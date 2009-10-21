@@ -49,8 +49,9 @@ public class ExecuteLdifAction extends Action
      */
     public ExecuteLdifAction( LdifEditor editor )
     {
-        super( Messages.getString("ExecuteLdifAction.ExecuteLDIF"), LdifEditorActivator.getDefault().getImageDescriptor( LdifEditorConstants.IMG_EXECUTE ) ); //$NON-NLS-1$
-        super.setToolTipText( Messages.getString("ExecuteLdifAction.ExecuteLDIF") ); //$NON-NLS-1$
+        super(
+            Messages.getString( "ExecuteLdifAction.ExecuteLDIF" ), LdifEditorActivator.getDefault().getImageDescriptor( LdifEditorConstants.IMG_EXECUTE ) ); //$NON-NLS-1$
+        super.setToolTipText( Messages.getString( "ExecuteLdifAction.ExecuteLDIF" ) ); //$NON-NLS-1$
         this.editor = editor;
     }
 

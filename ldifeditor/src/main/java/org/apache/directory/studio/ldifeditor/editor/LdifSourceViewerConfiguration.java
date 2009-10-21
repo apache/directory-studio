@@ -51,6 +51,7 @@ import org.eclipse.jface.text.source.ISourceViewer;
 import org.eclipse.jface.text.source.SourceViewerConfiguration;
 import org.eclipse.swt.graphics.RGB;
 
+
 /**
  * This class enables the features of the editor (Syntax coloring, code completion, etc.)
  *

@@ -32,7 +32,7 @@ public class FormatLdifDocumentAction extends AbstractLdifAction
 
     public FormatLdifDocumentAction( LdifEditor editor )
     {
-        super( Messages.getString("FormatLdifDocumentAction.FormatDocument"), editor ); //$NON-NLS-1$
+        super( Messages.getString( "FormatLdifDocumentAction.FormatDocument" ), editor ); //$NON-NLS-1$
     }
 
 

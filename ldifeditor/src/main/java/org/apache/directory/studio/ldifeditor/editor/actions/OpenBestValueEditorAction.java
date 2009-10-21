@@ -50,7 +50,8 @@ public class OpenBestValueEditorAction extends AbstractOpenValueEditorAction
             Object rawValue = getValueEditorRawValue();
             if ( !( valueEditor instanceof AbstractDialogValueEditor ) || rawValue == null )
             {
-                IValueEditor[] vps = valueEditorManager.getAlternativeValueEditors( connection.getSchema(), attributeDescription );
+                IValueEditor[] vps = valueEditorManager.getAlternativeValueEditors( connection.getSchema(),
+                    attributeDescription );
                 for ( int i = 0; i < vps.length
                     && ( !( valueEditor instanceof AbstractDialogValueEditor ) || rawValue == null ); i++ )
                 {

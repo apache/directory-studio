@@ -61,7 +61,7 @@ public class LdifEditorContentAssistPreferencePage extends PreferencePage implem
 
     public LdifEditorContentAssistPreferencePage()
     {
-        super( Messages.getString("LdifEditorContentAssistPreferencePage.ContentAssist") ); //$NON-NLS-1$
+        super( Messages.getString( "LdifEditorContentAssistPreferencePage.ContentAssist" ) ); //$NON-NLS-1$
         super.setPreferenceStore( LdifEditorActivator.getDefault().getPreferenceStore() );
     }
 
@@ -89,15 +89,16 @@ public class LdifEditorContentAssistPreferencePage extends PreferencePage implem
         BaseWidgetUtils.createSpacer( composite, 1 );
         BaseWidgetUtils.createSpacer( composite, 1 );
 
-        Group caGroup = BaseWidgetUtils.createGroup( BaseWidgetUtils.createColumnContainer( composite, 1, 1 ),
-            Messages.getString("LdifEditorContentAssistPreferencePage.ContentAssist"), 1 ); //$NON-NLS-1$
+        Group caGroup = BaseWidgetUtils.createGroup( BaseWidgetUtils.createColumnContainer( composite, 1, 1 ), Messages
+            .getString( "LdifEditorContentAssistPreferencePage.ContentAssist" ), 1 ); //$NON-NLS-1$
 
-        insertSingleProposalAutoButton = BaseWidgetUtils.createCheckbox( caGroup,
-            Messages.getString("LdifEditorContentAssistPreferencePage.InsertSingleProposalAutomatically"), 1 ); //$NON-NLS-1$
+        insertSingleProposalAutoButton = BaseWidgetUtils.createCheckbox( caGroup, Messages
+            .getString( "LdifEditorContentAssistPreferencePage.InsertSingleProposalAutomatically" ), 1 ); //$NON-NLS-1$
         insertSingleProposalAutoButton.setSelection( getPreferenceStore().getBoolean(
             LdifEditorConstants.PREFERENCE_LDIFEDITOR_CONTENTASSIST_INSERTSINGLEPROPOSALAUTO ) );
 
-        enableAutoActivationButton = BaseWidgetUtils.createCheckbox( caGroup, Messages.getString("LdifEditorContentAssistPreferencePage.EnableAutoAction"), 1 ); //$NON-NLS-1$
+        enableAutoActivationButton = BaseWidgetUtils.createCheckbox( caGroup, Messages
+            .getString( "LdifEditorContentAssistPreferencePage.EnableAutoAction" ), 1 ); //$NON-NLS-1$
         enableAutoActivationButton.setSelection( getPreferenceStore().getBoolean(
             LdifEditorConstants.PREFERENCE_LDIFEDITOR_CONTENTASSIST_ENABLEAUTOACTIVATION ) );
         enableAutoActivationButton.addSelectionListener( new SelectionAdapter()
@@ -110,7 +111,8 @@ public class LdifEditorContentAssistPreferencePage extends PreferencePage implem
 
         Composite autoActivationDelayComposite = BaseWidgetUtils.createColumnContainer( caGroup, 4, 1 );
         BaseWidgetUtils.createRadioIndent( autoActivationDelayComposite, 1 );
-        autoActivationDelayLabel = BaseWidgetUtils.createLabel( autoActivationDelayComposite, Messages.getString("LdifEditorContentAssistPreferencePage.AutoActivationDelay"), //$NON-NLS-1$
+        autoActivationDelayLabel = BaseWidgetUtils.createLabel( autoActivationDelayComposite, Messages
+            .getString( "LdifEditorContentAssistPreferencePage.AutoActivationDelay" ), //$NON-NLS-1$
             1 );
         autoActivationDelayText = BaseWidgetUtils.createText( autoActivationDelayComposite, "", 4, 1 ); //$NON-NLS-1$
         autoActivationDelayText.setText( getPreferenceStore().getString(
@@ -129,10 +131,11 @@ public class LdifEditorContentAssistPreferencePage extends PreferencePage implem
                 }
             }
         } );
-        autoActivationDelayMs = BaseWidgetUtils.createLabel( autoActivationDelayComposite, Messages.getString("LdifEditorContentAssistPreferencePage.MilliSecons"), 1 ); //$NON-NLS-1$
+        autoActivationDelayMs = BaseWidgetUtils.createLabel( autoActivationDelayComposite, Messages
+            .getString( "LdifEditorContentAssistPreferencePage.MilliSecons" ), 1 ); //$NON-NLS-1$
 
-        smartInsertAttributeInModspecButton = BaseWidgetUtils.createCheckbox( caGroup,
-            Messages.getString("LdifEditorContentAssistPreferencePage.SmartInsertAttributeName"), 1 ); //$NON-NLS-1$
+        smartInsertAttributeInModspecButton = BaseWidgetUtils.createCheckbox( caGroup, Messages
+            .getString( "LdifEditorContentAssistPreferencePage.SmartInsertAttributeName" ), 1 ); //$NON-NLS-1$
         smartInsertAttributeInModspecButton.setSelection( getPreferenceStore().getBoolean(
             LdifEditorConstants.PREFERENCE_LDIFEDITOR_CONTENTASSIST_SMARTINSERTATTRIBUTEINMODSPEC ) );
 
@@ -153,7 +156,8 @@ public class LdifEditorContentAssistPreferencePage extends PreferencePage implem
     public boolean performOk()
     {
 
-        getPreferenceStore().setValue( LdifEditorConstants.PREFERENCE_LDIFEDITOR_CONTENTASSIST_INSERTSINGLEPROPOSALAUTO,
+        getPreferenceStore().setValue(
+            LdifEditorConstants.PREFERENCE_LDIFEDITOR_CONTENTASSIST_INSERTSINGLEPROPOSALAUTO,
             this.insertSingleProposalAutoButton.getSelection() );
         getPreferenceStore().setValue( LdifEditorConstants.PREFERENCE_LDIFEDITOR_CONTENTASSIST_ENABLEAUTOACTIVATION,
             this.enableAutoActivationButton.getSelection() );

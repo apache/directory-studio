@@ -480,7 +480,7 @@ public class LdifDocumentProvider extends AbstractDocumentProvider implements ID
             File file = new File( ( ( IEditorInput ) element ).getToolTipText() );
             return file.canWrite() || !file.exists(); // Allow to edit new files
         }
-        
+
         return false;
     }
 

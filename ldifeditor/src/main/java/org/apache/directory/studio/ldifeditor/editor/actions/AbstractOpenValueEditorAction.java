@@ -59,7 +59,7 @@ public abstract class AbstractOpenValueEditorAction extends AbstractLdifAction
 
     public AbstractOpenValueEditorAction( LdifEditor editor )
     {
-        super( Messages.getString("AbstractOpenValueEditorAction.EditValue"), editor ); //$NON-NLS-1$
+        super( Messages.getString( "AbstractOpenValueEditorAction.EditValue" ), editor ); //$NON-NLS-1$
         valueEditorManager = editor.getValueEditorManager();
     }
 

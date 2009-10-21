@@ -115,7 +115,7 @@ public class NonExistingLdifEditorInput implements IPathEditorInput, ILocationPr
         {
             return this;
         }
-        
+
         return Platform.getAdapterManager().getAdapter( this, adapter );
     }
 
@@ -134,7 +134,7 @@ public class NonExistingLdifEditorInput implements IPathEditorInput, ILocationPr
             NonExistingLdifEditorInput input = ( NonExistingLdifEditorInput ) element;
             return input.getPath();
         }
-        
+
         return null;
     }
 

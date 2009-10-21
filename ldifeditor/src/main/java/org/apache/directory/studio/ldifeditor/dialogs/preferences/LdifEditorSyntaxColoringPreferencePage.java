@@ -167,7 +167,8 @@ public class LdifEditorSyntaxColoringPreferencePage extends PreferencePage imple
         void savePreferences()
         {
             IPreferenceStore store = LdifEditorActivator.getDefault().getPreferenceStore();
-            PreferenceConverter.setValue( store, key + LdifEditorConstants.PREFERENCE_LDIFEDITOR_SYNTAX_RGB_SUFFIX, rgb );
+            PreferenceConverter
+                .setValue( store, key + LdifEditorConstants.PREFERENCE_LDIFEDITOR_SYNTAX_RGB_SUFFIX, rgb );
             store.setValue( key + LdifEditorConstants.PREFERENCE_LDIFEDITOR_SYNTAX_STYLE_SUFFIX, getStyle() );
         }
 
@@ -191,7 +192,7 @@ public class LdifEditorSyntaxColoringPreferencePage extends PreferencePage imple
 
     public LdifEditorSyntaxColoringPreferencePage()
     {
-        super( Messages.getString("LdifEditorSyntaxColoringPreferencePage.SyntaxColoring") ); //$NON-NLS-1$
+        super( Messages.getString( "LdifEditorSyntaxColoringPreferencePage.SyntaxColoring" ) ); //$NON-NLS-1$
         super.setPreferenceStore( LdifEditorActivator.getDefault().getPreferenceStore() );
         // super.setDescription("");
     }
@@ -231,21 +232,29 @@ public class LdifEditorSyntaxColoringPreferencePage extends PreferencePage imple
         createPreviewer( composite );
 
         syntaxItems = new SyntaxItem[10];
-        syntaxItems[0] = new SyntaxItem( Messages.getString("LdifEditorSyntaxColoringPreferencePage.Comments"), LdifEditorConstants.PREFERENCE_LDIFEDITOR_SYNTAX_COMMENT ); //$NON-NLS-1$
-        syntaxItems[1] = new SyntaxItem( Messages.getString("LdifEditorSyntaxColoringPreferencePage.DN"), LdifEditorConstants.PREFERENCE_LDIFEDITOR_SYNTAX_DN ); //$NON-NLS-1$
-        syntaxItems[2] = new SyntaxItem( Messages.getString("LdifEditorSyntaxColoringPreferencePage.AttributeDescriptions"), //$NON-NLS-1$
+        syntaxItems[0] = new SyntaxItem(
+            Messages.getString( "LdifEditorSyntaxColoringPreferencePage.Comments" ), LdifEditorConstants.PREFERENCE_LDIFEDITOR_SYNTAX_COMMENT ); //$NON-NLS-1$
+        syntaxItems[1] = new SyntaxItem(
+            Messages.getString( "LdifEditorSyntaxColoringPreferencePage.DN" ), LdifEditorConstants.PREFERENCE_LDIFEDITOR_SYNTAX_DN ); //$NON-NLS-1$
+        syntaxItems[2] = new SyntaxItem( Messages
+            .getString( "LdifEditorSyntaxColoringPreferencePage.AttributeDescriptions" ), //$NON-NLS-1$
             LdifEditorConstants.PREFERENCE_LDIFEDITOR_SYNTAX_ATTRIBUTE );
-        syntaxItems[3] = new SyntaxItem( Messages.getString("LdifEditorSyntaxColoringPreferencePage.ValueTypes"), LdifEditorConstants.PREFERENCE_LDIFEDITOR_SYNTAX_VALUETYPE ); //$NON-NLS-1$
-        syntaxItems[4] = new SyntaxItem( Messages.getString("LdifEditorSyntaxColoringPreferencePage.Values"), LdifEditorConstants.PREFERENCE_LDIFEDITOR_SYNTAX_VALUE ); //$NON-NLS-1$
-        syntaxItems[5] = new SyntaxItem( Messages.getString("LdifEditorSyntaxColoringPreferencePage.Keywords"), //$NON-NLS-1$
+        syntaxItems[3] = new SyntaxItem(
+            Messages.getString( "LdifEditorSyntaxColoringPreferencePage.ValueTypes" ), LdifEditorConstants.PREFERENCE_LDIFEDITOR_SYNTAX_VALUETYPE ); //$NON-NLS-1$
+        syntaxItems[4] = new SyntaxItem(
+            Messages.getString( "LdifEditorSyntaxColoringPreferencePage.Values" ), LdifEditorConstants.PREFERENCE_LDIFEDITOR_SYNTAX_VALUE ); //$NON-NLS-1$
+        syntaxItems[5] = new SyntaxItem( Messages.getString( "LdifEditorSyntaxColoringPreferencePage.Keywords" ), //$NON-NLS-1$
             LdifEditorConstants.PREFERENCE_LDIFEDITOR_SYNTAX_KEYWORD );
-        syntaxItems[6] = new SyntaxItem( Messages.getString("LdifEditorSyntaxColoringPreferencePage.ChangetypeAdd"), //$NON-NLS-1$
+        syntaxItems[6] = new SyntaxItem( Messages.getString( "LdifEditorSyntaxColoringPreferencePage.ChangetypeAdd" ), //$NON-NLS-1$
             LdifEditorConstants.PREFERENCE_LDIFEDITOR_SYNTAX_CHANGETYPEADD );
-        syntaxItems[7] = new SyntaxItem( Messages.getString("LdifEditorSyntaxColoringPreferencePage.ChangetypeModify"), //$NON-NLS-1$
+        syntaxItems[7] = new SyntaxItem(
+            Messages.getString( "LdifEditorSyntaxColoringPreferencePage.ChangetypeModify" ), //$NON-NLS-1$
             LdifEditorConstants.PREFERENCE_LDIFEDITOR_SYNTAX_CHANGETYPEMODIFY );
-        syntaxItems[8] = new SyntaxItem( Messages.getString("LdifEditorSyntaxColoringPreferencePage.ChangetypeDelete"), //$NON-NLS-1$
+        syntaxItems[8] = new SyntaxItem(
+            Messages.getString( "LdifEditorSyntaxColoringPreferencePage.ChangetypeDelete" ), //$NON-NLS-1$
             LdifEditorConstants.PREFERENCE_LDIFEDITOR_SYNTAX_CHANGETYPEDELETE );
-        syntaxItems[9] = new SyntaxItem( Messages.getString("LdifEditorSyntaxColoringPreferencePage.ChangetypeModdn"), //$NON-NLS-1$
+        syntaxItems[9] = new SyntaxItem(
+            Messages.getString( "LdifEditorSyntaxColoringPreferencePage.ChangetypeModdn" ), //$NON-NLS-1$
             LdifEditorConstants.PREFERENCE_LDIFEDITOR_SYNTAX_CHANGETYPEMODDN );
         syntaxItemViewer.setInput( syntaxItems );
         syntaxItemViewer.setSelection( new StructuredSelection( syntaxItems[0] ) );
@@ -257,7 +266,7 @@ public class LdifEditorSyntaxColoringPreferencePage extends PreferencePage imple
     private void createSyntaxPage( Composite parent )
     {
 
-        BaseWidgetUtils.createLabel( parent, Messages.getString("LdifEditorSyntaxColoringPreferencePage.Element"), 1 ); //$NON-NLS-1$
+        BaseWidgetUtils.createLabel( parent, Messages.getString( "LdifEditorSyntaxColoringPreferencePage.Element" ), 1 ); //$NON-NLS-1$
 
         Composite editorComposite = BaseWidgetUtils.createColumnContainer( parent, 2, 1 );
 
@@ -273,12 +282,17 @@ public class LdifEditorSyntaxColoringPreferencePage extends PreferencePage imple
         Composite stylesComposite = BaseWidgetUtils.createColumnContainer( editorComposite, 1, 1 );
         stylesComposite.setLayoutData( new GridData( GridData.FILL_BOTH ) );
         Composite colorComposite = BaseWidgetUtils.createColumnContainer( stylesComposite, 2, 1 );
-        BaseWidgetUtils.createLabel( colorComposite, Messages.getString("LdifEditorSyntaxColoringPreferencePage.Color"), 1 ); //$NON-NLS-1$
+        BaseWidgetUtils.createLabel( colorComposite, Messages
+            .getString( "LdifEditorSyntaxColoringPreferencePage.Color" ), 1 ); //$NON-NLS-1$
         colorSelector = new ColorSelector( colorComposite );
-        boldCheckBox = BaseWidgetUtils.createCheckbox( stylesComposite, Messages.getString("LdifEditorSyntaxColoringPreferencePage.Bold"), 1 ); //$NON-NLS-1$
-        italicCheckBox = BaseWidgetUtils.createCheckbox( stylesComposite, Messages.getString("LdifEditorSyntaxColoringPreferencePage.Italic"), 1 ); //$NON-NLS-1$
-        strikethroughCheckBox = BaseWidgetUtils.createCheckbox( stylesComposite, Messages.getString("LdifEditorSyntaxColoringPreferencePage.Strikethrough"), 1 ); //$NON-NLS-1$
-        underlineCheckBox = BaseWidgetUtils.createCheckbox( stylesComposite, Messages.getString("LdifEditorSyntaxColoringPreferencePage.Underline"), 1 ); //$NON-NLS-1$
+        boldCheckBox = BaseWidgetUtils.createCheckbox( stylesComposite, Messages
+            .getString( "LdifEditorSyntaxColoringPreferencePage.Bold" ), 1 ); //$NON-NLS-1$
+        italicCheckBox = BaseWidgetUtils.createCheckbox( stylesComposite, Messages
+            .getString( "LdifEditorSyntaxColoringPreferencePage.Italic" ), 1 ); //$NON-NLS-1$
+        strikethroughCheckBox = BaseWidgetUtils.createCheckbox( stylesComposite, Messages
+            .getString( "LdifEditorSyntaxColoringPreferencePage.Strikethrough" ), 1 ); //$NON-NLS-1$
+        underlineCheckBox = BaseWidgetUtils.createCheckbox( stylesComposite, Messages
+            .getString( "LdifEditorSyntaxColoringPreferencePage.Underline" ), 1 ); //$NON-NLS-1$
 
         syntaxItemViewer.addSelectionChangedListener( new ISelectionChangedListener()
         {
@@ -416,7 +430,7 @@ public class LdifEditorSyntaxColoringPreferencePage extends PreferencePage imple
     private void createPreviewer( Composite parent )
     {
 
-        BaseWidgetUtils.createLabel( parent, Messages.getString("LdifEditorSyntaxColoringPreferencePage.Preview"), 1 ); //$NON-NLS-1$
+        BaseWidgetUtils.createLabel( parent, Messages.getString( "LdifEditorSyntaxColoringPreferencePage.Preview" ), 1 ); //$NON-NLS-1$
 
         ldifEditorWidget = new LdifEditorWidget( null, LDIF_INITIAL, false );
         ldifEditorWidget.createWidget( parent );

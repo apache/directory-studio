@@ -77,7 +77,7 @@ public class LdifAutoEditStrategy implements IAutoEditStrategy
 
         boolean autoWrap = LdifEditorActivator.getDefault().getPreferenceStore().getBoolean(
             LdifEditorConstants.PREFERENCE_LDIFEDITOR_FORMATTER_AUTOWRAP );
-        
+
         if ( autoWrap )
         {
 

@@ -131,8 +131,8 @@ public class LdifDamagerRepairer implements IPresentationDamager, IPresentationR
     {
         IPreferenceStore store = LdifEditorActivator.getDefault().getPreferenceStore();
 
-        RGB rgb = PreferenceConverter
-            .getColor( store, key + LdifEditorConstants.PREFERENCE_LDIFEDITOR_SYNTAX_RGB_SUFFIX );
+        RGB rgb = PreferenceConverter.getColor( store, key
+            + LdifEditorConstants.PREFERENCE_LDIFEDITOR_SYNTAX_RGB_SUFFIX );
         int style = store.getInt( key + LdifEditorConstants.PREFERENCE_LDIFEDITOR_SYNTAX_STYLE_SUFFIX );
 
         if ( textAttributeKeyToValueMap != null )

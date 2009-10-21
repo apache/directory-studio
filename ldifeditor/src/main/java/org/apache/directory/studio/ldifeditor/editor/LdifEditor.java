@@ -141,6 +141,7 @@ public class LdifEditor extends TextEditor implements ILdifEditor, ConnectionUpd
 
     protected boolean showToolBar = true;
 
+
     /**
      * Creates a new instance of LdifEditor.
      */
@@ -159,7 +160,7 @@ public class LdifEditor extends TextEditor implements ILdifEditor, ConnectionUpd
 
         setHelpContextId( LdifEditorConstants.PLUGIN_ID + "." + "tools_ldif_editor" ); //$NON-NLS-1$ //$NON-NLS-2$
     }
-    
+
 
     /**
      * @see org.eclipse.ui.texteditor.AbstractDecoratedTextEditor#handlePreferenceStoreChanged(org.eclipse.jface.util.PropertyChangeEvent)
@@ -228,8 +229,8 @@ public class LdifEditor extends TextEditor implements ILdifEditor, ConnectionUpd
             long fileLength = javaIoFile.length();
             if ( fileLength > ( 1 * 1024 * 1024 ) )
             {
-                MessageDialog.openError( site.getShell(), Messages.getString("LdifEditor.LDIFFileIsTooBig"), //$NON-NLS-1$
-                    Messages.getString("LdifEditor.LDIFFileIsTooBigDescription") ); //$NON-NLS-1$
+                MessageDialog.openError( site.getShell(), Messages.getString( "LdifEditor.LDIFFileIsTooBig" ), //$NON-NLS-1$
+                    Messages.getString( "LdifEditor.LDIFFileIsTooBigDescription" ) ); //$NON-NLS-1$
                 super.init( site, new NonExistingLdifEditorInput() );
                 return;
             }
@@ -343,7 +344,7 @@ public class LdifEditor extends TextEditor implements ILdifEditor, ConnectionUpd
             LdifEditorConstants.ACTION_ID_EDIT_ATTRIBUTE_DESCRIPTION );
         addAction( menu, ITextEditorActionConstants.GROUP_EDIT, BrowserCommonConstants.ACTION_ID_EDIT_VALUE );
 
-        MenuManager valueEditorMenuManager = new MenuManager( Messages.getString("LdifEditor.EditValueWith") ); //$NON-NLS-1$
+        MenuManager valueEditorMenuManager = new MenuManager( Messages.getString( "LdifEditor.EditValueWith" ) ); //$NON-NLS-1$
         if ( this.openBestValueEditorAction.isEnabled() )
         {
             valueEditorMenuManager.add( this.openBestValueEditorAction );
@@ -367,7 +368,7 @@ public class LdifEditor extends TextEditor implements ILdifEditor, ConnectionUpd
         addAction( menu, ITextEditorActionConstants.GROUP_EDIT, LdifEditorConstants.ACTION_ID_EDIT_RECORD );
 
         // add Format actions
-        MenuManager formatMenuManager = new MenuManager( Messages.getString("LdifEditor.Format") ); //$NON-NLS-1$
+        MenuManager formatMenuManager = new MenuManager( Messages.getString( "LdifEditor.Format" ) ); //$NON-NLS-1$
         addAction( formatMenuManager, LdifEditorConstants.ACTION_ID_FORMAT_LDIF_DOCUMENT );
         addAction( formatMenuManager, LdifEditorConstants.ACTION_ID_FORMAT_LDIF_RECORD );
         menu.appendToGroup( ITextEditorActionConstants.GROUP_EDIT, formatMenuManager );
@@ -453,7 +454,7 @@ public class LdifEditor extends TextEditor implements ILdifEditor, ConnectionUpd
     {
         setHelpContextId( LdifEditorConstants.PLUGIN_ID + "." + "tools_ldif_editor" ); //$NON-NLS-1$ //$NON-NLS-2$
 
-        if(showToolBar)
+        if ( showToolBar )
         {
             // create the toolbar (including connection widget and execute button) on top of the editor 
             Composite composite = new Composite( parent, SWT.NONE );
@@ -463,10 +464,10 @@ public class LdifEditor extends TextEditor implements ILdifEditor, ConnectionUpd
             layout.marginHeight = 0;
             layout.verticalSpacing = 0;
             composite.setLayout( layout );
-    
+
             control = new ViewForm( composite, SWT.NONE );
             control.setLayoutData( new GridData( GridData.FILL_BOTH ) );
-    
+
             Composite browserConnectionWidgetControl = BaseWidgetUtils.createColumnContainer( control, 2, 1 );
             browserConnectionWidget = new BrowserConnectionWidget();
             browserConnectionWidget.createWidget( browserConnectionWidgetControl );
@@ -480,16 +481,16 @@ public class LdifEditor extends TextEditor implements ILdifEditor, ConnectionUpd
                 }
             } );
             control.setTopLeft( browserConnectionWidgetControl );
-    
+
             // tool bar
             actionToolBar = new ToolBar( control, SWT.FLAT | SWT.RIGHT );
             actionToolBar.setLayoutData( new GridData( SWT.END, SWT.NONE, true, false ) );
             actionToolBarManager = new ToolBarManager( actionToolBar );
             control.setTopCenter( actionToolBar );
-    
+
             // local menu
             control.setTopRight( null );
-    
+
             // content
             Composite editorComposite = new Composite( control, SWT.NONE );
             editorComposite.setLayout( new FillLayout() );
@@ -581,7 +582,7 @@ public class LdifEditor extends TextEditor implements ILdifEditor, ConnectionUpd
     {
         this.browserConnection = browserConnection;
         getEditorSite().getActionBars().getStatusLineManager().setMessage(
-            Messages.getString("LdifEditor.UsedConnection") //$NON-NLS-1$
+            Messages.getString( "LdifEditor.UsedConnection" ) //$NON-NLS-1$
                 + ( browserConnection == null || browserConnection.getConnection() == null ? "-" : browserConnection //$NON-NLS-1$
                     .getConnection().getName() ) );
         // getStatusField("ldapconnection").setText();
@@ -741,7 +742,8 @@ public class LdifEditor extends TextEditor implements ILdifEditor, ConnectionUpd
             final File externalFile = new File( path );
             if ( externalFile.exists() )
             {
-                MessageDialog overwriteDialog = new MessageDialog( shell, Messages.getString("LdifEditor.Overwrite"), null, Messages.getString("OverwriteQuestion"), //$NON-NLS-1$ //$NON-NLS-2$
+                MessageDialog overwriteDialog = new MessageDialog( shell,
+                    Messages.getString( "LdifEditor.Overwrite" ), null, Messages.getString( "OverwriteQuestion" ), //$NON-NLS-1$ //$NON-NLS-2$
                     MessageDialog.WARNING, new String[]
                         { IDialogConstants.YES_LABEL, IDialogConstants.NO_LABEL }, 1 ); // 'No' is the default
                 if ( overwriteDialog.open() != Window.OK )
@@ -769,8 +771,8 @@ public class LdifEditor extends TextEditor implements ILdifEditor, ConnectionUpd
                 final IStatus status = x.getStatus();
                 if ( status == null || status.getSeverity() != IStatus.CANCEL )
                 {
-                    String title = Messages.getString("LdifEditor.ErrorInSaveAs"); //$NON-NLS-1$
-                    String msg = Messages.getString("LdifEditor.ErrorInSaveAs") + x.getMessage(); //$NON-NLS-1$
+                    String title = Messages.getString( "LdifEditor.ErrorInSaveAs" ); //$NON-NLS-1$
+                    String msg = Messages.getString( "LdifEditor.ErrorInSaveAs" ) + x.getMessage(); //$NON-NLS-1$
                     MessageDialog.openError( shell, title, msg );
                 }
             }

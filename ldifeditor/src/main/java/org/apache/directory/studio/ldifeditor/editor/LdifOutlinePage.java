@@ -109,8 +109,7 @@ public class LdifOutlinePage extends ContentOutlinePage
                         if ( !list.isEmpty() && list.get( 0 ) instanceof LdifAttrValLine )
                         {
                             LdifAttrValLine line = ( LdifAttrValLine ) list.get( 0 );
-                            ldifEditor.selectAndReveal( line.getOffset(), line.getRawAttributeDescription()
-                                .length() );
+                            ldifEditor.selectAndReveal( line.getOffset(), line.getRawAttributeDescription().length() );
                         }
                     }
                     else if ( element instanceof LdifAttrValLine )

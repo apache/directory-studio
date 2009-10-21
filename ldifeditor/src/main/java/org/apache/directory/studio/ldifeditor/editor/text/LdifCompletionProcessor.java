@@ -143,25 +143,24 @@ public class LdifCompletionProcessor extends TemplateCompletionProcessor
             {
                 if ( CT_ADD.startsWith( prefix ) )
                     proposalList.add( new CompletionProposal( CT_ADD, offset - prefix.length(), prefix.length(), CT_ADD
-                        .length(), LdifEditorActivator.getDefault().getImage( LdifEditorConstants.IMG_LDIF_ADD ), CT_ADD
-                        .substring( 0, CT_ADD.length() - BrowserCoreConstants.LINE_SEPARATOR.length() ), null, null ) );
+                        .length(), LdifEditorActivator.getDefault().getImage( LdifEditorConstants.IMG_LDIF_ADD ),
+                        CT_ADD.substring( 0, CT_ADD.length() - BrowserCoreConstants.LINE_SEPARATOR.length() ), null,
+                        null ) );
                 if ( CT_MODIFY.startsWith( prefix ) )
                     proposalList.add( new CompletionProposal( CT_MODIFY, offset - prefix.length(), prefix.length(),
-                        CT_MODIFY.length(),
-                        LdifEditorActivator.getDefault().getImage( LdifEditorConstants.IMG_LDIF_MODIFY ), CT_MODIFY
-                            .substring( 0, CT_MODIFY.length() - BrowserCoreConstants.LINE_SEPARATOR.length() ), null,
-                        null ) );
+                        CT_MODIFY.length(), LdifEditorActivator.getDefault().getImage(
+                            LdifEditorConstants.IMG_LDIF_MODIFY ), CT_MODIFY.substring( 0, CT_MODIFY.length()
+                            - BrowserCoreConstants.LINE_SEPARATOR.length() ), null, null ) );
                 if ( CT_DELETE.startsWith( prefix ) )
                     proposalList.add( new CompletionProposal( CT_DELETE, offset - prefix.length(), prefix.length(),
-                        CT_DELETE.length(),
-                        LdifEditorActivator.getDefault().getImage( LdifEditorConstants.IMG_LDIF_DELETE ), CT_DELETE
-                            .substring( 0, CT_DELETE.length() - BrowserCoreConstants.LINE_SEPARATOR.length() ), null,
-                        null ) );
+                        CT_DELETE.length(), LdifEditorActivator.getDefault().getImage(
+                            LdifEditorConstants.IMG_LDIF_DELETE ), CT_DELETE.substring( 0, CT_DELETE.length()
+                            - BrowserCoreConstants.LINE_SEPARATOR.length() ), null, null ) );
                 if ( CT_MODDN.startsWith( prefix ) )
                     proposalList.add( new CompletionProposal( CT_MODDN, offset - prefix.length(), prefix.length(),
-                        CT_MODDN.length(), LdifEditorActivator.getDefault().getImage( LdifEditorConstants.IMG_LDIF_RENAME ),
-                        CT_MODDN.substring( 0, CT_MODDN.length() - BrowserCoreConstants.LINE_SEPARATOR.length() ),
-                        null, null ) );
+                        CT_MODDN.length(), LdifEditorActivator.getDefault().getImage(
+                            LdifEditorConstants.IMG_LDIF_RENAME ), CT_MODDN.substring( 0, CT_MODDN.length()
+                            - BrowserCoreConstants.LINE_SEPARATOR.length() ), null, null ) );
             }
 
         }

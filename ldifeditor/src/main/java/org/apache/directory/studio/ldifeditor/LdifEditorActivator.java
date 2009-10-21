@@ -53,7 +53,7 @@ public class LdifEditorActivator extends AbstractUIPlugin
 
     /** Resource bundle */
     private ResourceBundle resourceBundle;
-    
+
     /** The color registry */
     private ColorRegistry colorRegistry;
 
@@ -73,7 +73,7 @@ public class LdifEditorActivator extends AbstractUIPlugin
     public LdifEditorActivator()
     {
         plugin = this;
-        
+
         try
         {
             resourceBundle = ResourceBundle.getBundle( "org.apache.directory.studio.ldifeditor.messages" ); //$NON-NLS-1$
@@ -262,7 +262,7 @@ public class LdifEditorActivator extends AbstractUIPlugin
     {
         return ldifTemplateContextTypeRegistry;
     }
-    
+
 
     /**
      * 
@@ -272,8 +272,8 @@ public class LdifEditorActivator extends AbstractUIPlugin
     {
         return ldifTemplateStore;
     }
-    
-    
+
+
     /**
      * Gets the resource bundle.
      * 
@@ -304,9 +304,8 @@ public class LdifEditorActivator extends AbstractUIPlugin
             {
                 // We can't use the PLUGIN_ID constant since loading the plugin.properties file has failed,
                 // So we're using a default plugin id.
-                getLog().log(
-                    new Status( Status.ERROR, "org.apache.directory.studio.ldifeditor", Status.OK, //$NON-NLS-1$
-                        "Unable to get the plugin properties.", e ) ); //$NON-NLS-1$
+                getLog().log( new Status( Status.ERROR, "org.apache.directory.studio.ldifeditor", Status.OK, //$NON-NLS-1$
+                    "Unable to get the plugin properties.", e ) ); //$NON-NLS-1$
             }
         }
 
