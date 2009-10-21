@@ -255,7 +255,7 @@ public class ApacheDsSchemaConnector extends AbstractSchemaConnector implements 
             {
                 monitor.reportError( e );
             }
-       }
+        }
 
         return schema;
     }

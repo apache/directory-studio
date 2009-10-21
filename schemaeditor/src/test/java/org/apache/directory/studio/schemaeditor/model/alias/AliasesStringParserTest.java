@@ -121,7 +121,8 @@ public class AliasesStringParserTest extends TestCase
         assertEquals( "1test", aliases.get( 0 ).getAlias() );
         assertEquals( AliasWithStartError.class, aliases.get( 0 ).getClass() );
     }
-    
+
+
     public void testOneAliasWithStartError2() throws Exception
     {
         AliasesStringParser parser = new AliasesStringParser();
@@ -156,7 +157,8 @@ public class AliasesStringParserTest extends TestCase
         assertEquals( "tes/", aliases.get( 0 ).getAlias() );
         assertEquals( AliasWithPartError.class, aliases.get( 0 ).getClass() );
     }
-    
+
+
     public void testOneAliasWithPartErrorAndOneAliasWithStartError() throws Exception
     {
         AliasesStringParser parser = new AliasesStringParser();
@@ -171,7 +173,6 @@ public class AliasesStringParserTest extends TestCase
     }
 
 
-    
     public void testOneAliasWithPartErrorAndOneAliasWithStartError2() throws Exception
     {
         AliasesStringParser parser = new AliasesStringParser();
