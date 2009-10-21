@@ -367,7 +367,7 @@ public class InitializeChildrenRunnable implements StudioBulkRunnableWithProgres
     }
 
 
-    private static ISearch createSearch( IEntry parent, StudioControl pagedSearchControl, boolean isSubSearch,
+    private static ISearch createSearch( IEntry parent, StudioControl pagedSearchControl, boolean isSubentriesSearch,
         boolean isAliasSearch, boolean isReferralsSearch )
     {
         // scope
@@ -375,7 +375,7 @@ public class InitializeChildrenRunnable implements StudioBulkRunnableWithProgres
 
         // filter
         String filter = parent.getChildrenFilter();
-        if ( isSubSearch )
+        if ( isSubentriesSearch )
         {
             filter = ISearch.FILTER_SUBENTRY;
         }
@@ -413,6 +413,10 @@ public class InitializeChildrenRunnable implements StudioBulkRunnableWithProgres
         if ( parent.isReferral() || isReferralsSearch || parent.getBrowserConnection().isManageDsaIT() )
         {
             search.getSearchParameter().getControls().add( StudioControl.MANAGEDSAIT_CONTROL );
+        }
+        if ( isSubentriesSearch )
+        {
+            search.getSearchParameter().getControls().add( StudioControl.SUBENTRIES_CONTROL );
         }
         if ( pagedSearchControl != null )
         {
