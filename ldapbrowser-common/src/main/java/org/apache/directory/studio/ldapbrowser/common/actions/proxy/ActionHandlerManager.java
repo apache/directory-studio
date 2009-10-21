@@ -19,6 +19,7 @@
  */
 package org.apache.directory.studio.ldapbrowser.common.actions.proxy;
 
+
 /**
  * A ActionHandlerManager activates and deactives the action handlers.
  *
@@ -33,7 +34,7 @@ public interface ActionHandlerManager
      */
     public void deactivateGlobalActionHandlers();
 
-    
+
     /**
      * Activates global action handlers.
      */

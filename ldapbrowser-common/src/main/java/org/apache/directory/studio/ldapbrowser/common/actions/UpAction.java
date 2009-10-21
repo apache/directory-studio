@@ -64,7 +64,7 @@ public class UpAction extends BrowserAction
      */
     public String getText()
     {
-        return Messages.getString("UpAction.Up"); //$NON-NLS-1$
+        return Messages.getString( "UpAction.Up" ); //$NON-NLS-1$
     }
 
 

@@ -240,7 +240,8 @@ public class DnBuilderWidget extends BrowserWidget implements ModifyListener
         // draw parent
         if ( showParent )
         {
-            parentEntryLabel = BaseWidgetUtils.createLabel( composite, Messages.getString("DnBuilderWidget.Parent"), 1 ); //$NON-NLS-1$
+            parentEntryLabel = BaseWidgetUtils.createLabel( composite,
+                Messages.getString( "DnBuilderWidget.Parent" ), 1 ); //$NON-NLS-1$
             parentEntryWidget = new EntryWidget();
             parentEntryWidget.createWidget( composite );
             parentEntryWidget.addWidgetModifyListener( new WidgetModifyListener()
@@ -257,7 +258,7 @@ public class DnBuilderWidget extends BrowserWidget implements ModifyListener
         // draw RDN group
         if ( showRDN )
         {
-            rdnLabel = BaseWidgetUtils.createLabel( composite, Messages.getString("DnBuilderWidget.RDN"), 1 ); //$NON-NLS-1$
+            rdnLabel = BaseWidgetUtils.createLabel( composite, Messages.getString( "DnBuilderWidget.RDN" ), 1 ); //$NON-NLS-1$
             rdnComposite = BaseWidgetUtils.createColumnContainer( composite, 5, 2 );
             rdnLineList = new ArrayList<RdnLine>();
             BaseWidgetUtils.createSpacer( composite, 3 );
@@ -266,7 +267,8 @@ public class DnBuilderWidget extends BrowserWidget implements ModifyListener
         // draw dn/rdn preview
         if ( showRDN )
         {
-            previewLabel = BaseWidgetUtils.createLabel( composite, showParent ? Messages.getString("DnBuilderWidget.DNPreview") : Messages.getString("DnBuilderWidget.RDNPrevei"), 1 ); //$NON-NLS-1$ //$NON-NLS-2$
+            previewLabel = BaseWidgetUtils.createLabel( composite, showParent ? Messages
+                .getString( "DnBuilderWidget.DNPreview" ) : Messages.getString( "DnBuilderWidget.RDNPrevei" ), 1 ); //$NON-NLS-1$ //$NON-NLS-2$
             previewText = BaseWidgetUtils.createReadonlyText( composite, "", 2 ); //$NON-NLS-1$
             BaseWidgetUtils.createSpacer( composite, 3 );
         }
@@ -351,11 +353,11 @@ public class DnBuilderWidget extends BrowserWidget implements ModifyListener
         String s = ""; //$NON-NLS-1$
         if ( rdnE != null )
         {
-            s += rdnE.getMessage() != null ? rdnE.getMessage() : Messages.getString("DnBuilderWidget.ErrorInRDN"); //$NON-NLS-1$
+            s += rdnE.getMessage() != null ? rdnE.getMessage() : Messages.getString( "DnBuilderWidget.ErrorInRDN" ); //$NON-NLS-1$
         }
         if ( parentE != null )
         {
-            s += ", " + parentE.getMessage() != null ? parentE.getMessage() : Messages.getString("DnBuilderWidget.ErrorInParentDN"); //$NON-NLS-1$ //$NON-NLS-2$
+            s += ", " + parentE.getMessage() != null ? parentE.getMessage() : Messages.getString( "DnBuilderWidget.ErrorInParentDN" ); //$NON-NLS-1$ //$NON-NLS-2$
         }
 
         if ( previewText != null )

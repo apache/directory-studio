@@ -93,7 +93,7 @@ public abstract class BrowserAction extends StudioAction implements IWorkbenchWi
 
     /** The selected properties. */
     protected String[] selectedProperties;
-    
+
     /** The input */
     private Object input;
 
@@ -223,7 +223,7 @@ public abstract class BrowserAction extends StudioAction implements IWorkbenchWi
         this.selectedLdifModel = null;
         this.selectedLdifContainers = new LdifContainer[0];
         this.selectedLdifParts = new LdifPart[0];
-        
+
         this.selectedProperties = new String[0];
 
         this.input = null;
@@ -249,7 +249,7 @@ public abstract class BrowserAction extends StudioAction implements IWorkbenchWi
         this.selectedLdifModel = null;
         this.selectedLdifContainers = new LdifContainer[0];
         this.selectedLdifParts = new LdifPart[0];
-        
+
         this.selectedProperties = new String[0];
 
         this.input = null;

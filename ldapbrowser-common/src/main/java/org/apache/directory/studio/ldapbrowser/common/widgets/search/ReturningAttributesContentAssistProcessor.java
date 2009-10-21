@@ -169,7 +169,7 @@ public class ReturningAttributesContentAssistProcessor implements ISubjectContro
     {
         IDocument document = contentAssistSubjectControl.getDocument();
         String text = document.get();
-       
+
         // search start of current attribute type
         int start = 0;
         for ( int i = documentOffset - 1; i >= 0; i-- )
@@ -190,8 +190,7 @@ public class ReturningAttributesContentAssistProcessor implements ISubjectContro
             if ( string.toUpperCase().startsWith( attribute.toUpperCase() ) )
             {
                 ICompletionProposal proposal = new CompletionProposal( string + ", ", start, //$NON-NLS-1$
-                    documentOffset - start, string.length() + 2, null, string,
-                    null, null );
+                    documentOffset - start, string.length() + 2, null, string, null, null );
                 proposalList.add( proposal );
             }
         }

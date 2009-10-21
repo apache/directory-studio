@@ -50,7 +50,8 @@ public class LineSeparatorInput extends OptionsInput
      */
     public LineSeparatorInput( String initialRawValue, boolean asGroup )
     {
-        super( Messages.getString("LineSeparatorInput.LineSeparator"), getDefaultDisplayValue(), getDefaultRawValue(), getOtherDisplayValues(), //$NON-NLS-1$
+        super(
+            Messages.getString( "LineSeparatorInput.LineSeparator" ), getDefaultDisplayValue(), getDefaultRawValue(), getOtherDisplayValues(), //$NON-NLS-1$
             getOtherRawValues(), initialRawValue, asGroup, false );
 
     }

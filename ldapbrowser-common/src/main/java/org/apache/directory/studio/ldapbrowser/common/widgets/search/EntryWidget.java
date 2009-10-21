@@ -162,7 +162,7 @@ public class EntryWidget extends BrowserWidget
 
         // Up button
         upButton = new Button( textAndUpComposite, SWT.PUSH );
-        upButton.setToolTipText( Messages.getString("EntryWidget.Parent") ); //$NON-NLS-1$
+        upButton.setToolTipText( Messages.getString( "EntryWidget.Parent" ) ); //$NON-NLS-1$
         upButton.setImage( BrowserCommonActivator.getDefault().getImage( BrowserCommonConstants.IMG_PARENT ) );
         upButton.setEnabled( false );
         upButton.addSelectionListener( new SelectionAdapter()
@@ -180,7 +180,7 @@ public class EntryWidget extends BrowserWidget
         } );
 
         // Browse button
-        entryBrowseButton = BaseWidgetUtils.createButton( parent, Messages.getString("EntryWidget.BrowseButton"), 1 ); //$NON-NLS-1$
+        entryBrowseButton = BaseWidgetUtils.createButton( parent, Messages.getString( "EntryWidget.BrowseButton" ), 1 ); //$NON-NLS-1$
         entryBrowseButton.addSelectionListener( new SelectionAdapter()
         {
             public void widgetSelected( SelectionEvent e )
@@ -189,7 +189,7 @@ public class EntryWidget extends BrowserWidget
                 {
                     // get root entry
                     IEntry rootEntry = browserConnection.getRootDSE();
-                    if( suffix != null && suffix.size() > 0 )
+                    if ( suffix != null && suffix.size() > 0 )
                     {
                         rootEntry = browserConnection.getEntryFromCache( suffix );
                         if ( rootEntry == null )
@@ -202,9 +202,9 @@ public class EntryWidget extends BrowserWidget
 
                     // calculate initial DN
                     LdapDN initialDN = dn;
-                    if( useLocalName && suffix != null && suffix.size() > 0 )
+                    if ( useLocalName && suffix != null && suffix.size() > 0 )
                     {
-                        if( initialDN != null && initialDN.size() > 0 )
+                        if ( initialDN != null && initialDN.size() > 0 )
                         {
                             initialDN = DnUtils.composeDn( initialDN, suffix );
                         }
@@ -224,7 +224,8 @@ public class EntryWidget extends BrowserWidget
                     }
 
                     // open dialog
-                    SelectEntryDialog dialog = new SelectEntryDialog( parent.getShell(), Messages.getString("EntryWidget.SelectDN"), rootEntry, entry ); //$NON-NLS-1$
+                    SelectEntryDialog dialog = new SelectEntryDialog( parent.getShell(), Messages
+                        .getString( "EntryWidget.SelectDN" ), rootEntry, entry ); //$NON-NLS-1$
                     dialog.open();
                     IEntry selectedEntry = dialog.getSelectedEntry();
 
@@ -232,7 +233,7 @@ public class EntryWidget extends BrowserWidget
                     if ( selectedEntry != null )
                     {
                         dn = selectedEntry.getDn();
-                        if( useLocalName && suffix != null && suffix.size() > 0 )
+                        if ( useLocalName && suffix != null && suffix.size() > 0 )
                         {
                             dn = DnUtils.getPrefixName( dn, suffix );
                         }

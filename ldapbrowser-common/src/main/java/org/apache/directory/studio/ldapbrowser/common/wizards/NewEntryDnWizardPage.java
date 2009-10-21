@@ -95,14 +95,14 @@ public class NewEntryDnWizardPage extends WizardPage implements WidgetModifyList
     public NewEntryDnWizardPage( String pageName, NewEntryWizard wizard )
     {
         super( pageName );
-        setTitle( Messages.getString("NewEntryDnWizardPage.DistinguishedName") ); //$NON-NLS-1$
+        setTitle( Messages.getString( "NewEntryDnWizardPage.DistinguishedName" ) ); //$NON-NLS-1$
         if ( wizard.isNewContextEntry() )
         {
-            setDescription( Messages.getString("NewEntryDnWizardPage.EnterDN") ); //$NON-NLS-1$
+            setDescription( Messages.getString( "NewEntryDnWizardPage.EnterDN" ) ); //$NON-NLS-1$
         }
         else
         {
-            setDescription( Messages.getString("NewEntryDnWizardPage.SelectParent") ); //$NON-NLS-1$
+            setDescription( Messages.getString( "NewEntryDnWizardPage.SelectParent" ) ); //$NON-NLS-1$
         }
         setImageDescriptor( BrowserCommonActivator.getDefault().getImageDescriptor(
             BrowserCommonConstants.IMG_ENTRY_WIZARD ) );
@@ -183,7 +183,7 @@ public class NewEntryDnWizardPage extends WizardPage implements WidgetModifyList
         else
         {
             Collection<AttributeTypeDescription> atds = SchemaUtils.getAllAttributeTypeDescriptions( newEntry );
-            String[] attributeNames = SchemaUtils.getNames( atds ).toArray(ArrayUtils.EMPTY_STRING_ARRAY);
+            String[] attributeNames = SchemaUtils.getNames( atds ).toArray( ArrayUtils.EMPTY_STRING_ARRAY );
 
             LdapDN parentDn = null;
             if ( wizard.getSelectedEntry() != null && newEntry.getDn().equals( wizard.getSelectedEntry().getDn() )
@@ -360,8 +360,12 @@ public class NewEntryDnWizardPage extends WizardPage implements WidgetModifyList
                 {
                     public void run()
                     {
-                        MessageDialog.openError( getShell(), Messages.getString("NewEntryDnWizardPage.Error"), //$NON-NLS-1$
-                            NLS.bind( Messages.getString("NewEntryDnWizardPage.ParentDoesNotExist"), dnBuilderWidget.getParentDn().toString() ) ); //$NON-NLS-1$
+                        MessageDialog
+                            .openError( getShell(),
+                                Messages.getString( "NewEntryDnWizardPage.Error" ), //$NON-NLS-1$
+                                NLS
+                                    .bind(
+                                        Messages.getString( "NewEntryDnWizardPage.ParentDoesNotExist" ), dnBuilderWidget.getParentDn().toString() ) ); //$NON-NLS-1$
                     }
                 } );
                 return null;
@@ -377,7 +381,10 @@ public class NewEntryDnWizardPage extends WizardPage implements WidgetModifyList
                 {
                     public void run()
                     {
-                        MessageDialog.openError( getShell(), Messages.getString("NewEntryDnWizardPage.Error"), NLS.bind( Messages.getString("NewEntryDnWizardPage.EntryAlreadyExists"), dn.toString() ) ); //$NON-NLS-1$ //$NON-NLS-2$
+                        MessageDialog
+                            .openError(
+                                getShell(),
+                                Messages.getString( "NewEntryDnWizardPage.Error" ), NLS.bind( Messages.getString( "NewEntryDnWizardPage.EntryAlreadyExists" ), dn.toString() ) ); //$NON-NLS-1$ //$NON-NLS-2$
                     }
                 } );
                 return null;
@@ -388,7 +395,7 @@ public class NewEntryDnWizardPage extends WizardPage implements WidgetModifyList
             try
             {
                 final LdapDN dn = new LdapDN( contextEntryDnCombo.getText() );
-                
+
                 // check that new entry does not exists yet 
                 ReadEntryRunnable readEntryRunnable2 = new ReadEntryRunnable( wizard.getSelectedConnection(), dn );
                 RunnableContextRunner.execute( readEntryRunnable2, getContainer(), false );
@@ -399,7 +406,10 @@ public class NewEntryDnWizardPage extends WizardPage implements WidgetModifyList
                     {
                         public void run()
                         {
-                            MessageDialog.openError( getShell(), Messages.getString("NewEntryDnWizardPage.Error"), NLS.bind( Messages.getString("NewEntryDnWizardPage.EntryAlreadyExists"), dn.toString() ) ); //$NON-NLS-1$ //$NON-NLS-2$
+                            MessageDialog
+                                .openError(
+                                    getShell(),
+                                    Messages.getString( "NewEntryDnWizardPage.Error" ), NLS.bind( Messages.getString( "NewEntryDnWizardPage.EntryAlreadyExists" ), dn.toString() ) ); //$NON-NLS-1$ //$NON-NLS-2$
                         }
                     } );
                     return null;

@@ -43,7 +43,7 @@ public class TextDialog extends Dialog
 {
 
     /** The dialog title. */
-    private static final String DIALOG_TITLE = Messages.getString("TextDialog.TextEditor"); //$NON-NLS-1$
+    private static final String DIALOG_TITLE = Messages.getString( "TextDialog.TextEditor" ); //$NON-NLS-1$
 
     /** The initial value. */
     private String initialValue;

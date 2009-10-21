@@ -104,7 +104,8 @@ public class EntryEditorWidgetActionGroupWithAttribute extends EntryEditorWidget
         menuManager.add( ( IAction ) entryEditorActionMap.get( pasteAction ) );
         menuManager.add( ( IAction ) entryEditorActionMap.get( deleteAction ) );
         menuManager.add( ( IAction ) entryEditorActionMap.get( selectAllAction ) );
-        MenuManager copyMenuManager = new MenuManager( Messages.getString("EntryEditorWidgetActionGroupWithAttribute.Advanced") ); //$NON-NLS-1$
+        MenuManager copyMenuManager = new MenuManager( Messages
+            .getString( "EntryEditorWidgetActionGroupWithAttribute.Advanced" ) ); //$NON-NLS-1$
         copyMenuManager.add( ( IAction ) entryEditorActionMap.get( deleteAllValuesAction ) );
         menuManager.add( copyMenuManager );
         menuManager.add( new Separator() );

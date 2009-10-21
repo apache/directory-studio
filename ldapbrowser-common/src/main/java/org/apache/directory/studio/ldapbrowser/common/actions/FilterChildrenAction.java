@@ -85,7 +85,7 @@ public class FilterChildrenAction extends BrowserAction
      */
     public String getText()
     {
-        return Messages.getString("FilterChildrenAction.FilterChildrenLabel"); //$NON-NLS-1$
+        return Messages.getString( "FilterChildrenAction.FilterChildrenLabel" ); //$NON-NLS-1$
     }
 
 

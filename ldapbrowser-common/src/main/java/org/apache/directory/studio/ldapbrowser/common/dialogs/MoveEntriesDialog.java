@@ -48,7 +48,7 @@ public class MoveEntriesDialog extends Dialog implements WidgetModifyListener
 {
 
     /** The dialog title. */
-    private static final String DIALOG_TITLE = Messages.getString("MoveEntriesDialog.MoveEntries"); //$NON-NLS-1$
+    private static final String DIALOG_TITLE = Messages.getString( "MoveEntriesDialog.MoveEntries" ); //$NON-NLS-1$
 
     /** The entries to move. */
     private IEntry[] entries;
@@ -130,13 +130,13 @@ public class MoveEntriesDialog extends Dialog implements WidgetModifyListener
         gd.widthHint = convertHorizontalDLUsToPixels( IDialogConstants.MINIMUM_MESSAGE_AREA_WIDTH ) * 3 / 2;
         composite.setLayoutData( gd );
 
-        BaseWidgetUtils.createLabel( composite,
-            Messages.getString("MoveEntriesDialog.MoveEntriesDescription"), 1 ); //$NON-NLS-1$
+        BaseWidgetUtils.createLabel( composite, Messages.getString( "MoveEntriesDialog.MoveEntriesDescription" ), 1 ); //$NON-NLS-1$
 
         dnBuilderWidget = new DnBuilderWidget( false, true );
         dnBuilderWidget.addWidgetModifyListener( this );
         dnBuilderWidget.createContents( composite );
-        dnBuilderWidget.setInput( entries[0].getBrowserConnection(), null, null, DnUtils.getParent( entries[0].getDn() ) );
+        dnBuilderWidget
+            .setInput( entries[0].getBrowserConnection(), null, null, DnUtils.getParent( entries[0].getDn() ) );
 
         applyDialogFont( composite );
         return composite;

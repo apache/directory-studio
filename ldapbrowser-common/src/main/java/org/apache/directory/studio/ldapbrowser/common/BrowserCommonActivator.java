@@ -387,9 +387,8 @@ public class BrowserCommonActivator extends AbstractUIPlugin
             }
             catch ( IOException e )
             {
-                getLog().log(
-                    new Status( Status.ERROR, "org.apache.directory.studio.ldapbrowser.common", Status.OK, //$NON-NLS-1$
-                        "Unable to get the plugin properties.", e ) ); //$NON-NLS-1$
+                getLog().log( new Status( Status.ERROR, "org.apache.directory.studio.ldapbrowser.common", Status.OK, //$NON-NLS-1$
+                    "Unable to get the plugin properties.", e ) ); //$NON-NLS-1$
             }
         }
 

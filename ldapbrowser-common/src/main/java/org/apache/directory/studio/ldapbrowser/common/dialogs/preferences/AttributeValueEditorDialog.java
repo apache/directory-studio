@@ -100,7 +100,7 @@ public class AttributeValueEditorDialog extends Dialog
     protected void configureShell( Shell newShell )
     {
         super.configureShell( newShell );
-        newShell.setText( Messages.getString("AttributeValueEditorDialog.AttributeValueEditor") ); //$NON-NLS-1$
+        newShell.setText( Messages.getString( "AttributeValueEditorDialog.AttributeValueEditor" ) ); //$NON-NLS-1$
     }
 
 
@@ -123,7 +123,7 @@ public class AttributeValueEditorDialog extends Dialog
         Composite composite = ( Composite ) super.createDialogArea( parent );
 
         Composite c = BaseWidgetUtils.createColumnContainer( composite, 2, 1 );
-        BaseWidgetUtils.createLabel( c, Messages.getString("AttributeValueEditorDialog.AttributeTypeOrOID"), 1 ); //$NON-NLS-1$
+        BaseWidgetUtils.createLabel( c, Messages.getString( "AttributeValueEditorDialog.AttributeTypeOrOID" ), 1 ); //$NON-NLS-1$
         typeOrOidCombo = BaseWidgetUtils.createCombo( c, attributeTypesAndOids, -1, 1 );
         if ( relation != null && relation.getAttributeNumericOidOrType() != null )
         {
@@ -137,7 +137,7 @@ public class AttributeValueEditorDialog extends Dialog
             }
         } );
 
-        BaseWidgetUtils.createLabel( c, Messages.getString("AttributeValueEditorDialog.ValueEditor"), 1 ); //$NON-NLS-1$
+        BaseWidgetUtils.createLabel( c, Messages.getString( "AttributeValueEditorDialog.ValueEditor" ), 1 ); //$NON-NLS-1$
         valueEditorCombo = BaseWidgetUtils.createReadonlyCombo( c, veName2classMap.keySet().toArray( new String[0] ),
             -1, 1 );
         if ( relation != null && relation.getValueEditorClassName() != null

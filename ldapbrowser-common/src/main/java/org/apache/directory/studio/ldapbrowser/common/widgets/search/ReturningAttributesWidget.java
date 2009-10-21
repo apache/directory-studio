@@ -219,7 +219,7 @@ public class ReturningAttributesWidget extends BrowserWidget
 
     }
 
-    
+
     /**
      * Splits the given string into an array. Only the following
      * characters are kept, all other are used to split the string
@@ -276,7 +276,5 @@ public class ReturningAttributesWidget extends BrowserWidget
             return ( String[] ) attributeList.toArray( new String[attributeList.size()] );
         }
     }
-
-
 
 }

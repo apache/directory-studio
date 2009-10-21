@@ -632,8 +632,7 @@ public class BrowserParameterPage extends AbstractConnectionParameterPage
         parameter.setExtendedIntProperty( IBrowserConnection.CONNECTION_PARAMETER_ALIASES_DEREFERENCING_METHOD,
             getAliasesDereferencingMethod().getOrdinal() );
 
-        parameter.setExtendedBoolProperty( IBrowserConnection.CONNECTION_PARAMETER_MANAGE_DSA_IT,
-            manageDsaIT() );
+        parameter.setExtendedBoolProperty( IBrowserConnection.CONNECTION_PARAMETER_MANAGE_DSA_IT, manageDsaIT() );
         parameter.setExtendedBoolProperty( IBrowserConnection.CONNECTION_PARAMETER_FETCH_SUBENTRIES,
             isFetchSubentries() );
         parameter.setExtendedBoolProperty( IBrowserConnection.CONNECTION_PARAMETER_PAGED_SEARCH, isPagedSearch() );
@@ -684,9 +683,8 @@ public class BrowserParameterPage extends AbstractConnectionParameterPage
             .getExtendedBoolProperty( IBrowserConnection.CONNECTION_PARAMETER_PAGED_SEARCH_SCROLL_MODE );
 
         return isReconnectionRequired() || countLimit != getCountLimit() || timeLimit != getTimeLimit()
-            || manageDsaIT != manageDsaIT() || fetchSubentries != isFetchSubentries()
-            || pagedSearch != isPagedSearch() || pagedSearchSize != getPagedSearchSize()
-            || pagedSearchScrollMode != isPagedSearchScrollMode();
+            || manageDsaIT != manageDsaIT() || fetchSubentries != isFetchSubentries() || pagedSearch != isPagedSearch()
+            || pagedSearchSize != getPagedSearchSize() || pagedSearchScrollMode != isPagedSearchScrollMode();
     }
 
 
@@ -913,8 +911,7 @@ public class BrowserParameterPage extends AbstractConnectionParameterPage
 
         // ManageDsaIT control
         Extension manageDsaIT = ldapUrl.getExtension( X_MANAGE_DSA_IT );
-        parameter.setExtendedBoolProperty( IBrowserConnection.CONNECTION_PARAMETER_MANAGE_DSA_IT,
-            manageDsaIT != null );
+        parameter.setExtendedBoolProperty( IBrowserConnection.CONNECTION_PARAMETER_MANAGE_DSA_IT, manageDsaIT != null );
 
         // fetch subentries
         Extension fetchSubentries = ldapUrl.getExtension( X_FETCH_SUBENTRIES );

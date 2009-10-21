@@ -21,8 +21,6 @@
 package org.apache.directory.studio.valueeditors;
 
 
-
-
 /**
  * The default editor for string values.
  *

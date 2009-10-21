@@ -38,10 +38,11 @@ public interface EntryEditorWidgetTableMetadata
     public static final int VALUE_COLUMN_INDEX = 1;
 
     /** The Constant KEY_COLUMN_NAME. */
-    public static final String KEY_COLUMN_NAME = Messages.getString("EntryEditorWidgetTableMetadata.AttributeDescription"); //$NON-NLS-1$
+    public static final String KEY_COLUMN_NAME = Messages
+        .getString( "EntryEditorWidgetTableMetadata.AttributeDescription" ); //$NON-NLS-1$
 
     /** The Constant VALUE_COLUMN_NAME. */
-    public static final String VALUE_COLUMN_NAME = Messages.getString("EntryEditorWidgetTableMetadata.Value"); //$NON-NLS-1$
+    public static final String VALUE_COLUMN_NAME = Messages.getString( "EntryEditorWidgetTableMetadata.Value" ); //$NON-NLS-1$
 
     /** The Constant COLUM_NAMES. */
     public static final String[] COLUM_NAMES =

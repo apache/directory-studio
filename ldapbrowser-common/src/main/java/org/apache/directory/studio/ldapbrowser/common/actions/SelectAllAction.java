@@ -57,13 +57,15 @@ public class SelectAllAction extends BrowserAction
         this.viewer = viewer;
     }
 
+
     /**
      * {@inheritDoc}
      */
     public String getText()
     {
-        return Messages.getString("SelectAllAction.SelectAll"); //$NON-NLS-1$
+        return Messages.getString( "SelectAllAction.SelectAll" ); //$NON-NLS-1$
     }
+
 
     /**
      * {@inheritDoc}
@@ -73,6 +75,7 @@ public class SelectAllAction extends BrowserAction
         return null;
     }
 
+
     /**
      * {@inheritDoc}
      */
@@ -81,6 +84,7 @@ public class SelectAllAction extends BrowserAction
         return IWorkbenchActionDefinitionIds.SELECT_ALL;
     }
 
+
     /**
      * {@inheritDoc}
      */
@@ -88,6 +92,7 @@ public class SelectAllAction extends BrowserAction
     {
         return true;
     }
+
 
     /**
      * {@inheritDoc}

@@ -56,7 +56,7 @@ public class RenameEntryDialog extends Dialog implements WidgetModifyListener
     private static final String DELETE_OLD_RDN_DIALOGSETTING_KEY = RenameEntryDialog.class.getName() + ".deleteOldRdn"; //$NON-NLS-1$
 
     /** The dialog title. */
-    private static final String DIALOG_TITLE = Messages.getString("RenameEntryDialog.RenameEntry"); //$NON-NLS-1$
+    private static final String DIALOG_TITLE = Messages.getString( "RenameEntryDialog.RenameEntry" ); //$NON-NLS-1$
 
     /** The entry to rename. */
     private IEntry entry;
@@ -142,15 +142,14 @@ public class RenameEntryDialog extends Dialog implements WidgetModifyListener
         gd.widthHint = convertHorizontalDLUsToPixels( IDialogConstants.MINIMUM_MESSAGE_AREA_WIDTH ) * 3 / 2;
         composite.setLayoutData( gd );
 
-        BaseWidgetUtils.createLabel( composite, Messages.getString("RenameEntryDialog.RenameEntryDescription"), 1 ); //$NON-NLS-1$
+        BaseWidgetUtils.createLabel( composite, Messages.getString( "RenameEntryDialog.RenameEntryDescription" ), 1 ); //$NON-NLS-1$
 
         dnBuilderWidget = new DnBuilderWidget( true, false );
         dnBuilderWidget.addWidgetModifyListener( this );
         dnBuilderWidget.createContents( composite );
         Collection<AttributeTypeDescription> allAtds = SchemaUtils.getAllAttributeTypeDescriptions( entry );
         String[] allAttributeNames = SchemaUtils.getNames( allAtds ).toArray( ArrayUtils.EMPTY_STRING_ARRAY );
-        dnBuilderWidget.setInput( entry.getBrowserConnection(), allAttributeNames, entry
-            .getRdn(), null );
+        dnBuilderWidget.setInput( entry.getBrowserConnection(), allAttributeNames, entry.getRdn(), null );
 
         applyDialogFont( composite );
         return composite;

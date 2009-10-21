@@ -186,11 +186,11 @@ public class FilterContentAssistProcessor extends TemplateCompletionProcessor im
                 }
             }
 
-            possibleFilterTypes.put( "=", Messages.getString("FilterContentAssistProcessor.Equals") ); //$NON-NLS-1$ //$NON-NLS-2$
-            possibleFilterTypes.put( "=*", Messages.getString("FilterContentAssistProcessor.Present") ); //$NON-NLS-1$ //$NON-NLS-2$
-            possibleFilterTypes.put( "<=", Messages.getString("FilterContentAssistProcessor.LessThanOrEquals") ); //$NON-NLS-1$ //$NON-NLS-2$
-            possibleFilterTypes.put( ">=", Messages.getString("FilterContentAssistProcessor.GreaterThanOrEquals") ); //$NON-NLS-1$ //$NON-NLS-2$
-            possibleFilterTypes.put( "~=", Messages.getString("FilterContentAssistProcessor.Approximately") ); //$NON-NLS-1$ //$NON-NLS-2$
+            possibleFilterTypes.put( "=", Messages.getString( "FilterContentAssistProcessor.Equals" ) ); //$NON-NLS-1$ //$NON-NLS-2$
+            possibleFilterTypes.put( "=*", Messages.getString( "FilterContentAssistProcessor.Present" ) ); //$NON-NLS-1$ //$NON-NLS-2$
+            possibleFilterTypes.put( "<=", Messages.getString( "FilterContentAssistProcessor.LessThanOrEquals" ) ); //$NON-NLS-1$ //$NON-NLS-2$
+            possibleFilterTypes.put( ">=", Messages.getString( "FilterContentAssistProcessor.GreaterThanOrEquals" ) ); //$NON-NLS-1$ //$NON-NLS-2$
+            possibleFilterTypes.put( "~=", Messages.getString( "FilterContentAssistProcessor.Approximately" ) ); //$NON-NLS-1$ //$NON-NLS-2$
 
             Collection<ObjectClassDescription> ocds = schema.getObjectClassDescriptions();
             for ( ObjectClassDescription ocd : ocds )

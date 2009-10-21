@@ -164,8 +164,8 @@ public class BrowserConfiguration
         if ( labelProvider == null )
         {
             labelProvider = new BrowserLabelProvider( getPreferences() );
-            decoratingLabelProvider = new DecoratingLabelProvider( labelProvider, BrowserCommonActivator.getDefault().getWorkbench()
-                .getDecoratorManager().getLabelDecorator() );
+            decoratingLabelProvider = new DecoratingLabelProvider( labelProvider, BrowserCommonActivator.getDefault()
+                .getWorkbench().getDecoratorManager().getLabelDecorator() );
         }
 
         return decoratingLabelProvider;

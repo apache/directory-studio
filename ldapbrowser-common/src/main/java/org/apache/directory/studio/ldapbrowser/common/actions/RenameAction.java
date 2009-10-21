@@ -67,19 +67,19 @@ public class RenameAction extends BrowserAction
 
         if ( entries.length == 1 && searches.length == 0 && bookmarks.length == 0 )
         {
-            return Messages.getString("RenameAction.RenameEntry"); //$NON-NLS-1$
+            return Messages.getString( "RenameAction.RenameEntry" ); //$NON-NLS-1$
         }
         else if ( searches.length == 1 && entries.length == 0 && bookmarks.length == 0 )
         {
-            return Messages.getString("RenameAction.RenameSearch"); //$NON-NLS-1$
+            return Messages.getString( "RenameAction.RenameSearch" ); //$NON-NLS-1$
         }
         else if ( bookmarks.length == 1 && entries.length == 0 && searches.length == 0 )
         {
-            return Messages.getString("RenameAction.RenameBookmark"); //$NON-NLS-1$
+            return Messages.getString( "RenameAction.RenameBookmark" ); //$NON-NLS-1$
         }
         else
         {
-            return Messages.getString("RenameAction.Rename"); //$NON-NLS-1$
+            return Messages.getString( "RenameAction.Rename" ); //$NON-NLS-1$
         }
     }
 
@@ -237,13 +237,15 @@ public class RenameAction extends BrowserAction
                 if ( search.getName().equals( newName ) )
                     return null;
                 else if ( search.getBrowserConnection().getSearchManager().getSearch( newName ) != null )
-                    return Messages.getString("RenameAction.ConnectionWithThisNameAlreadyExists"); //$NON-NLS-1$
+                    return Messages.getString( "RenameAction.ConnectionWithThisNameAlreadyExists" ); //$NON-NLS-1$
                 else
                     return null;
             }
         };
 
-        InputDialog dialog = new InputDialog( getShell(), Messages.getString("RenameAction.RenameSearchDialog"), Messages.getString("RenameAction.RenameSearchNewName"), search.getName(), validator ); //$NON-NLS-1$ //$NON-NLS-2$
+        InputDialog dialog = new InputDialog(
+            getShell(),
+            Messages.getString( "RenameAction.RenameSearchDialog" ), Messages.getString( "RenameAction.RenameSearchNewName" ), search.getName(), validator ); //$NON-NLS-1$ //$NON-NLS-2$
 
         dialog.open();
         String newName = dialog.getValue();
@@ -288,13 +290,15 @@ public class RenameAction extends BrowserAction
                 if ( bookmark.getName().equals( newName ) )
                     return null;
                 else if ( bookmark.getBrowserConnection().getBookmarkManager().getBookmark( newName ) != null )
-                    return Messages.getString("RenameAction.BookmarkWithThisNameAlreadyExists"); //$NON-NLS-1$
+                    return Messages.getString( "RenameAction.BookmarkWithThisNameAlreadyExists" ); //$NON-NLS-1$
                 else
                     return null;
             }
         };
 
-        InputDialog dialog = new InputDialog( getShell(), Messages.getString("RenameAction.RenameBookmarkDialog"), Messages.getString("RenameAction.RenameBookmarkNewName"), bookmark.getName(), validator ); //$NON-NLS-1$ //$NON-NLS-2$
+        InputDialog dialog = new InputDialog(
+            getShell(),
+            Messages.getString( "RenameAction.RenameBookmarkDialog" ), Messages.getString( "RenameAction.RenameBookmarkNewName" ), bookmark.getName(), validator ); //$NON-NLS-1$ //$NON-NLS-2$
 
         dialog.open();
         String newName = dialog.getValue();

@@ -170,7 +170,7 @@ public class MultivaluedValueEditor extends CellEditor implements IValueEditor
         StringBuffer sb = new StringBuffer();
         if ( valueList.size() > 1 )
         {
-            sb.append( NLS.bind( Messages.getString("EntryValueEditor.n_values"), valueList.size() ) ); //$NON-NLS-1$
+            sb.append( NLS.bind( Messages.getString( "EntryValueEditor.n_values" ), valueList.size() ) ); //$NON-NLS-1$
         }
         for ( Iterator<IValue> it = valueList.iterator(); it.hasNext(); )
         {

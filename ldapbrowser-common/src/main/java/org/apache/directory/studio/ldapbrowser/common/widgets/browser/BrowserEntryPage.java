@@ -38,7 +38,7 @@ public class BrowserEntryPage
     /** The tree sorter */
     private BrowserSorter sorter;
 
-    /** The index of the first child entry in this page */ 
+    /** The index of the first child entry in this page */
     private int first;
 
     /** The index of the last child entry in this page */
@@ -119,7 +119,6 @@ public class BrowserEntryPage
     }
 
 
-    
     /**
      * Gets the first.
      * 

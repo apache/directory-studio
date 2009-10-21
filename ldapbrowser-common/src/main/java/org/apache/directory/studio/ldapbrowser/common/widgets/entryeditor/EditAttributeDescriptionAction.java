@@ -85,7 +85,7 @@ public class EditAttributeDescriptionAction extends BrowserAction
     @Override
     public String getText()
     {
-        return Messages.getString("EditAttributeDescriptionAction.EditAttributeDescription"); //$NON-NLS-1$
+        return Messages.getString( "EditAttributeDescriptionAction.EditAttributeDescription" ); //$NON-NLS-1$
     }
 
 

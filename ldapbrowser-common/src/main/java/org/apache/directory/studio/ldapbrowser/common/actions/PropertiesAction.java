@@ -54,7 +54,7 @@ public class PropertiesAction extends BrowserAction
      */
     public String getText()
     {
-        return Messages.getString("PropertiesAction.Properties"); //$NON-NLS-1$
+        return Messages.getString( "PropertiesAction.Properties" ); //$NON-NLS-1$
     }
 
 
@@ -151,8 +151,8 @@ public class PropertiesAction extends BrowserAction
             {
                 title = Utils.shorten( title, 30 );
             }
-            
-            dialog.getShell().setText( NLS.bind( Messages.getString("PropertiesAction.PropertiesForX"), title ) ); //$NON-NLS-1$
+
+            dialog.getShell().setText( NLS.bind( Messages.getString( "PropertiesAction.PropertiesForX" ), title ) ); //$NON-NLS-1$
             dialog.open();
 
         }

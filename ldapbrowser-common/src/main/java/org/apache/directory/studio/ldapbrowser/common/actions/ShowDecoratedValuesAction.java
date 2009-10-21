@@ -39,7 +39,7 @@ public class ShowDecoratedValuesAction extends Action
      */
     public ShowDecoratedValuesAction()
     {
-        super( Messages.getString("ShowDecoratedValuesAction.ShowDecoratedValues"), AS_CHECK_BOX ); //$NON-NLS-1$
+        super( Messages.getString( "ShowDecoratedValuesAction.ShowDecoratedValues" ), AS_CHECK_BOX ); //$NON-NLS-1$
         super.setToolTipText( getText() );
         super.setEnabled( true );
 
@@ -53,8 +53,8 @@ public class ShowDecoratedValuesAction extends Action
      */
     public void run()
     {
-        BrowserCommonActivator.getDefault().getPreferenceStore().setValue( BrowserCommonConstants.PREFERENCE_SHOW_RAW_VALUES,
-            !super.isChecked() );
+        BrowserCommonActivator.getDefault().getPreferenceStore().setValue(
+            BrowserCommonConstants.PREFERENCE_SHOW_RAW_VALUES, !super.isChecked() );
     }
 
 

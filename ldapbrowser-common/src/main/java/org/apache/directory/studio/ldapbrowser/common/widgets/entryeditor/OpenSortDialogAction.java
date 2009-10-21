@@ -35,9 +35,10 @@ public class OpenSortDialogAction extends Action
 
     public OpenSortDialogAction( EntryEditorWidgetPreferences preferences )
     {
-        super.setText( Messages.getString("OpenSortDialogAction.Sorting") ); //$NON-NLS-1$
-        super.setToolTipText( Messages.getString("OpenSortDialogAction.Sorting") ); //$NON-NLS-1$
-        super.setImageDescriptor( BrowserCommonActivator.getDefault().getImageDescriptor( BrowserCommonConstants.IMG_SORT ) );
+        super.setText( Messages.getString( "OpenSortDialogAction.Sorting" ) ); //$NON-NLS-1$
+        super.setToolTipText( Messages.getString( "OpenSortDialogAction.Sorting" ) ); //$NON-NLS-1$
+        super.setImageDescriptor( BrowserCommonActivator.getDefault().getImageDescriptor(
+            BrowserCommonConstants.IMG_SORT ) );
         super.setEnabled( true );
 
         this.preferences = preferences;

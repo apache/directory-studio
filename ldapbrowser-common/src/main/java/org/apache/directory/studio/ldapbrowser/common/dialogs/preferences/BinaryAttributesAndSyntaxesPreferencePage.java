@@ -125,8 +125,9 @@ public class BinaryAttributesAndSyntaxesPreferencePage extends PreferencePage im
      */
     public BinaryAttributesAndSyntaxesPreferencePage()
     {
-        super( Messages.getString("BinaryAttributesAndSyntaxesPreferencePage.BinaryAttributes") ); //$NON-NLS-1$
-        super.setDescription( Messages.getString("BinaryAttributesAndSyntaxesPreferencePage.BinaryAttributesDescription") ); //$NON-NLS-1$
+        super( Messages.getString( "BinaryAttributesAndSyntaxesPreferencePage.BinaryAttributes" ) ); //$NON-NLS-1$
+        super.setDescription( Messages
+            .getString( "BinaryAttributesAndSyntaxesPreferencePage.BinaryAttributesDescription" ) ); //$NON-NLS-1$
     }
 
 
@@ -229,7 +230,8 @@ public class BinaryAttributesAndSyntaxesPreferencePage extends PreferencePage im
 
     private void createAttributeContents( Composite parent )
     {
-        BaseWidgetUtils.createLabel( parent, Messages.getString("BinaryAttributesAndSyntaxesPreferencePage.BinaryAttributes"), 1 ); //$NON-NLS-1$
+        BaseWidgetUtils.createLabel( parent, Messages
+            .getString( "BinaryAttributesAndSyntaxesPreferencePage.BinaryAttributes" ), 1 ); //$NON-NLS-1$
 
         Composite composite = BaseWidgetUtils.createColumnContainer( parent, 2, 1 );
         composite.setLayoutData( new GridData( GridData.FILL_BOTH ) );
@@ -248,14 +250,14 @@ public class BinaryAttributesAndSyntaxesPreferencePage extends PreferencePage im
         attributeViewer = new TableViewer( table );
 
         TableColumn c1 = new TableColumn( table, SWT.NONE );
-        c1.setText( Messages.getString("BinaryAttributesAndSyntaxesPreferencePage.Attribute") ); //$NON-NLS-1$
+        c1.setText( Messages.getString( "BinaryAttributesAndSyntaxesPreferencePage.Attribute" ) ); //$NON-NLS-1$
         c1.setWidth( 300 );
         TableColumn c2 = new TableColumn( table, SWT.NONE );
-        c2.setText( Messages.getString("BinaryAttributesAndSyntaxesPreferencePage.Alias") ); //$NON-NLS-1$
+        c2.setText( Messages.getString( "BinaryAttributesAndSyntaxesPreferencePage.Alias" ) ); //$NON-NLS-1$
         c2.setWidth( 60 );
 
         attributeViewer.setColumnProperties( new String[]
-            { Messages.getString("BinaryAttributesAndSyntaxesPreferencePage.Attribute") } ); //$NON-NLS-1$
+            { Messages.getString( "BinaryAttributesAndSyntaxesPreferencePage.Attribute" ) } ); //$NON-NLS-1$
         attributeViewer.setContentProvider( new ArrayContentProvider() );
         attributeViewer.setLabelProvider( new AttributeLabelProvider() );
 
@@ -267,7 +269,8 @@ public class BinaryAttributesAndSyntaxesPreferencePage extends PreferencePage im
             }
         } );
 
-        attributeAddButton = BaseWidgetUtils.createButton( buttonComposite, Messages.getString("BinaryAttributesAndSyntaxesPreferencePage.Add"), 1 ); //$NON-NLS-1$
+        attributeAddButton = BaseWidgetUtils.createButton( buttonComposite, Messages
+            .getString( "BinaryAttributesAndSyntaxesPreferencePage.Add" ), 1 ); //$NON-NLS-1$
         attributeAddButton.addSelectionListener( new SelectionAdapter()
         {
             public void widgetSelected( SelectionEvent e )
@@ -275,7 +278,8 @@ public class BinaryAttributesAndSyntaxesPreferencePage extends PreferencePage im
                 addAttribute();
             }
         } );
-        attributeEditButton = BaseWidgetUtils.createButton( buttonComposite, Messages.getString("BinaryAttributesAndSyntaxesPreferencePage.Edit"), 1 ); //$NON-NLS-1$
+        attributeEditButton = BaseWidgetUtils.createButton( buttonComposite, Messages
+            .getString( "BinaryAttributesAndSyntaxesPreferencePage.Edit" ), 1 ); //$NON-NLS-1$
         attributeEditButton.addSelectionListener( new SelectionAdapter()
         {
             public void widgetSelected( SelectionEvent e )
@@ -283,7 +287,8 @@ public class BinaryAttributesAndSyntaxesPreferencePage extends PreferencePage im
                 editAttribute();
             }
         } );
-        attributeRemoveButton = BaseWidgetUtils.createButton( buttonComposite, Messages.getString("BinaryAttributesAndSyntaxesPreferencePage.Remove"), 1 ); //$NON-NLS-1$
+        attributeRemoveButton = BaseWidgetUtils.createButton( buttonComposite, Messages
+            .getString( "BinaryAttributesAndSyntaxesPreferencePage.Remove" ), 1 ); //$NON-NLS-1$
         attributeRemoveButton.addSelectionListener( new SelectionAdapter()
         {
             public void widgetSelected( SelectionEvent e )
@@ -296,7 +301,8 @@ public class BinaryAttributesAndSyntaxesPreferencePage extends PreferencePage im
 
     private void createSyntaxContents( Composite parent )
     {
-        BaseWidgetUtils.createLabel( parent, Messages.getString("BinaryAttributesAndSyntaxesPreferencePage.BinarySyntaxes"), 1 ); //$NON-NLS-1$
+        BaseWidgetUtils.createLabel( parent, Messages
+            .getString( "BinaryAttributesAndSyntaxesPreferencePage.BinarySyntaxes" ), 1 ); //$NON-NLS-1$
 
         Composite composite = BaseWidgetUtils.createColumnContainer( parent, 2, 1 );
         composite.setLayoutData( new GridData( GridData.FILL_BOTH ) );
@@ -315,14 +321,14 @@ public class BinaryAttributesAndSyntaxesPreferencePage extends PreferencePage im
         syntaxViewer = new TableViewer( table );
 
         TableColumn c1 = new TableColumn( table, SWT.NONE );
-        c1.setText( Messages.getString("BinaryAttributesAndSyntaxesPreferencePage.Syntax") ); //$NON-NLS-1$
+        c1.setText( Messages.getString( "BinaryAttributesAndSyntaxesPreferencePage.Syntax" ) ); //$NON-NLS-1$
         c1.setWidth( 300 );
         TableColumn c2 = new TableColumn( table, SWT.NONE );
-        c2.setText( Messages.getString("BinaryAttributesAndSyntaxesPreferencePage.Desc") ); //$NON-NLS-1$
+        c2.setText( Messages.getString( "BinaryAttributesAndSyntaxesPreferencePage.Desc" ) ); //$NON-NLS-1$
         c2.setWidth( 60 );
 
         syntaxViewer.setColumnProperties( new String[]
-            { Messages.getString("BinaryAttributesAndSyntaxesPreferencePage.Syntax") } ); //$NON-NLS-1$
+            { Messages.getString( "BinaryAttributesAndSyntaxesPreferencePage.Syntax" ) } ); //$NON-NLS-1$
         syntaxViewer.setContentProvider( new ArrayContentProvider() );
         syntaxViewer.setLabelProvider( new SyntaxLabelProvider() );
 
@@ -334,7 +340,8 @@ public class BinaryAttributesAndSyntaxesPreferencePage extends PreferencePage im
             }
         } );
 
-        syntaxAddButton = BaseWidgetUtils.createButton( buttonComposite, Messages.getString("BinaryAttributesAndSyntaxesPreferencePage.Add"), 1 ); //$NON-NLS-1$
+        syntaxAddButton = BaseWidgetUtils.createButton( buttonComposite, Messages
+            .getString( "BinaryAttributesAndSyntaxesPreferencePage.Add" ), 1 ); //$NON-NLS-1$
         syntaxAddButton.addSelectionListener( new SelectionAdapter()
         {
             public void widgetSelected( SelectionEvent e )
@@ -342,7 +349,8 @@ public class BinaryAttributesAndSyntaxesPreferencePage extends PreferencePage im
                 addSyntax();
             }
         } );
-        syntaxEditButton = BaseWidgetUtils.createButton( buttonComposite, Messages.getString("BinaryAttributesAndSyntaxesPreferencePage.Edit"), 1 ); //$NON-NLS-1$
+        syntaxEditButton = BaseWidgetUtils.createButton( buttonComposite, Messages
+            .getString( "BinaryAttributesAndSyntaxesPreferencePage.Edit" ), 1 ); //$NON-NLS-1$
         syntaxEditButton.addSelectionListener( new SelectionAdapter()
         {
             public void widgetSelected( SelectionEvent e )
@@ -350,7 +358,8 @@ public class BinaryAttributesAndSyntaxesPreferencePage extends PreferencePage im
                 editSyntax();
             }
         } );
-        syntaxRemoveButton = BaseWidgetUtils.createButton( buttonComposite, Messages.getString("BinaryAttributesAndSyntaxesPreferencePage.Remove"), 1 ); //$NON-NLS-1$
+        syntaxRemoveButton = BaseWidgetUtils.createButton( buttonComposite, Messages
+            .getString( "BinaryAttributesAndSyntaxesPreferencePage.Remove" ), 1 ); //$NON-NLS-1$
         syntaxRemoveButton.addSelectionListener( new SelectionAdapter()
         {
             public void widgetSelected( SelectionEvent e )

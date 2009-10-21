@@ -167,15 +167,15 @@ public class SearchTransfer extends ByteArrayTransfer
                             int size = readIn.readInt();
                             byte[] connectionId = new byte[size];
                             readIn.read( connectionId );
-                            connection = BrowserCorePlugin.getDefault().getConnectionManager().getBrowserConnectionById(
-                                new String( connectionId, "UTF-8" ) ); //$NON-NLS-1$
+                            connection = BrowserCorePlugin.getDefault().getConnectionManager()
+                                .getBrowserConnectionById( new String( connectionId, "UTF-8" ) ); //$NON-NLS-1$
                         }
 
                         ISearch search = null;
                         if ( readIn.available() > 1 && connection != null )
                         {
                             int size = readIn.readInt();
-                            if(size == 0)
+                            if ( size == 0 )
                             {
                                 search = connection.getSearchManager().getQuickSearch();
                             }

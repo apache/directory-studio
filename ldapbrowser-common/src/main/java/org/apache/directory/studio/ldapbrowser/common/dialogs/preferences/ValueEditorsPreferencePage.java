@@ -135,8 +135,8 @@ public class ValueEditorsPreferencePage extends PreferencePage implements IWorkb
      */
     public ValueEditorsPreferencePage()
     {
-        super( Messages.getString("ValueEditorsPreferencePage.ValueEditors") ); //$NON-NLS-1$
-        super.setDescription( Messages.getString("ValueEditorsPreferencePage.SpecifyValueEditors") ); //$NON-NLS-1$
+        super( Messages.getString( "ValueEditorsPreferencePage.ValueEditors" ) ); //$NON-NLS-1$
+        super.setDescription( Messages.getString( "ValueEditorsPreferencePage.SpecifyValueEditors" ) ); //$NON-NLS-1$
         this.imageMap = new HashMap<ImageDescriptor, Image>();
     }
 
@@ -274,7 +274,8 @@ public class ValueEditorsPreferencePage extends PreferencePage implements IWorkb
 
     private void createAttributeContents( Composite parent )
     {
-        BaseWidgetUtils.createLabel( parent, Messages.getString("ValueEditorsPreferencePage.ValueEditorsByAttributeType"), 1 ); //$NON-NLS-1$
+        BaseWidgetUtils.createLabel( parent, Messages
+            .getString( "ValueEditorsPreferencePage.ValueEditorsByAttributeType" ), 1 ); //$NON-NLS-1$
 
         Composite composite = BaseWidgetUtils.createColumnContainer( parent, 2, 1 );
         composite.setLayoutData( new GridData( GridData.FILL_BOTH ) );
@@ -293,17 +294,19 @@ public class ValueEditorsPreferencePage extends PreferencePage implements IWorkb
         attributeViewer = new TableViewer( table );
 
         TableColumn c1 = new TableColumn( table, SWT.NONE );
-        c1.setText( Messages.getString("ValueEditorsPreferencePage.Attribute") ); //$NON-NLS-1$
+        c1.setText( Messages.getString( "ValueEditorsPreferencePage.Attribute" ) ); //$NON-NLS-1$
         c1.setWidth( 80 );
         TableColumn c2 = new TableColumn( table, SWT.NONE );
-        c2.setText( Messages.getString("ValueEditorsPreferencePage.Alias") ); //$NON-NLS-1$
+        c2.setText( Messages.getString( "ValueEditorsPreferencePage.Alias" ) ); //$NON-NLS-1$
         c2.setWidth( 80 );
         TableColumn c3 = new TableColumn( table, SWT.NONE );
-        c3.setText( Messages.getString("ValueEditorsPreferencePage.ValueEditor") ); //$NON-NLS-1$
+        c3.setText( Messages.getString( "ValueEditorsPreferencePage.ValueEditor" ) ); //$NON-NLS-1$
         c3.setWidth( 200 );
 
-        attributeViewer.setColumnProperties( new String[]
-            { Messages.getString("ValueEditorsPreferencePage.Attribute"), Messages.getString("ValueEditorsPreferencePage.ValueEditor") } ); //$NON-NLS-1$ //$NON-NLS-2$
+        attributeViewer
+            .setColumnProperties( new String[]
+                {
+                    Messages.getString( "ValueEditorsPreferencePage.Attribute" ), Messages.getString( "ValueEditorsPreferencePage.ValueEditor" ) } ); //$NON-NLS-1$ //$NON-NLS-2$
         attributeViewer.setContentProvider( new ArrayContentProvider() );
         attributeViewer.setLabelProvider( new AttributeLabelProvider() );
 
@@ -315,7 +318,8 @@ public class ValueEditorsPreferencePage extends PreferencePage implements IWorkb
             }
         } );
 
-        attributeAddButton = BaseWidgetUtils.createButton( buttonComposite, Messages.getString("ValueEditorsPreferencePage.Add"), 1 ); //$NON-NLS-1$
+        attributeAddButton = BaseWidgetUtils.createButton( buttonComposite, Messages
+            .getString( "ValueEditorsPreferencePage.Add" ), 1 ); //$NON-NLS-1$
         attributeAddButton.addSelectionListener( new SelectionAdapter()
         {
             public void widgetSelected( SelectionEvent e )
@@ -323,7 +327,8 @@ public class ValueEditorsPreferencePage extends PreferencePage implements IWorkb
                 addAttribute();
             }
         } );
-        attributeEditButton = BaseWidgetUtils.createButton( buttonComposite, Messages.getString("ValueEditorsPreferencePage.Edit"), 1 ); //$NON-NLS-1$
+        attributeEditButton = BaseWidgetUtils.createButton( buttonComposite, Messages
+            .getString( "ValueEditorsPreferencePage.Edit" ), 1 ); //$NON-NLS-1$
         attributeEditButton.addSelectionListener( new SelectionAdapter()
         {
             public void widgetSelected( SelectionEvent e )
@@ -331,7 +336,8 @@ public class ValueEditorsPreferencePage extends PreferencePage implements IWorkb
                 editAttribute();
             }
         } );
-        attributeRemoveButton = BaseWidgetUtils.createButton( buttonComposite, Messages.getString("ValueEditorsPreferencePage.Remove"), 1 ); //$NON-NLS-1$
+        attributeRemoveButton = BaseWidgetUtils.createButton( buttonComposite, Messages
+            .getString( "ValueEditorsPreferencePage.Remove" ), 1 ); //$NON-NLS-1$
         attributeRemoveButton.addSelectionListener( new SelectionAdapter()
         {
             public void widgetSelected( SelectionEvent e )
@@ -344,7 +350,7 @@ public class ValueEditorsPreferencePage extends PreferencePage implements IWorkb
 
     private void createSyntaxContents( Composite parent )
     {
-        BaseWidgetUtils.createLabel( parent, Messages.getString("ValueEditorsPreferencePage.ValueEditorBySyntax"), 1 ); //$NON-NLS-1$
+        BaseWidgetUtils.createLabel( parent, Messages.getString( "ValueEditorsPreferencePage.ValueEditorBySyntax" ), 1 ); //$NON-NLS-1$
 
         Composite composite = BaseWidgetUtils.createColumnContainer( parent, 2, 1 );
         composite.setLayoutData( new GridData( GridData.FILL_BOTH ) );
@@ -363,17 +369,19 @@ public class ValueEditorsPreferencePage extends PreferencePage implements IWorkb
         syntaxViewer = new TableViewer( table );
 
         TableColumn c1 = new TableColumn( table, SWT.NONE );
-        c1.setText( Messages.getString("ValueEditorsPreferencePage.Syntax") ); //$NON-NLS-1$
+        c1.setText( Messages.getString( "ValueEditorsPreferencePage.Syntax" ) ); //$NON-NLS-1$
         c1.setWidth( 80 );
         TableColumn c2 = new TableColumn( table, SWT.NONE );
-        c2.setText( Messages.getString("ValueEditorsPreferencePage.Description") ); //$NON-NLS-1$
+        c2.setText( Messages.getString( "ValueEditorsPreferencePage.Description" ) ); //$NON-NLS-1$
         c2.setWidth( 80 );
         TableColumn c3 = new TableColumn( table, SWT.NONE );
-        c3.setText( Messages.getString("ValueEditorsPreferencePage.ValueEditor") ); //$NON-NLS-1$
+        c3.setText( Messages.getString( "ValueEditorsPreferencePage.ValueEditor" ) ); //$NON-NLS-1$
         c3.setWidth( 200 );
 
-        syntaxViewer.setColumnProperties( new String[]
-            { Messages.getString("ValueEditorsPreferencePage.Syntax"), Messages.getString("ValueEditorsPreferencePage.ValueEditor") } ); //$NON-NLS-1$ //$NON-NLS-2$
+        syntaxViewer
+            .setColumnProperties( new String[]
+                {
+                    Messages.getString( "ValueEditorsPreferencePage.Syntax" ), Messages.getString( "ValueEditorsPreferencePage.ValueEditor" ) } ); //$NON-NLS-1$ //$NON-NLS-2$
         syntaxViewer.setContentProvider( new ArrayContentProvider() );
         syntaxViewer.setLabelProvider( new SyntaxLabelProvider() );
 
@@ -385,7 +393,8 @@ public class ValueEditorsPreferencePage extends PreferencePage implements IWorkb
             }
         } );
 
-        syntaxAddButton = BaseWidgetUtils.createButton( buttonComposite, Messages.getString("ValueEditorsPreferencePage.Add"), 1 ); //$NON-NLS-1$
+        syntaxAddButton = BaseWidgetUtils.createButton( buttonComposite, Messages
+            .getString( "ValueEditorsPreferencePage.Add" ), 1 ); //$NON-NLS-1$
         syntaxAddButton.addSelectionListener( new SelectionAdapter()
         {
             public void widgetSelected( SelectionEvent e )
@@ -393,7 +402,8 @@ public class ValueEditorsPreferencePage extends PreferencePage implements IWorkb
                 addSyntax();
             }
         } );
-        syntaxEditButton = BaseWidgetUtils.createButton( buttonComposite, Messages.getString("ValueEditorsPreferencePage.Edit"), 1 ); //$NON-NLS-1$
+        syntaxEditButton = BaseWidgetUtils.createButton( buttonComposite, Messages
+            .getString( "ValueEditorsPreferencePage.Edit" ), 1 ); //$NON-NLS-1$
         syntaxEditButton.addSelectionListener( new SelectionAdapter()
         {
             public void widgetSelected( SelectionEvent e )
@@ -401,7 +411,8 @@ public class ValueEditorsPreferencePage extends PreferencePage implements IWorkb
                 editSyntax();
             }
         } );
-        syntaxRemoveButton = BaseWidgetUtils.createButton( buttonComposite, Messages.getString("ValueEditorsPreferencePage.Remove"), 1 ); //$NON-NLS-1$
+        syntaxRemoveButton = BaseWidgetUtils.createButton( buttonComposite, Messages
+            .getString( "ValueEditorsPreferencePage.Remove" ), 1 ); //$NON-NLS-1$
         syntaxRemoveButton.addSelectionListener( new SelectionAdapter()
         {
             public void widgetSelected( SelectionEvent e )

@@ -42,9 +42,9 @@ public class ViewsPreferencePage extends PreferencePage implements IWorkbenchPre
      */
     public ViewsPreferencePage()
     {
-        super( Messages.getString("ViewsPreferencePage.Views") ); //$NON-NLS-1$
-        setDescription( Messages.getString("ViewsPreferencePage.Description") ); //$NON-NLS-1$
-        
+        super( Messages.getString( "ViewsPreferencePage.Views" ) ); //$NON-NLS-1$
+        setDescription( Messages.getString( "ViewsPreferencePage.Description" ) ); //$NON-NLS-1$
+
         // Removing Default and Apply buttons
         noDefaultAndApplyButton();
     }
@@ -65,7 +65,7 @@ public class ViewsPreferencePage extends PreferencePage implements IWorkbenchPre
     protected Control createContents( Composite parent )
     {
         // Nothing to do
-        
+
         return parent;
     }
 }

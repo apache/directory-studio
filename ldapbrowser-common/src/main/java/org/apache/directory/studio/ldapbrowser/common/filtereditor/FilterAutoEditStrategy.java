@@ -109,8 +109,7 @@ public class FilterAutoEditStrategy extends DefaultIndentLineAutoEditStrategy im
         if ( aep.length > 0 && ( aep.text == null || "".equals( aep.text ) ) ) //$NON-NLS-1$
         {
             // delete surrounding parenthesis after deleting the last character
-            if ( filter.toString().length() - aep.length == 2 
-                && filter.getStartToken() != null
+            if ( filter.toString().length() - aep.length == 2 && filter.getStartToken() != null
                 && filter.getStopToken() != null
                 && aep.offset >= filter.getStartToken().getOffset() + filter.getStartToken().getLength()
                 && aep.offset + aep.length <= filter.getStopToken().getOffset() )
@@ -123,21 +122,19 @@ public class FilterAutoEditStrategy extends DefaultIndentLineAutoEditStrategy im
                     aep.shiftsCaret = false;
                 }
             }
-            
+
             // delete closing parenthesis after deleting the opening parenthesis
-            if ( filter.toString().length() - aep.length == 1
-                && filter.getStartToken() != null
-                && filter.getStopToken() != null
-                && aep.offset == filter.getStartToken().getOffset() )
+            if ( filter.toString().length() - aep.length == 1 && filter.getStartToken() != null
+                && filter.getStopToken() != null && aep.offset == filter.getStartToken().getOffset() )
             {
                 aep.length += 1;
                 aep.caretOffset = aep.offset;
                 aep.shiftsCaret = false;
             }
-            
+
         }
 
-        if ( (aep.length == 0 || aep.length==currentFilter.length()) && aep.text != null && !"".equals( aep.text ) ) //$NON-NLS-1$
+        if ( ( aep.length == 0 || aep.length == currentFilter.length() ) && aep.text != null && !"".equals( aep.text ) ) //$NON-NLS-1$
         {
             boolean isNewFilter = aep.text.equals( "(" ); //$NON-NLS-1$
             boolean isNewNestedFilter = aep.text.equals( "&" ) || aep.text.equals( "|" ) || aep.text.equals( "!" ); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
@@ -145,7 +142,8 @@ public class FilterAutoEditStrategy extends DefaultIndentLineAutoEditStrategy im
             boolean isSurroundNested = false;
             boolean isSurroundBeforeOtherFilter = false;
             boolean isSurroundAfterOtherFilter = false;
-            if( !Character.isWhitespace( aep.text.charAt( 0 ) ) && !aep.text.startsWith( "(" ) && !aep.text.endsWith( ")" ) ) //$NON-NLS-1$ //$NON-NLS-2$
+            if ( !Character.isWhitespace( aep.text.charAt( 0 ) )
+                && !aep.text.startsWith( "(" ) && !aep.text.endsWith( ")" ) ) //$NON-NLS-1$ //$NON-NLS-2$
             {
                 // isSurroundNew
                 isSurroundNew = aep.offset == 0;
@@ -227,14 +225,14 @@ public class FilterAutoEditStrategy extends DefaultIndentLineAutoEditStrategy im
                 if ( balanced == 0 )
                 {
                     aep.text = aep.text + ")"; //$NON-NLS-1$
-                    if( aep.caretOffset == -1 )
+                    if ( aep.caretOffset == -1 )
                     {
                         aep.caretOffset = aep.offset + aep.text.length() - 1;
                         aep.shiftsCaret = false;
                     }
                 }
             }
-            
+
             // translate tab to IDENT_STRING
             if ( aep.text.equals( "\t" ) ) //$NON-NLS-1$
             {

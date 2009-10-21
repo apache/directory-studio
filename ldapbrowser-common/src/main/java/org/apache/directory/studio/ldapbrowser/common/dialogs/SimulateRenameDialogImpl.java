@@ -47,7 +47,7 @@ public class SimulateRenameDialogImpl extends Dialog implements SimulateRenameDi
 {
 
     /** The dialog title. */
-    private String dialogTitle = Messages.getString("SimulateRenameDialogImpl.SimulateRename"); //$NON-NLS-1$
+    private String dialogTitle = Messages.getString( "SimulateRenameDialogImpl.SimulateRename" ); //$NON-NLS-1$
 
     /** The simulate rename flag */
     private boolean isSimulateRename;
@@ -119,14 +119,16 @@ public class SimulateRenameDialogImpl extends Dialog implements SimulateRenameDi
         gd = new GridData( GridData.FILL_BOTH );
         innerComposite.setLayoutData( gd );
 
-        String text1 = NLS.bind( Messages.getString("SimulateRenameDialogImpl.SimulateRenameDescription1"), oldDn.getUpName(), newDn.getUpName() ); //$NON-NLS-1$
+        String text1 = NLS
+            .bind(
+                Messages.getString( "SimulateRenameDialogImpl.SimulateRenameDescription1" ), oldDn.getUpName(), newDn.getUpName() ); //$NON-NLS-1$
         BaseWidgetUtils.createLabel( innerComposite, text1, 1 );
 
-        String text2 = NLS.bind( Messages.getString("SimulateRenameDialogImpl.SimulateRenameDescription2"), //$NON-NLS-1$
+        String text2 = NLS.bind( Messages.getString( "SimulateRenameDialogImpl.SimulateRenameDescription2" ), //$NON-NLS-1$
             browserConnection.getConnection().getName() );
         BaseWidgetUtils.createLabel( innerComposite, text2, 1 );
 
-        String text3 = Messages.getString("SimulateRenameDialogImpl.SimulateButton"); //$NON-NLS-1$
+        String text3 = Messages.getString( "SimulateRenameDialogImpl.SimulateButton" ); //$NON-NLS-1$
         BaseWidgetUtils.createLabel( innerComposite, text3, 1 );
 
         applyDialogFont( composite );

@@ -51,8 +51,8 @@ public class ShowQuickFilterAction extends Action
      */
     public ShowQuickFilterAction( EntryEditorWidgetQuickFilterWidget quickFilterWidget )
     {
-        super( Messages.getString("ShowQuickFilterAction.ShowQuickFilter"), AS_CHECK_BOX ); //$NON-NLS-1$
-        setToolTipText( Messages.getString("ShowQuickFilterAction.ShowQuickFilter") ); //$NON-NLS-1$
+        super( Messages.getString( "ShowQuickFilterAction.ShowQuickFilter" ), AS_CHECK_BOX ); //$NON-NLS-1$
+        setToolTipText( Messages.getString( "ShowQuickFilterAction.ShowQuickFilter" ) ); //$NON-NLS-1$
         setImageDescriptor( BrowserCommonActivator.getDefault().getImageDescriptor( BrowserCommonConstants.IMG_FILTER ) );
         setActionDefinitionId( IWorkbenchActionDefinitionIds.FIND_REPLACE );
         setEnabled( true );

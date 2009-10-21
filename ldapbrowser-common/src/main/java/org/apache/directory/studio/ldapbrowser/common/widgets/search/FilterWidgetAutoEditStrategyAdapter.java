@@ -105,7 +105,7 @@ public class FilterWidgetAutoEditStrategyAdapter
             String oldText = combo.getText();
             //parser.parse( oldText );
 
-            if( !oldTexts.isEmpty() )
+            if ( !oldTexts.isEmpty() )
             {
                 oldTexts.clear();
                 verifyEvents.clear();

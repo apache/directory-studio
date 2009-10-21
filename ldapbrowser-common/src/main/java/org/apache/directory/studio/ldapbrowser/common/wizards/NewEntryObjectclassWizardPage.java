@@ -324,8 +324,8 @@ public class NewEntryObjectclassWizardPage extends WizardPage
 
         Composite availableObjectClassesComposite = BaseWidgetUtils.createColumnContainer( composite, 1, 1 );
 
-        Composite availableObjectClassesInstantSearchComposite = BaseWidgetUtils
-            .createColumnContainer( availableObjectClassesComposite, 2, 1 );
+        Composite availableObjectClassesInstantSearchComposite = BaseWidgetUtils.createColumnContainer(
+            availableObjectClassesComposite, 2, 1 );
         availableObjectClassesInstantSearch = new Text( availableObjectClassesInstantSearchComposite, SWT.NONE
             | SWT.BORDER | SWT.SEARCH | SWT.CANCEL );
         availableObjectClassesInstantSearch.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );

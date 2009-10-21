@@ -53,7 +53,7 @@ public class HexDialog extends Dialog
 {
 
     /** The default title. */
-    private static final String DIALOG_TITLE = Messages.getString("HexDialog.HexEditor"); //$NON-NLS-1$
+    private static final String DIALOG_TITLE = Messages.getString( "HexDialog.HexEditor" ); //$NON-NLS-1$
 
     /** The button ID for the load button. */
     private static final int LOAD_BUTTON_ID = 9998;
@@ -97,7 +97,7 @@ public class HexDialog extends Dialog
         else if ( buttonId == SAVE_BUTTON_ID )
         {
             FileDialog fileDialog = new FileDialog( getShell(), SWT.SAVE );
-            fileDialog.setText( Messages.getString("HexDialog.SaveData") ); //$NON-NLS-1$
+            fileDialog.setText( Messages.getString( "HexDialog.SaveData" ) ); //$NON-NLS-1$
             // fileDialog.setFilterExtensions(new String[]{"*.jpg"});
             String returnedFileName = fileDialog.open();
             if ( returnedFileName != null )
@@ -118,7 +118,7 @@ public class HexDialog extends Dialog
         else if ( buttonId == LOAD_BUTTON_ID )
         {
             FileDialog fileDialog = new FileDialog( getShell(), SWT.OPEN );
-            fileDialog.setText( Messages.getString("HexDialog.LoadData") ); //$NON-NLS-1$
+            fileDialog.setText( Messages.getString( "HexDialog.LoadData" ) ); //$NON-NLS-1$
             String returnedFileName = fileDialog.open();
             if ( returnedFileName != null )
             {
@@ -161,8 +161,8 @@ public class HexDialog extends Dialog
      */
     protected void createButtonsForButtonBar( Composite parent )
     {
-        createButton( parent, LOAD_BUTTON_ID, Messages.getString("HexDialog.LoadDataButton"), false ); //$NON-NLS-1$
-        createButton( parent, SAVE_BUTTON_ID, Messages.getString("HexDialog.SaveDataButton"), false ); //$NON-NLS-1$
+        createButton( parent, LOAD_BUTTON_ID, Messages.getString( "HexDialog.LoadDataButton" ), false ); //$NON-NLS-1$
+        createButton( parent, SAVE_BUTTON_ID, Messages.getString( "HexDialog.SaveDataButton" ), false ); //$NON-NLS-1$
         createButton( parent, IDialogConstants.OK_ID, IDialogConstants.OK_LABEL, false );
         createButton( parent, IDialogConstants.CANCEL_ID, IDialogConstants.CANCEL_LABEL, false );
     }

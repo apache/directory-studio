@@ -107,8 +107,8 @@ public class AttributeTypeWizardPage extends WizardPage
         boolean initialShowSubschemaAttributesOnly, boolean initialHideExistingAttributes, AttributeWizard wizard )
     {
         super( pageName );
-        super.setTitle( Messages.getString("AttributeTypeWizardPage.AttributeType") ); //$NON-NLS-1$
-        super.setDescription( Messages.getString("AttributeTypeWizardPage.AttributeTypeDescription") ); //$NON-NLS-1$
+        super.setTitle( Messages.getString( "AttributeTypeWizardPage.AttributeType" ) ); //$NON-NLS-1$
+        super.setDescription( Messages.getString( "AttributeTypeWizardPage.AttributeTypeDescription" ) ); //$NON-NLS-1$
         // super.setImageDescriptor(BrowserUIPlugin.getDefault().getImageDescriptor(BrowserUIConstants.IMG_ATTRIBUTE_WIZARD));
         super.setPageComplete( false );
 
@@ -121,10 +121,10 @@ public class AttributeTypeWizardPage extends WizardPage
         Collection<String> atdNames = SchemaUtils.getNames( atds );
         possibleAttributeTypes = atdNames.toArray( new String[atdNames.size()] );
         Arrays.sort( possibleAttributeTypes );
-        
+
         Collection<AttributeTypeDescription> allAtds = SchemaUtils.getAllAttributeTypeDescriptions( initialEntry );
         Collection<String> names = SchemaUtils.getNames( allAtds );
-        possibleAttributeTypesSubschemaOnly  = names.toArray(new String[0]);
+        possibleAttributeTypesSubschemaOnly = names.toArray( new String[0] );
         Arrays.sort( possibleAttributeTypesSubschemaOnly );
 
         Set<String> set = new HashSet<String>( Arrays.asList( possibleAttributeTypesSubschemaOnly ) );
@@ -179,7 +179,7 @@ public class AttributeTypeWizardPage extends WizardPage
         composite.setLayout( gl );
         composite.setLayoutData( new GridData( GridData.FILL_BOTH ) );
 
-        BaseWidgetUtils.createLabel( composite, Messages.getString("AttributeTypeWizardPage.AttributeTypeLabel"), 1 ); //$NON-NLS-1$
+        BaseWidgetUtils.createLabel( composite, Messages.getString( "AttributeTypeWizardPage.AttributeTypeLabel" ), 1 ); //$NON-NLS-1$
 
         // attribute combo with field decoration and content proposal
         attributeTypeCombo = BaseWidgetUtils.createCombo( composite, possibleAttributeTypes, -1, 1 );
@@ -188,12 +188,14 @@ public class AttributeTypeWizardPage extends WizardPage
             new ListContentProposalProvider( possibleAttributeTypes ), null, null, true );
 
         BaseWidgetUtils.createSpacer( composite, 1 );
-        showSubschemAttributesOnlyButton = BaseWidgetUtils.createCheckbox( composite, Messages.getString("AttributeTypeWizardPage.ShowSubschemaAttributesOnly"), //$NON-NLS-1$
+        showSubschemAttributesOnlyButton = BaseWidgetUtils.createCheckbox( composite, Messages
+            .getString( "AttributeTypeWizardPage.ShowSubschemaAttributesOnly" ), //$NON-NLS-1$
             1 );
         showSubschemAttributesOnlyButton.setSelection( initialShowSubschemaAttributesOnly );
 
         BaseWidgetUtils.createSpacer( composite, 1 );
-        hideExistingAttributesButton = BaseWidgetUtils.createCheckbox( composite, Messages.getString("AttributeTypeWizardPage.HideExistingAttributes"), 1 ); //$NON-NLS-1$
+        hideExistingAttributesButton = BaseWidgetUtils.createCheckbox( composite, Messages
+            .getString( "AttributeTypeWizardPage.HideExistingAttributes" ), 1 ); //$NON-NLS-1$
         hideExistingAttributesButton.setSelection( initialHideExistingAttributes );
 
         Label l = new Label( composite, SWT.NONE );
@@ -201,7 +203,7 @@ public class AttributeTypeWizardPage extends WizardPage
         gd.horizontalSpan = 2;
         l.setLayoutData( gd );
 
-        BaseWidgetUtils.createLabel( composite, Messages.getString("AttributeTypeWizardPage.PreviewLabel"), 1 ); //$NON-NLS-1$
+        BaseWidgetUtils.createLabel( composite, Messages.getString( "AttributeTypeWizardPage.PreviewLabel" ), 1 ); //$NON-NLS-1$
         previewText = BaseWidgetUtils.createReadonlyText( composite, "", 1 ); //$NON-NLS-1$
 
         // attribute type listener

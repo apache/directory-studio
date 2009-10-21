@@ -109,8 +109,8 @@ public class AttributeOptionsWizardPage extends WizardPage
     public AttributeOptionsWizardPage( String pageName, String initialAttributeDescription, AttributeWizard wizard )
     {
         super( pageName );
-        super.setTitle( Messages.getString("AttributeOptionsWizardPage.Options") ); //$NON-NLS-1$
-        super.setDescription( Messages.getString("AttributeOptionsWizardPage.OptionsDescription") ); //$NON-NLS-1$
+        super.setTitle( Messages.getString( "AttributeOptionsWizardPage.Options" ) ); //$NON-NLS-1$
+        super.setDescription( Messages.getString( "AttributeOptionsWizardPage.OptionsDescription" ) ); //$NON-NLS-1$
         // super.setImageDescriptor(BrowserUIPlugin.getDefault().getImageDescriptor(BrowserUIConstants.IMG_ATTRIBUTE_WIZARD));
         super.setPageComplete( false );
 
@@ -204,7 +204,8 @@ public class AttributeOptionsWizardPage extends WizardPage
         composite.setLayoutData( new GridData( GridData.FILL_BOTH ) );
 
         // Lang group
-        langGroup = BaseWidgetUtils.createGroup( composite, Messages.getString("AttributeOptionsWizardPage.LanguageTags"), 2 ); //$NON-NLS-1$
+        langGroup = BaseWidgetUtils.createGroup( composite, Messages
+            .getString( "AttributeOptionsWizardPage.LanguageTags" ), 2 ); //$NON-NLS-1$
         GridData gd = new GridData( GridData.FILL_HORIZONTAL );
         gd.horizontalSpan = 2;
         langGroup.setLayoutData( gd );
@@ -214,14 +215,16 @@ public class AttributeOptionsWizardPage extends WizardPage
         BaseWidgetUtils.createSpacer( composite, 2 );
 
         // Options group with binary option
-        optionsGroup = BaseWidgetUtils.createGroup( composite, Messages.getString("AttributeOptionsWizardPage.OtherOptions"), 2 ); //$NON-NLS-1$
+        optionsGroup = BaseWidgetUtils.createGroup( composite, Messages
+            .getString( "AttributeOptionsWizardPage.OtherOptions" ), 2 ); //$NON-NLS-1$
         gd = new GridData( GridData.FILL_HORIZONTAL );
         gd.horizontalSpan = 2;
         optionsGroup.setLayoutData( gd );
         Composite optionsComposite = BaseWidgetUtils.createColumnContainer( optionsGroup, 3, 1 );
         optionLineList = new ArrayList<OptionLine>();
         Composite binaryComposite = BaseWidgetUtils.createColumnContainer( optionsGroup, 1, 1 );
-        binaryOptionButton = BaseWidgetUtils.createCheckbox( binaryComposite, Messages.getString("AttributeOptionsWizardPage.BinaryOption"), 1 ); //$NON-NLS-1$
+        binaryOptionButton = BaseWidgetUtils.createCheckbox( binaryComposite, Messages
+            .getString( "AttributeOptionsWizardPage.BinaryOption" ), 1 ); //$NON-NLS-1$
         binaryOptionButton.setSelection( parsedBinary );
 
         Label la = new Label( composite, SWT.NONE );
@@ -230,7 +233,7 @@ public class AttributeOptionsWizardPage extends WizardPage
         la.setLayoutData( gd );
 
         // Preview text
-        BaseWidgetUtils.createLabel( composite, Messages.getString("AttributeOptionsWizardPage.Preview"), 1 ); //$NON-NLS-1$
+        BaseWidgetUtils.createLabel( composite, Messages.getString( "AttributeOptionsWizardPage.Preview" ), 1 ); //$NON-NLS-1$
         previewText = BaseWidgetUtils.createReadonlyText( composite, "", 1 ); //$NON-NLS-1$
 
         // fill lang
@@ -309,7 +312,7 @@ public class AttributeOptionsWizardPage extends WizardPage
             {
                 if ( s1 == null || s2 == null )
                 {
-                    throw new ClassCastException( Messages.getString("AttributeOptionsWizardPage.MustNotBeNull") ); //$NON-NLS-1$
+                    throw new ClassCastException( Messages.getString( "AttributeOptionsWizardPage.MustNotBeNull" ) ); //$NON-NLS-1$
                 }
                 return s1.compareToIgnoreCase( s2 );
             }

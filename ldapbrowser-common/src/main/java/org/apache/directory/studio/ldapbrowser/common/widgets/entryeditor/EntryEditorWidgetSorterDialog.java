@@ -49,16 +49,17 @@ public class EntryEditorWidgetSorterDialog extends Dialog
 {
 
     /** The Constant DIALOG_TITLE. */
-    public static final String DIALOG_TITLE = Messages.getString("EntryEditorWidgetSorterDialog.EntryEditorSorting"); //$NON-NLS-1$
+    public static final String DIALOG_TITLE = Messages.getString( "EntryEditorWidgetSorterDialog.EntryEditorSorting" ); //$NON-NLS-1$
 
     /** The Constant SORT_BY_NONE. */
-    public static final String SORT_BY_NONE = Messages.getString("EntryEditorWidgetSorterDialog.NoDefaultSorting"); //$NON-NLS-1$
+    public static final String SORT_BY_NONE = Messages.getString( "EntryEditorWidgetSorterDialog.NoDefaultSorting" ); //$NON-NLS-1$
 
     /** The Constant SORT_BY_ATTRIBUTE. */
-    public static final String SORT_BY_ATTRIBUTE = Messages.getString("EntryEditorWidgetSorterDialog.AttributeDescription"); //$NON-NLS-1$
+    public static final String SORT_BY_ATTRIBUTE = Messages
+        .getString( "EntryEditorWidgetSorterDialog.AttributeDescription" ); //$NON-NLS-1$
 
     /** The Constant SORT_BY_VALUE. */
-    public static final String SORT_BY_VALUE = Messages.getString("EntryEditorWidgetSorterDialog.Value"); //$NON-NLS-1$
+    public static final String SORT_BY_VALUE = Messages.getString( "EntryEditorWidgetSorterDialog.Value" ); //$NON-NLS-1$
 
     /** The preferences. */
     private EntryEditorWidgetPreferences preferences;
@@ -121,9 +122,9 @@ public class EntryEditorWidgetSorterDialog extends Dialog
             store.setValue( BrowserCommonConstants.PREFERENCE_ENTRYEDITOR_DEFAULT_SORT_ORDER, sortDescendingButton
                 .getSelection() ? BrowserCoreConstants.SORT_ORDER_DESCENDING
                 : BrowserCoreConstants.SORT_ORDER_ASCENDING );
-            store.setValue( BrowserCommonConstants.PREFERENCE_ENTRYEDITOR_DEFAULT_SORT_BY,
-                sortByCombo.getSelectionIndex() == 2 ? BrowserCoreConstants.SORT_BY_VALUE : sortByCombo
-                    .getSelectionIndex() == 1 ? BrowserCoreConstants.SORT_BY_ATTRIBUTE_DESCRIPTION
+            store.setValue( BrowserCommonConstants.PREFERENCE_ENTRYEDITOR_DEFAULT_SORT_BY, sortByCombo
+                .getSelectionIndex() == 2 ? BrowserCoreConstants.SORT_BY_VALUE
+                : sortByCombo.getSelectionIndex() == 1 ? BrowserCoreConstants.SORT_BY_ATTRIBUTE_DESCRIPTION
                     : BrowserCoreConstants.SORT_BY_NONE );
         }
 
@@ -138,22 +139,25 @@ public class EntryEditorWidgetSorterDialog extends Dialog
     {
         Composite composite = ( Composite ) super.createDialogArea( parent );
 
-        Group group = BaseWidgetUtils.createGroup( composite, Messages.getString("EntryEditorWidgetSorterDialog.GroupAttributes"), 1 ); //$NON-NLS-1$
+        Group group = BaseWidgetUtils.createGroup( composite, Messages
+            .getString( "EntryEditorWidgetSorterDialog.GroupAttributes" ), 1 ); //$NON-NLS-1$
         GridData gd = new GridData( GridData.FILL_BOTH | GridData.GRAB_HORIZONTAL );
         gd.widthHint = convertHorizontalDLUsToPixels( IDialogConstants.MINIMUM_MESSAGE_AREA_WIDTH );
         group.setLayoutData( gd );
 
-        objectClassAndMustAttributesFirstButton = BaseWidgetUtils.createCheckbox( group,
-            Messages.getString("EntryEditorWidgetSorterDialog.ObjectClassAndMustAttributesFirst"), 1 ); //$NON-NLS-1$
+        objectClassAndMustAttributesFirstButton = BaseWidgetUtils.createCheckbox( group, Messages
+            .getString( "EntryEditorWidgetSorterDialog.ObjectClassAndMustAttributesFirst" ), 1 ); //$NON-NLS-1$
         objectClassAndMustAttributesFirstButton.setSelection( preferences.isObjectClassAndMustAttributesFirst() );
 
-        operationalAttributesLastButton = BaseWidgetUtils.createCheckbox( group, Messages.getString("EntryEditorWidgetSorterDialog.OperationalAttributesLast"), 1 ); //$NON-NLS-1$
+        operationalAttributesLastButton = BaseWidgetUtils.createCheckbox( group, Messages
+            .getString( "EntryEditorWidgetSorterDialog.OperationalAttributesLast" ), 1 ); //$NON-NLS-1$
         operationalAttributesLastButton.setSelection( preferences.isOperationalAttributesLast() );
 
-        Group sortingGroup = BaseWidgetUtils.createGroup( composite, Messages.getString("EntryEditorWidgetSorterDialog.SortAttributes"), 1 ); //$NON-NLS-1$
+        Group sortingGroup = BaseWidgetUtils.createGroup( composite, Messages
+            .getString( "EntryEditorWidgetSorterDialog.SortAttributes" ), 1 ); //$NON-NLS-1$
 
         Composite sortByComposite = BaseWidgetUtils.createColumnContainer( sortingGroup, 4, 1 );
-        BaseWidgetUtils.createLabel( sortByComposite, Messages.getString("EntryEditorWidgetSorterDialog.SortBy"), 1 ); //$NON-NLS-1$
+        BaseWidgetUtils.createLabel( sortByComposite, Messages.getString( "EntryEditorWidgetSorterDialog.SortBy" ), 1 ); //$NON-NLS-1$
         sortByCombo = BaseWidgetUtils.createReadonlyCombo( sortByComposite, new String[]
             { SORT_BY_NONE, SORT_BY_ATTRIBUTE, SORT_BY_VALUE }, 0, 1 );
         sortByCombo.select( preferences.getDefaultSortBy() == BrowserCoreConstants.SORT_BY_VALUE ? 2 : preferences
@@ -167,20 +171,21 @@ public class EntryEditorWidgetSorterDialog extends Dialog
             }
         } );
 
-        sortAcendingButton = BaseWidgetUtils.createRadiobutton( sortByComposite, Messages.getString("EntryEditorWidgetSorterDialog.Ascending"), 1 ); //$NON-NLS-1$
+        sortAcendingButton = BaseWidgetUtils.createRadiobutton( sortByComposite, Messages
+            .getString( "EntryEditorWidgetSorterDialog.Ascending" ), 1 ); //$NON-NLS-1$
         sortAcendingButton
             .setSelection( preferences.getDefaultSortOrder() == BrowserCoreConstants.SORT_ORDER_ASCENDING );
         sortAcendingButton.setEnabled( sortByCombo.getSelectionIndex() != 0 );
 
-        sortDescendingButton = BaseWidgetUtils.createRadiobutton( sortByComposite, Messages.getString("EntryEditorWidgetSorterDialog.Descending"), 1 ); //$NON-NLS-1$
+        sortDescendingButton = BaseWidgetUtils.createRadiobutton( sortByComposite, Messages
+            .getString( "EntryEditorWidgetSorterDialog.Descending" ), 1 ); //$NON-NLS-1$
         sortDescendingButton
             .setSelection( preferences.getDefaultSortOrder() == BrowserCoreConstants.SORT_ORDER_DESCENDING );
         sortDescendingButton.setEnabled( sortByCombo.getSelectionIndex() != 0 );
 
         BaseWidgetUtils.createSpacer( composite, 2 );
 
-        BaseWidgetUtils.createLabel( composite,
-            Messages.getString("EntryEditorWidgetSorterDialog.SortTableHint"), 1 ); //$NON-NLS-1$
+        BaseWidgetUtils.createLabel( composite, Messages.getString( "EntryEditorWidgetSorterDialog.SortTableHint" ), 1 ); //$NON-NLS-1$
 
         applyDialogFont( composite );
         return composite;

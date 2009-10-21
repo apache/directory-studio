@@ -60,7 +60,7 @@ public class BrowserActionGroup implements ActionHandlerManager, IMenuListener
 
     /** The show quick search action. */
     protected ShowQuickSearchAction showQuickSearchAction;
-    
+
     /** The collapse all action. */
     protected CollapseAllAction collapseAllAction;
 

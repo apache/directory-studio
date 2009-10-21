@@ -291,7 +291,8 @@ public class EntryEditorWidgetActionGroup implements ActionHandlerManager
     protected void addEditMenu( IMenuManager menuManager )
     {
         menuManager.add( openDefaultValueEditorActionProxy );
-        MenuManager editorMenuManager = new MenuManager( Messages.getString("EntryEditorWidgetActionGroup.EditValueWith") ); //$NON-NLS-1$
+        MenuManager editorMenuManager = new MenuManager( Messages
+            .getString( "EntryEditorWidgetActionGroup.EditValueWith" ) ); //$NON-NLS-1$
         if ( openBestValueEditorActionProxy.isEnabled() )
         {
             editorMenuManager.add( openBestValueEditorActionProxy );

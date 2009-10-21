@@ -74,7 +74,7 @@ public class AttributeWizard extends Wizard implements INewWizard
      */
     public AttributeWizard()
     {
-        super.setWindowTitle( Messages.getString("AttributeWizard.NewAttribute") ); //$NON-NLS-1$
+        super.setWindowTitle( Messages.getString( "AttributeWizard.NewAttribute" ) ); //$NON-NLS-1$
         super.setNeedsProgressMonitor( false );
         this.initialShowSubschemaAttributesOnly = true;
         this.initialHideExistingAttributes = true;
@@ -175,8 +175,8 @@ public class AttributeWizard extends Wizard implements INewWizard
         protected DummyWizardPage()
         {
             super( "" ); //$NON-NLS-1$
-            super.setTitle( Messages.getString("AttributeWizard.NoEntrySelected") ); //$NON-NLS-1$
-            super.setDescription( Messages.getString("AttributeWizard.NoeEntrySelectedDescription") ); //$NON-NLS-1$
+            super.setTitle( Messages.getString( "AttributeWizard.NoEntrySelected" ) ); //$NON-NLS-1$
+            super.setDescription( Messages.getString( "AttributeWizard.NoeEntrySelectedDescription" ) ); //$NON-NLS-1$
             // super.setImageDescriptor(BrowserUIPlugin.getDefault().getImageDescriptor(BrowserUIConstants.IMG_ATTRIBUTE_WIZARD));
             super.setPageComplete( true );
         }

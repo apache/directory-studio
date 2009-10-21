@@ -50,7 +50,7 @@ public class DnDialog extends Dialog
 
     /** The title. */
     private String title;
-    
+
     /** The description. */
     private String description;
 
@@ -127,11 +127,11 @@ public class DnDialog extends Dialog
         gd.widthHint = convertHorizontalDLUsToPixels( IDialogConstants.MINIMUM_MESSAGE_AREA_WIDTH ) * 3 / 2;
         composite.setLayoutData( gd );
 
-        if(description != null)
+        if ( description != null )
         {
             BaseWidgetUtils.createLabel( composite, description, 1 );
         }
-        
+
         Composite innerComposite = BaseWidgetUtils.createColumnContainer( composite, 2, 1 );
         entryWidget = new EntryWidget( connection, dn );
         entryWidget.addWidgetModifyListener( new WidgetModifyListener()

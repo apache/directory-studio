@@ -118,18 +118,18 @@ public class ScopeDialog extends Dialog
         GridData gd = new GridData( GridData.FILL_BOTH );
         composite.setLayoutData( gd );
 
-        Group group = BaseWidgetUtils.createGroup( composite, Messages.getString("ScopeDialog.SelectCopyDepth"), 1 ); //$NON-NLS-1$
+        Group group = BaseWidgetUtils.createGroup( composite, Messages.getString( "ScopeDialog.SelectCopyDepth" ), 1 ); //$NON-NLS-1$
         objectScopeButton = new Button( group, SWT.RADIO );
         objectScopeButton.setSelection( true );
-        objectScopeButton.setText( multipleEntriesSelected ? Messages.getString("ScopeDialog.OnlyCopiedEntries") //$NON-NLS-1$
-            : Messages.getString("ScopeDialog.OnlyCopiedEntry") ); //$NON-NLS-1$
+        objectScopeButton.setText( multipleEntriesSelected ? Messages.getString( "ScopeDialog.OnlyCopiedEntries" ) //$NON-NLS-1$
+            : Messages.getString( "ScopeDialog.OnlyCopiedEntry" ) ); //$NON-NLS-1$
         onelevelScopeButton = new Button( group, SWT.RADIO );
-        onelevelScopeButton
-            .setText( multipleEntriesSelected ? Messages.getString("ScopeDialog.CopiedEntriesAndDirectChildren") //$NON-NLS-1$
-                : Messages.getString("ScopeDialog.CopiedEntryAndDirectChildren") ); //$NON-NLS-1$
+        onelevelScopeButton.setText( multipleEntriesSelected ? Messages
+            .getString( "ScopeDialog.CopiedEntriesAndDirectChildren" ) //$NON-NLS-1$
+            : Messages.getString( "ScopeDialog.CopiedEntryAndDirectChildren" ) ); //$NON-NLS-1$
         subtreeScopeButton = new Button( group, SWT.RADIO );
-        subtreeScopeButton.setText( multipleEntriesSelected ? Messages.getString("ScopeDialog.WholeSubtrees") //$NON-NLS-1$
-            : Messages.getString("ScopeDialog.WholeSubtree") ); //$NON-NLS-1$
+        subtreeScopeButton.setText( multipleEntriesSelected ? Messages.getString( "ScopeDialog.WholeSubtrees" ) //$NON-NLS-1$
+            : Messages.getString( "ScopeDialog.WholeSubtree" ) ); //$NON-NLS-1$
 
         applyDialogFont( composite );
         return composite;

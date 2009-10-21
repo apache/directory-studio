@@ -55,7 +55,7 @@ public class EntryExistsCopyStrategyDialogImpl extends Dialog implements EntryEx
 {
 
     /** The dialog title. */
-    private String dialogTitle = Messages.getString("EntryExistsCopyStrategyDialogImpl.SelectCopyStrategy"); //$NON-NLS-1$
+    private String dialogTitle = Messages.getString( "EntryExistsCopyStrategyDialogImpl.SelectCopyStrategy" ); //$NON-NLS-1$
 
     /** The break button. */
     private Button breakButton;
@@ -68,9 +68,9 @@ public class EntryExistsCopyStrategyDialogImpl extends Dialog implements EntryEx
 
     /** The rename button. */
     private Button renameButton;
-//
-//    /** The remember check box. */
-//    private Button rememberCheckbox;
+    //
+    //    /** The remember check box. */
+    //    private Button rememberCheckbox;
 
     /** The DN builder widget. */
     private DnBuilderWidget dnBuilderWidget;
@@ -119,7 +119,7 @@ public class EntryExistsCopyStrategyDialogImpl extends Dialog implements EntryEx
     protected void okPressed()
     {
         rdn = null;
-//        isRememberStrategy = rememberCheckbox.getSelection() && rememberCheckbox.isEnabled();
+        //        isRememberStrategy = rememberCheckbox.getSelection() && rememberCheckbox.isEnabled();
 
         if ( breakButton.getSelection() )
         {
@@ -162,7 +162,8 @@ public class EntryExistsCopyStrategyDialogImpl extends Dialog implements EntryEx
         GridData gd = new GridData( GridData.FILL_BOTH );
         composite.setLayoutData( gd );
 
-        String text = NLS.bind( Messages.getString("EntryExistsCopyStrategyDialogImpl.SelectCopyStrategyDescription"), dn.getUpName() ); //$NON-NLS-1$
+        String text = NLS.bind(
+            Messages.getString( "EntryExistsCopyStrategyDialogImpl.SelectCopyStrategyDescription" ), dn.getUpName() ); //$NON-NLS-1$
         BaseWidgetUtils.createLabel( composite, text, 1 );
 
         Composite group2 = BaseWidgetUtils.createGroup( composite, "", 1 ); //$NON-NLS-1$
@@ -176,17 +177,21 @@ public class EntryExistsCopyStrategyDialogImpl extends Dialog implements EntryEx
             }
         };
 
-        breakButton = BaseWidgetUtils.createRadiobutton( group, Messages.getString("EntryExistsCopyStrategyDialogImpl.StopCopyProcess"), 2 ); //$NON-NLS-1$
+        breakButton = BaseWidgetUtils.createRadiobutton( group, Messages
+            .getString( "EntryExistsCopyStrategyDialogImpl.StopCopyProcess" ), 2 ); //$NON-NLS-1$
         breakButton.setSelection( true );
         breakButton.addSelectionListener( listener );
 
-        ignoreButton = BaseWidgetUtils.createRadiobutton( group, Messages.getString("EntryExistsCopyStrategyDialogImpl.IgnoreEntryAndContinue"), 2 ); //$NON-NLS-1$
+        ignoreButton = BaseWidgetUtils.createRadiobutton( group, Messages
+            .getString( "EntryExistsCopyStrategyDialogImpl.IgnoreEntryAndContinue" ), 2 ); //$NON-NLS-1$
         ignoreButton.addSelectionListener( listener );
 
-        overwriteButton = BaseWidgetUtils.createRadiobutton( group, Messages.getString("EntryExistsCopyStrategyDialogImpl.OverwriteEntryAndContinue"), 2 ); //$NON-NLS-1$
+        overwriteButton = BaseWidgetUtils.createRadiobutton( group, Messages
+            .getString( "EntryExistsCopyStrategyDialogImpl.OverwriteEntryAndContinue" ), 2 ); //$NON-NLS-1$
         overwriteButton.addSelectionListener( listener );
 
-        renameButton = BaseWidgetUtils.createRadiobutton( group, Messages.getString("EntryExistsCopyStrategyDialogImpl.RenameEntryAndContinue"), 2 ); //$NON-NLS-1$
+        renameButton = BaseWidgetUtils.createRadiobutton( group, Messages
+            .getString( "EntryExistsCopyStrategyDialogImpl.RenameEntryAndContinue" ), 2 ); //$NON-NLS-1$
         renameButton.addSelectionListener( listener );
 
         BaseWidgetUtils.createRadioIndent( group, 1 );
@@ -202,7 +207,7 @@ public class EntryExistsCopyStrategyDialogImpl extends Dialog implements EntryEx
         dnBuilderWidget.setInput( browserConnection, SchemaUtils.getNamesAsArray( browserConnection.getSchema()
             .getAttributeTypeDescriptions() ), dn.getRdn(), null );
 
-//        rememberCheckbox = BaseWidgetUtils.createCheckbox( composite, "Remember decision", 2 );
+        //        rememberCheckbox = BaseWidgetUtils.createCheckbox( composite, "Remember decision", 2 );
 
         validate();
 
@@ -222,7 +227,7 @@ public class EntryExistsCopyStrategyDialogImpl extends Dialog implements EntryEx
         {
             dnBuilderWidget.setEnabled( false );
         }
-//        rememberCheckbox.setEnabled( overwriteButton.getSelection() || ignoreButton.getSelection() );
+        //        rememberCheckbox.setEnabled( overwriteButton.getSelection() || ignoreButton.getSelection() );
     }
 
 

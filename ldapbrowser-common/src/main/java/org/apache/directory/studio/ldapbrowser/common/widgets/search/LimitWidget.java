@@ -97,13 +97,13 @@ public class LimitWidget extends BrowserWidget
     public void createWidget( Composite parent )
     {
 
-        limitGroup = BaseWidgetUtils.createGroup( parent, Messages.getString("LimitWidget.Limits"), 1 ); //$NON-NLS-1$
+        limitGroup = BaseWidgetUtils.createGroup( parent, Messages.getString( "LimitWidget.Limits" ), 1 ); //$NON-NLS-1$
         GridLayout gl = new GridLayout( 2, false );
         limitGroup.setLayout( gl );
 
         // Count limit
-        String countLimitToolTipText = Messages.getString("LimitWidget.CountLimitTooltip"); //$NON-NLS-1$
-        countLimitLabel = BaseWidgetUtils.createLabel( limitGroup, Messages.getString("LimitWidget.CountLimit"), 1 ); //$NON-NLS-1$
+        String countLimitToolTipText = Messages.getString( "LimitWidget.CountLimitTooltip" ); //$NON-NLS-1$
+        countLimitLabel = BaseWidgetUtils.createLabel( limitGroup, Messages.getString( "LimitWidget.CountLimit" ), 1 ); //$NON-NLS-1$
         countLimitLabel.setToolTipText( countLimitToolTipText );
         countLimitText = BaseWidgetUtils.createText( limitGroup, "", 1 ); //$NON-NLS-1$
         countLimitText.setToolTipText( countLimitToolTipText );
@@ -126,8 +126,8 @@ public class LimitWidget extends BrowserWidget
         } );
 
         // Time limit
-        String timeLimitToolTipText = Messages.getString("LimitWidget.TimeLimitToolTip"); //$NON-NLS-1$
-        timeLimitLabel = BaseWidgetUtils.createLabel( limitGroup, Messages.getString("LimitWidget.TimeLimit"), 1 ); //$NON-NLS-1$
+        String timeLimitToolTipText = Messages.getString( "LimitWidget.TimeLimitToolTip" ); //$NON-NLS-1$
+        timeLimitLabel = BaseWidgetUtils.createLabel( limitGroup, Messages.getString( "LimitWidget.TimeLimit" ), 1 ); //$NON-NLS-1$
         timeLimitLabel.setToolTipText( timeLimitToolTipText );
         timeLimitText = BaseWidgetUtils.createText( limitGroup, "", 1 ); //$NON-NLS-1$
         timeLimitText.setToolTipText( timeLimitToolTipText );

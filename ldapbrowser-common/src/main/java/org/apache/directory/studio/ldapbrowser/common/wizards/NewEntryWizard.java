@@ -117,11 +117,11 @@ public class NewEntryWizard extends Wizard implements INewWizard
 
         if ( isNewContextEntry() )
         {
-            setWindowTitle( Messages.getString("NewEntryWizard.NewContextEntry") ); //$NON-NLS-1$
+            setWindowTitle( Messages.getString( "NewEntryWizard.NewContextEntry" ) ); //$NON-NLS-1$
         }
         else
         {
-            setWindowTitle( Messages.getString("NewEntryWizard.NewEntry") ); //$NON-NLS-1$
+            setWindowTitle( Messages.getString( "NewEntryWizard.NewEntry" ) ); //$NON-NLS-1$
         }
 
         if ( o instanceof IEntry )
@@ -267,8 +267,8 @@ public class NewEntryWizard extends Wizard implements INewWizard
         protected DummyWizardPage()
         {
             super( "" ); //$NON-NLS-1$
-            setTitle( Messages.getString("NewEntryWizard.NoConnectonSelected") ); //$NON-NLS-1$
-            setDescription( Messages.getString("NewEntryWizard.NoConnectonSelectedDescription") ); //$NON-NLS-1$
+            setTitle( Messages.getString( "NewEntryWizard.NoConnectonSelected" ) ); //$NON-NLS-1$
+            setDescription( Messages.getString( "NewEntryWizard.NoConnectonSelectedDescription" ) ); //$NON-NLS-1$
             setImageDescriptor( BrowserCommonActivator.getDefault().getImageDescriptor(
                 BrowserCommonConstants.IMG_ENTRY_WIZARD ) );
             setPageComplete( true );

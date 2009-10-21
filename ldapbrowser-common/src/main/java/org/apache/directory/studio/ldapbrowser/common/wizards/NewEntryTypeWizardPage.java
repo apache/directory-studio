@@ -88,8 +88,8 @@ public class NewEntryTypeWizardPage extends WizardPage implements WidgetModifyLi
     public NewEntryTypeWizardPage( String pageName, NewEntryWizard wizard )
     {
         super( pageName );
-        setTitle( Messages.getString("NewEntryTypeWizardPage.EntryCreationMethod") ); //$NON-NLS-1$
-        setDescription( Messages.getString("NewEntryTypeWizardPage.EntryCreationMethodDescription") ); //$NON-NLS-1$
+        setTitle( Messages.getString( "NewEntryTypeWizardPage.EntryCreationMethod" ) ); //$NON-NLS-1$
+        setDescription( Messages.getString( "NewEntryTypeWizardPage.EntryCreationMethodDescription" ) ); //$NON-NLS-1$
         setImageDescriptor( BrowserCommonActivator.getDefault().getImageDescriptor(
             BrowserCommonConstants.IMG_ENTRY_WIZARD ) );
         setPageComplete( false );
@@ -151,7 +151,10 @@ public class NewEntryTypeWizardPage extends WizardPage implements WidgetModifyLi
                 {
                     public void run()
                     {
-                        MessageDialog.openError( getShell(), Messages.getString("NewEntryTypeWizardPage.Error"), Messages.getString("NewEntryTypeWizardPage.NoConnection") ); //$NON-NLS-1$ //$NON-NLS-2$
+                        MessageDialog
+                            .openError(
+                                getShell(),
+                                Messages.getString( "NewEntryTypeWizardPage.Error" ), Messages.getString( "NewEntryTypeWizardPage.NoConnection" ) ); //$NON-NLS-1$ //$NON-NLS-2$
                     }
                 } );
                 return null;
@@ -162,7 +165,10 @@ public class NewEntryTypeWizardPage extends WizardPage implements WidgetModifyLi
                 {
                     public void run()
                     {
-                        MessageDialog.openError( getShell(), Messages.getString("NewEntryTypeWizardPage.Error"), Messages.getString("NewEntryTypeWizardPage.NoDN") ); //$NON-NLS-1$ //$NON-NLS-2$
+                        MessageDialog
+                            .openError(
+                                getShell(),
+                                Messages.getString( "NewEntryTypeWizardPage.Error" ), Messages.getString( "NewEntryTypeWizardPage.NoDN" ) ); //$NON-NLS-1$ //$NON-NLS-2$
                     }
                 } );
                 return null;
@@ -178,7 +184,10 @@ public class NewEntryTypeWizardPage extends WizardPage implements WidgetModifyLi
                 {
                     public void run()
                     {
-                        MessageDialog.openError( getShell(), Messages.getString("NewEntryTypeWizardPage.Error"), NLS.bind(Messages.getString("NewEntryTypeWizardPage.EntryDoesNotExist"), dn.toString() ) ); //$NON-NLS-1$ //$NON-NLS-2$
+                        MessageDialog
+                            .openError(
+                                getShell(),
+                                Messages.getString( "NewEntryTypeWizardPage.Error" ), NLS.bind( Messages.getString( "NewEntryTypeWizardPage.EntryDoesNotExist" ), dn.toString() ) ); //$NON-NLS-1$ //$NON-NLS-2$
                     }
                 } );
                 return null;
@@ -236,9 +245,11 @@ public class NewEntryTypeWizardPage extends WizardPage implements WidgetModifyLi
         composite.setLayout( gl );
         composite.setLayoutData( new GridData( GridData.FILL_BOTH ) );
 
-        schemaButton = BaseWidgetUtils.createRadiobutton( composite, Messages.getString("NewEntryTypeWizardPage.CreateEntryFromScratch"), 1 ); //$NON-NLS-1$
+        schemaButton = BaseWidgetUtils.createRadiobutton( composite, Messages
+            .getString( "NewEntryTypeWizardPage.CreateEntryFromScratch" ), 1 ); //$NON-NLS-1$
         schemaButton.addSelectionListener( this );
-        templateButton = BaseWidgetUtils.createRadiobutton( composite, Messages.getString("NewEntryTypeWizardPage.UseExistingEntryAsTemplate"), 1 ); //$NON-NLS-1$
+        templateButton = BaseWidgetUtils.createRadiobutton( composite, Messages
+            .getString( "NewEntryTypeWizardPage.UseExistingEntryAsTemplate" ), 1 ); //$NON-NLS-1$
         templateButton.addSelectionListener( this );
 
         Composite entryComposite = BaseWidgetUtils.createColumnContainer( composite, 3, 1 );

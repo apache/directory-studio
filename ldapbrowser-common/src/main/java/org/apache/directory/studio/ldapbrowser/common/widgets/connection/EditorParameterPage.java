@@ -279,8 +279,7 @@ public class EditorParameterPage extends AbstractConnectionParameterPage
      */
     public void mergeParametersToLdapURL( ConnectionParameter parameter, LdapURL ldapUrl )
     {
-        int modifyMode = parameter
-            .getExtendedIntProperty( IBrowserConnection.CONNECTION_PARAMETER_MODIFY_MODE );
+        int modifyMode = parameter.getExtendedIntProperty( IBrowserConnection.CONNECTION_PARAMETER_MODIFY_MODE );
         if ( modifyMode != 0 )
         {
             ldapUrl.getExtensions().add(
@@ -297,8 +296,7 @@ public class EditorParameterPage extends AbstractConnectionParameterPage
                     .getExtendedProperty( IBrowserConnection.CONNECTION_PARAMETER_MODIFY_MODE_NO_EMR ) ) );
         }
 
-        int modifyOrder = parameter
-            .getExtendedIntProperty( IBrowserConnection.CONNECTION_PARAMETER_MODIFY_ORDER );
+        int modifyOrder = parameter.getExtendedIntProperty( IBrowserConnection.CONNECTION_PARAMETER_MODIFY_ORDER );
         if ( modifyOrder != 0 )
         {
             ldapUrl.getExtensions().add(

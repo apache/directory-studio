@@ -66,11 +66,11 @@ public abstract class AbstractDialogBinaryValueEditor extends AbstractDialogValu
             else if ( value.isBinary() )
             {
                 byte[] data = value.getBinaryValue();
-                return NLS.bind( Messages.getString("AbstractDialogBinaryValueEditor.BinaryDateNBytes"), data.length ); //$NON-NLS-1$
+                return NLS.bind( Messages.getString( "AbstractDialogBinaryValueEditor.BinaryDateNBytes" ), data.length ); //$NON-NLS-1$
             }
             else
             {
-                return Messages.getString("AbstractDialogBinaryValueEditor.InvalidData"); //$NON-NLS-1$
+                return Messages.getString( "AbstractDialogBinaryValueEditor.InvalidData" ); //$NON-NLS-1$
             }
         }
     }

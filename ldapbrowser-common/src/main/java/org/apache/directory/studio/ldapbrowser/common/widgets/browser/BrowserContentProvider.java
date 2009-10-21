@@ -351,7 +351,7 @@ public class BrowserContentProvider implements ITreeContentProvider
         else if ( parent instanceof IEntry )
         {
             final IEntry parentEntry = ( IEntry ) parent;
-            
+
             if ( parentEntry instanceof IContinuation )
             {
                 IContinuation continuation = ( IContinuation ) parentEntry;
@@ -383,7 +383,8 @@ public class BrowserContentProvider implements ITreeContentProvider
                 List<Object> objects = new ArrayList<Object>();
 
                 SearchManager sm = parentEntry.getBrowserConnection().getSearchManager();
-                if ( sm != null && sm.getQuickSearch() != null && parentEntry.getDn().equals( sm.getQuickSearch().getSearchBase() ) )
+                if ( sm != null && sm.getQuickSearch() != null
+                    && parentEntry.getDn().equals( sm.getQuickSearch().getSearchBase() ) )
                 {
                     objects.add( sm.getQuickSearch() );
                 }
@@ -394,7 +395,7 @@ public class BrowserContentProvider implements ITreeContentProvider
                 }
 
                 objects.addAll( Arrays.asList( results ) );
-                
+
                 if ( parentEntry.getNextPageChildrenRunnable() != null )
                 {
                     objects.add( parentEntry.getNextPageChildrenRunnable() );
@@ -442,7 +443,7 @@ public class BrowserContentProvider implements ITreeContentProvider
                     return new Object[0];
                 }
             }
-            
+
             if ( search.getSearchResults() == null || search.getSearchContinuations() == null )
             {
                 new StudioBrowserJob( new SearchRunnable( new ISearch[]
@@ -472,8 +473,8 @@ public class BrowserContentProvider implements ITreeContentProvider
                 }
 
                 objects.addAll( Arrays.asList( results ) );
-                
-                if(scs != null)
+
+                if ( scs != null )
                 {
                     objects.addAll( Arrays.asList( scs ) );
                 }

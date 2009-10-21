@@ -169,7 +169,7 @@ public interface BrowserCommonConstants
     public static final String IMG_NEXT = "resources/icons/next.gif"; //$NON-NLS-1$
     public static final String IMG_PREVIOUS = "resources/icons/previous.gif"; //$NON-NLS-1$
     public static final String IMG_RENAME = "resources/icons/rename.gif"; //$NON-NLS-1$
-    
+
     public static final String IMG_SYNTAX_CHECKER = "resources/icons/syntax_checker.png"; //$NON-NLS-1$
     public static final String IMG_COMPARATOR = "resources/icons/comparator.png"; //$NON-NLS-1$
     public static final String IMG_NORMALIZER = "resources/icons/normalizer.png"; //$NON-NLS-1$
@@ -211,7 +211,7 @@ public interface BrowserCommonConstants
         .getString( "DnD_SearchTransfer" ); //$NON-NLS-1$
     public static final String DND_VALUES_TRANSFER = BrowserCommonActivator.getDefault().getPluginProperties()
         .getString( "DnD_ValuesTransfer" ); //$NON-NLS-1$
-    
+
     public static final String WIZARD_ATTRIBUTE_WIZARD = BrowserCommonActivator.getDefault().getPluginProperties()
         .getString( "Wizard_AttributeWizard_id" ); //$NON-NLS-1$
 

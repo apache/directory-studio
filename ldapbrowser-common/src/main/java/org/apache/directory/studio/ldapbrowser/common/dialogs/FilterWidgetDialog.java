@@ -149,7 +149,8 @@ public class FilterWidgetDialog extends Dialog
             }
         } );
 
-        errorMessageLabel = BaseWidgetUtils.createLabel( inner, Messages.getString("FilterWidgetDialog.EnterValidFilter"), 2 ); //$NON-NLS-1$
+        errorMessageLabel = BaseWidgetUtils.createLabel( inner, Messages
+            .getString( "FilterWidgetDialog.EnterValidFilter" ), 2 ); //$NON-NLS-1$
 
         validate();
 
@@ -166,7 +167,8 @@ public class FilterWidgetDialog extends Dialog
         {
             getButton( IDialogConstants.OK_ID ).setEnabled( filterWidget.getFilter() != null );
         }
-        errorMessageLabel.setText( filterWidget.getFilter() == null ? Messages.getString("FilterWidgetDialog.EnterValidFilter") : "" ); //$NON-NLS-1$ //$NON-NLS-2$
+        errorMessageLabel.setText( filterWidget.getFilter() == null ? Messages
+            .getString( "FilterWidgetDialog.EnterValidFilter" ) : "" ); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
 }

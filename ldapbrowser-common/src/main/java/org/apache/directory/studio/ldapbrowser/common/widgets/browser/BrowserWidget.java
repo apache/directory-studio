@@ -55,7 +55,7 @@ public class BrowserWidget extends ViewFormWidget
 
     /** The quick search widget. */
     private BrowserQuickSearchWidget quickSearchWidget;
-    
+
     /** The action bars. */
     private IActionBars actionBars;
 
@@ -215,7 +215,7 @@ public class BrowserWidget extends ViewFormWidget
                 quickSearchWidget.dispose();
                 quickSearchWidget = null;
             }
-            
+
             this.tree.dispose();
             this.tree = null;
             this.viewer = null;

@@ -135,7 +135,7 @@ public class SearchPageWrapper extends BrowserWidget
 
     /** Style for read-only referrals options */
     public static final int REFERRALOPTIONS_READONLY = 1 << 25;
-    
+
     /** Style for invisible follow referrals manually*/
     public static final int REFERRALOPTIONS_FOLLOW_MANUAL_INVISIBLE = 1 << 26;
 
@@ -539,8 +539,8 @@ public class SearchPageWrapper extends BrowserWidget
         }
 
         Composite controlComposite = BaseWidgetUtils.createColumnContainer( composite, 1, 3 );
-        controlGroup = BaseWidgetUtils.createGroup( controlComposite, Messages
-            .getString( "SearchPageWrapper.Controls" ), 1 ); //$NON-NLS-1$
+        controlGroup = BaseWidgetUtils.createGroup( controlComposite,
+            Messages.getString( "SearchPageWrapper.Controls" ), 1 ); //$NON-NLS-1$
 
         // ManageDsaIT control
         manageDsaItControlButton = BaseWidgetUtils.createCheckbox( controlGroup, Messages
