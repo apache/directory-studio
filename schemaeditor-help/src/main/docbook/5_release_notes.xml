@@ -89,6 +89,16 @@
                 </listitem>
             </itemizedlist>
         </para>
+        <para>
+            <emphasis>Task</emphasis>
+        </para>
+        <para>
+            <itemizedlist spacing="normal" mark="bullet">
+                <listitem>
+                    <para>[DIRSTUDIO-573] - Update bundled Apache DS Schema files to version 1.5.5</para>
+                </listitem>
+            </itemizedlist>
+        </para>
     </simplesect>
     
     <simplesect>
