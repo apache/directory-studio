@@ -103,7 +103,7 @@ public class DnUtils
 
         for ( int i = 0; i < prefix.size(); i++ )
         {
-        	ldapDn.add( (Rdn) prefix.getRdn( i ).clone() );
+            ldapDn.add( ( Rdn ) prefix.getRdn( i ).clone() );
         }
 
         return ldapDn;

@@ -82,16 +82,16 @@ public interface ConnectionUpdateListener extends EventListener
      * @param connectionFolder the modified connection folder 
      */
     public void connectionFolderModified( ConnectionFolder connectionFolder );
-    
-    
+
+
     /**
      * Called when an {@link ConnectionFolder} was added.
      *
      * @param connectionFolder the added connection folder 
      */
     public void connectionFolderAdded( ConnectionFolder connectionFolder );
-    
-    
+
+
     /**
      * Called when an {@link ConnectionFolder} was removed.
      *

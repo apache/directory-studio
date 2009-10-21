@@ -87,9 +87,10 @@ public class ConnectionFolder implements Cloneable
                 folder.addConnectionId( newConnection.getId() );
             }
         }
-        
+
         // clone subfolders
-        ConnectionFolderManager connectionFolderManager = ConnectionCorePlugin.getDefault().getConnectionFolderManager();
+        ConnectionFolderManager connectionFolderManager = ConnectionCorePlugin.getDefault()
+            .getConnectionFolderManager();
         for ( String id : subFolderIds )
         {
             ConnectionFolder subFolder = connectionFolderManager.getConnectionFolderById( id );

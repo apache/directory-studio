@@ -65,7 +65,6 @@ public class ConnectionManager implements ConnectionUpdateListener
 
     public static final String TEMP_SUFFIX = "-temp"; //$NON-NLS-1$
 
-
     /** The list of connections. */
     private Set<Connection> connectionList;
 
@@ -148,8 +147,8 @@ public class ConnectionManager implements ConnectionUpdateListener
         {
             file.mkdir();
         }
-        return p
-            .append( MODIFICATIONS_LOG_PREFIX + Utils.getFilenameString( connection.getId() ) + LDIFLOG_SUFFIX ).toOSString();
+        return p.append( MODIFICATIONS_LOG_PREFIX + Utils.getFilenameString( connection.getId() ) + LDIFLOG_SUFFIX )
+            .toOSString();
     }
 
 
@@ -169,7 +168,8 @@ public class ConnectionManager implements ConnectionUpdateListener
         {
             file.mkdir();
         }
-        return p.append( SEARCH_LOGS_PREFIX + Utils.getFilenameString( connection.getId() ) + LDIFLOG_SUFFIX ).toOSString();
+        return p.append( SEARCH_LOGS_PREFIX + Utils.getFilenameString( connection.getId() ) + LDIFLOG_SUFFIX )
+            .toOSString();
     }
 
 
@@ -371,7 +371,8 @@ public class ConnectionManager implements ConnectionUpdateListener
         // To avoid a corrupt file, save object to a temp file first 
         try
         {
-            ConnectionIO.save( connectionParameters, new FileOutputStream( getConnectionStoreFileName() + TEMP_SUFFIX ) );
+            ConnectionIO
+                .save( connectionParameters, new FileOutputStream( getConnectionStoreFileName() + TEMP_SUFFIX ) );
         }
         catch ( IOException e )
         {
@@ -418,8 +419,8 @@ public class ConnectionManager implements ConnectionUpdateListener
             // If loading failed, try with temp file
             try
             {
-                connectionParameters = ConnectionIO
-                    .load( new FileInputStream( getConnectionStoreFileName() + TEMP_SUFFIX ) );
+                connectionParameters = ConnectionIO.load( new FileInputStream( getConnectionStoreFileName()
+                    + TEMP_SUFFIX ) );
             }
             catch ( FileNotFoundException e1 )
             {

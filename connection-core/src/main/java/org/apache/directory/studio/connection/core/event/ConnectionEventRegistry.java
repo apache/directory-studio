@@ -430,7 +430,7 @@ public class ConnectionEventRegistry
             {
                 return;
             }
-            
+
             Map<L, EventRunner> clone = new HashMap<L, EventRunner>( listeners );
             for ( final L listener : clone.keySet() )
             {

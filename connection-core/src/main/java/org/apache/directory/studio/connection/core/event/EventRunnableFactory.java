@@ -29,7 +29,7 @@ package org.apache.directory.studio.connection.core.event;
  */
 public interface EventRunnableFactory<L>
 {
-    
+
     /**
      * Creates a new {@link EventRunnable} object.
      * 

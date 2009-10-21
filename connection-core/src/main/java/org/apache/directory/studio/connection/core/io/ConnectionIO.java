@@ -395,7 +395,7 @@ public class ConnectionIO
 
         // SASL Quality of Protection
         connectionElement.addAttribute( SASL_QOP_TAG, connection.getSaslQop().toString() );
-        
+
         // SASL Security Strength
         connectionElement.addAttribute( SASL_SEC_STRENGTH_TAG, connection.getSaslSecurityStrength().toString() );
 

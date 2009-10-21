@@ -152,7 +152,7 @@ class StudioTrustManager implements X509TrustManager
                 {
                     failCauses.add( FailCause.NoValidCertificationPath );
                 }
-                
+
                 try
                 {
                     chain[0].checkValidity();

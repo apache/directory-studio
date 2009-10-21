@@ -21,8 +21,6 @@
 package org.apache.directory.studio.connection.core.jobs;
 
 
-
-
 /**
  * A runnable with a progess monitor. When invoked by the {@link StudioConnectionJob} 
  * during the run() method all event notifications are blocked and the runNotification()

@@ -19,6 +19,7 @@
  */
 package org.apache.directory.studio.connection.core;
 
+
 import org.apache.directory.studio.connection.core.jobs.StudioProgressMonitor;
 
 
@@ -49,5 +50,5 @@ public interface IConnectionListener
      * @param connection the closed connection 
      * @param monitor the progress monitor
      */
-    public void connectionClosed( Connection connection, StudioProgressMonitor monitor ); 
+    public void connectionClosed( Connection connection, StudioProgressMonitor monitor );
 }

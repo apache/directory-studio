@@ -20,6 +20,7 @@
 
 package org.apache.directory.studio.connection.core.jobs;
 
+
 import org.apache.directory.studio.connection.core.Connection;
 
 
