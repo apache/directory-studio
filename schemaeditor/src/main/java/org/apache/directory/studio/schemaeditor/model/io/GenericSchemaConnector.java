@@ -83,7 +83,7 @@ public class GenericSchemaConnector extends AbstractSchemaConnector implements S
 
         JNDIConnectionWrapper wrapper = connection.getJNDIConnectionWrapper();
 
-        monitor.beginTask( "Fetching Schema: ", 1 );
+        monitor.beginTask( Messages.getString( "GenericSchemaConnector.FetchingSchema" ), 1 ); //$NON-NLS-1$
 
         SearchControls constraintSearch = new SearchControls();
         constraintSearch.setSearchScope( SearchControls.OBJECT_SCOPE );
@@ -187,8 +187,6 @@ public class GenericSchemaConnector extends AbstractSchemaConnector implements S
     private static Schema getSchema( JNDIConnectionWrapper wrapper, SearchResult searchResult,
         StudioProgressMonitor monitor ) throws NamingException, ParseException
     {
-        monitor.subTask( "Reading schema" );
-
         // Creating the schema
         Schema schema = new SchemaImpl( "schema" );
 

@@ -32,10 +32,10 @@ import javax.naming.directory.SearchResult;
 import org.apache.directory.shared.ldap.schema.ObjectClassTypeEnum;
 import org.apache.directory.shared.ldap.schema.UsageEnum;
 import org.apache.directory.studio.connection.core.Connection;
-import org.apache.directory.studio.connection.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
 import org.apache.directory.studio.connection.core.Connection.ReferralHandlingMethod;
 import org.apache.directory.studio.connection.core.io.jndi.JNDIConnectionWrapper;
+import org.apache.directory.studio.connection.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.schemaeditor.model.AttributeTypeImpl;
 import org.apache.directory.studio.schemaeditor.model.MatchingRuleImpl;
 import org.apache.directory.studio.schemaeditor.model.ObjectClassImpl;
@@ -97,7 +97,7 @@ public class ApacheDsSchemaConnector extends AbstractSchemaConnector implements 
 
         JNDIConnectionWrapper wrapper = connection.getJNDIConnectionWrapper();
 
-        monitor.beginTask( "Fetching Schema: ", 1 );
+        monitor.beginTask( Messages.getString( "GenericSchemaConnector.FetchingSchema" ), 1 ); //$NON-NLS-1$
 
         // Looking for all the defined schemas
         SearchControls constraintSearch = new SearchControls();
@@ -202,7 +202,7 @@ public class ApacheDsSchemaConnector extends AbstractSchemaConnector implements 
     private static Schema getSchema( JNDIConnectionWrapper wrapper, String name, StudioProgressMonitor monitor )
         throws NamingException
     {
-        monitor.subTask( "Reading schema '" + name + "'" );
+        monitor.subTask( name ); //$NON-NLS-1$
 
         // Creating the schema
         Schema schema = new SchemaImpl( name );
