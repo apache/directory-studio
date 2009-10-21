@@ -99,13 +99,13 @@ public class ExtendedOperationDetailsPage implements IDetailsPage
         section.setClient( client );
 
         // Name
-        toolkit.createLabel( client, Messages.getString("ExtendedOperationDetailsPage.Name") ); //$NON-NLS-1$
+        toolkit.createLabel( client, Messages.getString( "ExtendedOperationDetailsPage.Name" ) ); //$NON-NLS-1$
         nameText = toolkit.createText( client, "" ); //$NON-NLS-1$
         nameText.setEditable( false );
         nameText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
 
         // Description
-        toolkit.createLabel( client, Messages.getString("ExtendedOperationDetailsPage.Description") ); //$NON-NLS-1$
+        toolkit.createLabel( client, Messages.getString( "ExtendedOperationDetailsPage.Description" ) ); //$NON-NLS-1$
         descriptionText = toolkit.createText( client, "", SWT.MULTI | SWT.WRAP | SWT.V_SCROLL ); //$NON-NLS-1$
         descriptionText.setEditable( false );
         GridData gridData = new GridData( SWT.FILL, SWT.NONE, true, false );

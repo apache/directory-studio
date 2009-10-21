@@ -40,7 +40,7 @@ public class ServerConfigurationV151 extends AbstractServerConfiguration impleme
 
     /** The flag for Enable LDAP */
     private boolean enableLdap;
-    
+
     /** The port */
     private int ldapPort;
 

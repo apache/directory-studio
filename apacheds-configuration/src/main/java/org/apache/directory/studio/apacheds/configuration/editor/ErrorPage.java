@@ -46,7 +46,7 @@ public class ErrorPage extends FormPage
     public static final String ID = ServerConfigurationEditor.ID + ".ErrorPage"; //$NON-NLS-1$
 
     /** The Page Title */
-    private static final String TITLE = Messages.getString("ErrorPage.Error"); //$NON-NLS-1$
+    private static final String TITLE = Messages.getString( "ErrorPage.Error" ); //$NON-NLS-1$
 
 
     /**
@@ -76,10 +76,10 @@ public class ErrorPage extends FormPage
         errorImageLabel.setImage( Display.getCurrent().getSystemImage( SWT.ICON_ERROR ) );
 
         // Error Label
-        toolkit.createLabel( parent, Messages.getString("ErrorPage.ErrorOpeningTheEditor") ); //$NON-NLS-1$
+        toolkit.createLabel( parent, Messages.getString( "ErrorPage.ErrorOpeningTheEditor" ) ); //$NON-NLS-1$
 
         // Details Label
-        Label detailsLabel = toolkit.createLabel( parent, Messages.getString("ErrorPage.Details") ); //$NON-NLS-1$
+        Label detailsLabel = toolkit.createLabel( parent, Messages.getString( "ErrorPage.Details" ) ); //$NON-NLS-1$
         detailsLabel.setLayoutData( new GridData( SWT.NONE, SWT.NONE, false, false, 2, 1 ) );
 
         // Details Text

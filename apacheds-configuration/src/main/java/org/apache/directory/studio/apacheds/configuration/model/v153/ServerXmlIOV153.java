@@ -1472,13 +1472,13 @@ public class ServerXmlIOV153 extends AbstractServerXmlIO implements ServerXmlIO
         OutputStream os = new ByteArrayOutputStream();
         OutputFormat outformat = OutputFormat.createPrettyPrint();
         outformat.setEncoding( "UTF-8" ); //$NON-NLS-1$
-        
+
         // Writing the XML.
         XMLWriter writer = new XMLWriter( os, outformat );
         writer.write( document );
         writer.flush();
         writer.close();
-        
+
         return os.toString();
     }
 

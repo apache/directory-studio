@@ -74,7 +74,7 @@ public class AuthenticationPage extends FormPage implements SaveableFormPage
     public static final String ID = ServerConfigurationEditor.ID + ".V155.AuthenticationPage"; //$NON-NLS-1$
 
     /** The Page Title */
-    private static final String TITLE = Messages.getString("AuthenticationPage.Authentication"); //$NON-NLS-1$
+    private static final String TITLE = Messages.getString( "AuthenticationPage.Authentication" ); //$NON-NLS-1$
 
     private List<String> saslRealms;
 
@@ -114,7 +114,7 @@ public class AuthenticationPage extends FormPage implements SaveableFormPage
             ApacheDSConfigurationPluginConstants.PLUGIN_ID + "." + "configuration_editor_154" ); //$NON-NLS-1$ //$NON-NLS-2$
 
         ScrolledForm form = managedForm.getForm();
-        form.setText( Messages.getString("AuthenticationPage.Authentication") ); //$NON-NLS-1$
+        form.setText( Messages.getString( "AuthenticationPage.Authentication" ) ); //$NON-NLS-1$
 
         Composite parent = form.getBody();
         parent.setLayout( new TableWrapLayout() );
@@ -147,7 +147,7 @@ public class AuthenticationPage extends FormPage implements SaveableFormPage
     {
         // Creation of the section
         Section section = toolkit.createSection( parent, Section.TITLE_BAR );
-        section.setText( Messages.getString("AuthenticationPage.SupportedAuthenticationMechanisms") ); //$NON-NLS-1$
+        section.setText( Messages.getString( "AuthenticationPage.SupportedAuthenticationMechanisms" ) ); //$NON-NLS-1$
         section.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
         Composite client = toolkit.createComposite( section );
         toolkit.paintBordersFor( client );
@@ -167,16 +167,19 @@ public class AuthenticationPage extends FormPage implements SaveableFormPage
                 SupportedMechanismEnum.GSSAPI, SupportedMechanismEnum.NTLM, SupportedMechanismEnum.GSS_SPNEGO } );
 
         // Edit Button
-        editSupportedMechanismButton = toolkit.createButton( client, Messages.getString("AuthenticationPage.Edit"), SWT.PUSH ); //$NON-NLS-1$
+        editSupportedMechanismButton = toolkit.createButton( client,
+            Messages.getString( "AuthenticationPage.Edit" ), SWT.PUSH ); //$NON-NLS-1$
         editSupportedMechanismButton.setLayoutData( new GridData( SWT.FILL, SWT.BEGINNING, false, false ) );
         editSupportedMechanismButton.setEnabled( false );
 
         // Select All Button
-        selectAllSupportedMechanismsButton = toolkit.createButton( client, Messages.getString("AuthenticationPage.SelectAll"), SWT.PUSH ); //$NON-NLS-1$
+        selectAllSupportedMechanismsButton = toolkit.createButton( client, Messages
+            .getString( "AuthenticationPage.SelectAll" ), SWT.PUSH ); //$NON-NLS-1$
         selectAllSupportedMechanismsButton.setLayoutData( new GridData( SWT.FILL, SWT.BEGINNING, false, false ) );
 
         // Deselect All Button
-        deselectAllSupportedMechanismsButton = toolkit.createButton( client, Messages.getString("AuthenticationPage.DeselectAll"), SWT.PUSH ); //$NON-NLS-1$
+        deselectAllSupportedMechanismsButton = toolkit.createButton( client, Messages
+            .getString( "AuthenticationPage.DeselectAll" ), SWT.PUSH ); //$NON-NLS-1$
         deselectAllSupportedMechanismsButton.setLayoutData( new GridData( SWT.FILL, SWT.BEGINNING, false, false ) );
     }
 
@@ -193,7 +196,7 @@ public class AuthenticationPage extends FormPage implements SaveableFormPage
     {
         // Creation of the section
         Section section = toolkit.createSection( parent, Section.TITLE_BAR );
-        section.setText( Messages.getString("AuthenticationPage.SaslSettings") ); //$NON-NLS-1$
+        section.setText( Messages.getString( "AuthenticationPage.SaslSettings" ) ); //$NON-NLS-1$
         section.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
         Composite client = toolkit.createComposite( section );
         toolkit.paintBordersFor( client );
@@ -202,17 +205,17 @@ public class AuthenticationPage extends FormPage implements SaveableFormPage
         section.setClient( client );
 
         // SASL Host
-        toolkit.createLabel( client, Messages.getString("AuthenticationPage.SaslHost") ); //$NON-NLS-1$
+        toolkit.createLabel( client, Messages.getString( "AuthenticationPage.SaslHost" ) ); //$NON-NLS-1$
         saslHostText = toolkit.createText( client, "" ); //$NON-NLS-1$
         saslHostText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
 
         // SASL Principal
-        toolkit.createLabel( client, Messages.getString("AuthenticationPage.SaslPrincipal") ); //$NON-NLS-1$
+        toolkit.createLabel( client, Messages.getString( "AuthenticationPage.SaslPrincipal" ) ); //$NON-NLS-1$
         saslPrincipalText = toolkit.createText( client, "" ); //$NON-NLS-1$
         saslPrincipalText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
 
         // Search Base DN
-        toolkit.createLabel( client, Messages.getString("AuthenticationPage.SearchBaseDN") ); //$NON-NLS-1$
+        toolkit.createLabel( client, Messages.getString( "AuthenticationPage.SearchBaseDN" ) ); //$NON-NLS-1$
         searchBaseDnText = toolkit.createText( client, "" ); //$NON-NLS-1$
         searchBaseDnText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
     }
@@ -230,7 +233,7 @@ public class AuthenticationPage extends FormPage implements SaveableFormPage
     {
         // Creation of the section
         Section section = toolkit.createSection( parent, Section.TITLE_BAR );
-        section.setText( Messages.getString("AuthenticationPage.SaslRealms") ); //$NON-NLS-1$
+        section.setText( Messages.getString( "AuthenticationPage.SaslRealms" ) ); //$NON-NLS-1$
         section.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
         Composite client = toolkit.createComposite( section );
         toolkit.paintBordersFor( client );
@@ -247,16 +250,17 @@ public class AuthenticationPage extends FormPage implements SaveableFormPage
         saslRealmsTableViewer.setContentProvider( new ArrayContentProvider() );
 
         // Add Button
-        addSaslRealmButton = toolkit.createButton( client, Messages.getString("AuthenticationPage.Add"), SWT.PUSH ); //$NON-NLS-1$
+        addSaslRealmButton = toolkit.createButton( client, Messages.getString( "AuthenticationPage.Add" ), SWT.PUSH ); //$NON-NLS-1$
         addSaslRealmButton.setLayoutData( new GridData( SWT.FILL, SWT.BEGINNING, false, false ) );
 
         // Edit Button
-        editSaslRealmsButton = toolkit.createButton( client, Messages.getString("AuthenticationPage.Edit"), SWT.PUSH ); //$NON-NLS-1$
+        editSaslRealmsButton = toolkit.createButton( client, Messages.getString( "AuthenticationPage.Edit" ), SWT.PUSH ); //$NON-NLS-1$
         editSaslRealmsButton.setLayoutData( new GridData( SWT.FILL, SWT.BEGINNING, false, false ) );
         editSaslRealmsButton.setEnabled( false );
 
         // Delete Button
-        deleteSaslRealmButton = toolkit.createButton( client, Messages.getString("AuthenticationPage.Delete"), SWT.PUSH ); //$NON-NLS-1$
+        deleteSaslRealmButton = toolkit.createButton( client,
+            Messages.getString( "AuthenticationPage.Delete" ), SWT.PUSH ); //$NON-NLS-1$
         deleteSaslRealmButton.setLayoutData( new GridData( SWT.FILL, SWT.BEGINNING, false, false ) );
         deleteSaslRealmButton.setEnabled( false );
     }

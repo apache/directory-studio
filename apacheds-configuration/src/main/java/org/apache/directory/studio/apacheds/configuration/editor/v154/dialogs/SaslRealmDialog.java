@@ -71,7 +71,7 @@ public class SaslRealmDialog extends Dialog
     protected void configureShell( Shell newShell )
     {
         super.configureShell( newShell );
-        newShell.setText( Messages.getString("SaslRealmDialog.SaslRealmDialog") ); //$NON-NLS-1$
+        newShell.setText( Messages.getString( "SaslRealmDialog.SaslRealmDialog" ) ); //$NON-NLS-1$
     }
 
 
@@ -86,7 +86,7 @@ public class SaslRealmDialog extends Dialog
         composite.setLayoutData( new GridData( GridData.FILL, GridData.FILL, true, true ) );
 
         Label saslRealmLabel = new Label( composite, SWT.NONE );
-        saslRealmLabel.setText( Messages.getString("SaslRealmDialog.SaslRealm") ); //$NON-NLS-1$
+        saslRealmLabel.setText( Messages.getString( "SaslRealmDialog.SaslRealm" ) ); //$NON-NLS-1$
 
         saslRealmText = new Text( composite, SWT.BORDER );
         saslRealmText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );

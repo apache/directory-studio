@@ -72,7 +72,7 @@ public class IndexedAttributeDialog extends Dialog
     protected void configureShell( Shell newShell )
     {
         super.configureShell( newShell );
-        newShell.setText( Messages.getString("IndexedAttributeDialog.IndexedAttributeDialog") ); //$NON-NLS-1$
+        newShell.setText( Messages.getString( "IndexedAttributeDialog.IndexedAttributeDialog" ) ); //$NON-NLS-1$
     }
 
 
@@ -87,13 +87,13 @@ public class IndexedAttributeDialog extends Dialog
         composite.setLayoutData( new GridData( GridData.FILL, GridData.FILL, true, true ) );
 
         Label attributeIdLabel = new Label( composite, SWT.NONE );
-        attributeIdLabel.setText( Messages.getString("IndexedAttributeDialog.AttributeID") ); //$NON-NLS-1$
+        attributeIdLabel.setText( Messages.getString( "IndexedAttributeDialog.AttributeID" ) ); //$NON-NLS-1$
 
         attributeIdText = new Text( composite, SWT.BORDER );
         attributeIdText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
 
         Label cacheSizeLabel = new Label( composite, SWT.NONE );
-        cacheSizeLabel.setText( Messages.getString("IndexedAttributeDialog.CacheSize") ); //$NON-NLS-1$
+        cacheSizeLabel.setText( Messages.getString( "IndexedAttributeDialog.CacheSize" ) ); //$NON-NLS-1$
 
         cacheSizeText = new Text( composite, SWT.BORDER );
         cacheSizeText.addVerifyListener( new VerifyListener()

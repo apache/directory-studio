@@ -42,7 +42,7 @@ public class InterceptorsPage extends FormPage implements SaveableFormPage
     public static final String ID = ServerConfigurationEditor.ID + ".V154.InterceptorsPage"; //$NON-NLS-1$
 
     /** The Page Title */
-    private static final String TITLE = Messages.getString("InterceptorsPage.Interceptors"); //$NON-NLS-1$
+    private static final String TITLE = Messages.getString( "InterceptorsPage.Interceptors" ); //$NON-NLS-1$
 
     /** The Master/Details Block */
     private InterceptorsMasterDetailsBlock masterDetailsBlock;
@@ -69,7 +69,7 @@ public class InterceptorsPage extends FormPage implements SaveableFormPage
             ApacheDSConfigurationPluginConstants.PLUGIN_ID + "." + "configuration_editor_154" ); //$NON-NLS-1$ //$NON-NLS-2$
 
         final ScrolledForm form = managedForm.getForm();
-        form.setText( Messages.getString("InterceptorsPage.Interceptors") ); //$NON-NLS-1$
+        form.setText( Messages.getString( "InterceptorsPage.Interceptors" ) ); //$NON-NLS-1$
         masterDetailsBlock = new InterceptorsMasterDetailsBlock( this );
         masterDetailsBlock.createContent( managedForm );
     }

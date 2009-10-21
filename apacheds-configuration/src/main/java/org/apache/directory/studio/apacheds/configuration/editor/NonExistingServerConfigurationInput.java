@@ -91,19 +91,19 @@ public class NonExistingServerConfigurationInput implements IEditorInput
         switch ( serverConfiguration.getVersion() )
         {
             case VERSION_1_5_5:
-                return Messages.getString("NonExistingServerConfigurationInput.NewApacheDS155Configuration"); //$NON-NLS-1$
+                return Messages.getString( "NonExistingServerConfigurationInput.NewApacheDS155Configuration" ); //$NON-NLS-1$
             case VERSION_1_5_4:
-                return Messages.getString("NonExistingServerConfigurationInput.NewApacheDS154Configuration"); //$NON-NLS-1$
+                return Messages.getString( "NonExistingServerConfigurationInput.NewApacheDS154Configuration" ); //$NON-NLS-1$
             case VERSION_1_5_3:
-                return Messages.getString("NonExistingServerConfigurationInput.NewApacheDS153Configuration"); //$NON-NLS-1$
+                return Messages.getString( "NonExistingServerConfigurationInput.NewApacheDS153Configuration" ); //$NON-NLS-1$
             case VERSION_1_5_2:
-                return Messages.getString("NonExistingServerConfigurationInput.NewApacheDS152Configuration"); //$NON-NLS-1$
+                return Messages.getString( "NonExistingServerConfigurationInput.NewApacheDS152Configuration" ); //$NON-NLS-1$
             case VERSION_1_5_1:
-                return Messages.getString("NonExistingServerConfigurationInput.NewApacheDS151Configuration"); //$NON-NLS-1$
+                return Messages.getString( "NonExistingServerConfigurationInput.NewApacheDS151Configuration" ); //$NON-NLS-1$
             case VERSION_1_5_0:
-                return Messages.getString("NonExistingServerConfigurationInput.NewApacheDS150Configuration"); //$NON-NLS-1$
+                return Messages.getString( "NonExistingServerConfigurationInput.NewApacheDS150Configuration" ); //$NON-NLS-1$
             default:
-                return Messages.getString("NonExistingServerConfigurationInput.NewApacheDSConfiguration"); //$NON-NLS-1$
+                return Messages.getString( "NonExistingServerConfigurationInput.NewApacheDSConfiguration" ); //$NON-NLS-1$
         }
     }
 

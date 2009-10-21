@@ -90,7 +90,8 @@ public class PartitionsMasterDetailsBlock extends MasterDetailsBlock
     public PartitionsMasterDetailsBlock( FormPage page )
     {
         this.page = page;
-        serverConfiguration = ( ServerConfigurationV153 ) ( ( ServerConfigurationEditor ) page.getEditor() ).getServerConfiguration();
+        serverConfiguration = ( ServerConfigurationV153 ) ( ( ServerConfigurationEditor ) page.getEditor() )
+            .getServerConfiguration();
         partitions = serverConfiguration.getPartitions();
     }
 
@@ -139,9 +140,11 @@ public class PartitionsMasterDetailsBlock extends MasterDetailsBlock
             public Image getImage( Object element )
             {
 
-                return ApacheDSConfigurationPlugin.getDefault().getImage(
-                    ( ( Partition ) element ).isSystemPartition() ? ApacheDSConfigurationPluginConstants.IMG_PARTITION_SYSTEM
-                        : ApacheDSConfigurationPluginConstants.IMG_PARTITION );
+                return ApacheDSConfigurationPlugin
+                    .getDefault()
+                    .getImage(
+                        ( ( Partition ) element ).isSystemPartition() ? ApacheDSConfigurationPluginConstants.IMG_PARTITION_SYSTEM
+                            : ApacheDSConfigurationPluginConstants.IMG_PARTITION );
             }
         } );
 

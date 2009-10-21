@@ -19,10 +19,12 @@
  */
 package org.apache.directory.studio.apacheds.configuration;
 
+
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtension;
 import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.Platform;
+
 
 public class ApacheDSConfigurationPluginUtils
 {

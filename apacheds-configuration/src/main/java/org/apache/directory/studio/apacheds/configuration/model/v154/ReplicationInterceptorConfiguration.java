@@ -19,6 +19,7 @@
  */
 package org.apache.directory.studio.apacheds.configuration.model.v154;
 
+
 /**
  * This class implements a interceptor configuration for the replication interceptor. 
  *

@@ -559,6 +559,7 @@ public class ServerConfigurationV153 extends AbstractServerConfiguration impleme
         return enableKerberos;
     }
 
+
     /**
      * Gets the Enable LDAP flag.
      *
@@ -569,8 +570,8 @@ public class ServerConfigurationV153 extends AbstractServerConfiguration impleme
     {
         return enableLdap;
     }
-    
-    
+
+
     /**
      * Gets the Enable LDAPS flag.
      *
@@ -785,7 +786,7 @@ public class ServerConfigurationV153 extends AbstractServerConfiguration impleme
     {
         this.enableLdaps = enableLdaps;
     }
-    
+
 
     /**
      * Sets the Enable LDAP flag.

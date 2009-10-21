@@ -42,7 +42,7 @@ public class ExtendedOperationsPage extends FormPage implements SaveableFormPage
     public static final String ID = ServerConfigurationEditor.ID + ".V155.ExtendedOperationsPage"; //$NON-NLS-1$
 
     /** The Page Title */
-    private static final String TITLE = Messages.getString("ExtendedOperationsPage.ExtendedOperations"); //$NON-NLS-1$
+    private static final String TITLE = Messages.getString( "ExtendedOperationsPage.ExtendedOperations" ); //$NON-NLS-1$
 
     /** The Master/Details Block */
     private ExtendedOperationsMasterDetailsBlock masterDetailsBlock;
@@ -69,7 +69,7 @@ public class ExtendedOperationsPage extends FormPage implements SaveableFormPage
             ApacheDSConfigurationPluginConstants.PLUGIN_ID + "." + "configuration_editor_154" ); //$NON-NLS-1$ //$NON-NLS-2$
 
         final ScrolledForm form = managedForm.getForm();
-        form.setText( Messages.getString("ExtendedOperationsPage.ExtendedOperations") ); //$NON-NLS-1$
+        form.setText( Messages.getString( "ExtendedOperationsPage.ExtendedOperations" ) ); //$NON-NLS-1$
         masterDetailsBlock = new ExtendedOperationsMasterDetailsBlock( this );
         masterDetailsBlock.createContent( managedForm );
     }

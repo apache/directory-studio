@@ -104,7 +104,7 @@ public class ExtendedOperationsMasterDetailsBlock extends MasterDetailsBlock
 
         // Creating the Section
         Section section = toolkit.createSection( parent, Section.TITLE_BAR );
-        section.setText( Messages.getString("ExtendedOperationsMasterDetailsBlock.AllExtendedOperations") ); //$NON-NLS-1$
+        section.setText( Messages.getString( "ExtendedOperationsMasterDetailsBlock.AllExtendedOperations" ) ); //$NON-NLS-1$
         section.marginWidth = 10;
         section.marginHeight = 5;
         Composite client = toolkit.createComposite( section, SWT.WRAP );
@@ -156,10 +156,12 @@ public class ExtendedOperationsMasterDetailsBlock extends MasterDetailsBlock
         } );
 
         // Creating the button(s)
-        addButton = toolkit.createButton( client, Messages.getString("ExtendedOperationsMasterDetailsBlock.Add"), SWT.PUSH ); //$NON-NLS-1$
+        addButton = toolkit.createButton( client,
+            Messages.getString( "ExtendedOperationsMasterDetailsBlock.Add" ), SWT.PUSH ); //$NON-NLS-1$
         addButton.setLayoutData( new GridData( SWT.FILL, SWT.BEGINNING, false, false ) );
 
-        deleteButton = toolkit.createButton( client, Messages.getString("ExtendedOperationsMasterDetailsBlock.Delete"), SWT.PUSH ); //$NON-NLS-1$
+        deleteButton = toolkit.createButton( client,
+            Messages.getString( "ExtendedOperationsMasterDetailsBlock.Delete" ), SWT.PUSH ); //$NON-NLS-1$
         deleteButton.setEnabled( false );
         deleteButton.setLayoutData( new GridData( SWT.FILL, SWT.BEGINNING, false, false ) );
 

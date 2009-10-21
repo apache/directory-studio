@@ -73,7 +73,7 @@ public class PartitionsMasterDetailsBlock extends MasterDetailsBlock
     /** The Details Page */
     private PartitionDetailsPage detailsPage;
 
-    private static final String NEW_ID = Messages.getString("PartitionsMasterDetailsBlock.NewPartition"); //$NON-NLS-1$
+    private static final String NEW_ID = Messages.getString( "PartitionsMasterDetailsBlock.NewPartition" ); //$NON-NLS-1$
 
     // UI Fields
     private TableViewer viewer;
@@ -90,7 +90,8 @@ public class PartitionsMasterDetailsBlock extends MasterDetailsBlock
     public PartitionsMasterDetailsBlock( FormPage page )
     {
         this.page = page;
-        serverConfiguration = ( ServerConfigurationV154 ) ( ( ServerConfigurationEditor ) page.getEditor() ).getServerConfiguration();
+        serverConfiguration = ( ServerConfigurationV154 ) ( ( ServerConfigurationEditor ) page.getEditor() )
+            .getServerConfiguration();
         partitions = serverConfiguration.getPartitions();
     }
 
@@ -104,7 +105,7 @@ public class PartitionsMasterDetailsBlock extends MasterDetailsBlock
 
         // Creating the Section
         Section section = toolkit.createSection( parent, Section.TITLE_BAR );
-        section.setText( Messages.getString("PartitionsMasterDetailsBlock.AllPartitions") ); //$NON-NLS-1$
+        section.setText( Messages.getString( "PartitionsMasterDetailsBlock.AllPartitions" ) ); //$NON-NLS-1$
         section.marginWidth = 10;
         section.marginHeight = 5;
         Composite client = toolkit.createComposite( section, SWT.WRAP );
@@ -139,17 +140,20 @@ public class PartitionsMasterDetailsBlock extends MasterDetailsBlock
             public Image getImage( Object element )
             {
 
-                return ApacheDSConfigurationPlugin.getDefault().getImage(
-                    ( ( Partition ) element ).isSystemPartition() ? ApacheDSConfigurationPluginConstants.IMG_PARTITION_SYSTEM
-                        : ApacheDSConfigurationPluginConstants.IMG_PARTITION );
+                return ApacheDSConfigurationPlugin
+                    .getDefault()
+                    .getImage(
+                        ( ( Partition ) element ).isSystemPartition() ? ApacheDSConfigurationPluginConstants.IMG_PARTITION_SYSTEM
+                            : ApacheDSConfigurationPluginConstants.IMG_PARTITION );
             }
         } );
 
         // Creating the button(s)
-        addButton = toolkit.createButton( client, Messages.getString("PartitionsMasterDetailsBlock.Add"), SWT.PUSH ); //$NON-NLS-1$
+        addButton = toolkit.createButton( client, Messages.getString( "PartitionsMasterDetailsBlock.Add" ), SWT.PUSH ); //$NON-NLS-1$
         addButton.setLayoutData( new GridData( SWT.FILL, SWT.BEGINNING, false, false ) );
 
-        deleteButton = toolkit.createButton( client, Messages.getString("PartitionsMasterDetailsBlock.Delete"), SWT.PUSH ); //$NON-NLS-1$
+        deleteButton = toolkit.createButton( client,
+            Messages.getString( "PartitionsMasterDetailsBlock.Delete" ), SWT.PUSH ); //$NON-NLS-1$
         deleteButton.setEnabled( false );
         deleteButton.setLayoutData( new GridData( SWT.FILL, SWT.BEGINNING, false, false ) );
 

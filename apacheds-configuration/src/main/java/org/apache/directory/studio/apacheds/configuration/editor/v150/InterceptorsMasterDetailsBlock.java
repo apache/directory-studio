@@ -91,7 +91,8 @@ public class InterceptorsMasterDetailsBlock extends MasterDetailsBlock
     public InterceptorsMasterDetailsBlock( FormPage page )
     {
         this.page = page;
-        serverConfiguration = ( ServerConfigurationV150 ) ( ( ServerConfigurationEditor ) page.getEditor() ).getServerConfiguration();
+        serverConfiguration = ( ServerConfigurationV150 ) ( ( ServerConfigurationEditor ) page.getEditor() )
+            .getServerConfiguration();
         interceptors = serverConfiguration.getInterceptors();
     }
 
@@ -141,7 +142,8 @@ public class InterceptorsMasterDetailsBlock extends MasterDetailsBlock
         {
             public Image getImage( Object element )
             {
-                return ApacheDSConfigurationPlugin.getDefault().getImage( ApacheDSConfigurationPluginConstants.IMG_INTERCEPTOR );
+                return ApacheDSConfigurationPlugin.getDefault().getImage(
+                    ApacheDSConfigurationPluginConstants.IMG_INTERCEPTOR );
             }
         } );
 

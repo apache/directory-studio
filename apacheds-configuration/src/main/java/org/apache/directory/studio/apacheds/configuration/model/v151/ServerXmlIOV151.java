@@ -929,7 +929,7 @@ public class ServerXmlIOV151 extends AbstractServerXmlIO implements ServerXmlIO
 
         // CustomEditors Bean
         createCustomEditorsBean( root );
-        
+
         // Adding specific doctype
         document.addDocType( "beans", "-//SPRING//DTD BEAN//EN", //$NON-NLS-1$ //$NON-NLS-2$
             "http://www.springframework.org/dtd/spring-beans.dtd" ); //$NON-NLS-1$
@@ -938,7 +938,7 @@ public class ServerXmlIOV151 extends AbstractServerXmlIO implements ServerXmlIO
         OutputStream os = new ByteArrayOutputStream();
         OutputFormat outformat = OutputFormat.createPrettyPrint();
         outformat.setEncoding( "UTF-8" ); //$NON-NLS-1$
-        
+
         // Writing the XML.
         XMLWriter writer = new XMLWriter( os, outformat );
         writer.write( document );

@@ -71,7 +71,7 @@ public class NtlmProviderDialog extends Dialog
     protected void configureShell( Shell newShell )
     {
         super.configureShell( newShell );
-        newShell.setText( Messages.getString("NtlmProviderDialog.NtlmProviderDialog") ); //$NON-NLS-1$
+        newShell.setText( Messages.getString( "NtlmProviderDialog.NtlmProviderDialog" ) ); //$NON-NLS-1$
     }
 
 
@@ -86,7 +86,7 @@ public class NtlmProviderDialog extends Dialog
         composite.setLayoutData( new GridData( GridData.FILL, GridData.FILL, true, true ) );
 
         Label ntlmProviderLabel = new Label( composite, SWT.NONE );
-        ntlmProviderLabel.setText( Messages.getString("NtlmProviderDialog.NtlmProvider") ); //$NON-NLS-1$
+        ntlmProviderLabel.setText( Messages.getString( "NtlmProviderDialog.NtlmProvider" ) ); //$NON-NLS-1$
 
         ntlmProviderText = new Text( composite, SWT.BORDER );
         ntlmProviderText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );

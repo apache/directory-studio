@@ -69,7 +69,7 @@ public class AttributeValueDialog extends Dialog
     protected void configureShell( Shell newShell )
     {
         super.configureShell( newShell );
-        newShell.setText( Messages.getString("AttributeValueDialog.AttributeValueDialog") ); //$NON-NLS-1$
+        newShell.setText( Messages.getString( "AttributeValueDialog.AttributeValueDialog" ) ); //$NON-NLS-1$
     }
 
 
@@ -84,13 +84,13 @@ public class AttributeValueDialog extends Dialog
         composite.setLayoutData( new GridData( GridData.FILL, GridData.FILL, true, true ) );
 
         Label attributeLabel = new Label( composite, SWT.NONE );
-        attributeLabel.setText( Messages.getString("AttributeValueDialog.Attribute") ); //$NON-NLS-1$
+        attributeLabel.setText( Messages.getString( "AttributeValueDialog.Attribute" ) ); //$NON-NLS-1$
 
         attributeText = new Text( composite, SWT.BORDER );
         attributeText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
 
         Label valueLabel = new Label( composite, SWT.NONE );
-        valueLabel.setText( Messages.getString("AttributeValueDialog.Value") ); //$NON-NLS-1$
+        valueLabel.setText( Messages.getString( "AttributeValueDialog.Value" ) ); //$NON-NLS-1$
 
         valueText = new Text( composite, SWT.BORDER );
         valueText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );

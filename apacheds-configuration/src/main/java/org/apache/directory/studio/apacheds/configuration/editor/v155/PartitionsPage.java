@@ -42,7 +42,7 @@ public class PartitionsPage extends FormPage implements SaveableFormPage
     public static final String ID = ServerConfigurationEditor.ID + ".V155.PartitionsPage"; //$NON-NLS-1$
 
     /** The Page Title */
-    private static final String TITLE = Messages.getString("PartitionsPage.Partitions"); //$NON-NLS-1$
+    private static final String TITLE = Messages.getString( "PartitionsPage.Partitions" ); //$NON-NLS-1$
 
     /** The Master/Details block */
     private PartitionsMasterDetailsBlock masterDetailsBlock;
@@ -69,7 +69,7 @@ public class PartitionsPage extends FormPage implements SaveableFormPage
             ApacheDSConfigurationPluginConstants.PLUGIN_ID + "." + "configuration_editor_154" ); //$NON-NLS-1$ //$NON-NLS-2$
 
         ScrolledForm form = managedForm.getForm();
-        form.setText( Messages.getString("PartitionsPage.Partitions") ); //$NON-NLS-1$
+        form.setText( Messages.getString( "PartitionsPage.Partitions" ) ); //$NON-NLS-1$
         masterDetailsBlock = new PartitionsMasterDetailsBlock( this );
         masterDetailsBlock.createContent( managedForm );
     }

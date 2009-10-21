@@ -60,7 +60,7 @@ public class GeneralPage extends FormPage implements SaveableFormPage
     public static final String ID = ServerConfigurationEditor.ID + ".V154.GeneralPage"; //$NON-NLS-1$
 
     /** The Page Title */
-    private static final String TITLE = Messages.getString("GeneralPage.General"); //$NON-NLS-1$
+    private static final String TITLE = Messages.getString( "GeneralPage.General" ); //$NON-NLS-1$
 
     // UI Fields
     private Button allowAnonymousAccessCheckbox;
@@ -105,7 +105,7 @@ public class GeneralPage extends FormPage implements SaveableFormPage
             ApacheDSConfigurationPluginConstants.PLUGIN_ID + "." + "configuration_editor_154" ); //$NON-NLS-1$ //$NON-NLS-2$
 
         ScrolledForm form = managedForm.getForm();
-        form.setText( Messages.getString("GeneralPage.General") ); //$NON-NLS-1$
+        form.setText( Messages.getString( "GeneralPage.General" ) ); //$NON-NLS-1$
 
         Composite parent = form.getBody();
         TableWrapLayout twl = new TableWrapLayout();
@@ -152,7 +152,7 @@ public class GeneralPage extends FormPage implements SaveableFormPage
     {
         // Creation of the section
         Section section = toolkit.createSection( parent, Section.TITLE_BAR );
-        section.setText( Messages.getString("GeneralPage.Protocols") ); //$NON-NLS-1$
+        section.setText( Messages.getString( "GeneralPage.Protocols" ) ); //$NON-NLS-1$
         section.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
         Composite client = toolkit.createComposite( section );
         toolkit.paintBordersFor( client );
@@ -161,51 +161,57 @@ public class GeneralPage extends FormPage implements SaveableFormPage
 
         // LDAP
         Composite ldapProtocolComposite = createProtocolComposite( toolkit, client );
-        enableLdapCheckbox = toolkit.createButton( ldapProtocolComposite, Messages.getString("GeneralPage.EnableLDAP"), SWT.CHECK ); //$NON-NLS-1$
+        enableLdapCheckbox = toolkit.createButton( ldapProtocolComposite,
+            Messages.getString( "GeneralPage.EnableLDAP" ), SWT.CHECK ); //$NON-NLS-1$
         enableLdapCheckbox.setLayoutData( new GridData( SWT.NONE, SWT.NONE, true, false, 3, 1 ) );
         toolkit.createLabel( ldapProtocolComposite, "    " ); //$NON-NLS-1$
-        toolkit.createLabel( ldapProtocolComposite, Messages.getString("GeneralPage.Port") ); //$NON-NLS-1$
+        toolkit.createLabel( ldapProtocolComposite, Messages.getString( "GeneralPage.Port" ) ); //$NON-NLS-1$
         ldapPortText = createPortText( toolkit, ldapProtocolComposite );
 
         // LDAPS
         Composite ldapsProtocolComposite = createProtocolComposite( toolkit, client );
-        enableLdapsCheckbox = toolkit.createButton( ldapsProtocolComposite, Messages.getString("GeneralPage.EnableLDAPS"), SWT.CHECK ); //$NON-NLS-1$
+        enableLdapsCheckbox = toolkit.createButton( ldapsProtocolComposite, Messages
+            .getString( "GeneralPage.EnableLDAPS" ), SWT.CHECK ); //$NON-NLS-1$
         enableLdapsCheckbox.setLayoutData( new GridData( SWT.NONE, SWT.NONE, true, false, 3, 1 ) );
         toolkit.createLabel( ldapsProtocolComposite, "    " ); //$NON-NLS-1$
-        toolkit.createLabel( ldapsProtocolComposite, Messages.getString("GeneralPage.Port") ); //$NON-NLS-1$
+        toolkit.createLabel( ldapsProtocolComposite, Messages.getString( "GeneralPage.Port" ) ); //$NON-NLS-1$
         ldapsPortText = createPortText( toolkit, ldapsProtocolComposite );
 
         // Kerberos
         Composite kerberosProtocolComposite = createProtocolComposite( toolkit, client );
-        enableKerberosCheckbox = toolkit.createButton( kerberosProtocolComposite, Messages.getString("GeneralPage.EnableKerberos"), SWT.CHECK ); //$NON-NLS-1$
+        enableKerberosCheckbox = toolkit.createButton( kerberosProtocolComposite, Messages
+            .getString( "GeneralPage.EnableKerberos" ), SWT.CHECK ); //$NON-NLS-1$
         enableKerberosCheckbox.setLayoutData( new GridData( SWT.NONE, SWT.NONE, true, false, 3, 1 ) );
         toolkit.createLabel( kerberosProtocolComposite, "    " ); //$NON-NLS-1$
-        toolkit.createLabel( kerberosProtocolComposite, Messages.getString("GeneralPage.Port") ); //$NON-NLS-1$
+        toolkit.createLabel( kerberosProtocolComposite, Messages.getString( "GeneralPage.Port" ) ); //$NON-NLS-1$
         kerberosPortText = createPortText( toolkit, kerberosProtocolComposite );
 
         // NTP
         Composite ntpProtocolComposite = createProtocolComposite( toolkit, client );
-        enableNtpCheckbox = toolkit.createButton( ntpProtocolComposite, Messages.getString("GeneralPage.EnableNTP"), SWT.CHECK ); //$NON-NLS-1$
+        enableNtpCheckbox = toolkit.createButton( ntpProtocolComposite,
+            Messages.getString( "GeneralPage.EnableNTP" ), SWT.CHECK ); //$NON-NLS-1$
         enableNtpCheckbox.setLayoutData( new GridData( SWT.NONE, SWT.NONE, true, false, 3, 1 ) );
         toolkit.createLabel( ntpProtocolComposite, "    " ); //$NON-NLS-1$
-        toolkit.createLabel( ntpProtocolComposite, Messages.getString("GeneralPage.Port") ); //$NON-NLS-1$
+        toolkit.createLabel( ntpProtocolComposite, Messages.getString( "GeneralPage.Port" ) ); //$NON-NLS-1$
         ntpPortText = createPortText( toolkit, ntpProtocolComposite );
 
         // DNS
         Composite dnsProtocolComposite = createProtocolComposite( toolkit, client );
-        enableDnsCheckbox = toolkit.createButton( dnsProtocolComposite, Messages.getString("GeneralPage.EnableDNS"), SWT.CHECK ); //$NON-NLS-1$
+        enableDnsCheckbox = toolkit.createButton( dnsProtocolComposite,
+            Messages.getString( "GeneralPage.EnableDNS" ), SWT.CHECK ); //$NON-NLS-1$
         enableDnsCheckbox.setLayoutData( new GridData( SWT.NONE, SWT.NONE, true, false, 3, 1 ) );
         toolkit.createLabel( dnsProtocolComposite, "    " ); //$NON-NLS-1$
-        toolkit.createLabel( dnsProtocolComposite, Messages.getString("GeneralPage.Port") ); //$NON-NLS-1$
+        toolkit.createLabel( dnsProtocolComposite, Messages.getString( "GeneralPage.Port" ) ); //$NON-NLS-1$
         dnsPortText = createPortText( toolkit, dnsProtocolComposite );
 
         // Change Password
         Composite changePasswordProtocolComposite = createProtocolComposite( toolkit, client );
-        enableChangePasswordCheckbox = toolkit.createButton( changePasswordProtocolComposite, Messages.getString("GeneralPage.EnableChangePassword"), //$NON-NLS-1$
+        enableChangePasswordCheckbox = toolkit.createButton( changePasswordProtocolComposite, Messages
+            .getString( "GeneralPage.EnableChangePassword" ), //$NON-NLS-1$
             SWT.CHECK );
         enableChangePasswordCheckbox.setLayoutData( new GridData( SWT.NONE, SWT.NONE, true, false, 3, 1 ) );
         toolkit.createLabel( changePasswordProtocolComposite, "    " ); //$NON-NLS-1$
-        toolkit.createLabel( changePasswordProtocolComposite, Messages.getString("GeneralPage.Port") ); //$NON-NLS-1$
+        toolkit.createLabel( changePasswordProtocolComposite, Messages.getString( "GeneralPage.Port" ) ); //$NON-NLS-1$
         changePasswordPortText = createPortText( toolkit, changePasswordProtocolComposite );
     }
 
@@ -277,7 +283,7 @@ public class GeneralPage extends FormPage implements SaveableFormPage
     {
         // Creation of the section
         Section section = toolkit.createSection( parent, Section.TITLE_BAR );
-        section.setText( Messages.getString("GeneralPage.Limits") ); //$NON-NLS-1$
+        section.setText( Messages.getString( "GeneralPage.Limits" ) ); //$NON-NLS-1$
         section.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
         Composite client = toolkit.createComposite( section );
         toolkit.paintBordersFor( client );
@@ -286,7 +292,7 @@ public class GeneralPage extends FormPage implements SaveableFormPage
         section.setClient( client );
 
         // Max. Time Limit
-        toolkit.createLabel( client, Messages.getString("GeneralPage.MaxTimeLimit") ); //$NON-NLS-1$
+        toolkit.createLabel( client, Messages.getString( "GeneralPage.MaxTimeLimit" ) ); //$NON-NLS-1$
         maxTimeLimitText = toolkit.createText( client, "" ); //$NON-NLS-1$
         maxTimeLimitText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
         maxTimeLimitText.addVerifyListener( new VerifyListener()
@@ -301,7 +307,7 @@ public class GeneralPage extends FormPage implements SaveableFormPage
         } );
 
         // Max. Size Limit
-        toolkit.createLabel( client, Messages.getString("GeneralPage.MaxSizeLimit") ); //$NON-NLS-1$
+        toolkit.createLabel( client, Messages.getString( "GeneralPage.MaxSizeLimit" ) ); //$NON-NLS-1$
         maxSizeLimitText = toolkit.createText( client, "" ); //$NON-NLS-1$
         maxSizeLimitText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
         maxSizeLimitText.addVerifyListener( new VerifyListener()
@@ -316,7 +322,7 @@ public class GeneralPage extends FormPage implements SaveableFormPage
         } );
 
         // Synchronization Period
-        toolkit.createLabel( client, Messages.getString("GeneralPage.SyncPeriod") ); //$NON-NLS-1$
+        toolkit.createLabel( client, Messages.getString( "GeneralPage.SyncPeriod" ) ); //$NON-NLS-1$
         synchPeriodText = toolkit.createText( client, "" ); //$NON-NLS-1$
         synchPeriodText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
         synchPeriodText.addVerifyListener( new VerifyListener()
@@ -331,7 +337,7 @@ public class GeneralPage extends FormPage implements SaveableFormPage
         } );
 
         // Max. Threads
-        toolkit.createLabel( client, Messages.getString("GeneralPage.MaxThreads") ); //$NON-NLS-1$
+        toolkit.createLabel( client, Messages.getString( "GeneralPage.MaxThreads" ) ); //$NON-NLS-1$
         maxThreadsText = toolkit.createText( client, "" ); //$NON-NLS-1$
         maxThreadsText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
         maxThreadsText.addVerifyListener( new VerifyListener()
@@ -359,7 +365,7 @@ public class GeneralPage extends FormPage implements SaveableFormPage
     {
         // Creation of the section
         Section section = toolkit.createSection( parent, Section.TITLE_BAR );
-        section.setText( Messages.getString("GeneralPage.Options") ); //$NON-NLS-1$
+        section.setText( Messages.getString( "GeneralPage.Options" ) ); //$NON-NLS-1$
         section.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
         Composite client = toolkit.createComposite( section );
         toolkit.paintBordersFor( client );
@@ -367,15 +373,18 @@ public class GeneralPage extends FormPage implements SaveableFormPage
         section.setClient( client );
 
         // Allow Anonymous Access
-        allowAnonymousAccessCheckbox = toolkit.createButton( client, Messages.getString("GeneralPage.AllowAnonymousAccess"), SWT.CHECK ); //$NON-NLS-1$
+        allowAnonymousAccessCheckbox = toolkit.createButton( client, Messages
+            .getString( "GeneralPage.AllowAnonymousAccess" ), SWT.CHECK ); //$NON-NLS-1$
         allowAnonymousAccessCheckbox.setLayoutData( new GridData( SWT.NONE, SWT.NONE, true, false ) );
 
         // Enable Access Control
-        enableAccesControlCheckbox = toolkit.createButton( client, Messages.getString("GeneralPage.EnableAccessControl"), SWT.CHECK ); //$NON-NLS-1$
+        enableAccesControlCheckbox = toolkit.createButton( client, Messages
+            .getString( "GeneralPage.EnableAccessControl" ), SWT.CHECK ); //$NON-NLS-1$
         enableAccesControlCheckbox.setLayoutData( new GridData( SWT.NONE, SWT.NONE, true, false ) );
 
         // Denormalize Operational Attributes
-        denormalizeOpAttrCheckbox = toolkit.createButton( client, Messages.getString("GeneralPage.DenormalizeOperationalAttributes"), SWT.CHECK ); //$NON-NLS-1$
+        denormalizeOpAttrCheckbox = toolkit.createButton( client, Messages
+            .getString( "GeneralPage.DenormalizeOperationalAttributes" ), SWT.CHECK ); //$NON-NLS-1$
         denormalizeOpAttrCheckbox.setLayoutData( new GridData( SWT.NONE, SWT.NONE, true, false ) );
     }
 
