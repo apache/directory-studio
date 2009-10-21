@@ -285,7 +285,7 @@ public class AttributeTypeEditorOverviewPage extends FormPage
             setEditorDirty();
         }
     };
-    
+
     /** The listener for the Edit Aliases Button Widget */
     private SelectionAdapter aliasesButtonListener = new SelectionAdapter()
     {
@@ -656,20 +656,20 @@ public class AttributeTypeEditorOverviewPage extends FormPage
             setEditorDirty();
         }
     };
-    
+
     /** The filter listener for Mouse Wheel events */
     private Listener mouseWheelFilter = new Listener()
     {
-    	public void handleEvent( Event event )
-    	{
-    		// Hiding Mouse Wheel events for Combo widgets
-    		if ( event.widget instanceof Combo )
-    		{
-    			event.doit = false;
-    		}
-    	}
+        public void handleEvent( Event event )
+        {
+            // Hiding Mouse Wheel events for Combo widgets
+            if ( event.widget instanceof Combo )
+            {
+                event.doit = false;
+            }
+        }
     };
-    
+
 
     /**
      * Default constructor.
@@ -795,7 +795,6 @@ public class AttributeTypeEditorOverviewPage extends FormPage
         usageCombo = new Combo( client_general_information, SWT.READ_ONLY | SWT.SINGLE );
         usageCombo.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
         initUsageCombo();
-
 
         // SYNTAX Combo
         toolkit
@@ -1201,7 +1200,7 @@ public class AttributeTypeEditorOverviewPage extends FormPage
         equalityComboViewer.addSelectionChangedListener( equalityComboViewerListener );
         orderingComboViewer.addSelectionChangedListener( orderingComboViewerListener );
         substringComboViewer.addSelectionChangedListener( substringComboViewerListener );
-        
+
         Display.getCurrent().addFilter( SWT.MouseWheel, mouseWheelFilter );
     }
 
@@ -1230,7 +1229,7 @@ public class AttributeTypeEditorOverviewPage extends FormPage
         equalityComboViewer.removeSelectionChangedListener( equalityComboViewerListener );
         orderingComboViewer.removeSelectionChangedListener( orderingComboViewerListener );
         substringComboViewer.removeSelectionChangedListener( substringComboViewerListener );
-        
+
         Display.getCurrent().removeFilter( SWT.MouseWheel, mouseWheelFilter );
     }
 

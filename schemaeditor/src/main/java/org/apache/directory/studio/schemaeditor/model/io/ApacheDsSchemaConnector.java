@@ -103,8 +103,9 @@ public class ApacheDsSchemaConnector extends AbstractSchemaConnector implements 
         SearchControls constraintSearch = new SearchControls();
         constraintSearch.setSearchScope( SearchControls.ONELEVEL_SCOPE );
 
-        NamingEnumeration<SearchResult> answer = wrapper.search( "ou=schema", "(objectclass=metaSchema)",
-            constraintSearch, DEREF_ALIAS_METHOD, HANDLE_REFERALS_METHOD, null, ( StudioProgressMonitor ) monitor, null );
+        NamingEnumeration<SearchResult> answer = wrapper
+            .search( "ou=schema", "(objectclass=metaSchema)", constraintSearch, DEREF_ALIAS_METHOD,
+                HANDLE_REFERALS_METHOD, null, ( StudioProgressMonitor ) monitor, null );
         if ( answer != null )
         {
             while ( answer.hasMoreElements() )

@@ -830,18 +830,18 @@ public class ObjectClassEditorOverviewPage extends FormPage
             }
         }
     };
-    
+
     /** The filter listener for Mouse Wheel events */
     private Listener mouseWheelFilter = new Listener()
     {
-    	public void handleEvent( Event event )
-    	{
-    		// Hiding Mouse Wheel events for Combo widgets
-    		if ( event.widget instanceof Combo )
-    		{
-    			event.doit = false;
-    		}
-    	}
+        public void handleEvent( Event event )
+        {
+            // Hiding Mouse Wheel events for Combo widgets
+            if ( event.widget instanceof Combo )
+            {
+                event.doit = false;
+            }
+        }
     };
 
 
@@ -1226,7 +1226,7 @@ public class ObjectClassEditorOverviewPage extends FormPage
         superiorsTable.addMouseListener( superiorsTableListener );
         mandatoryAttributesTable.addMouseListener( mandatoryAttributesTableListener );
         optionalAttributesTable.addMouseListener( optionalAttributesTableListener );
-        
+
         Display.getCurrent().addFilter( SWT.MouseWheel, mouseWheelFilter );
     }
 
@@ -1253,7 +1253,7 @@ public class ObjectClassEditorOverviewPage extends FormPage
         optionalAttributesTable.removeMouseListener( optionalAttributesTableListener );
         addButtonOptionalTable.removeSelectionListener( addButtonOptionalTableListener );
         removeButtonOptionalTable.removeSelectionListener( removeButtonOptionalTableListener );
-        
+
         Display.getCurrent().removeFilter( SWT.MouseWheel, mouseWheelFilter );
     }
 

@@ -39,6 +39,7 @@ public class SyntaxImpl extends AbstractSyntax
     /** The schema object */
     private Schema schemaObject;
 
+
     /**
      * Creates a new instance of SyntaxImpl.
      *

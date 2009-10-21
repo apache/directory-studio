@@ -46,7 +46,7 @@ public class ImportSchemasFromOpenLdapAction extends Action implements IWorkbenc
      */
     public ImportSchemasFromOpenLdapAction()
     {
-        super( Messages.getString("ImportSchemasFromOpenLdapAction.SchemaFromOpenLDAPFilesAction") ); //$NON-NLS-1$
+        super( Messages.getString( "ImportSchemasFromOpenLdapAction.SchemaFromOpenLDAPFilesAction" ) ); //$NON-NLS-1$
         setToolTipText( getText() );
         setImageDescriptor( Activator.getDefault().getImageDescriptor( PluginConstants.IMG_SCHEMAS_IMPORT ) );
         setEnabled( true );

@@ -211,14 +211,16 @@ public class PluginUtils
                     }
                     catch ( ProjectsImportException e )
                     {
-                        reportError( Messages.getString("PluginUtils.ErrorLoadingProject"), e, Messages.getString("PluginUtils.ProjectsLoadingError"),
-                            Messages.getString("PluginUtils.ErrorLoadingProject") );
+                        reportError( Messages.getString( "PluginUtils.ErrorLoadingProject" ), e, Messages
+                            .getString( "PluginUtils.ProjectsLoadingError" ), Messages
+                            .getString( "PluginUtils.ErrorLoadingProject" ) );
                         return;
                     }
                     catch ( FileNotFoundException e )
                     {
-                        reportError( Messages.getString("PluginUtils.ErrorLoadingProject"), e, Messages.getString("PluginUtils.ProjectsLoadingError"),
-                            Messages.getString("PluginUtils.ErrorLoadingProject") );
+                        reportError( Messages.getString( "PluginUtils.ErrorLoadingProject" ), e, Messages
+                            .getString( "PluginUtils.ProjectsLoadingError" ), Messages
+                            .getString( "PluginUtils.ErrorLoadingProject" ) );
                         return;
                     }
 
@@ -230,8 +232,9 @@ public class PluginUtils
                 }
                 else
                 {
-                    reportError( Messages.getString("PluginUtils.ErrorLoadingProject"), null, Messages.getString("PluginUtils.ProjectsLoadingError"),
-                        Messages.getString("PluginUtils.ErrorLoadingProject") );
+                    reportError( Messages.getString( "PluginUtils.ErrorLoadingProject" ), null, Messages
+                        .getString( "PluginUtils.ProjectsLoadingError" ), Messages
+                        .getString( "PluginUtils.ErrorLoadingProject" ) );
                 }
 
             }
@@ -275,8 +278,9 @@ public class PluginUtils
             catch ( IOException e2 )
             {
                 // If another error occur, we display an error
-                reportError( Messages.getString("PluginUtils.ErrorSavingProject"), e2, Messages.getString("PluginUtils.ProjectsSavingError"),
-                    Messages.getString("PluginUtils.ErrorSavingProject") );
+                reportError( Messages.getString( "PluginUtils.ErrorSavingProject" ), e2, Messages
+                    .getString( "PluginUtils.ProjectsSavingError" ), Messages
+                    .getString( "PluginUtils.ErrorSavingProject" ) );
             }
         }
     }
@@ -349,8 +353,9 @@ public class PluginUtils
 
             if ( url == null )
             {
-                reportError( Messages.getString("PluginUtils.SchemaLoadingError") + schemaName + ".", null, //$NON-NLS-2$
-                    Messages.getString("PluginUtils.ProjectsLoadingError"), Messages.getString("PluginUtils.SchemaLoadingError") + schemaName + "." ); //$NON-NLS-3$
+                reportError(
+                    Messages.getString( "PluginUtils.SchemaLoadingError" ) + schemaName + ".", null, //$NON-NLS-2$
+                    Messages.getString( "PluginUtils.ProjectsLoadingError" ), Messages.getString( "PluginUtils.SchemaLoadingError" ) + schemaName + "." ); //$NON-NLS-3$
             }
             else
             {
@@ -359,18 +364,21 @@ public class PluginUtils
         }
         catch ( XMLSchemaFileImportException e )
         {
-            reportError( Messages.getString("PluginUtils.SchemaLoadingError") + schemaName + ".", e, Messages.getString("PluginUtils.ProjectsLoadingError"),//$NON-NLS-2$
-                Messages.getString("PluginUtils.SchemaLoadingError") + schemaName + "." ); //$NON-NLS-2$
+            reportError(
+                Messages.getString( "PluginUtils.SchemaLoadingError" ) + schemaName + ".", e, Messages.getString( "PluginUtils.ProjectsLoadingError" ),//$NON-NLS-2$
+                Messages.getString( "PluginUtils.SchemaLoadingError" ) + schemaName + "." ); //$NON-NLS-2$
         }
         catch ( FileNotFoundException e )
         {
-            reportError( Messages.getString("PluginUtils.SchemaLoadingError") + schemaName + ".", e, Messages.getString("PluginUtils.ProjectsLoadingError"), //$NON-NLS-2$
-                Messages.getString("PluginUtils.SchemaLoadingError") + schemaName + "." ); //$NON-NLS-2$
+            reportError(
+                Messages.getString( "PluginUtils.SchemaLoadingError" ) + schemaName + ".", e, Messages.getString( "PluginUtils.ProjectsLoadingError" ), //$NON-NLS-2$
+                Messages.getString( "PluginUtils.SchemaLoadingError" ) + schemaName + "." ); //$NON-NLS-2$
         }
         catch ( IOException e )
         {
-            reportError( Messages.getString("PluginUtils.SchemaLoadingError") + schemaName + ".", e, Messages.getString("PluginUtils.ProjectsLoadingError"), //$NON-NLS-2$
-                Messages.getString("PluginUtils.SchemaLoadingError") + schemaName + "." ); //$NON-NLS-2$
+            reportError(
+                Messages.getString( "PluginUtils.SchemaLoadingError" ) + schemaName + ".", e, Messages.getString( "PluginUtils.ProjectsLoadingError" ), //$NON-NLS-2$
+                Messages.getString( "PluginUtils.SchemaLoadingError" ) + schemaName + "." ); //$NON-NLS-2$
         }
 
         return schema;
@@ -481,8 +489,9 @@ public class PluginUtils
                 }
                 catch ( CoreException e )
                 {
-                    PluginUtils.logError( Messages.getString("PluginUtils.ConnectorsLoadingError"), e );
-                    ViewUtils.displayErrorMessageBox( Messages.getString("PluginUtils.Error"), Messages.getString("PluginUtils.ConnectorsLoadingError") );
+                    PluginUtils.logError( Messages.getString( "PluginUtils.ConnectorsLoadingError" ), e );
+                    ViewUtils.displayErrorMessageBox( Messages.getString( "PluginUtils.Error" ), Messages
+                        .getString( "PluginUtils.ConnectorsLoadingError" ) );
                 }
             }
         }

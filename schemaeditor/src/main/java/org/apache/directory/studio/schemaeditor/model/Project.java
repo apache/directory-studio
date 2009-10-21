@@ -107,9 +107,10 @@ public class Project
      */
     public Project( ProjectType type )
     {
-        init( type, null, ProjectState.CLOSED);
+        init( type, null, ProjectState.CLOSED );
     }
-    
+
+
     /**
      * Inits the project.
      *
@@ -120,7 +121,7 @@ public class Project
      * @param state
      *      the state of the project
      */
-    private void init( ProjectType type, String name, ProjectState state)
+    private void init( ProjectType type, String name, ProjectState state )
     {
         this.type = type;
         this.name = name;

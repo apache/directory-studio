@@ -46,6 +46,7 @@ public class MatchingRuleImpl extends AbstractMatchingRule implements MutableSch
     /** The schema object */
     private Schema schemaObject;
 
+
     /**
      * Gets the OID of the syntax.
      *

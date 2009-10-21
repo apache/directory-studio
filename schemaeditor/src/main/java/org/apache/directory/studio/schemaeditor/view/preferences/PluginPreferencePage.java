@@ -111,7 +111,7 @@ public class PluginPreferencePage extends PreferencePage implements IWorkbenchPr
         } );
 
         schemaConnectorsTableViewer.setComparator( new ViewerComparator( new Comparator<String>()
-            {
+        {
             public int compare( String o1, String o2 )
             {
                 if ( ( o1 != null ) && ( o2 != null ) )
@@ -122,7 +122,7 @@ public class PluginPreferencePage extends PreferencePage implements IWorkbenchPr
                 // Default
                 return 0;
             }
-            } ) );
+        } ) );
 
         //      schemaConnectorsTableViewer.setComparator( new ViewerComparator( new Comparator<SchemaConnector>()
         //      {

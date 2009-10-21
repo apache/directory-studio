@@ -57,6 +57,7 @@ public class ObjectClassImpl extends AbstractSchemaObject implements MutableSche
     /** The schema object */
     private Schema schemaObject;
 
+
     /**
      * Creates a new instance of ObjectClassImpl.
      * 

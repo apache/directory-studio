@@ -546,7 +546,8 @@ public class XMLSchemaFileImporter
             }
             catch ( IllegalArgumentException e )
             {
-                throw new XMLSchemaFileImportException( Messages.getString( "XMLSchemaFileImporter.UnconvertableValue" ), e ); //$NON-NLS-1$
+                throw new XMLSchemaFileImportException(
+                    Messages.getString( "XMLSchemaFileImporter.UnconvertableValue" ), e ); //$NON-NLS-1$
             }
         }
 

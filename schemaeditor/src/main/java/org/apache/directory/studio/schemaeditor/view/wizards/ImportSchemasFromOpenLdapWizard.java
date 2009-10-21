@@ -128,10 +128,11 @@ public class ImportSchemasFromOpenLdapWizard extends Wizard implements IImportWi
              */
             private void reportError( Exception e, File schemaFile, StudioProgressMonitor monitor )
             {
-                String message = NLS.bind( Messages
-                    .getString( "ImportSchemasFromOpenLdapWizard.ErrorImportingSchema" ), schemaFile.getName() ); //$NON-NLS-1$
+                String message = NLS.bind(
+                    Messages.getString( "ImportSchemasFromOpenLdapWizard.ErrorImportingSchema" ), schemaFile.getName() ); //$NON-NLS-1$
                 monitor.reportError( message, e );
             }
+
 
             public String getName()
             {

@@ -187,7 +187,7 @@ public class AliasesStringScanner
             else
             {
                 prevChar();
-                
+
                 lastTokenType = AliasesStringToken.ALIAS;
                 return new AliasesStringToken( lastTokenType, sb.toString(), pos - sb.length() + 1 );
             }

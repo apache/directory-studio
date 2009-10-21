@@ -97,12 +97,12 @@ public interface PluginConstants
         "View_SearchView_id" );
 
     /** The New Attribute Type Wizard ID */
-    public static final String NEW_WIZARD_NEW_ATTRIBUTE_TYPE_WIZARD = Activator.getDefault().getPluginProperties().getString(
-        "NewWizard_NewAttributeTypeWizard_id" );
+    public static final String NEW_WIZARD_NEW_ATTRIBUTE_TYPE_WIZARD = Activator.getDefault().getPluginProperties()
+        .getString( "NewWizard_NewAttributeTypeWizard_id" );
 
     /** The New Object Class Wizard ID */
-    public static final String NEW_WIZARD_NEW_OBJECT_CLASS_WIZARD = Activator.getDefault().getPluginProperties().getString(
-        "NewWizard_NewObjectClassWizard_id" );
+    public static final String NEW_WIZARD_NEW_OBJECT_CLASS_WIZARD = Activator.getDefault().getPluginProperties()
+        .getString( "NewWizard_NewObjectClassWizard_id" );
 
     /** The New Project Wizard ID */
     public static final String NEW_WIZARD_NEW_PROJECT_WIZARD = Activator.getDefault().getPluginProperties().getString(

@@ -61,6 +61,7 @@ public class AttributeTypeImpl extends AbstractAttributeType implements MutableS
     /** The schema object */
     private Schema schemaObject;
 
+
     /**
      * Creates a new instance of AttributeTypeImpl.
      *

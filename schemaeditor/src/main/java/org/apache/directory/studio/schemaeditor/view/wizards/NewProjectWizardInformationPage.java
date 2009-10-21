@@ -127,6 +127,7 @@ public class NewProjectWizardInformationPage extends AbstractWizardPage
         setPageComplete( false );
     }
 
+
     /**
      * This method is called when the user modifies something in the UI.
      */
