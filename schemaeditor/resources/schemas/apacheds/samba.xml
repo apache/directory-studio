@@ -18,550 +18,550 @@
   under the License.
 -->
 <schema name="samba">
-   <attributetypes>
-      <attributetype oid="1.3.6.1.4.1.7165.2.1.21" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-         <aliases>
-            <alias>sambaNextUserRid</alias>
-         </aliases>
-         <description>Next NT rid to give our for users</description>
-         <usage>USER_APPLICATIONS</usage>
-         <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
-         <equality>integerMatch</equality>
-      </attributetype>
-      <attributetype oid="1.3.6.1.4.1.7165.2.1.42" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
-         <aliases>
-            <alias>sambaOptionName</alias>
-         </aliases>
-         <description>Option Name</description>
-         <usage>USER_APPLICATIONS</usage>
-         <syntax>1.3.6.1.4.1.1466.115.121.1.15</syntax>
-         <equality>caseIgnoreMatch</equality>
-         <substring>caseIgnoreSubstringsMatch</substring>
-      </attributetype>
-      <attributetype oid="1.3.6.1.4.1.7165.2.1.22" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-         <aliases>
-            <alias>sambaNextGroupRid</alias>
-         </aliases>
-         <description>Next NT rid to give out for groups</description>
-         <usage>USER_APPLICATIONS</usage>
-         <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
-         <equality>integerMatch</equality>
-      </attributetype>
-      <attributetype oid="1.3.6.1.4.1.7165.2.1.40" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-         <aliases>
-            <alias>sambaAlgorithmicRidBase</alias>
-         </aliases>
-         <description>Base at which the samba RID generation algorithm should operate</description>
-         <usage>USER_APPLICATIONS</usage>
-         <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
-         <equality>integerMatch</equality>
-      </attributetype>
-      <attributetype oid="1.3.6.1.4.1.7165.2.1.28" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-         <aliases>
-            <alias>sambaPwdCanChange</alias>
-         </aliases>
-         <description>Timestamp of when the user is allowed to update the password</description>
-         <usage>USER_APPLICATIONS</usage>
-         <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
-         <equality>integerMatch</equality>
-      </attributetype>
-      <attributetype oid="1.3.6.1.4.1.7165.2.1.20" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-         <aliases>
-            <alias>sambaSID</alias>
-         </aliases>
-         <description>Security ID</description>
-         <usage>USER_APPLICATIONS</usage>
-         <syntax>1.3.6.1.4.1.1466.115.121.1.26</syntax>
-         <equality>caseIgnoreIA5Match</equality>
-      </attributetype>
-      <attributetype oid="1.3.6.1.4.1.7165.2.1.48" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-         <aliases>
-            <alias>sambaBadPasswordCount</alias>
-         </aliases>
-         <description>Bad password attempt count</description>
-         <usage>USER_APPLICATIONS</usage>
-         <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
-         <equality>integerMatch</equality>
-      </attributetype>
-      <attributetype oid="1.3.6.1.4.1.7165.2.1.41" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-         <aliases>
-            <alias>sambaShareName</alias>
-         </aliases>
-         <description>Share Name</description>
-         <usage>USER_APPLICATIONS</usage>
-         <syntax>1.3.6.1.4.1.1466.115.121.1.15</syntax>
-         <equality>caseIgnoreMatch</equality>
-      </attributetype>
-      <attributetype oid="1.3.6.1.4.1.7165.2.1.24" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-         <aliases>
-            <alias>sambaLMPassword</alias>
-         </aliases>
-         <description>LanManager Password</description>
-         <usage>USER_APPLICATIONS</usage>
-         <syntax>1.3.6.1.4.1.1466.115.121.1.26</syntax>
-         <equality>caseIgnoreIA5Match</equality>
-      </attributetype>
-      <attributetype oid="1.3.6.1.4.1.7165.2.1.23" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-         <aliases>
-            <alias>sambaPrimaryGroupSID</alias>
-         </aliases>
-         <description>Primary Group Security ID</description>
-         <usage>USER_APPLICATIONS</usage>
-         <syntax>1.3.6.1.4.1.1466.115.121.1.26</syntax>
-         <equality>caseIgnoreIA5Match</equality>
-      </attributetype>
-      <attributetype oid="1.3.6.1.4.1.7165.2.1.49" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-         <aliases>
-            <alias>sambaBadPasswordTime</alias>
-         </aliases>
-         <description>Time of the last bad password attempt</description>
-         <usage>USER_APPLICATIONS</usage>
-         <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
-         <equality>integerMatch</equality>
-      </attributetype>
-      <attributetype oid="1.3.6.1.4.1.7165.2.1.43" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-         <aliases>
-            <alias>sambaBoolOption</alias>
-         </aliases>
-         <description>A boolean option</description>
-         <usage>USER_APPLICATIONS</usage>
-         <syntax>1.3.6.1.4.1.1466.115.121.1.7</syntax>
-         <equality>booleanMatch</equality>
-      </attributetype>
-      <attributetype oid="1.3.6.1.4.1.7165.2.1.47" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
-         <aliases>
-            <alias>sambaMungedDial</alias>
-         </aliases>
-         <usage>USER_APPLICATIONS</usage>
-         <syntax>1.3.6.1.4.1.1466.115.121.1.15</syntax>
-         <equality>caseExactMatch</equality>
-      </attributetype>
-      <attributetype oid="1.3.6.1.4.1.7165.2.1.27" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-         <aliases>
-            <alias>sambaPwdLastSet</alias>
-         </aliases>
-         <description>Timestamp of the last password update</description>
-         <usage>USER_APPLICATIONS</usage>
-         <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
-         <equality>integerMatch</equality>
-      </attributetype>
-      <attributetype oid="1.3.6.1.4.1.7165.2.1.29" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-         <aliases>
-            <alias>sambaPwdMustChange</alias>
-         </aliases>
-         <description>Timestamp of when the password will expire</description>
-         <usage>USER_APPLICATIONS</usage>
-         <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
-         <equality>integerMatch</equality>
-      </attributetype>
-      <attributetype oid="1.3.6.1.4.1.7165.2.1.26" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-         <aliases>
-            <alias>sambaAcctFlags</alias>
-         </aliases>
-         <description>Account Flags</description>
-         <usage>USER_APPLICATIONS</usage>
-         <syntax>1.3.6.1.4.1.1466.115.121.1.26</syntax>
-         <equality>caseIgnoreIA5Match</equality>
-      </attributetype>
-      <attributetype oid="1.3.6.1.4.1.7165.2.1.44" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-         <aliases>
-            <alias>sambaIntegerOption</alias>
-         </aliases>
-         <description>An integer option</description>
-         <usage>USER_APPLICATIONS</usage>
-         <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
-         <equality>integerMatch</equality>
-      </attributetype>
-      <attributetype oid="1.3.6.1.4.1.7165.2.1.46" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
-         <aliases>
-            <alias>sambaStringListOption</alias>
-         </aliases>
-         <description>A string list option</description>
-         <usage>USER_APPLICATIONS</usage>
-         <syntax>1.3.6.1.4.1.1466.115.121.1.15</syntax>
-         <equality>caseIgnoreMatch</equality>
-      </attributetype>
-      <attributetype oid="1.3.6.1.4.1.7165.2.1.25" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-         <aliases>
-            <alias>sambaNTPassword</alias>
-         </aliases>
-         <description>MD4 hash of the unicode password</description>
-         <usage>USER_APPLICATIONS</usage>
-         <syntax>1.3.6.1.4.1.1466.115.121.1.26</syntax>
-         <equality>caseIgnoreIA5Match</equality>
-      </attributetype>
-      <attributetype oid="1.3.6.1.4.1.7165.2.1.45" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-         <aliases>
-            <alias>sambaStringOption</alias>
-         </aliases>
-         <description>A string option</description>
-         <usage>USER_APPLICATIONS</usage>
-         <syntax>1.3.6.1.4.1.1466.115.121.1.26</syntax>
-         <equality>caseExactIA5Match</equality>
-      </attributetype>
-      <attributetype oid="1.3.6.1.4.1.7165.2.1.52" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
-         <aliases>
-            <alias>sambaPrivilegeList</alias>
-         </aliases>
-         <description>Privileges List</description>
-         <usage>USER_APPLICATIONS</usage>
-         <syntax>1.3.6.1.4.1.1466.115.121.1.26</syntax>
-         <equality>caseIgnoreIA5Match</equality>
-      </attributetype>
-      <attributetype oid="1.3.6.1.4.1.7165.2.1.33" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-         <aliases>
-            <alias>sambaHomeDrive</alias>
-         </aliases>
-         <description>Driver letter of home directory mapping</description>
-         <usage>USER_APPLICATIONS</usage>
-         <syntax>1.3.6.1.4.1.1466.115.121.1.26</syntax>
-         <equality>caseIgnoreIA5Match</equality>
-      </attributetype>
-      <attributetype oid="1.3.6.1.4.1.7165.2.1.34" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-         <aliases>
-            <alias>sambaLogonScript</alias>
-         </aliases>
-         <description>Logon script path</description>
-         <usage>USER_APPLICATIONS</usage>
-         <syntax>1.3.6.1.4.1.1466.115.121.1.15</syntax>
-         <equality>caseIgnoreMatch</equality>
-      </attributetype>
-      <attributetype oid="1.3.6.1.4.1.7165.2.1.50" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
-         <aliases>
-            <alias>sambaPrivName</alias>
-         </aliases>
-         <superior>name</superior>
-         <usage>USER_APPLICATIONS</usage>
-         <syntax>1.3.6.1.4.1.1466.115.121.1.15</syntax>
-         <equality>caseIgnoreMatch</equality>
-         <substring>caseIgnoreSubstringsMatch</substring>
-      </attributetype>
-      <attributetype oid="1.3.6.1.4.1.7165.2.1.30" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-         <aliases>
-            <alias>sambaLogonTime</alias>
-         </aliases>
-         <description>Timestamp of last logon</description>
-         <usage>USER_APPLICATIONS</usage>
-         <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
-         <equality>integerMatch</equality>
-      </attributetype>
-      <attributetype oid="1.3.6.1.4.1.7165.2.1.38" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
-         <aliases>
-            <alias>sambaDomainName</alias>
-         </aliases>
-         <description>Windows NT domain to which the user belongs</description>
-         <usage>USER_APPLICATIONS</usage>
-         <syntax>1.3.6.1.4.1.1466.115.121.1.15</syntax>
-         <equality>caseIgnoreMatch</equality>
-      </attributetype>
-      <attributetype oid="1.3.6.1.4.1.7165.2.1.53" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
-         <aliases>
-            <alias>sambaTrustFlags</alias>
-         </aliases>
-         <description>Trust Password Flags</description>
-         <usage>USER_APPLICATIONS</usage>
-         <syntax>1.3.6.1.4.1.1466.115.121.1.26</syntax>
-         <equality>caseIgnoreIA5Match</equality>
-      </attributetype>
-      <attributetype oid="1.3.6.1.4.1.7165.2.1.31" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-         <aliases>
-            <alias>sambaLogoffTime</alias>
-         </aliases>
-         <description>Timestamp of last logoff</description>
-         <usage>USER_APPLICATIONS</usage>
-         <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
-         <equality>integerMatch</equality>
-      </attributetype>
-      <attributetype oid="1.3.6.1.4.1.7165.2.1.36" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-         <aliases>
-            <alias>sambaUserWorkstations</alias>
-         </aliases>
-         <description>List of user workstations the user is allowed to logon to</description>
-         <usage>USER_APPLICATIONS</usage>
-         <syntax>1.3.6.1.4.1.1466.115.121.1.15</syntax>
-         <equality>caseIgnoreMatch</equality>
-      </attributetype>
-      <attributetype oid="1.3.6.1.4.1.7165.2.1.37" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
-         <aliases>
-            <alias>sambaHomePath</alias>
-         </aliases>
-         <description>Home directory UNC path</description>
-         <usage>USER_APPLICATIONS</usage>
-         <syntax>1.3.6.1.4.1.1466.115.121.1.15</syntax>
-         <equality>caseIgnoreMatch</equality>
-      </attributetype>
-      <attributetype oid="1.3.6.1.4.1.7165.2.1.51" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
-         <aliases>
-            <alias>sambaSIDList</alias>
-         </aliases>
-         <description>Security ID List</description>
-         <usage>USER_APPLICATIONS</usage>
-         <syntax>1.3.6.1.4.1.1466.115.121.1.26</syntax>
-         <equality>caseIgnoreIA5Match</equality>
-      </attributetype>
-      <attributetype oid="1.3.6.1.4.1.7165.2.1.39" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-         <aliases>
-            <alias>sambaNextRid</alias>
-         </aliases>
-         <description>Next NT rid to give out for anything</description>
-         <usage>USER_APPLICATIONS</usage>
-         <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
-         <equality>integerMatch</equality>
-      </attributetype>
-      <attributetype oid="1.3.6.1.4.1.7165.2.1.55" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-         <aliases>
-            <alias>sambaLogonHours</alias>
-         </aliases>
-         <description>Logon Hours</description>
-         <usage>USER_APPLICATIONS</usage>
-         <syntax>1.3.6.1.4.1.1466.115.121.1.26</syntax>
-         <equality>caseIgnoreIA5Match</equality>
-      </attributetype>
-      <attributetype oid="1.3.6.1.4.1.7165.2.1.54" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
-         <aliases>
-            <alias>sambaPasswordHistory</alias>
-         </aliases>
-         <description>Concatenated MD4 hashes of the unicode passwords used on this account</description>
-         <usage>USER_APPLICATIONS</usage>
-         <syntax>1.3.6.1.4.1.1466.115.121.1.26</syntax>
-         <equality>caseIgnoreIA5Match</equality>
-      </attributetype>
-      <attributetype oid="1.3.6.1.4.1.7165.2.1.19" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-         <aliases>
-            <alias>sambaGroupType</alias>
-         </aliases>
-         <description>NT Group Type</description>
-         <usage>USER_APPLICATIONS</usage>
-         <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
-         <equality>integerMatch</equality>
-      </attributetype>
-      <attributetype oid="1.3.6.1.4.1.7165.2.1.32" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-         <aliases>
-            <alias>sambaKickoffTime</alias>
-         </aliases>
-         <description>Timestamp of when the user will be logged off automatically</description>
-         <usage>USER_APPLICATIONS</usage>
-         <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
-         <equality>integerMatch</equality>
-      </attributetype>
-      <attributetype oid="1.3.6.1.4.1.7165.2.1.35" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-         <aliases>
-            <alias>sambaProfilePath</alias>
-         </aliases>
-         <description>Roaming profile path</description>
-         <usage>USER_APPLICATIONS</usage>
-         <syntax>1.3.6.1.4.1.1466.115.121.1.15</syntax>
-         <equality>caseIgnoreMatch</equality>
-      </attributetype>
-   </attributetypes>
-   <objectclasses>
-      <objectclass oid="1.3.6.1.4.1.7165.2.2.8" obsolete="false">
-         <aliases>
-            <alias>sambaIdmapEntry</alias>
-         </aliases>
-         <description>Mapping from a SID to an ID</description>
-         <superiors>
-            <superior>top</superior>
-         </superiors>
-         <type>AUXILIARY</type>
-         <mandatory>
-            <attributetype>sambaSID</attributetype>
-         </mandatory>
-         <optional>
-            <attributetype>uidNumber</attributetype>
-            <attributetype>gidNumber</attributetype>
-         </optional>
-      </objectclass>
-      <objectclass oid="1.3.6.1.4.1.7165.2.2.9" obsolete="false">
-         <aliases>
-            <alias>sambaSidEntry</alias>
-         </aliases>
-         <description>Structural Class for a SID</description>
-         <superiors>
-            <superior>top</superior>
-         </superiors>
-         <type>STRUCTURAL</type>
-         <mandatory>
-            <attributetype>sambaSID</attributetype>
-         </mandatory>
-      </objectclass>
-      <objectclass oid="1.3.6.1.4.1.7165.2.2.11" obsolete="false">
-         <aliases>
-            <alias>sambaShare</alias>
-         </aliases>
-         <description>Samba Share Section</description>
-         <superiors>
-            <superior>top</superior>
-         </superiors>
-         <type>STRUCTURAL</type>
-         <mandatory>
-            <attributetype>sambaShareName</attributetype>
-         </mandatory>
-         <optional>
-            <attributetype>description</attributetype>
-         </optional>
-      </objectclass>
-      <objectclass oid="1.3.6.1.4.1.7165.1.2.2.10" obsolete="false">
-         <aliases>
-            <alias>sambaConfig</alias>
-         </aliases>
-         <description>Samba Configuration Section</description>
-         <superiors>
-            <superior>top</superior>
-         </superiors>
-         <type>AUXILIARY</type>
-         <optional>
-            <attributetype>description</attributetype>
-         </optional>
-      </objectclass>
-      <objectclass oid="1.3.6.1.4.1.7165.2.2.13" obsolete="false">
-         <aliases>
-            <alias>sambaPrivilege</alias>
-         </aliases>
-         <description>Samba Privilege</description>
-         <superiors>
-            <superior>top</superior>
-         </superiors>
-         <type>AUXILIARY</type>
-         <mandatory>
-            <attributetype>sambaSID</attributetype>
-         </mandatory>
-         <optional>
-            <attributetype>sambaPrivilegeList</attributetype>
-         </optional>
-      </objectclass>
-      <objectclass oid="1.3.6.1.4.1.7165.2.2.4" obsolete="false">
-         <aliases>
-            <alias>sambaGroupMapping</alias>
-         </aliases>
-         <description>Samba Group Mapping</description>
-         <superiors>
-            <superior>top</superior>
-         </superiors>
-         <type>AUXILIARY</type>
-         <mandatory>
-            <attributetype>gidNumber</attributetype>
-            <attributetype>sambaSID</attributetype>
-            <attributetype>sambaGroupType</attributetype>
-         </mandatory>
-         <optional>
-            <attributetype>displayName</attributetype>
-            <attributetype>description</attributetype>
-            <attributetype>sambaSIDList</attributetype>
-         </optional>
-      </objectclass>
-      <objectclass oid="1.3.6.1.4.1.7165.2.2.12" obsolete="false">
-         <aliases>
-            <alias>sambaConfigOption</alias>
-         </aliases>
-         <description>Samba Configuration Option</description>
-         <superiors>
-            <superior>top</superior>
-         </superiors>
-         <type>STRUCTURAL</type>
-         <mandatory>
-            <attributetype>sambaOptionName</attributetype>
-         </mandatory>
-         <optional>
-            <attributetype>sambaBoolOption</attributetype>
-            <attributetype>sambaIntegerOption</attributetype>
-            <attributetype>sambaStringOption</attributetype>
-            <attributetype>sambaStringListOption</attributetype>
-            <attributetype>description</attributetype>
-         </optional>
-      </objectclass>
-      <objectclass oid="1.3.6.1.4.1.7165.2.2.6" obsolete="false">
-         <aliases>
-            <alias>sambaSamAccount</alias>
-         </aliases>
-         <description>Samba 3.0 Auxilary SAM Account</description>
-         <superiors>
-            <superior>top</superior>
-         </superiors>
-         <type>AUXILIARY</type>
-         <mandatory>
-            <attributetype>uid</attributetype>
-            <attributetype>sambaSID</attributetype>
-         </mandatory>
-         <optional>
-            <attributetype>cn</attributetype>
-            <attributetype>sambaLMPassword</attributetype>
-            <attributetype>sambaNTPassword</attributetype>
-            <attributetype>sambaPwdLastSet</attributetype>
-            <attributetype>sambaLogonTime</attributetype>
-            <attributetype>sambaLogoffTime</attributetype>
-            <attributetype>sambaKickoffTime</attributetype>
-            <attributetype>sambaPwdCanChange</attributetype>
-            <attributetype>sambaPwdMustChange</attributetype>
-            <attributetype>sambaAcctFlags</attributetype>
-            <attributetype>displayName</attributetype>
-            <attributetype>sambaHomePath</attributetype>
-            <attributetype>sambaHomeDrive</attributetype>
-            <attributetype>sambaLogonScript</attributetype>
-            <attributetype>sambaProfilePath</attributetype>
-            <attributetype>description</attributetype>
-            <attributetype>sambaUserWorkstations</attributetype>
-            <attributetype>sambaPrimaryGroupSID</attributetype>
-            <attributetype>sambaDomainName</attributetype>
-            <attributetype>sambaMungedDial</attributetype>
-            <attributetype>sambaBadPasswordCount</attributetype>
-            <attributetype>sambaBadPasswordTime</attributetype>
-            <attributetype>sambaPasswordHistory</attributetype>
-            <attributetype>sambaLogonHours</attributetype>
-         </optional>
-      </objectclass>
-      <objectclass oid="1.3.6.1.4.1.7165.2.2.14" obsolete="false">
-         <aliases>
-            <alias>sambaTrustPassword</alias>
-         </aliases>
-         <description>Samba Trust Password</description>
-         <superiors>
-            <superior>top</superior>
-         </superiors>
-         <type>STRUCTURAL</type>
-         <mandatory>
-            <attributetype>sambaDomainName</attributetype>
-            <attributetype>sambaNTPassword</attributetype>
-            <attributetype>sambaTrustFlags</attributetype>
-         </mandatory>
-         <optional>
-            <attributetype>sambaSID</attributetype>
-            <attributetype>sambaPwdLastSet</attributetype>
-         </optional>
-      </objectclass>
-      <objectclass oid="1.3.6.1.4.1.7165.2.2.5" obsolete="false">
-         <aliases>
-            <alias>sambaDomain</alias>
-         </aliases>
-         <description>Samba Domain Information</description>
-         <superiors>
-            <superior>top</superior>
-         </superiors>
-         <type>STRUCTURAL</type>
-         <mandatory>
-            <attributetype>sambaDomainName</attributetype>
-            <attributetype>sambaSID</attributetype>
-         </mandatory>
-         <optional>
-            <attributetype>sambaNextRid</attributetype>
-            <attributetype>sambaNextGroupRid</attributetype>
-            <attributetype>sambaNextUserRid</attributetype>
-            <attributetype>sambaAlgorithmicRidBase</attributetype>
-         </optional>
-      </objectclass>
-      <objectclass oid="1.3.6.1.4.1.7165.2.2.7" obsolete="false">
-         <aliases>
-            <alias>sambaUnixIdPool</alias>
-         </aliases>
-         <description>Pool for allocating UNIX uids/gids</description>
-         <superiors>
-            <superior>top</superior>
-         </superiors>
-         <type>AUXILIARY</type>
-         <mandatory>
-            <attributetype>uidNumber</attributetype>
-            <attributetype>gidNumber</attributetype>
-         </mandatory>
-      </objectclass>
-   </objectclasses>
+  <attributetypes>
+    <attributetype oid="1.3.6.1.4.1.7165.2.1.48" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>sambaBadPasswordCount</alias>
+      </aliases>
+      <description>Bad password attempt count</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
+      <equality>integerMatch</equality>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.7165.2.1.44" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>sambaIntegerOption</alias>
+      </aliases>
+      <description>An integer option</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
+      <equality>integerMatch</equality>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.7165.2.1.35" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>sambaProfilePath</alias>
+      </aliases>
+      <description>Roaming profile path</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.15</syntax>
+      <equality>caseIgnoreMatch</equality>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.7165.2.1.34" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>sambaLogonScript</alias>
+      </aliases>
+      <description>Logon script path</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.15</syntax>
+      <equality>caseIgnoreMatch</equality>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.7165.2.1.51" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
+      <aliases>
+        <alias>sambaSIDList</alias>
+      </aliases>
+      <description>Security ID List</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.26</syntax>
+      <equality>caseIgnoreIA5Match</equality>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.7165.2.1.47" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
+      <aliases>
+        <alias>sambaMungedDial</alias>
+      </aliases>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.15</syntax>
+      <equality>caseExactMatch</equality>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.7165.2.1.43" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>sambaBoolOption</alias>
+      </aliases>
+      <description>A boolean option</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.7</syntax>
+      <equality>booleanMatch</equality>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.7165.2.1.38" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
+      <aliases>
+        <alias>sambaDomainName</alias>
+      </aliases>
+      <description>Windows NT domain to which the user belongs</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.15</syntax>
+      <equality>caseIgnoreMatch</equality>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.7165.2.1.19" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>sambaGroupType</alias>
+      </aliases>
+      <description>NT Group Type</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
+      <equality>integerMatch</equality>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.7165.2.1.26" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>sambaAcctFlags</alias>
+      </aliases>
+      <description>Account Flags</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.26</syntax>
+      <equality>caseIgnoreIA5Match</equality>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.7165.2.1.22" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>sambaNextGroupRid</alias>
+      </aliases>
+      <description>Next NT rid to give out for groups</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
+      <equality>integerMatch</equality>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.7165.2.1.31" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>sambaLogoffTime</alias>
+      </aliases>
+      <description>Timestamp of last logoff</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
+      <equality>integerMatch</equality>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.7165.2.1.25" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>sambaNTPassword</alias>
+      </aliases>
+      <description>MD4 hash of the unicode password</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.26</syntax>
+      <equality>caseIgnoreIA5Match</equality>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.7165.2.1.21" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>sambaNextUserRid</alias>
+      </aliases>
+      <description>Next NT rid to give our for users</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
+      <equality>integerMatch</equality>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.7165.2.1.30" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>sambaLogonTime</alias>
+      </aliases>
+      <description>Timestamp of last logon</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
+      <equality>integerMatch</equality>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.7165.2.1.40" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>sambaAlgorithmicRidBase</alias>
+      </aliases>
+      <description>Base at which the samba RID generation algorithm should operate</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
+      <equality>integerMatch</equality>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.7165.2.1.28" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>sambaPwdCanChange</alias>
+      </aliases>
+      <description>Timestamp of when the user is allowed to update the password</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
+      <equality>integerMatch</equality>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.7165.2.1.24" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>sambaLMPassword</alias>
+      </aliases>
+      <description>LanManager Password</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.26</syntax>
+      <equality>caseIgnoreIA5Match</equality>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.7165.2.1.41" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>sambaShareName</alias>
+      </aliases>
+      <description>Share Name</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.15</syntax>
+      <equality>caseIgnoreMatch</equality>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.7165.2.1.55" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>sambaLogonHours</alias>
+      </aliases>
+      <description>Logon Hours</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.26</syntax>
+      <equality>caseIgnoreIA5Match</equality>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.7165.2.1.33" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>sambaHomeDrive</alias>
+      </aliases>
+      <description>Driver letter of home directory mapping</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.26</syntax>
+      <equality>caseIgnoreIA5Match</equality>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.7165.2.1.27" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>sambaPwdLastSet</alias>
+      </aliases>
+      <description>Timestamp of the last password update</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
+      <equality>integerMatch</equality>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.7165.2.1.23" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>sambaPrimaryGroupSID</alias>
+      </aliases>
+      <description>Primary Group Security ID</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.26</syntax>
+      <equality>caseIgnoreIA5Match</equality>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.7165.2.1.37" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
+      <aliases>
+        <alias>sambaHomePath</alias>
+      </aliases>
+      <description>Home directory UNC path</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.15</syntax>
+      <equality>caseIgnoreMatch</equality>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.7165.2.1.46" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
+      <aliases>
+        <alias>sambaStringListOption</alias>
+      </aliases>
+      <description>A string list option</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.15</syntax>
+      <equality>caseIgnoreMatch</equality>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.7165.2.1.42" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
+      <aliases>
+        <alias>sambaOptionName</alias>
+      </aliases>
+      <description>Option Name</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.15</syntax>
+      <equality>caseIgnoreMatch</equality>
+      <substring>caseIgnoreSubstringsMatch</substring>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.7165.2.1.54" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
+      <aliases>
+        <alias>sambaPasswordHistory</alias>
+      </aliases>
+      <description>Concatenated MD4 hashes of the unicode passwords used on this account</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.26</syntax>
+      <equality>caseIgnoreIA5Match</equality>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.7165.2.1.32" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>sambaKickoffTime</alias>
+      </aliases>
+      <description>Timestamp of when the user will be logged off automatically</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
+      <equality>integerMatch</equality>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.7165.2.1.53" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
+      <aliases>
+        <alias>sambaTrustFlags</alias>
+      </aliases>
+      <description>Trust Password Flags</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.26</syntax>
+      <equality>caseIgnoreIA5Match</equality>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.7165.2.1.36" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>sambaUserWorkstations</alias>
+      </aliases>
+      <description>List of user workstations the user is allowed to logon to</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.15</syntax>
+      <equality>caseIgnoreMatch</equality>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.7165.2.1.45" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>sambaStringOption</alias>
+      </aliases>
+      <description>A string option</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.26</syntax>
+      <equality>caseExactIA5Match</equality>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.7165.2.1.20" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>sambaSID</alias>
+      </aliases>
+      <description>Security ID</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.26</syntax>
+      <equality>caseIgnoreIA5Match</equality>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.7165.2.1.29" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>sambaPwdMustChange</alias>
+      </aliases>
+      <description>Timestamp of when the password will expire</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
+      <equality>integerMatch</equality>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.7165.2.1.50" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
+      <aliases>
+        <alias>sambaPrivName</alias>
+      </aliases>
+      <superior>name</superior>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.15</syntax>
+      <equality>caseIgnoreMatch</equality>
+      <substring>caseIgnoreSubstringsMatch</substring>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.7165.2.1.49" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>sambaBadPasswordTime</alias>
+      </aliases>
+      <description>Time of the last bad password attempt</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
+      <equality>integerMatch</equality>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.7165.2.1.39" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>sambaNextRid</alias>
+      </aliases>
+      <description>Next NT rid to give out for anything</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
+      <equality>integerMatch</equality>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.7165.2.1.52" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
+      <aliases>
+        <alias>sambaPrivilegeList</alias>
+      </aliases>
+      <description>Privileges List</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.26</syntax>
+      <equality>caseIgnoreIA5Match</equality>
+    </attributetype>
+  </attributetypes>
+  <objectclasses>
+    <objectclass oid="1.3.6.1.4.1.7165.2.2.5" obsolete="false">
+      <aliases>
+        <alias>sambaDomain</alias>
+      </aliases>
+      <description>Samba Domain Information</description>
+      <superiors>
+        <superior>top</superior>
+      </superiors>
+      <type>STRUCTURAL</type>
+      <mandatory>
+        <attributetype>sambaDomainName</attributetype>
+        <attributetype>sambaSID</attributetype>
+      </mandatory>
+      <optional>
+        <attributetype>sambaNextRid</attributetype>
+        <attributetype>sambaNextGroupRid</attributetype>
+        <attributetype>sambaNextUserRid</attributetype>
+        <attributetype>sambaAlgorithmicRidBase</attributetype>
+      </optional>
+    </objectclass>
+    <objectclass oid="1.3.6.1.4.1.7165.2.2.8" obsolete="false">
+      <aliases>
+        <alias>sambaIdmapEntry</alias>
+      </aliases>
+      <description>Mapping from a SID to an ID</description>
+      <superiors>
+        <superior>top</superior>
+      </superiors>
+      <type>AUXILIARY</type>
+      <mandatory>
+        <attributetype>sambaSID</attributetype>
+      </mandatory>
+      <optional>
+        <attributetype>uidNumber</attributetype>
+        <attributetype>gidNumber</attributetype>
+      </optional>
+    </objectclass>
+    <objectclass oid="1.3.6.1.4.1.7165.2.2.6" obsolete="false">
+      <aliases>
+        <alias>sambaSamAccount</alias>
+      </aliases>
+      <description>Samba 3.0 Auxilary SAM Account</description>
+      <superiors>
+        <superior>top</superior>
+      </superiors>
+      <type>AUXILIARY</type>
+      <mandatory>
+        <attributetype>uid</attributetype>
+        <attributetype>sambaSID</attributetype>
+      </mandatory>
+      <optional>
+        <attributetype>cn</attributetype>
+        <attributetype>sambaLMPassword</attributetype>
+        <attributetype>sambaNTPassword</attributetype>
+        <attributetype>sambaPwdLastSet</attributetype>
+        <attributetype>sambaLogonTime</attributetype>
+        <attributetype>sambaLogoffTime</attributetype>
+        <attributetype>sambaKickoffTime</attributetype>
+        <attributetype>sambaPwdCanChange</attributetype>
+        <attributetype>sambaPwdMustChange</attributetype>
+        <attributetype>sambaAcctFlags</attributetype>
+        <attributetype>displayName</attributetype>
+        <attributetype>sambaHomePath</attributetype>
+        <attributetype>sambaHomeDrive</attributetype>
+        <attributetype>sambaLogonScript</attributetype>
+        <attributetype>sambaProfilePath</attributetype>
+        <attributetype>description</attributetype>
+        <attributetype>sambaUserWorkstations</attributetype>
+        <attributetype>sambaPrimaryGroupSID</attributetype>
+        <attributetype>sambaDomainName</attributetype>
+        <attributetype>sambaMungedDial</attributetype>
+        <attributetype>sambaBadPasswordCount</attributetype>
+        <attributetype>sambaBadPasswordTime</attributetype>
+        <attributetype>sambaPasswordHistory</attributetype>
+        <attributetype>sambaLogonHours</attributetype>
+      </optional>
+    </objectclass>
+    <objectclass oid="1.3.6.1.4.1.7165.2.2.11" obsolete="false">
+      <aliases>
+        <alias>sambaShare</alias>
+      </aliases>
+      <description>Samba Share Section</description>
+      <superiors>
+        <superior>top</superior>
+      </superiors>
+      <type>STRUCTURAL</type>
+      <mandatory>
+        <attributetype>sambaShareName</attributetype>
+      </mandatory>
+      <optional>
+        <attributetype>description</attributetype>
+      </optional>
+    </objectclass>
+    <objectclass oid="1.3.6.1.4.1.7165.2.2.13" obsolete="false">
+      <aliases>
+        <alias>sambaPrivilege</alias>
+      </aliases>
+      <description>Samba Privilege</description>
+      <superiors>
+        <superior>top</superior>
+      </superiors>
+      <type>AUXILIARY</type>
+      <mandatory>
+        <attributetype>sambaSID</attributetype>
+      </mandatory>
+      <optional>
+        <attributetype>sambaPrivilegeList</attributetype>
+      </optional>
+    </objectclass>
+    <objectclass oid="1.3.6.1.4.1.7165.2.2.9" obsolete="false">
+      <aliases>
+        <alias>sambaSidEntry</alias>
+      </aliases>
+      <description>Structural Class for a SID</description>
+      <superiors>
+        <superior>top</superior>
+      </superiors>
+      <type>STRUCTURAL</type>
+      <mandatory>
+        <attributetype>sambaSID</attributetype>
+      </mandatory>
+    </objectclass>
+    <objectclass oid="1.3.6.1.4.1.7165.2.2.12" obsolete="false">
+      <aliases>
+        <alias>sambaConfigOption</alias>
+      </aliases>
+      <description>Samba Configuration Option</description>
+      <superiors>
+        <superior>top</superior>
+      </superiors>
+      <type>STRUCTURAL</type>
+      <mandatory>
+        <attributetype>sambaOptionName</attributetype>
+      </mandatory>
+      <optional>
+        <attributetype>sambaBoolOption</attributetype>
+        <attributetype>sambaIntegerOption</attributetype>
+        <attributetype>sambaStringOption</attributetype>
+        <attributetype>sambaStringListOption</attributetype>
+        <attributetype>description</attributetype>
+      </optional>
+    </objectclass>
+    <objectclass oid="1.3.6.1.4.1.7165.1.2.2.10" obsolete="false">
+      <aliases>
+        <alias>sambaConfig</alias>
+      </aliases>
+      <description>Samba Configuration Section</description>
+      <superiors>
+        <superior>top</superior>
+      </superiors>
+      <type>AUXILIARY</type>
+      <optional>
+        <attributetype>description</attributetype>
+      </optional>
+    </objectclass>
+    <objectclass oid="1.3.6.1.4.1.7165.2.2.4" obsolete="false">
+      <aliases>
+        <alias>sambaGroupMapping</alias>
+      </aliases>
+      <description>Samba Group Mapping</description>
+      <superiors>
+        <superior>top</superior>
+      </superiors>
+      <type>AUXILIARY</type>
+      <mandatory>
+        <attributetype>gidNumber</attributetype>
+        <attributetype>sambaSID</attributetype>
+        <attributetype>sambaGroupType</attributetype>
+      </mandatory>
+      <optional>
+        <attributetype>displayName</attributetype>
+        <attributetype>description</attributetype>
+        <attributetype>sambaSIDList</attributetype>
+      </optional>
+    </objectclass>
+    <objectclass oid="1.3.6.1.4.1.7165.2.2.7" obsolete="false">
+      <aliases>
+        <alias>sambaUnixIdPool</alias>
+      </aliases>
+      <description>Pool for allocating UNIX uids/gids</description>
+      <superiors>
+        <superior>top</superior>
+      </superiors>
+      <type>AUXILIARY</type>
+      <mandatory>
+        <attributetype>uidNumber</attributetype>
+        <attributetype>gidNumber</attributetype>
+      </mandatory>
+    </objectclass>
+    <objectclass oid="1.3.6.1.4.1.7165.2.2.14" obsolete="false">
+      <aliases>
+        <alias>sambaTrustPassword</alias>
+      </aliases>
+      <description>Samba Trust Password</description>
+      <superiors>
+        <superior>top</superior>
+      </superiors>
+      <type>STRUCTURAL</type>
+      <mandatory>
+        <attributetype>sambaDomainName</attributetype>
+        <attributetype>sambaNTPassword</attributetype>
+        <attributetype>sambaTrustFlags</attributetype>
+      </mandatory>
+      <optional>
+        <attributetype>sambaSID</attributetype>
+        <attributetype>sambaPwdLastSet</attributetype>
+      </optional>
+    </objectclass>
+  </objectclasses>
 </schema>

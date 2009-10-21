@@ -18,648 +18,648 @@
   under the License.
 -->
 <schema name="cosine">
-   <attributetypes>
-      <attributetype oid="0.9.2342.19200300.100.1.21" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
-         <aliases>
-            <alias>secretary</alias>
-         </aliases>
-         <description>RFC1274: DN of secretary</description>
-         <usage>USER_APPLICATIONS</usage>
-         <syntax>1.3.6.1.4.1.1466.115.121.1.12</syntax>
-         <equality>distinguishedNameMatch</equality>
-      </attributetype>
-      <attributetype oid="0.9.2342.19200300.100.1.52" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-         <aliases>
-            <alias>subtreeMaximumQuality</alias>
-         </aliases>
-         <description>RFC1274: Subtree Maximun Quality</description>
-         <usage>USER_APPLICATIONS</usage>
-         <syntax>1.3.6.1.4.1.1466.115.121.1.13</syntax>
-      </attributetype>
-      <attributetype oid="0.9.2342.19200300.100.1.50" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-         <aliases>
-            <alias>singleLevelQuality</alias>
-         </aliases>
-         <description>RFC1274: Single Level Quality</description>
-         <usage>USER_APPLICATIONS</usage>
-         <syntax>1.3.6.1.4.1.1466.115.121.1.13</syntax>
-      </attributetype>
-      <attributetype oid="0.9.2342.19200300.100.1.51" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-         <aliases>
-            <alias>subtreeMinimumQuality</alias>
-         </aliases>
-         <description>RFC1274: Subtree Mininum Quality</description>
-         <usage>USER_APPLICATIONS</usage>
-         <syntax>1.3.6.1.4.1.1466.115.121.1.13</syntax>
-      </attributetype>
-      <attributetype oid="0.9.2342.19200300.100.1.39" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
-         <aliases>
-            <alias>homePostalAddress</alias>
-         </aliases>
-         <description>RFC1274: home postal address</description>
-         <usage>USER_APPLICATIONS</usage>
-         <syntax>1.3.6.1.4.1.1466.115.121.1.41</syntax>
-         <equality>caseIgnoreListMatch</equality>
-         <substring>caseIgnoreListSubstringsMatch</substring>
-      </attributetype>
-      <attributetype oid="0.9.2342.19200300.100.1.2" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
-         <aliases>
-            <alias>textEncodedORAddress</alias>
-         </aliases>
-         <usage>USER_APPLICATIONS</usage>
-         <syntax>1.3.6.1.4.1.1466.115.121.1.15</syntax>
-         <equality>caseIgnoreMatch</equality>
-         <substring>caseIgnoreSubstringsMatch</substring>
-      </attributetype>
-      <attributetype oid="0.9.2342.19200300.100.1.30" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
-         <aliases>
-            <alias>sOARecord</alias>
-         </aliases>
-         <usage>USER_APPLICATIONS</usage>
-         <syntax>1.3.6.1.4.1.1466.115.121.1.26</syntax>
-         <equality>caseIgnoreIA5Match</equality>
-      </attributetype>
-      <attributetype oid="0.9.2342.19200300.100.1.22" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
-         <aliases>
-            <alias>otherMailbox</alias>
-         </aliases>
-         <usage>USER_APPLICATIONS</usage>
-         <syntax>1.3.6.1.4.1.1466.115.121.1.39</syntax>
-      </attributetype>
-      <attributetype oid="0.9.2342.19200300.100.1.27" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
-         <aliases>
-            <alias>mDRecord</alias>
-         </aliases>
-         <usage>USER_APPLICATIONS</usage>
-         <syntax>1.3.6.1.4.1.1466.115.121.1.26</syntax>
-         <equality>caseIgnoreIA5Match</equality>
-      </attributetype>
-      <attributetype oid="0.9.2342.19200300.100.1.26" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
-         <aliases>
-            <alias>aRecord</alias>
-         </aliases>
-         <usage>USER_APPLICATIONS</usage>
-         <syntax>1.3.6.1.4.1.1466.115.121.1.26</syntax>
-         <equality>caseIgnoreIA5Match</equality>
-      </attributetype>
-      <attributetype oid="0.9.2342.19200300.100.1.20" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
-         <aliases>
-            <alias>homePhone</alias>
-            <alias>homeTelephoneNumber</alias>
-         </aliases>
-         <description>RFC1274: home telephone number</description>
-         <usage>USER_APPLICATIONS</usage>
-         <syntax>1.3.6.1.4.1.1466.115.121.1.50</syntax>
-         <equality>telephoneNumberMatch</equality>
-         <substring>telephoneNumberSubstringsMatch</substring>
-      </attributetype>
-      <attributetype oid="0.9.2342.19200300.100.1.43" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
-         <aliases>
-            <alias>co</alias>
-            <alias>friendlyCountryName</alias>
-         </aliases>
-         <description>RFC1274: friendly country name</description>
-         <usage>USER_APPLICATIONS</usage>
-         <syntax>1.3.6.1.4.1.1466.115.121.1.15</syntax>
-         <equality>caseIgnoreMatch</equality>
-         <substring>caseIgnoreSubstringsMatch</substring>
-      </attributetype>
-      <attributetype oid="0.9.2342.19200300.100.1.44" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
-         <aliases>
-            <alias>uniqueIdentifier</alias>
-         </aliases>
-         <description>RFC1274: unique identifer</description>
-         <usage>USER_APPLICATIONS</usage>
-         <syntax>1.3.6.1.4.1.1466.115.121.1.15</syntax>
-         <equality>caseIgnoreMatch</equality>
-      </attributetype>
-      <attributetype oid="0.9.2342.19200300.100.1.15" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
-         <aliases>
-            <alias>documentLocation</alias>
-         </aliases>
-         <description>RFC1274: location of document original</description>
-         <usage>USER_APPLICATIONS</usage>
-         <syntax>1.3.6.1.4.1.1466.115.121.1.15</syntax>
-         <equality>caseIgnoreMatch</equality>
-         <substring>caseIgnoreSubstringsMatch</substring>
-      </attributetype>
-      <attributetype oid="0.9.2342.19200300.100.1.13" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
-         <aliases>
-            <alias>documentVersion</alias>
-         </aliases>
-         <description>RFC1274: version of document</description>
-         <usage>USER_APPLICATIONS</usage>
-         <syntax>1.3.6.1.4.1.1466.115.121.1.15</syntax>
-         <equality>caseIgnoreMatch</equality>
-         <substring>caseIgnoreSubstringsMatch</substring>
-      </attributetype>
-      <attributetype oid="0.9.2342.19200300.100.1.42" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
-         <aliases>
-            <alias>pager</alias>
-            <alias>pagerTelephoneNumber</alias>
-         </aliases>
-         <description>RFC1274: pager telephone number</description>
-         <usage>USER_APPLICATIONS</usage>
-         <syntax>1.3.6.1.4.1.1466.115.121.1.50</syntax>
-         <equality>telephoneNumberMatch</equality>
-         <substring>telephoneNumberSubstringsMatch</substring>
-      </attributetype>
-      <attributetype oid="0.9.2342.19200300.100.1.45" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
-         <aliases>
-            <alias>organizationalStatus</alias>
-         </aliases>
-         <description>RFC1274: organizational status</description>
-         <usage>USER_APPLICATIONS</usage>
-         <syntax>1.3.6.1.4.1.1466.115.121.1.15</syntax>
-         <equality>caseIgnoreMatch</equality>
-         <substring>caseIgnoreSubstringsMatch</substring>
-      </attributetype>
-      <attributetype oid="0.9.2342.19200300.100.1.54" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
-         <aliases>
-            <alias>dITRedirect</alias>
-         </aliases>
-         <description>RFC1274: DIT Redirect</description>
-         <usage>USER_APPLICATIONS</usage>
-         <syntax>1.3.6.1.4.1.1466.115.121.1.12</syntax>
-         <equality>distinguishedNameMatch</equality>
-      </attributetype>
-      <attributetype oid="0.9.2342.19200300.100.1.12" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
-         <aliases>
-            <alias>documentTitle</alias>
-         </aliases>
-         <description>RFC1274: title of document</description>
-         <usage>USER_APPLICATIONS</usage>
-         <syntax>1.3.6.1.4.1.1466.115.121.1.15</syntax>
-         <equality>caseIgnoreMatch</equality>
-         <substring>caseIgnoreSubstringsMatch</substring>
-      </attributetype>
-      <attributetype oid="0.9.2342.19200300.100.1.46" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
-         <aliases>
-            <alias>janetMailbox</alias>
-         </aliases>
-         <description>RFC1274: Janet mailbox</description>
-         <usage>USER_APPLICATIONS</usage>
-         <syntax>1.3.6.1.4.1.1466.115.121.1.26</syntax>
-         <equality>caseIgnoreIA5Match</equality>
-         <substring>caseIgnoreIA5SubstringsMatch</substring>
-      </attributetype>
-      <attributetype oid="0.9.2342.19200300.100.1.48" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
-         <aliases>
-            <alias>buildingName</alias>
-         </aliases>
-         <description>RFC1274: name of building</description>
-         <usage>USER_APPLICATIONS</usage>
-         <syntax>1.3.6.1.4.1.1466.115.121.1.15</syntax>
-         <equality>caseIgnoreMatch</equality>
-         <substring>caseIgnoreSubstringsMatch</substring>
-      </attributetype>
-      <attributetype oid="0.9.2342.19200300.100.1.53" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
-         <aliases>
-            <alias>personalSignature</alias>
-         </aliases>
-         <description>RFC1274: Personal Signature (G3 fax)</description>
-         <usage>USER_APPLICATIONS</usage>
-         <syntax>1.3.6.1.4.1.1466.115.121.1.23</syntax>
-      </attributetype>
-      <attributetype oid="0.9.2342.19200300.100.1.40" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
-         <aliases>
-            <alias>personalTitle</alias>
-         </aliases>
-         <description>RFC1274: personal title</description>
-         <usage>USER_APPLICATIONS</usage>
-         <syntax>1.3.6.1.4.1.1466.115.121.1.15</syntax>
-         <equality>caseIgnoreMatch</equality>
-         <substring>caseIgnoreSubstringsMatch</substring>
-      </attributetype>
-      <attributetype oid="0.9.2342.19200300.100.1.49" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-         <aliases>
-            <alias>dSAQuality</alias>
-         </aliases>
-         <description>RFC1274: DSA Quality</description>
-         <usage>USER_APPLICATIONS</usage>
-         <syntax>1.3.6.1.4.1.1466.115.121.1.19</syntax>
-      </attributetype>
-      <attributetype oid="0.9.2342.19200300.100.1.47" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
-         <aliases>
-            <alias>mailPreferenceOption</alias>
-         </aliases>
-         <description>RFC1274: mail preference option</description>
-         <usage>USER_APPLICATIONS</usage>
-         <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
-      </attributetype>
-      <attributetype oid="0.9.2342.19200300.100.1.55" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
-         <aliases>
-            <alias>audio</alias>
-         </aliases>
-         <description>RFC1274: audio (u-law)</description>
-         <usage>USER_APPLICATIONS</usage>
-         <syntax>1.3.6.1.4.1.1466.115.121.1.4</syntax>
-      </attributetype>
-      <attributetype oid="0.9.2342.19200300.100.1.5" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
-         <aliases>
-            <alias>drink</alias>
-            <alias>favouriteDrink</alias>
-         </aliases>
-         <description>RFC1274: favorite drink</description>
-         <usage>USER_APPLICATIONS</usage>
-         <syntax>1.3.6.1.4.1.1466.115.121.1.15</syntax>
-         <equality>caseIgnoreMatch</equality>
-         <substring>caseIgnoreSubstringsMatch</substring>
-      </attributetype>
-      <attributetype oid="0.9.2342.19200300.100.1.11" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
-         <aliases>
-            <alias>documentIdentifier</alias>
-         </aliases>
-         <description>RFC1274: unique identifier of document</description>
-         <usage>USER_APPLICATIONS</usage>
-         <syntax>1.3.6.1.4.1.1466.115.121.1.15</syntax>
-         <equality>caseIgnoreMatch</equality>
-         <substring>caseIgnoreSubstringsMatch</substring>
-      </attributetype>
-      <attributetype oid="0.9.2342.19200300.100.1.28" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
-         <aliases>
-            <alias>mXRecord</alias>
-         </aliases>
-         <usage>USER_APPLICATIONS</usage>
-         <syntax>1.3.6.1.4.1.1466.115.121.1.26</syntax>
-         <equality>caseIgnoreIA5Match</equality>
-      </attributetype>
-      <attributetype oid="0.9.2342.19200300.100.1.38" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
-         <aliases>
-            <alias>associatedName</alias>
-         </aliases>
-         <description>RFC1274: DN of entry associated with domain</description>
-         <usage>USER_APPLICATIONS</usage>
-         <syntax>1.3.6.1.4.1.1466.115.121.1.12</syntax>
-         <equality>distinguishedNameMatch</equality>
-      </attributetype>
-      <attributetype oid="0.9.2342.19200300.100.1.6" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
-         <aliases>
-            <alias>roomNumber</alias>
-         </aliases>
-         <description>RFC1274: room number</description>
-         <usage>USER_APPLICATIONS</usage>
-         <syntax>1.3.6.1.4.1.1466.115.121.1.15</syntax>
-         <equality>caseIgnoreMatch</equality>
-         <substring>caseIgnoreSubstringsMatch</substring>
-      </attributetype>
-      <attributetype oid="0.9.2342.19200300.100.1.31" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
-         <aliases>
-            <alias>cNAMERecord</alias>
-         </aliases>
-         <usage>USER_APPLICATIONS</usage>
-         <syntax>1.3.6.1.4.1.1466.115.121.1.26</syntax>
-         <equality>caseIgnoreIA5Match</equality>
-      </attributetype>
-      <attributetype oid="0.9.2342.19200300.100.1.10" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
-         <aliases>
-            <alias>manager</alias>
-         </aliases>
-         <description>RFC1274: DN of manager</description>
-         <usage>USER_APPLICATIONS</usage>
-         <syntax>1.3.6.1.4.1.1466.115.121.1.12</syntax>
-         <equality>distinguishedNameMatch</equality>
-      </attributetype>
-      <attributetype oid="0.9.2342.19200300.100.1.9" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
-         <aliases>
-            <alias>host</alias>
-         </aliases>
-         <description>RFC1274: host computer</description>
-         <usage>USER_APPLICATIONS</usage>
-         <syntax>1.3.6.1.4.1.1466.115.121.1.15</syntax>
-         <equality>caseIgnoreMatch</equality>
-         <substring>caseIgnoreSubstringsMatch</substring>
-      </attributetype>
-      <attributetype oid="0.9.2342.19200300.100.1.29" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
-         <aliases>
-            <alias>nSRecord</alias>
-         </aliases>
-         <usage>USER_APPLICATIONS</usage>
-         <syntax>1.3.6.1.4.1.1466.115.121.1.26</syntax>
-         <equality>caseIgnoreIA5Match</equality>
-      </attributetype>
-      <attributetype oid="0.9.2342.19200300.100.1.41" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
-         <aliases>
-            <alias>mobile</alias>
-            <alias>mobileTelephoneNumber</alias>
-         </aliases>
-         <description>RFC1274: mobile telephone number</description>
-         <usage>USER_APPLICATIONS</usage>
-         <syntax>1.3.6.1.4.1.1466.115.121.1.50</syntax>
-         <equality>telephoneNumberMatch</equality>
-         <substring>telephoneNumberSubstringsMatch</substring>
-      </attributetype>
-      <attributetype oid="0.9.2342.19200300.100.1.8" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
-         <aliases>
-            <alias>userClass</alias>
-         </aliases>
-         <description>RFC1274: categorory of user</description>
-         <usage>USER_APPLICATIONS</usage>
-         <syntax>1.3.6.1.4.1.1466.115.121.1.15</syntax>
-         <equality>caseIgnoreMatch</equality>
-         <substring>caseIgnoreSubstringsMatch</substring>
-      </attributetype>
-      <attributetype oid="0.9.2342.19200300.100.1.7" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
-         <aliases>
-            <alias>photo</alias>
-         </aliases>
-         <description>RFC1274: photo (G3 fax)</description>
-         <usage>USER_APPLICATIONS</usage>
-         <syntax>1.3.6.1.4.1.1466.115.121.1.23</syntax>
-      </attributetype>
-      <attributetype oid="0.9.2342.19200300.100.1.56" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
-         <aliases>
-            <alias>documentPublisher</alias>
-         </aliases>
-         <description>RFC1274: publisher of document</description>
-         <usage>USER_APPLICATIONS</usage>
-         <syntax>1.3.6.1.4.1.1466.115.121.1.15</syntax>
-         <equality>caseIgnoreMatch</equality>
-         <substring>caseIgnoreSubstringsMatch</substring>
-      </attributetype>
-      <attributetype oid="0.9.2342.19200300.100.1.14" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
-         <aliases>
-            <alias>documentAuthor</alias>
-         </aliases>
-         <description>RFC1274: DN of author of document</description>
-         <usage>USER_APPLICATIONS</usage>
-         <syntax>1.3.6.1.4.1.1466.115.121.1.12</syntax>
-         <equality>distinguishedNameMatch</equality>
-      </attributetype>
-      <attributetype oid="0.9.2342.19200300.100.1.4" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
-         <aliases>
-            <alias>info</alias>
-         </aliases>
-         <description>RFC1274: general information</description>
-         <usage>USER_APPLICATIONS</usage>
-         <syntax>1.3.6.1.4.1.1466.115.121.1.15</syntax>
-         <equality>caseIgnoreMatch</equality>
-         <substring>caseIgnoreSubstringsMatch</substring>
-      </attributetype>
-   </attributetypes>
-   <objectclasses>
-      <objectclass oid="0.9.2342.19200300.100.4.21" obsolete="false">
-         <aliases>
-            <alias>pilotDSA</alias>
-         </aliases>
-         <superiors>
-            <superior>dSA</superior>
-         </superiors>
-         <type>STRUCTURAL</type>
-         <optional>
-            <attributetype>dSAQuality</attributetype>
-         </optional>
-      </objectclass>
-      <objectclass oid="0.9.2342.19200300.100.4.20" obsolete="false">
-         <aliases>
-            <alias>pilotOrganization</alias>
-         </aliases>
-         <superiors>
-            <superior>organization</superior>
-            <superior>organizationalUnit</superior>
-         </superiors>
-         <type>STRUCTURAL</type>
-         <optional>
-            <attributetype>buildingName</attributetype>
-         </optional>
-      </objectclass>
-      <objectclass oid="0.9.2342.19200300.100.4.7" obsolete="false">
-         <aliases>
-            <alias>room</alias>
-         </aliases>
-         <superiors>
-            <superior>top</superior>
-         </superiors>
-         <type>STRUCTURAL</type>
-         <mandatory>
-            <attributetype>cn</attributetype>
-         </mandatory>
-         <optional>
-            <attributetype>roomNumber</attributetype>
-            <attributetype>description</attributetype>
-            <attributetype>seeAlso</attributetype>
-            <attributetype>telephoneNumber</attributetype>
-         </optional>
-      </objectclass>
-      <objectclass oid="0.9.2342.19200300.100.4.9" obsolete="false">
-         <aliases>
-            <alias>documentSeries</alias>
-         </aliases>
-         <superiors>
-            <superior>top</superior>
-         </superiors>
-         <type>STRUCTURAL</type>
-         <mandatory>
-            <attributetype>cn</attributetype>
-         </mandatory>
-         <optional>
-            <attributetype>description</attributetype>
-            <attributetype>seeAlso</attributetype>
-            <attributetype>telephoneNumber</attributetype>
-            <attributetype>l</attributetype>
-            <attributetype>o</attributetype>
-            <attributetype>ou</attributetype>
-         </optional>
-      </objectclass>
-      <objectclass oid="0.9.2342.19200300.100.4.5" obsolete="false">
-         <aliases>
-            <alias>account</alias>
-         </aliases>
-         <superiors>
-            <superior>top</superior>
-         </superiors>
-         <type>STRUCTURAL</type>
-         <mandatory>
-            <attributetype>uid</attributetype>
-         </mandatory>
-         <optional>
-            <attributetype>description</attributetype>
-            <attributetype>seeAlso</attributetype>
-            <attributetype>l</attributetype>
-            <attributetype>o</attributetype>
-            <attributetype>ou</attributetype>
-            <attributetype>host</attributetype>
-         </optional>
-      </objectclass>
-      <objectclass oid="0.9.2342.19200300.100.4.22" obsolete="false">
-         <aliases>
-            <alias>qualityLabelledData</alias>
-         </aliases>
-         <superiors>
-            <superior>top</superior>
-         </superiors>
-         <type>AUXILIARY</type>
-         <mandatory>
-            <attributetype>dSAQuality</attributetype>
-         </mandatory>
-         <optional>
-            <attributetype>subtreeMinimumQuality</attributetype>
-            <attributetype>subtreeMaximumQuality</attributetype>
-         </optional>
-      </objectclass>
-      <objectclass oid="0.9.2342.19200300.100.4.6" obsolete="false">
-         <aliases>
-            <alias>document</alias>
-         </aliases>
-         <superiors>
-            <superior>top</superior>
-         </superiors>
-         <type>STRUCTURAL</type>
-         <mandatory>
-            <attributetype>documentIdentifier</attributetype>
-         </mandatory>
-         <optional>
-            <attributetype>cn</attributetype>
-            <attributetype>description</attributetype>
-            <attributetype>seeAlso</attributetype>
-            <attributetype>l</attributetype>
-            <attributetype>o</attributetype>
-            <attributetype>ou</attributetype>
-            <attributetype>documentTitle</attributetype>
-            <attributetype>documentVersion</attributetype>
-            <attributetype>documentAuthor</attributetype>
-            <attributetype>documentLocation</attributetype>
-            <attributetype>documentPublisher</attributetype>
-         </optional>
-      </objectclass>
-      <objectclass oid="0.9.2342.19200300.100.4.14" obsolete="false">
-         <aliases>
-            <alias>RFC822localPart</alias>
-         </aliases>
-         <superiors>
-            <superior>domain</superior>
-         </superiors>
-         <type>STRUCTURAL</type>
-         <optional>
-            <attributetype>cn</attributetype>
-            <attributetype>sn</attributetype>
-            <attributetype>description</attributetype>
-            <attributetype>seeAlso</attributetype>
-            <attributetype>telephoneNumber</attributetype>
-            <attributetype>physicalDeliveryOfficeName</attributetype>
-            <attributetype>postalAddress</attributetype>
-            <attributetype>postalCode</attributetype>
-            <attributetype>postOfficeBox</attributetype>
-            <attributetype>street</attributetype>
-            <attributetype>facsimileTelephoneNumber</attributetype>
-            <attributetype>internationaliSDNNumber</attributetype>
-            <attributetype>teletexTerminalIdentifier</attributetype>
-            <attributetype>telexNumber</attributetype>
-            <attributetype>preferredDeliveryMethod</attributetype>
-            <attributetype>destinationIndicator</attributetype>
-            <attributetype>registeredAddress</attributetype>
-            <attributetype>x121Address</attributetype>
-         </optional>
-      </objectclass>
-      <objectclass oid="0.9.2342.19200300.100.4.13" obsolete="false">
-         <aliases>
-            <alias>domain</alias>
-         </aliases>
-         <superiors>
-            <superior>top</superior>
-         </superiors>
-         <type>STRUCTURAL</type>
-         <mandatory>
-            <attributetype>dc</attributetype>
-         </mandatory>
-         <optional>
-            <attributetype>associatedName</attributetype>
-            <attributetype>o</attributetype>
-            <attributetype>description</attributetype>
-            <attributetype>businessCategory</attributetype>
-            <attributetype>seeAlso</attributetype>
-            <attributetype>searchGuide</attributetype>
-            <attributetype>userPassword</attributetype>
-            <attributetype>l</attributetype>
-            <attributetype>st</attributetype>
-            <attributetype>street</attributetype>
-            <attributetype>physicalDeliveryOfficeName</attributetype>
-            <attributetype>postalAddress</attributetype>
-            <attributetype>postalCode</attributetype>
-            <attributetype>postOfficeBox</attributetype>
-            <attributetype>facsimileTelephoneNumber</attributetype>
-            <attributetype>internationaliSDNNumber</attributetype>
-            <attributetype>telephoneNumber</attributetype>
-            <attributetype>teletexTerminalIdentifier</attributetype>
-            <attributetype>telexNumber</attributetype>
-            <attributetype>preferredDeliveryMethod</attributetype>
-            <attributetype>destinationIndicator</attributetype>
-            <attributetype>registeredAddress</attributetype>
-            <attributetype>x121Address</attributetype>
-         </optional>
-      </objectclass>
-      <objectclass oid="0.9.2342.19200300.100.4.4" obsolete="false">
-         <aliases>
-            <alias>pilotPerson</alias>
-            <alias>newPilotPerson</alias>
-         </aliases>
-         <superiors>
-            <superior>person</superior>
-         </superiors>
-         <type>STRUCTURAL</type>
-         <optional>
-            <attributetype>uid</attributetype>
-            <attributetype>textEncodedORAddress</attributetype>
-            <attributetype>mail</attributetype>
-            <attributetype>drink</attributetype>
-            <attributetype>roomNumber</attributetype>
-            <attributetype>userClass</attributetype>
-            <attributetype>homePhone</attributetype>
-            <attributetype>homePostalAddress</attributetype>
-            <attributetype>secretary</attributetype>
-            <attributetype>personalTitle</attributetype>
-            <attributetype>preferredDeliveryMethod</attributetype>
-            <attributetype>businessCategory</attributetype>
-            <attributetype>janetMailbox</attributetype>
-            <attributetype>otherMailbox</attributetype>
-            <attributetype>mobile</attributetype>
-            <attributetype>pager</attributetype>
-            <attributetype>organizationalStatus</attributetype>
-            <attributetype>mailPreferenceOption</attributetype>
-            <attributetype>personalSignature</attributetype>
-         </optional>
-      </objectclass>
-      <objectclass oid="0.9.2342.19200300.100.4.15" obsolete="false">
-         <aliases>
-            <alias>dNSDomain</alias>
-         </aliases>
-         <superiors>
-            <superior>domain</superior>
-         </superiors>
-         <type>STRUCTURAL</type>
-         <optional>
-            <attributetype>aRecord</attributetype>
-            <attributetype>mDRecord</attributetype>
-            <attributetype>mXRecord</attributetype>
-            <attributetype>nSRecord</attributetype>
-            <attributetype>sOARecord</attributetype>
-            <attributetype>cNAMERecord</attributetype>
-         </optional>
-      </objectclass>
-      <objectclass oid="0.9.2342.19200300.100.4.17" obsolete="false">
-         <aliases>
-            <alias>domainRelatedObject</alias>
-         </aliases>
-         <description>RFC1274: an object related to an domain</description>
-         <superiors>
-            <superior>top</superior>
-         </superiors>
-         <type>AUXILIARY</type>
-         <mandatory>
-            <attributetype>associatedDomain</attributetype>
-         </mandatory>
-      </objectclass>
-      <objectclass oid="0.9.2342.19200300.100.4.18" obsolete="false">
-         <aliases>
-            <alias>friendlyCountry</alias>
-         </aliases>
-         <superiors>
-            <superior>country</superior>
-         </superiors>
-         <type>STRUCTURAL</type>
-         <mandatory>
-            <attributetype>co</attributetype>
-         </mandatory>
-      </objectclass>
-   </objectclasses>
+  <attributetypes>
+    <attributetype oid="0.9.2342.19200300.100.1.54" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
+      <aliases>
+        <alias>dITRedirect</alias>
+      </aliases>
+      <description>RFC1274: DIT Redirect</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.12</syntax>
+      <equality>distinguishedNameMatch</equality>
+    </attributetype>
+    <attributetype oid="0.9.2342.19200300.100.1.53" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
+      <aliases>
+        <alias>personalSignature</alias>
+      </aliases>
+      <description>RFC1274: Personal Signature (G3 fax)</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.23</syntax>
+    </attributetype>
+    <attributetype oid="0.9.2342.19200300.100.1.10" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
+      <aliases>
+        <alias>manager</alias>
+      </aliases>
+      <description>RFC1274: DN of manager</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.12</syntax>
+      <equality>distinguishedNameMatch</equality>
+    </attributetype>
+    <attributetype oid="0.9.2342.19200300.100.1.31" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
+      <aliases>
+        <alias>cNAMERecord</alias>
+      </aliases>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.26</syntax>
+      <equality>caseIgnoreIA5Match</equality>
+    </attributetype>
+    <attributetype oid="0.9.2342.19200300.100.1.44" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
+      <aliases>
+        <alias>uniqueIdentifier</alias>
+      </aliases>
+      <description>RFC1274: unique identifer</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.15</syntax>
+      <equality>caseIgnoreMatch</equality>
+    </attributetype>
+    <attributetype oid="0.9.2342.19200300.100.1.50" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>singleLevelQuality</alias>
+      </aliases>
+      <description>RFC1274: Single Level Quality</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.13</syntax>
+    </attributetype>
+    <attributetype oid="0.9.2342.19200300.100.1.55" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
+      <aliases>
+        <alias>audio</alias>
+      </aliases>
+      <description>RFC1274: audio (u-law)</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.4</syntax>
+    </attributetype>
+    <attributetype oid="0.9.2342.19200300.100.1.11" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
+      <aliases>
+        <alias>documentIdentifier</alias>
+      </aliases>
+      <description>RFC1274: unique identifier of document</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.15</syntax>
+      <equality>caseIgnoreMatch</equality>
+      <substring>caseIgnoreSubstringsMatch</substring>
+    </attributetype>
+    <attributetype oid="0.9.2342.19200300.100.1.9" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
+      <aliases>
+        <alias>host</alias>
+      </aliases>
+      <description>RFC1274: host computer</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.15</syntax>
+      <equality>caseIgnoreMatch</equality>
+      <substring>caseIgnoreSubstringsMatch</substring>
+    </attributetype>
+    <attributetype oid="0.9.2342.19200300.100.1.6" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
+      <aliases>
+        <alias>roomNumber</alias>
+      </aliases>
+      <description>RFC1274: room number</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.15</syntax>
+      <equality>caseIgnoreMatch</equality>
+      <substring>caseIgnoreSubstringsMatch</substring>
+    </attributetype>
+    <attributetype oid="0.9.2342.19200300.100.1.56" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
+      <aliases>
+        <alias>documentPublisher</alias>
+      </aliases>
+      <description>RFC1274: publisher of document</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.15</syntax>
+      <equality>caseIgnoreMatch</equality>
+      <substring>caseIgnoreSubstringsMatch</substring>
+    </attributetype>
+    <attributetype oid="0.9.2342.19200300.100.1.5" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
+      <aliases>
+        <alias>drink</alias>
+        <alias>favouriteDrink</alias>
+      </aliases>
+      <description>RFC1274: favorite drink</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.15</syntax>
+      <equality>caseIgnoreMatch</equality>
+      <substring>caseIgnoreSubstringsMatch</substring>
+    </attributetype>
+    <attributetype oid="0.9.2342.19200300.100.1.41" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
+      <aliases>
+        <alias>mobile</alias>
+        <alias>mobileTelephoneNumber</alias>
+      </aliases>
+      <description>RFC1274: mobile telephone number</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.50</syntax>
+      <equality>telephoneNumberMatch</equality>
+      <substring>telephoneNumberSubstringsMatch</substring>
+    </attributetype>
+    <attributetype oid="0.9.2342.19200300.100.1.15" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
+      <aliases>
+        <alias>documentLocation</alias>
+      </aliases>
+      <description>RFC1274: location of document original</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.15</syntax>
+      <equality>caseIgnoreMatch</equality>
+      <substring>caseIgnoreSubstringsMatch</substring>
+    </attributetype>
+    <attributetype oid="0.9.2342.19200300.100.1.27" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
+      <aliases>
+        <alias>mDRecord</alias>
+      </aliases>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.26</syntax>
+      <equality>caseIgnoreIA5Match</equality>
+    </attributetype>
+    <attributetype oid="0.9.2342.19200300.100.1.43" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
+      <aliases>
+        <alias>co</alias>
+        <alias>friendlyCountryName</alias>
+      </aliases>
+      <description>RFC1274: friendly country name</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.15</syntax>
+      <equality>caseIgnoreMatch</equality>
+      <substring>caseIgnoreSubstringsMatch</substring>
+    </attributetype>
+    <attributetype oid="0.9.2342.19200300.100.1.8" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
+      <aliases>
+        <alias>userClass</alias>
+      </aliases>
+      <description>RFC1274: categorory of user</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.15</syntax>
+      <equality>caseIgnoreMatch</equality>
+      <substring>caseIgnoreSubstringsMatch</substring>
+    </attributetype>
+    <attributetype oid="0.9.2342.19200300.100.1.21" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
+      <aliases>
+        <alias>secretary</alias>
+      </aliases>
+      <description>RFC1274: DN of secretary</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.12</syntax>
+      <equality>distinguishedNameMatch</equality>
+    </attributetype>
+    <attributetype oid="0.9.2342.19200300.100.1.29" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
+      <aliases>
+        <alias>nSRecord</alias>
+      </aliases>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.26</syntax>
+      <equality>caseIgnoreIA5Match</equality>
+    </attributetype>
+    <attributetype oid="0.9.2342.19200300.100.1.28" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
+      <aliases>
+        <alias>mXRecord</alias>
+      </aliases>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.26</syntax>
+      <equality>caseIgnoreIA5Match</equality>
+    </attributetype>
+    <attributetype oid="0.9.2342.19200300.100.1.7" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
+      <aliases>
+        <alias>photo</alias>
+      </aliases>
+      <description>RFC1274: photo (G3 fax)</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.23</syntax>
+    </attributetype>
+    <attributetype oid="0.9.2342.19200300.100.1.22" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
+      <aliases>
+        <alias>otherMailbox</alias>
+      </aliases>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.39</syntax>
+    </attributetype>
+    <attributetype oid="0.9.2342.19200300.100.1.12" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
+      <aliases>
+        <alias>documentTitle</alias>
+      </aliases>
+      <description>RFC1274: title of document</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.15</syntax>
+      <equality>caseIgnoreMatch</equality>
+      <substring>caseIgnoreSubstringsMatch</substring>
+    </attributetype>
+    <attributetype oid="0.9.2342.19200300.100.1.48" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
+      <aliases>
+        <alias>buildingName</alias>
+      </aliases>
+      <description>RFC1274: name of building</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.15</syntax>
+      <equality>caseIgnoreMatch</equality>
+      <substring>caseIgnoreSubstringsMatch</substring>
+    </attributetype>
+    <attributetype oid="0.9.2342.19200300.100.1.42" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
+      <aliases>
+        <alias>pager</alias>
+        <alias>pagerTelephoneNumber</alias>
+      </aliases>
+      <description>RFC1274: pager telephone number</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.50</syntax>
+      <equality>telephoneNumberMatch</equality>
+      <substring>telephoneNumberSubstringsMatch</substring>
+    </attributetype>
+    <attributetype oid="0.9.2342.19200300.100.1.2" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
+      <aliases>
+        <alias>textEncodedORAddress</alias>
+      </aliases>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.15</syntax>
+      <equality>caseIgnoreMatch</equality>
+      <substring>caseIgnoreSubstringsMatch</substring>
+    </attributetype>
+    <attributetype oid="0.9.2342.19200300.100.1.14" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
+      <aliases>
+        <alias>documentAuthor</alias>
+      </aliases>
+      <description>RFC1274: DN of author of document</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.12</syntax>
+      <equality>distinguishedNameMatch</equality>
+    </attributetype>
+    <attributetype oid="0.9.2342.19200300.100.1.47" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
+      <aliases>
+        <alias>mailPreferenceOption</alias>
+      </aliases>
+      <description>RFC1274: mail preference option</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
+    </attributetype>
+    <attributetype oid="0.9.2342.19200300.100.1.20" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
+      <aliases>
+        <alias>homePhone</alias>
+        <alias>homeTelephoneNumber</alias>
+      </aliases>
+      <description>RFC1274: home telephone number</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.50</syntax>
+      <equality>telephoneNumberMatch</equality>
+      <substring>telephoneNumberSubstringsMatch</substring>
+    </attributetype>
+    <attributetype oid="0.9.2342.19200300.100.1.49" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>dSAQuality</alias>
+      </aliases>
+      <description>RFC1274: DSA Quality</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.19</syntax>
+    </attributetype>
+    <attributetype oid="0.9.2342.19200300.100.1.39" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
+      <aliases>
+        <alias>homePostalAddress</alias>
+      </aliases>
+      <description>RFC1274: home postal address</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.41</syntax>
+      <equality>caseIgnoreListMatch</equality>
+      <substring>caseIgnoreListSubstringsMatch</substring>
+    </attributetype>
+    <attributetype oid="0.9.2342.19200300.100.1.52" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>subtreeMaximumQuality</alias>
+      </aliases>
+      <description>RFC1274: Subtree Maximun Quality</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.13</syntax>
+    </attributetype>
+    <attributetype oid="0.9.2342.19200300.100.1.46" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
+      <aliases>
+        <alias>janetMailbox</alias>
+      </aliases>
+      <description>RFC1274: Janet mailbox</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.26</syntax>
+      <equality>caseIgnoreIA5Match</equality>
+      <substring>caseIgnoreIA5SubstringsMatch</substring>
+    </attributetype>
+    <attributetype oid="0.9.2342.19200300.100.1.30" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
+      <aliases>
+        <alias>sOARecord</alias>
+      </aliases>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.26</syntax>
+      <equality>caseIgnoreIA5Match</equality>
+    </attributetype>
+    <attributetype oid="0.9.2342.19200300.100.1.51" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>subtreeMinimumQuality</alias>
+      </aliases>
+      <description>RFC1274: Subtree Mininum Quality</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.13</syntax>
+    </attributetype>
+    <attributetype oid="0.9.2342.19200300.100.1.26" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
+      <aliases>
+        <alias>aRecord</alias>
+      </aliases>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.26</syntax>
+      <equality>caseIgnoreIA5Match</equality>
+    </attributetype>
+    <attributetype oid="0.9.2342.19200300.100.1.45" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
+      <aliases>
+        <alias>organizationalStatus</alias>
+      </aliases>
+      <description>RFC1274: organizational status</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.15</syntax>
+      <equality>caseIgnoreMatch</equality>
+      <substring>caseIgnoreSubstringsMatch</substring>
+    </attributetype>
+    <attributetype oid="0.9.2342.19200300.100.1.38" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
+      <aliases>
+        <alias>associatedName</alias>
+      </aliases>
+      <description>RFC1274: DN of entry associated with domain</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.12</syntax>
+      <equality>distinguishedNameMatch</equality>
+    </attributetype>
+    <attributetype oid="0.9.2342.19200300.100.1.13" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
+      <aliases>
+        <alias>documentVersion</alias>
+      </aliases>
+      <description>RFC1274: version of document</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.15</syntax>
+      <equality>caseIgnoreMatch</equality>
+      <substring>caseIgnoreSubstringsMatch</substring>
+    </attributetype>
+    <attributetype oid="0.9.2342.19200300.100.1.4" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
+      <aliases>
+        <alias>info</alias>
+      </aliases>
+      <description>RFC1274: general information</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.15</syntax>
+      <equality>caseIgnoreMatch</equality>
+      <substring>caseIgnoreSubstringsMatch</substring>
+    </attributetype>
+    <attributetype oid="0.9.2342.19200300.100.1.40" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
+      <aliases>
+        <alias>personalTitle</alias>
+      </aliases>
+      <description>RFC1274: personal title</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.15</syntax>
+      <equality>caseIgnoreMatch</equality>
+      <substring>caseIgnoreSubstringsMatch</substring>
+    </attributetype>
+  </attributetypes>
+  <objectclasses>
+    <objectclass oid="0.9.2342.19200300.100.4.5" obsolete="false">
+      <aliases>
+        <alias>account</alias>
+      </aliases>
+      <superiors>
+        <superior>top</superior>
+      </superiors>
+      <type>STRUCTURAL</type>
+      <mandatory>
+        <attributetype>uid</attributetype>
+      </mandatory>
+      <optional>
+        <attributetype>description</attributetype>
+        <attributetype>seeAlso</attributetype>
+        <attributetype>l</attributetype>
+        <attributetype>o</attributetype>
+        <attributetype>ou</attributetype>
+        <attributetype>host</attributetype>
+      </optional>
+    </objectclass>
+    <objectclass oid="0.9.2342.19200300.100.4.13" obsolete="false">
+      <aliases>
+        <alias>domain</alias>
+      </aliases>
+      <superiors>
+        <superior>top</superior>
+      </superiors>
+      <type>STRUCTURAL</type>
+      <mandatory>
+        <attributetype>dc</attributetype>
+      </mandatory>
+      <optional>
+        <attributetype>associatedName</attributetype>
+        <attributetype>o</attributetype>
+        <attributetype>description</attributetype>
+        <attributetype>businessCategory</attributetype>
+        <attributetype>seeAlso</attributetype>
+        <attributetype>searchGuide</attributetype>
+        <attributetype>userPassword</attributetype>
+        <attributetype>l</attributetype>
+        <attributetype>st</attributetype>
+        <attributetype>street</attributetype>
+        <attributetype>physicalDeliveryOfficeName</attributetype>
+        <attributetype>postalAddress</attributetype>
+        <attributetype>postalCode</attributetype>
+        <attributetype>postOfficeBox</attributetype>
+        <attributetype>facsimileTelephoneNumber</attributetype>
+        <attributetype>internationaliSDNNumber</attributetype>
+        <attributetype>telephoneNumber</attributetype>
+        <attributetype>teletexTerminalIdentifier</attributetype>
+        <attributetype>telexNumber</attributetype>
+        <attributetype>preferredDeliveryMethod</attributetype>
+        <attributetype>destinationIndicator</attributetype>
+        <attributetype>registeredAddress</attributetype>
+        <attributetype>x121Address</attributetype>
+      </optional>
+    </objectclass>
+    <objectclass oid="0.9.2342.19200300.100.4.6" obsolete="false">
+      <aliases>
+        <alias>document</alias>
+      </aliases>
+      <superiors>
+        <superior>top</superior>
+      </superiors>
+      <type>STRUCTURAL</type>
+      <mandatory>
+        <attributetype>documentIdentifier</attributetype>
+      </mandatory>
+      <optional>
+        <attributetype>cn</attributetype>
+        <attributetype>description</attributetype>
+        <attributetype>seeAlso</attributetype>
+        <attributetype>l</attributetype>
+        <attributetype>o</attributetype>
+        <attributetype>ou</attributetype>
+        <attributetype>documentTitle</attributetype>
+        <attributetype>documentVersion</attributetype>
+        <attributetype>documentAuthor</attributetype>
+        <attributetype>documentLocation</attributetype>
+        <attributetype>documentPublisher</attributetype>
+      </optional>
+    </objectclass>
+    <objectclass oid="0.9.2342.19200300.100.4.21" obsolete="false">
+      <aliases>
+        <alias>pilotDSA</alias>
+      </aliases>
+      <superiors>
+        <superior>dSA</superior>
+      </superiors>
+      <type>STRUCTURAL</type>
+      <optional>
+        <attributetype>dSAQuality</attributetype>
+      </optional>
+    </objectclass>
+    <objectclass oid="0.9.2342.19200300.100.4.22" obsolete="false">
+      <aliases>
+        <alias>qualityLabelledData</alias>
+      </aliases>
+      <superiors>
+        <superior>top</superior>
+      </superiors>
+      <type>AUXILIARY</type>
+      <mandatory>
+        <attributetype>dSAQuality</attributetype>
+      </mandatory>
+      <optional>
+        <attributetype>subtreeMinimumQuality</attributetype>
+        <attributetype>subtreeMaximumQuality</attributetype>
+      </optional>
+    </objectclass>
+    <objectclass oid="0.9.2342.19200300.100.4.18" obsolete="false">
+      <aliases>
+        <alias>friendlyCountry</alias>
+      </aliases>
+      <superiors>
+        <superior>country</superior>
+      </superiors>
+      <type>STRUCTURAL</type>
+      <mandatory>
+        <attributetype>co</attributetype>
+      </mandatory>
+    </objectclass>
+    <objectclass oid="0.9.2342.19200300.100.4.4" obsolete="false">
+      <aliases>
+        <alias>pilotPerson</alias>
+        <alias>newPilotPerson</alias>
+      </aliases>
+      <superiors>
+        <superior>person</superior>
+      </superiors>
+      <type>STRUCTURAL</type>
+      <optional>
+        <attributetype>uid</attributetype>
+        <attributetype>textEncodedORAddress</attributetype>
+        <attributetype>mail</attributetype>
+        <attributetype>drink</attributetype>
+        <attributetype>roomNumber</attributetype>
+        <attributetype>userClass</attributetype>
+        <attributetype>homePhone</attributetype>
+        <attributetype>homePostalAddress</attributetype>
+        <attributetype>secretary</attributetype>
+        <attributetype>personalTitle</attributetype>
+        <attributetype>preferredDeliveryMethod</attributetype>
+        <attributetype>businessCategory</attributetype>
+        <attributetype>janetMailbox</attributetype>
+        <attributetype>otherMailbox</attributetype>
+        <attributetype>mobile</attributetype>
+        <attributetype>pager</attributetype>
+        <attributetype>organizationalStatus</attributetype>
+        <attributetype>mailPreferenceOption</attributetype>
+        <attributetype>personalSignature</attributetype>
+      </optional>
+    </objectclass>
+    <objectclass oid="0.9.2342.19200300.100.4.17" obsolete="false">
+      <aliases>
+        <alias>domainRelatedObject</alias>
+      </aliases>
+      <description>RFC1274: an object related to an domain</description>
+      <superiors>
+        <superior>top</superior>
+      </superiors>
+      <type>AUXILIARY</type>
+      <mandatory>
+        <attributetype>associatedDomain</attributetype>
+      </mandatory>
+    </objectclass>
+    <objectclass oid="0.9.2342.19200300.100.4.20" obsolete="false">
+      <aliases>
+        <alias>pilotOrganization</alias>
+      </aliases>
+      <superiors>
+        <superior>organization</superior>
+        <superior>organizationalUnit</superior>
+      </superiors>
+      <type>STRUCTURAL</type>
+      <optional>
+        <attributetype>buildingName</attributetype>
+      </optional>
+    </objectclass>
+    <objectclass oid="0.9.2342.19200300.100.4.15" obsolete="false">
+      <aliases>
+        <alias>dNSDomain</alias>
+      </aliases>
+      <superiors>
+        <superior>domain</superior>
+      </superiors>
+      <type>STRUCTURAL</type>
+      <optional>
+        <attributetype>aRecord</attributetype>
+        <attributetype>mDRecord</attributetype>
+        <attributetype>mXRecord</attributetype>
+        <attributetype>nSRecord</attributetype>
+        <attributetype>sOARecord</attributetype>
+        <attributetype>cNAMERecord</attributetype>
+      </optional>
+    </objectclass>
+    <objectclass oid="0.9.2342.19200300.100.4.9" obsolete="false">
+      <aliases>
+        <alias>documentSeries</alias>
+      </aliases>
+      <superiors>
+        <superior>top</superior>
+      </superiors>
+      <type>STRUCTURAL</type>
+      <mandatory>
+        <attributetype>cn</attributetype>
+      </mandatory>
+      <optional>
+        <attributetype>description</attributetype>
+        <attributetype>seeAlso</attributetype>
+        <attributetype>telephoneNumber</attributetype>
+        <attributetype>l</attributetype>
+        <attributetype>o</attributetype>
+        <attributetype>ou</attributetype>
+      </optional>
+    </objectclass>
+    <objectclass oid="0.9.2342.19200300.100.4.14" obsolete="false">
+      <aliases>
+        <alias>RFC822localPart</alias>
+      </aliases>
+      <superiors>
+        <superior>domain</superior>
+      </superiors>
+      <type>STRUCTURAL</type>
+      <optional>
+        <attributetype>cn</attributetype>
+        <attributetype>sn</attributetype>
+        <attributetype>description</attributetype>
+        <attributetype>seeAlso</attributetype>
+        <attributetype>telephoneNumber</attributetype>
+        <attributetype>physicalDeliveryOfficeName</attributetype>
+        <attributetype>postalAddress</attributetype>
+        <attributetype>postalCode</attributetype>
+        <attributetype>postOfficeBox</attributetype>
+        <attributetype>street</attributetype>
+        <attributetype>facsimileTelephoneNumber</attributetype>
+        <attributetype>internationaliSDNNumber</attributetype>
+        <attributetype>teletexTerminalIdentifier</attributetype>
+        <attributetype>telexNumber</attributetype>
+        <attributetype>preferredDeliveryMethod</attributetype>
+        <attributetype>destinationIndicator</attributetype>
+        <attributetype>registeredAddress</attributetype>
+        <attributetype>x121Address</attributetype>
+      </optional>
+    </objectclass>
+    <objectclass oid="0.9.2342.19200300.100.4.7" obsolete="false">
+      <aliases>
+        <alias>room</alias>
+      </aliases>
+      <superiors>
+        <superior>top</superior>
+      </superiors>
+      <type>STRUCTURAL</type>
+      <mandatory>
+        <attributetype>cn</attributetype>
+      </mandatory>
+      <optional>
+        <attributetype>roomNumber</attributetype>
+        <attributetype>description</attributetype>
+        <attributetype>seeAlso</attributetype>
+        <attributetype>telephoneNumber</attributetype>
+      </optional>
+    </objectclass>
+  </objectclasses>
 </schema>

@@ -18,187 +18,187 @@
   under the License.
 -->
 <schema name="krb5kdc">
-   <attributetypes>
-      <attributetype oid="1.3.6.1.4.1.5322.10.1.11" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
-         <aliases>
-            <alias>krb5PrincipalRealm</alias>
-         </aliases>
-         <description>Distinguished name of krb5Realm entry</description>
-         <superior>distinguishedName</superior>
-         <usage>USER_APPLICATIONS</usage>
-         <syntax>1.3.6.1.4.1.1466.115.121.1.12</syntax>
-         <equality>distinguishedNameMatch</equality>
-      </attributetype>
-      <attributetype oid="1.3.6.1.4.1.5322.10.1.10" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
-         <aliases>
-            <alias>krb5Key</alias>
-         </aliases>
-         <description>Encoded ASN1 Key as an octet string</description>
-         <usage>USER_APPLICATIONS</usage>
-         <syntax>1.3.6.1.4.1.1466.115.121.1.5</syntax>
-      </attributetype>
-      <attributetype oid="1.3.6.1.4.1.5322.10.1.12" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
-         <aliases>
-            <alias>krb5RealmName</alias>
-         </aliases>
-         <usage>USER_APPLICATIONS</usage>
-         <syntax>1.3.6.1.4.1.1466.115.121.1.26</syntax>
-         <equality>caseExactIA5Match</equality>
-      </attributetype>
-      <attributetype oid="1.3.6.1.4.1.5322.10.1.13" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-         <aliases>
-            <alias>krb5AccountDisabled</alias>
-         </aliases>
-         <usage>USER_APPLICATIONS</usage>
-         <syntax>1.3.6.1.4.1.1466.115.121.1.7</syntax>
-         <equality>booleanMatch</equality>
-      </attributetype>
-      <attributetype oid="1.3.6.1.4.1.5322.10.1.9" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-         <aliases>
-            <alias>krb5PasswordEnd</alias>
-         </aliases>
-         <usage>USER_APPLICATIONS</usage>
-         <syntax>1.3.6.1.4.1.1466.115.121.1.24</syntax>
-         <equality>generalizedTimeMatch</equality>
-         <ordering>generalizedTimeOrderingMatch</ordering>
-      </attributetype>
-      <attributetype oid="1.3.6.1.4.1.5322.10.1.4" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-         <aliases>
-            <alias>krb5MaxRenew</alias>
-         </aliases>
-         <usage>USER_APPLICATIONS</usage>
-         <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
-         <equality>integerMatch</equality>
-      </attributetype>
-      <attributetype oid="1.3.6.1.4.1.5322.10.1.3" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-         <aliases>
-            <alias>krb5MaxLife</alias>
-         </aliases>
-         <usage>USER_APPLICATIONS</usage>
-         <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
-         <equality>integerMatch</equality>
-      </attributetype>
-      <attributetype oid="1.3.6.1.4.1.5322.10.1.14" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-         <aliases>
-            <alias>krb5AccountLockedOut</alias>
-         </aliases>
-         <usage>USER_APPLICATIONS</usage>
-         <syntax>1.3.6.1.4.1.1466.115.121.1.7</syntax>
-         <equality>booleanMatch</equality>
-      </attributetype>
-      <attributetype oid="1.3.6.1.4.1.5322.10.1.15" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-         <aliases>
-            <alias>krb5AccountExpirationTime</alias>
-         </aliases>
-         <usage>USER_APPLICATIONS</usage>
-         <syntax>1.3.6.1.4.1.1466.115.121.1.24</syntax>
-         <equality>generalizedTimeMatch</equality>
-      </attributetype>
-      <attributetype oid="1.3.6.1.4.1.5322.10.1.6" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
-         <aliases>
-            <alias>krb5EncryptionType</alias>
-         </aliases>
-         <usage>USER_APPLICATIONS</usage>
-         <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
-         <equality>integerMatch</equality>
-      </attributetype>
-      <attributetype oid="1.3.6.1.4.1.5322.10.1.7" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-         <aliases>
-            <alias>krb5ValidStart</alias>
-         </aliases>
-         <usage>USER_APPLICATIONS</usage>
-         <syntax>1.3.6.1.4.1.1466.115.121.1.24</syntax>
-         <equality>generalizedTimeMatch</equality>
-         <ordering>generalizedTimeOrderingMatch</ordering>
-      </attributetype>
-      <attributetype oid="1.3.6.1.4.1.5322.10.1.8" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-         <aliases>
-            <alias>krb5ValidEnd</alias>
-         </aliases>
-         <usage>USER_APPLICATIONS</usage>
-         <syntax>1.3.6.1.4.1.1466.115.121.1.24</syntax>
-         <equality>generalizedTimeMatch</equality>
-         <ordering>generalizedTimeOrderingMatch</ordering>
-      </attributetype>
-      <attributetype oid="1.3.6.1.4.1.5322.10.1.5" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-         <aliases>
-            <alias>krb5KDCFlags</alias>
-         </aliases>
-         <usage>USER_APPLICATIONS</usage>
-         <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
-         <equality>integerMatch</equality>
-      </attributetype>
-      <attributetype oid="1.3.6.1.4.1.5322.10.1.2" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-         <aliases>
-            <alias>krb5KeyVersionNumber</alias>
-         </aliases>
-         <usage>USER_APPLICATIONS</usage>
-         <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
-         <equality>integerMatch</equality>
-      </attributetype>
-      <attributetype oid="1.3.6.1.4.1.5322.10.1.1" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-         <aliases>
-            <alias>krb5PrincipalName</alias>
-         </aliases>
-         <description>The unparsed Kerberos principal name</description>
-         <usage>USER_APPLICATIONS</usage>
-         <syntax>1.3.6.1.4.1.1466.115.121.1.26</syntax>
-         <equality>caseExactIA5Match</equality>
-      </attributetype>
-   </attributetypes>
-   <objectclasses>
-      <objectclass oid="1.3.6.1.4.1.5322.10.2.1" obsolete="false">
-         <aliases>
-            <alias>krb5Principal</alias>
-         </aliases>
-         <superiors>
-            <superior>top</superior>
-         </superiors>
-         <type>AUXILIARY</type>
-         <mandatory>
-            <attributetype>krb5PrincipalName</attributetype>
-         </mandatory>
-         <optional>
-            <attributetype>cn</attributetype>
-            <attributetype>krb5PrincipalRealm</attributetype>
-         </optional>
-      </objectclass>
-      <objectclass oid="1.3.6.1.4.1.5322.10.2.3" obsolete="false">
-         <aliases>
-            <alias>krb5Realm</alias>
-         </aliases>
-         <superiors>
-            <superior>top</superior>
-         </superiors>
-         <type>AUXILIARY</type>
-         <mandatory>
-            <attributetype>krb5RealmName</attributetype>
-         </mandatory>
-      </objectclass>
-      <objectclass oid="1.3.6.1.4.1.5322.10.2.2" obsolete="false">
-         <aliases>
-            <alias>krb5KDCEntry</alias>
-         </aliases>
-         <superiors>
-            <superior>krb5Principal</superior>
-         </superiors>
-         <type>AUXILIARY</type>
-         <mandatory>
-            <attributetype>krb5KeyVersionNumber</attributetype>
-         </mandatory>
-         <optional>
-            <attributetype>krb5ValidStart</attributetype>
-            <attributetype>krb5ValidEnd</attributetype>
-            <attributetype>krb5PasswordEnd</attributetype>
-            <attributetype>krb5MaxLife</attributetype>
-            <attributetype>krb5MaxRenew</attributetype>
-            <attributetype>krb5KDCFlags</attributetype>
-            <attributetype>krb5EncryptionType</attributetype>
-            <attributetype>krb5Key</attributetype>
-            <attributetype>krb5AccountDisabled</attributetype>
-            <attributetype>krb5AccountLockedOut</attributetype>
-            <attributetype>krb5AccountExpirationTime</attributetype>
-         </optional>
-      </objectclass>
-   </objectclasses>
+  <attributetypes>
+    <attributetype oid="1.3.6.1.4.1.5322.10.1.12" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
+      <aliases>
+        <alias>krb5RealmName</alias>
+      </aliases>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.26</syntax>
+      <equality>caseExactIA5Match</equality>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.5322.10.1.10" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
+      <aliases>
+        <alias>krb5Key</alias>
+      </aliases>
+      <description>Encoded ASN1 Key as an octet string</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.5</syntax>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.5322.10.1.13" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>krb5AccountDisabled</alias>
+      </aliases>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.7</syntax>
+      <equality>booleanMatch</equality>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.5322.10.1.1" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>krb5PrincipalName</alias>
+      </aliases>
+      <description>The unparsed Kerberos principal name</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.26</syntax>
+      <equality>caseExactIA5Match</equality>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.5322.10.1.5" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>krb5KDCFlags</alias>
+      </aliases>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
+      <equality>integerMatch</equality>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.5322.10.1.6" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
+      <aliases>
+        <alias>krb5EncryptionType</alias>
+      </aliases>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
+      <equality>integerMatch</equality>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.5322.10.1.4" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>krb5MaxRenew</alias>
+      </aliases>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
+      <equality>integerMatch</equality>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.5322.10.1.11" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
+      <aliases>
+        <alias>krb5PrincipalRealm</alias>
+      </aliases>
+      <description>Distinguished name of krb5Realm entry</description>
+      <superior>distinguishedName</superior>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.12</syntax>
+      <equality>distinguishedNameMatch</equality>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.5322.10.1.7" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>krb5ValidStart</alias>
+      </aliases>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.24</syntax>
+      <equality>generalizedTimeMatch</equality>
+      <ordering>generalizedTimeOrderingMatch</ordering>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.5322.10.1.3" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>krb5MaxLife</alias>
+      </aliases>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
+      <equality>integerMatch</equality>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.5322.10.1.8" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>krb5ValidEnd</alias>
+      </aliases>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.24</syntax>
+      <equality>generalizedTimeMatch</equality>
+      <ordering>generalizedTimeOrderingMatch</ordering>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.5322.10.1.2" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>krb5KeyVersionNumber</alias>
+      </aliases>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
+      <equality>integerMatch</equality>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.5322.10.1.15" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>krb5AccountExpirationTime</alias>
+      </aliases>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.24</syntax>
+      <equality>generalizedTimeMatch</equality>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.5322.10.1.9" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>krb5PasswordEnd</alias>
+      </aliases>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.24</syntax>
+      <equality>generalizedTimeMatch</equality>
+      <ordering>generalizedTimeOrderingMatch</ordering>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.5322.10.1.14" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>krb5AccountLockedOut</alias>
+      </aliases>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.7</syntax>
+      <equality>booleanMatch</equality>
+    </attributetype>
+  </attributetypes>
+  <objectclasses>
+    <objectclass oid="1.3.6.1.4.1.5322.10.2.3" obsolete="false">
+      <aliases>
+        <alias>krb5Realm</alias>
+      </aliases>
+      <superiors>
+        <superior>top</superior>
+      </superiors>
+      <type>AUXILIARY</type>
+      <mandatory>
+        <attributetype>krb5RealmName</attributetype>
+      </mandatory>
+    </objectclass>
+    <objectclass oid="1.3.6.1.4.1.5322.10.2.2" obsolete="false">
+      <aliases>
+        <alias>krb5KDCEntry</alias>
+      </aliases>
+      <superiors>
+        <superior>krb5Principal</superior>
+      </superiors>
+      <type>AUXILIARY</type>
+      <mandatory>
+        <attributetype>krb5KeyVersionNumber</attributetype>
+      </mandatory>
+      <optional>
+        <attributetype>krb5ValidStart</attributetype>
+        <attributetype>krb5ValidEnd</attributetype>
+        <attributetype>krb5PasswordEnd</attributetype>
+        <attributetype>krb5MaxLife</attributetype>
+        <attributetype>krb5MaxRenew</attributetype>
+        <attributetype>krb5KDCFlags</attributetype>
+        <attributetype>krb5EncryptionType</attributetype>
+        <attributetype>krb5Key</attributetype>
+        <attributetype>krb5AccountDisabled</attributetype>
+        <attributetype>krb5AccountLockedOut</attributetype>
+        <attributetype>krb5AccountExpirationTime</attributetype>
+      </optional>
+    </objectclass>
+    <objectclass oid="1.3.6.1.4.1.5322.10.2.1" obsolete="false">
+      <aliases>
+        <alias>krb5Principal</alias>
+      </aliases>
+      <superiors>
+        <superior>top</superior>
+      </superiors>
+      <type>AUXILIARY</type>
+      <mandatory>
+        <attributetype>krb5PrincipalName</attributetype>
+      </mandatory>
+      <optional>
+        <attributetype>cn</attributetype>
+        <attributetype>krb5PrincipalRealm</attributetype>
+      </optional>
+    </objectclass>
+  </objectclasses>
 </schema>
