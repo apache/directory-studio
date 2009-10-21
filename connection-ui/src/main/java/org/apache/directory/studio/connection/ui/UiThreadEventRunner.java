@@ -19,6 +19,7 @@
  */
 package org.apache.directory.studio.connection.ui;
 
+
 import org.apache.directory.studio.connection.core.event.EventRunnable;
 import org.apache.directory.studio.connection.core.event.EventRunner;
 import org.eclipse.swt.widgets.Display;

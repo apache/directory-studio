@@ -62,7 +62,7 @@ public class NewConnectionWizard extends Wizard implements INewWizard
      */
     public NewConnectionWizard()
     {
-        setWindowTitle( Messages.getString("NewConnectionWizard.NewLdapConnection") ); //$NON-NLS-1$
+        setWindowTitle( Messages.getString( "NewConnectionWizard.NewLdapConnection" ) ); //$NON-NLS-1$
         setNeedsProgressMonitor( true );
     }
 

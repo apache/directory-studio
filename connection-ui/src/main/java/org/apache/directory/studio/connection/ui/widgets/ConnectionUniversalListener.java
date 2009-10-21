@@ -68,7 +68,8 @@ public class ConnectionUniversalListener implements ConnectionUpdateListener
             }
         }
     };
-    
+
+
     /**
      * Creates a new instance of ConnectionUniversalListener.
      *

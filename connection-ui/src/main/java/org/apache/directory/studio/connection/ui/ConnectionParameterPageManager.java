@@ -72,9 +72,15 @@ public class ConnectionParameterPageManager
             }
             catch ( Exception e )
             {
-                ConnectionUIPlugin.getDefault().getLog().log(
-                    new Status( IStatus.ERROR, ConnectionUIConstants.PLUGIN_ID, 1,
-                        Messages.getString("ConnectionParameterPageManager.UnableCreateConnectionParamPage") + member.getAttribute( "class" ), e ) );  //$NON-NLS-1$//$NON-NLS-2$
+                ConnectionUIPlugin
+                    .getDefault()
+                    .getLog()
+                    .log(
+                        new Status(
+                            IStatus.ERROR,
+                            ConnectionUIConstants.PLUGIN_ID,
+                            1,
+                            Messages.getString( "ConnectionParameterPageManager.UnableCreateConnectionParamPage" ) + member.getAttribute( "class" ), e ) ); //$NON-NLS-1$//$NON-NLS-2$
             }
         }
 

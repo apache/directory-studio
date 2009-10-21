@@ -119,7 +119,7 @@ public class ConnectionPropertyPage extends PropertyPage implements ConnectionPa
         int index = tabFolder.getSelectionIndex();
         ConnectionParameterPage page = index >= 0 ? pages[tabFolder.getSelectionIndex()] : null;
         if ( page != null
-            && ( page.getMessage() != null || page.getInfoMessage() != null || page.getErrorMessage() != null ) ) 
+            && ( page.getMessage() != null || page.getInfoMessage() != null || page.getErrorMessage() != null ) )
         {
             if ( page.getMessage() != null )
             {
@@ -160,7 +160,7 @@ public class ConnectionPropertyPage extends PropertyPage implements ConnectionPa
                     return;
                 }
             }
-            
+
             setMessage( null );
             setErrorMessage( null );
             setValid( true );
@@ -187,30 +187,33 @@ public class ConnectionPropertyPage extends PropertyPage implements ConnectionPa
         Connection connection = getConnection( getElement() );
         if ( connection != null )
         {
-            super.setMessage( Messages.getString("ConnectionPropertyPage.Connection") + Utils.shorten( connection.getName(), 30 ) ); //$NON-NLS-1$
-            
+            super
+                .setMessage( Messages.getString( "ConnectionPropertyPage.Connection" ) + Utils.shorten( connection.getName(), 30 ) ); //$NON-NLS-1$
+
             pages = ConnectionParameterPageManager.getConnectionParameterPages();
-            
+
             tabFolder = new TabFolder( parent, SWT.TOP );
-            
+
             tabs = new TabItem[pages.length];
             for ( int i = 0; i < pages.length; i++ )
             {
                 Composite composite = new Composite( tabFolder, SWT.NONE );
                 GridLayout gl = new GridLayout( 1, false );
                 composite.setLayout( gl );
-                
+
                 pages[i].init( composite, this, connection.getConnectionParameter() );
-                
+
                 tabs[i] = new TabItem( tabFolder, SWT.NONE );
                 tabs[i].setText( pages[i].getPageName() );
                 tabs[i].setControl( composite );
             }
-            
+
             return tabFolder;
         }
-        else {
-            Label label = BaseWidgetUtils.createLabel( parent, Messages.getString("ConnectionPropertyPage.NoConnection"), 1 ); //$NON-NLS-1$
+        else
+        {
+            Label label = BaseWidgetUtils.createLabel( parent, Messages
+                .getString( "ConnectionPropertyPage.NoConnection" ), 1 ); //$NON-NLS-1$
             return label;
         }
     }
@@ -223,7 +226,7 @@ public class ConnectionPropertyPage extends PropertyPage implements ConnectionPa
     {
         // get current connection parameters
         Connection connection = ( Connection ) getConnection( getElement() );
-        
+
         // save modified parameters
         boolean parametersModified = false;
         boolean reconnectionRequired = false;

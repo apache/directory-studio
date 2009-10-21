@@ -60,7 +60,7 @@ public class CloseConnectionAction extends StudioAction
      */
     public String getText()
     {
-        return getSelectedConnections().length > 1 ? Messages.getString("CloseConnectionAction.CloseConnections") : Messages.getString("CloseConnectionAction.CloseConnection"); //$NON-NLS-1$ //$NON-NLS-2$
+        return getSelectedConnections().length > 1 ? Messages.getString( "CloseConnectionAction.CloseConnections" ) : Messages.getString( "CloseConnectionAction.CloseConnection" ); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
 

@@ -129,7 +129,7 @@ public class ConnectionActionGroup implements ActionHandlerManager, IMenuListene
         expandAllAction = new ExpandAllAction( viewer );
 
         connectionActionMap = new HashMap<String, ConnectionViewActionProxy>();
-        
+
         connectionActionMap.put( newConnectionAction, new ConnectionViewActionProxy( viewer, this,
             new NewConnectionAction() ) );
         connectionActionMap.put( newConnectionFolderAction, new ConnectionViewActionProxy( viewer, this,

@@ -181,11 +181,11 @@ public class NetworkParameterPage extends AbstractConnectionParameterPage
             .getString( "NetworkParameterPage.NetworkParameter" ), 1 ); //$NON-NLS-1$
 
         Composite groupComposite = BaseWidgetUtils.createColumnContainer( group, 3, 1 );
-        BaseWidgetUtils.createLabel( groupComposite, Messages.getString("NetworkParameterPage.HostName"), 1 ); //$NON-NLS-1$
+        BaseWidgetUtils.createLabel( groupComposite, Messages.getString( "NetworkParameterPage.HostName" ), 1 ); //$NON-NLS-1$
         String[] hostHistory = HistoryUtils.load( ConnectionUIConstants.DIALOGSETTING_KEY_HOST_HISTORY );
         hostCombo = BaseWidgetUtils.createCombo( groupComposite, hostHistory, -1, 2 );
 
-        BaseWidgetUtils.createLabel( groupComposite, Messages.getString("NetworkParameterPage.Port"), 1 ); //$NON-NLS-1$
+        BaseWidgetUtils.createLabel( groupComposite, Messages.getString( "NetworkParameterPage.Port" ), 1 ); //$NON-NLS-1$
         String[] portHistory = HistoryUtils.load( ConnectionUIConstants.DIALOGSETTING_KEY_PORT_HISTORY );
         portCombo = BaseWidgetUtils.createCombo( groupComposite, portHistory, -1, 2 );
         portCombo.setTextLimit( 5 );
@@ -198,7 +198,7 @@ public class NetworkParameterPage extends AbstractConnectionParameterPage
         int index = 0;
         BaseWidgetUtils.createLabel( groupComposite, Messages.getString( "NetworkParameterPage.EncryptionMethod" ), 1 ); //$NON-NLS-1$
         encryptionMethodCombo = BaseWidgetUtils.createReadonlyCombo( groupComposite, encMethods, index, 2 );
-        
+
         boolean validateCertificates = ConnectionCorePlugin.getDefault().getPluginPreferences().getBoolean(
             ConnectionCoreConstants.PREFERENCE_VALIDATE_CERTIFICATES );
         if ( !validateCertificates )
@@ -247,9 +247,8 @@ public class NetworkParameterPage extends AbstractConnectionParameterPage
         if ( ConnectionCorePlugin.getDefault().getConnectionManager().getConnectionByName( nameText.getText() ) != null
             && ( connectionParameter == null || !nameText.getText().equals( connectionParameter.getName() ) ) )
         {
-            errorMessage = NLS
-                .bind(
-                    Messages.getString( "NetworkParameterPage.ConnectionExists" ), new String[] { nameText.getText() } ); //$NON-NLS-1$
+            errorMessage = NLS.bind(
+                Messages.getString( "NetworkParameterPage.ConnectionExists" ), new String[] { nameText.getText() } ); //$NON-NLS-1$
         }
     }
 

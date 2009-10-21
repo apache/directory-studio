@@ -49,7 +49,7 @@ public class ConnectionConfiguration
 
     /** The sorter. */
     private ConnectionSorter sorter;
-    
+
     /** The context menu manager. */
     private MenuManager contextMenuManager;
 
@@ -146,8 +146,8 @@ public class ConnectionConfiguration
 
         return labelProvider;
     }
-    
-    
+
+
     /**
      * Gets the sorter.
      * 
@@ -159,7 +159,7 @@ public class ConnectionConfiguration
         {
             sorter = new ConnectionSorter();
         }
-        
+
         return sorter;
     }
 

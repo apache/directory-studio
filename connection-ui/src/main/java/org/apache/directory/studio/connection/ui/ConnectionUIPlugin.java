@@ -211,9 +211,8 @@ public class ConnectionUIPlugin extends AbstractUIPlugin
             {
                 // We can't use the PLUGIN_ID constant since loading the plugin.properties file has failed,
                 // So we're using a default plugin id.
-                getLog().log(
-                    new Status( Status.ERROR, "org.apache.directory.studio.connection.ui", Status.OK, //$NON-NLS-1$
-                        Messages.getString("ConnectionUIPlugin.UnableGetPluginProperties"), e ) ); //$NON-NLS-1$
+                getLog().log( new Status( Status.ERROR, "org.apache.directory.studio.connection.ui", Status.OK, //$NON-NLS-1$
+                    Messages.getString( "ConnectionUIPlugin.UnableGetPluginProperties" ), e ) ); //$NON-NLS-1$
             }
         }
 

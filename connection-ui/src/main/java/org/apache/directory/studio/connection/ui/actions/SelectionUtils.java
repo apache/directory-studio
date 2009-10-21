@@ -105,8 +105,8 @@ public abstract class SelectionUtils
         List<Object> list = getTypes( selection, ConnectionFolder.class );
         return list.toArray( new ConnectionFolder[list.size()] );
     }
-    
-    
+
+
     /**
      * Gets the objects contained in the given selection.
      *

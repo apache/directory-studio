@@ -77,15 +77,15 @@ public class CopyAction extends StudioAction
         ConnectionFolder[] connectionFolders = getSelectedConnectionFolders();
         if ( connections.length > 0 && connectionFolders.length == 0 )
         {
-            return connections.length > 1 ? Messages.getString("CopyAction.CopyConnections") : Messages.getString("CopyAction.CopyConnection"); //$NON-NLS-1$ //$NON-NLS-2$
+            return connections.length > 1 ? Messages.getString( "CopyAction.CopyConnections" ) : Messages.getString( "CopyAction.CopyConnection" ); //$NON-NLS-1$ //$NON-NLS-2$
         }
         else if ( connectionFolders.length > 0 && connections.length == 0 )
         {
-            return connectionFolders.length > 1 ? Messages.getString("CopyAction.CopyFolders") : Messages.getString("CopyAction.CopyFolder"); //$NON-NLS-1$ //$NON-NLS-2$
+            return connectionFolders.length > 1 ? Messages.getString( "CopyAction.CopyFolders" ) : Messages.getString( "CopyAction.CopyFolder" ); //$NON-NLS-1$ //$NON-NLS-2$
         }
         else
         {
-            return Messages.getString("CopyAction.Copy"); //$NON-NLS-1$
+            return Messages.getString( "CopyAction.Copy" ); //$NON-NLS-1$
         }
     }
 

@@ -127,7 +127,7 @@ public class ConnectionsPreferencePage extends PreferencePage implements IWorkbe
         } );
 
         validate();
-        
+
         return composite;
     }
 

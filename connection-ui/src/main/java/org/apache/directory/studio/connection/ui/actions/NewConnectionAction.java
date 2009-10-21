@@ -74,7 +74,7 @@ public class NewConnectionAction extends StudioAction
      */
     public String getText()
     {
-        return Messages.getString("NewConnectionAction.NewConnection"); //$NON-NLS-1$
+        return Messages.getString( "NewConnectionAction.NewConnection" ); //$NON-NLS-1$
     }
 
 
