@@ -130,8 +130,8 @@ public class ProtectedItemWrapper
      * @param valueSuffix the dislpay name
      * @param valueEditor the value editor
      */
-    public ProtectedItemWrapper( Class<? extends ProtectedItem> clazz, boolean isMultivalued, String valuePrefix, String valueSuffix,
-        AbstractDialogStringValueEditor valueEditor )
+    public ProtectedItemWrapper( Class<? extends ProtectedItem> clazz, boolean isMultivalued, String valuePrefix,
+        String valueSuffix, AbstractDialogStringValueEditor valueEditor )
     {
         this.clazz = clazz;
         this.isMultivalued = isMultivalued;

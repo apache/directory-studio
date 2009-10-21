@@ -19,6 +19,7 @@
  */
 package org.apache.directory.studio.aciitemeditor.valueeditors;
 
+
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -62,6 +63,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Spinner;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Text;
+
 
 /**
  * This class provides a dialog to enter the Subtree Specification value.
@@ -509,7 +511,7 @@ class SubtreeSpecificationDialog extends Dialog
             subtreeSpecification = null;
             valid &= false;
         }
-        
+
         if ( refinementOrFilterVisible && filterButton.getSelection() )
         {
             valid &= filterWidget.getFilter() != null;
@@ -659,7 +661,8 @@ class SubtreeSpecificationDialog extends Dialog
         }
 
         ExclusionDialog dialog = new ExclusionDialog( getShell(), connection, chopBase, "" ); //$NON-NLS-1$
-        if ( dialog.open() == TextDialog.OK && !SubtreeValueEditor.EMPTY.equals( dialog.getType() ) && !SubtreeValueEditor.EMPTY.equals( dialog.getDN() ) )
+        if ( dialog.open() == TextDialog.OK && !SubtreeValueEditor.EMPTY.equals( dialog.getType() )
+            && !SubtreeValueEditor.EMPTY.equals( dialog.getDN() ) )
         {
             String newValue = dialog.getType() + ": \"" + dialog.getDN() + "\""; //$NON-NLS-1$ //$NON-NLS-2$
             exclusions.add( newValue );

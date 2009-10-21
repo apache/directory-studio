@@ -72,8 +72,8 @@ public class FilterValueEditor extends AbstractDialogStringValueEditor
      */
     public Object getRawValue( IValue value )
     {
-        return value != null ? getRawValue( value.getAttribute().getEntry().getBrowserConnection(), value.getStringValue() )
-            : null;
+        return value != null ? getRawValue( value.getAttribute().getEntry().getBrowserConnection(), value
+            .getStringValue() ) : null;
     }
 
 

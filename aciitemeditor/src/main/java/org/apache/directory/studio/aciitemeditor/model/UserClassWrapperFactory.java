@@ -44,7 +44,7 @@ public class UserClassWrapperFactory
     {
         UserClassWrapper[] userClassWrappers = new UserClassWrapper[]
             {
-                // allUsers
+            // allUsers
                 new UserClassWrapper( UserClass.AllUsers.class, "", //$NON-NLS-1$
                     "", //$NON-NLS-1$
                     null ),
@@ -72,8 +72,7 @@ public class UserClassWrapperFactory
                 // subtree
                 new UserClassWrapper( UserClass.Subtree.class, "", //$NON-NLS-1$
                     "", //$NON-NLS-1$
-                    new SubtreeValueEditor( false, false )
-                ) };
+                    new SubtreeValueEditor( false, false ) ) };
 
         return userClassWrappers;
     }

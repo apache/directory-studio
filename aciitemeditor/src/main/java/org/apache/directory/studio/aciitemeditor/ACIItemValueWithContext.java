@@ -86,8 +86,8 @@ public class ACIItemValueWithContext
     {
         return entry;
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */

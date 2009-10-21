@@ -59,8 +59,8 @@ public class ACIItemValueEditor extends AbstractDialogStringValueEditor
         Object value = getValue();
         if ( value != null && value instanceof ACIItemValueWithContext )
         {
-            ACIItemValueWithContext context = (ACIItemValueWithContext)value;
-            
+            ACIItemValueWithContext context = ( ACIItemValueWithContext ) value;
+
             ACIItemDialog dialog = new ACIItemDialog( shell, context );
             if ( dialog.open() == ACIItemDialog.OK && !"".equals( dialog.getACIItemValue() ) ) //$NON-NLS-1$
             {
@@ -71,7 +71,7 @@ public class ACIItemValueEditor extends AbstractDialogStringValueEditor
         return false;
     }
 
-    
+
     /**
      * Returns a ACIItemValueContext with the connection
      * and entry of the attribute hierarchy and an empty value if there
@@ -126,7 +126,7 @@ public class ACIItemValueEditor extends AbstractDialogStringValueEditor
         {
             IEntry entry = value.getAttribute().getEntry();
             IBrowserConnection connection = entry.getBrowserConnection();
-            String v = (String) o;
+            String v = ( String ) o;
             return new ACIItemValueWithContext( connection, entry, v );
         }
 

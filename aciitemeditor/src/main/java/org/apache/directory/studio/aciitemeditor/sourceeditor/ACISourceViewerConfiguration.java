@@ -77,7 +77,8 @@ public class ACISourceViewerConfiguration extends SourceViewerConfiguration
 
         return assistant;
     }
-    
+
+
     /* (non-Javadoc)
      * @see org.eclipse.jface.text.source.SourceViewerConfiguration#getContentFormatter(org.eclipse.jface.text.source.ISourceViewer)
      */
@@ -89,5 +90,5 @@ public class ACISourceViewerConfiguration extends SourceViewerConfiguration
         formatter.setFormattingStrategy( formattingStrategy, IDocument.DEFAULT_CONTENT_TYPE );
         return formatter;
     }
-    
+
 }

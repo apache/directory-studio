@@ -124,8 +124,8 @@ public class MultiValuedDialog extends Dialog
     protected void configureShell( Shell shell )
     {
         super.configureShell( shell );
-        shell.setText( Messages.getString("MultiValuedDialog.dialog.titlePrefix") + displayName ); //$NON-NLS-1$
-        shell.setImage( Activator.getDefault().getImage( Messages.getString("MultiValuedDialog.dialog.icon") ) ); //$NON-NLS-1$
+        shell.setText( Messages.getString( "MultiValuedDialog.dialog.titlePrefix" ) + displayName ); //$NON-NLS-1$
+        shell.setImage( Activator.getDefault().getImage( Messages.getString( "MultiValuedDialog.dialog.icon" ) ) ); //$NON-NLS-1$
     }
 
 

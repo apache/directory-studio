@@ -49,7 +49,7 @@ public class ProtectedItemWrapperFactory
     {
         ProtectedItemWrapper[] protectedItemWrappers = new ProtectedItemWrapper[]
             {
-                // entry
+            // entry
                 new ProtectedItemWrapper( ProtectedItem.Entry.class, false, "", //$NON-NLS-1$
                     "", //$NON-NLS-1$
                     null ),

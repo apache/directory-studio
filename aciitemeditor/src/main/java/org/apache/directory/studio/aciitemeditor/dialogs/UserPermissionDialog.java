@@ -55,7 +55,7 @@ public class UserPermissionDialog extends Dialog
 
     /** The context */
     private ACIItemValueWithContext context;
-    
+
     /** The initial value, passed by the constructor */
     private UserPermission initialUserPermission;
 
@@ -82,7 +82,8 @@ public class UserPermissionDialog extends Dialog
      * @param initialUserPermission the initial user permission
      * @param context the context
      */
-    public UserPermissionDialog( Shell parentShell, UserPermission initialUserPermission, ACIItemValueWithContext context )
+    public UserPermissionDialog( Shell parentShell, UserPermission initialUserPermission,
+        ACIItemValueWithContext context )
     {
         super( parentShell );
         super.setShellStyle( super.getShellStyle() | SWT.RESIZE );
@@ -100,8 +101,8 @@ public class UserPermissionDialog extends Dialog
     protected void configureShell( Shell shell )
     {
         super.configureShell( shell );
-        shell.setText( Messages.getString("UserPermissionDialog.dialog.text") ); //$NON-NLS-1$
-        shell.setImage( Activator.getDefault().getImage( Messages.getString("UserPermissionDialog.dialog.icon") ) ); //$NON-NLS-1$
+        shell.setText( Messages.getString( "UserPermissionDialog.dialog.text" ) ); //$NON-NLS-1$
+        shell.setImage( Activator.getDefault().getImage( Messages.getString( "UserPermissionDialog.dialog.icon" ) ) ); //$NON-NLS-1$
     }
 
 
@@ -120,7 +121,8 @@ public class UserPermissionDialog extends Dialog
         }
         catch ( Exception e )
         {
-            MessageDialog.openError( getShell(), Messages.getString("UserPermissionDialog.error.invalidUserPermission"), e.getMessage() ); //$NON-NLS-1$
+            MessageDialog.openError( getShell(), Messages
+                .getString( "UserPermissionDialog.error.invalidUserPermission" ), e.getMessage() ); //$NON-NLS-1$
         }
     }
 
@@ -141,7 +143,7 @@ public class UserPermissionDialog extends Dialog
         spinnerComposite.setLayout( new GridLayout( 2, false ) );
         spinnerComposite.setLayoutData( new GridData() );
         precedenceCheckbox = new Button( spinnerComposite, SWT.CHECK );
-        precedenceCheckbox.setText( Messages.getString("UserPermissionDialog.precedence.label") ); //$NON-NLS-1$
+        precedenceCheckbox.setText( Messages.getString( "UserPermissionDialog.precedence.label" ) ); //$NON-NLS-1$
         precedenceCheckbox.addSelectionListener( new SelectionAdapter()
         {
             public void widgetSelected( SelectionEvent e )
@@ -198,5 +200,5 @@ public class UserPermissionDialog extends Dialog
     {
         return returnUserPermission;
     }
-    
+
 }

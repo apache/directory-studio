@@ -19,9 +19,11 @@
  */
 package org.apache.directory.studio.aciitemeditor.sourceeditor;
 
+
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreConstants;
 import org.eclipse.jface.text.formatter.IFormattingStrategy;
 import org.eclipse.jface.text.source.ISourceViewer;
+
 
 /**
  * This class implements the formatting strategy for the ACI Item Editor.
@@ -38,14 +40,14 @@ public class ACIFormattingStrategy implements IFormattingStrategy
 
     /** The Constant INDENT_STRING. */
     public static final String INDENT_STRING = "    "; //$NON-NLS-1$
-    
+
     /** The Constant NEWLINE. */
     public static final String NEWLINE = BrowserCoreConstants.LINE_SEPARATOR;
-    
+
     /** The source viewer. */
     private ISourceViewer sourceViewer;
-    
-    
+
+
     /**
      * Creates a new instance of ACIFormattingStrategy.
      *
@@ -63,9 +65,9 @@ public class ACIFormattingStrategy implements IFormattingStrategy
     public String format( String content, boolean isLineStart, String indentation, int[] positions )
     {
         String oldContent = sourceViewer.getDocument().get();
-        String newContent = internFormat ( oldContent );
+        String newContent = internFormat( oldContent );
         sourceViewer.getDocument().set( newContent );
-        
+
         return null;
     }
 
@@ -85,39 +87,40 @@ public class ACIFormattingStrategy implements IFormattingStrategy
     {
     }
 
+
     private String internFormat( String content )
     {
         StringBuffer sb = new StringBuffer();
 
         // flag to track if a new line was started
         boolean newLineStarted = true;
-        
+
         // flag to track if we are within a quoted string
         boolean inQuotedString = false;
-        
+
         // flag to track if the current expression is appended in one-line mode
         boolean oneLineMode = false;
-        
+
         // the current indent
         int indent = 0;
 
         int contentLength = content.length();
-        for (int i=0; i<contentLength; i++)
+        for ( int i = 0; i < contentLength; i++ )
         {
             char c = content.charAt( i );
-            
+
             // track quotes
-            if( c == '"')
+            if ( c == '"' )
             {
                 inQuotedString = !inQuotedString;
             }
-            
-            if( c == '{' && !inQuotedString )
+
+            if ( c == '{' && !inQuotedString )
             {
                 // check one-line mode
-                oneLineMode = checkInOneLine(i, content);
-                
-                if(oneLineMode)
+                oneLineMode = checkInOneLine( i, content );
+
+                if ( oneLineMode )
                 {
                     // no new line in one-line mode
                     sb.append( c );
@@ -126,7 +129,7 @@ public class ACIFormattingStrategy implements IFormattingStrategy
                 else
                 {
                     // start a new line, but avoid blank lines if there are multiple opened curlies
-                    if( !newLineStarted )
+                    if ( !newLineStarted )
                     {
                         sb.append( NEWLINE );
                         for ( int x = 0; x < indent; x++ )
@@ -134,10 +137,10 @@ public class ACIFormattingStrategy implements IFormattingStrategy
                             sb.append( INDENT_STRING );
                         }
                     }
-                    
+
                     // append the curly
                     sb.append( c );
-                    
+
                     // start a new line and increment indent
                     sb.append( NEWLINE );
                     newLineStarted = true;
@@ -148,14 +151,14 @@ public class ACIFormattingStrategy implements IFormattingStrategy
                     }
                 }
             }
-            else if (c == '}' && !inQuotedString )
+            else if ( c == '}' && !inQuotedString )
             {
-                if(oneLineMode)
+                if ( oneLineMode )
                 {
                     // no new line in one-line mode
                     sb.append( c );
                     newLineStarted = false;
-                    
+
                     // closed curly indicates end of one-line mode
                     oneLineMode = false;
                 }
@@ -163,12 +166,12 @@ public class ACIFormattingStrategy implements IFormattingStrategy
                 {
                     // decrement indent
                     indent--;
-    
+
                     // start a new line, but avoid blank lines if there are multiple closed curlies
-                    if( newLineStarted )
+                    if ( newLineStarted )
                     {
                         // delete one indent 
-                        sb.delete( sb.length()-INDENT_STRING.length(), sb.length() );
+                        sb.delete( sb.length() - INDENT_STRING.length(), sb.length() );
                     }
                     else
                     {
@@ -178,10 +181,10 @@ public class ACIFormattingStrategy implements IFormattingStrategy
                             sb.append( INDENT_STRING );
                         }
                     }
-                    
+
                     // append the curly
                     sb.append( c );
-                    
+
                     // start a new line 
                     sb.append( NEWLINE );
                     newLineStarted = true;
@@ -191,10 +194,10 @@ public class ACIFormattingStrategy implements IFormattingStrategy
                     }
                 }
             }
-            else if (c == ',' && !inQuotedString )
+            else if ( c == ',' && !inQuotedString )
             {
                 // start new line on comma
-                if(oneLineMode)
+                if ( oneLineMode )
                 {
                     sb.append( c );
                     newLineStarted = false;
@@ -202,10 +205,10 @@ public class ACIFormattingStrategy implements IFormattingStrategy
                 else
                 {
                     sb.append( c );
-                    
+
                     sb.append( NEWLINE );
                     newLineStarted = true;
-                    
+
                     for ( int x = 0; x < indent; x++ )
                     {
                         sb.append( INDENT_STRING );
@@ -215,20 +218,20 @@ public class ACIFormattingStrategy implements IFormattingStrategy
             else if ( Character.isWhitespace( c ) )
             {
                 char c1 = 'A';
-                if(i+1 < contentLength )
+                if ( i + 1 < contentLength )
                 {
-                    c1 = content.charAt( i+1 );
+                    c1 = content.charAt( i + 1 );
                 }
-                
-                if( newLineStarted )
+
+                if ( newLineStarted )
                 {
                     // ignore space after starting a new line
                 }
-                else if (c == '\n' || c == '\r' )
+                else if ( c == '\n' || c == '\r' )
                 {
                     // ignore new lines
                 }
-                else if( Character.isWhitespace( c1 ) || c1 == '\n' || c1 == '\r' )
+                else if ( Character.isWhitespace( c1 ) || c1 == '\n' || c1 == '\r' )
                 {
                     // compress whitespaces
                 }
@@ -237,7 +240,7 @@ public class ACIFormattingStrategy implements IFormattingStrategy
                     sb.append( c );
                 }
             }
-            
+
             else
             {
                 // default case: append the char
@@ -264,45 +267,45 @@ public class ACIFormattingStrategy implements IFormattingStrategy
     {
         // flag to track if we are within a quoted string
         boolean inQuote = false;
-        
+
         // counter for commas
         int commaCounter = 0;
 
         int contentLength = content.length();
-        for ( int k=i+1; k<contentLength; k++)
+        for ( int k = i + 1; k < contentLength; k++ )
         {
             char c = content.charAt( k );
 
             // track quotes
-            if( c == '"')
+            if ( c == '"' )
             {
                 inQuote = !inQuote;
             }
-            
+
             // open curly indicates nested expression
-            if( ( c == '{'  )  && !inQuote )
+            if ( ( c == '{' ) && !inQuote )
             {
                 return false;
             }
-            
+
             // closing curly indicates end of expression
-            if ( c == '}' && !inQuote ) 
+            if ( c == '}' && !inQuote )
             {
                 return true;
             }
-            
+
             // allow only single comma in an expression in one line
-            if (c == ',' && !inQuote )
+            if ( c == ',' && !inQuote )
             {
                 commaCounter++;
-                if(commaCounter > 1)
+                if ( commaCounter > 1 )
                 {
                     return false;
                 }
             }
         }
-        
+
         return false;
     }
-    
+
 }

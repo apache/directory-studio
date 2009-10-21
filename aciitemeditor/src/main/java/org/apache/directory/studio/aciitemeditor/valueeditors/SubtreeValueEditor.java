@@ -20,7 +20,6 @@
 package org.apache.directory.studio.aciitemeditor.valueeditors;
 
 
-
 import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.studio.ldapbrowser.common.dialogs.TextDialog;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
@@ -41,7 +40,7 @@ public class SubtreeValueEditor extends AbstractDialogStringValueEditor
     static final String EMPTY = ""; //$NON-NLS-1$
 
     private boolean refinementOrFilterVisible;
-    
+
     private boolean useLocalName;
 
 
@@ -106,7 +105,6 @@ public class SubtreeValueEditor extends AbstractDialogStringValueEditor
         return null;
     }
 
-
     /**
      * The SubtreeSpecificationValueWrapper is used to pass contextual
      * information to the opened SubtreeSpecificationDialog.
@@ -136,7 +134,8 @@ public class SubtreeValueEditor extends AbstractDialogStringValueEditor
          * @param subtreeSpecification
          *      the subtreeSpecification
          */
-        private SubtreeSpecificationValueWrapper( IBrowserConnection connection, LdapDN subentryDN, String subtreeSpecification )
+        private SubtreeSpecificationValueWrapper( IBrowserConnection connection, LdapDN subentryDN,
+            String subtreeSpecification )
         {
             this.connection = connection;
             this.subentryDN = subentryDN;
