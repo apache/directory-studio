@@ -80,7 +80,7 @@ public class NewProjectWizardInformationPage extends AbstractWizardPage
 
         // Name
         Label nameLabel = new Label( composite, SWT.NONE );
-        nameLabel.setText( Messages.getString( "NewProjectWizardInformationPage.ProejctName" ) ); //$NON-NLS-1$
+        nameLabel.setText( Messages.getString( "NewProjectWizardInformationPage.ProjectName" ) ); //$NON-NLS-1$
         nameText = new Text( composite, SWT.BORDER );
         nameText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
         nameText.addModifyListener( new ModifyListener()
@@ -95,15 +95,15 @@ public class NewProjectWizardInformationPage extends AbstractWizardPage
         {
             // Type Group
             Group typeGroup = new Group( composite, SWT.NONE );
-            typeGroup.setText( "Type" );
+            typeGroup.setText( Messages.getString( "NewProjectWizardInformationPage.Type" ) ); //$NON-NLS-1$
             typeGroup.setLayout( new GridLayout() );
             typeGroup.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
 
             typeOfflineRadio = new Button( typeGroup, SWT.RADIO );
-            typeOfflineRadio.setText( "Offline Schema" );
+            typeOfflineRadio.setText( Messages.getString( "NewProjectWizardInformationPage.OfflineSchema" ) ); //$NON-NLS-1$
             typeOfflineRadio.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
             typeOnlineRadio = new Button( typeGroup, SWT.RADIO );
-            typeOnlineRadio.setText( "Online Schema from a Directory Server" );
+            typeOnlineRadio.setText( Messages.getString( "NewProjectWizardInformationPage.OnlineSchema" ) ); //$NON-NLS-1$
             typeOnlineRadio.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
         }
 
