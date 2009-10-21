@@ -18,7 +18,6 @@
  *  
  */
 
-
 package org.apache.directory.studio.apacheds.actions;
 
 

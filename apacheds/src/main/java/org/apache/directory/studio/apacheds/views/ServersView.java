@@ -148,14 +148,14 @@ public class ServersView extends ViewPart
 
         // Adding columns
         TreeColumn serverColumn = new TreeColumn( tree, SWT.SINGLE );
-        serverColumn.setText( Messages.getString("ServersView.server") ); //$NON-NLS-1$
+        serverColumn.setText( Messages.getString( "ServersView.server" ) ); //$NON-NLS-1$
         serverColumn.setWidth( columnWidths[0] );
         serverColumn.addSelectionListener( getHeaderListener( 0 ) );
         tree.setSortColumn( serverColumn );
         tree.setSortDirection( SWT.UP );
 
         TreeColumn stateColumn = new TreeColumn( tree, SWT.SINGLE );
-        stateColumn.setText( Messages.getString("ServersView.state") ); //$NON-NLS-1$
+        stateColumn.setText( Messages.getString( "ServersView.state" ) ); //$NON-NLS-1$
         stateColumn.setWidth( columnWidths[1] );
         stateColumn.addSelectionListener( getHeaderListener( 1 ) );
 
@@ -304,7 +304,7 @@ public class ServersView extends ViewPart
         {
             public void menuAboutToShow( IMenuManager manager )
             {
-                MenuManager newManager = new MenuManager( Messages.getString("ServersView.new") ); //$NON-NLS-1$
+                MenuManager newManager = new MenuManager( Messages.getString( "ServersView.new" ) ); //$NON-NLS-1$
                 newManager.add( newServer );
                 manager.add( newManager );
                 manager.add( openConfiguration );
@@ -315,7 +315,7 @@ public class ServersView extends ViewPart
                 manager.add( run );
                 manager.add( stop );
                 manager.add( new Separator() );
-                MenuManager ldapBrowserManager = new MenuManager( Messages.getString("ServersView.ldapBrowser") ); //$NON-NLS-1$
+                MenuManager ldapBrowserManager = new MenuManager( Messages.getString( "ServersView.ldapBrowser" ) ); //$NON-NLS-1$
                 ldapBrowserManager.add( createConnection );
                 manager.add( ldapBrowserManager );
                 manager.add( new Separator() );

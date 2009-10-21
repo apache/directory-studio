@@ -409,7 +409,7 @@ public class RunAction extends Action implements IWorkbenchWindowActionDelegate
 
         return alreadyInUseProtocolPortsList.toArray( new String[0] );
     }
-    
+
 
     /**
      * Gets an array of String containing the ports and their associated 
