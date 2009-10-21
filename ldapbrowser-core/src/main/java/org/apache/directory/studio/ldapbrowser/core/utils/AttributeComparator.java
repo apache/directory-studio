@@ -205,5 +205,4 @@ public class AttributeComparator implements Comparator<Object>
             : s2.compareToIgnoreCase( s1 );
     }
 
-
 }

@@ -215,7 +215,7 @@ public class InitializeChildrenRunnable implements StudioBulkRunnableWithProgres
         SearchContinuation[] scs = search.getSearchContinuations();
 
         // fill children in search result
-        if ( (srs != null && srs.length > 0) || (scs != null && scs.length > 0) )
+        if ( ( srs != null && srs.length > 0 ) || ( scs != null && scs.length > 0 ) )
         {
             // clearing old children before filling new children is
             // necessary to handle aliases and referrals.
@@ -223,7 +223,7 @@ public class InitializeChildrenRunnable implements StudioBulkRunnableWithProgres
 
             do
             {
-                if(srs != null)
+                if ( srs != null )
                 {
                     for ( ISearchResult searchResult : srs )
                     {
@@ -231,8 +231,8 @@ public class InitializeChildrenRunnable implements StudioBulkRunnableWithProgres
                     }
                     srs = null;
                 }
-                
-                if(scs != null)
+
+                if ( scs != null )
                 {
                     for ( SearchContinuation searchContinuation : scs )
                     {
@@ -317,7 +317,8 @@ public class InitializeChildrenRunnable implements StudioBulkRunnableWithProgres
         }
 
         // get aliases and referrals
-        ISearch aliasOrReferralSearch = createSearch( parent, null, false, parent.isFetchAliases(), parent.isFetchReferrals() );
+        ISearch aliasOrReferralSearch = createSearch( parent, null, false, parent.isFetchAliases(), parent
+            .isFetchReferrals() );
         if ( parent.isFetchAliases() || parent.isFetchReferrals() )
         {
             executeSubSearch( parent, aliasOrReferralSearch, monitor );
@@ -347,8 +348,8 @@ public class InitializeChildrenRunnable implements StudioBulkRunnableWithProgres
             }
             for ( SearchContinuation searchContinuation : subScs )
             {
-                ContinuedSearchResultEntry entry = new ContinuedSearchResultEntry( parent
-                    .getBrowserConnection(), searchContinuation.getUrl().getDn() );
+                ContinuedSearchResultEntry entry = new ContinuedSearchResultEntry( parent.getBrowserConnection(),
+                    searchContinuation.getUrl().getDn() );
                 entry.setUnresolved( searchContinuation.getUrl() );
                 parent.addChild( entry );
             }
@@ -424,11 +425,11 @@ public class InitializeChildrenRunnable implements StudioBulkRunnableWithProgres
 
     static void clearCaches( IEntry entry, boolean purgeAllCaches )
     {
-        if(entry instanceof IContinuation)
+        if ( entry instanceof IContinuation )
         {
             return;
         }
-        
+
         // clear the parent-child relationship, recursively
         IEntry[] children = entry.getChildren();
         if ( children != null )

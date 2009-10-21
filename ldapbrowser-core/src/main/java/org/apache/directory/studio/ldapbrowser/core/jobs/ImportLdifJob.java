@@ -287,7 +287,7 @@ public class ImportLdifJob extends AbstractNotificationJob
                             IEntry entry = browserConnection.getEntryFromCache( dn );
                             LdapDN parentDn = DnUtils.getParent( dn );
                             IEntry parentEntry = null;
-                            while(parentEntry == null && parentDn != null)
+                            while ( parentEntry == null && parentDn != null )
                             {
                                 parentEntry = browserConnection.getEntryFromCache( parentDn );
                                 parentDn = DnUtils.getParent( parentDn );

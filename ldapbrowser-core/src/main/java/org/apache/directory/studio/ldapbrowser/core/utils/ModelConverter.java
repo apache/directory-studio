@@ -211,7 +211,7 @@ public class ModelConverter
     {
         LdifContentRecord record = LdifContentRecord.create( entry.getDn().getUpName() );
 
-        if(entry.getAttributes() != null)
+        if ( entry.getAttributes() != null )
         {
             for ( IAttribute attribute : entry.getAttributes() )
             {

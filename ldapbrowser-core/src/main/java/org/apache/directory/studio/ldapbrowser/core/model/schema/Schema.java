@@ -81,12 +81,12 @@ public class Schema
         DUMMY_LDAP_SYNTAX.setDescription( "" );
     }
 
-    public static final HashMap<String,List<String>> DUMMY_EXTENSIONS;
+    public static final HashMap<String, List<String>> DUMMY_EXTENSIONS;
     static
     {
         DUMMY_EXTENSIONS = new HashMap<String, List<String>>();
         List<String> dummyValues = new ArrayList<String>();
-        dummyValues.add("DUMMY");
+        dummyValues.add( "DUMMY" );
         DUMMY_EXTENSIONS.put( "X-DUMMY", dummyValues );
     }
 
@@ -796,7 +796,8 @@ public class Schema
      */
     public Collection<MatchingRuleUseDescription> getMatchingRuleUseDescriptions()
     {
-        Set<MatchingRuleUseDescription> set = new HashSet<MatchingRuleUseDescription>( mrudMapByNameOrNumericOid.values() );
+        Set<MatchingRuleUseDescription> set = new HashSet<MatchingRuleUseDescription>( mrudMapByNameOrNumericOid
+            .values() );
         return set;
     }
 

@@ -167,8 +167,7 @@ public interface IAttribute extends Serializable, IAdaptable, AttributePropertyP
      *                 if the value is null or if the value's attribute
      *                 isn't this attribute.
      */
-    public abstract void modifyValue( IValue oldValue, IValue newValue )
-        throws IllegalArgumentException;
+    public abstract void modifyValue( IValue oldValue, IValue newValue ) throws IllegalArgumentException;
 
 
     /**

@@ -70,7 +70,7 @@ public class Password
 
     /** The constant used for unsupported hash methods */
     public static final String HASH_METHOD_UNSUPPORTED = BrowserCoreMessages.model__unsupported_hash;
-    
+
     /** The constant used for invalid password hashes */
     public static final String HASH_METHOD_INVALID = BrowserCoreMessages.model__invalid_hash;
 

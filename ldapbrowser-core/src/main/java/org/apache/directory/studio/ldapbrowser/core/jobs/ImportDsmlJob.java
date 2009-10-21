@@ -402,13 +402,12 @@ public class ImportDsmlJob extends AbstractNotificationJob
             delResponseDsml.getLdapResult().setMatchedDN( request.getEntry() );
             batchResponseDsml.addResponse( delResponseDsml );
         }
-        
+
         // Update cached entries
         LdapDN dn = request.getEntry();
         IEntry e = browserConnection.getEntryFromCache( dn );
         LdapDN parentDn = DnUtils.getParent( dn );
-        IEntry parentEntry = parentDn != null ? browserConnection.getEntryFromCache( parentDn )
-            : null;
+        IEntry parentEntry = parentDn != null ? browserConnection.getEntryFromCache( parentDn ) : null;
         if ( e != null )
         {
             e.setAttributesInitialized( false );
@@ -479,7 +478,7 @@ public class ImportDsmlJob extends AbstractNotificationJob
             modifyResponseDsml.getLdapResult().setMatchedDN( request.getObject() );
             batchResponseDsml.addResponse( modifyResponseDsml );
         }
-        
+
         LdapDN dn = request.getObject();
         IEntry e = browserConnection.getEntryFromCache( dn );
         if ( e != null )
@@ -536,13 +535,12 @@ public class ImportDsmlJob extends AbstractNotificationJob
             modDNResponseDsml.getLdapResult().setMatchedDN( request.getEntry() );
             batchResponseDsml.addResponse( modDNResponseDsml );
         }
-        
+
         // Update cached entries
         LdapDN dn = request.getEntry();
         IEntry e = browserConnection.getEntryFromCache( dn );
         LdapDN parentDn = DnUtils.getParent( dn );
-        IEntry parentEntry = parentDn != null ? browserConnection.getEntryFromCache( parentDn )
-            : null;
+        IEntry parentEntry = parentDn != null ? browserConnection.getEntryFromCache( parentDn ) : null;
         if ( e != null )
         {
             e.setAttributesInitialized( false );

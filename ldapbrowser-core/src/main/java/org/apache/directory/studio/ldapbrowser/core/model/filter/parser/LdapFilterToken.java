@@ -77,7 +77,7 @@ public class LdapFilterToken implements Comparable<LdapFilterToken>
 
     /** The token identifier for the present filter type =* */
     public static final int PRESENT = 45;
-    
+
     /** The token identifier for the substring filter type =* */
     public static final int SUBSTRING = 46;
 

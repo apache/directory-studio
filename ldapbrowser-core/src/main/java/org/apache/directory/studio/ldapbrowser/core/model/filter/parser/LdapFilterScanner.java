@@ -98,7 +98,6 @@ public class LdapFilterScanner
     }
 
 
-    
     /**
      * Resets this scanner.
      * 
@@ -123,7 +122,6 @@ public class LdapFilterScanner
     }
 
 
-    
     /**
      * Increments the position counter and gets
      * the character at that positon.
@@ -225,7 +223,7 @@ public class LdapFilterScanner
                 return new LdapFilterToken( this.lastTokenType, "(", pos );
             case ')':
                 if ( lastTokenType != LdapFilterToken.EQUAL && lastTokenType != LdapFilterToken.GREATER
-                    && lastTokenType != LdapFilterToken.LESS && lastTokenType != LdapFilterToken.APROX 
+                    && lastTokenType != LdapFilterToken.LESS && lastTokenType != LdapFilterToken.APROX
                     && lastTokenType != LdapFilterToken.SUBSTRING )
                 {
                     this.lastTokenType = LdapFilterToken.RPAR;
@@ -292,7 +290,7 @@ public class LdapFilterScanner
                     {
                         prevChar();
                     }
-                    
+
                     // substring or equal
                     // read till ) or eof, if we found an * we have an substring
                     boolean asteriskFound = false;
@@ -300,21 +298,21 @@ public class LdapFilterScanner
                     int count = 1;
                     while ( c != ')' && c != '\u0000' )
                     {
-                        if( c == '*' )
+                        if ( c == '*' )
                         {
                             asteriskFound = true;
                             break;
                         }
-                        
+
                         c = nextNonLinebreakChar();
                         count++;
                     }
-                    while( count > 0 )
+                    while ( count > 0 )
                     {
                         prevNonLinebreakChar();
                         count--;
                     }
-                    if( asteriskFound )
+                    if ( asteriskFound )
                     {
                         this.lastTokenType = LdapFilterToken.SUBSTRING;
                         return new LdapFilterToken( this.lastTokenType, "=", pos );
@@ -381,38 +379,33 @@ public class LdapFilterScanner
                 prevChar();
                 prevChar();
                 if ( ( lastTokenType == LdapFilterToken.LPAR || lastTokenType == LdapFilterToken.EXTENSIBLE_ATTRIBUTE )
-                    &&
-                    ( 
-//                        ( t1 == ':' && t2 != '=' )
-//                        ||
-//                        ( ( t1 == 'd' || t1 == 'D' ) && t2 == ':' && t3 == ':' )
-//                        ||
-                        ( ( t1 == 'd' || t1 == 'D' )  && ( t2 == 'n' || t2 == 'N' ) && ( t3 == ':' ) )
-                    )
-                    )
+                    && (
+                    //                        ( t1 == ':' && t2 != '=' )
+                    //                        ||
+                    //                        ( ( t1 == 'd' || t1 == 'D' ) && t2 == ':' && t3 == ':' )
+                    //                        ||
+                    ( ( t1 == 'd' || t1 == 'D' ) && ( t2 == 'n' || t2 == 'N' ) && ( t3 == ':' ) ) ) )
                 {
                     this.lastTokenType = LdapFilterToken.EXTENSIBLE_DNATTR_COLON;
                     return new LdapFilterToken( this.lastTokenType, ":", pos );
                 }
                 else if ( ( lastTokenType == LdapFilterToken.EXTENSIBLE_ATTRIBUTE
                     || lastTokenType == LdapFilterToken.EXTENSIBLE_DNATTR
-                    || lastTokenType == LdapFilterToken.EXTENSIBLE_MATCHINGRULEOID 
-                    || lastTokenType == LdapFilterToken.EXTENSIBLE_MATCHINGRULEOID_COLON )
+                    || lastTokenType == LdapFilterToken.EXTENSIBLE_MATCHINGRULEOID || lastTokenType == LdapFilterToken.EXTENSIBLE_MATCHINGRULEOID_COLON )
                     && t1 == '=' )
                 {
                     this.lastTokenType = LdapFilterToken.EXTENSIBLE_EQUALS_COLON;
                     return new LdapFilterToken( this.lastTokenType, ":", pos );
                 }
                 else if ( ( lastTokenType == LdapFilterToken.LPAR
-                    || lastTokenType == LdapFilterToken.EXTENSIBLE_ATTRIBUTE 
-                    || lastTokenType == LdapFilterToken.EXTENSIBLE_DNATTR 
-                    || lastTokenType == LdapFilterToken.EXTENSIBLE_DNATTR_COLON ) )
+                    || lastTokenType == LdapFilterToken.EXTENSIBLE_ATTRIBUTE
+                    || lastTokenType == LdapFilterToken.EXTENSIBLE_DNATTR || lastTokenType == LdapFilterToken.EXTENSIBLE_DNATTR_COLON ) )
                 {
                     this.lastTokenType = LdapFilterToken.EXTENSIBLE_MATCHINGRULEOID_COLON;
                     return new LdapFilterToken( this.lastTokenType, ":", pos );
                 }
                 break;
-                
+
         } // switch
         prevChar();
 
@@ -434,7 +427,7 @@ public class LdapFilterScanner
             if ( sb.length() > 0 )
             {
                 boolean isExtensible = ( c == ':' );
-                if(isExtensible)
+                if ( isExtensible )
                 {
                     this.lastTokenType = LdapFilterToken.EXTENSIBLE_ATTRIBUTE;
                     return new LdapFilterToken( this.lastTokenType, sb.toString(), pos - sb.length() + 1 );
@@ -477,7 +470,8 @@ public class LdapFilterScanner
                     count--;
                 }
             }
-            else //if ( sb.length() > 0 )
+            else
+            //if ( sb.length() > 0 )
             {
                 this.lastTokenType = LdapFilterToken.VALUE;
                 return new LdapFilterToken( this.lastTokenType, sb.toString(), pos - sb.length() + 1 );
@@ -525,17 +519,15 @@ public class LdapFilterScanner
             char t2 = nextChar();
             char t3 = nextChar();
             prevChar();
-            if ( ( t1 == 'd' || t1 == 'D' )
-                && ( t2 == 'n' || t2 == 'N' )
-                && ( t3 == ':' || t3 == '\u0000' ) )
+            if ( ( t1 == 'd' || t1 == 'D' ) && ( t2 == 'n' || t2 == 'N' ) && ( t3 == ':' || t3 == '\u0000' ) )
             {
                 this.lastTokenType = LdapFilterToken.EXTENSIBLE_DNATTR;
-                return new LdapFilterToken( this.lastTokenType, ""+t1+t2, pos - 1 );
+                return new LdapFilterToken( this.lastTokenType, "" + t1 + t2, pos - 1 );
             }
             prevChar();
             prevChar();
         }
-        
+
         // check extensible matchingrule
         if ( lastTokenType == LdapFilterToken.EXTENSIBLE_MATCHINGRULEOID_COLON )
         {
@@ -557,7 +549,7 @@ public class LdapFilterScanner
                 return new LdapFilterToken( this.lastTokenType, sb.toString(), pos - sb.length() + 1 );
             }
         }
-        
+
         // no match
         StringBuffer sb = new StringBuffer();
         c = nextChar();

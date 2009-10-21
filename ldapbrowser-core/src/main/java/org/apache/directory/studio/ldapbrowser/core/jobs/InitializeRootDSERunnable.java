@@ -181,8 +181,8 @@ public class InitializeRootDSERunnable implements StudioBulkRunnableWithProgress
 
         // load all user attributes
         search = new Search( null, browserConnection, LdapDN.EMPTY_LDAPDN, ISearch.FILTER_TRUE, new String[]
-            { SchemaConstants.ALL_USER_ATTRIBUTES }, SearchScope.OBJECT, 0, 0, Connection.AliasDereferencingMethod.NEVER,
-            Connection.ReferralHandlingMethod.IGNORE, false, null );
+            { SchemaConstants.ALL_USER_ATTRIBUTES }, SearchScope.OBJECT, 0, 0,
+            Connection.AliasDereferencingMethod.NEVER, Connection.ReferralHandlingMethod.IGNORE, false, null );
         SearchRunnable.searchAndUpdateModel( browserConnection, search, monitor );
 
         // the list of entries under the Root DSE

@@ -107,8 +107,8 @@ public class BookmarkManager implements Serializable
         }
 
         bookmarkList.add( index, bookmark );
-        EventRegistry.fireBookmarkUpdated( new BookmarkUpdateEvent( bookmark, BookmarkUpdateEvent.Detail.BOOKMARK_ADDED ),
-            this );
+        EventRegistry.fireBookmarkUpdated(
+            new BookmarkUpdateEvent( bookmark, BookmarkUpdateEvent.Detail.BOOKMARK_ADDED ), this );
     }
 
 
@@ -157,8 +157,8 @@ public class BookmarkManager implements Serializable
     public void removeBookmark( IBookmark bookmark )
     {
         bookmarkList.remove( bookmark );
-        EventRegistry.fireBookmarkUpdated( new BookmarkUpdateEvent( bookmark, BookmarkUpdateEvent.Detail.BOOKMARK_REMOVED ),
-            this );
+        EventRegistry.fireBookmarkUpdated( new BookmarkUpdateEvent( bookmark,
+            BookmarkUpdateEvent.Detail.BOOKMARK_REMOVED ), this );
     }
 
 

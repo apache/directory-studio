@@ -172,7 +172,7 @@ public class SearchManager implements Serializable
      */
     public void removeSearch( ISearch search )
     {
-        if(search == quickSearch)
+        if ( search == quickSearch )
         {
             quickSearch = null;
         }

@@ -20,6 +20,7 @@
 
 package org.apache.directory.studio.ldapbrowser.core.events;
 
+
 import java.util.EventListener;
 
 import org.apache.directory.studio.ldapbrowser.core.model.IBookmark;

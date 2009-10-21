@@ -34,11 +34,11 @@ public class BrowserCoreMessages extends NLS
 {
     private static final String BUNDLE_NAME = "org.apache.directory.studio.ldapbrowser.core.browsercoremessages"; //$NON-NLS-1$
 
-	
-	/**
-	 * Creates a new instance of BrowserCoreMessages.
-	 */
-	private BrowserCoreMessages()
+
+    /**
+     * Creates a new instance of BrowserCoreMessages.
+     */
+    private BrowserCoreMessages()
     {
     }
 
@@ -57,7 +57,7 @@ public class BrowserCoreMessages extends NLS
     public static String event__dn_attributes_initialized;
 
     public static String event__dn_children_initialized;
-    
+
     public static String event__bulk_modification;
 
     public static String event__empty_value_added_to_att_at_dn;
@@ -179,7 +179,7 @@ public class BrowserCoreMessages extends NLS
     public static String ldif__import_into_host_port_failed_on_date;
 
     public static String ldif__error_msg;
-    
+
     public static String dsml__n_errors_see_responsefile;
 
     public static String model__no_connection;
@@ -293,7 +293,7 @@ public class BrowserCoreMessages extends NLS
     public static String jobs__export_ldif_task;
 
     public static String jobs__export_ldif_error;
-    
+
     public static String jobs__export_dsml_name;
 
     public static String jobs__export_dsml_task;
@@ -323,7 +323,7 @@ public class BrowserCoreMessages extends NLS
     public static String jobs__import_ldif_task;
 
     public static String jobs__import_ldif_error;
-    
+
     public static String jobs__import_dsml_name;
 
     public static String jobs__import_dsml_task;

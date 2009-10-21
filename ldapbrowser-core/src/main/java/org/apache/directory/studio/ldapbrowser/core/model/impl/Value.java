@@ -307,7 +307,7 @@ public class Value implements IValue
     public boolean isRdnPart()
     {
         Iterator<AttributeTypeAndValue> atavIterator = getAttribute().getEntry().getRdn().iterator();
-        while(atavIterator.hasNext())
+        while ( atavIterator.hasNext() )
         {
             AttributeTypeAndValue atav = atavIterator.next();
             if ( getAttribute().getDescription().equals( atav.getUpType() )

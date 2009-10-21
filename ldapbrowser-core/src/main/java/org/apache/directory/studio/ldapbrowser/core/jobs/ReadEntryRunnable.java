@@ -157,7 +157,8 @@ public class ReadEntryRunnable implements StudioBulkRunnableWithProgress
      * 
      * @return the read entry
      */
-    static IEntry getEntry( IBrowserConnection browserConnection, LdapDN dn, List<StudioControl> controls, StudioProgressMonitor monitor )
+    static IEntry getEntry( IBrowserConnection browserConnection, LdapDN dn, List<StudioControl> controls,
+        StudioProgressMonitor monitor )
     {
         try
         {

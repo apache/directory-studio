@@ -70,7 +70,8 @@ import org.apache.directory.studio.ldapbrowser.core.model.schema.Schema;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class BrowserConnectionManager implements ConnectionUpdateListener, BrowserConnectionUpdateListener, SearchUpdateListener, BookmarkUpdateListener
+public class BrowserConnectionManager implements ConnectionUpdateListener, BrowserConnectionUpdateListener,
+    SearchUpdateListener, BookmarkUpdateListener
 {
 
     /** The list of connections. */
@@ -119,7 +120,8 @@ public class BrowserConnectionManager implements ConnectionUpdateListener, Brows
      */
     public static final String getBrowserConnectionStoreFileName()
     {
-        String filename = BrowserCorePlugin.getDefault().getStateLocation().append( "browserconnections.xml" ).toOSString(); //$NON-NLS-1$
+        String filename = BrowserCorePlugin.getDefault().getStateLocation()
+            .append( "browserconnections.xml" ).toOSString(); //$NON-NLS-1$
         File file = new File( filename );
         if ( !file.exists() )
         {
@@ -182,8 +184,8 @@ public class BrowserConnectionManager implements ConnectionUpdateListener, Brows
         Connection connection = ConnectionCorePlugin.getDefault().getConnectionManager().getConnectionByName( name );
         return getBrowserConnection( connection );
     }
-    
-    
+
+
     /**
      * Gets a browser connection from its underlying connection.
      *
@@ -344,7 +346,8 @@ public class BrowserConnectionManager implements ConnectionUpdateListener, Brows
         // To avoid a corrupt file, save object to a temp file first 
         try
         {
-            BrowserConnectionIO.save( new FileOutputStream( getBrowserConnectionStoreFileName() + "-temp" ), connectionMap );
+            BrowserConnectionIO.save( new FileOutputStream( getBrowserConnectionStoreFileName() + "-temp" ),
+                connectionMap );
         }
         catch ( IOException e )
         {
@@ -370,34 +373,34 @@ public class BrowserConnectionManager implements ConnectionUpdateListener, Brows
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        
-//        Object[][] object = new Object[connectionMap.size()][3];
-//
-//        Iterator<IBrowserConnection> connectionIterator = connectionMap.values().iterator();
-//        for ( int i = 0; connectionIterator.hasNext(); i++ )
-//        {
-//            IBrowserConnection browserConnection = connectionIterator.next();
-//            
-//            ISearch[] searches = browserConnection.getSearchManager().getSearches();
-//            SearchParameter[] searchParameters = new SearchParameter[searches.length];
-//            for ( int k = 0; k < searches.length; k++ )
-//            {
-//                searchParameters[k] = searches[k].getSearchParameter();
-//            }
-//            
-//            IBookmark[] bookmarks = browserConnection.getBookmarkManager().getBookmarks();
-//            BookmarkParameter[] bookmarkParameters = new BookmarkParameter[bookmarks.length];
-//            for ( int k = 0; k < bookmarks.length; k++ )
-//            {
-//                bookmarkParameters[k] = bookmarks[k].getBookmarkParameter();
-//            }
-//
-//            object[i][0] = browserConnection.getConnection().getId();
-//            object[i][1] = searchParameters;
-//            object[i][2] = bookmarkParameters;
-//        }
-//
-//        save( object, getBrowserConnectionStoreFileName() );
+
+        //        Object[][] object = new Object[connectionMap.size()][3];
+        //
+        //        Iterator<IBrowserConnection> connectionIterator = connectionMap.values().iterator();
+        //        for ( int i = 0; connectionIterator.hasNext(); i++ )
+        //        {
+        //            IBrowserConnection browserConnection = connectionIterator.next();
+        //            
+        //            ISearch[] searches = browserConnection.getSearchManager().getSearches();
+        //            SearchParameter[] searchParameters = new SearchParameter[searches.length];
+        //            for ( int k = 0; k < searches.length; k++ )
+        //            {
+        //                searchParameters[k] = searches[k].getSearchParameter();
+        //            }
+        //            
+        //            IBookmark[] bookmarks = browserConnection.getBookmarkManager().getBookmarks();
+        //            BookmarkParameter[] bookmarkParameters = new BookmarkParameter[bookmarks.length];
+        //            for ( int k = 0; k < bookmarks.length; k++ )
+        //            {
+        //                bookmarkParameters[k] = bookmarks[k].getBookmarkParameter();
+        //            }
+        //
+        //            object[i][0] = browserConnection.getConnection().getId();
+        //            object[i][1] = searchParameters;
+        //            object[i][2] = bookmarkParameters;
+        //        }
+        //
+        //        save( object, getBrowserConnectionStoreFileName() );
     }
 
 
@@ -434,7 +437,7 @@ public class BrowserConnectionManager implements ConnectionUpdateListener, Brows
             Connection connection = connections[i];
             BrowserConnection browserConnection = new BrowserConnection( connection );
             connectionMap.put( connection.getId(), browserConnection );
-            
+
             try
             {
                 String schemaFilename = getSchemaCacheFileName( connection.getId() );
@@ -447,7 +450,7 @@ public class BrowserConnectionManager implements ConnectionUpdateListener, Brows
             {
             }
         }
-        
+
         // java.beans.XMLDecoder
         try
         {
@@ -456,20 +459,21 @@ public class BrowserConnectionManager implements ConnectionUpdateListener, Brows
             if ( file.exists() )
             {
                 String oldContent = FileUtils.readFileToString( file, "UTF-8" );
-                if(!oldContent.contains( "java.beans.XMLDecoder" ))
+                if ( !oldContent.contains( "java.beans.XMLDecoder" ) )
                 {
                     // new file format
                     try
                     {
-                        BrowserConnectionIO.load( new FileInputStream( getBrowserConnectionStoreFileName() ), connectionMap );
+                        BrowserConnectionIO.load( new FileInputStream( getBrowserConnectionStoreFileName() ),
+                            connectionMap );
                     }
                     catch ( Exception e )
                     {
                         // If loading failed, try with temp file
                         try
                         {
-                            BrowserConnectionIO
-                                .load( new FileInputStream( getBrowserConnectionStoreFileName() + "-temp" ), connectionMap );
+                            BrowserConnectionIO.load( new FileInputStream( getBrowserConnectionStoreFileName()
+                                + "-temp" ), connectionMap );
                         }
                         catch ( FileNotFoundException e1 )
                         {
@@ -483,7 +487,7 @@ public class BrowserConnectionManager implements ConnectionUpdateListener, Brows
                         }
                     }
                 }
-                else 
+                else
                 {
                     // old file format
                     Object[][] object = ( Object[][] ) this.load( getBrowserConnectionStoreFileName() );
@@ -536,8 +540,7 @@ public class BrowserConnectionManager implements ConnectionUpdateListener, Brows
         catch ( Exception e )
         {
         }
-        
-        
+
     }
 
 
@@ -584,7 +587,6 @@ public class BrowserConnectionManager implements ConnectionUpdateListener, Brows
             }
         }
     }
-
 
     class TypeSafeEnumPersistenceDelegate extends PersistenceDelegate
     {
