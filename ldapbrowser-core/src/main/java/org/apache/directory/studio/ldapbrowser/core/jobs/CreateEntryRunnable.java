@@ -21,13 +21,18 @@
 package org.apache.directory.studio.ldapbrowser.core.jobs;
 
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.naming.directory.Attributes;
 import javax.naming.directory.BasicAttributes;
+import javax.naming.ldap.Control;
+import javax.naming.ldap.ManageReferralControl;
 
 import org.apache.directory.studio.connection.core.Connection;
+import org.apache.directory.studio.connection.core.StudioControl;
 import org.apache.directory.studio.connection.core.jobs.StudioBulkRunnableWithProgress;
 import org.apache.directory.studio.connection.core.jobs.StudioProgressMonitor;
-import org.apache.directory.studio.connection.core.Connection.ReferralHandlingMethod;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.ldapbrowser.core.events.EntryAddedEvent;
 import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
@@ -113,7 +118,13 @@ public class CreateEntryRunnable implements StudioBulkRunnableWithProgress
 
         if ( !monitor.errorsReported() )
         {
-            createdEntry = ReadEntryRunnable.getEntry( browserConnection, entryToCreate.getDn(), monitor );
+            List<StudioControl> controls = new ArrayList<StudioControl>();
+            if ( entryToCreate.isReferral() )
+            {
+                controls.add( StudioControl.MANAGEDSAIT_CONTROL );
+            }
+
+            createdEntry = ReadEntryRunnable.getEntry( browserConnection, entryToCreate.getDn(), controls, monitor );
             createdEntry.setHasChildrenHint( false );
 
             // set some flags at the parent
@@ -194,12 +205,16 @@ public class CreateEntryRunnable implements StudioBulkRunnableWithProgress
             }
         }
 
-        // determine referrals handling method
-        ReferralHandlingMethod referralsHandlingMethod = entryToCreate.isReferral() ? ReferralHandlingMethod.MANAGE
-            : ReferralHandlingMethod.FOLLOW;
+        // ManageDsaIT control
+        Control[] controls = null;
+        if ( entryToCreate.isReferral() )
+        {
+            controls = new Control[]
+                { new ManageReferralControl( false ) };
+        }
 
-        browserConnection.getConnection().getJNDIConnectionWrapper().createEntry( dn, jndiAttributes,
-            referralsHandlingMethod, null, monitor, null );
+        browserConnection.getConnection().getJNDIConnectionWrapper().createEntry( dn, jndiAttributes, controls,
+            monitor, null );
     }
 
 }

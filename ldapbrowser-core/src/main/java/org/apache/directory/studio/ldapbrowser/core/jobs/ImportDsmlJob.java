@@ -33,7 +33,7 @@ import javax.naming.NamingException;
 import javax.naming.directory.DirContext;
 import javax.naming.directory.ModificationItem;
 import javax.naming.directory.SearchControls;
-import javax.naming.ldap.ExtendedRequest;
+import javax.naming.ldap.Control;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.directory.shared.dsmlv2.Dsmlv2Parser;
@@ -46,7 +46,9 @@ import org.apache.directory.shared.dsmlv2.reponse.ExtendedResponseDsml;
 import org.apache.directory.shared.dsmlv2.reponse.ModDNResponseDsml;
 import org.apache.directory.shared.dsmlv2.reponse.ModifyResponseDsml;
 import org.apache.directory.shared.dsmlv2.request.BatchRequest;
+import org.apache.directory.shared.ldap.codec.ControlCodec;
 import org.apache.directory.shared.ldap.codec.LdapConstants;
+import org.apache.directory.shared.ldap.codec.LdapMessageCodec;
 import org.apache.directory.shared.ldap.codec.LdapResultCodec;
 import org.apache.directory.shared.ldap.codec.add.AddRequestCodec;
 import org.apache.directory.shared.ldap.codec.bind.BindRequestCodec;
@@ -77,6 +79,8 @@ import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.SearchParameter;
+
+import com.sun.jndi.ldap.BasicControl;
 
 
 /**
@@ -321,7 +325,7 @@ public class ImportDsmlJob extends AbstractNotificationJob
         // Executing the add request
         Entry entry = request.getEntry();
         browserConnection.getConnection().getJNDIConnectionWrapper().createEntry( entry.getDn().getUpName(),
-            AttributeUtils.toAttributes( entry ), ReferralHandlingMethod.IGNORE, null, monitor, null );
+            AttributeUtils.toAttributes( entry ), getControls( request ), monitor, null );
 
         // Creating the response
         if ( batchResponseDsml != null )
@@ -388,7 +392,7 @@ public class ImportDsmlJob extends AbstractNotificationJob
     {
         // Executing the del request
         browserConnection.getConnection().getJNDIConnectionWrapper().deleteEntry( request.getEntry().getUpName(),
-            ReferralHandlingMethod.IGNORE, null, monitor, null );
+            getControls( request ), monitor, null );
 
         // Creating the response
         if ( batchResponseDsml != null )
@@ -465,7 +469,7 @@ public class ImportDsmlJob extends AbstractNotificationJob
 
         // Executing the modify request
         browserConnection.getConnection().getJNDIConnectionWrapper().modifyEntry( request.getObject().getUpName(),
-            modificationItems.toArray( new ModificationItem[0] ), ReferralHandlingMethod.IGNORE, null, monitor, null );
+            modificationItems.toArray( new ModificationItem[0] ), getControls( request ), monitor, null );
 
         // Creating the response
         if ( batchResponseDsml != null )
@@ -522,8 +526,7 @@ public class ImportDsmlJob extends AbstractNotificationJob
     {
         // Executing the modify DN request
         browserConnection.getConnection().getJNDIConnectionWrapper().renameEntry( request.getEntry().getUpName(),
-            request.getNewRDN().getUpName(), request.isDeleteOldRDN(), ReferralHandlingMethod.IGNORE, null, monitor,
-            null );
+            request.getNewRDN().getUpName(), request.isDeleteOldRDN(), getControls( request ), monitor, null );
 
         // Creating the response
         if ( batchResponseDsml != null )
@@ -580,7 +583,8 @@ public class ImportDsmlJob extends AbstractNotificationJob
             // [Optimization] We're only searching if we need to produce a response
             StudioNamingEnumeration ne = browserConnection.getConnection().getJNDIConnectionWrapper().search(
                 request.getBaseObject().getUpName(), request.getFilter().toString(), getSearchControls( request ),
-                getAliasDereferencingMethod( request ), ReferralHandlingMethod.IGNORE, null, monitor, null );
+                getAliasDereferencingMethod( request ), ReferralHandlingMethod.IGNORE, getControls( request ), monitor,
+                null );
 
             SearchParameter sp = new SearchParameter();
             sp.setReferralsHandlingMethod( browserConnection.getReferralsHandlingMethod() );
@@ -667,6 +671,24 @@ public class ImportDsmlJob extends AbstractNotificationJob
             default:
                 return AliasDereferencingMethod.NEVER;
         }
+    }
+
+
+    private Control[] getControls( LdapMessageCodec request )
+    {
+        List<ControlCodec> controls = request.getControls();
+        if ( controls != null )
+        {
+            List<Control> jndiControls = new ArrayList<Control>();
+            for ( ControlCodec control : controls )
+            {
+                Control jndiControl = new BasicControl( control.getControlType(), control.getCriticality(), control
+                    .getEncodedValue() );
+                jndiControls.add( jndiControl );
+            }
+            return jndiControls.toArray( new Control[jndiControls.size()] );
+        }
+        return null;
     }
 
 

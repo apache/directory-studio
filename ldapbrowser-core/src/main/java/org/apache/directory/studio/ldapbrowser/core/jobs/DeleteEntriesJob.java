@@ -35,9 +35,11 @@ import javax.naming.directory.SearchControls;
 import javax.naming.directory.SearchResult;
 import javax.naming.ldap.BasicControl;
 import javax.naming.ldap.Control;
+import javax.naming.ldap.ManageReferralControl;
 
 import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.studio.connection.core.Connection;
+import org.apache.directory.studio.connection.core.StudioControl;
 import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
 import org.apache.directory.studio.connection.core.Connection.ReferralHandlingMethod;
 import org.apache.directory.studio.connection.core.jobs.StudioProgressMonitor;
@@ -49,7 +51,6 @@ import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearchResult;
-import org.apache.directory.studio.ldapbrowser.core.model.StudioControl;
 import org.apache.directory.studio.ldapbrowser.core.utils.JNDIUtils;
 
 
@@ -147,8 +148,8 @@ public class DeleteEntriesJob extends AbstractNotificationJob
 
             // delete from directory
             int errorStatusSize1 = monitor.getErrorStatus( "" ).getChildren().length; //$NON-NLS-1$
-            num = optimisticDeleteEntryRecursive( browserConnection, entryToDelete.getDn(), useTreeDeleteControl, num,
-                dummyMonitor, monitor );
+            num = optimisticDeleteEntryRecursive( browserConnection, entryToDelete.getDn(), entryToDelete.isReferral(),
+                useTreeDeleteControl, num, dummyMonitor, monitor );
             int errorStatusSize2 = monitor.getErrorStatus( "" ).getChildren().length; //$NON-NLS-1$
 
             if ( !monitor.isCanceled() )
@@ -215,6 +216,7 @@ public class DeleteEntriesJob extends AbstractNotificationJob
      * 
      * @param browserConnection the browser connection
      * @param dn the DN to delete
+     * @param useManageDsaItControl true to use the ManageDsaIT control
      * @param useTreeDeleteControl true to use the tree delete control
      * @param numberOfDeletedEntries the number of deleted entries
      * @param dummyMonitor the dummy monitor
@@ -223,12 +225,12 @@ public class DeleteEntriesJob extends AbstractNotificationJob
      * @return the cumulative number of deleted entries
      */
     static int optimisticDeleteEntryRecursive( IBrowserConnection browserConnection, LdapDN dn,
-        boolean useTreeDeleteControl, int numberOfDeletedEntries, StudioProgressMonitor dummyMonitor,
-        StudioProgressMonitor monitor )
+        boolean useManageDsaItControl, boolean useTreeDeleteControl, int numberOfDeletedEntries,
+        StudioProgressMonitor dummyMonitor, StudioProgressMonitor monitor )
     {
         // try to delete entry
         dummyMonitor.reset();
-        deleteEntry( browserConnection, dn, useTreeDeleteControl, dummyMonitor );
+        deleteEntry( browserConnection, dn, useManageDsaItControl, useTreeDeleteControl, dummyMonitor );
 
         if ( !dummyMonitor.errorsReported() )
         {
@@ -241,9 +243,7 @@ public class DeleteEntriesJob extends AbstractNotificationJob
         {
             // do not follow referrals or dereference aliases when deleting entries
             AliasDereferencingMethod aliasDereferencingMethod = AliasDereferencingMethod.NEVER;
-            ReferralHandlingMethod referralsHandlingMethod = browserConnection.getRootDSE().isControlSupported(
-                StudioControl.MANAGEDSAIT_CONTROL.getOid() ) ? ReferralHandlingMethod.MANAGE
-                : ReferralHandlingMethod.IGNORE;
+            ReferralHandlingMethod referralsHandlingMethod = ReferralHandlingMethod.IGNORE;
 
             // perform one-level search and delete recursively
             int numberInBatch;
@@ -269,7 +269,7 @@ public class DeleteEntriesJob extends AbstractNotificationJob
                         LdapDN childDn = JNDIUtils.getDn( sr );
 
                         numberOfDeletedEntries = optimisticDeleteEntryRecursive( browserConnection, childDn, false,
-                            numberOfDeletedEntries, dummyMonitor, monitor );
+                            false, numberOfDeletedEntries, dummyMonitor, monitor );
                         numberInBatch++;
                     }
                 }
@@ -292,7 +292,7 @@ public class DeleteEntriesJob extends AbstractNotificationJob
             // try to delete the entry again 
             if ( !dummyMonitor.errorsReported() )
             {
-                deleteEntry( browserConnection, dn, false, dummyMonitor );
+                deleteEntry( browserConnection, dn, false, false, dummyMonitor );
             }
             if ( !dummyMonitor.errorsReported() )
             {
@@ -340,8 +340,8 @@ public class DeleteEntriesJob extends AbstractNotificationJob
     }
 
 
-    static void deleteEntry( IBrowserConnection browserConnection, LdapDN dn, boolean useTreeDeleteControl,
-        StudioProgressMonitor monitor )
+    static void deleteEntry( IBrowserConnection browserConnection, LdapDN dn, boolean useManageDsaItControl,
+        boolean useTreeDeleteControl, StudioProgressMonitor monitor )
     {
         // controls
         List<Control> controlList = new ArrayList<Control>();
@@ -352,18 +352,18 @@ public class DeleteEntriesJob extends AbstractNotificationJob
                 StudioControl.TREEDELETE_CONTROL.isCritical(), StudioControl.TREEDELETE_CONTROL.getControlValue() );
             controlList.add( treeDeleteControl );
         }
+        if ( useManageDsaItControl
+            && browserConnection.getRootDSE().isControlSupported( StudioControl.MANAGEDSAIT_CONTROL.getOid() ) )
+        {
+            controlList.add( new ManageReferralControl( false ) );
+        }
         Control[] controls = controlList.toArray( new Control[controlList.size()] );
-
-        // do not follow referrals
-        ReferralHandlingMethod referralsHandlingMethod = browserConnection.getRootDSE().isControlSupported(
-            StudioControl.MANAGEDSAIT_CONTROL.getOid() ) ? ReferralHandlingMethod.MANAGE
-            : ReferralHandlingMethod.IGNORE;
 
         // delete entry
         if ( browserConnection.getConnection() != null )
         {
-            browserConnection.getConnection().getJNDIConnectionWrapper().deleteEntry( dn.getUpName(),
-                referralsHandlingMethod, controls, monitor, null );
+            browserConnection.getConnection().getJNDIConnectionWrapper().deleteEntry( dn.getUpName(), controls,
+                monitor, null );
         }
     }
 

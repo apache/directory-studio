@@ -85,7 +85,9 @@ public class BrowserParameterPage extends AbstractConnectionParameterPage
 
     private static final String X_REFERRAL_HANDLING_IGNORE = "IGNORE"; //$NON-NLS-1$
 
-    private static final String X_REFERRAL_HANDLING_MANAGE = "MANAGE"; //$NON-NLS-1$
+    private static final String X_REFERRAL_HANDLING_FOLLOW = "FOLLOW"; //$NON-NLS-1$
+
+    private static final String X_MANAGE_DSA_IT = "X-MANAGE-DSA-IT"; //$NON-NLS-1$
 
     private static final String X_FETCH_SUBENTRIES = "X-FETCH-SUBENTRIES"; //$NON-NLS-1$
 
@@ -115,20 +117,23 @@ public class BrowserParameterPage extends AbstractConnectionParameterPage
     /** The widget to select the referrals handling method */
     private ReferralsHandlingWidget referralsHandlingWidget;
 
+    /** The ManageDsaIT control button. */
+    private Button manageDsaItButton;
+
     /** The fetch subentries button. */
     private Button fetchSubentriesButton;
 
     /** The paged search button. */
-    protected Button pagedSearchButton;
+    private Button pagedSearchButton;
 
     /** The paged search size label. */
-    protected Label pagedSearchSizeLabel;
+    private Label pagedSearchSizeLabel;
 
     /** The paged search size text. */
-    protected Text pagedSearchSizeText;
+    private Text pagedSearchSizeText;
 
     /** The paged search scroll mode button. */
-    protected Button pagedSearchScrollModeButton;
+    private Button pagedSearchScrollModeButton;
 
     /** The fetch operational attributes button. */
     private Button fetchOperationalAttributesButton;
@@ -206,6 +211,18 @@ public class BrowserParameterPage extends AbstractConnectionParameterPage
     private Connection.ReferralHandlingMethod getReferralsHandlingMethod()
     {
         return referralsHandlingWidget.getReferralsHandlingMethod();
+    }
+
+
+    /**
+     * Returns true if ManageDsaIT control should be used
+     * while browsing.
+     * 
+     * @return true, if ManageDsaIT control should be used
+     */
+    private boolean manageDsaIT()
+    {
+        return manageDsaItButton.getSelection();
     }
 
 
@@ -345,6 +362,12 @@ public class BrowserParameterPage extends AbstractConnectionParameterPage
         Group group = BaseWidgetUtils.createGroup( composite, Messages.getString( "BrowserParameterPage.Controls" ), 1 ); //$NON-NLS-1$
         Composite groupComposite = BaseWidgetUtils.createColumnContainer( group, 1, 1 );
 
+        // ManageDsaIT control
+        manageDsaItButton = BaseWidgetUtils.createCheckbox( groupComposite, Messages
+            .getString( "BrowserParameterPage.ManageDsaItWhileBrowsing" ), 1 ); //$NON-NLS-1$
+        manageDsaItButton.setToolTipText( Messages.getString( "BrowserParameterPage.ManageDsaItWhileBrowsingTooltip" ) ); //$NON-NLS-1$
+        manageDsaItButton.setSelection( false );
+
         // fetch subentries control
         fetchSubentriesButton = BaseWidgetUtils.createCheckbox( groupComposite, Messages
             .getString( "BrowserParameterPage.FetchSubentriesWhileBrowsing" ), 1 ); //$NON-NLS-1$
@@ -404,8 +427,8 @@ public class BrowserParameterPage extends AbstractConnectionParameterPage
         aliasesDereferencingWidget = new AliasesDereferencingWidget( Connection.AliasDereferencingMethod.ALWAYS );
         aliasesDereferencingWidget.createWidget( composite );
 
-        referralsHandlingWidget = new ReferralsHandlingWidget( Connection.ReferralHandlingMethod.FOLLOW );
-        referralsHandlingWidget.createWidget( composite );
+        referralsHandlingWidget = new ReferralsHandlingWidget( Connection.ReferralHandlingMethod.FOLLOW_MANUALLY );
+        referralsHandlingWidget.createWidget( composite, true );
     }
 
 
@@ -463,6 +486,10 @@ public class BrowserParameterPage extends AbstractConnectionParameterPage
         Connection.AliasDereferencingMethod aliasesDereferencingMethod = Connection.AliasDereferencingMethod
             .getByOrdinal( aliasesDereferencingMethodOrdinal );
         aliasesDereferencingWidget.setAliasesDereferencingMethod( aliasesDereferencingMethod );
+
+        boolean manageDsaIT = parameter.getExtendedBoolProperty( IBrowserConnection.CONNECTION_PARAMETER_MANAGE_DSA_IT );
+        manageDsaItButton.setSelection( manageDsaIT );
+
         boolean fetchSubentries = parameter
             .getExtendedBoolProperty( IBrowserConnection.CONNECTION_PARAMETER_FETCH_SUBENTRIES );
         fetchSubentriesButton.setSelection( fetchSubentries );
@@ -539,6 +566,14 @@ public class BrowserParameterPage extends AbstractConnectionParameterPage
             }
         } );
 
+        manageDsaItButton.addSelectionListener( new SelectionAdapter()
+        {
+            public void widgetSelected( SelectionEvent arg0 )
+            {
+                connectionPageModified();
+            }
+        } );
+
         fetchSubentriesButton.addSelectionListener( new SelectionAdapter()
         {
             public void widgetSelected( SelectionEvent arg0 )
@@ -596,6 +631,9 @@ public class BrowserParameterPage extends AbstractConnectionParameterPage
             getReferralsHandlingMethod().getOrdinal() );
         parameter.setExtendedIntProperty( IBrowserConnection.CONNECTION_PARAMETER_ALIASES_DEREFERENCING_METHOD,
             getAliasesDereferencingMethod().getOrdinal() );
+
+        parameter.setExtendedBoolProperty( IBrowserConnection.CONNECTION_PARAMETER_MANAGE_DSA_IT,
+            manageDsaIT() );
         parameter.setExtendedBoolProperty( IBrowserConnection.CONNECTION_PARAMETER_FETCH_SUBENTRIES,
             isFetchSubentries() );
         parameter.setExtendedBoolProperty( IBrowserConnection.CONNECTION_PARAMETER_PAGED_SEARCH, isPagedSearch() );
@@ -634,7 +672,21 @@ public class BrowserParameterPage extends AbstractConnectionParameterPage
             .getExtendedIntProperty( IBrowserConnection.CONNECTION_PARAMETER_COUNT_LIMIT );
         int timeLimit = connectionParameter.getExtendedIntProperty( IBrowserConnection.CONNECTION_PARAMETER_TIME_LIMIT );
 
-        return isReconnectionRequired() || countLimit != getCountLimit() || timeLimit != getTimeLimit();
+        boolean manageDsaIT = connectionParameter
+            .getExtendedBoolProperty( IBrowserConnection.CONNECTION_PARAMETER_MANAGE_DSA_IT );
+        boolean fetchSubentries = connectionParameter
+            .getExtendedBoolProperty( IBrowserConnection.CONNECTION_PARAMETER_FETCH_SUBENTRIES );
+        boolean pagedSearch = connectionParameter
+            .getExtendedBoolProperty( IBrowserConnection.CONNECTION_PARAMETER_PAGED_SEARCH );
+        int pagedSearchSize = connectionParameter
+            .getExtendedIntProperty( IBrowserConnection.CONNECTION_PARAMETER_PAGED_SEARCH_SIZE );
+        boolean pagedSearchScrollMode = connectionParameter
+            .getExtendedBoolProperty( IBrowserConnection.CONNECTION_PARAMETER_PAGED_SEARCH_SCROLL_MODE );
+
+        return isReconnectionRequired() || countLimit != getCountLimit() || timeLimit != getTimeLimit()
+            || manageDsaIT != manageDsaIT() || fetchSubentries != isFetchSubentries()
+            || pagedSearch != isPagedSearch() || pagedSearchSize != getPagedSearchSize()
+            || pagedSearchScrollMode != isPagedSearchScrollMode();
     }
 
 
@@ -659,22 +711,12 @@ public class BrowserParameterPage extends AbstractConnectionParameterPage
             .getExtendedIntProperty( IBrowserConnection.CONNECTION_PARAMETER_ALIASES_DEREFERENCING_METHOD );
         Connection.AliasDereferencingMethod aliasesDereferencingMethod = Connection.AliasDereferencingMethod
             .getByOrdinal( aliasesDereferencingMethodOrdinal );
-        boolean fetchSubentries = connectionParameter
-            .getExtendedBoolProperty( IBrowserConnection.CONNECTION_PARAMETER_FETCH_SUBENTRIES );
-        boolean pagedSearch = connectionParameter
-            .getExtendedBoolProperty( IBrowserConnection.CONNECTION_PARAMETER_PAGED_SEARCH );
-        int pagedSearchSize = connectionParameter
-            .getExtendedIntProperty( IBrowserConnection.CONNECTION_PARAMETER_PAGED_SEARCH_SIZE );
-        boolean pagedSearchScrollMode = connectionParameter
-            .getExtendedBoolProperty( IBrowserConnection.CONNECTION_PARAMETER_PAGED_SEARCH_SCROLL_MODE );
         boolean fetchOperationalAttributes = connectionParameter
             .getExtendedBoolProperty( IBrowserConnection.CONNECTION_PARAMETER_FETCH_OPERATIONAL_ATTRIBUTES );
 
         return fetchBaseDns != isAutoFetchBaseDns() || !StringUtils.equals( baseDn, getBaseDN() )
             || referralsHandlingMethod != getReferralsHandlingMethod()
-            || aliasesDereferencingMethod != getAliasesDereferencingMethod() || fetchSubentries != isFetchSubentries()
-            || pagedSearch != isPagedSearch() || pagedSearchSize != getPagedSearchSize()
-            || pagedSearchScrollMode != isPagedSearchScrollMode()
+            || aliasesDereferencingMethod != getAliasesDereferencingMethod()
             || fetchOperationalAttributes != isFetchOperationalAttributes();
     }
 
@@ -734,15 +776,22 @@ public class BrowserParameterPage extends AbstractConnectionParameterPage
             .getByOrdinal( referralsHandlingMethodOrdinal );
         switch ( referralsHandlingMethod )
         {
-            case FOLLOW:
+            case FOLLOW_MANUALLY:
                 // default
                 break;
             case IGNORE:
                 ldapUrl.getExtensions().add( new Extension( false, X_REFERRAL_HANDLING, X_REFERRAL_HANDLING_IGNORE ) );
                 break;
-            case MANAGE:
-                ldapUrl.getExtensions().add( new Extension( false, X_REFERRAL_HANDLING, X_REFERRAL_HANDLING_MANAGE ) );
+            case FOLLOW:
+                ldapUrl.getExtensions().add( new Extension( false, X_REFERRAL_HANDLING, X_REFERRAL_HANDLING_FOLLOW ) );
                 break;
+        }
+
+        // ManageDsaIT control
+        boolean manageDsaIt = parameter.getExtendedBoolProperty( IBrowserConnection.CONNECTION_PARAMETER_MANAGE_DSA_IT );
+        if ( manageDsaIt )
+        {
+            ldapUrl.getExtensions().add( new Extension( false, X_MANAGE_DSA_IT, null ) );
         }
 
         // fetch subentries
@@ -844,23 +893,28 @@ public class BrowserParameterPage extends AbstractConnectionParameterPage
                 Connection.AliasDereferencingMethod.ALWAYS.getOrdinal() );
         }
 
-        // referral handling, FOLLOW if unknown or absent
+        // referral handling, FOLLOW_MANUALLY if unknown or absent
         String referral = ldapUrl.getExtensionValue( X_REFERRAL_HANDLING );
         if ( StringUtils.isNotEmpty( referral ) && X_REFERRAL_HANDLING_IGNORE.equalsIgnoreCase( referral ) )
         {
             parameter.setExtendedIntProperty( IBrowserConnection.CONNECTION_PARAMETER_REFERRALS_HANDLING_METHOD,
                 Connection.ReferralHandlingMethod.IGNORE.getOrdinal() );
         }
-        else if ( StringUtils.isNotEmpty( referral ) && X_REFERRAL_HANDLING_MANAGE.equalsIgnoreCase( referral ) )
-        {
-            parameter.setExtendedIntProperty( IBrowserConnection.CONNECTION_PARAMETER_REFERRALS_HANDLING_METHOD,
-                Connection.ReferralHandlingMethod.MANAGE.getOrdinal() );
-        }
-        else
+        else if ( StringUtils.isNotEmpty( referral ) && X_REFERRAL_HANDLING_FOLLOW.equalsIgnoreCase( referral ) )
         {
             parameter.setExtendedIntProperty( IBrowserConnection.CONNECTION_PARAMETER_REFERRALS_HANDLING_METHOD,
                 Connection.ReferralHandlingMethod.FOLLOW.getOrdinal() );
         }
+        else
+        {
+            parameter.setExtendedIntProperty( IBrowserConnection.CONNECTION_PARAMETER_REFERRALS_HANDLING_METHOD,
+                Connection.ReferralHandlingMethod.FOLLOW_MANUALLY.getOrdinal() );
+        }
+
+        // ManageDsaIT control
+        Extension manageDsaIT = ldapUrl.getExtension( X_MANAGE_DSA_IT );
+        parameter.setExtendedBoolProperty( IBrowserConnection.CONNECTION_PARAMETER_MANAGE_DSA_IT,
+            manageDsaIT != null );
 
         // fetch subentries
         Extension fetchSubentries = ldapUrl.getExtension( X_FETCH_SUBENTRIES );

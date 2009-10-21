@@ -22,12 +22,16 @@ package org.apache.directory.studio.connection.ui;
 
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.directory.shared.ldap.util.LdapURL;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
 import org.apache.directory.studio.connection.core.IReferralHandler;
+import org.apache.directory.studio.connection.core.Utils;
+import org.apache.directory.studio.connection.core.event.ConnectionEventRegistry;
+import org.apache.directory.studio.connection.core.event.ConnectionUpdateAdapter;
 import org.apache.directory.studio.connection.ui.dialogs.SelectReferralConnectionDialog;
 import org.eclipse.ui.PlatformUI;
 
@@ -38,24 +42,40 @@ import org.eclipse.ui.PlatformUI;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class ConnectionUIReferralHandler implements IReferralHandler
+public class ConnectionUIReferralHandler extends ConnectionUpdateAdapter implements IReferralHandler
 {
 
     /** The referral URL to referral connection cache. */
-    private Map<LdapURL, Connection> referralUrlToReferralConnectionCache = new HashMap<LdapURL, Connection>();
+    private Map<String, Connection> referralUrlToReferralConnectionCache = new HashMap<String, Connection>();
+
+
+    public ConnectionUIReferralHandler()
+    {
+        ConnectionEventRegistry.addConnectionUpdateListener( this, ConnectionCorePlugin.getDefault().getEventRunner() );
+    }
+
+
+    @Override
+    public void connectionClosed( Connection connection )
+    {
+        referralUrlToReferralConnectionCache.clear();
+    }
 
 
     /**
      * {@inheritDoc}
      */
-    public Connection getReferralConnection( final LdapURL referralUrl )
+    public Connection getReferralConnection( final List<LdapURL> referralUrls )
     {
         // check cache
-        if ( referralUrlToReferralConnectionCache.containsKey( referralUrl ) )
+        for ( LdapURL url : referralUrls )
         {
-            Connection referralConnection = referralUrlToReferralConnectionCache.get( referralUrl );
-            if ( referralConnection != null )
+            String normalizedUrl = Utils.getSimpleNormalizedUrl( url );
+
+            if ( referralUrlToReferralConnectionCache.containsKey( normalizedUrl ) )
             {
+                // check if referral connection exists in connection manager
+                Connection referralConnection = referralUrlToReferralConnectionCache.get( normalizedUrl );
                 Connection[] connections = ConnectionCorePlugin.getDefault().getConnectionManager().getConnections();
                 for ( int i = 0; i < connections.length; i++ )
                 {
@@ -65,29 +85,39 @@ public class ConnectionUIReferralHandler implements IReferralHandler
                         return referralConnection;
                     }
                 }
+
+                // referral connection doesn't exist in connection manager, remove it from cache
+                referralUrlToReferralConnectionCache.remove( normalizedUrl );
             }
         }
 
-        referralUrlToReferralConnectionCache.remove( referralUrl );
-
         // open dialog
-        final Connection[] referralConnection = new Connection[1];
+        final Connection[] referralConnections = new Connection[1];
         PlatformUI.getWorkbench().getDisplay().syncExec( new Runnable()
         {
             public void run()
             {
                 SelectReferralConnectionDialog dialog = new SelectReferralConnectionDialog( PlatformUI.getWorkbench()
-                    .getDisplay().getActiveShell(), referralUrl );
+                    .getDisplay().getActiveShell(), referralUrls );
                 if ( dialog.open() == SelectReferralConnectionDialog.OK )
                 {
                     Connection connection = dialog.getReferralConnection();
-                    referralUrlToReferralConnectionCache.put( referralUrl, connection );
-                    referralConnection[0] = connection;
+                    referralConnections[0] = connection;
                 }
             }
         } );
 
-        return referralConnection[0];
+        // put to cache
+        if ( referralConnections[0] != null )
+        {
+            for ( LdapURL url : referralUrls )
+            {
+                String normalizedUrl = Utils.getSimpleNormalizedUrl( url );
+                referralUrlToReferralConnectionCache.put( normalizedUrl, referralConnections[0] );
+            }
+        }
+
+        return referralConnections[0];
     }
 
 }

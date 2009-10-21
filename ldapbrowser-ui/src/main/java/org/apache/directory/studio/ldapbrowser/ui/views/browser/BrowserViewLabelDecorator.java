@@ -21,11 +21,11 @@
 package org.apache.directory.studio.ldapbrowser.ui.views.browser;
 
 
+import org.apache.directory.studio.ldapbrowser.core.model.IContinuation;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearchResult;
 import org.apache.directory.studio.ldapbrowser.ui.BrowserUIConstants;
 import org.apache.directory.studio.ldapbrowser.ui.BrowserUIPlugin;
-
 import org.eclipse.jface.viewers.IDecoration;
 import org.eclipse.jface.viewers.ILightweightLabelDecorator;
 import org.eclipse.jface.viewers.LabelProvider;
@@ -48,11 +48,9 @@ public class BrowserViewLabelDecorator extends LabelProvider implements ILightwe
     public void decorate( Object element, IDecoration decoration )
     {
         IEntry entry = null;
-
         if ( element instanceof ISearchResult )
         {
-            ISearchResult searchResult = ( ISearchResult ) element;
-            entry = searchResult.getEntry();
+            entry = ( ( ISearchResult ) element ).getEntry();
             decoration.addOverlay( BrowserUIPlugin.getDefault().getImageDescriptor(
                 BrowserUIConstants.IMG_OVR_SEARCHRESULT ), IDecoration.BOTTOM_RIGHT );
         }
@@ -65,14 +63,11 @@ public class BrowserViewLabelDecorator extends LabelProvider implements ILightwe
                     BrowserUIConstants.IMG_OVR_FILTERED ), IDecoration.BOTTOM_RIGHT );
             }
         }
-        else
-        {
-            decoration.addOverlay( null, IDecoration.BOTTOM_RIGHT );
-        }
 
-        if ( entry != null )
+        if ( entry instanceof IContinuation || element instanceof IContinuation )
         {
-            decoration.addOverlay( null, IDecoration.BOTTOM_LEFT );
+            decoration.addOverlay( BrowserUIPlugin.getDefault().getImageDescriptor( BrowserUIConstants.IMG_OVR_REF ),
+                IDecoration.TOP_LEFT );
         }
     }
 

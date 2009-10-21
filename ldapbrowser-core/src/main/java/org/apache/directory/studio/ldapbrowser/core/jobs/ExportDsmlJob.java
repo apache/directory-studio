@@ -259,7 +259,7 @@ public class ExportDsmlJob extends AbstractEclipseJob
             // Creating and adding a search result entry or reference for each result
             while ( ne.hasMore() )
             {
-                SearchResult searchResult = ( SearchResult ) ne.nextElement();
+                SearchResult searchResult = ( SearchResult ) ne.next();
                 sr.addResponse( convertSearchResultToDsml( searchResult, searchParameter ) );
             }
         }
@@ -398,7 +398,7 @@ public class ExportDsmlJob extends AbstractEclipseJob
             // Creating and adding an add request for each result
             while ( ne.hasMore() )
             {
-                SearchResult searchResult = ( SearchResult ) ne.nextElement();
+                SearchResult searchResult = ( SearchResult ) ne.next();
                 AddRequestDsml arDsml = convertToAddRequestDsml( searchResult );
                 batchRequest.addRequest( arDsml );
             }

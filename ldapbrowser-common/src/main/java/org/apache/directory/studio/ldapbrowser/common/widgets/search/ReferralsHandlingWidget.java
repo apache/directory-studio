@@ -22,6 +22,7 @@ package org.apache.directory.studio.ldapbrowser.common.widgets.search;
 
 
 import org.apache.directory.studio.connection.core.Connection;
+import org.apache.directory.studio.connection.core.Connection.ReferralHandlingMethod;
 import org.apache.directory.studio.connection.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.ldapbrowser.common.widgets.BrowserWidget;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -47,16 +48,16 @@ public class ReferralsHandlingWidget extends BrowserWidget
 
     /** The group. */
     private Group group;
-    
-    /** The follow button. */
-    private Button followButton;
+
+    /** The follow manually button. */
+    private Button followManuallyButton;
+
+    /** The follow automatically button. */
+    private Button followAutomaticallyButton;
 
     /** The ignore button. */
     private Button ignoreButton;
 
-    /** The manage button. */
-    private Button manageButton;
-    
 
     /**
      * Creates a new instance of ReferralsHandlingWidget with the given
@@ -85,13 +86,31 @@ public class ReferralsHandlingWidget extends BrowserWidget
      * 
      * @param parent the parent
      */
-    public void createWidget( Composite parent )
+    public void createWidget( Composite parent, boolean followManuallyVisible )
     {
-        group = BaseWidgetUtils.createGroup( parent, Messages.getString("ReferralsHandlingWidget.ReferralsHandling"), 1 ); //$NON-NLS-1$
+        group = BaseWidgetUtils.createGroup( parent,
+            Messages.getString( "ReferralsHandlingWidget.ReferralsHandling" ), 1 ); //$NON-NLS-1$
         Composite groupComposite = BaseWidgetUtils.createColumnContainer( group, 1, 1 );
-        
-        followButton = BaseWidgetUtils.createRadiobutton( groupComposite, Messages.getString("ReferralsHandlingWidget.Follow"), 1 ); //$NON-NLS-1$
-        followButton.addSelectionListener( new SelectionAdapter()
+
+        if ( followManuallyVisible )
+        {
+            followManuallyButton = BaseWidgetUtils.createRadiobutton( groupComposite, Messages
+                .getString( "ReferralsHandlingWidget.FollowManually" ), 1 ); //$NON-NLS-1$
+            followManuallyButton.setToolTipText( Messages.getString( "ReferralsHandlingWidget.FollowManuallyTooltip" ) ); //$NON-NLS-1$
+            followManuallyButton.addSelectionListener( new SelectionAdapter()
+            {
+                public void widgetSelected( SelectionEvent e )
+                {
+                    notifyListeners();
+                }
+            } );
+        }
+
+        followAutomaticallyButton = BaseWidgetUtils.createRadiobutton( groupComposite, Messages
+            .getString( "ReferralsHandlingWidget.FollowAutomatically" ), 1 ); //$NON-NLS-1$
+        followAutomaticallyButton.setToolTipText( Messages
+            .getString( "ReferralsHandlingWidget.FollowAutomaticallyTooltip" ) ); //$NON-NLS-1$
+        followAutomaticallyButton.addSelectionListener( new SelectionAdapter()
         {
             public void widgetSelected( SelectionEvent e )
             {
@@ -99,17 +118,10 @@ public class ReferralsHandlingWidget extends BrowserWidget
             }
         } );
 
-        ignoreButton = BaseWidgetUtils.createRadiobutton( groupComposite, Messages.getString("ReferralsHandlingWidget.Ignore"), 1 ); //$NON-NLS-1$
+        ignoreButton = BaseWidgetUtils.createRadiobutton( groupComposite, Messages
+            .getString( "ReferralsHandlingWidget.Ignore" ), 1 ); //$NON-NLS-1$
+        ignoreButton.setToolTipText( Messages.getString( "ReferralsHandlingWidget.IgnoreTooltip" ) ); //$NON-NLS-1$
         ignoreButton.addSelectionListener( new SelectionAdapter()
-        {
-            public void widgetSelected( SelectionEvent e )
-            {
-                notifyListeners();
-            }
-        } );
-        
-        manageButton = BaseWidgetUtils.createRadiobutton( groupComposite, Messages.getString("ReferralsHandlingWidget.Manage"), 1 ); //$NON-NLS-1$
-        manageButton.addSelectionListener( new SelectionAdapter()
         {
             public void widgetSelected( SelectionEvent e )
             {
@@ -129,9 +141,20 @@ public class ReferralsHandlingWidget extends BrowserWidget
     public void setReferralsHandlingMethod( Connection.ReferralHandlingMethod referralsHandlingMethod )
     {
         initialReferralsHandlingMethod = referralsHandlingMethod;
-        followButton.setSelection( initialReferralsHandlingMethod == Connection.ReferralHandlingMethod.FOLLOW );
+        if ( followManuallyButton == null && referralsHandlingMethod == ReferralHandlingMethod.FOLLOW_MANUALLY )
+        {
+            // fall-back to FOLLOW if manually button is invisible
+            initialReferralsHandlingMethod = ReferralHandlingMethod.FOLLOW;
+        }
+
+        if ( followManuallyButton != null )
+        {
+            followManuallyButton
+                .setSelection( initialReferralsHandlingMethod == Connection.ReferralHandlingMethod.FOLLOW_MANUALLY );
+        }
+        followAutomaticallyButton
+            .setSelection( initialReferralsHandlingMethod == Connection.ReferralHandlingMethod.FOLLOW );
         ignoreButton.setSelection( initialReferralsHandlingMethod == Connection.ReferralHandlingMethod.IGNORE );
-        manageButton.setSelection( initialReferralsHandlingMethod == Connection.ReferralHandlingMethod.MANAGE );
     }
 
 
@@ -146,13 +169,13 @@ public class ReferralsHandlingWidget extends BrowserWidget
         {
             return Connection.ReferralHandlingMethod.IGNORE;
         }
-        else if ( manageButton.getSelection() )
+        else if ( followAutomaticallyButton.getSelection() )
         {
-            return Connection.ReferralHandlingMethod.MANAGE;
+            return Connection.ReferralHandlingMethod.FOLLOW;
         }
         else
         {
-            return Connection.ReferralHandlingMethod.FOLLOW;
+            return Connection.ReferralHandlingMethod.FOLLOW_MANUALLY;
         }
     }
 
@@ -165,9 +188,12 @@ public class ReferralsHandlingWidget extends BrowserWidget
     public void setEnabled( boolean b )
     {
         group.setEnabled( b );
-        followButton.setEnabled( b );
+        if ( followManuallyButton != null )
+        {
+            followManuallyButton.setEnabled( b );
+        }
+        followAutomaticallyButton.setEnabled( b );
         ignoreButton.setEnabled( b );
-        manageButton.setEnabled( b );
     }
 
 }

@@ -46,9 +46,11 @@ import org.apache.directory.studio.ldapbrowser.core.jobs.UpdateEntryRunnable;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.IBookmark;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
+import org.apache.directory.studio.ldapbrowser.core.model.IContinuation;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearchResult;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
+import org.apache.directory.studio.ldapbrowser.core.model.IContinuation.State;
 import org.apache.directory.studio.ldapbrowser.core.utils.CompoundModification;
 import org.apache.directory.studio.ldapbrowser.core.utils.Utils;
 import org.apache.directory.studio.ldapbrowser.ui.BrowserUIConstants;
@@ -66,7 +68,6 @@ import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.osgi.util.NLS;
-import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IEditorReference;
 import org.eclipse.ui.IPartListener2;
@@ -710,22 +711,36 @@ public class EntryEditorManager
     public void openEntryEditor( EntryEditorExtension extension, IEntry[] entries, ISearchResult[] searchResults,
         IBookmark[] bookmarks )
     {
-        IEditorInput input = null;
+        EntryEditorInput input = null;
+        IEntry entry;
         if ( entries.length == 1 )
         {
             input = new EntryEditorInput( entries[0], extension );
+            entry = entries[0];
         }
         else if ( searchResults.length == 1 )
         {
             input = new EntryEditorInput( searchResults[0], extension );
+            entry = searchResults[0].getEntry();
         }
         else if ( bookmarks.length == 1 )
         {
             input = new EntryEditorInput( bookmarks[0], extension );
+            entry = bookmarks[0].getEntry();
         }
         else
         {
             input = new EntryEditorInput( ( IEntry ) null, extension );
+            entry = null;
+        }
+
+        if ( entry != null && entry instanceof IContinuation )
+        {
+            IContinuation continuation = ( IContinuation ) entry;
+            if ( continuation.getState() == State.UNRESOLVED )
+            {
+                continuation.resolve();
+            }
         }
 
         String editorId = extension.getEditorId();

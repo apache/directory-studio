@@ -204,6 +204,9 @@ public interface IBrowserConnection extends Serializable, IAdaptable, Connection
     /** The key for the connection parameter "Modify add delete order". */
     public static String CONNECTION_PARAMETER_MODIFY_ORDER = "ldapbrowser.modifyOrder";
 
+    /** The key for the connection parameter "Use ManageDsaIT Control" */
+    public static String CONNECTION_PARAMETER_MANAGE_DSA_IT = "ldapbrowser.manageDsaIT";
+
 
     /**
      * Gets the URL of this connection.
@@ -327,6 +330,22 @@ public interface IBrowserConnection extends Serializable, IAdaptable, Connection
      * @param fetchSubentries true to fetch subentries
      */
     public abstract void setFetchSubentries( boolean fetchSubentries );
+
+
+    /**
+     * Checks if ManageDsaIT control should be used.
+     * 
+     * @return true if ManageDsaIT control should be used
+     */
+    public abstract boolean isManageDsaIT();
+
+
+    /**
+     * Sets if ManageDsaIT control should be used.
+     * 
+     * @param manageDsaIT true to use ManageDsaIT control
+     */
+    public abstract void setManageDsaIT( boolean manageDsaIT );
 
 
     /**

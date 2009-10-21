@@ -51,7 +51,8 @@ public class ExportCsvFromWizardPage extends ExportBaseFromWizardPage
     public ExportCsvFromWizardPage( String pageName, ExportBaseWizard wizard )
     {
         super( pageName, wizard, new SearchPageWrapper( SearchPageWrapper.NAME_INVISIBLE
-            | SearchPageWrapper.RETURN_DN_VISIBLE | SearchPageWrapper.RETURN_DN_CHECKED ) );
+            | SearchPageWrapper.REFERRALOPTIONS_FOLLOW_MANUAL_INVISIBLE | SearchPageWrapper.RETURN_DN_VISIBLE
+            | SearchPageWrapper.RETURN_DN_CHECKED ) );
         super.setImageDescriptor( BrowserUIPlugin.getDefault().getImageDescriptor(
             BrowserUIConstants.IMG_EXPORT_CSV_WIZARD ) );
     }

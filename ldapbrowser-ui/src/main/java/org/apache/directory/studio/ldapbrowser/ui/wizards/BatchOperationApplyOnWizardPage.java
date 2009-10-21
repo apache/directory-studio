@@ -145,6 +145,7 @@ public class BatchOperationApplyOnWizardPage extends WizardPage
         BaseWidgetUtils.createRadioIndent( searchComposite, 1 );
         Composite innerSearchComposite = BaseWidgetUtils.createColumnContainer( searchComposite, 3, 1 );
         this.spw = new SearchPageWrapper( SearchPageWrapper.NAME_INVISIBLE
+            | SearchPageWrapper.REFERRALOPTIONS_FOLLOW_MANUAL_INVISIBLE
             | SearchPageWrapper.RETURNINGATTRIBUTES_INVISIBLE | SearchPageWrapper.REFERRALOPTIONS_READONLY );
         this.spw.createContents( innerSearchComposite );
         this.spw.loadFromSearch( this.initSearch );

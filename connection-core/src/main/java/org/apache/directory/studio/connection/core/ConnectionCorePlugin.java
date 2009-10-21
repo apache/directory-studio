@@ -309,7 +309,7 @@ public class ConnectionCorePlugin extends Plugin
             // that just cancels referral chasing
             referralHandler = new IReferralHandler()
             {
-                public Connection getReferralConnection( LdapURL referralURL )
+                public Connection getReferralConnection( List<LdapURL> referralUrls )
                 {
                     // null cancels referral chasing
                     return null;

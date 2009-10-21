@@ -21,12 +21,15 @@ package org.apache.directory.studio.connection.core.io.jndi;
 
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 import javax.naming.LinkLoopException;
 
-import org.apache.directory.shared.ldap.util.LdapURL;
 import org.apache.directory.shared.ldap.name.LdapDN;
+import org.apache.directory.shared.ldap.util.LdapURL;
 import org.apache.directory.studio.connection.core.Messages;
 import org.eclipse.osgi.util.NLS;
 
@@ -40,44 +43,24 @@ import org.eclipse.osgi.util.NLS;
  */
 public class ReferralsInfo
 {
-    private List<UrlAndDn> referralsToProcess;
+    private LinkedList<Referral> referralsToProcess = new LinkedList<Referral>();
 
-    private List<UrlAndDn> processedReferrals;
-
-
-    /**
-     * 
-     * Creates a new instance of ReferralsInfo.
-     */
-    public ReferralsInfo()
-    {
-        this.referralsToProcess = new ArrayList<UrlAndDn>();
-        this.processedReferrals = new ArrayList<UrlAndDn>();
-    }
+    private Set<LdapURL> processedUrls = new HashSet<LdapURL>();
 
 
     /**
-     * Adds the referral URL and DN to the list of referrals to be processed.
+     * Adds the referral entry to the list of referrals to be processed.
      * 
-     * If the URL is already in the list or if the URL was already processed
+     * If the URLs are already in the list or if the URL was already processed
      * a NamingException will be thrown
      * 
-     * @param url the URL
-     * @param dn the DN
+     * @param referral the referral
      * 
      * @throws LinkLoopException if a loop was encountered.
      */
-    public void addReferralUrl( LdapURL url, LdapDN dn ) throws LinkLoopException
+    public void addReferral( Referral referral )
     {
-        UrlAndDn urlAndDn = new UrlAndDn( url, dn );
-        if ( !referralsToProcess.contains( urlAndDn ) && !processedReferrals.contains( urlAndDn ) )
-        {
-            referralsToProcess.add( urlAndDn );
-        }
-        else
-        {
-            throw new LinkLoopException( NLS.bind( Messages.error__loop_detected, url ) );
-        }
+        referralsToProcess.addLast( referral );
     }
 
 
@@ -86,13 +69,16 @@ public class ReferralsInfo
      * 
      * @return the next referral URL or null
      */
-    public UrlAndDn getNext()
+    public Referral getNextReferral()
     {
         if ( !referralsToProcess.isEmpty() )
         {
-            UrlAndDn urlAndDn = referralsToProcess.remove( 0 );
-            processedReferrals.add( urlAndDn );
-            return urlAndDn;
+            Referral referral = referralsToProcess.removeFirst();
+            for ( LdapURL url : referral.urls )
+            {
+                processedUrls.add( url );
+            }
+            return referral;
         }
         else
         {
@@ -100,47 +86,37 @@ public class ReferralsInfo
         }
     }
 
+
     /**
-     * Container for an LDAP URL and an LDAP DN.
-     *
-     * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
-     * @version $Rev$, $Date$
+     * Checks for more referrals.
+     * 
+     * @return true, if there are more referrals
      */
-    public static class UrlAndDn
+    public boolean hasMoreReferrals()
     {
-        private LdapURL url;
+        return !referralsToProcess.isEmpty();
+    }
+
+    public class Referral
+    {
+        private List<LdapURL> urls = new ArrayList<LdapURL>();
         private LdapDN dn;
 
 
-        /**
-         * Creates a new instance of UrlAndDn.
-         *
-         * @param url the URL, never null
-         * @param dn the DN, never null
-         */
-        private UrlAndDn( LdapURL url, LdapDN dn )
+        public Referral( LdapDN dn )
         {
-            if ( url == null )
-            {
-                throw new IllegalArgumentException( "URL may not be null" ); //$NON-NLS-1$
-            }
-            if ( dn == null )
-            {
-                throw new IllegalArgumentException( "DN may not be null" ); //$NON-NLS-1$
-            }
-            this.url = url;
             this.dn = dn;
         }
 
 
         /**
-         * Gets the URL.
+         * Gets the list of {@link LdapURL}.
          * 
-         * @return the URL
+         * @return the list of {@link LdapURL}
          */
-        public LdapURL getUrl()
+        public List<LdapURL> getLdapURLs()
         {
-            return url;
+            return urls;
         }
 
 
@@ -156,35 +132,20 @@ public class ReferralsInfo
 
 
         /**
-         * {@inheritDoc}
+         * Adds the URL.
+         * 
+         * @param url the URL
+         * 
+         * @throws LinkLoopException if a loop was encountered.
          */
-        public int hashCode()
+        public void addUrl( LdapURL url ) throws LinkLoopException
         {
-            // dn and url are never null
-            int h = 37;
-            h = h * 17 + url.hashCode();
-            h = h * 17 + dn.hashCode();
-            return h;
-        }
-
-
-        /**
-         * {@inheritDoc}
-         */
-        public boolean equals( Object obj )
-        {
-            // dn and url are never null
-            if ( this == obj )
+            if ( processedUrls.contains( url ) )
             {
-                return true;
-            }
-            if ( !( obj instanceof UrlAndDn ) )
-            {
-                return false;
+                throw new LinkLoopException( NLS.bind( Messages.error__loop_detected, url ) );
             }
 
-            UrlAndDn other = ( UrlAndDn ) obj;
-            return dn.equals( other.dn ) && url.equals( other.url );
+            urls.add( url );
         }
 
     }

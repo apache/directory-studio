@@ -32,6 +32,8 @@ import org.apache.directory.shared.ldap.constants.SchemaConstants;
 import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.shared.ldap.schema.parsers.AttributeTypeDescription;
 import org.apache.directory.studio.connection.core.Connection;
+import org.apache.directory.studio.connection.core.StudioControl;
+import org.apache.directory.studio.connection.core.StudioPagedResultsControl;
 import org.apache.directory.studio.connection.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.ldapbrowser.common.widgets.BrowserWidget;
 import org.apache.directory.studio.ldapbrowser.common.widgets.WidgetModifyEvent;
@@ -40,8 +42,6 @@ import org.apache.directory.studio.ldapbrowser.core.jobs.SearchRunnable;
 import org.apache.directory.studio.ldapbrowser.core.jobs.StudioBrowserJob;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
-import org.apache.directory.studio.ldapbrowser.core.model.StudioControl;
-import org.apache.directory.studio.ldapbrowser.core.model.StudioPagedResultsControl;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch.SearchScope;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.SchemaUtils;
 import org.eclipse.swt.events.ModifyEvent;
@@ -135,6 +135,9 @@ public class SearchPageWrapper extends BrowserWidget
 
     /** Style for read-only referrals options */
     public static final int REFERRALOPTIONS_READONLY = 1 << 25;
+    
+    /** Style for invisible follow referrals manually*/
+    public static final int REFERRALOPTIONS_FOLLOW_MANUAL_INVISIBLE = 1 << 26;
 
     /** Style for invisible controls fields */
     public static final int CONTROLS_INVISIBLE = 1 << 30;
@@ -193,8 +196,11 @@ public class SearchPageWrapper extends BrowserWidget
     /** The referrals handling widget. */
     protected ReferralsHandlingWidget referralsHandlingWidget;
 
-    /** The control label. */
-    protected Label controlLabel;
+    /** The control group. */
+    protected Group controlGroup;
+
+    /** The ManageDsaIT control button. */
+    protected Button manageDsaItControlButton;
 
     /** The subentries control button. */
     protected Button subentriesControlButton;
@@ -278,7 +284,8 @@ public class SearchPageWrapper extends BrowserWidget
             return;
         }
 
-        searchNameLabel = BaseWidgetUtils.createLabel( composite, Messages.getString("SearchPageWrapper.SearchName"), 1 ); //$NON-NLS-1$
+        searchNameLabel = BaseWidgetUtils.createLabel( composite,
+            Messages.getString( "SearchPageWrapper.SearchName" ), 1 ); //$NON-NLS-1$
         if ( isActive( NAME_READONLY ) )
         {
             searchNameText = BaseWidgetUtils.createReadonlyText( composite, "", 2 ); //$NON-NLS-1$
@@ -311,7 +318,8 @@ public class SearchPageWrapper extends BrowserWidget
             return;
         }
 
-        connectionLabel = BaseWidgetUtils.createLabel( composite, Messages.getString("SearchPageWrapper.Connection"), 1 ); //$NON-NLS-1$
+        connectionLabel = BaseWidgetUtils.createLabel( composite,
+            Messages.getString( "SearchPageWrapper.Connection" ), 1 ); //$NON-NLS-1$
         browserConnectionWidget = new BrowserConnectionWidget();
         browserConnectionWidget.createWidget( composite );
         browserConnectionWidget.setEnabled( !isActive( CONNECTION_READONLY ) );
@@ -338,7 +346,8 @@ public class SearchPageWrapper extends BrowserWidget
             return;
         }
 
-        searchBaseLabel = BaseWidgetUtils.createLabel( composite, Messages.getString("SearchPageWrapper.SearchBase"), 1 ); //$NON-NLS-1$
+        searchBaseLabel = BaseWidgetUtils.createLabel( composite,
+            Messages.getString( "SearchPageWrapper.SearchBase" ), 1 ); //$NON-NLS-1$
         searchBaseWidget = new EntryWidget();
         searchBaseWidget.createWidget( composite );
         searchBaseWidget.setEnabled( !isActive( SEARCHBASE_READONLY ) );
@@ -365,7 +374,7 @@ public class SearchPageWrapper extends BrowserWidget
             return;
         }
 
-        filterLabel = BaseWidgetUtils.createLabel( composite, Messages.getString("SearchPageWrapper.Filter"), 1 ); //$NON-NLS-1$
+        filterLabel = BaseWidgetUtils.createLabel( composite, Messages.getString( "SearchPageWrapper.Filter" ), 1 ); //$NON-NLS-1$
         filterWidget = new FilterWidget();
         filterWidget.createWidget( composite );
         filterWidget.setEnabled( !isActive( FILTER_READONLY ) );
@@ -392,7 +401,7 @@ public class SearchPageWrapper extends BrowserWidget
             return;
         }
 
-        BaseWidgetUtils.createLabel( composite, Messages.getString("SearchPageWrapper.ReturningAttributes"), 1 ); //$NON-NLS-1$
+        BaseWidgetUtils.createLabel( composite, Messages.getString( "SearchPageWrapper.ReturningAttributes" ), 1 ); //$NON-NLS-1$
         Composite retComposite = BaseWidgetUtils.createColumnContainer( composite, 1, 2 );
         returningAttributesWidget = new ReturningAttributesWidget();
         returningAttributesWidget.createWidget( retComposite );
@@ -413,7 +422,8 @@ public class SearchPageWrapper extends BrowserWidget
             Composite buttonComposite = BaseWidgetUtils.createColumnContainer( composite, 3, 1 );
             if ( isActive( RETURN_DN_VISIBLE ) )
             {
-                returnDnButton = BaseWidgetUtils.createCheckbox( buttonComposite, Messages.getString("SearchPageWrapper.ExportDN"), 1 ); //$NON-NLS-1$
+                returnDnButton = BaseWidgetUtils.createCheckbox( buttonComposite, Messages
+                    .getString( "SearchPageWrapper.ExportDN" ), 1 ); //$NON-NLS-1$
                 returnDnButton.addSelectionListener( new SelectionAdapter()
                 {
                     public void widgetSelected( SelectionEvent e )
@@ -425,7 +435,8 @@ public class SearchPageWrapper extends BrowserWidget
             }
             if ( isActive( RETURN_ALLATTRIBUTES_VISIBLE ) )
             {
-                returnAllAttributesButton = BaseWidgetUtils.createCheckbox( buttonComposite, Messages.getString("SearchPageWrapper.AllUserAttributes"), 1 ); //$NON-NLS-1$
+                returnAllAttributesButton = BaseWidgetUtils.createCheckbox( buttonComposite, Messages
+                    .getString( "SearchPageWrapper.AllUserAttributes" ), 1 ); //$NON-NLS-1$
                 returnAllAttributesButton.addSelectionListener( new SelectionAdapter()
                 {
                     public void widgetSelected( SelectionEvent e )
@@ -437,8 +448,8 @@ public class SearchPageWrapper extends BrowserWidget
             }
             if ( isActive( RETURN_OPERATIONALATTRIBUTES_VISIBLE ) )
             {
-                returnOperationalAttributesButton = BaseWidgetUtils.createCheckbox( buttonComposite,
-                    Messages.getString("SearchPageWrapper.OperationalAttributes"), 1 ); //$NON-NLS-1$
+                returnOperationalAttributesButton = BaseWidgetUtils.createCheckbox( buttonComposite, Messages
+                    .getString( "SearchPageWrapper.OperationalAttributes" ), 1 ); //$NON-NLS-1$
                 returnOperationalAttributesButton.addSelectionListener( new SelectionAdapter()
                 {
                     public void widgetSelected( SelectionEvent e )
@@ -503,7 +514,7 @@ public class SearchPageWrapper extends BrowserWidget
         } );
 
         referralsHandlingWidget = new ReferralsHandlingWidget();
-        referralsHandlingWidget.createWidget( optionsComposite );
+        referralsHandlingWidget.createWidget( optionsComposite, !isActive( REFERRALOPTIONS_FOLLOW_MANUAL_INVISIBLE ) );
         referralsHandlingWidget.setEnabled( !isActive( REFERRALOPTIONS_READONLY ) );
         referralsHandlingWidget.addWidgetModifyListener( new WidgetModifyListener()
         {
@@ -528,12 +539,25 @@ public class SearchPageWrapper extends BrowserWidget
         }
 
         Composite controlComposite = BaseWidgetUtils.createColumnContainer( composite, 1, 3 );
-        Group controlGroup = BaseWidgetUtils.createGroup( controlComposite, Messages.getString("SearchPageWrapper.Controls"), 1 ); //$NON-NLS-1$
+        controlGroup = BaseWidgetUtils.createGroup( controlComposite, Messages
+            .getString( "SearchPageWrapper.Controls" ), 1 ); //$NON-NLS-1$
+
+        // ManageDsaIT control
+        manageDsaItControlButton = BaseWidgetUtils.createCheckbox( controlGroup, Messages
+            .getString( "SearchPageWrapper.ManageDsaIt" ), 1 ); //$NON-NLS-1$
+        manageDsaItControlButton.setToolTipText( Messages.getString( "SearchPageWrapper.ManageDsaItTooltip" ) ); //$NON-NLS-1$
+        manageDsaItControlButton.addSelectionListener( new SelectionAdapter()
+        {
+            public void widgetSelected( SelectionEvent e )
+            {
+                validate();
+            }
+        } );
 
         // subentries control
-        subentriesControlButton = BaseWidgetUtils.createCheckbox( controlGroup, Messages.getString("SearchPageWrapper.Subentries"), 1 ); //$NON-NLS-1$
-        subentriesControlButton
-            .setToolTipText( Messages.getString("SearchPageWrapper.SubentriesTooltip") ); //$NON-NLS-1$
+        subentriesControlButton = BaseWidgetUtils.createCheckbox( controlGroup, Messages
+            .getString( "SearchPageWrapper.Subentries" ), 1 ); //$NON-NLS-1$
+        subentriesControlButton.setToolTipText( Messages.getString( "SearchPageWrapper.SubentriesTooltip" ) ); //$NON-NLS-1$
         subentriesControlButton.addSelectionListener( new SelectionAdapter()
         {
             public void widgetSelected( SelectionEvent e )
@@ -544,8 +568,9 @@ public class SearchPageWrapper extends BrowserWidget
 
         // simple paged results control
         Composite sprcComposite = BaseWidgetUtils.createColumnContainer( controlGroup, 4, 1 );
-        pagedSearchControlButton = BaseWidgetUtils.createCheckbox( sprcComposite, Messages.getString("SearchPageWrapper.PagedSearch"), 1 ); //$NON-NLS-1$
-        pagedSearchControlButton.setToolTipText( Messages.getString("SearchPageWrapper.PagedSearchToolTip") ); //$NON-NLS-1$
+        pagedSearchControlButton = BaseWidgetUtils.createCheckbox( sprcComposite, Messages
+            .getString( "SearchPageWrapper.PagedSearch" ), 1 ); //$NON-NLS-1$
+        pagedSearchControlButton.setToolTipText( Messages.getString( "SearchPageWrapper.PagedSearchToolTip" ) ); //$NON-NLS-1$
         pagedSearchControlButton.addSelectionListener( new SelectionAdapter()
         {
             public void widgetSelected( SelectionEvent e )
@@ -553,7 +578,8 @@ public class SearchPageWrapper extends BrowserWidget
                 validate();
             }
         } );
-        pagedSearchControlSizeLabel = BaseWidgetUtils.createLabel( sprcComposite, Messages.getString("SearchPageWrapper.PageSize"), 1 ); //$NON-NLS-1$
+        pagedSearchControlSizeLabel = BaseWidgetUtils.createLabel( sprcComposite, Messages
+            .getString( "SearchPageWrapper.PageSize" ), 1 ); //$NON-NLS-1$
         pagedSearchControlSizeText = BaseWidgetUtils.createText( sprcComposite, "100", 5, 1 ); //$NON-NLS-1$
         pagedSearchControlSizeText.addVerifyListener( new VerifyListener()
         {
@@ -572,8 +598,9 @@ public class SearchPageWrapper extends BrowserWidget
                 validate();
             }
         } );
-        pagedSearchControlScrollButton = BaseWidgetUtils.createCheckbox( sprcComposite, Messages.getString("SearchPageWrapper.ScrollMode"), 1 ); //$NON-NLS-1$
-        pagedSearchControlScrollButton.setToolTipText( Messages.getString("SearchPageWrapper.ScrollModeToolTip") ); //$NON-NLS-1$
+        pagedSearchControlScrollButton = BaseWidgetUtils.createCheckbox( sprcComposite, Messages
+            .getString( "SearchPageWrapper.ScrollMode" ), 1 ); //$NON-NLS-1$
+        pagedSearchControlScrollButton.setToolTipText( Messages.getString( "SearchPageWrapper.ScrollModeToolTip" ) ); //$NON-NLS-1$
         pagedSearchControlScrollButton.setSelection( true );
         pagedSearchControlScrollButton.addSelectionListener( new SelectionAdapter()
         {
@@ -683,7 +710,11 @@ public class SearchPageWrapper extends BrowserWidget
                 {
                     for ( StudioControl c : searchControls )
                     {
-                        if ( StudioControl.SUBENTRIES_CONTROL.equals( c ) )
+                        if ( StudioControl.MANAGEDSAIT_CONTROL.equals( c ) )
+                        {
+                            manageDsaItControlButton.setSelection( true );
+                        }
+                        else if ( StudioControl.SUBENTRIES_CONTROL.equals( c ) )
                         {
                             subentriesControlButton.setSelection( true );
                         }
@@ -836,6 +867,10 @@ public class SearchPageWrapper extends BrowserWidget
 
             search.getSearchParameter().getControls().clear();
 
+            if ( manageDsaItControlButton.getSelection() )
+            {
+                search.getSearchParameter().getControls().add( StudioControl.MANAGEDSAIT_CONTROL );
+            }
             if ( subentriesControlButton.getSelection() )
             {
                 search.getSearchParameter().getControls().add( StudioControl.SUBENTRIES_CONTROL );
@@ -934,19 +969,19 @@ public class SearchPageWrapper extends BrowserWidget
     {
         if ( browserConnectionWidget != null && browserConnectionWidget.getBrowserConnection() == null )
         {
-            return Messages.getString("SearchPageWrapper.SelectConnection"); //$NON-NLS-1$
+            return Messages.getString( "SearchPageWrapper.SelectConnection" ); //$NON-NLS-1$
         }
         if ( searchBaseWidget != null && searchBaseWidget.getDn() == null )
         {
-            return Messages.getString("SearchPageWrapper.EnterValidSearchBase"); //$NON-NLS-1$
+            return Messages.getString( "SearchPageWrapper.EnterValidSearchBase" ); //$NON-NLS-1$
         }
         if ( searchNameText != null && "".equals( searchNameText.getText() ) ) //$NON-NLS-1$
         {
-            return Messages.getString("SearchPageWrapper.EnterSearchName"); //$NON-NLS-1$
+            return Messages.getString( "SearchPageWrapper.EnterSearchName" ); //$NON-NLS-1$
         }
         if ( filterWidget != null && filterWidget.getFilter() == null )
         {
-            return Messages.getString("SearchPageWrapper.EnterValidFilter"); //$NON-NLS-1$
+            return Messages.getString( "SearchPageWrapper.EnterValidFilter" ); //$NON-NLS-1$
         }
 
         return null;
@@ -1013,9 +1048,10 @@ public class SearchPageWrapper extends BrowserWidget
         {
             referralsHandlingWidget.setEnabled( b && !isActive( REFERRALOPTIONS_READONLY ) );
         }
-        if ( controlLabel != null )
+        if ( controlGroup != null )
         {
-            controlLabel.setEnabled( b );
+            controlGroup.setEnabled( b );
+            manageDsaItControlButton.setEnabled( b );
             subentriesControlButton.setEnabled( b );
         }
     }

@@ -25,7 +25,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.apache.directory.studio.connection.core.Connection.ReferralHandlingMethod;
 import org.apache.directory.studio.ldapbrowser.core.jobs.InitializeChildrenRunnable;
 import org.apache.directory.studio.ldapbrowser.core.jobs.StudioBrowserJob;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
@@ -81,8 +80,7 @@ public class FetchReferralsAction extends BrowserAction
     public boolean isEnabled()
     {
         List<IEntry> entries = getEntries();
-        return !entries.isEmpty()
-            && entries.iterator().next().getBrowserConnection().getReferralsHandlingMethod() != ReferralHandlingMethod.MANAGE;
+        return !entries.isEmpty() && !entries.iterator().next().getBrowserConnection().isManageDsaIT();
     }
 
 

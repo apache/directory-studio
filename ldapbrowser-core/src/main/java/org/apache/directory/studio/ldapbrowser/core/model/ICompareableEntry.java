@@ -18,33 +18,15 @@
  *  
  */
 
-package org.apache.directory.studio.connection.core;
-
-
-import java.util.List;
-
-import org.apache.directory.shared.ldap.util.LdapURL;
+package org.apache.directory.studio.ldapbrowser.core.model;
 
 
 /**
- * Callback interface to request the target connection 
- * of a referral from a higher-level layer (from the UI plugin).
+ * A tagging interface for comparable entries.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public interface IReferralHandler
+public interface ICompareableEntry extends IEntry
 {
-
-    /**
-     * Gets the connection from this referral handler.
-     * The connection is used to continue a LDAP request.
-     * The referral handler may display a dialog to the user
-     * to select a proper connection.
-     * 
-     * @param referralURLs the referral URLs
-     * @return the target connection, null to cancel referral chasing
-     */
-    public Connection getReferralConnection( List<LdapURL> referralUrls );
-
 }

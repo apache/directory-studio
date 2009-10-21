@@ -49,6 +49,7 @@ import org.apache.directory.studio.ldapbrowser.core.events.SearchUpdateEvent;
 import org.apache.directory.studio.ldapbrowser.core.events.SearchUpdateListener;
 import org.apache.directory.studio.ldapbrowser.core.model.IBookmark;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
+import org.apache.directory.studio.ldapbrowser.core.model.IContinuation;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.IRootDSE;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
@@ -515,9 +516,14 @@ public class BrowserViewUniversalListener extends BrowserUniversalListener imple
     public void searchUpdated( SearchUpdateEvent searchUpdateEvent )
     {
         ISearch search = searchUpdateEvent.getSearch();
+        viewer.setSelection( StructuredSelection.EMPTY );
         viewer.refresh();
 
-        if ( search.getBrowserConnection().getSearchManager().getSearches().contains( search ) )
+        if ( search instanceof IContinuation )
+        {
+            viewer.setSelection( new StructuredSelection( search ), true );
+        }
+        else if ( search.getBrowserConnection().getSearchManager().getSearches().contains( search ) )
         {
             viewer.setSelection( new StructuredSelection( search ), true );
         }
@@ -528,7 +534,10 @@ public class BrowserViewUniversalListener extends BrowserUniversalListener imple
         else
         {
             Object searchCategory = ( ( ITreeContentProvider ) viewer.getContentProvider() ).getParent( search );
-            viewer.setSelection( new StructuredSelection( searchCategory ), true );
+            if ( searchCategory != null )
+            {
+                viewer.setSelection( new StructuredSelection( searchCategory ), true );
+            }
         }
     }
 

@@ -46,22 +46,22 @@ import org.eclipse.search.ui.ISearchPageScoreComputer;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class DelegateEntry implements IEntry
+public abstract class DelegateEntry implements IEntry
 {
 
     private static final long serialVersionUID = -4488685394817691963L;
 
     /** The connection id. */
-    private String connectionId;
+    protected String connectionId;
 
     /** The DN. */
-    private LdapDN dn;
+    protected LdapDN dn;
 
     /** The entry does not exist flag. */
-    private boolean entryDoesNotExist;
+    protected boolean entryDoesNotExist;
 
     /** The delegate. */
-    private IEntry delegate;
+    protected IEntry delegate;
 
 
     protected DelegateEntry()
@@ -75,7 +75,7 @@ public class DelegateEntry implements IEntry
      * @param browserConnection the browser connection of the delegate
      * @param dn the DN of the delegate
      */
-    public DelegateEntry( IBrowserConnection browserConnection, LdapDN dn )
+    protected DelegateEntry( IBrowserConnection browserConnection, LdapDN dn )
     {
         this.connectionId = browserConnection.getConnection() != null ? browserConnection.getConnection().getId()
             : null;
@@ -207,10 +207,6 @@ public class DelegateEntry implements IEntry
         {
             return getDelegate().isInitOperationalAttributes();
         }
-        else if ( entryDoesNotExist )
-        {
-            return true;
-        }
         else
         {
             return false;
@@ -226,10 +222,6 @@ public class DelegateEntry implements IEntry
         if ( getDelegate() != null )
         {
             return getDelegate().isFetchAliases();
-        }
-        else if ( entryDoesNotExist )
-        {
-            return true;
         }
         else
         {
@@ -247,10 +239,6 @@ public class DelegateEntry implements IEntry
         {
             return getDelegate().isFetchReferrals();
         }
-        else if ( entryDoesNotExist )
-        {
-            return true;
-        }
         else
         {
             return false;
@@ -266,10 +254,6 @@ public class DelegateEntry implements IEntry
         if ( getDelegate() != null )
         {
             return getDelegate().isFetchSubentries();
-        }
-        else if ( entryDoesNotExist )
-        {
-            return true;
         }
         else
         {
@@ -389,7 +373,7 @@ public class DelegateEntry implements IEntry
         }
         else
         {
-            return null;
+            return new IAttribute[0];
         }
     }
 
@@ -438,7 +422,7 @@ public class DelegateEntry implements IEntry
         }
         else
         {
-            return null;
+            return new IEntry[0];
         }
     }
 
@@ -927,33 +911,6 @@ public class DelegateEntry implements IEntry
             return this;
         }
         return null;
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    public int hashCode()
-    {
-        return getDn().hashCode();
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    public boolean equals( Object o )
-    {
-        // check argument
-        if ( o == null || !( o instanceof IEntry ) )
-        {
-            return false;
-        }
-        IEntry e = ( IEntry ) o;
-
-        // compare dn and connection
-        return getDn() == null ? e.getDn() == null : ( getDn().equals( e.getDn() ) && getBrowserConnection().equals(
-            e.getBrowserConnection() ) );
     }
 
 

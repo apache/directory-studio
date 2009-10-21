@@ -22,6 +22,7 @@ package org.apache.directory.studio.connection.core.io.jndi;
 
 import javax.naming.directory.SearchResult;
 
+import org.apache.directory.shared.ldap.util.LdapURL;
 import org.apache.directory.studio.connection.core.Connection;
 
 
@@ -36,14 +37,15 @@ public class StudioSearchResult extends SearchResult
 {
 
     private static final long serialVersionUID = 1L;
-    
-    
+
     /** The connection. */
     private Connection connection;
-    
-    
-    /** The is referral flag. */
-    private boolean isReferral;
+
+    /** The is continued search result flag */
+    private boolean isContinuedSearchResult;
+
+    /** The URL with information on how to continue the search. */
+    private LdapURL searchContinuationUrl;
 
 
     /**
@@ -51,14 +53,18 @@ public class StudioSearchResult extends SearchResult
      * 
      * @param searchResult the original search result
      * @param connection the connection
-     * @param isReferral the is referral flag
+     * @param isContinuedSearchResult if the search result is a result from a continued search
+     * @param searchContinuationUrl the URL with information on how to continue the search
      */
-    public StudioSearchResult( SearchResult searchResult, Connection connection, boolean isReferral )
+    public StudioSearchResult( SearchResult searchResult, Connection connection, boolean isContinuedSearchResult,
+        LdapURL searchContinuationUrl )
     {
-        super( searchResult.getName(), searchResult.getClassName(), searchResult.getObject(), searchResult.getAttributes(), searchResult.isRelative() );
+        super( searchResult.getName(), searchResult.getClassName(), searchResult.getObject(), searchResult
+            .getAttributes(), searchResult.isRelative() );
         super.setNameInNamespace( searchResult.getNameInNamespace() );
         this.connection = connection;
-        this.isReferral = isReferral;
+        this.isContinuedSearchResult = isContinuedSearchResult;
+        this.searchContinuationUrl = searchContinuationUrl;
     }
 
 
@@ -85,24 +91,24 @@ public class StudioSearchResult extends SearchResult
 
 
     /**
-     * Checks if is referral.
+     * Checks if this search result is a result from a continued search.
      * 
-     * @return true, if is referral
+     * @return true, if this search result is a result from a continued search
      */
-    public boolean isReferral()
+    public boolean isContinuedSearchResult()
     {
-        return isReferral;
+        return isContinuedSearchResult;
     }
 
 
     /**
-     * Sets the referral flag.
+     * The URL with information on how to continue the search.
      * 
-     * @param isReferral the new referral flag
+     * @return the URL with information on how to continue the search
      */
-    public void setReferral( boolean isReferral )
+    public LdapURL getSearchContinuationUrl()
     {
-        this.isReferral = isReferral;
+        return searchContinuationUrl;
     }
 
 }

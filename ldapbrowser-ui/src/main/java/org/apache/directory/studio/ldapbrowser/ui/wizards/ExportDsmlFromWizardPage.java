@@ -53,6 +53,7 @@ public class ExportDsmlFromWizardPage extends ExportBaseFromWizardPage
     {
         super( pageName, wizard, new SearchPageWrapper(
             SearchPageWrapper.NAME_INVISIBLE
+                | SearchPageWrapper.REFERRALOPTIONS_FOLLOW_MANUAL_INVISIBLE
                 | SearchPageWrapper.RETURN_ALLATTRIBUTES_VISIBLE
                 | SearchPageWrapper.RETURN_OPERATIONALATTRIBUTES_VISIBLE
                 | ( ( wizard.getSearch().getReturningAttributes() == null || wizard.getSearch()

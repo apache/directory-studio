@@ -100,7 +100,7 @@ public class BrowserConnection implements IBrowserConnection, Serializable
             connection.getConnectionParameter().setExtendedIntProperty(
                 CONNECTION_PARAMETER_ALIASES_DEREFERENCING_METHOD, AliasDereferencingMethod.ALWAYS.getOrdinal() );
             connection.getConnectionParameter().setExtendedIntProperty( CONNECTION_PARAMETER_REFERRALS_HANDLING_METHOD,
-                ReferralHandlingMethod.FOLLOW.getOrdinal() );
+                ReferralHandlingMethod.FOLLOW_MANUALLY.getOrdinal() );
             connection.getConnectionParameter().setExtendedBoolProperty( CONNECTION_PARAMETER_FETCH_BASE_DNS, true );
             connection.getConnectionParameter().setExtendedProperty( CONNECTION_PARAMETER_BASE_DN, "" );
             connection.getConnectionParameter().setExtendedBoolProperty( CONNECTION_PARAMETER_FETCH_SUBENTRIES, false );
@@ -309,6 +309,25 @@ public class BrowserConnection implements IBrowserConnection, Serializable
     public void setTimeLimit( int timeLimit )
     {
         connection.getConnectionParameter().setExtendedIntProperty( CONNECTION_PARAMETER_TIME_LIMIT, timeLimit );
+        ConnectionEventRegistry.fireConnectionUpdated( connection, this );
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public boolean isManageDsaIT()
+    {
+        return connection.getConnectionParameter().getExtendedBoolProperty( CONNECTION_PARAMETER_MANAGE_DSA_IT );
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public void setManageDsaIT( boolean manageDsaIT )
+    {
+        connection.getConnectionParameter().setExtendedBoolProperty( CONNECTION_PARAMETER_MANAGE_DSA_IT, manageDsaIT );
         ConnectionEventRegistry.fireConnectionUpdated( connection, this );
     }
 

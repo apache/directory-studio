@@ -21,9 +21,12 @@
 package org.apache.directory.studio.connection.ui.dialogs;
 
 
+import java.util.List;
+
 import org.apache.directory.shared.ldap.util.LdapURL;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
+import org.apache.directory.studio.connection.core.Utils;
 import org.apache.directory.studio.connection.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.connection.ui.widgets.ConnectionActionGroup;
 import org.apache.directory.studio.connection.ui.widgets.ConnectionConfiguration;
@@ -40,6 +43,7 @@ import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
@@ -56,7 +60,7 @@ public class SelectReferralConnectionDialog extends Dialog
 
     private String title;
 
-    private LdapURL referralUrl;
+    private List<LdapURL> referralUrls;
 
     private Connection selectedConnection;
 
@@ -75,12 +79,12 @@ public class SelectReferralConnectionDialog extends Dialog
      * @param parentShell the parent shell
      * @param referralUrl the referral URL
      */
-    public SelectReferralConnectionDialog( Shell parentShell, LdapURL referralUrl )
+    public SelectReferralConnectionDialog( Shell parentShell, List<LdapURL> referralUrls )
     {
         super( parentShell );
         super.setShellStyle( super.getShellStyle() | SWT.RESIZE );
-        this.title = Messages.getString("SelectReferralConnectionDialog.SelectReferralConenction"); //$NON-NLS-1$
-        this.referralUrl = referralUrl;
+        this.title = Messages.getString( "SelectReferralConnectionDialog.SelectReferralConenction" ); //$NON-NLS-1$
+        this.referralUrls = referralUrls;
         this.selectedConnection = null;
     }
 
@@ -131,8 +135,20 @@ public class SelectReferralConnectionDialog extends Dialog
      */
     protected void createButtonsForButtonBar( Composite parent )
     {
-        createButton( parent, IDialogConstants.OK_ID, IDialogConstants.OK_LABEL, false );
+        Button okButton = createButton( parent, IDialogConstants.OK_ID, IDialogConstants.OK_LABEL, true );
+        okButton.setFocus();
         createButton( parent, IDialogConstants.CANCEL_ID, IDialogConstants.CANCEL_LABEL, false );
+        
+        validate();
+    }
+
+
+    private void validate()
+    {
+        if ( getButton( IDialogConstants.OK_ID ) != null )
+        {
+            getButton( IDialogConstants.OK_ID ).setEnabled( selectedConnection != null );
+        }
     }
 
 
@@ -149,8 +165,12 @@ public class SelectReferralConnectionDialog extends Dialog
         gd.heightHint = convertHorizontalDLUsToPixels( IDialogConstants.MINIMUM_MESSAGE_AREA_WIDTH / 2 );
         composite.setLayoutData( gd );
 
-        BaseWidgetUtils.createWrappedLabeledText( composite, Messages.getString("SelectReferralConnectionDialog.SelectConnectionToHandleReferral") //$NON-NLS-1$
-            + referralUrl, 1 );
+        BaseWidgetUtils.createWrappedLabeledText( composite, Messages
+            .getString( "SelectReferralConnectionDialog.SelectConnectionToHandleReferral" ), 1 ); //$NON-NLS-1$
+        for ( LdapURL url : referralUrls )
+        {
+            BaseWidgetUtils.createWrappedLabeledText( composite, " - " + url.toString(), 1 ); //$NON-NLS-1$
+        }
 
         // create configuration
         configuration = new ConnectionConfiguration();
@@ -174,6 +194,7 @@ public class SelectReferralConnectionDialog extends Dialog
         {
             public void selectionChanged( SelectionChangedEvent event )
             {
+                selectedConnection = null;
                 if ( !event.getSelection().isEmpty() )
                 {
                     Object o = ( ( IStructuredSelection ) event.getSelection() ).getFirstElement();
@@ -182,6 +203,7 @@ public class SelectReferralConnectionDialog extends Dialog
                         selectedConnection = ( Connection ) o;
                     }
                 }
+                validate();
             }
         } );
 
@@ -189,6 +211,7 @@ public class SelectReferralConnectionDialog extends Dialog
         {
             public void doubleClick( DoubleClickEvent event )
             {
+                selectedConnection = null;
                 if ( !event.getSelection().isEmpty() )
                 {
                     Object o = ( ( IStructuredSelection ) event.getSelection() ).getFirstElement();
@@ -197,27 +220,33 @@ public class SelectReferralConnectionDialog extends Dialog
                         selectedConnection = ( Connection ) o;
                     }
                 }
+                validate();
             }
         } );
 
-        if ( referralUrl != null )
+        if ( referralUrls != null )
         {
             Connection[] connections = ConnectionCorePlugin.getDefault().getConnectionManager().getConnections();
             for ( int i = 0; i < connections.length; i++ )
             {
                 Connection connection = connections[i];
                 LdapURL connectionUrl = connection.getUrl();
-                if ( connectionUrl != null && referralUrl.toString().startsWith( connectionUrl.toString() ) )
+                String normalizedConnectionUrl = Utils.getSimpleNormalizedUrl( connectionUrl );
+                for ( LdapURL url : referralUrls )
                 {
-                    mainWidget.getViewer().reveal( connection );
-                    mainWidget.getViewer().setSelection( new StructuredSelection( connection ), true );
+                    if ( url != null && Utils.getSimpleNormalizedUrl( url ).equals( normalizedConnectionUrl ) )
+                    {
+                        mainWidget.getViewer().reveal( connection );
+                        mainWidget.getViewer().setSelection( new StructuredSelection( connection ), true );
+                        break;
+                    }
                 }
             }
         }
 
         applyDialogFont( composite );
 
-        mainWidget.setFocus();
+        validate();
 
         return composite;
     }

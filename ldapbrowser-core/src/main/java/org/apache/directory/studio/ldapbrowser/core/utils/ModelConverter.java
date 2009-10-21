@@ -33,13 +33,13 @@ import javax.naming.directory.DirContext;
 import javax.naming.directory.ModificationItem;
 
 import org.apache.directory.shared.ldap.name.LdapDN;
+import org.apache.directory.studio.connection.core.StudioControl;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreConstants;
 import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
-import org.apache.directory.studio.ldapbrowser.core.model.StudioControl;
 import org.apache.directory.studio.ldapbrowser.core.model.impl.Attribute;
 import org.apache.directory.studio.ldapbrowser.core.model.impl.DummyEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.impl.Value;
@@ -211,28 +211,31 @@ public class ModelConverter
     {
         LdifContentRecord record = LdifContentRecord.create( entry.getDn().getUpName() );
 
-        for ( IAttribute attribute : entry.getAttributes() )
+        if(entry.getAttributes() != null)
         {
-            String name = attribute.getDescription();
-            for ( IValue value : attribute.getValues() )
+            for ( IAttribute attribute : entry.getAttributes() )
             {
-                if ( !value.isEmpty() )
+                String name = attribute.getDescription();
+                for ( IValue value : attribute.getValues() )
                 {
-                    if ( value.getRawValue() instanceof LdifPart )
+                    if ( !value.isEmpty() )
                     {
-                        LdifPart part = ( LdifPart ) value.getRawValue();
-                        if ( part instanceof LdifCommentLine )
+                        if ( value.getRawValue() instanceof LdifPart )
                         {
-                            record.addComment( ( LdifCommentLine ) part );
+                            LdifPart part = ( LdifPart ) value.getRawValue();
+                            if ( part instanceof LdifCommentLine )
+                            {
+                                record.addComment( ( LdifCommentLine ) part );
+                            }
                         }
-                    }
-                    else if ( value.isString() )
-                    {
-                        record.addAttrVal( LdifAttrValLine.create( name, value.getStringValue() ) );
-                    }
-                    else
-                    {
-                        record.addAttrVal( LdifAttrValLine.create( name, value.getBinaryValue() ) );
+                        else if ( value.isString() )
+                        {
+                            record.addAttrVal( LdifAttrValLine.create( name, value.getStringValue() ) );
+                        }
+                        else
+                        {
+                            record.addAttrVal( LdifAttrValLine.create( name, value.getBinaryValue() ) );
+                        }
                     }
                 }
             }

@@ -108,31 +108,31 @@ public class ApacheDsSchemaConnector extends AbstractSchemaConnector implements 
                 HANDLE_REFERALS_METHOD, null, ( StudioProgressMonitor ) monitor, null );
         if ( answer != null )
         {
-            while ( answer.hasMoreElements() )
+            try
             {
-                SearchResult searchResult = ( SearchResult ) answer.nextElement();
-
-                // Getting the 'cn' Attribute
-                Attribute cnAttribute = searchResult.getAttributes().get( "cn" );
-
-                // Looping on the values
-                NamingEnumeration<?> ne = null;
-                try
+                while ( answer.hasMore() )
                 {
+                    SearchResult searchResult = ( SearchResult ) answer.next();
+
+                    // Getting the 'cn' Attribute
+                    Attribute cnAttribute = searchResult.getAttributes().get( "cn" );
+
+                    // Looping on the values
+                    NamingEnumeration<?> ne = null;
                     ne = cnAttribute.getAll();
                     if ( ne != null )
                     {
-                        while ( ne.hasMoreElements() )
+                        while ( ne.hasMore() )
                         {
-                            String value = ( String ) ne.nextElement();
+                            String value = ( String ) ne.next();
                             schemas.add( getSchema( wrapper, value, monitor ) );
                         }
                     }
                 }
-                catch ( NamingException e )
-                {
-                    monitor.reportError( e );
-                }
+            }
+            catch ( NamingException e )
+            {
+                monitor.reportError( e );
             }
         }
 
@@ -159,32 +159,39 @@ public class ApacheDsSchemaConnector extends AbstractSchemaConnector implements 
 
         if ( answer != null )
         {
-            if ( answer.hasMoreElements() )
+            try
             {
-                SearchResult searchResult = ( SearchResult ) answer.nextElement();
-
-                Attribute vendorNameAttribute = searchResult.getAttributes().get( "vendorName" );
-                if ( vendorNameAttribute == null )
+                if ( answer.hasMore() )
                 {
-                    return false;
-                }
+                    SearchResult searchResult = ( SearchResult ) answer.next();
 
-                if ( vendorNameAttribute.size() != 1 )
-                {
-                    return false;
-                }
+                    Attribute vendorNameAttribute = searchResult.getAttributes().get( "vendorName" );
+                    if ( vendorNameAttribute == null )
+                    {
+                        return false;
+                    }
 
-                String vendorName = null;
-                try
-                {
-                    vendorName = ( String ) vendorNameAttribute.get();
-                }
-                catch ( NamingException e )
-                {
-                    return false;
-                }
+                    if ( vendorNameAttribute.size() != 1 )
+                    {
+                        return false;
+                    }
 
-                return ( ( vendorName != null ) && vendorName.equalsIgnoreCase( "Apache Software Foundation" ) );
+                    String vendorName = null;
+                    try
+                    {
+                        vendorName = ( String ) vendorNameAttribute.get();
+                    }
+                    catch ( NamingException e )
+                    {
+                        return false;
+                    }
+
+                    return ( ( vendorName != null ) && vendorName.equalsIgnoreCase( "Apache Software Foundation" ) );
+                }
+            }
+            catch ( NamingException e )
+            {
+                monitor.reportError( e );
             }
         }
 
@@ -208,40 +215,47 @@ public class ApacheDsSchemaConnector extends AbstractSchemaConnector implements 
             constraintSearch, DEREF_ALIAS_METHOD, HANDLE_REFERALS_METHOD, null, monitor, null );
         if ( answer != null )
         {
-            while ( answer.hasMoreElements() )
+            try
             {
-                SearchResult searchResult = ( SearchResult ) answer.nextElement();
-                switch ( getNodeType( searchResult ) )
+                while ( answer.hasMore() )
                 {
-                    case ATTRIBUTE_TYPE:
-                        AttributeTypeImpl at = createAttributeType( searchResult );
-                        at.setSchema( name );
-                        at.setSchemaObject( schema );
-                        schema.addAttributeType( at );
-                        break;
-                    case OBJECT_CLASS:
-                        ObjectClassImpl oc = createObjectClass( searchResult );
-                        oc.setSchema( name );
-                        oc.setSchemaObject( schema );
-                        schema.addObjectClass( oc );
-                        break;
-                    case MATCHING_RULE:
-                        MatchingRuleImpl mr = createMatchingRule( searchResult );
-                        mr.setSchema( name );
-                        mr.setSchemaObject( schema );
-                        schema.addMatchingRule( mr );
-                        break;
-                    case SYNTAX:
-                        SyntaxImpl syntax = createSyntax( searchResult );
-                        syntax.setSchema( name );
-                        syntax.setSchemaObject( schema );
-                        schema.addSyntax( syntax );
-                        break;
-                    default:
-                        break;
+                    SearchResult searchResult = ( SearchResult ) answer.next();
+                    switch ( getNodeType( searchResult ) )
+                    {
+                        case ATTRIBUTE_TYPE:
+                            AttributeTypeImpl at = createAttributeType( searchResult );
+                            at.setSchema( name );
+                            at.setSchemaObject( schema );
+                            schema.addAttributeType( at );
+                            break;
+                        case OBJECT_CLASS:
+                            ObjectClassImpl oc = createObjectClass( searchResult );
+                            oc.setSchema( name );
+                            oc.setSchemaObject( schema );
+                            schema.addObjectClass( oc );
+                            break;
+                        case MATCHING_RULE:
+                            MatchingRuleImpl mr = createMatchingRule( searchResult );
+                            mr.setSchema( name );
+                            mr.setSchemaObject( schema );
+                            schema.addMatchingRule( mr );
+                            break;
+                        case SYNTAX:
+                            SyntaxImpl syntax = createSyntax( searchResult );
+                            syntax.setSchema( name );
+                            syntax.setSchemaObject( schema );
+                            schema.addSyntax( syntax );
+                            break;
+                        default:
+                            break;
+                    }
                 }
             }
-        }
+            catch ( NamingException e )
+            {
+                monitor.reportError( e );
+            }
+       }
 
         return schema;
     }

@@ -28,13 +28,15 @@ import java.util.Set;
 
 import javax.naming.ContextNotEmptyException;
 import javax.naming.directory.SearchControls;
+import javax.naming.ldap.Control;
+import javax.naming.ldap.ManageReferralControl;
 
 import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.shared.ldap.name.Rdn;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.DnUtils;
+import org.apache.directory.studio.connection.core.StudioControl;
 import org.apache.directory.studio.connection.core.jobs.StudioProgressMonitor;
-import org.apache.directory.studio.connection.core.Connection.ReferralHandlingMethod;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.ldapbrowser.core.events.EntryRenamedEvent;
 import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
@@ -158,8 +160,8 @@ public class RenameEntryJob extends AbstractNotificationJob
                     if ( !dummyMonitor.errorsReported() )
                     {
                         dummyMonitor.reset();
-                        DeleteEntriesJob.optimisticDeleteEntryRecursive( browserConnection, oldDn, false, 0,
-                            dummyMonitor, monitor );
+                        DeleteEntriesJob.optimisticDeleteEntryRecursive( browserConnection, oldDn, oldEntry
+                            .isReferral(), false, 0, dummyMonitor, monitor );
                     }
                 }
                 else
@@ -189,7 +191,12 @@ public class RenameEntryJob extends AbstractNotificationJob
             IEntry parent = oldEntry.getParententry();
             boolean hasMoreChildren = parent.hasMoreChildren();
             parent.deleteChild( oldEntry );
-            newEntry = ReadEntryRunnable.getEntry( browserConnection, newDn, monitor );
+            List<StudioControl> controls = new ArrayList<StudioControl>();
+            if ( oldEntry.isReferral() )
+            {
+                controls.add( StudioControl.MANAGEDSAIT_CONTROL );
+            }
+            newEntry = ReadEntryRunnable.getEntry( browserConnection, newDn, controls, monitor );
             parent.addChild( newEntry );
             parent.setHasMoreChildren( hasMoreChildren );
 
@@ -242,7 +249,6 @@ public class RenameEntryJob extends AbstractNotificationJob
     }
 
 
-    
     /**
      * Moves/Renames an entry.
      * 
@@ -258,14 +264,18 @@ public class RenameEntryJob extends AbstractNotificationJob
         String oldDnString = entry.getDn().getUpName();
         String newDnString = newDn.getUpName();
 
-        // determine referrals handling method
-        ReferralHandlingMethod referralsHandlingMethod = entry.isReferral() ? ReferralHandlingMethod.MANAGE
-            : ReferralHandlingMethod.FOLLOW;
+        // ManageDsaIT control
+        Control[] controls = null;
+        if ( entry.isReferral() )
+        {
+            controls = new Control[]
+                { new ManageReferralControl( false ) };
+        }
 
         if ( browserConnection.getConnection() != null )
         {
             browserConnection.getConnection().getJNDIConnectionWrapper().renameEntry( oldDnString, newDnString, true,
-                referralsHandlingMethod, null, monitor, null );
+                controls, monitor, null );
         }
     }
 

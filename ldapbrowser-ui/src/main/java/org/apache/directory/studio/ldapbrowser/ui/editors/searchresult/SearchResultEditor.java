@@ -98,7 +98,7 @@ public class SearchResultEditor extends EditorPart implements INavigationLocatio
 
             IEntry modifiedEntry = event.getModifiedEntry();
 
-            if ( workingCopy != null )
+            if ( workingCopy != null && workingCopy.getSearchResults() != null )
             {
                 for ( ISearchResult sr : workingCopy.getSearchResults() )
                 {

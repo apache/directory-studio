@@ -84,6 +84,7 @@ public class Utils
         return null;
     }
 
+
     /**
      * Shortens the given label to the given maximum length
      * and filters non-printable characters.
@@ -205,6 +206,19 @@ public class Utils
         url.setScope( scope );
         url.setFilter( filter );
         return url;
+    }
+
+
+    /**
+     * Gets the simple normalized form of the LDAP URL: schema, host and port.
+     * 
+     * @param url the LDAP URL
+     * 
+     * @return the simple normalized form of the LDAP URL
+     */
+    public static String getSimpleNormalizedUrl( LdapURL url )
+    {
+        return url.getScheme() + ( url.getHost() != null ? url.getHost().toLowerCase() : "" ) + ":" + url.getPort();
     }
 
 

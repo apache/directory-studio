@@ -411,7 +411,7 @@ public class LdifSearchLogger implements IJndiLogger
     /**
      * {@inheritDoc}
      */
-    public void logSearchResultReference( Connection connection, ReferralsInfo.UrlAndDn urlAndDn,
+    public void logSearchResultReference( Connection connection, ReferralsInfo.Referral referral,
         ReferralsInfo referralsInfo, long requestNum, NamingException ex )
     {
         if ( !isSearchResultEntryLogEnabled() )
@@ -420,7 +420,7 @@ public class LdifSearchLogger implements IJndiLogger
         }
 
         Collection<LdifLineBase> lines = new ArrayList<LdifLineBase>();
-        lines.add( LdifCommentLine.create( "# reference : " + ( urlAndDn != null ? urlAndDn.getUrl() : "null" ) ) ); //$NON-NLS-1$ //$NON-NLS-2$
+        lines.add( LdifCommentLine.create( "# reference : " + ( referral != null ? referral.getLdapURLs() : "null" ) ) ); //$NON-NLS-1$ //$NON-NLS-2$
         lines.add( LdifSepLine.create() );
 
         String formattedString = ""; //$NON-NLS-1$

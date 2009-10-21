@@ -82,41 +82,45 @@ public class EntryEditorUtils
         {
             if ( input.getEntryInput() != null )
             {
+                String connectionName = input.getEntryInput().getBrowserConnection().getConnection() == null ? "" //$NON-NLS-1$
+                    : " - " + input.getEntryInput().getBrowserConnection().getConnection().getName(); //$NON-NLS-1$
                 if ( input.getEntryInput() instanceof IRootDSE )
                 {
-                    return Messages.getString( "EntryEditorNavigationLocation.RootDSE" ) + " - " + input.getEntryInput().getBrowserConnection().getConnection().getName(); //$NON-NLS-1$ //$NON-NLS-2$
+                    return Messages.getString( "EntryEditorNavigationLocation.RootDSE" ) + connectionName; //$NON-NLS-1$ //$NON-NLS-2$
                 }
                 else
                 {
                     return NLS.bind( Messages.getString( "EntryEditorNavigationLocation.Entry" ), //$NON-NLS-1$
                         input.getEntryInput().getDn().getUpName() )
-                        + " - " + input.getEntryInput().getBrowserConnection().getConnection().getName(); //$NON-NLS-1$
+                        + connectionName;
                 }
             }
             else if ( input.getSearchResultInput() != null )
             {
+                String connectionName = input.getSearchResultInput().getEntry().getBrowserConnection().getConnection() == null ? "" //$NON-NLS-1$
+                    : " - " + input.getSearchResultInput().getEntry().getBrowserConnection().getConnection().getName(); //$NON-NLS-1$
                 if ( input.getSearchResultInput() instanceof IRootDSE )
                 {
-                    return Messages.getString( "EntryEditorNavigationLocation.RootDSE" ) + " - " + input.getEntryInput().getBrowserConnection().getConnection().getName(); //$NON-NLS-1$ //$NON-NLS-2$
+                    return Messages.getString( "EntryEditorNavigationLocation.RootDSE" ) + connectionName; //$NON-NLS-1$ //$NON-NLS-2$
                 }
                 else
                 {
                     return NLS.bind( Messages.getString( "EntryEditorNavigationLocation.SearchResult" ), //$NON-NLS-1$
-                        input.getSearchResultInput().getDn().getUpName() )
-                        + " - " + input.getSearchResultInput().getEntry().getBrowserConnection().getConnection().getName(); //$NON-NLS-1$
+                        input.getSearchResultInput().getDn().getUpName() ) + connectionName; //$NON-NLS-1$
                 }
             }
             else if ( input.getBookmarkInput() != null )
             {
+                String connectionName = input.getBookmarkInput().getBrowserConnection().getConnection() == null ? "" //$NON-NLS-1$
+                    : " - " + input.getBookmarkInput().getBrowserConnection().getConnection().getName(); //$NON-NLS-1$
                 if ( input.getBookmarkInput() instanceof IRootDSE )
                 {
-                    return Messages.getString( "EntryEditorNavigationLocation.RootDSE" ) + " - " + input.getEntryInput().getBrowserConnection().getConnection().getName(); //$NON-NLS-1$ //$NON-NLS-2$
+                    return Messages.getString( "EntryEditorNavigationLocation.RootDSE" ) + connectionName; //$NON-NLS-1$
                 }
                 else
                 {
                     return NLS.bind( Messages.getString( "EntryEditorNavigationLocation.Bookmark" ), //$NON-NLS-1$
-                        input.getBookmarkInput().getDn().getUpName() )
-                        + " - " + input.getBookmarkInput().getBrowserConnection().getConnection().getName(); //$NON-NLS-1$
+                        input.getBookmarkInput().getDn().getUpName() ) + connectionName;
                 }
             }
             else

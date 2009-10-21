@@ -46,28 +46,28 @@ public class Connection implements ConnectionPropertyPageProvider, IAdaptable
      */
     public static enum AliasDereferencingMethod
     {
-    
+
         /** Never. */
         NEVER(0),
-    
+
         /** Always. */
         ALWAYS(1),
-    
+
         /** Finding. */
         FINDING(2),
-    
+
         /** Search. */
         SEARCH(3);
-    
+
         private final int ordinal;
-    
-    
+
+
         private AliasDereferencingMethod( int ordinal )
         {
             this.ordinal = ordinal;
         }
-    
-    
+
+
         /**
          * Gets the ordinal.
          * 
@@ -77,8 +77,8 @@ public class Connection implements ConnectionPropertyPageProvider, IAdaptable
         {
             return ordinal;
         }
-    
-    
+
+
         /**
          * Gets the AliasDereferencingMethod by ordinal.
          * 
@@ -104,7 +104,6 @@ public class Connection implements ConnectionPropertyPageProvider, IAdaptable
         }
     }
 
-
     /**
      * Enum for referral handling method.
      * 
@@ -113,25 +112,28 @@ public class Connection implements ConnectionPropertyPageProvider, IAdaptable
      */
     public static enum ReferralHandlingMethod
     {
-    
+
         /** Ignore. */
         IGNORE(0),
-    
-        /** Follow. */
+
+        /** Follow automatically. */
         FOLLOW(1),
-    
+
         /** Manage. */
-        MANAGE(2);
-    
+        //MANAGE(2),
+
+        /** Follow manually. */
+        FOLLOW_MANUALLY(3);
+
         private final int ordinal;
-    
-    
+
+
         private ReferralHandlingMethod( int ordinal )
         {
             this.ordinal = ordinal;
         }
-    
-    
+
+
         /**
          * Gets the ordinal.
          * 
@@ -141,8 +143,8 @@ public class Connection implements ConnectionPropertyPageProvider, IAdaptable
         {
             return ordinal;
         }
-    
-    
+
+
         /**
          * Gets the ReferralHandlingMethod by ordinal.
          * 
@@ -159,17 +161,20 @@ public class Connection implements ConnectionPropertyPageProvider, IAdaptable
                 case 1:
                     return FOLLOW;
                 case 2:
-                    return MANAGE;
+                    //return MANAGE;
+                    return FOLLOW_MANUALLY;
+                case 3:
+                    return FOLLOW_MANUALLY;
                 default:
                     return null;
             }
         }
     }
 
-
     private ConnectionParameter connectionParameter;
 
     private JNDIConnectionWrapper jndiConnectionWrapper;
+
 
     /**
      * Creates a new instance of Connection.
@@ -288,8 +293,8 @@ public class Connection implements ConnectionPropertyPageProvider, IAdaptable
     {
         return connectionParameter.getId();
     }
-    
-    
+
+
     /**
      * Gets the host.
      * 
@@ -322,15 +327,15 @@ public class Connection implements ConnectionPropertyPageProvider, IAdaptable
         return connectionParameter.getPort();
     }
 
-    
+
     /**
      * Gets the SASL realm.
      * 
      * @return the SASL realm
      */
-    public String getSaslRealm ()
+    public String getSaslRealm()
     {
-    	return connectionParameter.getSaslRealm();
+        return connectionParameter.getSaslRealm();
     }
 
 
@@ -343,8 +348,8 @@ public class Connection implements ConnectionPropertyPageProvider, IAdaptable
     {
         return connectionParameter.isReadOnly();
     }
-    
-    
+
+
     /**
      * Sets the auth method.
      * 

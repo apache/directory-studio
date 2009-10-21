@@ -22,10 +22,7 @@ package org.apache.directory.studio.ldapbrowser.common.widgets.browser;
 
 
 import java.util.Collection;
-import java.util.Iterator;
 
-import org.apache.directory.shared.ldap.name.AttributeTypeAndValue;
-import org.apache.directory.shared.ldap.name.Rdn;
 import org.apache.directory.shared.ldap.schema.ObjectClassTypeEnum;
 import org.apache.directory.shared.ldap.schema.parsers.ObjectClassDescription;
 import org.apache.directory.studio.connection.core.Utils;
@@ -34,15 +31,16 @@ import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonConstants;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
 import org.apache.directory.studio.ldapbrowser.core.model.IBookmark;
+import org.apache.directory.studio.ldapbrowser.core.model.IContinuation;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.IQuickSearch;
 import org.apache.directory.studio.ldapbrowser.core.model.IRootDSE;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearchResult;
-import org.apache.directory.studio.ldapbrowser.core.model.impl.AliasBaseEntry;
+import org.apache.directory.studio.ldapbrowser.core.model.IContinuation.State;
 import org.apache.directory.studio.ldapbrowser.core.model.impl.BaseDNEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.impl.DirectoryMetadataEntry;
-import org.apache.directory.studio.ldapbrowser.core.model.impl.ReferralBaseEntry;
+import org.apache.directory.studio.ldapbrowser.core.model.impl.SearchContinuation;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.ObjectClassIconPair;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.Schema;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.SchemaUtils;
@@ -110,13 +108,9 @@ public class BrowserLabelProvider extends LabelProvider implements IFontProvider
             {
                 return "Root DSE" + append.toString(); //$NON-NLS-1$
             }
-            else if ( entry instanceof ReferralBaseEntry )
+            else if ( entry instanceof IContinuation )
             {
                 return entry.getUrl().toString() + append.toString();
-            }
-            else if ( entry instanceof AliasBaseEntry )
-            {
-                return entry.getDn().getUpName() + append.toString();
             }
             else if ( entry instanceof BaseDNEntry )
             {
@@ -152,6 +146,11 @@ public class BrowserLabelProvider extends LabelProvider implements IFontProvider
                 return entry.getDn().getUpName() + append.toString();
             }
         }
+        else if ( obj instanceof SearchContinuation )
+        {
+            SearchContinuation sc = ( SearchContinuation ) obj;
+            return sc.getUrl().toString();
+        }
         else if ( obj instanceof BrowserEntryPage )
         {
             BrowserEntryPage container = ( BrowserEntryPage ) obj;
@@ -166,10 +165,11 @@ public class BrowserLabelProvider extends LabelProvider implements IFontProvider
         {
             ISearch search = ( ISearch ) obj;
             ISearchResult[] results = search.getSearchResults();
+            SearchContinuation[] scs = search.getSearchContinuations();
             StringBuffer append = new StringBuffer( search.getName() );
-            if ( results != null )
+            if ( results != null && scs != null )
             {
-                append.append( " (" ).append( results.length ); //$NON-NLS-1$
+                append.append( " (" ).append( results.length + scs.length ); //$NON-NLS-1$
                 if ( search.isCountLimitExceeded() )
                 {
                     append.append( "+" ); //$NON-NLS-1$
@@ -187,7 +187,7 @@ public class BrowserLabelProvider extends LabelProvider implements IFontProvider
         {
             ISearchResult sr = ( ISearchResult ) obj;
 
-            if ( !sr.getSearch().getBrowserConnection().equals( sr.getEntry().getBrowserConnection() ) )
+            if ( sr.getEntry() instanceof IContinuation )
             {
                 return sr.getEntry().getUrl().toString();
             }
@@ -235,11 +235,11 @@ public class BrowserLabelProvider extends LabelProvider implements IFontProvider
                     ISearch search = ( ISearch ) lockedObject;
                     if ( obj == search.getTopSearchRunnable() )
                     {
-                        return Messages.getString("BrowserLabelProvider.TopPage"); //$NON-NLS-1$
+                        return Messages.getString( "BrowserLabelProvider.TopPage" ); //$NON-NLS-1$
                     }
                     else if ( obj == search.getNextSearchRunnable() )
                     {
-                        return Messages.getString("BrowserLabelProvider.NextPage"); //$NON-NLS-1$
+                        return Messages.getString( "BrowserLabelProvider.NextPage" ); //$NON-NLS-1$
                     }
                 }
                 else if ( lockedObject instanceof IEntry )
@@ -247,11 +247,11 @@ public class BrowserLabelProvider extends LabelProvider implements IFontProvider
                     IEntry entry = ( IEntry ) lockedObject;
                     if ( obj == entry.getTopPageChildrenRunnable() )
                     {
-                        return Messages.getString("BrowserLabelProvider.TopPage"); //$NON-NLS-1$
+                        return Messages.getString( "BrowserLabelProvider.TopPage" ); //$NON-NLS-1$
                     }
                     else if ( obj == entry.getNextPageChildrenRunnable() )
                     {
-                        return Messages.getString("BrowserLabelProvider.NextPage"); //$NON-NLS-1$
+                        return Messages.getString( "BrowserLabelProvider.NextPage" ); //$NON-NLS-1$
                     }
                 }
             }
@@ -281,7 +281,24 @@ public class BrowserLabelProvider extends LabelProvider implements IFontProvider
         if ( obj instanceof IEntry )
         {
             IEntry entry = ( IEntry ) obj;
-            return getImageByObjectClass( entry );
+            if ( entry instanceof IRootDSE )
+            {
+                return BrowserCommonActivator.getDefault().getImage( BrowserCommonConstants.IMG_ENTRY_ROOT );
+            }
+            else if ( entry instanceof DirectoryMetadataEntry && ( ( DirectoryMetadataEntry ) entry ).isSchemaEntry() )
+            {
+                return BrowserCommonActivator.getDefault().getImage(
+                    BrowserCommonConstants.IMG_BROWSER_SCHEMABROWSEREDITOR );
+            }
+            else if ( entry.getDn().equals( entry.getBrowserConnection().getSchema().getDn() ) )
+            {
+                return BrowserCommonActivator.getDefault().getImage(
+                    BrowserCommonConstants.IMG_BROWSER_SCHEMABROWSEREDITOR );
+            }
+            else
+            {
+                return getImageByObjectClass( entry );
+            }
         }
         else if ( obj instanceof BrowserEntryPage )
         {
@@ -298,7 +315,11 @@ public class BrowserLabelProvider extends LabelProvider implements IFontProvider
         else if ( obj instanceof ISearch )
         {
             ISearch search = ( ISearch ) obj;
-            if ( search.getSearchResults() != null )
+            if ( search instanceof IContinuation && ( ( IContinuation ) search ).getState() != State.RESOLVED )
+            {
+                return BrowserCommonActivator.getDefault().getImage( BrowserCommonConstants.IMG_SEARCH_UNPERFORMED );
+            }
+            else if ( search.getSearchResults() != null )
             {
                 return BrowserCommonActivator.getDefault().getImage( BrowserCommonConstants.IMG_SEARCH );
             }
@@ -378,91 +399,15 @@ public class BrowserLabelProvider extends LabelProvider implements IFontProvider
     }
 
 
-    /**
-     * Gets the image depending on the RDN attribute
-     *
-     * @param entry the entry
-     * @return the image
-     */
-    private Image getImageByRdn( IEntry entry )
+    private Image getImageByObjectClass( IEntry entry )
     {
-        if ( entry instanceof IRootDSE )
-        {
-            return BrowserCommonActivator.getDefault().getImage( BrowserCommonConstants.IMG_ENTRY_ROOT );
-        }
-        else if ( entry instanceof DirectoryMetadataEntry && ( ( DirectoryMetadataEntry ) entry ).isSchemaEntry() )
-        {
-            return BrowserCommonActivator.getDefault()
-                .getImage( BrowserCommonConstants.IMG_BROWSER_SCHEMABROWSEREDITOR );
-        }
-        else if ( entry.getDn().equals( entry.getBrowserConnection().getSchema().getDn() ) )
-        {
-            return BrowserCommonActivator.getDefault()
-                .getImage( BrowserCommonConstants.IMG_BROWSER_SCHEMABROWSEREDITOR );
-        }
-        else if ( entry.isAlias() )
-        {
-            return BrowserCommonActivator.getDefault().getImage( BrowserCommonConstants.IMG_ENTRY_ALIAS );
-        }
-        else if ( entry.isReferral() )
-        {
-            return BrowserCommonActivator.getDefault().getImage( BrowserCommonConstants.IMG_ENTRY_REF );
-        }
-        else if ( entry.isSubentry() )
-        {
-            return BrowserCommonActivator.getDefault()
-                .getImage( BrowserCommonConstants.IMG_BROWSER_SCHEMABROWSEREDITOR );
-        }
-        else
-        {
-            Rdn rdn = entry.getRdn();
-            Iterator<AttributeTypeAndValue> atavIterator = rdn.iterator();
-            while ( atavIterator.hasNext() )
-            {
-                AttributeTypeAndValue atav = atavIterator.next();
-                if ( "cn".equalsIgnoreCase( atav.getUpType() ) || "sn".equalsIgnoreCase( atav.getUpType() ) //$NON-NLS-1$ //$NON-NLS-2$
-                    || "uid".equalsIgnoreCase( atav.getUpType() ) || "userid".equalsIgnoreCase( atav.getUpType() ) ) //$NON-NLS-1$ //$NON-NLS-2$
-                {
-                    return BrowserCommonActivator.getDefault().getImage( BrowserCommonConstants.IMG_ENTRY_PERSON );
-                }
-                else if ( "ou".equalsIgnoreCase( atav.getUpType() ) || "o".equalsIgnoreCase( atav.getUpType() ) ) //$NON-NLS-1$ //$NON-NLS-2$
-                {
-                    return BrowserCommonActivator.getDefault().getImage( BrowserCommonConstants.IMG_ENTRY_ORG );
-                }
-                else if ( "dc".equalsIgnoreCase( atav.getUpType() ) || "c".equalsIgnoreCase( atav.getUpType() ) //$NON-NLS-1$ //$NON-NLS-2$
-                    || "l".equalsIgnoreCase( atav.getUpType() ) ) //$NON-NLS-1$
-                {
-                    return BrowserCommonActivator.getDefault().getImage( BrowserCommonConstants.IMG_ENTRY_DC );
-                }
-            }
-        }
-
-        return BrowserCommonActivator.getDefault().getImage( BrowserCommonConstants.IMG_ENTRY );
-    }
-
-
-    private Image getImageByObjectClass(IEntry entry) {
-        
-        if(entry instanceof IRootDSE) {
-            return BrowserCommonActivator.getDefault().getImage( BrowserCommonConstants.IMG_ENTRY_ROOT );
-        }
-        else if ( entry instanceof DirectoryMetadataEntry && ( ( DirectoryMetadataEntry ) entry ).isSchemaEntry() )
-        {
-            return BrowserCommonActivator.getDefault()
-                .getImage( BrowserCommonConstants.IMG_BROWSER_SCHEMABROWSEREDITOR );
-        }
-        else if ( entry.getDn().equals( entry.getBrowserConnection().getSchema().getDn() ) )
-        {
-            return BrowserCommonActivator.getDefault()
-                .getImage( BrowserCommonConstants.IMG_BROWSER_SCHEMABROWSEREDITOR );
-        }
-        
         Schema schema = entry.getBrowserConnection().getSchema();
         Collection<ObjectClassDescription> ocds = entry.getObjectClassDescriptions();
         if ( ocds != null )
         {
             Collection<String> numericOids = SchemaUtils.getNumericOids( ocds );
-            ObjectClassIconPair[] objectClassIcons = BrowserCorePlugin.getDefault().getCorePreferences().getObjectClassIcons();
+            ObjectClassIconPair[] objectClassIcons = BrowserCorePlugin.getDefault().getCorePreferences()
+                .getObjectClassIcons();
             int maxWeight = 0;
             ObjectClassIconPair maxObjectClassIconPair = null;
             for ( ObjectClassIconPair objectClassIconPair : objectClassIcons )
@@ -471,33 +416,34 @@ public class BrowserLabelProvider extends LabelProvider implements IFontProvider
                 String[] ocNumericOids = objectClassIconPair.getOcNumericOids();
                 for ( String ocNumericOid : ocNumericOids )
                 {
-                    if(numericOids.contains( ocNumericOid ))
+                    if ( numericOids.contains( ocNumericOid ) )
                     {
                         ObjectClassDescription ocd = schema.getObjectClassDescription( ocNumericOid );
-                        if(ocd.getKind() == ObjectClassTypeEnum.STRUCTURAL)
+                        if ( ocd.getKind() == ObjectClassTypeEnum.STRUCTURAL )
                         {
                             weight += 3;
                         }
-                        else if(ocd.getKind() == ObjectClassTypeEnum.AUXILIARY)
+                        else if ( ocd.getKind() == ObjectClassTypeEnum.AUXILIARY )
                         {
                             weight += 2;
                         }
                     }
                 }
-                if(weight > maxWeight)
+                if ( weight > maxWeight )
                 {
                     maxObjectClassIconPair = objectClassIconPair;
                 }
             }
-            
-            if(maxObjectClassIconPair != null)
+
+            if ( maxObjectClassIconPair != null )
             {
-                return BrowserCommonActivator.getDefault().getImage( maxObjectClassIconPair.getIconPath() );   
+                return BrowserCommonActivator.getDefault().getImage( maxObjectClassIconPair.getIconPath() );
             }
         }
 
         return BrowserCommonActivator.getDefault().getImage( BrowserCommonConstants.IMG_ENTRY );
     }
+
 
     /**
      * {@inheritDoc}

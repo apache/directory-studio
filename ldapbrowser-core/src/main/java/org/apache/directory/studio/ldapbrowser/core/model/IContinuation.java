@@ -18,40 +18,52 @@
  *  
  */
 
-package org.apache.directory.studio.ldapbrowser.core.model.impl;
+package org.apache.directory.studio.ldapbrowser.core.model;
 
 
-import org.apache.directory.shared.ldap.name.LdapDN;
-import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
+import org.apache.directory.shared.ldap.util.LdapURL;
 
 
 /**
- * An {@link AliasBaseEntry} represents the target 
- * (named by the aliasedObjectName attribute) of an alias entry.
+ * A tagging interface for search continuations.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class AliasBaseEntry extends DelegateEntry
+public interface IContinuation
 {
 
-    private static final long serialVersionUID = -3599038109979581295L;
-
-
-    protected AliasBaseEntry()
+    public enum State
     {
+        /** The search continuation URL is unresolved.*/
+        UNRESOLVED,
+
+        /** The search continuation URL is unresolved. The user didn't select a suitable connection for the URL. */
+        CANCELED,
+
+        /** The search continuation URL is resolved. The user selected a suitable connection for the URL. */
+        RESOLVED
     }
 
 
     /**
-     * Creates a new instance of AliasBaseEntry.
+     * Gets the resolve state.
      * 
-     * @param connection the connection of the alias
-     * @param dn the DN of the alias target
+     * @return the resolve state
      */
-    public AliasBaseEntry( IBrowserConnection connection, LdapDN dn )
-    {
-        super( connection, dn );
-    }
+    State getState();
 
+
+    /**
+     * Resolves the search continuation URL, asks the user which connection to use.
+     */
+    void resolve();
+
+
+    /**
+     * Gets the search continuation URL.
+     * 
+     * @return the search continuation URL
+     */
+    LdapURL getUrl();
 }

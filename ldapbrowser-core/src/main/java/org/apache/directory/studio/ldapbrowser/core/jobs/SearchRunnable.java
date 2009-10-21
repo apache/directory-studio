@@ -40,8 +40,11 @@ import javax.naming.ldap.PagedResultsResponseControl;
 
 import org.apache.directory.shared.ldap.constants.SchemaConstants;
 import org.apache.directory.shared.ldap.name.LdapDN;
+import org.apache.directory.shared.ldap.util.LdapURL;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.DnUtils;
+import org.apache.directory.studio.connection.core.StudioControl;
+import org.apache.directory.studio.connection.core.StudioPagedResultsControl;
 import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
 import org.apache.directory.studio.connection.core.Connection.ReferralHandlingMethod;
 import org.apache.directory.studio.connection.core.io.jndi.StudioNamingEnumeration;
@@ -59,12 +62,11 @@ import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearchResult;
 import org.apache.directory.studio.ldapbrowser.core.model.SearchParameter;
-import org.apache.directory.studio.ldapbrowser.core.model.StudioControl;
-import org.apache.directory.studio.ldapbrowser.core.model.StudioPagedResultsControl;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch.SearchScope;
 import org.apache.directory.studio.ldapbrowser.core.model.impl.BaseDNEntry;
+import org.apache.directory.studio.ldapbrowser.core.model.impl.ContinuedSearchResultEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.impl.Entry;
-import org.apache.directory.studio.ldapbrowser.core.model.impl.ReferralBaseEntry;
+import org.apache.directory.studio.ldapbrowser.core.model.impl.SearchContinuation;
 import org.apache.directory.studio.ldapbrowser.core.model.impl.Value;
 import org.apache.directory.studio.ldapbrowser.core.utils.JNDIUtils;
 import org.apache.directory.studio.ldapbrowser.core.utils.Utils;
@@ -309,6 +311,7 @@ public class SearchRunnable implements StudioBulkRunnableWithProgress
                 // add returning attributes for children and alias detection
                 SearchParameter searchParameter = getSearchParameter( search );
                 ArrayList<ISearchResult> searchResultList = new ArrayList<ISearchResult>();
+                ArrayList<SearchContinuation> searchContinuationList = new ArrayList<SearchContinuation>();
 
                 StudioNamingEnumeration enumeration = null;
                 // search
@@ -320,36 +323,53 @@ public class SearchRunnable implements StudioBulkRunnableWithProgress
                     while ( !monitor.isCanceled() && enumeration != null && enumeration.hasMore() )
                     {
                         StudioSearchResult sr = enumeration.next();
-                        LdapDN dn = JNDIUtils.getDn( sr );
-                        boolean isReferral = sr.isReferral();
-                        Connection resultConnection = sr.getConnection();
-                        IBrowserConnection resultBrowserConnection = BrowserCorePlugin.getDefault()
-                            .getConnectionManager().getBrowserConnection( resultConnection );
-                        if ( resultBrowserConnection == null )
+                        boolean isContinuedSearchResult = sr.isContinuedSearchResult();
+                        LdapURL searchContinuationUrl = sr.getSearchContinuationUrl();
+
+                        if ( searchContinuationUrl == null )
                         {
-                            resultBrowserConnection = browserConnection;
-                        }
+                            LdapDN dn = JNDIUtils.getDn( sr );
+                            IEntry entry = null;
 
-                        // get entry from cache or create it
-                        IEntry entry = resultBrowserConnection.getEntryFromCache( dn );
-                        if ( entry == null )
+                            Connection resultConnection = sr.getConnection();
+                            IBrowserConnection resultBrowserConnection = BrowserCorePlugin.getDefault()
+                                .getConnectionManager().getBrowserConnection( resultConnection );
+                            if ( resultBrowserConnection == null )
+                            {
+                                resultBrowserConnection = browserConnection;
+                            }
+
+                            // get entry from cache or create it
+                            entry = resultBrowserConnection.getEntryFromCache( dn );
+                            if ( entry == null )
+                            {
+                                entry = createAndCacheEntry( resultBrowserConnection, dn, monitor );
+                            }
+
+                            // initialize special flags
+                            initFlags( entry, sr, searchParameter );
+
+                            // fill the attributes
+                            fillAttributes( entry, sr, search.getSearchParameter() );
+
+                            if ( isContinuedSearchResult )
+                            {
+                                // the result is from a continued search
+                                // we create a special entry that displays the URL of the entry
+                                entry = new ContinuedSearchResultEntry( resultBrowserConnection, dn );
+                            }
+
+                            searchResultList
+                                .add( new org.apache.directory.studio.ldapbrowser.core.model.impl.SearchResult( entry,
+                                    search ) );
+                        }
+                        else
                         {
-                            entry = createAndCacheEntry( resultBrowserConnection, dn, monitor );
+                            //entry = new ContinuedSearchResultEntry( resultBrowserConnection, dn );
+                            SearchContinuation searchContinuation = new SearchContinuation( search,
+                                searchContinuationUrl );
+                            searchContinuationList.add( searchContinuation );
                         }
-
-                        // initialize special flags
-                        initFlags( entry, sr, searchParameter );
-
-                        // fill the attributes
-                        fillAttributes( entry, sr, search.getSearchParameter() );
-
-                        if ( isReferral )
-                        {
-                            entry = new ReferralBaseEntry( resultBrowserConnection, dn );
-                        }
-
-                        searchResultList.add( new org.apache.directory.studio.ldapbrowser.core.model.impl.SearchResult(
-                            entry, search ) );
 
                         monitor
                             .reportProgress( searchResultList.size() == 1 ? BrowserCoreMessages.model__retrieved_1_entry
@@ -414,6 +434,8 @@ public class SearchRunnable implements StudioBulkRunnableWithProgress
 
                 search.setSearchResults( ( ISearchResult[] ) searchResultList
                     .toArray( new ISearchResult[searchResultList.size()] ) );
+                search.setSearchContinuations( ( SearchContinuation[] ) searchContinuationList
+                    .toArray( new SearchContinuation[searchContinuationList.size()] ) );
             }
         }
         catch ( Exception e )
@@ -639,6 +661,7 @@ public class SearchRunnable implements StudioBulkRunnableWithProgress
                         entry = new BaseDNEntry( aDN, browserConnection );
                         browserConnection.getRootDSE().addChild( entry );
                         browserConnection.cacheEntry( entry );
+                        enumeration.close();
                     }
                 }
                 catch ( NamingException e )
@@ -725,7 +748,7 @@ public class SearchRunnable implements StudioBulkRunnableWithProgress
                             entry.setReferral( true );
                             entry.setHasChildrenHint( false );
                         }
-                        
+
                         IAttribute ocAttribute = entry.getAttribute( attributeDescription );
                         Value ocValue = new Value( ocAttribute, value );
                         ocAttribute.addValue( ocValue );

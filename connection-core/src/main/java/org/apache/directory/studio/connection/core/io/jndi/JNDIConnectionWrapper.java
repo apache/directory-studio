@@ -47,7 +47,6 @@ import javax.naming.ldap.Control;
 import javax.naming.ldap.InitialLdapContext;
 import javax.naming.ldap.LdapContext;
 import javax.naming.ldap.LdapName;
-import javax.naming.ldap.ManageReferralControl;
 import javax.naming.ldap.StartTlsRequest;
 import javax.naming.ldap.StartTlsResponse;
 import javax.net.ssl.HostnameVerifier;
@@ -85,7 +84,7 @@ import org.apache.directory.studio.connection.core.Connection.ReferralHandlingMe
 import org.apache.directory.studio.connection.core.ConnectionParameter.AuthenticationMethod;
 import org.apache.directory.studio.connection.core.event.ConnectionEventRegistry;
 import org.apache.directory.studio.connection.core.io.ConnectionWrapper;
-import org.apache.directory.studio.connection.core.io.jndi.ReferralsInfo.UrlAndDn;
+import org.apache.directory.studio.connection.core.io.jndi.ReferralsInfo.Referral;
 import org.apache.directory.studio.connection.core.jobs.StudioProgressMonitor;
 import org.eclipse.core.runtime.Preferences;
 import org.eclipse.osgi.util.NLS;
@@ -340,13 +339,11 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
         {
             public void run()
             {
-                // add ManageDsaIT control
-                Control[] localControls = addManageDsaItControls( controls, referralsHandlingMethod );
-
+                LdapContext searchCtx = context;
                 try
                 {
                     // create the search context
-                    LdapContext searchCtx = context.newInstance( localControls );
+                    searchCtx = context.newInstance( controls );
 
                     // translate alias dereferencing method
                     searchCtx.addToEnvironment( JAVA_NAMING_LDAP_DEREF_ALIASES,
@@ -356,76 +353,26 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
                     searchCtx.addToEnvironment( Context.REFERRAL, REFERRAL_THROW );
 
                     // perform the search
-                    NamingEnumeration<SearchResult> ne = searchCtx.search( getSaveJndiName( searchBase ), filter,
-                        searchControls );
-                    namingEnumeration = new StudioNamingEnumeration( connection, searchCtx, ne, searchBase, filter,
-                        searchControls, aliasesDereferencingMethod, referralsHandlingMethod, controls, requestNum,
-                        monitor, referralsInfo );
+                    NamingEnumeration<SearchResult> result = searchCtx.search( JNDIConnectionWrapper
+                        .getSaveJndiName( searchBase ), filter, searchControls );
+                    namingEnumeration = new StudioNamingEnumeration( connection, searchCtx, result, null, searchBase,
+                        filter, searchControls, aliasesDereferencingMethod, referralsHandlingMethod, controls,
+                        requestNum, monitor, referralsInfo );
                 }
-                catch ( PartialResultException pre )
+                catch ( PartialResultException e )
                 {
-                    // ignore exception if referrals handling method is IGNORE
-                    // report exception if referrals handling method is FOLLOW or MANGAGE
-                    if ( referralsHandlingMethod == ReferralHandlingMethod.FOLLOW
-                        || referralsHandlingMethod == ReferralHandlingMethod.MANAGE )
-                    {
-                        namingException = pre;
-                    }
+                    namingEnumeration = new StudioNamingEnumeration( connection, searchCtx, null, e, searchBase,
+                        filter, searchControls, aliasesDereferencingMethod, referralsHandlingMethod, controls,
+                        requestNum, monitor, referralsInfo );
                 }
-                catch ( ReferralException re )
+                catch ( ReferralException e )
                 {
-                    // ignore exception if referrals handling method is IGNORE
-                    // report exception if referrals handling method is MANGAGE
-                    // follow referral if referrals handling method is FOLLOW
-                    if ( referralsHandlingMethod == ReferralHandlingMethod.MANAGE )
-                    {
-                        namingException = re;
-                    }
-                    else if ( referralsHandlingMethod == ReferralHandlingMethod.FOLLOW )
-                    {
-                        try
-                        {
-                            ReferralsInfo newReferralsInfo = handleReferralException( re, referralsInfo );
-                            UrlAndDn urlAndDn = newReferralsInfo.getNext();
-                            if ( urlAndDn != null )
-                            {
-                                LdapURL url = urlAndDn.getUrl();
-                                Connection referralConnection = getReferralConnection( url, monitor, this );
-                                if ( referralConnection != null )
-                                {
-                                    String referralSearchBase = url.getDn() != null && !url.getDn().isEmpty() ? url
-                                        .getDn().getUpName() : searchBase;
-                                    String referralFilter = url.getFilter() != null && url.getFilter().length() == 0 ? url
-                                        .getFilter()
-                                        : filter;
-                                    SearchControls referralSearchControls = new SearchControls();
-                                    referralSearchControls.setSearchScope( url.getScope() > -1 ? url.getScope()
-                                        : searchControls.getSearchScope() );
-                                    referralSearchControls.setReturningAttributes( url.getAttributes() != null
-                                        && url.getAttributes().size() > 0 ? url.getAttributes().toArray(
-                                        new String[url.getAttributes().size()] ) : searchControls
-                                        .getReturningAttributes() );
-                                    referralSearchControls.setCountLimit( searchControls.getCountLimit() );
-                                    referralSearchControls.setTimeLimit( searchControls.getTimeLimit() );
-                                    referralSearchControls.setDerefLinkFlag( searchControls.getDerefLinkFlag() );
-                                    referralSearchControls.setReturningObjFlag( searchControls.getReturningObjFlag() );
-
-                                    namingEnumeration = ( StudioNamingEnumeration ) referralConnection
-                                        .getJNDIConnectionWrapper().search( referralSearchBase, referralFilter,
-                                            referralSearchControls, aliasesDereferencingMethod,
-                                            referralsHandlingMethod, controls, monitor, newReferralsInfo );
-                                }
-                            }
-                        }
-                        catch ( NamingException ne )
-                        {
-                            namingException = ne;
-                        }
-                    }
+                    namingEnumeration = new StudioNamingEnumeration( connection, searchCtx, null, e, searchBase,
+                        filter, searchControls, aliasesDereferencingMethod, referralsHandlingMethod, controls,
+                        requestNum, monitor, referralsInfo );
                 }
                 catch ( NamingException e )
                 {
-                    // report each other naming exception
                     namingException = e;
                 }
 
@@ -434,12 +381,12 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
                     if ( namingEnumeration != null )
                     {
                         logger.logSearchRequest( connection, searchBase, filter, searchControls,
-                            aliasesDereferencingMethod, localControls, requestNum, namingException );
+                            aliasesDereferencingMethod, controls, requestNum, namingException );
                     }
                     else
                     {
                         logger.logSearchRequest( connection, searchBase, filter, searchControls,
-                            aliasesDereferencingMethod, localControls, requestNum, namingException );
+                            aliasesDereferencingMethod, controls, requestNum, namingException );
                         logger.logSearchResultDone( connection, 0, requestNum, namingException );
                     }
                 }
@@ -461,14 +408,9 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
             monitor.reportError( runnable.getException() );
             return null;
         }
-        else if ( runnable.getResult() != null )
-        {
-            return runnable.getResult();
-        }
         else
         {
-            return new StudioNamingEnumeration( connection, null, null, searchBase, filter, searchControls,
-                aliasesDereferencingMethod, referralsHandlingMethod, controls, requestNum, monitor, referralsInfo );
+            return runnable.getResult();
         }
     }
 
@@ -478,13 +420,11 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
      * 
      * @param dn the DN
      * @param modificationItems the modification items
-     * @param referralsHandlingMethod the referrals handling method
      * @param controls the controls
      * @param monitor the progress monitor
      * @param referralsInfo the referrals info
      */
-    public void modifyEntry( final String dn, final ModificationItem[] modificationItems,
-        final ReferralHandlingMethod referralsHandlingMethod, final Control[] controls,
+    public void modifyEntry( final String dn, final ModificationItem[] modificationItems, final Control[] controls,
         final StudioProgressMonitor monitor, final ReferralsInfo referralsInfo )
     {
         if ( connection.isReadOnly() )
@@ -497,13 +437,11 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
         {
             public void run()
             {
-                // add ManageDsaIT control
-                Control[] localControls = addManageDsaItControls( controls, referralsHandlingMethod );
-
+                boolean logModifycation = true;
                 try
                 {
                     // create modify context
-                    LdapContext modCtx = context.newInstance( localControls );
+                    LdapContext modCtx = context.newInstance( controls );
 
                     // use "throw" as we handle referrals manually
                     modCtx.addToEnvironment( Context.REFERRAL, REFERRAL_THROW );
@@ -513,22 +451,25 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
                 }
                 catch ( ReferralException re )
                 {
+                    logModifycation = false;
                     try
                     {
                         ReferralsInfo newReferralsInfo = handleReferralException( re, referralsInfo );
-                        UrlAndDn urlAndDn = newReferralsInfo.getNext();
-                        if ( urlAndDn != null )
+                        Referral referral = newReferralsInfo.getNextReferral();
+                        if ( referral != null )
                         {
-                            Connection referralConnection = getReferralConnection( urlAndDn.getUrl(), monitor, this );
+                            Connection referralConnection = getReferralConnection( referral, monitor, this );
                             if ( referralConnection != null )
                             {
-                                String referralDn = urlAndDn.getDn() != null && !urlAndDn.getDn().isEmpty() ? urlAndDn
+                                String referralDn = referral.getDn() != null && !referral.getDn().isEmpty() ? referral
                                     .getDn().getUpName() : dn;
 
                                 referralConnection.getJNDIConnectionWrapper().modifyEntry( referralDn,
-                                    modificationItems, referralsHandlingMethod, controls, monitor, newReferralsInfo );
+                                    modificationItems, controls, monitor, newReferralsInfo );
                             }
                         }
+
+                        return;
                     }
                     catch ( NamingException ne )
                     {
@@ -540,9 +481,12 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
                     namingException = ne;
                 }
 
-                for ( IJndiLogger logger : getJndiLoggers() )
+                if ( logModifycation )
                 {
-                    logger.logChangetypeModify( connection, dn, modificationItems, localControls, namingException );
+                    for ( IJndiLogger logger : getJndiLoggers() )
+                    {
+                        logger.logChangetypeModify( connection, dn, modificationItems, controls, namingException );
+                    }
                 }
             }
         };
@@ -569,14 +513,12 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
      * @param oldDn the old DN
      * @param newDn the new DN
      * @param deleteOldRdn true to delete the old RDN
-     * @param referralsHandlingMethod the referrals handling method
      * @param controls the controls
      * @param monitor the progress monitor
      * @param referralsInfo the referrals info
      */
     public void renameEntry( final String oldDn, final String newDn, final boolean deleteOldRdn,
-        final ReferralHandlingMethod referralsHandlingMethod, final Control[] controls,
-        final StudioProgressMonitor monitor, final ReferralsInfo referralsInfo )
+        final Control[] controls, final StudioProgressMonitor monitor, final ReferralsInfo referralsInfo )
     {
         if ( connection.isReadOnly() )
         {
@@ -588,13 +530,11 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
         {
             public void run()
             {
-                // add ManageDsaIT control
-                Control[] localControls = addManageDsaItControls( controls, referralsHandlingMethod );
-
+                boolean logModifycation = true;
                 try
                 {
                     // create modify context
-                    LdapContext modCtx = context.newInstance( localControls );
+                    LdapContext modCtx = context.newInstance( controls );
 
                     // use "throw" as we handle referrals manually
                     modCtx.addToEnvironment( Context.REFERRAL, REFERRAL_THROW );
@@ -614,20 +554,18 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
                 }
                 catch ( ReferralException re )
                 {
+                    logModifycation = false;
                     try
                     {
                         ReferralsInfo newReferralsInfo = handleReferralException( re, referralsInfo );
-                        UrlAndDn urlAndDn = newReferralsInfo.getNext();
-                        if ( urlAndDn != null )
+                        Referral referral = newReferralsInfo.getNextReferral();
+                        if ( referral != null )
                         {
-                            Connection referralConnection = getReferralConnection( urlAndDn.getUrl(), monitor, this );
+                            Connection referralConnection = getReferralConnection( referral, monitor, this );
                             if ( referralConnection != null )
                             {
-                                //                                String referralDn = url.getDn() != null && !url.getDn().isEmpty() ? url.getDn()
-                                //                                    .getUpName() : dn;
-                                // TODO: referral DN???
                                 referralConnection.getJNDIConnectionWrapper().renameEntry( oldDn, newDn, deleteOldRdn,
-                                    referralsHandlingMethod, controls, monitor, newReferralsInfo );
+                                    controls, monitor, newReferralsInfo );
                             }
                         }
                     }
@@ -641,9 +579,12 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
                     namingException = ne;
                 }
 
-                for ( IJndiLogger logger : getJndiLoggers() )
+                if ( logModifycation )
                 {
-                    logger.logChangetypeModDn( connection, oldDn, newDn, deleteOldRdn, localControls, namingException );
+                    for ( IJndiLogger logger : getJndiLoggers() )
+                    {
+                        logger.logChangetypeModDn( connection, oldDn, newDn, deleteOldRdn, controls, namingException );
+                    }
                 }
             }
         };
@@ -669,13 +610,11 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
      * 
      * @param dn the entry's DN
      * @param attributes the entry's attributes
-     * @param referralsHandlingMethod the referrals handling method
      * @param controls the controls
      * @param monitor the progress monitor
      * @param referralsInfo the referrals info
      */
-    public void createEntry( final String dn, final Attributes attributes,
-        final ReferralHandlingMethod referralsHandlingMethod, final Control[] controls,
+    public void createEntry( final String dn, final Attributes attributes, final Control[] controls,
         final StudioProgressMonitor monitor, final ReferralsInfo referralsInfo )
     {
         if ( connection.isReadOnly() )
@@ -688,13 +627,11 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
         {
             public void run()
             {
-                // add ManageDsaIT control
-                Control[] localControls = addManageDsaItControls( controls, referralsHandlingMethod );
-
+                boolean logModifycation = true;
                 try
                 {
                     // create modify context
-                    LdapContext modCtx = context.newInstance( localControls );
+                    LdapContext modCtx = context.newInstance( controls );
 
                     // use "throw" as we handle referrals manually
                     modCtx.addToEnvironment( Context.REFERRAL, REFERRAL_THROW );
@@ -704,20 +641,21 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
                 }
                 catch ( ReferralException re )
                 {
+                    logModifycation = false;
                     try
                     {
                         ReferralsInfo newReferralsInfo = handleReferralException( re, referralsInfo );
-                        UrlAndDn urlAndDn = newReferralsInfo.getNext();
-                        if ( urlAndDn != null )
+                        Referral referral = newReferralsInfo.getNextReferral();
+                        if ( referral != null )
                         {
-                            Connection referralConnection = getReferralConnection( urlAndDn.getUrl(), monitor, this );
+                            Connection referralConnection = getReferralConnection( referral, monitor, this );
                             if ( referralConnection != null )
                             {
-                                String referralDn = urlAndDn.getDn() != null && !urlAndDn.getDn().isEmpty() ? urlAndDn
+                                String referralDn = referral.getDn() != null && !referral.getDn().isEmpty() ? referral
                                     .getDn().getUpName() : dn;
 
                                 referralConnection.getJNDIConnectionWrapper().createEntry( referralDn, attributes,
-                                    referralsHandlingMethod, controls, monitor, newReferralsInfo );
+                                    controls, monitor, newReferralsInfo );
                             }
                         }
                     }
@@ -731,9 +669,12 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
                     namingException = ne;
                 }
 
-                for ( IJndiLogger logger : getJndiLoggers() )
+                if ( logModifycation )
                 {
-                    logger.logChangetypeAdd( connection, dn, attributes, localControls, namingException );
+                    for ( IJndiLogger logger : getJndiLoggers() )
+                    {
+                        logger.logChangetypeAdd( connection, dn, attributes, controls, namingException );
+                    }
                 }
             }
         };
@@ -758,13 +699,12 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
      * Deletes an entry.
      * 
      * @param dn the DN of the entry to delete
-     * @param referralsHandlingMethod the referrals handling method
      * @param controls the controls
      * @param monitor the progress monitor
      * @param referralsInfo the referrals info
      */
-    public void deleteEntry( final String dn, final ReferralHandlingMethod referralsHandlingMethod,
-        final Control[] controls, final StudioProgressMonitor monitor, final ReferralsInfo referralsInfo )
+    public void deleteEntry( final String dn, final Control[] controls, final StudioProgressMonitor monitor,
+        final ReferralsInfo referralsInfo )
     {
         if ( connection.isReadOnly() )
         {
@@ -776,13 +716,11 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
         {
             public void run()
             {
-                // add ManageDsaIT control
-                Control[] localControls = addManageDsaItControls( controls, referralsHandlingMethod );
-
+                boolean logModifycation = true;
                 try
                 {
                     // create modify context
-                    LdapContext modCtx = context.newInstance( localControls );
+                    LdapContext modCtx = context.newInstance( controls );
 
                     // use "throw" as we handle referrals manually
                     modCtx.addToEnvironment( Context.REFERRAL, REFERRAL_THROW );
@@ -792,20 +730,21 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
                 }
                 catch ( ReferralException re )
                 {
+                    logModifycation = false;
                     try
                     {
                         ReferralsInfo newReferralsInfo = handleReferralException( re, referralsInfo );
-                        UrlAndDn urlAndDn = newReferralsInfo.getNext();
-                        if ( urlAndDn != null )
+                        Referral referral = newReferralsInfo.getNextReferral();
+                        if ( referral != null )
                         {
-                            Connection referralConnection = getReferralConnection( urlAndDn.getUrl(), monitor, this );
+                            Connection referralConnection = getReferralConnection( referral, monitor, this );
                             if ( referralConnection != null )
                             {
-                                String referralDn = urlAndDn.getDn() != null && !urlAndDn.getDn().isEmpty() ? urlAndDn
+                                String referralDn = referral.getDn() != null && !referral.getDn().isEmpty() ? referral
                                     .getDn().getUpName() : dn;
 
-                                referralConnection.getJNDIConnectionWrapper().deleteEntry( referralDn,
-                                    referralsHandlingMethod, controls, monitor, newReferralsInfo );
+                                referralConnection.getJNDIConnectionWrapper().deleteEntry( referralDn, controls,
+                                    monitor, newReferralsInfo );
                             }
                         }
                     }
@@ -819,9 +758,12 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
                     namingException = ne;
                 }
 
-                for ( IJndiLogger logger : getJndiLoggers() )
+                if ( logModifycation )
                 {
-                    logger.logChangetypeDelete( connection, dn, localControls, namingException );
+                    for ( IJndiLogger logger : getJndiLoggers() )
+                    {
+                        logger.logChangetypeDelete( connection, dn, controls, namingException );
+                    }
                 }
             }
         };
@@ -1460,49 +1402,6 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
 
 
     /**
-     * Adds the ManageDsaIT controls if the referrals handling method is MANAGE and 
-     * if the current controls don't contain the ManageDsaIT control.
-     * 
-     * @param currentControls the current controls
-     * @param referralsHandlingMethod the referrals handling method
-     * 
-     * @return the new controls
-     */
-    private Control[] addManageDsaItControls( final Control[] currentControls,
-        final ReferralHandlingMethod referralsHandlingMethod )
-    {
-        Control[] localControls = currentControls;
-        if ( referralsHandlingMethod == ReferralHandlingMethod.MANAGE )
-        {
-            if ( currentControls == null )
-            {
-                localControls = new Control[]
-                    { new ManageReferralControl( false ) };
-            }
-            else
-            {
-                boolean manageDsaItControlAlreadyContained = false;
-                for ( Control control : currentControls )
-                {
-                    if ( ManageReferralControl.OID.equals( control.getID() ) )
-                    {
-                        manageDsaItControlAlreadyContained = true;
-                        break;
-                    }
-                }
-                if ( !manageDsaItControlAlreadyContained )
-                {
-                    localControls = new Control[currentControls.length + 1];
-                    System.arraycopy( currentControls, 0, localControls, 0, currentControls.length );
-                    localControls[localControls.length - 1] = new ManageReferralControl( false );
-                }
-            }
-        }
-        return localControls;
-    }
-
-
-    /**
      * Gets a Name object that is save for JNDI operations.
      * <p>
      * In JNDI we have could use the following classes for names:
@@ -1536,7 +1435,7 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
      * 
      * @throws InvalidNameException the invalid name exception
      */
-    private Name getSaveJndiName( String name ) throws InvalidNameException
+    static Name getSaveJndiName( String name ) throws InvalidNameException
     {
         if ( name == null || StringUtils.isEmpty( name ) ) //$NON-NLS-1$
         {
@@ -1558,14 +1457,15 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
      * 
      * @return the referral connection
      */
-    static Connection getReferralConnection( LdapURL url, StudioProgressMonitor monitor, Object source )
+    static Connection getReferralConnection( Referral referral, StudioProgressMonitor monitor, Object source )
     {
         Connection referralConnection = null;
         IReferralHandler referralHandler = ConnectionCorePlugin.getDefault().getReferralHandler();
         if ( referralHandler != null )
         {
-            referralConnection = referralHandler.getReferralConnection( url );
+            referralConnection = referralHandler.getReferralConnection( referral.getLdapURLs() );
 
+            // open connection if not yet open
             if ( referralConnection != null && !referralConnection.getJNDIConnectionWrapper().isConnected() )
             {
                 referralConnection.getJNDIConnectionWrapper().connect( monitor );
@@ -1600,17 +1500,7 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
             initialReferralsInfo = new ReferralsInfo();
         }
 
-        try
-        {
-            String info = ( String ) referralException.getReferralInfo();
-            String name = referralException.getRemainingName().toString();
-            LdapURL url = new LdapURL( info );
-            LdapDN dn = new LdapDN( name );
-            initialReferralsInfo.addReferralUrl( url, dn );
-        }
-        catch ( LdapURLEncodingException e )
-        {
-        }
+        Referral referral = handleReferralException( referralException, initialReferralsInfo, null );
 
         while ( referralException.skipReferral() )
         {
@@ -1623,18 +1513,17 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
             {
                 if ( ne instanceof ReferralException )
                 {
+                    if ( ne != referralException )
+                    {
+                        // what a hack: 
+                        // if the same exception is throw, we have another URL for the same Referral/SearchResultReference
+                        // if another exception is throws, we have a new Referral/SearchResultReference
+                        // in the latter case we null out the reference, a new one will be created by handleReferral()
+                        referral = null;
+                    }
                     referralException = ( ReferralException ) ne;
-                    try
-                    {
-                        String info = ( String ) referralException.getReferralInfo();
-                        String name = referralException.getRemainingName().toString();
-                        LdapURL url = new LdapURL( info );
-                        LdapDN dn = new LdapDN( name );
-                        initialReferralsInfo.addReferralUrl( url, dn );
-                    }
-                    catch ( LdapURLEncodingException e )
-                    {
-                    }
+
+                    referral = handleReferralException( referralException, initialReferralsInfo, referral );
                 }
                 else
                 {
@@ -1644,6 +1533,31 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
         }
 
         return initialReferralsInfo;
+    }
+
+
+    private static Referral handleReferralException( ReferralException referralException,
+        ReferralsInfo initialReferralsInfo, Referral referral ) throws NamingException
+    {
+        try
+        {
+            String info = ( String ) referralException.getReferralInfo();
+            String name = referralException.getRemainingName().toString();
+            LdapURL url = new LdapURL( info );
+            LdapDN dn = new LdapDN( name );
+
+            if ( referral == null )
+            {
+                referral = initialReferralsInfo.new Referral( dn );
+                initialReferralsInfo.addReferral( referral );
+            }
+            referral.addUrl( url );
+        }
+        catch ( LdapURLEncodingException e )
+        {
+        }
+
+        return referral;
     }
 
 }

@@ -237,6 +237,23 @@ public class DummyConnection implements IBrowserConnection
     /** 
      * {@inheritDoc}
      */
+    public boolean isManageDsaIT()
+    {
+        return false;
+    }
+
+
+    /** 
+     * {@inheritDoc}
+     */
+    public void setManageDsaIT( boolean manageDsaIT )
+    {
+    }
+
+
+    /** 
+     * {@inheritDoc}
+     */
     public boolean isFetchSubentries()
     {
         return false;

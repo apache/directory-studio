@@ -32,9 +32,11 @@ import org.apache.directory.studio.ldapbrowser.core.jobs.InitializeChildrenRunna
 import org.apache.directory.studio.ldapbrowser.core.jobs.SearchRunnable;
 import org.apache.directory.studio.ldapbrowser.core.jobs.StudioBrowserJob;
 import org.apache.directory.studio.ldapbrowser.core.model.IBookmark;
+import org.apache.directory.studio.ldapbrowser.core.model.IContinuation;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearchResult;
+import org.apache.directory.studio.ldapbrowser.core.model.IContinuation.State;
 import org.eclipse.jface.resource.ImageDescriptor;
 
 
@@ -134,6 +136,17 @@ public class RefreshAction extends BrowserAction
 
         if ( entries.size() > 0 )
         {
+            for ( IEntry entry : entries )
+            {
+                if ( entry instanceof IContinuation )
+                {
+                    IContinuation continuation = ( IContinuation ) entry;
+                    if ( continuation.getState() != State.RESOLVED )
+                    {
+                        continuation.resolve();
+                    }
+                }
+            }
             InitializeChildrenRunnable initializeChildrenRunnable = new InitializeChildrenRunnable( true, entries
                 .toArray( new IEntry[0] ) );
             new StudioBrowserJob( initializeChildrenRunnable ).execute();
@@ -143,6 +156,14 @@ public class RefreshAction extends BrowserAction
             for ( ISearch search : searches )
             {
                 search.setSearchResults( null );
+                if ( search instanceof IContinuation )
+                {
+                    IContinuation continuation = ( IContinuation ) search;
+                    if ( continuation.getState() != State.RESOLVED )
+                    {
+                        continuation.resolve();
+                    }
+                }
             }
             new StudioBrowserJob( new SearchRunnable( searches ) ).execute();
         }

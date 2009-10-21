@@ -174,12 +174,12 @@ public interface IJndiLogger
      * Logs a search result reference.
      *
      * @param connection the connection
-     * @param urlAndDn the first URL and DN
+     * @param referral the referral
      * @param referralsInfo the referrals info containing further URLs and DNs
      * @param requestNum the request number
      * @param the naming exception if an error occurred, null otherwise
      */
-    public void logSearchResultReference( Connection connection, ReferralsInfo.UrlAndDn urlAndDn,
+    public void logSearchResultReference( Connection connection, ReferralsInfo.Referral referral,
         ReferralsInfo referralsInfo, long requestNum, NamingException namingException );
 
 

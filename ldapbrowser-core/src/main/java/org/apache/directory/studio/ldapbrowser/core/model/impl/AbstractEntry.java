@@ -47,6 +47,7 @@ import org.apache.directory.studio.ldapbrowser.core.model.AttributeDescription;
 import org.apache.directory.studio.ldapbrowser.core.model.AttributeHierarchy;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
+import org.apache.directory.studio.ldapbrowser.core.model.ICompareableEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.Schema;
 import org.apache.directory.studio.ldapbrowser.core.utils.Utils;
@@ -64,7 +65,7 @@ import org.eclipse.search.ui.ISearchPageScoreComputer;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public abstract class AbstractEntry implements IEntry
+public abstract class AbstractEntry implements IEntry, ICompareableEntry
 {
 
     private static final long serialVersionUID = -2431637532526418774L;
@@ -876,11 +877,11 @@ public abstract class AbstractEntry implements IEntry
     public boolean equals( Object o )
     {
         // check argument
-        if ( o == null || !( o instanceof IEntry ) )
+        if ( o == null || !( o instanceof ICompareableEntry ) )
         {
             return false;
         }
-        IEntry e = ( IEntry ) o;
+        ICompareableEntry e = ( ICompareableEntry ) o;
 
         // compare dn and connection
         return getDn() == null ? e.getDn() == null : ( getDn().equals( e.getDn() ) && getBrowserConnection().equals(

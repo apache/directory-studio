@@ -73,7 +73,7 @@ public class Bookmark implements IBookmark
     {
         this.connection = connection;
         this.bookmarkParameter = bookmarkParameter;
-        this.bookmarkEntry = new DelegateEntry( connection, bookmarkParameter.getDn() );
+        this.bookmarkEntry = new BookmarkEntry( connection, bookmarkParameter.getDn() );
     }
 
 
@@ -88,7 +88,7 @@ public class Bookmark implements IBookmark
     {
         this.connection = connection;
         this.bookmarkParameter = new BookmarkParameter( dn, name );
-        this.bookmarkEntry = new DelegateEntry( connection, dn );
+        this.bookmarkEntry = new BookmarkEntry( connection, dn );
     }
 
 

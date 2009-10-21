@@ -52,6 +52,7 @@ public class ExportExcelFromWizardPage extends ExportBaseFromWizardPage
     {
         super( pageName, wizard, new SearchPageWrapper(
             SearchPageWrapper.NAME_INVISIBLE
+                | SearchPageWrapper.REFERRALOPTIONS_FOLLOW_MANUAL_INVISIBLE
                 | SearchPageWrapper.RETURN_DN_VISIBLE
                 | SearchPageWrapper.RETURN_DN_CHECKED
                 | SearchPageWrapper.RETURN_ALLATTRIBUTES_VISIBLE

@@ -21,8 +21,11 @@
 package org.apache.directory.studio.ldapbrowser.core.jobs;
 
 
+import java.util.List;
+
 import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.studio.connection.core.Connection;
+import org.apache.directory.studio.connection.core.StudioControl;
 import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
 import org.apache.directory.studio.connection.core.Connection.ReferralHandlingMethod;
 import org.apache.directory.studio.connection.core.jobs.StudioBulkRunnableWithProgress;
@@ -131,7 +134,7 @@ public class ReadEntryRunnable implements StudioBulkRunnableWithProgress
             pm.reportProgress( " " ); //$NON-NLS-1$
             pm.worked( 1 );
 
-            readEntry = getEntry( browserConnection, dn, pm );
+            readEntry = getEntry( browserConnection, dn, null, pm );
         }
     }
 
@@ -149,11 +152,12 @@ public class ReadEntryRunnable implements StudioBulkRunnableWithProgress
      * 
      * @param browserConnection the browser connection
      * @param dn the DN of the entry
+     * @param controls the LDAP controls
      * @param monitor the progress monitor
      * 
      * @return the read entry
      */
-    static IEntry getEntry( IBrowserConnection browserConnection, LdapDN dn, StudioProgressMonitor monitor )
+    static IEntry getEntry( IBrowserConnection browserConnection, LdapDN dn, List<StudioControl> controls, StudioProgressMonitor monitor )
     {
         try
         {
@@ -166,7 +170,7 @@ public class ReadEntryRunnable implements StudioBulkRunnableWithProgress
 
             // search in directory
             ISearch search = new Search( null, browserConnection, dn, null, ISearch.NO_ATTRIBUTES, SearchScope.OBJECT,
-                1, 0, AliasDereferencingMethod.NEVER, ReferralHandlingMethod.MANAGE, true, null );
+                1, 0, AliasDereferencingMethod.NEVER, ReferralHandlingMethod.IGNORE, true, controls );
             SearchRunnable.searchAndUpdateModel( browserConnection, search, monitor );
             ISearchResult[] srs = search.getSearchResults();
             if ( srs.length > 0 )

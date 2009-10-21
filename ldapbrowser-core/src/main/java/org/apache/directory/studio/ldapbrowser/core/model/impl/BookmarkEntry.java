@@ -23,35 +23,61 @@ package org.apache.directory.studio.ldapbrowser.core.model.impl;
 
 import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
+import org.apache.directory.studio.ldapbrowser.core.model.ICompareableEntry;
 
 
 /**
- * An {@link ReferralBaseEntry} represents the target 
- * (named by the ref attribute) of an referral entry.
+ * An {@link BookmarkEntry} represents the target of a {@link Bookmark}.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class ReferralBaseEntry extends DelegateEntry
+public class BookmarkEntry extends DelegateEntry implements ICompareableEntry
 {
 
     private static final long serialVersionUID = -6351277968774226912L;
 
 
-    protected ReferralBaseEntry()
+    protected BookmarkEntry()
     {
     }
 
 
     /**
-     * Creates a new instance of ReferralBaseEntry.
+     * Creates a new instance of BookmarkEntry.
      * 
-     * @param connection the connection of the referral target
-     * @param dn the DN of the referral target
+     * @param connection the connection of the bookmark target
+     * @param dn the DN of the bookmark target
      */
-    public ReferralBaseEntry( IBrowserConnection connection, LdapDN dn )
+    public BookmarkEntry( IBrowserConnection connection, LdapDN dn )
     {
         super( connection, dn );
     }
 
+
+    /**
+     * {@inheritDoc}
+     */
+    public int hashCode()
+    {
+        return getDn().hashCode();
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public boolean equals( Object o )
+    {
+        // check argument
+        if ( o == null || !( o instanceof ICompareableEntry ) )
+        {
+            return false;
+        }
+        ICompareableEntry e = ( ICompareableEntry ) o;
+
+        // compare dn and connection
+        return getDn() == null ? e.getDn() == null : ( getDn().equals( e.getDn() ) && getBrowserConnection().equals(
+            e.getBrowserConnection() ) );
+    }
 }

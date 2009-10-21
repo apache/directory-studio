@@ -28,6 +28,7 @@ import java.util.List;
 import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.shared.ldap.util.LdapURL;
 import org.apache.directory.studio.connection.core.Connection;
+import org.apache.directory.studio.connection.core.StudioControl;
 import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
 import org.apache.directory.studio.connection.core.Connection.ReferralHandlingMethod;
 import org.apache.directory.studio.connection.core.jobs.StudioBulkRunnableWithProgress;
@@ -38,7 +39,6 @@ import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearchResult;
 import org.apache.directory.studio.ldapbrowser.core.model.SearchParameter;
-import org.apache.directory.studio.ldapbrowser.core.model.StudioControl;
 import org.apache.directory.studio.ldapbrowser.core.utils.Utils;
 import org.eclipse.search.ui.ISearchPageScoreComputer;
 
@@ -56,22 +56,25 @@ public class Search implements ISearch
     private static final long serialVersionUID = -3482673086666351174L;
 
     /** The connection. */
-    private IBrowserConnection connection;
+    protected IBrowserConnection connection;
 
     /** The search results. */
-    private ISearchResult[] searchResults;
+    protected ISearchResult[] searchResults;
 
     /** The search parameter. */
-    private SearchParameter searchParameter;
+    protected SearchParameter searchParameter;
 
     /** The count limit exceeded flag. */
-    private boolean countLimitExceeded;
+    protected boolean countLimitExceeded;
 
     /** The next search runnable. */
-    private StudioBulkRunnableWithProgress nextSearchRunnable;
+    protected StudioBulkRunnableWithProgress nextSearchRunnable;
 
     /** The top search runnable. */
-    private StudioBulkRunnableWithProgress topSearchRunnable;
+    protected StudioBulkRunnableWithProgress topSearchRunnable;
+
+    /** The search continuations. */
+    protected SearchContinuation[] searchContinuations;
 
 
     /**
@@ -114,6 +117,7 @@ public class Search implements ISearch
         this.searchParameter = searchParameter;
         this.countLimitExceeded = false;
         this.nextSearchRunnable = null;
+        this.searchContinuations = null;
     }
 
 
@@ -190,7 +194,7 @@ public class Search implements ISearch
      *
      * @param detail the SearchUpdateEvent detail
      */
-    private void fireSearchUpdated( SearchUpdateEvent.EventDetail detail )
+    protected void fireSearchUpdated( SearchUpdateEvent.EventDetail detail )
     {
         if ( getName() != null && !"".equals( getName() ) ) { //$NON-NLS-1$
             EventRegistry.fireSearchUpdated( new SearchUpdateEvent( this, detail ), this );
@@ -499,6 +503,29 @@ public class Search implements ISearch
     /**
      * {@inheritDoc}
      */
+    public SearchContinuation[] getSearchContinuations()
+    {
+        return searchContinuations;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public void setSearchContinuations( SearchContinuation[] searchContinuations )
+    {
+        this.searchContinuations = searchContinuations;
+        if ( searchContinuations != null && getName() != null )
+        {
+            fireSearchUpdated( SearchUpdateEvent.EventDetail.SEARCH_PERFORMED );
+        }
+
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
     public String toString()
     {
         return getName() + " (" + getBrowserConnection() + ")"; //$NON-NLS-1$ //$NON-NLS-2$
@@ -568,7 +595,10 @@ public class Search implements ISearch
         final int prime = 31;
         int result = 1;
         result = prime * result + ( ( connection == null ) ? 0 : connection.hashCode() );
-        result = prime * result + ( ( searchParameter == null ) ? 0 : searchParameter.getName().hashCode() );
+        result = prime
+            * result
+            + ( ( searchParameter == null || searchParameter.getName() == null ) ? 0 : searchParameter.getName()
+                .hashCode() );
         return result;
     }
 
@@ -600,9 +630,9 @@ public class Search implements ISearch
         {
             return false;
         }
-        if ( searchParameter == null )
+        if ( searchParameter == null || searchParameter.getName() == null )
         {
-            if ( other.searchParameter != null )
+            if ( other.searchParameter != null && other.searchParameter.getName() != null )
             {
                 return false;
             }

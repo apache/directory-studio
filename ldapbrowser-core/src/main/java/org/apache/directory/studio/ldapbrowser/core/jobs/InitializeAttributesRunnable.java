@@ -30,6 +30,7 @@ import java.util.List;
 import org.apache.directory.shared.ldap.constants.SchemaConstants;
 import org.apache.directory.shared.ldap.schema.parsers.AttributeTypeDescription;
 import org.apache.directory.studio.connection.core.Connection;
+import org.apache.directory.studio.connection.core.StudioControl;
 import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
 import org.apache.directory.studio.connection.core.Connection.ReferralHandlingMethod;
 import org.apache.directory.studio.connection.core.jobs.StudioBulkRunnableWithProgress;
@@ -145,6 +146,11 @@ public class InitializeAttributesRunnable implements StudioBulkRunnableWithProgr
         {
             if ( entry.getBrowserConnection() != null && entry.isAttributesInitialized() )
             {
+                // lookup the entry from cache and fire event with real entry
+                if ( entry.getBrowserConnection().getEntryFromCache( entry.getDn() ) != null )
+                {
+                    entry = entry.getBrowserConnection().getEntryFromCache( entry.getDn() );
+                }
                 EventRegistry.fireEntryUpdated( new AttributesInitializedEvent( entry ), this );
             }
         }
@@ -219,10 +225,6 @@ public class InitializeAttributesRunnable implements StudioBulkRunnableWithProgr
                 aliasesDereferencingMethod = AliasDereferencingMethod.NEVER;
             }
             ReferralHandlingMethod referralsHandlingMethod = entry.getBrowserConnection().getReferralsHandlingMethod();
-            if ( entry.isReferral() )
-            {
-                referralsHandlingMethod = ReferralHandlingMethod.MANAGE;
-            }
 
             if ( clearAllAttributes )
             {
@@ -240,10 +242,18 @@ public class InitializeAttributesRunnable implements StudioBulkRunnableWithProgr
                 }
             }
 
-            // search
+            // create search
             ISearch search = new Search( null, entry.getBrowserConnection(), entry.getDn(),
                 entry.isSubentry() ? ISearch.FILTER_SUBENTRY : ISearch.FILTER_TRUE, attributes, SearchScope.OBJECT, 0,
                 0, aliasesDereferencingMethod, referralsHandlingMethod, false, null );
+
+            // add controls
+            if ( entry.isReferral() )
+            {
+                search.getControls().add( StudioControl.MANAGEDSAIT_CONTROL );
+            }
+
+            // search
             SearchRunnable.searchAndUpdateModel( entry.getBrowserConnection(), search, monitor );
 
             // we requested all attributes, set initialized state

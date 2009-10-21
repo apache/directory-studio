@@ -203,7 +203,7 @@ public class SearchResult implements ISearchResult
                 return false;
             }
         }
-        else if ( !entry.getDn().equals( other.entry.getDn() ) )
+        else if ( !entry.equals( other.entry ) )
         {
             return false;
         }

@@ -37,6 +37,7 @@ import javax.naming.directory.ModificationItem;
 import javax.naming.directory.SearchControls;
 import javax.naming.directory.SearchResult;
 import javax.naming.ldap.Control;
+import javax.naming.ldap.ManageReferralControl;
 
 import org.apache.directory.shared.ldap.constants.SchemaConstants;
 import org.apache.directory.shared.ldap.name.AttributeTypeAndValue;
@@ -44,6 +45,7 @@ import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.shared.ldap.name.Rdn;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.DnUtils;
+import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
 import org.apache.directory.studio.connection.core.Connection.ReferralHandlingMethod;
 import org.apache.directory.studio.connection.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
@@ -212,11 +214,18 @@ public class CopyEntriesJob extends AbstractNotificationJob
         searchControls.setReturningAttributes( new String[]
             { SchemaConstants.ALL_USER_ATTRIBUTES, SchemaConstants.REF_AT } );
         searchControls.setSearchScope( SearchControls.OBJECT_SCOPE );
+
+        // ManageDsaIT control
         Control[] controls = null;
+        if ( entryToCopy.isReferral() )
+        {
+            controls = new Control[]
+                { new ManageReferralControl( false ) };
+        }
+
         NamingEnumeration<SearchResult> result = entryToCopy.getBrowserConnection().getConnection()
             .getJNDIConnectionWrapper().search( entryToCopy.getDn().getUpName(), ISearch.FILTER_TRUE, searchControls,
-                entryToCopy.getBrowserConnection().getAliasesDereferencingMethod(),
-                entryToCopy.getBrowserConnection().getReferralsHandlingMethod(), controls, monitor, null );
+                AliasDereferencingMethod.NEVER, ReferralHandlingMethod.IGNORE, controls, monitor, null );
 
         // In case the parent is the RootDSE: use the parent DN of the old entry
         LdapDN parentDn = parent.getDn();
@@ -278,13 +287,18 @@ public class CopyEntriesJob extends AbstractNotificationJob
                 // apply new RDN to the attributes
                 applyNewRdn( newAttributes, oldRdn, newRdn );
 
-                // determine referrals handling method
-                ReferralHandlingMethod referralsHandlingMethod = newAttributes.get( "ref" ) != null ? ReferralHandlingMethod.MANAGE
-                    : ReferralHandlingMethod.FOLLOW;
+                // ManageDsaIT control
+                Control[] controls = null;
+                if ( newAttributes.get( SchemaConstants.OBJECT_CLASS_AT ) != null
+                    && newAttributes.get( SchemaConstants.OBJECT_CLASS_AT ).contains( SchemaConstants.REFERRAL_OC ) )
+                {
+                    controls = new Control[]
+                        { new ManageReferralControl( false ) };
+                }
 
                 // create entry
                 targetBrowserConnection.getConnection().getJNDIConnectionWrapper().createEntry( newLdapDn.getUpName(),
-                    newAttributes, referralsHandlingMethod, null, dummyMonitor, null );
+                    newAttributes, controls, dummyMonitor, null );
 
                 while ( dummyMonitor.errorsReported() )
                 {
@@ -322,16 +336,16 @@ public class CopyEntriesJob extends AbstractNotificationJob
 
                                     // modify entry
                                     targetBrowserConnection.getConnection().getJNDIConnectionWrapper().modifyEntry(
-                                        newLdapDn.getUpName(), mis.toArray( new ModificationItem[mis.size()] ),
-                                        referralsHandlingMethod, null, dummyMonitor, null );
+                                        newLdapDn.getUpName(), mis.toArray( new ModificationItem[mis.size()] ), null,
+                                        dummyMonitor, null );
 
-                                    // forece reloading of attributes
+                                    // force reloading of attributes
                                     IEntry newEntry = targetBrowserConnection.getEntryFromCache( newLdapDn );
                                     if ( newEntry != null )
                                     {
                                         newEntry.setAttributesInitialized( false );
                                     }
-                                    
+
                                     break;
 
                                 case RENAME_AND_CONTINUE:
@@ -345,8 +359,7 @@ public class CopyEntriesJob extends AbstractNotificationJob
 
                                     // create entry
                                     targetBrowserConnection.getConnection().getJNDIConnectionWrapper().createEntry(
-                                        newLdapDn.getUpName(), newAttributes, referralsHandlingMethod, null,
-                                        dummyMonitor, null );
+                                        newLdapDn.getUpName(), newAttributes, null, dummyMonitor, null );
 
                                     break;
                             }
@@ -382,8 +395,8 @@ public class CopyEntriesJob extends AbstractNotificationJob
                         searchControls.setSearchScope( SearchControls.ONELEVEL_SCOPE );
                         NamingEnumeration<SearchResult> childEntries = sourceBrowserConnection.getConnection()
                             .getJNDIConnectionWrapper().search( oldLdapDn.getUpName(), ISearch.FILTER_TRUE,
-                                searchControls, sourceBrowserConnection.getAliasesDereferencingMethod(),
-                                sourceBrowserConnection.getReferralsHandlingMethod(), null, monitor, null );
+                                searchControls, AliasDereferencingMethod.NEVER, ReferralHandlingMethod.IGNORE, null,
+                                monitor, null );
 
                         if ( scope == SearchControls.ONELEVEL_SCOPE )
                         {

@@ -158,7 +158,7 @@ public class EntryEditorInput implements IEditorInput
         if ( entry != null )
         {
             IBrowserConnection connection = entry.getBrowserConnection();
-            if ( connection != null )
+            if ( connection != null && connection.getConnection() != null )
             {
                 return getName() + " - " + connection.getConnection().getName();//$NON-NLS-1$
             }
@@ -212,22 +212,30 @@ public class EntryEditorInput implements IEditorInput
      */
     public IEntry getResolvedEntry()
     {
+        IEntry resolvedEntry;
         if ( entry != null )
         {
-            return entry;
+            resolvedEntry = entry;
         }
         else if ( searchResult != null )
         {
-            return searchResult.getEntry();
+            resolvedEntry = searchResult.getEntry();
         }
         else if ( bookmark != null )
         {
-            return bookmark.getEntry();
+            resolvedEntry = bookmark.getEntry();
         }
         else
         {
-            return null;
+            resolvedEntry = null;
         }
+
+        if ( resolvedEntry != null )
+        {
+            resolvedEntry = resolvedEntry.getBrowserConnection().getEntryFromCache( resolvedEntry.getDn() );
+        }
+
+        return resolvedEntry;
     }
 
 

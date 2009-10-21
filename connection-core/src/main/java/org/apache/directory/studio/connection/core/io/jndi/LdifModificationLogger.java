@@ -466,7 +466,7 @@ public class LdifModificationLogger implements IJndiLogger
     /**
      * {@inheritDoc}
      */
-    public void logSearchResultReference( Connection connection, ReferralsInfo.UrlAndDn urlAndDn,
+    public void logSearchResultReference( Connection connection, ReferralsInfo.Referral referral,
         ReferralsInfo referralsInfo, long requestNum, NamingException ex )
     {
         // don't log searches 

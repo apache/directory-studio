@@ -28,7 +28,9 @@ import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.shared.ldap.util.LdapURL;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.ConnectionPropertyPageProvider;
+import org.apache.directory.studio.connection.core.StudioControl;
 import org.apache.directory.studio.connection.core.jobs.StudioBulkRunnableWithProgress;
+import org.apache.directory.studio.ldapbrowser.core.model.impl.SearchContinuation;
 import org.apache.directory.studio.ldapbrowser.core.propertypageproviders.SearchPropertyPageProvider;
 import org.eclipse.core.runtime.IAdaptable;
 
@@ -63,7 +65,7 @@ public interface ISearch extends Serializable, IAdaptable, SearchPropertyPagePro
 
     /** Filter for fetching referrals (objectClass=referral) */
     public static final String FILTER_REFERRAL = "(objectClass=referral)"; //$NON-NLS-1$
-    
+
     /** Filter for fetching aliases and referrals (|(objectClass=alias)(objectClass=referral)) */
     public static final String FILTER_ALIAS_OR_REFERRAL = "(|(objectClass=alias)(objectClass=referral))"; //$NON-NLS-1$
 
@@ -434,5 +436,21 @@ public interface ISearch extends Serializable, IAdaptable, SearchPropertyPagePro
      * @param nextSearchRunnable the top search runnable
      */
     public abstract void setTopPageSearchRunnable( StudioBulkRunnableWithProgress nextSearchRunnable );
+
+
+    /**
+     * Gets the search continuations.
+     * 
+     * @return the search continuations
+     */
+    public abstract SearchContinuation[] getSearchContinuations();
+
+
+    /**
+     * Sets the search continuations 
+     *
+     * @param the search continuations
+     */
+    public abstract void setSearchContinuations( SearchContinuation[] searchContinuations );
 
 }

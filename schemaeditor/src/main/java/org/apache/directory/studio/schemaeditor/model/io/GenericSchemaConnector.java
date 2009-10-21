@@ -94,17 +94,24 @@ public class GenericSchemaConnector extends AbstractSchemaConnector implements S
             DEREF_ALIAS_METHOD, HANDLE_REFERALS_METHOD, null, ( StudioProgressMonitor ) monitor, null );
         if ( answer != null )
         {
-            while ( answer.hasMoreElements() )
+            try
             {
-                SearchResult searchResult = ( SearchResult ) answer.nextElement();
-                try
+                while ( answer.hasMore() )
                 {
-                    schemas.add( getSchema( wrapper, searchResult, monitor ) );
+                    SearchResult searchResult = ( SearchResult ) answer.next();
+                    try
+                    {
+                        schemas.add( getSchema( wrapper, searchResult, monitor ) );
+                    }
+                    catch ( Exception e )
+                    {
+                        monitor.reportError( e );
+                    }
                 }
-                catch ( Exception e )
-                {
-                    monitor.reportError( e );
-                }
+            }
+            catch ( NamingException e )
+            {
+                monitor.reportError( e );
             }
         }
 
@@ -137,32 +144,39 @@ public class GenericSchemaConnector extends AbstractSchemaConnector implements S
 
         if ( answer != null )
         {
-            if ( answer.hasMoreElements() )
+            try
             {
-                SearchResult searchResult = ( SearchResult ) answer.nextElement();
-
-                Attribute subschemaSubentryAttribute = searchResult.getAttributes().get( "subschemaSubentry" );
-                if ( subschemaSubentryAttribute == null )
+                if ( answer.hasMore() )
                 {
-                    return null;
-                }
+                    SearchResult searchResult = ( SearchResult ) answer.next();
 
-                if ( subschemaSubentryAttribute.size() != 1 )
-                {
-                    return null;
-                }
+                    Attribute subschemaSubentryAttribute = searchResult.getAttributes().get( "subschemaSubentry" );
+                    if ( subschemaSubentryAttribute == null )
+                    {
+                        return null;
+                    }
 
-                String subschemaSubentry = null;
-                try
-                {
-                    subschemaSubentry = ( String ) subschemaSubentryAttribute.get();
-                }
-                catch ( NamingException e )
-                {
-                    return null;
-                }
+                    if ( subschemaSubentryAttribute.size() != 1 )
+                    {
+                        return null;
+                    }
 
-                return subschemaSubentry;
+                    String subschemaSubentry = null;
+                    try
+                    {
+                        subschemaSubentry = ( String ) subschemaSubentryAttribute.get();
+                    }
+                    catch ( NamingException e )
+                    {
+                        return null;
+                    }
+
+                    return subschemaSubentry;
+                }
+            }
+            catch ( NamingException e )
+            {
+                monitor.reportError( e );
             }
         }
 

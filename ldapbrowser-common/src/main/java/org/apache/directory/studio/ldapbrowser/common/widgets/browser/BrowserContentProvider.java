@@ -36,12 +36,15 @@ import org.apache.directory.studio.ldapbrowser.core.jobs.SearchRunnable;
 import org.apache.directory.studio.ldapbrowser.core.jobs.StudioBrowserJob;
 import org.apache.directory.studio.ldapbrowser.core.model.IBookmark;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
+import org.apache.directory.studio.ldapbrowser.core.model.IContinuation;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.IQuickSearch;
 import org.apache.directory.studio.ldapbrowser.core.model.IRootDSE;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearchResult;
+import org.apache.directory.studio.ldapbrowser.core.model.IContinuation.State;
 import org.apache.directory.studio.ldapbrowser.core.model.impl.DirectoryMetadataEntry;
+import org.apache.directory.studio.ldapbrowser.core.model.impl.SearchContinuation;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.ITreeContentProvider;
@@ -246,7 +249,14 @@ public class BrowserContentProvider implements ITreeContentProvider
         else if ( child instanceof ISearch )
         {
             ISearch search = ( ( ISearch ) child );
-            return connectionToCategoriesMap.get( search.getBrowserConnection() )[1];
+            if ( connectionToCategoriesMap.get( search.getBrowserConnection() ) != null )
+            {
+                return connectionToCategoriesMap.get( search.getBrowserConnection() )[1];
+            }
+            else
+            {
+                return null;
+            }
         }
         else if ( child instanceof ISearchResult )
         {
@@ -271,7 +281,14 @@ public class BrowserContentProvider implements ITreeContentProvider
         else if ( child instanceof IBookmark )
         {
             IBookmark bookmark = ( ( IBookmark ) child );
-            return connectionToCategoriesMap.get( bookmark.getBrowserConnection() )[2];
+            if ( connectionToCategoriesMap.get( bookmark.getBrowserConnection() ) != null )
+            {
+                return connectionToCategoriesMap.get( bookmark.getBrowserConnection() )[2];
+            }
+            else
+            {
+                return null;
+            }
         }
         else
         {
@@ -334,6 +351,19 @@ public class BrowserContentProvider implements ITreeContentProvider
         else if ( parent instanceof IEntry )
         {
             final IEntry parentEntry = ( IEntry ) parent;
+            
+            if ( parentEntry instanceof IContinuation )
+            {
+                IContinuation continuation = ( IContinuation ) parentEntry;
+                if ( continuation.getState() == State.UNRESOLVED )
+                {
+                    continuation.resolve();
+                }
+                if ( continuation.getState() == State.CANCELED )
+                {
+                    return new Object[0];
+                }
+            }
 
             if ( !parentEntry.isChildrenInitialized() )
             {
@@ -341,23 +371,21 @@ public class BrowserContentProvider implements ITreeContentProvider
                 return new String[]
                     { Messages.getString( "BrowserContentProvider.FetchingEntries" ) }; //$NON-NLS-1$
             }
-
-            if ( parentEntry.getChildrenCount() <= preferences.getFoldingSize() || !preferences.isUseFolding() )
+            else if ( parentEntry.getChildrenCount() <= preferences.getFoldingSize() || !preferences.isUseFolding() )
             {
                 if ( entryToEntryPagesMap.containsKey( parentEntry ) )
                 {
                     entryToEntryPagesMap.remove( parentEntry );
                 }
 
-                Object[] results = parentEntry.getChildren();
+                IEntry[] results = parentEntry.getChildren();
 
                 List<Object> objects = new ArrayList<Object>();
 
                 SearchManager sm = parentEntry.getBrowserConnection().getSearchManager();
-                IQuickSearch quickSearch = sm.getQuickSearch();
-                if ( quickSearch != null && parentEntry.getDn().equals( quickSearch.getSearchBase() ) )
+                if ( sm != null && sm.getQuickSearch() != null && parentEntry.getDn().equals( sm.getQuickSearch().getSearchBase() ) )
                 {
-                    objects.add( quickSearch );
+                    objects.add( sm.getQuickSearch() );
                 }
 
                 if ( parentEntry.getTopPageChildrenRunnable() != null )
@@ -366,23 +394,13 @@ public class BrowserContentProvider implements ITreeContentProvider
                 }
 
                 objects.addAll( Arrays.asList( results ) );
-
+                
                 if ( parentEntry.getNextPageChildrenRunnable() != null )
                 {
                     objects.add( parentEntry.getNextPageChildrenRunnable() );
                 }
 
-                results = objects.toArray();
-
-                if ( results == null )
-                {
-                    return new String[]
-                        { Messages.getString( "BrowserContentProvider.FetchingEntries" ) }; //$NON-NLS-1$
-                }
-                else
-                {
-                    return results;
-                }
+                return objects.toArray();
             }
             else
             {
@@ -412,14 +430,27 @@ public class BrowserContentProvider implements ITreeContentProvider
         else if ( parent instanceof ISearch )
         {
             ISearch search = ( ISearch ) parent;
-            if ( search.getSearchResults() == null )
+            if ( search instanceof IContinuation )
+            {
+                IContinuation continuation = ( IContinuation ) search;
+                if ( continuation.getState() == State.UNRESOLVED )
+                {
+                    continuation.resolve();
+                }
+                if ( continuation.getState() == State.CANCELED )
+                {
+                    return new Object[0];
+                }
+            }
+            
+            if ( search.getSearchResults() == null || search.getSearchContinuations() == null )
             {
                 new StudioBrowserJob( new SearchRunnable( new ISearch[]
                     { search } ) ).execute();
                 return new String[]
                     { Messages.getString( "BrowserContentProvider.PerformingSearch" ) }; //$NON-NLS-1$
             }
-            else if ( search.getSearchResults().length == 0 )
+            else if ( search.getSearchResults().length + search.getSearchContinuations().length == 0 )
             {
                 return new String[]
                     { Messages.getString( "BrowserContentProvider.NoResults" ) }; //$NON-NLS-1$
@@ -431,7 +462,8 @@ public class BrowserContentProvider implements ITreeContentProvider
                     searchToSearchResultPagesMap.remove( search );
                 }
 
-                Object[] results = search.getSearchResults();
+                ISearchResult[] results = search.getSearchResults();
+                SearchContinuation[] scs = search.getSearchContinuations();
                 List<Object> objects = new ArrayList<Object>();
 
                 if ( search.getTopSearchRunnable() != null )
@@ -440,15 +472,18 @@ public class BrowserContentProvider implements ITreeContentProvider
                 }
 
                 objects.addAll( Arrays.asList( results ) );
+                
+                if(scs != null)
+                {
+                    objects.addAll( Arrays.asList( scs ) );
+                }
 
                 if ( search.getNextSearchRunnable() != null )
                 {
                     objects.add( search.getNextSearchRunnable() );
                 }
 
-                results = objects.toArray();
-
-                return results;
+                return objects.toArray();
             }
             else
             {
@@ -508,6 +543,10 @@ public class BrowserContentProvider implements ITreeContentProvider
         {
             IEntry parentEntry = ( IEntry ) parent;
             return parentEntry.hasChildren();
+        }
+        else if ( parent instanceof SearchContinuation )
+        {
+            return true;
         }
         else if ( parent instanceof BrowserEntryPage )
         {

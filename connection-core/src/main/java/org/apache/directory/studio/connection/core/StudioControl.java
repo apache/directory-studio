@@ -18,7 +18,7 @@
  *  
  */
 
-package org.apache.directory.studio.ldapbrowser.core.model;
+package org.apache.directory.studio.connection.core;
 
 
 import java.io.Serializable;

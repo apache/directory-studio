@@ -52,7 +52,6 @@ import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.ConnectionCoreConstants;
 import org.apache.directory.studio.connection.core.DnUtils;
-import org.apache.directory.studio.connection.core.Connection.ReferralHandlingMethod;
 import org.apache.directory.studio.connection.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.ldapbrowser.core.events.BulkModificationEvent;
@@ -456,7 +455,7 @@ public class ImportLdifJob extends AbstractNotificationJob
             }
 
             browserConnection.getConnection().getJNDIConnectionWrapper().createEntry( dn, jndiAttributes,
-                ReferralHandlingMethod.IGNORE, getControls( record ), monitor, null );
+                getControls( record ), monitor, null );
 
             if ( monitor.errorsReported() && updateIfEntryExists
                 && monitor.getException() instanceof NameAlreadyBoundException )
@@ -466,14 +465,14 @@ public class ImportLdifJob extends AbstractNotificationJob
 
                 ModificationItem[] mis = ModelConverter.entryToReplaceModificationItems( dummyEntry );
                 browserConnection.getConnection().getJNDIConnectionWrapper().modifyEntry( dn, mis,
-                    ReferralHandlingMethod.IGNORE, getControls( record ), monitor, null );
+                    getControls( record ), monitor, null );
             }
         }
         else if ( record instanceof LdifChangeDeleteRecord )
         {
             LdifChangeDeleteRecord changeDeleteRecord = ( LdifChangeDeleteRecord ) record;
             browserConnection.getConnection().getJNDIConnectionWrapper().deleteEntry( dn,
-                ReferralHandlingMethod.IGNORE, getControls( changeDeleteRecord ), monitor, null );
+                getControls( changeDeleteRecord ), monitor, null );
         }
         else if ( record instanceof LdifChangeModifyRecord )
         {
@@ -506,7 +505,7 @@ public class ImportLdifJob extends AbstractNotificationJob
             }
 
             browserConnection.getConnection().getJNDIConnectionWrapper().modifyEntry( dn, mis,
-                ReferralHandlingMethod.IGNORE, getControls( modifyRecord ), monitor, null );
+                getControls( modifyRecord ), monitor, null );
         }
         else if ( record instanceof LdifChangeModDnRecord )
         {
@@ -529,7 +528,7 @@ public class ImportLdifJob extends AbstractNotificationJob
                 }
 
                 browserConnection.getConnection().getJNDIConnectionWrapper().renameEntry( dn, newDn.toString(),
-                    deleteOldRdn, ReferralHandlingMethod.IGNORE, getControls( modDnRecord ), monitor, null );
+                    deleteOldRdn, getControls( modDnRecord ), monitor, null );
             }
         }
     }

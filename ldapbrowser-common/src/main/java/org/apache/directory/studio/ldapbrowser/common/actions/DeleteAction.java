@@ -32,6 +32,7 @@ import java.util.Set;
 
 import org.apache.directory.shared.ldap.schema.parsers.AttributeTypeDescription;
 import org.apache.directory.shared.ldap.schema.parsers.ObjectClassDescription;
+import org.apache.directory.studio.connection.core.StudioControl;
 import org.apache.directory.studio.ldapbrowser.common.dialogs.DeleteDialog;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreConstants;
 import org.apache.directory.studio.ldapbrowser.core.jobs.DeleteEntriesJob;
@@ -43,7 +44,6 @@ import org.apache.directory.studio.ldapbrowser.core.model.IRootDSE;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearchResult;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
-import org.apache.directory.studio.ldapbrowser.core.model.StudioControl;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.Schema;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.SchemaUtils;
 import org.apache.directory.studio.ldapbrowser.core.utils.CompoundModification;

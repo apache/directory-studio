@@ -59,9 +59,11 @@ public class SearchResultEditorNavigationLocation extends NavigationLocation
         ISearch search = getSearch();
         if ( search != null )
         {
+            String connectionName = search.getBrowserConnection().getConnection() != null ? " - " //$NON-NLS-1$ 
+                + search.getBrowserConnection().getConnection().getName() : ""; //$NON-NLS-1$ 
             return NLS.bind(
                 Messages.getString( "SearchResultEditorNavigationLocation.Search" ), new String[] { search.getName() } ) //$NON-NLS-1$
-                + " - " + search.getBrowserConnection().getConnection().getName(); //$NON-NLS-1$ 
+                + connectionName;
         }
         else
         {
