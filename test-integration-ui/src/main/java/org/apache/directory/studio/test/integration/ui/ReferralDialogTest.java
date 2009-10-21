@@ -24,6 +24,7 @@ package org.apache.directory.studio.test.integration.ui;
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNotNull;
 import static junit.framework.Assert.assertNull;
+import static junit.framework.Assert.assertTrue;
 
 import org.apache.directory.server.core.entry.DefaultServerEntry;
 import org.apache.directory.server.core.entry.ServerEntry;
@@ -92,6 +93,8 @@ public class ReferralDialogTest
     public void testBrowseAndFollowContinuationReference() throws Exception
     {
         // ensure that referrals handling method is FOLLOW
+        connection.getConnectionParameter().setExtendedIntProperty(
+            IBrowserConnection.CONNECTION_PARAMETER_REFERRALS_HANDLING_METHOD, ReferralHandlingMethod.FOLLOW.ordinal() );
         int referralsHandlingMethodOrdinal = connection.getConnectionParameter().getExtendedIntProperty(
             IBrowserConnection.CONNECTION_PARAMETER_REFERRALS_HANDLING_METHOD );
         assertEquals( ReferralHandlingMethod.FOLLOW.ordinal(), referralsHandlingMethodOrdinal );
@@ -143,6 +146,8 @@ public class ReferralDialogTest
     public void testBrowseAndCancelFollowingContinuationReference() throws Exception
     {
         // ensure that referrals handling method is FOLLOW
+        connection.getConnectionParameter().setExtendedIntProperty(
+            IBrowserConnection.CONNECTION_PARAMETER_REFERRALS_HANDLING_METHOD, ReferralHandlingMethod.FOLLOW.ordinal() );
         int referralsHandlingMethodOrdinal = connection.getConnectionParameter().getExtendedIntProperty(
             IBrowserConnection.CONNECTION_PARAMETER_REFERRALS_HANDLING_METHOD );
         assertEquals( ReferralHandlingMethod.FOLLOW.ordinal(), referralsHandlingMethodOrdinal );
@@ -244,10 +249,15 @@ public class ReferralDialogTest
     {
         // ensure that referrals handling method is MANAGE
         connection.getConnectionParameter().setExtendedIntProperty(
-            IBrowserConnection.CONNECTION_PARAMETER_REFERRALS_HANDLING_METHOD, ReferralHandlingMethod.MANAGE.ordinal() );
+            IBrowserConnection.CONNECTION_PARAMETER_REFERRALS_HANDLING_METHOD, ReferralHandlingMethod.IGNORE.ordinal() );
+        connection.getConnectionParameter().setExtendedBoolProperty(
+            IBrowserConnection.CONNECTION_PARAMETER_MANAGE_DSA_IT, true );
         int referralsHandlingMethodOrdinal = connection.getConnectionParameter().getExtendedIntProperty(
             IBrowserConnection.CONNECTION_PARAMETER_REFERRALS_HANDLING_METHOD );
-        assertEquals( ReferralHandlingMethod.MANAGE.ordinal(), referralsHandlingMethodOrdinal );
+        boolean manageDsaIT = connection.getConnectionParameter().getExtendedBoolProperty(
+            IBrowserConnection.CONNECTION_PARAMETER_MANAGE_DSA_IT );
+        assertEquals( ReferralHandlingMethod.IGNORE.ordinal(), referralsHandlingMethodOrdinal );
+        assertTrue( manageDsaIT );
 
         // create the referral entry
         createReferralEntry();
