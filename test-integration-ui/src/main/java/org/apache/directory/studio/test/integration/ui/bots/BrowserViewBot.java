@@ -109,7 +109,6 @@ public class BrowserViewBot
                 // adjust current path, because the label is decorated with the
                 // number of children
                 node = adjustNodeName( entry, node );
-                System.out.println( node );
                 entry = entry.getNode( node );
             }
 

@@ -40,6 +40,12 @@ public class StudioBot
     }
 
 
+    public BrowserViewBot getBrowserView()
+    {
+        return new BrowserViewBot();
+    }
+
+
     public void resetLdapPerspective()
     {
         UIThreadRunnable.syncExec( new VoidResult()

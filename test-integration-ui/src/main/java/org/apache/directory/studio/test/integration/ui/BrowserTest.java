@@ -30,6 +30,7 @@ import org.apache.directory.server.core.integ.annotations.CleanupLevel;
 import org.apache.directory.server.integ.SiRunner;
 import org.apache.directory.server.ldap.LdapServer;
 import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
+import org.apache.directory.studio.test.integration.ui.bots.StudioBot;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.swt.finder.waits.DefaultCondition;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotStyledText;
@@ -55,14 +56,18 @@ public class BrowserTest
 {
     public static LdapServer ldapServer;
 
+    private StudioBot studioBot;
+
     private SWTWorkbenchBot eBot;
 
 
     @Before
     public void setUp() throws Exception
     {
+        studioBot = new StudioBot();
+        studioBot.resetLdapPerspective();
+
         eBot = new SWTWorkbenchBot();
-        SWTBotUtils.openLdapPerspective( eBot );
         SWTBotUtils.createTestConnection( eBot, "BrowserTest", ldapServer.getPort() );
     }
 

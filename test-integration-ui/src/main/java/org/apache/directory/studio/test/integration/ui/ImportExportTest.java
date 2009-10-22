@@ -40,6 +40,7 @@ import org.apache.directory.server.core.partition.impl.btree.jdbm.JdbmPartition;
 import org.apache.directory.server.integ.SiRunner;
 import org.apache.directory.server.ldap.LdapServer;
 import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
+import org.apache.directory.studio.test.integration.ui.bots.StudioBot;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.swt.finder.waits.DefaultCondition;
@@ -65,14 +66,18 @@ public class ImportExportTest
 {
     public static LdapServer ldapServer;
 
+    private StudioBot studioBot;
+
     private SWTWorkbenchBot eBot;
 
 
     @Before
     public void setUp() throws Exception
     {
+        studioBot = new StudioBot();
+        studioBot.resetLdapPerspective();
+
         eBot = new SWTWorkbenchBot();
-        SWTBotUtils.openLdapPerspective( eBot );
         SWTBotUtils.createTestConnection( eBot, "ImportExportTest", ldapServer.getPort() );
     }
 

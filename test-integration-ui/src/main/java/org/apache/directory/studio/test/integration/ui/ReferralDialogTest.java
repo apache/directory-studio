@@ -38,6 +38,7 @@ import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.test.integration.ui.bots.BrowserViewBot;
 import org.apache.directory.studio.test.integration.ui.bots.ConnectionsViewBot;
 import org.apache.directory.studio.test.integration.ui.bots.ReferralDialogBot;
+import org.apache.directory.studio.test.integration.ui.bots.StudioBot;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.junit.After;
 import org.junit.Before;
@@ -57,6 +58,7 @@ public class ReferralDialogTest
 {
     public static LdapServer ldapServer;
 
+    private StudioBot studioBot;
     private ConnectionsViewBot connectionsViewBot;
     private BrowserViewBot browserViewBot;
 
@@ -71,12 +73,13 @@ public class ReferralDialogTest
     @Before
     public void setUp() throws Exception
     {
+        studioBot = new StudioBot();
+        studioBot.resetLdapPerspective();
+        connectionsViewBot = studioBot.getConnectionView();
+        browserViewBot = studioBot.getBrowserView();
+        
         bot = new SWTWorkbenchBot();
-        SWTBotUtils.openLdapPerspective( bot );
         connection = SWTBotUtils.createTestConnection( bot, "ReferralDialogTest", ldapServer.getPort() );
-
-        connectionsViewBot = new ConnectionsViewBot();
-        browserViewBot = new BrowserViewBot();
 
         // create referral entry
         ServerEntry entry = new DefaultServerEntry( ldapServer.getDirectoryService().getRegistries() );

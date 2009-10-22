@@ -46,7 +46,6 @@ import org.eclipse.swtbot.swt.finder.waits.ICondition;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotButton;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotMenu;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotStyledText;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotTable;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.eclipse.swtbot.swt.finder.widgets.TimeoutException;
@@ -60,73 +59,6 @@ import org.eclipse.swtbot.swt.finder.widgets.TimeoutException;
  */
 public class SWTBotUtils
 {
-
-    /**
-     * Opens the LDAP perspective.
-     * 
-     * @param bot
-     *            the bot
-     * 
-     * @throws Exception
-     *             the exception
-     */
-    public static void openLdapPerspective( final SWTWorkbenchBot eBot ) throws Exception
-    {
-        // optimization: only open LDAP perspective if not yet opened
-        try
-        {
-            if ( eBot.viewByTitle( "Connections" ) != null )
-            {
-                // LDAP perspective already opened
-                return;
-            }
-        }
-        catch ( Exception e )
-        {
-            // no 'Connections' view, continue to open the LDAP perspective
-        }
-
-        // open "Open Perspective" dialog
-        SWTBotMenu windowMenu = eBot.menu( "&Window" );
-        windowMenu.click();
-        SWTBotMenu perspectiveMenu = windowMenu.menu( "Open Perspective" );
-        perspectiveMenu.click();
-        SWTBotMenu otherMenu = windowMenu.menu( "Other..." );
-        otherMenu.click();
-
-        // select "LDAP" perspective
-        SWTBotTable table = eBot.table();
-        table.select( "LDAP" );
-
-        // press "OK"
-        SWTBotButton okButton = eBot.button( "OK" );
-        okButton.click();
-
-        // wait till Connections view become visible
-        eBot.waitUntil( new DefaultCondition()
-        {
-            public boolean test() throws Exception
-            {
-                return eBot.viewByTitle( "Connections" ) != null;
-            }
-
-
-            public String getFailureMessage()
-            {
-                return "Could not find widget";
-            }
-        } );
-
-        // close welcome view, if it is there
-        try
-        {
-            eBot.viewByTitle( "Welcome" ).close();
-        }
-        catch ( Exception e )
-        {
-        }
-    }
-
 
     /**
      * Creates the test connection.
