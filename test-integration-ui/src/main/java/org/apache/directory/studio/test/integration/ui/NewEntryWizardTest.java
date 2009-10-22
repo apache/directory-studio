@@ -34,6 +34,7 @@ import org.apache.directory.server.core.integ.Level;
 import org.apache.directory.server.core.integ.annotations.CleanupLevel;
 import org.apache.directory.server.integ.SiRunner;
 import org.apache.directory.server.ldap.LdapServer;
+import org.apache.directory.studio.test.integration.ui.bots.ConnectionsViewBot;
 import org.apache.directory.studio.test.integration.ui.bots.StudioBot;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.swt.finder.waits.DefaultCondition;
@@ -60,6 +61,7 @@ public class NewEntryWizardTest
     public static LdapServer ldapServer;
 
     private StudioBot studioBot;
+    private ConnectionsViewBot connectionsViewBot;
 
     private SWTWorkbenchBot bot;
 
@@ -86,16 +88,17 @@ public class NewEntryWizardTest
 
         studioBot = new StudioBot();
         studioBot.resetLdapPerspective();
+        connectionsViewBot = studioBot.getConnectionView();
+        connectionsViewBot.createTestConnection( "NewEntryWizardTest", ldapServer.getPort() );
 
         bot = new SWTWorkbenchBot();
-        SWTBotUtils.createTestConnection( bot, "NewEntryWizardTest", ldapServer.getPort() );
     }
 
 
     @After
     public void tearDown() throws Exception
     {
-        SWTBotUtils.deleteTestConnections();
+        connectionsViewBot.deleteTestConnections();
         bot = null;
     }
 

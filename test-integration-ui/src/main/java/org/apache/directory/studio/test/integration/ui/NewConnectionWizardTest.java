@@ -127,7 +127,7 @@ public class NewConnectionWizardTest
     @After
     public void tearDown() throws Exception
     {
-        SWTBotUtils.deleteTestConnections();
+        connectionsViewBot.deleteTestConnections();
         studioBot = null;
         connectionsViewBot = null;
         wizardBot = null;

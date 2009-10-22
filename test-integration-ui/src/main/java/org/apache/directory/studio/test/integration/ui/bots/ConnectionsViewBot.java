@@ -20,9 +20,19 @@
 package org.apache.directory.studio.test.integration.ui.bots;
 
 
+import org.apache.directory.studio.connection.core.Connection;
+import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
+import org.apache.directory.studio.connection.core.ConnectionFolder;
+import org.apache.directory.studio.connection.core.ConnectionFolderManager;
+import org.apache.directory.studio.connection.core.ConnectionManager;
+import org.apache.directory.studio.connection.core.ConnectionParameter;
+import org.apache.directory.studio.connection.core.ConnectionParameter.AuthenticationMethod;
+import org.apache.directory.studio.connection.core.ConnectionParameter.EncryptionMethod;
 import org.apache.directory.studio.test.integration.ui.ContextMenuHelper;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
+import org.eclipse.swtbot.swt.finder.utils.TableCollection;
+import org.eclipse.swtbot.swt.finder.utils.TableRow;
 import org.eclipse.swtbot.swt.finder.waits.DefaultCondition;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
@@ -43,6 +53,24 @@ public class ConnectionsViewBot
     public void closeSelectedConnections()
     {
         getConnectionsTree().contextMenu( "Close Connection" ).click();
+    }
+
+
+    public void selectConnection( String connectionName )
+    {
+        getConnectionsTree().select( connectionName );
+    }
+
+
+    public String getSelectedConnection()
+    {
+        TableCollection selection = getConnectionsTree().selection();
+        if ( selection != null && selection.rowCount() == 1 )
+        {
+            TableRow row = selection.get( 0 );
+            return row.get( 0 );
+        }
+        return null;
     }
 
 
@@ -88,4 +116,53 @@ public class ConnectionsViewBot
 
     }
 
+    /**
+     * Creates the test connection.
+     * 
+     * @param name
+     *            the name of the connection
+     * @param port
+     *            the port to use
+     * 
+     * @return the connection
+     * 
+     */
+    public Connection createTestConnection( String name, int port ) throws Exception
+    {
+        ConnectionManager connectionManager = ConnectionCorePlugin.getDefault().getConnectionManager();
+        ConnectionParameter connectionParameter = new ConnectionParameter();
+        connectionParameter.setName( name );
+        connectionParameter.setHost( "localhost" );
+        connectionParameter.setPort( port );
+        connectionParameter.setEncryptionMethod( EncryptionMethod.NONE );
+        connectionParameter.setAuthMethod( AuthenticationMethod.SIMPLE );
+        connectionParameter.setBindPrincipal( "uid=admin,ou=system" );
+        connectionParameter.setBindPassword( "secret" );
+        Connection connection = new Connection( connectionParameter );
+        connectionManager.addConnection( connection );
+
+        ConnectionFolderManager connectionFolderManager = ConnectionCorePlugin.getDefault()
+            .getConnectionFolderManager();
+        ConnectionFolder rootConnectionFolder = connectionFolderManager.getRootConnectionFolder();
+        rootConnectionFolder.addConnectionId( connection.getId() );
+
+        selectConnection( name );
+        // new OpenConnectionsJob( connection ).execute();
+
+        Thread.sleep( 1000 );
+        return connection;
+    }
+
+
+    /**
+     * Deletes the test connection.
+     */
+    public void deleteTestConnections()
+    {
+        ConnectionManager connectionManager = ConnectionCorePlugin.getDefault().getConnectionManager();
+        for ( Connection connection : connectionManager.getConnections() )
+        {
+            connectionManager.removeConnection( connection );
+        }
+    }
 }

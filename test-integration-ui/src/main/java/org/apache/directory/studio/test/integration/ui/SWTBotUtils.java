@@ -60,62 +60,6 @@ import org.eclipse.swtbot.swt.finder.widgets.TimeoutException;
 public class SWTBotUtils
 {
 
-    /**
-     * Creates the test connection.
-     * 
-     * @param bot
-     *            the bot
-     * @param name
-     *            the name of the connection
-     * @param port
-     *            the port to use
-     * 
-     * @return the connection
-     * 
-     * @throws Exception
-     *             the exception
-     */
-    public static Connection createTestConnection( SWTWorkbenchBot bot, String name, int port ) throws Exception
-    {
-        SWTBotTree connectionsTree = getConnectionsTree( bot );
-
-        ConnectionManager connectionManager = ConnectionCorePlugin.getDefault().getConnectionManager();
-        ConnectionParameter connectionParameter = new ConnectionParameter();
-        connectionParameter.setName( name );
-        connectionParameter.setHost( "localhost" );
-        connectionParameter.setPort( port );
-        connectionParameter.setEncryptionMethod( EncryptionMethod.NONE );
-        connectionParameter.setAuthMethod( AuthenticationMethod.SIMPLE );
-        connectionParameter.setBindPrincipal( "uid=admin,ou=system" );
-        connectionParameter.setBindPassword( "secret" );
-        Connection connection = new Connection( connectionParameter );
-        connectionManager.addConnection( connection );
-
-        ConnectionFolderManager connectionFolderManager = ConnectionCorePlugin.getDefault()
-            .getConnectionFolderManager();
-        ConnectionFolder rootConnectionFolder = connectionFolderManager.getRootConnectionFolder();
-        rootConnectionFolder.addConnectionId( connection.getId() );
-
-        connectionsTree.select( name );
-        // new OpenConnectionsJob( connection ).execute();
-
-        Thread.sleep( 1000 );
-        return connection;
-    }
-
-
-    /**
-     * Deletes the test connection.
-     */
-    public static void deleteTestConnections()
-    {
-        ConnectionManager connectionManager = ConnectionCorePlugin.getDefault().getConnectionManager();
-        for ( Connection connection : connectionManager.getConnections() )
-        {
-            connectionManager.removeConnection( connection );
-        }
-    }
-
 
     /**
      * Gets the connections tree.

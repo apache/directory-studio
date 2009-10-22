@@ -39,7 +39,6 @@ import org.apache.directory.studio.test.integration.ui.bots.BrowserViewBot;
 import org.apache.directory.studio.test.integration.ui.bots.ConnectionsViewBot;
 import org.apache.directory.studio.test.integration.ui.bots.ReferralDialogBot;
 import org.apache.directory.studio.test.integration.ui.bots.StudioBot;
-import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -62,7 +61,6 @@ public class ReferralDialogTest
     private ConnectionsViewBot connectionsViewBot;
     private BrowserViewBot browserViewBot;
 
-    private SWTWorkbenchBot bot;
     private Connection connection;
 
     private String[] parentPath;
@@ -76,10 +74,8 @@ public class ReferralDialogTest
         studioBot = new StudioBot();
         studioBot.resetLdapPerspective();
         connectionsViewBot = studioBot.getConnectionView();
+        connection = connectionsViewBot.createTestConnection( "ReferralDialogTest", ldapServer.getPort() );
         browserViewBot = studioBot.getBrowserView();
-        
-        bot = new SWTWorkbenchBot();
-        connection = SWTBotUtils.createTestConnection( bot, "ReferralDialogTest", ldapServer.getPort() );
 
         // create referral entry
         ServerEntry entry = new DefaultServerEntry( ldapServer.getDirectoryService().getRegistries() );
@@ -103,8 +99,7 @@ public class ReferralDialogTest
     public void tearDown() throws Exception
     {
         connectionsViewBot.closeSelectedConnections();
-        SWTBotUtils.deleteTestConnections();
-        bot = null;
+        connectionsViewBot.deleteTestConnections();
     }
 
 
