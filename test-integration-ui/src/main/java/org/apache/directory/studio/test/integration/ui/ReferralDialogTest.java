@@ -22,8 +22,7 @@ package org.apache.directory.studio.test.integration.ui;
 
 
 import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertNotNull;
-import static junit.framework.Assert.assertNull;
+import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertTrue;
 
 import org.apache.directory.server.core.entry.DefaultServerEntry;
@@ -36,12 +35,10 @@ import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.Connection.ReferralHandlingMethod;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
+import org.apache.directory.studio.test.integration.ui.bots.BrowserViewBot;
+import org.apache.directory.studio.test.integration.ui.bots.ConnectionsViewBot;
+import org.apache.directory.studio.test.integration.ui.bots.ReferralDialogBot;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
-import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
-import org.eclipse.swtbot.swt.finder.finders.UIThreadRunnable;
-import org.eclipse.swtbot.swt.finder.results.VoidResult;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -60,8 +57,15 @@ public class ReferralDialogTest
 {
     public static LdapServer ldapServer;
 
+    private ConnectionsViewBot connectionsViewBot;
+    private BrowserViewBot browserViewBot;
+
     private SWTWorkbenchBot bot;
     private Connection connection;
+
+    private String[] parentPath;
+    private String[] referralPath;
+    private String[] targetPath;
 
 
     @Before
@@ -70,12 +74,32 @@ public class ReferralDialogTest
         bot = new SWTWorkbenchBot();
         SWTBotUtils.openLdapPerspective( bot );
         connection = SWTBotUtils.createTestConnection( bot, "ReferralDialogTest", ldapServer.getPort() );
+
+        connectionsViewBot = new ConnectionsViewBot();
+        browserViewBot = new BrowserViewBot();
+
+        // create referral entry
+        ServerEntry entry = new DefaultServerEntry( ldapServer.getDirectoryService().getRegistries() );
+        entry.setDn( new LdapDN( "cn=referralDialogTest,ou=system" ) );
+        entry.add( "objectClass", "top", "referral", "extensibleObject" );
+        entry.add( "cn", "referralDialogTest" );
+        entry.add( "ref", "ldap://localhost:" + ldapServer.getPort() + "/ou=users,ou=system" );
+        ldapServer.getDirectoryService().getAdminSession().add( entry );
+
+        // get paths
+        parentPath = new String[]
+            { "DIT", "Root DSE", "ou=system" };
+        referralPath = new String[]
+            { "DIT", "Root DSE", "ou=system", "cn=referralDialogTest" };
+        targetPath = new String[]
+            { "DIT", "Root DSE", "ou=system", "ldap://localhost:" + ldapServer.getPort() + "/ou=users,ou=system" };
     }
 
 
     @After
     public void tearDown() throws Exception
     {
+        connectionsViewBot.closeSelectedConnections();
         SWTBotUtils.deleteTestConnections();
         bot = null;
     }
@@ -85,12 +109,9 @@ public class ReferralDialogTest
      * Test for DIRSTUDIO-343.
      * 
      * Follows a continuation reference.
-     * 
-     * @throws Exception
-     *             the exception
      */
     @Test
-    public void testBrowseAndFollowContinuationReference() throws Exception
+    public void testBrowseAndFollowContinuationReference()
     {
         // ensure that referrals handling method is FOLLOW
         connection.getConnectionParameter().setExtendedIntProperty(
@@ -99,37 +120,15 @@ public class ReferralDialogTest
             IBrowserConnection.CONNECTION_PARAMETER_REFERRALS_HANDLING_METHOD );
         assertEquals( ReferralHandlingMethod.FOLLOW.ordinal(), referralsHandlingMethodOrdinal );
 
-        // create the referral entry
-        createReferralEntry();
+        // expand ou=system, that reads the referral and opens the referral dialog
+        ReferralDialogBot referralDialogBot = browserViewBot.expandEntryExpectingReferralDialog( parentPath );
+        assertEquals( connection.getName(), referralDialogBot.getSelectedConnection() );
+        referralDialogBot.clickOkButton();
 
-        final SWTBotTree browserTree = SWTBotUtils.getLdapBrowserTree( bot );
-
-        // select ou=system, don't expand yet
-        final SWTBotTreeItem systemNode = SWTBotUtils.selectEntry( bot, browserTree, false, "DIT", "Root DSE",
-            "ou=system" );
-
-        // expand ou=system, that reads the referral and opens the referral
-        // dialog
-        UIThreadRunnable.asyncExec( bot.getDisplay(), new VoidResult()
-        {
-            public void run()
-            {
-                systemNode.expand();
-            }
-        } );
-        bot.sleep( 1000 );
-
-        // click OK in the referral dialog
-        bot.button( "OK" ).click();
-        SWTBotUtils.selectEntry( bot, browserTree, true, "DIT", "Root DSE", "ou=system" );
-
-        // ensure that the referral URL and target is visible
-        SWTBotTreeItem referralNode = systemNode.getNode( "ldap://localhost:" + ldapServer.getPort()
-            + "/ou=users,ou=system" );
-        assertNotNull( referralNode );
-        SWTBotUtils.selectEntry( bot, browserTree, false, "DIT", "Root DSE", "ou=system", "ldap://localhost:"
-            + ldapServer.getPort() + "/ou=users,ou=system" );
-
+        // ensure that the target exists, the referral is not visible
+        assertFalse( browserViewBot.existsEntry( referralPath ) );
+        assertTrue( browserViewBot.existsEntry( targetPath ) );
+        browserViewBot.selectEntry( targetPath );
     }
 
 
@@ -138,12 +137,9 @@ public class ReferralDialogTest
      * 
      * Does not follow a continuation reference by clicking the cancel button in
      * the referral dialog.
-     * 
-     * @throws Exception
-     *             the exception
      */
     @Test
-    public void testBrowseAndCancelFollowingContinuationReference() throws Exception
+    public void testBrowseAndCancelFollowingContinuationReference()
     {
         // ensure that referrals handling method is FOLLOW
         connection.getConnectionParameter().setExtendedIntProperty(
@@ -152,52 +148,22 @@ public class ReferralDialogTest
             IBrowserConnection.CONNECTION_PARAMETER_REFERRALS_HANDLING_METHOD );
         assertEquals( ReferralHandlingMethod.FOLLOW.ordinal(), referralsHandlingMethodOrdinal );
 
-        // create the referral entry
-        createReferralEntry();
+        // expand ou=system, that reads the referral and opens the referral dialog
+        ReferralDialogBot referralDialogBot = browserViewBot.expandEntryExpectingReferralDialog( parentPath );
+        assertEquals( connection.getName(), referralDialogBot.getSelectedConnection() );
+        referralDialogBot.clickCancelButton();
 
-        final SWTBotTree browserTree = SWTBotUtils.getLdapBrowserTree( bot );
-
-        // select ou=system, don't expand yet
-        final SWTBotTreeItem systemNode = SWTBotUtils.selectEntry( bot, browserTree, false, "DIT", "Root DSE",
-            "ou=system" );
-
-        // expand ou=system, that reads the referral and opens the referral
-        // dialog
-        UIThreadRunnable.asyncExec( bot.getDisplay(), new VoidResult()
-        {
-            public void run()
-            {
-                systemNode.expand();
-            }
-        } );
-        bot.sleep( 1000 );
-
-        // click Cancel in the referral dialog
-        bot.button( "Cancel" ).click();
-        SWTBotUtils.selectEntry( bot, browserTree, true, "DIT", "Root DSE", "ou=system" );
-
-        // ensure that the referral URL and target is not visible
-        SWTBotTreeItem referralNode = null;
-        try
-        {
-            referralNode = systemNode.getNode( "ldap://localhost:" + ldapServer.getPort() + "/ou=users,ou=system" );
-        }
-        catch ( WidgetNotFoundException wnfe )
-        {
-            // that is expected
-        }
-        assertNull( referralNode );
+        // ensure that neither the target, nor the referral exist
+        assertFalse( browserViewBot.existsEntry( referralPath ) );
+        assertFalse( browserViewBot.existsEntry( targetPath ) );
     }
 
 
     /**
      * Tests ignore referral by setting the connection property to IGNORE.
-     * 
-     * @throws Exception
-     *             the exception
      */
     @Test
-    public void testBrowseAndIgnoreReferral() throws Exception
+    public void testBrowseAndIgnoreReferral()
     {
         // ensure that referrals handling method is IGNORE
         connection.getConnectionParameter().setExtendedIntProperty(
@@ -206,48 +172,22 @@ public class ReferralDialogTest
             IBrowserConnection.CONNECTION_PARAMETER_REFERRALS_HANDLING_METHOD );
         assertEquals( ReferralHandlingMethod.IGNORE.ordinal(), referralsHandlingMethodOrdinal );
 
-        // create the referral entry
-        createReferralEntry();
+        // expand ou=system, no referral dialog expected
+        browserViewBot.expandEntry( parentPath );
 
-        // expand ou=system, the referral must be ignored, no referral dialog
-        // expected
-        SWTBotTree browserTree = SWTBotUtils.getLdapBrowserTree( bot );
-        SWTBotTreeItem systemNode = SWTBotUtils.selectEntry( bot, browserTree, true, "DIT", "Root DSE", "ou=system" );
-
-        // ensure that the referral entry is not visible
-        SWTBotTreeItem referralNode1 = null;
-        try
-        {
-            referralNode1 = systemNode.getNode( "ldap://localhost:" + ldapServer.getPort() + "/ou=users,ou=system" );
-        }
-        catch ( WidgetNotFoundException wnfe )
-        {
-            // that is expected
-        }
-        assertNull( referralNode1 );
-        SWTBotTreeItem referralNode2 = null;
-        try
-        {
-            referralNode2 = systemNode.getNode( "cn=referralDialogTest" );
-        }
-        catch ( WidgetNotFoundException wnfe )
-        {
-            // that is expected
-        }
-        assertNull( referralNode2 );
+        // ensure that neither the target, nor the referral exist
+        assertFalse( browserViewBot.existsEntry( referralPath ) );
+        assertFalse( browserViewBot.existsEntry( targetPath ) );
     }
 
 
     /**
-     * Tests manage referral entry by setting the connection property to MANAGE.
-     * 
-     * @throws Exception
-     *             the exception
+     * Tests manage referral entry by setting the ManageDsaIT control.
      */
     @Test
-    public void testBrowseAndManageReferralEntry() throws Exception
+    public void testBrowseAndManageReferralEntry()
     {
-        // ensure that referrals handling method is MANAGE
+        // ensure that ManageDsaIT is set
         connection.getConnectionParameter().setExtendedIntProperty(
             IBrowserConnection.CONNECTION_PARAMETER_REFERRALS_HANDLING_METHOD, ReferralHandlingMethod.IGNORE.ordinal() );
         connection.getConnectionParameter().setExtendedBoolProperty(
@@ -259,28 +199,45 @@ public class ReferralDialogTest
         assertEquals( ReferralHandlingMethod.IGNORE.ordinal(), referralsHandlingMethodOrdinal );
         assertTrue( manageDsaIT );
 
-        // create the referral entry
-        createReferralEntry();
+        // expand ou=system, that reads the referral and opens the referral dialog
+        browserViewBot.expandEntry( parentPath );
 
-        // expand ou=system, the referral is managed, no referral dialog
-        // expected
-        SWTBotTree browserTree = SWTBotUtils.getLdapBrowserTree( bot );
-        SWTBotTreeItem systemNode = SWTBotUtils.selectEntry( bot, browserTree, true, "DIT", "Root DSE", "ou=system" );
-
-        // ensure that the referral entry is visible
-        SWTBotTreeItem referralNode = systemNode.getNode( "cn=referralDialogTest" );
-        assertNotNull( referralNode );
-        SWTBotUtils.selectEntry( bot, browserTree, false, "DIT", "Root DSE", "ou=system", "cn=referralDialogTest" );
+        // ensure that the referral entry exists
+        assertTrue( browserViewBot.existsEntry( referralPath ) );
+        assertFalse( browserViewBot.existsEntry( targetPath ) );
+        browserViewBot.selectEntry( referralPath );
     }
 
 
-    private void createReferralEntry() throws Exception
+    /**
+     * Tests manual referral following.
+     */
+    @Test
+    public void testBrowseAndFollowManuallyContinuationReference()
     {
-        ServerEntry entry = new DefaultServerEntry( ldapServer.getDirectoryService().getRegistries() );
-        entry.setDn( new LdapDN( "cn=referralDialogTest,ou=system" ) );
-        entry.add( "objectClass", "top", "referral", "extensibleObject" );
-        entry.add( "cn", "referralDialogTest" );
-        entry.add( "ref", "ldap://localhost:" + ldapServer.getPort() + "/ou=users,ou=system" );
-        ldapServer.getDirectoryService().getAdminSession().add( entry );
+        // ensure that referrals handling method is FOLLOW_MANUALLY
+        connection.getConnectionParameter().setExtendedIntProperty(
+            IBrowserConnection.CONNECTION_PARAMETER_REFERRALS_HANDLING_METHOD,
+            ReferralHandlingMethod.FOLLOW_MANUALLY.ordinal() );
+        int referralsHandlingMethodOrdinal = connection.getConnectionParameter().getExtendedIntProperty(
+            IBrowserConnection.CONNECTION_PARAMETER_REFERRALS_HANDLING_METHOD );
+        assertEquals( ReferralHandlingMethod.FOLLOW_MANUALLY.ordinal(), referralsHandlingMethodOrdinal );
+
+        // expand ou=system, no referral dialog expected yet
+        browserViewBot.expandEntry( parentPath );
+
+        // ensure that the target exists, the referral is not visible
+        assertFalse( browserViewBot.existsEntry( referralPath ) );
+        assertTrue( browserViewBot.existsEntry( targetPath ) );
+
+        // select the target, that should popup the referral dialog
+        ReferralDialogBot referralDialogBot = browserViewBot.selectEntryExpectingReferralDialog( targetPath );
+        assertEquals( connection.getName(), referralDialogBot.getSelectedConnection() );
+        referralDialogBot.clickOkButton();
+
+        // ensure that the target exists, the referral is not visible
+        assertFalse( browserViewBot.existsEntry( referralPath ) );
+        assertTrue( browserViewBot.existsEntry( targetPath ) );
+        browserViewBot.selectEntry( targetPath );
     }
 }

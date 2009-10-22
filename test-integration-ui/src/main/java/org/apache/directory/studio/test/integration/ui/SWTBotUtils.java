@@ -217,7 +217,7 @@ public class SWTBotUtils
      * @throws Exception
      *             the exception
      */
-    public static SWTBotTree getLdapBrowserTree( SWTWorkbenchBot bot ) throws Exception
+    public static SWTBotTree getLdapBrowserTree( SWTWorkbenchBot bot )
     {
         SWTBotView view = bot.viewByTitle( "LDAP Browser" );
         view.show();
@@ -414,7 +414,7 @@ public class SWTBotUtils
      *             the exception
      */
     public static SWTBotTreeItem selectEntry( final SWTWorkbenchBot bot, final SWTBotTree tree,
-        final boolean expandChild, final String... path ) throws Exception
+        final boolean expandChild, final String... path )
     {
         List<String> pathList = new ArrayList<String>( Arrays.asList( path ) );
         SWTBotTreeItem entry = null;
@@ -468,7 +468,6 @@ public class SWTBotUtils
      *             the exception
      */
     public static void expandEntry( final SWTWorkbenchBot bot, final SWTBotTreeItem entry, final String nextName )
-        throws Exception
     {
         UIThreadRunnable.asyncExec( bot.getDisplay(), new VoidResult()
         {
