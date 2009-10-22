@@ -69,7 +69,7 @@ public class StudioBot
 
                     // close shells (open dialogs)
                     Shell activeShell = Display.getCurrent().getActiveShell();
-                    if ( activeShell != window.getShell() )
+                    if ( activeShell != null && activeShell != window.getShell() )
                     {
                         activeShell.close();
                     }
