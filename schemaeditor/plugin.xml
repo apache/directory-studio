@@ -432,15 +432,15 @@
        point="org.apache.directory.studio.schemaeditor.schemaConnectors">
     <schemaConnector
           class="org.apache.directory.studio.schemaeditor.model.io.ApacheDsSchemaConnector"
-          description="ApacheDS Schema Connector"
-          id="org.apache.directory.studio.schemaeditor.model.io.ApacheDsSchemaConnector"
-          name="ApacheDS Schema Connector">
+          description="%SchemaConnector_ApacheDS_description"
+          id="%SchemaConnector_ApacheDS_id"
+          name="%SchemaConnector_ApacheDS_name">
     </schemaConnector>
     <schemaConnector
           class="org.apache.directory.studio.schemaeditor.model.io.GenericSchemaConnector"
-          description="Generic Schema Connector"
-          id="org.apache.directory.studio.schemaeditor.model.io.GenericSchemaConnector"
-          name="Generic Schema Connector">
+          description="%SchemaConnector_Generic_description"
+          id="%SchemaConnector_Generic_id"
+          name="%SchemaConnector_Generic_name">
     </schemaConnector>
  </extension>     
 </plugin>
