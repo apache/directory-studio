@@ -174,11 +174,11 @@ public class MergeSchemasSelectionWizardPage extends AbstractWizardPage
                 }
                 else if ( element instanceof ObjectClassFolder )
                 {
-                    return Messages.getString( "MergeSchemasSelectionWizardPage.ObjectClasses" );
+                    return Messages.getString( "MergeSchemasSelectionWizardPage.ObjectClasses" ); //$NON-NLS-1$
                 }
                 else if ( element instanceof AttributeTypeFolder )
                 {
-                    return Messages.getString( "MergeSchemasSelectionWizardPage.AttributeTypes" );
+                    return Messages.getString( "MergeSchemasSelectionWizardPage.AttributeTypes" ); //$NON-NLS-1$
                 }
                 else if ( element instanceof AttributeType )
                 {

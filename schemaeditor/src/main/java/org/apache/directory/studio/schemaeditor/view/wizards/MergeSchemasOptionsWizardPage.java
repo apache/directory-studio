@@ -68,21 +68,21 @@ public class MergeSchemasOptionsWizardPage extends WizardPage
         composite.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
 
         replaceUnknowNSyntaxButton = BaseWidgetUtils.createCheckbox( composite, Messages
-            .getString( "MergeSchemasOptionsWizardPage.ReplaceUnknownSyntax" ), 1 );
+            .getString( "MergeSchemasOptionsWizardPage.ReplaceUnknownSyntax" ), 1 ); //$NON-NLS-1$
         replaceUnknowNSyntaxButton.setToolTipText( Messages
-            .getString( "MergeSchemasOptionsWizardPage.ReplaceUnknownSyntaxTooltip" ) );
+            .getString( "MergeSchemasOptionsWizardPage.ReplaceUnknownSyntaxTooltip" ) ); //$NON-NLS-1$
         replaceUnknowNSyntaxButton.setSelection( true );
 
         mergeDependenciesButton = BaseWidgetUtils.createCheckbox( composite, Messages
-            .getString( "MergeSchemasOptionsWizardPage.MergeDependencies" ), 1 );
+            .getString( "MergeSchemasOptionsWizardPage.MergeDependencies" ), 1 ); //$NON-NLS-1$
         mergeDependenciesButton.setToolTipText( Messages
-            .getString( "MergeSchemasOptionsWizardPage.MergeDependenciesTooltip" ) );
+            .getString( "MergeSchemasOptionsWizardPage.MergeDependenciesTooltip" ) ); //$NON-NLS-1$
         mergeDependenciesButton.setSelection( true );
 
         pullUpAttributesButton = BaseWidgetUtils.createCheckbox( composite, Messages
-            .getString( "MergeSchemasOptionsWizardPage.PullUpAttributes" ), 1 );
+            .getString( "MergeSchemasOptionsWizardPage.PullUpAttributes" ), 1 ); //$NON-NLS-1$
         pullUpAttributesButton.setToolTipText( Messages
-            .getString( "MergeSchemasOptionsWizardPage.PullUpAttributesTooltip" ) );
+            .getString( "MergeSchemasOptionsWizardPage.PullUpAttributesTooltip" ) ); //$NON-NLS-1$
         pullUpAttributesButton.setSelection( true );
 
         setControl( composite );

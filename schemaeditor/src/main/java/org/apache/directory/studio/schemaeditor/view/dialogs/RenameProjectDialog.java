@@ -86,7 +86,7 @@ public class RenameProjectDialog extends Dialog
     protected void configureShell( Shell newShell )
     {
         super.configureShell( newShell );
-        newShell.setText( Messages.getString( "RenameProjectDialog.Rename" ) );
+        newShell.setText( Messages.getString( "RenameProjectDialog.Rename" ) ); //$NON-NLS-1$
     }
 
 
@@ -101,7 +101,7 @@ public class RenameProjectDialog extends Dialog
 
         // New Name
         Label newNameLabel = new Label( composite, SWT.NONE );
-        newNameLabel.setText( Messages.getString( "RenameProjectDialog.NewName" ) );
+        newNameLabel.setText( Messages.getString( "RenameProjectDialog.NewName" ) ); //$NON-NLS-1$
         newNameText = new Text( composite, SWT.BORDER );
         newNameText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
         newNameText.setText( originalName );
@@ -142,7 +142,7 @@ public class RenameProjectDialog extends Dialog
         // Error Label
         errorLabel = new Label( errorComposite, SWT.NONE );
         errorLabel.setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, true ) );
-        errorLabel.setText( Messages.getString( "RenameProjectDialog.NameExists" ) );
+        errorLabel.setText( Messages.getString( "RenameProjectDialog.NameExists" ) ); //$NON-NLS-1$
 
         newNameText.setFocus();
         newNameText.selectAll();

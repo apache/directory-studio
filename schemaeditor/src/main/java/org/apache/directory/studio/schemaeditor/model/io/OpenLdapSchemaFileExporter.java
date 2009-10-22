@@ -51,13 +51,13 @@ public class OpenLdapSchemaFileExporter
         for ( AttributeTypeImpl at : schema.getAttributeTypes() )
         {
             sb.append( toSourceCode( at ) );
-            sb.append( "\n" );
+            sb.append( "\n" ); //$NON-NLS-1$
         }
 
         for ( ObjectClassImpl oc : schema.getObjectClasses() )
         {
             sb.append( toSourceCode( oc ) );
-            sb.append( "\n" );
+            sb.append( "\n" ); //$NON-NLS-1$
         }
 
         return sb.toString();

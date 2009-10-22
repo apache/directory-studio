@@ -139,7 +139,7 @@ public class GenericSchemaConnector extends AbstractSchemaConnector implements S
         constraintSearch.setReturningAttributes( new String[]
             { "subschemaSubentry" } );
 
-        NamingEnumeration<SearchResult> answer = wrapper.search( "", "(objectclass=*)", constraintSearch,
+        NamingEnumeration<SearchResult> answer = wrapper.search( "", "(objectclass=*)", constraintSearch, //$NON-NLS-1$ //$NON-NLS-2$
             DEREF_ALIAS_METHOD, HANDLE_REFERALS_METHOD, null, monitor, null );
 
         if ( answer != null )
@@ -188,7 +188,7 @@ public class GenericSchemaConnector extends AbstractSchemaConnector implements S
         StudioProgressMonitor monitor ) throws NamingException, ParseException
     {
         // Creating the schema
-        Schema schema = new SchemaImpl( "schema" );
+        Schema schema = new SchemaImpl( "schema" ); //$NON-NLS-1$
 
         Attribute attributeTypesAttribute = searchResult.getAttributes().get( "attributeTypes" );
         if ( attributeTypesAttribute != null )
@@ -222,7 +222,7 @@ public class GenericSchemaConnector extends AbstractSchemaConnector implements S
                     impl.setSchemaObject( schema );
 
                     // Active Directory hack
-                    if ( impl.getSyntaxOid() != null && "OctetString".equalsIgnoreCase( impl.getSyntaxOid() ) )
+                    if ( impl.getSyntaxOid() != null && "OctetString".equalsIgnoreCase( impl.getSyntaxOid() ) ) //$NON-NLS-1$
                     {
                         impl.setSyntaxOid( "1.3.6.1.4.1.1466.115.121.1.40" );
                     }
@@ -298,7 +298,7 @@ public class GenericSchemaConnector extends AbstractSchemaConnector implements S
                 impl.setSchema( schema.getName() );
                 impl.setSchemaObject( schema );
                 String oidDescription = Utils.getOidDescription( syntaxOid );
-                impl.setDescription( oidDescription != null ? oidDescription : "Dummy" );
+                impl.setDescription( oidDescription != null ? oidDescription : "Dummy" ); //$NON-NLS-1$
                 impl.setNames( new String[]
                     { impl.getDescription() } );
                 schema.addSyntax( impl );
@@ -352,7 +352,7 @@ public class GenericSchemaConnector extends AbstractSchemaConnector implements S
                 MatchingRuleImpl impl = new MatchingRuleImpl( matchingRuleName );
                 impl.setSchema( schema.getName() );
                 impl.setSchemaObject( schema );
-                impl.setDescription( "Dummy" );
+                impl.setDescription( "Dummy" ); //$NON-NLS-1$
                 impl.setNames( new String[]
                     { matchingRuleName } );
                 schema.addMatchingRule( impl );

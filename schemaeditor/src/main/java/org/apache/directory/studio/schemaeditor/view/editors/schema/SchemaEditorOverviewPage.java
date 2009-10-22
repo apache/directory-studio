@@ -153,9 +153,9 @@ public class SchemaEditorOverviewPage extends FormPage
                 }
                 catch ( PartInitException exception )
                 {
-                    PluginUtils.logError( Messages.getString( "SchemaEditorOverviewPage.ErrorOpenEditor" ), exception );
-                    ViewUtils.displayErrorMessageBox( Messages.getString( "SchemaEditorOverviewPage.Error" ), Messages
-                        .getString( "SchemaEditorOverviewPage.ErrorOpenEditor" ) );
+                    PluginUtils.logError( Messages.getString( "SchemaEditorOverviewPage.ErrorOpenEditor" ), exception ); //$NON-NLS-1$
+                    ViewUtils.displayErrorMessageBox( Messages.getString( "SchemaEditorOverviewPage.Error" ), Messages //$NON-NLS-1$
+                        .getString( "SchemaEditorOverviewPage.ErrorOpenEditor" ) ); //$NON-NLS-1$
                 }
             }
         }
@@ -182,9 +182,9 @@ public class SchemaEditorOverviewPage extends FormPage
                 }
                 catch ( PartInitException exception )
                 {
-                    PluginUtils.logError( Messages.getString( "SchemaEditorOverviewPage.ErrorOpenEditor" ), exception );
-                    ViewUtils.displayErrorMessageBox( Messages.getString( "SchemaEditorOverviewPage.Error" ), Messages
-                        .getString( "SchemaEditorOverviewPage.ErrorOpenEditor" ) );
+                    PluginUtils.logError( Messages.getString( "SchemaEditorOverviewPage.ErrorOpenEditor" ), exception ); //$NON-NLS-1$
+                    ViewUtils.displayErrorMessageBox( Messages.getString( "SchemaEditorOverviewPage.Error" ), Messages //$NON-NLS-1$
+                        .getString( "SchemaEditorOverviewPage.ErrorOpenEditor" ) ); //$NON-NLS-1$
                 }
             }
         }
@@ -199,7 +199,7 @@ public class SchemaEditorOverviewPage extends FormPage
      */
     public SchemaEditorOverviewPage( FormEditor editor )
     {
-        super( editor, ID, Messages.getString( "SchemaEditorOverviewPage.Overview" ) );
+        super( editor, ID, Messages.getString( "SchemaEditorOverviewPage.Overview" ) ); //$NON-NLS-1$
         schemaHandler = Activator.getDefault().getSchemaHandler();
     }
 
@@ -247,9 +247,9 @@ public class SchemaEditorOverviewPage extends FormPage
         Section attributeTypesSection = toolkit.createSection( parent, Section.DESCRIPTION | Section.EXPANDED
             | Section.TITLE_BAR );
         attributeTypesSection.setDescription( NLS.bind(
-            Messages.getString( "SchemaEditorOverviewPage.SchemaAttribute" ), new String[]
+            Messages.getString( "SchemaEditorOverviewPage.SchemaAttribute" ), new String[] //$NON-NLS-1$
                 { schema.getName() } ) );
-        attributeTypesSection.setText( Messages.getString( "SchemaEditorOverviewPage.AttributeTypes" ) );
+        attributeTypesSection.setText( Messages.getString( "SchemaEditorOverviewPage.AttributeTypes" ) ); //$NON-NLS-1$
 
         // Creating the layout of the section
         Composite attributeTypesSectionClient = toolkit.createComposite( attributeTypesSection );
@@ -280,9 +280,9 @@ public class SchemaEditorOverviewPage extends FormPage
         Section objectClassesSection = toolkit.createSection( parent, Section.DESCRIPTION | Section.EXPANDED
             | Section.TITLE_BAR );
         objectClassesSection.setDescription( NLS.bind( Messages
-            .getString( "SchemaEditorOverviewPage.SchemaObjectClasses" ), new String[]
+            .getString( "SchemaEditorOverviewPage.SchemaObjectClasses" ), new String[] //$NON-NLS-1$
             { schema.getName() } ) );
-        objectClassesSection.setText( Messages.getString( "SchemaEditorOverviewPage.ObjectClasses" ) );
+        objectClassesSection.setText( Messages.getString( "SchemaEditorOverviewPage.ObjectClasses" ) ); //$NON-NLS-1$
 
         // Creating the layout of the section
         Composite objectClassesSectionClient = toolkit.createComposite( objectClassesSection );

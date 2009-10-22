@@ -410,7 +410,7 @@ public class HierarchyManager
     {
         // Removing the attribute type as child of its superior
         String superiorName = at.getSuperiorName();
-        if ( ( superiorName != null ) && ( !"".equals( superiorName ) ) )
+        if ( ( superiorName != null ) && ( !"".equals( superiorName ) ) ) //$NON-NLS-1$
         {
             AttributeTypeImpl superiorAT = schemaHandler.getAttributeType( superiorName );
             if ( superiorAT == null )
@@ -440,7 +440,7 @@ public class HierarchyManager
                 parentsMap.put( child, root );
                 childrenMap.put( root, child );
                 String childSuperiorName = childAT.getSuperiorName();
-                if ( ( childSuperiorName != null ) && ( !"".equals( childSuperiorName ) ) )
+                if ( ( childSuperiorName != null ) && ( !"".equals( childSuperiorName ) ) ) //$NON-NLS-1$
                 {
                     parentsMap.put( child, childSuperiorName.toLowerCase() );
                     childrenMap.put( childSuperiorName.toLowerCase(), child );
@@ -461,7 +461,7 @@ public class HierarchyManager
         {
             for ( String superClassName : superClassesNames )
             {
-                if ( !"".equals( superClassName ) )
+                if ( !"".equals( superClassName ) ) //$NON-NLS-1$
                 {
                     ObjectClassImpl superClassOC = schemaHandler.getObjectClass( superClassName );
                     if ( superClassOC == null )

@@ -42,8 +42,8 @@ public class SchemaDifferenceSorter implements Comparator<Object>
             SchemaDifference sd1 = ( SchemaDifference ) o1;
             SchemaDifference sd2 = ( SchemaDifference ) o2;
 
-            String name1 = "";
-            String name2 = "";
+            String name1 = ""; //$NON-NLS-1$
+            String name2 = ""; //$NON-NLS-1$
             switch ( sd1.getType() )
             {
                 case ADDED:

@@ -133,7 +133,7 @@ public class ExportSchemasForADSWizard extends Wizard implements IExportWizard
                                                 Messages.getString( "ExportSchemasForADSWizard.ErrorSavingSchema" ), new String[] { schema.getName() } ), e ); //$NON-NLS-1$
                                 ViewUtils
                                     .displayErrorMessageBox(
-                                        Messages.getString( "ExportSchemasForADSWizard.Error" ), NLS.bind( Messages.getString( "ExportSchemasForADSWizard.ErrorSavingSchema" ), new String[] { schema.getName() } ) ); //$NON-NLS-1$
+                                        Messages.getString( "ExportSchemasForADSWizard.Error" ), NLS.bind( Messages.getString( "ExportSchemasForADSWizard.ErrorSavingSchema" ), new String[] { schema.getName() } ) ); //$NON-NLS-1$ //$NON-NLS-2$
                             }
                             catch ( NamingException e )
                             {
@@ -144,7 +144,7 @@ public class ExportSchemasForADSWizard extends Wizard implements IExportWizard
                                                 Messages.getString( "ExportSchemasForADSWizard.ErrorSavingSchema" ), new String[] { schema.getName() } ), e ); //$NON-NLS-1$
                                 ViewUtils
                                     .displayErrorMessageBox(
-                                        Messages.getString( "ExportSchemasForADSWizard.Error" ), NLS.bind( Messages.getString( "ExportSchemasForADSWizard.ErrorSavingSchema" ), new String[] { schema.getName() } ) ); //$NON-NLS-1$
+                                        Messages.getString( "ExportSchemasForADSWizard.Error" ), NLS.bind( Messages.getString( "ExportSchemasForADSWizard.ErrorSavingSchema" ), new String[] { schema.getName() } ) ); //$NON-NLS-1$ //$NON-NLS-2$
                             }
                             monitor.worked( 1 );
                         }
@@ -195,7 +195,7 @@ public class ExportSchemasForADSWizard extends Wizard implements IExportWizard
                                                 Messages.getString( "ExportSchemasForADSWizard.ErrorSavingSchema" ), new String[] { schema.getName() } ), e ); //$NON-NLS-1$
                                 ViewUtils
                                     .displayErrorMessageBox(
-                                        Messages.getString( "ExportSchemasForADSWizard.Error" ), NLS.bind( Messages.getString( "ExportSchemasForADSWizard.ErrorSavingSchema" ), new String[] { schema.getName() } ) ); //$NON-NLS-1$
+                                        Messages.getString( "ExportSchemasForADSWizard.Error" ), NLS.bind( Messages.getString( "ExportSchemasForADSWizard.ErrorSavingSchema" ), new String[] { schema.getName() } ) ); //$NON-NLS-1$ //$NON-NLS-2$
                             }
                         }
 

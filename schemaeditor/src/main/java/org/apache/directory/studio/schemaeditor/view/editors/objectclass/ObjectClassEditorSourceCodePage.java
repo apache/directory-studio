@@ -149,7 +149,7 @@ public class ObjectClassEditorSourceCodePage extends FormPage
 
         // Help Context for Dynamic Help
         PlatformUI.getWorkbench().getHelpSystem().setHelp( form,
-            PluginConstants.PLUGIN_ID + "." + "object_class_editor" );
+            PluginConstants.PLUGIN_ID + "." + "object_class_editor" ); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
 

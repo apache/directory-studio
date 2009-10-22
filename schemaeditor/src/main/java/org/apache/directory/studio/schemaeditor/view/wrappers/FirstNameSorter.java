@@ -82,11 +82,11 @@ public class FirstNameSorter implements Comparator<TreeNode>
             }
             else if ( ( o1Names.length == 0 ) && ( o2Names.length > 0 ) )
             {
-                return "".compareToIgnoreCase( o2Names[0] );
+                return "".compareToIgnoreCase( o2Names[0] ); //$NON-NLS-1$
             }
             else if ( ( o1Names.length > 0 ) && ( o2Names.length == 0 ) )
             {
-                return o1Names[0].compareToIgnoreCase( "" );
+                return o1Names[0].compareToIgnoreCase( "" ); //$NON-NLS-1$
             }
         }
 

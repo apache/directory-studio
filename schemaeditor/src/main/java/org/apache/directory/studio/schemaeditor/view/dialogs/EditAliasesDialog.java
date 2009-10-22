@@ -138,7 +138,7 @@ public class EditAliasesDialog extends Dialog
 
         // Aliases Label
         Label aliasesLabel = new Label( composite, SWT.NONE );
-        aliasesLabel.setText( Messages.getString( "EditAliasesDialog.Aliases" ) );
+        aliasesLabel.setText( Messages.getString( "EditAliasesDialog.Aliases" ) ); //$NON-NLS-1$
         aliasesLabel.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, true, 2, 1 ) );
 
         // Aliases Table
@@ -159,18 +159,18 @@ public class EditAliasesDialog extends Dialog
 
         // Add Button
         addButton = new Button( composite, SWT.PUSH );
-        addButton.setText( Messages.getString( "EditAliasesDialog.Add" ) );
+        addButton.setText( Messages.getString( "EditAliasesDialog.Add" ) ); //$NON-NLS-1$
         addButton.setLayoutData( new GridData( SWT.FILL, SWT.NONE, false, false ) );
 
         // Edit Button
         editButton = new Button( composite, SWT.PUSH );
-        editButton.setText( Messages.getString( "EditAliasesDialog.Edit" ) );
+        editButton.setText( Messages.getString( "EditAliasesDialog.Edit" ) ); //$NON-NLS-1$
         editButton.setLayoutData( new GridData( SWT.FILL, SWT.NONE, false, false ) );
         editButton.setEnabled( false );
 
         // Remove Button
         removeButton = new Button( composite, SWT.PUSH );
-        removeButton.setText( Messages.getString( "EditAliasesDialog.Remove" ) );
+        removeButton.setText( Messages.getString( "EditAliasesDialog.Remove" ) ); //$NON-NLS-1$
         removeButton.setLayoutData( new GridData( SWT.FILL, SWT.NONE, false, false ) );
         removeButton.setEnabled( false );
 
@@ -257,7 +257,7 @@ public class EditAliasesDialog extends Dialog
         Menu menu = new Menu( getShell(), SWT.POP_UP );
         aliasesTable.setMenu( menu );
         MenuItem removeMenuItem = new MenuItem( menu, SWT.PUSH );
-        removeMenuItem.setText( Messages.getString( "EditAliasesDialog.Remove" ) );
+        removeMenuItem.setText( Messages.getString( "EditAliasesDialog.Remove" ) ); //$NON-NLS-1$
         removeMenuItem.setImage( PlatformUI.getWorkbench().getSharedImages().getImage( ISharedImages.IMG_TOOL_DELETE ) );
         removeMenuItem.addListener( SWT.Selection, new Listener()
         {
@@ -446,12 +446,12 @@ public class EditAliasesDialog extends Dialog
                 && ( !initialLowerCasedAliases.contains( alias.toLowerCase() ) ) )
             {
                 errorComposite.setVisible( true );
-                errorLabel.setText( Messages.getString( "EditAliasesDialog.ElementWithSameAliasExists" ) );
+                errorLabel.setText( Messages.getString( "EditAliasesDialog.ElementWithSameAliasExists" ) ); //$NON-NLS-1$
             }
             else if ( !PluginUtils.verifyName( alias ) )
             {
                 errorComposite.setVisible( true );
-                errorLabel.setText( NLS.bind( Messages.getString( "EditAliasesDialog.TheAliasBegin" ), new String[]
+                errorLabel.setText( NLS.bind( Messages.getString( "EditAliasesDialog.TheAliasBegin" ), new String[] //$NON-NLS-1$
                     { alias } ) );
             }
         }
@@ -464,7 +464,7 @@ public class EditAliasesDialog extends Dialog
     protected void configureShell( Shell newShell )
     {
         super.configureShell( newShell );
-        newShell.setText( Messages.getString( "EditAliasesDialog.EditAlias" ) );
+        newShell.setText( Messages.getString( "EditAliasesDialog.EditAlias" ) ); //$NON-NLS-1$
     }
 
 

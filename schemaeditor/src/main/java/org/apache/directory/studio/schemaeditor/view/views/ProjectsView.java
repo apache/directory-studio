@@ -53,7 +53,7 @@ public class ProjectsView extends ViewPart
     public void createPartControl( Composite parent )
     {
         // Help Context for Dynamic Help
-        PlatformUI.getWorkbench().getHelpSystem().setHelp( parent, PluginConstants.PLUGIN_ID + "." + "projects_view" );
+        PlatformUI.getWorkbench().getHelpSystem().setHelp( parent, PluginConstants.PLUGIN_ID + "." + "projects_view" ); //$NON-NLS-1$ //$NON-NLS-2$
 
         initViewer( parent );
 

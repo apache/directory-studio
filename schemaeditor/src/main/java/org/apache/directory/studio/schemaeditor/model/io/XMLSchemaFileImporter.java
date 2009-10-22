@@ -319,7 +319,7 @@ public class XMLSchemaFileImporter
         }
         else
         {
-            throw new XMLSchemaFileImportException( Messages.getString( "XMLSchemaFileImporter.NoOIDInAttribute" ) );
+            throw new XMLSchemaFileImportException( Messages.getString( "XMLSchemaFileImporter.NoOIDInAttribute" ) ); //$NON-NLS-1$
         }
 
         // Schema
@@ -367,7 +367,7 @@ public class XMLSchemaFileImporter
             catch ( IllegalArgumentException e )
             {
                 throw new XMLSchemaFileImportException( Messages
-                    .getString( "XMLSchemaFileImporter.UnceonvertableAttribute" ), e );
+                    .getString( "XMLSchemaFileImporter.UnceonvertableAttribute" ), e ); //$NON-NLS-1$
             }
         }
 
@@ -389,7 +389,7 @@ public class XMLSchemaFileImporter
             catch ( NumberFormatException e )
             {
                 throw new XMLSchemaFileImportException( Messages
-                    .getString( "XMLSchemaFileImporter.UnconvertableInteger" ), e );
+                    .getString( "XMLSchemaFileImporter.UnconvertableInteger" ), e ); //$NON-NLS-1$
             }
         }
 
@@ -490,7 +490,7 @@ public class XMLSchemaFileImporter
         }
         else
         {
-            throw new XMLSchemaFileImportException( Messages.getString( "XMLSchemaFileImporter.NoOIDInClass" ) );
+            throw new XMLSchemaFileImportException( Messages.getString( "XMLSchemaFileImporter.NoOIDInClass" ) ); //$NON-NLS-1$
         }
 
         // Schema
@@ -638,7 +638,7 @@ public class XMLSchemaFileImporter
         }
         else
         {
-            throw new XMLSchemaFileImportException( Messages.getString( "XMLSchemaFileImporter.NoMatchingRuleForOID" ) );
+            throw new XMLSchemaFileImportException( Messages.getString( "XMLSchemaFileImporter.NoMatchingRuleForOID" ) ); //$NON-NLS-1$
         }
 
         // Schema
@@ -730,7 +730,7 @@ public class XMLSchemaFileImporter
         }
         else
         {
-            throw new XMLSchemaFileImportException( Messages.getString( "XMLSchemaFileImporter.InvalidSyntaxForOID" ) );
+            throw new XMLSchemaFileImportException( Messages.getString( "XMLSchemaFileImporter.InvalidSyntaxForOID" ) ); //$NON-NLS-1$
         }
 
         // Schema

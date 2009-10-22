@@ -49,39 +49,39 @@ import org.dom4j.io.XMLWriter;
 public class XMLSchemaFileExporter
 {
     // The Tags
-    private static final String ALIAS_TAG = "alias";
-    private static final String ALIASES_TAG = "aliases";
-    private static final String ATTRIBUTE_TYPE_TAG = "attributetype";
-    private static final String ATTRIBUTE_TYPES_TAG = "attributetypes";
-    private static final String BOOLEAN_FALSE = "false";
-    private static final String BOOLEAN_TRUE = "true";
-    private static final String COLLECTIVE_TAG = "collective";
-    private static final String DESCRIPTION_TAG = "description";
-    private static final String EQUALITY_TAG = "equality";
-    private static final String HUMAN_READABLE_TAG = "humanreadable";
-    private static final String MANDATORY_TAG = "mandatory";
-    private static final String MATCHING_RULE_TAG = "matchingrule";
-    private static final String MATCHING_RULES_TAG = "matchingrules";
-    private static final String NAME_TAG = "name";
-    private static final String NO_USER_MODIFICATION_TAG = "nousermodification";
-    private static final String OBJECT_CLASS_TAG = "objectclass";
-    private static final String OBJECT_CLASSES_TAG = "objectclasses";
-    private static final String OBSOLETE_TAG = "obsolete";
-    private static final String OID_TAG = "oid";
-    private static final String OPTIONAL_TAG = "optional";
-    private static final String ORDERING_TAG = "ordering";
-    private static final String SCHEMA_TAG = "schema";
-    private static final String SCHEMAS_TAG = "schemas";
-    private static final String SINGLE_VALUE_TAG = "singlevalue";
-    private static final String SUBSTRING_TAG = "substring";
-    private static final String SUPERIOR_TAG = "superior";
-    private static final String SUPERIORS_TAG = "superiors";
-    private static final String SYNTAX_LENGTH_TAG = "syntaxlength";
-    private static final String SYNTAX_OID_TAG = "syntaxoid";
-    private static final String SYNTAX_TAG = "syntax";
-    private static final String SYNTAXES_TAG = "syntaxes";
-    private static final String TYPE_TAG = "type";
-    private static final String USAGE_TAG = "usage";
+    private static final String ALIAS_TAG = "alias"; //$NON-NLS-1$
+    private static final String ALIASES_TAG = "aliases"; //$NON-NLS-1$
+    private static final String ATTRIBUTE_TYPE_TAG = "attributetype"; //$NON-NLS-1$
+    private static final String ATTRIBUTE_TYPES_TAG = "attributetypes"; //$NON-NLS-1$
+    private static final String BOOLEAN_FALSE = "false"; //$NON-NLS-1$
+    private static final String BOOLEAN_TRUE = "true"; //$NON-NLS-1$
+    private static final String COLLECTIVE_TAG = "collective"; //$NON-NLS-1$
+    private static final String DESCRIPTION_TAG = "description"; //$NON-NLS-1$
+    private static final String EQUALITY_TAG = "equality"; //$NON-NLS-1$
+    private static final String HUMAN_READABLE_TAG = "humanreadable"; //$NON-NLS-1$
+    private static final String MANDATORY_TAG = "mandatory"; //$NON-NLS-1$
+    private static final String MATCHING_RULE_TAG = "matchingrule"; //$NON-NLS-1$
+    private static final String MATCHING_RULES_TAG = "matchingrules"; //$NON-NLS-1$
+    private static final String NAME_TAG = "name"; //$NON-NLS-1$
+    private static final String NO_USER_MODIFICATION_TAG = "nousermodification"; //$NON-NLS-1$
+    private static final String OBJECT_CLASS_TAG = "objectclass"; //$NON-NLS-1$
+    private static final String OBJECT_CLASSES_TAG = "objectclasses"; //$NON-NLS-1$
+    private static final String OBSOLETE_TAG = "obsolete"; //$NON-NLS-1$
+    private static final String OID_TAG = "oid"; //$NON-NLS-1$
+    private static final String OPTIONAL_TAG = "optional"; //$NON-NLS-1$
+    private static final String ORDERING_TAG = "ordering"; //$NON-NLS-1$
+    private static final String SCHEMA_TAG = "schema"; //$NON-NLS-1$
+    private static final String SCHEMAS_TAG = "schemas"; //$NON-NLS-1$
+    private static final String SINGLE_VALUE_TAG = "singlevalue"; //$NON-NLS-1$
+    private static final String SUBSTRING_TAG = "substring"; //$NON-NLS-1$
+    private static final String SUPERIOR_TAG = "superior"; //$NON-NLS-1$
+    private static final String SUPERIORS_TAG = "superiors"; //$NON-NLS-1$
+    private static final String SYNTAX_LENGTH_TAG = "syntaxlength"; //$NON-NLS-1$
+    private static final String SYNTAX_OID_TAG = "syntaxoid"; //$NON-NLS-1$
+    private static final String SYNTAX_TAG = "syntax"; //$NON-NLS-1$
+    private static final String SYNTAXES_TAG = "syntaxes"; //$NON-NLS-1$
+    private static final String TYPE_TAG = "type"; //$NON-NLS-1$
+    private static final String USAGE_TAG = "usage"; //$NON-NLS-1$
 
 
     /**
@@ -188,7 +188,7 @@ public class XMLSchemaFileExporter
         {
             // Name 
             String name = schema.getName();
-            if ( ( name != null ) && ( !name.equals( "" ) ) )
+            if ( ( name != null ) && ( !name.equals( "" ) ) ) //$NON-NLS-1$
             {
                 element.addAttribute( NAME_TAG, name );
             }
@@ -254,7 +254,7 @@ public class XMLSchemaFileExporter
 
         // OID
         String oid = at.getOid();
-        if ( ( oid != null ) && ( !oid.equals( "" ) ) )
+        if ( ( oid != null ) && ( !oid.equals( "" ) ) ) //$NON-NLS-1$
         {
             atNode.addAttribute( OID_TAG, oid );
         }
@@ -272,14 +272,14 @@ public class XMLSchemaFileExporter
 
         // Description
         String description = at.getDescription();
-        if ( ( description != null ) && ( !description.equals( "" ) ) )
+        if ( ( description != null ) && ( !description.equals( "" ) ) ) //$NON-NLS-1$
         {
             atNode.addElement( DESCRIPTION_TAG ).setText( description );
         }
 
         // Superior
         String superior = at.getSuperiorName();
-        if ( ( superior != null ) && ( !superior.equals( "" ) ) )
+        if ( ( superior != null ) && ( !superior.equals( "" ) ) ) //$NON-NLS-1$
         {
             atNode.addElement( SUPERIOR_TAG ).setText( superior );
         }
@@ -293,7 +293,7 @@ public class XMLSchemaFileExporter
 
         // Syntax
         String syntax = at.getSyntaxOid();
-        if ( ( syntax != null ) && ( !syntax.equals( "" ) ) )
+        if ( ( syntax != null ) && ( !syntax.equals( "" ) ) ) //$NON-NLS-1$
         {
             atNode.addElement( SYNTAX_TAG ).setText( syntax );
         }
@@ -302,7 +302,7 @@ public class XMLSchemaFileExporter
         int syntaxLength = at.getLength();
         if ( syntaxLength > 0 )
         {
-            atNode.addElement( SYNTAX_LENGTH_TAG ).setText( "" + syntaxLength );
+            atNode.addElement( SYNTAX_LENGTH_TAG ).setText( "" + syntaxLength ); //$NON-NLS-1$
         }
 
         // Obsolete
@@ -347,21 +347,21 @@ public class XMLSchemaFileExporter
 
         // Equality
         String equality = at.getEqualityName();
-        if ( ( equality != null ) && ( !equality.equals( "" ) ) )
+        if ( ( equality != null ) && ( !equality.equals( "" ) ) ) //$NON-NLS-1$
         {
             atNode.addElement( EQUALITY_TAG ).setText( equality );
         }
 
         // Ordering
         String ordering = at.getOrderingName();
-        if ( ( ordering != null ) && ( !ordering.equals( "" ) ) )
+        if ( ( ordering != null ) && ( !ordering.equals( "" ) ) ) //$NON-NLS-1$
         {
             atNode.addElement( ORDERING_TAG ).setText( ordering );
         }
 
         // Substring
         String substring = at.getSubstrName();
-        if ( ( substring != null ) && ( !substring.equals( "" ) ) )
+        if ( ( substring != null ) && ( !substring.equals( "" ) ) ) //$NON-NLS-1$
         {
             atNode.addElement( SUBSTRING_TAG ).setText( substring );
         }
@@ -382,7 +382,7 @@ public class XMLSchemaFileExporter
 
         // OID
         String oid = oc.getOid();
-        if ( ( oid != null ) && ( !oid.equals( "" ) ) )
+        if ( ( oid != null ) && ( !oid.equals( "" ) ) ) //$NON-NLS-1$
         {
             ocNode.addAttribute( OID_TAG, oid );
         }
@@ -400,7 +400,7 @@ public class XMLSchemaFileExporter
 
         // Description
         String description = oc.getDescription();
-        if ( ( description != null ) && ( !description.equals( "" ) ) )
+        if ( ( description != null ) && ( !description.equals( "" ) ) ) //$NON-NLS-1$
         {
             ocNode.addElement( DESCRIPTION_TAG ).setText( description );
         }
@@ -471,7 +471,7 @@ public class XMLSchemaFileExporter
 
         // OID
         String oid = mr.getOid();
-        if ( ( oid != null ) && ( !oid.equals( "" ) ) )
+        if ( ( oid != null ) && ( !oid.equals( "" ) ) ) //$NON-NLS-1$
         {
             mrNode.addAttribute( OID_TAG, oid );
         }
@@ -489,7 +489,7 @@ public class XMLSchemaFileExporter
 
         // Description
         String description = mr.getDescription();
-        if ( ( description != null ) && ( !description.equals( "" ) ) )
+        if ( ( description != null ) && ( !description.equals( "" ) ) ) //$NON-NLS-1$
         {
             mrNode.addElement( DESCRIPTION_TAG ).setText( description );
         }
@@ -506,7 +506,7 @@ public class XMLSchemaFileExporter
 
         // Syntax OID
         String syntaxOid = mr.getSyntaxOid();
-        if ( ( syntaxOid != null ) && ( !syntaxOid.equals( "" ) ) )
+        if ( ( syntaxOid != null ) && ( !syntaxOid.equals( "" ) ) ) //$NON-NLS-1$
         {
             mrNode.addElement( SYNTAX_OID_TAG ).setText( syntaxOid );
         }
@@ -530,7 +530,7 @@ public class XMLSchemaFileExporter
 
         // OID
         String oid = syntax.getOid();
-        if ( ( oid != null ) && ( !oid.equals( "" ) ) )
+        if ( ( oid != null ) && ( !oid.equals( "" ) ) ) //$NON-NLS-1$
         {
             syntaxNode.addAttribute( OID_TAG, oid );
         }
@@ -548,7 +548,7 @@ public class XMLSchemaFileExporter
 
         // Description
         String description = syntax.getDescription();
-        if ( ( description != null ) && ( !description.equals( "" ) ) )
+        if ( ( description != null ) && ( !description.equals( "" ) ) ) //$NON-NLS-1$
         {
             syntaxNode.addElement( DESCRIPTION_TAG ).setText( description );
         }

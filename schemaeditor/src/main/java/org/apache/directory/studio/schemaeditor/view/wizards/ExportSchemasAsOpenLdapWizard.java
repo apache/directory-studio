@@ -107,7 +107,7 @@ public class ExportSchemasAsOpenLdapWizard extends Wizard implements IExportWiza
                                     e );
                             ViewUtils
                                 .displayErrorMessageBox(
-                                    Messages.getString( "ExportSchemasAsOpenLdapWizard.Error" ), NLS.bind( Messages.getString( "ExportSchemasAsOpenLdapWizard.ErrorSavingSchema" ), new String[] { schema.getName() } ) ); //$NON-NLS-1$
+                                    Messages.getString( "ExportSchemasAsOpenLdapWizard.Error" ), NLS.bind( Messages.getString( "ExportSchemasAsOpenLdapWizard.ErrorSavingSchema" ), new String[] { schema.getName() } ) ); //$NON-NLS-1$ //$NON-NLS-2$
                         }
                         monitor.worked( 1 );
                     }

@@ -226,6 +226,6 @@ public class HierarchyWrapper
      */
     public String toString()
     {
-        return "{|" + wrappedObject + "|" + children + "}";
+        return "{|" + wrappedObject + "|" + children + "}"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
     }
 }

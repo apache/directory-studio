@@ -109,7 +109,7 @@ public class ExportSchemasAsXmlWizard extends Wizard implements IExportWizard
                                                 Messages.getString( "ExportSchemasAsXmlWizard.ErrorWhenSavingSchema" ), new String[] { schema.getName() } ), e ); //$NON-NLS-1$
                                 ViewUtils
                                     .displayErrorMessageBox(
-                                        Messages.getString( "ExportSchemasAsXmlWizard.Error" ), NLS.bind( Messages.getString( "ExportSchemasAsXmlWizard.ErrorWhenSavingSchema" ), new String[] { schema.getName() } ) ); //$NON-NLS-1$
+                                        Messages.getString( "ExportSchemasAsXmlWizard.Error" ), NLS.bind( Messages.getString( "ExportSchemasAsXmlWizard.ErrorWhenSavingSchema" ), new String[] { schema.getName() } ) ); //$NON-NLS-1$ //$NON-NLS-2$
                             }
                             monitor.worked( 1 );
                         }

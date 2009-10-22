@@ -291,7 +291,7 @@ public class DependenciesComputer
                 if ( mandatoryAttributeType == null )
                 {
                     throw new DependencyComputerException( NLS.bind( Messages
-                        .getString( "DependenciesComputer.Mandatory" ), new String[]
+                        .getString( "DependenciesComputer.Mandatory" ), new String[] //$NON-NLS-1$
                         { mandatoryAttributeTypeName } ) ); //$NON-NLS-1$
                 }
                 else

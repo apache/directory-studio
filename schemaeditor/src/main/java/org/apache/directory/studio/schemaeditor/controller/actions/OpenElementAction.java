@@ -94,7 +94,7 @@ public class OpenElementAction extends Action implements IWorkbenchWindowActionD
                     PluginUtils.logError( Messages.getString( "OpenElementAction.ErrorOpeningEditor" ), e ); //$NON-NLS-1$
                     ViewUtils
                         .displayErrorMessageBox(
-                            Messages.getString( "OpenElementAction.Error" ), Messages.getString( "OpenElementAction.ErrorOpeningEditor" ) ); //$NON-NLS-1$
+                            Messages.getString( "OpenElementAction.Error" ), Messages.getString( "OpenElementAction.ErrorOpeningEditor" ) ); //$NON-NLS-1$ //$NON-NLS-2$
                 }
             }
             else if ( selectedItem instanceof ObjectClassWrapper )
@@ -110,7 +110,7 @@ public class OpenElementAction extends Action implements IWorkbenchWindowActionD
                     PluginUtils.logError( Messages.getString( "OpenElementAction.ErrorOpeningEditor" ), e ); //$NON-NLS-1$
                     ViewUtils
                         .displayErrorMessageBox(
-                            Messages.getString( "OpenElementAction.Error" ), Messages.getString( "OpenElementAction.ErrorOpeningEditor" ) ); //$NON-NLS-1$
+                            Messages.getString( "OpenElementAction.Error" ), Messages.getString( "OpenElementAction.ErrorOpeningEditor" ) ); //$NON-NLS-1$ //$NON-NLS-2$
                 }
             }
             else if ( selectedItem instanceof SchemaWrapper )
@@ -125,7 +125,7 @@ public class OpenElementAction extends Action implements IWorkbenchWindowActionD
                     PluginUtils.logError( Messages.getString( "OpenElementAction.ErrorOpeningEditor" ), e ); //$NON-NLS-1$
                     ViewUtils
                         .displayErrorMessageBox(
-                            Messages.getString( "OpenElementAction.Error" ), Messages.getString( "OpenElementAction.ErrorOpeningEditor" ) ); //$NON-NLS-1$
+                            Messages.getString( "OpenElementAction.Error" ), Messages.getString( "OpenElementAction.ErrorOpeningEditor" ) ); //$NON-NLS-1$ //$NON-NLS-2$
                 }
             }
             else if ( selectedItem instanceof Folder )

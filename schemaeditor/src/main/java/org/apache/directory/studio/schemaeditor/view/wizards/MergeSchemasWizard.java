@@ -94,8 +94,8 @@ public class MergeSchemasWizard extends Wizard implements IImportWizard
                 sb.append( errorMessage );
                 sb.append( '\n' );
             }
-            new MessageDialogWithTextarea( getShell(), Messages.getString( "MergeSchemasWizard.MergeResultTitle" ),
-                Messages.getString( "MergeSchemasWizard.MergeResultMessage" ), sb.toString() ).open();
+            new MessageDialogWithTextarea( getShell(), Messages.getString( "MergeSchemasWizard.MergeResultTitle" ), //$NON-NLS-1$
+                Messages.getString( "MergeSchemasWizard.MergeResultMessage" ), sb.toString() ).open(); //$NON-NLS-1$
         }
 
         return true;
@@ -188,7 +188,7 @@ public class MergeSchemasWizard extends Wizard implements IImportWizard
 
     private Schema getTargetSchema( Project sourceProject, Project targetProject, Map<String, Schema> targetSchemas )
     {
-        String targetSchemaName = "merge-from-" + sourceProject.getName();
+        String targetSchemaName = "merge-from-" + sourceProject.getName(); //$NON-NLS-1$
         Schema targetSchema = targetProject.getSchemaHandler().getSchema( targetSchemaName );
         if ( targetSchema != null )
         {
@@ -276,14 +276,14 @@ public class MergeSchemasWizard extends Wizard implements IImportWizard
 
         if ( targetAttributeType != null )
         {
-            errorMessages.add( NLS.bind( Messages.getString( "MergeSchemasWizard.AttributeTypeExistsInTargetProject" ),
+            errorMessages.add( NLS.bind( Messages.getString( "MergeSchemasWizard.AttributeTypeExistsInTargetProject" ), //$NON-NLS-1$
                 getIdString( sourceAttributeType ) ) );
         }
         else
         {
             if ( oidOrAliasAlreadyTaken )
             {
-                errorMessages.add( NLS.bind( Messages.getString( "MergeSchemasWizard.OidOrAliasAlreadyTaken" ),
+                errorMessages.add( NLS.bind( Messages.getString( "MergeSchemasWizard.OidOrAliasAlreadyTaken" ), //$NON-NLS-1$
                     getIdString( sourceAttributeType ) ) );
             }
             else
@@ -320,10 +320,10 @@ public class MergeSchemasWizard extends Wizard implements IImportWizard
                     if ( clonedAttributeType.getSyntaxOid() == null
                         || targetProject.getSchemaHandler().getSyntax( clonedAttributeType.getSyntaxOid() ) == null )
                     {
-                        errorMessages.add( NLS.bind( Messages.getString( "MergeSchemasWizard.ReplacedSyntax" ),
+                        errorMessages.add( NLS.bind( Messages.getString( "MergeSchemasWizard.ReplacedSyntax" ), //$NON-NLS-1$
                             new String[]
                                 { getIdString( sourceAttributeType ), clonedAttributeType.getSyntaxOid(),
-                                    "1.3.6.1.4.1.1466.115.121.1.15 (Directory String)" } ) );
+                                    "1.3.6.1.4.1.1466.115.121.1.15 (Directory String)" } ) ); //$NON-NLS-1$
                         clonedAttributeType.setSyntaxOid( "1.3.6.1.4.1.1466.115.121.1.15" );
                         clonedAttributeType.setEqualityName( "caseIgnoreMatch" );
                         clonedAttributeType.setOrderingName( null );
@@ -400,14 +400,14 @@ public class MergeSchemasWizard extends Wizard implements IImportWizard
 
         if ( targetObjectClass != null )
         {
-            errorMessages.add( NLS.bind( Messages.getString( "MergeSchemasWizard.ObjectClassExistsInTargetProject" ),
+            errorMessages.add( NLS.bind( Messages.getString( "MergeSchemasWizard.ObjectClassExistsInTargetProject" ), //$NON-NLS-1$
                 getIdString( sourceObjectClass ) ) );
         }
         else
         {
             if ( oidOrAliasAlreadyTaken )
             {
-                errorMessages.add( NLS.bind( Messages.getString( "MergeSchemasWizard.OidOrAliasAlreadyTaken" ),
+                errorMessages.add( NLS.bind( Messages.getString( "MergeSchemasWizard.OidOrAliasAlreadyTaken" ), //$NON-NLS-1$
                     getIdString( sourceObjectClass ) ) );
             }
             else

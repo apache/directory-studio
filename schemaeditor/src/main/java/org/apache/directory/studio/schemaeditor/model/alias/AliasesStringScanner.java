@@ -41,7 +41,7 @@ public class AliasesStringScanner
     public AliasesStringScanner()
     {
         super();
-        aliases = "";
+        aliases = ""; //$NON-NLS-1$
     }
 
 
@@ -109,7 +109,7 @@ public class AliasesStringScanner
         if ( c == CHAR_EOF )
         {
             lastTokenType = AliasesStringToken.EOF;
-            return new AliasesStringToken( lastTokenType, "", pos );
+            return new AliasesStringToken( lastTokenType, "", pos ); //$NON-NLS-1$
         }
         prevChar();
 
@@ -152,7 +152,7 @@ public class AliasesStringScanner
         if ( c == CHAR_COMMA )
         {
             lastTokenType = AliasesStringToken.COMMA;
-            return new AliasesStringToken( lastTokenType, ",", pos );
+            return new AliasesStringToken( lastTokenType, ",", pos ); //$NON-NLS-1$
         }
         prevChar();
 
@@ -195,7 +195,7 @@ public class AliasesStringScanner
         else
         {
             lastTokenType = AliasesStringToken.ERROR_ALIAS_START;
-            return new AliasesStringToken( lastTokenType, c + "", pos );
+            return new AliasesStringToken( lastTokenType, c + "", pos ); //$NON-NLS-1$
         }
     }
 

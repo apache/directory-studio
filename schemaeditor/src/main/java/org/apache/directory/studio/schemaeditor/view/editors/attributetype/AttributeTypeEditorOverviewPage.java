@@ -334,13 +334,13 @@ public class AttributeTypeEditorOverviewPage extends FormPage
                 else
                 {
                     oidText.setForeground( ViewUtils.COLOR_RED );
-                    oidText.setToolTipText( Messages.getString( "AttributeTypeEditorOverviewPage.ElementOIDExists" ) );
+                    oidText.setToolTipText( Messages.getString( "AttributeTypeEditorOverviewPage.ElementOIDExists" ) ); //$NON-NLS-1$
                 }
             }
             else
             {
                 oidText.setForeground( ViewUtils.COLOR_RED );
-                oidText.setToolTipText( Messages.getString( "AttributeTypeEditorOverviewPage.MalformedOID" ) );
+                oidText.setToolTipText( Messages.getString( "AttributeTypeEditorOverviewPage.MalformedOID" ) ); //$NON-NLS-1$
             }
         }
     };
@@ -679,7 +679,7 @@ public class AttributeTypeEditorOverviewPage extends FormPage
      */
     public AttributeTypeEditorOverviewPage( FormEditor editor )
     {
-        super( editor, ID, Messages.getString( "AttributeTypeEditorOverviewPage.Overview" ) );
+        super( editor, ID, Messages.getString( "AttributeTypeEditorOverviewPage.Overview" ) ); //$NON-NLS-1$
         schemaHandler = Activator.getDefault().getSchemaHandler();
         schemaHandler.addListener( schemaHandlerListener );
     }
@@ -733,9 +733,9 @@ public class AttributeTypeEditorOverviewPage extends FormPage
         Section section_general_information = toolkit.createSection( parent, Section.DESCRIPTION | Section.EXPANDED
             | Section.TITLE_BAR );
         section_general_information.setDescription( Messages
-            .getString( "AttributeTypeEditorOverviewPage.SpecifyGeneralInformation" ) );
+            .getString( "AttributeTypeEditorOverviewPage.SpecifyGeneralInformation" ) ); //$NON-NLS-1$
         section_general_information
-            .setText( Messages.getString( "AttributeTypeEditorOverviewPage.GeneralInformation" ) );
+            .setText( Messages.getString( "AttributeTypeEditorOverviewPage.GeneralInformation" ) ); //$NON-NLS-1$
 
         // Creating the layout of the section
         Composite client_general_information = toolkit.createComposite( section_general_information );
@@ -748,7 +748,7 @@ public class AttributeTypeEditorOverviewPage extends FormPage
 
         // ALIASES Field
         toolkit
-            .createLabel( client_general_information, Messages.getString( "AttributeTypeEditorOverviewPage.Aliases" ) );
+            .createLabel( client_general_information, Messages.getString( "AttributeTypeEditorOverviewPage.Aliases" ) ); //$NON-NLS-1$
         Composite aliasComposite = toolkit.createComposite( client_general_information );
         GridLayout aliasCompositeGridLayout = new GridLayout( 2, false );
         toolkit.paintBordersFor( aliasComposite );
@@ -759,17 +759,17 @@ public class AttributeTypeEditorOverviewPage extends FormPage
         aliasesText = toolkit.createText( aliasComposite, "" ); //$NON-NLS-1$
         aliasesText.setLayoutData( new GridData( SWT.FILL, SWT.CENTER, true, false ) );
         aliasesButton = toolkit.createButton( aliasComposite, Messages
-            .getString( "AttributeTypeEditorOverviewPage.EditAliases" ), SWT.PUSH );
+            .getString( "AttributeTypeEditorOverviewPage.EditAliases" ), SWT.PUSH ); //$NON-NLS-1$
         aliasesButton.setLayoutData( new GridData( SWT.NONE, SWT.CENTER, false, false ) );
 
         // OID Field
-        toolkit.createLabel( client_general_information, Messages.getString( "AttributeTypeEditorOverviewPage.OID" ) );
+        toolkit.createLabel( client_general_information, Messages.getString( "AttributeTypeEditorOverviewPage.OID" ) ); //$NON-NLS-1$
         oidText = toolkit.createText( client_general_information, "" ); //$NON-NLS-1$
         oidText.setLayoutData( new GridData( SWT.FILL, 0, true, false ) );
 
         // DESCRIPTION Field
         toolkit.createLabel( client_general_information, Messages
-            .getString( "AttributeTypeEditorOverviewPage.Description" ) );
+            .getString( "AttributeTypeEditorOverviewPage.Description" ) ); //$NON-NLS-1$
         descriptionText = toolkit.createText( client_general_information, "", SWT.MULTI | SWT.V_SCROLL ); //$NON-NLS-1$
         GridData descriptionGridData = new GridData( SWT.FILL, SWT.NONE, true, false );
         descriptionGridData.heightHint = 42;
@@ -777,13 +777,13 @@ public class AttributeTypeEditorOverviewPage extends FormPage
 
         // SCHEMA Field
         schemaLink = toolkit.createHyperlink( client_general_information, Messages
-            .getString( "AttributeTypeEditorOverviewPage.Schema" ), SWT.WRAP );
+            .getString( "AttributeTypeEditorOverviewPage.Schema" ), SWT.WRAP ); //$NON-NLS-1$
         schemaLabel = toolkit.createLabel( client_general_information, "" ); //$NON-NLS-1$
         schemaLabel.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
 
         // SUP Combo
         supLabel = toolkit.createHyperlink( client_general_information, Messages
-            .getString( "AttributeTypeEditorOverviewPage.SuperiorType" ), SWT.WRAP );
+            .getString( "AttributeTypeEditorOverviewPage.SuperiorType" ), SWT.WRAP ); //$NON-NLS-1$
         supCombo = new Combo( client_general_information, SWT.READ_ONLY | SWT.SINGLE );
         supCombo.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
         supComboViewer = new ComboViewer( supCombo );
@@ -791,14 +791,14 @@ public class AttributeTypeEditorOverviewPage extends FormPage
         supComboViewer.setLabelProvider( new ATESuperiorComboLabelProvider() );
 
         // USAGE Combo
-        toolkit.createLabel( client_general_information, Messages.getString( "AttributeTypeEditorOverviewPage.Usage" ) );
+        toolkit.createLabel( client_general_information, Messages.getString( "AttributeTypeEditorOverviewPage.Usage" ) ); //$NON-NLS-1$
         usageCombo = new Combo( client_general_information, SWT.READ_ONLY | SWT.SINGLE );
         usageCombo.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
         initUsageCombo();
 
         // SYNTAX Combo
         toolkit
-            .createLabel( client_general_information, Messages.getString( "AttributeTypeEditorOverviewPage.Syntax" ) );
+            .createLabel( client_general_information, Messages.getString( "AttributeTypeEditorOverviewPage.Syntax" ) ); //$NON-NLS-1$
         syntaxCombo = new Combo( client_general_information, SWT.READ_ONLY | SWT.SINGLE );
         syntaxCombo.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
         syntaxComboViewer = new ComboViewer( syntaxCombo );
@@ -807,7 +807,7 @@ public class AttributeTypeEditorOverviewPage extends FormPage
 
         // SYNTAX LENGTH Field
         toolkit.createLabel( client_general_information, Messages
-            .getString( "AttributeTypeEditorOverviewPage.SyntaxLength" ) );
+            .getString( "AttributeTypeEditorOverviewPage.SyntaxLength" ) ); //$NON-NLS-1$
         syntaxLengthText = toolkit.createText( client_general_information, "" ); //$NON-NLS-1$
         syntaxLengthText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
 
@@ -824,18 +824,18 @@ public class AttributeTypeEditorOverviewPage extends FormPage
 
         // OBSOLETE Checkbox
         obsoleteCheckbox = toolkit.createButton( propertiesComposite, Messages
-            .getString( "AttributeTypeEditorOverviewPage.Obsolete" ), SWT.CHECK );
+            .getString( "AttributeTypeEditorOverviewPage.Obsolete" ), SWT.CHECK ); //$NON-NLS-1$
         obsoleteCheckbox.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
 
         // SINGLE-VALUE Checkbox
         singleValueCheckbox = toolkit.createButton( propertiesComposite, Messages
-            .getString( "AttributeTypeEditorOverviewPage.SingleValue" ), SWT.CHECK );
+            .getString( "AttributeTypeEditorOverviewPage.SingleValue" ), SWT.CHECK ); //$NON-NLS-1$
         singleValueCheckbox.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
 
         // COLLECTIVE Checkbox
         toolkit.createLabel( client_general_information, "" ); // Filling the first column //$NON-NLS-1$
         collectiveCheckbox = toolkit.createButton( propertiesComposite, Messages
-            .getString( "AttributeTypeEditorOverviewPage.Collective" ), SWT.CHECK );
+            .getString( "AttributeTypeEditorOverviewPage.Collective" ), SWT.CHECK ); //$NON-NLS-1$
         collectiveCheckbox.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
 
         // NO-USER-MODIFICATION Checkbox
@@ -858,8 +858,8 @@ public class AttributeTypeEditorOverviewPage extends FormPage
         Section section_matching_rules = toolkit.createSection( parent, Section.DESCRIPTION | Section.EXPANDED
             | Section.TITLE_BAR );
         section_matching_rules.setDescription( Messages
-            .getString( "AttributeTypeEditorOverviewPage.SpecifyMatchingRules" ) );
-        section_matching_rules.setText( Messages.getString( "AttributeTypeEditorOverviewPage.MatchingRules" ) );
+            .getString( "AttributeTypeEditorOverviewPage.SpecifyMatchingRules" ) ); //$NON-NLS-1$
+        section_matching_rules.setText( Messages.getString( "AttributeTypeEditorOverviewPage.MatchingRules" ) ); //$NON-NLS-1$
 
         // Creating the layout of the section
         Composite client_matching_rules = toolkit.createComposite( section_matching_rules );
@@ -871,7 +871,7 @@ public class AttributeTypeEditorOverviewPage extends FormPage
         section_matching_rules.setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, true ) );
 
         // EQUALITY Combo
-        toolkit.createLabel( client_matching_rules, Messages.getString( "AttributeTypeEditorOverviewPage.Equality" ) );
+        toolkit.createLabel( client_matching_rules, Messages.getString( "AttributeTypeEditorOverviewPage.Equality" ) ); //$NON-NLS-1$
         equalityCombo = new Combo( client_matching_rules, SWT.READ_ONLY | SWT.SINGLE );
         equalityCombo.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
         equalityComboViewer = new ComboViewer( equalityCombo );
@@ -879,7 +879,7 @@ public class AttributeTypeEditorOverviewPage extends FormPage
         equalityComboViewer.setLabelProvider( new ATEMatchingRulesComboLabelProvider() );
 
         // ORDERING Combo
-        toolkit.createLabel( client_matching_rules, Messages.getString( "AttributeTypeEditorOverviewPage.Ordering" ) );
+        toolkit.createLabel( client_matching_rules, Messages.getString( "AttributeTypeEditorOverviewPage.Ordering" ) ); //$NON-NLS-1$
         orderingCombo = new Combo( client_matching_rules, SWT.READ_ONLY | SWT.SINGLE );
         orderingCombo.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
         orderingComboViewer = new ComboViewer( orderingCombo );
@@ -887,7 +887,7 @@ public class AttributeTypeEditorOverviewPage extends FormPage
         orderingComboViewer.setLabelProvider( new ATEMatchingRulesComboLabelProvider() );
 
         // SUBSTRING Combo
-        toolkit.createLabel( client_matching_rules, Messages.getString( "AttributeTypeEditorOverviewPage.Substring" ) );
+        toolkit.createLabel( client_matching_rules, Messages.getString( "AttributeTypeEditorOverviewPage.Substring" ) ); //$NON-NLS-1$
         substringCombo = new Combo( client_matching_rules, SWT.READ_ONLY | SWT.SINGLE );
         substringCombo.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
         substringComboViewer = new ComboViewer( substringCombo );

@@ -210,7 +210,7 @@ public class AttributeTypeEditorUsedByPage extends FormPage
      */
     public AttributeTypeEditorUsedByPage( FormEditor editor )
     {
-        super( editor, ID, Messages.getString( "AttributeTypeEditorUsedByPage.UsedBy" ) );
+        super( editor, ID, Messages.getString( "AttributeTypeEditorUsedByPage.UsedBy" ) ); //$NON-NLS-1$
         schemaHandler = Activator.getDefault().getSchemaHandler();
         schemaHandler.addListener( schemaHandlerListener );
     }
@@ -277,7 +277,7 @@ public class AttributeTypeEditorUsedByPage extends FormPage
                     .bind(
                         Messages.getString( "AttributeTypeEditorUsedByPage.AttributeTypeMandatory" ), new String[] { modifiedAttributeType.getOid() } ) ); //$NON-NLS-1$
         }
-        mandatoryAttributeSection.setText( Messages.getString( "AttributeTypeEditorUsedByPage.AsMandatoryAttribute" ) );
+        mandatoryAttributeSection.setText( Messages.getString( "AttributeTypeEditorUsedByPage.AsMandatoryAttribute" ) ); //$NON-NLS-1$
 
         // Creating the layout of the section
         Composite mandatoryAttributeSectionClient = toolkit.createComposite( mandatoryAttributeSection );
@@ -324,7 +324,7 @@ public class AttributeTypeEditorUsedByPage extends FormPage
                     .bind(
                         Messages.getString( "AttributeTypeEditorUsedByPage.AttributeTypeOptional" ), new String[] { modifiedAttributeType.getOid() } ) ); //$NON-NLS-1$
         }
-        optionalAttributeSection.setText( Messages.getString( "AttributeTypeEditorUsedByPage.AsOptionalAttribute" ) );
+        optionalAttributeSection.setText( Messages.getString( "AttributeTypeEditorUsedByPage.AsOptionalAttribute" ) ); //$NON-NLS-1$
 
         // Creating the layout of the section
         Composite optionalAttributeSectionClient = toolkit.createComposite( optionalAttributeSection );

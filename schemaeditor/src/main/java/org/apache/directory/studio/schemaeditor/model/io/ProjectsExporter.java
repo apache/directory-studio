@@ -40,13 +40,13 @@ import org.dom4j.Element;
 public class ProjectsExporter
 {
     // The tags
-    private static final String PROJECT_TAG = "project";
-    private static final String PROJECTS_TAG = "projects";
-    private static final String NAME_TAG = "name";
-    private static final String TYPE_TAG = "type";
-    private static final String CONNECTION_TAG = "connection";
-    private static final String SCHEMA_CONNECTOR_TAG = "schemaConnector";
-    private static final String SCHEMA_BACKUP_TAG = "schemaBackup";
+    private static final String PROJECT_TAG = "project"; //$NON-NLS-1$
+    private static final String PROJECTS_TAG = "projects"; //$NON-NLS-1$
+    private static final String NAME_TAG = "name"; //$NON-NLS-1$
+    private static final String TYPE_TAG = "type"; //$NON-NLS-1$
+    private static final String CONNECTION_TAG = "connection"; //$NON-NLS-1$
+    private static final String SCHEMA_CONNECTOR_TAG = "schemaConnector"; //$NON-NLS-1$
+    private static final String SCHEMA_BACKUP_TAG = "schemaBackup"; //$NON-NLS-1$
 
 
     /**
@@ -114,7 +114,7 @@ public class ProjectsExporter
         {
             // Name 
             String name = project.getName();
-            if ( ( name != null ) && ( !name.equals( "" ) ) )
+            if ( ( name != null ) && ( !name.equals( "" ) ) ) //$NON-NLS-1$
             {
                 element.addAttribute( NAME_TAG, name );
             }

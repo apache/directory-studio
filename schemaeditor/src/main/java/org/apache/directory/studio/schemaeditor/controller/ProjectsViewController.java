@@ -147,8 +147,8 @@ public class ProjectsViewController
         {
             public void menuAboutToShow( IMenuManager manager )
             {
-                MenuManager importManager = new MenuManager( Messages.getString( "ProjectsViewController.ImportAction" ) );
-                MenuManager exportManager = new MenuManager( Messages.getString( "ProjectsViewController.ExportAction" ) );
+                MenuManager importManager = new MenuManager( Messages.getString( "ProjectsViewController.ImportAction" ) ); //$NON-NLS-1$
+                MenuManager exportManager = new MenuManager( Messages.getString( "ProjectsViewController.ExportAction" ) ); //$NON-NLS-1$
                 manager.add( newProject );
                 manager.add( new Separator() );
                 manager.add( openProject );

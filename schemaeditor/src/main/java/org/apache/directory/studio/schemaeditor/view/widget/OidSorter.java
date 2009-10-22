@@ -38,8 +38,8 @@ public class OidSorter implements Comparator<Object>
      */
     public int compare( Object o1, Object o2 )
     {
-        String oid1 = "";
-        String oid2 = "";
+        String oid1 = ""; //$NON-NLS-1$
+        String oid2 = ""; //$NON-NLS-1$
 
         if ( ( o1 instanceof AttributeTypeDifference ) && ( o2 instanceof AttributeTypeDifference ) )
         {

@@ -134,9 +134,9 @@ public class HierarchyViewController
                 }
                 catch ( PartInitException e )
                 {
-                    PluginUtils.logError( Messages.getString( "HierarchyViewController.ErrorOpeningEditor" ), e );
-                    ViewUtils.displayErrorMessageBox( Messages.getString( "HierarchyViewController.Error" ), Messages
-                        .getString( "HierarchyViewController.ErrorOpeningEditor" ) );
+                    PluginUtils.logError( Messages.getString( "HierarchyViewController.ErrorOpeningEditor" ), e ); //$NON-NLS-1$
+                    ViewUtils.displayErrorMessageBox( Messages.getString( "HierarchyViewController.Error" ), Messages //$NON-NLS-1$
+                        .getString( "HierarchyViewController.ErrorOpeningEditor" ) ); //$NON-NLS-1$
                 }
             }
         }

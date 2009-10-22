@@ -120,7 +120,7 @@ public class AliasesStringToken implements Comparable<AliasesStringToken>
      */
     public String toString()
     {
-        return "(" + offset + ") " + "(" + type + ") " + value;
+        return "(" + offset + ") " + "(" + type + ") " + value; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
     }
 
 
@@ -136,7 +136,7 @@ public class AliasesStringToken implements Comparable<AliasesStringToken>
         }
         else
         {
-            throw new ClassCastException( "Not instanceof AliasesToken: " + o.getClass().getName() );
+            throw new ClassCastException( "Not instanceof AliasesToken: " + o.getClass().getName() ); //$NON-NLS-1$
         }
     }
 

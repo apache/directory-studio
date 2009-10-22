@@ -87,7 +87,7 @@ public class ObjectClassEditor extends FormEditor
             {
                 if ( !sourceCode.canLeaveThePage() )
                 {
-                    notifyError( Messages.getString( "ObjectClassEditor.CodeError" ) );
+                    notifyError( Messages.getString( "ObjectClassEditor.CodeError" ) ); //$NON-NLS-1$
                     return;
                 }
 
@@ -191,7 +191,7 @@ public class ObjectClassEditor extends FormEditor
         // Verifying if there is an error on the source code page
         if ( !sourceCode.canLeaveThePage() )
         {
-            notifyError( Messages.getString( "ObjectClassEditor.CodeErrorObject" ) );
+            notifyError( Messages.getString( "ObjectClassEditor.CodeErrorObject" ) ); //$NON-NLS-1$
             monitor.setCanceled( true );
             return;
         }

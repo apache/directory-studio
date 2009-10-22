@@ -106,7 +106,7 @@ public class AttributeTypeEditorSourceCodePage extends FormPage
      */
     public AttributeTypeEditorSourceCodePage( FormEditor editor )
     {
-        super( editor, ID, Messages.getString( "AttributeTypeEditorSourceCodePage.SourceCode" ) );
+        super( editor, ID, Messages.getString( "AttributeTypeEditorSourceCodePage.SourceCode" ) ); //$NON-NLS-1$
     }
 
 

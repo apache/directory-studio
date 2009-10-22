@@ -81,7 +81,7 @@ public class ProjectsImporter
         }
         catch ( DocumentException e )
         {
-            throw new ProjectsImportException( NLS.bind( Messages.getString( "ProjectsImporter.NotReadCorrectly" ),
+            throw new ProjectsImportException( NLS.bind( Messages.getString( "ProjectsImporter.NotReadCorrectly" ), //$NON-NLS-1$
                 new String[]
                     { path } ) );
         }
@@ -89,7 +89,7 @@ public class ProjectsImporter
         Element rootElement = document.getRootElement();
         if ( !rootElement.getName().equals( PROJECT_TAG ) )
         {
-            throw new ProjectsImportException( NLS.bind( Messages.getString( "ProjectsImporter.NotValidProject" ),
+            throw new ProjectsImportException( NLS.bind( Messages.getString( "ProjectsImporter.NotValidProject" ), //$NON-NLS-1$
                 new String[]
                     { path } ) );
         }
@@ -124,9 +124,9 @@ public class ProjectsImporter
         }
         catch ( DocumentException e )
         {
-            PluginUtils.logError( NLS.bind( Messages.getString( "ProjectsImporter.NotReadCorrectly" ), new String[]
+            PluginUtils.logError( NLS.bind( Messages.getString( "ProjectsImporter.NotReadCorrectly" ), new String[] //$NON-NLS-1$
                 { path } ), e );
-            throw new ProjectsImportException( NLS.bind( Messages.getString( "ProjectsImporter.NotReadCorrectly" ),
+            throw new ProjectsImportException( NLS.bind( Messages.getString( "ProjectsImporter.NotReadCorrectly" ), //$NON-NLS-1$
                 new String[]
                     { path } ) );
         }
@@ -134,7 +134,7 @@ public class ProjectsImporter
         Element rootElement = document.getRootElement();
         if ( !rootElement.getName().equals( PROJECTS_TAG ) )
         {
-            throw new ProjectsImportException( NLS.bind( Messages.getString( "ProjectsImporter.NotValidProject" ),
+            throw new ProjectsImportException( NLS.bind( Messages.getString( "ProjectsImporter.NotValidProject" ), //$NON-NLS-1$
                 new String[]
                     { path } ) );
         }
@@ -182,7 +182,7 @@ public class ProjectsImporter
             }
             catch ( IllegalArgumentException e )
             {
-                throw new ProjectsImportException( Messages.getString( "ProjectsImporter.NotConvertableValue" ) );
+                throw new ProjectsImportException( Messages.getString( "ProjectsImporter.NotConvertableValue" ) ); //$NON-NLS-1$
             }
         }
 
@@ -215,7 +215,7 @@ public class ProjectsImporter
                 if ( schemaConnector == null )
                 {
                     throw new ProjectsImportException( NLS.bind( Messages
-                        .getString( "ProjectsImporter.NoSchemaConnectorIDFound" ), new String[]
+                        .getString( "ProjectsImporter.NoSchemaConnectorIDFound" ), new String[] //$NON-NLS-1$
                         { schemaConnectorId } ) ); //$NON-NLS-1$
                 }
 
@@ -240,7 +240,7 @@ public class ProjectsImporter
                     }
                     catch ( XMLSchemaFileImportException e )
                     {
-                        throw new ProjectsImportException( Messages.getString( "ProjectsImporter.NotConvertableSchema" ) );
+                        throw new ProjectsImportException( Messages.getString( "ProjectsImporter.NotConvertableSchema" ) ); //$NON-NLS-1$
                     }
 
                     project.setSchemaBackup( Arrays.asList( schemas ) );
@@ -259,7 +259,7 @@ public class ProjectsImporter
             }
             catch ( XMLSchemaFileImportException e )
             {
-                throw new ProjectsImportException( Messages.getString( "ProjectsImporter.NotConvertableSchema" ) );
+                throw new ProjectsImportException( Messages.getString( "ProjectsImporter.NotConvertableSchema" ) ); //$NON-NLS-1$
             }
             for ( Schema schema : schemas )
             {
@@ -303,7 +303,7 @@ public class ProjectsImporter
         }
         catch ( DocumentException e )
         {
-            throw new ProjectsImportException( NLS.bind( Messages.getString( "ProjectsImporter.NotReadCorrectly" ),
+            throw new ProjectsImportException( NLS.bind( Messages.getString( "ProjectsImporter.NotReadCorrectly" ), //$NON-NLS-1$
                 new String[]
                     { path } ) );
         }
@@ -319,7 +319,7 @@ public class ProjectsImporter
         }
         else
         {
-            throw new ProjectsImportException( NLS.bind( Messages.getString( "ProjectsImporter.NotValidProject" ),
+            throw new ProjectsImportException( NLS.bind( Messages.getString( "ProjectsImporter.NotValidProject" ), //$NON-NLS-1$
                 new String[]
                     { path } ) );
         }

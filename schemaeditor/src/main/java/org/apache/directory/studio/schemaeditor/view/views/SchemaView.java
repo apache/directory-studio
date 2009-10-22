@@ -63,7 +63,7 @@ public class SchemaView extends ViewPart
         new SchemaViewController( this );
 
         // Help Context for Dynamic Help
-        PlatformUI.getWorkbench().getHelpSystem().setHelp( parent, PluginConstants.PLUGIN_ID + "." + "schema_view" );
+        PlatformUI.getWorkbench().getHelpSystem().setHelp( parent, PluginConstants.PLUGIN_ID + "." + "schema_view" ); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
 

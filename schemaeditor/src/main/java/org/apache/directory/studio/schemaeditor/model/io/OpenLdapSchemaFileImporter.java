@@ -85,11 +85,11 @@ public class OpenLdapSchemaFileImporter
         {
             ExceptionMessage exceptionMessage = parseExceptionMessage( e.getMessage() );
             throw new OpenLdapSchemaFileImportException( NLS.bind( Messages
-                .getString( "OpenLdapSchemaFileImporter.NotReadCorrectly" ), new String[]
-                { path } ) //$NON-NLS-1$
-                + ( exceptionMessage == null ? "" : NLS.bind( Messages
-                    .getString( "OpenLdapSchemaFileImporter.ErrorMessage" ), new String[]
-                    { exceptionMessage.lineNumber, exceptionMessage.columnNumber, exceptionMessage.cause } ) ), e ); //$NON-NLS-1$
+                .getString( "OpenLdapSchemaFileImporter.NotReadCorrectly" ), new String[] //$NON-NLS-1$
+                { path } )
+                + ( exceptionMessage == null ? "" : NLS.bind( Messages //$NON-NLS-1$
+                    .getString( "OpenLdapSchemaFileImporter.ErrorMessage" ), new String[] //$NON-NLS-1$
+                    { exceptionMessage.lineNumber, exceptionMessage.columnNumber, exceptionMessage.cause } ) ), e );
         }
 
         String schemaName = getNameFromPath( path );

@@ -109,7 +109,7 @@ public class NewProjectWizard extends Wizard implements INewWizard
                     if ( correctSchemaConnectors.size() == 0 )
                     {
                         monitor.reportError(
-                            "No suitable SchemaConnector has been found for the choosen Directory Server.",
+                            "No suitable SchemaConnector has been found for the choosen Directory Server.", //$NON-NLS-1$
                             new NoSuitableSchemaConnectorException() );
                     }
 

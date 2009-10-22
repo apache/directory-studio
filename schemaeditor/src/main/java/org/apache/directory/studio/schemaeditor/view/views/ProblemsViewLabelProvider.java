@@ -294,7 +294,7 @@ public class ProblemsViewLabelProvider extends LabelProvider implements ITableLa
                     Messages.getString( "ProblemsViewLabelProvider.AttributeTypeCollective" ), new String[] { getDisplayName( source ), getDisplayName( superior ) } ); //$NON-NLS-1$
         }
 
-        return "";
+        return ""; //$NON-NLS-1$
     }
 
 
