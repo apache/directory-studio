@@ -256,7 +256,7 @@ public class Project
 
             if ( schemaBackup != null )
             {
-                monitor.beginTask( Messages.getString("Project.AddingSchemaToProject"), schemaBackup.size() ); //$NON-NLS-1$
+                monitor.beginTask( Messages.getString( "Project.AddingSchemaToProject" ), schemaBackup.size() ); //$NON-NLS-1$
                 for ( Schema schema : schemaBackup )
                 {
                     getSchemaHandler().addSchema( schema );
