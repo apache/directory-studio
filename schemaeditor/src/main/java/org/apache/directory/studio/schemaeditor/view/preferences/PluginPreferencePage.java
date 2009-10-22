@@ -80,15 +80,15 @@ public class PluginPreferencePage extends PreferencePage implements IWorkbenchPr
         Group schemaConnectorsGroup = new Group( composite, SWT.NONE );
         schemaConnectorsGroup.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
         schemaConnectorsGroup.setLayout( new GridLayout( 2, true ) );
-        schemaConnectorsGroup.setText( "Schema Connectors" );
+        schemaConnectorsGroup.setText( Messages.getString( "PluginPreferencePage.SchemaConnectors" ) ); //$NON-NLS-1$
 
         // Available Schema Connectors Label
         Label availableSchemaConnectorsLabel = new Label( schemaConnectorsGroup, SWT.NONE );
-        availableSchemaConnectorsLabel.setText( "Available Connectors:" );
+        availableSchemaConnectorsLabel.setText( Messages.getString( "PluginPreferencePage.AvailableConnectorsColon" ) ); //$NON-NLS-1$
 
         // Description Label
         Label descriptionLabel = new Label( schemaConnectorsGroup, SWT.NONE );
-        descriptionLabel.setText( "Description:" );
+        descriptionLabel.setText( Messages.getString( "PluginPreferencePage.DescriptionColon" ) ); //$NON-NLS-1$
         // SchemaConnectors TableViewer
         final TableViewer schemaConnectorsTableViewer = new TableViewer( schemaConnectorsGroup, SWT.BORDER | SWT.SINGLE
             | SWT.FULL_SELECTION );
