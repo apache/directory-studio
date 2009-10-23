@@ -20,6 +20,7 @@
 package org.apache.directory.studio.apacheds.configuration.editor.v150;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.directory.studio.apacheds.configuration.ApacheDSConfigurationPlugin;
@@ -27,6 +28,7 @@ import org.apache.directory.studio.apacheds.configuration.ApacheDSConfigurationP
 import org.apache.directory.studio.apacheds.configuration.editor.ServerConfigurationEditor;
 import org.apache.directory.studio.apacheds.configuration.model.v150.Partition;
 import org.apache.directory.studio.apacheds.configuration.model.v150.ServerConfigurationV150;
+import org.apache.directory.studio.apacheds.configuration.model.v150.IndexedAttribute;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
@@ -199,6 +201,26 @@ public class PartitionsMasterDetailsBlock extends MasterDetailsBlock
             public void widgetSelected( SelectionEvent e )
             {
                 Partition newPartition = new Partition( getNewId() );
+
+                // Default values
+                newPartition.setCacheSize( 100 );
+                newPartition.setEnableOptimizer( true );
+                newPartition.setSynchronizationOnWrite( true );
+                List<IndexedAttribute> indexedAttributes = new ArrayList<IndexedAttribute>();
+                indexedAttributes.add( new IndexedAttribute( "1.3.6.1.4.1.18060.0.4.1.2.1", 100 ) ); //$NON-NLS-1$
+                indexedAttributes.add( new IndexedAttribute( "1.3.6.1.4.1.18060.0.4.1.2.2", 100 ) ); //$NON-NLS-1$
+                indexedAttributes.add( new IndexedAttribute( "1.3.6.1.4.1.18060.0.4.1.2.3", 100 ) ); //$NON-NLS-1$
+                indexedAttributes.add( new IndexedAttribute( "1.3.6.1.4.1.18060.0.4.1.2.4", 100 ) ); //$NON-NLS-1$
+                indexedAttributes.add( new IndexedAttribute( "1.3.6.1.4.1.18060.0.4.1.2.5", 10 ) ); //$NON-NLS-1$
+                indexedAttributes.add( new IndexedAttribute( "1.3.6.1.4.1.18060.0.4.1.2.6", 10 ) ); //$NON-NLS-1$
+                indexedAttributes.add( new IndexedAttribute( "1.3.6.1.4.1.18060.0.4.1.2.7", 10 ) ); //$NON-NLS-1$
+                indexedAttributes.add( new IndexedAttribute( "dc", 100 ) ); //$NON-NLS-1$
+                indexedAttributes.add( new IndexedAttribute( "ou", 100 ) ); //$NON-NLS-1$
+                indexedAttributes.add( new IndexedAttribute( "krb5PrincipalName", 100 ) ); //$NON-NLS-1$
+                indexedAttributes.add( new IndexedAttribute( "uid", 100 ) ); //$NON-NLS-1$
+                indexedAttributes.add( new IndexedAttribute( "objectClass", 100 ) ); //$NON-NLS-1$
+                newPartition.setIndexedAttributes( indexedAttributes );
+
                 partitions.add( newPartition );
                 viewer.refresh();
                 viewer.setSelection( new StructuredSelection( newPartition ) );
