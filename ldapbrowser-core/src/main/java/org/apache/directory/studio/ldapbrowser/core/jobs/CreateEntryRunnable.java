@@ -116,7 +116,7 @@ public class CreateEntryRunnable implements StudioBulkRunnableWithProgress
 
         createEntry( browserConnection, entryToCreate, monitor );
 
-        if ( !monitor.errorsReported() )
+        if ( !monitor.errorsReported() && !monitor.isCanceled() )
         {
             List<StudioControl> controls = new ArrayList<StudioControl>();
             if ( entryToCreate.isReferral() )
@@ -124,23 +124,33 @@ public class CreateEntryRunnable implements StudioBulkRunnableWithProgress
                 controls.add( StudioControl.MANAGEDSAIT_CONTROL );
             }
 
-            createdEntry = ReadEntryRunnable.getEntry( browserConnection, entryToCreate.getDn(), controls, monitor );
-            createdEntry.setHasChildrenHint( false );
-
-            // set some flags at the parent
-            if ( createdEntry.hasParententry() )
+            // Here we try to read the created entry to be able to send the right event notification.
+            // In some cases this don't work:
+            // - if there was a referral and the entry was created on another (master) server and not yet sync'ed to the current server
+            // So we use a dummy monitor to no bother the user with an error message.
+            StudioProgressMonitor dummyMonitor = new StudioProgressMonitor( monitor );
+            createdEntry = ReadEntryRunnable
+                .getEntry( browserConnection, entryToCreate.getDn(), controls, dummyMonitor );
+            dummyMonitor.done();
+            if ( createdEntry != null )
             {
-                if ( createdEntry.isAlias() )
+                createdEntry.setHasChildrenHint( false );
+
+                // set some flags at the parent
+                if ( createdEntry.hasParententry() )
                 {
-                    createdEntry.getParententry().setFetchAliases( true );
-                }
-                if ( createdEntry.isReferral() )
-                {
-                    createdEntry.getParententry().setFetchReferrals( true );
-                }
-                if ( createdEntry.isSubentry() )
-                {
-                    createdEntry.getParententry().setFetchSubentries( true );
+                    if ( createdEntry.isAlias() )
+                    {
+                        createdEntry.getParententry().setFetchAliases( true );
+                    }
+                    if ( createdEntry.isReferral() )
+                    {
+                        createdEntry.getParententry().setFetchReferrals( true );
+                    }
+                    if ( createdEntry.isSubentry() )
+                    {
+                        createdEntry.getParententry().setFetchSubentries( true );
+                    }
                 }
             }
         }

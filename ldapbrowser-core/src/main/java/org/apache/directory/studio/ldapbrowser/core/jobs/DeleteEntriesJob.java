@@ -190,10 +190,10 @@ public class DeleteEntriesJob extends AbstractNotificationJob
                             }
                         }
                     }
-                }
 
-                // delete from cache
-                browserConnection.uncacheEntryRecursive( entryToDelete );
+                    // delete from cache
+                    browserConnection.uncacheEntryRecursive( entryToDelete );
+                }
             }
             else
             {

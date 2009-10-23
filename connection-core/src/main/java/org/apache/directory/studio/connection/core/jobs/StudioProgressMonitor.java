@@ -355,6 +355,10 @@ public class StudioProgressMonitor extends ProgressMonitorWrapper
 
             return multiStatus;
         }
+        else if(isCanceled())
+        {
+            return Status.CANCEL_STATUS;
+        }
         else
         {
             return Status.OK_STATUS;

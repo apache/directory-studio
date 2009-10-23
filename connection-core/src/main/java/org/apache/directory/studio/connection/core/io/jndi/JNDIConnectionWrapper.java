@@ -403,6 +403,10 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
             return null;
         }
 
+        if ( runnable.isCanceled() )
+        {
+            monitor.setCanceled( true );
+        }
         if ( runnable.getException() != null )
         {
             monitor.reportError( runnable.getException() );
@@ -461,11 +465,13 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
                             Connection referralConnection = getReferralConnection( referral, monitor, this );
                             if ( referralConnection != null )
                             {
-                                String referralDn = referral.getDn() != null && !referral.getDn().isEmpty() ? referral
-                                    .getDn().getUpName() : dn;
-
+                                String referralDn = referral.getLdapURLs().get( 0 ).getDn().getUpName();
                                 referralConnection.getJNDIConnectionWrapper().modifyEntry( referralDn,
                                     modificationItems, controls, monitor, newReferralsInfo );
+                            }
+                            else
+                            {
+                                canceled = true;
                             }
                         }
 
@@ -500,6 +506,10 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
             monitor.reportError( ne );
         }
 
+        if ( runnable.isCanceled() )
+        {
+            monitor.setCanceled( true );
+        }
         if ( runnable.getException() != null )
         {
             monitor.reportError( runnable.getException() );
@@ -567,6 +577,10 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
                                 referralConnection.getJNDIConnectionWrapper().renameEntry( oldDn, newDn, deleteOldRdn,
                                     controls, monitor, newReferralsInfo );
                             }
+                            else
+                            {
+                                canceled = true;
+                            }
                         }
                     }
                     catch ( NamingException ne )
@@ -598,6 +612,10 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
             monitor.reportError( ne );
         }
 
+        if ( runnable.isCanceled() )
+        {
+            monitor.setCanceled( true );
+        }
         if ( runnable.getException() != null )
         {
             monitor.reportError( runnable.getException() );
@@ -651,11 +669,13 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
                             Connection referralConnection = getReferralConnection( referral, monitor, this );
                             if ( referralConnection != null )
                             {
-                                String referralDn = referral.getDn() != null && !referral.getDn().isEmpty() ? referral
-                                    .getDn().getUpName() : dn;
-
+                                String referralDn = referral.getLdapURLs().get( 0 ).getDn().getUpName();
                                 referralConnection.getJNDIConnectionWrapper().createEntry( referralDn, attributes,
                                     controls, monitor, newReferralsInfo );
+                            }
+                            else
+                            {
+                                canceled = true;
                             }
                         }
                     }
@@ -688,6 +708,10 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
             monitor.reportError( ne );
         }
 
+        if ( runnable.isCanceled() )
+        {
+            monitor.setCanceled( true );
+        }
         if ( runnable.getException() != null )
         {
             monitor.reportError( runnable.getException() );
@@ -740,11 +764,13 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
                             Connection referralConnection = getReferralConnection( referral, monitor, this );
                             if ( referralConnection != null )
                             {
-                                String referralDn = referral.getDn() != null && !referral.getDn().isEmpty() ? referral
-                                    .getDn().getUpName() : dn;
-
+                                String referralDn = referral.getLdapURLs().get( 0 ).getDn().getUpName();
                                 referralConnection.getJNDIConnectionWrapper().deleteEntry( referralDn, controls,
                                     monitor, newReferralsInfo );
+                            }
+                            else
+                            {
+                                canceled = true;
                             }
                         }
                     }
@@ -777,6 +803,10 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
             monitor.reportError( ne );
         }
 
+        if ( runnable.isCanceled() )
+        {
+            monitor.setCanceled( true );
+        }
         if ( runnable.getException() != null )
         {
             monitor.reportError( runnable.getException() );
@@ -1329,6 +1359,7 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
     {
         protected StudioNamingEnumeration namingEnumeration = null;
         protected NamingException namingException = null;
+        protected boolean canceled = false;
 
 
         /**
@@ -1354,12 +1385,24 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
 
 
         /**
+         * Checks if is canceled.
+         * 
+         * @return true, if is canceled
+         */
+        public boolean isCanceled()
+        {
+            return canceled;
+        }
+
+
+        /**
          * Reset.
          */
         public void reset()
         {
             namingEnumeration = null;
             namingException = null;
+            canceled = false;
         }
     }
 

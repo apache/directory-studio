@@ -141,7 +141,7 @@ public class RenameEntryJob extends AbstractNotificationJob
         renameEntry( browserConnection, oldEntry, newDn, dummyMonitor );
 
         // do a simulated rename, if renaming of a non-leaf entry is not supported.
-        if ( dummyMonitor.errorsReported() )
+        if ( dummyMonitor.errorsReported() && !monitor.isCanceled() )
         {
             if ( dialog != null && dummyMonitor.getException() instanceof ContextNotEmptyException )
             {
@@ -182,7 +182,7 @@ public class RenameEntryJob extends AbstractNotificationJob
         }
 
         // update model
-        if ( !monitor.errorsReported() )
+        if ( !monitor.errorsReported() && !monitor.isCanceled() )
         {
             // uncache old entry
             browserConnection.uncacheEntryRecursive( oldEntry );
@@ -191,13 +191,24 @@ public class RenameEntryJob extends AbstractNotificationJob
             IEntry parent = oldEntry.getParententry();
             boolean hasMoreChildren = parent.hasMoreChildren();
             parent.deleteChild( oldEntry );
+
             List<StudioControl> controls = new ArrayList<StudioControl>();
             if ( oldEntry.isReferral() )
             {
                 controls.add( StudioControl.MANAGEDSAIT_CONTROL );
             }
-            newEntry = ReadEntryRunnable.getEntry( browserConnection, newDn, controls, monitor );
-            parent.addChild( newEntry );
+
+            // Here we try to read the renamed entry to be able to send the right event notification.
+            // In some cases this don't work:
+            // - if there was a referral and the entry was created on another (master) server and not yet sync'ed to the current server
+            // So we use a dummy monitor to no bother the user with an error message.
+            dummyMonitor.reset();
+            newEntry = ReadEntryRunnable.getEntry( browserConnection, newDn, controls, dummyMonitor );
+            dummyMonitor.done();
+            if ( newEntry != null )
+            {
+                parent.addChild( newEntry );
+            }
             parent.setHasMoreChildren( hasMoreChildren );
 
             // reset searches, if the renamed entry is a result of a search

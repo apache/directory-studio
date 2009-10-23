@@ -56,6 +56,11 @@ public class UpdateEntryRunnable extends ExecuteLdifRunnable
     public void run( StudioProgressMonitor monitor )
     {
         super.run( monitor );
+        if ( monitor.isCanceled() )
+        {
+            // update attributes in any case, because the attributes are not initialized
+            monitor.setCanceled( false );
+        }
         InitializeAttributesRunnable.initializeAttributes( entry, monitor );
     }
 
