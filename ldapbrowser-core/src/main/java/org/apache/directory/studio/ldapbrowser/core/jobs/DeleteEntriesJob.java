@@ -44,7 +44,7 @@ import org.apache.directory.studio.connection.core.Connection.AliasDereferencing
 import org.apache.directory.studio.connection.core.Connection.ReferralHandlingMethod;
 import org.apache.directory.studio.connection.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
-import org.apache.directory.studio.ldapbrowser.core.events.ChildrenInitializedEvent;
+import org.apache.directory.studio.ldapbrowser.core.events.BulkModificationEvent;
 import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
 import org.apache.directory.studio.ldapbrowser.core.events.SearchUpdateEvent;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
@@ -78,9 +78,6 @@ public class DeleteEntriesJob extends AbstractNotificationJob
     /** The deleted entries. */
     private Set<IEntry> deletedEntriesSet;
 
-    /** The entries to update. */
-    private Set<IEntry> entriesToUpdateSet;
-
     /** The searches to update. */
     private Set<ISearch> searchesToUpdateSet;
 
@@ -99,7 +96,6 @@ public class DeleteEntriesJob extends AbstractNotificationJob
         this.useTreeDeleteControl = useTreeDeleteControl;
 
         this.deletedEntriesSet = new HashSet<IEntry>();
-        this.entriesToUpdateSet = new HashSet<IEntry>();
         this.searchesToUpdateSet = new HashSet<ISearch>();
 
         setName( entriesToDelete.size() == 1 ? BrowserCoreMessages.jobs__delete_entries_name_1
@@ -161,7 +157,6 @@ public class DeleteEntriesJob extends AbstractNotificationJob
                     //entryToDelete.setChildrenInitialized( false );
 
                     // delete from parent entry
-                    entriesToUpdateSet.add( entryToDelete.getParententry() );
                     entryToDelete.getParententry().setChildrenInitialized( false );
                     entryToDelete.getParententry().deleteChild( entryToDelete );
 
@@ -197,7 +192,6 @@ public class DeleteEntriesJob extends AbstractNotificationJob
             }
             else
             {
-                entriesToUpdateSet.add( entryToDelete );
                 entryToDelete.setChildrenInitialized( false );
             }
 
@@ -320,11 +314,10 @@ public class DeleteEntriesJob extends AbstractNotificationJob
     {
         // don't fire an EntryDeletedEvent for each deleted entry
         // that would cause massive UI updates
-        // instead we fire a ChildrenInitializedEvent for each parent
-        for ( IEntry parent : entriesToUpdateSet )
-        {
-            EventRegistry.fireEntryUpdated( new ChildrenInitializedEvent( parent ), this );
-        }
+        // instead we unset children information and fire a BulkModificationEvent
+        IBrowserConnection browserConnection = entriesToDelete.iterator().next().getBrowserConnection();
+        EventRegistry.fireEntryUpdated( new BulkModificationEvent( browserConnection ), this );
+
         for ( ISearch search : searchesToUpdateSet )
         {
             EventRegistry.fireSearchUpdated( new SearchUpdateEvent( search,

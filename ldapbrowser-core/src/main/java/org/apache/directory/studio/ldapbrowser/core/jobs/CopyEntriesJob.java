@@ -49,7 +49,7 @@ import org.apache.directory.studio.connection.core.Connection.AliasDereferencing
 import org.apache.directory.studio.connection.core.Connection.ReferralHandlingMethod;
 import org.apache.directory.studio.connection.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
-import org.apache.directory.studio.ldapbrowser.core.events.ChildrenInitializedEvent;
+import org.apache.directory.studio.ldapbrowser.core.events.BulkModificationEvent;
 import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
 import org.apache.directory.studio.ldapbrowser.core.jobs.EntryExistsCopyStrategyDialog.EntryExistsCopyStrategy;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
@@ -174,7 +174,10 @@ public class CopyEntriesJob extends AbstractNotificationJob
      */
     protected void runNotification()
     {
-        EventRegistry.fireEntryUpdated( new ChildrenInitializedEvent( parent ), this );
+        // don't fire an EntryCreatedEvent for each created entry
+        // that would cause massive UI updates
+        // instead we fire a BulkModificationEvent
+        EventRegistry.fireEntryUpdated( new BulkModificationEvent( parent.getBrowserConnection() ), this );
     }
 
 
