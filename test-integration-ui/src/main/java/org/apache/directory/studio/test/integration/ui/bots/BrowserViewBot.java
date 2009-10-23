@@ -24,8 +24,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.apache.directory.studio.test.integration.ui.SWTBotUtils;
+import org.apache.directory.studio.test.integration.ui.ContextMenuHelper;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
+import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.finders.UIThreadRunnable;
 import org.eclipse.swtbot.swt.finder.results.VoidResult;
@@ -89,9 +90,23 @@ public class BrowserViewBot
     }
 
 
+    public NewEntryWizardBot openNewEntryWizard()
+    {
+        ContextMenuHelper.clickContextMenu( getBrowserTree(), "New", "New Entry..." );
+        return new NewEntryWizardBot();
+    }
+
+
+    public RenameEntryDialogBot openRenameDialog()
+    {
+        ContextMenuHelper.clickContextMenu( getBrowserTree(), "Rename Entry..." );
+        return new RenameEntryDialogBot();
+    }
+
+
     private SWTBotTreeItem getEntry( String... path )
     {
-        SWTBotTree browserTree = SWTBotUtils.getLdapBrowserTree( bot );
+        SWTBotTree browserTree = getBrowserTree();
         List<String> pathList = new ArrayList<String>( Arrays.asList( path ) );
         SWTBotTreeItem entry = null;
 
@@ -142,15 +157,15 @@ public class BrowserViewBot
             {
                 public boolean test() throws Exception
                 {
-//                    if ( nextNode != null )
-//                    {
-//                        String adjustedNodeName = nextNode != null ? adjustNodeName( entry, nextNode ) : null;
-//                        SWTBotTreeItem node = entry.getNode( adjustedNodeName );
-//                        if ( node == null )
-//                        {
-//                            return false;
-//                        }
-//                    }
+                    //                    if ( nextNode != null )
+                    //                    {
+                    //                        String adjustedNodeName = nextNode != null ? adjustNodeName( entry, nextNode ) : null;
+                    //                        SWTBotTreeItem node = entry.getNode( adjustedNodeName );
+                    //                        if ( node == null )
+                    //                        {
+                    //                            return false;
+                    //                        }
+                    //                    }
                     return !entry.getNodes().contains( "Fetching Entries..." )
                         && !entry.getNodes().contains( "Opening Connection..." );
                 }
@@ -198,6 +213,15 @@ public class BrowserViewBot
             }
         }
         return nodeName;
+    }
+
+
+    private SWTBotTree getBrowserTree()
+    {
+        SWTBotView view = bot.viewByTitle( "LDAP Browser" );
+        view.show();
+        SWTBotTree tree = view.bot().tree();
+        return tree;
     }
 
 }

@@ -21,16 +21,17 @@
 package org.apache.directory.studio.test.integration.ui;
 
 
+import static junit.framework.Assert.assertTrue;
+
 import org.apache.directory.server.core.integ.Level;
 import org.apache.directory.server.core.integ.annotations.ApplyLdifFiles;
 import org.apache.directory.server.core.integ.annotations.CleanupLevel;
 import org.apache.directory.server.integ.SiRunner;
 import org.apache.directory.server.ldap.LdapServer;
+import org.apache.directory.studio.test.integration.ui.bots.BrowserViewBot;
 import org.apache.directory.studio.test.integration.ui.bots.ConnectionsViewBot;
+import org.apache.directory.studio.test.integration.ui.bots.RenameEntryDialogBot;
 import org.apache.directory.studio.test.integration.ui.bots.StudioBot;
-import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotMenu;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -52,8 +53,7 @@ public class RenameEntryDialogTest
 
     private StudioBot studioBot;
     private ConnectionsViewBot connectionsViewBot;
-
-    private SWTWorkbenchBot bot;
+    private BrowserViewBot browserViewBot;
 
 
     @Before
@@ -63,8 +63,7 @@ public class RenameEntryDialogTest
         studioBot.resetLdapPerspective();
         connectionsViewBot = studioBot.getConnectionView();
         connectionsViewBot.createTestConnection( "RenameEntryDialogTest", ldapServer.getPort() );
-
-        bot = new SWTWorkbenchBot();
+        browserViewBot = studioBot.getBrowserView();
     }
 
 
@@ -72,7 +71,6 @@ public class RenameEntryDialogTest
     public void tearDown() throws Exception
     {
         connectionsViewBot.deleteTestConnections();
-        bot = null;
     }
 
 
@@ -87,22 +85,17 @@ public class RenameEntryDialogTest
     @Test
     public void testRenameMultiValuedRdn() throws Exception
     {
-        final SWTBotTree browserTree = SWTBotUtils.getLdapBrowserTree( bot );
+        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users", "cn=Barbara Jensen+uid=bjensen" );
 
-        SWTBotUtils.selectEntry( bot, browserTree, false, "DIT", "Root DSE", "ou=system", "ou=users",
-            "cn=Barbara Jensen+uid=bjensen" );
+        RenameEntryDialogBot renameDialogBot = browserViewBot.openRenameDialog();
+        assertTrue( renameDialogBot.isVisible() );
+        renameDialogBot.setRdnValue( 1, "Babs Jensen" );
+        renameDialogBot.setRdnValue( 2, "babsjens" );
+        renameDialogBot.clickOkButton();
 
-        bot.sleep( 2000 );
-        SWTBotMenu contextMenu = browserTree.contextMenu( "Rename Entry..." );
-        contextMenu.click();
-
-        bot.text( "Barbara Jensen" ).setText( "Babs Jensen" );
-        bot.text( "bjensen" ).setText( "babsjens" );
-        bot.button( "OK" ).click();
-
-        // ensure that the entry with the new name exists
-        SWTBotUtils.selectEntry( bot, browserTree, false, "DIT", "Root DSE", "ou=system", "ou=users",
-            "cn=Babs Jensen+uid=babsjens" );
+        assertTrue( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=users",
+            "cn=Babs Jensen+uid=babsjens" ) );
+        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users", "cn=Babs Jensen+uid=babsjens" );
     }
 
 
@@ -117,20 +110,17 @@ public class RenameEntryDialogTest
     @Test
     public void testRenameRdnWithEscapedCharacters() throws Exception
     {
-        SWTBotTree browserTree = SWTBotUtils.getLdapBrowserTree( bot );
+        browserViewBot
+            .selectEntry( "DIT", "Root DSE", "ou=system", "ou=users", "cn=\\#\\\\\\+\\, \\\"\u00F6\u00E9\\\"" );
 
-        SWTBotUtils.selectEntry( bot, browserTree, false, "DIT", "Root DSE", "ou=system", "ou=users",
-            "cn=\\#\\\\\\+\\, \\\"\u00F6\u00E9\\\"" );
+        RenameEntryDialogBot renameDialogBot = browserViewBot.openRenameDialog();
+        assertTrue( renameDialogBot.isVisible() );
+        renameDialogBot.setRdnValue( 1, "#\\+, \"\u00F6\u00E9\"2" );
+        renameDialogBot.clickOkButton();
 
-        SWTBotMenu contextMenu = browserTree.contextMenu( "Rename Entry..." );
-        contextMenu.click();
-
-        // ensure that the unescaped value is in the text field
-        bot.text( "#\\+, \"\u00F6\u00E9\"" ).setText( "#\\+, \"\u00F6\u00E9\"2" );
-        bot.button( "OK" ).click();
-
-        // ensure that the entry with the new name exists
-        SWTBotUtils.selectEntry( bot, browserTree, false, "DIT", "Root DSE", "ou=system", "ou=users",
+        assertTrue( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=users",
+            "cn=\\#\\\\\\+\\, \\\"\u00F6\u00E9\\\"2" ) );
+        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users",
             "cn=\\#\\\\\\+\\, \\\"\u00F6\u00E9\\\"2" );
     }
 

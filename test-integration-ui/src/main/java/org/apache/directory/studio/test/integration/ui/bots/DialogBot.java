@@ -21,6 +21,9 @@ package org.apache.directory.studio.test.integration.ui.bots;
 
 
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
+import org.eclipse.swtbot.swt.finder.SWTBot;
+import org.eclipse.swtbot.swt.finder.waits.ICondition;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotButton;
 
 
 public abstract class DialogBot
@@ -35,9 +38,32 @@ public abstract class DialogBot
     }
 
 
-    protected void clickButton( String buttonTitle )
+    protected void clickButton( final String buttonTitle )
     {
-        bot.button( buttonTitle ).click();
+        final SWTBotButton button = bot.button( buttonTitle );
+        if ( !button.isEnabled() )
+        {
+            bot.waitUntil( new ICondition()
+            {
+
+                public boolean test() throws Exception
+                {
+                    return button.isEnabled();
+                }
+
+
+                public void init( SWTBot bot )
+                {
+                }
+
+
+                public String getFailureMessage()
+                {
+                    return "Button " + buttonTitle + " is not enabled!";
+                }
+            } );
+        }
+        button.click();
     }
 
 }

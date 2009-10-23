@@ -22,6 +22,8 @@ package org.apache.directory.studio.test.integration.ui;
 
 
 import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertFalse;
+import static junit.framework.Assert.assertTrue;
 import static org.apache.directory.server.integ.ServerIntegrationUtils.getWiredContext;
 
 import javax.naming.directory.Attribute;
@@ -34,14 +36,11 @@ import org.apache.directory.server.core.integ.Level;
 import org.apache.directory.server.core.integ.annotations.CleanupLevel;
 import org.apache.directory.server.integ.SiRunner;
 import org.apache.directory.server.ldap.LdapServer;
+import org.apache.directory.studio.test.integration.ui.bots.BrowserViewBot;
 import org.apache.directory.studio.test.integration.ui.bots.ConnectionsViewBot;
+import org.apache.directory.studio.test.integration.ui.bots.NewEntryWizardBot;
 import org.apache.directory.studio.test.integration.ui.bots.StudioBot;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
-import org.eclipse.swtbot.swt.finder.waits.DefaultCondition;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotCombo;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotText;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -62,6 +61,7 @@ public class NewEntryWizardTest
 
     private StudioBot studioBot;
     private ConnectionsViewBot connectionsViewBot;
+    private BrowserViewBot browserViewBot;
 
     private SWTWorkbenchBot bot;
 
@@ -90,6 +90,7 @@ public class NewEntryWizardTest
         studioBot.resetLdapPerspective();
         connectionsViewBot = studioBot.getConnectionView();
         connectionsViewBot.createTestConnection( "NewEntryWizardTest", ldapServer.getPort() );
+        browserViewBot = studioBot.getBrowserView();
 
         bot = new SWTWorkbenchBot();
     }
@@ -112,54 +113,55 @@ public class NewEntryWizardTest
     @Test
     public void testCreateOrganizationEntry() throws Exception
     {
-        final SWTBotTree browserTree = SWTBotUtils.getLdapBrowserTree( bot );
-        SWTBotUtils.selectEntry( bot, browserTree, true, "DIT", "Root DSE", "ou=system" );
+        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system" );
 
-        // open "New Entry" wizard
-        ContextMenuHelper.clickContextMenu( browserTree, "New", "New Entry..." );
+        NewEntryWizardBot wizardBot = browserViewBot.openNewEntryWizard();
+        assertTrue( wizardBot.isVisible() );
 
-        // select entry creation method
-        bot.radio( "Create entry from scratch" ).click();
-        bot.button( "Next >" ).click();
+        wizardBot.selectCreateEntryFromScratch();
 
-        // select object classes
-        bot.table( 0 ).select( "organization" );
-        bot.button( "Add" ).click();
-        bot.button( "Next >" ).click();
+        assertFalse( wizardBot.isBackButtonEnabled() );
+        assertTrue( wizardBot.isNextButtonEnabled() );
+        assertFalse( wizardBot.isFinishButtonEnabled() );
+        assertTrue( wizardBot.isCancelButtonEnabled() );
 
-        // specify DN
-        SWTBotCombo typeCombo = bot.comboBox( "" );
-        typeCombo.setText( "o" );
-        SWTBotText valueText = bot.text( "" );
-        valueText.setText( "testCreateOrganizationEntry" );
-        SWTBotUtils.asyncClick( bot, bot.button( "Next >" ), new DefaultCondition()
-        {
-            public boolean test() throws Exception
-            {
-                return bot.tree( 0 ) != null;
-            }
+        wizardBot.clickNextButton();
 
+        assertTrue( wizardBot.isBackButtonEnabled() );
+        assertFalse( wizardBot.isNextButtonEnabled() );
+        assertFalse( wizardBot.isFinishButtonEnabled() );
+        assertTrue( wizardBot.isCancelButtonEnabled() );
 
-            public String getFailureMessage()
-            {
-                return "Could not find widget";
-            }
-        } );
+        wizardBot.addObjectClasses( "organization" );
+        assertTrue( wizardBot.isObjectClassSelected( "top" ) );
+        assertTrue( wizardBot.isObjectClassSelected( "organization" ) );
 
-        // click finish to create the entry
-        SWTBotUtils.asyncClick( bot, bot.button( "Finish" ), new DefaultCondition()
-        {
-            public boolean test() throws Exception
-            {
-                return browserTree.selection().get( 0 ).get( 0 ).startsWith( "o=testCreateOrganizationEntry" );
-            }
+        assertTrue( wizardBot.isBackButtonEnabled() );
+        assertTrue( wizardBot.isNextButtonEnabled() );
+        assertFalse( wizardBot.isFinishButtonEnabled() );
+        assertTrue( wizardBot.isCancelButtonEnabled() );
 
+        wizardBot.clickNextButton();
 
-            public String getFailureMessage()
-            {
-                return "Could not find 'o=testCreateOrganizationEntry'";
-            }
-        } );
+        assertTrue( wizardBot.isBackButtonEnabled() );
+        assertFalse( wizardBot.isNextButtonEnabled() );
+        assertFalse( wizardBot.isFinishButtonEnabled() );
+        assertTrue( wizardBot.isCancelButtonEnabled() );
+
+        wizardBot.setRdnType( 1, "o" );
+        wizardBot.setRdnValue( 1, "testCreateOrganizationEntry" );
+
+        assertTrue( wizardBot.isBackButtonEnabled() );
+        assertTrue( wizardBot.isNextButtonEnabled() );
+        assertFalse( wizardBot.isFinishButtonEnabled() );
+        assertTrue( wizardBot.isCancelButtonEnabled() );
+
+        wizardBot.clickNextButton();
+
+        wizardBot.clickFinishButton();
+
+        browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "o=testCreateOrganizationEntry" );
+        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "o=testCreateOrganizationEntry" );
     }
 
 
@@ -172,64 +174,25 @@ public class NewEntryWizardTest
     @Test
     public void testCreatePersonEntry() throws Exception
     {
-        final SWTBotTree browserTree = SWTBotUtils.getLdapBrowserTree( bot );
-        SWTBotUtils.selectEntry( bot, browserTree, true, "DIT", "Root DSE", "ou=system" );
+        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system" );
 
-        // open "New Entry" wizard
-        ContextMenuHelper.clickContextMenu( browserTree, "New", "New Entry..." );
+        NewEntryWizardBot wizardBot = browserViewBot.openNewEntryWizard();
 
-        // select entry creation method
-        bot.radio( "Create entry from scratch" ).click();
-        bot.button( "Next >" ).click();
+        wizardBot.selectCreateEntryFromScratch();
+        wizardBot.clickNextButton();
 
-        // select object classes
-        bot.table( 0 ).select( "inetOrgPerson" );
-        bot.button( "Add" ).click();
-        bot.button( "Next >" ).click();
+        wizardBot.addObjectClasses( "inetOrgPerson" );
+        wizardBot.clickNextButton();
 
-        // specify DN
-        SWTBotCombo typeCombo = bot.comboBox( "" );
-        typeCombo.setText( "cn" );
-        SWTBotText valueText = bot.text( "" );
-        valueText.setText( "testCreatePersonEntry" );
-        SWTBotUtils.asyncClick( bot, bot.button( "Next >" ), new DefaultCondition()
-        {
-            public boolean test() throws Exception
-            {
-                return bot.tree( 0 ) != null;
-            }
+        wizardBot.setRdnType( 1, "cn" );
+        wizardBot.setRdnValue( 1, "testCreatePersonEntry" );
+        wizardBot.clickNextButton();
 
+        wizardBot.setAttributeValue( "sn", 1, "test" );
+        wizardBot.clickFinishButton();
 
-            public String getFailureMessage()
-            {
-                return "Could not find widget";
-            }
-        } );
-
-        // enter sn value
-        SWTBotTree tree = bot.tree( 0 );
-        tree.getTreeItem( "sn" ).doubleClick();
-
-        SWTBotText text = bot.text( "" );
-        text.setText( "test" );
-        // click to finish editing of sn
-        SWTBotTreeItem snNode = tree.getTreeItem( "sn" );
-        snNode.click();
-
-        // click finish to create the entry
-        SWTBotUtils.asyncClick( bot, bot.button( "Finish" ), new DefaultCondition()
-        {
-            public boolean test() throws Exception
-            {
-                return browserTree.selection().get( 0 ).get( 0 ).startsWith( "cn=testCreatePersonEntry" );
-            }
-
-
-            public String getFailureMessage()
-            {
-                return "Could not find 'cn=testCreatePersonEntry'";
-            }
-        } );
+        browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "cn=testCreatePersonEntry" );
+        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "cn=testCreatePersonEntry" );
     }
 
 
@@ -245,108 +208,48 @@ public class NewEntryWizardTest
     @Test
     public void testCreateUpperCaseOrganizationEntries() throws Exception
     {
-        final SWTBotTree browserTree = SWTBotUtils.getLdapBrowserTree( bot );
-        SWTBotUtils.selectEntry( bot, browserTree, true, "DIT", "Root DSE", "ou=system" );
+        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system" );
 
-        // open "New Entry" wizard
-        ContextMenuHelper.clickContextMenu( browserTree, "New", "New Entry..." );
+        NewEntryWizardBot wizardBot = browserViewBot.openNewEntryWizard();
 
-        // select entry creation method
-        bot.radio( "Create entry from scratch" ).click();
-        bot.button( "Next >" ).click();
+        wizardBot.selectCreateEntryFromScratch();
+        wizardBot.clickNextButton();
 
-        // select object classes
-        bot.table( 0 ).select( "organization" );
-        bot.button( "Add" ).click();
-        bot.button( "Next >" ).click();
+        wizardBot.addObjectClasses( "organization" );
+        wizardBot.clickNextButton();
 
-        // specify DN
-        SWTBotCombo typeCombo = bot.comboBox( "" );
-        typeCombo.setText( "O" );
-        SWTBotText valueText = bot.text( "" );
-        valueText.setText( "testCreateOrganizationEntry" );
-        SWTBotUtils.asyncClick( bot, bot.button( "Next >" ), new DefaultCondition()
-        {
-            public boolean test() throws Exception
-            {
-                return bot.tree( 0 ) != null;
-            }
+        wizardBot.setRdnType( 1, "O" );
+        wizardBot.setRdnValue( 1, "testCreateOrganizationEntry" );
+        wizardBot.clickNextButton();
 
+        wizardBot.clickFinishButton();
 
-            public String getFailureMessage()
-            {
-                return "Could not find widget";
-            }
-        } );
-
-        // click finish to create the entry
-        SWTBotUtils.asyncClick( bot, bot.button( "Finish" ), new DefaultCondition()
-        {
-            public boolean test() throws Exception
-            {
-                return browserTree.selection().get( 0 ).get( 0 ).startsWith( "O=testCreateOrganizationEntry" );
-            }
-
-
-            public String getFailureMessage()
-            {
-                return "Could not find 'O=testCreateOrganizationEntry'";
-            }
-        } );
+        browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "O=testCreateOrganizationEntry" );
+        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "O=testCreateOrganizationEntry" );
 
         // Now create a second entry under the previously created entry
         // to ensure that the selected parent is also upper case.
 
-        // open "New Entry" wizard
-        ContextMenuHelper.clickContextMenu( browserTree, "New", "New Entry..." );
+        wizardBot = browserViewBot.openNewEntryWizard();
 
-        // select entry creation method
-        bot.radio( "Create entry from scratch" ).click();
-        bot.button( "Next >" ).click();
+        wizardBot.selectCreateEntryFromScratch();
+        wizardBot.clickNextButton();
 
-        // select object classes
-        bot.table( 0 ).select( "organization" );
-        bot.button( "Add" ).click();
-        bot.button( "Next >" ).click();
+        wizardBot.addObjectClasses( "organization" );
+        wizardBot.clickNextButton();
 
-        // specify DN
-        typeCombo = bot.comboBox( "" );
-        typeCombo.setText( "O" );
-        valueText = bot.text( "" );
-        valueText.setText( "testCreateOrganizationEntry2" );
+        wizardBot.setRdnType( 1, "O" );
+        wizardBot.setRdnValue( 1, "testCreateOrganizationEntry2" );
+        assertEquals( "O=testCreateOrganizationEntry2,O=testCreateOrganizationEntry,ou=system", wizardBot
+            .getDnPreview() );
+        wizardBot.clickNextButton();
 
-        // check preview text
-        SWTBotText previewText = bot.text( "O=testCreateOrganizationEntry2,O=testCreateOrganizationEntry,ou=system" );
-        assertEquals( "O=testCreateOrganizationEntry2,O=testCreateOrganizationEntry,ou=system", previewText.getText() );
+        wizardBot.clickFinishButton();
 
-        SWTBotUtils.asyncClick( bot, bot.button( "Next >" ), new DefaultCondition()
-        {
-            public boolean test() throws Exception
-            {
-                return bot.tree( 0 ) != null;
-            }
-
-
-            public String getFailureMessage()
-            {
-                return "Could not find widget";
-            }
-        } );
-
-        // click finish to create the entry
-        SWTBotUtils.asyncClick( bot, bot.button( "Finish" ), new DefaultCondition()
-        {
-            public boolean test() throws Exception
-            {
-                return browserTree.selection().get( 0 ).get( 0 ).startsWith( "O=testCreateOrganizationEntry2" );
-            }
-
-
-            public String getFailureMessage()
-            {
-                return "Could not find 'O=testCreateOrganizationEntry2'";
-            }
-        } );
+        browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "O=testCreateOrganizationEntry",
+            "O=testCreateOrganizationEntry2" );
+        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "O=testCreateOrganizationEntry",
+            "O=testCreateOrganizationEntry2" );
     }
 
 
@@ -361,74 +264,26 @@ public class NewEntryWizardTest
     @Test
     public void testCreateEntryWithSlash() throws Exception
     {
-        final SWTBotTree browserTree = SWTBotUtils.getLdapBrowserTree( bot );
-        SWTBotUtils.selectEntry( bot, browserTree, true, "DIT", "Root DSE", "ou=system" );
+        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system" );
 
-        // open "New Entry" wizard
-        ContextMenuHelper.clickContextMenu( browserTree, "New", "New Entry..." );
+        NewEntryWizardBot wizardBot = browserViewBot.openNewEntryWizard();
 
-        // select entry creation method
-        bot.radio( "Create entry from scratch" ).click();
-        bot.button( "Next >" ).click();
+        wizardBot.selectCreateEntryFromScratch();
+        wizardBot.clickNextButton();
 
-        // select object classes
-        bot.table( 0 ).select( "krb5Principal" );
-        bot.button( "Add" ).click();
-        bot.table( 0 ).select( "person" );
-        bot.button( "Add" ).click();
-        bot.button( "Next >" ).click();
+        wizardBot.addObjectClasses( "krb5Principal", "person" );
+        wizardBot.clickNextButton();
 
-        // specify DN
-        SWTBotCombo typeCombo = bot.comboBox( "" );
-        typeCombo.setText( "krb5PrincipalName" );
-        SWTBotText valueText = bot.text( "" );
-        valueText.setText( "kadmin/changepw@DOMAIN" );
-        SWTBotUtils.asyncClick( bot, bot.button( "Next >" ), new DefaultCondition()
-        {
-            public boolean test() throws Exception
-            {
-                return bot.tree( 0 ) != null;
-            }
+        wizardBot.setRdnType( 1, "krb5PrincipalName" );
+        wizardBot.setRdnValue( 1, "kadmin/changepw@DOMAIN" );
+        wizardBot.clickNextButton();
 
+        wizardBot.setAttributeValue( "cn", 1, "test" );
+        wizardBot.setAttributeValue( "sn", 1, "test" );
+        wizardBot.clickFinishButton();
 
-            public String getFailureMessage()
-            {
-                return "Could not find entry editor";
-            }
-        } );
-
-        SWTBotTree tree = bot.tree( 0 );
-        SWTBotTreeItem krbNode = tree.getTreeItem( "krb5PrincipalName" );
-        // click to cancel editing attribute when pages becomes visible
-        krbNode.click();
-
-        // enter cn value
-        tree.getTreeItem( "cn" ).doubleClick();
-        bot.text( "" ).setText( "test" );
-        // click to finish editing of cn
-        krbNode.click();
-
-        // enter sn value
-        tree.getTreeItem( "sn" ).doubleClick();
-        bot.text( "" ).setText( "test" );
-        // click to finish editing of sn
-        krbNode.click();
-
-        // click finish to create the entry
-        SWTBotUtils.asyncClick( bot, bot.button( "Finish" ), new DefaultCondition()
-        {
-            public boolean test() throws Exception
-            {
-                return browserTree.selection().get( 0 ).get( 0 )
-                    .startsWith( "krb5PrincipalName=kadmin/changepw@DOMAIN" );
-            }
-
-
-            public String getFailureMessage()
-            {
-                return "Could not find entry 'krb5Principal=kadmin/changepw@DOMAIN'";
-            }
-        } );
+        browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "krb5PrincipalName=kadmin/changepw@DOMAIN" );
+        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "krb5PrincipalName=kadmin/changepw@DOMAIN" );
     }
 
 }
