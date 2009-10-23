@@ -46,7 +46,7 @@
                value="plugin_customization.ini"/>
          <property
                name="windowImages"
-               value="resources/icons/window/studio_16x16.gif,resources/icons/window/studio_32x32.gif,resources/icons/window/studio_48x48.gif,resources/icons/window/studio_64x64.gif,resources/icons/window/studio_128x128.gif"/>
+               value="resources/icons/window/studio_16x16.png,resources/icons/window/studio_32x32.png,resources/icons/window/studio_48x48.png,resources/icons/window/studio_64x64.png,resources/icons/window/studio_128x128.png"/>
          <property
                name="appName"
                value="Apache Directory Studio">
