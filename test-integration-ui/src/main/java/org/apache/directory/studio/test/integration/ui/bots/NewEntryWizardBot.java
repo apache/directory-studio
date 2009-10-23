@@ -95,4 +95,11 @@ public class NewEntryWizardBot extends WizardBot
         }
     }
 
+
+    public ReferralDialogBot clickFinishButtonExpectingReferralDialog()
+    {
+        clickFinishButton();
+        return new ReferralDialogBot();
+    }
+
 }

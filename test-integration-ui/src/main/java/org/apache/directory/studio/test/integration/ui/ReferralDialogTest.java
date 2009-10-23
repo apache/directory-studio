@@ -197,7 +197,7 @@ public class ReferralDialogTest
         assertEquals( ReferralHandlingMethod.IGNORE.ordinal(), referralsHandlingMethodOrdinal );
         assertTrue( manageDsaIT );
 
-        // expand ou=system, that reads the referral and opens the referral dialog
+        // expand ou=system, that reads the referral object
         browserViewBot.expandEntry( parentPath );
 
         // ensure that the referral entry exists

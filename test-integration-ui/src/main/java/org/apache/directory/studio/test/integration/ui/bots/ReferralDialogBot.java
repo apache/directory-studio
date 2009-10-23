@@ -27,6 +27,12 @@ import org.eclipse.swtbot.swt.finder.utils.TableRow;
 public class ReferralDialogBot extends DialogBot
 {
 
+    public boolean isVisible()
+    {
+        return super.isVisible( "Select Referral Connection" );
+    }
+
+
     public void clickOkButton()
     {
         super.clickButton( "OK" );

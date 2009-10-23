@@ -27,10 +27,12 @@ import java.util.List;
 import org.apache.directory.studio.test.integration.ui.ContextMenuHelper;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
+import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.finders.UIThreadRunnable;
 import org.eclipse.swtbot.swt.finder.results.VoidResult;
 import org.eclipse.swtbot.swt.finder.waits.DefaultCondition;
+import org.eclipse.swtbot.swt.finder.waits.ICondition;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 
@@ -180,8 +182,30 @@ public class BrowserViewBot
     }
 
 
-    private void select( SWTBotTreeItem entry )
+    private void select( final SWTBotTreeItem entry )
     {
+        if ( !getBrowserTree().isEnabled() )
+        {
+            bot.waitUntil( new ICondition()
+            {
+
+                public boolean test() throws Exception
+                {
+                    return getBrowserTree().isEnabled();
+                }
+
+
+                public void init( SWTBot bot )
+                {
+                }
+
+
+                public String getFailureMessage()
+                {
+                    return "Entry " + entry + " is not enabled!";
+                }
+            } );
+        }
         entry.click();
         entry.select();
     }
