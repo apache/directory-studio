@@ -114,6 +114,29 @@ public class EntryExistsCopyStrategyDialogImpl extends Dialog implements EntryEx
 
 
     /**
+     * @see org.eclipse.jface.dialogs.Dialog#close()
+     */
+    @Override
+    public boolean close()
+    {
+        strategy = EntryExistsCopyStrategy.BREAK;
+
+        return super.close();
+    }
+
+
+    /**
+     * @see org.eclipse.jface.dialogs.Dialog#cancelPressed()
+     */
+    protected void cancelPressed()
+    {
+        strategy = EntryExistsCopyStrategy.BREAK;
+
+        super.cancelPressed();
+    }
+
+
+    /**
      * @see org.eclipse.jface.dialogs.Dialog#okPressed()
      */
     protected void okPressed()
@@ -149,7 +172,7 @@ public class EntryExistsCopyStrategyDialogImpl extends Dialog implements EntryEx
     protected void createButtonsForButtonBar( Composite parent )
     {
         createButton( parent, IDialogConstants.OK_ID, IDialogConstants.OK_LABEL, true );
-        //createButton( parent, IDialogConstants.CANCEL_ID, IDialogConstants.CANCEL_LABEL, false );
+        createButton( parent, IDialogConstants.CANCEL_ID, IDialogConstants.CANCEL_LABEL, false );
     }
 
 
