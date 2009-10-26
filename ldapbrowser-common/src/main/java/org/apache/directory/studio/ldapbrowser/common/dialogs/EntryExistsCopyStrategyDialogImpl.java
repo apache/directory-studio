@@ -100,6 +100,7 @@ public class EntryExistsCopyStrategyDialogImpl extends Dialog implements EntryEx
     {
         super( parentShell );
         super.setShellStyle( super.getShellStyle() | SWT.RESIZE );
+        strategy = EntryExistsCopyStrategy.BREAK;
     }
 
 
@@ -110,29 +111,6 @@ public class EntryExistsCopyStrategyDialogImpl extends Dialog implements EntryEx
     {
         super.configureShell( shell );
         shell.setText( dialogTitle );
-    }
-
-
-    /**
-     * @see org.eclipse.jface.dialogs.Dialog#close()
-     */
-    @Override
-    public boolean close()
-    {
-        strategy = EntryExistsCopyStrategy.BREAK;
-
-        return super.close();
-    }
-
-
-    /**
-     * @see org.eclipse.jface.dialogs.Dialog#cancelPressed()
-     */
-    protected void cancelPressed()
-    {
-        strategy = EntryExistsCopyStrategy.BREAK;
-
-        super.cancelPressed();
     }
 
 
