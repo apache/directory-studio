@@ -274,19 +274,27 @@ public class BrowserView extends ViewPart
                     {
                         IValue value = ( IValue ) obj;
                         IEntry entry = value.getAttribute().getEntry();
+                        // The entry may be a clone, lookup original entry from entry cache.
+                        // The result may be null, in that case the selection won't change.
+                        entry =  entry.getBrowserConnection().getEntryFromCache( entry.getDn() );
                         select( entry );
                     }
                     else if ( obj instanceof IAttribute )
                     {
                         IAttribute attribute = ( IAttribute ) obj;
                         IEntry entry = attribute.getEntry();
+                        // The entry may be a clone, lookup original entry from entry cache.
+                        // The result may be null, in that case the selection won't change.
+                        entry = entry.getBrowserConnection().getEntryFromCache( entry.getDn() );
                         select( entry );
-
                     }
                     else if ( obj instanceof ISearchResult )
                     {
                         ISearchResult sr = ( ISearchResult ) obj;
                         ISearch search = sr.getSearch();
+                        // The search may be a clone, lookup original search from search manager.
+                        // The result may be null, in that case the selection won't change.
+                        search = search.getBrowserConnection().getSearchManager().getSearch( search.getName() );
                         select( search );
                     }
                     return true;
