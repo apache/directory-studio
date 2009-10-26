@@ -35,6 +35,7 @@ import org.apache.directory.studio.ldapbrowser.ui.views.browser.BrowserView;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -412,6 +413,15 @@ public abstract class EntryEditor extends EditorPart implements IEntryEditor, IN
         if ( mainWidget != null )
         {
             universalListener.setInput( eei.getSharedWorkingCopy( this ) );
+
+            /*
+             * Explicitly deselect previously selected attributes and values.
+             * This avoids disabled actions if the new input is equal but not
+             * identical to the previous input. This happens for example if
+             * an ISearchResult or IBookmark object is open and afterwards 
+             * the IEntry object is opened.
+             */
+            mainWidget.getViewer().setSelection( StructuredSelection.EMPTY );
         }
     }
 
