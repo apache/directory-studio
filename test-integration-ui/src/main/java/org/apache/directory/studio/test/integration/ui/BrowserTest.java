@@ -30,13 +30,12 @@ import org.apache.directory.server.core.integ.annotations.CleanupLevel;
 import org.apache.directory.server.integ.SiRunner;
 import org.apache.directory.server.ldap.LdapServer;
 import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
+import org.apache.directory.studio.test.integration.ui.bots.BrowserViewBot;
 import org.apache.directory.studio.test.integration.ui.bots.ConnectionsViewBot;
+import org.apache.directory.studio.test.integration.ui.bots.DeleteDialogBot;
 import org.apache.directory.studio.test.integration.ui.bots.StudioBot;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
-import org.eclipse.swtbot.swt.finder.waits.DefaultCondition;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotStyledText;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -59,6 +58,7 @@ public class BrowserTest
 
     private StudioBot studioBot;
     private ConnectionsViewBot connectionsViewBot;
+    private BrowserViewBot browserViewBot;
 
     private SWTWorkbenchBot eBot;
 
@@ -70,6 +70,7 @@ public class BrowserTest
         studioBot.resetLdapPerspective();
         connectionsViewBot = studioBot.getConnectionView();
         connectionsViewBot.createTestConnection( "BrowserTest", ldapServer.getPort() );
+        browserViewBot = studioBot.getBrowserView();
 
         eBot = new SWTWorkbenchBot();
     }
@@ -94,8 +95,7 @@ public class BrowserTest
     @Test
     public void testOnlyOneSearchRequestWhenExpandingEntry() throws Exception
     {
-        SWTBotTree browserTree = SWTBotUtils.getLdapBrowserTree( eBot );
-        SWTBotUtils.selectEntry( eBot, browserTree, false, "DIT", "Root DSE", "ou=system" );
+        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system" );
 
         // get number of search requests before expanding the entry
         SWTBotStyledText searchLogsText = SWTBotUtils.getSearchLogsText( eBot );
@@ -103,13 +103,14 @@ public class BrowserTest
         int countMatchesBefore = StringUtils.countMatches( text, "#!SEARCH REQUEST" );
 
         // expand
-        browserTree = SWTBotUtils.getLdapBrowserTree( eBot );
-        SWTBotUtils.selectEntry( eBot, browserTree, true, "DIT", "Root DSE", "ou=system" );
+        browserViewBot.expandEntry( "DIT", "Root DSE", "ou=system" );
+        browserViewBot.waitForEntry( "DIT", "Root DSE", "ou=system", "ou=users" );
 
         // get number of search requests after expanding the entry
         searchLogsText = SWTBotUtils.getSearchLogsText( eBot );
         text = searchLogsText.getText();
         int countMatchesAfter = StringUtils.countMatches( text, "#!SEARCH REQUEST" );
+        System.out.println( "countMatchesAfter: " + countMatchesAfter );
 
         assertEquals( "Expected exactly 1 search request", 1, countMatchesAfter - countMatchesBefore );
     }
@@ -125,35 +126,19 @@ public class BrowserTest
     @Test
     public void testDeleteDontUpdateUI() throws Exception
     {
-        final SWTBotTree browserTree = SWTBotUtils.getLdapBrowserTree( eBot );
-        SWTBotTreeItem ou = SWTBotUtils.selectEntry( eBot, browserTree, true, "DIT", "Root DSE", "ou=system",
-            "ou=users" );
+        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users" );
+        browserViewBot.expandEntry( "DIT", "Root DSE", "ou=system", "ou=users" );
 
         long fireCount0 = EventRegistry.getFireCount();
 
         // delete
-        ou.select( "uid=user.1", "uid=user.2", "uid=user.3", "uid=user.4", "uid=user.5", "uid=user.6", "uid=user.7",
-            "uid=user.8" );
-        browserTree.contextMenu( "Delete Entries" ).click();
-        eBot.shell( "Delete Entries" );
-        eBot.button( "OK" ).click();
-
-        // wait until tree is refreshed, that is if ou=users doesn't has any children
-        eBot.waitUntil( new DefaultCondition()
-        {
-            public boolean test() throws Exception
-            {
-                SWTBotTreeItem ou = SWTBotUtils.selectEntry( eBot, browserTree, true, "DIT", "Root DSE", "ou=system",
-                    "ou=users" );
-                return "ou=users".equals( ou.getText() ) && ou.getNodes().isEmpty();
-            }
-
-
-            public String getFailureMessage()
-            {
-                return "'ou=users' should be selected and should not contain any children";
-            }
-        } );
+        String[] children = new String[]
+            { "uid=user.1", "uid=user.2", "uid=user.3", "uid=user.4", "uid=user.5", "uid=user.6", "uid=user.7",
+                "uid=user.8" };
+        browserViewBot.selectChildrenOfEnty( children, "DIT", "Root DSE", "ou=system", "ou=users" );
+        DeleteDialogBot deleteDialog = browserViewBot.openDeleteDialog();
+        deleteDialog.clickOkButton();
+        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users" );
 
         long fireCount1 = EventRegistry.getFireCount();
 

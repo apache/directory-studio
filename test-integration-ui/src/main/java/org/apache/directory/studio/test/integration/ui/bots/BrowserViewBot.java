@@ -69,6 +69,13 @@ public class BrowserViewBot
     }
 
 
+    public void selectChildrenOfEnty( String[] children, String... path )
+    {
+        SWTBotTreeItem entry = getEntry( path );
+        entry.select( children );
+    }
+
+
     public ReferralDialogBot selectEntryExpectingReferralDialog( String... path )
     {
         SWTBotTreeItem entry = getEntry( path );
@@ -81,6 +88,12 @@ public class BrowserViewBot
     {
         SWTBotTreeItem entry = getEntry( path );
         expand( entry, true, null );
+    }
+
+
+    public void waitForEntry( String... path )
+    {
+        getEntry( path );
     }
 
 
@@ -103,6 +116,13 @@ public class BrowserViewBot
     {
         ContextMenuHelper.clickContextMenu( getBrowserTree(), "Rename Entry..." );
         return new RenameEntryDialogBot();
+    }
+
+
+    public DeleteDialogBot openDeleteDialog()
+    {
+        ContextMenuHelper.clickContextMenu( getBrowserTree(), "Delete Entries" );
+        return new DeleteDialogBot();
     }
 
 
