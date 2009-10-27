@@ -121,7 +121,6 @@ public class BrowserTest
         searchLogsText = SWTBotUtils.getSearchLogsText( eBot );
         text = searchLogsText.getText();
         int countMatchesAfter = StringUtils.countMatches( text, "#!SEARCH REQUEST" );
-        System.out.println( "countMatchesAfter: " + countMatchesAfter );
 
         assertEquals( "Expected exactly 1 search request", 1, countMatchesAfter - countMatchesBefore );
     }
