@@ -22,6 +22,9 @@ package org.apache.directory.studio.test.integration.ui;
 
 
 import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertTrue;
+
+import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.directory.server.core.integ.Level;
@@ -29,10 +32,16 @@ import org.apache.directory.server.core.integ.annotations.ApplyLdifFiles;
 import org.apache.directory.server.core.integ.annotations.CleanupLevel;
 import org.apache.directory.server.integ.SiRunner;
 import org.apache.directory.server.ldap.LdapServer;
+import org.apache.directory.shared.ldap.name.LdapDN;
+import org.apache.directory.studio.connection.core.Connection;
+import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
 import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
+import org.apache.directory.studio.ldapbrowser.core.model.impl.Bookmark;
 import org.apache.directory.studio.test.integration.ui.bots.BrowserViewBot;
 import org.apache.directory.studio.test.integration.ui.bots.ConnectionsViewBot;
 import org.apache.directory.studio.test.integration.ui.bots.DeleteDialogBot;
+import org.apache.directory.studio.test.integration.ui.bots.EntryEditorBot;
 import org.apache.directory.studio.test.integration.ui.bots.StudioBot;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotStyledText;
@@ -60,6 +69,8 @@ public class BrowserTest
     private ConnectionsViewBot connectionsViewBot;
     private BrowserViewBot browserViewBot;
 
+    private Connection connection;
+
     private SWTWorkbenchBot eBot;
 
 
@@ -69,7 +80,7 @@ public class BrowserTest
         studioBot = new StudioBot();
         studioBot.resetLdapPerspective();
         connectionsViewBot = studioBot.getConnectionView();
-        connectionsViewBot.createTestConnection( "BrowserTest", ldapServer.getPort() );
+        connection = connectionsViewBot.createTestConnection( "BrowserTest", ldapServer.getPort() );
         browserViewBot = studioBot.getBrowserView();
 
         eBot = new SWTWorkbenchBot();
@@ -145,6 +156,36 @@ public class BrowserTest
         // verify that only two events were fired during deletion
         long fireCount = fireCount1 - fireCount0;
         assertEquals( "Only 2 event firings expected when deleting multiple entries.", 2, fireCount );
+    }
+
+
+    /**
+     * Test for DIRSTUDIO-575.
+     * 
+     * When opening a bookmark the entry editor should be opened and the 
+     * bookmark entry's attributes should be displayed.
+     *
+     * @throws Exception
+     */
+    @Test
+    public void testBookmark() throws Exception
+    {
+        // create a bookmark
+        IBrowserConnection browserConnection = BrowserCorePlugin.getDefault().getConnectionManager()
+            .getBrowserConnection( connection );
+        browserConnection.getBookmarkManager().addBookmark(
+            new Bookmark( browserConnection, new LdapDN( "uid=user.1,ou=users,ou=system" ), "Existing Bookmark" ) );
+
+        // select the bookmark
+        browserViewBot.selectEntry( "Bookmarks", "Existing Bookmark" );
+
+        // check that entry editor was opened and attributes are visible
+        EntryEditorBot entryEditorBot = studioBot.getEntryEditorBot( "uid=user.1,ou=users,ou=system" );
+        String dn = entryEditorBot.getDnText();
+        assertEquals( "DN: uid=user.1,ou=users,ou=system", dn );
+        List<String> attributeValues = entryEditorBot.getAttributeValues();
+        assertEquals( 23, attributeValues.size() );
+        assertTrue( attributeValues.contains( "uid: user.1" ) );
     }
 
 }

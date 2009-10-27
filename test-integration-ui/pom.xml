@@ -258,6 +258,7 @@
             <Bundle-Localization>plugin</Bundle-Localization>
             <Require-Bundle>org.eclipse.core.runtime,
  org.eclipse.ui,
+ org.apache.directory.studio.jars,
  org.apache.directory.studio.connection.core,
  org.apache.directory.studio.connection.ui,
  org.apache.directory.studio.ldapbrowser.common,
@@ -318,11 +319,13 @@
       <groupId>org.apache.directory.shared</groupId>
       <artifactId>shared-ldap</artifactId>
       <version>0.9.15</version>
+      <scope>provided</scope>
     </dependency> 
     <dependency>
       <groupId>org.apache.directory.shared</groupId>
       <artifactId>shared-asn1</artifactId>
       <version>0.9.15</version>
+      <scope>provided</scope>
     </dependency> 
     <dependency>
       <groupId>junit</groupId>

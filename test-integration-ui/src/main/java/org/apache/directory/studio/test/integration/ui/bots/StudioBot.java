@@ -46,6 +46,12 @@ public class StudioBot
     }
 
 
+    public EntryEditorBot getEntryEditorBot( String title )
+    {
+        return new EntryEditorBot( title );
+    }
+
+
     public void resetLdapPerspective()
     {
         UIThreadRunnable.syncExec( new VoidResult()

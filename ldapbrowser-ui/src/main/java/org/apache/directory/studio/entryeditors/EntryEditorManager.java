@@ -727,6 +727,10 @@ public class EntryEditorManager
         {
             input = new EntryEditorInput( bookmarks[0], extension );
             entry = bookmarks[0].getEntry();
+            if ( entry.getBrowserConnection().getEntryFromCache( entry.getDn() ) == null )
+            {
+                EntryEditorUtils.ensureAttributesInitialized( entry );
+            }
         }
         else
         {
