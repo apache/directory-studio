@@ -42,9 +42,8 @@ import org.apache.directory.studio.test.integration.ui.bots.BrowserViewBot;
 import org.apache.directory.studio.test.integration.ui.bots.ConnectionsViewBot;
 import org.apache.directory.studio.test.integration.ui.bots.DeleteDialogBot;
 import org.apache.directory.studio.test.integration.ui.bots.EntryEditorBot;
+import org.apache.directory.studio.test.integration.ui.bots.SearchLogsViewBot;
 import org.apache.directory.studio.test.integration.ui.bots.StudioBot;
-import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotStyledText;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -68,10 +67,9 @@ public class BrowserTest
     private StudioBot studioBot;
     private ConnectionsViewBot connectionsViewBot;
     private BrowserViewBot browserViewBot;
+    private SearchLogsViewBot searchLogsViewBot;
 
     private Connection connection;
-
-    private SWTWorkbenchBot eBot;
 
 
     @Before
@@ -82,8 +80,7 @@ public class BrowserTest
         connectionsViewBot = studioBot.getConnectionView();
         connection = connectionsViewBot.createTestConnection( "BrowserTest", ldapServer.getPort() );
         browserViewBot = studioBot.getBrowserView();
-
-        eBot = new SWTWorkbenchBot();
+        searchLogsViewBot = studioBot.getSearchLogsViewBot();
     }
 
 
@@ -91,7 +88,6 @@ public class BrowserTest
     public void tearDown() throws Exception
     {
         connectionsViewBot.deleteTestConnections();
-        eBot = null;
     }
 
 
@@ -109,8 +105,7 @@ public class BrowserTest
         browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system" );
 
         // get number of search requests before expanding the entry
-        SWTBotStyledText searchLogsText = SWTBotUtils.getSearchLogsText( eBot );
-        String text = searchLogsText.getText();
+        String text = searchLogsViewBot.getSearchLogsText();
         int countMatchesBefore = StringUtils.countMatches( text, "#!SEARCH REQUEST" );
 
         // expand
@@ -118,8 +113,7 @@ public class BrowserTest
         browserViewBot.waitForEntry( "DIT", "Root DSE", "ou=system", "ou=users" );
 
         // get number of search requests after expanding the entry
-        searchLogsText = SWTBotUtils.getSearchLogsText( eBot );
-        text = searchLogsText.getText();
+        text = searchLogsViewBot.getSearchLogsText();
         int countMatchesAfter = StringUtils.countMatches( text, "#!SEARCH REQUEST" );
 
         assertEquals( "Expected exactly 1 search request", 1, countMatchesAfter - countMatchesBefore );

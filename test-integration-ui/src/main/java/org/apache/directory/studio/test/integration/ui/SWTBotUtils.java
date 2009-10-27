@@ -21,17 +21,12 @@
 package org.apache.directory.studio.test.integration.ui;
 
 
-import static org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory.allOf;
 import static org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory.widgetOfType;
-import static org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory.withStyle;
-import static org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory.withTooltip;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.ToolItem;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
@@ -42,12 +37,9 @@ import org.eclipse.swtbot.swt.finder.waits.DefaultCondition;
 import org.eclipse.swtbot.swt.finder.waits.ICondition;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotButton;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotMenu;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotStyledText;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotToolbarButton;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.eclipse.swtbot.swt.finder.widgets.TimeoutException;
-import org.hamcrest.Matcher;
 
 
 /**
@@ -58,7 +50,6 @@ import org.hamcrest.Matcher;
  */
 public class SWTBotUtils
 {
-
 
     /**
      * Gets the connections tree.
@@ -98,56 +89,6 @@ public class SWTBotUtils
         view.show();
         Tree tree = ( Tree ) bot.widget( widgetOfType( Tree.class ), view.getWidget() );
         return new SWTBotTree( tree );
-    }
-
-
-    /**
-     * Gets the search logs text.
-     * 
-     * @param bot
-     *            the bot
-     * 
-     * @return the search logs text
-     * 
-     * @throws Exception
-     *             the exception
-     */
-    public static SWTBotStyledText getSearchLogsText( SWTWorkbenchBot bot ) throws Exception
-    {
-        SWTBotView view = bot.viewByTitle( "Search Logs" );
-        view.show();
-        //view.toolbarButton( "Refresh" ).click();
-        // just a workaround till view.toolbarButton() is fixed
-        Matcher matcher = allOf( widgetOfType( ToolItem.class ), withTooltip( "Refresh" ), withStyle( SWT.PUSH,
-            "SWT.PUSH" ) );
-        SWTBotToolbarButton button = new SWTBotToolbarButton( ( ToolItem ) bot.widget( matcher, 0 ), matcher );
-        button.click();
-        return view.bot().styledText();
-    }
-
-
-    /**
-     * Gets the modification logs text.
-     * 
-     * @param bot
-     *            the bot
-     * 
-     * @return the modification logs text
-     * 
-     * @throws Exception
-     *             the exception
-     */
-    public static SWTBotStyledText getModificationLogsText( SWTWorkbenchBot bot ) throws Exception
-    {
-        SWTBotView view = bot.viewByTitle( "Modification Logs" );
-        view.show();
-        //  view.toolbarButton( "Refresh" ).click();
-        // just a workaround till view.toolbarButton() is fixed
-        Matcher matcher = allOf( widgetOfType( ToolItem.class ), withTooltip( "Refresh" ), withStyle( SWT.PUSH,
-            "SWT.PUSH" ) );
-        SWTBotToolbarButton button = new SWTBotToolbarButton( ( ToolItem ) bot.widget( matcher, 0 ), matcher );
-        button.click();
-        return view.bot().styledText();
     }
 
 

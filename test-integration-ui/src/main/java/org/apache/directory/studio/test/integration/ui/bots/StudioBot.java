@@ -46,6 +46,18 @@ public class StudioBot
     }
 
 
+    public SearchLogsViewBot getSearchLogsViewBot()
+    {
+        return new SearchLogsViewBot();
+    }
+
+
+    public ModificationLogsViewBot getModificationLogsViewBot()
+    {
+        return new ModificationLogsViewBot();
+    }
+
+
     public EntryEditorBot getEntryEditorBot( String title )
     {
         return new EntryEditorBot( title );
