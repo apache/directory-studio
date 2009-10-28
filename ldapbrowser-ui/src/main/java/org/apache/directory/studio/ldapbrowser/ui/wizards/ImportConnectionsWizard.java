@@ -64,7 +64,7 @@ public class ImportConnectionsWizard extends ExportBaseWizard
      */
     public ImportConnectionsWizard()
     {
-        super( Messages.getString( "ImportConnectionsWizard.ConnectionsExport" ) ); //$NON-NLS-1$
+        super( Messages.getString( "ImportConnectionsWizard.ConnectionsImport" ) ); //$NON-NLS-1$
     }
 
 
