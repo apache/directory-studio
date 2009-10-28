@@ -38,7 +38,6 @@ import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
 import org.apache.directory.studio.ldapbrowser.core.events.ChildrenInitializedEvent;
 import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
-import org.apache.directory.studio.ldapbrowser.core.model.IContinuation;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.IRootDSE;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
@@ -429,11 +428,6 @@ public class InitializeChildrenRunnable implements StudioBulkRunnableWithProgres
 
     static void clearCaches( IEntry entry, boolean purgeAllCaches )
     {
-        if ( entry instanceof IContinuation )
-        {
-            return;
-        }
-
         // clear the parent-child relationship, recursively
         IEntry[] children = entry.getChildren();
         if ( children != null )

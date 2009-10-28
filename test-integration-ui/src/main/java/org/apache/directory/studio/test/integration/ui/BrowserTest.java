@@ -22,11 +22,14 @@ package org.apache.directory.studio.test.integration.ui;
 
 
 import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertTrue;
 
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.directory.server.core.entry.DefaultServerEntry;
+import org.apache.directory.server.core.entry.ServerEntry;
 import org.apache.directory.server.core.integ.Level;
 import org.apache.directory.server.core.integ.annotations.ApplyLdifFiles;
 import org.apache.directory.server.core.integ.annotations.CleanupLevel;
@@ -34,6 +37,7 @@ import org.apache.directory.server.integ.SiRunner;
 import org.apache.directory.server.ldap.LdapServer;
 import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.studio.connection.core.Connection;
+import org.apache.directory.studio.connection.core.Connection.ReferralHandlingMethod;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
 import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
@@ -42,6 +46,7 @@ import org.apache.directory.studio.test.integration.ui.bots.BrowserViewBot;
 import org.apache.directory.studio.test.integration.ui.bots.ConnectionsViewBot;
 import org.apache.directory.studio.test.integration.ui.bots.DeleteDialogBot;
 import org.apache.directory.studio.test.integration.ui.bots.EntryEditorBot;
+import org.apache.directory.studio.test.integration.ui.bots.ReferralDialogBot;
 import org.apache.directory.studio.test.integration.ui.bots.SearchLogsViewBot;
 import org.apache.directory.studio.test.integration.ui.bots.StudioBot;
 import org.junit.After;
@@ -179,6 +184,222 @@ public class BrowserTest
         List<String> attributeValues = entryEditorBot.getAttributeValues();
         assertEquals( 23, attributeValues.size() );
         assertTrue( attributeValues.contains( "uid: user.1" ) );
+    }
+
+
+    /**
+     * Test for DIRSTUDIO-481.
+     * 
+     * Check proper operation of refresh action.
+     *
+     * @throws Exception
+     */
+    @Test
+    public void testRefreshParent() throws Exception
+    {
+        // check the entry doesn't exist yet
+        browserViewBot.expandEntry( "DIT", "Root DSE", "ou=system", "ou=users" );
+        assertFalse( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=users", "cn=refresh" ) );
+
+        // add the entry directly in the server
+        ServerEntry entry = new DefaultServerEntry( ldapServer.getDirectoryService().getRegistries() );
+        entry.setDn( new LdapDN( "cn=refresh,ou=users,ou=system" ) );
+        entry.add( "objectClass", "top", "person" );
+        entry.add( "cn", "refresh" );
+        entry.add( "sn", "refresh" );
+        ldapServer.getDirectoryService().getAdminSession().add( entry );
+
+        // check the entry still isn't visible in the tree
+        assertFalse( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=users", "cn=refresh" ) );
+
+        // refresh parent
+        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users" );
+        browserViewBot.refresh();
+
+        // check the entry exists now
+        browserViewBot.expandEntry( "DIT", "Root DSE", "ou=system", "ou=users" );
+        assertTrue( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=users", "cn=refresh" ) );
+        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users", "cn=refresh" );
+
+        // delete the entry directly in the server
+        ldapServer.getDirectoryService().getAdminSession().delete( new LdapDN( "cn=refresh,ou=users,ou=system" ) );
+
+        // check the entry still is now visible in the tree
+        assertTrue( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=users", "cn=refresh" ) );
+
+        // refresh parent
+        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users" );
+        browserViewBot.refresh();
+
+        // check the entry doesn't exist now
+        browserViewBot.expandEntry( "DIT", "Root DSE", "ou=system", "ou=users" );
+        assertFalse( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=users", "cn=refresh" ) );
+    }
+
+
+    /**
+     * Test for DIRSTUDIO-481.
+     * 
+     * Check proper operation of refresh action.
+     *
+     * @throws Exception
+     */
+    @Test
+    public void testRefreshContextEntry() throws Exception
+    {
+        // check the entry doesn't exist yet
+        browserViewBot.expandEntry( "DIT", "Root DSE", "ou=system", "ou=users" );
+        assertFalse( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=users", "cn=refresh" ) );
+
+        // add the entry directly in the server
+        ServerEntry entry = new DefaultServerEntry( ldapServer.getDirectoryService().getRegistries() );
+        entry.setDn( new LdapDN( "cn=refresh,ou=users,ou=system" ) );
+        entry.add( "objectClass", "top", "person" );
+        entry.add( "cn", "refresh" );
+        entry.add( "sn", "refresh" );
+        ldapServer.getDirectoryService().getAdminSession().add( entry );
+
+        // check the entry still isn't visible in the tree
+        assertFalse( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=users", "cn=refresh" ) );
+
+        // refresh context entry
+        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system" );
+        browserViewBot.refresh();
+
+        // check the entry exists now
+        browserViewBot.expandEntry( "DIT", "Root DSE", "ou=system", "ou=users" );
+        assertTrue( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=users", "cn=refresh" ) );
+        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users", "cn=refresh" );
+
+        // delete the entry directly in the server
+        ldapServer.getDirectoryService().getAdminSession().delete( new LdapDN( "cn=refresh,ou=users,ou=system" ) );
+
+        // check the entry still is now visible in the tree
+        assertTrue( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=users", "cn=refresh" ) );
+
+        // refresh context entry
+        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system" );
+        browserViewBot.refresh();
+
+        // check the entry doesn't exist now
+        browserViewBot.expandEntry( "DIT", "Root DSE", "ou=system", "ou=users" );
+        assertFalse( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=users", "cn=refresh" ) );
+    }
+
+
+    /**
+     * Test for DIRSTUDIO-481.
+     * 
+     * Check proper operation of refresh action.
+     *
+     * @throws Exception
+     */
+    @Test
+    public void testRefreshRootDSE() throws Exception
+    {
+        // check the entry doesn't exist yet
+        browserViewBot.expandEntry( "DIT", "Root DSE", "ou=system", "ou=users" );
+        assertFalse( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=users", "cn=refresh" ) );
+
+        // add the entry directly in the server
+        ServerEntry entry = new DefaultServerEntry( ldapServer.getDirectoryService().getRegistries() );
+        entry.setDn( new LdapDN( "cn=refresh,ou=users,ou=system" ) );
+        entry.add( "objectClass", "top", "person" );
+        entry.add( "cn", "refresh" );
+        entry.add( "sn", "refresh" );
+        ldapServer.getDirectoryService().getAdminSession().add( entry );
+
+        // check the entry still isn't visible in the tree
+        assertFalse( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=users", "cn=refresh" ) );
+
+        // refresh Root DSE
+        browserViewBot.selectEntry( "DIT", "Root DSE" );
+        browserViewBot.refresh();
+
+        // check the entry exists now
+        browserViewBot.expandEntry( "DIT", "Root DSE", "ou=system", "ou=users" );
+        assertTrue( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=users", "cn=refresh" ) );
+        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users", "cn=refresh" );
+
+        // delete the entry directly in the server
+        ldapServer.getDirectoryService().getAdminSession().delete( new LdapDN( "cn=refresh,ou=users,ou=system" ) );
+
+        // check the entry still is now visible in the tree
+        assertTrue( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=users", "cn=refresh" ) );
+
+        // refresh Root DSE
+        browserViewBot.selectEntry( "DIT", "Root DSE" );
+        browserViewBot.refresh();
+
+        // check the entry doesn't exist now
+        browserViewBot.expandEntry( "DIT", "Root DSE", "ou=system", "ou=users" );
+        assertFalse( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=users", "cn=refresh" ) );
+    }
+
+
+    /**
+     * Test for DIRSTUDIO-481.
+     * 
+     * Check proper operation of refresh action.
+     *
+     * @throws Exception
+     */
+    @Test
+    public void testRefreshSearchContinuation() throws Exception
+    {
+        // preparation: add referral entry and set referral handling
+        String url = "ldap://localhost:" + ldapServer.getPort() + "/ou=users,ou=system";
+        ServerEntry refEntry = new DefaultServerEntry( ldapServer.getDirectoryService().getRegistries() );
+        refEntry.setDn( new LdapDN( "cn=referral,ou=system" ) );
+        refEntry.add( "objectClass", "top", "referral", "extensibleObject" );
+        refEntry.add( "cn", "referral" );
+        refEntry.add( "ref", url );
+        ldapServer.getDirectoryService().getAdminSession().add( refEntry );
+        connection.getConnectionParameter().setExtendedIntProperty(
+            IBrowserConnection.CONNECTION_PARAMETER_REFERRALS_HANDLING_METHOD,
+            ReferralHandlingMethod.FOLLOW_MANUALLY.ordinal() );
+        browserViewBot.selectEntry( "DIT", "Root DSE" );
+        browserViewBot.refresh();
+
+        // check the entry doesn't exist yet
+        ReferralDialogBot refDialog = browserViewBot.expandEntryExpectingReferralDialog( "DIT", "Root DSE",
+            "ou=system", url );
+        refDialog.clickOkButton();
+        assertFalse( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", url, "cn=refresh" ) );
+
+        // add the entry directly in the server
+        ServerEntry entry = new DefaultServerEntry( ldapServer.getDirectoryService().getRegistries() );
+        entry.setDn( new LdapDN( "cn=refresh,ou=users,ou=system" ) );
+        entry.add( "objectClass", "top", "person" );
+        entry.add( "cn", "refresh" );
+        entry.add( "sn", "refresh" );
+        ldapServer.getDirectoryService().getAdminSession().add( entry );
+
+        // check the entry still isn't visible in the tree
+        assertFalse( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", url, "cn=refresh" ) );
+
+        // refresh search continuation
+        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", url );
+        browserViewBot.refresh();
+
+        // check the entry exists now
+        browserViewBot.expandEntry( "DIT", "Root DSE", "ou=system", url );
+        assertTrue( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", url, "cn=refresh" ) );
+        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", url, "cn=refresh" );
+
+        // delete the entry directly in the server
+        ldapServer.getDirectoryService().getAdminSession().delete( new LdapDN( "cn=refresh,ou=users,ou=system" ) );
+
+        // check the entry still is now visible in the tree
+        assertTrue( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", url, "cn=refresh" ) );
+
+        // refresh search continuation
+        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", url );
+        browserViewBot.refresh();
+
+        // check the entry doesn't exist now
+        browserViewBot.expandEntry( "DIT", "Root DSE", "ou=system", url );
+        assertFalse( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", url, "cn=refresh" ) );
     }
 
 }

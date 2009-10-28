@@ -268,4 +268,10 @@ public class BrowserViewBot
         return tree;
     }
 
+
+    public void refresh()
+    {
+        ContextMenuHelper.clickContextMenu( getBrowserTree(), "Reload Entry" );
+    }
+
 }
