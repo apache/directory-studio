@@ -42,10 +42,13 @@
   
   <!ENTITY tools_ldifimport_wizard SYSTEM "2.45_tools_ldifimport_wizard.xml">
   <!ENTITY tools_dsmlimport_wizard SYSTEM "2.45.1_tools_dsmlimport_wizard.xml">
+  <!ENTITY tools_connectionsimport_wizard SYSTEM "2.45.9_tools_connectionsimport_wizard.xml">
   <!ENTITY tools_ldifexport_wizard SYSTEM "2.46_tools_ldifexport_wizard.xml">
   <!ENTITY tools_dsmlexport_wizard SYSTEM "2.46.1_tools_dsmlexport_wizard.xml">
-  <!ENTITY tools_csvexport_wizard SYSTEM "2.47_tools_csvexport_wizard.xml">
-  <!ENTITY tools_excelexport_wizard SYSTEM "2.48_tools_excelexport_wizard.xml">
+  <!ENTITY tools_csvexport_wizard SYSTEM "2.46.2_tools_csvexport_wizard.xml">
+  <!ENTITY tools_excelexport_wizard SYSTEM "2.46.3_tools_excelexport_wizard.xml">
+  <!ENTITY tools_odfexport_wizard SYSTEM "2.46.4_tools_odfexport_wizard.xml">
+  <!ENTITY tools_connectionsexport_wizard SYSTEM "2.46.9_tools_connectionsexport_wizard.xml">
 
   <!ENTITY tools_referrals_connection_dialog SYSTEM "2.49_tools_referrals_connection_dialog.xml">
   <!ENTITY tools_filter_editor_dialog SYSTEM "2.50_tools_filter_editor_dialog.xml">

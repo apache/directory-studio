@@ -51,10 +51,13 @@
 		
 		&tools_ldifimport_wizard;
 		&tools_dsmlimport_wizard;
+		&tools_connectionsimport_wizard;
 		&tools_ldifexport_wizard;
 		&tools_dsmlexport_wizard;
 		&tools_csvexport_wizard;
 		&tools_excelexport_wizard;
+		&tools_odfexport_wizard;
+		&tools_connectionsexport_wizard;
 		
 		&tools_referrals_connection_dialog;
 		&tools_filter_editor_dialog;

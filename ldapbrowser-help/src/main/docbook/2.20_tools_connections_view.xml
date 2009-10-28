@@ -117,24 +117,22 @@
 					  <entry>Close Connection</entry>
 					  <entry>Closes the selected connection(s)</entry>
 					</row>
+					<row>
+					  <entry><guiicon><inlinemediaobject><imageobject><imagedata scale="50" fileref="icons/expandall.gif" format="GIF"/></imageobject></inlinemediaobject></guiicon></entry>
+					  <entry>Expand All</entry>
+					  <entry>Expands all connection folders</entry>
+					</row>
+					<row>
+					  <entry><guiicon><inlinemediaobject><imageobject><imagedata scale="50" fileref="icons/collapseall.gif" format="GIF"/></imageobject></inlinemediaobject></guiicon></entry>
+					  <entry>Collapse All</entry>
+					  <entry>Collapses all connection folders</entry>
+					</row>
 				</tbody>
 			</tgroup>
 		</informaltable>						
 	</simplesect>
 	<simplesect id="tools_connections_view_contextmenu">
 		<title>Context Menu</title>
-		<!-- 
-		<para>
-			<screenshot>
-				<mediaobject>
-					<imageobject>
-						<imagedata width="15cm"
-							fileref="images/tools_connections_view_2.png" format="PNG" />
-					</imageobject>
-				</mediaobject>
-			</screenshot>
-		</para>				
-		-->
 		<informaltable>
 			<tgroup cols='4'>
 				<colspec colname="Icon" align="center" colwidth="1*" />
@@ -245,6 +243,16 @@
 					  <entry></entry>
 					</row>
 					<row>
+					  <entry><guiicon><inlinemediaobject><imageobject><imagedata scale="50" fileref="icons/import_connections.gif" format="GIF"/></imageobject></inlinemediaobject></guiicon></entry>
+					  <entry><menuchoice>
+						<guimenu>Import</guimenu>
+						<guisubmenu>Import Connections...</guisubmenu>
+						</menuchoice>
+					  </entry>
+					  <entry>Starts the <link linkend="tools_connectionsimport_wizard">Import Connection wizard</link>.</entry>
+					  <entry></entry>
+					</row>
+					<row>
 					  <entry><guiicon><inlinemediaobject><imageobject><imagedata scale="50" fileref="icons/export_ldif.gif" format="GIF"/></imageobject></inlinemediaobject></guiicon></entry>
 					  <entry><menuchoice>
 						<guimenu>Export</guimenu>
@@ -282,6 +290,26 @@
 						</menuchoice>
 					  </entry>
 					  <entry>Starts the <link linkend="tools_excelexport_wizard">Excel Export wizard</link>.</entry>
+					  <entry></entry>
+					</row>
+					<row>
+					  <entry><guiicon><inlinemediaobject><imageobject><imagedata scale="50" fileref="icons/export_odf.gif" format="GIF"/></imageobject></inlinemediaobject></guiicon></entry>
+					  <entry><menuchoice>
+						<guimenu>Export</guimenu>
+						<guisubmenu>ODF Export...</guisubmenu>
+						</menuchoice>
+					  </entry>
+					  <entry>Starts the <link linkend="tools_odfexport_wizard">ODF Export wizard</link>.</entry>
+					  <entry></entry>
+					</row>
+					<row>
+					  <entry><guiicon><inlinemediaobject><imageobject><imagedata scale="50" fileref="icons/export_connections.gif" format="GIF"/></imageobject></inlinemediaobject></guiicon></entry>
+					  <entry><menuchoice>
+						<guimenu>Export</guimenu>
+						<guisubmenu>Export Connections...</guisubmenu>
+						</menuchoice>
+					  </entry>
+					  <entry>Starts the <link linkend="tools_connectionsexport_wizard">Export Connections wizard</link>.</entry>
 					  <entry></entry>
 					</row>
 					<row>
