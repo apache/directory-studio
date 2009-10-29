@@ -1,0 +1,358 @@
+<!--
+  Licensed to the Apache Software Foundation (ASF) under one
+  or more contributor license agreements.  See the NOTICE file
+  distributed with this work for additional information
+  regarding copyright ownership.  The ASF licenses this file
+  to you under the Apache License, Version 2.0 (the
+  "License"); you may not use this file except in compliance
+  with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing,
+  software distributed under the License is distributed on an
+  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+  KIND, either express or implied.  See the License for the
+  specific language governing permissions and limitations
+  under the License.
+-->
+<section id="tools_ldif_entry_editor_contextmenu">
+	<title>LDIF Entry Editor Context Menu</title>
+	<para>
+		This section describes the context menu of the LDIF Entry editor.
+	</para>
+
+	<simplesect id="tools_ldif_entry_edior_contextmenu_undo">
+		<title>Undo Typing</title>
+		<para>
+			<itemizedlist>
+				<listitem>
+					<para>
+						Undo the last typing.
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						Shortcut:
+						<shortcut>
+							<keycombo>
+								<keycap>Ctrl</keycap>
+								<keycap>Z</keycap>
+							</keycombo>
+						</shortcut>
+					</para>
+				</listitem>
+			</itemizedlist>
+		</para>
+	</simplesect>
+	
+	<simplesect id="tools_ldif_entry_edior_contextmenu_revert">
+		<title>Revert File</title>
+		<para>
+			<itemizedlist>
+				<listitem>
+					<para>
+						Reverts all unsaved modifications.
+					</para>
+				</listitem>
+			</itemizedlist>
+		</para>
+	</simplesect>
+
+	<simplesect id="tools_ldif_entry_edior_contextmenu_save">
+		<title>Save</title>
+		<para>
+			<itemizedlist>
+				<listitem>
+					<para>
+						Saves the modified entry to the directory server.
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						Shortcut:
+						<shortcut>
+							<keycombo>
+								<keycap>Ctrl</keycap>
+								<keycap>S</keycap>
+							</keycombo>
+						</shortcut>
+					</para>
+				</listitem>
+			</itemizedlist>
+		</para>
+	</simplesect>
+
+	<simplesect id="tools_ldif_entry_edior_contextmenu_cut">
+		<title>Cuts</title>
+		<para>
+			<itemizedlist>
+				<listitem>
+					<para>
+						Cuts the selected text to the clipboard.
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						Shortcut:
+						<shortcut>
+							<keycombo>
+								<keycap>Ctrl</keycap>
+								<keycap>X</keycap>
+							</keycombo>
+						</shortcut>
+					</para>
+				</listitem>
+			</itemizedlist>
+		</para>
+	</simplesect>
+
+	<simplesect id="tools_ldif_entry_edior_contextmenu_copy">
+		<title>Copy</title>
+		<para>
+			<itemizedlist>
+				<listitem>
+					<para>
+						Copies the selected text to the clipboard.
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						Icon:
+						<guiicon>
+							<inlinemediaobject>
+								<imageobject>
+									<imagedata scale="50" fileref="icons/copy.gif"
+										format="GIF" />
+								</imageobject>
+							</inlinemediaobject>
+						</guiicon>
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						Shortcut:
+						<shortcut>
+							<keycombo>
+								<keycap>Ctrl</keycap>
+								<keycap>C</keycap>
+							</keycombo>
+						</shortcut>
+						or
+						<shortcut>
+							<keycombo>
+								<keycap>Ctrl</keycap>
+								<keycap>Insert</keycap>
+							</keycombo>
+						</shortcut>
+					</para>
+				</listitem>
+			</itemizedlist>
+		</para>
+	</simplesect>
+
+	<simplesect id="tools_ldif_entry_editor_contextmenu_paste">
+		<title>Paste</title>
+		<para>
+			<itemizedlist>
+				<listitem>
+					<para>
+						Pastes the content of the clipboard.
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						Icon:
+						<guiicon>
+							<inlinemediaobject>
+								<imageobject>
+									<imagedata scale="50" fileref="icons/paste.gif"
+										format="GIF" />
+								</imageobject>
+							</inlinemediaobject>
+						</guiicon>
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						Shortcut:
+						<shortcut>
+							<keycombo>
+								<keycap>Ctrl</keycap>
+								<keycap>V</keycap>
+							</keycombo>
+						</shortcut>
+						or
+						<shortcut>
+							<keycombo>
+								<keycap>Shift</keycap>
+								<keycap>Insert</keycap>
+							</keycombo>
+						</shortcut>
+					</para>
+				</listitem>
+			</itemizedlist>
+		</para>
+	</simplesect>
+
+	<simplesect id="tools_ldif_entry_editor_contextmenu_editattribute">
+		<title>Edit Attribute Description</title>
+		<para>
+			<itemizedlist>
+				<listitem>
+					<para>
+						Opens the <link linkend="tools_attribute_wizard">
+						Edit Attribute wizard</link>.
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						Enabled: If one attribute is selected.
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						Shortcut:
+						<shortcut>
+							<keycap>F6</keycap>
+						</shortcut>
+					</para>
+				</listitem>
+			</itemizedlist>
+		</para>
+	</simplesect>
+
+	<simplesect id="tools_ldif_entry_editor_contextmenu_editvalue">
+		<title>Edit Value</title>
+		<para>
+			<itemizedlist>
+				<listitem>
+					<para>
+						Edits the selected value using the default value
+						editor. To change the default value editor see
+						<link linkend="preferences_value_editors">
+							Value Editors preferences
+						</link>
+						.
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						Enabled: If one value is selected.
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						Shortcut:
+						<shortcut>
+							<keycap>F7</keycap>
+						</shortcut>
+					</para>
+				</listitem>
+			</itemizedlist>
+		</para>
+	</simplesect>
+
+	<simplesect id="tools_ldif_entry_editor_contextmenu_editvaluewith">
+		<title>Edit Value With</title>
+		<para>
+			<itemizedlist>
+				<listitem>
+					<para>
+						Depending on the selected value there could be
+						alternate value editors. To edit the selected
+						value with another value editor choose one of
+						the listed editors.
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						Enabled: If one value is selected.
+					</para>
+				</listitem>
+			</itemizedlist>
+		</para>
+	</simplesect>
+
+	<simplesect id="tools_ldif_entry_editor_contextmenu_editentry">
+		<title>Edit Record</title>
+		<para>
+			<itemizedlist>
+				<listitem>
+					<para>
+						Opens the LDIF Record Editor dialog.
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						Shortcut:
+						<shortcut>
+							<keycap>F8</keycap>
+						</shortcut>
+					</para>
+				</listitem>
+			</itemizedlist>
+		</para>
+	</simplesect>
+
+	<simplesect id="tools_ldif_entry_editor_contextmenu_reload">
+		<title>Reload Attributes</title>
+		<para>
+			<itemizedlist>
+				<listitem>
+					<para>
+						Reloads the attributes of the current entry.
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						Icon:
+						<guiicon>
+							<inlinemediaobject>
+								<imageobject>
+									<imagedata scale="50"
+										fileref="icons/refresh.gif" format="GIF" />
+								</imageobject>
+							</inlinemediaobject>
+						</guiicon>
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						Shortcut:
+						<shortcut>
+							<keycap>F5</keycap>
+						</shortcut>
+					</para>
+				</listitem>
+			</itemizedlist>
+		</para>
+	</simplesect>
+
+	<simplesect id="tools_ldif_entry_editor_contextmenu_fetch_operational_attributes">
+		<title>Fetch Operational Attributes</title>
+		<para>
+			<itemizedlist>
+				<listitem>
+					<para>
+						Loads the operational attributes of the current entry.
+					</para>
+				</listitem>
+			</itemizedlist>
+		</para>
+	</simplesect>
+
+	<simplesect id="tools_ldif_entry_editor_contextmenu_preferences">
+		<title>Preferences</title>
+		<para>
+			<itemizedlist>
+				<listitem>
+					<para>
+						Opens the LDIF Editor preferences.
+					</para>
+				</listitem>
+			</itemizedlist>
+		</para>
+	</simplesect>
+
+</section>

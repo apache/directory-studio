@@ -1,0 +1,97 @@
+<!--
+  Licensed to the Apache Software Foundation (ASF) under one
+  or more contributor license agreements.  See the NOTICE file
+  distributed with this work for additional information
+  regarding copyright ownership.  The ASF licenses this file
+  to you under the Apache License, Version 2.0 (the
+  "License"); you may not use this file except in compliance
+  with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing,
+  software distributed under the License is distributed on an
+  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+  KIND, either express or implied.  See the License for the
+  specific language governing permissions and limitations
+  under the License.
+-->
+<section id="tools_entry_editors">
+	<title>Entry editors</title>
+	<para>
+		Entry editors are used to view and edit the attributes and values of an entry. 
+	</para>
+	
+	<simplesect id="tools_entry_editors_types">
+		<title>Editor Types</title>
+		<para>
+			There are two editor types available.
+			<itemizedlist>
+				<listitem>
+					<para>Table Entry editor: Displays the entry's attributes and values in a table grid.
+					</para>
+				</listitem>
+				<listitem>
+					<para>LDIF Entry editor: Displays the entry's attributes and values in LDIF format.
+					</para>
+				</listitem>
+			</itemizedlist>
+		</para>
+		<para>
+			By default the single-tab Table Entry editor is used, you could change that setting in the
+			<link linkend="preferences_entry_editors">Entry Editor preferences</link>. 
+		</para>
+	</simplesect>
+	
+	<simplesect id="tools_entry_editors_single_multi_tab">
+		<title>Single-Tab vs. Multi-Tab</title>
+		<para>
+			Each editor type can be used in single-tab or multi-tab mode.
+			<itemizedlist>
+				<listitem>
+					<para>Single-tab means that only one instance of the editor is used, 
+					all entries are opened in the same editor tab.</para>
+				</listitem>
+				<listitem>
+					<para>Multi-tab means that each entry is opened in its own editor tab.</para>
+				</listitem>
+			</itemizedlist>
+		</para>
+	</simplesect>
+	
+	<simplesect id="tools_entry_editors_open_mode">
+		<title>Open Mode</title>
+		<para>
+			With the open mode you could define how an entry should be opened while
+			navigating through the DIT in the LDAP Browser view.
+			<itemizedlist>
+				<listitem>
+					<para>Traditional: Editors open on single-click, using arrow keys triggers
+					the opening of a new editor.</para>
+				</listitem>
+				<listitem>
+					<para>Application-wide open mode + double-click: Editors open on double-click,
+					using arrow keys requires an explicit enter to open the entry in an editor.  
+					</para>
+				</listitem>
+				<listitem>
+					<para>Application-wide open mode + single-click: Editors open on single-click,
+					arrow key and hover behaviour could be configured.
+					</para>
+				</listitem>
+			</itemizedlist>
+		</para>
+		<para>
+			By default the traditional open mode is used, you could change that setting in the
+			<link linkend="preferences_entry_editors">Entry Editor preferences</link>. 
+		</para>
+	</simplesect>
+
+	&tools_table_entry_editor_overview;
+	&tools_table_entry_editor_features;
+	&tools_table_entry_editor_contextmenu;
+
+	&tools_ldif_entry_editor_overview;
+	&tools_ldif_entry_editor_contextmenu;
+	
+</section>

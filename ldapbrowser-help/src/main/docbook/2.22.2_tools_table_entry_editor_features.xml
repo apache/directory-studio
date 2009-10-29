@@ -16,20 +16,20 @@
   specific language governing permissions and limitations
   under the License.
 -->
-<section id="tools_entry_editor_features">
-	<title>Features</title>
+<section id="tools_table_entry_editor_features">
+	<title>Table Entry Editor Features</title>
 	<para>
-		This section describes the features of the Entry editor.
+		This section describes the features of the Table Entry editor.
 	</para>
 	
-	<simplesect id="tools_entry_editor_sorting">
+	<simplesect id="tools_table_entry_editor_sorting">
 		<title>Sorting</title>
 		<para>
 			You could sort the displayed attributes by attribute
 			description or value by clicking to the column header. The
 			current sort criteria and direction is indicated by an
 			arrow. The default sorting behaviour could be changed in the
-			<link linkend="tools_entry_editor_sortdialog">
+			<link linkend="tools_table_entry_editor_sortdialog">
 				Sort Dialog
 			</link>
 			(
@@ -49,7 +49,7 @@
 		</para>
 	</simplesect>
 
-	<simplesect id="tools_entry_editor_sortdialog">
+	<simplesect id="tools_table_entry_editor_sortdialog">
 		<title>Sort dialog</title>
 		<para>
 			The default sorting behaviour of the entry editor could be
@@ -114,7 +114,7 @@
 		</informaltable>
 	</simplesect>
 
-	<simplesect id="tools_entry_editor_quickfilter">
+	<simplesect id="tools_table_entry_editor_quickfilter">
 		<title>Quick Filter</title>
 		<para>
 			If an entry has many attributes and values it is difficult
@@ -149,12 +149,12 @@
 		</para>
 	</simplesect>
 
-	<simplesect id="tools_entry_editor_visibleattributes">
+	<simplesect id="tools_table_entry_editor_visibleattributes">
 		<title>Visible attributes</title>
 		<para>
 			By default all user attributes of an entry are fetched and
 			displayed in the Entry editor. In the
-			<link linkend="preferences_entry_editor">
+			<link linkend="preferences_table_entry_editor">
 				Entry editor preferences
 			</link>
 			it is possible to define which classes of attributes (must,
@@ -173,7 +173,7 @@
 		</para>
 	</simplesect>
 
-	<simplesect id="tools_entry_editor_folding">
+	<simplesect id="tools_table_entry_editor_folding">
 		<title>Folding</title>
 		<para>
 			By default attributes with more than 10 values are folded.
@@ -221,13 +221,13 @@
 		</para>
 		<para>
 			You could change this setting in
-			<link linkend="preferences_entry_editor">
+			<link linkend="preferences_table_entry_editor">
 				Entry editor preferences
 			</link>.
 		</para>
 	</simplesect>
 
-	<simplesect id="tools_entry_editor_locatednindit">
+	<simplesect id="tools_table_entry_editor_locatednindit">
 		<title>Locate DN in DIT</title>
 		<para>
 			If a value contains a distinguished name the
@@ -244,7 +244,7 @@
 		</para>
 	</simplesect>
 
-	<simplesect id="tools_entry_editor_querybyexample">
+	<simplesect id="tools_table_entry_editor_querybyexample">
 		<title>Query by example</title>
 		<para>
 			When selecting attributes these attribute-value-pairs are
@@ -275,7 +275,7 @@
 		</para>
 	</simplesect>
 	
-	<simplesect id="tools_entry_editor_edit_attributes">
+	<simplesect id="tools_table_entry_editor_edit_attributes">
 		<title>Edit Attributes and Values</title>
 		<para>
 			It is possible to add, edit or delete attributes and values of
@@ -302,22 +302,33 @@
 			<emphasis role="strong">ESC</emphasis> or click the Cancel button 
 			in a value editor dialog.
 		</para>
-		<para>
-			Using this method each modification will be immediately sent to
-			the directory. 
-		</para>
 	</simplesect>	
 	
-	<simplesect id="tools_entry_editor_edit_offline">
-		<title>Edit Entry Offline</title>
+	<simplesect id="tools_table_entry_editor_edit_offline">
+		<title>Edit Entry Offline and Save Automatically</title>
 		<para>
-			You could edit an entry offline to make multiple modifications on 
+			Sometimes you may want to make multiple modifications on
 			an entry and to send these modifications as one request to the server.
 			This is necessary e.g. when adding an additional object class
-			which requires addional attributes.
+			which requires addional attributes. There are two ways to accomplish this.
 		</para>
 		<para>
-			To start the offlien entry editor press <emphasis role="strong">F8</emphasis>
+			One way is to toggle the "save modifications automatically" setting. 
+			
+			This could be done from the editor's drop-down menu or in the 
+			<link linkend="preferences_table_entry_editor">Table Entry Editor preferences</link>.
+			
+			This mode could be set independently for the single-tab and the 
+			multi-tab editor. For the single-tab editor it is enabled by default, 
+			for the multi-tab editor it is disabled by default.
+			
+			If disabled the editor becomes dirty (an asterisk '*' appears in the editor tab)
+			if the entry is modified. The editor must be saved explicitely using 
+			<emphasis role="strong">Ctrl+S</emphasis>.
+		</para>
+		<para>
+			Another way is to use the <link linkend="tools_editentry_wizard">Editor Entry Wizard</link>.
+			To start the wizard press <emphasis role="strong">F8</emphasis>
 			or choose <emphasis role="strong">Edit Entry...</emphasis> from the
 			context menu.
 		</para>

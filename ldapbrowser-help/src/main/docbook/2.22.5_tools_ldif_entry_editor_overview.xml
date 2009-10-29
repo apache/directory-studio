@@ -1,0 +1,51 @@
+<!--
+  Licensed to the Apache Software Foundation (ASF) under one
+  or more contributor license agreements.  See the NOTICE file
+  distributed with this work for additional information
+  regarding copyright ownership.  The ASF licenses this file
+  to you under the Apache License, Version 2.0 (the
+  "License"); you may not use this file except in compliance
+  with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing,
+  software distributed under the License is distributed on an
+  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+  KIND, either express or implied.  See the License for the
+  specific language governing permissions and limitations
+  under the License.
+-->
+<section id="tools_ldif_entry_editor_overview">
+	<title>LDIF Entry Editor Overview</title>
+	
+	<para>
+		The LDIF Entry editor allows you to view and edit an entry using its LDIF representation.
+		An LDIF content record is used to display all attributes and values. 
+	</para>
+	
+	<para>
+		You could add, modify and delete attributes. To save the modifications to the directory server
+		you must explicitly save the editor.
+	</para>
+		
+	<para>
+		It is not possible to modify the distinguished name. 
+		It is also not possible to add change the record type or to add additional records.
+	</para>
+	
+	<simplesect id="tools_ldif_entry_editor_screenshot">
+		<title>Example screenshot</title>
+		<para>
+			<screenshot>
+				<mediaobject>
+					<imageobject>
+						<imagedata width="15cm"
+							fileref="images/tools_ldif_entry_editor_1.png" format="PNG" />
+					</imageobject>
+				</mediaobject>
+			</screenshot>
+		</para>
+	</simplesect>
+
+</section>

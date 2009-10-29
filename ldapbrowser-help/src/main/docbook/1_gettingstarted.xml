@@ -307,10 +307,10 @@
 			</screenshot>
 		</para>
 		<para>
-			When selecting an entry its attributes and values will be displayed in the <emphasis role="strong">Entry editor</emphasis>.
+			When selecting an entry its attributes and values will be displayed in an <emphasis role="strong">Entry editor</emphasis>.
 		</para>
 		<para>
-			For more information see <link linkend="tools_browser_view">LDAP Browser view</link> and <link linkend="tools_entry_editor">Entry editor</link>.
+			For more information see <link linkend="tools_browser_view">LDAP Browser view</link> and <link linkend="tools_entry_editosr">Entry editors</link>.
 		</para>	
 	</section>
 	

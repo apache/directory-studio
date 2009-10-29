@@ -613,14 +613,6 @@
 				<listitem>
 					<para>
 						Description: Deletes the selected attribute.
-						Note that the following attributes aren't
-						deleteable:
-						<itemizedlist>
-							<listitem>objectClasses</listitem>
-							<listitem>RDN attributes</listitem>
-							<listitem>Must attributes</listitem>
-							<listitem>Operational attributes</listitem>
-						</itemizedlist>
 					</para>
 				</listitem>
 				<listitem>

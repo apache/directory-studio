@@ -27,7 +27,7 @@
 		&tools_connections_view;
 		&tools_browser_view;
 		
-		&tools_entry_editor;
+		&tools_entry_editors;
 		&tools_search_result_editor;
 		&tools_schema_browser;
 	

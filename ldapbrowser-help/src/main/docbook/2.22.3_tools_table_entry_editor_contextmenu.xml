@@ -16,13 +16,13 @@
   specific language governing permissions and limitations
   under the License.
 -->
-<section id="tools_entry_editor_contextmenu">
-	<title>Context Menu</title>
+<section id="tools_table_entry_editor_contextmenu">
+	<title>Table Entry Editor Context Menu</title>
 	<para>
-		This section describes the context menu of the Entry Editor.
+		This section describes the context menu of the Table Entry editor.
 	</para>
 
-	<simplesect id="tools_entry_editor_contextmenu_newattribute">
+	<simplesect id="tools_table_entry_editor_contextmenu_newattribute">
 		<title>New Attribute...</title>
 		<para>
 			<itemizedlist>
@@ -66,7 +66,7 @@
 		</para>
 	</simplesect>
 
-	<simplesect id="tools_entry_editor_contextmenu_newvalue">
+	<simplesect id="tools_table_entry_editor_contextmenu_newvalue">
 		<title>New Value</title>
 		<para>
 			<itemizedlist>
@@ -109,7 +109,7 @@
 		</para>
 	</simplesect>
 
-	<simplesect id="tools_entry_editor_contextmenu_newsearch">
+	<simplesect id="tools_table_entry_editor_contextmenu_newsearch">
 		<title>New Search...</title>
 		<para>
 			<itemizedlist>
@@ -156,7 +156,7 @@
 		</para>
 	</simplesect>
 
-	<simplesect id="tools_entry_editor_contextmenu_newbatchoperation">
+	<simplesect id="tools_table_entry_editor_contextmenu_newbatchoperation">
 		<title>New Batch Operation...</title>
 		<para>
 			<itemizedlist>
@@ -196,7 +196,7 @@
 		</para>
 	</simplesect>
 
-	<simplesect id="tools_entry_editor_contextmenu_locatednindit">
+	<simplesect id="tools_table_entry_editor_contextmenu_locatednindit">
 		<title>Locate DN in DIT</title>
 		<para>
 			<itemizedlist>
@@ -238,7 +238,7 @@
 	</simplesect>
 
 
-	<simplesect id="tools_entry_editor_contextmenu_schemabrowser_ocd">
+	<simplesect id="tools_table_entry_editor_contextmenu_schemabrowser_ocd">
 		<title>Open Schema Browser -> Object Class Definition</title>
 		<para>
 			<itemizedlist>
@@ -279,7 +279,7 @@
 		</para>
 	</simplesect>
 
-	<simplesect id="tools_entry_editor_contextmenu_schemabrowser_atd">
+	<simplesect id="tools_table_entry_editor_contextmenu_schemabrowser_atd">
 		<title>Open Schema Browser -> Attribute Type Definition</title>
 		<para>
 			<itemizedlist>
@@ -321,7 +321,7 @@
 	</simplesect>
 
 	<simplesect
-		id="tools_entry_editor_contextmenu_schemabrowser_mrd_equality">
+		id="tools_table_entry_editor_contextmenu_schemabrowser_mrd_equality">
 		<title>
 			Open Schema Browser -> Equality Matching Rule Definition
 		</title>
@@ -367,7 +367,7 @@
 	</simplesect>
 
 	<simplesect
-		id="tools_entry_editor_contextmenu_schemabrowser_mrd_substring">
+		id="tools_table_entry_editor_contextmenu_schemabrowser_mrd_substring">
 		<title>
 			Open Schema Browser -> Substring Matching Rule Definition
 		</title>
@@ -413,7 +413,7 @@
 	</simplesect>
 
 	<simplesect
-		id="tools_entry_editor_contextmenu_schemabrowser_mrd_ordering">
+		id="tools_table_entry_editor_contextmenu_schemabrowser_mrd_ordering">
 		<title>
 			Open Schema Browser -> Ordering Matching Rule Definition
 		</title>
@@ -458,7 +458,7 @@
 		</para>
 	</simplesect>
 
-	<simplesect id="tools_entry_editor_contextmenu_schemabrowser_lsd">
+	<simplesect id="tools_table_entry_editor_contextmenu_schemabrowser_lsd">
 		<title>Open Schema Browser -> Syntax Definition</title>
 		<para>
 			<itemizedlist>
@@ -500,21 +500,20 @@
 		</para>
 	</simplesect>
 
-	<simplesect id="tools_entry_edior_contextmenu_copy">
+	<simplesect id="tools_table_entry_edior_contextmenu_copy">
 		<title>Copy Values</title>
 		<para>
 			<itemizedlist>
 				<listitem>
 					<para>
-						 Copies the selected values. The
+						Copies the selected values. The
 						values are copied to clipboard in an internal
 						format so they could be pasted to another entry
 						even in the search result editor. Additional
-						they are copied to the system clipboard as
+						the displayed values are copied to the system clipboard as
 						string so they could be pasted in other
 						applications. New-line is used as value
-						separator. Binary values are copied BASE-64
-						encoded.
+						separator.
 					</para>
 				</listitem>
 				<listitem>
@@ -552,7 +551,7 @@
 		</para>
 	</simplesect>
 
-	<simplesect id="tools_entry_editor_contextmenu_paste">
+	<simplesect id="tools_table_entry_editor_contextmenu_paste">
 		<title>Paste Values</title>
 		<para>
 			<itemizedlist>
@@ -606,26 +605,13 @@
 		</para>
 	</simplesect>
 
-	<simplesect id="tools_entry_editor_contextmenu_delete">
+	<simplesect id="tools_table_entry_editor_contextmenu_delete">
 		<title>Delete</title>
 		<para>
 			<itemizedlist>
 				<listitem>
 					<para>
-						Deletes the selected attributes and
-						values. Note that the following attributes
-						aren't deleteable:
-						<itemizedlist>
-							<listitem>
-								objectClasses which attributes are
-								contained in the entry
-							</listitem>
-							<listitem>RDN attributes</listitem>
-							<listitem>
-								The last value of must attributes
-							</listitem>
-							<listitem>Operational attributes</listitem>
-						</itemizedlist>
+						Deletes the selected attributes and values.
 					</para>
 				</listitem>
 				<listitem>
@@ -658,7 +644,7 @@
 		</para>
 	</simplesect>
 
-	<simplesect id="tools_entry_editor_contextmenu_selectall">
+	<simplesect id="tools_table_entry_editor_contextmenu_selectall">
 		<title>Select All</title>
 		<para>
 			<itemizedlist>
@@ -682,8 +668,8 @@
 		</para>
 	</simplesect>
 
-	<simplesect id="tools_entry_editor_contextmenu_advanced_copydn">
-		<title>Advanced -> Copy DN</title>
+	<simplesect id="tools_table_entry_editor_contextmenu_advanced_copydn">
+		<title>Advanced > Copy DN</title>
 		<para>
 			<itemizedlist>
 				<listitem>
@@ -709,8 +695,8 @@
 			</itemizedlist>
 		</para>
 	</simplesect>
-	<simplesect id="tools_entry_editor_contextmenu_advanced_copyurl">
-		<title>Advanced -> Copy URL</title>
+	<simplesect id="tools_table_entry_editor_contextmenu_advanced_copyurl">
+		<title>Advanced > Copy URL</title>
 		<para>
 			<itemizedlist>
 				<listitem>
@@ -738,8 +724,8 @@
 	</simplesect>
 
 	<simplesect
-		id="tools_entry_editor_contextmenu_advanced_copyattribute">
-		<title>Advanced -> Copy Attribute Descriptions</title>
+		id="tools_table_entry_editor_contextmenu_advanced_copyattribute">
+		<title>Advanced > Copy Attribute Descriptions</title>
 		<para>
 			<itemizedlist>
 				<listitem>
@@ -766,8 +752,35 @@
 		</para>
 	</simplesect>
 
-	<simplesect id="tools_entry_editor_contextmenu_advanced_copyutf8">
-		<title>Advanced -> Copy Values (UTF-8)</title>
+	<simplesect id="tools_table_entry_editor_contextmenu_advanced_copydisplay">
+		<title>Advanced > Copy Display Values</title>
+		<para>
+			<itemizedlist>
+				<listitem>
+					<para>
+						Copies the values as displayed in the entry editor,
+						either decorated or not.
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						Icon:
+						<guiicon>
+							<inlinemediaobject>
+								<imageobject>
+									<imagedata scale="50"
+										fileref="icons/copy_display.gif" format="GIF" />
+								</imageobject>
+							</inlinemediaobject>
+						</guiicon>
+					</para>
+				</listitem>
+			</itemizedlist>
+		</para>
+	</simplesect>
+
+	<simplesect id="tools_table_entry_editor_contextmenu_advanced_copyutf8">
+		<title>Advanced > Copy Values (UTF-8)</title>
 		<para>
 			<itemizedlist>
 				<listitem>
@@ -794,8 +807,8 @@
 	</simplesect>
 
 	<simplesect
-		id="tools_entry_editor_contextmenu_advanced_copybase64">
-		<title>Advanced -> Copy Values (BASE-64)</title>
+		id="tools_table_entry_editor_contextmenu_advanced_copybase64">
+		<title>Advanced > Copy Values (BASE-64)</title>
 		<para>
 			<itemizedlist>
 				<listitem>
@@ -821,8 +834,8 @@
 		</para>
 	</simplesect>
 
-	<simplesect id="tools_entry_editor_contextmenu_advanced_copyhex">
-		<title>Advanced -> Copy Values (HEX)</title>
+	<simplesect id="tools_table_entry_editor_contextmenu_advanced_copyhex">
+		<title>Advanced > Copy Values (HEX)</title>
 		<para>
 			<itemizedlist>
 				<listitem>
@@ -848,8 +861,8 @@
 		</para>
 	</simplesect>
 
-	<simplesect id="tools_entry_editor_contextmenu_advanced_copyldif">
-		<title>Advanced -> Copy Name-Value-Pairs as LDIF</title>
+	<simplesect id="tools_table_entry_editor_contextmenu_advanced_copyldif">
+		<title>Advanced > Copy Name-Value-Pairs as LDIF</title>
 		<para>
 			<itemizedlist>
 				<listitem>
@@ -876,8 +889,8 @@
 	</simplesect>
 
 	<simplesect
-		id="tools_entry_editor_contextmenu_advanced_copyfilter">
-		<title>Advanced -> Copy Search Filter</title>
+		id="tools_table_entry_editor_contextmenu_advanced_copyfilter">
+		<title>Advanced > Copy Search Filter</title>
 		<para>
 			Builds search filters from the selected attributes and
 			values. There are four options:
@@ -1006,8 +1019,8 @@
 		</para>
 	</simplesect>
 
-	<simplesect id="tools_entry_editor_contextmenu_deleteall">
-		<title>Advanced -> Delete Attributes</title>
+	<simplesect id="tools_table_entry_editor_contextmenu_deleteall">
+		<title>Advanced > Delete Attributes</title>
 		<para>
 			<itemizedlist>
 				<listitem>
@@ -1041,7 +1054,7 @@
 		</para>
 	</simplesect>
 
-	<simplesect id="tools_entry_editor_contextmenu_editattribute">
+	<simplesect id="tools_table_entry_editor_contextmenu_editattribute">
 		<title>Edit Attribute Description</title>
 		<para>
 			<itemizedlist>
@@ -1053,20 +1066,6 @@
 						</link>
 						. When changing the attribute description a add
 						operation and a delete operation is performed.
-						Note that the attribute descriptions of the
-						following attributes aren't editable (analog to
-						delete):
-						<itemizedlist>
-							<listitem>
-								objectClasses which attributes are
-								contained in the entry
-							</listitem>
-							<listitem>RDN attributes</listitem>
-							<listitem>
-								The last value of must attributes
-							</listitem>
-							<listitem>Operational attributes</listitem>
-						</itemizedlist>
 					</para>
 				</listitem>
 				<listitem>
@@ -1086,7 +1085,7 @@
 		</para>
 	</simplesect>
 
-	<simplesect id="tools_entry_editor_contextmenu_editvalue">
+	<simplesect id="tools_table_entry_editor_contextmenu_editvalue">
 		<title>Edit Value</title>
 		<para>
 			<itemizedlist>
@@ -1121,7 +1120,7 @@
 		</para>
 	</simplesect>
 
-	<simplesect id="tools_entry_editor_contextmenu_editvaluewith">
+	<simplesect id="tools_table_entry_editor_contextmenu_editvaluewith">
 		<title>Edit Value With</title>
 		<para>
 			<itemizedlist>
@@ -1142,7 +1141,7 @@
 		</para>
 	</simplesect>
 
-	<simplesect id="tools_entry_editor_contextmenu_editentry">
+	<simplesect id="tools_table_entry_editor_contextmenu_editentry">
 		<title>Edit Entry...</title>
 		<para>
 			<itemizedlist>
@@ -1165,8 +1164,8 @@
 		</para>
 	</simplesect>
 
-	<simplesect id="tools_entry_editor_contextmenu_reload">
-		<title>Reload Attribute</title>
+	<simplesect id="tools_table_entry_editor_contextmenu_reload">
+		<title>Reload Attributes</title>
 		<para>
 			<itemizedlist>
 				<listitem>
@@ -1199,7 +1198,7 @@
 		</para>
 	</simplesect>
 
-	<simplesect id="tools_entry_editor_contextmenu_fetch_operational_attributes">
+	<simplesect id="tools_table_entry_editor_contextmenu_fetch_operational_attributes">
 		<title>Fetch Operational Attributes</title>
 		<para>
 			<itemizedlist>
@@ -1212,7 +1211,7 @@
 		</para>
 	</simplesect>
 
-	<simplesect id="tools_entry_editor_contextmenu_properties">
+	<simplesect id="tools_table_entry_editor_contextmenu_properties">
 		<title>Properties</title>
 		<para>
 			<itemizedlist>

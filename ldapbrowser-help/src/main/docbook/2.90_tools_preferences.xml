@@ -247,7 +247,7 @@
 		<title>Entry editor preferences</title>
 		<para>
 			In the Entry editor preferences page you can configure the behavior of the 
-			<link linkend="tools_entry_editor">Entry editor</link>.
+			<link linkend="tools_entry_editors">Entry editors</link>.
 		</para>	
 		<para>
 			<screenshot>
@@ -344,7 +344,7 @@
 		<title>Search Result editor preferences</title>
 		<para>
 			In the Search Result editor preferences page you configure the behavior of the 
-			<link linkend="tools_entry_editor">Search Result editor</link>.
+			<link linkend="tools_search_result_editor">Search Result editor</link>.
 		</para>	
 		<para>
 			<screenshot>

@@ -16,38 +16,14 @@
   specific language governing permissions and limitations
   under the License.
 -->
-<!--   
-	<para>
-	This section describes the main features of the Entry editor.
-	</para>
-	- Options-Suppport (;binary)
-	- Language-Tags support
-	- UTF-8 support
-	
-	Show Schema:
-	- Opens the schema of the 
-	
-	Outline:
-	- Shows attributes and number of values
-	- Interaction with Entry editor
-	
-	Modify Attributes:
-	- New Attribute
-	- New Value
-	- Edit Value: Double-Click, Enter, F7, Context-Menu->Edit Value
-	- Edit Value with
-	- Delete
-	
--->
-
-<section id="tools_entry_editor_overview">
-	<title>Overview</title>
+<section id="tools_table_entry_editor_overview">
+	<title>Table Entry Editor Overview</title>
 	
 	<para>
-		This section describes general aspects of the Entry editor.
+		This section describes general aspects of the Table Entry editor.
 	</para>
 	
-	<simplesect id="tools_entry_editor_screenshot">
+	<simplesect id="tools_table_entry_editor_screenshot">
 		<title>Example screenshot</title>
 		<para>
 			<screenshot>
@@ -61,7 +37,7 @@
 		</para>
 	</simplesect>
 
-	<simplesect id="tools_entry_editor_layout">
+	<simplesect id="tools_table_entry_editor_layout">
 		<title>Layout</title>
 		<para>
 			The Entry editor has a two-column layout. The left column
@@ -76,7 +52,7 @@
 		</para>
 	</simplesect>
 
-	<simplesect id="tools_entry_editor_fonts">
+	<simplesect id="tools_table_entry_editor_fonts">
 		<title>Colors and Fonts</title>
 		<para>
 			To distinguish the different attribute classes the Entry
@@ -170,7 +146,7 @@
 		</para>
 	</simplesect>
 
-	<simplesect id="tools_entry_editor_toolbar">
+	<simplesect id="tools_table_entry_editor_toolbar">
 		<title>Toolbar</title>
 		<para>
 			The toolbar contains the following items:
@@ -374,7 +350,7 @@
 		</para>
 	</simplesect>
 
-	<simplesect id="tools_entry_editor_drop_down_menu">
+	<simplesect id="tools_table_entry_editor_drop_down_menu">
 		<title>Drop Down Menu</title>
 		<para>
 			The drop down menu contains the following items:
@@ -420,8 +396,19 @@
 				</listitem>
 				<listitem>
 					<para>
+						Save Automatically: If checked, each modifcation (add attribute,
+						edit value, delete attribute) is saved automatically and a modify
+						request is sent to the server. 
+						If unchecked the editor becomes dirty (an asterisk '*' appears 
+						in the editor tab) if the entry is modified. Multiple modifications
+						could be applied to the entry. The editor must be saved explicitely
+						using <emphasis role="strong">Ctrl+S</emphasis>.
+					</para>
+				</listitem>
+				<listitem>
+					<para>
 						Preferences...: Opens the
-						<link linkend="preferences_entry_editor">
+						<link linkend="preferences_entry_editors">
 							Entry editor preferences
 						</link>
 						dialog.

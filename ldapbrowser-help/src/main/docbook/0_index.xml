@@ -16,10 +16,12 @@
   <!ENTITY tools_browser_view_bookmarks SYSTEM "2.21.3_tools_browser_view_bookmarks.xml">
   <!ENTITY tools_browser_view_contextmenu SYSTEM "2.21.9_tools_browser_view_contextmenu.xml">
 
-  <!ENTITY tools_entry_editor SYSTEM "2.22_tools_entry_editor.xml">
-  <!ENTITY tools_entry_editor_overview SYSTEM "2.22.0_tools_entry_editor_overview.xml">
-  <!ENTITY tools_entry_editor_features SYSTEM "2.22.1_tools_entry_editor_features.xml">
-  <!ENTITY tools_entry_editor_contextmenu SYSTEM "2.22.9_tools_entry_editor_contextmenu.xml">
+  <!ENTITY tools_entry_editors SYSTEM "2.22_tools_entry_editors.xml">
+  <!ENTITY tools_table_entry_editor_overview SYSTEM "2.22.1_tools_table_entry_editor_overview.xml">
+  <!ENTITY tools_table_entry_editor_features SYSTEM "2.22.2_tools_table_entry_editor_features.xml">
+  <!ENTITY tools_table_entry_editor_contextmenu SYSTEM "2.22.3_tools_table_entry_editor_contextmenu.xml">
+  <!ENTITY tools_ldif_entry_editor_overview SYSTEM "2.22.5_tools_ldif_entry_editor_overview.xml">
+  <!ENTITY tools_ldif_entry_editor_contextmenu SYSTEM "2.22.6_tools_ldif_entry_editor_contextmenu.xml">
   
   <!ENTITY tools_search_result_editor SYSTEM "2.23_tools_search_result_editor.xml">
   <!ENTITY tools_search_result_editor_overview SYSTEM "2.23.0_tools_search_result_editor_overview.xml">
