@@ -24,7 +24,7 @@
 	</para>
 
 	<simplesect id="tools_browser_view_contextmenu_newentry">
-		<title>New Entry...</title>
+		<title>New > New Entry...</title>
 		<para>
 			<itemizedlist>
 				<listitem>
@@ -59,9 +59,45 @@
 			</itemizedlist>
 		</para>
 	</simplesect>
+	
+	<simplesect id="tools_browser_view_contextmenu_newcontextentry">
+		<title>New > New Context Entry...</title>
+		<para>
+			<itemizedlist>
+				<listitem>
+					<para>
+						Icon:
+						<guiicon>
+							<inlinemediaobject>
+								<imageobject>
+									<imagedata scale="50"
+										fileref="icons/entry_add.gif" format="GIF" />
+								</imageobject>
+							</inlinemediaobject>
+						</guiicon>
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						Description: Opens the
+						<link linkend="tools_newcontextentry_wizard">
+							New Context Entry wizard
+						</link>
+						.
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						Enabled: If one entry, search result or bookmark
+						is selected.
+					</para>
+				</listitem>
+			</itemizedlist>
+		</para>
+	</simplesect>
 
 	<simplesect id="tools_browser_view_contextmenu_newsearch">
-		<title>New Search...</title>
+		<title>New > New Search...</title>
 		<para>
 			<itemizedlist>
 				<listitem>
@@ -109,7 +145,7 @@
 	</simplesect>
 
 	<simplesect id="tools_browser_view_contextmenu_newbookmark">
-		<title>New Bookmark...</title>
+		<title>New > New Bookmark...</title>
 		<para>
 			<itemizedlist>
 				<listitem>
@@ -143,7 +179,7 @@
 	</simplesect>
 
 	<simplesect id="tools_browser_view_contextmenu_newbatchoperation">
-		<title>New Batch Operation...</title>
+		<title>New > New Batch Operation...</title>
 		<para>
 			<itemizedlist>
 				<listitem>
@@ -179,6 +215,150 @@
 						are selected.
 					</para>
 				</listitem>
+			</itemizedlist>
+		</para>
+	</simplesect>
+
+	<simplesect id="tools_browser_view_contextmenu_openentry">
+		<title>Open Entry</title>
+		<para>
+			<itemizedlist>
+				<listitem>
+					<para>
+						Description: Opens the selected entry in the
+						default entry editor.
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						Enabled: If one entry, search result or bookmark
+						is selected.
+					</para>
+				</listitem>
+			</itemizedlist>
+		</para>
+	</simplesect>
+
+	<simplesect id="tools_browser_view_contextmenu_openwith">
+		<title>Open With ></title>
+		<para>
+			Opens the selected entry in a custom Entry editor.
+			The follwing editor are available:
+		</para> 
+		<para>
+			<itemizedlist>
+				<listitem>
+					<para>
+						<link linkend="tools_table_entry_editor">
+						Table Entry Editor (single-tab)</link>
+						<itemizedlist>
+							<listitem>
+								<para>
+									Icon:
+									<guiicon>
+										<inlinemediaobject>
+											<imageobject>
+												<imagedata scale="50"
+													fileref="icons/browser_singletab_entry_editor.gif" format="GIF" />
+											</imageobject>
+										</inlinemediaobject>
+									</guiicon>
+								</para>
+							</listitem>
+							<listitem>
+								<para>
+									Description: Displays attributes and values in a table grid.
+									Single-tab means that only one instance of the editor is used,
+									all entries are opened in the same editor tab.									
+									This is the traditional Entry editor.
+								</para>
+							</listitem>
+						</itemizedlist>
+					</para> 
+				</listitem>
+				<listitem>
+					<para>
+						<link linkend="tools_table_entry_editor">
+						Table Entry Editor (multi-tab)</link>
+						<itemizedlist>
+							<listitem>
+								<para>
+									Icon:
+									<guiicon>
+										<inlinemediaobject>
+											<imageobject>
+												<imagedata scale="50"
+													fileref="icons/browser_multitab_entry_editor.gif" format="GIF" />
+											</imageobject>
+										</inlinemediaobject>
+									</guiicon>
+								</para>
+							</listitem>
+							<listitem>
+								<para>
+									Description: Displays attributes and values in a table grid.
+									Multi-tab means that each entry is opened in its own editor tab.									
+								</para>
+							</listitem>
+						</itemizedlist>
+					</para> 
+				</listitem>
+				<listitem>
+					<para>
+						<link linkend="tools_ldif_entry_editor">
+						LDIF Entry Editor (multi-tab)</link>
+						<itemizedlist>
+							<listitem>
+								<para>
+									Icon:
+									<guiicon>
+										<inlinemediaobject>
+											<imageobject>
+												<imagedata scale="50"
+													fileref="icons/browser_multitab_ldif_editor.gif" format="GIF" />
+											</imageobject>
+										</inlinemediaobject>
+									</guiicon>
+								</para>
+							</listitem>
+							<listitem>
+								<para>
+									Description: Displays attributes and values in LDIF format.
+									Multi-tab means that each entry is opened in its own editor tab.									
+								</para>
+							</listitem>
+						</itemizedlist>
+					</para> 
+				</listitem>
+				<listitem>
+					<para>
+						<link linkend="tools_ldif_entry_editor">
+						LDIF Entry Editor (single-tab)</link>
+						<itemizedlist>
+							<listitem>
+								<para>
+									Icon:
+									<guiicon>
+										<inlinemediaobject>
+											<imageobject>
+												<imagedata scale="50"
+													fileref="icons/browser_singletab_ldif_editor.gif" format="GIF" />
+											</imageobject>
+										</inlinemediaobject>
+									</guiicon>
+								</para>
+							</listitem>
+							<listitem>
+								<para>
+									Description: Displays attributes and values in LDIF format.
+									Single-tab means that only one instance of the editor is used,
+									all entries are opened in the same editor tab.									
+								</para>
+							</listitem>
+						</itemizedlist>
+					</para> 
+				</listitem>
+
 			</itemizedlist>
 		</para>
 	</simplesect>
@@ -531,7 +711,7 @@
 	</simplesect>
 
 	<simplesect id="tools_browser_view_contextmenu_advanced_copydn">
-		<title>Advanced -> Copy DN</title>
+		<title>Advanced > Copy DN</title>
 		<para>
 			<itemizedlist>
 				<listitem>
@@ -564,7 +744,7 @@
 		</para>
 	</simplesect>
 	<simplesect id="tools_browser_view_contextmenu_advanced_copyurl">
-		<title>Advanced -> Copy URL</title>
+		<title>Advanced > Copy URL</title>
 		<para>
 			<itemizedlist>
 				<listitem>
@@ -599,7 +779,7 @@
 
 	<simplesect
 		id="tools_browser_view_contextmenu_advanced_copyasldif">
-		<title>Advanced -> Copy Entry as LDIF</title>
+		<title>Advanced > Copy Entry as LDIF</title>
 		<para>
 			Copies the selected entries in LDIF content format. There
 			are four options:
@@ -759,7 +939,7 @@
 
 	<simplesect
 		id="tools_browser_view_contextmenu_advanced_copyascsv">
-		<title>Advanced -> Copy Entry as CSV</title>
+		<title>Advanced > Copy Entry as CSV</title>
 		<para>
 			Copies the selected entries in CSV format. By default the
 			tabulator is used as attribute delimiter, a pipe is used as
@@ -988,7 +1168,7 @@
 	</simplesect>
 
 	<simplesect id="tools_browser_view_contextmenu_ldifimport">
-		<title>Import -> LDIF Import...</title>
+		<title>Import > LDIF Import...</title>
 		<para>
 			<itemizedlist>
 				<listitem>
@@ -1017,7 +1197,7 @@
 		</para>
 	</simplesect>
 	<simplesect id="tools_browser_view_contextmenu_dsmlimport">
-		<title>Import -> DSML Import...</title>
+		<title>Import > DSML Import...</title>
 		<para>
 			<itemizedlist>
 				<listitem>
@@ -1046,7 +1226,7 @@
 		</para>
 	</simplesect>
 	<simplesect id="tools_browser_view_contextmenu_ldifexport">
-		<title>Export -> LDIF Export...</title>
+		<title>Export > LDIF Export...</title>
 		<para>
 			<itemizedlist>
 				<listitem>
@@ -1075,7 +1255,7 @@
 		</para>
 	</simplesect>
 	<simplesect id="tools_browser_view_contextmenu_dsmlexport">
-		<title>Export -> DSML Export...</title>
+		<title>Export > DSML Export...</title>
 		<para>
 			<itemizedlist>
 				<listitem>
@@ -1104,7 +1284,7 @@
 		</para>
 	</simplesect>
 	<simplesect id="tools_browser_view_contextmenu_csvexport">
-		<title>Export -> CSV Export...</title>
+		<title>Export > CSV Export...</title>
 		<para>
 			<itemizedlist>
 				<listitem>
@@ -1133,7 +1313,7 @@
 		</para>
 	</simplesect>
 	<simplesect id="tools_browser_view_contextmenu_exportexcel">
-		<title>Export -> Excel Export...</title>
+		<title>Export > Excel Export...</title>
 		<para>
 			<itemizedlist>
 				<listitem>
@@ -1154,6 +1334,35 @@
 						Description: Starts the
 						<link linkend="tools_excelexport_wizard">
 							Excel Export wizard
+						</link>
+						.
+					</para>
+				</listitem>
+			</itemizedlist>
+		</para>
+	</simplesect>
+	<simplesect id="tools_browser_view_contextmenu_exportodf">
+		<title>Export > ODF Export...</title>
+		<para>
+			<itemizedlist>
+				<listitem>
+					<para>
+						Icon:
+						<guiicon>
+							<inlinemediaobject>
+								<imageobject>
+									<imagedata scale="50"
+										fileref="icons/export_odf.gif" format="GIF" />
+								</imageobject>
+							</inlinemediaobject>
+						</guiicon>
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						Description: Starts the
+						<link linkend="tools_odfexport_wizard">
+							ODF Export wizard
 						</link>
 						.
 					</para>
@@ -1200,6 +1409,125 @@
 						<shortcut>
 							<keycap>F5</keycap>
 						</shortcut>
+					</para>
+				</listitem>
+			</itemizedlist>
+		</para>
+	</simplesect>
+	<simplesect id="tools_browser_view_contextmenu_fetch_operational_attributes">
+		<title>Fetch -> Fetch Operational Attributes</title>
+		<para>
+			<itemizedlist>
+				<listitem>
+					<para>
+						Description: Enables/disables fetching 
+						of operational attributes. If the server supports
+						the 'All Operational Attributes' feature the
+						operation attributes are requested using a '+',
+						otherwise all available operational attributes 
+						available in the schema are requested. 
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						Enabled: If one or multiple entries,
+						search results or bookmarks are selected.
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						Note: This menu item is not available if 
+						"Fetch operational attributes while browsing"
+						in the connection properties is enabled because
+						in that case operational attributes are always
+						loaded.
+					</para>
+				</listitem>
+			</itemizedlist>
+		</para>
+	</simplesect>
+	<simplesect id="tools_browser_view_contextmenu_fetch_aliases">
+		<title>Fetch -> Fetch Aliases</title>
+		<para>
+			<itemizedlist>
+				<listitem>
+					<para>
+						Description: Enables/disables fetching 
+						of alias entries. If enabled an additional
+						search request with alias dereferncing
+						mode 'never' is necessary when loading 
+						the children of an entry.
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						Enabled: If one or multiple entries are selected.
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						Note: This menu item is not available if 
+						no alias dereferencing is enabled in the
+						connection properties because in that case
+						alias entries are always visible.
+					</para>
+				</listitem>
+			</itemizedlist>
+		</para>
+	</simplesect>
+	<simplesect id="tools_browser_view_contextmenu_fetch_referrals">
+		<title>Fetch -> Fetch Referrals</title>
+		<para>
+			<itemizedlist>
+				<listitem>
+					<para>
+						Description: Enables/disables fetching 
+						of referral entries. If enabled an additional
+						search request with ManageDsaIT controls is 
+						necessary when loading the children of an entry.
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						Enabled: If one or multiple entries are selected.
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						Note: This menu item is not available if
+						"Use ManageDsaIT control while browsing"
+						is enabled in the connection properties 
+						because in that case referral entries 
+						are always visible.
+					</para>
+				</listitem>
+			</itemizedlist>
+		</para>
+	</simplesect>
+	<simplesect id="tools_browser_view_contextmenu_fetch_subentries">
+		<title>Fetch -> Fetch Subentries</title>
+		<para>
+			<itemizedlist>
+				<listitem>
+					<para>
+						Description: Enables/disables fetching 
+						of subentries. If enabled an additional
+						search request with Subentries controls is 
+						necessary when loading the children of an entry.
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						Enabled: If one or multiple entries are selected.
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						Note: This menu item is not available if
+						"Fetch subentries while browsing"
+						is enabled in the connection properties 
+						because in that case subentries are always
+						fetched.
 					</para>
 				</listitem>
 			</itemizedlist>

@@ -108,7 +108,20 @@
 								</inlinemediaobject>
 							</guiicon>
 						</entry>
-						<entry>Entry with cn, sn or uid as RDN.</entry>
+						<entry>Entry with object class person, inetOrgPerson, posixAccount, user</entry>
+					</row>
+					<row>
+						<entry>
+							<guiicon>
+								<inlinemediaobject>
+									<imageobject>
+										<imagedata scale="50"
+											fileref="icons/entry_group.gif" format="GIF" />
+									</imageobject>
+								</inlinemediaobject>
+							</guiicon>
+						</entry>
+						<entry>Entry with object class groupOfNames, groupOfUniqueNames, posixGroup, group</entry>
 					</row>
 					<row>
 						<entry>
@@ -121,7 +134,7 @@
 								</inlinemediaobject>
 							</guiicon>
 						</entry>
-						<entry>Entry with o or ou as RDN.</entry>
+						<entry>Entry with object class organization, organizationalUnit, container</entry>
 					</row>
 					<row>
 						<entry>
@@ -134,7 +147,7 @@
 								</inlinemediaobject>
 							</guiicon>
 						</entry>
-						<entry>Entry with c, dc or l as RDN.</entry>
+						<entry>Entry with object class domain, domainComponent, country, locality</entry>
 					</row>
 					<row>
 						<entry>
@@ -147,7 +160,7 @@
 								</inlinemediaobject>
 							</guiicon>
 						</entry>
-						<entry>Alias entry.</entry>
+						<entry>Entry with object class alias</entry>
 					</row>
 					<row>
 						<entry>
@@ -160,7 +173,7 @@
 								</inlinemediaobject>
 							</guiicon>
 						</entry>
-						<entry>Referral entry.</entry>
+						<entry>Entry with object class referral</entry>
 					</row>
 					<row>
 						<entry>
@@ -209,40 +222,63 @@
 	<simplesect id="tools_browser_view_dit_aliases_and_referrals">
 		<title>Alias and referral entries</title>
 		<para>
-			To manage alias entries you have to disable the options "Finding Base DN" and "Search"
-			in the "Aliases Dereferencing" group of the 
-			<link
-				linkend="tools_connection_properties_options">
-				Connection properties
-			</link>
-			. This setting will display 
-			<guiicon>
-				<inlinemediaobject>
-					<imageobject>
-						<imagedata scale="50"
-							fileref="icons/entry_alias.png" format="GIF" />
-					</imageobject>
-				</inlinemediaobject>
-			</guiicon>
-			 alias entries in the tree.
+			To manage alias entries you have the following options:
+			<itemizedlist>
+				<listitem>
+					<para>Disable the options "Finding Base DN" and "Search"
+					in the "Aliases Dereferencing" group of the 
+					<link
+						linkend="tools_connection_properties_options">
+						Connection properties
+					</link>
+					. This setting will display 
+					<guiicon>
+						<inlinemediaobject>
+							<imageobject>
+								<imagedata scale="50"
+									fileref="icons/entry_alias.png" format="GIF" />
+							</imageobject>
+						</inlinemediaobject>
+					</guiicon>
+					 alias entries in the tree.
+					</para>
+				</listitem>
+				<listitem>
+					<para>If you know that an entry contains alias child entriy you could
+					select <emphasis role="strong">Fetch > Fetch Aliases </emphasis>
+					from the browser's context menu.</para>
+				</listitem>
+			</itemizedlist>
 		</para>
+		
 		<para>
-			To manage referral entries you have to enable the options "Manage"
-			in the "Referrals Handling" group of the 
-			<link
-				linkend="tools_connection_properties_options">
-				Connection properties
-			</link>
-			. This setting will display 
-			<guiicon>
-				<inlinemediaobject>
-					<imageobject>
-						<imagedata scale="50"
-							fileref="icons/entry_ref.png" format="GIF" />
-					</imageobject>
-				</inlinemediaobject>
-			</guiicon>
-			referral entries in the tree.
+			To manage referral entries you have the following options
+			<itemizedlist>
+				<listitem>
+					<para>Enable the option "Use ManageDsaIT control"
+					in the "Controls" group of the 
+					<link
+						linkend="tools_connection_properties_options">
+						Connection properties
+					</link>
+					. This setting will display 
+					<guiicon>
+						<inlinemediaobject>
+							<imageobject>
+								<imagedata scale="50"
+									fileref="icons/entry_ref.png" format="GIF" />
+							</imageobject>
+						</inlinemediaobject>
+					</guiicon>
+					referral entries in the tree.
+					</para>
+				</listitem>
+				<listitem>
+					<para>If you know that an entry contains referrals child entriy you could
+					select <emphasis role="strong">Fetch > Fetch Referrals </emphasis>
+					from the browser's context menu.</para>
+				</listitem>
+			</itemizedlist>
 		</para>		
 	</simplesect>
 

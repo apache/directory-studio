@@ -42,6 +42,7 @@
 		
 		&tools_newconnection_wizard;
 		&tools_newentry_wizard;
+		&tools_newcontextentry_wizard;
 		&tools_editentry_wizard;
 		
 		&tools_attribute_wizard;

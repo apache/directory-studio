@@ -83,6 +83,14 @@
 								<inlinemediaobject>
 									<imageobject>
 										<imagedata scale="50"
+											fileref="icons/entry_group.gif" format="GIF" />
+									</imageobject>
+								</inlinemediaobject>
+							</guiicon>
+							<guiicon>
+								<inlinemediaobject>
+									<imageobject>
+										<imagedata scale="50"
 											fileref="icons/entry_org.gif" format="GIF" />
 									</imageobject>
 								</inlinemediaobject>
@@ -105,8 +113,7 @@
 							</guiicon>
 						</entry>
 						<entry>
-							Entry, the icon depends on its RDN
-							attribute.
+							Entry, the icon depends on its object classes.
 						</entry>
 					</row>
 					<row>

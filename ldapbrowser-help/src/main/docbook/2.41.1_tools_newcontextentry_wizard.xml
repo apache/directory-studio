@@ -1,0 +1,141 @@
+<!--
+  Licensed to the Apache Software Foundation (ASF) under one
+  or more contributor license agreements.  See the NOTICE file
+  distributed with this work for additional information
+  regarding copyright ownership.  The ASF licenses this file
+  to you under the Apache License, Version 2.0 (the
+  "License"); you may not use this file except in compliance
+  with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing,
+  software distributed under the License is distributed on an
+  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+  KIND, either express or implied.  See the License for the
+  specific language governing permissions and limitations
+  under the License.
+-->
+<section id="tools_newcontextentry_wizard">
+	<title>New Context Entry wizard</title>
+	<para>This wizard helps you to create a new context entry.</para>
+
+	<para>
+		To start the wizard choose one of the following options:
+		<itemizedlist>
+			<listitem>
+				<para>
+					In the LDAP Browser view select an entry or search
+					result or bookmark. Then choose
+					<inlinemediaobject>
+						<imageobject>
+							<imagedata scale="50" fileref="icons/entry_add.gif"
+								format="GIF" />
+						</imageobject>
+					</inlinemediaobject>
+					<emphasis role="strong">New -> New Context Entry...</emphasis>
+					from context menu.
+				</para>
+			</listitem>
+			<listitem>
+				<para>
+					In the Workbench window's toolbar, activate the
+					drop-down menu on the New Wizard button and select
+					<emphasis role="strong">LDAP Context Entry</emphasis>
+				</para>
+			</listitem>
+			<listitem>
+				<para>
+					In the Workbench menu bar select
+					<emphasis role="strong">
+						File > New > LDAP Context Entry
+					</emphasis>
+					.
+				</para>
+			</listitem>
+		</itemizedlist>
+	</para>
+
+	<para>
+		The creation of a new LDAP entry is a four-step process:
+		<orderedlist numeration="arabic">
+			<listitem>
+				<para>
+					<link linkend="tools_newcontextentry_wizard_1">
+						Select entry creation method.
+					</link>
+				</para>
+			</listitem>
+			<listitem>
+				<para>
+					<link linkend="tools_newcontextentry_wizard_2">
+						Specify object classes of the new context entry.
+					</link>
+				</para>
+			</listitem>
+			<listitem>
+				<para>
+					<link linkend="tools_newcontextentry_wizard_3">
+						Specifiy the distinguished name of the new
+						context entry.
+					</link>
+				</para>
+			</listitem>
+			<listitem>
+				<para>
+					<link linkend="tools_newcontextentry_wizard_4">
+						Enter attributes and values of the new context entry.
+					</link>
+				</para>
+			</listitem>
+		</orderedlist>
+	</para>
+
+	<simplesect id="tools_newcontextentry_wizard_1">
+		<title>Page 1</title>
+		<para>
+			This page is identical to the 
+			<link linkend="tools_newentry_wizard_1">New Entry wizard</link>.
+		</para>
+	</simplesect>
+	
+	<simplesect id="tools_newcontextentry_wizard_2">
+		<title>Page 2</title>
+		<para>
+			This page is identical to the 
+			<link linkend="tools_newentry_wizard_2">New Entry wizard</link>.
+		</para>
+	</simplesect>
+	
+	<simplesect id="tools_newcontextentry_wizard_3">
+		<title>Page 3</title>
+		<para>
+			On the third page you have to define the distinguished name
+			of the new entry.
+		</para>
+		<para>
+			<screenshot>
+				<mediaobject>
+					<imageobject>
+						<imagedata scale="50"
+							fileref="images/tools_newcontextentry_wizard_3.png" format="PNG" />
+					</imageobject>
+				</mediaobject>
+			</screenshot>
+		</para>
+		<para>
+			The distinguished name the new context entry could be specified 
+			in the input field. The drop-down list provides all available 
+			values from the Root DSE namingContexts attribute.
+		</para>
+	</simplesect>
+
+	<simplesect id="tools_newcontextentry_wizard_4">
+		<title>Page 4</title>
+		<para>
+			This page is identical to the 
+			<link linkend="tools_newentry_wizard">New Entry wizard</link>.
+		</para>
+	</simplesect>
+
+</section>
