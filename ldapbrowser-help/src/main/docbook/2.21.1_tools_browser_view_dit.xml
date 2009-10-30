@@ -228,7 +228,7 @@
 					<para>Disable the options "Finding Base DN" and "Search"
 					in the "Aliases Dereferencing" group of the 
 					<link
-						linkend="tools_connection_properties_options">
+						linkend="tools_connection_properties_browser_options">
 						Connection properties
 					</link>
 					. This setting will display 
@@ -258,7 +258,7 @@
 					<para>Enable the option "Use ManageDsaIT control"
 					in the "Controls" group of the 
 					<link
-						linkend="tools_connection_properties_options">
+						linkend="tools_connection_properties_browser_options">
 						Connection properties
 					</link>
 					. This setting will display 

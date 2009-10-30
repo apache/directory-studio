@@ -22,8 +22,17 @@
  	<context id="tools_newconnection_wizard">
    		<description>This wizard helps you to create a new connection to a LDAP directory.</description>
    		<topic label="New LDAP Connection wizard" href="html/tools_newconnection_wizard.html"/>
-   		<topic label="Specify network parameters" href="html/tools_newconnection_wizard.html#tools_newconnection_wizard_1"/>
-   		<topic label="Specify authentication parameters" href="html/tools_newconnection_wizard.html#tools_newconnection_wizard_2"/>
-   		<topic label="Specify additional parameters" href="html/tools_newconnection_wizard.html#tools_newconnection_wizard_3"/>
+   		<topic label="Network Parameter" href="html/tools_newconnection_wizard.html#tools_newconnection_wizard_1"/>
+   		<topic label="Authentication" href="html/tools_newconnection_wizard.html#tools_newconnection_wizard_2"/>
+   		<topic label="Browser Options" href="html/tools_newconnection_wizard.html#tools_newconnection_wizard_3"/>
+   		<topic label="Edit Options" href="html/tools_newconnection_wizard.html#tools_newconnection_wizard_4"/>
+   	</context>
+ 	<context id="tools_connection_properties">
+   		<description>Properties of a connection to a LDAP directory.</description>
+   		<topic label="LDAP Connection properties" href="html/tools_connection_properties.html"/>
+   		<topic label="Network Parameter" href="html/tools_connection_properties.html#tools_connection_properties_network_parameter"/>
+   		<topic label="Authentication" href="html/tools_connection_properties.html#tools_connection_properties_authentication"/>
+   		<topic label="Browser Options" href="html/tools_connection_properties.html#tools_connection_properties_browser_options"/>
+   		<topic label="Edit Options" href="html/tools_connection_properties.html#tools_connection_properties_edit_options"/>
    	</context>
 </contexts>

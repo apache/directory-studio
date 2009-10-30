@@ -162,7 +162,7 @@
 			Note: Operational attributes must be requested from the 
 			directory. You could define to request operational attributes
 			for each entry for the whole connection, see 
-			<link linkend="tools_connection_properties_options">
+			<link linkend="tools_connection_properties_browser_options">
 				Connection properties
 			</link>
 			for details. 

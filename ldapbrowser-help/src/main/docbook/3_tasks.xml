@@ -338,7 +338,7 @@
 				<para>
 					It is recommended to limit the number of returned 
 					entries. The limit is defined in  
-					<link linkend="tools_connection_properties_options">Connection properties</link>.
+					<link linkend="tools_connection_properties_browser_options">Connection properties</link>.
 				</para>
 			</simplesect>
 			
@@ -386,7 +386,7 @@
 				administration of different aspects of the directory. By default 
 				they are not visible. To make them visible in the Browser view 
 				enable <emphasis role="strong">Fetch subentries</emphasis> in the 
-				<link linkend="tools_connection_properties_options">Connection properties</link>. 
+				<link linkend="tools_connection_properties_browser_options">Connection properties</link>. 
 				
 			</para>
 		</section>
