@@ -301,6 +301,7 @@ public class SearchPageWrapper extends BrowserWidget
                 validate();
             }
         } );
+        searchNameText.setFocus();
 
         BaseWidgetUtils.createSpacer( composite, 3 );
     }
