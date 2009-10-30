@@ -65,6 +65,7 @@
 		&tools_rename_entry_dialog;
 		&tools_move_entries_dialog;
 		&tools_goto_dn_dialog;
+		&tools_certificate_trust_dialog;
 
 	</section>
 	

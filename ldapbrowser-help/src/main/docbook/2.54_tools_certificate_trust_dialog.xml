@@ -1,0 +1,101 @@
+<!--
+  Licensed to the Apache Software Foundation (ASF) under one
+  or more contributor license agreements.  See the NOTICE file
+  distributed with this work for additional information
+  regarding copyright ownership.  The ASF licenses this file
+  to you under the Apache License, Version 2.0 (the
+  "License"); you may not use this file except in compliance
+  with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing,
+  software distributed under the License is distributed on an
+  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+  KIND, either express or implied.  See the License for the
+  specific language governing permissions and limitations
+  under the License.
+-->
+<section id="tools_certificate_trust_dialog">
+	<title>Certificate Trust dialog</title>
+	<para>
+		The Certificate Trust dialog pops up if a secure connection (ldaps or StartTLS) is
+		established and the server's certificate is invalid. 
+	</para>
+	
+	<para>
+		<screenshot>
+			<mediaobject>
+				<imageobject>
+					<imagedata scale="50"
+						fileref="images/tools_certificate_trust_dialog.png" format="PNG" />
+				</imageobject>
+			</mediaobject>
+		</screenshot>	
+	</para>
+	
+	<para>
+		<informaltable frame="all">
+			<tgroup cols="2">
+				<colspec colname="Option" colwidth="1*" />
+				<colspec colname="Description" colwidth="2*" />
+				<thead>
+					<row>
+						<entry>Option</entry>
+						<entry>Description</entry>
+					</row>
+				</thead>
+				<tbody>
+					<row>
+						<entry>Dont't trust this certificate.</entry>
+						<entry>If you don't trust the certificate choose this option,
+						the connection won't be established</entry>
+					</row>
+					<row>
+						<entry>Trust this certificate for this session.</entry>
+						<entry>The certificate is only valid within this session and
+						added to the temporary certificate store. 
+						After a restart of Studio you are asked again
+						You could see all temporary trusted certificates in the 
+						<link linkend="tools_certificate_validation_preferences">
+						Certificate Validation preferences</link>.</entry>
+					</row>
+					<row>
+						<entry>Always trust this certificate.</entry>
+						<entry>The certificate is permanently valid and added to the 
+						permanent certificate store.
+						You could see all permanent trusted certificates in the 
+						<link linkend="tools_certificate_validation_preferences">
+						Certificate Validation preferences</link></entry>
+					</row>
+					<row>
+						<entry>View Certificate...</entry>
+						<entry>Opens the Certificate Viewer dialog, where you
+						could examine the certificate.</entry>
+					</row>
+				</tbody>
+			</tgroup>
+		</informaltable>
+	</para>
+	
+	<para>
+		<screenshot>
+			<mediaobject>
+				<imageobject>
+					<imagedata scale="50"
+						fileref="images/tools_certificate_viewer_dialog_1.png" format="PNG" />
+				</imageobject>
+			</mediaobject>
+		</screenshot>	
+	</para>
+	<para>
+		<screenshot>
+			<mediaobject>
+				<imageobject>
+					<imagedata scale="50"
+						fileref="images/tools_certificate_viewer_dialog_2.png" format="PNG" />
+				</imageobject>
+			</mediaobject>
+		</screenshot>	
+	</para>
+</section>
