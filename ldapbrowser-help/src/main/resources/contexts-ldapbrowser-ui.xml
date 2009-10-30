@@ -31,11 +31,12 @@
    		<topic label="Bookmarks category" href="html/tools_browser_view_bookmarks.html"/>
    		<topic label="Context menu" href="html/tools_browser_view_contextmenu.html"/>
    	</context>
- 	<context id="tools_entry_editor">
-   		<description>The Entry editor is used to view and edit the attributes and values of an entry.</description>
-   		<topic label="Overview" href="html/tools_entry_editor_overview.html"/>
-   		<topic label="Features (Sorting, Filtering, Editing)" href="html/tools_entry_editor_features.html"/>
-   		<topic label="Context menu" href="html/tools_entry_editor_contextmenu.html"/>
+ 	<context id="tools_table_entry_editor">
+   		<description>The Table Entry editor is used to view and edit the attributes and values of an entry.</description>
+   		<topic label="Entry Editors" href="html/tools_entry_editors.html"/>
+   		<topic label="Table Entry Editor Overview" href="html/tools_table_entry_editor_overview.html"/>
+   		<topic label="Table Entry Editor Features (Sorting, Filtering, Editing)" href="html/tools_table_entry_editor_features.html"/>
+   		<topic label="Table Entry Editor Context menu" href="html/tools_table_entry_editor_contextmenu.html"/>
    	</context>
  	<context id="tools_search_result_editor">
    		<description>The Search Result editor is used to view and edit search results.</description>
@@ -63,6 +64,10 @@
  	<context id="tools_search_dialog">
    		<description>In the LDAP Search page you can specify search parameters to query a directory.</description>
    		<topic label="LDAP Search page" href="html/tools_search_dialog.html"/>
+   	</context>
+ 	<context id="tools_search_properties">
+   		<description>Properties of a LDAP search.</description>
+   		<topic label="LDAP Search properties" href="html/tools_search_dialog.html"/>
    	</context>
  	<context id="tools_batchoperation_wizard">
    		<description> This wizard helps you to modify several entries.</description>

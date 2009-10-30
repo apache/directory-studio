@@ -63,7 +63,7 @@
 						</inlinemediaobject>
 						Search
 					</emphasis>
-					button int the Workbench toolbar.
+					button in the Workbench toolbar.
 				</para>
 			</listitem>		
 		</orderedlist>
@@ -168,19 +168,28 @@
 					</row>
 					
 					<row>
+						<entry>ManageDsaIT</entry>
+						<entry>
+							If checked the ManageDsaIT control is sent to the server.
+						</entry>
+						<entry>
+							unchecked
+						</entry>
+					</row>
+					<row>
 						<entry>Subentries</entry>
 						<entry>
-							If enabled enabled the subentries control
+							If checked the Subentries control
 							(RFC 3672) is sent to the server.
 						</entry>
 						<entry>
-							disabled
+							unchecked
 						</entry>
 					</row>
 					<row>
 						<entry>Paged Search</entry>
 						<entry>
-							If enabled the simple paged result control
+							If checked the simple paged result control
 							is sent to the server.
 							With the page size you could define how many entries 
 							should be retrieved	in one request.
@@ -194,7 +203,7 @@
 							avoid server-side limits.
 						</entry>
 						<entry>
-							disabled
+							unchecked
 						</entry>
 					</row>
 					
@@ -261,14 +270,27 @@
 					<row>
 						<entry>Referrals Handling</entry>
 						<entry>
-							Follow means to follow 
-							referrals returned from server, you are asked which
-							connection to use when following the referral.
-							Ignore means that referrals returned from server 
-							are ignored. 
-							Select Manage to be able to manage (create,
-							modify, delete) referral entries. In that case
-							the Manage DSA IT control is sent to the server.
+							Specifies the referral handling. 
+							<itemizedlist spacing="normal" mark="bullet">
+									<listitem>Follow Referrals manually:
+									Received referrals and search continuations are just displayed 
+									As soon as you open or expand such an search 
+									continuation the search is continued. You are asked which connection 
+									you want to use to follow a specific referral URL, this way you have 
+									full control regarding encryption and authentication options when 
+									following referrals.</listitem>
+									<listitem>Follow Referrals automatically: 
+									Follows referrals and search continuations immediately if they are 
+									received from the directory server. You are asked which connection 
+									you want to use to follow a specific referral URL, this way you 
+									have full control regarding encryption and authentication options 
+									when following referrals.</listitem>
+									<listitem>Ignore Referrals:
+									Any referral or search continuation received from the directory server 
+									is silently ignored. No error is logged, no dialog appears, no special 
+									entry is displayed, no ManageDsaIT control is sent to the 
+									server.</listitem>
+								</itemizedlist>
 						</entry>
 						<entry>
 							<superscript>*</superscript>
