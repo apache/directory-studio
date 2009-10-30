@@ -329,7 +329,7 @@ public class EntryPropertyPage extends PropertyPage implements IWorkbenchPropert
             urlText.setText( entry.getUrl().toString() );
             ctText.setText( getNonNullStringValue( entry.getAttribute( SchemaConstants.CREATE_TIMESTAMP_AT ) ) );
             cnText.setText( getNonNullStringValue( entry.getAttribute( SchemaConstants.CREATORS_NAME_AT ) ) );
-            mtText.setText( getNonNullStringValue( entry.getAttribute( SchemaConstants.MODIFIERS_NAME_AT ) ) );
+            mtText.setText( getNonNullStringValue( entry.getAttribute( SchemaConstants.MODIFY_TIMESTAMP_AT ) ) );
             mnText.setText( getNonNullStringValue( entry.getAttribute( SchemaConstants.MODIFIERS_NAME_AT ) ) );
             reloadCmiButton.setText( Messages.getString( "EntryPropertyPage.Refresh" ) ); //$NON-NLS-1$
 
