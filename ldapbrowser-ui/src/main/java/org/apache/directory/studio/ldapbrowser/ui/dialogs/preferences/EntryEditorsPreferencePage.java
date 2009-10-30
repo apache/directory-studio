@@ -109,22 +109,24 @@ public class EntryEditorsPreferencePage extends PreferencePage implements IWorkb
      */
     protected Control createContents( Composite parent )
     {
-        Composite composite = new Composite( parent, SWT.NONE );
-        composite.setLayout( new GridLayout() );
-        composite.setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, true ) );
+        Composite composite = BaseWidgetUtils.createColumnContainer( parent, 1, 1 );
 
         // Open Mode Group
-        Group openModeGroup = BaseWidgetUtils.createGroup( composite, Messages
-            .getString( "EntryEditorsPreferencePage.OpenMode" ), 1 ); //$NON-NLS-1$
-        openModeGroup.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
+        BaseWidgetUtils.createSpacer( composite, 1 );
+        BaseWidgetUtils.createSpacer( composite, 1 );
+        Group openModeGroup = BaseWidgetUtils.createGroup( BaseWidgetUtils.createColumnContainer( composite, 1, 1 ),
+            Messages.getString( "EntryEditorsPreferencePage.OpenMode" ), 1 ); //$NON-NLS-1$
 
         // Historical Behavior Button
         historicalBehaviorButton = BaseWidgetUtils.createRadiobutton( openModeGroup, Messages
             .getString( "EntryEditorsPreferencePage.HistoricalBehavior" ), 1 ); //$NON-NLS-1$
         Composite historicalBehaviorComposite = BaseWidgetUtils.createColumnContainer( openModeGroup, 2, 1 );
         BaseWidgetUtils.createRadioIndent( historicalBehaviorComposite, 1 );
-        BaseWidgetUtils.createWrappedLabel( historicalBehaviorComposite, Messages
+        Label historicalBehaviourLabel = BaseWidgetUtils.createWrappedLabel( historicalBehaviorComposite, Messages
             .getString( "EntryEditorsPreferencePage.HistoricalBehaviorTooltip" ), 1 ); //$NON-NLS-1$
+        GridData historicalBehaviourLabelGridData = new GridData( GridData.FILL_HORIZONTAL );
+        historicalBehaviourLabelGridData.widthHint = 300;
+        historicalBehaviourLabel.setLayoutData( historicalBehaviourLabelGridData );
 
         // Use Application Wide Open Mode Button
         useApplicationWideOpenModeButton = BaseWidgetUtils.createRadiobutton( openModeGroup, Messages
@@ -132,8 +134,10 @@ public class EntryEditorsPreferencePage extends PreferencePage implements IWorkb
         Composite useApplicationWideOpenModeComposite = BaseWidgetUtils.createColumnContainer( openModeGroup, 2, 1 );
         BaseWidgetUtils.createRadioIndent( useApplicationWideOpenModeComposite, 1 );
         Link link = BaseWidgetUtils.createLink( useApplicationWideOpenModeComposite, Messages
-            .getString( "EntryEditorsPreferencePage.ApplicationWideSettingTooltip" ), //$NON-NLS-1$
-            1 );
+            .getString( "EntryEditorsPreferencePage.ApplicationWideSettingTooltip" ), 1 ); //$NON-NLS-1$
+        GridData linkGridData = new GridData( GridData.FILL_HORIZONTAL );
+        linkGridData.widthHint = 300;
+        link.setLayoutData( linkGridData );
         link.addSelectionListener( new SelectionAdapter()
         {
             public void widgetSelected( SelectionEvent e )
@@ -156,13 +160,18 @@ public class EntryEditorsPreferencePage extends PreferencePage implements IWorkb
         }
 
         // Entry Editors Group
-        Group entryEditorsGroup = BaseWidgetUtils.createGroup( composite, Messages
-            .getString( "EntryEditorsPreferencePage.EntryEditors" ), 1 ); //$NON-NLS-1$
-        openModeGroup.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
+        BaseWidgetUtils.createSpacer( composite, 1 );
+        BaseWidgetUtils.createSpacer( composite, 1 );
+        Group entryEditorsGroup = BaseWidgetUtils.createGroup(
+            BaseWidgetUtils.createColumnContainer( composite, 1, 1 ), Messages
+                .getString( "EntryEditorsPreferencePage.EntryEditors" ), 1 ); //$NON-NLS-1$
 
         // Entry Editors Label
-        BaseWidgetUtils.createWrappedLabel( entryEditorsGroup, Messages
+        Label entryEditorsLabel = BaseWidgetUtils.createWrappedLabel( entryEditorsGroup, Messages
             .getString( "EntryEditorsPreferencePage.EntryEditorsLabel" ), 1 ); //$NON-NLS-1$
+        GridData entryEditorsLabelGridData = new GridData( GridData.FILL_HORIZONTAL );
+        entryEditorsLabelGridData.widthHint = 300;
+        entryEditorsLabel.setLayoutData( entryEditorsLabelGridData );
 
         // Entry Editors Composite
         Composite entryEditorsComposite = new Composite( entryEditorsGroup, SWT.NONE );
@@ -240,6 +249,7 @@ public class EntryEditorsPreferencePage extends PreferencePage implements IWorkb
         descriptionText.setEditable( false );
         gridData = new GridData( SWT.FILL, SWT.NONE, true, false );
         gridData.heightHint = 27;
+        gridData.widthHint = 300;
         descriptionText.setLayoutData( gridData );
         entryEditorsTableViewer.addSelectionChangedListener( new ISelectionChangedListener()
         {
@@ -274,7 +284,7 @@ public class EntryEditorsPreferencePage extends PreferencePage implements IWorkb
             entryEditorsTableViewer.setSelection( new StructuredSelection( sortedEntryEditorsList.get( 0 ) ) );
         }
 
-        return parent;
+        return composite;
     }
 
 
