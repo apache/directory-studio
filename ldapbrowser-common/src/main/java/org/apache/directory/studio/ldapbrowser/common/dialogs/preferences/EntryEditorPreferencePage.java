@@ -29,6 +29,7 @@ import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.VerifyEvent;
 import org.eclipse.swt.events.VerifyListener;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -117,8 +118,11 @@ public class EntryEditorPreferencePage extends PreferencePage implements IWorkbe
             .getString( "EntryEditorPreferencePage.ShowOperationalAttributes" ), 1 ); //$NON-NLS-1$
         showOperationalAttributesButton.setSelection( getPreferenceStore().getBoolean(
             BrowserCommonConstants.PREFERENCE_ENTRYEDITOR_SHOW_OPERATIONAL_ATTRIBUTES ) );
-        BaseWidgetUtils.createWrappedLabel( visibleAttributesComposite, Messages
+        Label operationalAttributesLabel = BaseWidgetUtils.createWrappedLabel( visibleAttributesComposite, Messages
             .getString( "EntryEditorPreferencePage.ShowOperationalAttributesToolTip" ), 1 );
+        GridData gd = new GridData( GridData.FILL_HORIZONTAL );
+        gd.widthHint = 300;
+        operationalAttributesLabel.setLayoutData( gd );        
 
         BaseWidgetUtils.createSpacer( composite, 1 );
         BaseWidgetUtils.createSpacer( composite, 1 );
