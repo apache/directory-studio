@@ -142,7 +142,7 @@ public abstract class EntryEditor extends EditorPart implements IEntryEditor, IN
         composite.setLayout( layout );
 
         PlatformUI.getWorkbench().getHelpSystem().setHelp( composite,
-            BrowserUIConstants.PLUGIN_ID + "." + "tools_entry_editor" ); //$NON-NLS-1$ //$NON-NLS-2$
+            BrowserUIConstants.PLUGIN_ID + "." + "tools_table_entry_editor" ); //$NON-NLS-1$ //$NON-NLS-2$
 
         // create configuration
         configuration = new EntryEditorConfiguration( this );
