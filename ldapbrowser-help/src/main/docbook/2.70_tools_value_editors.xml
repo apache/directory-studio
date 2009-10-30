@@ -573,5 +573,54 @@
 		</simplesect>		
 	</section>		
 
+	<section id="tools_value_editors_certificateeditor">
+		<title>Certificate Editor</title>
+		<para>
+			The Certificate Editor is the default editor for certificates.
+		</para>
+		<simplesect id="tools_value_editors_certificateeditor_display">
+			<title>Display value</title>			
+			<para>
+				The certificate type, version and owner are displayed.
+			</para>	
+			<para>
+				<screenshot>
+					<mediaobject>
+						<imageobject>
+							<imagedata scale="50"
+								fileref="images/tools_value_editors_11a.png" format="PNG" />
+						</imageobject>
+					</mediaobject>
+				</screenshot>
+			</para>
+		</simplesect>
+		<simplesect id="tools_value_editors_certificateeditor_details">
+			<title>Certificate Editor Dialog</title>
+			<para>
+				The full certificate data could be exampined in the Certificate Editor dialog.
+				<emphasis role="strong">Load data...</emphasis> button.
+			</para>
+			<para>
+				<screenshot>
+					<mediaobject>
+						<imageobject>
+							<imagedata scale="50"
+								fileref="images/tools_value_editors_11b.png" format="PNG" />
+						</imageobject>
+					</mediaobject>
+				</screenshot>
+			</para>
+			<para>
+				You could also save the current certificate to a file with the
+				<emphasis role="strong">Save Certificate...</emphasis> button.
+			</para>
+			<para>
+				To modify the certificate in the directory server load the new
+				certificate from a file using the 
+				<emphasis role="strong">Load Certificate...</emphasis> button 
+				and press the <emphasis role="strong">OK.</emphasis> button.
+			</para>
+		</simplesect>
+	</section>
 
 </section>
