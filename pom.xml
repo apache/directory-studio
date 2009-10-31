@@ -63,7 +63,7 @@
       Can be overwritten in the settings.xml
     -->
     <studio.dist.url>${pom.distributionManagement.repository.url}</studio.dist.url>
-    <distMgmtSiteUrl>scpexe://vm094.oxylos.org/var/www/html/projects/studio/</distMgmtSiteUrl>
+    <distMgmtSiteUrl>scpexe://people.apache.org/www/directory.apache.org/studio/gen-docs/${version}</distMgmtSiteUrl>
     <!-- Set versions for subprojects -->
     <aciitemeditor.version>1.5.0-SNAPSHOT</aciitemeditor.version>
     <!-- <!> <!> <!> WARNING <!> <!> <!> -->
