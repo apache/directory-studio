@@ -19,8 +19,126 @@
 <section id="preferences">
 	<title>Preferences</title>
 	<para>
-		
+			<screenshot>
+				<mediaobject>
+					<imageobject>
+						<imagedata scale="50"
+							fileref="images/tools_preferences_tree.png"
+							format="PNG" />
+					</imageobject>
+				</mediaobject>
+			</screenshot>
 	</para>
+	
+	<section id="preferences_connections">
+		<title>Connections</title>
+		<para>
+			In the Connections preferences page you can configure general settings
+			for LDAP Connections.
+		</para>	
+		<para>
+			<screenshot>
+				<mediaobject>
+					<imageobject>
+						<imagedata scale="50"
+							fileref="images/tools_preferences_connections.png"
+							format="PNG" />
+					</imageobject>
+				</mediaobject>
+			</screenshot>
+		</para>
+		<para>
+			<informaltable frame="all">
+				<tgroup cols="3">
+					<colspec colname="Option" colwidth="1*" />
+					<colspec colname="Description" colwidth="2*" />
+					<colspec colname="Default" colwidth="1*" />
+					<thead>
+						<row>
+							<entry>Option</entry>
+							<entry>Description</entry>
+							<entry>Default</entry>
+						</row>
+					</thead>
+					<tbody>
+						<row>
+							<entry>
+								JNDI LDAP Context Factory
+							</entry>
+							<entry>
+								Apache Directory Studio uses JNDI for LDAP access.
+								This parameter configures the the factory class.
+								Normally this value is automatically detected and
+								there is no need to change it.
+							</entry>
+							<entry>auto-detected</entry>
+						</row>
+						<row>
+							<entry>
+								User Kerberos System Properties
+							</entry>
+							<entry>
+								If checked you need to configure Kerberos (GSSAPI) 
+								authentication using system properties, see 
+								http://java.sun.com/products/jndi/tutorial/ldap/security/gssapi.html 
+								for details.
+							</entry>
+							<entry>unchecked</entry>
+						</row>
+						<row>
+							<entry>
+								Kerberos Login Module
+							</entry>
+							<entry>
+								Apache Directory Studio uses JAAS for Kerberos authentication.
+								This parameter configures the JAAS login modul. 
+								Normally this value is automatically detected and
+								there is no need to change it.
+							</entry>
+							<entry>auto-detected</entry>
+						</row>
+					</tbody>
+				</tgroup>
+			</informaltable>
+		</para>		
+	</section>	
+	
+	<section id="preferences_certificate_validation">
+		<title>Certificate Validation</title>
+		<para>
+			In the Certificate Validation preferences page you can configure 
+			certificate validation settings.
+		</para>	
+		<para>
+			<screenshot>
+				<mediaobject>
+					<imageobject>
+						<imagedata scale="50"
+							fileref="images/tools_preferences_certificate_validation_perm.png"
+							format="PNG" />
+					</imageobject>
+				</mediaobject>
+			</screenshot>
+		</para>
+		<para>
+			If <emphasis role="strong">Validate certificates for secure LDAP connections</emphasis>
+			is checked, Apache Directory Studio checks certificates when a secure LDAP connection 
+			(ldaps or StartTLS) is established. The following checks are performed: 
+			a valid certification path with a trusted root CA must exist, 
+			the certificate must not be expired, 
+			the hostname must match the certificate subject common name,
+			the certificate must not be self-signed.
+		</para>
+		<para>
+			If validation fails the <link linkend="tools_certificate_trust_dialog">
+			Certificate Trust dialog</link> pops up and the you could manually trust
+			a certificate. Those certificates are listed in the "Permanent Trusted"
+			and "Temporary Trusted" lists. You could examine those certificates using
+			the <emphasis role="strong">View</emphasis> button. You can remove 
+			certificates if you don't trust them any more using the 
+			<emphasis role="strong">Remove</emphasis> button.
+		</para>
+	</section>
 	
 	<section id="preferences_attributes">
 		<title>Attributes preferences</title>
@@ -43,9 +161,16 @@
 			By default non-text attributes are displayed in a user-friendly way
 			within the Entry editor and the Search Result editor. For example if
 			an attribute contains a timestamp it is displayed in your local
-			date format. When checking the option
-			<emphasis role="strong">Show raw values</emphasis>
+			date format. When unchecking the option
+			<emphasis role="strong">Show decorated values</emphasis>
 			the values are displayed as returned from directory.
+		</para>
+		<para>
+			In the 
+			<emphasis role="strong">Attribute Colors and Fonts</emphasis>
+			group you can define the style how attributes
+			and values are displayed within the Entry editor and the Search Result 
+			editor.
 		</para>
 	</section>	
 	
@@ -71,180 +196,8 @@
 		</para>
 	</section>	
 	
-	<section id="preferences_value_editors">
-		<title>Value Editors preferences</title>
-		<para>
-			In the Value Editors preferences page you can configure which 
-			value editor to use for an attribute. 
-		</para>	
-		<para>
-			<screenshot>
-				<mediaobject>
-					<imageobject>
-						<imagedata scale="50"
-							fileref="images/tools_preferences_value_editors.png"
-							format="PNG" />
-					</imageobject>
-				</mediaobject>
-			</screenshot>
-		</para>
-		<para>
-			You can specify value editors by attribute type or by syntax.
-			If a value editor is specified by syntax the value editor is used 
-			for all attributes with this syntax. A value editor specified for an 
-			attribute overwrites the syntax-setting.
-		</para>
-	</section>	
-	
-	
-	<section id="preferences_browser_view">
-		<title>Browser preferences</title>
-		<para>
-			In the Browser preferences page you can configure the layout and
-			behavior of the 
-			<link linkend="tools_browser_view">LDAP Browser view</link>
-			and the Select DN dialog.
-		</para>	
-		<para>
-			<screenshot>
-				<mediaobject>
-					<imageobject>
-						<imagedata scale="50"
-							fileref="images/tools_preferences_browser_view.png"
-							format="PNG" />
-					</imageobject>
-				</mediaobject>
-			</screenshot>
-		</para>
-		<para>
-			<informaltable frame="all">
-				<tgroup cols="3">
-					<colspec colname="Option" colwidth="1*" />
-					<colspec colname="Description" colwidth="2*" />
-					<colspec colname="Default" colwidth="1*" />
-					<thead>
-						<row>
-							<entry>Option</entry>
-							<entry>Description</entry>
-							<entry>Default</entry>
-						</row>
-					</thead>
-					<tbody>
-						<row>
-							<entry>
-								Entry label
-							</entry>
-							<entry>
-								Choose one of 
-								<emphasis role="strong">DN</emphasis>,
-								<emphasis role="strong">RDN</emphasis> or
-								<emphasis role="strong">RDN value</emphasis>
-								to be used as 
-								label for entries in the DIT category. 
-								If the checkbox is checked long labels with more
-								than the specified number of characters are
-								abbreviated.
-							</entry>
-							<entry>RDN with limit of 50 characters</entry>
-						</row>
-						<row>
-							<entry>
-								Search Result label
-							</entry>
-							<entry>
-								Choose one of 
-								<emphasis role="strong">DN</emphasis>,
-								<emphasis role="strong">RDN</emphasis> or
-								<emphasis role="strong">RDN value</emphasis>
-								to be used as 
-								label for search results in the DIT category. 
-								If the checkbox is checked long labels with more
-								than the specified number of characters are
-								abbreviated.
-							</entry>
-							<entry>DN with limit of 50 characters</entry>
-						</row>
-						<row>
-							<entry>
-								Folding
-							</entry>
-							<entry>
-								If checked large subtrees and search results are
-								folded into virtual folders each with the given
-								number of entries.
-							</entry>
-							<entry>enabled with folding size 100</entry>
-						</row>
-						<row>
-							<entry>
-								Expand base entries when opening connection
-							</entry>
-							<entry>
-								If checked the base entries are expanded when
-								opening the connection.
-							</entry>
-							<entry>off</entry>
-						</row>
-						<row>
-							<entry>
-								Check for children
-							</entry>
-							<entry>
-								If checked the LDAP Browser tries to find out if
-								the fetched entries have children. Therefore the
-								operational attributes hasSubordinates, numSubordinates
-								and subordinateCount are requested from server.
-							</entry>
-							<entry>on</entry>
-						</row>
-					</tbody>
-				</tgroup>
-			</informaltable>
-		</para>		
-	</section>
-
-
-	<section id="preferences_colors_and_fonts">
-		<title>Colors and Fonts preferences</title>
-		<para>
-			In the Colors and Fonts preferences page you can configure colors 
-			and fonts options in the LDAP Browser.
-		</para>	
-		<para>
-			<screenshot>
-				<mediaobject>
-					<imageobject>
-						<imagedata scale="50"
-							fileref="images/tools_preferences_colors_and_fonts.png"
-							format="PNG" />
-					</imageobject>
-				</mediaobject>
-			</screenshot>
-		</para>
-		<para>
-			In the 
-			<emphasis role="strong">Warning and Error Colors and Fonts</emphasis>
-			group you can define the style how warning and errors
-			are displayed within the LDAP Browser
-		</para>
-		<para>
-			In the 
-			<emphasis role="strong">Quick Filter Colors and Fonts</emphasis>
-			group you can define the style how quick filters are displayed
-			within LDAP Browser.
-		</para>
-		<para>
-			In the 
-			<emphasis role="strong">Attribute Colors and Fonts</emphasis>
-			group you can define the style how attributes
-			and values are displayed within the Entry editor and the Search Result 
-			editor.
-		</para>
-	</section>
-
-
-	<section id="preferences_entry_editor">
-		<title>Entry editor preferences</title>
+	<section id="preferences_entry_editors">
+		<title>Entry Editors preferences</title>
 		<para>
 			In the Entry editor preferences page you can configure the behavior of the 
 			<link linkend="tools_entry_editors">Entry editors</link>.
@@ -254,8 +207,36 @@
 				<mediaobject>
 					<imageobject>
 						<imagedata scale="50"
-							fileref="images/tools_preferences_entry_editor.png"
+							fileref="images/tools_preferences_entry_editors.png"
 							format="PNG" />
+					</imageobject>
+				</mediaobject>
+			</screenshot>
+		</para>
+		<para>
+			With the open mode you could define how the entry editor should be opened
+			while browsing through the DIT.
+		</para>
+		<para>
+			In the entry editors section you could define your preferred order of
+			available entry editors using the Up/Down buttons. 
+			The topmost entry editor in the list is the	default entry editor.
+		</para>
+	</section>
+	
+	
+	
+	<section id="preferences_table_entry_editor">
+		<title>Table Entry Editor preferences</title>
+		<para>
+			In the Table Entry Editor preferences page you can configure the behavior of the 
+			<link linkend="tools_entry_editors">Table Entry Editor</link>.
+		</para>	
+		<para>
+			<screenshot>
+				<mediaobject>
+					<imageobject>
+						<imagedata scale="50" fileref="images/tools_preferences_table_entry_editor.png" format="PNG" />
 					</imageobject>
 				</mediaobject>
 			</screenshot>
@@ -333,12 +314,44 @@
 							</entry>
 							<entry>10</entry>
 						</row>
+						<row>
+							<entry>
+								Auto-expand folded attributes
+							</entry>
+							<entry>
+								If checked folded attribute are automatically expanded.
+							</entry>
+							<entry>off</entry>
+						</row>
+						<row>
+							<entry>
+								Save modifications automatically in single-tab editor
+							</entry>
+							<entry>
+								If checked the single-tab editor automatically saves 
+								any modification immediately and sends a modify request
+								to the LDAP server. If unchecked you need to save
+								the editor manually in order to save modifications.
+							</entry>
+							<entry>on</entry>
+						</row>
+						<row>
+							<entry>
+								Save modifications automatically in multi-tab editor
+							</entry>
+							<entry>
+								If checked the multi-tab editor automatically saves 
+								any modification immediately and sends a modify request
+								to the LDAP server. If unchecked you need to save
+								the editor manually in order to save modifications.
+							</entry>
+							<entry>off</entry>
+						</row>
 					</tbody>
 				</tgroup>
 			</informaltable>
 		</para>
 	</section>
-	
 	
 	<section id="preferences_search_result_editor">
 		<title>Search Result editor preferences</title>
@@ -350,9 +363,7 @@
 			<screenshot>
 				<mediaobject>
 					<imageobject>
-						<imagedata scale="50"
-							fileref="images/tools_preferences_search_result_editor.png"
-							format="PNG" />
+						<imagedata scale="50" fileref="images/tools_preferences_search_result_editor.png" format="PNG" />
 					</imageobject>
 				</mediaobject>
 			</screenshot>
@@ -397,7 +408,6 @@
 		</para>
 	</section>
 	
-	
 	<section id="preferences_text_formats">
 		<title>Text Formats preferences</title>
 		<para>
@@ -412,9 +422,7 @@
 				<screenshot>
 					<mediaobject>
 						<imageobject>
-							<imagedata scale="50"
-								fileref="images/tools_preferences_text_formats_ldif.png"
-								format="PNG" />
+							<imagedata scale="50" fileref="images/tools_preferences_text_formats_ldif.png" format="PNG" />
 						</imageobject>
 					</mediaobject>
 				</screenshot>
@@ -479,9 +487,7 @@
 				<screenshot>
 					<mediaobject>
 						<imageobject>
-							<imagedata scale="50"
-								fileref="images/tools_preferences_text_formats_table.png"
-								format="PNG" />
+							<imagedata scale="50" fileref="images/tools_preferences_text_formats_table.png" format="PNG" />
 						</imageobject>
 					</mediaobject>
 				</screenshot>
@@ -575,9 +581,7 @@
 				<screenshot>
 					<mediaobject>
 						<imageobject>
-							<imagedata scale="50"
-								fileref="images/tools_preferences_text_formats_csv.png"
-								format="PNG" />
+							<imagedata scale="50" fileref="images/tools_preferences_text_formats_csv.png" format="PNG" />
 						</imageobject>
 					</mediaobject>
 				</screenshot>
@@ -681,9 +685,7 @@
 				<screenshot>
 					<mediaobject>
 						<imageobject>
-							<imagedata scale="50"
-								fileref="images/tools_preferences_text_formats_excel.png"
-								format="PNG" />
+							<imagedata scale="50" fileref="images/tools_preferences_text_formats_excel.png" format="PNG" />
 						</imageobject>
 					</mediaobject>
 				</screenshot>
@@ -733,7 +735,345 @@
 				</informaltable>
 			</para>
 		</simplesect>
-				
+
+		<simplesect id="preferences_text_formats_odf">
+			<title>ODF Export</title>
+			<para>In the ODF Export tab you can configure the format used when
+				exporting to Open Document Spreadsheet format.</para>
+			<para>
+				<screenshot>
+					<mediaobject>
+						<imageobject>
+							<imagedata scale="50" fileref="images/tools_preferences_text_formats_odf.png" format="PNG" />
+						</imageobject>
+					</mediaobject>
+				</screenshot>
+			</para>
+			<para>
+				<informaltable frame="all">
+					<tgroup cols="3">
+						<colspec colname="Option" colwidth="1*" />
+						<colspec colname="Description" colwidth="2*" />
+						<colspec colname="Default" colwidth="1*" />
+						<thead>
+							<row>
+								<entry>Option</entry>
+								<entry>Description</entry>
+								<entry>Default</entry>
+							</row>
+						</thead>
+						<tbody>
+							<row>
+								<entry>
+									Value Delimiter
+								</entry>
+								<entry>
+									The character used to separate values of 
+									multi-valued attributes. 
+									Select default or one from the drop-down box
+									or enter a custom character.
+								</entry>
+								<entry>Pipe (|)</entry>
+							</row>
+							<row>
+								<entry>
+									Binary Encoding
+								</entry>
+								<entry>
+									When exporting binary values they must be encoded. Choose 
+									<itemizedlist>
+										<listitem>Ignore: if binary values should not be exported.</listitem>
+										<listitem>BASE-64: to export the binary values BASE-64 encoded.</listitem>
+										<listitem>HEX: to export the HEX representation of each byte.</listitem>
+									</itemizedlist>
+								</entry>
+								<entry>Ignore</entry>
+							</row>
+						</tbody>
+					</tgroup>
+				</informaltable>
+			</para>
+		</simplesect>
 	</section>
+	
+	<section id="preferences_value_editors">
+		<title>Value Editors preferences</title>
+		<para>
+			In the Value Editors preferences page you can configure which 
+			value editor to use for an attribute. 
+		</para>	
+		<para>
+			<screenshot>
+				<mediaobject>
+					<imageobject>
+						<imagedata scale="50"
+							fileref="images/tools_preferences_value_editors.png"
+							format="PNG" />
+					</imageobject>
+				</mediaobject>
+			</screenshot>
+		</para>
+		<para>
+			You can specify value editors by attribute type or by syntax.
+			If a value editor is specified by syntax the value editor is used 
+			for all attributes with this syntax. A value editor specified for an 
+			attribute overwrites the syntax-setting.
+		</para>
+	</section>	
+	
+	
+	<section id="preferences_browser_view">
+		<title>Browser View preferences</title>
+		<para>
+			In the Browser View preferences page you can configure the layout and
+			behavior of the 
+			<link linkend="tools_browser_view">LDAP Browser view</link>
+			and the Select DN dialog.
+		</para>	
+		<para>
+			<screenshot>
+				<mediaobject>
+					<imageobject>
+						<imagedata scale="50"
+							fileref="images/tools_preferences_browser_view.png"
+							format="PNG" />
+					</imageobject>
+				</mediaobject>
+			</screenshot>
+		</para>
+		<para>
+			<informaltable frame="all">
+				<tgroup cols="3">
+					<colspec colname="Option" colwidth="1*" />
+					<colspec colname="Description" colwidth="2*" />
+					<colspec colname="Default" colwidth="1*" />
+					<thead>
+						<row>
+							<entry>Option</entry>
+							<entry>Description</entry>
+							<entry>Default</entry>
+						</row>
+					</thead>
+					<tbody>
+						<row>
+							<entry>
+								Entry label
+							</entry>
+							<entry>
+								Choose one of 
+								<emphasis role="strong">DN</emphasis>,
+								<emphasis role="strong">RDN</emphasis> or
+								<emphasis role="strong">RDN value</emphasis>
+								to be used as 
+								label for entries in the DIT category. 
+								If the checkbox is checked long labels with more
+								than the specified number of characters are
+								abbreviated.
+							</entry>
+							<entry>RDN with limit of 50 characters</entry>
+						</row>
+						<row>
+							<entry>
+								Search Result label
+							</entry>
+							<entry>
+								Choose one of 
+								<emphasis role="strong">DN</emphasis>,
+								<emphasis role="strong">RDN</emphasis> or
+								<emphasis role="strong">RDN value</emphasis>
+								to be used as 
+								label for search results in the DIT category. 
+								If the checkbox is checked long labels with more
+								than the specified number of characters are
+								abbreviated.
+							</entry>
+							<entry>DN with limit of 50 characters</entry>
+						</row>
+						<row>
+							<entry>
+								Folding
+							</entry>
+							<entry>
+								If checked large subtrees and search results are
+								folded into virtual folders each with the given
+								number of entries.
+							</entry>
+							<entry>enabled with folding size 100</entry>
+						</row>
+						<row>
+							<entry>
+								Expand base entries when opening connection
+							</entry>
+							<entry>
+								If checked the base entries are expanded when
+								opening the connection.
+							</entry>
+							<entry>off</entry>
+						</row>
+						<row>
+							<entry>
+								Check for children
+							</entry>
+							<entry>
+								If checked the LDAP Browser tries to find out if
+								the fetched entries have children. Therefore the
+								operational attributes hasSubordinates, numSubordinates
+								and subordinateCount are requested from server.
+							</entry>
+							<entry>on</entry>
+						</row>
+					</tbody>
+				</tgroup>
+			</informaltable>
+		</para>		
+	</section>
+	
+	<section id="preferences_modification_logs_view">
+		<title>Modification Logs View preferences</title>
+		<para>
+			In the Modification Logs preferences page you can configure the
+			behavior of the 
+			<link linkend="tools_modification_logs_view">Modification Logs view</link>
+		</para>	
+		<para>
+			<screenshot>
+				<mediaobject>
+					<imageobject>
+						<imagedata scale="50"
+							fileref="images/tools_preferences_modification_logs_view.png"
+							format="PNG" />
+					</imageobject>
+				</mediaobject>
+			</screenshot>
+		</para>
+		<para>
+			<informaltable frame="all">
+				<tgroup cols="3">
+					<colspec colname="Option" colwidth="1*" />
+					<colspec colname="Description" colwidth="2*" />
+					<colspec colname="Default" colwidth="1*" />
+					<thead>
+						<row>
+							<entry>Option</entry>
+							<entry>Description</entry>
+							<entry>Default</entry>
+						</row>
+					</thead>
+					<tbody>
+						<row>
+							<entry>
+								Enable modificaton logs
+							</entry>
+							<entry>
+								Enables/Disables the modificaton logs.
+							</entry>
+							<entry>on</entry>
+						</row>
+						<row>
+							<entry>
+								Masked Attributes
+							</entry>
+							<entry>
+								Enter a comma-separated list of attributes that should be 
+								masked by an asterisk '*'. A typical attribute to mask is
+								userPassword.
+							</entry>
+							<entry></entry>
+						</row>
+						<row>
+							<entry>
+								Log File Rotation
+							</entry>
+							<entry>
+								Log file rotation is used. You could specifiy the 
+								number of log files an the maximum size for each log file.
+							</entry>
+							<entry>10 log files each with 100 kB</entry>
+						</row>
+					</tbody>
+				</tgroup>
+			</informaltable>
+		</para>		
+	</section>
+
+	
+	<section id="preferences_search_logs_view">
+		<title>Search Logs View preferences</title>
+		<para>
+			In the Search Logs preferences page you can configure the
+			behavior of the 
+			<link linkend="tools_search_logs_view">Search Logs view</link>
+		</para>	
+		<para>
+			<screenshot>
+				<mediaobject>
+					<imageobject>
+						<imagedata scale="50"
+							fileref="images/tools_preferences_search_logs_view.png"
+							format="PNG" />
+					</imageobject>
+				</mediaobject>
+			</screenshot>
+		</para>
+		<para>
+			<informaltable frame="all">
+				<tgroup cols="3">
+					<colspec colname="Option" colwidth="1*" />
+					<colspec colname="Description" colwidth="2*" />
+					<colspec colname="Default" colwidth="1*" />
+					<thead>
+						<row>
+							<entry>Option</entry>
+							<entry>Description</entry>
+							<entry>Default</entry>
+						</row>
+					</thead>
+					<tbody>
+						<row>
+							<entry>
+								Enable search request logs
+							</entry>
+							<entry>
+								Enables/Disables the search request and search result done logs.
+							</entry>
+							<entry>on</entry>
+						</row>
+						<row>
+							<entry>
+								Enable search result entry logs
+							</entry>
+							<entry>
+								Enables/Disables the search result entry logs. 
+								Note: You should only activate this options for debug reasons, 
+								otherwise your logfile will overfill very fast.
+							</entry>
+							<entry>off</entry>
+						</row>
+						<row>
+							<entry>
+								Log File Rotation
+							</entry>
+							<entry>
+								Log file rotation is used. You could specifiy the 
+								number of log files an the maximum size for each log file.
+							</entry>
+							<entry>10 log files each with 100 kB</entry>
+						</row>
+					</tbody>
+				</tgroup>
+			</informaltable>
+		</para>		
+	</section>
+
+
+
+
+	
+	
+	
+	
+	
+	
+	
 	
 </section>

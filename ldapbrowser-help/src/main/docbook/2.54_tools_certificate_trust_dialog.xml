@@ -20,7 +20,7 @@
 	<title>Certificate Trust dialog</title>
 	<para>
 		The Certificate Trust dialog pops up if a secure connection (ldaps or StartTLS) is
-		established and the server's certificate is invalid. 
+		established and the validation of the server's certificate failed. 
 	</para>
 	
 	<para>
