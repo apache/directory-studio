@@ -20,6 +20,69 @@
 	<title>What's new</title>
 
 	<simplesect>
+		<title>What's new in 1.5.0</title>
+		<para>
+			<emphasis role="strong">Entry editors enhancements</emphasis>
+		</para>
+		<para>
+			The traditional table entry editor can now work in offline mode
+			where modifications aren't saved immediately.
+		</para>
+		<para>
+			A new LDIF etry editor is now available, it renders
+			LDAP entries in LDIF format and allows editing of those entries. 
+		</para>
+		<para>
+			Both editors can operate in single-tab (opens each entry in the
+			same editor tab) or in multi-tab (opens each entry in its own editor
+			tab) mode.
+		</para>
+		<para>
+			Modify operations (add, delete, replace) are configurable which allows
+			specific adjustments for various directory servers.
+		</para>
+		<para>
+			<emphasis role="strong">Enhanced Connection Security</emphasis>
+		</para>
+		<para>
+			Server certificates of secure connections (ldaps and StartTLS) 
+			are now validated.
+		</para>
+		<para>
+			Kerberos authentication is now supported.
+		</para>
+		<para>
+			<emphasis role="strong">New value editors</emphasis>
+		</para>
+		<para>
+			Various new value editors are available:
+			<itemizedlist spacing="normal" mark="bullet">
+				<listitem>
+					<para>Certificate value editor to view and edit X.509 certificates.</para>
+				</listitem>
+				<listitem>
+					<para>Value editors for Microsoft Active Directory 
+					objectGUID and objectSid attributes</para>
+				</listitem>
+				<listitem>
+					<para>Value editor for UUID syntax</para>
+				</listitem>
+			</itemizedlist>
+		</para>
+		<para>
+			<emphasis role="strong">A number of bug fixes and improvements</emphasis>
+		</para>
+		<para>
+			Besides these key new features, the LDAP Browser plugin has
+			received a number of bug fixes and improvements. A detailed report is
+			provided in the
+			<link linkend="release_notes">Release Notes</link>
+			section.
+		</para>
+	</simplesect>
+
+
+	<simplesect>
 		<title>What's new in 1.4.0</title>
 		<para>
 			<emphasis role="strong">Internationalization</emphasis>
