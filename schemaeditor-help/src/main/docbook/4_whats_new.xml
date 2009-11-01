@@ -20,6 +20,34 @@
 	<title>What's new</title>
 
 	<simplesect>
+		<title>What's new in 1.5.0</title>
+		<para>
+			<emphasis role="strong">Online Schema</emphasis>
+		</para>
+		<para>
+			Schema projects can be created from an existing	schema
+			from a directory server.		
+		</para>
+		<para>
+			<emphasis role="strong">Merge Schemas</emphasis>
+		</para>
+		<para>
+			Schemas, object classes and attribute types can be merged
+			between schema projects.
+		</para>
+		<para>
+			<emphasis role="strong">A number of bug fixes</emphasis>
+		</para>
+		<para>
+			Besides these key new features, the Schema Editor plugin has
+			received a number of bug fixes. A detailed report is
+			provided in the
+			<link linkend="release_notes">Release Notes</link>
+			section.
+		</para>
+	</simplesect>
+
+	<simplesect>
 		<title>What's new in 1.4.0</title>
 		<para>
 			<emphasis role="strong">Internationalization</emphasis>

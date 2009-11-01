@@ -34,10 +34,12 @@
 		The creation of a new Schema Project is a two-step process:
 		<orderedlist numeration="arabic">
 			<listitem>
-				<para>Define the name of the project.</para>
+				<para>Define the name an the type of the project.</para>
 			</listitem>
 			<listitem>
-				<para>Select the 'core' schema files to import.</para>
+				<para>Select the 'core' schema files to import or select 
+				the directory server from which the schema should be 
+				imported.</para>
 			</listitem>
 		</orderedlist>
 	</para>
@@ -96,7 +98,7 @@
 		</para>
 	</simplesect>
 	<simplesect>
-		<title>Page 2</title>
+		<title>Page 2 (offline)</title>
 		<para>
 			The second page allows you to select the 'core' schema files
 			to import.
@@ -115,6 +117,24 @@
 		<para>
 			Specify the type of server you want to work with and check
 			the 'core' schema files you want to import.
+		</para>
+	</simplesect>
+	<simplesect>
+		<title>Page 2 (online)</title>
+		<para>
+			The second page allows you to select the connection to the 
+			directory server from which the schema should be loaded.
+		</para>
+		<para>
+			<screenshot>
+				<mediaobject>
+					<imageobject>
+						<imagedata scale="50"
+							fileref="images/tasks_new-project-wizard_page-2_online.png"
+							format="PNG" />
+					</imageobject>
+				</mediaobject>
+			</screenshot>
 		</para>
 	</simplesect>
 </section>

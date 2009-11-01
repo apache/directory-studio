@@ -22,5 +22,6 @@
 	&tasks_importing_schemas_from_xml_files;
 	&tasks_importing_schemas_from_openldap_files;
 	&tasks_importing_core_schemas_files;
+	&tasks_merge_schemas;
 
 </section>
