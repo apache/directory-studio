@@ -1,5 +1,112 @@
 Release Notes
 
+Apache Directory Studio 1.5.0
+
+Sub-task
+  * [DIRSTUDIO-516] - Create a new Entry Editor extension point
+  * [DIRSTUDIO-517] - Create a new single-window Entry Editor
+  * [DIRSTUDIO-518] - Create a new multi-window Entry Editor
+  * [DIRSTUDIO-519] - Create a new LDIF Entry Editor
+  
+Bug
+  * [DIRSTUDIO-282] - Save failed: null, when adding an attribute to a class, if attribute is also open in gui
+  * [DIRSTUDIO-331] - Instant error when importing schema in a new schema-project
+  * [DIRSTUDIO-334] - Built-in help doesn't show icons for "Icons" and "Toolbars" tables in "LDAP Browser View"
+  * [DIRSTUDIO-370] - Welcome screen subpages mouse-over images displays red crosses
+  * [DIRSTUDIO-402] - The ManageDsaIT control should be activable for a single request, not at the connection level
+  * [DIRSTUDIO-403] - Cannot add refs when the ExtensibleObject OC has been added to a referral
+  * [DIRSTUDIO-409] - No error message in some special case
+  * [DIRSTUDIO-410] - Referral handling is problematic
+  * [DIRSTUDIO-418] - Slow LDIF/CSV export
+  * [DIRSTUDIO-429] - Meaningless error message on importing schema
+  * [DIRSTUDIO-437] - Alias are not exposed as such in the browser
+  * [DIRSTUDIO-441] - New ObjectClass and AttributeType wizards always show a warning indicating that the item does not have any name
+  * [DIRSTUDIO-443] - The warning and error overlay for OCs and ATs sometimes (often) lacks forgets some items
+  * [DIRSTUDIO-473] - Import OpenLDAP core schema
+  * [DIRSTUDIO-481] - Improve refreshing of attributes and children
+  * [DIRSTUDIO-483] - DN Editor escapes all non-ascii characters
+  * [DIRSTUDIO-484] - Rename dialog does not work with escaped RDNs
+  * [DIRSTUDIO-486] - Include Version Specifier in LDIF export
+  * [DIRSTUDIO-488] - New context entry creation is not shown just after connection
+  * [DIRSTUDIO-489] - LDIF Import very slow
+  * [DIRSTUDIO-490] - Copy/Paste a search from one connection to another doesn't work
+  * [DIRSTUDIO-493] - Aliased attributes show only one attribute name in the RDN selection list instead of the full aliases list
+  * [DIRSTUDIO-495] - Cannot edit password field
+  * [DIRSTUDIO-497] - LdapSchema plugin 'Save' is erratic
+  * [DIRSTUDIO-499] - SOCKS proxy settings not used on startup
+  * [DIRSTUDIO-502] - Copy/Paste the context entry from one connection to another doesn't work
+  * [DIRSTUDIO-503] - New Entry -> Available object classes list remains stale after new objectclasses added
+  * [DIRSTUDIO-504] - Timestamp attribute with an invalid time in it is read only - editor ignores entry
+  * [DIRSTUDIO-506] - Export Schemas for ApacheDS: object classes must be sorted by hierarchy
+  * [DIRSTUDIO-507] - Attempt to rename the rdn results in message contain {0} and {1}
+  * [DIRSTUDIO-512] - Deletion of entries very slow
+  * [DIRSTUDIO-514] - Unable to restore last opened ldif-editors on restart
+  * [DIRSTUDIO-520] - NPE when saving a 1.5.0 server configuration
+  * [DIRSTUDIO-524] - Operational attributes are not show, although enabled under preferences
+  * [DIRSTUDIO-527] - Unable to display Active Directory GUIDs
+  * [DIRSTUDIO-529] - Unpretty 2-3 pixels height margin at the top of the Browser view
+  * [DIRSTUDIO-530] - Unpretty 2-3 pixels height margin at the top of the Entry editor
+  * [DIRSTUDIO-531] - Unpretty 2-3 pixels height margin at the top of the Search Results editor
+  * [DIRSTUDIO-532] - Refreshing parent of referral may give ConcurrentModificationException
+  * [DIRSTUDIO-537] - Error in the title of the Properties window of a server in the Apache DS plugin
+  * [DIRSTUDIO-545] - Widget disposed too early
+  * [DIRSTUDIO-547] - Editor for Classes userClass saves or reloads incorrect value
+  * [DIRSTUDIO-549] - subtree userClass editor does not keep full DN for base component upon its selection
+  * [DIRSTUDIO-550] - Root DSE properties: Directory types IBM Tivoli Directory Server 6.1 and 6.2 not detected correctly
+  * [DIRSTUDIO-552] - NullPointerException if Root DSE of IBM Tivoli Directory Server displayed in Entry Editor
+  * [DIRSTUDIO-553] - Add descriptions for server specific OIDs of IBM Tivoli Directory Server 6.1 and 6.2
+  * [DIRSTUDIO-557] - Edit value and edit entry are not working if DN is invalid
+  * [DIRSTUDIO-565] - Inconsistent handling of the 'modified schemas' flag
+  * [DIRSTUDIO-568] - When editing an AT or OC, using the scroll wheel may trigger a combo change
+  * [DIRSTUDIO-569] - Exceptions showing up in the log when starting a server in the Apache DS plugin
+  * [DIRSTUDIO-570] - Integer Value Editor does not accept negative numbers
+  * [DIRSTUDIO-571] - Modification is logged even if referred to another directory server
+  * [DIRSTUDIO-575] - Bookmarks not working
+  
+Improvement
+  * [DIRSTUDIO-145] - Multiple tabs for entry editor
+  * [DIRSTUDIO-263] - Add certificate validation for ldaps and StartTLS
+  * [DIRSTUDIO-371] - Entries with a ref attribute should be shown N times in the browser (N = number of ref values)
+  * [DIRSTUDIO-444] - Allow the user to enter the names of an item inline (using ',' as separator) in the OC and AT Editors
+  * [DIRSTUDIO-485] - Provide default IAuthHandler and IReferralHandler to be used in connections core without connections ui
+  * [DIRSTUDIO-487] - Empty namingcontexts causes javax.naming.InvalidNameException: Bad DN
+  * [DIRSTUDIO-496] - Password editor improvements
+  * [DIRSTUDIO-509] - Load schema from the directory server
+  * [DIRSTUDIO-513] - Do delete before add when modifying attribute values
+  * [DIRSTUDIO-521] - Replace the XSLT transformation by the use of the Dom4J OutputFormat class for XML pretty print
+  * [DIRSTUDIO-533] - Only show referral handling dialog when opening or expanding referral entry
+  * [DIRSTUDIO-534] - Re-order the preference pages for better understanding
+  * [DIRSTUDIO-535] - Use SWT.SEARCH and SWT.CANCEL style bits on search text field for a native search field on Mac OS X
+  * [DIRSTUDIO-541] - Add support for version 1.5.5 of the Apache DS
+  * [DIRSTUDIO-548] - SubtreeSpecification Editor does not accept empty filter if it's selected
+  * [DIRSTUDIO-554] - Add option to save tabular entry editor automatically or manually
+  * [DIRSTUDIO-555] - Human readable descriptions of OIDs in binary attributes preference page
+  * [DIRSTUDIO-558] - Load special entries (aliases, referrals, subentries) per request, add menu items to browser's context menu
+  * [DIRSTUDIO-574] - Add 'Cancel' button to "Select copy strategy" (was Abort of copy/paste not possible)
+  
+New Feature
+  * [DIRSTUDIO-62] - Add GSSAPI authentication - Cannot connect to Active Directory if not using Simple authentication
+  * [DIRSTUDIO-434] - Add value editor for Active Directory objectGUID and objectSid attributes
+  * [DIRSTUDIO-462] - Add Export to Open Document Format
+  * [DIRSTUDIO-494] - Add value editor for certificates (syntax 1.3.6.1.4.1.1466.115.121.1.8)
+  * [DIRSTUDIO-510] - Add functionality to copy/merge schema elements between schema projects
+  * [DIRSTUDIO-515] - Add extensibility to Entry Editor
+  * [DIRSTUDIO-536] - Add support for version 1.5.5 of the Apache DS server.xml configuration file
+  * [DIRSTUDIO-556] - Add value editor for UUID
+  * [DIRSTUDIO-562] - Add 'Copy Display Value' action, default copy action should copy displayed value
+  
+Task
+  * [DIRSTUDIO-479] - Object classes of an entry should always be present
+  * [DIRSTUDIO-523] - Update Eclipse dependencies to version 3.5 Galileo
+  * [DIRSTUDIO-525] - Remove support for the Linux PPC distribution
+  * [DIRSTUDIO-573] - Update bundled Apache DS Schema files to version 1.5.5
+  
+Wish
+  * [DIRSTUDIO-167] - Show custom icons for various kinds of schema elements while browsing schema data
+
+
+--------------------------------------------------------------------------------
+
 Apache Directory Studio 1.4.0
 
 Bug
