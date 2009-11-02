@@ -28,7 +28,7 @@
   </parent>
 
   <artifactId>apacheds.configuration.help</artifactId>
-  <version>${apacheds.configuration.help.version}</version>
+  <version>1.5.0.v20091102</version>
   <name>Apache Directory Studio Apache DS Configuration Help</name>
   <packaging>jar</packaging>
 
@@ -57,4 +57,10 @@
       </plugin>
     </plugins>
   </build>
+
+  <scm>
+    <connection>scm:svn:http://svn.apache.org/repos/asf/directory/studio/tags/1.5.0.v20091102/parent-help/apacheds.configuration.help</connection>
+    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/directory/studio/tags/1.5.0.v20091102/parent-help/apacheds.configuration.help</developerConnection>
+    <url>https://svn.apache.org/repos/asf/directory/studio/tags/1.5.0.v20091102/parent-help/apacheds.configuration.help</url>
+  </scm>
 </project>
