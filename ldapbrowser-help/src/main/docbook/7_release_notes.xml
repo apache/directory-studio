@@ -26,6 +26,9 @@
         <para>
             <itemizedlist spacing="normal" mark="bullet">
                 <listitem>
+                    <para>[DIRSTUDIO-575] - Bookmarks not working</para>
+                </listitem>
+                <listitem>
                     <para>[DIRSTUDIO-570] - Integer Value Editor does not accept negative numbers</para>
                 </listitem>
                 <listitem>
@@ -104,6 +107,9 @@
                     <para>[DIRSTUDIO-418] - Slow LDIF/CSV export</para>
                 </listitem>
                 <listitem>
+                    <para>[DIRSTUDIO-409] - No error message in some special case</para>
+                </listitem>
+                <listitem>
                     <para>[DIRSTUDIO-403] - Cannot add refs when the ExtensibleObject OC has been added to a referral</para>
                 </listitem>
                 <listitem>
@@ -120,6 +126,9 @@
         <para>
             <itemizedlist spacing="normal" mark="bullet">
                 <listitem>
+                    <para>[DIRSTUDIO-574] - Add 'Cancel' button to "Select copy strategy" (was Abort of copy/paste not possible)</para>
+                </listitem>
+                <listitem>
                     <para>[DIRSTUDIO-558] - Load special entries (aliases, referrals, subentries) per request, add menu items to browser's context menu</para>
                 </listitem>
                 <listitem>
@@ -135,6 +144,9 @@
                     <para>[DIRSTUDIO-534] - Re-order the preference pages for better understanding</para>
                 </listitem>
                 <listitem>
+                    <para>[DIRSTUDIO-533] - Only show referral handling dialog when opening or expanding referral entry</para>
+                </listitem>
+                <listitem>
                     <para>[DIRSTUDIO-513] - Do delete before add when modifying attribute values</para>
                 </listitem>
                 <listitem>
@@ -142,6 +154,9 @@
                 </listitem>
                 <listitem>
                     <para>[DIRSTUDIO-487] - Empty namingcontexts causes javax.naming.InvalidNameException: Bad DN</para>
+                </listitem>
+                <listitem>
+                    <para>[DIRSTUDIO-371] - Entries with a ref attribute should be shown N times in the browser (N = number of ref values)</para>
                 </listitem>
                 <listitem>
                     <para>[DIRSTUDIO-145] - Multiple tabs for entry editor</para>
