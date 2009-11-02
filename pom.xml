@@ -66,9 +66,6 @@
     <distMgmtSiteUrl>scpexe://people.apache.org/www/directory.apache.org/studio/gen-docs/${version}</distMgmtSiteUrl>
     <!-- Set versions for subprojects -->
     <aciitemeditor.version>1.5.0-SNAPSHOT</aciitemeditor.version>
-    <!-- <!> <!> <!> WARNING <!> <!> <!> -->
-    <!-- The version for the Apache DS launcher needs to be set to a final version. -->
-    <!-- Make sure to add the "-SNAPSHOT" string to the version before releasing. -->
     <apacheds.launcher.version>1.5.0</apacheds.launcher.version>
     <apacheds.version>1.5.0-SNAPSHOT</apacheds.version>
     <apacheds.feature.version>1.5.0-SNAPSHOT</apacheds.feature.version>
@@ -179,7 +176,15 @@
       of at least 1 iteration because the dist modules would be
       built before the help modules ...
     -->
-    <profile>
+    <!--
+      NOTE:
+      This profile has been disabled for the release, and needs to be 
+      enabled again after the release is over.
+      We are disabling the build of 'updatesite' and 'studio' because we don't 
+      want to overload the maven repository with useless (heavy) packages and 
+      distributions
+    -->
+    <!--<profile>
       <id>build-dist-modules</id>
       <activation>
         <file>
@@ -190,7 +195,7 @@
         <module>updatesite</module>
         <module>studio</module>
       </modules>
-    </profile>
+    </profile>-->
   </profiles>
 
   <dependencyManagement>
@@ -1228,7 +1233,7 @@
         <plugin>
           <groupId>org.apache.directory.studio</groupId>
           <artifactId>studio-maven-plugin</artifactId>
-          <version>1.0.3</version>
+          <version>1.0.2</version>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
