@@ -28,6 +28,16 @@
 			Schema projects can be created from an existing	schema
 			from a directory server.		
 		</para>
+        <para>
+            <screenshot>
+                <mediaobject>
+                    <imageobject>
+                        <imagedata scale="50"
+                            fileref="images/whats_new_online_schema.png" format="PNG" />
+                    </imageobject>
+                </mediaobject>
+            </screenshot>
+        </para>
 		<para>
 			<emphasis role="strong">Merge Schemas</emphasis>
 		</para>
@@ -35,6 +45,16 @@
 			Schemas, object classes and attribute types can be merged
 			between schema projects.
 		</para>
+        <para>
+            <screenshot>
+                <mediaobject>
+                    <imageobject>
+                        <imagedata scale="50"
+                            fileref="images/whats_new_merge-schemas-wizard.png" format="PNG" />
+                    </imageobject>
+                </mediaobject>
+            </screenshot>
+        </para>
 		<para>
 			<emphasis role="strong">A number of bug fixes</emphasis>
 		</para>

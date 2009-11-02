@@ -18,6 +18,27 @@
 -->
 <chapter id="whats_new">
 	<title>What's new</title>
+
+    <simplesect>
+        <title>What's new in 1.5.0</title>
+        <para>
+            <emphasis role="strong">Support for Apache DS 1.5.5</emphasis>
+        </para>
+        <para>
+              The Apache DS Configuration plugin now supports the 1.5.5 
+              version of Apache Directory Server.      
+        </para>
+        <para>
+            <screenshot>
+                <mediaobject>
+                    <imageobject>
+                        <imagedata scale="50"
+                            fileref="images/whats_new_apacheds_1.5.5.png" format="PNG" />
+                    </imageobject>
+                </mediaobject>
+            </screenshot>
+        </para>
+    </simplesect>
 	
 	<simplesect>
 		<title>What's new in 1.4.0</title>
