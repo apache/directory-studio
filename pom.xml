@@ -1228,7 +1228,7 @@
         <plugin>
           <groupId>org.apache.directory.studio</groupId>
           <artifactId>studio-maven-plugin</artifactId>
-          <version>1.0.2</version>
+          <version>1.0.3</version>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
