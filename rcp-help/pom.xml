@@ -28,7 +28,7 @@
   </parent>
 
   <artifactId>rcp.help</artifactId>
-  <version>1.5.0.v20091102</version>
+  <version>${rcp.help.version}</version>
   <name>Apache Directory Studio RCP Help</name>
   <packaging>jar</packaging>
 
@@ -57,10 +57,4 @@
       </plugin>
     </plugins>
   </build>
-
-  <scm>
-    <connection>scm:svn:http://svn.apache.org/repos/asf/directory/studio/tags/1.5.0.v20091102/parent-help/rcp.help</connection>
-    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/directory/studio/tags/1.5.0.v20091102/parent-help/rcp.help</developerConnection>
-    <url>https://svn.apache.org/repos/asf/directory/studio/tags/1.5.0.v20091102/parent-help/rcp.help</url>
-  </scm>
 </project>
