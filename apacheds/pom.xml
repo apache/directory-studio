@@ -721,7 +721,7 @@
                 <artifactItem>
                   <groupId>org.apache.directory.studio</groupId>
                   <artifactId>apacheds-launcher</artifactId>
-                  <version>1.5.0</version>
+                  <version>${apacheds.launcher.version}</version>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.apache.directory.server</groupId>
