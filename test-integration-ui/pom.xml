@@ -23,11 +23,11 @@
   <parent>
     <groupId>org.apache.directory.studio</groupId>
     <artifactId>parent</artifactId>
-    <version>1.5.0-SNAPSHOT</version>
+    <version>1.5.0.v20091102</version>
   </parent>
   
   <artifactId>test.integration.ui</artifactId>
-  <version>${test.integration.ui.version}</version>
+  <version>1.5.0.v20091102</version>
   <name>Apache Directory Studio UI Integration Tests</name>
   <packaging>jar</packaging>
 
