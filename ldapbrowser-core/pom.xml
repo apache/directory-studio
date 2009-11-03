@@ -27,7 +27,7 @@
   </parent>
 
   <artifactId>ldapbrowser.core</artifactId>
-  <version>1.5.1-SNAPSHOT</version>
+  <version>${ldapbrowser.core.version}</version>
   <name>Apache Directory Studio LDAP Browser Core</name>
   <packaging>jar</packaging>
 

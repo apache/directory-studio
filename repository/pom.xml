@@ -27,7 +27,7 @@
   </parent>
 
   <artifactId>repository</artifactId>
-  <version>1.5.1-SNAPSHOT</version>
+  <version>${repository.version}</version>
   <name>Apache Directory Studio Repository</name>
   <packaging>pom</packaging>
   

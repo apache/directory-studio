@@ -23,12 +23,12 @@
   <parent>
     <groupId>org.apache.directory.studio</groupId>
     <artifactId>parent-help</artifactId>
-    <version>1.5.0-SNAPSHOT</version>
+    <version>1.5.1-SNAPSHOT</version>
     <relativePath>../help-pom.xml</relativePath>
   </parent>
 
   <artifactId>rcp.help</artifactId>
-  <version>1.5.1-SNAPSHOT</version>
+  <version>${rcp.help.version}</version>
   <name>Apache Directory Studio RCP Help</name>
   <packaging>jar</packaging>
 

@@ -27,7 +27,7 @@
   </parent>
   
   <artifactId>ldifparser</artifactId>
-  <version>1.5.1-SNAPSHOT</version>
+  <version>${ldifparser.version}</version>
   <name>Apache Directory Studio LDIF Parser</name>
   <packaging>jar</packaging>
 
