@@ -30,6 +30,7 @@
   <artifactId>parent</artifactId>
   <version>1.5.1-SNAPSHOT</version>
   <name>Apache Directory Studio</name>
+  <description>Apache Directory Studio is a complete directory tooling platform intended to be used with any LDAP server however it is particularly designed for use with the Apache Directory Server.</description>
   <packaging>pom</packaging>
 
   <url>http://directory.apache.org/studio/</url>
@@ -47,7 +48,7 @@
   <scm>
     <connection>scm:svn:http://svn.apache.org/repos/asf/directory/studio/trunk/</connection>
     <developerConnection>scm:svn:https://svn.apache.org/repos/asf/directory/studio/trunk/</developerConnection>
-    <url>https://svn.apache.org/repos/asf/directory/studio/trunk/</url>
+    <url>https://svn.apache.org/viewvc/directory/studio/trunk/</url>
   </scm>
 
   <distributionManagement>
