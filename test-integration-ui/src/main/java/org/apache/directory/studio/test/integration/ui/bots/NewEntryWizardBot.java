@@ -21,12 +21,18 @@ package org.apache.directory.studio.test.integration.ui.bots;
 
 
 import org.apache.directory.shared.ldap.name.LdapDN;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotText;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 
 
 public class NewEntryWizardBot extends WizardBot
 {
+    private EntryEditorWidgetBot widgetBot;
+
+
+    public NewEntryWizardBot()
+    {
+        this.widgetBot = new EntryEditorWidgetBot( bot );
+    }
+
 
     public boolean isVisible()
     {
@@ -67,19 +73,24 @@ public class NewEntryWizardBot extends WizardBot
     }
 
 
-    public void setAttributeValue( String type, int number, String value )
+    public void typeValueAndFinish( String value )
     {
-        SWTBotTree tree = bot.tree( 0 );
+        widgetBot.isVisisble();
+        widgetBot.typeValueAndFinish( value );
+    }
 
-        // click to finish editing of value
-        tree.getTreeItem( type ).click();
 
-        tree.getTreeItem( type ).doubleClick();
-        SWTBotText text = bot.text( "" );
-        text.setText( value );
+    public void editValue( String attributeType, String value )
+    {
+        widgetBot.isVisisble();
+        widgetBot.editValue( attributeType, value );
+    }
 
-        // click to finish editing of value
-        tree.getTreeItem( type ).click();
+
+    public void cancelEditValue()
+    {
+        widgetBot.isVisisble();
+        widgetBot.cancelEditValue();
     }
 
 

@@ -196,7 +196,7 @@ public class NewEntryWizardTest
         wizardBot.setRdnValue( 1, "testCreatePersonEntry" );
         wizardBot.clickNextButton();
 
-        wizardBot.setAttributeValue( "sn", 1, "test" );
+        wizardBot.typeValueAndFinish( "test" );
         wizardBot.clickFinishButton();
 
         assertTrue( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "cn=testCreatePersonEntry" ) );
@@ -280,8 +280,10 @@ public class NewEntryWizardTest
         wizardBot.setRdnValue( 1, "kadmin/changepw@DOMAIN" );
         wizardBot.clickNextButton();
 
-        wizardBot.setAttributeValue( "cn", 1, "test" );
-        wizardBot.setAttributeValue( "sn", 1, "test" );
+        wizardBot.editValue( "cn", "" );
+        wizardBot.typeValueAndFinish( "test" );
+        wizardBot.editValue( "sn", "" );
+        wizardBot.typeValueAndFinish( "test" );
         wizardBot.clickFinishButton();
 
         assertTrue( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system",
