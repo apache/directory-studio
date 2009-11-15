@@ -20,15 +20,14 @@
 package org.apache.directory.studio.test.integration.ui.bots;
 
 
-public class DeleteDialogBot extends DialogBot
+public class ImportWizardBot extends WizardBot
 {
-    public static final String DELETE_ENTRY_TITLE = "Delete Entry";
-    public static final String DELETE_ENTRIES_TITLE = "Delete Entries";
-    public static final String DELETE_VALUE_TITLE = "Delete Value";
+    public static final String IMPORT_LDIF_TITLE = "LDIF Import";
+    public static final String IMPORT_DSML_TITLE = "DSML Import";
     private String title;
 
 
-    public DeleteDialogBot( String title )
+    public ImportWizardBot( String title )
     {
         this.title = title;
     }
@@ -36,19 +35,13 @@ public class DeleteDialogBot extends DialogBot
 
     public boolean isVisible()
     {
-        return super.isVisible( title );
+        return isVisible( title );
     }
 
 
-    public void clickOkButton()
+    public void typeFile( String file )
     {
-        super.clickButton( "OK" );
-    }
-
-
-    public void clickCancelButton()
-    {
-        super.clickButton( "Cancel" );
+        bot.comboBox().setText( file );
     }
 
 }

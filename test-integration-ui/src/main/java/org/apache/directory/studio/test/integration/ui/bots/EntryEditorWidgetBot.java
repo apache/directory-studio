@@ -81,7 +81,6 @@ class EntryEditorWidgetBot
     {
         cancelEditValue();
         SWTBotTreeItem treeItem = getTreeItem( attributeType, value );
-        System.out.println( treeItem.cell( 0 ) + " - '" + treeItem.cell( 1 ) + "'" );
         treeItem.doubleClick();
     }
 
@@ -113,7 +112,7 @@ class EntryEditorWidgetBot
         SWTBotTreeItem treeItem = getTreeItem( attributeType, value );
         treeItem.click();
         ContextMenuHelper.clickContextMenu( bot.tree(), "Delete Value" );
-        DeleteDialogBot deleteDialogBot = new DeleteDialogBot();
+        DeleteDialogBot deleteDialogBot = new DeleteDialogBot( DeleteDialogBot.DELETE_VALUE_TITLE );
         deleteDialogBot.clickOkButton();
     }
 

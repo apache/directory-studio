@@ -99,8 +99,44 @@ public class BrowserViewBot
 
     public DeleteDialogBot openDeleteDialog()
     {
-        ContextMenuHelper.clickContextMenu( browserBot.getTree(), "Delete Entries" );
-        return new DeleteDialogBot();
+        if ( browserBot.getTree().selectionCount() == 1 )
+        {
+            ContextMenuHelper.clickContextMenu( browserBot.getTree(), "Delete Entry" );
+            return new DeleteDialogBot( DeleteDialogBot.DELETE_ENTRY_TITLE );
+        }
+        else
+        {
+            ContextMenuHelper.clickContextMenu( browserBot.getTree(), "Delete Entries" );
+            return new DeleteDialogBot( DeleteDialogBot.DELETE_ENTRIES_TITLE );
+        }
+    }
+
+
+    public ExportWizardBot openExportLdifWizard()
+    {
+        ContextMenuHelper.clickContextMenu( browserBot.getTree(), "Export", "LDIF Export..." );
+        return new ExportWizardBot( ExportWizardBot.EXPORT_LDIF_TITLE );
+    }
+
+
+    public ExportWizardBot openExportDsmlWizard()
+    {
+        ContextMenuHelper.clickContextMenu( browserBot.getTree(), "Export", "DSML Export..." );
+        return new ExportWizardBot( ExportWizardBot.EXPORT_DSML_TITLE );
+    }
+
+
+    public ImportWizardBot openImportLdifWizard()
+    {
+        ContextMenuHelper.clickContextMenu( browserBot.getTree(), "Import", "LDIF Import..." );
+        return new ImportWizardBot( ImportWizardBot.IMPORT_LDIF_TITLE );
+    }
+
+
+    public ImportWizardBot openImportDsmlWizard()
+    {
+        ContextMenuHelper.clickContextMenu( browserBot.getTree(), "Import", "DSML Import..." );
+        return new ImportWizardBot( ImportWizardBot.IMPORT_DSML_TITLE );
     }
 
 

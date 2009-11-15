@@ -22,8 +22,8 @@ package org.apache.directory.studio.test.integration.ui;
 
 
 import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertTrue;
-import static junit.framework.Assert.fail;
 
 import java.io.File;
 import java.io.InputStream;
@@ -40,13 +40,13 @@ import org.apache.directory.server.core.partition.impl.btree.jdbm.JdbmPartition;
 import org.apache.directory.server.integ.SiRunner;
 import org.apache.directory.server.ldap.LdapServer;
 import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
+import org.apache.directory.studio.test.integration.ui.bots.BrowserViewBot;
 import org.apache.directory.studio.test.integration.ui.bots.ConnectionsViewBot;
+import org.apache.directory.studio.test.integration.ui.bots.DeleteDialogBot;
+import org.apache.directory.studio.test.integration.ui.bots.ExportWizardBot;
+import org.apache.directory.studio.test.integration.ui.bots.ImportWizardBot;
 import org.apache.directory.studio.test.integration.ui.bots.StudioBot;
 import org.eclipse.core.runtime.Platform;
-import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
-import org.eclipse.swtbot.swt.finder.waits.DefaultCondition;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -69,8 +69,7 @@ public class ImportExportTest
 
     private StudioBot studioBot;
     private ConnectionsViewBot connectionsViewBot;
-
-    private SWTWorkbenchBot eBot;
+    private BrowserViewBot browserViewBot;
 
 
     @Before
@@ -80,8 +79,7 @@ public class ImportExportTest
         studioBot.resetLdapPerspective();
         connectionsViewBot = studioBot.getConnectionView();
         connectionsViewBot.createTestConnection( "ImportExportTest", ldapServer.getPort() );
-
-        eBot = new SWTWorkbenchBot();
+        browserViewBot = studioBot.getBrowserView();
     }
 
 
@@ -89,7 +87,6 @@ public class ImportExportTest
     public void tearDown() throws Exception
     {
         connectionsViewBot.deleteTestConnections();
-        eBot = null;
     }
 
 
@@ -110,33 +107,15 @@ public class ImportExportTest
         URL url = Platform.getInstanceLocation().getURL();
         final String file = url.getFile() + "ImportExportTest.ldif";
 
-        final SWTBotTree browserTree = SWTBotUtils.getLdapBrowserTree( eBot );
-
-        SWTBotUtils.selectEntry( eBot, browserTree, false, "DIT", "Root DSE", "ou=system", "ou=users",
-            "cn=Wolfgang K\u00f6lbel" );
+        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users", "cn=Wolfgang K\u00f6lbel" );
 
         // export LDIF
-        ContextMenuHelper.clickContextMenu( browserTree, "Export", "LDIF Export..." );
-        eBot.shell( "LDIF Export" );
-        eBot.button( "Next >" ).click();
-        eBot.comboBoxWithLabel( "LDIF File:" ).setText( file );
-        eBot.button( "Finish" ).click();
-
-        // wait till LDIF file exists
-        eBot.waitUntil( new DefaultCondition()
-        {
-            public boolean test() throws Exception
-            {
-                File f = new File( file );
-                return f.exists() && f.length() > 200; // is actually 217 bytes
-            }
-
-
-            public String getFailureMessage()
-            {
-                return "LDIF File " + file + " not found.";
-            }
-        } );
+        ExportWizardBot wizardBot = browserViewBot.openExportLdifWizard();
+        assertTrue( wizardBot.isVisible() );
+        wizardBot.clickNextButton();
+        wizardBot.typeFile( file );
+        wizardBot.clickFinishButton();
+        wizardBot.waitTillExportFinished( file, 200 ); // is actually 217 bytes
 
         List<String> lines = FileUtils.readLines( new File( file ) );
         // verify that the first line of exported LDIF is "version: 1"
@@ -146,18 +125,19 @@ public class ImportExportTest
             "dn:: Y249V29sZmdhbmcgS8O2bGJlbCxvdT11c2VycyxvdT1zeXN0ZW0=" );
 
         // delete entry
-        ContextMenuHelper.clickContextMenu( browserTree, "Delete Entry" );
-        eBot.button( "OK" ).click();
+        DeleteDialogBot dialogBot = browserViewBot.openDeleteDialog();
+        assertTrue( dialogBot.isVisible() );
+        dialogBot.clickOkButton();
+        assertFalse( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=users", "cn=Wolfgang K\u00f6lbel" ) );
 
         // import LDIF
-        ContextMenuHelper.clickContextMenu( browserTree, "Import", "LDIF Import..." );
-        eBot.shell( "LDIF Import" );
-        eBot.comboBoxWithLabel( "LDIF File:" ).setText( file );
-        eBot.button( "Finish" ).click();
+        ImportWizardBot importWizardBot = browserViewBot.openImportLdifWizard();
+        importWizardBot.typeFile( file );
+        importWizardBot.clickFinishButton();
 
         // verify that entry with umlaut exists
-        SWTBotUtils.selectEntry( eBot, browserTree, false, "DIT", "Root DSE", "ou=system", "ou=users",
-            "cn=Wolfgang K\u00f6lbel" );
+        assertTrue( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=users", "cn=Wolfgang K\u00f6lbel" ) );
+        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users", "cn=Wolfgang K\u00f6lbel" );
     }
 
 
@@ -178,34 +158,16 @@ public class ImportExportTest
         URL url = Platform.getInstanceLocation().getURL();
         final String file = url.getFile() + "ImportExportTest.dsml";
 
-        final SWTBotTree browserTree = SWTBotUtils.getLdapBrowserTree( eBot );
+        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users", "cn=Wolfgang K\u00f6lbel" );
 
-        SWTBotUtils.selectEntry( eBot, browserTree, false, "DIT", "Root DSE", "ou=system", "ou=users",
-            "cn=Wolfgang K\u00f6lbel" );
-
-        // export DSML
-        ContextMenuHelper.clickContextMenu( browserTree, "Export", "DSML Export..." );
-        eBot.shell( "DSML Export" );
-        eBot.button( "Next >" ).click();
-        eBot.comboBoxWithLabel( "DSML File:" ).setText( file );
-        eBot.radio( "DSML Request" ).click();
-        eBot.button( "Finish" ).click();
-
-        // wait till DSML file exists
-        eBot.waitUntil( new DefaultCondition()
-        {
-            public boolean test() throws Exception
-            {
-                File f = new File( file );
-                return f.exists() && f.length() > 600; // is actually 651 bytes
-            }
-
-
-            public String getFailureMessage()
-            {
-                return "DSML File " + file + " not found.";
-            }
-        } );
+        // export LDIF
+        ExportWizardBot wizardBot = browserViewBot.openExportDsmlWizard();
+        assertTrue( wizardBot.isVisible() );
+        wizardBot.clickNextButton();
+        wizardBot.typeFile( file );
+        wizardBot.selectDsmlRequest();
+        wizardBot.clickFinishButton();
+        wizardBot.waitTillExportFinished( file, 600 ); // is actually 651 bytes
 
         // verify that exported DSML contains the Base64 encoded DN
         String content = FileUtils.readFileToString( new File( file ), "UTF-8" );
@@ -213,18 +175,19 @@ public class ImportExportTest
             .contains( "dn=\"cn=Wolfgang K\u00f6lbel,ou=users,ou=system\"" ) );
 
         // delete entry
-        ContextMenuHelper.clickContextMenu( browserTree, "Delete Entry" );
-        eBot.button( "OK" ).click();
+        DeleteDialogBot dialogBot = browserViewBot.openDeleteDialog();
+        assertTrue( dialogBot.isVisible() );
+        dialogBot.clickOkButton();
+        assertFalse( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=users", "cn=Wolfgang K\u00f6lbel" ) );
 
         // import DSML
-        ContextMenuHelper.clickContextMenu( browserTree, "Import", "DSML Import..." );
-        eBot.shell( "DSML Import" );
-        eBot.comboBoxWithLabel( "DSML File:" ).setText( file );
-        eBot.button( "Finish" ).click();
+        ImportWizardBot importWizardBot = browserViewBot.openImportDsmlWizard();
+        importWizardBot.typeFile( file );
+        importWizardBot.clickFinishButton();
 
         // verify that entry with umlaut exists
-        SWTBotUtils.selectEntry( eBot, browserTree, false, "DIT", "Root DSE", "ou=system", "ou=users",
-            "cn=Wolfgang K\u00f6lbel" );
+        assertTrue( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=users", "cn=Wolfgang K\u00f6lbel" ) );
+        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users", "cn=Wolfgang K\u00f6lbel" );
     }
 
 
@@ -240,8 +203,6 @@ public class ImportExportTest
     @Test
     public void testImportContextEntryRefreshesRootDSE() throws Exception
     {
-        final SWTBotTree browserTree = SWTBotUtils.getLdapBrowserTree( eBot );
-
         // add a new partition
         Partition partition = new JdbmPartition();
         partition.setId( "example" );
@@ -249,32 +210,24 @@ public class ImportExportTest
         ldapServer.getDirectoryService().addPartition( partition );
 
         // refresh root DSE and ensure that the partition is in root DSE
-        SWTBotTreeItem rootDSE = SWTBotUtils.selectEntry( eBot, browserTree, false, "DIT", "Root DSE" );
-        ContextMenuHelper.clickContextMenu( browserTree, "Reload Entry" );
+        browserViewBot.selectEntry( "DIT", "Root DSE" );
+        browserViewBot.refresh();
 
         // ensure context entry is not there
-        rootDSE = SWTBotUtils.selectEntry( eBot, browserTree, false, "DIT", "Root DSE" );
-        List<String> nodes = rootDSE.getNodes();
-        for ( String node : nodes )
-        {
-            if ( node.startsWith( "dc=example,dc=com" ) )
-            {
-                fail( "dc=example,dc=com should not exist yet" );
-            }
-        }
+        assertFalse( browserViewBot.existsEntry( "DIT", "Root DSE", "dc=example,dc=com" ) );
 
         // import
         URL url = Platform.getInstanceLocation().getURL();
         String file = url.getFile() + "ImportContextEntry.ldif";
         String data = "dn:dc=example,dc=com\nobjectClass:top\nobjectClass:domain\ndc:example\n\n";
         FileUtils.writeStringToFile( new File( file ), data );
-        ContextMenuHelper.clickContextMenu( browserTree, "Import", "LDIF Import..." );
-        eBot.shell( "LDIF Import" );
-        eBot.comboBoxWithLabel( "LDIF File:" ).setText( file );
-        eBot.button( "Finish" ).click();
+        ImportWizardBot importWizardBot = browserViewBot.openImportLdifWizard();
+        importWizardBot.typeFile( file );
+        importWizardBot.clickFinishButton();
 
         // ensure context entry is there now, without a manual refresh
-        SWTBotUtils.selectEntry( eBot, browserTree, false, "DIT", "Root DSE", "dc=example,dc=com" );
+        assertTrue( browserViewBot.existsEntry( "DIT", "Root DSE", "dc=example,dc=com" ) );
+        browserViewBot.selectEntry( "DIT", "Root DSE", "dc=example,dc=com" );
     }
 
 
@@ -294,20 +247,19 @@ public class ImportExportTest
         String ldifContent = IOUtils.toString( is );
         FileUtils.writeStringToFile( new File( destFile ), ldifContent );
 
-        SWTBotTree browserTree = SWTBotUtils.getLdapBrowserTree( eBot );
-        SWTBotUtils.selectEntry( eBot, browserTree, true, "DIT", "Root DSE", "ou=system", "ou=users" );
+        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users" );
+        browserViewBot.expandEntry( "DIT", "Root DSE", "ou=system", "ou=users" );
 
         long fireCount0 = EventRegistry.getFireCount();
 
         // import the LDIF
-        ContextMenuHelper.clickContextMenu( browserTree, "Import", "LDIF Import..." );
-        eBot.shell( "LDIF Import" );
-        eBot.comboBoxWithLabel( "LDIF File:" ).setText( destFile );
-        eBot.button( "Finish" ).click();
+        ImportWizardBot importWizardBot = browserViewBot.openImportLdifWizard();
+        importWizardBot.typeFile( destFile );
+        importWizardBot.clickFinishButton();
 
         long fireCount1 = EventRegistry.getFireCount();
 
-        SWTBotUtils.selectEntry( eBot, browserTree, false, "DIT", "Root DSE", "ou=system", "ou=users", "uid=User.1" );
+        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users", "uid=User.1" );
 
         // verify that only three two events were fired between Import 
         long fireCount = fireCount1 - fireCount0;

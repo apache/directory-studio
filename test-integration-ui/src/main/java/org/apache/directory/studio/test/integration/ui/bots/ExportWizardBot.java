@@ -20,15 +20,19 @@
 package org.apache.directory.studio.test.integration.ui.bots;
 
 
-public class DeleteDialogBot extends DialogBot
+import java.io.File;
+
+import org.eclipse.swtbot.swt.finder.waits.DefaultCondition;
+
+
+public class ExportWizardBot extends WizardBot
 {
-    public static final String DELETE_ENTRY_TITLE = "Delete Entry";
-    public static final String DELETE_ENTRIES_TITLE = "Delete Entries";
-    public static final String DELETE_VALUE_TITLE = "Delete Value";
+    public static final String EXPORT_LDIF_TITLE = "LDIF Export";
+    public static final String EXPORT_DSML_TITLE = "DSML Export";
     private String title;
 
 
-    public DeleteDialogBot( String title )
+    public ExportWizardBot( String title )
     {
         this.title = title;
     }
@@ -36,19 +40,38 @@ public class DeleteDialogBot extends DialogBot
 
     public boolean isVisible()
     {
-        return super.isVisible( title );
+        return isVisible( title );
     }
 
 
-    public void clickOkButton()
+    public void typeFile( String file )
     {
-        super.clickButton( "OK" );
+        bot.comboBox().setText( file );
     }
 
 
-    public void clickCancelButton()
+    public void waitTillExportFinished( final String file, final int expectedFileSize )
     {
-        super.clickButton( "Cancel" );
+        bot.waitUntil( new DefaultCondition()
+        {
+            public boolean test() throws Exception
+            {
+                File f = new File( file );
+                return f.exists() && f.length() > expectedFileSize;
+            }
+
+
+            public String getFailureMessage()
+            {
+                return "LDIF File " + file + " not found.";
+            }
+        } );
+    }
+
+
+    public void selectDsmlRequest()
+    {
+        bot.radio( "DSML Request" ).click();
     }
 
 }
