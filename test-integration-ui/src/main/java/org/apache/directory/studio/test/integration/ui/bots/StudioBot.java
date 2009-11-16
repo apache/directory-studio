@@ -22,6 +22,7 @@ package org.apache.directory.studio.test.integration.ui.bots;
 
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.finders.UIThreadRunnable;
 import org.eclipse.swtbot.swt.finder.results.VoidResult;
 import org.eclipse.ui.IViewReference;
@@ -109,6 +110,13 @@ public class StudioBot
             }
         } );
 
+    }
+
+
+    public PreferencesBot openPreferences()
+    {
+        new SWTBot().menu( "Window" ).menu( "Preferences" ).click();
+        return new PreferencesBot();
     }
 
 }
