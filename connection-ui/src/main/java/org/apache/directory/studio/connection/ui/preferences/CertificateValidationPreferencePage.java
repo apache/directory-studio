@@ -139,6 +139,7 @@ public class CertificateValidationPreferencePage extends PreferencePage implemen
     {
         verifyCertificatesButton.setSelection( ConnectionCorePlugin.getDefault().getPluginPreferences()
             .getDefaultBoolean( ConnectionCoreConstants.PREFERENCE_VALIDATE_CERTIFICATES ) );
+        ConnectionCorePlugin.getDefault().savePluginPreferences();
         super.performDefaults();
     }
 
@@ -150,6 +151,7 @@ public class CertificateValidationPreferencePage extends PreferencePage implemen
     {
         ConnectionCorePlugin.getDefault().getPluginPreferences().setValue(
             ConnectionCoreConstants.PREFERENCE_VALIDATE_CERTIFICATES, verifyCertificatesButton.getSelection() );
+        ConnectionCorePlugin.getDefault().savePluginPreferences();
         return true;
     }
 
