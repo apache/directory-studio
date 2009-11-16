@@ -22,6 +22,7 @@ package org.apache.directory.studio.test.integration.ui;
 
 
 import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertTrue;
 
 import org.apache.directory.server.core.integ.Level;
 import org.apache.directory.server.core.integ.annotations.CleanupLevel;
@@ -30,10 +31,11 @@ import org.apache.directory.server.ldap.LdapServer;
 import org.apache.directory.studio.ldapbrowser.core.BrowserConnectionManager;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
+import org.apache.directory.studio.test.integration.ui.bots.BrowserViewBot;
 import org.apache.directory.studio.test.integration.ui.bots.ConnectionsViewBot;
+import org.apache.directory.studio.test.integration.ui.bots.SearchDialogBot;
+import org.apache.directory.studio.test.integration.ui.bots.SearchPropertiesDialogBot;
 import org.apache.directory.studio.test.integration.ui.bots.StudioBot;
-import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -55,8 +57,7 @@ public class SearchTest
 
     private StudioBot studioBot;
     private ConnectionsViewBot connectionsViewBot;
-
-    private SWTWorkbenchBot bot;
+    private BrowserViewBot browserViewBot;
 
 
     @Before
@@ -67,8 +68,7 @@ public class SearchTest
         connectionsViewBot = studioBot.getConnectionView();
         connectionsViewBot.createTestConnection( "SearchTest1", ldapServer.getPort() );
         connectionsViewBot.createTestConnection( "SearchTest2", ldapServer.getPort() );
-
-        bot = new SWTWorkbenchBot();
+        browserViewBot = studioBot.getBrowserView();
     }
 
 
@@ -76,7 +76,6 @@ public class SearchTest
     public void tearDown() throws Exception
     {
         connectionsViewBot.deleteTestConnections();
-        bot = null;
     }
 
 
@@ -96,21 +95,15 @@ public class SearchTest
         assertEquals( 0, browserConnection1.getSearchManager().getSearches().size() );
         assertEquals( 0, browserConnection2.getSearchManager().getSearches().size() );
 
-        SWTBotTree connectionsTree = SWTBotUtils.getConnectionsTree( bot );
-        SWTBotTree browserTree = SWTBotUtils.getLdapBrowserTree( bot );
-
         // create a search for in connection 1
-        connectionsTree.select( "SearchTest1" );
-        SWTBotUtils.selectEntry( bot, browserTree, false, "DIT", "Root DSE", "ou=system" );
-        ContextMenuHelper.clickContextMenu( browserTree, "New", "New Search..." );
-        bot.shell( "Search" );
-        //SWTBotAssert.assertEnabled( bot.textWithLabel( "Connection:" ) );
-        //SWTBotAssert.assertText( "SearchTest1", bot.textWithLabel( "Connection:" ) );
-        bot.textWithLabel( "Search Name:" ).setText( "Search all persons" );
-        bot.comboBoxWithLabel( "Filter:" ).setText( "(objectClass=person)" );
-        //bot.radioWithLabelInGroup( "Subtree", "Scope" ).click();
-        bot.button( "Search" ).click();
-        SWTBotUtils.selectEntry( bot, browserTree, false, "Searches", "Search all persons" );
+        connectionsViewBot.selectConnection( "SearchTest1" );
+        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system" );
+        SearchDialogBot dialogBot = browserViewBot.openSearchDialog();
+        assertTrue( dialogBot.isVisible() );
+        dialogBot.setSearchName( "Search all persons" );
+        dialogBot.setFilter( "(objectClass=person)" );
+        dialogBot.clickSearchButton();
+        browserViewBot.selectEntry( "Searches", "Search all persons" );
 
         // assert browser connection in searches
         assertEquals( 1, browserConnection1.getSearchManager().getSearches().size() );
@@ -119,14 +112,12 @@ public class SearchTest
         assertEquals( 0, browserConnection2.getSearchManager().getSearches().size() );
 
         // copy/paste the created search from connection 1 to connection 2
-        ContextMenuHelper.clickContextMenu( browserTree, "Copy Search" );
-        connectionsTree.select( "SearchTest2" );
-        SWTBotUtils.selectEntry( bot, browserTree, false, "Searches" );
-        ContextMenuHelper.clickContextMenu( browserTree, "Paste Search" );
-        bot.shell( "Properties for Search all persons" );
-        //SWTBotAssert.assertNotEnabled( bot.textWithLabel( "Connection:" ) );
-        //SWTBotAssert.assertText( "SearchTest2", bot.textWithLabel( "Connection:" ) );
-        bot.button( "Cancel" ).click();
+        browserViewBot.copy();
+        connectionsViewBot.selectConnection( "SearchTest2" );
+        browserViewBot.selectEntry( "Searches" );
+        SearchPropertiesDialogBot searchPropertiesDialogBot = browserViewBot.pasteSearch();
+        assertTrue( searchPropertiesDialogBot.isVisible() );
+        searchPropertiesDialogBot.clickCancelButton();
 
         // assert browser connection in searches
         assertEquals( 1, browserConnection1.getSearchManager().getSearches().size() );

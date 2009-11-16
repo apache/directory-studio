@@ -90,6 +90,13 @@ public class BrowserViewBot
     }
 
 
+    public SearchDialogBot openSearchDialog()
+    {
+        ContextMenuHelper.clickContextMenu( browserBot.getTree(), "New", "New Search..." );
+        return new SearchDialogBot();
+    }
+
+
     public RenameEntryDialogBot openRenameDialog()
     {
         ContextMenuHelper.clickContextMenu( browserBot.getTree(), "Rename Entry..." );
@@ -143,6 +150,23 @@ public class BrowserViewBot
     public void refresh()
     {
         ContextMenuHelper.clickContextMenu( browserBot.getTree(), "Reload Entry" );
+    }
+
+
+    public void copy()
+    {
+        ContextMenuHelper.clickContextMenu( browserBot.getTree(), "Copy" );
+    }
+    
+    public void paste()
+    {
+        ContextMenuHelper.clickContextMenu( browserBot.getTree(), "Paste" );
+    }
+    
+    public SearchPropertiesDialogBot pasteSearch()
+    {
+        ContextMenuHelper.clickContextMenu( browserBot.getTree(), "Paste" );
+        return new SearchPropertiesDialogBot();
     }
 
 }
