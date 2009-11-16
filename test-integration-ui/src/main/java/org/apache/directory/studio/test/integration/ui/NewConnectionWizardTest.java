@@ -419,7 +419,8 @@ public class NewConnectionWizardTest
         // click "Check Network Parameter" button and get the result
         String result3 = wizardBot.clickCheckNetworkParameterButton();
         assertNotNull( "Expected Error", result3 );
-        assertTrue( "'No route to host' message must occur in error message", result3.contains( "No route to host" ) );
+        assertTrue( "'No route to host' or 'Network is unreachable' message must occur in error message", //
+            result3.contains( "No route to host" ) || result3.contains( "Network is unreachable" ) );
         assertTrue( "IP address must occur in error message", result3.contains( ipAddress ) );
 
         wizardBot.clickCancelButton();
