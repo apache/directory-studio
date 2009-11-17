@@ -28,6 +28,8 @@ import org.apache.directory.studio.connection.core.ConnectionManager;
 import org.apache.directory.studio.connection.core.ConnectionParameter;
 import org.apache.directory.studio.connection.core.ConnectionParameter.AuthenticationMethod;
 import org.apache.directory.studio.connection.core.ConnectionParameter.EncryptionMethod;
+import org.apache.directory.studio.connection.core.jobs.OpenConnectionsRunnable;
+import org.apache.directory.studio.connection.core.jobs.StudioConnectionJob;
 import org.apache.directory.studio.test.integration.ui.ContextMenuHelper;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
@@ -116,6 +118,7 @@ public class ConnectionsViewBot
 
     }
 
+
     /**
      * Creates the test connection.
      * 
@@ -147,9 +150,10 @@ public class ConnectionsViewBot
         rootConnectionFolder.addConnectionId( connection.getId() );
 
         selectConnection( name );
-        // new OpenConnectionsJob( connection ).execute();
+        StudioConnectionJob job = new StudioConnectionJob( new OpenConnectionsRunnable( connection ) );
+        job.execute();
+        job.join();
 
-        Thread.sleep( 1000 );
         return connection;
     }
 
