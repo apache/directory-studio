@@ -21,6 +21,7 @@
 package org.apache.directory.studio.ldapbrowser.core.model.impl;
 
 
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.IQuickSearch;
 
@@ -47,6 +48,19 @@ public class QuickSearch extends Search implements IQuickSearch
     public QuickSearch( IEntry searchBaseEntry )
     {
         this.searchBaseEntry = searchBaseEntry;
+    }
+
+
+    /**
+     * Instantiates a new quick search.
+     * 
+     * @param searchBaseEntry the search base entry
+     * @param connection the connection
+     */
+    public QuickSearch( IEntry searchBaseEntry, IBrowserConnection connection )
+    {
+        this.searchBaseEntry = searchBaseEntry;
+        this.connection = connection;
     }
 
 
