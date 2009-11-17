@@ -157,16 +157,42 @@ public class BrowserViewBot
     {
         ContextMenuHelper.clickContextMenu( browserBot.getTree(), "Copy" );
     }
-    
+
+
     public void paste()
     {
         ContextMenuHelper.clickContextMenu( browserBot.getTree(), "Paste" );
     }
-    
+
+
     public SearchPropertiesDialogBot pasteSearch()
     {
         ContextMenuHelper.clickContextMenu( browserBot.getTree(), "Paste" );
         return new SearchPropertiesDialogBot();
+    }
+
+
+    public void typeQuickSearchAttributeType( String attributeType )
+    {
+        bot.comboBox( 0 ).setText( attributeType );
+    }
+
+
+    public void typeQuickSearchValue( String value )
+    {
+        bot.comboBox( 2 ).setText( value );
+    }
+
+
+    public void clickRunQuickSearchButton()
+    {
+        bot.buttonWithTooltip( "Run Quick Search" ).click();
+    }
+
+
+    public boolean isQuickSearchEnabled()
+    {
+        return bot.comboBox( 0 ).isEnabled();
     }
 
 }

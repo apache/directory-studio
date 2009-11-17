@@ -30,6 +30,7 @@ import org.apache.directory.server.integ.SiRunner;
 import org.apache.directory.server.ldap.LdapServer;
 import org.apache.directory.studio.ldapbrowser.core.BrowserConnectionManager;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
+import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.test.integration.ui.bots.BrowserViewBot;
 import org.apache.directory.studio.test.integration.ui.bots.ConnectionsViewBot;
@@ -126,6 +127,34 @@ public class SearchTest
         assertEquals( 1, browserConnection2.getSearchManager().getSearches().size() );
         assertEquals( browserConnection2, browserConnection2.getSearchManager().getSearches().get( 0 )
             .getBrowserConnection() );
+    }
+
+
+    /**
+     * Test for DIRSTUDIO-587 (UI flickers on quick search).
+     * 
+     * When performing a quick search only one UI update should be fired.
+     *
+     * @throws Exception
+     */
+    @Test
+    public void testOnlyOneUiUpdateOnQuickSearch() throws Exception
+    {
+        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system" );
+
+        browserViewBot.typeQuickSearchAttributeType( "ou" );
+        browserViewBot.typeQuickSearchValue( "*" );
+
+        long fireCount0 = EventRegistry.getFireCount();
+        browserViewBot.clickRunQuickSearchButton();
+        browserViewBot.waitForEntry( "DIT", "Root DSE", "ou=system", "Quick Search" );
+        long fireCount1 = EventRegistry.getFireCount();
+
+        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "Quick Search" );
+
+        // verify that only one events was fired 
+        long fireCount = fireCount1 - fireCount0;
+        assertEquals( "Only 1 event firings expected when running quick search.", 1, fireCount );
     }
 
 }
