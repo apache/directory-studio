@@ -294,15 +294,15 @@ public class BrowserQuickSearchWidget
         IBrowserConnection conn = entry.getBrowserConnection();
 
         QuickSearch quickSearch = new QuickSearch( entry );
-        quickSearch.setName( Messages.getString( "BrowserQuickSearchWidget.QuickSearch" ) ); //$NON-NLS-1$
+        quickSearch.getSearchParameter().setName( Messages.getString( "BrowserQuickSearchWidget.QuickSearch" ) ); //$NON-NLS-1$
         quickSearch.setBrowserConnection( conn );
-        quickSearch.setSearchBase( entry.getDn() );
-        quickSearch.setReturningAttributes( ISearch.NO_ATTRIBUTES );
-        quickSearch.setAliasesDereferencingMethod( conn.getAliasesDereferencingMethod() );
-        quickSearch.setReferralsHandlingMethod( conn.getReferralsHandlingMethod() );
-        quickSearch.setCountLimit( conn.getCountLimit() );
-        quickSearch.setTimeLimit( conn.getTimeLimit() );
-        quickSearch.setScope( quickSearchScopeButton.getSelection() ? SearchScope.SUBTREE : SearchScope.ONELEVEL );
+        quickSearch.getSearchParameter().setSearchBase( entry.getDn() );
+        quickSearch.getSearchParameter().setReturningAttributes( ISearch.NO_ATTRIBUTES );
+        quickSearch.getSearchParameter().setAliasesDereferencingMethod( conn.getAliasesDereferencingMethod() );
+        quickSearch.getSearchParameter().setReferralsHandlingMethod( conn.getReferralsHandlingMethod() );
+        quickSearch.getSearchParameter().setCountLimit( conn.getCountLimit() );
+        quickSearch.getSearchParameter().setTimeLimit( conn.getTimeLimit() );
+        quickSearch.getSearchParameter().setScope( quickSearchScopeButton.getSelection() ? SearchScope.SUBTREE : SearchScope.ONELEVEL );
 
         StringBuffer filter = new StringBuffer();
         filter.append( "(" );
@@ -326,7 +326,7 @@ public class BrowserQuickSearchWidget
             filter.append( ")" );
         }
         filter.append( ")" );
-        quickSearch.setFilter( filter.toString() );
+        quickSearch.getSearchParameter().setFilter( filter.toString() );
 
         // set new quick search
         conn.getSearchManager().setQuickSearch( quickSearch );
