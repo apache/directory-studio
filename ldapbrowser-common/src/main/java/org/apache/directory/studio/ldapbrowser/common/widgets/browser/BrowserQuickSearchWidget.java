@@ -294,7 +294,7 @@ public class BrowserQuickSearchWidget
         IBrowserConnection conn = entry.getBrowserConnection();
 
         QuickSearch quickSearch = new QuickSearch( entry );
-        quickSearch.setName( "Quick Search" );
+        quickSearch.setName( Messages.getString( "BrowserQuickSearchWidget.QuickSearch" ) ); //$NON-NLS-1$
         quickSearch.setBrowserConnection( conn );
         quickSearch.setSearchBase( entry.getDn() );
         quickSearch.setReturningAttributes( ISearch.NO_ATTRIBUTES );
