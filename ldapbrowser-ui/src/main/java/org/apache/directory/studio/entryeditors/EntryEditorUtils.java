@@ -23,6 +23,7 @@ package org.apache.directory.studio.entryeditors;
 
 import org.apache.directory.studio.connection.ui.RunnableContextRunner;
 import org.apache.directory.studio.ldapbrowser.core.jobs.InitializeAttributesRunnable;
+import org.apache.directory.studio.ldapbrowser.core.jobs.StudioBrowserJob;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.IRootDSE;
 import org.eclipse.osgi.util.NLS;
@@ -42,8 +43,9 @@ public class EntryEditorUtils
     {
         if ( !entry.isAttributesInitialized() )
         {
-            InitializeAttributesRunnable iar = new InitializeAttributesRunnable( entry );
-            RunnableContextRunner.execute( iar, null, true );
+            InitializeAttributesRunnable runnable = new InitializeAttributesRunnable( entry );
+            StudioBrowserJob job = new StudioBrowserJob( runnable );
+            job.execute();
         }
     }
 
