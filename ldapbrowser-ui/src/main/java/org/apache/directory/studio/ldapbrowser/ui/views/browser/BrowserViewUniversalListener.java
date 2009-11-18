@@ -32,6 +32,7 @@ import org.apache.directory.studio.entryeditors.IEntryEditor;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonConstants;
 import org.apache.directory.studio.ldapbrowser.common.actions.BrowserSelectionUtils;
+import org.apache.directory.studio.ldapbrowser.common.widgets.browser.BrowserContentProvider;
 import org.apache.directory.studio.ldapbrowser.common.widgets.browser.BrowserUniversalListener;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
 import org.apache.directory.studio.ldapbrowser.core.events.AttributesInitializedEvent;
@@ -612,12 +613,30 @@ public class BrowserViewUniversalListener extends BrowserUniversalListener imple
         }
         else if ( event instanceof ChildrenInitializedEvent )
         {
-            boolean expandedState = viewer.getExpandedState( event.getModifiedEntry() );
-            viewer.collapseToLevel( event.getModifiedEntry(), TreeViewer.ALL_LEVELS );
-            if ( expandedState )
+            // Getting the children of the entry to collapse their nodes
+            // See DIRSTUDIO-481 (refreshing of attributes and children)
+            Object[] children = ( ( BrowserContentProvider ) viewer.getContentProvider() ).getChildren( event
+                .getModifiedEntry() );
+            for ( Object child : children )
             {
-                viewer.expandToLevel( event.getModifiedEntry(), 1 );
+                // We're only collapsing the node if it is expanded
+                if ( viewer.getExpandedState( child ) )
+                {
+                    viewer.collapseToLevel( child, TreeViewer.ALL_LEVELS );
+
+                    // There seem to be a bug (maybe it's a feature?!?) with nodes that were expanded
+                    // but does not have any child.
+                    // The call to 'viewer.collapseToLevel(...)' has no effect, the node stays expanded...
+                    if ( viewer.getExpandedState( child ) )
+                    {
+                        // In that particular case, we need to remove the child from the tree viewer.
+                        // As it's a costly operation we're only using this in that particular case,
+                        // and not as default option.
+                        viewer.remove( child );
+                    }
+                }
             }
+
             viewer.refresh( event.getModifiedEntry(), true );
         }
         else if ( !( event.getModifiedEntry() instanceof DummyEntry ) )
