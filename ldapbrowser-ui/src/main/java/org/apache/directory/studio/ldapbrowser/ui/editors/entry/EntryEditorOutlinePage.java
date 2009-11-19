@@ -26,6 +26,8 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
+import org.apache.directory.studio.ldapbrowser.common.BrowserCommonConstants;
+import org.apache.directory.studio.ldapbrowser.common.widgets.browser.BrowserLabelProvider;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
@@ -333,8 +335,19 @@ public class EntryEditorOutlinePage extends ContentOutlinePage
             // Entry
             if ( element instanceof EntryWrapper )
             {
-                EntryWrapper entryWrapper = ( EntryWrapper ) element;
-                return entryWrapper.entry.getDn().getUpName();
+                IEntry entry = ( ( EntryWrapper ) element ).entry;
+
+                // Checking the Root DSE
+                if ( entry.getDn() != null && "".equals( entry.getDn().toString() ) ) //$NON-NLS-1$
+                {
+                    // Root DSE
+                    return "Root DSE"; //$NON-NLS-1$
+                }
+                else
+                {
+                    // Any other case
+                    return entry.getDn().getUpName();
+                }
             }
 
             // Attribute
@@ -366,7 +379,19 @@ public class EntryEditorOutlinePage extends ContentOutlinePage
             // Entry
             if ( element instanceof EntryWrapper )
             {
-                return LdifEditorActivator.getDefault().getImage( LdifEditorConstants.IMG_ENTRY );
+                IEntry entry = ( ( EntryWrapper ) element ).entry;
+
+                // Checking the Root DSE
+                if ( entry.getDn() != null && "".equals( entry.getDn().toString() ) ) //$NON-NLS-1$
+                {
+                    // Root DSE
+                    return BrowserCommonActivator.getDefault().getImage( BrowserCommonConstants.IMG_ENTRY_ROOT );
+                }
+                else
+                {
+                    // Any other case
+                    return BrowserLabelProvider.getImageByObjectClass( entry );
+                }
             }
 
             // Attribute
