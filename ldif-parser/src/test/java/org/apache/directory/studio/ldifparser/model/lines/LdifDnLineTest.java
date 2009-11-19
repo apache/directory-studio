@@ -74,4 +74,18 @@ public class LdifDnLineTest extends TestCase
         String formattedString = dnLine.toFormattedString( formatParameters );
         assertEquals( formattedString, "dn:: Y249w6TDtsO8LG91PWRlcGFydG1lbnQsbz1vcmcsZGM9ZXhhbXBsZSxkYz1jb20=\n" );
     }
+
+
+    /**
+     * Test for DIRSTUDIO-598
+     * (Base64 encoded DN marked as invalid in LDIF editor)
+     */
+    public void testIsValid()
+    {
+        LdifDnLine dnLine = LdifDnLine.create( "cn=\\#\\\\\\+\\, \\\"öé\\\",ou=users,ou=system" );
+        assertTrue( dnLine.isValid() );
+        assertEquals( "Y249XCNcXFwrXCwgXCLDtsOpXCIsb3U9dXNlcnMsb3U9c3lzdGVt", dnLine.getUnfoldedDn() );
+        assertEquals( "cn=\\#\\\\\\+\\, \\\"öé\\\",ou=users,ou=system", dnLine.getValueAsString() );
+    }
+
 }

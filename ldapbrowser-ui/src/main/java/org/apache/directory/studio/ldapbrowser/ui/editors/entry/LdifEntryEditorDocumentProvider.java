@@ -102,7 +102,7 @@ public class LdifEntryEditorDocumentProvider extends LdifDocumentProvider
         EntryEditorInput input = getEntryEditorInput( element );
         try
         {
-            LdapDN newDN = new LdapDN( records[0].getDnLine().getUnfoldedDn() );
+            LdapDN newDN = new LdapDN( records[0].getDnLine().getValueAsString() );
             if ( !newDN.equals( input.getResolvedEntry().getDn() ) )
             {
                 throw new CoreException( new Status( IStatus.ERROR, BrowserUIConstants.PLUGIN_ID, NLS.bind( Messages
@@ -139,7 +139,7 @@ public class LdifEntryEditorDocumentProvider extends LdifDocumentProvider
         // only continue if the LDIF model is valid
         LdifRecord[] records = getLdifModel().getRecords();
         if ( records.length != 1 || !( records[0] instanceof LdifContentRecord ) || !records[0].isValid()
-            || !LdapDN.isValid( records[0].getDnLine().getUnfoldedDn() ) )
+            || !records[0].getDnLine().isValid() )
         {
             return;
         }
