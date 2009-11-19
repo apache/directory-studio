@@ -197,3 +197,10 @@ postalCode: 51865
 postalAddress: Abahri Abazari$81023 River Street$Monroe, SD  51865
 description: This is the description for Abahri Abazari.
 roomNumber: 1963
+
+dn: cn=\#ACL_AD-Projects_Author,ou=users,ou=system
+objectClass: top
+objectClass: person
+cn: #ACL_AD-Projects_Author
+sn: #ACL_AD-Projects_Author
+

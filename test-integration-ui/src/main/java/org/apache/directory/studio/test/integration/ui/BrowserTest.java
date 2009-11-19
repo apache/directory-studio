@@ -402,4 +402,18 @@ public class BrowserTest
         assertFalse( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", url, "cn=refresh" ) );
     }
 
+
+    /**
+     * Test for DIRSTUDIO-591.
+     * (Error reading objects with # in DN)
+     *
+     * @throws Exception
+     */
+    @Test
+    public void testBrowseDnWithSharpAndHexSequence() throws Exception
+    {
+        assertTrue( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=users",
+            "cn=\\#ACL_AD-Projects_Author" ) );
+        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users", "cn=\\#ACL_AD-Projects_Author" );
+    }
 }
