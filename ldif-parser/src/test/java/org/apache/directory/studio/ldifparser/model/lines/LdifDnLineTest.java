@@ -82,10 +82,10 @@ public class LdifDnLineTest extends TestCase
      */
     public void testIsValid()
     {
-        LdifDnLine dnLine = LdifDnLine.create( "cn=\\#\\\\\\+\\, \\\"öé\\\",ou=users,ou=system" );
+        LdifDnLine dnLine = LdifDnLine.create( "cn=\\#\\\\\\+\\, \\\"\u00f6\u00e9\\\",ou=users,ou=system" );
         assertTrue( dnLine.isValid() );
         assertEquals( "Y249XCNcXFwrXCwgXCLDtsOpXCIsb3U9dXNlcnMsb3U9c3lzdGVt", dnLine.getUnfoldedDn() );
-        assertEquals( "cn=\\#\\\\\\+\\, \\\"öé\\\",ou=users,ou=system", dnLine.getValueAsString() );
+        assertEquals( "cn=\\#\\\\\\+\\, \\\"\u00f6\u00e9\\\",ou=users,ou=system", dnLine.getValueAsString() );
     }
 
 }
