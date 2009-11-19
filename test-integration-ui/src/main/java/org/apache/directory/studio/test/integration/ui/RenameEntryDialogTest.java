@@ -124,4 +124,24 @@ public class RenameEntryDialogTest
             "cn=\\#\\\\\\+\\, \\\"\u00F6\u00E9\\\"2" );
     }
 
+
+    /**
+     * Test for DIRSTUDIO-589, DIRSTUDIO-591, DIRSHARED-38.
+     * 
+     * Rename an entry with sharp in DN: cn=\#123456.
+     */
+    @Test
+    public void testRenameRdnWithSharp() throws Exception
+    {
+        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users", "cn=\\#123456" );
+
+        RenameEntryDialogBot renameDialogBot = browserViewBot.openRenameDialog();
+        assertTrue( renameDialogBot.isVisible() );
+        renameDialogBot.setRdnValue( 1, "#ABCDEF" );
+        renameDialogBot.clickOkButton();
+
+        assertTrue( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=users", "cn=\\#ABCDEF" ) );
+        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users", "cn=\\#ABCDEF" );
+    }
+
 }

@@ -378,4 +378,33 @@ public class NewEntryWizardTest
         browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users", "o=orgBelowReferral" );
     }
 
+
+    /**
+     * Test for DIRSTUDIO-589, DIRSTUDIO-591, DIRSHARED-38.
+     * 
+     * Create an entry with sharp in DN: cn=\#123456.
+     */
+    @Test
+    public void testCreateEntryWithSharp()
+    {
+        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system" );
+
+        NewEntryWizardBot wizardBot = browserViewBot.openNewEntryWizard();
+
+        wizardBot.selectCreateEntryFromScratch();
+        wizardBot.clickNextButton();
+
+        wizardBot.addObjectClasses( "inetOrgPerson" );
+        wizardBot.clickNextButton();
+
+        wizardBot.setRdnType( 1, "cn" );
+        wizardBot.setRdnValue( 1, "#123456" );
+        wizardBot.clickNextButton();
+
+        wizardBot.typeValueAndFinish( "#123456" );
+        wizardBot.clickFinishButton();
+
+        assertTrue( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "cn=\\#123456" ) );
+        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "cn=\\#123456" );
+    }
 }
