@@ -411,8 +411,6 @@ public class EntryEditorManager
                     }
                 }
 
-                System.out.println( event + " - " + event.getSource() );
-
                 LdifFile diff = Utils.computeDiff( autoSaveSharedReferenceCopy, autoSaveSharedWorkingCopy );
                 if ( diff != null )
                 {
