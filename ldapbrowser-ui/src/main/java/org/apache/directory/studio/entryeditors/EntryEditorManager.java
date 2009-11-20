@@ -381,6 +381,13 @@ public class EntryEditorManager
                 IEntry autoSaveSharedReferenceCopy = autoSaveSharedReferenceCopies.get( originalEntry );
                 IEntry autoSaveSharedWorkingCopy = autoSaveSharedWorkingCopies.get( originalEntry );
 
+                // only auto-save if the source of the modification event is an entry
+                // i.e. the modification was done on the entry itself
+                if ( !( event.getSource() instanceof IEntry ) )
+                {
+                    return;
+                }
+
                 // consistency check: don't save if there is an empty value, silently return in that case
                 for ( IAttribute attribute : autoSaveSharedWorkingCopy.getAttributes() )
                 {
