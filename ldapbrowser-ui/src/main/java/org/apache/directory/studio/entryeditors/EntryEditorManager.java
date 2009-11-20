@@ -42,6 +42,11 @@ import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
 import org.apache.directory.studio.ldapbrowser.core.events.EntryModificationEvent;
 import org.apache.directory.studio.ldapbrowser.core.events.EntryUpdateListener;
 import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
+import org.apache.directory.studio.ldapbrowser.core.events.ValueAddedEvent;
+import org.apache.directory.studio.ldapbrowser.core.events.ValueDeletedEvent;
+import org.apache.directory.studio.ldapbrowser.core.events.ValueModifiedEvent;
+import org.apache.directory.studio.ldapbrowser.core.events.ValueMultiModificationEvent;
+import org.apache.directory.studio.ldapbrowser.core.events.ValueRenamedEvent;
 import org.apache.directory.studio.ldapbrowser.core.jobs.UpdateEntryRunnable;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.IBookmark;
@@ -381,9 +386,15 @@ public class EntryEditorManager
                 IEntry autoSaveSharedReferenceCopy = autoSaveSharedReferenceCopies.get( originalEntry );
                 IEntry autoSaveSharedWorkingCopy = autoSaveSharedWorkingCopies.get( originalEntry );
 
-                // only auto-save if the source of the modification event is an entry
-                // i.e. the modification was done on the entry itself
-                if ( !( event.getSource() instanceof IEntry ) )
+                // sanity check: never save if event source is the EntryEditorManager
+                if ( event.getSource() instanceof EntryEditorManager )
+                {
+                    return;
+                }
+
+                // only save if we receive a real value modification event
+                if ( !( event instanceof ValueAddedEvent || event instanceof ValueDeletedEvent
+                    || event instanceof ValueModifiedEvent || event instanceof ValueRenamedEvent || event instanceof ValueMultiModificationEvent ) )
                 {
                     return;
                 }
@@ -399,6 +410,8 @@ public class EntryEditorManager
                         }
                     }
                 }
+
+                System.out.println( event + " - " + event.getSource() );
 
                 LdifFile diff = Utils.computeDiff( autoSaveSharedReferenceCopy, autoSaveSharedWorkingCopy );
                 if ( diff != null )

@@ -28,12 +28,11 @@ import javax.naming.InvalidNameException;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
-import org.apache.directory.studio.ldapbrowser.core.events.AttributesInitializedEvent;
-import org.apache.directory.studio.ldapbrowser.core.events.EntryModificationEvent;
 import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
 import org.apache.directory.studio.ldapbrowser.core.events.ValueAddedEvent;
 import org.apache.directory.studio.ldapbrowser.core.events.ValueDeletedEvent;
 import org.apache.directory.studio.ldapbrowser.core.events.ValueModifiedEvent;
+import org.apache.directory.studio.ldapbrowser.core.events.ValueMultiModificationEvent;
 import org.apache.directory.studio.ldapbrowser.core.events.ValueRenamedEvent;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
@@ -309,7 +308,7 @@ public class CompoundModification
     /**
      * Copies all attributes and values from the 1st entry to the second entry.
      * Clears all existing attributes from the 2nd entry.
-     * Only one event (an {@link AttributesInitializedEvent}) is fired.
+     * Only one event (an {@link ValueMultiModificationEvent}) is fired.
      *
      * @param fromEntry
      * @param toEntry
@@ -335,7 +334,7 @@ public class CompoundModification
         }
         EventRegistry.resumeEventFiringInCurrentThread();
 
-        EntryModificationEvent event = new AttributesInitializedEvent( toEntry );
+        ValueMultiModificationEvent event = new ValueMultiModificationEvent( toEntry.getBrowserConnection(), toEntry );
         EventRegistry.fireEntryUpdated( event, source );
     }
 
