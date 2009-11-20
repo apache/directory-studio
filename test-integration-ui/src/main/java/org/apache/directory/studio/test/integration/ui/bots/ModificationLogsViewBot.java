@@ -45,7 +45,7 @@ public class ModificationLogsViewBot
     }
 
 
-    public String getSearchLogsText()
+    public String getModificationLogsText()
     {
         view.show();
 
