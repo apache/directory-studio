@@ -46,9 +46,11 @@ import org.apache.directory.studio.test.integration.ui.bots.BrowserViewBot;
 import org.apache.directory.studio.test.integration.ui.bots.ConnectionsViewBot;
 import org.apache.directory.studio.test.integration.ui.bots.DeleteDialogBot;
 import org.apache.directory.studio.test.integration.ui.bots.EntryEditorBot;
+import org.apache.directory.studio.test.integration.ui.bots.ModificationLogsViewBot;
 import org.apache.directory.studio.test.integration.ui.bots.ReferralDialogBot;
 import org.apache.directory.studio.test.integration.ui.bots.SearchLogsViewBot;
 import org.apache.directory.studio.test.integration.ui.bots.StudioBot;
+import org.eclipse.jface.dialogs.ErrorDialog;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -73,6 +75,7 @@ public class BrowserTest
     private ConnectionsViewBot connectionsViewBot;
     private BrowserViewBot browserViewBot;
     private SearchLogsViewBot searchLogsViewBot;
+    private ModificationLogsViewBot modificationLogsViewBot;
 
     private Connection connection;
 
@@ -86,6 +89,7 @@ public class BrowserTest
         connection = connectionsViewBot.createTestConnection( "BrowserTest", ldapServer.getPort() );
         browserViewBot = studioBot.getBrowserView();
         searchLogsViewBot = studioBot.getSearchLogsViewBot();
+        modificationLogsViewBot = studioBot.getModificationLogsViewBot();
     }
 
 
@@ -122,6 +126,8 @@ public class BrowserTest
         int countMatchesAfter = StringUtils.countMatches( text, "#!SEARCH REQUEST" );
 
         assertEquals( "Expected exactly 1 search request", 1, countMatchesAfter - countMatchesBefore );
+
+        assertEquals( "No modification expected", "", modificationLogsViewBot.getModificationLogsText() );
     }
 
 
@@ -184,6 +190,8 @@ public class BrowserTest
         List<String> attributeValues = entryEditorBot.getAttributeValues();
         assertEquals( 23, attributeValues.size() );
         assertTrue( attributeValues.contains( "uid: user.1" ) );
+
+        assertEquals( "No modification expected", "", modificationLogsViewBot.getModificationLogsText() );
     }
 
 
@@ -415,5 +423,51 @@ public class BrowserTest
         assertTrue( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=users",
             "cn=\\#ACL_AD-Projects_Author" ) );
         browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users", "cn=\\#ACL_AD-Projects_Author" );
+
+        assertEquals( "No modification expected", "", modificationLogsViewBot.getModificationLogsText() );
     }
+
+
+    /**
+     * Test for DIRSTUDIO-597.
+     * (Modification sent to the server while browsing through the DIT and refreshing entries)
+     *
+     * @throws Exception
+     */
+    @Test
+    public void testNoModificationWhileBrowsingAndRefreshing() throws Exception
+    {
+        boolean errorDialogAutomatedMode = ErrorDialog.AUTOMATED_MODE;
+        ErrorDialog.AUTOMATED_MODE = false;
+
+        String text = modificationLogsViewBot.getModificationLogsText();
+        assertEquals( "", text );
+
+        try
+        {
+            assertTrue( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=users",
+                "cn=\\#ACL_AD-Projects_Author" ) );
+
+            for ( int i = 0; i < 5; i++ )
+            {
+                // select entry and refresh
+                browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users", "cn=\\#ACL_AD-Projects_Author" );
+                browserViewBot.refresh();
+
+                // select parent and refresh
+                browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users" );
+                browserViewBot.refresh();
+            }
+        }
+        finally
+        {
+            // reset flag
+            ErrorDialog.AUTOMATED_MODE = errorDialogAutomatedMode;
+        }
+
+        // check that modification logs is still empty 
+        // to ensure that no modification was sent to the server
+        assertEquals( "No modification expected", "", modificationLogsViewBot.getModificationLogsText() );
+    }
+
 }

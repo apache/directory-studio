@@ -24,7 +24,9 @@ package org.apache.directory.studio.test.integration.ui;
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertTrue;
+import static org.eclipse.swtbot.swt.finder.SWTBotTestCase.assertContains;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.directory.server.core.integ.Level;
 import org.apache.directory.server.core.integ.annotations.ApplyLdifFiles;
 import org.apache.directory.server.core.integ.annotations.CleanupLevel;
@@ -34,6 +36,7 @@ import org.apache.directory.studio.test.integration.ui.bots.BrowserViewBot;
 import org.apache.directory.studio.test.integration.ui.bots.ConnectionsViewBot;
 import org.apache.directory.studio.test.integration.ui.bots.DnEditorDialogBot;
 import org.apache.directory.studio.test.integration.ui.bots.EntryEditorBot;
+import org.apache.directory.studio.test.integration.ui.bots.ModificationLogsViewBot;
 import org.apache.directory.studio.test.integration.ui.bots.NewAttributeWizardBot;
 import org.apache.directory.studio.test.integration.ui.bots.SelectDnDialogBot;
 import org.apache.directory.studio.test.integration.ui.bots.StudioBot;
@@ -61,6 +64,7 @@ public class EntryEditorTest
     private StudioBot studioBot;
     private ConnectionsViewBot connectionsViewBot;
     private BrowserViewBot browserViewBot;
+    private ModificationLogsViewBot modificationLogsViewBot;
 
 
     @Before
@@ -71,6 +75,7 @@ public class EntryEditorTest
         connectionsViewBot = studioBot.getConnectionView();
         connectionsViewBot.createTestConnection( "EntryEditorTest", ldapServer.getPort() );
         browserViewBot = studioBot.getBrowserView();
+        modificationLogsViewBot = studioBot.getModificationLogsViewBot();
     }
 
 
@@ -97,8 +102,10 @@ public class EntryEditorTest
         String dn = entryEditorBot.getDnText();
         assertEquals( "DN: cn=Barbara Jensen,ou=users,ou=system", dn );
         assertEquals( 8, entryEditorBot.getAttributeValues().size() );
+        assertEquals( "", modificationLogsViewBot.getModificationLogsText() );
 
         // add description attribute
+        entryEditorBot.activate();
         NewAttributeWizardBot wizardBot = entryEditorBot.openNewAttributeWizard();
         assertTrue( wizardBot.isVisible() );
         wizardBot.typeAttributeType( "description" );
@@ -106,13 +113,18 @@ public class EntryEditorTest
         entryEditorBot.typeValueAndFinish( "This is the 1st description." );
         assertEquals( 9, entryEditorBot.getAttributeValues().size() );
         assertTrue( entryEditorBot.getAttributeValues().contains( "description: This is the 1st description." ) );
+        assertContains( "add: description\ndescription: This is the 1st description.", modificationLogsViewBot
+            .getModificationLogsText() );
 
         // add second value
+        entryEditorBot.activate();
         entryEditorBot.addValue( "description" );
         entryEditorBot.typeValueAndFinish( "This is the 2nd description." );
         assertEquals( 10, entryEditorBot.getAttributeValues().size() );
         assertTrue( entryEditorBot.getAttributeValues().contains( "description: This is the 1st description." ) );
         assertTrue( entryEditorBot.getAttributeValues().contains( "description: This is the 2nd description." ) );
+        assertContains( "add: description\ndescription: This is the 2nd description.", modificationLogsViewBot
+            .getModificationLogsText() );
 
         // edit second value
         entryEditorBot.editValue( "description", "This is the 2nd description." );
@@ -122,12 +134,18 @@ public class EntryEditorTest
         assertTrue( entryEditorBot.getAttributeValues().contains( "description: This is the 1st description." ) );
         assertFalse( entryEditorBot.getAttributeValues().contains( "description: This is the 2nd description." ) );
         assertTrue( entryEditorBot.getAttributeValues().contains( "description: This is the 3rd description." ) );
+        assertContains( "delete: description\ndescription: This is the 2nd description.", modificationLogsViewBot
+            .getModificationLogsText() );
+        assertContains( "add: description\ndescription: This is the 3rd description.", modificationLogsViewBot
+            .getModificationLogsText() );
 
         // delete second value
         entryEditorBot.deleteValue( "description", "This is the 3rd description." );
         assertEquals( 9, entryEditorBot.getAttributeValues().size() );
         assertTrue( entryEditorBot.getAttributeValues().contains( "description: This is the 1st description." ) );
         assertFalse( entryEditorBot.getAttributeValues().contains( "description: This is the 3rd description." ) );
+        assertContains( "delete: description\ndescription: This is the 3rd description.", modificationLogsViewBot
+            .getModificationLogsText() );
 
         // edit 1st value
         entryEditorBot.editValue( "description", "This is the 1st description." );
@@ -135,11 +153,17 @@ public class EntryEditorTest
         assertEquals( 9, entryEditorBot.getAttributeValues().size() );
         assertFalse( entryEditorBot.getAttributeValues().contains( "description: This is the 1st description." ) );
         assertTrue( entryEditorBot.getAttributeValues().contains( "description: This is the final description." ) );
+        assertContains( "replace: description\ndescription: This is the final description.", modificationLogsViewBot
+            .getModificationLogsText() );
 
         // delete 1st value/attribute
         entryEditorBot.deleteValue( "description", "This is the final description." );
         assertEquals( 8, entryEditorBot.getAttributeValues().size() );
         assertFalse( entryEditorBot.getAttributeValues().contains( "description: This is the final description." ) );
+        assertContains( "delete: description\n-", modificationLogsViewBot.getModificationLogsText() );
+
+        assertEquals( "Expected 6 modifications.", 6, StringUtils.countMatches( modificationLogsViewBot
+            .getModificationLogsText(), "#!RESULT OK" ) );
     }
 
 
@@ -182,6 +206,9 @@ public class EntryEditorTest
             "cn=\\#\\\\\\+\\, \\\"\u00F6\u00E9\\\",ou=users,ou=system" );
         assertEquals( "cn=\\#\\\\\\+\\, \\\"\u00F6\u00E9\\\",ou=users,ou=system", dnEditorBot.getDnText() );
         dnEditorBot.clickCancelButton();
+
+        assertEquals( "Expected 1 modification.", 1, StringUtils.countMatches( modificationLogsViewBot
+            .getModificationLogsText(), "#!RESULT OK" ) );
     }
 
 }
