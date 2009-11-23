@@ -144,4 +144,32 @@ public class RenameEntryDialogTest
         browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users", "cn=\\#ABCDEF" );
     }
 
+
+    /**
+     * Test for DIRSHARED-39.
+     * 
+     * Rename an entry with trailing space in RDN.
+     */
+    @Test
+    public void testRenameRdnWithTrailingSpace() throws Exception
+    {
+        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users", "cn=\\#123456" );
+
+        RenameEntryDialogBot renameDialogBot = browserViewBot.openRenameDialog();
+        assertTrue( renameDialogBot.isVisible() );
+        renameDialogBot.setRdnValue( 1, "#ABCDEF " );
+        renameDialogBot.clickOkButton();
+
+        assertTrue( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=users", "cn=\\#ABCDEF\\ " ) );
+        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users", "cn=\\#ABCDEF\\ " );
+
+        renameDialogBot = browserViewBot.openRenameDialog();
+        assertTrue( renameDialogBot.isVisible() );
+        renameDialogBot.setRdnValue( 1, "A " );
+        renameDialogBot.clickOkButton();
+
+        assertTrue( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=users", "cn=A\\ " ) );
+        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users", "cn=A\\ " );
+    }
+
 }
