@@ -67,7 +67,7 @@
     <distMgmtSiteUrl>scpexe://people.apache.org/www/directory.apache.org/studio/gen-docs/${version}</distMgmtSiteUrl>
     <!-- Set versions for subprojects -->
     <aciitemeditor.version>1.5.1.v20091130</aciitemeditor.version>
-    <apacheds.launcher.version>1.5.1-SNAPSHOT</apacheds.launcher.version>
+    <apacheds.launcher.version>1.5.1</apacheds.launcher.version>
     <apacheds.version>1.5.1.v20091130</apacheds.version>
     <apacheds.feature.version>1.5.1.v20091130</apacheds.feature.version>
     <apacheds.help.version>1.5.1.v20091130</apacheds.help.version>
@@ -90,13 +90,13 @@
     <rcp.version>1.5.1.v20091130</rcp.version>
     <rcp.feature.version>1.5.1.v20091130</rcp.feature.version>
     <rcp.help.version>1.5.1.v20091130</rcp.help.version>
-    <repository.version>1.5.1-SNAPSHOT</repository.version>
+    <repository.version>1.5.1.v20091130</repository.version>
     <schemaeditor.version>1.5.1.v20091130</schemaeditor.version>
     <schemaeditor.feature.version>1.5.1.v20091130</schemaeditor.feature.version>
     <schemaeditor.help.version>1.5.1.v20091130</schemaeditor.help.version>
-    <test.integration.core.version>1.5.1-SNAPSHOT</test.integration.core.version>
-    <test.integration.ui.version>1.5.1-SNAPSHOT</test.integration.ui.version>
-    <updatesite.version>1.5.1-SNAPSHOT</updatesite.version>
+    <test.integration.core.version>1.5.1.v20091130</test.integration.core.version>
+    <test.integration.ui.version>1.5.1.v20091130</test.integration.ui.version>
+    <updatesite.version>1.5.1.v20091130</updatesite.version>
     <valueeditors.version>1.5.1.v20091130</valueeditors.version>
 
     <!-- Set versions for depending projects -->
@@ -177,15 +177,7 @@
       of at least 1 iteration because the dist modules would be
       built before the help modules ...
     -->
-    <!--
-      NOTE:
-      This profile has been disabled for the release, and needs to be 
-      enabled again after the release is over.
-      We are disabling the build of 'updatesite' and 'studio' because we don't 
-      want to overload the maven repository with useless (heavy) packages and 
-      distributions
-    -->
-    <!--<profile>
+    <profile>
       <id>build-dist-modules</id>
       <activation>
         <file>
@@ -196,7 +188,7 @@
         <module>updatesite</module>
         <module>studio</module>
       </modules>
-    </profile>-->
+    </profile>
   </profiles>
 
   <dependencyManagement>

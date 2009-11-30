@@ -1,5 +1,27 @@
 Release Notes
 
+Apache Directory Studio 1.5.1
+
+Bug
+  * [DIRSTUDIO-576] - Context menu not shown after a right-click on a non-cached entry
+  * [DIRSTUDIO-577] - LDIF editor doesn't notify Eclipse that the LDIF file has changed when saving
+  * [DIRSTUDIO-580] - Setting "Validate certificates for secure LDAP connections" is not saved
+  * [DIRSTUDIO-587] - UI flickers on quick search
+  * [DIRSTUDIO-589] - InvalidNameException: unexpected token for user ids starting with hash sign
+  * [DIRSTUDIO-590] - The 'Quick Search' string has not been externalized in the LDAP Browser view
+  * [DIRSTUDIO-591] - Error reading objects with # in DN
+  * [DIRSTUDIO-592] - LDAP Browser view is refreshed twice after the initialization of the children of an entry
+  * [DIRSTUDIO-593] - Missing string and typo in the french translation of the Password Editor
+  * [DIRSTUDIO-594] - The 'Show new password details' checkbox does not display the 'Enter new password' text field as clear text when checked in the Password Editor
+  * [DIRSTUDIO-596] - Various typos in the french translation
+  * [DIRSTUDIO-597] - Modification sent to the server while browsing through the DIT and refreshing entries
+  * [DIRSTUDIO-598] - Base64 encoded DN marked as invalid in LDIF editor
+Improvement
+  * [DIRSTUDIO-595] - The icon of the entry in the 'Outline' view should be the same as the one in the 'LDAP Browser' view
+
+
+--------------------------------------------------------------------------------
+
 Apache Directory Studio 1.5.0
 
 Sub-task

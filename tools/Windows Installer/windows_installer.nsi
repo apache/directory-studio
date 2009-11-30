@@ -21,7 +21,7 @@
 # Constants and variables
 #
     !define Application "Apache Directory Studio"
-    !define Version "1.4.0.v20090407"
+    !define Version "1.5.1.v20091130"
     !define Icon "utils\studio-installer.ico"
     !define WelcomeImage "utils\welcome_studio.bmp"
     !define HeaderImage "utils\header_studio.bmp"
