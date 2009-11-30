@@ -28,7 +28,7 @@
 
   <groupId>org.apache.directory.studio</groupId>
   <artifactId>parent</artifactId>
-  <version>1.5.1.v20091130</version>
+  <version>1.5.2-SNAPSHOT</version>
   <name>Apache Directory Studio</name>
   <description>Apache Directory Studio is a complete directory tooling platform intended to be used with any LDAP server however it is particularly designed for use with the Apache Directory Server.</description>
   <packaging>pom</packaging>
@@ -46,9 +46,9 @@
   </organization>
 
   <scm>
-    <connection>scm:svn:http://svn.apache.org/repos/asf/directory/studio/tags/1.5.1.v20091130</connection>
-    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/directory/studio/tags/1.5.1.v20091130</developerConnection>
-    <url>https://svn.apache.org/viewvc/directory/studio/tags/1.5.1.v20091130</url>
+    <connection>scm:svn:http://svn.apache.org/repos/asf/directory/studio/trunk/</connection>
+    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/directory/studio/trunk/</developerConnection>
+    <url>https://svn.apache.org/viewvc/directory/studio/trunk/</url>
   </scm>
 
   <distributionManagement>
@@ -66,38 +66,38 @@
     <studio.dist.url>${pom.distributionManagement.repository.url}</studio.dist.url>
     <distMgmtSiteUrl>scpexe://people.apache.org/www/directory.apache.org/studio/gen-docs/${version}</distMgmtSiteUrl>
     <!-- Set versions for subprojects -->
-    <aciitemeditor.version>1.5.1.v20091130</aciitemeditor.version>
+    <aciitemeditor.version>1.5.2-SNAPSHOT</aciitemeditor.version>
     <apacheds.launcher.version>1.5.1-SNAPSHOT</apacheds.launcher.version>
-    <apacheds.version>1.5.1.v20091130</apacheds.version>
-    <apacheds.feature.version>1.5.1.v20091130</apacheds.feature.version>
-    <apacheds.help.version>1.5.1.v20091130</apacheds.help.version>
-    <apacheds.configuration.version>1.5.1.v20091130</apacheds.configuration.version>
-    <apacheds.configuration.feature.version>1.5.1.v20091130</apacheds.configuration.feature.version>
-    <apacheds.configuration.help.version>1.5.1.v20091130</apacheds.configuration.help.version>
-    <common.ui.version>1.5.1.v20091130</common.ui.version>
-    <connection.core.version>1.5.1.v20091130</connection.core.version>
-    <connection.ui.version>1.5.1.v20091130</connection.ui.version>
-    <jars.version>1.5.1.v20091130</jars.version>
-    <ldapbrowser.common.version>1.5.1.v20091130</ldapbrowser.common.version>
-    <ldapbrowser.core.version>1.5.1.v20091130</ldapbrowser.core.version>
-    <ldapbrowser.feature.version>1.5.1.v20091130</ldapbrowser.feature.version>
-    <ldapbrowser.help.version>1.5.1.v20091130</ldapbrowser.help.version>
-    <ldapbrowser.ui.version>1.5.1.v20091130</ldapbrowser.ui.version>
-    <ldifeditor.version>1.5.1.v20091130</ldifeditor.version>
-    <ldifeditor.feature.version>1.5.1.v20091130</ldifeditor.feature.version>
-    <ldifeditor.help.version>1.5.1.v20091130</ldifeditor.help.version>
-    <ldifparser.version>1.5.1.v20091130</ldifparser.version>
-    <rcp.version>1.5.1.v20091130</rcp.version>
-    <rcp.feature.version>1.5.1.v20091130</rcp.feature.version>
-    <rcp.help.version>1.5.1.v20091130</rcp.help.version>
+    <apacheds.version>1.5.2-SNAPSHOT</apacheds.version>
+    <apacheds.feature.version>1.5.2-SNAPSHOT</apacheds.feature.version>
+    <apacheds.help.version>1.5.2-SNAPSHOT</apacheds.help.version>
+    <apacheds.configuration.version>1.5.2-SNAPSHOT</apacheds.configuration.version>
+    <apacheds.configuration.feature.version>1.5.2-SNAPSHOT</apacheds.configuration.feature.version>
+    <apacheds.configuration.help.version>1.5.2-SNAPSHOT</apacheds.configuration.help.version>
+    <common.ui.version>1.5.2-SNAPSHOT</common.ui.version>
+    <connection.core.version>1.5.2-SNAPSHOT</connection.core.version>
+    <connection.ui.version>1.5.2-SNAPSHOT</connection.ui.version>
+    <jars.version>1.5.2-SNAPSHOT</jars.version>
+    <ldapbrowser.common.version>1.5.2-SNAPSHOT</ldapbrowser.common.version>
+    <ldapbrowser.core.version>1.5.2-SNAPSHOT</ldapbrowser.core.version>
+    <ldapbrowser.feature.version>1.5.2-SNAPSHOT</ldapbrowser.feature.version>
+    <ldapbrowser.help.version>1.5.2-SNAPSHOT</ldapbrowser.help.version>
+    <ldapbrowser.ui.version>1.5.2-SNAPSHOT</ldapbrowser.ui.version>
+    <ldifeditor.version>1.5.2-SNAPSHOT</ldifeditor.version>
+    <ldifeditor.feature.version>1.5.2-SNAPSHOT</ldifeditor.feature.version>
+    <ldifeditor.help.version>1.5.2-SNAPSHOT</ldifeditor.help.version>
+    <ldifparser.version>1.5.2-SNAPSHOT</ldifparser.version>
+    <rcp.version>1.5.2-SNAPSHOT</rcp.version>
+    <rcp.feature.version>1.5.2-SNAPSHOT</rcp.feature.version>
+    <rcp.help.version>1.5.2-SNAPSHOT</rcp.help.version>
     <repository.version>1.5.1-SNAPSHOT</repository.version>
-    <schemaeditor.version>1.5.1.v20091130</schemaeditor.version>
-    <schemaeditor.feature.version>1.5.1.v20091130</schemaeditor.feature.version>
-    <schemaeditor.help.version>1.5.1.v20091130</schemaeditor.help.version>
+    <schemaeditor.version>1.5.2-SNAPSHOT</schemaeditor.version>
+    <schemaeditor.feature.version>1.5.2-SNAPSHOT</schemaeditor.feature.version>
+    <schemaeditor.help.version>1.5.2-SNAPSHOT</schemaeditor.help.version>
     <test.integration.core.version>1.5.1-SNAPSHOT</test.integration.core.version>
     <test.integration.ui.version>1.5.1-SNAPSHOT</test.integration.ui.version>
     <updatesite.version>1.5.1-SNAPSHOT</updatesite.version>
-    <valueeditors.version>1.5.1.v20091130</valueeditors.version>
+    <valueeditors.version>1.5.2-SNAPSHOT</valueeditors.version>
 
     <!-- Set versions for depending projects -->
     <org.apache.directory.shared.version>0.9.16</org.apache.directory.shared.version>
@@ -225,7 +225,7 @@
       <dependency>
         <groupId>org.apache.directory.studio</groupId>
         <artifactId>apacheds-launcher</artifactId>
-        <version>1.5.1</version>
+        <version>1.5.2-SNAPSHOT</version>
       </dependency>
       <dependency>
         <groupId>org.apache.directory.studio</groupId>

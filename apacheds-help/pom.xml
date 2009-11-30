@@ -28,7 +28,7 @@
   </parent>
 
   <artifactId>apacheds.help</artifactId>
-  <version>1.5.1.v20091130</version>
+  <version>1.5.2-SNAPSHOT</version>
   <name>Apache Directory Studio Apache DS Help</name>
   <packaging>jar</packaging>
 
@@ -57,10 +57,4 @@
       </plugin>
     </plugins>
   </build>
-
-  <scm>
-    <connection>scm:svn:http://svn.apache.org/repos/asf/directory/studio/tags/1.5.1.v20091130/parent-help/apacheds.help</connection>
-    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/directory/studio/tags/1.5.1.v20091130/parent-help/apacheds.help</developerConnection>
-    <url>https://svn.apache.org/viewvc/directory/studio/tags/1.5.1.v20091130/parent-help/apacheds.help</url>
-  </scm>
 </project>
