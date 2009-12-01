@@ -19,7 +19,54 @@
 <chapter id="release_notes">
 	<title>Release notes</title>
     <simplesect>
-        <title>Apache Directory Studio 1.5.0 - (2009, October XXxx)</title>
+        <title>Apache Directory Studio 1.5.1 - (2009, November 30th)</title>
+        <para>
+            <emphasis>Bug</emphasis>
+        </para>
+        <para>
+            <itemizedlist spacing="normal" mark="bullet">
+                <listitem>
+                    <para>[DIRSTUDIO-597] - Modification sent to the server while browsing through the DIT and refreshing entries</para>
+                </listitem>
+                <listitem>
+                    <para>[DIRSTUDIO-596] - Various typos in the french translation</para>
+                </listitem>
+                <listitem>
+                    <para>[DIRSTUDIO-595] - The icon of the entry in the 'Outline' view should be the same as the one in the 'LDAP Browser' view</para>
+                </listitem>
+                <listitem>
+                    <para>[DIRSTUDIO-594] - The 'Show new password details' checkbox does not display the 'Enter new password' text field as clear text when checked in the Password Editor</para>
+                </listitem>
+                <listitem>
+                    <para>[DIRSTUDIO-593] - Missing string and typo in the french translation of the Password Editor</para>
+                </listitem>
+                <listitem>
+                    <para>[DIRSTUDIO-592] - LDAP Browser view is refreshed twice after the initialization of the children of an entry</para>
+                </listitem>
+                <listitem>
+                    <para>[DIRSTUDIO-591] - Error reading objects with # in DN</para>
+                </listitem>
+                <listitem>
+                    <para>[DIRSTUDIO-590] - The 'Quick Search' string has not been externalized in the LDAP Browser view</para>
+                </listitem>
+                <listitem>
+                    <para>[DIRSTUDIO-589] - InvalidNameException: unexpected token for user ids starting with hash sign</para>
+                </listitem>
+                <listitem>
+                    <para>[DIRSTUDIO-587] - UI flickers on quick search</para>
+                </listitem>
+                <listitem>
+                    <para>[DIRSTUDIO-580] - Setting "Validate certificates for secure LDAP connections" is not saved</para>
+                </listitem>
+                <listitem>
+                    <para>[DIRSTUDIO-576] - Context menu not shown after a right-click on a non-cached entry</para>
+                </listitem>
+            </itemizedlist>
+        </para>
+    </simplesect>
+    
+    <simplesect>
+        <title>Apache Directory Studio 1.5.0 - (2009, November 2nd)</title>
         <para>
             <emphasis>Bug</emphasis>
         </para>
