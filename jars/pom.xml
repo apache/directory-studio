@@ -27,7 +27,7 @@
   </parent>
   
   <artifactId>jars</artifactId>
-  <version>1.5.2-SNAPSHOT</version>
+  <version>${jars.version}</version>
   <name>Apache Directory Studio Jars</name>
   <packaging>jar</packaging>
 

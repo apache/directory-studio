@@ -27,7 +27,7 @@
   </parent>
   
   <artifactId>apacheds.feature</artifactId>
-  <version>1.5.2-SNAPSHOT</version>
+  <version>${apacheds.feature.version}</version>
   <name>Apache Directory Studio Apache DS Feature</name>
   <packaging>jar</packaging>
 

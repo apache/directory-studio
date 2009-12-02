@@ -27,7 +27,7 @@
   </parent>
   
   <artifactId>schemaeditor</artifactId>
-  <version>1.5.2-SNAPSHOT</version>
+  <version>${schemaeditor.version}</version>
   <name>Apache Directory Studio Schema Editor</name>
   <packaging>jar</packaging>
 

@@ -27,7 +27,7 @@
 	</parent>
 
 	<artifactId>apacheds-launcher</artifactId>
-	<version>1.5.2-SNAPSHOT</version>
+	<version>${apacheds.launcher.version}</version>
 	<name>Apache Directory Studio Apache DS Launcher</name>
 	<packaging>jar</packaging>
 

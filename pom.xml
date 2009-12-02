@@ -67,7 +67,7 @@
     <distMgmtSiteUrl>scpexe://people.apache.org/www/directory.apache.org/studio/gen-docs/${version}</distMgmtSiteUrl>
     <!-- Set versions for subprojects -->
     <aciitemeditor.version>1.5.2-SNAPSHOT</aciitemeditor.version>
-    <apacheds.launcher.version>1.5.1-SNAPSHOT</apacheds.launcher.version>
+    <apacheds.launcher.version>1.5.2-SNAPSHOT</apacheds.launcher.version>
     <apacheds.version>1.5.2-SNAPSHOT</apacheds.version>
     <apacheds.feature.version>1.5.2-SNAPSHOT</apacheds.feature.version>
     <apacheds.help.version>1.5.2-SNAPSHOT</apacheds.help.version>
@@ -90,12 +90,12 @@
     <rcp.version>1.5.2-SNAPSHOT</rcp.version>
     <rcp.feature.version>1.5.2-SNAPSHOT</rcp.feature.version>
     <rcp.help.version>1.5.2-SNAPSHOT</rcp.help.version>
-    <repository.version>1.5.1-SNAPSHOT</repository.version>
+    <repository.version>1.5.2-SNAPSHOT</repository.version>
     <schemaeditor.version>1.5.2-SNAPSHOT</schemaeditor.version>
     <schemaeditor.feature.version>1.5.2-SNAPSHOT</schemaeditor.feature.version>
     <schemaeditor.help.version>1.5.2-SNAPSHOT</schemaeditor.help.version>
-    <test.integration.core.version>1.5.1-SNAPSHOT</test.integration.core.version>
-    <test.integration.ui.version>1.5.1-SNAPSHOT</test.integration.ui.version>
+    <test.integration.core.version>1.5.2-SNAPSHOT</test.integration.core.version>
+    <test.integration.ui.version>1.5.2-SNAPSHOT</test.integration.ui.version>
     <updatesite.version>1.5.1-SNAPSHOT</updatesite.version>
     <valueeditors.version>1.5.2-SNAPSHOT</valueeditors.version>
 
@@ -177,15 +177,7 @@
       of at least 1 iteration because the dist modules would be
       built before the help modules ...
     -->
-    <!--
-      NOTE:
-      This profile has been disabled for the release, and needs to be 
-      enabled again after the release is over.
-      We are disabling the build of 'updatesite' and 'studio' because we don't 
-      want to overload the maven repository with useless (heavy) packages and 
-      distributions
-    -->
-    <!--<profile>
+    <profile>
       <id>build-dist-modules</id>
       <activation>
         <file>
@@ -196,7 +188,7 @@
         <module>updatesite</module>
         <module>studio</module>
       </modules>
-    </profile>-->
+    </profile>
   </profiles>
 
   <dependencyManagement>

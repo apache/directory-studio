@@ -27,7 +27,7 @@
   </parent>
   
   <artifactId>ldapbrowser.ui</artifactId>
-  <version>1.5.2-SNAPSHOT</version>
+  <version>${ldapbrowser.ui.version}</version>
   <name>Apache Directory Studio LDAP Browser UI</name>
   <packaging>jar</packaging>
 

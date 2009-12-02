@@ -27,7 +27,7 @@
   </parent>
   
   <artifactId>rcp.feature</artifactId>
-  <version>1.5.2-SNAPSHOT</version>
+  <version>${rcp.feature.version}</version>
   <name>Apache Directory Studio RCP Feature</name>
   <packaging>jar</packaging>
 

@@ -27,7 +27,7 @@
   </parent>
 
   <artifactId>connection.ui</artifactId>
-  <version>1.5.2-SNAPSHOT</version>
+  <version>${connection.ui.version}</version>
   <name>Apache Directory Studio Connection UI</name>
   <packaging>jar</packaging>
 
