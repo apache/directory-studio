@@ -224,49 +224,49 @@ of your accepting any such warranty or additional liability.
          id="org.apache.directory.studio.common.ui"
          download-size="0"
          install-size="0"
-         version="${common.ui.version}"
+         version="${pom.version}"
          unpack="false"/>
 
    <plugin
          id="org.apache.directory.studio.schemaeditor"
          download-size="0"
          install-size="0"
-         version="${schemaeditor.version}"
+         version="${pom.version}"
          unpack="false"/>
 
    <plugin
          id="org.apache.directory.studio.schemaeditor.help"
          download-size="0"
          install-size="0"
-         version="${schemaeditor.help.version}"
+         version="${pom.version}"
          unpack="false"/>
 
    <plugin
          id="org.apache.directory.studio.jars"
          download-size="0"
          install-size="0"
-         version="${jars.version}"
+         version="${pom.version}"
          unpack="false"/>
 
    <plugin
          id="org.apache.directory.studio.connection.core"
          download-size="0"
          install-size="0"
-         version="${connection.core.version}"
+         version="${pom.version}"
          unpack="false"/>
 
    <plugin
          id="org.apache.directory.studio.connection.ui"
          download-size="0"
          install-size="0"
-         version="${connection.ui.version}"
+         version="${pom.version}"
          unpack="false"/>
 
    <plugin
          id="org.apache.directory.studio.ldifparser"
          download-size="0"
          install-size="0"
-         version="${ldifparser.version}"
+         version="${pom.version}"
          unpack="false"/>
 
 </feature>

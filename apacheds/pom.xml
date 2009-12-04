@@ -27,7 +27,6 @@
   </parent>
   
   <artifactId>apacheds</artifactId>
-  <version>${apacheds.version}</version>
   <name>Apache Directory Studio Apache DS</name>
   <packaging>jar</packaging>
 
@@ -721,7 +720,7 @@
                 <artifactItem>
                   <groupId>org.apache.directory.studio</groupId>
                   <artifactId>apacheds-launcher</artifactId>
-                  <version>${apacheds.launcher.version}</version>
+                  <version>1.5.0</version>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.apache.directory.server</groupId>

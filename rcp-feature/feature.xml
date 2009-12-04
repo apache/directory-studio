@@ -228,21 +228,21 @@ of your accepting any such warranty or additional liability.
          id="org.apache.directory.studio.common.ui"
          download-size="0"
          install-size="0"
-         version="${common.ui.version}"
+         version="${pom.version}"
          unpack="false"/>
 
    <plugin
          id="org.apache.directory.studio.rcp"
          download-size="0"
          install-size="0"
-         version="${rcp.version}"
+         version="${pom.version}"
          unpack="false"/>
 
    <plugin
          id="org.apache.directory.studio.rcp.help"
          download-size="0"
          install-size="0"
-         version="${rcp.help.version}"
+         version="${pom.version}"
          unpack="false"/>
 
 </feature>

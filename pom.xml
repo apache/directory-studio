@@ -65,39 +65,8 @@
     -->
     <studio.dist.url>${pom.distributionManagement.repository.url}</studio.dist.url>
     <distMgmtSiteUrl>scpexe://people.apache.org/www/directory.apache.org/studio/gen-docs/${version}</distMgmtSiteUrl>
-    <!-- Set versions for subprojects -->
-    <aciitemeditor.version>1.5.2-SNAPSHOT</aciitemeditor.version>
-    <apacheds.launcher.version>1.5.2-SNAPSHOT</apacheds.launcher.version>
-    <apacheds.version>1.5.2-SNAPSHOT</apacheds.version>
-    <apacheds.feature.version>1.5.2-SNAPSHOT</apacheds.feature.version>
-    <apacheds.help.version>1.5.2-SNAPSHOT</apacheds.help.version>
-    <apacheds.configuration.version>1.5.2-SNAPSHOT</apacheds.configuration.version>
-    <apacheds.configuration.feature.version>1.5.2-SNAPSHOT</apacheds.configuration.feature.version>
-    <apacheds.configuration.help.version>1.5.2-SNAPSHOT</apacheds.configuration.help.version>
-    <common.ui.version>1.5.2-SNAPSHOT</common.ui.version>
-    <connection.core.version>1.5.2-SNAPSHOT</connection.core.version>
-    <connection.ui.version>1.5.2-SNAPSHOT</connection.ui.version>
-    <jars.version>1.5.2-SNAPSHOT</jars.version>
-    <ldapbrowser.common.version>1.5.2-SNAPSHOT</ldapbrowser.common.version>
-    <ldapbrowser.core.version>1.5.2-SNAPSHOT</ldapbrowser.core.version>
-    <ldapbrowser.feature.version>1.5.2-SNAPSHOT</ldapbrowser.feature.version>
-    <ldapbrowser.help.version>1.5.2-SNAPSHOT</ldapbrowser.help.version>
-    <ldapbrowser.ui.version>1.5.2-SNAPSHOT</ldapbrowser.ui.version>
-    <ldifeditor.version>1.5.2-SNAPSHOT</ldifeditor.version>
-    <ldifeditor.feature.version>1.5.2-SNAPSHOT</ldifeditor.feature.version>
-    <ldifeditor.help.version>1.5.2-SNAPSHOT</ldifeditor.help.version>
-    <ldifparser.version>1.5.2-SNAPSHOT</ldifparser.version>
-    <rcp.version>1.5.2-SNAPSHOT</rcp.version>
-    <rcp.feature.version>1.5.2-SNAPSHOT</rcp.feature.version>
-    <rcp.help.version>1.5.2-SNAPSHOT</rcp.help.version>
-    <repository.version>1.5.2-SNAPSHOT</repository.version>
-    <schemaeditor.version>1.5.2-SNAPSHOT</schemaeditor.version>
-    <schemaeditor.feature.version>1.5.2-SNAPSHOT</schemaeditor.feature.version>
-    <schemaeditor.help.version>1.5.2-SNAPSHOT</schemaeditor.help.version>
-    <test.integration.core.version>1.5.2-SNAPSHOT</test.integration.core.version>
-    <test.integration.ui.version>1.5.2-SNAPSHOT</test.integration.ui.version>
-    <updatesite.version>1.5.1-SNAPSHOT</updatesite.version>
-    <valueeditors.version>1.5.2-SNAPSHOT</valueeditors.version>
+    
+    <apacheds.launcher.version>1.5.0</apacheds.launcher.version>
 
     <!-- Set versions for depending projects -->
     <org.apache.directory.shared.version>0.9.16</org.apache.directory.shared.version>
@@ -197,157 +166,157 @@
       <dependency>
         <groupId>org.apache.directory.studio</groupId>
         <artifactId>aciitemeditor</artifactId>
-        <version>${aciitemeditor.version}</version>
+        <version>${pom.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.directory.studio</groupId>
         <artifactId>apacheds</artifactId>
-        <version>${apacheds.version}</version>
+        <version>${pom.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.directory.studio</groupId>
         <artifactId>apacheds.feature</artifactId>
-        <version>${apacheds.feature.version}</version>
+        <version>${pom.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.directory.studio</groupId>
         <artifactId>apacheds.help</artifactId>
-        <version>${apacheds.help.version}</version>
+        <version>${pom.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.directory.studio</groupId>
         <artifactId>apacheds-launcher</artifactId>
-        <version>1.5.2-SNAPSHOT</version>
+        <version>${apacheds.launcher.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.directory.studio</groupId>
         <artifactId>apacheds.configuration</artifactId>
-        <version>${apacheds.configuration.version}</version>
+        <version>${pom.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.directory.studio</groupId>
         <artifactId>apacheds.configuration.feature</artifactId>
-        <version>${apacheds.configuration.feature.version}</version>
+        <version>${pom.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.directory.studio</groupId>
         <artifactId>apacheds.configuration.help</artifactId>
-        <version>${apacheds.configuration.help.version}</version>
+        <version>${pom.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.directory.studio</groupId>
         <artifactId>common.ui</artifactId>
-        <version>${common.ui.version}</version>
+        <version>${pom.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.directory.studio</groupId>
         <artifactId>connection.core</artifactId>
-        <version>${connection.core.version}</version>
+        <version>${pom.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.directory.studio</groupId>
         <artifactId>connection.ui</artifactId>
-        <version>${connection.ui.version}</version>
+        <version>${pom.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.directory.studio</groupId>
         <artifactId>jars</artifactId>
-        <version>${jars.version}</version>
+        <version>${pom.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.directory.studio</groupId>
         <artifactId>ldapbrowser.common</artifactId>
-        <version>${ldapbrowser.common.version}</version>
+        <version>${pom.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.directory.studio</groupId>
         <artifactId>ldapbrowser.core</artifactId>
-        <version>${ldapbrowser.core.version}</version>
+        <version>${pom.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.directory.studio</groupId>
         <artifactId>ldapbrowser.feature</artifactId>
-        <version>${ldapbrowser.feature.version}</version>
+        <version>${pom.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.directory.studio</groupId>
         <artifactId>ldapbrowser.help</artifactId>
-        <version>${ldapbrowser.help.version}</version>
+        <version>${pom.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.directory.studio</groupId>
         <artifactId>ldapbrowser.ui</artifactId>
-        <version>${ldapbrowser.ui.version}</version>
+        <version>${pom.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.directory.studio</groupId>
         <artifactId>ldifeditor</artifactId>
-        <version>${ldifeditor.version}</version>
+        <version>${pom.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.directory.studio</groupId>
         <artifactId>ldifeditor.feature</artifactId>
-        <version>${ldifeditor.feature.version}</version>
+        <version>${pom.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.directory.studio</groupId>
         <artifactId>ldifeditor.help</artifactId>
-        <version>${ldifeditor.help.version}</version>
+        <version>${pom.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.directory.studio</groupId>
         <artifactId>ldifparser</artifactId>
-        <version>${ldifparser.version}</version>
+        <version>${pom.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.directory.studio</groupId>
         <artifactId>rcp</artifactId>
-        <version>${rcp.version}</version>
+        <version>${pom.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.directory.studio</groupId>
         <artifactId>rcp.feature</artifactId>
-        <version>${rcp.feature.version}</version>
+        <version>${pom.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.directory.studio</groupId>
         <artifactId>rcp.help</artifactId>
-        <version>${rcp.help.version}</version>
+        <version>${pom.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.directory.studio</groupId>
         <artifactId>schemaeditor</artifactId>
-        <version>${schemaeditor.version}</version>
+        <version>${pom.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.directory.studio</groupId>
         <artifactId>schemaeditor.feature</artifactId>
-        <version>${schemaeditor.feature.version}</version>
+        <version>${pom.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.directory.studio</groupId>
         <artifactId>schemaeditor.help</artifactId>
-        <version>${schemaeditor.help.version}</version>
+        <version>${pom.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.directory.studio</groupId>
         <artifactId>test.integration.core</artifactId>
-        <version>${test.integration.core.version}</version>
+        <version>${pom.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.directory.studio</groupId>
         <artifactId>test.integration.ui</artifactId>
-        <version>${test.integration.ui.version}</version>
+        <version>${pom.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.directory.studio</groupId>
         <artifactId>updatesite</artifactId>
-        <version>${updatesite.version}</version>
+        <version>${pom.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.directory.studio</groupId>
         <artifactId>valueeditors</artifactId>
-        <version>${valueeditors.version}</version>
+        <version>${pom.version}</version>
       </dependency>
       
       <!-- Maven -->

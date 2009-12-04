@@ -27,7 +27,6 @@
   </parent>
   
   <artifactId>test.integration.ui</artifactId>
-  <version>${test.integration.ui.version}</version>
   <name>Apache Directory Studio UI Integration Tests</name>
   <packaging>jar</packaging>
 

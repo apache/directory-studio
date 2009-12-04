@@ -27,7 +27,6 @@
   </parent>
   
   <artifactId>valueeditors</artifactId>
-  <version>${valueeditors.version}</version>
   <name>Apache Directory Studio Value Editors</name>
   <packaging>jar</packaging>
 

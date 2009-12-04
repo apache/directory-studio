@@ -45,7 +45,7 @@
 	<bookinfo>
 		<title>Apache Directory Studio</title>
 		<subtitle>User's Guide</subtitle>
-		<releaseinfo>Version ${current_pom_version}</releaseinfo>
+		<releaseinfo>Version ${pom.version}</releaseinfo>
 		<copyright>
 			<year>2006 - 2009</year>
 			<holder>Apache Software Foundation</holder>

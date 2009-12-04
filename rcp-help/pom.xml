@@ -28,15 +28,10 @@
   </parent>
 
   <artifactId>rcp.help</artifactId>
-  <version>${rcp.help.version}</version>
   <name>Apache Directory Studio RCP Help</name>
   <packaging>jar</packaging>
 
   <description />
-
-  <properties>
-    <current_pom_version>${pom.version}</current_pom_version>
-  </properties>
 
   <build>
     <plugins>

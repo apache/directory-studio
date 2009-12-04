@@ -27,7 +27,6 @@
   </parent>
   
   <artifactId>test.integration.core</artifactId>
-  <version>${test.integration.core.version}</version>
   <name>Apache Directory Studio Core Integration Tests</name>
   <packaging>jar</packaging>
 

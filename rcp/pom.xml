@@ -27,7 +27,6 @@
   </parent>
   
   <artifactId>rcp</artifactId>
-  <version>${rcp.version}</version>
   <name>Apache Directory Studio RCP</name>
   <packaging>jar</packaging>
 

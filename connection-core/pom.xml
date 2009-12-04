@@ -27,7 +27,6 @@
   </parent>
 
   <artifactId>connection.core</artifactId>
-  <version>${connection.core.version}</version>
   <name>Apache Directory Studio Connection Core</name>
   <packaging>jar</packaging>
 

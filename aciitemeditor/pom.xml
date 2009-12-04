@@ -27,7 +27,6 @@
   </parent>
   
   <artifactId>aciitemeditor</artifactId>
-  <version>${aciitemeditor.version}</version>
   <name>Apache Directory Studio ACI Item Editor</name>
   <packaging>jar</packaging>
 

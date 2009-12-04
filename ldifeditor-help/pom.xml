@@ -28,15 +28,10 @@
   </parent>
 
   <artifactId>ldifeditor.help</artifactId>
-  <version>${ldifeditor.help.version}</version>
   <name>Apache Directory Studio LDIF Editor Help</name>
   <packaging>jar</packaging>
 
   <description />
-
-  <properties>
-    <current_pom_version>${pom.version}</current_pom_version>
-  </properties>
 
   <build>
     <plugins>

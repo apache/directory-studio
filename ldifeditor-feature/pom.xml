@@ -27,7 +27,6 @@
   </parent>
   
   <artifactId>ldifeditor.feature</artifactId>
-  <version>${ldifeditor.feature.version}</version>
   <name>Apache Directory Studio LDIF Editor Feature</name>
   <packaging>jar</packaging>
 

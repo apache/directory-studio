@@ -27,16 +27,10 @@
   </parent>
 
   <artifactId>updatesite</artifactId>
-  <version>${updatesite.version}</version>
   <name>Apache Directory Studio Update Site</name>
   <packaging>pom</packaging>
 
   <description></description>
-
-  <properties>
-    <current_pom_version>${pom.version}</current_pom_version>
-    <local-repo>${project.basedir}/../repository</local-repo>
-  </properties>
 
   <profiles>
     <profile>

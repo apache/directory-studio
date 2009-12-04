@@ -27,7 +27,6 @@
   </parent>
   
   <artifactId>apacheds.configuration</artifactId>
-  <version>${apacheds.configuration.version}</version>
   <name>Apache Directory Studio Apache DS Configuration</name>
   <packaging>jar</packaging>
 

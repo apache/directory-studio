@@ -27,7 +27,6 @@
   </parent>
 
   <artifactId>ldapbrowser.common</artifactId>
-  <version>${ldapbrowser.common.version}</version>
   <name>Apache Directory Studio LDAP Browser Common</name>
   <packaging>jar</packaging>
 

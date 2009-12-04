@@ -224,28 +224,28 @@ of your accepting any such warranty or additional liability.
          id="org.apache.directory.studio.common.ui"
          download-size="0"
          install-size="0"
-         version="${common.ui.version}"
+         version="${pom.version}"
          unpack="false"/>
 
    <plugin
          id="org.apache.directory.studio.apacheds.configuration"
          download-size="0"
          install-size="0"
-         version="${apacheds.configuration.version}"
+         version="${pom.version}"
          unpack="false"/>
 
    <plugin
          id="org.apache.directory.studio.jars"
          download-size="0"
          install-size="0"
-         version="${jars.version}"
+         version="${pom.version}"
          unpack="false"/>
 
    <plugin
          id="org.apache.directory.studio.apacheds.configuration.help"
          download-size="0"
          install-size="0"
-         version="${apacheds.configuration.help.version}"
+         version="${pom.version}"
          unpack="false"/>
 
 </feature>

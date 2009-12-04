@@ -27,7 +27,6 @@
   </parent>
 
   <artifactId>common.ui</artifactId>
-  <version>${common.ui.version}</version>
   <name>Apache Directory Studio Common UI</name>
   <packaging>jar</packaging>
 
