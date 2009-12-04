@@ -161,6 +161,10 @@ public class SearchRunnable implements StudioBulkRunnableWithProgress
         {
             ISearch search = searches[pi];
             ISearch searchToPerform = searchesToPerform[pi];
+            
+            // Making sure we have the original search objects and not clones
+            search = search.getBrowserConnection().getSearchManager().getSearch( search.getName() );
+            searchToPerform = searchToPerform.getBrowserConnection().getSearchManager().getSearch( searchToPerform.getName() );
 
             monitor.setTaskName( BrowserCoreMessages.bind( BrowserCoreMessages.jobs__search_task, new String[]
                 { search.getName() } ) );
