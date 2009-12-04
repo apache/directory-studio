@@ -176,9 +176,11 @@ public class RefreshAction extends BrowserAction
         }
         if ( searchInput != null )
         {
-            searchInput.setSearchResults( null );
+            // the search input is usually a cloned search, lookup the real search from connection
+            ISearch search = searchInput.getBrowserConnection().getSearchManager().getSearch( searchInput.getName() );
+            search.setSearchResults( null );
             new StudioBrowserJob( new SearchRunnable( new ISearch[]
-                { searchInput } ) ).execute();
+                { search } ) ).execute();
         }
     }
 
