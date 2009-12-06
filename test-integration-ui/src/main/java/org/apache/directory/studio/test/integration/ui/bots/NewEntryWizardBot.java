@@ -59,6 +59,13 @@ public class NewEntryWizardBot extends WizardBot
     }
 
 
+    public void clickAddRdnButton( int number )
+    {
+        int index = number - 1;
+        bot.button( "  +   ", index ).click();
+    }
+
+
     public void setRdnValue( int number, String text )
     {
         int index = number - 1;

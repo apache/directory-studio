@@ -470,4 +470,27 @@ public class BrowserTest
         assertEquals( "No modification expected", "", modificationLogsViewBot.getModificationLogsText() );
     }
 
+
+    /**
+     * Test for DIRSTUDIO-603, DIRSHARED-41.
+     * (Error browsing/entering rfc2307 compliant host entry.)
+     */
+    @Test
+    public void testBrowseDnWithIpHostNumber() throws Exception
+    {
+        ApacheDsUtils.enableSchema( ldapServer, "nis" );
+
+        // create entry with multi-valued RDN containing an IP address value
+        ServerEntry entry = new DefaultServerEntry( ldapServer.getDirectoryService().getRegistries() );
+        entry.setDn( new LdapDN( "cn=loopback+ipHostNumber=127.0.0.1,ou=users,ou=system" ) );
+        entry.add( "objectClass", "top", "device", "ipHost" );
+        entry.add( "cn", "loopback" );
+        entry.add( "ipHostNumber", "127.0.0.1" );
+        ldapServer.getDirectoryService().getAdminSession().add( entry );
+
+        assertTrue( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=users",
+            "cn=loopback+ipHostNumber=127.0.0.1" ) );
+        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users", "cn=loopback+ipHostNumber=127.0.0.1" );
+    }
+
 }

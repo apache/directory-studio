@@ -78,22 +78,9 @@ public class NewEntryWizardTest
     {
         ErrorDialog.AUTOMATED_MODE = false;
 
-        // check if krb5kdc is disabled
-        DirContext schemaRoot = ( DirContext ) getWiredContext( ldapServer ).lookup( "ou=schema" );
-        Attributes krb5kdcAttrs = schemaRoot.getAttributes( "cn=Krb5kdc" );
-        boolean isKrb5KdcDisabled = false;
-        if ( krb5kdcAttrs.get( "m-disabled" ) != null )
-        {
-            isKrb5KdcDisabled = ( ( String ) krb5kdcAttrs.get( "m-disabled" ).get() ).equalsIgnoreCase( "TRUE" );
-        }
-        // if krb5kdc is disabled then enable it
-        if ( isKrb5KdcDisabled )
-        {
-            Attribute disabled = new BasicAttribute( "m-disabled" );
-            ModificationItem[] mods = new ModificationItem[]
-                { new ModificationItem( DirContext.REMOVE_ATTRIBUTE, disabled ) };
-            schemaRoot.modifyAttributes( "cn=Krb5kdc", mods );
-        }
+        // enable krb5kdc and nis schemas
+        ApacheDsUtils.enableSchema( ldapServer, "krb5kdc" );
+        ApacheDsUtils.enableSchema( ldapServer, "nis" );
 
         // create referral entry
         ServerEntry entry = new DefaultServerEntry( ldapServer.getDirectoryService().getRegistries() );
@@ -406,5 +393,38 @@ public class NewEntryWizardTest
 
         assertTrue( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "cn=\\#123456" ) );
         browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "cn=\\#123456" );
+    }
+
+
+    /**
+     * Test for DIRSTUDIO-603, DIRSHARED-41.
+     * 
+     * Create an entry with multi-valued RDN and numeric OID (IP address) in RDN value.
+     */
+    @Test
+    public void testCreateMvRdnWithNumericOid()
+    {
+        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system" );
+
+        NewEntryWizardBot wizardBot = browserViewBot.openNewEntryWizard();
+
+        wizardBot.selectCreateEntryFromScratch();
+        wizardBot.clickNextButton();
+
+        wizardBot.addObjectClasses( "device" );
+        wizardBot.addObjectClasses( "ipHost" );
+        wizardBot.clickNextButton();
+
+        wizardBot.clickAddRdnButton( 1 );
+        wizardBot.setRdnType( 1, "cn" );
+        wizardBot.setRdnValue( 1, "loopback" );
+        wizardBot.setRdnType( 2, "ipHostNumber" );
+        wizardBot.setRdnValue( 2, "127.0.0.1" );
+        wizardBot.clickNextButton();
+
+        wizardBot.clickFinishButton();
+
+        assertTrue( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "cn=loopback+ipHostNumber=127.0.0.1" ) );
+        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "cn=loopback+ipHostNumber=127.0.0.1" );
     }
 }
