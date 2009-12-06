@@ -24,10 +24,18 @@ package org.apache.directory.studio.test.integration.ui;
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertTrue;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.directory.server.core.integ.Level;
 import org.apache.directory.server.core.integ.annotations.CleanupLevel;
 import org.apache.directory.server.integ.SiRunner;
 import org.apache.directory.server.ldap.LdapServer;
+import org.apache.directory.shared.ldap.entry.Modification;
+import org.apache.directory.shared.ldap.entry.ModificationOperation;
+import org.apache.directory.shared.ldap.entry.client.ClientModification;
+import org.apache.directory.shared.ldap.entry.client.DefaultClientAttribute;
+import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.studio.ldapbrowser.core.BrowserConnectionManager;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
 import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
@@ -36,7 +44,9 @@ import org.apache.directory.studio.test.integration.ui.bots.BrowserViewBot;
 import org.apache.directory.studio.test.integration.ui.bots.ConnectionsViewBot;
 import org.apache.directory.studio.test.integration.ui.bots.SearchDialogBot;
 import org.apache.directory.studio.test.integration.ui.bots.SearchPropertiesDialogBot;
+import org.apache.directory.studio.test.integration.ui.bots.SearchResultEditorBot;
 import org.apache.directory.studio.test.integration.ui.bots.StudioBot;
+import org.eclipse.swtbot.swt.finder.utils.SWTUtils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -49,7 +59,6 @@ import org.junit.runner.RunWith;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-//@RunWith(SWTBotJunit4ClassRunner.class)
 @RunWith(SiRunner.class)
 @CleanupLevel(Level.SUITE)
 public class SearchTest
@@ -155,6 +164,48 @@ public class SearchTest
         // verify that only one events was fired 
         long fireCount = fireCount1 - fireCount0;
         assertEquals( "Only 1 event firings expected when running quick search.", 1, fireCount );
+    }
+
+
+    /**
+     * Test for DIRSTUDIO-601.
+     * (The 'Perform Search/Search Again' button in the Search Result Editor does not work correctly)
+     *
+     * @throws Exception
+     */
+    @Test
+    public void testRefresh() throws Exception
+    {
+        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system" );
+        SearchDialogBot dialogBot = browserViewBot.openSearchDialog();
+        assertTrue( dialogBot.isVisible() );
+        dialogBot.setSearchName( "Search Admin" );
+        dialogBot.setFilter( "(uid=admin)" );
+        dialogBot.setReturningAttributes( "objectClass, uid, description" );
+        dialogBot.clickSearchButton();
+        browserViewBot.selectEntry( "Searches", "Search Admin" );
+
+        SearchResultEditorBot srEditorBot = studioBot.getSearchResultEditorBot( "Search Result Editor" );
+        srEditorBot.activate();
+        assertTrue( srEditorBot.isEnabled() );
+
+        // assert that description attribute is empty
+        assertEquals( "uid=admin,ou=system", srEditorBot.getContent( 1, 1 ) );
+        assertEquals( "", srEditorBot.getContent( 1, 4 ) );
+
+        // add description
+        List<Modification> modifications = new ArrayList<Modification>();
+        modifications.add( new ClientModification( ModificationOperation.REPLACE_ATTRIBUTE, new DefaultClientAttribute(
+            "description", "The 1st description." ) ) );
+        ldapServer.getDirectoryService().getAdminSession().modify( new LdapDN( "uid=admin,ou=system" ), modifications );
+
+        // refresh the search, using the toolbar icon
+        srEditorBot.refresh();
+        SWTUtils.sleep( 1000 );
+
+        // assert the description attribute value is displayed now
+        assertEquals( "uid=admin,ou=system", srEditorBot.getContent( 1, 1 ) );
+        assertEquals( "The 1st description.", srEditorBot.getContent( 1, 4 ) );
     }
 
 }

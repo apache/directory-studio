@@ -42,13 +42,19 @@ class SearchPageWrapperBot
 
     void setSearchName( String string )
     {
-        bot.textWithLabel( "Search Name:" ).setText( "Search all persons" );
+        bot.textWithLabel( "Search Name:" ).setText( string );
     }
 
 
     void setFilter( String string )
     {
-        bot.comboBoxWithLabel( "Filter:" ).setText( "(objectClass=person)" );
+        bot.comboBoxWithLabel( "Filter:" ).setText( string );
+    }
+
+
+    void setReturningAttributes( String string )
+    {
+        bot.comboBoxWithLabel( "Returning Attributes:" ).setText( string );
     }
 
 }

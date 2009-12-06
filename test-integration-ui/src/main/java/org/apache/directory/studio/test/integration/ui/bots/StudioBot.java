@@ -98,9 +98,11 @@ public class StudioBot
                         "org.apache.directory.studio.ldapbrowser.ui.perspective.BrowserPerspective", window );
 
                     // reset LDAP perspective
-                    page.closeAllEditors( false );
-                    page.resetPerspective();
-
+                    if ( page.getActivePart() != null )
+                    {
+                        page.closeAllEditors( false );
+                        page.resetPerspective();
+                    }
                 }
                 catch ( Exception e )
                 {
@@ -117,6 +119,12 @@ public class StudioBot
     {
         new SWTBot().menu( "Window" ).menu( "Preferences" ).click();
         return new PreferencesBot();
+    }
+
+
+    public SearchResultEditorBot getSearchResultEditorBot( String title )
+    {
+        return new SearchResultEditorBot( title );
     }
 
 }

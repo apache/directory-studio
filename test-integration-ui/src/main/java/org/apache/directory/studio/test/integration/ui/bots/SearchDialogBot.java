@@ -49,6 +49,12 @@ public class SearchDialogBot extends DialogBot
     }
 
 
+    public void setReturningAttributes( String string )
+    {
+        searchPageWrapperBot.setReturningAttributes( string );
+    }
+
+
     public void clickSearchButton()
     {
         super.clickButton( "Search" );
