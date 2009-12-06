@@ -69,7 +69,7 @@
     <apacheds.launcher.version>1.5.0-SNAPSHOT</apacheds.launcher.version>
 
     <!-- Set versions for depending projects -->
-    <org.apache.directory.shared.version>0.9.16</org.apache.directory.shared.version>
+    <org.apache.directory.shared.version>0.9.17-SNAPSHOT</org.apache.directory.shared.version>
     <skin.version>1.0.0</skin.version>
   </properties>
 
