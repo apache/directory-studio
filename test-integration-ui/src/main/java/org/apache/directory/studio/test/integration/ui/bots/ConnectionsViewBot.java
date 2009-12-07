@@ -132,6 +132,8 @@ public class ConnectionsViewBot
      */
     public Connection createTestConnection( String name, int port ) throws Exception
     {
+        name = name + "_" + System.currentTimeMillis();
+
         ConnectionManager connectionManager = ConnectionCorePlugin.getDefault().getConnectionManager();
         ConnectionParameter connectionParameter = new ConnectionParameter();
         connectionParameter.setName( name );
