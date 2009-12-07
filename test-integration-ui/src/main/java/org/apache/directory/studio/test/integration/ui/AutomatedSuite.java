@@ -24,6 +24,8 @@ import org.apache.directory.server.core.integ.Level;
 import org.apache.directory.server.core.integ.SetupMode;
 import org.apache.directory.server.core.integ.annotations.CleanupLevel;
 import org.apache.directory.server.core.integ.annotations.Mode;
+import org.eclipse.jface.dialogs.ErrorDialog;
+import org.eclipse.swtbot.swt.finder.utils.SWTBotPreferences;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
@@ -37,10 +39,16 @@ import org.junit.runners.Suite;
 @RunWith(Suite.class)
 @Suite.SuiteClasses(
     { BrowserTest.class, EntryEditorTest.class, ImportExportTest.class, NewConnectionWizardTest.class,
-        NewEntryWizardTest.class, ReferralDialogTest.class, RenameEntryDialogTest.class, SearchTest.class })
+        NewEntryWizardTest.class, PreferencesTest.class, ReferralDialogTest.class, RenameEntryDialogTest.class,
+        SearchTest.class })
 @CleanupLevel(Level.SUITE)
 @Mode(SetupMode.ROLLBACK)
 public class AutomatedSuite
 {
+    static
+    {
+        ErrorDialog.AUTOMATED_MODE = false;
+        SWTBotPreferences.PLAYBACK_DELAY = 50;
+    }
 
 }
