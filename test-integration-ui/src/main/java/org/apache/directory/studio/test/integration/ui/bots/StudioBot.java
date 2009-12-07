@@ -97,6 +97,16 @@ public class StudioBot
                     workbench.showPerspective(
                         "org.apache.directory.studio.ldapbrowser.ui.perspective.BrowserPerspective", window );
 
+                    // close "LDAP Browser view" as it sometimes does not respond, will be re-opened by the following reset
+                    for ( IViewReference viewref : page.getViewReferences() )
+                    {
+                        if ( "org.apache.directory.studio.ldapbrowser.ui.views.browser.BrowserView".equals( viewref
+                            .getId() ) )
+                        {
+                            page.hideView( viewref );
+                        }
+                    }
+
                     // reset LDAP perspective
                     if ( page.getActivePart() != null )
                     {
