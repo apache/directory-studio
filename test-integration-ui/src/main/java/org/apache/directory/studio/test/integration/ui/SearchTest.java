@@ -36,6 +36,7 @@ import org.apache.directory.shared.ldap.entry.ModificationOperation;
 import org.apache.directory.shared.ldap.entry.client.ClientModification;
 import org.apache.directory.shared.ldap.entry.client.DefaultClientAttribute;
 import org.apache.directory.shared.ldap.name.LdapDN;
+import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.ldapbrowser.core.BrowserConnectionManager;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
 import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
@@ -69,6 +70,9 @@ public class SearchTest
     private ConnectionsViewBot connectionsViewBot;
     private BrowserViewBot browserViewBot;
 
+    private Connection connection1;
+    private Connection connection2;
+
 
     @Before
     public void setUp() throws Exception
@@ -76,8 +80,8 @@ public class SearchTest
         studioBot = new StudioBot();
         studioBot.resetLdapPerspective();
         connectionsViewBot = studioBot.getConnectionView();
-        connectionsViewBot.createTestConnection( "SearchTest1", ldapServer.getPort() );
-        connectionsViewBot.createTestConnection( "SearchTest2", ldapServer.getPort() );
+        connection1 = connectionsViewBot.createTestConnection( "SearchTest1", ldapServer.getPort() );
+        connection2 = connectionsViewBot.createTestConnection( "SearchTest2", ldapServer.getPort() );
         browserViewBot = studioBot.getBrowserView();
     }
 
@@ -100,13 +104,15 @@ public class SearchTest
     public void testCopyPasteSearchBetweenConnections() throws Exception
     {
         BrowserConnectionManager browserConnectionManager = BrowserCorePlugin.getDefault().getConnectionManager();
-        IBrowserConnection browserConnection1 = browserConnectionManager.getBrowserConnectionByName( "SearchTest1" );
-        IBrowserConnection browserConnection2 = browserConnectionManager.getBrowserConnectionByName( "SearchTest2" );
+        IBrowserConnection browserConnection1 = browserConnectionManager.getBrowserConnectionByName( connection1
+            .getName() );
+        IBrowserConnection browserConnection2 = browserConnectionManager.getBrowserConnectionByName( connection2
+            .getName() );
         assertEquals( 0, browserConnection1.getSearchManager().getSearches().size() );
         assertEquals( 0, browserConnection2.getSearchManager().getSearches().size() );
 
         // create a search for in connection 1
-        connectionsViewBot.selectConnection( "SearchTest1" );
+        connectionsViewBot.selectConnection( connection1.getName() );
         browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system" );
         SearchDialogBot dialogBot = browserViewBot.openSearchDialog();
         assertTrue( dialogBot.isVisible() );
@@ -123,7 +129,7 @@ public class SearchTest
 
         // copy/paste the created search from connection 1 to connection 2
         browserViewBot.copy();
-        connectionsViewBot.selectConnection( "SearchTest2" );
+        connectionsViewBot.selectConnection( connection2.getName() );
         browserViewBot.selectEntry( "Searches" );
         SearchPropertiesDialogBot searchPropertiesDialogBot = browserViewBot.pasteSearch();
         assertTrue( searchPropertiesDialogBot.isVisible() );
