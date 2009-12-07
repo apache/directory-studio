@@ -41,6 +41,7 @@ import org.apache.directory.studio.test.integration.ui.bots.NewEntryWizardBot;
 import org.apache.directory.studio.test.integration.ui.bots.ReferralDialogBot;
 import org.apache.directory.studio.test.integration.ui.bots.StudioBot;
 import org.eclipse.jface.dialogs.ErrorDialog;
+import org.eclipse.swtbot.swt.finder.utils.SWTUtils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -307,6 +308,8 @@ public class NewEntryWizardTest
 
         // click cancel button, check the wizard is not closed
         referralDialogBot.clickCancelButton();
+        // timing issues, use ugly sleep for now, should use some condition but have no idea. 
+        SWTUtils.sleep( 1000 );
         assertTrue( wizardBot.isVisible() );
         assertTrue( wizardBot.isFinishButtonEnabled() );
 
