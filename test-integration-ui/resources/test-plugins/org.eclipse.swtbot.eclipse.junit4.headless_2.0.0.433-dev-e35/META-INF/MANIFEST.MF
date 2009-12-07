@@ -1,0 +1,17 @@
+Manifest-Version: 1.0
+Bundle-Name: SWTBot Headless JUnit4 Launch Plug-in (incubation)
+Import-Package: junit.framework;version="4.3.0",org.apache.tools.ant,o
+ rg.apache.tools.ant.taskdefs.optional.junit,org.eclipse.core.runtime;
+ version="3.4.0",org.eclipse.equinox.app;version="1.0.0",org.eclipse.o
+ sgi.util;version="1.1.0",org.eclipse.swt.widgets,org.eclipse.ui,org.e
+ clipse.ui.testing,org.osgi.framework;version="1.4.0"
+Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Bundle-Vendor: Eclipse.org
+Bundle-ManifestVersion: 2
+Bundle-SymbolicName: org.eclipse.swtbot.eclipse.junit4.headless;single
+ ton:=true
+Bundle-ActivationPolicy: lazy
+Export-Package: org.eclipse.swtbot.eclipse.junit4.headless
+Bundle-Version: 2.0.0.433-dev-e35
+
+
