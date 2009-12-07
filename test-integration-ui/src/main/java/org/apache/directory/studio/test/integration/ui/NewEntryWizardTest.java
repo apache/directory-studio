@@ -24,13 +24,6 @@ package org.apache.directory.studio.test.integration.ui;
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertTrue;
-import static org.apache.directory.server.integ.ServerIntegrationUtils.getWiredContext;
-
-import javax.naming.directory.Attribute;
-import javax.naming.directory.Attributes;
-import javax.naming.directory.BasicAttribute;
-import javax.naming.directory.DirContext;
-import javax.naming.directory.ModificationItem;
 
 import org.apache.directory.server.core.entry.DefaultServerEntry;
 import org.apache.directory.server.core.entry.ServerEntry;
@@ -357,7 +350,7 @@ public class NewEntryWizardTest
         assertTrue( referralDialogBot.isVisible() );
 
         // follow referral, click ok button
-        referralDialogBot.selectConnection( "NewEntryWizardTest" );
+        referralDialogBot.selectConnection( connection.getName() );
         referralDialogBot.clickOkButton();
 
         // check entry was created under referral target entry
