@@ -31,7 +31,7 @@ import org.eclipse.swt.widgets.ToolItem;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
 import org.eclipse.swtbot.swt.finder.SWTBot;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotToolbarButton;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotToolbarPushButton;
 import org.hamcrest.Matcher;
 
 
@@ -71,9 +71,10 @@ public class SearchResultEditorBot
 
     public void refresh()
     {
+        //bot.toolbarButton( "Search Again (F5)" ).click();
         Matcher matcher = allOf( widgetOfType( ToolItem.class ), withTooltip( "Search Again (F5)" ), withStyle(
             SWT.PUSH, "SWT.PUSH" ) );
-        SWTBotToolbarButton button = new SWTBotToolbarButton( ( ToolItem ) bot.widget( matcher, 0 ), matcher );
+        SWTBotToolbarPushButton button = new SWTBotToolbarPushButton( ( ToolItem ) bot.widget( matcher, 0 ), matcher );
         button.click();
     }
 
