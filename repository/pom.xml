@@ -548,6 +548,10 @@
     <!-- Testing framework dependencies -->
     <dependency>
       <groupId>org.eclipse.swtbot.eclipse</groupId>
+      <artifactId>core</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.swtbot.eclipse</groupId>
       <artifactId>finder</artifactId>
     </dependency>
     <dependency>

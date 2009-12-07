@@ -964,13 +964,18 @@
     <!-- Testing framework dependencies -->
     <dependency>
       <groupId>org.eclipse.swtbot.eclipse</groupId>
+      <artifactId>core</artifactId>
+      <version>2.0.0.433-dev-e35</version>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.swtbot.eclipse</groupId>
       <artifactId>finder</artifactId>
-      <version>2.0.0.329-dev</version>
+      <version>2.0.0.433-dev-e35</version>
     </dependency>
     <dependency>
       <groupId>org.eclipse.swtbot.swt</groupId>
       <artifactId>finder</artifactId>
-      <version>2.0.0.329-dev</version>
+      <version>2.0.0.433-dev-e35</version>
     </dependency>
     <dependency>
       <groupId>org.hamcrest</groupId>
