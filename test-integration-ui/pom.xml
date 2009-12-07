@@ -407,6 +407,11 @@
       <scope>provided</scope>
     </dependency>
     <dependency>
+      <groupId>org.eclipse.core</groupId>
+      <artifactId>jobs</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
       <groupId>org.eclipse</groupId>
       <artifactId>ui</artifactId>
       <scope>provided</scope>
