@@ -19,6 +19,20 @@
 <chapter id="releasenotes">
 	<title>Release notes</title>
     <simplesect>
+        <title>Apache Directory Studio 1.5.2 - (2009, December xxth)</title>
+        <para>
+            <emphasis>Bug</emphasis>
+        </para>
+        <para>
+            <itemizedlist spacing="normal" mark="bullet">
+                <listitem>
+                    <para>[DIRSTUDIO-602] - Unable to start an Apache DS version 1.5.5 server</para>
+                </listitem>
+            </itemizedlist>
+        </para>
+    </simplesect>
+    
+    <simplesect>
         <title>Apache Directory Studio 1.5.1 - (2009, November 30th)</title>
         <para>
             Nothing new.
