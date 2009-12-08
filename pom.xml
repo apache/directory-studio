@@ -363,7 +363,7 @@
       <groupId>org.apache.directory.studio</groupId>
       <artifactId>launcher-macosx</artifactId>
       <type>tar.gz</type>
-      <version>1.5.1</version>
+      <version>1.5.2</version>
     </dependency>
     <dependency>
       <groupId>org.apache.directory.studio</groupId>
