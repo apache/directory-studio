@@ -21,7 +21,14 @@
 	<simplesect>
         <title>Apache Directory Studio 1.5.2 - (2009, December xxth)</title>
         <para>
-            Nothing new.
+            <emphasis>Bug</emphasis>
+        </para>
+        <para>
+            <itemizedlist spacing="normal" mark="bullet">
+                <listitem>
+                    <para>[DIRSTUDIO-605] - Update the help content of the configuration editor for version 1.5.5 of Apache DS</para>
+                </listitem>
+            </itemizedlist>
         </para>
     </simplesect>
     
