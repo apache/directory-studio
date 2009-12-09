@@ -25,6 +25,7 @@ public class DeleteDialogBot extends DialogBot
     public static final String DELETE_ENTRY_TITLE = "Delete Entry";
     public static final String DELETE_ENTRIES_TITLE = "Delete Entries";
     public static final String DELETE_VALUE_TITLE = "Delete Value";
+    public static final String DELETE_SERVER = "Delete Server";
     private String title;
 
 
@@ -50,5 +51,4 @@ public class DeleteDialogBot extends DialogBot
     {
         super.clickButton( "Cancel" );
     }
-
 }

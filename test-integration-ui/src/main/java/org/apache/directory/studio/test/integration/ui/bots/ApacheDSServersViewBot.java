@@ -44,12 +44,21 @@ public class ApacheDSServersViewBot
     }
 
 
+    /**
+     * Shows the view.
+     */
     public void show()
     {
         view.show();
     }
 
 
+    /**
+     * Opens the 'New Server' wizard.
+     *
+     * @return
+     *      a bot associated with the 'New Server' wizard
+     */
     public NewApacheDSServerWizardBot openNewServerWizard()
     {
         ContextMenuHelper.clickContextMenu( getServersTree(), "New", "New &Server" );
@@ -57,6 +66,25 @@ public class ApacheDSServersViewBot
     }
 
 
+    /**
+     * Opens the 'Delete' dialog.
+     *
+     * @return
+     *      a bot associated with the 'Delete' dialog
+     */
+    public DeleteDialogBot openDeleteServerDialog()
+    {
+        ContextMenuHelper.clickContextMenu( getServersTree(), "Delete" );
+        return new DeleteDialogBot( DeleteDialogBot.DELETE_SERVER );
+    }
+
+
+    /**
+     * Gets the tree associated with the 'Servers' view.
+     *
+     * @return
+     *      the tree associated with the 'Servers' view
+     */
     private SWTBotTree getServersTree()
     {
         view.show();
@@ -65,12 +93,24 @@ public class ApacheDSServersViewBot
     }
 
 
+    /**
+     * Selects the server associated with the given name.
+     *
+     * @param serverName
+     *      the name of the server
+     */
     public void selectServer( String serverName )
     {
         getServersTree().select( serverName );
     }
 
 
+    /**
+     * Starts the server associated with the given name.
+     *
+     * @param serverName
+     *      the name of the server
+     */
     public void runServer( String serverName )
     {
         getServersTree().select( serverName );
@@ -78,6 +118,12 @@ public class ApacheDSServersViewBot
     }
 
 
+    /**
+     * Stops the server associated with the given name.
+     *
+     * @param serverName
+     *      the name of the server
+     */
     public void stopServer( String serverName )
     {
         getServersTree().select( serverName );
@@ -85,6 +131,13 @@ public class ApacheDSServersViewBot
     }
 
 
+    /**
+     * Waits until the server associated with the given name appears in 
+     * the 'servers' view.
+     *
+     * @param serverName
+     *      the name of the server
+     */
     public void waitForServer( final String serverName )
     {
         bot.waitUntil( new DefaultCondition()
@@ -111,6 +164,12 @@ public class ApacheDSServersViewBot
     }
 
 
+    /**
+     * Waits until the server associated with the given name is started.
+     *
+     * @param serverName
+     *      the server name
+     */
     public void waitForServerStart( final String serverName )
     {
         bot.waitUntil( new DefaultCondition()
@@ -135,6 +194,12 @@ public class ApacheDSServersViewBot
     }
 
 
+    /**
+     * Waits until the server associated with the given name is stopped.
+     *
+     * @param serverName
+     *      the name of the server
+     */
     public void waitForServerStop( final String serverName )
     {
         bot.waitUntil( new DefaultCondition()
@@ -159,6 +224,15 @@ public class ApacheDSServersViewBot
     }
 
 
+    /**
+     * Gets the server associated with the given name.
+     *
+     * @param serverName
+     *      the name of the server
+     * @return
+     *      the server associated with the given name,
+     *      or <code>null</code> if none was found.
+     */
     private Server getServer( String serverName )
     {
         for ( Server server : ServersHandler.getDefault().getServersList() )
@@ -170,5 +244,23 @@ public class ApacheDSServersViewBot
         }
 
         return null;
+    }
+
+
+    /**
+     * Gets the servers count found in the 'Servers' view.
+     *
+     * @return
+     *      the servers count found in the 'Servers' view
+     */
+    public int getServersCount()
+    {
+        SWTBotTree tree = getServersTree();
+        if ( tree != null )
+        {
+            return tree.rowCount();
+        }
+
+        return 0;
     }
 }
