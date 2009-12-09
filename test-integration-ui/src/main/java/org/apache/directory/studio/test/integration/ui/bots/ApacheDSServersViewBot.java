@@ -76,7 +76,8 @@ public class ApacheDSServersViewBot
         getServersTree().select( serverName );
         ContextMenuHelper.clickContextMenu( getServersTree(), "&Run" );
     }
-    
+
+
     public void stopServer( String serverName )
     {
         getServersTree().select( serverName );
