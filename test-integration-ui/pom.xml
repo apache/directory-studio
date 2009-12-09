@@ -263,6 +263,7 @@
  org.apache.directory.studio.ldapbrowser.common,
  org.apache.directory.studio.ldapbrowser.core,
  org.apache.directory.studio.ldapbrowser.ui,
+ org.apache.directory.studio.apacheds,
  org.junit4,
  org.eclipse.swtbot.junit4_x,
  org.eclipse.swtbot.swt.finder,
@@ -367,6 +368,11 @@
     <dependency>
       <groupId>org.apache.directory.studio</groupId>
       <artifactId>ldapbrowser.ui</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.directory.studio</groupId>
+      <artifactId>apacheds</artifactId>
       <scope>provided</scope>
     </dependency>
     

@@ -95,7 +95,6 @@ public class ConnectionsViewBot
     {
         bot.waitUntil( new DefaultCondition()
         {
-
             public boolean test() throws Exception
             {
                 for ( SWTBotTreeItem item : getConnectionsTree().getAllItems() )
@@ -112,10 +111,9 @@ public class ConnectionsViewBot
 
             public String getFailureMessage()
             {
-                return "Connection " + connectionName + " not visible in connectoins view.";
+                return "Connection " + connectionName + " not visible in connections view.";
             }
         } );
-
     }
 
 
