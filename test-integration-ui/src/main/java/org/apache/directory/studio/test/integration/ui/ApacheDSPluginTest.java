@@ -65,7 +65,7 @@ public class ApacheDSPluginTest
      * </ul>
      */
     @Test
-    public void serverCreationAndDeletion()
+    public void serverCreationStartStopAndDeletion()
     {
         // Showing view
         serversViewBot.show();
@@ -102,6 +102,70 @@ public class ApacheDSPluginTest
         // Stopping the server
         serversViewBot.stopServer( serverName );
         serversViewBot.waitForServerStop( serverName );
+
+        // Deleting the server
+        DeleteDialogBot deleteDialogBot = serversViewBot.openDeleteServerDialog();
+        deleteDialogBot.clickOkButton();
+
+        // Verifying the servers count is back to 0
+        assertEquals( 0, getCoreServersCount() );
+        assertEquals( 0, serversViewBot.getServersCount() );
+    }
+
+
+    /**
+     * Verifies that the 'New Server' does not allow the creation of 
+     * 2 servers with the same name.
+     */
+    @Test
+    public void verifyServerNameCollisionInNewWizard()
+    {
+        // Showing view
+        serversViewBot.show();
+
+        // Verifying the servers count is 0
+        assertEquals( 0, getCoreServersCount() );
+        assertEquals( 0, serversViewBot.getServersCount() );
+
+        // Opening wizard
+        NewApacheDSServerWizardBot wizardBot = serversViewBot.openNewServerWizard();
+
+        // Verifying the wizard can't be finished yet
+        assertFalse( wizardBot.isFinishButtonEnabled() );
+
+        // Filling fields of the wizard
+        String serverName = "NewServerWizardTest";
+        wizardBot.typeServerName( serverName );
+
+        // Verifying the wizard can now be finished
+        assertTrue( wizardBot.isFinishButtonEnabled() );
+
+        // Closing wizard
+        wizardBot.clickFinishButton();
+        serversViewBot.waitForServer( serverName );
+
+        // Verifying the servers count is now 1
+        assertEquals( 1, getCoreServersCount() );
+        assertEquals( 1, serversViewBot.getServersCount() );
+
+        // Opening wizard
+        wizardBot = serversViewBot.openNewServerWizard();
+
+        // Verifying the wizard can't be finished yet
+        assertFalse( wizardBot.isFinishButtonEnabled() );
+
+        // Filling fields of the wizard
+        wizardBot.typeServerName( serverName );
+
+        // Verifying the wizard can't be finished (because a server with
+        // same name already exists)
+        assertFalse( wizardBot.isFinishButtonEnabled() );
+
+        // Canceling wizard
+        wizardBot.clickCancelButton();
+
+        // Selecting the server row
+        serversViewBot.selectServer( serverName );
 
         // Deleting the server
         DeleteDialogBot deleteDialogBot = serversViewBot.openDeleteServerDialog();
