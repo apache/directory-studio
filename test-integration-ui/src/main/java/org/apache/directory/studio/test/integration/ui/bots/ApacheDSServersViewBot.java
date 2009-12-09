@@ -27,7 +27,6 @@ import org.apache.directory.studio.test.integration.ui.ContextMenuHelper;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
 import org.eclipse.swtbot.swt.finder.waits.DefaultCondition;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotTable;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 
@@ -63,14 +62,6 @@ public class ApacheDSServersViewBot
         view.show();
         SWTBotTree tree = view.bot().tree();
         return tree;
-    }
-
-
-    private SWTBotTable getServersTable()
-    {
-        view.show();
-        SWTBotTable table = view.bot().table();
-        return table;
     }
 
 
