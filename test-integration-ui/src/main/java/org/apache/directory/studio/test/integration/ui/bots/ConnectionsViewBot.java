@@ -51,6 +51,11 @@ public class ConnectionsViewBot
         return new NewConnectionWizardBot();
     }
 
+    public void openSelectedConnection()
+    {
+        getConnectionsTree().contextMenu( "Open Connection" ).click();
+    }
+    
 
     public void closeSelectedConnections()
     {

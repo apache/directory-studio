@@ -67,6 +67,19 @@ public class ApacheDSServersViewBot
 
 
     /**
+     * Opens the 'LDAP Browser' > 'Create a Connection' action of the context menu.
+     *
+     * @return
+     *      a bot associated with the dialog
+     */
+    public ConnectionFromServerDialogBot createConnectionFromServer()
+    {
+        ContextMenuHelper.clickContextMenu( getServersTree(), "LDAP Browser", "Create a Connection" );
+        return new ConnectionFromServerDialogBot();
+    }
+
+
+    /**
      * Opens the 'Delete' dialog.
      *
      * @return
