@@ -23,7 +23,7 @@
   <parent>
     <groupId>org.apache.directory.studio</groupId>
     <artifactId>parent</artifactId>
-    <version>1.5.2.v20091211</version>
+    <version>1.5.3-SNAPSHOT</version>
   </parent>
   
   <artifactId>jars</artifactId>
