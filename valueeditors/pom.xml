@@ -23,7 +23,7 @@
   <parent>
     <groupId>org.apache.directory.studio</groupId>
     <artifactId>parent</artifactId>
-    <version>1.5.2-SNAPSHOT</version>
+    <version>1.5.2.v20091211</version>
   </parent>
   
   <artifactId>valueeditors</artifactId>

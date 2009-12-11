@@ -28,6 +28,7 @@
   </parent>
 
   <artifactId>ldifeditor.help</artifactId>
+  <version>1.5.2.v20091211</version>
   <name>Apache Directory Studio LDIF Editor Help</name>
   <packaging>jar</packaging>
 
@@ -52,4 +53,10 @@
       </plugin>
     </plugins>
   </build>
+
+  <scm>
+    <connection>scm:svn:http://svn.apache.org/repos/asf/directory/studio/tags/1.5.2.v20091211/parent-help/ldifeditor.help</connection>
+    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/directory/studio/tags/1.5.2.v20091211/parent-help/ldifeditor.help</developerConnection>
+    <url>https://svn.apache.org/viewvc/directory/studio/tags/1.5.2.v20091211/parent-help/ldifeditor.help</url>
+  </scm>
 </project>

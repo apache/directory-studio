@@ -28,7 +28,7 @@
 
   <groupId>org.apache.directory.studio</groupId>
   <artifactId>parent</artifactId>
-  <version>1.5.2-SNAPSHOT</version>
+  <version>1.5.2.v20091211</version>
   <name>Apache Directory Studio</name>
   <description>Apache Directory Studio is a complete directory tooling platform intended to be used with any LDAP server however it is particularly designed for use with the Apache Directory Server.</description>
   <packaging>pom</packaging>
@@ -46,9 +46,9 @@
   </organization>
 
   <scm>
-    <connection>scm:svn:http://svn.apache.org/repos/asf/directory/studio/trunk/</connection>
-    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/directory/studio/trunk/</developerConnection>
-    <url>https://svn.apache.org/viewvc/directory/studio/trunk/</url>
+    <connection>scm:svn:http://svn.apache.org/repos/asf/directory/studio/tags/1.5.2.v20091211</connection>
+    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/directory/studio/tags/1.5.2.v20091211</developerConnection>
+    <url>https://svn.apache.org/viewvc/directory/studio/tags/1.5.2.v20091211</url>
   </scm>
 
   <distributionManagement>
@@ -195,7 +195,7 @@
       <dependency>
         <groupId>org.apache.directory.studio</groupId>
         <artifactId>apacheds-launcher</artifactId>
-        <version>${apacheds.launcher.version}</version>
+        <version>1.5.0</version>
       </dependency>
       <dependency>
         <groupId>org.apache.directory.studio</groupId>
