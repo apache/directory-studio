@@ -154,7 +154,6 @@
       want to overload the maven repository with useless (heavy) packages and 
       distributions
     -->
-    <!--
     <profile>
       <id>build-dist-modules</id>
       <activation>
@@ -166,7 +165,7 @@
         <module>updatesite</module>
         <module>studio</module>
       </modules>
-    </profile>-->
+    </profile>
   </profiles>
 
   <dependencyManagement>
