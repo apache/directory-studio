@@ -38,6 +38,7 @@ import org.apache.directory.studio.ldapbrowser.ui.actions.CopyDnAction;
 import org.apache.directory.studio.ldapbrowser.ui.actions.CopySearchFilterAction;
 import org.apache.directory.studio.ldapbrowser.ui.actions.CopyUrlAction;
 import org.apache.directory.studio.ldapbrowser.ui.actions.CopyValueAction;
+import org.apache.directory.studio.ldapbrowser.ui.actions.EntryEditorPropertiesAction;
 import org.apache.directory.studio.ldapbrowser.ui.actions.LocateDnInDitAction;
 import org.apache.directory.studio.ldapbrowser.ui.actions.NewBatchOperationAction;
 import org.apache.directory.studio.ldapbrowser.ui.actions.NewSearchAction;
@@ -240,6 +241,10 @@ public class EntryEditorActionGroup extends EntryEditorWidgetActionGroup
             new DeleteAllValuesAction() ) );
         entryEditorActionMap.put( fetchOperationalAttributesAction, new EntryEditorActionProxy( viewer,
             new FetchOperationalAttributesAction() ) );
+
+        entryEditorActionMap.put( propertyDialogAction, new EntryEditorActionProxy( viewer,
+            new EntryEditorPropertiesAction( entryEditor ) ) );
+
     }
 
 
