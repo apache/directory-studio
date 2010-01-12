@@ -229,7 +229,16 @@ public class CertificateListComposite extends Composite
             if ( element instanceof X509Certificate )
             {
                 X509Certificate certificate = ( X509Certificate ) element;
-                return certificate.getSubjectX500Principal().getName();
+
+                String certificateName = certificate.getSubjectX500Principal().getName();
+                if ( ( certificateName != null ) && ( !"".equals( certificateName ) ) )
+                {
+                    return certificateName;
+                }
+                else
+                {
+                    return Messages.getString( "CertificateListComposite.UntitledCertificate" ); //$NON-NLS-1$
+                }
             }
             return super.getText( element );
         }
