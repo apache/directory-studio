@@ -134,7 +134,7 @@
  org.apache.directory.studio.ldapbrowser.common,
  org.apache.directory.studio.ldifeditor
             </Require-Bundle>
-            <Export-Package>org.apache.directory.studio.ldapbrowser.ui.*</Export-Package>
+            <Export-Package>org.apache.directory.studio.*</Export-Package>
             <Import-Package>!</Import-Package>
             <Private-Package>!</Private-Package>
           </instructions>
