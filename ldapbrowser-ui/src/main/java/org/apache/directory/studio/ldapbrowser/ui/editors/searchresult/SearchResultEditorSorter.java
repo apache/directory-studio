@@ -257,49 +257,64 @@ public class SearchResultEditorSorter extends ViewerSorter implements SelectionL
         IEntry entry1 = sr1.getEntry();
         IEntry entry2 = sr2.getEntry();
 
-        String attributeName;
-        if ( showDn && sortBy == 0 )
+        if ( ( entry1 == null ) && ( entry2 == null ) )
         {
-            attributeName = BrowserUIConstants.DN;
+            return equal();
         }
-        else if ( showDn && sortBy > 0 )
+        else if ( ( entry1 != null ) && ( entry2 == null ) )
         {
-            attributeName = search.getReturningAttributes()[sortBy - 1];
+            return greaterThan();
         }
-        else
+        else if ( ( entry1 == null ) && ( entry2 != null ) )
         {
-            attributeName = search.getReturningAttributes()[sortBy];
-        }
-
-        if ( attributeName == BrowserUIConstants.DN )
-        {
-            // compare normalized names
-            return compare( entry1.getDn().getNormName(), entry2.getDn().getNormName() );
+            return lessThan();
         }
         else
         {
-            AttributeHierarchy ah1 = entry1.getAttributeWithSubtypes( attributeName );
-            AttributeHierarchy ah2 = entry2.getAttributeWithSubtypes( attributeName );
-            if ( ah1 == null && ah2 == null )
+            String attributeName;
+            if ( showDn && sortBy == 0 )
             {
-                return equal();
+                attributeName = BrowserUIConstants.DN;
             }
-            else if ( ah1 == null && ah2 != null )
+            else if ( showDn && sortBy > 0 )
             {
-                return lessThan();
-            }
-            else if ( ah1 != null && ah2 == null )
-            {
-                return greaterThan();
+                attributeName = search.getReturningAttributes()[sortBy - 1];
             }
             else
             {
-                IAttribute attribute1 = ah1.getAttribute();
-                IAttribute attribute2 = ah2.getAttribute();
+                attributeName = search.getReturningAttributes()[sortBy];
+            }
 
-                String value1 = getValue( attribute1 );
-                String value2 = getValue( attribute2 );
-                return compare( value1, value2 );
+            if ( attributeName == BrowserUIConstants.DN )
+            {
+                // compare normalized names
+                return compare( entry1.getDn().getNormName(), entry2.getDn().getNormName() );
+            }
+            else
+            {
+                AttributeHierarchy ah1 = entry1.getAttributeWithSubtypes( attributeName );
+                AttributeHierarchy ah2 = entry2.getAttributeWithSubtypes( attributeName );
+                if ( ah1 == null && ah2 == null )
+                {
+                    return equal();
+                }
+                else if ( ah1 == null && ah2 != null )
+                {
+                    return lessThan();
+                }
+                else if ( ah1 != null && ah2 == null )
+                {
+                    return greaterThan();
+                }
+                else
+                {
+                    IAttribute attribute1 = ah1.getAttribute();
+                    IAttribute attribute2 = ah2.getAttribute();
+
+                    String value1 = getValue( attribute1 );
+                    String value2 = getValue( attribute2 );
+                    return compare( value1, value2 );
+                }
             }
         }
     }
