@@ -34,18 +34,24 @@ public class EntryEditorUtils
 
     /**
      * Checks if the attributes of the given entry are initialized and 
-     * initializes them in necessary.
+     * initializes them if necessary.
      * 
      * @param entry the entry
+     * @return
+     *      the job associated with the attributes initialization, 
+     *      or <code>null</code> if the attributes were already initialized
      */
-    public static void ensureAttributesInitialized( IEntry entry )
+    public static StudioBrowserJob ensureAttributesInitialized( IEntry entry )
     {
         if ( !entry.isAttributesInitialized() )
         {
             InitializeAttributesRunnable runnable = new InitializeAttributesRunnable( entry );
             StudioBrowserJob job = new StudioBrowserJob( runnable );
             job.execute();
+            return job;
         }
+        
+        return null;
     }
 
 

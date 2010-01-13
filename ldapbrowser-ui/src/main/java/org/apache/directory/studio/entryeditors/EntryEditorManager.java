@@ -47,6 +47,7 @@ import org.apache.directory.studio.ldapbrowser.core.events.ValueDeletedEvent;
 import org.apache.directory.studio.ldapbrowser.core.events.ValueModifiedEvent;
 import org.apache.directory.studio.ldapbrowser.core.events.ValueMultiModificationEvent;
 import org.apache.directory.studio.ldapbrowser.core.events.ValueRenamedEvent;
+import org.apache.directory.studio.ldapbrowser.core.jobs.StudioBrowserJob;
 import org.apache.directory.studio.ldapbrowser.core.jobs.UpdateEntryRunnable;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.IBookmark;
@@ -756,12 +757,32 @@ public class EntryEditorManager
             entry = null;
         }
 
-        if ( entry != null && entry instanceof IContinuation )
+        if ( entry != null )
         {
-            IContinuation continuation = ( IContinuation ) entry;
-            if ( continuation.getState() == State.UNRESOLVED )
+            if ( entry instanceof IContinuation )
             {
-                continuation.resolve();
+                IContinuation continuation = ( IContinuation ) entry;
+                if ( continuation.getState() == State.UNRESOLVED )
+                {
+                    continuation.resolve();
+                }
+            }
+            else
+            {
+                try
+                {
+                    // Making sure attributes are initialized
+                    StudioBrowserJob job = EntryEditorUtils.ensureAttributesInitialized( entry );
+                    if ( job != null )
+                    {
+                        // Waiting for the entry's attributes to be initialized
+                        job.join();
+                    }
+                }
+                catch ( InterruptedException e )
+                {
+                    // Nothing to do
+                }
             }
         }
 
@@ -805,6 +826,24 @@ public class EntryEditorManager
         else if ( bookmarks.length == 1 )
         {
             entry = bookmarks[0].getEntry();
+        }
+
+        if ( entry != null )
+        {
+            try
+            {
+                // Making sure attributes are initialized
+                StudioBrowserJob job = EntryEditorUtils.ensureAttributesInitialized( entry );
+                if ( job != null )
+                {
+                    // Waiting for the entry's attributes to be initialized
+                    job.join();
+                }
+            }
+            catch ( InterruptedException e )
+            {
+                // Nothing to do
+            }
         }
 
         // Looking for the correct entry editor
