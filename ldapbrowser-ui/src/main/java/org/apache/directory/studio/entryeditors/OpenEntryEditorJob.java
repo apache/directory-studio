@@ -200,7 +200,7 @@ public class OpenEntryEditorJob extends Job
                 try
                 {
                     PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().openEditor( editorInput,
-                        editorId, true );
+                        editorId, false );
                 }
                 catch ( PartInitException e )
                 {
