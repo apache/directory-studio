@@ -47,16 +47,13 @@ import org.apache.directory.studio.ldapbrowser.core.events.ValueDeletedEvent;
 import org.apache.directory.studio.ldapbrowser.core.events.ValueModifiedEvent;
 import org.apache.directory.studio.ldapbrowser.core.events.ValueMultiModificationEvent;
 import org.apache.directory.studio.ldapbrowser.core.events.ValueRenamedEvent;
-import org.apache.directory.studio.ldapbrowser.core.jobs.StudioBrowserJob;
 import org.apache.directory.studio.ldapbrowser.core.jobs.UpdateEntryRunnable;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.IBookmark;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
-import org.apache.directory.studio.ldapbrowser.core.model.IContinuation;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearchResult;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
-import org.apache.directory.studio.ldapbrowser.core.model.IContinuation.State;
 import org.apache.directory.studio.ldapbrowser.core.utils.CompoundModification;
 import org.apache.directory.studio.ldapbrowser.core.utils.Utils;
 import org.apache.directory.studio.ldapbrowser.ui.BrowserUIConstants;
@@ -81,7 +78,6 @@ import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.IWorkbenchPartReference;
 import org.eclipse.ui.IWorkbenchWindow;
-import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 
@@ -730,72 +726,8 @@ public class EntryEditorManager
     public void openEntryEditor( EntryEditorExtension extension, IEntry[] entries, ISearchResult[] searchResults,
         IBookmark[] bookmarks )
     {
-        EntryEditorInput input = null;
-        IEntry entry;
-        if ( entries.length == 1 )
-        {
-            input = new EntryEditorInput( entries[0], extension );
-            entry = entries[0];
-        }
-        else if ( searchResults.length == 1 )
-        {
-            input = new EntryEditorInput( searchResults[0], extension );
-            entry = searchResults[0].getEntry();
-        }
-        else if ( bookmarks.length == 1 )
-        {
-            input = new EntryEditorInput( bookmarks[0], extension );
-            entry = bookmarks[0].getEntry();
-            if ( entry.getBrowserConnection().getEntryFromCache( entry.getDn() ) == null )
-            {
-                EntryEditorUtils.ensureAttributesInitialized( entry );
-            }
-        }
-        else
-        {
-            input = new EntryEditorInput( ( IEntry ) null, extension );
-            entry = null;
-        }
-
-        if ( entry != null )
-        {
-            if ( entry instanceof IContinuation )
-            {
-                IContinuation continuation = ( IContinuation ) entry;
-                if ( continuation.getState() == State.UNRESOLVED )
-                {
-                    continuation.resolve();
-                }
-            }
-            else
-            {
-                try
-                {
-                    // Making sure attributes are initialized
-                    StudioBrowserJob job = EntryEditorUtils.ensureAttributesInitialized( entry );
-                    if ( job != null )
-                    {
-                        // Waiting for the entry's attributes to be initialized
-                        job.join();
-                    }
-                }
-                catch ( InterruptedException e )
-                {
-                    // Nothing to do
-                }
-            }
-        }
-
-        String editorId = extension.getEditorId();
-
-        try
-        {
-            PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().openEditor( input, editorId, false );
-        }
-        catch ( PartInitException e )
-        {
-            throw new RuntimeException( e );
-        }
+        OpenEntryEditorJob runnable = new OpenEntryEditorJob( extension, entries, searchResults, bookmarks );
+        runnable.schedule();
     }
 
 
@@ -813,50 +745,8 @@ public class EntryEditorManager
      */
     public void openEntryEditor( IEntry[] entries, ISearchResult[] searchResults, IBookmark[] bookmarks )
     {
-        // Looking for the entry to test the editor on
-        IEntry entry = null;
-        if ( entries.length == 1 )
-        {
-            entry = entries[0];
-        }
-        else if ( searchResults.length == 1 )
-        {
-            entry = searchResults[0].getEntry();
-        }
-        else if ( bookmarks.length == 1 )
-        {
-            entry = bookmarks[0].getEntry();
-        }
-
-        if ( entry != null )
-        {
-            try
-            {
-                // Making sure attributes are initialized
-                StudioBrowserJob job = EntryEditorUtils.ensureAttributesInitialized( entry );
-                if ( job != null )
-                {
-                    // Waiting for the entry's attributes to be initialized
-                    job.join();
-                }
-            }
-            catch ( InterruptedException e )
-            {
-                // Nothing to do
-            }
-        }
-
-        // Looking for the correct entry editor
-        for ( EntryEditorExtension entryEditor : getSortedEntryEditorExtensions() )
-        {
-            // Verifying that the editor can handle the entry
-            if ( entryEditor.getEditorInstance().canHandle( entry ) )
-            {
-                // The correct editor has been found, let's open the entry in the editor
-                openEntryEditor( entryEditor, entries, searchResults, bookmarks );
-                return;
-            }
-        }
+        OpenEntryEditorJob runnable = new OpenEntryEditorJob( entries, searchResults, bookmarks );
+        runnable.schedule();
     }
 
 
