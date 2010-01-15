@@ -70,7 +70,7 @@
 
     <!-- Set versions for depending projects -->
     <org.apache.directory.shared.version>0.9.17</org.apache.directory.shared.version>
-    <skin.version>1.0.0</skin.version>
+    <skin.version>1.0.1</skin.version>
   </properties>
 
   <profiles>
