@@ -245,7 +245,6 @@ public class OpenEntryEditorRunnable extends StudioRunnableWithProgressAdapter i
         // Opening the editor
         Display.getDefault().asyncExec( new Runnable()
         {
-
             public void run()
             {
                 try
