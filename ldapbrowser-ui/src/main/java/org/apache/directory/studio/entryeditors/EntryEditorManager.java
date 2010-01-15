@@ -47,6 +47,7 @@ import org.apache.directory.studio.ldapbrowser.core.events.ValueDeletedEvent;
 import org.apache.directory.studio.ldapbrowser.core.events.ValueModifiedEvent;
 import org.apache.directory.studio.ldapbrowser.core.events.ValueMultiModificationEvent;
 import org.apache.directory.studio.ldapbrowser.core.events.ValueRenamedEvent;
+import org.apache.directory.studio.ldapbrowser.core.jobs.StudioBrowserJob;
 import org.apache.directory.studio.ldapbrowser.core.jobs.UpdateEntryRunnable;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.IBookmark;
@@ -67,6 +68,7 @@ import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.resource.ImageDescriptor;
@@ -726,8 +728,10 @@ public class EntryEditorManager
     public void openEntryEditor( EntryEditorExtension extension, IEntry[] entries, ISearchResult[] searchResults,
         IBookmark[] bookmarks )
     {
-        OpenEntryEditorJob runnable = new OpenEntryEditorJob( extension, entries, searchResults, bookmarks );
-        runnable.schedule();
+        OpenEntryEditorRunnable runnable = new OpenEntryEditorRunnable( extension, entries, searchResults, bookmarks );
+        StudioBrowserJob job = new StudioBrowserJob( runnable );
+        job.setPriority( Job.INTERACTIVE ); // Highest priority (just in case)
+        job.execute();
     }
 
 
@@ -745,8 +749,10 @@ public class EntryEditorManager
      */
     public void openEntryEditor( IEntry[] entries, ISearchResult[] searchResults, IBookmark[] bookmarks )
     {
-        OpenEntryEditorJob runnable = new OpenEntryEditorJob( entries, searchResults, bookmarks );
-        runnable.schedule();
+        OpenEntryEditorRunnable runnable = new OpenEntryEditorRunnable( entries, searchResults, bookmarks );
+        StudioBrowserJob job = new StudioBrowserJob( runnable );
+        job.setPriority( Job.INTERACTIVE ); // Highest priority (just in case)
+        job.execute();
     }
 
 

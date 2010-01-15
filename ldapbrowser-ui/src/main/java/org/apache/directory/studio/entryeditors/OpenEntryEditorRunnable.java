@@ -21,29 +21,30 @@
 package org.apache.directory.studio.entryeditors;
 
 
-import org.apache.directory.studio.ldapbrowser.core.jobs.StudioBrowserJob;
+import org.apache.directory.studio.connection.core.Connection;
+import org.apache.directory.studio.connection.core.jobs.StudioBulkRunnableWithProgress;
+import org.apache.directory.studio.connection.core.jobs.StudioProgressMonitor;
+import org.apache.directory.studio.connection.core.jobs.StudioRunnableWithProgressAdapter;
+import org.apache.directory.studio.ldapbrowser.core.jobs.InitializeAttributesRunnable;
 import org.apache.directory.studio.ldapbrowser.core.model.IBookmark;
 import org.apache.directory.studio.ldapbrowser.core.model.IContinuation;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearchResult;
 import org.apache.directory.studio.ldapbrowser.core.model.IContinuation.State;
 import org.apache.directory.studio.ldapbrowser.ui.BrowserUIPlugin;
-import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
-import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 
 
 /**
- * Job to open an entry editor. 
+ * Runnable to open an entry editor. 
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class OpenEntryEditorJob extends Job
+public class OpenEntryEditorRunnable extends StudioRunnableWithProgressAdapter implements
+    StudioBulkRunnableWithProgress
 {
     private IEntry[] entries;
     private ISearchResult[] searchResults;
@@ -52,7 +53,7 @@ public class OpenEntryEditorJob extends Job
 
 
     /**
-     * Creates a new instance of OpenEntryEditorJob.
+     * Creates a new instance of OpenEntryEditorRunnable.
      * <p>
      * Opens an entry editor from one of the given entries, 
      * search results or bookmarks.
@@ -64,20 +65,17 @@ public class OpenEntryEditorJob extends Job
      * @param bookmarks
      *      an arrays of bookmarks
      */
-    public OpenEntryEditorJob( IEntry[] entries, ISearchResult[] searchResults, IBookmark[] bookmarks )
+    public OpenEntryEditorRunnable( IEntry[] entries, ISearchResult[] searchResults, IBookmark[] bookmarks )
     {
-        super( "" ); //$NON-NLS-1$
+        super();
         this.entries = entries;
         this.searchResults = searchResults;
         this.bookmarks = bookmarks;
-
-        // Using a high priority for this job
-        setPriority( Job.INTERACTIVE );
     }
 
 
     /**
-     * Creates a new instance of OpenEntryEditorJob.
+     * Creates a new instance of OpenEntryEditorRunnable.
      * <p>
      * Opens an entry editor with the given entry editor extension and one of 
      * the given entries, search results or bookmarks.
@@ -91,25 +89,87 @@ public class OpenEntryEditorJob extends Job
      * @param bookmarks
      *      an arrays of bookmarks
      */
-    public OpenEntryEditorJob( EntryEditorExtension extension, IEntry[] entries, ISearchResult[] searchResults,
+    public OpenEntryEditorRunnable( EntryEditorExtension extension, IEntry[] entries, ISearchResult[] searchResults,
         IBookmark[] bookmarks )
     {
-        super( "" ); //$NON-NLS-1$
+        super();
         this.extension = extension;
         this.entries = entries;
         this.searchResults = searchResults;
         this.bookmarks = bookmarks;
-
-        // Using a high priority for this job
-        setPriority( Job.INTERACTIVE );
     }
 
 
     /**
      * {@inheritDoc}
      */
-    protected IStatus run( IProgressMonitor monitor )
+    public String getName()
     {
+        return Messages.getString( "OpenEntryEditorRunnable.OpenEntryEditor" ); //$NON-NLS-1$
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public Object[] getLockedObjects()
+    {
+        if ( entries.length == 1 )
+        {
+            return new Object[]
+                { entries[0] };
+        }
+        else if ( searchResults.length == 1 )
+        {
+            return new Object[]
+                { searchResults[0].getEntry() };
+        }
+        else if ( bookmarks.length == 1 )
+        {
+            return new Object[]
+                { bookmarks[0].getEntry() };
+        }
+        else
+        {
+            return new Object[0];
+        }
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public Connection[] getConnections()
+    {
+        if ( entries.length == 1 )
+        {
+            return new Connection[]
+                { entries[0].getBrowserConnection().getConnection() };
+        }
+        else if ( searchResults.length == 1 )
+        {
+            return new Connection[]
+                { searchResults[0].getEntry().getBrowserConnection().getConnection() };
+        }
+        else if ( bookmarks.length == 1 )
+        {
+            return new Connection[]
+                { bookmarks[0].getEntry().getBrowserConnection().getConnection() };
+        }
+        else
+        {
+            return new Connection[0];
+        }
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public void run( StudioProgressMonitor monitor )
+    {
+        monitor.setTaskName( Messages.getString( "OpenEntryEditorRunnable.OpeningEntryEditor" ) ); //$NON-NLS-1$
+
         // Getting the entry to open
         IEntry entry = null;
 
@@ -138,19 +198,10 @@ public class OpenEntryEditorJob extends Job
             }
             else
             {
-                try
+                // Making sure attributes are initialized
+                if ( !entry.isAttributesInitialized() )
                 {
-                    // Making sure attributes are initialized
-                    StudioBrowserJob job = EntryEditorUtils.ensureAttributesInitialized( entry );
-                    if ( job != null )
-                    {
-                        // Waiting for the entry's attributes to be initialized
-                        job.join();
-                    }
-                }
-                catch ( InterruptedException e )
-                {
-                    // Nothing to do
+                    InitializeAttributesRunnable.initializeAttributes( entry, monitor );
                 }
             }
         }
@@ -208,7 +259,14 @@ public class OpenEntryEditorJob extends Job
                 }
             }
         } );
+    }
 
-        return Status.OK_STATUS;
+
+    /**
+     * {@inheritDoc}
+     */
+    public void runNotification( StudioProgressMonitor monitor )
+    {
+        // Nothing to notify
     }
 }
