@@ -326,6 +326,15 @@ public abstract class LdifEntryEditor extends LdifEditor implements IEntryEditor
                     return;
                 }
 
+                // If the editor is dirty, let's ask for a save before changing the input
+                if ( isDirty() )
+                {
+                    if ( !EntryEditorUtils.askSaveSharedWorkingCopyBeforeInputChange( this ) )
+                    {
+                        return;
+                    }
+                }
+
                 /*
                  * Workaround to make link-with-editor working for the single-tab editor:
                  * The call of firePropertyChange is used to inform the link-with-editor action.
