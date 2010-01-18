@@ -26,6 +26,12 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.naming.InvalidNameException;
+
+import org.apache.directory.shared.ldap.name.LdapDN;
+import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
+import org.apache.directory.studio.ldapbrowser.common.BrowserCommonConstants;
+import org.apache.directory.studio.ldapbrowser.common.widgets.browser.BrowserLabelProvider;
 import org.apache.directory.studio.ldapbrowser.core.utils.Utils;
 import org.apache.directory.studio.ldifeditor.LdifEditorActivator;
 import org.apache.directory.studio.ldifeditor.LdifEditorConstants;
@@ -38,6 +44,7 @@ import org.apache.directory.studio.ldifparser.model.container.LdifContentRecord;
 import org.apache.directory.studio.ldifparser.model.container.LdifModSpec;
 import org.apache.directory.studio.ldifparser.model.container.LdifRecord;
 import org.apache.directory.studio.ldifparser.model.lines.LdifAttrValLine;
+import org.apache.directory.studio.ldifparser.model.lines.LdifDnLine;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
@@ -64,6 +71,9 @@ public class LdifOutlinePage extends ContentOutlinePage
     /** The editor it is attached to */
     private LdifEditor ldifEditor;
 
+    /** Whether or not the outline page is linked to an entry in the LDAP Browser view*/
+    private boolean isLinkedToLdapBrowser = false;
+
 
     /**
      * Creates a new instance of LdifOutlinePage.
@@ -77,6 +87,19 @@ public class LdifOutlinePage extends ContentOutlinePage
     }
 
 
+    /**
+     * Creates a new instance of LdifOutlinePage.
+     *
+     * @param ldifEditor
+     *      the editor the Outline page is attached to
+     */
+    public LdifOutlinePage( LdifEditor ldifEditor, boolean isLinkedToLdapBrowser )
+    {
+        this.ldifEditor = ldifEditor;
+        this.isLinkedToLdapBrowser = isLinkedToLdapBrowser;
+    }
+
+
     /* (non-Javadoc)
      * @see org.eclipse.ui.views.contentoutline.ContentOutlinePage#createControl(org.eclipse.swt.widgets.Composite)
      */
@@ -85,9 +108,13 @@ public class LdifOutlinePage extends ContentOutlinePage
         super.createControl( parent );
 
         final TreeViewer treeViewer = getTreeViewer();
-        treeViewer.setLabelProvider( new LdifLabelProvider() );
+        treeViewer.setLabelProvider( new LdifLabelProvider( ldifEditor, isLinkedToLdapBrowser ) );
         treeViewer.setContentProvider( new LdifContentProvider() );
-        // treeViewer.setAutoExpandLevel(1);
+
+        if ( isLinkedToLdapBrowser )
+        {
+            treeViewer.setAutoExpandLevel( 2 );
+        }
 
         treeViewer.addSelectionChangedListener( new ISelectionChangedListener()
         {
@@ -188,6 +215,11 @@ public class LdifOutlinePage extends ContentOutlinePage
             }
 
             treeViewer.refresh();
+
+            if ( isLinkedToLdapBrowser )
+            {
+                treeViewer.setAutoExpandLevel( 2 );
+            }
 
             // treeViewer.setSelection(selection);
             // treeViewer.setExpandedElements(expandedElements);
@@ -346,6 +378,21 @@ public class LdifOutlinePage extends ContentOutlinePage
      */
     private static class LdifLabelProvider extends LabelProvider
     {
+        /** The editor it is attached to */
+        private LdifEditor ldifEditor;
+
+        /** Whether or not the outline page is linked to an entry in the LDAP Browser view*/
+        private boolean isLinkedToLdapBrowser = false;
+
+
+        public LdifLabelProvider( LdifEditor ldifEditor, boolean isLinkedToLdapBrowser )
+        {
+            super();
+            this.ldifEditor = ldifEditor;
+            this.isLinkedToLdapBrowser = isLinkedToLdapBrowser;
+        }
+
+
         /* (non-Javadoc)
          * @see org.eclipse.jface.viewers.LabelProvider#getText(java.lang.Object)
          */
@@ -394,6 +441,35 @@ public class LdifOutlinePage extends ContentOutlinePage
             // Record
             if ( element instanceof LdifContentRecord )
             {
+                if ( isLinkedToLdapBrowser )
+                {
+                    LdifContentRecord record = ( LdifContentRecord ) element;
+
+                    LdifDnLine dnLine = record.getDnLine();
+                    if ( dnLine != null )
+                    {
+                        String dn = dnLine.getRawDn();
+                        if ( dn != null && "".equals( dn ) ) //$NON-NLS-1$
+                        {
+                            // Root DSE
+                            return BrowserCommonActivator.getDefault().getImage( BrowserCommonConstants.IMG_ENTRY_ROOT );
+                        }
+                        else
+                        {
+                            // Any other case
+                            try
+                            {
+                                return BrowserLabelProvider.getImageByObjectClass( ldifEditor.getConnection()
+                                    .getEntryFromCache( new LdapDN( dn ) ) );
+                            }
+                            catch ( InvalidNameException e )
+                            {
+                                // Will never occur
+                            }
+                        }
+                    }
+                }
+
                 return LdifEditorActivator.getDefault().getImage( LdifEditorConstants.IMG_ENTRY );
             }
             else if ( element instanceof LdifChangeAddRecord )

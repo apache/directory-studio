@@ -129,7 +129,7 @@ public class LdifEditor extends TextEditor implements ILdifEditor, ConnectionUpd
 
     private ProjectionSupport projectionSupport;
 
-    private LdifOutlinePage outlinePage;
+    protected LdifOutlinePage outlinePage;
 
     private ValueEditorManager valueEditorManager;
 
