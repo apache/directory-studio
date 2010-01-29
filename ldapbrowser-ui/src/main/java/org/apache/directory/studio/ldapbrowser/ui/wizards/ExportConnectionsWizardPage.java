@@ -170,7 +170,6 @@ public class ExportConnectionsWizardPage extends WizardPage
     {
         boolean ok = true;
         File file = new File( fileBrowserWidget.getFilename() );
-        File fileDirectory = file.getParentFile();
         if ( "".equals( fileBrowserWidget.getFilename() ) ) //$NON-NLS-1$
         {
             setErrorMessage( null );
@@ -192,11 +191,6 @@ public class ExportConnectionsWizardPage extends WizardPage
             ok = false;
         }
         else if ( file.getParentFile() == null )
-        {
-            setErrorMessage( Messages.getString( "ExportConnectionsWizardPage.ErrorFileDirectoryNotWritable" ) ); //$NON-NLS-1$
-            ok = false;
-        }
-        else if ( !file.exists() && ( fileDirectory == null || !fileDirectory.canWrite() ) )
         {
             setErrorMessage( Messages.getString( "ExportConnectionsWizardPage.ErrorFileDirectoryNotWritable" ) ); //$NON-NLS-1$
             ok = false;

@@ -79,7 +79,6 @@ public abstract class ExportBaseToPage extends WizardPage
     {
         boolean ok = true;
         File file = new File( fileBrowserWidget.getFilename() );
-        File fileDirectory = file.getParentFile();
         if ( "".equals( fileBrowserWidget.getFilename() ) ) //$NON-NLS-1$
         {
             setErrorMessage( null );
@@ -105,12 +104,6 @@ public abstract class ExportBaseToPage extends WizardPage
             ok = false;
         }
         else if ( file.getParentFile() == null )
-        {
-            setErrorMessage( NLS.bind(
-                Messages.getString( "ExportBaseToPage.ErrorDirectoryNotWritable" ), new String[] { getFileType() } ) ); //$NON-NLS-1$
-            ok = false;
-        }
-        else if ( !file.exists() && ( fileDirectory == null || !fileDirectory.canWrite() ) )
         {
             setErrorMessage( NLS.bind(
                 Messages.getString( "ExportBaseToPage.ErrorDirectoryNotWritable" ), new String[] { getFileType() } ) ); //$NON-NLS-1$
