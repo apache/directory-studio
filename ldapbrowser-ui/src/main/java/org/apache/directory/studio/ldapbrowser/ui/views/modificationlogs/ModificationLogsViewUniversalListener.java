@@ -142,13 +142,14 @@ public class ModificationLogsViewUniversalListener implements EntryUpdateListene
         if ( this.input != input && input.getBrowserConnection().getConnection() != null )
         {
             this.input = input;
+
+            LdifModificationLogger modificationLogger = ConnectionCorePlugin.getDefault().getLdifModificationLogger();
+
             if ( ( input != null ) && ( input.getBrowserConnection() != null )
-                && ( input.getBrowserConnection().getConnection() != null ) )
+                && ( input.getBrowserConnection().getConnection() != null ) && ( modificationLogger != null ) )
             {
                 // load file %u %g
                 StringBuffer sb = new StringBuffer();
-                LdifModificationLogger modificationLogger = ConnectionCorePlugin.getDefault()
-                    .getLdifModificationLogger();
                 File[] files = modificationLogger.getFiles( input.getBrowserConnection().getConnection() );
                 int i = input.getIndex();
                 if ( 0 <= i && i < files.length && files[i] != null && files[i].exists() && files[i].canRead() )
