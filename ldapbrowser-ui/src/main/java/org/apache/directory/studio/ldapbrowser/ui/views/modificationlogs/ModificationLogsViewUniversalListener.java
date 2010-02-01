@@ -142,32 +142,36 @@ public class ModificationLogsViewUniversalListener implements EntryUpdateListene
         if ( this.input != input && input.getBrowserConnection().getConnection() != null )
         {
             this.input = input;
-
-            // load file %u %g
-            StringBuffer sb = new StringBuffer();
-            LdifModificationLogger modificationLogger = ConnectionCorePlugin.getDefault().getLdifModificationLogger();
-            File[] files = modificationLogger.getFiles( input.getBrowserConnection().getConnection() );
-            int i = input.getIndex();
-            if ( 0 <= i && i < files.length && files[i] != null && files[i].exists() && files[i].canRead() )
+            if ( ( input != null ) && ( input.getBrowserConnection() != null )
+                && ( input.getBrowserConnection().getConnection() != null ) )
             {
-                try
+                // load file %u %g
+                StringBuffer sb = new StringBuffer();
+                LdifModificationLogger modificationLogger = ConnectionCorePlugin.getDefault()
+                    .getLdifModificationLogger();
+                File[] files = modificationLogger.getFiles( input.getBrowserConnection().getConnection() );
+                int i = input.getIndex();
+                if ( 0 <= i && i < files.length && files[i] != null && files[i].exists() && files[i].canRead() )
                 {
-                    FileReader fr = new FileReader( files[i] );
-                    char[] cbuf = new char[4096];
-                    for ( int length = fr.read( cbuf ); length > 0; length = fr.read( cbuf ) )
+                    try
                     {
-                        sb.append( cbuf, 0, length );
+                        FileReader fr = new FileReader( files[i] );
+                        char[] cbuf = new char[4096];
+                        for ( int length = fr.read( cbuf ); length > 0; length = fr.read( cbuf ) )
+                        {
+                            sb.append( cbuf, 0, length );
+                        }
+                    }
+                    catch ( Exception e )
+                    {
+                        sb.append( e.getMessage() );
                     }
                 }
-                catch ( Exception e )
-                {
-                    sb.append( e.getMessage() );
-                }
-            }
 
-            // change input
-            view.getMainWidget().getSourceViewer().getDocument().set( sb.toString() );
-            view.getActionGroup().setInput( input );
+                // change input
+                view.getMainWidget().getSourceViewer().getDocument().set( sb.toString() );
+                view.getActionGroup().setInput( input );
+            }
         }
     }
 
