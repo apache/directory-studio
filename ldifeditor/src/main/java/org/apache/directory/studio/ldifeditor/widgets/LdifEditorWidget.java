@@ -39,6 +39,7 @@ import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 
 
 /**
@@ -71,6 +72,9 @@ public class LdifEditorWidget extends BrowserWidget implements ILdifEditor, ITex
 
     /** The source viewer configuration. */
     private LdifSourceViewerConfiguration sourceViewerConfiguration;
+
+    /** The widget composite */
+    private Composite composite;
 
 
     /**
@@ -110,7 +114,7 @@ public class LdifEditorWidget extends BrowserWidget implements ILdifEditor, ITex
      */
     public void createWidget( Composite parent )
     {
-        Composite composite = new Composite( parent, SWT.NONE );
+        composite = new Composite( parent, SWT.NONE );
         composite.setLayoutData( new GridData( GridData.FILL_BOTH ) );
         GridLayout layout = new GridLayout( 1, false );
         layout.marginWidth = 0;
@@ -212,4 +216,14 @@ public class LdifEditorWidget extends BrowserWidget implements ILdifEditor, ITex
         return sourceViewerConfiguration;
     }
 
+
+    /**
+     * Returns the primary control associated with this view form.
+     *
+     * @return the SWT control which displays this view form's content
+     */
+    public Control getControl()
+    {
+        return composite;
+    }
 }
