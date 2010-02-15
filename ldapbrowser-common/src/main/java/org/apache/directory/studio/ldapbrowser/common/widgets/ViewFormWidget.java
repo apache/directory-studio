@@ -254,4 +254,14 @@ public abstract class ViewFormWidget
         return this.contextMenuManager;
     }
 
+
+    /**
+     * Returns the primary control associated with this view form.
+     *
+     * @return the SWT control which displays this view form's content
+     */
+    public Control getControl()
+    {
+        return control;
+    }
 }
