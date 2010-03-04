@@ -45,6 +45,9 @@ public interface ConnectionUIConstants
     /** The dialog setting key used for the history of SASL realms. */
     public static final String DIALOGSETTING_KEY_REALM_HISTORY = "saslrealmHistory"; //$NON-NLS-1$
 
+    /** The certificate image */
+    public static final String IMG_CERTIFICATE = "resources/icons/certificate.gif"; //$NON-NLS-1$
+
     /** The image to add a connection. */
     public static final String IMG_CONNECTION_ADD = "resources/icons/connection_add.gif"; //$NON-NLS-1$
 

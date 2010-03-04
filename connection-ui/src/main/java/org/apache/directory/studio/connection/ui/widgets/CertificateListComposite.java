@@ -25,6 +25,8 @@ import java.security.cert.X509Certificate;
 import java.util.Iterator;
 
 import org.apache.directory.studio.connection.core.StudioKeyStoreManager;
+import org.apache.directory.studio.connection.ui.ConnectionUIConstants;
+import org.apache.directory.studio.connection.ui.ConnectionUIPlugin;
 import org.apache.directory.studio.connection.ui.dialogs.CertificateInfoDialog;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
@@ -38,6 +40,7 @@ import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -241,6 +244,19 @@ public class CertificateListComposite extends Composite
                 }
             }
             return super.getText( element );
+        }
+
+
+        @Override
+        public Image getImage( Object element )
+        {
+            if ( element instanceof X509Certificate )
+            {
+                return ConnectionUIPlugin.getDefault().getImage( ConnectionUIConstants.IMG_CERTIFICATE );
+            }
+
+            // TODO Auto-generated method stub
+            return super.getImage( element );
         }
     }
 }
