@@ -221,18 +221,31 @@ public class LdifEditor extends TextEditor implements ILdifEditor, ConnectionUpd
      */
     public void init( IEditorSite site, IEditorInput input ) throws PartInitException
     {
+        String className = input.getClass().getName();
+        File file = null;
         if ( input instanceof IPathEditorInput )
         {
             IPathEditorInput pei = ( IPathEditorInput ) input;
             IPath path = pei.getPath();
-            File javaIoFile = path.toFile();
-            long fileLength = javaIoFile.length();
+            file = path.toFile();
+        }
+        else if ( className.equals( "org.eclipse.ui.internal.editors.text.JavaFileEditorInput" ) //$NON-NLS-1$
+            || className.equals( "org.eclipse.ui.ide.FileStoreEditorInput" ) ) //$NON-NLS-1$
+        // The class 'org.eclipse.ui.internal.editors.text.JavaFileEditorInput'
+        // is used when opening a file from the menu File > Open... in Eclipse 3.2.x
+        // The class 'org.eclipse.ui.ide.FileStoreEditorInput' is used when
+        // opening a file from the menu File > Open... in Eclipse 3.3.x
+        {
+            file = new File( input.getToolTipText() );
+        }
+        if ( file != null )
+        {
+            long fileLength = file.length();
             if ( fileLength > ( 1 * 1024 * 1024 ) )
             {
                 MessageDialog.openError( site.getShell(), Messages.getString( "LdifEditor.LDIFFileIsTooBig" ), //$NON-NLS-1$
                     Messages.getString( "LdifEditor.LDIFFileIsTooBigDescription" ) ); //$NON-NLS-1$
-                super.init( site, new NonExistingLdifEditorInput() );
-                return;
+                input = new NonExistingLdifEditorInput();
             }
         }
 
