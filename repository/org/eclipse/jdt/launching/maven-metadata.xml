@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?><metadata>
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata>
   <groupId>org.eclipse.jdt</groupId>
   <artifactId>launching</artifactId>
   <version>3.3.2.v20080115_r332</version>
@@ -8,7 +9,8 @@
       <version>3.4.0.v20080529-1300</version>
       <version>3.4.1.v20080729_r341</version>
       <version>3.5.0.v20090527</version>
+      <version>3.5.1.v20100108_r352</version>
     </versions>
-    <lastUpdated>20090819134247</lastUpdated>
+    <lastUpdated>20100318160459</lastUpdated>
   </versioning>
 </metadata>
