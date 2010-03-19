@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?><metadata>
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata>
   <groupId>org.eclipse</groupId>
   <artifactId>swt</artifactId>
   <version>3.3.2.v3349d</version>
@@ -8,7 +9,8 @@
       <version>3.4.0.v3448f</version>
       <version>3.4.2.v3452b</version>
       <version>3.5.0.v3550b</version>
+      <version>3.5.2.v3557f</version>
     </versions>
-    <lastUpdated>20090819134323</lastUpdated>
+    <lastUpdated>20100318160647</lastUpdated>
   </versioning>
 </metadata>
