@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?><metadata>
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata>
   <groupId>org.eclipse</groupId>
   <artifactId>search</artifactId>
   <version>3.3.1.r331_v20070831-0800-studio</version>
@@ -10,7 +11,8 @@
       <version>3.4.1.r341_v20080813-0800-studio</version>
       <version>3.5.0.v20090526-2000</version>
       <version>3.5.0.v20090526-2000-studio</version>
+      <version>3.5.1.r351_v20090708-0800</version>
     </versions>
-    <lastUpdated>20090825133114</lastUpdated>
+    <lastUpdated>20100318160626</lastUpdated>
   </versioning>
 </metadata>

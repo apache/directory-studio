@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?><metadata>
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata>
   <groupId>org.eclipse</groupId>
   <artifactId>osgi</artifactId>
   <version>3.3.2.R33x_v20080105</version>
@@ -8,7 +9,8 @@
       <version>3.4.0.v20080605-1900</version>
       <version>3.4.3.R34x_v20081215-1030</version>
       <version>3.5.0.v20090520</version>
+      <version>3.5.2.R35x_v20100126</version>
     </versions>
-    <lastUpdated>20090819134312</lastUpdated>
+    <lastUpdated>20100318160605</lastUpdated>
   </versioning>
 </metadata>
