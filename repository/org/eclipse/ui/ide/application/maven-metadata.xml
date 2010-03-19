@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?><metadata>
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata>
   <groupId>org.eclipse.ui.ide</groupId>
   <artifactId>application</artifactId>
   <version>1.0.0-I20070530-0100-studio</version>
@@ -10,7 +11,8 @@
       <version>1.0.1.M20090204-0800-studio</version>
       <version>1.0.100.I20090525-2000</version>
       <version>1.0.100.I20090525-2000-studio</version>
+      <version>1.0.101.M20090826-0800</version>
     </versions>
-    <lastUpdated>20090825122807</lastUpdated>
+    <lastUpdated>20100318160729</lastUpdated>
   </versioning>
 </metadata>
