@@ -891,8 +891,7 @@
     <dependency>
       <groupId>org.eclipse.ui.navigator</groupId>
       <artifactId>resources</artifactId>
-      <!--<version>3.4.0.I20090525-2000-studio</version>TODO-->
-      <version>3.4.1.M20090826-0800</version>
+      <version>3.4.1.M20090826-0800-studio</version>
     </dependency>
     <dependency>
       <groupId>org.eclipse.ui</groupId>
