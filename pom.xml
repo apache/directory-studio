@@ -550,8 +550,7 @@
     <dependency>
       <groupId>org.eclipse.debug</groupId>
       <artifactId>ui</artifactId>
-      <!--<version>3.5.0.v20090603-studio</version>TODO-->
-      <version>3.5.2.v20091028_r352</version>
+      <version>3.5.2.v20091028_r352-studio</version>
     </dependency>
     <dependency>
       <groupId>org.eclipse</groupId>

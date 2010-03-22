@@ -4,5 +4,5 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.eclipse.debug</groupId>
   <artifactId>ui</artifactId>
-  <version>3.5.2.v20091028_r352</version>
+  <version>3.5.2.v20091028_r352-studio</version>
 </project>
