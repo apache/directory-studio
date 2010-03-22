@@ -27,6 +27,8 @@ import java.util.Map;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.event.ConnectionEventRegistry;
 import org.apache.directory.studio.connection.ui.ConnectionUIPlugin;
+import org.apache.directory.studio.entryeditors.EntryEditorExtension;
+import org.apache.directory.studio.entryeditors.EntryEditorInput;
 import org.apache.directory.studio.entryeditors.EntryEditorManager;
 import org.apache.directory.studio.entryeditors.IEntryEditor;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
@@ -336,13 +338,21 @@ public class BrowserViewUniversalListener extends BrowserUniversalListener imple
             ISearch[] searches = BrowserSelectionUtils.getSearches( selection );
             EntryEditorManager entryEditorManager = BrowserUIPlugin.getDefault().getEntryEditorManager();
 
-            if ( entries.length + searchResults.length + bookmarks.length + searches.length == 1 )
+            if ( entries.length + searchResults.length + bookmarks.length == 1 )
             {
-                if ( ( entries.length == 1 ) || ( searchResults.length == 1 ) || ( bookmarks.length == 1 ) )
-                {
-                    entryEditorManager.openEntryEditor( entries, searchResults, bookmarks );
-                }
-                else if ( searches.length == 1 )
+                entryEditorManager.openEntryEditor( entries, searchResults, bookmarks );
+                // atm it is not necessary to blank the search result editor, it blanks itself
+            }
+            else
+            {
+                // Checking if there's at least one entry editor open.
+                // We need to blank them.
+                // This is done before the search result editor is opened, 
+                // otherwise the entry editor would be activated. 
+                // We can blank them directly here, without using the  OpenEntryEditorRunnable.
+                blankSingleTabEntryEditors();
+
+                if ( searches.length == 1 )
                 {
                     try
                     {
@@ -354,24 +364,14 @@ public class BrowserViewUniversalListener extends BrowserUniversalListener imple
                     }
                 }
             }
-            // Checking if there's at least one entry editor open.
-            // We need to blank it
-            else if ( isOneOrMoreOpenSingleTabEntryEditors() )
-            {
-                entryEditorManager.openEntryEditor( new IEntry[0], new ISearchResult[0], new IBookmark[0] );
-            }
         }
     }
 
 
     /**
-     * Indicates when one or more single-tab entry editor is (are) open.
-     *
-     * @return
-     *      <code>true</code> if one or more single-tab entry editor is (are) open,
-     *      <code>false</code> if not.
+     * Blanks all single-tab entry editors.
      */
-    private boolean isOneOrMoreOpenSingleTabEntryEditors()
+    private void blankSingleTabEntryEditors()
     {
         IWorkbenchPage activePage = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
         for ( IEditorReference ref : activePage.getEditorReferences() )
@@ -381,15 +381,24 @@ public class BrowserViewUniversalListener extends BrowserUniversalListener imple
             {
                 IEntryEditor editor = ( IEntryEditor ) part;
                 if ( ( editor != null ) && ( editor.getEntryEditorInput() != null )
+                    && ( editor.getEntryEditorInput().getResolvedEntry() != null )
                     && ( editor.getEntryEditorInput().getExtension() != null )
                     && ( !editor.getEntryEditorInput().getExtension().isMultiWindow() ) )
                 {
-                    return true;
+
+                    EntryEditorExtension extension = editor.getEntryEditorInput().getExtension();
+                    String editorId = extension.getEditorId();
+                    EntryEditorInput input = new EntryEditorInput( ( IEntry ) null, extension );
+                    try
+                    {
+                        view.getSite().getPage().openEditor( input, editorId, false );
+                    }
+                    catch ( PartInitException e )
+                    {
+                    }
                 }
             }
         }
-
-        return false;
     }
 
 
@@ -630,7 +639,7 @@ public class BrowserViewUniversalListener extends BrowserUniversalListener imple
                     if ( viewer.getExpandedState( child ) )
                     {
                         // In that particular case, we need to remove the child from the tree viewer.
-                        // As it's a costlyÊoperation we're only using this in that particular case,
+                        // As it's a costlyï¿½operation we're only using this in that particular case,
                         // and not as default option.
                         viewer.remove( child );
                     }
