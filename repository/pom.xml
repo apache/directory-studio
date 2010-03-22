@@ -222,6 +222,10 @@
       <artifactId>identity</artifactId>
     </dependency>
     <dependency>
+      <groupId>org.eclipse.ecf.provider</groupId>
+      <artifactId>filetransfer</artifactId>
+    </dependency>
+    <dependency>
       <groupId>org.eclipse.equinox</groupId>
       <artifactId>app</artifactId>
     </dependency>

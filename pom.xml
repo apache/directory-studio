@@ -424,7 +424,6 @@
     <dependency>
       <groupId>org.eclipse</groupId>
       <artifactId>compare</artifactId>
-      <!--<version>3.5.0.I20090514-0808-studio</version>TODO-->
       <version>3.5.2.r35x_20100113-0800</version>
     </dependency>
     <dependency>
@@ -568,6 +567,11 @@
       <groupId>org.eclipse.ecf</groupId>
       <artifactId>identity</artifactId>
       <version>3.0.0.v20090831-1906</version>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.ecf.provider</groupId>
+      <artifactId>filetransfer</artifactId>
+      <version>3.0.1.v20090831-1906</version>
     </dependency>
     <dependency>
       <groupId>org.eclipse.equinox</groupId>

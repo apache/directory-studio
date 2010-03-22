@@ -1202,6 +1202,10 @@
 			      <artifactId>identity</artifactId>
 			    </artifactItem>
 			    <artifactItem>
+			      <groupId>org.eclipse.ecf.provider</groupId>
+			      <artifactId>filetransfer</artifactId>
+			    </artifactItem>
+			    <artifactItem>
 			      <groupId>org.eclipse.equinox</groupId>
 			      <artifactId>app</artifactId>
 			    </artifactItem>
