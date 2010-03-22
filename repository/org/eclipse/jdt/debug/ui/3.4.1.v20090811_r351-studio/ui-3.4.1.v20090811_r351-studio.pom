@@ -4,5 +4,5 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.eclipse.jdt.debug</groupId>
   <artifactId>ui</artifactId>
-  <version>3.4.1.v20090811_r351</version>
+  <version>3.4.1.v20090811_r351-studio</version>
 </project>
