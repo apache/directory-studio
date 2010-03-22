@@ -871,8 +871,7 @@
     <dependency>
       <groupId>org.eclipse.ui</groupId>
       <artifactId>ide</artifactId>
-      <!--<version>3.5.0.I20090525-2000-studio</version>TODO-->
-      <version>3.5.2.M20100113-0800</version>
+      <version>3.5.2.M20100113-0800-studio</version>
     </dependency>
     <dependency>
       <groupId>org.eclipse.ui.ide</groupId>
