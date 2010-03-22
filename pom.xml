@@ -746,8 +746,7 @@
     <dependency>
       <groupId>org.eclipse.jdt</groupId>
       <artifactId>ui</artifactId>
-      <!--<version>3.5.0.v20090604-studio</version>TODO-->
-      <version>3.5.2.r352_v20100106-0800</version>
+      <version>3.5.2.r352_v20100106-0800-studio</version>
     </dependency>
     <dependency>
       <groupId>org.eclipse</groupId>
