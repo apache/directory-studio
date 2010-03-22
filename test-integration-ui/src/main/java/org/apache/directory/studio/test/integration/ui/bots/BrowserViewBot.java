@@ -20,7 +20,9 @@
 package org.apache.directory.studio.test.integration.ui.bots;
 
 
+import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.test.integration.ui.ContextMenuHelper;
+import org.apache.directory.studio.test.integration.ui.bots.utils.JobWatcher;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
 
@@ -67,7 +69,9 @@ public class BrowserViewBot
 
     public void expandEntry( String... path )
     {
+        JobWatcher watcher = new JobWatcher( BrowserCoreMessages.jobs__init_entries_title_subonly );
         browserBot.expandEntry( path );
+        watcher.waitUntilDone();
     }
 
 
@@ -149,7 +153,9 @@ public class BrowserViewBot
 
     public void refresh()
     {
+        JobWatcher watcher = new JobWatcher( BrowserCoreMessages.jobs__init_entries_title_subonly );
         ContextMenuHelper.clickContextMenu( browserBot.getTree(), "Reload Entry" );
+        watcher.waitUntilDone();
     }
 
 
