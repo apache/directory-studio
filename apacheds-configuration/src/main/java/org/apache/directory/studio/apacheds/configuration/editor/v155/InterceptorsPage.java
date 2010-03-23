@@ -66,7 +66,7 @@ public class InterceptorsPage extends FormPage implements SaveableFormPage
     protected void createFormContent( IManagedForm managedForm )
     {
         PlatformUI.getWorkbench().getHelpSystem().setHelp( getPartControl(),
-            ApacheDSConfigurationPluginConstants.PLUGIN_ID + "." + "configuration_editor_154" ); //$NON-NLS-1$ //$NON-NLS-2$
+            ApacheDSConfigurationPluginConstants.PLUGIN_ID + "." + "configuration_editor_155" ); //$NON-NLS-1$ //$NON-NLS-2$
 
         final ScrolledForm form = managedForm.getForm();
         form.setText( Messages.getString( "InterceptorsPage.Interceptors" ) ); //$NON-NLS-1$
