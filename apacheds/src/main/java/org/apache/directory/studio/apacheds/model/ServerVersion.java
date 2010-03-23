@@ -28,6 +28,17 @@ package org.apache.directory.studio.apacheds.model;
  */
 public enum ServerVersion
 {
+    /** Version 1.5.6 */
+    VERSION_1_5_6
+    {
+        /* (non-Javadoc)
+         * @see java.lang.Enum#toString()
+         */
+        public String toString()
+        {
+            return "1.5.6"; //$NON-NLS-1$
+        }
+    },
     /** Version 1.5.5 */
     VERSION_1_5_5
     {

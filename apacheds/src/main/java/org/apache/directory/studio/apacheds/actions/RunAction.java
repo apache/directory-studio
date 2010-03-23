@@ -32,6 +32,7 @@ import org.apache.directory.studio.apacheds.configuration.model.ServerXmlIOExcep
 import org.apache.directory.studio.apacheds.configuration.model.v153.ServerConfigurationV153;
 import org.apache.directory.studio.apacheds.configuration.model.v154.ServerConfigurationV154;
 import org.apache.directory.studio.apacheds.configuration.model.v155.ServerConfigurationV155;
+import org.apache.directory.studio.apacheds.configuration.model.v156.ServerConfigurationV156;
 import org.apache.directory.studio.apacheds.jobs.LaunchServerJob;
 import org.apache.directory.studio.apacheds.model.Server;
 import org.apache.directory.studio.apacheds.views.ServersView;
@@ -225,6 +226,11 @@ public class RunAction extends Action implements IWorkbenchWindowActionDelegate
      */
     private String[] getAlreadyInUseProtocolPorts( ServerConfiguration serverConfiguration )
     {
+        // Version 1.5.6
+        if ( serverConfiguration instanceof ServerConfigurationV156 )
+        {
+            return getAlreadyInUseProtocolPortsVersion156( ( ServerConfigurationV156 ) serverConfiguration );
+        }
         // Version 1.5.5
         if ( serverConfiguration instanceof ServerConfigurationV155 )
         {
@@ -422,6 +428,88 @@ public class RunAction extends Action implements IWorkbenchWindowActionDelegate
      * protocols which are already in use.
      */
     private String[] getAlreadyInUseProtocolPortsVersion155( ServerConfigurationV155 serverConfiguration )
+    {
+        List<String> alreadyInUseProtocolPortsList = new ArrayList<String>();
+
+        // LDAP
+        if ( serverConfiguration.isEnableLdap() )
+        {
+            if ( !AvailablePortFinder.available( serverConfiguration.getLdapPort() ) )
+            {
+                alreadyInUseProtocolPortsList.add( NLS.bind(
+                    Messages.getString( "RunAction.LDAPPort" ), new Object[] { serverConfiguration.getLdapPort() } ) ); //$NON-NLS-1$
+            }
+        }
+
+        // LDAPS
+        if ( serverConfiguration.isEnableLdaps() )
+        {
+            if ( !AvailablePortFinder.available( serverConfiguration.getLdapsPort() ) )
+            {
+                alreadyInUseProtocolPortsList.add( NLS.bind(
+                    Messages.getString( "RunAction.LDAPSPort" ), new Object[] { serverConfiguration.getLdapsPort() } ) ); //$NON-NLS-1$
+            }
+        }
+
+        // Kerberos
+        if ( serverConfiguration.isEnableKerberos() )
+        {
+            if ( !AvailablePortFinder.available( serverConfiguration.getKerberosPort() ) )
+            {
+                alreadyInUseProtocolPortsList
+                    .add( NLS
+                        .bind(
+                            Messages.getString( "RunAction.KerberosPort" ), new Object[] { serverConfiguration.getKerberosPort() } ) ); //$NON-NLS-1$
+            }
+        }
+
+        // DNS
+        if ( serverConfiguration.isEnableDns() )
+        {
+            if ( !AvailablePortFinder.available( serverConfiguration.getDnsPort() ) )
+            {
+                alreadyInUseProtocolPortsList.add( NLS.bind(
+                    Messages.getString( "RunAction.DNSPort" ), new Object[] { serverConfiguration.getDnsPort() } ) ); //$NON-NLS-1$
+            }
+        }
+
+        // NTP
+        if ( serverConfiguration.isEnableNtp() )
+        {
+            if ( !AvailablePortFinder.available( serverConfiguration.getNtpPort() ) )
+            {
+                alreadyInUseProtocolPortsList.add( NLS.bind( Messages.getString( "RunAction.NTPPort" ), new Object[] //$NON-NLS-1$
+                    { serverConfiguration.getNtpPort() } ) );
+            }
+        }
+
+        // Change Password
+        if ( serverConfiguration.isEnableChangePassword() )
+        {
+            if ( !AvailablePortFinder.available( serverConfiguration.getChangePasswordPort() ) )
+            {
+                alreadyInUseProtocolPortsList
+                    .add( NLS
+                        .bind(
+                            Messages.getString( "RunAction.ChangePasswordPort" ), new Object[] { serverConfiguration.getChangePasswordPort() } ) ); //$NON-NLS-1$
+            }
+        }
+
+        return alreadyInUseProtocolPortsList.toArray( new String[0] );
+    }
+
+
+    /**
+     * Gets an array of String containing the ports and their associated 
+     * protocols which are already in use.
+     *
+     * @param serverConfiguration
+     *      the 1.5.6 server configuration
+     * @return
+     *      an array of String containing the ports and their associated 
+     * protocols which are already in use.
+     */
+    private String[] getAlreadyInUseProtocolPortsVersion156( ServerConfigurationV156 serverConfiguration )
     {
         List<String> alreadyInUseProtocolPortsList = new ArrayList<String>();
 
