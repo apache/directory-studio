@@ -424,7 +424,7 @@
     <dependency>
       <groupId>org.eclipse</groupId>
       <artifactId>compare</artifactId>
-      <version>3.5.2.r35x_20100113-0800</version>
+      <version>3.5.2.r35x_20100113-0800-studio</version>
     </dependency>
     <dependency>
       <groupId>org.eclipse.compare</groupId>
