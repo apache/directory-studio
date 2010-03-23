@@ -191,7 +191,7 @@ public class SearchTest
         dialogBot.clickSearchButton();
         browserViewBot.selectEntry( "Searches", "Search Admin" );
 
-        SearchResultEditorBot srEditorBot = studioBot.getSearchResultEditorBot( "Search Result Editor" );
+        SearchResultEditorBot srEditorBot = studioBot.getSearchResultEditorBot( "Search Admin" );
         srEditorBot.activate();
         assertTrue( srEditorBot.isEnabled() );
 

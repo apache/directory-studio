@@ -54,6 +54,7 @@ import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.INavigationLocation;
 import org.eclipse.ui.INavigationLocationProvider;
 import org.eclipse.ui.IReusableEditor;
+import org.eclipse.ui.IShowEditorInput;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.EditorPart;
@@ -70,7 +71,7 @@ import org.eclipse.ui.part.ShowInContext;
  * @version $Rev$, $Date$
  */
 public class SearchResultEditor extends EditorPart implements INavigationLocationProvider, IReusableEditor,
-    IPropertyChangeListener
+    IShowEditorInput, IPropertyChangeListener
 {
 
     /** The configuration. */
@@ -166,28 +167,36 @@ public class SearchResultEditor extends EditorPart implements INavigationLocatio
 
         if ( input instanceof SearchResultEditorInput && universalListener != null )
         {
+            setPartName( input.getName() );
+
+            SearchResultEditorInput srei = ( SearchResultEditorInput ) input;
+            setSearchResultEditorWidgetInput( srei );
+        }
+    }
+
+
+    public void showEditorInput( IEditorInput input )
+    {
+        if ( input instanceof SearchResultEditorInput )
+        {
+            /*
+             * Workaround to make link-with-editor working for the single-tab editor:
+             * The call of firePropertyChange is used to inform the link-with-editor action.
+             * However firePropertyChange also modifies the navigation history.
+             * Thus, a dummy input with the real search but dummy flag is set.
+             * This avoids to modification of the navigation history.
+             * Afterwards the real input is set.
+             */
             SearchResultEditorInput srei = ( SearchResultEditorInput ) input;
             ISearch search = srei.getSearch();
+            SearchResultEditorInput dummyInput = new SearchResultEditorInput( search, true );
+            setInput( dummyInput );
+            firePropertyChange( IEditorPart.PROP_INPUT );
 
-            setSearchResultEditorWidgetInput( srei );
-
-            if ( search != null )
-            {
-                // disable one instance hack before firing the input change event 
-                // otherwise the navigation history is cleared.
-                // Note: seems this behavior has been changed with Eclipse 3.3
-                SearchResultEditorInput.enableOneInstanceHack( false );
-                firePropertyChange( IEditorPart.PROP_INPUT );
-
-                // enable one instance hack for marking the location
-                // Note: seems this behavior has been changed with Eclipse 3.3
-                SearchResultEditorInput.enableOneInstanceHack( true );
-                getSite().getPage().getNavigationHistory().markLocation( this );
-            }
+            // now set the real input and mark history location
+            setInput( input );
+            getSite().getPage().getNavigationHistory().markLocation( this );
         }
-
-        // finally enable the one instance hack 
-        SearchResultEditorInput.enableOneInstanceHack( true );
     }
 
 

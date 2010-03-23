@@ -21,6 +21,7 @@
 package org.apache.directory.studio.ldapbrowser.ui.editors.searchresult;
 
 
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
 import org.apache.directory.studio.ldapbrowser.ui.BrowserUIConstants;
 import org.apache.directory.studio.ldapbrowser.ui.BrowserUIPlugin;
@@ -53,8 +54,8 @@ public class SearchResultEditorInput implements IEditorInput
     /** The search input */
     private ISearch search;
 
-    /** One instance hack flag */
-    private static boolean oneInstanceHackEnabled = true;
+    /** Flag indicating this is a dummy input */
+    private boolean dummy;
 
 
     /**
@@ -64,7 +65,20 @@ public class SearchResultEditorInput implements IEditorInput
      */
     public SearchResultEditorInput( ISearch search )
     {
+        this( search, false );
+    }
+
+
+    /**
+     * Creates a new instance of SearchResultEditorInput.
+     * 
+     * @param search the search input
+     * @param dummy the is dummy flag
+     */
+    /*package*/SearchResultEditorInput( ISearch search, boolean dummy )
+    {
         this.search = search;
+        this.dummy = dummy;
     }
 
 
@@ -95,7 +109,12 @@ public class SearchResultEditorInput implements IEditorInput
      */
     public String getName()
     {
-        return Messages.getString( "SearchResultEditorInput.SearchResultEditor" ); //$NON-NLS-1$
+        if ( search != null )
+        {
+            return search.getName();
+        }
+
+        return Messages.getString( "SearchResultEditorContentProvider.NoSearchSelected" ); //$NON-NLS-1$
     }
 
 
@@ -104,7 +123,19 @@ public class SearchResultEditorInput implements IEditorInput
      */
     public String getToolTipText()
     {
-        return Messages.getString( "SearchResultEditorInput.SearchResultEditorToolTip" ); //$NON-NLS-1$
+        if ( search != null )
+        {
+            String toolTipText = search.getUrl().toString();
+
+            IBrowserConnection browserConnection = search.getBrowserConnection();
+            if ( browserConnection != null && browserConnection.getConnection() != null )
+            {
+                toolTipText += " - " + browserConnection.getConnection().getName();//$NON-NLS-1$
+            }
+            return toolTipText;
+        }
+
+        return Messages.getString( "SearchResultEditorContentProvider.NoSearchSelected" ); //$NON-NLS-1$
     }
 
 
@@ -144,6 +175,11 @@ public class SearchResultEditorInput implements IEditorInput
      */
     public int hashCode()
     {
+        if ( dummy )
+        {
+            return 0;
+        }
+
         return getToolTipText().hashCode();
     }
 
@@ -153,51 +189,34 @@ public class SearchResultEditorInput implements IEditorInput
      */
     public boolean equals( Object obj )
     {
-
-        boolean equal;
-
-        if ( oneInstanceHackEnabled )
+        if ( !( obj instanceof SearchResultEditorInput ) )
         {
-            equal = ( obj instanceof SearchResultEditorInput );
+            return false;
+        }
+
+        SearchResultEditorInput other = ( SearchResultEditorInput ) obj;
+
+        if ( dummy && other.dummy )
+        {
+            return true;
+        }
+        if ( dummy != other.dummy )
+        {
+            return false;
+        }
+
+        if ( this.search == null && other.search == null )
+        {
+            return true;
+        }
+        else if ( this.search == null || other.search == null )
+        {
+            return false;
         }
         else
         {
-            if ( obj instanceof SearchResultEditorInput )
-            {
-                SearchResultEditorInput other = ( SearchResultEditorInput ) obj;
-                if ( this.search == null && other.search == null )
-                {
-                    return true;
-                }
-                else if ( this.search == null || other.search == null )
-                {
-                    return false;
-                }
-                else
-                {
-                    equal = other.search.equals( this.search );
-                }
-            }
-            else
-            {
-                equal = false;
-            }
+            return other.search.equals( this.search );
         }
-
-        return equal;
-    }
-
-
-    /**
-     * Enables or disabled the one instance hack.
-     *
-     * @param b 
-     *      true to enable the one instance hack,
-     *      false to disable the one instance hack
-     */
-    public static void enableOneInstanceHack( boolean b )
-    {
-        oneInstanceHackEnabled = b;
     }
 
 }
