@@ -57,7 +57,7 @@ import org.eclipse.ui.forms.widgets.TableWrapLayout;
 public class GeneralPage extends FormPage implements SaveableFormPage
 {
     /** The Page ID*/
-    public static final String ID = ServerConfigurationEditor.ID + ".V154.GeneralPage"; //$NON-NLS-1$
+    public static final String ID = ServerConfigurationEditor.ID + ".V155.GeneralPage"; //$NON-NLS-1$
 
     /** The Page Title */
     private static final String TITLE = Messages.getString( "GeneralPage.General" ); //$NON-NLS-1$
