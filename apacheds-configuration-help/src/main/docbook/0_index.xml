@@ -38,6 +38,12 @@
   <!ENTITY configuration_editor_1.5.5_partitions SYSTEM "1.2.6.3_configuration_editor_1.5.5_partitions.xml">
   <!ENTITY configuration_editor_1.5.5_interceptors SYSTEM "1.2.6.4_configuration_editor_1.5.5_interceptors.xml">
   <!ENTITY configuration_editor_1.5.5_extended_operations SYSTEM "1.2.6.5_configuration_editor_1.5.5_extended_operations.xml">
+  <!ENTITY configuration_editor_1.5.6 SYSTEM "1.2.7_configuration_editor_1.5.6.xml">
+  <!ENTITY configuration_editor_1.5.6_general SYSTEM "1.2.7.1_configuration_editor_1.5.6_general.xml">
+  <!ENTITY configuration_editor_1.5.6_authentication SYSTEM "1.2.7.2_configuration_editor_1.5.6_authentication.xml">
+  <!ENTITY configuration_editor_1.5.6_partitions SYSTEM "1.2.7.3_configuration_editor_1.5.6_partitions.xml">
+  <!ENTITY configuration_editor_1.5.6_interceptors SYSTEM "1.2.7.4_configuration_editor_1.5.6_interceptors.xml">
+  <!ENTITY configuration_editor_1.5.6_extended_operations SYSTEM "1.2.7.5_configuration_editor_1.5.6_extended_operations.xml">
   <!ENTITY tasks SYSTEM "2_tasks.xml">
   <!ENTITY open_server_configuration SYSTEM "2.1_open_server_configuration.xml">
   <!ENTITY create_new_server_configuration SYSTEM "2.2_create_new_server_configuration.xml">
