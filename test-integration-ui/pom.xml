@@ -169,6 +169,7 @@
                     
                     <!-- launch the tests -->
                     <java fork="true" failonerror="true" classname="org.eclipse.core.launcher.Main">
+                      <jvmarg line="-Xmx1024m -XX:MaxPermSize=512m"/>
                       <arg line="${integration-cmdline-params} -nl en -debug debugoptions -application org.eclipse.swtbot.eclipse.junit4.headless.swtbottestapplication -data target/test-sandbox/workspace formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,target/test-sandbox/workspace/test-result.xml -testPluginName org.apache.directory.studio.test.integration.ui -className org.apache.directory.studio.test.integration.ui.AutomatedSuite"/>
                       <classpath>
                         <fileset dir="target/test-sandbox">
@@ -302,29 +303,24 @@
   <dependencies>
     <dependency>
       <groupId>org.apache.directory.server</groupId>
-      <artifactId>apacheds-server-unit</artifactId>
-      <version>1.5.6-SNAPSHOT</version>
-    </dependency> 
-    <dependency>
-      <groupId>org.apache.directory.server</groupId>
       <artifactId>apacheds-core-integ</artifactId>
-      <version>1.5.6-SNAPSHOT</version>
+      <version>1.5.5</version>
     </dependency> 
     <dependency>
       <groupId>org.apache.directory.server</groupId>
       <artifactId>apacheds-server-integ</artifactId>
-      <version>1.5.6-SNAPSHOT</version>
+      <version>1.5.5</version>
     </dependency> 
     <dependency>
       <groupId>org.apache.directory.shared</groupId>
       <artifactId>shared-ldap</artifactId>
-      <version>0.9.17-SNAPSHOT</version>
+      <version>0.9.17</version>
       <scope>provided</scope>
     </dependency> 
     <dependency>
       <groupId>org.apache.directory.shared</groupId>
       <artifactId>shared-asn1</artifactId>
-      <version>0.9.17-SNAPSHOT</version>
+      <version>0.9.17</version>
       <scope>provided</scope>
     </dependency> 
     <dependency>
