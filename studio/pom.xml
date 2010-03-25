@@ -792,8 +792,7 @@
                     eclipse/plugins/org.eclipse.swt.jmx.nl*,
                     eclipse/plugins/org.eclipse.swt.examples.*,
                     eclipse/plugins/org.eclipse.search.tests.nl*,
-                    eclipse/plugins/org.eclipse.sdk.tests.nl*,
-                    eclipse/plugins/org.eclipse.sdk.examples.nl*,
+                    eclipse/plugins/org.eclipse.sdk*,
                     eclipse/plugins/org.eclipse.releng.tools.nl*,
                     eclipse/plugins/org.eclipse.platform.*,
                     eclipse/plugins/org.eclipse.pde.*,
@@ -889,8 +888,7 @@
                     eclipse/plugins/org.eclipse.swt.jmx.nl*,
                     eclipse/plugins/org.eclipse.swt.examples.*,
                     eclipse/plugins/org.eclipse.search.tests.nl*,
-                    eclipse/plugins/org.eclipse.sdk.tests.nl*,
-                    eclipse/plugins/org.eclipse.sdk.examples.nl*,
+                    eclipse/plugins/org.eclipse.sdk*,
                     eclipse/plugins/org.eclipse.releng.tools.nl*,
                     eclipse/plugins/org.eclipse.platform.*,
                     eclipse/plugins/org.eclipse.pde.*,
@@ -1482,11 +1480,6 @@
                 <artifactItem>
                   <groupId>org.eclipse.jdt</groupId>
                   <artifactId>debug</artifactId>
-                  <type>zip</type>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.eclipse</groupId>
-                  <artifactId>sdk</artifactId>
                   <type>zip</type>
                 </artifactItem>
                 <artifactItem>

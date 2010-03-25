@@ -404,11 +404,6 @@
     </dependency>
     <dependency>
       <groupId>org.eclipse</groupId>
-      <artifactId>sdk</artifactId>
-      <type>zip</type>
-    </dependency>
-    <dependency>
-      <groupId>org.eclipse</groupId>
       <artifactId>search</artifactId>
     </dependency>
     <dependency>

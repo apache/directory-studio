@@ -794,12 +794,6 @@
     </dependency>
     <dependency>
       <groupId>org.eclipse</groupId>
-      <artifactId>sdk</artifactId>
-      <version>3.5.0.v200906111540</version>
-      <type>zip</type>
-    </dependency>
-    <dependency>
-      <groupId>org.eclipse</groupId>
       <artifactId>search</artifactId>
       <version>3.5.1.r351_v20090708-0800-studio</version>
     </dependency>
