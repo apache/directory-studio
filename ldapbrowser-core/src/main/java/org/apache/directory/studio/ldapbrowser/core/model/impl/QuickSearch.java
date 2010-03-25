@@ -21,9 +21,11 @@
 package org.apache.directory.studio.ldapbrowser.core.model.impl;
 
 
+import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.IQuickSearch;
+import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
 
 
 /**
@@ -61,6 +63,16 @@ public class QuickSearch extends Search implements IQuickSearch
     {
         this.searchBaseEntry = searchBaseEntry;
         this.connection = connection;
+
+        // set default parameter
+        getSearchParameter().setName( BrowserCoreMessages.model__quick_search_name );
+        getSearchParameter().setSearchBase( searchBaseEntry.getDn() );
+        getSearchParameter().setReturningAttributes( ISearch.NO_ATTRIBUTES );
+        getSearchParameter().setAliasesDereferencingMethod( connection.getAliasesDereferencingMethod() );
+        getSearchParameter().setReferralsHandlingMethod( connection.getReferralsHandlingMethod() );
+        getSearchParameter().setCountLimit( connection.getCountLimit() );
+        getSearchParameter().setTimeLimit( connection.getTimeLimit() );
+        getSearchParameter().setScope( SearchScope.SUBTREE );
     }
 
 

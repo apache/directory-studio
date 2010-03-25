@@ -27,6 +27,7 @@ import java.util.Map;
 import org.apache.directory.studio.connection.ui.actions.CollapseAllAction;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonConstants;
 import org.apache.directory.studio.ldapbrowser.common.actions.FilterChildrenAction;
+import org.apache.directory.studio.ldapbrowser.common.actions.OpenQuickSearchAction;
 import org.apache.directory.studio.ldapbrowser.common.actions.PropertiesAction;
 import org.apache.directory.studio.ldapbrowser.common.actions.RefreshAction;
 import org.apache.directory.studio.ldapbrowser.common.actions.UnfilterChildrenAction;
@@ -73,6 +74,9 @@ public class BrowserActionGroup implements ActionHandlerManager, IMenuListener
     /** The Constant filterChildrenAction. */
     protected static final String filterChildrenAction = "filterChildrenAction"; //$NON-NLS-1$
 
+    /** The Constant openQuickSearchAction. */
+    protected static final String openQuickSearchAction = "openQuickSearch"; //$NON-NLS-1$
+
     /** The Constant unfilterChildrenAction. */
     protected static final String unfilterChildrenAction = "unfilterChildrenAction"; //$NON-NLS-1$
 
@@ -105,6 +109,7 @@ public class BrowserActionGroup implements ActionHandlerManager, IMenuListener
         showQuickSearchAction = new ShowQuickSearchAction( mainWidget.getQuickSearchWidget() );
         collapseAllAction = new CollapseAllAction( viewer );
 
+        browserActionMap.put( openQuickSearchAction, new BrowserViewActionProxy( viewer, new OpenQuickSearchAction() ) );
         browserActionMap.put( upAction, new BrowserViewActionProxy( viewer, new UpAction( viewer ) ) );
         browserActionMap.put( refreshAction, new BrowserViewActionProxy( viewer, new RefreshAction() ) );
         browserActionMap.put( filterChildrenAction, new BrowserViewActionProxy( viewer, new FilterChildrenAction() ) );
@@ -212,6 +217,7 @@ public class BrowserActionGroup implements ActionHandlerManager, IMenuListener
         {
             menuManager.add( browserActionMap.get( unfilterChildrenAction ) );
         }
+        menuManager.add( browserActionMap.get( openQuickSearchAction ) );
         menuManager.add( new Separator() );
 
         // refresh

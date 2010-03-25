@@ -429,4 +429,7 @@ public class BrowserCoreMessages extends NLS
     public static String model_filter_missing_closing_parenthesis;
 
     public static String model_filter_missing_filter_expression;
+
+    public static String model__quick_search_name;
+
 }

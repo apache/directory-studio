@@ -294,13 +294,6 @@ public class BrowserQuickSearchWidget
         IBrowserConnection conn = entry.getBrowserConnection();
 
         QuickSearch quickSearch = new QuickSearch( entry, conn );
-        quickSearch.getSearchParameter().setName( Messages.getString( "BrowserQuickSearchWidget.QuickSearch" ) ); //$NON-NLS-1$
-        quickSearch.getSearchParameter().setSearchBase( entry.getDn() );
-        quickSearch.getSearchParameter().setReturningAttributes( ISearch.NO_ATTRIBUTES );
-        quickSearch.getSearchParameter().setAliasesDereferencingMethod( conn.getAliasesDereferencingMethod() );
-        quickSearch.getSearchParameter().setReferralsHandlingMethod( conn.getReferralsHandlingMethod() );
-        quickSearch.getSearchParameter().setCountLimit( conn.getCountLimit() );
-        quickSearch.getSearchParameter().setTimeLimit( conn.getTimeLimit() );
         quickSearch.getSearchParameter().setScope( quickSearchScopeButton.getSelection() ? SearchScope.SUBTREE : SearchScope.ONELEVEL );
 
         StringBuffer filter = new StringBuffer();
