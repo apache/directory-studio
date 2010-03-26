@@ -395,9 +395,7 @@
 			<title>Displaying entry's attribute</title>
 			<para>
 				Select an entry in the Browser view. The Entry editor will be
-				opened and shows the entry's attributes. You could define
-				the visible attriubtes in the
-				<link linkend="preferences_entry_editor">Entry editor preferences</link>.
+				opened and shows the entry's attributes.
 			</para>
 		</section>
 		
@@ -409,15 +407,6 @@
 					Quick Filter
 				</link>
 				in Entry editor features.
-			</para>
-		</section>
-		
-		<section id="tasks_browse_directory_display_operational_attributes">
-			<title>Displaying entry's operational attribute</title>
-			<para>
-				In order to make operational attributes visible please enable
-				<emphasis role="strong">Show operational attributes</emphasis> in the
-				<link linkend="preferences_entry_editor">Entry editor preferences</link>.
 			</para>
 		</section>
 		
