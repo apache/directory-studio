@@ -390,6 +390,7 @@ public class BrowserViewActionGroup extends BrowserActionGroup
         {
             menuManager.add( browserActionMap.get( unfilterChildrenAction ) );
         }
+        menuManager.add( browserActionMap.get( openQuickSearchAction ) );
         menuManager.add( new Separator() );
 
         // import/export
