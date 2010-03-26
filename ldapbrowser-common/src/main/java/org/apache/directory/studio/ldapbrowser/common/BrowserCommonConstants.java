@@ -84,10 +84,6 @@ public interface BrowserCommonConstants
     public static final String PREFERENCE_BROWSER_SEARCH_RESULT_LABEL = "browserSearchResultLabel"; //$NON-NLS-1$
     public static final String PREFERENCE_BROWSER_SEARCH_RESULT_ABBREVIATE = "browserWearchResultAbbreviate"; //$NON-NLS-1$
     public static final String PREFERENCE_BROWSER_SEARCH_RESULT_ABBREVIATE_MAX_LENGTH = "browserSearchResultAbbreviateMaxLength"; //$NON-NLS-1$
-    public static final String PREFERENCE_ENTRYEDITOR_SHOW_MAY_ATTRIBUTES = "entryeditorShowMayAttributes"; //$NON-NLS-1$
-    public static final String PREFERENCE_ENTRYEDITOR_SHOW_MUST_ATTRIBUTES = "entryeditorShowMustAttributes"; //$NON-NLS-1$
-    public static final String PREFERENCE_ENTRYEDITOR_SHOW_OBJECTCLASS_ATTRIBUTES = "entryeditorShowObjectClassAttribute"; //$NON-NLS-1$
-    public static final String PREFERENCE_ENTRYEDITOR_SHOW_OPERATIONAL_ATTRIBUTES = "entryeditorShowOperationalAttributes"; //$NON-NLS-1$
     public static final String PREFERENCE_ENTRYEDITOR_AUTOSAVE_SINGLE_TAB = "entryeditorAutoSaveSingleTab"; //$NON-NLS-1$
     public static final String PREFERENCE_ENTRYEDITOR_AUTOSAVE_MULTI_TAB = "entryeditorAutoSaveMultiTab"; //$NON-NLS-1$
     public static final String PREFERENCE_ENTRYEDITOR_ENABLE_FOLDING = "entryeditorEnableFolding"; //$NON-NLS-1$

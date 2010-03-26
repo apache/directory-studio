@@ -25,8 +25,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.directory.studio.connection.ui.RunnableContextRunner;
-import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
-import org.apache.directory.studio.ldapbrowser.common.BrowserCommonConstants;
 import org.apache.directory.studio.ldapbrowser.common.actions.BrowserAction;
 import org.apache.directory.studio.ldapbrowser.core.jobs.InitializeAttributesRunnable;
 import org.apache.directory.studio.ldapbrowser.core.jobs.ReadEntryRunnable;
@@ -234,25 +232,22 @@ public abstract class CopyEntryAsAction extends BrowserAction
      */
     public boolean isEnabled()
     {
-        boolean showOperational = BrowserCommonActivator.getDefault().getPreferenceStore().getBoolean(
-            BrowserCommonConstants.PREFERENCE_ENTRYEDITOR_SHOW_OPERATIONAL_ATTRIBUTES );
-
         if ( getSelectedSearchResults().length > 0
             && getSelectedEntries().length + getSelectedBookmarks().length + getSelectedSearches().length == 0 )
         {
             return ( this.mode == MODE_RETURNING_ATTRIBUTES_ONLY || this.mode == MODE_NORMAL
-                || this.mode == MODE_DN_ONLY || ( this.mode == MODE_INCLUDE_OPERATIONAL_ATTRIBUTES && showOperational ) );
+                || this.mode == MODE_DN_ONLY || this.mode == MODE_INCLUDE_OPERATIONAL_ATTRIBUTES );
         }
         if ( getSelectedEntries().length + getSelectedSearchResults().length + getSelectedBookmarks().length > 0
             && getSelectedSearches().length == 0 )
         {
-            return ( this.mode == MODE_NORMAL || this.mode == MODE_DN_ONLY || ( this.mode == MODE_INCLUDE_OPERATIONAL_ATTRIBUTES && showOperational ) );
+            return ( this.mode == MODE_NORMAL || this.mode == MODE_DN_ONLY || this.mode == MODE_INCLUDE_OPERATIONAL_ATTRIBUTES );
         }
         if ( getSelectedEntries().length + getSelectedSearchResults().length + getSelectedBookmarks().length == 0
             && getSelectedSearches().length == 1 && getSelectedSearches()[0].getSearchResults() != null
             && getSelectedSearches()[0].getSearchResults().length > 0 )
         {
-            return ( this.mode != MODE_INCLUDE_OPERATIONAL_ATTRIBUTES || ( this.mode == MODE_INCLUDE_OPERATIONAL_ATTRIBUTES && showOperational ) );
+            return true;
         }
         return false;
     }

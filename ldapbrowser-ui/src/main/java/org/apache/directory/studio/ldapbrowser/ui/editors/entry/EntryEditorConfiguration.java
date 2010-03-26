@@ -22,7 +22,6 @@ package org.apache.directory.studio.ldapbrowser.ui.editors.entry;
 
 
 import org.apache.directory.studio.ldapbrowser.common.widgets.entryeditor.EntryEditorWidgetConfiguration;
-import org.apache.directory.studio.ldapbrowser.common.widgets.entryeditor.EntryEditorWidgetFilter;
 import org.apache.directory.studio.valueeditors.ValueEditorManager;
 import org.eclipse.jface.viewers.TreeViewer;
 
@@ -47,20 +46,6 @@ public class EntryEditorConfiguration extends EntryEditorWidgetConfiguration
     public EntryEditorConfiguration( EntryEditor entryEditor )
     {
         this.entryEditor = entryEditor;
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    public EntryEditorWidgetFilter getFilter()
-    {
-        if ( filter == null )
-        {
-            filter = new EntryEditorFilter( getPreferences() );
-        }
-
-        return filter;
     }
 
 

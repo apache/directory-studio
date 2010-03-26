@@ -106,54 +106,6 @@ public class EntryEditorWidgetPreferences
 
 
     /**
-     * Checks if may attributes should be shown.
-     * 
-     * @return true, if may attributes should be shown
-     */
-    public boolean isShowMayAttributes()
-    {
-        return BrowserCommonActivator.getDefault().getPreferenceStore().getBoolean(
-            BrowserCommonConstants.PREFERENCE_ENTRYEDITOR_SHOW_MAY_ATTRIBUTES );
-    }
-
-
-    /**
-     * Checks if must attributes should be shown.
-     * 
-     * @return true, if must attributes should be shown
-     */
-    public boolean isShowMustAttributes()
-    {
-        return BrowserCommonActivator.getDefault().getPreferenceStore().getBoolean(
-            BrowserCommonConstants.PREFERENCE_ENTRYEDITOR_SHOW_MUST_ATTRIBUTES );
-    }
-
-
-    /**
-     * Checks if object class attribute should be shown.
-     * 
-     * @return true, if object class attribute should be shown
-     */
-    public boolean isShowObjectClassAttribute()
-    {
-        return BrowserCommonActivator.getDefault().getPreferenceStore().getBoolean(
-            BrowserCommonConstants.PREFERENCE_ENTRYEDITOR_SHOW_OBJECTCLASS_ATTRIBUTES );
-    }
-
-
-    /**
-     * Checks if operational attributes should be shown.
-     * 
-     * @return true, if operational attributes should be shown
-     */
-    public boolean isShowOperationalAttributes()
-    {
-        return BrowserCommonActivator.getDefault().getPreferenceStore().getBoolean(
-            BrowserCommonConstants.PREFERENCE_ENTRYEDITOR_SHOW_OPERATIONAL_ATTRIBUTES );
-    }
-
-
-    /**
      * Checks if object class and must attributes should be 
      * grouped before may attributes.
      * 
