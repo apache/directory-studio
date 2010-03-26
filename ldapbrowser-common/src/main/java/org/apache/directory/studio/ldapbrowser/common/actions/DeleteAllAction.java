@@ -21,9 +21,15 @@
 package org.apache.directory.studio.ldapbrowser.common.actions;
 
 
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashSet;
+
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonConstants;
+import org.apache.directory.studio.ldapbrowser.common.widgets.browser.BrowserCategory;
 import org.apache.directory.studio.ldapbrowser.core.model.IBookmark;
+import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
 import org.eclipse.jface.resource.ImageDescriptor;
 
@@ -36,8 +42,9 @@ import org.eclipse.jface.resource.ImageDescriptor;
  */
 public class DeleteAllAction extends DeleteAction
 {
-    private static final IBookmark[] EMPTY_BOOKMARKS = new IBookmark[0];
+    private static final Collection<IEntry> EMPTY_ENTRIES = new HashSet<IEntry>();
     private static final ISearch[] EMPTY_SEARCHES = new ISearch[0];
+    private static final IBookmark[] EMPTY_BOOKMARKS = new IBookmark[0];
 
 
     /**
@@ -62,11 +69,19 @@ public class DeleteAllAction extends DeleteAction
      */
     public String getText()
     {
-        if ( getSelectedSearches().length >= 1 )
+        if ( getSelectedEntries().length >= 1 )
+        {
+            return Messages.getString( "DeleteAllAction.DeleteAllChildEntries" ); //$NON-NLS-1$
+        }
+        else if ( ( getSelectedSearches().length >= 1 )
+            || ( ( getSelectedBrowserViewCategories().length == 1 ) && ( getSelectedBrowserViewCategories()[0]
+                .getType() == BrowserCategory.TYPE_SEARCHES ) ) )
         {
             return Messages.getString( "DeleteAllAction.DeleteAllSearches" ); //$NON-NLS-1$
         }
-        else if ( getSelectedBookmarks().length >= 1 )
+        else if ( ( getSelectedBookmarks().length >= 1 )
+            || ( ( getSelectedBrowserViewCategories().length == 1 ) && ( getSelectedBrowserViewCategories()[0]
+                .getType() == BrowserCategory.TYPE_BOOKMARKS ) ) )
         {
             return Messages.getString( "DeleteAllAction.DeleteAllBookmarks" ); //$NON-NLS-1$
         }
@@ -98,9 +113,18 @@ public class DeleteAllAction extends DeleteAction
     /**
      * {@inheritDoc}
      */
-    public boolean isEnabled()
+    protected Collection<IEntry> getEntries()
     {
-        return ( ( getSelectedSearches().length >= 1 ) || getSelectedBookmarks().length >= 1 );
+        if ( getSelectedEntries().length >= 1 )
+        {
+            Collection<IEntry> values = new HashSet<IEntry>();
+            values.addAll( Arrays.asList( getSelectedEntries()[0].getChildren() ) );
+            return values;
+        }
+        else
+        {
+            return EMPTY_ENTRIES;
+        }
     }
 
 
@@ -112,6 +136,12 @@ public class DeleteAllAction extends DeleteAction
         if ( getSelectedSearches().length >= 1 )
         {
             return getSelectedSearches()[0].getBrowserConnection().getSearchManager().getSearches().toArray(
+                new ISearch[0] );
+        }
+        else if ( ( getSelectedBrowserViewCategories().length == 1 )
+            && ( getSelectedBrowserViewCategories()[0].getType() == BrowserCategory.TYPE_SEARCHES ) )
+        {
+            return getSelectedBrowserViewCategories()[0].getParent().getSearchManager().getSearches().toArray(
                 new ISearch[0] );
         }
         else
@@ -129,6 +159,11 @@ public class DeleteAllAction extends DeleteAction
         if ( getSelectedBookmarks().length >= 1 )
         {
             return getSelectedBookmarks()[0].getBrowserConnection().getBookmarkManager().getBookmarks();
+        }
+        else if ( ( getSelectedBrowserViewCategories().length == 1 )
+            && ( getSelectedBrowserViewCategories()[0].getType() == BrowserCategory.TYPE_BOOKMARKS ) )
+        {
+            return getSelectedBrowserViewCategories()[0].getParent().getBookmarkManager().getBookmarks();
         }
         else
         {
