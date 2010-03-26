@@ -23,6 +23,7 @@ package org.apache.directory.studio.ldapbrowser.ui.views.browser;
 
 import org.apache.directory.studio.ldapbrowser.common.actions.CopyAction;
 import org.apache.directory.studio.ldapbrowser.common.actions.DeleteAction;
+import org.apache.directory.studio.ldapbrowser.common.actions.DeleteAllAction;
 import org.apache.directory.studio.ldapbrowser.common.actions.FetchAliasesAction;
 import org.apache.directory.studio.ldapbrowser.common.actions.FetchOperationalAttributesAction;
 import org.apache.directory.studio.ldapbrowser.common.actions.FetchReferralsAction;
@@ -151,6 +152,9 @@ public class BrowserViewActionGroup extends BrowserActionGroup
     /** The Constant copyEntryAsCsvOperationalAction. */
     private static final String copyEntryAsCsvOperationalAction = "copyEntryAsCsvOperationalAction"; //$NON-NLS-1$
 
+    /** The Constant deleteAllAction. */
+    private static final String deleteAllAction = "deleteAllAction"; //$NON-NLS-1$
+
     /** The Constant importDsmlAction. */
     private static final String importDsmlAction = "importDsmlAction"; //$NON-NLS-1$
 
@@ -245,6 +249,7 @@ public class BrowserViewActionGroup extends BrowserActionGroup
             new CopyEntryAsCsvAction( CopyEntryAsLdifAction.MODE_RETURNING_ATTRIBUTES_ONLY ) ) );
         browserActionMap.put( copyEntryAsCsvOperationalAction, new BrowserViewActionProxy( viewer,
             new CopyEntryAsCsvAction( CopyEntryAsLdifAction.MODE_INCLUDE_OPERATIONAL_ATTRIBUTES ) ) );
+        browserActionMap.put( deleteAllAction, new BrowserViewActionProxy( viewer, new DeleteAllAction() ) );
 
         browserActionMap.put( importDsmlAction, new BrowserViewActionProxy( viewer, new ImportExportAction(
             ImportExportAction.TYPE_IMPORT_DSML ) ) );
@@ -373,6 +378,8 @@ public class BrowserViewActionGroup extends BrowserActionGroup
         advancedMenuManager.add( browserActionMap.get( copyEntryAsCsvReturningAttributesOnlyAction ) );
         advancedMenuManager.add( browserActionMap.get( copyEntryAsCsvAction ) );
         advancedMenuManager.add( browserActionMap.get( copyEntryAsCsvOperationalAction ) );
+        advancedMenuManager.add( new Separator() );
+        advancedMenuManager.add( browserActionMap.get( deleteAllAction ) );
         advancedMenuManager.add( new Separator() );
         menuManager.add( advancedMenuManager );
         menuManager.add( new Separator() );
