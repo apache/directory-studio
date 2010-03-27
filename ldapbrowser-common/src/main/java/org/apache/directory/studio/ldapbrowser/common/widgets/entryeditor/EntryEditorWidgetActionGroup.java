@@ -29,7 +29,6 @@ import org.apache.directory.studio.ldapbrowser.common.BrowserCommonConstants;
 import org.apache.directory.studio.ldapbrowser.common.actions.CopyAction;
 import org.apache.directory.studio.ldapbrowser.common.actions.DeleteAction;
 import org.apache.directory.studio.ldapbrowser.common.actions.NewValueAction;
-import org.apache.directory.studio.ldapbrowser.common.actions.PasteAction;
 import org.apache.directory.studio.ldapbrowser.common.actions.PropertiesAction;
 import org.apache.directory.studio.ldapbrowser.common.actions.SelectAllAction;
 import org.apache.directory.studio.ldapbrowser.common.actions.ShowDecoratedValuesAction;
@@ -144,7 +143,7 @@ public class EntryEditorWidgetActionGroup implements ActionHandlerManager
 
         entryEditorActionMap.put( newValueAction, new EntryEditorActionProxy( viewer, new NewValueAction() ) );
 
-        entryEditorActionMap.put( pasteAction, new EntryEditorActionProxy( viewer, new PasteAction() ) );
+        entryEditorActionMap.put( pasteAction, new EntryEditorActionProxy( viewer, new EntryEditorPasteAction() ) );
         entryEditorActionMap.put( copyAction, new EntryEditorActionProxy( viewer, new CopyAction(
             ( BrowserActionProxy ) entryEditorActionMap.get( pasteAction ), valueEditorManager ) ) );
         entryEditorActionMap.put( deleteAction, new EntryEditorActionProxy( viewer, new DeleteAction() ) );

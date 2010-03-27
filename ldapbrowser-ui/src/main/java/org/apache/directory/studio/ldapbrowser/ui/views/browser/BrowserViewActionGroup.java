@@ -28,11 +28,11 @@ import org.apache.directory.studio.ldapbrowser.common.actions.FetchAliasesAction
 import org.apache.directory.studio.ldapbrowser.common.actions.FetchOperationalAttributesAction;
 import org.apache.directory.studio.ldapbrowser.common.actions.FetchReferralsAction;
 import org.apache.directory.studio.ldapbrowser.common.actions.FetchSubentriesAction;
-import org.apache.directory.studio.ldapbrowser.common.actions.PasteAction;
 import org.apache.directory.studio.ldapbrowser.common.actions.RenameAction;
 import org.apache.directory.studio.ldapbrowser.common.actions.proxy.BrowserActionProxy;
 import org.apache.directory.studio.ldapbrowser.common.actions.proxy.BrowserViewActionProxy;
 import org.apache.directory.studio.ldapbrowser.common.widgets.browser.BrowserActionGroup;
+import org.apache.directory.studio.ldapbrowser.ui.actions.BrowserPasteAction;
 import org.apache.directory.studio.ldapbrowser.ui.actions.CopyDnAction;
 import org.apache.directory.studio.ldapbrowser.ui.actions.CopyEntryAsCsvAction;
 import org.apache.directory.studio.ldapbrowser.ui.actions.CopyEntryAsLdifAction;
@@ -223,7 +223,7 @@ public class BrowserViewActionGroup extends BrowserActionGroup
             .put( locateEntryInDitAction, new BrowserViewActionProxy( viewer, new LocateEntryInDitAction() ) );
         browserActionMap.put( gotoDnAction, new BrowserViewActionProxy( viewer, new GotoDnAction() ) );
 
-        browserActionMap.put( pasteAction, new BrowserViewActionProxy( viewer, new PasteAction() ) );
+        browserActionMap.put( pasteAction, new BrowserViewActionProxy( viewer, new BrowserPasteAction() ) );
         browserActionMap.put( copyAction, new BrowserViewActionProxy( viewer, new CopyAction(
             ( BrowserActionProxy ) browserActionMap.get( pasteAction ) ) ) );
         browserActionMap.put( deleteAction, new BrowserViewActionProxy( viewer, new DeleteAction() ) );

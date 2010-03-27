@@ -18,30 +18,29 @@
  *  
  */
 
-package org.apache.directory.studio.ldapbrowser.ui.editors.searchresult;
+package org.apache.directory.studio.ldapbrowser.common.widgets.entryeditor;
 
 
 import org.apache.directory.studio.ldapbrowser.common.actions.PasteAction;
 import org.apache.directory.studio.ldapbrowser.common.dnd.ValuesTransfer;
-import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
+import org.apache.directory.studio.ldapbrowser.core.model.AttributeHierarchy;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
-import org.apache.directory.studio.ldapbrowser.core.model.impl.Value;
 import org.apache.directory.studio.ldapbrowser.core.utils.CompoundModification;
 
 
 /**
- * This class implements the paste action for the search result editor. 
- * It copies the value af a copied attribute-value to another attribute.
+ * This class implements the paste action for the tabular entry editor. 
+ * It copies attribute-values to another entry.
  * It does not invoke an UpdateEntryRunnable but only updates the model.
  */
-public class SearchResultEditorPasteAction extends PasteAction
+public class EntryEditorPasteAction extends PasteAction
 {
 
     /**
-     * Creates a new instance of SearchResultEditorPasteAction.
+     * Creates a new instance of EntryEditorPasteAction.
      */
-    public SearchResultEditorPasteAction()
+    public EntryEditorPasteAction()
     {
         super();
     }
@@ -55,10 +54,10 @@ public class SearchResultEditorPasteAction extends PasteAction
         IValue[] values = getValuesToPaste();
         if ( values != null )
         {
-            return values.length > 1 ? Messages.getString( "SearchResultEditorPasteAction.PasteValues" ) : Messages.getString( "SearchResultEditorPasteAction.PasteValue" ); //$NON-NLS-1$ //$NON-NLS-2$
+            return values.length > 1 ? Messages.getString( "EntryEditorPasteAction.PasteValues" ) : Messages.getString( "EntryEditorPasteAction.PasteValue" ); //$NON-NLS-1$ //$NON-NLS-2$
         }
 
-        return Messages.getString( "SearchResultEditorPasteAction.Paste" ); //$NON-NLS-1$
+        return Messages.getString( "EntryEditorPasteAction.Paste" ); //$NON-NLS-1$
     }
 
 
@@ -84,38 +83,37 @@ public class SearchResultEditorPasteAction extends PasteAction
         IValue[] values = getValuesToPaste();
         if ( values != null )
         {
-            IAttribute attribute = getSelectedAttributeHierarchies()[0].getAttribute();
-            IEntry entry = attribute.getEntry();
-
-            IValue[] newValues = new IValue[values.length];
-            for ( int v = 0; v < values.length; v++ )
+            IEntry entry = null;
+            if ( getInput() instanceof IEntry )
             {
-                newValues[v] = new Value( attribute, values[v].getRawValue() );
+                entry = ( IEntry ) getInput();
+            }
+            else if ( getInput() instanceof AttributeHierarchy )
+            {
+                entry = ( ( AttributeHierarchy ) getInput() ).getEntry();
             }
 
-            // only modify the model
-            // the modification at the directory is done by SearchResultEditor.entryUpdateListener
-            new CompoundModification().createValues( entry, newValues );
+            if ( entry != null )
+            {
+                // only modify the model
+                // the modification at the directory is done by EntryEditorManager
+                new CompoundModification().createValues( entry, values );
+            }
         }
     }
 
 
     /**
-     * Conditions:
-     * <li> an search result and a mv-attribute are selected
-     * <li> there are IValues in clipboard.
+     * Conditions: 
+     * <li>the input is an entry or attribute hierarchy</li>
+     * <li>there are values in clipboard</li>
      * 
      * @return the values to paste
      */
     private IValue[] getValuesToPaste()
     {
-        if ( getSelectedEntries().length + getSelectedBookmarks().length + getSelectedValues().length
-            + getSelectedAttributes().length + getSelectedSearches().length == 0
-            && getSelectedSearchResults().length == 1
-            && getSelectedAttributeHierarchies().length == 1
-            && getSelectedAttributeHierarchies()[0].size() == 1 )
+        if ( getInput() instanceof IEntry || getInput() instanceof AttributeHierarchy )
         {
-
             Object content = this.getFromClipboard( ValuesTransfer.getInstance() );
             if ( content != null && content instanceof IValue[] )
             {
