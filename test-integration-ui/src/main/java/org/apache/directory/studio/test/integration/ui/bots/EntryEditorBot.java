@@ -106,4 +106,16 @@ public class EntryEditorBot
         editorBot.deleteValue( attributeType, value );
     }
 
+
+    public void copyValue( String attributeType, String value )
+    {
+        editorBot.copyValue( attributeType, value );
+    }
+
+
+    public void pasteValue()
+    {
+        editorBot.pasteValue();
+    }
+
 }

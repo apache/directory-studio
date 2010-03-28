@@ -28,6 +28,7 @@ import static junit.framework.Assert.assertTrue;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.directory.server.core.entry.ClonedServerEntry;
 import org.apache.directory.server.core.entry.DefaultServerEntry;
 import org.apache.directory.server.core.entry.ServerEntry;
 import org.apache.directory.server.core.integ.Level;
@@ -38,6 +39,7 @@ import org.apache.directory.server.ldap.LdapServer;
 import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.Connection.ReferralHandlingMethod;
+import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
 import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
@@ -50,6 +52,7 @@ import org.apache.directory.studio.test.integration.ui.bots.ModificationLogsView
 import org.apache.directory.studio.test.integration.ui.bots.ReferralDialogBot;
 import org.apache.directory.studio.test.integration.ui.bots.SearchLogsViewBot;
 import org.apache.directory.studio.test.integration.ui.bots.StudioBot;
+import org.apache.directory.studio.test.integration.ui.bots.utils.JobWatcher;
 import org.eclipse.jface.dialogs.ErrorDialog;
 import org.junit.After;
 import org.junit.Before;
@@ -491,6 +494,50 @@ public class BrowserTest
         assertTrue( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=users",
             "cn=loopback+ipHostNumber=127.0.0.1" ) );
         browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users", "cn=loopback+ipHostNumber=127.0.0.1" );
+    }
+
+
+    /**
+     * DIRSTUDIO-637: copy/paste of attributes no longer works.
+     * Test copy/paste of a value to a bookmark.
+     * 
+     * @throws Exception
+     *             the exception
+     */
+    @Test
+    public void testCopyPasteValueToBookmark() throws Exception
+    {
+        // create a bookmark
+        IBrowserConnection browserConnection = BrowserCorePlugin.getDefault().getConnectionManager()
+            .getBrowserConnection( connection );
+        browserConnection.getBookmarkManager().addBookmark(
+            new Bookmark( browserConnection, new LdapDN( "uid=user.2,ou=users,ou=system" ), "My Bookmark" ) );
+
+        // copy a value
+        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users", "uid=user.1" );
+        EntryEditorBot entryEditorBot = studioBot.getEntryEditorBot( "uid=user.1,ou=users,ou=system" );
+        entryEditorBot.activate();
+        entryEditorBot.copyValue( "uid", "user.1" );
+
+        // select the bookmark
+        browserViewBot.selectEntry( "Bookmarks", "My Bookmark" );
+        entryEditorBot = studioBot.getEntryEditorBot( "uid=user.2,ou=users,ou=system" );
+        entryEditorBot.activate();
+        assertEquals( 23, entryEditorBot.getAttributeValues().size() );
+
+        // paste the value
+        JobWatcher watcher = new JobWatcher( BrowserCoreMessages.jobs__execute_ldif_name );
+        browserViewBot.paste();
+        watcher.waitUntilDone();
+
+        // assert pasted value visible in editor
+        assertEquals( 24, entryEditorBot.getAttributeValues().size() );
+        entryEditorBot.getAttributeValues().contains( "uid: user.1" );
+
+        // assert pasted value was written to directory
+        ClonedServerEntry entry = ldapServer.getDirectoryService().getAdminSession().lookup(
+            new LdapDN( "uid=user.2,ou=users,ou=system" ) );
+        assertTrue( entry.contains( "uid", "user.1" ) );
     }
 
 }

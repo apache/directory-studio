@@ -27,11 +27,14 @@ import static junit.framework.Assert.assertTrue;
 import static org.eclipse.swtbot.swt.finder.SWTBotTestCase.assertContains;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.directory.server.core.entry.ClonedServerEntry;
 import org.apache.directory.server.core.integ.Level;
 import org.apache.directory.server.core.integ.annotations.ApplyLdifFiles;
 import org.apache.directory.server.core.integ.annotations.CleanupLevel;
 import org.apache.directory.server.integ.SiRunner;
 import org.apache.directory.server.ldap.LdapServer;
+import org.apache.directory.shared.ldap.name.LdapDN;
+import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.test.integration.ui.bots.BrowserViewBot;
 import org.apache.directory.studio.test.integration.ui.bots.ConnectionsViewBot;
 import org.apache.directory.studio.test.integration.ui.bots.DnEditorDialogBot;
@@ -40,6 +43,7 @@ import org.apache.directory.studio.test.integration.ui.bots.ModificationLogsView
 import org.apache.directory.studio.test.integration.ui.bots.NewAttributeWizardBot;
 import org.apache.directory.studio.test.integration.ui.bots.SelectDnDialogBot;
 import org.apache.directory.studio.test.integration.ui.bots.StudioBot;
+import org.apache.directory.studio.test.integration.ui.bots.utils.JobWatcher;
 import org.eclipse.swtbot.swt.finder.utils.SWTUtils;
 import org.junit.After;
 import org.junit.Before;
@@ -209,6 +213,46 @@ public class EntryEditorTest
 
         assertEquals( "Expected 1 modification.", 1, StringUtils.countMatches( modificationLogsViewBot
             .getModificationLogsText(), "#!RESULT OK" ) );
+    }
+
+
+    /**
+     * DIRSTUDIO-637: copy/paste of attributes no longer works.
+     * Test copy/paste within entry editor.
+     * 
+     * @throws Exception
+     *             the exception
+     */
+    @Test
+    public void testCopyPasteIn() throws Exception
+    {
+        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users", "cn=Barbara Jensen" );
+
+        // copy a value
+        EntryEditorBot entryEditorBot = studioBot.getEntryEditorBot( "cn=Barbara Jensen,ou=users,ou=system" );
+        entryEditorBot.activate();
+        entryEditorBot.copyValue( "uid", "bjensen" );
+
+        // go to another entry
+        browserViewBot
+            .selectEntry( "DIT", "Root DSE", "ou=system", "ou=users", "cn=\\#\\\\\\+\\, \\\"\u00F6\u00E9\\\"" );
+        entryEditorBot = studioBot.getEntryEditorBot( "cn=\\#\\\\\\+\\, \\\"\u00F6\u00E9\\\",ou=users,ou=system" );
+        entryEditorBot.activate();
+        assertEquals( 8, entryEditorBot.getAttributeValues().size() );
+
+        // paste value, wait till job is done
+        JobWatcher watcher = new JobWatcher( BrowserCoreMessages.jobs__execute_ldif_name );
+        entryEditorBot.pasteValue();
+        watcher.waitUntilDone();
+
+        // assert pasted value visible in editor
+        assertEquals( 9, entryEditorBot.getAttributeValues().size() );
+        entryEditorBot.getAttributeValues().contains( "uid: bjensen" );
+
+        // assert pasted value was written to directory
+        ClonedServerEntry entry = ldapServer.getDirectoryService().getAdminSession().lookup(
+            new LdapDN( "cn=\\#\\\\\\+\\, \\\"\u00F6\u00E9\\\",ou=users,ou=system" ) );
+        assertTrue( entry.contains( "uid", "bjensen" ) );
     }
 
 }

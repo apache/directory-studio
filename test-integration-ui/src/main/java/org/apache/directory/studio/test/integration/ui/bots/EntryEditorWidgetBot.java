@@ -110,10 +110,24 @@ class EntryEditorWidgetBot
     void deleteValue( String attributeType, String value )
     {
         SWTBotTreeItem treeItem = getTreeItem( attributeType, value );
-        treeItem.click();
+        treeItem.select();
         ContextMenuHelper.clickContextMenu( bot.tree(), "Delete Value" );
         DeleteDialogBot deleteDialogBot = new DeleteDialogBot( DeleteDialogBot.DELETE_VALUE_TITLE );
         deleteDialogBot.clickOkButton();
+    }
+
+
+    public void copyValue( String attributeType, String value )
+    {
+        SWTBotTreeItem treeItem = getTreeItem( attributeType, value );
+        treeItem.select();
+        ContextMenuHelper.clickContextMenu( bot.tree(), "Copy Value" );
+    }
+
+
+    public void pasteValue()
+    {
+        ContextMenuHelper.clickContextMenu( bot.tree(), "Paste Value" );
     }
 
 }
