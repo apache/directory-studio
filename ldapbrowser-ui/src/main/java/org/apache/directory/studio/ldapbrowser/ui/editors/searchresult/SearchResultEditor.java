@@ -242,13 +242,7 @@ public class SearchResultEditor extends EditorPart implements INavigationLocatio
      */
     public void init( IEditorSite site, IEditorInput input ) throws PartInitException
     {
-        super.setSite( site );
-
-        // mark dummy location, necessary because the first marked
-        // location doesn't appear in history
-        setInput( new SearchResultEditorInput( null ) );
-        getSite().getPage().getNavigationHistory().markLocation( this );
-
+        setSite( site );
         setInput( input );
 
         EventRegistry
