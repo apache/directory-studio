@@ -19,6 +19,13 @@
 <chapter id="release_notes">
 	<title>Release notes</title>
     <simplesect>
+        <title>Apache Directory Studio 1.5.3 - (2010, March 29th)</title>
+        <para>
+            Nothing new.
+        </para>
+    </simplesect>
+    
+    <simplesect>
         <title>Apache Directory Studio 1.5.2 - (2009, December 11th)</title>
         <para>
             Nothing new.
