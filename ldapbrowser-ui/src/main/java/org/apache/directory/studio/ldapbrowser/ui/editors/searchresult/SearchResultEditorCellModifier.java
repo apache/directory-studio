@@ -49,15 +49,20 @@ public class SearchResultEditorCellModifier implements ICellModifier
     /** The value editor manager. */
     private ValueEditorManager valueEditorManager;
 
+    /** The cursor */
+    private SearchResultEditorCursor cursor;
+
 
     /**
      * Creates a new instance of SearchResultEditorCellModifier.
      * 
      * @param valueEditorManager the value editor manager
+     * @param cursor the cursor
      */
-    public SearchResultEditorCellModifier( ValueEditorManager valueEditorManager )
+    public SearchResultEditorCellModifier( ValueEditorManager valueEditorManager, SearchResultEditorCursor cursor )
     {
         this.valueEditorManager = valueEditorManager;
+        this.cursor = cursor;
     }
 
 
@@ -110,7 +115,8 @@ public class SearchResultEditorCellModifier implements ICellModifier
     {
         if ( element != null && element instanceof ISearchResult && property != null )
         {
-            ISearchResult result = ( ISearchResult ) element;
+            // perform modifications on the clone
+            ISearchResult result = cursor.getSelectedSearchResult();
             AttributeHierarchy ah = result.getAttributeWithSubtypes( property );
 
             if ( !canModify( element, property ) )
@@ -145,7 +151,8 @@ public class SearchResultEditorCellModifier implements ICellModifier
 
         if ( element != null && element instanceof ISearchResult && property != null )
         {
-            ISearchResult result = ( ISearchResult ) element;
+            // perform modifications on the clone
+            ISearchResult result = cursor.getSelectedSearchResult();
             AttributeHierarchy ah = result.getAttributeWithSubtypes( property );
 
             // switch operation:

@@ -108,9 +108,10 @@ public class SearchResultEditorContentProvider implements ILazyContentProvider
             if ( elements.length > 1000 && mainWidget.getViewer() != null
                 && !mainWidget.getViewer().getTable().isDisposed() )
             {
-                FilterAndSortRunnable runnable = new FilterAndSortRunnable( configuration, mainWidget, elements );
-                RunnableContextRunner.execute( runnable, null, true );
-                filteredAndSortedElements = runnable.getFilteredAndSortedElements();
+                // deactivate fitering and sorting for large data set
+                // FilterAndSortRunnable runnable = new FilterAndSortRunnable( configuration, mainWidget, elements );
+                // RunnableContextRunner.execute( runnable, null, true );
+                // filteredAndSortedElements = runnable.getFilteredAndSortedElements();
             }
             else if ( elements.length > 0 && mainWidget.getViewer() != null
                 && !mainWidget.getViewer().getTable().isDisposed() )

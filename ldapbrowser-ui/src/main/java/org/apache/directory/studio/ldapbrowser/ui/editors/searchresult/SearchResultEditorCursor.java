@@ -31,8 +31,11 @@ import org.apache.directory.studio.ldapbrowser.core.events.EntryUpdateListener;
 import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
 import org.apache.directory.studio.ldapbrowser.core.model.AttributeHierarchy;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
+import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearchResult;
 import org.apache.directory.studio.ldapbrowser.core.model.impl.Attribute;
+import org.apache.directory.studio.ldapbrowser.core.model.impl.SearchResult;
+import org.apache.directory.studio.ldapbrowser.core.utils.CompoundModification;
 import org.apache.directory.studio.ldapbrowser.ui.BrowserUIConstants;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
@@ -62,6 +65,12 @@ public class SearchResultEditorCursor extends TableCursor implements ISelectionP
 
     /** The selection changes listener list. */
     private List<ISelectionChangedListener> selectionChangesListenerList;
+
+    /** The cloned reference copy of the search result under the cursor */
+    private ISearchResult referenceCopy;
+
+    /** The cloned working copy of the search result under the cursor */
+    private ISearchResult workingCopy;
 
 
     /**
@@ -192,11 +201,10 @@ public class SearchResultEditorCursor extends TableCursor implements ISelectionP
         if ( !isDisposed() && getRow() != null && viewer != null && viewer.getColumnProperties() != null
             && viewer.getColumnProperties().length >= getColumn() + 1 )
         {
-            Object o = getRow().getData();
+            ISearchResult sr = getSelectedSearchResult();
             String property = ( String ) viewer.getColumnProperties()[getColumn()];
-            if ( o instanceof ISearchResult && !BrowserUIConstants.DN.equals( property ) )
+            if ( sr != null && !BrowserUIConstants.DN.equals( property ) )
             {
-                ISearchResult sr = ( ISearchResult ) o;
                 AttributeHierarchy ah = sr.getAttributeWithSubtypes( property );
 
                 if ( ah == null )
@@ -224,10 +232,48 @@ public class SearchResultEditorCursor extends TableCursor implements ISelectionP
             Object o = getRow().getData();
             if ( o instanceof ISearchResult )
             {
-                return ( ISearchResult ) o;
+                ISearchResult sr = ( ISearchResult ) o;
+                if ( !sr.equals( workingCopy ) )
+                {
+                    IEntry entry = sr.getEntry();
+                    IEntry referenceEntry = new CompoundModification().cloneEntry( entry );
+                    referenceCopy = new SearchResult( referenceEntry, sr.getSearch() );
+                    IEntry workingEntry = new CompoundModification().cloneEntry( entry );
+                    workingCopy = new SearchResult( workingEntry, sr.getSearch() );
+                }
+
+                return workingCopy;
             }
         }
         return null;
+    }
+
+
+    /**
+     * Gets the selected reference copy.
+     * 
+     * @return the selected reference copy, may be null
+     */
+    public ISearchResult getSelectedReferenceCopy()
+    {
+        return referenceCopy;
+    }
+
+
+    /**
+     * Resets reference and working copy copy.
+     */
+    public void resetCopies()
+    {
+        referenceCopy = null;
+        workingCopy = null;
+
+        // update all actions with the fresh selection
+        for ( Iterator<?> it = selectionChangesListenerList.iterator(); it.hasNext(); )
+        {
+            ( ( ISelectionChangedListener ) it.next() ).selectionChanged( new SelectionChangedEvent(
+                SearchResultEditorCursor.this, getSelection() ) );
+        }
     }
 
 

@@ -208,7 +208,7 @@ public class SearchResultEditorConfiguration
     {
         if ( cellModifier == null )
         {
-            cellModifier = new SearchResultEditorCellModifier( getValueEditorManager( viewer ) );
+            cellModifier = new SearchResultEditorCellModifier( getValueEditorManager( viewer ), getCursor( viewer ) );
         }
         return cellModifier;
     }
