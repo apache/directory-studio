@@ -98,7 +98,7 @@
 			<itemizedlist spacing="normal" mark="bullet">
 				<listitem>
 					<para>[DIRSTUDIO-638] - Improve the way we ask for operational
-						attrbutes</para>
+						attributes</para>
 				</listitem>
 				<listitem>
 					<para>[DIRSTUDIO-634] - Add search context menu entry / simplify
