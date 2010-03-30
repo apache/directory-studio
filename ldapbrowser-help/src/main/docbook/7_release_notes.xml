@@ -78,6 +78,9 @@
 					<para>[DIRSTUDIO-610] - Unable to export to "My Documents"</para>
 				</listitem>
 				<listitem>
+					<para>[DIRSTUDIO-609] - Studio "hangs" when performing large search that is to be displayed</para>
+				</listitem>
+				<listitem>
 					<para>[DIRSTUDIO-608] - Non-translated string in the French version
 						of the "Export Connections" wizard</para>
 				</listitem>
