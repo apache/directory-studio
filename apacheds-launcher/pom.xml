@@ -23,11 +23,11 @@
 	<parent>
 		<groupId>org.apache.directory.studio</groupId>
 		<artifactId>parent</artifactId>
-		<version>1.5.3-SNAPSHOT</version>
+		<version>1.5.3.v20100330</version>
 	</parent>
 
 	<artifactId>apacheds-launcher</artifactId>
-    <version>1.5.3-SNAPSHOT</version>
+    <version>1.5.3</version>
 	<name>Apache Directory Studio Apache DS Launcher</name>
 	<packaging>jar</packaging>
 

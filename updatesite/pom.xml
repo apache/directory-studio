@@ -23,14 +23,14 @@
   <parent>
     <groupId>org.apache.directory.studio</groupId>
     <artifactId>parent</artifactId>
-    <version>1.5.3-SNAPSHOT</version>
+    <version>1.5.3.v20100330</version>
   </parent>
 
   <artifactId>updatesite</artifactId>
   <name>Apache Directory Studio Update Site</name>
   <packaging>pom</packaging>
 
-  <description></description>
+  <description />
 
   <profiles>
     <profile>
@@ -66,14 +66,8 @@
                 <configuration>
                   <tasks>
                     <mkdir dir="/var/www/html/mirror-maven2/org/apache/directory/studio/nightly-plugin" />
-                    <copy
-                      todir="/var/www/html/mirror-maven2/org/apache/directory/studio/nightly-plugin"
-                      overwrite="true"
-                      file="target/studio-plugin-nightlybuild.tar.gz" />
-                    <copy
-                      todir="/var/www/html/mirror-maven2/org/apache/directory/studio/nightly-plugin"
-                      overwrite="true"
-                      file="target/studio-plugin-nightlybuild.zip" />
+                    <copy todir="/var/www/html/mirror-maven2/org/apache/directory/studio/nightly-plugin" overwrite="true" file="target/studio-plugin-nightlybuild.tar.gz" />
+                    <copy todir="/var/www/html/mirror-maven2/org/apache/directory/studio/nightly-plugin" overwrite="true" file="target/studio-plugin-nightlybuild.zip" />
                   </tasks>
                 </configuration>
                 <goals>
