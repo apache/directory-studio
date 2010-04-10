@@ -28,7 +28,7 @@
 
   <groupId>org.apache.directory.studio</groupId>
   <artifactId>parent</artifactId>
-  <version>1.5.3-SNAPSHOT</version>
+  <version>1.5.4-SNAPSHOT</version>
   <name>Apache Directory Studio</name>
   <description>Apache Directory Studio is a complete directory tooling platform intended to be used with any LDAP server however it is particularly designed for use with the Apache Directory Server.</description>
   <packaging>pom</packaging>
@@ -66,8 +66,6 @@
     <studio.dist.url>${pom.distributionManagement.repository.url}</studio.dist.url>
     <distMgmtSiteUrl>scpexe://people.apache.org/www/directory.apache.org/studio/gen-docs/${version}</distMgmtSiteUrl>
     
-    <apacheds.launcher.version>1.5.0-SNAPSHOT</apacheds.launcher.version>
-
     <!-- Set versions for depending projects -->
     <org.apache.directory.shared.version>0.9.17</org.apache.directory.shared.version>
     <skin.version>1.0.1</skin.version>
@@ -194,7 +192,7 @@
       <dependency>
         <groupId>org.apache.directory.studio</groupId>
         <artifactId>apacheds-launcher</artifactId>
-        <version>1.5.3-SNAPSHOT</version>
+        <version>${pom.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.directory.studio</groupId>
