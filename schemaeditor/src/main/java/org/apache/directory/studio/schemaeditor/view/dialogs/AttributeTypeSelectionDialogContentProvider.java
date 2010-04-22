@@ -72,14 +72,11 @@ public class AttributeTypeSelectionDialogContentProvider implements IStructuredC
             String searchText = ( String ) inputElement;
 
             String searchRegexp;
-            if ( searchText.length() == 0 )
-            {
-                searchRegexp = ".*"; //$NON-NLS-1$
-            }
-            else
-            {
-                searchRegexp = searchText + ".*"; //$NON-NLS-1$
-            }
+
+            searchText += "*"; //$NON-NLS-1$
+            searchRegexp = searchText.replaceAll( "\\*", "[\\\\S]*" ); //$NON-NLS-1$ //$NON-NLS-2$ 
+            searchRegexp = searchRegexp.replaceAll( "\\?", "[\\\\S]" ); //$NON-NLS-1$ //$NON-NLS-2$ 
+
             Pattern pattern = Pattern.compile( searchRegexp, Pattern.CASE_INSENSITIVE );
 
             List<AttributeTypeImpl> atList = schemaHandler.getAttributeTypes();

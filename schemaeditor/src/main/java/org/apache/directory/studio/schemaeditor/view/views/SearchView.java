@@ -685,8 +685,8 @@ public class SearchView extends ViewPart
 
         if ( searchString != null )
         {
-            String computedSearchString = searchString.replaceAll( "\\*", "\\\\S*" ); //$NON-NLS-1$ //$NON-NLS-2$
-            computedSearchString = computedSearchString.replaceAll( "\\?", ".*" ); //$NON-NLS-1$ //$NON-NLS-2$
+            String computedSearchString = searchString.replaceAll( "\\*", "[\\\\S]*" ); //$NON-NLS-1$ //$NON-NLS-2$
+            computedSearchString = computedSearchString.replaceAll( "\\?", "[\\\\S]" ); //$NON-NLS-1$ //$NON-NLS-2$
 
             Pattern pattern = Pattern.compile( computedSearchString, Pattern.CASE_INSENSITIVE );
 
