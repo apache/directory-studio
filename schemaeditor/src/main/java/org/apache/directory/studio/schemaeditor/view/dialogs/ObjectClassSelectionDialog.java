@@ -110,7 +110,7 @@ public class ObjectClassSelectionDialog extends Dialog
         chooseLabel.setText( Messages.getString( "ObjectClassSelectionDialog.ChooseClass" ) ); //$NON-NLS-1$
         chooseLabel.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
 
-        searchText = new Text( composite, SWT.BORDER );
+        searchText = new Text( composite, SWT.BORDER | SWT.SEARCH );
         searchText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
         searchText.addModifyListener( new ModifyListener()
         {
