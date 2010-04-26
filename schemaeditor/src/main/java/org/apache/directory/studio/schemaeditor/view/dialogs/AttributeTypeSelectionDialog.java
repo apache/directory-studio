@@ -220,7 +220,8 @@ public class AttributeTypeSelectionDialog extends Dialog
      */
     protected void createButtonsForButtonBar( Composite parent )
     {
-        chooseButton = createButton( parent, IDialogConstants.OK_ID, "Choose", true ); //$NON-NLS-1$
+        chooseButton = createButton( parent, IDialogConstants.OK_ID, Messages
+            .getString( "AttributeTypeSelectionDialog.Choose" ), true ); //$NON-NLS-1$
         createButton( parent, IDialogConstants.CANCEL_ID, IDialogConstants.CANCEL_LABEL, false );
 
         StructuredSelection selection = ( StructuredSelection ) attributeTypesTableViewer.getSelection();
