@@ -29,8 +29,8 @@
     <release>
       <Version>
         <name>Stable release</name>
-        <created>2008-08-19</created>
-        <revision>1.2.0</revision>
+        <created>2010-04-05</created>
+        <revision>1.5.3</revision>
       </Version>
     </release>
     <repository>
