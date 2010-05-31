@@ -263,7 +263,7 @@ public class SearchViewLabelProvider extends LabelProvider
             {
                 SchemaObject object = ( SchemaObject ) element;
 
-                label += " from schema \"" + object.getSchema() + "\""; //$NON-NLS-1$ //$NON-NLS-2$
+                label += " " + Messages.getString( "SearchViewLabelProvider.FromSchema" ) + "\"" + object.getSchema() + "\""; //$NON-NLS-1$ //$NON-NLS-2$
             }
         }
 
