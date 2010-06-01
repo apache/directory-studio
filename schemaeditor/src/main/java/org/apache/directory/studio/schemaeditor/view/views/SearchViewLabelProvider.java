@@ -253,7 +253,7 @@ public class SearchViewLabelProvider extends LabelProvider
                 secondaryLabel = secondaryLabel.substring( 0, secondaryLabelAbbreviateMaxLength ) + "..."; //$NON-NLS-1$
             }
 
-            label += "  [" + secondaryLabel + "]"; //$NON-NLS-1$ //$NON-NLS-2$
+            label += " [" + secondaryLabel + "]"; //$NON-NLS-1$ //$NON-NLS-2$
         }
 
         // Schema Label
@@ -263,7 +263,7 @@ public class SearchViewLabelProvider extends LabelProvider
             {
                 SchemaObject object = ( SchemaObject ) element;
 
-                label += " " + Messages.getString( "SearchViewLabelProvider.FromSchema" ) + "\"" + object.getSchema() + "\""; //$NON-NLS-1$ //$NON-NLS-2$
+                label += " " + Messages.getString( "SearchViewLabelProvider.FromSchema" ) + " \"" + object.getSchema() + "\""; //$NON-NLS-1$ //$NON-NLS-2$
             }
         }
 
