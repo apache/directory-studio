@@ -28,7 +28,6 @@ import org.apache.directory.studio.schemaeditor.model.Project;
  * events that are generated when the ProjectsHandler is modified.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public interface ProjectsHandlerListener
 {

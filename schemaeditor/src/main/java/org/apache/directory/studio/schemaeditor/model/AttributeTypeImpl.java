@@ -34,7 +34,6 @@ import org.apache.directory.shared.ldap.schema.UsageEnum;
  * This class represents an attribute type.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class AttributeTypeImpl extends AbstractAttributeType implements MutableSchemaObject
 {

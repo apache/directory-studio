@@ -26,7 +26,6 @@ package org.apache.directory.studio.ldapbrowser.common.widgets.entryeditor;
  * by the entry editor widget.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public interface EntryEditorWidgetTableMetadata
 {

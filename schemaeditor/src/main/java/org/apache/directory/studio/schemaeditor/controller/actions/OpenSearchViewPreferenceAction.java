@@ -35,7 +35,6 @@ import org.eclipse.ui.dialogs.PreferencesUtil;
  * This action opens the Preference Page for the SearchView.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class OpenSearchViewPreferenceAction extends Action implements IWorkbenchWindowActionDelegate
 {

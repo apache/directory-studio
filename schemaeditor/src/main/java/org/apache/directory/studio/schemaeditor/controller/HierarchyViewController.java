@@ -60,7 +60,6 @@ import org.eclipse.ui.PlatformUI;
  * This class implements the Controller for the Hierarchy View
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class HierarchyViewController
 {

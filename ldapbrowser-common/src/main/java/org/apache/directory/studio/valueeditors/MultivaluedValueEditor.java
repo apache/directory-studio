@@ -41,7 +41,6 @@ import org.eclipse.swt.widgets.Control;
  * Special ValueEditor to handle attributes with multiple values in a dialog.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class MultivaluedValueEditor extends CellEditor implements IValueEditor
 {

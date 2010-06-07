@@ -28,7 +28,6 @@ import org.apache.directory.studio.ldapbrowser.core.model.IValue;
  * Utilies for filter handling.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class LdapFilterUtils
 {

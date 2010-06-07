@@ -40,7 +40,6 @@ import org.eclipse.swt.widgets.Composite;
  * This class implements the page used to select the connections to export.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class ExportConnectionsWizardPage extends WizardPage
 {

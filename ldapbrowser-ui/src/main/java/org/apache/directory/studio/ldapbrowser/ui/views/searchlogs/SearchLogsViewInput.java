@@ -29,7 +29,6 @@ import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
  * It consists of a connection and the index of the displayed log file.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class SearchLogsViewInput
 {

@@ -46,7 +46,6 @@ import org.eclipse.ui.dialogs.PreferencesUtil;
  * The main preference page of the LDIF editor.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class LdifEditorPreferencePage extends PreferencePage implements IWorkbenchPreferencePage
 {

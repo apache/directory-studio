@@ -41,7 +41,6 @@ import org.eclipse.jface.viewers.Viewer;
  * This class implements the Content Provider for the Schemas View.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class HierarchyViewContentProvider implements IStructuredContentProvider, ITreeContentProvider
 {

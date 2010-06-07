@@ -66,7 +66,6 @@ import org.eclipse.ui.texteditor.AbstractDocumentProvider;
  * This class is used to share a LDIF Document and listen on document modifications.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class LdifDocumentProvider extends AbstractDocumentProvider implements IDocumentListener
 {

@@ -43,7 +43,6 @@ import org.apache.directory.studio.ldapbrowser.core.model.impl.Search;
  * Runnable to read a single entry from directory.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class ReadEntryRunnable implements StudioBulkRunnableWithProgress
 {

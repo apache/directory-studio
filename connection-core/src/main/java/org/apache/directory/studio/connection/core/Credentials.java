@@ -25,7 +25,6 @@ package org.apache.directory.studio.connection.core;
  * Default implementation of ICredentials.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class Credentials implements ICredentials
 {

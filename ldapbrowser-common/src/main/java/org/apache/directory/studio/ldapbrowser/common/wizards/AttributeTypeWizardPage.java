@@ -54,7 +54,6 @@ import org.eclipse.swt.widgets.Text;
  * some filter and a preview field.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class AttributeTypeWizardPage extends WizardPage
 {

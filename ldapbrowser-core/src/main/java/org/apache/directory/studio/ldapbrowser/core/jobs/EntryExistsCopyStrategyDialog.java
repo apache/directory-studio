@@ -29,7 +29,6 @@ import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
  * A dialog to select the copy strategy if an entry already exists.
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public interface EntryExistsCopyStrategyDialog
 {
@@ -79,7 +78,6 @@ public interface EntryExistsCopyStrategyDialog
      * Enum for the copy strategy.
      * 
      * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
-     * @version $Rev$, $Date$
      */
     public enum EntryExistsCopyStrategy
     {

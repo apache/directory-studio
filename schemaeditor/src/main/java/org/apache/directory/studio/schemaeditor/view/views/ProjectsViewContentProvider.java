@@ -40,7 +40,6 @@ import org.eclipse.jface.viewers.Viewer;
  * This class implements the ContentProvider for the ProblemsView.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class ProjectsViewContentProvider implements IStructuredContentProvider, ITreeContentProvider
 {

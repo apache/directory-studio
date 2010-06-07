@@ -47,7 +47,6 @@ import org.eclipse.swt.widgets.Text;
  * This class represents the dialog used to change the browser's sort settings.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class BrowserSorterDialog extends Dialog
 {

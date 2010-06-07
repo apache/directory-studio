@@ -59,7 +59,6 @@ import org.eclipse.ui.PlatformUI;
  * the browser widget.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class BrowserLabelProvider extends LabelProvider implements IFontProvider, IColorProvider
 {

@@ -55,7 +55,6 @@ import org.eclipse.swt.widgets.Display;
  * The cursor implementation for the search result editor.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class SearchResultEditorCursor extends TableCursor implements ISelectionProvider, EntryUpdateListener
 {

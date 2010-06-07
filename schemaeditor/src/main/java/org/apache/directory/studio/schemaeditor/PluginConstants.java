@@ -29,7 +29,6 @@ import org.apache.directory.studio.schemaeditor.view.preferences.SearchViewPrefe
  * This interface contains all the Constants used in the Plugin.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public interface PluginConstants
 {

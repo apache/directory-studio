@@ -51,7 +51,6 @@ import org.eclipse.ui.PartInitException;
  * This class implements the Search Page.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class SearchPage extends DialogPage implements ISearchPage
 {
@@ -77,7 +76,6 @@ public class SearchPage extends DialogPage implements ISearchPage
      * This enums represents the different possible search in for a Schema Search.
      *
      * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
-     * @version $Rev$, $Date$
      */
     public enum SearchInEnum
     {

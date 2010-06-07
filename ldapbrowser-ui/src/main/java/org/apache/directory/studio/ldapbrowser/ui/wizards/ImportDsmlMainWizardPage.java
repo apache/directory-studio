@@ -42,7 +42,6 @@ import org.eclipse.swt.widgets.Group;
  * This class implements the Main Page of the DSML Import Wizard
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class ImportDsmlMainWizardPage extends WizardPage
 {

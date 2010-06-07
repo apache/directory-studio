@@ -42,7 +42,6 @@ import org.eclipse.ui.IWorkbenchWindowActionDelegate;
  * This action launches the NewProjectWizard.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class RenameProjectAction extends Action implements IWorkbenchWindowActionDelegate
 {

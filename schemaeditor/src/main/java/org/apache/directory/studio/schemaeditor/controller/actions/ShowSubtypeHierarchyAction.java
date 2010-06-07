@@ -30,7 +30,6 @@ import org.eclipse.jface.action.Action;
  * This class implements the Show Subtype Hierachy Action for the Hierarchy View.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class ShowSubtypeHierarchyAction extends Action
 {

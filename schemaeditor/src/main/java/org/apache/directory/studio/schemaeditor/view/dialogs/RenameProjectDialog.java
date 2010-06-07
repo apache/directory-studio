@@ -44,7 +44,6 @@ import org.eclipse.ui.PlatformUI;
  * this dialog is used to rename a project.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class RenameProjectDialog extends Dialog
 {

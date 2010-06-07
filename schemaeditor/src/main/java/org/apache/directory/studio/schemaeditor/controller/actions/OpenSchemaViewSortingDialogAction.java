@@ -35,7 +35,6 @@ import org.eclipse.ui.PlatformUI;
  * This action opens the Sorting Dialog for the SchemaView.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class OpenSchemaViewSortingDialogAction extends Action implements IWorkbenchWindowActionDelegate
 {

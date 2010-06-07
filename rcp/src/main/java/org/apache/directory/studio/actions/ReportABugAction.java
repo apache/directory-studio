@@ -38,7 +38,6 @@ import org.eclipse.ui.PartInitException;
  * The Action is used to open a browser that displays to page for opening a new Jira
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class ReportABugAction extends Action implements IWorkbenchWindowActionDelegate
 {

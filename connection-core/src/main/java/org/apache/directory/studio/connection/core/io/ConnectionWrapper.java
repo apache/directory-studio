@@ -27,7 +27,6 @@ import org.apache.directory.studio.connection.core.jobs.StudioProgressMonitor;
  * A ConnectionWrapper is a wrapper for a real directory connection implementation.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public interface ConnectionWrapper
 {

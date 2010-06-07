@@ -34,7 +34,6 @@ import org.apache.directory.studio.ldapbrowser.core.BrowserCoreConstants;
  * {@link Charset#availableCharsets()}. No custom input is allowed.
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class FileEncodingInput extends OptionsInput
 {

@@ -37,7 +37,6 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
  * search result editor.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class SearchResultEditorPreferencePage extends PreferencePage implements IWorkbenchPreferencePage
 {

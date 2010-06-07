@@ -48,7 +48,6 @@ import org.eclipse.swt.widgets.Spinner;
  * A dialog to compose item permissions.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class ItemPermissionDialog extends Dialog
 {

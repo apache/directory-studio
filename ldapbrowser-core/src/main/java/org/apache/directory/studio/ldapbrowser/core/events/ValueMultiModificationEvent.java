@@ -32,7 +32,6 @@ import org.apache.directory.studio.ldapbrowser.core.model.IValue;
  * {@link IEntry} were added, modified, deleted and/or renamed.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class ValueMultiModificationEvent extends EntryModificationEvent
 {

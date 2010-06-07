@@ -38,7 +38,6 @@ import org.eclipse.ui.PlatformUI;
  * This class implements the Dialog for SASL Realm.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class SaslRealmDialog extends Dialog
 {

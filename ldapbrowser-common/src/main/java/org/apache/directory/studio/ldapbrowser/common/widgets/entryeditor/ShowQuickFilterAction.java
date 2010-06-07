@@ -31,7 +31,6 @@ import org.eclipse.ui.texteditor.IWorkbenchActionDefinitionIds;
  * This action shows/hides the instant search.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class ShowQuickFilterAction extends Action
 {

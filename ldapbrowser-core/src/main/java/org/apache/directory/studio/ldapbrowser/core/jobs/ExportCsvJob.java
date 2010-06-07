@@ -53,7 +53,6 @@ import org.eclipse.core.runtime.Preferences;
  * Job to export directory content to an CSV file.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class ExportCsvJob extends AbstractEclipseJob
 {

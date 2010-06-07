@@ -36,7 +36,6 @@ import org.eclipse.swt.widgets.Group;
  * This class implements the page to select the target DSML file.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class ExportDsmlToWizardPage extends ExportBaseToPage
 {

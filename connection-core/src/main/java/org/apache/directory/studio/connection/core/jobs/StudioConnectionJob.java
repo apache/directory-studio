@@ -36,7 +36,6 @@ import org.eclipse.core.runtime.jobs.Job;
  * Job to run {@link StudioRunnableWithProgress} runnables.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class StudioConnectionJob extends Job
 {

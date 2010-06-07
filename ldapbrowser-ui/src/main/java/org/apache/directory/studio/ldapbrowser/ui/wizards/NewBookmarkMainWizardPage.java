@@ -42,7 +42,6 @@ import org.eclipse.swt.widgets.Text;
  * and the DN of the target entry.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class NewBookmarkMainWizardPage extends WizardPage implements WidgetModifyListener
 {

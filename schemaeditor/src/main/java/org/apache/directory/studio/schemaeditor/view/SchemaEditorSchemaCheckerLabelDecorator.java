@@ -44,7 +44,6 @@ import org.eclipse.jface.viewers.LabelProvider;
  * based on their state in the schema checker.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class SchemaEditorSchemaCheckerLabelDecorator extends LabelProvider implements ILightweightLabelDecorator
 {
@@ -276,7 +275,6 @@ public class SchemaEditorSchemaCheckerLabelDecorator extends LabelProvider imple
      * This enum defines the state of an element.
      * 
      * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
-     * @version $Rev$, $Date$
      */
     private enum ElementState
     {

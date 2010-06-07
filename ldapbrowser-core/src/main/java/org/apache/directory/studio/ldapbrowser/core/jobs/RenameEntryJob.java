@@ -56,7 +56,6 @@ import org.apache.directory.studio.ldapbrowser.core.model.ISearchResult;
  * searching/creating/deleting entries.
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class RenameEntryJob extends AbstractNotificationJob
 {

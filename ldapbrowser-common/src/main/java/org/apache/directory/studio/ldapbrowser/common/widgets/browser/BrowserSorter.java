@@ -40,7 +40,6 @@ import org.eclipse.jface.viewers.ViewerSorter;
  * The BrowserSorter implements the sorter for the browser widget. 
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class BrowserSorter extends ViewerSorter
 {

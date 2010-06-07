@@ -64,7 +64,6 @@ import org.apache.directory.studio.ldifparser.model.lines.LdifVersionLine;
  * Job to export directory content to an LDIF file.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class ExportLdifJob extends AbstractEclipseJob
 {

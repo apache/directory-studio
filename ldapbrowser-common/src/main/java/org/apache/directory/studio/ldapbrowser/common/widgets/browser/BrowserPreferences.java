@@ -35,7 +35,6 @@ import org.eclipse.jface.viewers.TreeViewer;
  * This class is a wrapper for the preferences of the browser widget.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class BrowserPreferences implements IPropertyChangeListener, Preferences.IPropertyChangeListener
 {

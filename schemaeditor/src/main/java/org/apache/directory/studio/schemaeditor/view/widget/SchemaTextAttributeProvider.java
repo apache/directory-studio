@@ -34,7 +34,6 @@ import org.eclipse.swt.widgets.Display;
  * This class provides the TextAttributes elements for each kind of attribute.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class SchemaTextAttributeProvider
 {

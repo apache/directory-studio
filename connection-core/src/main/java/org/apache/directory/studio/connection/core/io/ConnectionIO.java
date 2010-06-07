@@ -51,7 +51,6 @@ import org.dom4j.io.XMLWriter;
  * This class is used to read/write the 'connections.xml' file.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class ConnectionIO
 {

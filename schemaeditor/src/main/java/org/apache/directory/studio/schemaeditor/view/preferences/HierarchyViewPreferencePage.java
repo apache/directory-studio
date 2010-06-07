@@ -47,7 +47,6 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
  * This class implements the Preference page for the Hierarchy View
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class HierarchyViewPreferencePage extends PreferencePage implements IWorkbenchPreferencePage
 {

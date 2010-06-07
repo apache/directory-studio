@@ -25,7 +25,6 @@ package org.apache.directory.studio.ldapbrowser.core.model;
  * An IRootDSE represents a Root DSE of an LDAP server.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public interface IRootDSE extends IEntry
 {

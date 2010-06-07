@@ -25,7 +25,6 @@ package org.apache.directory.studio.ldapbrowser.core.model.filter.parser;
  * The LdapFilterScanner is a scanner for LDAP filters. 
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class LdapFilterScanner
 {

@@ -33,7 +33,6 @@ import org.eclipse.swt.widgets.Shell;
  * Implementation of IValueEditor for attribute type and value.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class AttributeTypeAndValueValueEditor extends AbstractDialogStringValueEditor
 {
@@ -103,7 +102,6 @@ public class AttributeTypeAndValueValueEditor extends AbstractDialogStringValueE
      * information to the opened AttributeTypeAndValueDialog.
      *
      * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
-     * @version $Rev$, $Date$
      */
     private class AttributeTypeAndValueValueEditorRawValueWrapper
     {

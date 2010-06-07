@@ -36,7 +36,6 @@ import org.eclipse.swt.graphics.Image;
  * This class is the Label Provider for the TableViewers of the Schema Editor.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class SchemaEditorTableViewerLabelProvider extends LabelProvider implements ITableLabelProvider
 {

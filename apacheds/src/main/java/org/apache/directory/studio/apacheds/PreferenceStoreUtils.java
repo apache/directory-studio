@@ -28,7 +28,6 @@ import org.eclipse.swt.graphics.FontData;
  * This class is used to store utilities for the preference store.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class PreferenceStoreUtils
 {

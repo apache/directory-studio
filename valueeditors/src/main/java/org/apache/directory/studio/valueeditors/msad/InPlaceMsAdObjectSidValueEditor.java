@@ -36,7 +36,6 @@ import org.apache.directory.studio.valueeditors.HexValueEditor;
  * http://msdn.microsoft.com/en-us/library/cc230371(PROT.10).aspx</a> for details.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class InPlaceMsAdObjectSidValueEditor extends HexValueEditor
 {

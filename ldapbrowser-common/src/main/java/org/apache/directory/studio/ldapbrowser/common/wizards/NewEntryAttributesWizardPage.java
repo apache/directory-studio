@@ -60,7 +60,6 @@ import org.eclipse.ui.contexts.IContextService;
  * the new entry.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class NewEntryAttributesWizardPage extends WizardPage implements EntryUpdateListener
 {

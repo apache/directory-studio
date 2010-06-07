@@ -46,7 +46,6 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
  * The certificate validation preference page is used to manage trusted certificates.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class CertificateValidationPreferencePage extends PreferencePage implements IWorkbenchPreferencePage
 {

@@ -34,7 +34,6 @@ import org.eclipse.ui.texteditor.IWorkbenchActionDefinitionIds;
  * This class implements the Paste Action.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public abstract class PasteAction extends BrowserAction
 {

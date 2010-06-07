@@ -56,7 +56,6 @@ import org.eclipse.ui.actions.ActionFactory;
  * The EntryEditorWidgetActionGroup manages all actions of the entry editor widget.
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class EntryEditorWidgetActionGroup implements ActionHandlerManager
 {

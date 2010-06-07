@@ -24,7 +24,6 @@ package org.apache.directory.studio.schemaeditor.model.difference;
  * This class represents a difference of added superior object class.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class SuperiorOCDifference extends AbstractPropertyDifference
 {

@@ -36,7 +36,6 @@ import org.eclipse.ui.console.IConsole;
  * It is used to store all the consoles associated to servers.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class ConsolesHandler
 {

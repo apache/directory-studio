@@ -30,7 +30,6 @@ import org.apache.directory.studio.ldapbrowser.core.model.ICompareableEntry;
  * An {@link BookmarkEntry} represents the target of a {@link Bookmark}.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class BookmarkEntry extends DelegateEntry implements ICompareableEntry
 {

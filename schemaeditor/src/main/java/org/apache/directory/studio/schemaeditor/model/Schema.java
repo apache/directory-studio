@@ -27,7 +27,6 @@ import java.util.List;
  * This interface represents a Schema.
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public interface Schema
 {

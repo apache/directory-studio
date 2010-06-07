@@ -54,7 +54,6 @@ import org.w3c.dom.Element;
  * Job to export directory content to an ODF file.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class ExportOdfJob extends AbstractEclipseJob
 {

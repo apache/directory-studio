@@ -82,7 +82,6 @@ import org.apache.directory.studio.ldifparser.parser.LdifParser;
  * Job used to import an LDIF file.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class ImportLdifJob extends AbstractNotificationJob
 {

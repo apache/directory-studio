@@ -46,7 +46,6 @@ import org.eclipse.swt.widgets.Table;
  * This class implements a CoreSchemasSelectionWidget.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class CoreSchemasSelectionWidget
 {
@@ -54,7 +53,6 @@ public class CoreSchemasSelectionWidget
      * This enum represents the different server types.
      *
      * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
-     * @version $Rev$, $Date$
      */
     public enum ServerTypeEnum
     {

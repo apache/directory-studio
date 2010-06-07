@@ -58,7 +58,6 @@ import org.eclipse.ui.PlatformUI;
  * This class is the Object Class Selection Dialog, that allows user to select an object class.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class ObjectClassSelectionDialog extends Dialog
 {

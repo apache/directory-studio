@@ -62,7 +62,6 @@ import org.eclipse.swt.widgets.Composite;
  * for the browser widget.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class BrowserQuickSearchWidget
 {

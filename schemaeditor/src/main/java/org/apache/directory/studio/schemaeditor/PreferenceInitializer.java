@@ -28,7 +28,6 @@ import org.eclipse.jface.preference.IPreferenceStore;
  * This class initializes the preferences of the plug-in.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class PreferenceInitializer extends AbstractPreferenceInitializer
 {

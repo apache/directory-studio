@@ -29,7 +29,6 @@ import org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer;
  * This class is used to set default preference values.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class ConnectionCorePreferencesInitializer extends AbstractPreferenceInitializer
 {

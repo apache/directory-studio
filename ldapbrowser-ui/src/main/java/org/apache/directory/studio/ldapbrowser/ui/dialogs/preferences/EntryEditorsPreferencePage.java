@@ -58,7 +58,6 @@ import org.eclipse.ui.dialogs.PreferencesUtil;
  * for the Entry Editors.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class EntryEditorsPreferencePage extends PreferencePage implements IWorkbenchPreferencePage
 {
@@ -404,7 +403,6 @@ public class EntryEditorsPreferencePage extends PreferencePage implements IWorkb
      * should be moved.
      *
      * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
-     * @version $Rev$, $Date$
      */
     private enum MoveEntryEditorDirectionEnum
     {

@@ -65,7 +65,6 @@ import org.eclipse.swt.widgets.Text;
  * The style is used to specify the invisible and readonly elements. 
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class SearchPageWrapper extends BrowserWidget
 {

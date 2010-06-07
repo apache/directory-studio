@@ -31,7 +31,6 @@ import org.eclipse.ui.PlatformUI;
  * This action opens the {@link BrowserSorterDialog}.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class OpenSortDialogAction extends Action
 {

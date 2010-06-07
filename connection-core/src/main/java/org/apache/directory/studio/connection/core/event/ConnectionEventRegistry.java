@@ -40,7 +40,6 @@ import org.eclipse.core.runtime.Status;
  * events and to fire events to registered listeners.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class ConnectionEventRegistry
 {

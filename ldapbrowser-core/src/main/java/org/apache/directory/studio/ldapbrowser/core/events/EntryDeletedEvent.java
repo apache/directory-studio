@@ -30,7 +30,6 @@ import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
  * An EntryDeletedEvent indicates that an {@link IEntry} was deleted from the underlying directory.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class EntryDeletedEvent extends EntryModificationEvent
 {

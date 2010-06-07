@@ -43,7 +43,6 @@ import org.eclipse.swt.widgets.Shell;
  * This dialog is used to enter a LDAP filter.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class FilterWidgetDialog extends Dialog
 {

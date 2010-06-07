@@ -34,7 +34,6 @@ import org.eclipse.ui.PlatformUI;
  * This class is a base implementation of the export wizard.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public abstract class ExportBaseWizard extends Wizard implements IExportWizard
 {

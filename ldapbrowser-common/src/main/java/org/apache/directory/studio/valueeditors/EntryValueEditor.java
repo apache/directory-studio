@@ -43,7 +43,6 @@ import org.eclipse.swt.widgets.Control;
  * Special ValueEditor to edit an entry off-line in the {@link EditEntryWizard}.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class EntryValueEditor extends CellEditor implements IValueEditor
 {

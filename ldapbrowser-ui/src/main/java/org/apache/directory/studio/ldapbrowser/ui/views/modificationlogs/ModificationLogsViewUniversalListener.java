@@ -48,7 +48,6 @@ import org.eclipse.ui.IWorkbenchPart;
  * The ModificationLogsViewUniversalListener manages all events for the modification logs view.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class ModificationLogsViewUniversalListener implements EntryUpdateListener
 {

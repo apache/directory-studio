@@ -32,7 +32,6 @@ import org.eclipse.ui.PlatformUI;
  * of the single schema browser instance.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class SchemaBrowserManager
 {

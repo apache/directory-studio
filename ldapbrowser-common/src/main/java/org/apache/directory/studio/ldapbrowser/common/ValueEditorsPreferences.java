@@ -34,7 +34,6 @@ import org.eclipse.jface.preference.IPreferenceStore;
  * This class is used to manage and access the preferences of the Value Editors Plugin.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class ValueEditorsPreferences
 {

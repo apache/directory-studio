@@ -31,7 +31,6 @@ import org.eclipse.core.runtime.IAdaptable;
  * This interface represents the LDIF Editor.
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public interface ILdifEditor extends IAdaptable
 {

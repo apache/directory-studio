@@ -27,7 +27,6 @@ import org.apache.directory.shared.ldap.schema.SchemaObject;
  * This class represents the NonExistingMandatoryATError.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class NonExistingMandatoryATError implements SchemaError
 {

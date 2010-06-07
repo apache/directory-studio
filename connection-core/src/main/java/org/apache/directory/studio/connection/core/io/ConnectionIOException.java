@@ -24,7 +24,6 @@ package org.apache.directory.studio.connection.core.io;
  * This exception can be raised when loading the Connections file.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class ConnectionIOException extends Exception
 {

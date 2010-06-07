@@ -34,7 +34,6 @@ import org.eclipse.jface.viewers.TreeViewer;
  * action is invoked.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class OpenDefaultEditorAction extends BrowserAction
 {

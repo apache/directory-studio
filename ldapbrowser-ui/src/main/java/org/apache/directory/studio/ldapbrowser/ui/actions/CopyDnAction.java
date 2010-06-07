@@ -34,7 +34,6 @@ import org.eclipse.swt.dnd.Transfer;
  * This class implements the Copy Drag'n'Drop Action.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class CopyDnAction extends BrowserAction
 {

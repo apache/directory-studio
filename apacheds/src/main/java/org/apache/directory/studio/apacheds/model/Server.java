@@ -32,7 +32,6 @@ import org.eclipse.core.runtime.IAdaptable;
  * This class represents an Apache DS server.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class Server implements IAdaptable
 {

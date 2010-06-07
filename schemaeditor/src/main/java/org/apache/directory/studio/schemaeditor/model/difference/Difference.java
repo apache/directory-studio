@@ -24,7 +24,6 @@ package org.apache.directory.studio.schemaeditor.model.difference;
  * This interface defines a Difference between two objects.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public interface Difference
 {

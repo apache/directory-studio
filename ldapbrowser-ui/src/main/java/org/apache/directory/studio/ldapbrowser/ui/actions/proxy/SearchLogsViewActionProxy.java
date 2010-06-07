@@ -30,7 +30,6 @@ import org.eclipse.jface.viewers.Viewer;
  * The SearchLogsViewActionProxy is a proxy for a real action.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class SearchLogsViewActionProxy extends BrowserActionProxy
 {

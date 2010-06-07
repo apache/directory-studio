@@ -87,7 +87,6 @@ import com.sun.jndi.ldap.BasicControl;
  * This class implements a Job for Importing a DSML File into a LDAP server
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class ImportDsmlJob extends AbstractNotificationJob
 {

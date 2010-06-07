@@ -37,7 +37,6 @@ import org.apache.directory.studio.ldapbrowser.core.model.schema.Schema;
  * without committing these modifications to the directory.
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class DummyConnection implements IBrowserConnection
 {

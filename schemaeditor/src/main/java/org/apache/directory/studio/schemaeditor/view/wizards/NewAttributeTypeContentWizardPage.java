@@ -61,7 +61,6 @@ import org.eclipse.swt.widgets.Text;
  * attribute type he wants to create (superior, usage, syntax and properties).
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class NewAttributeTypeContentWizardPage extends AbstractWizardPage
 {

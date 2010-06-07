@@ -38,7 +38,6 @@ import org.eclipse.swt.graphics.Image;
  * matching rule use descriptions and hosts the detail page.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class MatchingRuleUseDescriptionPage extends SchemaPage
 {
@@ -121,7 +120,6 @@ public class MatchingRuleUseDescriptionPage extends SchemaPage
      * The content provider used by the viewer.
      *
      * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
-     * @version $Rev$, $Date$
      */
     class MRUDContentProvider implements IStructuredContentProvider
     {
@@ -162,7 +160,6 @@ public class MatchingRuleUseDescriptionPage extends SchemaPage
      * The label provider used by the viewer.
      *
      * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
-     * @version $Rev$, $Date$
      */
     class MRUDLabelProvider extends LabelProvider implements ITableLabelProvider
     {
@@ -192,7 +189,6 @@ public class MatchingRuleUseDescriptionPage extends SchemaPage
      * The sorter used by the viewer.
      *
      * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
-     * @version $Rev$, $Date$
      */
     class MRUDViewerSorter extends ViewerSorter
     {
@@ -217,7 +213,6 @@ public class MatchingRuleUseDescriptionPage extends SchemaPage
      * The filter used by the viewer.
      *
      * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
-     * @version $Rev$, $Date$
      */
     class MRUDViewerFilter extends ViewerFilter
     {

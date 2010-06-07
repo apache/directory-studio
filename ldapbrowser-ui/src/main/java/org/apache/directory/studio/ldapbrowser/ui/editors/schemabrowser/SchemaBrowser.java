@@ -51,7 +51,6 @@ import org.eclipse.ui.part.EditorPart;
  * The schema browser editor part.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class SchemaBrowser extends EditorPart implements INavigationLocationProvider, IReusableEditor
 {

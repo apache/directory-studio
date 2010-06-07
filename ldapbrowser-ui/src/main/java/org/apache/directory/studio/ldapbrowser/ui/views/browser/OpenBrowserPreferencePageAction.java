@@ -33,7 +33,6 @@ import org.eclipse.ui.dialogs.PreferencesUtil;
  * preference dialog with the browser's preference page.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class OpenBrowserPreferencePageAction extends Action
 {

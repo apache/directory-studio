@@ -24,7 +24,6 @@ package org.apache.directory.studio.schemaeditor.model.alias;
  * This interface defines an {@link Alias} with error.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public interface AliasWithError extends Alias
 {

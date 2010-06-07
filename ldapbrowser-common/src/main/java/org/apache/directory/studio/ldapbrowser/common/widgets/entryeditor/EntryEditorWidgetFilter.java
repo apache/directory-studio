@@ -34,7 +34,6 @@ import org.eclipse.jface.viewers.ViewerFilter;
  * the entry editor widget.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class EntryEditorWidgetFilter extends ViewerFilter
 {

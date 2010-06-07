@@ -27,7 +27,6 @@ import org.apache.directory.shared.ldap.schema.SchemaObject;
  * This class represents the NonExistingMatchingRuleError.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class NonExistingMatchingRuleError implements SchemaError
 {
@@ -35,7 +34,6 @@ public class NonExistingMatchingRuleError implements SchemaError
      * This enum represents the different types of NonExistingMatchingRuleError.
      *
      * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
-     * @version $Rev$, $Date$
      */
     public enum NonExistingMatchingRuleErrorEnum
     {

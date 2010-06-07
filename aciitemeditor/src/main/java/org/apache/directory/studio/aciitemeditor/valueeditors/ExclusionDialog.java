@@ -51,7 +51,6 @@ import org.eclipse.swt.widgets.Shell;
  * This class provides a dialog to enter the Exclusion values.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 class ExclusionDialog extends Dialog
 {

@@ -33,7 +33,6 @@ import org.eclipse.ui.IWorkbenchWindow;
  * This action launches the New Context Entry Wizard.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class NewContextEntryAction extends NewEntryAction
 {

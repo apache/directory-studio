@@ -32,7 +32,6 @@ import org.eclipse.swt.widgets.Shell;
  * Dialog that prompts a user to delete server(s) and/or server configuration(s).
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class DeleteServerDialog extends MessageDialog
 {

@@ -24,7 +24,6 @@ package org.apache.directory.studio.schemaeditor.model.difference;
  * This enum represents the type of Difference.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public enum DifferenceType
 {

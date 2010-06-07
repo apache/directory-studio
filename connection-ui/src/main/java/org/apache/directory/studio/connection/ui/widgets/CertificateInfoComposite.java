@@ -68,7 +68,6 @@ import org.eclipse.swt.widgets.TreeItem;
  * This composite contains the tabs with general and detail of an certificate.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class CertificateInfoComposite extends Composite
 {

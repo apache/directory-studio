@@ -32,7 +32,6 @@ import org.eclipse.swt.graphics.RGB;
  * This class is used to set default preference values for the LDIF editor.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class LdifEditorPreferencesInitializer extends AbstractPreferenceInitializer
 {

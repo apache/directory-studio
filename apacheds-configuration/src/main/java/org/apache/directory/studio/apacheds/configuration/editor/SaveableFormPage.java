@@ -28,7 +28,6 @@ import org.eclipse.ui.forms.editor.IFormPage;
  * This interface defines a {@link FormPage} that can be saved.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public interface SaveableFormPage extends IFormPage
 {

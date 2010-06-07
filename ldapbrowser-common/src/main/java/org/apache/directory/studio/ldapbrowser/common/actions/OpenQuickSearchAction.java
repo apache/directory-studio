@@ -37,7 +37,6 @@ import org.eclipse.ui.dialogs.PreferencesUtil;
  * This class implements the Open Quick Seach Action.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class OpenQuickSearchAction extends BrowserAction
 {

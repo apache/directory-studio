@@ -41,7 +41,6 @@ import org.eclipse.swt.graphics.Image;
  * This class implements the Content Assist Processor for ACI Item
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class ACIContentAssistProcessor extends TemplateCompletionProcessor
 {

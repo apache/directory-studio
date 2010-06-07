@@ -34,7 +34,6 @@ import org.eclipse.jface.viewers.TableViewer;
  * The OpenEditorAction is used to edit a value with a specific value editor.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class OpenEditorAction extends AbstractOpenEditorAction
 {

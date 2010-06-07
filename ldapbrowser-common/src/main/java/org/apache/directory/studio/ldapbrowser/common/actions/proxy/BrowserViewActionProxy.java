@@ -29,7 +29,6 @@ import org.eclipse.jface.viewers.Viewer;
  * The BrowserViewActionProxy is a proxy for a real action.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class BrowserViewActionProxy extends BrowserActionProxy
 {

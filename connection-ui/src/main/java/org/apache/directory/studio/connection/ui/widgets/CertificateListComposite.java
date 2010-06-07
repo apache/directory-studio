@@ -52,7 +52,6 @@ import org.eclipse.swt.widgets.Composite;
  * to add, delete and view certificates.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class CertificateListComposite extends Composite
 {

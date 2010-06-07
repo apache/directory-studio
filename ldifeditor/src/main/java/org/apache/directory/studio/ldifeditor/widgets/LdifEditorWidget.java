@@ -47,7 +47,6 @@ import org.eclipse.swt.widgets.Control;
  * syntax highlighting and content assistent.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class LdifEditorWidget extends BrowserWidget implements ILdifEditor, ITextListener
 {

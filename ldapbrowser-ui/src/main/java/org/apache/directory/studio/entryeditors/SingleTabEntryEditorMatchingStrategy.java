@@ -30,7 +30,6 @@ import org.eclipse.ui.IEditorReference;
  * Matching strategy for a single tab entry editor.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class SingleTabEntryEditorMatchingStrategy implements IEditorMatchingStrategy
 {

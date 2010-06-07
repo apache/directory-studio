@@ -46,7 +46,6 @@ import org.eclipse.osgi.util.NLS;
  * This class is used to import a Schema file from the XML Format.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class XMLSchemaFileImporter
 {
@@ -809,7 +808,6 @@ public class XMLSchemaFileImporter
      * This enum represents the different types of schema files.
      *
      * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
-     * @version $Rev$, $Date$
      */
     public enum SchemaFileType
     {

@@ -39,7 +39,6 @@ import org.eclipse.swt.widgets.Composite;
  * It is used to let the user choose the 'core' schemas to import.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class ImportCoreSchemasWizardPage extends AbstractWizardPage
 {

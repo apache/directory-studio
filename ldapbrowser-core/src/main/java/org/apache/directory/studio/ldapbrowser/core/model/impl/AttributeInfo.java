@@ -32,7 +32,6 @@ import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
  * A ChildrenInfo is used to hold the list of attributes of an entry.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class AttributeInfo implements Serializable
 {

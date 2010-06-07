@@ -36,7 +36,6 @@ import org.eclipse.swt.graphics.Image;
  * This class is the Label Provider for the Attributes Table of the Object Class Editor.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class ObjectClassEditorAttributesTableLabelProvider extends LabelProvider implements ITableLabelProvider
 {

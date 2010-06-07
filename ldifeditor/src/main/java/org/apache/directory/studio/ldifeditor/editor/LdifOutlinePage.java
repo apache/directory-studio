@@ -64,7 +64,6 @@ import org.eclipse.ui.views.contentoutline.ContentOutlinePage;
  * It used to display LDIF files and records.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class LdifOutlinePage extends ContentOutlinePage
 {
@@ -244,7 +243,6 @@ public class LdifOutlinePage extends ContentOutlinePage
      * This class implements the ContentProvider used for the LDIF Outline View
      *
      * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
-     * @version $Rev$, $Date$
      */
     private static class LdifContentProvider implements ITreeContentProvider
     {
@@ -374,7 +372,6 @@ public class LdifOutlinePage extends ContentOutlinePage
      * This class implements the LabelProvider used for the LDIF Outline View
      *
      * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
-     * @version $Rev$, $Date$
      */
     private static class LdifLabelProvider extends LabelProvider
     {

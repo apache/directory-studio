@@ -60,7 +60,6 @@ import org.eclipse.ui.contexts.IContextService;
  * This class implements the Controller for the SchemaView.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class ProjectsViewController
 {

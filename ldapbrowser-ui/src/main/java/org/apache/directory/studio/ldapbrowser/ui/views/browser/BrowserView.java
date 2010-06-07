@@ -51,7 +51,6 @@ import org.eclipse.ui.part.ViewPart;
  * This class implements the browser view. It displays the DIT, the searches and the bookmarks.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class BrowserView extends ViewPart
 {

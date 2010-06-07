@@ -33,7 +33,6 @@ import org.eclipse.core.runtime.IAdaptable;
  * The ISearchResult represents a single search result.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public interface ISearchResult extends Serializable, IAdaptable, EntryPropertyPageProvider,
     ConnectionPropertyPageProvider

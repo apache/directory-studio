@@ -33,7 +33,6 @@ import org.eclipse.swt.widgets.Shell;
  * Implementation of IValueEditor for LDAP filters.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class FilterValueEditor extends AbstractDialogStringValueEditor
 {
@@ -94,7 +93,6 @@ public class FilterValueEditor extends AbstractDialogStringValueEditor
      * information to the opened FilterDialog.
      *
      * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
-     * @version $Rev$, $Date$
      */
     private class FilterValueEditorRawValueWrapper
     {

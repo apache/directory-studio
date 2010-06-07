@@ -34,7 +34,6 @@ import org.eclipse.ui.PlatformUI;
  * This Action opens a new Search Dialog.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class NewSearchAction extends BrowserAction
 {

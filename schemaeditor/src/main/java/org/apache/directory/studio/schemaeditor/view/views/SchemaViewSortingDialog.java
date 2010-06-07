@@ -42,7 +42,6 @@ import org.eclipse.swt.widgets.Shell;
  * This class implements the SchemaView Sorting Dialog.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class SchemaViewSortingDialog extends Dialog
 {

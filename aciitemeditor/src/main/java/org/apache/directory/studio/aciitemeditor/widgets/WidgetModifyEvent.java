@@ -27,7 +27,6 @@ import java.util.EventObject;
  * A WidgetModifyEvent contains details of the widget modification.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class WidgetModifyEvent extends EventObject
 {

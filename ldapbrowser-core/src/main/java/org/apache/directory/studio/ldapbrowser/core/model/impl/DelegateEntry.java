@@ -45,7 +45,6 @@ import org.eclipse.search.ui.ISearchPageScoreComputer;
  * It is used for bookmarks, alias and referral entries.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public abstract class DelegateEntry implements IEntry
 {

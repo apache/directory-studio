@@ -39,7 +39,6 @@ import org.eclipse.swt.graphics.Image;
  * attribute type descriptions and hosts the detail page.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class AttributeTypeDescriptionPage extends SchemaPage
 {
@@ -121,7 +120,6 @@ public class AttributeTypeDescriptionPage extends SchemaPage
      * The content provider used by the viewer.
      *
      * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
-     * @version $Rev$, $Date$
      */
     class ATDContentProvider implements IStructuredContentProvider
     {
@@ -162,7 +160,6 @@ public class AttributeTypeDescriptionPage extends SchemaPage
      * The label provider used by the viewer.
      *
      * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
-     * @version $Rev$, $Date$
      */
     class ATDLabelProvider extends LabelProvider implements ITableLabelProvider
     {
@@ -192,7 +189,6 @@ public class AttributeTypeDescriptionPage extends SchemaPage
      * The sorter used by the viewer.
      *
      * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
-     * @version $Rev$, $Date$
      */
     class ATDViewerSorter extends ViewerSorter
     {
@@ -217,7 +213,6 @@ public class AttributeTypeDescriptionPage extends SchemaPage
      * The filter used by the viewer.
      *
      * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
-     * @version $Rev$, $Date$
      */
     class ATDViewerFilter extends ViewerFilter
     {

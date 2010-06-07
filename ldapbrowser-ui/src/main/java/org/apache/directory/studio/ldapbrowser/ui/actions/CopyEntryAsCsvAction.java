@@ -47,7 +47,6 @@ import org.eclipse.jface.resource.ImageDescriptor;
  * This Action copies entry(ies) as CSV.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class CopyEntryAsCsvAction extends CopyEntryAsAction
 {

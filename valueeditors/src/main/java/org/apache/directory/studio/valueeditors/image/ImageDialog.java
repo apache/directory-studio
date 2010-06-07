@@ -65,7 +65,6 @@ import org.eclipse.swt.widgets.Text;
  * and to select a new image.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class ImageDialog extends Dialog
 {

@@ -44,7 +44,6 @@ import org.eclipse.swt.widgets.Shell;
  * Dialog to select an entry.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class SelectEntryDialog extends Dialog
 {

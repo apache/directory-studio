@@ -54,7 +54,6 @@ import org.eclipse.osgi.util.NLS;
  * Apache Directory Server version 1.5.3.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class ServerXmlIOV153 extends AbstractServerXmlIO implements ServerXmlIO
 {

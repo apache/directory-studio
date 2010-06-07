@@ -35,7 +35,6 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
  * This class implements the Apache DS preference page for the Apache DS plugin.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class MainPage extends PreferencePage implements IWorkbenchPreferencePage
 {

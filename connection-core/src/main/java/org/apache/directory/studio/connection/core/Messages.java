@@ -28,7 +28,6 @@ import org.eclipse.osgi.util.NLS;
  * This class contains most of the Strings used by the Plugin
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class Messages extends NLS
 {

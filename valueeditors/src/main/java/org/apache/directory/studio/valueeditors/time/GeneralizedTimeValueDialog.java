@@ -64,7 +64,6 @@ import org.eclipse.swt.widgets.Text;
  * This class provides a dialog to define a generalized time.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class GeneralizedTimeValueDialog extends Dialog
 {

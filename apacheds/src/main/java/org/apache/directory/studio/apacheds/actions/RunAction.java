@@ -52,7 +52,6 @@ import org.eclipse.ui.IWorkbenchWindowActionDelegate;
  * This class implements the run action for a server.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class RunAction extends Action implements IWorkbenchWindowActionDelegate
 {

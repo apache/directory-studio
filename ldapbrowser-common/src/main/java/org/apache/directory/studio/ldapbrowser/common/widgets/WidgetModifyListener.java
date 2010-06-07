@@ -26,7 +26,6 @@ package org.apache.directory.studio.ldapbrowser.common.widgets;
  * {@link BrowserWidget}.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public interface WidgetModifyListener
 {

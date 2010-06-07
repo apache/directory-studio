@@ -92,7 +92,6 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
  * <code>org.apache.directory.studio.entryeditors</code>. 
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class EntryEditorManager
 {

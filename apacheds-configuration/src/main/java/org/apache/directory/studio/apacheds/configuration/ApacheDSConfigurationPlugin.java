@@ -52,7 +52,6 @@ import org.apache.directory.studio.apacheds.configuration.model.v156.ServerXmlIO
  * The activator class controls the plug-in life cycle.
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class ApacheDSConfigurationPlugin extends AbstractUIPlugin
 {

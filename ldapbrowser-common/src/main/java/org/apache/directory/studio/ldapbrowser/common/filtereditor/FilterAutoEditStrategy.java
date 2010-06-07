@@ -38,7 +38,6 @@ import org.eclipse.jface.text.IDocument;
  * It provides smart parentesis handling when typing the filter.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class FilterAutoEditStrategy extends DefaultIndentLineAutoEditStrategy implements IAutoEditStrategy
 {
@@ -245,7 +244,6 @@ public class FilterAutoEditStrategy extends DefaultIndentLineAutoEditStrategy im
      * Helper class.
      *
      * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
-     * @version $Rev$, $Date$
      */
     public static class AutoEditParameters
     {

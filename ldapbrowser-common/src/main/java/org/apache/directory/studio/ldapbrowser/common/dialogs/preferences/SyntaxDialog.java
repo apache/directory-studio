@@ -37,7 +37,6 @@ import org.eclipse.swt.widgets.Shell;
  * The SyntaxDialog is used to enter/select a syntax OID.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class SyntaxDialog extends Dialog
 {

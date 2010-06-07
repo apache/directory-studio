@@ -44,7 +44,6 @@ import org.eclipse.jface.resource.ImageDescriptor;
  * This Action refreshes the selected item.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class RefreshAction extends BrowserAction
 {

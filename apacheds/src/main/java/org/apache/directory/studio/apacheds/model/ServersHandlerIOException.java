@@ -25,7 +25,6 @@ package org.apache.directory.studio.apacheds.model;
  * the servers to the store.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class ServersHandlerIOException extends Exception
 {

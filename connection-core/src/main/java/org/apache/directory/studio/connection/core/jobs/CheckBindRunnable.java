@@ -29,7 +29,6 @@ import org.apache.directory.studio.connection.core.Messages;
  * Runnable to check binding (authentication) to a directory server
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class CheckBindRunnable implements StudioRunnableWithProgress
 {

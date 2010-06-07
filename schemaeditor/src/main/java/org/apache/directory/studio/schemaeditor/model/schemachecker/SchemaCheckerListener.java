@@ -25,7 +25,6 @@ package org.apache.directory.studio.schemaeditor.model.schemachecker;
  * events that are generated when an event occurrs on the SchemaChecker.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public interface SchemaCheckerListener
 {

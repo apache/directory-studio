@@ -29,7 +29,6 @@ import org.eclipse.swt.widgets.Composite;
  * Base implementation of ConnectionParameterPage.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public abstract class AbstractConnectionParameterPage implements ConnectionParameterPage
 {

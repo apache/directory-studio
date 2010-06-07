@@ -42,7 +42,6 @@ import org.eclipse.jface.viewers.TextCellEditor;
  * withing the table or tree control. 
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public abstract class AbstractInPlaceStringValueEditor extends TextCellEditor implements IValueEditor
 {

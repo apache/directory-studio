@@ -39,7 +39,6 @@ import org.eclipse.ui.PlatformUI;
  * This action is used to locate and open an entry by its DN in DIT.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public abstract class LocateInDitAction extends BrowserAction
 {
@@ -117,7 +116,6 @@ public abstract class LocateInDitAction extends BrowserAction
      * Inner class to get connection and DN of the entry to locate.
      *
      * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
-     * @version $Rev$, $Date$
      */
     protected class ConnectionAndDn
     {

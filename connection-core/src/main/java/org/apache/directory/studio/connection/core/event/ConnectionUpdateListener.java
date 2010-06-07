@@ -31,7 +31,6 @@ import org.apache.directory.studio.connection.core.ConnectionFolder;
  * A listener for connection updates
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public interface ConnectionUpdateListener extends EventListener
 {

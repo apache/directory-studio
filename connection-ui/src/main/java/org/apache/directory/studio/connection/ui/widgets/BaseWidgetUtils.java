@@ -42,7 +42,6 @@ import org.eclipse.swt.widgets.Text;
  * This class provides utility methods to create SWT widgets.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class BaseWidgetUtils
 {

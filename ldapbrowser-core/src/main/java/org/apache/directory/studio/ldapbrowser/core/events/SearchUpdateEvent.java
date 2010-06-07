@@ -28,7 +28,6 @@ import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
  * An SearchUpdateEvent indicates that an {@link ISearch} was updated.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class SearchUpdateEvent
 {

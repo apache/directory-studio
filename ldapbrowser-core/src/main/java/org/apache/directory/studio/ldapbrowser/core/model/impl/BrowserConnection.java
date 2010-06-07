@@ -49,7 +49,6 @@ import org.eclipse.search.ui.ISearchPageScoreComputer;
  * The default implementation of {@link IBrowserConnection}.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class BrowserConnection implements IBrowserConnection, Serializable
 {

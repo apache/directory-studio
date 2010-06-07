@@ -46,7 +46,6 @@ import org.eclipse.ui.IWorkbench;
  * This class represents the wizard to import schemas from XML format.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class ImportSchemasFromXmlWizard extends Wizard implements IImportWizard
 {

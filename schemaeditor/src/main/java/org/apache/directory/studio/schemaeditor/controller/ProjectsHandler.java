@@ -36,7 +36,6 @@ import org.apache.directory.studio.schemaeditor.model.Project.ProjectState;
  * It used to handle the schema projects.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class ProjectsHandler
 {

@@ -40,7 +40,6 @@ import org.eclipse.ui.dialogs.PropertyPage;
  * This page shows some info about the selected Value.
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class ValuePropertyPage extends PropertyPage implements IWorkbenchPropertyPage
 {

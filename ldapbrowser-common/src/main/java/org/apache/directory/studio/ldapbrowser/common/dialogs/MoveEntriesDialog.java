@@ -42,7 +42,6 @@ import org.eclipse.swt.widgets.Shell;
  * Dialog to select and enter the new parent of some entries. 
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class MoveEntriesDialog extends Dialog implements WidgetModifyListener
 {

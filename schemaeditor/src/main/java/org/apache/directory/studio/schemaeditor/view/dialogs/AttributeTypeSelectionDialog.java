@@ -58,7 +58,6 @@ import org.eclipse.ui.PlatformUI;
  * This class is Attribute Type Selection Dialog, that allows user to select an attribute type.
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class AttributeTypeSelectionDialog extends Dialog
 {

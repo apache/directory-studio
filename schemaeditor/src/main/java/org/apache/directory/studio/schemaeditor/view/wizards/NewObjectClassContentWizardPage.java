@@ -60,7 +60,6 @@ import org.eclipse.swt.widgets.Table;
  * attribute type he wants to create (superiors, class type, and properties).
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class NewObjectClassContentWizardPage extends WizardPage
 {

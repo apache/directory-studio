@@ -38,7 +38,6 @@ import org.eclipse.jface.text.rules.WordRule;
  * Scanner used to analyse Schema code. Allows syntax coloring.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class SchemaCodeScanner extends RuleBasedScanner
 {
@@ -111,7 +110,6 @@ public class SchemaCodeScanner extends RuleBasedScanner
      * This class implements a word detector for Schema
      *
      * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
-     * @version $Rev$, $Date$
      */
     static class SchemaWordDetector implements IWordDetector
     {
@@ -138,7 +136,6 @@ public class SchemaCodeScanner extends RuleBasedScanner
      * This class implements an OID detector for Schema
      *
      * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
-     * @version $Rev$, $Date$
      */
     static class SchemaOIDDetector implements IWordDetector
     {

@@ -68,7 +68,6 @@ import org.eclipse.swt.widgets.Text;
  * attribute type he wants to create (schema, OID, aliases an description).
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class NewAttributeTypeGeneralWizardPage extends AbstractWizardPage
 {

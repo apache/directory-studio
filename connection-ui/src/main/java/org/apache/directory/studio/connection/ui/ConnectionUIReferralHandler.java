@@ -40,7 +40,6 @@ import org.eclipse.ui.PlatformUI;
  * Default implementation of {@link IReferralHandler}.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class ConnectionUIReferralHandler extends ConnectionUpdateAdapter implements IReferralHandler
 {

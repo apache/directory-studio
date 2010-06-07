@@ -52,7 +52,6 @@ import org.eclipse.swt.widgets.Group;
  * The OptionsInput is used by {@link TextFormatsPreferencePage}.
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class OptionsInput extends BrowserWidget
 {

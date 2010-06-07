@@ -29,7 +29,6 @@ import org.eclipse.swt.widgets.Shell;
  * Implementation of IValueEditor for integer values.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class IntegerValueEditor extends AbstractDialogStringValueEditor
 {

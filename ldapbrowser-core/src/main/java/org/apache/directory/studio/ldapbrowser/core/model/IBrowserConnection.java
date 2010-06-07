@@ -42,7 +42,6 @@ import org.eclipse.core.runtime.IAdaptable;
  * It also provides an entry cache.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public interface IBrowserConnection extends Serializable, IAdaptable, ConnectionPropertyPageProvider
 {
@@ -51,7 +50,6 @@ public interface IBrowserConnection extends Serializable, IAdaptable, Connection
      * Enum for the modify mode of attributes
      *
      * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
-     * @version $Rev$, $Date$
      */
     public enum ModifyMode
     {
@@ -111,7 +109,6 @@ public interface IBrowserConnection extends Serializable, IAdaptable, Connection
      * Enum for modify order when using add/delete operations
      *
      * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
-     * @version $Rev$, $Date$
      */
     public enum ModifyOrder
     {

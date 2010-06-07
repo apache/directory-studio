@@ -88,7 +88,6 @@ import org.eclipse.ui.contexts.IContextService;
  * The BrowserViewUniversalListener manages all events for the browser view.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class BrowserViewUniversalListener extends BrowserUniversalListener implements SearchUpdateListener,
     BookmarkUpdateListener

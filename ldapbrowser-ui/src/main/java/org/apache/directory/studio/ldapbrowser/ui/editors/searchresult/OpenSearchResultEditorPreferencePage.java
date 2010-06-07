@@ -32,7 +32,6 @@ import org.eclipse.ui.dialogs.PreferencesUtil;
  * This action opens the preference page of the search result editor.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class OpenSearchResultEditorPreferencePage extends Action
 {

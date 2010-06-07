@@ -31,7 +31,6 @@ import org.eclipse.jface.resource.ImageDescriptor;
  * This Action adds a new Value to an Attribute.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class NewValueAction extends BrowserAction
 {

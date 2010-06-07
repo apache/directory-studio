@@ -42,7 +42,6 @@ import org.eclipse.swt.widgets.Shell;
  * Dialog to ask for certificate trust.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class CertificateTrustDialog extends Dialog
 {

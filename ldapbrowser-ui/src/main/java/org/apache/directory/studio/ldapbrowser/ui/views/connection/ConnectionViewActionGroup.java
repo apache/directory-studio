@@ -39,7 +39,6 @@ import org.eclipse.ui.IWorkbenchActionConstants;
  * This class manages all the actions of the connection view.
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class ConnectionViewActionGroup extends ConnectionActionGroup
 {

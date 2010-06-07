@@ -25,7 +25,6 @@ package org.apache.directory.studio.schemaeditor.controller;
  * events that are generated when an event occurs on an object class.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public interface ObjectClassListener
 {

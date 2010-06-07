@@ -36,7 +36,6 @@ import org.eclipse.ui.PlatformUI;
  * This Action launches the Import Connections Wizard.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class ImportConnectionsAction extends BrowserAction
 {

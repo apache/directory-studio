@@ -51,7 +51,6 @@ import org.eclipse.ui.PlatformUI;
  * This action is used to link the with the view with the frontmost editor.
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class LinkWithEditorSchemaViewAction extends Action implements IWorkbenchWindowActionDelegate
 {

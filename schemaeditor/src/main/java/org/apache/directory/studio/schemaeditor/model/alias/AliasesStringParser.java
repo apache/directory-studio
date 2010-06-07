@@ -28,7 +28,6 @@ import java.util.List;
  * The AliasesParser implements a parser for Aliases {@link String}.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class AliasesStringParser
 {

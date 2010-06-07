@@ -35,7 +35,6 @@ import org.apache.directory.studio.ldapbrowser.core.model.IRootDSE;
  * The RootDSE class represents a root DSE entry.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public final class RootDSE extends BaseDNEntry implements IRootDSE
 {

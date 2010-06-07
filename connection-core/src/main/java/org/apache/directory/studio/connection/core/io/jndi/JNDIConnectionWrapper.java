@@ -101,7 +101,6 @@ import org.eclipse.osgi.util.NLS;
  * - referral handling
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class JNDIConnectionWrapper implements ConnectionWrapper
 {

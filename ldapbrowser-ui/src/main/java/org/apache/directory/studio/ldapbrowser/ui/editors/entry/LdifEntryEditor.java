@@ -54,7 +54,6 @@ import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
  * An entry editor that uses LDIF format.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public abstract class LdifEntryEditor extends LdifEditor implements IEntryEditor, IShowEditorInput
 {

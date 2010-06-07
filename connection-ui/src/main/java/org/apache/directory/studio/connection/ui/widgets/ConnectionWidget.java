@@ -45,7 +45,6 @@ import org.eclipse.ui.IActionBars;
  * add, modify, delete, open and close connections.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class ConnectionWidget extends ViewFormWidget
 {

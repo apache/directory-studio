@@ -63,7 +63,6 @@ import org.eclipse.search.ui.ISearchPageScoreComputer;
  * {@link BrowserConnection} instance.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public abstract class AbstractEntry implements IEntry, ICompareableEntry
 {

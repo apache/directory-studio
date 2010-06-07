@@ -69,7 +69,6 @@ import org.eclipse.ui.actions.ContributionItemFactory;
  * The SearchResultEditorActionGroup manages all actions of the search result editor.
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class SearchResultEditorActionGroup implements ActionHandlerManager, IMenuListener
 {

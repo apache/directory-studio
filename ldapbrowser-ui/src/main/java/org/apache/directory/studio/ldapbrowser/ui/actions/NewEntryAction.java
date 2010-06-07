@@ -36,7 +36,6 @@ import org.eclipse.ui.IWorkbenchWindow;
  * This action launches the New Entry Wizard.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class NewEntryAction extends BrowserAction
 {

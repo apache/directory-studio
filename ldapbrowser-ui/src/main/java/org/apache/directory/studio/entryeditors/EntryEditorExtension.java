@@ -29,7 +29,6 @@ import org.eclipse.jface.resource.ImageDescriptor;
  * A bean class to hold the entry editor extension point properties.
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class EntryEditorExtension
 {

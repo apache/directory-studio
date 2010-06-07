@@ -33,7 +33,6 @@ import org.eclipse.ui.fieldassist.ContentAssistCommandAdapter;
  * methods for more controls when proposal popup is opened and closed.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class ExtendedContentAssistCommandAdapter extends ContentAssistCommandAdapter
 {

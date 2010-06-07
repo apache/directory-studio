@@ -56,7 +56,6 @@ import org.apache.directory.studio.schemaeditor.model.SyntaxImpl;
  * A Generic Schema Connector, suitable for all LDAP servers.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class GenericSchemaConnector extends AbstractSchemaConnector implements SchemaConnector
 {

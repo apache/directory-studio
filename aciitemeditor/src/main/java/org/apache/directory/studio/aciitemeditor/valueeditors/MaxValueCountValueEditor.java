@@ -53,7 +53,6 @@ import org.eclipse.swt.widgets.Spinner;
  * ACI item editor specific value editor to edit the MaxValueCount protected item.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class MaxValueCountValueEditor extends AbstractDialogStringValueEditor
 {
@@ -135,7 +134,6 @@ public class MaxValueCountValueEditor extends AbstractDialogStringValueEditor
      * information to the opened MaxValueCountDialog.
      *
      * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
-     * @version $Rev$, $Date$
      */
     private class MaxValueCountValueEditorRawValueWrapper
     {
@@ -171,7 +169,6 @@ public class MaxValueCountValueEditor extends AbstractDialogStringValueEditor
      * This class provides a dialog to enter the MaxValueCount values.
      *
      * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
-     * @version $Rev$, $Date$
      */
     private class MaxValueCountDialog extends Dialog
     {

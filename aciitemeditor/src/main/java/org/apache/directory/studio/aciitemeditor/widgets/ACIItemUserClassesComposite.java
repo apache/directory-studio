@@ -60,7 +60,6 @@ import org.eclipse.swt.widgets.Table;
  * This composite contains GUI elements to edit ACI item user classes.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class ACIItemUserClassesComposite extends Composite
 {
@@ -311,7 +310,6 @@ public class ACIItemUserClassesComposite extends Composite
      * The label provider used for this table viewer.
      *
      * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
-     * @version $Rev$, $Date$
      */
     private class UserClassesLabelProvider extends LabelProvider
     {

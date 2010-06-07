@@ -64,7 +64,6 @@ import org.eclipse.swt.graphics.Image;
  * The FilterContentAssistProcessor computes the content proposals for the filter editor.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class FilterContentAssistProcessor extends TemplateCompletionProcessor implements IContentAssistProcessor,
     IContentProposalProvider

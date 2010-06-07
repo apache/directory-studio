@@ -43,7 +43,6 @@ import org.eclipse.ui.PlatformUI;
  * This Action launches the Export Connections Wizard.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class ExportConnectionsAction extends BrowserAction
 {

@@ -49,7 +49,6 @@ import org.eclipse.swt.widgets.Shell;
  * Dialog to select an {@link IBrowserConnection}.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class SelectBrowserConnectionDialog extends Dialog
 {

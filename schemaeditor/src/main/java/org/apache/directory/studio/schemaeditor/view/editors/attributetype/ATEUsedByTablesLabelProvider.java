@@ -34,7 +34,6 @@ import org.eclipse.swt.graphics.Image;
  * This class is the Label Provider for the Used By Tables of the Attribute Type Editor (Used By Page).
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class ATEUsedByTablesLabelProvider extends LabelProvider implements ITableLabelProvider
 {

@@ -27,7 +27,6 @@ import org.apache.directory.studio.apacheds.configuration.model.ServerConfigurat
  * This abstract class provides a default implementation of a server configuration.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public abstract class AbstractServerConfiguration implements ServerConfiguration
 {

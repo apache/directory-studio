@@ -30,7 +30,6 @@ import javax.naming.ldap.PagedResultsControl;
  * Implementation of the RFC 2696 Paged Results Control.
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class StudioPagedResultsControl extends StudioControl
 {

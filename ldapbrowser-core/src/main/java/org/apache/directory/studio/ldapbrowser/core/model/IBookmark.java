@@ -35,7 +35,6 @@ import org.eclipse.core.runtime.IAdaptable;
  * The target entry is defined by a connection a DN.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public interface IBookmark extends Serializable, IAdaptable, BookmarkPropertyPageProvider, EntryPropertyPageProvider,
     ConnectionPropertyPageProvider

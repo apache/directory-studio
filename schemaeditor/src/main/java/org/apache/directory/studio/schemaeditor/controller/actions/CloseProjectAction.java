@@ -41,7 +41,6 @@ import org.eclipse.ui.IWorkbenchWindowActionDelegate;
  * This action opens a Project.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class CloseProjectAction extends Action implements IWorkbenchWindowActionDelegate
 {

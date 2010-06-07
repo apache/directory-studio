@@ -48,7 +48,6 @@ import org.eclipse.swt.widgets.Shell;
  * the source viewer.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class FilterSourceViewerConfiguration extends SourceViewerConfiguration
 {

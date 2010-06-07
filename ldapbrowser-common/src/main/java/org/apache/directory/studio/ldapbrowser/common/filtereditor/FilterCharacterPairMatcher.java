@@ -35,7 +35,6 @@ import org.eclipse.jface.text.source.ISourceViewer;
  * to match the peer opening and closing parentesis.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class FilterCharacterPairMatcher implements ICharacterPairMatcher
 {

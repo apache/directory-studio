@@ -36,7 +36,6 @@ import org.apache.directory.studio.ldifparser.model.container.LdifContentRecord;
  * and sends these changes to the server.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class EditEntryWizard extends NewEntryWizard
 {

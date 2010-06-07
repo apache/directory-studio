@@ -41,7 +41,6 @@ import org.eclipse.swt.dnd.Transfer;
  * This class implements the Copy Attribute Description Action.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class CopyAttributeDescriptionAction extends BrowserAction
 {

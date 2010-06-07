@@ -36,7 +36,6 @@ import org.eclipse.jface.viewers.ViewerFilter;
  * The SearchResultEditorFilter implements the filter for the search result editor.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class SearchResultEditorFilter extends ViewerFilter
 {

@@ -36,7 +36,6 @@ import org.eclipse.osgi.util.NLS;
  * This class is used to manage Bookmarks.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class BookmarkManager implements Serializable
 {

@@ -34,7 +34,6 @@ import org.eclipse.ui.forms.widgets.ScrolledForm;
  * This class represents the Partitions Page of the Server Configuration Editor.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class PartitionsPage extends FormPage implements SaveableFormPage
 {

@@ -32,7 +32,6 @@ import org.eclipse.ui.IEditorInput;
  * This Action opens the Property Dialog for a given object.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class EntryEditorPropertiesAction extends PropertiesAction
 {

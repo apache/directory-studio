@@ -76,7 +76,6 @@ import org.eclipse.ui.part.FileEditorInput;
  * This class implements the Server Configuration Editor.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class ServerConfigurationEditor extends FormEditor
 {
@@ -776,7 +775,6 @@ public class ServerConfigurationEditor extends FormEditor
  * Inspired from org.eclipse.ui.internal.editors.text.NonExistingFileEditorInput.java
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 class PathEditorInput implements IPathEditorInput
 {

@@ -24,7 +24,6 @@ package org.apache.directory.studio.schemaeditor.model;
  * This enum represents the different types of Project.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public enum ProjectType
 {

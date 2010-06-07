@@ -40,7 +40,6 @@ import org.eclipse.jface.viewers.Viewer;
  * {@link AttributeHierarchy} as input.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class EntryEditorWidgetContentProvider implements ITreeContentProvider
 {

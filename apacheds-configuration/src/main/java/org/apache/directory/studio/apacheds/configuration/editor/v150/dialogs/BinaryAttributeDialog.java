@@ -38,7 +38,6 @@ import org.eclipse.ui.PlatformUI;
  * This class implements the Dialog for Binary Attribute.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class BinaryAttributeDialog extends Dialog
 {

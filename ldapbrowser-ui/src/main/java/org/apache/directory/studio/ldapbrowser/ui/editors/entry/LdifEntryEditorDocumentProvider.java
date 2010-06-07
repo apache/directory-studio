@@ -56,7 +56,6 @@ import org.eclipse.osgi.util.NLS;
  * The document provider for the LDIF entry editor.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class LdifEntryEditorDocumentProvider extends LdifDocumentProvider
 {

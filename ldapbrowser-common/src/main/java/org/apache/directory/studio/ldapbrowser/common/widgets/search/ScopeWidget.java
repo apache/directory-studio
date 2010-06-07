@@ -38,7 +38,6 @@ import org.eclipse.swt.widgets.Group;
  * It is composed of a group with radio buttons.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class ScopeWidget extends BrowserWidget
 {

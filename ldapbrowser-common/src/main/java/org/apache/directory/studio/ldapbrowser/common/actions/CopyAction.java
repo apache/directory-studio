@@ -53,7 +53,6 @@ import org.eclipse.ui.texteditor.IWorkbenchActionDefinitionIds;
  * This class implements the Copy Action
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class CopyAction extends BrowserAction
 {

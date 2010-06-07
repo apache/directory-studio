@@ -42,7 +42,6 @@ import org.eclipse.ui.texteditor.IWorkbenchActionDefinitionIds;
  * This Action implements the Delete Action. It deletes Connections, Entries, Searches, Bookmarks, Attributes or Values.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class DeleteAction extends StudioAction
 {

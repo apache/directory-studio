@@ -35,7 +35,6 @@ import org.eclipse.jface.resource.ImageDescriptor;
  * Action to switch to an older logfile.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class OlderAction extends BrowserAction
 {

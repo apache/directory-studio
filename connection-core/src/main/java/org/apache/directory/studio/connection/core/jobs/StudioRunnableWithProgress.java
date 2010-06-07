@@ -28,7 +28,6 @@ import org.apache.directory.studio.connection.core.Connection;
  * A runnable with a progress monitor.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public interface StudioRunnableWithProgress
 {

@@ -46,7 +46,6 @@ import org.eclipse.ui.PlatformUI;
  * This class implements the delete action for a server.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class DeleteAction extends Action implements IWorkbenchWindowActionDelegate
 {

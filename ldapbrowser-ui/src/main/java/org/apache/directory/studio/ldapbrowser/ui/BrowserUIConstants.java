@@ -25,7 +25,6 @@ package org.apache.directory.studio.ldapbrowser.ui;
  * This class contains all the constants used by the Browser UI Plugin
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public interface BrowserUIConstants
 {

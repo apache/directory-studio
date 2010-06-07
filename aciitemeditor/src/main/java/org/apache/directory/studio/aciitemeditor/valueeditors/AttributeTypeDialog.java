@@ -45,7 +45,6 @@ import org.eclipse.swt.widgets.Shell;
  * This class provides a dialog to enter or select an attribute type.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class AttributeTypeDialog extends Dialog
 {

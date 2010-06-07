@@ -52,7 +52,6 @@ import org.eclipse.swt.widgets.Shell;
  * used to load and save the certificate from and to disk.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class CertificateDialog extends Dialog
 {

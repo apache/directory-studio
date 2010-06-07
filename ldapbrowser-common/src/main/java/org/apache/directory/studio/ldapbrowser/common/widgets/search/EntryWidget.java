@@ -57,7 +57,6 @@ import org.eclipse.swt.widgets.Composite;
  * </ul>
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class EntryWidget extends BrowserWidget
 {

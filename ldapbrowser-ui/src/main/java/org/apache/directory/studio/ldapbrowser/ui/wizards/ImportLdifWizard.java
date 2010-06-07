@@ -43,7 +43,6 @@ import org.eclipse.ui.PlatformUI;
  * This class implements the Import LDIF Wizard.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class ImportLdifWizard extends Wizard implements IImportWizard
 {

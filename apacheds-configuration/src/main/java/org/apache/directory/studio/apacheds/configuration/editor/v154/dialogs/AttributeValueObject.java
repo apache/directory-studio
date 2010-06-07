@@ -24,7 +24,6 @@ package org.apache.directory.studio.apacheds.configuration.editor.v154.dialogs;
  * This class implements an Attribute Value Object that is used in the PartitionDetailsPage.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class AttributeValueObject
 {

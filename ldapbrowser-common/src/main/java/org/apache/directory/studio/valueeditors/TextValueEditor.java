@@ -29,7 +29,6 @@ import org.eclipse.swt.widgets.Shell;
  * The default editor for string values.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class TextValueEditor extends AbstractDialogStringValueEditor
 {

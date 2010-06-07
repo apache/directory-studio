@@ -43,7 +43,6 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
  * The EntryEditorPreferencePage contains general settings for the entry editor.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class EntryEditorPreferencePage extends PreferencePage implements IWorkbenchPreferencePage
 {

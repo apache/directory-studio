@@ -54,7 +54,6 @@ import org.eclipse.swt.widgets.Text;
  * and to build a (multivalued) RDN.
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class DnBuilderWidget extends BrowserWidget implements ModifyListener
 {

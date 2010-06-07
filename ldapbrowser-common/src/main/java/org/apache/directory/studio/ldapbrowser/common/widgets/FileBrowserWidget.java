@@ -42,7 +42,6 @@ import org.eclipse.swt.widgets.FileDialog;
  * used files an a browse button to open the file browser.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class FileBrowserWidget extends BrowserWidget
 {

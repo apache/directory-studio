@@ -35,7 +35,6 @@ import org.eclipse.ui.PlatformUI;
  * This action opens the Sorting Dialog for the SearchView.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class OpenSearchViewSortingDialogAction extends Action implements IWorkbenchWindowActionDelegate
 {

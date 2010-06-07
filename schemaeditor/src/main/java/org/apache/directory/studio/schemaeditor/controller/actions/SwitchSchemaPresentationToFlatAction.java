@@ -33,7 +33,6 @@ import org.eclipse.ui.IWorkbenchWindowActionDelegate;
  * This action launches the SwitchSchemaPresentationToFlatAction.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class SwitchSchemaPresentationToFlatAction extends Action implements IWorkbenchWindowActionDelegate
 {

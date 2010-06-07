@@ -68,7 +68,6 @@ import org.eclipse.swt.widgets.Display;
  * This class implements a {@link Job} that is used to launch a server.
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class LaunchServerJob extends Job
 {

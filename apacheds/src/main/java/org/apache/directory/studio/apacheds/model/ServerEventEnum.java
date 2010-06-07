@@ -24,7 +24,6 @@ package org.apache.directory.studio.apacheds.model;
  * This enums defines the different server events notificiations.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public enum ServerEventEnum
 {

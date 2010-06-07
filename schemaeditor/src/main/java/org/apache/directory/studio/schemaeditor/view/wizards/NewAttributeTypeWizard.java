@@ -35,7 +35,6 @@ import org.eclipse.ui.IWorkbench;
  * This class represents the wizard to create a new AttributeType.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class NewAttributeTypeWizard extends Wizard implements INewWizard
 {

@@ -32,7 +32,6 @@ import org.eclipse.ui.texteditor.TextSelectionNavigationLocation;
  * Represents the text selection context marked for the user in the navigation history.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class LdifEntryEditorNavigationLocation extends TextSelectionNavigationLocation
 {

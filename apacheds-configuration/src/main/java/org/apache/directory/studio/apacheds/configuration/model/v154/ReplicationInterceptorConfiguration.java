@@ -24,7 +24,6 @@ package org.apache.directory.studio.apacheds.configuration.model.v154;
  * This class implements a interceptor configuration for the replication interceptor. 
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class ReplicationInterceptorConfiguration implements InterceptorConfiguration
 {

@@ -30,7 +30,6 @@ import org.eclipse.osgi.util.NLS;
  * This class implements the Label Provider of the Syntax Combo of the Attribute Type Editor.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class ATESyntaxComboLabelProvider extends LabelProvider
 {

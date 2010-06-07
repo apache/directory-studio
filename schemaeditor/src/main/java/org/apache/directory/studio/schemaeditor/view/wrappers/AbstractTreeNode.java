@@ -29,7 +29,6 @@ import java.util.List;
  * This abstract class implements the TreeNode Interface.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public abstract class AbstractTreeNode implements TreeNode
 {

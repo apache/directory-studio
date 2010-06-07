@@ -41,7 +41,6 @@ import org.eclipse.ui.PlatformUI;
  * Runnable to open an entry editor. 
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class OpenEntryEditorRunnable extends StudioRunnableWithProgressAdapter implements
     StudioBulkRunnableWithProgress

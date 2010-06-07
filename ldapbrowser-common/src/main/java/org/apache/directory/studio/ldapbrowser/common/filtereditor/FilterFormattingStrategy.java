@@ -38,7 +38,6 @@ import org.eclipse.jface.text.source.ISourceViewer;
  * filter editor.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class FilterFormattingStrategy implements IFormattingStrategy
 {

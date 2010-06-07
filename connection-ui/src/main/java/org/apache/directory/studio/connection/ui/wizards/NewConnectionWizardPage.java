@@ -36,7 +36,6 @@ import org.eclipse.swt.widgets.Composite;
  * NewConnectionWizard.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class NewConnectionWizardPage extends WizardPage implements ConnectionParameterPageModifyListener
 {

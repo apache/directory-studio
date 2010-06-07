@@ -42,7 +42,6 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
  * search logs view.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class SearchLogsPreferencePage extends PreferencePage implements IWorkbenchPreferencePage
 {

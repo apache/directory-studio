@@ -41,7 +41,6 @@ import org.eclipse.swt.widgets.TreeColumn;
  * The EntryEditorWidgetSorter implements the Sorter for the entry editor widget.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class EntryEditorWidgetSorter extends ViewerSorter implements SelectionListener
 {

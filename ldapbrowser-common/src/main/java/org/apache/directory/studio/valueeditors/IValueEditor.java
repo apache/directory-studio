@@ -34,7 +34,6 @@ import org.eclipse.swt.widgets.Composite;
  * to display and edit values in a user-friendly way.  
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public interface IValueEditor
 {

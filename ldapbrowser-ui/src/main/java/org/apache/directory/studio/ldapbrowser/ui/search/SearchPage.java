@@ -45,7 +45,6 @@ import org.eclipse.ui.PlatformUI;
  * It uses the {@link SearchPageWrapper} to render all UI elements. 
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class SearchPage extends DialogPage implements ISearchPage, WidgetModifyListener
 {

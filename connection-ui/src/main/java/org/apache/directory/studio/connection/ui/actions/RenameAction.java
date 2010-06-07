@@ -34,7 +34,6 @@ import org.eclipse.ui.texteditor.IWorkbenchActionDefinitionIds;
  * This Action renames Connections, Entries, Searches, or Bookmarks.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class RenameAction extends StudioAction
 {

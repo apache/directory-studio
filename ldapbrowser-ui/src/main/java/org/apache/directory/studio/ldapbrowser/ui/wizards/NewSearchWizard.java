@@ -36,7 +36,6 @@ import org.eclipse.ui.IWorkbenchWindow;
  * "New..." menu. It just opens the platform's search dialog.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class NewSearchWizard extends Wizard implements INewWizard
 {

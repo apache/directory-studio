@@ -37,7 +37,6 @@ import org.eclipse.ui.PlatformUI;
  * This action launches the NewProjectWizard.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class CommitChangesAction extends Action implements IWorkbenchWindowActionDelegate
 {

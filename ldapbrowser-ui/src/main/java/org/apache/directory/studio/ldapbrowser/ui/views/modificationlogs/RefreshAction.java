@@ -31,7 +31,6 @@ import org.eclipse.jface.resource.ImageDescriptor;
  * Action to refresh the view from logfile.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class RefreshAction extends BrowserAction
 {

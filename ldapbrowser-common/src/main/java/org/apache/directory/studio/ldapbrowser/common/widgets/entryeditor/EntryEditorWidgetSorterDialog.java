@@ -43,7 +43,6 @@ import org.eclipse.swt.widgets.Shell;
  * This class represents the dialog used to change the entry editors's  default sort preferences.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class EntryEditorWidgetSorterDialog extends Dialog
 {

@@ -113,7 +113,6 @@ import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
  * This class implements the LDIF editor
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class LdifEditor extends TextEditor implements ILdifEditor, ConnectionUpdateListener, IPartListener2
 {

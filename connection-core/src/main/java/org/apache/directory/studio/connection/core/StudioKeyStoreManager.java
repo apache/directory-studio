@@ -39,7 +39,6 @@ import org.apache.commons.codec.digest.DigestUtils;
  * A wrapper around {@link KeyStore}.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class StudioKeyStoreManager
 {

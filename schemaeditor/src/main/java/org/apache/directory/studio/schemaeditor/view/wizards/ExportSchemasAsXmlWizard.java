@@ -42,7 +42,6 @@ import org.eclipse.ui.IWorkbench;
  * This class represents the wizard to export schemas as XML.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class ExportSchemasAsXmlWizard extends Wizard implements IExportWizard
 {

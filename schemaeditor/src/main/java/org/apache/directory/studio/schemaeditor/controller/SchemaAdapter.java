@@ -34,7 +34,6 @@ import org.apache.directory.studio.schemaeditor.model.SyntaxImpl;
  * and override only the methods which they are interested in. 
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public abstract class SchemaAdapter implements SchemaListener
 {

@@ -51,7 +51,6 @@ import org.eclipse.jface.viewers.TreeViewer;
  * The BrowserUniversalListener manages all events for the browser widget.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class BrowserUniversalListener implements ConnectionUpdateListener, EntryUpdateListener, SearchUpdateListener
 {

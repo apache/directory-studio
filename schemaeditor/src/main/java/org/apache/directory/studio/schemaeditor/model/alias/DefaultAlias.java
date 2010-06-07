@@ -24,7 +24,6 @@ package org.apache.directory.studio.schemaeditor.model.alias;
  * This class defines an {@link Alias}.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class DefaultAlias extends AbstractAlias
 {

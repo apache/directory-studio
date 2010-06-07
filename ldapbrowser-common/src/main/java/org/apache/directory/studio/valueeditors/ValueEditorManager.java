@@ -61,7 +61,6 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
  * <code>org.apache.directory.studio.valueeditors</code>. 
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class ValueEditorManager
 {
@@ -712,7 +711,6 @@ public class ValueEditorManager
      * This class is a bean to hold the data defined in value editor extension 
      *
      * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
-     * @version $Rev$, $Date$
      */
     public static class ValueEditorExtension
     {

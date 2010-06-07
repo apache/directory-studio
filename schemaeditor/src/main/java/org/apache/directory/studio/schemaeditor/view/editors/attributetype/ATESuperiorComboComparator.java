@@ -30,7 +30,6 @@ import org.apache.directory.studio.schemaeditor.view.editors.NonExistingAttribut
  * This class implements the Comparator used to compare elements in the Matching Rules Content Providers.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class ATESuperiorComboComparator implements Comparator<Object>
 {

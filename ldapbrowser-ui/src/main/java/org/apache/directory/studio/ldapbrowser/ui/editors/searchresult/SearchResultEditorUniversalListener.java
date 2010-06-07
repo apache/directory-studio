@@ -77,7 +77,6 @@ import org.eclipse.ui.forms.widgets.Hyperlink;
  * The SearchResultEditorUniversalListener manages all events for the search result editor.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class SearchResultEditorUniversalListener implements SearchUpdateListener, EntryUpdateListener
 {

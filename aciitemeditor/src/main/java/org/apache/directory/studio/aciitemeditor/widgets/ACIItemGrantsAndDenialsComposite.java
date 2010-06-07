@@ -55,7 +55,6 @@ import org.eclipse.swt.widgets.TreeColumn;
 
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class ACIItemGrantsAndDenialsComposite extends Composite
 {
@@ -162,7 +161,6 @@ public class ACIItemGrantsAndDenialsComposite extends Composite
      * undo/redo functionality.
      *
      * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
-     * @version $Rev$, $Date$
      */
     private class GrantAndDenialWrapper
     {
@@ -432,7 +430,6 @@ public class ACIItemGrantsAndDenialsComposite extends Composite
      * The ICellModifier user for this tree viewer.
      *
      * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
-     * @version $Rev$, $Date$
      */
     private class GrantsAndDenialsCellModifier implements ICellModifier
     {
@@ -523,7 +520,6 @@ public class ACIItemGrantsAndDenialsComposite extends Composite
      * The content provider used for this tree viewer.
      *
      * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
-     * @version $Rev$, $Date$
      */
     private class GrantsAndDenialsContentProvider extends ArrayContentProvider implements ITreeContentProvider
     {
@@ -578,7 +574,6 @@ public class ACIItemGrantsAndDenialsComposite extends Composite
      * The label provider used for this tree viewer.
      *
      * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
-     * @version $Rev$, $Date$
      */
     private class GrantsAndDenialsLabelProvider extends LabelProvider implements ITableLabelProvider
     {

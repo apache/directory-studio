@@ -30,7 +30,6 @@ import org.apache.directory.shared.ldap.name.LdapDN;
  * Utility class for JNDI specific stuff.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class JNDIUtils
 {

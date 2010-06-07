@@ -60,7 +60,6 @@ import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
  * The EntryEditor is an {@link IEditorPart} is used to display and edit the attributes of an entry.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public abstract class EntryEditor extends EditorPart implements IEntryEditor, INavigationLocationProvider,
     IReusableEditor, IShowEditorInput

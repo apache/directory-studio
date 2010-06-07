@@ -32,7 +32,6 @@ import org.apache.directory.studio.schemaeditor.view.wrappers.TreeNode;
  * This used to represent a folder in a TreeViewer.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class Folder
 {
@@ -43,7 +42,6 @@ public class Folder
      * This enum represents the different types of folders.
      *
      * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
-     * @version $Rev$, $Date$
      */
     public enum FolderType
     {

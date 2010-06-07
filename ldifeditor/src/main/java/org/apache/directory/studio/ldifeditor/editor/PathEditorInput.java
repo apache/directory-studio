@@ -30,7 +30,6 @@ import org.eclipse.ui.editors.text.ILocationProvider;
  * Inspired from org.eclipse.ui.internal.editors.text.NonExistingFileEditorInput.java
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class PathEditorInput implements IPathEditorInput, ILocationProvider
 {

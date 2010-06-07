@@ -32,7 +32,6 @@ import org.eclipse.ui.dialogs.PreferencesUtil;
  * This action opens the Preference Page for the Hierarchy View.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class OpenHierarchyViewPreferencesAction extends Action
 {

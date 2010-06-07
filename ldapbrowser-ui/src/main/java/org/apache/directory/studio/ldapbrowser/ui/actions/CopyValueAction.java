@@ -49,7 +49,6 @@ import org.eclipse.swt.dnd.Transfer;
  * This Action copies values of the seleced Entry to the Clipboard.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class CopyValueAction extends BrowserAction
 {

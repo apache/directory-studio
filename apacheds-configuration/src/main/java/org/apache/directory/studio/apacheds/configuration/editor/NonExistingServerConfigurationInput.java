@@ -30,7 +30,6 @@ import org.eclipse.ui.IPersistableElement;
  * This class represents the Non Existing Server Configuration Input.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class NonExistingServerConfigurationInput implements IEditorInput
 {

@@ -38,7 +38,6 @@ import org.eclipse.swt.widgets.Text;
  * This class implements the wizard page for the new server wizard.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class NewServerWizardPage extends WizardPage
 {

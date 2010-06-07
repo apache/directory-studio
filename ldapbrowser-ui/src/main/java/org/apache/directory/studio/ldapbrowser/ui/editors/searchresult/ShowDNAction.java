@@ -30,7 +30,6 @@ import org.eclipse.jface.action.Action;
  * Action to show/hide the DN column.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class ShowDNAction extends Action
 {

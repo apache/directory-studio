@@ -55,7 +55,6 @@ import org.eclipse.ui.dialogs.PreferencesUtil;
  * It invokes an UpdateEntryRunnable.
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class BrowserPasteAction extends PasteAction
 {

@@ -33,7 +33,6 @@ import org.apache.directory.studio.ldapbrowser.core.model.filter.parser.LdapFilt
  * The LdapFilterComponent is the base class for all filter components.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public abstract class LdapFilterComponent
 {

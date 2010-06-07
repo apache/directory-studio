@@ -25,7 +25,6 @@ package org.apache.directory.studio.connection.ui;
  * Constants used in the connection UI plugin.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public interface ConnectionUIConstants
 {

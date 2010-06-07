@@ -31,7 +31,6 @@ import org.apache.directory.shared.ldap.util.LdapURL;
  * of a referral from a higher-level layer (from the UI plugin).
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public interface IReferralHandler
 {

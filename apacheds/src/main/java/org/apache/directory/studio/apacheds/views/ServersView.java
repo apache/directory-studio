@@ -70,7 +70,6 @@ import org.eclipse.ui.part.ViewPart;
  * It displays the list of Apache Directory Servers.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class ServersView extends ViewPart
 {

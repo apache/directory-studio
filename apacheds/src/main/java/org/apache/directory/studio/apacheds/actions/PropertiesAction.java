@@ -38,7 +38,6 @@ import org.eclipse.ui.dialogs.PreferencesUtil;
  * This class implements the properties action for a server.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class PropertiesAction extends Action implements IWorkbenchWindowActionDelegate
 {

@@ -46,7 +46,6 @@ import org.eclipse.ui.IPersistableElement;
  * </ul>
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class SearchResultEditorInput implements IEditorInput
 {

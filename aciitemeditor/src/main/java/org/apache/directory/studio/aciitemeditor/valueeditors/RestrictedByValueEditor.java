@@ -51,7 +51,6 @@ import org.eclipse.swt.widgets.Shell;
  * ACI item editor specific value editor to edit the RestrictedBy protected item.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class RestrictedByValueEditor extends AbstractDialogStringValueEditor
 {
@@ -136,7 +135,6 @@ public class RestrictedByValueEditor extends AbstractDialogStringValueEditor
      * information to the opened RestrictedByDialog.
      *
      * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
-     * @version $Rev$, $Date$
      */
     private class RestrictedByValueEditorRawValueWrapper
     {
@@ -172,7 +170,6 @@ public class RestrictedByValueEditor extends AbstractDialogStringValueEditor
      * This class provides a dialog to enter the RestrictedBy values.
      *
      * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
-     * @version $Rev$, $Date$
      */
     private class RestrictedByDialog extends Dialog
     {

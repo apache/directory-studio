@@ -63,7 +63,6 @@ import org.eclipse.ui.actions.ActionFactory;
  * This class manages all the actions of the browser view.
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class BrowserViewActionGroup extends BrowserActionGroup
 {

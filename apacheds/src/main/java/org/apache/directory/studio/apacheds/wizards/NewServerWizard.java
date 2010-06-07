@@ -33,7 +33,6 @@ import org.eclipse.ui.IWorkbench;
  * This class implements the new server wizard.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class NewServerWizard extends Wizard implements INewWizard
 {

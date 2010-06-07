@@ -49,7 +49,6 @@ import org.eclipse.ui.PlatformUI;
  * This class implements the New ApacheDS Configuration File Wizard.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class NewApacheDSConfigurationFileWizard extends Wizard implements INewWizard
 {

@@ -32,7 +32,6 @@ import org.eclipse.jface.viewers.Viewer;
  * This class is a wrapper for the preferences of the entry editor widget.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class EntryEditorWidgetPreferences
 {

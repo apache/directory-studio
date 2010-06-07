@@ -52,7 +52,6 @@ import org.eclipse.core.runtime.jobs.Job;
  * It is used to check the schema integrity.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class SchemaChecker
 {

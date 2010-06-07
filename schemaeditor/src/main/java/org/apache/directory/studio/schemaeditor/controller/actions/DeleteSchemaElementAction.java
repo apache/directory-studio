@@ -55,7 +55,6 @@ import org.eclipse.ui.PlatformUI;
  * This action deletes one or more Schema Elements from the SchemaView.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class DeleteSchemaElementAction extends Action implements IWorkbenchWindowActionDelegate
 {

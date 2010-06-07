@@ -38,7 +38,6 @@ import org.eclipse.ui.PlatformUI;
  * This Action launches the New Connection Wizard.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class NewConnectionAction extends StudioAction
 {

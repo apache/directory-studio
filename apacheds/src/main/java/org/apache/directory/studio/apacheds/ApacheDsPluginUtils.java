@@ -46,7 +46,6 @@ import org.eclipse.jface.dialogs.MessageDialog;
  * This class contains helpful methods.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class ApacheDsPluginUtils
 {

@@ -41,7 +41,6 @@ import org.eclipse.swt.widgets.Item;
  * for the search result editor.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class SearchResultEditorCellModifier implements ICellModifier
 {

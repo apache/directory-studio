@@ -58,7 +58,6 @@ import org.eclipse.ui.forms.widgets.Section;
  * This class is the Overview Page of the Schema Editore.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class SchemaEditorOverviewPage extends FormPage
 {

@@ -27,7 +27,6 @@ import org.apache.directory.studio.schemaeditor.model.schemachecker.SchemaWarnin
  * This class is used to wrap a SchemaWarning in a TreeViewer.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class SchemaWarningWrapper extends AbstractTreeNode
 {

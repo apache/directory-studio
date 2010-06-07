@@ -28,7 +28,6 @@ import org.apache.directory.studio.ldapbrowser.ui.BrowserUIConstants;
  * An entry editor that uses LDIF format.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class MultiTabLdifEntryEditor extends LdifEntryEditor
 {

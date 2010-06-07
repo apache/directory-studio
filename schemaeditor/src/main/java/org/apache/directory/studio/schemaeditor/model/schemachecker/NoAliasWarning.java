@@ -27,7 +27,6 @@ import org.apache.directory.shared.ldap.schema.SchemaObject;
  * This class represents the NoAliasWarning.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class NoAliasWarning implements SchemaWarning
 {

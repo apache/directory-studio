@@ -62,7 +62,6 @@ import org.eclipse.ui.PlatformUI;
  * It is used to display a List of Difference given in input.
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class DifferencesWidget
 {

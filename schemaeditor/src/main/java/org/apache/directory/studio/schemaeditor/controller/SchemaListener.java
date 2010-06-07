@@ -31,7 +31,6 @@ import org.apache.directory.studio.schemaeditor.model.SyntaxImpl;
  * events that are generated when an event occurs on a schema.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public interface SchemaListener
 {

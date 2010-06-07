@@ -57,7 +57,6 @@ import org.eclipse.swt.widgets.Table;
  * It is used to let the user specify the optional attribute types for the object class.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class NewObjectClassOptionalAttributesPage extends WizardPage
 {

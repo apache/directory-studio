@@ -47,7 +47,6 @@ import org.eclipse.search.ui.ISearchPageScoreComputer;
  * Default implementation of ISearch.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class Search implements ISearch
 {

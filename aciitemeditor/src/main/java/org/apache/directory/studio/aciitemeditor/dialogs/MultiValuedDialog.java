@@ -56,7 +56,6 @@ import org.eclipse.swt.widgets.Table;
  * Dialog to edit user classes or protected items with multiple values.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class MultiValuedDialog extends Dialog
 {

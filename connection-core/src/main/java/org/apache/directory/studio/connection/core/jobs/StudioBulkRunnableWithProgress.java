@@ -27,7 +27,6 @@ package org.apache.directory.studio.connection.core.jobs;
  * method is called afterwards to fire event notifications.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public interface StudioBulkRunnableWithProgress extends StudioRunnableWithProgress
 {

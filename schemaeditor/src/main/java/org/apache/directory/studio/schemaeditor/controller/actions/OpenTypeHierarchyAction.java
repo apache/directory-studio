@@ -48,7 +48,6 @@ import org.eclipse.ui.PlatformUI;
  * This action opens the selected element in the Viewer in the Hierarchy View.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class OpenTypeHierarchyAction extends Action implements IWorkbenchWindowActionDelegate
 {

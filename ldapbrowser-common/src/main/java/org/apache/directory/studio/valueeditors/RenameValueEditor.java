@@ -46,7 +46,6 @@ import org.eclipse.swt.widgets.Control;
  * Special ValueEditor to rename an entry using the {@link RenameEntryDialog}.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class RenameValueEditor extends CellEditor implements IValueEditor
 {

@@ -36,7 +36,6 @@ import org.eclipse.jface.resource.ImageDescriptor;
  * This Action toggles weather to fetch referrals for an entry or not.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class FetchReferralsAction extends BrowserAction
 {

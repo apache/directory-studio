@@ -37,7 +37,6 @@ import org.eclipse.core.runtime.Platform;
  * No custom input is allowed.
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class LineSeparatorInput extends OptionsInput
 {

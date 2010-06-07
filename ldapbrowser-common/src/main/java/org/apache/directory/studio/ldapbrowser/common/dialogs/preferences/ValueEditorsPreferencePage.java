@@ -71,7 +71,6 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
  * value editors for attributes and syntaxes.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class ValueEditorsPreferencePage extends PreferencePage implements IWorkbenchPreferencePage
 {

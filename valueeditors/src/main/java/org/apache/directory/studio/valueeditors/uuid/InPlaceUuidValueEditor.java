@@ -34,7 +34,6 @@ import org.apache.directory.studio.valueeditors.HexValueEditor;
  * For modification the raw string must be edited.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class InPlaceUuidValueEditor extends HexValueEditor
 {

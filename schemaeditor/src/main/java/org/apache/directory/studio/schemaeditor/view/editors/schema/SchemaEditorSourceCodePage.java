@@ -50,7 +50,6 @@ import org.eclipse.ui.forms.widgets.ScrolledForm;
  * This class is the Source Code Page of the Schema Editor.
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class SchemaEditorSourceCodePage extends FormPage
 {

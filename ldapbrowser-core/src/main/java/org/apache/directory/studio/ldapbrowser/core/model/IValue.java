@@ -35,7 +35,6 @@ import org.eclipse.core.runtime.IAdaptable;
  * An IValue represents a value of a LDAP attribute.
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public interface IValue extends Serializable, IAdaptable, ValuePropertyPageProvider, AttributePropertyPageProvider,
     EntryPropertyPageProvider, ConnectionPropertyPageProvider
@@ -45,7 +44,6 @@ public interface IValue extends Serializable, IAdaptable, ValuePropertyPageProvi
      * EmptyValue is used to indicate an empty value.
      *
      * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
-     * @version $Rev$, $Date$
      */
     interface EmptyValue
     {

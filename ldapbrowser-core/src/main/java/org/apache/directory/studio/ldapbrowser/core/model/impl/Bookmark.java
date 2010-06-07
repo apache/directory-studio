@@ -37,7 +37,6 @@ import org.eclipse.search.ui.ISearchPageScoreComputer;
  * Default implementation if IBookmark.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class Bookmark implements IBookmark
 {

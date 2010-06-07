@@ -45,7 +45,6 @@ import org.eclipse.ui.PlatformUI;
  * This class implements the open action for a server.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class OpenConfigurationAction extends Action implements IWorkbenchWindowActionDelegate
 {
@@ -161,7 +160,6 @@ public class OpenConfigurationAction extends Action implements IWorkbenchWindowA
      * Inspired from org.eclipse.ui.internal.editors.text.NonExistingFileEditorInput.java
      *
      * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
-     * @version $Rev$, $Date$
      */
     class PathEditorInput implements IPathEditorInput
     {

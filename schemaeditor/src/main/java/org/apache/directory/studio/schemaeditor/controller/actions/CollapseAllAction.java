@@ -34,7 +34,6 @@ import org.eclipse.ui.IWorkbenchWindowActionDelegate;
  * This action collapse all the of the given TreeViewer.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class CollapseAllAction extends Action implements IWorkbenchWindowActionDelegate
 {

@@ -30,7 +30,6 @@ import org.apache.directory.studio.ldapbrowser.ui.BrowserUIConstants;
  * An entry editor the opens all entries in one single editor tab.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class SingleTabEntryEditor extends EntryEditor
 {

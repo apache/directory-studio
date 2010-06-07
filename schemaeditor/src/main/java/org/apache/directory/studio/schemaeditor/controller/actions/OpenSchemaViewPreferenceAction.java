@@ -35,7 +35,6 @@ import org.eclipse.ui.dialogs.PreferencesUtil;
  * This action opens the Preference Page for the SchemaView.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class OpenSchemaViewPreferenceAction extends Action implements IWorkbenchWindowActionDelegate
 {

@@ -43,7 +43,6 @@ import org.eclipse.ui.texteditor.IWorkbenchActionDefinitionIds;
  * This Action moves entries from one node of the tree to another.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class MoveAction extends BrowserAction
 {

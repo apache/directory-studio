@@ -56,7 +56,6 @@ import org.eclipse.ui.IWorkbench;
  * This class represents the wizard to export schemas for Apache DS.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class ExportSchemasForADSWizard extends Wizard implements IExportWizard
 {

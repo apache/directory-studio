@@ -62,7 +62,6 @@ import org.apache.directory.studio.ldifparser.parser.LdifParser;
  * The schema is the central access point to all schema information.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class Schema
 {

@@ -45,7 +45,6 @@ import org.eclipse.ui.IWorkbench;
  * This class represents the wizard to import schemas from OpenLdap format.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class ImportSchemasFromOpenLdapWizard extends Wizard implements IImportWizard
 {

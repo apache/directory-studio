@@ -39,7 +39,6 @@ import org.eclipse.jface.text.source.SourceViewerConfiguration;
  * This class enables the features of the editor (Syntax coloring, code completion, etc.)
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class ACISourceViewerConfiguration extends SourceViewerConfiguration
 {

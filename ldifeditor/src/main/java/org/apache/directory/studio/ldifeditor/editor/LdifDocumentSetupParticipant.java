@@ -34,7 +34,6 @@ import org.eclipse.jface.text.rules.FastPartitioner;
  * This class implements the IDocumentSetupParticipant interface for LDIF document
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class LdifDocumentSetupParticipant implements IDocumentSetupParticipant
 {

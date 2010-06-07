@@ -63,7 +63,6 @@ import org.eclipse.ui.contexts.IContextService;
  * Dialog to view and edit multi-valued attributes.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class MultivaluedDialog extends Dialog
 {

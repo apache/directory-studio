@@ -38,7 +38,6 @@ import org.eclipse.jface.resource.ImageDescriptor;
  * This Action deletes all the Searches or Bookmarks.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class DeleteAllAction extends DeleteAction
 {

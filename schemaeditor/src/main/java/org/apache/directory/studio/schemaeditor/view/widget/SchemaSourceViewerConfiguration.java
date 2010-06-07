@@ -33,7 +33,6 @@ import org.eclipse.jface.text.source.SourceViewerConfiguration;
  * This class is used to handle the display (syntax highlighting, etc.) of Schema files in the SchemaSourceViewer.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class SchemaSourceViewerConfiguration extends SourceViewerConfiguration
 {

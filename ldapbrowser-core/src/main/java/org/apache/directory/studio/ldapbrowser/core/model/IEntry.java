@@ -38,7 +38,6 @@ import org.eclipse.core.runtime.IAdaptable;
  * An IEntry represents an LDAP entry.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public interface IEntry extends Serializable, IAdaptable, EntryPropertyPageProvider, ConnectionPropertyPageProvider
 {

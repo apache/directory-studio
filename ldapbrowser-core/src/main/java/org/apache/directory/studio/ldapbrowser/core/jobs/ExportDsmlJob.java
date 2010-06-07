@@ -67,7 +67,6 @@ import org.apache.directory.studio.ldapbrowser.core.model.SearchParameter;
  * This class implements a Job for Exporting a part of a LDAP Server into a DSML File.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class ExportDsmlJob extends AbstractEclipseJob
 {
@@ -96,7 +95,6 @@ public class ExportDsmlJob extends AbstractEclipseJob
      * This enum contains the two possible export types.
      *
      * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
-     * @version $Rev$, $Date$
      */
     public enum ExportDsmlJobType
     {

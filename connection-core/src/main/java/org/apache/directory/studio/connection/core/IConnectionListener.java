@@ -30,7 +30,6 @@ import org.apache.directory.studio.connection.core.jobs.StudioProgressMonitor;
  * extension point.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public interface IConnectionListener
 {

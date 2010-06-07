@@ -34,7 +34,6 @@ import org.apache.directory.shared.ldap.schema.Syntax;
  * This class represents a matching rule.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class MatchingRuleImpl extends AbstractMatchingRule implements MutableSchemaObject
 {

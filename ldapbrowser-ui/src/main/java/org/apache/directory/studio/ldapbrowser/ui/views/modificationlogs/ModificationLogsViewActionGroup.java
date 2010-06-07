@@ -39,7 +39,6 @@ import org.eclipse.ui.IActionBars;
  * The ModificationLogsViewActionGroup manages all the actions of the modification logs view.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class ModificationLogsViewActionGroup implements ActionHandlerManager, IMenuListener
 {

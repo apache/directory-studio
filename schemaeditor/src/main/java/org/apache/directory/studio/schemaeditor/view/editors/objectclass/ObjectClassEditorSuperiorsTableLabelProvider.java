@@ -36,7 +36,6 @@ import org.eclipse.swt.graphics.Image;
  * This class is the Label Provider for the Superiors Table of the Object Class Editor.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class ObjectClassEditorSuperiorsTableLabelProvider extends LabelProvider implements ITableLabelProvider
 {

@@ -28,7 +28,6 @@ import java.util.List;
  * This interface represents an object class difference.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class ObjectClassDifference extends AbstractDifference
 {

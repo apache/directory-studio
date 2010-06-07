@@ -64,7 +64,6 @@ import org.eclipse.ui.forms.widgets.TableWrapLayout;
  * This class represents the Details Page of the Server Configuration Editor for the Partition type
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class PartitionDetailsPage implements IDetailsPage
 {

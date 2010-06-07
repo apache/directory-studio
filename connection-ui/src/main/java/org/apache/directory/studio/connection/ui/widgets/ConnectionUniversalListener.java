@@ -38,7 +38,6 @@ import org.eclipse.jface.viewers.TreeViewer;
  * The ConnectionUniversalListener manages all events for the connection widget.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class ConnectionUniversalListener implements ConnectionUpdateListener
 {

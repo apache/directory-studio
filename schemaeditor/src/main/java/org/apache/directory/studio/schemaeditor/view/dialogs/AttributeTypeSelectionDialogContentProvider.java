@@ -39,7 +39,6 @@ import org.eclipse.jface.viewers.Viewer;
  * This class is the Content Provider for the Attribute Type Selection Dialog.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class AttributeTypeSelectionDialogContentProvider implements IStructuredContentProvider
 {

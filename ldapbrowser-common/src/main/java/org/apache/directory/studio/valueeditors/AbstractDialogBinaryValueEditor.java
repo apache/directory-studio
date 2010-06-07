@@ -32,7 +32,6 @@ import org.eclipse.osgi.util.NLS;
  * in a dialog. 
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public abstract class AbstractDialogBinaryValueEditor extends AbstractDialogValueEditor
 {

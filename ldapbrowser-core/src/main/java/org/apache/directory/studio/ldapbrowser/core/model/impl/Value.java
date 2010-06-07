@@ -39,7 +39,6 @@ import org.eclipse.search.ui.ISearchPageScoreComputer;
  * Default implementation of IValue.
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class Value implements IValue
 {

@@ -24,7 +24,6 @@ package org.apache.directory.studio.valueeditors;
  * Contains constants for the value editors.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public interface ValueEditorsConstants
 {

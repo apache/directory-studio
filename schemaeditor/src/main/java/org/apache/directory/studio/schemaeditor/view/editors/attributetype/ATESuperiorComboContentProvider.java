@@ -35,7 +35,6 @@ import org.eclipse.jface.viewers.Viewer;
  * This class implements the Content Provider for the Superior Combo of the Attribute Type Editor.
  *  
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class ATESuperiorComboContentProvider implements IStructuredContentProvider
 {

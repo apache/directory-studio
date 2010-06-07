@@ -51,7 +51,6 @@ import org.osgi.framework.Bundle;
  * This class implements the create connection action for a server.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class CreateConnectionAction extends Action implements IWorkbenchWindowActionDelegate
 {

@@ -29,7 +29,6 @@ import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
  * information to the opened ACIItemDialog.
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class ACIItemValueWithContext
 {

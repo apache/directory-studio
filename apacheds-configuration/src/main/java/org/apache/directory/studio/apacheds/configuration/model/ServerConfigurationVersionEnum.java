@@ -24,7 +24,6 @@ package org.apache.directory.studio.apacheds.configuration.model;
  * This enum contains all the versions supported by the plugin.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public enum ServerConfigurationVersionEnum
 {

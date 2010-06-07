@@ -58,7 +58,6 @@ import org.eclipse.jface.viewers.Viewer;
  * the browser widget. It accepts an IConnection as input.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class BrowserContentProvider implements ITreeContentProvider
 {

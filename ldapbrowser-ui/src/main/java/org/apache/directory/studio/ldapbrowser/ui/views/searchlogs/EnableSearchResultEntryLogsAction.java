@@ -30,7 +30,6 @@ import org.eclipse.jface.action.Action;
  * This action is used to toggle the "enable search result entry logs" preference.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class EnableSearchResultEntryLogsAction extends Action
 {

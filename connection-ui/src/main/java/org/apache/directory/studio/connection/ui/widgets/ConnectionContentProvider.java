@@ -38,7 +38,6 @@ import org.eclipse.jface.viewers.Viewer;
  * and returns its connections as elements.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class ConnectionContentProvider implements ITreeContentProvider
 {

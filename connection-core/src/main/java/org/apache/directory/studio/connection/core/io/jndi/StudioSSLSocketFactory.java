@@ -38,7 +38,6 @@ import javax.net.ssl.X509TrustManager;
  * A {@link SSLSocketFactory} that uses a custom {@link TrustManager} ({@link StudioTrustManager}).
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class StudioSSLSocketFactory extends SSLSocketFactory
 {

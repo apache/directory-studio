@@ -35,7 +35,6 @@ import org.eclipse.ui.PlatformUI;
  * a UI dialog.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class UIAuthHandler implements IAuthHandler
 {

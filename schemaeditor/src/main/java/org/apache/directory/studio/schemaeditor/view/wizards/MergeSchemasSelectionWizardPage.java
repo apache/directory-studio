@@ -54,7 +54,6 @@ import org.eclipse.swt.widgets.Tree;
  * This class represents the page to select merged elements of the MergeSchemasWizard.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class MergeSchemasSelectionWizardPage extends AbstractWizardPage
 {

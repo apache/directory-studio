@@ -35,7 +35,6 @@ import org.eclipse.jface.viewers.Viewer;
  * the search resutl editor. It accepts an {@link ISearch} as input.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class SearchResultEditorContentProvider implements ILazyContentProvider
 {

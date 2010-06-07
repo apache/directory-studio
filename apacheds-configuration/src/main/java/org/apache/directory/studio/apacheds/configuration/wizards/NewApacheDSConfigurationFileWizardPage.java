@@ -39,7 +39,6 @@ import org.eclipse.swt.widgets.Label;
  * It is used to let the user choose the target version for the configuration file.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class NewApacheDSConfigurationFileWizardPage extends WizardPage
 {

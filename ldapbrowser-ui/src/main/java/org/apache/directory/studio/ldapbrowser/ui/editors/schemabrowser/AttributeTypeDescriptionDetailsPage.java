@@ -49,7 +49,6 @@ import org.eclipse.ui.forms.widgets.Section;
  * attribute type description.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class AttributeTypeDescriptionDetailsPage extends SchemaDetailsPage
 {

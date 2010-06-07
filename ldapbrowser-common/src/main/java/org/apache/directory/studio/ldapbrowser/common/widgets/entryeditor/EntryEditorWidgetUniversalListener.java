@@ -56,7 +56,6 @@ import org.eclipse.swt.events.TraverseListener;
  * The EntryEditorWidgetUniversalListener manages all events for the entry editor widget.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class EntryEditorWidgetUniversalListener implements EntryUpdateListener
 {

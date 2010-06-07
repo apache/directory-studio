@@ -47,7 +47,6 @@ import org.eclipse.ui.dialogs.PropertyPage;
  * This page shows some info about the Root DSE.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class RootDSEPropertyPage extends PropertyPage implements IWorkbenchPropertyPage
 {

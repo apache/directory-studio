@@ -38,7 +38,6 @@ import org.eclipse.swt.widgets.TableItem;
  * It manages activation and closing of value editors. 
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public abstract class AbstractOpenEditorAction extends BrowserAction implements FocusListener, KeyListener
 {

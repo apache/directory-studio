@@ -32,7 +32,6 @@ import org.eclipse.swt.widgets.Display;
  * This wrapper is used as root in the ProjectsView.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class ProjectsViewRoot extends AbstractTreeNode
 {

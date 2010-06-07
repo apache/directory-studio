@@ -31,7 +31,6 @@ import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
  * An AttributeDeletedEvent indicates that an {@link IAttribute} was deleted from an {@link IEntry}.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class AttributeDeletedEvent extends EntryModificationEvent
 {

@@ -39,7 +39,6 @@ import org.eclipse.jface.viewers.TreeViewer;
  * This class implements the Up Action.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class UpAction extends BrowserAction
 {

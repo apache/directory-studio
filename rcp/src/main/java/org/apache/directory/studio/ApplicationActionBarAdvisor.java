@@ -54,7 +54,6 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
  * new actions.
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class ApplicationActionBarAdvisor extends ActionBarAdvisor
 {

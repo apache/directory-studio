@@ -24,7 +24,6 @@ package org.apache.directory.studio.apacheds.model;
  * This class implements a default servers handler listener.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class ServersHandlerAdapter implements ServersHandlerListener
 {

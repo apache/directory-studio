@@ -51,7 +51,6 @@ import org.eclipse.swt.widgets.Label;
  * attribute type he wants to create (equality, ordering, substring).
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class NewAttributeTypeMatchingRulesWizardPage extends WizardPage
 {

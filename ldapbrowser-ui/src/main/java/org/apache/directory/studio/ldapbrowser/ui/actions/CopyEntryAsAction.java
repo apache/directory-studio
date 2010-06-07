@@ -41,7 +41,6 @@ import org.eclipse.swt.widgets.Display;
  * This abstract class must be extended by each Action that <em>"Copies an Entry as..."</em>.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public abstract class CopyEntryAsAction extends BrowserAction
 {

@@ -31,7 +31,6 @@ import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
  * The BaseDNEntry class represents an entry without a logical parent entry.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class BaseDNEntry extends AbstractEntry
 {

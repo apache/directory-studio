@@ -36,7 +36,6 @@ import org.eclipse.osgi.util.NLS;
  * This Action deletes all the values of an Attribute (a whole Attribute).
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class DeleteAllValuesAction extends DeleteAction
 {

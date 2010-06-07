@@ -36,7 +36,6 @@ import org.apache.directory.studio.schemaeditor.model.Schema;
  * This class represents the HierarchyManager.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class HierarchyManager
 {

@@ -30,7 +30,6 @@ import org.eclipse.jface.action.Action;
  * This action toggles between connection specific schemas and the default schema.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class ShowDefaultSchemaAction extends Action
 {

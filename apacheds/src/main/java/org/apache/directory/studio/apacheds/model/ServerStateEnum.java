@@ -24,7 +24,6 @@ package org.apache.directory.studio.apacheds.model;
  * This enum defines the different states that a server can take.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public enum ServerStateEnum
 {

@@ -47,7 +47,6 @@ import org.apache.directory.studio.ldifparser.model.container.LdifContentRecord;
  * Performs compound operations to model classes.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class CompoundModification
 {

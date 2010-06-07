@@ -37,7 +37,6 @@ import org.eclipse.ui.dialogs.PropertyPage;
  * This class implements the Info property page for a server.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class ServerPropertyPage extends PropertyPage implements IWorkbenchPropertyPage
 {

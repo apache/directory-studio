@@ -56,7 +56,6 @@ import org.eclipse.ui.views.contentoutline.ContentOutlinePage;
  * It used to display LDAP entries.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class EntryEditorOutlinePage extends ContentOutlinePage
 {
@@ -236,7 +235,6 @@ public class EntryEditorOutlinePage extends ContentOutlinePage
      * This class implements the ContentProvider used for the Entry Editor Outline View.
      *
      * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
-     * @version $Rev$, $Date$
      */
     private static class EntryEditorOutlineContentProvider implements ITreeContentProvider
     {
@@ -323,7 +321,6 @@ public class EntryEditorOutlinePage extends ContentOutlinePage
      * This class implements the LabelProvider used for the Entry Editor Outline View
      *
      * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
-     * @version $Rev$, $Date$
      */
     private static class EntryEditorOutlineLabelProvider extends LabelProvider
     {
@@ -417,7 +414,6 @@ public class EntryEditorOutlinePage extends ContentOutlinePage
      * Wrapper around an entry.
      *
      * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
-     * @version $Rev$, $Date$
      */
     private static class EntryWrapper
     {

@@ -42,7 +42,6 @@ import org.eclipse.swt.dnd.Transfer;
  * This Action copies the Search Filter
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class CopySearchFilterAction extends BrowserAction
 {

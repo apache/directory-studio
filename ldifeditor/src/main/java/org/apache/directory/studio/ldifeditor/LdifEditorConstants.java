@@ -24,7 +24,6 @@ package org.apache.directory.studio.ldifeditor;
  * Constants for the LDIF editor.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public interface LdifEditorConstants
 {

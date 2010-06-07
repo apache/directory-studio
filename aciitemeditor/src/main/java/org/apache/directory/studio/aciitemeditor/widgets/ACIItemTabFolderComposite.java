@@ -44,7 +44,6 @@ import org.eclipse.swt.widgets.TabItem;
  * 
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class ACIItemTabFolderComposite extends Composite
 {

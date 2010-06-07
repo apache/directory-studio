@@ -28,7 +28,6 @@ import org.eclipse.osgi.util.NLS;
  * This class is used to wrap an Schema in a TreeViewer.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class SchemaWrapper extends AbstractTreeNode
 {

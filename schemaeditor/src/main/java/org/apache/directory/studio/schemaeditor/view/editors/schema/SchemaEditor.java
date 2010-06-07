@@ -38,7 +38,6 @@ import org.eclipse.ui.forms.editor.FormEditor;
  * This class is the Schema Editor main class.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class SchemaEditor extends FormEditor
 {

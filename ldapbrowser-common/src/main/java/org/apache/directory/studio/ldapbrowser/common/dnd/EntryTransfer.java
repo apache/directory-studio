@@ -47,7 +47,6 @@ import org.eclipse.swt.dnd.TransferData;
  * representation, not the complete object.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class EntryTransfer extends ByteArrayTransfer
 {

@@ -33,7 +33,6 @@ import org.eclipse.swt.widgets.Display;
  * This class is used to set default preference values.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class PreferenceInitializer extends AbstractPreferenceInitializer
 {
