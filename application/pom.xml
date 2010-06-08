@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Licensed to the Apache Software Foundation (ASF) under one or more
+  contributor license agreements.  See the NOTICE file distributed with
+  this work for additional information regarding copyright ownership.
+  The ASF licenses this file to You under the Apache License, Version 2.0
+  (the "License"); you may not use this file except in compliance with
+  the License.  You may obtain a copy of the License at
+  
+  http://www.apache.org/licenses/LICENSE-2.0
+  
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<!--
+  @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>org.apache.directory.studio</groupId>
+    <artifactId>parent</artifactId>
+    <version>1.5.4-SNAPSHOT</version>
+  </parent>
+  
+  <artifactId>application</artifactId>
+  <name>Apache Directory Studio Application</name>
+  <packaging>pom</packaging>
+  
+  <properties>
+    <studio-dir>${project.build.directory}/ApacheDirectoryStudio</studio-dir>
+  </properties>
+  
+  <modules>
+    <module>application-features</module>
+    <module>application-plugins</module>
+    <module>application-eclipse-plugins</module>
+  </modules>
+  
+  <profiles>
+    <profile>
+      <id>linux-x86</id>
+      <activation>
+        <os>
+          <arch>i386</arch>
+          <family>unix</family>
+          <name>linux</name>
+        </os>
+      </activation>
+      <modules>
+        <module>application-linux-x86</module>
+      </modules>
+    </profile>
+    <profile>
+      <id>linux-x86_64</id>
+      <activation>
+        <os>
+          <arch>amd64</arch>
+          <family>unix</family>
+          <name>linux</name>
+        </os>
+      </activation>
+      <modules>
+        <module>application-linux-x86_64</module>
+      </modules>
+    </profile>
+    <profile>
+      <id>win32</id>
+      <activation>
+        <os>
+          <arch>x86</arch>
+          <family>windows</family>
+        </os>
+      </activation>
+      <modules>
+        <module>application-win32</module>
+      </modules>
+    </profile>
+    <profile>
+      <id>macosx</id>
+      <activation>
+        <os>
+          <family>unix</family>
+          <name>mac os x</name>
+        </os>
+      </activation>
+      <modules>
+        <module>application-macosx</module>
+      </modules>
+    </profile>
+    <profile>
+      <id>updatesite</id>
+      <modules>
+        <module>application-updatesite</module>
+      </modules>
+    </profile>
+    <profile>
+      <id>unpack</id>
+      <activation>
+        <file>
+          <exists>pom.xml</exists>
+        </file>
+      </activation>
+      <modules>
+        <module>application-unpack</module>
+      </modules>
+    </profile>
+  </profiles>
+  
+  <build>
+    <plugins>
+      <!-- Overwritten configuration from the Directory Project pom -->
+      <plugin>
+        <groupId>org.apache.geronimo.genesis.plugins</groupId>
+        <artifactId>tools-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>verify-legal-files</id>
+            <phase>verify</phase>
+            <goals>
+              <goal>verify-legal-files</goal>
+            </goals>
+            <configuration>
+              <strict>false</strict>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+  
+</project>

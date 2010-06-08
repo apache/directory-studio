@@ -160,8 +160,8 @@
         </file>
       </activation>
       <modules>
-        <module>updatesite</module>
-        <module>studio</module>
+        <!--<module>updatesite</module>-->
+        <module>application</module>
       </modules>
     </profile>
   </profiles>

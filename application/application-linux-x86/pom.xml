@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Licensed to the Apache Software Foundation (ASF) under one or more
+  contributor license agreements.  See the NOTICE file distributed with
+  this work for additional information regarding copyright ownership.
+  The ASF licenses this file to You under the Apache License, Version 2.0
+  (the "License"); you may not use this file except in compliance with
+  the License.  You may obtain a copy of the License at
+  
+  http://www.apache.org/licenses/LICENSE-2.0
+  
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<!--
+  @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>org.apache.directory.studio</groupId>
+    <artifactId>application</artifactId>
+    <version>1.5.4-SNAPSHOT</version>
+  </parent>
+  
+  <artifactId>ApacheDirectoryStudio-linux-x86</artifactId>
+  <name>Apache Directory Studio Application Linux x86</name>
+  <packaging>pom</packaging>
+  
+  <properties>
+    <app-dir>${studio-dir}-linux-x86</app-dir>
+    <plugins-dir>${app-dir}/plugins</plugins-dir>
+    <features-dir>${app-dir}/features</features-dir>
+  </properties>
+  
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>copy-studio-launcher-linux-x86</id>
+            <phase>generate-resources</phase>
+            <goals>
+              <goal>copy</goal>
+            </goals>
+            <configuration>
+              <artifactItems>
+                <artifactItem>
+                  <groupId>org.apache.directory.studio</groupId>
+                  <artifactId>launcher-linux-x86</artifactId>
+                  <type>tar.gz</type>
+                  <outputDirectory>${project.build.directory}</outputDirectory>
+                </artifactItem>
+              </artifactItems>
+            </configuration>
+          </execution>
+          <execution>
+            <id>unpack-plugins-features-archives</id>
+            <phase>generate-resources</phase>
+            <goals>
+              <goal>unpack</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>${project.build.directory}</outputDirectory>
+              <artifactItems>
+                <artifactItem>
+                  <groupId>org.apache.directory.studio</groupId>
+                  <artifactId>application-plugins</artifactId>
+                  <type>zip</type>
+                  <version>${project.version}</version> <!-- TODO -->
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.apache.directory.studio</groupId>
+                  <artifactId>application-eclipse-plugins</artifactId>
+                  <type>zip</type>
+                  <version>${project.version}</version> <!-- TODO -->
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.apache.directory.studio</groupId>
+                  <artifactId>application-features</artifactId>
+                  <classifier>unpacked</classifier>
+                  <type>zip</type>
+                  <version>${project.version}</version> <!-- TODO -->
+                </artifactItem>
+              </artifactItems>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-antrun-plugin</artifactId>
+        <executions>
+          <!-- Unpack the Studio launcher for Linux x86 -->
+          <execution>
+            <id>unpack-studio-launcher-linux-x86</id>
+            <phase>generate-resources</phase>
+            <configuration>
+              <tasks>
+                <untar dest="${app-dir}" compression="gzip">
+                    <fileset dir="${project.build.directory}" includes="launcher-linux-x86*.tar.gz"/>
+                </untar>
+              </tasks>
+            </configuration>
+            <goals>
+              <goal>run</goal>
+            </goals>
+          </execution>
+          <!-- Copy plugins and features -->
+          <execution>
+            <id>copy-plugins-features</id>
+            <phase>process-resources</phase>
+            <configuration>
+              <tasks>
+                <copy todir="${plugins-dir}">
+                  <fileset dir="${project.build.directory}/application-plugins-${project.version}" />
+                  <fileset dir="${project.build.directory}/application-eclipse-plugins-${project.version}" />
+                </copy>
+                <copy todir="${features-dir}">
+                  <fileset dir="${project.build.directory}/application-features-${project.version}" />
+                </copy>
+              </tasks>
+            </configuration>
+            <goals>
+              <goal>run</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      
+      <plugin>
+        <groupId>org.apache.directory.studio</groupId>
+        <artifactId>studio-maven-plugin</artifactId>
+        <executions>
+          <!-- Copy specific plugins for Linux x86 -->
+          <execution>
+            <id>copy-plugins-linux-x86</id>
+            <phase>generate-resources</phase>
+            <goals>
+              <goal>copy-eclipse-artifact</goal>
+            </goals>
+            <configuration>
+              <destinationDirectory>${plugins-dir}</destinationDirectory>
+              <artifactItems>
+                <artifactItem>
+                  <groupId>org.eclipse.core.filesystem.linux</groupId>
+                  <artifactId>x86</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.eclipse.swt.gtk.linux</groupId>
+                  <artifactId>x86</artifactId>
+                </artifactItem>
+              </artifactItems>
+            </configuration>
+          </execution>
+          <!-- Unpack specific plugins for Linux x86 -->
+          <execution>
+          <id>unpack-plugins-linux-x86</id>
+          <phase>generate-resources</phase>
+          <goals>
+            <goal>unpack-with-artifactid-prefix</goal>
+          </goals>
+          <configuration>
+            <outputDirectory>${plugins-dir}</outputDirectory>
+            <artifactItems>
+              <artifactItem>
+                <groupId>org.eclipse.equinox.launcher.gtk.linux</groupId>
+                <artifactId>x86</artifactId>
+                <type>zip</type>
+              </artifactItem>
+            </artifactItems>
+          </configuration>
+        </execution>
+        </executions>
+      </plugin>
+  
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-assembly-plugin</artifactId>
+        <executions>
+          <!-- Create the distribution file -->
+          <execution>
+            <id>assembly-distribution-linux-x86</id>
+            <phase>package</phase>
+            <configuration>
+              <descriptors>
+                <descriptor>src/main/assembly/application.xml</descriptor>
+              </descriptors>
+            </configuration>
+            <goals>
+              <goal>attached</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+
+</project>
