@@ -68,18 +68,6 @@
       </modules>
     </profile>
     <profile>
-      <id>win32</id>
-      <activation>
-        <os>
-          <arch>x86</arch>
-          <family>windows</family>
-        </os>
-      </activation>
-      <modules>
-        <module>application-win32</module>
-      </modules>
-    </profile>
-    <profile>
       <id>macosx</id>
       <activation>
         <os>
@@ -89,6 +77,18 @@
       </activation>
       <modules>
         <module>application-macosx</module>
+      </modules>
+    </profile>
+    <profile>
+      <id>win32</id>
+      <activation>
+        <os>
+          <arch>x86</arch>
+          <family>windows</family>
+        </os>
+      </activation>
+      <modules>
+        <module>application-win32</module>
       </modules>
     </profile>
     <profile>
@@ -106,6 +106,14 @@
       </activation>
       <modules>
         <module>application-unpack</module>
+      </modules>
+    </profile>
+    <profile>
+      <id>release</id>
+      <modules>
+        <module>application-macosx-dmg</module>
+        <module>application-win32-exe</module>
+        <module>application-release</module>
       </modules>
     </profile>
   </profiles>
