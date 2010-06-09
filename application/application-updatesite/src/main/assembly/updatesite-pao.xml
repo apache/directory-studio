@@ -49,7 +49,6 @@
             <includes>
                 <include>LICENSE.txt</include>
                 <include>NOTICE.txt</include>
-                <include>Release Notes.txt</include>
             </includes>
         </fileSet>
     </fileSets>
