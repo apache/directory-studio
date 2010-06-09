@@ -73,8 +73,8 @@
                 <unzip dest="${project.build.directory}">
                     <fileset dir="${project.build.directory}" includes="ApacheDirectoryStudio-macosx-*.zip"/>
                 </unzip>
-                <copyfile src="src/main/resources/DS_Store" dest="${dmg-dir}/.DS_Store"/>
-                <copyfile src="src/main/resources/background.png" dest="${dmg-dir}/.background/background.png"/>
+                <copy file="src/main/resources/DS_Store" tofile="${dmg-dir}/.DS_Store"/>
+                <copy file="src/main/resources/background.png" tofile="${dmg-dir}/.background/background.png"/>
               </tasks>
             </configuration>
             <goals>
