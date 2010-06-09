@@ -75,6 +75,21 @@
                   <version>${project.version}</version> <!-- TODO -->
                   <outputDirectory>${project.build.directory}</outputDirectory>
                 </artifactItem>
+                <artifactItem>
+                  <groupId>org.apache.directory.studio</groupId>
+                  <artifactId>ApacheDirectoryStudio-updatesite</artifactId>
+                  <type>zip</type>
+                  <version>${project.version}</version> <!-- TODO -->
+                  <outputDirectory>${release-dir}</outputDirectory>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.apache.directory.studio</groupId>
+                  <artifactId>ApacheDirectoryStudio-updatesite</artifactId>
+                  <classifier>pao</classifier>
+                  <type>zip</type>
+                  <version>${project.version}</version> <!-- TODO -->
+                  <outputDirectory>${project.build.directory}</outputDirectory>
+                </artifactItem>
               </artifactItems>
             </configuration>
           </execution>
@@ -95,6 +110,9 @@
                 </unzip>
                 <copy file="${project.build.directory}/ApacheDirectoryStudio-macosx-dmg-${version}/ApacheDirectoryStudio-macosx-${version}.dmg" todir="${release-dir}" />
                 <copy file="${project.build.directory}/ApacheDirectoryStudio-win32-exe-${version}/ApacheDirectoryStudio-win32-${version}.exe" todir="${release-dir}" />
+                <copy todir="${release-dir}/updatesite">
+                  <fileset dir="${project.build.directory}/ApacheDirectoryStudio-updatesite-${version}"/>
+                </copy>
                 <copy file="src/main/resources/sign.sh" todir="${release-dir}">
                   <filterset>
                     <filter token="password" value="${gpg.passphrase}" />
@@ -141,25 +159,7 @@
           </execution>
         </executions>
       </plugin>
-  
-    <!--
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-assembly-plugin</artifactId>
-        <executions>
-          <execution>
-            <phase>package</phase>
-            <configuration>
-              <descriptors>
-                <descriptor>src/main/assembly/assembly.xml</descriptor>
-              </descriptors>
-            </configuration>
-            <goals>
-              <goal>attached</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>-->
+      
     </plugins>
   </build>
   
