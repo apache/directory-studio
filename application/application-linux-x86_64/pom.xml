@@ -30,15 +30,6 @@
   <name>Apache Directory Studio Application Linux x86_64</name>
   <packaging>pom</packaging>
   
-  <dependencies>
-    <dependency>
-      <groupId>org.apache.directory.studio</groupId>
-      <artifactId>application-linux-x86</artifactId>
-      <version>1.5.4-SNAPSHOT</version>
-      <type>tar.gz</type>
-    </dependency>
-  </dependencies>
-  
   <properties>
     <app-dir>${studio-dir}-linux-x86_64</app-dir>
     <plugins-dir>${app-dir}/plugins</plugins-dir>
