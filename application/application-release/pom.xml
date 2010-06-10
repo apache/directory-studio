@@ -125,11 +125,14 @@
             </goals>
           </execution>
           <execution>
-            <id>delete-sign-sh</id>
+            <id>delete-sign-sh-copy-release</id>
             <phase>package</phase>
             <configuration>
               <tasks>
                 <delete file="${release-dir}/sign.sh"/>
+                <move todir="../../target/release">
+                  <fileset dir="${release-dir}"/>
+                </move>
               </tasks>
             </configuration>
             <goals>
