@@ -98,17 +98,6 @@
       </modules>
     </profile>
     <profile>
-      <id>unpack</id>
-      <activation>
-        <file>
-          <exists>pom.xml</exists>
-        </file>
-      </activation>
-      <modules>
-        <module>application-unpack</module>
-      </modules>
-    </profile>
-    <profile>
       <id>release</id>
       <modules>
         <module>application-macosx-dmg</module>

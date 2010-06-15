@@ -34,6 +34,7 @@
     <app-dir>${studio-dir}-macosx</app-dir>
     <plugins-dir>${app-dir}/Apache Directory Studio.app/Contents/Resources/Java/plugins</plugins-dir>
     <features-dir>${app-dir}/Apache Directory Studio.app/Contents/Resources/Java/features</features-dir>
+    <configuration-dir>${app-dir}/Apache Directory Studio.app/Contents/Resources/Java/configuration</configuration-dir>
   </properties>
   
   <build>
@@ -125,6 +126,11 @@
                 <copy todir="${features-dir}">
                   <fileset dir="${project.build.directory}/application-features-${project.version}" />
                 </copy>
+                <copy todir="${configuration-dir}" file="src/main/configuration/config.ini" />
+                <copy todir="${app-dir}" file="../../docs/LICENSE.txt" />
+                <copy todir="${app-dir}" file="../../docs/NOTICE.txt" />
+                <copy todir="${app-dir}" file="../../docs/Release Notes.txt" />
+                <chmod file="${app-dir}/Apache Directory Studio.app/Contents/MacOS/ApacheDirectoryStudio" perm="755"/>
               </tasks>
             </configuration>
             <goals>

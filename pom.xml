@@ -111,12 +111,7 @@
       to the commandline.
     -->
     <profile>
-      <id>build-help-modules</id>
-      <activation>
-        <property>
-          <name>!fastbuild</name>
-        </property>
-      </activation>
+      <id>studio-full</id>
       <modules>
         <module>schemaeditor-help</module>
         <module>ldifeditor-help</module>
@@ -124,6 +119,12 @@
         <module>apacheds-configuration-help</module>
         <module>rcp-help</module>
         <module>apacheds-help</module>
+        <module>apacheds-configuration-feature</module>
+        <module>apacheds-feature</module>
+        <module>ldapbrowser-feature</module>
+        <module>ldifeditor-feature</module>
+        <module>rcp-feature</module>
+        <module>schemaeditor-feature</module>
       </modules>
     </profile>
     <!-- 
@@ -1138,24 +1139,18 @@
     <module>aciitemeditor</module>
     <module>apacheds</module>
     <module>apacheds-configuration</module>
-    <module>apacheds-configuration-feature</module>
     <module>apacheds-launcher</module>
-    <module>apacheds-feature</module>
     <module>connection-core</module>
     <module>connection-ui</module>
     <module>common-ui</module>
     <module>jars</module>
     <module>ldapbrowser-core</module>
     <module>ldapbrowser-common</module>
-    <module>ldapbrowser-feature</module>
     <module>ldapbrowser-ui</module>
     <module>ldifeditor</module>
-    <module>ldifeditor-feature</module>
     <module>ldif-parser</module>
     <module>rcp</module>
-    <module>rcp-feature</module>
     <module>schemaeditor</module>
-    <module>schemaeditor-feature</module>
     <module>valueeditors</module>
   </modules>
 

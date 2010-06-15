@@ -40,28 +40,6 @@
             </includes>
             <fileMode>755</fileMode>
         </fileSet>
-
-        <!-- Configuration file -->
-        <fileSet>
-            <directory>src/main/configuration</directory>
-            <outputDirectory>/configuration</outputDirectory>
-            <includes>
-                <include>config.ini</include>
-            </includes>
-            <fileMode>644</fileMode>
-        </fileSet>
-        
-        <!-- Legal files & release notes -->
-        <fileSet>
-            <directory>../../docs</directory>
-            <outputDirectory>/</outputDirectory>
-            <includes>
-                <include>LICENSE.txt</include>
-                <include>NOTICE.txt</include>
-                <include>Release Notes.txt</include>
-            </includes>
-            <fileMode>644</fileMode>
-        </fileSet>
     </fileSets>
 </assembly>
 
