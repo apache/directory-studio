@@ -106,17 +106,12 @@
       </build>
     </profile>
     <!-- 
-      Building help modules can be skipped by adding 
-      -Dfastbuild
-      to the commandline.
+      Building help and features modules are disabled by default. Add 
+      -Dstudio-full
+      to the commandline to add them to the build.
     -->
     <profile>
-      <id>build-help-modules</id>
-      <activation>
-        <property>
-          <name>!fastbuild</name>
-        </property>
-      </activation>
+      <id>studio-full</id>
       <modules>
         <module>schemaeditor-help</module>
         <module>ldifeditor-help</module>
@@ -124,6 +119,12 @@
         <module>apacheds-configuration-help</module>
         <module>rcp-help</module>
         <module>apacheds-help</module>
+        <module>apacheds-configuration-feature</module>
+        <module>apacheds-feature</module>
+        <module>ldapbrowser-feature</module>
+        <module>ldifeditor-feature</module>
+        <module>rcp-feature</module>
+        <module>schemaeditor-feature</module>
       </modules>
     </profile>
     <!-- 
@@ -139,29 +140,20 @@
       </modules>
     </profile>
     <!--
-      Add the dist modules as profile to force them being built
-      AFTER the help modules, otherwise we run into a backlog
-      of at least 1 iteration because the dist modules would be
-      built before the help modules ...
-    -->
-    <!--
-      NOTE:
-      This profile has been disabled for the release, and needs to be 
-      enabled again after the release is over.
-      We are disabling the build of 'updatesite' and 'studio' because we don't 
-      want to overload the maven repository with useless (heavy) packages and 
-      distributions
+      Add the 'application' module as a profile to force it being built
+      AFTER all the orther modules, otherwise we run into a backlog
+      of at least 1 iteration because the 'application' modules would be
+      built before the other modules...
     -->
     <profile>
-      <id>build-dist-modules</id>
+      <id>build-application</id>
       <activation>
         <file>
           <exists>pom.xml</exists>
         </file>
       </activation>
       <modules>
-        <module>updatesite</module>
-        <module>studio</module>
+        <module>application</module>
       </modules>
     </profile>
   </profiles>
