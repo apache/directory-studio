@@ -39,7 +39,6 @@ import org.eclipse.swt.widgets.Display;
  * This Action is used to edit an attribute description within the entry edtitor.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class EditAttributeDescriptionAction extends BrowserAction
 {

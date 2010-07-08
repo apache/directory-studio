@@ -49,7 +49,6 @@ import org.eclipse.swt.widgets.Shell;
  * A dialog to select the copy strategy if an entry already exists.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class EntryExistsCopyStrategyDialogImpl extends Dialog implements EntryExistsCopyStrategyDialog
 {

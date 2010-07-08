@@ -45,7 +45,6 @@ import org.eclipse.swt.widgets.Shell;
  * This class provides a dialog to enter or select an object class.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class ObjectClassDialog extends Dialog
 {

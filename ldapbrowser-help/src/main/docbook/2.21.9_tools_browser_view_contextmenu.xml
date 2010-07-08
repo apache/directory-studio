@@ -1,21 +1,19 @@
-<!--
-  Licensed to the Apache Software Foundation (ASF) under one
-  or more contributor license agreements.  See the NOTICE file
-  distributed with this work for additional information
-  regarding copyright ownership.  The ASF licenses this file
-  to you under the Apache License, Version 2.0 (the
-  "License"); you may not use this file except in compliance
-  with the License.  You may obtain a copy of the License at
 
-    http://www.apache.org/licenses/LICENSE-2.0
+	<!--
+		Licensed to the Apache Software Foundation (ASF) under one or more
+		contributor license agreements. See the NOTICE file distributed with
+		this work for additional information regarding copyright ownership.
+		The ASF licenses this file to you under the Apache License, Version
+		2.0 (the "License"); you may not use this file except in compliance
+		with the License. You may obtain a copy of the License at
 
-  Unless required by applicable law or agreed to in writing,
-  software distributed under the License is distributed on an
-  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-  KIND, either express or implied.  See the License for the
-  specific language governing permissions and limitations
-  under the License.
--->
+		http://www.apache.org/licenses/LICENSE-2.0 Unless required by
+		applicable law or agreed to in writing, software distributed under the
+		License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
+		CONDITIONS OF ANY KIND, either express or implied. See the License for
+		the specific language governing permissions and limitations under the
+		License.
+	-->
 <section id="tools_browser_view_contextmenu">
 	<title>Context Menu</title>
 	<para>
@@ -33,8 +31,8 @@
 						<guiicon>
 							<inlinemediaobject>
 								<imageobject>
-									<imagedata scale="50"
-										fileref="icons/entry_add.gif" format="GIF" />
+									<imagedata scale="50" fileref="icons/entry_add.gif"
+										format="GIF" />
 								</imageobject>
 							</inlinemediaobject>
 						</guiicon>
@@ -47,7 +45,8 @@
 							New Entry wizard
 						</link>
 						. The selected entry is used as template or to
-						preset the parent entry.
+						preset the parent
+						entry.
 					</para>
 				</listitem>
 				<listitem>
@@ -59,7 +58,7 @@
 			</itemizedlist>
 		</para>
 	</simplesect>
-	
+
 	<simplesect id="tools_browser_view_contextmenu_newcontextentry">
 		<title>New > New Context Entry...</title>
 		<para>
@@ -70,8 +69,8 @@
 						<guiicon>
 							<inlinemediaobject>
 								<imageobject>
-									<imagedata scale="50"
-										fileref="icons/entry_add.gif" format="GIF" />
+									<imagedata scale="50" fileref="icons/entry_add.gif"
+										format="GIF" />
 								</imageobject>
 							</inlinemediaobject>
 						</guiicon>
@@ -106,8 +105,8 @@
 						<guiicon>
 							<inlinemediaobject>
 								<imageobject>
-									<imagedata scale="50"
-										fileref="icons/search_new.gif" format="GIF" />
+									<imagedata scale="50" fileref="icons/search_new.gif"
+										format="GIF" />
 								</imageobject>
 							</inlinemediaobject>
 						</guiicon>
@@ -120,13 +119,15 @@
 							Search dialog
 						</link>
 						. The selected search or entry is used to preset
-						the search parameters.
+						the search
+						parameters.
 					</para>
 				</listitem>
 				<listitem>
 					<para>
 						Enabled: If one search, entry, search result or
-						bookmark is selected.
+						bookmark is
+						selected.
 					</para>
 				</listitem>
 				<listitem>
@@ -154,8 +155,8 @@
 						<guiicon>
 							<inlinemediaobject>
 								<imageobject>
-									<imagedata scale="50"
-										fileref="icons/bookmark_add.gif" format="GIF" />
+									<imagedata scale="50" fileref="icons/bookmark_add.gif"
+										format="GIF" />
 								</imageobject>
 							</inlinemediaobject>
 						</guiicon>
@@ -164,7 +165,8 @@
 				<listitem>
 					<para>
 						Description: Opens the bookmark dialog. The
-						selected entry is used to preset the new
+						selected entry is
+						used to preset the new
 						bookmarks name and DN.
 					</para>
 				</listitem>
@@ -198,20 +200,22 @@
 				<listitem>
 					<para>
 						Description: Opens the
-						<link
-							linkend="tools_batchoperation_wizard">
+						<link linkend="tools_batchoperation_wizard">
 							Batch Operation wizard
 						</link>
 						. If one or multiple entries are selected they
-						are used as operation objects. If a search is
-						selected its search results are used as
+						are used as
+						operation objects. If a search is
+						selected its search results are
+						used as
 						operation objects.
 					</para>
 				</listitem>
 				<listitem>
 					<para>
 						Enabled: If one search is selected or if one or
-						multiple entries, search results or bookmarks
+						multiple
+						entries, search results or bookmarks
 						are selected.
 					</para>
 				</listitem>
@@ -226,7 +230,8 @@
 				<listitem>
 					<para>
 						Description: Opens the selected entry in the
-						default entry editor.
+						default entry
+						editor.
 					</para>
 				</listitem>
 				<listitem>
@@ -243,14 +248,15 @@
 		<title>Open With ></title>
 		<para>
 			Opens the selected entry in a custom Entry editor.
-			The follwing editor types are available:
-		</para> 
+			The follwing
+			editor types are available:
+		</para>
 		<para>
 			<itemizedlist>
 				<listitem>
 					<para>
 						<link linkend="tools_table_entry_editor">
-						Table Entry Editor (single-tab)</link>
+							Table Entry Editor (single-tab)</link>
 						<itemizedlist>
 							<listitem>
 								<para>
@@ -267,19 +273,22 @@
 							</listitem>
 							<listitem>
 								<para>
-									Description: Displays attributes and values in a table grid.
-									Single-tab means that only one instance of the editor is used,
-									all entries are opened in the same editor tab.									
-									This is the traditional Entry editor.
+									Description: Displays attributes and values in a table
+									grid.
+									Single-tab means that only one instance of the editor is
+									used,
+									all entries are opened in the same editor tab.
+									This is the
+									traditional Entry editor.
 								</para>
 							</listitem>
 						</itemizedlist>
-					</para> 
+					</para>
 				</listitem>
 				<listitem>
 					<para>
 						<link linkend="tools_table_entry_editor">
-						Table Entry Editor (multi-tab)</link>
+							Table Entry Editor (multi-tab)</link>
 						<itemizedlist>
 							<listitem>
 								<para>
@@ -296,17 +305,19 @@
 							</listitem>
 							<listitem>
 								<para>
-									Description: Displays attributes and values in a table grid.
-									Multi-tab means that each entry is opened in its own editor tab.									
+									Description: Displays attributes and values in a table
+									grid.
+									Multi-tab means that each entry is opened in its own
+									editor tab.									
 								</para>
 							</listitem>
 						</itemizedlist>
-					</para> 
+					</para>
 				</listitem>
 				<listitem>
 					<para>
 						<link linkend="tools_ldif_entry_editor">
-						LDIF Entry Editor (multi-tab)</link>
+							LDIF Entry Editor (multi-tab)</link>
 						<itemizedlist>
 							<listitem>
 								<para>
@@ -323,17 +334,19 @@
 							</listitem>
 							<listitem>
 								<para>
-									Description: Displays attributes and values in LDIF format.
-									Multi-tab means that each entry is opened in its own editor tab.									
+									Description: Displays attributes and values in LDIF
+									format.
+									Multi-tab means that each entry is opened in its own
+									editor tab.									
 								</para>
 							</listitem>
 						</itemizedlist>
-					</para> 
+					</para>
 				</listitem>
 				<listitem>
 					<para>
 						<link linkend="tools_ldif_entry_editor">
-						LDIF Entry Editor (single-tab)</link>
+							LDIF Entry Editor (single-tab)</link>
 						<itemizedlist>
 							<listitem>
 								<para>
@@ -350,13 +363,15 @@
 							</listitem>
 							<listitem>
 								<para>
-									Description: Displays attributes and values in LDIF format.
-									Single-tab means that only one instance of the editor is used,
+									Description: Displays attributes and values in LDIF
+									format.
+									Single-tab means that only one instance of the editor is
+									used,
 									all entries are opened in the same editor tab.									
 								</para>
 							</listitem>
 						</itemizedlist>
-					</para> 
+					</para>
 				</listitem>
 
 			</itemizedlist>
@@ -382,8 +397,8 @@
 						<guiicon>
 							<inlinemediaobject>
 								<imageobject>
-									<imagedata scale="50"
-										fileref="icons/locate_bookmark_in_dit.gif" format="GIF" />
+									<imagedata scale="50" fileref="icons/locate_bookmark_in_dit.gif"
+										format="GIF" />
 								</imageobject>
 							</inlinemediaobject>
 						</guiicon>
@@ -392,7 +407,8 @@
 				<listitem>
 					<para>
 						Description: Opens the selected search result or
-						bookmark in DIT.
+						bookmark in
+						DIT.
 					</para>
 				</listitem>
 				<listitem>
@@ -423,8 +439,8 @@
 						<guiicon>
 							<inlinemediaobject>
 								<imageobject>
-									<imagedata scale="50"
-										fileref="icons/parent.gif" format="GIF" />
+									<imagedata scale="50" fileref="icons/parent.gif"
+										format="GIF" />
 								</imageobject>
 							</inlinemediaobject>
 						</guiicon>
@@ -472,16 +488,20 @@
 				<listitem>
 					<para>
 						Description: Copies the selected entries and DNs
-						to the system clipboard. The entries are copied
-						in an internal format and could be pasted inside
+						to the system
+						clipboard. The entries are copied
+						in an internal format and could
+						be pasted inside
 						the LDAP Browser view. The DNs are copied as
-						text and could be pasted even outside of Studio.
+						text
+						and could be pasted even outside of Studio.
 					</para>
 				</listitem>
 				<listitem>
 					<para>
 						Enabled: If one or multiple entries, search
-						results or bookmarks are selected.
+						results or
+						bookmarks are selected.
 					</para>
 				</listitem>
 				<listitem>
@@ -526,27 +546,30 @@
 				<listitem>
 					<para>
 						Description: Pastes the previously copied
-						entries as children into the selected entry. 
-						
+						entries as children into
+						the selected entry.
+
 						If the copied entries have children you are
 						asked for the copy depth.
 						<screenshot>
 							<mediaobject>
 								<imageobject>
-									<imagedata scale="50"
-										fileref="images/tools_browser_view_3.png" format="PNG" />
+									<imagedata scale="50" fileref="images/tools_browser_view_3.png"
+										format="PNG" />
 								</imageobject>
 							</mediaobject>
 						</screenshot>
-						The	new entries will receive the same RDNs and
-						attributes as the copied entries. If there is
-						already an entry with the same RDN you are asked
-						how to proceed. 
+						The new entries will receive the same RDNs and
+						attributes as the
+						copied entries. If there is
+						already an entry with the same RDN you
+						are asked
+						how to proceed.
 						<screenshot>
 							<mediaobject>
 								<imageobject>
-									<imagedata scale="50"
-										fileref="images/tools_browser_view_11.png" format="PNG" />
+									<imagedata scale="50" fileref="images/tools_browser_view_11.png"
+										format="PNG" />
 								</imageobject>
 							</mediaobject>
 						</screenshot>
@@ -555,7 +578,8 @@
 				<listitem>
 					<para>
 						Enabled: If one entry is selected and the system
-						clipboard contains entries.
+						clipboard
+						contains entries.
 					</para>
 				</listitem>
 				<listitem>
@@ -590,8 +614,8 @@
 						<guiicon>
 							<inlinemediaobject>
 								<imageobject>
-									<imagedata scale="50"
-										fileref="icons/delete.gif" format="GIF" />
+									<imagedata scale="50" fileref="icons/delete.gif"
+										format="GIF" />
 								</imageobject>
 							</inlinemediaobject>
 						</guiicon>
@@ -600,24 +624,29 @@
 				<listitem>
 					<para>
 						Description: Deletes the selected elements, the
-						real action depends on the selected elements
+						real action depends
+						on the selected elements
 						type:
 						<itemizedlist>
 							<listitem>
 								Entries or Search Results: The entries
-								and its children are deleted
+								and its children
+								are deleted
 								physically from directory. It is not
-								possible to delete base entries or the
+								possible to
+								delete base entries or the
 								root DSE.
 							</listitem>
 							<listitem>
 								Searches: The selected searches are
-								removed from the view. No entries from
+								removed from the
+								view. No entries from
 								directory are deleted.
 							</listitem>
 							<listitem>
 								Bookmarks: The selected bookmarks are
-								removed from the view. No entries from
+								removed from the
+								view. No entries from
 								directory are deleted.
 							</listitem>
 						</itemizedlist>
@@ -626,7 +655,8 @@
 				<listitem>
 					<para>
 						Enabled: If one or multiple searches, entries,
-						search results or bookmarks are selected.
+						search results
+						or bookmarks are selected.
 					</para>
 				</listitem>
 				<listitem>
@@ -648,17 +678,18 @@
 				<listitem>
 					<para>
 						Description: Moves the selected entries to
-						another parent. The 
+						another parent. The
 						<link linkend="tools_move_entries_dialog">
 							Move Entries dialog
-						</link> 
-						is opened to select the new parent DN. 
+						</link>
+						is opened to select the new parent DN.
 					</para>
 				</listitem>
 				<listitem>
 					<para>
 						Enabled: If one or multiple entries or search
-						results are selected.
+						results are
+						selected.
 					</para>
 				</listitem>
 			</itemizedlist>
@@ -672,16 +703,18 @@
 				<listitem>
 					<para>
 						Description: Renames the selected element, the
-						real action depends on the selected element
+						real action depends
+						on the selected element
 						type:
 						<itemizedlist>
 							<listitem>
 								Entry or Search Result: Renames the
-								selected entry in directory. The 
+								selected entry in directory.
+								The
 								<link linkend="tools_rename_entry_dialog">
 									Rename Entry dialog
 								</link>
-								is opened to specify a new RDN. 
+								is opened to specify a new RDN.
 							</listitem>
 							<listitem>
 								Search: Renames the selected search.
@@ -695,7 +728,8 @@
 				<listitem>
 					<para>
 						Enabled: If one search, entry, search results or
-						bookmark is selected.
+						bookmark is
+						selected.
 					</para>
 				</listitem>
 				<listitem>
@@ -720,8 +754,8 @@
 						<guiicon>
 							<inlinemediaobject>
 								<imageobject>
-									<imagedata scale="50"
-										fileref="icons/copy_dn.gif" format="GIF" />
+									<imagedata scale="50" fileref="icons/copy_dn.gif"
+										format="GIF" />
 								</imageobject>
 							</inlinemediaobject>
 						</guiicon>
@@ -730,7 +764,8 @@
 				<listitem>
 					<para>
 						Description: Copies the distinguished name of
-						the selected entry (e.g. cn=John
+						the selected
+						entry (e.g. cn=John
 						Fowler,ou=People,o=JNDITutorial)
 					</para>
 				</listitem>
@@ -753,8 +788,8 @@
 						<guiicon>
 							<inlinemediaobject>
 								<imageobject>
-									<imagedata scale="50"
-										fileref="icons/copy_url.gif" format="GIF" />
+									<imagedata scale="50" fileref="icons/copy_url.gif"
+										format="GIF" />
 								</imageobject>
 							</inlinemediaobject>
 						</guiicon>
@@ -763,7 +798,8 @@
 				<listitem>
 					<para>
 						Description: Copies the URL of the selected
-						entry (e.g. ldap://localhost:389/cn=John
+						entry (e.g.
+						ldap://localhost:389/cn=John
 						Fowler,ou=People,o=JNDITutorial)
 					</para>
 				</listitem>
@@ -777,12 +813,12 @@
 		</para>
 	</simplesect>
 
-	<simplesect
-		id="tools_browser_view_contextmenu_advanced_copyasldif">
+	<simplesect id="tools_browser_view_contextmenu_advanced_copyasldif">
 		<title>Advanced > Copy Entry as LDIF</title>
 		<para>
 			Copies the selected entries in LDIF content format. There
-			are four options:
+			are four
+			options:
 			<itemizedlist>
 				<listitem>
 					<para>
@@ -794,8 +830,8 @@
 									<guiicon>
 										<inlinemediaobject>
 											<imageobject>
-												<imagedata scale="50"
-													fileref="icons/copy_ldif.gif" format="GIF" />
+												<imagedata scale="50" fileref="icons/copy_ldif.gif"
+													format="GIF" />
 											</imageobject>
 										</inlinemediaobject>
 									</guiicon>
@@ -806,14 +842,16 @@
 									Description: Copies the
 									distinguished names of the selected
 									entries in LDIF format. If a search
-									is selected the distinguished names
+									is selected the
+									distinguished names
 									of all search results are copied.
 								</para>
 							</listitem>
 							<listitem>
 								<para>
 									Enabled: If one search is selected
-									or if one or multiple entries,
+									or if one or multiple
+									entries,
 									search results or bookmarks are
 									selected.
 								</para>
@@ -841,9 +879,11 @@
 							<listitem>
 								<para>
 									Description: Copies all returning
-									attributes of the selected search
+									attributes of the
+									selected search
 									result entries in LDIF format. If a
-									search is selected the returning
+									search is
+									selected the returning
 									attributes of all search results are
 									copied.
 								</para>
@@ -851,7 +891,8 @@
 							<listitem>
 								<para>
 									Enabled: If one search is selected
-									or if one or multiple search results
+									or if one or multiple
+									search results
 									are selected.
 								</para>
 							</listitem>
@@ -868,8 +909,8 @@
 									<guiicon>
 										<inlinemediaobject>
 											<imageobject>
-												<imagedata scale="50"
-													fileref="icons/copy_ldif_user.gif" format="GIF" />
+												<imagedata scale="50" fileref="icons/copy_ldif_user.gif"
+													format="GIF" />
 											</imageobject>
 										</inlinemediaobject>
 									</guiicon>
@@ -878,16 +919,19 @@
 							<listitem>
 								<para>
 									Description: Copies all user
-									attributes of the selected entries
+									attributes of the selected
+									entries
 									in LDIF format. If a search is
-									selected the user attributes of all
+									selected the user
+									attributes of all
 									search results are copied.
 								</para>
 							</listitem>
 							<listitem>
 								<para>
 									Enabled: If one search is selected
-									or if one or multiple entries,
+									or if one or multiple
+									entries,
 									search results or bookmarks are
 									selected.
 								</para>
@@ -905,8 +949,8 @@
 									<guiicon>
 										<inlinemediaobject>
 											<imageobject>
-												<imagedata scale="50"
-													fileref="icons/copy_ldif_operational.gif" format="GIF" />
+												<imagedata scale="50" fileref="icons/copy_ldif_operational.gif"
+													format="GIF" />
 											</imageobject>
 										</inlinemediaobject>
 									</guiicon>
@@ -917,7 +961,8 @@
 									Description: Copies all user
 									attributes and operational
 									attributes of the selected entries
-									in LDIF format. If a search is
+									in LDIF format. If a search
+									is
 									selected the attributes of all
 									search results are copied.
 								</para>
@@ -925,7 +970,8 @@
 							<listitem>
 								<para>
 									Enabled: If one search is selected
-									or if one or multiple entries,
+									or if one or multiple
+									entries,
 									search results or bookmarks are
 									selected.
 								</para>
@@ -937,14 +983,16 @@
 		</para>
 	</simplesect>
 
-	<simplesect
-		id="tools_browser_view_contextmenu_advanced_copyascsv">
+	<simplesect id="tools_browser_view_contextmenu_advanced_copyascsv">
 		<title>Advanced > Copy Entry as CSV</title>
 		<para>
 			Copies the selected entries in CSV format. By default the
-			tabulator is used as attribute delimiter, a pipe is used as
-			value delimiter and each attribute is wrapped by
-			double-quotes, these settings could be changed in
+			tabulator is
+			used as attribute delimiter, a pipe is used as
+			value delimiter and
+			each attribute is wrapped by
+			double-quotes, these settings could be
+			changed in
 			<link linkend="preferences_text_formats">
 				Text Formats preferences
 			</link>
@@ -960,8 +1008,8 @@
 									<guiicon>
 										<inlinemediaobject>
 											<imageobject>
-												<imagedata scale="50"
-													fileref="icons/copy_csv.gif" format="GIF" />
+												<imagedata scale="50" fileref="icons/copy_csv.gif"
+													format="GIF" />
 											</imageobject>
 										</inlinemediaobject>
 									</guiicon>
@@ -972,14 +1020,16 @@
 									Description: Copies the
 									distinguished names of the selected
 									entries in CSV format. If a search
-									is selected the distinguished names
+									is selected the distinguished
+									names
 									of all search results are copied.
 								</para>
 							</listitem>
 							<listitem>
 								<para>
 									Enabled: If one search is selected
-									or if one or multiple entries,
+									or if one or multiple
+									entries,
 									search results or bookmarks are
 									selected.
 								</para>
@@ -997,8 +1047,8 @@
 									<guiicon>
 										<inlinemediaobject>
 											<imageobject>
-												<imagedata scale="50"
-													fileref="icons/copy_csv_searchresult.gif" format="GIF" />
+												<imagedata scale="50" fileref="icons/copy_csv_searchresult.gif"
+													format="GIF" />
 											</imageobject>
 										</inlinemediaobject>
 									</guiicon>
@@ -1007,9 +1057,11 @@
 							<listitem>
 								<para>
 									Description: Copies all returning
-									attributes of the selected search
+									attributes of the
+									selected search
 									result entries in CSV format. If a
-									search is selected the returning
+									search is
+									selected the returning
 									attributes of all search results are
 									copied.
 								</para>
@@ -1017,7 +1069,8 @@
 							<listitem>
 								<para>
 									Enabled: If one search is selected
-									or if one or multiple search results
+									or if one or multiple
+									search results
 									are selected.
 								</para>
 							</listitem>
@@ -1034,8 +1087,8 @@
 									<guiicon>
 										<inlinemediaobject>
 											<imageobject>
-												<imagedata scale="50"
-													fileref="icons/copy_csv_user.gif" format="GIF" />
+												<imagedata scale="50" fileref="icons/copy_csv_user.gif"
+													format="GIF" />
 											</imageobject>
 										</inlinemediaobject>
 									</guiicon>
@@ -1044,16 +1097,19 @@
 							<listitem>
 								<para>
 									Description: Copies all user
-									attributes of the selected entries
+									attributes of the selected
+									entries
 									in CSV format. If a search is
-									selected the user attributes of all
+									selected the user
+									attributes of all
 									search results are copied.
 								</para>
 							</listitem>
 							<listitem>
 								<para>
 									Enabled: If one search is selected
-									or if one or multiple entries,
+									or if one or multiple
+									entries,
 									search results or bookmarks are
 									selected.
 								</para>
@@ -1071,8 +1127,8 @@
 									<guiicon>
 										<inlinemediaobject>
 											<imageobject>
-												<imagedata scale="50"
-													fileref="icons/copy_csv_operational.gif" format="GIF" />
+												<imagedata scale="50" fileref="icons/copy_csv_operational.gif"
+													format="GIF" />
 											</imageobject>
 										</inlinemediaobject>
 									</guiicon>
@@ -1091,12 +1147,63 @@
 							<listitem>
 								<para>
 									Enabled: If one search is selected
-									or if one or multiple entries,
+									or if one or multiple
+									entries,
 									search results or bookmarks are
 									selected.
 								</para>
 							</listitem>
 						</itemizedlist>
+					</para>
+				</listitem>
+			</itemizedlist>
+		</para>
+	</simplesect>
+
+	<simplesect id="tools_browser_view_contextmenu_deleteall">
+		<title>Advanced > Delete All</title>
+		<para>
+			<itemizedlist>
+				<listitem>
+					<para>
+						Icon:
+						<guiicon>
+							<inlinemediaobject>
+								<imageobject>
+									<imagedata scale="50" fileref="icons/delete_all.gif"
+										format="GIF" />
+								</imageobject>
+							</inlinemediaobject>
+						</guiicon>
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						Description: The action depends on the selected element type:
+						<itemizedlist>
+							<listitem>
+								Entry: The children entries of the selected entry are
+								deleted physically
+								from directory. It is not possible to delete
+								base entries or the
+								root DSE.
+							</listitem>
+							<listitem>
+								Search or 'Searches' category: All the searches are
+								removed from the view. No entries from directory are deleted.
+							</listitem>
+							<listitem>
+								Bookmark or 'Bookmarks' category: All the bookmarks are
+								removed from the view. No entries from directory are deleted.
+							</listitem>
+						</itemizedlist>
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						Enabled: If an entry, search, bookmark, the 'Searches' or
+						'Bookmarks' category is
+						selected.
 					</para>
 				</listitem>
 			</itemizedlist>
@@ -1113,8 +1220,8 @@
 						<guiicon>
 							<inlinemediaobject>
 								<imageobject>
-									<imagedata scale="50"
-										fileref="icons/filter_dit.gif" format="GIF" />
+									<imagedata scale="50" fileref="icons/filter_dit.gif"
+										format="GIF" />
 								</imageobject>
 							</inlinemediaobject>
 						</guiicon>
@@ -1123,7 +1230,8 @@
 				<listitem>
 					<para>
 						Description: Opens the Filter Children dialog to
-						specify a children filter for the selected entry.
+						specify a
+						children filter for the selected entry.
 					</para>
 				</listitem>
 				<listitem>
@@ -1135,6 +1243,7 @@
 			</itemizedlist>
 		</para>
 	</simplesect>
+
 	<simplesect id="tools_browser_view_contextmenu_unfilterchildren">
 		<title>Remove Children Filter</title>
 		<para>
@@ -1145,8 +1254,8 @@
 						<guiicon>
 							<inlinemediaobject>
 								<imageobject>
-									<imagedata scale="50"
-										fileref="icons/unfilter_dit.gif" format="GIF" />
+									<imagedata scale="50" fileref="icons/unfilter_dit.gif"
+										format="GIF" />
 								</imageobject>
 							</inlinemediaobject>
 						</guiicon>
@@ -1160,7 +1269,8 @@
 				<listitem>
 					<para>
 						Enabled: If one entry in DIT category is
-						selected and a children filter is set.
+						selected and a
+						children filter is set.
 					</para>
 				</listitem>
 			</itemizedlist>
@@ -1177,8 +1287,8 @@
 						<guiicon>
 							<inlinemediaobject>
 								<imageobject>
-									<imagedata scale="50"
-										fileref="icons/import_ldif.gif" format="GIF" />
+									<imagedata scale="50" fileref="icons/import_ldif.gif"
+										format="GIF" />
 								</imageobject>
 							</inlinemediaobject>
 						</guiicon>
@@ -1206,8 +1316,8 @@
 						<guiicon>
 							<inlinemediaobject>
 								<imageobject>
-									<imagedata scale="50"
-										fileref="icons/import_dsml.gif" format="GIF" />
+									<imagedata scale="50" fileref="icons/import_dsml.gif"
+										format="GIF" />
 								</imageobject>
 							</inlinemediaobject>
 						</guiicon>
@@ -1235,8 +1345,8 @@
 						<guiicon>
 							<inlinemediaobject>
 								<imageobject>
-									<imagedata scale="50"
-										fileref="icons/export_ldif.gif" format="GIF" />
+									<imagedata scale="50" fileref="icons/export_ldif.gif"
+										format="GIF" />
 								</imageobject>
 							</inlinemediaobject>
 						</guiicon>
@@ -1264,8 +1374,8 @@
 						<guiicon>
 							<inlinemediaobject>
 								<imageobject>
-									<imagedata scale="50"
-										fileref="icons/export_dsml.gif" format="GIF" />
+									<imagedata scale="50" fileref="icons/export_dsml.gif"
+										format="GIF" />
 								</imageobject>
 							</inlinemediaobject>
 						</guiicon>
@@ -1293,8 +1403,8 @@
 						<guiicon>
 							<inlinemediaobject>
 								<imageobject>
-									<imagedata scale="50"
-										fileref="icons/export_csv.gif" format="GIF" />
+									<imagedata scale="50" fileref="icons/export_csv.gif"
+										format="GIF" />
 								</imageobject>
 							</inlinemediaobject>
 						</guiicon>
@@ -1322,8 +1432,8 @@
 						<guiicon>
 							<inlinemediaobject>
 								<imageobject>
-									<imagedata scale="50"
-										fileref="icons/export_xls.gif" format="GIF" />
+									<imagedata scale="50" fileref="icons/export_xls.gif"
+										format="GIF" />
 								</imageobject>
 							</inlinemediaobject>
 						</guiicon>
@@ -1351,8 +1461,8 @@
 						<guiicon>
 							<inlinemediaobject>
 								<imageobject>
-									<imagedata scale="50"
-										fileref="icons/export_odf.gif" format="GIF" />
+									<imagedata scale="50" fileref="icons/export_odf.gif"
+										format="GIF" />
 								</imageobject>
 							</inlinemediaobject>
 						</guiicon>
@@ -1381,8 +1491,8 @@
 						<guiicon>
 							<inlinemediaobject>
 								<imageobject>
-									<imagedata scale="50"
-										fileref="icons/refresh.gif" format="GIF" />
+									<imagedata scale="50" fileref="icons/refresh.gif"
+										format="GIF" />
 								</imageobject>
 							</inlinemediaobject>
 						</guiicon>
@@ -1391,16 +1501,20 @@
 				<listitem>
 					<para>
 						Description: Refreshes the selected elements. If
-						entries, search results or bookmarks are
-						selected their attributes and children are
+						entries,
+						search results or bookmarks are
+						selected their attributes and
+						children are
 						refreshed. If searches are selected this
-						searches are performed
+						searches are
+						performed
 					</para>
 				</listitem>
 				<listitem>
 					<para>
 						Enabled: If one or multiple searches, entries,
-						search results or bookmarks are selected.
+						search results
+						or bookmarks are selected.
 					</para>
 				</listitem>
 				<listitem>
@@ -1414,32 +1528,44 @@
 			</itemizedlist>
 		</para>
 	</simplesect>
-	<simplesect id="tools_browser_view_contextmenu_fetch_operational_attributes">
+	<simplesect
+		id="tools_browser_view_contextmenu_fetch_operational_attributes">
 		<title>Fetch -> Fetch Operational Attributes</title>
 		<para>
 			<itemizedlist>
 				<listitem>
 					<para>
-						Description: Enables/disables fetching 
-						of operational attributes. If the server supports
-						the 'All Operational Attributes' feature the
-						operation attributes are requested using a '+',
-						otherwise all available operational attributes 
-						available in the schema are requested. 
+						Description: Enables/disables fetching
+						of operational
+						attributes. If the server supports
+						the 'All
+						Operational Attributes'
+						feature the
+						operation attributes are
+						requested using a '+',
+						otherwise all available operational
+						attributes
+						available in the
+						schema are requested. 
 					</para>
 				</listitem>
 				<listitem>
 					<para>
 						Enabled: If one or multiple entries,
-						search results or bookmarks are selected.
+						search results or
+						bookmarks are selected.
 					</para>
 				</listitem>
 				<listitem>
 					<para>
-						Note: This menu item is not available if 
-						"Fetch operational attributes while browsing"
-						in the connection properties is enabled because
-						in that case operational attributes are always
+						Note: This menu item is not available if
+						"Fetch operational
+						attributes while browsing"
+						in the connection
+						properties is enabled
+						because
+						in that case operational attributes
+						are always
 						loaded.
 					</para>
 				</listitem>
@@ -1452,10 +1578,13 @@
 			<itemizedlist>
 				<listitem>
 					<para>
-						Description: Enables/disables fetching 
-						of alias entries. If enabled an additional
-						search request with alias dereferncing
-						mode 'never' is necessary when loading 
+						Description: Enables/disables fetching
+						of alias entries. If
+						enabled an additional
+						search request with alias
+						dereferncing
+						mode
+						'never' is necessary when loading
 						the children of an entry.
 					</para>
 				</listitem>
@@ -1466,9 +1595,12 @@
 				</listitem>
 				<listitem>
 					<para>
-						Note: This menu item is not available if 
-						no alias dereferencing is enabled in the
-						connection properties because in that case
+						Note: This menu item is not available if
+						no alias
+						dereferencing is enabled in the
+						connection properties
+						because in
+						that case
 						alias entries are always visible.
 					</para>
 				</listitem>
@@ -1481,9 +1613,11 @@
 			<itemizedlist>
 				<listitem>
 					<para>
-						Description: Enables/disables fetching 
-						of referral entries. If enabled an additional
-						search request with ManageDsaIT controls is 
+						Description: Enables/disables fetching
+						of referral entries. If
+						enabled an additional
+						search request with
+						ManageDsaIT controls is
 						necessary when loading the children of an entry.
 					</para>
 				</listitem>
@@ -1495,9 +1629,10 @@
 				<listitem>
 					<para>
 						Note: This menu item is not available if
-						"Use ManageDsaIT control while browsing"
-						is enabled in the connection properties 
-						because in that case referral entries 
+						"Use ManageDsaIT
+						control while browsing"
+						is enabled in the connection properties
+						because in that case referral entries
 						are always visible.
 					</para>
 				</listitem>
@@ -1510,9 +1645,11 @@
 			<itemizedlist>
 				<listitem>
 					<para>
-						Description: Enables/disables fetching 
-						of subentries. If enabled an additional
-						search request with Subentries controls is 
+						Description: Enables/disables fetching
+						of subentries. If
+						enabled an additional
+						search request with
+						Subentries controls is
 						necessary when loading the children of an entry.
 					</para>
 				</listitem>
@@ -1524,9 +1661,11 @@
 				<listitem>
 					<para>
 						Note: This menu item is not available if
-						"Fetch subentries while browsing"
-						is enabled in the connection properties 
-						because in that case subentries are always
+						"Fetch subentries
+						while browsing"
+						is enabled in the connection properties
+						because in
+						that case subentries are always
 						fetched.
 					</para>
 				</listitem>
@@ -1558,7 +1697,8 @@
 				<listitem>
 					<para>
 						Enabled: If one search, entry, search result or
-						bookmark is selected.
+						bookmark is
+						selected.
 					</para>
 				</listitem>
 				<listitem>

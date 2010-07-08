@@ -42,7 +42,6 @@ import org.apache.directory.studio.connection.core.io.ConnectionIOException;
  * This class is used to manage {@link ConnectionFolder}s.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class ConnectionFolderManager implements ConnectionUpdateListener
 {

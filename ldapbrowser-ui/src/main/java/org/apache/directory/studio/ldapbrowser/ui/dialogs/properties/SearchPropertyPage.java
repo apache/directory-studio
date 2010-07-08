@@ -42,7 +42,6 @@ import org.eclipse.ui.dialogs.PropertyPage;
  * The SearchPropertyPage implements the property page for an {@link ISearch}.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class SearchPropertyPage extends PropertyPage implements IWorkbenchPropertyPage, WidgetModifyListener
 {

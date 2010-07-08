@@ -32,7 +32,6 @@ import org.apache.directory.studio.apacheds.configuration.model.ServerConfigurat
  * This class represents a Server Configuration.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class ServerConfigurationV155 extends AbstractServerConfiguration implements ServerConfiguration
 {

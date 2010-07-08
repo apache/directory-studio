@@ -120,6 +120,7 @@ public class ReferralDialogTest
 
         // expand ou=system, that reads the referral and opens the referral dialog
         ReferralDialogBot referralDialogBot = browserViewBot.expandEntryExpectingReferralDialog( parentPath );
+        assertTrue( referralDialogBot.isVisible() );
         assertEquals( connection.getName(), referralDialogBot.getSelectedConnection() );
         referralDialogBot.clickOkButton();
 
@@ -148,6 +149,7 @@ public class ReferralDialogTest
 
         // expand ou=system, that reads the referral and opens the referral dialog
         ReferralDialogBot referralDialogBot = browserViewBot.expandEntryExpectingReferralDialog( parentPath );
+        assertTrue( referralDialogBot.isVisible() );
         assertEquals( connection.getName(), referralDialogBot.getSelectedConnection() );
         referralDialogBot.clickCancelButton();
 
@@ -230,6 +232,7 @@ public class ReferralDialogTest
 
         // select the target, that should popup the referral dialog
         ReferralDialogBot referralDialogBot = browserViewBot.selectEntryExpectingReferralDialog( targetPath );
+        assertTrue( referralDialogBot.isVisible() );
         assertEquals( connection.getName(), referralDialogBot.getSelectedConnection() );
         referralDialogBot.clickOkButton();
 

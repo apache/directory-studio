@@ -53,7 +53,6 @@ import org.eclipse.swt.widgets.Shell;
  * Dialog to select the connection of a referral.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class SelectReferralConnectionDialog extends Dialog
 {

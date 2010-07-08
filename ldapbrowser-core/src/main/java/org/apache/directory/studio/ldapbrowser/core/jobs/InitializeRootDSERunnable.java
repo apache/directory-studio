@@ -56,7 +56,6 @@ import org.apache.directory.studio.ldapbrowser.core.model.impl.Search;
  * Runnable to initialize the Root DSE.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class InitializeRootDSERunnable implements StudioBulkRunnableWithProgress
 {

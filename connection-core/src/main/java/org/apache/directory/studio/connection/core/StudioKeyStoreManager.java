@@ -32,12 +32,13 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
 
+import org.apache.commons.codec.digest.DigestUtils;
+
 
 /**
  * A wrapper around {@link KeyStore}.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class StudioKeyStoreManager
 {
@@ -226,8 +227,11 @@ public class StudioKeyStoreManager
 
     private void addToKeyStore( X509Certificate certificate, KeyStore keyStore ) throws Exception
     {
-        String alias = certificate.getSubjectX500Principal().getName();
-        keyStore.setCertificateEntry( alias, certificate );
+        // The alias is not relevant, it just needs to be an unique identifier.
+        // The SHA-1 hash of the certificate should be unique.
+        byte[] encoded = certificate.getEncoded();
+        String shaHex = DigestUtils.shaHex( encoded );
+        keyStore.setCertificateEntry( shaHex, certificate );
     }
 
 

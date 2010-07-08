@@ -68,7 +68,6 @@ import org.eclipse.swt.widgets.Composite;
  * distinguished name.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class NewEntryDnWizardPage extends WizardPage implements WidgetModifyListener
 {

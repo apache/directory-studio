@@ -30,7 +30,6 @@ import org.eclipse.swt.widgets.Composite;
  * Implementation of a SourceViewer for displaying Schema files source code.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class SchemaSourceViewer extends SourceViewer
 {

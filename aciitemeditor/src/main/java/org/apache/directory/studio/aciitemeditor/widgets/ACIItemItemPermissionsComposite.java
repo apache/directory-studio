@@ -55,7 +55,6 @@ import org.eclipse.swt.widgets.Table;
  * This composite contains GUI elements to add, edit and delete ACI item permissions.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class ACIItemItemPermissionsComposite extends Composite
 {
@@ -94,7 +93,6 @@ public class ACIItemItemPermissionsComposite extends Composite
      * ItemPermissionWrappers are used as input of the table viewer.
      *
      * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
-     * @version $Rev$, $Date$
      */
     private class ItemPermissionWrapper
     {

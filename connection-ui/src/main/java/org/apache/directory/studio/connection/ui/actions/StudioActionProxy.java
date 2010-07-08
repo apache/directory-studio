@@ -39,7 +39,6 @@ import org.eclipse.jface.viewers.StructuredSelection;
  * updates the real actions on every modificaton. 
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public abstract class StudioActionProxy extends Action implements ISelectionChangedListener, ConnectionUpdateListener
 {

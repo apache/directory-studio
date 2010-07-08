@@ -1,0 +1,192 @@
+<?xml version="1.0"?>
+<!--
+
+
+======================================================================
+this has been copied from o.e.test plugin with some targets for SWTBot
+======================================================================
+
+
+-->
+
+<project name="Library" default="usage" basedir=".">
+
+	<target name="usage">
+		<echo message="Please refer to the testframework.html in org.eclipse.test for instructions on usage." />
+	</target>
+
+	<target name="init">
+		<!--
+			Parameters:
+				(Mandatory)
+				data-dir		- the directory for Eclipse to write its data
+				plugin-name		- the name of the plugin to test
+				classname		- the name of the test class
+
+				(Optional - overrides defaults set in script)
+				testProduct		- a string containing the product id to test.
+				testApplication	- a string containing the application id to test.
+				vmargs			- a string containing arguments to pass to the VM.
+				extraVMargs		- allows separate setting of VM args from separate caller.
+				timeout			- overrides default test timeout value (in milliseconds).
+				test-output		- overrides default output file produced from test run.
+				plugin-path		- path to root of plug-in
+				useEclipseExe	- property setting forces test to launch via eclipse executable.
+				junit-report-output - output directory for junit reports produced for specified classname.
+		-->
+
+		<tstamp>
+			<format property="TIMENOW" pattern="HHmmssSSSS" />
+		</tstamp>
+		<!--property setting useEclipseExe launches tests using the eclipse executable-->
+		<condition property="launchTarget" value="eclipse-test">
+			<isset property="useEclipseExe" />
+		</condition>
+		<!--default launch target for launching tests-->
+		<property name="launchTarget" value="java-test" />
+
+		<!-- default product/application to launch -->
+		<condition property="testproduct.if.available" value="-product ${testProduct}">
+			<isset property="testProduct" />
+		</condition>
+		<property name="testproduct.if.available" value="" />
+
+		<condition property="testapplication.if.available" value="-testApplication ${testApplication}">
+			<isset property="testApplication" />
+		</condition>
+
+		<property name="testapplication.if.available" value="" />
+
+		<!--default heap sizes when running performance tests-->
+		<condition property="vmargs" value=" -Xms256M -Xmx256M">
+			<equals arg1="${test.target}" arg2="performance" />
+		</condition>
+		<property name="extraVMargs" value="" />
+		<property name="plugin-path" value="" />
+		<property name="timeout" value="7200000" />
+		<property name="test-output" value="${eclipse-home}/${classname}.xml" />
+		<property name="junit-report-output" value="${eclipse-home}/results" />
+		<mkdir dir="${junit-report-output}" />
+	</target>
+
+	<target name="swtbot-test" description="Eclipse application used to launch UI plugin tests." depends="init">
+		<antcall target="${launchTarget}">
+			<!--param name="application" value="org.eclipse.test.uitestapplication"/-->
+			<param name="application" value="org.eclipse.swtbot.eclipse.junit4.headless.swtbottestapplication" />
+		</antcall>
+	</target>
+
+	<target name="java-test">
+		<!--default vm args-->
+		<property name="vmargs" value="-Xms256m -Xmx512m" />
+
+		<!-- this argument is needed for macosx -->
+		<condition property="jvmOption" value="-XstartOnFirstThread -Dorg.eclipse.swt.internal.carbon.smallFonts">
+			<os family="mac" />
+		</condition>
+
+		<property name="jvmOption" value="" />
+
+		<!--set default jvm to use for testing-->
+		<property name="jvm" value="${java.home}/bin/java" />
+
+		<property name="launcher-arg-line" value="
+			-application ${application}
+			${testproduct.if.available}
+			${testapplication.if.available}
+			-data ${data-dir}
+			formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,${test-output} formatter=org.apache.tools.ant.taskdefs.optional.junit.PlainJUnitResultFormatter
+			-testPluginName ${plugin-name}
+			-className ${classname}
+			-os ${os}
+			-ws ${ws}
+			-arch ${arch}
+			-consoleLog
+			-debug" />
+		<property name="jvm-arg-line" value="${vmargs} ${extraVMargs} ${jvmOption}" />
+
+		<echo>======================================</echo>
+		<echo>Running swtbot junit tests in ${classname}</echo>
+		<echo>Command line args are ${launcher-arg-line}</echo>
+		<echo>JVM args are ${jvm-arg-line}</echo>
+		<echo>JUnit Result File: ${junit-report-output}/${classname}.xml.</echo>
+		<echo>Console output File: ${junit-report-output}/${classname}.txt.</echo>
+		<echo>======================================</echo>
+
+		<fail unless="application" message="variable 'application' not defined." />
+		<fail unless="data-dir" message="variable 'data-dir' not defined." />
+		<fail unless="test-output" message="variable 'test-output' not defined" />
+		<fail unless="plugin-name" message="variable 'plugin-name' not defined" />
+		<fail unless="classname" message="variable 'classname' not defined" />
+		<fail unless="os" message="variable 'os' not defined. os can be one of win32, linux, macosx" />
+		<fail unless="ws" message="variable 'ws' not defined. ws can be one of win32, wpf, gtk, carbon, cocoa" />
+		<fail unless="arch" message="variable 'arch' not defined. arch can be one of x86, x86_64, ppc" />
+
+		<pathconvert property="foundJunit3" setonempty="false" pathsep=" ">
+			<path>
+				<fileset dir="${eclipse-home}/plugins" includes="org.eclipse.swtbot.eclipse.junit3.headless*/META-INF/MANIFEST.MF" />
+				<fileset dir="${eclipse-home}/plugins" includes="org.eclipse.swtbot.ant.optional.junit3*" />
+			</path>
+		</pathconvert>
+
+		<fail if="foundJunit3">
+			.
+			Found org.eclipse.swtbot.eclipse.junit3.headless or org.eclipse.swtbot.ant.optional.junit3 in the plugins directory.
+			JUnit 3.x and 4.x don't play well together.
+			Please remove org.eclipse.swtbot.eclipse.junit3.headless and org.eclipse.swtbot.ant.optional.junit3 from the plugins dir.
+		</fail>
+
+		<java fork="true" dir="." timeout="${timeout}" jvm="${jvm}" logError="true" classname="org.eclipse.core.launcher.Main" output="${junit-report-output}/${classname}.txt">
+			<classpath>
+				<fileset dir="${eclipse-home}/plugins">
+					<include name="org.eclipse.equinox.launcher_*.jar" />
+				</fileset>
+			</classpath>
+			<arg line="${launcher-arg-line}" />
+			<jvmarg line="${jvm-arg-line}" />
+			<sysproperty key="PLUGIN_PATH" value="${plugin-path}" />
+		</java>
+
+		<echo>======================================</echo>
+		<echo>If you see errors above please see the file ${junit-report-output}/${classname}.txt for more information.</echo>
+		<echo>Errors are generally caused by missing or incorrect dependencies.</echo>
+		<echo>======================================</echo>
+
+		<antcall target="collect-results" />
+	</target>
+
+	<target name="collect-results">
+		<dirname property="output-dir" file="${test-output}" />
+		<basename property="output-file-name" file="${test-output}" />
+		<junitreport todir="${junit-report-output}" tofile="${classname}.xml">
+			<fileset dir="${output-dir}">
+				<include name="${output-file-name}" />
+			</fileset>
+		</junitreport>
+
+		<style style="${eclipse-home}/plugins/org.eclipse.test/JUNIT.XSL" basedir="${junit-report-output}" includes="${classname}.result.xml" destdir="${junit-report-output}" />
+
+		<!--save .log content and *.log content from configuration directory-->
+		<concat destfile="${junit-report-output}/${classname}.log">
+			<fileset dir="${eclipse-home}" includes="${data-dir}/.metadata/*.log" />
+			<fileset dir="${eclipse-home}" includes="configuration/*.log" />
+		</concat>
+	</target>
+
+	<target name="collect">
+		<!--
+			This target can be used to aggragate test runs from multiple test suites into a single report.
+
+			Parameters to this target:
+			includes		- the names of the files to include
+			output-file		- the name of the output file to produce
+		-->
+		<junitreport todir="." tofile="${output-file}">
+			<fileset dir=".">
+				<include name="${includes}" />
+			</fileset>
+		</junitreport>
+	</target>
+
+</project>
+

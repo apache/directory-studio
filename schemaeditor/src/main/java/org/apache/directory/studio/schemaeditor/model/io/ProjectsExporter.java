@@ -35,7 +35,6 @@ import org.dom4j.Element;
  * This class is used to export Project(s) into the XML Format.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class ProjectsExporter
 {

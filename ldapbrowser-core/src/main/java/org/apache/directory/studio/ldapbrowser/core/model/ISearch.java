@@ -40,7 +40,6 @@ import org.eclipse.core.runtime.IAdaptable;
  * LDAP search.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public interface ISearch extends Serializable, IAdaptable, SearchPropertyPageProvider, ConnectionPropertyPageProvider
 {
@@ -73,7 +72,6 @@ public interface ISearch extends Serializable, IAdaptable, SearchPropertyPagePro
      * Enum for the used search scope.
      * 
      * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
-     * @version $Rev$, $Date$
      */
     public enum SearchScope
     {

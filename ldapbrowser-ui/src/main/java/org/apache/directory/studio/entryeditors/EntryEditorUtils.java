@@ -21,11 +21,15 @@
 package org.apache.directory.studio.entryeditors;
 
 
-import org.apache.directory.studio.connection.ui.RunnableContextRunner;
 import org.apache.directory.studio.ldapbrowser.core.jobs.InitializeAttributesRunnable;
+import org.apache.directory.studio.ldapbrowser.core.jobs.StudioBrowserJob;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.IRootDSE;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.jface.dialogs.IDialogConstants;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.osgi.util.NLS;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IEditorInput;
 
 
@@ -34,17 +38,24 @@ public class EntryEditorUtils
 
     /**
      * Checks if the attributes of the given entry are initialized and 
-     * initializes them in necessary.
+     * initializes them if necessary.
      * 
      * @param entry the entry
+     * @return
+     *      the job associated with the attributes initialization, 
+     *      or <code>null</code> if the attributes were already initialized
      */
-    public static void ensureAttributesInitialized( IEntry entry )
+    public static StudioBrowserJob ensureAttributesInitialized( IEntry entry )
     {
         if ( !entry.isAttributesInitialized() )
         {
-            InitializeAttributesRunnable iar = new InitializeAttributesRunnable( entry );
-            RunnableContextRunner.execute( iar, null, true );
+            InitializeAttributesRunnable runnable = new InitializeAttributesRunnable( entry );
+            StudioBrowserJob job = new StudioBrowserJob( runnable );
+            job.execute();
+            return job;
         }
+
+        return null;
     }
 
 
@@ -129,5 +140,45 @@ public class EntryEditorUtils
         }
 
         return null;
+    }
+
+
+    /**
+     * Asks the user if he wants to save the modifications made to the entry before 
+     * opening the new input.
+     * <p>
+     * If the user answers 'Yes', then the entry's modifications are saved.
+     * <p>
+     * This method returns whether or not the whole operation completed.
+     * <p>Based on this return value, <code>true</code> or <code>false</code>, the editor
+     * then updates its input or not.
+     *
+     * @param editor
+     *      the editor
+     * @return
+     *      <code>true</code> if the whole operation completed correctly,
+     *      <code>false</code> if not.
+     */
+    public static boolean askSaveSharedWorkingCopyBeforeInputChange( IEntryEditor editor )
+    {
+        // Asking for saving the modifications
+        MessageDialog dialog = new MessageDialog( Display.getCurrent().getActiveShell(), Messages
+            .getString( "EntryEditorUtils.SaveChanges" ), null, Messages //$NON-NLS-1$
+            .getString( "EntryEditorUtils.SaveChangesDescription" ), MessageDialog.QUESTION, new String[] //$NON-NLS-1$
+            { IDialogConstants.YES_LABEL, IDialogConstants.NO_LABEL }, 0 );
+        int result = dialog.open();
+        if ( result == 0 )
+        {
+            // Saving the modifications
+            EntryEditorInput eei = editor.getEntryEditorInput();
+            IStatus status = eei.saveSharedWorkingCopy( true, editor );
+            if ( !status.isOK() )
+            {
+                // If save failed, let's keep the modifications in the editor and return false
+                return false;
+            }
+        }
+
+        return true;
     }
 }

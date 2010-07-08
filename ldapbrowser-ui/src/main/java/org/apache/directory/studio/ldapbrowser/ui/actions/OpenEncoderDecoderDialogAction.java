@@ -31,7 +31,6 @@ import org.eclipse.ui.PlatformUI;
  * This Action opens the Encoder/Decoder Dialog.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class OpenEncoderDecoderDialogAction extends BrowserAction
 {

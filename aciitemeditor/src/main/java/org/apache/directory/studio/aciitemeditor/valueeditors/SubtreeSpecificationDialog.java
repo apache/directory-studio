@@ -69,7 +69,6 @@ import org.eclipse.swt.widgets.Text;
  * This class provides a dialog to enter the Subtree Specification value.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 class SubtreeSpecificationDialog extends Dialog
 {

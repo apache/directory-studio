@@ -58,7 +58,6 @@ import org.eclipse.swt.widgets.ToolItem;
  * </pre>
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public abstract class ViewFormWidget
 {

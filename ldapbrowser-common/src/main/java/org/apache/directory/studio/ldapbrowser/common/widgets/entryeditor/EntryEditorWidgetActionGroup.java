@@ -29,7 +29,6 @@ import org.apache.directory.studio.ldapbrowser.common.BrowserCommonConstants;
 import org.apache.directory.studio.ldapbrowser.common.actions.CopyAction;
 import org.apache.directory.studio.ldapbrowser.common.actions.DeleteAction;
 import org.apache.directory.studio.ldapbrowser.common.actions.NewValueAction;
-import org.apache.directory.studio.ldapbrowser.common.actions.PasteAction;
 import org.apache.directory.studio.ldapbrowser.common.actions.PropertiesAction;
 import org.apache.directory.studio.ldapbrowser.common.actions.SelectAllAction;
 import org.apache.directory.studio.ldapbrowser.common.actions.ShowDecoratedValuesAction;
@@ -57,7 +56,6 @@ import org.eclipse.ui.actions.ActionFactory;
  * The EntryEditorWidgetActionGroup manages all actions of the entry editor widget.
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class EntryEditorWidgetActionGroup implements ActionHandlerManager
 {
@@ -144,7 +142,7 @@ public class EntryEditorWidgetActionGroup implements ActionHandlerManager
 
         entryEditorActionMap.put( newValueAction, new EntryEditorActionProxy( viewer, new NewValueAction() ) );
 
-        entryEditorActionMap.put( pasteAction, new EntryEditorActionProxy( viewer, new PasteAction() ) );
+        entryEditorActionMap.put( pasteAction, new EntryEditorActionProxy( viewer, new EntryEditorPasteAction() ) );
         entryEditorActionMap.put( copyAction, new EntryEditorActionProxy( viewer, new CopyAction(
             ( BrowserActionProxy ) entryEditorActionMap.get( pasteAction ), valueEditorManager ) ) );
         entryEditorActionMap.put( deleteAction, new EntryEditorActionProxy( viewer, new DeleteAction() ) );

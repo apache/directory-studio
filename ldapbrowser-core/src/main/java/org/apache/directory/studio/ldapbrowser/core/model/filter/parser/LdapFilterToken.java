@@ -25,7 +25,6 @@ package org.apache.directory.studio.ldapbrowser.core.model.filter.parser;
  * The LdapFilterToken is used to exchange tokens from the scanner to the parser.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class LdapFilterToken implements Comparable<LdapFilterToken>
 {

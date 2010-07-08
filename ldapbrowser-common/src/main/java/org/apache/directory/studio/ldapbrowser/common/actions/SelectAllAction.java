@@ -39,7 +39,6 @@ import org.eclipse.ui.texteditor.IWorkbenchActionDefinitionIds;
  * This class implements the Select All Action.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class SelectAllAction extends BrowserAction
 {

@@ -32,7 +32,6 @@ import org.eclipse.core.runtime.IAdaptable;
  * This class represents an Apache DS server.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class Server implements IAdaptable
 {
@@ -43,7 +42,7 @@ public class Server implements IAdaptable
     private String id;
 
     /** The version of the server */
-    private ServerVersion version = ServerVersion.VERSION_1_5_5;
+    private ServerVersion version = ServerVersion.VERSION_1_5_6;
 
     /** The state of the server */
     private ServerStateEnum state = ServerStateEnum.STOPPED;

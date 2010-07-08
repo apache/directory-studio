@@ -23,6 +23,7 @@ package org.apache.directory.studio.ldifeditor.editor;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -40,6 +41,7 @@ import org.apache.directory.studio.ldifparser.model.LdifFile;
 import org.apache.directory.studio.ldifparser.model.container.LdifContainer;
 import org.apache.directory.studio.ldifparser.model.container.LdifRecord;
 import org.apache.directory.studio.ldifparser.parser.LdifParser;
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -55,6 +57,7 @@ import org.eclipse.jface.text.TextUtilities;
 import org.eclipse.jface.text.source.IAnnotationModel;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IPathEditorInput;
+import org.eclipse.ui.part.FileEditorInput;
 import org.eclipse.ui.texteditor.AbstractDocumentProvider;
 
 
@@ -63,7 +66,6 @@ import org.eclipse.ui.texteditor.AbstractDocumentProvider;
  * This class is used to share a LDIF Document and listen on document modifications.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class LdifDocumentProvider extends AbstractDocumentProvider implements IDocumentListener
 {
@@ -376,7 +378,14 @@ public class LdifDocumentProvider extends AbstractDocumentProvider implements ID
     {
         File file = null;
         String elementClassName = element.getClass().getName();
-        if ( element instanceof IPathEditorInput )
+        if ( element instanceof FileEditorInput )
+        // FileEditorInput class is used when the file is opened
+        // from a project in the workspace.
+        {
+            writeDocumentContent( document, ( ( FileEditorInput ) element ).getFile(), monitor );
+            return;
+        }
+        else if ( element instanceof IPathEditorInput )
         {
             IPathEditorInput pei = ( IPathEditorInput ) element;
             IPath path = pei.getPath();
@@ -423,6 +432,24 @@ public class LdifDocumentProvider extends AbstractDocumentProvider implements ID
                     "org.eclipse.ui.examples.rcp.texteditor", IStatus.OK, "error when saving file", e ) ); //$NON-NLS-1$ //$NON-NLS-2$
             }
 
+        }
+    }
+
+
+    /**
+     * Saves the document contents to a stream.
+     * 
+     * @param document the document to save
+     * @param file the file to save it to
+     * @param monitor a progress monitor to report progress
+     * @throws CoreException 
+     * @throws IOException if writing fails
+     */
+    private void writeDocumentContent( IDocument document, IFile file, IProgressMonitor monitor ) throws CoreException
+    {
+        if ( file != null )
+        {
+            file.setContents( new ByteArrayInputStream( document.get().getBytes() ), true, true, monitor );
         }
     }
 

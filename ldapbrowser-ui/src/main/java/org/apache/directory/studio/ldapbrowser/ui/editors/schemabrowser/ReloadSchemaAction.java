@@ -33,7 +33,6 @@ import org.eclipse.jface.action.Action;
  * This action reloads the schema.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class ReloadSchemaAction extends Action
 {

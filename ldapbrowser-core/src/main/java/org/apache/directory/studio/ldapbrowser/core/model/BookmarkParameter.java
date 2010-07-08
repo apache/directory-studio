@@ -31,7 +31,6 @@ import org.apache.directory.shared.ldap.name.LdapDN;
  * It is used to make bookmarks persistent.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class BookmarkParameter implements Serializable
 {

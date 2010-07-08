@@ -28,7 +28,6 @@ import org.apache.directory.shared.ldap.util.LdapURL;
  * A tagging interface for search continuations.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public interface IContinuation
 {

@@ -32,7 +32,6 @@ import org.eclipse.swt.widgets.Shell;
  * The CredentialsDialog is used to ask the user for credentials (paasword).
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class CredentialsDialog extends InputDialog
 {

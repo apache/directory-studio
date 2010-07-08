@@ -24,7 +24,6 @@ package org.apache.directory.studio.apacheds.configuration.model.v152;
  * This interface defines an interceptor configuration.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public interface InterceptorConfiguration
 {

@@ -29,7 +29,6 @@ import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
  * Job to run {@link StudioRunnableWithProgress} runnables.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class StudioBrowserJob extends StudioConnectionJob
 {

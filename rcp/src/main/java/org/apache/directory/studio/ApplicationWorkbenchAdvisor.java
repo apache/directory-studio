@@ -54,7 +54,6 @@ import org.osgi.framework.ServiceReference;
  * - postShutdown 	Called after all windows are closed during Workbench shutdown. 
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class ApplicationWorkbenchAdvisor extends WorkbenchAdvisor
 {

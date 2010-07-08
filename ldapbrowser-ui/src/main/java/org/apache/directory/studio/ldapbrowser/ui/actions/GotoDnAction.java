@@ -38,7 +38,6 @@ import org.eclipse.swt.widgets.Display;
  * This action locates a DN that the user entered into a dialog.
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class GotoDnAction extends LocateInDitAction
 {

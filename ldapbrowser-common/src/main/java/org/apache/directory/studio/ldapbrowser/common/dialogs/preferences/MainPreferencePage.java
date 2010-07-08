@@ -34,7 +34,6 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
  * The main preference page contains general settings for the LDAP browser.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class MainPreferencePage extends PreferencePage implements IWorkbenchPreferencePage
 {

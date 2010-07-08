@@ -24,14 +24,11 @@ package org.apache.directory.studio.ldapbrowser.common.widgets.entryeditor;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
-import org.apache.directory.studio.ldapbrowser.common.BrowserCommonConstants;
 import org.apache.directory.studio.ldapbrowser.core.jobs.InitializeAttributesRunnable;
 import org.apache.directory.studio.ldapbrowser.core.jobs.StudioBrowserJob;
 import org.apache.directory.studio.ldapbrowser.core.model.AttributeHierarchy;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
-import org.apache.directory.studio.ldapbrowser.core.model.IRootDSE;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.Viewer;
@@ -43,7 +40,6 @@ import org.eclipse.jface.viewers.Viewer;
  * {@link AttributeHierarchy} as input.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class EntryEditorWidgetContentProvider implements ITreeContentProvider
 {
@@ -127,9 +123,6 @@ public class EntryEditorWidgetContentProvider implements ITreeContentProvider
      */
     public Object[] getElements( Object inputElement )
     {
-        boolean showOperationalAttributes = BrowserCommonActivator.getDefault().getPreferenceStore().getBoolean(
-            BrowserCommonConstants.PREFERENCE_ENTRYEDITOR_SHOW_OPERATIONAL_ATTRIBUTES );
-
         if ( inputElement != null && inputElement instanceof IEntry )
         {
             IEntry entry = ( IEntry ) inputElement;
@@ -144,7 +137,7 @@ public class EntryEditorWidgetContentProvider implements ITreeContentProvider
             else
             {
                 IAttribute[] attributes = entry.getAttributes();
-                Object[] values = getValues( attributes, showOperationalAttributes );
+                Object[] values = getValues( attributes );
                 return values;
             }
         }
@@ -152,7 +145,7 @@ public class EntryEditorWidgetContentProvider implements ITreeContentProvider
         {
             AttributeHierarchy ah = ( AttributeHierarchy ) inputElement;
             IAttribute[] attributes = ah.getAttributes();
-            Object[] values = getValues( attributes, showOperationalAttributes );
+            Object[] values = getValues( attributes );
             return values;
         }
         else
@@ -166,34 +159,29 @@ public class EntryEditorWidgetContentProvider implements ITreeContentProvider
      * Gets the values of the given attributes.
      * 
      * @param attributes the attributes
-     * @param showOperationalAttributes true if operational attributes are visible
      * 
      * @return the values
      */
-    private Object[] getValues( IAttribute[] attributes, boolean showOperationalAttributes )
+    private Object[] getValues( IAttribute[] attributes )
     {
         List<Object> valueList = new ArrayList<Object>();
         if ( attributes != null )
         {
             for ( IAttribute attribute : attributes )
             {
-                if ( !attribute.isOperationalAttribute() || showOperationalAttributes
-                    || ( attribute.getEntry() instanceof IRootDSE ) )
+                IValue[] values = attribute.getValues();
+                if ( preferences == null || !preferences.isUseFolding()
+                    || ( values.length <= preferences.getFoldingThreshold() ) )
                 {
-                    IValue[] values = attribute.getValues();
-                    if ( preferences == null || !preferences.isUseFolding()
-                        || ( values.length <= preferences.getFoldingThreshold() ) )
+                    for ( IValue value : values )
                     {
-                        for ( IValue value : values )
-                        {
-                            valueList.add( value );
-                        }
+                        valueList.add( value );
                     }
-                    else
-                    {
-                        // if folding threshold is exceeded then return the attribute itself
-                        valueList.add( attribute );
-                    }
+                }
+                else
+                {
+                    // if folding threshold is exceeded then return the attribute itself
+                    valueList.add( attribute );
                 }
             }
         }

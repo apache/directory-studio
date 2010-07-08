@@ -24,7 +24,6 @@ package org.apache.directory.studio.aciitemeditor.widgets;
  * A widget modify listeners gets informed if a widget was modified.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public interface WidgetModifyListener
 {

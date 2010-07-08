@@ -40,7 +40,6 @@ import org.eclipse.core.runtime.Status;
  * This class implements the wizard for exporting the search logs.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class ExportSearchLogsWizard extends ExportBaseWizard
 {

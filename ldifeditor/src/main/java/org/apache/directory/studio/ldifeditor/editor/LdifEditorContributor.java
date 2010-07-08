@@ -36,7 +36,6 @@ import org.eclipse.ui.texteditor.RetargetTextEditorAction;
  * This class manages the installation and removal of global actions for the LDIF Editor.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class LdifEditorContributor extends BasicTextEditorActionContributor
 {

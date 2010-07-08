@@ -31,7 +31,6 @@ import org.eclipse.swt.widgets.Composite;
  * to the connection wizard and the connection property page.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public interface ConnectionParameterPage
 {

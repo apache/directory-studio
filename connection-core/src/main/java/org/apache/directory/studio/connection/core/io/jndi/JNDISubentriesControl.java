@@ -28,7 +28,6 @@ import javax.naming.ldap.BasicControl;
  * The Subentries control.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class JNDISubentriesControl extends BasicControl
 {

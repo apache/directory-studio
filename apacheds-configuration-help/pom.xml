@@ -23,20 +23,16 @@
   <parent>
     <groupId>org.apache.directory.studio</groupId>
     <artifactId>parent-help</artifactId>
-    <version>1.5.1-SNAPSHOT</version>
+    <version>1.5.4-SNAPSHOT</version>
     <relativePath>../help-pom.xml</relativePath>
   </parent>
 
   <artifactId>apacheds.configuration.help</artifactId>
-  <version>${apacheds.configuration.help.version}</version>
+  <version>1.5.4-SNAPSHOT</version>
   <name>Apache Directory Studio Apache DS Configuration Help</name>
   <packaging>jar</packaging>
 
   <description />
-
-  <properties>
-    <current_pom_version>${pom.version}</current_pom_version>
-  </properties>
 
   <build>
     <plugins>

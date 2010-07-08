@@ -45,7 +45,6 @@ import org.eclipse.swt.graphics.Image;
  * The label provider for the search result editor.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class SearchResultEditorLabelProvider extends LabelProvider implements ITableLabelProvider, ITableFontProvider,
     ITableColorProvider

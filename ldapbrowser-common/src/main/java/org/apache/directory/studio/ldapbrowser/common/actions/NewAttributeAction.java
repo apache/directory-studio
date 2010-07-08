@@ -35,7 +35,6 @@ import org.eclipse.jface.wizard.WizardDialog;
  * This Action creates a new Attribute
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class NewAttributeAction extends BrowserAction
 {

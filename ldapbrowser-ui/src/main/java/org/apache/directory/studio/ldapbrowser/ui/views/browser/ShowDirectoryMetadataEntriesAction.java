@@ -32,7 +32,6 @@ import org.eclipse.jface.action.IAction;
  * should be visible in the browser view or not.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class ShowDirectoryMetadataEntriesAction extends Action
 {

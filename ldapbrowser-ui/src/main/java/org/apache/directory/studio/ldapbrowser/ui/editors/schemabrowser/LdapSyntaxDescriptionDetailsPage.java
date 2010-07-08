@@ -45,7 +45,6 @@ import org.eclipse.ui.forms.widgets.Section;
  * syntax description.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class LdapSyntaxDescriptionDetailsPage extends SchemaDetailsPage
 {

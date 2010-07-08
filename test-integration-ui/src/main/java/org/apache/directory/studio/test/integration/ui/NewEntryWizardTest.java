@@ -24,13 +24,6 @@ package org.apache.directory.studio.test.integration.ui;
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertTrue;
-import static org.apache.directory.server.integ.ServerIntegrationUtils.getWiredContext;
-
-import javax.naming.directory.Attribute;
-import javax.naming.directory.Attributes;
-import javax.naming.directory.BasicAttribute;
-import javax.naming.directory.DirContext;
-import javax.naming.directory.ModificationItem;
 
 import org.apache.directory.server.core.entry.DefaultServerEntry;
 import org.apache.directory.server.core.entry.ServerEntry;
@@ -48,6 +41,7 @@ import org.apache.directory.studio.test.integration.ui.bots.NewEntryWizardBot;
 import org.apache.directory.studio.test.integration.ui.bots.ReferralDialogBot;
 import org.apache.directory.studio.test.integration.ui.bots.StudioBot;
 import org.eclipse.jface.dialogs.ErrorDialog;
+import org.eclipse.swtbot.swt.finder.utils.SWTUtils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -78,22 +72,9 @@ public class NewEntryWizardTest
     {
         ErrorDialog.AUTOMATED_MODE = false;
 
-        // check if krb5kdc is disabled
-        DirContext schemaRoot = ( DirContext ) getWiredContext( ldapServer ).lookup( "ou=schema" );
-        Attributes krb5kdcAttrs = schemaRoot.getAttributes( "cn=Krb5kdc" );
-        boolean isKrb5KdcDisabled = false;
-        if ( krb5kdcAttrs.get( "m-disabled" ) != null )
-        {
-            isKrb5KdcDisabled = ( ( String ) krb5kdcAttrs.get( "m-disabled" ).get() ).equalsIgnoreCase( "TRUE" );
-        }
-        // if krb5kdc is disabled then enable it
-        if ( isKrb5KdcDisabled )
-        {
-            Attribute disabled = new BasicAttribute( "m-disabled" );
-            ModificationItem[] mods = new ModificationItem[]
-                { new ModificationItem( DirContext.REMOVE_ATTRIBUTE, disabled ) };
-            schemaRoot.modifyAttributes( "cn=Krb5kdc", mods );
-        }
+        // enable krb5kdc and nis schemas
+        ApacheDsUtils.enableSchema( ldapServer, "krb5kdc" );
+        ApacheDsUtils.enableSchema( ldapServer, "nis" );
 
         // create referral entry
         ServerEntry entry = new DefaultServerEntry( ldapServer.getDirectoryService().getRegistries() );
@@ -196,7 +177,7 @@ public class NewEntryWizardTest
         wizardBot.setRdnValue( 1, "testCreatePersonEntry" );
         wizardBot.clickNextButton();
 
-        wizardBot.setAttributeValue( "sn", 1, "test" );
+        wizardBot.typeValueAndFinish( "test" );
         wizardBot.clickFinishButton();
 
         assertTrue( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "cn=testCreatePersonEntry" ) );
@@ -280,8 +261,10 @@ public class NewEntryWizardTest
         wizardBot.setRdnValue( 1, "kadmin/changepw@DOMAIN" );
         wizardBot.clickNextButton();
 
-        wizardBot.setAttributeValue( "cn", 1, "test" );
-        wizardBot.setAttributeValue( "sn", 1, "test" );
+        wizardBot.editValue( "cn", "" );
+        wizardBot.typeValueAndFinish( "test" );
+        wizardBot.editValue( "sn", "" );
+        wizardBot.typeValueAndFinish( "test" );
         wizardBot.clickFinishButton();
 
         assertTrue( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system",
@@ -325,6 +308,8 @@ public class NewEntryWizardTest
 
         // click cancel button, check the wizard is not closed
         referralDialogBot.clickCancelButton();
+        // timing issues, use ugly sleep for now, should use some condition but have no idea. 
+        SWTUtils.sleep( 1000 );
         assertTrue( wizardBot.isVisible() );
         assertTrue( wizardBot.isFinishButtonEnabled() );
 
@@ -368,7 +353,7 @@ public class NewEntryWizardTest
         assertTrue( referralDialogBot.isVisible() );
 
         // follow referral, click ok button
-        referralDialogBot.selectConnection( "NewEntryWizardTest" );
+        referralDialogBot.selectConnection( connection.getName() );
         referralDialogBot.clickOkButton();
 
         // check entry was created under referral target entry
@@ -376,4 +361,66 @@ public class NewEntryWizardTest
         browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users", "o=orgBelowReferral" );
     }
 
+
+    /**
+     * Test for DIRSTUDIO-589, DIRSTUDIO-591, DIRSHARED-38.
+     * 
+     * Create an entry with sharp in DN: cn=\#123456.
+     */
+    @Test
+    public void testCreateEntryWithSharp()
+    {
+        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system" );
+
+        NewEntryWizardBot wizardBot = browserViewBot.openNewEntryWizard();
+
+        wizardBot.selectCreateEntryFromScratch();
+        wizardBot.clickNextButton();
+
+        wizardBot.addObjectClasses( "inetOrgPerson" );
+        wizardBot.clickNextButton();
+
+        wizardBot.setRdnType( 1, "cn" );
+        wizardBot.setRdnValue( 1, "#123456" );
+        wizardBot.clickNextButton();
+
+        wizardBot.typeValueAndFinish( "#123456" );
+        wizardBot.clickFinishButton();
+
+        assertTrue( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "cn=\\#123456" ) );
+        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "cn=\\#123456" );
+    }
+
+
+    /**
+     * Test for DIRSTUDIO-603, DIRSHARED-41.
+     * 
+     * Create an entry with multi-valued RDN and numeric OID (IP address) in RDN value.
+     */
+    @Test
+    public void testCreateMvRdnWithNumericOid()
+    {
+        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system" );
+
+        NewEntryWizardBot wizardBot = browserViewBot.openNewEntryWizard();
+
+        wizardBot.selectCreateEntryFromScratch();
+        wizardBot.clickNextButton();
+
+        wizardBot.addObjectClasses( "device" );
+        wizardBot.addObjectClasses( "ipHost" );
+        wizardBot.clickNextButton();
+
+        wizardBot.clickAddRdnButton( 1 );
+        wizardBot.setRdnType( 1, "cn" );
+        wizardBot.setRdnValue( 1, "loopback" );
+        wizardBot.setRdnType( 2, "ipHostNumber" );
+        wizardBot.setRdnValue( 2, "127.0.0.1" );
+        wizardBot.clickNextButton();
+
+        wizardBot.clickFinishButton();
+
+        assertTrue( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "cn=loopback+ipHostNumber=127.0.0.1" ) );
+        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "cn=loopback+ipHostNumber=127.0.0.1" );
+    }
 }

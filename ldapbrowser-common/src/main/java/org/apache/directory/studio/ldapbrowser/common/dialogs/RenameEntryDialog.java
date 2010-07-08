@@ -47,7 +47,6 @@ import org.eclipse.swt.widgets.Shell;
  * A dialog to enter the new RDN of an entry.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class RenameEntryDialog extends Dialog implements WidgetModifyListener
 {

@@ -23,11 +23,10 @@
   <parent>
     <groupId>org.apache.directory.studio</groupId>
     <artifactId>parent</artifactId>
-    <version>1.5.1-SNAPSHOT</version>
+    <version>1.5.4-SNAPSHOT</version>
   </parent>
 
   <artifactId>repository</artifactId>
-  <version>${repository.version}</version>
   <name>Apache Directory Studio Repository</name>
   <packaging>pom</packaging>
   
@@ -223,6 +222,10 @@
       <artifactId>identity</artifactId>
     </dependency>
     <dependency>
+      <groupId>org.eclipse.ecf.provider</groupId>
+      <artifactId>filetransfer</artifactId>
+    </dependency>
+    <dependency>
       <groupId>org.eclipse.equinox</groupId>
       <artifactId>app</artifactId>
     </dependency>
@@ -401,11 +404,6 @@
     </dependency>
     <dependency>
       <groupId>org.eclipse</groupId>
-      <artifactId>sdk</artifactId>
-      <type>zip</type>
-    </dependency>
-    <dependency>
-      <groupId>org.eclipse</groupId>
       <artifactId>search</artifactId>
     </dependency>
     <dependency>
@@ -547,6 +545,10 @@
     </dependency>
     
     <!-- Testing framework dependencies -->
+    <dependency>
+      <groupId>org.eclipse.swtbot.eclipse</groupId>
+      <artifactId>core</artifactId>
+    </dependency>
     <dependency>
       <groupId>org.eclipse.swtbot.eclipse</groupId>
       <artifactId>finder</artifactId>

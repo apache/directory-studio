@@ -77,7 +77,6 @@ import org.eclipse.swt.widgets.Text;
  * The NewEntryTypeWizardPage is used to select the entry's object classes.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class NewEntryObjectclassWizardPage extends WizardPage
 {

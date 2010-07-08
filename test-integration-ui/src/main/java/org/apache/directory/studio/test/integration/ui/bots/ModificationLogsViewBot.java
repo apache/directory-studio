@@ -20,17 +20,8 @@
 package org.apache.directory.studio.test.integration.ui.bots;
 
 
-import static org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory.allOf;
-import static org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory.widgetOfType;
-import static org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory.withStyle;
-import static org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory.withTooltip;
-
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.ToolItem;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotToolbarButton;
-import org.hamcrest.Matcher;
 
 
 public class ModificationLogsViewBot
@@ -45,18 +36,10 @@ public class ModificationLogsViewBot
     }
 
 
-    public String getSearchLogsText()
+    public String getModificationLogsText()
     {
         view.show();
-
-        //view.toolbarButton( "Refresh" ).click();
-        // just a workaround till view.toolbarButton() is fixed
-        Matcher matcher = allOf( widgetOfType( ToolItem.class ), withTooltip( "Refresh" ), withStyle( SWT.PUSH,
-            "SWT.PUSH" ) );
-        SWTBotToolbarButton button = new SWTBotToolbarButton( ( ToolItem ) new SWTWorkbenchBot().widget( matcher, 0 ),
-            matcher );
-        button.click();
-
+        view.toolbarPushButton( "Refresh" ).click();
         return view.bot().styledText().getText();
     }
 

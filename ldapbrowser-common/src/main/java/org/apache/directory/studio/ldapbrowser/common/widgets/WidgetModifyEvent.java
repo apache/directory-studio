@@ -29,7 +29,6 @@ import java.util.EventObject;
  * been modified.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class WidgetModifyEvent extends EventObject
 {

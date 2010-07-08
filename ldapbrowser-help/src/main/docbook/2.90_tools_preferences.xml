@@ -257,46 +257,6 @@
 					<tbody>
 						<row>
 							<entry>
-								Show objectClass attribute
-							</entry>
-							<entry>
-								If checked the objectClass attribute is
-								displayed.
-							</entry>
-							<entry>on</entry>
-						</row>
-						<row>
-							<entry>
-								Show must attribute
-							</entry>
-							<entry>
-								If checked the required attributes are
-								displayed.
-							</entry>
-							<entry>on</entry>
-						</row>
-						<row>
-							<entry>
-								Show may attribute
-							</entry>
-							<entry>
-								If checked the optional attributes are
-								displayed.
-							</entry>
-							<entry>on</entry>
-						</row>
-						<row>
-							<entry>
-								Show operational attribute
-							</entry>
-							<entry>
-								If checked the operational attributes are
-								displayed.
-							</entry>
-							<entry>on</entry>
-						</row>
-						<row>
-							<entry>
 								Enable folding
 							</entry>
 							<entry>

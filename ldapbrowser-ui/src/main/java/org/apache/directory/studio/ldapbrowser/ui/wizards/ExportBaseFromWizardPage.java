@@ -33,7 +33,6 @@ import org.eclipse.swt.widgets.Composite;
  * This class is a base implementation of the page to select the data to export.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public abstract class ExportBaseFromWizardPage extends WizardPage implements WidgetModifyListener
 {

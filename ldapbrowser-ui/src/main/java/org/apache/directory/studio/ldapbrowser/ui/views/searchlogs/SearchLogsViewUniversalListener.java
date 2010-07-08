@@ -52,7 +52,6 @@ import org.eclipse.ui.IWorkbenchPart;
  * The SearchLogsViewUniversalListener manages all events for the search logs view.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class SearchLogsViewUniversalListener implements BrowserConnectionUpdateListener, SearchUpdateListener,
     EntryUpdateListener
@@ -155,31 +154,36 @@ public class SearchLogsViewUniversalListener implements BrowserConnectionUpdateL
         {
             this.input = input;
 
-            // load file %u %g
-            StringBuffer sb = new StringBuffer();
             LdifSearchLogger searchLogger = ConnectionCorePlugin.getDefault().getLdifSearchLogger();
-            File[] files = searchLogger.getFiles( input.getBrowserConnection().getConnection() );
-            int i = input.getIndex();
-            if ( 0 <= i && i < files.length && files[i] != null && files[i].exists() && files[i].canRead() )
+
+            if ( ( input != null ) && ( input.getBrowserConnection() != null )
+                && ( input.getBrowserConnection().getConnection() != null ) && ( searchLogger != null ) )
             {
-                try
+                // load file %u %g
+                StringBuffer sb = new StringBuffer();
+                File[] files = searchLogger.getFiles( input.getBrowserConnection().getConnection() );
+                int i = input.getIndex();
+                if ( 0 <= i && i < files.length && files[i] != null && files[i].exists() && files[i].canRead() )
                 {
-                    FileReader fr = new FileReader( files[i] );
-                    char[] cbuf = new char[4096];
-                    for ( int length = fr.read( cbuf ); length > 0; length = fr.read( cbuf ) )
+                    try
                     {
-                        sb.append( cbuf, 0, length );
+                        FileReader fr = new FileReader( files[i] );
+                        char[] cbuf = new char[4096];
+                        for ( int length = fr.read( cbuf ); length > 0; length = fr.read( cbuf ) )
+                        {
+                            sb.append( cbuf, 0, length );
+                        }
+                    }
+                    catch ( Exception e )
+                    {
+                        sb.append( e.getMessage() );
                     }
                 }
-                catch ( Exception e )
-                {
-                    sb.append( e.getMessage() );
-                }
-            }
 
-            // change input
-            view.getMainWidget().getSourceViewer().getDocument().set( sb.toString() );
-            view.getActionGroup().setInput( input );
+                // change input
+                view.getMainWidget().getSourceViewer().getDocument().set( sb.toString() );
+                view.getActionGroup().setInput( input );
+            }
         }
     }
 

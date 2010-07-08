@@ -35,7 +35,6 @@ import org.eclipse.ui.IWorkbenchPart;
  * preferences for the search result editor. 
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class SearchResultEditorConfiguration
 {
@@ -208,7 +207,7 @@ public class SearchResultEditorConfiguration
     {
         if ( cellModifier == null )
         {
-            cellModifier = new SearchResultEditorCellModifier( getValueEditorManager( viewer ) );
+            cellModifier = new SearchResultEditorCellModifier( getValueEditorManager( viewer ), getCursor( viewer ) );
         }
         return cellModifier;
     }

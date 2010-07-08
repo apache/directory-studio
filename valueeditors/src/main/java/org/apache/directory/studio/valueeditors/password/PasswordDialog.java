@@ -61,7 +61,6 @@ import org.eclipse.swt.widgets.Text;
  * and to enter a new password.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class PasswordDialog extends Dialog
 {
@@ -374,7 +373,7 @@ public class PasswordDialog extends Dialog
         newPasswordContainer.setLayout( newLayout );
 
         BaseWidgetUtils.createLabel( newPasswordContainer, Messages.getString( "PasswordDialog.EnterNewPassword" ), 1 ); //$NON-NLS-1$
-        newPasswordText = BaseWidgetUtils.createPasswordText( newPasswordContainer, "", 1 ); //$NON-NLS-1$
+        newPasswordText = BaseWidgetUtils.createText( newPasswordContainer, "", 1 ); //$NON-NLS-1$
         newPasswordText.addModifyListener( new ModifyListener()
         {
             public void modifyText( ModifyEvent e )
@@ -578,12 +577,14 @@ public class PasswordDialog extends Dialog
         // show password details?
         if ( showNewPasswordDetailsButton.getSelection() )
         {
+            newPasswordText.setEchoChar( '\0' );
             newPasswordPreviewText.setEchoChar( '\0' );
             newPasswordPreviewValueHexText.setEchoChar( '\0' );
             newPasswordPreviewSaltHexText.setEchoChar( '\0' );
         }
         else
         {
+            newPasswordText.setEchoChar( '\u2022' );
             newPasswordPreviewText.setEchoChar( newPasswordPreviewText.getText()
                 .equals( Utils.getNonNullString( null ) ) ? '\0' : '\u2022' );
             newPasswordPreviewValueHexText.setEchoChar( newPasswordPreviewValueHexText.getText().equals(

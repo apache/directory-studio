@@ -33,7 +33,6 @@ import org.eclipse.jface.wizard.WizardDialog;
  * Action to save the log files to a place outside the workspace.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class ExportAction extends BrowserAction
 {

@@ -40,7 +40,6 @@ import org.eclipse.ui.IWorkbench;
  * This class represents the wizard to commit changes to the Apache Directory Server.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class CommitChangesWizard extends Wizard implements IExportWizard
 {

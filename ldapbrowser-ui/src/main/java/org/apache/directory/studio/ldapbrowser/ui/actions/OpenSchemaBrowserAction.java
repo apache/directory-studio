@@ -41,7 +41,6 @@ import org.eclipse.jface.resource.ImageDescriptor;
  * This Action opens the Schema Browser 
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class OpenSchemaBrowserAction extends BrowserAction
 {

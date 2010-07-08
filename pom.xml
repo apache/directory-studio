@@ -23,13 +23,14 @@
   <parent>
     <groupId>org.apache.directory.project</groupId>
     <artifactId>project</artifactId>
-    <version>15</version>
+    <version>17</version>
   </parent>
 
   <groupId>org.apache.directory.studio</groupId>
   <artifactId>parent</artifactId>
-  <version>1.5.1-SNAPSHOT</version>
+  <version>1.5.4-SNAPSHOT</version>
   <name>Apache Directory Studio</name>
+  <description>Apache Directory Studio is a complete directory tooling platform intended to be used with any LDAP server however it is particularly designed for use with the Apache Directory Server.</description>
   <packaging>pom</packaging>
 
   <url>http://directory.apache.org/studio/</url>
@@ -47,7 +48,7 @@
   <scm>
     <connection>scm:svn:http://svn.apache.org/repos/asf/directory/studio/trunk/</connection>
     <developerConnection>scm:svn:https://svn.apache.org/repos/asf/directory/studio/trunk/</developerConnection>
-    <url>https://svn.apache.org/repos/asf/directory/studio/trunk/</url>
+    <url>https://svn.apache.org/viewvc/directory/studio/trunk/</url>
   </scm>
 
   <distributionManagement>
@@ -64,43 +65,10 @@
     -->
     <studio.dist.url>${pom.distributionManagement.repository.url}</studio.dist.url>
     <distMgmtSiteUrl>scpexe://people.apache.org/www/directory.apache.org/studio/gen-docs/${version}</distMgmtSiteUrl>
-    <!-- Set versions for subprojects -->
-    <aciitemeditor.version>1.5.1-SNAPSHOT</aciitemeditor.version>
-    <apacheds.launcher.version>1.5.1-SNAPSHOT</apacheds.launcher.version>
-    <apacheds.version>1.5.1-SNAPSHOT</apacheds.version>
-    <apacheds.feature.version>1.5.1-SNAPSHOT</apacheds.feature.version>
-    <apacheds.help.version>1.5.1-SNAPSHOT</apacheds.help.version>
-    <apacheds.configuration.version>1.5.1-SNAPSHOT</apacheds.configuration.version>
-    <apacheds.configuration.feature.version>1.5.1-SNAPSHOT</apacheds.configuration.feature.version>
-    <apacheds.configuration.help.version>1.5.1-SNAPSHOT</apacheds.configuration.help.version>
-    <common.ui.version>1.5.1-SNAPSHOT</common.ui.version>
-    <connection.core.version>1.5.1-SNAPSHOT</connection.core.version>
-    <connection.ui.version>1.5.1-SNAPSHOT</connection.ui.version>
-    <jars.version>1.5.1-SNAPSHOT</jars.version>
-    <ldapbrowser.common.version>1.5.1-SNAPSHOT</ldapbrowser.common.version>
-    <ldapbrowser.core.version>1.5.1-SNAPSHOT</ldapbrowser.core.version>
-    <ldapbrowser.feature.version>1.5.1-SNAPSHOT</ldapbrowser.feature.version>
-    <ldapbrowser.help.version>1.5.1-SNAPSHOT</ldapbrowser.help.version>
-    <ldapbrowser.ui.version>1.5.1-SNAPSHOT</ldapbrowser.ui.version>
-    <ldifeditor.version>1.5.1-SNAPSHOT</ldifeditor.version>
-    <ldifeditor.feature.version>1.5.1-SNAPSHOT</ldifeditor.feature.version>
-    <ldifeditor.help.version>1.5.1-SNAPSHOT</ldifeditor.help.version>
-    <ldifparser.version>1.5.1-SNAPSHOT</ldifparser.version>
-    <rcp.version>1.5.1-SNAPSHOT</rcp.version>
-    <rcp.feature.version>1.5.1-SNAPSHOT</rcp.feature.version>
-    <rcp.help.version>1.5.1-SNAPSHOT</rcp.help.version>
-    <repository.version>1.5.1-SNAPSHOT</repository.version>
-    <schemaeditor.version>1.5.1-SNAPSHOT</schemaeditor.version>
-    <schemaeditor.feature.version>1.5.1-SNAPSHOT</schemaeditor.feature.version>
-    <schemaeditor.help.version>1.5.1-SNAPSHOT</schemaeditor.help.version>
-    <test.integration.core.version>1.5.1-SNAPSHOT</test.integration.core.version>
-    <test.integration.ui.version>1.5.1-SNAPSHOT</test.integration.ui.version>
-    <updatesite.version>1.5.1-SNAPSHOT</updatesite.version>
-    <valueeditors.version>1.5.1-SNAPSHOT</valueeditors.version>
-
+    
     <!-- Set versions for depending projects -->
-    <org.apache.directory.shared.version>0.9.15</org.apache.directory.shared.version>
-    <skin.version>1.0.0</skin.version>
+    <org.apache.directory.shared.version>0.9.17</org.apache.directory.shared.version>
+    <skin.version>1.0.1</skin.version>
   </properties>
 
   <profiles>
@@ -138,17 +106,12 @@
       </build>
     </profile>
     <!-- 
-      Building help modules can be skipped by adding 
-      -Dfastbuild
-      to the commandline.
+      Building help and features modules are disabled by default. Add 
+      -Dstudio-full
+      to the commandline to add them to the build.
     -->
     <profile>
-      <id>build-help-modules</id>
-      <activation>
-        <property>
-          <name>!fastbuild</name>
-        </property>
-      </activation>
+      <id>studio-full</id>
       <modules>
         <module>schemaeditor-help</module>
         <module>ldifeditor-help</module>
@@ -156,6 +119,12 @@
         <module>apacheds-configuration-help</module>
         <module>rcp-help</module>
         <module>apacheds-help</module>
+        <module>apacheds-configuration-feature</module>
+        <module>apacheds-feature</module>
+        <module>ldapbrowser-feature</module>
+        <module>ldifeditor-feature</module>
+        <module>rcp-feature</module>
+        <module>schemaeditor-feature</module>
       </modules>
     </profile>
     <!-- 
@@ -171,21 +140,20 @@
       </modules>
     </profile>
     <!--
-      Add the dist modules as profile to force them being built
-      AFTER the help modules, otherwise we run into a backlog
-      of at least 1 iteration because the dist modules would be
-      built before the help modules ...
+      Add the 'application' module as a profile to force it being built
+      AFTER all the orther modules, otherwise we run into a backlog
+      of at least 1 iteration because the 'application' modules would be
+      built before the other modules...
     -->
     <profile>
-      <id>build-dist-modules</id>
+      <id>build-application</id>
       <activation>
         <file>
           <exists>pom.xml</exists>
         </file>
       </activation>
       <modules>
-        <module>updatesite</module>
-        <module>studio</module>
+        <module>application</module>
       </modules>
     </profile>
   </profiles>
@@ -196,157 +164,157 @@
       <dependency>
         <groupId>org.apache.directory.studio</groupId>
         <artifactId>aciitemeditor</artifactId>
-        <version>${aciitemeditor.version}</version>
+        <version>${pom.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.directory.studio</groupId>
         <artifactId>apacheds</artifactId>
-        <version>${apacheds.version}</version>
+        <version>${pom.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.directory.studio</groupId>
         <artifactId>apacheds.feature</artifactId>
-        <version>${apacheds.feature.version}</version>
+        <version>${pom.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.directory.studio</groupId>
         <artifactId>apacheds.help</artifactId>
-        <version>${apacheds.help.version}</version>
+        <version>${pom.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.directory.studio</groupId>
         <artifactId>apacheds-launcher</artifactId>
-        <version>1.5.1-SNAPSHOT</version>
+        <version>${pom.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.directory.studio</groupId>
         <artifactId>apacheds.configuration</artifactId>
-        <version>${apacheds.configuration.version}</version>
+        <version>${pom.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.directory.studio</groupId>
         <artifactId>apacheds.configuration.feature</artifactId>
-        <version>${apacheds.configuration.feature.version}</version>
+        <version>${pom.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.directory.studio</groupId>
         <artifactId>apacheds.configuration.help</artifactId>
-        <version>${apacheds.configuration.help.version}</version>
+        <version>${pom.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.directory.studio</groupId>
         <artifactId>common.ui</artifactId>
-        <version>${common.ui.version}</version>
+        <version>${pom.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.directory.studio</groupId>
         <artifactId>connection.core</artifactId>
-        <version>${connection.core.version}</version>
+        <version>${pom.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.directory.studio</groupId>
         <artifactId>connection.ui</artifactId>
-        <version>${connection.ui.version}</version>
+        <version>${pom.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.directory.studio</groupId>
         <artifactId>jars</artifactId>
-        <version>${jars.version}</version>
+        <version>${pom.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.directory.studio</groupId>
         <artifactId>ldapbrowser.common</artifactId>
-        <version>${ldapbrowser.common.version}</version>
+        <version>${pom.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.directory.studio</groupId>
         <artifactId>ldapbrowser.core</artifactId>
-        <version>${ldapbrowser.core.version}</version>
+        <version>${pom.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.directory.studio</groupId>
         <artifactId>ldapbrowser.feature</artifactId>
-        <version>${ldapbrowser.feature.version}</version>
+        <version>${pom.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.directory.studio</groupId>
         <artifactId>ldapbrowser.help</artifactId>
-        <version>${ldapbrowser.help.version}</version>
+        <version>${pom.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.directory.studio</groupId>
         <artifactId>ldapbrowser.ui</artifactId>
-        <version>${ldapbrowser.ui.version}</version>
+        <version>${pom.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.directory.studio</groupId>
         <artifactId>ldifeditor</artifactId>
-        <version>${ldifeditor.version}</version>
+        <version>${pom.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.directory.studio</groupId>
         <artifactId>ldifeditor.feature</artifactId>
-        <version>${ldifeditor.feature.version}</version>
+        <version>${pom.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.directory.studio</groupId>
         <artifactId>ldifeditor.help</artifactId>
-        <version>${ldifeditor.help.version}</version>
+        <version>${pom.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.directory.studio</groupId>
         <artifactId>ldifparser</artifactId>
-        <version>${ldifparser.version}</version>
+        <version>${pom.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.directory.studio</groupId>
         <artifactId>rcp</artifactId>
-        <version>${rcp.version}</version>
+        <version>${pom.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.directory.studio</groupId>
         <artifactId>rcp.feature</artifactId>
-        <version>${rcp.feature.version}</version>
+        <version>${pom.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.directory.studio</groupId>
         <artifactId>rcp.help</artifactId>
-        <version>${rcp.help.version}</version>
+        <version>${pom.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.directory.studio</groupId>
         <artifactId>schemaeditor</artifactId>
-        <version>${schemaeditor.version}</version>
+        <version>${pom.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.directory.studio</groupId>
         <artifactId>schemaeditor.feature</artifactId>
-        <version>${schemaeditor.feature.version}</version>
+        <version>${pom.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.directory.studio</groupId>
         <artifactId>schemaeditor.help</artifactId>
-        <version>${schemaeditor.help.version}</version>
+        <version>${pom.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.directory.studio</groupId>
         <artifactId>test.integration.core</artifactId>
-        <version>${test.integration.core.version}</version>
+        <version>${pom.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.directory.studio</groupId>
         <artifactId>test.integration.ui</artifactId>
-        <version>${test.integration.ui.version}</version>
+        <version>${pom.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.directory.studio</groupId>
         <artifactId>updatesite</artifactId>
-        <version>${updatesite.version}</version>
+        <version>${pom.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.directory.studio</groupId>
         <artifactId>valueeditors</artifactId>
-        <version>${valueeditors.version}</version>
+        <version>${pom.version}</version>
       </dependency>
       
       <!-- Maven -->
@@ -393,7 +361,7 @@
       <groupId>org.apache.directory.studio</groupId>
       <artifactId>launcher-macosx</artifactId>
       <type>tar.gz</type>
-      <version>1.5.0</version>
+      <version>1.5.3</version>
     </dependency>
     <dependency>
       <groupId>org.apache.directory.studio</groupId>
@@ -406,7 +374,7 @@
     <dependency>
       <groupId>com.ibm</groupId>
       <artifactId>icu</artifactId>
-      <version>4.0.1.v20090415</version>
+      <version>4.0.1.v20090822</version>
     </dependency>
     <dependency>
       <groupId>javax</groupId>
@@ -446,7 +414,7 @@
     <dependency>
       <groupId>org.eclipse</groupId>
       <artifactId>compare</artifactId>
-      <version>3.5.0.I20090514-0808-studio</version>
+      <version>3.5.2.r35x_20100113-0800-studio</version>
     </dependency>
     <dependency>
       <groupId>org.eclipse.compare</groupId>
@@ -466,27 +434,27 @@
     <dependency>
       <groupId>org.eclipse.core</groupId>
       <artifactId>contenttype</artifactId>
-      <version>3.4.0.v20090429-1800</version>
+      <version>3.4.1.R35x_v20090826-0451</version>
     </dependency>
     <dependency>
       <groupId>org.eclipse.core</groupId>
       <artifactId>databinding</artifactId>
-      <version>1.2.0.I20090604-2000</version>
+      <version>1.2.0.M20090819-0800</version>
     </dependency>
     <dependency>
       <groupId>org.eclipse.core.databinding</groupId>
       <artifactId>observable</artifactId>
-      <version>1.2.0.I20090604-2000</version>
+      <version>1.2.0.M20090902-0800</version>
     </dependency>
     <dependency>
       <groupId>org.eclipse.core.databinding</groupId>
       <artifactId>property</artifactId>
-      <version>1.2.0.I20090526-2000</version>
+      <version>1.2.0.M20090819-0800</version>
     </dependency>
     <dependency>
       <groupId>org.eclipse.core</groupId>
       <artifactId>expressions</artifactId>
-      <version>3.4.100.v20090429-1800</version>
+      <version>3.4.101.R35x_v20100209</version>
     </dependency>
     <dependency>
       <groupId>org.eclipse.core</groupId>
@@ -496,22 +464,22 @@
     <dependency>
       <groupId>org.eclipse.core</groupId>
       <artifactId>filesystem</artifactId>
-      <version>1.2.0.v20090507</version>
+      <version>1.2.1.R35x_v20091203-1235</version>
     </dependency>
     <dependency>
       <groupId>org.eclipse.core.filesystem.linux</groupId>
       <artifactId>x86</artifactId>
-      <version>1.2.0.v20080604-1400</version>
+      <version>1.3.0.R35x_v20091203-1235</version>
     </dependency>
     <dependency>
       <groupId>org.eclipse.core.filesystem.linux</groupId>
       <artifactId>x86_64</artifactId>
-      <version>1.0.100.v20080604-1400</version>
+      <version>1.1.0.R35x_v20091203-1235</version>
     </dependency>
     <dependency>
       <groupId>org.eclipse.core.filesystem</groupId>
       <artifactId>macosx</artifactId>
-      <version>1.1.0.v20090112</version>
+      <version>1.2.0.R35x_v20091203-1235</version>
     </dependency>
     <dependency>
       <groupId>org.eclipse.core.filesystem.win32</groupId>
@@ -526,17 +494,17 @@
     <dependency>
       <groupId>org.eclipse.core</groupId>
       <artifactId>net</artifactId>
-      <version>1.2.0.I20090522-1010</version>
+      <version>1.2.1.r35x_20090812-1200</version>
     </dependency>
     <dependency>
       <groupId>org.eclipse.core</groupId>
       <artifactId>resources</artifactId>
-      <version>3.5.0.v20090512</version>
+      <version>3.5.2.R35x_v20091203-1235</version>
     </dependency>
     <dependency>
       <groupId>org.eclipse.core.resources</groupId>
       <artifactId>compatibility</artifactId>
-      <version>3.4.0.v20090505</version>
+      <version>3.4.1.R35x_v20100113-0530</version>
     </dependency>
     <dependency>
       <groupId>org.eclipse.core</groupId>
@@ -567,37 +535,42 @@
     <dependency>
       <groupId>org.eclipse.debug</groupId>
       <artifactId>core</artifactId>
-      <version>3.5.0.v20090526-1600</version>
+      <version>3.5.1.v20091103_r352</version>
     </dependency>
     <dependency>
       <groupId>org.eclipse.debug</groupId>
       <artifactId>ui</artifactId>
-      <version>3.5.0.v20090603-studio</version>
+      <version>3.5.2.v20091028_r352-studio</version>
     </dependency>
     <dependency>
       <groupId>org.eclipse</groupId>
       <artifactId>ecf</artifactId>
-      <version>3.0.0.v20090604-1131</version>
+      <version>3.0.0.v20090831-1906</version>
     </dependency>
     <dependency>
       <groupId>org.eclipse.ecf</groupId>
       <artifactId>filetransfer</artifactId>
-      <version>3.0.0.v20090604-1131</version>
+      <version>3.0.0.v20090831-1906</version>
     </dependency>
     <dependency>
       <groupId>org.eclipse.ecf</groupId>
       <artifactId>identity</artifactId>
-      <version>3.0.0.v20090604-1131</version>
+      <version>3.0.0.v20090831-1906</version>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.ecf.provider</groupId>
+      <artifactId>filetransfer</artifactId>
+      <version>3.0.1.v20090831-1906</version>
     </dependency>
     <dependency>
       <groupId>org.eclipse.equinox</groupId>
       <artifactId>app</artifactId>
-      <version>1.2.0.v20090520-1800</version>
+      <version>1.2.1.R35x_v20091203</version>
     </dependency>
     <dependency>
       <groupId>org.eclipse.equinox</groupId>
       <artifactId>common</artifactId>
-      <version>3.5.0.v20090520-1800</version>
+      <version>3.5.1.R35x_v20090807-1100</version>
     </dependency>
     <dependency>
       <groupId>org.eclipse.equinox.http</groupId>
@@ -627,7 +600,7 @@
     <dependency>
       <groupId>org.eclipse.equinox</groupId>
       <artifactId>launcher</artifactId>
-      <version>1.0.200.v20090520</version>
+      <version>1.0.201.R35x_v20090715</version>
     </dependency>
     <dependency>
       <groupId>org.eclipse.equinox.launcher.carbon</groupId>
@@ -656,17 +629,17 @@
     <dependency>
       <groupId>org.eclipse.equinox.p2.artifact</groupId>
       <artifactId>repository</artifactId>
-      <version>1.0.100.v20090527-1812</version>
+      <version>1.0.101.R35x_v20090721</version>
     </dependency>
     <dependency>
       <groupId>org.eclipse.equinox.p2</groupId>
       <artifactId>core</artifactId>
-      <version>1.0.100.v20090520-1905</version>
+      <version>1.0.101.R35x_v20090819</version>
     </dependency>
     <dependency>
       <groupId>org.eclipse.equinox.p2</groupId>
       <artifactId>engine</artifactId>
-      <version>1.0.100.v20090525</version>
+      <version>1.0.102.R35x_v20091117</version>
     </dependency>
     <dependency>
       <groupId>org.eclipse.equinox.p2</groupId>
@@ -676,22 +649,22 @@
     <dependency>
       <groupId>org.eclipse.equinox.p2</groupId>
       <artifactId>metadata</artifactId>
-      <version>1.0.100.v20090525</version>
+      <version>1.0.101.R35x_v20100112</version>
     </dependency>
     <dependency>
       <groupId>org.eclipse.equinox.p2.metadata</groupId>
       <artifactId>repository</artifactId>
-      <version>1.0.100.v20090525</version>
+      <version>1.0.101.R35x_v20090812</version>
     </dependency>
     <dependency>
       <groupId>org.eclipse.equinox.p2</groupId>
       <artifactId>repository</artifactId>
-      <version>1.0.0.v20090601-1921</version>
+      <version>1.0.1.R35x_v20100105</version>
     </dependency>
     <dependency>
       <groupId>org.eclipse.equinox</groupId>
       <artifactId>preferences</artifactId>
-      <version>3.2.300.v20090520-1800</version>
+      <version>3.2.301.R35x_v20091117</version>
     </dependency>
     <dependency>
       <groupId>org.eclipse.equinox</groupId>
@@ -706,7 +679,7 @@
     <dependency>
       <groupId>org.eclipse</groupId>
       <artifactId>help</artifactId>
-      <version>3.4.0.v20090526</version>
+      <version>3.4.1.v20090805_35x</version>
     </dependency>
     <dependency>
       <groupId>org.eclipse.help</groupId>
@@ -716,22 +689,22 @@
     <dependency>
       <groupId>org.eclipse.help</groupId>
       <artifactId>base</artifactId>
-      <version>3.4.0.v200906111540</version>
+      <version>3.4.0.v201002111343</version>
     </dependency>
     <dependency>
       <groupId>org.eclipse.help</groupId>
       <artifactId>ui</artifactId>
-      <version>3.4.0.v20090528</version>
+      <version>3.4.1.v20090819_35x</version>
     </dependency>
     <dependency>
       <groupId>org.eclipse.help</groupId>
       <artifactId>webapp</artifactId>
-      <version>3.4.0.v20090429_1800</version>
+      <version>3.4.1.v20091009_35x</version>
     </dependency>
     <dependency>
       <groupId>org.eclipse.jdt</groupId>
       <artifactId>core</artifactId>
-      <version>3.5.0.v_963</version>
+      <version>3.5.2.v_981_R35x</version>
     </dependency>
     <dependency>
       <groupId>org.eclipse.jdt.core</groupId>
@@ -747,12 +720,12 @@
     <dependency>
       <groupId>org.eclipse.jdt.debug</groupId>
       <artifactId>ui</artifactId>
-      <version>3.4.0.v20090527-studio</version>
+      <version>3.4.1.v20090811_r351-studio</version>
     </dependency>
     <dependency>
       <groupId>org.eclipse.jdt</groupId>
       <artifactId>launching</artifactId>
-      <version>3.5.0.v20090527</version>
+      <version>3.5.1.v20100108_r352</version>
     </dependency>
     <dependency>
       <groupId>org.eclipse.jdt.launching</groupId>
@@ -762,22 +735,22 @@
     <dependency>
       <groupId>org.eclipse.jdt</groupId>
       <artifactId>ui</artifactId>
-      <version>3.5.0.v20090604-studio</version>
+      <version>3.5.2.r352_v20100106-0800-studio</version>
     </dependency>
     <dependency>
       <groupId>org.eclipse</groupId>
       <artifactId>jface</artifactId>
-      <version>3.5.0.I20090525-2000</version>
+      <version>3.5.2.M20100120-0800</version>
     </dependency>
     <dependency>
       <groupId>org.eclipse.jface</groupId>
       <artifactId>databinding</artifactId>
-      <version>1.3.0.I20090525-2000</version>
+      <version>1.3.1.M20090826-0800</version>
     </dependency>
     <dependency>
       <groupId>org.eclipse.jface</groupId>
       <artifactId>text</artifactId>
-      <version>3.5.0.v20090602</version>
+      <version>3.5.2.r352_v20091118-0800</version>
     </dependency>
     <dependency>
       <groupId>org.eclipse.ltk.core</groupId>
@@ -787,12 +760,12 @@
     <dependency>
       <groupId>org.eclipse.ltk.ui</groupId>
       <artifactId>refactoring</artifactId>
-      <version>3.4.100.v20090604</version>
+      <version>3.4.101.r352_v20100209</version>
     </dependency>
     <dependency>
       <groupId>org.eclipse</groupId>
       <artifactId>osgi</artifactId>
-      <version>3.5.0.v20090520</version>
+      <version>3.5.2.R35x_v20100126</version>
     </dependency>
     <dependency>
       <groupId>org.eclipse.osgi</groupId>
@@ -807,48 +780,42 @@
     <dependency>
       <groupId>org.eclipse</groupId>
       <artifactId>rcp</artifactId>
-      <version>3.5.0.v200906111540</version>
-    </dependency>
-    <dependency>
-      <groupId>org.eclipse</groupId>
-      <artifactId>sdk</artifactId>
-      <version>3.5.0.v200906111540</version>
-      <type>zip</type>
+      <version>3.5.0.v201002111343</version>
     </dependency>
     <dependency>
       <groupId>org.eclipse</groupId>
       <artifactId>search</artifactId>
-      <version>3.5.0.v20090526-2000-studio</version>
+      <version>3.5.1.r351_v20090708-0800-studio</version>
     </dependency>
     <dependency>
       <groupId>org.eclipse</groupId>
       <artifactId>swt</artifactId>
-      <version>3.5.0.v3550b</version>
+      <version>3.5.2.v3557f</version>
     </dependency>
     <dependency>
       <groupId>org.eclipse.swt.carbon</groupId>
       <artifactId>macosx</artifactId>
-      <version>3.5.0.v3550b</version>
+      <version>3.5.2.v3557f</version>
     </dependency>
     <dependency>
       <groupId>org.eclipse.swt.gtk.linux</groupId>
       <artifactId>x86</artifactId>
-      <version>3.5.0.v3550b</version>
+      <version>3.5.2.v3557f</version>
     </dependency>
     <dependency>
       <groupId>org.eclipse.swt.gtk.linux</groupId>
       <artifactId>x86_64</artifactId>
-      <version>3.5.0.v3550b</version>
+      <version>3.5.2.v3557f</version>
     </dependency>
     <dependency>
       <groupId>org.eclipse.swt.win32.win32</groupId>
       <artifactId>x86</artifactId>
-      <version>3.5.0.v3550b</version>
+      <version>3.5.2.v3557f</version>
     </dependency>
     <dependency>
       <groupId>org.eclipse.team</groupId>
       <artifactId>core</artifactId>
-      <version>3.5.0.I20090527-0620</version>
+      <version>3.5.1.r35x_20100113-0800</version>
     </dependency>
     <dependency>
       <groupId>org.eclipse.team</groupId>
@@ -863,7 +830,7 @@
     <dependency>
       <groupId>org.eclipse</groupId>
       <artifactId>ui</artifactId>
-      <version>3.5.0.I20090604-2000</version>
+      <version>3.5.2.M20100120-0800</version>
     </dependency>
     <dependency>
       <groupId>org.eclipse.ui</groupId>
@@ -883,42 +850,42 @@
     <dependency>
       <groupId>org.eclipse.ui</groupId>
       <artifactId>forms</artifactId>
-      <version>3.4.0.v20090526</version>
+      <version>3.4.1.v20090714_35x</version>
     </dependency>
     <dependency>
       <groupId>org.eclipse.ui</groupId>
       <artifactId>ide</artifactId>
-      <version>3.5.0.I20090525-2000-studio</version>
+      <version>3.5.2.M20100113-0800-studio</version>
     </dependency>
     <dependency>
       <groupId>org.eclipse.ui.ide</groupId>
       <artifactId>application</artifactId>
-      <version>1.0.100.I20090525-2000-studio</version>
+      <version>1.0.101.M20090826-0800-studio</version>
     </dependency>
     <dependency>
       <groupId>org.eclipse.ui</groupId>
       <artifactId>intro</artifactId>
-      <version>3.3.0.v20090526</version>
+      <version>3.3.2.v20100111_35x</version>
     </dependency>
     <dependency>
       <groupId>org.eclipse.ui</groupId>
       <artifactId>navigator</artifactId>
-      <version>3.4.0.I20090525-2000</version>
+      <version>3.4.2.M20100120-0800</version>
     </dependency>
     <dependency>
       <groupId>org.eclipse.ui.navigator</groupId>
       <artifactId>resources</artifactId>
-      <version>3.4.0.I20090525-2000-studio</version>
+      <version>3.4.1.M20090826-0800-studio</version>
     </dependency>
     <dependency>
       <groupId>org.eclipse.ui</groupId>
       <artifactId>net</artifactId>
-      <version>1.2.0.I20090430-0408</version>
+      <version>1.2.1.r35x_20090812-1200</version>
     </dependency>
     <dependency>
       <groupId>org.eclipse.ui</groupId>
       <artifactId>views</artifactId>
-      <version>3.4.0.I20090525-2000-studio</version>
+      <version>3.4.1.M20090826-0800-studio</version>
     </dependency>
     <dependency>
       <groupId>org.eclipse.ui.views.properties</groupId>
@@ -933,7 +900,7 @@
     <dependency>
       <groupId>org.eclipse.ui</groupId>
       <artifactId>workbench</artifactId>
-      <version>3.5.0.I20090603-2000</version>
+      <version>3.5.2.M20100113-0800</version>
     </dependency>
     <dependency>
       <groupId>org.eclipse.ui.workbench</groupId>
@@ -944,7 +911,7 @@
     <dependency>
       <groupId>org.eclipse.ui.workbench</groupId>
       <artifactId>texteditor</artifactId>
-      <version>3.5.0.v20090603</version>
+      <version>3.5.1.r352_v20100105</version>
     </dependency>
     <dependency>
       <groupId>org.eclipse.update</groupId>
@@ -964,7 +931,7 @@
     <dependency>
       <groupId>org.eclipse.update</groupId>
       <artifactId>ui</artifactId>
-      <version>3.2.200.v20090213</version>
+      <version>3.2.201.R35x_v20090813</version>
     </dependency>
     <dependency>
       <groupId>org.mortbay.jetty</groupId>
@@ -994,13 +961,18 @@
     <!-- Testing framework dependencies -->
     <dependency>
       <groupId>org.eclipse.swtbot.eclipse</groupId>
+      <artifactId>core</artifactId>
+      <version>2.0.0.433-dev-e35</version>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.swtbot.eclipse</groupId>
       <artifactId>finder</artifactId>
-      <version>2.0.0.329-dev</version>
+      <version>2.0.0.433-dev-e35</version>
     </dependency>
     <dependency>
       <groupId>org.eclipse.swtbot.swt</groupId>
       <artifactId>finder</artifactId>
-      <version>2.0.0.329-dev</version>
+      <version>2.0.0.433-dev-e35</version>
     </dependency>
     <dependency>
       <groupId>org.hamcrest</groupId>
@@ -1309,7 +1281,9 @@
         </configuration>
       </plugin>
       <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-pmd-plugin</artifactId>
+        <version>2.5</version>
         <configuration>
           <linkXref>true</linkXref>
           <sourceEncoding>utf-8</sourceEncoding>
@@ -1317,6 +1291,11 @@
           <targetJdk>1.5</targetJdk>
           <aggregate>true</aggregate>
         </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-project-info-reports-plugin</artifactId>
+        <version>2.2</version>
       </plugin>
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
@@ -1334,11 +1313,20 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
         <configuration>
-          <aggregate>true</aggregate>
           <linksource>true</linksource>
           <minmemory>128m</minmemory>
           <maxmemory>1g</maxmemory>
         </configuration>
+        <reportSets>
+          <reportSet>
+            <reports>
+              <report>aggregate</report>
+              <report>test-aggregate</report>
+              <report>fix</report>
+              <report>test-fix</report>
+            </reports>
+          </reportSet>
+        </reportSets>
       </plugin>
       <plugin>
         <groupId>org.codehaus.mojo</groupId>

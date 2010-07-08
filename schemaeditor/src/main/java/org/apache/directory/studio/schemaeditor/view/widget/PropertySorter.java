@@ -46,7 +46,6 @@ import org.apache.directory.studio.schemaeditor.model.difference.UsageDifference
  * This class is used to compare, group and sort Differences by 'Property'
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class PropertySorter implements Comparator<PropertyDifference>
 {

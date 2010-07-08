@@ -32,7 +32,6 @@ import org.eclipse.swt.widgets.Shell;
  * (Certificate). 
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class CertificateValueEditor extends AbstractDialogBinaryValueEditor
 {

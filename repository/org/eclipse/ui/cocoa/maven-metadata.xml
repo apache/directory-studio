@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata>
+  <groupId>org.eclipse.ui</groupId>
+  <artifactId>cocoa</artifactId>
+  <version>1.0.0.I20090525-2000</version>
+  <versioning>
+    <versions>
+      <version>1.0.0.I20090525-2000</version>
+    </versions>
+    <lastUpdated>20100318160708</lastUpdated>
+  </versioning>
+</metadata>

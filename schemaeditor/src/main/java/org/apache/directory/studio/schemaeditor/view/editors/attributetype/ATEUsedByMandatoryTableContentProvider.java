@@ -37,7 +37,6 @@ import org.eclipse.jface.viewers.Viewer;
  * This class is the Content Provider for the Mandatory Table of the Attribute Type Editor (Used By Page).
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class ATEUsedByMandatoryTableContentProvider implements IStructuredContentProvider
 {

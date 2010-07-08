@@ -22,6 +22,7 @@ package org.apache.directory.studio.test.integration.ui.bots;
 
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.finders.UIThreadRunnable;
 import org.eclipse.swtbot.swt.finder.results.VoidResult;
 import org.eclipse.ui.IViewReference;
@@ -55,6 +56,12 @@ public class StudioBot
     public ModificationLogsViewBot getModificationLogsViewBot()
     {
         return new ModificationLogsViewBot();
+    }
+    
+
+    public ApacheDSServersViewBot getApacheDSServersViewBot()
+    {
+        return new ApacheDSServersViewBot();
     }
 
 
@@ -96,10 +103,22 @@ public class StudioBot
                     workbench.showPerspective(
                         "org.apache.directory.studio.ldapbrowser.ui.perspective.BrowserPerspective", window );
 
-                    // reset LDAP perspective
-                    page.closeAllEditors( false );
-                    page.resetPerspective();
+                    // close "LDAP Browser view" as it sometimes does not respond, will be re-opened by the following reset
+                    for ( IViewReference viewref : page.getViewReferences() )
+                    {
+                        if ( "org.apache.directory.studio.ldapbrowser.ui.views.browser.BrowserView".equals( viewref
+                            .getId() ) )
+                        {
+                            page.hideView( viewref );
+                        }
+                    }
 
+                    // reset LDAP perspective
+                    if ( page.getActivePart() != null )
+                    {
+                        page.closeAllEditors( false );
+                        page.resetPerspective();
+                    }
                 }
                 catch ( Exception e )
                 {
@@ -109,6 +128,19 @@ public class StudioBot
             }
         } );
 
+    }
+
+
+    public PreferencesBot openPreferences()
+    {
+        new SWTBot().menu( "Window" ).menu( "Preferences" ).click();
+        return new PreferencesBot();
+    }
+
+
+    public SearchResultEditorBot getSearchResultEditorBot( String title )
+    {
+        return new SearchResultEditorBot( title );
     }
 
 }

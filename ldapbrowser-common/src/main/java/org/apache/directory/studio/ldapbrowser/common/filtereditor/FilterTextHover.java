@@ -42,7 +42,6 @@ import org.eclipse.jface.text.Region;
  * The FilterTextHover is used to display error messages in a tooltip.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class FilterTextHover implements ITextHover
 {

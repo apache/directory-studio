@@ -49,7 +49,6 @@ import org.eclipse.swt.graphics.Image;
  * This class implements the LabelProvider for the DifferencesWidget.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class DifferencesWidgetPropertiesLabelProvider extends LabelProvider
 {

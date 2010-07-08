@@ -38,7 +38,6 @@ import org.eclipse.swt.graphics.Image;
  * This class implements the LabelProvider for the SchemaView.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class DifferencesWidgetSchemaLabelProvider extends LabelProvider
 {

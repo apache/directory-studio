@@ -31,7 +31,6 @@ import org.apache.directory.studio.connection.core.Connection;
  * underlying connection.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class StudioSearchResult extends SearchResult
 {

@@ -1,377 +1,97 @@
-<!--
-	Licensed to the Apache Software Foundation (ASF) under one
-	or more contributor license agreements.  See the NOTICE file
-	distributed with this work for additional information
-	regarding copyright ownership.  The ASF licenses this file
-	to you under the Apache License, Version 2.0 (the
-	"License"); you may not use this file except in compliance
-	with the License.  You may obtain a copy of the License at
-	
-	http://www.apache.org/licenses/LICENSE-2.0
-	
-	Unless required by applicable law or agreed to in writing,
-	software distributed under the License is distributed on an
-	"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-	KIND, either express or implied.  See the License for the
-	specific language governing permissions and limitations
-	under the License.
--->
+
+	<!--
+		Licensed to the Apache Software Foundation (ASF) under one or more
+		contributor license agreements. See the NOTICE file distributed with
+		this work for additional information regarding copyright ownership.
+		The ASF licenses this file to you under the Apache License, Version
+		2.0 (the "License"); you may not use this file except in compliance
+		with the License. You may obtain a copy of the License at
+
+		http://www.apache.org/licenses/LICENSE-2.0 Unless required by
+		applicable law or agreed to in writing, software distributed under the
+		License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
+		CONDITIONS OF ANY KIND, either express or implied. See the License for
+		the specific language governing permissions and limitations under the
+		License.
+	-->
 <chapter id="release_notes">
 	<title>Release notes</title>
-    <simplesect>
-        <title>Apache Directory Studio 1.5.0 - (2009, October XXxx)</title>
-        <para>
-            <emphasis>Bug</emphasis>
-        </para>
-        <para>
-            <itemizedlist spacing="normal" mark="bullet">
-                <listitem>
-                    <para>[DIRSTUDIO-575] - Bookmarks not working</para>
-                </listitem>
-                <listitem>
-                    <para>[DIRSTUDIO-570] - Integer Value Editor does not accept negative numbers</para>
-                </listitem>
-                <listitem>
-                    <para>[DIRSTUDIO-553] - Add descriptions for server specific OIDs of IBM Tivoli Directory Server 6.1 and 6.2</para>
-                </listitem>
-                <listitem>
-                    <para>[DIRSTUDIO-552] - NullPointerException if Root DSE of IBM Tivoli Directory Server displayed in Entry Editor</para>
-                </listitem>
-                <listitem>
-                    <para>[DIRSTUDIO-550] - Root DSE properties: Directory types IBM Tivoli Directory Server 6.1 and 6.2 not detected correctly</para>
-                </listitem>
-                <listitem>
-                    <para>[DIRSTUDIO-532] - Refreshing parent of referral may give ConcurrentModificationException</para>
-                </listitem>
-                <listitem>
-                    <para>[DIRSTUDIO-531] - Unpretty 2-3 pixels height margin at the top of the Search Results editor</para>
-                </listitem>
-                <listitem>
-                    <para>[DIRSTUDIO-530] - Unpretty 2-3 pixels height margin at the top of the Entry editor</para>
-                </listitem>
-                <listitem>
-                    <para>[DIRSTUDIO-529] - Unpretty 2-3 pixels height margin at the top of the Browser view</para>
-                </listitem>
-                <listitem>
-                    <para>[DIRSTUDIO-527] - Unable to display Active Directory GUIDs</para>
-                </listitem>
-                <listitem>
-                    <para>[DIRSTUDIO-524] - Operational attributes are not show, although enabled under preferences</para>
-                </listitem>
-                <listitem>
-                    <para>[DIRSTUDIO-512] - Deletion of entries very slow</para>
-                </listitem>
-                <listitem>
-                    <para>[DIRSTUDIO-507] - Attempt to rename the rdn results in message contain {0} and {1}</para>
-                </listitem>
-                <listitem>
-                    <para>[DIRSTUDIO-504] - Timestamp attribute with an invalid time in it is read only - editor ignores entry</para>
-                </listitem>
-                <listitem>
-                    <para>[DIRSTUDIO-503] - New Entry -> Available object classes list remains stale after new objectclasses added</para>
-                </listitem>
-                <listitem>
-                    <para>[DIRSTUDIO-502] - Copy/Paste the context entry from one connection to another doesn't work</para>
-                </listitem>
-                <listitem>
-                    <para>[DIRSTUDIO-495] - Cannot edit password field</para>
-                </listitem>
-                <listitem>
-                    <para>[DIRSTUDIO-493] - Aliased attributes show only one attribute name in the RDN selection list instead of the full aliases list</para>
-                </listitem>
-                <listitem>
-                    <para>[DIRSTUDIO-490] - Copy/Paste a search from one connection to another doesn't work</para>
-                </listitem>
-                <listitem>
-                    <para>[DIRSTUDIO-489] - LDIF Import very slow</para>
-                </listitem>
-                <listitem>
-                    <para>[DIRSTUDIO-488] - New context entry creation is not shown just after connection</para>
-                </listitem>
-                <listitem>
-                    <para>[DIRSTUDIO-486] - Include Version Specifier in LDIF export</para>
-                </listitem>
-                <listitem>
-                    <para>[DIRSTUDIO-484] - Rename dialog does not work with escaped RDNs</para>
-                </listitem>
-                <listitem>
-                    <para>[DIRSTUDIO-483] - DN Editor escapes all non-ascii characters</para>
-                </listitem>
-                <listitem>
-                    <para>[DIRSTUDIO-481] - Improve refreshing of attributes and children</para>
-                </listitem>
-                <listitem>
-                    <para>[DIRSTUDIO-437] - Alias are not exposed as such in the browser</para>
-                </listitem>
-                <listitem>
-                    <para>[DIRSTUDIO-418] - Slow LDIF/CSV export</para>
-                </listitem>
-                <listitem>
-                    <para>[DIRSTUDIO-409] - No error message in some special case</para>
-                </listitem>
-                <listitem>
-                    <para>[DIRSTUDIO-403] - Cannot add refs when the ExtensibleObject OC has been added to a referral</para>
-                </listitem>
-                <listitem>
-                    <para>[DIRSTUDIO-402] - The ManageDsaIT control should be activable for a single request, not at the connection level</para>
-                </listitem>
-                <listitem>
-                    <para>[DIRSTUDIO-334] - Built-in help doesn't show icons for "Icons" and "Toolbars" tables in "LDAP Browser View"</para>
-                </listitem>
-            </itemizedlist>
-        </para>
-        <para>
-            <emphasis>Improvement</emphasis>
-        </para>
-        <para>
-            <itemizedlist spacing="normal" mark="bullet">
-                <listitem>
-                    <para>[DIRSTUDIO-574] - Add 'Cancel' button to "Select copy strategy" (was Abort of copy/paste not possible)</para>
-                </listitem>
-                <listitem>
-                    <para>[DIRSTUDIO-558] - Load special entries (aliases, referrals, subentries) per request, add menu items to browser's context menu</para>
-                </listitem>
-                <listitem>
-                    <para>[DIRSTUDIO-555] - Human readable descriptions of OIDs in binary attributes preference page</para>
-                </listitem>
-                <listitem>
-                    <para>[DIRSTUDIO-554] - Add option to save tabular entry editor automatically or manually</para>
-                </listitem>
-                <listitem>
-                    <para>[DIRSTUDIO-535] - Use SWT.SEARCH and SWT.CANCEL style bits on search text field for a native search field on Mac OS X</para>
-                </listitem>
-                <listitem>
-                    <para>[DIRSTUDIO-534] - Re-order the preference pages for better understanding</para>
-                </listitem>
-                <listitem>
-                    <para>[DIRSTUDIO-533] - Only show referral handling dialog when opening or expanding referral entry</para>
-                </listitem>
-                <listitem>
-                    <para>[DIRSTUDIO-513] - Do delete before add when modifying attribute values</para>
-                </listitem>
-                <listitem>
-                    <para>[DIRSTUDIO-496] - Password editor improvements</para>
-                </listitem>
-                <listitem>
-                    <para>[DIRSTUDIO-487] - Empty namingcontexts causes javax.naming.InvalidNameException: Bad DN</para>
-                </listitem>
-                <listitem>
-                    <para>[DIRSTUDIO-371] - Entries with a ref attribute should be shown N times in the browser (N = number of ref values)</para>
-                </listitem>
-                <listitem>
-                    <para>[DIRSTUDIO-145] - Multiple tabs for entry editor</para>
-                </listitem>
-            </itemizedlist>
-        </para>
-        <para>
-            <emphasis>New Feature</emphasis>
-        </para>
-        <para>
-            <itemizedlist spacing="normal" mark="bullet">
-                <listitem>
-                    <para>[DIRSTUDIO-562] - Add 'Copy Display Value' action, default copy action should copy displayed value</para>
-                </listitem>
-                <listitem>
-                    <para>[DIRSTUDIO-556] - Add value editor for UUID</para>
-                </listitem>
-                <listitem>
-                    <para>[DIRSTUDIO-515] - Add extensibility to Entry Editor</para>
-                </listitem>
-                <listitem>
-                    <para>[DIRSTUDIO-494] - Add value editor for certificates (syntax 1.3.6.1.4.1.1466.115.121.1.8)</para>
-                </listitem>
-                <listitem>
-                    <para>[DIRSTUDIO-462] - Add Export to Open Document Format</para>
-                </listitem>
-                <listitem>
-                    <para>[DIRSTUDIO-434] - Add value editor for Active Directory objectGUID and objectSid attributes</para>
-                </listitem>
-            </itemizedlist>
-        </para>
-        <para>
-            <emphasis>Sub-task</emphasis>
-        </para>
-        <para>
-            <itemizedlist spacing="normal" mark="bullet">
-                <listitem>
-                    <para>[DIRSTUDIO-519] - Create a new LDIF Entry Editor</para>
-                </listitem>
-                <listitem>
-                    <para>[DIRSTUDIO-518] - Create a new multi-window Entry Editor</para>
-                </listitem>
-                <listitem>
-                    <para>[DIRSTUDIO-517] - Create a new single-window Entry Editor</para>
-                </listitem>
-                <listitem>
-                    <para>[DIRSTUDIO-516] - Create a new Entry Editor extension point</para>
-                </listitem>
-            </itemizedlist>
-        </para>
-        <para>
-            <emphasis>Task</emphasis>
-        </para>
-        <para>
-            <itemizedlist spacing="normal" mark="bullet">
-                <listitem>
-                    <para>[DIRSTUDIO-479] - Object classes of an entry should always be present</para>
-                </listitem>
-            </itemizedlist>
-        </para>
-        <para>
-            <emphasis>Wish</emphasis>
-        </para>
-        <para>
-            <itemizedlist spacing="normal" mark="bullet">
-                <listitem>
-                    <para>[DIRSTUDIO-167] - Show custom icons for various kinds of schema elements while browsing schema data</para>
-                </listitem>
-            </itemizedlist>
-        </para>
-    </simplesect>
-    
-    <simplesect>
-        <title>Apache Directory Studio 1.4.0 - (2009, April 7th)</title>
-        <para>
-            <emphasis>Bug</emphasis>
-        </para>
-        <para>
-            <itemizedlist spacing="normal" mark="bullet">
-                <listitem>
-                    <para>[DIRSTUDIO-472] - SWTException (Widget is disposed) when disabling DIT Quick Search</para>
-                </listitem>
-                <listitem>
-                    <para>[DIRSTUDIO-470] - Schema Browser view is not bring to front when using the 'Open Schema Browser' menu item while the view is already opened but not the frontmost view</para>
-                </listitem>
-                <listitem>
-                    <para>[DIRSTUDIO-469] - Added wrong AttributeTypes can't be deleted</para>
-                </listitem>
-                <listitem>
-                    <para>[DIRSTUDIO-465] - Context entry created from an LDIF import is not shown in the Browser view</para>
-                </listitem>
-                <listitem>
-                    <para>[DIRSTUDIO-463] - Browsing the directory produce too many search requests</para>
-                </listitem>
-                <listitem>
-                    <para>[DIRSTUDIO-460] - Pressing 'Enter' in New Entry wizard should edit the attribute</para>
-                </listitem>
-                <listitem>
-                    <para>[DIRSTUDIO-457] - Unknown schema causes attributes to be treated as operational</para>
-                </listitem>
-                <listitem>
-                    <para>[DIRSTUDIO-456] - Cannot create an entry with mandatory binary attribute</para>
-                </listitem>
-                <listitem>
-                    <para>[DIRSTUDIO-430] - NullPointer exception when fetching children of a node</para>
-                </listitem>
-                <listitem>
-                    <para>[DIRSTUDIO-427] - Operational attributes turned on by itself</para>
-                </listitem>
-                <listitem>
-                    <para>[DIRSTUDIO-423] - Outline view does not respect the settings of the Entry Editor on displaying or not the operational attributes</para>
-                </listitem>
-                <listitem>
-                    <para>[DIRSTUDIO-420] - Unable to locate in DIT (f3)</para>
-                </listitem>
-                <listitem>
-                    <para>[DIRSTUDIO-419] - Problems switching between connections</para>
-                </listitem>
-                <listitem>
-                    <para>[DIRSTUDIO-396] - Custom LDAP attributes not shown in entry editor</para>
-                </listitem>
-                <listitem>
-                    <para>[DIRSTUDIO-395] - Problems with special chars (german Umlauts)</para>
-                </listitem>
-                <listitem>
-                    <para>[DIRSTUDIO-373] - Can't delete a tagged attribute if the non tagged attribute belong to the DN</para>
-                </listitem>
-            </itemizedlist>
-        </para>
-        <para>
-            <emphasis>Improvement</emphasis>
-        </para>
-        <para>
-            <itemizedlist spacing="normal" mark="bullet">
-                <listitem>
-                    <para>[DIRSTUDIO-455] - Cannot copy/past an existing search</para>
-                </listitem>
-                <listitem>
-                    <para>[DIRSTUDIO-426] - Overwritten hashCode() method should not use super.hashCode()</para>
-                </listitem>
-                <listitem>
-                    <para>[DIRSTUDIO-412] - Add expand all and collapse all actions to the connections view</para>
-                </listitem>
-                <listitem>
-                    <para>[DIRSTUDIO-411] - Select a new created folder in the connection view</para>
-                </listitem>
-                <listitem>
-                    <para>[DIRSTUDIO-241] - The "New Value" action (in the Entry Editor) should be disabled if the AT is defined as single valued</para>
-                </listitem>
-                <listitem>
-                    <para>[DIRSTUDIO-234] - Greyed out menu items should have a tool tip explaining *why* they're greyed out</para>
-                </listitem>
-                <listitem>
-                    <para>[DIRSTUDIO-207] - Operationnal attributes cannot be shown entirely</para>
-                </listitem>
-                <listitem>
-                    <para>[DIRSTUDIO-150] - mprove error handling</para>
-                </listitem>
-                <listitem>
-                    <para>[DIRSTUDIO-115] - Unable to edit operational attribute values</para>
-                </listitem>
-            </itemizedlist>
-        </para>
-        <para>
-            <emphasis>New Feature</emphasis>
-        </para>
-        <para>
-            <itemizedlist spacing="normal" mark="bullet">
-                <listitem>
-                    <para>[DIRSTUDIO-449] - Add a new GeneralizedTime Value Editor</para>
-                </listitem>
-                <listitem>
-                    <para>[DIRSTUDIO-397] - Request for multi-language GUI</para>
-                </listitem>
-                <listitem>
-                    <para>[DIRSTUDIO-335] - DIT Quick Search</para>
-                </listitem>
-            </itemizedlist>
-        </para>
-    </simplesect>
-    
 	<simplesect>
-		<title>Apache Directory Studio 1.3.0 - (2008, November 24th)</title>
+		<title>Apache Directory Studio 1.5.3 - (2010, March 30th)</title>
 		<para>
 			<emphasis>Bug</emphasis>
 		</para>
 		<para>
 			<itemizedlist spacing="normal" mark="bullet">
 				<listitem>
-                    <para>[DIRSTUDIO-389] - Back/Forward Navigation isn't working</para>
-                </listitem>
+					<para>[DIRSTUDIO-642] - ADS does not remember the certificate if
+						two certificates are used for the same server</para>
+				</listitem>
 				<listitem>
-                    <para>[DIRSTUDIO-380] - Attribute and Entry property pages makes the dialog very tall</para>
-                </listitem>
+					<para>[DIRSTUDIO-639] - Exception when navigation history contains
+						bookmarks of an deleted connection</para>
+				</listitem>
 				<listitem>
-                    <para>[DIRSTUDIO-379] - Class NewEntryWizard not found, application doesn't starts</para>
-                </listitem>
+					<para>[DIRSTUDIO-637] - copy/paste of attributes no longer works
+					</para>
+				</listitem>
 				<listitem>
-                    <para>[DIRSTUDIO-367] - Tree delete control should not be used automatically</para>
-                </listitem>
+					<para>[DIRSTUDIO-632] - Endless event loop</para>
+				</listitem>
 				<listitem>
-                    <para>[DIRSTUDIO-355] - DSML Import and Export fail with "Internal Error: null"</para>
-                </listitem>
+					<para>[DIRSTUDIO-629] - Entry editor tab is activated when
+						executing a search</para>
+				</listitem>
 				<listitem>
-                    <para>[DIRSTUDIO-354] - Search window, paste problem</para>
-                </listitem>
+					<para>[DIRSTUDIO-624] - NPE in the
+						SearchLogsViewUniversalListener.java under rare circumstances when
+						selecting a connection</para>
+				</listitem>
 				<listitem>
-                    <para>[DIRSTUDIO-293] - Values of attributes of the syntax 'Generalized Time' must have the g-time-zone 'Z' and minutes and seconds set to be interpreted and shown as a date instead of the raw value</para>
-                </listitem>
+					<para>[DIRSTUDIO-623] - NPE in the
+						ModificationLogsViewUniversalListener under rare circumstances
+						when selecting a connection</para>
+				</listitem>
 				<listitem>
-                    <para>[DIRSTUDIO-291] - Adding of an objectclass requiring attributes not present to an entry in the ldap browser, modify operation fails</para>
-                </listitem>
+					<para>[DIRSTUDIO-617] - Tabular and LDIF Entry Single-Tab Editors
+						should warn the user when modifications are pending (auto-save
+						disabled) and their input is changed</para>
+				</listitem>
 				<listitem>
-                    <para>[DIRSTUDIO-260] - Unable to do a DSML Export from eDirectory</para>
-                </listitem>
+					<para>[DIRSTUDIO-616] - Entry Editor Manager does not ensure that
+						the entry's attributes are initialized (loaded) before testing and
+						opening editors</para>
+				</listitem>
+				<listitem>
+					<para>[DIRSTUDIO-615] - Various typos in the french translation
+					</para>
+				</listitem>
+				<listitem>
+					<para>[DIRSTUDIO-613] - Certificate with empty common name (cn)
+						appears almost hidden in the preference page table view</para>
+				</listitem>
+				<listitem>
+					<para>[DIRSTUDIO-611] - Unable to add a third party Entry Editor
+					</para>
+				</listitem>
+				<listitem>
+					<para>[DIRSTUDIO-610] - Unable to export to "My Documents"</para>
+				</listitem>
+				<listitem>
+					<para>[DIRSTUDIO-609] - Studio "hangs" when performing large search that is to be displayed</para>
+				</listitem>
+				<listitem>
+					<para>[DIRSTUDIO-608] - Non-translated string in the French version
+						of the "Export Connections" wizard</para>
+				</listitem>
+				<listitem>
+					<para>[DIRSTUDIO-585] - Do not modify the current thread's
+						ClassLoader; or reset it afterwards</para>
+				</listitem>
+				<listitem>
+					<para>[DIRSTUDIO-424] - Canceling a search gives an error sometimes
+					</para>
+				</listitem>
 			</itemizedlist>
 		</para>
 		<para>
@@ -380,44 +100,297 @@
 		<para>
 			<itemizedlist spacing="normal" mark="bullet">
 				<listitem>
-				    <para>[DIRSTUDIO-407] - In the NewEntryWizard, the first selected object class on the left side should be added if the Enter key is hit in the text field</para>
-                </listitem>
+					<para>[DIRSTUDIO-638] - Improve the way we ask for operational
+						attributes</para>
+				</listitem>
 				<listitem>
-				    <para>[DIRSTUDIO-383] - Make "Fetch subentries" setting configurable per connection, move from browser preferences to connection properties</para>
-                </listitem>
+					<para>[DIRSTUDIO-634] - Add search context menu entry / simplify
+						search</para>
+				</listitem>
 				<listitem>
-				    <para>[DIRSTUDIO-378] - An attribute name containing an underscore ("_") is split in two when used in "Returning Attributes" field of the "Search" dialog</para>
-                </listitem>
+					<para>[DIRSTUDIO-633] - Delete all searches context menu</para>
+				</listitem>
 				<listitem>
-				    <para>[DIRSTUDIO-377] - Add value editor for OIDs</para>
-                </listitem>
+					<para>[DIRSTUDIO-625] - Add Connection Context in the LDAP Browser
+						Window</para>
+				</listitem>
 				<listitem>
-				    <para>[DIRSTUDIO-363] - Browser View doesn't accept menu additions thru viewerContribution extension point</para>
-                </listitem>
+					<para>[DIRSTUDIO-619] - Outline view for the LDIF Entry Editor
+						should display by default the nodes underneath the entry</para>
+				</listitem>
 				<listitem>
-				    <para>[DIRSTUDIO-327] - Add support for Paged Results Control</para>
-                </listitem>
+					<para>[DIRSTUDIO-618] - The icon of the entry in the 'Outline' view
+						for the LDIF Entry Editor should be the same as the one in the
+						'LDAP Browser' view</para>
+				</listitem>
 				<listitem>
-				    <para>[DIRSTUDIO-311] - Provide Goto DN dialog</para>
-                </listitem>
+					<para>[DIRSTUDIO-612] - The 'Properties' item in the context menu
+						of the default Entry Editor should be enabled and linked to the
+						entry properties when no particular attribute is selected in the
+						table</para>
+				</listitem>
+			</itemizedlist>
+		</para>
+	</simplesect>
+
+	<simplesect>
+		<title>Apache Directory Studio 1.5.2 - (2009, December 11th)</title>
+		<para>
+			<emphasis>Bug</emphasis>
+		</para>
+		<para>
+			<itemizedlist spacing="normal" mark="bullet">
 				<listitem>
-				    <para>[DIRSTUDIO-291] - Using the 'new entry'/'use existing entry as template' feature from the context menu of an entry, the parent dn is also copied from the template entry </para>
-                </listitem>
+					<para>[DIRSTUDIO-603] - Error browsing/entering rfc2307 compliant
+						host entry</para>
+				</listitem>
 				<listitem>
-				    <para>[DIRSTUDIO-244] - Add selection for copy strategy if an entry to copy already exists</para>
-                </listitem>
+					<para>[DIRSTUDIO-601] - The 'Perform Search/Search Again' button in
+						the Search Result Editor does not work correctly</para>
+				</listitem>
+			</itemizedlist>
+		</para>
+	</simplesect>
+
+	<simplesect>
+		<title>Apache Directory Studio 1.5.1 - (2009, November 30th)</title>
+		<para>
+			<emphasis>Bug</emphasis>
+		</para>
+		<para>
+			<itemizedlist spacing="normal" mark="bullet">
 				<listitem>
-				    <para>[DIRSTUDIO-228] - Mask userPassword in the log view</para>
-                </listitem>
+					<para>[DIRSTUDIO-597] - Modification sent to the server while
+						browsing through the DIT and refreshing entries</para>
+				</listitem>
 				<listitem>
-				    <para>[DIRSTUDIO-147] - Allow LDIF imports to overwrite existing entries</para>
-                </listitem>
+					<para>[DIRSTUDIO-596] - Various typos in the french translation
+					</para>
+				</listitem>
 				<listitem>
-				    <para>[DIRSTUDIO-116] - Expand all folds by default</para>
-                </listitem>
+					<para>[DIRSTUDIO-595] - The icon of the entry in the 'Outline' view
+						should be the same as the one in the 'LDAP Browser' view</para>
+				</listitem>
 				<listitem>
-				    <para>[DIRSTUDIO-114] - Group container entries first in browser view</para>
-                </listitem>
+					<para>[DIRSTUDIO-594] - The 'Show new password details' checkbox
+						does not display the 'Enter new password' text field as clear text
+						when checked in the Password Editor</para>
+				</listitem>
+				<listitem>
+					<para>[DIRSTUDIO-593] - Missing string and typo in the french
+						translation of the Password Editor</para>
+				</listitem>
+				<listitem>
+					<para>[DIRSTUDIO-592] - LDAP Browser view is refreshed twice after
+						the initialization of the children of an entry</para>
+				</listitem>
+				<listitem>
+					<para>[DIRSTUDIO-591] - Error reading objects with # in DN</para>
+				</listitem>
+				<listitem>
+					<para>[DIRSTUDIO-590] - The 'Quick Search' string has not been
+						externalized in the LDAP Browser view</para>
+				</listitem>
+				<listitem>
+					<para>[DIRSTUDIO-589] - InvalidNameException: unexpected token for
+						user ids starting with hash sign</para>
+				</listitem>
+				<listitem>
+					<para>[DIRSTUDIO-587] - UI flickers on quick search</para>
+				</listitem>
+				<listitem>
+					<para>[DIRSTUDIO-580] - Setting "Validate certificates for secure
+						LDAP connections" is not saved</para>
+				</listitem>
+				<listitem>
+					<para>[DIRSTUDIO-576] - Context menu not shown after a right-click
+						on a non-cached entry</para>
+				</listitem>
+			</itemizedlist>
+		</para>
+	</simplesect>
+
+	<simplesect>
+		<title>Apache Directory Studio 1.5.0 - (2009, November 2nd)</title>
+		<para>
+			<emphasis>Bug</emphasis>
+		</para>
+		<para>
+			<itemizedlist spacing="normal" mark="bullet">
+				<listitem>
+					<para>[DIRSTUDIO-575] - Bookmarks not working</para>
+				</listitem>
+				<listitem>
+					<para>[DIRSTUDIO-570] - Integer Value Editor does not accept
+						negative numbers</para>
+				</listitem>
+				<listitem>
+					<para>[DIRSTUDIO-553] - Add descriptions for server specific OIDs
+						of IBM Tivoli Directory Server 6.1 and 6.2</para>
+				</listitem>
+				<listitem>
+					<para>[DIRSTUDIO-552] - NullPointerException if Root DSE of IBM
+						Tivoli Directory Server displayed in Entry Editor</para>
+				</listitem>
+				<listitem>
+					<para>[DIRSTUDIO-550] - Root DSE properties: Directory types IBM
+						Tivoli Directory Server 6.1 and 6.2 not detected correctly</para>
+				</listitem>
+				<listitem>
+					<para>[DIRSTUDIO-532] - Refreshing parent of referral may give
+						ConcurrentModificationException</para>
+				</listitem>
+				<listitem>
+					<para>[DIRSTUDIO-531] - Unpretty 2-3 pixels height margin at the
+						top of the Search Results editor</para>
+				</listitem>
+				<listitem>
+					<para>[DIRSTUDIO-530] - Unpretty 2-3 pixels height margin at the
+						top of the Entry editor</para>
+				</listitem>
+				<listitem>
+					<para>[DIRSTUDIO-529] - Unpretty 2-3 pixels height margin at the
+						top of the Browser view</para>
+				</listitem>
+				<listitem>
+					<para>[DIRSTUDIO-527] - Unable to display Active Directory GUIDs
+					</para>
+				</listitem>
+				<listitem>
+					<para>[DIRSTUDIO-524] - Operational attributes are not show,
+						although enabled under preferences</para>
+				</listitem>
+				<listitem>
+					<para>[DIRSTUDIO-512] - Deletion of entries very slow</para>
+				</listitem>
+				<listitem>
+					<para>[DIRSTUDIO-507] - Attempt to rename the rdn results in
+						message contain {0} and {1}</para>
+				</listitem>
+				<listitem>
+					<para>[DIRSTUDIO-504] - Timestamp attribute with an invalid time in
+						it is read only - editor ignores entry</para>
+				</listitem>
+				<listitem>
+					<para>[DIRSTUDIO-503] - New Entry -> Available object classes list
+						remains stale after new objectclasses added</para>
+				</listitem>
+				<listitem>
+					<para>[DIRSTUDIO-502] - Copy/Paste the context entry from one
+						connection to another doesn't work</para>
+				</listitem>
+				<listitem>
+					<para>[DIRSTUDIO-495] - Cannot edit password field</para>
+				</listitem>
+				<listitem>
+					<para>[DIRSTUDIO-493] - Aliased attributes show only one attribute
+						name in the RDN selection list instead of the full aliases list
+					</para>
+				</listitem>
+				<listitem>
+					<para>[DIRSTUDIO-490] - Copy/Paste a search from one connection to
+						another doesn't work</para>
+				</listitem>
+				<listitem>
+					<para>[DIRSTUDIO-489] - LDIF Import very slow</para>
+				</listitem>
+				<listitem>
+					<para>[DIRSTUDIO-488] - New context entry creation is not shown
+						just after connection</para>
+				</listitem>
+				<listitem>
+					<para>[DIRSTUDIO-486] - Include Version Specifier in LDIF export
+					</para>
+				</listitem>
+				<listitem>
+					<para>[DIRSTUDIO-484] - Rename dialog does not work with escaped
+						RDNs</para>
+				</listitem>
+				<listitem>
+					<para>[DIRSTUDIO-483] - DN Editor escapes all non-ascii characters
+					</para>
+				</listitem>
+				<listitem>
+					<para>[DIRSTUDIO-481] - Improve refreshing of attributes and
+						children</para>
+				</listitem>
+				<listitem>
+					<para>[DIRSTUDIO-437] - Alias are not exposed as such in the
+						browser</para>
+				</listitem>
+				<listitem>
+					<para>[DIRSTUDIO-418] - Slow LDIF/CSV export</para>
+				</listitem>
+				<listitem>
+					<para>[DIRSTUDIO-409] - No error message in some special case
+					</para>
+				</listitem>
+				<listitem>
+					<para>[DIRSTUDIO-403] - Cannot add refs when the ExtensibleObject
+						OC has been added to a referral</para>
+				</listitem>
+				<listitem>
+					<para>[DIRSTUDIO-402] - The ManageDsaIT control should be activable
+						for a single request, not at the connection level</para>
+				</listitem>
+				<listitem>
+					<para>[DIRSTUDIO-334] - Built-in help doesn't show icons for
+						"Icons" and "Toolbars" tables in "LDAP Browser View"</para>
+				</listitem>
+			</itemizedlist>
+		</para>
+		<para>
+			<emphasis>Improvement</emphasis>
+		</para>
+		<para>
+			<itemizedlist spacing="normal" mark="bullet">
+				<listitem>
+					<para>[DIRSTUDIO-574] - Add 'Cancel' button to "Select copy
+						strategy" (was Abort of copy/paste not possible)</para>
+				</listitem>
+				<listitem>
+					<para>[DIRSTUDIO-558] - Load special entries (aliases, referrals,
+						subentries) per request, add menu items to browser's context menu
+					</para>
+				</listitem>
+				<listitem>
+					<para>[DIRSTUDIO-555] - Human readable descriptions of OIDs in
+						binary attributes preference page</para>
+				</listitem>
+				<listitem>
+					<para>[DIRSTUDIO-554] - Add option to save tabular entry editor
+						automatically or manually</para>
+				</listitem>
+				<listitem>
+					<para>[DIRSTUDIO-535] - Use SWT.SEARCH and SWT.CANCEL style bits on
+						search text field for a native search field on Mac OS X</para>
+				</listitem>
+				<listitem>
+					<para>[DIRSTUDIO-534] - Re-order the preference pages for better
+						understanding</para>
+				</listitem>
+				<listitem>
+					<para>[DIRSTUDIO-533] - Only show referral handling dialog when
+						opening or expanding referral entry</para>
+				</listitem>
+				<listitem>
+					<para>[DIRSTUDIO-513] - Do delete before add when modifying
+						attribute values</para>
+				</listitem>
+				<listitem>
+					<para>[DIRSTUDIO-496] - Password editor improvements</para>
+				</listitem>
+				<listitem>
+					<para>[DIRSTUDIO-487] - Empty namingcontexts causes
+						javax.naming.InvalidNameException: Bad DN</para>
+				</listitem>
+				<listitem>
+					<para>[DIRSTUDIO-371] - Entries with a ref attribute should be
+						shown N times in the browser (N = number of ref values)</para>
+				</listitem>
+				<listitem>
+					<para>[DIRSTUDIO-145] - Multiple tabs for entry editor</para>
+				</listitem>
 			</itemizedlist>
 		</para>
 		<para>
@@ -426,22 +399,47 @@
 		<para>
 			<itemizedlist spacing="normal" mark="bullet">
 				<listitem>
-					<para>[DIRSTUDIO-385] - Add dialog to create a new context entry</para>
+					<para>[DIRSTUDIO-562] - Add 'Copy Display Value' action, default
+						copy action should copy displayed value</para>
 				</listitem>
 				<listitem>
-					<para>[DIRSTUDIO-356] - Add a way to get the connection config as an URL</para>
+					<para>[DIRSTUDIO-556] - Add value editor for UUID</para>
 				</listitem>
 				<listitem>
-					<para>[DIRSTUDIO-297] - Add a 'save as' for logs</para>
+					<para>[DIRSTUDIO-515] - Add extensibility to Entry Editor</para>
 				</listitem>
 				<listitem>
-					<para>[DIRSTUDIO-153] - Allow offline modifications of entries</para>
+					<para>[DIRSTUDIO-494] - Add value editor for certificates (syntax
+						1.3.6.1.4.1.1466.115.121.1.8)</para>
 				</listitem>
 				<listitem>
-					<para>[DIRSTUDIO-107] - Enable Select/Copy in Property page of RootDSE in order to copy and paste detected OIDs</para>
+					<para>[DIRSTUDIO-462] - Add Export to Open Document Format</para>
 				</listitem>
 				<listitem>
-					<para>[DIRSTUDIO-85] - Add support for search dialog to include * and + for returnable attributes</para>
+					<para>[DIRSTUDIO-434] - Add value editor for Active Directory
+						objectGUID and objectSid attributes</para>
+				</listitem>
+			</itemizedlist>
+		</para>
+		<para>
+			<emphasis>Sub-task</emphasis>
+		</para>
+		<para>
+			<itemizedlist spacing="normal" mark="bullet">
+				<listitem>
+					<para>[DIRSTUDIO-519] - Create a new LDIF Entry Editor</para>
+				</listitem>
+				<listitem>
+					<para>[DIRSTUDIO-518] - Create a new multi-window Entry Editor
+					</para>
+				</listitem>
+				<listitem>
+					<para>[DIRSTUDIO-517] - Create a new single-window Entry Editor
+					</para>
+				</listitem>
+				<listitem>
+					<para>[DIRSTUDIO-516] - Create a new Entry Editor extension point
+					</para>
 				</listitem>
 			</itemizedlist>
 		</para>
@@ -451,69 +449,95 @@
 		<para>
 			<itemizedlist spacing="normal" mark="bullet">
 				<listitem>
-					<para>[DIRSTUDIO-375] - Move each plugin IDs in a plugin.properties file</para>
+					<para>[DIRSTUDIO-479] - Object classes of an entry should always be
+						present</para>
 				</listitem>
+			</itemizedlist>
+		</para>
+		<para>
+			<emphasis>Wish</emphasis>
+		</para>
+		<para>
+			<itemizedlist spacing="normal" mark="bullet">
 				<listitem>
-					<para>[DIRSTUDIO-374] - Clean duplicated dependencies in plugins</para>
-				</listitem>
-				<listitem>
-					<para>[DIRSTUDIO-19] - Add Javadoc to LDAP Browser classes</para>
+					<para>[DIRSTUDIO-167] - Show custom icons for various kinds of
+						schema elements while browsing schema data</para>
 				</listitem>
 			</itemizedlist>
 		</para>
 	</simplesect>
-	
+
 	<simplesect>
-        <title>Apache Directory Studio 1.2.0 - (2008, august 18th)</title>
+		<title>Apache Directory Studio 1.4.0 - (2009, April 7th)</title>
 		<para>
 			<emphasis>Bug</emphasis>
 		</para>
 		<para>
 			<itemizedlist spacing="normal" mark="bullet">
 				<listitem>
-                    <para>[DIRSTUDIO-365] - Can't delete entry with studio 1.1.0. works with 1.0.1</para>
-                </listitem>
-                <listitem>
-                    <para>[DIRSTUDIO-360] - cannot read attribute from items with a / in the dn</para>
-                </listitem>
-                <listitem>
-					<para>[DIRSTUDIO-349] - Unable to enter large values for uid</para>
+					<para>[DIRSTUDIO-472] - SWTException (Widget is disposed) when
+						disabling DIT Quick Search</para>
 				</listitem>
 				<listitem>
-					<para>[DIRSTUDIO-341] - Paste error</para>
+					<para>[DIRSTUDIO-470] - Schema Browser view is not bring to front
+						when using the 'Open Schema Browser' menu item while the view is
+						already opened but not the frontmost view</para>
 				</listitem>
 				<listitem>
-					<para>[DIRSTUDIO-336] - Errors when parsing schema of some LDAP servers</para>
+					<para>[DIRSTUDIO-469] - Added wrong AttributeTypes can't be deleted
+					</para>
 				</listitem>
 				<listitem>
-					<para>[DIRSTUDIO-326] - Non-Operational attributes are marked as operational when bind to Siemens DirX 7.0</para>
+					<para>[DIRSTUDIO-465] - Context entry created from an LDIF import
+						is not shown in the Browser view</para>
 				</listitem>
 				<listitem>
-					<para>[DIRSTUDIO-319] - LDAP Browser creating new entry becomes empty and unusable in Windows Vista after certain actions</para>
+					<para>[DIRSTUDIO-463] - Browsing the directory produce too many
+						search requests</para>
 				</listitem>
 				<listitem>
-					<para>[DIRSTUDIO-318] - Rename of multi-values RDN does not work when changing the second RDN</para>
+					<para>[DIRSTUDIO-460] - Pressing 'Enter' in New Entry wizard should
+						edit the attribute</para>
 				</listitem>
 				<listitem>
-					<para>[DIRSTUDIO-315] - Choosing new value, in entry editor shows new entry when server error occures</para>
+					<para>[DIRSTUDIO-457] - Unknown schema causes attributes to be
+						treated as operational</para>
 				</listitem>
 				<listitem>
-					<para>[DIRSTUDIO-298] - NullPointerException raised when drag'n'dropping a connection to a folder (on Mac OS X only)</para>
+					<para>[DIRSTUDIO-456] - Cannot create an entry with mandatory
+						binary attribute</para>
 				</listitem>
 				<listitem>
-					<para>[DIRSTUDIO-273] - Unable to get Base DNs on OID (Oracle Internet Directory)</para>
+					<para>[DIRSTUDIO-430] - NullPointer exception when fetching
+						children of a node</para>
 				</listitem>
 				<listitem>
-					<para>[DIRSTUDIO-209] - Cannot expand attribute list</para>
+					<para>[DIRSTUDIO-427] - Operational attributes turned on by itself
+					</para>
 				</listitem>
 				<listitem>
-					<para>[DIRSTUDIO-157] - Studio looses STRG-V over some time of use</para>
+					<para>[DIRSTUDIO-423] - Outline view does not respect the settings
+						of the Entry Editor on displaying or not the operational
+						attributes</para>
 				</listitem>
 				<listitem>
-					<para>[DIRSTUDIO-121] - Some property pages make the dialog very tall</para>
+					<para>[DIRSTUDIO-420] - Unable to locate in DIT (f3)</para>
 				</listitem>
 				<listitem>
-					<para>[DIRSTUDIO-89] - Entry painted even though not created in server</para>
+					<para>[DIRSTUDIO-419] - Problems switching between connections
+					</para>
+				</listitem>
+				<listitem>
+					<para>[DIRSTUDIO-396] - Custom LDAP attributes not shown in entry
+						editor</para>
+				</listitem>
+				<listitem>
+					<para>[DIRSTUDIO-395] - Problems with special chars (german
+						Umlauts)</para>
+				</listitem>
+				<listitem>
+					<para>[DIRSTUDIO-373] - Can't delete a tagged attribute if the non
+						tagged attribute belong to the DN</para>
 				</listitem>
 			</itemizedlist>
 		</para>
@@ -523,10 +547,295 @@
 		<para>
 			<itemizedlist spacing="normal" mark="bullet">
 				<listitem>
-				    <para>[DIRSTUDIO-361] - Auto-activate 'show operational attributes' when adding an operational attribute</para>
-                </listitem>
-                <listitem>
-					<para>[DIRSTUDIO-329] - Replace internal URL class by shared-ldap LdapURL class</para>
+					<para>[DIRSTUDIO-455] - Cannot copy/past an existing search</para>
+				</listitem>
+				<listitem>
+					<para>[DIRSTUDIO-426] - Overwritten hashCode() method should not
+						use super.hashCode()</para>
+				</listitem>
+				<listitem>
+					<para>[DIRSTUDIO-412] - Add expand all and collapse all actions to
+						the connections view</para>
+				</listitem>
+				<listitem>
+					<para>[DIRSTUDIO-411] - Select a new created folder in the
+						connection view</para>
+				</listitem>
+				<listitem>
+					<para>[DIRSTUDIO-241] - The "New Value" action (in the Entry
+						Editor) should be disabled if the AT is defined as single valued
+					</para>
+				</listitem>
+				<listitem>
+					<para>[DIRSTUDIO-234] - Greyed out menu items should have a tool
+						tip explaining *why* they're greyed out</para>
+				</listitem>
+				<listitem>
+					<para>[DIRSTUDIO-207] - Operationnal attributes cannot be shown
+						entirely</para>
+				</listitem>
+				<listitem>
+					<para>[DIRSTUDIO-150] - mprove error handling</para>
+				</listitem>
+				<listitem>
+					<para>[DIRSTUDIO-115] - Unable to edit operational attribute values
+					</para>
+				</listitem>
+			</itemizedlist>
+		</para>
+		<para>
+			<emphasis>New Feature</emphasis>
+		</para>
+		<para>
+			<itemizedlist spacing="normal" mark="bullet">
+				<listitem>
+					<para>[DIRSTUDIO-449] - Add a new GeneralizedTime Value Editor
+					</para>
+				</listitem>
+				<listitem>
+					<para>[DIRSTUDIO-397] - Request for multi-language GUI</para>
+				</listitem>
+				<listitem>
+					<para>[DIRSTUDIO-335] - DIT Quick Search</para>
+				</listitem>
+			</itemizedlist>
+		</para>
+	</simplesect>
+
+	<simplesect>
+		<title>Apache Directory Studio 1.3.0 - (2008, November 24th)</title>
+		<para>
+			<emphasis>Bug</emphasis>
+		</para>
+		<para>
+			<itemizedlist spacing="normal" mark="bullet">
+				<listitem>
+					<para>[DIRSTUDIO-389] - Back/Forward Navigation isn't working
+					</para>
+				</listitem>
+				<listitem>
+					<para>[DIRSTUDIO-380] - Attribute and Entry property pages makes
+						the dialog very tall</para>
+				</listitem>
+				<listitem>
+					<para>[DIRSTUDIO-379] - Class NewEntryWizard not found, application
+						doesn't starts</para>
+				</listitem>
+				<listitem>
+					<para>[DIRSTUDIO-367] - Tree delete control should not be used
+						automatically</para>
+				</listitem>
+				<listitem>
+					<para>[DIRSTUDIO-355] - DSML Import and Export fail with "Internal
+						Error: null"</para>
+				</listitem>
+				<listitem>
+					<para>[DIRSTUDIO-354] - Search window, paste problem</para>
+				</listitem>
+				<listitem>
+					<para>[DIRSTUDIO-293] - Values of attributes of the syntax
+						'Generalized Time' must have the g-time-zone 'Z' and minutes and
+						seconds set to be interpreted and shown as a date instead of the
+						raw value</para>
+				</listitem>
+				<listitem>
+					<para>[DIRSTUDIO-291] - Adding of an objectclass requiring
+						attributes not present to an entry in the ldap browser, modify
+						operation fails</para>
+				</listitem>
+				<listitem>
+					<para>[DIRSTUDIO-260] - Unable to do a DSML Export from eDirectory
+					</para>
+				</listitem>
+			</itemizedlist>
+		</para>
+		<para>
+			<emphasis>Improvement</emphasis>
+		</para>
+		<para>
+			<itemizedlist spacing="normal" mark="bullet">
+				<listitem>
+					<para>[DIRSTUDIO-407] - In the NewEntryWizard, the first selected
+						object class on the left side should be added if the Enter key is
+						hit in the text field</para>
+				</listitem>
+				<listitem>
+					<para>[DIRSTUDIO-383] - Make "Fetch subentries" setting
+						configurable per connection, move from browser preferences to
+						connection properties</para>
+				</listitem>
+				<listitem>
+					<para>[DIRSTUDIO-378] - An attribute name containing an underscore
+						("_") is split in two when used in "Returning Attributes" field of
+						the "Search" dialog</para>
+				</listitem>
+				<listitem>
+					<para>[DIRSTUDIO-377] - Add value editor for OIDs</para>
+				</listitem>
+				<listitem>
+					<para>[DIRSTUDIO-363] - Browser View doesn't accept menu additions
+						thru viewerContribution extension point</para>
+				</listitem>
+				<listitem>
+					<para>[DIRSTUDIO-327] - Add support for Paged Results Control
+					</para>
+				</listitem>
+				<listitem>
+					<para>[DIRSTUDIO-311] - Provide Goto DN dialog</para>
+				</listitem>
+				<listitem>
+					<para>[DIRSTUDIO-291] - Using the 'new entry'/'use existing entry
+						as template' feature from the context menu of an entry, the parent
+						dn is also copied from the template entry </para>
+				</listitem>
+				<listitem>
+					<para>[DIRSTUDIO-244] - Add selection for copy strategy if an entry
+						to copy already exists</para>
+				</listitem>
+				<listitem>
+					<para>[DIRSTUDIO-228] - Mask userPassword in the log view</para>
+				</listitem>
+				<listitem>
+					<para>[DIRSTUDIO-147] - Allow LDIF imports to overwrite existing
+						entries</para>
+				</listitem>
+				<listitem>
+					<para>[DIRSTUDIO-116] - Expand all folds by default</para>
+				</listitem>
+				<listitem>
+					<para>[DIRSTUDIO-114] - Group container entries first in browser
+						view</para>
+				</listitem>
+			</itemizedlist>
+		</para>
+		<para>
+			<emphasis>New Feature</emphasis>
+		</para>
+		<para>
+			<itemizedlist spacing="normal" mark="bullet">
+				<listitem>
+					<para>[DIRSTUDIO-385] - Add dialog to create a new context entry
+					</para>
+				</listitem>
+				<listitem>
+					<para>[DIRSTUDIO-356] - Add a way to get the connection config as
+						an URL</para>
+				</listitem>
+				<listitem>
+					<para>[DIRSTUDIO-297] - Add a 'save as' for logs</para>
+				</listitem>
+				<listitem>
+					<para>[DIRSTUDIO-153] - Allow offline modifications of entries
+					</para>
+				</listitem>
+				<listitem>
+					<para>[DIRSTUDIO-107] - Enable Select/Copy in Property page of
+						RootDSE in order to copy and paste detected OIDs</para>
+				</listitem>
+				<listitem>
+					<para>[DIRSTUDIO-85] - Add support for search dialog to include *
+						and + for returnable attributes</para>
+				</listitem>
+			</itemizedlist>
+		</para>
+		<para>
+			<emphasis>Task</emphasis>
+		</para>
+		<para>
+			<itemizedlist spacing="normal" mark="bullet">
+				<listitem>
+					<para>[DIRSTUDIO-375] - Move each plugin IDs in a plugin.properties
+						file</para>
+				</listitem>
+				<listitem>
+					<para>[DIRSTUDIO-374] - Clean duplicated dependencies in plugins
+					</para>
+				</listitem>
+				<listitem>
+					<para>[DIRSTUDIO-19] - Add Javadoc to LDAP Browser classes</para>
+				</listitem>
+			</itemizedlist>
+		</para>
+	</simplesect>
+
+	<simplesect>
+		<title>Apache Directory Studio 1.2.0 - (2008, august 18th)</title>
+		<para>
+			<emphasis>Bug</emphasis>
+		</para>
+		<para>
+			<itemizedlist spacing="normal" mark="bullet">
+				<listitem>
+					<para>[DIRSTUDIO-365] - Can't delete entry with studio 1.1.0. works
+						with 1.0.1</para>
+				</listitem>
+				<listitem>
+					<para>[DIRSTUDIO-360] - cannot read attribute from items with a /
+						in the dn</para>
+				</listitem>
+				<listitem>
+					<para>[DIRSTUDIO-349] - Unable to enter large values for uid</para>
+				</listitem>
+				<listitem>
+					<para>[DIRSTUDIO-341] - Paste error</para>
+				</listitem>
+				<listitem>
+					<para>[DIRSTUDIO-336] - Errors when parsing schema of some LDAP
+						servers</para>
+				</listitem>
+				<listitem>
+					<para>[DIRSTUDIO-326] - Non-Operational attributes are marked as
+						operational when bind to Siemens DirX 7.0</para>
+				</listitem>
+				<listitem>
+					<para>[DIRSTUDIO-319] - LDAP Browser creating new entry becomes
+						empty and unusable in Windows Vista after certain actions</para>
+				</listitem>
+				<listitem>
+					<para>[DIRSTUDIO-318] - Rename of multi-values RDN does not work
+						when changing the second RDN</para>
+				</listitem>
+				<listitem>
+					<para>[DIRSTUDIO-315] - Choosing new value, in entry editor shows
+						new entry when server error occures</para>
+				</listitem>
+				<listitem>
+					<para>[DIRSTUDIO-298] - NullPointerException raised when
+						drag'n'dropping a connection to a folder (on Mac OS X only)</para>
+				</listitem>
+				<listitem>
+					<para>[DIRSTUDIO-273] - Unable to get Base DNs on OID (Oracle
+						Internet Directory)</para>
+				</listitem>
+				<listitem>
+					<para>[DIRSTUDIO-209] - Cannot expand attribute list</para>
+				</listitem>
+				<listitem>
+					<para>[DIRSTUDIO-157] - Studio looses STRG-V over some time of use
+					</para>
+				</listitem>
+				<listitem>
+					<para>[DIRSTUDIO-121] - Some property pages make the dialog very
+						tall</para>
+				</listitem>
+				<listitem>
+					<para>[DIRSTUDIO-89] - Entry painted even though not created in
+						server</para>
+				</listitem>
+			</itemizedlist>
+		</para>
+		<para>
+			<emphasis>Improvement</emphasis>
+		</para>
+		<para>
+			<itemizedlist spacing="normal" mark="bullet">
+				<listitem>
+					<para>[DIRSTUDIO-361] - Auto-activate 'show operational attributes'
+						when adding an operational attribute</para>
+				</listitem>
+				<listitem>
+					<para>[DIRSTUDIO-329] - Replace internal URL class by shared-ldap
+						LdapURL class</para>
 				</listitem>
 				<listitem>
 					<para>[DIRSTUDIO-126] - Triple click to edit attribute</para>
@@ -552,12 +861,13 @@
 		<para>
 			<itemizedlist spacing="normal" mark="bullet">
 				<listitem>
-					<para>[DIRSTUDIO-128] - Replace internal schema parser with the schema parser in shared-ldap.</para>
+					<para>[DIRSTUDIO-128] - Replace internal schema parser with the
+						schema parser in shared-ldap.</para>
 				</listitem>
 			</itemizedlist>
 		</para>
 	</simplesect>
-	
+
 	<simplesect>
 		<title>
 			Apache Directory Studio 1.1.0 - (2008, march 31st)
@@ -568,85 +878,112 @@
 		<para>
 			<itemizedlist spacing="normal" mark="bullet">
 				<listitem>
-				    <para>[DIRSTUDIO-286] - Update Site is not working, missing dependencies in ldifeditor, ldapbrower and schemaeditor feature</para>
+					<para>[DIRSTUDIO-286] - Update Site is not working, missing
+						dependencies in ldifeditor, ldapbrower and schemaeditor feature
+					</para>
 				</listitem>
 				<listitem>
-				    <para>[DIRSTUDIO-285] - Export into LDIF format could be corrupted</para>
+					<para>[DIRSTUDIO-285] - Export into LDIF format could be corrupted
+					</para>
 				</listitem>
 				<listitem>
-				    <para>[DIRSTUDIO-281] - LDIF and Apache DS configuration files can't be saved in RCP mode</para>
+					<para>[DIRSTUDIO-281] - LDIF and Apache DS configuration files
+						can't be saved in RCP mode</para>
 				</listitem>
 				<listitem>
-				    <para>[DIRSTUDIO-279] - Filter Editor doesn't remove spaces and line breaks after OK</para>
+					<para>[DIRSTUDIO-279] - Filter Editor doesn't remove spaces and
+						line breaks after OK</para>
 				</listitem>
 				<listitem>
-				    <para>[DIRSTUDIO-270] - Copy and paste does not work when value being edited</para>
+					<para>[DIRSTUDIO-270] - Copy and paste does not work when value
+						being edited</para>
 				</listitem>
 				<listitem>
-				    <para>[DIRSTUDIO-269] - Attributes not displayed when browsing BEA Weblogic embedded LDAP</para>
+					<para>[DIRSTUDIO-269] - Attributes not displayed when browsing BEA
+						Weblogic embedded LDAP</para>
 				</listitem>
 				<listitem>
-				    <para>[DIRSTUDIO-267] - Clicking on a bookmark loops and does not display attributes</para>
+					<para>[DIRSTUDIO-267] - Clicking on a bookmark loops and does not
+						display attributes</para>
 				</listitem>
 				<listitem>
-				    <para>[DIRSTUDIO-261] - LDAP Browser shows same root objects two times under Root DSE</para>
+					<para>[DIRSTUDIO-261] - LDAP Browser shows same root objects two
+						times under Root DSE</para>
 				</listitem>
 				<listitem>
-				    <para>[DIRSTUDIO-252] - Advanced value editors don't work in NewEntryWizard</para>
+					<para>[DIRSTUDIO-252] - Advanced value editors don't work in
+						NewEntryWizard</para>
 				</listitem>
 				<listitem>
-				    <para>[DIRSTUDIO-250] - Unable to load entries if RDN is quoted and contains unescaped comma</para>
+					<para>[DIRSTUDIO-250] - Unable to load entries if RDN is quoted and
+						contains unescaped comma</para>
 				</listitem>
 				<listitem>
-				    <para>[DIRSTUDIO-249] - Modification Logs view does not display request controls, if sent to the server</para>
+					<para>[DIRSTUDIO-249] - Modification Logs view does not display
+						request controls, if sent to the server</para>
 				</listitem>
 				<listitem>
-				    <para>[DIRSTUDIO-247] - Don't use implicit ManageDsaIT control magic of JNDI</para>
+					<para>[DIRSTUDIO-247] - Don't use implicit ManageDsaIT control
+						magic of JNDI</para>
 				</listitem>
 				<listitem>
-				    <para>[DIRSTUDIO-242] - Inconsistent state of the Entry Editor after using "New Value" (or "New Attribute...") and pressing "Escape".</para>
+					<para>[DIRSTUDIO-242] - Inconsistent state of the Entry Editor
+						after using "New Value" (or "New Attribute...") and pressing
+						"Escape".</para>
 				</listitem>
 				<listitem>
-				    <para>[DIRSTUDIO-235] - Non ASCII characters are not rendered properly in the LDAP Browser View when label is limited to a certain number of characters</para>
+					<para>[DIRSTUDIO-235] - Non ASCII characters are not rendered
+						properly in the LDAP Browser View when label is limited to a
+						certain number of characters</para>
 				</listitem>
 				<listitem>
-				    <para>[DIRSTUDIO-233] - Browsing base DN returns [LDAP: error code 10 - Referral]</para>
+					<para>[DIRSTUDIO-233] - Browsing base DN returns [LDAP: error code
+						10 - Referral]</para>
 				</listitem>
 				<listitem>
-				    <para>[DIRSTUDIO-230] - Locate Dn in DIT Action does not work well</para>
+					<para>[DIRSTUDIO-230] - Locate Dn in DIT Action does not work well
+					</para>
 				</listitem>
 				<listitem>
-				    <para>[DIRSTUDIO-223] - NullPointerException raised when adding values in the New Entry Wizard</para>
+					<para>[DIRSTUDIO-223] - NullPointerException raised when adding
+						values in the New Entry Wizard</para>
 				</listitem>
 				<listitem>
-				    <para>[DIRSTUDIO-222] - Pb when creating an entry with an invalid atribute as a RDN</para>
+					<para>[DIRSTUDIO-222] - Pb when creating an entry with an invalid
+						atribute as a RDN</para>
 				</listitem>
 				<listitem>
-				    <para>[DIRSTUDIO-220] - lowercase {crypt} in userPassword is an "Unsupported Hash Method"</para>
+					<para>[DIRSTUDIO-220] - lowercase {crypt} in userPassword is an
+						"Unsupported Hash Method"</para>
 				</listitem>
 				<listitem>
-				    <para>[DIRSTUDIO-210] - Filter parser accepts bad filters</para>
+					<para>[DIRSTUDIO-210] - Filter parser accepts bad filters</para>
 				</listitem>
 				<listitem>
-				    <para>[DIRSTUDIO-197] - Following referrals throws NPE</para>
+					<para>[DIRSTUDIO-197] - Following referrals throws NPE</para>
 				</listitem>
 				<listitem>
-				    <para>[DIRSTUDIO-184] - Error while reading entry in Active Directory</para>
+					<para>[DIRSTUDIO-184] - Error while reading entry in Active
+						Directory</para>
 				</listitem>
 				<listitem>
-				    <para>[DIRSTUDIO-154] - Studio getting slower and slower on bulk operations</para>
+					<para>[DIRSTUDIO-154] - Studio getting slower and slower on bulk
+						operations</para>
 				</listitem>
 				<listitem>
-				    <para>[DIRSTUDIO-152] - New entry creator does not know that 'dc' and 'domainComponent' is the same thing</para>
+					<para>[DIRSTUDIO-152] - New entry creator does not know that 'dc'
+						and 'domainComponent' is the same thing</para>
 				</listitem>
 				<listitem>
-				    <para>[DIRSTUDIO-139] - Operational attributes not shown in the Entry Editor</para>
+					<para>[DIRSTUDIO-139] - Operational attributes not shown in the
+						Entry Editor</para>
 				</listitem>
 				<listitem>
-				    <para>[DIRSTUDIO-120] - 100% CPU when deleting thousands of entries</para>
+					<para>[DIRSTUDIO-120] - 100% CPU when deleting thousands of entries
+					</para>
 				</listitem>
 				<listitem>
-				    <para>[DIRSTUDIO-95] - Not returning large queries</para>
+					<para>[DIRSTUDIO-95] - Not returning large queries</para>
 				</listitem>
 			</itemizedlist>
 		</para>
@@ -656,22 +993,28 @@
 		<para>
 			<itemizedlist spacing="normal" mark="bullet">
 				<listitem>
-				    <para>[DIRSTUDIO-221] - Improve Object Class selection in the New Entry Wizard</para>
+					<para>[DIRSTUDIO-221] - Improve Object Class selection in the New
+						Entry Wizard</para>
 				</listitem>
 				<listitem>
-				    <para>[DIRSTUDIO-156] - useability improvement: when exporting an OU use the applied filter by default</para>
+					<para>[DIRSTUDIO-156] - useability improvement: when exporting an
+						OU use the applied filter by default</para>
 				</listitem>
 				<listitem>
-				    <para>[DIRSTUDIO-138] - Add visual feedback to the user, if SSL (ldaps) is enabled</para>
+					<para>[DIRSTUDIO-138] - Add visual feedback to the user, if SSL
+						(ldaps) is enabled</para>
 				</listitem>
 				<listitem>
-				    <para>[DIRSTUDIO-123] - Refactor IConnection interface and Connection class</para>
+					<para>[DIRSTUDIO-123] - Refactor IConnection interface and
+						Connection class</para>
 				</listitem>
 				<listitem>
-				    <para>[DIRSTUDIO-119] - Allow user to disabled the Modification logs windows</para>
+					<para>[DIRSTUDIO-119] - Allow user to disabled the Modification
+						logs windows</para>
 				</listitem>
 				<listitem>
-				    <para>[DIRSTUDIO-37] - Improve authentication methods and security mechanisms</para>
+					<para>[DIRSTUDIO-37] - Improve authentication methods and security
+						mechanisms</para>
 				</listitem>
 			</itemizedlist>
 		</para>
@@ -681,10 +1024,12 @@
 		<para>
 			<itemizedlist spacing="normal" mark="bullet">
 				<listitem>
-				    <para>[DIRSTUDIO-248] - Add support for simulated moving of non-leaf entries</para>
+					<para>[DIRSTUDIO-248] - Add support for simulated moving of
+						non-leaf entries</para>
 				</listitem>
 				<listitem>
-				    <para>[DIRSTUDIO-246] - Add support for simulated renaming of non-leaf entries</para>
+					<para>[DIRSTUDIO-246] - Add support for simulated renaming of
+						non-leaf entries</para>
 				</listitem>
 			</itemizedlist>
 		</para>
@@ -694,15 +1039,16 @@
 		<para>
 			<itemizedlist spacing="normal" mark="bullet">
 				<listitem>
-				    <para>[DIRSTUDIO-229] - Replace internal DN/RDN/RDNPart with LdapDN/Rdn/ATAV of shared-ldap</para>
+					<para>[DIRSTUDIO-229] - Replace internal DN/RDN/RDNPart with
+						LdapDN/Rdn/ATAV of shared-ldap</para>
 				</listitem>
 				<listitem>
-				    <para>[DIRSTUDIO-142] - Add SASL authentication</para>
+					<para>[DIRSTUDIO-142] - Add SASL authentication</para>
 				</listitem>
 			</itemizedlist>
 		</para>
 	</simplesect>
-	
+
 	<simplesect>
 		<title>
 			Apache Directory Studio 1.0.1 - (2007, september 10)
@@ -713,13 +1059,16 @@
 		<para>
 			<itemizedlist spacing="normal" mark="bullet">
 				<listitem>
-                    <para>[DIRSTUDIO-162] - Delete old RDN on rename has no effect</para>
+					<para>[DIRSTUDIO-162] - Delete old RDN on rename has no effect
+					</para>
 				</listitem>
 				<listitem>
-                    <para>[DIRSTUDIO-183] - It's not possible to select a Connection in a New Search</para>
+					<para>[DIRSTUDIO-183] - It's not possible to select a Connection in
+						a New Search</para>
 				</listitem>
 				<listitem>
-				    <para>[DIRSTUDIO-186] - When copying an entry it isn't displayed correctly in the browser tree</para>
+					<para>[DIRSTUDIO-186] - When copying an entry it isn't displayed
+						correctly in the browser tree</para>
 				</listitem>
 			</itemizedlist>
 		</para>
@@ -729,12 +1078,13 @@
 		<para>
 			<itemizedlist spacing="normal" mark="bullet">
 				<listitem>
-				    <para>[DIRSTUDIO-185] - Provide completion for all attribute types in the attribute wizard</para>
+					<para>[DIRSTUDIO-185] - Provide completion for all attribute types
+						in the attribute wizard</para>
 				</listitem>
 			</itemizedlist>
 		</para>
 	</simplesect>
-	
+
 	<simplesect>
 		<title>
 			Apache Directory Studio 1.0.0 - (2007, september 3rd)
@@ -743,5 +1093,5 @@
 			Initial release.
 		</para>
 	</simplesect>
-	
+
 </chapter>

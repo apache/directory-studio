@@ -32,6 +32,7 @@ import org.apache.directory.studio.ldapbrowser.core.model.IBookmark;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearchResult;
 import org.apache.directory.studio.ldifeditor.editor.LdifEditor;
+import org.apache.directory.studio.ldifeditor.editor.LdifOutlinePage;
 import org.apache.directory.studio.utils.ActionUtils;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.action.Action;
@@ -46,13 +47,13 @@ import org.eclipse.ui.INavigationLocation;
 import org.eclipse.ui.IShowEditorInput;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.texteditor.ITextEditorActionConstants;
+import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 
 
 /**
  * An entry editor that uses LDIF format.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public abstract class LdifEntryEditor extends LdifEditor implements IEntryEditor, IShowEditorInput
 {
@@ -202,6 +203,26 @@ public abstract class LdifEntryEditor extends LdifEditor implements IEntryEditor
     }
 
 
+    /**
+     * @see org.eclipse.ui.editors.text.TextEditor#getAdapter(java.lang.Class)
+     */
+    public Object getAdapter( Class required )
+    {
+        // Overwriting the outline page
+        if ( IContentOutlinePage.class.equals( required ) )
+        {
+            if ( outlinePage == null || outlinePage.getControl() == null || outlinePage.getControl().isDisposed() )
+            {
+                outlinePage = new LdifOutlinePage( this, true );
+            }
+            return outlinePage;
+        }
+
+        // In all other cases, refering to the super class
+        return super.getAdapter( required );
+    }
+
+
     @Override
     protected void createActions()
     {
@@ -324,6 +345,15 @@ public abstract class LdifEntryEditor extends LdifEditor implements IEntryEditor
                     && getEntryEditorInput().getResolvedEntry() == eei.getResolvedEntry() )
                 {
                     return;
+                }
+
+                // If the editor is dirty, let's ask for a save before changing the input
+                if ( isDirty() )
+                {
+                    if ( !EntryEditorUtils.askSaveSharedWorkingCopyBeforeInputChange( this ) )
+                    {
+                        return;
+                    }
                 }
 
                 /*

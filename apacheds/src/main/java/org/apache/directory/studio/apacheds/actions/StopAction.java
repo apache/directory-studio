@@ -46,7 +46,6 @@ import org.eclipse.ui.IWorkbenchWindowActionDelegate;
  * This class implements the stop action for a server.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class StopAction extends Action implements IWorkbenchWindowActionDelegate
 {

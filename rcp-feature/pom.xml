@@ -23,11 +23,10 @@
   <parent>
     <groupId>org.apache.directory.studio</groupId>
     <artifactId>parent</artifactId>
-    <version>1.5.1-SNAPSHOT</version>
+    <version>1.5.4-SNAPSHOT</version>
   </parent>
   
   <artifactId>rcp.feature</artifactId>
-  <version>${rcp.feature.version}</version>
   <name>Apache Directory Studio RCP Feature</name>
   <packaging>jar</packaging>
 

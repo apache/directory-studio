@@ -32,7 +32,6 @@ import org.apache.directory.studio.schemaeditor.model.io.SchemaConnector;
  * This class implements a Project.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class Project
 {
@@ -40,7 +39,6 @@ public class Project
      * This enum represents the different states of Project.
      *
      * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
-     * @version $Rev$, $Date$
      */
     public enum ProjectState
     {

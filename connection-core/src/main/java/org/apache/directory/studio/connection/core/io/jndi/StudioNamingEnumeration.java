@@ -47,7 +47,6 @@ import org.apache.directory.studio.connection.core.jobs.StudioProgressMonitor;
  * A naming enumeration that handles referrals itself. 
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class StudioNamingEnumeration implements NamingEnumeration<SearchResult>
 {

@@ -28,7 +28,6 @@ import java.util.List;
  * This class represents a Partition.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class Partition
 {

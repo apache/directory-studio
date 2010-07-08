@@ -40,7 +40,6 @@ import org.apache.directory.studio.ldapbrowser.core.model.schema.Schema;
  * An {@link ContinuedSearchResultEntry} represents a result entry of a search continuation.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class ContinuedSearchResultEntry extends DelegateEntry implements IContinuation
 {

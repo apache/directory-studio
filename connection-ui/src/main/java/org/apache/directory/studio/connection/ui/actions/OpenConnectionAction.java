@@ -32,7 +32,6 @@ import org.eclipse.jface.resource.ImageDescriptor;
  * This Action opens a Connection.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class OpenConnectionAction extends StudioAction
 {

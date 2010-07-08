@@ -43,7 +43,6 @@ import org.eclipse.swt.widgets.Shell;
  * in a dialog. 
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public abstract class AbstractDialogValueEditor extends CellEditor implements IValueEditor
 {

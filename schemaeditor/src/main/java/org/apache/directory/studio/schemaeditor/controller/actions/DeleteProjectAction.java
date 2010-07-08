@@ -47,7 +47,6 @@ import org.eclipse.ui.PlatformUI;
  * This action deletes one or more Projects from the ProjectsView.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class DeleteProjectAction extends Action implements IWorkbenchWindowActionDelegate
 {

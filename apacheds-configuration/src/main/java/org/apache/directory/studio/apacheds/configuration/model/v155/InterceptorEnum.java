@@ -24,7 +24,6 @@ package org.apache.directory.studio.apacheds.configuration.model.v155;
  * This enum contains all the interceptors.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public enum InterceptorEnum
 {

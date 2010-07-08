@@ -37,7 +37,6 @@ import org.eclipse.update.ui.UpdateManagerUI;
  * installed on Apache Directory Studio.
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class UpdateAction extends Action implements IAction
 {

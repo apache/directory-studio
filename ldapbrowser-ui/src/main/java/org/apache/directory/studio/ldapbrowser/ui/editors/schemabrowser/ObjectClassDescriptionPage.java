@@ -38,7 +38,6 @@ import org.eclipse.swt.graphics.Image;
  * object class descriptions and hosts the detail page.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class ObjectClassDescriptionPage extends SchemaPage
 {
@@ -120,7 +119,6 @@ public class ObjectClassDescriptionPage extends SchemaPage
      * The content provider used by the viewer.
      *
      * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
-     * @version $Rev$, $Date$
      */
     class OCDContentProvider implements IStructuredContentProvider
     {
@@ -161,7 +159,6 @@ public class ObjectClassDescriptionPage extends SchemaPage
      * The label provider used by the viewer.
      *
      * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
-     * @version $Rev$, $Date$
      */
     class OCDLabelProvider extends LabelProvider implements ITableLabelProvider
     {
@@ -191,7 +188,6 @@ public class ObjectClassDescriptionPage extends SchemaPage
      * The sorter used by the viewer.
      *
      * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
-     * @version $Rev$, $Date$
      */
     class OCDViewerSorter extends ViewerSorter
     {
@@ -216,7 +212,6 @@ public class ObjectClassDescriptionPage extends SchemaPage
      * The filter used by the viewer.
      *
      * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
-     * @version $Rev$, $Date$
      */
     class OCDViewerFilter extends ViewerFilter
     {

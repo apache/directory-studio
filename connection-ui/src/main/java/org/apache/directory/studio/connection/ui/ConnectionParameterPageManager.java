@@ -38,7 +38,6 @@ import org.eclipse.core.runtime.Status;
  * The ConnectionParameterPageManager manages the {@link ConnectionParameterPage}s.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class ConnectionParameterPageManager
 {

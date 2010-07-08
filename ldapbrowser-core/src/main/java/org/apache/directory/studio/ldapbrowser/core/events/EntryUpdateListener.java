@@ -30,7 +30,6 @@ import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
  * A listener for {@link EntryModificationEvent}s
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public interface EntryUpdateListener extends EventListener
 {

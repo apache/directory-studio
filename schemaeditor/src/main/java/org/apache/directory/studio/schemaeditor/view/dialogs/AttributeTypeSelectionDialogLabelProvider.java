@@ -34,7 +34,6 @@ import org.eclipse.swt.graphics.Image;
  * This class is the Label Provider for the Attribute Types Viewer of the AttributeTypeSelectionDialog.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class AttributeTypeSelectionDialogLabelProvider extends LabelProvider
 {

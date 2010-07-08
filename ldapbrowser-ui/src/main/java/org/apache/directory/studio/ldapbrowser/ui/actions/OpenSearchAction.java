@@ -37,7 +37,6 @@ import org.eclipse.ui.PlatformUI;
  * This Action opens the Search Dialog.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class OpenSearchAction extends Action implements IWorkbenchWindowActionDelegate
 {

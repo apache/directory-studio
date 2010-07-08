@@ -31,7 +31,6 @@ import org.eclipse.ui.PlatformUI;
  * This class implements the Wizard for Exporting to CSV
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class ExportCsvWizard extends ExportBaseWizard
 {

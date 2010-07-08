@@ -32,7 +32,6 @@ import org.apache.commons.codec.binary.Hex;
  * Utilities for LDAP related encoding and decoding.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class LdifUtils
 {

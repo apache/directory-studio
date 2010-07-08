@@ -39,7 +39,6 @@ import org.eclipse.jface.resource.ImageDescriptor;
  * Then this action is enabled and opens entry "ou=test" in DIT. 
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class LocateDnInDitAction extends LocateInDitAction
 {

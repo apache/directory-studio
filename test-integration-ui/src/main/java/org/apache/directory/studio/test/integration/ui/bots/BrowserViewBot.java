@@ -20,258 +20,185 @@
 package org.apache.directory.studio.test.integration.ui.bots;
 
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
+import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.test.integration.ui.ContextMenuHelper;
+import org.apache.directory.studio.test.integration.ui.bots.utils.JobWatcher;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
-import org.eclipse.swtbot.swt.finder.SWTBot;
-import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
-import org.eclipse.swtbot.swt.finder.finders.UIThreadRunnable;
-import org.eclipse.swtbot.swt.finder.results.VoidResult;
-import org.eclipse.swtbot.swt.finder.waits.DefaultCondition;
-import org.eclipse.swtbot.swt.finder.waits.ICondition;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 
 
 public class BrowserViewBot
 {
-    private SWTWorkbenchBot bot = new SWTWorkbenchBot();
+    private SWTWorkbenchBot bot;
+    private BrowserWidgetBot browserBot;
+
+
+    public BrowserViewBot()
+    {
+        bot = new SWTWorkbenchBot();
+        SWTBotView view = bot.viewByTitle( "LDAP Browser" );
+        view.show();
+
+        browserBot = new BrowserWidgetBot( view.bot() );
+    }
 
 
     public boolean existsEntry( String... path )
     {
-        // ensure the parent exists
-        String[] parentPath = new String[path.length - 1];
-        System.arraycopy( path, 0, parentPath, 0, parentPath.length );
-        getEntry( parentPath );
-
-        // check if the child exists
-        try
-        {
-            getEntry( path );
-            return true;
-        }
-        catch ( WidgetNotFoundException e )
-        {
-            return false;
-        }
+        return browserBot.existsEntry( path );
     }
 
 
     public void selectEntry( String... path )
     {
-        SWTBotTreeItem entry = getEntry( path );
-        select( entry );
+        browserBot.selectEntry( path );
     }
 
 
     public void selectChildrenOfEnty( String[] children, String... path )
     {
-        SWTBotTreeItem entry = getEntry( path );
-        entry.select( children );
+        browserBot.selectChildrenOfEnty( children, path );
     }
 
 
     public ReferralDialogBot selectEntryExpectingReferralDialog( String... path )
     {
-        SWTBotTreeItem entry = getEntry( path );
-        select( entry );
-        return new ReferralDialogBot();
+        return browserBot.selectEntryExpectingReferralDialog( path );
     }
 
 
     public void expandEntry( String... path )
     {
-        SWTBotTreeItem entry = getEntry( path );
-        expand( entry, true, null );
+        JobWatcher watcher = new JobWatcher( BrowserCoreMessages.jobs__init_entries_title_subonly );
+        browserBot.expandEntry( path );
+        watcher.waitUntilDone();
     }
 
 
     public void waitForEntry( String... path )
     {
-        getEntry( path );
+        browserBot.waitForEntry( path );
     }
 
 
     public ReferralDialogBot expandEntryExpectingReferralDialog( String... path )
     {
-        SWTBotTreeItem entry = getEntry( path );
-        expand( entry, false, null );
-        return new ReferralDialogBot();
+        return browserBot.expandEntryExpectingReferralDialog( path );
     }
 
 
     public NewEntryWizardBot openNewEntryWizard()
     {
-        ContextMenuHelper.clickContextMenu( getBrowserTree(), "New", "New Entry..." );
+        ContextMenuHelper.clickContextMenu( browserBot.getTree(), "New", "New Entry..." );
         return new NewEntryWizardBot();
+    }
+
+
+    public SearchDialogBot openSearchDialog()
+    {
+        ContextMenuHelper.clickContextMenu( browserBot.getTree(), "New", "New Search..." );
+        return new SearchDialogBot();
     }
 
 
     public RenameEntryDialogBot openRenameDialog()
     {
-        ContextMenuHelper.clickContextMenu( getBrowserTree(), "Rename Entry..." );
+        ContextMenuHelper.clickContextMenu( browserBot.getTree(), "Rename Entry..." );
         return new RenameEntryDialogBot();
     }
 
 
     public DeleteDialogBot openDeleteDialog()
     {
-        ContextMenuHelper.clickContextMenu( getBrowserTree(), "Delete Entries" );
-        return new DeleteDialogBot();
-    }
-
-
-    private SWTBotTreeItem getEntry( String... path )
-    {
-        SWTBotTree browserTree = getBrowserTree();
-        List<String> pathList = new ArrayList<String>( Arrays.asList( path ) );
-        SWTBotTreeItem entry = null;
-
-        while ( !pathList.isEmpty() )
+        if ( browserBot.getTree().selectionCount() == 1 )
         {
-            String node = pathList.remove( 0 );
-
-            if ( entry == null )
-            {
-                node = adjustNodeName( browserTree, node );
-                entry = browserTree.getTreeItem( node );
-            }
-            else
-            {
-                // adjust current path, because the label is decorated with the
-                // number of children
-                node = adjustNodeName( entry, node );
-                entry = entry.getNode( node );
-            }
-
-            if ( !pathList.isEmpty() )
-            {
-                // expand entry and wait till
-                // - children are displayed
-                // - next child is visible
-                final String nextNode = !pathList.isEmpty() ? pathList.get( 0 ) : null;
-                expand( entry, true, nextNode );
-            }
+            ContextMenuHelper.clickContextMenu( browserBot.getTree(), "Delete Entry" );
+            return new DeleteDialogBot( DeleteDialogBot.DELETE_ENTRY_TITLE );
         }
-
-        return entry;
-    }
-
-
-    private void expand( final SWTBotTreeItem entry, boolean wait, final String nextNode )
-    {
-        UIThreadRunnable.asyncExec( bot.getDisplay(), new VoidResult()
+        else
         {
-            public void run()
-            {
-                entry.expand();
-            }
-        } );
-
-        if ( wait )
-        {
-            bot.waitUntil( new DefaultCondition()
-            {
-                public boolean test() throws Exception
-                {
-                    //                    if ( nextNode != null )
-                    //                    {
-                    //                        String adjustedNodeName = nextNode != null ? adjustNodeName( entry, nextNode ) : null;
-                    //                        SWTBotTreeItem node = entry.getNode( adjustedNodeName );
-                    //                        if ( node == null )
-                    //                        {
-                    //                            return false;
-                    //                        }
-                    //                    }
-                    return !entry.getNodes().contains( "Fetching Entries..." )
-                        && !entry.getNodes().contains( "Opening Connection..." );
-                }
-
-
-                public String getFailureMessage()
-                {
-                    return "Could not find entry " + entry.getText() + " -> " + nextNode;
-                }
-            } );
+            ContextMenuHelper.clickContextMenu( browserBot.getTree(), "Delete Entries" );
+            return new DeleteDialogBot( DeleteDialogBot.DELETE_ENTRIES_TITLE );
         }
     }
 
 
-    private void select( final SWTBotTreeItem entry )
+    public ExportWizardBot openExportLdifWizard()
     {
-        if ( !getBrowserTree().isEnabled() )
-        {
-            bot.waitUntil( new ICondition()
-            {
-
-                public boolean test() throws Exception
-                {
-                    return getBrowserTree().isEnabled();
-                }
-
-
-                public void init( SWTBot bot )
-                {
-                }
-
-
-                public String getFailureMessage()
-                {
-                    return "Entry " + entry + " is not enabled!";
-                }
-            } );
-        }
-        entry.click();
-        entry.select();
+        ContextMenuHelper.clickContextMenu( browserBot.getTree(), "Export", "LDIF Export..." );
+        return new ExportWizardBot( ExportWizardBot.EXPORT_LDIF_TITLE );
     }
 
 
-    private String adjustNodeName( SWTBotTreeItem child, String nodeName )
+    public ExportWizardBot openExportDsmlWizard()
     {
-        List<String> nodes = child.getNodes();
-        for ( String node : nodes )
-        {
-            if ( node.toUpperCase().startsWith( nodeName.toUpperCase() ) )
-            {
-                return node;
-            }
-        }
-        return nodeName;
+        ContextMenuHelper.clickContextMenu( browserBot.getTree(), "Export", "DSML Export..." );
+        return new ExportWizardBot( ExportWizardBot.EXPORT_DSML_TITLE );
     }
 
 
-    private String adjustNodeName( SWTBotTree tree, String nodeName )
+    public ImportWizardBot openImportLdifWizard()
     {
-        SWTBotTreeItem[] allItems = tree.getAllItems();
-        for ( SWTBotTreeItem item : allItems )
-        {
-            String node = item.getText();
-            if ( node.toUpperCase().startsWith( nodeName.toUpperCase() ) )
-            {
-                return node;
-            }
-        }
-        return nodeName;
+        ContextMenuHelper.clickContextMenu( browserBot.getTree(), "Import", "LDIF Import..." );
+        return new ImportWizardBot( ImportWizardBot.IMPORT_LDIF_TITLE );
     }
 
 
-    private SWTBotTree getBrowserTree()
+    public ImportWizardBot openImportDsmlWizard()
     {
-        SWTBotView view = bot.viewByTitle( "LDAP Browser" );
-        view.show();
-        SWTBotTree tree = view.bot().tree();
-        return tree;
+        ContextMenuHelper.clickContextMenu( browserBot.getTree(), "Import", "DSML Import..." );
+        return new ImportWizardBot( ImportWizardBot.IMPORT_DSML_TITLE );
     }
 
 
     public void refresh()
     {
-        ContextMenuHelper.clickContextMenu( getBrowserTree(), "Reload Entry" );
+        JobWatcher watcher = new JobWatcher( BrowserCoreMessages.jobs__init_entries_title_subonly );
+        ContextMenuHelper.clickContextMenu( browserBot.getTree(), "Reload Entry" );
+        watcher.waitUntilDone();
+    }
+
+
+    public void copy()
+    {
+        ContextMenuHelper.clickContextMenu( browserBot.getTree(), "Copy" );
+    }
+
+
+    public void paste()
+    {
+        ContextMenuHelper.clickContextMenu( browserBot.getTree(), "Paste" );
+    }
+
+
+    public SearchPropertiesDialogBot pasteSearch()
+    {
+        ContextMenuHelper.clickContextMenu( browserBot.getTree(), "Paste" );
+        return new SearchPropertiesDialogBot();
+    }
+
+
+    public void typeQuickSearchAttributeType( String attributeType )
+    {
+        bot.comboBox( 0 ).setText( attributeType );
+    }
+
+
+    public void typeQuickSearchValue( String value )
+    {
+        bot.comboBox( 2 ).setText( value );
+    }
+
+
+    public void clickRunQuickSearchButton()
+    {
+        bot.buttonWithTooltip( "Run Quick Search" ).click();
+    }
+
+
+    public boolean isQuickSearchEnabled()
+    {
+        return bot.comboBox( 0 ).isEnabled();
     }
 
 }

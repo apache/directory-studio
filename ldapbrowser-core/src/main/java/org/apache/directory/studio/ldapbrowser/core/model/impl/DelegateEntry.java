@@ -34,6 +34,7 @@ import org.apache.directory.studio.ldapbrowser.core.model.AttributeHierarchy;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
+import org.apache.directory.studio.ldapbrowser.core.model.schema.Schema;
 import org.apache.directory.studio.ldapbrowser.core.utils.Utils;
 import org.eclipse.search.ui.ISearchPageScoreComputer;
 
@@ -44,7 +45,6 @@ import org.eclipse.search.ui.ISearchPageScoreComputer;
  * It is used for bookmarks, alias and referral entries.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public abstract class DelegateEntry implements IEntry
 {
@@ -96,7 +96,7 @@ public abstract class DelegateEntry implements IEntry
             .getBrowserConnectionById( connectionId );
         if ( browserConnection == null )
         {
-            throw new IllegalStateException( "Connection " + connectionId + " does not exist." );
+            browserConnection = new DummyConnection( Schema.DEFAULT_SCHEMA );
         }
 
         // always get the fresh entry from cache
@@ -139,7 +139,7 @@ public abstract class DelegateEntry implements IEntry
                 .getBrowserConnectionById( connectionId );
             if ( browserConnection == null )
             {
-                throw new IllegalStateException( "Connection " + connectionId + " does not exist." );
+                browserConnection = new DummyConnection( Schema.DEFAULT_SCHEMA );
             }
             return browserConnection;
         }

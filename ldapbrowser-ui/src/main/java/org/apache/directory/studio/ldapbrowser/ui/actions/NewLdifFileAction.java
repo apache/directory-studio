@@ -37,7 +37,6 @@ import org.eclipse.ui.PlatformUI;
  * This Action launches a new empty LDIF Editor. 
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class NewLdifFileAction extends BrowserAction
 {

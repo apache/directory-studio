@@ -36,7 +36,6 @@ import org.eclipse.ui.part.ViewPart;
  * to a connection using LDIF change format.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class ModificationLogsView extends ViewPart
 {

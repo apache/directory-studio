@@ -47,7 +47,6 @@ import org.eclipse.swt.widgets.Text;
  * used to load and save binary data from and to disk.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class HexDialog extends Dialog
 {

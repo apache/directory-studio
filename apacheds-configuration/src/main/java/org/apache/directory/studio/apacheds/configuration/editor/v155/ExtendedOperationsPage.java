@@ -34,7 +34,6 @@ import org.eclipse.ui.forms.widgets.ScrolledForm;
  * This class represents the Extended Operations Page of the Server Configuration Editor.
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class ExtendedOperationsPage extends FormPage implements SaveableFormPage
 {
@@ -66,7 +65,7 @@ public class ExtendedOperationsPage extends FormPage implements SaveableFormPage
     protected void createFormContent( IManagedForm managedForm )
     {
         PlatformUI.getWorkbench().getHelpSystem().setHelp( getPartControl(),
-            ApacheDSConfigurationPluginConstants.PLUGIN_ID + "." + "configuration_editor_154" ); //$NON-NLS-1$ //$NON-NLS-2$
+            ApacheDSConfigurationPluginConstants.PLUGIN_ID + "." + "configuration_editor_155" ); //$NON-NLS-1$ //$NON-NLS-2$
 
         final ScrolledForm form = managedForm.getForm();
         form.setText( Messages.getString( "ExtendedOperationsPage.ExtendedOperations" ) ); //$NON-NLS-1$

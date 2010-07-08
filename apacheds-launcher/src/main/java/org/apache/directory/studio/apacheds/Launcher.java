@@ -30,7 +30,6 @@ import java.io.File;
  * case so there really is not much here.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev: 596814 $
  */
 public class Launcher
 {

@@ -37,7 +37,6 @@ import org.eclipse.swt.widgets.Text;
  * Dialog with an text area.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class TextDialog extends Dialog
 {

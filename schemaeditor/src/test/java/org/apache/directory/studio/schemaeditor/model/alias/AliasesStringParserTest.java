@@ -29,7 +29,6 @@ import junit.framework.TestCase;
  * This class tests the {@link AliasesStringParser} class.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class AliasesStringParserTest extends TestCase
 {

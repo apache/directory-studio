@@ -32,7 +32,6 @@ import org.eclipse.jface.viewers.Viewer;
  * This class is a wrapper for the preferences of the entry editor widget.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class EntryEditorWidgetPreferences
 {
@@ -102,54 +101,6 @@ public class EntryEditorWidgetPreferences
     {
         return BrowserCommonActivator.getDefault().getPreferenceStore().getBoolean(
             BrowserCommonConstants.PREFERENCE_ENTRYEDITOR_AUTO_EXPAND_FOLDED_ATTRIBUTES );
-    }
-
-
-    /**
-     * Checks if may attributes should be shown.
-     * 
-     * @return true, if may attributes should be shown
-     */
-    public boolean isShowMayAttributes()
-    {
-        return BrowserCommonActivator.getDefault().getPreferenceStore().getBoolean(
-            BrowserCommonConstants.PREFERENCE_ENTRYEDITOR_SHOW_MAY_ATTRIBUTES );
-    }
-
-
-    /**
-     * Checks if must attributes should be shown.
-     * 
-     * @return true, if must attributes should be shown
-     */
-    public boolean isShowMustAttributes()
-    {
-        return BrowserCommonActivator.getDefault().getPreferenceStore().getBoolean(
-            BrowserCommonConstants.PREFERENCE_ENTRYEDITOR_SHOW_MUST_ATTRIBUTES );
-    }
-
-
-    /**
-     * Checks if object class attribute should be shown.
-     * 
-     * @return true, if object class attribute should be shown
-     */
-    public boolean isShowObjectClassAttribute()
-    {
-        return BrowserCommonActivator.getDefault().getPreferenceStore().getBoolean(
-            BrowserCommonConstants.PREFERENCE_ENTRYEDITOR_SHOW_OBJECTCLASS_ATTRIBUTES );
-    }
-
-
-    /**
-     * Checks if operational attributes should be shown.
-     * 
-     * @return true, if operational attributes should be shown
-     */
-    public boolean isShowOperationalAttributes()
-    {
-        return BrowserCommonActivator.getDefault().getPreferenceStore().getBoolean(
-            BrowserCommonConstants.PREFERENCE_ENTRYEDITOR_SHOW_OPERATIONAL_ATTRIBUTES );
     }
 
 

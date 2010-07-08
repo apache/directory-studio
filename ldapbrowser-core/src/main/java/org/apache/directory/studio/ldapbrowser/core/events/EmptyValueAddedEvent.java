@@ -32,7 +32,6 @@ import org.apache.directory.studio.ldapbrowser.core.model.IValue;
  * An EmptyValueAddedEvent indicates that an empty {@link IValue} was added to an {@link IEntry}.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class EmptyValueAddedEvent extends EntryModificationEvent
 {

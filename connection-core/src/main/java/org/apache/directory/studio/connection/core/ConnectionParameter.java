@@ -31,7 +31,6 @@ import java.util.UUID;
  * It is used to make connections persistent.
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class ConnectionParameter
 {
@@ -40,7 +39,6 @@ public class ConnectionParameter
      * Enum for the used encryption method.
      * 
      * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
-     * @version $Rev$, $Date$
      */
     public enum EncryptionMethod
     {
@@ -59,7 +57,6 @@ public class ConnectionParameter
      * Enum for the used authentication method.
      * 
      * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
-     * @version $Rev$, $Date$
      */
     public enum AuthenticationMethod
     {

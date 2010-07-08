@@ -33,7 +33,6 @@ import org.eclipse.swt.widgets.Shell;
  * The IValueEditor implementation of this plugin.
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class ACIItemValueEditor extends AbstractDialogStringValueEditor
 {

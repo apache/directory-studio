@@ -34,7 +34,6 @@ import org.eclipse.swt.widgets.Shell;
  * Dialog that prompts a user to delete items in the browser tree.
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class DeleteDialog extends MessageDialog
 {

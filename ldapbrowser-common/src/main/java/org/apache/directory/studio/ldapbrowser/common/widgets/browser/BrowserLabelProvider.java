@@ -59,7 +59,6 @@ import org.eclipse.ui.PlatformUI;
  * the browser widget.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class BrowserLabelProvider extends LabelProvider implements IFontProvider, IColorProvider
 {
@@ -297,7 +296,7 @@ public class BrowserLabelProvider extends LabelProvider implements IFontProvider
             }
             else
             {
-                return getImageByObjectClass( entry );
+                return BrowserLabelProvider.getImageByObjectClass( entry );
             }
         }
         else if ( obj instanceof BrowserEntryPage )
@@ -336,7 +335,7 @@ public class BrowserLabelProvider extends LabelProvider implements IFontProvider
         {
             ISearchResult sr = ( ISearchResult ) obj;
             IEntry entry = sr.getEntry();
-            return getImageByObjectClass( entry );
+            return BrowserLabelProvider.getImageByObjectClass( entry );
         }
         else if ( obj instanceof StudioRunnableWithProgress )
         {
@@ -399,7 +398,16 @@ public class BrowserLabelProvider extends LabelProvider implements IFontProvider
     }
 
 
-    private Image getImageByObjectClass( IEntry entry )
+    /**
+     * Gets the image associated with the entry based 
+     * on the value of its 'objectClass' attribute.
+     *
+     * @param entry
+     *      the entry
+     * @return
+     *      the image associated with then entry
+     */
+    public static Image getImageByObjectClass( IEntry entry )
     {
         Schema schema = entry.getBrowserConnection().getSchema();
         Collection<ObjectClassDescription> ocds = entry.getObjectClassDescriptions();

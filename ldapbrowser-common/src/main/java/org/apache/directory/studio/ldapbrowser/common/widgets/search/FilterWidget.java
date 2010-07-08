@@ -50,7 +50,6 @@ import org.eclipse.swt.widgets.Composite;
  * a filter and a button to open a {@link FilterDialog}.
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class FilterWidget extends BrowserWidget
 {

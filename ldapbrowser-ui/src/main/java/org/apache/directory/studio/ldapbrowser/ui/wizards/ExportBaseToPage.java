@@ -39,7 +39,6 @@ import org.eclipse.swt.widgets.Composite;
  * This class is a base implementation of the page to select the target export file.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public abstract class ExportBaseToPage extends WizardPage
 {
@@ -79,7 +78,6 @@ public abstract class ExportBaseToPage extends WizardPage
     {
         boolean ok = true;
         File file = new File( fileBrowserWidget.getFilename() );
-        File fileDirectory = file.getParentFile();
         if ( "".equals( fileBrowserWidget.getFilename() ) ) //$NON-NLS-1$
         {
             setErrorMessage( null );
@@ -110,12 +108,6 @@ public abstract class ExportBaseToPage extends WizardPage
                 Messages.getString( "ExportBaseToPage.ErrorDirectoryNotWritable" ), new String[] { getFileType() } ) ); //$NON-NLS-1$
             ok = false;
         }
-        else if ( !file.exists() && ( fileDirectory == null || !fileDirectory.canWrite() ) )
-        {
-            setErrorMessage( NLS.bind(
-                Messages.getString( "ExportBaseToPage.ErrorDirectoryNotWritable" ), new String[] { getFileType() } ) ); //$NON-NLS-1$
-            ok = false;
-        }
 
         if ( ok )
         {
@@ -132,7 +124,8 @@ public abstract class ExportBaseToPage extends WizardPage
     public void createControl( Composite composite )
     {
         // Export file
-        BaseWidgetUtils.createLabel( composite, getFileType() + Messages.getString( "ExportBaseToPage.File" ), 1 ); //$NON-NLS-1$
+        BaseWidgetUtils.createLabel( composite, NLS.bind(
+            Messages.getString( "ExportBaseToPage.FileTypeColon" ), getFileType() ), 1 ); //$NON-NLS-1$
         fileBrowserWidget = new FileBrowserWidget( NLS.bind(
             Messages.getString( "ExportBaseToPage.SelectFileType" ), new String[] { getFileType() } ), getExtensions(), //$NON-NLS-1$
             FileBrowserWidget.TYPE_SAVE );

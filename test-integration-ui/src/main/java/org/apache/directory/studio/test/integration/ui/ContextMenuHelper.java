@@ -20,7 +20,7 @@
 package org.apache.directory.studio.test.integration.ui;
 
 
-import static org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory.withMnemonic;
+import static org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory.withRegex;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.instanceOf;
 
@@ -61,7 +61,8 @@ public class ContextMenuHelper
         final Matcher<?>[] matchers = new Matcher<?>[texts.length];
         for ( int i = 0; i < texts.length; i++ )
         {
-            matchers[i] = allOf( instanceOf( MenuItem.class ), withMnemonic( texts[i] ) );
+            // matchers[i] = allOf( instanceOf( MenuItem.class ), withMnemonic( texts[i] ) );
+            matchers[i] = allOf( instanceOf( MenuItem.class ), withRegex( texts[i] ) );
         }
 
         // show

@@ -34,7 +34,6 @@ import org.apache.directory.studio.schemaeditor.model.ObjectClassImpl;
  * This class tests the DifferenceEngine class.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class DifferenceEngineTest extends TestCase
 {

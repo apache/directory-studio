@@ -24,7 +24,6 @@ package org.apache.directory.studio.apacheds.configuration.model;
  * This interface represents a Server Configuration.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public interface ServerConfiguration
 {

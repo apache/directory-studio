@@ -1,5 +1,83 @@
 Release Notes
 
+Apache Directory Studio 1.5.3
+
+Bug
+  * [DIRSTUDIO-424] - Canceling a search gives an error sometimes
+  * [DIRSTUDIO-585] - Do not modify the current thread's ClassLoader; or reset it afterwards
+  * [DIRSTUDIO-608] - Non-translated string in the French version of the "Export Connections" wizard
+  * [DIRSTUDIO-609] - Studio "hangs" when performing large search that is to be displayed
+  * [DIRSTUDIO-610] - Unable to export to "My Documents"
+  * [DIRSTUDIO-611] - Unable to add a third party Entry Editor
+  * [DIRSTUDIO-613] - Certificate with empty common name (cn) appears almost hidden in the preference page table view
+  * [DIRSTUDIO-614] - The 'Installed JREs' preference page is no longer displayed in Apache Directory Studio's preferences
+  * [DIRSTUDIO-615] - Various typos in the french translation
+  * [DIRSTUDIO-616] - Entry Editor Manager does not ensure that the entry's attributes are initialized (loaded) before testing and opening editors
+  * [DIRSTUDIO-617] - Tabular and LDIF Entry Single-Tab Editors should warn the user when modifications are pending (auto-save disabled) and their input is changed
+  * [DIRSTUDIO-623] - NPE in the ModificationLogsViewUniversalListener under rare circumstances when selecting a connection
+  * [DIRSTUDIO-624] - NPE in the SearchLogsViewUniversalListener.java under rare circumstances when selecting a connection
+  * [DIRSTUDIO-627] - Can't open a relatively big LDIF file
+  * [DIRSTUDIO-629] - Entry editor tab is activated when executing a search
+  * [DIRSTUDIO-632] - Endless event loop
+  * [DIRSTUDIO-637] - copy/paste of attributes no longer works
+  * [DIRSTUDIO-639] - Exception when navigation history contains bookmarks of an deleted connection
+  * [DIRSTUDIO-642] - ADS does not remember the certificate if two certificates are used for the same server
+  * [DIRSTUDIO-643] - Missing modules when importing into Eclipse as existing project
+  
+Improvement
+  * [DIRSTUDIO-612] - The 'Properties' item in the context menu of the default Entry Editor should be enabled and linked to the entry properties when no particular attribute is selected in the table
+  * [DIRSTUDIO-618] - The icon of the entry in the 'Outline' view for the LDIF Entry Editor should be the same as the one in the 'LDAP Browser' view
+  * [DIRSTUDIO-619] - Outline view for the LDIF Entry Editor should display by default the nodes underneath the entry
+  * [DIRSTUDIO-625] - Add Connection Context in the LDAP Browser Window
+  * [DIRSTUDIO-633] - Delete all searches context menu
+  * [DIRSTUDIO-634] - Add search context menu entry / simplify search
+  * [DIRSTUDIO-638] - Improve the way we ask for operational attributes
+  
+Task
+  * [DIRSTUDIO-635] - Update Eclipse dependencies to version 3.5.2
+  * [DIRSTUDIO-636] - Update copyright in spash screen to 2010
+  * [DIRSTUDIO-640] - Support for server.xml file of Apache DS version 1.5.6
+  * [DIRSTUDIO-641] - Integrate Apache DS version 1.5.6 in the Apache DS plugin
+
+
+--------------------------------------------------------------------------------
+
+Apache Directory Studio 1.5.2
+
+Bug
+  * [DIRSTUDIO-601] - Unable to start an Apache DS version 1.5.5 server
+  * [DIRSTUDIO-602] - The 'Perform Search/Search Again' button in the Search Result Editor does not work correctly
+  * [DIRSTUDIO-603] - Error browsing/entering rfc2307 compliant host entry
+  
+Task
+  * [DIRSTUDIO-605] - Update the help content of the configuration editor for version 1.5.5 of Apache DS
+
+
+--------------------------------------------------------------------------------
+
+Apache Directory Studio 1.5.1
+
+Bug
+  * [DIRSTUDIO-576] - Context menu not shown after a right-click on a non-cached entry
+  * [DIRSTUDIO-577] - LDIF editor doesn't notify Eclipse that the LDIF file has changed when saving
+  * [DIRSTUDIO-580] - Setting "Validate certificates for secure LDAP connections" is not saved
+  * [DIRSTUDIO-587] - UI flickers on quick search
+  * [DIRSTUDIO-589] - InvalidNameException: unexpected token for user ids starting with hash sign
+  * [DIRSTUDIO-590] - The 'Quick Search' string has not been externalized in the LDAP Browser view
+  * [DIRSTUDIO-591] - Error reading objects with # in DN
+  * [DIRSTUDIO-592] - LDAP Browser view is refreshed twice after the initialization of the children of an entry
+  * [DIRSTUDIO-593] - Missing string and typo in the french translation of the Password Editor
+  * [DIRSTUDIO-594] - The 'Show new password details' checkbox does not display the 'Enter new password' text field as clear text when checked in the Password Editor
+  * [DIRSTUDIO-596] - Various typos in the french translation
+  * [DIRSTUDIO-597] - Modification sent to the server while browsing through the DIT and refreshing entries
+  * [DIRSTUDIO-598] - Base64 encoded DN marked as invalid in LDIF editor
+  
+Improvement
+  * [DIRSTUDIO-595] - The icon of the entry in the 'Outline' view should be the same as the one in the 'LDAP Browser' view
+
+
+--------------------------------------------------------------------------------
+
 Apache Directory Studio 1.5.0
 
 Sub-task

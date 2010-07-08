@@ -45,7 +45,6 @@ import org.eclipse.ui.IActionBars;
  * manage entries, searches and bookmarks.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class BrowserWidget extends ViewFormWidget
 {

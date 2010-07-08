@@ -33,7 +33,6 @@ import org.eclipse.ui.IWorkbenchWindowActionDelegate;
  * This action launches the SwitchSchemaPresentationToHierarchicalAction.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class SwitchSchemaPresentationToHierarchicalAction extends Action implements IWorkbenchWindowActionDelegate
 {

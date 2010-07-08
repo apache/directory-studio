@@ -35,7 +35,6 @@ import org.eclipse.swt.graphics.Image;
  * the connection widget.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class ConnectionLabelProvider extends LabelProvider
 {

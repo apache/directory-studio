@@ -44,7 +44,6 @@ import org.eclipse.ui.IPerspectiveFactory;
  * plugin. It is responsible for creating the perspective layout.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class BrowserPerspective implements IPerspectiveFactory
 {

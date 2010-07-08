@@ -36,7 +36,6 @@ import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
  * The EntryEditorUniversalListener manages all events for the entry editor.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class EntryEditorUniversalListener extends EntryEditorWidgetUniversalListener
 {

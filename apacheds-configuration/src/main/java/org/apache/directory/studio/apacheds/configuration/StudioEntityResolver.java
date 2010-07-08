@@ -37,7 +37,6 @@ import org.xml.sax.SAXException;
  * that are passed to the {@link ApacheDSConfigurationContentDescriber}.
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class StudioEntityResolver implements EntityResolver
 {

@@ -46,7 +46,6 @@ import org.eclipse.core.runtime.jobs.Job;
  * Progress Monitor with active cancellation capabilities.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class StudioProgressMonitor extends ProgressMonitorWrapper
 {
@@ -394,7 +393,6 @@ public class StudioProgressMonitor extends ProgressMonitorWrapper
      * CancelEvent.
      *
      * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
-     * @version $Rev$, $Date$
      */
     public static class CancelEvent
     {
@@ -427,7 +425,6 @@ public class StudioProgressMonitor extends ProgressMonitorWrapper
      * CancelListener.
      *
      * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
-     * @version $Rev$, $Date$
      */
     public interface CancelListener
     {

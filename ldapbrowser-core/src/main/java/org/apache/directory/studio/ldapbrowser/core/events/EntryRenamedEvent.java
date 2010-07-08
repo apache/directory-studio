@@ -29,7 +29,6 @@ import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
  * An EntryRenamedEvent indicates that an {@link IEntry} was renamed in the underlying directory.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class EntryRenamedEvent extends EntryModificationEvent
 {

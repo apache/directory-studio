@@ -43,7 +43,6 @@ import org.eclipse.ui.part.ViewPart;
  * This class implements the Hierarchy View.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class HierarchyView extends ViewPart
 {

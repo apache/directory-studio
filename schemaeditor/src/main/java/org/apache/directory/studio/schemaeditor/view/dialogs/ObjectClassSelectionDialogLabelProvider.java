@@ -34,7 +34,6 @@ import org.eclipse.swt.graphics.Image;
  * This class is the Label Provider for the Object Classes Viewer of the ObjectClassSelectionDialog.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class ObjectClassSelectionDialogLabelProvider extends LabelProvider
 {

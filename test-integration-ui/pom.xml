@@ -23,11 +23,10 @@
   <parent>
     <groupId>org.apache.directory.studio</groupId>
     <artifactId>parent</artifactId>
-    <version>1.5.1-SNAPSHOT</version>
+    <version>1.5.4-SNAPSHOT</version>
   </parent>
   
   <artifactId>test.integration.ui</artifactId>
-  <version>${test.integration.ui.version}</version>
   <name>Apache Directory Studio UI Integration Tests</name>
   <packaging>jar</packaging>
 
@@ -170,6 +169,7 @@
                     
                     <!-- launch the tests -->
                     <java fork="true" failonerror="true" classname="org.eclipse.core.launcher.Main">
+                      <jvmarg line="-Xmx1024m -XX:MaxPermSize=512m"/>
                       <arg line="${integration-cmdline-params} -nl en -debug debugoptions -application org.eclipse.swtbot.eclipse.junit4.headless.swtbottestapplication -data target/test-sandbox/workspace formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,target/test-sandbox/workspace/test-result.xml -testPluginName org.apache.directory.studio.test.integration.ui -className org.apache.directory.studio.test.integration.ui.AutomatedSuite"/>
                       <classpath>
                         <fileset dir="target/test-sandbox">
@@ -264,6 +264,7 @@
  org.apache.directory.studio.ldapbrowser.common,
  org.apache.directory.studio.ldapbrowser.core,
  org.apache.directory.studio.ldapbrowser.ui,
+ org.apache.directory.studio.apacheds,
  org.junit4,
  org.eclipse.swtbot.junit4_x,
  org.eclipse.swtbot.swt.finder,
@@ -302,11 +303,6 @@
   <dependencies>
     <dependency>
       <groupId>org.apache.directory.server</groupId>
-      <artifactId>apacheds-server-unit</artifactId>
-      <version>1.5.5</version>
-    </dependency> 
-    <dependency>
-      <groupId>org.apache.directory.server</groupId>
       <artifactId>apacheds-core-integ</artifactId>
       <version>1.5.5</version>
     </dependency> 
@@ -318,13 +314,13 @@
     <dependency>
       <groupId>org.apache.directory.shared</groupId>
       <artifactId>shared-ldap</artifactId>
-      <version>0.9.15</version>
+      <version>0.9.17</version>
       <scope>provided</scope>
     </dependency> 
     <dependency>
       <groupId>org.apache.directory.shared</groupId>
       <artifactId>shared-asn1</artifactId>
-      <version>0.9.15</version>
+      <version>0.9.17</version>
       <scope>provided</scope>
     </dependency> 
     <dependency>
@@ -370,6 +366,11 @@
       <artifactId>ldapbrowser.ui</artifactId>
       <scope>provided</scope>
     </dependency>
+    <dependency>
+      <groupId>org.apache.directory.studio</groupId>
+      <artifactId>apacheds</artifactId>
+      <scope>provided</scope>
+    </dependency>
     
     <dependency>
       <groupId>org.eclipse.swtbot.swt</groupId>
@@ -405,6 +406,11 @@
     <dependency>
       <groupId>org.eclipse.core</groupId>
       <artifactId>runtime</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.core</groupId>
+      <artifactId>jobs</artifactId>
       <scope>provided</scope>
     </dependency>
     <dependency>

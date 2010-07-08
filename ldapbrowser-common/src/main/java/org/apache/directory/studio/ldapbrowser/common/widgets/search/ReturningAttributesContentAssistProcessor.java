@@ -45,7 +45,6 @@ import org.eclipse.jface.text.contentassist.IContextInformationValidator;
  * into separate regions.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class ReturningAttributesContentAssistProcessor implements ISubjectControlContentAssistProcessor
 {

@@ -38,7 +38,6 @@ import org.apache.directory.studio.schemaeditor.model.Schema;
  * It is used to generate the difference between two Objects.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class DifferenceEngine
 {

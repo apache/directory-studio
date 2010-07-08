@@ -24,7 +24,6 @@ package org.apache.directory.studio.schemaeditor.model.schemachecker;
  * Common interface for the all the schema errors.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public interface SchemaError extends SchemaCheckerElement
 {

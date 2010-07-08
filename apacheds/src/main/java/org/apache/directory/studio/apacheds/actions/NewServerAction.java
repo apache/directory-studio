@@ -37,7 +37,6 @@ import org.eclipse.ui.PlatformUI;
  * This class implements the new server action.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class NewServerAction extends Action implements IWorkbenchWindowActionDelegate
 {

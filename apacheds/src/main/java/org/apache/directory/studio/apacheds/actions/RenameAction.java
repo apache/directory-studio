@@ -60,7 +60,6 @@ import org.eclipse.ui.actions.TextActionHandler;
  * This class implements the open action for a server.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class RenameAction extends Action implements IWorkbenchWindowActionDelegate
 {

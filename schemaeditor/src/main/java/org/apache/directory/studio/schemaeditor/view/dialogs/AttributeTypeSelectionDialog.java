@@ -58,7 +58,6 @@ import org.eclipse.ui.PlatformUI;
  * This class is Attribute Type Selection Dialog, that allows user to select an attribute type.
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class AttributeTypeSelectionDialog extends Dialog
 {
@@ -110,7 +109,7 @@ public class AttributeTypeSelectionDialog extends Dialog
         chooseLabel.setText( Messages.getString( "AttributeTypeSelectionDialog.ChooseAType" ) ); //$NON-NLS-1$
         chooseLabel.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
 
-        searchText = new Text( composite, SWT.BORDER );
+        searchText = new Text( composite, SWT.BORDER | SWT.SEARCH );
         searchText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
         searchText.addModifyListener( new ModifyListener()
         {
@@ -220,7 +219,8 @@ public class AttributeTypeSelectionDialog extends Dialog
      */
     protected void createButtonsForButtonBar( Composite parent )
     {
-        chooseButton = createButton( parent, IDialogConstants.OK_ID, "Choose", true ); //$NON-NLS-1$
+        chooseButton = createButton( parent, IDialogConstants.OK_ID, Messages
+            .getString( "AttributeTypeSelectionDialog.Choose" ), true ); //$NON-NLS-1$
         createButton( parent, IDialogConstants.CANCEL_ID, IDialogConstants.CANCEL_LABEL, false );
 
         StructuredSelection selection = ( StructuredSelection ) attributeTypesTableViewer.getSelection();

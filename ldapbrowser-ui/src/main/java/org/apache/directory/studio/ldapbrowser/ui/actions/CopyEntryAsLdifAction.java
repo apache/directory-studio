@@ -45,7 +45,6 @@ import org.eclipse.jface.resource.ImageDescriptor;
  * This Action copies entry(ies) as LDIF.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class CopyEntryAsLdifAction extends CopyEntryAsAction
 {

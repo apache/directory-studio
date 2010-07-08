@@ -45,7 +45,6 @@ import org.eclipse.core.runtime.IPath;
  * It is used to store all the servers used in the plugin.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class ServersHandler
 {

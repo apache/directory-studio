@@ -23,11 +23,10 @@
 	<parent>
 		<groupId>org.apache.directory.studio</groupId>
 		<artifactId>parent</artifactId>
-		<version>1.5.1-SNAPSHOT</version>
+		<version>1.5.4-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>apacheds-launcher</artifactId>
-	<version>${apacheds.launcher.version}</version>
 	<name>Apache Directory Studio Apache DS Launcher</name>
 	<packaging>jar</packaging>
 
@@ -52,16 +51,6 @@
 					<projectnatures>
 						<projectnature>org.eclipse.jdt.core.javanature</projectnature>
 					</projectnatures>
-				</configuration>
-			</plugin>
-			<!-- <!> <!> <!> WARNING <!> <!> <!> -->
-			<!-- The following plugin configuration needs to be removed before the next release. -->
-			<!-- It has only been added to please the continuum deployment. -->
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-deploy-plugin</artifactId>
-				<configuration>
-				    <skip>true</skip>
 				</configuration>
 			</plugin>
 		</plugins>

@@ -25,7 +25,6 @@ package org.apache.directory.studio.ldapbrowser.core.model;
  * A tagging interface for comparable entries.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public interface ICompareableEntry extends IEntry
 {

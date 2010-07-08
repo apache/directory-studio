@@ -37,7 +37,6 @@ import org.eclipse.jface.viewers.LabelProvider;
  * entries and inconsistent entries.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class BrowserViewLabelDecorator extends LabelProvider implements ILightweightLabelDecorator
 {

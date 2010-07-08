@@ -56,7 +56,6 @@ import org.eclipse.swt.widgets.Composite;
  * The NewEntryTypeWizardPage is used to choose the entry creation method.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class NewEntryTypeWizardPage extends WizardPage implements WidgetModifyListener, SelectionListener
 {

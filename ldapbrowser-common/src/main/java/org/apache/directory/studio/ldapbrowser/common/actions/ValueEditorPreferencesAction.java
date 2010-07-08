@@ -32,7 +32,6 @@ import org.eclipse.ui.dialogs.PreferencesUtil;
  * This Action opens the Value Editors Preference Page.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class ValueEditorPreferencesAction extends Action
 {

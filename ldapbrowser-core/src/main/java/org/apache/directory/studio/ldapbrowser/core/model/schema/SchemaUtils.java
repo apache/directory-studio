@@ -51,7 +51,6 @@ import org.eclipse.osgi.util.NLS;
  * Utility class for Schema.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class SchemaUtils
 {

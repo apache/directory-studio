@@ -36,7 +36,6 @@ import org.eclipse.jface.viewers.IStructuredSelection;
  * selection (org.eclipse.jface.viewers.ISelection).
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public abstract class SelectionUtils
 {

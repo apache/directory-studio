@@ -24,7 +24,6 @@ package org.apache.directory.studio.ldapbrowser.core.model;
  * A DirectoryTypeDetector detects the directory type.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public interface DirectoryTypeDetector
 {

@@ -31,8 +31,9 @@ import org.apache.directory.studio.ldapbrowser.core.utils.CompoundModification;
 
 
 /**
- * Special paste action to copy the values of a copied attr-val to another
- * attribute.
+ * This class implements the paste action for the search result editor. 
+ * It copies the value af a copied attribute-value to another attribute.
+ * It does not invoke an UpdateEntryRunnable but only updates the model.
  */
 public class SearchResultEditorPasteAction extends PasteAction
 {
@@ -92,6 +93,8 @@ public class SearchResultEditorPasteAction extends PasteAction
                 newValues[v] = new Value( attribute, values[v].getRawValue() );
             }
 
+            // only modify the model
+            // the modification at the directory is done by SearchResultEditor.entryUpdateListener
             new CompoundModification().createValues( entry, newValues );
         }
     }

@@ -39,7 +39,6 @@ import org.eclipse.osgi.util.NLS;
  * already processed referrals. 
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class ReferralsInfo
 {

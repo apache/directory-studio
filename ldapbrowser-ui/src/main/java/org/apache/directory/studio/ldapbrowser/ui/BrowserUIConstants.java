@@ -25,7 +25,6 @@ package org.apache.directory.studio.ldapbrowser.ui;
  * This class contains all the constants used by the Browser UI Plugin
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public interface BrowserUIConstants
 {
@@ -114,7 +113,8 @@ public interface BrowserUIConstants
     public static final String IMG_LOCATE_BOOKMARK_IN_DIT = "resources/icons/locate_bookmark_in_dit.gif"; //$NON-NLS-1$
     public static final String IMG_LOCATE_ENTRY_IN_DIT = "resources/icons/locate_entry_in_dit.gif"; //$NON-NLS-1$
     public static final String IMG_OPEN_SEARCHRESULT = "resources/icons/open_searchresult.gif"; //$NON-NLS-1$
-    public static final String IMG_BROWSER_ENTRYEDITOR = "resources/icons/browser_entryeditor.gif"; //$NON-NLS-1$
+    public static final String IMG_BROWSER_SINGLETAB_ENTRYEDITOR = "resources/icons/browser_singletab_entry_editor.gif"; //$NON-NLS-1$
+    public static final String IMG_BROWSER_MULTITAB_ENTRYEDITOR = "resources/icons/browser_multitab_entry_editor.gif"; //$NON-NLS-1$
     public static final String IMG_ATTRIBUTE = "resources/icons/attribute.gif"; //$NON-NLS-1$
     public static final String IMG_VALUE = "resources/icons/value.gif"; //$NON-NLS-1$
     public static final String IMG_COPY_LDIF = "resources/icons/copy_ldif.gif"; //$NON-NLS-1$

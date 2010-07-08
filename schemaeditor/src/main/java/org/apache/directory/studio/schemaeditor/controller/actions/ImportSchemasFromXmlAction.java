@@ -37,7 +37,6 @@ import org.eclipse.ui.PlatformUI;
  * This action launches the ImportSchemasFromXmlWizard.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class ImportSchemasFromXmlAction extends Action implements IWorkbenchWindowActionDelegate
 {

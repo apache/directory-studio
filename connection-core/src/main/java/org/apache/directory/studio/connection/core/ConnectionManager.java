@@ -47,7 +47,6 @@ import org.eclipse.core.runtime.Status;
  * This class is used to manage {@link Connection}s.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class ConnectionManager implements ConnectionUpdateListener
 {

@@ -21,15 +21,17 @@
 package org.apache.directory.studio.ldapbrowser.core.model.impl;
 
 
+import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.IQuickSearch;
+import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
 
 
 /**
  * Default implementation of IQuickSearch.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class QuickSearch extends Search implements IQuickSearch
 {
@@ -47,6 +49,29 @@ public class QuickSearch extends Search implements IQuickSearch
     public QuickSearch( IEntry searchBaseEntry )
     {
         this.searchBaseEntry = searchBaseEntry;
+    }
+
+
+    /**
+     * Instantiates a new quick search.
+     * 
+     * @param searchBaseEntry the search base entry
+     * @param connection the connection
+     */
+    public QuickSearch( IEntry searchBaseEntry, IBrowserConnection connection )
+    {
+        this.searchBaseEntry = searchBaseEntry;
+        this.connection = connection;
+
+        // set default parameter
+        getSearchParameter().setName( BrowserCoreMessages.model__quick_search_name );
+        getSearchParameter().setSearchBase( searchBaseEntry.getDn() );
+        getSearchParameter().setReturningAttributes( ISearch.NO_ATTRIBUTES );
+        getSearchParameter().setAliasesDereferencingMethod( connection.getAliasesDereferencingMethod() );
+        getSearchParameter().setReferralsHandlingMethod( connection.getReferralsHandlingMethod() );
+        getSearchParameter().setCountLimit( connection.getCountLimit() );
+        getSearchParameter().setTimeLimit( connection.getTimeLimit() );
+        getSearchParameter().setScope( SearchScope.SUBTREE );
     }
 
 

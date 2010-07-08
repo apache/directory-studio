@@ -40,7 +40,6 @@ import org.eclipse.jface.viewers.ViewerSorter;
  * The BrowserSorter implements the sorter for the browser widget. 
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class BrowserSorter extends ViewerSorter
 {
@@ -355,48 +354,63 @@ public class BrowserSorter extends ViewerSorter
      */
     private int compareRdnValues( IEntry entry1, IEntry entry2 )
     {
-        Rdn rdn1 = entry1.getRdn();
-        Rdn rdn2 = entry2.getRdn();
-
-        if ( ( rdn1 == null || rdn1.getValue() == null || "".equals( rdn1.getValue() ) ) //$NON-NLS-1$
-            && ( rdn2 == null || rdn2.getValue() == null || "".equals( rdn2.getValue() ) ) ) //$NON-NLS-1$
+        if ( ( entry1 == null ) && ( entry2 == null ) )
         {
             return equal();
         }
-        else if ( ( rdn1 == null || rdn1.getValue() == null || "".equals( rdn1.getValue() ) ) //$NON-NLS-1$
-            && !( rdn2 == null || rdn2.getValue() == null || "".equals( rdn2.getValue() ) ) ) //$NON-NLS-1$
+        else if ( ( entry1 != null ) && ( entry2 == null ) )
         {
             return greaterThan();
         }
-        else if ( !( rdn1 == null || rdn1.getValue() == null || "".equals( rdn1.getValue() ) ) //$NON-NLS-1$
-            && ( rdn2 == null || rdn2.getValue() == null || "".equals( rdn2.getValue() ) ) ) //$NON-NLS-1$
+        else if ( ( entry1 == null ) && ( entry2 != null ) )
         {
             return lessThan();
         }
-
-        String rdn1Value = ( String ) rdn1.getUpValue();
-        String rdn2Value = ( String ) rdn2.getUpValue();
-        if ( rdn1Value.matches( "\\d*" ) && !rdn2Value.matches( "\\d*" ) ) //$NON-NLS-1$ //$NON-NLS-2$
-        {
-            // return lessThan();
-            return compare( rdn1Value, rdn2Value );
-        }
-        else if ( !rdn1Value.matches( "\\d*" ) && rdn2Value.matches( "\\d*" ) ) //$NON-NLS-1$ //$NON-NLS-2$
-        {
-            // return greaterThan();
-            return compare( rdn1Value, rdn2Value );
-        }
-        else if ( rdn2Value.matches( "\\d*" ) && rdn2Value.matches( "\\d*" ) ) //$NON-NLS-1$ //$NON-NLS-2$
-        {
-            BigInteger bi1 = new BigInteger( rdn1Value );
-            BigInteger bi2 = new BigInteger( rdn2Value );
-            return compare( bi1, bi2 );
-            // return Integer.parseInt(rdn1.getValue()) -
-            // Integer.parseInt(rdn2.getValue());
-        }
         else
         {
-            return compare( rdn1Value, rdn2Value );
+            Rdn rdn1 = entry1.getRdn();
+            Rdn rdn2 = entry2.getRdn();
+
+            if ( ( rdn1 == null || rdn1.getValue() == null || "".equals( rdn1.getValue() ) ) //$NON-NLS-1$
+                && ( rdn2 == null || rdn2.getValue() == null || "".equals( rdn2.getValue() ) ) ) //$NON-NLS-1$
+            {
+                return equal();
+            }
+            else if ( ( rdn1 == null || rdn1.getValue() == null || "".equals( rdn1.getValue() ) ) //$NON-NLS-1$
+                && !( rdn2 == null || rdn2.getValue() == null || "".equals( rdn2.getValue() ) ) ) //$NON-NLS-1$
+            {
+                return greaterThan();
+            }
+            else if ( !( rdn1 == null || rdn1.getValue() == null || "".equals( rdn1.getValue() ) ) //$NON-NLS-1$
+                && ( rdn2 == null || rdn2.getValue() == null || "".equals( rdn2.getValue() ) ) ) //$NON-NLS-1$
+            {
+                return lessThan();
+            }
+
+            String rdn1Value = ( String ) rdn1.getUpValue();
+            String rdn2Value = ( String ) rdn2.getUpValue();
+            if ( rdn1Value.matches( "\\d*" ) && !rdn2Value.matches( "\\d*" ) ) //$NON-NLS-1$ //$NON-NLS-2$
+            {
+                // return lessThan();
+                return compare( rdn1Value, rdn2Value );
+            }
+            else if ( !rdn1Value.matches( "\\d*" ) && rdn2Value.matches( "\\d*" ) ) //$NON-NLS-1$ //$NON-NLS-2$
+            {
+                // return greaterThan();
+                return compare( rdn1Value, rdn2Value );
+            }
+            else if ( rdn2Value.matches( "\\d*" ) && rdn2Value.matches( "\\d*" ) ) //$NON-NLS-1$ //$NON-NLS-2$
+            {
+                BigInteger bi1 = new BigInteger( rdn1Value );
+                BigInteger bi2 = new BigInteger( rdn2Value );
+                return compare( bi1, bi2 );
+                // return Integer.parseInt(rdn1.getValue()) -
+                // Integer.parseInt(rdn2.getValue());
+            }
+            else
+            {
+                return compare( rdn1Value, rdn2Value );
+            }
         }
     }
 

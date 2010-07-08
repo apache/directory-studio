@@ -33,7 +33,6 @@ import org.eclipse.jface.wizard.WizardDialog;
  * This Action opens the New Batch Operation Dialog.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class NewBatchOperationAction extends BrowserAction
 {

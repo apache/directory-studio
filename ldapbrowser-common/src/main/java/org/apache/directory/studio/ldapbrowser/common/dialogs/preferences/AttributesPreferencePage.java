@@ -45,7 +45,6 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
  * The AttributesPreferencePage contains general settings for attributes.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class AttributesPreferencePage extends PreferencePage implements IWorkbenchPreferencePage
 {

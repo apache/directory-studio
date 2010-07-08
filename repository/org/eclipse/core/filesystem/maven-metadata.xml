@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?><metadata>
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata>
   <groupId>org.eclipse.core</groupId>
   <artifactId>filesystem</artifactId>
   <version>1.1.0-v20070606</version>
@@ -7,7 +8,8 @@
       <version>1.1.0-v20070606</version>
       <version>1.2.0.v20080604-1400</version>
       <version>1.2.0.v20090507</version>
+      <version>1.2.1.R35x_v20091203-1235</version>
     </versions>
-    <lastUpdated>20090819134053</lastUpdated>
+    <lastUpdated>20100318160026</lastUpdated>
   </versioning>
 </metadata>

@@ -62,7 +62,6 @@ import org.eclipse.swt.widgets.Composite;
  * for the browser widget.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class BrowserQuickSearchWidget
 {
@@ -293,16 +292,8 @@ public class BrowserQuickSearchWidget
 
         IBrowserConnection conn = entry.getBrowserConnection();
 
-        QuickSearch quickSearch = new QuickSearch( entry );
-        quickSearch.setName( "Quick Search" );
-        quickSearch.setBrowserConnection( conn );
-        quickSearch.setSearchBase( entry.getDn() );
-        quickSearch.setReturningAttributes( ISearch.NO_ATTRIBUTES );
-        quickSearch.setAliasesDereferencingMethod( conn.getAliasesDereferencingMethod() );
-        quickSearch.setReferralsHandlingMethod( conn.getReferralsHandlingMethod() );
-        quickSearch.setCountLimit( conn.getCountLimit() );
-        quickSearch.setTimeLimit( conn.getTimeLimit() );
-        quickSearch.setScope( quickSearchScopeButton.getSelection() ? SearchScope.SUBTREE : SearchScope.ONELEVEL );
+        QuickSearch quickSearch = new QuickSearch( entry, conn );
+        quickSearch.getSearchParameter().setScope( quickSearchScopeButton.getSelection() ? SearchScope.SUBTREE : SearchScope.ONELEVEL );
 
         StringBuffer filter = new StringBuffer();
         filter.append( "(" );
@@ -326,7 +317,7 @@ public class BrowserQuickSearchWidget
             filter.append( ")" );
         }
         filter.append( ")" );
-        quickSearch.setFilter( filter.toString() );
+        quickSearch.getSearchParameter().setFilter( filter.toString() );
 
         // set new quick search
         conn.getSearchManager().setQuickSearch( quickSearch );

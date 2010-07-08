@@ -48,7 +48,6 @@ import org.eclipse.ui.forms.widgets.Section;
  * matching rule description.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class MatchingRuleDescriptionDetailsPage extends SchemaDetailsPage
 {

@@ -45,7 +45,6 @@ import org.eclipse.swt.widgets.Display;
  * This class is used to set default preference values.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class BrowserCommonPreferencesInitializer extends AbstractPreferenceInitializer
 {
@@ -209,10 +208,6 @@ public class BrowserCommonPreferencesInitializer extends AbstractPreferenceIniti
         store.setDefault( BrowserCommonConstants.PREFERENCE_ENTRYEDITOR_ENABLE_FOLDING, true );
         store.setDefault( BrowserCommonConstants.PREFERENCE_ENTRYEDITOR_FOLDING_THRESHOLD, 10 );
         store.setDefault( BrowserCommonConstants.PREFERENCE_ENTRYEDITOR_AUTO_EXPAND_FOLDED_ATTRIBUTES, false );
-        store.setDefault( BrowserCommonConstants.PREFERENCE_ENTRYEDITOR_SHOW_OBJECTCLASS_ATTRIBUTES, true );
-        store.setDefault( BrowserCommonConstants.PREFERENCE_ENTRYEDITOR_SHOW_MUST_ATTRIBUTES, true );
-        store.setDefault( BrowserCommonConstants.PREFERENCE_ENTRYEDITOR_SHOW_MAY_ATTRIBUTES, true );
-        store.setDefault( BrowserCommonConstants.PREFERENCE_ENTRYEDITOR_SHOW_OPERATIONAL_ATTRIBUTES, true );
         store.setDefault( BrowserCommonConstants.PREFERENCE_ENTRYEDITOR_AUTOSAVE_SINGLE_TAB, true );
         store.setDefault( BrowserCommonConstants.PREFERENCE_ENTRYEDITOR_AUTOSAVE_MULTI_TAB, false );
         store.setDefault( BrowserCommonConstants.PREFERENCE_ENTRYEDITOR_OBJECTCLASS_AND_MUST_ATTRIBUTES_FIRST, true );

@@ -43,7 +43,6 @@ import org.eclipse.osgi.util.NLS;
  * The protected item values are always stored as raw string value.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class ProtectedItemWrapper
 {

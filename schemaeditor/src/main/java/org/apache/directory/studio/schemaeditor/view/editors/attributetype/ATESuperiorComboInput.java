@@ -30,7 +30,6 @@ import org.apache.directory.studio.schemaeditor.model.AttributeTypeImpl;
  * This class implements the Input of the Superior Combo of the Attribute Type Editor
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class ATESuperiorComboInput
 {

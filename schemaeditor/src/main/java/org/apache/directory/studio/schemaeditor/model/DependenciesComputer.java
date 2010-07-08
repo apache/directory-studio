@@ -36,7 +36,6 @@ import org.eclipse.osgi.util.NLS;
  * This class represents the DependenciesComputer.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class DependenciesComputer
 {
@@ -455,7 +454,6 @@ public class DependenciesComputer
      * This class represents the DependencyComputerException.
      *
      * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
-     * @version $Rev$, $Date$
      */
     public class DependencyComputerException extends Exception
     {

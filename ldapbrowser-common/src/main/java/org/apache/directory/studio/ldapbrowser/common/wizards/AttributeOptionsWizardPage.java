@@ -54,7 +54,6 @@ import org.eclipse.swt.widgets.Text;
  * and a preview field.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class AttributeOptionsWizardPage extends WizardPage
 {
@@ -524,7 +523,6 @@ public class AttributeOptionsWizardPage extends WizardPage
      * The class OptionLine is a wrapper for all input elements of an option.
      *
      * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
-     * @version $Rev$, $Date$
      */
     public class OptionLine
     {
@@ -725,7 +723,6 @@ public class AttributeOptionsWizardPage extends WizardPage
      * The class LangLine is a wrapper for all input elements of a language tag.
      *
      * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
-     * @version $Rev$, $Date$
      */
     public class LangLine
     {

@@ -45,13 +45,13 @@ import org.apache.directory.studio.apacheds.configuration.model.v152.ServerXmlIO
 import org.apache.directory.studio.apacheds.configuration.model.v153.ServerXmlIOV153;
 import org.apache.directory.studio.apacheds.configuration.model.v154.ServerXmlIOV154;
 import org.apache.directory.studio.apacheds.configuration.model.v155.ServerXmlIOV155;
+import org.apache.directory.studio.apacheds.configuration.model.v156.ServerXmlIOV156;
 
 
 /**
  * The activator class controls the plug-in life cycle.
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class ApacheDSConfigurationPlugin extends AbstractUIPlugin
 {
@@ -62,8 +62,8 @@ public class ApacheDSConfigurationPlugin extends AbstractUIPlugin
     private PropertyResourceBundle properties;
 
     private ServerXmlIO[] serverXmlIOs = new ServerXmlIO[]
-        { new ServerXmlIOV155(), new ServerXmlIOV154(), new ServerXmlIOV153(), new ServerXmlIOV152(),
-            new ServerXmlIOV151(), new ServerXmlIOV150(), };
+        { new ServerXmlIOV156(), new ServerXmlIOV155(), new ServerXmlIOV154(), new ServerXmlIOV153(),
+            new ServerXmlIOV152(), new ServerXmlIOV151(), new ServerXmlIOV150(), };
 
 
     /**

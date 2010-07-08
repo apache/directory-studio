@@ -39,7 +39,6 @@ import javax.net.ssl.X509TrustManager;
  * A SSLSocketFactory that accepts every certificate without validation.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class DummySSLSocketFactory extends SSLSocketFactory
 {

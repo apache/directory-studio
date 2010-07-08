@@ -40,7 +40,6 @@ import org.eclipse.swt.widgets.Tree;
  * drag and drop connections withing the connections view.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class DragConnectionListener implements DragSourceListener
 {

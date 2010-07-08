@@ -48,7 +48,6 @@ import org.osgi.framework.BundleContext;
  * The activator class controls the plug-in life cycle
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class Activator extends AbstractUIPlugin
 {

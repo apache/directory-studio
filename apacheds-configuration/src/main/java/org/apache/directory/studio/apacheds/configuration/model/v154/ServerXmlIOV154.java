@@ -48,7 +48,6 @@ import org.dom4j.io.XMLWriter;
  * Apache Directory Server version 1.5.4.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class ServerXmlIOV154 extends AbstractServerXmlIO implements ServerXmlIO
 {

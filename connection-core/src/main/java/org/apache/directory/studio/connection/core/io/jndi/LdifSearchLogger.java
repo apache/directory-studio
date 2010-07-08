@@ -70,7 +70,6 @@ import org.eclipse.core.runtime.Preferences.PropertyChangeEvent;
  * The LdifSearchLogger is used to log searches into a file.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class LdifSearchLogger implements IJndiLogger
 {

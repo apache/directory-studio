@@ -52,12 +52,11 @@ import org.eclipse.ui.forms.widgets.TableWrapLayout;
  * This class represents the General Page of the Server Configuration Editor.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class GeneralPage extends FormPage implements SaveableFormPage
 {
     /** The Page ID*/
-    public static final String ID = ServerConfigurationEditor.ID + ".V154.GeneralPage"; //$NON-NLS-1$
+    public static final String ID = ServerConfigurationEditor.ID + ".V155.GeneralPage"; //$NON-NLS-1$
 
     /** The Page Title */
     private static final String TITLE = Messages.getString( "GeneralPage.General" ); //$NON-NLS-1$
@@ -102,7 +101,7 @@ public class GeneralPage extends FormPage implements SaveableFormPage
     protected void createFormContent( IManagedForm managedForm )
     {
         PlatformUI.getWorkbench().getHelpSystem().setHelp( getPartControl(),
-            ApacheDSConfigurationPluginConstants.PLUGIN_ID + "." + "configuration_editor_154" ); //$NON-NLS-1$ //$NON-NLS-2$
+            ApacheDSConfigurationPluginConstants.PLUGIN_ID + "." + "configuration_editor_155" ); //$NON-NLS-1$ //$NON-NLS-2$
 
         ScrolledForm form = managedForm.getForm();
         form.setText( Messages.getString( "GeneralPage.General" ) ); //$NON-NLS-1$

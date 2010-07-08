@@ -33,7 +33,6 @@ import org.eclipse.swt.widgets.Shell;
  * ACI item editor specific value editor to edit the SubtreeSpecification.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class SubtreeValueEditor extends AbstractDialogStringValueEditor
 {
@@ -110,7 +109,6 @@ public class SubtreeValueEditor extends AbstractDialogStringValueEditor
      * information to the opened SubtreeSpecificationDialog.
      *
      * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
-     * @version $Rev$, $Date$
      */
     private class SubtreeSpecificationValueWrapper
     {

@@ -30,7 +30,6 @@ import org.eclipse.swt.dnd.DragSourceListener;
  * TODO: The code isn't working yet, just a test implementation.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class DragListener /* implements DragSourceListener */
 {

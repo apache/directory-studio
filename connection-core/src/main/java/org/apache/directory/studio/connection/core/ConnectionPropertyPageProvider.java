@@ -30,7 +30,6 @@ import org.eclipse.core.runtime.IAdaptable;
  * and the getAdaptable() metho must return the right {@link Connection} object. 
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public interface ConnectionPropertyPageProvider extends IAdaptable
 {

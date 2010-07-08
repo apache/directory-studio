@@ -31,7 +31,6 @@ import org.apache.directory.studio.connection.core.ConnectionFolder;
  * All methods are "empty".
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class ConnectionUpdateAdapter implements ConnectionUpdateListener
 {

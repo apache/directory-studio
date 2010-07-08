@@ -24,7 +24,6 @@ package org.apache.directory.studio.schemaeditor.model.io;
  * This class represents the OpenLdapSchemaFileImportException.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class OpenLdapSchemaFileImportException extends Exception
 {

@@ -21,13 +21,11 @@
 package org.apache.directory.studio.test.integration.ui.bots;
 
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
 import org.eclipse.swtbot.swt.finder.SWTBot;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 
 
 public class EntryEditorBot
@@ -35,6 +33,7 @@ public class EntryEditorBot
 
     private SWTBotEditor editor;
     private SWTBot bot;
+    private EntryEditorWidgetBot editorBot;
 
 
     public EntryEditorBot( String title )
@@ -42,6 +41,7 @@ public class EntryEditorBot
         SWTWorkbenchBot bot = new SWTWorkbenchBot();
         editor = bot.editorByTitle( title );
         this.bot = editor.bot();
+        this.editorBot = new EntryEditorWidgetBot( editor.bot() );
     }
 
 
@@ -60,16 +60,62 @@ public class EntryEditorBot
 
     public List<String> getAttributeValues()
     {
-        SWTBotTree tree = bot.tree();
-        List<String> attributes = new ArrayList<String>();
-        int rowCount = tree.rowCount();
-        for ( int i = 0; i < rowCount; i++ )
-        {
-            String attribute = tree.cell( i, 0 );
-            String value = tree.cell( i, 1 );
-            attributes.add( attribute + ": " + value );
-        }
-        return attributes;
+        return editorBot.getAttributeValues();
+    }
+
+
+    public NewAttributeWizardBot openNewAttributeWizard()
+    {
+        return editorBot.openNewAttributeWizard();
+    }
+
+
+    public void activate()
+    {
+        editor.setFocus();
+        bot.tree().setFocus();
+    }
+
+
+    public void typeValueAndFinish( String value )
+    {
+        editorBot.typeValueAndFinish( value );
+    }
+
+
+    public void addValue( String attributeType )
+    {
+        editorBot.addValue( attributeType );
+    }
+
+
+    public void editValue( String attributeType, String value )
+    {
+        editorBot.editValue( attributeType, value );
+    }
+
+
+    public DnEditorDialogBot editValueExpectingDnEditor( String attributeType, String value )
+    {
+        return editorBot.editValueExpectingDnEditor( attributeType, value );
+    }
+
+
+    public void deleteValue( String attributeType, String value )
+    {
+        editorBot.deleteValue( attributeType, value );
+    }
+
+
+    public void copyValue( String attributeType, String value )
+    {
+        editorBot.copyValue( attributeType, value );
+    }
+
+
+    public void pasteValue()
+    {
+        editorBot.pasteValue();
     }
 
 }

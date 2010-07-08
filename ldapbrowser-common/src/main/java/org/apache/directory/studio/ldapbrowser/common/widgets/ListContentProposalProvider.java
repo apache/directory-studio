@@ -34,7 +34,6 @@ import org.eclipse.jface.fieldassist.IContentProposalProvider;
  * Strings to content proposals.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class ListContentProposalProvider implements IContentProposalProvider
 {

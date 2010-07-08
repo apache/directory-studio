@@ -33,7 +33,6 @@ import org.eclipse.swt.widgets.Shell;
  * Implementation of IValueEditor for attribute userPassword.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class PasswordValueEditor extends AbstractDialogBinaryValueEditor
 {
@@ -140,7 +139,6 @@ public class PasswordValueEditor extends AbstractDialogBinaryValueEditor
      * information to the opened PasswordDialog.
      *
      * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
-     * @version $Rev$, $Date$
      */
     private class PasswordValueEditorRawValueWrapper
     {

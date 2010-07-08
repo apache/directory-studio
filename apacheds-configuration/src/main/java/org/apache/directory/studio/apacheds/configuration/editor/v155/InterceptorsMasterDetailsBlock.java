@@ -59,7 +59,6 @@ import org.eclipse.ui.forms.widgets.Section;
  * This class represents the Interceptors Master/Details Block used in the Interceptors Page.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class InterceptorsMasterDetailsBlock extends MasterDetailsBlock
 {

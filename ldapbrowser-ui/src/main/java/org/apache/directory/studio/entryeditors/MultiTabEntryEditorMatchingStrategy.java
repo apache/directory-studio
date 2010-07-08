@@ -31,7 +31,6 @@ import org.eclipse.ui.PartInitException;
  * Matching strategy for a multi tab entry editor.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class MultiTabEntryEditorMatchingStrategy implements IEditorMatchingStrategy
 {

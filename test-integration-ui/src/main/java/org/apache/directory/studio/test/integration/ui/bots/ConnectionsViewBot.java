@@ -28,6 +28,8 @@ import org.apache.directory.studio.connection.core.ConnectionManager;
 import org.apache.directory.studio.connection.core.ConnectionParameter;
 import org.apache.directory.studio.connection.core.ConnectionParameter.AuthenticationMethod;
 import org.apache.directory.studio.connection.core.ConnectionParameter.EncryptionMethod;
+import org.apache.directory.studio.connection.core.jobs.OpenConnectionsRunnable;
+import org.apache.directory.studio.connection.core.jobs.StudioConnectionJob;
 import org.apache.directory.studio.test.integration.ui.ContextMenuHelper;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
@@ -49,6 +51,11 @@ public class ConnectionsViewBot
         return new NewConnectionWizardBot();
     }
 
+    public void openSelectedConnection()
+    {
+        getConnectionsTree().contextMenu( "Open Connection" ).click();
+    }
+    
 
     public void closeSelectedConnections()
     {
@@ -93,7 +100,6 @@ public class ConnectionsViewBot
     {
         bot.waitUntil( new DefaultCondition()
         {
-
             public boolean test() throws Exception
             {
                 for ( SWTBotTreeItem item : getConnectionsTree().getAllItems() )
@@ -110,11 +116,11 @@ public class ConnectionsViewBot
 
             public String getFailureMessage()
             {
-                return "Connection " + connectionName + " not visible in connectoins view.";
+                return "Connection " + connectionName + " not visible in connections view.";
             }
         } );
-
     }
+
 
     /**
      * Creates the test connection.
@@ -129,6 +135,8 @@ public class ConnectionsViewBot
      */
     public Connection createTestConnection( String name, int port ) throws Exception
     {
+        name = name + "_" + System.currentTimeMillis();
+
         ConnectionManager connectionManager = ConnectionCorePlugin.getDefault().getConnectionManager();
         ConnectionParameter connectionParameter = new ConnectionParameter();
         connectionParameter.setName( name );
@@ -147,9 +155,10 @@ public class ConnectionsViewBot
         rootConnectionFolder.addConnectionId( connection.getId() );
 
         selectConnection( name );
-        // new OpenConnectionsJob( connection ).execute();
+        StudioConnectionJob job = new StudioConnectionJob( new OpenConnectionsRunnable( connection ) );
+        job.execute();
+        job.join();
 
-        Thread.sleep( 1000 );
         return connection;
     }
 

@@ -53,7 +53,6 @@ import org.eclipse.ui.PlatformUI;
  * This dialog is used to display the previous searches.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class PreviousSearchesDialog extends Dialog
 {

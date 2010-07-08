@@ -38,7 +38,6 @@ import org.eclipse.jface.text.rules.WordRule;
  * Scanner used to analyse ACI code. Allows syntax coloring.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class ACICodeScanner extends RuleBasedScanner
 {
@@ -210,7 +209,6 @@ public class ACICodeScanner extends RuleBasedScanner
      * This class implements a word detector for ACI Items
      *
      * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
-     * @version $Rev$, $Date$
      */
     static class AciWordDetector implements IWordDetector
     {

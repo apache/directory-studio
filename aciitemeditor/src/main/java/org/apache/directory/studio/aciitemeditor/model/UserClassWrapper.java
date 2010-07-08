@@ -44,7 +44,6 @@ import org.eclipse.osgi.util.NLS;
  * The user class values are always stored as raw string values.
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class UserClassWrapper
 {

@@ -32,7 +32,6 @@ import org.apache.directory.studio.ldapbrowser.core.model.IValue;
  * means that the attribute type was modified.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class ValueRenamedEvent extends EntryModificationEvent
 {

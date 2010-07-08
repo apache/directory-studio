@@ -52,7 +52,6 @@ import org.eclipse.swt.widgets.Display;
  * depending on whether the attribte is a must, may or operational attribute.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class EntryEditorWidgetLabelProvider extends LabelProvider implements ITableLabelProvider, IFontProvider,
     IColorProvider

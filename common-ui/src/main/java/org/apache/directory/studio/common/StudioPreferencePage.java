@@ -31,7 +31,6 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
  * This class implements the "Apache Directory Studio" preference page.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class StudioPreferencePage extends PreferencePage implements IWorkbenchPreferencePage
 {

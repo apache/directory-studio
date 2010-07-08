@@ -32,7 +32,6 @@ import org.eclipse.ui.commands.ICommandService;
  * Utils for Eclipse IAction objects.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class ActionUtils
 {

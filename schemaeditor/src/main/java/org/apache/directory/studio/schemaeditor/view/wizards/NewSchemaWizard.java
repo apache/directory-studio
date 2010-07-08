@@ -33,7 +33,6 @@ import org.eclipse.ui.IWorkbench;
  * This class represents the wizard to create a new Schema.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class NewSchemaWizard extends Wizard implements INewWizard
 {

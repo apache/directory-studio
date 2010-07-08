@@ -24,7 +24,6 @@ package org.apache.directory.studio.schemaeditor.model.difference;
  * This interface represents a property difference
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public interface PropertyDifference extends Difference
 {

@@ -28,7 +28,6 @@ import java.util.List;
  * This class represents a schema.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class SchemaImpl implements Schema
 {

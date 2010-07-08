@@ -57,7 +57,6 @@ import org.eclipse.ui.forms.widgets.Section;
  * A base implementation used from all schema master pages.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public abstract class SchemaPage
 {

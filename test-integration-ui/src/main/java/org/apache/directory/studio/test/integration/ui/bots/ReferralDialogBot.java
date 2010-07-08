@@ -20,6 +20,8 @@
 package org.apache.directory.studio.test.integration.ui.bots;
 
 
+import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
+import org.apache.directory.studio.test.integration.ui.bots.utils.JobWatcher;
 import org.eclipse.swtbot.swt.finder.utils.TableCollection;
 import org.eclipse.swtbot.swt.finder.utils.TableRow;
 
@@ -35,7 +37,9 @@ public class ReferralDialogBot extends DialogBot
 
     public void clickOkButton()
     {
+        JobWatcher watcher = new JobWatcher( BrowserCoreMessages.jobs__init_entries_title_subonly );
         super.clickButton( "OK" );
+        watcher.waitUntilDone();
     }
 
 

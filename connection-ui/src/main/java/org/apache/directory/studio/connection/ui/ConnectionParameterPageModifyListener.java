@@ -29,7 +29,6 @@ import org.apache.directory.studio.connection.core.ConnectionParameter;
  * ConnectionPageWrapper.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public interface ConnectionParameterPageModifyListener
 {

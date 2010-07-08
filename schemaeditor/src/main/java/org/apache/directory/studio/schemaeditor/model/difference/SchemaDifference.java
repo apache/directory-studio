@@ -28,7 +28,6 @@ import java.util.List;
  * This class represents a schema difference.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class SchemaDifference extends AbstractDifference
 {

@@ -22,7 +22,6 @@ package org.apache.directory.studio.ldapbrowser.common.widgets.entryeditor;
 
 
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
-import org.apache.directory.studio.ldapbrowser.common.BrowserCommonConstants;
 import org.apache.directory.studio.ldapbrowser.common.actions.BrowserSelectionUtils;
 import org.apache.directory.studio.ldapbrowser.core.events.BulkModificationEvent;
 import org.apache.directory.studio.ldapbrowser.core.events.EmptyValueAddedEvent;
@@ -57,7 +56,6 @@ import org.eclipse.swt.events.TraverseListener;
  * The EntryEditorWidgetUniversalListener manages all events for the entry editor widget.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class EntryEditorWidgetUniversalListener implements EntryUpdateListener
 {
@@ -253,15 +251,6 @@ public class EntryEditorWidgetUniversalListener implements EntryUpdateListener
         else if ( event instanceof EmptyValueAddedEvent )
         {
             EmptyValueAddedEvent evaEvent = ( EmptyValueAddedEvent ) event;
-
-            // show operational attributes if an operational attribute was added
-            if ( evaEvent.getAddedValue().getAttribute().isOperationalAttribute()
-                && !BrowserCommonActivator.getDefault().getPreferenceStore().getBoolean(
-                    BrowserCommonConstants.PREFERENCE_ENTRYEDITOR_SHOW_OPERATIONAL_ATTRIBUTES ) )
-            {
-                BrowserCommonActivator.getDefault().getPreferenceStore().setValue(
-                    BrowserCommonConstants.PREFERENCE_ENTRYEDITOR_SHOW_OPERATIONAL_ATTRIBUTES, true );
-            }
 
             // select the added value and start editing
             viewer.setSelection( new StructuredSelection( evaEvent.getAddedValue() ), true );

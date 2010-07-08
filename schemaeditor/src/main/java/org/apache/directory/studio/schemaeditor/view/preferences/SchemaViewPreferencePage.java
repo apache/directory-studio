@@ -46,7 +46,6 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
  * This class implements the Preference page for the Schema View
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class SchemaViewPreferencePage extends PreferencePage implements IWorkbenchPreferencePage
 {

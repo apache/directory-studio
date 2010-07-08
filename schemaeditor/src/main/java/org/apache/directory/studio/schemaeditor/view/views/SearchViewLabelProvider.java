@@ -35,7 +35,6 @@ import org.eclipse.swt.graphics.Image;
  * This class implements the LabelProvider for the SearchView.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class SearchViewLabelProvider extends LabelProvider
 {
@@ -253,7 +252,7 @@ public class SearchViewLabelProvider extends LabelProvider
                 secondaryLabel = secondaryLabel.substring( 0, secondaryLabelAbbreviateMaxLength ) + "..."; //$NON-NLS-1$
             }
 
-            label += "  [" + secondaryLabel + "]"; //$NON-NLS-1$ //$NON-NLS-2$
+            label += " [" + secondaryLabel + "]"; //$NON-NLS-1$ //$NON-NLS-2$
         }
 
         // Schema Label
@@ -263,7 +262,7 @@ public class SearchViewLabelProvider extends LabelProvider
             {
                 SchemaObject object = ( SchemaObject ) element;
 
-                label += " from schema \"" + object.getSchema() + "\""; //$NON-NLS-1$ //$NON-NLS-2$
+                label += " " + Messages.getString( "SearchViewLabelProvider.FromSchema" ) + " \"" + object.getSchema() + "\""; //$NON-NLS-1$ //$NON-NLS-2$
             }
         }
 

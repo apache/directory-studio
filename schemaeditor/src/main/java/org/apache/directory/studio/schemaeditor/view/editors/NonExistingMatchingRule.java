@@ -24,7 +24,6 @@ package org.apache.directory.studio.schemaeditor.view.editors;
  * This class implements the Non Existing Matching Rule.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class NonExistingMatchingRule
 {

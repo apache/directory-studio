@@ -37,7 +37,6 @@ import org.eclipse.jface.viewers.Viewer;
  * This class is the Content Provider for the Attributes Table of the Object Class Editor.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class ObjectClassEditorAttributesTableContentProvider implements IStructuredContentProvider
 {

@@ -37,7 +37,6 @@ import org.eclipse.osgi.util.NLS;
  * This class is used to manages {@link ISearch}es of an {@link IBrowserConnection}
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class SearchManager implements Serializable
 {

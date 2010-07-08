@@ -37,7 +37,6 @@ import org.eclipse.ui.PlatformUI;
  * This abstract class must be extended by each Action related to the Browser.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public abstract class StudioAction implements IWorkbenchWindowActionDelegate
 {

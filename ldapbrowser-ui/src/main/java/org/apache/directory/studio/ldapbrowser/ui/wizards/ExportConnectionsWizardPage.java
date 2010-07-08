@@ -40,7 +40,6 @@ import org.eclipse.swt.widgets.Composite;
  * This class implements the page used to select the connections to export.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class ExportConnectionsWizardPage extends WizardPage
 {
@@ -170,7 +169,6 @@ public class ExportConnectionsWizardPage extends WizardPage
     {
         boolean ok = true;
         File file = new File( fileBrowserWidget.getFilename() );
-        File fileDirectory = file.getParentFile();
         if ( "".equals( fileBrowserWidget.getFilename() ) ) //$NON-NLS-1$
         {
             setErrorMessage( null );
@@ -192,11 +190,6 @@ public class ExportConnectionsWizardPage extends WizardPage
             ok = false;
         }
         else if ( file.getParentFile() == null )
-        {
-            setErrorMessage( Messages.getString( "ExportConnectionsWizardPage.ErrorFileDirectoryNotWritable" ) ); //$NON-NLS-1$
-            ok = false;
-        }
-        else if ( !file.exists() && ( fileDirectory == null || !fileDirectory.canWrite() ) )
         {
             setErrorMessage( Messages.getString( "ExportConnectionsWizardPage.ErrorFileDirectoryNotWritable" ) ); //$NON-NLS-1$
             ok = false;

@@ -33,6 +33,7 @@ import org.apache.directory.studio.apacheds.configuration.model.ServerXmlIOExcep
 import org.apache.directory.studio.apacheds.configuration.model.v153.ServerXmlIOV153;
 import org.apache.directory.studio.apacheds.configuration.model.v154.ServerXmlIOV154;
 import org.apache.directory.studio.apacheds.configuration.model.v155.ServerXmlIOV155;
+import org.apache.directory.studio.apacheds.configuration.model.v156.ServerXmlIOV156;
 import org.apache.directory.studio.apacheds.model.Server;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IPath;
@@ -45,7 +46,6 @@ import org.eclipse.jface.dialogs.MessageDialog;
  * This class contains helpful methods.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class ApacheDsPluginUtils
 {
@@ -125,6 +125,37 @@ public class ApacheDsPluginUtils
         {
             switch ( server.getVersion() )
             {
+                case VERSION_1_5_6:
+                    return new String[]
+                        { "antlr-2.7.7.jar", "apacheds-avl-partition-1.5.6.jar", "apacheds-core-1.5.6.jar",
+                            "apacheds-core-annotations-1.5.6.jar", "apacheds-core-api-1.5.6.jar",
+                            "apacheds-core-avl-1.5.6.jar", "apacheds-core-constants-1.5.6.jar",
+                            "apacheds-core-entry-1.5.6.jar", "apacheds-core-jndi-1.5.6.jar",
+                            "apacheds-core-mock-1.5.6.jar", "apacheds-http-integration-1.5.6.jar",
+                            "apacheds-i18n-1.5.6.jar", "apacheds-interceptor-kerberos-1.5.6.jar",
+                            "apacheds-jdbm-1.5.6.jar", "apacheds-jdbm-partition-1.5.6.jar",
+                            "apacheds-jdbm-store-1.5.6.jar", "apacheds-kerberos-shared-1.5.6.jar",
+                            "apacheds-launcher-1.5.0.jar", "apacheds-ldif-partition-1.5.6.jar",
+                            "apacheds-protocol-changepw-1.5.6.jar", "apacheds-protocol-dns-1.5.6.jar",
+                            "apacheds-protocol-kerberos-1.5.6.jar", "apacheds-protocol-ldap-1.5.6.jar",
+                            "apacheds-protocol-ntp-1.5.6.jar", "apacheds-protocol-shared-1.5.6.jar",
+                            "apacheds-server-jndi-1.5.6.jar", "apacheds-server-xml-1.5.6.jar",
+                            "apacheds-utils-1.5.6.jar", "apacheds-xbean-spring-1.5.6.jar",
+                            "apacheds-xdbm-base-1.5.6.jar", "apacheds-xdbm-search-1.5.6.jar",
+                            "apacheds-xdbm-tools-1.5.6.jar", "bcprov-jdk15-140.jar", "commons-cli-1.2.jar",
+                            "commons-collections-3.2.1.jar", "commons-daemon-1.0.1.jar", "commons-io-1.4.jar",
+                            "commons-lang-2.5.jar", "daemon-bootstrappers-1.1.7.jar", "dom4j-1.6.1.jar",
+                            "jcl-over-slf4j-1.5.10.jar", "jetty-6.1.14.jar", "jetty-util-6.1.14.jar", "junit-4.7.jar",
+                            "log4j-1.2.14.jar", "mina-core-2.0.0-RC1.jar", "servlet-api-2.5-6.1.14.jar",
+                            "shared-asn1-0.9.18.jar", "shared-asn1-codec-0.9.18.jar", "shared-cursor-0.9.18.jar",
+                            "shared-dsml-parser-0.9.18.jar", "shared-i18n-0.9.18.jar", "shared-ldap-0.9.18.jar",
+                            "shared-ldap-constants-0.9.18.jar", "shared-ldap-converter-0.9.18.jar",
+                            "shared-ldap-jndi-0.9.18.jar", "shared-ldap-schema-0.9.18.jar",
+                            "shared-ldap-schema-dao-0.9.18.jar", "shared-ldap-schema-loader-0.9.18.jar",
+                            "shared-ldap-schema-manager-0.9.18.jar", "shared-ldif-0.9.18.jar", "slf4j-api-1.5.10.jar",
+                            "slf4j-log4j12-1.5.10.jar", "spring-beans-2.5.6.SEC01.jar",
+                            "spring-context-2.5.6.SEC01.jar", "spring-core-2.5.6.SEC01.jar", "xbean-spring-3.5.jar",
+                            "xercesImpl-2.9.1.jar", "xpp3-1.1.4c.jar" };
                 case VERSION_1_5_5:
                     return new String[]
                         { "antlr-2.7.7.jar", "apacheds-bootstrap-extract-1.5.5.jar",
@@ -316,7 +347,7 @@ public class ApacheDsPluginUtils
 
             // Copying server.xml file
             File serverXmlFile = new File( confFolder, "server.xml" );
-            copyConfigurationFile( "server-1.5.5.xml", serverXmlFile );
+            copyConfigurationFile( "server-1.5.6.xml", serverXmlFile );
 
             // Creating log4j.properties file to the serverSocket folder
             File log4jPropertiesServerSocketFile = new File( serverSocketFolder, "log4j.properties" );
@@ -566,6 +597,9 @@ public class ApacheDsPluginUtils
         // Parsing and returning the server configuration
         switch ( server.getVersion() )
         {
+            case VERSION_1_5_6:
+                ServerXmlIOV156 serverXmlIOV156 = new ServerXmlIOV156();
+                return serverXmlIOV156.parse( fis );
             case VERSION_1_5_5:
                 ServerXmlIOV155 serverXmlIOV155 = new ServerXmlIOV155();
                 return serverXmlIOV155.parse( fis );

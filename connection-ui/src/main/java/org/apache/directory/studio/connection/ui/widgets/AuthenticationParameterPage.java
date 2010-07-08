@@ -68,7 +68,6 @@ import org.eclipse.ui.forms.widgets.ExpandableComposite;
  * connection.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class AuthenticationParameterPage extends AbstractConnectionParameterPage
 {

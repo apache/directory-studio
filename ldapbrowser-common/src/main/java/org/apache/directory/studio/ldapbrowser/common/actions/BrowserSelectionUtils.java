@@ -55,7 +55,6 @@ import org.eclipse.jface.viewers.StructuredSelection;
  * selection (org.eclipse.jface.viewers.ISelection).
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public abstract class BrowserSelectionUtils extends SelectionUtils
 {

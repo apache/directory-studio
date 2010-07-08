@@ -32,7 +32,6 @@ import org.eclipse.swt.widgets.Shell;
  * The ConnectionFolderDialog is used to create or rename a connection folder.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class ConnectionFolderDialog extends InputDialog
 {

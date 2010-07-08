@@ -366,13 +366,6 @@
 				</listitem>
 				<listitem>
 					<para>
-						Show Operational Attributes: If checked the
-						operational attributes (e.g. createTimestamp
-						and modifyTimestamp) are displayed.
-					</para>
-				</listitem>
-				<listitem>
-					<para>
 						Show Decorated Values: If checked decorated 
 						values are displayed, this means some additional
 						information is displayed:

@@ -38,6 +38,7 @@ import org.apache.directory.studio.ldapbrowser.ui.actions.CopyDnAction;
 import org.apache.directory.studio.ldapbrowser.ui.actions.CopySearchFilterAction;
 import org.apache.directory.studio.ldapbrowser.ui.actions.CopyUrlAction;
 import org.apache.directory.studio.ldapbrowser.ui.actions.CopyValueAction;
+import org.apache.directory.studio.ldapbrowser.ui.actions.EntryEditorPropertiesAction;
 import org.apache.directory.studio.ldapbrowser.ui.actions.LocateDnInDitAction;
 import org.apache.directory.studio.ldapbrowser.ui.actions.NewBatchOperationAction;
 import org.apache.directory.studio.ldapbrowser.ui.actions.NewSearchAction;
@@ -61,13 +62,9 @@ import org.eclipse.ui.actions.ContributionItemFactory;
  * The EntryEditorWidgetActionGroup manages all actions of the entry editor.
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class EntryEditorActionGroup extends EntryEditorWidgetActionGroup
 {
-
-    /** The show operational attributes action. */
-    private ShowOperationalAttributesAction showOperationalAttributesAction;
 
     /** The toggle auto save action */
     private ToggleAutosaveAction toggleAutosaveAction;
@@ -182,7 +179,6 @@ public class EntryEditorActionGroup extends EntryEditorWidgetActionGroup
         openEntryValueEditorActionProxy = new EntryEditorActionProxy( viewer, new OpenEntryEditorAction( viewer,
             valueEditorManager, valueEditorManager.getEntryValueEditor(), this ) );
 
-        showOperationalAttributesAction = new ShowOperationalAttributesAction();
         toggleAutosaveAction = new ToggleAutosaveAction( entryEditor );
         openEntryEditorPreferencePage = new OpenEntryEditorPreferencePageAction();
         collapseAllAction = new CollapseAllAction( viewer );
@@ -240,6 +236,10 @@ public class EntryEditorActionGroup extends EntryEditorWidgetActionGroup
             new DeleteAllValuesAction() ) );
         entryEditorActionMap.put( fetchOperationalAttributesAction, new EntryEditorActionProxy( viewer,
             new FetchOperationalAttributesAction() ) );
+
+        entryEditorActionMap.put( propertyDialogAction, new EntryEditorActionProxy( viewer,
+            new EntryEditorPropertiesAction( entryEditor ) ) );
+
     }
 
 
@@ -248,14 +248,13 @@ public class EntryEditorActionGroup extends EntryEditorWidgetActionGroup
      */
     public void dispose()
     {
-        if ( showOperationalAttributesAction != null )
+        if ( toggleAutosaveAction != null )
         {
             deactivateGlobalActionHandlers();
 
             openEntryValueEditorActionProxy.dispose();
             openEntryValueEditorActionProxy = null;
             openEntryEditorPreferencePage = null;
-            showOperationalAttributesAction = null;
             toggleAutosaveAction = null;
             expandAllAction.dispose();
             expandAllAction = null;
@@ -296,7 +295,6 @@ public class EntryEditorActionGroup extends EntryEditorWidgetActionGroup
     {
         menuManager.add( openSortDialogAction );
         menuManager.add( new Separator() );
-        menuManager.add( showOperationalAttributesAction );
         menuManager.add( showDecoratedValuesAction );
         menuManager.add( new Separator() );
         menuManager.add( toggleAutosaveAction );
@@ -308,8 +306,6 @@ public class EntryEditorActionGroup extends EntryEditorWidgetActionGroup
             {
                 showDecoratedValuesAction.setChecked( !BrowserCommonActivator.getDefault().getPreferenceStore()
                     .getBoolean( BrowserCommonConstants.PREFERENCE_SHOW_RAW_VALUES ) );
-                showOperationalAttributesAction.setChecked( BrowserCommonActivator.getDefault().getPreferenceStore()
-                    .getBoolean( BrowserCommonConstants.PREFERENCE_ENTRYEDITOR_SHOW_OPERATIONAL_ATTRIBUTES ) );
                 toggleAutosaveAction.updateSetChecked();
             }
         } );

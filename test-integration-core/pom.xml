@@ -23,11 +23,10 @@
   <parent>
     <groupId>org.apache.directory.studio</groupId>
     <artifactId>parent</artifactId>
-    <version>1.5.1-SNAPSHOT</version>
+    <version>1.5.4-SNAPSHOT</version>
   </parent>
   
   <artifactId>test.integration.core</artifactId>
-  <version>${test.integration.core.version}</version>
   <name>Apache Directory Studio Core Integration Tests</name>
   <packaging>jar</packaging>
 
@@ -315,7 +314,15 @@
     </dependency>
     <dependency>
       <groupId>org.slf4j</groupId>
-      <artifactId>nlog4j</artifactId>
+      <artifactId>slf4j-api</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-log4j12</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>log4j</groupId>
+      <artifactId>log4j</artifactId>
     </dependency>
     
     <dependency>

@@ -23,7 +23,6 @@ package org.apache.directory.studio.ldapbrowser.common.widgets.entryeditor;
 
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
-import org.apache.directory.studio.ldapbrowser.core.model.IRootDSE;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
@@ -35,7 +34,6 @@ import org.eclipse.jface.viewers.ViewerFilter;
  * the entry editor widget.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class EntryEditorWidgetFilter extends ViewerFilter
 {
@@ -96,12 +94,6 @@ public class EntryEditorWidgetFilter extends ViewerFilter
             {
                 return false;
             }
-
-            // check attribute category
-            if ( !goesThroughtCategoryFilter( attribute ) )
-            {
-                return false;
-            }
         }
         else if ( element instanceof IValue )
         {
@@ -109,12 +101,6 @@ public class EntryEditorWidgetFilter extends ViewerFilter
 
             // check quick filter
             if ( !goesThroughQuickFilter( value ) )
-            {
-                return false;
-            }
-
-            // check attribute category
-            if ( !goesThroughtCategoryFilter( value.getAttribute() ) )
             {
                 return false;
             }
@@ -157,38 +143,6 @@ public class EntryEditorWidgetFilter extends ViewerFilter
         }
 
         return true;
-    }
-
-
-    /**
-     * Checks if the given attribute goes through attribute category filter.
-     * 
-     * @param attribute the attribute
-     * 
-     * @return true, if goes through attribute category filter
-     */
-    private boolean goesThroughtCategoryFilter( IAttribute attribute )
-    {
-        if ( attribute.isObjectClassAttribute() )
-        {
-            return isShowObjectClassAttribute() || ( attribute.getEntry() instanceof IRootDSE );
-        }
-        else if ( attribute.isMustAttribute() )
-        {
-            return isShowMustAttributes() || ( attribute.getEntry() instanceof IRootDSE );
-        }
-        else if ( attribute.isMayAttribute() )
-        {
-            return isShowMayAttributes() || ( attribute.getEntry() instanceof IRootDSE );
-        }
-        else if ( attribute.isOperationalAttribute() )
-        {
-            return isShowOperationalAttributes() || ( attribute.getEntry() instanceof IRootDSE );
-        }
-        else
-        {
-            return true;
-        }
     }
 
 
@@ -254,50 +208,6 @@ public class EntryEditorWidgetFilter extends ViewerFilter
             BrowserCommonActivator.getDefault().getPreferenceStore().firePropertyChangeEvent(
                 "QuickFilterValueChanged", oldValue, quickFilterAttribute ); //$NON-NLS-1$
         }
-    }
-
-
-    /**
-     * Checks if may attributes should be shown.
-     * 
-     * @return true, if may attributes should be shown
-     */
-    public boolean isShowMayAttributes()
-    {
-        return true;
-    }
-
-
-    /**
-     * Checks if must attributes should be shown.
-     * 
-     * @return true, if must attributes should be shown
-     */
-    public boolean isShowMustAttributes()
-    {
-        return true;
-    }
-
-
-    /**
-     * Checks if the objectClass attribute should be shown.
-     * 
-     * @return true, if the objectClass attribute should be shown
-     */
-    public boolean isShowObjectClassAttribute()
-    {
-        return true;
-    }
-
-
-    /**
-     * Checks if operational attributes should be shown.
-     * 
-     * @return true, if operational attributes should be shown
-     */
-    public boolean isShowOperationalAttributes()
-    {
-        return true;
     }
 
 }

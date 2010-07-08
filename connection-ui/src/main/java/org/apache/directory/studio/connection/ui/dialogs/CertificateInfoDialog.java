@@ -36,7 +36,6 @@ import org.eclipse.swt.widgets.Shell;
  * Dialog to show dialog information.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class CertificateInfoDialog extends Dialog
 {

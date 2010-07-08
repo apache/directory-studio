@@ -32,7 +32,6 @@ import org.slf4j.LoggerFactory;
  * This class is used to get Strings to display in the User Interface
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class Messages
 {

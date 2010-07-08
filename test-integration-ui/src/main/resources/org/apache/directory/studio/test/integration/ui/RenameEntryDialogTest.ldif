@@ -19,3 +19,13 @@ sn:: I1wrLCAiw7bDqSI=
 givenName:: I1wrLCAiw7bDqSI=
 uid:: I1wrLCAiw7bDqSI=
 
+dn: cn=\#123456,ou=users,ou=system
+objectClass: inetOrgPerson
+objectClass: organizationalPerson
+objectClass: person
+objectClass: top
+cn: #123456
+sn: #123456
+givenName: #123456
+uid: #123456
+

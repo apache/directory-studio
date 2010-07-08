@@ -32,7 +32,6 @@ import org.apache.directory.studio.ldapbrowser.core.model.filter.parser.LdapFilt
  * The LdapFilterExtensibleComponent represents an extensible filter.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class LdapFilterExtensibleComponent extends LdapFilterComponent
 {

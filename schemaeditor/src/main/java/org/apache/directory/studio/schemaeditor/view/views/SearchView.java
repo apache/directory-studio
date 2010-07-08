@@ -78,7 +78,6 @@ import org.eclipse.ui.part.ViewPart;
  * This class represents the Search View.
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class SearchView extends ViewPart
 {
@@ -685,8 +684,8 @@ public class SearchView extends ViewPart
 
         if ( searchString != null )
         {
-            String computedSearchString = searchString.replaceAll( "\\*", "\\\\S*" ); //$NON-NLS-1$ //$NON-NLS-2$
-            computedSearchString = computedSearchString.replaceAll( "\\?", ".*" ); //$NON-NLS-1$ //$NON-NLS-2$
+            String computedSearchString = searchString.replaceAll( "\\*", "[\\\\S]*" ); //$NON-NLS-1$ //$NON-NLS-2$
+            computedSearchString = computedSearchString.replaceAll( "\\?", "[\\\\S]" ); //$NON-NLS-1$ //$NON-NLS-2$
 
             Pattern pattern = Pattern.compile( computedSearchString, Pattern.CASE_INSENSITIVE );
 

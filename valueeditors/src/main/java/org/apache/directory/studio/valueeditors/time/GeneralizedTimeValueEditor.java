@@ -44,7 +44,6 @@ import org.eclipse.ui.PlatformUI;
  * For modification the raw string must be edited.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class GeneralizedTimeValueEditor extends AbstractDialogStringValueEditor
 {

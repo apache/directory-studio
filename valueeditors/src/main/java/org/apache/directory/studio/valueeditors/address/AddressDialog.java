@@ -38,7 +38,6 @@ import org.eclipse.swt.widgets.Text;
  * The AddressDialog is used from the address value editor to edit an address.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class AddressDialog extends Dialog
 {

@@ -29,7 +29,6 @@ import java.util.List;
  * This class represents the HierarchyWrapper.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class HierarchyWrapper
 {

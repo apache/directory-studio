@@ -24,7 +24,6 @@ package org.apache.directory.studio.apacheds.model;
  * This interface represents a listener for the servers handler
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public interface ServersHandlerListener
 {

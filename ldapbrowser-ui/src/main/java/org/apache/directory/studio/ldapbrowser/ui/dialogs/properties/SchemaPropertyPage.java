@@ -50,7 +50,6 @@ import org.eclipse.ui.dialogs.PropertyPage;
  * schema cache. 
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class SchemaPropertyPage extends PropertyPage implements IWorkbenchPropertyPage
 {

@@ -24,7 +24,6 @@ package org.apache.directory.studio.schemaeditor.view.wrappers;
  * This wrapper is used as root in the Problems View.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class ProblemsViewRoot extends AbstractTreeNode
 {

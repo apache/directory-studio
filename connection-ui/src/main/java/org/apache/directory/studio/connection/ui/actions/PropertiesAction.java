@@ -35,7 +35,6 @@ import org.eclipse.ui.texteditor.IWorkbenchActionDefinitionIds;
  * This Action opens the Property Dialog for a given object.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class PropertiesAction extends StudioAction
 {

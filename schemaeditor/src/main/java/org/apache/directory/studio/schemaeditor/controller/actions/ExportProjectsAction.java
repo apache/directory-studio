@@ -44,7 +44,6 @@ import org.eclipse.ui.PlatformUI;
  * This action launches the ExportProjectsWizard.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class ExportProjectsAction extends Action implements IWorkbenchWindowActionDelegate
 {

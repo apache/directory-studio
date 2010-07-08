@@ -23,11 +23,10 @@
   <parent>
     <groupId>org.apache.directory.studio</groupId>
     <artifactId>parent</artifactId>
-    <version>1.5.1-SNAPSHOT</version>
+    <version>1.5.4-SNAPSHOT</version>
   </parent>
   
   <artifactId>rcp</artifactId>
-  <version>${rcp.version}</version>
   <name>Apache Directory Studio RCP</name>
   <packaging>jar</packaging>
 
@@ -40,16 +39,10 @@
         <includes>
           <include>plugin.properties</include>
           <include>plugin.xml</include>
-        </includes>
-        <filtering>true</filtering>
-      </resource>
-      <resource>
-        <directory>.</directory>
-        <includes>
           <include>about.ini</include>
           <include>studio.png</include>
         </includes>
-        <filtering>false</filtering>
+        <filtering>true</filtering>
       </resource>
       <resource>
         <directory>resources</directory>

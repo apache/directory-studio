@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata>
+  <groupId>org.eclipse.ecf.provider</groupId>
+  <artifactId>filetransfer</artifactId>
+  <version>3.0.1.v20090831-1906</version>
+  <versioning>
+    <versions>
+      <version>3.0.1.v20090831-1906</version>
+    </versions>
+    <lastUpdated>20100322155135</lastUpdated>
+  </versioning>
+</metadata>

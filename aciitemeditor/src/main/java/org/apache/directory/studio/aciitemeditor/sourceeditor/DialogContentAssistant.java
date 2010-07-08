@@ -45,7 +45,6 @@ import org.eclipse.ui.texteditor.ITextEditorActionDefinitionIds;
  * Source Editor for displaying proposals
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class DialogContentAssistant extends SubjectControlContentAssistant implements FocusListener
 {

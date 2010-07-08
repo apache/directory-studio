@@ -29,7 +29,6 @@ import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.VerifyEvent;
 import org.eclipse.swt.events.VerifyListener;
-import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -44,18 +43,9 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
  * The EntryEditorPreferencePage contains general settings for the entry editor.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class EntryEditorPreferencePage extends PreferencePage implements IWorkbenchPreferencePage
 {
-
-    private Button showObjectClassAttributeButton;
-
-    private Button showMustAttributesButton;
-
-    private Button showMayAttributesButton;
-
-    private Button showOperationalAttributesButton;
 
     private Button autosaveSingleTabButton;
 
@@ -95,34 +85,6 @@ public class EntryEditorPreferencePage extends PreferencePage implements IWorkbe
     protected Control createContents( Composite parent )
     {
         Composite composite = BaseWidgetUtils.createColumnContainer( parent, 1, 1 );
-
-        BaseWidgetUtils.createSpacer( composite, 1 );
-        BaseWidgetUtils.createSpacer( composite, 1 );
-        Group visibleAttributesGroup = BaseWidgetUtils.createGroup( BaseWidgetUtils.createColumnContainer( composite,
-            1, 1 ), Messages.getString( "EntryEditorPreferencePage.VisibleAttributes" ), 1 ); //$NON-NLS-1$
-        Composite visibleAttributesComposite = BaseWidgetUtils.createColumnContainer( visibleAttributesGroup, 1, 1 );
-        showObjectClassAttributeButton = BaseWidgetUtils.createCheckbox( visibleAttributesComposite, Messages
-            .getString( "EntryEditorPreferencePage.ShowObjectClassAttributes" ), 1 ); //$NON-NLS-1$
-        showObjectClassAttributeButton.setSelection( getPreferenceStore().getBoolean(
-            BrowserCommonConstants.PREFERENCE_ENTRYEDITOR_SHOW_OBJECTCLASS_ATTRIBUTES ) );
-        showMustAttributesButton = BaseWidgetUtils.createCheckbox( visibleAttributesComposite, Messages
-            .getString( "EntryEditorPreferencePage.ShowMustAttributes" ), //$NON-NLS-1$
-            1 );
-        showMustAttributesButton.setSelection( getPreferenceStore().getBoolean(
-            BrowserCommonConstants.PREFERENCE_ENTRYEDITOR_SHOW_MUST_ATTRIBUTES ) );
-        showMayAttributesButton = BaseWidgetUtils.createCheckbox( visibleAttributesComposite, Messages
-            .getString( "EntryEditorPreferencePage.ShowMayAttributes" ), 1 ); //$NON-NLS-1$
-        showMayAttributesButton.setSelection( getPreferenceStore().getBoolean(
-            BrowserCommonConstants.PREFERENCE_ENTRYEDITOR_SHOW_MAY_ATTRIBUTES ) );
-        showOperationalAttributesButton = BaseWidgetUtils.createCheckbox( visibleAttributesComposite, Messages
-            .getString( "EntryEditorPreferencePage.ShowOperationalAttributes" ), 1 ); //$NON-NLS-1$
-        showOperationalAttributesButton.setSelection( getPreferenceStore().getBoolean(
-            BrowserCommonConstants.PREFERENCE_ENTRYEDITOR_SHOW_OPERATIONAL_ATTRIBUTES ) );
-        Label operationalAttributesLabel = BaseWidgetUtils.createWrappedLabel( visibleAttributesComposite, Messages
-            .getString( "EntryEditorPreferencePage.ShowOperationalAttributesToolTip" ), 1 );
-        GridData gd = new GridData( GridData.FILL_HORIZONTAL );
-        gd.widthHint = 300;
-        operationalAttributesLabel.setLayoutData( gd );        
 
         BaseWidgetUtils.createSpacer( composite, 1 );
         BaseWidgetUtils.createSpacer( composite, 1 );
@@ -207,15 +169,6 @@ public class EntryEditorPreferencePage extends PreferencePage implements IWorkbe
      */
     public boolean performOk()
     {
-        getPreferenceStore().setValue( BrowserCommonConstants.PREFERENCE_ENTRYEDITOR_SHOW_OBJECTCLASS_ATTRIBUTES,
-            showObjectClassAttributeButton.getSelection() );
-        getPreferenceStore().setValue( BrowserCommonConstants.PREFERENCE_ENTRYEDITOR_SHOW_MUST_ATTRIBUTES,
-            showMustAttributesButton.getSelection() );
-        getPreferenceStore().setValue( BrowserCommonConstants.PREFERENCE_ENTRYEDITOR_SHOW_MAY_ATTRIBUTES,
-            showMayAttributesButton.getSelection() );
-        getPreferenceStore().setValue( BrowserCommonConstants.PREFERENCE_ENTRYEDITOR_SHOW_OPERATIONAL_ATTRIBUTES,
-            showOperationalAttributesButton.getSelection() );
-
         getPreferenceStore().setValue( BrowserCommonConstants.PREFERENCE_ENTRYEDITOR_AUTOSAVE_SINGLE_TAB,
             autosaveSingleTabButton.getSelection() );
         getPreferenceStore().setValue( BrowserCommonConstants.PREFERENCE_ENTRYEDITOR_AUTOSAVE_MULTI_TAB,
@@ -237,15 +190,6 @@ public class EntryEditorPreferencePage extends PreferencePage implements IWorkbe
      */
     protected void performDefaults()
     {
-        showObjectClassAttributeButton.setSelection( getPreferenceStore().getDefaultBoolean(
-            BrowserCommonConstants.PREFERENCE_ENTRYEDITOR_SHOW_OBJECTCLASS_ATTRIBUTES ) );
-        showMustAttributesButton.setSelection( getPreferenceStore().getDefaultBoolean(
-            BrowserCommonConstants.PREFERENCE_ENTRYEDITOR_SHOW_MUST_ATTRIBUTES ) );
-        showMayAttributesButton.setSelection( getPreferenceStore().getDefaultBoolean(
-            BrowserCommonConstants.PREFERENCE_ENTRYEDITOR_SHOW_MAY_ATTRIBUTES ) );
-        showOperationalAttributesButton.setSelection( getPreferenceStore().getDefaultBoolean(
-            BrowserCommonConstants.PREFERENCE_ENTRYEDITOR_SHOW_OPERATIONAL_ATTRIBUTES ) );
-
         autosaveSingleTabButton.setSelection( getPreferenceStore().getDefaultBoolean(
             BrowserCommonConstants.PREFERENCE_ENTRYEDITOR_AUTOSAVE_SINGLE_TAB ) );
         autosaveMultiTabButton.setSelection( getPreferenceStore().getDefaultBoolean(

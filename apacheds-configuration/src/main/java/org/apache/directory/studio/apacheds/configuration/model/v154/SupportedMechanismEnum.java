@@ -24,7 +24,6 @@ package org.apache.directory.studio.apacheds.configuration.model.v154;
  * This enum contains all the supported mechanisms.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public enum SupportedMechanismEnum
 {

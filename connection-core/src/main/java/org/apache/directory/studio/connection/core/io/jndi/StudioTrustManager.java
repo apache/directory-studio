@@ -48,7 +48,6 @@ import org.apache.http.conn.ssl.BrowserCompatHostnameVerifier;
  * then ask the user.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 class StudioTrustManager implements X509TrustManager
 {

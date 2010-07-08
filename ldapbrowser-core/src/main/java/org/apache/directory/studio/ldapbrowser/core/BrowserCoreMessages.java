@@ -28,7 +28,6 @@ import org.eclipse.osgi.util.NLS;
  * This class contains most of the Strings used by the Plugin
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class BrowserCoreMessages extends NLS
 {
@@ -429,4 +428,7 @@ public class BrowserCoreMessages extends NLS
     public static String model_filter_missing_closing_parenthesis;
 
     public static String model_filter_missing_filter_expression;
+
+    public static String model__quick_search_name;
+
 }

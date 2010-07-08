@@ -51,7 +51,6 @@ import org.eclipse.swt.widgets.Composite;
  * This class implements the Wizard for Importing connections.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class ImportConnectionsWizard extends ExportBaseWizard
 {

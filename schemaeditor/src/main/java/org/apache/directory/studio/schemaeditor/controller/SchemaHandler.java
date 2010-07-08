@@ -40,7 +40,6 @@ import org.apache.directory.studio.schemaeditor.model.SyntaxImpl;
  * object classes, matching rules and syntaxes).
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class SchemaHandler
 {

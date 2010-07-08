@@ -28,7 +28,6 @@ import org.apache.directory.studio.connection.core.Connection;
  * An adapter class for StudioRunnableWithProgress.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public abstract class StudioRunnableWithProgressAdapter implements StudioRunnableWithProgress
 {

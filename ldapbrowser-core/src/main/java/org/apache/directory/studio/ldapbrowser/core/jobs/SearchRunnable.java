@@ -76,7 +76,6 @@ import org.apache.directory.studio.ldapbrowser.core.utils.Utils;
  * Runnable to perform search operations. 
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class SearchRunnable implements StudioBulkRunnableWithProgress
 {
@@ -161,7 +160,7 @@ public class SearchRunnable implements StudioBulkRunnableWithProgress
         {
             ISearch search = searches[pi];
             ISearch searchToPerform = searchesToPerform[pi];
-
+            
             monitor.setTaskName( BrowserCoreMessages.bind( BrowserCoreMessages.jobs__search_task, new String[]
                 { search.getName() } ) );
             monitor.worked( 1 );

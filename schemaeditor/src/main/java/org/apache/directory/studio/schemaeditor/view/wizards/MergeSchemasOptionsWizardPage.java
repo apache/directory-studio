@@ -35,7 +35,6 @@ import org.eclipse.swt.widgets.Composite;
  * This class represents the page to select options of the MergeSchemasWizard.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class MergeSchemasOptionsWizardPage extends WizardPage
 {

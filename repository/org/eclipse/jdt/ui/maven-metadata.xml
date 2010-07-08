@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?><metadata>
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata>
   <groupId>org.eclipse.jdt</groupId>
   <artifactId>ui</artifactId>
   <version>3.3.2.r332_20080128-studio</version>
@@ -10,7 +11,9 @@
       <version>3.4.2.r342_v20090107-0800-studio</version>
       <version>3.5.0.v20090604</version>
       <version>3.5.0.v20090604-studio</version>
+      <version>3.5.2.r352_v20100106-0800</version>
+      <version>3.5.2.r352_v20100106-0800-studio</version>
     </versions>
-    <lastUpdated>20090825163136</lastUpdated>
+    <lastUpdated>20100322162600</lastUpdated>
   </versioning>
 </metadata>

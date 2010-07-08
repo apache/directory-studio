@@ -31,7 +31,6 @@ import org.apache.directory.studio.schemaeditor.model.Schema;
  * This interface defines a SchemaConnector.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public interface SchemaConnector
 {

@@ -42,7 +42,7 @@
 	<bookinfo>
 		<title>Apache Directory Studio Apache DS</title>
 		<subtitle>User's Guide</subtitle>
-		<releaseinfo>Version ${current_pom_version}</releaseinfo>
+		<releaseinfo>Version ${pom.version}</releaseinfo>
 		<copyright>
 			<year>2006 - 2009</year>
 			<holder>Apache Software Foundation</holder>
@@ -58,10 +58,7 @@
 				except in compliance with the License. You may obtain a
 				copy of the License at
 
-				<ulink
-					url="http://www.apache.org/licenses/LICENSE-2.0">
-					http://www.apache.org/licenses/LICENSE-2.0
-				</ulink>
+				<ulink url="http://www.apache.org/licenses/LICENSE-2.0">http://www.apache.org/licenses/LICENSE-2.0</ulink>
 
 				Unless required by applicable law or agreed to in
 				writing, software distributed under the License is

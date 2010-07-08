@@ -44,7 +44,6 @@ import org.eclipse.jface.resource.ImageDescriptor;
  * This Action refreshes the selected item.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class RefreshAction extends BrowserAction
 {
@@ -176,9 +175,11 @@ public class RefreshAction extends BrowserAction
         }
         if ( searchInput != null )
         {
-            searchInput.setSearchResults( null );
+            // the search input is usually a cloned search, lookup the real search from connection
+            ISearch search = searchInput.getBrowserConnection().getSearchManager().getSearch( searchInput.getName() );
+            search.setSearchResults( null );
             new StudioBrowserJob( new SearchRunnable( new ISearch[]
-                { searchInput } ) ).execute();
+                { search } ) ).execute();
         }
     }
 

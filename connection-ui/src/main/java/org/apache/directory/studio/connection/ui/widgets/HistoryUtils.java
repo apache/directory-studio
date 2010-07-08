@@ -32,7 +32,6 @@ import org.apache.directory.studio.connection.ui.ConnectionUIPlugin;
  * The HistoryUtils are used to save and load the history of input fields.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class HistoryUtils
 {

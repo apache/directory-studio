@@ -42,7 +42,6 @@ import org.eclipse.ui.PlatformUI;
  * The NewConnectionWizard is used to create a new connection.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class NewConnectionWizard extends Wizard implements INewWizard
 {

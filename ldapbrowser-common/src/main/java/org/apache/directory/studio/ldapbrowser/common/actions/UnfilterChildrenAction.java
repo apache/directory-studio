@@ -33,7 +33,6 @@ import org.eclipse.jface.resource.ImageDescriptor;
  * This action removes the children filter from the currently selected entry.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class UnfilterChildrenAction extends BrowserAction
 {

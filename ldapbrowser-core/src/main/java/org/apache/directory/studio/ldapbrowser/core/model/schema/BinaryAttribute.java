@@ -25,7 +25,6 @@ package org.apache.directory.studio.ldapbrowser.core.model.schema;
  * Bean class to store the numeric OID or the name of a binary attribute.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class BinaryAttribute
 {

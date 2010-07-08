@@ -30,7 +30,6 @@ import org.eclipse.jface.viewers.ViewerSorter;
  * The ConnectionSorter implements the sorter for the connection widget. 
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class ConnectionSorter extends ViewerSorter
 {

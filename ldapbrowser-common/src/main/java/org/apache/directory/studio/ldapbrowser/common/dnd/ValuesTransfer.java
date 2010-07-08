@@ -45,7 +45,6 @@ import org.eclipse.swt.dnd.TransferData;
  * A {@link Transfer} that could be used to transfer {@link IValue} objects.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class ValuesTransfer extends ByteArrayTransfer
 {

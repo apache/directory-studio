@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?><metadata>
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata>
   <groupId>org.eclipse.ui</groupId>
   <artifactId>navigator</artifactId>
   <version>3.3.2.M20080207-0800</version>
@@ -8,7 +9,8 @@
       <version>3.3.100.I20080606-1300</version>
       <version>3.3.102.M20090127-1700</version>
       <version>3.4.0.I20090525-2000</version>
+      <version>3.4.2.M20100120-0800</version>
     </versions>
-    <lastUpdated>20090819134355</lastUpdated>
+    <lastUpdated>20100318160812</lastUpdated>
   </versioning>
 </metadata>

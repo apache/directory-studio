@@ -30,7 +30,6 @@ import org.eclipse.swt.widgets.Display;
  * withing the SWT UI thread.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class UiThreadEventRunner implements EventRunner
 {

@@ -25,7 +25,6 @@ package org.apache.directory.studio.connection.core;
  * An ICredential holds authentication information for a connection. 
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public interface ICredentials
 {

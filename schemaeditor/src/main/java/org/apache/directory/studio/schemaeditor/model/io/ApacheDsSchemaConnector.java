@@ -48,7 +48,6 @@ import org.apache.directory.studio.schemaeditor.model.SyntaxImpl;
  * A Schema Connector for Apache DS.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class ApacheDsSchemaConnector extends AbstractSchemaConnector implements SchemaConnector
 {

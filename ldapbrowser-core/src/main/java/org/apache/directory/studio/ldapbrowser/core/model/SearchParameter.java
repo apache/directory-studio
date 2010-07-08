@@ -38,7 +38,6 @@ import org.apache.directory.studio.ldapbrowser.core.model.ISearch.SearchScope;
  * It is used to make searches persistent.
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class SearchParameter implements Serializable
 {

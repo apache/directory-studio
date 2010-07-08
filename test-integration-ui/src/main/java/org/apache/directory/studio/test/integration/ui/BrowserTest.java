@@ -28,6 +28,7 @@ import static junit.framework.Assert.assertTrue;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.directory.server.core.entry.ClonedServerEntry;
 import org.apache.directory.server.core.entry.DefaultServerEntry;
 import org.apache.directory.server.core.entry.ServerEntry;
 import org.apache.directory.server.core.integ.Level;
@@ -38,6 +39,7 @@ import org.apache.directory.server.ldap.LdapServer;
 import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.Connection.ReferralHandlingMethod;
+import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
 import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
@@ -46,9 +48,12 @@ import org.apache.directory.studio.test.integration.ui.bots.BrowserViewBot;
 import org.apache.directory.studio.test.integration.ui.bots.ConnectionsViewBot;
 import org.apache.directory.studio.test.integration.ui.bots.DeleteDialogBot;
 import org.apache.directory.studio.test.integration.ui.bots.EntryEditorBot;
+import org.apache.directory.studio.test.integration.ui.bots.ModificationLogsViewBot;
 import org.apache.directory.studio.test.integration.ui.bots.ReferralDialogBot;
 import org.apache.directory.studio.test.integration.ui.bots.SearchLogsViewBot;
 import org.apache.directory.studio.test.integration.ui.bots.StudioBot;
+import org.apache.directory.studio.test.integration.ui.bots.utils.JobWatcher;
+import org.eclipse.jface.dialogs.ErrorDialog;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -73,6 +78,7 @@ public class BrowserTest
     private ConnectionsViewBot connectionsViewBot;
     private BrowserViewBot browserViewBot;
     private SearchLogsViewBot searchLogsViewBot;
+    private ModificationLogsViewBot modificationLogsViewBot;
 
     private Connection connection;
 
@@ -86,6 +92,7 @@ public class BrowserTest
         connection = connectionsViewBot.createTestConnection( "BrowserTest", ldapServer.getPort() );
         browserViewBot = studioBot.getBrowserView();
         searchLogsViewBot = studioBot.getSearchLogsViewBot();
+        modificationLogsViewBot = studioBot.getModificationLogsViewBot();
     }
 
 
@@ -122,6 +129,8 @@ public class BrowserTest
         int countMatchesAfter = StringUtils.countMatches( text, "#!SEARCH REQUEST" );
 
         assertEquals( "Expected exactly 1 search request", 1, countMatchesAfter - countMatchesBefore );
+
+        assertEquals( "No modification expected", "", modificationLogsViewBot.getModificationLogsText() );
     }
 
 
@@ -184,6 +193,8 @@ public class BrowserTest
         List<String> attributeValues = entryEditorBot.getAttributeValues();
         assertEquals( 23, attributeValues.size() );
         assertTrue( attributeValues.contains( "uid: user.1" ) );
+
+        assertEquals( "No modification expected", "", modificationLogsViewBot.getModificationLogsText() );
     }
 
 
@@ -400,6 +411,133 @@ public class BrowserTest
         // check the entry doesn't exist now
         browserViewBot.expandEntry( "DIT", "Root DSE", "ou=system", url );
         assertFalse( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", url, "cn=refresh" ) );
+    }
+
+
+    /**
+     * Test for DIRSTUDIO-591.
+     * (Error reading objects with # in DN)
+     *
+     * @throws Exception
+     */
+    @Test
+    public void testBrowseDnWithSharpAndHexSequence() throws Exception
+    {
+        assertTrue( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=users",
+            "cn=\\#ACL_AD-Projects_Author" ) );
+        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users", "cn=\\#ACL_AD-Projects_Author" );
+
+        assertEquals( "No modification expected", "", modificationLogsViewBot.getModificationLogsText() );
+    }
+
+
+    /**
+     * Test for DIRSTUDIO-597.
+     * (Modification sent to the server while browsing through the DIT and refreshing entries)
+     *
+     * @throws Exception
+     */
+    @Test
+    public void testNoModificationWhileBrowsingAndRefreshing() throws Exception
+    {
+        boolean errorDialogAutomatedMode = ErrorDialog.AUTOMATED_MODE;
+        ErrorDialog.AUTOMATED_MODE = false;
+
+        String text = modificationLogsViewBot.getModificationLogsText();
+        assertEquals( "", text );
+
+        try
+        {
+            assertTrue( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=users",
+                "cn=\\#ACL_AD-Projects_Author" ) );
+
+            for ( int i = 0; i < 5; i++ )
+            {
+                // select entry and refresh
+                browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users", "cn=\\#ACL_AD-Projects_Author" );
+                browserViewBot.refresh();
+
+                // select parent and refresh
+                browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users" );
+                browserViewBot.refresh();
+            }
+        }
+        finally
+        {
+            // reset flag
+            ErrorDialog.AUTOMATED_MODE = errorDialogAutomatedMode;
+        }
+
+        // check that modification logs is still empty 
+        // to ensure that no modification was sent to the server
+        assertEquals( "No modification expected", "", modificationLogsViewBot.getModificationLogsText() );
+    }
+
+
+    /**
+     * Test for DIRSTUDIO-603, DIRSHARED-41.
+     * (Error browsing/entering rfc2307 compliant host entry.)
+     */
+    @Test
+    public void testBrowseDnWithIpHostNumber() throws Exception
+    {
+        ApacheDsUtils.enableSchema( ldapServer, "nis" );
+
+        // create entry with multi-valued RDN containing an IP address value
+        ServerEntry entry = new DefaultServerEntry( ldapServer.getDirectoryService().getRegistries() );
+        entry.setDn( new LdapDN( "cn=loopback+ipHostNumber=127.0.0.1,ou=users,ou=system" ) );
+        entry.add( "objectClass", "top", "device", "ipHost" );
+        entry.add( "cn", "loopback" );
+        entry.add( "ipHostNumber", "127.0.0.1" );
+        ldapServer.getDirectoryService().getAdminSession().add( entry );
+
+        assertTrue( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=users",
+            "cn=loopback+ipHostNumber=127.0.0.1" ) );
+        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users", "cn=loopback+ipHostNumber=127.0.0.1" );
+    }
+
+
+    /**
+     * DIRSTUDIO-637: copy/paste of attributes no longer works.
+     * Test copy/paste of a value to a bookmark.
+     * 
+     * @throws Exception
+     *             the exception
+     */
+    @Test
+    public void testCopyPasteValueToBookmark() throws Exception
+    {
+        // create a bookmark
+        IBrowserConnection browserConnection = BrowserCorePlugin.getDefault().getConnectionManager()
+            .getBrowserConnection( connection );
+        browserConnection.getBookmarkManager().addBookmark(
+            new Bookmark( browserConnection, new LdapDN( "uid=user.2,ou=users,ou=system" ), "My Bookmark" ) );
+
+        // copy a value
+        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users", "uid=user.1" );
+        EntryEditorBot entryEditorBot = studioBot.getEntryEditorBot( "uid=user.1,ou=users,ou=system" );
+        entryEditorBot.activate();
+        entryEditorBot.copyValue( "uid", "user.1" );
+
+        // select the bookmark
+        browserViewBot.selectEntry( "Bookmarks", "My Bookmark" );
+        entryEditorBot = studioBot.getEntryEditorBot( "uid=user.2,ou=users,ou=system" );
+        entryEditorBot.activate();
+        assertEquals( 23, entryEditorBot.getAttributeValues().size() );
+
+        // paste the value
+        JobWatcher watcher = new JobWatcher( BrowserCoreMessages.jobs__execute_ldif_name );
+        browserViewBot.paste();
+        watcher.waitUntilDone();
+
+        // assert pasted value visible in editor
+        assertEquals( 24, entryEditorBot.getAttributeValues().size() );
+        entryEditorBot.getAttributeValues().contains( "uid: user.1" );
+
+        // assert pasted value was written to directory
+        ClonedServerEntry entry = ldapServer.getDirectoryService().getAdminSession().lookup(
+            new LdapDN( "uid=user.2,ou=users,ou=system" ) );
+        assertTrue( entry.contains( "uid", "user.1" ) );
     }
 
 }

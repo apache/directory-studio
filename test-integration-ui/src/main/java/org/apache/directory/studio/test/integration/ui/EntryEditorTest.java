@@ -22,16 +22,29 @@ package org.apache.directory.studio.test.integration.ui;
 
 
 import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertFalse;
+import static junit.framework.Assert.assertTrue;
+import static org.eclipse.swtbot.swt.finder.SWTBotTestCase.assertContains;
 
+import org.apache.commons.lang.StringUtils;
+import org.apache.directory.server.core.entry.ClonedServerEntry;
 import org.apache.directory.server.core.integ.Level;
 import org.apache.directory.server.core.integ.annotations.ApplyLdifFiles;
 import org.apache.directory.server.core.integ.annotations.CleanupLevel;
 import org.apache.directory.server.integ.SiRunner;
 import org.apache.directory.server.ldap.LdapServer;
+import org.apache.directory.shared.ldap.name.LdapDN;
+import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
+import org.apache.directory.studio.test.integration.ui.bots.BrowserViewBot;
 import org.apache.directory.studio.test.integration.ui.bots.ConnectionsViewBot;
+import org.apache.directory.studio.test.integration.ui.bots.DnEditorDialogBot;
+import org.apache.directory.studio.test.integration.ui.bots.EntryEditorBot;
+import org.apache.directory.studio.test.integration.ui.bots.ModificationLogsViewBot;
+import org.apache.directory.studio.test.integration.ui.bots.NewAttributeWizardBot;
+import org.apache.directory.studio.test.integration.ui.bots.SelectDnDialogBot;
 import org.apache.directory.studio.test.integration.ui.bots.StudioBot;
-import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
+import org.apache.directory.studio.test.integration.ui.bots.utils.JobWatcher;
+import org.eclipse.swtbot.swt.finder.utils.SWTUtils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -54,8 +67,8 @@ public class EntryEditorTest
 
     private StudioBot studioBot;
     private ConnectionsViewBot connectionsViewBot;
-
-    private SWTWorkbenchBot bot;
+    private BrowserViewBot browserViewBot;
+    private ModificationLogsViewBot modificationLogsViewBot;
 
 
     @Before
@@ -65,8 +78,8 @@ public class EntryEditorTest
         studioBot.resetLdapPerspective();
         connectionsViewBot = studioBot.getConnectionView();
         connectionsViewBot.createTestConnection( "EntryEditorTest", ldapServer.getPort() );
-
-        bot = new SWTWorkbenchBot();
+        browserViewBot = studioBot.getBrowserView();
+        modificationLogsViewBot = studioBot.getModificationLogsViewBot();
     }
 
 
@@ -74,7 +87,6 @@ public class EntryEditorTest
     public void tearDown() throws Exception
     {
         connectionsViewBot.deleteTestConnections();
-        bot = null;
     }
 
 
@@ -87,49 +99,75 @@ public class EntryEditorTest
     @Test
     public void testAddEditDeleteAttribute() throws Exception
     {
-        final SWTBotTree browserTree = SWTBotUtils.getLdapBrowserTree( bot );
-        SWTBotUtils.selectEntry( bot, browserTree, false, "DIT", "Root DSE", "ou=system", "ou=users",
-            "cn=Barbara Jensen" );
+        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users", "cn=Barbara Jensen" );
 
-        final SWTBotTree entryEditorTree = SWTBotUtils.getEntryEditorTree( bot, "cn=Barbara Jensen,ou=users,ou=system" );
-        entryEditorTree.setFocus();
+        EntryEditorBot entryEditorBot = studioBot.getEntryEditorBot( "cn=Barbara Jensen,ou=users,ou=system" );
+        entryEditorBot.activate();
+        String dn = entryEditorBot.getDnText();
+        assertEquals( "DN: cn=Barbara Jensen,ou=users,ou=system", dn );
+        assertEquals( 8, entryEditorBot.getAttributeValues().size() );
+        assertEquals( "", modificationLogsViewBot.getModificationLogsText() );
 
         // add description attribute
-        entryEditorTree.contextMenu( "New Attribute..." ).click();
-        bot.comboBoxWithLabel( "Attribute type:" ).setText( "description" );
-        bot.button( "Finish" ).click();
-        bot.text( "" ).setText( "This is the 1st description." );
-        entryEditorTree.getTreeItem( "objectClass" ).click();
+        entryEditorBot.activate();
+        NewAttributeWizardBot wizardBot = entryEditorBot.openNewAttributeWizard();
+        assertTrue( wizardBot.isVisible() );
+        wizardBot.typeAttributeType( "description" );
+        wizardBot.clickFinishButton();
+        entryEditorBot.typeValueAndFinish( "This is the 1st description." );
+        assertEquals( 9, entryEditorBot.getAttributeValues().size() );
+        assertTrue( entryEditorBot.getAttributeValues().contains( "description: This is the 1st description." ) );
+        assertContains( "add: description\ndescription: This is the 1st description.", modificationLogsViewBot
+            .getModificationLogsText() );
 
         // add second value
-        entryEditorTree.getTreeItem( "description" ).click();
-        entryEditorTree.contextMenu( "New Value" ).click();
-        bot.text( "" ).setText( "This is the 2nd description." );
-        entryEditorTree.getTreeItem( "objectClass" ).click();
+        entryEditorBot.activate();
+        entryEditorBot.addValue( "description" );
+        entryEditorBot.typeValueAndFinish( "This is the 2nd description." );
+        assertEquals( 10, entryEditorBot.getAttributeValues().size() );
+        assertTrue( entryEditorBot.getAttributeValues().contains( "description: This is the 1st description." ) );
+        assertTrue( entryEditorBot.getAttributeValues().contains( "description: This is the 2nd description." ) );
+        assertContains( "add: description\ndescription: This is the 2nd description.", modificationLogsViewBot
+            .getModificationLogsText() );
 
         // edit second value
-        entryEditorTree.select( 7 );
-        entryEditorTree.contextMenu( "Edit Value" ).click();
-        bot.text( "This is the 2nd description." ).setText( "This is the 3rd description." );
-        entryEditorTree.getTreeItem( "objectClass" ).click();
+        entryEditorBot.editValue( "description", "This is the 2nd description." );
+        entryEditorBot.typeValueAndFinish( "This is the 3rd description." );
+        assertEquals( 10, entryEditorBot.getAttributeValues().size() );
+        assertEquals( 10, entryEditorBot.getAttributeValues().size() );
+        assertTrue( entryEditorBot.getAttributeValues().contains( "description: This is the 1st description." ) );
+        assertFalse( entryEditorBot.getAttributeValues().contains( "description: This is the 2nd description." ) );
+        assertTrue( entryEditorBot.getAttributeValues().contains( "description: This is the 3rd description." ) );
+        assertContains( "delete: description\ndescription: This is the 2nd description.", modificationLogsViewBot
+            .getModificationLogsText() );
+        assertContains( "add: description\ndescription: This is the 3rd description.", modificationLogsViewBot
+            .getModificationLogsText() );
 
         // delete second value
-        entryEditorTree.select( 7 );
-        entryEditorTree.contextMenu( "Delete Value" ).click();
-        bot.shell( "Delete Value" );
-        bot.button( "OK" ).click();
+        entryEditorBot.deleteValue( "description", "This is the 3rd description." );
+        assertEquals( 9, entryEditorBot.getAttributeValues().size() );
+        assertTrue( entryEditorBot.getAttributeValues().contains( "description: This is the 1st description." ) );
+        assertFalse( entryEditorBot.getAttributeValues().contains( "description: This is the 3rd description." ) );
+        assertContains( "delete: description\ndescription: This is the 3rd description.", modificationLogsViewBot
+            .getModificationLogsText() );
 
         // edit 1st value
-        entryEditorTree.select( 6 );
-        entryEditorTree.contextMenu( "Edit Value" ).click();
-        bot.text( "This is the 1st description." ).setText( "This is the final description." );
-        entryEditorTree.getTreeItem( "objectClass" ).click();
+        entryEditorBot.editValue( "description", "This is the 1st description." );
+        entryEditorBot.typeValueAndFinish( "This is the final description." );
+        assertEquals( 9, entryEditorBot.getAttributeValues().size() );
+        assertFalse( entryEditorBot.getAttributeValues().contains( "description: This is the 1st description." ) );
+        assertTrue( entryEditorBot.getAttributeValues().contains( "description: This is the final description." ) );
+        assertContains( "replace: description\ndescription: This is the final description.", modificationLogsViewBot
+            .getModificationLogsText() );
 
         // delete 1st value/attribute
-        entryEditorTree.select( 6 );
-        entryEditorTree.contextMenu( "Delete Value" ).click();
-        bot.shell( "Delete Value" );
-        bot.button( "OK" ).click();
+        entryEditorBot.deleteValue( "description", "This is the final description." );
+        assertEquals( 8, entryEditorBot.getAttributeValues().size() );
+        assertFalse( entryEditorBot.getAttributeValues().contains( "description: This is the final description." ) );
+        assertContains( "delete: description\n-", modificationLogsViewBot.getModificationLogsText() );
+
+        assertEquals( "Expected 6 modifications.", 6, StringUtils.countMatches( modificationLogsViewBot
+            .getModificationLogsText(), "#!RESULT OK" ) );
     }
 
 
@@ -142,43 +180,79 @@ public class EntryEditorTest
     @Test
     public void testDnValueEditor() throws Exception
     {
-        SWTBotTree browserTree = SWTBotUtils.getLdapBrowserTree( bot );
-        SWTBotUtils.selectEntry( bot, browserTree, false, "DIT", "Root DSE", "ou=system", "ou=users",
-            "cn=\\#\\\\\\+\\, \\\"\u00F6\u00E9\\\"" );
-        SWTBotUtils.selectEntry( bot, browserTree, false, "DIT", "Root DSE", "ou=system", "ou=groups", "cn=My Group" );
+        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=groups", "cn=My Group" );
 
-        SWTBotTree entryEditorTree = SWTBotUtils.getEntryEditorTree( bot, "cn=My Group,ou=groups,ou=system" );
-        entryEditorTree.setFocus();
-        entryEditorTree.contextMenu( "New Attribute..." ).click();
-        bot.shell( "New Attribute" );
-        bot.comboBoxWithLabel( "Attribute type:" ).setText( "member" );
-        bot.button( "Finish" ).click();
+        EntryEditorBot entryEditorBot = studioBot.getEntryEditorBot( "cn=My Group,ou=groups,ou=system" );
+        entryEditorBot.activate();
+        String dn = entryEditorBot.getDnText();
+        assertEquals( "DN: cn=My Group,ou=groups,ou=system", dn );
+        assertEquals( 4, entryEditorBot.getAttributeValues().size() );
 
-        // DN Editor automatically opened
-        bot.shell( "DN Editor" );
-        bot.button( "Browse..." ).click();
-
-        // select value from DN picker
-        bot.shell( "Select DN" );
-        SWTBotTree tree = bot.tree( 0 );
-        SWTBotUtils.selectEntry( bot, tree, false, "Root DSE", "ou=system", "ou=users",
-            "cn=\\#\\\\\\+\\, \\\"\u00F6\u00E9\\\"" );
-        bot.button( "OK" ).click();
-
-        // assert value after selection
-        assertEquals( "Unexpected value", "cn=\\#\\\\\\+\\, \\\"\u00F6\u00E9\\\",ou=users,ou=system", bot.comboBox()
-            .getText() );
-
-        // save value
-        bot.button( "OK" ).click();
-        bot.sleep( 1000 );
+        // add member attribute
+        NewAttributeWizardBot wizardBot = entryEditorBot.openNewAttributeWizard();
+        assertTrue( wizardBot.isVisible() );
+        wizardBot.typeAttributeType( "member" );
+        DnEditorDialogBot dnEditorBot = wizardBot.clickFinishButtonExpectingDnEditor();
+        assertTrue( dnEditorBot.isVisible() );
+        SelectDnDialogBot selectDnBot = dnEditorBot.clickBrowseButtonExpectingSelectDnDialog();
+        assertTrue( selectDnBot.isVisible() );
+        selectDnBot.selectEntry( "Root DSE", "ou=system", "ou=users", "cn=\\#\\\\\\+\\, \\\"\u00F6\u00E9\\\"" );
+        selectDnBot.clickOkButton();
+        assertEquals( "cn=\\#\\\\\\+\\, \\\"\u00F6\u00E9\\\",ou=users,ou=system", dnEditorBot.getDnText() );
+        dnEditorBot.clickOkButton();
 
         // assert value after saved and reloaded from server
-        entryEditorTree.select( 3 );
-        entryEditorTree.getTreeItem( "member" ).doubleClick();
-        assertEquals( "Unexpected value", "cn=\\#\\\\\\+\\, \\\"\u00F6\u00E9\\\",ou=users,ou=system", bot.comboBox()
-            .getText() );
-        bot.button( "Cancel" ).click();
+        SWTUtils.sleep( 1000 );
+        assertEquals( 5, entryEditorBot.getAttributeValues().size() );
+        assertTrue( entryEditorBot.getAttributeValues().contains(
+            "member: cn=\\#\\\\\\+\\, \\\"\u00F6\u00E9\\\",ou=users,ou=system" ) );
+        dnEditorBot = entryEditorBot.editValueExpectingDnEditor( "member",
+            "cn=\\#\\\\\\+\\, \\\"\u00F6\u00E9\\\",ou=users,ou=system" );
+        assertEquals( "cn=\\#\\\\\\+\\, \\\"\u00F6\u00E9\\\",ou=users,ou=system", dnEditorBot.getDnText() );
+        dnEditorBot.clickCancelButton();
+
+        assertEquals( "Expected 1 modification.", 1, StringUtils.countMatches( modificationLogsViewBot
+            .getModificationLogsText(), "#!RESULT OK" ) );
+    }
+
+
+    /**
+     * DIRSTUDIO-637: copy/paste of attributes no longer works.
+     * Test copy/paste within entry editor.
+     * 
+     * @throws Exception
+     *             the exception
+     */
+    @Test
+    public void testCopyPasteIn() throws Exception
+    {
+        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users", "cn=Barbara Jensen" );
+
+        // copy a value
+        EntryEditorBot entryEditorBot = studioBot.getEntryEditorBot( "cn=Barbara Jensen,ou=users,ou=system" );
+        entryEditorBot.activate();
+        entryEditorBot.copyValue( "uid", "bjensen" );
+
+        // go to another entry
+        browserViewBot
+            .selectEntry( "DIT", "Root DSE", "ou=system", "ou=users", "cn=\\#\\\\\\+\\, \\\"\u00F6\u00E9\\\"" );
+        entryEditorBot = studioBot.getEntryEditorBot( "cn=\\#\\\\\\+\\, \\\"\u00F6\u00E9\\\",ou=users,ou=system" );
+        entryEditorBot.activate();
+        assertEquals( 8, entryEditorBot.getAttributeValues().size() );
+
+        // paste value, wait till job is done
+        JobWatcher watcher = new JobWatcher( BrowserCoreMessages.jobs__execute_ldif_name );
+        entryEditorBot.pasteValue();
+        watcher.waitUntilDone();
+
+        // assert pasted value visible in editor
+        assertEquals( 9, entryEditorBot.getAttributeValues().size() );
+        entryEditorBot.getAttributeValues().contains( "uid: bjensen" );
+
+        // assert pasted value was written to directory
+        ClonedServerEntry entry = ldapServer.getDirectoryService().getAdminSession().lookup(
+            new LdapDN( "cn=\\#\\\\\\+\\, \\\"\u00F6\u00E9\\\",ou=users,ou=system" ) );
+        assertTrue( entry.contains( "uid", "bjensen" ) );
     }
 
 }

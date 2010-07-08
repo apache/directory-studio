@@ -51,7 +51,6 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
  * This class implements the Preference page for the Plugin
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class PluginPreferencePage extends PreferencePage implements IWorkbenchPreferencePage
 {

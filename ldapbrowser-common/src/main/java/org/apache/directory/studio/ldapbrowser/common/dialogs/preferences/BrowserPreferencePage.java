@@ -48,7 +48,6 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
  * The BrowserPreferencePage contains general settings for the browser view.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class BrowserPreferencePage extends PreferencePage implements IWorkbenchPreferencePage
 {

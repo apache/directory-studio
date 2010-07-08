@@ -28,7 +28,6 @@ import org.apache.directory.studio.connection.core.jobs.StudioProgressMonitor;
  * This class represents an AbstractSchemaConnector and implements SchemaConnector.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public abstract class AbstractSchemaConnector implements SchemaConnector
 {

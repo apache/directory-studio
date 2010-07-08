@@ -185,24 +185,40 @@ public class Utils
 
     public static String serialize( Object o )
     {
-        Thread.currentThread().setContextClassLoader( Utils.class.getClassLoader() );
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        XMLEncoder encoder = new XMLEncoder( baos );
-        encoder.writeObject( o );
-        encoder.close();
-        String s = LdifUtils.utf8decode( baos.toByteArray() );
-        return s;
+        ClassLoader ccl = Thread.currentThread().getContextClassLoader();
+        try
+        {
+            Thread.currentThread().setContextClassLoader( Utils.class.getClassLoader() );
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            XMLEncoder encoder = new XMLEncoder( baos );
+            encoder.writeObject( o );
+            encoder.close();
+            String s = LdifUtils.utf8decode( baos.toByteArray() );
+            return s;
+        }
+        finally
+        {
+            Thread.currentThread().setContextClassLoader( ccl );
+        }
     }
 
 
     public static Object deserialize( String s )
     {
-        Thread.currentThread().setContextClassLoader( Utils.class.getClassLoader() );
-        ByteArrayInputStream bais = new ByteArrayInputStream( LdifUtils.utf8encode( s ) );
-        XMLDecoder decoder = new XMLDecoder( bais );
-        Object o = decoder.readObject();
-        decoder.close();
-        return o;
+        ClassLoader ccl = Thread.currentThread().getContextClassLoader();
+        try
+        {
+            Thread.currentThread().setContextClassLoader( Utils.class.getClassLoader() );
+            ByteArrayInputStream bais = new ByteArrayInputStream( LdifUtils.utf8encode( s ) );
+            XMLDecoder decoder = new XMLDecoder( bais );
+            Object o = decoder.readObject();
+            decoder.close();
+            return o;
+        }
+        finally
+        {
+            Thread.currentThread().setContextClassLoader( ccl );
+        }
     }
 
 

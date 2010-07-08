@@ -28,7 +28,6 @@ import org.apache.directory.studio.schemaeditor.view.wrappers.TreeNode;
  * This class represents an abstract difference wrapper.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public abstract class AbstractDifferenceWrapper extends AbstractTreeNode
 {

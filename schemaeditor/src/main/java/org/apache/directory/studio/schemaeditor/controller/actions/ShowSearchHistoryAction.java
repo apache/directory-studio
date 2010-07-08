@@ -44,7 +44,6 @@ import org.eclipse.ui.IWorkbenchWindowActionDelegate;
  * This action is show the search History.
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class ShowSearchHistoryAction extends Action implements IWorkbenchWindowActionDelegate
 {

@@ -39,7 +39,6 @@ import org.eclipse.jface.viewers.Viewer;
  * This class is the Content Provider for the Object Class Selection Dialog.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class ObjectClassSelectionDialogContentProvider implements IStructuredContentProvider
 {
@@ -72,14 +71,11 @@ public class ObjectClassSelectionDialogContentProvider implements IStructuredCon
             String searchText = ( String ) inputElement;
 
             String searchRegexp;
-            if ( searchText.length() == 0 )
-            {
-                searchRegexp = ".*"; //$NON-NLS-1$
-            }
-            else
-            {
-                searchRegexp = searchText + ".*"; //$NON-NLS-1$
-            }
+
+            searchText += "*"; //$NON-NLS-1$
+            searchRegexp = searchText.replaceAll( "\\*", "[\\\\S]*" ); //$NON-NLS-1$ //$NON-NLS-2$ 
+            searchRegexp = searchRegexp.replaceAll( "\\?", "[\\\\S]" ); //$NON-NLS-1$ //$NON-NLS-2$ 
+
             Pattern pattern = Pattern.compile( searchRegexp, Pattern.CASE_INSENSITIVE );
 
             List<ObjectClassImpl> ocList = schemaHandler.getObjectClasses();

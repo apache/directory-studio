@@ -31,7 +31,6 @@ import org.eclipse.ui.PlatformUI;
  * This class implements the Wizard for Exporting to LDIF
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class ExportLdifWizard extends ExportBaseWizard
 {

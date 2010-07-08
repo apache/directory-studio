@@ -44,7 +44,6 @@ import org.dom4j.io.XMLWriter;
  * This class is used to export a Schema file into the XML Format.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class XMLSchemaFileExporter
 {

@@ -38,7 +38,6 @@ import org.eclipse.jface.viewers.LabelProvider;
  * It displays specific icons overlays for attribute types and object classes.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class SchemaEditorTypeLabelDecorator extends LabelProvider implements ILightweightLabelDecorator
 {

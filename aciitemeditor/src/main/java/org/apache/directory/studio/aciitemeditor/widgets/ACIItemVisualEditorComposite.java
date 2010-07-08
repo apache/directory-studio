@@ -49,7 +49,6 @@ import org.eclipse.swt.widgets.Composite;
  * It extends ScrolledComposite.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class ACIItemVisualEditorComposite extends ScrolledComposite implements WidgetModifyListener
 {

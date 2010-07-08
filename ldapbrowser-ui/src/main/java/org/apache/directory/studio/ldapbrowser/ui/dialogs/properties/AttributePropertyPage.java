@@ -47,7 +47,6 @@ import org.eclipse.ui.dialogs.PropertyPage;
  * This page shows some info about the selected Attribute.
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class AttributePropertyPage extends PropertyPage implements IWorkbenchPropertyPage
 {

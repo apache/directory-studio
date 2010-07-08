@@ -24,7 +24,6 @@ package org.apache.directory.studio.schemaeditor.model.difference;
  * This abstract class represents an Abstract Property Difference.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public abstract class AbstractPropertyDifference extends AbstractDifference implements PropertyDifference
 {

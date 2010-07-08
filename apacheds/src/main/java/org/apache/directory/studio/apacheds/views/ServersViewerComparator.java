@@ -38,7 +38,6 @@ import org.eclipse.jface.viewers.ViewerComparator;
  * This class implements the servers table viewer comparator.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class ServersViewerComparator extends ViewerComparator
 {

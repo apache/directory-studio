@@ -42,7 +42,6 @@ import org.eclipse.ui.PlatformUI;
  * an {@link IRunnableContext}.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class RunnableContextRunner
 {

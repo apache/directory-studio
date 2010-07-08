@@ -25,7 +25,6 @@ package org.apache.directory.studio.connection.core.event;
  * Factory to create {@link EventRunnable} objects.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public interface EventRunnableFactory<L>
 {

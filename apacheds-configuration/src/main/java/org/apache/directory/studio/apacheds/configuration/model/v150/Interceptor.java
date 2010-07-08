@@ -24,7 +24,6 @@ package org.apache.directory.studio.apacheds.configuration.model.v150;
  * This class represents an Interceptor.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class Interceptor
 {

@@ -74,6 +74,7 @@
        default="true"
        icon="resources/icons/browser_searchresulteditor.gif"
        id="%Editor_SearchResultEditor_id"
+       matchingStrategy="org.apache.directory.studio.ldapbrowser.ui.editors.searchresult.SingleTabSearchResultEditorMatchingStrategy"
        name="%Editor_SearchResultEditor_name"/>
  <editor
        class="org.apache.directory.studio.ldapbrowser.ui.editors.schemabrowser.SchemaBrowser"

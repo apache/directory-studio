@@ -38,7 +38,6 @@ import org.eclipse.swt.widgets.Shell;
  * (Distinguished Name).
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class DnValueEditor extends AbstractDialogStringValueEditor
 {
@@ -132,7 +131,6 @@ public class DnValueEditor extends AbstractDialogStringValueEditor
      * information to the opened DnDialog.
      *
      * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
-     * @version $Rev$, $Date$
      */
     private class DnValueEditorRawValueWrapper
     {

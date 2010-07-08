@@ -52,7 +52,6 @@ import org.eclipse.ui.forms.widgets.TableWrapLayout;
  * This class represents the General Page of the Server Configuration Editor.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class GeneralPage extends FormPage implements SaveableFormPage
 {

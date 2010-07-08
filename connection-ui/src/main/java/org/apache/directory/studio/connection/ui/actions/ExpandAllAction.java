@@ -31,7 +31,6 @@ import org.eclipse.jface.viewers.TreeViewer;
  * This action expands all nodes of the viewer's tree, starting with the root.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class ExpandAllAction extends Action
 {

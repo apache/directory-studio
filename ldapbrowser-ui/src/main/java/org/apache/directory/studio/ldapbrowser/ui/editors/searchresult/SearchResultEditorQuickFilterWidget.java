@@ -41,7 +41,6 @@ import org.eclipse.swt.widgets.Text;
  * for the search result edtior. It contains one fields for all displayed values.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class SearchResultEditorQuickFilterWidget
 {

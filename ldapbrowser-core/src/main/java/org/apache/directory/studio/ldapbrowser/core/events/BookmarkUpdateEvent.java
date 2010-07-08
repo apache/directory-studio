@@ -28,7 +28,6 @@ import org.apache.directory.studio.ldapbrowser.core.model.IBookmark;
  * An BookmarkUpdateEvent indicates that an {@link IBookmark} was modified.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class BookmarkUpdateEvent
 {

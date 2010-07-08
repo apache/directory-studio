@@ -45,7 +45,6 @@ import org.apache.directory.studio.ldapbrowser.core.model.schema.SchemaUtils;
  * is opened and closed.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class BrowserConnectionListener implements IConnectionListener
 {

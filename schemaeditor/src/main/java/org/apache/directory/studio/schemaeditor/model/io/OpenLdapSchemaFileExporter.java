@@ -31,7 +31,6 @@ import org.apache.directory.studio.schemaeditor.model.Schema;
  * This class is used to export a Schema file into the OpenLDAP Format.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class OpenLdapSchemaFileExporter
 {

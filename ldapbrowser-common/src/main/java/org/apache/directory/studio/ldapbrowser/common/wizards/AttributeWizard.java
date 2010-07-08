@@ -41,7 +41,6 @@ import org.eclipse.ui.PlatformUI;
  * to modify an existing attribute description. 
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class AttributeWizard extends Wizard implements INewWizard
 {
@@ -164,7 +163,6 @@ public class AttributeWizard extends Wizard implements INewWizard
      * A dummy wizard page to show the user that no entry is selected.
      *
      * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
-     * @version $Rev$, $Date$
      */
     class DummyWizardPage extends WizardPage
     {

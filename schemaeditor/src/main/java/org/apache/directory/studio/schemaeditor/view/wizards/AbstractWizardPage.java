@@ -30,7 +30,6 @@ import org.eclipse.jface.wizard.WizardPage;
  * for all our {@link WizardPage}s.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public abstract class AbstractWizardPage extends WizardPage
 {

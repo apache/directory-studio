@@ -24,7 +24,6 @@ package org.apache.directory.studio.ldifeditor;
  * Constants for the LDIF editor.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public interface LdifEditorConstants
 {
@@ -154,7 +153,7 @@ public interface LdifEditorConstants
 
     public static final String IMG_TEMPLATE = "resources/icons/template.gif"; //$NON-NLS-1$
 
-    public static final String IMG_BROWSER_LDIFEDITOR = "resources/icons/browser_ldifeditor.gif"; //$NON-NLS-1$
+    public static final String IMG_BROWSER_LDIFEDITOR = "resources/icons/ldifeditor.gif"; //$NON-NLS-1$
 
     public static final String IMG_LDIFEDITOR_NEW = "resources/icons/ldifeditor_new.gif"; //$NON-NLS-1$
 

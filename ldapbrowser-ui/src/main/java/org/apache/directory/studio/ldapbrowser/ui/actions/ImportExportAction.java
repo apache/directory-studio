@@ -46,7 +46,6 @@ import org.eclipse.jface.wizard.WizardDialog;
  * This class implements Import/Export Actions for LDIF, CSV, EXCEL, ODF and DSML.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class ImportExportAction extends BrowserAction
 {

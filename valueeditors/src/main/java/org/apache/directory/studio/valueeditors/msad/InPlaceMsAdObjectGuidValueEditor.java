@@ -45,7 +45,6 @@ import org.apache.directory.studio.valueeditors.HexValueEditor;
  * </ul>
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class InPlaceMsAdObjectGuidValueEditor extends HexValueEditor
 {

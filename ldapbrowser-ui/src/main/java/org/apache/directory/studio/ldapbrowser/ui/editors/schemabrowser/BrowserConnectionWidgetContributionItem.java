@@ -46,7 +46,6 @@ import org.eclipse.swt.widgets.ToolItem;
  * A contribution item that adds a BrowserConnectionWidget with connections to the toolbar.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class BrowserConnectionWidgetContributionItem extends ContributionItem implements ConnectionUpdateListener
 {

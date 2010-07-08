@@ -37,7 +37,6 @@ import org.eclipse.jface.viewers.TreeViewer;
  * This class manages all the actions of the attribute page of the new entry wizard.
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class EntryEditorWidgetActionGroupWithAttribute extends EntryEditorWidgetActionGroup
 {

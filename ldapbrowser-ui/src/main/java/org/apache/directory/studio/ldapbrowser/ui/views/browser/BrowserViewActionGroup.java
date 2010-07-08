@@ -23,15 +23,16 @@ package org.apache.directory.studio.ldapbrowser.ui.views.browser;
 
 import org.apache.directory.studio.ldapbrowser.common.actions.CopyAction;
 import org.apache.directory.studio.ldapbrowser.common.actions.DeleteAction;
+import org.apache.directory.studio.ldapbrowser.common.actions.DeleteAllAction;
 import org.apache.directory.studio.ldapbrowser.common.actions.FetchAliasesAction;
 import org.apache.directory.studio.ldapbrowser.common.actions.FetchOperationalAttributesAction;
 import org.apache.directory.studio.ldapbrowser.common.actions.FetchReferralsAction;
 import org.apache.directory.studio.ldapbrowser.common.actions.FetchSubentriesAction;
-import org.apache.directory.studio.ldapbrowser.common.actions.PasteAction;
 import org.apache.directory.studio.ldapbrowser.common.actions.RenameAction;
 import org.apache.directory.studio.ldapbrowser.common.actions.proxy.BrowserActionProxy;
 import org.apache.directory.studio.ldapbrowser.common.actions.proxy.BrowserViewActionProxy;
 import org.apache.directory.studio.ldapbrowser.common.widgets.browser.BrowserActionGroup;
+import org.apache.directory.studio.ldapbrowser.ui.actions.BrowserPasteAction;
 import org.apache.directory.studio.ldapbrowser.ui.actions.CopyDnAction;
 import org.apache.directory.studio.ldapbrowser.ui.actions.CopyEntryAsCsvAction;
 import org.apache.directory.studio.ldapbrowser.ui.actions.CopyEntryAsLdifAction;
@@ -62,7 +63,6 @@ import org.eclipse.ui.actions.ActionFactory;
  * This class manages all the actions of the browser view.
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class BrowserViewActionGroup extends BrowserActionGroup
 {
@@ -151,6 +151,9 @@ public class BrowserViewActionGroup extends BrowserActionGroup
     /** The Constant copyEntryAsCsvOperationalAction. */
     private static final String copyEntryAsCsvOperationalAction = "copyEntryAsCsvOperationalAction"; //$NON-NLS-1$
 
+    /** The Constant deleteAllAction. */
+    private static final String deleteAllAction = "deleteAllAction"; //$NON-NLS-1$
+
     /** The Constant importDsmlAction. */
     private static final String importDsmlAction = "importDsmlAction"; //$NON-NLS-1$
 
@@ -219,7 +222,7 @@ public class BrowserViewActionGroup extends BrowserActionGroup
             .put( locateEntryInDitAction, new BrowserViewActionProxy( viewer, new LocateEntryInDitAction() ) );
         browserActionMap.put( gotoDnAction, new BrowserViewActionProxy( viewer, new GotoDnAction() ) );
 
-        browserActionMap.put( pasteAction, new BrowserViewActionProxy( viewer, new PasteAction() ) );
+        browserActionMap.put( pasteAction, new BrowserViewActionProxy( viewer, new BrowserPasteAction() ) );
         browserActionMap.put( copyAction, new BrowserViewActionProxy( viewer, new CopyAction(
             ( BrowserActionProxy ) browserActionMap.get( pasteAction ) ) ) );
         browserActionMap.put( deleteAction, new BrowserViewActionProxy( viewer, new DeleteAction() ) );
@@ -245,6 +248,7 @@ public class BrowserViewActionGroup extends BrowserActionGroup
             new CopyEntryAsCsvAction( CopyEntryAsLdifAction.MODE_RETURNING_ATTRIBUTES_ONLY ) ) );
         browserActionMap.put( copyEntryAsCsvOperationalAction, new BrowserViewActionProxy( viewer,
             new CopyEntryAsCsvAction( CopyEntryAsLdifAction.MODE_INCLUDE_OPERATIONAL_ATTRIBUTES ) ) );
+        browserActionMap.put( deleteAllAction, new BrowserViewActionProxy( viewer, new DeleteAllAction() ) );
 
         browserActionMap.put( importDsmlAction, new BrowserViewActionProxy( viewer, new ImportExportAction(
             ImportExportAction.TYPE_IMPORT_DSML ) ) );
@@ -374,6 +378,8 @@ public class BrowserViewActionGroup extends BrowserActionGroup
         advancedMenuManager.add( browserActionMap.get( copyEntryAsCsvAction ) );
         advancedMenuManager.add( browserActionMap.get( copyEntryAsCsvOperationalAction ) );
         advancedMenuManager.add( new Separator() );
+        advancedMenuManager.add( browserActionMap.get( deleteAllAction ) );
+        advancedMenuManager.add( new Separator() );
         menuManager.add( advancedMenuManager );
         menuManager.add( new Separator() );
 
@@ -383,6 +389,7 @@ public class BrowserViewActionGroup extends BrowserActionGroup
         {
             menuManager.add( browserActionMap.get( unfilterChildrenAction ) );
         }
+        menuManager.add( browserActionMap.get( openQuickSearchAction ) );
         menuManager.add( new Separator() );
 
         // import/export

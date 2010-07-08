@@ -30,7 +30,6 @@ import org.apache.directory.studio.valueeditors.dn.DnValueEditor;
  * be used in the user classes table.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class UserClassWrapperFactory
 {

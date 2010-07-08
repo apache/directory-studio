@@ -44,7 +44,6 @@ import org.eclipse.ui.PlatformUI;
  * This action launches the NewObjectClassWizard.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class NewObjectClassAction extends Action implements IWorkbenchWindowActionDelegate
 {

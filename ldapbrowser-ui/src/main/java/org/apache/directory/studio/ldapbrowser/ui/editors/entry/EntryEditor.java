@@ -60,7 +60,6 @@ import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
  * The EntryEditor is an {@link IEditorPart} is used to display and edit the attributes of an entry.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public abstract class EntryEditor extends EditorPart implements IEntryEditor, INavigationLocationProvider,
     IReusableEditor, IShowEditorInput
@@ -433,6 +432,15 @@ public abstract class EntryEditor extends EditorPart implements IEntryEditor, IN
     {
         if ( input instanceof EntryEditorInput )
         {
+            // If the editor is dirty, let's ask for a save before changing the input
+            if ( isDirty() )
+            {
+                if ( !EntryEditorUtils.askSaveSharedWorkingCopyBeforeInputChange( this ) )
+                {
+                    return;
+                }
+            }
+
             /*
              * Workaround to make link-with-editor working for the single-tab editor:
              * The call of firePropertyChange is used to inform the link-with-editor action.

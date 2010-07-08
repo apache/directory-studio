@@ -47,7 +47,6 @@ import org.eclipse.ui.ide.IDE;
  * It creates IPathEditorInput inputs.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class OpenFileAction extends Action implements IWorkbenchWindowActionDelegate
 {

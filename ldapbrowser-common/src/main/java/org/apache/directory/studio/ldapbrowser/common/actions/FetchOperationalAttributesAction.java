@@ -38,7 +38,6 @@ import org.eclipse.jface.resource.ImageDescriptor;
  * This Action toggles weather to fetch operational attributes for an entry or not.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class FetchOperationalAttributesAction extends BrowserAction
 {

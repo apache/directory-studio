@@ -39,7 +39,6 @@ import org.eclipse.swt.widgets.Text;
  * or search. It is composed of a group with text input fields.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class LimitWidget extends BrowserWidget
 {

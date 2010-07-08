@@ -52,7 +52,6 @@ import org.eclipse.ui.texteditor.ITextEditorActionDefinitionIds;
  * while the proposal popup is opened. 
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class DialogContentAssistant extends SubjectControlContentAssistant implements FocusListener
 {

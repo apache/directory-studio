@@ -25,7 +25,6 @@ package org.apache.directory.studio.apacheds.configuration.model;
  * when an error is detected when reading the Server Configuration file.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class ServerXmlIOException extends Exception
 {

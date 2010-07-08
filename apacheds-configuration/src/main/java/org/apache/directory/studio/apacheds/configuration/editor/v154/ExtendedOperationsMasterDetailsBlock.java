@@ -59,7 +59,6 @@ import org.eclipse.ui.forms.widgets.Section;
  * This class represents the Extended Operations Master/Details Block used in the Extended Operations Page.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class ExtendedOperationsMasterDetailsBlock extends MasterDetailsBlock
 {

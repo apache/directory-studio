@@ -42,7 +42,6 @@ import org.eclipse.ui.PlatformUI;
  * The ConnectionViewUniversalListener manages all events for the connection view.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class ConnectionViewUniversalListener extends ConnectionUniversalListener
 {

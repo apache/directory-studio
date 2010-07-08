@@ -66,7 +66,6 @@ import org.apache.directory.studio.ldapbrowser.core.utils.JNDIUtils;
  * TODO: implement remember selection
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class CopyEntriesJob extends AbstractNotificationJob
 {

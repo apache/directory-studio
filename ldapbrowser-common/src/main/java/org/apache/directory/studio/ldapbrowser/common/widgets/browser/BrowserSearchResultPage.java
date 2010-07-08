@@ -32,7 +32,6 @@ import org.apache.directory.studio.ldapbrowser.core.model.ISearchResult;
  * It is used when folding searches with many results. 
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class BrowserSearchResultPage
 {

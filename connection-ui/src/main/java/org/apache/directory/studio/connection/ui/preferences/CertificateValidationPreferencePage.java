@@ -46,7 +46,6 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
  * The certificate validation preference page is used to manage trusted certificates.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class CertificateValidationPreferencePage extends PreferencePage implements IWorkbenchPreferencePage
 {
@@ -139,6 +138,7 @@ public class CertificateValidationPreferencePage extends PreferencePage implemen
     {
         verifyCertificatesButton.setSelection( ConnectionCorePlugin.getDefault().getPluginPreferences()
             .getDefaultBoolean( ConnectionCoreConstants.PREFERENCE_VALIDATE_CERTIFICATES ) );
+        ConnectionCorePlugin.getDefault().savePluginPreferences();
         super.performDefaults();
     }
 
@@ -150,6 +150,7 @@ public class CertificateValidationPreferencePage extends PreferencePage implemen
     {
         ConnectionCorePlugin.getDefault().getPluginPreferences().setValue(
             ConnectionCoreConstants.PREFERENCE_VALIDATE_CERTIFICATES, verifyCertificatesButton.getSelection() );
+        ConnectionCorePlugin.getDefault().savePluginPreferences();
         return true;
     }
 

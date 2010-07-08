@@ -24,7 +24,6 @@ package org.apache.directory.studio.apacheds.configuration.model.v151;
  * This class represents an Extended Operation.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class ExtendedOperation
 {

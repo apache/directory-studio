@@ -33,7 +33,6 @@ import org.eclipse.core.runtime.IAdaptable;
  * The Connection class is the central .
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class Connection implements ConnectionPropertyPageProvider, IAdaptable
 {
@@ -42,7 +41,6 @@ public class Connection implements ConnectionPropertyPageProvider, IAdaptable
      * Enum for alias dereferencing method.
      * 
      * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
-     * @version $Rev$, $Date$
      */
     public static enum AliasDereferencingMethod
     {
@@ -108,7 +106,6 @@ public class Connection implements ConnectionPropertyPageProvider, IAdaptable
      * Enum for referral handling method.
      * 
      * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
-     * @version $Rev$, $Date$
      */
     public static enum ReferralHandlingMethod
     {

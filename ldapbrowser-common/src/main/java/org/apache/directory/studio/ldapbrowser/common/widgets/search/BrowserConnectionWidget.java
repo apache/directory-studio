@@ -38,7 +38,6 @@ import org.eclipse.swt.widgets.Text;
  * and a browse button to open a {@link SelectBrowserConnectionDialog}.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class BrowserConnectionWidget extends BrowserWidget
 {

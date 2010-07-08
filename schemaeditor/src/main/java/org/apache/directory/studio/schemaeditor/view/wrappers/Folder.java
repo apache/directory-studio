@@ -27,7 +27,6 @@ import org.eclipse.osgi.util.NLS;
  * This used to represent a folder in a TreeViewer.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class Folder extends AbstractTreeNode
 {
@@ -35,7 +34,6 @@ public class Folder extends AbstractTreeNode
      * This enum represents the different types of folders.
      *
      * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
-     * @version $Rev$, $Date$
      */
     public enum FolderType
     {

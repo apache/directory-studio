@@ -39,7 +39,6 @@ import org.eclipse.ui.IActionBars;
  * The SearchLogsViewActionGroup manages all the actions of the search logs view.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class SearchLogsViewActionGroup implements ActionHandlerManager, IMenuListener
 {

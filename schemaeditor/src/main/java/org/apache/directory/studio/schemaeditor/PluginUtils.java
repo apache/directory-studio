@@ -61,7 +61,6 @@ import org.eclipse.core.runtime.Status;
  * This class contains helper methods.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class PluginUtils
 {

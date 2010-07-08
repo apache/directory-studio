@@ -55,7 +55,6 @@ import org.eclipse.ui.PlatformUI;
  * This class implements a {@link TreeViewer} that displays the servers.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class ServersTableViewer extends TreeViewer
 {

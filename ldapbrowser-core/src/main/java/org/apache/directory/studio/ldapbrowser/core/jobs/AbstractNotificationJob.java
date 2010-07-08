@@ -29,7 +29,6 @@ import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
  * Abstract Job used to fire a notification after the job was executed.   
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public abstract class AbstractNotificationJob extends AbstractEclipseJob
 {

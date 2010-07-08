@@ -26,7 +26,6 @@ package org.apache.directory.studio.connection.core;
  * higher-level layer (from the UI plugin).
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public interface IAuthHandler
 {

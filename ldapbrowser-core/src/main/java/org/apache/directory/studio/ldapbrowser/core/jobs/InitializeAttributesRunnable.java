@@ -51,7 +51,6 @@ import org.apache.directory.studio.ldapbrowser.core.model.schema.SchemaUtils;
  * Runnable to initialize the attributes of an entry.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class InitializeAttributesRunnable implements StudioBulkRunnableWithProgress
 {

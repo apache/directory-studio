@@ -35,7 +35,6 @@ import org.eclipse.ui.PlatformUI;
  * This Action launches the New Connection Folder Dialog.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class NewConnectionFolderAction extends StudioAction
 {

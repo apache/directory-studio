@@ -35,7 +35,6 @@ import org.eclipse.swt.dnd.Transfer;
  * This Action copies the URL of the selected Entry to the Clipboard.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class CopyUrlAction extends BrowserAction
 {

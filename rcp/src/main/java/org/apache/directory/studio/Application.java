@@ -34,7 +34,6 @@ import org.slf4j.LoggerFactory;
  * This class controls all aspects of the application's execution
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class Application implements IApplication
 {

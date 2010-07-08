@@ -33,7 +33,6 @@ import org.eclipse.swt.graphics.Image;
  * This class implements the label provider for the Servers view.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class ServersViewLabelProvider extends LabelProvider implements ITableLabelProvider
 {

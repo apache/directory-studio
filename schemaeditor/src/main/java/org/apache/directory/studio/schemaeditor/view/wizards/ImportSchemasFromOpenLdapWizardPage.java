@@ -56,7 +56,6 @@ import org.eclipse.ui.PlatformUI;
  * schemas he wants to import.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class ImportSchemasFromOpenLdapWizardPage extends AbstractWizardPage
 {

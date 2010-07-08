@@ -36,7 +36,6 @@ import org.eclipse.ui.dialogs.PreferencesUtil;
  * This class implements the page to select the target Excel file.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class ExportExcelToWizardPage extends ExportBaseToPage
 {

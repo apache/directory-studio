@@ -32,7 +32,6 @@ import org.eclipse.ui.dialogs.PreferencesUtil;
  * This action opens the prefence page of the search logs view.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class OpenSearchLogsPreferencePageAction extends Action
 {

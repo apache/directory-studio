@@ -56,7 +56,6 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
  * binary attributes and syntaxes.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class TextFormatsPreferencePage extends PreferencePage implements IWorkbenchPreferencePage,
     WidgetModifyListener, ModifyListener

@@ -50,7 +50,6 @@ import org.eclipse.ui.IWorkbench;
  * The NewConnectionWizard is used to create a new bookmark.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class NewBookmarkWizard extends Wizard implements INewWizard
 {
@@ -160,7 +159,6 @@ public class NewBookmarkWizard extends Wizard implements INewWizard
      * Just a dummy page.
      *
      * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
-     * @version $Rev$, $Date$
      */
     class DummyWizardPage extends WizardPage
     {

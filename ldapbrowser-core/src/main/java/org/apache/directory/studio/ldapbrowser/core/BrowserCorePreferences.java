@@ -35,7 +35,6 @@ import org.eclipse.core.runtime.Preferences;
  * This class is used to manage and access the preferences of the Browser Core Plugin
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class BrowserCorePreferences
 {

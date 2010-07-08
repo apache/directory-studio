@@ -37,7 +37,6 @@ import org.eclipse.ui.PlatformUI;
  * This action launches the NewSchemaWizard.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class NewSchemaAction extends Action implements IWorkbenchWindowActionDelegate
 {

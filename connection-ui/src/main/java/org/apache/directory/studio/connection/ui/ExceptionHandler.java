@@ -31,7 +31,6 @@ import org.eclipse.swt.widgets.Display;
  * This class is used to handle exceptions thrown at runtime.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class ExceptionHandler
 {

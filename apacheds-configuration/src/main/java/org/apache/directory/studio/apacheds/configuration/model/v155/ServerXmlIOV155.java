@@ -48,7 +48,6 @@ import org.dom4j.io.XMLWriter;
  * Apache Directory Server version 1.5.5.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class ServerXmlIOV155 extends AbstractServerXmlIO implements ServerXmlIO
 {
@@ -156,22 +155,13 @@ public class ServerXmlIOV155 extends AbstractServerXmlIO implements ServerXmlIO
     protected boolean isValid( Document document )
     {
         Element rootElement = document.getRootElement();
-
         if ( rootElement != null )
         {
             // Checking if the root element is named 'beans'
             if ( ServerXmlIOV155.ELEMENT_BEANS.equalsIgnoreCase( rootElement.getName() ) )
             {
-                // Looking for the 'apacheDS' element
-                Element apacheDSElement = rootElement.element( ServerXmlIOV155.ELEMENT_APACHE_DS );
-                if ( apacheDSElement != null )
-                {
-                    // Looking for the 'apacheDS' element
-                    Element ldapServiceElement = rootElement.element( ServerXmlIOV155.ELEMENT_LDAP_SERVER );
-
-                    return ( ldapServiceElement != null );
-                }
-
+                // Checking if we have the correct namespace
+                return ( rootElement.getNamespaceForURI( NAMESPACE_APACHEDS.getURI() ) != null );
             }
         }
 

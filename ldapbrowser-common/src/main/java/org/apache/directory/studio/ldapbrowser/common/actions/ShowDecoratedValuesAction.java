@@ -30,7 +30,6 @@ import org.eclipse.jface.action.Action;
  * This Action toggles the Show Decorated Values Preference.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class ShowDecoratedValuesAction extends Action
 {

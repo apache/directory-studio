@@ -45,7 +45,6 @@ import org.eclipse.osgi.util.NLS;
  * useful methods for reading and creating XML.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public abstract class AbstractServerXmlIO implements ServerXmlIO
 {
@@ -165,7 +164,6 @@ public abstract class AbstractServerXmlIO implements ServerXmlIO
      * but that the string does not have the appropriate format.
      *
      * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
-     * @version $Rev$, $Date$
      */
     public class BooleanFormatException extends Exception
     {

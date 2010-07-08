@@ -46,7 +46,6 @@ import org.eclipse.ui.forms.widgets.Section;
  * object class description.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class ObjectClassDescriptionDetailsPage extends SchemaDetailsPage
 {

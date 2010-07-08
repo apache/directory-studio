@@ -30,7 +30,6 @@ import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
  * A listener for {@link SearchUpdateEvent}s
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public interface SearchUpdateListener extends EventListener
 {

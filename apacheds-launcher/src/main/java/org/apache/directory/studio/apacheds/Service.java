@@ -43,7 +43,6 @@ import org.slf4j.LoggerFactory;
  * DirectoryServer bean used by both the daemon code and by the ServerMain here.
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev: 596797 $
  */
 public class Service implements DaemonApplication
 {

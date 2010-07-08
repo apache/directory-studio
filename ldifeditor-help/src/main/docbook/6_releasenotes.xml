@@ -19,7 +19,52 @@
 <chapter id="releasenotes">
 	<title>Release notes</title>
     <simplesect>
-        <title>Apache Directory Studio 1.5.0 - (2009, October XXxx)</title>
+        <title>Apache Directory Studio 1.5.3 - (2010, March 30th)</title>
+        <para>
+            <emphasis>Bug</emphasis>
+        </para>
+        <para>
+            <itemizedlist spacing="normal" mark="bullet">
+                <listitem>
+                    <para>[DIRSTUDIO-627] - Can't open a relatively big LDIF file</para>
+                </listitem>
+            </itemizedlist>
+        </para>
+    </simplesect>
+    
+    <simplesect>
+        <title>Apache Directory Studio 1.5.2 - (2009, December 11th)</title>
+        <para>
+            <emphasis>Bug</emphasis>
+        </para>
+        <para>
+            <itemizedlist spacing="normal" mark="bullet">
+                <listitem>
+                    <para>[DIRSTUDIO-603] - Error browsing/entering rfc2307 compliant host entry</para>
+                </listitem>
+            </itemizedlist>
+        </para>
+    </simplesect>
+    
+    <simplesect>
+        <title>Apache Directory Studio 1.5.1 - (2009, November 30th)</title>
+        <para>
+            <emphasis>Bug</emphasis>
+        </para>
+        <para>
+            <itemizedlist spacing="normal" mark="bullet">
+                <listitem>
+                    <para>[DIRSTUDIO-598] - Base64 encoded DN marked as invalid in LDIF editor</para>
+                </listitem>
+                <listitem>
+                    <para>[DIRSTUDIO-577] - LDIF editor doesn't notify Eclipse that the LDIF file has changed when saving</para>
+                </listitem>
+            </itemizedlist>
+        </para>
+    </simplesect>
+    
+    <simplesect>
+        <title>Apache Directory Studio 1.5.0 - (2009, November 2nd)</title>
         <para>
             <emphasis>Bug</emphasis>
         </para>

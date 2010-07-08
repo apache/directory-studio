@@ -30,7 +30,6 @@ import org.eclipse.ui.PlatformUI;
  * This Helper Class contains useful methods used to create the UI.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class ViewUtils
 {

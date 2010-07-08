@@ -25,7 +25,6 @@ package org.apache.directory.studio.schemaeditor.model.alias;
  * character of the alias.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class AliasWithPartError extends AbstractAliasWithError
 {

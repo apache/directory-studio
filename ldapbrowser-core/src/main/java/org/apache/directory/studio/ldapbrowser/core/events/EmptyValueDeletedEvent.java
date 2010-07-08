@@ -32,7 +32,6 @@ import org.apache.directory.studio.ldapbrowser.core.model.IValue;
  * An EmptyValueDeletedEvent indicates that an empty {@link IValue} was deleted from an {@link IEntry}.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class EmptyValueDeletedEvent extends EntryModificationEvent
 {

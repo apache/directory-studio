@@ -34,7 +34,6 @@ import org.eclipse.core.runtime.content.ITextContentDescriber;
  * This class implements a ContentDescriber for Apache DS Configuration file.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class ApacheDSConfigurationContentDescriber implements ITextContentDescriber
 {

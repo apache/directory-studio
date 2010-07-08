@@ -24,7 +24,6 @@ package org.apache.directory.studio.aciitemeditor;
  * This interface is used to store all constants related to the ACI Item Editor Plugin
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public interface ACIITemConstants
 {

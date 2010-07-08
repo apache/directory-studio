@@ -67,7 +67,6 @@ import org.apache.directory.studio.ldapbrowser.core.utils.JNDIUtils;
  * TODO: delete subentries?
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class DeleteEntriesJob extends AbstractNotificationJob
 {

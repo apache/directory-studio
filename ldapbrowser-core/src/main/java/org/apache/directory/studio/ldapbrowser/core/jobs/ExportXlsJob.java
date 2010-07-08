@@ -51,7 +51,6 @@ import org.eclipse.core.runtime.Preferences;
  * Job to export directory content to an XLS file.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class ExportXlsJob extends AbstractEclipseJob
 {

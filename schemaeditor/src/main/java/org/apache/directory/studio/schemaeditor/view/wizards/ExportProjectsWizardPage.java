@@ -60,7 +60,6 @@ import org.eclipse.ui.PlatformUI;
  * schemas projects he wants to export and where to export.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class ExportProjectsWizardPage extends AbstractWizardPage
 {

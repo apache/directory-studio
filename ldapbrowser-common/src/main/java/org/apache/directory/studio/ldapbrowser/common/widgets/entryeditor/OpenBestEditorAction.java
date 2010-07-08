@@ -40,7 +40,6 @@ import org.eclipse.osgi.util.NLS;
  * The OpenBestEditorAction is used to edit a value with the best value editor.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class OpenBestEditorAction extends AbstractOpenEditorAction
 {

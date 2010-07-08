@@ -32,7 +32,6 @@ import org.apache.directory.studio.connection.core.event.ConnectionEventRegistry
  * A ConnectionFolder helps to organize connections in folders.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class ConnectionFolder implements Cloneable
 {

@@ -38,7 +38,6 @@ import org.eclipse.swt.widgets.Spinner;
  * This class provides a dialog to enter or choose an integer.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class IntegerDialog extends Dialog
 {

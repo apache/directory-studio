@@ -27,7 +27,6 @@ import org.apache.directory.studio.schemaeditor.view.wrappers.TreeNode;
  * This class represent the wrapper for an object class.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class ObjectClassDifferenceWrapper extends AbstractDifferenceWrapper
 {

@@ -40,7 +40,6 @@ import org.eclipse.ui.NavigationLocation;
  * This class is used to mark the schema browser input to the navigation history.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class SchemaBrowserNavigationLocation extends NavigationLocation
 {

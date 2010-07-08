@@ -27,7 +27,6 @@ import org.apache.directory.studio.schemaeditor.view.wrappers.TreeNode;
  * This class represent the wrapper for an attribute type.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class AttributeTypeDifferenceWrapper extends AbstractDifferenceWrapper
 {

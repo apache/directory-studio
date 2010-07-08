@@ -45,7 +45,6 @@ import org.eclipse.ui.IWorkbenchPartReference;
  * with editor property of the browser view.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class LinkWithEditorAction extends Action
 {

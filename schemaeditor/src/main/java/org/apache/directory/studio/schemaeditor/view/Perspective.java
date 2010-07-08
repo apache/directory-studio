@@ -41,7 +41,6 @@ import org.eclipse.ui.IPerspectiveFactory;
  * It is composed of two views, the Schema View and the Problems View, and the editor part.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class Perspective implements IPerspectiveFactory
 {

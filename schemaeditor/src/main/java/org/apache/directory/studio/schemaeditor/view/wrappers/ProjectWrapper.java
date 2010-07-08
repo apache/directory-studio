@@ -30,7 +30,6 @@ import org.eclipse.jface.viewers.TableViewer;
  * This class is used to wrap a Project in a TreeViewer.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class ProjectWrapper extends AbstractTreeNode
 {

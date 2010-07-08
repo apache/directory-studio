@@ -30,7 +30,6 @@ import org.eclipse.ui.IPersistableElement;
  * This class represents the Non Existing Server Configuration Input.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class NonExistingServerConfigurationInput implements IEditorInput
 {
@@ -90,6 +89,8 @@ public class NonExistingServerConfigurationInput implements IEditorInput
     {
         switch ( serverConfiguration.getVersion() )
         {
+            case VERSION_1_5_6:
+                return Messages.getString( "NonExistingServerConfigurationInput.NewApacheDS156Configuration" ); //$NON-NLS-1$
             case VERSION_1_5_5:
                 return Messages.getString( "NonExistingServerConfigurationInput.NewApacheDS155Configuration" ); //$NON-NLS-1$
             case VERSION_1_5_4:

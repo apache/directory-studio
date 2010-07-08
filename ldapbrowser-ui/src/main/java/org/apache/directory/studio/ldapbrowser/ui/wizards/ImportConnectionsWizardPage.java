@@ -37,7 +37,6 @@ import org.eclipse.swt.widgets.Composite;
  * This class implements the page used to select the data to export to LDIF.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class ImportConnectionsWizardPage extends WizardPage
 {

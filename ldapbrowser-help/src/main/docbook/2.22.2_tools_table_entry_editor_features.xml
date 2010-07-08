@@ -153,14 +153,8 @@
 		<title>Visible attributes</title>
 		<para>
 			By default all user attributes of an entry are fetched and
-			displayed in the Entry editor. In the
-			<link linkend="preferences_table_entry_editor">
-				Entry editor preferences
-			</link>
-			it is possible to define which classes of attributes (must,
-			may, operational) are displayed. 
-			Note: Operational attributes must be requested from the 
-			directory. You could define to request operational attributes
+			displayed in the Entry editor. 
+			You could define to request operational attributes
 			for each entry for the whole connection, see 
 			<link linkend="tools_connection_properties_browser_options">
 				Connection properties

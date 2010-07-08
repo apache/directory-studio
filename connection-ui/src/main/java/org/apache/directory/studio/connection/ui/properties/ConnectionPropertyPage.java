@@ -47,7 +47,6 @@ import org.eclipse.ui.dialogs.PropertyPage;
  * The ConnectionPropertyPage displays the properties of a {@link Connection}.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
 public class ConnectionPropertyPage extends PropertyPage implements ConnectionParameterPageModifyListener
 {

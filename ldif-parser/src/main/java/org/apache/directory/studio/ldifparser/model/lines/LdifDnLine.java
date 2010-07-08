@@ -75,7 +75,7 @@ public class LdifDnLine extends LdifValueLineBase
 
     public boolean isValid()
     {
-        return super.isValid() && LdapDN.isValid( getUnfoldedDn() );
+        return super.isValid() && LdapDN.isValid( getValueAsString() );
     }
 
 
@@ -89,7 +89,7 @@ public class LdifDnLine extends LdifValueLineBase
         {
             return "Missing DN";
         }
-        else if ( !LdapDN.isValid( getUnfoldedDn() ) )
+        else if ( !LdapDN.isValid( getValueAsString() ) )
         {
             return "Invalid DN";
         }

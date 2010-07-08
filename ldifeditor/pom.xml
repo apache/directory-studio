@@ -23,11 +23,10 @@
   <parent>
     <groupId>org.apache.directory.studio</groupId>
     <artifactId>parent</artifactId>
-    <version>1.5.1-SNAPSHOT</version>
+    <version>1.5.4-SNAPSHOT</version>
   </parent>
   
   <artifactId>ldifeditor</artifactId>
-  <version>${ldifeditor.version}</version>
   <name>Apache Directory Studio LDIF Editor</name>
   <packaging>jar</packaging>
 
@@ -124,6 +123,8 @@
  org.eclipse.ui.views,
  org.eclipse.ui.forms,
  org.eclipse.jface.text,
+ org.eclipse.ui.ide,
+ org.eclipse.core.resources,
  org.apache.directory.studio.jars,
  org.apache.directory.studio.ldifparser,
  org.apache.directory.studio.connection.core,
@@ -190,6 +191,16 @@
     </dependency>
     
 	<!-- Eclipse plugins dependencies -->
+    <dependency>
+      <groupId>org.eclipse.ui</groupId>
+      <artifactId>ide</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.core</groupId>
+      <artifactId>resources</artifactId>
+      <scope>provided</scope>
+    </dependency>
     <dependency>
       <groupId>org.eclipse.swt.gtk.linux</groupId>
       <artifactId>x86</artifactId>
