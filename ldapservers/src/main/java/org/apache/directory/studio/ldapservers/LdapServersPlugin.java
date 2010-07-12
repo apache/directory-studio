@@ -45,6 +45,13 @@ public class LdapServersPlugin extends AbstractUIPlugin
     /** The plugin properties */
     private PropertyResourceBundle properties;
 
+    /** The LDAP Server Adapter Extensions Manager */
+    private LdapServerAdapterExtensionsManager ldapServerAdapterExtensionsManager = LdapServerAdapterExtensionsManager
+        .getDefault();
+
+    /** The LDAP Servers Manager */
+    private LdapServersManager ldapServersManager = LdapServersManager.getDefault();
+
 
     /**
      * The constructor
@@ -61,6 +68,12 @@ public class LdapServersPlugin extends AbstractUIPlugin
     public void start( BundleContext context ) throws Exception
     {
         super.start( context );
+
+        // Loading the LDAP Server Adapters extensions
+        ldapServerAdapterExtensionsManager.loadLdapServerAdapterExtensions();
+
+        // Loading the servers to the LDAP Servers Manager
+        ldapServersManager.loadServersFromStore();
     }
 
 
@@ -69,6 +82,9 @@ public class LdapServersPlugin extends AbstractUIPlugin
      */
     public void stop( BundleContext context ) throws Exception
     {
+        // Loading the servers to the LDAP Servers Manager
+        ldapServersManager.saveServersToStore();
+
         plugin = null;
         super.stop( context );
     }

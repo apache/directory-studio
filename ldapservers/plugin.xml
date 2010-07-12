@@ -1,4 +1,56 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.4"?>
 <plugin>
+   <extension-point id="ldapServerAdapters" name="LDAP Server Adapters" schema="resources/ldapServerAdapters.exsd"/>
+   <extension
+         point="org.apache.directory.studio.ldapservers.ldapServerAdapters">
+      <ldapServerAdapter
+            class="org.apache.directory.studio.ldapservers.apacheds.ApacheDS157LdapServerAdapter"
+            id="org.apache.directory.server.1.5.7"
+            name="Apache DS"
+            vendorName="Apache Software Foundation"
+            version="1.5.7">
+      </ldapServerAdapter>
+      <ldapServerAdapter
+            class="org.apache.directory.studio.ldapservers.apacheds.ApacheDS156LdapServerAdapter"
+            id="org.apache.directory.server.1.5.6"
+            name="Apache DS"
+            vendorName="Apache Software Foundation"
+            version="1.5.6">
+      </ldapServerAdapter>
+   </extension>
+   
+   <extension
+         point="org.eclipse.ui.views">
+      <category
+            id="org.apache.directory.studio.ldapservers.view.category"
+            name="LDAP Servers" />
+      <view
+            category="org.apache.directory.studio.ldapservers.view.category"
+            class="org.apache.directory.studio.ldapservers.views.ServerAdaptersView"
+            id="org.apache.directory.studio.ldapservers.views.ServerAdaptersView"
+            name="LDAP Server Adapters" />
+      <view
+            category="org.apache.directory.studio.ldapservers.view.category"
+            class="org.apache.directory.studio.ldapservers.views.ServersView"
+            id="org.apache.directory.studio.ldapservers.views.ServersView"
+            name="LDAP Servers" />
+   </extension>
+   
+   <extension
+         point="org.eclipse.ui.perspectiveExtensions">
+      <perspectiveExtension
+            targetID="org.apache.directory.studio.ldapbrowser.ui.perspective.BrowserPerspective">
+         <view
+               closeable="true"
+               id="org.apache.directory.studio.ldapservers.views.ServersView"
+               minimized="false"
+               moveable="true"
+               relationship="stack"
+               relative="org.apache.directory.studio.ldapbrowser.ui.views.connection.ConnectionView"
+               showTitle="true"
+               visible="true">
+         </view>
+      </perspectiveExtension>
+   </extension>
 </plugin>

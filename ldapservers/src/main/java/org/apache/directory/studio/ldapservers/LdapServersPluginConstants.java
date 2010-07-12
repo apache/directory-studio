@@ -31,4 +31,21 @@ public interface LdapServersPluginConstants
     /** The plug-in ID */
     public static final String PLUGIN_ID = LdapServersPlugin.getDefault().getPluginProperties().getString( "Plugin_id" ); //$NON-NLS-1$
 
+    /** The LDAP Adapters Extension Point ID */
+    public static final String LDAP_SERVER_ADAPTERS_EXTENSION_POINT = PLUGIN_ID + ".ldapServerAdapters"; //$NON-NLS-1$
+    
+
+    // ------
+    // IMAGES
+    // ------
+    public static final String IMG_SERVER = "resources/icons/server.gif";
+    public static final String IMG_SERVER_STARTED = "resources/icons/server_started.gif";
+    public static final String IMG_SERVER_STARTING1 = "resources/icons/server_starting1.gif";
+    public static final String IMG_SERVER_STARTING2 = "resources/icons/server_starting2.gif";
+    public static final String IMG_SERVER_STARTING3 = "resources/icons/server_starting3.gif";
+    public static final String IMG_SERVER_STOPPED = "resources/icons/server_stopped.gif";
+    public static final String IMG_SERVER_STOPPING1 = "resources/icons/server_stopping1.gif";
+    public static final String IMG_SERVER_STOPPING2 = "resources/icons/server_stopping2.gif";
+    public static final String IMG_SERVER_STOPPING3 = "resources/icons/server_stopping3.gif";
+
 }
