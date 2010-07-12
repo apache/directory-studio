@@ -35,7 +35,7 @@ public class LdapServerAdapterExtension
     private String id;
     private String name;
     private String version;
-    private String vendorName;
+    private String vendor;
     private String className;
     private String description;
     private ImageDescriptor icon;
@@ -97,13 +97,13 @@ public class LdapServerAdapterExtension
 
 
     /**
-     * TODO getVendorName.
+     * TODO vendor.
      *
      * @return
      */
-    public String getVendorName()
+    public String getVendor()
     {
-        return vendorName;
+        return vendor;
     }
 
 
@@ -174,13 +174,13 @@ public class LdapServerAdapterExtension
 
 
     /**
-     * TODO setVendorName.
+     * TODO setVendor.
      *
-     * @param vendorName
+     * @param vendor
      */
-    public void setVendorName( String vendorName )
+    public void setVendor( String vendor )
     {
-        this.vendorName = vendorName;
+        this.vendor = vendor;
     }
 
 

@@ -35,6 +35,14 @@ public class LdapServer
 
     private LdapServerStatus status = LdapServerStatus.STOPPED;
 
+    private LdapServerAdapterExtension ldapServerAdapterExtension;
+
+
+    public void setLdapServerAdapterExtension( LdapServerAdapterExtension ldapServerAdapterExtension )
+    {
+        this.ldapServerAdapterExtension = ldapServerAdapterExtension;
+    }
+
 
     /**
      * Gets the name of the server.
@@ -73,12 +81,12 @@ public class LdapServer
 
 
     /**
-     * Gets the associated {@link LdapServerAdapter}.
+     * Gets the associated {@link LdapServerAdapterExtension}.
      *
      * @return
-     *      the associated {@link LdapServerAdapter}
+     *      the associated {@link LdapServerAdapterExtension}
      */
-    public LdapServerAdapter getLdapServerAdapter()
+    public LdapServerAdapterExtension getLdapServerAdapterExtension()
     {
         return null;
     }

@@ -86,7 +86,7 @@ public class LdapServerAdapterExtensionsManager
             ldapServerAdapterExtension.setId( member.getAttribute( "id" ) );
             ldapServerAdapterExtension.setName( member.getAttribute( "name" ) );
             ldapServerAdapterExtension.setVersion( member.getAttribute( "version" ) );
-            ldapServerAdapterExtension.setVendorName( member.getAttribute( "vendorName" ) );
+            ldapServerAdapterExtension.setVendor( member.getAttribute( "vendor" ) );
             ldapServerAdapterExtension.setClassName( member.getAttribute( "class" ) );
             ldapServerAdapterExtension.setDescription( member.getAttribute( "description" ) );
             String iconPath = member.getAttribute( "icon" );

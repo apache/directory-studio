@@ -38,6 +38,8 @@ public interface LdapServersPluginConstants
     // ------
     // IMAGES
     // ------
+    public static final String IMG_SERVER_NEW = "resources/icons/server_new.gif";
+    public static final String IMG_SERVER_NEW_WIZARD = "resources/icons/server_new_wizard.png";
     public static final String IMG_SERVER = "resources/icons/server.gif";
     public static final String IMG_SERVER_STARTED = "resources/icons/server_started.gif";
     public static final String IMG_SERVER_STARTING1 = "resources/icons/server_starting1.gif";

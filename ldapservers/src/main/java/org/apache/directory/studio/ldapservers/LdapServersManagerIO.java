@@ -28,6 +28,8 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.apache.directory.studio.ldapservers.model.LdapServer;
+import org.apache.directory.studio.ldapservers.model.LdapServerAdapterExtension;
+import org.apache.directory.studio.ldapservers.model.UnknownLdapServerAdapterExtension;
 import org.dom4j.Attribute;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
@@ -51,6 +53,9 @@ public class LdapServersManagerIO
     private static final String ID_ATTRIBUTE = "id"; //$NON-NLS-1$
     private static final String NAME_ATTRIBUTE = "name"; //$NON-NLS-1$
     private static final String ADAPTER_ID_ATTRIBUTE = "adapterId"; //$NON-NLS-1$
+    private static final String ADAPTER_NAME_ATTRIBUTE = "adapterName"; //$NON-NLS-1$
+    private static final String ADAPTER_VENDOR_ATTRIBUTE = "adapterVendor"; //$NON-NLS-1$
+    private static final String ADAPTER_VERSION_ATTRIBUTE = "adapterVersion"; //$NON-NLS-1$
 
 
     /**
@@ -81,7 +86,7 @@ public class LdapServersManagerIO
         Element rootElement = document.getRootElement();
         if ( !rootElement.getName().equals( LDAP_SERVERS_TAG ) )
         {
-            throw new LdapServersManagerIOException( Messages.getString( "ServersHandlerIO.ErrorNotValidServersFile" ) ); //$NON-NLS-1$
+            throw new LdapServersManagerIOException( Messages.getString( "ServersHandlerIO.ErrorNotValidServersFile" ) ); //$NON-NLS-1$ // TODO
         }
 
         for ( Iterator<?> i = rootElement.elementIterator( LDAP_SERVER_TAG ); i.hasNext(); )
@@ -119,8 +124,54 @@ public class LdapServersManagerIO
             server.setName( nameAttribute.getValue() );
         }
 
-        // Adapter
-        // TODO
+        // Adapter ID
+        Attribute adapterIdAttribute = element.attribute( ADAPTER_ID_ATTRIBUTE );
+        if ( adapterIdAttribute != null )
+        {
+            // Getting the id
+            String adapterId = adapterIdAttribute.getValue();
+
+            // Looking for the correct LDAP Server Adapter Extension object
+            LdapServerAdapterExtension ldapServerAdapterExtension = LdapServerAdapterExtensionsManager.getDefault()
+                .getLdapServerAdapterExtensionById( adapterId );
+            if ( ldapServerAdapterExtension != null )
+            {
+                // The Adapter Extension has been found
+                // Assigning it to the server
+                server.setLdapServerAdapterExtension( ldapServerAdapterExtension );
+            }
+            else
+            {
+                // The Adapter Extension has not been found
+                // Assigning an "unknown" Adapter Extension
+                UnknownLdapServerAdapterExtension unknownLdapServerAdapterExtension = new UnknownLdapServerAdapterExtension();
+
+                // Adapter Name
+                Attribute adapterNameAttribute = element.attribute( ADAPTER_NAME_ATTRIBUTE );
+                if ( adapterNameAttribute != null )
+                {
+                    unknownLdapServerAdapterExtension.setName( adapterNameAttribute.getValue() );
+                }
+
+                // Adapter Vendor
+                Attribute adapterVendorAttribute = element.attribute( ADAPTER_VENDOR_ATTRIBUTE );
+                if ( adapterVendorAttribute != null )
+                {
+                    unknownLdapServerAdapterExtension.setVendor( adapterVendorAttribute.getValue() );
+                }
+
+                // Adapter Version
+                Attribute adapterVersionAttribute = element.attribute( ADAPTER_VERSION_ATTRIBUTE );
+                if ( adapterVersionAttribute != null )
+                {
+                    unknownLdapServerAdapterExtension.setVersion( adapterVersionAttribute.getValue() );
+                }
+            }
+        }
+        else
+        {
+            // TODO No Adapter ID, throw an error ?
+        }
 
         return server;
     }
@@ -180,7 +231,16 @@ public class LdapServersManagerIO
         // Name
         serverElement.addAttribute( NAME_ATTRIBUTE, server.getName() );
 
-        // Adapter
-        // TODO
+        // Adapter ID
+        serverElement.addAttribute( ADAPTER_ID_ATTRIBUTE, server.getLdapServerAdapterExtension().getId() );
+
+        // Adapter Name
+        serverElement.addAttribute( ADAPTER_NAME_ATTRIBUTE, server.getLdapServerAdapterExtension().getName() );
+
+        // Adapter Vendor
+        serverElement.addAttribute( ADAPTER_VENDOR_ATTRIBUTE, server.getLdapServerAdapterExtension().getVendor() );
+
+        // Adapter Version
+        serverElement.addAttribute( ADAPTER_VERSION_ATTRIBUTE, server.getLdapServerAdapterExtension().getVersion() );
     }
 }

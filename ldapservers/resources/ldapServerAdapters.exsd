@@ -59,28 +59,28 @@
          <attribute name="name" type="string" use="required">
             <annotation>
                <documentation>
-                  
+                  The name of the LDAP Server Adapter
                </documentation>
             </annotation>
          </attribute>
          <attribute name="version" type="string" use="required">
             <annotation>
                <documentation>
-                  
+                  The version of the LDAP Server Adapter
                </documentation>
             </annotation>
          </attribute>
-         <attribute name="vendorName" type="string" use="required">
+         <attribute name="vendor" type="string" use="required">
             <annotation>
                <documentation>
-                  
+                  The vendor of the LDAP Server Adapter
                </documentation>
             </annotation>
          </attribute>
          <attribute name="description" type="string">
             <annotation>
                <documentation>
-                  
+                  The description of the LDAP Server Adapter
                </documentation>
             </annotation>
          </attribute>

@@ -22,7 +22,19 @@ package org.apache.directory.studio.ldapservers.views;
 
 import org.apache.directory.studio.ldapservers.LdapServersManager;
 import org.apache.directory.studio.ldapservers.LdapServersManagerListener;
+import org.apache.directory.studio.ldapservers.actions.NewServerAction;
 import org.apache.directory.studio.ldapservers.model.LdapServer;
+import org.eclipse.jface.action.IMenuListener;
+import org.eclipse.jface.action.IMenuManager;
+import org.eclipse.jface.action.IToolBarManager;
+import org.eclipse.jface.action.MenuManager;
+import org.eclipse.jface.action.Separator;
+import org.eclipse.jface.commands.ActionHandler;
+import org.eclipse.jface.viewers.DoubleClickEvent;
+import org.eclipse.jface.viewers.IDoubleClickListener;
+import org.eclipse.jface.viewers.ISelectionChangedListener;
+import org.eclipse.jface.viewers.SelectionChangedEvent;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -33,10 +45,17 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeColumn;
 import org.eclipse.ui.IMemento;
+import org.eclipse.ui.IPartListener2;
 import org.eclipse.ui.IViewSite;
+import org.eclipse.ui.IWorkbenchPartReference;
 import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.commands.ICommandService;
 import org.eclipse.ui.contexts.IContextActivation;
+import org.eclipse.ui.contexts.IContextService;
 import org.eclipse.ui.part.ViewPart;
+
+import com.sun.corba.se.spi.activation.Server;
 
 
 /**
@@ -67,7 +86,7 @@ public class ServersView extends ViewPart
     protected int[] columnWidths;
 
     // Actions
-//    private NewServerAction newServer;
+    private NewServerAction newServer;
 //    private OpenConfigurationAction openConfiguration;
 //    private DeleteAction delete;
 //    private RenameAction rename;
@@ -127,10 +146,10 @@ public class ServersView extends ViewPart
         // Creating the viewer
         tableViewer = new ServersTableViewer( tree );
 
-//        initActions();
-//        initToolbar();
-//        initContextMenu();
-//        initListeners();
+        initActions();
+        initToolbar();
+        initContextMenu();
+        initListeners();
 
         // set help context
         // TODO
@@ -216,13 +235,13 @@ public class ServersView extends ViewPart
     }
 
 
-//    /**
-//     * Initializes the actions.
-//     */
-//    private void initActions()
-//    {
-//        newServer = new NewServerAction();
-//
+    /**
+     * Initializes the actions.
+     */
+    private void initActions()
+    {
+        newServer = new NewServerAction();
+
 //        openConfiguration = new OpenConfigurationAction( this );
 //        openConfiguration.setEnabled( false );
 //
@@ -243,36 +262,36 @@ public class ServersView extends ViewPart
 //
 //        properties = new PropertiesAction( this );
 //        properties.setEnabled( false );
-//    }
+    }
 
 
-//    /**
-//     * Initializes the toolbar.
-//     */
-//    private void initToolbar()
-//    {
-//        IToolBarManager toolbar = getViewSite().getActionBars().getToolBarManager();
-//        toolbar.add( newServer );
+    /**
+     * Initializes the toolbar.
+     */
+    private void initToolbar()
+    {
+        IToolBarManager toolbar = getViewSite().getActionBars().getToolBarManager();
+        toolbar.add( newServer );
 //        toolbar.add( new Separator() );
 //        toolbar.add( run );
 //        toolbar.add( stop );
-//    }
+    }
 
 
-//    /**
-//     * Initializes the Context Menu.
-//     */
-//    private void initContextMenu()
-//    {
-//        MenuManager contextMenu = new MenuManager( "" ); //$NON-NLS-1$
-//        contextMenu.setRemoveAllWhenShown( true );
-//        contextMenu.addMenuListener( new IMenuListener()
-//        {
-//            public void menuAboutToShow( IMenuManager manager )
-//            {
-//                MenuManager newManager = new MenuManager( Messages.getString( "ServersView.new" ) ); //$NON-NLS-1$
-//                newManager.add( newServer );
-//                manager.add( newManager );
+    /**
+     * Initializes the Context Menu.
+     */
+    private void initContextMenu()
+    {
+        MenuManager contextMenu = new MenuManager( "" ); //$NON-NLS-1$
+        contextMenu.setRemoveAllWhenShown( true );
+        contextMenu.addMenuListener( new IMenuListener()
+        {
+            public void menuAboutToShow( IMenuManager manager )
+            {
+                MenuManager newManager = new MenuManager( Messages.getString( "ServersView.new" ) ); //$NON-NLS-1$
+                newManager.add( newServer );
+                manager.add( newManager );
 //                manager.add( openConfiguration );
 //                manager.add( new Separator() );
 //                manager.add( delete );
@@ -286,25 +305,25 @@ public class ServersView extends ViewPart
 //                manager.add( ldapBrowserManager );
 //                manager.add( new Separator() );
 //                manager.add( properties );
-//            }
-//        } );
-//
-//        // set the context menu to the table viewer
-//        tableViewer.getControl().setMenu( contextMenu.createContextMenu( tableViewer.getControl() ) );
-//
-//        // register the context menu to enable extension actions
-//        getSite().registerContextMenu( contextMenu, tableViewer );
-//    }
+            }
+        } );
+
+        // set the context menu to the table viewer
+        tableViewer.getControl().setMenu( contextMenu.createContextMenu( tableViewer.getControl() ) );
+
+        // register the context menu to enable extension actions
+        getSite().registerContextMenu( contextMenu, tableViewer );
+    }
 
 
-//    /**
-//     * Initializes the listeners
-//     */
-//    private void initListeners()
-//    {
-//        LdapServersManager serversHandler = LdapServersManager.getDefault();
-//        serversHandler.addListener( ldapServersManagerListener );
-//
+    /**
+     * Initializes the listeners
+     */
+    private void initListeners()
+    {
+        LdapServersManager serversHandler = LdapServersManager.getDefault();
+        serversHandler.addListener( ldapServersManagerListener );
+
 //        tableViewer.addDoubleClickListener( new IDoubleClickListener()
 //        {
 //            public void doubleClick( DoubleClickEvent event )
@@ -312,53 +331,53 @@ public class ServersView extends ViewPart
 //                openConfiguration.run();
 //            }
 //        } );
-//
-//        tableViewer.addSelectionChangedListener( new ISelectionChangedListener()
-//        {
-//            public void selectionChanged( SelectionChangedEvent event )
-//            {
-//                updateActionsStates();
-//            }
-//        } );
-//
-//        // Initializing the PartListener
-//        getSite().getPage().addPartListener( new IPartListener2()
-//        {
-//            /**
-//              * This implementation deactivates the shortcuts when the part is deactivated.
-//              */
-//            public void partDeactivated( IWorkbenchPartReference partRef )
-//            {
-//                if ( partRef.getPart( false ) == instance && contextActivation != null )
-//                {
-//                    ICommandService commandService = ( ICommandService ) PlatformUI.getWorkbench().getAdapter(
-//                        ICommandService.class );
-//                    if ( commandService != null )
-//                    {
-//                        commandService.getCommand( newServer.getActionDefinitionId() ).setHandler( null );
+
+        tableViewer.addSelectionChangedListener( new ISelectionChangedListener()
+        {
+            public void selectionChanged( SelectionChangedEvent event )
+            {
+                updateActionsStates();
+            }
+        } );
+
+        // Initializing the PartListener
+        getSite().getPage().addPartListener( new IPartListener2()
+        {
+            /**
+              * This implementation deactivates the shortcuts when the part is deactivated.
+              */
+            public void partDeactivated( IWorkbenchPartReference partRef )
+            {
+                if ( partRef.getPart( false ) == instance && contextActivation != null )
+                {
+                    ICommandService commandService = ( ICommandService ) PlatformUI.getWorkbench().getAdapter(
+                        ICommandService.class );
+                    if ( commandService != null )
+                    {
+                        commandService.getCommand( newServer.getActionDefinitionId() ).setHandler( null );
 //                        commandService.getCommand( openConfiguration.getActionDefinitionId() ).setHandler( null );
 //                        commandService.getCommand( delete.getActionDefinitionId() ).setHandler( null );
 //                        commandService.getCommand( rename.getActionDefinitionId() ).setHandler( null );
 //                        commandService.getCommand( run.getActionDefinitionId() ).setHandler( null );
 //                        commandService.getCommand( stop.getActionDefinitionId() ).setHandler( null );
 //                        commandService.getCommand( properties.getActionDefinitionId() ).setHandler( null );
-//                    }
-//
-//                    IContextService contextService = ( IContextService ) PlatformUI.getWorkbench().getAdapter(
-//                        IContextService.class );
-//                    contextService.deactivateContext( contextActivation );
-//                    contextActivation = null;
-//                }
-//            }
-//
-//
-//            /**
-//             * This implementation activates the shortcuts when the part is activated.
-//             */
-//            public void partActivated( IWorkbenchPartReference partRef )
-//            {
-//                if ( partRef.getPart( false ) == instance )
-//                {
+                    }
+
+                    IContextService contextService = ( IContextService ) PlatformUI.getWorkbench().getAdapter(
+                        IContextService.class );
+                    contextService.deactivateContext( contextActivation );
+                    contextActivation = null;
+                }
+            }
+
+
+            /**
+             * This implementation activates the shortcuts when the part is activated.
+             */
+            public void partActivated( IWorkbenchPartReference partRef )
+            {
+                if ( partRef.getPart( false ) == instance )
+                {
 //                    IContextService contextService = ( IContextService ) PlatformUI.getWorkbench().getAdapter(
 //                        IContextService.class );
 //                    contextActivation = contextService.activateContext( ApacheDsPluginConstants.CONTEXTS_SERVERS_VIEW );
@@ -381,88 +400,88 @@ public class ServersView extends ViewPart
 //                        commandService.getCommand( properties.getActionDefinitionId() ).setHandler(
 //                            new ActionHandler( properties ) );
 //                    }
-//                }
-//            }
-//
-//
-//            public void partBroughtToTop( IWorkbenchPartReference partRef )
-//            {
-//            }
-//
-//
-//            public void partClosed( IWorkbenchPartReference partRef )
-//            {
-//            }
-//
-//
-//            public void partHidden( IWorkbenchPartReference partRef )
-//            {
-//            }
-//
-//
-//            public void partInputChanged( IWorkbenchPartReference partRef )
-//            {
-//            }
-//
-//
-//            public void partOpened( IWorkbenchPartReference partRef )
-//            {
-//            }
-//
-//
-//            public void partVisible( IWorkbenchPartReference partRef )
-//            {
-//            }
-//
-//        } );
-//    }
-//
-//
-//    /**
-//     * Enables or disables the actions according to the current selection 
-//     * in the viewer.
-//     */
-//    public void updateActionsStates()
-//    {
-//        // Getting the selection
-//        StructuredSelection selection = ( StructuredSelection ) tableViewer.getSelection();
-//
-//        if ( !selection.isEmpty() )
-//        {
-//            Server server = ( Server ) selection.getFirstElement();
-//
-//            switch ( server.getState() )
-//            {
-//                case STARTED:
+                }
+            }
+
+
+            public void partBroughtToTop( IWorkbenchPartReference partRef )
+            {
+            }
+
+
+            public void partClosed( IWorkbenchPartReference partRef )
+            {
+            }
+
+
+            public void partHidden( IWorkbenchPartReference partRef )
+            {
+            }
+
+
+            public void partInputChanged( IWorkbenchPartReference partRef )
+            {
+            }
+
+
+            public void partOpened( IWorkbenchPartReference partRef )
+            {
+            }
+
+
+            public void partVisible( IWorkbenchPartReference partRef )
+            {
+            }
+
+        } );
+    }
+
+
+    /**
+     * Enables or disables the actions according to the current selection 
+     * in the viewer.
+     */
+    public void updateActionsStates()
+    {
+        // Getting the selection
+        StructuredSelection selection = ( StructuredSelection ) tableViewer.getSelection();
+
+        if ( !selection.isEmpty() )
+        {
+            LdapServer server = ( LdapServer ) selection.getFirstElement();
+
+            switch ( server.getStatus() )
+            {
+                case STARTED:
 //                    run.setEnabled( false );
 //                    stop.setEnabled( true );
-//                    break;
-//                case STARTING:
+                    break;
+                case STARTING:
 //                    run.setEnabled( false );
 //                    stop.setEnabled( false );
-//                    break;
-//                case STOPPED:
+                    break;
+                case STOPPED:
 //                    run.setEnabled( true );
 //                    stop.setEnabled( false );
-//                    break;
-//                case STOPPING:
+                    break;
+                case STOPPING:
 //                    run.setEnabled( false );
 //                    stop.setEnabled( false );
-//                    break;
-//                case UNKNONW:
+                    break;
+                case UNKNOWN:
 //                    run.setEnabled( false );
 //                    stop.setEnabled( false );
-//                    break;
-//            }
-//
+                    break;
+            }
+
 //            openConfiguration.setEnabled( true );
 //            delete.setEnabled( true );
 //            rename.setEnabled( true );
 //            createConnection.setEnabled( true );
 //            properties.setEnabled( true );
-//        }
-//        else
-//        {
+        }
+        else
+        {
 //            openConfiguration.setEnabled( false );
 //            delete.setEnabled( false );
 //            rename.setEnabled( false );
@@ -470,8 +489,8 @@ public class ServersView extends ViewPart
 //            stop.setEnabled( false );
 //            createConnection.setEnabled( false );
 //            properties.setEnabled( false );
-//        }
-//    }
+        }
+    }
 
 
     /**
