@@ -20,9 +20,18 @@
 package org.apache.directory.studio.ldapservers.wizards;
 
 
+import java.util.regex.Pattern;
+
 import org.apache.directory.studio.ldapservers.LdapServersManager;
 import org.apache.directory.studio.ldapservers.LdapServersPlugin;
 import org.apache.directory.studio.ldapservers.LdapServersPluginConstants;
+import org.apache.directory.studio.ldapservers.model.LdapServerAdapterExtension;
+import org.eclipse.jface.viewers.ISelectionChangedListener;
+import org.eclipse.jface.viewers.SelectionChangedEvent;
+import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.jface.viewers.TreeViewer;
+import org.eclipse.jface.viewers.Viewer;
+import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
@@ -32,6 +41,7 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.swt.widgets.Tree;
 
 
 /**
@@ -44,8 +54,17 @@ public class NewServerWizardPage extends WizardPage
     /** The servers handler */
     private LdapServersManager ldapServersManager;
 
+    /** The content provider of the TreeViewer */
+    private LdapServerAdapterExtensionsContentProvider contentProvider;
+
+    /** The label provider of the TreeViewer */
+    private LdapServerAdapterExtensionsLabelProvider labelProvider;
+
     // UI fields
-    private Text nameText;
+    private Label filterLabel;
+    private Text filterText;
+    private TreeViewer ldapServerAdaptersTreeViewer;
+    private Text serverNameText;
 
 
     /**
@@ -54,8 +73,8 @@ public class NewServerWizardPage extends WizardPage
     public NewServerWizardPage()
     {
         super( NewServerWizardPage.class.getCanonicalName() );
-        setTitle( Messages.getString( "NewServerWizardPage.CreateNewServer" ) ); //$NON-NLS-1$
-        setDescription( Messages.getString( "NewServerWizardPage.PleaseSpecifyName" ) ); //$NON-NLS-1$
+        setTitle( "Create an LDAP Server" );
+        setDescription( "Please choose the type of server and specify a name to create a new server." );
         setImageDescriptor( LdapServersPlugin.getDefault().getImageDescriptor(
             LdapServersPluginConstants.IMG_SERVER_NEW_WIZARD ) );
         setPageComplete( false );
@@ -63,27 +82,179 @@ public class NewServerWizardPage extends WizardPage
     }
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.jface.dialogs.IDialogPage#createControl(org.eclipse.swt.widgets.Composite)
+    /**
+     * {@inheritDoc}
      */
     public void createControl( Composite parent )
     {
+        // Creating the composite to hold the UI
         Composite composite = new Composite( parent, SWT.NONE );
         composite.setLayout( new GridLayout( 2, false ) );
 
-        Label nameLabel = new Label( composite, SWT.NONE );
-        nameLabel.setText( Messages.getString( "NewServerWizardPage.Name" ) ); //$NON-NLS-1$
-        nameText = new Text( composite, SWT.BORDER );
-        nameText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
-        nameText.addModifyListener( new ModifyListener()
+        // Filter Label
+        filterLabel = new Label( composite, SWT.NONE );
+        filterLabel.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
+        filterLabel.setText( "Select the server type:" );
+
+        // Filter Text
+        filterText = new Text( composite, SWT.BORDER | SWT.SEARCH | SWT.CANCEL );
+        filterText.setMessage( "Type filter here..." );
+        filterText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
+
+        // LDAP Server Adapters Tree Viewer
+        ldapServerAdaptersTreeViewer = new TreeViewer( new Tree( composite, SWT.SINGLE | SWT.H_SCROLL | SWT.V_SCROLL
+            | SWT.BORDER ) );
+        GridData gd = new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 );
+        gd.heightHint = 90;
+        ldapServerAdaptersTreeViewer.getTree().setLayoutData( gd );
+        contentProvider = new LdapServerAdapterExtensionsContentProvider();
+        ldapServerAdaptersTreeViewer.setContentProvider( contentProvider );
+        labelProvider = new LdapServerAdapterExtensionsLabelProvider();
+        ldapServerAdaptersTreeViewer.setLabelProvider( labelProvider );
+        ldapServerAdaptersTreeViewer.setInput( "LDAP Server Adapters Tree Viewer Input" );
+        ldapServerAdaptersTreeViewer.expandAll();
+        ldapServerAdaptersTreeViewer.addFilter( new ViewerFilter()
+        {
+            public boolean select( Viewer viewer, Object parentElement, Object element )
+            {
+                // The current element is a Vendor
+                if ( element instanceof String )
+                {
+                    Object[] children = contentProvider.getChildren( element );
+                    for ( Object child : children )
+                    {
+                        String label = labelProvider.getText( child );
+
+                        return getFilterPattern().matcher( label ).matches();
+                    }
+                }
+                // The current element is an LdapServerAdapterExtension
+                else if ( element instanceof LdapServerAdapterExtension )
+                {
+                    String label = labelProvider.getText( element );
+
+                    return getFilterPattern().matcher( label ).matches();
+                }
+
+                return false;
+            }
+
+
+            /**
+             * Gets the filter pattern.
+             *
+             * @return
+             *      the filter pattern
+             */
+            private Pattern getFilterPattern()
+            {
+                String filter = filterText.getText();
+
+                return Pattern.compile( ( ( filter == null ) ? ".*" : ".*" + filter + ".*" ), Pattern.CASE_INSENSITIVE );
+            }
+        } );
+
+        // Filler
+        Label filler = new Label( composite, SWT.NONE );
+        filler.setLayoutData( new GridData( SWT.NONE, SWT.NONE, true, false, 2, 1 ) );
+
+        // Server Name Label
+        Label serverNameLabel = new Label( composite, SWT.NONE );
+        serverNameLabel.setText( "Server Name:" );
+
+        // Server Name Text
+        serverNameText = new Text( composite, SWT.BORDER );
+        serverNameText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
+
+        // Adding listeners
+        addListeners();
+
+        // Setting the control on the composite and setting focus
+        setControl( composite );
+        composite.setFocus();
+    }
+
+
+    /**
+     * Adding listeners to UI elements.
+     */
+    private void addListeners()
+    {
+        // Filter Text
+        filterText.addModifyListener( new ModifyListener()
+        {
+            public void modifyText( ModifyEvent e )
+            {
+                // Refreshing the LDAP Server Adapters Tree Viewer
+                ldapServerAdaptersTreeViewer.refresh();
+                ldapServerAdaptersTreeViewer.expandAll();
+            }
+        } );
+
+        // LDAP Server Adapters Tree Viewer
+        ldapServerAdaptersTreeViewer.addSelectionChangedListener( new ISelectionChangedListener()
+        {
+            public void selectionChanged( SelectionChangedEvent event )
+            {
+                // Assigning an automatic name to the LDAP Server based on the selected LDAP Server Adapter Extension
+                serverNameText.setText( getServerName( ( StructuredSelection ) ldapServerAdaptersTreeViewer
+                    .getSelection() ) );
+
+                validate();
+            }
+
+
+            /**
+             * Get a name for the server based on the current selection.
+             *
+             * @param selection
+             *      the current selection
+             * @return
+             *      a name for the server based on the current selection
+             */
+            private String getServerName( StructuredSelection selection )
+            {
+                if ( !selection.isEmpty() )
+                {
+                    Object selectedObject = selection.getFirstElement();
+                    if ( selectedObject instanceof LdapServerAdapterExtension )
+                    {
+                        // Getting the name of the LDAP Server Adapter Extension
+                        String serverName = labelProvider.getText( selection.getFirstElement() );
+
+                        // Checking if the name if available
+                        if ( ldapServersManager.isNameAvailable( serverName ) )
+                        {
+                            return serverName;
+                        }
+                        else
+                        {
+                            // The name is not available, looking for another name
+                            String newServerName = serverName;
+
+                            for ( int i = 2; !ldapServersManager.isNameAvailable( newServerName ); i++ )
+                            {
+                                newServerName = serverName + " (" + i + ")";
+                            }
+
+                            return newServerName;
+                        }
+                    }
+                }
+
+                // Returning an empty string if the selection is empty or if the current selection is a vendor
+                return "";
+            }
+        } );
+
+        // Server Name Text
+        serverNameText.addModifyListener( new ModifyListener()
         {
             public void modifyText( ModifyEvent e )
             {
                 validate();
             }
         } );
-
-        setControl( composite );
     }
 
 
@@ -94,17 +265,35 @@ public class NewServerWizardPage extends WizardPage
     {
         displayErrorMessage( null );
 
-        String name = nameText.getText();
+        // LDAP Server Adapters Tree Viewer
+        StructuredSelection selection = ( StructuredSelection ) ldapServerAdaptersTreeViewer.getSelection();
+        if ( selection.isEmpty() )
+        {
+            displayErrorMessage( "Choose the type of server to create." );
+            return;
+        }
+        else
+        {
+            Object selectedObject = selection.getFirstElement();
+            if ( selectedObject instanceof String )
+            {
+                displayErrorMessage( "Choose the type of server to create." );
+                return;
+            }
+        }
+
+        // Server Name Text
+        String name = serverNameText.getText();
         if ( ( name != null ) )
         {
             if ( "".equals( name ) ) //$NON-NLS-1$
             {
-                displayErrorMessage( Messages.getString( "NewServerWizardPage.ErrorEnterName" ) ); //$NON-NLS-1$
+                displayErrorMessage( "Enter a name for the LDAP server." );
                 return;
             }
             if ( !ldapServersManager.isNameAvailable( name ) )
             {
-                displayErrorMessage( Messages.getString( "NewServerWizardPage.ErrorNameExists" ) ); //$NON-NLS-1$
+                displayErrorMessage( "An LDAP server with the same name already exists." );
                 return;
             }
         }
@@ -133,6 +322,28 @@ public class NewServerWizardPage extends WizardPage
      */
     public String getServerName()
     {
-        return nameText.getText();
+        return serverNameText.getText();
+    }
+
+
+    /**
+     * Gets the Ldap Server Adapter Extension.
+     *
+     * @return
+     *      the Ldap Server Adapter Extension
+     */
+    public LdapServerAdapterExtension getLdapServerAdapterExtension()
+    {
+        StructuredSelection selection = ( StructuredSelection ) ldapServerAdaptersTreeViewer.getSelection();
+        if ( !selection.isEmpty() )
+        {
+            Object selectedObject = selection.getFirstElement();
+            if ( selectedObject instanceof LdapServerAdapterExtension )
+            {
+                return ( LdapServerAdapterExtension ) selectedObject;
+            }
+        }
+
+        return null;
     }
 }

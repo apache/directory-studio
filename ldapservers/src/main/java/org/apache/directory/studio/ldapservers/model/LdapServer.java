@@ -21,74 +21,67 @@
 package org.apache.directory.studio.ldapservers.model;
 
 
+import java.util.UUID;
+
+import org.eclipse.core.runtime.IAdaptable;
+
+
 /**
  * The {@link LdapServer} interface defines the required methods
  * to implement an LDAP Server instance.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class LdapServer
+public class LdapServer implements IAdaptable
 {
+    /** The ID of the server */
     private String id;
 
+    /** The name of the server*/
     private String name;
 
+    /** The status of the server */
     private LdapServerStatus status = LdapServerStatus.STOPPED;
 
+    /** The LDAP Server Adapater Extension */
     private LdapServerAdapterExtension ldapServerAdapterExtension;
 
 
-    public void setLdapServerAdapterExtension( LdapServerAdapterExtension ldapServerAdapterExtension )
+    /**
+     * Creates a new instance of LDAP Server.
+     * <p>
+     * An ID is automatically created.
+     */
+    public LdapServer()
     {
-        this.ldapServerAdapterExtension = ldapServerAdapterExtension;
+        id = createId();
     }
 
 
     /**
-     * Gets the name of the server.
+     * Creates a new instance of LDAP Server.
+     * <p>
+     * An ID is automatically created.
      *
-     * @return
+     * @param name
      *      the name of the server
      */
-    public String getName()
-    {
-        return name;
-    }
-
-
-    public void setName( String name )
+    public LdapServer( String name )
     {
         this.name = name;
+        id = createId();
     }
 
 
     /**
-     * Gets the id of the server.
+     * Creates a new ID.
      *
      * @return
-     *      the id of the server
+     *      a new ID
      */
-    public String getId()
+    private static String createId()
     {
-        return id;
-    }
-
-
-    public void setId( String id )
-    {
-        this.id = id;
-    }
-
-
-    /**
-     * Gets the associated {@link LdapServerAdapterExtension}.
-     *
-     * @return
-     *      the associated {@link LdapServerAdapterExtension}
-     */
-    public LdapServerAdapterExtension getLdapServerAdapterExtension()
-    {
-        return null;
+        return UUID.randomUUID().toString();
     }
 
 
@@ -105,6 +98,54 @@ public class LdapServer
 
 
     /**
+     * Gets the id of the server.
+     *
+     * @return
+     *      the id of the server
+     */
+    public String getId()
+    {
+        return id;
+    }
+
+
+    /**
+     * Gets the associated {@link LdapServerAdapterExtension}.
+     *
+     * @return
+     *      the associated {@link LdapServerAdapterExtension}
+     */
+    public LdapServerAdapterExtension getLdapServerAdapterExtension()
+    {
+        return ldapServerAdapterExtension;
+    }
+
+
+    /**
+     * Gets the name of the server.
+     *
+     * @return
+     *      the name of the server
+     */
+    public String getName()
+    {
+        return name;
+    }
+
+
+    /**
+     * Gets the status of the server.
+     *
+     * @return
+     *      the status of the server
+     */
+    public LdapServerStatus getStatus()
+    {
+        return status;
+    }
+
+
+    /**
      * Removes the {@link LdapServerListener} from the server.
      *
      * @param listener
@@ -113,6 +154,48 @@ public class LdapServer
     public void removeListener( LdapServerListener listener )
     {
 
+    }
+
+
+    /**
+     * Restarts the server.
+     *
+     * @throws Exception
+     *      if an error occurs when restarting the server
+     */
+    public void restart() throws Exception
+    {
+
+    }
+
+
+    /**
+     * Sets the ID of the server
+     *
+     * @param id
+     *      the ID of the server
+     */
+    public void setId( String id )
+    {
+        this.id = id;
+    }
+
+
+    public void setLdapServerAdapterExtension( LdapServerAdapterExtension ldapServerAdapterExtension )
+    {
+        this.ldapServerAdapterExtension = ldapServerAdapterExtension;
+    }
+
+
+    /**
+     * Sets the name of the server
+     *
+     * @param name
+     *      the name of the server
+     */
+    public void setName( String name )
+    {
+        this.name = name;
     }
 
 
@@ -141,25 +224,10 @@ public class LdapServer
 
 
     /**
-     * Restarts the server.
-     *
-     * @throws Exception
-     *      if an error occurs when restarting the server
+     * {@inheritDoc}
      */
-    public void restart() throws Exception
+    public Object getAdapter( Class adapter )
     {
-
-    }
-
-
-    /**
-     * Gets the status of the server.
-     *
-     * @return
-     *      the status of the server
-     */
-    public LdapServerStatus getStatus()
-    {
-        return status;
+        return null;
     }
 }

@@ -39,8 +39,8 @@ public class NewServerWizard extends Wizard implements INewWizard
     private NewServerWizardPage page;
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.jface.wizard.Wizard#addPages()
+    /**
+     * {@inheritDoc}
      */
     public void addPages()
     {
@@ -49,14 +49,15 @@ public class NewServerWizard extends Wizard implements INewWizard
     }
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.jface.wizard.Wizard#performFinish()
+    /**
+     * {@inheritDoc}
      */
     public boolean performFinish()
     {
         // Creating the new server
         LdapServer server = new LdapServer();
         server.setName( page.getServerName() );
+        server.setLdapServerAdapterExtension( page.getLdapServerAdapterExtension() );
 
         // Adding the new server to the servers handler
         LdapServersManager.getDefault().addServer( server );
@@ -68,8 +69,8 @@ public class NewServerWizard extends Wizard implements INewWizard
     }
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.ui.IWorkbenchWizard#init(org.eclipse.ui.IWorkbench, org.eclipse.jface.viewers.IStructuredSelection)
+    /**
+     * {@inheritDoc}
      */
     public void init( IWorkbench workbench, IStructuredSelection selection )
     {
