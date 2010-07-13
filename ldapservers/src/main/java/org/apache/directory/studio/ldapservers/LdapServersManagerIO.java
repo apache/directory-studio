@@ -86,7 +86,8 @@ public class LdapServersManagerIO
         Element rootElement = document.getRootElement();
         if ( !rootElement.getName().equals( LDAP_SERVERS_TAG ) )
         {
-            throw new LdapServersManagerIOException( Messages.getString( "ServersHandlerIO.ErrorNotValidServersFile" ) ); //$NON-NLS-1$ // TODO
+            throw new LdapServersManagerIOException(
+                Messages.getString( "LdapServersManagerIO.ErrorNotValidServersFile" ) ); //$NON-NLS-1$
         }
 
         for ( Iterator<?> i = rootElement.elementIterator( LDAP_SERVER_TAG ); i.hasNext(); )

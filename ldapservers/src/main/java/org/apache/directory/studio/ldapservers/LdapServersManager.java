@@ -272,23 +272,15 @@ public class LdapServersManager
                         }
                         return;
                     }
-                    catch ( FileNotFoundException e )
+                    catch ( Exception e )
                     {
-                        // TODO Add error messages
-                        CommonUiUtils.reportError( Messages.getString( "ServersHandler.ErrorLoadingServer" ) //$NON-NLS-1$
-                            + e.getMessage() );
-                    }
-                    catch ( LdapServersManagerIOException e )
-                    {
-                        // TODO Add error messages
-                        CommonUiUtils.reportError( Messages.getString( "ServersHandler.ErrorLoadingServer" ) //$NON-NLS-1$
+                        CommonUiUtils.reportError( Messages.getString( "LdapServersManager.ErrorLoadingServer" ) //$NON-NLS-1$
                             + e.getMessage() );
                     }
                 }
                 else
                 {
-                    // TODO Add error messages
-                    CommonUiUtils.reportError( Messages.getString( "ServersHandler.ErrorLoadingServer" ) //$NON-NLS-1$
+                    CommonUiUtils.reportError( Messages.getString( "LdapServersManager.ErrorLoadingServer" ) //$NON-NLS-1$
                         + exceptionMessage );
                 }
             }
@@ -336,15 +328,9 @@ public class LdapServersManager
                 LdapServersManagerIO.write( serversList, outputStream );
                 outputStream.close();
             }
-            catch ( FileNotFoundException e )
+            catch ( Exception e )
             {
-                // TODO Add error messages
-                CommonUiUtils.reportError( Messages.getString( "ServersHandler.ErrorLoadingServer" ) + e.getMessage() ); //$NON-NLS-1$
-            }
-            catch ( IOException e )
-            {
-                // TODO Add error messages
-                CommonUiUtils.reportError( Messages.getString( "ServersHandler.ErrorLoadingServer" ) + e.getMessage() ); //$NON-NLS-1$
+                CommonUiUtils.reportError( Messages.getString( "LdapServersManager.ErrorLoadingServer" ) + e.getMessage() ); //$NON-NLS-1$
             }
         }
     }
