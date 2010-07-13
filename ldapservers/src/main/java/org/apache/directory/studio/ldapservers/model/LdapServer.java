@@ -43,7 +43,7 @@ public class LdapServer implements IAdaptable
     /** The status of the server */
     private LdapServerStatus status = LdapServerStatus.STOPPED;
 
-    /** The LDAP Server Adapater Extension */
+    /** The LDAP Server Adapter Extension */
     private LdapServerAdapterExtension ldapServerAdapterExtension;
 
 

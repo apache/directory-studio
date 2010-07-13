@@ -62,8 +62,8 @@ public class NewServerWizard extends Wizard implements INewWizard
         // Adding the new server to the servers handler
         LdapServersManager.getDefault().addServer( server );
 
-        // Creating the complete folder structure for the new server
-        //ApacheDsPluginUtils.createNewServerFolder( server.getId() ); // TODO
+        // Creating the folder for the new server
+        LdapServersManager.createNewServerFolder( server );
 
         return true;
     }

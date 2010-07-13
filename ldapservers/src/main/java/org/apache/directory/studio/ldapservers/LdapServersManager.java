@@ -47,6 +47,8 @@ import org.eclipse.core.runtime.IPath;
  */
 public class LdapServersManager
 {
+    private static final String SERVERS = "servers";
+
     /** The default instance */
     private static LdapServersManager instance;
 
@@ -417,5 +419,32 @@ public class LdapServersManager
     public LdapServer getServerById( String id )
     {
         return serversIdMap.get( id );
+    }
+
+
+    /**
+     * Get the path to the servers folder.
+     *
+     * @return
+     *      the path to the server folder
+     */
+    public static IPath getServersFolder()
+    {
+        return LdapServersPlugin.getDefault().getStateLocation().append( SERVERS );
+    }
+
+
+    /**
+    * Creates a new server folder for the given id.
+    *
+    * @param id
+    *      the id of the server
+    */
+    public static void createNewServerFolder( LdapServer server )
+    {
+        // Creating the server folder
+        IPath serverFolderPath = getServersFolder().append( server.getId() );
+        File serverFolder = new File( serverFolderPath.toOSString() );
+        serverFolder.mkdir();
     }
 }
