@@ -23,15 +23,13 @@ package org.apache.directory.studio.ldapservers.views;
 import org.apache.directory.studio.ldapservers.LdapServersManager;
 import org.apache.directory.studio.ldapservers.LdapServersManagerListener;
 import org.apache.directory.studio.ldapservers.actions.NewServerAction;
+import org.apache.directory.studio.ldapservers.actions.PropertiesAction;
 import org.apache.directory.studio.ldapservers.model.LdapServer;
 import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
-import org.eclipse.jface.commands.ActionHandler;
-import org.eclipse.jface.viewers.DoubleClickEvent;
-import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
@@ -54,8 +52,6 @@ import org.eclipse.ui.commands.ICommandService;
 import org.eclipse.ui.contexts.IContextActivation;
 import org.eclipse.ui.contexts.IContextService;
 import org.eclipse.ui.part.ViewPart;
-
-import com.sun.corba.se.spi.activation.Server;
 
 
 /**
@@ -93,7 +89,7 @@ public class ServersView extends ViewPart
 //    private RunAction run;
 //    private StopAction stop;
 //    private CreateConnectionAction createConnection;
-//    private PropertiesAction properties;
+    private PropertiesAction properties;
 
     // Listeners
     private LdapServersManagerListener ldapServersManagerListener = new LdapServersManagerListener()
@@ -260,8 +256,8 @@ public class ServersView extends ViewPart
 //        createConnection = new CreateConnectionAction( this );
 //        createConnection.setEnabled( false );
 //
-//        properties = new PropertiesAction( this );
-//        properties.setEnabled( false );
+        properties = new PropertiesAction( this );
+        properties.setEnabled( false );
     }
 
 
@@ -303,8 +299,8 @@ public class ServersView extends ViewPart
 //                MenuManager ldapBrowserManager = new MenuManager( Messages.getString( "ServersView.ldapBrowser" ) ); //$NON-NLS-1$
 //                ldapBrowserManager.add( createConnection );
 //                manager.add( ldapBrowserManager );
-//                manager.add( new Separator() );
-//                manager.add( properties );
+                manager.add( new Separator() );
+                manager.add( properties );
             }
         } );
 
@@ -478,7 +474,7 @@ public class ServersView extends ViewPart
 //            delete.setEnabled( true );
 //            rename.setEnabled( true );
 //            createConnection.setEnabled( true );
-//            properties.setEnabled( true );
+            properties.setEnabled( true );
         }
         else
         {
@@ -488,7 +484,7 @@ public class ServersView extends ViewPart
 //            run.setEnabled( false );
 //            stop.setEnabled( false );
 //            createConnection.setEnabled( false );
-//            properties.setEnabled( false );
+            properties.setEnabled( false );
         }
     }
 

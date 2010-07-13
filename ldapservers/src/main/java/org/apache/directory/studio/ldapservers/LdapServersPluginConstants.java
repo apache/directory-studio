@@ -33,7 +33,6 @@ public interface LdapServersPluginConstants
 
     /** The LDAP Adapters Extension Point ID */
     public static final String LDAP_SERVER_ADAPTERS_EXTENSION_POINT = PLUGIN_ID + ".ldapServerAdapters"; //$NON-NLS-1$
-    
 
     // ------
     // IMAGES
@@ -50,5 +49,10 @@ public interface LdapServersPluginConstants
     public static final String IMG_SERVER_STOPPING1 = "resources/icons/server_stopping1.gif";
     public static final String IMG_SERVER_STOPPING2 = "resources/icons/server_stopping2.gif";
     public static final String IMG_SERVER_STOPPING3 = "resources/icons/server_stopping3.gif";
+
+    // --------------
+    // PROPERTY PAGES
+    // --------------
+    public static final String PROP_SERVER_PROPERTY_PAGE = "org.apache.directory.studio.ldapservers.properties.ServerPropertyPage";
 
 }

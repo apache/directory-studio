@@ -53,4 +53,18 @@
          </view>
       </perspectiveExtension>
    </extension>
+   
+   <extension
+         point="org.eclipse.ui.propertyPages">
+      <page
+            class="org.apache.directory.studio.ldapservers.properties.ServerPropertyPage"
+            id="org.apache.directory.studio.ldapservers.properties.ServerPropertyPage"
+            name="Info">
+         <enabledWhen>
+            <instanceof
+                  value="org.apache.directory.studio.ldapservers.model.LdapServer">
+            </instanceof>
+         </enabledWhen>
+      </page>
+   </extension>
 </plugin>
