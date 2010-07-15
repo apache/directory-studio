@@ -21,6 +21,7 @@
 package org.apache.directory.studio.ldapservers.apacheds;
 
 
+import org.apache.directory.studio.ldapservers.model.LdapServer;
 import org.apache.directory.studio.ldapservers.model.LdapServerAdapter;
 
 
@@ -32,38 +33,32 @@ import org.apache.directory.studio.ldapservers.model.LdapServerAdapter;
  */
 public class ApacheDS156LdapServerAdapter implements LdapServerAdapter
 {
-    /**
-     * Starts the server.
-     *
-     * @throws Exception
-     *      if an error occurs when restarting the server
-     */
-    public void start() throws Exception
+    public void add( LdapServer server ) throws Exception
     {
-        System.out.println( "Start" );
+        System.out.println( "add " + server.getName() );
     }
 
 
-    /**
-     * Stops the server.
-     *
-     * @throws Exception
-     *      if an error occurs when restarting the server
-     */
-    public void stop() throws Exception
+    public void delete( LdapServer server ) throws Exception
     {
-        System.out.println( "Stop" );
+        System.out.println( "delete " + server.getName() );
     }
 
 
-    /**
-     * Restarts the server.
-     *
-     * @throws Exception
-     *      if an error occurs when restarting the server
-     */
-    public void restart() throws Exception
+    public void start( LdapServer server ) throws Exception
     {
-        System.out.println( "Restart" );
+        System.out.println( "start " + server.getName() );
+    }
+
+
+    public void stop( LdapServer server ) throws Exception
+    {
+        System.out.println( "stop " + server.getName() );
+    }
+
+
+    public void restart( LdapServer server ) throws Exception
+    {
+        System.out.println( "restart " + server.getName() );
     }
 }

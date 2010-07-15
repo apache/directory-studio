@@ -37,6 +37,7 @@ public class LdapServerAdapterExtension
     private String version;
     private String vendor;
     private String className;
+    private LdapServerAdapter instance;
     private String description;
     private ImageDescriptor icon;
 
@@ -82,6 +83,17 @@ public class LdapServerAdapterExtension
     public String getId()
     {
         return id;
+    }
+
+
+    /**
+     * TODO getInstance.
+     *
+     * @return
+     */
+    public LdapServerAdapter getInstance()
+    {
+        return instance;
     }
 
 
@@ -159,6 +171,17 @@ public class LdapServerAdapterExtension
     public void setId( String id )
     {
         this.id = id;
+    }
+
+
+    /**
+     * TODO setInstance.
+     *
+     * @param instance
+     */
+    public void setInstance( LdapServerAdapter instance )
+    {
+        this.instance = instance;
     }
 
 

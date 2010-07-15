@@ -22,6 +22,7 @@ package org.apache.directory.studio.ldapservers.views;
 
 import org.apache.directory.studio.ldapservers.LdapServersManager;
 import org.apache.directory.studio.ldapservers.LdapServersManagerListener;
+import org.apache.directory.studio.ldapservers.actions.DeleteAction;
 import org.apache.directory.studio.ldapservers.actions.NewServerAction;
 import org.apache.directory.studio.ldapservers.actions.PropertiesAction;
 import org.apache.directory.studio.ldapservers.model.LdapServer;
@@ -64,7 +65,7 @@ import org.eclipse.ui.part.ViewPart;
 public class ServersView extends ViewPart
 {
     /** The ID of the view */
-//    public static final String ID = ApacheDsPluginConstants.VIEW_SERVERS_VIEW;
+    //    public static final String ID = ApacheDsPluginConstants.VIEW_SERVERS_VIEW;
 
     /** The tree*/
     private Tree tree;
@@ -83,12 +84,12 @@ public class ServersView extends ViewPart
 
     // Actions
     private NewServerAction newServer;
-//    private OpenConfigurationAction openConfiguration;
-//    private DeleteAction delete;
-//    private RenameAction rename;
-//    private RunAction run;
-//    private StopAction stop;
-//    private CreateConnectionAction createConnection;
+    //    private OpenConfigurationAction openConfiguration;
+    private DeleteAction delete;
+    //    private RenameAction rename;
+    //    private RunAction run;
+    //    private StopAction stop;
+    //    private CreateConnectionAction createConnection;
     private PropertiesAction properties;
 
     // Listeners
@@ -149,8 +150,8 @@ public class ServersView extends ViewPart
 
         // set help context
         // TODO
-//        PlatformUI.getWorkbench().getHelpSystem()
-//            .setHelp( parent, ApacheDsPluginConstants.PLUGIN_ID + "." + "gettingstarted_views_servers" ); //$NON-NLS-1$ //$NON-NLS-2$
+        //        PlatformUI.getWorkbench().getHelpSystem()
+        //            .setHelp( parent, ApacheDsPluginConstants.PLUGIN_ID + "." + "gettingstarted_views_servers" ); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
 
@@ -238,24 +239,24 @@ public class ServersView extends ViewPart
     {
         newServer = new NewServerAction();
 
-//        openConfiguration = new OpenConfigurationAction( this );
-//        openConfiguration.setEnabled( false );
-//
-//        delete = new DeleteAction( this );
-//        delete.setEnabled( false );
-//
-//        rename = new RenameAction( this );
-//        rename.setEnabled( false );
-//
-//        run = new RunAction( this );
-//        run.setEnabled( false );
-//
-//        stop = new StopAction( this );
-//        stop.setEnabled( false );
-//
-//        createConnection = new CreateConnectionAction( this );
-//        createConnection.setEnabled( false );
-//
+        //        openConfiguration = new OpenConfigurationAction( this );
+        //        openConfiguration.setEnabled( false );
+        //
+        delete = new DeleteAction( this );
+        delete.setEnabled( false );
+
+        //        rename = new RenameAction( this );
+        //        rename.setEnabled( false );
+        //
+        //        run = new RunAction( this );
+        //        run.setEnabled( false );
+        //
+        //        stop = new StopAction( this );
+        //        stop.setEnabled( false );
+        //
+        //        createConnection = new CreateConnectionAction( this );
+        //        createConnection.setEnabled( false );
+        //
         properties = new PropertiesAction( this );
         properties.setEnabled( false );
     }
@@ -268,9 +269,9 @@ public class ServersView extends ViewPart
     {
         IToolBarManager toolbar = getViewSite().getActionBars().getToolBarManager();
         toolbar.add( newServer );
-//        toolbar.add( new Separator() );
-//        toolbar.add( run );
-//        toolbar.add( stop );
+        //        toolbar.add( new Separator() );
+        //        toolbar.add( run );
+        //        toolbar.add( stop );
     }
 
 
@@ -288,17 +289,17 @@ public class ServersView extends ViewPart
                 MenuManager newManager = new MenuManager( Messages.getString( "ServersView.new" ) ); //$NON-NLS-1$
                 newManager.add( newServer );
                 manager.add( newManager );
-//                manager.add( openConfiguration );
-//                manager.add( new Separator() );
-//                manager.add( delete );
-//                manager.add( rename );
-//                manager.add( new Separator() );
-//                manager.add( run );
-//                manager.add( stop );
-//                manager.add( new Separator() );
-//                MenuManager ldapBrowserManager = new MenuManager( Messages.getString( "ServersView.ldapBrowser" ) ); //$NON-NLS-1$
-//                ldapBrowserManager.add( createConnection );
-//                manager.add( ldapBrowserManager );
+                //                manager.add( openConfiguration );
+                manager.add( new Separator() );
+                manager.add( delete );
+                //                manager.add( rename );
+                //                manager.add( new Separator() );
+                //                manager.add( run );
+                //                manager.add( stop );
+                //                manager.add( new Separator() );
+                //                MenuManager ldapBrowserManager = new MenuManager( Messages.getString( "ServersView.ldapBrowser" ) ); //$NON-NLS-1$
+                //                ldapBrowserManager.add( createConnection );
+                //                manager.add( ldapBrowserManager );
                 manager.add( new Separator() );
                 manager.add( properties );
             }
@@ -320,13 +321,13 @@ public class ServersView extends ViewPart
         LdapServersManager serversHandler = LdapServersManager.getDefault();
         serversHandler.addListener( ldapServersManagerListener );
 
-//        tableViewer.addDoubleClickListener( new IDoubleClickListener()
-//        {
-//            public void doubleClick( DoubleClickEvent event )
-//            {
-//                openConfiguration.run();
-//            }
-//        } );
+        //        tableViewer.addDoubleClickListener( new IDoubleClickListener()
+        //        {
+        //            public void doubleClick( DoubleClickEvent event )
+        //            {
+        //                openConfiguration.run();
+        //            }
+        //        } );
 
         tableViewer.addSelectionChangedListener( new ISelectionChangedListener()
         {
@@ -351,12 +352,12 @@ public class ServersView extends ViewPart
                     if ( commandService != null )
                     {
                         commandService.getCommand( newServer.getActionDefinitionId() ).setHandler( null );
-//                        commandService.getCommand( openConfiguration.getActionDefinitionId() ).setHandler( null );
-//                        commandService.getCommand( delete.getActionDefinitionId() ).setHandler( null );
-//                        commandService.getCommand( rename.getActionDefinitionId() ).setHandler( null );
-//                        commandService.getCommand( run.getActionDefinitionId() ).setHandler( null );
-//                        commandService.getCommand( stop.getActionDefinitionId() ).setHandler( null );
-//                        commandService.getCommand( properties.getActionDefinitionId() ).setHandler( null );
+                        //                        commandService.getCommand( openConfiguration.getActionDefinitionId() ).setHandler( null );
+                        //                        commandService.getCommand( delete.getActionDefinitionId() ).setHandler( null );
+                        //                        commandService.getCommand( rename.getActionDefinitionId() ).setHandler( null );
+                        //                        commandService.getCommand( run.getActionDefinitionId() ).setHandler( null );
+                        //                        commandService.getCommand( stop.getActionDefinitionId() ).setHandler( null );
+                        //                        commandService.getCommand( properties.getActionDefinitionId() ).setHandler( null );
                     }
 
                     IContextService contextService = ( IContextService ) PlatformUI.getWorkbench().getAdapter(
@@ -374,28 +375,28 @@ public class ServersView extends ViewPart
             {
                 if ( partRef.getPart( false ) == instance )
                 {
-//                    IContextService contextService = ( IContextService ) PlatformUI.getWorkbench().getAdapter(
-//                        IContextService.class );
-//                    contextActivation = contextService.activateContext( ApacheDsPluginConstants.CONTEXTS_SERVERS_VIEW );
-//
-//                    ICommandService commandService = ( ICommandService ) PlatformUI.getWorkbench().getAdapter(
-//                        ICommandService.class );
-//                    if ( commandService != null )
-//                    {
-//                        commandService.getCommand( newServer.getActionDefinitionId() ).setHandler(
-//                            new ActionHandler( newServer ) );
-//                        commandService.getCommand( openConfiguration.getActionDefinitionId() ).setHandler(
-//                            new ActionHandler( openConfiguration ) );
-//                        commandService.getCommand( delete.getActionDefinitionId() ).setHandler(
-//                            new ActionHandler( delete ) );
-//                        commandService.getCommand( rename.getActionDefinitionId() ).setHandler(
-//                            new ActionHandler( rename ) );
-//                        commandService.getCommand( run.getActionDefinitionId() ).setHandler( new ActionHandler( run ) );
-//                        commandService.getCommand( stop.getActionDefinitionId() )
-//                            .setHandler( new ActionHandler( stop ) );
-//                        commandService.getCommand( properties.getActionDefinitionId() ).setHandler(
-//                            new ActionHandler( properties ) );
-//                    }
+                    //                    IContextService contextService = ( IContextService ) PlatformUI.getWorkbench().getAdapter(
+                    //                        IContextService.class );
+                    //                    contextActivation = contextService.activateContext( ApacheDsPluginConstants.CONTEXTS_SERVERS_VIEW );
+                    //
+                    //                    ICommandService commandService = ( ICommandService ) PlatformUI.getWorkbench().getAdapter(
+                    //                        ICommandService.class );
+                    //                    if ( commandService != null )
+                    //                    {
+                    //                        commandService.getCommand( newServer.getActionDefinitionId() ).setHandler(
+                    //                            new ActionHandler( newServer ) );
+                    //                        commandService.getCommand( openConfiguration.getActionDefinitionId() ).setHandler(
+                    //                            new ActionHandler( openConfiguration ) );
+                    //                        commandService.getCommand( delete.getActionDefinitionId() ).setHandler(
+                    //                            new ActionHandler( delete ) );
+                    //                        commandService.getCommand( rename.getActionDefinitionId() ).setHandler(
+                    //                            new ActionHandler( rename ) );
+                    //                        commandService.getCommand( run.getActionDefinitionId() ).setHandler( new ActionHandler( run ) );
+                    //                        commandService.getCommand( stop.getActionDefinitionId() )
+                    //                            .setHandler( new ActionHandler( stop ) );
+                    //                        commandService.getCommand( properties.getActionDefinitionId() ).setHandler(
+                    //                            new ActionHandler( properties ) );
+                    //                    }
                 }
             }
 
@@ -449,41 +450,41 @@ public class ServersView extends ViewPart
             switch ( server.getStatus() )
             {
                 case STARTED:
-//                    run.setEnabled( false );
-//                    stop.setEnabled( true );
+                    //                    run.setEnabled( false );
+                    //                    stop.setEnabled( true );
                     break;
                 case STARTING:
-//                    run.setEnabled( false );
-//                    stop.setEnabled( false );
+                    //                    run.setEnabled( false );
+                    //                    stop.setEnabled( false );
                     break;
                 case STOPPED:
-//                    run.setEnabled( true );
-//                    stop.setEnabled( false );
+                    //                    run.setEnabled( true );
+                    //                    stop.setEnabled( false );
                     break;
                 case STOPPING:
-//                    run.setEnabled( false );
-//                    stop.setEnabled( false );
+                    //                    run.setEnabled( false );
+                    //                    stop.setEnabled( false );
                     break;
                 case UNKNOWN:
-//                    run.setEnabled( false );
-//                    stop.setEnabled( false );
+                    //                    run.setEnabled( false );
+                    //                    stop.setEnabled( false );
                     break;
             }
 
-//            openConfiguration.setEnabled( true );
-//            delete.setEnabled( true );
-//            rename.setEnabled( true );
-//            createConnection.setEnabled( true );
+            //            openConfiguration.setEnabled( true );
+            delete.setEnabled( true );
+            //            rename.setEnabled( true );
+            //            createConnection.setEnabled( true );
             properties.setEnabled( true );
         }
         else
         {
-//            openConfiguration.setEnabled( false );
-//            delete.setEnabled( false );
-//            rename.setEnabled( false );
-//            run.setEnabled( false );
-//            stop.setEnabled( false );
-//            createConnection.setEnabled( false );
+            //            openConfiguration.setEnabled( false );
+            delete.setEnabled( false );
+            //            rename.setEnabled( false );
+            //            run.setEnabled( false );
+            //            stop.setEnabled( false );
+            //            createConnection.setEnabled( false );
             properties.setEnabled( false );
         }
     }

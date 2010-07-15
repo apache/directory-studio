@@ -30,28 +30,54 @@ package org.apache.directory.studio.ldapservers.model;
 public interface LdapServerAdapter
 {
     /**
-     * Starts the server.
+     * This method is called when a server is added.
      *
+     * @param server
+     *      the server
      * @throws Exception
-     *      if an error occurs when restarting the server
      */
-    public void start() throws Exception;
+    public void add( LdapServer server ) throws Exception;
 
 
     /**
-     * Stops the server.
+     * This method is called when a server is deleted.
      *
+     * @param server
+     *      the server
      * @throws Exception
-     *      if an error occurs when restarting the server
      */
-    public void stop() throws Exception;
+    public void delete( LdapServer server ) throws Exception;
 
 
     /**
-     * Restarts the server.
+     * This method is called when a server needs to be started.
      *
+     * @param server
+     *      the server
      * @throws Exception
      *      if an error occurs when restarting the server
      */
-    public void restart() throws Exception;
+    public void start( LdapServer server ) throws Exception;
+
+
+    /**
+     * This method is called when a server needs to be restarted.
+     *
+     * @param server
+     *      the server
+     * @throws Exception
+     *      if an error occurs when restarting the server
+     */
+    public void stop( LdapServer server ) throws Exception;
+
+
+    /**
+     * This method is called when a server needs to be stopped.
+     *
+     * @param server
+     *      the server
+     * @throws Exception
+     *      if an error occurs when restarting the server
+     */
+    public void restart( LdapServer server ) throws Exception;
 }

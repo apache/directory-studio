@@ -25,7 +25,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.directory.studio.ldapservers.model.LdapServerAdapter;
 import org.apache.directory.studio.ldapservers.model.LdapServerAdapterExtension;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.resource.ImageDescriptor;
@@ -41,6 +43,15 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
  */
 public class LdapServerAdapterExtensionsManager
 {
+    // Attributes names used in 'plugin.xml' file
+    private static final String ID_ATTR = "id";
+    private static final String NAME_ATTR = "name";
+    private static final String VERSION_ATTR = "version";
+    private static final String VENDOR_ATTR = "vendor";
+    private static final String CLASS_ATTR = "class";
+    private static final String DESCRIPTION_ATTR = "description";
+    private static final String ICON_ATTR = "icon";
+
     /** The default instance */
     private static LdapServerAdapterExtensionsManager instance;
 
@@ -82,14 +93,23 @@ public class LdapServerAdapterExtensionsManager
             // Getting the ID of the extending plugin
             String extendingPluginId = member.getDeclaringExtension().getNamespaceIdentifier();
 
-            // Setting 
-            ldapServerAdapterExtension.setId( member.getAttribute( "id" ) );
-            ldapServerAdapterExtension.setName( member.getAttribute( "name" ) );
-            ldapServerAdapterExtension.setVersion( member.getAttribute( "version" ) );
-            ldapServerAdapterExtension.setVendor( member.getAttribute( "vendor" ) );
-            ldapServerAdapterExtension.setClassName( member.getAttribute( "class" ) );
-            ldapServerAdapterExtension.setDescription( member.getAttribute( "description" ) );
-            String iconPath = member.getAttribute( "icon" );
+            // Setting each parameter to the LDAP Server Adapter Extension
+            ldapServerAdapterExtension.setId( member.getAttribute( ID_ATTR ) );
+            ldapServerAdapterExtension.setName( member.getAttribute( NAME_ATTR ) );
+            ldapServerAdapterExtension.setVersion( member.getAttribute( VERSION_ATTR ) );
+            ldapServerAdapterExtension.setVendor( member.getAttribute( VENDOR_ATTR ) );
+            ldapServerAdapterExtension.setClassName( member.getAttribute( CLASS_ATTR ) );
+            try
+            {
+                ldapServerAdapterExtension.setInstance( ( LdapServerAdapter ) member
+                    .createExecutableExtension( CLASS_ATTR ) );
+            }
+            catch ( CoreException e )
+            {
+                // Will never happen
+            }
+            ldapServerAdapterExtension.setDescription( member.getAttribute( DESCRIPTION_ATTR ) );
+            String iconPath = member.getAttribute( ICON_ATTR );
             if ( iconPath != null )
             {
                 ImageDescriptor icon = AbstractUIPlugin.imageDescriptorFromPlugin( extendingPluginId, iconPath );
@@ -99,16 +119,6 @@ public class LdapServerAdapterExtensionsManager
                 }
                 ldapServerAdapterExtension.setIcon( icon );
             }
-
-            // TODO uncomment this...
-            //            try
-            //            {
-            //                bean.setEditorInstance( ( IEntryEditor ) member.createExecutableExtension( CLASS_ATTR ) );
-            //            }
-            //            catch ( CoreException e )
-            //            {
-            //                // Will never happen
-            //            }
 
             ldapServerAdapterExtensionsList.add( ldapServerAdapterExtension );
             ldapServerAdapterExtensionsByIdMap.put( ldapServerAdapterExtension.getId(), ldapServerAdapterExtension );

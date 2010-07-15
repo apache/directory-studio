@@ -21,6 +21,8 @@
 package org.apache.directory.studio.ldapservers.model;
 
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import org.eclipse.core.runtime.IAdaptable;
@@ -45,6 +47,9 @@ public class LdapServer implements IAdaptable
 
     /** The LDAP Server Adapter Extension */
     private LdapServerAdapterExtension ldapServerAdapterExtension;
+
+    /** The list of listeners */
+    private List<LdapServerListener> listeners = new ArrayList<LdapServerListener>();
 
 
     /**
@@ -93,7 +98,10 @@ public class LdapServer implements IAdaptable
      */
     public void addListener( LdapServerListener listener )
     {
-
+        if ( !listeners.contains( listener ) )
+        {
+            listeners.add( listener );
+        }
     }
 
 
@@ -153,7 +161,10 @@ public class LdapServer implements IAdaptable
      */
     public void removeListener( LdapServerListener listener )
     {
-
+        if ( !listeners.contains( listener ) )
+        {
+            listeners.remove( listener );
+        }
     }
 
 
@@ -230,4 +241,5 @@ public class LdapServer implements IAdaptable
     {
         return null;
     }
+
 }

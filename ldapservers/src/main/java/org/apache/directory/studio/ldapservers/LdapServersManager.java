@@ -24,7 +24,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.FileReader;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
@@ -36,6 +36,8 @@ import org.apache.commons.io.FileUtils;
 import org.apache.directory.studio.common.CommonUiUtils;
 import org.apache.directory.studio.ldapservers.model.LdapServer;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.ui.IMemento;
+import org.eclipse.ui.XMLMemento;
 
 
 /**
@@ -307,11 +309,7 @@ public class LdapServersManager
             String content = FileUtils.readFileToString( tempStore, "UTF-8" ); //$NON-NLS-1$
             FileUtils.writeStringToFile( store, content, "UTF-8" ); //$NON-NLS-1$
         }
-        catch ( FileNotFoundException e )
-        {
-            saveFailed = true;
-        }
-        catch ( IOException e )
+        catch ( Exception e )
         {
             saveFailed = true;
         }
@@ -330,7 +328,8 @@ public class LdapServersManager
             }
             catch ( Exception e )
             {
-                CommonUiUtils.reportError( Messages.getString( "LdapServersManager.ErrorLoadingServer" ) + e.getMessage() ); //$NON-NLS-1$
+                CommonUiUtils
+                    .reportError( Messages.getString( "LdapServersManager.ErrorLoadingServer" ) + e.getMessage() ); //$NON-NLS-1$
             }
         }
     }
@@ -421,6 +420,26 @@ public class LdapServersManager
 
 
     /**
+     * Gets the path to the server's folder.
+     *
+     * @param server
+     *      the server
+     * @return
+     *      the path to the server's folder
+     */
+    public static IPath getServerFolder( LdapServer server )
+    {
+        if ( server != null )
+        {
+
+            return getServersFolder().append( server.getId() );
+        }
+
+        return null;
+    }
+
+
+    /**
     * Creates a new server folder for the given id.
     *
     * @param id
@@ -428,9 +447,51 @@ public class LdapServersManager
     */
     public static void createNewServerFolder( LdapServer server )
     {
-        // Creating the server folder
-        IPath serverFolderPath = getServersFolder().append( server.getId() );
-        File serverFolder = new File( serverFolderPath.toOSString() );
-        serverFolder.mkdir();
+        if ( server != null )
+        {
+            // Creating the server folder
+            File serverFolder = getServerFolder( server ).toFile();
+            serverFolder.mkdir();
+        }
+    }
+
+
+    /**
+     * Gets the memento for the given server.
+     *
+     * @param server
+     *      the server
+     * @return
+     *      the associated memento
+     */
+    public static IMemento getMementoForServer( LdapServer server )
+    {
+        try
+        {
+            if ( server != null )
+            {
+                // Creating the File of the memento (if needed)
+                File mementoFile = getServerFolder( server ).append( "memento.xml" ).toFile();
+                if ( !mementoFile.exists() )
+                {
+                    mementoFile.createNewFile();
+                }
+
+                // Getting a (read-only) memento from the File
+                XMLMemento readMemento = XMLMemento.createReadRoot( new FileReader( mementoFile ) );
+
+                // Converting the read memento to a writable memento
+                XMLMemento memento = XMLMemento.createWriteRoot( "memento" );
+                memento.putMemento( readMemento );
+
+                return memento;
+            }
+
+            return null;
+        }
+        catch ( Exception e )
+        {
+            return null;
+        }
     }
 }

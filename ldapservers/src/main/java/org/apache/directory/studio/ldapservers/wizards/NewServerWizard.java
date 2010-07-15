@@ -22,6 +22,7 @@ package org.apache.directory.studio.ldapservers.wizards;
 
 import org.apache.directory.studio.ldapservers.LdapServersManager;
 import org.apache.directory.studio.ldapservers.model.LdapServer;
+import org.apache.directory.studio.ldapservers.model.LdapServerAdapterExtension;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.ui.INewWizard;
@@ -57,13 +58,27 @@ public class NewServerWizard extends Wizard implements INewWizard
         // Creating the new server
         LdapServer server = new LdapServer();
         server.setName( page.getServerName() );
-        server.setLdapServerAdapterExtension( page.getLdapServerAdapterExtension() );
+
+        // Getting the LDAP Server Adapter Extension associated with the server
+        LdapServerAdapterExtension ldapServerAdapterExtension = page.getLdapServerAdapterExtension();
+        server.setLdapServerAdapterExtension( ldapServerAdapterExtension );
 
         // Adding the new server to the servers handler
         LdapServersManager.getDefault().addServer( server );
 
         // Creating the folder for the new server
         LdapServersManager.createNewServerFolder( server );
+
+        // Letting the LDAP Server Adapter finish the creation of the server
+        try
+        {
+            ldapServerAdapterExtension.getInstance().add( server );
+        }
+        catch ( Exception e )
+        {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
 
         return true;
     }
