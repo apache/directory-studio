@@ -206,7 +206,57 @@ public class LdapServer implements IAdaptable
      */
     public void setName( String name )
     {
+        if ( this.name == name )
+        {
+            return;
+        }
+
         this.name = name;
+
+        fireServerNameChangeEvent();
+    }
+
+
+    /**
+     * Fire a server listener name change event.
+     */
+    private void fireServerNameChangeEvent()
+    {
+        for ( LdapServerListener listener : listeners.toArray( new LdapServerListener[0] ) )
+        {
+            listener.serverChanged( new LdapServerEvent( this, LdapServerEventType.RENAMED ) );
+        }
+    }
+
+
+    /**
+     * Sets the status
+     *
+     * @param status
+     *      the status
+     */
+    public void setStatus( LdapServerStatus status )
+    {
+        if ( this.status == status )
+        {
+            return;
+        }
+
+        this.status = status;
+
+        fireServerStateChangeEvent();
+    }
+
+
+    /**
+     * Fires a server listener status change event.
+     */
+    private void fireServerStateChangeEvent()
+    {
+        for ( LdapServerListener listener : listeners.toArray( new LdapServerListener[0] ) )
+        {
+            listener.serverChanged( new LdapServerEvent( this, LdapServerEventType.STATUS_CHANGED ) );
+        }
     }
 
 

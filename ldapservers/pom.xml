@@ -117,6 +117,7 @@
             <Require-Bundle>org.eclipse.core.runtime,
  org.eclipse.ui,
  org.eclipse.jface.text,
+ org.eclipse.ui.ide,
  org.apache.directory.studio.jars,
  org.apache.directory.studio.common.ui
             </Require-Bundle>

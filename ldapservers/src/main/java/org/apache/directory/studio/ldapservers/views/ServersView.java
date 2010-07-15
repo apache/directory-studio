@@ -25,6 +25,7 @@ import org.apache.directory.studio.ldapservers.LdapServersManagerListener;
 import org.apache.directory.studio.ldapservers.actions.DeleteAction;
 import org.apache.directory.studio.ldapservers.actions.NewServerAction;
 import org.apache.directory.studio.ldapservers.actions.PropertiesAction;
+import org.apache.directory.studio.ldapservers.actions.RenameAction;
 import org.apache.directory.studio.ldapservers.model.LdapServer;
 import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
@@ -86,7 +87,7 @@ public class ServersView extends ViewPart
     private NewServerAction newServer;
     //    private OpenConfigurationAction openConfiguration;
     private DeleteAction delete;
-    //    private RenameAction rename;
+    private RenameAction rename;
     //    private RunAction run;
     //    private StopAction stop;
     //    private CreateConnectionAction createConnection;
@@ -245,9 +246,9 @@ public class ServersView extends ViewPart
         delete = new DeleteAction( this );
         delete.setEnabled( false );
 
-        //        rename = new RenameAction( this );
-        //        rename.setEnabled( false );
-        //
+        rename = new RenameAction( this );
+        rename.setEnabled( false );
+
         //        run = new RunAction( this );
         //        run.setEnabled( false );
         //
@@ -292,8 +293,8 @@ public class ServersView extends ViewPart
                 //                manager.add( openConfiguration );
                 manager.add( new Separator() );
                 manager.add( delete );
-                //                manager.add( rename );
-                //                manager.add( new Separator() );
+                manager.add( rename );
+                manager.add( new Separator() );
                 //                manager.add( run );
                 //                manager.add( stop );
                 //                manager.add( new Separator() );
@@ -473,7 +474,7 @@ public class ServersView extends ViewPart
 
             //            openConfiguration.setEnabled( true );
             delete.setEnabled( true );
-            //            rename.setEnabled( true );
+            rename.setEnabled( true );
             //            createConnection.setEnabled( true );
             properties.setEnabled( true );
         }
@@ -481,7 +482,7 @@ public class ServersView extends ViewPart
         {
             //            openConfiguration.setEnabled( false );
             delete.setEnabled( false );
-            //            rename.setEnabled( false );
+            rename.setEnabled( false );
             //            run.setEnabled( false );
             //            stop.setEnabled( false );
             //            createConnection.setEnabled( false );
