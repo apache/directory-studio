@@ -21,6 +21,9 @@
 package org.apache.directory.studio.ldapservers.model;
 
 
+import org.eclipse.core.runtime.IProgressMonitor;
+
+
 /**
  * The {@link LdapServerAdapter} interface defines the required methods
  * to implement an LDAP Server adapter.
@@ -54,21 +57,12 @@ public interface LdapServerAdapter
      *
      * @param server
      *      the server
+     * @param monitor
+     *      the progress monitor
      * @throws Exception
      *      if an error occurs when restarting the server
      */
-    public void start( LdapServer server ) throws Exception;
-
-
-    /**
-     * This method is called when a server needs to be restarted.
-     *
-     * @param server
-     *      the server
-     * @throws Exception
-     *      if an error occurs when restarting the server
-     */
-    public void stop( LdapServer server ) throws Exception;
+    public void start( LdapServer server, IProgressMonitor monitor ) throws Exception;
 
 
     /**
@@ -76,8 +70,10 @@ public interface LdapServerAdapter
      *
      * @param server
      *      the server
+     * @param monitor
+     *      the progress monitor
      * @throws Exception
      *      if an error occurs when restarting the server
      */
-    public void restart( LdapServer server ) throws Exception;
+    public void stop( LdapServer server, IProgressMonitor monitor ) throws Exception;
 }

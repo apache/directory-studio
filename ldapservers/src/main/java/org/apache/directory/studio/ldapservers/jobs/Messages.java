@@ -17,15 +17,35 @@
  *  under the License. 
  *  
  */
-package org.apache.directory.studio.ldapservers.model;
+
+package org.apache.directory.studio.ldapservers.jobs;
 
 
-/**
- * This enum defines the various statuses of an LDAP Server.
- *
- * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- */
-public enum LdapServerStatus
+import java.util.MissingResourceException;
+import java.util.ResourceBundle;
+
+
+public class Messages
 {
-    STARTED, STARTING, STOPPED, STOPPING, UNKNOWN
+    private static final String BUNDLE_NAME = "org.apache.directory.studio.ldapservers.jobs.messages"; //$NON-NLS-1$
+
+    private static final ResourceBundle RESOURCE_BUNDLE = ResourceBundle.getBundle( BUNDLE_NAME );
+
+
+    private Messages()
+    {
+    }
+
+
+    public static String getString( String key )
+    {
+        try
+        {
+            return RESOURCE_BUNDLE.getString( key );
+        }
+        catch ( MissingResourceException e )
+        {
+            return '!' + key + '!';
+        }
+    }
 }

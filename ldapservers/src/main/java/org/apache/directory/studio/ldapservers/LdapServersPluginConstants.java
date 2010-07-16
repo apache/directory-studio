@@ -38,6 +38,7 @@ public interface LdapServersPluginConstants
     // IMAGES
     // ------
     public static final String IMG_FOLDER = "resources/icons/folder.gif";
+    public static final String IMG_RUN = "resources/icons/run.gif";
     public static final String IMG_SERVER_NEW = "resources/icons/server_new.gif";
     public static final String IMG_SERVER_NEW_WIZARD = "resources/icons/server_new_wizard.png";
     public static final String IMG_SERVER = "resources/icons/server.gif";
@@ -49,6 +50,7 @@ public interface LdapServersPluginConstants
     public static final String IMG_SERVER_STOPPING1 = "resources/icons/server_stopping1.gif";
     public static final String IMG_SERVER_STOPPING2 = "resources/icons/server_stopping2.gif";
     public static final String IMG_SERVER_STOPPING3 = "resources/icons/server_stopping3.gif";
+    public static final String IMG_STOP = "resources/icons/stop.gif";
 
     // --------------
     // PROPERTY PAGES

@@ -23,6 +23,7 @@ package org.apache.directory.studio.ldapservers.apacheds;
 
 import org.apache.directory.studio.ldapservers.model.LdapServer;
 import org.apache.directory.studio.ldapservers.model.LdapServerAdapter;
+import org.eclipse.core.runtime.IProgressMonitor;
 
 
 /**
@@ -45,20 +46,14 @@ public class ApacheDS157LdapServerAdapter implements LdapServerAdapter
     }
 
 
-    public void start( LdapServer server ) throws Exception
+    public void start( LdapServer server, IProgressMonitor monitor ) throws Exception
     {
         System.out.println( "start " + server.getName() );
     }
 
 
-    public void stop( LdapServer server ) throws Exception
+    public void stop( LdapServer server, IProgressMonitor monitor ) throws Exception
     {
         System.out.println( "stop " + server.getName() );
-    }
-
-
-    public void restart( LdapServer server ) throws Exception
-    {
-        System.out.println( "restart " + server.getName() );
     }
 }

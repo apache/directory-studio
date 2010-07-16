@@ -60,19 +60,15 @@ public class ServersViewLabelProvider extends LabelProvider implements ITableLab
                 switch ( status )
                 {
                     case STARTED:
-                        return "started"; // TODO
+                        return "Started"; // TODO
                     case STARTING:
-                        return "starting" + getDots(); // TODO
-                    case RESTARTED:
-                        return "restarted"; // TODO
-                    case RESTARTING:
-                        return "restarting" + getDots(); // TODO
+                        return "Starting" + getDots(); // TODO
                     case STOPPED:
-                        return "stopped"; // TODO
+                        return "Stopped"; // TODO
                     case STOPPING:
-                        return "stopped" + getDots(); // TODO
+                        return "Stopping" + getDots(); // TODO
                     case UNKNOWN:
-                        return "unkown"; // TODO
+                        return "Unkown"; // TODO
                 }
             }
 

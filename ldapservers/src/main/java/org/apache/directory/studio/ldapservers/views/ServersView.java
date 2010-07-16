@@ -26,6 +26,8 @@ import org.apache.directory.studio.ldapservers.actions.DeleteAction;
 import org.apache.directory.studio.ldapservers.actions.NewServerAction;
 import org.apache.directory.studio.ldapservers.actions.PropertiesAction;
 import org.apache.directory.studio.ldapservers.actions.RenameAction;
+import org.apache.directory.studio.ldapservers.actions.StartAction;
+import org.apache.directory.studio.ldapservers.actions.StopAction;
 import org.apache.directory.studio.ldapservers.model.LdapServer;
 import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
@@ -88,8 +90,8 @@ public class ServersView extends ViewPart
     //    private OpenConfigurationAction openConfiguration;
     private DeleteAction delete;
     private RenameAction rename;
-    //    private RunAction run;
-    //    private StopAction stop;
+    private StartAction run;
+    private StopAction stop;
     //    private CreateConnectionAction createConnection;
     private PropertiesAction properties;
 
@@ -249,12 +251,12 @@ public class ServersView extends ViewPart
         rename = new RenameAction( this );
         rename.setEnabled( false );
 
-        //        run = new RunAction( this );
-        //        run.setEnabled( false );
-        //
-        //        stop = new StopAction( this );
-        //        stop.setEnabled( false );
-        //
+        run = new StartAction( this );
+        run.setEnabled( false );
+
+        stop = new StopAction( this );
+        stop.setEnabled( false );
+
         //        createConnection = new CreateConnectionAction( this );
         //        createConnection.setEnabled( false );
         //
@@ -270,9 +272,9 @@ public class ServersView extends ViewPart
     {
         IToolBarManager toolbar = getViewSite().getActionBars().getToolBarManager();
         toolbar.add( newServer );
-        //        toolbar.add( new Separator() );
-        //        toolbar.add( run );
-        //        toolbar.add( stop );
+        toolbar.add( new Separator() );
+        toolbar.add( run );
+        toolbar.add( stop );
     }
 
 
@@ -295,9 +297,9 @@ public class ServersView extends ViewPart
                 manager.add( delete );
                 manager.add( rename );
                 manager.add( new Separator() );
-                //                manager.add( run );
-                //                manager.add( stop );
-                //                manager.add( new Separator() );
+                manager.add( run );
+                manager.add( stop );
+                manager.add( new Separator() );
                 //                MenuManager ldapBrowserManager = new MenuManager( Messages.getString( "ServersView.ldapBrowser" ) ); //$NON-NLS-1$
                 //                ldapBrowserManager.add( createConnection );
                 //                manager.add( ldapBrowserManager );
@@ -451,24 +453,24 @@ public class ServersView extends ViewPart
             switch ( server.getStatus() )
             {
                 case STARTED:
-                    //                    run.setEnabled( false );
-                    //                    stop.setEnabled( true );
+                    run.setEnabled( false );
+                    stop.setEnabled( true );
                     break;
                 case STARTING:
-                    //                    run.setEnabled( false );
-                    //                    stop.setEnabled( false );
+                    run.setEnabled( false );
+                    stop.setEnabled( false );
                     break;
                 case STOPPED:
-                    //                    run.setEnabled( true );
-                    //                    stop.setEnabled( false );
+                    run.setEnabled( true );
+                    stop.setEnabled( false );
                     break;
                 case STOPPING:
-                    //                    run.setEnabled( false );
-                    //                    stop.setEnabled( false );
+                    run.setEnabled( false );
+                    stop.setEnabled( false );
                     break;
                 case UNKNOWN:
-                    //                    run.setEnabled( false );
-                    //                    stop.setEnabled( false );
+                    run.setEnabled( false );
+                    stop.setEnabled( false );
                     break;
             }
 
@@ -483,8 +485,8 @@ public class ServersView extends ViewPart
             //            openConfiguration.setEnabled( false );
             delete.setEnabled( false );
             rename.setEnabled( false );
-            //            run.setEnabled( false );
-            //            stop.setEnabled( false );
+            run.setEnabled( false );
+            stop.setEnabled( false );
             //            createConnection.setEnabled( false );
             properties.setEnabled( false );
         }
