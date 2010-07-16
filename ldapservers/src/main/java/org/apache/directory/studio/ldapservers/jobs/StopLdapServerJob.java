@@ -62,7 +62,7 @@ public class StopLdapServerJob extends Job
     protected IStatus run( IProgressMonitor monitor )
     {
         // Setting the name of the Job
-        setName( NLS.bind( Messages.getString( "StopLdapServerJob.Stoping" ), new String[] { server.getName() } ) ); //$NON-NLS-1$
+        setName( NLS.bind( Messages.getString( "StopLdapServerJob.Stopping" ), new String[] { server.getName() } ) ); //$NON-NLS-1$
 
         // Setting the status on the server to 'stopping'
         server.setStatus( LdapServerStatus.STOPPING );
