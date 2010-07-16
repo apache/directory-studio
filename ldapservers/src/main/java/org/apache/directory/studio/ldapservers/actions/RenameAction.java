@@ -341,11 +341,15 @@ public class RenameAction extends Action implements IWorkbenchWindowActionDelega
      */
     private static int getCellEditorInset( Control c )
     {
-        // special case for MacOS X
+        // special cases for MacOS X
         if ( "carbon".equals( SWT.getPlatform() ) ) { //$NON-NLS-1$
             if ( System.getProperty( "org.eclipse.swt.internal.carbon.noFocusRing" ) == null || c.getShell().getParent() != null ) { //$NON-NLS-1$
                 return -2; // native border
             }
+        }
+        else if ( "cocoa".equals( SWT.getPlatform() ) )
+        {
+            return 0; // native border
         }
         return 1; // one pixel wide black border
     }
