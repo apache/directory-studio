@@ -56,10 +56,8 @@ public class StartLdapServerJob extends Job
     }
 
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.core.runtime.jobs.Job#run(org.eclipse.core.runtime.IProgressMonitor)
+    /**
+     * {@inheritDoc}
      */
     protected IStatus run( IProgressMonitor monitor )
     {
@@ -69,6 +67,10 @@ public class StartLdapServerJob extends Job
         // Setting the status on the server to 'starting'
         server.setStatus( LdapServerStatus.STARTING );
 
+        // Starting a new watchdog thread
+        StartLdapServerWatchDogThread.runNewWatchDogThread( server );
+
+        // Launching the 'start()' method of the LDAP Server Adapter
         LdapServerAdapterExtension ldapServerAdapterExtension = server.getLdapServerAdapterExtension();
         if ( ldapServerAdapterExtension != null )
         {
@@ -86,18 +88,6 @@ public class StartLdapServerJob extends Job
                 }
             }
         }
-
-        // TODO remove this
-        try
-        {
-            Thread.sleep( 3000 );
-        }
-        catch ( InterruptedException e )
-        {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        server.setStatus( LdapServerStatus.STARTED );
 
         return Status.OK_STATUS;
     }

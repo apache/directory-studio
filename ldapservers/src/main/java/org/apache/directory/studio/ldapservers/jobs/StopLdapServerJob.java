@@ -56,10 +56,8 @@ public class StopLdapServerJob extends Job
     }
 
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.core.runtime.jobs.Job#run(org.eclipse.core.runtime.IProgressMonitor)
+    /**
+     * {@inheritDoc}
      */
     protected IStatus run( IProgressMonitor monitor )
     {
@@ -69,6 +67,10 @@ public class StopLdapServerJob extends Job
         // Setting the status on the server to 'stopping'
         server.setStatus( LdapServerStatus.STOPPING );
 
+        // Starting a new watchdog thread
+        StopLdapServerWatchDogThread.runNewWatchDogThread( server );
+
+        // Launching the 'stop()' of the LDAP Server Adapter
         LdapServerAdapterExtension ldapServerAdapterExtension = server.getLdapServerAdapterExtension();
         if ( ldapServerAdapterExtension != null )
         {
@@ -86,18 +88,6 @@ public class StopLdapServerJob extends Job
                 }
             }
         }
-
-        // TODO remove this
-        try
-        {
-            Thread.sleep( 3000 );
-        }
-        catch ( InterruptedException e )
-        {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        server.setStatus( LdapServerStatus.STOPPED );
 
         return Status.OK_STATUS;
     }
