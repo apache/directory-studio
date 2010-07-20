@@ -118,6 +118,9 @@
  org.eclipse.ui,
  org.eclipse.jface.text,
  org.eclipse.ui.ide,
+ org.eclipse.jdt.launching,
+ org.eclipse.debug.core,
+ org.eclipse.debug.ui,
  org.apache.directory.studio.jars,
  org.apache.directory.studio.common.ui,
  org.apache.directory.studio.ldapservers
