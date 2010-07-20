@@ -431,7 +431,6 @@ public class LdapServersManager
     {
         if ( server != null )
         {
-
             return getServersFolder().append( server.getId() );
         }
 
@@ -449,9 +448,19 @@ public class LdapServersManager
     {
         if ( server != null )
         {
-            // Creating the server folder
+            // Creating if needed the 'servers' folder
+            File serversFolder = getServersFolder().toFile();
+            if ( !serversFolder.exists() )
+            {
+                serversFolder.mkdir();
+            }
+
+            // Creating the specific server folder
             File serverFolder = getServerFolder( server ).toFile();
-            serverFolder.mkdir();
+            if ( !serverFolder.exists() )
+            {
+                serverFolder.mkdir();
+            }
         }
     }
 

@@ -11,13 +11,6 @@
             vendor="Apache Software Foundation"
             version="1.5.7">
       </ldapServerAdapter>
-      <ldapServerAdapter
-            class="org.apache.directory.studio.ldapservers.apacheds.ApacheDS156LdapServerAdapter"
-            id="org.apache.directory.server.1.5.6"
-            name="Apache DS"
-            vendor="Apache Software Foundation"
-            version="1.5.6">
-      </ldapServerAdapter>
    </extension>
    
    <extension

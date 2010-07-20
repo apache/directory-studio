@@ -119,7 +119,8 @@
  org.eclipse.jface.text,
  org.eclipse.ui.ide,
  org.apache.directory.studio.jars,
- org.apache.directory.studio.common.ui
+ org.apache.directory.studio.common.ui,
+ org.apache.directory.studio.ldapbrowser.ui 
             </Require-Bundle>
             <Export-Package>org.apache.directory.studio.*</Export-Package>
             <Import-Package>!</Import-Package>
@@ -157,6 +158,11 @@
     <dependency>
       <groupId>org.apache.directory.studio</groupId>
       <artifactId>common.ui</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.directory.studio</groupId>
+      <artifactId>ldapbrowser.ui</artifactId>
       <scope>provided</scope>
     </dependency>
     

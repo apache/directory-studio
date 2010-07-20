@@ -44,6 +44,7 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeColumn;
 import org.eclipse.ui.IMemento;
@@ -100,19 +101,19 @@ public class ServersView extends ViewPart
     {
         public void serverAdded( LdapServer server )
         {
-            tableViewer.refresh();
+            asyncRefresh();
         }
 
 
         public void serverRemoved( LdapServer server )
         {
-            tableViewer.refresh();
+            asyncRefresh();
         }
 
 
         public void serverUpdated( LdapServer server )
         {
-            tableViewer.refresh();
+            asyncRefresh();
         }
     };
 
@@ -513,5 +514,20 @@ public class ServersView extends ViewPart
         LdapServersManager.getDefault().removeListener( ldapServersManagerListener );
 
         super.dispose();
+    }
+
+
+    /**
+     * Refreshes the Servers View asynchronously.
+     */
+    private void asyncRefresh()
+    {
+        Display.getDefault().asyncExec( new Runnable()
+        {
+            public void run()
+            {
+                tableViewer.refresh();
+            }
+        } );
     }
 }

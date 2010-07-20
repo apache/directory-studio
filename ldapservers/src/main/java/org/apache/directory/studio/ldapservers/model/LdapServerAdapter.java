@@ -39,7 +39,7 @@ public interface LdapServerAdapter
      *      the server
      * @throws Exception
      */
-    public void add( LdapServer server ) throws Exception;
+    public void add( LdapServer server, IProgressMonitor monitor ) throws Exception;
 
 
     /**

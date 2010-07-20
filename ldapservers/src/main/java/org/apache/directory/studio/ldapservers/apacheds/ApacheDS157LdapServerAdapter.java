@@ -35,7 +35,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
  */
 public class ApacheDS157LdapServerAdapter implements LdapServerAdapter
 {
-    public void add( LdapServer server ) throws Exception
+    public void add( LdapServer server, IProgressMonitor monitor ) throws Exception
     {
         System.out.println( "add " + server.getName() );
     }
@@ -50,7 +50,7 @@ public class ApacheDS157LdapServerAdapter implements LdapServerAdapter
     public void start( LdapServer server, IProgressMonitor monitor ) throws Exception
     {
         System.out.println( "start " + server.getName() );
-        
+
         Thread.sleep( 3000 );
 
         server.setStatus( LdapServerStatus.STARTED );
@@ -60,7 +60,7 @@ public class ApacheDS157LdapServerAdapter implements LdapServerAdapter
     public void stop( LdapServer server, IProgressMonitor monitor ) throws Exception
     {
         System.out.println( "stop " + server.getName() );
-        
+
         Thread.sleep( 3000 );
 
         server.setStatus( LdapServerStatus.STOPPED );

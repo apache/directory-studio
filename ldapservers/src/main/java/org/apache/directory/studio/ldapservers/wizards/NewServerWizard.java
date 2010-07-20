@@ -23,6 +23,8 @@ package org.apache.directory.studio.ldapservers.wizards;
 import org.apache.directory.studio.ldapservers.LdapServersManager;
 import org.apache.directory.studio.ldapservers.model.LdapServer;
 import org.apache.directory.studio.ldapservers.model.LdapServerAdapterExtension;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.ui.INewWizard;
@@ -55,24 +57,46 @@ public class NewServerWizard extends Wizard implements INewWizard
      */
     public boolean performFinish()
     {
-        // Creating the new server
-        LdapServer server = new LdapServer();
-        server.setName( page.getServerName() );
+        // Getting server name and adapter extension
+        final String serverName = page.getServerName();
+        final LdapServerAdapterExtension adapterExtension = page.getLdapServerAdapterExtension();
 
-        // Getting the LDAP Server Adapter Extension associated with the server
-        LdapServerAdapterExtension ldapServerAdapterExtension = page.getLdapServerAdapterExtension();
-        server.setLdapServerAdapterExtension( ldapServerAdapterExtension );
-
-        // Adding the new server to the servers handler
-        LdapServersManager.getDefault().addServer( server );
-
-        // Creating the folder for the new server
-        LdapServersManager.createNewServerFolder( server );
-
-        // Letting the LDAP Server Adapter finish the creation of the server
         try
         {
-            ldapServerAdapterExtension.getInstance().add( server );
+            getContainer().run( true, false, new IRunnableWithProgress()
+            {
+                public void run( IProgressMonitor monitor )
+                {
+                    // Setting the title
+                    monitor.beginTask( "Creating LDAP Server: ", IProgressMonitor.UNKNOWN );
+                    monitor.subTask( "creating server folder" );
+
+                    // Creating the new server
+                    LdapServer server = new LdapServer();
+                    server.setName( serverName );
+                    server.setLdapServerAdapterExtension( adapterExtension );
+
+                    // Adding the new server to the servers handler
+                    LdapServersManager.getDefault().addServer( server );
+
+                    // Creating the folder for the new server
+                    LdapServersManager.createNewServerFolder( server );
+
+                    // Letting the LDAP Server Adapter finish the creation of the server
+                    try
+                    {
+                        adapterExtension.getInstance().add( server, monitor );
+                    }
+                    catch ( Exception e )
+                    {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
+
+                    // Reporting to the monitor that we're done
+                    monitor.done();
+                }
+            } );
         }
         catch ( Exception e )
         {
@@ -89,6 +113,6 @@ public class NewServerWizard extends Wizard implements INewWizard
      */
     public void init( IWorkbench workbench, IStructuredSelection selection )
     {
-        setNeedsProgressMonitor( false );
+        setNeedsProgressMonitor( true );
     }
 }
