@@ -77,6 +77,12 @@ public class ServersTableViewer extends TreeViewer
     private List<LdapServer> serversNeedingAnimation = new ArrayList<LdapServer>();
 
 
+    /**
+     * Creates a new instance of ServersTableViewer.
+     *
+     * @param tree
+     *      the associated tree
+     */
     public ServersTableViewer( Tree tree )
     {
         super( tree );

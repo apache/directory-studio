@@ -35,6 +35,7 @@ import org.eclipse.swt.widgets.Shell;
  */
 public class DeleteServerDialog extends MessageDialog
 {
+    /** The server */
     protected LdapServer server;
 
 
@@ -57,14 +58,5 @@ public class DeleteServerDialog extends MessageDialog
 
         this.server = server;
         message = NLS.bind( Messages.getString( "DeleteServerDialog.SureToDelete" ), server.getName() ); //$NON-NLS-1$
-    }
-
-
-    /* (non-Javadoc)
-     * @see org.eclipse.jface.dialogs.MessageDialog#buttonPressed(int)
-     */
-    protected void buttonPressed( int buttonId )
-    {
-        super.buttonPressed( buttonId );
     }
 }

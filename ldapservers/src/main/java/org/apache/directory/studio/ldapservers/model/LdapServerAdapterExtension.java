@@ -32,20 +32,36 @@ import org.eclipse.jface.resource.ImageDescriptor;
  */
 public class LdapServerAdapterExtension
 {
+    /** The ID */
     private String id;
+
+    /** The name*/
     private String name;
+
+    /** The version */
     private String version;
+
+    /** The vendor */
     private String vendor;
+
+    /** The class name */
     private String className;
+
+    /** The {@link LdapServerAdapter} instance */
     private LdapServerAdapter instance;
+
+    /** The description */
     private String description;
+
+    /** The icon */
     private ImageDescriptor icon;
 
 
     /**
-     * TODO getClassName.
+     * Gets the class name.
      *
      * @return
+     *      the class name
      */
     public String getClassName()
     {
@@ -54,9 +70,10 @@ public class LdapServerAdapterExtension
 
 
     /**
-     * TODO getDescription.
+     * Gets the description.
      *
      * @return
+     *      the description
      */
     public String getDescription()
     {
@@ -65,9 +82,10 @@ public class LdapServerAdapterExtension
 
 
     /**
-     * TODO getIcon.
+     * Gets the icon.
      *
      * @return
+     *      the icon
      */
     public ImageDescriptor getIcon()
     {
@@ -76,9 +94,10 @@ public class LdapServerAdapterExtension
 
 
     /**
-     * TODO getId.
+     * Gets the ID.
      *
      * @return
+     *      the ID
      */
     public String getId()
     {
@@ -87,9 +106,10 @@ public class LdapServerAdapterExtension
 
 
     /**
-     * TODO getInstance.
+     * Gets the {@link LdapServerAdapter} instance.
      *
      * @return
+     *      the {@link LdapServerAdapter} instance
      */
     public LdapServerAdapter getInstance()
     {
@@ -98,9 +118,10 @@ public class LdapServerAdapterExtension
 
 
     /**
-     * TODO getName.
+     * Gets the name.
      *
      * @return
+     *      the name
      */
     public String getName()
     {
@@ -109,9 +130,10 @@ public class LdapServerAdapterExtension
 
 
     /**
-     * TODO vendor.
+     * Gets the vendor.
      *
      * @return
+     *      the vendor
      */
     public String getVendor()
     {
@@ -120,9 +142,10 @@ public class LdapServerAdapterExtension
 
 
     /**
-     * TODO getVersion.
+     * Gets the version.
      *
      * @return
+     *      the version
      */
     public String getVersion()
     {
@@ -131,9 +154,10 @@ public class LdapServerAdapterExtension
 
 
     /**
-     * TODO setClassName.
+     * Sets the class name.
      *
      * @param className
+     *      the class name
      */
     public void setClassName( String className )
     {
@@ -142,9 +166,10 @@ public class LdapServerAdapterExtension
 
 
     /**
-     * TODO setDescription.
+     * Sets the description.
      *
      * @param description
+     *      the description
      */
     public void setDescription( String description )
     {
@@ -153,9 +178,10 @@ public class LdapServerAdapterExtension
 
 
     /**
-     * TODO setIcon.
+     * Sets the icon.
      *
      * @param icon
+     *      the icon
      */
     public void setIcon( ImageDescriptor icon )
     {
@@ -164,9 +190,10 @@ public class LdapServerAdapterExtension
 
 
     /**
-     * TODO setId.
+     * Sets the ID.
      *
      * @param id
+     *      the ID
      */
     public void setId( String id )
     {
@@ -175,9 +202,10 @@ public class LdapServerAdapterExtension
 
 
     /**
-     * TODO setInstance.
+     * Sets the {@link LdapServerAdapter} instance.
      *
      * @param instance
+     *      the {@link LdapServerAdapter} instance
      */
     public void setInstance( LdapServerAdapter instance )
     {
@@ -186,9 +214,10 @@ public class LdapServerAdapterExtension
 
 
     /**
-     * TODO setName.
+     * Sets the name.
      *
      * @param name
+     *      the name
      */
     public void setName( String name )
     {
@@ -197,9 +226,10 @@ public class LdapServerAdapterExtension
 
 
     /**
-     * TODO setVendor.
+     * Sets the vendor.
      *
      * @param vendor
+     *      the vendor
      */
     public void setVendor( String vendor )
     {
@@ -208,9 +238,10 @@ public class LdapServerAdapterExtension
 
 
     /**
-     * TODO setVersion.
+     * Sets the version.
      *
      * @param version
+     *      the version
      */
     public void setVersion( String version )
     {

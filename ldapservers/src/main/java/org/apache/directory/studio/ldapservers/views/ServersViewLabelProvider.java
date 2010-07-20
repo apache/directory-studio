@@ -36,14 +36,17 @@ import org.eclipse.swt.graphics.Image;
  */
 public class ServersViewLabelProvider extends LabelProvider implements ITableLabelProvider
 {
+    // Static strings for dots
     private static final String THREE_DOTS = "..."; //$NON-NLS-1$
     private static final String TWO_DOTS = ".."; //$NON-NLS-1$
     private static final String ONE_DOT = "."; //$NON-NLS-1$
-    private int count = 1;
+
+    /** The counter used for dots */
+    private int dotsCount = 1;
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.jface.viewers.ITableLabelProvider#getColumnText(java.lang.Object, int)
+    /**
+     * {@inheritDoc}
      */
     public String getColumnText( Object element, int columnIndex )
     {
@@ -78,13 +81,19 @@ public class ServersViewLabelProvider extends LabelProvider implements ITableLab
     }
 
 
+    /**
+     * Gets the dotted string, based on the current dotsCount.
+     *
+     * @return
+     *      the dotted string, based on the current dotsCount
+     */
     private String getDots()
     {
-        if ( count == 1 )
+        if ( dotsCount == 1 )
         {
             return ServersViewLabelProvider.ONE_DOT;
         }
-        else if ( count == 2 )
+        else if ( dotsCount == 2 )
         {
             return ServersViewLabelProvider.TWO_DOTS;
         }
@@ -95,8 +104,8 @@ public class ServersViewLabelProvider extends LabelProvider implements ITableLab
     }
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.jface.viewers.ITableLabelProvider#getColumnImage(java.lang.Object, int)
+    /**
+     * {@inheritDoc}
      */
     public Image getColumnImage( Object element, int columnIndex )
     {
@@ -113,7 +122,7 @@ public class ServersViewLabelProvider extends LabelProvider implements ITableLab
                     case STARTED:
                         return LdapServersPlugin.getDefault().getImage( LdapServersPluginConstants.IMG_SERVER_STARTED );
                     case STARTING:
-                        switch ( count )
+                        switch ( dotsCount )
                         {
                             case 1:
                                 return LdapServersPlugin.getDefault().getImage(
@@ -128,7 +137,7 @@ public class ServersViewLabelProvider extends LabelProvider implements ITableLab
                     case STOPPED:
                         return LdapServersPlugin.getDefault().getImage( LdapServersPluginConstants.IMG_SERVER_STOPPED );
                     case STOPPING:
-                        switch ( count )
+                        switch ( dotsCount )
                         {
                             case 1:
                                 return LdapServersPlugin.getDefault().getImage(
@@ -155,11 +164,11 @@ public class ServersViewLabelProvider extends LabelProvider implements ITableLab
      */
     public void animate()
     {
-        count++;
+        dotsCount++;
 
-        if ( count > 3 )
+        if ( dotsCount > 3 )
         {
-            count = 1;
+            dotsCount = 1;
         }
     }
 }

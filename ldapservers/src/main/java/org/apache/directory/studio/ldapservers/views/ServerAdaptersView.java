@@ -40,11 +40,12 @@ import org.eclipse.ui.part.ViewPart;
  */
 public class ServerAdaptersView extends ViewPart
 {
+    /** The table viewer */
     private TableViewer tableViewer;
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.ui.part.WorkbenchPart#createPartControl(org.eclipse.swt.widgets.Composite)
+    /**
+     * {@inheritDoc}
      */
     public void createPartControl( Composite parent )
     {
@@ -72,7 +73,9 @@ public class ServerAdaptersView extends ViewPart
     }
 
 
-    @Override
+    /**
+     * {@inheritDoc}
+     */
     public void setFocus()
     {
         tableViewer.getTable().setFocus();

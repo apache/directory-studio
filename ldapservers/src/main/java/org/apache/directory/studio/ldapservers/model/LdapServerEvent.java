@@ -34,6 +34,14 @@ public class LdapServerEvent
     private LdapServerEventType kind;
 
 
+    /**
+     * Creates a new instance of LdapServerEvent.
+     *
+     * @param server
+     *      the server
+     * @param kind
+     *      the kind of event
+     */
     public LdapServerEvent( LdapServer server, LdapServerEventType kind )
     {
         super();
@@ -42,24 +50,48 @@ public class LdapServerEvent
     }
 
 
+    /**
+     * Gets the server.
+     *
+     * @return
+     *      the server
+     */
     public LdapServer getServer()
     {
         return server;
     }
 
 
+    /**
+     * Sets the server.
+     *
+     * @param server
+     *      the server
+     */
     public void setServer( LdapServer server )
     {
         this.server = server;
     }
 
 
+    /**
+     * Gets the kind of event.
+     *
+     * @return
+     *      the kind of event
+     */
     public LdapServerEventType getKind()
     {
         return kind;
     }
 
 
+    /**
+     * Sets the kind of event.
+     *
+     * @param kind
+     *      the kind of event
+     */
     public void setKind( LdapServerEventType kind )
     {
         this.kind = kind;

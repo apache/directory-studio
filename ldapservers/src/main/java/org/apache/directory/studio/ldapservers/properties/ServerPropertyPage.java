@@ -47,13 +47,12 @@ public class ServerPropertyPage extends PropertyPage implements IWorkbenchProper
     public ServerPropertyPage()
     {
         super();
-        
         super.noDefaultAndApplyButton();
     }
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.jface.preference.PreferencePage#createContents(org.eclipse.swt.widgets.Composite)
+    /**
+     * {@inheritDoc}
      */
     protected Control createContents( Composite parent )
     {
