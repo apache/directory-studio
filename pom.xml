@@ -71,6 +71,30 @@
     <skin.version>1.0.1</skin.version>
   </properties>
 
+  <modules>
+    <!-- The 'repository' module must be the first one -->
+    <module>repository</module>
+    <!-- Other modules are sorted in alphabetical order -->
+    <module>aciitemeditor</module>
+    <module>apacheds</module>
+    <module>apacheds-configuration</module>
+    <module>apacheds-launcher</module>
+    <module>apacheds-feature</module>
+    <module>common-core</module>
+    <module>common-ui</module>
+    <module>connection-core</module>
+    <module>connection-ui</module>
+    <module>jars</module>
+    <module>ldapbrowser-core</module>
+    <module>ldapbrowser-common</module>
+    <module>ldapbrowser-ui</module>
+    <module>ldifeditor</module>
+    <module>ldif-parser</module>
+    <module>rcp</module>
+    <module>schemaeditor</module>
+    <module>valueeditors</module>
+  </modules>
+
   <profiles>
     <!-- Skip tests -->
     <profile>
@@ -204,6 +228,11 @@
       <dependency>
         <groupId>org.apache.directory.studio</groupId>
         <artifactId>common.ui</artifactId>
+        <version>${pom.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.directory.studio</groupId>
+        <artifactId>common.core</artifactId>
         <version>${pom.version}</version>
       </dependency>
       <dependency>
@@ -1127,34 +1156,6 @@
       </dependency>
     </dependencies>
   </dependencyManagement>
-
-  <modules>
-    <!-- The 'repository' module must be the first one -->
-    <module>repository</module>
-    <!-- Other modules are sorted in alphabetical order -->
-    <module>aciitemeditor</module>
-    <module>apacheds</module>
-    <module>apacheds-configuration</module>
-    <module>apacheds-configuration-feature</module>
-    <module>apacheds-launcher</module>
-    <module>apacheds-feature</module>
-    <module>connection-core</module>
-    <module>connection-ui</module>
-    <module>common-ui</module>
-    <module>jars</module>
-    <module>ldapbrowser-core</module>
-    <module>ldapbrowser-common</module>
-    <module>ldapbrowser-feature</module>
-    <module>ldapbrowser-ui</module>
-    <module>ldifeditor</module>
-    <module>ldifeditor-feature</module>
-    <module>ldif-parser</module>
-    <module>rcp</module>
-    <module>rcp-feature</module>
-    <module>schemaeditor</module>
-    <module>schemaeditor-feature</module>
-    <module>valueeditors</module>
-  </modules>
 
   <build>
     <plugins>
