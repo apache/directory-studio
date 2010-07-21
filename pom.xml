@@ -77,19 +77,19 @@
     <!-- Other modules are sorted in alphabetical order -->
     <module>aciitemeditor</module>
     <module>apacheds</module>
-    <module>apacheds-configuration</module>
     <module>apacheds-launcher</module>
-    <module>apacheds-feature</module>
-    <module>common-core</module>
-    <module>common-ui</module>
-    <module>connection-core</module>
-    <module>connection-ui</module>
+    <module>apacheds.configuration</module>
+    <module>apacheds.feature</module>
+    <module>common.core</module>
+    <module>common.ui</module>
+    <module>connection.core</module>
+    <module>connection.ui</module>
     <module>jars</module>
-    <module>ldapbrowser-core</module>
-    <module>ldapbrowser-common</module>
-    <module>ldapbrowser-ui</module>
+    <module>ldapbrowser.core</module>
+    <module>ldapbrowser.common</module>
+    <module>ldapbrowser.ui</module>
     <module>ldifeditor</module>
-    <module>ldif-parser</module>
+    <module>ldifparser</module>
     <module>rcp</module>
     <module>schemaeditor</module>
     <module>valueeditors</module>
@@ -137,18 +137,18 @@
     <profile>
       <id>studio-full</id>
       <modules>
-        <module>schemaeditor-help</module>
-        <module>ldifeditor-help</module>
-        <module>ldapbrowser-help</module>
-        <module>apacheds-configuration-help</module>
-        <module>rcp-help</module>
-        <module>apacheds-help</module>
-        <module>apacheds-configuration-feature</module>
-        <module>apacheds-feature</module>
-        <module>ldapbrowser-feature</module>
-        <module>ldifeditor-feature</module>
-        <module>rcp-feature</module>
-        <module>schemaeditor-feature</module>
+        <module>schemaeditor.help</module>
+        <module>ldifeditor.help</module>
+        <module>ldapbrowser.help</module>
+        <module>apacheds.configuration.help</module>
+        <module>rcp.help</module>
+        <module>apacheds.help</module>
+        <module>apacheds.configuration.feature</module>
+        <module>apacheds.feature</module>
+        <module>ldapbrowser.feature</module>
+        <module>ldifeditor.feature</module>
+        <module>rcp.feature</module>
+        <module>schemaeditor.feature</module>
       </modules>
     </profile>
     <!-- 
@@ -159,8 +159,8 @@
     <profile>
       <id>integration-tests</id>
       <modules>
-        <module>test-integration-core</module>
-        <module>test-integration-ui</module>
+        <module>test.integration.core</module>
+        <module>test.integration.ui</module>
       </modules>
     </profile>
     <!--
