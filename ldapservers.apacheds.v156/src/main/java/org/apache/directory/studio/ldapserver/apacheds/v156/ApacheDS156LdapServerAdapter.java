@@ -41,6 +41,7 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
@@ -122,6 +123,7 @@ public class ApacheDS156LdapServerAdapter implements LdapServerAdapter
         IPath resourceConfFolderPath = new Path( RESOURCES ).append( CONF );
         copyResource( resourceConfFolderPath.append( SERVER_XML ), new File( confFolder, SERVER_XML ) );
         copyResource( resourceConfFolderPath.append( LOG4J_PROPERTIES ), new File( confFolder, LOG4J_PROPERTIES ) );
+        
     }
 
 
@@ -222,6 +224,9 @@ public class ApacheDS156LdapServerAdapter implements LdapServerAdapter
 
             // Launching the launch configuration
             ILaunch launch = configuration.launch( ILaunchManager.RUN_MODE, new NullProgressMonitor() );
+
+            // Storing the launch configuration as a custom object in the LDAP Server for later use
+            server.putCustomObject( "launchConfiguration", launch );
         }
         catch ( CoreException e )
         {
@@ -236,9 +241,25 @@ public class ApacheDS156LdapServerAdapter implements LdapServerAdapter
      */
     public void stop( LdapServer server, IProgressMonitor monitor ) throws Exception
     {
-        System.out.println( "stop " + server.getName() );
-
-        Thread.sleep( 3000 );
+        // Getting the launch
+        ILaunch launch = ( ILaunch ) server.getCustomObject( "launchConfiguration" );
+        if ( ( launch != null ) && ( !launch.isTerminated() ) )
+        {
+            // Terminating the launch
+            try
+            {
+                launch.terminate();
+            }
+            catch ( DebugException e )
+            {
+                CommonUiUtils.reportError( NLS.bind( "An error occurred when stopping the server.\n\n{0}", new String[]
+                    { e.getMessage() } ) );
+            }
+        }
+        else
+        {
+            // TODO throw an error
+        }
 
         server.setStatus( LdapServerStatus.STOPPED );
     }

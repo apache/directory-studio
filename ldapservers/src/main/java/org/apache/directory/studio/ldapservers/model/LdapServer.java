@@ -22,7 +22,9 @@ package org.apache.directory.studio.ldapservers.model;
 
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import org.eclipse.core.runtime.IAdaptable;
@@ -50,6 +52,9 @@ public class LdapServer implements IAdaptable
 
     /** The list of listeners */
     private List<LdapServerListener> listeners = new ArrayList<LdapServerListener>();
+
+    /** The Map for custom objects */
+    private Map<String, Object> customObjectsMap = new HashMap<String, Object>();
 
 
     /**
@@ -106,6 +111,22 @@ public class LdapServer implements IAdaptable
 
 
     /**
+     * Returns the value to which the specified key is mapped, 
+     * or null if no mapping for the key is found.
+     *
+     * @param key
+     *      the key
+     * @return
+     *      the value to which the specified key is mapped, 
+     *      or null if no mapping for the key is found.
+     */
+    public Object getCustomObject( String key )
+    {
+        return customObjectsMap.get( key );
+    }
+
+
+    /**
      * Gets the id of the server.
      *
      * @return
@@ -154,6 +175,35 @@ public class LdapServer implements IAdaptable
 
 
     /**
+     * Associates the specified value with the specified key.
+     *
+     * @param key
+     *      the key
+     * @param value
+     *      the value
+     */
+    public void putCustomObject( String key, Object value )
+    {
+        customObjectsMap.put( key, value );
+    }
+
+
+    /**
+     * Removes the value to which the specified key is mapped.
+     * <p>
+     * Returns the value previously associated the key,
+     * or null if there was no mapping for the key.
+     *
+     * @param key
+     * @return
+     */
+    public Object removeCustomObject( String key )
+    {
+        return customObjectsMap.remove( key );
+    }
+
+
+    /**
      * Removes the {@link LdapServerListener} from the server.
      *
      * @param listener
@@ -165,18 +215,6 @@ public class LdapServer implements IAdaptable
         {
             listeners.remove( listener );
         }
-    }
-
-
-    /**
-     * Restarts the server.
-     *
-     * @throws Exception
-     *      if an error occurs when restarting the server
-     */
-    public void restart() throws Exception
-    {
-
     }
 
 
@@ -257,30 +295,6 @@ public class LdapServer implements IAdaptable
         {
             listener.serverChanged( new LdapServerEvent( this, LdapServerEventType.STATUS_CHANGED ) );
         }
-    }
-
-
-    /**
-     * Starts the server.
-     *
-     * @throws Exception
-     *      if an error occurs when restarting the server
-     */
-    public void start() throws Exception
-    {
-
-    }
-
-
-    /**
-     * Stops the server.
-     *
-     * @throws Exception
-     *      if an error occurs when restarting the server
-     */
-    public void stop() throws Exception
-    {
-
     }
 
 
