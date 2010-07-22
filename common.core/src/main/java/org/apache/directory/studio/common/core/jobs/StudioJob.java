@@ -32,10 +32,10 @@ import org.eclipse.core.runtime.jobs.Job;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class StudioJob extends Job
+public class StudioJob<T extends StudioRunnableWithProgress> extends Job
 {
     /** The runnables. */
-    private StudioRunnableWithProgress[] runnables;
+    protected T[] runnables;
 
 
     /**
@@ -43,7 +43,7 @@ public class StudioJob extends Job
      * 
      * @param runnables the runnables to run
      */
-    public StudioJob( StudioRunnableWithProgress... runnables )
+    public StudioJob( T... runnables )
     {
         super( runnables[0].getName() );
         this.runnables = runnables;
@@ -53,7 +53,7 @@ public class StudioJob extends Job
     /**
      * @see org.eclipse.core.runtime.jobs.Job#run(org.eclipse.core.runtime.IProgressMonitor)
      */
-    protected final IStatus run( IProgressMonitor ipm )
+    protected IStatus run( IProgressMonitor ipm )
     {
         StudioProgressMonitor monitor = new StudioProgressMonitor( ipm );
 
@@ -132,7 +132,7 @@ public class StudioJob extends Job
     /**
      * Executes the job.
      */
-    public final void execute()
+    public void execute()
     {
         setUser( true );
         schedule();
@@ -147,7 +147,7 @@ public class StudioJob extends Job
         // We don't schedule a job if the same type of runnable should run
         // that works on the same entry as the current runnable.
 
-        for ( StudioRunnableWithProgress runnable : runnables )
+        for ( T runnable : runnables )
         {
             Object[] myLockedObjects = runnable.getLockedObjects();
             String[] myLockedObjectsIdentifiers = getLockIdentifiers( myLockedObjects );
@@ -158,7 +158,8 @@ public class StudioJob extends Job
                 Job job = jobs[i];
                 if ( job instanceof StudioJob )
                 {
-                    StudioJob otherJob = ( StudioJob ) job;
+                    @SuppressWarnings("unchecked")
+                    StudioJob<StudioRunnableWithProgress> otherJob = ( StudioJob<StudioRunnableWithProgress> ) job;
                     for ( StudioRunnableWithProgress otherRunnable : otherJob.runnables )
                     {
                         if ( runnable.getClass() == otherRunnable.getClass() && runnable != otherRunnable )

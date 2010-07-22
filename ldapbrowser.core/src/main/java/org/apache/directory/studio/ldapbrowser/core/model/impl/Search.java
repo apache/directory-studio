@@ -31,7 +31,7 @@ import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.StudioControl;
 import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
 import org.apache.directory.studio.connection.core.Connection.ReferralHandlingMethod;
-import org.apache.directory.studio.connection.core.jobs.StudioBulkRunnableWithProgress;
+import org.apache.directory.studio.connection.core.jobs.StudioConnectionBulkRunnableWithProgress;
 import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
 import org.apache.directory.studio.ldapbrowser.core.events.SearchUpdateEvent;
 import org.apache.directory.studio.ldapbrowser.core.internal.search.LdapSearchPageScoreComputer;
@@ -67,10 +67,10 @@ public class Search implements ISearch
     protected boolean countLimitExceeded;
 
     /** The next search runnable. */
-    protected StudioBulkRunnableWithProgress nextSearchRunnable;
+    protected StudioConnectionBulkRunnableWithProgress nextSearchRunnable;
 
     /** The top search runnable. */
-    protected StudioBulkRunnableWithProgress topSearchRunnable;
+    protected StudioConnectionBulkRunnableWithProgress topSearchRunnable;
 
     /** The search continuations. */
     protected SearchContinuation[] searchContinuations;
@@ -466,7 +466,7 @@ public class Search implements ISearch
     /**
      * {@inheritDoc}
      */
-    public StudioBulkRunnableWithProgress getNextSearchRunnable()
+    public StudioConnectionBulkRunnableWithProgress getNextSearchRunnable()
     {
         return nextSearchRunnable;
     }
@@ -475,7 +475,7 @@ public class Search implements ISearch
     /**
      * {@inheritDoc}
      */
-    public void setNextPageSearchRunnable( StudioBulkRunnableWithProgress nextSearchRunnable )
+    public void setNextPageSearchRunnable( StudioConnectionBulkRunnableWithProgress nextSearchRunnable )
     {
         this.nextSearchRunnable = nextSearchRunnable;
     }
@@ -484,7 +484,7 @@ public class Search implements ISearch
     /**
      * {@inheritDoc}
      */
-    public StudioBulkRunnableWithProgress getTopSearchRunnable()
+    public StudioConnectionBulkRunnableWithProgress getTopSearchRunnable()
     {
         return topSearchRunnable;
     }
@@ -493,7 +493,7 @@ public class Search implements ISearch
     /**
      * {@inheritDoc}
      */
-    public void setTopPageSearchRunnable( StudioBulkRunnableWithProgress topSearchRunnable )
+    public void setTopPageSearchRunnable( StudioConnectionBulkRunnableWithProgress topSearchRunnable )
     {
         this.topSearchRunnable = topSearchRunnable;
     }

@@ -34,13 +34,13 @@ import javax.naming.ldap.Control;
 import javax.naming.ldap.LdapContext;
 
 import org.apache.directory.shared.ldap.util.LdapURL;
+import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.Connection;
-import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
-import org.apache.directory.studio.connection.core.IJndiLogger;
 import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
 import org.apache.directory.studio.connection.core.Connection.ReferralHandlingMethod;
+import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
+import org.apache.directory.studio.connection.core.IJndiLogger;
 import org.apache.directory.studio.connection.core.io.jndi.ReferralsInfo.Referral;
-import org.apache.directory.studio.connection.core.jobs.StudioProgressMonitor;
 
 
 /**

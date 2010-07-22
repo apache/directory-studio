@@ -29,7 +29,7 @@ import org.apache.directory.shared.ldap.name.Rdn;
 import org.apache.directory.shared.ldap.schema.parsers.ObjectClassDescription;
 import org.apache.directory.shared.ldap.util.LdapURL;
 import org.apache.directory.studio.connection.core.ConnectionPropertyPageProvider;
-import org.apache.directory.studio.connection.core.jobs.StudioBulkRunnableWithProgress;
+import org.apache.directory.studio.connection.core.jobs.StudioConnectionBulkRunnableWithProgress;
 import org.apache.directory.studio.ldapbrowser.core.propertypageproviders.EntryPropertyPageProvider;
 import org.eclipse.core.runtime.IAdaptable;
 
@@ -381,7 +381,7 @@ public interface IEntry extends Serializable, IAdaptable, EntryPropertyPageProvi
      * 
      * @return the runnable used to fetch the top page of children, null if none
      */
-    public abstract StudioBulkRunnableWithProgress getTopPageChildrenRunnable();
+    public abstract StudioConnectionBulkRunnableWithProgress getTopPageChildrenRunnable();
 
 
     /**
@@ -389,7 +389,7 @@ public interface IEntry extends Serializable, IAdaptable, EntryPropertyPageProvi
      * 
      * @param moreChildrenRunnable the runnable used to fetch the top page of children
      */
-    public abstract void setTopPageChildrenRunnable( StudioBulkRunnableWithProgress topPageChildrenRunnable );
+    public abstract void setTopPageChildrenRunnable( StudioConnectionBulkRunnableWithProgress topPageChildrenRunnable );
 
 
     /**
@@ -397,7 +397,7 @@ public interface IEntry extends Serializable, IAdaptable, EntryPropertyPageProvi
      * 
      * @return the runnable used to fetch the next page of children, null if none
      */
-    public abstract StudioBulkRunnableWithProgress getNextPageChildrenRunnable();
+    public abstract StudioConnectionBulkRunnableWithProgress getNextPageChildrenRunnable();
 
 
     /**
@@ -405,7 +405,7 @@ public interface IEntry extends Serializable, IAdaptable, EntryPropertyPageProvi
      * 
      * @param moreChildrenRunnable the runnable used to fetch the next page of children
      */
-    public abstract void setNextPageChildrenRunnable( StudioBulkRunnableWithProgress nextPageChildrenRunnable );
+    public abstract void setNextPageChildrenRunnable( StudioConnectionBulkRunnableWithProgress nextPageChildrenRunnable );
 
 
     /**

@@ -26,7 +26,7 @@ import java.util.Collection;
 import org.apache.directory.shared.ldap.schema.ObjectClassTypeEnum;
 import org.apache.directory.shared.ldap.schema.parsers.ObjectClassDescription;
 import org.apache.directory.studio.connection.core.Utils;
-import org.apache.directory.studio.connection.core.jobs.StudioRunnableWithProgress;
+import org.apache.directory.studio.connection.core.jobs.StudioConnectionRunnableWithProgress;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonConstants;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
@@ -224,9 +224,9 @@ public class BrowserLabelProvider extends LabelProvider implements IFontProvider
             }
 
         }
-        else if ( obj instanceof StudioRunnableWithProgress )
+        else if ( obj instanceof StudioConnectionRunnableWithProgress )
         {
-            StudioRunnableWithProgress runnable = ( StudioRunnableWithProgress ) obj;
+            StudioConnectionRunnableWithProgress runnable = ( StudioConnectionRunnableWithProgress ) obj;
             for ( Object lockedObject : runnable.getLockedObjects() )
             {
                 if ( lockedObject instanceof ISearch )
@@ -337,9 +337,9 @@ public class BrowserLabelProvider extends LabelProvider implements IFontProvider
             IEntry entry = sr.getEntry();
             return BrowserLabelProvider.getImageByObjectClass( entry );
         }
-        else if ( obj instanceof StudioRunnableWithProgress )
+        else if ( obj instanceof StudioConnectionRunnableWithProgress )
         {
-            StudioRunnableWithProgress runnable = ( StudioRunnableWithProgress ) obj;
+            StudioConnectionRunnableWithProgress runnable = ( StudioConnectionRunnableWithProgress ) obj;
             for ( Object lockedObject : runnable.getLockedObjects() )
             {
                 if ( lockedObject instanceof ISearch )

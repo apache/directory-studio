@@ -21,11 +21,11 @@
 package org.apache.directory.studio.ldapbrowser.core.jobs;
 
 
+import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
 import org.apache.directory.studio.connection.core.IConnectionListener;
 import org.apache.directory.studio.connection.core.Messages;
-import org.apache.directory.studio.connection.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.event.ConnectionEventRegistry;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
@@ -170,7 +170,7 @@ public abstract class AbstractEclipseJob extends Job
         {
             Job job = jobs[i];
 
-            // if(job instanceof AbstractEclipseJob) {
+            // if(job instanceof AbstractStudioJob) {
             if ( job.getClass() == this.getClass() && job != this )
             {
 

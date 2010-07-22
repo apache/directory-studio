@@ -21,6 +21,8 @@
 package org.apache.directory.studio.connection.core.jobs;
 
 
+import org.apache.directory.studio.common.core.jobs.StudioJob;
+import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
 import org.apache.directory.studio.connection.core.IConnectionListener;
@@ -37,34 +39,28 @@ import org.eclipse.core.runtime.jobs.Job;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class StudioConnectionJob extends Job
+public class StudioConnectionJob extends StudioJob<StudioConnectionRunnableWithProgress>
 {
-
-    /** The runnables. */
-    private StudioRunnableWithProgress[] runnables;
-
-
     /**
      * Creates a new instance of StudioConnectionJob.
      * 
      * @param runnables the runnables to run
      */
-    public StudioConnectionJob( StudioRunnableWithProgress... runnables )
+    public StudioConnectionJob( StudioConnectionRunnableWithProgress... runnables )
     {
-        super( runnables[0].getName() );
-        this.runnables = runnables;
+        super( runnables );
     }
 
 
     /**
      * @see org.eclipse.core.runtime.jobs.Job#run(org.eclipse.core.runtime.IProgressMonitor)
      */
-    protected final IStatus run( IProgressMonitor ipm )
+    protected IStatus run( IProgressMonitor ipm )
     {
         StudioProgressMonitor monitor = new StudioProgressMonitor( ipm );
 
         // ensure that connections are opened
-        for ( StudioRunnableWithProgress runnable : runnables )
+        for ( StudioConnectionRunnableWithProgress runnable : runnables )
         {
             Connection[] connections = runnable.getConnections();
             if ( connections != null )
@@ -102,11 +98,11 @@ public class StudioConnectionJob extends Job
         {
             try
             {
-                for ( StudioRunnableWithProgress runnable : runnables )
+                for ( StudioConnectionRunnableWithProgress runnable : runnables )
                 {
-                    if ( runnable instanceof StudioBulkRunnableWithProgress )
+                    if ( runnable instanceof StudioConnectionBulkRunnableWithProgress )
                     {
-                        StudioBulkRunnableWithProgress bulkRunnable = ( StudioBulkRunnableWithProgress ) runnable;
+                        StudioConnectionBulkRunnableWithProgress bulkRunnable = ( StudioConnectionBulkRunnableWithProgress ) runnable;
                         suspendEventFiringInCurrentThread();
                         try
                         {
@@ -169,16 +165,6 @@ public class StudioConnectionJob extends Job
 
 
     /**
-     * Executes the job.
-     */
-    public final void execute()
-    {
-        setUser( true );
-        schedule();
-    }
-
-
-    /**
      * {@inheritDoc}
      */
     public boolean shouldSchedule()
@@ -186,7 +172,7 @@ public class StudioConnectionJob extends Job
         // We don't schedule a job if the same type of runnable should run
         // that works on the same entry as the current runnable.
 
-        for ( StudioRunnableWithProgress runnable : runnables )
+        for ( StudioConnectionRunnableWithProgress runnable : runnables )
         {
             Object[] myLockedObjects = runnable.getLockedObjects();
             String[] myLockedObjectsIdentifiers = getLockIdentifiers( myLockedObjects );
@@ -198,7 +184,7 @@ public class StudioConnectionJob extends Job
                 if ( job instanceof StudioConnectionJob )
                 {
                     StudioConnectionJob otherJob = ( StudioConnectionJob ) job;
-                    for ( StudioRunnableWithProgress otherRunnable : otherJob.runnables )
+                    for ( StudioConnectionRunnableWithProgress otherRunnable : otherJob.runnables )
                     {
                         if ( runnable.getClass() == otherRunnable.getClass() && runnable != otherRunnable )
                         {
@@ -226,7 +212,10 @@ public class StudioConnectionJob extends Job
     }
 
 
-    private static String[] getLockIdentifiers( Object[] objects )
+    /**
+     * {@inheritDoc}
+     */
+    protected String[] getLockIdentifiers( Object[] objects )
     {
         String[] identifiers = new String[objects.length];
         for ( int i = 0; i < identifiers.length; i++ )
@@ -245,17 +234,32 @@ public class StudioConnectionJob extends Job
     }
 
 
-    private static String getLockIdentifier( Connection connection )
+    /**
+     * Gets the string identifier for a {@link Connection} object.
+     *
+     * @param connection
+     *      the connection
+     * @return
+     *      the lock identifier for the connection
+     */
+    private String getLockIdentifier( Connection connection )
     {
         return connection.getHost() + ':' + connection.getPort();
     }
 
 
-    private static String getLockIdentifier( Object object )
+    /**
+     * Gets the generic lock identifier for an object.
+     *
+     * @param object
+     *      the object
+     * @return
+     *      the lock identifier for the object
+     */
+    private String getLockIdentifier( Object object )
     {
         String s = object != null ? object.toString() : "null"; //$NON-NLS-1$
         s = '-' + s;
         return s;
     }
-
 }

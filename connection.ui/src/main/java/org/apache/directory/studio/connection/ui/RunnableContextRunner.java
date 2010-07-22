@@ -21,14 +21,14 @@
 package org.apache.directory.studio.connection.ui;
 
 
+import org.apache.directory.studio.common.core.jobs.StudioBulkRunnableWithProgress;
+import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
 import org.apache.directory.studio.connection.core.IConnectionListener;
 import org.apache.directory.studio.connection.core.Messages;
 import org.apache.directory.studio.connection.core.event.ConnectionEventRegistry;
-import org.apache.directory.studio.connection.core.jobs.StudioBulkRunnableWithProgress;
-import org.apache.directory.studio.connection.core.jobs.StudioProgressMonitor;
-import org.apache.directory.studio.connection.core.jobs.StudioRunnableWithProgress;
+import org.apache.directory.studio.connection.core.jobs.StudioConnectionRunnableWithProgress;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -53,8 +53,8 @@ public class RunnableContextRunner
      * @param runnableContext the runnable context or null to create a progress monitor dialog
      * @param handleError true to handle errors
      */
-    public static IStatus execute( final StudioRunnableWithProgress runnable, IRunnableContext runnableContext,
-        boolean handleError )
+    public static IStatus execute( final StudioConnectionRunnableWithProgress runnable,
+        IRunnableContext runnableContext, boolean handleError )
     {
         if ( runnableContext == null )
         {
@@ -141,9 +141,12 @@ public class RunnableContextRunner
         }
         catch ( Exception ex )
         {
-            ConnectionUIPlugin.getDefault().getExceptionHandler().handleException(
-                new Status( IStatus.ERROR, ConnectionUIConstants.PLUGIN_ID, IStatus.ERROR, ex.getMessage() != null ? ex
-                    .getMessage() : "", ex ) ); //$NON-NLS-1$
+            ConnectionUIPlugin
+                .getDefault()
+                .getExceptionHandler()
+                .handleException(
+                    new Status( IStatus.ERROR, ConnectionUIConstants.PLUGIN_ID, IStatus.ERROR,
+                        ex.getMessage() != null ? ex.getMessage() : "", ex ) ); //$NON-NLS-1$
         }
 
         IStatus status = spm[0].getErrorStatus( runnable.getErrorMessage() );

@@ -116,8 +116,9 @@
  org.eclipse.ui.forms,
  org.eclipse.core.runtime,
  org.eclipse.ui.workbench.texteditor,
- org.apache.directory.studio.jars,
- org.apache.directory.studio.connection.core
+ org.apache.directory.studio.common.core,
+ org.apache.directory.studio.connection.core,
+ org.apache.directory.studio.jars
             </Require-Bundle>
             <Export-Package>org.apache.directory.studio.*</Export-Package>
             <Import-Package>!</Import-Package>
@@ -149,12 +150,17 @@
   	<!-- Apache Directory Studio plugins dependencies -->
     <dependency>
       <groupId>org.apache.directory.studio</groupId>
-      <artifactId>jars</artifactId>
+      <artifactId>common.core</artifactId>
       <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.directory.studio</groupId>
       <artifactId>connection.core</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.directory.studio</groupId>
+      <artifactId>jars</artifactId>
       <scope>provided</scope>
     </dependency>
     

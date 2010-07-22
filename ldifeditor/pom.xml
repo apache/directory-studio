@@ -125,12 +125,13 @@
  org.eclipse.jface.text,
  org.eclipse.ui.ide,
  org.eclipse.core.resources,
- org.apache.directory.studio.jars,
- org.apache.directory.studio.ldifparser,
+ org.apache.directory.studio.common.core,
  org.apache.directory.studio.connection.core,
  org.apache.directory.studio.connection.ui,
+ org.apache.directory.studio.jars,
  org.apache.directory.studio.ldapbrowser.core,
- org.apache.directory.studio.ldapbrowser.common</Require-Bundle>
+ org.apache.directory.studio.ldapbrowser.common,
+ org.apache.directory.studio.ldifparser</Require-Bundle>
             <Export-Package>org.apache.directory.studio.ldifeditor.*</Export-Package>
             <Import-Package>!</Import-Package>
             <Private-Package>!</Private-Package>
@@ -159,6 +160,11 @@
 
   <dependencies>
   	<!-- Apache Directory Studio plugins dependencies -->
+    <dependency>
+      <groupId>org.apache.directory.studio</groupId>
+      <artifactId>common.core</artifactId>
+      <scope>provided</scope>
+    </dependency>
   	<dependency>
       <groupId>org.apache.directory.studio</groupId>
       <artifactId>jars</artifactId>

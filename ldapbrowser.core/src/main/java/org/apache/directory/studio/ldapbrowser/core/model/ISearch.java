@@ -29,7 +29,7 @@ import org.apache.directory.shared.ldap.util.LdapURL;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.ConnectionPropertyPageProvider;
 import org.apache.directory.studio.connection.core.StudioControl;
-import org.apache.directory.studio.connection.core.jobs.StudioBulkRunnableWithProgress;
+import org.apache.directory.studio.connection.core.jobs.StudioConnectionBulkRunnableWithProgress;
 import org.apache.directory.studio.ldapbrowser.core.model.impl.SearchContinuation;
 import org.apache.directory.studio.ldapbrowser.core.propertypageproviders.SearchPropertyPageProvider;
 import org.eclipse.core.runtime.IAdaptable;
@@ -409,7 +409,7 @@ public interface ISearch extends Serializable, IAdaptable, SearchPropertyPagePro
      * 
      * @return the next search runnable, null if none
      */
-    public abstract StudioBulkRunnableWithProgress getNextSearchRunnable();
+    public abstract StudioConnectionBulkRunnableWithProgress getNextSearchRunnable();
 
 
     /**
@@ -417,7 +417,7 @@ public interface ISearch extends Serializable, IAdaptable, SearchPropertyPagePro
      * 
      * @param nextSearchRunnable the next search runnable
      */
-    public abstract void setNextPageSearchRunnable( StudioBulkRunnableWithProgress nextSearchRunnable );
+    public abstract void setNextPageSearchRunnable( StudioConnectionBulkRunnableWithProgress nextSearchRunnable );
 
 
     /**
@@ -425,7 +425,7 @@ public interface ISearch extends Serializable, IAdaptable, SearchPropertyPagePro
      * 
      * @return the top search runnable, null if none
      */
-    public abstract StudioBulkRunnableWithProgress getTopSearchRunnable();
+    public abstract StudioConnectionBulkRunnableWithProgress getTopSearchRunnable();
 
 
     /**
@@ -433,7 +433,7 @@ public interface ISearch extends Serializable, IAdaptable, SearchPropertyPagePro
      * 
      * @param nextSearchRunnable the top search runnable
      */
-    public abstract void setTopPageSearchRunnable( StudioBulkRunnableWithProgress nextSearchRunnable );
+    public abstract void setTopPageSearchRunnable( StudioConnectionBulkRunnableWithProgress nextSearchRunnable );
 
 
     /**

@@ -106,6 +106,7 @@
             <Eclipse-LazyStart>true</Eclipse-LazyStart>
             <Bundle-Activator>org.apache.directory.studio.connection.core.ConnectionCorePlugin</Bundle-Activator>
             <Require-Bundle>org.eclipse.core.runtime,
+ org.apache.directory.studio.common.core,
  org.apache.directory.studio.jars,
  org.apache.directory.studio.ldifparser
             </Require-Bundle>
@@ -137,6 +138,11 @@
 
   <dependencies>
   	<!-- Apache Directory Studio plugins dependencies -->
+    <dependency>
+      <groupId>org.apache.directory.studio</groupId>
+      <artifactId>common.core</artifactId>
+      <scope>provided</scope>
+    </dependency>
     <dependency>
       <groupId>org.apache.directory.studio</groupId>
       <artifactId>jars</artifactId>

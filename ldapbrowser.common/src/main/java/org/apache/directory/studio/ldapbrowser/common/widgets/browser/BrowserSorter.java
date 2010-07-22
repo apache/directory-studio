@@ -24,7 +24,7 @@ package org.apache.directory.studio.ldapbrowser.common.widgets.browser;
 import java.math.BigInteger;
 
 import org.apache.directory.shared.ldap.name.Rdn;
-import org.apache.directory.studio.connection.core.jobs.StudioRunnableWithProgress;
+import org.apache.directory.studio.connection.core.jobs.StudioConnectionRunnableWithProgress;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreConstants;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
@@ -143,9 +143,9 @@ public class BrowserSorter extends ViewerSorter
      */
     public int compare( Viewer viewer, Object o1, Object o2 )
     {
-        if ( o1 instanceof StudioRunnableWithProgress )
+        if ( o1 instanceof StudioConnectionRunnableWithProgress )
         {
-            StudioRunnableWithProgress runnable = ( StudioRunnableWithProgress ) o1;
+            StudioConnectionRunnableWithProgress runnable = ( StudioConnectionRunnableWithProgress ) o1;
             for ( Object lockedObject : runnable.getLockedObjects() )
             {
                 if ( lockedObject instanceof ISearch )
@@ -175,9 +175,9 @@ public class BrowserSorter extends ViewerSorter
             }
             return lessThan();
         }
-        if ( o2 instanceof StudioRunnableWithProgress )
+        if ( o2 instanceof StudioConnectionRunnableWithProgress )
         {
-            StudioRunnableWithProgress runnable = ( StudioRunnableWithProgress ) o2;
+            StudioConnectionRunnableWithProgress runnable = ( StudioConnectionRunnableWithProgress ) o2;
             for ( Object lockedObject : runnable.getLockedObjects() )
             {
                 if ( lockedObject instanceof ISearch )

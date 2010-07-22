@@ -21,16 +21,16 @@
 package org.apache.directory.studio.entryeditors;
 
 
+import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.Connection;
-import org.apache.directory.studio.connection.core.jobs.StudioBulkRunnableWithProgress;
-import org.apache.directory.studio.connection.core.jobs.StudioProgressMonitor;
-import org.apache.directory.studio.connection.core.jobs.StudioRunnableWithProgressAdapter;
+import org.apache.directory.studio.connection.core.jobs.StudioConnectionBulkRunnableWithProgress;
+import org.apache.directory.studio.connection.core.jobs.StudioConnectionRunnableWithProgressAdapter;
 import org.apache.directory.studio.ldapbrowser.core.jobs.InitializeAttributesRunnable;
 import org.apache.directory.studio.ldapbrowser.core.model.IBookmark;
 import org.apache.directory.studio.ldapbrowser.core.model.IContinuation;
+import org.apache.directory.studio.ldapbrowser.core.model.IContinuation.State;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearchResult;
-import org.apache.directory.studio.ldapbrowser.core.model.IContinuation.State;
 import org.apache.directory.studio.ldapbrowser.ui.BrowserUIPlugin;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.PartInitException;
@@ -42,8 +42,8 @@ import org.eclipse.ui.PlatformUI;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class OpenEntryEditorRunnable extends StudioRunnableWithProgressAdapter implements
-    StudioBulkRunnableWithProgress
+public class OpenEntryEditorRunnable extends StudioConnectionRunnableWithProgressAdapter implements
+    StudioConnectionBulkRunnableWithProgress
 {
     private IEntry[] entries;
     private ISearchResult[] searchResults;

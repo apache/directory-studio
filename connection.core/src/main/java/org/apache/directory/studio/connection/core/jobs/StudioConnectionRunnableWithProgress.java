@@ -21,21 +21,21 @@
 package org.apache.directory.studio.connection.core.jobs;
 
 
+import org.apache.directory.studio.common.core.jobs.StudioRunnableWithProgress;
+import org.apache.directory.studio.connection.core.Connection;
+
+
 /**
- * A runnable with a progess monitor. When invoked by the {@link StudioConnectionJob} 
- * during the run() method all event notifications are blocked and the runNotification()
- * method is called afterwards to fire event notifications.
+ * A runnable with a progress monitor.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public interface StudioBulkRunnableWithProgress extends StudioRunnableWithProgress
+public interface StudioConnectionRunnableWithProgress extends StudioRunnableWithProgress
 {
-
     /**
-     * Runs notification, called by {@link StudioConnectionJob} after the run() method.
+     * Gets the connections that must be opened before running this runnable.
      * 
-     * @param monitor the monitor
+     * @return the connections, null if none
      */
-    public void runNotification( StudioProgressMonitor monitor );
-
+    public Connection[] getConnections();
 }

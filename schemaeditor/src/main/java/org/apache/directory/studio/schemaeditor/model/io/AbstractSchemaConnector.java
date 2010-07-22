@@ -20,8 +20,8 @@
 package org.apache.directory.studio.schemaeditor.model.io;
 
 
+import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.Connection;
-import org.apache.directory.studio.connection.core.jobs.StudioProgressMonitor;
 
 
 /**

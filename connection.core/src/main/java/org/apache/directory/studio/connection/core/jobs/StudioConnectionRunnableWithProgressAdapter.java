@@ -21,53 +21,27 @@
 package org.apache.directory.studio.connection.core.jobs;
 
 
+import org.apache.directory.studio.common.core.jobs.StudioRunnableWithProgressAdapter;
 import org.apache.directory.studio.connection.core.Connection;
 
 
 /**
- * A runnable with a progress monitor.
+ * An adapter class for StudioConnectionRunnableWithProgress.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public interface StudioRunnableWithProgress
+public abstract class StudioConnectionRunnableWithProgressAdapter extends StudioRunnableWithProgressAdapter implements
+    StudioConnectionRunnableWithProgress
 {
-
-    /**
-     * Runs the runnable.
-     * 
-     * @param monitor the monitor
-     */
-    public void run( StudioProgressMonitor monitor );
+    /** The connections*/
+    private static final Connection[] EMPTY_CONNECTION_ARRAY = new Connection[0];
 
 
     /**
-     * Gets the locked objects.
-     * 
-     * @return the locked objects
+     * @return an empty array
      */
-    public Object[] getLockedObjects();
-
-
-    /**
-     * Gets the error message.
-     * 
-     * @return the error message
-     */
-    public String getErrorMessage();
-
-
-    /**
-     * Gets the name that is used when reporting progress.
-     * 
-     * @return the name
-     */
-    public String getName();
-
-
-    /**
-     * Gets the connections that must be opened before running this runnable.
-     * 
-     * @return the connections, null if none
-     */
-    public Connection[] getConnections();
+    public Connection[] getConnections()
+    {
+        return EMPTY_CONNECTION_ARRAY;
+    }
 }

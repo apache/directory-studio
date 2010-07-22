@@ -23,6 +23,8 @@ package org.apache.directory.studio.connection.core.jobs;
 
 import java.util.List;
 
+import org.apache.directory.studio.common.core.jobs.StudioBulkRunnableWithProgress;
+import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
 import org.apache.directory.studio.connection.core.IConnectionListener;
@@ -35,7 +37,7 @@ import org.apache.directory.studio.connection.core.event.ConnectionEventRegistry
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class CloseConnectionsRunnable implements StudioBulkRunnableWithProgress
+public class CloseConnectionsRunnable implements StudioConnectionBulkRunnableWithProgress
 {
 
     private Connection[] connections;

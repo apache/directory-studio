@@ -32,7 +32,7 @@ import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.shared.ldap.name.Rdn;
 import org.apache.directory.shared.ldap.schema.parsers.ObjectClassDescription;
 import org.apache.directory.shared.ldap.util.LdapURL;
-import org.apache.directory.studio.connection.core.jobs.StudioBulkRunnableWithProgress;
+import org.apache.directory.studio.connection.core.jobs.StudioConnectionBulkRunnableWithProgress;
 import org.apache.directory.studio.ldapbrowser.core.events.AttributeAddedEvent;
 import org.apache.directory.studio.ldapbrowser.core.events.AttributeDeletedEvent;
 import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
@@ -281,7 +281,7 @@ public class DummyEntry implements IEntry, ICompareableEntry
     /**
      * This implementation always returns null.
      */
-    public StudioBulkRunnableWithProgress getNextPageChildrenRunnable()
+    public StudioConnectionBulkRunnableWithProgress getNextPageChildrenRunnable()
     {
         return null;
     }
@@ -290,7 +290,7 @@ public class DummyEntry implements IEntry, ICompareableEntry
     /**
      * This implementation always returns null.
      */
-    public StudioBulkRunnableWithProgress getTopPageChildrenRunnable()
+    public StudioConnectionBulkRunnableWithProgress getTopPageChildrenRunnable()
     {
         return null;
     }
@@ -465,7 +465,7 @@ public class DummyEntry implements IEntry, ICompareableEntry
     /**
      * This implementation does nothing.
      */
-    public void setTopPageChildrenRunnable( StudioBulkRunnableWithProgress topPageChildrenRunnable )
+    public void setTopPageChildrenRunnable( StudioConnectionBulkRunnableWithProgress topPageChildrenRunnable )
     {
     }
 
@@ -473,7 +473,7 @@ public class DummyEntry implements IEntry, ICompareableEntry
     /**
      * This implementation does nothing.
      */
-    public void setNextPageChildrenRunnable( StudioBulkRunnableWithProgress nextPageChildrenRunnable )
+    public void setNextPageChildrenRunnable( StudioConnectionBulkRunnableWithProgress nextPageChildrenRunnable )
     {
     }
 

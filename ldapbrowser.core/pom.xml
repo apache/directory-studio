@@ -108,9 +108,10 @@
             <Bundle-Activator>org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin</Bundle-Activator>
             <Require-Bundle>org.eclipse.core.runtime,
  org.eclipse.search,
+ org.apache.directory.studio.common.core,
+ org.apache.directory.studio.connection.core,
  org.apache.directory.studio.jars,
- org.apache.directory.studio.ldifparser,
- org.apache.directory.studio.connection.core
+ org.apache.directory.studio.ldifparser
             </Require-Bundle>
             <Embed-Dependency>*;scope=compile|runtime</Embed-Dependency>
             <Embed-Directory>lib</Embed-Directory>
@@ -161,17 +162,22 @@
   	<!-- Apache Directory Studio plugins dependencies -->
     <dependency>
       <groupId>org.apache.directory.studio</groupId>
+      <artifactId>connection.core</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.directory.studio</groupId>
+      <artifactId>common.core</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.directory.studio</groupId>
       <artifactId>jars</artifactId>
       <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.directory.studio</groupId>
       <artifactId>ldifparser</artifactId>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.directory.studio</groupId>
-      <artifactId>connection.core</artifactId>
       <scope>provided</scope>
     </dependency>
     

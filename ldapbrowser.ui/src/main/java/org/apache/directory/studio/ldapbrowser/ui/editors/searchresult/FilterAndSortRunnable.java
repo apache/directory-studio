@@ -21,9 +21,9 @@
 package org.apache.directory.studio.ldapbrowser.ui.editors.searchresult;
 
 
+import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.Connection;
-import org.apache.directory.studio.connection.core.jobs.StudioProgressMonitor;
-import org.apache.directory.studio.connection.core.jobs.StudioRunnableWithProgress;
+import org.apache.directory.studio.connection.core.jobs.StudioConnectionRunnableWithProgress;
 
 
 /**
@@ -32,7 +32,7 @@ import org.apache.directory.studio.connection.core.jobs.StudioRunnableWithProgre
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class FilterAndSortRunnable implements StudioRunnableWithProgress
+public class FilterAndSortRunnable implements StudioConnectionRunnableWithProgress
 {
 
     /** The configuration. */

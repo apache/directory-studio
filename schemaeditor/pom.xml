@@ -119,6 +119,7 @@
  org.eclipse.search,
  org.eclipse.ui,
  org.eclipse.ui.forms,
+ org.apache.directory.studio.common.core,
  org.apache.directory.studio.connection.core,
  org.apache.directory.studio.connection.ui,
  org.apache.directory.studio.jars
@@ -166,6 +167,11 @@
     </dependency>
     
   	<!-- Apache Directory Studio plugins dependencies -->
+    <dependency>
+      <groupId>org.apache.directory.studio</groupId>
+      <artifactId>common.core</artifactId>
+      <scope>provided</scope>
+    </dependency>
     <dependency>
       <groupId>org.apache.directory.studio</groupId>
       <artifactId>connection.core</artifactId>

@@ -27,7 +27,7 @@ import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.shared.ldap.name.Rdn;
 import org.apache.directory.shared.ldap.schema.parsers.ObjectClassDescription;
 import org.apache.directory.shared.ldap.util.LdapURL;
-import org.apache.directory.studio.connection.core.jobs.StudioBulkRunnableWithProgress;
+import org.apache.directory.studio.connection.core.jobs.StudioConnectionBulkRunnableWithProgress;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
 import org.apache.directory.studio.ldapbrowser.core.internal.search.LdapSearchPageScoreComputer;
 import org.apache.directory.studio.ldapbrowser.core.model.AttributeHierarchy;
@@ -478,7 +478,7 @@ public abstract class DelegateEntry implements IEntry
     /**
      * {@inheritDoc}
      */
-    public StudioBulkRunnableWithProgress getTopPageChildrenRunnable()
+    public StudioConnectionBulkRunnableWithProgress getTopPageChildrenRunnable()
     {
         if ( getDelegate() != null )
         {
@@ -494,7 +494,7 @@ public abstract class DelegateEntry implements IEntry
     /**
      * {@inheritDoc}
      */
-    public StudioBulkRunnableWithProgress getNextPageChildrenRunnable()
+    public StudioConnectionBulkRunnableWithProgress getNextPageChildrenRunnable()
     {
         if ( getDelegate() != null )
         {
@@ -731,7 +731,7 @@ public abstract class DelegateEntry implements IEntry
     /**
      * {@inheritDoc}
      */
-    public void setTopPageChildrenRunnable( StudioBulkRunnableWithProgress topPageChildrenRunnable )
+    public void setTopPageChildrenRunnable( StudioConnectionBulkRunnableWithProgress topPageChildrenRunnable )
     {
         if ( getDelegate() != null )
         {
@@ -743,7 +743,7 @@ public abstract class DelegateEntry implements IEntry
     /**
      * {@inheritDoc}
      */
-    public void setNextPageChildrenRunnable( StudioBulkRunnableWithProgress nextPageChildrenRunnable )
+    public void setNextPageChildrenRunnable( StudioConnectionBulkRunnableWithProgress nextPageChildrenRunnable )
     {
         if ( getDelegate() != null )
         {

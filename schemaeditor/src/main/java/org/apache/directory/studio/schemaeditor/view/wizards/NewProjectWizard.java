@@ -23,9 +23,9 @@ package org.apache.directory.studio.schemaeditor.view.wizards;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.Connection;
-import org.apache.directory.studio.connection.core.jobs.StudioProgressMonitor;
-import org.apache.directory.studio.connection.core.jobs.StudioRunnableWithProgress;
+import org.apache.directory.studio.connection.core.jobs.StudioConnectionRunnableWithProgress;
 import org.apache.directory.studio.connection.ui.RunnableContextRunner;
 import org.apache.directory.studio.schemaeditor.Activator;
 import org.apache.directory.studio.schemaeditor.PluginConstants;
@@ -94,7 +94,7 @@ public class NewProjectWizard extends Wizard implements INewWizard
             // Setting the connection to use
             project.setConnection( connectionSelectionPage.getSelectedConnection() );
 
-            RunnableContextRunner.execute( new StudioRunnableWithProgress()
+            RunnableContextRunner.execute( new StudioConnectionRunnableWithProgress()
             {
 
                 public void run( StudioProgressMonitor monitor )

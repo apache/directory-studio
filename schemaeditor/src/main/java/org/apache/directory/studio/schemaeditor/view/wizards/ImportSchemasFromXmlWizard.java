@@ -24,9 +24,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
-import org.apache.directory.studio.connection.core.jobs.StudioProgressMonitor;
-import org.apache.directory.studio.connection.core.jobs.StudioRunnableWithProgress;
-import org.apache.directory.studio.connection.core.jobs.StudioRunnableWithProgressAdapter;
+import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
+import org.apache.directory.studio.connection.core.jobs.StudioConnectionRunnableWithProgress;
+import org.apache.directory.studio.connection.core.jobs.StudioConnectionRunnableWithProgressAdapter;
 import org.apache.directory.studio.connection.ui.RunnableContextRunner;
 import org.apache.directory.studio.schemaeditor.Activator;
 import org.apache.directory.studio.schemaeditor.controller.SchemaHandler;
@@ -84,7 +84,7 @@ public class ImportSchemasFromXmlWizard extends Wizard implements IImportWizard
         final File[] selectedSchemasFiles = page.getSelectedSchemaFiles();
         schemaChecker.disableModificationsListening();
 
-        StudioRunnableWithProgress runnable = new StudioRunnableWithProgressAdapter()
+        StudioConnectionRunnableWithProgress runnable = new StudioConnectionRunnableWithProgressAdapter()
         {
             public void run( StudioProgressMonitor monitor )
             {

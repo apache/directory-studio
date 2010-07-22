@@ -29,7 +29,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.directory.studio.connection.core.jobs.OpenConnectionsRunnable;
-import org.apache.directory.studio.connection.core.jobs.StudioRunnableWithProgress;
+import org.apache.directory.studio.connection.core.jobs.StudioConnectionRunnableWithProgress;
 import org.apache.directory.studio.ldapbrowser.core.SearchManager;
 import org.apache.directory.studio.ldapbrowser.core.jobs.InitializeChildrenRunnable;
 import org.apache.directory.studio.ldapbrowser.core.jobs.SearchRunnable;
@@ -86,9 +86,9 @@ public class BrowserContentProvider implements ITreeContentProvider
         public void selectionChanged( SelectionChangedEvent event )
         {
             IStructuredSelection selection = ( IStructuredSelection ) event.getSelection();
-            if ( selection.size() == 1 && selection.getFirstElement() instanceof StudioRunnableWithProgress )
+            if ( selection.size() == 1 && selection.getFirstElement() instanceof StudioConnectionRunnableWithProgress )
             {
-                StudioRunnableWithProgress runnable = ( StudioRunnableWithProgress ) selection.getFirstElement();
+                StudioConnectionRunnableWithProgress runnable = ( StudioConnectionRunnableWithProgress ) selection.getFirstElement();
                 new StudioBrowserJob( runnable ).execute();
             }
         }

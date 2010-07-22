@@ -21,44 +21,22 @@
 package org.apache.directory.studio.connection.core.jobs;
 
 
-import org.apache.directory.studio.connection.core.Connection;
+import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 
 
 /**
- * An adapter class for StudioRunnableWithProgress.
+ * A runnable with a progess monitor. When invoked by the {@link StudioJob} 
+ * during the run() method all event notifications are blocked and the runNotification()
+ * method is called afterwards to fire event notifications.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public abstract class StudioRunnableWithProgressAdapter implements StudioRunnableWithProgress
+public interface StudioConnectionBulkRunnableWithProgress extends StudioConnectionRunnableWithProgress
 {
-
-    private static final Object[] EMPTY_OBJECT_ARRAY = new Object[0];
-    private static final Connection[] EMPTY_CONNECTION_ARRAY = new Connection[0];
-
-
     /**
-     * @return an empty array
+     * Runs notification, called by {@link StudioJob} after the run() method.
+     * 
+     * @param monitor the monitor
      */
-    public Object[] getLockedObjects()
-    {
-        return EMPTY_OBJECT_ARRAY;
-    }
-
-
-    /**
-     * @return empty string
-     */
-    public String getErrorMessage()
-    {
-        return "";
-    }
-
-
-    /**
-     * @return an empty array
-     */
-    public Connection[] getConnections()
-    {
-        return EMPTY_CONNECTION_ARRAY;
-    }
+    public void runNotification( StudioProgressMonitor monitor );
 }
