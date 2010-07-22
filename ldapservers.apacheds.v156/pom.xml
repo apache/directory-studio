@@ -115,14 +115,15 @@
             <Eclipse-LazyStart>true</Eclipse-LazyStart>
             <Bundle-Activator>org.apache.directory.studio.ldapserver.apacheds.v156.ApacheDS156Plugin</Bundle-Activator>
             <Require-Bundle>org.eclipse.core.runtime,
- org.eclipse.ui,
- org.eclipse.jface.text,
- org.eclipse.ui.ide,
- org.eclipse.jdt.launching,
  org.eclipse.debug.core,
  org.eclipse.debug.ui,
- org.apache.directory.studio.jars,
+ org.eclipse.jdt.launching,
+ org.eclipse.jface.text,
+ org.eclipse.ui,
+ org.eclipse.ui.ide,
+ org.apache.directory.studio.common.core,
  org.apache.directory.studio.common.ui,
+ org.apache.directory.studio.jars,
  org.apache.directory.studio.ldapservers
             </Require-Bundle>
             <Export-Package>org.apache.directory.studio.*</Export-Package>
@@ -524,12 +525,17 @@
   	<!-- Apache Directory Studio plugins dependencies -->
     <dependency>
       <groupId>org.apache.directory.studio</groupId>
-      <artifactId>jars</artifactId>
+      <artifactId>common.core</artifactId>
       <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.directory.studio</groupId>
       <artifactId>common.ui</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.directory.studio</groupId>
+      <artifactId>jars</artifactId>
       <scope>provided</scope>
     </dependency>
     <dependency>

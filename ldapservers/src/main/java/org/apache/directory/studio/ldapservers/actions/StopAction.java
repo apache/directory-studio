@@ -20,19 +20,16 @@
 package org.apache.directory.studio.ldapservers.actions;
 
 
-import java.io.IOException;
-
 import org.apache.directory.studio.ldapservers.LdapServersPlugin;
 import org.apache.directory.studio.ldapservers.LdapServersPluginConstants;
-import org.apache.directory.studio.ldapservers.jobs.StartLdapServerJob;
-import org.apache.directory.studio.ldapservers.jobs.StopLdapServerJob;
+import org.apache.directory.studio.ldapservers.jobs.StopLdapServerRunnable;
+import org.apache.directory.studio.ldapservers.jobs.StudioLdapServerJob;
 import org.apache.directory.studio.ldapservers.model.LdapServer;
 import org.apache.directory.studio.ldapservers.views.ServersView;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.StructuredSelection;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.IWorkbenchWindowActionDelegate;
 
@@ -99,7 +96,7 @@ public class StopAction extends Action implements IWorkbenchWindowActionDelegate
                 LdapServer server = ( LdapServer ) selection.getFirstElement();
 
                 // Creating and scheduling the job to stop the server
-                StopLdapServerJob job = new StopLdapServerJob( server );
+                StudioLdapServerJob job = new StudioLdapServerJob( new StopLdapServerRunnable( server ) );
                 job.schedule();
             }
         }

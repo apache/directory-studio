@@ -22,7 +22,8 @@ package org.apache.directory.studio.ldapservers.actions;
 
 import org.apache.directory.studio.ldapservers.LdapServersPlugin;
 import org.apache.directory.studio.ldapservers.LdapServersPluginConstants;
-import org.apache.directory.studio.ldapservers.jobs.StartLdapServerJob;
+import org.apache.directory.studio.ldapservers.jobs.StartLdapServerRunnable;
+import org.apache.directory.studio.ldapservers.jobs.StudioLdapServerJob;
 import org.apache.directory.studio.ldapservers.model.LdapServer;
 import org.apache.directory.studio.ldapservers.views.ServersView;
 import org.eclipse.jface.action.Action;
@@ -95,7 +96,7 @@ public class StartAction extends Action implements IWorkbenchWindowActionDelegat
                 LdapServer server = ( LdapServer ) selection.getFirstElement();
 
                 // Creating and scheduling the job to start the server
-                StartLdapServerJob job = new StartLdapServerJob( server );
+                StudioLdapServerJob job = new StudioLdapServerJob( new StartLdapServerRunnable( server ) );
                 job.schedule();
             }
         }

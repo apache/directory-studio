@@ -21,37 +21,36 @@
 package org.apache.directory.studio.ldapservers.jobs;
 
 
+import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
+import org.apache.directory.studio.common.core.jobs.StudioRunnableWithProgress;
+import org.apache.directory.studio.ldapservers.LdapServersPluginConstants;
 import org.apache.directory.studio.ldapservers.model.LdapServer;
 import org.apache.directory.studio.ldapservers.model.LdapServerAdapter;
 import org.apache.directory.studio.ldapservers.model.LdapServerAdapterExtension;
 import org.apache.directory.studio.ldapservers.model.LdapServerStatus;
-import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.osgi.util.NLS;
 
 
 /**
- * This class implements a {@link Job} that is used to start an LDAP Server.
+ * This class implements a {@link Job} that is used to stop an LDAP Server.
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class StartLdapServerJob extends Job
+public class StopLdapServerRunnable implements StudioRunnableWithProgress
 {
     /** The server */
     private LdapServer server;
 
 
     /**
-     * Creates a new instance of StartLdapServerJob.
+     * Creates a new instance of StartLdapServerRunnable.
      * 
      * @param server
      *            the LDAP Server
      */
-    public StartLdapServerJob( LdapServer server )
+    public StopLdapServerRunnable( LdapServer server )
     {
-        super( "" ); //$NON-NLS-1$
         this.server = server;
     }
 
@@ -59,18 +58,44 @@ public class StartLdapServerJob extends Job
     /**
      * {@inheritDoc}
      */
-    protected IStatus run( IProgressMonitor monitor )
+    public String getErrorMessage()
     {
-        // Setting the name of the Job
-        setName( NLS.bind( Messages.getString( "StartLdapServerJob.Starting" ), new String[] { server.getName() } ) ); //$NON-NLS-1$
+        return NLS.bind( "Unable to stop server ''{0}''", new String[]
+            { server.getName() } );
+    }
 
-        // Setting the status on the server to 'starting'
-        server.setStatus( LdapServerStatus.STARTING );
+
+    /**
+     * {@inheritDoc}
+     */
+    public Object[] getLockedObjects()
+    {
+        return new Object[]
+            { server };
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public String getName()
+    {
+        return NLS.bind( Messages.getString( "StopLdapServerRunnable.StopServer" ), new String[] { server.getName() } ); //$NON-NLS-1$;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public void run( StudioProgressMonitor monitor )
+    {
+        // Setting the status on the server to 'stopping'
+        server.setStatus( LdapServerStatus.STOPPING );
 
         // Starting a new watchdog thread
-        StartLdapServerWatchDogThread.runNewWatchDogThread( server );
+        StopLdapServerWatchDogThread.runNewWatchDogThread( server );
 
-        // Launching the 'start()' method of the LDAP Server Adapter
+        // Launching the 'stop()' of the LDAP Server Adapter
         LdapServerAdapterExtension ldapServerAdapterExtension = server.getLdapServerAdapterExtension();
         if ( ldapServerAdapterExtension != null )
         {
@@ -79,7 +104,8 @@ public class StartLdapServerJob extends Job
             {
                 try
                 {
-                    ldapServerAdapter.start( server, monitor );
+                    ldapServerAdapter.stop( server, new StudioProgressMonitor( LdapServersPluginConstants.PLUGIN_ID,
+                        monitor ) ); // TODO
                 }
                 catch ( Exception e )
                 {
@@ -88,7 +114,5 @@ public class StartLdapServerJob extends Job
                 }
             }
         }
-
-        return Status.OK_STATUS;
     }
 }

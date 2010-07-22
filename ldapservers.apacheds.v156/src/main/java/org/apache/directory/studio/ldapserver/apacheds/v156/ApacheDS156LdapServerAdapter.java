@@ -31,6 +31,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.directory.studio.common.CommonUiUtils;
+import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.ldapservers.LdapServersManager;
 import org.apache.directory.studio.ldapservers.model.LdapServer;
 import org.apache.directory.studio.ldapservers.model.LdapServerAdapter;
@@ -38,7 +39,6 @@ import org.apache.directory.studio.ldapservers.model.LdapServerStatus;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IPath;
-import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.debug.core.DebugException;
@@ -100,7 +100,7 @@ public class ApacheDS156LdapServerAdapter implements LdapServerAdapter
     /**
      * {@inheritDoc}
      */
-    public void add( LdapServer server, IProgressMonitor monitor ) throws Exception
+    public void add( LdapServer server, StudioProgressMonitor monitor ) throws Exception
     {
         // Verifying and copying ApacheDS 1.5.6 libraries
         monitor.subTask( "verifying and copying ApacheDS 1.5.6 libraries" );
@@ -123,7 +123,7 @@ public class ApacheDS156LdapServerAdapter implements LdapServerAdapter
         IPath resourceConfFolderPath = new Path( RESOURCES ).append( CONF );
         copyResource( resourceConfFolderPath.append( SERVER_XML ), new File( confFolder, SERVER_XML ) );
         copyResource( resourceConfFolderPath.append( LOG4J_PROPERTIES ), new File( confFolder, LOG4J_PROPERTIES ) );
-        
+
     }
 
 
@@ -139,7 +139,7 @@ public class ApacheDS156LdapServerAdapter implements LdapServerAdapter
     /**
      * {@inheritDoc}
      */
-    public void start( LdapServer server, IProgressMonitor monitor ) throws Exception
+    public void start( LdapServer server, StudioProgressMonitor monitor ) throws Exception
     {
         launchApacheDS( server );
 
@@ -239,7 +239,7 @@ public class ApacheDS156LdapServerAdapter implements LdapServerAdapter
     /**
      * {@inheritDoc}
      */
-    public void stop( LdapServer server, IProgressMonitor monitor ) throws Exception
+    public void stop( LdapServer server, StudioProgressMonitor monitor ) throws Exception
     {
         // Getting the launch
         ILaunch launch = ( ILaunch ) server.getCustomObject( "launchConfiguration" );

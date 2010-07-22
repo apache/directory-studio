@@ -115,12 +115,12 @@
             <Eclipse-LazyStart>true</Eclipse-LazyStart>
             <Bundle-Activator>org.apache.directory.studio.ldapservers.LdapServersPlugin</Bundle-Activator>
             <Require-Bundle>org.eclipse.core.runtime,
- org.eclipse.ui,
  org.eclipse.jface.text,
+ org.eclipse.ui,
  org.eclipse.ui.ide,
- org.apache.directory.studio.jars,
+ org.apache.directory.studio.common.core,
  org.apache.directory.studio.common.ui,
- org.apache.directory.studio.ldapbrowser.ui 
+ org.apache.directory.studio.jars
             </Require-Bundle>
             <Export-Package>org.apache.directory.studio.*</Export-Package>
             <Import-Package>!</Import-Package>
@@ -152,7 +152,7 @@
   	<!-- Apache Directory Studio plugins dependencies -->
     <dependency>
       <groupId>org.apache.directory.studio</groupId>
-      <artifactId>jars</artifactId>
+      <artifactId>common.core</artifactId>
       <scope>provided</scope>
     </dependency>
     <dependency>
@@ -162,7 +162,7 @@
     </dependency>
     <dependency>
       <groupId>org.apache.directory.studio</groupId>
-      <artifactId>ldapbrowser.ui</artifactId>
+      <artifactId>jars</artifactId>
       <scope>provided</scope>
     </dependency>
     

@@ -37,7 +37,7 @@ public class StartLdapServerWatchDogThread extends Thread
 
 
     /**
-     * Creates a new instance of StartLdapServerJob.
+     * Creates a new instance of StartLdapServerWatchDogThread.
      * 
      * @param server
      *            the LDAP Server

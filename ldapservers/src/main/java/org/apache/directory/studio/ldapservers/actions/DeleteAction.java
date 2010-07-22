@@ -110,7 +110,7 @@ public class DeleteAction extends Action implements IWorkbenchWindowActionDelega
                     //                    server.setStatus( LdapServerStatus.STOPPING ); // TODO
 
                     // Getting the launch job // TODO
-                    //                    StartLdapServerJob launchJob = server.getLaunchJob();
+                    //                    StartLdapServerRunnable launchJob = server.getLaunchJob();
                     //                    if ( launchJob != null )
                     //                    {
                     //                        // Getting the launch

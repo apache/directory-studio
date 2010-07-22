@@ -20,7 +20,9 @@
 package org.apache.directory.studio.ldapservers.wizards;
 
 
+import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.ldapservers.LdapServersManager;
+import org.apache.directory.studio.ldapservers.LdapServersPluginConstants;
 import org.apache.directory.studio.ldapservers.model.LdapServer;
 import org.apache.directory.studio.ldapservers.model.LdapServerAdapterExtension;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -85,7 +87,8 @@ public class NewServerWizard extends Wizard implements INewWizard
                     // Letting the LDAP Server Adapter finish the creation of the server
                     try
                     {
-                        adapterExtension.getInstance().add( server, monitor );
+                        adapterExtension.getInstance().add( server,
+                            new StudioProgressMonitor( LdapServersPluginConstants.PLUGIN_ID, monitor ) ); // TODO
                     }
                     catch ( Exception e )
                     {

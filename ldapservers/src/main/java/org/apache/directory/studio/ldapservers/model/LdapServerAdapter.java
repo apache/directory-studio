@@ -21,6 +21,7 @@
 package org.apache.directory.studio.ldapservers.model;
 
 
+import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.eclipse.core.runtime.IProgressMonitor;
 
 
@@ -39,7 +40,7 @@ public interface LdapServerAdapter
      *      the server
      * @throws Exception
      */
-    public void add( LdapServer server, IProgressMonitor monitor ) throws Exception;
+    public void add( LdapServer server, StudioProgressMonitor monitor ) throws Exception;
 
 
     /**
@@ -62,7 +63,7 @@ public interface LdapServerAdapter
      * @throws Exception
      *      if an error occurs when restarting the server
      */
-    public void start( LdapServer server, IProgressMonitor monitor ) throws Exception;
+    public void start( LdapServer server, StudioProgressMonitor monitor ) throws Exception;
 
 
     /**
@@ -75,5 +76,5 @@ public interface LdapServerAdapter
      * @throws Exception
      *      if an error occurs when restarting the server
      */
-    public void stop( LdapServer server, IProgressMonitor monitor ) throws Exception;
+    public void stop( LdapServer server, StudioProgressMonitor monitor ) throws Exception;
 }
