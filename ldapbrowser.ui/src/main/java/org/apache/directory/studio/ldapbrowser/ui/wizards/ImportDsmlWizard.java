@@ -23,7 +23,8 @@ package org.apache.directory.studio.ldapbrowser.ui.wizards;
 
 import java.io.File;
 
-import org.apache.directory.studio.ldapbrowser.core.jobs.ImportDsmlJob;
+import org.apache.directory.studio.ldapbrowser.core.jobs.ImportDsmlRunnable;
+import org.apache.directory.studio.ldapbrowser.core.jobs.StudioBrowserJob;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.IBookmark;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
@@ -108,11 +109,11 @@ public class ImportDsmlWizard extends Wizard implements IImportWizard
             if ( saveResponse )
             {
                 File responseFile = new File( responseFilename );
-                new ImportDsmlJob( importConnection, dsmlFile, responseFile ).execute();
+                new StudioBrowserJob( new ImportDsmlRunnable( importConnection, dsmlFile, responseFile ) ).execute();
             }
             else
             {
-                new ImportDsmlJob( importConnection, dsmlFile ).execute();
+                new StudioBrowserJob( new ImportDsmlRunnable( importConnection, dsmlFile ) ).execute();
             }
 
             return true;
@@ -176,8 +177,8 @@ public class ImportDsmlWizard extends Wizard implements IImportWizard
         super.createPageControls( pageContainer );
 
         // set help context ID
-        PlatformUI.getWorkbench().getHelpSystem().setHelp( mainPage.getControl(),
-            BrowserUIConstants.PLUGIN_ID + "." + "tools_dsmlimport_wizard" ); //$NON-NLS-1$ //$NON-NLS-2$
+        PlatformUI.getWorkbench().getHelpSystem()
+            .setHelp( mainPage.getControl(), BrowserUIConstants.PLUGIN_ID + "." + "tools_dsmlimport_wizard" ); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
 

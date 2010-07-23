@@ -46,7 +46,6 @@ import org.apache.directory.studio.ldapbrowser.core.model.impl.Search;
  */
 public class ReadEntryRunnable implements StudioConnectionBulkRunnableWithProgress
 {
-
     /** The browser connection. */
     private IBrowserConnection browserConnection;
 
@@ -97,17 +96,6 @@ public class ReadEntryRunnable implements StudioConnectionBulkRunnableWithProgre
     {
         return new Object[]
             { browserConnection };
-    }
-
-
-    /**
-     * Gets the read entry.
-     * 
-     * @return the read entry
-     */
-    public IEntry getReadEntry()
-    {
-        return readEntry;
     }
 
 
@@ -190,4 +178,14 @@ public class ReadEntryRunnable implements StudioConnectionBulkRunnableWithProgre
         }
     }
 
+
+    /**
+     * Gets the read entry.
+     * 
+     * @return the read entry
+     */
+    public IEntry getReadEntry()
+    {
+        return readEntry;
+    }
 }

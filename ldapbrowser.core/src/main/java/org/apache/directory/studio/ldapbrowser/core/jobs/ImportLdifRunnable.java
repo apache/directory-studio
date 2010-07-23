@@ -53,6 +53,7 @@ import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.ConnectionCoreConstants;
 import org.apache.directory.studio.connection.core.DnUtils;
+import org.apache.directory.studio.connection.core.jobs.StudioConnectionBulkRunnableWithProgress;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.ldapbrowser.core.events.BulkModificationEvent;
 import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
@@ -79,13 +80,12 @@ import org.apache.directory.studio.ldifparser.parser.LdifParser;
 
 
 /**
- * Job used to import an LDIF file.
+ * Runnable used to import an LDIF file.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class ImportLdifJob extends AbstractNotificationJob
+public class ImportLdifRunnable implements StudioConnectionBulkRunnableWithProgress
 {
-
     /** The browser connection. */
     private IBrowserConnection browserConnection;
 
@@ -103,7 +103,7 @@ public class ImportLdifJob extends AbstractNotificationJob
 
 
     /**
-     * Creates a new instance of ImportLdifJob.
+     * Creates a new instance of ImportLdifRunnable.
      * 
      * @param browserConnection the browser connection
      * @param ldifFile the LDIF file
@@ -111,7 +111,7 @@ public class ImportLdifJob extends AbstractNotificationJob
      * @param updateIfEntryExists the update if entry exists flag
      * @param continueOnError the continue on error flag
      */
-    public ImportLdifJob( IBrowserConnection browserConnection, File ldifFile, File logFile,
+    public ImportLdifRunnable( IBrowserConnection browserConnection, File ldifFile, File logFile,
         boolean updateIfEntryExists, boolean continueOnError )
     {
         this.browserConnection = browserConnection;
@@ -119,20 +119,18 @@ public class ImportLdifJob extends AbstractNotificationJob
         this.logFile = logFile;
         this.continueOnError = continueOnError;
         this.updateIfEntryExists = updateIfEntryExists;
-
-        setName( BrowserCoreMessages.jobs__import_ldif_name );
     }
 
 
     /**
-     * Creates a new instance of ImportLdifJob.
+     * Creates a new instance of ImportLdifRunnable.
      * 
      * @param connection the connection
      * @param ldifFile the LDIF file
      * @param updateIfEntryExists the update if entry exists flag
      * @param continueOnError the continue on error flag
      */
-    public ImportLdifJob( IBrowserConnection connection, File ldifFile, boolean updateIfEntryExists,
+    public ImportLdifRunnable( IBrowserConnection connection, File ldifFile, boolean updateIfEntryExists,
         boolean continueOnError )
     {
         this( connection, ldifFile, null, updateIfEntryExists, continueOnError );
@@ -142,7 +140,7 @@ public class ImportLdifJob extends AbstractNotificationJob
     /**
      * {@inheritDoc}
      */
-    protected Connection[] getConnections()
+    public Connection[] getConnections()
     {
         return new Connection[]
             { browserConnection.getConnection() };
@@ -152,7 +150,16 @@ public class ImportLdifJob extends AbstractNotificationJob
     /**
      * {@inheritDoc}
      */
-    protected Object[] getLockedObjects()
+    public String getName()
+    {
+        return BrowserCoreMessages.jobs__import_ldif_name;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public Object[] getLockedObjects()
     {
         List<Object> l = new ArrayList<Object>();
         l.add( browserConnection.getUrl() + "_" + DigestUtils.shaHex( ldifFile.toString() ) );
@@ -163,7 +170,16 @@ public class ImportLdifJob extends AbstractNotificationJob
     /**
      * {@inheritDoc}
      */
-    protected void executeNotificationJob( StudioProgressMonitor monitor )
+    public String getErrorMessage()
+    {
+        return BrowserCoreMessages.jobs__import_ldif_error;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public void run( StudioProgressMonitor monitor )
     {
         monitor.beginTask( BrowserCoreMessages.jobs__import_ldif_task, 2 );
         monitor.reportProgress( " " ); //$NON-NLS-1$
@@ -215,16 +231,7 @@ public class ImportLdifJob extends AbstractNotificationJob
     /**
      * {@inheritDoc}
      */
-    protected String getErrorMessage()
-    {
-        return BrowserCoreMessages.jobs__import_ldif_error;
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    protected void runNotification()
+    public void runNotification( StudioProgressMonitor monitor )
     {
         EventRegistry.fireEntryUpdated( new BulkModificationEvent( browserConnection ), this );
     }
@@ -453,8 +460,8 @@ public class ImportLdifJob extends AbstractNotificationJob
                 }
             }
 
-            browserConnection.getConnection().getJNDIConnectionWrapper().createEntry( dn, jndiAttributes,
-                getControls( record ), monitor, null );
+            browserConnection.getConnection().getJNDIConnectionWrapper()
+                .createEntry( dn, jndiAttributes, getControls( record ), monitor, null );
 
             if ( monitor.errorsReported() && updateIfEntryExists
                 && monitor.getException() instanceof NameAlreadyBoundException )
@@ -463,15 +470,15 @@ public class ImportLdifJob extends AbstractNotificationJob
                 monitor.reset();
 
                 ModificationItem[] mis = ModelConverter.entryToReplaceModificationItems( dummyEntry );
-                browserConnection.getConnection().getJNDIConnectionWrapper().modifyEntry( dn, mis,
-                    getControls( record ), monitor, null );
+                browserConnection.getConnection().getJNDIConnectionWrapper()
+                    .modifyEntry( dn, mis, getControls( record ), monitor, null );
             }
         }
         else if ( record instanceof LdifChangeDeleteRecord )
         {
             LdifChangeDeleteRecord changeDeleteRecord = ( LdifChangeDeleteRecord ) record;
-            browserConnection.getConnection().getJNDIConnectionWrapper().deleteEntry( dn,
-                getControls( changeDeleteRecord ), monitor, null );
+            browserConnection.getConnection().getJNDIConnectionWrapper()
+                .deleteEntry( dn, getControls( changeDeleteRecord ), monitor, null );
         }
         else if ( record instanceof LdifChangeModifyRecord )
         {
@@ -503,8 +510,8 @@ public class ImportLdifJob extends AbstractNotificationJob
                 }
             }
 
-            browserConnection.getConnection().getJNDIConnectionWrapper().modifyEntry( dn, mis,
-                getControls( modifyRecord ), monitor, null );
+            browserConnection.getConnection().getJNDIConnectionWrapper()
+                .modifyEntry( dn, mis, getControls( modifyRecord ), monitor, null );
         }
         else if ( record instanceof LdifChangeModDnRecord )
         {
@@ -526,8 +533,8 @@ public class ImportLdifJob extends AbstractNotificationJob
                     newDn = DnUtils.composeDn( newRdn, parent.getUpName() );
                 }
 
-                browserConnection.getConnection().getJNDIConnectionWrapper().renameEntry( dn, newDn.toString(),
-                    deleteOldRdn, getControls( modDnRecord ), monitor, null );
+                browserConnection.getConnection().getJNDIConnectionWrapper()
+                    .renameEntry( dn, newDn.toString(), deleteOldRdn, getControls( modDnRecord ), monitor, null );
             }
         }
     }
@@ -551,8 +558,8 @@ public class ImportLdifJob extends AbstractNotificationJob
             for ( int i = 0; i < controlLines.length; i++ )
             {
                 LdifControlLine line = controlLines[i];
-                controls[i] = new BasicControl( line.getUnfoldedOid(), line.isCritical(), line
-                    .getControlValueAsBinary() );
+                controls[i] = new BasicControl( line.getUnfoldedOid(), line.isCritical(),
+                    line.getControlValueAsBinary() );
             }
         }
         return controls;

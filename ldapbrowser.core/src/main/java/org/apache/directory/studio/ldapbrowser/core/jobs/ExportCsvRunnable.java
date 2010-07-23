@@ -34,10 +34,11 @@ import javax.naming.NamingException;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.Connection;
+import org.apache.directory.studio.connection.core.jobs.StudioConnectionRunnableWithProgress;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreConstants;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
-import org.apache.directory.studio.ldapbrowser.core.jobs.ExportLdifJob.JndiLdifEnumeration;
+import org.apache.directory.studio.ldapbrowser.core.jobs.ExportLdifRunnable.JndiLdifEnumeration;
 import org.apache.directory.studio.ldapbrowser.core.model.AttributeDescription;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.SearchParameter;
@@ -50,13 +51,12 @@ import org.eclipse.core.runtime.Preferences;
 
 
 /**
- * Job to export directory content to an CSV file.
+ * Runnable to export directory content to an CSV file.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class ExportCsvJob extends AbstractEclipseJob
+public class ExportCsvRunnable implements StudioConnectionRunnableWithProgress
 {
-
     /** The filename of the CSV file. */
     private String exportCsvFilename;
 
@@ -71,29 +71,27 @@ public class ExportCsvJob extends AbstractEclipseJob
 
 
     /**
-     * Creates a new instance of ExportCsvJob.
+     * Creates a new instance of ExportCsvRunnable.
      * 
      * @param exportCsvFilename the filename of the csv file
      * @param browserConnection the browser connection
      * @param searchParameter the search parameter
      * @param exportDn true to export the DN
      */
-    public ExportCsvJob( String exportCsvFilename, IBrowserConnection browserConnection,
+    public ExportCsvRunnable( String exportCsvFilename, IBrowserConnection browserConnection,
         SearchParameter searchParameter, boolean exportDn )
     {
         this.exportCsvFilename = exportCsvFilename;
         this.browserConnection = browserConnection;
         this.searchParameter = searchParameter;
         this.exportDn = exportDn;
-
-        setName( BrowserCoreMessages.jobs__export_csv_name );
     }
 
 
     /**
-     * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractEclipseJob#getConnections()
+     * {@inheritDoc}
      */
-    protected Connection[] getConnections()
+    public Connection[] getConnections()
     {
         return new Connection[]
             { browserConnection.getConnection() };
@@ -101,9 +99,18 @@ public class ExportCsvJob extends AbstractEclipseJob
 
 
     /**
-     * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractEclipseJob#getLockedObjects()
+     * {@inheritDoc}
      */
-    protected Object[] getLockedObjects()
+    public String getName()
+    {
+        return BrowserCoreMessages.jobs__export_csv_name;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public Object[] getLockedObjects()
     {
         return new Object[]
             { browserConnection.getUrl() + "_" + DigestUtils.shaHex( exportCsvFilename ) };
@@ -111,9 +118,18 @@ public class ExportCsvJob extends AbstractEclipseJob
 
 
     /**
-     * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractEclipseJob#executeAsyncJob(org.apache.directory.studio.connection.core.jobs.StudioProgressMonitor)
+     * {@inheritDoc}
      */
-    protected void executeAsyncJob( StudioProgressMonitor monitor )
+    public String getErrorMessage()
+    {
+        return BrowserCoreMessages.jobs__export_cvs_error;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public void run( StudioProgressMonitor monitor )
     {
         monitor.beginTask( BrowserCoreMessages.jobs__export_csv_task, 2 );
         monitor.reportProgress( " " ); //$NON-NLS-1$
@@ -195,7 +211,7 @@ public class ExportCsvJob extends AbstractEclipseJob
     {
         try
         {
-            JndiLdifEnumeration enumeration = ExportLdifJob.search( browserConnection, searchParameter, monitor );
+            JndiLdifEnumeration enumeration = ExportLdifRunnable.search( browserConnection, searchParameter, monitor );
             while ( !monitor.isCanceled() && !monitor.errorsReported() && enumeration.hasNext() )
             {
                 LdifContainer container = enumeration.next();
@@ -364,14 +380,4 @@ public class ExportCsvJob extends AbstractEclipseJob
         }
         return attributeMap;
     }
-
-
-    /**
-     * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractEclipseJob#getErrorMessage()
-     */
-    protected String getErrorMessage()
-    {
-        return BrowserCoreMessages.jobs__export_cvs_error;
-    }
-
 }

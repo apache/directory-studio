@@ -40,9 +40,10 @@ import org.apache.directory.studio.ldapbrowser.core.model.impl.DirectoryMetadata
  */
 public class FetchBaseDNsRunnable implements StudioConnectionBulkRunnableWithProgress
 {
-
+    /** The connection */
     private IBrowserConnection connection;
 
+    /** The base DNs*/
     private List<String> baseDNs;
 
 
@@ -89,6 +90,15 @@ public class FetchBaseDNsRunnable implements StudioConnectionBulkRunnableWithPro
     /**
      * {@inheritDoc}
      */
+    public String getErrorMessage()
+    {
+        return BrowserCoreMessages.jobs__fetch_basedns_error;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
     public void run( StudioProgressMonitor monitor )
     {
         monitor.beginTask( BrowserCoreMessages.jobs__fetch_basedns_task, 5 );
@@ -116,9 +126,8 @@ public class FetchBaseDNsRunnable implements StudioConnectionBulkRunnableWithPro
     /**
      * {@inheritDoc}
      */
-    public String getErrorMessage()
+    public void runNotification( StudioProgressMonitor monitor )
     {
-        return BrowserCoreMessages.jobs__fetch_basedns_error;
     }
 
 
@@ -131,13 +140,4 @@ public class FetchBaseDNsRunnable implements StudioConnectionBulkRunnableWithPro
     {
         return baseDNs;
     }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    public void runNotification( StudioProgressMonitor monitor )
-    {
-    }
-
 }

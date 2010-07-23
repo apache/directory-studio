@@ -35,7 +35,8 @@ import org.apache.directory.shared.ldap.schema.parsers.ObjectClassDescription;
 import org.apache.directory.studio.connection.core.StudioControl;
 import org.apache.directory.studio.ldapbrowser.common.dialogs.DeleteDialog;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreConstants;
-import org.apache.directory.studio.ldapbrowser.core.jobs.DeleteEntriesJob;
+import org.apache.directory.studio.ldapbrowser.core.jobs.DeleteEntriesRunnable;
+import org.apache.directory.studio.ldapbrowser.core.jobs.StudioBrowserJob;
 import org.apache.directory.studio.ldapbrowser.core.model.AttributeHierarchy;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.IBookmark;
@@ -135,8 +136,8 @@ public class DeleteAction extends BrowserAction
             {
                 appendEntriesWarnMessage( message, entries );
 
-                if ( entries.iterator().next().getBrowserConnection().getRootDSE().isControlSupported(
-                    StudioControl.TREEDELETE_CONTROL.getOid() ) )
+                if ( entries.iterator().next().getBrowserConnection().getRootDSE()
+                    .isControlSupported( StudioControl.TREEDELETE_CONTROL.getOid() ) )
                 {
                     askForTreeDeleteControl = true;
                 }
@@ -298,7 +299,7 @@ public class DeleteAction extends BrowserAction
      */
     protected void deleteEntries( Collection<IEntry> entries, boolean useTreeDeleteControl )
     {
-        new DeleteEntriesJob( entries, useTreeDeleteControl ).execute();
+        new StudioBrowserJob( new DeleteEntriesRunnable( entries, useTreeDeleteControl ) ).execute();
     }
 
 

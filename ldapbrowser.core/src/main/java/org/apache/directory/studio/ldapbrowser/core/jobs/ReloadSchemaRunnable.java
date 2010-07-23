@@ -48,7 +48,6 @@ import org.apache.directory.studio.ldifparser.model.container.LdifContentRecord;
  */
 public class ReloadSchemaRunnable implements StudioConnectionBulkRunnableWithProgress
 {
-
     /** The browser connection. */
     private IBrowserConnection browserConnection;
 
@@ -96,6 +95,15 @@ public class ReloadSchemaRunnable implements StudioConnectionBulkRunnableWithPro
     /**
      * {@inheritDoc}
      */
+    public String getErrorMessage()
+    {
+        return BrowserCoreMessages.jobs__reload_schemas_error_1;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
     public void run( StudioProgressMonitor monitor )
     {
         monitor.beginTask( " ", 3 ); //$NON-NLS-1$
@@ -120,15 +128,6 @@ public class ReloadSchemaRunnable implements StudioConnectionBulkRunnableWithPro
         BrowserConnectionUpdateEvent browserConnectionUpdateEvent = new BrowserConnectionUpdateEvent(
             browserConnection, BrowserConnectionUpdateEvent.Detail.SCHEMA_UPDATED );
         EventRegistry.fireBrowserConnectionUpdated( browserConnectionUpdateEvent, this );
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    public String getErrorMessage()
-    {
-        return BrowserCoreMessages.jobs__reload_schemas_error_1;
     }
 
 
@@ -171,7 +170,7 @@ public class ReloadSchemaRunnable implements StudioConnectionBulkRunnableWithPro
                         SchemaConstants.MATCHING_RULE_USE_AT, SchemaConstants.CREATE_TIMESTAMP_AT,
                         SchemaConstants.MODIFY_TIMESTAMP_AT } );
 
-                LdifEnumeration le = ExportLdifJob.search( browserConnection, sp, monitor );
+                LdifEnumeration le = ExportLdifRunnable.search( browserConnection, sp, monitor );
                 if ( le.hasNext() )
                 {
                     LdifContentRecord schemaRecord = ( LdifContentRecord ) le.next();

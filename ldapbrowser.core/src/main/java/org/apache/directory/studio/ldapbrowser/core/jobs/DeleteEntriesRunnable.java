@@ -42,6 +42,7 @@ import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
 import org.apache.directory.studio.connection.core.Connection.ReferralHandlingMethod;
+import org.apache.directory.studio.connection.core.jobs.StudioConnectionBulkRunnableWithProgress;
 import org.apache.directory.studio.connection.core.StudioControl;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.ldapbrowser.core.events.BulkModificationEvent;
@@ -55,7 +56,7 @@ import org.apache.directory.studio.ldapbrowser.core.utils.JNDIUtils;
 
 
 /**
- * Job to delete entries.
+ * Runnable to delete entries.
  * 
  * Deletes the entry recursively in a optimistic way:
  * <ol>
@@ -68,9 +69,8 @@ import org.apache.directory.studio.ldapbrowser.core.utils.JNDIUtils;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class DeleteEntriesJob extends AbstractNotificationJob
+public class DeleteEntriesRunnable implements StudioConnectionBulkRunnableWithProgress
 {
-
     /** The entries to delete. */
     private Collection<IEntry> entriesToDelete;
 
@@ -85,24 +85,24 @@ public class DeleteEntriesJob extends AbstractNotificationJob
 
 
     /**
-     * Creates a new instance of DeleteEntriesJob. 
+     * Creates a new instance of DeleteEntriesRunnable. 
      * 
      * @param entriesToDelete the entries to delete
      */
-    public DeleteEntriesJob( final Collection<IEntry> entriesToDelete, boolean useTreeDeleteControl )
+    public DeleteEntriesRunnable( final Collection<IEntry> entriesToDelete, boolean useTreeDeleteControl )
     {
         this.entriesToDelete = entriesToDelete;
         this.useTreeDeleteControl = useTreeDeleteControl;
 
         this.deletedEntriesSet = new HashSet<IEntry>();
         this.searchesToUpdateSet = new HashSet<ISearch>();
-
-        setName( entriesToDelete.size() == 1 ? BrowserCoreMessages.jobs__delete_entries_name_1
-            : BrowserCoreMessages.jobs__delete_entries_name_n );
     }
 
 
-    protected Connection[] getConnections()
+    /**
+     * {@inheritDoc}
+     */
+    public Connection[] getConnections()
     {
         Connection[] connections = new Connection[entriesToDelete.size()];
         int i = 0;
@@ -115,7 +115,20 @@ public class DeleteEntriesJob extends AbstractNotificationJob
     }
 
 
-    protected Object[] getLockedObjects()
+    /**
+     * {@inheritDoc}
+     */
+    public String getName()
+    {
+        return entriesToDelete.size() == 1 ? BrowserCoreMessages.jobs__delete_entries_name_1
+            : BrowserCoreMessages.jobs__delete_entries_name_n;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public Object[] getLockedObjects()
     {
         List<IEntry> l = new ArrayList<IEntry>();
         l.addAll( entriesToDelete );
@@ -123,13 +136,27 @@ public class DeleteEntriesJob extends AbstractNotificationJob
     }
 
 
-    protected void executeNotificationJob( StudioProgressMonitor monitor )
+    /**
+     * {@inheritDoc}
+     */
+    public String getErrorMessage()
     {
-        monitor.beginTask( entriesToDelete.size() == 1 ? BrowserCoreMessages.bind(
-            BrowserCoreMessages.jobs__delete_entries_task_1, new String[]
-                { entriesToDelete.iterator().next().getDn().getUpName() } ) : BrowserCoreMessages.bind(
-            BrowserCoreMessages.jobs__delete_entries_task_n, new String[]
-                { Integer.toString( entriesToDelete.size() ) } ), 2 + entriesToDelete.size() );
+        return entriesToDelete.size() == 1 ? BrowserCoreMessages.jobs__delete_entries_error_1
+            : BrowserCoreMessages.jobs__delete_entries_error_n;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public void run( StudioProgressMonitor monitor )
+    {
+        monitor.beginTask(
+            entriesToDelete.size() == 1 ? BrowserCoreMessages.bind( BrowserCoreMessages.jobs__delete_entries_task_1,
+                new String[]
+                    { entriesToDelete.iterator().next().getDn().getUpName() } ) : BrowserCoreMessages.bind(
+                BrowserCoreMessages.jobs__delete_entries_task_n, new String[]
+                    { Integer.toString( entriesToDelete.size() ) } ), 2 + entriesToDelete.size() );
         monitor.reportProgress( " " ); //$NON-NLS-1$
         monitor.worked( 1 );
 
@@ -200,6 +227,25 @@ public class DeleteEntriesJob extends AbstractNotificationJob
 
 
     /**
+     * {@inheritDoc}
+     */
+    public void runNotification( StudioProgressMonitor monitor )
+    {
+        // don't fire an EntryDeletedEvent for each deleted entry
+        // that would cause massive UI updates
+        // instead we unset children information and fire a BulkModificationEvent
+        IBrowserConnection browserConnection = entriesToDelete.iterator().next().getBrowserConnection();
+        EventRegistry.fireEntryUpdated( new BulkModificationEvent( browserConnection ), this );
+
+        for ( ISearch search : searchesToUpdateSet )
+        {
+            EventRegistry.fireSearchUpdated( new SearchUpdateEvent( search,
+                SearchUpdateEvent.EventDetail.SEARCH_PERFORMED ), this );
+        }
+    }
+
+
+    /**
      * Deletes the entry recursively in a optimistic way:
      * <ol>
      * <li>Deletes the entry
@@ -249,7 +295,9 @@ public class DeleteEntriesJob extends AbstractNotificationJob
                 searchControls.setCountLimit( 1000 );
                 searchControls.setReturningAttributes( new String[0] );
                 searchControls.setSearchScope( SearchControls.ONELEVEL_SCOPE );
-                NamingEnumeration<SearchResult> result = browserConnection.getConnection().getJNDIConnectionWrapper()
+                NamingEnumeration<SearchResult> result = browserConnection
+                    .getConnection()
+                    .getJNDIConnectionWrapper()
                     .search( dn.getUpName(), ISearch.FILTER_TRUE, searchControls, aliasDereferencingMethod,
                         referralsHandlingMethod, null, dummyMonitor, null );
 
@@ -309,29 +357,6 @@ public class DeleteEntriesJob extends AbstractNotificationJob
     }
 
 
-    protected void runNotification()
-    {
-        // don't fire an EntryDeletedEvent for each deleted entry
-        // that would cause massive UI updates
-        // instead we unset children information and fire a BulkModificationEvent
-        IBrowserConnection browserConnection = entriesToDelete.iterator().next().getBrowserConnection();
-        EventRegistry.fireEntryUpdated( new BulkModificationEvent( browserConnection ), this );
-
-        for ( ISearch search : searchesToUpdateSet )
-        {
-            EventRegistry.fireSearchUpdated( new SearchUpdateEvent( search,
-                SearchUpdateEvent.EventDetail.SEARCH_PERFORMED ), this );
-        }
-    }
-
-
-    protected String getErrorMessage()
-    {
-        return entriesToDelete.size() == 1 ? BrowserCoreMessages.jobs__delete_entries_error_1
-            : BrowserCoreMessages.jobs__delete_entries_error_n;
-    }
-
-
     static void deleteEntry( IBrowserConnection browserConnection, LdapDN dn, boolean useManageDsaItControl,
         boolean useTreeDeleteControl, StudioProgressMonitor monitor )
     {
@@ -354,9 +379,8 @@ public class DeleteEntriesJob extends AbstractNotificationJob
         // delete entry
         if ( browserConnection.getConnection() != null )
         {
-            browserConnection.getConnection().getJNDIConnectionWrapper().deleteEntry( dn.getUpName(), controls,
-                monitor, null );
+            browserConnection.getConnection().getJNDIConnectionWrapper()
+                .deleteEntry( dn.getUpName(), controls, monitor, null );
         }
     }
-
 }

@@ -54,7 +54,6 @@ import org.apache.directory.studio.ldapbrowser.core.model.schema.SchemaUtils;
  */
 public class InitializeAttributesRunnable implements StudioConnectionBulkRunnableWithProgress
 {
-
     /** The entries. */
     private IEntry[] entries;
 

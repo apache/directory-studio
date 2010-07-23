@@ -21,7 +21,8 @@
 package org.apache.directory.studio.ldapbrowser.ui.wizards;
 
 
-import org.apache.directory.studio.ldapbrowser.core.jobs.ExportOdfJob;
+import org.apache.directory.studio.ldapbrowser.core.jobs.ExportOdfRunnable;
+import org.apache.directory.studio.ldapbrowser.core.jobs.StudioBrowserJob;
 import org.apache.directory.studio.ldapbrowser.ui.BrowserUIConstants;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.PlatformUI;
@@ -82,10 +83,10 @@ public class ExportOdfWizard extends ExportBaseWizard
         super.createPageControls( pageContainer );
 
         // set help context ID
-        PlatformUI.getWorkbench().getHelpSystem().setHelp( fromPage.getControl(),
-            BrowserUIConstants.PLUGIN_ID + "." + "tools_odfexport_wizard" ); //$NON-NLS-1$ //$NON-NLS-2$
-        PlatformUI.getWorkbench().getHelpSystem().setHelp( toPage.getControl(),
-            BrowserUIConstants.PLUGIN_ID + "." + "tools_odfexport_wizard" ); //$NON-NLS-1$ //$NON-NLS-2$
+        PlatformUI.getWorkbench().getHelpSystem()
+            .setHelp( fromPage.getControl(), BrowserUIConstants.PLUGIN_ID + "." + "tools_odfexport_wizard" ); //$NON-NLS-1$ //$NON-NLS-2$
+        PlatformUI.getWorkbench().getHelpSystem()
+            .setHelp( toPage.getControl(), BrowserUIConstants.PLUGIN_ID + "." + "tools_odfexport_wizard" ); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
 
@@ -98,9 +99,8 @@ public class ExportOdfWizard extends ExportBaseWizard
         toPage.saveDialogSettings();
         boolean exportDn = this.fromPage.isExportDn();
 
-        ExportOdfJob eoj = new ExportOdfJob( exportFilename, search.getBrowserConnection(),
-            search.getSearchParameter(), exportDn );
-        eoj.execute();
+        new StudioBrowserJob( new ExportOdfRunnable( exportFilename, search.getBrowserConnection(),
+            search.getSearchParameter(), exportDn ) ).execute();
 
         return true;
     }

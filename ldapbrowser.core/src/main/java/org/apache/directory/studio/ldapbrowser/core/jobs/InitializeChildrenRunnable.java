@@ -55,7 +55,6 @@ import org.apache.directory.studio.ldapbrowser.core.model.impl.SearchContinuatio
  */
 public class InitializeChildrenRunnable implements StudioConnectionBulkRunnableWithProgress
 {
-
     /** The entries. */
     private IEntry[] entries;
 
@@ -454,5 +453,4 @@ public class InitializeChildrenRunnable implements StudioConnectionBulkRunnableW
             entry.setHasMoreChildren( false );
         }
     }
-
 }

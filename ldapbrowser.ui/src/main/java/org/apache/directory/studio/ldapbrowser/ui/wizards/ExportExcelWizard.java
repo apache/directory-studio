@@ -21,7 +21,8 @@
 package org.apache.directory.studio.ldapbrowser.ui.wizards;
 
 
-import org.apache.directory.studio.ldapbrowser.core.jobs.ExportXlsJob;
+import org.apache.directory.studio.ldapbrowser.core.jobs.ExportXlsRunnable;
+import org.apache.directory.studio.ldapbrowser.core.jobs.StudioBrowserJob;
 import org.apache.directory.studio.ldapbrowser.ui.BrowserUIConstants;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.PlatformUI;
@@ -82,10 +83,10 @@ public class ExportExcelWizard extends ExportBaseWizard
         super.createPageControls( pageContainer );
 
         // set help context ID
-        PlatformUI.getWorkbench().getHelpSystem().setHelp( fromPage.getControl(),
-            BrowserUIConstants.PLUGIN_ID + "." + "tools_excelexport_wizard" ); //$NON-NLS-1$ //$NON-NLS-2$
-        PlatformUI.getWorkbench().getHelpSystem().setHelp( toPage.getControl(),
-            BrowserUIConstants.PLUGIN_ID + "." + "tools_excelexport_wizard" ); //$NON-NLS-1$ //$NON-NLS-2$
+        PlatformUI.getWorkbench().getHelpSystem()
+            .setHelp( fromPage.getControl(), BrowserUIConstants.PLUGIN_ID + "." + "tools_excelexport_wizard" ); //$NON-NLS-1$ //$NON-NLS-2$
+        PlatformUI.getWorkbench().getHelpSystem()
+            .setHelp( toPage.getControl(), BrowserUIConstants.PLUGIN_ID + "." + "tools_excelexport_wizard" ); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
 
@@ -98,9 +99,8 @@ public class ExportExcelWizard extends ExportBaseWizard
         toPage.saveDialogSettings();
         boolean exportDn = this.fromPage.isExportDn();
 
-        ExportXlsJob eej = new ExportXlsJob( exportFilename, search.getBrowserConnection(),
-            search.getSearchParameter(), exportDn );
-        eej.execute();
+        new StudioBrowserJob( new ExportXlsRunnable( exportFilename, search.getBrowserConnection(),
+            search.getSearchParameter(), exportDn ) ).execute();
 
         return true;
     }

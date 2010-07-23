@@ -29,7 +29,8 @@ import java.util.List;
 import org.apache.directory.shared.ldap.name.Rdn;
 import org.apache.directory.studio.ldapbrowser.common.dialogs.RenameEntryDialog;
 import org.apache.directory.studio.ldapbrowser.common.dialogs.SimulateRenameDialogImpl;
-import org.apache.directory.studio.ldapbrowser.core.jobs.RenameEntryJob;
+import org.apache.directory.studio.ldapbrowser.core.jobs.RenameEntryRunnable;
+import org.apache.directory.studio.ldapbrowser.core.jobs.StudioBrowserJob;
 import org.apache.directory.studio.ldapbrowser.core.model.AttributeHierarchy;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
@@ -144,8 +145,8 @@ public class RenameValueEditor extends CellEditor implements IValueEditor
                     if ( newRdn != null && !newRdn.equals( entry.getRdn() ) )
                     {
                         IEntry originalEntry = entry.getBrowserConnection().getEntryFromCache( entry.getDn() );
-                        new RenameEntryJob( originalEntry, newRdn, new SimulateRenameDialogImpl( parent.getShell() ) )
-                            .execute();
+                        new StudioBrowserJob( new RenameEntryRunnable( originalEntry, newRdn,
+                            new SimulateRenameDialogImpl( parent.getShell() ) ) ).execute();
                     }
                 }
             }

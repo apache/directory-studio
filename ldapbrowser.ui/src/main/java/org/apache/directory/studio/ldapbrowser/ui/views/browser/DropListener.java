@@ -239,7 +239,7 @@ public class DropListener /* implements DropTargetListener, ModelModifier */
 * (IEntry[]) objectToTransfer; if (entries != null && entries.length >
 * 0) { if(internalClipboard.getOperationType() ==
 * InternalClipboard.TYPE_DUPLICATE_OPERATION) new
-* CopyEntriesJob(selectedEntries[0], entries).execute(); else
+* CopyEntriesRunnable(selectedEntries[0], entries).execute(); else
 * if(internalClipboard.getOperationType() ==
 * InternalClipboard.TYPE_MOVE_OPERATION) this.move(selectedEntries[0],
 * entries); } } else if (objectToTransfer != null && objectToTransfer
@@ -250,7 +250,7 @@ public class DropListener /* implements DropTargetListener, ModelModifier */
 * i++) { entries[i] = searchResults[i].getEntry(); } if (entries !=
 * null && entries.length > 0) { if(internalClipboard.getOperationType() ==
 * InternalClipboard.TYPE_DUPLICATE_OPERATION) new
-* CopyEntriesJob(selectedEntries[0], entries).execute(); else
+* CopyEntriesRunnable(selectedEntries[0], entries).execute(); else
 * if(internalClipboard.getOperationType() ==
 * InternalClipboard.TYPE_MOVE_OPERATION) this.move(selectedEntries[0],
 * entries); } }

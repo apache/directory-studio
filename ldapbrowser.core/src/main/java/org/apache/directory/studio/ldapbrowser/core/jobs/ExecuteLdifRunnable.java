@@ -46,7 +46,6 @@ import org.apache.directory.studio.ldifparser.parser.LdifParser;
  */
 public class ExecuteLdifRunnable implements StudioConnectionBulkRunnableWithProgress
 {
-
     /** The browser connection. */
     private IBrowserConnection browserConnection;
 
@@ -110,6 +109,15 @@ public class ExecuteLdifRunnable implements StudioConnectionBulkRunnableWithProg
     /**
      * {@inheritDoc}
      */
+    public String getErrorMessage()
+    {
+        return BrowserCoreMessages.jobs__execute_ldif_error;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
     public void run( StudioProgressMonitor monitor )
     {
         monitor.beginTask( BrowserCoreMessages.jobs__execute_ldif_task, 2 );
@@ -139,8 +147,8 @@ public class ExecuteLdifRunnable implements StudioConnectionBulkRunnableWithProg
                 }
             };
 
-            ImportLdifJob.importLdif( browserConnection, enumeration, logWriter, updateIfEntryExists, continueOnError,
-                monitor );
+            ImportLdifRunnable.importLdif( browserConnection, enumeration, logWriter, updateIfEntryExists,
+                continueOnError, monitor );
 
             logWriter.close();
             ldifReader.close();
@@ -149,15 +157,6 @@ public class ExecuteLdifRunnable implements StudioConnectionBulkRunnableWithProg
         {
             monitor.reportError( e );
         }
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    public String getErrorMessage()
-    {
-        return BrowserCoreMessages.jobs__execute_ldif_error;
     }
 
 

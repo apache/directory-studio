@@ -34,7 +34,7 @@ import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
  */
 public class UpdateEntryRunnable extends ExecuteLdifRunnable
 {
-
+    /** The entry */
     private IEntry entry;
 
 
@@ -51,7 +51,9 @@ public class UpdateEntryRunnable extends ExecuteLdifRunnable
     }
 
 
-    @Override
+    /**
+     * {@inheritDoc}
+     */
     public void run( StudioProgressMonitor monitor )
     {
         super.run( monitor );

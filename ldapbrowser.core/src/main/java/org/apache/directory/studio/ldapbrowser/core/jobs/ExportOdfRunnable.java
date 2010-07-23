@@ -30,10 +30,11 @@ import javax.naming.NamingException;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.Connection;
+import org.apache.directory.studio.connection.core.jobs.StudioConnectionRunnableWithProgress;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreConstants;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
-import org.apache.directory.studio.ldapbrowser.core.jobs.ExportLdifJob.JndiLdifEnumeration;
+import org.apache.directory.studio.ldapbrowser.core.jobs.ExportLdifRunnable.JndiLdifEnumeration;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.SearchParameter;
 import org.apache.directory.studio.ldapbrowser.core.utils.JNDIUtils;
@@ -51,13 +52,12 @@ import org.w3c.dom.Element;
 
 
 /**
- * Job to export directory content to an ODF file.
+ * Runnable to export directory content to an ODF file.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class ExportOdfJob extends AbstractEclipseJob
+public class ExportOdfRunnable implements StudioConnectionRunnableWithProgress
 {
-
     /** The maximum count limit */
     public static final int MAX_COUNT_LIMIT = 65000;
 
@@ -75,29 +75,27 @@ public class ExportOdfJob extends AbstractEclipseJob
 
 
     /**
-     * Creates a new instance of ExportOdfJob.
+     * Creates a new instance of ExportOdfRunnable.
      * 
      * @param exportOdfFilename the ODF filename
      * @param browserConnection the browser connection
      * @param searchParameter the search parameter
      * @param exportDn true to export the DN
      */
-    public ExportOdfJob( String exportOdfFilename, IBrowserConnection browserConnection,
+    public ExportOdfRunnable( String exportOdfFilename, IBrowserConnection browserConnection,
         SearchParameter searchParameter, boolean exportDn )
     {
         this.exportOdfFilename = exportOdfFilename;
         this.browserConnection = browserConnection;
         this.searchParameter = searchParameter;
         this.exportDn = exportDn;
-
-        setName( BrowserCoreMessages.jobs__export_odf_name );
     }
 
 
     /**
-     * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractEclipseJob#getConnections()
+     * {@inheritDoc}
      */
-    protected Connection[] getConnections()
+    public Connection[] getConnections()
     {
         return new Connection[]
             { browserConnection.getConnection() };
@@ -105,9 +103,18 @@ public class ExportOdfJob extends AbstractEclipseJob
 
 
     /**
-     * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractEclipseJob#getLockedObjects()
+     * {@inheritDoc}
      */
-    protected Object[] getLockedObjects()
+    public String getName()
+    {
+        return BrowserCoreMessages.jobs__export_odf_name;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public Object[] getLockedObjects()
     {
         return new Object[]
             { browserConnection.getUrl() + "_" + DigestUtils.shaHex( exportOdfFilename ) };
@@ -115,9 +122,18 @@ public class ExportOdfJob extends AbstractEclipseJob
 
 
     /**
-     * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractEclipseJob#executeAsyncJob(org.apache.directory.studio.connection.core.jobs.StudioProgressMonitor)
+     * {@inheritDoc}
      */
-    protected void executeAsyncJob( StudioProgressMonitor monitor )
+    public String getErrorMessage()
+    {
+        return BrowserCoreMessages.jobs__export_odf_error;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public void run( StudioProgressMonitor monitor )
     {
         monitor.beginTask( BrowserCoreMessages.jobs__export_odf_task, 2 );
         monitor.reportProgress( " " ); //$NON-NLS-1$
@@ -153,7 +169,7 @@ public class ExportOdfJob extends AbstractEclipseJob
             LinkedHashMap<String, Short> attributeNameMap = new LinkedHashMap<String, Short>();
             if ( this.exportDn )
             {
-                short cellNum = ( short ) 0;
+                //                short cellNum = ( short ) 0;
                 //attributeNameMap.put( "dn", new Short( cellNum ) ); //$NON-NLS-1$
                 OdfTableCell cell = new OdfTableCell( contentDoc );
                 cell.setValueType( OdfValueType.STRING );
@@ -204,7 +220,7 @@ public class ExportOdfJob extends AbstractEclipseJob
     {
         try
         {
-            JndiLdifEnumeration enumeration = ExportLdifJob.search( browserConnection, searchParameter, monitor );
+            JndiLdifEnumeration enumeration = ExportLdifRunnable.search( browserConnection, searchParameter, monitor );
             while ( !monitor.isCanceled() && !monitor.errorsReported() && enumeration.hasNext() )
             {
                 LdifContainer container = enumeration.next();
@@ -256,7 +272,7 @@ public class ExportOdfJob extends AbstractEclipseJob
         String valueDelimiter, int binaryEncoding, boolean exportDn )
     {
         // group multi-valued attributes
-        Map<String, String> attributeMap = ExportCsvJob.getAttributeMap( null, record, valueDelimiter, "UTF-16",
+        Map<String, String> attributeMap = ExportCsvRunnable.getAttributeMap( null, record, valueDelimiter, "UTF-16",
             binaryEncoding );
 
         // output attributes
@@ -298,14 +314,4 @@ public class ExportOdfJob extends AbstractEclipseJob
             row.appendCell( cell );
         }
     }
-
-
-    /**
-     * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractEclipseJob#getErrorMessage()
-     */
-    protected String getErrorMessage()
-    {
-        return BrowserCoreMessages.jobs__export_odf_error;
-    }
-
 }

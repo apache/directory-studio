@@ -24,7 +24,8 @@ package org.apache.directory.studio.ldapbrowser.common.actions;
 import org.apache.directory.shared.ldap.name.Rdn;
 import org.apache.directory.studio.ldapbrowser.common.dialogs.RenameEntryDialog;
 import org.apache.directory.studio.ldapbrowser.common.dialogs.SimulateRenameDialogImpl;
-import org.apache.directory.studio.ldapbrowser.core.jobs.RenameEntryJob;
+import org.apache.directory.studio.ldapbrowser.core.jobs.RenameEntryRunnable;
+import org.apache.directory.studio.ldapbrowser.core.jobs.StudioBrowserJob;
 import org.apache.directory.studio.ldapbrowser.core.model.IBookmark;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.IQuickSearch;
@@ -196,7 +197,8 @@ public class RenameAction extends BrowserAction
             Rdn newRdn = renameDialog.getRdn();
             if ( newRdn != null && !newRdn.equals( entry.getRdn() ) )
             {
-                new RenameEntryJob( entry, newRdn, new SimulateRenameDialogImpl( getShell() ) ).execute();
+                new StudioBrowserJob(
+                    new RenameEntryRunnable( entry, newRdn, new SimulateRenameDialogImpl( getShell() ) ) ).execute();
             }
         }
     }

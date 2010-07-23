@@ -21,7 +21,8 @@
 package org.apache.directory.studio.ldapbrowser.ui.wizards;
 
 
-import org.apache.directory.studio.ldapbrowser.core.jobs.ExportCsvJob;
+import org.apache.directory.studio.ldapbrowser.core.jobs.ExportCsvRunnable;
+import org.apache.directory.studio.ldapbrowser.core.jobs.StudioBrowserJob;
 import org.apache.directory.studio.ldapbrowser.ui.BrowserUIConstants;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.PlatformUI;
@@ -82,10 +83,10 @@ public class ExportCsvWizard extends ExportBaseWizard
         super.createPageControls( pageContainer );
 
         // set help context ID
-        PlatformUI.getWorkbench().getHelpSystem().setHelp( fromPage.getControl(),
-            BrowserUIConstants.PLUGIN_ID + "." + "tools_csvexport_wizard" ); //$NON-NLS-1$ //$NON-NLS-2$
-        PlatformUI.getWorkbench().getHelpSystem().setHelp( toPage.getControl(),
-            BrowserUIConstants.PLUGIN_ID + "." + "tools_csvexport_wizard" ); //$NON-NLS-1$ //$NON-NLS-2$
+        PlatformUI.getWorkbench().getHelpSystem()
+            .setHelp( fromPage.getControl(), BrowserUIConstants.PLUGIN_ID + "." + "tools_csvexport_wizard" ); //$NON-NLS-1$ //$NON-NLS-2$
+        PlatformUI.getWorkbench().getHelpSystem()
+            .setHelp( toPage.getControl(), BrowserUIConstants.PLUGIN_ID + "." + "tools_csvexport_wizard" ); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
 
@@ -98,11 +99,9 @@ public class ExportCsvWizard extends ExportBaseWizard
         toPage.saveDialogSettings();
         boolean exportDn = this.fromPage.isExportDn();
 
-        ExportCsvJob ecj = new ExportCsvJob( exportFilename, search.getBrowserConnection(),
-            search.getSearchParameter(), exportDn );
-        ecj.execute();
+        new StudioBrowserJob( new ExportCsvRunnable( exportFilename, search.getBrowserConnection(),
+            search.getSearchParameter(), exportDn ) ).execute();
 
         return true;
     }
-
 }

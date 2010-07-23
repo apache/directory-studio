@@ -21,8 +21,9 @@
 package org.apache.directory.studio.ldapbrowser.ui.wizards;
 
 
-import org.apache.directory.studio.ldapbrowser.core.jobs.ExportDsmlJob;
-import org.apache.directory.studio.ldapbrowser.core.jobs.ExportDsmlJob.ExportDsmlJobType;
+import org.apache.directory.studio.ldapbrowser.core.jobs.ExportDsmlRunnable;
+import org.apache.directory.studio.ldapbrowser.core.jobs.ExportDsmlRunnable.ExportDsmlJobType;
+import org.apache.directory.studio.ldapbrowser.core.jobs.StudioBrowserJob;
 import org.apache.directory.studio.ldapbrowser.ui.BrowserUIConstants;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.PlatformUI;
@@ -115,12 +116,12 @@ public class ExportDsmlWizard extends ExportBaseWizard
         switch ( saveAsType )
         {
             case RESPONSE:
-                new ExportDsmlJob( exportFilename, search.getBrowserConnection(), search.getSearchParameter(),
-                    ExportDsmlJobType.RESPONSE ).execute();
+                new StudioBrowserJob( new ExportDsmlRunnable( exportFilename, search.getBrowserConnection(), search.getSearchParameter(),
+                    ExportDsmlJobType.RESPONSE )).execute();
                 break;
             case REQUEST:
-                new ExportDsmlJob( exportFilename, search.getBrowserConnection(), search.getSearchParameter(),
-                    ExportDsmlJobType.REQUEST ).execute();
+                new StudioBrowserJob( new ExportDsmlRunnable( exportFilename, search.getBrowserConnection(), search.getSearchParameter(),
+                    ExportDsmlJobType.REQUEST )).execute();
                 break;
         }
 

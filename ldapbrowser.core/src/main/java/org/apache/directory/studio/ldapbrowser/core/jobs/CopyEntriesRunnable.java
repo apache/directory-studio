@@ -48,6 +48,7 @@ import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
 import org.apache.directory.studio.connection.core.Connection.ReferralHandlingMethod;
 import org.apache.directory.studio.connection.core.DnUtils;
+import org.apache.directory.studio.connection.core.jobs.StudioConnectionBulkRunnableWithProgress;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.ldapbrowser.core.events.BulkModificationEvent;
 import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
@@ -60,16 +61,15 @@ import org.apache.directory.studio.ldapbrowser.core.utils.JNDIUtils;
 
 
 /**
- * Job to copy entries asynchronously.
+ * Runnable to copy entries asynchronously.
  * 
  * TODO: implement overwrite strategy
  * TODO: implement remember selection
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class CopyEntriesJob extends AbstractNotificationJob
+public class CopyEntriesRunnable implements StudioConnectionBulkRunnableWithProgress
 {
-
     /** The parent entry. */
     private IEntry parent;
 
@@ -84,29 +84,27 @@ public class CopyEntriesJob extends AbstractNotificationJob
 
 
     /**
-     * Creates a new instance of CopyEntriesJob.
+     * Creates a new instance of CopyEntriesRunnable.
      * 
      * @param parent the parent entry
      * @param entriesToCopy the entries to copy
      * @param scope the copy scope
      * @param dialog the dialog
      */
-    public CopyEntriesJob( final IEntry parent, final IEntry[] entriesToCopy, SearchScope scope,
+    public CopyEntriesRunnable( final IEntry parent, final IEntry[] entriesToCopy, SearchScope scope,
         EntryExistsCopyStrategyDialog dialog )
     {
         this.parent = parent;
         this.entriesToCopy = entriesToCopy;
         this.scope = scope;
         this.dialog = dialog;
-        setName( entriesToCopy.length == 1 ? BrowserCoreMessages.jobs__copy_entries_name_1
-            : BrowserCoreMessages.jobs__copy_entries_name_n );
     }
 
 
     /**
-     * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractEclipseJob#getConnections()
+     * {@inheritDoc}
      */
-    protected Connection[] getConnections()
+    public Connection[] getConnections()
     {
         return new Connection[]
             { parent.getBrowserConnection().getConnection() };
@@ -114,9 +112,19 @@ public class CopyEntriesJob extends AbstractNotificationJob
 
 
     /**
-     * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractEclipseJob#getLockedObjects()
+     * {@inheritDoc}
      */
-    protected Object[] getLockedObjects()
+    public String getName()
+    {
+        return entriesToCopy.length == 1 ? BrowserCoreMessages.jobs__copy_entries_name_1
+            : BrowserCoreMessages.jobs__copy_entries_name_n;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public Object[] getLockedObjects()
     {
         List<IEntry> l = new ArrayList<IEntry>();
         l.add( parent );
@@ -126,15 +134,27 @@ public class CopyEntriesJob extends AbstractNotificationJob
 
 
     /**
-     * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractNotificationJob#executeNotificationJob(org.apache.directory.studio.connection.core.jobs.StudioProgressMonitor)
+     * {@inheritDoc}
      */
-    protected void executeNotificationJob( StudioProgressMonitor monitor )
+    public String getErrorMessage()
     {
-        monitor.beginTask( entriesToCopy.length == 1 ? BrowserCoreMessages.bind(
-            BrowserCoreMessages.jobs__copy_entries_task_1, new String[]
-                { entriesToCopy[0].getDn().getUpName(), parent.getDn().getUpName() } ) : BrowserCoreMessages.bind(
-            BrowserCoreMessages.jobs__copy_entries_task_n, new String[]
-                { Integer.toString( entriesToCopy.length ), parent.getDn().getUpName() } ), 2 + entriesToCopy.length );
+        return entriesToCopy.length == 1 ? BrowserCoreMessages.jobs__copy_entries_error_1
+            : BrowserCoreMessages.jobs__copy_entries_error_n;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public void run( StudioProgressMonitor monitor )
+    {
+        monitor.beginTask(
+            entriesToCopy.length == 1 ? BrowserCoreMessages.bind( BrowserCoreMessages.jobs__copy_entries_task_1,
+                new String[]
+                    { entriesToCopy[0].getDn().getUpName(), parent.getDn().getUpName() } ) : BrowserCoreMessages.bind(
+                BrowserCoreMessages.jobs__copy_entries_task_n, new String[]
+                    { Integer.toString( entriesToCopy.length ), parent.getDn().getUpName() } ),
+            2 + entriesToCopy.length );
 
         monitor.reportProgress( " " ); //$NON-NLS-1$
         monitor.worked( 1 );
@@ -169,24 +189,14 @@ public class CopyEntriesJob extends AbstractNotificationJob
 
 
     /**
-     * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractNotificationJob#runNotification()
+     * {@inheritDoc}
      */
-    protected void runNotification()
+    public void runNotification( StudioProgressMonitor monitor )
     {
         // don't fire an EntryCreatedEvent for each created entry
         // that would cause massive UI updates
         // instead we fire a BulkModificationEvent
         EventRegistry.fireEntryUpdated( new BulkModificationEvent( parent.getBrowserConnection() ), this );
-    }
-
-
-    /**
-     * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractEclipseJob#getErrorMessage()
-     */
-    protected String getErrorMessage()
-    {
-        return entriesToCopy.length == 1 ? BrowserCoreMessages.jobs__copy_entries_error_1
-            : BrowserCoreMessages.jobs__copy_entries_error_n;
     }
 
 
@@ -225,8 +235,11 @@ public class CopyEntriesJob extends AbstractNotificationJob
                 { new ManageReferralControl( false ) };
         }
 
-        NamingEnumeration<SearchResult> result = entryToCopy.getBrowserConnection().getConnection()
-            .getJNDIConnectionWrapper().search( entryToCopy.getDn().getUpName(), ISearch.FILTER_TRUE, searchControls,
+        NamingEnumeration<SearchResult> result = entryToCopy
+            .getBrowserConnection()
+            .getConnection()
+            .getJNDIConnectionWrapper()
+            .search( entryToCopy.getDn().getUpName(), ISearch.FILTER_TRUE, searchControls,
                 AliasDereferencingMethod.NEVER, ReferralHandlingMethod.IGNORE, controls, monitor, null );
 
         // In case the parent is the RootDSE: use the parent DN of the old entry
@@ -235,8 +248,9 @@ public class CopyEntriesJob extends AbstractNotificationJob
         {
             parentDn = DnUtils.getParent( entryToCopy.getDn() );
         }
-        numberOfCopiedEntries = copyEntryRecursive( entryToCopy.getBrowserConnection(), result, parent
-            .getBrowserConnection(), parentDn, newRdn, scope, numberOfCopiedEntries, dialog, dummyMonitor, monitor );
+        numberOfCopiedEntries = copyEntryRecursive( entryToCopy.getBrowserConnection(), result,
+            parent.getBrowserConnection(), parentDn, newRdn, scope, numberOfCopiedEntries, dialog, dummyMonitor,
+            monitor );
 
         return numberOfCopiedEntries;
     }
@@ -299,8 +313,8 @@ public class CopyEntriesJob extends AbstractNotificationJob
                 }
 
                 // create entry
-                targetBrowserConnection.getConnection().getJNDIConnectionWrapper().createEntry( newLdapDn.getUpName(),
-                    newAttributes, controls, dummyMonitor, null );
+                targetBrowserConnection.getConnection().getJNDIConnectionWrapper()
+                    .createEntry( newLdapDn.getUpName(), newAttributes, controls, dummyMonitor, null );
 
                 while ( dummyMonitor.errorsReported() )
                 {
@@ -337,9 +351,11 @@ public class CopyEntriesJob extends AbstractNotificationJob
                                     }
 
                                     // modify entry
-                                    targetBrowserConnection.getConnection().getJNDIConnectionWrapper().modifyEntry(
-                                        newLdapDn.getUpName(), mis.toArray( new ModificationItem[mis.size()] ), null,
-                                        dummyMonitor, null );
+                                    targetBrowserConnection
+                                        .getConnection()
+                                        .getJNDIConnectionWrapper()
+                                        .modifyEntry( newLdapDn.getUpName(),
+                                            mis.toArray( new ModificationItem[mis.size()] ), null, dummyMonitor, null );
 
                                     // force reloading of attributes
                                     IEntry newEntry = targetBrowserConnection.getEntryFromCache( newLdapDn );
@@ -360,8 +376,8 @@ public class CopyEntriesJob extends AbstractNotificationJob
                                     newLdapDn = DnUtils.composeDn( renamedRdn, parentDn );
 
                                     // create entry
-                                    targetBrowserConnection.getConnection().getJNDIConnectionWrapper().createEntry(
-                                        newLdapDn.getUpName(), newAttributes, null, dummyMonitor, null );
+                                    targetBrowserConnection.getConnection().getJNDIConnectionWrapper()
+                                        .createEntry( newLdapDn.getUpName(), newAttributes, null, dummyMonitor, null );
 
                                     break;
                             }
@@ -395,10 +411,11 @@ public class CopyEntriesJob extends AbstractNotificationJob
                         searchControls.setReturningAttributes( new String[]
                             { SchemaConstants.ALL_USER_ATTRIBUTES, SchemaConstants.REF_AT } );
                         searchControls.setSearchScope( SearchControls.ONELEVEL_SCOPE );
-                        NamingEnumeration<SearchResult> childEntries = sourceBrowserConnection.getConnection()
-                            .getJNDIConnectionWrapper().search( oldLdapDn.getUpName(), ISearch.FILTER_TRUE,
-                                searchControls, AliasDereferencingMethod.NEVER, ReferralHandlingMethod.IGNORE, null,
-                                monitor, null );
+                        NamingEnumeration<SearchResult> childEntries = sourceBrowserConnection
+                            .getConnection()
+                            .getJNDIConnectionWrapper()
+                            .search( oldLdapDn.getUpName(), ISearch.FILTER_TRUE, searchControls,
+                                AliasDereferencingMethod.NEVER, ReferralHandlingMethod.IGNORE, null, monitor, null );
 
                         if ( scope == SearchControls.ONELEVEL_SCOPE )
                         {

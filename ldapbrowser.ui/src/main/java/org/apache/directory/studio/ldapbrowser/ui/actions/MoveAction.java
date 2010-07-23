@@ -28,8 +28,9 @@ import org.apache.directory.studio.connection.ui.RunnableContextRunner;
 import org.apache.directory.studio.ldapbrowser.common.actions.BrowserAction;
 import org.apache.directory.studio.ldapbrowser.common.dialogs.MoveEntriesDialog;
 import org.apache.directory.studio.ldapbrowser.common.dialogs.SimulateRenameDialogImpl;
-import org.apache.directory.studio.ldapbrowser.core.jobs.MoveEntriesJob;
+import org.apache.directory.studio.ldapbrowser.core.jobs.MoveEntriesRunnable;
 import org.apache.directory.studio.ldapbrowser.core.jobs.ReadEntryRunnable;
+import org.apache.directory.studio.ldapbrowser.core.jobs.StudioBrowserJob;
 import org.apache.directory.studio.ldapbrowser.core.model.IBookmark;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
@@ -190,7 +191,8 @@ public class MoveAction extends BrowserAction
                 }
                 if ( newParentEntry != null )
                 {
-                    new MoveEntriesJob( entries, newParentEntry, new SimulateRenameDialogImpl( getShell() ) ).execute();
+                    new StudioBrowserJob( new MoveEntriesRunnable( entries, newParentEntry,
+                        new SimulateRenameDialogImpl( getShell() ) ) ).execute();
                 }
             }
         }

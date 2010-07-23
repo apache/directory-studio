@@ -29,7 +29,7 @@ import org.apache.directory.studio.ldapbrowser.common.dialogs.ScopeDialog;
 import org.apache.directory.studio.ldapbrowser.common.dnd.EntryTransfer;
 import org.apache.directory.studio.ldapbrowser.common.dnd.SearchTransfer;
 import org.apache.directory.studio.ldapbrowser.common.dnd.ValuesTransfer;
-import org.apache.directory.studio.ldapbrowser.core.jobs.CopyEntriesJob;
+import org.apache.directory.studio.ldapbrowser.core.jobs.CopyEntriesRunnable;
 import org.apache.directory.studio.ldapbrowser.core.jobs.StudioBrowserJob;
 import org.apache.directory.studio.ldapbrowser.core.jobs.UpdateEntryRunnable;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
@@ -178,15 +178,15 @@ public class BrowserPasteAction extends PasteAction
         }
         if ( askForScope )
         {
-            ScopeDialog scopeDialog = new ScopeDialog( Display.getDefault().getActiveShell(), Messages
-                .getString( "BrowserPasteAction.SelectCopyDepth" ), //$NON-NLS-1$
+            ScopeDialog scopeDialog = new ScopeDialog( Display.getDefault().getActiveShell(),
+                Messages.getString( "BrowserPasteAction.SelectCopyDepth" ), //$NON-NLS-1$
                 entriesToPaste.length > 1 );
             scopeDialog.open();
             scope = scopeDialog.getScope();
         }
 
-        new CopyEntriesJob( parent, entriesToPaste, scope, new EntryExistsCopyStrategyDialogImpl( Display.getDefault()
-            .getActiveShell() ) ).execute();
+        new StudioBrowserJob( new CopyEntriesRunnable( parent, entriesToPaste, scope, new EntryExistsCopyStrategyDialogImpl(
+            Display.getDefault().getActiveShell() ) ) ).execute();
     }
 
 
@@ -266,8 +266,8 @@ public class BrowserPasteAction extends PasteAction
             LdifFile diff = org.apache.directory.studio.ldapbrowser.core.utils.Utils.computeDiff( entry, clone );
             if ( diff != null )
             {
-                UpdateEntryRunnable runnable = new UpdateEntryRunnable( entry, diff
-                    .toFormattedString( LdifFormatParameters.DEFAULT ) );
+                UpdateEntryRunnable runnable = new UpdateEntryRunnable( entry,
+                    diff.toFormattedString( LdifFormatParameters.DEFAULT ) );
                 new StudioBrowserJob( runnable ).execute();
             }
         }

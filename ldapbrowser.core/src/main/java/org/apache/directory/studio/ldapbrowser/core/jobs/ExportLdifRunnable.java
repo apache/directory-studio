@@ -42,6 +42,7 @@ import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.StudioControl;
 import org.apache.directory.studio.connection.core.StudioPagedResultsControl;
 import org.apache.directory.studio.connection.core.io.jndi.StudioNamingEnumeration;
+import org.apache.directory.studio.connection.core.jobs.StudioConnectionRunnableWithProgress;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.SearchParameter;
@@ -61,13 +62,12 @@ import org.apache.directory.studio.ldifparser.model.lines.LdifVersionLine;
 
 
 /**
- * Job to export directory content to an LDIF file.
+ * Runnable to export directory content to an LDIF file.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class ExportLdifJob extends AbstractEclipseJob
+public class ExportLdifRunnable implements StudioConnectionRunnableWithProgress
 {
-
     /** The filename of the LDIF file. */
     private String exportLdifFilename;
 
@@ -79,27 +79,25 @@ public class ExportLdifJob extends AbstractEclipseJob
 
 
     /**
-     * Creates a new instance of ExportLdifJob.
+     * Creates a new instance of ExportLdifRunnable.
      * 
      * @param exportLdifFilename the filename of the LDIF file
      * @param browserConnection the browser connection
      * @param searchParameter the search parameter
      */
-    public ExportLdifJob( String exportLdifFilename, IBrowserConnection browserConnection,
+    public ExportLdifRunnable( String exportLdifFilename, IBrowserConnection browserConnection,
         SearchParameter searchParameter )
     {
         this.exportLdifFilename = exportLdifFilename;
         this.browserConnection = browserConnection;
         this.searchParameter = searchParameter;
-
-        setName( BrowserCoreMessages.jobs__export_ldif_name );
     }
 
 
     /**
-     * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractEclipseJob#getConnections()
+     * {@inheritDoc}
      */
-    protected Connection[] getConnections()
+    public Connection[] getConnections()
     {
         return new Connection[]
             { browserConnection.getConnection() };
@@ -107,9 +105,18 @@ public class ExportLdifJob extends AbstractEclipseJob
 
 
     /**
-     * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractEclipseJob#getLockedObjects()
+     * {@inheritDoc}
      */
-    protected Object[] getLockedObjects()
+    public String getName()
+    {
+        return BrowserCoreMessages.jobs__export_ldif_name;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public Object[] getLockedObjects()
     {
         List<Object> l = new ArrayList<Object>();
         l.add( browserConnection.getUrl() + "_" + DigestUtils.shaHex( exportLdifFilename ) );
@@ -118,9 +125,18 @@ public class ExportLdifJob extends AbstractEclipseJob
 
 
     /**
-     * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractEclipseJob#executeAsyncJob(org.apache.directory.studio.connection.core.jobs.StudioProgressMonitor)
+     * {@inheritDoc}
      */
-    protected void executeAsyncJob( StudioProgressMonitor monitor )
+    public String getErrorMessage()
+    {
+        return BrowserCoreMessages.jobs__export_ldif_error;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public void run( StudioProgressMonitor monitor )
     {
         monitor.beginTask( BrowserCoreMessages.jobs__export_ldif_task, 2 );
         monitor.reportProgress( " " ); //$NON-NLS-1$
@@ -210,12 +226,6 @@ public class ExportLdifJob extends AbstractEclipseJob
                 monitor.reportError( ne );
             }
         }
-    }
-
-
-    protected String getErrorMessage()
-    {
-        return BrowserCoreMessages.jobs__export_ldif_error;
     }
 
 
@@ -321,5 +331,4 @@ public class ExportLdifJob extends AbstractEclipseJob
         }
 
     }
-
 }

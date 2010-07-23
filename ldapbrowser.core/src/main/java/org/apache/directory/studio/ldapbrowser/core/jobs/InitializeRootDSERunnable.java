@@ -59,7 +59,6 @@ import org.apache.directory.studio.ldapbrowser.core.model.impl.Search;
  */
 public class InitializeRootDSERunnable implements StudioConnectionBulkRunnableWithProgress
 {
-
     /** The requested attributes when reading the Root DSE. */
     public static final String[] ROOT_DSE_ATTRIBUTES =
         { SchemaConstants.NAMING_CONTEXTS_AT, SchemaConstants.SUBSCHEMA_SUBENTRY_AT,

@@ -73,6 +73,7 @@ import org.apache.directory.studio.connection.core.Connection.AliasDereferencing
 import org.apache.directory.studio.connection.core.Connection.ReferralHandlingMethod;
 import org.apache.directory.studio.connection.core.DnUtils;
 import org.apache.directory.studio.connection.core.io.jndi.StudioNamingEnumeration;
+import org.apache.directory.studio.connection.core.jobs.StudioConnectionBulkRunnableWithProgress;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.ldapbrowser.core.events.BulkModificationEvent;
 import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
@@ -84,11 +85,11 @@ import com.sun.jndi.ldap.BasicControl;
 
 
 /**
- * This class implements a Job for Importing a DSML File into a LDAP server
+ * Runnable to import a DSML File into a LDAP server
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class ImportDsmlJob extends AbstractNotificationJob
+public class ImportDsmlRunnable implements StudioConnectionBulkRunnableWithProgress
 {
     /** The connection to use */
     private IBrowserConnection browserConnection;
@@ -101,7 +102,7 @@ public class ImportDsmlJob extends AbstractNotificationJob
 
 
     /**
-     * Creates a new instance of ImportDsmlJob.
+     * Creates a new instance of ImportDsmlRunnable.
      *
      * @param connection
      *          The connection to use
@@ -112,18 +113,16 @@ public class ImportDsmlJob extends AbstractNotificationJob
      * @param continueOnError
      *          The ContinueOnError flag
      */
-    public ImportDsmlJob( IBrowserConnection connection, File dsmlFile, File saveFile )
+    public ImportDsmlRunnable( IBrowserConnection connection, File dsmlFile, File saveFile )
     {
         this.browserConnection = connection;
         this.dsmlFile = dsmlFile;
         this.responseFile = saveFile;
-
-        setName( BrowserCoreMessages.jobs__import_dsml_name );
     }
 
 
     /**
-     * Creates a new instance of ImportDsmlJob.
+     * Creates a new instance of ImportDsmlRunnable.
      *
      * @param connection
      *          The Connection to use
@@ -132,7 +131,7 @@ public class ImportDsmlJob extends AbstractNotificationJob
      * @param continueOnError
      *          The ContinueOnError flag
      */
-    public ImportDsmlJob( IBrowserConnection connection, File dsmlFile )
+    public ImportDsmlRunnable( IBrowserConnection connection, File dsmlFile )
     {
         this( connection, dsmlFile, null );
     }
@@ -141,7 +140,7 @@ public class ImportDsmlJob extends AbstractNotificationJob
     /**
      * {@inheritDoc}
      */
-    protected Connection[] getConnections()
+    public Connection[] getConnections()
     {
         return new Connection[]
             { browserConnection.getConnection() };
@@ -151,7 +150,16 @@ public class ImportDsmlJob extends AbstractNotificationJob
     /**
      * {@inheritDoc}
      */
-    protected Object[] getLockedObjects()
+    public String getName()
+    {
+        return BrowserCoreMessages.jobs__import_dsml_name;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public Object[] getLockedObjects()
     {
         List<Object> l = new ArrayList<Object>();
         l.add( browserConnection.getUrl() + "_" + DigestUtils.shaHex( dsmlFile.toString() ) );
@@ -162,7 +170,16 @@ public class ImportDsmlJob extends AbstractNotificationJob
     /**
      * {@inheritDoc}
      */
-    protected void executeNotificationJob( StudioProgressMonitor monitor )
+    public String getErrorMessage()
+    {
+        return BrowserCoreMessages.jobs__import_dsml_error;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public void run( StudioProgressMonitor monitor )
     {
         monitor.beginTask( BrowserCoreMessages.jobs__import_dsml_task, 2 );
         monitor.reportProgress( " " ); //$NON-NLS-1$
@@ -232,6 +249,15 @@ public class ImportDsmlJob extends AbstractNotificationJob
         {
             monitor.reportError( e );
         }
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public void runNotification( StudioProgressMonitor monitor )
+    {
+        EventRegistry.fireEntryUpdated( new BulkModificationEvent( browserConnection ), this );
     }
 
 
@@ -323,8 +349,11 @@ public class ImportDsmlJob extends AbstractNotificationJob
     {
         // Executing the add request
         Entry entry = request.getEntry();
-        browserConnection.getConnection().getJNDIConnectionWrapper().createEntry( entry.getDn().getUpName(),
-            AttributeUtils.toAttributes( entry ), getControls( request ), monitor, null );
+        browserConnection
+            .getConnection()
+            .getJNDIConnectionWrapper()
+            .createEntry( entry.getDn().getUpName(), AttributeUtils.toAttributes( entry ), getControls( request ),
+                monitor, null );
 
         // Creating the response
         if ( batchResponseDsml != null )
@@ -390,8 +419,8 @@ public class ImportDsmlJob extends AbstractNotificationJob
         StudioProgressMonitor monitor )
     {
         // Executing the del request
-        browserConnection.getConnection().getJNDIConnectionWrapper().deleteEntry( request.getEntry().getUpName(),
-            getControls( request ), monitor, null );
+        browserConnection.getConnection().getJNDIConnectionWrapper()
+            .deleteEntry( request.getEntry().getUpName(), getControls( request ), monitor, null );
 
         // Creating the response
         if ( batchResponseDsml != null )
@@ -466,8 +495,11 @@ public class ImportDsmlJob extends AbstractNotificationJob
         }
 
         // Executing the modify request
-        browserConnection.getConnection().getJNDIConnectionWrapper().modifyEntry( request.getObject().getUpName(),
-            modificationItems.toArray( new ModificationItem[0] ), getControls( request ), monitor, null );
+        browserConnection
+            .getConnection()
+            .getJNDIConnectionWrapper()
+            .modifyEntry( request.getObject().getUpName(), modificationItems.toArray( new ModificationItem[0] ),
+                getControls( request ), monitor, null );
 
         // Creating the response
         if ( batchResponseDsml != null )
@@ -523,8 +555,11 @@ public class ImportDsmlJob extends AbstractNotificationJob
         StudioProgressMonitor monitor )
     {
         // Executing the modify DN request
-        browserConnection.getConnection().getJNDIConnectionWrapper().renameEntry( request.getEntry().getUpName(),
-            request.getNewRDN().getUpName(), request.isDeleteOldRDN(), getControls( request ), monitor, null );
+        browserConnection
+            .getConnection()
+            .getJNDIConnectionWrapper()
+            .renameEntry( request.getEntry().getUpName(), request.getNewRDN().getUpName(), request.isDeleteOldRDN(),
+                getControls( request ), monitor, null );
 
         // Creating the response
         if ( batchResponseDsml != null )
@@ -578,14 +613,16 @@ public class ImportDsmlJob extends AbstractNotificationJob
         if ( batchResponseDsml != null )
         {
             // [Optimization] We're only searching if we need to produce a response
-            StudioNamingEnumeration ne = browserConnection.getConnection().getJNDIConnectionWrapper().search(
-                request.getBaseObject().getUpName(), request.getFilter().toString(), getSearchControls( request ),
-                getAliasDereferencingMethod( request ), ReferralHandlingMethod.IGNORE, getControls( request ), monitor,
-                null );
+            StudioNamingEnumeration ne = browserConnection
+                .getConnection()
+                .getJNDIConnectionWrapper()
+                .search( request.getBaseObject().getUpName(), request.getFilter().toString(),
+                    getSearchControls( request ), getAliasDereferencingMethod( request ),
+                    ReferralHandlingMethod.IGNORE, getControls( request ), monitor, null );
 
             SearchParameter sp = new SearchParameter();
             sp.setReferralsHandlingMethod( browserConnection.getReferralsHandlingMethod() );
-            ExportDsmlJob.processAsDsmlResponse( ne, batchResponseDsml, monitor, sp );
+            ExportDsmlRunnable.processAsDsmlResponse( ne, batchResponseDsml, monitor, sp );
         }
     }
 
@@ -679,8 +716,8 @@ public class ImportDsmlJob extends AbstractNotificationJob
             List<Control> jndiControls = new ArrayList<Control>();
             for ( ControlCodec control : controls )
             {
-                Control jndiControl = new BasicControl( control.getControlType(), control.getCriticality(), control
-                    .getEncodedValue() );
+                Control jndiControl = new BasicControl( control.getControlType(), control.getCriticality(),
+                    control.getEncodedValue() );
                 jndiControls.add( jndiControl );
             }
             return jndiControls.toArray( new Control[jndiControls.size()] );
@@ -722,23 +759,4 @@ public class ImportDsmlJob extends AbstractNotificationJob
 
         return ldapResult;
     }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    protected String getErrorMessage()
-    {
-        return BrowserCoreMessages.jobs__import_dsml_error;
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    protected void runNotification()
-    {
-        EventRegistry.fireEntryUpdated( new BulkModificationEvent( browserConnection ), this );
-    }
-
 }

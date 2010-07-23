@@ -23,7 +23,8 @@ package org.apache.directory.studio.ldapbrowser.ui.wizards;
 
 import java.io.File;
 
-import org.apache.directory.studio.ldapbrowser.core.jobs.ImportLdifJob;
+import org.apache.directory.studio.ldapbrowser.core.jobs.ImportLdifRunnable;
+import org.apache.directory.studio.ldapbrowser.core.jobs.StudioBrowserJob;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.IBookmark;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
@@ -156,8 +157,8 @@ public class ImportLdifWizard extends Wizard implements IImportWizard
     {
         super.createPageControls( pageContainer );
 
-        PlatformUI.getWorkbench().getHelpSystem().setHelp( mainPage.getControl(),
-            BrowserUIConstants.PLUGIN_ID + "." + "tools_ldifimport_wizard" ); //$NON-NLS-1$ //$NON-NLS-2$
+        PlatformUI.getWorkbench().getHelpSystem()
+            .setHelp( mainPage.getControl(), BrowserUIConstants.PLUGIN_ID + "." + "tools_ldifimport_wizard" ); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
 
@@ -175,12 +176,13 @@ public class ImportLdifWizard extends Wizard implements IImportWizard
             if ( enableLogging )
             {
                 File logFile = new File( logFilename );
-                new ImportLdifJob( importConnection, ldifFile, logFile, updateIfEntryExists, continueOnError )
-                    .execute();
+                new StudioBrowserJob( new ImportLdifRunnable( importConnection, ldifFile, logFile, updateIfEntryExists,
+                    continueOnError ) ).execute();
             }
             else
             {
-                new ImportLdifJob( importConnection, ldifFile, updateIfEntryExists, continueOnError ).execute();
+                new StudioBrowserJob( new ImportLdifRunnable( importConnection, ldifFile, updateIfEntryExists,
+                    continueOnError ) ).execute();
             }
 
             return true;

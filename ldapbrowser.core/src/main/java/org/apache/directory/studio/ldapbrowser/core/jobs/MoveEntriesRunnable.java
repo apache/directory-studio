@@ -35,6 +35,7 @@ import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.DnUtils;
 import org.apache.directory.studio.connection.core.StudioControl;
+import org.apache.directory.studio.connection.core.jobs.StudioConnectionBulkRunnableWithProgress;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.ldapbrowser.core.events.BulkModificationEvent;
 import org.apache.directory.studio.ldapbrowser.core.events.EntryMovedEvent;
@@ -46,7 +47,7 @@ import org.apache.directory.studio.ldapbrowser.core.model.ISearchResult;
 
 
 /**
- * Job to move entries.
+ * Runnable to move entries.
  * 
  * First it tries to move an entry using an moddn operation. If
  * that operation fails with an LDAP error 66 (ContextNotEmptyException)
@@ -55,9 +56,8 @@ import org.apache.directory.studio.ldapbrowser.core.model.ISearchResult;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class MoveEntriesJob extends AbstractNotificationJob
+public class MoveEntriesRunnable implements StudioConnectionBulkRunnableWithProgress
 {
-
     /** The browser connection. */
     private IBrowserConnection browserConnection;
 
@@ -78,29 +78,26 @@ public class MoveEntriesJob extends AbstractNotificationJob
 
 
     /**
-     * Creates a new instance of MoveEntriesJob.
+     * Creates a new instance of MoveEntriesRunnable.
      * 
      * @param entries the entries to move
      * @param newParent the new parent
      * @param dialog the dialog
      */
-    public MoveEntriesJob( IEntry[] entries, IEntry newParent, SimulateRenameDialog dialog )
+    public MoveEntriesRunnable( IEntry[] entries, IEntry newParent, SimulateRenameDialog dialog )
     {
         this.browserConnection = newParent.getBrowserConnection();
         this.oldEntries = entries;
         this.newParent = newParent;
         this.dialog = dialog;
         this.newEntries = new IEntry[oldEntries.length];
-
-        setName( entries.length == 1 ? BrowserCoreMessages.jobs__move_entry_name_1
-            : BrowserCoreMessages.jobs__move_entry_name_n );
     }
 
 
     /**
-     * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractEclipseJob#getConnections()
+     * {@inheritDoc}
      */
-    protected Connection[] getConnections()
+    public Connection[] getConnections()
     {
         return new Connection[]
             { browserConnection.getConnection() };
@@ -108,9 +105,19 @@ public class MoveEntriesJob extends AbstractNotificationJob
 
 
     /**
-     * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractEclipseJob#getLockedObjects()
+     * {@inheritDoc}
      */
-    protected Object[] getLockedObjects()
+    public String getName()
+    {
+        return oldEntries.length == 1 ? BrowserCoreMessages.jobs__move_entry_name_1
+            : BrowserCoreMessages.jobs__move_entry_name_n;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public Object[] getLockedObjects()
     {
         List<IEntry> l = new ArrayList<IEntry>();
         l.add( newParent );
@@ -120,9 +127,19 @@ public class MoveEntriesJob extends AbstractNotificationJob
 
 
     /**
-     * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractNotificationJob#executeNotificationJob(org.apache.directory.studio.connection.core.jobs.StudioProgressMonitor)
+     * {@inheritDoc}
      */
-    protected void executeNotificationJob( StudioProgressMonitor monitor )
+    public String getErrorMessage()
+    {
+        return oldEntries.length == 1 ? BrowserCoreMessages.jobs__move_entry_error_1
+            : BrowserCoreMessages.jobs__move_entry_error_n;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public void run( StudioProgressMonitor monitor )
     {
         monitor.beginTask( BrowserCoreMessages.bind(
             oldEntries.length == 1 ? BrowserCoreMessages.jobs__move_entry_task_1
@@ -148,7 +165,7 @@ public class MoveEntriesJob extends AbstractNotificationJob
             LdapDN newDn = DnUtils.composeDn( oldDn.getRdn(), parentDn );
 
             // try to move entry
-            RenameEntryJob.renameEntry( browserConnection, oldEntry, newDn, dummyMonitor );
+            RenameEntryRunnable.renameEntry( browserConnection, oldEntry, newDn, dummyMonitor );
 
             // do a simulated rename, if renaming of a non-leaf entry is not supported.
             if ( dummyMonitor.errorsReported() )
@@ -168,13 +185,13 @@ public class MoveEntriesJob extends AbstractNotificationJob
                         // do simulated rename operation
                         dummyMonitor.reset();
 
-                        numAdd = CopyEntriesJob.copyEntry( oldEntry, newParent, null, SearchControls.SUBTREE_SCOPE,
+                        numAdd = CopyEntriesRunnable.copyEntry( oldEntry, newParent, null, SearchControls.SUBTREE_SCOPE,
                             numAdd, null, dummyMonitor, monitor );
 
                         if ( !dummyMonitor.errorsReported() )
                         {
                             dummyMonitor.reset();
-                            numDel = DeleteEntriesJob.optimisticDeleteEntryRecursive( browserConnection, oldDn,
+                            numDel = DeleteEntriesRunnable.optimisticDeleteEntryRecursive( browserConnection, oldDn,
                                 oldEntry.isReferral(), false, numDel, dummyMonitor, monitor );
                         }
                     }
@@ -240,9 +257,9 @@ public class MoveEntriesJob extends AbstractNotificationJob
 
 
     /**
-     * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractNotificationJob#runNotification()
+     * {@inheritDoc}
      */
-    protected void runNotification()
+    public void runNotification( StudioProgressMonitor monitor )
     {
         // notify the entries and their parents
         if ( newEntries.length < 2 )
@@ -268,15 +285,4 @@ public class MoveEntriesJob extends AbstractNotificationJob
             EventRegistry.fireEntryUpdated( new BulkModificationEvent( browserConnection ), this );
         }
     }
-
-
-    /**
-     * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractEclipseJob#getErrorMessage()
-     */
-    protected String getErrorMessage()
-    {
-        return oldEntries.length == 1 ? BrowserCoreMessages.jobs__move_entry_error_1
-            : BrowserCoreMessages.jobs__move_entry_error_n;
-    }
-
 }

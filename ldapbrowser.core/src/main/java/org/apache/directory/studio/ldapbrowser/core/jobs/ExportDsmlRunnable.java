@@ -58,17 +58,18 @@ import org.apache.directory.shared.ldap.util.LdapURL;
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.io.jndi.StudioNamingEnumeration;
+import org.apache.directory.studio.connection.core.jobs.StudioConnectionRunnableWithProgress;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.SearchParameter;
 
 
 /**
- * This class implements a Job for Exporting a part of a LDAP Server into a DSML File.
+ * Runnable for Exporting a part of a LDAP Server into a DSML File.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class ExportDsmlJob extends AbstractEclipseJob
+public class ExportDsmlRunnable implements StudioConnectionRunnableWithProgress
 {
     private static final String OBJECTCLASS_OBJECTCLASS_OID = "objectClass";
     private static final String OBJECTCLASS_OBJECTCLASS_NAME = "2.5.4.0";
@@ -103,7 +104,7 @@ public class ExportDsmlJob extends AbstractEclipseJob
 
 
     /**
-     * Creates a new instance of ExportDsmlJob.
+     * Creates a new instance of ExportDsmlRunnable.
      *
      * @param exportDsmlFilename
      *          the name of the DSML file to export to
@@ -112,8 +113,8 @@ public class ExportDsmlJob extends AbstractEclipseJob
      * @param searchParameter
      *          the Search Parameter of the export
      */
-    public ExportDsmlJob( String exportDsmlFilename, IBrowserConnection connection, SearchParameter searchParameter,
-        ExportDsmlJobType type )
+    public ExportDsmlRunnable( String exportDsmlFilename, IBrowserConnection connection,
+        SearchParameter searchParameter, ExportDsmlJobType type )
     {
         this.exportDsmlFilename = exportDsmlFilename;
         this.browserConnection = connection;
@@ -127,25 +128,32 @@ public class ExportDsmlJob extends AbstractEclipseJob
         returningAttributes.add( REF_ATTRIBUTETYPE_NAME );
         returningAttributes.add( REF_ATTRIBUTETYPE_OID );
         searchParameter.setReturningAttributes( returningAttributes.toArray( new String[0] ) );
-
-        setName( BrowserCoreMessages.jobs__export_dsml_name );
     }
 
 
-    /* (non-Javadoc)
-     * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractEclipseJob#getConnections()
+    /**
+     * {@inheritDoc}
      */
-    protected Connection[] getConnections()
+    public Connection[] getConnections()
     {
         return new Connection[]
             { browserConnection.getConnection() };
     }
 
 
-    /* (non-Javadoc)
-     * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractEclipseJob#getLockedObjects()
+    /**
+     * {@inheritDoc}
      */
-    protected Object[] getLockedObjects()
+    public String getName()
+    {
+        return BrowserCoreMessages.jobs__export_dsml_name;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public Object[] getLockedObjects()
     {
         List<String> l = new ArrayList<String>();
         l.add( browserConnection.getUrl() + "_" + DigestUtils.shaHex( exportDsmlFilename ) );
@@ -153,10 +161,19 @@ public class ExportDsmlJob extends AbstractEclipseJob
     }
 
 
-    /* (non-Javadoc)
-     * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractEclipseJob#executeAsyncJob(org.apache.directory.studio.ldapbrowser.core.jobs.ExtendedProgressMonitor)
+    /**
+     * {@inheritDoc}
      */
-    protected void executeAsyncJob( StudioProgressMonitor monitor )
+    public String getErrorMessage()
+    {
+        return BrowserCoreMessages.jobs__export_dsml_error;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public void run( StudioProgressMonitor monitor )
     {
         monitor.beginTask( BrowserCoreMessages.jobs__export_dsml_task, 4 );
         monitor.reportProgress( " " ); //$NON-NLS-1$
@@ -302,8 +319,8 @@ public class ExportDsmlJob extends AbstractEclipseJob
     private static DsmlDecorator convertSearchResultToDsml( SearchResult searchResult, SearchParameter searchParameter )
         throws InvalidAttributeIdentifierException, InvalidNameException, LdapURLEncodingException
     {
-        Entry entry = AttributeUtils.toClientEntry( searchResult.getAttributes(), new LdapDN( searchResult
-            .getNameInNamespace() ) );
+        Entry entry = AttributeUtils.toClientEntry( searchResult.getAttributes(),
+            new LdapDN( searchResult.getNameInNamespace() ) );
 
         if ( isReferral( entry ) )
         {
@@ -311,11 +328,11 @@ public class ExportDsmlJob extends AbstractEclipseJob
             SearchResultReferenceDsml srr = new SearchResultReferenceDsml();
 
             // Getting the 'ref' attribute
-            EntryAttribute refAttribute = entry.get( ExportDsmlJob.REF_ATTRIBUTETYPE_NAME );
+            EntryAttribute refAttribute = entry.get( ExportDsmlRunnable.REF_ATTRIBUTETYPE_NAME );
             if ( refAttribute == null )
             {
                 // If we did not get it by its name, let's get it by its OID
-                refAttribute = entry.get( ExportDsmlJob.REF_ATTRIBUTETYPE_OID );
+                refAttribute = entry.get( ExportDsmlRunnable.REF_ATTRIBUTETYPE_OID );
             }
 
             // Adding references
@@ -355,18 +372,18 @@ public class ExportDsmlJob extends AbstractEclipseJob
         if ( entry != null )
         {
             // Getting the 'objectClass' Attribute
-            EntryAttribute objectClassAttribute = entry.get( ExportDsmlJob.OBJECTCLASS_OBJECTCLASS_NAME );
+            EntryAttribute objectClassAttribute = entry.get( ExportDsmlRunnable.OBJECTCLASS_OBJECTCLASS_NAME );
             if ( objectClassAttribute == null )
             {
-                objectClassAttribute = entry.get( ExportDsmlJob.OBJECTCLASS_OBJECTCLASS_OID );
+                objectClassAttribute = entry.get( ExportDsmlRunnable.OBJECTCLASS_OBJECTCLASS_OID );
             }
 
             if ( objectClassAttribute != null )
             {
                 // Checking if the 'objectClass' attribute contains the 
                 // 'referral' object class as value
-                return ( ( objectClassAttribute.contains( ExportDsmlJob.REFERRAL_OBJECTCLASS_NAME ) ) || ( objectClassAttribute
-                    .contains( ExportDsmlJob.REFERRAL_OBJECTCLASS_OID ) ) );
+                return ( ( objectClassAttribute.contains( ExportDsmlRunnable.REFERRAL_OBJECTCLASS_NAME ) ) || ( objectClassAttribute
+                    .contains( ExportDsmlRunnable.REFERRAL_OBJECTCLASS_OID ) ) );
             }
         }
 
@@ -421,19 +438,10 @@ public class ExportDsmlJob extends AbstractEclipseJob
         throws InvalidAttributeIdentifierException, InvalidNameException
     {
         AddRequestDsml ar = new AddRequestDsml();
-        Entry entry = AttributeUtils.toClientEntry( searchResult.getAttributes(), new LdapDN( searchResult
-            .getNameInNamespace() ) );
+        Entry entry = AttributeUtils.toClientEntry( searchResult.getAttributes(),
+            new LdapDN( searchResult.getNameInNamespace() ) );
         ar.setEntry( entry );
 
         return ar;
-    }
-
-
-    /* (non-Javadoc)
-     * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractEclipseJob#getErrorMessage()
-     */
-    protected String getErrorMessage()
-    {
-        return BrowserCoreMessages.jobs__export_dsml_error;
     }
 }

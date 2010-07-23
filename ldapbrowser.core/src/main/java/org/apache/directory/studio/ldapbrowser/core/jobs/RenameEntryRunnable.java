@@ -37,6 +37,7 @@ import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.DnUtils;
 import org.apache.directory.studio.connection.core.StudioControl;
+import org.apache.directory.studio.connection.core.jobs.StudioConnectionBulkRunnableWithProgress;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.ldapbrowser.core.events.EntryRenamedEvent;
 import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
@@ -48,7 +49,7 @@ import org.apache.directory.studio.ldapbrowser.core.model.ISearchResult;
 
 
 /**
- * Job to rename an entry.
+ * Runnable to rename an entry.
  *
  * First it tries to rename an entry using an modrdn operation. If
  * that operation fails with an LDAP error 66 (ContextNotEmptyException)
@@ -57,9 +58,8 @@ import org.apache.directory.studio.ldapbrowser.core.model.ISearchResult;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class RenameEntryJob extends AbstractNotificationJob
+public class RenameEntryRunnable implements StudioConnectionBulkRunnableWithProgress
 {
-
     /** The browser connection. */
     private IBrowserConnection browserConnection;
 
@@ -80,28 +80,26 @@ public class RenameEntryJob extends AbstractNotificationJob
 
 
     /**
-     * Creates a new instance of RenameEntryJob.
+     * Creates a new instance of RenameEntryRunnable.
      * 
      * @param entry the entry to rename
      * @param newRdn the new RDN
      * @param dialog the dialog
      */
-    public RenameEntryJob( IEntry entry, Rdn newRdn, SimulateRenameDialog dialog )
+    public RenameEntryRunnable( IEntry entry, Rdn newRdn, SimulateRenameDialog dialog )
     {
         this.browserConnection = entry.getBrowserConnection();
         this.oldEntry = entry;
         this.newEntry = null;
         this.newRdn = newRdn;
         this.dialog = dialog;
-
-        setName( BrowserCoreMessages.jobs__rename_entry_name );
     }
 
 
     /**
-     * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractEclipseJob#getConnections()
+     * {@inheritDoc}
      */
-    protected Connection[] getConnections()
+    public Connection[] getConnections()
     {
         return new Connection[]
             { browserConnection.getConnection() };
@@ -109,9 +107,18 @@ public class RenameEntryJob extends AbstractNotificationJob
 
 
     /**
-     * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractEclipseJob#getLockedObjects()
+     * {@inheritDoc}
      */
-    protected Object[] getLockedObjects()
+    public String getName()
+    {
+        return BrowserCoreMessages.jobs__rename_entry_name;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public Object[] getLockedObjects()
     {
         List<Object> l = new ArrayList<Object>();
         l.add( oldEntry.getParententry() );
@@ -120,9 +127,18 @@ public class RenameEntryJob extends AbstractNotificationJob
 
 
     /**
-     * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractNotificationJob#executeNotificationJob(org.apache.directory.studio.connection.core.jobs.StudioProgressMonitor)
+     * {@inheritDoc}
      */
-    protected void executeNotificationJob( StudioProgressMonitor monitor )
+    public String getErrorMessage()
+    {
+        return BrowserCoreMessages.jobs__rename_entry_error;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public void run( StudioProgressMonitor monitor )
     {
         monitor.beginTask( BrowserCoreMessages.bind( BrowserCoreMessages.jobs__rename_entry_task, new String[]
             { oldEntry.getDn().getUpName() } ), 3 );
@@ -153,14 +169,14 @@ public class RenameEntryJob extends AbstractNotificationJob
                 {
                     // do simulated rename operation
                     dummyMonitor.reset();
-                    CopyEntriesJob.copyEntry( oldEntry, oldEntry.getParententry(), newRdn,
+                    CopyEntriesRunnable.copyEntry( oldEntry, oldEntry.getParententry(), newRdn,
                         SearchControls.SUBTREE_SCOPE, 0, null, dummyMonitor, monitor );
 
                     if ( !dummyMonitor.errorsReported() )
                     {
                         dummyMonitor.reset();
-                        DeleteEntriesJob.optimisticDeleteEntryRecursive( browserConnection, oldDn, oldEntry
-                            .isReferral(), false, 0, dummyMonitor, monitor );
+                        DeleteEntriesRunnable.optimisticDeleteEntryRecursive( browserConnection, oldDn,
+                            oldEntry.isReferral(), false, 0, dummyMonitor, monitor );
                     }
                 }
                 else
@@ -233,9 +249,9 @@ public class RenameEntryJob extends AbstractNotificationJob
 
 
     /**
-     * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractNotificationJob#runNotification()
+     * {@inheritDoc}
      */
-    protected void runNotification()
+    public void runNotification( StudioProgressMonitor monitor )
     {
         if ( oldEntry != null && newEntry != null )
         {
@@ -247,15 +263,6 @@ public class RenameEntryJob extends AbstractNotificationJob
                     SearchUpdateEvent.EventDetail.SEARCH_PERFORMED ), this );
             }
         }
-    }
-
-
-    /**
-     * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractEclipseJob#getErrorMessage()
-     */
-    protected String getErrorMessage()
-    {
-        return BrowserCoreMessages.jobs__rename_entry_error;
     }
 
 
@@ -284,9 +291,8 @@ public class RenameEntryJob extends AbstractNotificationJob
 
         if ( browserConnection.getConnection() != null )
         {
-            browserConnection.getConnection().getJNDIConnectionWrapper().renameEntry( oldDnString, newDnString, true,
-                controls, monitor, null );
+            browserConnection.getConnection().getJNDIConnectionWrapper()
+                .renameEntry( oldDnString, newDnString, true, controls, monitor, null );
         }
     }
-
 }

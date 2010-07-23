@@ -21,7 +21,8 @@
 package org.apache.directory.studio.ldapbrowser.ui.wizards;
 
 
-import org.apache.directory.studio.ldapbrowser.core.jobs.ExportLdifJob;
+import org.apache.directory.studio.ldapbrowser.core.jobs.ExportLdifRunnable;
+import org.apache.directory.studio.ldapbrowser.core.jobs.StudioBrowserJob;
 import org.apache.directory.studio.ldapbrowser.ui.BrowserUIConstants;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.PlatformUI;
@@ -82,10 +83,10 @@ public class ExportLdifWizard extends ExportBaseWizard
         super.createPageControls( pageContainer );
 
         // set help context ID
-        PlatformUI.getWorkbench().getHelpSystem().setHelp( fromPage.getControl(),
-            BrowserUIConstants.PLUGIN_ID + "." + "tools_ldifexport_wizard" ); //$NON-NLS-1$ //$NON-NLS-2$
-        PlatformUI.getWorkbench().getHelpSystem().setHelp( toPage.getControl(),
-            BrowserUIConstants.PLUGIN_ID + "." + "tools_ldifexport_wizard" ); //$NON-NLS-1$ //$NON-NLS-2$
+        PlatformUI.getWorkbench().getHelpSystem()
+            .setHelp( fromPage.getControl(), BrowserUIConstants.PLUGIN_ID + "." + "tools_ldifexport_wizard" ); //$NON-NLS-1$ //$NON-NLS-2$
+        PlatformUI.getWorkbench().getHelpSystem()
+            .setHelp( toPage.getControl(), BrowserUIConstants.PLUGIN_ID + "." + "tools_ldifexport_wizard" ); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
 
@@ -97,9 +98,8 @@ public class ExportLdifWizard extends ExportBaseWizard
         fromPage.saveDialogSettings();
         toPage.saveDialogSettings();
 
-        ExportLdifJob elj = new ExportLdifJob( exportFilename, search.getBrowserConnection(), search
-            .getSearchParameter() );
-        elj.execute();
+        new StudioBrowserJob( new ExportLdifRunnable( exportFilename, search.getBrowserConnection(),
+            search.getSearchParameter() ) ).execute();
 
         return true;
     }

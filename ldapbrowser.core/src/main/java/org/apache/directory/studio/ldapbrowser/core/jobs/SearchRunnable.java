@@ -79,7 +79,6 @@ import org.apache.directory.studio.ldapbrowser.core.utils.Utils;
  */
 public class SearchRunnable implements StudioConnectionBulkRunnableWithProgress
 {
-
     /** The searches. */
     protected ISearch[] searches;
 
@@ -151,6 +150,16 @@ public class SearchRunnable implements StudioConnectionBulkRunnableWithProgress
     /**
      * {@inheritDoc}
      */
+    public String getErrorMessage()
+    {
+        return searches.length == 1 ? BrowserCoreMessages.jobs__search_error_1
+            : BrowserCoreMessages.jobs__search_error_n;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
     public void run( StudioProgressMonitor monitor )
     {
         monitor.beginTask( " ", searches.length + 1 ); //$NON-NLS-1$
@@ -160,7 +169,7 @@ public class SearchRunnable implements StudioConnectionBulkRunnableWithProgress
         {
             ISearch search = searches[pi];
             ISearch searchToPerform = searchesToPerform[pi];
-            
+
             monitor.setTaskName( BrowserCoreMessages.bind( BrowserCoreMessages.jobs__search_task, new String[]
                 { search.getName() } ) );
             monitor.worked( 1 );
@@ -279,16 +288,6 @@ public class SearchRunnable implements StudioConnectionBulkRunnableWithProgress
 
 
     /**
-     * {@inheritDoc}
-     */
-    public String getErrorMessage()
-    {
-        return searches.length == 1 ? BrowserCoreMessages.jobs__search_error_1
-            : BrowserCoreMessages.jobs__search_error_n;
-    }
-
-
-    /**
      * Searches the directory and updates the browser model.
      * 
      * @param browserConnection the browser connection
@@ -403,8 +402,8 @@ public class SearchRunnable implements StudioConnectionBulkRunnableWithProgress
                                 if ( jndiControl instanceof PagedResultsResponseControl )
                                 {
                                     PagedResultsResponseControl prrc = ( PagedResultsResponseControl ) jndiControl;
-                                    StudioPagedResultsControl studioControl = new StudioPagedResultsControl( prrc
-                                        .getResultSize(), prrc.getCookie(), prrc.isCritical(), false );
+                                    StudioPagedResultsControl studioControl = new StudioPagedResultsControl(
+                                        prrc.getResultSize(), prrc.getCookie(), prrc.isCritical(), false );
                                     search.getResponseControls().add( studioControl );
 
                                     search.setCountLimitExceeded( prrc.getCookie() != null );
@@ -496,9 +495,11 @@ public class SearchRunnable implements StudioConnectionBulkRunnableWithProgress
             }
         }
 
-        StudioNamingEnumeration result = browserConnection.getConnection().getJNDIConnectionWrapper().search(
-            searchBase, filter, controls, aliasesDereferencingMethod, referralsHandlingMethod, jndiControls, monitor,
-            null );
+        StudioNamingEnumeration result = browserConnection
+            .getConnection()
+            .getJNDIConnectionWrapper()
+            .search( searchBase, filter, controls, aliasesDereferencingMethod, referralsHandlingMethod, jndiControls,
+                monitor, null );
         return result;
     }
 
@@ -510,36 +511,36 @@ public class SearchRunnable implements StudioConnectionBulkRunnableWithProgress
         // add children detetion attributes
         if ( search.isInitHasChildrenFlag() )
         {
-            if ( search.getBrowserConnection().getSchema().hasAttributeTypeDescription(
-                SchemaConstants.HAS_SUBORDINATES_AT )
+            if ( search.getBrowserConnection().getSchema()
+                .hasAttributeTypeDescription( SchemaConstants.HAS_SUBORDINATES_AT )
                 && !Utils.containsIgnoreCase( Arrays.asList( searchParameter.getReturningAttributes() ),
                     SchemaConstants.HAS_SUBORDINATES_AT ) )
             {
                 String[] returningAttributes = new String[searchParameter.getReturningAttributes().length + 1];
-                System.arraycopy( searchParameter.getReturningAttributes(), 0, returningAttributes, 0, searchParameter
-                    .getReturningAttributes().length );
+                System.arraycopy( searchParameter.getReturningAttributes(), 0, returningAttributes, 0,
+                    searchParameter.getReturningAttributes().length );
                 returningAttributes[returningAttributes.length - 1] = SchemaConstants.HAS_SUBORDINATES_AT;
                 searchParameter.setReturningAttributes( returningAttributes );
             }
-            else if ( search.getBrowserConnection().getSchema().hasAttributeTypeDescription(
-                SchemaConstants.NUM_SUBORDINATES_AT )
+            else if ( search.getBrowserConnection().getSchema()
+                .hasAttributeTypeDescription( SchemaConstants.NUM_SUBORDINATES_AT )
                 && !Utils.containsIgnoreCase( Arrays.asList( searchParameter.getReturningAttributes() ),
                     SchemaConstants.NUM_SUBORDINATES_AT ) )
             {
                 String[] returningAttributes = new String[searchParameter.getReturningAttributes().length + 1];
-                System.arraycopy( searchParameter.getReturningAttributes(), 0, returningAttributes, 0, searchParameter
-                    .getReturningAttributes().length );
+                System.arraycopy( searchParameter.getReturningAttributes(), 0, returningAttributes, 0,
+                    searchParameter.getReturningAttributes().length );
                 returningAttributes[returningAttributes.length - 1] = SchemaConstants.NUM_SUBORDINATES_AT;
                 searchParameter.setReturningAttributes( returningAttributes );
             }
-            else if ( search.getBrowserConnection().getSchema().hasAttributeTypeDescription(
-                SchemaConstants.SUBORDINATE_COUNT_AT )
+            else if ( search.getBrowserConnection().getSchema()
+                .hasAttributeTypeDescription( SchemaConstants.SUBORDINATE_COUNT_AT )
                 && !Utils.containsIgnoreCase( Arrays.asList( searchParameter.getReturningAttributes() ),
                     SchemaConstants.SUBORDINATE_COUNT_AT ) )
             {
                 String[] returningAttributes = new String[searchParameter.getReturningAttributes().length + 1];
-                System.arraycopy( searchParameter.getReturningAttributes(), 0, returningAttributes, 0, searchParameter
-                    .getReturningAttributes().length );
+                System.arraycopy( searchParameter.getReturningAttributes(), 0, returningAttributes, 0,
+                    searchParameter.getReturningAttributes().length );
                 returningAttributes[returningAttributes.length - 1] = SchemaConstants.SUBORDINATE_COUNT_AT;
                 searchParameter.setReturningAttributes( returningAttributes );
             }
@@ -555,8 +556,8 @@ public class SearchRunnable implements StudioConnectionBulkRunnableWithProgress
                 SchemaConstants.ALL_USER_ATTRIBUTES ) )
         {
             String[] returningAttributes = new String[searchParameter.getReturningAttributes().length + 1];
-            System.arraycopy( searchParameter.getReturningAttributes(), 0, returningAttributes, 0, searchParameter
-                .getReturningAttributes().length );
+            System.arraycopy( searchParameter.getReturningAttributes(), 0, returningAttributes, 0,
+                searchParameter.getReturningAttributes().length );
             returningAttributes[returningAttributes.length - 1] = SchemaConstants.OBJECT_CLASS_AT;
             searchParameter.setReturningAttributes( returningAttributes );
         }
@@ -880,5 +881,4 @@ public class SearchRunnable implements StudioConnectionBulkRunnableWithProgress
             }
         }
     }
-
 }

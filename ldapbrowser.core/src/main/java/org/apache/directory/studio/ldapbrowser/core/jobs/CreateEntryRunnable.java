@@ -49,7 +49,6 @@ import org.apache.directory.studio.ldapbrowser.core.model.IValue;
  */
 public class CreateEntryRunnable implements StudioConnectionBulkRunnableWithProgress
 {
-
     /** The entry to create. */
     private IEntry entryToCreate;
 
@@ -100,6 +99,15 @@ public class CreateEntryRunnable implements StudioConnectionBulkRunnableWithProg
     {
         return new Object[]
             { browserConnection };
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public String getErrorMessage()
+    {
+        return BrowserCoreMessages.jobs__create_entry_error_1;
     }
 
 
@@ -172,15 +180,6 @@ public class CreateEntryRunnable implements StudioConnectionBulkRunnableWithProg
 
 
     /**
-     * {@inheritDoc}
-     */
-    public String getErrorMessage()
-    {
-        return BrowserCoreMessages.jobs__create_entry_error_1;
-    }
-
-
-    /**
      * Creates the entry using the underlying JNDI connection wrapper.
      * 
      * @param browserConnection the browser connection
@@ -222,8 +221,7 @@ public class CreateEntryRunnable implements StudioConnectionBulkRunnableWithProg
                 { new ManageReferralControl( false ) };
         }
 
-        browserConnection.getConnection().getJNDIConnectionWrapper().createEntry( dn, jndiAttributes, controls,
-            monitor, null );
+        browserConnection.getConnection().getJNDIConnectionWrapper()
+            .createEntry( dn, jndiAttributes, controls, monitor, null );
     }
-
 }
