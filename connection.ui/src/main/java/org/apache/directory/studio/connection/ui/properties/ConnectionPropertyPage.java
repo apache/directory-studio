@@ -21,6 +21,7 @@
 package org.apache.directory.studio.connection.ui.properties;
 
 
+import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.ConnectionParameter;
 import org.apache.directory.studio.connection.core.Utils;
@@ -30,7 +31,6 @@ import org.apache.directory.studio.connection.ui.ConnectionParameterPage;
 import org.apache.directory.studio.connection.ui.ConnectionParameterPageManager;
 import org.apache.directory.studio.connection.ui.ConnectionParameterPageModifyListener;
 import org.apache.directory.studio.connection.ui.ConnectionUIConstants;
-import org.apache.directory.studio.connection.ui.widgets.BaseWidgetUtils;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridLayout;

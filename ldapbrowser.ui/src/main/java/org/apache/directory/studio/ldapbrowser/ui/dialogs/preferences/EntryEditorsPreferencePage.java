@@ -23,7 +23,7 @@ package org.apache.directory.studio.ldapbrowser.ui.dialogs.preferences;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.directory.studio.connection.ui.widgets.BaseWidgetUtils;
+import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.entryeditors.EntryEditorExtension;
 import org.apache.directory.studio.entryeditors.EntryEditorManager;
 import org.apache.directory.studio.ldapbrowser.ui.BrowserUIConstants;

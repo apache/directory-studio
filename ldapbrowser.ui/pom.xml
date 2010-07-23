@@ -127,6 +127,7 @@
  org.eclipse.ui.workbench.texteditor,
  org.eclipse.search,
  org.apache.directory.studio.common.core,
+ org.apache.directory.studio.common.ui,
  org.apache.directory.studio.connection.core,
  org.apache.directory.studio.connection.ui,
  org.apache.directory.studio.jars,
@@ -165,6 +166,11 @@
     <dependency>
       <groupId>org.apache.directory.studio</groupId>
       <artifactId>common.core</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.directory.studio</groupId>
+      <artifactId>common.ui</artifactId>
       <scope>provided</scope>
     </dependency>
     <dependency>

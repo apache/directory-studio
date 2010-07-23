@@ -23,7 +23,6 @@ package org.apache.directory.studio.ldifeditor.editor;
 
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldifparser.model.LdifFile;
-
 import org.eclipse.core.runtime.IAdaptable;
 
 

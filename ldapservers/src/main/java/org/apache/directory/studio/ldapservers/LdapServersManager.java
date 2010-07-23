@@ -33,7 +33,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.directory.studio.common.CommonUiUtils;
+import org.apache.directory.studio.common.ui.CommonUiUtils;
 import org.apache.directory.studio.ldapservers.model.LdapServer;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.ui.IMemento;

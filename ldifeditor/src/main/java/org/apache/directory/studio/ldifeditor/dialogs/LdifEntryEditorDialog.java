@@ -23,7 +23,7 @@ package org.apache.directory.studio.ldifeditor.dialogs;
 
 import javax.naming.InvalidNameException;
 
-import org.apache.directory.studio.connection.ui.widgets.BaseWidgetUtils;
+import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonConstants;
 import org.apache.directory.studio.ldapbrowser.common.widgets.entryeditor.EntryEditorWidget;
 import org.apache.directory.studio.ldapbrowser.common.widgets.entryeditor.EntryEditorWidgetActionGroup;

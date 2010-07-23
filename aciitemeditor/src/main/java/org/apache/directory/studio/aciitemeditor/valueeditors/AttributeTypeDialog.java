@@ -25,7 +25,7 @@ import java.util.Arrays;
 import java.util.Collection;
 
 import org.apache.directory.studio.aciitemeditor.Activator;
-import org.apache.directory.studio.connection.ui.widgets.BaseWidgetUtils;
+import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.connection.ui.widgets.ExtendedContentAssistCommandAdapter;
 import org.apache.directory.studio.ldapbrowser.common.widgets.ListContentProposalProvider;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.Schema;

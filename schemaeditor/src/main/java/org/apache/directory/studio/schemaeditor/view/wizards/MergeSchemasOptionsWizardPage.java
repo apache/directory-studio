@@ -20,7 +20,7 @@
 package org.apache.directory.studio.schemaeditor.view.wizards;
 
 
-import org.apache.directory.studio.connection.ui.widgets.BaseWidgetUtils;
+import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.schemaeditor.Activator;
 import org.apache.directory.studio.schemaeditor.PluginConstants;
 import org.eclipse.jface.wizard.WizardPage;

@@ -21,7 +21,7 @@
 package org.apache.directory.studio.ldapbrowser.common.widgets.browser;
 
 
-import org.apache.directory.studio.connection.ui.widgets.BaseWidgetUtils;
+import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.ldapbrowser.common.dialogs.SelectEntryDialog;
 import org.apache.directory.studio.ldapbrowser.common.widgets.ViewFormWidget;
 import org.eclipse.jface.action.IMenuManager;

@@ -22,7 +22,7 @@ package org.apache.directory.studio.ldapbrowser.common.dialogs;
 
 
 import org.apache.directory.shared.ldap.name.LdapDN;
-import org.apache.directory.studio.connection.ui.widgets.BaseWidgetUtils;
+import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.ldapbrowser.core.jobs.SimulateRenameDialog;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.eclipse.jface.dialogs.Dialog;

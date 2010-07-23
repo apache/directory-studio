@@ -25,9 +25,9 @@ import java.util.List;
 
 import org.apache.directory.studio.schemaeditor.Activator;
 import org.apache.directory.studio.schemaeditor.model.DependenciesComputer;
+import org.apache.directory.studio.schemaeditor.model.DependenciesComputer.DependencyComputerException;
 import org.apache.directory.studio.schemaeditor.model.Project;
 import org.apache.directory.studio.schemaeditor.model.Schema;
-import org.apache.directory.studio.schemaeditor.model.DependenciesComputer.DependencyComputerException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.viewers.IStructuredSelection;

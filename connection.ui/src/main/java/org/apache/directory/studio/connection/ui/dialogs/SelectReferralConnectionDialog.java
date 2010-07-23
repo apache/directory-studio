@@ -24,10 +24,10 @@ package org.apache.directory.studio.connection.ui.dialogs;
 import java.util.List;
 
 import org.apache.directory.shared.ldap.util.LdapURL;
+import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
 import org.apache.directory.studio.connection.core.Utils;
-import org.apache.directory.studio.connection.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.connection.ui.widgets.ConnectionActionGroup;
 import org.apache.directory.studio.connection.ui.widgets.ConnectionConfiguration;
 import org.apache.directory.studio.connection.ui.widgets.ConnectionUniversalListener;

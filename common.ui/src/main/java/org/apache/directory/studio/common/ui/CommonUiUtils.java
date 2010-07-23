@@ -17,7 +17,7 @@
  *  under the License. 
  *  
  */
-package org.apache.directory.studio.common;
+package org.apache.directory.studio.common.ui;
 
 
 import org.eclipse.jface.dialogs.IDialogConstants;

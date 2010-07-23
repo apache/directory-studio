@@ -23,9 +23,9 @@ package org.apache.directory.studio.ldapbrowser.common.widgets.connection;
 
 import org.apache.directory.shared.ldap.util.LdapURL;
 import org.apache.directory.shared.ldap.util.LdapURL.Extension;
+import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.connection.core.ConnectionParameter;
 import org.apache.directory.studio.connection.ui.AbstractConnectionParameterPage;
-import org.apache.directory.studio.connection.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection.ModifyMode;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection.ModifyOrder;

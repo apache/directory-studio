@@ -23,7 +23,7 @@ package org.apache.directory.studio.valueeditors.objectclass;
 
 import java.util.Arrays;
 
-import org.apache.directory.studio.connection.ui.widgets.BaseWidgetUtils;
+import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.connection.ui.widgets.ExtendedContentAssistCommandAdapter;
 import org.apache.directory.studio.ldapbrowser.common.widgets.ListContentProposalProvider;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.Schema;

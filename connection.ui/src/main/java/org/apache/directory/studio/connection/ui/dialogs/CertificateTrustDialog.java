@@ -23,8 +23,8 @@ package org.apache.directory.studio.connection.ui.dialogs;
 import java.security.cert.X509Certificate;
 import java.util.List;
 
+import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.connection.core.ICertificateHandler;
-import org.apache.directory.studio.connection.ui.widgets.BaseWidgetUtils;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.osgi.util.NLS;

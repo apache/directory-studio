@@ -18,7 +18,7 @@
  *  
  */
 
-package org.apache.directory.studio.connection.ui.widgets;
+package org.apache.directory.studio.common.ui.widgets;
 
 
 import org.eclipse.jface.dialogs.Dialog;

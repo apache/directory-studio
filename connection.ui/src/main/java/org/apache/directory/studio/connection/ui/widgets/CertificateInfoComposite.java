@@ -37,6 +37,7 @@ import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateFormatUtils;
+import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
 import org.bouncycastle.asn1.ASN1Object;
 import org.bouncycastle.x509.extension.X509ExtensionUtil;
 import org.eclipse.jface.resource.JFaceResources;
