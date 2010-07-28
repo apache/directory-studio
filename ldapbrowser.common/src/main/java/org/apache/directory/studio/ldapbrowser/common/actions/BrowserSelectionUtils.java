@@ -30,10 +30,12 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.directory.shared.ldap.schema.parsers.AttributeTypeDescription;
+import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.ui.actions.SelectionUtils;
 import org.apache.directory.studio.ldapbrowser.common.widgets.browser.BrowserCategory;
 import org.apache.directory.studio.ldapbrowser.common.widgets.browser.BrowserEntryPage;
 import org.apache.directory.studio.ldapbrowser.common.widgets.browser.BrowserSearchResultPage;
+import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
 import org.apache.directory.studio.ldapbrowser.core.model.AttributeHierarchy;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.IBookmark;
@@ -205,7 +207,20 @@ public abstract class BrowserSelectionUtils extends SelectionUtils
                 }
                 exampleSearch.setFilter( filter.toString() );
             }
-
+            else if ( obj instanceof Connection )
+            {
+                IBrowserConnection connection = BrowserCorePlugin.getDefault().getConnectionManager()
+                    .getBrowserConnection( ( Connection ) obj );
+                exampleSearch.setBrowserConnection( connection );
+                if ( connection.getRootDSE().getChildrenCount() > 0 )
+                {
+                    exampleSearch.setSearchBase( connection.getRootDSE().getChildren()[0].getDn() );
+                }
+                else
+                {
+                    exampleSearch.setSearchBase( connection.getRootDSE().getDn() );
+                }
+            }
             else if ( obj instanceof IBrowserConnection )
             {
                 IBrowserConnection connection = ( IBrowserConnection ) obj;

@@ -175,7 +175,7 @@
        <description>
           %ImportWizard_ImportLdifWizard_description
        </description>
-       <selection class="org.apache.directory.studio.ldapbrowser.core.model.IConnection"/>
+       <selection class="org.apache.directory.studio.connection.core.Connection"/>
        <selection class="org.apache.directory.studio.ldapbrowser.core.model.IEntry"/>
     </wizard>
     <wizard
@@ -187,7 +187,7 @@
        <description>
           %ImportWizard_ImportDsmlWizard_description
        </description>
-       <selection class="org.apache.directory.studio.ldapbrowser.core.model.IConnection"/>
+       <selection class="org.apache.directory.studio.connection.core.Connection"/>
        <selection class="org.apache.directory.studio.ldapbrowser.core.model.IEntry"/>
     </wizard>
  </extension>
@@ -205,7 +205,7 @@
        <description>
           %ExportWizard_ExportLdifWizard_description
        </description>
-       <selection class="org.apache.directory.studio.ldapbrowser.core.model.IConnection"/>
+       <selection class="org.apache.directory.studio.connection.core.Connection"/>
        <selection class="org.apache.directory.studio.ldapbrowser.core.model.IEntry"/>
     </wizard>
     <wizard
@@ -217,7 +217,7 @@
        <description>
           %ExportWizard_ExportDdsmlWizard_description
        </description>
-       <selection class="org.apache.directory.studio.ldapbrowser.core.model.IConnection"/>
+       <selection class="org.apache.directory.studio.connection.core.Connection"/>
        <selection class="org.apache.directory.studio.ldapbrowser.core.model.IEntry"/>
     </wizard>
     <wizard
@@ -229,7 +229,7 @@
        <description>
           %ExportWizard_ExportCsvWizard_description
        </description>
-       <selection class="org.apache.directory.studio.ldapbrowser.core.model.IConnection"/>
+       <selection class="org.apache.directory.studio.connection.core.Connection"/>
        <selection class="org.apache.directory.studio.ldapbrowser.core.model.IEntry"/>
     </wizard>
     <wizard
@@ -241,7 +241,7 @@
        <description>
           %ExportWizard_ExportExcelWizard_description
        </description>
-       <selection class="org.apache.directory.studio.ldapbrowser.core.model.IConnection"/>
+       <selection class="org.apache.directory.studio.connection.core.Connection"/>
        <selection class="org.apache.directory.studio.ldapbrowser.core.model.IEntry"/>
     </wizard>
     <wizard
@@ -253,7 +253,7 @@
        <description>
           %ExportWizard_ExportOdfWizard_description
        </description>
-       <selection class="org.apache.directory.studio.ldapbrowser.core.model.IConnection"/>
+       <selection class="org.apache.directory.studio.connection.core.Connection"/>
        <selection class="org.apache.directory.studio.ldapbrowser.core.model.IEntry"/>
     </wizard>
  </extension>
