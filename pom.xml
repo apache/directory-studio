@@ -79,7 +79,6 @@
     <module>apacheds</module>
     <module>apacheds-launcher</module>
     <module>apacheds.configuration</module>
-    <module>apacheds.feature</module>
     <module>common.core</module>
     <module>common.ui</module>
     <module>connection.core</module>
