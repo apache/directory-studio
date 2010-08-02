@@ -90,7 +90,6 @@ public abstract class ViewFormWidget
      */
     public void createWidget( Composite parent )
     {
-
         control = new ViewForm( parent, SWT.NONE );
         // control.marginWidth = 0;
         // control.marginHeight = 0;
