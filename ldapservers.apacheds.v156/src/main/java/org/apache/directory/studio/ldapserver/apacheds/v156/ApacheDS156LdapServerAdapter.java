@@ -22,6 +22,7 @@ package org.apache.directory.studio.ldapserver.apacheds.v156;
 
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -30,24 +31,32 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.directory.studio.apacheds.configuration.model.ServerConfiguration;
+import org.apache.directory.studio.apacheds.configuration.model.ServerXmlIOException;
+import org.apache.directory.studio.apacheds.configuration.model.v156.ServerConfigurationV156;
+import org.apache.directory.studio.apacheds.configuration.model.v156.ServerXmlIOV156;
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.common.ui.CommonUiUtils;
 import org.apache.directory.studio.ldapservers.LdapServersManager;
 import org.apache.directory.studio.ldapservers.model.LdapServer;
 import org.apache.directory.studio.ldapservers.model.LdapServerAdapter;
 import org.apache.directory.studio.ldapservers.model.LdapServerStatus;
+import org.apache.mina.util.AvailablePortFinder;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.debug.core.DebugEvent;
 import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.core.DebugPlugin;
+import org.eclipse.debug.core.IDebugEventSetListener;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationType;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.core.ILaunchManager;
+import org.eclipse.debug.core.model.RuntimeProcess;
 import org.eclipse.debug.ui.IDebugUIConstants;
 import org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants;
 import org.eclipse.jdt.launching.IRuntimeClasspathEntry;
@@ -123,7 +132,6 @@ public class ApacheDS156LdapServerAdapter implements LdapServerAdapter
         IPath resourceConfFolderPath = new Path( RESOURCES ).append( CONF );
         copyResource( resourceConfFolderPath.append( SERVER_XML ), new File( confFolder, SERVER_XML ) );
         copyResource( resourceConfFolderPath.append( LOG4J_PROPERTIES ), new File( confFolder, LOG4J_PROPERTIES ) );
-
     }
 
 
@@ -141,16 +149,26 @@ public class ApacheDS156LdapServerAdapter implements LdapServerAdapter
      */
     public void start( LdapServer server, StudioProgressMonitor monitor ) throws Exception
     {
-        launchApacheDS( server );
+        // Launching Apache DS
+        ILaunch launch = launchApacheDS( server );
 
-        server.setStatus( LdapServerStatus.STARTED );
+        // Starting the "terminate" listener thread
+        startTerminateListenerThread( server, launch );
+
+        // Running the startup listener watchdog
+        runStartupListenerWatchdog( server );
     }
 
 
     /**
      * Launches Apache DS using a launch configuration.
+     *
+     * @param server
+     *      the server
+     * @return
+     *      the associated launch
      */
-    private void launchApacheDS( LdapServer server )
+    private ILaunch launchApacheDS( LdapServer server )
     {
         try
         {
@@ -227,12 +245,17 @@ public class ApacheDS156LdapServerAdapter implements LdapServerAdapter
 
             // Storing the launch configuration as a custom object in the LDAP Server for later use
             server.putCustomObject( "launchConfiguration", launch );
+
+            return launch;
         }
         catch ( CoreException e )
         {
             CommonUiUtils.reportError( NLS.bind( "An error occurred when launching the server.\n\n{0}", new String[]
                 { e.getMessage() } ) );
+            // TODO use the monitor to report the error.
         }
+
+        return null;
     }
 
 
@@ -254,14 +277,13 @@ public class ApacheDS156LdapServerAdapter implements LdapServerAdapter
             {
                 CommonUiUtils.reportError( NLS.bind( "An error occurred when stopping the server.\n\n{0}", new String[]
                     { e.getMessage() } ) );
+                // TODO use the monitor to report the error.
             }
         }
         else
         {
             // TODO throw an error
         }
-
-        server.setStatus( LdapServerStatus.STOPPED );
     }
 
 
@@ -302,9 +324,221 @@ public class ApacheDS156LdapServerAdapter implements LdapServerAdapter
     }
 
 
+    /**
+     * Gets the path to the server libraries folder.
+     *
+     * @return
+     *      the path to the server libraries folder
+     */
     private static IPath getServerLibrariesFolder()
     {
         return ApacheDS156Plugin.getDefault().getStateLocation().append( LIBS );
+    }
+
+
+    /**
+     * Runs the startup listener watchdog.
+     */
+    private void runStartupListenerWatchdog( LdapServer server )
+    {
+        // Getting the current time
+        long startTime = System.currentTimeMillis();
+
+        // Calculating the watch dog time
+        final long watchDog = startTime + ( 1000 * 60 * 3 ); // 3 minutes
+
+        // Looping until the end of the watchdog if the server is still 'starting'
+        while ( ( System.currentTimeMillis() < watchDog ) && ( LdapServerStatus.STARTING == server.getStatus() ) )
+        {
+            try
+            {
+                // Getting the port to test
+                int port = getTestingPort( server );
+
+                // If no protocol is enabled, we pass this and 
+                // declare the server as started
+                if ( port != 0 )
+                {
+                    // Trying to see if the port is available
+                    if ( AvailablePortFinder.available( port ) )
+                    {
+                        // The port is still available
+                        throw new Exception();
+                    }
+                }
+
+                // If we pass the creation of the context, it means
+                // the server is correctly started
+
+                // We set the state of the server to 'started'...
+                server.setStatus( LdapServerStatus.STARTED );
+
+                // ... and we exit the thread
+                return;
+            }
+            catch ( Exception e )
+            {
+                // If we get an exception,it means the server is not 
+                // yet started
+
+                // We just wait one second before starting the test once
+                // again
+                try
+                {
+                    Thread.sleep( 1000 );
+                }
+                catch ( InterruptedException e1 )
+                {
+                    // Nothing to do...
+                }
+            }
+        }
+
+        // If, at the end of the watch dog, the state of the server is
+        // still 'starting' then, we declare the server as 'stopped'
+        if ( LdapServerStatus.STARTING == server.getStatus() )
+        {
+            server.setStatus( LdapServerStatus.STOPPED );
+        }
+    }
+
+
+    /**
+    * Gets the server configuration.
+    *
+    * @param server
+    *      the server
+    * @return
+    *      the associated server configuration
+    * @throws ServerXmlIOException 
+    * @throws ServerXmlIOException
+    * @throws IOException 
+    */
+    private ServerConfiguration getServerConfiguration( LdapServer server ) throws ServerXmlIOException, IOException
+    {
+        InputStream fis = new FileInputStream( new File( LdapServersManager.getServerFolder( server ).append( "conf" )
+            .append( "server.xml" ).toOSString() ) );
+
+        ServerXmlIOV156 serverXmlIOV156 = new ServerXmlIOV156();
+        return serverXmlIOV156.parse( fis );
+    }
+
+
+    /**
+     * Gets the testing port.
+     *
+     * @param configuration
+     *      the 1.5.6 server configuration
+     * @return
+     *      the testing port
+     * @throws IOException 
+     * @throws ServerXmlIOException 
+     */
+    private int getTestingPort( LdapServer server ) throws ServerXmlIOException, IOException
+    {
+        ServerConfigurationV156 configuration = ( ServerConfigurationV156 ) getServerConfiguration( server );
+
+        // LDAP
+        if ( configuration.isEnableLdap() )
+        {
+            return configuration.getLdapPort();
+        }
+        // LDAPS
+        else if ( configuration.isEnableLdaps() )
+        {
+            return configuration.getLdapsPort();
+        }
+        // Kerberos
+        else if ( configuration.isEnableKerberos() )
+        {
+            return configuration.getKerberosPort();
+        }
+        // DNS
+        else if ( configuration.isEnableDns() )
+        {
+            return configuration.getDnsPort();
+        }
+        // NTP
+        else if ( configuration.isEnableNtp() )
+        {
+            return configuration.getNtpPort();
+        }
+        // ChangePassword
+        else if ( configuration.isEnableChangePassword() )
+        {
+            return configuration.getChangePasswordPort();
+        }
+        else
+        {
+            return 0;
+        }
+    }
+
+
+    /**
+     * Starting the "terminate" listener thread.
+     * 
+     * @param server 
+     *      the server
+     * @param launch 
+     *      the launch
+     */
+    private void startTerminateListenerThread( final LdapServer server, final ILaunch launch )
+    {
+        // Creating the thread
+        Thread thread = new Thread()
+        {
+            /** The debug event listener */
+            private IDebugEventSetListener debugEventSetListener;
+
+
+            public void run()
+            {
+                // Creating the listener
+                debugEventSetListener = new IDebugEventSetListener()
+                {
+                    public void handleDebugEvents( DebugEvent[] events )
+                    {
+                        // Looping on the debug events array
+                        for ( DebugEvent debugEvent : events )
+                        {
+                            // We only care of event with kind equals to
+                            // 'terminate'
+                            if ( debugEvent.getKind() == DebugEvent.TERMINATE )
+                            {
+                                // Getting the source of the debug event
+                                Object source = debugEvent.getSource();
+                                if ( source instanceof RuntimeProcess )
+                                {
+                                    RuntimeProcess runtimeProcess = ( RuntimeProcess ) source;
+
+                                    // Getting the associated launch
+                                    ILaunch debugEventLaunch = runtimeProcess.getLaunch();
+                                    if ( debugEventLaunch.equals( launch ) )
+                                    {
+                                        // The launch we had created is now terminated
+                                        // The server is now stopped
+                                        server.setStatus( LdapServerStatus.STOPPED );
+
+                                        // Removing the listener
+                                        DebugPlugin.getDefault().removeDebugEventListener( debugEventSetListener );
+
+                                        // ... and we exit the thread
+                                        return;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                };
+
+                // Adding the listener
+                DebugPlugin.getDefault().addDebugEventListener( debugEventSetListener );
+            }
+        };
+
+        // Starting the thread
+        thread.start();
     }
 
 
