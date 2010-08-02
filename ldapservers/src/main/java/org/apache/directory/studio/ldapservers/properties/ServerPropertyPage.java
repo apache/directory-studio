@@ -20,12 +20,12 @@
 package org.apache.directory.studio.ldapservers.properties;
 
 
+import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.ldapservers.LdapServersManager;
 import org.apache.directory.studio.ldapservers.model.LdapServer;
 import org.apache.directory.studio.ldapservers.model.LdapServerAdapterExtension;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
@@ -57,41 +57,25 @@ public class ServerPropertyPage extends PropertyPage implements IWorkbenchProper
     protected Control createContents( Composite parent )
     {
         // Composite
-        Composite composite = new Composite( parent, SWT.NONE );
-        composite.setLayout( new GridLayout( 2, false ) );
-        composite.setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, true ) );
+        Composite composite = BaseWidgetUtils.createColumnContainer( parent, 2, 1 );
 
         // Name
-        Label nameLabel = new Label( composite, SWT.NONE );
-        nameLabel.setText( Messages.getString( "ServerPropertyPage.Name" ) ); //$NON-NLS-1$
-        Text nameText = new Text( composite, SWT.NONE );
-        nameText.setEditable( false );
-        nameText.setBackground( parent.getBackground() );
-        nameText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
+        BaseWidgetUtils.createLabel( composite, Messages.getString( "ServerPropertyPage.Name" ), 1 ); //$NON-NLS-1$
+        Text nameText = BaseWidgetUtils.createLabeledText( composite, "", 1 );
 
         // Type
-        Label typeLabel = new Label( composite, SWT.NONE );
-        typeLabel.setText( "Type:" );
-        Text typeText = new Text( composite, SWT.NONE );
-        typeText.setEditable( false );
-        typeText.setBackground( parent.getBackground() );
-        typeText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
+        BaseWidgetUtils.createLabel( composite, "Type:", 1 );
+        Text typeText = BaseWidgetUtils.createLabeledText( composite, "", 1 );
 
         // Vendor
-        Label vendorLabel = new Label( composite, SWT.NONE );
-        vendorLabel.setText( "Vendor:" );
-        Text vendorText = new Text( composite, SWT.NONE );
-        vendorText.setEditable( false );
-        vendorText.setBackground( parent.getBackground() );
-        vendorText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
+        BaseWidgetUtils.createLabel( composite, "Vendor:", 1 );
+        Text vendorText = BaseWidgetUtils.createLabeledText( composite, "", 1 );
 
         // Location
-        Label locationLabel = new Label( composite, SWT.NONE );
-        locationLabel.setText( Messages.getString( "ServerPropertyPage.Location" ) ); //$NON-NLS-1$
+        Label locationLabel = BaseWidgetUtils.createLabel( composite,
+            Messages.getString( "ServerPropertyPage.Location" ), 1 ); //$NON-NLS-1$
         locationLabel.setLayoutData( new GridData( SWT.NONE, SWT.TOP, false, false ) );
-        Text locationText = new Text( composite, SWT.WRAP );
-        locationText.setEditable( false );
-        locationText.setBackground( parent.getBackground() );
+        Text locationText = BaseWidgetUtils.createWrappedLabeledText( composite, "", 1 );
         GridData gd = new GridData( SWT.FILL, SWT.NONE, true, false );
         gd.widthHint = 300;
         locationText.setLayoutData( gd );

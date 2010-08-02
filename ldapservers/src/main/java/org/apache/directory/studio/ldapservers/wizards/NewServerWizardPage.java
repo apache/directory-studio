@@ -22,6 +22,7 @@ package org.apache.directory.studio.ldapservers.wizards;
 
 import java.util.regex.Pattern;
 
+import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.ldapservers.LdapServersManager;
 import org.apache.directory.studio.ldapservers.LdapServersPlugin;
 import org.apache.directory.studio.ldapservers.LdapServersPluginConstants;
@@ -92,9 +93,8 @@ public class NewServerWizardPage extends WizardPage
         composite.setLayout( new GridLayout( 2, false ) );
 
         // Filter Label
-        filterLabel = new Label( composite, SWT.NONE );
+        filterLabel = BaseWidgetUtils.createLabel( composite, "Select the server type:", 2 );
         filterLabel.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
-        filterLabel.setText( "Select the server type:" );
 
         // Filter Text
         filterText = new Text( composite, SWT.BORDER | SWT.SEARCH | SWT.CANCEL );
@@ -159,12 +159,10 @@ public class NewServerWizardPage extends WizardPage
         filler.setLayoutData( new GridData( SWT.NONE, SWT.NONE, true, false, 2, 1 ) );
 
         // Server Name Label
-        Label serverNameLabel = new Label( composite, SWT.NONE );
-        serverNameLabel.setText( "Server Name:" );
+        BaseWidgetUtils.createLabel( composite, "Server Name:", 1 );
 
         // Server Name Text
-        serverNameText = new Text( composite, SWT.BORDER );
-        serverNameText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
+        serverNameText = BaseWidgetUtils.createText( composite, "", 1 );
 
         // Adding listeners
         addListeners();
