@@ -71,9 +71,6 @@ public interface ConnectionUIConstants
     /** The new connection wizard image */
     public static final String IMG_CONNECTION_WIZARD = "resources/icons/connection_wizard.gif"; //$NON-NLS-1$
 
-    /** The pull-down image */
-    public static final String IMG_PULLDOWN = "resources/icons/pulldown.gif"; //$NON-NLS-1$
-
     /** The image used for connection folders. */
     public static final String IMG_CONNECTION_FOLDER = "resources/icons/connection_folder.gif"; //$NON-NLS-1$
 
@@ -86,20 +83,20 @@ public interface ConnectionUIConstants
     /** The collapse all image */
     public static final String IMG_COLLAPSEALL = "resources/icons/collapseall.gif"; //$NON-NLS-1$
 
-    public static final String TYPENAME = ConnectionUIPlugin.getDefault().getPluginProperties().getString(
-        "ConnectionTransfert_Typename" ); //$NON-NLS-1$
+    public static final String TYPENAME = ConnectionUIPlugin.getDefault().getPluginProperties()
+        .getString( "ConnectionTransfert_Typename" ); //$NON-NLS-1$
 
-    public static final String CMD_COPY = ConnectionUIPlugin.getDefault().getPluginProperties().getString(
-        "Cmd_Copy_id" ); //$NON-NLS-1$
+    public static final String CMD_COPY = ConnectionUIPlugin.getDefault().getPluginProperties()
+        .getString( "Cmd_Copy_id" ); //$NON-NLS-1$
 
-    public static final String CMD_PASTE = ConnectionUIPlugin.getDefault().getPluginProperties().getString(
-        "Cmd_Paste_id" ); //$NON-NLS-1$
+    public static final String CMD_PASTE = ConnectionUIPlugin.getDefault().getPluginProperties()
+        .getString( "Cmd_Paste_id" ); //$NON-NLS-1$
 
-    public static final String CMD_DELETE = ConnectionUIPlugin.getDefault().getPluginProperties().getString(
-        "Cmd_Delete_id" ); //$NON-NLS-1$
+    public static final String CMD_DELETE = ConnectionUIPlugin.getDefault().getPluginProperties()
+        .getString( "Cmd_Delete_id" ); //$NON-NLS-1$
 
-    public static final String CMD_PROPERTIES = ConnectionUIPlugin.getDefault().getPluginProperties().getString(
-        "Cmd_Properties_id" ); //$NON-NLS-1$
+    public static final String CMD_PROPERTIES = ConnectionUIPlugin.getDefault().getPluginProperties()
+        .getString( "Cmd_Properties_id" ); //$NON-NLS-1$
 
     public static final String NEW_WIZARD_NEW_CONNECTION = ConnectionUIPlugin.getDefault().getPluginProperties()
         .getString( "NewWizards_NewConnectionWizard_id" ); //$NON-NLS-1$

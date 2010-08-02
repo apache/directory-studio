@@ -116,7 +116,6 @@ public interface BrowserCommonConstants
     public static final String IMG_INPLACE_TEXTEDITOR = "resources/icons/inplace_texteditor.gif"; //$NON-NLS-1$
     public static final String IMG_MULTIVALUEDEDITOR = "resources/icons/multivaluededitor.gif"; //$NON-NLS-1$
     public static final String IMG_DNEDITOR = "resources/icons/dneditor.gif"; //$NON-NLS-1$
-    public static final String IMG_PULLDOWN = "resources/icons/pulldown.gif"; //$NON-NLS-1$
     public static final String IMG_SORT = "resources/icons/sort.gif"; //$NON-NLS-1$
     public static final String IMG_DIT = "resources/icons/dit.gif"; //$NON-NLS-1$
     public static final String IMG_ENTRY = "resources/icons/entry_default.gif"; //$NON-NLS-1$

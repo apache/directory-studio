@@ -21,6 +21,7 @@
 package org.apache.directory.studio.connection.ui.widgets;
 
 
+import org.apache.directory.studio.common.ui.widgets.ViewFormWidget;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.viewers.TreeViewer;

@@ -21,7 +21,7 @@
 package org.apache.directory.studio.ldapbrowser.common.widgets.entryeditor;
 
 
-import org.apache.directory.studio.ldapbrowser.common.widgets.ViewFormWidget;
+import org.apache.directory.studio.common.ui.widgets.ViewFormWidget;
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;

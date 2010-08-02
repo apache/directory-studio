@@ -18,15 +18,13 @@
  *  
  */
 
-package org.apache.directory.studio.connection.ui;
+package org.apache.directory.studio.common.ui;
 
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.PropertyResourceBundle;
 
-import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
-import org.apache.directory.studio.connection.core.event.EventRunner;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
@@ -39,16 +37,10 @@ import org.osgi.framework.BundleContext;
 /**
  * The activator class controls the plug-in life cycle
  */
-public class ConnectionUIPlugin extends AbstractUIPlugin
+public class CommonUIPlugin extends AbstractUIPlugin
 {
     /** The shared plugin instance. */
-    private static ConnectionUIPlugin plugin;
-
-    /** The event dispatcher */
-    private ExceptionHandler exceptionHandler;
-
-    /** The event runner. */
-    private EventRunner eventRunner;
+    private static CommonUIPlugin plugin;
 
     /** The plugin properties */
     private PropertyResourceBundle properties;
@@ -57,7 +49,7 @@ public class ConnectionUIPlugin extends AbstractUIPlugin
     /**
      * The constructor
      */
-    public ConnectionUIPlugin()
+    public CommonUIPlugin()
     {
         plugin = this;
     }
@@ -69,20 +61,6 @@ public class ConnectionUIPlugin extends AbstractUIPlugin
     public void start( BundleContext context ) throws Exception
     {
         super.start( context );
-
-        if ( exceptionHandler == null )
-        {
-            exceptionHandler = new ExceptionHandler();
-        }
-
-        if ( eventRunner == null )
-        {
-            eventRunner = new UiThreadEventRunner();
-        }
-
-        ConnectionCorePlugin.getDefault().setAuthHandler( new UIAuthHandler() );
-        ConnectionCorePlugin.getDefault().setReferralHandler( new ConnectionUIReferralHandler() );
-        ConnectionCorePlugin.getDefault().setCertificateHandler( new ConnectionUICertificateHandler() );
     }
 
 
@@ -93,16 +71,6 @@ public class ConnectionUIPlugin extends AbstractUIPlugin
     {
         plugin = null;
         super.stop( context );
-
-        if ( exceptionHandler != null )
-        {
-            exceptionHandler = null;
-        }
-
-        if ( eventRunner != null )
-        {
-            eventRunner = null;
-        }
     }
 
 
@@ -111,20 +79,9 @@ public class ConnectionUIPlugin extends AbstractUIPlugin
      *
      * @return the shared instance
      */
-    public static ConnectionUIPlugin getDefault()
+    public static CommonUIPlugin getDefault()
     {
         return plugin;
-    }
-
-
-    /**
-     * Gets the exception handler.
-     * 
-     * @return the exception handler
-     */
-    public ExceptionHandler getExceptionHandler()
-    {
-        return exceptionHandler;
     }
 
 
@@ -182,17 +139,6 @@ public class ConnectionUIPlugin extends AbstractUIPlugin
 
 
     /**
-     * Gets the event runner.
-     *
-     * @return the event runner
-     */
-    public EventRunner getEventRunner()
-    {
-        return eventRunner;
-    }
-
-
-    /**
      * Gets the plugin properties.
      *
      * @return
@@ -211,7 +157,7 @@ public class ConnectionUIPlugin extends AbstractUIPlugin
             {
                 // We can't use the PLUGIN_ID constant since loading the plugin.properties file has failed,
                 // So we're using a default plugin id.
-                getLog().log( new Status( Status.ERROR, "org.apache.directory.studio.connection.ui", Status.OK, //$NON-NLS-1$
+                getLog().log( new Status( Status.ERROR, "org.apache.directory.studio.common.ui", Status.OK, //$NON-NLS-1$
                     Messages.getString( "CommonUIPlugin.UnableGetPluginProperties" ), e ) ); //$NON-NLS-1$
             }
         }

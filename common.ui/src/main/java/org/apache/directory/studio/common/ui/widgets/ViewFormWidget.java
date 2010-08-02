@@ -18,12 +18,11 @@
  *  
  */
 
-package org.apache.directory.studio.connection.ui.widgets;
+package org.apache.directory.studio.common.ui.widgets;
 
 
-import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
-import org.apache.directory.studio.connection.ui.ConnectionUIConstants;
-import org.apache.directory.studio.connection.ui.ConnectionUIPlugin;
+import org.apache.directory.studio.common.ui.CommonUIConstants;
+import org.apache.directory.studio.common.ui.CommonUIPlugin;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.MenuManager;
@@ -62,7 +61,6 @@ import org.eclipse.swt.widgets.ToolItem;
  */
 public abstract class ViewFormWidget
 {
-
     /** The view form control */
     protected ViewForm control;
 
@@ -117,7 +115,7 @@ public abstract class ViewFormWidget
         this.menuManager = new MenuManager();
         menuToolBar = new ToolBar( control, SWT.FLAT | SWT.RIGHT );
         ToolItem ti = new ToolItem( menuToolBar, SWT.PUSH, 0 );
-        ti.setImage( ConnectionUIPlugin.getDefault().getImage( ConnectionUIConstants.IMG_PULLDOWN ) );
+        ti.setImage( CommonUIPlugin.getDefault().getImage( CommonUIConstants.IMG_PULLDOWN ) );
         ti.addSelectionListener( new SelectionAdapter()
         {
             public void widgetSelected( SelectionEvent e )
@@ -253,4 +251,14 @@ public abstract class ViewFormWidget
         return this.contextMenuManager;
     }
 
+
+    /**
+     * Returns the primary control associated with this view form.
+     *
+     * @return the SWT control which displays this view form's content
+     */
+    public Control getControl()
+    {
+        return control;
+    }
 }
