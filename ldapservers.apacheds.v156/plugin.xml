@@ -4,7 +4,7 @@
    <extension
          point="org.apache.directory.studio.ldapservers.ldapServerAdapters">
       <ldapServerAdapter
-            class="org.apache.directory.studio.ldapserver.apacheds.v156.ApacheDS156LdapServerAdapter"
+            class="org.apache.directory.studio.ldapservers.apacheds.v156.ApacheDS156LdapServerAdapter"
             id="org.apache.directory.server.1.5.6"
             name="Apache DS"
             vendor="Apache Software Foundation"

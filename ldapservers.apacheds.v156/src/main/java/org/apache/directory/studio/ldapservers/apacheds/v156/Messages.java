@@ -17,7 +17,7 @@
  *  under the License. 
  *  
  */
-package org.apache.directory.studio.ldapserver.apacheds.v156;
+package org.apache.directory.studio.ldapservers.apacheds.v156;
 
 
 import java.util.MissingResourceException;
