@@ -22,7 +22,6 @@ package org.apache.directory.studio.ldapservers.model;
 
 
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
-import org.eclipse.core.runtime.IProgressMonitor;
 
 
 /**

@@ -21,6 +21,10 @@
 package org.apache.directory.studio.ldapservers.model;
 
 
+import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
+import org.eclipse.osgi.util.NLS;
+
+
 /**
  * The {@link UnknownLdapServerAdapterExtension} class represents an extension to the 
  * LDAP Server Adapters extension point that can not be found while parsing the server instances file.
@@ -29,4 +33,48 @@ package org.apache.directory.studio.ldapservers.model;
  */
 public class UnknownLdapServerAdapterExtension extends LdapServerAdapterExtension
 {
+    public UnknownLdapServerAdapterExtension()
+    {
+        // Setting behavior for this particular LDAP Server Adapter Extension
+        setInstance( new LdapServerAdapter()
+        {
+            /**
+            * {@inheritDoc}
+            */
+            public void stop( LdapServer server, StudioProgressMonitor monitor ) throws Exception
+            {
+                // Will never occur
+            }
+
+
+            /**
+             * {@inheritDoc}
+             */
+            public void start( LdapServer server, StudioProgressMonitor monitor ) throws Exception
+            {
+                throw new Exception(
+                    NLS.bind(
+                        "This server was created with a server adapter which is no longer available. You need install it (again) using the update site of the vendor. \nServer adapter information: ID=''{0}'', Name=''{1}'', Vendor=''{2}'', Version=''{3}''",
+                        new String[]
+                            { getId(), getName(), getVendor(), getVersion() } ) );
+            }
+
+
+            /**
+             * {@inheritDoc}
+             */
+            public void delete( LdapServer server ) throws Exception
+            {
+            }
+
+
+            /**
+             * {@inheritDoc}
+             */
+            public void add( LdapServer server, StudioProgressMonitor monitor ) throws Exception
+            {
+                // Will never occur
+            }
+        } );
+    }
 }
