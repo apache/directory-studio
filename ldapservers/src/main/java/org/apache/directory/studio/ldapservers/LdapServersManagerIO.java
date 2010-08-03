@@ -144,8 +144,11 @@ public class LdapServersManagerIO
             else
             {
                 // The Adapter Extension has not been found
-                // Assigning an "unknown" Adapter Extension
+                // Creating an "unknown" Adapter Extension
                 UnknownLdapServerAdapterExtension unknownLdapServerAdapterExtension = new UnknownLdapServerAdapterExtension();
+
+                // Adapter Id
+                unknownLdapServerAdapterExtension.setId( adapterId );
 
                 // Adapter Name
                 Attribute adapterNameAttribute = element.attribute( ADAPTER_NAME_ATTRIBUTE );
@@ -167,6 +170,9 @@ public class LdapServersManagerIO
                 {
                     unknownLdapServerAdapterExtension.setVersion( adapterVersionAttribute.getValue() );
                 }
+
+                // Assigning the "unknown" Adapter Extension to the server
+                server.setLdapServerAdapterExtension( unknownLdapServerAdapterExtension );
             }
         }
         else
