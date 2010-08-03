@@ -80,7 +80,8 @@ public class StartLdapServerRunnable implements StudioRunnableWithProgress
      */
     public String getName()
     {
-        return NLS.bind( Messages.getString( "StartLdapServerRunnable.StartServer" ), new String[] { server.getName() } ); //$NON-NLS-1$
+        return NLS
+            .bind( Messages.getString( "StartLdapServerRunnable.StartServer" ), new String[] { server.getName() } ); //$NON-NLS-1$
     }
 
 
@@ -112,8 +113,12 @@ public class StartLdapServerRunnable implements StudioRunnableWithProgress
                 }
                 catch ( Exception e )
                 {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
+                    // Setting the server as stopped
+                    server.setStatus( LdapServerStatus.STOPPED );
+
+                    // Reporting the error to the monitor
+                    monitor.reportError( e );
+
                 }
             }
         }
