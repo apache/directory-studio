@@ -21,9 +21,38 @@
 package org.apache.directory.studio.ldapservers;
 
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.directory.studio.common.ui.CommonUiUtils;
 import org.apache.directory.studio.ldapservers.model.LdapServer;
 import org.apache.directory.studio.ldapservers.model.LdapServerStatus;
 import org.apache.mina.util.AvailablePortFinder;
+import org.eclipse.core.runtime.FileLocator;
+import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.debug.core.DebugEvent;
+import org.eclipse.debug.core.DebugPlugin;
+import org.eclipse.debug.core.IDebugEventSetListener;
+import org.eclipse.debug.core.ILaunch;
+import org.eclipse.debug.core.ILaunchConfiguration;
+import org.eclipse.debug.core.ILaunchConfigurationType;
+import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
+import org.eclipse.debug.core.ILaunchManager;
+import org.eclipse.debug.core.model.RuntimeProcess;
+import org.eclipse.debug.ui.IDebugUIConstants;
+import org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants;
+import org.eclipse.jdt.launching.IRuntimeClasspathEntry;
+import org.eclipse.jdt.launching.IVMInstall;
+import org.eclipse.jdt.launching.JavaRuntime;
+import org.eclipse.osgi.util.NLS;
+import org.osgi.framework.Bundle;
 
 
 /**
@@ -31,6 +60,10 @@ import org.apache.mina.util.AvailablePortFinder;
  */
 public class LdapServersUtils
 {
+    /** The ID of the launch configuration custom object */
+    public static final String LAUNCH_CONFIGURATION_CUSTOM_OBJECT = "launchConfiguration";
+
+
     /**
      * Runs the startup listener watchdog.
      *
@@ -98,6 +131,258 @@ public class LdapServersUtils
         if ( LdapServerStatus.STARTING == server.getStatus() )
         {
             server.setStatus( LdapServerStatus.STOPPED );
+        }
+    }
+
+
+    /**
+     * Starting the "terminate" listener thread.
+     * 
+     * @param server 
+     *      the server
+     * @param launch 
+     *      the launch
+     */
+    public static void startTerminateListenerThread( final LdapServer server, final ILaunch launch )
+    {
+        // Creating the thread
+        Thread thread = new Thread()
+        {
+            /** The debug event listener */
+            private IDebugEventSetListener debugEventSetListener;
+
+
+            public void run()
+            {
+                // Creating the listener
+                debugEventSetListener = new IDebugEventSetListener()
+                {
+                    public void handleDebugEvents( DebugEvent[] events )
+                    {
+                        // Looping on the debug events array
+                        for ( DebugEvent debugEvent : events )
+                        {
+                            // We only care of event with kind equals to
+                            // 'terminate'
+                            if ( debugEvent.getKind() == DebugEvent.TERMINATE )
+                            {
+                                // Getting the source of the debug event
+                                Object source = debugEvent.getSource();
+                                if ( source instanceof RuntimeProcess )
+                                {
+                                    RuntimeProcess runtimeProcess = ( RuntimeProcess ) source;
+
+                                    // Getting the associated launch
+                                    ILaunch debugEventLaunch = runtimeProcess.getLaunch();
+                                    if ( debugEventLaunch.equals( launch ) )
+                                    {
+                                        // The launch we had created is now terminated
+                                        // The server is now stopped
+                                        server.setStatus( LdapServerStatus.STOPPED );
+
+                                        // Removing the listener
+                                        DebugPlugin.getDefault().removeDebugEventListener( debugEventSetListener );
+
+                                        // ... and we exit the thread
+                                        return;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                };
+
+                // Adding the listener
+                DebugPlugin.getDefault().addDebugEventListener( debugEventSetListener );
+            }
+        };
+
+        // Starting the thread
+        thread.start();
+    }
+
+
+    /**
+     * Launches Apache DS using a launch configuration.
+     *
+     * @param server
+     *      the server
+     * @param apacheDsLibrariesFolder
+     *      the ApacheDS libraries folder
+     * @param libraries
+     *      the names of the libraries
+     * @return
+     *      the associated launch
+     */
+    public static ILaunch launchApacheDS( LdapServer server, IPath apacheDsLibrariesFolder, String[] libraries )
+        throws Exception
+    {
+        // Getting the default VM installation
+        IVMInstall vmInstall = JavaRuntime.getDefaultVMInstall();
+
+        // Creating a new editable launch configuration
+        ILaunchConfigurationType type = DebugPlugin.getDefault().getLaunchManager()
+            .getLaunchConfigurationType( IJavaLaunchConfigurationConstants.ID_JAVA_APPLICATION );
+        ILaunchConfigurationWorkingCopy workingCopy = type.newInstance( null, NLS.bind( "Starting {0}", new String[]
+            { server.getName() } ) );
+
+        // Setting the JRE container path attribute
+        workingCopy.setAttribute( IJavaLaunchConfigurationConstants.ATTR_JRE_CONTAINER_PATH, vmInstall
+            .getInstallLocation().toString() );
+
+        // Setting the main type attribute
+        workingCopy.setAttribute( IJavaLaunchConfigurationConstants.ATTR_MAIN_TYPE_NAME,
+            "org.apache.directory.studio.apacheds.Launcher" ); //$NON-NLS-1$
+
+        // Creating the classpath list
+        List<String> classpath = new ArrayList<String>();
+        for ( String library : libraries )
+        {
+            IRuntimeClasspathEntry libraryClasspathEntry = JavaRuntime
+                .newArchiveRuntimeClasspathEntry( apacheDsLibrariesFolder.append( library ) );
+            libraryClasspathEntry.setClasspathProperty( IRuntimeClasspathEntry.USER_CLASSES );
+
+            classpath.add( libraryClasspathEntry.getMemento() );
+        }
+
+        // Setting the classpath type attribute
+        workingCopy.setAttribute( IJavaLaunchConfigurationConstants.ATTR_CLASSPATH, classpath );
+
+        // Setting the default classpath type attribute to false
+        workingCopy.setAttribute( IJavaLaunchConfigurationConstants.ATTR_DEFAULT_CLASSPATH, false );
+
+        // The server folder path
+        IPath serverFolderPath = LdapServersManager.getServerFolder( server );
+
+        // Setting the program arguments attribute
+        workingCopy.setAttribute( IJavaLaunchConfigurationConstants.ATTR_PROGRAM_ARGUMENTS, "\"" //$NON-NLS-1$
+            + serverFolderPath.toOSString() + "\"" ); //$NON-NLS-1$
+
+        // Creating the VM arguments string
+        StringBuffer vmArguments = new StringBuffer();
+        vmArguments.append( "-Dlog4j.configuration=file:\"" //$NON-NLS-1$
+            + serverFolderPath.append( "conf" ).append( "log4j.properties" ).toOSString() + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        vmArguments.append( " " ); //$NON-NLS-1$
+        vmArguments.append( "-Dapacheds.var.dir=\"" + serverFolderPath.toOSString() + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
+        vmArguments.append( " " ); //$NON-NLS-1$
+        vmArguments.append( "-Dapacheds.log.dir=\"" + serverFolderPath.append( "log" ).toOSString() + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        vmArguments.append( " " ); //$NON-NLS-1$
+        vmArguments.append( "-Dapacheds.run.dir=\"" + serverFolderPath.append( "run" ).toOSString() + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        vmArguments.append( " " ); //$NON-NLS-1$
+        vmArguments.append( "-Dapacheds.instance=\"" + server.getName() + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
+
+        // Setting the VM arguments attribute
+        workingCopy.setAttribute( IJavaLaunchConfigurationConstants.ATTR_VM_ARGUMENTS, vmArguments.toString() );
+
+        // Setting the launch configuration as private
+        workingCopy.setAttribute( IDebugUIConstants.ATTR_PRIVATE, true );
+
+        // Indicating that we don't want any console to show up
+        workingCopy.setAttribute( DebugPlugin.ATTR_CAPTURE_OUTPUT, false );
+
+        // Saving the launch configuration
+        ILaunchConfiguration configuration = workingCopy.doSave();
+
+        // Launching the launch configuration
+        ILaunch launch = configuration.launch( ILaunchManager.RUN_MODE, new NullProgressMonitor() );
+
+        // Storing the launch configuration as a custom object in the LDAP Server for later use
+        server.putCustomObject( LAUNCH_CONFIGURATION_CUSTOM_OBJECT, launch );
+
+        return launch;
+    }
+
+
+    /**
+     * Verifies that the libraries folder exists and contains the jar files 
+     * needed to launch the server.
+     *
+     * @param bundle
+     *      the bundle
+     * @param sourceLibrariesPath
+     *      the path to the source libraries
+     * @param destinationLibrariesPath
+     *      the path to the destination libraries
+     * @param libraries
+     *      the names of the libraries
+     */
+    public static void verifyAndCopyLibraries( Bundle bundle, IPath sourceLibrariesPath,
+        IPath destinationLibrariesPath, String[] libraries )
+    {
+        // Destination libraries folder
+        File destinationLibraries = destinationLibrariesPath.toFile();
+        if ( !destinationLibraries.exists() )
+        {
+            destinationLibraries.mkdir();
+        }
+
+        // Verifying and copying libraries (if needed)
+        for ( String library : libraries )
+        {
+            File destinationLibraryFile = destinationLibrariesPath.append( library ).toFile();
+            if ( !destinationLibraryFile.exists() )
+            {
+                try
+                {
+                    copyResource( bundle, sourceLibrariesPath.append( library ), destinationLibraryFile );
+                }
+                catch ( IOException e )
+                {
+                    CommonUiUtils.reportError( "An error occurred when copying the library '" + library
+                        + "' to the location '" + destinationLibraryFile.getAbsolutePath() + "'.\n\n" + e.getMessage() );
+                }
+            }
+        }
+    }
+
+
+    /**
+    * Copy the given resource.
+    *
+    * @param bundle
+    *       the bundle
+    * @param resource
+    *      the path of the resource
+    * @param destination
+    *      the destination
+    * @throws IOException
+    *      if an error occurs when copying the jar file
+    */
+    public static void copyResource( Bundle bundle, IPath resource, File destination ) throws IOException
+    {
+        // Getting he URL of the resource within the bundle
+        URL resourceUrl = FileLocator.find( bundle, resource, null );
+
+        // Creating the input and output streams
+        InputStream resourceInputStream = resourceUrl.openStream();
+        FileOutputStream resourceOutputStream = new FileOutputStream( destination );
+
+        // Copying the resource
+        copyFile( resourceInputStream, resourceOutputStream );
+
+        // Closing the streams
+        resourceInputStream.close();
+        resourceOutputStream.close();
+    }
+
+
+    /**
+     * Copies a file from the given streams.
+     *
+     * @param inputStream
+     *      the input stream
+     * @param outputStream
+     *      the output stream
+     * @throws IOException
+     *      if an error occurs when copying the file
+     */
+    private static void copyFile( InputStream inputStream, OutputStream outputStream ) throws IOException
+    {
+        byte[] buf = new byte[1024];
+        int i = 0;
+        while ( ( i = inputStream.read( buf ) ) != -1 )
+        {
+            outputStream.write( buf, 0, i );
         }
     }
 }

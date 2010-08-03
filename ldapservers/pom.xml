@@ -115,6 +115,9 @@
             <Eclipse-LazyStart>true</Eclipse-LazyStart>
             <Bundle-Activator>org.apache.directory.studio.ldapservers.LdapServersPlugin</Bundle-Activator>
             <Require-Bundle>org.eclipse.core.runtime,
+ org.eclipse.debug.core,
+ org.eclipse.debug.ui,
+ org.eclipse.jdt.launching,
  org.eclipse.jface.text,
  org.eclipse.ui,
  org.eclipse.ui.ide,
@@ -210,6 +213,21 @@
     <dependency>
       <groupId>org.eclipse.core</groupId>
       <artifactId>expressions</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.debug</groupId>
+      <artifactId>core</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.debug</groupId>
+      <artifactId>ui</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.jdt</groupId>
+      <artifactId>launching</artifactId>
       <scope>provided</scope>
     </dependency>
     <dependency>
