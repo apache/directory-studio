@@ -86,15 +86,15 @@ public class NewServerWizard extends Wizard implements INewWizard
                     // Creating the folder for the new server
                     LdapServersManager.createNewServerFolder( server );
 
-                    // Letting the LDAP Server Adapter finish the creation of the server
                     try
                     {
+                        // Letting the LDAP Server Adapter finish the creation of the server
                         adapterExtension.getInstance().add( server, spm );
                     }
                     catch ( Exception e )
                     {
-                        // TODO Auto-generated catch block
-                        e.printStackTrace();
+                        // Reporting the error to the progress monitor
+                        spm.reportError( e );
                     }
 
                     // Reporting to the monitors that we're done
