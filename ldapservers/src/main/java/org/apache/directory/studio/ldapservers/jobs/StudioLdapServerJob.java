@@ -32,7 +32,7 @@ import org.eclipse.core.runtime.jobs.Job;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class StudioLdapServerJob extends StudioJob
+public class StudioLdapServerJob extends StudioJob<StudioRunnableWithProgress>
 {
     /**
     * Creates a new instance of StudioLdapServerJob.
