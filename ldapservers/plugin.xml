@@ -16,8 +16,9 @@
       <view
             category="org.apache.directory.studio.ldapservers.view.category"
             class="org.apache.directory.studio.ldapservers.views.ServersView"
+            icon="resources/icons/servers_view.gif"
             id="org.apache.directory.studio.ldapservers.views.ServersView"
-            name="LDAP Servers" />
+            name="LDAP Servers"/>
    </extension>
    
    <extension
