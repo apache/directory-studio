@@ -22,7 +22,6 @@ package org.apache.directory.studio.ldapservers.wizards;
 
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.ldapservers.LdapServersManager;
-import org.apache.directory.studio.ldapservers.LdapServersPluginConstants;
 import org.apache.directory.studio.ldapservers.model.LdapServer;
 import org.apache.directory.studio.ldapservers.model.LdapServerAdapterExtension;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -69,9 +68,12 @@ public class NewServerWizard extends Wizard implements INewWizard
             {
                 public void run( IProgressMonitor monitor )
                 {
+                    // Creating a StudioProgressMonitor
+                    StudioProgressMonitor spm = new StudioProgressMonitor( monitor );
+
                     // Setting the title
-                    monitor.beginTask( "Creating LDAP Server: ", IProgressMonitor.UNKNOWN );
-                    monitor.subTask( "creating server folder" );
+                    spm.beginTask( "Creating LDAP Server: ", IProgressMonitor.UNKNOWN );
+                    spm.subTask( "creating server folder" );
 
                     // Creating the new server
                     LdapServer server = new LdapServer();
@@ -87,8 +89,7 @@ public class NewServerWizard extends Wizard implements INewWizard
                     // Letting the LDAP Server Adapter finish the creation of the server
                     try
                     {
-                        adapterExtension.getInstance().add( server,
-                            new StudioProgressMonitor( LdapServersPluginConstants.PLUGIN_ID, monitor ) ); // TODO
+                        adapterExtension.getInstance().add( server, spm );
                     }
                     catch ( Exception e )
                     {
@@ -96,8 +97,8 @@ public class NewServerWizard extends Wizard implements INewWizard
                         e.printStackTrace();
                     }
 
-                    // Reporting to the monitor that we're done
-                    monitor.done();
+                    // Reporting to the monitors that we're done
+                    spm.done();
                 }
             } );
         }
