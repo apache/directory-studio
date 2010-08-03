@@ -128,10 +128,6 @@
  org.apache.directory.studio.jars,
  org.apache.directory.studio.ldapservers
             </Require-Bundle>
-            <Embed-Dependency>*;scope=compile|runtime</Embed-Dependency>
-            <Embed-Directory>lib</Embed-Directory>
-            <Embed-StripGroup>true</Embed-StripGroup>
-            <Embed-Transitive>true</Embed-Transitive>
             <Export-Package>org.apache.directory.studio.*</Export-Package>
             <Import-Package>!</Import-Package>
             <Private-Package>!</Private-Package>
@@ -528,12 +524,6 @@
   </build>
 
   <dependencies>
-    <!-- Libraries dependencies -->
-    <dependency>
-      <groupId>org.apache.mina</groupId>
-      <artifactId>mina-core</artifactId>
-    </dependency>
-    
   	<!-- Apache Directory Studio plugins dependencies -->
     <dependency>
       <groupId>org.apache.directory.studio</groupId>

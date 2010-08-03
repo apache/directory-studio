@@ -23,6 +23,7 @@ package org.apache.directory.studio.ldapserver.apacheds.v156;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -38,17 +39,15 @@ import org.apache.directory.studio.apacheds.configuration.model.v156.ServerXmlIO
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.common.ui.CommonUiUtils;
 import org.apache.directory.studio.ldapservers.LdapServersManager;
+import org.apache.directory.studio.ldapservers.LdapServersUtils;
 import org.apache.directory.studio.ldapservers.model.LdapServer;
 import org.apache.directory.studio.ldapservers.model.LdapServerAdapter;
 import org.apache.directory.studio.ldapservers.model.LdapServerStatus;
-import org.apache.mina.util.AvailablePortFinder;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.debug.core.DebugEvent;
-import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.IDebugEventSetListener;
 import org.eclipse.debug.core.ILaunch;
@@ -72,6 +71,9 @@ import org.eclipse.osgi.util.NLS;
  */
 public class ApacheDS156LdapServerAdapter implements LdapServerAdapter
 {
+    /** The ID of the launch configuration custom object */
+    private static final String LAUNCH_CONFIGURATION_CUSTOM_OBJECT = "launchConfiguration";
+
     // Various strings constants used in paths
     private static final String SERVER_XML = "server.xml";
     private static final String LOG4J_PROPERTIES = "log4j.properties";
@@ -156,7 +158,7 @@ public class ApacheDS156LdapServerAdapter implements LdapServerAdapter
         startTerminateListenerThread( server, launch );
 
         // Running the startup listener watchdog
-        runStartupListenerWatchdog( server );
+        LdapServersUtils.runStartupListenerWatchdog( server, getTestingPort( server ) );
     }
 
 
@@ -168,94 +170,82 @@ public class ApacheDS156LdapServerAdapter implements LdapServerAdapter
      * @return
      *      the associated launch
      */
-    private ILaunch launchApacheDS( LdapServer server )
+    private ILaunch launchApacheDS( LdapServer server ) throws Exception
     {
-        try
+        // Getting the default VM installation
+        IVMInstall vmInstall = JavaRuntime.getDefaultVMInstall();
+
+        // Creating a new editable launch configuration
+        ILaunchConfigurationType type = DebugPlugin.getDefault().getLaunchManager()
+            .getLaunchConfigurationType( IJavaLaunchConfigurationConstants.ID_JAVA_APPLICATION );
+        ILaunchConfigurationWorkingCopy workingCopy = type.newInstance( null, NLS.bind( "Starting {0}", new String[]
+            { server.getName() } ) );
+
+        // Setting the JRE container path attribute
+        workingCopy.setAttribute( IJavaLaunchConfigurationConstants.ATTR_JRE_CONTAINER_PATH, vmInstall
+            .getInstallLocation().toString() );
+
+        // Setting the main type attribute
+        workingCopy.setAttribute( IJavaLaunchConfigurationConstants.ATTR_MAIN_TYPE_NAME,
+            "org.apache.directory.studio.apacheds.Launcher" ); //$NON-NLS-1$
+
+        // Creating the classpath list
+        List<String> classpath = new ArrayList<String>();
+        IPath apacheDsLibrariesFolder = getServerLibrariesFolder();
+        for ( String library : libraries )
         {
-            // Getting the default VM installation
-            IVMInstall vmInstall = JavaRuntime.getDefaultVMInstall();
+            IRuntimeClasspathEntry libraryClasspathEntry = JavaRuntime
+                .newArchiveRuntimeClasspathEntry( apacheDsLibrariesFolder.append( library ) );
+            libraryClasspathEntry.setClasspathProperty( IRuntimeClasspathEntry.USER_CLASSES );
 
-            // Creating a new editable launch configuration
-            ILaunchConfigurationType type = DebugPlugin.getDefault().getLaunchManager()
-                .getLaunchConfigurationType( IJavaLaunchConfigurationConstants.ID_JAVA_APPLICATION );
-            ILaunchConfigurationWorkingCopy workingCopy = type.newInstance( null,
-                NLS.bind( "Starting {0}", new String[]
-                    { server.getName() } ) );
-
-            // Setting the JRE container path attribute
-            workingCopy.setAttribute( IJavaLaunchConfigurationConstants.ATTR_JRE_CONTAINER_PATH, vmInstall
-                .getInstallLocation().toString() );
-
-            // Setting the main type attribute
-            workingCopy.setAttribute( IJavaLaunchConfigurationConstants.ATTR_MAIN_TYPE_NAME,
-                "org.apache.directory.studio.apacheds.Launcher" ); //$NON-NLS-1$
-
-            // Creating the classpath list
-            List<String> classpath = new ArrayList<String>();
-            IPath apacheDsLibrariesFolder = getServerLibrariesFolder();
-            for ( String library : libraries )
-            {
-                IRuntimeClasspathEntry libraryClasspathEntry = JavaRuntime
-                    .newArchiveRuntimeClasspathEntry( apacheDsLibrariesFolder.append( library ) );
-                libraryClasspathEntry.setClasspathProperty( IRuntimeClasspathEntry.USER_CLASSES );
-
-                classpath.add( libraryClasspathEntry.getMemento() );
-            }
-
-            // Setting the classpath type attribute
-            workingCopy.setAttribute( IJavaLaunchConfigurationConstants.ATTR_CLASSPATH, classpath );
-
-            // Setting the default classpath type attribute to false
-            workingCopy.setAttribute( IJavaLaunchConfigurationConstants.ATTR_DEFAULT_CLASSPATH, false );
-
-            // The server folder path
-            IPath serverFolderPath = LdapServersManager.getServerFolder( server );
-
-            // Setting the program arguments attribute
-            workingCopy.setAttribute( IJavaLaunchConfigurationConstants.ATTR_PROGRAM_ARGUMENTS, "\"" //$NON-NLS-1$
-                + serverFolderPath.toOSString() + "\"" ); //$NON-NLS-1$
-
-            // Creating the VM arguments string
-            StringBuffer vmArguments = new StringBuffer();
-            vmArguments.append( "-Dlog4j.configuration=file:\"" //$NON-NLS-1$
-                + serverFolderPath.append( "conf" ).append( "log4j.properties" ).toOSString() + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-            vmArguments.append( " " ); //$NON-NLS-1$
-            vmArguments.append( "-Dapacheds.var.dir=\"" + serverFolderPath.toOSString() + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
-            vmArguments.append( " " ); //$NON-NLS-1$
-            vmArguments.append( "-Dapacheds.log.dir=\"" + serverFolderPath.append( "log" ).toOSString() + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-            vmArguments.append( " " ); //$NON-NLS-1$
-            vmArguments.append( "-Dapacheds.run.dir=\"" + serverFolderPath.append( "run" ).toOSString() + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-            vmArguments.append( " " ); //$NON-NLS-1$
-            vmArguments.append( "-Dapacheds.instance=\"" + server.getName() + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
-
-            // Setting the VM arguments attribute
-            workingCopy.setAttribute( IJavaLaunchConfigurationConstants.ATTR_VM_ARGUMENTS, vmArguments.toString() );
-
-            // Setting the launch configuration as private
-            workingCopy.setAttribute( IDebugUIConstants.ATTR_PRIVATE, true );
-
-            // Indicating that we don't want any console to show up
-            workingCopy.setAttribute( DebugPlugin.ATTR_CAPTURE_OUTPUT, false );
-
-            // Saving the launch configuration
-            ILaunchConfiguration configuration = workingCopy.doSave();
-
-            // Launching the launch configuration
-            ILaunch launch = configuration.launch( ILaunchManager.RUN_MODE, new NullProgressMonitor() );
-
-            // Storing the launch configuration as a custom object in the LDAP Server for later use
-            server.putCustomObject( "launchConfiguration", launch );
-
-            return launch;
-        }
-        catch ( CoreException e )
-        {
-            CommonUiUtils.reportError( NLS.bind( "An error occurred when launching the server.\n\n{0}", new String[]
-                { e.getMessage() } ) );
-            // TODO use the monitor to report the error.
+            classpath.add( libraryClasspathEntry.getMemento() );
         }
 
-        return null;
+        // Setting the classpath type attribute
+        workingCopy.setAttribute( IJavaLaunchConfigurationConstants.ATTR_CLASSPATH, classpath );
+
+        // Setting the default classpath type attribute to false
+        workingCopy.setAttribute( IJavaLaunchConfigurationConstants.ATTR_DEFAULT_CLASSPATH, false );
+
+        // The server folder path
+        IPath serverFolderPath = LdapServersManager.getServerFolder( server );
+
+        // Setting the program arguments attribute
+        workingCopy.setAttribute( IJavaLaunchConfigurationConstants.ATTR_PROGRAM_ARGUMENTS, "\"" //$NON-NLS-1$
+            + serverFolderPath.toOSString() + "\"" ); //$NON-NLS-1$
+
+        // Creating the VM arguments string
+        StringBuffer vmArguments = new StringBuffer();
+        vmArguments.append( "-Dlog4j.configuration=file:\"" //$NON-NLS-1$
+            + serverFolderPath.append( "conf" ).append( "log4j.properties" ).toOSString() + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        vmArguments.append( " " ); //$NON-NLS-1$
+        vmArguments.append( "-Dapacheds.var.dir=\"" + serverFolderPath.toOSString() + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
+        vmArguments.append( " " ); //$NON-NLS-1$
+        vmArguments.append( "-Dapacheds.log.dir=\"" + serverFolderPath.append( "log" ).toOSString() + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        vmArguments.append( " " ); //$NON-NLS-1$
+        vmArguments.append( "-Dapacheds.run.dir=\"" + serverFolderPath.append( "run" ).toOSString() + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        vmArguments.append( " " ); //$NON-NLS-1$
+        vmArguments.append( "-Dapacheds.instance=\"" + server.getName() + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
+
+        // Setting the VM arguments attribute
+        workingCopy.setAttribute( IJavaLaunchConfigurationConstants.ATTR_VM_ARGUMENTS, vmArguments.toString() );
+
+        // Setting the launch configuration as private
+        workingCopy.setAttribute( IDebugUIConstants.ATTR_PRIVATE, true );
+
+        // Indicating that we don't want any console to show up
+        workingCopy.setAttribute( DebugPlugin.ATTR_CAPTURE_OUTPUT, false );
+
+        // Saving the launch configuration
+        ILaunchConfiguration configuration = workingCopy.doSave();
+
+        // Launching the launch configuration
+        ILaunch launch = configuration.launch( ILaunchManager.RUN_MODE, new NullProgressMonitor() );
+
+        // Storing the launch configuration as a custom object in the LDAP Server for later use
+        server.putCustomObject( LAUNCH_CONFIGURATION_CUSTOM_OBJECT, launch );
+
+        return launch;
     }
 
 
@@ -265,24 +255,15 @@ public class ApacheDS156LdapServerAdapter implements LdapServerAdapter
     public void stop( LdapServer server, StudioProgressMonitor monitor ) throws Exception
     {
         // Getting the launch
-        ILaunch launch = ( ILaunch ) server.getCustomObject( "launchConfiguration" );
+        ILaunch launch = ( ILaunch ) server.removeCustomObject( LAUNCH_CONFIGURATION_CUSTOM_OBJECT );
         if ( ( launch != null ) && ( !launch.isTerminated() ) )
         {
             // Terminating the launch
-            try
-            {
-                launch.terminate();
-            }
-            catch ( DebugException e )
-            {
-                CommonUiUtils.reportError( NLS.bind( "An error occurred when stopping the server.\n\n{0}", new String[]
-                    { e.getMessage() } ) );
-                // TODO use the monitor to report the error.
-            }
+            launch.terminate();
         }
         else
         {
-            // TODO throw an error
+            throw new Exception( "The associated launch configuration could not be found or is already terminated." );
         }
     }
 
@@ -337,73 +318,6 @@ public class ApacheDS156LdapServerAdapter implements LdapServerAdapter
 
 
     /**
-     * Runs the startup listener watchdog.
-     */
-    private void runStartupListenerWatchdog( LdapServer server )
-    {
-        // Getting the current time
-        long startTime = System.currentTimeMillis();
-
-        // Calculating the watch dog time
-        final long watchDog = startTime + ( 1000 * 60 * 3 ); // 3 minutes
-
-        // Looping until the end of the watchdog if the server is still 'starting'
-        while ( ( System.currentTimeMillis() < watchDog ) && ( LdapServerStatus.STARTING == server.getStatus() ) )
-        {
-            try
-            {
-                // Getting the port to test
-                int port = getTestingPort( server );
-
-                // If no protocol is enabled, we pass this and 
-                // declare the server as started
-                if ( port != 0 )
-                {
-                    // Trying to see if the port is available
-                    if ( AvailablePortFinder.available( port ) )
-                    {
-                        // The port is still available
-                        throw new Exception();
-                    }
-                }
-
-                // If we pass the creation of the context, it means
-                // the server is correctly started
-
-                // We set the state of the server to 'started'...
-                server.setStatus( LdapServerStatus.STARTED );
-
-                // ... and we exit the thread
-                return;
-            }
-            catch ( Exception e )
-            {
-                // If we get an exception,it means the server is not 
-                // yet started
-
-                // We just wait one second before starting the test once
-                // again
-                try
-                {
-                    Thread.sleep( 1000 );
-                }
-                catch ( InterruptedException e1 )
-                {
-                    // Nothing to do...
-                }
-            }
-        }
-
-        // If, at the end of the watch dog, the state of the server is
-        // still 'starting' then, we declare the server as 'stopped'
-        if ( LdapServerStatus.STARTING == server.getStatus() )
-        {
-            server.setStatus( LdapServerStatus.STOPPED );
-        }
-    }
-
-
-    /**
     * Gets the server configuration.
     *
     * @param server
@@ -411,13 +325,13 @@ public class ApacheDS156LdapServerAdapter implements LdapServerAdapter
     * @return
     *      the associated server configuration
     * @throws ServerXmlIOException 
-    * @throws ServerXmlIOException
-    * @throws IOException 
+    * @throws FileNotFoundException 
     */
-    private ServerConfiguration getServerConfiguration( LdapServer server ) throws ServerXmlIOException, IOException
+    private ServerConfiguration getServerConfiguration( LdapServer server ) throws ServerXmlIOException,
+        FileNotFoundException
     {
-        InputStream fis = new FileInputStream( new File( LdapServersManager.getServerFolder( server ).append( "conf" )
-            .append( "server.xml" ).toOSString() ) );
+        InputStream fis = new FileInputStream( LdapServersManager.getServerFolder( server ).append( "conf" )
+            .append( "server.xml" ).toFile() );
 
         ServerXmlIOV156 serverXmlIOV156 = new ServerXmlIOV156();
         return serverXmlIOV156.parse( fis );

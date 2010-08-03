@@ -104,8 +104,7 @@ public class NewServerWizard extends Wizard implements INewWizard
         }
         catch ( Exception e )
         {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            // Will never occur
         }
 
         return true;
