@@ -90,10 +90,6 @@ public class StartLdapServerRunnable implements StudioRunnableWithProgress
      */
     public void run( StudioProgressMonitor monitor )
     {
-        // Creating a Studio Progress Monitor
-        //        StudioProgressMonitor studioConnectionProgressMonitor = new StudioProgressMonitor(
-        //            LdapServersPluginConstants.PLUGIN_ID, monitor ); // TODO remove this?
-
         // Setting the status on the server to 'starting'
         server.setStatus( LdapServerStatus.STARTING );
 
@@ -118,7 +114,6 @@ public class StartLdapServerRunnable implements StudioRunnableWithProgress
 
                     // Reporting the error to the monitor
                     monitor.reportError( e );
-
                 }
             }
         }

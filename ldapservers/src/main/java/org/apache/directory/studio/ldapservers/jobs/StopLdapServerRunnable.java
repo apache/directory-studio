@@ -23,7 +23,6 @@ package org.apache.directory.studio.ldapservers.jobs;
 
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.common.core.jobs.StudioRunnableWithProgress;
-import org.apache.directory.studio.ldapservers.LdapServersPluginConstants;
 import org.apache.directory.studio.ldapservers.model.LdapServer;
 import org.apache.directory.studio.ldapservers.model.LdapServerAdapter;
 import org.apache.directory.studio.ldapservers.model.LdapServerAdapterExtension;
@@ -95,7 +94,7 @@ public class StopLdapServerRunnable implements StudioRunnableWithProgress
         // Starting a new watchdog thread
         StopLdapServerWatchDogThread.runNewWatchDogThread( server );
 
-        // Launching the 'stop()' of the LDAP Server Adapter
+        // Launching the 'stop()' method of the LDAP Server Adapter
         LdapServerAdapterExtension ldapServerAdapterExtension = server.getLdapServerAdapterExtension();
         if ( ldapServerAdapterExtension != null )
         {
@@ -104,13 +103,15 @@ public class StopLdapServerRunnable implements StudioRunnableWithProgress
             {
                 try
                 {
-                    ldapServerAdapter.stop( server, new StudioProgressMonitor( LdapServersPluginConstants.PLUGIN_ID,
-                        monitor ) ); // TODO
+                    ldapServerAdapter.stop( server, monitor );
                 }
                 catch ( Exception e )
                 {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
+                    // Setting the server as started
+                    server.setStatus( LdapServerStatus.STARTED );
+
+                    // Reporting the error to the monitor
+                    monitor.reportError( e );
                 }
             }
         }
