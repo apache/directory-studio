@@ -87,6 +87,9 @@
     <module>ldapbrowser.core</module>
     <module>ldapbrowser.common</module>
     <module>ldapbrowser.ui</module>
+    <module>ldapservers</module>
+    <module>ldapservers.apacheds.v155</module>
+    <module>ldapservers.apacheds.v156</module>
     <module>ldifeditor</module>
     <module>ldifparser</module>
     <module>rcp</module>
@@ -277,6 +280,16 @@
       <dependency>
         <groupId>org.apache.directory.studio</groupId>
         <artifactId>ldapservers</artifactId>
+        <version>${pom.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.directory.studio</groupId>
+        <artifactId>ldapservers.apacheds.v155</artifactId>
+        <version>${pom.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.directory.studio</groupId>
+        <artifactId>ldapservers.apacheds.v156</artifactId>
         <version>${pom.version}</version>
       </dependency>
       <dependency>

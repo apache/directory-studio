@@ -107,6 +107,14 @@
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.apache.directory.studio</groupId>
+                  <artifactId>ldapservers</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.apache.directory.studio</groupId>
+                  <artifactId>ldapservers.apacheds.v156</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.apache.directory.studio</groupId>
                   <artifactId>ldifeditor</artifactId>
                 </artifactItem>
                 <artifactItem>
