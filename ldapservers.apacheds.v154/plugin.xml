@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.apache.directory.studio.ldapservers.ldapServerAdapters">
+      <ldapServerAdapter
+            class="org.apache.directory.studio.ldapservers.apacheds.v154.ApacheDS154LdapServerAdapter"
+            id="org.apache.directory.server.1.5.4"
+            name="Apache DS"
+            vendor="Apache Software Foundation"
+            version="1.5.4">
+      </ldapServerAdapter>
+   </extension>
+</plugin>
