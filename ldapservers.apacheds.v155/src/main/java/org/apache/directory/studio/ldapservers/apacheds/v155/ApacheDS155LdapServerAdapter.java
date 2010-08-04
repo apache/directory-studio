@@ -195,7 +195,7 @@ public class ApacheDS155LdapServerAdapter implements LdapServerAdapter
      * Gets the testing port.
      *
      * @param configuration
-     *      the 1.5.6 server configuration
+     *      the 1.5.5 server configuration
      * @return
      *      the testing port
      * @throws IOException 
