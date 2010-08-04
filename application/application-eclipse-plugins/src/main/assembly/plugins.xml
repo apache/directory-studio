@@ -29,7 +29,7 @@
             <directory>${plugins-dir}</directory>
             <outputDirectory>/</outputDirectory>
             <includes>
-                <include>*</include>
+                <include>**</include>
             </includes>
         </fileSet>
     </fileSets>

@@ -433,6 +433,34 @@
               </artifactItems>
             </configuration>
           </execution>
+          
+          <execution>
+            <id>unpack-eclipse-plugins</id>
+            <phase>process-resources</phase>
+            <goals>
+              <goal>unpack-with-artifactid-prefix</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>${plugins-dir}</outputDirectory>
+              <artifactItems>
+                <artifactItem>
+                    <groupId>org.eclipse.ui.workbench</groupId>
+                    <artifactId>compatibility</artifactId>
+                    <type>zip</type>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.eclipse.jdt</groupId>
+                  <artifactId>debug</artifactId>
+                  <type>zip</type>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.eclipse.core.runtime.compatibility</groupId>
+                  <artifactId>registry</artifactId>
+                  <type>zip</type>
+                </artifactItem>
+              </artifactItems>
+            </configuration>
+          </execution>
         </executions>
       </plugin>
       <plugin>
