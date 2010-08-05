@@ -101,8 +101,8 @@
               <outputDirectory>src/main/resources</outputDirectory>
               <artifactItems>
                 <artifactItem>
-                  <groupId>commons-codec</groupId>
-                  <artifactId>commons-codec</artifactId>
+                  <groupId>commons-collections</groupId>
+                  <artifactId>commons-collections</artifactId>
                   <excludes>META-INF/**</excludes>
                 </artifactItem>
               </artifactItems>
