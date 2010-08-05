@@ -189,6 +189,11 @@
       <!-- Apache Directory Studio -->
       <dependency>
         <groupId>org.apache.directory.studio</groupId>
+        <artifactId>org.apache.mina.core</artifactId>
+        <version>2.0.0-M6</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.directory.studio</groupId>
         <artifactId>aciitemeditor</artifactId>
         <version>${pom.version}</version>
       </dependency>

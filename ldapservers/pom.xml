@@ -122,6 +122,7 @@
  org.eclipse.jface.text,
  org.eclipse.ui,
  org.eclipse.ui.ide,
+ org.apache.mina.core,
  org.apache.directory.studio.common.core,
  org.apache.directory.studio.common.ui,
  org.apache.directory.studio.jars
@@ -157,16 +158,15 @@
   </build>
 
   <dependencies>
-    <!-- Libraries dependencies -->
-    <dependency>
-      <groupId>org.apache.mina</groupId>
-      <artifactId>mina-core</artifactId>
-    </dependency>
-    
   	<!-- Apache Directory Studio plugins dependencies -->
     <dependency>
       <groupId>org.apache.directory.studio</groupId>
       <artifactId>common.core</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.directory.studio</groupId>
+      <artifactId>org.apache.mina.core</artifactId>
       <scope>provided</scope>
     </dependency>
     <dependency>
