@@ -75,6 +75,7 @@
     <org.apache.commons.logging.version>1.1.1</org.apache.commons.logging.version>
     <org.apache.directory.shared.version>0.9.17</org.apache.directory.shared.version>
     <org.apache.mina.core.version>2.0.0-M6</org.apache.mina.core.version>
+    <org.bouncycastle.bcprovjdk15.version>140</org.bouncycastle.bcprovjdk15.version>
     <skin.version>1.0.1</skin.version>
   </properties>
 
@@ -1081,6 +1082,11 @@
       </dependency>
 
       <!-- Other dependencies -->
+      <dependency>
+        <groupId>bouncycastle</groupId>
+        <artifactId>bcprov-jdk15</artifactId>
+        <version>${org.bouncycastle.bcprovjdk15.version}</version>
+      </dependency>
       <dependency>
         <groupId>org.apache.xmlgraphics</groupId>
         <artifactId>fop</artifactId>
