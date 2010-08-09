@@ -26,10 +26,10 @@
     <version>2.0.0-SNAPSHOT</version>
   </parent>
 
-  <artifactId>org.dom4j.dom4j</artifactId>
-  <version>${org.dom4j.version}</version>
+  <artifactId>org.xpp3.xpp3</artifactId>
+  <version>${org.xpp3.version}</version>
   
-  <name>dom4j (for Apache Directory Studio)</name>
+  <name>XPP3 (for Apache Directory Studio)</name>
   <packaging>jar</packaging>
 
   <description />
@@ -101,8 +101,8 @@
               <outputDirectory>src/main/resources</outputDirectory>
               <artifactItems>
                 <artifactItem>
-                  <groupId>dom4j</groupId>
-                  <artifactId>dom4j</artifactId>
+                  <groupId>xpp3</groupId>
+                  <artifactId>xpp3</artifactId>
                   <excludes>META-INF/**</excludes>
                 </artifactItem>
               </artifactItems>
