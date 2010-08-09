@@ -1150,7 +1150,7 @@
       <dependency>
         <groupId>dom4j</groupId>
         <artifactId>dom4j</artifactId>
-        <version>${org.dom4j.dom4j.version}</version>
+        <version>${org.dom4j.version}</version>
       </dependency>
       <dependency>
         <groupId>commons-io</groupId>
