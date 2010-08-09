@@ -70,7 +70,7 @@
           <instructions>            
             <Bundle-SymbolicName>${artifactId};singleton:=true</Bundle-SymbolicName>
             <Bundle-Localization>plugin</Bundle-Localization>
-            <Export-Package>*</Export-Package>
+            <Export-Package>!org.apache.commons.lang.enum,*</Export-Package>
             <Import-Package>!</Import-Package>
             <Private-Package>!</Private-Package>
           </instructions>
