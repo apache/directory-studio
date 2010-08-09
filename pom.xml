@@ -101,6 +101,7 @@
     <module>org.bouncycastle.bcprovjdk15</module>
     <module>org.dom4j.dom4j</module>
     <module>org.slf4j.api</module>
+    <module>org.slf4j.log4j12</module>
     <module>org.xpp3.xpp3</module>
     <module>aciitemeditor</module>
     <module>apacheds</module>
