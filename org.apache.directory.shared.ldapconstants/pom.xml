@@ -125,7 +125,6 @@
     <dependency>
       <groupId>org.apache.directory.studio</groupId>
       <artifactId>org.slf4j.api</artifactId>
-      <scope>provided</scope>
     </dependency>
   </dependencies>
   

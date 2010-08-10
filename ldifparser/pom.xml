@@ -94,7 +94,9 @@
           <instructions>            
             <Bundle-SymbolicName>${groupId}.${artifactId};singleton:=true</Bundle-SymbolicName>
             <Bundle-Localization>plugin</Bundle-Localization>
-            <Require-Bundle>org.apache.directory.studio.jars</Require-Bundle>
+            <Require-Bundle>org.apache.commons.codec;bundle-version="${org.apache.commons.codec.version}",
+ org.apache.directory.shared.ldap;bundle-version="${org.apache.directory.shared.version}",
+ org.slf4j.log4j12;bundle-version="${org.slf4j.version}"</Require-Bundle>
             <Export-Package>org.apache.directory.studio.ldifparser.*</Export-Package>
             <Import-Package>!</Import-Package>
             <Private-Package>!</Private-Package>
@@ -114,10 +116,20 @@
   </build>
 
   <dependencies>
-  	<!-- Apache Directory Studio plugins dependencies -->
+    <!-- Apache Directory Studio library plugins dependencies -->
     <dependency>
       <groupId>org.apache.directory.studio</groupId>
-      <artifactId>jars</artifactId>
+      <artifactId>org.apache.commons.codec</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.directory.studio</groupId>
+      <artifactId>org.apache.directory.shared.ldap</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.directory.studio</groupId>
+      <artifactId>org.slf4j.log4j12</artifactId>
       <scope>provided</scope>
     </dependency>
     

@@ -106,10 +106,14 @@
             <Eclipse-LazyStart>true</Eclipse-LazyStart>
             <Bundle-Activator>org.apache.directory.studio.connection.core.ConnectionCorePlugin</Bundle-Activator>
             <Require-Bundle>org.eclipse.core.runtime,
+ org.apache.commons.codec;bundle-version="${org.apache.commons.codec.version}",
+ org.apache.commons.io;bundle-version="${org.apache.commons.io.version}",
+ org.apache.commons.lang;bundle-version="${org.apache.commons.lang.version}",
+ org.apache.directory.shared.ldap;bundle-version="${org.apache.directory.shared.version}",
  org.apache.directory.studio.common.core,
- org.apache.directory.studio.jars,
- org.apache.directory.studio.ldifparser
-            </Require-Bundle>
+ org.apache.directory.studio.ldifparser,
+ org.apache.httpcomponents.httpclient;bundle-version="${org.apache.httpcomponents.version}",
+ org.dom4j.dom4j;bundle-version="${org.dom4j.version}"</Require-Bundle>
             <Export-Package>org.apache.directory.studio.connection.core.*</Export-Package>
             <Import-Package>!</Import-Package>
             <Private-Package>!</Private-Package>
@@ -137,15 +141,42 @@
   </build>
 
   <dependencies>
-  	<!-- Apache Directory Studio plugins dependencies -->
+    <!-- Apache Directory Studio library plugins dependencies -->
     <dependency>
       <groupId>org.apache.directory.studio</groupId>
-      <artifactId>common.core</artifactId>
+      <artifactId>org.apache.commons.codec</artifactId>
       <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.directory.studio</groupId>
-      <artifactId>jars</artifactId>
+      <artifactId>org.apache.commons.io</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.directory.studio</groupId>
+      <artifactId>org.apache.commons.lang</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.directory.studio</groupId>
+      <artifactId>org.apache.directory.shared.ldap</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.directory.studio</groupId>
+      <artifactId>org.apache.httpcomponents.httpclient</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.directory.studio</groupId>
+      <artifactId>org.dom4j.dom4j</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    
+    <!-- Apache Directory Studio plugins dependencies -->
+    <dependency>
+      <groupId>org.apache.directory.studio</groupId>
+      <artifactId>common.core</artifactId>
       <scope>provided</scope>
     </dependency>
     <dependency>

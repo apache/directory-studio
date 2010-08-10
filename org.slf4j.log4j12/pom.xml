@@ -126,12 +126,10 @@
     <dependency>
       <groupId>org.apache.directory.studio</groupId>
       <artifactId>org.apache.logging.log4j</artifactId>
-      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.directory.studio</groupId>
       <artifactId>org.slf4j.api</artifactId>
-      <scope>provided</scope>
     </dependency>
   </dependencies>
   

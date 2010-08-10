@@ -122,10 +122,12 @@
  org.eclipse.jface.text,
  org.eclipse.ui,
  org.eclipse.ui.ide,
- org.apache.mina.core,
+ org.apache.commons.collections;bundle-version="${org.apache.commons.collections.version}",
+ org.apache.commons.io;bundle-version="${org.apache.commons.io.version}",
  org.apache.directory.studio.common.core,
  org.apache.directory.studio.common.ui,
- org.apache.directory.studio.jars
+ org.apache.mina.core;bundle-version="${org.apache.mina.core.validversion}",
+ org.dom4j.dom4j;bundle-version="${org.dom4j.version}"
             </Require-Bundle>
             <Embed-Dependency>*;scope=compile|runtime</Embed-Dependency>
             <Embed-Directory>lib</Embed-Directory>
@@ -158,10 +160,15 @@
   </build>
 
   <dependencies>
-  	<!-- Apache Directory Studio plugins dependencies -->
+    <!-- Apache Directory Studio library plugins dependencies -->
     <dependency>
       <groupId>org.apache.directory.studio</groupId>
-      <artifactId>common.core</artifactId>
+      <artifactId>org.apache.commons.collections</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.directory.studio</groupId>
+      <artifactId>org.apache.commons.io</artifactId>
       <scope>provided</scope>
     </dependency>
     <dependency>
@@ -171,12 +178,19 @@
     </dependency>
     <dependency>
       <groupId>org.apache.directory.studio</groupId>
-      <artifactId>common.ui</artifactId>
+      <artifactId>org.dom4j.dom4j</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    
+  	<!-- Apache Directory Studio plugins dependencies -->
+    <dependency>
+      <groupId>org.apache.directory.studio</groupId>
+      <artifactId>common.core</artifactId>
       <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.directory.studio</groupId>
-      <artifactId>jars</artifactId>
+      <artifactId>common.ui</artifactId>
       <scope>provided</scope>
     </dependency>
     

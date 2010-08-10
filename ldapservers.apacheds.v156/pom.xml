@@ -125,8 +125,8 @@
  org.apache.directory.studio.apacheds.configuration,
  org.apache.directory.studio.common.core,
  org.apache.directory.studio.common.ui,
- org.apache.directory.studio.jars,
- org.apache.directory.studio.ldapservers
+ org.apache.directory.studio.ldapservers,
+ org.dom4j.dom4j;bundle-version="${org.dom4j.version}"
             </Require-Bundle>
             <Export-Package>org.apache.directory.studio.*</Export-Package>
             <Import-Package>!</Import-Package>
@@ -524,6 +524,13 @@
   </build>
 
   <dependencies>
+    <!-- Apache Directory Studio library plugins dependencies -->
+    <dependency>
+      <groupId>org.apache.directory.studio</groupId>
+      <artifactId>org.dom4j.dom4j</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    
   	<!-- Apache Directory Studio plugins dependencies -->
     <dependency>
       <groupId>org.apache.directory.studio</groupId>
@@ -538,11 +545,6 @@
     <dependency>
       <groupId>org.apache.directory.studio</groupId>
       <artifactId>common.ui</artifactId>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.directory.studio</groupId>
-      <artifactId>jars</artifactId>
       <scope>provided</scope>
     </dependency>
     <dependency>

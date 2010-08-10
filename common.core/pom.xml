@@ -101,8 +101,7 @@
             <Bundle-Localization>plugin</Bundle-Localization>
             <Eclipse-LazyStart>true</Eclipse-LazyStart>
             <Require-Bundle>org.eclipse.core.runtime,
-org.apache.directory.studio.jars
-            </Require-Bundle>
+ org.apache.commons.lang;bundle-version="${org.apache.commons.lang.version}"</Require-Bundle>
             <Export-Package>org.apache.directory.studio.*</Export-Package>
             <Import-Package>!</Import-Package>
             <Private-Package>!</Private-Package>
@@ -130,10 +129,10 @@ org.apache.directory.studio.jars
   </build>
 
   <dependencies>
-    <!-- Apache Directory Studio plugins dependencies -->
+    <!-- Apache Directory Studio library plugins dependencies -->
     <dependency>
       <groupId>org.apache.directory.studio</groupId>
-      <artifactId>jars</artifactId>
+      <artifactId>org.apache.commons.lang</artifactId>
       <scope>provided</scope>
     </dependency>
     

@@ -49,6 +49,89 @@
             <configuration>
               <destinationDirectory>${plugins-dir}</destinationDirectory>
               <artifactItems>
+                <!-- Apache Directory Studio library plugins dependencies -->
+                <artifactItem>
+                  <groupId>org.apache.directory.studio</groupId>
+                  <artifactId>org.antlr.antlr</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.apache.directory.studio</groupId>
+                  <artifactId>org.apache.commons.codec</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.apache.directory.studio</groupId>
+                  <artifactId>org.apache.commons.codec</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.apache.directory.studio</groupId>
+                  <artifactId>org.apache.commons.collections</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.apache.directory.studio</groupId>
+                  <artifactId>org.apache.commons.io</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.apache.directory.studio</groupId>
+                  <artifactId>org.apache.commons.lang</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.apache.directory.studio</groupId>
+                  <artifactId>org.apache.commons.logging</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.apache.directory.studio</groupId>
+                  <artifactId>org.apache.directory.shared.asn1</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.apache.directory.studio</groupId>
+                  <artifactId>org.apache.directory.shared.dsmlparser</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.apache.directory.studio</groupId>
+                  <artifactId>org.apache.directory.shared.ldap</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.apache.directory.studio</groupId>
+                  <artifactId>org.apache.directory.shared.ldapconstants</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.apache.directory.studio</groupId>
+                  <artifactId>org.apache.httpcomponents.httpclient</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.apache.directory.studio</groupId>
+                  <artifactId>org.apache.httpcomponents.httpcore</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.apache.directory.studio</groupId>
+                  <artifactId>org.apache.logging.log4j</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.apache.directory.studio</groupId>
+                  <artifactId>org.apache.mina.core</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.apache.directory.studio</groupId>
+                  <artifactId>org.bouncycastle.bcprovjdk15</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.apache.directory.studio</groupId>
+                  <artifactId>org.dom4j.dom4j</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.apache.directory.studio</groupId>
+                  <artifactId>org.slf4j.api</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.apache.directory.studio</groupId>
+                  <artifactId>org.slf4j.log4j12</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.apache.directory.studio</groupId>
+                  <artifactId>org.xpp3.xpp3</artifactId>
+                </artifactItem>
+                
+                <!-- Apache Directory Studio plugins dependencies -->
                 <artifactItem>
                   <groupId>org.apache.directory.studio</groupId>
                   <artifactId>org.apache.mina.core</artifactId>
@@ -88,10 +171,6 @@
                 <artifactItem>
                   <groupId>org.apache.directory.studio</groupId>
                   <artifactId>connection.ui</artifactId>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.apache.directory.studio</groupId>
-                  <artifactId>jars</artifactId>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.apache.directory.studio</groupId>

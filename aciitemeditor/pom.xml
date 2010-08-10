@@ -116,10 +116,11 @@
  org.eclipse.core.resources,
  org.eclipse.ui.editors,
  org.eclipse.ui.workbench.texteditor,
+ org.apache.directory.shared.ldap;bundle-version="${org.apache.directory.shared.version}",
+ org.apache.directory.shared.ldapconstants;bundle-version="${org.apache.directory.shared.version}",
  org.apache.directory.studio.common.ui,
  org.apache.directory.studio.connection.core,
  org.apache.directory.studio.connection.ui,
- org.apache.directory.studio.jars,
  org.apache.directory.studio.ldapbrowser.common,
  org.apache.directory.studio.ldapbrowser.core,
  org.apache.directory.studio.valueeditors
@@ -150,15 +151,22 @@
   </build>
 
   <dependencies>
-  	<!-- Apache Directory Studio plugins dependencies -->
+    <!-- Apache Directory Studio library plugins dependencies -->
     <dependency>
       <groupId>org.apache.directory.studio</groupId>
-      <artifactId>common.ui</artifactId>
+      <artifactId>org.apache.directory.shared.ldap</artifactId>
       <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.directory.studio</groupId>
-      <artifactId>jars</artifactId>
+      <artifactId>org.apache.directory.shared.ldapconstants</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    
+  	<!-- Apache Directory Studio plugins dependencies -->
+    <dependency>
+      <groupId>org.apache.directory.studio</groupId>
+      <artifactId>common.ui</artifactId>
       <scope>provided</scope>
     </dependency>
     <dependency>

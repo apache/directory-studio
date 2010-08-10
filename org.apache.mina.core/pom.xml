@@ -27,7 +27,7 @@
   </parent>
 
   <artifactId>org.apache.mina.core</artifactId>
-  <version>${org.apache.mina.core.version}</version>
+  <version>${org.apache.mina.core.validversion}</version>
   
   <name>Apache MINA Core (for Apache Directory Studio)</name>
   <packaging>jar</packaging>

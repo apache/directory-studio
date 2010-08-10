@@ -116,10 +116,13 @@
  org.eclipse.ui.forms,
  org.eclipse.core.runtime,
  org.eclipse.ui.workbench.texteditor,
+ org.bouncycastle.bcprovjdk15;bundle-version="${org.bouncycastle.bcprovjdk15.version}",
+ org.apache.commons.codec;bundle-version="${org.apache.commons.codec.version}",
+ org.apache.commons.lang;bundle-version="${org.apache.commons.lang.version}",
+ org.apache.directory.shared.ldap;bundle-version="${org.apache.directory.shared.version}",
  org.apache.directory.studio.common.core,
  org.apache.directory.studio.common.ui,
- org.apache.directory.studio.connection.core,
- org.apache.directory.studio.jars
+ org.apache.directory.studio.connection.core
             </Require-Bundle>
             <Export-Package>org.apache.directory.studio.*</Export-Package>
             <Import-Package>!</Import-Package>
@@ -164,9 +167,26 @@
       <artifactId>connection.core</artifactId>
       <scope>provided</scope>
     </dependency>
+    
+    <!-- Apache Directory Studio library plugins dependencies -->
     <dependency>
       <groupId>org.apache.directory.studio</groupId>
-      <artifactId>jars</artifactId>
+      <artifactId>org.bouncycastle.bcprovjdk15</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.directory.studio</groupId>
+      <artifactId>org.apache.commons.lang</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.directory.studio</groupId>
+      <artifactId>org.apache.commons.codec</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.directory.studio</groupId>
+      <artifactId>org.apache.directory.shared.ldap</artifactId>
       <scope>provided</scope>
     </dependency>
     
