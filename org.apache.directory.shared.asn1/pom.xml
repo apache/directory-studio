@@ -70,6 +70,7 @@
           <instructions>            
             <Bundle-SymbolicName>${artifactId};singleton:=true</Bundle-SymbolicName>
             <Bundle-Localization>plugin</Bundle-Localization>
+            <Require-Bundle>org.slf4j.api;bundle-version="${org.slf4j.version}"</Require-Bundle>
             <Export-Package>*</Export-Package>
             <Import-Package>!</Import-Package>
             <Private-Package>!</Private-Package>
@@ -119,5 +120,13 @@
       </plugin>
     </plugins>
   </build>
+  
+  <dependencies>
+    <dependency>
+      <groupId>org.apache.directory.studio</groupId>
+      <artifactId>org.slf4j.api</artifactId>
+      <scope>provided</scope>
+    </dependency>
+  </dependencies>
   
 </project>

@@ -27,7 +27,7 @@
   </parent>
 
   <artifactId>org.xpp3.xpp3</artifactId>
-  <version>${org.xpp3.version}</version>
+  <version>${org.xpp3.validversion}</version>
   
   <name>XPP3 (for Apache Directory Studio)</name>
   <packaging>jar</packaging>

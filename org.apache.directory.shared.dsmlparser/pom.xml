@@ -70,6 +70,14 @@
           <instructions>            
             <Bundle-SymbolicName>${artifactId};singleton:=true</Bundle-SymbolicName>
             <Bundle-Localization>plugin</Bundle-Localization>
+            <Require-Bundle>org.antlr.antlr;bundle-version="${org.antlr.version}",
+ org.apache.commons.collections;bundle-version="${org.apache.commons.collections.version}",
+ org.apache.directory.shared.asn1;bundle-version="${org.apache.directory.shared.version}",
+ org.apache.directory.shared.ldap;bundle-version="${org.apache.directory.shared.version}",
+ org.apache.directory.shared.ldapconstants;bundle-version="${org.apache.directory.shared.version}",
+ org.dom4j.dom4j;bundle-version="${org.dom4j.version}",
+ org.xpp3.xpp3;bundle-version="${org.xpp3.validversion}",
+ org.slf4j.api;bundle-version="${org.slf4j.version}"</Require-Bundle>
             <Export-Package>*</Export-Package>
             <Import-Package>!</Import-Package>
             <Private-Package>!</Private-Package>
@@ -119,5 +127,43 @@
       </plugin>
     </plugins>
   </build>
+  
+  <dependencies>
+    <dependency>
+      <groupId>org.apache.directory.studio</groupId>
+      <artifactId>org.antlr.antlr</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.directory.studio</groupId>
+      <artifactId>org.apache.commons.collections</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.directory.studio</groupId>
+      <artifactId>org.apache.directory.shared.asn1</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.directory.studio</groupId>
+      <artifactId>org.apache.directory.shared.ldap</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.directory.studio</groupId>
+      <artifactId>org.apache.directory.shared.ldapconstants</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.directory.studio</groupId>
+      <artifactId>org.dom4j.dom4j</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.directory.studio</groupId>
+      <artifactId>org.xpp3.xpp3</artifactId>
+      <scope>provided</scope>
+    </dependency>
+  </dependencies>
   
 </project>

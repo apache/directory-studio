@@ -27,7 +27,7 @@
   </parent>
 
   <artifactId>org.antlr.antlr</artifactId>
-  <version>${org.antlr.antlr.version}</version>
+  <version>${org.antlr.version}</version>
   
   <name>AntLR Parser Generator (for Apache Directory Studio)</name>
   <packaging>jar</packaging>
