@@ -133,7 +133,7 @@
             <Embed-Dependency>*;scope=compile|runtime</Embed-Dependency>
             <Embed-Directory>lib</Embed-Directory>
             <Embed-StripGroup>true</Embed-StripGroup>
-            <Embed-Transitive>true</Embed-Transitive>  
+            <Embed-Transitive>true</Embed-Transitive>
             <Export-Package>org.apache.directory.studio.schemaeditor.model.*, org.apache.directory.studio.schemaeditor.model.io.*</Export-Package>
             <Import-Package>!</Import-Package>
             <Private-Package>!</Private-Package>

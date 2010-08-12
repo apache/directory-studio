@@ -40,15 +40,32 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-eclipse-plugin</artifactId>
         <configuration>
-          <skip>true</skip>
+          <skip>false</skip>
+          <pde>true</pde>
+          <additionalProjectnatures>
+            <projectnature>org.eclipse.pde.PluginNature</projectnature>
+            <projectnature>org.eclipse.jdt.core.javanature</projectnature>
+          </additionalProjectnatures>
+          <classpathContainers>
+            <classpathContainer>org.eclipse.jdt.launching.JRE_CONTAINER</classpathContainer>
+            <classpathContainer>org.eclipse.pde.core.requiredPlugins</classpathContainer>
+          </classpathContainers>
         </configuration>
       </plugin>
       <plugin>
         <groupId>org.apache.directory.studio</groupId>
         <artifactId>studio-maven-plugin</artifactId>
         <configuration>
-          <skip>true</skip>
+          <skip>false</skip>
+          <createManifest>true</createManifest>
         </configuration>
+        <executions>
+          <execution>
+            <goals>
+              <goal>prepare-jar-package</goal>
+            </goals>
+          </execution>
+        </executions>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -67,11 +84,13 @@
         <extensions>true</extensions>
         <configuration>
           <manifestLocation>META-INF</manifestLocation>
-          <instructions>            
+          <instructions>
             <Bundle-SymbolicName>${artifactId}</Bundle-SymbolicName>
+            <Embed-Dependency>*;scope=compile|runtime</Embed-Dependency>
+            <Embed-Directory>lib</Embed-Directory>
+            <Embed-StripGroup>true</Embed-StripGroup>
             <Export-Package>*</Export-Package>
             <Import-Package>!</Import-Package>
-            <Private-Package>!</Private-Package>
           </instructions>
         </configuration>
         <executions>
@@ -84,31 +103,6 @@
           </execution>
         </executions>
       </plugin>
-      
-      <!-- Unpack the jar -->
-      <plugin>
-        <artifactId>maven-dependency-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>unpack-apache-directory-studio-plugin</id>
-            <phase>generate-resources</phase>
-            <goals>
-              <goal>unpack</goal>
-            </goals>
-            <configuration>
-              <overWrite>true</overWrite>
-              <outputDirectory>src/main/resources</outputDirectory>
-              <artifactItems>
-                <artifactItem>
-                  <groupId>commons-collections</groupId>
-                  <artifactId>commons-collections</artifactId>
-                  <excludes>META-INF/**</excludes>
-                </artifactItem>
-              </artifactItems>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
       <!-- No tests to run -->
       <plugin>
         <artifactId>maven-surefire-plugin</artifactId>
@@ -118,5 +112,12 @@
       </plugin>
     </plugins>
   </build>
+  
+  <dependencies>
+    <dependency>
+      <groupId>commons-collections</groupId>
+      <artifactId>commons-collections</artifactId>
+    </dependency>
+  </dependencies>
   
 </project>

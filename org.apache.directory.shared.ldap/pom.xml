@@ -40,15 +40,32 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-eclipse-plugin</artifactId>
         <configuration>
-          <skip>true</skip>
+          <skip>false</skip>
+          <pde>true</pde>
+          <additionalProjectnatures>
+            <projectnature>org.eclipse.pde.PluginNature</projectnature>
+            <projectnature>org.eclipse.jdt.core.javanature</projectnature>
+          </additionalProjectnatures>
+          <classpathContainers>
+            <classpathContainer>org.eclipse.jdt.launching.JRE_CONTAINER</classpathContainer>
+            <classpathContainer>org.eclipse.pde.core.requiredPlugins</classpathContainer>
+          </classpathContainers>
         </configuration>
       </plugin>
       <plugin>
         <groupId>org.apache.directory.studio</groupId>
         <artifactId>studio-maven-plugin</artifactId>
         <configuration>
-          <skip>true</skip>
+          <skip>false</skip>
+          <createManifest>true</createManifest>
         </configuration>
+        <executions>
+          <execution>
+            <goals>
+              <goal>prepare-jar-package</goal>
+            </goals>
+          </execution>
+        </executions>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -67,7 +84,7 @@
         <extensions>true</extensions>
         <configuration>
           <manifestLocation>META-INF</manifestLocation>
-          <instructions>            
+          <instructions>
             <Bundle-SymbolicName>${artifactId}</Bundle-SymbolicName>
             <Require-Bundle>org.antlr.antlr;bundle-version="${org.antlr.version}",
  org.apache.commons.collections;bundle-version="${org.apache.commons.collections.version}",
@@ -76,9 +93,11 @@
  org.apache.logging.log4j;bundle-version="${org.apache.logging.log4j.version}",
  org.slf4j.api;bundle-version="${org.slf4j.version}",
  org.slf4j.log4j12;bundle-version="${org.slf4j.version}"</Require-Bundle>
+            <Embed-Dependency>*;scope=compile|runtime</Embed-Dependency>
+            <Embed-Directory>lib</Embed-Directory>
+            <Embed-StripGroup>true</Embed-StripGroup>
             <Export-Package>*</Export-Package>
-            <Import-Package>org.slf4j.impl;version="${org.slf4j.version}"</Import-Package>
-            <Private-Package>!</Private-Package>
+            <Import-Package>!</Import-Package>
           </instructions>
         </configuration>
         <executions>
@@ -88,31 +107,6 @@
             <goals>
               <goal>manifest</goal>
             </goals>
-          </execution>
-        </executions>
-      </plugin>
-      
-      <!-- Unpack the jar -->
-      <plugin>
-        <artifactId>maven-dependency-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>unpack-apache-directory-studio-plugin</id>
-            <phase>generate-resources</phase>
-            <goals>
-              <goal>unpack</goal>
-            </goals>
-            <configuration>
-              <overWrite>true</overWrite>
-              <outputDirectory>src/main/resources</outputDirectory>
-              <artifactItems>
-                <artifactItem>
-                  <groupId>org.apache.directory.shared</groupId>
-                  <artifactId>shared-ldap</artifactId>
-                  <excludes>META-INF/**</excludes>
-                </artifactItem>
-              </artifactItems>
-            </configuration>
           </execution>
         </executions>
       </plugin>
@@ -128,28 +122,34 @@
   
   <dependencies>
     <dependency>
-      <groupId>org.apache.directory.studio</groupId>
-      <artifactId>org.antlr.antlr</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.directory.studio</groupId>
-      <artifactId>org.apache.commons.collections</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.directory.studio</groupId>
-      <artifactId>org.apache.directory.shared.asn1</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.directory.studio</groupId>
-      <artifactId>org.apache.directory.shared.ldapconstants</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.directory.studio</groupId>
-      <artifactId>org.slf4j.api</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.directory.studio</groupId>
-      <artifactId>org.slf4j.log4j12</artifactId>
+      <groupId>org.apache.directory.shared</groupId>
+      <artifactId>shared-ldap</artifactId>
+      <exclusions>
+        <exclusion>
+          <groupId>antlr</groupId>
+          <artifactId>antlr</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>commons-lang</groupId>
+          <artifactId>commons-lang</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>commons-collections</groupId>
+          <artifactId>commons-collections</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.apache.directory.shared</groupId>
+          <artifactId>shared-asn1</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.apache.directory.shared</groupId>
+          <artifactId>shared-ldap-constants</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.slf4j</groupId>
+          <artifactId>slf4j-api</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
   </dependencies>
   
