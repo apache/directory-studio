@@ -68,8 +68,7 @@
         <configuration>
           <manifestLocation>META-INF</manifestLocation>
           <instructions>            
-            <Bundle-SymbolicName>${artifactId};singleton:=true</Bundle-SymbolicName>
-            <Bundle-Localization>plugin</Bundle-Localization>
+            <Bundle-SymbolicName>${artifactId}</Bundle-SymbolicName>
             <Export-Package>*</Export-Package>
             <Import-Package>!</Import-Package>
             <Private-Package>!</Private-Package>

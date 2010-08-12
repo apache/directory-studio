@@ -68,8 +68,7 @@
         <configuration>
           <manifestLocation>META-INF</manifestLocation>
           <instructions>            
-            <Bundle-SymbolicName>${artifactId};singleton:=true</Bundle-SymbolicName>
-            <Bundle-Localization>plugin</Bundle-Localization>
+            <Bundle-SymbolicName>${artifactId}</Bundle-SymbolicName>
             <Require-Bundle>org.apache.logging.log4j;bundle-version="${org.apache.logging.log4j.version}",
  org.slf4j.api;bundle-version="${org.slf4j.version}"</Require-Bundle>
             <Export-Package>*</Export-Package>

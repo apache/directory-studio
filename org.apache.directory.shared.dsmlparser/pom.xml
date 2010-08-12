@@ -68,16 +68,17 @@
         <configuration>
           <manifestLocation>META-INF</manifestLocation>
           <instructions>            
-            <Bundle-SymbolicName>${artifactId};singleton:=true</Bundle-SymbolicName>
-            <Bundle-Localization>plugin</Bundle-Localization>
+            <Bundle-SymbolicName>${artifactId}</Bundle-SymbolicName>
             <Require-Bundle>org.antlr.antlr;bundle-version="${org.antlr.version}",
  org.apache.commons.collections;bundle-version="${org.apache.commons.collections.version}",
  org.apache.directory.shared.asn1;bundle-version="${org.apache.directory.shared.version}",
  org.apache.directory.shared.ldap;bundle-version="${org.apache.directory.shared.version}",
  org.apache.directory.shared.ldapconstants;bundle-version="${org.apache.directory.shared.version}",
+ org.apache.logging.log4j;bundle-version="${org.apache.logging.log4j.version}",
  org.dom4j.dom4j;bundle-version="${org.dom4j.version}",
  org.xpp3.xpp3;bundle-version="${org.xpp3.validversion}",
- org.slf4j.api;bundle-version="${org.slf4j.version}"</Require-Bundle>
+ org.slf4j.api;bundle-version="${org.slf4j.version}",
+ org.slf4j.log4j12;bundle-version="${org.slf4j.version}"</Require-Bundle>
             <Export-Package>*</Export-Package>
             <Import-Package>!</Import-Package>
             <Private-Package>!</Private-Package>

@@ -113,7 +113,23 @@
             <Bundle-Localization>plugin</Bundle-Localization>
             <Eclipse-LazyStart>true</Eclipse-LazyStart>
             <Bundle-Activator>org.apache.directory.studio.ldifeditor.LdifEditorActivator</Bundle-Activator>
-            <Require-Bundle>org.eclipse.core.runtime,
+            <Require-Bundle>org.antlr.antlr;bundle-version="${org.antlr.version}",
+ org.apache.commons.collections;bundle-version="${org.apache.commons.collections.version}",
+ org.apache.commons.io;bundle-version="${org.apache.commons.io.version}",
+ org.apache.commons.lang;bundle-version="${org.apache.commons.lang.version}",
+ org.apache.directory.shared.asn1;bundle-version="${org.apache.directory.shared.version}",
+ org.apache.directory.shared.ldap;bundle-version="${org.apache.directory.shared.version}",
+ org.apache.directory.shared.ldapconstants;bundle-version="${org.apache.directory.shared.version}",
+ org.apache.directory.studio.common.core,
+ org.apache.directory.studio.common.ui,
+ org.apache.directory.studio.connection.core,
+ org.apache.directory.studio.connection.ui,
+ org.apache.directory.studio.ldapbrowser.core,
+ org.apache.directory.studio.ldapbrowser.common,
+ org.apache.directory.studio.ldifparser,
+ org.apache.logging.log4j;bundle-version="${org.apache.logging.log4j.version}",
+ org.dom4j.dom4j;bundle-version="${org.dom4j.version}",
+ org.eclipse.core.runtime,
  org.eclipse.core.expressions,
  org.eclipse.core.filesystem,
  org.eclipse.search,
@@ -125,16 +141,11 @@
  org.eclipse.jface.text,
  org.eclipse.ui.ide,
  org.eclipse.core.resources,
- org.apache.directory.shared.ldap;bundle-version="${org.apache.directory.shared.version}",
- org.apache.directory.studio.common.core,
- org.apache.directory.studio.common.ui,
- org.apache.directory.studio.connection.core,
- org.apache.directory.studio.connection.ui,
- org.apache.directory.studio.ldapbrowser.core,
- org.apache.directory.studio.ldapbrowser.common,
- org.apache.directory.studio.ldifparser</Require-Bundle>
+ org.xpp3.xpp3;bundle-version="${org.xpp3.validversion}",
+ org.slf4j.api;bundle-version="${org.slf4j.version}",
+ org.slf4j.log4j12;bundle-version="${org.slf4j.version}"</Require-Bundle>
             <Export-Package>org.apache.directory.studio.ldifeditor.*</Export-Package>
-            <Import-Package>!</Import-Package>
+            <Import-Package>org.slf4j.impl;version="${org.slf4j.version}"</Import-Package>
             <Private-Package>!</Private-Package>
           </instructions>
         </configuration>
