@@ -258,7 +258,6 @@
             <Bundle-Localization>plugin</Bundle-Localization>
             <Require-Bundle>org.eclipse.core.runtime,
  org.eclipse.ui,
- org.apache.directory.studio.jars,
  org.apache.directory.studio.connection.core,
  org.apache.directory.studio.connection.ui,
  org.apache.directory.studio.ldapbrowser.common,
