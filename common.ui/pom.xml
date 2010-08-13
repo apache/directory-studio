@@ -112,8 +112,9 @@
             <Bundle-Localization>plugin</Bundle-Localization>
             <Eclipse-LazyStart>true</Eclipse-LazyStart>
             <Bundle-Activator>org.apache.directory.studio.common.ui.CommonUIPlugin</Bundle-Activator>
-            <Require-Bundle>org.eclipse.ui,
- org.eclipse.core.runtime
+            <Require-Bundle>
+ org.eclipse.core.runtime,
+ org.eclipse.ui
             </Require-Bundle>
             <Export-Package>org.apache.directory.studio.*</Export-Package>
             <Import-Package>!</Import-Package>

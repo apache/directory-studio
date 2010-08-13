@@ -116,11 +116,9 @@
             <Bundle-Localization>plugin</Bundle-Localization>
             <Eclipse-LazyStart>true</Eclipse-LazyStart>
             <Bundle-Activator>org.apache.directory.studio.ldapbrowser.ui.BrowserUIPlugin</Bundle-Activator>
-            <Require-Bundle>org.antlr.antlr;bundle-version="${org.antlr.version}",
- org.apache.commons.collections;bundle-version="${org.apache.commons.collections.version}",
+            <Require-Bundle>
  org.apache.commons.io;bundle-version="${org.apache.commons.io.version}",
  org.apache.commons.lang;bundle-version="${org.apache.commons.lang.version}",
- org.apache.directory.shared.asn1;bundle-version="${org.apache.directory.shared.version}",
  org.apache.directory.shared.ldap;bundle-version="${org.apache.directory.shared.version}",
  org.apache.directory.shared.ldapconstants;bundle-version="${org.apache.directory.shared.version}",
  org.apache.directory.studio.common.core,
@@ -131,8 +129,6 @@
  org.apache.directory.studio.ldapbrowser.common,
  org.apache.directory.studio.ldifeditor,
  org.apache.directory.studio.ldifparser,
- org.apache.logging.log4j;bundle-version="${org.apache.logging.log4j.version}",
- org.dom4j.dom4j;bundle-version="${org.dom4j.version}",
  org.eclipse.core.expressions,
  org.eclipse.core.filesystem,
  org.eclipse.core.runtime,
@@ -142,10 +138,8 @@
  org.eclipse.ui.forms,
  org.eclipse.ui.views,
  org.eclipse.ui.workbench.texteditor,
- org.eclipse.search,
- org.xpp3.xpp3;bundle-version="${org.xpp3.validversion}",
- org.slf4j.api;bundle-version="${org.slf4j.version}",
- org.slf4j.log4j12;bundle-version="${org.slf4j.version}"</Require-Bundle>
+ org.eclipse.search
+            </Require-Bundle>
             <Export-Package>org.apache.directory.studio.*</Export-Package>
             <Import-Package>org.slf4j.impl;version="${org.slf4j.version}"</Import-Package>
             <Private-Package>!</Private-Package>
@@ -192,11 +186,6 @@
     <dependency>
       <groupId>org.apache.directory.studio</groupId>
       <artifactId>org.apache.directory.shared.ldapconstants</artifactId>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.directory.studio</groupId>
-      <artifactId>org.slf4j.log4j12</artifactId>
       <scope>provided</scope>
     </dependency>
     

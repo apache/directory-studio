@@ -100,8 +100,10 @@
             <Bundle-SymbolicName>${groupId}.${artifactId};singleton:=true</Bundle-SymbolicName>
             <Bundle-Localization>plugin</Bundle-Localization>
             <Eclipse-LazyStart>true</Eclipse-LazyStart>
-            <Require-Bundle>org.eclipse.core.runtime,
- org.apache.commons.lang;bundle-version="${org.apache.commons.lang.version}"</Require-Bundle>
+            <Require-Bundle>
+ org.apache.commons.lang;bundle-version="${org.apache.commons.lang.version}",
+ org.eclipse.core.runtime
+            </Require-Bundle>
             <Export-Package>org.apache.directory.studio.*</Export-Package>
             <Import-Package>!</Import-Package>
             <Private-Package>!</Private-Package>

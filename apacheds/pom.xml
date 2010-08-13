@@ -109,21 +109,22 @@
             <Eclipse-LazyStart>true</Eclipse-LazyStart>
             <Bundle-Activator>org.apache.directory.studio.apacheds.ApacheDsPlugin</Bundle-Activator>
             <Eclipse-RegisterBuddy>org.apache.directory.studio.jars</Eclipse-RegisterBuddy>
-            <Require-Bundle>org.eclipse.ui,
- org.eclipse.core.runtime,
- org.eclipse.core.expressions,
- org.eclipse.ui.console,
- org.eclipse.ui.ide,
- org.eclipse.jface.text,
- org.eclipse.jdt.launching,
- org.eclipse.debug.core,
- org.eclipse.debug.ui,
+            <Require-Bundle>
+ org.apache.commons.io;bundle-version="${org.apache.commons.io.version}",
  org.apache.directory.studio.apacheds.configuration,
  org.apache.directory.studio.connection.core;resolution:=optional,
- org.apache.commons.io;bundle-version="${org.apache.commons.io.version}",
  org.apache.logging.log4j;bundle-version="${org.apache.logging.log4j.version}",
  org.apache.mina.core;bundle-version="${org.apache.mina.core.validversion}",
- org.dom4j.dom4j;bundle-version="${org.dom4j.version}"
+ org.dom4j.dom4j;bundle-version="${org.dom4j.version}",
+ org.eclipse.core.expressions,
+ org.eclipse.core.runtime,
+ org.eclipse.debug.core,
+ org.eclipse.debug.ui,
+ org.eclipse.jdt.launching,
+ org.eclipse.jface.text,
+ org.eclipse.ui,
+ org.eclipse.ui.console,
+ org.eclipse.ui.ide
             </Require-Bundle>
             <Embed-Dependency>*;scope=compile|runtime</Embed-Dependency>
             <Embed-Directory>lib</Embed-Directory>

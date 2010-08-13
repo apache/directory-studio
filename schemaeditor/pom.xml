@@ -113,12 +113,7 @@
             <Bundle-Localization>plugin</Bundle-Localization>
             <Eclipse-LazyStart>true</Eclipse-LazyStart>
             <Bundle-Activator>org.apache.directory.studio.schemaeditor.Activator</Bundle-Activator>
-            <Require-Bundle>org.eclipse.core.runtime,
- org.eclipse.core.expressions,
- org.eclipse.jface.text,
- org.eclipse.search,
- org.eclipse.ui,
- org.eclipse.ui.forms,
+            <Require-Bundle>
  org.apache.commons.collections;bundle-version="${org.apache.commons.collections.version}",
  org.apache.commons.io;bundle-version="${org.apache.commons.io.version}",
  org.apache.directory.shared.asn1;bundle-version="${org.apache.directory.shared.version}",
@@ -128,7 +123,13 @@
  org.apache.directory.studio.connection.core,
  org.apache.directory.studio.connection.ui,
  org.apache.logging.log4j;bundle-version="${org.apache.logging.log4j.version}",
- org.dom4j.dom4j;bundle-version="${org.dom4j.version}"
+ org.dom4j.dom4j;bundle-version="${org.dom4j.version}",
+ org.eclipse.core.runtime,
+ org.eclipse.core.expressions,
+ org.eclipse.jface.text,
+ org.eclipse.search,
+ org.eclipse.ui,
+ org.eclipse.ui.forms
             </Require-Bundle>
             <Embed-Dependency>*;scope=compile|runtime</Embed-Dependency>
             <Embed-Directory>lib</Embed-Directory>
