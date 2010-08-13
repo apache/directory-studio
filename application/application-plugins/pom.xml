@@ -112,6 +112,10 @@
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.apache.directory.studio</groupId>
+                  <artifactId>org.apache.xmlcommons.xmlapis</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.apache.directory.studio</groupId>
                   <artifactId>org.bouncycastle.bcprovjdk15</artifactId>
                 </artifactItem>
                 <artifactItem>

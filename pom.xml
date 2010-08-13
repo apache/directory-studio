@@ -78,6 +78,8 @@
     <org.apache.directory.shared.version>0.9.17</org.apache.directory.shared.version>
     <org.apache.mina.core.version>2.0.0-M6</org.apache.mina.core.version>
     <org.apache.mina.core.validversion>2.0.0.M6</org.apache.mina.core.validversion>
+    <org.apache.xmlcommons.xmlapis.version>1.0.b2</org.apache.xmlcommons.xmlapis.version>
+    <org.apache.xmlcommons.xmlapis.validversion>1.0.0.b2</org.apache.xmlcommons.xmlapis.validversion>
     <org.bouncycastle.bcprovjdk15.version>140</org.bouncycastle.bcprovjdk15.version>
     <org.dom4j.version>1.6.1</org.dom4j.version>
     <org.slf4j.version>1.5.6</org.slf4j.version>
@@ -104,6 +106,7 @@
     <module>org.apache.httpcomponents.httpcore</module>
     <module>org.apache.logging.log4j</module>
     <module>org.apache.mina.core</module>
+    <module>org.apache.xmlcommons.xmlapis</module>
     <module>org.bouncycastle.bcprovjdk15</module>
     <module>org.dom4j.dom4j</module>
     <module>org.slf4j.api</module>
@@ -291,6 +294,11 @@
         <groupId>org.apache.directory.studio</groupId>
         <artifactId>org.apache.mina.core</artifactId>
         <version>${org.apache.mina.core.validversion}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.directory.studio</groupId>
+        <artifactId>org.apache.xmlcommons.xmlapis</artifactId>
+        <version>${org.apache.xmlcommons.xmlapis.validversion}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.directory.studio</groupId>
@@ -1306,6 +1314,11 @@
         <groupId>org.openoffice</groupId>
         <artifactId>odfdom</artifactId>
         <version>0.6.16</version>
+      </dependency>
+      <dependency>
+        <groupId>xml-apis</groupId>
+        <artifactId>xml-apis</artifactId>
+        <version>${org.apache.xmlcommons.xmlapis.version}</version>
       </dependency>
 
       <dependency>

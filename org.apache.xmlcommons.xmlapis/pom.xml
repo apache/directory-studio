@@ -26,10 +26,10 @@
     <version>2.0.0-SNAPSHOT</version>
   </parent>
 
-  <artifactId>org.dom4j.dom4j</artifactId>
-  <version>${org.dom4j.version}</version>
+  <artifactId>org.apache.xmlcommons.xmlapis</artifactId>
+  <version>${org.apache.xmlcommons.xmlapis.validversion}</version>
   
-  <name>dom4j (for Apache Directory Studio)</name>
+  <name>XML Commons External Components XML APIs (for Apache Directory Studio)</name>
   <packaging>jar</packaging>
 
   <description />
@@ -86,9 +86,6 @@
           <manifestLocation>META-INF</manifestLocation>
           <instructions>
             <Bundle-SymbolicName>${artifactId}</Bundle-SymbolicName>
-            <Require-Bundle>
-org.apache.xmlcommons.xmlapis;bundle-version="${org.apache.xmlcommons.xmlapis.validversion}"
-            </Require-Bundle>
             <Embed-Dependency>*;scope=compile|runtime</Embed-Dependency>
             <Embed-Directory>lib</Embed-Directory>
             <Embed-StripGroup>true</Embed-StripGroup>
@@ -118,14 +115,8 @@ org.apache.xmlcommons.xmlapis;bundle-version="${org.apache.xmlcommons.xmlapis.va
   
   <dependencies>
     <dependency>
-      <groupId>dom4j</groupId>
-      <artifactId>dom4j</artifactId>
-      <exclusions>
-        <exclusion>
-          <groupId>xml-apis</groupId>
-          <artifactId>xml-apis</artifactId>
-        </exclusion>
-      </exclusions>
+      <groupId>xml-apis</groupId>
+      <artifactId>xml-apis</artifactId>
     </dependency>
   </dependencies>
   
