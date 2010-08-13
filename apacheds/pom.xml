@@ -108,7 +108,6 @@
             <Bundle-Localization>plugin</Bundle-Localization>
             <Eclipse-LazyStart>true</Eclipse-LazyStart>
             <Bundle-Activator>org.apache.directory.studio.apacheds.ApacheDsPlugin</Bundle-Activator>
-            <Eclipse-RegisterBuddy>org.apache.directory.studio.jars</Eclipse-RegisterBuddy>
             <Require-Bundle>
  org.apache.commons.io;bundle-version="${org.apache.commons.io.version}",
  org.apache.directory.studio.apacheds.configuration,

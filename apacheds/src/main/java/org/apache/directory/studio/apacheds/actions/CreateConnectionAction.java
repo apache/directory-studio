@@ -141,8 +141,8 @@ public class CreateConnectionAction extends Action implements IWorkbenchWindowAc
                 else
                 {
                     // LDAP and LDAPS protocols are disabled, we report this error to the user
-                    MessageDialog dialog = new MessageDialog( view.getSite().getShell(), Messages
-                        .getString( "CreateConnectionAction.UnableCreateConnection" ), null, //$NON-NLS-1$
+                    MessageDialog dialog = new MessageDialog( view.getSite().getShell(),
+                        Messages.getString( "CreateConnectionAction.UnableCreateConnection" ), null, //$NON-NLS-1$
                         Messages.getString( "CreateConnectionAction.LDAPAndLDAPSDisabled" ), MessageDialog.ERROR, //$NON-NLS-1$
                         new String[]
                             { IDialogConstants.OK_LABEL }, MessageDialog.OK );
@@ -175,8 +175,8 @@ public class CreateConnectionAction extends Action implements IWorkbenchWindowAc
                 + Messages.getString( "CreateConnectionAction.FollowingErrorOccurred" ) + errorMessage; //$NON-NLS-1$
         }
 
-        MessageDialog dialog = new MessageDialog( view.getSite().getShell(), Messages
-            .getString( "CreateConnectionAction.UnableReadServerConfiguration" ), //$NON-NLS-1$
+        MessageDialog dialog = new MessageDialog( view.getSite().getShell(),
+            Messages.getString( "CreateConnectionAction.UnableReadServerConfiguration" ), //$NON-NLS-1$
             null, message, MessageDialog.ERROR, new String[]
                 { IDialogConstants.OK_LABEL }, MessageDialog.OK );
         dialog.open();
@@ -339,18 +339,7 @@ public class CreateConnectionAction extends Action implements IWorkbenchWindowAc
                                         return false;
                                     }
 
-                                    // Jars Plugin
-                                    Bundle jarsBundle = Platform.getBundle( properties.getString( "Plugin_Jars_id" ) ); //$NON-NLS-1$
-                                    if ( jarsBundle != null )
-                                    {
-                                        // Checking the state of the plugin
-                                        if ( jarsBundle.getState() == Bundle.UNINSTALLED )
-                                        {
-                                            return false;
-                                        }
-
-                                        return true;
-                                    }
+                                    return true;
                                 }
                             }
                         }
