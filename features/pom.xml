@@ -22,34 +22,21 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>org.apache.directory.studio</groupId>
-    <artifactId>parent-help</artifactId>
+    <artifactId>parent</artifactId>
     <version>2.0.0-SNAPSHOT</version>
-    <relativePath>../help-pom.xml</relativePath>
   </parent>
+  
+  <artifactId>parent-features</artifactId>
+  <name>Apache Directory Studio Feature Plugins</name>
+  <packaging>pom</packaging>
 
-  <artifactId>rcp.help</artifactId>
-  <name>Apache Directory Studio RCP Help</name>
-  <packaging>jar</packaging>
-
-  <description />
-
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-eclipse-plugin</artifactId>
-        <configuration>
-          <skip>false</skip>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.directory.studio</groupId>
-        <artifactId>studio-maven-plugin</artifactId>
-        <configuration>
-          <skip>false</skip>
-          <createManifest>true</createManifest>
-        </configuration>
-      </plugin>
-    </plugins>
-  </build>
+  <modules>
+    <module>apacheds.configuration.feature</module>
+    <module>apacheds.feature</module>
+    <module>ldapbrowser.feature</module>
+    <module>ldifeditor.feature</module>
+    <module>rcp.feature</module>
+    <module>schemaeditor.feature</module>
+  </modules>
+  
 </project>

@@ -35,8 +35,8 @@
   </properties>
   
   <modules>
-    <module>application-features</module>
     <module>application-plugins</module>
+    <module>application-features</module>
     <module>application-eclipse-plugins</module>
   </modules>
   

@@ -22,16 +22,16 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>org.apache.directory.studio</groupId>
-    <artifactId>parent</artifactId>
+    <artifactId>parent-features</artifactId>
     <version>2.0.0-SNAPSHOT</version>
   </parent>
   
-  <artifactId>rcp.feature</artifactId>
-  <name>Apache Directory Studio RCP Feature</name>
+  <artifactId>schemaeditor.feature</artifactId>
+  <name>Apache Directory Studio Schema Editor Feature</name>
   <packaging>jar</packaging>
 
   <description />
-  
+
   <build>
     <resources>
       <resource>
@@ -43,7 +43,7 @@
         <filtering>true</filtering>
       </resource>
     </resources>
-    
+
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>

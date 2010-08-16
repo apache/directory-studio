@@ -22,12 +22,12 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>org.apache.directory.studio</groupId>
-    <artifactId>parent</artifactId>
+    <artifactId>parent-features</artifactId>
     <version>2.0.0-SNAPSHOT</version>
   </parent>
   
-  <artifactId>ldapbrowser.feature</artifactId>
-  <name>Apache Directory Studio LDAP Browser Feature</name>
+  <artifactId>apacheds.configuration.feature</artifactId>
+  <name>Apache Directory Studio Apache DS Configuration Feature</name>
   <packaging>jar</packaging>
 
   <description />
@@ -80,14 +80,6 @@
           </archive>
         </configuration>
       </plugin>
-      <plugin>
-        <groupId>org.apache.directory.studio</groupId>
-        <artifactId>studio-maven-plugin</artifactId>
-        <configuration>
-          <skip>true</skip>
-          <createManifest>true</createManifest>
-        </configuration>
-      </plugin>
       <!-- MANIFEST.MF Generation -->
       <plugin>
         <groupId>org.apache.felix</groupId>
@@ -99,7 +91,6 @@
             <Bundle-SymbolicName>${groupId}.${artifactId};singleton:=true</Bundle-SymbolicName>
             <Bundle-Localization>plugin</Bundle-Localization>
             <Eclipse-LazyStart>true</Eclipse-LazyStart>
-            <Export-Package>!</Export-Package>
           </instructions>
         </configuration>
         <executions>
@@ -111,6 +102,14 @@
             </goals>
           </execution>
         </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.directory.studio</groupId>
+        <artifactId>studio-maven-plugin</artifactId>
+        <configuration>
+          <skip>true</skip>
+          <createManifest>true</createManifest>
+        </configuration>
       </plugin>
       <!-- No tests to run -->
       <plugin>

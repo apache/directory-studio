@@ -24,13 +24,21 @@
     <groupId>org.apache.directory.studio</groupId>
     <artifactId>parent</artifactId>
     <version>2.0.0-SNAPSHOT</version>
-    <relativePath>.</relativePath>
   </parent>
   
   <groupId>org.apache.directory.studio</groupId>
-  <artifactId>parent-help</artifactId>
-  <name>Parent Help</name>
+  <artifactId>parent-helps</artifactId>
+  <name>Apache Directory Studio Help Plugins</name>
   <packaging>pom</packaging>
+  
+  <modules>
+    <module>schemaeditor.help</module>
+    <module>ldifeditor.help</module>
+    <module>ldapbrowser.help</module>
+    <module>apacheds.configuration.help</module>
+    <module>rcp.help</module>
+    <module>apacheds.help</module>
+  </modules>
   
   <profiles>
     <!-- UserGuides -->
