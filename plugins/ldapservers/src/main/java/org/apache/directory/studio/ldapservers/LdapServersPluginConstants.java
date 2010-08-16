@@ -38,7 +38,6 @@ public interface LdapServersPluginConstants
     // IMAGES
     // ------
     public static final String IMG_FOLDER = "resources/icons/folder.gif";
-    public static final String IMG_RUN = "resources/icons/run.gif";
     public static final String IMG_SERVER_NEW = "resources/icons/server_new.gif";
     public static final String IMG_SERVER_NEW_WIZARD = "resources/icons/server_new_wizard.png";
     public static final String IMG_SERVER = "resources/icons/server.gif";
@@ -50,11 +49,39 @@ public interface LdapServersPluginConstants
     public static final String IMG_SERVER_STOPPING1 = "resources/icons/server_stopping1.gif";
     public static final String IMG_SERVER_STOPPING2 = "resources/icons/server_stopping2.gif";
     public static final String IMG_SERVER_STOPPING3 = "resources/icons/server_stopping3.gif";
+    public static final String IMG_START = "resources/icons/start.gif";
     public static final String IMG_STOP = "resources/icons/stop.gif";
+
+    // --------
+    // COMMANDS
+    // --------
+    public static final String CMD_DELETE = LdapServersPlugin.getDefault().getPluginProperties()
+        .getString( "Cmd_Delete_id" );
+    public static final String CMD_NEW_SERVER = LdapServersPlugin.getDefault().getPluginProperties()
+        .getString( "Cmd_NewServer_id" );
+    public static final String CMD_PROPERTIES = LdapServersPlugin.getDefault().getPluginProperties()
+        .getString( "Cmd_Properties_id" );
+    public static final String CMD_RENAME = LdapServersPlugin.getDefault().getPluginProperties()
+        .getString( "Cmd_Rename_id" );
+    public static final String CMD_START = LdapServersPlugin.getDefault().getPluginProperties()
+        .getString( "Cmd_Start_id" );
+    public static final String CMD_STOP = LdapServersPlugin.getDefault().getPluginProperties()
+        .getString( "Cmd_Stop_id" );
 
     // --------------
     // PROPERTY PAGES
     // --------------
     public static final String PROP_SERVER_PROPERTY_PAGE = "org.apache.directory.studio.ldapservers.properties.ServerPropertyPage";
 
+    // -----
+    // VIEWS
+    // -----
+    public static final String VIEW_SERVERS_VIEW = LdapServersPlugin.getDefault().getPluginProperties()
+        .getString( "View_ServersView_id" );
+
+    // --------
+    // CONTEXTS
+    // --------
+    public static final String CONTEXTS_SERVERS_VIEW = LdapServersPlugin.getDefault().getPluginProperties()
+        .getString( "Ctx_ServersView_id" );
 }

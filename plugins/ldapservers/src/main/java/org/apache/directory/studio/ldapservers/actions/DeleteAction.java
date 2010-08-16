@@ -23,6 +23,7 @@ package org.apache.directory.studio.ldapservers.actions;
 import java.io.File;
 
 import org.apache.directory.studio.ldapservers.LdapServersManager;
+import org.apache.directory.studio.ldapservers.LdapServersPluginConstants;
 import org.apache.directory.studio.ldapservers.dialogs.DeleteServerDialog;
 import org.apache.directory.studio.ldapservers.model.LdapServer;
 import org.apache.directory.studio.ldapservers.model.LdapServerStatus;
@@ -77,8 +78,8 @@ public class DeleteAction extends Action implements IWorkbenchWindowActionDelega
      */
     private void init()
     {
-        //        setId( ApacheDsPluginConstants.CMD_DELETE ); // TODO
-        //        setActionDefinitionId( ApacheDsPluginConstants.CMD_DELETE ); // TODO
+        setId( LdapServersPluginConstants.CMD_DELETE );
+        setActionDefinitionId( LdapServersPluginConstants.CMD_DELETE );
         setToolTipText( Messages.getString( "DeleteAction.DeleteToolTip" ) ); //$NON-NLS-1$
         setImageDescriptor( PlatformUI.getWorkbench().getSharedImages()
             .getImageDescriptor( ISharedImages.IMG_TOOL_DELETE ) );

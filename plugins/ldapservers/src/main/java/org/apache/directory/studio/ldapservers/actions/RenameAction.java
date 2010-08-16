@@ -31,6 +31,7 @@ package org.apache.directory.studio.ldapservers.actions;
 
 
 import org.apache.directory.studio.ldapservers.LdapServersManager;
+import org.apache.directory.studio.ldapservers.LdapServersPluginConstants;
 import org.apache.directory.studio.ldapservers.model.LdapServer;
 import org.apache.directory.studio.ldapservers.views.ServersView;
 import org.eclipse.jface.action.Action;
@@ -106,8 +107,8 @@ public class RenameAction extends Action implements IWorkbenchWindowActionDelega
      */
     private void init()
     {
-        //        setId( ApacheDsPluginConstants.CMD_RENAME ); // TODO
-        //        setActionDefinitionId( ApacheDsPluginConstants.CMD_RENAME ); // TODO
+        setId( LdapServersPluginConstants.CMD_RENAME );
+        setActionDefinitionId( LdapServersPluginConstants.CMD_RENAME );
         setToolTipText( Messages.getString( "RenameAction.RenameToolTip" ) ); //$NON-NLS-1$
     }
 

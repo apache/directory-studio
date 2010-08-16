@@ -74,9 +74,9 @@ public class PropertiesAction extends Action implements IWorkbenchWindowActionDe
      */
     private void init()
     {
-//        setId( ApacheDsPluginConstants.CMD_PROPERTIES ); // TODO
-//        setActionDefinitionId( ApacheDsPluginConstants.CMD_PROPERTIES ); // TODO
-//        setToolTipText( Messages.getString( "PropertiesAction.PropertiesToolTip" ) ); //$NON-NLS-1$ // TODO
+        setId( LdapServersPluginConstants.CMD_PROPERTIES );
+        setActionDefinitionId( LdapServersPluginConstants.CMD_PROPERTIES );
+        setToolTipText( Messages.getString( "PropertiesAction.PropertiesToolTip" ) ); //$NON-NLS-1$
     }
 
 

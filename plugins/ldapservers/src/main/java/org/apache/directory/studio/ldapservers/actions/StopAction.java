@@ -74,8 +74,8 @@ public class StopAction extends Action implements IWorkbenchWindowActionDelegate
      */
     private void init()
     {
-        //        setId( ApacheDsPluginConstants.CMD_STOP ); // TODO
-        //        setActionDefinitionId( ApacheDsPluginConstants.CMD_STOP ); // TODO
+        setId( LdapServersPluginConstants.CMD_STOP );
+        setActionDefinitionId( LdapServersPluginConstants.CMD_STOP );
         setToolTipText( Messages.getString( "StopAction.StopToolTip" ) ); //$NON-NLS-1$
         setImageDescriptor( LdapServersPlugin.getDefault().getImageDescriptor( LdapServersPluginConstants.IMG_STOP ) );
     }

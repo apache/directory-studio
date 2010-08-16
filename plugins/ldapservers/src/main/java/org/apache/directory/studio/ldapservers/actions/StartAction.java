@@ -50,7 +50,7 @@ public class StartAction extends Action implements IWorkbenchWindowActionDelegat
      */
     public StartAction()
     {
-        super( Messages.getString( "StartAction.Run" ) ); //$NON-NLS-1$
+        super( Messages.getString( "StartAction.Start" ) ); //$NON-NLS-1$
         init();
     }
 
@@ -63,7 +63,7 @@ public class StartAction extends Action implements IWorkbenchWindowActionDelegat
      */
     public StartAction( ServersView view )
     {
-        super( Messages.getString( "StartAction.Run" ) ); //$NON-NLS-1$
+        super( Messages.getString( "StartAction.Start" ) ); //$NON-NLS-1$
         this.view = view;
         init();
     }
@@ -74,10 +74,10 @@ public class StartAction extends Action implements IWorkbenchWindowActionDelegat
      */
     private void init()
     {
-        //        setId( ApacheDsPluginConstants.CMD_RUN ); // TODO
-        //        setActionDefinitionId( ApacheDsPluginConstants.CMD_RUN ); // TODO
-        setToolTipText( Messages.getString( "StartAction.RunToolTip" ) ); //$NON-NLS-1$
-        setImageDescriptor( LdapServersPlugin.getDefault().getImageDescriptor( LdapServersPluginConstants.IMG_RUN ) );
+        setId( LdapServersPluginConstants.CMD_START );
+        setActionDefinitionId( LdapServersPluginConstants.CMD_START );
+        setToolTipText( Messages.getString( "StartAction.StartToolTip" ) ); //$NON-NLS-1$
+        setImageDescriptor( LdapServersPlugin.getDefault().getImageDescriptor( LdapServersPluginConstants.IMG_START ) );
     }
 
 

@@ -45,10 +45,10 @@ public class NewServerAction extends Action implements IWorkbenchWindowActionDel
      */
     public NewServerAction()
     {
-        super( "New Server" );
-        //        setId( ApacheDsPluginConstants.CMD_NEW_SERVER ); TODO
-        //        setActionDefinitionId( ApacheDsPluginConstants.CMD_NEW_SERVER ); // TODO
-        //        setToolTipText( Messages.getString( "NewServerAction.NewServerToolTip" ) ); //$NON-NLS-1$ // TODO
+        super( Messages.getString( "NewServerAction.NewServer" ) ); //$NON-NLS-1$
+        setId( LdapServersPluginConstants.CMD_NEW_SERVER );
+        setActionDefinitionId( LdapServersPluginConstants.CMD_NEW_SERVER );
+        setToolTipText( Messages.getString( "NewServerAction.NewServerToolTip" ) ); //$NON-NLS-1$
         setImageDescriptor( LdapServersPlugin.getDefault().getImageDescriptor(
             LdapServersPluginConstants.IMG_SERVER_NEW ) );
     }

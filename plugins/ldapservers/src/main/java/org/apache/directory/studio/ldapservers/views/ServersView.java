@@ -22,6 +22,7 @@ package org.apache.directory.studio.ldapservers.views;
 
 import org.apache.directory.studio.ldapservers.LdapServersManager;
 import org.apache.directory.studio.ldapservers.LdapServersManagerListener;
+import org.apache.directory.studio.ldapservers.LdapServersPluginConstants;
 import org.apache.directory.studio.ldapservers.actions.DeleteAction;
 import org.apache.directory.studio.ldapservers.actions.NewServerAction;
 import org.apache.directory.studio.ldapservers.actions.PropertiesAction;
@@ -34,6 +35,7 @@ import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
+import org.eclipse.jface.commands.ActionHandler;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
@@ -91,7 +93,7 @@ public class ServersView extends ViewPart
     //    private OpenConfigurationAction openConfiguration;
     private DeleteAction delete;
     private RenameAction rename;
-    private StartAction run;
+    private StartAction start;
     private StopAction stop;
     //    private CreateConnectionAction createConnection;
     private PropertiesAction properties;
@@ -252,8 +254,8 @@ public class ServersView extends ViewPart
         rename = new RenameAction( this );
         rename.setEnabled( false );
 
-        run = new StartAction( this );
-        run.setEnabled( false );
+        start = new StartAction( this );
+        start.setEnabled( false );
 
         stop = new StopAction( this );
         stop.setEnabled( false );
@@ -274,7 +276,7 @@ public class ServersView extends ViewPart
         IToolBarManager toolbar = getViewSite().getActionBars().getToolBarManager();
         toolbar.add( newServer );
         toolbar.add( new Separator() );
-        toolbar.add( run );
+        toolbar.add( start );
         toolbar.add( stop );
     }
 
@@ -298,7 +300,7 @@ public class ServersView extends ViewPart
                 manager.add( delete );
                 manager.add( rename );
                 manager.add( new Separator() );
-                manager.add( run );
+                manager.add( start );
                 manager.add( stop );
                 manager.add( new Separator() );
                 //                MenuManager ldapBrowserManager = new MenuManager( Messages.getString( "ServersView.ldapBrowser" ) ); //$NON-NLS-1$
@@ -356,12 +358,12 @@ public class ServersView extends ViewPart
                     if ( commandService != null )
                     {
                         commandService.getCommand( newServer.getActionDefinitionId() ).setHandler( null );
-                        //                        commandService.getCommand( openConfiguration.getActionDefinitionId() ).setHandler( null );
-                        //                        commandService.getCommand( delete.getActionDefinitionId() ).setHandler( null );
-                        //                        commandService.getCommand( rename.getActionDefinitionId() ).setHandler( null );
-                        //                        commandService.getCommand( run.getActionDefinitionId() ).setHandler( null );
-                        //                        commandService.getCommand( stop.getActionDefinitionId() ).setHandler( null );
-                        //                        commandService.getCommand( properties.getActionDefinitionId() ).setHandler( null );
+                        //                        commandService.getCommand( openConfiguration.getActionDefinitionId() ).setHandler( null ); // TODO
+                        commandService.getCommand( delete.getActionDefinitionId() ).setHandler( null );
+                        commandService.getCommand( rename.getActionDefinitionId() ).setHandler( null );
+                        commandService.getCommand( start.getActionDefinitionId() ).setHandler( null );
+                        commandService.getCommand( stop.getActionDefinitionId() ).setHandler( null );
+                        commandService.getCommand( properties.getActionDefinitionId() ).setHandler( null );
                     }
 
                     IContextService contextService = ( IContextService ) PlatformUI.getWorkbench().getAdapter(
@@ -379,28 +381,30 @@ public class ServersView extends ViewPart
             {
                 if ( partRef.getPart( false ) == instance )
                 {
-                    //                    IContextService contextService = ( IContextService ) PlatformUI.getWorkbench().getAdapter(
-                    //                        IContextService.class );
-                    //                    contextActivation = contextService.activateContext( ApacheDsPluginConstants.CONTEXTS_SERVERS_VIEW );
-                    //
-                    //                    ICommandService commandService = ( ICommandService ) PlatformUI.getWorkbench().getAdapter(
-                    //                        ICommandService.class );
-                    //                    if ( commandService != null )
-                    //                    {
-                    //                        commandService.getCommand( newServer.getActionDefinitionId() ).setHandler(
-                    //                            new ActionHandler( newServer ) );
-                    //                        commandService.getCommand( openConfiguration.getActionDefinitionId() ).setHandler(
-                    //                            new ActionHandler( openConfiguration ) );
-                    //                        commandService.getCommand( delete.getActionDefinitionId() ).setHandler(
-                    //                            new ActionHandler( delete ) );
-                    //                        commandService.getCommand( rename.getActionDefinitionId() ).setHandler(
-                    //                            new ActionHandler( rename ) );
-                    //                        commandService.getCommand( run.getActionDefinitionId() ).setHandler( new ActionHandler( run ) );
-                    //                        commandService.getCommand( stop.getActionDefinitionId() )
-                    //                            .setHandler( new ActionHandler( stop ) );
-                    //                        commandService.getCommand( properties.getActionDefinitionId() ).setHandler(
-                    //                            new ActionHandler( properties ) );
-                    //                    }
+                    IContextService contextService = ( IContextService ) PlatformUI.getWorkbench().getAdapter(
+                        IContextService.class );
+                    contextActivation = contextService
+                        .activateContext( LdapServersPluginConstants.CONTEXTS_SERVERS_VIEW );
+
+                    ICommandService commandService = ( ICommandService ) PlatformUI.getWorkbench().getAdapter(
+                        ICommandService.class );
+                    if ( commandService != null )
+                    {
+                        commandService.getCommand( newServer.getActionDefinitionId() ).setHandler(
+                            new ActionHandler( newServer ) );
+                        //                        commandService.getCommand( openConfiguration.getActionDefinitionId() ).setHandler(  // TODO
+                        //                            new ActionHandler( openConfiguration ) ); // TODO
+                        commandService.getCommand( delete.getActionDefinitionId() ).setHandler(
+                            new ActionHandler( delete ) );
+                        commandService.getCommand( rename.getActionDefinitionId() ).setHandler(
+                            new ActionHandler( rename ) );
+                        commandService.getCommand( start.getActionDefinitionId() ).setHandler(
+                            new ActionHandler( start ) );
+                        commandService.getCommand( stop.getActionDefinitionId() )
+                            .setHandler( new ActionHandler( stop ) );
+                        commandService.getCommand( properties.getActionDefinitionId() ).setHandler(
+                            new ActionHandler( properties ) );
+                    }
                 }
             }
 
@@ -433,7 +437,6 @@ public class ServersView extends ViewPart
             public void partVisible( IWorkbenchPartReference partRef )
             {
             }
-
         } );
     }
 
@@ -454,23 +457,23 @@ public class ServersView extends ViewPart
             switch ( server.getStatus() )
             {
                 case STARTED:
-                    run.setEnabled( false );
+                    start.setEnabled( false );
                     stop.setEnabled( true );
                     break;
                 case STARTING:
-                    run.setEnabled( false );
+                    start.setEnabled( false );
                     stop.setEnabled( false );
                     break;
                 case STOPPED:
-                    run.setEnabled( true );
+                    start.setEnabled( true );
                     stop.setEnabled( false );
                     break;
                 case STOPPING:
-                    run.setEnabled( false );
+                    start.setEnabled( false );
                     stop.setEnabled( false );
                     break;
                 case UNKNOWN:
-                    run.setEnabled( false );
+                    start.setEnabled( false );
                     stop.setEnabled( false );
                     break;
             }
@@ -486,7 +489,7 @@ public class ServersView extends ViewPart
             //            openConfiguration.setEnabled( false );
             delete.setEnabled( false );
             rename.setEnabled( false );
-            run.setEnabled( false );
+            start.setEnabled( false );
             stop.setEnabled( false );
             //            createConnection.setEnabled( false );
             properties.setEnabled( false );
