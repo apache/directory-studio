@@ -91,28 +91,7 @@
   <modules>
     <!-- The 'repository' module must be the first one -->
     <module>repository</module>
-    <!-- Other modules are sorted in alphabetical order -->
-    <module>aciitemeditor</module>
-    <module>apacheds</module>
-    <module>apacheds-launcher</module>
-    <module>apacheds.configuration</module>
-    <module>common.core</module>
-    <module>common.ui</module>
-    <module>connection.core</module>
-    <module>connection.ui</module>
-    <module>ldapbrowser.core</module>
-    <module>ldapbrowser.common</module>
-    <module>ldapbrowser.ui</module>
-    <module>ldapservers</module>
-    <module>ldapservers.apacheds.v153</module>
-    <module>ldapservers.apacheds.v154</module>
-    <module>ldapservers.apacheds.v155</module>
-    <module>ldapservers.apacheds.v156</module>
-    <module>ldifeditor</module>
-    <module>ldifparser</module>
-    <module>rcp</module>
-    <module>schemaeditor</module>
-    <module>valueeditors</module>
+    <module>plugins</module>
   </modules>
 
   <profiles>
