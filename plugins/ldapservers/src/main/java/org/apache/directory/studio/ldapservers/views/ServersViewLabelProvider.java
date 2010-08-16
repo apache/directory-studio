@@ -63,15 +63,15 @@ public class ServersViewLabelProvider extends LabelProvider implements ITableLab
                 switch ( status )
                 {
                     case STARTED:
-                        return "Started"; // TODO
+                        return Messages.getString( "ServersViewLabelProvider.Started" ); //$NON-NLS-1$
                     case STARTING:
-                        return "Starting" + getDots(); // TODO
+                        return Messages.getString( "ServersViewLabelProvider.Starting" ) + getDots(); //$NON-NLS-1$
                     case STOPPED:
-                        return "Stopped"; // TODO
+                        return Messages.getString( "ServersViewLabelProvider.Stopped" ); //$NON-NLS-1$
                     case STOPPING:
-                        return "Stopping" + getDots(); // TODO
+                        return Messages.getString( "ServersViewLabelProvider.Stopping" ) + getDots(); //$NON-NLS-1$
                     case UNKNOWN:
-                        return "Unkown"; // TODO
+                        return Messages.getString( "ServersViewLabelProvider.Unknown" ); //$NON-NLS-1$
                 }
             }
 
