@@ -23,11 +23,8 @@ package org.apache.directory.studio.ldapservers.model;
 
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.common.ui.CommonUIUtils;
-import org.eclipse.jface.dialogs.IDialogConstants;
-import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.ui.PlatformUI;
 
 
 /**
@@ -51,7 +48,7 @@ public class UnknownLdapServerAdapterExtension extends LdapServerAdapterExtensio
              */
             public void add( LdapServer server, StudioProgressMonitor monitor ) throws Exception
             {
-                // Will never occur
+                showWarningDialog();
             }
 
 
@@ -69,13 +66,7 @@ public class UnknownLdapServerAdapterExtension extends LdapServerAdapterExtensio
              */
             public void openConfiguration( LdapServer server, StudioProgressMonitor monitor ) throws Exception
             {
-                Display.getDefault().asyncExec( new Runnable()
-                {
-                    public void run()
-                    {
-                        // TODO
-                    }
-                } );
+                showWarningDialog();
             }
 
 
@@ -84,11 +75,9 @@ public class UnknownLdapServerAdapterExtension extends LdapServerAdapterExtensio
              */
             public void start( LdapServer server, StudioProgressMonitor monitor ) throws Exception
             {
-                throw new Exception(
-                    NLS.bind(
-                        "This server was created with a server adapter which is no longer available. You need install it (again) using the update site of the vendor. \nServer adapter information: ID=''{0}'', Name=''{1}'', Vendor=''{2}'', Version=''{3}''",
-                        new String[]
-                            { getId(), getName(), getVendor(), getVersion() } ) );
+                showWarningDialog();
+
+                server.setStatus( LdapServerStatus.STOPPED );
             }
 
 
@@ -97,8 +86,31 @@ public class UnknownLdapServerAdapterExtension extends LdapServerAdapterExtensio
              */
             public void stop( LdapServer server, StudioProgressMonitor monitor ) throws Exception
             {
-                // Will never occur
+                showWarningDialog();
+
+                server.setStatus( LdapServerStatus.STOPPED );
+            }
+
+
+            /**
+             * Shows the warning dialog.
+             */
+            private void showWarningDialog()
+            {
+                Display.getDefault().asyncExec( new Runnable()
+                {
+                    public void run()
+                    {
+                        CommonUIUtils.openWarningDialog(
+                            "Server Adapter Not Available",
+                            NLS.bind(
+                                "This server was created with a server adapter which is no longer available. You need install it (again) using the update site of the vendor. \n\nServer adapter information: ID=''{0}'', Name=''{1}'', Vendor=''{2}'', Version=''{3}''",
+                                new String[]
+                                    { getId(), getName(), getVendor(), getVersion() } ) );
+                    }
+                } );
             }
         } );
+
     }
 }

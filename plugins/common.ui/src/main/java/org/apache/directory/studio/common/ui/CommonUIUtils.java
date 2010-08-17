@@ -33,15 +33,87 @@ import org.eclipse.ui.PlatformUI;
 public class CommonUIUtils
 {
     /**
-     * Reports an error.
+     * Opens an Error {@link MessageDialog} with the given message.
      *
      * @param message
      *      the message
      */
-    public static void reportError( String message )
+    public static void openErrorDialog( String message )
+    {
+        openErrorDialog( "Error!", message );
+    }
+
+
+    /**
+     * Opens an Error {@link MessageDialog} with the given title and message.
+     *
+     * @param title
+     *      the title
+     * @param message
+     *      the message
+     */
+    public static void openErrorDialog( String title, String message )
     {
         MessageDialog dialog = new MessageDialog( PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
-            "Error!", null, message, MessageDialog.ERROR, new String[]
+            title, null, message, MessageDialog.ERROR, new String[]
+                { IDialogConstants.OK_LABEL }, MessageDialog.OK );
+        dialog.open();
+    }
+
+
+    /**
+     * Opens an Information {@link MessageDialog} with the given message.
+     *
+     * @param message
+     *      the message
+     */
+    public static void openInformationDialog( String message )
+    {
+        openInformationDialog( "Information", message );
+    }
+
+
+    /**
+     * Opens an Information {@link MessageDialog} with the given title and message.
+     *
+     * @param title
+     *      the title
+     * @param message
+     *      the message
+     */
+    public static void openInformationDialog( String title, String message )
+    {
+        MessageDialog dialog = new MessageDialog( PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
+            title, null, message, MessageDialog.INFORMATION, new String[]
+                { IDialogConstants.OK_LABEL }, MessageDialog.OK );
+        dialog.open();
+    }
+
+
+    /**
+     * Opens an Warning {@link MessageDialog} with the given message.
+     *
+     * @param message
+     *      the message
+     */
+    public static void openWarningDialog( String message )
+    {
+        openInformationDialog( "Information", message );
+    }
+
+
+    /**
+     * Opens an Warning {@link MessageDialog} with the given title and message.
+     *
+     * @param title
+     *      the title
+     * @param message
+     *      the message
+     */
+    public static void openWarningDialog( String title, String message )
+    {
+        MessageDialog dialog = new MessageDialog( PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
+            title, null, message, MessageDialog.WARNING, new String[]
                 { IDialogConstants.OK_LABEL }, MessageDialog.OK );
         dialog.open();
     }

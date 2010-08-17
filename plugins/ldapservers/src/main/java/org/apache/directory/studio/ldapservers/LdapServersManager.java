@@ -276,13 +276,13 @@ public class LdapServersManager
                     }
                     catch ( Exception e )
                     {
-                        CommonUIUtils.reportError( Messages.getString( "LdapServersManager.ErrorLoadingServer" ) //$NON-NLS-1$
+                        CommonUIUtils.openErrorDialog( Messages.getString( "LdapServersManager.ErrorLoadingServer" ) //$NON-NLS-1$
                             + e.getMessage() );
                     }
                 }
                 else
                 {
-                    CommonUIUtils.reportError( Messages.getString( "LdapServersManager.ErrorLoadingServer" ) //$NON-NLS-1$
+                    CommonUIUtils.openErrorDialog( Messages.getString( "LdapServersManager.ErrorLoadingServer" ) //$NON-NLS-1$
                         + exceptionMessage );
                 }
             }
@@ -329,7 +329,7 @@ public class LdapServersManager
             catch ( Exception e )
             {
                 CommonUIUtils
-                    .reportError( Messages.getString( "LdapServersManager.ErrorLoadingServer" ) + e.getMessage() ); //$NON-NLS-1$
+                    .openErrorDialog( Messages.getString( "LdapServersManager.ErrorLoadingServer" ) + e.getMessage() ); //$NON-NLS-1$
             }
         }
     }

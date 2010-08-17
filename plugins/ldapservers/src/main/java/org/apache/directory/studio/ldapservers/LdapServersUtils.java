@@ -328,7 +328,7 @@ public class LdapServersUtils
                 }
                 catch ( IOException e )
                 {
-                    CommonUIUtils.reportError( "An error occurred when copying the library '" + library
+                    CommonUIUtils.openErrorDialog( "An error occurred when copying the library '" + library
                         + "' to the location '" + destinationLibraryFile.getAbsolutePath() + "'.\n\n" + e.getMessage() );
                 }
             }
