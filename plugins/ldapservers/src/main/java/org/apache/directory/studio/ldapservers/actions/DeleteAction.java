@@ -20,13 +20,11 @@
 package org.apache.directory.studio.ldapservers.actions;
 
 
-import java.io.File;
-
-import org.apache.directory.studio.ldapservers.LdapServersManager;
 import org.apache.directory.studio.ldapservers.LdapServersPluginConstants;
 import org.apache.directory.studio.ldapservers.dialogs.DeleteServerDialog;
+import org.apache.directory.studio.ldapservers.jobs.DeleteLdapServerRunnable;
+import org.apache.directory.studio.ldapservers.jobs.StudioLdapServerJob;
 import org.apache.directory.studio.ldapservers.model.LdapServer;
-import org.apache.directory.studio.ldapservers.model.LdapServerStatus;
 import org.apache.directory.studio.ldapservers.views.ServersView;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
@@ -103,83 +101,11 @@ public class DeleteAction extends Action implements IWorkbenchWindowActionDelega
             DeleteServerDialog dsd = new DeleteServerDialog( view.getSite().getShell(), server );
             if ( dsd.open() == DeleteServerDialog.OK )
             {
-                // Checking if the server is running
-                // If yes, we need to shut it down before removing its data
-                if ( server.getStatus() == LdapServerStatus.STARTED )
-                {
-                    // Setting the server of the server to 'stopping'
-                    //                    server.setStatus( LdapServerStatus.STOPPING ); // TODO
-
-                    // Getting the launch job // TODO
-                    //                    StartLdapServerRunnable launchJob = server.getLaunchJob();
-                    //                    if ( launchJob != null )
-                    //                    {
-                    //                        // Getting the launch
-                    //                        ILaunch launch = launchJob.getLaunch();
-                    //                        if ( ( launch != null ) && ( !launch.isTerminated() ) )
-                    //                        {
-                    //                            // Terminating the launch
-                    //                            try
-                    //                            {
-                    //                                launch.terminate();
-                    //                            }
-                    //                            catch ( DebugException e )
-                    //                            {
-                    //                                ApacheDsPluginUtils.reportError( Messages.getString( "DeleteAction.ErrorWhileStopping" ) //$NON-NLS-1$
-                    //                                    + e.getMessage() );
-                    //                            }
-                    //                        }
-                    //                    }
-                }
-
-                // Removing the server
-                LdapServersManager.getDefault().removeServer( server );
-
-                // Deleting the associated directory on disk
-                deleteDirectory( LdapServersManager.getServerFolder( server ).toFile() );
-
-                // Letting the LDAP Server Adapter finish the deletion of the server
-                try
-                {
-                    server.getLdapServerAdapterExtension().getInstance().delete( server );
-                }
-                catch ( Exception e )
-                {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
+                // Creating and scheduling the job to delete the server
+                StudioLdapServerJob job = new StudioLdapServerJob( new DeleteLdapServerRunnable( server ) );
+                job.schedule();
             }
         }
-    }
-
-
-    /**
-     * Deletes the given directory
-     *
-     * @param path
-     *      the directory
-     * @return
-     *      <code>true</code> if and only if the directory is 
-     *      successfully deleted; <code>false</code> otherwise
-     */
-    private boolean deleteDirectory( File path )
-    {
-        if ( path.exists() )
-        {
-            File[] files = path.listFiles();
-            for ( int i = 0; i < files.length; i++ )
-            {
-                if ( files[i].isDirectory() )
-                {
-                    deleteDirectory( files[i] );
-                }
-                else
-                {
-                    files[i].delete();
-                }
-            }
-        }
-        return ( path.delete() );
     }
 
 

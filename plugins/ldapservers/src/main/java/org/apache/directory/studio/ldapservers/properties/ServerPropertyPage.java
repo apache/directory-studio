@@ -64,11 +64,11 @@ public class ServerPropertyPage extends PropertyPage implements IWorkbenchProper
         Text nameText = BaseWidgetUtils.createLabeledText( composite, "", 1 ); //$NON-NLS-1$
 
         // Type
-        BaseWidgetUtils.createLabel( composite, "Type:", 1 );
+        BaseWidgetUtils.createLabel( composite, Messages.getString( "ServerPropertyPage.Type" ), 1 ); //$NON-NLS-1$
         Text typeText = BaseWidgetUtils.createLabeledText( composite, "", 1 ); //$NON-NLS-1$
 
         // Vendor
-        BaseWidgetUtils.createLabel( composite, "Vendor:", 1 );
+        BaseWidgetUtils.createLabel( composite, Messages.getString( "ServerPropertyPage.Vendor" ), 1 ); //$NON-NLS-1$
         Text vendorText = BaseWidgetUtils.createLabeledText( composite, "", 1 ); //$NON-NLS-1$
 
         // Location
@@ -87,7 +87,7 @@ public class ServerPropertyPage extends PropertyPage implements IWorkbenchProper
             LdapServerAdapterExtension ldapServerAdapterExtension = server.getLdapServerAdapterExtension();
 
             nameText.setText( server.getName() );
-            typeText.setText( ldapServerAdapterExtension.getName() + " " + ldapServerAdapterExtension.getVersion() );
+            typeText.setText( ldapServerAdapterExtension.getName() + " " + ldapServerAdapterExtension.getVersion() ); //$NON-NLS-1$
             vendorText.setText( ldapServerAdapterExtension.getVendor() );
             locationText.setText( LdapServersManager.getServersFolder().append( server.getId() ).toOSString() );
         }
