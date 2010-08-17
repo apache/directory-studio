@@ -30,7 +30,7 @@ import org.eclipse.ui.PlatformUI;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class CommonUiUtils
+public class CommonUIUtils
 {
     /**
      * Reports an error.

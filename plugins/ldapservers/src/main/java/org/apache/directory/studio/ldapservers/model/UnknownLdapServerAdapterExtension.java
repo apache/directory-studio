@@ -22,9 +22,12 @@ package org.apache.directory.studio.ldapservers.model;
 
 
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
-import org.apache.directory.studio.common.ui.CommonUiUtils;
+import org.apache.directory.studio.common.ui.CommonUIUtils;
+import org.eclipse.jface.dialogs.IDialogConstants;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.ui.PlatformUI;
 
 
 /**
@@ -70,7 +73,7 @@ public class UnknownLdapServerAdapterExtension extends LdapServerAdapterExtensio
                 {
                     public void run()
                     {
-                        CommonUiUtils.reportError( "test" );
+                        // TODO
                     }
                 } );
             }

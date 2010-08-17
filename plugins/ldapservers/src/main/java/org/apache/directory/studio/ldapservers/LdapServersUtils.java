@@ -30,7 +30,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.directory.studio.common.ui.CommonUiUtils;
+import org.apache.directory.studio.common.ui.CommonUIUtils;
 import org.apache.directory.studio.ldapservers.model.LdapServer;
 import org.apache.directory.studio.ldapservers.model.LdapServerStatus;
 import org.apache.mina.util.AvailablePortFinder;
@@ -328,7 +328,7 @@ public class LdapServersUtils
                 }
                 catch ( IOException e )
                 {
-                    CommonUiUtils.reportError( "An error occurred when copying the library '" + library
+                    CommonUIUtils.reportError( "An error occurred when copying the library '" + library
                         + "' to the location '" + destinationLibraryFile.getAbsolutePath() + "'.\n\n" + e.getMessage() );
                 }
             }

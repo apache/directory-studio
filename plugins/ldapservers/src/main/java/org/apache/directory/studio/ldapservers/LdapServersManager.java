@@ -33,7 +33,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.directory.studio.common.ui.CommonUiUtils;
+import org.apache.directory.studio.common.ui.CommonUIUtils;
 import org.apache.directory.studio.ldapservers.model.LdapServer;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.ui.IMemento;
@@ -276,13 +276,13 @@ public class LdapServersManager
                     }
                     catch ( Exception e )
                     {
-                        CommonUiUtils.reportError( Messages.getString( "LdapServersManager.ErrorLoadingServer" ) //$NON-NLS-1$
+                        CommonUIUtils.reportError( Messages.getString( "LdapServersManager.ErrorLoadingServer" ) //$NON-NLS-1$
                             + e.getMessage() );
                     }
                 }
                 else
                 {
-                    CommonUiUtils.reportError( Messages.getString( "LdapServersManager.ErrorLoadingServer" ) //$NON-NLS-1$
+                    CommonUIUtils.reportError( Messages.getString( "LdapServersManager.ErrorLoadingServer" ) //$NON-NLS-1$
                         + exceptionMessage );
                 }
             }
@@ -328,7 +328,7 @@ public class LdapServersManager
             }
             catch ( Exception e )
             {
-                CommonUiUtils
+                CommonUIUtils
                     .reportError( Messages.getString( "LdapServersManager.ErrorLoadingServer" ) + e.getMessage() ); //$NON-NLS-1$
             }
         }
