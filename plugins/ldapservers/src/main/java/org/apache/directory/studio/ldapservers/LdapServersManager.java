@@ -49,7 +49,7 @@ import org.eclipse.ui.XMLMemento;
  */
 public class LdapServersManager
 {
-    private static final String SERVERS = "servers";
+    private static final String SERVERS = "servers"; //$NON-NLS-1$
 
     /** The default instance */
     private static LdapServersManager instance;
@@ -480,7 +480,7 @@ public class LdapServersManager
             if ( server != null )
             {
                 // Creating the File of the memento (if needed)
-                File mementoFile = getServerFolder( server ).append( "memento.xml" ).toFile();
+                File mementoFile = getServerFolder( server ).append( "memento.xml" ).toFile(); //$NON-NLS-1$
                 if ( !mementoFile.exists() )
                 {
                     mementoFile.createNewFile();
@@ -490,7 +490,7 @@ public class LdapServersManager
                 XMLMemento readMemento = XMLMemento.createReadRoot( new FileReader( mementoFile ) );
 
                 // Converting the read memento to a writable memento
-                XMLMemento memento = XMLMemento.createWriteRoot( "memento" );
+                XMLMemento memento = XMLMemento.createWriteRoot( "memento" ); //$NON-NLS-1$
                 memento.putMemento( readMemento );
 
                 return memento;

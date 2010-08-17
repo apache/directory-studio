@@ -317,7 +317,7 @@ public class ServersTableViewer extends TreeViewer
                     }
                     catch ( Exception e )
                     {
-                        //                        Trace.trace( Trace.FINEST, "Error in Servers view animation", e ); TODO
+                        // Trace.trace( Trace.FINEST, "Error in Servers view animation", e ); TODO
                     }
 
                     // Re-launching the animation
@@ -363,8 +363,7 @@ public class ServersTableViewer extends TreeViewer
         }
         catch ( Exception e )
         {
-            //            Trace.trace( Trace.WARNING, "Error in optimized animation", e );
-            //TODO
+            // Trace.trace( Trace.WARNING, "Error in optimized animation", e ); TODO
         }
     }
 

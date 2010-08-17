@@ -61,7 +61,7 @@ import org.osgi.framework.Bundle;
 public class LdapServersUtils
 {
     /** The ID of the launch configuration custom object */
-    public static final String LAUNCH_CONFIGURATION_CUSTOM_OBJECT = "launchConfiguration";
+    public static final String LAUNCH_CONFIGURATION_CUSTOM_OBJECT = "launchConfiguration"; //$NON-NLS-1$
 
 
     /**

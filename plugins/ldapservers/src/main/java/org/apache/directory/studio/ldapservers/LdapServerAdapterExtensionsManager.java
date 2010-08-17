@@ -44,13 +44,13 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
 public class LdapServerAdapterExtensionsManager
 {
     // Attributes names used in 'plugin.xml' file
-    private static final String ID_ATTR = "id";
-    private static final String NAME_ATTR = "name";
-    private static final String VERSION_ATTR = "version";
-    private static final String VENDOR_ATTR = "vendor";
-    private static final String CLASS_ATTR = "class";
-    private static final String DESCRIPTION_ATTR = "description";
-    private static final String ICON_ATTR = "icon";
+    private static final String ID_ATTR = "id"; //$NON-NLS-1$
+    private static final String NAME_ATTR = "name"; //$NON-NLS-1$
+    private static final String VERSION_ATTR = "version"; //$NON-NLS-1$
+    private static final String VENDOR_ATTR = "vendor"; //$NON-NLS-1$
+    private static final String CLASS_ATTR = "class"; //$NON-NLS-1$
+    private static final String DESCRIPTION_ATTR = "description"; //$NON-NLS-1$
+    private static final String ICON_ATTR = "icon"; //$NON-NLS-1$
 
     /** The default instance */
     private static LdapServerAdapterExtensionsManager instance;

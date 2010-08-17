@@ -348,7 +348,7 @@ public class RenameAction extends Action implements IWorkbenchWindowActionDelega
                 return -2; // native border
             }
         }
-        else if ( "cocoa".equals( SWT.getPlatform() ) )
+        else if ( "cocoa".equals( SWT.getPlatform() ) ) //$NON-NLS-1$
         {
             return 0; // native border
         }

@@ -37,51 +37,51 @@ public interface LdapServersPluginConstants
     // ------
     // IMAGES
     // ------
-    public static final String IMG_FOLDER = "resources/icons/folder.gif";
-    public static final String IMG_SERVER_NEW = "resources/icons/server_new.gif";
-    public static final String IMG_SERVER_NEW_WIZARD = "resources/icons/server_new_wizard.png";
-    public static final String IMG_SERVER = "resources/icons/server.gif";
-    public static final String IMG_SERVER_STARTED = "resources/icons/server_started.gif";
-    public static final String IMG_SERVER_STARTING1 = "resources/icons/server_starting1.gif";
-    public static final String IMG_SERVER_STARTING2 = "resources/icons/server_starting2.gif";
-    public static final String IMG_SERVER_STARTING3 = "resources/icons/server_starting3.gif";
-    public static final String IMG_SERVER_STOPPED = "resources/icons/server_stopped.gif";
-    public static final String IMG_SERVER_STOPPING1 = "resources/icons/server_stopping1.gif";
-    public static final String IMG_SERVER_STOPPING2 = "resources/icons/server_stopping2.gif";
-    public static final String IMG_SERVER_STOPPING3 = "resources/icons/server_stopping3.gif";
-    public static final String IMG_START = "resources/icons/start.gif";
-    public static final String IMG_STOP = "resources/icons/stop.gif";
+    public static final String IMG_FOLDER = "resources/icons/folder.gif"; //$NON-NLS-1$
+    public static final String IMG_SERVER_NEW = "resources/icons/server_new.gif"; //$NON-NLS-1$
+    public static final String IMG_SERVER_NEW_WIZARD = "resources/icons/server_new_wizard.png"; //$NON-NLS-1$
+    public static final String IMG_SERVER = "resources/icons/server.gif"; //$NON-NLS-1$
+    public static final String IMG_SERVER_STARTED = "resources/icons/server_started.gif"; //$NON-NLS-1$
+    public static final String IMG_SERVER_STARTING1 = "resources/icons/server_starting1.gif"; //$NON-NLS-1$
+    public static final String IMG_SERVER_STARTING2 = "resources/icons/server_starting2.gif"; //$NON-NLS-1$
+    public static final String IMG_SERVER_STARTING3 = "resources/icons/server_starting3.gif"; //$NON-NLS-1$
+    public static final String IMG_SERVER_STOPPED = "resources/icons/server_stopped.gif"; //$NON-NLS-1$
+    public static final String IMG_SERVER_STOPPING1 = "resources/icons/server_stopping1.gif"; //$NON-NLS-1$
+    public static final String IMG_SERVER_STOPPING2 = "resources/icons/server_stopping2.gif"; //$NON-NLS-1$
+    public static final String IMG_SERVER_STOPPING3 = "resources/icons/server_stopping3.gif"; //$NON-NLS-1$
+    public static final String IMG_START = "resources/icons/start.gif"; //$NON-NLS-1$
+    public static final String IMG_STOP = "resources/icons/stop.gif"; //$NON-NLS-1$
 
     // --------
     // COMMANDS
     // --------
     public static final String CMD_DELETE = LdapServersPlugin.getDefault().getPluginProperties()
-        .getString( "Cmd_Delete_id" );
+        .getString( "Cmd_Delete_id" ); //$NON-NLS-1$
     public static final String CMD_NEW_SERVER = LdapServersPlugin.getDefault().getPluginProperties()
-        .getString( "Cmd_NewServer_id" );
+        .getString( "Cmd_NewServer_id" ); //$NON-NLS-1$
     public static final String CMD_PROPERTIES = LdapServersPlugin.getDefault().getPluginProperties()
-        .getString( "Cmd_Properties_id" );
+        .getString( "Cmd_Properties_id" ); //$NON-NLS-1$
     public static final String CMD_RENAME = LdapServersPlugin.getDefault().getPluginProperties()
-        .getString( "Cmd_Rename_id" );
+        .getString( "Cmd_Rename_id" ); //$NON-NLS-1$
     public static final String CMD_START = LdapServersPlugin.getDefault().getPluginProperties()
-        .getString( "Cmd_Start_id" );
+        .getString( "Cmd_Start_id" ); //$NON-NLS-1$
     public static final String CMD_STOP = LdapServersPlugin.getDefault().getPluginProperties()
-        .getString( "Cmd_Stop_id" );
+        .getString( "Cmd_Stop_id" ); //$NON-NLS-1$
 
     // --------------
     // PROPERTY PAGES
     // --------------
-    public static final String PROP_SERVER_PROPERTY_PAGE = "org.apache.directory.studio.ldapservers.properties.ServerPropertyPage";
+    public static final String PROP_SERVER_PROPERTY_PAGE = "org.apache.directory.studio.ldapservers.properties.ServerPropertyPage"; //$NON-NLS-1$
 
     // -----
     // VIEWS
     // -----
     public static final String VIEW_SERVERS_VIEW = LdapServersPlugin.getDefault().getPluginProperties()
-        .getString( "View_ServersView_id" );
+        .getString( "View_ServersView_id" ); //$NON-NLS-1$
 
     // --------
     // CONTEXTS
     // --------
     public static final String CONTEXTS_SERVERS_VIEW = LdapServersPlugin.getDefault().getPluginProperties()
-        .getString( "Ctx_ServersView_id" );
+        .getString( "Ctx_ServersView_id" ); //$NON-NLS-1$
 }

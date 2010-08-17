@@ -61,21 +61,21 @@ public class ServerPropertyPage extends PropertyPage implements IWorkbenchProper
 
         // Name
         BaseWidgetUtils.createLabel( composite, Messages.getString( "ServerPropertyPage.Name" ), 1 ); //$NON-NLS-1$
-        Text nameText = BaseWidgetUtils.createLabeledText( composite, "", 1 );
+        Text nameText = BaseWidgetUtils.createLabeledText( composite, "", 1 ); //$NON-NLS-1$
 
         // Type
         BaseWidgetUtils.createLabel( composite, "Type:", 1 );
-        Text typeText = BaseWidgetUtils.createLabeledText( composite, "", 1 );
+        Text typeText = BaseWidgetUtils.createLabeledText( composite, "", 1 ); //$NON-NLS-1$
 
         // Vendor
         BaseWidgetUtils.createLabel( composite, "Vendor:", 1 );
-        Text vendorText = BaseWidgetUtils.createLabeledText( composite, "", 1 );
+        Text vendorText = BaseWidgetUtils.createLabeledText( composite, "", 1 ); //$NON-NLS-1$
 
         // Location
         Label locationLabel = BaseWidgetUtils.createLabel( composite,
             Messages.getString( "ServerPropertyPage.Location" ), 1 ); //$NON-NLS-1$
         locationLabel.setLayoutData( new GridData( SWT.NONE, SWT.TOP, false, false ) );
-        Text locationText = BaseWidgetUtils.createWrappedLabeledText( composite, "", 1 );
+        Text locationText = BaseWidgetUtils.createWrappedLabeledText( composite, "", 1 ); //$NON-NLS-1$
         GridData gd = new GridData( SWT.FILL, SWT.NONE, true, false );
         gd.widthHint = 300;
         locationText.setLayoutData( gd );
