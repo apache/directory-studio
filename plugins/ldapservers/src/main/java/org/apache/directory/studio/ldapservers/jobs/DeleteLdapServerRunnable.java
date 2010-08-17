@@ -61,7 +61,7 @@ public class DeleteLdapServerRunnable implements StudioRunnableWithProgress
      */
     public String getErrorMessage()
     {
-        return NLS.bind( "Unable to start server ''{0}''", new String[]
+        return NLS.bind( "Unable to delete server ''{0}''", new String[]
             { server.getName() } );
     }
 
@@ -81,8 +81,8 @@ public class DeleteLdapServerRunnable implements StudioRunnableWithProgress
      */
     public String getName()
     {
-        return NLS
-            .bind( Messages.getString( "DeleteLdapServerRunnable.DeleteServer" ), new String[] { server.getName() } ); //$NON-NLS-1$
+        return NLS.bind(
+            Messages.getString( "DeleteLdapServerRunnable.DeleteServer" ), new String[] { server.getName() } ); //$NON-NLS-1$
     }
 
 
@@ -113,7 +113,7 @@ public class DeleteLdapServerRunnable implements StudioRunnableWithProgress
             deleteDirectory( LdapServersManager.getServerFolder( server ).toFile() );
 
             // Letting the LDAP Server Adapter finish the deletion of the server
-            server.getLdapServerAdapterExtension().getInstance().delete( server );
+            server.getLdapServerAdapterExtension().getInstance().delete( server, monitor );
         }
         catch ( InterruptedException e )
         {

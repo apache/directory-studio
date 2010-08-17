@@ -37,6 +37,8 @@ public interface LdapServerAdapter
      *
      * @param server
      *      the server
+     * @param monitor
+     *      the progress monitor
      * @throws Exception
      */
     public void add( LdapServer server, StudioProgressMonitor monitor ) throws Exception;
@@ -47,9 +49,23 @@ public interface LdapServerAdapter
      *
      * @param server
      *      the server
+     * @param monitor
+     *      the progress monitor
      * @throws Exception
      */
-    public void delete( LdapServer server ) throws Exception;
+    public void delete( LdapServer server, StudioProgressMonitor monitor ) throws Exception;
+
+
+    /**
+     * This method is called when a server is double-clicked in the 'LDAP Servers' view.
+     *
+     * @param server
+     *      the server
+     * @param monitor
+     *      the progress monitor
+     * @throws Exception
+     */
+    public void openConfiguration( LdapServer server, StudioProgressMonitor monitor ) throws Exception;
 
 
     /**

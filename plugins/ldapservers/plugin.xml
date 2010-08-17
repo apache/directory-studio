@@ -94,6 +94,12 @@
             id="%Cmd_Properties_id"
             name="%Cmd_Properties_name">
       </command>
+      <command
+            categoryId="%Cmd_Category_id"
+            description="%Cmd_OpenConfiguration_description"
+            id="%Cmd_OpenConfiguration_id"
+            name="%Cmd_OpenConfiguration_name">
+      </command>
    </extension>
    
    <extension
@@ -138,5 +144,10 @@
             contextId="%Ctx_ServersView_id"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
             sequence="ALT+RETURN"/>
+      <key
+            commandId="%Cmd_OpenConfiguration_id"
+            contextId="%Ctx_ServersView_id"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="F3"/>
    </extension>
 </plugin>

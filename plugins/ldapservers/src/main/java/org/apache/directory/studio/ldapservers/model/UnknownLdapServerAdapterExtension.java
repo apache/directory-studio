@@ -22,7 +22,9 @@ package org.apache.directory.studio.ldapservers.model;
 
 
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
+import org.apache.directory.studio.common.ui.CommonUiUtils;
 import org.eclipse.osgi.util.NLS;
+import org.eclipse.swt.widgets.Display;
 
 
 /**
@@ -33,17 +35,44 @@ import org.eclipse.osgi.util.NLS;
  */
 public class UnknownLdapServerAdapterExtension extends LdapServerAdapterExtension
 {
+    /**
+     * Creates a new instance of UnknownLdapServerAdapterExtension.
+     */
     public UnknownLdapServerAdapterExtension()
     {
         // Setting behavior for this particular LDAP Server Adapter Extension
         setInstance( new LdapServerAdapter()
         {
             /**
-            * {@inheritDoc}
-            */
-            public void stop( LdapServer server, StudioProgressMonitor monitor ) throws Exception
+             * {@inheritDoc}
+             */
+            public void add( LdapServer server, StudioProgressMonitor monitor ) throws Exception
             {
                 // Will never occur
+            }
+
+
+            /**
+             * {@inheritDoc}
+             */
+            public void delete( LdapServer server, StudioProgressMonitor monitor ) throws Exception
+            {
+                // Nothing to do
+            }
+
+
+            /**
+             * {@inheritDoc}
+             */
+            public void openConfiguration( LdapServer server, StudioProgressMonitor monitor ) throws Exception
+            {
+                Display.getDefault().asyncExec( new Runnable()
+                {
+                    public void run()
+                    {
+                        CommonUiUtils.reportError( "test" );
+                    }
+                } );
             }
 
 
@@ -63,15 +92,7 @@ public class UnknownLdapServerAdapterExtension extends LdapServerAdapterExtensio
             /**
              * {@inheritDoc}
              */
-            public void delete( LdapServer server ) throws Exception
-            {
-            }
-
-
-            /**
-             * {@inheritDoc}
-             */
-            public void add( LdapServer server, StudioProgressMonitor monitor ) throws Exception
+            public void stop( LdapServer server, StudioProgressMonitor monitor ) throws Exception
             {
                 // Will never occur
             }

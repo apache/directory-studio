@@ -27,6 +27,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 
+import org.apache.directory.studio.apacheds.configuration.editor.ServerConfigurationEditor;
 import org.apache.directory.studio.apacheds.configuration.model.ServerConfiguration;
 import org.apache.directory.studio.apacheds.configuration.model.ServerXmlIOException;
 import org.apache.directory.studio.apacheds.configuration.model.v156.ServerConfigurationV156;
@@ -34,11 +35,15 @@ import org.apache.directory.studio.apacheds.configuration.model.v156.ServerXmlIO
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.ldapservers.LdapServersManager;
 import org.apache.directory.studio.ldapservers.LdapServersUtils;
+import org.apache.directory.studio.ldapservers.jobs.PathEditorInput;
 import org.apache.directory.studio.ldapservers.model.LdapServer;
 import org.apache.directory.studio.ldapservers.model.LdapServerAdapter;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.debug.core.ILaunch;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.PlatformUI;
 import org.osgi.framework.Bundle;
 
 
@@ -121,10 +126,36 @@ public class ApacheDS156LdapServerAdapter implements LdapServerAdapter
     /**
      * {@inheritDoc}
      */
-    public void delete( LdapServer server ) throws Exception
+    public void delete( LdapServer server, StudioProgressMonitor monitor ) throws Exception
     {
         // Nothing to do (nothing more than the default behavior of 
         // the delete action before this method is called)
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public void openConfiguration( final LdapServer server, final StudioProgressMonitor monitor ) throws Exception
+    {
+        // Opening the editor
+        Display.getDefault().syncExec( new Runnable()
+        {
+            public void run()
+            {
+                try
+                {
+                    PathEditorInput input = new PathEditorInput( LdapServersManager.getServerFolder( server )
+                        .append( "conf" ).append( "server.xml" ) ); //$NON-NLS-1$ //$NON-NLS-2$
+                    PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
+                        .openEditor( input, ServerConfigurationEditor.ID );
+                }
+                catch ( PartInitException e )
+                {
+                    monitor.reportError( e );
+                }
+            }
+        } );
     }
 
 
