@@ -28,6 +28,7 @@ import java.util.Map;
 import java.util.UUID;
 
 import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.ui.IActionFilter;
 
 
 /**
@@ -303,6 +304,11 @@ public class LdapServer implements IAdaptable
      */
     public Object getAdapter( Class adapter )
     {
+        if ( adapter == IActionFilter.class )
+        {
+            return LdapServerActionFilterAdapter.getInstance();
+        }
+
         return null;
     }
 
