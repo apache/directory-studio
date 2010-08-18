@@ -66,6 +66,7 @@ public class CreateConnectionActionHelper
                 new String[]
                     { IDialogConstants.OK_LABEL }, MessageDialog.OK );
             dialog.open();
+            // TODO use common methods in Common UI plugin
         }
         else
         {
@@ -79,6 +80,7 @@ public class CreateConnectionActionHelper
                     Messages.getString( "CreateConnectionActionHelper.ConnectionCalledCreatedSwitch" ), new String[] { connection.getName() } ), //$NON-NLS-1$
                 MessageDialog.INFORMATION, new String[]
                     { IDialogConstants.YES_LABEL, IDialogConstants.NO_LABEL }, MessageDialog.OK );
+            // TODO use common methods in Common UI plugin
             if ( dialog.open() == MessageDialog.OK )
             {
                 // Switching to the LDAP perspective
