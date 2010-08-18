@@ -119,6 +119,7 @@
  org.apache.commons.io;bundle-version="${org.apache.commons.io.version}",
  org.apache.directory.studio.common.core,
  org.apache.directory.studio.common.ui,
+ org.apache.directory.studio.connection.core,
  org.apache.mina.core;bundle-version="${org.apache.mina.core.validversion}",
  org.dom4j.dom4j;bundle-version="${org.dom4j.version}",
  org.eclipse.core.resources,
@@ -192,6 +193,11 @@
     <dependency>
       <groupId>org.apache.directory.studio</groupId>
       <artifactId>common.ui</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.directory.studio</groupId>
+      <artifactId>connection.core</artifactId>
       <scope>provided</scope>
     </dependency>
     
