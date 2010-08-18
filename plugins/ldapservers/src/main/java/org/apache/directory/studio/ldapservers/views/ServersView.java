@@ -55,6 +55,7 @@ import org.eclipse.swt.widgets.TreeColumn;
 import org.eclipse.ui.IMemento;
 import org.eclipse.ui.IPartListener2;
 import org.eclipse.ui.IViewSite;
+import org.eclipse.ui.IWorkbenchActionConstants;
 import org.eclipse.ui.IWorkbenchPartReference;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
@@ -309,6 +310,8 @@ public class ServersView extends ViewPart
                 //                MenuManager ldapBrowserManager = new MenuManager( Messages.getString( "ServersView.ldapBrowser" ) ); //$NON-NLS-1$
                 //                ldapBrowserManager.add( createConnection );
                 //                manager.add( ldapBrowserManager );
+                manager.add( new Separator( IWorkbenchActionConstants.MB_ADDITIONS ) );
+                manager.add( new Separator() );
                 manager.add( new Separator() );
                 manager.add( properties );
             }
