@@ -293,38 +293,38 @@ public class ConnectionActionGroup implements ActionHandlerManager, IMenuListene
      */
     public void activateGlobalActionHandlers()
     {
-        if ( actionBars != null )
-        {
-            actionBars.setGlobalActionHandler( ActionFactory.COPY.getId(), ( IAction ) connectionActionMap
-                .get( copyConnectionAction ) );
-            actionBars.setGlobalActionHandler( ActionFactory.PASTE.getId(), ( IAction ) connectionActionMap
-                .get( pasteConnectionAction ) );
-            actionBars.setGlobalActionHandler( ActionFactory.DELETE.getId(), ( IAction ) connectionActionMap
-                .get( deleteConnectionAction ) );
-            actionBars.setGlobalActionHandler( ActionFactory.RENAME.getId(), ( IAction ) connectionActionMap
-                .get( renameConnectionAction ) );
-            actionBars.setGlobalActionHandler( ActionFactory.PROPERTIES.getId(), ( IAction ) connectionActionMap
-                .get( propertyDialogAction ) );
-            actionBars.updateActionBars();
-        }
-        else
-        {
-            IAction ca = ( IAction ) connectionActionMap.get( copyConnectionAction );
-            ca.setActionDefinitionId( ConnectionUIConstants.CMD_COPY );
-            ActionUtils.activateActionHandler( ca );
-
-            IAction pa = ( IAction ) connectionActionMap.get( pasteConnectionAction );
-            pa.setActionDefinitionId( ConnectionUIConstants.CMD_PASTE );
-            ActionUtils.activateActionHandler( pa );
-
-            IAction da = ( IAction ) connectionActionMap.get( deleteConnectionAction );
-            da.setActionDefinitionId( ConnectionUIConstants.CMD_DELETE );
-            ActionUtils.activateActionHandler( da );
-
-            IAction pda = ( IAction ) connectionActionMap.get( propertyDialogAction );
-            pda.setActionDefinitionId( ConnectionUIConstants.CMD_PROPERTIES );
-            ActionUtils.activateActionHandler( pda );
-        }
+//        if ( actionBars != null )
+//        {
+//            actionBars.setGlobalActionHandler( ActionFactory.COPY.getId(), ( IAction ) connectionActionMap
+//                .get( copyConnectionAction ) );
+//            actionBars.setGlobalActionHandler( ActionFactory.PASTE.getId(), ( IAction ) connectionActionMap
+//                .get( pasteConnectionAction ) );
+//            actionBars.setGlobalActionHandler( ActionFactory.DELETE.getId(), ( IAction ) connectionActionMap
+//                .get( deleteConnectionAction ) );
+//            actionBars.setGlobalActionHandler( ActionFactory.RENAME.getId(), ( IAction ) connectionActionMap
+//                .get( renameConnectionAction ) );
+//            actionBars.setGlobalActionHandler( ActionFactory.PROPERTIES.getId(), ( IAction ) connectionActionMap
+//                .get( propertyDialogAction ) );
+//            actionBars.updateActionBars();
+//        }
+//        else
+//        {
+//            IAction ca = ( IAction ) connectionActionMap.get( copyConnectionAction );
+//            ca.setActionDefinitionId( ConnectionUIConstants.CMD_COPY );
+//            ActionUtils.activateActionHandler( ca );
+//
+//            IAction pa = ( IAction ) connectionActionMap.get( pasteConnectionAction );
+//            pa.setActionDefinitionId( ConnectionUIConstants.CMD_PASTE );
+//            ActionUtils.activateActionHandler( pa );
+//
+//            IAction da = ( IAction ) connectionActionMap.get( deleteConnectionAction );
+//            da.setActionDefinitionId( ConnectionUIConstants.CMD_DELETE );
+//            ActionUtils.activateActionHandler( da );
+//
+//            IAction pda = ( IAction ) connectionActionMap.get( propertyDialogAction );
+//            pda.setActionDefinitionId( ConnectionUIConstants.CMD_PROPERTIES );
+//            ActionUtils.activateActionHandler( pda );
+//        }
     }
 
 

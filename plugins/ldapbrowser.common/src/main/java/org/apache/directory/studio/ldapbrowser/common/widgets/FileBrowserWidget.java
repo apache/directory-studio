@@ -21,10 +21,7 @@
 package org.apache.directory.studio.ldapbrowser.common.widgets;
 
 
-import java.io.File;
-
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
-import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonConstants;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
@@ -34,7 +31,6 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.FileDialog;
 
 
 /**
@@ -107,35 +103,35 @@ public class FileBrowserWidget extends BrowserWidget
         {
             public void widgetSelected( SelectionEvent event )
             {
-                FileDialog fileDialog = new FileDialog( parent.getShell(), type );
-                fileDialog.setText( title );
-
-                fileDialog.setFilterExtensions( extensions );
-
-                File file = new File( fileCombo.getText() );
-                if ( file.isFile() )
-                {
-                    fileDialog.setFilterPath( file.getParent() );
-                    fileDialog.setFileName( file.getName() );
-                }
-                else if ( file.isDirectory() )
-                {
-                    fileDialog.setFilterPath( file.getPath() );
-                }
-                else
-                {
-                    fileDialog.setFilterPath( BrowserCommonActivator.getDefault().getDialogSettings().get(
-                        BrowserCommonConstants.DIALOGSETTING_KEY_RECENT_FILE_PATH ) );
-                }
-
-                String returnedFileName = fileDialog.open();
-                if ( returnedFileName != null )
-                {
-                    fileCombo.setText( returnedFileName );
-                    File file2 = new File( returnedFileName );
-                    BrowserCommonActivator.getDefault().getDialogSettings().put(
-                        BrowserCommonConstants.DIALOGSETTING_KEY_RECENT_FILE_PATH, file2.getParent() );
-                }
+//                FileDialog fileDialog = new FileDialog( parent.getShell(), type );
+//                fileDialog.setText( title );
+//
+//                fileDialog.setFilterExtensions( extensions );
+//
+//                File file = new File( fileCombo.getText() );
+//                if ( file.isFile() )
+//                {
+//                    fileDialog.setFilterPath( file.getParent() );
+//                    fileDialog.setFileName( file.getName() );
+//                }
+//                else if ( file.isDirectory() )
+//                {
+//                    fileDialog.setFilterPath( file.getPath() );
+//                }
+//                else
+//                {
+//                    fileDialog.setFilterPath( BrowserCommonActivator.getDefault().getDialogSettings().get(
+//                        BrowserCommonConstants.DIALOGSETTING_KEY_RECENT_FILE_PATH ) );
+//                }
+//
+//                String returnedFileName = fileDialog.open();
+//                if ( returnedFileName != null )
+//                {
+//                    fileCombo.setText( returnedFileName );
+//                    File file2 = new File( returnedFileName );
+//                    BrowserCommonActivator.getDefault().getDialogSettings().put(
+//                        BrowserCommonConstants.DIALOGSETTING_KEY_RECENT_FILE_PATH, file2.getParent() );
+//                }
             }
         } );
 

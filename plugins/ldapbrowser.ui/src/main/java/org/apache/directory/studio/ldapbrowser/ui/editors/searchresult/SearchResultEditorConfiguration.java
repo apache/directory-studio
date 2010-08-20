@@ -105,8 +105,8 @@ public class SearchResultEditorConfiguration
             }
             if ( cursor != null )
             {
-                cursor.dispose();
-                cursor = null;
+//                cursor.dispose();
+//                cursor = null;
             }
             disposed = true;
         }
@@ -156,7 +156,7 @@ public class SearchResultEditorConfiguration
         {
             contextMenuManager = new MenuManager();
             Menu menu = contextMenuManager.createContextMenu( viewer.getControl() );
-            getCursor( viewer ).setMenu( menu );
+//            getCursor( viewer ).setMenu( menu );
         }
         return contextMenuManager;
     }
@@ -222,10 +222,10 @@ public class SearchResultEditorConfiguration
      */
     public SearchResultEditorCursor getCursor( TableViewer viewer )
     {
-        if ( cursor == null )
-        {
-            cursor = new SearchResultEditorCursor( viewer );
-        }
+//        if ( cursor == null )
+//        {
+//            cursor = new SearchResultEditorCursor( viewer );
+//        }
         return cursor;
     }
 

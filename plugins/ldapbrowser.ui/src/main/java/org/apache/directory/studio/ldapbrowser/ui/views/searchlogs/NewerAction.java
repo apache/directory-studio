@@ -71,7 +71,7 @@ public class NewerAction extends BrowserAction
         view.getUniversalListener().scrollToOldest();
 
         // go to top
-        view.getMainWidget().getSourceViewer().setTopIndex( 0 );
+//        view.getMainWidget().getSourceViewer().setTopIndex( 0 );
     }
 
 

@@ -53,7 +53,6 @@ public class ConnectionUIPlugin extends AbstractUIPlugin
     /** The plugin properties */
     private PropertyResourceBundle properties;
 
-
     /**
      * The constructor
      */

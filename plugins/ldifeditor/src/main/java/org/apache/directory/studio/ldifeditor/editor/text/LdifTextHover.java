@@ -21,67 +21,7 @@
 package org.apache.directory.studio.ldifeditor.editor.text;
 
 
-import org.apache.directory.studio.ldifeditor.editor.ILdifEditor;
-import org.apache.directory.studio.ldifparser.model.LdifFile;
-import org.apache.directory.studio.ldifparser.model.LdifPart;
-import org.apache.directory.studio.ldifparser.model.container.LdifContainer;
-import org.apache.directory.studio.ldifparser.model.lines.LdifValueLineBase;
-
-import org.eclipse.jface.text.IRegion;
-import org.eclipse.jface.text.ITextHover;
-import org.eclipse.jface.text.ITextViewer;
-import org.eclipse.jface.text.Region;
 
 
-public class LdifTextHover implements ITextHover
-{
-
-    private ILdifEditor editor;
-
-
-    public LdifTextHover( ILdifEditor editor )
-    {
-        this.editor = editor;
-    }
-
-
-    public String getHoverInfo( ITextViewer textViewer, IRegion hoverRegion )
-    {
-
-        if ( this.editor != null )
-        {
-
-            LdifContainer container = LdifFile.getContainer( this.editor.getLdifModel(), hoverRegion.getOffset() );
-            if ( container != null )
-            {
-                LdifPart part = LdifFile.getContainerContent( container, hoverRegion.getOffset() );
-                if ( part != null )
-                {
-                    if ( part instanceof LdifValueLineBase )
-                    {
-                        LdifValueLineBase line = ( LdifValueLineBase ) part;
-                        if ( line.isValueTypeBase64() )
-                        {
-                            return line.getValueAsString();
-                        }
-                    }
-                }
-            }
-        }
-
-        return null;
-    }
-
-
-    public IRegion getHoverRegion( ITextViewer textViewer, int offset )
-    {
-
-        if ( this.editor != null )
-        {
-            return new Region( offset, 0 );
-        }
-
-        return null;
-    }
-
+public class LdifTextHover {
 }

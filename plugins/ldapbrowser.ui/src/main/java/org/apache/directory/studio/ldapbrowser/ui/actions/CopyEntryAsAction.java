@@ -31,10 +31,6 @@ import org.apache.directory.studio.ldapbrowser.core.jobs.ReadEntryRunnable;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearchResult;
 import org.eclipse.osgi.util.NLS;
-import org.eclipse.swt.dnd.Clipboard;
-import org.eclipse.swt.dnd.TextTransfer;
-import org.eclipse.swt.dnd.Transfer;
-import org.eclipse.swt.widgets.Display;
 
 
 /**
@@ -260,18 +256,18 @@ public abstract class CopyEntryAsAction extends BrowserAction
      */
     protected void copyToClipboard( String text )
     {
-        Clipboard clipboard = null;
-        try
-        {
-            clipboard = new Clipboard( Display.getCurrent() );
-            clipboard.setContents( new Object[]
-                { text }, new Transfer[]
-                { TextTransfer.getInstance() } );
-        }
-        finally
-        {
-            if ( clipboard != null )
-                clipboard.dispose();
-        }
+//        Clipboard clipboard = null;
+//        try
+//        {
+//            clipboard = new Clipboard( Display.getCurrent() );
+//            clipboard.setContents( new Object[]
+//                { text }, new Transfer[]
+//                { TextTransfer.getInstance() } );
+//        }
+//        finally
+//        {
+//            if ( clipboard != null )
+//                clipboard.dispose();
+//        }
     }
 }

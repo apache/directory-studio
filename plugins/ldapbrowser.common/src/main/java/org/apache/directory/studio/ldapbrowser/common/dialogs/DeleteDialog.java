@@ -60,7 +60,7 @@ public class DeleteDialog extends MessageDialog
     public DeleteDialog( Shell parentShell, String title, String message, boolean askForTreeDeleteControl )
     {
         super( parentShell, title, null, message, QUESTION, new String[]
-            { IDialogConstants.OK_LABEL, IDialogConstants.CANCEL_LABEL }, OK );
+            { "OK", "Cancel" /*IDialogConstants.OK_LABEL, IDialogConstants.CANCEL_LABEL*/ }, OK );
 
         this.askForTreeDeleteControl = askForTreeDeleteControl;
         this.useTreeDeleteControl = false;

@@ -73,7 +73,7 @@ public class CertificateInfoDialog extends Dialog
     @Override
     protected void createButtonsForButtonBar( Composite parent )
     {
-        createButton( parent, IDialogConstants.CANCEL_ID, IDialogConstants.CLOSE_LABEL, false );
+        createButton( parent, IDialogConstants.CANCEL_ID, "close"/*IDialogConstants.CLOSE_LABEL*/, false );
     }
 
 

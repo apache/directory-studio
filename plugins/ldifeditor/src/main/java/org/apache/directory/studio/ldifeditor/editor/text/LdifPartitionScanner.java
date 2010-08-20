@@ -21,37 +21,7 @@
 package org.apache.directory.studio.ldifeditor.editor.text;
 
 
-import org.eclipse.jface.text.rules.IPredicateRule;
-import org.eclipse.jface.text.rules.IToken;
-import org.eclipse.jface.text.rules.RuleBasedPartitionScanner;
-import org.eclipse.jface.text.rules.Token;
 
 
-public class LdifPartitionScanner extends RuleBasedPartitionScanner
-{
-
-    public final static String LDIF_RECORD = "__ldif_record"; //$NON-NLS-1$
-
-
-    public LdifPartitionScanner()
-    {
-        IToken record = new Token( LDIF_RECORD );
-
-        IPredicateRule[] rules = new IPredicateRule[1];
-        rules[0] = new LdifRecordRule( record );
-
-        setPredicateRules( rules );
-    }
-
-
-    public int read()
-    {
-        return super.read();
-        // try {
-        // return super.read();
-        // } finally {
-        // fColumn = UNDEFINED;
-        // }
-    }
-
+public class LdifPartitionScanner {
 }

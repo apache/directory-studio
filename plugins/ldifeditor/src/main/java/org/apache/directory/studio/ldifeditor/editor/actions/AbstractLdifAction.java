@@ -26,14 +26,11 @@ import org.apache.directory.studio.ldifparser.model.LdifFile;
 import org.apache.directory.studio.ldifparser.model.LdifPart;
 import org.apache.directory.studio.ldifparser.model.container.LdifContainer;
 import org.apache.directory.studio.ldifparser.model.container.LdifModSpec;
-
 import org.eclipse.jface.action.Action;
-import org.eclipse.jface.text.source.ISourceViewer;
 import org.eclipse.swt.graphics.Point;
-import org.eclipse.ui.texteditor.IUpdate;
 
 
-public abstract class AbstractLdifAction extends Action implements IUpdate
+public abstract class AbstractLdifAction extends Action 
 {
 
     protected LdifEditor editor;
@@ -60,7 +57,7 @@ public abstract class AbstractLdifAction extends Action implements IUpdate
 
     public boolean isEnabled()
     {
-        update();
+//        update();
         return super.isEnabled();
     }
 
@@ -77,13 +74,13 @@ public abstract class AbstractLdifAction extends Action implements IUpdate
 
         LdifContainer[] containers = null;
 
-        ISourceViewer sourceViewer = ( ISourceViewer ) editor.getAdapter( ISourceViewer.class );
-        if ( sourceViewer != null )
-        {
-            LdifFile model = editor.getLdifModel();
-            Point selection = sourceViewer.getSelectedRange();
-            containers = LdifFile.getContainers( model, selection.x, selection.y );
-        }
+//        ISourceViewer sourceViewer = ( ISourceViewer ) editor.getAdapter( ISourceViewer.class );
+//        if ( sourceViewer != null )
+//        {
+//            LdifFile model = editor.getLdifModel();
+//            Point selection = sourceViewer.getSelectedRange();
+//            containers = LdifFile.getContainers( model, selection.x, selection.y );
+//        }
 
         return containers != null ? containers : new LdifContainer[0];
 
@@ -95,14 +92,14 @@ public abstract class AbstractLdifAction extends Action implements IUpdate
 
         LdifPart[] parts = null;
 
-        ISourceViewer sourceViewer = ( ISourceViewer ) editor.getAdapter( ISourceViewer.class );
-        if ( sourceViewer != null )
-        {
-            LdifFile model = editor.getLdifModel();
-            Point selection = sourceViewer.getSelectedRange();
-            parts = LdifFile.getParts( model, selection.x, selection.y );
-
-        }
+//        ISourceViewer sourceViewer = ( ISourceViewer ) editor.getAdapter( ISourceViewer.class );
+//        if ( sourceViewer != null )
+//        {
+//            LdifFile model = editor.getLdifModel();
+//            Point selection = sourceViewer.getSelectedRange();
+//            parts = LdifFile.getParts( model, selection.x, selection.y );
+//
+//        }
 
         return parts != null ? parts : new LdifPart[0];
 
@@ -115,15 +112,15 @@ public abstract class AbstractLdifAction extends Action implements IUpdate
         LdifModSpec modSpec = null;
 
         LdifContainer[] containers = getSelectedLdifContainers();
-        if ( containers.length == 1 )
-        {
-            ISourceViewer sourceViewer = ( ISourceViewer ) editor.getAdapter( ISourceViewer.class );
-            if ( sourceViewer != null )
-            {
-                Point selection = sourceViewer.getSelectedRange();
-                modSpec = LdifFile.getInnerContainer( containers[0], selection.x );
-            }
-        }
+//        if ( containers.length == 1 )
+//        {
+//            ISourceViewer sourceViewer = ( ISourceViewer ) editor.getAdapter( ISourceViewer.class );
+//            if ( sourceViewer != null )
+//            {
+//                Point selection = sourceViewer.getSelectedRange();
+//                modSpec = LdifFile.getInnerContainer( containers[0], selection.x );
+//            }
+//        }
 
         return modSpec;
 

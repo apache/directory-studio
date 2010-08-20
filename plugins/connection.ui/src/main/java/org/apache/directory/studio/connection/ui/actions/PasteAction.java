@@ -21,6 +21,7 @@
 package org.apache.directory.studio.connection.ui.actions;
 
 
+import java.awt.datatransfer.Clipboard;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,13 +39,11 @@ import org.apache.directory.studio.connection.ui.ConnectionParameterPage;
 import org.apache.directory.studio.connection.ui.ConnectionParameterPageManager;
 import org.apache.directory.studio.connection.ui.dnd.ConnectionTransfer;
 import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.swt.dnd.Clipboard;
 import org.eclipse.swt.dnd.TextTransfer;
 import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.texteditor.IWorkbenchActionDefinitionIds;
 
 
 /**
@@ -99,7 +98,7 @@ public class PasteAction extends StudioAction
      */
     public String getCommandId()
     {
-        return IWorkbenchActionDefinitionIds.PASTE;
+        return "";// IWorkbenchActionDefinitionIds.PASTE;
     }
 
 
@@ -268,16 +267,17 @@ public class PasteAction extends StudioAction
      */
     protected Object getFromClipboard( Transfer dataType )
     {
-        Clipboard clipboard = null;
-        try
-        {
-            clipboard = new Clipboard( Display.getCurrent() );
-            return clipboard.getContents( dataType );
-        }
-        finally
-        {
-            if ( clipboard != null )
-                clipboard.dispose();
-        }
+//        Clipboard clipboard = null;
+//        try
+//        {
+//            clipboard = new Clipboard( Display.getCurrent() );
+//            return clipboard.getContents( dataType );
+//        }
+//        finally
+//        {
+//            if ( clipboard != null )
+//                clipboard.dispose();
+//        }
+    	return null;
     }
 }

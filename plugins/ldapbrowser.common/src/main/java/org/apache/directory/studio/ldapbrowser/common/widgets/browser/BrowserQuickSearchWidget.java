@@ -192,8 +192,8 @@ public class BrowserQuickSearchWidget
         String[] attributes = HistoryUtils.load( ATTRIBUTE_HISTORY_DIALOGSETTING_KEY );
         quickSearchAttributeCombo = BaseWidgetUtils.createCombo( innerComposite, attributes, -1, 1 );
         quickSearchAttributePP = new ListContentProposalProvider( attributes );
-        new ExtendedContentAssistCommandAdapter( quickSearchAttributeCombo, new ComboContentAdapter(),
-            quickSearchAttributePP, null, null, true );
+//        new ExtendedContentAssistCommandAdapter( quickSearchAttributeCombo, new ComboContentAdapter(),
+//            quickSearchAttributePP, null, null, true );
         quickSearchAttributeCombo.addModifyListener( new ModifyListener()
         {
             public void modifyText( ModifyEvent e )
@@ -221,8 +221,8 @@ public class BrowserQuickSearchWidget
         String[] values = HistoryUtils.load( VALUE_HISTORY_DIALOGSETTING_KEY );
         quickSearchValueCombo = BaseWidgetUtils.createCombo( innerComposite, values, -1, 1 );
         quickSearchValuePP = new ListContentProposalProvider( values );
-        new ExtendedContentAssistCommandAdapter( quickSearchValueCombo, new ComboContentAdapter(), quickSearchValuePP,
-            null, null, true );
+//        new ExtendedContentAssistCommandAdapter( quickSearchValueCombo, new ComboContentAdapter(), quickSearchValuePP,
+//            null, null, true );
         quickSearchValueCombo.addSelectionListener( new SelectionAdapter()
         {
             public void widgetDefaultSelected( SelectionEvent e )

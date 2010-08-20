@@ -190,7 +190,7 @@ public class EntryEditorManager
                                 Messages.getString( "EntryEditorManager.SaveChanges" ), null,//$NON-NLS-1$ 
                                 Messages.getString( "EntryEditorManager.SaveChangesDescription" ), //$NON-NLS-1$ 
                                 MessageDialog.QUESTION, new String[]
-                                    { IDialogConstants.YES_LABEL, IDialogConstants.NO_LABEL }, 0 );
+                                    { "Yes", "No" }, 0 );
                             int result = dialog.open();
                             if ( result == 0 )
                             {
@@ -457,11 +457,11 @@ public class EntryEditorManager
     public EntryEditorManager()
     {
         initEntryEditorExtensions();
-        PlatformUI.getWorkbench().getActiveWorkbenchWindow().getPartService().addPartListener( partListener );
-        EventRegistry
-            .addEntryUpdateListener( entryUpdateListener, BrowserCommonActivator.getDefault().getEventRunner() );
-        ConnectionEventRegistry.addConnectionUpdateListener( connectionUpdateListener, ConnectionUIPlugin.getDefault()
-            .getEventRunner() );
+//        PlatformUI.getWorkbench().getActiveWorkbenchWindow().getPartService().addPartListener( partListener );
+//        EventRegistry
+//            .addEntryUpdateListener( entryUpdateListener, BrowserCommonActivator.getDefault().getEventRunner() );
+//        ConnectionEventRegistry.addConnectionUpdateListener( connectionUpdateListener, ConnectionUIPlugin.getDefault()
+//            .getEventRunner() );
 
     }
 
@@ -985,7 +985,7 @@ public class EntryEditorManager
         MessageDialog dialog = new MessageDialog( partRef.getPart( false ).getSite().getShell(), Messages
             .getString( "EntryEditorManager.EntryChanged" ), null, Messages //$NON-NLS-1$
             .getString( "EntryEditorManager.EntryChangedDescription" ), MessageDialog.QUESTION, new String[] //$NON-NLS-1$
-            { IDialogConstants.YES_LABEL, IDialogConstants.NO_LABEL }, 0 );
+            { "Yes", "No" }, 0 );
         int result = dialog.open();
         if ( result == 0 )
         {

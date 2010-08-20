@@ -28,19 +28,17 @@ import java.util.List;
 import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.shared.ldap.util.LdapURL;
 import org.apache.directory.studio.connection.core.Connection;
-import org.apache.directory.studio.connection.core.StudioControl;
 import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
 import org.apache.directory.studio.connection.core.Connection.ReferralHandlingMethod;
+import org.apache.directory.studio.connection.core.StudioControl;
 import org.apache.directory.studio.connection.core.jobs.StudioConnectionBulkRunnableWithProgress;
 import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
 import org.apache.directory.studio.ldapbrowser.core.events.SearchUpdateEvent;
-import org.apache.directory.studio.ldapbrowser.core.internal.search.LdapSearchPageScoreComputer;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearchResult;
 import org.apache.directory.studio.ldapbrowser.core.model.SearchParameter;
 import org.apache.directory.studio.ldapbrowser.core.utils.Utils;
-import org.eclipse.search.ui.ISearchPageScoreComputer;
 
 
 /**
@@ -567,10 +565,10 @@ public class Search implements ISearch
     public Object getAdapter( Class adapter )
     {
         Class<?> clazz = ( Class<?> ) adapter;
-        if ( clazz.isAssignableFrom( ISearchPageScoreComputer.class ) )
-        {
-            return new LdapSearchPageScoreComputer();
-        }
+//        if ( clazz.isAssignableFrom( ISearchPageScoreComputer.class ) )
+//        {
+//            return new LdapSearchPageScoreComputer();
+//        }
         if ( clazz.isAssignableFrom( Connection.class ) )
         {
             return getBrowserConnection().getConnection();

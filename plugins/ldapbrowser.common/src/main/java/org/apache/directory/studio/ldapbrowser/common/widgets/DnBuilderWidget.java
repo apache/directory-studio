@@ -462,8 +462,8 @@ public class DnBuilderWidget extends BrowserWidget implements ModifyListener
         GridData gd = new GridData();
         gd.widthHint = 180;
         rdnLine.rdnTypeCombo.setLayoutData( gd );
-        rdnLine.rdnNameCPA = new ExtendedContentAssistCommandAdapter( rdnLine.rdnTypeCombo, new ComboContentAdapter(),
-            new ListContentProposalProvider( attributeNames ), null, null, true );
+//        rdnLine.rdnNameCPA = new ExtendedContentAssistCommandAdapter( rdnLine.rdnTypeCombo, new ComboContentAdapter(),
+//            new ListContentProposalProvider( attributeNames ), null, null, true );
 
         rdnLine.rdnEqualsLabel = new Label( rdnComposite, SWT.NONE );
         rdnLine.rdnEqualsLabel.setText( "=" ); //$NON-NLS-1$

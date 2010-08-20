@@ -21,6 +21,7 @@
 package org.apache.directory.studio.ldapbrowser.common.actions;
 
 
+import java.awt.datatransfer.Clipboard;
 import java.util.Arrays;
 import java.util.LinkedHashSet;
 
@@ -40,13 +41,11 @@ import org.apache.directory.studio.ldifparser.LdifUtils;
 import org.apache.directory.studio.valueeditors.IValueEditor;
 import org.apache.directory.studio.valueeditors.ValueEditorManager;
 import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.swt.dnd.Clipboard;
 import org.eclipse.swt.dnd.TextTransfer;
 import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.texteditor.IWorkbenchActionDefinitionIds;
 
 
 /**
@@ -132,7 +131,7 @@ public class CopyAction extends BrowserAction
      */
     public String getCommandId()
     {
-        return IWorkbenchActionDefinitionIds.COPY;
+        return "copy";//IWorkbenchActionDefinitionIds.COPY;
     }
 
 
@@ -244,17 +243,17 @@ public class CopyAction extends BrowserAction
      */
     public static void copyToClipboard( Object[] data, Transfer[] dataTypes )
     {
-        Clipboard clipboard = null;
-        try
-        {
-            clipboard = new Clipboard( Display.getCurrent() );
-            clipboard.setContents( data, dataTypes );
-        }
-        finally
-        {
-            if ( clipboard != null )
-                clipboard.dispose();
-        }
+//        Clipboard clipboard = null;
+//        try
+//        {
+//            clipboard = new Clipboard( Display.getCurrent() );
+//            clipboard.setContents( data, dataTypes );
+//        }
+//        finally
+//        {
+//            if ( clipboard != null )
+//                clipboard.dispose();
+//        }
     }
 
 

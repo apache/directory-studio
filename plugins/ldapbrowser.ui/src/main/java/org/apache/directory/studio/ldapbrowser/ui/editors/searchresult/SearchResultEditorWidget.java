@@ -77,7 +77,7 @@ public class SearchResultEditorWidget extends ViewFormWidget
         quickFilterWidget.createComposite( parent );
 
         // create table widget and viewer
-        table = new Table( parent, SWT.BORDER | SWT.HIDE_SELECTION | SWT.VIRTUAL );
+        table = new Table( parent, SWT.BORDER  | SWT.VIRTUAL );
         table.setHeaderVisible( true );
         table.setLinesVisible( true );
         table.setLayoutData( new GridData( GridData.FILL_BOTH ) );
@@ -111,7 +111,7 @@ public class SearchResultEditorWidget extends ViewFormWidget
      */
     public void setFocus()
     {
-        configuration.getCursor( viewer ).setFocus();
+        configuration.getCursor( viewer );
     }
 
 

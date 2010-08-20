@@ -21,19 +21,17 @@
 package org.apache.directory.studio.ldifeditor.dialogs.preferences;
 
 
-import org.apache.directory.studio.ldifeditor.LdifEditorActivator;
-import org.eclipse.ui.texteditor.templates.TemplatePreferencePage;
 
 
-public class LdifEditorTemplatesPreferencePage extends TemplatePreferencePage
+public class LdifEditorTemplatesPreferencePage /*extends TemplatePreferencePage*/
 {
-
-    public LdifEditorTemplatesPreferencePage()
-    {
-        super();
-        super.setPreferenceStore( LdifEditorActivator.getDefault().getPreferenceStore() );
-        super.setTemplateStore( LdifEditorActivator.getDefault().getLdifTemplateStore() );
-        super.setContextTypeRegistry( LdifEditorActivator.getDefault().getLdifTemplateContextTypeRegistry() );
-    }
+//
+//    public LdifEditorTemplatesPreferencePage()
+//    {
+//        super();
+//        super.setPreferenceStore( LdifEditorActivator.getDefault().getPreferenceStore() );
+//        super.setTemplateStore( LdifEditorActivator.getDefault().getLdifTemplateStore() );
+//        super.setContextTypeRegistry( LdifEditorActivator.getDefault().getLdifTemplateContextTypeRegistry() );
+//    }
 
 }

@@ -21,68 +21,8 @@
 package org.apache.directory.studio.ldifeditor.editor.text;
 
 
-import org.apache.directory.studio.ldifeditor.LdifEditorActivator;
-import org.apache.directory.studio.ldifeditor.LdifEditorConstants;
-import org.apache.directory.studio.ldifeditor.editor.ILdifEditor;
-import org.apache.directory.studio.ldifparser.model.LdifFile;
-import org.apache.directory.studio.ldifparser.model.LdifPart;
-import org.apache.directory.studio.ldifparser.model.container.LdifChangeModifyRecord;
-import org.apache.directory.studio.ldifparser.model.container.LdifContainer;
-import org.apache.directory.studio.ldifparser.model.container.LdifModSpec;
-import org.apache.directory.studio.ldifparser.model.lines.LdifAttrValLine;
-import org.apache.directory.studio.ldifparser.model.lines.LdifModSpecTypeLine;
-
-import org.eclipse.jface.text.DocumentCommand;
-import org.eclipse.jface.text.IAutoEditStrategy;
-import org.eclipse.jface.text.IDocument;
-import org.eclipse.jface.text.TextUtilities;
 
 
-public class LdifAutoEditStrategy implements IAutoEditStrategy
-{
-
-    private ILdifEditor editor;
-
-
-    public LdifAutoEditStrategy( ILdifEditor editor )
-    {
-        this.editor = editor;
-    }
-
-
-    public void customizeDocumentCommand( IDocument d, DocumentCommand c )
-    {
-
-        LdifFile model = editor.getLdifModel();
-        LdifContainer container = LdifFile.getContainer( model, c.offset );
-        LdifContainer innerContainer = container != null ? LdifFile.getInnerContainer( container, c.offset ) : null;
-        LdifPart part = container != null ? LdifFile.getContainerContent( container, c.offset ) : null;
-
-        boolean smartInsertAttributeInModSpec = LdifEditorActivator.getDefault().getPreferenceStore().getBoolean(
-            LdifEditorConstants.PREFERENCE_LDIFEDITOR_CONTENTASSIST_SMARTINSERTATTRIBUTEINMODSPEC );
-        if ( smartInsertAttributeInModSpec )
-        {
-            if ( c.length == 0 && c.text != null && TextUtilities.endsWith( d.getLegalLineDelimiters(), c.text ) != -1 )
-            {
-
-                if ( container instanceof LdifChangeModifyRecord && innerContainer instanceof LdifModSpec
-                    && ( part instanceof LdifAttrValLine || part instanceof LdifModSpecTypeLine ) )
-                {
-                    LdifModSpec modSpec = ( LdifModSpec ) innerContainer;
-                    String att = modSpec.getModSpecType().getUnfoldedAttributeDescription();
-                    c.text += att + ": "; //$NON-NLS-1$
-                }
-            }
-        }
-
-        boolean autoWrap = LdifEditorActivator.getDefault().getPreferenceStore().getBoolean(
-            LdifEditorConstants.PREFERENCE_LDIFEDITOR_FORMATTER_AUTOWRAP );
-
-        if ( autoWrap )
-        {
-
-        }
-
-    }
+public class LdifAutoEditStrategy {
 
 }

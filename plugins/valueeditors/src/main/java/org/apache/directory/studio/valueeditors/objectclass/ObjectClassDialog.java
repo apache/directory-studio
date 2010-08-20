@@ -129,8 +129,7 @@ public class ObjectClassDialog extends Dialog
         objectClassCombo.setVisibleItemCount( 20 );
         objectClassCombo.setItems( allOcNames );
         objectClassCombo.setText( initialValue );
-        new ExtendedContentAssistCommandAdapter( objectClassCombo, new ComboContentAdapter(),
-            new ListContentProposalProvider( objectClassCombo.getItems() ), null, null, true );
+        
 
         applyDialogFont( composite );
         return composite;

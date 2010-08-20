@@ -28,12 +28,10 @@ import java.util.List;
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonConstants;
 import org.apache.directory.studio.ldapbrowser.common.widgets.BrowserWidget;
-import org.apache.directory.studio.ldapbrowser.common.widgets.DialogContentAssistant;
 import org.apache.directory.studio.ldapbrowser.common.widgets.HistoryUtils;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.SchemaUtils;
 import org.apache.directory.studio.ldapbrowser.core.utils.Utils;
-import org.eclipse.jface.text.IDocument;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.layout.GridData;
@@ -104,13 +102,13 @@ public class ReturningAttributesWidget extends BrowserWidget
         returningAttributesCombo.setLayoutData( gd );
 
         // Content assist
-        contentAssistProcessor = new ReturningAttributesContentAssistProcessor( null );
-        DialogContentAssistant raca = new DialogContentAssistant();
-        raca.enableAutoInsert( true );
-        raca.enableAutoActivation( true );
-        raca.setAutoActivationDelay( 500 );
-        raca.setContentAssistProcessor( contentAssistProcessor, IDocument.DEFAULT_CONTENT_TYPE );
-        raca.install( returningAttributesCombo );
+//        contentAssistProcessor = new ReturningAttributesContentAssistProcessor( null );
+//        DialogContentAssistant raca = new DialogContentAssistant();
+//        raca.enableAutoInsert( true );
+//        raca.enableAutoActivation( true );
+//        raca.setAutoActivationDelay( 500 );
+//        raca.setContentAssistProcessor( contentAssistProcessor, IDocument.DEFAULT_CONTENT_TYPE );
+//        raca.install( returningAttributesCombo );
 
         // History
         String[] history = HistoryUtils.load( BrowserCommonConstants.DIALOGSETTING_KEY_RETURNING_ATTRIBUTES_HISTORY );
@@ -160,7 +158,7 @@ public class ReturningAttributesWidget extends BrowserWidget
             proposals.add( "*" ); //$NON-NLS-1$
         }
 
-        contentAssistProcessor.setProposals( proposals );
+//        contentAssistProcessor.setProposals( proposals );
     }
 
 

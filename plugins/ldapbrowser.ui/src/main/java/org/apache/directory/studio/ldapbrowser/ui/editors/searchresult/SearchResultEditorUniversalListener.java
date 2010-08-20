@@ -297,15 +297,15 @@ public class SearchResultEditorUniversalListener implements SearchUpdateListener
          */
         public void mouseMove( MouseEvent e )
         {
-            if ( !cursor.isDisposed() )
-            {
-                TableItem item = cursor.getRow();
-                if ( cursor.getColumn() == 0
-                    && "DN".equalsIgnoreCase( cursor.getRow().getParent().getColumns()[0].getText() ) ) //$NON-NLS-1$
-                {
-                    checkDnLink( item );
-                }
-            }
+//            if ( !cursor.isDisposed() )
+//            {
+//                TableItem item = cursor.getRow();
+//                if ( cursor.getColumn() == 0
+//                    && "DN".equalsIgnoreCase( cursor.getRow().getParent().getColumns()[0].getText() ) ) //$NON-NLS-1$
+//                {
+//                    checkDnLink( item );
+//                }
+//            }
         }
     };
 
@@ -347,16 +347,16 @@ public class SearchResultEditorUniversalListener implements SearchUpdateListener
             viewer.setSelection( null, true );
             viewer.getTable().setSelection( new TableItem[0] );
 
-            ISearchResult result = cursor.getSelectedSearchResult();
-            String property = cursor.getSelectedProperty();
-            if ( property != null && result != null && viewer.getCellModifier().canModify( result, property ) )
-            {
-                cursor.setBackground( Display.getDefault().getSystemColor( SWT.COLOR_LIST_SELECTION ) );
-            }
-            else
-            {
-                cursor.setBackground( Display.getDefault().getSystemColor( SWT.COLOR_TITLE_INACTIVE_FOREGROUND ) );
-            }
+//            ISearchResult result = cursor.getSelectedSearchResult();
+//            String property = cursor.getSelectedProperty();
+//            if ( property != null && result != null && viewer.getCellModifier().canModify( result, property ) )
+//            {
+//                cursor.setBackground( Display.getDefault().getSystemColor( SWT.COLOR_LIST_SELECTION ) );
+//            }
+//            else
+//            {
+//                cursor.setBackground( Display.getDefault().getSystemColor( SWT.COLOR_TITLE_INACTIVE_FOREGROUND ) );
+//            }
 
             // cursor.setForeground(Display.getDefault().getSystemColor(SWT.COLOR_LIST_SELECTION_TEXT));
         }
@@ -428,12 +428,12 @@ public class SearchResultEditorUniversalListener implements SearchUpdateListener
                     && startEditAction.getBestValueEditor().getCellEditor() instanceof TextCellEditor )
                 {
                     startEditAction.run();
-                    CellEditor editor = viewer.getCellEditors()[cursor.getColumn()];
-                    if ( editor instanceof TextCellEditor )
-                    {
-                        editor.setValue( String.valueOf( e.character ) );
-                        ( ( Text ) editor.getControl() ).setSelection( 1 );
-                    }
+//                    CellEditor editor = viewer.getCellEditors()[cursor.getColumn()];
+//                    if ( editor instanceof TextCellEditor )
+//                    {
+//                        editor.setValue( String.valueOf( e.character ) );
+//                        ( ( Text ) editor.getControl() ).setSelection( 1 );
+//                    }
                 }
 
             }
@@ -475,14 +475,14 @@ public class SearchResultEditorUniversalListener implements SearchUpdateListener
 
         // init listeners
         dnLink.addHyperlinkListener( dnHyperlinkListener );
-        dnLink.addMouseTrackListener( dnMouseTrackListener );
-
-        cursor.addMouseMoveListener( cursorMouseMoveListener );
-        cursor.addSelectionListener( cursorSelectionListener );
-        cursor.addMouseListener( cursorMouseListener );
-        cursor.addKeyListener( cursorKeyListener );
-
-        viewer.getTable().addMouseMoveListener( viewerMouseMoveListener );
+//        dnLink.addMouseTrackListener( dnMouseTrackListener );
+//
+//        cursor.addMouseMoveListener( cursorMouseMoveListener );
+//        cursor.addSelectionListener( cursorSelectionListener );
+//        cursor.addMouseListener( cursorMouseListener );
+//        cursor.addKeyListener( cursorKeyListener );
+//
+//        viewer.getTable().addMouseMoveListener( viewerMouseMoveListener );
 
         editor.getSite().getPage().addPartListener( partListener );
         editor.getSite().getWorkbenchWindow().getSelectionService().addPostSelectionListener( BrowserView.getId(),
@@ -542,21 +542,21 @@ public class SearchResultEditorUniversalListener implements SearchUpdateListener
         {
             EmptyValueAddedEvent evae = ( EmptyValueAddedEvent ) event;
             IAttribute att = evae.getAddedValue().getAttribute();
-            AttributeHierarchy ah = cursor.getSelectedAttributeHierarchy();
-            if ( ah != null && ah.contains( att ) )
-            {
-                viewer.setSelection( null, true );
-                viewer.getTable().setSelection( new TableItem[0] );
-                if ( startEditAction.isEnabled() )
-                {
-                    startEditAction.run();
-                }
-            }
+//            AttributeHierarchy ah = cursor.getSelectedAttributeHierarchy();
+//            if ( ah != null && ah.contains( att ) )
+//            {
+//                viewer.setSelection( null, true );
+//                viewer.getTable().setSelection( new TableItem[0] );
+//                if ( startEditAction.isEnabled() )
+//                {
+//                    startEditAction.run();
+//                }
+//            }
         }
         else
         {
-            viewer.refresh( true );
-            cursor.notifyListeners( SWT.Selection, new Event() );
+//            viewer.refresh( true );
+//            cursor.notifyListeners( SWT.Selection, new Event() );
         }
     }
 
@@ -700,7 +700,7 @@ public class SearchResultEditorUniversalListener implements SearchUpdateListener
     private void checkDnLink( TableItem item )
     {
         if ( dnLink == null || dnLink.isDisposed() || tableEditor == null || viewer.getTable().isDisposed()
-            || cursor.isDisposed() )
+             )
         {
             return;
         }

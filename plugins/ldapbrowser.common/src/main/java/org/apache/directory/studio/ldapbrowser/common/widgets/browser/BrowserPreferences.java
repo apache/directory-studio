@@ -192,8 +192,8 @@ public class BrowserPreferences implements IPropertyChangeListener, Preferences.
      */
     public int getFoldingSize()
     {
-        return BrowserCommonActivator.getDefault().getPreferenceStore().getInt(
-            BrowserCommonConstants.PREFERENCE_BROWSER_FOLDING_SIZE );
+        return 100;//BrowserCommonActivator.getDefault().getPreferenceStore().getInt(
+            //BrowserCommonConstants.PREFERENCE_BROWSER_FOLDING_SIZE );
     }
 
 

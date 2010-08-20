@@ -246,7 +246,7 @@ public abstract class BrowserActionProxy extends Action implements ISelectionCha
             setText( action.getText() );
             setToolTipText( action.getText() );
             setEnabled( action.isEnabled() );
-            setImageDescriptor( action.getImageDescriptor() );
+//            setImageDescriptor( action.getImageDescriptor() );
             setChecked( action.isChecked() );
         }
     }

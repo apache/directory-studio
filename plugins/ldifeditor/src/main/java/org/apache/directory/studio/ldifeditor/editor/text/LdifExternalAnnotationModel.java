@@ -21,10 +21,9 @@
 package org.apache.directory.studio.ldifeditor.editor.text;
 
 
-import org.eclipse.jface.text.source.projection.ProjectionAnnotationModel;
 
 
-public class LdifExternalAnnotationModel extends ProjectionAnnotationModel
+public class LdifExternalAnnotationModel 
 {
 
 }

@@ -21,55 +21,6 @@
 package org.apache.directory.studio.ldifeditor.editor.text;
 
 
-import org.apache.directory.studio.ldifeditor.editor.ILdifEditor;
-import org.apache.directory.studio.ldifparser.model.LdifFile;
-import org.apache.directory.studio.ldifparser.model.LdifPart;
-import org.apache.directory.studio.ldifparser.model.container.LdifContainer;
-
-import org.eclipse.jface.text.BadLocationException;
-import org.eclipse.jface.text.source.IAnnotationHover;
-import org.eclipse.jface.text.source.ISourceViewer;
 
 
-public class LdifAnnotationHover implements IAnnotationHover
-{
-
-    private ILdifEditor editor;
-
-
-    public LdifAnnotationHover( ILdifEditor editor )
-    {
-        this.editor = editor;
-    }
-
-
-    public String getHoverInfo( ISourceViewer sourceViewer, int lineNumber )
-    {
-
-        try
-        {
-            if ( this.editor != null )
-            {
-
-                int offset = sourceViewer.getDocument().getLineOffset( lineNumber );
-                LdifContainer container = LdifFile.getContainer( this.editor.getLdifModel(), offset );
-                if ( container != null )
-                {
-                    LdifPart part = LdifFile.getContainerContent( container, offset );
-                    if ( part != null )
-                    {
-                        // return container.getClass().getName() + " - " +
-                        // part.getClass().getName();
-                        return container.getInvalidString() + " - " + part.getInvalidString(); //$NON-NLS-1$
-                    }
-                }
-            }
-        }
-        catch ( BadLocationException e )
-        {
-        }
-
-        return null;
-    }
-
-}
+public class LdifAnnotationHover{}

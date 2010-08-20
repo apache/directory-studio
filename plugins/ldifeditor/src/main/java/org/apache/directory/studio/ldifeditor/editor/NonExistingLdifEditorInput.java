@@ -28,7 +28,6 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.IPathEditorInput;
 import org.eclipse.ui.IPersistableElement;
-import org.eclipse.ui.editors.text.ILocationProvider;
 
 
 /**
@@ -40,7 +39,7 @@ import org.eclipse.ui.editors.text.ILocationProvider;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class NonExistingLdifEditorInput implements IPathEditorInput, ILocationProvider
+public class NonExistingLdifEditorInput implements IPathEditorInput
 {
     /** The counter to create unique names */
     private static int counter = 0;
@@ -110,10 +109,6 @@ public class NonExistingLdifEditorInput implements IPathEditorInput, ILocationPr
      */
     public Object getAdapter( Class adapter )
     {
-        if ( ILocationProvider.class.equals( adapter ) )
-        {
-            return this;
-        }
 
         return Platform.getAdapterManager().getAdapter( this, adapter );
     }

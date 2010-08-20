@@ -169,7 +169,7 @@ public class ModificationLogsViewUniversalListener implements EntryUpdateListene
                 }
 
                 // change input
-                view.getMainWidget().getSourceViewer().getDocument().set( sb.toString() );
+//                view.getMainWidget().getSourceViewer().getDocument().set( sb.toString() );
                 view.getActionGroup().setInput( input );
             }
         }
@@ -196,7 +196,7 @@ public class ModificationLogsViewUniversalListener implements EntryUpdateListene
      */
     public void scrollToOldest()
     {
-        view.getMainWidget().getSourceViewer().setTopIndex( 0 );
+//        view.getMainWidget().getSourceViewer().setTopIndex( 0 );
     }
 
 
@@ -205,18 +205,18 @@ public class ModificationLogsViewUniversalListener implements EntryUpdateListene
      */
     public void scrollToNewest()
     {
-        try
-        {
-            LdifContainer record = view.getMainWidget().getLdifModel().getLastContainer();
-            int offset = record.getOffset();
-            int line = view.getMainWidget().getSourceViewer().getDocument().getLineOfOffset( offset );
-            if ( line > 3 )
-                line -= 3;
-            view.getMainWidget().getSourceViewer().setTopIndex( line );
-        }
-        catch ( Exception e )
-        {
-        }
+//        try
+//        {
+//            LdifContainer record = view.getMainWidget().getLdifModel().getLastContainer();
+//            int offset = record.getOffset();
+//            int line = view.getMainWidget().getSourceViewer().getDocument().getLineOfOffset( offset );
+//            if ( line > 3 )
+//                line -= 3;
+//            view.getMainWidget().getSourceViewer().setTopIndex( line );
+//        }
+//        catch ( Exception e )
+//        {
+//        }
     }
 
 
@@ -248,8 +248,8 @@ public class ModificationLogsViewUniversalListener implements EntryUpdateListene
                     sb.append( e.getMessage() );
                 }
             }
-            view.getMainWidget().getSourceViewer().setTopIndex( 0 );
-            view.getMainWidget().getSourceViewer().getDocument().set( sb.toString() );
+//            view.getMainWidget().getSourceViewer().setTopIndex( 0 );
+//            view.getMainWidget().getSourceViewer().getDocument().set( sb.toString() );
         }
     }
 

@@ -20,11 +20,6 @@
 package org.apache.directory.studio.connection.ui.widgets;
 
 
-import org.eclipse.jface.fieldassist.ContentProposalAdapter;
-import org.eclipse.jface.fieldassist.IContentProposalProvider;
-import org.eclipse.jface.fieldassist.IControlContentAdapter;
-import org.eclipse.swt.widgets.Control;
-import org.eclipse.ui.fieldassist.ContentAssistCommandAdapter;
 
 
 /**
@@ -34,9 +29,8 @@ import org.eclipse.ui.fieldassist.ContentAssistCommandAdapter;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class ExtendedContentAssistCommandAdapter extends ContentAssistCommandAdapter
+public class ExtendedContentAssistCommandAdapter /* extends ContentAssistCommandAdapter*/
 {
-
     /**
      * Creates a new instance of ExtendedContentAssistCommandAdapter 
      * with the following settings:
@@ -54,7 +48,8 @@ public class ExtendedContentAssistCommandAdapter extends ContentAssistCommandAda
      * @param autoActivationCharacters the auto activation characters
      * @param installDecoration the install decoration
      */
-    public ExtendedContentAssistCommandAdapter( Control control, IControlContentAdapter controlContentAdapter,
+
+	/*  public ExtendedContentAssistCommandAdapter( Control control, IControlContentAdapter controlContentAdapter,
         IContentProposalProvider proposalProvider, String commandId, char[] autoActivationCharacters,
         boolean installDecoration )
     {
@@ -79,5 +74,5 @@ public class ExtendedContentAssistCommandAdapter extends ContentAssistCommandAda
     {
         super.openProposalPopup();
     }
-
+*/
 }

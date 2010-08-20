@@ -56,7 +56,7 @@ public class CommonUIUtils
     {
         MessageDialog dialog = new MessageDialog( PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
             title, null, message, MessageDialog.ERROR, new String[]
-                { IDialogConstants.OK_LABEL }, MessageDialog.OK );
+                { "OK" }, MessageDialog.OK );
         dialog.open();
     }
 
@@ -85,7 +85,7 @@ public class CommonUIUtils
     {
         MessageDialog dialog = new MessageDialog( PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
             title, null, message, MessageDialog.INFORMATION, new String[]
-                { IDialogConstants.OK_LABEL }, MessageDialog.OK );
+                { "OK" }, MessageDialog.OK );
         dialog.open();
     }
 
@@ -114,7 +114,7 @@ public class CommonUIUtils
     {
         MessageDialog dialog = new MessageDialog( PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
             title, null, message, MessageDialog.WARNING, new String[]
-                { IDialogConstants.OK_LABEL }, MessageDialog.OK );
+                { "OK" }, MessageDialog.OK );
         dialog.open();
     }
 }

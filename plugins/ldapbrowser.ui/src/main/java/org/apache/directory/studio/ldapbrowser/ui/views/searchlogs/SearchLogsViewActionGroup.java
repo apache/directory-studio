@@ -21,7 +21,6 @@
 package org.apache.directory.studio.ldapbrowser.ui.views.searchlogs;
 
 
-import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.directory.studio.connection.core.ConnectionCoreConstants;
@@ -31,7 +30,6 @@ import org.apache.directory.studio.ldapbrowser.ui.actions.proxy.SearchLogsViewAc
 import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.Separator;
-import org.eclipse.jface.text.source.SourceViewer;
 import org.eclipse.ui.IActionBars;
 
 
@@ -82,17 +80,17 @@ public class SearchLogsViewActionGroup implements ActionHandlerManager, IMenuLis
     public SearchLogsViewActionGroup( SearchLogsView view )
     {
         this.view = view;
-        SourceViewer viewer = this.view.getMainWidget().getSourceViewer();
+//        SourceViewer viewer = this.view.getMainWidget().getSourceViewer();
 
-        searchLogsViewActionMap = new HashMap<String, SearchLogsViewActionProxy>();
-        searchLogsViewActionMap.put( olderAction, new SearchLogsViewActionProxy( viewer, new OlderAction( view ) ) );
-        searchLogsViewActionMap.put( newerAction, new SearchLogsViewActionProxy( viewer, new NewerAction( view ) ) );
-        searchLogsViewActionMap.put( refreshAction, new SearchLogsViewActionProxy( viewer, new RefreshAction( view ) ) );
-        searchLogsViewActionMap.put( clearAction, new SearchLogsViewActionProxy( viewer, new ClearAction( view ) ) );
-        searchLogsViewActionMap.put( exportAction, new SearchLogsViewActionProxy( viewer, new ExportAction() ) );
-        enableSearchRequestLogsAction = new EnableSearchRequestLogsAction();
-        enableSearchResultEntryLogsAction = new EnableSearchResultEntryLogsAction();
-        openSearchLogsPreferencePageAction = new OpenSearchLogsPreferencePageAction();
+//        searchLogsViewActionMap = new HashMap<String, SearchLogsViewActionProxy>();
+//        searchLogsViewActionMap.put( olderAction, new SearchLogsViewActionProxy( viewer, new OlderAction( view ) ) );
+//        searchLogsViewActionMap.put( newerAction, new SearchLogsViewActionProxy( viewer, new NewerAction( view ) ) );
+//        searchLogsViewActionMap.put( refreshAction, new SearchLogsViewActionProxy( viewer, new RefreshAction( view ) ) );
+//        searchLogsViewActionMap.put( clearAction, new SearchLogsViewActionProxy( viewer, new ClearAction( view ) ) );
+//        searchLogsViewActionMap.put( exportAction, new SearchLogsViewActionProxy( viewer, new ExportAction() ) );
+//        enableSearchRequestLogsAction = new EnableSearchRequestLogsAction();
+//        enableSearchResultEntryLogsAction = new EnableSearchResultEntryLogsAction();
+//        openSearchLogsPreferencePageAction = new OpenSearchLogsPreferencePageAction();
     }
 
 
@@ -127,30 +125,30 @@ public class SearchLogsViewActionGroup implements ActionHandlerManager, IMenuLis
      */
     public void fillActionBars( IActionBars actionBars )
     {
-        // Tool Bar
-        actionBars.getToolBarManager().add( searchLogsViewActionMap.get( clearAction ) );
-        actionBars.getToolBarManager().add( searchLogsViewActionMap.get( refreshAction ) );
-        actionBars.getToolBarManager().add( new Separator() );
-        actionBars.getToolBarManager().add( searchLogsViewActionMap.get( olderAction ) );
-        actionBars.getToolBarManager().add( searchLogsViewActionMap.get( newerAction ) );
-        actionBars.getToolBarManager().add( new Separator() );
-        actionBars.getToolBarManager().add( searchLogsViewActionMap.get( exportAction ) );
-
-        // Menu Bar
-        actionBars.getMenuManager().add( enableSearchRequestLogsAction );
-        actionBars.getMenuManager().add( enableSearchResultEntryLogsAction );
-        actionBars.getMenuManager().add( new Separator() );
-        actionBars.getMenuManager().add( openSearchLogsPreferencePageAction );
-        actionBars.getMenuManager().addMenuListener( new IMenuListener()
-        {
-            public void menuAboutToShow( IMenuManager manager )
-            {
-                enableSearchRequestLogsAction.setChecked( ConnectionCorePlugin.getDefault().getPluginPreferences()
-                    .getBoolean( ConnectionCoreConstants.PREFERENCE_SEARCHREQUESTLOGS_ENABLE ) );
-                enableSearchResultEntryLogsAction.setChecked( ConnectionCorePlugin.getDefault().getPluginPreferences()
-                    .getBoolean( ConnectionCoreConstants.PREFERENCE_SEARCHRESULTENTRYLOGS_ENABLE ) );
-            }
-        } );
+//        // Tool Bar
+//        actionBars.getToolBarManager().add( searchLogsViewActionMap.get( clearAction ) );
+//        actionBars.getToolBarManager().add( searchLogsViewActionMap.get( refreshAction ) );
+//        actionBars.getToolBarManager().add( new Separator() );
+//        actionBars.getToolBarManager().add( searchLogsViewActionMap.get( olderAction ) );
+//        actionBars.getToolBarManager().add( searchLogsViewActionMap.get( newerAction ) );
+//        actionBars.getToolBarManager().add( new Separator() );
+//        actionBars.getToolBarManager().add( searchLogsViewActionMap.get( exportAction ) );
+//
+//        // Menu Bar
+//        actionBars.getMenuManager().add( enableSearchRequestLogsAction );
+//        actionBars.getMenuManager().add( enableSearchResultEntryLogsAction );
+//        actionBars.getMenuManager().add( new Separator() );
+//        actionBars.getMenuManager().add( openSearchLogsPreferencePageAction );
+//        actionBars.getMenuManager().addMenuListener( new IMenuListener()
+//        {
+//            public void menuAboutToShow( IMenuManager manager )
+//            {
+//                enableSearchRequestLogsAction.setChecked( ConnectionCorePlugin.getDefault().getPluginPreferences()
+//                    .getBoolean( ConnectionCoreConstants.PREFERENCE_SEARCHREQUESTLOGS_ENABLE ) );
+//                enableSearchResultEntryLogsAction.setChecked( ConnectionCorePlugin.getDefault().getPluginPreferences()
+//                    .getBoolean( ConnectionCoreConstants.PREFERENCE_SEARCHRESULTENTRYLOGS_ENABLE ) );
+//            }
+//        } );
     }
 
 
@@ -169,10 +167,10 @@ public class SearchLogsViewActionGroup implements ActionHandlerManager, IMenuLis
      */
     public void setInput( SearchLogsViewInput input )
     {
-        for ( SearchLogsViewActionProxy action : searchLogsViewActionMap.values() )
-        {
-            action.inputChanged( input );
-        }
+//        for ( SearchLogsViewActionProxy action : searchLogsViewActionMap.values() )
+//        {
+//            action.inputChanged( input );
+//        }
     }
 
 

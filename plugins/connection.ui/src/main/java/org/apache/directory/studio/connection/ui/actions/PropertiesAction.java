@@ -20,7 +20,6 @@
 
 package org.apache.directory.studio.connection.ui.actions;
 
-
 import org.apache.directory.studio.connection.core.Utils;
 import org.apache.directory.studio.connection.ui.ConnectionUIPlugin;
 import org.eclipse.core.runtime.IAdaptable;
@@ -28,88 +27,77 @@ import org.eclipse.jface.preference.PreferenceDialog;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.ui.dialogs.PreferencesUtil;
-import org.eclipse.ui.texteditor.IWorkbenchActionDefinitionIds;
-
 
 /**
  * This Action opens the Property Dialog for a given object.
- *
- * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory
+ *         Project</a>
  */
-public class PropertiesAction extends StudioAction
-{
-    /**
-     * Creates a new instance of PropertiesAction.
-     */
-    public PropertiesAction()
-    {
-        super();
-    }
+public class PropertiesAction extends StudioAction {
+	/**
+	 * Creates a new instance of PropertiesAction.
+	 */
+	public PropertiesAction() {
+		super();
+	}
 
+	/**
+	 * {@inheritDoc}
+	 */
+	public String getText() {
+		return Messages.getString("PropertiesAction.Properties"); //$NON-NLS-1$
+	}
 
-    /**
-     * {@inheritDoc}
-     */
-    public String getText()
-    {
-        return Messages.getString( "PropertiesAction.Properties" ); //$NON-NLS-1$
-    }
+	/**
+	 * {@inheritDoc}
+	 */
+	public ImageDescriptor getImageDescriptor() {
+		return null;
+	}
 
+	/**
+	 * {@inheritDoc}
+	 */
+	public String getCommandId() {
+		return "";// IWorkbenchActionDefinitionIds.PROPERTIES;
+	}
 
-    /**
-     * {@inheritDoc}
-     */
-    public ImageDescriptor getImageDescriptor()
-    {
-        return null;
-    }
+	/**
+	 * {@inheritDoc}
+	 */
+	public boolean isEnabled() {
 
+		return getSelectedConnections().length == 1;
 
-    /**
-     * {@inheritDoc}
-     */
-    public String getCommandId()
-    {
-        return IWorkbenchActionDefinitionIds.PROPERTIES;
-    }
+	}
 
+	/**
+	 * {@inheritDoc}
+	 */
+	public void run() {
+		IAdaptable element = null;
+		String pageId = null;
+		String title = null;
 
-    /**
-     * {@inheritDoc}
-     */
-    public boolean isEnabled()
-    {
+		if (getSelectedConnections().length == 1) {
+			element = (IAdaptable) getSelectedConnections()[0];
+			pageId = ConnectionUIPlugin.getDefault().getPluginProperties()
+					.getString("Prop_ConnectionPropertyPage_id"); //$NON-NLS-1$
+			title = getSelectedConnections()[0].getName();
+		}
 
-        return getSelectedConnections().length == 1;
+		if (element != null) {
+			PreferenceDialog dialog = PreferencesUtil.createPropertyDialogOn(
+					getShell(), element, pageId, null, null);
+			if (dialog != null)
+				title = Utils.shorten(title, 30);
+			dialog.getShell()
+					.setText(
+							NLS.bind(
+									Messages.getString("PropertiesAction.PropertiesFor"), new String[] { title })); //$NON-NLS-1$
+			dialog.open();
 
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    public void run()
-    {
-        IAdaptable element = null;
-        String pageId = null;
-        String title = null;
-
-        if ( getSelectedConnections().length == 1 )
-        {
-            element = ( IAdaptable ) getSelectedConnections()[0];
-            pageId = ConnectionUIPlugin.getDefault().getPluginProperties().getString( "Prop_ConnectionPropertyPage_id" ); //$NON-NLS-1$
-            title = getSelectedConnections()[0].getName();
-        }
-
-        if ( element != null )
-        {
-            PreferenceDialog dialog = PreferencesUtil.createPropertyDialogOn( getShell(), element, pageId, null, null );
-            if ( dialog != null )
-                title = Utils.shorten( title, 30 );
-            dialog.getShell().setText(
-                NLS.bind( Messages.getString( "PropertiesAction.PropertiesFor" ), new String[] { title } ) ); //$NON-NLS-1$
-            dialog.open();
-
-        }
-    }
+		}
+	}
 }

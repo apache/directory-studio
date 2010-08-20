@@ -231,11 +231,11 @@ public abstract class StudioActionProxy extends Action implements ISelectionChan
     {
         if ( !isDisposed() )
         {
-            setText( action.getText() );
-            setToolTipText( action.getText() );
-            setEnabled( action.isEnabled() );
-            setImageDescriptor( action.getImageDescriptor() );
-            setChecked( action.isChecked() );
+//            setText( action.getText() );
+//            setToolTipText( action.getText() );
+//            setEnabled( action.isEnabled() );
+////            setImageDescriptor( action.getImageDescriptor() );
+//            setChecked( action.isChecked() );
         }
     }
 

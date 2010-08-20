@@ -46,7 +46,6 @@ import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.INavigationLocation;
 import org.eclipse.ui.IShowEditorInput;
 import org.eclipse.ui.PartInitException;
-import org.eclipse.ui.texteditor.ITextEditorActionConstants;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 
 
@@ -153,7 +152,7 @@ public abstract class LdifEntryEditor extends LdifEditor implements IEntryEditor
         super();
 
         // use our own document provider that saves changes to the directory
-        setDocumentProvider( new LdifEntryEditorDocumentProvider( this ) );
+//        setDocumentProvider( new LdifEntryEditorDocumentProvider( this ) );
     }
 
 
@@ -165,19 +164,19 @@ public abstract class LdifEntryEditor extends LdifEditor implements IEntryEditor
 
 
     @Override
-    protected void doSetInput( IEditorInput input ) throws CoreException
-    {
-        super.doSetInput( input );
+//    protected void doSetInput( IEditorInput input ) throws CoreException
+//    {
+//        super.doSetInput( input );
+//
+//        IEntry entry = getEntryEditorInput().getResolvedEntry();
+//        if ( entry != null )
+//        {
+//            setConnection( entry.getBrowserConnection() );
+//        }
+//    }
 
-        IEntry entry = getEntryEditorInput().getResolvedEntry();
-        if ( entry != null )
-        {
-            setConnection( entry.getBrowserConnection() );
-        }
-    }
 
-
-    @Override
+//    @Override
     public void createPartControl( Composite parent )
     {
         // don't show the tool bar
@@ -228,8 +227,8 @@ public abstract class LdifEntryEditor extends LdifEditor implements IEntryEditor
     {
         super.createActions();
 
-        setAction( REFRESH_ACTION, refreshAction );
-        setAction( FETCH_OPERATIONAL_ATTRIBUTES_ACTION, fetchOperationalAttributesAction );
+//        setAction( REFRESH_ACTION, refreshAction );
+//        setAction( FETCH_OPERATIONAL_ATTRIBUTES_ACTION, fetchOperationalAttributesAction );
     }
 
 
@@ -241,8 +240,8 @@ public abstract class LdifEntryEditor extends LdifEditor implements IEntryEditor
         IEntry entry = getEntryEditorInput().getResolvedEntry();
         fetchOperationalAttributesAction.setChecked( ( entry != null ) ? entry.isInitOperationalAttributes() : false );
 
-        addAction( menu, ITextEditorActionConstants.GROUP_REST, REFRESH_ACTION );
-        addAction( menu, ITextEditorActionConstants.GROUP_REST, FETCH_OPERATIONAL_ATTRIBUTES_ACTION );
+//        addAction( menu, ITextEditorActionConstants.GROUP_REST, REFRESH_ACTION );
+//        addAction( menu, ITextEditorActionConstants.GROUP_REST, FETCH_OPERATIONAL_ATTRIBUTES_ACTION );
     }
 
 
@@ -260,18 +259,18 @@ public abstract class LdifEntryEditor extends LdifEditor implements IEntryEditor
     }
 
 
-    @Override
-    public INavigationLocation createNavigationLocation()
-    {
-        return new LdifEntryEditorNavigationLocation( this, true );
-    }
-
-
-    @Override
-    public INavigationLocation createEmptyNavigationLocation()
-    {
-        return new LdifEntryEditorNavigationLocation( this, false );
-    }
+//    @Override
+//    public INavigationLocation createNavigationLocation()
+//    {
+//        return new LdifEntryEditorNavigationLocation( this, true );
+//    }
+//
+//
+//    @Override
+//    public INavigationLocation createEmptyNavigationLocation()
+//    {
+//        return new LdifEntryEditorNavigationLocation( this, false );
+//    }
 
 
     /**
@@ -279,122 +278,122 @@ public abstract class LdifEntryEditor extends LdifEditor implements IEntryEditor
      * 
      * {@inheritDoc}
      */
-    public boolean isAutoSave()
-    {
-        return false;
-    }
+//    public boolean isAutoSave()
+//    {
+//        return false;
+//    }
 
 
-    /**
-     * This implementation returns always true.
-     * 
-     * {@inheritDoc}
-     */
-    public boolean canHandle( IEntry entry )
-    {
-        return true;
-    }
+//    /**
+//     * This implementation returns always true.
+//     * 
+//     * {@inheritDoc}
+//     */
+//    public boolean canHandle( IEntry entry )
+//    {
+//        return true;
+//    }
 
 
-    /**
-     * {@inheritDoc}
-     */
-    public EntryEditorInput getEntryEditorInput()
-    {
-        return EntryEditorUtils.getEntryEditorInput( getEditorInput() );
-    }
+//    /**
+//     * {@inheritDoc}
+//     */
+//    public EntryEditorInput getEntryEditorInput()
+//    {
+//        return EntryEditorUtils.getEntryEditorInput( getEditorInput() );
+//    }
 
 
-    /**
-     * {@inheritDoc}
-     */
-    public void workingCopyModified( Object source )
-    {
-        ( ( LdifEntryEditorDocumentProvider ) getDocumentProvider() ).workingCopyModified( getEntryEditorInput(),
-            source );
-    }
+//    /**
+//     * {@inheritDoc}
+//     */
+//    public void workingCopyModified( Object source )
+//    {
+//        ( ( LdifEntryEditorDocumentProvider ) getDocumentProvider() ).workingCopyModified( getEntryEditorInput(),
+//            source );
+//    }
 
 
-    public void showEditorInput( IEditorInput input )
-    {
-        if ( inShowEditorInput )
-        {
-            /*
-             *  This is to avoid recursion when using history navigation:
-             *  - when selecting an entry this method is called
-             *  - this method fires an input changed event
-             *  - the LinkWithEditorAction gets the event and selects the entry in the browser tree
-             *  - this selection fires an selection event
-             *  - the selection event causes an openEditor() that calls this method again
-             */
-            return;
-        }
-
-        try
-        {
-            inShowEditorInput = true;
-
-            if ( input instanceof EntryEditorInput )
-            {
-                EntryEditorInput eei = ( EntryEditorInput ) input;
-
-                /*
-                 * Optimization: no need to set the input again if the same input is already set
-                 */
-                if ( getEntryEditorInput() != null
-                    && getEntryEditorInput().getResolvedEntry() == eei.getResolvedEntry() )
-                {
-                    return;
-                }
-
-                // If the editor is dirty, let's ask for a save before changing the input
-                if ( isDirty() )
-                {
-                    if ( !EntryEditorUtils.askSaveSharedWorkingCopyBeforeInputChange( this ) )
-                    {
-                        return;
-                    }
-                }
-
-                /*
-                 * Workaround to make link-with-editor working for the single-tab editor:
-                 * The call of firePropertyChange is used to inform the link-with-editor action.
-                 * However firePropertyChange also modifies the navigation history.
-                 * Thus, a dummy input with the real entry but a null extension is set.
-                 * This avoids to modification of the navigation history.
-                 * Afterwards the real input is set.
-                 */
-                IEntry entry = eei.getEntryInput();
-                ISearchResult searchResult = eei.getSearchResultInput();
-                IBookmark bookmark = eei.getBookmarkInput();
-                EntryEditorInput dummyInput;
-                if ( entry != null )
-                {
-                    dummyInput = new EntryEditorInput( entry, null );
-                }
-                else if ( searchResult != null )
-                {
-                    dummyInput = new EntryEditorInput( searchResult, null );
-                }
-                else
-                {
-                    dummyInput = new EntryEditorInput( bookmark, null );
-                }
-                doSetInput( dummyInput );
-                firePropertyChange( IEditorPart.PROP_INPUT );
-
-                // now set the real input and mark history location
-                doSetInput( input );
-                getSite().getPage().getNavigationHistory().markLocation( this );
-            }
-        }
-        catch ( CoreException e )
-        {
-            throw new RuntimeException( e );
-        }
-        finally
-        {
-            inShowEditorInput = false;
-        }
-    }
+//    public void showEditorInput( IEditorInput input )
+//    {
+//        if ( inShowEditorInput )
+//        {
+//            /*
+//             *  This is to avoid recursion when using history navigation:
+//             *  - when selecting an entry this method is called
+//             *  - this method fires an input changed event
+//             *  - the LinkWithEditorAction gets the event and selects the entry in the browser tree
+//             *  - this selection fires an selection event
+//             *  - the selection event causes an openEditor() that calls this method again
+//             */
+//            return;
+//        }
+//
+//        try
+//        {
+//            inShowEditorInput = true;
+//
+//            if ( input instanceof EntryEditorInput )
+//            {
+//                EntryEditorInput eei = ( EntryEditorInput ) input;
+//
+//                /*
+//                 * Optimization: no need to set the input again if the same input is already set
+//                 */
+//                if ( getEntryEditorInput() != null
+//                    && getEntryEditorInput().getResolvedEntry() == eei.getResolvedEntry() )
+//                {
+//                    return;
+//                }
+//
+//                // If the editor is dirty, let's ask for a save before changing the input
+//                if ( isDirty() )
+//                {
+//                    if ( !EntryEditorUtils.askSaveSharedWorkingCopyBeforeInputChange( this ) )
+//                    {
+//                        return;
+//                    }
+//                }
+//
+//                /*
+//                 * Workaround to make link-with-editor working for the single-tab editor:
+//                 * The call of firePropertyChange is used to inform the link-with-editor action.
+//                 * However firePropertyChange also modifies the navigation history.
+//                 * Thus, a dummy input with the real entry but a null extension is set.
+//                 * This avoids to modification of the navigation history.
+//                 * Afterwards the real input is set.
+//                 */
+//                IEntry entry = eei.getEntryInput();
+//                ISearchResult searchResult = eei.getSearchResultInput();
+//                IBookmark bookmark = eei.getBookmarkInput();
+//                EntryEditorInput dummyInput;
+//                if ( entry != null )
+//                {
+//                    dummyInput = new EntryEditorInput( entry, null );
+//                }
+//                else if ( searchResult != null )
+//                {
+//                    dummyInput = new EntryEditorInput( searchResult, null );
+//                }
+//                else
+//                {
+//                    dummyInput = new EntryEditorInput( bookmark, null );
+//                }
+//                doSetInput( dummyInput );
+//                firePropertyChange( IEditorPart.PROP_INPUT );
+//
+//                // now set the real input and mark history location
+//                doSetInput( input );
+//                getSite().getPage().getNavigationHistory().markLocation( this );
+//            }
+//        }
+//        catch ( CoreException e )
+//        {
+//            throw new RuntimeException( e );
+//        }
+//        finally
+//        {
+//            inShowEditorInput = false;
+//        }
+//    }
 }

@@ -35,13 +35,10 @@ import org.apache.directory.studio.connection.ui.ConnectionParameterPage;
 import org.apache.directory.studio.connection.ui.ConnectionParameterPageManager;
 import org.apache.directory.studio.connection.ui.dnd.ConnectionTransfer;
 import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.swt.dnd.Clipboard;
 import org.eclipse.swt.dnd.TextTransfer;
 import org.eclipse.swt.dnd.Transfer;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.texteditor.IWorkbenchActionDefinitionIds;
 
 
 /**
@@ -103,7 +100,7 @@ public class CopyAction extends StudioAction
      */
     public String getCommandId()
     {
-        return IWorkbenchActionDefinitionIds.COPY;
+        return "";//IWorkbenchActionDefinitionIds.COPY;
     }
 
 
@@ -155,17 +152,17 @@ public class CopyAction extends StudioAction
      */
     public static void copyToClipboard( Object[] data, Transfer[] dataTypes )
     {
-        Clipboard clipboard = null;
-        try
-        {
-            clipboard = new Clipboard( Display.getCurrent() );
-            clipboard.setContents( data, dataTypes );
-        }
-        finally
-        {
-            if ( clipboard != null )
-                clipboard.dispose();
-        }
+//        Clipboard clipboard = null;
+//        try
+//        {
+//            clipboard = new Clipboard( Display.getCurrent() );
+//            clipboard.setContents( data, dataTypes );
+//        }
+//        finally
+//        {
+//            if ( clipboard != null )
+//                clipboard.dispose();
+//        }
     }
 
 

@@ -45,8 +45,6 @@ import org.apache.directory.studio.ldifparser.model.lines.LdifModSpecSepLine;
 import org.apache.directory.studio.ldifparser.model.lines.LdifModSpecTypeLine;
 import org.apache.directory.studio.ldifparser.model.lines.LdifValueLineBase;
 import org.eclipse.jface.dialogs.Dialog;
-import org.eclipse.jface.text.BadLocationException;
-import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.widgets.Display;
 
@@ -136,7 +134,7 @@ public class EditLdifAttributeAction extends AbstractLdifAction
 
                     if ( newAttributeDescription != null )
                     {
-                        IDocument document = editor.getDocumentProvider().getDocument( editor.getEditorInput() );
+//                        IDocument document = editor.getDocumentProvider().getDocument( editor.getEditorInput() );
 
                         if ( modSpec != null )
                         {
@@ -173,29 +171,29 @@ public class EditLdifAttributeAction extends AbstractLdifAction
                                 text += newAttrValLines[j].toFormattedString( Utils.getLdifFormatParameters() );
                             }
                             text += newSepLine.toFormattedString( Utils.getLdifFormatParameters() );
-                            try
-                            {
-                                document.replace( modSpec.getOffset(), modSpec.getLength(), text );
-                            }
-                            catch ( BadLocationException e )
-                            {
-                                e.printStackTrace();
-                            }
+//                            try
+//                            {
+//                                document.replace( modSpec.getOffset(), modSpec.getLength(), text );
+//                            }
+//                            catch ( BadLocationException e )
+//                            {
+//                                e.printStackTrace();
+//                            }
 
                         }
                         else
                         { // LdifContentRecord ||
                             // LdifChangeAddRecord
                             LdifAttrValLine newLine = LdifAttrValLine.create( newAttributeDescription, oldValue );
-                            try
-                            {
-                                document.replace( line.getOffset(), line.getLength(), newLine.toFormattedString( Utils
-                                    .getLdifFormatParameters() ) );
-                            }
-                            catch ( BadLocationException e )
-                            {
-                                e.printStackTrace();
-                            }
+//                            try
+//                            {
+//                                document.replace( line.getOffset(), line.getLength(), newLine.toFormattedString( Utils
+//                                    .getLdifFormatParameters() ) );
+//                            }
+//                            catch ( BadLocationException e )
+//                            {
+//                                e.printStackTrace();
+//                            }
                         }
                     }
 

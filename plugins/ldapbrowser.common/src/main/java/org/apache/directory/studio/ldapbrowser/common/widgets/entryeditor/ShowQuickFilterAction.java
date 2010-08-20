@@ -20,93 +20,90 @@
 
 package org.apache.directory.studio.ldapbrowser.common.widgets.entryeditor;
 
-
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonConstants;
 import org.eclipse.jface.action.Action;
-import org.eclipse.ui.texteditor.IWorkbenchActionDefinitionIds;
-
 
 /**
  * This action shows/hides the instant search.
- *
- * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory
+ *         Project</a>
  */
-public class ShowQuickFilterAction extends Action
-{
+public class ShowQuickFilterAction extends Action {
 
-    /** The Constant SHOW_QUICKFILTER_DIALOGSETTING_KEY. */
-    public static final String SHOW_QUICKFILTER_DIALOGSETTING_KEY = ShowQuickFilterAction.class.getName()
-        + ".showQuickFilter"; //$NON-NLS-1$
+	/** The Constant SHOW_QUICKFILTER_DIALOGSETTING_KEY. */
+	public static final String SHOW_QUICKFILTER_DIALOGSETTING_KEY = ShowQuickFilterAction.class
+			.getName() + ".showQuickFilter"; //$NON-NLS-1$
 
-    /** The quick filter widget. */
-    private EntryEditorWidgetQuickFilterWidget quickFilterWidget;
+	/** The quick filter widget. */
+	private EntryEditorWidgetQuickFilterWidget quickFilterWidget;
 
+	/**
+	 * Creates a new instance of ShowQuickFilterAction.
+	 * 
+	 * @param quickFilterWidget
+	 *            the quick filter widget
+	 */
+	public ShowQuickFilterAction(
+			EntryEditorWidgetQuickFilterWidget quickFilterWidget) {
+		super(
+				Messages.getString("ShowQuickFilterAction.ShowQuickFilter"), AS_CHECK_BOX); //$NON-NLS-1$
+		setToolTipText(Messages
+				.getString("ShowQuickFilterAction.ShowQuickFilter")); //$NON-NLS-1$
+		setImageDescriptor(BrowserCommonActivator.getDefault()
+				.getImageDescriptor(BrowserCommonConstants.IMG_FILTER));
+		setActionDefinitionId("FindReplace");
+		setEnabled(true);
 
-    /**
-     * Creates a new instance of ShowQuickFilterAction.
-     * 
-     * @param quickFilterWidget the quick filter widget
-     */
-    public ShowQuickFilterAction( EntryEditorWidgetQuickFilterWidget quickFilterWidget )
-    {
-        super( Messages.getString( "ShowQuickFilterAction.ShowQuickFilter" ), AS_CHECK_BOX ); //$NON-NLS-1$
-        setToolTipText( Messages.getString( "ShowQuickFilterAction.ShowQuickFilter" ) ); //$NON-NLS-1$
-        setImageDescriptor( BrowserCommonActivator.getDefault().getImageDescriptor( BrowserCommonConstants.IMG_FILTER ) );
-        setActionDefinitionId( IWorkbenchActionDefinitionIds.FIND_REPLACE );
-        setEnabled( true );
+		this.quickFilterWidget = quickFilterWidget;
 
-        this.quickFilterWidget = quickFilterWidget;
+		if (BrowserCommonActivator.getDefault().getDialogSettings()
+				.get(SHOW_QUICKFILTER_DIALOGSETTING_KEY) == null) {
+			BrowserCommonActivator.getDefault().getDialogSettings()
+					.put(SHOW_QUICKFILTER_DIALOGSETTING_KEY, false);
+		}
 
-        if ( BrowserCommonActivator.getDefault().getDialogSettings().get( SHOW_QUICKFILTER_DIALOGSETTING_KEY ) == null )
-        {
-            BrowserCommonActivator.getDefault().getDialogSettings().put( SHOW_QUICKFILTER_DIALOGSETTING_KEY, false );
-        }
+		// call the super implementation here because the local implementation
+		// does nothing.
+		super.setChecked(BrowserCommonActivator.getDefault()
+				.getDialogSettings()
+				.getBoolean(SHOW_QUICKFILTER_DIALOGSETTING_KEY));
+		quickFilterWidget.setActive(isChecked());
+	}
 
-        // call the super implementation here because the local implementation
-        // does nothing.
-        super.setChecked( BrowserCommonActivator.getDefault().getDialogSettings().getBoolean(
-            SHOW_QUICKFILTER_DIALOGSETTING_KEY ) );
-        quickFilterWidget.setActive( isChecked() );
-    }
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * This implementation toggles the checked state and activates or
+	 * deactivates the quick filter accordingly.
+	 */
+	public void run() {
+		boolean checked = isChecked();
+		super.setChecked(!checked);
 
+		BrowserCommonActivator.getDefault().getDialogSettings()
+				.put(SHOW_QUICKFILTER_DIALOGSETTING_KEY, isChecked());
 
-    /**
-     * {@inheritDoc}
-     * 
-     * This implementation toggles the checked state and 
-     * activates or deactivates the quick filter accordingly. 
-     */
-    public void run()
-    {
-        boolean checked = isChecked();
-        super.setChecked( !checked );
+		if (quickFilterWidget != null) {
+			quickFilterWidget.setActive(isChecked());
+		}
+	}
 
-        BrowserCommonActivator.getDefault().getDialogSettings().put( SHOW_QUICKFILTER_DIALOGSETTING_KEY, isChecked() );
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * This implementation does nothing. Toggling of the checked state is done
+	 * within the run() method.
+	 */
+	public void setChecked(boolean checked) {
+	}
 
-        if ( quickFilterWidget != null )
-        {
-            quickFilterWidget.setActive( isChecked() );
-        }
-    }
-
-
-    /**
-     * {@inheritDoc}
-     * 
-     * This implementation does nothing. Toggling of the checked state is done within the run() method.
-     */
-    public void setChecked( boolean checked )
-    {
-    }
-
-
-    /**
-     * Disposes this action.
-     */
-    public void dispose()
-    {
-        quickFilterWidget = null;
-    }
+	/**
+	 * Disposes this action.
+	 */
+	public void dispose() {
+		quickFilterWidget = null;
+	}
 
 }

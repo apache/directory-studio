@@ -85,7 +85,7 @@
          <keywordReference id="%Keyword_LDIF_id"/>
       </page>
    </extension>      
-
+<!--
    <extension
          point="org.eclipse.ui.editors.templates">
       <contextType
@@ -225,6 +225,6 @@ ${cursor}
       </template>
       
       
-   </extension>
+   </extension>-->
 
 </plugin>

@@ -169,7 +169,7 @@ public class AttributesPreferencePage extends PreferencePage implements IWorkben
             {
                 style |= SWT.ITALIC;
             }
-            fontData.setStyle( style );
+//            fontData.setStyle( style );
         }
     }
 

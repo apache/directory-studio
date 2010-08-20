@@ -135,10 +135,10 @@ public class LdifEntryEditorDialog extends Dialog
 
     protected void createButtonsForButtonBar( Composite parent )
     {
-        createButton( parent, IDialogConstants.OK_ID, IDialogConstants.OK_LABEL, false );
+        createButton( parent, IDialogConstants.OK_ID, "OK", false );
         if ( entry != null )
         {
-            createButton( parent, IDialogConstants.CANCEL_ID, IDialogConstants.CANCEL_LABEL, false );
+            createButton( parent, IDialogConstants.CANCEL_ID, "Cancel", false );
         }
 
         getShell().update();

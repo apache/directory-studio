@@ -21,12 +21,9 @@
 package org.apache.directory.studio.ldifeditor.editor.actions;
 
 
-import org.apache.directory.studio.ldapbrowser.core.utils.Utils;
 import org.apache.directory.studio.ldifeditor.editor.LdifEditor;
 import org.apache.directory.studio.ldifparser.model.container.LdifContainer;
 import org.apache.directory.studio.ldifparser.model.container.LdifRecord;
-import org.eclipse.jface.text.IDocument;
-import org.eclipse.jface.text.source.ISourceViewer;
 
 
 public class FormatLdifRecordAction extends AbstractLdifAction
@@ -44,24 +41,24 @@ public class FormatLdifRecordAction extends AbstractLdifAction
         LdifContainer[] containers = super.getSelectedLdifContainers();
         if ( containers.length > 0 )
         {
-            IDocument document = editor.getDocumentProvider().getDocument( editor.getEditorInput() );
-            String old = document.get();
-            StringBuffer sb = new StringBuffer();
-            sb.append( old.substring( 0, containers[0].getOffset() ) );
-
-            for ( int i = 0; i < containers.length; i++ )
-            {
-                LdifContainer container = containers[i];
-                sb.append( container.toFormattedString( Utils.getLdifFormatParameters() ) );
-            }
-
-            sb.append( old.substring( containers[containers.length - 1].getOffset()
-                + containers[containers.length - 1].getLength(), old.length() ) );
-
-            ISourceViewer sourceViewer = ( ISourceViewer ) editor.getAdapter( ISourceViewer.class );
-            int topIndex = sourceViewer.getTopIndex();
-            document.set( sb.toString() );
-            sourceViewer.setTopIndex( topIndex );
+//            IDocument document = editor.getDocumentProvider().getDocument( editor.getEditorInput() );
+//            String old = document.get();
+//            StringBuffer sb = new StringBuffer();
+//            sb.append( old.substring( 0, containers[0].getOffset() ) );
+//
+//            for ( int i = 0; i < containers.length; i++ )
+//            {
+//                LdifContainer container = containers[i];
+//                sb.append( container.toFormattedString( Utils.getLdifFormatParameters() ) );
+//            }
+//
+//            sb.append( old.substring( containers[containers.length - 1].getOffset()
+//                + containers[containers.length - 1].getLength(), old.length() ) );
+//
+//            ISourceViewer sourceViewer = ( ISourceViewer ) editor.getAdapter( ISourceViewer.class );
+//            int topIndex = sourceViewer.getTopIndex();
+//            document.set( sb.toString() );
+//            sourceViewer.setTopIndex( topIndex );
         }
     }
 

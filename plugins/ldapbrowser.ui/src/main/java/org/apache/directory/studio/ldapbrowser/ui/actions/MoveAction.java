@@ -37,7 +37,6 @@ import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
 import org.apache.directory.studio.ldapbrowser.core.model.impl.RootDSE;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.ui.texteditor.IWorkbenchActionDefinitionIds;
 
 
 /**
@@ -90,7 +89,7 @@ public class MoveAction extends BrowserAction
      */
     public String getCommandId()
     {
-        return IWorkbenchActionDefinitionIds.MOVE;
+        return "move";//IWorkbenchActionDefinitionIds.MOVE;
     }
 
 

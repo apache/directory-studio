@@ -25,7 +25,6 @@ import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonConstants;
 import org.apache.directory.studio.ldapbrowser.ui.BrowserUIPlugin;
 import org.eclipse.jface.action.Action;
-import org.eclipse.ui.texteditor.IWorkbenchActionDefinitionIds;
 
 
 public class ShowQuickFilterAction extends Action
@@ -45,7 +44,7 @@ public class ShowQuickFilterAction extends Action
         super.setToolTipText( Messages.getString( "ShowQuickFilterAction.ShowQuickFilterToolTip" ) ); //$NON-NLS-1$
         super.setImageDescriptor( BrowserCommonActivator.getDefault().getImageDescriptor(
             BrowserCommonConstants.IMG_FILTER ) );
-        super.setActionDefinitionId( IWorkbenchActionDefinitionIds.FIND_REPLACE );
+        super.setActionDefinitionId( "findreplace" );
         super.setEnabled( true );
 
         this.quickFilterWidget = quickFilterWidget;

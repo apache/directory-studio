@@ -37,14 +37,12 @@ import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
 import org.apache.directory.studio.ldapbrowser.core.events.ValueAddedEvent;
 import org.apache.directory.studio.ldapbrowser.core.events.ValueDeletedEvent;
 import org.apache.directory.studio.ldapbrowser.core.events.ValueModifiedEvent;
-import org.apache.directory.studio.ldapbrowser.core.internal.search.LdapSearchPageScoreComputer;
 import org.apache.directory.studio.ldapbrowser.core.model.AttributeDescription;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.SchemaUtils;
-import org.eclipse.search.ui.ISearchPageScoreComputer;
 
 
 /**
@@ -447,10 +445,10 @@ public class Attribute implements IAttribute
     public Object getAdapter( Class adapter )
     {
         Class<?> clazz = ( Class<?> ) adapter;
-        if ( clazz.isAssignableFrom( ISearchPageScoreComputer.class ) )
-        {
-            return new LdapSearchPageScoreComputer();
-        }
+//        if ( clazz.isAssignableFrom( ISearchPageScoreComputer.class ) )
+//        {
+//            return new LdapSearchPageScoreComputer();
+//        }
         if ( clazz.isAssignableFrom( Connection.class ) )
         {
             return getEntry().getBrowserConnection().getConnection();

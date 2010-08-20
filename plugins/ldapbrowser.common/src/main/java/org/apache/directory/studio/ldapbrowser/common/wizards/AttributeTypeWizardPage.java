@@ -183,8 +183,8 @@ public class AttributeTypeWizardPage extends WizardPage
         // attribute combo with field decoration and content proposal
         attributeTypeCombo = BaseWidgetUtils.createCombo( composite, possibleAttributeTypes, -1, 1 );
         attributeTypeCombo.setText( parsedAttributeType );
-        new ExtendedContentAssistCommandAdapter( attributeTypeCombo, new ComboContentAdapter(),
-            new ListContentProposalProvider( possibleAttributeTypes ), null, null, true );
+//        new ExtendedContentAssistCommandAdapter( attributeTypeCombo, new ComboContentAdapter(),
+//            new ListContentProposalProvider( possibleAttributeTypes ), null, null, true );
 
         BaseWidgetUtils.createSpacer( composite, 1 );
         showSubschemAttributesOnlyButton = BaseWidgetUtils.createCheckbox( composite, Messages

@@ -115,16 +115,16 @@ public class BatchOperationLdifWizardPage extends WizardPage implements WidgetMo
         ldifEditorWidget.createWidget( composite );
         ldifEditorWidget.addWidgetModifyListener( this );
 
-        ldifEditorWidget.getSourceViewer().getTextWidget().addVerifyListener( new VerifyListener()
-        {
-            public void verifyText( VerifyEvent e )
-            {
-                if ( e.start < LDIF_DN_PREFIX.length() || e.end < LDIF_DN_PREFIX.length() )
-                {
-                    e.doit = false;
-                }
-            }
-        } );
+//        ldifEditorWidget.getSourceViewer().getTextWidget().addVerifyListener( new VerifyListener()
+//        {
+//            public void verifyText( VerifyEvent e )
+//            {
+//                if ( e.start < LDIF_DN_PREFIX.length() || e.end < LDIF_DN_PREFIX.length() )
+//                {
+//                    e.doit = false;
+//                }
+//            }
+//        } );
 
         validate();
 

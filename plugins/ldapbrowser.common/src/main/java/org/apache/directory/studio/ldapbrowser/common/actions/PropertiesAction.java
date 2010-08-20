@@ -21,15 +21,14 @@
 package org.apache.directory.studio.ldapbrowser.common.actions;
 
 
+import org.apache.directory.studio.connection.core.Utils;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonConstants;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
-import org.apache.directory.studio.connection.core.Utils;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.jface.preference.PreferenceDialog;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.ui.dialogs.PreferencesUtil;
-import org.eclipse.ui.texteditor.IWorkbenchActionDefinitionIds;
 
 
 /**
@@ -71,7 +70,7 @@ public class PropertiesAction extends BrowserAction
      */
     public String getCommandId()
     {
-        return IWorkbenchActionDefinitionIds.PROPERTIES;
+        return "properties";//IWorkbenchActionDefinitionIds.PROPERTIES;
     }
 
 

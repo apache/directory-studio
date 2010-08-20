@@ -22,13 +22,10 @@ package org.apache.directory.studio.valueeditors.certificate;
 
 
 import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.IOException;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
 
-import org.apache.commons.io.FileUtils;
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.connection.ui.ConnectionUIPlugin;
 import org.apache.directory.studio.connection.ui.widgets.CertificateInfoComposite;
@@ -43,7 +40,6 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Shell;
 
 
@@ -103,45 +99,45 @@ public class CertificateDialog extends Dialog
         }
         else if ( buttonId == SAVE_BUTTON_ID )
         {
-            FileDialog fileDialog = new FileDialog( getShell(), SWT.SAVE );
-            fileDialog.setText( Messages.getString( "CertificateDialog.SaveCertificate" ) ); //$NON-NLS-1$
-            // fileDialog.setFilterExtensions(new String[]{"*.pem"});
-            String returnedFileName = fileDialog.open();
-            if ( returnedFileName != null )
-            {
-                try
-                {
-                    File file = new File( returnedFileName );
-                    FileUtils.writeByteArrayToFile( file, currentData );
-                }
-                catch ( IOException e )
-                {
-                    ConnectionUIPlugin.getDefault().getExceptionHandler().handleException(
-                        new Status( IStatus.ERROR, ValueEditorsConstants.PLUGIN_ID, IStatus.ERROR, Messages
-                            .getString( "CertificateDialog.CantWriteToFile" ), e ) ); //$NON-NLS-1$
-                }
-            }
+//            FileDialog fileDialog = new FileDialog( getShell(), SWT.SAVE );
+//            fileDialog.setText( Messages.getString( "CertificateDialog.SaveCertificate" ) ); //$NON-NLS-1$
+//            // fileDialog.setFilterExtensions(new String[]{"*.pem"});
+//            String returnedFileName = fileDialog.open();
+//            if ( returnedFileName != null )
+//            {
+//                try
+//                {
+//                    File file = new File( returnedFileName );
+//                    FileUtils.writeByteArrayToFile( file, currentData );
+//                }
+//                catch ( IOException e )
+//                {
+//                    ConnectionUIPlugin.getDefault().getExceptionHandler().handleException(
+//                        new Status( IStatus.ERROR, ValueEditorsConstants.PLUGIN_ID, IStatus.ERROR, Messages
+//                            .getString( "CertificateDialog.CantWriteToFile" ), e ) ); //$NON-NLS-1$
+//                }
+//            }
         }
         else if ( buttonId == LOAD_BUTTON_ID )
         {
-            FileDialog fileDialog = new FileDialog( getShell(), SWT.OPEN );
-            fileDialog.setText( Messages.getString( "CertificateDialog.LoadCertificate" ) ); //$NON-NLS-1$
-            String returnedFileName = fileDialog.open();
-            if ( returnedFileName != null )
-            {
-                try
-                {
-                    File file = new File( returnedFileName );
-                    currentData = FileUtils.readFileToByteArray( file );
-                    updateInput();
-                }
-                catch ( IOException e )
-                {
-                    ConnectionUIPlugin.getDefault().getExceptionHandler().handleException(
-                        new Status( IStatus.ERROR, ValueEditorsConstants.PLUGIN_ID, IStatus.ERROR, Messages
-                            .getString( "CertificateDialog.CantReadFile" ), e ) ); //$NON-NLS-1$
-                }
-            }
+//            FileDialog fileDialog = new FileDialog( getShell(), SWT.OPEN );
+//            fileDialog.setText( Messages.getString( "CertificateDialog.LoadCertificate" ) ); //$NON-NLS-1$
+//            String returnedFileName = fileDialog.open();
+//            if ( returnedFileName != null )
+//            {
+//                try
+//                {
+//                    File file = new File( returnedFileName );
+//                    currentData = FileUtils.readFileToByteArray( file );
+//                    updateInput();
+//                }
+//                catch ( IOException e )
+//                {
+//                    ConnectionUIPlugin.getDefault().getExceptionHandler().handleException(
+//                        new Status( IStatus.ERROR, ValueEditorsConstants.PLUGIN_ID, IStatus.ERROR, Messages
+//                            .getString( "CertificateDialog.CantReadFile" ), e ) ); //$NON-NLS-1$
+//                }
+//            }
         }
         else
         {
@@ -170,8 +166,8 @@ public class CertificateDialog extends Dialog
     {
         createButton( parent, LOAD_BUTTON_ID, Messages.getString( "CertificateDialog.LoadCertificateButton" ), false ); //$NON-NLS-1$
         createButton( parent, SAVE_BUTTON_ID, Messages.getString( "CertificateDialog.SaveCertificateButton" ), false ); //$NON-NLS-1$
-        createButton( parent, IDialogConstants.OK_ID, IDialogConstants.OK_LABEL, false );
-        createButton( parent, IDialogConstants.CANCEL_ID, IDialogConstants.CANCEL_LABEL, false );
+        createButton( parent, IDialogConstants.OK_ID, "OK", false );
+        createButton( parent, IDialogConstants.CANCEL_ID, "Cancel", false );
     }
 
 

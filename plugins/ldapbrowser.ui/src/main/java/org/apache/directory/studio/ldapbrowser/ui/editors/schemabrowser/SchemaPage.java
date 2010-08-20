@@ -242,7 +242,7 @@ public abstract class SchemaPage
         gd.heightHint = 20;
         gd.widthHint = 100;
         t.setLayoutData( gd );
-        toolkit.paintBordersFor( client );
+//        toolkit.paintBordersFor( client );
 
         // setup viewer
         viewer = new TableViewer( t );

@@ -25,13 +25,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.directory.studio.ldapbrowser.common.filtereditor.FilterAutoEditStrategy;
-import org.apache.directory.studio.ldapbrowser.common.filtereditor.FilterAutoEditStrategy.AutoEditParameters;
 import org.apache.directory.studio.ldapbrowser.core.model.filter.parser.LdapFilterParser;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.VerifyEvent;
 import org.eclipse.swt.events.VerifyListener;
-import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Combo;
 
 
@@ -74,7 +72,7 @@ public class FilterWidgetAutoEditStrategyAdapter
         this.verifyEvents = new ArrayList<VerifyEvent>();
         this.inApplyComboCustomization = false;
 
-        this.autoEditStrategy = new FilterAutoEditStrategy( parser );
+//        this.autoEditStrategy = new FilterAutoEditStrategy( parser );
         combo.addVerifyListener( new VerifyListener()
         {
             public void verifyText( VerifyEvent e )
@@ -135,38 +133,38 @@ public class FilterWidgetAutoEditStrategyAdapter
                 - verifyEvent.end;
 
             // apply auto edit strategy
-            AutoEditParameters autoEditParameters = new AutoEditParameters( text, offset, length, -1, true );
-            autoEditStrategy.customizeAutoEditParameters( oldText, autoEditParameters );
-
-            // get current selection
-            Point oldSelection = combo.getSelection();
-
-            // compose new text
-            String newText = ""; //$NON-NLS-1$
-            newText += oldText.substring( 0, autoEditParameters.offset );
-            newText += autoEditParameters.text;
-            newText += oldText.substring( autoEditParameters.offset + autoEditParameters.length, oldText.length() );
-
-            // determine new cursor position
-            Point newSelection;
-            if ( autoEditParameters.caretOffset != -1 )
-            {
-                int x = autoEditParameters.caretOffset;
-                newSelection = new Point( x, x );
-            }
-            else
-            {
-                newSelection = new Point( oldSelection.x, oldSelection.y );
-            }
-
-            // set new text and cursor position
-            if ( verifyEvents.isEmpty() )
-            {
-                combo.setText( newText );
-                combo.setSelection( newSelection );
-            }
-
-            inApplyComboCustomization = false;
+//            AutoEditParameters autoEditParameters = new AutoEditParameters( text, offset, length, -1, true );
+////            autoEditStrategy.customizeAutoEditParameters( oldText, autoEditParameters );
+////
+////            // get current selection
+////            Point oldSelection = combo.getSelection();
+////
+////            // compose new text
+////            String newText = ""; //$NON-NLS-1$
+////            newText += oldText.substring( 0, autoEditParameters.offset );
+////            newText += autoEditParameters.text;
+////            newText += oldText.substring( autoEditParameters.offset + autoEditParameters.length, oldText.length() );
+////
+////            // determine new cursor position
+////            Point newSelection;
+////            if ( autoEditParameters.caretOffset != -1 )
+////            {
+////                int x = autoEditParameters.caretOffset;
+////                newSelection = new Point( x, x );
+////            }
+////            else
+////            {
+////                newSelection = new Point( oldSelection.x, oldSelection.y );
+////            }
+//
+//            // set new text and cursor position
+//            if ( verifyEvents.isEmpty() )
+//            {
+//                combo.setText( newText );
+//                combo.setSelection( newSelection );
+//            }
+//
+//            inApplyComboCustomization = false;
         }
 
     }

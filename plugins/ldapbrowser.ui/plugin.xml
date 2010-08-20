@@ -257,7 +257,7 @@
        <selection class="org.apache.directory.studio.ldapbrowser.core.model.IEntry"/>
     </wizard>
  </extension>
-
+<!--
    <extension point="org.eclipse.search.searchPages">
 	   <page
           enabled="true"
@@ -268,7 +268,7 @@
           sizeHint="450,450"
           id="%SearchPage_LdapSearch_id">
 		</page>
-	</extension>
+	</extension>-->
    
       <extension
          point="org.eclipse.core.runtime.preferences">

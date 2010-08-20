@@ -28,12 +28,6 @@ import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.filter.parser.LdapFilterParser;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
-import org.eclipse.jface.text.Document;
-import org.eclipse.jface.text.IDocument;
-import org.eclipse.jface.text.IRegion;
-import org.eclipse.jface.text.Region;
-import org.eclipse.jface.text.source.SourceViewer;
-import org.eclipse.jface.text.source.VerticalRuler;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
@@ -63,7 +57,7 @@ public class FilterDialog extends Dialog
     private IBrowserConnection browserConnection;
 
     /** The source viewer. */
-    private SourceViewer sourceViewer;
+//    private SourceViewer sourceViewer;
 
     /** The filter source viewer configuration. */
     private FilterSourceViewerConfiguration configuration;
@@ -123,13 +117,13 @@ public class FilterDialog extends Dialog
     {
         if ( buttonId == IDialogConstants.OK_ID )
         {
-            parser.parse( sourceViewer.getDocument().get() );
+//            parser.parse( sourceViewer.getDocument().get() );
             filter = parser.getModel().toString();
         }
         else if ( buttonId == FORMAT_BUTTON_ID )
         {
-            IRegion region = new Region( 0, sourceViewer.getDocument().getLength() );
-            configuration.getContentFormatter( sourceViewer ).format( sourceViewer.getDocument(), region );
+//            IRegion region = new Region( 0, sourceViewer.getDocument().getLength() );
+//            configuration.getContentFormatter( sourceViewer ).format( sourceViewer.getDocument(), region );
         }
 
         // call super implementation
@@ -161,21 +155,21 @@ public class FilterDialog extends Dialog
         composite.setLayoutData( gd );
 
         // create and configure source viewer
-        sourceViewer = new SourceViewer( composite, new VerticalRuler( 0 ), SWT.H_SCROLL | SWT.V_SCROLL );
-        sourceViewer.getControl().setLayoutData( new GridData( GridData.FILL_BOTH ) );
-        configuration = new FilterSourceViewerConfiguration( parser, browserConnection );
-        sourceViewer.configure( configuration );
-
-        // set document
-        IDocument document = new Document( filter );
-        sourceViewer.setDocument( document );
-
-        // preformat
-        IRegion region = new Region( 0, sourceViewer.getDocument().getLength() );
-        configuration.getContentFormatter( sourceViewer ).format( sourceViewer.getDocument(), region );
-
-        // set focus to the source viewer
-        sourceViewer.getTextWidget().setFocus();
+//        sourceViewer = new SourceViewer( composite, new VerticalRuler( 0 ), SWT.H_SCROLL | SWT.V_SCROLL );
+//        sourceViewer.getControl().setLayoutData( new GridData( GridData.FILL_BOTH ) );
+//        configuration = new FilterSourceViewerConfiguration( parser, browserConnection );
+//        sourceViewer.configure( configuration );
+//
+//        // set document
+//        IDocument document = new Document( filter );
+//        sourceViewer.setDocument( document );
+//
+//        // preformat
+//        IRegion region = new Region( 0, sourceViewer.getDocument().getLength() );
+//        configuration.getContentFormatter( sourceViewer ).format( sourceViewer.getDocument(), region );
+//
+//        // set focus to the source viewer
+//        sourceViewer.getTextWidget().setFocus();
 
         return composite;
     }

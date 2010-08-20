@@ -24,10 +24,7 @@ package org.apache.directory.studio.ldapbrowser.ui.actions;
 import org.apache.directory.studio.ldapbrowser.common.actions.BrowserAction;
 import org.apache.directory.studio.ldapbrowser.ui.BrowserUIConstants;
 import org.apache.directory.studio.ldapbrowser.ui.BrowserUIPlugin;
-import org.apache.directory.studio.ldapbrowser.ui.search.SearchPage;
 import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.search.ui.NewSearchUI;
-import org.eclipse.ui.PlatformUI;
 
 
 /**
@@ -51,7 +48,7 @@ public class NewSearchAction extends BrowserAction
      */
     public void run()
     {
-        NewSearchUI.openSearchDialog( PlatformUI.getWorkbench().getActiveWorkbenchWindow(), SearchPage.getId() );
+//        NewSearchUI.openSearchDialog( PlatformUI.getWorkbench().getActiveWorkbenchWindow(), SearchPage.getId() );
     }
 
 

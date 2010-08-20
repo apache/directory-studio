@@ -30,7 +30,6 @@ import org.apache.directory.studio.ldapbrowser.core.model.impl.DummyConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.impl.DummyEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.impl.Value;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.Schema;
-import org.apache.directory.studio.ldapbrowser.core.utils.Utils;
 import org.apache.directory.studio.ldifeditor.editor.LdifEditor;
 import org.apache.directory.studio.ldifparser.model.LdifPart;
 import org.apache.directory.studio.ldifparser.model.container.LdifContainer;
@@ -45,8 +44,6 @@ import org.apache.directory.studio.ldifparser.model.lines.LdifValueLineBase;
 import org.apache.directory.studio.valueeditors.AbstractDialogValueEditor;
 import org.apache.directory.studio.valueeditors.IValueEditor;
 import org.apache.directory.studio.valueeditors.ValueEditorManager;
-import org.eclipse.jface.text.BadLocationException;
-import org.eclipse.jface.text.IDocument;
 
 
 public abstract class AbstractOpenValueEditorAction extends AbstractLdifAction
@@ -90,7 +87,7 @@ public abstract class AbstractOpenValueEditorAction extends AbstractLdifAction
 
                 if ( newValue != null && newValue instanceof String || newValue instanceof byte[] )
                 {
-                    IDocument document = editor.getDocumentProvider().getDocument( editor.getEditorInput() );
+//                    IDocument document = editor.getDocumentProvider().getDocument( editor.getEditorInput() );
 
                     LdifValueLineBase newLine;
                     if ( line instanceof LdifControlLine )
@@ -119,15 +116,15 @@ public abstract class AbstractOpenValueEditorAction extends AbstractLdifAction
                         }
                     }
 
-                    try
-                    {
-                        document.replace( line.getOffset(), line.getLength(), newLine.toFormattedString( Utils
-                            .getLdifFormatParameters() ) );
-                    }
-                    catch ( BadLocationException e )
-                    {
-                        e.printStackTrace();
-                    }
+//                    try
+//                    {
+//                        document.replace( line.getOffset(), line.getLength(), newLine.toFormattedString( Utils
+//                            .getLdifFormatParameters() ) );
+//                    }
+//                    catch ( BadLocationException e )
+//                    {
+//                        e.printStackTrace();
+//                    }
 
                 }
             }

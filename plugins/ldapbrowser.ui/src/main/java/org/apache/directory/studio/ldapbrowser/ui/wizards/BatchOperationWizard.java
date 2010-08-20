@@ -38,7 +38,6 @@ import org.apache.directory.studio.ldapbrowser.ui.BrowserUIConstants;
 import org.apache.directory.studio.ldifeditor.editor.LdifEditor;
 import org.apache.directory.studio.ldifeditor.editor.NonExistingLdifEditorInput;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.IWizardPage;
@@ -56,7 +55,6 @@ import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.texteditor.IDocumentProvider;
 
 
 public class BatchOperationWizard extends Wizard implements INewWizard
@@ -341,15 +339,15 @@ public class BatchOperationWizard extends Wizard implements INewWizard
                         IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
                         IWorkbenchPage page = window.getActivePage();
                         IEditorPart editor = page.openEditor( input, editorId );
-                        IDocumentProvider documentProvider = ( ( LdifEditor ) editor ).getDocumentProvider();
-                        if ( documentProvider != null && input != null )
-                        {
-                            IDocument document = documentProvider.getDocument( input );
-                            if ( document != null )
-                            {
-                                document.set( ldif.toString() );
-                            }
-                        }
+//                        IDocumentProvider documentProvider = ( ( LdifEditor ) editor ).getDocumentProvider();
+//                        if ( documentProvider != null && input != null )
+//                        {
+//                            IDocument document = documentProvider.getDocument( input );
+//                            if ( document != null )
+//                            {
+//                                document.set( ldif.toString() );
+//                            }
+//                        }
 
                     }
                     catch ( PartInitException e )

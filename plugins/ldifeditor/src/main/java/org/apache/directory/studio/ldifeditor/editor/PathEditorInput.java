@@ -17,7 +17,6 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.IPathEditorInput;
 import org.eclipse.ui.IPersistableElement;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.editors.text.ILocationProvider;
 
 
 /**
@@ -31,7 +30,7 @@ import org.eclipse.ui.editors.text.ILocationProvider;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class PathEditorInput implements IPathEditorInput, ILocationProvider
+public class PathEditorInput implements IPathEditorInput
 {
 
     /** The absolute path in local file system */
@@ -136,10 +135,10 @@ public class PathEditorInput implements IPathEditorInput, ILocationProvider
      */
     public Object getAdapter( Class adapter )
     {
-        if ( ILocationProvider.class.equals( adapter ) )
-        {
-            return this;
-        }
+//        if ( ILocationProvider.class.equals( adapter ) )
+//        {
+//            return this;
+//        }
 
         return Platform.getAdapterManager().getAdapter( this, adapter );
     }

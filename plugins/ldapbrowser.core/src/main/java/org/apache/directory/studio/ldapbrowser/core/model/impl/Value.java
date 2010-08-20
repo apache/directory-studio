@@ -25,14 +25,12 @@ import java.util.Iterator;
 
 import org.apache.directory.shared.ldap.name.AttributeTypeAndValue;
 import org.apache.directory.studio.connection.core.Connection;
-import org.apache.directory.studio.ldapbrowser.core.internal.search.LdapSearchPageScoreComputer;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
 import org.apache.directory.studio.ldapbrowser.core.utils.Utils;
 import org.apache.directory.studio.ldifparser.LdifUtils;
-import org.eclipse.search.ui.ISearchPageScoreComputer;
 
 
 /**
@@ -272,10 +270,10 @@ public class Value implements IValue
     public Object getAdapter( Class adapter )
     {
         Class<?> clazz = ( Class<?> ) adapter;
-        if ( clazz.isAssignableFrom( ISearchPageScoreComputer.class ) )
-        {
-            return new LdapSearchPageScoreComputer();
-        }
+//        if ( clazz.isAssignableFrom( ISearchPageScoreComputer.class ) )
+//        {
+//            return new LdapSearchPageScoreComputer();
+//        }
         if ( clazz.isAssignableFrom( Connection.class ) )
         {
             return getAttribute().getEntry().getBrowserConnection().getConnection();

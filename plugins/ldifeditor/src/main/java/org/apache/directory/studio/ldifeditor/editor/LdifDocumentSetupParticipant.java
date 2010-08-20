@@ -21,13 +21,6 @@
 package org.apache.directory.studio.ldifeditor.editor;
 
 
-import org.apache.directory.studio.ldifeditor.LdifEditorConstants;
-import org.apache.directory.studio.ldifeditor.editor.text.LdifPartitionScanner;
-import org.eclipse.core.filebuffers.IDocumentSetupParticipant;
-import org.eclipse.jface.text.IDocument;
-import org.eclipse.jface.text.IDocumentExtension3;
-import org.eclipse.jface.text.IDocumentPartitioner;
-import org.eclipse.jface.text.rules.FastPartitioner;
 
 
 /**
@@ -35,49 +28,49 @@ import org.eclipse.jface.text.rules.FastPartitioner;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class LdifDocumentSetupParticipant implements IDocumentSetupParticipant
+public class LdifDocumentSetupParticipant /*implements IDocumentSetupParticipant*/
 {
-    /** The LDIF Partitioning ID */
-    public final static String LDIF_PARTITIONING = LdifEditorConstants.LDIF_PARTITIONING;
-
-
-    /**
-     * Creates a new instance of LdifDocumentSetupParticipant.
-     */
-    public LdifDocumentSetupParticipant()
-    {
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    public void setup( IDocument document )
-    {
-
-        if ( document instanceof IDocumentExtension3 )
-        {
-            IDocumentExtension3 extension3 = ( IDocumentExtension3 ) document;
-            if ( extension3.getDocumentPartitioner( LdifDocumentSetupParticipant.LDIF_PARTITIONING ) == null )
-            {
-                IDocumentPartitioner partitioner = createDocumentPartitioner();
-                extension3.setDocumentPartitioner( LDIF_PARTITIONING, partitioner );
-                partitioner.connect( document );
-            }
-        }
-    }
-
-
-    /**
-     * Creates the Document Partitioner
-     *
-     * @return
-     *      the Document Partitioner
-     */
-    private IDocumentPartitioner createDocumentPartitioner()
-    {
-        IDocumentPartitioner partitioner = new FastPartitioner( new LdifPartitionScanner(), new String[]
-            { LdifPartitionScanner.LDIF_RECORD } );
-        return partitioner;
-    }
+//    /** The LDIF Partitioning ID */
+//    public final static String LDIF_PARTITIONING = LdifEditorConstants.LDIF_PARTITIONING;
+//
+//
+//    /**
+//     * Creates a new instance of LdifDocumentSetupParticipant.
+//     */
+//    public LdifDocumentSetupParticipant()
+//    {
+//    }
+//
+//
+//    /**
+//     * {@inheritDoc}
+//     */
+//    public void setup( IDocument document )
+//    {
+//
+//        if ( document instanceof IDocumentExtension3 )
+//        {
+//            IDocumentExtension3 extension3 = ( IDocumentExtension3 ) document;
+//            if ( extension3.getDocumentPartitioner( LdifDocumentSetupParticipant.LDIF_PARTITIONING ) == null )
+//            {
+//                IDocumentPartitioner partitioner = createDocumentPartitioner();
+//                extension3.setDocumentPartitioner( LDIF_PARTITIONING, partitioner );
+//                partitioner.connect( document );
+//            }
+//        }
+//    }
+//
+//
+//    /**
+//     * Creates the Document Partitioner
+//     *
+//     * @return
+//     *      the Document Partitioner
+//     */
+//    private IDocumentPartitioner createDocumentPartitioner()
+//    {
+//        IDocumentPartitioner partitioner = new FastPartitioner( new LdifPartitionScanner(), new String[]
+//            { LdifPartitionScanner.LDIF_RECORD } );
+//        return partitioner;
+//    }
 }

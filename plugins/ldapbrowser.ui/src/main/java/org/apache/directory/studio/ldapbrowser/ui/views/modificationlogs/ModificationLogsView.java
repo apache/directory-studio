@@ -75,7 +75,7 @@ public class ModificationLogsView extends ViewPart
      */
     public void setFocus()
     {
-        mainWidget.getSourceViewer().getTextWidget().setFocus();
+//        mainWidget.getSourceViewer().getTextWidget().setFocus();
     }
 
 
@@ -112,7 +112,7 @@ public class ModificationLogsView extends ViewPart
         // create main widget
         mainWidget = new LdifEditorWidget( null, "", false ); //$NON-NLS-1$
         mainWidget.createWidget( composite );
-        mainWidget.getSourceViewer().setEditable( false );
+//        mainWidget.getSourceViewer().setEditable( false );
 
         // create actions and context menu (and register global actions)
         actionGroup = new ModificationLogsViewActionGroup( this );
@@ -123,8 +123,8 @@ public class ModificationLogsView extends ViewPart
         universalListener = new ModificationLogsViewUniversalListener( this );
 
         // set help context
-        PlatformUI.getWorkbench().getHelpSystem().setHelp( mainWidget.getSourceViewer().getTextWidget(),
-            BrowserUIConstants.PLUGIN_ID + "." + "tools_modification_logs_view" ); //$NON-NLS-1$ //$NON-NLS-2$
+//        PlatformUI.getWorkbench().getHelpSystem().setHelp( mainWidget.getSourceViewer().getTextWidget(),
+//            BrowserUIConstants.PLUGIN_ID + "." + "tools_modification_logs_view" ); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
 

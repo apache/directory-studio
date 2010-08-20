@@ -212,8 +212,8 @@ public class PasswordDialog extends Dialog
      */
     protected void createButtonsForButtonBar( Composite parent )
     {
-        okButton = createButton( parent, IDialogConstants.OK_ID, IDialogConstants.OK_LABEL, false );
-        createButton( parent, IDialogConstants.CANCEL_ID, IDialogConstants.CANCEL_LABEL, false );
+        okButton = createButton( parent, IDialogConstants.OK_ID, "Ok", false );
+        createButton( parent, IDialogConstants.CANCEL_ID, "Cancel", false );
 
         // load dialog settings
         try
@@ -505,7 +505,7 @@ public class PasswordDialog extends Dialog
                     getShell(),
                     Messages.getString( "PasswordDialog.PasswordVerification" ), getShell().getImage(), //$NON-NLS-1$
                     Messages.getString( "PasswordDialog.PasswordVerifiedSuccessfully" ), MessageDialog.INFORMATION, new String[] //$NON-NLS-1$
-                        { IDialogConstants.OK_LABEL }, 0 );
+                        { "OK" }, 0 );
                 dialog.open();
             }
             else
@@ -514,7 +514,7 @@ public class PasswordDialog extends Dialog
                     getShell(),
                     Messages.getString( "PasswordDialog.PasswordVerification" ), getShell().getImage(), //$NON-NLS-1$
                     Messages.getString( "PasswordDialog.PasswordVerificationFailed" ), MessageDialog.ERROR, new String[] //$NON-NLS-1$
-                        { IDialogConstants.OK_LABEL }, 0 );
+                        { "Cancel" }, 0 );
                 dialog.open();
             }
         }

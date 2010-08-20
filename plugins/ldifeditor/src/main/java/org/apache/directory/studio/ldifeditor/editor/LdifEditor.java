@@ -21,6 +21,7 @@
 package org.apache.directory.studio.ldifeditor.editor;
 
 
+import java.awt.FileDialog;
 import java.io.File;
 import java.util.ResourceBundle;
 
@@ -68,13 +69,6 @@ import org.eclipse.jface.action.ToolBarManager;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.preference.IPreferenceStore;
-import org.eclipse.jface.text.ITextHover;
-import org.eclipse.jface.text.contentassist.IContentAssistProcessor;
-import org.eclipse.jface.text.source.IAnnotationHover;
-import org.eclipse.jface.text.source.ISourceViewer;
-import org.eclipse.jface.text.source.IVerticalRuler;
-import org.eclipse.jface.text.source.projection.ProjectionSupport;
-import org.eclipse.jface.text.source.projection.ProjectionViewer;
 import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
@@ -83,7 +77,6 @@ import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.ui.IEditorInput;
@@ -97,15 +90,8 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.contexts.IContextActivation;
 import org.eclipse.ui.contexts.IContextService;
-import org.eclipse.ui.editors.text.EditorsUI;
-import org.eclipse.ui.editors.text.TextEditor;
+import org.eclipse.ui.part.EditorPart;
 import org.eclipse.ui.part.IShowInTargetList;
-import org.eclipse.ui.texteditor.ChainedPreferenceStore;
-import org.eclipse.ui.texteditor.ContentAssistAction;
-import org.eclipse.ui.texteditor.IDocumentProvider;
-import org.eclipse.ui.texteditor.ITextEditorActionConstants;
-import org.eclipse.ui.texteditor.ITextEditorActionDefinitionIds;
-import org.eclipse.ui.texteditor.SourceViewerDecorationSupport;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 
 
@@ -114,7 +100,7 @@ import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class LdifEditor extends TextEditor implements ILdifEditor, ConnectionUpdateListener, IPartListener2
+public class LdifEditor extends EditorPart implements ILdifEditor, ConnectionUpdateListener, IPartListener2
 {
     private ViewForm control;
 
@@ -126,7 +112,7 @@ public class LdifEditor extends TextEditor implements ILdifEditor, ConnectionUpd
 
     private IBrowserConnection browserConnection;
 
-    private ProjectionSupport projectionSupport;
+//    private ProjectionSupport projectionSupport;
 
     protected LdifOutlinePage outlinePage;
 
@@ -148,16 +134,16 @@ public class LdifEditor extends TextEditor implements ILdifEditor, ConnectionUpd
     {
         super();
 
-        setSourceViewerConfiguration( new LdifSourceViewerConfiguration( this, true ) );
-        setDocumentProvider( new LdifDocumentProvider() );
-
-        IPreferenceStore editorStore = EditorsUI.getPreferenceStore();
-        IPreferenceStore browserStore = LdifEditorActivator.getDefault().getPreferenceStore();
-        IPreferenceStore combinedStore = new ChainedPreferenceStore( new IPreferenceStore[]
-            { browserStore, editorStore } );
-        setPreferenceStore( combinedStore );
-
-        setHelpContextId( LdifEditorConstants.PLUGIN_ID + "." + "tools_ldif_editor" ); //$NON-NLS-1$ //$NON-NLS-2$
+//        setSourceViewerConfiguration( new LdifSourceViewerConfiguration( this, true ) );
+//        setDocumentProvider( new LdifDocumentProvider() );
+//
+//        IPreferenceStore editorStore = EditorsUI.getPreferenceStore();
+//        IPreferenceStore browserStore = LdifEditorActivator.getDefault().getPreferenceStore();
+//        IPreferenceStore combinedStore = new ChainedPreferenceStore( new IPreferenceStore[]
+//            { browserStore, editorStore } );
+//        setPreferenceStore( combinedStore );
+//
+//        setHelpContextId( LdifEditorConstants.PLUGIN_ID + "." + "tools_ldif_editor" ); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
 
@@ -166,24 +152,24 @@ public class LdifEditor extends TextEditor implements ILdifEditor, ConnectionUpd
      */
     protected void handlePreferenceStoreChanged( PropertyChangeEvent event )
     {
-        try
-        {
-
-            ISourceViewer sourceViewer = getSourceViewer();
-            if ( sourceViewer == null )
-            {
-                return;
-            }
-
-            int topIndex = getSourceViewer().getTopIndex();
-            getSourceViewer().getDocument().set( getSourceViewer().getDocument().get() );
-            getSourceViewer().setTopIndex( topIndex );
-
-        }
-        finally
-        {
-            super.handlePreferenceStoreChanged( event );
-        }
+//        try
+//        {
+//
+//            ISourceViewer sourceViewer = getSourceViewer();
+//            if ( sourceViewer == null )
+//            {
+//                return;
+//            }
+//
+//            int topIndex = getSourceViewer().getTopIndex();
+//            getSourceViewer().getDocument().set( getSourceViewer().getDocument().get() );
+//            getSourceViewer().setTopIndex( topIndex );
+//
+//        }
+//        finally
+//        {
+//            super.handlePreferenceStoreChanged( event );
+//        }
     }
 
 
@@ -192,14 +178,15 @@ public class LdifEditor extends TextEditor implements ILdifEditor, ConnectionUpd
      */
     protected String[] collectContextMenuPreferencePages()
     {
-        String[] ids = super.collectContextMenuPreferencePages();
-        String[] more = new String[ids.length + 4];
-        more[0] = LdifEditorConstants.PREFERENCEPAGEID_LDIFEDITOR;
-        more[1] = LdifEditorConstants.PREFERENCEPAGEID_LDIFEDITOR_CONTENTASSIST;
-        more[2] = LdifEditorConstants.PREFERENCEPAGEID_LDIFEDITOR_SYNTAXCOLORING;
-        more[3] = LdifEditorConstants.PREFERENCEPAGEID_LDIFEDITOR_TEMPLATES;
-        System.arraycopy( ids, 0, more, 4, ids.length );
-        return more;
+//        String[] ids = super.collectContextMenuPreferencePages();
+//        String[] more = new String[ids.length + 4];
+//        more[0] = LdifEditorConstants.PREFERENCEPAGEID_LDIFEDITOR;
+//        more[1] = LdifEditorConstants.PREFERENCEPAGEID_LDIFEDITOR_CONTENTASSIST;
+//        more[2] = LdifEditorConstants.PREFERENCEPAGEID_LDIFEDITOR_SYNTAXCOLORING;
+//        more[3] = LdifEditorConstants.PREFERENCEPAGEID_LDIFEDITOR_TEMPLATES;
+//        System.arraycopy( ids, 0, more, 4, ids.length );
+//        return more;
+    	return null;
     }
 
 
@@ -248,7 +235,7 @@ public class LdifEditor extends TextEditor implements ILdifEditor, ConnectionUpd
             }
         }
 
-        super.init( site, input );
+//        super.init( site, input );
 
         ConnectionEventRegistry.addConnectionUpdateListener( this, ConnectionUIPlugin.getDefault().getEventRunner() );
         getSite().getPage().addPartListener( this );
@@ -297,32 +284,32 @@ public class LdifEditor extends TextEditor implements ILdifEditor, ConnectionUpd
             }
             return outlinePage;
         }
-        if ( ISourceViewer.class.equals( required ) )
-        {
-            return getSourceViewer();
-        }
-        if ( IAnnotationHover.class.equals( required ) )
-        {
-            if ( getSourceViewerConfiguration() != null && getSourceViewer() != null )
-                return getSourceViewerConfiguration().getAnnotationHover( getSourceViewer() );
-        }
-        if ( ITextHover.class.equals( required ) )
-        {
-            if ( getSourceViewerConfiguration() != null && getSourceViewer() != null )
-                return getSourceViewerConfiguration().getTextHover( getSourceViewer(), null );
-        }
-        if ( IContentAssistProcessor.class.equals( required ) )
-        {
-            if ( getSourceViewerConfiguration() != null && getSourceViewer() != null )
-                return getSourceViewerConfiguration().getContentAssistant( getSourceViewer() )
-                    .getContentAssistProcessor( LdifPartitionScanner.LDIF_RECORD );
-        }
-        if ( projectionSupport != null )
-        {
-            Object adapter = projectionSupport.getAdapter( getSourceViewer(), required );
-            if ( adapter != null )
-                return adapter;
-        }
+//        if ( ISourceViewer.class.equals( required ) )
+//        {
+//            return getSourceViewer();
+//        }
+//        if ( IAnnotationHover.class.equals( required ) )
+//        {
+//            if ( getSourceViewerConfiguration() != null && getSourceViewer() != null )
+//                return getSourceViewerConfiguration().getAnnotationHover( getSourceViewer() );
+//        }
+//        if ( ITextHover.class.equals( required ) )
+//        {
+//            if ( getSourceViewerConfiguration() != null && getSourceViewer() != null )
+//                return getSourceViewerConfiguration().getTextHover( getSourceViewer(), null );
+//        }
+//        if ( IContentAssistProcessor.class.equals( required ) )
+//        {
+//            if ( getSourceViewerConfiguration() != null && getSourceViewer() != null )
+//                return getSourceViewerConfiguration().getContentAssistant( getSourceViewer() )
+//                    .getContentAssistProcessor( LdifPartitionScanner.LDIF_RECORD );
+//        }
+//        if ( projectionSupport != null )
+//        {
+//            Object adapter = projectionSupport.getAdapter( getSourceViewer(), required );
+//            if ( adapter != null )
+//                return adapter;
+//        }
         return super.getAdapter( required );
     }
 
@@ -332,29 +319,29 @@ public class LdifEditor extends TextEditor implements ILdifEditor, ConnectionUpd
      */
     protected void editorContextMenuAboutToShow( IMenuManager menu )
     {
-        super.editorContextMenuAboutToShow( menu );
+//        super.editorContextMenuAboutToShow( menu );
 
         IContributionItem[] items = menu.getItems();
         for ( int i = 0; i < items.length; i++ )
         {
             if ( items[i] instanceof ActionContributionItem )
             {
-                ActionContributionItem aci = ( ActionContributionItem ) items[i];
-                if ( aci.getAction() == getAction( ITextEditorActionConstants.SHIFT_LEFT ) )
-                {
-                    menu.remove( items[i] );
-                }
-                if ( aci.getAction() == getAction( ITextEditorActionConstants.SHIFT_RIGHT ) )
-                {
-                    menu.remove( items[i] );
-                }
+//                ActionContributionItem aci = ( ActionContributionItem ) items[i];
+//                if ( aci.getAction() == getAction( ITextEditorActionConstants.SHIFT_LEFT ) )
+//                {
+//                    menu.remove( items[i] );
+//                }
+//                if ( aci.getAction() == getAction( ITextEditorActionConstants.SHIFT_RIGHT ) )
+//                {
+//                    menu.remove( items[i] );
+//                }
             }
         }
 
         // add Edit actions
-        addAction( menu, ITextEditorActionConstants.GROUP_EDIT,
-            LdifEditorConstants.ACTION_ID_EDIT_ATTRIBUTE_DESCRIPTION );
-        addAction( menu, ITextEditorActionConstants.GROUP_EDIT, BrowserCommonConstants.ACTION_ID_EDIT_VALUE );
+//        addAction( menu, ITextEditorActionConstants.GROUP_EDIT,
+//            LdifEditorConstants.ACTION_ID_EDIT_ATTRIBUTE_DESCRIPTION );
+//        addAction( menu, ITextEditorActionConstants.GROUP_EDIT, BrowserCommonConstants.ACTION_ID_EDIT_VALUE );
 
         MenuManager valueEditorMenuManager = new MenuManager( Messages.getString( "LdifEditor.EditValueWith" ) ); //$NON-NLS-1$
         if ( this.openBestValueEditorAction.isEnabled() )
@@ -375,15 +362,15 @@ public class LdifEditor extends TextEditor implements ILdifEditor, ConnectionUpd
         }
         valueEditorMenuManager.add( new Separator() );
         valueEditorMenuManager.add( this.valueEditorPreferencesAction );
-        menu.appendToGroup( ITextEditorActionConstants.GROUP_EDIT, valueEditorMenuManager );
-
-        addAction( menu, ITextEditorActionConstants.GROUP_EDIT, LdifEditorConstants.ACTION_ID_EDIT_RECORD );
+//        menu.appendToGroup( ITextEditorActionConstants.GROUP_EDIT, valueEditorMenuManager );
+//
+//        addAction( menu, ITextEditorActionConstants.GROUP_EDIT, LdifEditorConstants.ACTION_ID_EDIT_RECORD );
 
         // add Format actions
         MenuManager formatMenuManager = new MenuManager( Messages.getString( "LdifEditor.Format" ) ); //$NON-NLS-1$
-        addAction( formatMenuManager, LdifEditorConstants.ACTION_ID_FORMAT_LDIF_DOCUMENT );
-        addAction( formatMenuManager, LdifEditorConstants.ACTION_ID_FORMAT_LDIF_RECORD );
-        menu.appendToGroup( ITextEditorActionConstants.GROUP_EDIT, formatMenuManager );
+//        addAction( formatMenuManager, LdifEditorConstants.ACTION_ID_FORMAT_LDIF_DOCUMENT );
+//        addAction( formatMenuManager, LdifEditorConstants.ACTION_ID_FORMAT_LDIF_RECORD );
+//        menu.appendToGroup( ITextEditorActionConstants.GROUP_EDIT, formatMenuManager );
     }
 
 
@@ -392,26 +379,26 @@ public class LdifEditor extends TextEditor implements ILdifEditor, ConnectionUpd
      */
     protected void createActions()
     {
-        super.createActions();
+//        super.createActions();
 
         // add content assistant
         ResourceBundle bundle = LdifEditorActivator.getDefault().getResourceBundle();
-        IAction action = new ContentAssistAction( bundle, "ldifeditor__contentassistproposal_", this ); //$NON-NLS-1$
-        action.setActionDefinitionId( ITextEditorActionDefinitionIds.CONTENT_ASSIST_PROPOSALS );
-        setAction( "ContentAssistProposal", action ); //$NON-NLS-1$
+//        IAction action = new ContentAssistAction( bundle, "ldifeditor__contentassistproposal_", this ); //$NON-NLS-1$
+//        action.setActionDefinitionId( ITextEditorActionDefinitionIds.CONTENT_ASSIST_PROPOSALS );
+//        setAction( "ContentAssistProposal", action ); //$NON-NLS-1$
 
         // add execute action (for tool bar)
         if ( actionToolBarManager != null )
         {
             ExecuteLdifAction executeLdifAction = new ExecuteLdifAction( this );
             actionToolBarManager.add( executeLdifAction );
-            setAction( LdifEditorConstants.ACTION_ID_EXECUTE_LDIF, executeLdifAction );
+//            setAction( LdifEditorConstants.ACTION_ID_EXECUTE_LDIF, executeLdifAction );
             actionToolBarManager.update( true );
         }
 
         // add context menu edit actions
         EditLdifAttributeAction editLdifAttributeAction = new EditLdifAttributeAction( this );
-        setAction( BrowserCommonConstants.ACTION_ID_EDIT_ATTRIBUTE_DESCRIPTION, editLdifAttributeAction );
+//        setAction( BrowserCommonConstants.ACTION_ID_EDIT_ATTRIBUTE_DESCRIPTION, editLdifAttributeAction );
 
         openBestValueEditorAction = new OpenBestValueEditorAction( this );
         IValueEditor[] valueEditors = valueEditorManager.getAllValueEditors();
@@ -424,38 +411,38 @@ public class LdifEditor extends TextEditor implements ILdifEditor, ConnectionUpd
 
         OpenDefaultValueEditorAction openDefaultValueEditorAction = new OpenDefaultValueEditorAction( this,
             openBestValueEditorAction );
-        setAction( BrowserCommonConstants.ACTION_ID_EDIT_VALUE, openDefaultValueEditorAction );
+//        setAction( BrowserCommonConstants.ACTION_ID_EDIT_VALUE, openDefaultValueEditorAction );
 
         EditLdifRecordAction editRecordAction = new EditLdifRecordAction( this );
-        setAction( LdifEditorConstants.ACTION_ID_EDIT_RECORD, editRecordAction );
+//        setAction( LdifEditorConstants.ACTION_ID_EDIT_RECORD, editRecordAction );
 
         // add context menu format actions
         FormatLdifDocumentAction formatDocumentAction = new FormatLdifDocumentAction( this );
-        setAction( LdifEditorConstants.ACTION_ID_FORMAT_LDIF_DOCUMENT, formatDocumentAction );
+//        setAction( LdifEditorConstants.ACTION_ID_FORMAT_LDIF_DOCUMENT, formatDocumentAction );
         FormatLdifRecordAction formatRecordAction = new FormatLdifRecordAction( this );
-        setAction( LdifEditorConstants.ACTION_ID_FORMAT_LDIF_RECORD, formatRecordAction );
+//        setAction( LdifEditorConstants.ACTION_ID_FORMAT_LDIF_RECORD, formatRecordAction );
 
         // update cut, copy, paste
-        IAction cutAction = getAction( ITextEditorActionConstants.CUT );
-        if ( cutAction != null )
-        {
-            cutAction.setImageDescriptor( PlatformUI.getWorkbench().getSharedImages().getImageDescriptor(
-                ISharedImages.IMG_TOOL_CUT ) );
-        }
-        IAction copyAction = getAction( ITextEditorActionConstants.COPY );
-        if ( copyAction != null )
-        {
-            copyAction.setImageDescriptor( PlatformUI.getWorkbench().getSharedImages().getImageDescriptor(
-                ISharedImages.IMG_TOOL_COPY ) );
-        }
-        IAction pasteAction = getAction( ITextEditorActionConstants.PASTE );
-        if ( pasteAction != null )
-        {
-            pasteAction.setImageDescriptor( PlatformUI.getWorkbench().getSharedImages().getImageDescriptor(
-                ISharedImages.IMG_TOOL_PASTE ) );
-        }
+//        IAction cutAction = getAction( ITextEditorActionConstants.CUT );
+//        if ( cutAction != null )
+//        {
+//            cutAction.setImageDescriptor( PlatformUI.getWorkbench().getSharedImages().getImageDescriptor(
+//                ISharedImages.IMG_TOOL_CUT ) );
+//        }
+////        IAction copyAction = getAction( ITextEditorActionConstants.COPY );
+//        if ( copyAction != null )
+//        {
+//            copyAction.setImageDescriptor( PlatformUI.getWorkbench().getSharedImages().getImageDescriptor(
+//                ISharedImages.IMG_TOOL_COPY ) );
+//        }
+//        IAction pasteAction = getAction( ITextEditorActionConstants.PASTE );
+//        if ( pasteAction != null )
+//        {
+//            pasteAction.setImageDescriptor( PlatformUI.getWorkbench().getSharedImages().getImageDescriptor(
+//                ISharedImages.IMG_TOOL_PASTE ) );
+//        }
 
-        activateGlobalActionHandlers();
+//        activateGlobalActionHandlers();
     }
 
 
@@ -464,7 +451,7 @@ public class LdifEditor extends TextEditor implements ILdifEditor, ConnectionUpd
      */
     public void createPartControl( Composite parent )
     {
-        setHelpContextId( LdifEditorConstants.PLUGIN_ID + "." + "tools_ldif_editor" ); //$NON-NLS-1$ //$NON-NLS-2$
+//        setHelpContextId( LdifEditorConstants.PLUGIN_ID + "." + "tools_ldif_editor" ); //$NON-NLS-1$ //$NON-NLS-2$
 
         if ( showToolBar )
         {
@@ -510,58 +497,58 @@ public class LdifEditor extends TextEditor implements ILdifEditor, ConnectionUpd
             data.widthHint = 450;
             data.heightHint = 250;
             editorComposite.setLayoutData( data );
-            super.createPartControl( editorComposite );
+//            super.createPartControl( editorComposite );
             control.setContent( editorComposite );
         }
         else
         {
-            super.createPartControl( parent );
+//            super.createPartControl( parent );
         }
 
-        ProjectionViewer projectionViewer = ( ProjectionViewer ) getSourceViewer();
-        projectionSupport = new ProjectionSupport( projectionViewer, getAnnotationAccess(), getSharedColors() );
-        projectionSupport.install();
-        projectionViewer.doOperation( ProjectionViewer.TOGGLE );
+//        ProjectionViewer projectionViewer = ( ProjectionViewer ) getSourceViewer();
+//        projectionSupport = new ProjectionSupport( projectionViewer, getAnnotationAccess(), getSharedColors() );
+//        projectionSupport.install();
+//        projectionViewer.doOperation( ProjectionViewer.TOGGLE );
     }
 
 
-    /**
-     * @see org.eclipse.ui.texteditor.AbstractDecoratedTextEditor#createSourceViewer(org.eclipse.swt.widgets.Composite, org.eclipse.jface.text.source.IVerticalRuler, int)
-     */
-    protected ISourceViewer createSourceViewer( Composite parent, IVerticalRuler ruler, int styles )
-    {
-        getAnnotationAccess();
-        getOverviewRuler();
-        ISourceViewer viewer = new ProjectionViewer( parent, ruler, getOverviewRuler(), true, styles );
-        getSourceViewerDecorationSupport( viewer );
-
-        return viewer;
-    }
-
-
-    /**
-     * @see org.eclipse.ui.texteditor.AbstractDecoratedTextEditor#configureSourceViewerDecorationSupport(org.eclipse.ui.texteditor.SourceViewerDecorationSupport)
-     */
-    protected void configureSourceViewerDecorationSupport( SourceViewerDecorationSupport support )
-    {
-        super.configureSourceViewerDecorationSupport( support );
-    }
+//    /**
+//     * @see org.eclipse.ui.texteditor.AbstractDecoratedTextEditor#createSourceViewer(org.eclipse.swt.widgets.Composite, org.eclipse.jface.text.source.IVerticalRuler, int)
+//     */
+//    protected ISourceViewer createSourceViewer( Composite parent, IVerticalRuler ruler, int styles )
+//    {
+//        getAnnotationAccess();
+//        getOverviewRuler();
+//        ISourceViewer viewer = new ProjectionViewer( parent, ruler, getOverviewRuler(), true, styles );
+//        getSourceViewerDecorationSupport( viewer );
+//
+//        return viewer;
+//    }
 
 
+//    /**
+//     * @see org.eclipse.ui.texteditor.AbstractDecoratedTextEditor#configureSourceViewerDecorationSupport(org.eclipse.ui.texteditor.SourceViewerDecorationSupport)
+//     */
+//    protected void configureSourceViewerDecorationSupport( SourceViewerDecorationSupport support )
+//    {
+//        super.configureSourceViewerDecorationSupport( support );
+//    }
+//
+//
     /**
      * @see org.apache.directory.studio.ldifeditor.editor.ILdifEditor#getLdifModel()
      */
     public LdifFile getLdifModel()
     {
-        IDocumentProvider provider = getDocumentProvider();
-        if ( provider instanceof LdifDocumentProvider )
-        {
-            return ( ( LdifDocumentProvider ) provider ).getLdifModel();
-        }
-        else
-        {
+////        IDocumentProvider provider = getDocumentProvider();
+//        if ( provider instanceof LdifDocumentProvider )
+//        {
+//            return ( ( LdifDocumentProvider ) provider ).getLdifModel();
+//        }
+//        else
+//        {
             return null;
-        }
+//        }
     }
 
 
@@ -570,7 +557,7 @@ public class LdifEditor extends TextEditor implements ILdifEditor, ConnectionUpd
      */
     public void outlinePageClosed()
     {
-        projectionSupport.dispose();
+//        projectionSupport.dispose();
         outlinePage = null;
     }
 
@@ -599,12 +586,12 @@ public class LdifEditor extends TextEditor implements ILdifEditor, ConnectionUpd
                     .getConnection().getName() ) );
         // getStatusField("ldapconnection").setText();
 
-        IAction action = getAction( LdifEditorConstants.ACTION_ID_EXECUTE_LDIF );
-        if ( action != null )
-        {
-            action.setEnabled( browserConnection == null );
-            action.setEnabled( browserConnection != null );
-        }
+//        IAction action = getAction( LdifEditorConstants.ACTION_ID_EXECUTE_LDIF );
+//        if ( action != null )
+//        {
+//            action.setEnabled( browserConnection == null );
+//            action.setEnabled( browserConnection != null );
+//        }
     }
 
 
@@ -694,11 +681,11 @@ public class LdifEditor extends TextEditor implements ILdifEditor, ConnectionUpd
         final IEditorInput input = getEditorInput();
         if ( input instanceof NonExistingLdifEditorInput )
         {
-            super.doSaveAs();
+//            super.doSaveAs();
             return;
         }
 
-        super.doSave( progressMonitor );
+//        super.doSave( progressMonitor );
     }
 
 
@@ -724,84 +711,84 @@ public class LdifEditor extends TextEditor implements ILdifEditor, ConnectionUpd
         if ( isIDE )
         {
             // Just call super implementation for now
-            IPreferenceStore store = EditorsUI.getPreferenceStore();
-            String key = getEditorSite().getId() + ".internal.delegateSaveAs"; // $NON-NLS-1$ //$NON-NLS-1$
-            store.setValue( key, true );
-            super.performSaveAs( progressMonitor );
+//            IPreferenceStore store = EditorsUI.getPreferenceStore();
+//            String key = getEditorSite().getId() + ".internal.delegateSaveAs"; // $NON-NLS-1$ //$NON-NLS-1$
+//            store.setValue( key, true );
+//            super.performSaveAs( progressMonitor );
         }
-        else
-        {
+//        else
+//        {
             // Open FileDialog
-            Shell shell = getSite().getShell();
-            final IEditorInput input = getEditorInput();
+//            Shell shell = getSite().getShell();
+//            final IEditorInput input = getEditorInput();
 
-            IDocumentProvider provider = getDocumentProvider();
-            final IEditorInput newInput;
-
-            FileDialog dialog = new FileDialog( shell, SWT.SAVE );
-
-            String path = dialog.open();
-            if ( path == null )
-            {
-                if ( progressMonitor != null )
-                {
-                    progressMonitor.setCanceled( true );
-                }
-                return;
-            }
-
-            // Check whether file exists and if so, confirm overwrite
-            final File externalFile = new File( path );
-            if ( externalFile.exists() )
-            {
-                MessageDialog overwriteDialog = new MessageDialog( shell,
-                    Messages.getString( "LdifEditor.Overwrite" ), null, Messages.getString( "OverwriteQuestion" ), //$NON-NLS-1$ //$NON-NLS-2$
-                    MessageDialog.WARNING, new String[]
-                        { IDialogConstants.YES_LABEL, IDialogConstants.NO_LABEL }, 1 ); // 'No' is the default
-                if ( overwriteDialog.open() != Window.OK )
-                {
-                    if ( progressMonitor != null )
-                    {
-                        progressMonitor.setCanceled( true );
-                        return;
-                    }
-                }
-            }
-
-            IPath iPath = new Path( path );
-            newInput = new PathEditorInput( iPath );
-
-            boolean success = false;
-            try
-            {
-                provider.aboutToChange( newInput );
-                provider.saveDocument( progressMonitor, newInput, provider.getDocument( input ), true );
-                success = true;
-            }
-            catch ( CoreException x )
-            {
-                final IStatus status = x.getStatus();
-                if ( status == null || status.getSeverity() != IStatus.CANCEL )
-                {
-                    String title = Messages.getString( "LdifEditor.ErrorInSaveAs" ); //$NON-NLS-1$
-                    String msg = Messages.getString( "LdifEditor.ErrorInSaveAs" ) + x.getMessage(); //$NON-NLS-1$
-                    MessageDialog.openError( shell, title, msg );
-                }
-            }
-            finally
-            {
-                provider.changed( newInput );
-                if ( success )
-                {
-                    setInput( newInput );
-                }
-            }
-
-            if ( progressMonitor != null )
-            {
-                progressMonitor.setCanceled( !success );
-            }
-        }
+////            IDocumentProvider provider = getDocumentProvider();
+////            final IEditorInput newInput;
+////
+////            FileDialog dialog = new FileDialog( shell, SWT.SAVE );
+////
+////            String path = dialog.open();
+//            if ( path == null )
+//            {
+//                if ( progressMonitor != null )
+//                {
+//                    progressMonitor.setCanceled( true );
+//                }
+//                return;
+//            }
+//
+//            // Check whether file exists and if so, confirm overwrite
+//            final File externalFile = new File( path );
+//            if ( externalFile.exists() )
+//            {
+//                MessageDialog overwriteDialog = new MessageDialog( shell,
+//                    Messages.getString( "LdifEditor.Overwrite" ), null, Messages.getString( "OverwriteQuestion" ), //$NON-NLS-1$ //$NON-NLS-2$
+//                    MessageDialog.WARNING, new String[]
+//                        { IDialogConstants.YES_LABEL, IDialogConstants.NO_LABEL }, 1 ); // 'No' is the default
+//                if ( overwriteDialog.open() != Window.OK )
+//                {
+//                    if ( progressMonitor != null )
+//                    {
+//                        progressMonitor.setCanceled( true );
+//                        return;
+//                    }
+//                }
+//            }
+//
+//            IPath iPath = new Path( path );
+//            newInput = new PathEditorInput( iPath );
+//
+//            boolean success = false;
+//            try
+//            {
+//                provider.aboutToChange( newInput );
+//                provider.saveDocument( progressMonitor, newInput, provider.getDocument( input ), true );
+//                success = true;
+//            }
+//            catch ( CoreException x )
+//            {
+//                final IStatus status = x.getStatus();
+//                if ( status == null || status.getSeverity() != IStatus.CANCEL )
+//                {
+//                    String title = Messages.getString( "LdifEditor.ErrorInSaveAs" ); //$NON-NLS-1$
+//                    String msg = Messages.getString( "LdifEditor.ErrorInSaveAs" ) + x.getMessage(); //$NON-NLS-1$
+//                    MessageDialog.openError( shell, title, msg );
+//                }
+//            }
+//            finally
+//            {
+//                provider.changed( newInput );
+//                if ( success )
+//                {
+//                    setInput( newInput );
+//                }
+//            }
+//
+//            if ( progressMonitor != null )
+//            {
+//                progressMonitor.setCanceled( !success );
+//            }
+//        }
 
     }
 
@@ -894,12 +881,12 @@ public class LdifEditor extends TextEditor implements ILdifEditor, ConnectionUpd
      */
     public void activateGlobalActionHandlers()
     {
-        IAction elaa = getAction( BrowserCommonConstants.ACTION_ID_EDIT_ATTRIBUTE_DESCRIPTION );
-        ActionUtils.activateActionHandler( elaa );
-        IAction elva = getAction( BrowserCommonConstants.ACTION_ID_EDIT_VALUE );
-        ActionUtils.activateActionHandler( elva );
-        IAction elra = getAction( LdifEditorConstants.ACTION_ID_EDIT_RECORD );
-        ActionUtils.activateActionHandler( elra );
+//        IAction elaa = getAction( BrowserCommonConstants.ACTION_ID_EDIT_ATTRIBUTE_DESCRIPTION );
+//        ActionUtils.activateActionHandler( elaa );
+//        IAction elva = getAction( BrowserCommonConstants.ACTION_ID_EDIT_VALUE );
+//        ActionUtils.activateActionHandler( elva );
+//        IAction elra = getAction( LdifEditorConstants.ACTION_ID_EDIT_RECORD );
+//        ActionUtils.activateActionHandler( elra );
     }
 
 
@@ -908,12 +895,12 @@ public class LdifEditor extends TextEditor implements ILdifEditor, ConnectionUpd
      */
     public void deactivateGlobalActionHandlers()
     {
-        IAction elaa = getAction( BrowserCommonConstants.ACTION_ID_EDIT_ATTRIBUTE_DESCRIPTION );
-        ActionUtils.deactivateActionHandler( elaa );
-        IAction elva = getAction( BrowserCommonConstants.ACTION_ID_EDIT_VALUE );
-        ActionUtils.deactivateActionHandler( elva );
-        IAction elra = getAction( LdifEditorConstants.ACTION_ID_EDIT_RECORD );
-        ActionUtils.deactivateActionHandler( elra );
+//        IAction elaa = getAction( BrowserCommonConstants.ACTION_ID_EDIT_ATTRIBUTE_DESCRIPTION );
+//        ActionUtils.deactivateActionHandler( elaa );
+//        IAction elva = getAction( BrowserCommonConstants.ACTION_ID_EDIT_VALUE );
+//        ActionUtils.deactivateActionHandler( elva );
+//        IAction elra = getAction( LdifEditorConstants.ACTION_ID_EDIT_RECORD );
+//        ActionUtils.deactivateActionHandler( elra );
     }
 
 
@@ -927,5 +914,33 @@ public class LdifEditor extends TextEditor implements ILdifEditor, ConnectionUpd
     {
         return valueEditorManager;
     }
+
+
+	@Override
+	public void doSaveAs() {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public boolean isDirty() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+
+	@Override
+	public boolean isSaveAsAllowed() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+
+	@Override
+	public void setFocus() {
+		// TODO Auto-generated method stub
+		
+	}
 
 }

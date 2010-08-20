@@ -33,7 +33,6 @@ import org.eclipse.jface.preference.ColorSelector;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.preference.PreferenceConverter;
 import org.eclipse.jface.preference.PreferencePage;
-import org.eclipse.jface.text.TextAttribute;
 import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.jface.viewers.ArrayContentProvider;
@@ -137,10 +136,10 @@ public class LdifEditorSyntaxColoringPreferencePage extends PreferencePage imple
                 style |= SWT.BOLD;
             if ( italic )
                 style |= SWT.ITALIC;
-            if ( strikethrough )
-                style |= TextAttribute.STRIKETHROUGH;
-            if ( underline )
-                style |= TextAttribute.UNDERLINE;
+//            if ( strikethrough )
+//                style |= TextAttribute.STRIKETHROUGH;
+//            if ( underline )
+//                style |= TextAttribute.UNDERLINE;
             return style;
         }
 
@@ -149,8 +148,8 @@ public class LdifEditorSyntaxColoringPreferencePage extends PreferencePage imple
         {
             this.bold = ( style & SWT.BOLD ) != SWT.NORMAL;
             this.italic = ( style & SWT.ITALIC ) != SWT.NORMAL;
-            this.strikethrough = ( style & TextAttribute.STRIKETHROUGH ) != SWT.NORMAL;
-            this.underline = ( style & TextAttribute.UNDERLINE ) != SWT.NORMAL;
+//            this.strikethrough = ( style & TextAttribute.STRIKETHROUGH ) != SWT.NORMAL;
+//            this.underline = ( style & TextAttribute.UNDERLINE ) != SWT.NORMAL;
         }
 
 
@@ -418,12 +417,12 @@ public class LdifEditorSyntaxColoringPreferencePage extends PreferencePage imple
 
     private void setTextAttribute( SyntaxItem item )
     {
-        ldifEditorWidget.getSourceViewerConfiguration().setTextAttribute( item.key, item.rgb, item.getStyle() );
+//        ldifEditorWidget.getSourceViewerConfiguration().setTextAttribute( item.key, item.rgb, item.getStyle() );
 
-        int topIndex = ldifEditorWidget.getSourceViewer().getTopIndex();
-        // ldifEditorWidget.getSourceViewer().getDocument().set("");
-        ldifEditorWidget.getSourceViewer().getDocument().set( LDIF_INITIAL );
-        ldifEditorWidget.getSourceViewer().setTopIndex( topIndex );
+//        int topIndex = ldifEditorWidget.getSourceViewer().getTopIndex();
+//        // ldifEditorWidget.getSourceViewer().getDocument().set("");
+//        ldifEditorWidget.getSourceViewer().getDocument().set( LDIF_INITIAL );
+//        ldifEditorWidget.getSourceViewer().setTopIndex( topIndex );
     }
 
 
@@ -434,12 +433,12 @@ public class LdifEditorSyntaxColoringPreferencePage extends PreferencePage imple
 
         ldifEditorWidget = new LdifEditorWidget( null, LDIF_INITIAL, false );
         ldifEditorWidget.createWidget( parent );
-        ldifEditorWidget.getSourceViewer().setEditable( false );
+//        ldifEditorWidget.getSourceViewer().setEditable( false );
 
         GridData gd = new GridData( GridData.FILL_BOTH );
         gd.widthHint = convertWidthInCharsToPixels( 20 );
         gd.heightHint = convertHeightInCharsToPixels( 5 );
-        ldifEditorWidget.getSourceViewer().getControl().setLayoutData( gd );
+//        ldifEditorWidget.getSourceViewer().getControl().setLayoutData( gd );
 
     }
 

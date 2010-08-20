@@ -26,15 +26,11 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
-import org.apache.directory.studio.connection.ui.ConnectionUIPlugin;
 import org.apache.directory.studio.valueeditors.ValueEditorsActivator;
 import org.apache.directory.studio.valueeditors.ValueEditorsConstants;
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.osgi.util.NLS;
@@ -52,7 +48,6 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.TabFolder;
@@ -227,8 +222,8 @@ public class ImageDialog extends Dialog
      */
     protected void createButtonsForButtonBar( Composite parent )
     {
-        okButton = createButton( parent, IDialogConstants.OK_ID, IDialogConstants.OK_LABEL, false );
-        createButton( parent, IDialogConstants.CANCEL_ID, IDialogConstants.CANCEL_LABEL, false );
+        okButton = createButton( parent, IDialogConstants.OK_ID, "OK", false );
+        createButton( parent, IDialogConstants.CANCEL_ID, "IDialogConstants.CANCEL_LABEL", false );
 
         // load dialog settings
         try
@@ -304,35 +299,35 @@ public class ImageDialog extends Dialog
             {
                 public void widgetSelected( SelectionEvent event )
                 {
-                    FileDialog fileDialog = new FileDialog( ImageDialog.this.getShell(), SWT.SAVE );
-                    fileDialog.setText( Messages.getString( "ImageDialog.SaveImage" ) ); //$NON-NLS-1$
-                    fileDialog.setFilterExtensions( new String[]
-                        { "*.jpg" } ); //$NON-NLS-1$
-                    String returnedFileName = fileDialog.open();
-                    if ( returnedFileName != null )
-                    {
-                        try
-                        {
-                            File file = new File( returnedFileName );
-                            FileOutputStream out = new FileOutputStream( file );
-                            out.write( currentImageRawData );
-                            out.flush();
-                            out.close();
-                        }
-                        catch ( FileNotFoundException e )
-                        {
-
-                            ConnectionUIPlugin.getDefault().getExceptionHandler().handleException(
-                                new Status( IStatus.ERROR, ValueEditorsConstants.PLUGIN_ID, IStatus.ERROR, Messages
-                                    .getString( "ImageDialog.CantWriteFile" ), e ) ); //$NON-NLS-1$
-                        }
-                        catch ( IOException e )
-                        {
-                            ConnectionUIPlugin.getDefault().getExceptionHandler().handleException(
-                                new Status( IStatus.ERROR, ValueEditorsConstants.PLUGIN_ID, IStatus.ERROR, Messages
-                                    .getString( "ImageDialog.CantWriteFile" ), e ) ); //$NON-NLS-1$
-                        }
-                    }
+//                    FileDialog fileDialog = new FileDialog( ImageDialog.this.getShell(), SWT.SAVE );
+//                    fileDialog.setText( Messages.getString( "ImageDialog.SaveImage" ) ); //$NON-NLS-1$
+//                    fileDialog.setFilterExtensions( new String[]
+//                        { "*.jpg" } ); //$NON-NLS-1$
+//                    String returnedFileName = fileDialog.open();
+//                    if ( returnedFileName != null )
+//                    {
+//                        try
+//                        {
+//                            File file = new File( returnedFileName );
+//                            FileOutputStream out = new FileOutputStream( file );
+//                            out.write( currentImageRawData );
+//                            out.flush();
+//                            out.close();
+//                        }
+//                        catch ( FileNotFoundException e )
+//                        {
+//
+//                            ConnectionUIPlugin.getDefault().getExceptionHandler().handleException(
+//                                new Status( IStatus.ERROR, ValueEditorsConstants.PLUGIN_ID, IStatus.ERROR, Messages
+//                                    .getString( "ImageDialog.CantWriteFile" ), e ) ); //$NON-NLS-1$
+//                        }
+//                        catch ( IOException e )
+//                        {
+//                            ConnectionUIPlugin.getDefault().getExceptionHandler().handleException(
+//                                new Status( IStatus.ERROR, ValueEditorsConstants.PLUGIN_ID, IStatus.ERROR, Messages
+//                                    .getString( "ImageDialog.CantWriteFile" ), e ) ); //$NON-NLS-1$
+//                        }
+//                    }
                 }
             } );
 
@@ -375,16 +370,16 @@ public class ImageDialog extends Dialog
         {
             public void widgetSelected( SelectionEvent event )
             {
-                FileDialog fileDialog = new FileDialog( ImageDialog.this.getShell(), SWT.OPEN );
-                fileDialog.setText( Messages.getString( "ImageDialog.SelectImage" ) ); //$NON-NLS-1$
-                // fileDialog.setFilterExtensions(IMAGE_FILE_EXTENSIONS);
-                fileDialog.setFileName( new File( newImageFilenameText.getText() ).getName() );
-                fileDialog.setFilterPath( new File( newImageFilenameText.getText() ).getParent() );
-                String returnedFileName = fileDialog.open();
-                if ( returnedFileName != null )
-                {
-                    newImageFilenameText.setText( returnedFileName );
-                }
+//                FileDialog fileDialog = new FileDialog( ImageDialog.this.getShell(), SWT.OPEN );
+//                fileDialog.setText( Messages.getString( "ImageDialog.SelectImage" ) ); //$NON-NLS-1$
+//                // fileDialog.setFilterExtensions(IMAGE_FILE_EXTENSIONS);
+//                fileDialog.setFileName( new File( newImageFilenameText.getText() ).getName() );
+//                fileDialog.setFilterPath( new File( newImageFilenameText.getText() ).getParent() );
+//                String returnedFileName = fileDialog.open();
+//                if ( returnedFileName != null )
+//                {
+//                    newImageFilenameText.setText( returnedFileName );
+//                }
             }
         } );
 

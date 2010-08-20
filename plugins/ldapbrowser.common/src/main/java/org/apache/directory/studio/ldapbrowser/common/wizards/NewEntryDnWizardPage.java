@@ -443,8 +443,8 @@ public class NewEntryDnWizardPage extends WizardPage implements WidgetModifyList
             } );
 
             // attach content proposal behavior
-            contextEntryDnComboCPA = new ContentProposalAdapter( contextEntryDnCombo, new ComboContentAdapter(), null,
-                null, null );
+//            contextEntryDnComboCPA = new ContentProposalAdapter( contextEntryDnCombo, new ComboContentAdapter(), null,
+//                null, null );
             contextEntryDnComboCPA.setFilterStyle( ContentProposalAdapter.FILTER_NONE );
             contextEntryDnComboCPA.setProposalAcceptanceStyle( ContentProposalAdapter.PROPOSAL_REPLACE );
 

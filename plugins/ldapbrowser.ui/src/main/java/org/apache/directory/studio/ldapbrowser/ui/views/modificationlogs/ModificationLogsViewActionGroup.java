@@ -21,7 +21,6 @@
 package org.apache.directory.studio.ldapbrowser.ui.views.modificationlogs;
 
 
-import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.directory.studio.connection.core.ConnectionCoreConstants;
@@ -31,7 +30,6 @@ import org.apache.directory.studio.ldapbrowser.ui.actions.proxy.ModificationLogs
 import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.Separator;
-import org.eclipse.jface.text.source.SourceViewer;
 import org.eclipse.ui.IActionBars;
 
 
@@ -79,21 +77,21 @@ public class ModificationLogsViewActionGroup implements ActionHandlerManager, IM
     public ModificationLogsViewActionGroup( ModificationLogsView view )
     {
         this.view = view;
-        SourceViewer viewer = this.view.getMainWidget().getSourceViewer();
+//        SourceViewer viewer = this.view.getMainWidget().getSourceViewer();
 
-        modificationLogsViewActionMap = new HashMap<String, ModificationLogsViewActionProxy>();
-        modificationLogsViewActionMap.put( olderAction, new ModificationLogsViewActionProxy( viewer, new OlderAction(
-            view ) ) );
-        modificationLogsViewActionMap.put( newerAction, new ModificationLogsViewActionProxy( viewer, new NewerAction(
-            view ) ) );
-        modificationLogsViewActionMap.put( refreshAction, new ModificationLogsViewActionProxy( viewer,
-            new RefreshAction( view ) ) );
-        modificationLogsViewActionMap.put( clearAction, new ModificationLogsViewActionProxy( viewer, new ClearAction(
-            view ) ) );
-        modificationLogsViewActionMap.put( exportAction, new ModificationLogsViewActionProxy( viewer,
-            new ExportAction() ) );
-        enableModificationLogsAction = new EnableModificationLogsAction();
-        openModificationLogsPreferencePageAction = new OpenModificationLogsPreferencePageAction();
+//        modificationLogsViewActionMap = new HashMap<String, ModificationLogsViewActionProxy>();
+//        modificationLogsViewActionMap.put( olderAction, new ModificationLogsViewActionProxy( viewer, new OlderAction(
+//            view ) ) );
+//        modificationLogsViewActionMap.put( newerAction, new ModificationLogsViewActionProxy( viewer, new NewerAction(
+//            view ) ) );
+//        modificationLogsViewActionMap.put( refreshAction, new ModificationLogsViewActionProxy( viewer,
+//            new RefreshAction( view ) ) );
+//        modificationLogsViewActionMap.put( clearAction, new ModificationLogsViewActionProxy( viewer, new ClearAction(
+//            view ) ) );
+//        modificationLogsViewActionMap.put( exportAction, new ModificationLogsViewActionProxy( viewer,
+//            new ExportAction() ) );
+//        enableModificationLogsAction = new EnableModificationLogsAction();
+//        openModificationLogsPreferencePageAction = new OpenModificationLogsPreferencePageAction();
     }
 
 
@@ -102,21 +100,21 @@ public class ModificationLogsViewActionGroup implements ActionHandlerManager, IM
      */
     public void dispose()
     {
-        if ( view != null )
-        {
-            for ( ModificationLogsViewActionProxy action : modificationLogsViewActionMap.values() )
-            {
-                action.dispose();
-                action = null;
-            }
-            modificationLogsViewActionMap.clear();
-            modificationLogsViewActionMap = null;
-
-            enableModificationLogsAction = null;
-            openModificationLogsPreferencePageAction = null;
-
-            view = null;
-        }
+//        if ( view != null )
+//        {
+//            for ( ModificationLogsViewActionProxy action : modificationLogsViewActionMap.values() )
+//            {
+//                action.dispose();
+//                action = null;
+//            }
+//            modificationLogsViewActionMap.clear();
+//            modificationLogsViewActionMap = null;
+//
+//            enableModificationLogsAction = null;
+//            openModificationLogsPreferencePageAction = null;
+//
+//            view = null;
+//        }
     }
 
 
@@ -127,27 +125,27 @@ public class ModificationLogsViewActionGroup implements ActionHandlerManager, IM
      */
     public void fillActionBars( IActionBars actionBars )
     {
-        // Tool Bar
-        actionBars.getToolBarManager().add( modificationLogsViewActionMap.get( clearAction ) );
-        actionBars.getToolBarManager().add( modificationLogsViewActionMap.get( refreshAction ) );
-        actionBars.getToolBarManager().add( new Separator() );
-        actionBars.getToolBarManager().add( modificationLogsViewActionMap.get( olderAction ) );
-        actionBars.getToolBarManager().add( modificationLogsViewActionMap.get( newerAction ) );
-        actionBars.getToolBarManager().add( new Separator() );
-        actionBars.getToolBarManager().add( modificationLogsViewActionMap.get( exportAction ) );
-
-        // Menu Bar
-        actionBars.getMenuManager().add( enableModificationLogsAction );
-        actionBars.getMenuManager().add( new Separator() );
-        actionBars.getMenuManager().add( openModificationLogsPreferencePageAction );
-        actionBars.getMenuManager().addMenuListener( new IMenuListener()
-        {
-            public void menuAboutToShow( IMenuManager manager )
-            {
-                enableModificationLogsAction.setChecked( ConnectionCorePlugin.getDefault().getPluginPreferences()
-                    .getBoolean( ConnectionCoreConstants.PREFERENCE_MODIFICATIONLOGS_ENABLE ) );
-            }
-        } );
+//        // Tool Bar
+//        actionBars.getToolBarManager().add( modificationLogsViewActionMap.get( clearAction ) );
+//        actionBars.getToolBarManager().add( modificationLogsViewActionMap.get( refreshAction ) );
+//        actionBars.getToolBarManager().add( new Separator() );
+//        actionBars.getToolBarManager().add( modificationLogsViewActionMap.get( olderAction ) );
+//        actionBars.getToolBarManager().add( modificationLogsViewActionMap.get( newerAction ) );
+//        actionBars.getToolBarManager().add( new Separator() );
+//        actionBars.getToolBarManager().add( modificationLogsViewActionMap.get( exportAction ) );
+//
+//        // Menu Bar
+//        actionBars.getMenuManager().add( enableModificationLogsAction );
+//        actionBars.getMenuManager().add( new Separator() );
+//        actionBars.getMenuManager().add( openModificationLogsPreferencePageAction );
+//        actionBars.getMenuManager().addMenuListener( new IMenuListener()
+//        {
+//            public void menuAboutToShow( IMenuManager manager )
+//            {
+//                enableModificationLogsAction.setChecked( ConnectionCorePlugin.getDefault().getPluginPreferences()
+//                    .getBoolean( ConnectionCoreConstants.PREFERENCE_MODIFICATIONLOGS_ENABLE ) );
+//            }
+//        } );
     }
 
 
@@ -166,10 +164,10 @@ public class ModificationLogsViewActionGroup implements ActionHandlerManager, IM
      */
     public void setInput( ModificationLogsViewInput input )
     {
-        for ( ModificationLogsViewActionProxy action : modificationLogsViewActionMap.values() )
-        {
-            action.inputChanged( input );
-        }
+//        for ( ModificationLogsViewActionProxy action : modificationLogsViewActionMap.values() )
+//        {
+//            action.inputChanged( input );
+//        }
     }
 
 

@@ -21,15 +21,6 @@
 package org.apache.directory.studio.ldifeditor.editor;
 
 
-import org.apache.directory.studio.ldifeditor.LdifEditorActivator;
-import org.apache.directory.studio.ldifeditor.LdifEditorConstants;
-import org.eclipse.ui.IActionBars;
-import org.eclipse.ui.IEditorPart;
-import org.eclipse.ui.IWorkbenchPage;
-import org.eclipse.ui.texteditor.BasicTextEditorActionContributor;
-import org.eclipse.ui.texteditor.ITextEditor;
-import org.eclipse.ui.texteditor.ITextEditorActionDefinitionIds;
-import org.eclipse.ui.texteditor.RetargetTextEditorAction;
 
 
 /**
@@ -37,54 +28,4 @@ import org.eclipse.ui.texteditor.RetargetTextEditorAction;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class LdifEditorContributor extends BasicTextEditorActionContributor
-{
-
-    private static final String CONTENTASSIST_ACTION = LdifEditorConstants.CONTENTASSIST_ACTION;
-
-    private RetargetTextEditorAction contentAssist;
-
-
-    /**
-     * Creates a new instance of LdifEditorContributor.
-     */
-    public LdifEditorContributor()
-    {
-        super();
-
-        contentAssist = new RetargetTextEditorAction( LdifEditorActivator.getDefault().getResourceBundle(),
-            "ContentAssistProposal." ); //$NON-NLS-1$
-        contentAssist.setActionDefinitionId( ITextEditorActionDefinitionIds.CONTENT_ASSIST_PROPOSALS );
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    public void setActiveEditor( IEditorPart part )
-    {
-        super.setActiveEditor( part );
-        ITextEditor editor = ( part instanceof ITextEditor ) ? ( ITextEditor ) part : null;
-        contentAssist.setAction( getAction( editor, CONTENTASSIST_ACTION ) );
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    public void init( IActionBars bars, IWorkbenchPage page )
-    {
-        super.init( bars, page );
-        bars.setGlobalActionHandler( CONTENTASSIST_ACTION, contentAssist );
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    public void dispose()
-    {
-        setActiveEditor( null );
-        super.dispose();
-    }
-}
+public class LdifEditorContributor {}

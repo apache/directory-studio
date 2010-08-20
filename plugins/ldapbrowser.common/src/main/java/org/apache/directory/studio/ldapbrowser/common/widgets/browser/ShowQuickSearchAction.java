@@ -25,7 +25,6 @@ import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonConstants;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
-import org.eclipse.ui.texteditor.IWorkbenchActionDefinitionIds;
 
 
 /**
@@ -48,7 +47,7 @@ public class ShowQuickSearchAction extends Action
     {
         super( Messages.getString( "ShowQuickSearchAction.ShowQuickSearch" ), IAction.AS_CHECK_BOX ); //$NON-NLS-1$
         this.quickSearchWidget = quickSearchWidget;
-        setActionDefinitionId( IWorkbenchActionDefinitionIds.FIND_REPLACE );
+        setActionDefinitionId( "" /*IWorkbenchActionDefinitionIds.FIND_REPLACE*/ );
         setEnabled( true );
         setChecked( BrowserCommonActivator.getDefault().getPreferenceStore().getBoolean(
             BrowserCommonConstants.PREFERENCE_BROWSER_SHOW_QUICK_SEARCH ) );

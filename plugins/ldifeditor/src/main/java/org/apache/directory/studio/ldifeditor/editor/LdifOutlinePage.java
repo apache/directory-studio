@@ -126,8 +126,8 @@ public class LdifOutlinePage extends ContentOutlinePage
                     if ( element instanceof LdifRecord )
                     {
                         LdifRecord ldifRecord = ( LdifRecord ) element;
-                        ldifEditor.selectAndReveal( ldifRecord.getDnLine().getOffset(), ldifRecord.getDnLine()
-                            .getLength() );
+//                        ldifEditor.selectAndReveal( ldifRecord.getDnLine().getOffset(), ldifRecord.getDnLine()
+//                            .getLength() );
                     }
                     else if ( element instanceof List )
                     {
@@ -135,19 +135,19 @@ public class LdifOutlinePage extends ContentOutlinePage
                         if ( !list.isEmpty() && list.get( 0 ) instanceof LdifAttrValLine )
                         {
                             LdifAttrValLine line = ( LdifAttrValLine ) list.get( 0 );
-                            ldifEditor.selectAndReveal( line.getOffset(), line.getRawAttributeDescription().length() );
+//                            ldifEditor.selectAndReveal( line.getOffset(), line.getRawAttributeDescription().length() );
                         }
                     }
                     else if ( element instanceof LdifAttrValLine )
                     {
                         LdifAttrValLine line = ( LdifAttrValLine ) element;
-                        ldifEditor.selectAndReveal( line.getOffset() + line.getRawAttributeDescription().length()
-                            + line.getRawValueType().length(), line.getRawValue().length() );
+//                        ldifEditor.selectAndReveal( line.getOffset() + line.getRawAttributeDescription().length()
+//                            + line.getRawValueType().length(), line.getRawValue().length() );
                     }
                     else if ( element instanceof LdifModSpec )
                     {
                         LdifModSpec modSpec = ( LdifModSpec ) element;
-                        ldifEditor.selectAndReveal( modSpec.getOffset(), modSpec.getModSpecType().getLength() );
+//                        ldifEditor.selectAndReveal( modSpec.getOffset(), modSpec.getModSpecType().getLength() );
                     }
                 }
             }

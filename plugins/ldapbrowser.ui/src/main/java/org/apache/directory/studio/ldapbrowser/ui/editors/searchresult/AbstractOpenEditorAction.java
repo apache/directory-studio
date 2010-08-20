@@ -103,46 +103,46 @@ public abstract class AbstractOpenEditorAction extends BrowserAction implements 
      */
     private void activateEditor()
     {
-        Object element = cursor.getRow().getData();
-        String property = ( String ) viewer.getColumnProperties()[cursor.getColumn()];
+//        Object element = cursor.getRow().getData();
+//        String property = ( String ) viewer.getColumnProperties()[cursor.getColumn()];
 
-        if ( !viewer.isCellEditorActive() && viewer.getCellModifier().canModify( element, property ) )
-        {
-            // disable action handlers
-            actionGroup.deactivateGlobalActionHandlers();
-
-            // set cell editor to viewer
-            for ( int i = 0; i < viewer.getCellEditors().length; i++ )
-            {
-                viewer.getCellEditors()[i] = cellEditor;
-            }
-
-            // add listener for end of editing
-            if ( cellEditor.getControl() != null )
-            {
-                cellEditor.getControl().addFocusListener( this );
-                cellEditor.getControl().addKeyListener( this );
-            }
-
-            // deactivate cursor
-            cursor.setVisible( false );
-
-            // start editing
-            isActive = true;
-            viewer.editElement( element, cursor.getColumn() );
-
-            viewer.setSelection( null, true );
-            viewer.getTable().setSelection( new TableItem[0] );
-
-            if ( !viewer.isCellEditorActive() )
-            {
-                editorClosed();
-            }
-        }
-        else
-        {
-            valueEditorManager.setUserSelectedValueEditor( null );
-        }
+//        if ( !viewer.isCellEditorActive() && viewer.getCellModifier().canModify( element, property ) )
+//        {
+//            // disable action handlers
+//            actionGroup.deactivateGlobalActionHandlers();
+//
+//            // set cell editor to viewer
+//            for ( int i = 0; i < viewer.getCellEditors().length; i++ )
+//            {
+//                viewer.getCellEditors()[i] = cellEditor;
+//            }
+//
+//            // add listener for end of editing
+//            if ( cellEditor.getControl() != null )
+//            {
+//                cellEditor.getControl().addFocusListener( this );
+//                cellEditor.getControl().addKeyListener( this );
+//            }
+//
+//            // deactivate cursor
+//            cursor.setVisible( false );
+//
+//            // start editing
+//            isActive = true;
+//            viewer.editElement( element, cursor.getColumn() );
+//
+//            viewer.setSelection( null, true );
+//            viewer.getTable().setSelection( new TableItem[0] );
+//
+//            if ( !viewer.isCellEditorActive() )
+//            {
+//                editorClosed();
+//            }
+//        }
+//        else
+//        {
+//            valueEditorManager.setUserSelectedValueEditor( null );
+//        }
     }
 
 
@@ -167,16 +167,16 @@ public abstract class AbstractOpenEditorAction extends BrowserAction implements 
         valueEditorManager.setUserSelectedValueEditor( null );
 
         // activate cursor
-        cursor.setVisible( true );
-        viewer.refresh();
-        cursor.redraw();
-        cursor.getDisplay().asyncExec( new Runnable()
-        {
-            public void run()
-            {
-                cursor.setFocus();
-            }
-        } );
+//        cursor.setVisible( true );
+//        viewer.refresh();
+//        cursor.redraw();
+//        cursor.getDisplay().asyncExec( new Runnable()
+//        {
+//            public void run()
+//            {
+//                cursor.setFocus();
+//            }
+//        } );
 
         // enable action handlers
         actionGroup.activateGlobalActionHandlers();

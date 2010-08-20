@@ -165,7 +165,7 @@ public class EntryEditorUtils
         MessageDialog dialog = new MessageDialog( Display.getCurrent().getActiveShell(), Messages
             .getString( "EntryEditorUtils.SaveChanges" ), null, Messages //$NON-NLS-1$
             .getString( "EntryEditorUtils.SaveChangesDescription" ), MessageDialog.QUESTION, new String[] //$NON-NLS-1$
-            { IDialogConstants.YES_LABEL, IDialogConstants.NO_LABEL }, 0 );
+            { "Yes", "No" }, 0 );
         int result = dialog.open();
         if ( result == 0 )
         {

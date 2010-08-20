@@ -35,14 +35,12 @@ import org.apache.directory.studio.connection.core.Connection.ReferralHandlingMe
 import org.apache.directory.studio.connection.core.event.ConnectionEventRegistry;
 import org.apache.directory.studio.ldapbrowser.core.BookmarkManager;
 import org.apache.directory.studio.ldapbrowser.core.SearchManager;
-import org.apache.directory.studio.ldapbrowser.core.internal.search.LdapSearchPageScoreComputer;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.IRootDSE;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.Schema;
 import org.apache.directory.studio.ldapbrowser.core.utils.Utils;
-import org.eclipse.search.ui.ISearchPageScoreComputer;
 
 
 /**
@@ -557,10 +555,10 @@ public class BrowserConnection implements IBrowserConnection, Serializable
     public Object getAdapter( Class adapter )
     {
         Class<?> clazz = ( Class<?> ) adapter;
-        if ( clazz.isAssignableFrom( ISearchPageScoreComputer.class ) )
-        {
-            return new LdapSearchPageScoreComputer();
-        }
+//        if ( clazz.isAssignableFrom( ISearchPageScoreComputer.class ) )
+//        {
+//            return new LdapSearchPageScoreComputer();
+//        }
         if ( clazz.isAssignableFrom( IBrowserConnection.class ) )
         {
             return this;

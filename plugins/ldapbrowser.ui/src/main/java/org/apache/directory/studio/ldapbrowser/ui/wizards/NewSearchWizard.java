@@ -22,10 +22,8 @@ package org.apache.directory.studio.ldapbrowser.ui.wizards;
 
 
 import org.apache.directory.studio.ldapbrowser.ui.BrowserUIConstants;
-import org.apache.directory.studio.ldapbrowser.ui.search.SearchPage;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
-import org.eclipse.search.ui.NewSearchUI;
 import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchWindow;
@@ -86,7 +84,7 @@ public class NewSearchWizard extends Wizard implements INewWizard
      */
     public boolean performFinish()
     {
-        NewSearchUI.openSearchDialog( window, SearchPage.getId() );
+//        NewSearchUI.openSearchDialog( window, SearchPage.getId() );
         return true;
     }
 

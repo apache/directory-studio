@@ -111,14 +111,14 @@
       </page>            
    </extension>
 
-   <extension
+   <!--<extension
          point="org.eclipse.ui.editors.templates">
       <contextType
             class="org.eclipse.jface.text.templates.TemplateContextType"
             name="%CtxType_LdapFilter_Template_name"
             id="%CtxType_LdapFilter_Template_id"/>
       <include file="resources/templates/templates.xml"/>
-   </extension>
+   </extension>-->
 
  <extension
        point="org.eclipse.ui.keywords">
@@ -136,7 +136,7 @@
           label="%Keyword_LDIF_label"/>
  </extension>
 
- <extension
+ <!--<extension
        point="org.eclipse.ui.bindings">
     <key
           commandId="%Cmd_AddValue_id"
@@ -218,7 +218,7 @@
           contextId="%Ctx_LdapBrowserDialogs_id"
           schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
           sequence="F7"/>            
- </extension>
+ </extension>-->
 
  <extension
        point="org.eclipse.ui.commands">

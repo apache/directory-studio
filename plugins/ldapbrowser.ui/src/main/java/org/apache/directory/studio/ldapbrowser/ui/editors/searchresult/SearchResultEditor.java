@@ -99,40 +99,40 @@ public class SearchResultEditor extends EditorPart implements INavigationLocatio
 
             IEntry modifiedEntry = event.getModifiedEntry();
             IEntry originalEntry = modifiedEntry.getBrowserConnection().getEntryFromCache( modifiedEntry.getDn() );
-            ISearchResult referenceCopy = configuration.getCursor( mainWidget.getViewer() ).getSelectedReferenceCopy();
-            ISearchResult workingCopy = configuration.getCursor( mainWidget.getViewer() ).getSelectedSearchResult();
+//            ISearchResult referenceCopy = configuration.getCursor( mainWidget.getViewer() ).getSelectedReferenceCopy();
+//            ISearchResult workingCopy = configuration.getCursor( mainWidget.getViewer() ).getSelectedSearchResult();
 
-            // check on object identity, nothing should be done for equal objects from other editors
-            if ( workingCopy != null && workingCopy.getEntry() == modifiedEntry )
-            {
-                // only save if we receive a real value modification event
-                if ( !( event instanceof ValueAddedEvent || event instanceof ValueDeletedEvent
-                    || event instanceof ValueModifiedEvent || event instanceof ValueRenamedEvent || event instanceof ValueMultiModificationEvent ) )
-                {
-                    return;
-                }
-                // consistency check: don't save if there is an empty value, silently return in that case
-                for ( IAttribute attribute : modifiedEntry.getAttributes() )
-                {
-                    for ( IValue value : attribute.getValues() )
-                    {
-                        if ( value.isEmpty() )
-                        {
-                            return;
-                        }
-                    }
-                }
-
-                LdifFile diff = Utils.computeDiff( referenceCopy.getEntry(), modifiedEntry );
-                if ( diff != null )
-                {
-                    // save
-                    UpdateEntryRunnable runnable = new UpdateEntryRunnable( originalEntry, diff
-                        .toFormattedString( LdifFormatParameters.DEFAULT ) );
-                    RunnableContextRunner.execute( runnable, null, true );
-                }
-                configuration.getCursor( mainWidget.getViewer() ).resetCopies();
-            }
+//            // check on object identity, nothing should be done for equal objects from other editors
+//            if ( workingCopy != null && workingCopy.getEntry() == modifiedEntry )
+//            {
+//                // only save if we receive a real value modification event
+//                if ( !( event instanceof ValueAddedEvent || event instanceof ValueDeletedEvent
+//                    || event instanceof ValueModifiedEvent || event instanceof ValueRenamedEvent || event instanceof ValueMultiModificationEvent ) )
+//                {
+//                    return;
+//                }
+//                // consistency check: don't save if there is an empty value, silently return in that case
+//                for ( IAttribute attribute : modifiedEntry.getAttributes() )
+//                {
+//                    for ( IValue value : attribute.getValues() )
+//                    {
+//                        if ( value.isEmpty() )
+//                        {
+//                            return;
+//                        }
+//                    }
+//                }
+//
+//                LdifFile diff = Utils.computeDiff( referenceCopy.getEntry(), modifiedEntry );
+//                if ( diff != null )
+//                {
+//                    // save
+//                    UpdateEntryRunnable runnable = new UpdateEntryRunnable( originalEntry, diff
+//                        .toFormattedString( LdifFormatParameters.DEFAULT ) );
+//                    RunnableContextRunner.execute( runnable, null, true );
+//                }
+//                configuration.getCursor( mainWidget.getViewer() ).resetCopies();
+//            }
         }
     };
 
@@ -255,7 +255,7 @@ public class SearchResultEditor extends EditorPart implements INavigationLocatio
 
         // create the listener
         universalListener = new SearchResultEditorUniversalListener( this );
-        getSite().setSelectionProvider( configuration.getCursor( mainWidget.getViewer() ) );
+//        getSite().setSelectionProvider( configuration.getCursor( mainWidget.getViewer() ) );
         this.setInput( getEditorInput() );
 
         BrowserUIPlugin.getDefault().getPreferenceStore().addPropertyChangeListener( this );
@@ -371,9 +371,9 @@ public class SearchResultEditor extends EditorPart implements INavigationLocatio
             {
                 public ShowInContext getShowInContext()
                 {
-                    ISelection selection = getConfiguration().getCursor( getMainWidget().getViewer() ).getSelection();
-                    return new ShowInContext( getMainWidget().getViewer().getInput(), selection );
-                }
+//                    ISelection selection = getConfiguration().getCursor( getMainWidget().getViewer() ).getSelection();
+//                    return new ShowInContext( getMainWidget().getViewer().getInput(), selection );
+                return null;}
             };
         }
 

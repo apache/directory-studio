@@ -112,29 +112,29 @@ public class SearchResultEditorCellModifier implements ICellModifier
      */
     public Object getValue( Object element, String property )
     {
-        if ( element != null && element instanceof ISearchResult && property != null )
-        {
-            // perform modifications on the clone
-            ISearchResult result = cursor.getSelectedSearchResult();
-            AttributeHierarchy ah = result.getAttributeWithSubtypes( property );
-
-            if ( !canModify( element, property ) )
-            {
-                return null;
-            }
-
-            if ( ah == null )
-            {
-                ah = new AttributeHierarchy( result.getEntry(), property, new IAttribute[]
-                    { new Attribute( result.getEntry(), property ) } );
-            }
-
-            return valueEditorManager.getCurrentValueEditor( ah ).getRawValue( ah );
-        }
-        else
-        {
+//        if ( element != null && element instanceof ISearchResult && property != null )
+//        {
+//            // perform modifications on the clone
+//            ISearchResult result = cursor.getSelectedSearchResult();
+//            AttributeHierarchy ah = result.getAttributeWithSubtypes( property );
+//
+//            if ( !canModify( element, property ) )
+//            {
+//                return null;
+//            }
+//
+//            if ( ah == null )
+//            {
+//                ah = new AttributeHierarchy( result.getEntry(), property, new IAttribute[]
+//                    { new Attribute( result.getEntry(), property ) } );
+//            }
+//
+//            return valueEditorManager.getCurrentValueEditor( ah ).getRawValue( ah );
+//        }
+//        else
+//        {
             return null;
-        }
+//        }
     }
 
 
@@ -143,39 +143,39 @@ public class SearchResultEditorCellModifier implements ICellModifier
      */
     public void modify( Object element, String property, Object newRawValue )
     {
-        if ( element != null && element instanceof Item )
-        {
-            element = ( ( Item ) element ).getData();
-        }
-
-        if ( element != null && element instanceof ISearchResult && property != null )
-        {
-            // perform modifications on the clone
-            ISearchResult result = cursor.getSelectedSearchResult();
-            AttributeHierarchy ah = result.getAttributeWithSubtypes( property );
-
-            // switch operation:
-            if ( ah == null && newRawValue != null )
-            {
-                new CompoundModification().createValue( result.getEntry(), property, newRawValue );
-            }
-            else if ( ah != null && newRawValue == null )
-            {
-                List<IValue> values = new ArrayList<IValue>();
-                for ( IAttribute attribute : ah.getAttributes() )
-                {
-                    for ( IValue value : attribute.getValues() )
-                    {
-                        values.add( value );
-                    }
-                }
-                new CompoundModification().deleteValues( values );
-            }
-            else if ( ah != null && ah.size() == 1 && ah.getAttribute().getValueSize() == 1 && newRawValue != null )
-            {
-                new CompoundModification().modifyValue( ah.getAttribute().getValues()[0], newRawValue );
-            }
-        }
+//        if ( element != null && element instanceof Item )
+//        {
+//            element = ( ( Item ) element ).getData();
+//        }
+//
+//        if ( element != null && element instanceof ISearchResult && property != null )
+//        {
+//            // perform modifications on the clone
+//            ISearchResult result = cursor.getSelectedSearchResult();
+//            AttributeHierarchy ah = result.getAttributeWithSubtypes( property );
+//
+//            // switch operation:
+//            if ( ah == null && newRawValue != null )
+//            {
+//                new CompoundModification().createValue( result.getEntry(), property, newRawValue );
+//            }
+//            else if ( ah != null && newRawValue == null )
+//            {
+//                List<IValue> values = new ArrayList<IValue>();
+//                for ( IAttribute attribute : ah.getAttributes() )
+//                {
+//                    for ( IValue value : attribute.getValues() )
+//                    {
+//                        values.add( value );
+//                    }
+//                }
+//                new CompoundModification().deleteValues( values );
+//            }
+//            else if ( ah != null && ah.size() == 1 && ah.getAttribute().getValueSize() == 1 && newRawValue != null )
+//            {
+//                new CompoundModification().modifyValue( ah.getAttribute().getValues()[0], newRawValue );
+//            }
+//        }
     }
 
 }

@@ -105,7 +105,7 @@ public class CertificateTrustDialog extends Dialog
     {
         createButton( parent, IDialogConstants.DETAILS_ID, Messages
             .getString( "CertificateTrustDialog.ViewCertificate" ), false );
-        createButton( parent, IDialogConstants.OK_ID, IDialogConstants.OK_LABEL, false );
+        createButton( parent, IDialogConstants.OK_ID, "OK"/*IDialogConstants.OK_LABEL*/, false );
     }
 
 

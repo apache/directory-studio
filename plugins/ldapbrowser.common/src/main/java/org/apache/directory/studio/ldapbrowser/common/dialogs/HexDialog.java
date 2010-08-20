@@ -21,15 +21,8 @@
 package org.apache.directory.studio.ldapbrowser.common.dialogs;
 
 
-import java.io.File;
-import java.io.IOException;
-
-import org.apache.commons.io.FileUtils;
-import org.apache.directory.studio.connection.ui.ConnectionUIPlugin;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonConstants;
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.resource.JFaceResources;
@@ -37,7 +30,6 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
@@ -95,45 +87,45 @@ public class HexDialog extends Dialog
         }
         else if ( buttonId == SAVE_BUTTON_ID )
         {
-            FileDialog fileDialog = new FileDialog( getShell(), SWT.SAVE );
-            fileDialog.setText( Messages.getString( "HexDialog.SaveData" ) ); //$NON-NLS-1$
-            // fileDialog.setFilterExtensions(new String[]{"*.jpg"});
-            String returnedFileName = fileDialog.open();
-            if ( returnedFileName != null )
-            {
-                try
-                {
-                    File file = new File( returnedFileName );
-                    FileUtils.writeByteArrayToFile( file, currentData );
-                }
-                catch ( IOException e )
-                {
-                    ConnectionUIPlugin.getDefault().getExceptionHandler().handleException(
-                        new Status( IStatus.ERROR, BrowserCommonConstants.PLUGIN_ID, IStatus.ERROR, Messages
-                            .getString( "HexDialog.CantWriteToFile" ), e ) ); //$NON-NLS-1$
-                }
-            }
+//            FileDialog fileDialog = new FileDialog( getShell(), SWT.SAVE );
+//            fileDialog.setText( Messages.getString( "HexDialog.SaveData" ) ); //$NON-NLS-1$
+//            // fileDialog.setFilterExtensions(new String[]{"*.jpg"});
+//            String returnedFileName = fileDialog.open();
+//            if ( returnedFileName != null )
+//            {
+//                try
+//                {
+//                    File file = new File( returnedFileName );
+//                    FileUtils.writeByteArrayToFile( file, currentData );
+//                }
+//                catch ( IOException e )
+//                {
+//                    ConnectionUIPlugin.getDefault().getExceptionHandler().handleException(
+//                        new Status( IStatus.ERROR, BrowserCommonConstants.PLUGIN_ID, IStatus.ERROR, Messages
+//                            .getString( "HexDialog.CantWriteToFile" ), e ) ); //$NON-NLS-1$
+//                }
+//            }
         }
         else if ( buttonId == LOAD_BUTTON_ID )
         {
-            FileDialog fileDialog = new FileDialog( getShell(), SWT.OPEN );
-            fileDialog.setText( Messages.getString( "HexDialog.LoadData" ) ); //$NON-NLS-1$
-            String returnedFileName = fileDialog.open();
-            if ( returnedFileName != null )
-            {
-                try
-                {
-                    File file = new File( returnedFileName );
-                    currentData = FileUtils.readFileToByteArray( file );
-                    hexText.setText( toFormattedHex( currentData ) );
-                }
-                catch ( IOException e )
-                {
-                    ConnectionUIPlugin.getDefault().getExceptionHandler().handleException(
-                        new Status( IStatus.ERROR, BrowserCommonConstants.PLUGIN_ID, IStatus.ERROR, Messages
-                            .getString( "HexDialog.CantReadFile" ), e ) ); //$NON-NLS-1$
-                }
-            }
+//            FileDialog fileDialog = new FileDialog( getShell(), SWT.OPEN );
+//            fileDialog.setText( Messages.getString( "HexDialog.LoadData" ) ); //$NON-NLS-1$
+//            String returnedFileName = fileDialog.open();
+//            if ( returnedFileName != null )
+//            {
+//                try
+//                {
+//                    File file = new File( returnedFileName );
+//                    currentData = FileUtils.readFileToByteArray( file );
+//                    hexText.setText( toFormattedHex( currentData ) );
+//                }
+//                catch ( IOException e )
+//                {
+//                    ConnectionUIPlugin.getDefault().getExceptionHandler().handleException(
+//                        new Status( IStatus.ERROR, BrowserCommonConstants.PLUGIN_ID, IStatus.ERROR, Messages
+//                            .getString( "HexDialog.CantReadFile" ), e ) ); //$NON-NLS-1$
+//                }
+//            }
         }
         else
         {
@@ -162,8 +154,8 @@ public class HexDialog extends Dialog
     {
         createButton( parent, LOAD_BUTTON_ID, Messages.getString( "HexDialog.LoadDataButton" ), false ); //$NON-NLS-1$
         createButton( parent, SAVE_BUTTON_ID, Messages.getString( "HexDialog.SaveDataButton" ), false ); //$NON-NLS-1$
-        createButton( parent, IDialogConstants.OK_ID, IDialogConstants.OK_LABEL, false );
-        createButton( parent, IDialogConstants.CANCEL_ID, IDialogConstants.CANCEL_LABEL, false );
+        createButton( parent, IDialogConstants.OK_ID,"OK", false );
+        createButton( parent, IDialogConstants.CANCEL_ID, "Cancel", false );
     }
 
 

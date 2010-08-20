@@ -22,7 +22,6 @@ package org.apache.directory.studio.ldapbrowser.ui.search;
 
 
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
-import org.apache.directory.studio.ldapbrowser.common.actions.BrowserSelectionUtils;
 import org.apache.directory.studio.ldapbrowser.common.widgets.WidgetModifyEvent;
 import org.apache.directory.studio.ldapbrowser.common.widgets.WidgetModifyListener;
 import org.apache.directory.studio.ldapbrowser.common.widgets.search.SearchPageWrapper;
@@ -31,8 +30,6 @@ import org.apache.directory.studio.ldapbrowser.ui.BrowserUIConstants;
 import org.eclipse.jface.dialogs.DialogPage;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.search.ui.ISearchPage;
-import org.eclipse.search.ui.ISearchPageContainer;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -46,11 +43,11 @@ import org.eclipse.ui.PlatformUI;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class SearchPage extends DialogPage implements ISearchPage, WidgetModifyListener
+public class SearchPage extends DialogPage implements WidgetModifyListener
 {
 
     /** The search page container. */
-    private ISearchPageContainer container;
+//    private ISearchPageContainer container;
 
     /** The search. */
     private ISearch search;
@@ -130,13 +127,13 @@ public class SearchPage extends DialogPage implements ISearchPage, WidgetModifyL
     }
 
 
-    /**
-     * {@inheritDoc}
-     */
-    public void setContainer( ISearchPageContainer container )
-    {
-        this.container = container;
-    }
+//    /**
+//     * {@inheritDoc}
+//     */
+//    public void setContainer( ISearchPageContainer container )
+//    {
+//        this.container = container;
+//    }
 
 
     /**
@@ -145,7 +142,7 @@ public class SearchPage extends DialogPage implements ISearchPage, WidgetModifyL
     public void createControl( Composite parent )
     {
         // declare search
-        search = BrowserSelectionUtils.getExampleSearch( container.getSelection() );
+//        search = BrowserSelectionUtils.getExampleSearch( container.getSelection() );
 
         // create search page content
         GridLayout gl = new GridLayout();
@@ -178,7 +175,7 @@ public class SearchPage extends DialogPage implements ISearchPage, WidgetModifyL
      */
     public void setVisible( boolean visible )
     {
-        container.setPerformActionEnabled( spw.isValid() );
+//        container.setPerformActionEnabled( spw.isValid() );
         super.setVisible( visible );
     }
 
@@ -188,7 +185,7 @@ public class SearchPage extends DialogPage implements ISearchPage, WidgetModifyL
      */
     public void widgetModified( WidgetModifyEvent event )
     {
-        container.setPerformActionEnabled( spw.isValid() );
+//        container.setPerformActionEnabled( spw.isValid() );
 
         setErrorMessage( spw.getErrorMessage() );
         errorMessageLabel.setText( getErrorMessage() != null ? getErrorMessage() : "" ); //$NON-NLS-1$

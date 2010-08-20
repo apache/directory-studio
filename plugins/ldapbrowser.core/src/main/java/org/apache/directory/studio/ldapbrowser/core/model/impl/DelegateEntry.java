@@ -29,14 +29,12 @@ import org.apache.directory.shared.ldap.schema.parsers.ObjectClassDescription;
 import org.apache.directory.shared.ldap.util.LdapURL;
 import org.apache.directory.studio.connection.core.jobs.StudioConnectionBulkRunnableWithProgress;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
-import org.apache.directory.studio.ldapbrowser.core.internal.search.LdapSearchPageScoreComputer;
 import org.apache.directory.studio.ldapbrowser.core.model.AttributeHierarchy;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.Schema;
 import org.apache.directory.studio.ldapbrowser.core.utils.Utils;
-import org.eclipse.search.ui.ISearchPageScoreComputer;
 
 
 /**
@@ -898,10 +896,10 @@ public abstract class DelegateEntry implements IEntry
     @SuppressWarnings("unchecked")
     public Object getAdapter( Class adapter )
     {
-        if ( adapter.isAssignableFrom( ISearchPageScoreComputer.class ) )
-        {
-            return new LdapSearchPageScoreComputer();
-        }
+//        if ( adapter.isAssignableFrom( ISearchPageScoreComputer.class ) )
+//        {
+//            return new LdapSearchPageScoreComputer();
+//        }
         if ( adapter == IBrowserConnection.class )
         {
             return this.getBrowserConnection();

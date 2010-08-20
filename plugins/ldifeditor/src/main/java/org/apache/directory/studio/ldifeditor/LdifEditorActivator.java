@@ -31,14 +31,9 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.resource.ColorRegistry;
 import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.jface.text.templates.ContextTypeRegistry;
-import org.eclipse.jface.text.templates.GlobalTemplateVariables;
-import org.eclipse.jface.text.templates.persistence.TemplateStore;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.RGB;
-import org.eclipse.ui.editors.text.templates.ContributionContextTypeRegistry;
-import org.eclipse.ui.editors.text.templates.ContributionTemplateStore;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
@@ -58,10 +53,10 @@ public class LdifEditorActivator extends AbstractUIPlugin
     private ColorRegistry colorRegistry;
 
     /** The template store */
-    private ContributionTemplateStore ldifTemplateStore;
-
-    /** The context type registry */
-    private ContributionContextTypeRegistry ldifTemplateContextTypeRegistry;
+//    private ContributionTemplateStore ldifTemplateStore;
+//
+//    /** The context type registry */
+//    private ContributionContextTypeRegistry ldifTemplateContextTypeRegistry;
 
     /** The plugin properties */
     private PropertyResourceBundle properties;
@@ -92,45 +87,45 @@ public class LdifEditorActivator extends AbstractUIPlugin
     {
         super.start( context );
 
-        if ( colorRegistry == null )
-        {
-            colorRegistry = new ColorRegistry( getWorkbench().getDisplay() );
-        }
+//        if ( colorRegistry == null )
+//        {
+//            colorRegistry = new ColorRegistry( getWorkbench().getDisplay() );
+//        }
 
-        if ( ldifTemplateContextTypeRegistry == null )
-        {
-            ldifTemplateContextTypeRegistry = new ContributionContextTypeRegistry();
-
-            ldifTemplateContextTypeRegistry.addContextType( LdifEditorConstants.LDIF_FILE_TEMPLATE_ID );
-            ldifTemplateContextTypeRegistry.getContextType( LdifEditorConstants.LDIF_FILE_TEMPLATE_ID ).addResolver(
-                new GlobalTemplateVariables.Cursor() );
-
-            ldifTemplateContextTypeRegistry.addContextType( LdifEditorConstants.LDIF_ATTR_VAL_RECORD_TEMPLATE_ID );
-            ldifTemplateContextTypeRegistry.getContextType( LdifEditorConstants.LDIF_ATTR_VAL_RECORD_TEMPLATE_ID )
-                .addResolver( new GlobalTemplateVariables.Cursor() );
-
-            ldifTemplateContextTypeRegistry.addContextType( LdifEditorConstants.LDIF_MODIFICATION_RECORD_TEMPLATE_ID );
-            ldifTemplateContextTypeRegistry.getContextType( LdifEditorConstants.LDIF_MODIFICATION_RECORD_TEMPLATE_ID )
-                .addResolver( new GlobalTemplateVariables.Cursor() );
-
-            ldifTemplateContextTypeRegistry.addContextType( LdifEditorConstants.LDIF_MODIFICATION_ITEM_TEMPLATE_ID );
-
-            ldifTemplateContextTypeRegistry.addContextType( LdifEditorConstants.LDIF_MODDN_RECORD_TEMPLATE_ID );
-        }
-
-        if ( ldifTemplateStore == null )
-        {
-            ldifTemplateStore = new ContributionTemplateStore( getLdifTemplateContextTypeRegistry(),
-                getPreferenceStore(), "templates" ); //$NON-NLS-1$
-            try
-            {
-                ldifTemplateStore.load();
-            }
-            catch ( IOException e )
-            {
-                e.printStackTrace();
-            }
-        }
+//        if ( ldifTemplateContextTypeRegistry == null )
+//        {
+//            ldifTemplateContextTypeRegistry = new ContributionContextTypeRegistry();
+//
+//            ldifTemplateContextTypeRegistry.addContextType( LdifEditorConstants.LDIF_FILE_TEMPLATE_ID );
+//            ldifTemplateContextTypeRegistry.getContextType( LdifEditorConstants.LDIF_FILE_TEMPLATE_ID ).addResolver(
+//                new GlobalTemplateVariables.Cursor() );
+//
+//            ldifTemplateContextTypeRegistry.addContextType( LdifEditorConstants.LDIF_ATTR_VAL_RECORD_TEMPLATE_ID );
+//            ldifTemplateContextTypeRegistry.getContextType( LdifEditorConstants.LDIF_ATTR_VAL_RECORD_TEMPLATE_ID )
+//                .addResolver( new GlobalTemplateVariables.Cursor() );
+//
+//            ldifTemplateContextTypeRegistry.addContextType( LdifEditorConstants.LDIF_MODIFICATION_RECORD_TEMPLATE_ID );
+//            ldifTemplateContextTypeRegistry.getContextType( LdifEditorConstants.LDIF_MODIFICATION_RECORD_TEMPLATE_ID )
+//                .addResolver( new GlobalTemplateVariables.Cursor() );
+//
+//            ldifTemplateContextTypeRegistry.addContextType( LdifEditorConstants.LDIF_MODIFICATION_ITEM_TEMPLATE_ID );
+//
+//            ldifTemplateContextTypeRegistry.addContextType( LdifEditorConstants.LDIF_MODDN_RECORD_TEMPLATE_ID );
+//        }
+//
+//        if ( ldifTemplateStore == null )
+//        {
+//            ldifTemplateStore = new ContributionTemplateStore( getLdifTemplateContextTypeRegistry(),
+//                getPreferenceStore(), "templates" ); //$NON-NLS-1$
+//            try
+//            {
+//                ldifTemplateStore.load();
+//            }
+//            catch ( IOException e )
+//            {
+//                e.printStackTrace();
+//            }
+//        }
     }
 
 
@@ -147,23 +142,23 @@ public class LdifEditorActivator extends AbstractUIPlugin
             colorRegistry = null;
         }
 
-        if ( ldifTemplateContextTypeRegistry != null )
-        {
-            ldifTemplateContextTypeRegistry = null;
-        }
+//        if ( ldifTemplateContextTypeRegistry != null )
+//        {
+//            ldifTemplateContextTypeRegistry = null;
+//        }
 
-        if ( ldifTemplateStore != null )
-        {
-            try
-            {
-                ldifTemplateStore.save();
-            }
-            catch ( IOException e )
-            {
-                e.printStackTrace();
-            }
-            ldifTemplateStore = null;
-        }
+//        if ( ldifTemplateStore != null )
+//        {
+//            try
+//            {
+//                ldifTemplateStore.save();
+//            }
+//            catch ( IOException e )
+//            {
+//                e.printStackTrace();
+//            }
+//            ldifTemplateStore = null;
+//        }
     }
 
 
@@ -254,24 +249,24 @@ public class LdifEditorActivator extends AbstractUIPlugin
     }
 
 
-    /**
-     * 
-     * @return The LDIF template context type registry
-     */
-    public ContextTypeRegistry getLdifTemplateContextTypeRegistry()
-    {
-        return ldifTemplateContextTypeRegistry;
-    }
-
-
-    /**
-     * 
-     * @return The LDIF template store
-     */
-    public TemplateStore getLdifTemplateStore()
-    {
-        return ldifTemplateStore;
-    }
+//    /**
+//     * 
+//     * @return The LDIF template context type registry
+//     */
+//    public ContextTypeRegistry getLdifTemplateContextTypeRegistry()
+//    {
+//        return ldifTemplateContextTypeRegistry;
+//    }
+//
+//
+//    /**
+//     * 
+//     * @return The LDIF template store
+//     */
+//    public TemplateStore getLdifTemplateStore()
+//    {
+//        return ldifTemplateStore;
+//    }
 
 
     /**

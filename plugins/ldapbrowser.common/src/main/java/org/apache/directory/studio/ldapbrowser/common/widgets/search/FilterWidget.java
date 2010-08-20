@@ -129,20 +129,20 @@ public class FilterWidget extends BrowserWidget
                 // either with 3rd mouse button (linux)
                 if ( !filterCombo.getText().equals( e.text ) && e.character == 0 && e.start == e.end )
                 {
-                    filterCPA.closeProposalPopup();
+//                    filterCPA.closeProposalPopup();
                 }
 
                 // or with ctrl+v / command+v
                 if ( !filterCombo.getText().equals( e.text ) && e.stateMask == SWT.MOD1 && e.start == e.end )
                 {
-                    filterCPA.closeProposalPopup();
+//                    filterCPA.closeProposalPopup();
                 }
             }
         } );
         parser = new LdapFilterParser();
-        contentAssistProcessor = new FilterContentAssistProcessor( parser );
-        filterCPA = new ExtendedContentAssistCommandAdapter( filterCombo, new ComboContentAdapter(),
-            contentAssistProcessor, null, null, true );
+//        contentAssistProcessor = new FilterContentAssistProcessor( parser );
+//        filterCPA = new ExtendedContentAssistCommandAdapter( filterCombo, new ComboContentAdapter(),
+//            contentAssistProcessor, null, null, true );
 
         // auto edit strategy
         new FilterWidgetAutoEditStrategyAdapter( filterCombo, parser );
@@ -215,9 +215,9 @@ public class FilterWidget extends BrowserWidget
         if ( this.browserConnection != browserConnection )
         {
             this.browserConnection = browserConnection;
-            contentAssistProcessor.setSchema( browserConnection == null ? null : browserConnection.getSchema() );
-            filterCPA.setAutoActivationCharacters( contentAssistProcessor
-                .getCompletionProposalAutoActivationCharacters() );
+//            contentAssistProcessor.setSchema( browserConnection == null ? null : browserConnection.getSchema() );
+//            filterCPA.setAutoActivationCharacters( contentAssistProcessor
+//                .getCompletionProposalAutoActivationCharacters() );
         }
     }
 

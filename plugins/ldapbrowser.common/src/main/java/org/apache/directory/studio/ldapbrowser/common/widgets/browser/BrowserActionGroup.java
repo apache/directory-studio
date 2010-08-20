@@ -237,30 +237,30 @@ public class BrowserActionGroup implements ActionHandlerManager, IMenuListener
      */
     public void activateGlobalActionHandlers()
     {
-        if ( actionBars != null )
-        {
-            actionBars.setGlobalActionHandler( ActionFactory.REFRESH.getId(), ( IAction ) browserActionMap
-                .get( refreshAction ) );
-            actionBars.setGlobalActionHandler( ActionFactory.PROPERTIES.getId(), ( IAction ) browserActionMap
-                .get( propertyDialogAction ) );
-            actionBars.setGlobalActionHandler( ActionFactory.FIND.getId(), showQuickSearchAction ); // IWorkbenchActionDefinitionIds.FIND_REPLACE
-            actionBars.updateActionBars();
-        }
-        else
-        {
-            IAction pda = browserActionMap.get( propertyDialogAction );
-            pda.setActionDefinitionId( BrowserCommonConstants.CMD_PROPERTIES );
-            ActionUtils.activateActionHandler( pda );
-
-            IAction ra = browserActionMap.get( refreshAction );
-            ActionUtils.activateActionHandler( ra );
-
-            showQuickSearchAction.setActionDefinitionId( BrowserCommonConstants.CMD_FIND );
-            ActionUtils.activateActionHandler( showQuickSearchAction );
-        }
-
-        IAction ua = browserActionMap.get( upAction );
-        ActionUtils.activateActionHandler( ua );
+//        if ( actionBars != null )
+//        {
+//            actionBars.setGlobalActionHandler( ActionFactory.REFRESH.getId(), ( IAction ) browserActionMap
+//                .get( refreshAction ) );
+//            actionBars.setGlobalActionHandler( ActionFactory.PROPERTIES.getId(), ( IAction ) browserActionMap
+//                .get( propertyDialogAction ) );
+//            actionBars.setGlobalActionHandler( ActionFactory.FIND.getId(), showQuickSearchAction ); // IWorkbenchActionDefinitionIds.FIND_REPLACE
+//            actionBars.updateActionBars();
+//        }
+//        else
+//        {
+//            IAction pda = browserActionMap.get( propertyDialogAction );
+//            pda.setActionDefinitionId( BrowserCommonConstants.CMD_PROPERTIES );
+//            ActionUtils.activateActionHandler( pda );
+//
+//            IAction ra = browserActionMap.get( refreshAction );
+//            ActionUtils.activateActionHandler( ra );
+//
+//            showQuickSearchAction.setActionDefinitionId( BrowserCommonConstants.CMD_FIND );
+//            ActionUtils.activateActionHandler( showQuickSearchAction );
+//        }
+//
+//        IAction ua = browserActionMap.get( upAction );
+//        ActionUtils.activateActionHandler( ua );
     }
 
 

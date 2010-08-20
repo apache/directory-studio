@@ -21,20 +21,9 @@
 package org.apache.directory.studio.ldifeditor.editor.reconciler;
 
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.apache.directory.studio.ldifeditor.editor.ILdifEditor;
 import org.apache.directory.studio.ldifparser.model.LdifFile;
-import org.apache.directory.studio.ldifparser.model.LdifPart;
 import org.apache.directory.studio.ldifparser.model.container.LdifContainer;
-
-import org.eclipse.jface.text.IDocument;
-import org.eclipse.jface.text.Position;
-import org.eclipse.jface.text.source.Annotation;
-import org.eclipse.jface.text.source.IAnnotationModel;
-import org.eclipse.jface.text.source.IAnnotationModelExtension;
-import org.eclipse.jface.text.source.ISourceViewer;
 
 
 class LdifAnnotationUpdater
@@ -66,79 +55,79 @@ class LdifAnnotationUpdater
     {
 
         LdifFile model = editor.getLdifModel();
-        ISourceViewer viewer = ( ISourceViewer ) editor.getAdapter( ISourceViewer.class );
-        if ( viewer == null )
-            return;
-
-        IDocument document = viewer.getDocument();
-        IAnnotationModel annotationModel = viewer.getAnnotationModel();
-        if ( document == null || annotationModel == null || model == null )
-            return;
-
-        if ( annotationModel instanceof IAnnotationModelExtension )
-        {
-            ( ( IAnnotationModelExtension ) annotationModel ).removeAllAnnotations();
-
-            List positionList = new ArrayList();
-
-            LdifContainer[] containers = model.getContainers();
-            for ( int i = 0; i < containers.length; i++ )
-            {
-                LdifContainer container = containers[i];
-
-                // LdifPart errorPart = null;
-                int errorOffset = -1;
-                int errorLength = -1;
-                StringBuffer errorText = null;
-
-                LdifPart[] parts = container.getParts();
-                for ( int k = 0; k < parts.length; k++ )
-                {
-                    LdifPart part = parts[k];
-                    if ( !part.isValid() )
-                    {
-                        if ( errorOffset == -1 )
-                        {
-                            // errorPart = part;
-                            errorOffset = part.getOffset();
-                            errorLength = part.getLength();
-                            errorText = new StringBuffer();
-                            errorText.append( part.toRawString() );
-                        }
-                        else
-                        {
-                            errorLength += part.getLength();
-                            errorText.append( part.toRawString() );
-                        }
-                    }
-                }
-
-                if ( errorOffset == -1 && !container.isValid() )
-                {
-                    errorOffset = container.getOffset();
-                    errorLength = container.getLength();
-                    errorText = new StringBuffer();
-                    errorText.append( container.toRawString() );
-                }
-
-                if ( errorOffset > -1 )
-                {
-                    // Annotation annotation = new Annotation("DEFAULT",
-                    // true,
-                    // invalidFilters[i].toString());
-                    // if(errorPart instanceof LdifUnknownPart) {
-                    // errorOffset = container.getOffset();
-                    // errorLength = container.getLength();
-                    // errorText = new StringBuffer(container.toString());
-                    // }
-                    Annotation annotation = new Annotation( ERROR_ANNOTATION_TYPE, true, errorText.toString() );
-                    Position position = new Position( errorOffset, errorLength );
-                    positionList.add( position );
-                    viewer.getAnnotationModel().addAnnotation( annotation, position );
-                }
-
-            }
-        }
+//        ISourceViewer viewer = ( ISourceViewer ) editor.getAdapter( ISourceViewer.class );
+//        if ( viewer == null )
+//            return;
+//
+//        IDocument document = viewer.getDocument();
+//        IAnnotationModel annotationModel = viewer.getAnnotationModel();
+//        if ( document == null || annotationModel == null || model == null )
+//            return;
+//
+//        if ( annotationModel instanceof IAnnotationModelExtension )
+//        {
+//            ( ( IAnnotationModelExtension ) annotationModel ).removeAllAnnotations();
+//
+//            List positionList = new ArrayList();
+//
+//            LdifContainer[] containers = model.getContainers();
+//            for ( int i = 0; i < containers.length; i++ )
+//            {
+//                LdifContainer container = containers[i];
+//
+//                // LdifPart errorPart = null;
+//                int errorOffset = -1;
+//                int errorLength = -1;
+//                StringBuffer errorText = null;
+//
+//                LdifPart[] parts = container.getParts();
+//                for ( int k = 0; k < parts.length; k++ )
+//                {
+//                    LdifPart part = parts[k];
+//                    if ( !part.isValid() )
+//                    {
+//                        if ( errorOffset == -1 )
+//                        {
+//                            // errorPart = part;
+//                            errorOffset = part.getOffset();
+//                            errorLength = part.getLength();
+//                            errorText = new StringBuffer();
+//                            errorText.append( part.toRawString() );
+//                        }
+//                        else
+//                        {
+//                            errorLength += part.getLength();
+//                            errorText.append( part.toRawString() );
+//                        }
+//                    }
+//                }
+//
+//                if ( errorOffset == -1 && !container.isValid() )
+//                {
+//                    errorOffset = container.getOffset();
+//                    errorLength = container.getLength();
+//                    errorText = new StringBuffer();
+//                    errorText.append( container.toRawString() );
+//                }
+//
+//                if ( errorOffset > -1 )
+//                {
+//                    // Annotation annotation = new Annotation("DEFAULT",
+//                    // true,
+//                    // invalidFilters[i].toString());
+//                    // if(errorPart instanceof LdifUnknownPart) {
+//                    // errorOffset = container.getOffset();
+//                    // errorLength = container.getLength();
+//                    // errorText = new StringBuffer(container.toString());
+//                    // }
+//                    Annotation annotation = new Annotation( ERROR_ANNOTATION_TYPE, true, errorText.toString() );
+//                    Position position = new Position( errorOffset, errorLength );
+//                    positionList.add( position );
+//                    viewer.getAnnotationModel().addAnnotation( annotation, position );
+//                }
+//
+//            }
+//        }
     }
 
 }

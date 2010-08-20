@@ -134,9 +134,9 @@ public class SelectReferralConnectionDialog extends Dialog
      */
     protected void createButtonsForButtonBar( Composite parent )
     {
-        Button okButton = createButton( parent, IDialogConstants.OK_ID, IDialogConstants.OK_LABEL, true );
+        Button okButton = createButton( parent, IDialogConstants.OK_ID, "OK" /*IDialogConstants.OK_LABEL*/, true );
         okButton.setFocus();
-        createButton( parent, IDialogConstants.CANCEL_ID, IDialogConstants.CANCEL_LABEL, false );
+        createButton( parent, IDialogConstants.CANCEL_ID, "Cancel" /*IDialogConstants.CANCEL_LABEL*/, false );
 
         validate();
     }

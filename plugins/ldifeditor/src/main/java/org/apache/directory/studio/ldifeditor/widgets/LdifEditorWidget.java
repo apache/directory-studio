@@ -29,13 +29,7 @@ import org.apache.directory.studio.ldifeditor.editor.LdifSourceViewerConfigurati
 import org.apache.directory.studio.ldifeditor.editor.NonExistingLdifEditorInput;
 import org.apache.directory.studio.ldifparser.model.LdifFile;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.jface.resource.JFaceResources;
-import org.eclipse.jface.text.IDocument;
-import org.eclipse.jface.text.ITextListener;
-import org.eclipse.jface.text.TextEvent;
-import org.eclipse.jface.text.source.SourceViewer;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -48,7 +42,7 @@ import org.eclipse.swt.widgets.Control;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class LdifEditorWidget extends BrowserWidget implements ILdifEditor, ITextListener
+public class LdifEditorWidget extends BrowserWidget implements ILdifEditor
 {
 
     /** The connection. */
@@ -67,7 +61,7 @@ public class LdifEditorWidget extends BrowserWidget implements ILdifEditor, ITex
     private LdifDocumentProvider documentProvider;
 
     /** The source viewer. */
-    private SourceViewer sourceViewer;
+//    private SourceViewer sourceViewer;
 
     /** The source viewer configuration. */
     private LdifSourceViewerConfiguration sourceViewerConfiguration;
@@ -98,8 +92,8 @@ public class LdifEditorWidget extends BrowserWidget implements ILdifEditor, ITex
     {
         if ( editorInput != null )
         {
-            sourceViewer.removeTextListener( this );
-            documentProvider.disconnect( editorInput );
+//            sourceViewer.removeTextListener( this );
+//            documentProvider.disconnect( editorInput );
             // documentProvider = null;
             editorInput = null;
         }
@@ -123,38 +117,38 @@ public class LdifEditorWidget extends BrowserWidget implements ILdifEditor, ITex
         // create source viewer
         // sourceViewer = new ProjectionViewer(parent, ruler,
         // getOverviewRuler(), true, styles);
-        sourceViewer = new SourceViewer( composite, null, null, false, SWT.BORDER | SWT.V_SCROLL | SWT.H_SCROLL );
-        sourceViewer.getControl().setLayoutData( new GridData( GridData.FILL_BOTH ) );
-
-        // configure
-        sourceViewerConfiguration = new LdifSourceViewerConfiguration( this, this.contentAssistEnabled );
-        sourceViewer.configure( sourceViewerConfiguration );
-
-        // set font
-        Font font = JFaceResources.getFont( JFaceResources.TEXT_FONT );
-        sourceViewer.getTextWidget().setFont( font );
+//        sourceViewer = new SourceViewer( composite, null, null, false, SWT.BORDER | SWT.V_SCROLL | SWT.H_SCROLL );
+//        sourceViewer.getControl().setLayoutData( new GridData( GridData.FILL_BOTH ) );
+//
+//        // configure
+//        sourceViewerConfiguration = new LdifSourceViewerConfiguration( this, this.contentAssistEnabled );
+//        sourceViewer.configure( sourceViewerConfiguration );
+//
+//        // set font
+//        Font font = JFaceResources.getFont( JFaceResources.TEXT_FONT );
+//        sourceViewer.getTextWidget().setFont( font );
 
         // setup document
-        try
-        {
+//        try
+//        {
             editorInput = new NonExistingLdifEditorInput();
             documentProvider = new LdifDocumentProvider();
-            documentProvider.connect( editorInput );
+//            documentProvider.connect( editorInput );
 
-            IDocument document = documentProvider.getDocument( editorInput );
-            document.set( initialLdif );
-            sourceViewer.setDocument( document );
-        }
-        catch ( CoreException e )
-        {
-            e.printStackTrace();
-        }
+//            IDocument document = documentProvider.getDocument( editorInput );
+//            document.set( initialLdif );
+//            sourceViewer.setDocument( document );
+//        }
+//        catch ( CoreException e )
+//        {
+//            e.printStackTrace();
+//        }
 
         // listener
-        sourceViewer.addTextListener( this );
+//        sourceViewer.addTextListener( this );
 
         // focus
-        sourceViewer.getControl().setFocus();
+//        sourceViewer.getControl().setFocus();
     }
 
 
@@ -172,7 +166,7 @@ public class LdifEditorWidget extends BrowserWidget implements ILdifEditor, ITex
      */
     public LdifFile getLdifModel()
     {
-        return documentProvider.getLdifModel();
+        return null;// documentProvider.getLdifModel();
     }
 
 
@@ -188,21 +182,21 @@ public class LdifEditorWidget extends BrowserWidget implements ILdifEditor, ITex
     /**
      * {@inheritDoc}
      */
-    public void textChanged( TextEvent event )
-    {
-        super.notifyListeners();
-    }
-
-
-    /**
-     * Gets the source viewer.
-     * 
-     * @return the source viewer
-     */
-    public SourceViewer getSourceViewer()
-    {
-        return sourceViewer;
-    }
+//    public void textChanged( TextEvent event )
+//    {
+//        super.notifyListeners();
+//    }
+//
+//
+//    /**
+//     * Gets the source viewer.
+//     * 
+//     * @return the source viewer
+//     */
+//    public SourceViewer getSourceViewer()
+//    {
+//        return sourceViewer;
+//    }
 
 
     /**

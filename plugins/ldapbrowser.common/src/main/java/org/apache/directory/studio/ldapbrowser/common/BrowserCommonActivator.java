@@ -36,16 +36,11 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.resource.ColorRegistry;
 import org.eclipse.jface.resource.FontRegistry;
 import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.jface.text.templates.ContextTypeRegistry;
-import org.eclipse.jface.text.templates.GlobalTemplateVariables;
-import org.eclipse.jface.text.templates.persistence.TemplateStore;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.RGB;
-import org.eclipse.ui.editors.text.templates.ContributionContextTypeRegistry;
-import org.eclipse.ui.editors.text.templates.ContributionTemplateStore;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
@@ -67,11 +62,11 @@ public class BrowserCommonActivator extends AbstractUIPlugin
     /** The value editor preferences */
     private ValueEditorsPreferences valueEditorPreferences;
 
-    /** The filter template store. */
-    private ContributionTemplateStore filterTemplateStore;
-
-    /** The filter template context type registry. */
-    private ContributionContextTypeRegistry filterTemplateContextTypeRegistry;
+//    /** The filter template store. */
+//    private ContributionTemplateStore filterTemplateStore;
+//
+//    /** The filter template context type registry. */
+//    private ContributionContextTypeRegistry filterTemplateContextTypeRegistry;
 
     /** The event runner. */
     private EventRunner eventRunner;
@@ -101,39 +96,39 @@ public class BrowserCommonActivator extends AbstractUIPlugin
             eventRunner = new UiThreadEventRunner();
         }
 
-        if ( fontRegistry == null )
-        {
-            fontRegistry = new FontRegistry( getWorkbench().getDisplay() );
-        }
-
-        if ( colorRegistry == null )
-        {
-            colorRegistry = new ColorRegistry( getWorkbench().getDisplay() );
-        }
+//        if ( fontRegistry == null )
+//        {
+//            fontRegistry = new FontRegistry( getWorkbench().getDisplay() );
+//        }
+//
+//        if ( colorRegistry == null )
+//        {
+//            colorRegistry = new ColorRegistry( getWorkbench().getDisplay() );
+//        }
 
         valueEditorPreferences = new ValueEditorsPreferences();
 
-        if ( filterTemplateContextTypeRegistry == null )
-        {
-            filterTemplateContextTypeRegistry = new ContributionContextTypeRegistry();
-            filterTemplateContextTypeRegistry.addContextType( BrowserCommonConstants.FILTER_TEMPLATE_ID );
-            filterTemplateContextTypeRegistry.getContextType( BrowserCommonConstants.FILTER_TEMPLATE_ID ).addResolver(
-                new GlobalTemplateVariables.Cursor() );
-        }
-
-        if ( filterTemplateStore == null )
-        {
-            filterTemplateStore = new ContributionTemplateStore( getFilterTemplateContextTypeRegistry(),
-                getPreferenceStore(), "templates" ); //$NON-NLS-1$
-            try
-            {
-                filterTemplateStore.load();
-            }
-            catch ( IOException e )
-            {
-                e.printStackTrace();
-            }
-        }
+//        if ( filterTemplateContextTypeRegistry == null )
+//        {
+//            filterTemplateContextTypeRegistry = new ContributionContextTypeRegistry();
+//            filterTemplateContextTypeRegistry.addContextType( BrowserCommonConstants.FILTER_TEMPLATE_ID );
+//            filterTemplateContextTypeRegistry.getContextType( BrowserCommonConstants.FILTER_TEMPLATE_ID ).addResolver(
+//                new GlobalTemplateVariables.Cursor() );
+//        }
+//
+//        if ( filterTemplateStore == null )
+//        {
+//            filterTemplateStore = new ContributionTemplateStore( getFilterTemplateContextTypeRegistry(),
+//                getPreferenceStore(), "templates" ); //$NON-NLS-1$
+//            try
+//            {
+//                filterTemplateStore.load();
+//            }
+//            catch ( IOException e )
+//            {
+//                e.printStackTrace();
+//            }
+//        }
     }
 
 
@@ -160,23 +155,23 @@ public class BrowserCommonActivator extends AbstractUIPlugin
             colorRegistry = null;
         }
 
-        if ( filterTemplateContextTypeRegistry != null )
-        {
-            filterTemplateContextTypeRegistry = null;
-        }
-
-        if ( filterTemplateStore != null )
-        {
-            try
-            {
-                filterTemplateStore.save();
-            }
-            catch ( IOException e )
-            {
-                e.printStackTrace();
-            }
-            filterTemplateStore = null;
-        }
+//        if ( filterTemplateContextTypeRegistry != null )
+//        {
+//            filterTemplateContextTypeRegistry = null;
+//        }
+//
+//        if ( filterTemplateStore != null )
+//        {
+//            try
+//            {
+//                filterTemplateStore.save();
+//            }
+//            catch ( IOException e )
+//            {
+//                e.printStackTrace();
+//            }
+//            filterTemplateStore = null;
+//        }
     }
 
 
@@ -301,24 +296,24 @@ public class BrowserCommonActivator extends AbstractUIPlugin
     }
 
 
-    /**
-     *
-     * @return The filter template store
-     */
-    public TemplateStore getFilterTemplateStore()
-    {
-        return filterTemplateStore;
-    }
-
-
-    /**
-     *
-     * @return The filter template context type registry
-     */
-    public ContextTypeRegistry getFilterTemplateContextTypeRegistry()
-    {
-        return filterTemplateContextTypeRegistry;
-    }
+//    /**
+//     *
+//     * @return The filter template store
+//     */
+//    public TemplateStore getFilterTemplateStore()
+//    {
+//        return filterTemplateStore;
+//    }
+//
+//
+//    /**
+//     *
+//     * @return The filter template context type registry
+//     */
+//    public ContextTypeRegistry getFilterTemplateContextTypeRegistry()
+//    {
+//        return filterTemplateContextTypeRegistry;
+//    }
 
 
     /**

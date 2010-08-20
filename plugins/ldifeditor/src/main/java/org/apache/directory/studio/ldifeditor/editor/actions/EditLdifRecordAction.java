@@ -29,7 +29,6 @@ import org.apache.directory.studio.ldifparser.model.container.LdifChangeAddRecor
 import org.apache.directory.studio.ldifparser.model.container.LdifContainer;
 import org.apache.directory.studio.ldifparser.model.container.LdifContentRecord;
 import org.apache.directory.studio.ldifparser.model.container.LdifRecord;
-import org.eclipse.jface.text.IDocument;
 
 
 public class EditLdifRecordAction extends AbstractLdifAction
@@ -68,13 +67,13 @@ public class EditLdifRecordAction extends AbstractLdifAction
             {
                 LdifRecord record = dialog.getLdifRecord();
 
-                IDocument document = editor.getDocumentProvider().getDocument( editor.getEditorInput() );
-                String old = document.get();
-                StringBuffer sb = new StringBuffer();
-                sb.append( old.substring( 0, container.getOffset() ) );
-                sb.append( record.toFormattedString( Utils.getLdifFormatParameters() ) );
-                sb.append( old.substring( container.getOffset() + container.getLength(), old.length() ) );
-                document.set( sb.toString() );
+//                IDocument document = editor.getDocumentProvider().getDocument( editor.getEditorInput() );
+//                String old = document.get();
+//                StringBuffer sb = new StringBuffer();
+//                sb.append( old.substring( 0, container.getOffset() ) );
+//                sb.append( record.toFormattedString( Utils.getLdifFormatParameters() ) );
+//                sb.append( old.substring( container.getOffset() + container.getLength(), old.length() ) );
+//                document.set( sb.toString() );
             }
             editor.activateGlobalActionHandlers();
         }

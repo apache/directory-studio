@@ -22,12 +22,9 @@ package org.apache.directory.studio.ldapbrowser.common.actions;
 
 
 import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.swt.dnd.Clipboard;
 import org.eclipse.swt.dnd.Transfer;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.texteditor.IWorkbenchActionDefinitionIds;
 
 
 /**
@@ -60,7 +57,7 @@ public abstract class PasteAction extends BrowserAction
      */
     public String getCommandId()
     {
-        return IWorkbenchActionDefinitionIds.PASTE;
+        return "paste";//IWorkbenchActionDefinitionIds.PASTE;
     }
 
 
@@ -74,16 +71,17 @@ public abstract class PasteAction extends BrowserAction
      */
     protected Object getFromClipboard( Transfer dataType )
     {
-        Clipboard clipboard = null;
-        try
-        {
-            clipboard = new Clipboard( Display.getCurrent() );
-            return clipboard.getContents( dataType );
-        }
-        finally
-        {
-            if ( clipboard != null )
-                clipboard.dispose();
-        }
+//        Clipboard clipboard = null;
+//        try
+//        {
+//            clipboard = new Clipboard( Display.getCurrent() );
+//            return clipboard.getContents( dataType );
+//        }
+//        finally
+//        {
+//            if ( clipboard != null )
+//                clipboard.dispose();
+//        }
+    	return null;
     }
 }

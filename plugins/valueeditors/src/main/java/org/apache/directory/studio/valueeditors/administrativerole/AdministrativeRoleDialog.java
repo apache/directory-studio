@@ -123,8 +123,8 @@ public class AdministrativeRoleDialog extends Dialog
         administrativeRoleCombo.setVisibleItemCount( 20 );
         administrativeRoleCombo.setItems( administrativeRoleValues );
         administrativeRoleCombo.setText( initialValue );
-        new ExtendedContentAssistCommandAdapter( administrativeRoleCombo, new ComboContentAdapter(),
-            new ListContentProposalProvider( administrativeRoleCombo.getItems() ), null, null, true );
+//        new ExtendedContentAssistCommandAdapter( administrativeRoleCombo, new ComboContentAdapter(),
+//            new ListContentProposalProvider( administrativeRoleCombo.getItems() ), null, null, true );
 
         applyDialogFont( composite );
         return composite;
