@@ -1,0 +1,20 @@
+Manifest-Version: 1.0
+Export-Package: org.apache.directory.studio.common.ui;version="2.0.0.S
+ NAPSHOT",org.apache.directory.studio.common.ui.widgets;uses:="org.apa
+ che.directory.studio.common.ui";version="2.0.0.SNAPSHOT"
+Tool: Bnd-0.0.357
+Bundle-Name: Apache Directory Studio Common UI
+Bundle-Localization: plugin
+Created-By: 1.6.0_20 (Apple Inc.)
+Require-Bundle: org.eclipse.core.runtime, org.eclipse.ui
+Bundle-Vendor: Apache Software Foundation
+Eclipse-LazyStart: true
+Bundle-Version: 2.0.0.SNAPSHOT
+Bnd-LastModified: 1282313686518
+Bundle-Activator: org.apache.directory.studio.common.ui.CommonUIPlugin
+Bundle-ManifestVersion: 2
+Bundle-License: http://www.apache.org/licenses/LICENSE-2.0.txt
+Bundle-SymbolicName: org.apache.directory.studio.common.ui;singleton:=
+ true
+Bundle-DocURL: http://www.apache.org
+

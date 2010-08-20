@@ -1,0 +1,50 @@
+Manifest-Version: 1.0
+Ignore-Package: org.eclipse.jface.contentassist,org.apache.directory.s
+ tudio.connection.ui.widgets,org.eclipse.swt.custom,org.eclipse.core.c
+ ommands,org.eclipse.jface.text.rules,org.eclipse.jface.fieldassist,ja
+ vax.naming.directory,org.apache.directory.studio.connection.core,org.
+ apache.directory.shared.ldap.aci,java.io,org.apache.directory.studio.
+ valueeditors.dn,java.lang,org.apache.directory.studio.ldapbrowser.cor
+ e.model.impl,javax.naming,org.eclipse.jface.text.source,org.eclipse.j
+ face.resource,org.eclipse.jface.text.formatter,org.eclipse.ui,org.ecl
+ ipse.swt.layout,org.eclipse.jface.preference,org.eclipse.swt.graphics
+ ,org.osgi.framework,org.apache.directory.studio.ldapbrowser.common.wi
+ dgets.search,org.eclipse.jface.text,org.eclipse.ui.handlers,org.apach
+ e.directory.shared.ldap.filter,org.eclipse.core.runtime,org.apache.di
+ rectory.studio.ldapbrowser.common.dialogs,org.apache.directory.studio
+ .ldapbrowser.core.model,java.util,org.apache.directory.shared.ldap.co
+ nstants,org.apache.directory.studio.valueeditors,org.apache.directory
+ .studio.ldapbrowser.core,org.eclipse.jface.text.templates,org.eclipse
+ .jface.viewers,org.apache.directory.studio.ldapbrowser.common.widgets
+ ,org.eclipse.ui.editors.text.templates,org.apache.directory.studio.co
+ mmon.ui.widgets,java.util.regex,org.eclipse.swt,org.eclipse.swt.event
+ s,org.eclipse.ui.plugin,java.text,org.eclipse.jface.text.contentassis
+ t,org.apache.directory.shared.ldap.name,org.apache.directory.studio.v
+ alueeditors.integer,org.eclipse.osgi.util,org.apache.directory.shared
+ .ldap.subtree,org.apache.directory.studio.ldapbrowser.core.model.sche
+ ma,org.eclipse.jface.text.presentation,org.eclipse.swt.widgets,org.ec
+ lipse.jface.dialogs
+Tool: Bnd-0.0.357
+Bundle-Name: Apache Directory Studio ACI Item Editor
+Bundle-Localization: plugin
+Created-By: 1.6.0_20 (Apple Inc.)
+Require-Bundle: org.apache.directory.shared.ldap;bundle-version="0.9.1
+ 7", org.apache.directory.shared.ldapconstants;bundle-version="0.9.17"
+ , org.apache.directory.studio.common.ui, org.apache.directory.studio.
+ connection.core, org.apache.directory.studio.connection.ui, org.apach
+ e.directory.studio.ldapbrowser.common, org.apache.directory.studio.ld
+ apbrowser.core, org.apache.directory.studio.valueeditors, org.eclipse
+ .core.expressions, org.eclipse.core.resources, org.eclipse.core.runti
+ me, org.eclipse.jface.text, org.eclipse.ui, org.eclipse.ui.editors, o
+ rg.eclipse.ui.workbench.texteditor
+Bundle-Vendor: Apache Software Foundation
+Eclipse-LazyStart: true
+Bundle-Version: 2.0.0.SNAPSHOT
+Bnd-LastModified: 1282313826219
+Bundle-Activator: org.apache.directory.studio.aciitemeditor.Activator
+Bundle-ManifestVersion: 2
+Bundle-License: http://www.apache.org/licenses/LICENSE-2.0.txt
+Bundle-SymbolicName: org.apache.directory.studio.aciitemeditor;singlet
+ on:=true
+Bundle-DocURL: http://www.apache.org
+

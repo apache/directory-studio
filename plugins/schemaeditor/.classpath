@@ -1,0 +1,13 @@
+<classpath>
+  <classpathentry including="**/*.java" path="src/test/java" output="target/test-classes" kind="src"/>
+  <classpathentry path="src/main/java" kind="src"/>
+  <classpathentry excluding="**/*.java" including="plugin*.properties|plugin.xml|about.ini|studio.png" path="." kind="src"/>
+  <classpathentry excluding="**/*.java" path="resources" kind="src"/>
+  <classpathentry excluding="**/*.java" path="src/main/resources" kind="src"/>
+  <classpathentry excluding="**/*.java" path="target/maven-shared-archive-resources" kind="src"/>
+  <classpathentry path="target/classes" kind="output"/>
+  <classpathentry sourcepath="M2_REPO/junit/junit/4.5/junit-4.5-sources.jar" path="M2_REPO/junit/junit/4.5/junit-4.5.jar" kind="var"/>
+  <classpathentry path="org.eclipse.jdt.launching.JRE_CONTAINER" kind="con"/>
+  <classpathentry path="org.eclipse.pde.core.requiredPlugins" kind="con"/>
+  <classpathentry path="lib/shared-converter-0.9.17.jar" exported="true" kind="lib"/>
+</classpath>

@@ -1,0 +1,10 @@
+#Fri Aug 20 16:13:22 CEST 2010
+encoding//src/main/java=ISO-8859-1
+org.eclipse.jdt.core.compiler.compliance=1.5
+encoding//src/test/resources=ISO-8859-1
+encoding//src/test/java=ISO-8859-1
+encoding/=ISO-8859-1
+org.eclipse.jdt.core.compiler.codegen.targetPlatform=1.5
+encoding//resources=ISO-8859-1
+eclipse.preferences.version=1
+org.eclipse.jdt.core.compiler.source=1.5

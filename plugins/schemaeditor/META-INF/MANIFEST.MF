@@ -1,0 +1,44 @@
+Manifest-Version: 1.0
+Export-Package: org.apache.directory.studio.schemaeditor.model.hierarc
+ hy;uses:="org.apache.directory.studio.schemaeditor.model";version="2.
+ 0.0.SNAPSHOT",org.apache.directory.studio.schemaeditor.model.alias;ve
+ rsion="2.0.0.SNAPSHOT",org.apache.directory.studio.schemaeditor.model
+ .schemachecker;uses:="org.apache.directory.studio.schemaeditor.model"
+ ;version="2.0.0.SNAPSHOT",org.apache.directory.studio.schemaeditor.mo
+ del.io;uses:="org.apache.directory.studio.schemaeditor.model";version
+ ="2.0.0.SNAPSHOT",org.apache.directory.studio.schemaeditor.model.diff
+ erence;uses:="org.apache.directory.studio.schemaeditor.model";version
+ ="2.0.0.SNAPSHOT",org.apache.directory.studio.schemaeditor.model;uses
+ :="org.apache.directory.studio.schemaeditor.model.io";version="2.0.0.
+ SNAPSHOT"
+Embed-Directory: lib
+Bundle-ClassPath: .,lib/shared-converter-0.9.17.jar
+Tool: Bnd-0.0.357
+Bundle-Name: Apache Directory Studio Schema Editor
+Bundle-Localization: plugin
+Created-By: 1.6.0_20 (Apple Inc.)
+Require-Bundle: org.apache.commons.collections;bundle-version="3.2.1",
+  org.apache.commons.io;bundle-version="1.3.1", org.apache.directory.s
+ hared.asn1;bundle-version="0.9.17", org.apache.directory.shared.ldap;
+ bundle-version="0.9.17", org.apache.directory.studio.common.core, org
+ .apache.directory.studio.common.ui, org.apache.directory.studio.conne
+ ction.core, org.apache.directory.studio.connection.ui, org.apache.log
+ ging.log4j;bundle-version="1.2.14", org.dom4j.dom4j;bundle-version="1
+ .6.1", org.eclipse.core.runtime, org.eclipse.core.expressions, org.ec
+ lipse.jface.text, org.eclipse.search, org.eclipse.ui, org.eclipse.ui.
+ forms
+Bundle-Vendor: Apache Software Foundation
+Eclipse-LazyStart: true
+Bundle-Version: 2.0.0.SNAPSHOT
+Eclipse-BuddyPolicy: registered
+Bnd-LastModified: 1282313931953
+Embed-Transitive: true
+Bundle-Activator: org.apache.directory.studio.schemaeditor.Activator
+Bundle-ManifestVersion: 2
+Bundle-License: http://www.apache.org/licenses/LICENSE-2.0.txt
+Embed-Dependency: *;scope=compile|runtime
+Bundle-DocURL: http://www.apache.org
+Embed-StripGroup: true
+Bundle-SymbolicName: org.apache.directory.studio.schemaeditor;singleto
+ n:=true
+

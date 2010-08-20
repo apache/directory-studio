@@ -1,0 +1,77 @@
+Manifest-Version: 1.0
+Export-Package: org.apache.directory.studio.ldapbrowser.core.jobs;uses
+ :="org.apache.directory.studio.ldapbrowser.core.model,org.apache.dire
+ ctory.studio.ldapbrowser.core,org.apache.directory.studio.ldapbrowser
+ .core.events,org.apache.directory.studio.ldapbrowser.core.utils,org.a
+ pache.directory.studio.ldapbrowser.core.model.schema,org.apache.direc
+ tory.studio.ldapbrowser.core.model.impl";version="2.0.0.SNAPSHOT",org
+ .apache.directory.studio.ldapbrowser.core.model.filter.parser;uses:="
+ org.apache.directory.studio.ldapbrowser.core.model.filter";version="2
+ .0.0.SNAPSHOT",org.apache.directory.studio.ldapbrowser.core.model;use
+ s:="org.apache.directory.studio.ldapbrowser.core.model.schema,org.apa
+ che.directory.studio.ldapbrowser.core.propertypageproviders,org.apach
+ e.directory.studio.ldapbrowser.core,org.apache.directory.studio.ldapb
+ rowser.core.model.impl,org.apache.directory.studio.ldapbrowser.core.u
+ tils";version="2.0.0.SNAPSHOT",org.apache.directory.studio.ldapbrowse
+ r.core.model.filter;uses:="org.apache.directory.studio.ldapbrowser.co
+ re.model.filter.parser,org.apache.directory.studio.ldapbrowser.core";
+ version="2.0.0.SNAPSHOT",org.apache.directory.studio.ldapbrowser.core
+ .utils;uses:="org.apache.directory.studio.ldapbrowser.core.model,org.
+ apache.directory.studio.ldapbrowser.core.events,org.apache.directory.
+ studio.ldapbrowser.core.model.impl,org.apache.directory.studio.ldapbr
+ owser.core,org.apache.directory.studio.ldapbrowser.core.model.schema"
+ ;version="2.0.0.SNAPSHOT",org.apache.directory.studio.ldapbrowser.cor
+ e.model.impl;uses:="org.apache.directory.studio.ldapbrowser.core.inte
+ rnal.search,org.apache.directory.studio.ldapbrowser.core.model,org.ap
+ ache.directory.studio.ldapbrowser.core,org.apache.directory.studio.ld
+ apbrowser.core.events,org.apache.directory.studio.ldapbrowser.core.mo
+ del.schema,org.apache.directory.studio.ldapbrowser.core.utils,org.apa
+ che.directory.studio.ldapbrowser.core.jobs";version="2.0.0.SNAPSHOT",
+ org.apache.directory.studio.ldapbrowser.core.internal.search;uses:="o
+ rg.apache.directory.studio.ldapbrowser.core";version="2.0.0.SNAPSHOT"
+ ,org.apache.directory.studio.ldapbrowser.core;uses:="org.apache.direc
+ tory.studio.ldapbrowser.core.events,org.apache.directory.studio.ldapb
+ rowser.core.model,org.apache.directory.studio.ldapbrowser.core.model.
+ impl,org.apache.directory.studio.ldapbrowser.core.model.schema,org.ap
+ ache.directory.studio.ldapbrowser.core.jobs,org.apache.directory.stud
+ io.ldapbrowser.core.utils";version="2.0.0.SNAPSHOT",org.apache.direct
+ ory.studio.ldapbrowser.core.events;uses:="org.apache.directory.studio
+ .ldapbrowser.core.model,org.apache.directory.studio.ldapbrowser.core"
+ ;version="2.0.0.SNAPSHOT",org.apache.directory.studio.ldapbrowser.cor
+ e.model.schema;uses:="org.apache.directory.studio.ldapbrowser.core.mo
+ del,org.apache.directory.studio.ldapbrowser.core";version="2.0.0.SNAP
+ SHOT",org.apache.directory.studio.ldapbrowser.core.propertypageprovid
+ ers;version="2.0.0.SNAPSHOT"
+Embed-Directory: lib
+Bundle-ClassPath: .,lib/poi-3.0.1-FINAL.jar,lib/xercesImpl-2.9.1.jar,l
+ ib/odfdom-0.6.16.jar
+Tool: Bnd-0.0.357
+Bundle-Name: Apache Directory Studio LDAP Browser Core
+Bundle-Localization: plugin
+Created-By: 1.6.0_20 (Apple Inc.)
+Require-Bundle: org.apache.commons.codec;bundle-version="1.3", org.apa
+ che.commons.collections;bundle-version="3.2.1", org.apache.commons.io
+ ;bundle-version="1.3.1", org.apache.commons.lang;bundle-version="2.3"
+ , org.apache.directory.shared.asn1;bundle-version="0.9.17", org.apach
+ e.directory.shared.ldap;bundle-version="0.9.17", org.apache.directory
+ .shared.ldapconstants;bundle-version="0.9.17", org.apache.directory.s
+ hared.dsmlparser;bundle-version="0.9.17", org.apache.directory.studio
+ .common.core, org.apache.directory.studio.connection.core, org.apache
+ .directory.studio.ldifparser, org.dom4j.dom4j;bundle-version="1.6.1",
+  org.eclipse.core.runtime, org.eclipse.search, org.xpp3.xpp3;bundle-v
+ ersion="1.1.340"
+Bundle-Vendor: Apache Software Foundation
+Eclipse-LazyStart: true
+Bundle-Version: 2.0.0.SNAPSHOT
+Bnd-LastModified: 1282313798427
+Bundle-Activator: org.apache.directory.studio.ldapbrowser.core.Browser
+ CorePlugin
+Bundle-ManifestVersion: 2
+Bundle-License: http://www.apache.org/licenses/LICENSE-2.0.txt
+Embed-Dependency: *;scope=compile|runtime
+Bundle-DocURL: http://www.apache.org
+Import-Package: org.slf4j.impl;version="1.5.6"
+Embed-StripGroup: true
+Bundle-SymbolicName: org.apache.directory.studio.ldapbrowser.core;sing
+ leton:=true
+

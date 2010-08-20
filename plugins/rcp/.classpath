@@ -1,0 +1,14 @@
+<classpath>
+  <classpathentry including="**/*.java" path="src/test/java" output="target/test-classes" kind="src"/>
+  <classpathentry path="src/main/java" kind="src"/>
+  <classpathentry excluding="**/*.java" including="plugin.properties|plugin.xml|about.ini|studio.png" path="." kind="src"/>
+  <classpathentry excluding="**/*.java" path="resources" kind="src"/>
+  <classpathentry excluding="**/*.java" path="src/main/resources" kind="src"/>
+  <classpathentry excluding="**/*.java" path="target/maven-shared-archive-resources" kind="src"/>
+  <classpathentry path="target/classes" kind="output"/>
+  <classpathentry path="org.eclipse.jdt.launching.JRE_CONTAINER" kind="con"/>
+  <classpathentry path="org.eclipse.pde.core.requiredPlugins" kind="con"/>
+  <classpathentry path="lib/log4j-1.2.14.jar" exported="true" kind="lib"/>
+  <classpathentry path="lib/slf4j-api-1.5.6.jar" exported="true" kind="lib"/>
+  <classpathentry path="lib/slf4j-log4j12-1.5.6.jar" exported="true" kind="lib"/>
+</classpath>

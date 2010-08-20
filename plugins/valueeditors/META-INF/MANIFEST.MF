@@ -1,0 +1,52 @@
+Manifest-Version: 1.0
+Export-Package: org.apache.directory.studio.valueeditors.password;uses
+ :="org.apache.directory.studio.valueeditors";version="2.0.0.SNAPSHOT"
+ ,org.apache.directory.studio.valueeditors;version="2.0.0.SNAPSHOT",or
+ g.apache.directory.studio.valueeditors.oid;uses:="org.apache.director
+ y.studio.valueeditors";version="2.0.0.SNAPSHOT",org.apache.directory.
+ studio.valueeditors.address;uses:="org.apache.directory.studio.valuee
+ ditors";version="2.0.0.SNAPSHOT",org.apache.directory.studio.valueedi
+ tors.msad;uses:="org.apache.directory.studio.valueeditors";version="2
+ .0.0.SNAPSHOT",org.apache.directory.studio.valueeditors.administrativ
+ erole;uses:="org.apache.directory.studio.valueeditors";version="2.0.0
+ .SNAPSHOT",org.apache.directory.studio.valueeditors.integer;uses:="or
+ g.apache.directory.studio.valueeditors";version="2.0.0.SNAPSHOT",org.
+ apache.directory.studio.valueeditors.time;uses:="org.apache.directory
+ .studio.valueeditors";version="2.0.0.SNAPSHOT",org.apache.directory.s
+ tudio.valueeditors.certificate;uses:="org.apache.directory.studio.val
+ ueeditors";version="2.0.0.SNAPSHOT",org.apache.directory.studio.value
+ editors.image;uses:="org.apache.directory.studio.valueeditors";versio
+ n="2.0.0.SNAPSHOT",org.apache.directory.studio.valueeditors.dn;uses:=
+ "org.apache.directory.studio.valueeditors";version="2.0.0.SNAPSHOT",o
+ rg.apache.directory.studio.valueeditors.uuid;uses:="org.apache.direct
+ ory.studio.valueeditors";version="2.0.0.SNAPSHOT",org.apache.director
+ y.studio.valueeditors.objectclass;uses:="org.apache.directory.studio.
+ valueeditors";version="2.0.0.SNAPSHOT"
+Embed-Directory: lib
+Tool: Bnd-0.0.357
+Bundle-Name: Apache Directory Studio Value Editors
+Bundle-Localization: plugin
+Created-By: 1.6.0_20 (Apple Inc.)
+Require-Bundle: org.apache.commons.codec;bundle-version="1.3", org.apa
+ che.commons.io;bundle-version="1.3.1", org.apache.directory.shared.ld
+ ap;bundle-version="0.9.17", org.apache.directory.studio.common.ui, or
+ g.apache.directory.studio.connection.core, org.apache.directory.studi
+ o.connection.ui, org.apache.directory.studio.ldapbrowser.core, org.ap
+ ache.directory.studio.ldapbrowser.common, org.eclipse.core.runtime, o
+ rg.eclipse.ui
+Bundle-Vendor: Apache Software Foundation
+Eclipse-LazyStart: true
+Bundle-Version: 2.0.0.SNAPSHOT
+Eclipse-BuddyPolicy: registered
+Bnd-LastModified: 1282313817683
+Embed-Transitive: true
+Bundle-Activator: org.apache.directory.studio.valueeditors.ValueEditor
+ sActivator
+Bundle-ManifestVersion: 2
+Bundle-License: http://www.apache.org/licenses/LICENSE-2.0.txt
+Embed-Dependency: *;scope=compile|runtime
+Bundle-DocURL: http://www.apache.org
+Embed-StripGroup: true
+Bundle-SymbolicName: org.apache.directory.studio.valueeditors;singleto
+ n:=true
+

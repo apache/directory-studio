@@ -1,0 +1,29 @@
+Manifest-Version: 1.0
+Export-Package: org.apache.directory.studio.ldifparser.model;uses:="or
+ g.apache.directory.studio.ldifparser,org.apache.directory.studio.ldif
+ parser.model.container";version="2.0.0.SNAPSHOT",org.apache.directory
+ .studio.ldifparser.model.container;uses:="org.apache.directory.studio
+ .ldifparser.model.lines,org.apache.directory.studio.ldifparser.model,
+ org.apache.directory.studio.ldifparser";version="2.0.0.SNAPSHOT",org.
+ apache.directory.studio.ldifparser.parser;uses:="org.apache.directory
+ .studio.ldifparser.model,org.apache.directory.studio.ldifparser.model
+ .container,org.apache.directory.studio.ldifparser.model.lines";versio
+ n="2.0.0.SNAPSHOT",org.apache.directory.studio.ldifparser.model.lines
+ ;uses:="org.apache.directory.studio.ldifparser,org.apache.directory.s
+ tudio.ldifparser.model";version="2.0.0.SNAPSHOT",org.apache.directory
+ .studio.ldifparser;version="2.0.0.SNAPSHOT"
+Tool: Bnd-0.0.357
+Bundle-Name: Apache Directory Studio LDIF Parser
+Bundle-Localization: plugin
+Created-By: 1.6.0_20 (Apple Inc.)
+Require-Bundle: org.apache.commons.codec;bundle-version="1.3", org.apa
+ che.directory.shared.ldap;bundle-version="0.9.17"
+Bundle-Vendor: Apache Software Foundation
+Bundle-Version: 2.0.0.SNAPSHOT
+Bnd-LastModified: 1282313748923
+Bundle-ManifestVersion: 2
+Bundle-License: http://www.apache.org/licenses/LICENSE-2.0.txt
+Bundle-SymbolicName: org.apache.directory.studio.ldifparser;singleton:
+ =true
+Bundle-DocURL: http://www.apache.org
+

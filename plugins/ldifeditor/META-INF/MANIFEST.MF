@@ -1,0 +1,51 @@
+Manifest-Version: 1.0
+Export-Package: org.apache.directory.studio.ldifeditor.dialogs.prefere
+ nces;uses:="org.apache.directory.studio.ldifeditor,org.apache.directo
+ ry.studio.ldifeditor.widgets,org.apache.directory.studio.ldifeditor.e
+ ditor";version="2.0.0.SNAPSHOT",org.apache.directory.studio.ldifedito
+ r.editor.reconciler;uses:="org.apache.directory.studio.ldifeditor.edi
+ tor,org.apache.directory.studio.ldifeditor";version="2.0.0.SNAPSHOT",
+ org.apache.directory.studio.ldifeditor.editor;uses:="org.apache.direc
+ tory.studio.ldifeditor,org.apache.directory.studio.ldifeditor.editor.
+ text,org.apache.directory.studio.ldifeditor.editor.actions,org.apache
+ .directory.studio.ldifeditor.editor.reconciler";version="2.0.0.SNAPSH
+ OT",org.apache.directory.studio.ldifeditor.editor.actions;uses:="org.
+ apache.directory.studio.ldifeditor.editor,org.apache.directory.studio
+ .ldifeditor.dialogs,org.apache.directory.studio.ldifeditor";version="
+ 2.0.0.SNAPSHOT",org.apache.directory.studio.ldifeditor.widgets;uses:=
+ "org.apache.directory.studio.ldifeditor.editor";version="2.0.0.SNAPSH
+ OT",org.apache.directory.studio.ldifeditor.wizards;uses:="org.apache.
+ directory.studio.ldifeditor.editor,org.apache.directory.studio.ldifed
+ itor";version="2.0.0.SNAPSHOT",org.apache.directory.studio.ldifeditor
+ .dialogs;uses:="org.apache.directory.studio.ldifeditor";version="2.0.
+ 0.SNAPSHOT",org.apache.directory.studio.ldifeditor;version="2.0.0.SNA
+ PSHOT",org.apache.directory.studio.ldifeditor.editor.text;uses:="org.
+ apache.directory.studio.ldifeditor.editor,org.apache.directory.studio
+ .ldifeditor";version="2.0.0.SNAPSHOT"
+Tool: Bnd-0.0.357
+Bundle-Name: Apache Directory Studio LDIF Editor
+Bundle-Localization: plugin
+Created-By: 1.6.0_20 (Apple Inc.)
+Require-Bundle: org.apache.directory.shared.ldap;bundle-version="0.9.1
+ 7", org.apache.directory.studio.common.core, org.apache.directory.stu
+ dio.common.ui, org.apache.directory.studio.connection.core, org.apach
+ e.directory.studio.connection.ui, org.apache.directory.studio.ldapbro
+ wser.core, org.apache.directory.studio.ldapbrowser.common, org.apache
+ .directory.studio.ldifparser, org.eclipse.core.expressions, org.eclip
+ se.core.resources, org.eclipse.core.runtime, org.eclipse.core.filesys
+ tem, org.eclipse.jface.text, org.eclipse.ui, org.eclipse.ui.editors, 
+ org.eclipse.ui.ide, org.eclipse.ui.forms, org.eclipse.ui.views, org.e
+ clipse.ui.workbench.texteditor, org.eclipse.search
+Bundle-Vendor: Apache Software Foundation
+Eclipse-LazyStart: true
+Bundle-Version: 2.0.0.SNAPSHOT
+Bnd-LastModified: 1282313867549
+Bundle-Activator: org.apache.directory.studio.ldifeditor.LdifEditorAct
+ ivator
+Bundle-ManifestVersion: 2
+Bundle-License: http://www.apache.org/licenses/LICENSE-2.0.txt
+Import-Package: org.slf4j.impl;version="1.5.6"
+Bundle-SymbolicName: org.apache.directory.studio.ldifeditor;singleton:
+ =true
+Bundle-DocURL: http://www.apache.org
+

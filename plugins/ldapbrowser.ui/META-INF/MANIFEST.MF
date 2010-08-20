@@ -1,0 +1,91 @@
+Manifest-Version: 1.0
+Export-Package: org.apache.directory.studio.ldapbrowser.ui.dialogs.pre
+ ferences;uses:="org.apache.directory.studio.entryeditors,org.apache.d
+ irectory.studio.ldapbrowser.ui";version="2.0.0.SNAPSHOT",org.apache.d
+ irectory.studio.ldapbrowser.ui.dialogs;version="2.0.0.SNAPSHOT",org.a
+ pache.directory.studio.ldapbrowser.ui.views.searchlogs;uses:="org.apa
+ che.directory.studio.ldapbrowser.ui,org.apache.directory.studio.ldapb
+ rowser.ui.wizards,org.apache.directory.studio.ldapbrowser.ui.actions.
+ proxy,org.apache.directory.studio.ldapbrowser.ui.views.connection";ve
+ rsion="2.0.0.SNAPSHOT",org.apache.directory.studio.ldapbrowser.ui.vie
+ ws.browser;uses:="org.apache.directory.studio.ldapbrowser.ui,org.apac
+ he.directory.studio.ldapbrowser.ui.actions,org.apache.directory.studi
+ o.ldapbrowser.ui.editors.searchresult,org.apache.directory.studio.ent
+ ryeditors,org.apache.directory.studio.ldapbrowser.ui.views.connection
+ ";version="2.0.0.SNAPSHOT",org.apache.directory.studio.ldapbrowser.ui
+ .wizards;uses:="org.apache.directory.studio.ldapbrowser.ui,org.apache
+ .directory.studio.ldapbrowser.ui.search";version="2.0.0.SNAPSHOT",org
+ .apache.directory.studio.ldapbrowser.ui.editors.entry;uses:="org.apac
+ he.directory.studio.ldapbrowser.ui.views.browser,org.apache.directory
+ .studio.ldapbrowser.ui,org.apache.directory.studio.entryeditors,org.a
+ pache.directory.studio.ldapbrowser.ui.actions";version="2.0.0.SNAPSHO
+ T",org.apache.directory.studio.ldapbrowser.ui.dialogs.properties;uses
+ :="org.apache.directory.studio.ldapbrowser.ui";version="2.0.0.SNAPSHO
+ T",org.apache.directory.studio.ldapbrowser.ui.actions;uses:="org.apac
+ he.directory.studio.ldapbrowser.ui,org.apache.directory.studio.entrye
+ ditors,org.apache.directory.studio.ldapbrowser.ui.editors.entry,org.a
+ pache.directory.studio.ldapbrowser.ui.wizards,org.apache.directory.st
+ udio.ldapbrowser.ui.views.browser,org.apache.directory.studio.ldapbro
+ wser.ui.search,org.apache.directory.studio.ldapbrowser.ui.dialogs,org
+ .apache.directory.studio.ldapbrowser.ui.editors.schemabrowser";versio
+ n="2.0.0.SNAPSHOT",org.apache.directory.studio.ldapbrowser.ui.editors
+ .searchresult;uses:="org.apache.directory.studio.ldapbrowser.ui.actio
+ ns.proxy,org.apache.directory.studio.ldapbrowser.ui,org.apache.direct
+ ory.studio.ldapbrowser.ui.views.browser,org.apache.directory.studio.l
+ dapbrowser.ui.actions";version="2.0.0.SNAPSHOT",org.apache.directory.
+ studio.ldapbrowser.ui;uses:="org.apache.directory.studio.entryeditors
+ ";version="2.0.0.SNAPSHOT",org.apache.directory.studio.ldapbrowser.ui
+ .views.modificationlogs;uses:="org.apache.directory.studio.ldapbrowse
+ r.ui,org.apache.directory.studio.ldapbrowser.ui.wizards,org.apache.di
+ rectory.studio.ldapbrowser.ui.actions.proxy,org.apache.directory.stud
+ io.ldapbrowser.ui.views.connection";version="2.0.0.SNAPSHOT",org.apac
+ he.directory.studio.entryeditors;uses:="org.apache.directory.studio.l
+ dapbrowser.ui";version="2.0.0.SNAPSHOT",org.apache.directory.studio.l
+ dapbrowser.ui.views.connection;uses:="org.apache.directory.studio.lda
+ pbrowser.ui,org.apache.directory.studio.ldapbrowser.ui.actions,org.ap
+ ache.directory.studio.ldapbrowser.ui.views.searchlogs,org.apache.dire
+ ctory.studio.ldapbrowser.ui.views.browser,org.apache.directory.studio
+ .ldapbrowser.ui.views.modificationlogs,org.apache.directory.studio.ld
+ apbrowser.ui.editors.searchresult,org.apache.directory.studio.entryed
+ itors";version="2.0.0.SNAPSHOT",org.apache.directory.studio.ldapbrows
+ er.ui.perspective;uses:="org.apache.directory.studio.ldapbrowser.ui.v
+ iews.searchlogs,org.apache.directory.studio.ldapbrowser.ui.wizards,or
+ g.apache.directory.studio.ldapbrowser.ui.views.browser,org.apache.dir
+ ectory.studio.ldapbrowser.ui,org.apache.directory.studio.ldapbrowser.
+ ui.views.modificationlogs,org.apache.directory.studio.ldapbrowser.ui.
+ views.connection";version="2.0.0.SNAPSHOT",org.apache.directory.studi
+ o.ldapbrowser.ui.actions.proxy;uses:="org.apache.directory.studio.lda
+ pbrowser.ui.editors.searchresult";version="2.0.0.SNAPSHOT",org.apache
+ .directory.studio.ldapbrowser.ui.search;uses:="org.apache.directory.s
+ tudio.ldapbrowser.ui";version="2.0.0.SNAPSHOT",org.apache.directory.s
+ tudio.ldapbrowser.ui.editors.schemabrowser;uses:="org.apache.director
+ y.studio.ldapbrowser.ui";version="2.0.0.SNAPSHOT"
+Tool: Bnd-0.0.357
+Bundle-Name: Apache Directory Studio LDAP Browser UI
+Bundle-Localization: plugin
+Created-By: 1.6.0_20 (Apple Inc.)
+Require-Bundle: org.apache.commons.io;bundle-version="1.3.1", org.apac
+ he.commons.lang;bundle-version="2.3", org.apache.directory.shared.lda
+ p;bundle-version="0.9.17", org.apache.directory.shared.ldapconstants;
+ bundle-version="0.9.17", org.apache.directory.studio.common.core, org
+ .apache.directory.studio.common.ui, org.apache.directory.studio.conne
+ ction.core, org.apache.directory.studio.connection.ui, org.apache.dir
+ ectory.studio.ldapbrowser.core, org.apache.directory.studio.ldapbrows
+ er.common, org.apache.directory.studio.ldifeditor, org.apache.directo
+ ry.studio.ldifparser, org.eclipse.core.expressions, org.eclipse.core.
+ filesystem, org.eclipse.core.runtime, org.eclipse.jface.text, org.ecl
+ ipse.ui, org.eclipse.ui.editors, org.eclipse.ui.forms, org.eclipse.ui
+ .views, org.eclipse.ui.workbench.texteditor, org.eclipse.search
+Bundle-Vendor: Apache Software Foundation
+Eclipse-LazyStart: true
+Bundle-Version: 2.0.0.SNAPSHOT
+Bnd-LastModified: 1282313879324
+Bundle-Activator: org.apache.directory.studio.ldapbrowser.ui.BrowserUI
+ Plugin
+Bundle-ManifestVersion: 2
+Bundle-License: http://www.apache.org/licenses/LICENSE-2.0.txt
+Import-Package: org.slf4j.impl;version="1.5.6"
+Bundle-SymbolicName: org.apache.directory.studio.ldapbrowser.ui;single
+ ton:=true
+Bundle-DocURL: http://www.apache.org
+

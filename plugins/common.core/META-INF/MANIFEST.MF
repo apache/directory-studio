@@ -1,0 +1,19 @@
+Manifest-Version: 1.0
+Export-Package: org.apache.directory.studio.common.core.jobs;version="
+ 2.0.0.SNAPSHOT"
+Tool: Bnd-0.0.357
+Bundle-Name: Apache Directory Studio Common Core
+Bundle-Localization: plugin
+Created-By: 1.6.0_20 (Apple Inc.)
+Require-Bundle: org.apache.commons.lang;bundle-version="2.3", org.ecli
+ pse.core.runtime
+Bundle-Vendor: Apache Software Foundation
+Eclipse-LazyStart: true
+Bundle-Version: 2.0.0.SNAPSHOT
+Bnd-LastModified: 1282313717714
+Bundle-ManifestVersion: 2
+Bundle-License: http://www.apache.org/licenses/LICENSE-2.0.txt
+Bundle-SymbolicName: org.apache.directory.studio.common.core;singleton
+ :=true
+Bundle-DocURL: http://www.apache.org
+

@@ -1,0 +1,47 @@
+Manifest-Version: 1.0
+Export-Package: org.apache.directory.studio.connection.ui.actions;uses
+ :="org.apache.directory.studio.connection.ui,org.apache.directory.stu
+ dio.connection.ui.dnd,org.apache.directory.studio.connection.ui.wizar
+ ds,org.apache.directory.studio.connection.ui.dialogs";version="2.0.0.
+ SNAPSHOT",org.apache.directory.studio.connection.ui.dialogs;uses:="or
+ g.apache.directory.studio.connection.ui.widgets";version="2.0.0.SNAPS
+ HOT",org.apache.directory.studio.connection.ui.dnd;uses:="org.apache.
+ directory.studio.connection.ui";version="2.0.0.SNAPSHOT",org.apache.d
+ irectory.studio.connection.ui.properties;uses:="org.apache.directory.
+ studio.connection.ui";version="2.0.0.SNAPSHOT",org.apache.directory.s
+ tudio.connection.ui.widgets;uses:="org.apache.directory.studio.connec
+ tion.ui,org.apache.directory.studio.connection.ui.dialogs,org.apache.
+ directory.studio.connection.ui.actions,org.apache.directory.studio.co
+ nnection.ui.dnd,org.apache.directory.studio.utils";version="2.0.0.SNA
+ PSHOT",org.apache.directory.studio.connection.ui.wizards;uses:="org.a
+ pache.directory.studio.connection.ui";version="2.0.0.SNAPSHOT",org.ap
+ ache.directory.studio.utils;version="2.0.0.SNAPSHOT",org.apache.direc
+ tory.studio.connection.ui.preferences;uses:="org.apache.directory.stu
+ dio.connection.ui.widgets,org.apache.directory.studio.connection.ui";
+ version="2.0.0.SNAPSHOT",org.apache.directory.studio.connection.ui;us
+ es:="org.apache.directory.studio.connection.ui.dialogs";version="2.0.
+ 0.SNAPSHOT"
+Tool: Bnd-0.0.357
+Bundle-Name: Apache Directory Studio Connection UI
+Bundle-Localization: plugin
+Created-By: 1.6.0_20 (Apple Inc.)
+Require-Bundle: org.apache.commons.codec;bundle-version="1.3", org.apa
+ che.commons.lang;bundle-version="2.3", org.apache.directory.shared.ld
+ ap;bundle-version="0.9.17", org.apache.directory.studio.common.core, 
+ org.apache.directory.studio.common.ui, org.apache.directory.studio.co
+ nnection.core, org.bouncycastle.bcprovjdk15;bundle-version="140", org
+ .eclipse.core.runtime, org.eclipse.ui, org.eclipse.ui.forms, org.ecli
+ pse.ui.workbench.texteditor
+Bundle-Vendor: Apache Software Foundation
+Eclipse-LazyStart: true
+Bundle-Version: 2.0.0.SNAPSHOT
+Bnd-LastModified: 1282313770460
+Bundle-Activator: org.apache.directory.studio.connection.ui.Connection
+ UIPlugin
+Bundle-ManifestVersion: 2
+Bundle-License: http://www.apache.org/licenses/LICENSE-2.0.txt
+Import-Package: org.slf4j.impl;version="1.5.6"
+Bundle-SymbolicName: org.apache.directory.studio.connection.ui;singlet
+ on:=true
+Bundle-DocURL: http://www.apache.org
+

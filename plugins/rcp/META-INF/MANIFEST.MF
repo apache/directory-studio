@@ -1,0 +1,25 @@
+Manifest-Version: 1.0
+Embed-Directory: lib
+Bundle-ClassPath: .,lib/log4j-1.2.14.jar,lib/slf4j-api-1.5.6.jar,lib/s
+ lf4j-log4j12-1.5.6.jar
+Tool: Bnd-0.0.357
+Bundle-Name: Apache Directory Studio RCP
+Bundle-Localization: plugin
+Created-By: 1.6.0_20 (Apple Inc.)
+Require-Bundle: org.eclipse.core.runtime, org.eclipse.update.core, org
+ .eclipse.update.ui, org.eclipse.ui, org.eclipse.ui.intro, org.eclipse
+ .core.resources, org.eclipse.ui.ide, org.eclipse.core.filesystem, org
+ .eclipse.core.net
+Bundle-Vendor: Apache Software Foundation
+Eclipse-LazyStart: true
+Bundle-Version: 2.0.0.SNAPSHOT
+Bnd-LastModified: 1282313918075
+Embed-Transitive: true
+Bundle-Activator: org.apache.directory.studio.Activator
+Bundle-ManifestVersion: 2
+Bundle-License: http://www.apache.org/licenses/LICENSE-2.0.txt
+Embed-Dependency: *;scope=compile|runtime
+Bundle-DocURL: http://www.apache.org
+Embed-StripGroup: true
+Bundle-SymbolicName: org.apache.directory.studio.rcp;singleton:=true
+

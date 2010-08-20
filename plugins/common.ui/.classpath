@@ -1,0 +1,9 @@
+<classpath>
+  <classpathentry path="src/main/java" kind="src"/>
+  <classpathentry excluding="**/*.java" including="plugin*.properties|plugin.xml" path="." kind="src"/>
+  <classpathentry excluding="**/*.java" path="resources" kind="src"/>
+  <classpathentry excluding="**/*.java" path="target/maven-shared-archive-resources" kind="src"/>
+  <classpathentry path="target/classes" kind="output"/>
+  <classpathentry path="org.eclipse.jdt.launching.JRE_CONTAINER" kind="con"/>
+  <classpathentry path="org.eclipse.pde.core.requiredPlugins" kind="con"/>
+</classpath>

@@ -1,0 +1,38 @@
+Manifest-Version: 1.0
+Export-Package: org.apache.directory.studio.connection.core;uses:="org
+ .apache.directory.studio.connection.core.io.jndi,org.apache.directory
+ .studio.connection.core.event,org.apache.directory.studio.connection.
+ core.io";version="2.0.0.SNAPSHOT",org.apache.directory.studio.connect
+ ion.core.io.jndi;uses:="org.apache.directory.studio.connection.core,o
+ rg.apache.directory.studio.connection.core.io,org.apache.directory.st
+ udio.connection.core.event";version="2.0.0.SNAPSHOT",org.apache.direc
+ tory.studio.connection.core.io;uses:="org.apache.directory.studio.con
+ nection.core";version="2.0.0.SNAPSHOT",org.apache.directory.studio.co
+ nnection.core.jobs;uses:="org.apache.directory.studio.connection.core
+ ,org.apache.directory.studio.connection.core.io.jndi,org.apache.direc
+ tory.studio.connection.core.event";version="2.0.0.SNAPSHOT",org.apach
+ e.directory.studio.connection.core.event;uses:="org.apache.directory.
+ studio.connection.core";version="2.0.0.SNAPSHOT"
+Tool: Bnd-0.0.357
+Bundle-Name: Apache Directory Studio Connection Core
+Bundle-Localization: plugin
+Created-By: 1.6.0_20 (Apple Inc.)
+Require-Bundle: org.apache.commons.codec;bundle-version="1.3", org.apa
+ che.commons.io;bundle-version="1.3.1", org.apache.commons.lang;bundle
+ -version="2.3", org.apache.directory.shared.asn1;bundle-version="0.9.
+ 17", org.apache.directory.shared.ldap;bundle-version="0.9.17", org.ap
+ ache.directory.studio.common.core, org.apache.directory.studio.ldifpa
+ rser, org.apache.httpcomponents.httpclient;bundle-version="4.0", org.
+ dom4j.dom4j;bundle-version="1.6.1", org.eclipse.core.runtime
+Bundle-Vendor: Apache Software Foundation
+Eclipse-LazyStart: true
+Bundle-Version: 2.0.0.SNAPSHOT
+Bnd-LastModified: 1282313756546
+Bundle-Activator: org.apache.directory.studio.connection.core.Connecti
+ onCorePlugin
+Bundle-ManifestVersion: 2
+Bundle-License: http://www.apache.org/licenses/LICENSE-2.0.txt
+Bundle-SymbolicName: org.apache.directory.studio.connection.core;singl
+ eton:=true
+Bundle-DocURL: http://www.apache.org
+

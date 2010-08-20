@@ -1,0 +1,26 @@
+Manifest-Version: 1.0
+Export-Package: org.apache.directory.studio.ldapservers.apacheds.v155;
+ version="2.0.0.SNAPSHOT"
+Tool: Bnd-0.0.357
+Bundle-Name: Apache Directory Studio ApacheDS 1.5.5 LDAP Server Adapte
+ r
+Bundle-Localization: plugin
+Created-By: 1.6.0_20 (Apple Inc.)
+Require-Bundle: org.apache.directory.studio.apacheds.configuration, or
+ g.apache.directory.studio.common.core, org.apache.directory.studio.co
+ mmon.ui, org.apache.directory.studio.ldapservers, org.dom4j.dom4j;bun
+ dle-version="1.6.1", org.eclipse.core.runtime, org.eclipse.core.resou
+ rces, org.eclipse.debug.core, org.eclipse.debug.ui, org.eclipse.jdt.l
+ aunching, org.eclipse.jface.text, org.eclipse.ui, org.eclipse.ui.ide
+Bundle-Vendor: Apache Software Foundation
+Eclipse-LazyStart: true
+Bundle-Version: 2.0.0.SNAPSHOT
+Bnd-LastModified: 1282313905466
+Bundle-Activator: org.apache.directory.studio.ldapservers.apacheds.v15
+ 5.ApacheDS155Plugin
+Bundle-ManifestVersion: 2
+Bundle-License: http://www.apache.org/licenses/LICENSE-2.0.txt
+Bundle-SymbolicName: org.apache.directory.studio.ldapservers.apacheds.
+ v155;singleton:=true
+Bundle-DocURL: http://www.apache.org
+
