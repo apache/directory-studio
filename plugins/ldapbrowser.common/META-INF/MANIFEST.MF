@@ -68,8 +68,7 @@ Require-Bundle: org.apache.directory.studio.common.core, org.apache.di
  -version="2.3", org.apache.directory.shared.ldap;bundle-version="0.9.
  17", org.apache.directory.shared.ldapconstants;bundle-version="0.9.17
  ", org.eclipse.core.runtime, org.eclipse.core.expressions, org.eclips
- e.jface.text, org.eclipse.ui, org.eclipse.ui.editors, org.eclipse.ui.
- workbench.texteditor
+ e.rap.ui
 Bundle-Vendor: Apache Software Foundation
 Eclipse-LazyStart: true
 Bundle-Version: 2.0.0.SNAPSHOT

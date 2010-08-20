@@ -33,7 +33,7 @@ Require-Bundle: org.apache.commons.codec;bundle-version="1.3", org.apa
  g.apache.directory.studio.connection.core, org.apache.directory.studi
  o.connection.ui, org.apache.directory.studio.ldapbrowser.core, org.ap
  ache.directory.studio.ldapbrowser.common, org.eclipse.core.runtime, o
- rg.eclipse.ui
+ rg.eclipse.rap.ui
 Bundle-Vendor: Apache Software Foundation
 Eclipse-LazyStart: true
 Bundle-Version: 2.0.0.SNAPSHOT

@@ -30,8 +30,7 @@ Require-Bundle: org.apache.commons.codec;bundle-version="1.3", org.apa
  ap;bundle-version="0.9.17", org.apache.directory.studio.common.core, 
  org.apache.directory.studio.common.ui, org.apache.directory.studio.co
  nnection.core, org.bouncycastle.bcprovjdk15;bundle-version="140", org
- .eclipse.core.runtime, org.eclipse.ui, org.eclipse.ui.forms, org.ecli
- pse.ui.workbench.texteditor
+ .eclipse.core.runtime, org.eclipse.rap.ui, org.eclipse.rap.ui.forms
 Bundle-Vendor: Apache Software Foundation
 Eclipse-LazyStart: true
 Bundle-Version: 2.0.0.SNAPSHOT

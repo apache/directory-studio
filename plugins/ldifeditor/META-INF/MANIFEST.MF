@@ -32,10 +32,8 @@ Require-Bundle: org.apache.directory.shared.ldap;bundle-version="0.9.1
  e.directory.studio.connection.ui, org.apache.directory.studio.ldapbro
  wser.core, org.apache.directory.studio.ldapbrowser.common, org.apache
  .directory.studio.ldifparser, org.eclipse.core.expressions, org.eclip
- se.core.resources, org.eclipse.core.runtime, org.eclipse.core.filesys
- tem, org.eclipse.jface.text, org.eclipse.ui, org.eclipse.ui.editors, 
- org.eclipse.ui.ide, org.eclipse.ui.forms, org.eclipse.ui.views, org.e
- clipse.ui.workbench.texteditor, org.eclipse.search
+ se.core.runtime, org.eclipse.rap.ui, org.eclipse.rap.ui.forms, org.ec
+ lipse.rap.ui.views
 Bundle-Vendor: Apache Software Foundation
 Eclipse-LazyStart: true
 Bundle-Version: 2.0.0.SNAPSHOT

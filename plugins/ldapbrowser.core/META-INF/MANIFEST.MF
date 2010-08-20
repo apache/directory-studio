@@ -58,8 +58,7 @@ Require-Bundle: org.apache.commons.codec;bundle-version="1.3", org.apa
  hared.dsmlparser;bundle-version="0.9.17", org.apache.directory.studio
  .common.core, org.apache.directory.studio.connection.core, org.apache
  .directory.studio.ldifparser, org.dom4j.dom4j;bundle-version="1.6.1",
-  org.eclipse.core.runtime, org.eclipse.search, org.xpp3.xpp3;bundle-v
- ersion="1.1.340"
+  org.eclipse.core.runtime, org.xpp3.xpp3;bundle-version="1.1.340"
 Bundle-Vendor: Apache Software Foundation
 Eclipse-LazyStart: true
 Bundle-Version: 2.0.0.SNAPSHOT

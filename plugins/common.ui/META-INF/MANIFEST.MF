@@ -6,7 +6,7 @@ Tool: Bnd-0.0.357
 Bundle-Name: Apache Directory Studio Common UI
 Bundle-Localization: plugin
 Created-By: 1.6.0_20 (Apple Inc.)
-Require-Bundle: org.eclipse.core.runtime, org.eclipse.ui
+Require-Bundle: org.eclipse.core.runtime, org.eclipse.rap.ui
 Bundle-Vendor: Apache Software Foundation
 Eclipse-LazyStart: true
 Bundle-Version: 2.0.0.SNAPSHOT
