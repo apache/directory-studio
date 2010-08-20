@@ -1,0 +1,22 @@
+Manifest-Version: 1.0
+Export-Package: lib;version="0.9.17",org.apache.directory.shared.ldap.
+ constants;version="0.9.17"
+Embed-Directory: lib
+Bundle-ClassPath: .,lib/shared-ldap-constants-0.9.17.jar
+Tool: Bnd-0.0.357
+Bundle-Name: Apache Directory Shared LDAP Constants (for Apache Direct
+ ory Studio)
+Created-By: 1.6.0_20 (Apple Inc.)
+Require-Bundle: org.apache.logging.log4j;bundle-version="1.2.14", org.
+ slf4j.api;bundle-version="1.5.6", org.slf4j.log4j12;bundle-version="1
+ .5.6"
+Bundle-Vendor: Apache Software Foundation
+Bundle-Version: 0.9.17
+Bnd-LastModified: 1282313676873
+Bundle-ManifestVersion: 2
+Bundle-License: http://www.apache.org/licenses/LICENSE-2.0.txt
+Embed-Dependency: *;scope=compile|runtime
+Embed-StripGroup: true
+Bundle-SymbolicName: org.apache.directory.shared.ldapconstants
+Bundle-DocURL: http://www.apache.org
+

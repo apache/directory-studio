@@ -1,0 +1,43 @@
+Manifest-Version: 1.0
+Export-Package: org.apache.directory.shared.asn1.util;uses:="org.apach
+ e.directory.shared.asn1.ber.tlv";version="0.9.17",org.apache.director
+ y.shared.asn1.ber;uses:="org.apache.directory.shared.asn1.ber.grammar
+ ,org.apache.directory.shared.asn1.ber.tlv,org.apache.directory.shared
+ .asn1.util,org.apache.directory.shared.asn1.codec";version="0.9.17",o
+ rg.apache.directory.shared.asn1.codec.binary;uses:="org.apache.direct
+ ory.shared.asn1.codec";version="0.9.17",org.apache.directory.shared.a
+ sn1.codec.stateful;uses:="org.apache.directory.shared.asn1.codec";ver
+ sion="0.9.17",org.apache.directory.shared.asn1.der;version="0.9.17",o
+ rg.apache.directory.shared.asn1.ber.grammar;uses:="org.apache.directo
+ ry.shared.asn1.util,org.apache.directory.shared.asn1.ber,org.apache.d
+ irectory.shared.asn1.ber.tlv,org.apache.directory.shared.asn1.codec";
+ version="0.9.17",lib;version="0.9.17",org.apache.directory.shared.asn
+ 1.codec.stateful.examples;uses:="org.apache.directory.shared.asn1.cod
+ ec.stateful,org.apache.directory.shared.asn1.codec";version="0.9.17",
+ org.apache.directory.shared.asn1;uses:="org.apache.directory.shared.a
+ sn1.codec";version="0.9.17",org.apache.directory.shared.asn1.ber.tlv;
+ uses:="org.apache.directory.shared.asn1.codec,org.apache.directory.sh
+ ared.asn1.util,org.apache.directory.shared.asn1.primitives";version="
+ 0.9.17",org.apache.directory.shared.asn1.primitives;uses:="org.apache
+ .directory.shared.asn1.util,org.apache.directory.shared.asn1.codec";v
+ ersion="0.9.17",org.apache.directory.shared.asn1.codec;version="0.9.1
+ 7"
+Embed-Directory: lib
+Bundle-ClassPath: .,lib/shared-asn1-0.9.17.jar
+Tool: Bnd-0.0.357
+Bundle-Name: Apache Directory ASN.1 Shared (for Apache Directory Studi
+ o)
+Created-By: 1.6.0_20 (Apple Inc.)
+Require-Bundle: org.apache.logging.log4j;bundle-version="1.2.14", org.
+ slf4j.api;bundle-version="1.5.6", org.slf4j.log4j12;bundle-version="1
+ .5.6"
+Bundle-Vendor: Apache Software Foundation
+Bundle-Version: 0.9.17
+Bnd-LastModified: 1282313775063
+Bundle-ManifestVersion: 2
+Bundle-License: http://www.apache.org/licenses/LICENSE-2.0.txt
+Embed-Dependency: *;scope=compile|runtime
+Embed-StripGroup: true
+Bundle-SymbolicName: org.apache.directory.shared.asn1
+Bundle-DocURL: http://www.apache.org
+

@@ -1,0 +1,32 @@
+Manifest-Version: 1.0
+Export-Package: org.dom4j.swing;uses:="org.dom4j";version="1.6.1",org.
+ dom4j.tree;uses:="org.dom4j,org.dom4j.io,org.dom4j.rule";version="1.6
+ .1",org.dom4j.rule.pattern;uses:="org.dom4j,org.dom4j.rule";version="
+ 1.6.1",org.dom4j;uses:="org.dom4j.tree,org.dom4j.util,org.dom4j.xpath
+ ,org.dom4j.rule,org.dom4j.io";version="1.6.1",org.dom4j.dom;uses:="or
+ g.dom4j.tree,org.dom4j,org.dom4j.util";version="1.6.1",org.dom4j.xpp;
+ uses:="org.dom4j.tree,org.dom4j";version="1.6.1",org.dom4j.datatype;u
+ ses:="org.dom4j.tree,org.dom4j,org.dom4j.io,org.dom4j.util";version="
+ 1.6.1",org.dom4j.util;uses:="org.dom4j,org.dom4j.tree,org.dom4j.rule"
+ ;version="1.6.1",lib;version="1.6.1",org.dom4j.io;uses:="org.dom4j.tr
+ ee,org.dom4j,org.dom4j.dtd,org.dom4j.xpp";version="1.6.1",org.dom4j.j
+ axb;uses:="org.dom4j,org.dom4j.io,org.dom4j.dom";version="1.6.1",org.
+ dom4j.dtd;version="1.6.1",org.dom4j.xpath;uses:="org.dom4j,org.dom4j.
+ rule";version="1.6.1",org.dom4j.rule;uses:="org.dom4j,org.dom4j.rule.
+ pattern";version="1.6.1",org.dom4j.bean;uses:="org.dom4j.tree,org.dom
+ 4j";version="1.6.1"
+Embed-Directory: lib
+Bundle-ClassPath: .,lib/dom4j-1.6.1.jar
+Tool: Bnd-0.0.357
+Bundle-Name: dom4j (for Apache Directory Studio)
+Created-By: 1.6.0_20 (Apple Inc.)
+Bundle-Vendor: Apache Software Foundation
+Bundle-Version: 1.6.1
+Bnd-LastModified: 1282313731802
+Bundle-ManifestVersion: 2
+Bundle-License: http://www.apache.org/licenses/LICENSE-2.0.txt
+Embed-Dependency: *;scope=compile|runtime
+Embed-StripGroup: true
+Bundle-SymbolicName: org.dom4j.dom4j
+Bundle-DocURL: http://www.apache.org
+

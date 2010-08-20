@@ -1,0 +1,56 @@
+Manifest-Version: 1.0
+Export-Package: org.apache.http.client.entity;uses:="org.apache.http.c
+ lient.utils";version="4.0",org.apache.http.conn.scheme;uses:="org.apa
+ che.http.conn";version="4.0",org.apache.http.conn.params;uses:="org.a
+ pache.http.conn.routing";version="4.0",org.apache.http.cookie.params;
+ version="4.0",org.apache.http.conn.ssl;uses:="org.apache.http.conn.ut
+ il,org.apache.http.conn,org.apache.http.conn.scheme";version="4.0",or
+ g.apache.http.client.utils;version="4.0",org.apache.http.client;uses:
+ ="org.apache.http.auth,org.apache.http.cookie,org.apache.http.conn,or
+ g.apache.http.client.methods";version="4.0",org.apache.http.impl.conn
+ ;uses:="org.apache.http.conn,org.apache.http.conn.routing,org.apache.
+ http.conn.scheme,org.apache.http.conn.params";version="4.0",org.apach
+ e.http.conn.routing;version="4.0",org.apache.http.client.protocol;use
+ s:="org.apache.http.cookie,org.apache.http.client,org.apache.http.aut
+ h,org.apache.http.conn.scheme,org.apache.http.client.params,org.apach
+ e.http.conn,org.apache.http.client.methods,org.apache.http.conn.routi
+ ng";version="4.0",org.apache.http.client.params;uses:="org.apache.htt
+ p.auth.params,org.apache.http.conn.params,org.apache.http.cookie.para
+ ms,org.apache.http.conn";version="4.0",org.apache.http.conn;uses:="or
+ g.apache.http.conn.scheme,org.apache.http.conn.routing";version="4.0"
+ ,org.apache.http.auth.params;version="4.0",org.apache.http.impl.clien
+ t;uses:="org.apache.http.client,org.apache.http.auth,org.apache.http.
+ conn.routing,org.apache.http.conn,org.apache.http.cookie,org.apache.h
+ ttp.client.methods,org.apache.http.conn.scheme,org.apache.http.conn.s
+ sl,org.apache.http.impl.conn,org.apache.http.client.protocol,org.apac
+ he.http.impl.cookie,org.apache.http.impl.auth,org.apache.http.client.
+ utils,org.apache.http.conn.params,org.apache.http.client.params";vers
+ ion="4.0",lib;version="4.0",org.apache.http.cookie;version="4.0",org.
+ apache.http.conn.util;version="4.0",org.apache.http.impl.cookie;uses:
+ ="org.apache.http.cookie,org.apache.http.client.utils";version="4.0",
+ org.apache.http.impl.auth;uses:="org.apache.http.auth,org.apache.http
+ .auth.params";version="4.0",org.apache.http.client.methods;uses:="org
+ .apache.http.conn,org.apache.http.client.utils";version="4.0",org.apa
+ che.http.impl.conn.tsccm;uses:="org.apache.http.conn,org.apache.http.
+ impl.conn,org.apache.http.conn.routing,org.apache.http.conn.params,or
+ g.apache.http.conn.scheme";version="4.0",org.apache.http.auth;version
+ ="4.0"
+Embed-Directory: lib
+Bundle-ClassPath: .,lib/httpclient-4.0.jar
+Tool: Bnd-0.0.357
+Bundle-Name: Apache HttpComponents Client (for Apache Directory Studio
+ )
+Created-By: 1.6.0_20 (Apple Inc.)
+Require-Bundle: org.apache.commons.codec;bundle-version="1.3", org.apa
+ che.commons.logging;bundle-version="1.1.1", org.apache.httpcomponents
+ .httpcore;bundle-version="4.0"
+Bundle-Vendor: Apache Software Foundation
+Bundle-Version: 4.0
+Bnd-LastModified: 1282313726892
+Bundle-ManifestVersion: 2
+Bundle-License: http://www.apache.org/licenses/LICENSE-2.0.txt
+Embed-Dependency: *;scope=compile|runtime
+Embed-StripGroup: true
+Bundle-SymbolicName: org.apache.httpcomponents.httpclient
+Bundle-DocURL: http://www.apache.org
+

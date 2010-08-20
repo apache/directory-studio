@@ -1,0 +1,34 @@
+Manifest-Version: 1.0
+Export-Package: org.apache.directory.shared.dsmlv2.reponse;uses:="org.
+ apache.directory.shared.dsmlv2";version="0.9.17",lib;version="0.9.17"
+ ,org.apache.directory.shared.dsmlv2;uses:="org.apache.directory.share
+ d.dsmlv2.reponse,org.apache.directory.shared.dsmlv2.request,org.apach
+ e.directory.shared.dsmlv2.engine";version="0.9.17",org.apache.directo
+ ry.shared.dsmlv2.engine;uses:="org.apache.directory.shared.dsmlv2,org
+ .apache.directory.shared.dsmlv2.reponse,org.apache.directory.shared.d
+ smlv2.request";version="0.9.17",org.apache.directory.shared.dsmlv2.re
+ quest;uses:="org.apache.directory.shared.dsmlv2";version="0.9.17"
+Embed-Directory: lib
+Bundle-ClassPath: .,lib/shared-dsml-parser-0.9.17.jar
+Tool: Bnd-0.0.357
+Bundle-Name: Apache Directory DSML Parser (for Apache Directory Studio
+ )
+Created-By: 1.6.0_20 (Apple Inc.)
+Require-Bundle: org.antlr.antlr;bundle-version="2.7.7", org.apache.com
+ mons.collections;bundle-version="3.2.1", org.apache.directory.shared.
+ asn1;bundle-version="0.9.17", org.apache.directory.shared.ldap;bundle
+ -version="0.9.17", org.apache.directory.shared.ldapconstants;bundle-v
+ ersion="0.9.17", org.apache.logging.log4j;bundle-version="1.2.14", or
+ g.dom4j.dom4j;bundle-version="1.6.1", org.xpp3.xpp3;bundle-version="1
+ .1.340", org.slf4j.api;bundle-version="1.5.6", org.slf4j.log4j12;bund
+ le-version="1.5.6"
+Bundle-Vendor: Apache Software Foundation
+Bundle-Version: 0.9.17
+Bnd-LastModified: 1282313779923
+Bundle-ManifestVersion: 2
+Bundle-License: http://www.apache.org/licenses/LICENSE-2.0.txt
+Embed-Dependency: *;scope=compile|runtime
+Embed-StripGroup: true
+Bundle-SymbolicName: org.apache.directory.shared.dsmlparser
+Bundle-DocURL: http://www.apache.org
+

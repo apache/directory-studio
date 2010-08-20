@@ -1,0 +1,56 @@
+Manifest-Version: 1.0
+Export-Package: org.apache.commons.collections.keyvalue;uses:="org.apa
+ che.commons.collections";version="3.2.1",org.apache.commons.collectio
+ ns.comparators;uses:="org.apache.commons.collections";version="3.2.1"
+ ,org.apache.commons.collections;uses:="org.apache.commons.collections
+ .bag,org.apache.commons.collections.keyvalue,org.apache.commons.colle
+ ctions.list,org.apache.commons.collections.set,org.apache.commons.col
+ lections.buffer,org.apache.commons.collections.functors,org.apache.co
+ mmons.collections.collection,org.apache.commons.collections.comparato
+ rs,org.apache.commons.collections.iterators,org.apache.commons.collec
+ tions.map";version="3.2.1",org.apache.commons.collections.bidimap;use
+ s:="org.apache.commons.collections,org.apache.commons.collections.map
+ ,org.apache.commons.collections.iterators,org.apache.commons.collecti
+ ons.keyvalue,org.apache.commons.collections.collection,org.apache.com
+ mons.collections.set";version="3.2.1",org.apache.commons.collections.
+ list;uses:="org.apache.commons.collections,org.apache.commons.collect
+ ions.collection,org.apache.commons.collections.iterators,org.apache.c
+ ommons.collections.set,org.apache.commons.collections.functors";versi
+ on="3.2.1",org.apache.commons.collections.functors;uses:="org.apache.
+ commons.collections";version="3.2.1",org.apache.commons.collections.c
+ ollection;uses:="org.apache.commons.collections.iterators,org.apache.
+ commons.collections.list,org.apache.commons.collections,org.apache.co
+ mmons.collections.functors";version="3.2.1",org.apache.commons.collec
+ tions.iterators;uses:="org.apache.commons.collections,org.apache.comm
+ ons.collections.list,org.apache.commons.collections.functors";version
+ ="3.2.1",lib;version="3.2.1",org.apache.commons.collections.map;uses:
+ ="org.apache.commons.collections,org.apache.commons.collections.itera
+ tors,org.apache.commons.collections.set,org.apache.commons.collection
+ s.keyvalue,org.apache.commons.collections.collection,org.apache.commo
+ ns.collections.functors,org.apache.commons.collections.list";version=
+ "3.2.1",org.apache.commons.collections.bag;uses:="org.apache.commons.
+ collections,org.apache.commons.collections.collection,org.apache.comm
+ ons.collections.set,org.apache.commons.collections.functors,org.apach
+ e.commons.collections.iterators";version="3.2.1",org.apache.commons.c
+ ollections.buffer;uses:="org.apache.commons.collections,org.apache.co
+ mmons.collections.collection,org.apache.commons.collections.iterators
+ ,org.apache.commons.collections.functors";version="3.2.1",org.apache.
+ commons.collections.set;uses:="org.apache.commons.collections.collect
+ ion,org.apache.commons.collections,org.apache.commons.collections.ite
+ rators,org.apache.commons.collections.list,org.apache.commons.collect
+ ions.functors";version="3.2.1"
+Embed-Directory: lib
+Bundle-ClassPath: .,lib/commons-collections-3.2.1.jar
+Tool: Bnd-0.0.357
+Bundle-Name: Apache Commons Collections (for Apache Directory Studio)
+Created-By: 1.6.0_20 (Apple Inc.)
+Bundle-Vendor: Apache Software Foundation
+Bundle-Version: 3.2.1
+Bnd-LastModified: 1282313741570
+Bundle-ManifestVersion: 2
+Bundle-License: http://www.apache.org/licenses/LICENSE-2.0.txt
+Embed-Dependency: *;scope=compile|runtime
+Embed-StripGroup: true
+Bundle-SymbolicName: org.apache.commons.collections
+Bundle-DocURL: http://www.apache.org
+

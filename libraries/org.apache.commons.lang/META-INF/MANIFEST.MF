@@ -1,0 +1,28 @@
+Manifest-Version: 1.0
+Export-Package: lib;version="2.3",org.apache.commons.lang.enums;uses:=
+ "org.apache.commons.lang";version="2.3",org.apache.commons.lang.build
+ er;uses:="org.apache.commons.lang.math,org.apache.commons.lang";versi
+ on="2.3",org.apache.commons.lang.time;uses:="org.apache.commons.lang"
+ ;version="2.3",org.apache.commons.lang.exception;uses:="org.apache.co
+ mmons.lang";version="2.3",org.apache.commons.lang.mutable;uses:="org.
+ apache.commons.lang,org.apache.commons.lang.math";version="2.3",org.a
+ pache.commons.lang.text;uses:="org.apache.commons.lang";version="2.3"
+ ,org.apache.commons.lang;uses:="org.apache.commons.lang.builder,org.a
+ pache.commons.lang.math,org.apache.commons.lang.exception";version="2
+ .3",org.apache.commons.lang.math;uses:="org.apache.commons.lang";vers
+ ion="2.3"
+Embed-Directory: lib
+Bundle-ClassPath: .,lib/commons-lang-2.3.jar
+Tool: Bnd-0.0.357
+Bundle-Name: Apache Commons Lang (for Apache Directory Studio)
+Created-By: 1.6.0_20 (Apple Inc.)
+Bundle-Vendor: Apache Software Foundation
+Bundle-Version: 2.3
+Bnd-LastModified: 1282313697465
+Bundle-ManifestVersion: 2
+Bundle-License: http://www.apache.org/licenses/LICENSE-2.0.txt
+Embed-Dependency: *;scope=compile|runtime
+Embed-StripGroup: true
+Bundle-SymbolicName: org.apache.commons.lang
+Bundle-DocURL: http://www.apache.org
+

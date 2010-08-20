@@ -1,0 +1,7 @@
+<classpath>
+  <classpathentry excluding="**/*.java" path="target/maven-shared-archive-resources" kind="src"/>
+  <classpathentry path="target/classes" kind="output"/>
+  <classpathentry path="org.eclipse.jdt.launching.JRE_CONTAINER" kind="con"/>
+  <classpathentry path="org.eclipse.pde.core.requiredPlugins" kind="con"/>
+  <classpathentry path="lib/commons-collections-3.2.1.jar" exported="true" kind="lib"/>
+</classpath>
