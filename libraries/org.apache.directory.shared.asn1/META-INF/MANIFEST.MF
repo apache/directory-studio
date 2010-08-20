@@ -33,7 +33,7 @@ Require-Bundle: org.apache.logging.log4j;bundle-version="1.2.14", org.
  .5.6"
 Bundle-Vendor: Apache Software Foundation
 Bundle-Version: 0.9.17
-Bnd-LastModified: 1282313775063
+Bnd-LastModified: 1282323482226
 Bundle-ManifestVersion: 2
 Bundle-License: http://www.apache.org/licenses/LICENSE-2.0.txt
 Embed-Dependency: *;scope=compile|runtime
