@@ -1,0 +1,8 @@
+<classpath>
+  <classpathentry excluding="**/*.java" including="plugin.xml" path="." kind="src"/>
+  <classpathentry excluding="**/*.java" path="src/main/resources" kind="src"/>
+  <classpathentry excluding="**/*.java" path="src/main/docbook" output="target/docbook/documents" kind="src"/>
+  <classpathentry excluding="**/*.java" path="target/maven-shared-archive-resources" kind="src"/>
+  <classpathentry path="target/classes" kind="output"/>
+  <classpathentry path="org.eclipse.jdt.launching.JRE_CONTAINER" kind="con"/>
+</classpath>

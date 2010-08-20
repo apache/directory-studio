@@ -1,0 +1,27 @@
+<projectDescription>
+  <name>repository</name>
+  <comment>Apache Directory Studio is a complete directory tooling platform intended to be used with any LDAP server however it is particularly designed for use with the Apache Directory Server. NO_M2ECLIPSE_SUPPORT: Project files created with the maven-eclipse-plugin are not supported in M2Eclipse.</comment>
+  <projects/>
+  <buildSpec>
+    <buildCommand>
+      <name>org.eclipse.jdt.core.javabuilder</name>
+    </buildCommand>
+    <buildCommand>
+      <name>org.eclipse.pde.ManifestBuilder</name>
+    </buildCommand>
+    <buildCommand>
+      <name>org.eclipse.pde.SchemaBuilder</name>
+    </buildCommand>
+  </buildSpec>
+  <natures>
+    <nature>org.eclipse.jdt.core.javanature</nature>
+    <nature>org.eclipse.pde.PluginNature</nature>
+  </natures>
+  <linkedResources>
+    <link>
+      <name>odfdom-0.6.16.jar</name>
+      <type>1</type>
+      <location>/Users/pajbam/.m2/repository/org/openoffice/odfdom/0.6.16/odfdom-0.6.16.jar</location>
+    </link>
+  </linkedResources>
+</projectDescription>
