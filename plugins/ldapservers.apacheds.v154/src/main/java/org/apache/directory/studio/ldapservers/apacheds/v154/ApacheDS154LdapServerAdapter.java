@@ -28,7 +28,6 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import org.apache.directory.studio.apacheds.configuration.editor.ServerConfigurationEditor;
-import org.apache.directory.studio.apacheds.configuration.model.ServerConfiguration;
 import org.apache.directory.studio.apacheds.configuration.model.ServerXmlIOException;
 import org.apache.directory.studio.apacheds.configuration.model.v154.ServerConfigurationV154;
 import org.apache.directory.studio.apacheds.configuration.model.v154.ServerXmlIOV154;
@@ -211,14 +210,14 @@ public class ApacheDS154LdapServerAdapter implements LdapServerAdapter
     * @throws ServerXmlIOException 
     * @throws FileNotFoundException 
     */
-    private ServerConfiguration getServerConfiguration( LdapServer server ) throws ServerXmlIOException,
+    public static ServerConfigurationV154 getServerConfiguration( LdapServer server ) throws ServerXmlIOException,
         FileNotFoundException
     {
         InputStream fis = new FileInputStream( LdapServersManager.getServerFolder( server ).append( "conf" )
             .append( "server.xml" ).toFile() );
 
         ServerXmlIOV154 serverXmlIOV154 = new ServerXmlIOV154();
-        return serverXmlIOV154.parse( fis );
+        return ( ServerConfigurationV154 ) serverXmlIOV154.parse( fis );
     }
 
 
@@ -234,7 +233,7 @@ public class ApacheDS154LdapServerAdapter implements LdapServerAdapter
      */
     private int getTestingPort( LdapServer server ) throws ServerXmlIOException, IOException
     {
-        ServerConfigurationV154 configuration = ( ServerConfigurationV154 ) getServerConfiguration( server );
+        ServerConfigurationV154 configuration = getServerConfiguration( server );
 
         // LDAP
         if ( configuration.isEnableLdap() )

@@ -118,6 +118,7 @@
  org.apache.directory.studio.apacheds.configuration,
  org.apache.directory.studio.common.core,
  org.apache.directory.studio.common.ui,
+ org.apache.directory.studio.connection.core,
  org.apache.directory.studio.ldapservers,
  org.dom4j.dom4j;bundle-version="${org.dom4j.version}",
  org.eclipse.core.runtime,
@@ -442,6 +443,11 @@
     <dependency>
       <groupId>org.apache.directory.studio</groupId>
       <artifactId>common.ui</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.directory.studio</groupId>
+      <artifactId>connection.core</artifactId>
       <scope>provided</scope>
     </dependency>
     <dependency>
