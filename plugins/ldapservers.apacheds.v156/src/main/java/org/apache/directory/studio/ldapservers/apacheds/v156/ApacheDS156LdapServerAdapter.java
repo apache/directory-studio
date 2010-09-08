@@ -28,7 +28,6 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import org.apache.directory.studio.apacheds.configuration.editor.ServerConfigurationEditor;
-import org.apache.directory.studio.apacheds.configuration.model.ServerConfiguration;
 import org.apache.directory.studio.apacheds.configuration.model.ServerXmlIOException;
 import org.apache.directory.studio.apacheds.configuration.model.v156.ServerConfigurationV156;
 import org.apache.directory.studio.apacheds.configuration.model.v156.ServerXmlIOV156;
@@ -223,7 +222,7 @@ public class ApacheDS156LdapServerAdapter implements LdapServerAdapter
             .append( "server.xml" ).toFile() );
 
         ServerXmlIOV156 serverXmlIOV156 = new ServerXmlIOV156();
-        return (ServerConfigurationV156) serverXmlIOV156.parse( fis );
+        return ( ServerConfigurationV156 ) serverXmlIOV156.parse( fis );
     }
 
 
