@@ -11,4 +11,25 @@
             version="1.5.6">
       </ldapServerAdapter>
    </extension>
+   
+   <extension
+         point="org.eclipse.ui.popupMenus">
+      <objectContribution
+            objectClass="org.apache.directory.studio.ldapservers.model.LdapServer"
+            id="org.apache.directory.studio.ldapservers.model.LdapServer">
+         <action
+               class="org.apache.directory.studio.ldapservers.apacheds.v156.CreateConnectionAction"
+               enablesFor="1"
+               id="org.apache.directory.studio.ldapservers.apacheds.v156.CreateConnectionAction"
+               label="Create a Connection"
+               icon="resources/icons/connection_new.gif">
+         </action>
+         <visibility>
+               <objectState
+                     name="extensionId"
+                     value="org.apache.directory.server.1.5.6">
+               </objectState>
+         </visibility>
+      </objectContribution>
+   </extension>
 </plugin>

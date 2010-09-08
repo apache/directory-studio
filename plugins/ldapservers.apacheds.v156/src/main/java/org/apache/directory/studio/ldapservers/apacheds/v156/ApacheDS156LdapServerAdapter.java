@@ -216,14 +216,14 @@ public class ApacheDS156LdapServerAdapter implements LdapServerAdapter
     * @throws ServerXmlIOException 
     * @throws FileNotFoundException 
     */
-    private ServerConfiguration getServerConfiguration( LdapServer server ) throws ServerXmlIOException,
+    public static ServerConfigurationV156 getServerConfiguration( LdapServer server ) throws ServerXmlIOException,
         FileNotFoundException
     {
         InputStream fis = new FileInputStream( LdapServersManager.getServerFolder( server ).append( "conf" )
             .append( "server.xml" ).toFile() );
 
         ServerXmlIOV156 serverXmlIOV156 = new ServerXmlIOV156();
-        return serverXmlIOV156.parse( fis );
+        return (ServerConfigurationV156) serverXmlIOV156.parse( fis );
     }
 
 
@@ -239,7 +239,7 @@ public class ApacheDS156LdapServerAdapter implements LdapServerAdapter
      */
     private int getTestingPort( LdapServer server ) throws ServerXmlIOException, IOException
     {
-        ServerConfigurationV156 configuration = ( ServerConfigurationV156 ) getServerConfiguration( server );
+        ServerConfigurationV156 configuration = getServerConfiguration( server );
 
         // LDAP
         if ( configuration.isEnableLdap() )
