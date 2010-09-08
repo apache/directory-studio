@@ -642,8 +642,8 @@ public class ServerXmlIOV155 extends AbstractServerXmlIO implements ServerXmlIO
             if ( transportsElement != null )
             {
                 // Getting the 'tcpTransport' element
-                Element tcpTransportElement = transportsElement.element( ServerXmlIOV155.ELEMENT_TRANSPORTS );
-                if ( transportsElement != null )
+                Element tcpTransportElement = transportsElement.element( ServerXmlIOV155.ELEMENT_TCP_TRANSPORT );
+                if ( tcpTransportElement != null )
                 {
                     // Getting the 'port' attribute
                     org.dom4j.Attribute portAttribute = tcpTransportElement.attribute( ServerXmlIOV155.ATTRIBUTE_PORT );
@@ -655,16 +655,16 @@ public class ServerXmlIOV155 extends AbstractServerXmlIO implements ServerXmlIO
                     {
                         // If the 'port' attribute does not exists,
                         // we throw an exception
-                        throw new ServerXmlIOException( Messages
-                            .getString( "ServerXmlIOV155.ErrorChangePasswordServerPort" ) ); //$NON-NLS-1$
+                        throw new ServerXmlIOException(
+                            Messages.getString( "ServerXmlIOV155.ErrorChangePasswordServerPort" ) ); //$NON-NLS-1$
                     }
                 }
                 else
                 {
                     // If the 'tcpTransport' element does not exists,
                     // we throw an exception
-                    throw new ServerXmlIOException( Messages
-                        .getString( "ServerXmlIOV155.ErrorChangePasswordServerPort" ) ); //$NON-NLS-1$
+                    throw new ServerXmlIOException(
+                        Messages.getString( "ServerXmlIOV155.ErrorChangePasswordServerPort" ) ); //$NON-NLS-1$
                 }
             }
             else
@@ -705,8 +705,8 @@ public class ServerXmlIOV155 extends AbstractServerXmlIO implements ServerXmlIO
             if ( transportsElement != null )
             {
                 // Getting the 'tcpTransport' element
-                Element tcpTransportElement = transportsElement.element( ServerXmlIOV155.ELEMENT_TRANSPORTS );
-                if ( transportsElement != null )
+                Element tcpTransportElement = transportsElement.element( ServerXmlIOV155.ELEMENT_TCP_TRANSPORT );
+                if ( tcpTransportElement != null )
                 {
                     // Getting the 'port' attribute
                     org.dom4j.Attribute portAttribute = tcpTransportElement.attribute( ServerXmlIOV155.ATTRIBUTE_PORT );
@@ -766,8 +766,8 @@ public class ServerXmlIOV155 extends AbstractServerXmlIO implements ServerXmlIO
             if ( transportsElement != null )
             {
                 // Getting the 'tcpTransport' element
-                Element tcpTransportElement = transportsElement.element( ServerXmlIOV155.ELEMENT_TRANSPORTS );
-                if ( transportsElement != null )
+                Element tcpTransportElement = transportsElement.element( ServerXmlIOV155.ELEMENT_TCP_TRANSPORT );
+                if ( tcpTransportElement != null )
                 {
                     // Getting the 'port' attribute
                     org.dom4j.Attribute portAttribute = tcpTransportElement.attribute( ServerXmlIOV155.ATTRIBUTE_PORT );
@@ -820,13 +820,15 @@ public class ServerXmlIOV155 extends AbstractServerXmlIO implements ServerXmlIO
         Element dnsServerElement = element.element( ServerXmlIOV155.ELEMENT_DNS_SERVER );
         if ( dnsServerElement != null )
         {
+            serverConfiguration.setEnableDns( true );
+
             // Getting the 'transports' element
             Element transportsElement = dnsServerElement.element( ServerXmlIOV155.ELEMENT_TRANSPORTS );
             if ( transportsElement != null )
             {
                 // Getting the 'tcpTransport' element
-                Element tcpTransportElement = transportsElement.element( ServerXmlIOV155.ELEMENT_TRANSPORTS );
-                if ( transportsElement != null )
+                Element tcpTransportElement = transportsElement.element( ServerXmlIOV155.ELEMENT_TCP_TRANSPORT );
+                if ( tcpTransportElement != null )
                 {
                     // Getting the 'port' attribute
                     org.dom4j.Attribute portAttribute = tcpTransportElement.attribute( ServerXmlIOV155.ATTRIBUTE_PORT );
@@ -1375,8 +1377,8 @@ public class ServerXmlIOV155 extends AbstractServerXmlIO implements ServerXmlIO
             {
                 // Adding the 'jdbmIndex' element
                 Element jdbmIndexElement = indexedAttributeElement.addElement( ServerXmlIOV155.ELEMENT_JDBM_INDEX );
-                jdbmIndexElement.addAttribute( ServerXmlIOV155.ATTRIBUTE_ATTRIBUTE_ID, indexedAttribute
-                    .getAttributeId() );
+                jdbmIndexElement.addAttribute( ServerXmlIOV155.ATTRIBUTE_ATTRIBUTE_ID,
+                    indexedAttribute.getAttributeId() );
                 jdbmIndexElement.addAttribute( ServerXmlIOV155.ATTRIBUTE_CACHE_SIZE, "" //$NON-NLS-1$
                     + indexedAttribute.getCacheSize() );
             }
@@ -1657,37 +1659,37 @@ public class ServerXmlIOV155 extends AbstractServerXmlIO implements ServerXmlIO
      */
     private void createLdapServerBean( Element root, ServerConfigurationV155 serverConfiguration )
     {
-        // Adding the 'ldapServer' element
-        Element ldapServerElement = root.addElement( ServerXmlIOV155.ELEMENT_LDAP_SERVER );
-
-        // Id
-        ldapServerElement.addAttribute( ServerXmlIOV155.ATTRIBUTE_ID, ServerXmlIOV155.ELEMENT_LDAP_SERVER );
-
-        // AllowAnonymousAccess
-        ldapServerElement.addAttribute( ServerXmlIOV155.ATTRIBUTE_ALLOW_ANONYMOUS_ACCESS, "" //$NON-NLS-1$
-            + serverConfiguration.isAllowAnonymousAccess() );
-
-        // SaslHost
-        ldapServerElement.addAttribute( ServerXmlIOV155.ATTRIBUTE_SASL_HOST, "" + serverConfiguration.getSaslHost() ); //$NON-NLS-1$
-
-        // SaslPrincipal
-        ldapServerElement.addAttribute( ServerXmlIOV155.ATTRIBUTE_SASL_PRINCIPAL, "" //$NON-NLS-1$
-            + serverConfiguration.getSaslPrincipal() );
-
-        // SearchBaseDn
-        ldapServerElement.addAttribute( ServerXmlIOV155.ATTRIBUTE_SEARCH_BASE_DN, "ou=users,ou=system" ); //$NON-NLS-1$
-
-        // MaxTimeLimit
-        ldapServerElement.addAttribute( ServerXmlIOV155.ATTRIBUTE_MAX_TIME_LIMIT, "" //$NON-NLS-1$
-            + serverConfiguration.getMaxTimeLimit() );
-
-        // MaxSizeLimit
-        ldapServerElement.addAttribute( ServerXmlIOV155.ATTRIBUTE_MAX_SIZE_LIMIT, "" //$NON-NLS-1$
-            + serverConfiguration.getMaxSizeLimit() );
-
-        // Transports
         if ( serverConfiguration.isEnableLdap() || serverConfiguration.isEnableLdaps() )
         {
+            // Adding the 'ldapServer' element
+            Element ldapServerElement = root.addElement( ServerXmlIOV155.ELEMENT_LDAP_SERVER );
+
+            // Id
+            ldapServerElement.addAttribute( ServerXmlIOV155.ATTRIBUTE_ID, ServerXmlIOV155.ELEMENT_LDAP_SERVER );
+
+            // AllowAnonymousAccess
+            ldapServerElement.addAttribute( ServerXmlIOV155.ATTRIBUTE_ALLOW_ANONYMOUS_ACCESS, "" //$NON-NLS-1$
+                + serverConfiguration.isAllowAnonymousAccess() );
+
+            // SaslHost
+            ldapServerElement
+                .addAttribute( ServerXmlIOV155.ATTRIBUTE_SASL_HOST, "" + serverConfiguration.getSaslHost() ); //$NON-NLS-1$
+
+            // SaslPrincipal
+            ldapServerElement.addAttribute( ServerXmlIOV155.ATTRIBUTE_SASL_PRINCIPAL, "" //$NON-NLS-1$
+                + serverConfiguration.getSaslPrincipal() );
+
+            // SearchBaseDn
+            ldapServerElement.addAttribute( ServerXmlIOV155.ATTRIBUTE_SEARCH_BASE_DN, "ou=users,ou=system" ); //$NON-NLS-1$
+
+            // MaxTimeLimit
+            ldapServerElement.addAttribute( ServerXmlIOV155.ATTRIBUTE_MAX_TIME_LIMIT, "" //$NON-NLS-1$
+                + serverConfiguration.getMaxTimeLimit() );
+
+            // MaxSizeLimit
+            ldapServerElement.addAttribute( ServerXmlIOV155.ATTRIBUTE_MAX_SIZE_LIMIT, "" //$NON-NLS-1$
+                + serverConfiguration.getMaxSizeLimit() );
+
             // Adding 'transports' element
             Element transportsElement = ldapServerElement.addElement( ServerXmlIOV155.ELEMENT_TRANSPORTS );
 
@@ -1733,90 +1735,90 @@ public class ServerXmlIOV155 extends AbstractServerXmlIO implements ServerXmlIO
                 // EnableSSL
                 tcpTransportElement.addAttribute( ServerXmlIOV155.ATTRIBUTE_ENABLESSL, "" + true ); //$NON-NLS-1$
             }
-        }
 
-        // Adding 'directoryService' element
-        ldapServerElement.addElement( ServerXmlIOV155.VALUE_DIRECTORY_SERVICE ).setText( "#directoryService" ); //$NON-NLS-1$
+            // Adding 'directoryService' element
+            ldapServerElement.addElement( ServerXmlIOV155.VALUE_DIRECTORY_SERVICE ).setText( "#directoryService" ); //$NON-NLS-1$
 
-        // Adding 'saslMechanismHandlers' element
-        Element saslMechanismHandlersElement = ldapServerElement
-            .addElement( ServerXmlIOV155.ELEMENT_SASL_MECHANISM_HANDLERS );
+            // Adding 'saslMechanismHandlers' element
+            Element saslMechanismHandlersElement = ldapServerElement
+                .addElement( ServerXmlIOV155.ELEMENT_SASL_MECHANISM_HANDLERS );
 
-        // Adding each supported mechanism
-        for ( SupportedMechanismEnum supportedMechanism : serverConfiguration.getSupportedMechanisms() )
-        {
-            switch ( supportedMechanism )
+            // Adding each supported mechanism
+            for ( SupportedMechanismEnum supportedMechanism : serverConfiguration.getSupportedMechanisms() )
             {
-                case SIMPLE:
-                    Element simpleMechanismHandlerElement = saslMechanismHandlersElement
-                        .addElement( ServerXmlIOV155.ELEMENT_SIMPLE_MECHANISM_HANDLER );
-                    simpleMechanismHandlerElement.addAttribute( ServerXmlIOV155.ATTRIBUTE_MECH_NAME,
-                        ServerXmlIOV155.SUPPORTED_MECHANISM_SIMPLE );
-                    break;
-                case CRAM_MD5:
-                    Element cramMd5MechanismHandlerElement = saslMechanismHandlersElement
-                        .addElement( ServerXmlIOV155.ELEMENT_CRAM_MD5_MECHANISM_HANDLER );
-                    cramMd5MechanismHandlerElement.addAttribute( ServerXmlIOV155.ATTRIBUTE_MECH_NAME,
-                        ServerXmlIOV155.SUPPORTED_MECHANISM_CRAM_MD5 );
-                    break;
-                case DIGEST_MD5:
-                    Element digestMd5MechanismHandlerElement = saslMechanismHandlersElement
-                        .addElement( ServerXmlIOV155.ELEMENT_DIGEST_MD5_MECHANISM_HANDLER );
-                    digestMd5MechanismHandlerElement.addAttribute( ServerXmlIOV155.ATTRIBUTE_MECH_NAME,
-                        ServerXmlIOV155.SUPPORTED_MECHANISM_DIGEST_MD5 );
-                    break;
-                case GSSAPI:
-                    Element gssapiMechanismHandlerElement = saslMechanismHandlersElement
-                        .addElement( ServerXmlIOV155.ELEMENT_GSSAPI_MECHANISM_HANDLER );
-                    gssapiMechanismHandlerElement.addAttribute( ServerXmlIOV155.ATTRIBUTE_MECH_NAME,
-                        ServerXmlIOV155.SUPPORTED_MECHANISM_GSSAPI );
-                    break;
-                case NTLM:
-                    Element ntlmMechanismHandlerElement = saslMechanismHandlersElement
-                        .addElement( ServerXmlIOV155.ELEMENT_NTLM_MECHANISM_HANDLER );
-                    ntlmMechanismHandlerElement.addAttribute( ServerXmlIOV155.ATTRIBUTE_MECH_NAME,
-                        ServerXmlIOV155.SUPPORTED_MECHANISM_NTLM );
-                    ntlmMechanismHandlerElement.addAttribute( ServerXmlIOV155.ATTRIBUTE_NTLM_PROVIDER_FQCN,
-                        supportedMechanism.getNtlmProviderFqcn() );
-                    break;
-                case GSS_SPNEGO:
-                    Element gssSpnegoMechanismHandlerElement = saslMechanismHandlersElement
-                        .addElement( ServerXmlIOV155.ELEMENT_NTLM_MECHANISM_HANDLER );
-                    gssSpnegoMechanismHandlerElement.addAttribute( ServerXmlIOV155.ATTRIBUTE_MECH_NAME,
-                        ServerXmlIOV155.SUPPORTED_MECHANISM_GSS_SPNEGO );
-                    gssSpnegoMechanismHandlerElement.addAttribute( ServerXmlIOV155.ATTRIBUTE_NTLM_PROVIDER_FQCN,
-                        supportedMechanism.getNtlmProviderFqcn() );
-                    break;
+                switch ( supportedMechanism )
+                {
+                    case SIMPLE:
+                        Element simpleMechanismHandlerElement = saslMechanismHandlersElement
+                            .addElement( ServerXmlIOV155.ELEMENT_SIMPLE_MECHANISM_HANDLER );
+                        simpleMechanismHandlerElement.addAttribute( ServerXmlIOV155.ATTRIBUTE_MECH_NAME,
+                            ServerXmlIOV155.SUPPORTED_MECHANISM_SIMPLE );
+                        break;
+                    case CRAM_MD5:
+                        Element cramMd5MechanismHandlerElement = saslMechanismHandlersElement
+                            .addElement( ServerXmlIOV155.ELEMENT_CRAM_MD5_MECHANISM_HANDLER );
+                        cramMd5MechanismHandlerElement.addAttribute( ServerXmlIOV155.ATTRIBUTE_MECH_NAME,
+                            ServerXmlIOV155.SUPPORTED_MECHANISM_CRAM_MD5 );
+                        break;
+                    case DIGEST_MD5:
+                        Element digestMd5MechanismHandlerElement = saslMechanismHandlersElement
+                            .addElement( ServerXmlIOV155.ELEMENT_DIGEST_MD5_MECHANISM_HANDLER );
+                        digestMd5MechanismHandlerElement.addAttribute( ServerXmlIOV155.ATTRIBUTE_MECH_NAME,
+                            ServerXmlIOV155.SUPPORTED_MECHANISM_DIGEST_MD5 );
+                        break;
+                    case GSSAPI:
+                        Element gssapiMechanismHandlerElement = saslMechanismHandlersElement
+                            .addElement( ServerXmlIOV155.ELEMENT_GSSAPI_MECHANISM_HANDLER );
+                        gssapiMechanismHandlerElement.addAttribute( ServerXmlIOV155.ATTRIBUTE_MECH_NAME,
+                            ServerXmlIOV155.SUPPORTED_MECHANISM_GSSAPI );
+                        break;
+                    case NTLM:
+                        Element ntlmMechanismHandlerElement = saslMechanismHandlersElement
+                            .addElement( ServerXmlIOV155.ELEMENT_NTLM_MECHANISM_HANDLER );
+                        ntlmMechanismHandlerElement.addAttribute( ServerXmlIOV155.ATTRIBUTE_MECH_NAME,
+                            ServerXmlIOV155.SUPPORTED_MECHANISM_NTLM );
+                        ntlmMechanismHandlerElement.addAttribute( ServerXmlIOV155.ATTRIBUTE_NTLM_PROVIDER_FQCN,
+                            supportedMechanism.getNtlmProviderFqcn() );
+                        break;
+                    case GSS_SPNEGO:
+                        Element gssSpnegoMechanismHandlerElement = saslMechanismHandlersElement
+                            .addElement( ServerXmlIOV155.ELEMENT_NTLM_MECHANISM_HANDLER );
+                        gssSpnegoMechanismHandlerElement.addAttribute( ServerXmlIOV155.ATTRIBUTE_MECH_NAME,
+                            ServerXmlIOV155.SUPPORTED_MECHANISM_GSS_SPNEGO );
+                        gssSpnegoMechanismHandlerElement.addAttribute( ServerXmlIOV155.ATTRIBUTE_NTLM_PROVIDER_FQCN,
+                            supportedMechanism.getNtlmProviderFqcn() );
+                        break;
+                }
             }
-        }
 
-        // Adding 'SaslRealms' element
-        Element saslRealmsElement = ldapServerElement.addElement( ServerXmlIOV155.ELEMENT_SASL_REALMS );
+            // Adding 'SaslRealms' element
+            Element saslRealmsElement = ldapServerElement.addElement( ServerXmlIOV155.ELEMENT_SASL_REALMS );
 
-        // Adding each SaslRealm item
-        for ( String saslRealm : serverConfiguration.getSaslRealms() )
-        {
-            saslRealmsElement.addElement( new QName( ServerXmlIOV155.ELEMENT_VALUE, NAMESPACE_SPRINGFRAMEWORK ) )
-                .setText( saslRealm );
-        }
+            // Adding each SaslRealm item
+            for ( String saslRealm : serverConfiguration.getSaslRealms() )
+            {
+                saslRealmsElement.addElement( new QName( ServerXmlIOV155.ELEMENT_VALUE, NAMESPACE_SPRINGFRAMEWORK ) )
+                    .setText( saslRealm );
+            }
 
-        // Adding 'ExtendedOperations' element
-        Element extendedOperationsElement = ldapServerElement
-            .addElement( ServerXmlIOV155.ELEMENT_EXTENDED_OPERATION_HANDLERS );
+            // Adding 'ExtendedOperations' element
+            Element extendedOperationsElement = ldapServerElement
+                .addElement( ServerXmlIOV155.ELEMENT_EXTENDED_OPERATION_HANDLERS );
 
-        // Adding each extended operation item
-        List<ExtendedOperationEnum> extendedOperations = serverConfiguration.getExtendedOperations();
-        if ( extendedOperations.contains( ExtendedOperationEnum.START_TLS ) )
-        {
-            extendedOperationsElement.addElement( ServerXmlIOV155.ELEMENT_START_TLS_HANDLER );
-        }
-        if ( extendedOperations.contains( ExtendedOperationEnum.GRACEFUL_SHUTDOWN ) )
-        {
-            extendedOperationsElement.addElement( ServerXmlIOV155.ELEMENT_GRACEFUL_SHUTDOWN_HANDLER );
-        }
-        if ( extendedOperations.contains( ExtendedOperationEnum.LAUNCH_DIAGNOSTIC_UI ) )
-        {
-            extendedOperationsElement.addElement( ServerXmlIOV155.ELEMENT_LAUNCH_DIAGNOSTIC_UI_HANDLER );
+            // Adding each extended operation item
+            List<ExtendedOperationEnum> extendedOperations = serverConfiguration.getExtendedOperations();
+            if ( extendedOperations.contains( ExtendedOperationEnum.START_TLS ) )
+            {
+                extendedOperationsElement.addElement( ServerXmlIOV155.ELEMENT_START_TLS_HANDLER );
+            }
+            if ( extendedOperations.contains( ExtendedOperationEnum.GRACEFUL_SHUTDOWN ) )
+            {
+                extendedOperationsElement.addElement( ServerXmlIOV155.ELEMENT_GRACEFUL_SHUTDOWN_HANDLER );
+            }
+            if ( extendedOperations.contains( ExtendedOperationEnum.LAUNCH_DIAGNOSTIC_UI ) )
+            {
+                extendedOperationsElement.addElement( ServerXmlIOV155.ELEMENT_LAUNCH_DIAGNOSTIC_UI_HANDLER );
+            }
         }
     }
 
