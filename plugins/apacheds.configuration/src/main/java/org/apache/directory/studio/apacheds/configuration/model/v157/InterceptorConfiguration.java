@@ -17,34 +17,14 @@
  *  under the License. 
  *  
  */
-package org.apache.directory.studio.apacheds.configuration.editor.v156.dialogs;
+package org.apache.directory.studio.apacheds.configuration.model.v157;
 
 
-import java.util.MissingResourceException;
-import java.util.ResourceBundle;
-
-
-public class Messages
+/**
+ * This interface defines an interceptor configuration.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ */
+public interface InterceptorConfiguration
 {
-    private static final String BUNDLE_NAME = "org.apache.directory.studio.apacheds.configuration.editor.v156.dialogs.messages"; //$NON-NLS-1$
-
-    private static final ResourceBundle RESOURCE_BUNDLE = ResourceBundle.getBundle( BUNDLE_NAME );
-
-
-    private Messages()
-    {
-    }
-
-
-    public static String getString( String key )
-    {
-        try
-        {
-            return RESOURCE_BUNDLE.getString( key );
-        }
-        catch ( MissingResourceException e )
-        {
-            return '!' + key + '!';
-        }
-    }
 }
