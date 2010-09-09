@@ -133,6 +133,11 @@
     -->
     <profile>
       <id>studio-full</id>
+     <activation>
+        <file>
+          <exists>pom.xml</exists>
+        </file>
+     </activation>
       <modules>
         <module>libraries</module>
         <module>helps</module>
