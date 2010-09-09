@@ -28,10 +28,9 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import org.apache.directory.studio.apacheds.configuration.editor.ServerConfigurationEditor;
-import org.apache.directory.studio.apacheds.configuration.model.ServerConfiguration;
 import org.apache.directory.studio.apacheds.configuration.model.ServerXmlIOException;
-import org.apache.directory.studio.apacheds.configuration.model.v156.ServerConfigurationV156;
-import org.apache.directory.studio.apacheds.configuration.model.v156.ServerXmlIOV156;
+import org.apache.directory.studio.apacheds.configuration.model.v157.ServerConfigurationV157;
+import org.apache.directory.studio.apacheds.configuration.model.v157.ServerXmlIOV157;
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.ldapservers.LdapServersManager;
 import org.apache.directory.studio.ldapservers.LdapServersUtils;
@@ -216,14 +215,14 @@ public class ApacheDS157LdapServerAdapter implements LdapServerAdapter
     * @throws ServerXmlIOException 
     * @throws FileNotFoundException 
     */
-    private ServerConfiguration getServerConfiguration( LdapServer server ) throws ServerXmlIOException,
+    public static ServerConfigurationV157 getServerConfiguration( LdapServer server ) throws ServerXmlIOException,
         FileNotFoundException
     {
         InputStream fis = new FileInputStream( LdapServersManager.getServerFolder( server ).append( "conf" )
             .append( "server.xml" ).toFile() );
 
-        ServerXmlIOV156 serverXmlIOV156 = new ServerXmlIOV156();
-        return serverXmlIOV156.parse( fis );
+        ServerXmlIOV157 serverXmlIOV157 = new ServerXmlIOV157();
+        return (ServerConfigurationV157) serverXmlIOV157.parse( fis );
     }
 
 
@@ -239,7 +238,7 @@ public class ApacheDS157LdapServerAdapter implements LdapServerAdapter
      */
     private int getTestingPort( LdapServer server ) throws ServerXmlIOException, IOException
     {
-        ServerConfigurationV156 configuration = ( ServerConfigurationV156 ) getServerConfiguration( server );
+        ServerConfigurationV157 configuration = getServerConfiguration( server );
 
         // LDAP
         if ( configuration.isEnableLdap() )
