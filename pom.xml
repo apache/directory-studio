@@ -381,6 +381,11 @@
       </dependency>
       <dependency>
         <groupId>org.apache.directory.studio</groupId>
+        <artifactId>ldapservers.apacheds.v157</artifactId>
+        <version>${pom.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.directory.studio</groupId>
         <artifactId>ldifeditor</artifactId>
         <version>${pom.version}</version>
       </dependency>
