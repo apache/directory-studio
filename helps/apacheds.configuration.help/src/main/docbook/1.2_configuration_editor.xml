@@ -92,6 +92,16 @@
                 allows you to edit the 'server.xml' file of an Apache DS
                 version 1.5.6 installation.
             </listitem>
+            <listitem>
+                The
+                <emphasis>
+                    <link linkend="configuration_editor_1.5.7">
+                        Editor for Apache DS 1.5.7
+                    </link>
+                </emphasis>
+                allows you to edit the 'server.xml' file of an Apache DS
+                version 1.5.7 installation.
+            </listitem>
 		</itemizedlist>
 	</para>
 
@@ -102,5 +112,6 @@
 	&configuration_editor_1.5.4;
     &configuration_editor_1.5.5;
     &configuration_editor_1.5.6;
+    &configuration_editor_1.5.7;
 
 </section>
