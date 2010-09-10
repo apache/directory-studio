@@ -206,10 +206,6 @@ public class InterceptorDialog extends Dialog
         {
             availableInterceptors.add( InterceptorEnum.OPERATIONAL_ATTRIBUTE );
         }
-        if ( !initialInterceptors.contains( InterceptorEnum.PASSWORD_POLICY ) )
-        {
-            availableInterceptors.add( InterceptorEnum.PASSWORD_POLICY );
-        }
         if ( !initialInterceptors.contains( InterceptorEnum.KEY_DERIVATION ) )
         {
             availableInterceptors.add( InterceptorEnum.KEY_DERIVATION );

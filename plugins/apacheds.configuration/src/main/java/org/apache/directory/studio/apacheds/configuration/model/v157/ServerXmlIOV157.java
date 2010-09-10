@@ -106,7 +106,6 @@ public class ServerXmlIOV157 extends AbstractServerXmlIO implements ServerXmlIO
     private static final String ELEMENT_NTP_SERVER = "ntpServer"; //$NON-NLS-1$
     private static final String ELEMENT_OPERATIONAL_ATTRIBUTE_INTERCEPTOR = "operationalAttributeInterceptor"; //$NON-NLS-1$
     private static final String ELEMENT_PARTITIONS = "partitions"; //$NON-NLS-1$
-    private static final String ELEMENT_PASSWORD_POLICY_INTERCEPTOR = "passwordPolicyInterceptor"; //$NON-NLS-1$
     private static final String ELEMENT_REFERRAL_INTERCEPTOR = "referralInterceptor"; //$NON-NLS-1$
     private static final String ELEMENT_REPLICATION_INTERCEPTOR = "replicationInterceptor"; //$NON-NLS-1$
     private static final String ELEMENT_SASL_MECHANISM_HANDLERS = "saslMechanismHandlers"; //$NON-NLS-1$
@@ -585,11 +584,6 @@ public class ServerXmlIOV157 extends AbstractServerXmlIO implements ServerXmlIO
                     .equalsIgnoreCase( interceptorElementName ) )
                 {
                     serverConfiguration.addInterceptor( InterceptorEnum.OPERATIONAL_ATTRIBUTE );
-                }
-                else if ( ServerXmlIOV157.ELEMENT_PASSWORD_POLICY_INTERCEPTOR
-                    .equalsIgnoreCase( interceptorElementName ) )
-                {
-                    serverConfiguration.addInterceptor( InterceptorEnum.PASSWORD_POLICY );
                 }
                 else if ( ServerXmlIOV157.ELEMENT_KEY_DERIVATION_INTERCEPTOR
                     .equalsIgnoreCase( interceptorElementName ) )
@@ -1434,9 +1428,6 @@ public class ServerXmlIOV157 extends AbstractServerXmlIO implements ServerXmlIO
                     break;
                 case OPERATIONAL_ATTRIBUTE:
                     interceptorsElement.addElement( ServerXmlIOV157.ELEMENT_OPERATIONAL_ATTRIBUTE_INTERCEPTOR );
-                    break;
-                case PASSWORD_POLICY:
-                    interceptorsElement.addElement( ServerXmlIOV157.ELEMENT_PASSWORD_POLICY_INTERCEPTOR );
                     break;
                 case KEY_DERIVATION:
                     interceptorsElement.addElement( ServerXmlIOV157.ELEMENT_KEY_DERIVATION_INTERCEPTOR );

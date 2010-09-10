@@ -55,10 +55,6 @@ public enum InterceptorEnum
     OPERATIONAL_ATTRIBUTE(
         Messages.getString( "InterceptorEnum.OperationalAttribute" ), Messages.getString( "InterceptorEnum.OperationalAttributeDescription" )), //$NON-NLS-1$ //$NON-NLS-2$
 
-    /** The Password Policy Interceptor */
-    PASSWORD_POLICY(Messages.getString( "InterceptorEnum.PasswordPolicy" ), Messages
-        .getString( "InterceptorEnum.PasswordPolicyDescription" )),
-
     /** The KeyDerivation Interceptor */
     KEY_DERIVATION(Messages.getString( "InterceptorEnum.KeyDerivation" ), Messages
         .getString( "InterceptorEnum.KeyDerivationDescription" )),
