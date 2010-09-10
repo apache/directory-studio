@@ -26,7 +26,7 @@ import java.util.ResourceBundle;
 
 public class Messages
 {
-    private static final String BUNDLE_NAME = "org.apache.directory.studio.apacheds.configuration.model.v156.messages"; //$NON-NLS-1$
+    private static final String BUNDLE_NAME = "org.apache.directory.studio.apacheds.configuration.model.v157.messages"; //$NON-NLS-1$
 
     private static final ResourceBundle RESOURCE_BUNDLE = ResourceBundle.getBundle( BUNDLE_NAME );
 

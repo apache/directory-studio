@@ -35,7 +35,7 @@ public enum InterceptorEnum
     AUTHENTICATION(
         Messages.getString( "InterceptorEnum.Authentication" ), Messages.getString( "InterceptorEnum.AuthenticationDescription" )), //$NON-NLS-1$ //$NON-NLS-2$
 
-    /** The Authentication Interceptor */
+    /** The Referral Interceptor */
     REFERRAL(
         Messages.getString( "InterceptorEnum.Referral" ), Messages.getString( "InterceptorEnum.ReferralDescription" )), //$NON-NLS-1$ //$NON-NLS-2$
 
@@ -54,6 +54,14 @@ public enum InterceptorEnum
     /** The Operational Attribute Interceptor */
     OPERATIONAL_ATTRIBUTE(
         Messages.getString( "InterceptorEnum.OperationalAttribute" ), Messages.getString( "InterceptorEnum.OperationalAttributeDescription" )), //$NON-NLS-1$ //$NON-NLS-2$
+
+    /** The Password Policy Interceptor */
+    PASSWORD_POLICY(Messages.getString( "InterceptorEnum.PasswordPolicy" ), Messages
+        .getString( "InterceptorEnum.PasswordPolicyDescription" )),
+
+    /** The KeyDerivation Interceptor */
+    KEY_DERIVATION(Messages.getString( "InterceptorEnum.KeyDerivation" ), Messages
+        .getString( "InterceptorEnum.KeyDerivationDescription" )),
 
     /** The Schema Interceptor */
     SCHEMA(Messages.getString( "InterceptorEnum.Schema" ), Messages.getString( "InterceptorEnum.SchemaDescription" )), //$NON-NLS-1$ //$NON-NLS-2$

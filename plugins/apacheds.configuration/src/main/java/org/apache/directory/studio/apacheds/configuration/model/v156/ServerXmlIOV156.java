@@ -98,6 +98,7 @@ public class ServerXmlIOV156 extends AbstractServerXmlIO implements ServerXmlIO
     private static final String ELEMENT_JDBM_INDEX = "jdbmIndex"; //$NON-NLS-1$
     private static final String ELEMENT_JDBM_PARTITION = "jdbmPartition"; //$NON-NLS-1$
     private static final String ELEMENT_KDC_SERVER = "kdcServer"; //$NON-NLS-1$
+    private static final String ELEMENT_KEY_DERIVATION_INTERCEPTOR = "keyDerivationInterceptor"; //$NON-NLS-1$
     private static final String ELEMENT_LAUNCH_DIAGNOSTIC_UI_HANDLER = "launchDiagnosticUiHandler"; //$NON-NLS-1$
     private static final String ELEMENT_LDAP_SERVER = "ldapServer"; //$NON-NLS-1$
     private static final String ELEMENT_NORMALIZATION_INTERCEPTOR = "normalizationInterceptor"; //$NON-NLS-1$
@@ -105,6 +106,7 @@ public class ServerXmlIOV156 extends AbstractServerXmlIO implements ServerXmlIO
     private static final String ELEMENT_NTP_SERVER = "ntpServer"; //$NON-NLS-1$
     private static final String ELEMENT_OPERATIONAL_ATTRIBUTE_INTERCEPTOR = "operationalAttributeInterceptor"; //$NON-NLS-1$
     private static final String ELEMENT_PARTITIONS = "partitions"; //$NON-NLS-1$
+    private static final String ELEMENT_PASSWORD_POLICY_INTERCEPTOR = "passwordPolicyInterceptor"; //$NON-NLS-1$
     private static final String ELEMENT_REFERRAL_INTERCEPTOR = "referralInterceptor"; //$NON-NLS-1$
     private static final String ELEMENT_REPLICATION_INTERCEPTOR = "replicationInterceptor"; //$NON-NLS-1$
     private static final String ELEMENT_SASL_MECHANISM_HANDLERS = "saslMechanismHandlers"; //$NON-NLS-1$
@@ -583,6 +585,16 @@ public class ServerXmlIOV156 extends AbstractServerXmlIO implements ServerXmlIO
                     .equalsIgnoreCase( interceptorElementName ) )
                 {
                     serverConfiguration.addInterceptor( InterceptorEnum.OPERATIONAL_ATTRIBUTE );
+                }
+                else if ( ServerXmlIOV156.ELEMENT_PASSWORD_POLICY_INTERCEPTOR
+                    .equalsIgnoreCase( interceptorElementName ) )
+                {
+                    serverConfiguration.addInterceptor( InterceptorEnum.PASSWORD_POLICY );
+                }
+                else if ( ServerXmlIOV156.ELEMENT_KEY_DERIVATION_INTERCEPTOR
+                    .equalsIgnoreCase( interceptorElementName ) )
+                {
+                    serverConfiguration.addInterceptor( InterceptorEnum.KEY_DERIVATION );
                 }
                 else if ( ServerXmlIOV156.ELEMENT_SCHEMA_INTERCEPTOR.equalsIgnoreCase( interceptorElementName ) )
                 {
@@ -1398,58 +1410,57 @@ public class ServerXmlIOV156 extends AbstractServerXmlIO implements ServerXmlIO
     {
         List<InterceptorEnum> interceptors = serverConfiguration.getInterceptors();
 
-        if ( interceptors.contains( InterceptorEnum.NORMALIZATION ) )
+        for ( InterceptorEnum interceptor : interceptors )
         {
-            interceptorsElement.addElement( ServerXmlIOV156.ELEMENT_NORMALIZATION_INTERCEPTOR );
-        }
-        if ( interceptors.contains( InterceptorEnum.AUTHENTICATION ) )
-        {
-            interceptorsElement.addElement( ServerXmlIOV156.ELEMENT_AUTHENTICATION_INTERCEPTOR );
-        }
-        if ( interceptors.contains( InterceptorEnum.REFERRAL ) )
-        {
-            interceptorsElement.addElement( ServerXmlIOV156.ELEMENT_REFERRAL_INTERCEPTOR );
-        }
-        if ( interceptors.contains( InterceptorEnum.ACI_AUTHORIZATION ) )
-        {
-            interceptorsElement.addElement( ServerXmlIOV156.ELEMENT_ACI_AUTHORIZATION_INTERCEPTOR );
-        }
-        if ( interceptors.contains( InterceptorEnum.DEFAULT_AUTHORIZATION ) )
-        {
-            interceptorsElement.addElement( ServerXmlIOV156.ELEMENT_DEFAULT_AUTHORIZATION_INTERCEPTOR );
-        }
-        if ( interceptors.contains( InterceptorEnum.EXCEPTION ) )
-        {
-            interceptorsElement.addElement( ServerXmlIOV156.ELEMENT_EXCEPTION_INTERCEPTOR );
-        }
-        if ( interceptors.contains( InterceptorEnum.OPERATIONAL_ATTRIBUTE ) )
-        {
-            interceptorsElement.addElement( ServerXmlIOV156.ELEMENT_OPERATIONAL_ATTRIBUTE_INTERCEPTOR );
-        }
-        if ( interceptors.contains( InterceptorEnum.SCHEMA ) )
-        {
-            interceptorsElement.addElement( ServerXmlIOV156.ELEMENT_SCHEMA_INTERCEPTOR );
-        }
-        if ( interceptors.contains( InterceptorEnum.SUBENTRY ) )
-        {
-            interceptorsElement.addElement( ServerXmlIOV156.ELEMENT_SUBENTRY_INTERCEPTOR );
-        }
-        if ( interceptors.contains( InterceptorEnum.COLLECTIVE_ATTRIBUTE ) )
-        {
-            interceptorsElement.addElement( ServerXmlIOV156.ELEMENT_COLLECTIVE_ATTRIBUTE_INTERCEPTOR );
-        }
-        if ( interceptors.contains( InterceptorEnum.EVENT ) )
-        {
-            interceptorsElement.addElement( ServerXmlIOV156.ELEMENT_EVENT_INTERCEPTOR );
-        }
-        if ( interceptors.contains( InterceptorEnum.TRIGGER ) )
-        {
-            interceptorsElement.addElement( ServerXmlIOV156.ELEMENT_TRIGGER_INTERCEPTOR );
-        }
-        if ( interceptors.contains( InterceptorEnum.REPLICATION ) )
-        {
-            // TODO support replication interceptor
-            //            interceptorsElement.addElement( "replicationInterceptor" );
+            switch ( interceptor )
+            {
+                case NORMALIZATION:
+                    interceptorsElement.addElement( ServerXmlIOV156.ELEMENT_NORMALIZATION_INTERCEPTOR );
+                    break;
+                case AUTHENTICATION:
+                    interceptorsElement.addElement( ServerXmlIOV156.ELEMENT_AUTHENTICATION_INTERCEPTOR );
+                    break;
+                case REFERRAL:
+                    interceptorsElement.addElement( ServerXmlIOV156.ELEMENT_REFERRAL_INTERCEPTOR );
+                    break;
+                case ACI_AUTHORIZATION:
+                    interceptorsElement.addElement( ServerXmlIOV156.ELEMENT_ACI_AUTHORIZATION_INTERCEPTOR );
+                    break;
+                case DEFAULT_AUTHORIZATION:
+                    interceptorsElement.addElement( ServerXmlIOV156.ELEMENT_DEFAULT_AUTHORIZATION_INTERCEPTOR );
+                    break;
+                case EXCEPTION:
+                    interceptorsElement.addElement( ServerXmlIOV156.ELEMENT_EXCEPTION_INTERCEPTOR );
+                    break;
+                case OPERATIONAL_ATTRIBUTE:
+                    interceptorsElement.addElement( ServerXmlIOV156.ELEMENT_OPERATIONAL_ATTRIBUTE_INTERCEPTOR );
+                    break;
+                case PASSWORD_POLICY:
+                    interceptorsElement.addElement( ServerXmlIOV156.ELEMENT_PASSWORD_POLICY_INTERCEPTOR );
+                    break;
+                case KEY_DERIVATION:
+                    interceptorsElement.addElement( ServerXmlIOV156.ELEMENT_KEY_DERIVATION_INTERCEPTOR );
+                    break;
+                case SCHEMA:
+                    interceptorsElement.addElement( ServerXmlIOV156.ELEMENT_SCHEMA_INTERCEPTOR );
+                    break;
+                case SUBENTRY:
+                    interceptorsElement.addElement( ServerXmlIOV156.ELEMENT_SUBENTRY_INTERCEPTOR );
+                    break;
+                case COLLECTIVE_ATTRIBUTE:
+                    interceptorsElement.addElement( ServerXmlIOV156.ELEMENT_COLLECTIVE_ATTRIBUTE_INTERCEPTOR );
+                    break;
+                case EVENT:
+                    interceptorsElement.addElement( ServerXmlIOV156.ELEMENT_EVENT_INTERCEPTOR );
+                    break;
+                case TRIGGER:
+                    interceptorsElement.addElement( ServerXmlIOV156.ELEMENT_TRIGGER_INTERCEPTOR );
+                    break;
+                case REPLICATION:
+                    // TODO support replication interceptor
+                    //            interceptorsElement.addElement( "replicationInterceptor" );
+                    break;
+            }
         }
     }
 
