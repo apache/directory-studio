@@ -127,9 +127,9 @@
                   <fileset dir="${project.build.directory}/application-features-${project.version}" />
                 </copy>
                 <copy todir="${configuration-dir}" file="src/main/configuration/config.ini" />
-                <copy todir="${app-dir}" file="../../docs/LICENSE.txt" />
-                <copy todir="${app-dir}" file="../../docs/NOTICE.txt" />
-                <copy todir="${app-dir}" file="../../docs/Release Notes.txt" />
+                <copy todir="${app-dir}" file="../docs/LICENSE.txt" />
+                <copy todir="${app-dir}" file="../docs/NOTICE.txt" />
+                <copy todir="${app-dir}" file="../docs/Release Notes.txt" />
                 <chmod file="${app-dir}/Apache Directory Studio.app/Contents/MacOS/ApacheDirectoryStudio" perm="755"/>
               </tasks>
             </configuration>
