@@ -9,7 +9,7 @@ read PASSWORD
 stty echo
 echo ""
 
-for FILE in $(find . -not '(' -name "*.md5″ -or -name "*.sha1″ -or -name "*.asc" ')' -and -type f) ; do
+for FILE in $(find . -not '(' -name "*.md5" -or -name "*.sha1" -or -name "*.asc" ')' -and -type f) ; do
     if [ -f "$FILE.asc" ]; then
         echo "Skipping: $FILE"
         continue
