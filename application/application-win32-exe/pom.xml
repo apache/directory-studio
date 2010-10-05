@@ -79,6 +79,7 @@
                     <filter token="installer-file-name" value="${installer-file-name}" />
                   </filterset>
                 </copy>
+                <copy file="src/main/resources/AdvUninstLog.nsh" todir="${tmp-dir}"/>
                 <copy file="src/main/resources/header_studio.bmp" todir="${tmp-dir}"/>
                 <copy file="src/main/resources/studio-installer.ico" todir="${tmp-dir}"/>
                 <copy file="src/main/resources/welcome_studio.bmp" todir="${tmp-dir}"/>
