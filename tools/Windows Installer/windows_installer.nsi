@@ -229,4 +229,5 @@
         
         # Removing registry keys
         DeleteRegKey "${INSTDIR_REG_ROOT}" "${INSTDIR_REG_KEY}"
+        DeleteRegKey "${INSTDIR_REG_ROOT}" "SOFTWARE\${Application}" "InstallDir"
     SectionEnd
