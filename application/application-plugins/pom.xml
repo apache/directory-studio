@@ -194,7 +194,7 @@
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.apache.directory.studio</groupId>
-                  <artifactId>ldapservers.apacheds.v156</artifactId>
+                  <artifactId>ldapservers.apacheds.v157</artifactId>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.apache.directory.studio</groupId>
