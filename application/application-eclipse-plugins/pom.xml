@@ -681,11 +681,11 @@
             <id>copy-language-packs</id>
             <phase>process-resources</phase>
             <configuration>
-              <tasks>
+              <target>
                 <copy todir="${plugins-dir}">
                   <fileset dir="${language-packs-dir}/eclipse/plugins" />
                 </copy>
-              </tasks>
+              </target>
             </configuration>
             <goals>
               <goal>run</goal>

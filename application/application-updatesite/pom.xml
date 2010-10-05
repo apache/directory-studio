@@ -76,14 +76,14 @@
           <execution>
             <phase>process-resources</phase>
             <configuration>
-              <tasks>
+              <target>
                 <copy todir="${plugins-dir}">
                   <fileset dir="${project.build.directory}/application-plugins-${project.version}" />
                 </copy>
                 <copy todir="${features-dir}">
                   <fileset dir="${project.build.directory}/application-features-${project.version}" />
                 </copy>
-              </tasks>
+              </target>
             </configuration>
             <goals>
               <goal>run</goal>

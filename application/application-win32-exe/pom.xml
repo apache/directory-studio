@@ -69,7 +69,7 @@
           <execution>
             <phase>process-resources</phase>
             <configuration>
-              <tasks>
+              <target>
                 <unzip dest="${tmp-dir}">
                     <fileset dir="${project.build.directory}" includes="ApacheDirectoryStudio-win32-*.zip"/>
                 </unzip>
@@ -83,7 +83,7 @@
                 <copy file="src/main/resources/header_studio.bmp" todir="${tmp-dir}"/>
                 <copy file="src/main/resources/studio-installer.ico" todir="${tmp-dir}"/>
                 <copy file="src/main/resources/welcome_studio.bmp" todir="${tmp-dir}"/>
-              </tasks>
+              </target>
             </configuration>
             <goals>
               <goal>run</goal>

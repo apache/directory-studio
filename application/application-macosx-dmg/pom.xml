@@ -69,13 +69,13 @@
           <execution>
             <phase>process-resources</phase>
             <configuration>
-              <tasks>
+              <target>
                 <unzip dest="${project.build.directory}">
                     <fileset dir="${project.build.directory}" includes="ApacheDirectoryStudio-macosx-*.zip"/>
                 </unzip>
                 <copy file="src/main/resources/DS_Store" tofile="${dmg-dir}/.DS_Store"/>
                 <copy file="src/main/resources/background.png" tofile="${dmg-dir}/.background/background.png"/>
-              </tasks>
+              </target>
             </configuration>
             <goals>
               <goal>run</goal>

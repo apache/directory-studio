@@ -103,11 +103,11 @@
             <id>unpack-studio-launcher-macosx</id>
             <phase>generate-resources</phase>
             <configuration>
-              <tasks>
+              <target>
                 <untar dest="${app-dir}" compression="gzip">
                     <fileset dir="${project.build.directory}" includes="launcher-macosx*.tar.gz"/>
                 </untar>
-              </tasks>
+              </target>
             </configuration>
             <goals>
               <goal>run</goal>
@@ -118,7 +118,7 @@
             <id>copy-plugins-features</id>
             <phase>process-resources</phase>
             <configuration>
-              <tasks>
+              <target>
                 <copy todir="${plugins-dir}">
                   <fileset dir="${project.build.directory}/application-plugins-${project.version}" />
                   <fileset dir="${project.build.directory}/application-eclipse-plugins-${project.version}" />
@@ -131,7 +131,7 @@
                 <copy todir="${app-dir}" file="../docs/NOTICE.txt" />
                 <copy todir="${app-dir}" file="../docs/Release Notes.txt" />
                 <chmod file="${app-dir}/Apache Directory Studio.app/Contents/MacOS/ApacheDirectoryStudio" perm="755"/>
-              </tasks>
+              </target>
             </configuration>
             <goals>
               <goal>run</goal>
