@@ -106,6 +106,18 @@
         <module>application-release</module>
       </modules>
     </profile>
+    <profile>
+      <id>installers</id>
+      <modules>
+        <module>application-linux-x86</module>
+        <module>application-linux-x86_64</module>
+        <module>application-macosx</module>
+        <module>application-macosx-dmg</module>
+        <module>application-win32</module>
+        <module>application-win32-exe</module>
+        <module>application-updatesite</module>
+      </modules>
+    </profile>
   </profiles>
   
   <build>
