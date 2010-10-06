@@ -34,6 +34,7 @@
     <tmp-dir>${project.build.directory}/ApacheDirectoryStudio-win32-exe-tmp</tmp-dir>
     <files-dir>${tmp-dir}/files</files-dir>
     <installer-file-name>ApacheDirectoryStudio-win32-${version}.exe</installer-file-name>
+    <installers.makensis>makensis</installers.makensis>
   </properties>
   
   <build>
