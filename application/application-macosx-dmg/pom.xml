@@ -143,6 +143,19 @@
                 </arguments>
             </configuration>
           </execution>
+          <execution>
+            <id>remove-tmp-dmg</id>
+            <phase>package</phase>
+            <goals>
+              <goal>exec</goal>
+            </goals>
+              <configuration>
+                <executable>rm</executable>
+                <arguments>
+                  <argument>${tmp-dmg}</argument>
+                </arguments>
+            </configuration>
+          </execution>
         </executions>
       </plugin>
   
