@@ -327,9 +327,9 @@ public class StudioNamingEnumeration implements NamingEnumeration<SearchResult>
                 public SearchResult next() throws NamingException
                 {
                     LdapURL url = urls.remove( 0 );
-                    SearchResult searchResult = new SearchResult( url.getDn().getUpName(), null, new BasicAttributes(),
+                    SearchResult searchResult = new SearchResult( url.getDn().getName(), null, new BasicAttributes(),
                         false );
-                    searchResult.setNameInNamespace( url.getDn().getUpName() );
+                    searchResult.setNameInNamespace( url.getDn().getName() );
                     StudioSearchResult ssr = new StudioSearchResult( searchResult, null, false, url );
                     return ssr;
                 }
@@ -361,13 +361,14 @@ public class StudioNamingEnumeration implements NamingEnumeration<SearchResult>
             if ( referralConnection != null )
             {
                 done = false;
-                String referralSearchBase = url.getDn() != null && !url.getDn().isEmpty() ? url.getDn().getUpName()
+                String referralSearchBase = url.getDn() != null && !url.getDn().isEmpty() ? url.getDn().getName()
                     : searchBase;
                 String referralFilter = url.getFilter() != null && url.getFilter().length() == 0 ? url.getFilter()
                     : filter;
                 SearchControls referralSearchControls = new SearchControls();
-                referralSearchControls.setSearchScope( url.getScope() > -1 ? url.getScope() : searchControls
-                    .getSearchScope() );
+                referralSearchControls.setSearchScope( url.getScope().getScope() > -1 ? url.getScope().getScope()
+                    : searchControls
+                        .getSearchScope() );
                 referralSearchControls.setReturningAttributes( url.getAttributes() != null
                     && url.getAttributes().size() > 0 ? url.getAttributes().toArray(
                     new String[url.getAttributes().size()] ) : searchControls.getReturningAttributes() );

@@ -28,7 +28,7 @@ import java.util.Set;
 
 import javax.naming.LinkLoopException;
 
-import org.apache.directory.shared.ldap.name.LdapDN;
+import org.apache.directory.shared.ldap.name.DN;
 import org.apache.directory.shared.ldap.util.LdapURL;
 import org.apache.directory.studio.connection.core.Messages;
 import org.eclipse.osgi.util.NLS;
@@ -99,10 +99,10 @@ public class ReferralsInfo
     public class Referral
     {
         private List<LdapURL> urls = new ArrayList<LdapURL>();
-        private LdapDN dn;
+        private DN dn;
 
 
-        public Referral( LdapDN dn )
+        public Referral( DN dn )
         {
             this.dn = dn;
         }
@@ -124,7 +124,7 @@ public class ReferralsInfo
          * 
          * @return the DN
          */
-        public LdapDN getDn()
+        public DN getDn()
         {
             return dn;
         }
