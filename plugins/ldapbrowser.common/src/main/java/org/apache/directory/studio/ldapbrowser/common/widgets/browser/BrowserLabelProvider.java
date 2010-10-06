@@ -23,8 +23,8 @@ package org.apache.directory.studio.ldapbrowser.common.widgets.browser;
 
 import java.util.Collection;
 
+import org.apache.directory.shared.ldap.schema.ObjectClass;
 import org.apache.directory.shared.ldap.schema.ObjectClassTypeEnum;
-import org.apache.directory.shared.ldap.schema.parsers.ObjectClassDescription;
 import org.apache.directory.studio.connection.core.Utils;
 import org.apache.directory.studio.connection.core.jobs.StudioConnectionRunnableWithProgress;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
@@ -113,22 +113,22 @@ public class BrowserLabelProvider extends LabelProvider implements IFontProvider
             }
             else if ( entry instanceof BaseDNEntry )
             {
-                return entry.getDn().getUpName() + append.toString();
+                return entry.getDn().getName() + append.toString();
             }
             else if ( entry.hasParententry() )
             {
                 String label = ""; //$NON-NLS-1$
                 if ( preferences.getEntryLabel() == BrowserCommonConstants.SHOW_DN )
                 {
-                    label = entry.getDn().getUpName();
+                    label = entry.getDn().getName();
                 }
                 else if ( preferences.getEntryLabel() == BrowserCommonConstants.SHOW_RDN )
                 {
-                    label = entry.getRdn().getUpName();
+                    label = entry.getRdn().getName();
                 }
                 else if ( preferences.getEntryLabel() == BrowserCommonConstants.SHOW_RDN_VALUE )
                 {
-                    label = ( String ) entry.getRdn().getUpValue();
+                    label = ( String ) entry.getRdn().getName();
                 }
 
                 label += append.toString();
@@ -142,7 +142,7 @@ public class BrowserLabelProvider extends LabelProvider implements IFontProvider
             }
             else
             {
-                return entry.getDn().getUpName() + append.toString();
+                return entry.getDn().getName() + append.toString();
             }
         }
         else if ( obj instanceof SearchContinuation )
@@ -199,15 +199,15 @@ public class BrowserLabelProvider extends LabelProvider implements IFontProvider
                 }
                 else if ( preferences.getSearchResultLabel() == BrowserCommonConstants.SHOW_DN )
                 {
-                    label = sr.getEntry().getDn().getUpName();
+                    label = sr.getEntry().getDn().getName();
                 }
                 else if ( preferences.getSearchResultLabel() == BrowserCommonConstants.SHOW_RDN )
                 {
-                    label = sr.getEntry().getRdn().getUpName();
+                    label = sr.getEntry().getRdn().getName();
                 }
                 else if ( preferences.getSearchResultLabel() == BrowserCommonConstants.SHOW_RDN_VALUE )
                 {
-                    label = ( String ) sr.getEntry().getRdn().getUpValue();
+                    label = ( String ) sr.getEntry().getRdn().getName();
                 }
 
                 if ( preferences.isSearchResultAbbreviate()
@@ -220,7 +220,7 @@ public class BrowserLabelProvider extends LabelProvider implements IFontProvider
             }
             else
             {
-                return sr.getEntry().getDn().getUpName();
+                return sr.getEntry().getDn().getName();
             }
 
         }
@@ -410,7 +410,7 @@ public class BrowserLabelProvider extends LabelProvider implements IFontProvider
     public static Image getImageByObjectClass( IEntry entry )
     {
         Schema schema = entry.getBrowserConnection().getSchema();
-        Collection<ObjectClassDescription> ocds = entry.getObjectClassDescriptions();
+        Collection<ObjectClass> ocds = entry.getObjectClassDescriptions();
         if ( ocds != null )
         {
             Collection<String> numericOids = SchemaUtils.getNumericOids( ocds );
@@ -426,12 +426,12 @@ public class BrowserLabelProvider extends LabelProvider implements IFontProvider
                 {
                     if ( numericOids.contains( ocNumericOid ) )
                     {
-                        ObjectClassDescription ocd = schema.getObjectClassDescription( ocNumericOid );
-                        if ( ocd.getKind() == ObjectClassTypeEnum.STRUCTURAL )
+                        ObjectClass ocd = schema.getObjectClassDescription( ocNumericOid );
+                        if ( ocd.getType() == ObjectClassTypeEnum.STRUCTURAL )
                         {
                             weight += 3;
                         }
-                        else if ( ocd.getKind() == ObjectClassTypeEnum.AUXILIARY )
+                        else if ( ocd.getType() == ObjectClassTypeEnum.AUXILIARY )
                         {
                             weight += 2;
                         }

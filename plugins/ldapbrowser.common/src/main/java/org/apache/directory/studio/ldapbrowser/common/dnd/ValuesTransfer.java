@@ -29,7 +29,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.directory.shared.ldap.name.LdapDN;
+import org.apache.directory.shared.ldap.name.DN;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonConstants;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
@@ -107,7 +107,7 @@ public class ValuesTransfer extends ByteArrayTransfer
                         .getId().getBytes( "UTF-8" ); //$NON-NLS-1$
                     writeOut.writeInt( connectionId.length );
                     writeOut.write( connectionId );
-                    byte[] dn = values[i].getAttribute().getEntry().getDn().getUpName().getBytes( "UTF-8" ); //$NON-NLS-1$
+                    byte[] dn = values[i].getAttribute().getEntry().getDn().getName().getBytes( "UTF-8" ); //$NON-NLS-1$
                     writeOut.writeInt( dn.length );
                     writeOut.write( dn );
                     byte[] attributeName = values[i].getAttribute().getDescription().getBytes( "UTF-8" ); //$NON-NLS-1$
@@ -185,7 +185,7 @@ public class ValuesTransfer extends ByteArrayTransfer
                             int size = readIn.readInt();
                             byte[] dn = new byte[size];
                             readIn.read( dn );
-                            entry = connection.getEntryFromCache( new LdapDN( new String( dn, "UTF-8" ) ) ); //$NON-NLS-1$
+                            entry = connection.getEntryFromCache( new DN( new String( dn, "UTF-8" ) ) ); //$NON-NLS-1$
                         }
                         else
                         {

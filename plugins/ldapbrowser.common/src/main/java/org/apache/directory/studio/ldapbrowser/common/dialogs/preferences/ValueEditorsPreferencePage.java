@@ -30,8 +30,8 @@ import java.util.Map;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
-import org.apache.directory.shared.ldap.schema.parsers.AttributeTypeDescription;
-import org.apache.directory.shared.ldap.schema.parsers.LdapSyntaxDescription;
+import org.apache.directory.shared.ldap.schema.AttributeType;
+import org.apache.directory.shared.ldap.schema.LdapSyntax;
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
 import org.apache.directory.studio.ldapbrowser.core.BrowserConnectionManager;
@@ -78,19 +78,19 @@ public class ValueEditorsPreferencePage extends PreferencePage implements IWorkb
     private SortedMap<String, ValueEditorExtension> class2ValueEditorExtensionMap;
 
     /** Map with attribute OID => attribute type description */
-    private SortedMap<String, AttributeTypeDescription> attributeOid2AtdMap;
+    private SortedMap<String, AttributeType> attributeOid2AtdMap;
 
     /** Map with attribute name => attribute type description */
-    private SortedMap<String, AttributeTypeDescription> attributeNames2AtdMap;
+    private SortedMap<String, AttributeType> attributeNames2AtdMap;
 
     /** The attribute names and OIDs. */
     private String[] attributeTypesAndOids;
 
     /** Map with syntax OID => syntax description */
-    private SortedMap<String, LdapSyntaxDescription> syntaxOid2LsdMap;
+    private SortedMap<String, LdapSyntax> syntaxOid2LsdMap;
 
     /** Map with syntax DESC => syntax description */
-    private SortedMap<String, LdapSyntaxDescription> syntaxDesc2LsdMap;
+    private SortedMap<String, LdapSyntax> syntaxDesc2LsdMap;
 
     /** The syntax DESCs and OIDs. */
     private String[] syntaxDescsAndOids;
@@ -187,8 +187,8 @@ public class ValueEditorsPreferencePage extends PreferencePage implements IWorkb
         }
 
         // init available attribute types
-        attributeNames2AtdMap = new TreeMap<String, AttributeTypeDescription>();
-        attributeOid2AtdMap = new TreeMap<String, AttributeTypeDescription>();
+        attributeNames2AtdMap = new TreeMap<String, AttributeType>();
+        attributeOid2AtdMap = new TreeMap<String, AttributeType>();
         BrowserConnectionManager cm = BrowserCorePlugin.getDefault().getConnectionManager();
         IBrowserConnection[] connections = cm.getBrowserConnections();
         for ( IBrowserConnection browserConnection : connections )
@@ -204,8 +204,8 @@ public class ValueEditorsPreferencePage extends PreferencePage implements IWorkb
             .size(), attributeOid2AtdMap.size() );
 
         // init available syntaxes
-        syntaxOid2LsdMap = new TreeMap<String, LdapSyntaxDescription>();
-        syntaxDesc2LsdMap = new TreeMap<String, LdapSyntaxDescription>();
+        syntaxOid2LsdMap = new TreeMap<String, LdapSyntax>();
+        syntaxDesc2LsdMap = new TreeMap<String, LdapSyntax>();
         for ( IBrowserConnection browserConnection : connections )
         {
             Schema schema = browserConnection.getSchema();
@@ -243,10 +243,10 @@ public class ValueEditorsPreferencePage extends PreferencePage implements IWorkb
 
     private void createAttributeMaps( Schema schema )
     {
-        Collection<AttributeTypeDescription> atds = schema.getAttributeTypeDescriptions();
-        for ( AttributeTypeDescription atd : atds )
+        Collection<AttributeType> atds = schema.getAttributeTypeDescriptions();
+        for ( AttributeType atd : atds )
         {
-            attributeOid2AtdMap.put( atd.getNumericOid(), atd );
+            attributeOid2AtdMap.put( atd.getOid(), atd );
 
             for ( String name : atd.getNames() )
             {
@@ -258,10 +258,10 @@ public class ValueEditorsPreferencePage extends PreferencePage implements IWorkb
 
     private void createSyntaxMaps( Schema schema )
     {
-        Collection<LdapSyntaxDescription> lsds = schema.getLdapSyntaxDescriptions();
-        for ( LdapSyntaxDescription lsd : lsds )
+        Collection<LdapSyntax> lsds = schema.getLdapSyntaxDescriptions();
+        for ( LdapSyntax lsd : lsds )
         {
-            syntaxOid2LsdMap.put( lsd.getNumericOid(), lsd );
+            syntaxOid2LsdMap.put( lsd.getOid(), lsd );
 
             if ( lsd.getDescription() != null )
             {
@@ -549,9 +549,9 @@ public class ValueEditorsPreferencePage extends PreferencePage implements IWorkb
                     {
                         if ( attributeNames2AtdMap.containsKey( relation.getAttributeNumericOidOrType() ) )
                         {
-                            AttributeTypeDescription atd = ( AttributeTypeDescription ) attributeNames2AtdMap
+                            AttributeType atd = ( AttributeType ) attributeNames2AtdMap
                                 .get( relation.getAttributeNumericOidOrType() );
-                            String s = atd.getNumericOid();
+                            String s = atd.getOid();
                             for ( String name : atd.getNames() )
                             {
                                 if ( !relation.getAttributeNumericOidOrType().equals( name ) )
@@ -563,7 +563,7 @@ public class ValueEditorsPreferencePage extends PreferencePage implements IWorkb
                         }
                         else if ( attributeOid2AtdMap.containsKey( relation.getAttributeNumericOidOrType() ) )
                         {
-                            AttributeTypeDescription atd = ( AttributeTypeDescription ) attributeOid2AtdMap
+                            AttributeType atd = ( AttributeType ) attributeOid2AtdMap
                                 .get( relation.getAttributeNumericOidOrType() );
                             return atd.toString();
                         }
@@ -621,7 +621,7 @@ public class ValueEditorsPreferencePage extends PreferencePage implements IWorkb
                     {
                         if ( syntaxOid2LsdMap.containsKey( relation.getSyntaxOID() ) )
                         {
-                            LdapSyntaxDescription lsd = ( LdapSyntaxDescription ) syntaxOid2LsdMap.get( relation
+                            LdapSyntax lsd = ( LdapSyntax ) syntaxOid2LsdMap.get( relation
                                 .getSyntaxOID() );
                             return SchemaUtils.toString( lsd );
                         }

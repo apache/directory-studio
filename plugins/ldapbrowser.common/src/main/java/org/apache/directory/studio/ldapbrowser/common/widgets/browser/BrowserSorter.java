@@ -23,7 +23,7 @@ package org.apache.directory.studio.ldapbrowser.common.widgets.browser;
 
 import java.math.BigInteger;
 
-import org.apache.directory.shared.ldap.name.Rdn;
+import org.apache.directory.shared.ldap.name.RDN;
 import org.apache.directory.studio.connection.core.jobs.StudioConnectionRunnableWithProgress;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreConstants;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
@@ -322,8 +322,8 @@ public class BrowserSorter extends ViewerSorter
      */
     private int compareRdns( IEntry entry1, IEntry entry2 )
     {
-        Rdn rdn1 = entry1.getRdn();
-        Rdn rdn2 = entry2.getRdn();
+        RDN rdn1 = entry1.getRdn();
+        RDN rdn2 = entry2.getRdn();
 
         if ( rdn1 == null && rdn2 == null )
         {
@@ -339,7 +339,7 @@ public class BrowserSorter extends ViewerSorter
         }
         else
         {
-            return compare( rdn1.getUpName(), rdn2.getUpName() );
+            return compare( rdn1.getName(), rdn2.getName() );
         }
     }
 
@@ -368,27 +368,27 @@ public class BrowserSorter extends ViewerSorter
         }
         else
         {
-            Rdn rdn1 = entry1.getRdn();
-            Rdn rdn2 = entry2.getRdn();
+            RDN rdn1 = entry1.getRdn();
+            RDN rdn2 = entry2.getRdn();
 
-            if ( ( rdn1 == null || rdn1.getValue() == null || "".equals( rdn1.getValue() ) ) //$NON-NLS-1$
-                && ( rdn2 == null || rdn2.getValue() == null || "".equals( rdn2.getValue() ) ) ) //$NON-NLS-1$
+            if ( ( rdn1 == null || rdn1.getName() == null || "".equals( rdn1.getName() ) ) //$NON-NLS-1$
+                && ( rdn2 == null || rdn2.getName() == null || "".equals( rdn2.getName() ) ) ) //$NON-NLS-1$
             {
                 return equal();
             }
-            else if ( ( rdn1 == null || rdn1.getValue() == null || "".equals( rdn1.getValue() ) ) //$NON-NLS-1$
-                && !( rdn2 == null || rdn2.getValue() == null || "".equals( rdn2.getValue() ) ) ) //$NON-NLS-1$
+            else if ( ( rdn1 == null || rdn1.getName() == null || "".equals( rdn1.getName() ) ) //$NON-NLS-1$
+                && !( rdn2 == null || rdn2.getName() == null || "".equals( rdn2.getName() ) ) ) //$NON-NLS-1$
             {
                 return greaterThan();
             }
-            else if ( !( rdn1 == null || rdn1.getValue() == null || "".equals( rdn1.getValue() ) ) //$NON-NLS-1$
-                && ( rdn2 == null || rdn2.getValue() == null || "".equals( rdn2.getValue() ) ) ) //$NON-NLS-1$
+            else if ( !( rdn1 == null || rdn1.getName() == null || "".equals( rdn1.getName() ) ) //$NON-NLS-1$
+                && ( rdn2 == null || rdn2.getName() == null || "".equals( rdn2.getName() ) ) ) //$NON-NLS-1$
             {
                 return lessThan();
             }
 
-            String rdn1Value = ( String ) rdn1.getUpValue();
-            String rdn2Value = ( String ) rdn2.getUpValue();
+            String rdn1Value = ( String ) rdn1.getName();
+            String rdn2Value = ( String ) rdn2.getName();
             if ( rdn1Value.matches( "\\d*" ) && !rdn2Value.matches( "\\d*" ) ) //$NON-NLS-1$ //$NON-NLS-2$
             {
                 // return lessThan();

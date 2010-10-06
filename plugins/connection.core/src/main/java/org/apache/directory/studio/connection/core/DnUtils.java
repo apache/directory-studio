@@ -147,7 +147,7 @@ public class DnUtils
      * 
      * @throws InvalidNameException the invalid name exception
      */
-    public static RDN composeRDN( String[] rdnTypes, String[] rdnValues ) throws InvalidNameException
+    public static RDN composeRdn( String[] rdnTypes, String[] rdnValues ) throws InvalidNameException
     {
         StringBuffer sb = new StringBuffer();
         for ( int i = 0; i < rdnTypes.length; i++ )

@@ -24,7 +24,7 @@ package org.apache.directory.studio.ldapbrowser.common.widgets.connection;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.directory.shared.ldap.name.LdapDN;
+import org.apache.directory.shared.ldap.name.DN;
 import org.apache.directory.shared.ldap.util.LdapURL;
 import org.apache.directory.shared.ldap.util.LdapURL.Extension;
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
@@ -448,7 +448,7 @@ public class BrowserParameterPage extends AbstractConnectionParameterPage
         errorMessage = null;
         if ( !isAutoFetchBaseDns() )
         {
-            if ( !LdapDN.isValid( getBaseDN() ) )
+            if ( !DN.isValid( getBaseDN() ) )
             {
                 message = Messages.getString( "BrowserParameterPage.EnterValidBaseDN" ); //$NON-NLS-1$
             }

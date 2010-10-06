@@ -21,7 +21,7 @@
 package org.apache.directory.studio.ldapbrowser.common.dialogs;
 
 
-import org.apache.directory.shared.ldap.name.LdapDN;
+import org.apache.directory.shared.ldap.name.DN;
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.ldapbrowser.core.jobs.SimulateRenameDialog;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
@@ -55,10 +55,10 @@ public class SimulateRenameDialogImpl extends Dialog implements SimulateRenameDi
     private IBrowserConnection browserConnection;
 
     /** The old DN. */
-    private LdapDN oldDn;
+    private DN oldDn;
 
     /** The new DN. */
-    private LdapDN newDn;
+    private DN newDn;
 
 
     /**
@@ -120,7 +120,7 @@ public class SimulateRenameDialogImpl extends Dialog implements SimulateRenameDi
 
         String text1 = NLS
             .bind(
-                Messages.getString( "SimulateRenameDialogImpl.SimulateRenameDescription1" ), oldDn.getUpName(), newDn.getUpName() ); //$NON-NLS-1$
+                Messages.getString( "SimulateRenameDialogImpl.SimulateRenameDescription1" ), oldDn.getName(), newDn.getName() ); //$NON-NLS-1$
         BaseWidgetUtils.createLabel( innerComposite, text1, 1 );
 
         String text2 = NLS.bind( Messages.getString( "SimulateRenameDialogImpl.SimulateRenameDescription2" ), //$NON-NLS-1$
@@ -155,7 +155,7 @@ public class SimulateRenameDialogImpl extends Dialog implements SimulateRenameDi
     /**
      * {@inheritDoc}
      */
-    public void setEntryInfo( IBrowserConnection browserConnection, LdapDN oldDn, LdapDN newDn )
+    public void setEntryInfo( IBrowserConnection browserConnection, DN oldDn, DN newDn )
     {
         this.browserConnection = browserConnection;
         this.oldDn = oldDn;

@@ -21,7 +21,7 @@
 package org.apache.directory.studio.ldapbrowser.common.dialogs;
 
 
-import org.apache.directory.shared.ldap.name.LdapDN;
+import org.apache.directory.shared.ldap.name.DN;
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonConstants;
@@ -59,8 +59,8 @@ public class DnDialog extends Dialog
     /** The connection. */
     private IBrowserConnection connection;
 
-    /** The dn. */
-    private LdapDN dn;
+    /** The dn */
+    private DN dn;
 
 
     /**
@@ -72,7 +72,7 @@ public class DnDialog extends Dialog
      * @param connection the connection used to browse the directory
      * @param dn the initial DN, may be null
      */
-    public DnDialog( Shell parentShell, String title, String description, IBrowserConnection connection, LdapDN dn )
+    public DnDialog( Shell parentShell, String title, String description, IBrowserConnection connection, DN dn )
     {
         super( parentShell );
         super.setShellStyle( super.getShellStyle() | SWT.RESIZE );
@@ -165,7 +165,7 @@ public class DnDialog extends Dialog
      * 
      * @return the dn
      */
-    public LdapDN getDn()
+    public DN getDn()
     {
         return dn;
     }

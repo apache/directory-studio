@@ -24,8 +24,8 @@ package org.apache.directory.studio.ldapbrowser.common.dialogs;
 import java.util.Collection;
 
 import org.apache.commons.lang.ArrayUtils;
-import org.apache.directory.shared.ldap.name.Rdn;
-import org.apache.directory.shared.ldap.schema.parsers.AttributeTypeDescription;
+import org.apache.directory.shared.ldap.name.RDN;
+import org.apache.directory.shared.ldap.schema.AttributeType;
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
 import org.apache.directory.studio.ldapbrowser.common.widgets.DnBuilderWidget;
@@ -67,7 +67,7 @@ public class RenameEntryDialog extends Dialog implements WidgetModifyListener
     private Button okButton;
 
     /** The new rdn. */
-    private Rdn rdn;
+    private RDN rdn;
 
 
     /**
@@ -146,7 +146,7 @@ public class RenameEntryDialog extends Dialog implements WidgetModifyListener
         dnBuilderWidget = new DnBuilderWidget( true, false );
         dnBuilderWidget.addWidgetModifyListener( this );
         dnBuilderWidget.createContents( composite );
-        Collection<AttributeTypeDescription> allAtds = SchemaUtils.getAllAttributeTypeDescriptions( entry );
+        Collection<AttributeType> allAtds = SchemaUtils.getAllAttributeTypeDescriptions( entry );
         String[] allAttributeNames = SchemaUtils.getNames( allAtds ).toArray( ArrayUtils.EMPTY_STRING_ARRAY );
         dnBuilderWidget.setInput( entry.getBrowserConnection(), allAttributeNames, entry.getRdn(), null );
 
@@ -172,7 +172,7 @@ public class RenameEntryDialog extends Dialog implements WidgetModifyListener
      * 
      * @return the rdn
      */
-    public Rdn getRdn()
+    public RDN getRdn()
     {
         return rdn;
     }

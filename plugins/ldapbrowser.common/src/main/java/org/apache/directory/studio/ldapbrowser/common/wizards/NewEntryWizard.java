@@ -21,7 +21,7 @@
 package org.apache.directory.studio.ldapbrowser.common.wizards;
 
 
-import org.apache.directory.shared.ldap.name.LdapDN;
+import org.apache.directory.shared.ldap.name.DN;
 import org.apache.directory.studio.connection.ui.RunnableContextRunner;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonConstants;
@@ -186,7 +186,7 @@ public class NewEntryWizard extends Wizard implements INewWizard
                 originalReadOnlyFlag = selectedConnection.getConnection().isReadOnly();
                 selectedConnection.getConnection().setReadOnly( true );
             }
-            prototypeEntry = new DummyEntry( new LdapDN(), selectedConnection );
+            prototypeEntry = new DummyEntry( new DN(), selectedConnection );
         }
     }
 

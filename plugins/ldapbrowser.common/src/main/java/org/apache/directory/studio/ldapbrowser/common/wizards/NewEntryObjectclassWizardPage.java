@@ -27,8 +27,8 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.apache.directory.shared.ldap.constants.SchemaConstants;
+import org.apache.directory.shared.ldap.schema.ObjectClass;
 import org.apache.directory.shared.ldap.schema.ObjectClassTypeEnum;
-import org.apache.directory.shared.ldap.schema.parsers.ObjectClassDescription;
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.connection.ui.RunnableContextRunner;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
@@ -91,7 +91,7 @@ public class NewEntryObjectclassWizardPage extends WizardPage
     private NewEntryWizard wizard;
 
     /** The available object classes. */
-    private List<ObjectClassDescription> availableObjectClasses;
+    private List<ObjectClass> availableObjectClasses;
 
     /** The available object classes instant search. */
     private Text availableObjectClassesInstantSearch;
@@ -100,7 +100,7 @@ public class NewEntryObjectclassWizardPage extends WizardPage
     private TableViewer availableObjectClassesViewer;
 
     /** The selected object classes. */
-    private List<ObjectClassDescription> selectedObjectClasses;
+    private List<ObjectClass> selectedObjectClasses;
 
     /** The selected object classes viewer. */
     private TableViewer selectedObjectClassesViewer;
@@ -118,9 +118,9 @@ public class NewEntryObjectclassWizardPage extends WizardPage
          */
         public String getText( Object element )
         {
-            if ( element instanceof ObjectClassDescription )
+            if ( element instanceof ObjectClass )
             {
-                ObjectClassDescription ocd = ( ObjectClassDescription ) element;
+                ObjectClass ocd = ( ObjectClass ) element;
                 return SchemaUtils.toString( ocd );
             }
 
@@ -134,10 +134,10 @@ public class NewEntryObjectclassWizardPage extends WizardPage
          */
         public Image getImage( Object element )
         {
-            if ( element instanceof ObjectClassDescription )
+            if ( element instanceof ObjectClass )
             {
-                ObjectClassDescription ocd = ( ObjectClassDescription ) element;
-                switch ( ocd.getKind() )
+                ObjectClass ocd = ( ObjectClass ) element;
+                switch ( ocd.getType() )
                 {
                     case STRUCTURAL:
                         return BrowserCommonActivator.getDefault().getImage( BrowserCommonConstants.IMG_OCD_STRUCTURAL );
@@ -172,8 +172,8 @@ public class NewEntryObjectclassWizardPage extends WizardPage
         setPageComplete( false );
 
         this.wizard = wizard;
-        this.availableObjectClasses = new ArrayList<ObjectClassDescription>();
-        this.selectedObjectClasses = new ArrayList<ObjectClassDescription>();
+        this.availableObjectClasses = new ArrayList<ObjectClass>();
+        this.selectedObjectClasses = new ArrayList<ObjectClass>();
     }
 
 
@@ -185,9 +185,9 @@ public class NewEntryObjectclassWizardPage extends WizardPage
         if ( !selectedObjectClasses.isEmpty() )
         {
             boolean hasOneStructuralOC = false;
-            for ( ObjectClassDescription ocd : selectedObjectClasses )
+            for ( ObjectClass ocd : selectedObjectClasses )
             {
-                if ( ocd.getKind() == ObjectClassTypeEnum.STRUCTURAL )
+                if ( ocd.getType() == ObjectClassTypeEnum.STRUCTURAL )
                 {
                     hasOneStructuralOC = true;
                     break;
@@ -235,7 +235,7 @@ public class NewEntryObjectclassWizardPage extends WizardPage
                 {
                     if ( !ocValue.isEmpty() )
                     {
-                        ObjectClassDescription ocd = wizard.getSelectedConnection().getSchema()
+                        ObjectClass ocd = wizard.getSelectedConnection().getSchema()
                             .getObjectClassDescription( ocValue.getStringValue() );
                         availableObjectClasses.remove( ocd );
                         selectedObjectClasses.add( ocd );
@@ -272,7 +272,7 @@ public class NewEntryObjectclassWizardPage extends WizardPage
             {
                 ocAttribute.deleteValue( value );
             }
-            for ( ObjectClassDescription ocd : selectedObjectClasses )
+            for ( ObjectClass ocd : selectedObjectClasses )
             {
                 ocAttribute.addValue( new Value( ocAttribute, ocd.getNames().get( 0 ) ) );
             }
@@ -479,14 +479,14 @@ public class NewEntryObjectclassWizardPage extends WizardPage
         Iterator<?> it = selection.iterator();
         while ( it.hasNext() )
         {
-            ObjectClassDescription ocd = ( ObjectClassDescription ) it.next();
+            ObjectClass ocd = ( ObjectClass ) it.next();
             if ( availableObjectClasses.contains( ocd ) && !selectedObjectClasses.contains( ocd ) )
             {
                 availableObjectClasses.remove( ocd );
                 selectedObjectClasses.add( ocd );
 
                 // recursively add superior object classes
-                List<ObjectClassDescription> superiorObjectClassDescriptions = SchemaUtils
+                List<ObjectClass> superiorObjectClassDescriptions = SchemaUtils
                     .getSuperiorObjectClassDescriptions( ocd, schema );
                 if ( !superiorObjectClassDescriptions.isEmpty() )
                 {
@@ -520,14 +520,14 @@ public class NewEntryObjectclassWizardPage extends WizardPage
         Iterator<?> it = selection.iterator();
         while ( it.hasNext() )
         {
-            ObjectClassDescription ocd = ( ObjectClassDescription ) it.next();
+            ObjectClass ocd = ( ObjectClass ) it.next();
             if ( !availableObjectClasses.contains( ocd ) && selectedObjectClasses.contains( ocd ) )
             {
                 selectedObjectClasses.remove( ocd );
                 availableObjectClasses.add( ocd );
 
                 // recursively remove sub object classes
-                List<ObjectClassDescription> subObjectClassDescriptions = SchemaUtils
+                List<ObjectClass> subObjectClassDescriptions = SchemaUtils
                     .getSuperiorObjectClassDescriptions( ocd, schema );
                 if ( !subObjectClassDescriptions.isEmpty() )
                 {
@@ -537,10 +537,10 @@ public class NewEntryObjectclassWizardPage extends WizardPage
         }
 
         // re-add superior object classes of remaining object classes
-        List<ObjectClassDescription> copy = new ArrayList<ObjectClassDescription>( selectedObjectClasses );
-        for ( ObjectClassDescription ocd : copy )
+        List<ObjectClass> copy = new ArrayList<ObjectClass>( selectedObjectClasses );
+        for ( ObjectClass ocd : copy )
         {
-            List<ObjectClassDescription> superiorObjectClassDescriptions = SchemaUtils
+            List<ObjectClass> superiorObjectClassDescriptions = SchemaUtils
                 .getSuperiorObjectClassDescriptions( ocd, schema );
             if ( !superiorObjectClassDescriptions.isEmpty() )
             {
@@ -579,9 +579,9 @@ public class NewEntryObjectclassWizardPage extends WizardPage
          */
         public boolean select( Viewer viewer, Object parentElement, Object element )
         {
-            if ( element instanceof ObjectClassDescription )
+            if ( element instanceof ObjectClass )
             {
-                ObjectClassDescription ocd = ( ObjectClassDescription ) element;
+                ObjectClass ocd = ( ObjectClass ) element;
                 Collection<String> lowerCaseIdentifiers = SchemaUtils.getLowerCaseIdentifiers( ocd );
                 for ( String s : lowerCaseIdentifiers )
                 {
