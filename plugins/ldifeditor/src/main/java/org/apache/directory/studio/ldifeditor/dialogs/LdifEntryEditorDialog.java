@@ -21,8 +21,7 @@
 package org.apache.directory.studio.ldifeditor.dialogs;
 
 
-import javax.naming.InvalidNameException;
-
+import org.apache.directory.shared.ldap.exception.LdapInvalidDnException;
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonConstants;
 import org.apache.directory.studio.ldapbrowser.common.widgets.entryeditor.EntryEditorWidget;
@@ -118,7 +117,7 @@ public class LdifEntryEditorDialog extends Dialog
                     this.browserConnection );
             }
         }
-        catch ( InvalidNameException e )
+        catch ( LdapInvalidDnException e )
         {
             entry = null;
         }

@@ -114,7 +114,7 @@
             <Eclipse-LazyStart>true</Eclipse-LazyStart>
             <Bundle-Activator>org.apache.directory.studio.ldifeditor.LdifEditorActivator</Bundle-Activator>
             <Require-Bundle>
- org.apache.directory.shared.ldap;bundle-version="${org.apache.directory.shared.version}",
+ org.apache.directory.shared.ldap;bundle-version="${org.apache.directory.shared.validversion}",
  org.apache.directory.studio.common.core,
  org.apache.directory.studio.common.ui,
  org.apache.directory.studio.connection.core,
