@@ -21,8 +21,8 @@
 package org.apache.directory.studio.ldapbrowser.core.model.impl;
 
 
-import org.apache.directory.shared.ldap.name.LdapDN;
-import org.apache.directory.shared.ldap.name.Rdn;
+import org.apache.directory.shared.ldap.name.DN;
+import org.apache.directory.shared.ldap.name.RDN;
 import org.apache.directory.studio.connection.core.DnUtils;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
@@ -39,7 +39,7 @@ public class Entry extends AbstractEntry
     private static final long serialVersionUID = -4718107307581983276L;
 
     /** The RDN. */
-    protected Rdn rdn;
+    protected RDN rdn;
 
     /** The parent entry. */
     protected IEntry parent;
@@ -56,7 +56,7 @@ public class Entry extends AbstractEntry
      * @param parent the parent entry
      * @param rdn the RDN
      */
-    public Entry( IEntry parent, Rdn rdn )
+    public Entry( IEntry parent, RDN rdn )
     {
         assert parent != null;
         assert rdn != null;
@@ -70,7 +70,7 @@ public class Entry extends AbstractEntry
     /**
      * @see org.apache.directory.studio.ldapbrowser.core.model.impl.AbstractEntry#getRdn()
      */
-    public Rdn getRdn()
+    public RDN getRdn()
     {
         // performance opt.
         return rdn;
@@ -80,9 +80,9 @@ public class Entry extends AbstractEntry
     /**
      * @see org.apache.directory.studio.ldapbrowser.core.model.IEntry#getDn()
      */
-    public LdapDN getDn()
+    public DN getDn()
     {
-        LdapDN dn = DnUtils.composeDn( rdn, parent.getDn() );
+        DN dn = DnUtils.composeDn( rdn, parent.getDn() );
         return dn;
     }
 
@@ -108,7 +108,7 @@ public class Entry extends AbstractEntry
     /**
      * @see org.apache.directory.studio.ldapbrowser.core.model.impl.AbstractEntry#setRdn(org.apache.directory.studio.ldapbrowser.core.model.RDN)
      */
-    protected void setRdn( Rdn newRdn )
+    protected void setRdn( RDN newRdn )
     {
         this.rdn = newRdn;
     }

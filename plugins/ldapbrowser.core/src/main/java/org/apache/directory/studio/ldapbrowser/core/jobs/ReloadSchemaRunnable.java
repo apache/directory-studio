@@ -26,7 +26,7 @@ import javax.naming.directory.Attribute;
 import javax.naming.directory.SearchResult;
 
 import org.apache.directory.shared.ldap.constants.SchemaConstants;
-import org.apache.directory.shared.ldap.name.LdapDN;
+import org.apache.directory.shared.ldap.name.DN;
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.jobs.StudioConnectionBulkRunnableWithProgress;
@@ -142,7 +142,7 @@ public class ReloadSchemaRunnable implements StudioConnectionBulkRunnableWithPro
     public static void reloadSchema( boolean forceReload, IBrowserConnection browserConnection,
         StudioProgressMonitor monitor )
     {
-        LdapDN schemaLocation = getSchemaLocation( browserConnection, monitor );
+        DN schemaLocation = getSchemaLocation( browserConnection, monitor );
         if ( schemaLocation == null )
         {
             monitor.reportError( BrowserCoreMessages.model__missing_schema_location );
@@ -198,7 +198,7 @@ public class ReloadSchemaRunnable implements StudioConnectionBulkRunnableWithPro
      * @param browserConnection the browser connection
      * @param monitor the progress monitor
      */
-    private static boolean mustReload( LdapDN schemaLocation, IBrowserConnection browserConnection,
+    private static boolean mustReload( DN schemaLocation, IBrowserConnection browserConnection,
         StudioProgressMonitor monitor )
     {
         Schema schema = browserConnection.getSchema();
@@ -252,12 +252,12 @@ public class ReloadSchemaRunnable implements StudioConnectionBulkRunnableWithPro
     }
 
 
-    private static LdapDN getSchemaLocation( IBrowserConnection browserConnection, StudioProgressMonitor monitor )
+    private static DN getSchemaLocation( IBrowserConnection browserConnection, StudioProgressMonitor monitor )
     {
         try
         {
             SearchParameter sp = new SearchParameter();
-            sp.setSearchBase( new LdapDN() );
+            sp.setSearchBase( new DN() );
             sp.setScope( SearchScope.OBJECT );
             sp.setReturningAttributes( new String[]
                 { SchemaConstants.SUBSCHEMA_SUBENTRY_AT } );
@@ -272,9 +272,9 @@ public class ReloadSchemaRunnable implements StudioConnectionBulkRunnableWithPro
                     if ( attribute.getID().equalsIgnoreCase( SchemaConstants.SUBSCHEMA_SUBENTRY_AT ) )
                     {
                         String value = ( String ) attribute.get();
-                        if ( LdapDN.isValid( value ) )
+                        if ( DN.isValid( value ) )
                         {
-                            LdapDN dn = new LdapDN( value );
+                            DN dn = new DN( value );
                             return dn;
                         }
                     }

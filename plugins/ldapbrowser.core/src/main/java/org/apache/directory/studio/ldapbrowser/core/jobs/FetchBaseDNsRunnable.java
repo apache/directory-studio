@@ -114,7 +114,7 @@ public class FetchBaseDNsRunnable implements StudioConnectionBulkRunnableWithPro
             {
                 if ( !( baseDNEntry instanceof DirectoryMetadataEntry ) )
                 {
-                    baseDNs.add( baseDNEntry.getDn().getUpName() );
+                    baseDNs.add( baseDNEntry.getDn().getName() );
                 }
             }
         }

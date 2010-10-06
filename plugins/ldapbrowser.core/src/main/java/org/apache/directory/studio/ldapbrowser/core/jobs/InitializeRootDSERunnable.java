@@ -28,10 +28,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import javax.naming.InvalidNameException;
-
 import org.apache.directory.shared.ldap.constants.SchemaConstants;
-import org.apache.directory.shared.ldap.name.LdapDN;
+import org.apache.directory.shared.ldap.exception.LdapInvalidDnException;
+import org.apache.directory.shared.ldap.name.DN;
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
@@ -128,12 +127,12 @@ public class InitializeRootDSERunnable implements StudioConnectionBulkRunnableWi
         monitor.reportProgress( " " ); //$NON-NLS-1$
 
         monitor.setTaskName( BrowserCoreMessages.bind( BrowserCoreMessages.jobs__init_entries_task, new String[]
-            { rootDSE.getDn().getUpName() } ) );
+            { rootDSE.getDn().getName() } ) );
         monitor.worked( 1 );
 
         monitor.reportProgress( BrowserCoreMessages.bind( BrowserCoreMessages.jobs__init_entries_progress_att,
             new String[]
-                { rootDSE.getDn().getUpName() } ) );
+                { rootDSE.getDn().getName() } ) );
 
         loadRootDSE( rootDSE.getBrowserConnection(), monitor );
     }
@@ -172,30 +171,30 @@ public class InitializeRootDSERunnable implements StudioConnectionBulkRunnableWi
         }
 
         // load well-known Root DSE attributes and operational attributes
-        ISearch search = new Search( null, browserConnection, LdapDN.EMPTY_LDAPDN, ISearch.FILTER_TRUE,
+        ISearch search = new Search( null, browserConnection, DN.EMPTY_DN, ISearch.FILTER_TRUE,
             ROOT_DSE_ATTRIBUTES, SearchScope.OBJECT, 0, 0, Connection.AliasDereferencingMethod.NEVER,
             Connection.ReferralHandlingMethod.IGNORE, false, null );
         SearchRunnable.searchAndUpdateModel( browserConnection, search, monitor );
 
         // load all user attributes
-        search = new Search( null, browserConnection, LdapDN.EMPTY_LDAPDN, ISearch.FILTER_TRUE, new String[]
+        search = new Search( null, browserConnection, DN.EMPTY_DN, ISearch.FILTER_TRUE, new String[]
             { SchemaConstants.ALL_USER_ATTRIBUTES }, SearchScope.OBJECT, 0, 0,
             Connection.AliasDereferencingMethod.NEVER, Connection.ReferralHandlingMethod.IGNORE, false, null );
         SearchRunnable.searchAndUpdateModel( browserConnection, search, monitor );
 
         // the list of entries under the Root DSE
-        Map<LdapDN, IEntry> rootDseEntries = new HashMap<LdapDN, IEntry>();
+        Map<DN, IEntry> rootDseEntries = new HashMap<DN, IEntry>();
 
         // 1st: add base DNs, either the specified or from the namingContexts attribute
         if ( !browserConnection.isFetchBaseDNs() && browserConnection.getBaseDN() != null
             && !"".equals( browserConnection.getBaseDN().toString() ) )
         {
             // only add the specified base DN
-            LdapDN dn = browserConnection.getBaseDN();
+            DN dn = browserConnection.getBaseDN();
             IEntry entry = browserConnection.getEntryFromCache( dn );
             if ( entry == null )
             {
-                entry = new BaseDNEntry( ( LdapDN ) dn.clone(), browserConnection );
+                entry = new BaseDNEntry( dn, browserConnection );
                 browserConnection.cacheEntry( entry );
             }
             rootDseEntries.put( dn, entry );
@@ -227,7 +226,7 @@ public class InitializeRootDSERunnable implements StudioConnectionBulkRunnableWi
                     {
                         try
                         {
-                            LdapDN dn = new LdapDN( namingContext );
+                            DN dn = new DN( namingContext );
                             IEntry entry = browserConnection.getEntryFromCache( dn );
                             if ( entry == null )
                             {
@@ -236,7 +235,7 @@ public class InitializeRootDSERunnable implements StudioConnectionBulkRunnableWi
                             }
                             rootDseEntries.put( dn, entry );
                         }
-                        catch ( InvalidNameException e )
+                        catch ( LdapInvalidDnException e )
                         {
                             monitor.reportError( BrowserCoreMessages.model__error_setting_base_dn, e );
                         }
@@ -302,7 +301,7 @@ public class InitializeRootDSERunnable implements StudioConnectionBulkRunnableWi
     private static void initBaseEntry( IEntry entry, StudioProgressMonitor monitor )
     {
         IBrowserConnection browserConnection = entry.getBrowserConnection();
-        LdapDN dn = entry.getDn();
+        DN dn = entry.getDn();
 
         // search the entry
         AliasDereferencingMethod derefAliasMethod = browserConnection.getAliasesDereferencingMethod();
@@ -330,7 +329,7 @@ public class InitializeRootDSERunnable implements StudioConnectionBulkRunnableWi
     private static IEntry[] getDirectoryMetadataEntries( IBrowserConnection browserConnection,
         String metadataAttributeName )
     {
-        List<LdapDN> metadataEntryDnList = new ArrayList<LdapDN>();
+        List<DN> metadataEntryDnList = new ArrayList<DN>();
         IAttribute attribute = browserConnection.getRootDSE().getAttribute( metadataAttributeName );
         if ( attribute != null )
         {
@@ -341,9 +340,9 @@ public class InitializeRootDSERunnable implements StudioConnectionBulkRunnableWi
                 {
                     try
                     {
-                        metadataEntryDnList.add( new LdapDN( dn ) );
+                        metadataEntryDnList.add( new DN( dn ) );
                     }
-                    catch ( InvalidNameException e )
+                    catch ( LdapInvalidDnException e )
                     {
                     }
                 }
@@ -353,7 +352,7 @@ public class InitializeRootDSERunnable implements StudioConnectionBulkRunnableWi
         IEntry[] metadataEntries = new IEntry[metadataEntryDnList.size()];
         for ( int i = 0; i < metadataEntryDnList.size(); i++ )
         {
-            LdapDN dn = metadataEntryDnList.get( i );
+            DN dn = metadataEntryDnList.get( i );
             metadataEntries[i] = browserConnection.getEntryFromCache( dn );
             if ( metadataEntries[i] == null )
             {
@@ -366,10 +365,10 @@ public class InitializeRootDSERunnable implements StudioConnectionBulkRunnableWi
     }
 
 
-    private static void searchRootDseEntries( IBrowserConnection browserConnection, Map<LdapDN, IEntry> rootDseEntries,
+    private static void searchRootDseEntries( IBrowserConnection browserConnection, Map<DN, IEntry> rootDseEntries,
         StudioProgressMonitor monitor )
     {
-        ISearch search = new Search( null, browserConnection, LdapDN.EMPTY_LDAPDN, ISearch.FILTER_TRUE,
+        ISearch search = new Search( null, browserConnection, DN.EMPTY_DN, ISearch.FILTER_TRUE,
             ISearch.NO_ATTRIBUTES, SearchScope.ONELEVEL, 0, 0, Connection.AliasDereferencingMethod.NEVER,
             Connection.ReferralHandlingMethod.IGNORE, false, null );
         SearchRunnable.searchAndUpdateModel( browserConnection, search, monitor );

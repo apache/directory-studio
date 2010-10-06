@@ -32,9 +32,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import javax.naming.InvalidNameException;
-
-import org.apache.directory.shared.ldap.name.LdapDN;
+import org.apache.directory.shared.ldap.exception.LdapInvalidDnException;
+import org.apache.directory.shared.ldap.name.DN;
 import org.apache.directory.shared.ldap.util.Base64;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.StudioControl;
@@ -43,8 +42,8 @@ import org.apache.directory.studio.ldapbrowser.core.model.BookmarkParameter;
 import org.apache.directory.studio.ldapbrowser.core.model.IBookmark;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
-import org.apache.directory.studio.ldapbrowser.core.model.SearchParameter;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch.SearchScope;
+import org.apache.directory.studio.ldapbrowser.core.model.SearchParameter;
 import org.apache.directory.studio.ldapbrowser.core.model.impl.Bookmark;
 import org.apache.directory.studio.ldapbrowser.core.model.impl.Search;
 import org.dom4j.Attribute;
@@ -198,9 +197,9 @@ public class BrowserConnectionIO
         {
             try
             {
-                searchParameter.setSearchBase( new LdapDN( searchBaseAttribute.getValue() ) );
+                searchParameter.setSearchBase( new DN( searchBaseAttribute.getValue() ) );
             }
-            catch ( InvalidNameException e )
+            catch ( LdapInvalidDnException e )
             {
                 throw new ConnectionIOException( "Unable to parse 'Search Base' of search '"
                     + searchParameter.getName() + "' :" + searchBaseAttribute.getValue() );
@@ -367,9 +366,9 @@ public class BrowserConnectionIO
         {
             try
             {
-                bookmarkParameter.setDn( new LdapDN( dnAttribute.getValue() ) );
+                bookmarkParameter.setDn( new DN( dnAttribute.getValue() ) );
             }
-            catch ( InvalidNameException e )
+            catch ( LdapInvalidDnException e )
             {
                 throw new ConnectionIOException( "Unable to parse 'DN' of bookmark '" + bookmarkParameter.getName()
                     + "' :" + dnAttribute.getValue() );
@@ -460,7 +459,7 @@ public class BrowserConnectionIO
         searchParameterElement.addAttribute( NAME_TAG, searchParameter.getName() );
 
         // Search base
-        String searchBase = searchParameter.getSearchBase() != null ? searchParameter.getSearchBase().getUpName() : "";
+        String searchBase = searchParameter.getSearchBase() != null ? searchParameter.getSearchBase().getName() : "";
         searchParameterElement.addAttribute( SEARCH_BASE_TAG, searchBase );
 
         // Filter
@@ -514,7 +513,7 @@ public class BrowserConnectionIO
         bookmarkParameterElement.addAttribute( NAME_TAG, bookmarkParameter.getName() );
 
         // DN
-        String dn = bookmarkParameter.getDn() != null ? bookmarkParameter.getDn().getUpName() : "";
+        String dn = bookmarkParameter.getDn() != null ? bookmarkParameter.getDn().getName() : "";
         bookmarkParameterElement.addAttribute( DN_TAG, dn );
     }
 

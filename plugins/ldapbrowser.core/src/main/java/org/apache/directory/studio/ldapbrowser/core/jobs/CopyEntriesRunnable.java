@@ -28,7 +28,6 @@ import java.util.List;
 
 import javax.naming.NameAlreadyBoundException;
 import javax.naming.NamingEnumeration;
-import javax.naming.NamingException;
 import javax.naming.directory.Attribute;
 import javax.naming.directory.Attributes;
 import javax.naming.directory.BasicAttribute;
@@ -40,9 +39,9 @@ import javax.naming.ldap.Control;
 import javax.naming.ldap.ManageReferralControl;
 
 import org.apache.directory.shared.ldap.constants.SchemaConstants;
-import org.apache.directory.shared.ldap.name.AttributeTypeAndValue;
-import org.apache.directory.shared.ldap.name.LdapDN;
-import org.apache.directory.shared.ldap.name.Rdn;
+import org.apache.directory.shared.ldap.name.AVA;
+import org.apache.directory.shared.ldap.name.DN;
+import org.apache.directory.shared.ldap.name.RDN;
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
@@ -151,9 +150,9 @@ public class CopyEntriesRunnable implements StudioConnectionBulkRunnableWithProg
         monitor.beginTask(
             entriesToCopy.length == 1 ? BrowserCoreMessages.bind( BrowserCoreMessages.jobs__copy_entries_task_1,
                 new String[]
-                    { entriesToCopy[0].getDn().getUpName(), parent.getDn().getUpName() } ) : BrowserCoreMessages.bind(
+                    { entriesToCopy[0].getDn().getName(), parent.getDn().getName() } ) : BrowserCoreMessages.bind(
                 BrowserCoreMessages.jobs__copy_entries_task_n, new String[]
-                    { Integer.toString( entriesToCopy.length ), parent.getDn().getUpName() } ),
+                    { Integer.toString( entriesToCopy.length ), parent.getDn().getName() } ),
             2 + entriesToCopy.length );
 
         monitor.reportProgress( " " ); //$NON-NLS-1$
@@ -218,7 +217,7 @@ public class CopyEntriesRunnable implements StudioConnectionBulkRunnableWithProg
      * 
      * @return the number of copied entries
      */
-    static int copyEntry( IEntry entryToCopy, IEntry parent, Rdn newRdn, int scope, int numberOfCopiedEntries,
+    static int copyEntry( IEntry entryToCopy, IEntry parent, RDN newRdn, int scope, int numberOfCopiedEntries,
         EntryExistsCopyStrategyDialog dialog, StudioProgressMonitor dummyMonitor, StudioProgressMonitor monitor )
     {
         SearchControls searchControls = new SearchControls();
@@ -239,11 +238,11 @@ public class CopyEntriesRunnable implements StudioConnectionBulkRunnableWithProg
             .getBrowserConnection()
             .getConnection()
             .getJNDIConnectionWrapper()
-            .search( entryToCopy.getDn().getUpName(), ISearch.FILTER_TRUE, searchControls,
+            .search( entryToCopy.getDn().getName(), ISearch.FILTER_TRUE, searchControls,
                 AliasDereferencingMethod.NEVER, ReferralHandlingMethod.IGNORE, controls, monitor, null );
 
         // In case the parent is the RootDSE: use the parent DN of the old entry
-        LdapDN parentDn = parent.getDn();
+        DN parentDn = parent.getDn();
         if ( parentDn.isEmpty() )
         {
             parentDn = DnUtils.getParent( entryToCopy.getDn() );
@@ -276,7 +275,7 @@ public class CopyEntriesRunnable implements StudioConnectionBulkRunnableWithProg
      * @return the number of copied entries
      */
     static int copyEntryRecursive( IBrowserConnection sourceBrowserConnection, NamingEnumeration<SearchResult> entries,
-        IBrowserConnection targetBrowserConnection, LdapDN parentDn, Rdn forceNewRdn, int scope,
+        IBrowserConnection targetBrowserConnection, DN parentDn, RDN forceNewRdn, int scope,
         int numberOfCopiedEntries, EntryExistsCopyStrategyDialog dialog, StudioProgressMonitor dummyMonitor,
         StudioProgressMonitor monitor )
     {
@@ -286,19 +285,19 @@ public class CopyEntriesRunnable implements StudioConnectionBulkRunnableWithProg
             {
                 // get next entry to copy
                 SearchResult sr = entries.next();
-                LdapDN oldLdapDn = JNDIUtils.getDn( sr );
-                Rdn oldRdn = oldLdapDn.getRdn();
+                DN oldLdapDn = JNDIUtils.getDn( sr );
+                RDN oldRdn = oldLdapDn.getRdn();
 
                 // reuse attributes of the entry to copy
                 Attributes newAttributes = sr.getAttributes();
 
                 // compose new DN
-                Rdn newRdn = oldLdapDn.getRdn();
+                RDN newRdn = oldLdapDn.getRdn();
                 if ( forceNewRdn != null )
                 {
                     newRdn = forceNewRdn;
                 }
-                LdapDN newLdapDn = DnUtils.composeDn( newRdn, parentDn );
+                DN newLdapDn = DnUtils.composeDn( newRdn, parentDn );
 
                 // apply new RDN to the attributes
                 applyNewRdn( newAttributes, oldRdn, newRdn );
@@ -314,7 +313,7 @@ public class CopyEntriesRunnable implements StudioConnectionBulkRunnableWithProg
 
                 // create entry
                 targetBrowserConnection.getConnection().getJNDIConnectionWrapper()
-                    .createEntry( newLdapDn.getUpName(), newAttributes, controls, dummyMonitor, null );
+                    .createEntry( newLdapDn.getName(), newAttributes, controls, dummyMonitor, null );
 
                 while ( dummyMonitor.errorsReported() )
                 {
@@ -354,7 +353,7 @@ public class CopyEntriesRunnable implements StudioConnectionBulkRunnableWithProg
                                     targetBrowserConnection
                                         .getConnection()
                                         .getJNDIConnectionWrapper()
-                                        .modifyEntry( newLdapDn.getUpName(),
+                                        .modifyEntry( newLdapDn.getName(),
                                             mis.toArray( new ModificationItem[mis.size()] ), null, dummyMonitor, null );
 
                                     // force reloading of attributes
@@ -367,7 +366,7 @@ public class CopyEntriesRunnable implements StudioConnectionBulkRunnableWithProg
                                     break;
 
                                 case RENAME_AND_CONTINUE:
-                                    Rdn renamedRdn = dialog.getRdn();
+                                    RDN renamedRdn = dialog.getRdn();
 
                                     // apply renamed RDN to the attributes
                                     applyNewRdn( newAttributes, newRdn, renamedRdn );
@@ -377,7 +376,7 @@ public class CopyEntriesRunnable implements StudioConnectionBulkRunnableWithProg
 
                                     // create entry
                                     targetBrowserConnection.getConnection().getJNDIConnectionWrapper()
-                                        .createEntry( newLdapDn.getUpName(), newAttributes, null, dummyMonitor, null );
+                                        .createEntry( newLdapDn.getName(), newAttributes, null, dummyMonitor, null );
 
                                     break;
                             }
@@ -414,7 +413,7 @@ public class CopyEntriesRunnable implements StudioConnectionBulkRunnableWithProg
                         NamingEnumeration<SearchResult> childEntries = sourceBrowserConnection
                             .getConnection()
                             .getJNDIConnectionWrapper()
-                            .search( oldLdapDn.getUpName(), ISearch.FILTER_TRUE, searchControls,
+                            .search( oldLdapDn.getName(), ISearch.FILTER_TRUE, searchControls,
                                 AliasDereferencingMethod.NEVER, ReferralHandlingMethod.IGNORE, null, monitor, null );
 
                         if ( scope == SearchControls.ONELEVEL_SCOPE )
@@ -429,7 +428,7 @@ public class CopyEntriesRunnable implements StudioConnectionBulkRunnableWithProg
                 }
             }
         }
-        catch ( NamingException e )
+        catch ( Exception e )
         {
             monitor.reportError( e );
         }
@@ -438,12 +437,12 @@ public class CopyEntriesRunnable implements StudioConnectionBulkRunnableWithProg
     }
 
 
-    private static void applyNewRdn( Attributes attributes, Rdn oldRdn, Rdn newRdn )
+    private static void applyNewRdn( Attributes attributes, RDN oldRdn, RDN newRdn )
     {
         // remove old RDN attributes and values
-        for ( Iterator<AttributeTypeAndValue> it = oldRdn.iterator(); it.hasNext(); )
+        for ( Iterator<AVA> it = oldRdn.iterator(); it.hasNext(); )
         {
-            AttributeTypeAndValue atav = it.next();
+            AVA atav = it.next();
             Attribute attribute = attributes.get( atav.getUpType() );
             if ( attribute != null )
             {
@@ -456,9 +455,9 @@ public class CopyEntriesRunnable implements StudioConnectionBulkRunnableWithProg
         }
 
         // add new RDN attributes and values
-        for ( Iterator<AttributeTypeAndValue> it = newRdn.iterator(); it.hasNext(); )
+        for ( Iterator<AVA> it = newRdn.iterator(); it.hasNext(); )
         {
-            AttributeTypeAndValue atav = it.next();
+            AVA atav = it.next();
             Attribute attribute = attributes.get( atav.getUpType() );
             if ( attribute == null )
             {

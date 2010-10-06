@@ -81,17 +81,17 @@ public class SearchContinuation extends Search implements IContinuation
         {
             getSearchParameter().setFilter( searchContinuationURL.getFilter() );
         }
-        if ( searchContinuationURL.getScope() > -1 )
+        if ( searchContinuationURL.getScope().getScope() > -1 )
         {
             switch ( searchContinuationURL.getScope() )
             {
-                case 0:
+                case OBJECT:
                     getSearchParameter().setScope( SearchScope.OBJECT );
                     break;
-                case 1:
+                case ONELEVEL:
                     getSearchParameter().setScope( SearchScope.ONELEVEL );
                     break;
-                case 2:
+                case SUBTREE:
                     getSearchParameter().setScope( SearchScope.SUBTREE );
                     break;
             }

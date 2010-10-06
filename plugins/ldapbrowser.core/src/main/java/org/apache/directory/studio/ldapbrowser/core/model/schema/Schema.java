@@ -36,17 +36,17 @@ import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.directory.shared.ldap.constants.SchemaConstants;
-import org.apache.directory.shared.ldap.name.LdapDN;
+import org.apache.directory.shared.ldap.name.DN;
+import org.apache.directory.shared.ldap.schema.AttributeType;
+import org.apache.directory.shared.ldap.schema.LdapSyntax;
+import org.apache.directory.shared.ldap.schema.MatchingRule;
+import org.apache.directory.shared.ldap.schema.MatchingRuleUse;
+import org.apache.directory.shared.ldap.schema.ObjectClass;
 import org.apache.directory.shared.ldap.schema.UsageEnum;
-import org.apache.directory.shared.ldap.schema.parsers.AttributeTypeDescription;
 import org.apache.directory.shared.ldap.schema.parsers.AttributeTypeDescriptionSchemaParser;
-import org.apache.directory.shared.ldap.schema.parsers.LdapSyntaxDescription;
 import org.apache.directory.shared.ldap.schema.parsers.LdapSyntaxDescriptionSchemaParser;
-import org.apache.directory.shared.ldap.schema.parsers.MatchingRuleDescription;
 import org.apache.directory.shared.ldap.schema.parsers.MatchingRuleDescriptionSchemaParser;
-import org.apache.directory.shared.ldap.schema.parsers.MatchingRuleUseDescription;
 import org.apache.directory.shared.ldap.schema.parsers.MatchingRuleUseDescriptionSchemaParser;
-import org.apache.directory.shared.ldap.schema.parsers.ObjectClassDescription;
 import org.apache.directory.shared.ldap.schema.parsers.ObjectClassDescriptionSchemaParser;
 import org.apache.directory.studio.connection.core.Utils;
 import org.apache.directory.studio.ldapbrowser.core.model.AttributeDescription;
@@ -72,12 +72,10 @@ public class Schema
 
     public static final String DN_SYNTAX_OID = "1.3.6.1.4.1.1466.115.121.1.12";
 
-    public static final LdapSyntaxDescription DUMMY_LDAP_SYNTAX;
+    public static final LdapSyntax DUMMY_LDAP_SYNTAX;
     static
     {
-        DUMMY_LDAP_SYNTAX = new LdapSyntaxDescription();
-        DUMMY_LDAP_SYNTAX.setNumericOid( "" );
-        DUMMY_LDAP_SYNTAX.setDescription( "" );
+        DUMMY_LDAP_SYNTAX = new LdapSyntax( "", "" );
     }
 
     public static final HashMap<String, List<String>> DUMMY_EXTENSIONS;
@@ -122,21 +120,21 @@ public class Schema
 
     private LdifContentRecord schemaRecord;
 
-    private LdapDN dn;
+    private DN dn;
 
     private String createTimestamp;
 
     private String modifyTimestamp;
 
-    private Map<String, ObjectClassDescription> ocdMapByNameOrNumericOid;
+    private Map<String, ObjectClass> ocdMapByNameOrNumericOid;
 
-    private Map<String, AttributeTypeDescription> atdMapByNameOrNumericOid;
+    private Map<String, AttributeType> atdMapByNameOrNumericOid;
 
-    private Map<String, LdapSyntaxDescription> lsdMapByNumericOid;
+    private Map<String, LdapSyntax> lsdMapByNumericOid;
 
-    private Map<String, MatchingRuleDescription> mrdMapByNameOrNumericOid;
+    private Map<String, MatchingRule> mrdMapByNameOrNumericOid;
 
-    private Map<String, MatchingRuleUseDescription> mrudMapByNameOrNumericOid;
+    private Map<String, MatchingRuleUse> mrudMapByNameOrNumericOid;
 
 
     /**
@@ -148,11 +146,11 @@ public class Schema
         this.dn = null;
         this.createTimestamp = null;
         this.modifyTimestamp = null;
-        this.ocdMapByNameOrNumericOid = new HashMap<String, ObjectClassDescription>();
-        this.atdMapByNameOrNumericOid = new HashMap<String, AttributeTypeDescription>();
-        this.lsdMapByNumericOid = new HashMap<String, LdapSyntaxDescription>();
-        this.mrdMapByNameOrNumericOid = new HashMap<String, MatchingRuleDescription>();
-        this.mrudMapByNameOrNumericOid = new HashMap<String, MatchingRuleUseDescription>();
+        this.ocdMapByNameOrNumericOid = new HashMap<String, ObjectClass>();
+        this.atdMapByNameOrNumericOid = new HashMap<String, AttributeType>();
+        this.lsdMapByNumericOid = new HashMap<String, LdapSyntax>();
+        this.mrdMapByNameOrNumericOid = new HashMap<String, MatchingRule>();
+        this.mrudMapByNameOrNumericOid = new HashMap<String, MatchingRuleUse>();
     }
 
 
@@ -234,7 +232,7 @@ public class Schema
     private void parseSchemaRecord( LdifContentRecord schemaRecord ) throws Exception
     {
         setSchemaRecord( schemaRecord );
-        setDn( new LdapDN( schemaRecord.getDnLine().getValueAsString() ) );
+        setDn( new DN( schemaRecord.getDnLine().getValueAsString() ) );
 
         ObjectClassDescriptionSchemaParser ocdPparser = new ObjectClassDescriptionSchemaParser();
         ocdPparser.setQuirksMode( true );
@@ -260,38 +258,38 @@ public class Schema
             {
                 if ( attributeName.equalsIgnoreCase( SchemaConstants.OBJECT_CLASSES_AT ) )
                 {
-                    ObjectClassDescription ocd = ocdPparser.parseObjectClassDescription( value );
+                    ObjectClass ocd = ocdPparser.parseObjectClassDescription( value );
                     ocd.addExtension( RAW_SCHEMA_DEFINITION_LDIF_VALUE, ldifValues );
-                    addObjectClassDescription( ocd );
+                    addObjectClass( ocd );
                 }
                 else if ( attributeName.equalsIgnoreCase( SchemaConstants.ATTRIBUTE_TYPES_AT ) )
                 {
-                    AttributeTypeDescription atd = atdParser.parseAttributeTypeDescription( value );
+                    AttributeType atd = atdParser.parseAttributeTypeDescription( value );
                     atd.addExtension( RAW_SCHEMA_DEFINITION_LDIF_VALUE, ldifValues );
-                    addAttributeTypeDescription( atd );
+                    addAttributeType( atd );
                 }
                 else if ( attributeName.equalsIgnoreCase( SchemaConstants.LDAP_SYNTAXES_AT ) )
                 {
-                    LdapSyntaxDescription lsd = lsdParser.parseLdapSyntaxDescription( value );
+                    LdapSyntax lsd = lsdParser.parseLdapSyntaxDescription( value );
                     if ( StringUtils.isEmpty( lsd.getDescription() )
-                        && Utils.getOidDescription( lsd.getNumericOid() ) != null )
+                        && Utils.getOidDescription( lsd.getOid() ) != null )
                     {
-                        lsd.setDescription( Utils.getOidDescription( lsd.getNumericOid() ) );
+                        lsd.setDescription( Utils.getOidDescription( lsd.getOid() ) );
                     }
                     lsd.addExtension( RAW_SCHEMA_DEFINITION_LDIF_VALUE, ldifValues );
-                    addLdapSyntaxDescription( lsd );
+                    addLdapSyntax( lsd );
                 }
                 else if ( attributeName.equalsIgnoreCase( SchemaConstants.MATCHING_RULES_AT ) )
                 {
-                    MatchingRuleDescription mrd = mrdParser.parseMatchingRuleDescription( value );
+                    MatchingRule mrd = mrdParser.parseMatchingRuleDescription( value );
                     mrd.addExtension( RAW_SCHEMA_DEFINITION_LDIF_VALUE, ldifValues );
-                    addMatchingRuleDescription( mrd );
+                    addMatchingRule( mrd );
                 }
                 else if ( attributeName.equalsIgnoreCase( SchemaConstants.MATCHING_RULE_USE_AT ) )
                 {
-                    MatchingRuleUseDescription mrud = mrudParser.parseMatchingRuleUseDescription( value );
+                    MatchingRuleUse mrud = mrudParser.parseMatchingRuleUseDescription( value );
                     mrud.addExtension( RAW_SCHEMA_DEFINITION_LDIF_VALUE, ldifValues );
-                    addMatchingRuleUseDescription( mrud );
+                    addMatchingRuleUse( mrud );
                 }
                 else if ( attributeName.equalsIgnoreCase( SchemaConstants.CREATE_TIMESTAMP_AT ) )
                 {
@@ -310,32 +308,31 @@ public class Schema
             }
         }
 
-        for ( AttributeTypeDescription atd : getAttributeTypeDescriptions() )
+        for ( AttributeType atd : getAttributeTypeDescriptions() )
         {
             // assume all received syntaxes in attributes are valid -> create pseudo syntaxes if missing
-            String syntaxOid = atd.getSyntax();
+            String syntaxOid = atd.getSyntaxName();
             if ( syntaxOid != null && !hasLdapSyntaxDescription( syntaxOid ) )
             {
-                LdapSyntaxDescription lsd = new LdapSyntaxDescription();
-                lsd.setNumericOid( syntaxOid );
+                LdapSyntax lsd = new LdapSyntax( syntaxOid );
                 lsd.setDescription( Utils.getOidDescription( syntaxOid ) );
-                addLdapSyntaxDescription( lsd );
+                addLdapSyntax( lsd );
             }
 
             // assume all received matching rules in attributes are valid -> create pseudo matching rules if missing
-            String emr = atd.getEqualityMatchingRule();
-            String omr = atd.getOrderingMatchingRule();
-            String smr = atd.getSubstringsMatchingRule();
+            String emr = atd.getEqualityName();
+            String omr = atd.getOrderingName();
+            String smr = atd.getSubstringName();
             checkMatchingRules( emr, omr, smr );
         }
 
         // set extensibleObject may attributes
-        ObjectClassDescription extensibleObjectOcd = this
+        ObjectClass extensibleObjectOcd = this
             .getObjectClassDescription( SchemaConstants.EXTENSIBLE_OBJECT_OC );
-        Collection<AttributeTypeDescription> userAtds = SchemaUtils.getUserAttributeDescriptions( this );
+        Collection<AttributeType> userAtds = SchemaUtils.getUserAttributeDescriptions( this );
         Collection<String> atdNames = SchemaUtils.getNames( userAtds );
         List<String> atdNames2 = new ArrayList<String>( atdNames );
-        extensibleObjectOcd.setMayAttributeTypes( atdNames2 );
+        extensibleObjectOcd.setMayAttributeTypeOids( atdNames2 );
     }
 
 
@@ -345,10 +342,9 @@ public class Schema
         {
             if ( matchingRule != null && !hasMatchingRuleDescription( matchingRule ) )
             {
-                MatchingRuleDescription mrd = new MatchingRuleDescription();
-                mrd.setNumericOid( matchingRule );
+                MatchingRule mrd = new MatchingRule( matchingRule );
                 mrd.getNames().add( matchingRule );
-                addMatchingRuleDescription( mrd );
+                addMatchingRule( mrd );
             }
         }
     }
@@ -382,7 +378,7 @@ public class Schema
      * 
      * @return the DN of the schema record, may be null
      */
-    public LdapDN getDn()
+    public DN getDn()
     {
         return dn;
     }
@@ -393,7 +389,7 @@ public class Schema
      * 
      * @param dn the new DN
      */
-    public void setDn( LdapDN dn )
+    public void setDn( DN dn )
     {
         this.dn = dn;
     }
@@ -450,11 +446,11 @@ public class Schema
      * 
      * @param ocd the object class description
      */
-    private void addObjectClassDescription( ObjectClassDescription ocd )
+    private void addObjectClass( ObjectClass ocd )
     {
-        if ( ocd.getNumericOid() != null )
+        if ( ocd.getOid() != null )
         {
-            ocdMapByNameOrNumericOid.put( ocd.getNumericOid().toLowerCase(), ocd );
+            ocdMapByNameOrNumericOid.put( ocd.getOid().toLowerCase(), ocd );
         }
         if ( ocd.getNames() != null && !ocd.getNames().isEmpty() )
         {
@@ -471,9 +467,9 @@ public class Schema
      * 
      * @return the object class descriptions
      */
-    public Collection<ObjectClassDescription> getObjectClassDescriptions()
+    public Collection<ObjectClass> getObjectClassDescriptions()
     {
-        Set<ObjectClassDescription> set = new HashSet<ObjectClassDescription>( ocdMapByNameOrNumericOid.values() );
+        Set<ObjectClass> set = new HashSet<ObjectClass>( ocdMapByNameOrNumericOid.values() );
         return set;
     }
 
@@ -501,7 +497,7 @@ public class Schema
      * 
      * @return the object class description, or the default or a dummy
      */
-    public ObjectClassDescription getObjectClassDescription( String nameOrOid )
+    public ObjectClass getObjectClassDescription( String nameOrOid )
     {
         if ( ocdMapByNameOrNumericOid.containsKey( nameOrOid.toLowerCase() ) )
         {
@@ -516,8 +512,7 @@ public class Schema
             // DUMMY
             List<String> names = new ArrayList<String>();
             names.add( nameOrOid );
-            ObjectClassDescription ocd = new ObjectClassDescription();
-            ocd.setNumericOid( nameOrOid );
+            ObjectClass ocd = new ObjectClass( nameOrOid );
             ocd.setNames( names );
             ocd.setExtensions( DUMMY_EXTENSIONS );
             return ocd;
@@ -532,11 +527,11 @@ public class Schema
      * 
      * @param atd the attribute type description
      */
-    private void addAttributeTypeDescription( AttributeTypeDescription atd )
+    private void addAttributeType( AttributeType atd )
     {
-        if ( atd.getNumericOid() != null )
+        if ( atd.getOid() != null )
         {
-            atdMapByNameOrNumericOid.put( atd.getNumericOid().toLowerCase(), atd );
+            atdMapByNameOrNumericOid.put( atd.getOid().toLowerCase(), atd );
         }
         if ( atd.getNames() != null && !atd.getNames().isEmpty() )
         {
@@ -553,9 +548,9 @@ public class Schema
      * 
      * @return the attribute type descriptions
      */
-    public Collection<AttributeTypeDescription> getAttributeTypeDescriptions()
+    public Collection<AttributeType> getAttributeTypeDescriptions()
     {
-        Set<AttributeTypeDescription> set = new HashSet<AttributeTypeDescription>( atdMapByNameOrNumericOid.values() );
+        Set<AttributeType> set = new HashSet<AttributeType>( atdMapByNameOrNumericOid.values() );
         return set;
     }
 
@@ -583,7 +578,7 @@ public class Schema
      * 
      * @return the attribute type description, or the default or a dummy
      */
-    public AttributeTypeDescription getAttributeTypeDescription( String nameOrOid )
+    public AttributeType getAttributeTypeDescription( String nameOrOid )
     {
         AttributeDescription ad = new AttributeDescription( nameOrOid );
         String attributeType = ad.getParsedAttributeType();
@@ -601,8 +596,7 @@ public class Schema
             // DUMMY
             List<String> attributeTypes = new ArrayList<String>();
             attributeTypes.add( attributeType );
-            AttributeTypeDescription atd = new AttributeTypeDescription();
-            atd.setNumericOid( attributeType );
+            AttributeType atd = new AttributeType( attributeType );
             atd.setNames( attributeTypes );
             atd.setUserModifiable( true );
             atd.setUsage( UsageEnum.USER_APPLICATIONS );
@@ -619,11 +613,11 @@ public class Schema
      * 
      * @param lsd the LDAP syntax description
      */
-    private void addLdapSyntaxDescription( LdapSyntaxDescription lsd )
+    private void addLdapSyntax( LdapSyntax lsd )
     {
-        if ( lsd.getNumericOid() != null )
+        if ( lsd.getOid() != null )
         {
-            lsdMapByNumericOid.put( lsd.getNumericOid().toLowerCase(), lsd );
+            lsdMapByNumericOid.put( lsd.getOid().toLowerCase(), lsd );
         }
     }
 
@@ -633,9 +627,9 @@ public class Schema
      * 
      * @return the LDAP syntax descriptions
      */
-    public Collection<LdapSyntaxDescription> getLdapSyntaxDescriptions()
+    public Collection<LdapSyntax> getLdapSyntaxDescriptions()
     {
-        Set<LdapSyntaxDescription> set = new HashSet<LdapSyntaxDescription>( lsdMapByNumericOid.values() );
+        Set<LdapSyntax> set = new HashSet<LdapSyntax>( lsdMapByNumericOid.values() );
         return set;
     }
 
@@ -661,7 +655,7 @@ public class Schema
      * 
      * @return the attribute type description or the default or a dummy
      */
-    public LdapSyntaxDescription getLdapSyntaxDescription( String numericOid )
+    public LdapSyntax getLdapSyntaxDescription( String numericOid )
     {
         if ( numericOid == null )
         {
@@ -678,8 +672,7 @@ public class Schema
         else
         {
             // DUMMY
-            LdapSyntaxDescription lsd = new LdapSyntaxDescription();
-            lsd.setNumericOid( numericOid );
+            LdapSyntax lsd = new LdapSyntax( numericOid );
             lsd.setExtensions( DUMMY_EXTENSIONS );
             return lsd;
         }
@@ -693,11 +686,11 @@ public class Schema
      * 
      * @param mrud the matching rule description
      */
-    private void addMatchingRuleDescription( MatchingRuleDescription mrd )
+    private void addMatchingRule( MatchingRule mrd )
     {
-        if ( mrd.getNumericOid() != null )
+        if ( mrd.getOid() != null )
         {
-            mrdMapByNameOrNumericOid.put( mrd.getNumericOid().toLowerCase(), mrd );
+            mrdMapByNameOrNumericOid.put( mrd.getOid().toLowerCase(), mrd );
         }
         if ( mrd.getNames() != null && !mrd.getNames().isEmpty() )
         {
@@ -714,9 +707,9 @@ public class Schema
      * 
      * @return the matching rule descriptions
      */
-    public Collection<MatchingRuleDescription> getMatchingRuleDescriptions()
+    public Collection<MatchingRule> getMatchingRuleDescriptions()
     {
-        Set<MatchingRuleDescription> set = new HashSet<MatchingRuleDescription>( mrdMapByNameOrNumericOid.values() );
+        Set<MatchingRule> set = new HashSet<MatchingRule>( mrdMapByNameOrNumericOid.values() );
         return set;
     }
 
@@ -744,7 +737,7 @@ public class Schema
      * 
      * @return the matching rule description or the default or a dummy
      */
-    public MatchingRuleDescription getMatchingRuleDescription( String nameOrOid )
+    public MatchingRule getMatchingRuleDescription( String nameOrOid )
     {
         if ( mrdMapByNameOrNumericOid.containsKey( nameOrOid.toLowerCase() ) )
         {
@@ -757,8 +750,7 @@ public class Schema
         else
         {
             // DUMMY
-            MatchingRuleDescription mrd = new MatchingRuleDescription();
-            mrd.setNumericOid( nameOrOid );
+            MatchingRule mrd = new MatchingRule( nameOrOid );
             mrd.setExtensions( DUMMY_EXTENSIONS );
             return mrd;
         }
@@ -772,11 +764,11 @@ public class Schema
      * 
      * @param mrud the matching rule use description
      */
-    private void addMatchingRuleUseDescription( MatchingRuleUseDescription mrud )
+    private void addMatchingRuleUse( MatchingRuleUse mrud )
     {
-        if ( mrud.getNumericOid() != null )
+        if ( mrud.getOid() != null )
         {
-            mrudMapByNameOrNumericOid.put( mrud.getNumericOid().toLowerCase(), mrud );
+            mrudMapByNameOrNumericOid.put( mrud.getOid().toLowerCase(), mrud );
         }
         if ( mrud.getNames() != null && !mrud.getNames().isEmpty() )
         {
@@ -793,9 +785,9 @@ public class Schema
      * 
      * @return the matching rule use descriptions
      */
-    public Collection<MatchingRuleUseDescription> getMatchingRuleUseDescriptions()
+    public Collection<MatchingRuleUse> getMatchingRuleUseDescriptions()
     {
-        Set<MatchingRuleUseDescription> set = new HashSet<MatchingRuleUseDescription>( mrudMapByNameOrNumericOid
+        Set<MatchingRuleUse> set = new HashSet<MatchingRuleUse>( mrudMapByNameOrNumericOid
             .values() );
         return set;
     }
@@ -824,7 +816,7 @@ public class Schema
      * 
      * @return the matching rule use description or the default or a dummy
      */
-    public MatchingRuleUseDescription getMatchingRuleUseDescription( String nameOrOid )
+    public MatchingRuleUse getMatchingRuleUseDescription( String nameOrOid )
     {
         if ( mrudMapByNameOrNumericOid.containsKey( nameOrOid.toLowerCase() ) )
         {
@@ -837,8 +829,7 @@ public class Schema
         else
         {
             // DUMMY
-            MatchingRuleUseDescription mrud = new MatchingRuleUseDescription();
-            mrud.setNumericOid( nameOrOid );
+            MatchingRuleUse mrud = new MatchingRuleUse( nameOrOid );
             mrud.setExtensions( DUMMY_EXTENSIONS );
             return mrud;
         }

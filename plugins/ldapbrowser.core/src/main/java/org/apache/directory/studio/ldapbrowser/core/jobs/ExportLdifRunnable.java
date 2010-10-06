@@ -36,7 +36,8 @@ import javax.naming.ldap.Control;
 import javax.naming.ldap.PagedResultsResponseControl;
 
 import org.apache.commons.codec.digest.DigestUtils;
-import org.apache.directory.shared.ldap.name.LdapDN;
+import org.apache.directory.shared.ldap.exception.LdapInvalidDnException;
+import org.apache.directory.shared.ldap.name.DN;
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.StudioControl;
@@ -226,6 +227,10 @@ public class ExportLdifRunnable implements StudioConnectionRunnableWithProgress
                 monitor.reportError( ne );
             }
         }
+        catch ( LdapInvalidDnException e )
+        {
+            monitor.reportError( e );
+        }
     }
 
 
@@ -299,11 +304,11 @@ public class ExportLdifRunnable implements StudioConnectionRunnableWithProgress
         }
 
 
-        public LdifContainer next() throws NamingException
+        public LdifContainer next() throws NamingException, LdapInvalidDnException
         {
             SearchResult sr = enumeration.next();
-            LdapDN dn = JNDIUtils.getDn( sr );
-            LdifContentRecord record = LdifContentRecord.create( dn.getUpName() );
+            DN dn = JNDIUtils.getDn( sr );
+            LdifContentRecord record = LdifContentRecord.create( dn.getName() );
 
             NamingEnumeration<? extends Attribute> attributeEnumeration = sr.getAttributes().getAll();
             while ( attributeEnumeration.hasMore() )

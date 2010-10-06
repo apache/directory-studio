@@ -89,7 +89,7 @@ public class ValueDeletedEvent extends EntryModificationEvent
     {
         return BrowserCoreMessages.bind( BrowserCoreMessages.event__deleted_val_from_att_at_dn, new String[]
             { getDeletedValue().getStringValue(), getModifiedAttribute().getDescription(),
-                getModifiedEntry().getDn().getUpName() } );
+                getModifiedEntry().getDn().getName() } );
     }
 
 }

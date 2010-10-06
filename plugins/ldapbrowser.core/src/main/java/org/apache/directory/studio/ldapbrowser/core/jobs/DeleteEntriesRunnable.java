@@ -37,13 +37,13 @@ import javax.naming.ldap.BasicControl;
 import javax.naming.ldap.Control;
 import javax.naming.ldap.ManageReferralControl;
 
-import org.apache.directory.shared.ldap.name.LdapDN;
+import org.apache.directory.shared.ldap.name.DN;
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
 import org.apache.directory.studio.connection.core.Connection.ReferralHandlingMethod;
-import org.apache.directory.studio.connection.core.jobs.StudioConnectionBulkRunnableWithProgress;
 import org.apache.directory.studio.connection.core.StudioControl;
+import org.apache.directory.studio.connection.core.jobs.StudioConnectionBulkRunnableWithProgress;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.ldapbrowser.core.events.BulkModificationEvent;
 import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
@@ -154,7 +154,7 @@ public class DeleteEntriesRunnable implements StudioConnectionBulkRunnableWithPr
         monitor.beginTask(
             entriesToDelete.size() == 1 ? BrowserCoreMessages.bind( BrowserCoreMessages.jobs__delete_entries_task_1,
                 new String[]
-                    { entriesToDelete.iterator().next().getDn().getUpName() } ) : BrowserCoreMessages.bind(
+                    { entriesToDelete.iterator().next().getDn().getName() } ) : BrowserCoreMessages.bind(
                 BrowserCoreMessages.jobs__delete_entries_task_n, new String[]
                     { Integer.toString( entriesToDelete.size() ) } ), 2 + entriesToDelete.size() );
         monitor.reportProgress( " " ); //$NON-NLS-1$
@@ -263,7 +263,7 @@ public class DeleteEntriesRunnable implements StudioConnectionBulkRunnableWithPr
      * 
      * @return the cumulative number of deleted entries
      */
-    static int optimisticDeleteEntryRecursive( IBrowserConnection browserConnection, LdapDN dn,
+    static int optimisticDeleteEntryRecursive( IBrowserConnection browserConnection, DN dn,
         boolean useManageDsaItControl, boolean useTreeDeleteControl, int numberOfDeletedEntries,
         StudioProgressMonitor dummyMonitor, StudioProgressMonitor monitor )
     {
@@ -298,7 +298,7 @@ public class DeleteEntriesRunnable implements StudioConnectionBulkRunnableWithPr
                 NamingEnumeration<SearchResult> result = browserConnection
                     .getConnection()
                     .getJNDIConnectionWrapper()
-                    .search( dn.getUpName(), ISearch.FILTER_TRUE, searchControls, aliasDereferencingMethod,
+                    .search( dn.getName(), ISearch.FILTER_TRUE, searchControls, aliasDereferencingMethod,
                         referralsHandlingMethod, null, dummyMonitor, null );
 
                 try
@@ -307,7 +307,7 @@ public class DeleteEntriesRunnable implements StudioConnectionBulkRunnableWithPr
                     while ( !dummyMonitor.isCanceled() && !dummyMonitor.errorsReported() && result.hasMore() )
                     {
                         SearchResult sr = result.next();
-                        LdapDN childDn = JNDIUtils.getDn( sr );
+                        DN childDn = JNDIUtils.getDn( sr );
 
                         numberOfDeletedEntries = optimisticDeleteEntryRecursive( browserConnection, childDn, false,
                             false, numberOfDeletedEntries, dummyMonitor, monitor );
@@ -357,7 +357,7 @@ public class DeleteEntriesRunnable implements StudioConnectionBulkRunnableWithPr
     }
 
 
-    static void deleteEntry( IBrowserConnection browserConnection, LdapDN dn, boolean useManageDsaItControl,
+    static void deleteEntry( IBrowserConnection browserConnection, DN dn, boolean useManageDsaItControl,
         boolean useTreeDeleteControl, StudioProgressMonitor monitor )
     {
         // controls
@@ -380,7 +380,7 @@ public class DeleteEntriesRunnable implements StudioConnectionBulkRunnableWithPr
         if ( browserConnection.getConnection() != null )
         {
             browserConnection.getConnection().getJNDIConnectionWrapper()
-                .deleteEntry( dn.getUpName(), controls, monitor, null );
+                .deleteEntry( dn.getName(), controls, monitor, null );
         }
     }
 }

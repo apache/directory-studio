@@ -21,7 +21,7 @@
 package org.apache.directory.studio.ldapbrowser.core.model.impl;
 
 
-import org.apache.directory.shared.ldap.name.LdapDN;
+import org.apache.directory.shared.ldap.name.DN;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.ICompareableEntry;
 
@@ -48,7 +48,7 @@ public class BookmarkEntry extends DelegateEntry implements ICompareableEntry
      * @param connection the connection of the bookmark target
      * @param dn the DN of the bookmark target
      */
-    public BookmarkEntry( IBrowserConnection connection, LdapDN dn )
+    public BookmarkEntry( IBrowserConnection connection, DN dn )
     {
         super( connection, dn );
     }

@@ -147,7 +147,7 @@ public class InitializeChildrenRunnable implements StudioConnectionBulkRunnableW
         for ( IEntry entry : entries )
         {
             monitor.setTaskName( BrowserCoreMessages.bind( BrowserCoreMessages.jobs__init_entries_task, new String[]
-                { entry.getDn().getUpName() } ) );
+                { entry.getDn().getName() } ) );
             monitor.worked( 1 );
 
             IBrowserConnection browserConnection = entry.getBrowserConnection();
@@ -198,7 +198,7 @@ public class InitializeChildrenRunnable implements StudioConnectionBulkRunnableW
     {
         monitor.reportProgress( BrowserCoreMessages.bind( BrowserCoreMessages.jobs__init_entries_progress_sub,
             new String[]
-                { parent.getDn().getUpName() } ) );
+                { parent.getDn().getName() } ) );
 
         // clear old children
         clearCaches( parent, purgeAllCaches );
@@ -360,7 +360,7 @@ public class InitializeChildrenRunnable implements StudioConnectionBulkRunnableW
         ISearchResult[] srs = search.getSearchResults();
         monitor.reportProgress( BrowserCoreMessages.bind( BrowserCoreMessages.jobs__init_entries_progress_subcount,
             new String[]
-                { srs == null ? Integer.toString( 0 ) : Integer.toString( srs.length ), parent.getDn().getUpName() } ) );
+                { srs == null ? Integer.toString( 0 ) : Integer.toString( srs.length ), parent.getDn().getName() } ) );
     }
 
 

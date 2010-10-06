@@ -25,9 +25,8 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.naming.InvalidNameException;
-
-import org.apache.directory.shared.ldap.name.LdapDN;
+import org.apache.directory.shared.ldap.exception.LdapInvalidDnException;
+import org.apache.directory.shared.ldap.name.DN;
 import org.apache.directory.shared.ldap.util.LdapURL;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
@@ -165,7 +164,7 @@ public class BrowserConnection implements IBrowserConnection, Serializable
     /**
      * {@inheritDoc}
      */
-    public IEntry getEntryFromCache( LdapDN dn )
+    public IEntry getEntryFromCache( DN dn )
     {
         if ( dn == null )
         {
@@ -207,13 +206,13 @@ public class BrowserConnection implements IBrowserConnection, Serializable
     /**
      * {@inheritDoc}
      */
-    public LdapDN getBaseDN()
+    public DN getBaseDN()
     {
         try
         {
-            return new LdapDN( connection.getConnectionParameter().getExtendedProperty( CONNECTION_PARAMETER_BASE_DN ) );
+            return new DN( connection.getConnectionParameter().getExtendedProperty( CONNECTION_PARAMETER_BASE_DN ) );
         }
-        catch ( InvalidNameException e )
+        catch ( LdapInvalidDnException e )
         {
             return null;
         }
@@ -223,7 +222,7 @@ public class BrowserConnection implements IBrowserConnection, Serializable
     /**
      * {@inheritDoc}
      */
-    public void setBaseDN( LdapDN baseDN )
+    public void setBaseDN( DN baseDN )
     {
         connection.getConnectionParameter().setExtendedProperty( CONNECTION_PARAMETER_BASE_DN, baseDN.toString() );
         ConnectionEventRegistry.fireConnectionUpdated( connection, this );
@@ -612,7 +611,7 @@ public class BrowserConnection implements IBrowserConnection, Serializable
      * 
      * @param dn the DN of the entry to remove from cache
      */
-    protected synchronized void uncacheEntry( LdapDN dn )
+    protected synchronized void uncacheEntry( DN dn )
     {
         dnToEntryCache.remove( Utils.getNormalizedOidString( dn, getSchema() ) );
     }

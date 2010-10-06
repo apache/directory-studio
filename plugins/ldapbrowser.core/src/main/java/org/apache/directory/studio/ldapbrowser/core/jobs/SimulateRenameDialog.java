@@ -20,7 +20,7 @@
 package org.apache.directory.studio.ldapbrowser.core.jobs;
 
 
-import org.apache.directory.shared.ldap.name.LdapDN;
+import org.apache.directory.shared.ldap.name.DN;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 
 
@@ -40,7 +40,7 @@ public interface SimulateRenameDialog
      * @param oldDn the old DN
      * @param newDn the new DN
      */
-    void setEntryInfo( IBrowserConnection browserConnection, LdapDN oldDn, LdapDN newDn );
+    void setEntryInfo( IBrowserConnection browserConnection, DN oldDn, DN newDn );
 
 
     /**

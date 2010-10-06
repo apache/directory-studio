@@ -83,8 +83,8 @@ public class EntryMovedEvent extends EntryModificationEvent
     {
         return BrowserCoreMessages.bind( BrowserCoreMessages.event__moved_oldrdn_from_oldparent_to_newparent,
             new String[]
-                { getOldEntry().getDn().getRdn().getUpName(), getOldEntry().getParententry().getDn().getUpName(),
-                    getNewEntry().getParententry().getDn().getUpName() } );
+                { getOldEntry().getDn().getRdn().getName(), getOldEntry().getParententry().getDn().getName(),
+                    getNewEntry().getParententry().getDn().getName() } );
     }
 
 }

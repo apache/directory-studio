@@ -52,7 +52,7 @@ public class ChildrenInitializedEvent extends EntryModificationEvent
     public String toString()
     {
         return BrowserCoreMessages.bind( BrowserCoreMessages.event__dn_children_initialized, new String[]
-            { getModifiedEntry().getDn().getUpName() } );
+            { getModifiedEntry().getDn().getName() } );
     }
 
 }

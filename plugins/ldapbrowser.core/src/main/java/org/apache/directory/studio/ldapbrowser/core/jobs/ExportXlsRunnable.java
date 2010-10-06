@@ -29,6 +29,7 @@ import java.util.Map;
 import javax.naming.NamingException;
 
 import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.directory.shared.ldap.exception.LdapInvalidDnException;
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.jobs.StudioConnectionRunnableWithProgress;
@@ -266,6 +267,10 @@ public class ExportXlsRunnable implements StudioConnectionRunnableWithProgress
             {
                 monitor.reportError( ne );
             }
+        }
+        catch ( LdapInvalidDnException e )
+        {
+            monitor.reportError( e );
         }
     }
 

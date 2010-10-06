@@ -88,7 +88,7 @@ public class EmptyValueAddedEvent extends EntryModificationEvent
     public String toString()
     {
         return BrowserCoreMessages.bind( BrowserCoreMessages.event__empty_value_added_to_att_at_dn, new String[]
-            { getModifiedAttribute().getDescription(), getModifiedEntry().getDn().getUpName() } );
+            { getModifiedAttribute().getDescription(), getModifiedEntry().getDn().getName() } );
     }
 
 }

@@ -23,7 +23,7 @@ package org.apache.directory.studio.ldapbrowser.core.jobs;
 
 import java.util.List;
 
-import org.apache.directory.shared.ldap.name.LdapDN;
+import org.apache.directory.shared.ldap.name.DN;
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
@@ -50,7 +50,7 @@ public class ReadEntryRunnable implements StudioConnectionBulkRunnableWithProgre
     private IBrowserConnection browserConnection;
 
     /** The DN of the entry. */
-    private LdapDN dn;
+    private DN dn;
 
     /** The entry read from directory. */
     private IEntry readEntry;
@@ -62,7 +62,7 @@ public class ReadEntryRunnable implements StudioConnectionBulkRunnableWithProgre
      * @param browserConnection the browser connection
      * @param dn the DN of the entry
      */
-    public ReadEntryRunnable( IBrowserConnection browserConnection, LdapDN dn )
+    public ReadEntryRunnable( IBrowserConnection browserConnection, DN dn )
     {
         this.browserConnection = browserConnection;
         this.dn = dn;
@@ -144,7 +144,7 @@ public class ReadEntryRunnable implements StudioConnectionBulkRunnableWithProgre
      * 
      * @return the read entry
      */
-    static IEntry getEntry( IBrowserConnection browserConnection, LdapDN dn, List<StudioControl> controls,
+    static IEntry getEntry( IBrowserConnection browserConnection, DN dn, List<StudioControl> controls,
         StudioProgressMonitor monitor )
     {
         try

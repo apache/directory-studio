@@ -28,8 +28,8 @@ import java.util.LinkedHashSet;
 import java.util.List;
 
 import org.apache.directory.shared.ldap.constants.SchemaConstants;
-import org.apache.directory.shared.ldap.name.Rdn;
-import org.apache.directory.shared.ldap.schema.parsers.ObjectClassDescription;
+import org.apache.directory.shared.ldap.name.RDN;
+import org.apache.directory.shared.ldap.schema.ObjectClass;
 import org.apache.directory.shared.ldap.util.LdapURL;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.jobs.StudioConnectionBulkRunnableWithProgress;
@@ -114,7 +114,7 @@ public abstract class AbstractEntry implements IEntry, ICompareableEntry
      * 
      * @param newRdn the new RDN
      */
-    protected abstract void setRdn( Rdn newRdn );
+    protected abstract void setRdn( RDN newRdn );
 
 
     /**
@@ -383,10 +383,10 @@ public abstract class AbstractEntry implements IEntry, ICompareableEntry
     /**
      * {@inheritDoc}
      */
-    public Rdn getRdn()
+    public RDN getRdn()
     {
-        Rdn rdn = getDn().getRdn();
-        return rdn == null ? new Rdn() : rdn;
+        RDN rdn = getDn().getRdn();
+        return rdn == null ? new RDN() : rdn;
     }
 
 
@@ -857,7 +857,7 @@ public abstract class AbstractEntry implements IEntry, ICompareableEntry
      */
     public String toString()
     {
-        return getDn().getUpName();
+        return getDn().getName();
     }
 
 
@@ -927,9 +927,9 @@ public abstract class AbstractEntry implements IEntry, ICompareableEntry
     /**
      * {@inheritDoc}
      */
-    public Collection<ObjectClassDescription> getObjectClassDescriptions()
+    public Collection<ObjectClass> getObjectClassDescriptions()
     {
-        Collection<ObjectClassDescription> ocds = new ArrayList<ObjectClassDescription>();
+        Collection<ObjectClass> ocds = new ArrayList<ObjectClass>();
         IAttribute ocAttribute = getAttribute( SchemaConstants.OBJECT_CLASS_AT );
         if ( ocAttribute != null )
         {
@@ -937,7 +937,7 @@ public abstract class AbstractEntry implements IEntry, ICompareableEntry
             Schema schema = getBrowserConnection().getSchema();
             for ( String ocName : ocNames )
             {
-                ObjectClassDescription ocd = schema.getObjectClassDescription( ocName );
+                ObjectClass ocd = schema.getObjectClassDescription( ocName );
                 ocds.add( ocd );
             }
         }
