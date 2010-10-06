@@ -88,8 +88,7 @@
             <Bundle-SymbolicName>${artifactId}</Bundle-SymbolicName>
             <Require-Bundle>org.antlr.antlr;bundle-version="${org.antlr.version}",
  org.apache.commons.collections;bundle-version="${org.apache.commons.collections.version}",
- org.apache.directory.shared.asn1;bundle-version="${org.apache.directory.shared.version}",
- org.apache.directory.shared.ldapconstants;bundle-version="${org.apache.directory.shared.version}",
+ org.apache.commons.lang;bundle-version="${org.apache.commons.lang.version}",
  org.apache.logging.log4j;bundle-version="${org.apache.logging.log4j.version}",
  org.slf4j.api;bundle-version="${org.slf4j.version}",
  org.slf4j.log4j12;bundle-version="${org.slf4j.version}"</Require-Bundle>

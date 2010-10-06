@@ -26,10 +26,10 @@
     <version>2.0.0-SNAPSHOT</version>
   </parent>
 
-  <artifactId>org.apache.directory.shared.ldapconstants</artifactId>
+  <artifactId>org.apache.directory.shared.i18n</artifactId>
   <version>${org.apache.directory.shared.version}</version>
   
-  <name>Apache Directory Shared LDAP Constants (for Apache Directory Studio)</name>
+  <name>Apache Directory Shared i18n (for Apache Directory Studio)</name>
   <packaging>jar</packaging>
 
   <description />
@@ -86,9 +86,6 @@
           <manifestLocation>META-INF</manifestLocation>
           <instructions>
             <Bundle-SymbolicName>${artifactId}</Bundle-SymbolicName>
-            <Require-Bundle>org.apache.logging.log4j;bundle-version="${org.apache.logging.log4j.version}",
- org.slf4j.api;bundle-version="${org.slf4j.version}",
- org.slf4j.log4j12;bundle-version="${org.slf4j.version}"</Require-Bundle>
             <Embed-Dependency>*;scope=compile|runtime</Embed-Dependency>
             <Embed-Directory>lib</Embed-Directory>
             <Embed-StripGroup>true</Embed-StripGroup>
@@ -119,13 +116,7 @@
   <dependencies>
     <dependency>
       <groupId>org.apache.directory.shared</groupId>
-      <artifactId>shared-ldap-constants</artifactId>
-      <exclusions>
-        <exclusion>
-          <groupId>org.slf4j</groupId>
-          <artifactId>slf4j-api</artifactId>
-        </exclusion>
-      </exclusions>
+      <artifactId>shared-i18n</artifactId>
     </dependency>
   </dependencies>
   

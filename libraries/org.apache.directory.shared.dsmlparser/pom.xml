@@ -86,12 +86,11 @@
           <manifestLocation>META-INF</manifestLocation>
           <instructions>
             <Bundle-SymbolicName>${artifactId}</Bundle-SymbolicName>
-            <Require-Bundle>org.antlr.antlr;bundle-version="${org.antlr.version}",
- org.apache.commons.collections;bundle-version="${org.apache.commons.collections.version}",
- org.apache.directory.shared.asn1;bundle-version="${org.apache.directory.shared.version}",
- org.apache.directory.shared.ldap;bundle-version="${org.apache.directory.shared.version}",
- org.apache.directory.shared.ldapconstants;bundle-version="${org.apache.directory.shared.version}",
+            <Require-Bundle>org.apache.commons.collections;bundle-version="${org.apache.commons.collections.version}",
+ org.apache.directory.shared.i18n;bundle-version="${org.apache.directory.shared.validversion}",
+ org.apache.directory.shared.ldap;bundle-version="${org.apache.directory.shared.validversion}",
  org.apache.logging.log4j;bundle-version="${org.apache.logging.log4j.version}",
+ org.apache.xml.commons.xmlapis;bundle-version="${org.apache.xml.commons.xmlapis.validversion}",
  org.dom4j.dom4j;bundle-version="${org.dom4j.version}",
  org.xpp3.xpp3;bundle-version="${org.xpp3.validversion}",
  org.slf4j.api;bundle-version="${org.slf4j.version}",
@@ -129,20 +128,12 @@
       <artifactId>shared-dsml-parser</artifactId>
       <exclusions>
         <exclusion>
-          <groupId>antlr</groupId>
-          <artifactId>antlr</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>commons-collections</groupId>
-          <artifactId>commons-collections</artifactId>
-        </exclusion>
-        <exclusion>
           <groupId>dom4j</groupId>
           <artifactId>dom4j</artifactId>
         </exclusion>
         <exclusion>
           <groupId>org.apache.directory.shared</groupId>
-          <artifactId>shared-asn1</artifactId>
+          <artifactId>shared-i18n</artifactId>
         </exclusion>
         <exclusion>
           <groupId>org.apache.directory.shared</groupId>
@@ -151,6 +142,10 @@
         <exclusion>
           <groupId>org.slf4j</groupId>
           <artifactId>slf4j-api</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>xml-apis</groupId>
+          <artifactId>xml-apis</artifactId>
         </exclusion>
         <exclusion>
           <groupId>xpp3</groupId>
