@@ -28,11 +28,9 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import javax.naming.NamingEnumeration;
-import javax.naming.NamingException;
-import javax.naming.directory.Attribute;
-import javax.naming.directory.Attributes;
-
+import org.apache.directory.shared.ldap.entry.Entry;
+import org.apache.directory.shared.ldap.entry.EntryAttribute;
+import org.apache.directory.shared.ldap.entry.Value;
 import org.apache.directory.studio.apacheds.configuration.StudioEntityResolver;
 import org.apache.directory.studio.apacheds.configuration.model.AbstractServerXmlIO;
 import org.apache.directory.studio.apacheds.configuration.model.ServerConfiguration;
@@ -544,7 +542,7 @@ public class ServerXmlIOV152 extends AbstractServerXmlIO implements ServerXmlIO
      *      the corresponding attributes
      * @throws ServerXmlIOException 
      */
-    private Attributes readContextEntry( Element element ) throws ServerXmlIOException
+    private Entry readContextEntry( Element element ) throws ServerXmlIOException
     {
         Element contextEntryElement = element.element( ServerXmlIOV152.ELEMENT_CONTEXT_ENTRY );
         if ( contextEntryElement == null )
@@ -1617,7 +1615,7 @@ public class ServerXmlIOV152 extends AbstractServerXmlIO implements ServerXmlIO
      * @param dn 
      *      the dn
      */
-    private void createContextEntry( Element element, Attributes contextEntry, String id, String dn )
+    private void createContextEntry( Element element, Entry contextEntry, String id, String dn )
     {
         // Adding the 'contextEntry' element
         element.addElement( ServerXmlIOV152.ELEMENT_CONTEXT_ENTRY ).setText( "#" + id + "ContextEntry" ); //$NON-NLS-1$ //$NON-NLS-2$
@@ -1664,21 +1662,15 @@ public class ServerXmlIOV152 extends AbstractServerXmlIO implements ServerXmlIO
         // Creating a string buffer to contain the LDIF data
         StringBuffer sb = new StringBuffer();
 
-        // Looping on attributes
-        NamingEnumeration<? extends Attribute> ne = contextEntry.getAll();
-        while ( ne.hasMoreElements() )
+        Iterator<EntryAttribute> attributes = contextEntry.iterator();
+        while ( attributes.hasNext() )
         {
-            Attribute attribute = ( Attribute ) ne.nextElement();
-            try
+            EntryAttribute attribute = attributes.next();
+            Iterator<Value<?>> values = attribute.iterator();
+            while ( values.hasNext() )
             {
-                NamingEnumeration<?> values = attribute.getAll();
-                while ( values.hasMoreElements() )
-                {
-                    sb.append( attribute.getID() + ": " + values.nextElement() + "\n" ); //$NON-NLS-1$ //$NON-NLS-2$
-                }
-            }
-            catch ( NamingException e )
-            {
+                Value<?> value = values.next();
+                sb.append( attribute.getId() + ": " + value.getString() + "\n" ); //$NON-NLS-1$ //$NON-NLS-2$
             }
         }
 

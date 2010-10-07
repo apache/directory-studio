@@ -21,14 +21,14 @@ package org.apache.directory.studio.apacheds.configuration.editor.v151;
 
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
-import javax.naming.NamingEnumeration;
-import javax.naming.NamingException;
-import javax.naming.directory.Attribute;
-import javax.naming.directory.Attributes;
-import javax.naming.directory.BasicAttribute;
-
+import org.apache.directory.shared.ldap.entry.DefaultEntryAttribute;
+import org.apache.directory.shared.ldap.entry.Entry;
+import org.apache.directory.shared.ldap.entry.EntryAttribute;
+import org.apache.directory.shared.ldap.entry.Value;
+import org.apache.directory.shared.ldap.exception.LdapException;
 import org.apache.directory.studio.apacheds.configuration.editor.v151.dialogs.AttributeValueDialog;
 import org.apache.directory.studio.apacheds.configuration.editor.v151.dialogs.AttributeValueObject;
 import org.apache.directory.studio.apacheds.configuration.editor.v151.dialogs.IndexedAttributeDialog;
@@ -92,7 +92,7 @@ public class PartitionDetailsPage implements IDetailsPage
     private Partition input;
 
     /** The Context Entry */
-    private Attributes contextEntry;
+    private Entry contextEntry;
 
     /** The Indexed Attributes List */
     private List<IndexedAttribute> indexedAttributes;
@@ -165,15 +165,22 @@ public class PartitionDetailsPage implements IDetailsPage
             if ( Dialog.OK == dialog.open() && dialog.isDirty() )
             {
                 AttributeValueObject newAttributeValueObject = dialog.getAttributeValueObject();
-                Attribute attribute = contextEntry.get( newAttributeValueObject.getAttribute() );
+                EntryAttribute attribute = contextEntry.get( newAttributeValueObject.getAttribute() );
                 if ( attribute != null )
                 {
                     attribute.add( newAttributeValueObject.getValue() );
                 }
                 else
                 {
-                    contextEntry.put( new BasicAttribute( newAttributeValueObject.getAttribute(),
-                        newAttributeValueObject.getValue() ) );
+                    try
+                    {
+                        contextEntry.put( new DefaultEntryAttribute( newAttributeValueObject.getAttribute(),
+                            newAttributeValueObject.getValue() ) );
+                    }
+                    catch ( LdapException e1 )
+                    {
+                        // Will never occur
+                    }
                 }
 
                 contextEntryTableViewer.refresh();
@@ -203,7 +210,7 @@ public class PartitionDetailsPage implements IDetailsPage
             {
                 AttributeValueObject attributeValueObject = ( AttributeValueObject ) selection.getFirstElement();
 
-                Attribute attribute = contextEntry.get( attributeValueObject.getAttribute() );
+                EntryAttribute attribute = contextEntry.get( attributeValueObject.getAttribute() );
                 if ( attribute != null )
                 {
                     attribute.remove( attributeValueObject.getValue() );
@@ -405,24 +412,21 @@ public class PartitionDetailsPage implements IDetailsPage
             public Object[] getElements( Object inputElement )
             {
                 List<AttributeValueObject> elements = new ArrayList<AttributeValueObject>();
+                Entry entry = ( Entry ) inputElement;
 
-                Attributes attributes = ( Attributes ) inputElement;
-
-                NamingEnumeration<? extends Attribute> ne = attributes.getAll();
-                while ( ne.hasMoreElements() )
+                Iterator<EntryAttribute> attributes = entry.iterator();
+                while ( attributes.hasNext() )
                 {
-                    Attribute attribute = ( Attribute ) ne.nextElement();
-                    try
+                    EntryAttribute attribute = attributes.next();
+
+                    Iterator<Value<?>> values = attribute.iterator();
+                    while ( values.hasNext() )
                     {
-                        NamingEnumeration<?> values = attribute.getAll();
-                        while ( values.hasMoreElements() )
-                        {
-                            elements.add( new AttributeValueObject( attribute.getID(), values.nextElement() ) );
-                        }
+                        Value<?> value = values.next();
+                        elements.add( new AttributeValueObject( attribute.getId(), value.getString() ) );
+
                     }
-                    catch ( NamingException e )
-                    {
-                    }
+
                 }
 
                 return elements.toArray();
@@ -768,12 +772,12 @@ public class PartitionDetailsPage implements IDetailsPage
             AttributeValueObject attributeValueObject = ( AttributeValueObject ) selection.getFirstElement();
 
             String oldId = attributeValueObject.getAttribute();
-            Object oldValue = attributeValueObject.getValue();
+            String oldValue = attributeValueObject.getValue();
 
             AttributeValueDialog dialog = new AttributeValueDialog( attributeValueObject );
             if ( Dialog.OK == dialog.open() && dialog.isDirty() )
             {
-                Attribute attribute = contextEntry.get( oldId );
+                EntryAttribute attribute = contextEntry.get( oldId );
                 if ( attribute != null )
                 {
                     attribute.remove( oldValue );
@@ -787,8 +791,15 @@ public class PartitionDetailsPage implements IDetailsPage
                 }
                 else
                 {
-                    contextEntry.put( new BasicAttribute( newAttributeValueObject.getAttribute(),
-                        newAttributeValueObject.getValue() ) );
+                    try
+                    {
+                        contextEntry.put( new DefaultEntryAttribute( newAttributeValueObject.getAttribute(),
+                            newAttributeValueObject.getValue() ) );
+                    }
+                    catch ( LdapException e )
+                    {
+                        // Will never occur
+                    }
                 }
 
                 contextEntryTableViewer.refresh();
