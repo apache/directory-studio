@@ -948,7 +948,7 @@ public class AttributeTypeEditorOverviewPage extends FormPage
         fillSyntaxCombo();
 
         // SYNTAX LENGTH Field
-        if ( modifiedAttributeType.getSyntaxLength() != -1 )
+        if ( modifiedAttributeType.getSyntaxLength() != 0 )
         {
             syntaxLengthText.setText( modifiedAttributeType.getSyntaxLength() + "" ); //$NON-NLS-1$
         }

@@ -684,7 +684,7 @@ public class SchemaUtils
      */
     public static long getSyntaxLengthTransitive( AttributeType atd, Schema schema )
     {
-        if ( atd.getSyntaxLength() != -1 )
+        if ( atd.getSyntaxLength() != 0 )
         {
             return atd.getSyntaxLength();
         }
