@@ -21,9 +21,8 @@
 package org.apache.directory.studio.valueeditors.dn;
 
 
-import javax.naming.InvalidNameException;
-
-import org.apache.directory.shared.ldap.name.LdapDN;
+import org.apache.directory.shared.ldap.exception.LdapInvalidDnException;
+import org.apache.directory.shared.ldap.name.DN;
 import org.apache.directory.studio.ldapbrowser.common.dialogs.DnDialog;
 import org.apache.directory.studio.ldapbrowser.common.dialogs.TextDialog;
 import org.apache.directory.studio.ldapbrowser.core.model.AttributeHierarchy;
@@ -53,12 +52,12 @@ public class DnValueEditor extends AbstractDialogStringValueEditor
         if ( value != null && value instanceof DnValueEditorRawValueWrapper )
         {
             DnValueEditorRawValueWrapper wrapper = ( DnValueEditorRawValueWrapper ) value;
-            LdapDN dn;
+            DN dn;
             try
             {
-                dn = wrapper.dn != null ? new LdapDN( wrapper.dn ) : null;
+                dn = wrapper.dn != null ? new DN( wrapper.dn ) : null;
             }
-            catch ( InvalidNameException e )
+            catch ( LdapInvalidDnException e )
             {
                 dn = null;
             }
@@ -66,7 +65,7 @@ public class DnValueEditor extends AbstractDialogStringValueEditor
                 Messages.getString( "DnValueEditor.DNEditor" ), null, wrapper.connection, dn ); //$NON-NLS-1$
             if ( dialog.open() == TextDialog.OK && dialog.getDn() != null )
             {
-                setValue( dialog.getDn().getUpName() );
+                setValue( dialog.getDn().getName() );
                 return true;
             }
         }

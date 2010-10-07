@@ -115,7 +115,7 @@
             <Require-Bundle>
  org.apache.commons.codec;bundle-version="${org.apache.commons.codec.version}",
  org.apache.commons.io;bundle-version="${org.apache.commons.io.version}",
- org.apache.directory.shared.ldap;bundle-version="${org.apache.directory.shared.version}",
+ org.apache.directory.shared.ldap;bundle-version="${org.apache.directory.shared.validversion}",
  org.apache.directory.studio.common.ui,
  org.apache.directory.studio.connection.core,
  org.apache.directory.studio.connection.ui,

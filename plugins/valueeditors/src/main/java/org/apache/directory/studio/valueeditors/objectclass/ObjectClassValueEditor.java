@@ -21,7 +21,7 @@
 package org.apache.directory.studio.valueeditors.objectclass;
 
 
-import org.apache.directory.shared.ldap.schema.parsers.ObjectClassDescription;
+import org.apache.directory.shared.ldap.schema.ObjectClass;
 import org.apache.directory.studio.ldapbrowser.common.dialogs.TextDialog;
 import org.apache.directory.studio.ldapbrowser.core.model.AttributeHierarchy;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
@@ -79,8 +79,8 @@ public class ObjectClassValueEditor extends AbstractDialogStringValueEditor
         if ( !showRawValues() && !"".equals( displayValue ) ) //$NON-NLS-1$
         {
             Schema schema = value.getAttribute().getEntry().getBrowserConnection().getSchema();
-            ObjectClassDescription ocd = schema.getObjectClassDescription( displayValue );
-            switch ( ocd.getKind() )
+            ObjectClass ocd = schema.getObjectClassDescription( displayValue );
+            switch ( ocd.getType() )
             {
                 case STRUCTURAL:
                     displayValue = displayValue + Messages.getString( "ObjectClassValueEditor.Structural" ); //$NON-NLS-1$

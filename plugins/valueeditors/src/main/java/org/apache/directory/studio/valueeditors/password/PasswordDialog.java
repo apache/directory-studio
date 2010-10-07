@@ -466,7 +466,7 @@ public class PasswordDialog extends Dialog
         // enable/disable test field and buttons
         testPasswordText.setEnabled( currentPassword != null && currentPassword.getHashedPassword() != null
             && currentPassword.toBytes().length > 0 );
-        testBindDnText.setText( entry != null ? entry.getDn().getUpName() : Utils.getNonNullString( null ) );
+        testBindDnText.setText( entry != null ? entry.getDn().getName() : Utils.getNonNullString( null ) );
         if ( showTestPasswordDetailsButton.getSelection() )
         {
             testPasswordText.setEchoChar( '\0' );
@@ -531,7 +531,7 @@ public class PasswordDialog extends Dialog
         {
             Connection connection = ( Connection ) entry.getBrowserConnection().getConnection().clone();
             connection.getConnectionParameter().setName( null );
-            connection.getConnectionParameter().setBindPrincipal( entry.getDn().getUpName() );
+            connection.getConnectionParameter().setBindPrincipal( entry.getDn().getName() );
             connection.getConnectionParameter().setBindPassword( testPasswordText.getText() );
             connection.getConnectionParameter().setAuthMethod( AuthenticationMethod.SIMPLE );
 
