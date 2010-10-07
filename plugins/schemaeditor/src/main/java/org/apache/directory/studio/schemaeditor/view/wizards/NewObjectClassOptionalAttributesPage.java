@@ -126,8 +126,8 @@ public class NewObjectClassOptionalAttributesPage extends WizardPage
                 {
                     AttributeTypeImpl at = ( AttributeTypeImpl ) element;
 
-                    String[] names = at.getNamesRef();
-                    if ( ( names != null ) && ( names.length > 0 ) )
+                    List<String> names = at.getNames();
+                    if ( ( names != null ) && ( names.size() > 0 ) )
                     {
                         return NLS
                             .bind(
@@ -221,12 +221,12 @@ public class NewObjectClassOptionalAttributesPage extends WizardPage
         {
             public int compare( AttributeTypeImpl o1, AttributeTypeImpl o2 )
             {
-                String[] at1Names = o1.getNamesRef();
-                String[] at2Names = o2.getNamesRef();
+                List<String> at1Names = o1.getNames();
+                List<String> at2Names = o2.getNames();
 
-                if ( ( at1Names != null ) && ( at2Names != null ) && ( at1Names.length > 0 ) && ( at2Names.length > 0 ) )
+                if ( ( at1Names != null ) && ( at2Names != null ) && ( at1Names.size() > 0 ) && ( at2Names.size() > 0 ) )
                 {
-                    return at1Names[0].compareToIgnoreCase( at2Names[0] );
+                    return at1Names.get( 0 ).compareToIgnoreCase( at2Names.get( 0 ) );
                 }
 
                 // Default
@@ -256,13 +256,13 @@ public class NewObjectClassOptionalAttributesPage extends WizardPage
      * @return
      *      the names of the optional attributes types
      */
-    public String[] getOptionalAttributeTypesNames()
+    public List<String> getOptionalAttributeTypesNames()
     {
         List<String> names = new ArrayList<String>();
         for ( AttributeTypeImpl at : optionalAttributeTypesList )
         {
             names.add( at.getName() );
         }
-        return names.toArray( new String[0] );
+        return names;
     }
 }

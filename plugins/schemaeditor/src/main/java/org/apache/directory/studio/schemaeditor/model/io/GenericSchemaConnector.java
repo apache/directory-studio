@@ -30,13 +30,13 @@ import javax.naming.directory.Attribute;
 import javax.naming.directory.SearchControls;
 import javax.naming.directory.SearchResult;
 
-import org.apache.directory.shared.ldap.schema.parsers.AttributeTypeDescription;
+import org.apache.directory.shared.ldap.schema.AttributeType;
+import org.apache.directory.shared.ldap.schema.LdapSyntax;
+import org.apache.directory.shared.ldap.schema.MatchingRule;
+import org.apache.directory.shared.ldap.schema.ObjectClass;
 import org.apache.directory.shared.ldap.schema.parsers.AttributeTypeDescriptionSchemaParser;
-import org.apache.directory.shared.ldap.schema.parsers.LdapSyntaxDescription;
 import org.apache.directory.shared.ldap.schema.parsers.LdapSyntaxDescriptionSchemaParser;
-import org.apache.directory.shared.ldap.schema.parsers.MatchingRuleDescription;
 import org.apache.directory.shared.ldap.schema.parsers.MatchingRuleDescriptionSchemaParser;
-import org.apache.directory.shared.ldap.schema.parsers.ObjectClassDescription;
 import org.apache.directory.shared.ldap.schema.parsers.ObjectClassDescriptionSchemaParser;
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.Connection;
@@ -200,24 +200,23 @@ public class GenericSchemaConnector extends AbstractSchemaConnector implements S
                     String value = ( String ) ne.nextElement();
                     AttributeTypeDescriptionSchemaParser parser = new AttributeTypeDescriptionSchemaParser();
                     parser.setQuirksMode( true );
-                    AttributeTypeDescription atd = parser.parseAttributeTypeDescription( value );
+                    AttributeType atd = parser.parseAttributeTypeDescription( value );
 
-                    AttributeTypeImpl impl = new AttributeTypeImpl( atd.getNumericOid() );
-                    impl.setOid( atd.getNumericOid() );
+                    AttributeTypeImpl impl = new AttributeTypeImpl( atd.getOid() );
                     impl.setNames( atd.getNames().toArray( new String[0] ) );
                     impl.setDescription( atd.getDescription() );
-                    impl.setSuperiorName( atd.getSuperType() );
+                    impl.setSuperiorOid( atd.getSuperiorOid() );
                     impl.setUsage( atd.getUsage() );
-                    impl.setSyntaxOid( atd.getSyntax() );
-                    impl.setLength( atd.getSyntaxLength() );
+                    impl.setSyntaxOid( atd.getSyntaxOid() );
+                    impl.setSyntaxLength( atd.getSyntaxLength() );
                     impl.setObsolete( atd.isObsolete() );
                     impl.setCollective( atd.isCollective() );
-                    impl.setSingleValue( atd.isSingleValued() );
-                    impl.setCanUserModify( atd.isUserModifiable() );
-                    impl.setEqualityName( atd.getEqualityMatchingRule() );
-                    impl.setOrderingName( atd.getOrderingMatchingRule() );
-                    impl.setSubstrName( atd.getSubstringsMatchingRule() );
-                    impl.setSchema( schema.getName() );
+                    impl.setSingleValued( atd.isSingleValued() );
+                    impl.setUserModifiable( atd.isUserModifiable() );
+                    impl.setEqualityOid( atd.getEqualityOid() );
+                    impl.setOrderingOid( atd.getOrderingOid() );
+                    impl.setSubstringOid( atd.getSubstringOid() );
+                    impl.setSchemaName( schema.getName() );
                     impl.setSchemaObject( schema );
 
                     // Active Directory hack
@@ -242,18 +241,17 @@ public class GenericSchemaConnector extends AbstractSchemaConnector implements S
                     String value = ( String ) ne.nextElement();
                     ObjectClassDescriptionSchemaParser parser = new ObjectClassDescriptionSchemaParser();
                     parser.setQuirksMode( true );
-                    ObjectClassDescription ocd = parser.parseObjectClassDescription( value );
+                    ObjectClass ocd = parser.parseObjectClassDescription( value );
 
-                    ObjectClassImpl impl = new ObjectClassImpl( ocd.getNumericOid() );
-                    impl.setOid( ocd.getNumericOid() );
+                    ObjectClassImpl impl = new ObjectClassImpl( ocd.getOid() );
                     impl.setNames( ocd.getNames().toArray( new String[0] ) );
                     impl.setDescription( ocd.getDescription() );
-                    impl.setSuperClassesNames( ocd.getSuperiorObjectClasses().toArray( new String[0] ) );
-                    impl.setType( ocd.getKind() );
+                    impl.setSuperiorOids( ocd.getSuperiorOids() );
+                    impl.setType( ocd.getType() );
                     impl.setObsolete( ocd.isObsolete() );
-                    impl.setMustNamesList( ocd.getMustAttributeTypes().toArray( new String[0] ) );
-                    impl.setMayNamesList( ocd.getMayAttributeTypes().toArray( new String[0] ) );
-                    impl.setSchema( schema.getName() );
+                    impl.setMustAttributeTypeOids( ocd.getMustAttributeTypeOids() );
+                    impl.setMayAttributeTypeOids( ocd.getMayAttributeTypeOids() );
+                    impl.setSchemaName( schema.getName() );
                     impl.setSchemaObject( schema );
 
                     schema.addObjectClass( impl );
@@ -272,15 +270,15 @@ public class GenericSchemaConnector extends AbstractSchemaConnector implements S
                     String value = ( String ) ne.nextElement();
                     LdapSyntaxDescriptionSchemaParser parser = new LdapSyntaxDescriptionSchemaParser();
                     parser.setQuirksMode( true );
-                    LdapSyntaxDescription lsd = parser.parseLdapSyntaxDescription( value );
+                    LdapSyntax lsd = parser.parseLdapSyntaxDescription( value );
 
-                    SyntaxImpl impl = new SyntaxImpl( lsd.getNumericOid() );
+                    SyntaxImpl impl = new SyntaxImpl( lsd.getOid() );
                     impl.setDescription( lsd.getDescription() );
                     impl.setNames( new String[]
                         { lsd.getDescription() } );
                     //impl.setObsolete( lsd.isObsolete() );
                     impl.setHumanReadable( true );
-                    impl.setSchema( schema.getName() );
+                    impl.setSchemaName( schema.getName() );
                     impl.setSchemaObject( schema );
 
                     schema.addSyntax( impl );
@@ -294,7 +292,7 @@ public class GenericSchemaConnector extends AbstractSchemaConnector implements S
             if ( syntaxOid != null && schema.getSyntax( syntaxOid ) == null )
             {
                 SyntaxImpl impl = new SyntaxImpl( syntaxOid );
-                impl.setSchema( schema.getName() );
+                impl.setSchemaName( schema.getName() );
                 impl.setSchemaObject( schema );
                 String oidDescription = Utils.getOidDescription( syntaxOid );
                 impl.setDescription( oidDescription != null ? oidDescription : "Dummy" ); //$NON-NLS-1$
@@ -315,14 +313,14 @@ public class GenericSchemaConnector extends AbstractSchemaConnector implements S
                     String value = ( String ) ne.nextElement();
                     MatchingRuleDescriptionSchemaParser parser = new MatchingRuleDescriptionSchemaParser();
                     parser.setQuirksMode( true );
-                    MatchingRuleDescription mrd = parser.parseMatchingRuleDescription( value );
+                    MatchingRule mrd = parser.parseMatchingRuleDescription( value );
 
-                    MatchingRuleImpl impl = new MatchingRuleImpl( mrd.getNumericOid() );
+                    MatchingRuleImpl impl = new MatchingRuleImpl( mrd.getOid() );
                     impl.setDescription( mrd.getDescription() );
                     impl.setNames( mrd.getNames().toArray( new String[0] ) );
                     impl.setObsolete( mrd.isObsolete() );
-                    impl.setSyntaxOid( mrd.getSyntax() );
-                    impl.setSchema( schema.getName() );
+                    impl.setSyntaxOid( mrd.getSyntaxOid() );
+                    impl.setSchemaName( schema.getName() );
                     impl.setSchemaObject( schema );
 
                     schema.addMatchingRule( impl );
@@ -332,9 +330,9 @@ public class GenericSchemaConnector extends AbstractSchemaConnector implements S
         // if online: assume all received matching rules in attributes are valid -> create dummy matching rules if missing
         for ( AttributeTypeImpl at : schema.getAttributeTypes() )
         {
-            String equalityName = at.getEqualityName();
-            String orderingName = at.getOrderingName();
-            String substrName = at.getSubstrName();
+            String equalityName = at.getEqualityOid();
+            String orderingName = at.getOrderingOid();
+            String substrName = at.getSubstringOid();
             checkMatchingRules( schema, equalityName, orderingName, substrName );
         }
 
@@ -349,7 +347,7 @@ public class GenericSchemaConnector extends AbstractSchemaConnector implements S
             if ( matchingRuleName != null && schema.getMatchingRule( matchingRuleName ) == null )
             {
                 MatchingRuleImpl impl = new MatchingRuleImpl( matchingRuleName );
-                impl.setSchema( schema.getName() );
+                impl.setSchemaName( schema.getName() );
                 impl.setSchemaObject( schema );
                 impl.setDescription( "Dummy" ); //$NON-NLS-1$
                 impl.setNames( new String[]

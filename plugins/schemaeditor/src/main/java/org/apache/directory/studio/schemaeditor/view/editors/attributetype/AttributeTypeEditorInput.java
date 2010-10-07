@@ -21,6 +21,8 @@
 package org.apache.directory.studio.schemaeditor.view.editors.attributetype;
 
 
+import java.util.List;
+
 import org.apache.directory.studio.schemaeditor.model.AttributeTypeImpl;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.osgi.util.NLS;
@@ -74,10 +76,10 @@ public class AttributeTypeEditorInput implements IEditorInput
      */
     public String getName()
     {
-        String[] names = attributeType.getNamesRef();
-        if ( ( names != null ) && ( names.length > 0 ) )
+        List<String> names = attributeType.getNames();
+        if ( ( names != null ) && ( names.size() > 0 ) )
         {
-            return names[0];
+            return names.get( 0 );
         }
         else
         {
@@ -101,7 +103,7 @@ public class AttributeTypeEditorInput implements IEditorInput
     public String getToolTipText()
     {
         return NLS.bind( Messages.getString( "AttributeTypeEditorInput.FromSchema" ), new String[] //$NON-NLS-1$
-            { getName(), attributeType.getSchema() } );
+            { getName(), attributeType.getSchemaName() } );
     }
 
 

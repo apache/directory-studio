@@ -130,10 +130,10 @@ public class NewAttributeTypeContentWizardPage extends AbstractWizardPage
                 if ( dialog.open() == Dialog.OK )
                 {
                     AttributeTypeImpl selectedAT = dialog.getSelectedAttributeType();
-                    String[] aliases = selectedAT.getNamesRef();
-                    if ( ( aliases != null ) && ( aliases.length > 0 ) )
+                    List<String> aliases = selectedAT.getNames();
+                    if ( ( aliases != null ) && ( aliases.size() > 0 ) )
                     {
-                        superiorText.setText( aliases[0] );
+                        superiorText.setText( aliases.get( 0 ) );
                     }
                     else
                     {
@@ -263,23 +263,23 @@ public class NewAttributeTypeContentWizardPage extends AbstractWizardPage
                 {
                     if ( ( o1 instanceof SyntaxImpl ) && ( o2 instanceof SyntaxImpl ) )
                     {
-                        String[] o1Names = ( ( SyntaxImpl ) o1 ).getNamesRef();
-                        String[] o2Names = ( ( SyntaxImpl ) o2 ).getNamesRef();
+                        List<String> o1Names = ( ( SyntaxImpl ) o1 ).getNames();
+                        List<String> o2Names = ( ( SyntaxImpl ) o2 ).getNames();
 
                         // Comparing the First Name
                         if ( ( o1Names != null ) && ( o2Names != null ) )
                         {
-                            if ( ( o1Names.length > 0 ) && ( o2Names.length > 0 ) )
+                            if ( ( o1Names.size() > 0 ) && ( o2Names.size() > 0 ) )
                             {
-                                return o1Names[0].compareToIgnoreCase( o2Names[0] );
+                                return o1Names.get( 0 ).compareToIgnoreCase( o2Names.get( 0 ) );
                             }
-                            else if ( ( o1Names.length == 0 ) && ( o2Names.length > 0 ) )
+                            else if ( ( o1Names.size() == 0 ) && ( o2Names.size() > 0 ) )
                             {
-                                return "".compareToIgnoreCase( o2Names[0] ); //$NON-NLS-1$
+                                return "".compareToIgnoreCase( o2Names.get( 0 ) ); //$NON-NLS-1$
                             }
-                            else if ( ( o1Names.length > 0 ) && ( o2Names.length == 0 ) )
+                            else if ( ( o1Names.size() > 0 ) && ( o2Names.size() == 0 ) )
                             {
-                                return o1Names[0].compareToIgnoreCase( "" ); //$NON-NLS-1$
+                                return o1Names.get( 0 ).compareToIgnoreCase( "" ); //$NON-NLS-1$
                             }
                         }
                     }

@@ -29,8 +29,8 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.regex.MatchResult;
 
-import org.apache.directory.shared.ldap.schema.parsers.AttributeTypeLiteral;
-import org.apache.directory.shared.ldap.schema.parsers.ObjectClassLiteral;
+import org.apache.directory.shared.ldap.schema.AttributeType;
+import org.apache.directory.shared.ldap.schema.ObjectClass;
 import org.apache.directory.shared.ldap.schema.parsers.OpenLdapSchemaParser;
 import org.apache.directory.studio.schemaeditor.model.AttributeTypeImpl;
 import org.apache.directory.studio.schemaeditor.model.ObjectClassImpl;
@@ -98,8 +98,8 @@ public class OpenLdapSchemaFileImporter
         List<?> ats = parser.getAttributeTypes();
         for ( int i = 0; i < ats.size(); i++ )
         {
-            AttributeTypeImpl at = convertAttributeType( ( AttributeTypeLiteral ) ats.get( i ) );
-            at.setSchema( schemaName );
+            AttributeTypeImpl at = convertAttributeType( ( AttributeType ) ats.get( i ) );
+            at.setSchemaName( schemaName );
             at.setSchemaObject( schema );
             schema.addAttributeType( at );
         }
@@ -107,8 +107,8 @@ public class OpenLdapSchemaFileImporter
         List<?> ocs = parser.getObjectClassTypes();
         for ( int i = 0; i < ocs.size(); i++ )
         {
-            ObjectClassImpl oc = convertObjectClass( ( ObjectClassLiteral ) ocs.get( i ) );
-            oc.setSchema( schemaName );
+            ObjectClassImpl oc = convertObjectClass( ( ObjectClass ) ocs.get( i ) );
+            oc.setSchemaName( schemaName );
             oc.setSchemaObject( schema );
             schema.addObjectClass( oc );
         }
@@ -147,22 +147,22 @@ public class OpenLdapSchemaFileImporter
      * @return
      *      the corresponding AttributeTypeImpl
      */
-    private static final AttributeTypeImpl convertAttributeType( AttributeTypeLiteral at )
+    private static final AttributeTypeImpl convertAttributeType( AttributeType at )
     {
         AttributeTypeImpl newAT = new AttributeTypeImpl( at.getOid() );
         newAT.setNames( at.getNames() );
         newAT.setDescription( at.getDescription() );
-        newAT.setSuperiorName( at.getSuperior() );
+        newAT.setSuperiorOid( at.getSuperiorOid() );
         newAT.setUsage( at.getUsage() );
-        newAT.setSyntaxOid( at.getSyntax() );
-        newAT.setLength( at.getLength() );
+        newAT.setSyntaxOid( at.getSyntaxOid() );
+        newAT.setSyntaxLength( at.getSyntaxLength() );
         newAT.setObsolete( at.isObsolete() );
-        newAT.setSingleValue( at.isSingleValue() );
+        newAT.setSingleValued( at.isSingleValued() );
         newAT.setCollective( at.isCollective() );
-        newAT.setCanUserModify( !at.isNoUserModification() );
-        newAT.setEqualityName( at.getEquality() );
-        newAT.setOrderingName( at.getOrdering() );
-        newAT.setSubstrName( at.getSubstr() );
+        newAT.setUserModifiable( at.isUserModifiable() );
+        newAT.setEqualityOid( at.getEqualityOid() );
+        newAT.setOrderingOid( at.getOrderingOid() );
+        newAT.setSubstringOid( at.getSubstringOid() );
 
         return newAT;
     }
@@ -176,16 +176,16 @@ public class OpenLdapSchemaFileImporter
      * @return
      *      the corresponding ObjectClassImpl
      */
-    private static final ObjectClassImpl convertObjectClass( ObjectClassLiteral oc )
+    private static final ObjectClassImpl convertObjectClass( ObjectClass oc )
     {
         ObjectClassImpl newOC = new ObjectClassImpl( oc.getOid() );
         newOC.setNames( oc.getNames() );
         newOC.setDescription( oc.getDescription() );
-        newOC.setSuperClassesNames( oc.getSuperiors() );
-        newOC.setType( oc.getClassType() );
+        newOC.setSuperiorOids( oc.getSuperiorOids() );
+        newOC.setType( oc.getType() );
         newOC.setObsolete( oc.isObsolete() );
-        newOC.setMustNamesList( oc.getMust() );
-        newOC.setMayNamesList( oc.getMay() );
+        newOC.setMustAttributeTypeOids( oc.getMustAttributeTypeOids() );
+        newOC.setMayAttributeTypeOids( oc.getMayAttributeTypeOids() );
 
         return newOC;
     }

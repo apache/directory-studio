@@ -20,6 +20,8 @@
 package org.apache.directory.studio.schemaeditor.view.views;
 
 
+import java.util.List;
+
 import org.apache.directory.shared.ldap.schema.SchemaObject;
 import org.apache.directory.studio.schemaeditor.Activator;
 import org.apache.directory.studio.schemaeditor.PluginConstants;
@@ -177,8 +179,8 @@ public class HierarchyView extends ViewPart
     {
         StringBuffer sb = new StringBuffer();
 
-        String[] names = object.getNamesRef();
-        if ( ( names != null ) && ( names.length > 0 ) )
+        List<String> names = object.getNames();
+        if ( ( names != null ) && ( names.size() > 0 ) )
         {
             sb.append( ViewUtils.concateAliases( names ) );
         }
@@ -187,7 +189,7 @@ public class HierarchyView extends ViewPart
             sb.append( Messages.getString( "HierarchyView.None" ) ); //$NON-NLS-1$
         }
         sb.append( NLS.bind(
-            Messages.getString( "HierarchyView.Schema" ), new String[] { object.getOid(), object.getSchema() } ) ); //$NON-NLS-1$
+            Messages.getString( "HierarchyView.Schema" ), new String[] { object.getOid(), object.getSchemaName() } ) ); //$NON-NLS-1$
 
         overviewLabel.setText( sb.toString() );
     }

@@ -85,26 +85,26 @@ public class AttributeTypeSelectionDialogContentProvider implements IStructuredC
             {
                 public int compare( AttributeTypeImpl at1, AttributeTypeImpl at2 )
                 {
-                    String[] at1Names = ( ( AttributeTypeImpl ) at1 ).getNamesRef();
-                    String[] at2Names = ( ( AttributeTypeImpl ) at2 ).getNamesRef();
+                    List<String> at1Names = ( ( AttributeTypeImpl ) at1 ).getNames();
+                    List<String> at2Names = ( ( AttributeTypeImpl ) at2 ).getNames();
 
-                    if ( ( at1Names == null || at1Names.length == 0 ) && ( at2Names == null || at2Names.length == 0 ) )
+                    if ( ( at1Names == null || at1Names.size() == 0 ) && ( at2Names == null || at2Names.size() == 0 ) )
                     {
                         return 0;
                     }
-                    else if ( ( at1Names == null || at1Names.length == 0 )
-                        && ( at2Names != null && at2Names.length > 0 ) )
+                    else if ( ( at1Names == null || at1Names.size() == 0 )
+                        && ( at2Names != null && at2Names.size() > 0 ) )
                     {
-                        return "".compareToIgnoreCase( at2Names[0] ); //$NON-NLS-1$
+                        return "".compareToIgnoreCase( at2Names.get( 0 ) ); //$NON-NLS-1$
                     }
-                    else if ( ( at1Names != null && at1Names.length > 0 )
-                        && ( at2Names == null || at2Names.length == 0 ) )
+                    else if ( ( at1Names != null && at1Names.size() > 0 )
+                        && ( at2Names == null || at2Names.size() == 0 ) )
                     {
-                        return at1Names[0].compareToIgnoreCase( "" ); //$NON-NLS-1$
+                        return at1Names.get( 0 ).compareToIgnoreCase( "" ); //$NON-NLS-1$
                     }
                     else
                     {
-                        return at1Names[0].compareToIgnoreCase( at2Names[0] );
+                        return at1Names.get( 0 ).compareToIgnoreCase( at2Names.get( 0 ) );
                     }
                 }
             } );
@@ -112,7 +112,7 @@ public class AttributeTypeSelectionDialogContentProvider implements IStructuredC
             // Searching for all matching elements
             for ( AttributeTypeImpl at : atList )
             {
-                for ( String name : at.getNamesRef() )
+                for ( String name : at.getNames() )
                 {
                     Matcher m = pattern.matcher( name );
                     if ( m.matches() )

@@ -431,7 +431,7 @@ public class NewAttributeTypeGeneralWizardPage extends AbstractWizardPage
      * @return
      *      the value of the aliases
      */
-    public String[] getAliasesValue()
+    public List<String> getAliasesValue()
     {
         List<String> aliasesValue = new ArrayList<String>();
 
@@ -440,7 +440,7 @@ public class NewAttributeTypeGeneralWizardPage extends AbstractWizardPage
             aliasesValue.add( alias.toString() );
         }
 
-        return aliasesValue.toArray( new String[0] );
+        return aliasesValue;
     }
 
 

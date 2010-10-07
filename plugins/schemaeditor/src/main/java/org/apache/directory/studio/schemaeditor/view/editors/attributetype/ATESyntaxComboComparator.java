@@ -21,6 +21,7 @@ package org.apache.directory.studio.schemaeditor.view.editors.attributetype;
 
 
 import java.util.Comparator;
+import java.util.List;
 
 import org.apache.directory.studio.schemaeditor.model.SyntaxImpl;
 import org.apache.directory.studio.schemaeditor.view.editors.NonExistingSyntax;
@@ -40,33 +41,33 @@ public class ATESyntaxComboComparator implements Comparator<Object>
     {
         if ( o1 instanceof SyntaxImpl && o2 instanceof SyntaxImpl )
         {
-            String[] syntax1Names = ( ( SyntaxImpl ) o1 ).getNamesRef();
-            String[] syntax2Names = ( ( SyntaxImpl ) o2 ).getNamesRef();
+            List<String> syntax1Names = ( ( SyntaxImpl ) o1 ).getNames();
+            List<String> syntax2Names = ( ( SyntaxImpl ) o2 ).getNames();
 
-            if ( ( syntax1Names != null ) && ( syntax2Names != null ) && ( syntax1Names.length > 0 )
-                && ( syntax2Names.length > 0 ) )
+            if ( ( syntax1Names != null ) && ( syntax2Names != null ) && ( syntax1Names.size() > 0 )
+                && ( syntax2Names.size() > 0 ) )
             {
-                return syntax1Names[0].compareToIgnoreCase( syntax2Names[0] );
+                return syntax1Names.get( 0 ).compareToIgnoreCase( syntax2Names.get( 0 ) );
             }
         }
         else if ( o1 instanceof SyntaxImpl && o2 instanceof NonExistingSyntax )
         {
-            String[] syntax1Names = ( ( SyntaxImpl ) o1 ).getNamesRef();
+            List<String> syntax1Names = ( ( SyntaxImpl ) o1 ).getNames();
             String syntax2Name = ( ( NonExistingSyntax ) o2 ).getName();
 
-            if ( ( syntax1Names != null ) && ( syntax2Name != null ) && ( syntax1Names.length > 0 ) )
+            if ( ( syntax1Names != null ) && ( syntax2Name != null ) && ( syntax1Names.size() > 0 ) )
             {
-                return syntax1Names[0].compareToIgnoreCase( syntax2Name );
+                return syntax1Names.get( 0 ).compareToIgnoreCase( syntax2Name );
             }
         }
         else if ( o1 instanceof NonExistingSyntax && o2 instanceof SyntaxImpl )
         {
             String syntax1Name = ( ( NonExistingSyntax ) o1 ).getName();
-            String[] syntax2Names = ( ( SyntaxImpl ) o2 ).getNamesRef();
+            List<String> syntax2Names = ( ( SyntaxImpl ) o2 ).getNames();
 
-            if ( ( syntax1Name != null ) && ( syntax2Names != null ) && ( syntax2Names.length > 0 ) )
+            if ( ( syntax1Name != null ) && ( syntax2Names != null ) && ( syntax2Names.size() > 0 ) )
             {
-                return syntax1Name.compareToIgnoreCase( syntax2Names[0] );
+                return syntax1Name.compareToIgnoreCase( syntax2Names.get( 0 ) );
             }
         }
         else if ( o1 instanceof NonExistingSyntax && o2 instanceof NonExistingSyntax )

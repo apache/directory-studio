@@ -142,7 +142,7 @@ public class ObjectClassEditor extends FormEditor
         modifiedObjectClass = PluginUtils.getClone( originalObjectClass );
 
         SchemaHandler schemaHandler = Activator.getDefault().getSchemaHandler();
-        originalSchema = schemaHandler.getSchema( originalObjectClass.getSchema() );
+        originalSchema = schemaHandler.getSchema( originalObjectClass.getSchemaName() );
         schemaHandler.addListener( originalObjectClass, objectClassListener );
         schemaHandler.addListener( schemaHandlerListener );
 

@@ -235,7 +235,7 @@ public class DependenciesComputer
     private void computeDependencies( Schema schema, ObjectClassImpl objectClass ) throws DependencyComputerException
     {
         // Super Classes
-        String[] superClassesNames = objectClass.getSuperClassesNames();
+        List<String> superClassesNames = objectClass.getSuperiorOids();
         if ( superClassesNames != null )
         {
             for ( String superClassName : superClassesNames )
@@ -258,7 +258,7 @@ public class DependenciesComputer
         }
 
         // Optional attribute types
-        String[] optionalAttributeTypes = objectClass.getMayNamesList();
+        List<String> optionalAttributeTypes = objectClass.getMayAttributeTypeOids();
         if ( optionalAttributeTypes != null )
         {
             for ( String optionalAttributeTypeName : optionalAttributeTypes )
@@ -281,7 +281,7 @@ public class DependenciesComputer
         }
 
         // Mandatory attribute types
-        String[] mandatoryAttributeTypes = objectClass.getMustNamesList();
+        List<String> mandatoryAttributeTypes = objectClass.getMustAttributeTypeOids();
         if ( mandatoryAttributeTypes != null )
         {
             for ( String mandatoryAttributeTypeName : mandatoryAttributeTypes )
@@ -317,7 +317,7 @@ public class DependenciesComputer
      */
     private void computeSchemaDependency( Schema schema, SchemaObject object ) throws DependencyComputerException
     {
-        String schemaName = object.getSchema();
+        String schemaName = object.getSchemaName();
         if ( !schemaName.equalsIgnoreCase( schema.getName() ) )
         {
             Schema schemaFromSuperiorAT = schemaHandler.getSchema( schemaName );

@@ -21,6 +21,8 @@
 package org.apache.directory.studio.schemaeditor.view.editors.attributetype;
 
 
+import java.util.List;
+
 import org.apache.directory.studio.schemaeditor.Activator;
 import org.apache.directory.studio.schemaeditor.PluginConstants;
 import org.apache.directory.studio.schemaeditor.controller.SchemaHandler;
@@ -262,8 +264,8 @@ public class AttributeTypeEditorUsedByPage extends FormPage
         // As Mandatory Attribute Section
         Section mandatoryAttributeSection = toolkit.createSection( parent, Section.DESCRIPTION | Section.EXPANDED
             | Section.TITLE_BAR );
-        String names[] = modifiedAttributeType.getNamesRef();
-        if ( ( names != null ) && ( names.length > 0 ) )
+        List<String> names = modifiedAttributeType.getNames();
+        if ( ( names != null ) && ( names.size() > 0 ) )
         {
             mandatoryAttributeSection
                 .setDescription( NLS
@@ -309,8 +311,8 @@ public class AttributeTypeEditorUsedByPage extends FormPage
         // Matching Rules Section
         Section optionalAttributeSection = toolkit.createSection( parent, Section.DESCRIPTION | Section.EXPANDED
             | Section.TITLE_BAR );
-        String names[] = modifiedAttributeType.getNamesRef();
-        if ( ( names != null ) && ( names.length > 0 ) )
+        List<String> names = modifiedAttributeType.getNames();
+        if ( ( names != null ) && ( names.size() > 0 ) )
         {
             optionalAttributeSection
                 .setDescription( NLS

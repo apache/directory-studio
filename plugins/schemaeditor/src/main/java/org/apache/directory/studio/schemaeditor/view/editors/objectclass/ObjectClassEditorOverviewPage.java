@@ -293,7 +293,7 @@ public class ObjectClassEditorOverviewPage extends FormPage
     {
         public void widgetSelected( SelectionEvent e )
         {
-            EditAliasesDialog editDialog = new EditAliasesDialog( modifiedObjectClass.getNamesRef() );
+            EditAliasesDialog editDialog = new EditAliasesDialog( modifiedObjectClass.getNames() );
             if ( editDialog.open() != Window.OK )
             {
                 return;
@@ -301,9 +301,9 @@ public class ObjectClassEditorOverviewPage extends FormPage
             if ( editDialog.isDirty() )
             {
                 modifiedObjectClass.setNames( editDialog.getAliases() );
-                if ( ( modifiedObjectClass.getNamesRef() != null ) && ( modifiedObjectClass.getNamesRef().length != 0 ) )
+                if ( ( modifiedObjectClass.getNames() != null ) && ( modifiedObjectClass.getNames().size() != 0 ) )
                 {
-                    aliasesText.setText( ViewUtils.concateAliases( modifiedObjectClass.getNamesRef() ) );
+                    aliasesText.setText( ViewUtils.concateAliases( modifiedObjectClass.getNames() ) );
                 }
                 else
                 {
@@ -365,7 +365,8 @@ public class ObjectClassEditorOverviewPage extends FormPage
         {
             IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
 
-            SchemaEditorInput input = new SchemaEditorInput( schemaHandler.getSchema( modifiedObjectClass.getSchema() ) );
+            SchemaEditorInput input = new SchemaEditorInput( schemaHandler.getSchema( modifiedObjectClass
+                .getSchemaName() ) );
             String editorId = SchemaEditor.ID;
             try
             {
@@ -470,7 +471,7 @@ public class ObjectClassEditorOverviewPage extends FormPage
         {
             AttributeTypeSelectionDialog dialog = new AttributeTypeSelectionDialog();
             List<AttributeTypeImpl> hiddenATs = new ArrayList<AttributeTypeImpl>();
-            String[] mustsHidden = modifiedObjectClass.getMustNamesList();
+            List<String> mustsHidden = modifiedObjectClass.getMustAttributeTypeOids();
             if ( mustsHidden != null )
             {
                 for ( String must : mustsHidden )
@@ -496,7 +497,7 @@ public class ObjectClassEditorOverviewPage extends FormPage
             }
 
             List<String> newMusts = new ArrayList<String>();
-            String[] musts = modifiedObjectClass.getMustNamesList();
+            List<String> musts = modifiedObjectClass.getMustAttributeTypeOids();
             if ( musts != null )
             {
                 for ( String must : musts )
@@ -504,16 +505,16 @@ public class ObjectClassEditorOverviewPage extends FormPage
                     newMusts.add( must );
                 }
             }
-            String[] names = at.getNamesRef();
-            if ( ( names != null ) && ( names.length > 0 ) )
+            List<String> names = at.getNames();
+            if ( ( names != null ) && ( names.size() > 0 ) )
             {
-                newMusts.add( names[0] );
+                newMusts.add( names.get( 0 ) );
             }
             else
             {
                 newMusts.add( at.getOid() );
             }
-            modifiedObjectClass.setMustNamesList( newMusts.toArray( new String[0] ) );
+            modifiedObjectClass.setMustAttributeTypeOids( newMusts );
 
             fillInMandatoryAttributesTable();
             setEditorDirty();
@@ -535,7 +536,7 @@ public class ObjectClassEditorOverviewPage extends FormPage
             if ( selectedElement != null )
             {
                 List<String> newMusts = new ArrayList<String>();
-                String[] musts = modifiedObjectClass.getMustNamesList();
+                List<String> musts = modifiedObjectClass.getMustAttributeTypeOids();
                 for ( String must : musts )
                 {
                     newMusts.add( must );
@@ -543,7 +544,7 @@ public class ObjectClassEditorOverviewPage extends FormPage
 
                 if ( selectedElement instanceof AttributeTypeImpl )
                 {
-                    for ( String name : ( ( AttributeTypeImpl ) selectedElement ).getNamesRef() )
+                    for ( String name : ( ( AttributeTypeImpl ) selectedElement ).getNames() )
                     {
                         newMusts.remove( name );
                     }
@@ -553,7 +554,7 @@ public class ObjectClassEditorOverviewPage extends FormPage
                     newMusts.remove( ( ( NonExistingAttributeType ) selectedElement ).getName() );
                 }
 
-                modifiedObjectClass.setMustNamesList( newMusts.toArray( new String[0] ) );
+                modifiedObjectClass.setMustAttributeTypeOids( newMusts );
 
                 fillInMandatoryAttributesTable();
                 addButtonMandatoryTable.setFocus();
@@ -607,7 +608,7 @@ public class ObjectClassEditorOverviewPage extends FormPage
         {
             AttributeTypeSelectionDialog dialog = new AttributeTypeSelectionDialog();
             List<AttributeTypeImpl> hiddenATs = new ArrayList<AttributeTypeImpl>();
-            String[] maysHidden = modifiedObjectClass.getMayNamesList();
+            List<String> maysHidden = modifiedObjectClass.getMayAttributeTypeOids();
             if ( maysHidden != null )
             {
                 for ( String may : maysHidden )
@@ -633,7 +634,7 @@ public class ObjectClassEditorOverviewPage extends FormPage
             }
 
             List<String> newMays = new ArrayList<String>();
-            String[] mays = modifiedObjectClass.getMayNamesList();
+            List<String> mays = modifiedObjectClass.getMayAttributeTypeOids();
             if ( mays != null )
             {
                 for ( String may : mays )
@@ -641,16 +642,16 @@ public class ObjectClassEditorOverviewPage extends FormPage
                     newMays.add( may );
                 }
             }
-            String[] names = at.getNamesRef();
-            if ( ( names != null ) && ( names.length > 0 ) )
+            List<String> names = at.getNames();
+            if ( ( names != null ) && ( names.size() > 0 ) )
             {
-                newMays.add( names[0] );
+                newMays.add( names.get( 0 ) );
             }
             else
             {
                 newMays.add( at.getOid() );
             }
-            modifiedObjectClass.setMayNamesList( newMays.toArray( new String[0] ) );
+            modifiedObjectClass.setMayAttributeTypeOids( newMays );
 
             fillInOptionalAttributesTable();
             setEditorDirty();
@@ -672,7 +673,7 @@ public class ObjectClassEditorOverviewPage extends FormPage
             if ( selectedElement != null )
             {
                 List<String> newMays = new ArrayList<String>();
-                String[] mays = modifiedObjectClass.getMayNamesList();
+                List<String> mays = modifiedObjectClass.getMayAttributeTypeOids();
                 for ( String may : mays )
                 {
                     newMays.add( may );
@@ -680,7 +681,7 @@ public class ObjectClassEditorOverviewPage extends FormPage
 
                 if ( selectedElement instanceof AttributeTypeImpl )
                 {
-                    for ( String name : ( ( AttributeTypeImpl ) selectedElement ).getNamesRef() )
+                    for ( String name : ( ( AttributeTypeImpl ) selectedElement ).getNames() )
                     {
                         newMays.remove( name );
                     }
@@ -690,7 +691,7 @@ public class ObjectClassEditorOverviewPage extends FormPage
                     newMays.remove( ( ( NonExistingAttributeType ) selectedElement ).getName() );
                 }
 
-                modifiedObjectClass.setMayNamesList( newMays.toArray( new String[0] ) );
+                modifiedObjectClass.setMayAttributeTypeOids( newMays );
 
                 fillInOptionalAttributesTable();
                 addButtonOptionalTable.setFocus();
@@ -744,7 +745,7 @@ public class ObjectClassEditorOverviewPage extends FormPage
         {
             ObjectClassSelectionDialog dialog = new ObjectClassSelectionDialog();
             List<ObjectClassImpl> hiddenOCs = new ArrayList<ObjectClassImpl>();
-            for ( String sup : modifiedObjectClass.getSuperClassesNames() )
+            for ( String sup : modifiedObjectClass.getSuperiorOids() )
             {
                 ObjectClassImpl oc = schemaHandler.getObjectClass( sup );
                 if ( oc != null )
@@ -767,21 +768,21 @@ public class ObjectClassEditorOverviewPage extends FormPage
             }
 
             List<String> superiors = new ArrayList<String>();
-            String[] sups = modifiedObjectClass.getSuperClassesNames();
+            List<String> sups = modifiedObjectClass.getSuperiorOids();
             for ( String sup : sups )
             {
                 superiors.add( sup );
             }
-            String[] names = oc.getNamesRef();
-            if ( ( names != null ) && ( names.length > 0 ) )
+            List<String> names = oc.getNames();
+            if ( ( names != null ) && ( names.size() > 0 ) )
             {
-                superiors.add( names[0] );
+                superiors.add( names.get( 0 ) );
             }
             else
             {
                 superiors.add( oc.getOid() );
             }
-            modifiedObjectClass.setSuperClassesNames( superiors.toArray( new String[0] ) );
+            modifiedObjectClass.setSuperiorOids( superiors );
 
             fillInSuperiorsTable();
             setEditorDirty();
@@ -803,7 +804,7 @@ public class ObjectClassEditorOverviewPage extends FormPage
             if ( selectedElement != null )
             {
                 List<String> superiors = new ArrayList<String>();
-                String[] sups = modifiedObjectClass.getSuperClassesNames();
+                List<String> sups = modifiedObjectClass.getSuperiorOids();
                 for ( String sup : sups )
                 {
                     superiors.add( sup );
@@ -811,7 +812,7 @@ public class ObjectClassEditorOverviewPage extends FormPage
 
                 if ( selectedElement instanceof ObjectClassImpl )
                 {
-                    for ( String name : ( ( ObjectClassImpl ) selectedElement ).getNamesRef() )
+                    for ( String name : ( ( ObjectClassImpl ) selectedElement ).getNames() )
                     {
                         superiors.remove( name );
                     }
@@ -821,7 +822,7 @@ public class ObjectClassEditorOverviewPage extends FormPage
                     superiors.remove( ( ( NonExistingObjectClass ) selectedElement ).getName() );
                 }
 
-                modifiedObjectClass.setSuperClassesNames( superiors.toArray( new String[0] ) );
+                modifiedObjectClass.setSuperiorOids( superiors );
 
                 fillInSuperiorsTable();
                 addButtonSuperiorsTable.setFocus();
@@ -866,7 +867,7 @@ public class ObjectClassEditorOverviewPage extends FormPage
         // Getting the original and modified object classes
         modifiedObjectClass = ( ( ObjectClassEditor ) getEditor() ).getModifiedObjectClass();
         originalObjectClass = ( ( ObjectClassEditor ) getEditor() ).getOriginalObjectClass();
-        originalSchema = schemaHandler.getSchema( originalObjectClass.getSchema() );
+        originalSchema = schemaHandler.getSchema( originalObjectClass.getSchemaName() );
 
         // Creating the base UI
         ScrolledForm form = managedForm.getForm();
@@ -1106,9 +1107,9 @@ public class ObjectClassEditorOverviewPage extends FormPage
     private void fillInUiFields()
     {
         // ALIASES Label
-        if ( ( modifiedObjectClass.getNamesRef() != null ) && ( modifiedObjectClass.getNamesRef().length != 0 ) )
+        if ( ( modifiedObjectClass.getNames() != null ) && ( modifiedObjectClass.getNames().size() != 0 ) )
         {
-            aliasesText.setText( ViewUtils.concateAliases( modifiedObjectClass.getNamesRef() ) );
+            aliasesText.setText( ViewUtils.concateAliases( modifiedObjectClass.getNames() ) );
         }
         else
         {
@@ -1121,7 +1122,7 @@ public class ObjectClassEditorOverviewPage extends FormPage
             oidText.setText( modifiedObjectClass.getOid() );
         }
 
-        schemaLabel.setText( modifiedObjectClass.getSchema() );
+        schemaLabel.setText( modifiedObjectClass.getSchemaName() );
 
         // DESCRIPTION Field
         if ( modifiedObjectClass.getDescription() != null )
@@ -1151,7 +1152,7 @@ public class ObjectClassEditorOverviewPage extends FormPage
      */
     private void fillInSuperiorsTable()
     {
-        superiorsTableViewer.setInput( modifiedObjectClass.getSuperClassesNames() );
+        superiorsTableViewer.setInput( modifiedObjectClass.getSuperiorOids() );
     }
 
 
@@ -1191,7 +1192,7 @@ public class ObjectClassEditorOverviewPage extends FormPage
      */
     private void fillInMandatoryAttributesTable()
     {
-        mandatoryAttributesTableViewer.setInput( modifiedObjectClass.getMustNamesList() );
+        mandatoryAttributesTableViewer.setInput( modifiedObjectClass.getMustAttributeTypeOids() );
     }
 
 
@@ -1200,7 +1201,7 @@ public class ObjectClassEditorOverviewPage extends FormPage
      */
     private void fillInOptionalAttributesTable()
     {
-        optionalAttributesTableViewer.setInput( modifiedObjectClass.getMayNamesList() );
+        optionalAttributesTableViewer.setInput( modifiedObjectClass.getMayAttributeTypeOids() );
     }
 
 

@@ -22,6 +22,7 @@ package org.apache.directory.studio.schemaeditor.view.wrappers;
 
 
 import java.util.Comparator;
+import java.util.List;
 
 import org.apache.directory.studio.schemaeditor.model.AttributeTypeImpl;
 import org.apache.directory.studio.schemaeditor.model.ObjectClassImpl;
@@ -37,56 +38,56 @@ public class FirstNameSorter implements Comparator<TreeNode>
      */
     public int compare( TreeNode o1, TreeNode o2 )
     {
-        String[] o1Names = null;
-        String[] o2Names = null;
+        List<String> o1Names = null;
+        List<String> o2Names = null;
 
         if ( ( o1 instanceof AttributeTypeWrapper ) && ( o2 instanceof AttributeTypeWrapper ) )
         {
             AttributeTypeImpl at1 = ( ( AttributeTypeWrapper ) o1 ).getAttributeType();
             AttributeTypeImpl at2 = ( ( AttributeTypeWrapper ) o2 ).getAttributeType();
 
-            o1Names = at1.getNamesRef();
-            o2Names = at2.getNamesRef();
+            o1Names = at1.getNames();
+            o2Names = at2.getNames();
         }
         else if ( ( o1 instanceof ObjectClassWrapper ) && ( o2 instanceof ObjectClassWrapper ) )
         {
             ObjectClassImpl oc1 = ( ( ObjectClassWrapper ) o1 ).getObjectClass();
             ObjectClassImpl oc2 = ( ( ObjectClassWrapper ) o2 ).getObjectClass();
 
-            o1Names = oc1.getNamesRef();
-            o2Names = oc2.getNamesRef();
+            o1Names = oc1.getNames();
+            o2Names = oc2.getNames();
         }
         else if ( ( o1 instanceof AttributeTypeWrapper ) && ( o2 instanceof ObjectClassWrapper ) )
         {
             AttributeTypeImpl at = ( ( AttributeTypeWrapper ) o1 ).getAttributeType();
             ObjectClassImpl oc = ( ( ObjectClassWrapper ) o2 ).getObjectClass();
 
-            o1Names = at.getNamesRef();
-            o2Names = oc.getNamesRef();
+            o1Names = at.getNames();
+            o2Names = oc.getNames();
         }
         else if ( ( o1 instanceof ObjectClassWrapper ) && ( o2 instanceof AttributeTypeWrapper ) )
         {
             ObjectClassImpl oc = ( ( ObjectClassWrapper ) o1 ).getObjectClass();
             AttributeTypeImpl at = ( ( AttributeTypeWrapper ) o2 ).getAttributeType();
 
-            o1Names = oc.getNamesRef();
-            o2Names = at.getNamesRef();
+            o1Names = oc.getNames();
+            o2Names = at.getNames();
         }
 
         // Comparing the First Name
         if ( ( o1Names != null ) && ( o2Names != null ) )
         {
-            if ( ( o1Names.length > 0 ) && ( o2Names.length > 0 ) )
+            if ( ( o1Names.size() > 0 ) && ( o2Names.size() > 0 ) )
             {
-                return o1Names[0].compareToIgnoreCase( o2Names[0] );
+                return o1Names.get( 0 ).compareToIgnoreCase( o2Names.get( 0 ) );
             }
-            else if ( ( o1Names.length == 0 ) && ( o2Names.length > 0 ) )
+            else if ( ( o1Names.size() == 0 ) && ( o2Names.size() > 0 ) )
             {
-                return "".compareToIgnoreCase( o2Names[0] ); //$NON-NLS-1$
+                return "".compareToIgnoreCase( o2Names.get( 0 ) ); //$NON-NLS-1$
             }
-            else if ( ( o1Names.length > 0 ) && ( o2Names.length == 0 ) )
+            else if ( ( o1Names.size() > 0 ) && ( o2Names.size() == 0 ) )
             {
-                return o1Names[0].compareToIgnoreCase( "" ); //$NON-NLS-1$
+                return o1Names.get( 0 ).compareToIgnoreCase( "" ); //$NON-NLS-1$
             }
         }
 

@@ -36,6 +36,7 @@ import javax.naming.NamingException;
 
 import org.apache.directory.shared.converter.schema.AttributeTypeHolder;
 import org.apache.directory.shared.converter.schema.ObjectClassHolder;
+import org.apache.directory.shared.ldap.exception.LdapException;
 import org.apache.directory.studio.schemaeditor.Activator;
 import org.apache.directory.studio.schemaeditor.PluginUtils;
 import org.apache.directory.studio.schemaeditor.controller.SchemaHandler;
@@ -123,18 +124,7 @@ public class ExportSchemasForADSWizard extends Wizard implements IExportWizard
                                 buffWriter.write( sb.toString() );
                                 buffWriter.close();
                             }
-                            catch ( IOException e )
-                            {
-                                PluginUtils
-                                    .logError(
-                                        NLS
-                                            .bind(
-                                                Messages.getString( "ExportSchemasForADSWizard.ErrorSavingSchema" ), new String[] { schema.getName() } ), e ); //$NON-NLS-1$
-                                ViewUtils
-                                    .displayErrorMessageBox(
-                                        Messages.getString( "ExportSchemasForADSWizard.Error" ), NLS.bind( Messages.getString( "ExportSchemasForADSWizard.ErrorSavingSchema" ), new String[] { schema.getName() } ) ); //$NON-NLS-1$ //$NON-NLS-2$
-                            }
-                            catch ( NamingException e )
+                            catch ( Exception e )
                             {
                                 PluginUtils
                                     .logError(
@@ -185,7 +175,7 @@ public class ExportSchemasForADSWizard extends Wizard implements IExportWizard
                             {
                                 toLdif( schema, sb );
                             }
-                            catch ( NamingException e )
+                            catch ( Exception e )
                             {
                                 PluginUtils
                                     .logError(
@@ -240,8 +230,9 @@ public class ExportSchemasForADSWizard extends Wizard implements IExportWizard
      *      the StringBuffer
      * @throws NamingException
      *      if an error occurs during the conversion
+     * @throws LdapException 
      */
-    private void toLdif( Schema schema, StringBuffer sb ) throws NamingException
+    private void toLdif( Schema schema, StringBuffer sb ) throws NamingException, LdapException
     {
         sb
             .append( NLS
@@ -272,21 +263,21 @@ public class ExportSchemasForADSWizard extends Wizard implements IExportWizard
             AttributeTypeHolder holder = new AttributeTypeHolder( at.getOid() );
             holder.setCollective( at.isCollective() );
             holder.setDescription( at.getDescription() );
-            holder.setEquality( at.getEqualityName() );
+            holder.setEquality( at.getEqualityOid() );
             List<String> names = new ArrayList<String>();
-            for ( String name : at.getNamesRef() )
+            for ( String name : at.getNames() )
             {
                 names.add( name );
             }
             holder.setNames( names );
-            holder.setNoUserModification( !at.isCanUserModify() );
+            holder.setNoUserModification( !at.isUserModifiable() );
             holder.setObsolete( at.isObsolete() );
-            holder.setOrdering( at.getOrderingName() );
-            holder.setSingleValue( at.isSingleValue() );
-            holder.setSubstr( at.getSubstrName() );
-            holder.setSuperior( at.getSuperiorName() );
+            holder.setOrdering( at.getOrderingOid() );
+            holder.setSingleValue( at.isSingleValued() );
+            holder.setSubstr( at.getSubstringOid() );
+            holder.setSuperior( at.getSuperiorOid() );
             holder.setSyntax( at.getSyntaxOid() );
-            holder.setOidLen( at.getLength() );
+            holder.setOidLen( new Long( at.getSyntaxLength() ).intValue() );
             holder.setUsage( at.getUsage() );
 
             sb.append( holder.toLdif( schema.getName() ) + "\n" ); //$NON-NLS-1$
@@ -356,25 +347,25 @@ public class ExportSchemasForADSWizard extends Wizard implements IExportWizard
             holder.setClassType( oc.getType() );
             holder.setDescription( oc.getDescription() );
             List<String> mayList = new ArrayList<String>();
-            for ( String may : oc.getMayNamesList() )
+            for ( String may : oc.getMayAttributeTypeOids() )
             {
                 mayList.add( may );
             }
             holder.setMay( mayList );
             List<String> mustList = new ArrayList<String>();
-            for ( String must : oc.getMustNamesList() )
+            for ( String must : oc.getMustAttributeTypeOids())
             {
                 mustList.add( must );
             }
             holder.setMust( mustList );
             List<String> names = new ArrayList<String>();
-            for ( String name : oc.getNamesRef() )
+            for ( String name : oc.getNames() )
             {
                 names.add( name );
             }
             holder.setNames( names );
             List<String> superiorList = new ArrayList<String>();
-            for ( String superior : oc.getSuperClassesNames() )
+            for ( String superior : oc.getSuperiorOids() )
             {
                 superiorList.add( superior );
             }
@@ -415,7 +406,7 @@ public class ExportSchemasForADSWizard extends Wizard implements IExportWizard
         Set<String> objectClassNames = new HashSet<String>();
         for ( ObjectClassImpl oc : unsortedObjectClasses )
         {
-            for ( String name : oc.getNamesRef() )
+            for ( String name : oc.getNames() )
             {
                 objectClassNames.add( name.toLowerCase() );
             }
@@ -432,14 +423,14 @@ public class ExportSchemasForADSWizard extends Wizard implements IExportWizard
             while ( unsortedIterator.hasNext() )
             {
                 ObjectClassImpl oc = unsortedIterator.next();
-                for ( String superName : oc.getSuperClassesNames() )
+                for ( String superName : oc.getSuperiorOids() )
                 {
                     if ( !objectClassNames.contains( superName.toLowerCase() )
                         || movedObjectClasses.contains( superName.toLowerCase() ) )
                     {
                         unsortedIterator.remove();
                         sortedObjectClasses.add( oc );
-                        for ( String name : oc.getNamesRef() )
+                        for ( String name : oc.getNames() )
                         {
                             movedObjectClasses.add( name.toLowerCase() );
                         }
@@ -484,9 +475,9 @@ public class ExportSchemasForADSWizard extends Wizard implements IExportWizard
                 AttributeTypeImpl sup = schemaHandler.getAttributeType( supName );
                 if ( sup != null )
                 {
-                    if ( !schema.getName().toLowerCase().equals( sup.getSchema().toLowerCase() ) )
+                    if ( !schema.getName().toLowerCase().equals( sup.getSchemaName().toLowerCase() ) )
                     {
-                        schemaNames.add( sup.getSchema() );
+                        schemaNames.add( sup.getSchemaName() );
                     }
                 }
             }
@@ -496,24 +487,24 @@ public class ExportSchemasForADSWizard extends Wizard implements IExportWizard
         for ( ObjectClassImpl oc : schema.getObjectClasses() )
         {
             // Superiors
-            String[] supNames = oc.getSuperClassesNames();
+            List<String> supNames = oc.getSuperiorOids();
             if ( supNames != null )
             {
-                for ( String supName : oc.getSuperClassesNames() )
+                for ( String supName : oc.getSuperiorOids() )
                 {
                     ObjectClassImpl sup = schemaHandler.getObjectClass( supName );
                     if ( sup != null )
                     {
-                        if ( !schema.getName().toLowerCase().equals( sup.getSchema().toLowerCase() ) )
+                        if ( !schema.getName().toLowerCase().equals( sup.getSchemaName().toLowerCase() ) )
                         {
-                            schemaNames.add( sup.getSchema() );
+                            schemaNames.add( sup.getSchemaName() );
                         }
                     }
                 }
             }
 
             // Mays
-            String[] mayNames = oc.getMayNamesList();
+            List<String> mayNames = oc.getMayAttributeTypeOids();
             if ( mayNames != null )
             {
                 for ( String mayName : mayNames )
@@ -521,9 +512,9 @@ public class ExportSchemasForADSWizard extends Wizard implements IExportWizard
                     AttributeTypeImpl may = schemaHandler.getAttributeType( mayName );
                     if ( may != null )
                     {
-                        if ( !schema.getName().toLowerCase().equals( may.getSchema().toLowerCase() ) )
+                        if ( !schema.getName().toLowerCase().equals( may.getSchemaName().toLowerCase() ) )
                         {
-                            schemaNames.add( may.getSchema() );
+                            schemaNames.add( may.getSchemaName() );
                         }
                     }
                 }
@@ -531,17 +522,17 @@ public class ExportSchemasForADSWizard extends Wizard implements IExportWizard
             }
 
             // Musts
-            String[] mustNames = oc.getMustNamesList();
+            List<String> mustNames = oc.getMustAttributeTypeOids();
             if ( mustNames != null )
             {
-                for ( String mustName : oc.getMustNamesList() )
+                for ( String mustName : oc.getMustAttributeTypeOids() )
                 {
                     AttributeTypeImpl must = schemaHandler.getAttributeType( mustName );
                     if ( must != null )
                     {
-                        if ( !schema.getName().toLowerCase().equals( must.getSchema().toLowerCase() ) )
+                        if ( !schema.getName().toLowerCase().equals( must.getSchemaName().toLowerCase() ) )
                         {
-                            schemaNames.add( must.getSchema() );
+                            schemaNames.add( must.getSchemaName() );
                         }
                     }
                 }

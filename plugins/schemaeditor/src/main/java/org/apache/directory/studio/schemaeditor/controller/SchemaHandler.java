@@ -524,7 +524,7 @@ public class SchemaHandler
         {
             AttributeTypeImpl at = ( AttributeTypeImpl ) object;
             attributeTypesList.add( at );
-            String[] names = at.getNamesRef();
+            List<String> names = at.getNames();
             if ( names != null )
             {
                 for ( String name : names )
@@ -538,7 +538,7 @@ public class SchemaHandler
         {
             MatchingRuleImpl mr = ( MatchingRuleImpl ) object;
             matchingRulesList.add( mr );
-            String[] names = mr.getNamesRef();
+            List<String> names = mr.getNames();
             if ( names != null )
             {
                 for ( String name : names )
@@ -552,7 +552,7 @@ public class SchemaHandler
         {
             ObjectClassImpl oc = ( ObjectClassImpl ) object;
             objectClassesList.add( oc );
-            String[] names = oc.getNamesRef();
+            List<String> names = oc.getNames();
             if ( names != null )
             {
                 for ( String name : names )
@@ -566,7 +566,7 @@ public class SchemaHandler
         {
             SyntaxImpl syntax = ( SyntaxImpl ) object;
             syntaxesList.add( syntax );
-            String[] names = syntax.getNamesRef();
+            List<String> names = syntax.getNames();
             if ( names != null )
             {
                 for ( String name : names )
@@ -631,7 +631,7 @@ public class SchemaHandler
         {
             AttributeTypeImpl at = ( AttributeTypeImpl ) object;
             attributeTypesList.remove( at );
-            String[] names = at.getNamesRef();
+            List<String> names = at.getNames();
             if ( names != null )
             {
                 for ( String name : names )
@@ -645,7 +645,7 @@ public class SchemaHandler
         {
             MatchingRuleImpl mr = ( MatchingRuleImpl ) object;
             matchingRulesList.remove( mr );
-            String[] names = mr.getNamesRef();
+            List<String> names = mr.getNames();
             if ( names != null )
             {
                 for ( String name : names )
@@ -659,7 +659,7 @@ public class SchemaHandler
         {
             ObjectClassImpl oc = ( ObjectClassImpl ) object;
             objectClassesList.remove( oc );
-            String[] names = oc.getNamesRef();
+            List<String> names = oc.getNames();
             if ( names != null )
             {
                 for ( String name : names )
@@ -673,7 +673,7 @@ public class SchemaHandler
         {
             SyntaxImpl syntax = ( SyntaxImpl ) object;
             syntaxesList.remove( syntax );
-            String[] names = syntax.getNamesRef();
+            List<String> names = syntax.getNames();
             if ( names != null )
             {
                 for ( String name : names )
@@ -694,7 +694,7 @@ public class SchemaHandler
      */
     public void addAttributeType( AttributeTypeImpl at )
     {
-        Schema schema = getSchema( at.getSchema() );
+        Schema schema = getSchema( at.getSchemaName() );
 
         if ( schema == null )
         {
@@ -724,20 +724,20 @@ public class SchemaHandler
         removeSchemaObject( at1 );
 
         // Updating the attribute type
-        at1.setNames( at2.getNamesRef() );
+        at1.setNames( at2.getNames() );
         at1.setOid( at2.getOid() );
         at1.setDescription( at2.getDescription() );
-        at1.setSuperiorName( at2.getSuperiorName() );
+        at1.setSuperiorOid( at2.getSuperiorOid() );
         at1.setUsage( at2.getUsage() );
         at1.setSyntaxOid( at2.getSyntaxOid() );
-        at1.setLength( at2.getLength() );
+        at1.setSyntaxLength( at2.getSyntaxLength() );
         at1.setObsolete( at2.isObsolete() );
-        at1.setSingleValue( at2.isSingleValue() );
+        at1.setSingleValued( at2.isSingleValued() );
         at1.setCollective( at2.isCollective() );
-        at1.setCanUserModify( at2.isCanUserModify() );
-        at1.setEqualityName( at2.getEqualityName() );
-        at1.setOrderingName( at2.getOrderingName() );
-        at1.setSubstrName( at2.getSubstrName() );
+        at1.setUserModifiable( at2.isUserModifiable() );
+        at1.setEqualityOid( at2.getEqualityOid() );
+        at1.setOrderingOid( at2.getOrderingOid() );
+        at1.setSubstringOid( at2.getSubstringOid() );
 
         // Adding the references (in case of the names or oid have changed)
         addSchemaObject( at1 );
@@ -755,7 +755,7 @@ public class SchemaHandler
      */
     public void removeAttributeType( AttributeTypeImpl at )
     {
-        Schema schema = getSchema( at.getSchema() );
+        Schema schema = getSchema( at.getSchemaName() );
 
         if ( schema == null )
         {
@@ -778,7 +778,7 @@ public class SchemaHandler
      */
     public void addObjectClass( ObjectClassImpl oc )
     {
-        Schema schema = getSchema( oc.getSchema() );
+        Schema schema = getSchema( oc.getSchemaName() );
 
         if ( schema == null )
         {
@@ -808,14 +808,14 @@ public class SchemaHandler
         removeSchemaObject( oc1 );
 
         // Updating the object class
-        oc1.setNames( oc2.getNamesRef() );
+        oc1.setNames( oc2.getNames() );
         oc1.setOid( oc2.getOid() );
         oc1.setDescription( oc2.getDescription() );
-        oc1.setSuperClassesNames( oc2.getSuperClassesNames() );
+        oc1.setSuperiorOids( oc2.getSuperiorOids() );
         oc1.setType( oc2.getType() );
         oc1.setObsolete( oc2.isObsolete() );
-        oc1.setMustNamesList( oc2.getMustNamesList() );
-        oc1.setMayNamesList( oc2.getMayNamesList() );
+        oc1.setMustAttributeTypeOids( oc2.getMustAttributeTypeOids() );
+        oc1.setMayAttributeTypeOids( oc2.getMayAttributeTypeOids() );
 
         // Adding the references (in case of the names or oid have changed)
         addSchemaObject( oc1 );
@@ -833,7 +833,7 @@ public class SchemaHandler
      */
     public void removeObjectClass( ObjectClassImpl oc )
     {
-        Schema schema = getSchema( oc.getSchema() );
+        Schema schema = getSchema( oc.getSchemaName() );
 
         if ( schema == null )
         {
@@ -892,7 +892,7 @@ public class SchemaHandler
         }
 
         // Schema Listeners
-        List<?> listeners = ( List<?> ) schemaListeners.get( getSchema( at.getSchema() ) );
+        List<?> listeners = ( List<?> ) schemaListeners.get( getSchema( at.getSchemaName() ) );
         if ( listeners != null )
         {
             for ( Object object : listeners.toArray() )
@@ -918,7 +918,7 @@ public class SchemaHandler
         }
 
         // Schema Listeners
-        List<?> listeners = ( List<?> ) schemaListeners.get( getSchema( at.getSchema() ) );
+        List<?> listeners = ( List<?> ) schemaListeners.get( getSchema( at.getSchemaName() ) );
         if ( listeners != null )
         {
             for ( Object object : listeners.toArray() )
@@ -944,7 +944,7 @@ public class SchemaHandler
         }
 
         // Schema Listeners
-        List<?> listeners = ( List<?> ) schemaListeners.get( getSchema( at.getSchema() ) );
+        List<?> listeners = ( List<?> ) schemaListeners.get( getSchema( at.getSchemaName() ) );
         if ( listeners != null )
         {
             for ( Object object : listeners.toArray() )
@@ -980,7 +980,7 @@ public class SchemaHandler
         }
 
         // Schema Listeners
-        List<?> listeners = ( List<?> ) schemaListeners.get( getSchema( oc.getSchema() ) );
+        List<?> listeners = ( List<?> ) schemaListeners.get( getSchema( oc.getSchemaName() ) );
         if ( listeners != null )
         {
             for ( Object object : listeners.toArray() )
@@ -1006,7 +1006,7 @@ public class SchemaHandler
         }
 
         // Schema Listeners
-        List<?> listeners = ( List<?> ) schemaListeners.get( getSchema( oc.getSchema() ) );
+        List<?> listeners = ( List<?> ) schemaListeners.get( getSchema( oc.getSchemaName() ) );
         if ( listeners != null )
         {
             for ( Object object : listeners.toArray() )
@@ -1032,7 +1032,7 @@ public class SchemaHandler
         }
 
         // Schema Listeners
-        List<?> listeners = ( List<?> ) schemaListeners.get( getSchema( oc.getSchema() ) );
+        List<?> listeners = ( List<?> ) schemaListeners.get( getSchema( oc.getSchemaName() ) );
         if ( listeners != null )
         {
             for ( Object object : listeners.toArray() )
@@ -1068,7 +1068,7 @@ public class SchemaHandler
         }
 
         // Schema Listeners
-        List<?> listeners = ( List<?> ) schemaListeners.get( getSchema( mr.getSchema() ) );
+        List<?> listeners = ( List<?> ) schemaListeners.get( getSchema( mr.getSchemaName() ) );
         if ( listeners != null )
         {
             for ( Object object : listeners.toArray() )
@@ -1094,7 +1094,7 @@ public class SchemaHandler
         }
 
         // Schema Listeners
-        List<?> listeners = ( List<?> ) schemaListeners.get( getSchema( mr.getSchema() ) );
+        List<?> listeners = ( List<?> ) schemaListeners.get( getSchema( mr.getSchemaName() ) );
         if ( listeners != null )
         {
             for ( Object object : listeners.toArray() )
@@ -1120,7 +1120,7 @@ public class SchemaHandler
         }
 
         // Schema Listeners
-        List<?> listeners = ( List<?> ) schemaListeners.get( getSchema( mr.getSchema() ) );
+        List<?> listeners = ( List<?> ) schemaListeners.get( getSchema( mr.getSchemaName() ) );
         if ( listeners != null )
         {
             for ( Object object : listeners.toArray() )
@@ -1146,7 +1146,7 @@ public class SchemaHandler
         }
 
         // Schema Listeners
-        List<?> listeners = ( List<?> ) schemaListeners.get( getSchema( syntax.getSchema() ) );
+        List<?> listeners = ( List<?> ) schemaListeners.get( getSchema( syntax.getSchemaName() ) );
         if ( listeners != null )
         {
             for ( Object object : listeners.toArray() )
@@ -1172,7 +1172,7 @@ public class SchemaHandler
         }
 
         // Schema Listeners
-        List<?> listeners = ( List<?> ) schemaListeners.get( getSchema( syntax.getSchema() ) );
+        List<?> listeners = ( List<?> ) schemaListeners.get( getSchema( syntax.getSchemaName() ) );
         if ( listeners != null )
         {
             for ( Object object : listeners.toArray() )
@@ -1198,7 +1198,7 @@ public class SchemaHandler
         }
 
         // Schema Listeners
-        List<?> listeners = ( List<?> ) schemaListeners.get( getSchema( syntax.getSchema() ) );
+        List<?> listeners = ( List<?> ) schemaListeners.get( getSchema( syntax.getSchemaName() ) );
         if ( listeners != null )
         {
             for ( Object object : listeners.toArray() )

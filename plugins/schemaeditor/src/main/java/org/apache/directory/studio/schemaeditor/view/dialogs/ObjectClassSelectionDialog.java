@@ -179,7 +179,7 @@ public class ObjectClassSelectionDialog extends Dialog
                         chooseButton.setEnabled( true );
                     }
                     schemaIconLabel.setImage( Activator.getDefault().getImage( PluginConstants.IMG_SCHEMA ) );
-                    schemaNameLabel.setText( ( ( ObjectClassImpl ) selection.getFirstElement() ).getSchema() );
+                    schemaNameLabel.setText( ( ( ObjectClassImpl ) selection.getFirstElement() ).getSchemaName() );
                 }
             }
         } );

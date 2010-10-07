@@ -322,7 +322,7 @@ public class XMLSchemaFileImporter
         }
 
         // Schema
-        at.setSchema( schema.getName() );
+        at.setSchemaName( schema.getName() );
         at.setSchemaObject( schema );
 
         // Aliases
@@ -352,7 +352,7 @@ public class XMLSchemaFileImporter
         Element superiorElement = element.element( SUPERIOR_TAG );
         if ( ( superiorElement != null ) && ( !superiorElement.getText().equals( "" ) ) ) //$NON-NLS-1$
         {
-            at.setSuperiorName( superiorElement.getText() );
+            at.setSuperiorOid( superiorElement.getText() );
         }
 
         // Usage
@@ -383,7 +383,7 @@ public class XMLSchemaFileImporter
         {
             try
             {
-                at.setLength( Integer.parseInt( syntaxLengthElement.getText() ) );
+                at.setSyntaxLength( Long.parseLong( syntaxLengthElement.getText() ) );
             }
             catch ( NumberFormatException e )
             {
@@ -403,7 +403,7 @@ public class XMLSchemaFileImporter
         Attribute singleValueAttribute = element.attribute( SINGLE_VALUE_TAG );
         if ( ( singleValueAttribute != null ) && ( !singleValueAttribute.getValue().equals( "" ) ) ) //$NON-NLS-1$
         {
-            at.setSingleValue( readBoolean( singleValueAttribute.getValue() ) );
+            at.setSingleValued( readBoolean( singleValueAttribute.getValue() ) );
         }
 
         // Collective
@@ -417,28 +417,28 @@ public class XMLSchemaFileImporter
         Attribute noUserModificationAttribute = element.attribute( NO_USER_MODIFICATION_TAG );
         if ( ( noUserModificationAttribute != null ) && ( !noUserModificationAttribute.getValue().equals( "" ) ) ) //$NON-NLS-1$
         {
-            at.setCanUserModify( !readBoolean( noUserModificationAttribute.getValue() ) );
+            at.setUserModifiable( !readBoolean( noUserModificationAttribute.getValue() ) );
         }
 
         // Equality
         Element equalityElement = element.element( EQUALITY_TAG );
         if ( ( equalityElement != null ) && ( !equalityElement.getText().equals( "" ) ) ) //$NON-NLS-1$
         {
-            at.setEqualityName( equalityElement.getText() );
+            at.setEqualityOid( equalityElement.getText() );
         }
 
         // Ordering
         Element orderingElement = element.element( ORDERING_TAG );
         if ( ( orderingElement != null ) && ( !orderingElement.getText().equals( "" ) ) ) //$NON-NLS-1$
         {
-            at.setOrderingName( orderingElement.getText() );
+            at.setOrderingOid( orderingElement.getText() );
         }
 
         // Substring
         Element substringElement = element.element( SUBSTRING_TAG );
         if ( ( substringElement != null ) && ( !substringElement.getText().equals( "" ) ) ) //$NON-NLS-1$
         {
-            at.setSubstrName( substringElement.getText() );
+            at.setSubstringOid( substringElement.getText() );
         }
 
         // Adding the attribute type to the schema
@@ -493,7 +493,7 @@ public class XMLSchemaFileImporter
         }
 
         // Schema
-        oc.setSchema( schema.getName() );
+        oc.setSchemaName( schema.getName() );
         oc.setSchemaObject( schema );
 
         // Aliases
@@ -531,7 +531,7 @@ public class XMLSchemaFileImporter
             }
             if ( superiors.size() >= 1 )
             {
-                oc.setSuperClassesNames( superiors.toArray( new String[0] ) );
+                oc.setSuperiorOids( superiors );
             }
         }
 
@@ -569,7 +569,7 @@ public class XMLSchemaFileImporter
             }
             if ( mandatoryATs.size() >= 1 )
             {
-                oc.setMustNamesList( mandatoryATs.toArray( new String[0] ) );
+                oc.setMustAttributeTypeOids( mandatoryATs );
             }
         }
 
@@ -585,7 +585,7 @@ public class XMLSchemaFileImporter
             }
             if ( optionalATs.size() >= 1 )
             {
-                oc.setMayNamesList( optionalATs.toArray( new String[0] ) );
+                oc.setMayAttributeTypeOids( optionalATs );
             }
         }
 
@@ -641,7 +641,7 @@ public class XMLSchemaFileImporter
         }
 
         // Schema
-        mr.setSchema( schema.getName() );
+        mr.setSchemaName( schema.getName() );
         mr.setSchemaObject( schema );
 
         // Aliases
@@ -733,7 +733,7 @@ public class XMLSchemaFileImporter
         }
 
         // Schema
-        syntax.setSchema( schema.getName() );
+        syntax.setSchemaName( schema.getName() );
         syntax.setSchemaObject( schema );
 
         // Aliases

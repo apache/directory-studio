@@ -20,6 +20,8 @@
 package org.apache.directory.studio.schemaeditor.model.difference;
 
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import junit.framework.TestCase;
@@ -100,7 +102,7 @@ public class DifferenceEngineTest extends TestCase
     {
         AttributeTypeImpl o1 = new AttributeTypeImpl( "1.2.3.4" );
         AttributeTypeImpl o2 = new AttributeTypeImpl( "1.2.3.4" );
-        o2.setEqualityName( "Equality" );
+        o2.setEqualityOid( "Equality" );
 
         List<PropertyDifference> differences = DifferenceEngine.getDifferences( o1, o2 );
 
@@ -126,8 +128,8 @@ public class DifferenceEngineTest extends TestCase
     {
         ObjectClassImpl o1 = new ObjectClassImpl( "1.2.3.4" );
         ObjectClassImpl o2 = new ObjectClassImpl( "1.2.3.4" );
-        o2.setMustNamesList( new String[]
-            { "must" } );
+        o2.setMustAttributeTypeOids( Arrays.asList( new String[]
+            { "must" } ) );
 
         List<PropertyDifference> differences = DifferenceEngine.getDifferences( o1, o2 );
 
@@ -154,8 +156,8 @@ public class DifferenceEngineTest extends TestCase
     {
         ObjectClassImpl o1 = new ObjectClassImpl( "1.2.3.4" );
         ObjectClassImpl o2 = new ObjectClassImpl( "1.2.3.4" );
-        o2.setMayNamesList( new String[]
-            { "may" } );
+        o2.setMayAttributeTypeOids( Arrays.asList( new String[]
+            { "may" } ) );
 
         List<PropertyDifference> differences = DifferenceEngine.getDifferences( o1, o2 );
 
@@ -181,7 +183,7 @@ public class DifferenceEngineTest extends TestCase
     {
         AttributeTypeImpl o1 = new AttributeTypeImpl( "1.2.3.4" );
         AttributeTypeImpl o2 = new AttributeTypeImpl( "1.2.3.4" );
-        o2.setOrderingName( "Ordering" );
+        o2.setOrderingOid( "Ordering" );
 
         List<PropertyDifference> differences = DifferenceEngine.getDifferences( o1, o2 );
 
@@ -207,7 +209,7 @@ public class DifferenceEngineTest extends TestCase
     {
         AttributeTypeImpl o1 = new AttributeTypeImpl( "1.2.3.4" );
         AttributeTypeImpl o2 = new AttributeTypeImpl( "1.2.3.4" );
-        o2.setSubstrName( "Substring" );
+        o2.setSubstringOid( "Substring" );
 
         List<PropertyDifference> differences = DifferenceEngine.getDifferences( o1, o2 );
 
@@ -233,7 +235,7 @@ public class DifferenceEngineTest extends TestCase
     {
         AttributeTypeImpl o1 = new AttributeTypeImpl( "1.2.3.4" );
         AttributeTypeImpl o2 = new AttributeTypeImpl( "1.2.3.4" );
-        o2.setSuperiorName( "superiorAT" );
+        o2.setSuperiorOid( "superiorAT" );
 
         List<PropertyDifference> differences = DifferenceEngine.getDifferences( o1, o2 );
 
@@ -259,8 +261,8 @@ public class DifferenceEngineTest extends TestCase
     {
         ObjectClassImpl o1 = new ObjectClassImpl( "1.2.3.4" );
         ObjectClassImpl o2 = new ObjectClassImpl( "1.2.3.4" );
-        o2.setSuperClassesNames( new String[]
-            { "superiorOC" } );
+        o2.setSuperiorOids( Arrays.asList( new String[]
+            { "superiorOC" } ) );
 
         List<PropertyDifference> differences = DifferenceEngine.getDifferences( o1, o2 );
 
@@ -312,7 +314,7 @@ public class DifferenceEngineTest extends TestCase
     {
         AttributeTypeImpl o1 = new AttributeTypeImpl( "1.2.3.4" );
         AttributeTypeImpl o2 = new AttributeTypeImpl( "1.2.3.4" );
-        o2.setLength( 1234 );
+        o2.setSyntaxLength( 1234 );
 
         List<PropertyDifference> differences = DifferenceEngine.getDifferences( o1, o2 );
 
@@ -425,9 +427,9 @@ public class DifferenceEngineTest extends TestCase
     public void testModifyEqualityDifference() throws Exception
     {
         AttributeTypeImpl o1 = new AttributeTypeImpl( "1.2.3.4" );
-        o1.setEqualityName( "equalityName" );
+        o1.setEqualityOid( "equalityName" );
         AttributeTypeImpl o2 = new AttributeTypeImpl( "1.2.3.4" );
-        o2.setEqualityName( "newEqualityName" );
+        o2.setEqualityOid( "newEqualityName" );
 
         List<PropertyDifference> differences = DifferenceEngine.getDifferences( o1, o2 );
 
@@ -454,9 +456,9 @@ public class DifferenceEngineTest extends TestCase
     public void testModifyNoUserModificationDifference() throws Exception
     {
         AttributeTypeImpl o1 = new AttributeTypeImpl( "1.2.3.4" );
-        o1.setCanUserModify( true );
+        o1.setUserModifiable( true );
         AttributeTypeImpl o2 = new AttributeTypeImpl( "1.2.3.4" );
-        o2.setCanUserModify( false );
+        o2.setUserModifiable( false );
 
         List<PropertyDifference> differences = DifferenceEngine.getDifferences( o1, o2 );
 
@@ -512,9 +514,9 @@ public class DifferenceEngineTest extends TestCase
     public void testModifyOrderingDifference() throws Exception
     {
         AttributeTypeImpl o1 = new AttributeTypeImpl( "1.2.3.4" );
-        o1.setOrderingName( "orderingName" );
+        o1.setOrderingOid( "orderingName" );
         AttributeTypeImpl o2 = new AttributeTypeImpl( "1.2.3.4" );
-        o2.setOrderingName( "newOrderingName" );
+        o2.setOrderingOid( "newOrderingName" );
 
         List<PropertyDifference> differences = DifferenceEngine.getDifferences( o1, o2 );
 
@@ -541,9 +543,9 @@ public class DifferenceEngineTest extends TestCase
     public void testModifySingleValueDifference() throws Exception
     {
         AttributeTypeImpl o1 = new AttributeTypeImpl( "1.2.3.4" );
-        o1.setSingleValue( true );
+        o1.setSingleValued( true );
         AttributeTypeImpl o2 = new AttributeTypeImpl( "1.2.3.4" );
-        o2.setSingleValue( false );
+        o2.setSingleValued( false );
 
         List<PropertyDifference> differences = DifferenceEngine.getDifferences( o1, o2 );
 
@@ -570,9 +572,9 @@ public class DifferenceEngineTest extends TestCase
     public void testModifySubstringDifference() throws Exception
     {
         AttributeTypeImpl o1 = new AttributeTypeImpl( "1.2.3.4" );
-        o1.setSubstrName( "substrName" );
+        o1.setSubstringOid( "substrName" );
         AttributeTypeImpl o2 = new AttributeTypeImpl( "1.2.3.4" );
-        o2.setSubstrName( "newSubstrName" );
+        o2.setSubstringOid( "newSubstrName" );
 
         List<PropertyDifference> differences = DifferenceEngine.getDifferences( o1, o2 );
 
@@ -599,9 +601,9 @@ public class DifferenceEngineTest extends TestCase
     public void testModifySuperiorATDifference() throws Exception
     {
         AttributeTypeImpl o1 = new AttributeTypeImpl( "1.2.3.4" );
-        o1.setSuperiorName( "superiorName" );
+        o1.setSuperiorOid( "superiorName" );
         AttributeTypeImpl o2 = new AttributeTypeImpl( "1.2.3.4" );
-        o2.setSuperiorName( "newSuperiorName" );
+        o2.setSuperiorOid( "newSuperiorName" );
 
         List<PropertyDifference> differences = DifferenceEngine.getDifferences( o1, o2 );
 
@@ -656,9 +658,9 @@ public class DifferenceEngineTest extends TestCase
     public void testModifySyntaxLengthDifference() throws Exception
     {
         AttributeTypeImpl o1 = new AttributeTypeImpl( "1.2.3.4" );
-        o1.setLength( 1234 );
+        o1.setSyntaxLength( 1234 );
         AttributeTypeImpl o2 = new AttributeTypeImpl( "1.2.3.4" );
-        o2.setLength( 12345 );
+        o2.setSyntaxLength( 12345 );
 
         List<PropertyDifference> differences = DifferenceEngine.getDifferences( o1, o2 );
 
@@ -771,7 +773,7 @@ public class DifferenceEngineTest extends TestCase
     public void testRemoveEqualityDifference() throws Exception
     {
         AttributeTypeImpl o1 = new AttributeTypeImpl( "1.2.3.4" );
-        o1.setEqualityName( "equalityName" );
+        o1.setEqualityOid( "equalityName" );
         AttributeTypeImpl o2 = new AttributeTypeImpl( "1.2.3.4" );
 
         List<PropertyDifference> differences = DifferenceEngine.getDifferences( o1, o2 );
@@ -798,11 +800,11 @@ public class DifferenceEngineTest extends TestCase
     public void testRemoveMandatoryATDifference() throws Exception
     {
         ObjectClassImpl o1 = new ObjectClassImpl( "1.2.3.4" );
-        o1.setMustNamesList( new String[]
-            { "must1", "must2" } );
+        o1.setMustAttributeTypeOids( Arrays.asList( new String[]
+            { "must1", "must2" } ) );
         ObjectClassImpl o2 = new ObjectClassImpl( "1.2.3.4" );
-        o2.setMustNamesList( new String[]
-            { "must2" } );
+        o2.setMustAttributeTypeOids( Arrays.asList( new String[]
+            { "must2" } ) );
 
         List<PropertyDifference> differences = DifferenceEngine.getDifferences( o1, o2 );
 
@@ -829,11 +831,11 @@ public class DifferenceEngineTest extends TestCase
     public void testRemoveOptionalATDifference() throws Exception
     {
         ObjectClassImpl o1 = new ObjectClassImpl( "1.2.3.4" );
-        o1.setMayNamesList( new String[]
-            { "may1", "may2" } );
+        o1.setMayAttributeTypeOids( Arrays.asList( new String[]
+            { "may1", "may2" } ) );
         ObjectClassImpl o2 = new ObjectClassImpl( "1.2.3.4" );
-        o2.setMayNamesList( new String[]
-            { "may2" } );
+        o2.setMayAttributeTypeOids( Arrays.asList( new String[]
+            { "may2" } ) );
 
         List<PropertyDifference> differences = DifferenceEngine.getDifferences( o1, o2 );
 
@@ -860,7 +862,7 @@ public class DifferenceEngineTest extends TestCase
     public void testRemoveOrderingDifference() throws Exception
     {
         AttributeTypeImpl o1 = new AttributeTypeImpl( "1.2.3.4" );
-        o1.setOrderingName( "orderingName" );
+        o1.setOrderingOid( "orderingName" );
         AttributeTypeImpl o2 = new AttributeTypeImpl( "1.2.3.4" );
 
         List<PropertyDifference> differences = DifferenceEngine.getDifferences( o1, o2 );
@@ -887,7 +889,7 @@ public class DifferenceEngineTest extends TestCase
     public void testRemoveSubstringDifference() throws Exception
     {
         AttributeTypeImpl o1 = new AttributeTypeImpl( "1.2.3.4" );
-        o1.setSubstrName( "substrName" );
+        o1.setSubstringOid( "substrName" );
         AttributeTypeImpl o2 = new AttributeTypeImpl( "1.2.3.4" );
 
         List<PropertyDifference> differences = DifferenceEngine.getDifferences( o1, o2 );
@@ -915,7 +917,7 @@ public class DifferenceEngineTest extends TestCase
     public void testRemoveSuperiorATDifference() throws Exception
     {
         AttributeTypeImpl o1 = new AttributeTypeImpl( "1.2.3.4" );
-        o1.setSuperiorName( "superiorName" );
+        o1.setSuperiorOid( "superiorName" );
         AttributeTypeImpl o2 = new AttributeTypeImpl( "1.2.3.4" );
 
         List<PropertyDifference> differences = DifferenceEngine.getDifferences( o1, o2 );
@@ -943,11 +945,11 @@ public class DifferenceEngineTest extends TestCase
     public void testRemoveSuperiorOCDifference() throws Exception
     {
         ObjectClassImpl o1 = new ObjectClassImpl( "1.2.3.4" );
-        o1.setSuperClassesNames( new String[]
-            { "sup1", "sup2" } );
+        o1.setSuperiorOids( Arrays.asList( new String[]
+            { "sup1", "sup2" } ) );
         ObjectClassImpl o2 = new ObjectClassImpl( "1.2.3.4" );
-        o2.setSuperClassesNames( new String[]
-            { "sup2" } );
+        o2.setSuperiorOids( Arrays.asList( new String[]
+            { "sup2" } ) );
 
         List<PropertyDifference> differences = DifferenceEngine.getDifferences( o1, o2 );
 
@@ -1001,7 +1003,7 @@ public class DifferenceEngineTest extends TestCase
     public void testRemoveSyntaxLengthDifference() throws Exception
     {
         AttributeTypeImpl o1 = new AttributeTypeImpl( "1.2.3.4" );
-        o1.setLength( 1234 );
+        o1.setSyntaxLength( 1234 );
         AttributeTypeImpl o2 = new AttributeTypeImpl( "1.2.3.4" );
 
         List<PropertyDifference> differences = DifferenceEngine.getDifferences( o1, o2 );

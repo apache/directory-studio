@@ -21,6 +21,8 @@
 package org.apache.directory.studio.schemaeditor.view.editors.objectclass;
 
 
+import java.util.List;
+
 import org.apache.directory.studio.schemaeditor.Activator;
 import org.apache.directory.studio.schemaeditor.PluginConstants;
 import org.apache.directory.studio.schemaeditor.model.ObjectClassImpl;
@@ -63,8 +65,8 @@ public class ObjectClassEditorSuperiorsTableLabelProvider extends LabelProvider 
         {
             ObjectClassImpl oc = ( ObjectClassImpl ) element;
 
-            String[] names = oc.getNamesRef();
-            if ( ( names != null ) && ( names.length > 0 ) )
+            List<String> names = oc.getNames();
+            if ( ( names != null ) && ( names.size() > 0 ) )
             {
                 return ViewUtils.concateAliases( names ) + "  -  (" + oc.getOid() + ")"; //$NON-NLS-1$ //$NON-NLS-2$
             }

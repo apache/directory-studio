@@ -105,7 +105,7 @@ public class EditAliasesDialog extends Dialog
      * @param aliases
      *      an array containing the aliases
      */
-    public EditAliasesDialog( String[] aliases )
+    public EditAliasesDialog( List<String> aliases )
     {
         super( PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell() );
         initialLowerCasedAliases = new ArrayList<String>();

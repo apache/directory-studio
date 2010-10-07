@@ -291,7 +291,7 @@ public class AttributeTypeEditorOverviewPage extends FormPage
     {
         public void widgetSelected( SelectionEvent e )
         {
-            EditAliasesDialog editDialog = new EditAliasesDialog( modifiedAttributeType.getNamesRef() );
+            EditAliasesDialog editDialog = new EditAliasesDialog( modifiedAttributeType.getNames() );
             if ( editDialog.open() != Window.OK )
             {
                 return;
@@ -299,10 +299,10 @@ public class AttributeTypeEditorOverviewPage extends FormPage
             if ( editDialog.isDirty() )
             {
                 modifiedAttributeType.setNames( editDialog.getAliases() );
-                if ( ( modifiedAttributeType.getNamesRef() != null )
-                    && ( modifiedAttributeType.getNamesRef().length != 0 ) )
+                if ( ( modifiedAttributeType.getNames() != null )
+                    && ( modifiedAttributeType.getNames().size() != 0 ) )
                 {
-                    aliasesText.setText( ViewUtils.concateAliases( modifiedAttributeType.getNamesRef() ) );
+                    aliasesText.setText( ViewUtils.concateAliases( modifiedAttributeType.getNames() ) );
                 }
                 else
                 {
@@ -365,7 +365,7 @@ public class AttributeTypeEditorOverviewPage extends FormPage
             IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
 
             SchemaEditorInput input = new SchemaEditorInput( schemaHandler
-                .getSchema( modifiedAttributeType.getSchema() ) );
+                .getSchema( modifiedAttributeType.getSchemaName() ) );
             String editorId = SchemaEditor.ID;
             try
             {
@@ -424,14 +424,14 @@ public class AttributeTypeEditorOverviewPage extends FormPage
             if ( selectedItem instanceof AttributeTypeImpl )
             {
                 AttributeTypeImpl at = ( AttributeTypeImpl ) selectedItem;
-                String[] names = at.getNamesRef();
-                if ( ( names != null ) && ( names.length > 0 ) )
+                List<String> names = at.getNames();
+                if ( ( names != null ) && ( names.size() > 0 ) )
                 {
-                    modifiedAttributeType.setSuperiorName( names[0] );
+                    modifiedAttributeType.setSuperiorOid( names.get( 0 ) );
                 }
                 else
                 {
-                    modifiedAttributeType.setSuperiorName( at.getOid() );
+                    modifiedAttributeType.setSuperiorOid( at.getOid() );
                 }
             }
             else if ( selectedItem instanceof NonExistingAttributeType )
@@ -440,11 +440,11 @@ public class AttributeTypeEditorOverviewPage extends FormPage
 
                 if ( NonExistingAttributeType.NONE.equals( neat.getName() ) )
                 {
-                    modifiedAttributeType.setSuperiorName( null );
+                    modifiedAttributeType.setSuperiorOid( null );
                 }
                 else
                 {
-                    modifiedAttributeType.setSuperiorName( ( ( NonExistingAttributeType ) selectedItem ).getName() );
+                    modifiedAttributeType.setSuperiorOid( ( ( NonExistingAttributeType ) selectedItem ).getName() );
                 }
             }
             setEditorDirty();
@@ -511,11 +511,11 @@ public class AttributeTypeEditorOverviewPage extends FormPage
         {
             if ( syntaxLengthText.getText().length() == 0 )
             {
-                modifiedAttributeType.setLength( -1 );
+                modifiedAttributeType.setSyntaxLength( -1 );
             }
             else
             {
-                modifiedAttributeType.setLength( Integer.parseInt( syntaxLengthText.getText() ) );
+                modifiedAttributeType.setSyntaxLength( Integer.parseInt( syntaxLengthText.getText() ) );
             }
             setEditorDirty();
         }
@@ -548,7 +548,7 @@ public class AttributeTypeEditorOverviewPage extends FormPage
     {
         public void widgetSelected( SelectionEvent e )
         {
-            modifiedAttributeType.setSingleValue( singleValueCheckbox.getSelection() );
+            modifiedAttributeType.setSingleValued( singleValueCheckbox.getSelection() );
             setEditorDirty();
         }
     };
@@ -568,7 +568,7 @@ public class AttributeTypeEditorOverviewPage extends FormPage
     {
         public void widgetSelected( SelectionEvent e )
         {
-            modifiedAttributeType.setCanUserModify( !noUserModificationCheckbox.getSelection() );
+            modifiedAttributeType.setUserModifiable( !noUserModificationCheckbox.getSelection() );
             setEditorDirty();
         }
     };
@@ -582,7 +582,7 @@ public class AttributeTypeEditorOverviewPage extends FormPage
 
             if ( selectedItem instanceof MatchingRuleImpl )
             {
-                modifiedAttributeType.setEqualityName( ( ( MatchingRuleImpl ) selectedItem ).getName() );
+                modifiedAttributeType.setEqualityOid( ( ( MatchingRuleImpl ) selectedItem ).getName() );
             }
             else if ( selectedItem instanceof NonExistingMatchingRule )
             {
@@ -590,11 +590,11 @@ public class AttributeTypeEditorOverviewPage extends FormPage
 
                 if ( NonExistingMatchingRule.NONE.equals( nemr.getName() ) )
                 {
-                    modifiedAttributeType.setEqualityName( null );
+                    modifiedAttributeType.setEqualityOid( null );
                 }
                 else
                 {
-                    modifiedAttributeType.setEqualityName( ( ( NonExistingMatchingRule ) selectedItem ).getName() );
+                    modifiedAttributeType.setEqualityOid( ( ( NonExistingMatchingRule ) selectedItem ).getName() );
                 }
             }
             setEditorDirty();
@@ -610,7 +610,7 @@ public class AttributeTypeEditorOverviewPage extends FormPage
 
             if ( selectedItem instanceof MatchingRuleImpl )
             {
-                modifiedAttributeType.setOrderingName( ( ( MatchingRuleImpl ) selectedItem ).getName() );
+                modifiedAttributeType.setOrderingOid( ( ( MatchingRuleImpl ) selectedItem ).getName() );
             }
             else if ( selectedItem instanceof NonExistingMatchingRule )
             {
@@ -618,11 +618,11 @@ public class AttributeTypeEditorOverviewPage extends FormPage
 
                 if ( NonExistingMatchingRule.NONE.equals( nemr.getName() ) )
                 {
-                    modifiedAttributeType.setOrderingName( null );
+                    modifiedAttributeType.setOrderingOid( null );
                 }
                 else
                 {
-                    modifiedAttributeType.setOrderingName( ( ( NonExistingMatchingRule ) selectedItem ).getName() );
+                    modifiedAttributeType.setOrderingOid( ( ( NonExistingMatchingRule ) selectedItem ).getName() );
                 }
             }
             setEditorDirty();
@@ -638,7 +638,7 @@ public class AttributeTypeEditorOverviewPage extends FormPage
 
             if ( selectedItem instanceof MatchingRuleImpl )
             {
-                modifiedAttributeType.setSubstrName( ( ( MatchingRuleImpl ) selectedItem ).getName() );
+                modifiedAttributeType.setSubstringOid( ( ( MatchingRuleImpl ) selectedItem ).getName() );
             }
             else if ( selectedItem instanceof NonExistingMatchingRule )
             {
@@ -646,11 +646,11 @@ public class AttributeTypeEditorOverviewPage extends FormPage
 
                 if ( NonExistingMatchingRule.NONE.equals( nemr.getName() ) )
                 {
-                    modifiedAttributeType.setSubstrName( null );
+                    modifiedAttributeType.setSubstringOid( null );
                 }
                 else
                 {
-                    modifiedAttributeType.setSubstrName( ( ( NonExistingMatchingRule ) selectedItem ).getName() );
+                    modifiedAttributeType.setSubstringOid( ( ( NonExistingMatchingRule ) selectedItem ).getName() );
                 }
             }
             setEditorDirty();
@@ -693,7 +693,7 @@ public class AttributeTypeEditorOverviewPage extends FormPage
         // Getting the original and modified attribute types
         modifiedAttributeType = ( ( AttributeTypeEditor ) getEditor() ).getModifiedAttributeType();
         originalAttributeType = ( ( AttributeTypeEditor ) getEditor() ).getOriginalAttributeType();
-        originalSchema = schemaHandler.getSchema( originalAttributeType.getSchema() );
+        originalSchema = schemaHandler.getSchema( originalAttributeType.getSchemaName() );
 
         // Creating the base UI
         ScrolledForm form = managedForm.getForm();
@@ -914,9 +914,9 @@ public class AttributeTypeEditorOverviewPage extends FormPage
     private void fillInUiFields()
     {
         // ALIASES Label
-        if ( ( modifiedAttributeType.getNamesRef() != null ) && ( modifiedAttributeType.getNamesRef().length != 0 ) )
+        if ( ( modifiedAttributeType.getNames() != null ) && ( modifiedAttributeType.getNames().size() != 0 ) )
         {
-            aliasesText.setText( ViewUtils.concateAliases( modifiedAttributeType.getNamesRef() ) );
+            aliasesText.setText( ViewUtils.concateAliases( modifiedAttributeType.getNames() ) );
         }
         else
         {
@@ -930,7 +930,7 @@ public class AttributeTypeEditorOverviewPage extends FormPage
         }
 
         // SCHEMA Field
-        schemaLabel.setText( modifiedAttributeType.getSchema() );
+        schemaLabel.setText( modifiedAttributeType.getSchemaName() );
 
         // DESCRIPTION Field
         if ( modifiedAttributeType.getDescription() != null )
@@ -948,22 +948,22 @@ public class AttributeTypeEditorOverviewPage extends FormPage
         fillSyntaxCombo();
 
         // SYNTAX LENGTH Field
-        if ( modifiedAttributeType.getLength() != -1 )
+        if ( modifiedAttributeType.getSyntaxLength() != -1 )
         {
-            syntaxLengthText.setText( modifiedAttributeType.getLength() + "" ); //$NON-NLS-1$
+            syntaxLengthText.setText( modifiedAttributeType.getSyntaxLength() + "" ); //$NON-NLS-1$
         }
 
         // OBSOLETE Checkbox
         obsoleteCheckbox.setSelection( modifiedAttributeType.isObsolete() );
 
         // SINGLE-VALUE Checkbox
-        singleValueCheckbox.setSelection( modifiedAttributeType.isSingleValue() );
+        singleValueCheckbox.setSelection( modifiedAttributeType.isSingleValued() );
 
         // COLLECTIVE Checkbox
         collectiveCheckbox.setSelection( modifiedAttributeType.isCollective() );
 
         // NO-USER-MODIFICATION Checkbox
-        noUserModificationCheckbox.setSelection( !modifiedAttributeType.isCanUserModify() );
+        noUserModificationCheckbox.setSelection( !modifiedAttributeType.isUserModifiable() );
 
         // EQUALITY Combo
         fillEqualityCombo();
@@ -1077,7 +1077,7 @@ public class AttributeTypeEditorOverviewPage extends FormPage
     {
         equalityComboViewer.setInput( new ATEMatchingRulesComboInput() );
 
-        String equalityName = modifiedAttributeType.getEqualityName();
+        String equalityName = modifiedAttributeType.getEqualityOid();
         if ( equalityName == null )
         {
             equalityComboViewer.setSelection( new StructuredSelection( new NonExistingMatchingRule(
@@ -1112,7 +1112,7 @@ public class AttributeTypeEditorOverviewPage extends FormPage
     {
         orderingComboViewer.setInput( new ATEMatchingRulesComboInput() );
 
-        String orderingName = modifiedAttributeType.getOrderingName();
+        String orderingName = modifiedAttributeType.getOrderingOid();
         if ( orderingName == null )
         {
             orderingComboViewer.setSelection( new StructuredSelection( new NonExistingMatchingRule(
@@ -1148,7 +1148,7 @@ public class AttributeTypeEditorOverviewPage extends FormPage
     {
         substringComboViewer.setInput( new ATEMatchingRulesComboInput() );
 
-        String substringName = modifiedAttributeType.getSubstrName();
+        String substringName = modifiedAttributeType.getSubstringOid();
         if ( substringName == null )
         {
             substringComboViewer.setSelection( new StructuredSelection( new NonExistingMatchingRule(

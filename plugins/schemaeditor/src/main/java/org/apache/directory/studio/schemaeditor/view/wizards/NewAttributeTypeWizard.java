@@ -74,21 +74,21 @@ public class NewAttributeTypeWizard extends Wizard implements INewWizard
     {
         // Creating the new attribute type
         AttributeTypeImpl newAT = new AttributeTypeImpl( generalPage.getOidValue() );
-        newAT.setSchema( generalPage.getSchemaValue() );
+        newAT.setSchemaName( generalPage.getSchemaValue() );
         newAT.setSchemaObject( Activator.getDefault().getSchemaHandler().getSchema( generalPage.getSchemaValue() ) );
         newAT.setNames( generalPage.getAliasesValue() );
         newAT.setDescription( generalPage.getDescriptionValue() );
-        newAT.setSuperiorName( contentPage.getSuperiorValue() );
+        newAT.setSuperiorOid( contentPage.getSuperiorValue() );
         newAT.setUsage( contentPage.getUsageValue() );
         newAT.setSyntaxOid( contentPage.getSyntax() );
-        newAT.setLength( contentPage.getSyntaxLengthValue() );
+        newAT.setSyntaxLength( contentPage.getSyntaxLengthValue() );
         newAT.setObsolete( contentPage.getObsoleteValue() );
-        newAT.setSingleValue( contentPage.getSingleValueValue() );
+        newAT.setSingleValued( contentPage.getSingleValueValue() );
         newAT.setCollective( contentPage.getCollectiveValue() );
-        newAT.setCanUserModify( !contentPage.getNoUserModificationValue() );
-        newAT.setEqualityName( matchingRulesPage.getEqualityMatchingRuleValue() );
-        newAT.setOrderingName( matchingRulesPage.getOrderingMatchingRuleValue() );
-        newAT.setSubstrName( matchingRulesPage.getSubstringMatchingRuleValue() );
+        newAT.setUserModifiable( !contentPage.getNoUserModificationValue() );
+        newAT.setEqualityOid( matchingRulesPage.getEqualityMatchingRuleValue() );
+        newAT.setOrderingOid( matchingRulesPage.getOrderingMatchingRuleValue() );
+        newAT.setSubstringOid( matchingRulesPage.getSubstringMatchingRuleValue() );
 
         // Adding the new attribute type
         Activator.getDefault().getSchemaHandler().addAttributeType( newAT );

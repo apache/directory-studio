@@ -482,7 +482,7 @@ public class SchemaViewContentProvider implements IStructuredContentProvider, IT
     public void attributeTypeAddedFlatPresentation( AttributeTypeImpl at )
     {
         SchemaWrapper schemaWrapper = ( SchemaWrapper ) getWrapper( Activator.getDefault().getSchemaHandler()
-            .getSchema( at.getSchema() ) );
+            .getSchema( at.getSchemaName() ) );
         if ( schemaWrapper != null )
         {
             AttributeTypeWrapper atw = null;
@@ -844,7 +844,7 @@ public class SchemaViewContentProvider implements IStructuredContentProvider, IT
     public void objectClassAddedFlatPresentation( ObjectClassImpl oc )
     {
         SchemaWrapper schemaWrapper = ( SchemaWrapper ) getWrapper( Activator.getDefault().getSchemaHandler()
-            .getSchema( oc.getSchema() ) );
+            .getSchema( oc.getSchemaName() ) );
         if ( schemaWrapper != null )
         {
             ObjectClassWrapper ocw = null;

@@ -90,21 +90,21 @@ public class PluginUtils
     public static AttributeTypeImpl getClone( AttributeTypeImpl at )
     {
         AttributeTypeImpl clone = new AttributeTypeImpl( at.getOid() );
-        clone.setNames( at.getNamesRef() );
-        clone.setSchema( at.getSchema() );
+        clone.setNames( at.getNames() );
+        clone.setSchemaName( at.getSchemaName() );
         clone.setSchemaObject( at.getSchemaObject() );
         clone.setDescription( at.getDescription() );
-        clone.setSuperiorName( at.getSuperiorName() );
+        clone.setSuperiorOid( at.getSuperiorOid() );
         clone.setUsage( at.getUsage() );
         clone.setSyntaxOid( at.getSyntaxOid() );
-        clone.setLength( at.getLength() );
+        clone.setSyntaxLength( at.getSyntaxLength() );
         clone.setObsolete( at.isObsolete() );
-        clone.setSingleValue( at.isSingleValue() );
+        clone.setSingleValued( at.isSingleValued() );
         clone.setCollective( at.isCollective() );
-        clone.setCanUserModify( at.isCanUserModify() );
-        clone.setEqualityName( at.getEqualityName() );
-        clone.setOrderingName( at.getOrderingName() );
-        clone.setSubstrName( at.getSubstrName() );
+        clone.setUserModifiable( at.isUserModifiable() );
+        clone.setEqualityOid( at.getEqualityOid() );
+        clone.setOrderingOid( at.getOrderingOid() );
+        clone.setSubstringOid( at.getSubstringOid() );
 
         return clone;
     }
@@ -121,15 +121,15 @@ public class PluginUtils
     public static ObjectClassImpl getClone( ObjectClassImpl oc )
     {
         ObjectClassImpl clone = new ObjectClassImpl( oc.getOid() );
-        clone.setNames( oc.getNamesRef() );
+        clone.setNames( oc.getNames() );
+        clone.setSchemaName( oc.getSchemaName() );
         clone.setSchemaObject( oc.getSchemaObject() );
-        clone.setSchema( oc.getSchema() );
         clone.setDescription( oc.getDescription() );
-        clone.setSuperClassesNames( oc.getSuperClassesNames() );
+        clone.setSuperiorOids( oc.getSuperiorOids() );
         clone.setType( oc.getType() );
         clone.setObsolete( oc.isObsolete() );
-        clone.setMustNamesList( oc.getMustNamesList() );
-        clone.setMayNamesList( oc.getMayNamesList() );
+        clone.setMustAttributeTypeOids( oc.getMustAttributeTypeOids() );
+        clone.setMayAttributeTypeOids( oc.getMayAttributeTypeOids() );
 
         return clone;
     }

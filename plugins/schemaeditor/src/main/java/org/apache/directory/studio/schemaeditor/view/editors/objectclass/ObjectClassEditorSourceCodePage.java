@@ -25,7 +25,7 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.util.List;
 
-import org.apache.directory.shared.ldap.schema.parsers.ObjectClassLiteral;
+import org.apache.directory.shared.ldap.schema.ObjectClass;
 import org.apache.directory.shared.ldap.schema.parsers.OpenLdapSchemaParser;
 import org.apache.directory.studio.schemaeditor.PluginConstants;
 import org.apache.directory.studio.schemaeditor.model.ObjectClassImpl;
@@ -87,7 +87,7 @@ public class ObjectClassEditorSourceCodePage extends FormPage
                 }
                 else
                 {
-                    updateObjectClass( ( ObjectClassLiteral ) objectclasses.get( 0 ) );
+                    updateObjectClass( ( ObjectClass ) objectclasses.get( 0 ) );
                 }
             }
             catch ( IOException e1 )
@@ -178,16 +178,16 @@ public class ObjectClassEditorSourceCodePage extends FormPage
      * @param ocl
      *      the Object Class Literal
      */
-    private void updateObjectClass( ObjectClassLiteral ocl )
+    private void updateObjectClass( ObjectClass ocl )
     {
         modifiedObjectClass.setDescription( ocl.getDescription() );
-        modifiedObjectClass.setMayNamesList( ocl.getMay() );
-        modifiedObjectClass.setMustNamesList( ocl.getMust() );
+        modifiedObjectClass.setMayAttributeTypeOids( ocl.getMayAttributeTypeOids() );
+        modifiedObjectClass.setMustAttributeTypeOids( ocl.getMustAttributeTypeOids() );
         modifiedObjectClass.setNames( ocl.getNames() );
         modifiedObjectClass.setObsolete( ocl.isObsolete() );
         modifiedObjectClass.setOid( ocl.getOid() );
-        modifiedObjectClass.setSuperClassesNames( ocl.getSuperiors() );
-        modifiedObjectClass.setType( ocl.getClassType() );
+        modifiedObjectClass.setSuperiorOids( ocl.getSuperiorOids() );
+        modifiedObjectClass.setType( ocl.getType() );
     }
 
 

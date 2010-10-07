@@ -60,24 +60,24 @@ public class SchemaEditorTableViewerContentProvider implements IStructuredConten
                 {
                     if ( o1 instanceof AttributeTypeImpl && o2 instanceof AttributeTypeImpl )
                     {
-                        String[] at1Names = ( ( AttributeTypeImpl ) o1 ).getNamesRef();
-                        String[] at2Names = ( ( AttributeTypeImpl ) o2 ).getNamesRef();
+                        List<String> at1Names = ( ( AttributeTypeImpl ) o1 ).getNames();
+                        List<String> at2Names = ( ( AttributeTypeImpl ) o2 ).getNames();
 
-                        if ( ( at1Names != null ) && ( at2Names != null ) && ( at1Names.length > 0 )
-                            && ( at2Names.length > 0 ) )
+                        if ( ( at1Names != null ) && ( at2Names != null ) && ( at1Names.size() > 0 )
+                            && ( at2Names.size() > 0 ) )
                         {
-                            return at1Names[0].compareToIgnoreCase( at2Names[0] );
+                            return at1Names.get( 0 ).compareToIgnoreCase( at2Names.get( 0 ) );
                         }
                     }
                     else if ( o1 instanceof ObjectClassImpl && o2 instanceof ObjectClassImpl )
                     {
-                        String[] oc1Names = ( ( ObjectClassImpl ) o1 ).getNamesRef();
-                        String[] oc2Names = ( ( ObjectClassImpl ) o2 ).getNamesRef();
+                        List<String> oc1Names = ( ( ObjectClassImpl ) o1 ).getNames();
+                        List<String> oc2Names = ( ( ObjectClassImpl ) o2 ).getNames();
 
-                        if ( ( oc1Names != null ) && ( oc2Names != null ) && ( oc1Names.length > 0 )
-                            && ( oc2Names.length > 0 ) )
+                        if ( ( oc1Names != null ) && ( oc2Names != null ) && ( oc1Names.size() > 0 )
+                            && ( oc2Names.size() > 0 ) )
                         {
-                            return oc1Names[0].compareToIgnoreCase( oc2Names[0] );
+                            return oc1Names.get( 0 ).compareToIgnoreCase( oc2Names.get( 0 ) );
                         }
                     }
 

@@ -20,6 +20,8 @@
 package org.apache.directory.studio.schemaeditor.view.views;
 
 
+import java.util.List;
+
 import org.apache.directory.shared.ldap.schema.SchemaObject;
 import org.apache.directory.studio.schemaeditor.Activator;
 import org.apache.directory.studio.schemaeditor.PluginConstants;
@@ -76,10 +78,10 @@ public class SearchViewLabelProvider extends LabelProvider
             // Label
             if ( labelValue == PluginConstants.PREFS_SEARCH_VIEW_LABEL_FIRST_NAME )
             {
-                String[] names = at.getNamesRef();
-                if ( ( names != null ) && ( names.length > 0 ) )
+                List<String> names = at.getNames();
+                if ( ( names != null ) && ( names.size() > 0 ) )
                 {
-                    label = names[0];
+                    label = names.get( 0 );
                 }
                 else
                 {
@@ -88,8 +90,8 @@ public class SearchViewLabelProvider extends LabelProvider
             }
             else if ( labelValue == PluginConstants.PREFS_SEARCH_VIEW_LABEL_ALL_ALIASES )
             {
-                String[] names = at.getNamesRef();
-                if ( ( names != null ) && ( names.length > 0 ) )
+                List<String> names = at.getNames();
+                if ( ( names != null ) && ( names.size() > 0 ) )
                 {
                     label = ViewUtils.concateAliases( names );
                 }
@@ -105,10 +107,10 @@ public class SearchViewLabelProvider extends LabelProvider
             else
             // Default
             {
-                String[] names = at.getNamesRef();
-                if ( ( names != null ) && ( names.length > 0 ) )
+                List<String> names = at.getNames();
+                if ( ( names != null ) && ( names.size() > 0 ) )
                 {
-                    label = names[0];
+                    label = names.get( 0 );
                 }
                 else
                 {
@@ -129,10 +131,10 @@ public class SearchViewLabelProvider extends LabelProvider
             // Label
             if ( labelValue == PluginConstants.PREFS_SEARCH_VIEW_LABEL_FIRST_NAME )
             {
-                String[] names = oc.getNamesRef();
-                if ( ( names != null ) && ( names.length > 0 ) )
+                List<String> names = oc.getNames();
+                if ( ( names != null ) && ( names.size() > 0 ) )
                 {
-                    label = names[0];
+                    label = names.get( 0 );
                 }
                 else
                 {
@@ -141,8 +143,8 @@ public class SearchViewLabelProvider extends LabelProvider
             }
             else if ( labelValue == PluginConstants.PREFS_SEARCH_VIEW_LABEL_ALL_ALIASES )
             {
-                String[] names = oc.getNamesRef();
-                if ( ( names != null ) && ( names.length > 0 ) )
+                List<String> names = oc.getNames();
+                if ( ( names != null ) && ( names.size() > 0 ) )
                 {
                     label = ViewUtils.concateAliases( names );
                 }
@@ -158,10 +160,10 @@ public class SearchViewLabelProvider extends LabelProvider
             else
             // Default
             {
-                String[] names = oc.getNamesRef();
-                if ( ( names != null ) && ( names.length > 0 ) )
+                List<String> names = oc.getNames();
+                if ( ( names != null ) && ( names.size() > 0 ) )
                 {
-                    label = names[0];
+                    label = names.get( 0 );
                 }
                 else
                 {
@@ -186,10 +188,10 @@ public class SearchViewLabelProvider extends LabelProvider
 
                 if ( secondaryLabelValue == PluginConstants.PREFS_SEARCH_VIEW_LABEL_FIRST_NAME )
                 {
-                    String[] names = at.getNamesRef();
-                    if ( ( names != null ) && ( names.length > 0 ) )
+                    List<String> names = at.getNames();
+                    if ( ( names != null ) && ( names.size() > 0 ) )
                     {
-                        secondaryLabel = names[0];
+                        secondaryLabel = names.get( 0 );
                     }
                     else
                     {
@@ -198,8 +200,8 @@ public class SearchViewLabelProvider extends LabelProvider
                 }
                 else if ( secondaryLabelValue == PluginConstants.PREFS_SEARCH_VIEW_LABEL_ALL_ALIASES )
                 {
-                    String[] names = at.getNamesRef();
-                    if ( ( names != null ) && ( names.length > 0 ) )
+                    List<String> names = at.getNames();
+                    if ( ( names != null ) && ( names.size() > 0 ) )
                     {
                         secondaryLabel = ViewUtils.concateAliases( names );
                     }
@@ -219,10 +221,10 @@ public class SearchViewLabelProvider extends LabelProvider
 
                 if ( secondaryLabelValue == PluginConstants.PREFS_SEARCH_VIEW_LABEL_FIRST_NAME )
                 {
-                    String[] names = oc.getNamesRef();
-                    if ( ( names != null ) && ( names.length > 0 ) )
+                    List<String> names = oc.getNames();
+                    if ( ( names != null ) && ( names.size() > 0 ) )
                     {
-                        secondaryLabel = names[0];
+                        secondaryLabel = names.get( 0 );
                     }
                     else
                     {
@@ -231,8 +233,8 @@ public class SearchViewLabelProvider extends LabelProvider
                 }
                 else if ( secondaryLabelValue == PluginConstants.PREFS_SEARCH_VIEW_LABEL_ALL_ALIASES )
                 {
-                    String[] names = oc.getNamesRef();
-                    if ( ( names != null ) && ( names.length > 0 ) )
+                    List<String> names = oc.getNames();
+                    if ( ( names != null ) && ( names.size() > 0 ) )
                     {
                         secondaryLabel = ViewUtils.concateAliases( names );
                     }
@@ -262,7 +264,7 @@ public class SearchViewLabelProvider extends LabelProvider
             {
                 SchemaObject object = ( SchemaObject ) element;
 
-                label += " " + Messages.getString( "SearchViewLabelProvider.FromSchema" ) + " \"" + object.getSchema() + "\""; //$NON-NLS-1$ //$NON-NLS-2$
+                label += " " + Messages.getString( "SearchViewLabelProvider.FromSchema" ) + " \"" + object.getSchemaName() + "\""; //$NON-NLS-1$ //$NON-NLS-2$
             }
         }
 
