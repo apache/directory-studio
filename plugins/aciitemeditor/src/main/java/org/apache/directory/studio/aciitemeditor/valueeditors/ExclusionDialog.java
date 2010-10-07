@@ -23,9 +23,8 @@ package org.apache.directory.studio.aciitemeditor.valueeditors;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import javax.naming.InvalidNameException;
-
-import org.apache.directory.shared.ldap.name.LdapDN;
+import org.apache.directory.shared.ldap.exception.LdapInvalidDnException;
+import org.apache.directory.shared.ldap.name.DN;
 import org.apache.directory.studio.aciitemeditor.Activator;
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.ldapbrowser.common.widgets.WidgetModifyEvent;
@@ -59,7 +58,7 @@ class ExclusionDialog extends Dialog
     private IBrowserConnection connection;
 
     /** The base. */
-    private LdapDN base;
+    private DN base;
 
     /** The initial type. */
     private String initialType;
@@ -91,7 +90,7 @@ class ExclusionDialog extends Dialog
      * @param base the base DN
      * @param exclusion the exclusion string
      */
-    protected ExclusionDialog( Shell parentShell, IBrowserConnection connection, LdapDN base, String exclusion )
+    protected ExclusionDialog( Shell parentShell, IBrowserConnection connection, DN base, String exclusion )
     {
         super( parentShell );
         this.connection = connection;
@@ -173,10 +172,10 @@ class ExclusionDialog extends Dialog
         entryWidget.createWidget( composite );
         try
         {
-            LdapDN dn = new LdapDN( initalDN );
+            DN dn = new DN( initalDN );
             entryWidget.setInput( connection, dn, base, true );
         }
-        catch ( InvalidNameException e )
+        catch ( LdapInvalidDnException e )
         {
         }
         entryWidget.addWidgetModifyListener( new WidgetModifyListener()

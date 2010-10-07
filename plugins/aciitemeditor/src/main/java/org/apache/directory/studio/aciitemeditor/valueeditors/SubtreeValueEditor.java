@@ -20,7 +20,7 @@
 package org.apache.directory.studio.aciitemeditor.valueeditors;
 
 
-import org.apache.directory.shared.ldap.name.LdapDN;
+import org.apache.directory.shared.ldap.name.DN;
 import org.apache.directory.studio.ldapbrowser.common.dialogs.TextDialog;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
@@ -97,7 +97,7 @@ public class SubtreeValueEditor extends AbstractDialogStringValueEditor
         if ( o != null && o instanceof String )
         {
             IBrowserConnection connection = value.getAttribute().getEntry().getBrowserConnection();
-            LdapDN dn = value.getAttribute().getEntry().getDn();
+            DN dn = value.getAttribute().getEntry().getDn();
             return new SubtreeSpecificationValueWrapper( connection, dn, value.getStringValue() );
         }
 
@@ -116,7 +116,7 @@ public class SubtreeValueEditor extends AbstractDialogStringValueEditor
         private IBrowserConnection connection;
 
         /** The subentry's DN */
-        private LdapDN subentryDN;
+        private DN subentryDN;
 
         /** The subtreeSpecification */
         private String subtreeSpecification;
@@ -132,7 +132,7 @@ public class SubtreeValueEditor extends AbstractDialogStringValueEditor
          * @param subtreeSpecification
          *      the subtreeSpecification
          */
-        private SubtreeSpecificationValueWrapper( IBrowserConnection connection, LdapDN subentryDN,
+        private SubtreeSpecificationValueWrapper( IBrowserConnection connection, DN subentryDN,
             String subtreeSpecification )
         {
             this.connection = connection;

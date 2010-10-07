@@ -28,12 +28,25 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import javax.naming.NamingException;
-import javax.naming.directory.Attribute;
-
 import org.apache.directory.shared.ldap.aci.ACIItemParser;
 import org.apache.directory.shared.ldap.aci.ItemFirstACIItem;
 import org.apache.directory.shared.ldap.aci.ProtectedItem;
+import org.apache.directory.shared.ldap.aci.protectedItem.AllAttributeValuesItem;
+import org.apache.directory.shared.ldap.aci.protectedItem.AllUserAttributeTypesAndValuesItem;
+import org.apache.directory.shared.ldap.aci.protectedItem.AllUserAttributeTypesItem;
+import org.apache.directory.shared.ldap.aci.protectedItem.AttributeTypeItem;
+import org.apache.directory.shared.ldap.aci.protectedItem.AttributeValueItem;
+import org.apache.directory.shared.ldap.aci.protectedItem.ClassesItem;
+import org.apache.directory.shared.ldap.aci.protectedItem.EntryItem;
+import org.apache.directory.shared.ldap.aci.protectedItem.MaxImmSubItem;
+import org.apache.directory.shared.ldap.aci.protectedItem.MaxValueCountElem;
+import org.apache.directory.shared.ldap.aci.protectedItem.MaxValueCountItem;
+import org.apache.directory.shared.ldap.aci.protectedItem.RangeOfValuesItem;
+import org.apache.directory.shared.ldap.aci.protectedItem.RestrictedByElem;
+import org.apache.directory.shared.ldap.aci.protectedItem.RestrictedByItem;
+import org.apache.directory.shared.ldap.aci.protectedItem.SelfValueItem;
+import org.apache.directory.shared.ldap.entry.EntryAttribute;
+import org.apache.directory.shared.ldap.schema.AttributeType;
 import org.apache.directory.studio.valueeditors.AbstractDialogStringValueEditor;
 import org.eclipse.osgi.util.NLS;
 
@@ -51,18 +64,18 @@ public class ProtectedItemWrapper
     static
     {
         Map<Class<? extends ProtectedItem>, String> map = new HashMap<Class<? extends ProtectedItem>, String>();
-        map.put( ProtectedItem.Entry.class, "entry" ); //$NON-NLS-1$
-        map.put( ProtectedItem.AllUserAttributeTypes.class, "allUserAttributeTypes" ); //$NON-NLS-1$
-        map.put( ProtectedItem.AttributeType.class, "attributeType" ); //$NON-NLS-1$
-        map.put( ProtectedItem.AllAttributeValues.class, "allAttributeValues" ); //$NON-NLS-1$
-        map.put( ProtectedItem.AllUserAttributeTypesAndValues.class, "allUserAttributeTypesAndValues" ); //$NON-NLS-1$
-        map.put( ProtectedItem.AttributeValue.class, "attributeValue" ); //$NON-NLS-1$
-        map.put( ProtectedItem.SelfValue.class, "selfValue" ); //$NON-NLS-1$
-        map.put( ProtectedItem.RangeOfValues.class, "rangeOfValues" ); //$NON-NLS-1$
-        map.put( ProtectedItem.MaxValueCount.class, "maxValueCount" ); //$NON-NLS-1$
-        map.put( ProtectedItem.MaxImmSub.class, "maxImmSub" ); //$NON-NLS-1$
-        map.put( ProtectedItem.RestrictedBy.class, "restrictedBy" ); //$NON-NLS-1$
-        map.put( ProtectedItem.Classes.class, "classes" ); //$NON-NLS-1$
+        map.put( EntryItem.class, "entry" ); //$NON-NLS-1$
+        map.put( AllUserAttributeTypesItem.class, "allUserAttributeTypes" ); //$NON-NLS-1$
+        map.put( AttributeTypeItem.class, "attributeType" ); //$NON-NLS-1$
+        map.put( AllAttributeValuesItem.class, "allAttributeValues" ); //$NON-NLS-1$
+        map.put( AllUserAttributeTypesAndValuesItem.class, "allUserAttributeTypesAndValues" ); //$NON-NLS-1$
+        map.put( AttributeValueItem.class, "attributeValue" ); //$NON-NLS-1$
+        map.put( SelfValueItem.class, "selfValue" ); //$NON-NLS-1$
+        map.put( RangeOfValuesItem.class, "rangeOfValues" ); //$NON-NLS-1$
+        map.put( MaxValueCountItem.class, "maxValueCount" ); //$NON-NLS-1$
+        map.put( MaxImmSubItem.class, "maxImmSub" ); //$NON-NLS-1$
+        map.put( RestrictedByItem.class, "restrictedBy" ); //$NON-NLS-1$
+        map.put( ClassesItem.class, "classes" ); //$NON-NLS-1$
         classToIdentifierMap = Collections.unmodifiableMap( map );
     }
 
@@ -71,28 +84,28 @@ public class ProtectedItemWrapper
     static
     {
         Map<Class<? extends ProtectedItem>, String> map = new HashMap<Class<? extends ProtectedItem>, String>();
-        map.put( ProtectedItem.Entry.class, Messages.getString( "ProtectedItemWrapper.protectedItem.entry.label" ) ); //$NON-NLS-1$
-        map.put( ProtectedItem.AllUserAttributeTypes.class, Messages
+        map.put( EntryItem.class, Messages.getString( "ProtectedItemWrapper.protectedItem.entry.label" ) ); //$NON-NLS-1$
+        map.put( AllUserAttributeTypesItem.class, Messages
             .getString( "ProtectedItemWrapper.protectedItem.allUserAttributeTypes.label" ) ); //$NON-NLS-1$
-        map.put( ProtectedItem.AttributeType.class, Messages
+        map.put( AttributeTypeItem.class, Messages
             .getString( "ProtectedItemWrapper.protectedItem.attributeType.label" ) ); //$NON-NLS-1$
-        map.put( ProtectedItem.AllAttributeValues.class, Messages
+        map.put( AllAttributeValuesItem.class, Messages
             .getString( "ProtectedItemWrapper.protectedItem.allAttributeValues.label" ) ); //$NON-NLS-1$
-        map.put( ProtectedItem.AllUserAttributeTypesAndValues.class, Messages
+        map.put( AllUserAttributeTypesAndValuesItem.class, Messages
             .getString( "ProtectedItemWrapper.protectedItem.allUserAttributeTypesAndValues.label" ) ); //$NON-NLS-1$
-        map.put( ProtectedItem.AttributeValue.class, Messages
+        map.put( AttributeValueItem.class, Messages
             .getString( "ProtectedItemWrapper.protectedItem.attributeValue.label" ) ); //$NON-NLS-1$
-        map.put( ProtectedItem.SelfValue.class, Messages
+        map.put( SelfValueItem.class, Messages
             .getString( "ProtectedItemWrapper.protectedItem.selfValue.label" ) ); //$NON-NLS-1$
-        map.put( ProtectedItem.RangeOfValues.class, Messages
+        map.put( RangeOfValuesItem.class, Messages
             .getString( "ProtectedItemWrapper.protectedItem.rangeOfValues.label" ) ); //$NON-NLS-1$
-        map.put( ProtectedItem.MaxValueCount.class, Messages
+        map.put( MaxValueCountItem.class, Messages
             .getString( "ProtectedItemWrapper.protectedItem.maxValueCount.label" ) ); //$NON-NLS-1$
-        map.put( ProtectedItem.MaxImmSub.class, Messages
+        map.put( MaxImmSubItem.class, Messages
             .getString( "ProtectedItemWrapper.protectedItem.maxImmSub.label" ) ); //$NON-NLS-1$
-        map.put( ProtectedItem.RestrictedBy.class, Messages
+        map.put( RestrictedByItem.class, Messages
             .getString( "ProtectedItemWrapper.protectedItem.restrictedBy.label" ) ); //$NON-NLS-1$
-        map.put( ProtectedItem.Classes.class, Messages.getString( "ProtectedItemWrapper.protectedItem.classes.label" ) ); //$NON-NLS-1$
+        map.put( ClassesItem.class, Messages.getString( "ProtectedItemWrapper.protectedItem.classes.label" ) ); //$NON-NLS-1$
         classToDisplayMap = Collections.unmodifiableMap( map );
     }
 
@@ -190,76 +203,73 @@ public class ProtectedItemWrapper
 
         // switch on userClass type
         // no value in ProtectedItem.Entry, ProtectedItem.AllUserAttributeTypes and ProtectedItem.AllUserAttributeTypesAndValues
-        if ( item.getClass() == ProtectedItem.AttributeType.class )
+        if ( item.getClass() == AttributeTypeItem.class )
         {
-            ProtectedItem.AttributeType at = ( ProtectedItem.AttributeType ) item;
-            for ( Iterator<String> it = at.iterator(); it.hasNext(); )
+            AttributeTypeItem at = ( AttributeTypeItem ) item;
+            for ( Iterator<AttributeType> it = at.iterator(); it.hasNext(); )
             {
-                values.add( it.next() );
+                AttributeType attributeType = it.next();
+                values.add( attributeType.toString() );
             }
         }
-        else if ( item.getClass() == ProtectedItem.AllAttributeValues.class )
+        else if ( item.getClass() == AllAttributeValuesItem.class )
         {
-            ProtectedItem.AllAttributeValues aav = ( ProtectedItem.AllAttributeValues ) item;
-            for ( Iterator<String> it = aav.iterator(); it.hasNext(); )
+            AllAttributeValuesItem aav = ( AllAttributeValuesItem ) item;
+            for ( Iterator<AttributeType> it = aav.iterator(); it.hasNext(); )
             {
-                values.add( it.next() );
+                AttributeType attributeType = it.next();
+                values.add( attributeType.toString() );
             }
         }
-        else if ( item.getClass() == ProtectedItem.AttributeValue.class )
+        else if ( item.getClass() == AttributeValueItem.class )
         {
-            ProtectedItem.AttributeValue av = ( ProtectedItem.AttributeValue ) item;
-            for ( Iterator<Attribute> it = av.iterator(); it.hasNext(); )
+            AttributeValueItem av = ( AttributeValueItem ) item;
+            for ( Iterator<EntryAttribute> it = av.iterator(); it.hasNext(); )
             {
-                Attribute attribute = it.next();
-                try
-                {
-                    values.add( attribute.getID() + "=" + attribute.get() ); //$NON-NLS-1$
-                }
-                catch ( NamingException e )
-                {
-                }
+                EntryAttribute entryAttribute = it.next();
+                values.add( entryAttribute.getId() + "=" + entryAttribute.get() ); //$NON-NLS-1$
             }
         }
-        else if ( item.getClass() == ProtectedItem.SelfValue.class )
+        else if ( item.getClass() == SelfValueItem.class )
         {
-            ProtectedItem.SelfValue sv = ( ProtectedItem.SelfValue ) item;
-            for ( Iterator<String> it = sv.iterator(); it.hasNext(); )
+            SelfValueItem sv = ( SelfValueItem ) item;
+            for ( Iterator<AttributeType> it = sv.iterator(); it.hasNext(); )
             {
-                values.add( it.next() );
+                AttributeType attributeType = it.next();
+                values.add( attributeType.toString() );
             }
         }
-        else if ( item.getClass() == ProtectedItem.RangeOfValues.class )
+        else if ( item.getClass() == RangeOfValuesItem.class )
         {
-            ProtectedItem.RangeOfValues rov = ( ProtectedItem.RangeOfValues ) item;
-            values.add( rov.getFilter().toString() );
+            RangeOfValuesItem rov = ( RangeOfValuesItem ) item;
+            values.add( rov.getRefinement().toString() );
         }
-        else if ( item.getClass() == ProtectedItem.MaxValueCount.class )
+        else if ( item.getClass() == MaxValueCountItem.class )
         {
-            ProtectedItem.MaxValueCount mvc = ( ProtectedItem.MaxValueCount ) item;
-            for ( Iterator<ProtectedItem.MaxValueCountItem> it = mvc.iterator(); it.hasNext(); )
+            MaxValueCountItem mvc = ( MaxValueCountItem ) item;
+            for ( Iterator<MaxValueCountElem> it = mvc.iterator(); it.hasNext(); )
             {
-                ProtectedItem.MaxValueCountItem mvci = it.next();
+                MaxValueCountElem mvci = it.next();
                 values.add( mvci.toString() );
             }
         }
-        else if ( item.getClass() == ProtectedItem.MaxImmSub.class )
+        else if ( item.getClass() == MaxImmSubItem.class )
         {
-            ProtectedItem.MaxImmSub mis = ( ProtectedItem.MaxImmSub ) item;
+            MaxImmSubItem mis = ( MaxImmSubItem ) item;
             values.add( Integer.toString( mis.getValue() ) );
         }
-        else if ( item.getClass() == ProtectedItem.RestrictedBy.class )
+        else if ( item.getClass() == RestrictedByItem.class )
         {
-            ProtectedItem.RestrictedBy rb = ( ProtectedItem.RestrictedBy ) item;
-            for ( Iterator<ProtectedItem.RestrictedByItem> it = rb.iterator(); it.hasNext(); )
+            RestrictedByItem rb = ( RestrictedByItem ) item;
+            for ( Iterator<RestrictedByElem> it = rb.iterator(); it.hasNext(); )
             {
-                ProtectedItem.RestrictedByItem rbi = it.next();
-                values.add( rbi.toString() );
+                RestrictedByElem rbe = it.next();
+                values.add( rbe.toString() );
             }
         }
-        else if ( item.getClass() == ProtectedItem.Classes.class )
+        else if ( item.getClass() == ClassesItem.class )
         {
-            ProtectedItem.Classes classes = ( ProtectedItem.Classes ) item;
+            ClassesItem classes = ( ClassesItem ) item;
             StringBuilder sb = new StringBuilder();
             classes.getClasses().printRefinementToBuffer( sb );
             values.add( sb.toString() );

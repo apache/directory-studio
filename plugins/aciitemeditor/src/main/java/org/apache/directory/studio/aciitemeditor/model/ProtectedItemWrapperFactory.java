@@ -20,7 +20,18 @@
 package org.apache.directory.studio.aciitemeditor.model;
 
 
-import org.apache.directory.shared.ldap.aci.ProtectedItem;
+import org.apache.directory.shared.ldap.aci.protectedItem.AllAttributeValuesItem;
+import org.apache.directory.shared.ldap.aci.protectedItem.AllUserAttributeTypesAndValuesItem;
+import org.apache.directory.shared.ldap.aci.protectedItem.AllUserAttributeTypesItem;
+import org.apache.directory.shared.ldap.aci.protectedItem.AttributeTypeItem;
+import org.apache.directory.shared.ldap.aci.protectedItem.AttributeValueItem;
+import org.apache.directory.shared.ldap.aci.protectedItem.ClassesItem;
+import org.apache.directory.shared.ldap.aci.protectedItem.EntryItem;
+import org.apache.directory.shared.ldap.aci.protectedItem.MaxImmSubItem;
+import org.apache.directory.shared.ldap.aci.protectedItem.MaxValueCountItem;
+import org.apache.directory.shared.ldap.aci.protectedItem.RangeOfValuesItem;
+import org.apache.directory.shared.ldap.aci.protectedItem.RestrictedByItem;
+import org.apache.directory.shared.ldap.aci.protectedItem.SelfValueItem;
 import org.apache.directory.studio.aciitemeditor.valueeditors.AttributeTypeAndValueValueEditor;
 import org.apache.directory.studio.aciitemeditor.valueeditors.AttributeTypeValueEditor;
 import org.apache.directory.studio.aciitemeditor.valueeditors.FilterValueEditor;
@@ -49,62 +60,62 @@ public class ProtectedItemWrapperFactory
         ProtectedItemWrapper[] protectedItemWrappers = new ProtectedItemWrapper[]
             {
             // entry
-                new ProtectedItemWrapper( ProtectedItem.Entry.class, false, "", //$NON-NLS-1$
+                new ProtectedItemWrapper( EntryItem.class, false, "", //$NON-NLS-1$
                     "", //$NON-NLS-1$
                     null ),
 
                 // allUserAttributeTypes
-                new ProtectedItemWrapper( ProtectedItem.AllUserAttributeTypes.class, false, "", //$NON-NLS-1$
+                new ProtectedItemWrapper( AllUserAttributeTypesItem.class, false, "", //$NON-NLS-1$
                     "", //$NON-NLS-1$
                     null ),
 
                 // attributeType { 1.2.3, cn }
-                new ProtectedItemWrapper( ProtectedItem.AttributeType.class, true, "", //$NON-NLS-1$
+                new ProtectedItemWrapper( AttributeTypeItem.class, true, "", //$NON-NLS-1$
                     "", //$NON-NLS-1$
                     new AttributeTypeValueEditor() ),
 
                 // allAttributeValues { 1.2.3, cn }
-                new ProtectedItemWrapper( ProtectedItem.AllAttributeValues.class, true, "", //$NON-NLS-1$
+                new ProtectedItemWrapper( AllAttributeValuesItem.class, true, "", //$NON-NLS-1$
                     "", //$NON-NLS-1$
                     new AttributeTypeValueEditor() ),
 
                 // attributeType
-                new ProtectedItemWrapper( ProtectedItem.AllUserAttributeTypesAndValues.class, false, "", //$NON-NLS-1$
+                new ProtectedItemWrapper( AllUserAttributeTypesAndValuesItem.class, false, "", //$NON-NLS-1$
                     "", //$NON-NLS-1$
                     null ),
 
                 // attributeValue { ou=people, cn=Ersin }
-                new ProtectedItemWrapper( ProtectedItem.AttributeValue.class, true, "", //$NON-NLS-1$
+                new ProtectedItemWrapper( AttributeValueItem.class, true, "", //$NON-NLS-1$
                     "", //$NON-NLS-1$
                     new AttributeTypeAndValueValueEditor() ),
 
                 // selfValue { 1.2.3, cn }
-                new ProtectedItemWrapper( ProtectedItem.SelfValue.class, true, "", //$NON-NLS-1$
+                new ProtectedItemWrapper( SelfValueItem.class, true, "", //$NON-NLS-1$
                     "", //$NON-NLS-1$
                     new AttributeTypeValueEditor() ),
 
                 // rangeOfValues (cn=E*)
-                new ProtectedItemWrapper( ProtectedItem.RangeOfValues.class, false, "", //$NON-NLS-1$
+                new ProtectedItemWrapper( RangeOfValuesItem.class, false, "", //$NON-NLS-1$
                     "", //$NON-NLS-1$
                     new FilterValueEditor() ),
 
                 // maxValueCount { { type 10.11.12, maxCount 10 }, { maxCount 20, type 11.12.13  } }
-                new ProtectedItemWrapper( ProtectedItem.MaxValueCount.class, true, "", //$NON-NLS-1$
+                new ProtectedItemWrapper( MaxValueCountItem.class, true, "", //$NON-NLS-1$
                     "", //$NON-NLS-1$
                     new MaxValueCountValueEditor() ),
 
                 // maxImmSub 3
-                new ProtectedItemWrapper( ProtectedItem.MaxImmSub.class, false, "", //$NON-NLS-1$
+                new ProtectedItemWrapper( MaxImmSubItem.class, false, "", //$NON-NLS-1$
                     "", //$NON-NLS-1$
                     new IntegerValueEditor() ),
 
                 // restrictedBy { { type 10.11.12, valuesIn ou }, { valuesIn cn, type 11.12.13  } }
-                new ProtectedItemWrapper( ProtectedItem.RestrictedBy.class, true, "", //$NON-NLS-1$
+                new ProtectedItemWrapper( RestrictedByItem.class, true, "", //$NON-NLS-1$
                     "", //$NON-NLS-1$
                     new RestrictedByValueEditor() ),
 
                 // classes and : { item: xyz , or:{item:X,item:Y}   }
-                new ProtectedItemWrapper( ProtectedItem.Classes.class, false, "", //$NON-NLS-1$
+                new ProtectedItemWrapper( ClassesItem.class, false, "", //$NON-NLS-1$
                     "", //$NON-NLS-1$
                     new TextValueEditor() // TODO: RefinementValueEditor 
                 ),
