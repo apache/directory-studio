@@ -328,7 +328,7 @@ public class DifferenceEngineTest extends TestCase
             fail();
         }
 
-        assertEquals( 1234, ( ( SyntaxLengthDifference ) difference ).getNewValue() );
+        assertEquals( 1234L, ( ( SyntaxLengthDifference ) difference ).getNewValue() );
     }
 
 
@@ -674,8 +674,8 @@ public class DifferenceEngineTest extends TestCase
             fail();
         }
 
-        assertEquals( 1234, ( ( SyntaxLengthDifference ) difference ).getOldValue() );
-        assertEquals( 12345, ( ( SyntaxLengthDifference ) difference ).getNewValue() );
+        assertEquals( 1234L, ( ( SyntaxLengthDifference ) difference ).getOldValue() );
+        assertEquals( 12345L, ( ( SyntaxLengthDifference ) difference ).getNewValue() );
     }
 
 
@@ -1018,7 +1018,7 @@ public class DifferenceEngineTest extends TestCase
             fail();
         }
 
-        assertEquals( 1234, ( ( SyntaxLengthDifference ) difference ).getOldValue() );
+        assertEquals( 1234L, ( ( SyntaxLengthDifference ) difference ).getOldValue() );
         assertNull( ( ( SyntaxLengthDifference ) difference ).getNewValue() );
     }
 }

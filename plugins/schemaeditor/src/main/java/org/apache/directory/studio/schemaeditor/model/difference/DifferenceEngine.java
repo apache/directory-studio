@@ -777,19 +777,19 @@ public class DifferenceEngine
         long at1SyntaxLength = at1.getSyntaxLength();
         long at2SyntaxLength = at2.getSyntaxLength();
 
-        if ( ( at1SyntaxLength == -1 ) && ( at2SyntaxLength != -1 ) )
+        if ( ( at1SyntaxLength == 0 ) && ( at2SyntaxLength != 0 ) )
         {
             PropertyDifference diff = new SyntaxLengthDifference( at1, at2, DifferenceType.ADDED );
             diff.setNewValue( at2SyntaxLength );
             return diff;
         }
-        else if ( ( at1SyntaxLength != -1 ) && ( at2SyntaxLength == -1 ) )
+        else if ( ( at1SyntaxLength != 0 ) && ( at2SyntaxLength == 0 ) )
         {
             PropertyDifference diff = new SyntaxLengthDifference( at1, at2, DifferenceType.REMOVED );
             diff.setOldValue( at1SyntaxLength );
             return diff;
         }
-        else if ( ( at1SyntaxLength != -1 ) && ( at2SyntaxLength != -1 ) )
+        else if ( ( at1SyntaxLength != 0 ) && ( at2SyntaxLength != 0 ) )
         {
             if ( at1SyntaxLength != at2SyntaxLength )
             {
