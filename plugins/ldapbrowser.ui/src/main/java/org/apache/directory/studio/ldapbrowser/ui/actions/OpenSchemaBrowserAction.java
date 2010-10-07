@@ -21,10 +21,10 @@
 package org.apache.directory.studio.ldapbrowser.ui.actions;
 
 
-import org.apache.directory.shared.ldap.schema.parsers.AttributeTypeDescription;
-import org.apache.directory.shared.ldap.schema.parsers.LdapSyntaxDescription;
-import org.apache.directory.shared.ldap.schema.parsers.MatchingRuleDescription;
-import org.apache.directory.shared.ldap.schema.parsers.ObjectClassDescription;
+import org.apache.directory.shared.ldap.schema.AttributeType;
+import org.apache.directory.shared.ldap.schema.LdapSyntax;
+import org.apache.directory.shared.ldap.schema.MatchingRule;
+import org.apache.directory.shared.ldap.schema.ObjectClass;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.ldapbrowser.common.actions.BrowserAction;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
@@ -281,12 +281,12 @@ public class OpenSchemaBrowserAction extends BrowserAction
      * @return
      *      the LDAP Syntax Description
      */
-    private LdapSyntaxDescription getLsd()
+    private LdapSyntax getLsd()
     {
         if ( getConnection() != null )
         {
             Schema schema = getConnection().getSchema();
-            AttributeTypeDescription atd = getAtd();
+            AttributeType atd = getAtd();
 
             if ( atd != null && SchemaUtils.getSyntaxNumericOidTransitive( atd, schema ) != null
                 && schema.hasLdapSyntaxDescription( SchemaUtils.getSyntaxNumericOidTransitive( atd, schema ) ) )
@@ -305,7 +305,7 @@ public class OpenSchemaBrowserAction extends BrowserAction
      * @return
      *      the Object Class Description
      */
-    private ObjectClassDescription getOcd()
+    private ObjectClass getOcd()
     {
         if ( getSelectedAttributes().length == 0 && getSelectedValues().length == 1
             && getSelectedValues()[0].getAttribute().isObjectClassAttribute() )
@@ -330,11 +330,11 @@ public class OpenSchemaBrowserAction extends BrowserAction
      * @return
      *      the Attribute Type Description
      */
-    private AttributeTypeDescription getAtd()
+    private AttributeType getAtd()
     {
         if ( ( getSelectedValues().length + getSelectedAttributes().length ) + getSelectedAttributeHierarchies().length == 1 )
         {
-            AttributeTypeDescription atd = null;
+            AttributeType atd = null;
             if ( getSelectedValues().length == 1 )
             {
                 atd = getSelectedValues()[0].getAttribute().getAttributeTypeDescription();
@@ -414,12 +414,12 @@ public class OpenSchemaBrowserAction extends BrowserAction
      * @return
      *      the Equality Matching Rule Description
      */
-    private MatchingRuleDescription getEmrd()
+    private MatchingRule getEmrd()
     {
         if ( getConnection() != null )
         {
             Schema schema = getConnection().getSchema();
-            AttributeTypeDescription atd = getAtd();
+            AttributeType atd = getAtd();
             if ( atd != null
                 && SchemaUtils.getEqualityMatchingRuleNameOrNumericOidTransitive( atd, schema ) != null
                 && schema.hasLdapSyntaxDescription( SchemaUtils.getEqualityMatchingRuleNameOrNumericOidTransitive( atd,
@@ -439,12 +439,12 @@ public class OpenSchemaBrowserAction extends BrowserAction
      * @return
      *      the Substring Matching Rule Description
      */
-    private MatchingRuleDescription getSmrd()
+    private MatchingRule getSmrd()
     {
         if ( getConnection() != null )
         {
             Schema schema = getConnection().getSchema();
-            AttributeTypeDescription atd = getAtd();
+            AttributeType atd = getAtd();
             if ( atd != null
                 && SchemaUtils.getSubstringMatchingRuleNameOrNumericOidTransitive( atd, schema ) != null
                 && schema.hasLdapSyntaxDescription( SchemaUtils.getSubstringMatchingRuleNameOrNumericOidTransitive(
@@ -464,12 +464,12 @@ public class OpenSchemaBrowserAction extends BrowserAction
      * @return
      *      the Ordering Matching Rule Description
      */
-    private MatchingRuleDescription getOmrd()
+    private MatchingRule getOmrd()
     {
         if ( getConnection() != null )
         {
             Schema schema = getConnection().getSchema();
-            AttributeTypeDescription atd = getAtd();
+            AttributeType atd = getAtd();
             if ( atd != null
                 && SchemaUtils.getOrderingMatchingRuleNameOrNumericOidTransitive( atd, schema ) != null
                 && schema.hasLdapSyntaxDescription( SchemaUtils.getOrderingMatchingRuleNameOrNumericOidTransitive( atd,

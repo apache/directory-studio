@@ -151,7 +151,7 @@ public class SearchResultEditorContentProvider implements ILazyContentProvider
             }
 
             // url += search.getURL();
-            url += Messages.getString( "SearchResultEditorContentProvider.SearchBase" ) + search.getSearchBase().getUpName() + "  -  "; //$NON-NLS-1$ //$NON-NLS-2$
+            url += Messages.getString( "SearchResultEditorContentProvider.SearchBase" ) + search.getSearchBase().getName() + "  -  "; //$NON-NLS-1$ //$NON-NLS-2$
             url += Messages.getString( "SearchResultEditorContentProvider.Filter" ) + search.getFilter(); //$NON-NLS-1$
 
             boolean showDn = BrowserUIPlugin.getDefault().getPreferenceStore().getBoolean(

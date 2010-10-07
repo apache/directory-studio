@@ -21,8 +21,8 @@
 package org.apache.directory.studio.ldapbrowser.ui.editors.schemabrowser;
 
 
-import org.apache.directory.shared.ldap.schema.parsers.AbstractSchemaDescription;
-import org.apache.directory.shared.ldap.schema.parsers.AttributeTypeDescription;
+import org.apache.directory.shared.ldap.schema.AbstractSchemaObject;
+import org.apache.directory.shared.ldap.schema.AttributeType;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.Schema;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.SchemaUtils;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
@@ -168,9 +168,9 @@ public class AttributeTypeDescriptionPage extends SchemaPage
          */
         public String getColumnText( Object obj, int index )
         {
-            if ( obj instanceof AttributeTypeDescription )
+            if ( obj instanceof AttributeType )
             {
-                return SchemaUtils.toString( ( AbstractSchemaDescription ) obj );
+                return SchemaUtils.toString( ( AbstractSchemaObject ) obj );
             }
             return obj.toString();
         }
@@ -197,13 +197,13 @@ public class AttributeTypeDescriptionPage extends SchemaPage
          */
         public int compare( Viewer viewer, Object e1, Object e2 )
         {
-            if ( e1 instanceof AttributeTypeDescription )
+            if ( e1 instanceof AttributeType )
             {
-                e1 = SchemaUtils.toString( ( AbstractSchemaDescription ) e1 );
+                e1 = SchemaUtils.toString( ( AbstractSchemaObject ) e1 );
             }
-            if ( e2 instanceof AttributeTypeDescription )
+            if ( e2 instanceof AttributeType )
             {
-                e2 = SchemaUtils.toString( ( AbstractSchemaDescription ) e2 );
+                e2 = SchemaUtils.toString( ( AbstractSchemaObject ) e2 );
             }
             return e1.toString().compareTo( e2.toString() );
         }
@@ -221,12 +221,12 @@ public class AttributeTypeDescriptionPage extends SchemaPage
          */
         public boolean select( Viewer viewer, Object parentElement, Object element )
         {
-            if ( element instanceof AttributeTypeDescription )
+            if ( element instanceof AttributeType )
             {
-                AttributeTypeDescription atd = ( AttributeTypeDescription ) element;
+                AttributeType atd = ( AttributeType ) element;
                 boolean matched = SchemaUtils.toString( atd ).toLowerCase()
                     .indexOf( filterText.getText().toLowerCase() ) != -1
-                    || atd.getNumericOid().toLowerCase().indexOf( filterText.getText().toLowerCase() ) != -1;
+                    || atd.getOid().toLowerCase().indexOf( filterText.getText().toLowerCase() ) != -1;
                 return matched;
             }
             return false;

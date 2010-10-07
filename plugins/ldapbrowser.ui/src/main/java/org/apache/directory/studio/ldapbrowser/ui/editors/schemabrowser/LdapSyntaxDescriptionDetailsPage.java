@@ -23,8 +23,8 @@ package org.apache.directory.studio.ldapbrowser.ui.editors.schemabrowser;
 
 import java.util.Collection;
 
-import org.apache.directory.shared.ldap.schema.parsers.AttributeTypeDescription;
-import org.apache.directory.shared.ldap.schema.parsers.LdapSyntaxDescription;
+import org.apache.directory.shared.ldap.schema.AttributeType;
+import org.apache.directory.shared.ldap.schema.LdapSyntax;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.SchemaUtils;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
@@ -110,10 +110,10 @@ public class LdapSyntaxDescriptionDetailsPage extends SchemaDetailsPage
      */
     public void setInput( Object input )
     {
-        LdapSyntaxDescription lsd = null;
-        if ( input instanceof LdapSyntaxDescription )
+        LdapSyntax lsd = null;
+        if ( input instanceof LdapSyntax )
         {
-            lsd = ( LdapSyntaxDescription ) input;
+            lsd = ( LdapSyntax ) input;
         }
 
         createMainContent( lsd );
@@ -131,7 +131,7 @@ public class LdapSyntaxDescriptionDetailsPage extends SchemaDetailsPage
      *
      * @param lsd the syntax description
      */
-    private void createMainContent( LdapSyntaxDescription lsd )
+    private void createMainContent( LdapSyntax lsd )
     {
         // dispose old content
         if ( mainSection.getClient() != null )
@@ -150,7 +150,7 @@ public class LdapSyntaxDescriptionDetailsPage extends SchemaDetailsPage
         {
             toolkit.createLabel( mainClient,
                 Messages.getString( "LdapSyntaxDescriptionDetailsPage.NumericOID" ), SWT.NONE ); //$NON-NLS-1$
-            Text numericOidText = toolkit.createText( mainClient, getNonNullString( lsd.getNumericOid() ), SWT.NONE );
+            Text numericOidText = toolkit.createText( mainClient, getNonNullString( lsd.getOid() ), SWT.NONE );
             numericOidText.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
             numericOidText.setEditable( false );
 
@@ -175,7 +175,7 @@ public class LdapSyntaxDescriptionDetailsPage extends SchemaDetailsPage
      *
      * @param lsd the syntax description
      */
-    private void createUsedFromContents( LdapSyntaxDescription lsd )
+    private void createUsedFromContents( LdapSyntax lsd )
     {
         // dispose old content
         if ( usedFromSection.getClient() != null && !usedFromSection.getClient().isDisposed() )
@@ -191,7 +191,7 @@ public class LdapSyntaxDescriptionDetailsPage extends SchemaDetailsPage
         // create content
         if ( lsd != null )
         {
-            Collection<AttributeTypeDescription> usedFromATDs = SchemaUtils.getUsedFromAttributeTypeDescriptions( lsd,
+            Collection<AttributeType> usedFromATDs = SchemaUtils.getUsedFromAttributeTypeDescriptions( lsd,
                 getSchema() );
             if ( usedFromATDs != null && !usedFromATDs.isEmpty() )
             {
@@ -199,7 +199,7 @@ public class LdapSyntaxDescriptionDetailsPage extends SchemaDetailsPage
                     .setText( NLS
                         .bind(
                             Messages.getString( "LdapSyntaxDescriptionDetailsPage.UsedFromCount" ), new Object[] { usedFromATDs.size() } ) ); //$NON-NLS-1$
-                for ( AttributeTypeDescription atd : usedFromATDs )
+                for ( AttributeType atd : usedFromATDs )
                 {
                     Hyperlink usedFromLink = toolkit.createHyperlink( usedFromClient, SchemaUtils.toString( atd ),
                         SWT.WRAP );

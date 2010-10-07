@@ -21,12 +21,12 @@
 package org.apache.directory.studio.ldapbrowser.ui.editors.schemabrowser;
 
 
-import org.apache.directory.shared.ldap.schema.parsers.AbstractSchemaDescription;
-import org.apache.directory.shared.ldap.schema.parsers.AttributeTypeDescription;
-import org.apache.directory.shared.ldap.schema.parsers.LdapSyntaxDescription;
-import org.apache.directory.shared.ldap.schema.parsers.MatchingRuleDescription;
-import org.apache.directory.shared.ldap.schema.parsers.MatchingRuleUseDescription;
-import org.apache.directory.shared.ldap.schema.parsers.ObjectClassDescription;
+import org.apache.directory.shared.ldap.schema.AbstractSchemaObject;
+import org.apache.directory.shared.ldap.schema.AttributeType;
+import org.apache.directory.shared.ldap.schema.LdapSyntax;
+import org.apache.directory.shared.ldap.schema.MatchingRule;
+import org.apache.directory.shared.ldap.schema.MatchingRuleUse;
+import org.apache.directory.shared.ldap.schema.ObjectClass;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.ui.BrowserUIConstants;
 import org.apache.directory.studio.ldapbrowser.ui.BrowserUIPlugin;
@@ -203,28 +203,28 @@ public class SchemaBrowser extends EditorPart implements INavigationLocationProv
             setConnection( connection );
 
             // set schema element and activate tab
-            AbstractSchemaDescription schemaElement = sbi.getSchemaElement();
-            if ( schemaElement instanceof ObjectClassDescription )
+            AbstractSchemaObject schemaElement = sbi.getSchemaElement();
+            if ( schemaElement instanceof ObjectClass )
             {
                 ocdPage.select( schemaElement );
                 tabFolder.setSelection( ocdTab );
             }
-            else if ( schemaElement instanceof AttributeTypeDescription )
+            else if ( schemaElement instanceof AttributeType )
             {
                 atdPage.select( schemaElement );
                 tabFolder.setSelection( atdTab );
             }
-            else if ( schemaElement instanceof MatchingRuleDescription )
+            else if ( schemaElement instanceof MatchingRule )
             {
                 mrdPage.select( schemaElement );
                 tabFolder.setSelection( mrdTab );
             }
-            else if ( schemaElement instanceof MatchingRuleUseDescription )
+            else if ( schemaElement instanceof MatchingRuleUse )
             {
                 mrudPage.select( schemaElement );
                 tabFolder.setSelection( mrudTab );
             }
-            else if ( schemaElement instanceof LdapSyntaxDescription )
+            else if ( schemaElement instanceof LdapSyntax )
             {
                 lsdPage.select( schemaElement );
                 tabFolder.setSelection( lsdTab );

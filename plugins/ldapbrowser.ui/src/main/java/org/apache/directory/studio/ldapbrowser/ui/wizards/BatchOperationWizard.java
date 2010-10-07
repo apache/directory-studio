@@ -21,7 +21,7 @@
 package org.apache.directory.studio.ldapbrowser.ui.wizards;
 
 
-import org.apache.directory.shared.ldap.name.LdapDN;
+import org.apache.directory.shared.ldap.name.DN;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.ui.RunnableContextRunner;
 import org.apache.directory.studio.ldapbrowser.common.actions.BrowserSelectionUtils;
@@ -293,7 +293,7 @@ public class BatchOperationWizard extends Wizard implements INewWizard
             }
 
             // get DNs
-            LdapDN[] dns = applyOnPage.getApplyOnDns();
+            DN[] dns = applyOnPage.getApplyOnDns();
             if ( dns == null )
             {
                 if ( applyOnPage.getApplyOnSearch() != null )
@@ -308,7 +308,7 @@ public class BatchOperationWizard extends Wizard implements INewWizard
                         if ( status.isOK() )
                         {
                             ISearchResult[] srs = search.getSearchResults();
-                            dns = new LdapDN[srs.length];
+                            dns = new DN[srs.length];
                             for ( int i = 0; i < srs.length; i++ )
                             {
                                 dns[i] = srs[i].getDn();
@@ -324,7 +324,7 @@ public class BatchOperationWizard extends Wizard implements INewWizard
                 for ( int i = 0; i < dns.length; i++ )
                 {
                     ldif.append( "dn: " ); //$NON-NLS-1$
-                    ldif.append( dns[i].getUpName() );
+                    ldif.append( dns[i].getName() );
                     ldif.append( BrowserCoreConstants.LINE_SEPARATOR );
                     ldif.append( ldifFragment );
                     ldif.append( BrowserCoreConstants.LINE_SEPARATOR );

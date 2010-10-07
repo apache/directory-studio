@@ -112,7 +112,7 @@ public class SearchResultEditorLabelProvider extends LabelProvider implements IT
 
                 if ( property == BrowserUIConstants.DN )
                 {
-                    return result.getDn().getUpName();
+                    return result.getDn().getName();
                 }
                 else
                 {

@@ -23,7 +23,7 @@ package org.apache.directory.studio.ldapbrowser.ui.actions;
 
 import java.util.LinkedHashSet;
 
-import org.apache.directory.shared.ldap.name.LdapDN;
+import org.apache.directory.shared.ldap.name.DN;
 import org.apache.directory.studio.connection.ui.RunnableContextRunner;
 import org.apache.directory.studio.ldapbrowser.common.actions.BrowserAction;
 import org.apache.directory.studio.ldapbrowser.common.dialogs.MoveEntriesDialog;
@@ -179,7 +179,7 @@ public class MoveAction extends BrowserAction
         MoveEntriesDialog moveDialog = new MoveEntriesDialog( getShell(), entries );
         if ( moveDialog.open() == Dialog.OK )
         {
-            LdapDN newParentDn = moveDialog.getParentDn();
+            DN newParentDn = moveDialog.getParentDn();
             if ( newParentDn != null /* && !newRdn.equals(entry.getRdn()) */)
             {
                 IEntry newParentEntry = entries[0].getBrowserConnection().getEntryFromCache( newParentDn );

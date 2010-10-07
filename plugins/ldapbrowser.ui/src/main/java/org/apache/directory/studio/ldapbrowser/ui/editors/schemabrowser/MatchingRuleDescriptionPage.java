@@ -21,7 +21,7 @@
 package org.apache.directory.studio.ldapbrowser.ui.editors.schemabrowser;
 
 
-import org.apache.directory.shared.ldap.schema.parsers.MatchingRuleDescription;
+import org.apache.directory.shared.ldap.schema.MatchingRule;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.Schema;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.SchemaUtils;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
@@ -167,9 +167,9 @@ public class MatchingRuleDescriptionPage extends SchemaPage
          */
         public String getColumnText( Object obj, int index )
         {
-            if ( obj instanceof MatchingRuleDescription )
+            if ( obj instanceof MatchingRule )
             {
-                return SchemaUtils.toString( ( MatchingRuleDescription ) obj );
+                return SchemaUtils.toString( ( MatchingRule ) obj );
             }
             return obj.toString();
         }
@@ -196,13 +196,13 @@ public class MatchingRuleDescriptionPage extends SchemaPage
          */
         public int compare( Viewer viewer, Object e1, Object e2 )
         {
-            if ( e1 instanceof MatchingRuleDescription )
+            if ( e1 instanceof MatchingRule )
             {
-                e1 = SchemaUtils.toString( ( MatchingRuleDescription ) e1 );
+                e1 = SchemaUtils.toString( ( MatchingRule ) e1 );
             }
-            if ( e2 instanceof MatchingRuleDescription )
+            if ( e2 instanceof MatchingRule )
             {
-                e2 = SchemaUtils.toString( ( MatchingRuleDescription ) e2 );
+                e2 = SchemaUtils.toString( ( MatchingRule ) e2 );
             }
             return e1.toString().compareTo( e2.toString() );
         }
@@ -220,12 +220,12 @@ public class MatchingRuleDescriptionPage extends SchemaPage
          */
         public boolean select( Viewer viewer, Object parentElement, Object element )
         {
-            if ( element instanceof MatchingRuleDescription )
+            if ( element instanceof MatchingRule )
             {
-                MatchingRuleDescription mrd = ( MatchingRuleDescription ) element;
+                MatchingRule mrd = ( MatchingRule ) element;
                 boolean matched = SchemaUtils.toString( mrd ).toLowerCase()
                     .indexOf( filterText.getText().toLowerCase() ) != -1
-                    || mrd.getNumericOid().toLowerCase().indexOf( filterText.getText().toLowerCase() ) != -1;
+                    || mrd.getOid().toLowerCase().indexOf( filterText.getText().toLowerCase() ) != -1;
                 return matched;
             }
             return false;

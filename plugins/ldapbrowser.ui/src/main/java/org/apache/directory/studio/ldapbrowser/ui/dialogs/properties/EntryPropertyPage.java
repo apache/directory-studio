@@ -322,9 +322,9 @@ public class EntryPropertyPage extends PropertyPage implements IWorkbenchPropert
 
         if ( !this.dnText.isDisposed() )
         {
-            setMessage( Messages.getString( "EntryPropertyPage.Entry" ) + entry.getDn().getUpName() ); //$NON-NLS-1$
+            setMessage( Messages.getString( "EntryPropertyPage.Entry" ) + entry.getDn().getName() ); //$NON-NLS-1$
 
-            dnText.setText( entry.getDn().getUpName() );
+            dnText.setText( entry.getDn().getName() );
             urlText.setText( entry.getUrl().toString() );
             ctText.setText( getNonNullStringValue( entry.getAttribute( SchemaConstants.CREATE_TIMESTAMP_AT ) ) );
             cnText.setText( getNonNullStringValue( entry.getAttribute( SchemaConstants.CREATORS_NAME_AT ) ) );

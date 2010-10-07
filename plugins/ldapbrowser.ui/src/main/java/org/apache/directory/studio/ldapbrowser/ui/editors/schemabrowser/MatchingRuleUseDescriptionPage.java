@@ -21,7 +21,7 @@
 package org.apache.directory.studio.ldapbrowser.ui.editors.schemabrowser;
 
 
-import org.apache.directory.shared.ldap.schema.parsers.MatchingRuleUseDescription;
+import org.apache.directory.shared.ldap.schema.MatchingRuleUse;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.Schema;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.SchemaUtils;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
@@ -168,9 +168,9 @@ public class MatchingRuleUseDescriptionPage extends SchemaPage
          */
         public String getColumnText( Object obj, int index )
         {
-            if ( obj instanceof MatchingRuleUseDescription )
+            if ( obj instanceof MatchingRuleUse )
             {
-                return SchemaUtils.toString( ( MatchingRuleUseDescription ) obj );
+                return SchemaUtils.toString( ( MatchingRuleUse ) obj );
             }
             return obj.toString();
         }
@@ -197,13 +197,13 @@ public class MatchingRuleUseDescriptionPage extends SchemaPage
          */
         public int compare( Viewer viewer, Object e1, Object e2 )
         {
-            if ( e1 instanceof MatchingRuleUseDescription )
+            if ( e1 instanceof MatchingRuleUse )
             {
-                e1 = SchemaUtils.toString( ( MatchingRuleUseDescription ) e1 );
+                e1 = SchemaUtils.toString( ( MatchingRuleUse ) e1 );
             }
-            if ( e2 instanceof MatchingRuleUseDescription )
+            if ( e2 instanceof MatchingRuleUse )
             {
-                e2 = SchemaUtils.toString( ( MatchingRuleUseDescription ) e2 );
+                e2 = SchemaUtils.toString( ( MatchingRuleUse ) e2 );
             }
             return e1.toString().compareTo( e2.toString() );
         }
@@ -221,12 +221,12 @@ public class MatchingRuleUseDescriptionPage extends SchemaPage
          */
         public boolean select( Viewer viewer, Object parentElement, Object element )
         {
-            if ( element instanceof MatchingRuleUseDescription )
+            if ( element instanceof MatchingRuleUse )
             {
-                MatchingRuleUseDescription mrud = ( MatchingRuleUseDescription ) element;
+                MatchingRuleUse mrud = ( MatchingRuleUse ) element;
                 boolean matched = SchemaUtils.toString( mrud ).toLowerCase().indexOf(
                     filterText.getText().toLowerCase() ) != -1
-                    || mrud.getNumericOid().toLowerCase().indexOf( filterText.getText().toLowerCase() ) != -1;
+                    || mrud.getOid().toLowerCase().indexOf( filterText.getText().toLowerCase() ) != -1;
                 return matched;
             }
             return false;

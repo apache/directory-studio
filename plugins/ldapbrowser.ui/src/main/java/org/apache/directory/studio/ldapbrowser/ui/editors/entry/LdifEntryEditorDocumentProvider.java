@@ -23,9 +23,8 @@ package org.apache.directory.studio.ldapbrowser.ui.editors.entry;
 
 import java.util.Arrays;
 
-import javax.naming.InvalidNameException;
-
-import org.apache.directory.shared.ldap.name.LdapDN;
+import org.apache.directory.shared.ldap.exception.LdapInvalidDnException;
+import org.apache.directory.shared.ldap.name.DN;
 import org.apache.directory.studio.entryeditors.EntryEditorInput;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
@@ -101,14 +100,14 @@ public class LdifEntryEditorDocumentProvider extends LdifDocumentProvider
         EntryEditorInput input = getEntryEditorInput( element );
         try
         {
-            LdapDN newDN = new LdapDN( records[0].getDnLine().getValueAsString() );
+            DN newDN = new DN( records[0].getDnLine().getValueAsString() );
             if ( !newDN.equals( input.getResolvedEntry().getDn() ) )
             {
                 throw new CoreException( new Status( IStatus.ERROR, BrowserUIConstants.PLUGIN_ID, NLS.bind( Messages
                     .getString( "LdifEntryEditorDocumentProvider.ModDnNotSupported" ), records[0].getInvalidString() ) ) ); //$NON-NLS-1$
             }
         }
-        catch ( InvalidNameException e )
+        catch ( LdapInvalidDnException e )
         {
             throw new CoreException( new Status( IStatus.ERROR, BrowserUIConstants.PLUGIN_ID, Messages
                 .getString( "LdifEntryEditorDocumentProvider.InvalidDN" ) ) ); //$NON-NLS-1$
@@ -159,7 +158,7 @@ public class LdifEntryEditorDocumentProvider extends LdifDocumentProvider
             ( ( DummyEntry ) input.getSharedWorkingCopy( editor ) ).setDn( modifiedEntry.getDn() );
             new CompoundModification().replaceAttributes( modifiedEntry, input.getSharedWorkingCopy( editor ), this );
         }
-        catch ( InvalidNameException e )
+        catch ( LdapInvalidDnException e )
         {
             throw new RuntimeException( e );
         }

@@ -21,7 +21,7 @@
 package org.apache.directory.studio.ldapbrowser.ui.actions;
 
 
-import org.apache.directory.shared.ldap.name.LdapDN;
+import org.apache.directory.shared.ldap.name.DN;
 import org.apache.directory.studio.connection.ui.RunnableContextRunner;
 import org.apache.directory.studio.ldapbrowser.common.actions.BrowserAction;
 import org.apache.directory.studio.ldapbrowser.core.jobs.ReadEntryRunnable;
@@ -51,7 +51,7 @@ public abstract class LocateInDitAction extends BrowserAction
         if ( connectionAndDn != null )
         {
             IBrowserConnection connection = connectionAndDn.connection;
-            LdapDN dn = connectionAndDn.dn;
+            DN dn = connectionAndDn.dn;
 
             IEntry entry = connection.getEntryFromCache( dn );
             if ( entry == null )
@@ -123,7 +123,7 @@ public abstract class LocateInDitAction extends BrowserAction
         private IBrowserConnection connection;
 
         /** The DN */
-        private LdapDN dn;
+        private DN dn;
 
 
         /**
@@ -132,7 +132,7 @@ public abstract class LocateInDitAction extends BrowserAction
          * @param connection the connection
          * @param dn the DN
          */
-        protected ConnectionAndDn( IBrowserConnection connection, LdapDN dn )
+        protected ConnectionAndDn( IBrowserConnection connection, DN dn )
         {
             this.connection = connection;
             this.dn = dn;

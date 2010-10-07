@@ -27,7 +27,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.directory.shared.ldap.name.LdapDN;
+import org.apache.directory.shared.ldap.name.DN;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreConstants;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
@@ -176,7 +176,7 @@ public class CopyEntryAsLdifAction extends CopyEntryAsAction
      * @param text
      *      the StringBuffer to serialize to
      */
-    protected void serializeDn( LdapDN dn, StringBuffer text )
+    protected void serializeDn( DN dn, StringBuffer text )
     {
         text.append( ModelConverter.dnToLdifDnLine( dn ).toFormattedString( Utils.getLdifFormatParameters() ) );
     }

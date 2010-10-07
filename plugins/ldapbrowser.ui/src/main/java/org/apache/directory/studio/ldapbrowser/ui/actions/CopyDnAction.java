@@ -54,27 +54,27 @@ public class CopyDnAction extends BrowserAction
         String dn = null;
         if ( getSelectedEntries().length > 0 )
         {
-            dn = getSelectedEntries()[0].getDn().getUpName();
+            dn = getSelectedEntries()[0].getDn().getName();
         }
         else if ( getSelectedAttributes().length > 0 )
         {
-            dn = getSelectedAttributes()[0].getEntry().getDn().getUpName();
+            dn = getSelectedAttributes()[0].getEntry().getDn().getName();
         }
         else if ( getSelectedAttributeHierarchies().length > 0 )
         {
-            dn = getSelectedAttributeHierarchies()[0].getAttribute().getEntry().getDn().getUpName();
+            dn = getSelectedAttributeHierarchies()[0].getAttribute().getEntry().getDn().getName();
         }
         else if ( getSelectedValues().length > 0 )
         {
-            dn = getSelectedValues()[0].getAttribute().getEntry().getDn().getUpName();
+            dn = getSelectedValues()[0].getAttribute().getEntry().getDn().getName();
         }
         else if ( getSelectedSearchResults().length > 0 )
         {
-            dn = getSelectedSearchResults()[0].getDn().getUpName();
+            dn = getSelectedSearchResults()[0].getDn().getName();
         }
         else if ( getSelectedBookmarks().length > 0 )
         {
-            dn = getSelectedBookmarks()[0].getDn().getUpName();
+            dn = getSelectedBookmarks()[0].getDn().getName();
         }
 
         if ( dn != null )

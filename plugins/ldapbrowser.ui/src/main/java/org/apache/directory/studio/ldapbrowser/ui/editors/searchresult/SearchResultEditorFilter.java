@@ -152,7 +152,7 @@ public class SearchResultEditorFilter extends ViewerFilter
             }
 
             if ( showDn
-                && searchResult.getDn().getUpName().toUpperCase().indexOf( quickFilterValue.toUpperCase() ) > -1 )
+                && searchResult.getDn().getName().toUpperCase().indexOf( quickFilterValue.toUpperCase() ) > -1 )
             {
                 return true;
             }

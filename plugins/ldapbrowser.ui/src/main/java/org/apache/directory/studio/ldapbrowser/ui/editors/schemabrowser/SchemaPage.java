@@ -21,7 +21,7 @@
 package org.apache.directory.studio.ldapbrowser.ui.editors.schemabrowser;
 
 
-import org.apache.directory.shared.ldap.schema.parsers.AbstractSchemaDescription;
+import org.apache.directory.shared.ldap.schema.AbstractSchemaObject;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.Schema;
 import org.eclipse.jface.action.Separator;
@@ -349,10 +349,10 @@ public abstract class SchemaPage
 
                     // Do not set the input of the schema browser if 
                     // the selection was changed programatically.
-                    if ( !inChange && obj instanceof AbstractSchemaDescription )
+                    if ( !inChange && obj instanceof AbstractSchemaObject )
                     {
                         schemaBrowser.setInput( new SchemaBrowserInput( getConnection(),
-                            ( AbstractSchemaDescription ) obj ) );
+                            ( AbstractSchemaObject ) obj ) );
                     }
                 }
             }
