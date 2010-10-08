@@ -444,7 +444,7 @@ public class LdifOutlinePage extends ContentOutlinePage
                     LdifDnLine dnLine = record.getDnLine();
                     if ( dnLine != null )
                     {
-                        String dn = dnLine.getRawDn();
+                        String dn = dnLine.getUnfoldedDn();
                         if ( dn != null && "".equals( dn ) ) //$NON-NLS-1$
                         {
                             // Root DSE
