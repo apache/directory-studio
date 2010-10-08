@@ -31,7 +31,7 @@ public class AttributeValueObject
     private String attribute;
 
     /** The value */
-    private Object value;
+    private String value;
 
 
     /**
@@ -42,7 +42,7 @@ public class AttributeValueObject
      * @param value
      *      the value
      */
-    public AttributeValueObject( String attribute, Object value )
+    public AttributeValueObject( String attribute, String value )
     {
         this.attribute = attribute;
         this.value = value;
@@ -79,7 +79,7 @@ public class AttributeValueObject
      * @return
      *      the value
      */
-    public Object getValue()
+    public String getValue()
     {
         return value;
     }
@@ -91,7 +91,7 @@ public class AttributeValueObject
      * @param value
      *      the new value
      */
-    public void setValue( Object value )
+    public void setValue( String value )
     {
         this.value = value;
     }

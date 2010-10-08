@@ -23,8 +23,8 @@ package org.apache.directory.studio.apacheds.configuration.model.v151;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.naming.directory.Attributes;
-import javax.naming.directory.BasicAttributes;
+import org.apache.directory.shared.ldap.entry.DefaultEntry;
+import org.apache.directory.shared.ldap.entry.Entry;
 
 
 /**
@@ -50,7 +50,7 @@ public class Partition
     private boolean synchronizationOnWrite;
 
     /** The Context Entry */
-    private Attributes contextEntry;
+    private Entry contextEntry;
 
     /** The indexed attributes */
     private List<IndexedAttribute> indexedAttributes;
@@ -65,7 +65,7 @@ public class Partition
     public Partition()
     {
         indexedAttributes = new ArrayList<IndexedAttribute>();
-        contextEntry = new BasicAttributes( true );
+        contextEntry = new DefaultEntry();
     }
 
 
@@ -78,7 +78,7 @@ public class Partition
     public Partition( String id )
     {
         indexedAttributes = new ArrayList<IndexedAttribute>();
-        contextEntry = new BasicAttributes( true );
+        contextEntry = new DefaultEntry();
         this.id = id;
     }
 
@@ -137,7 +137,7 @@ public class Partition
      * @return
      *      the Content Entry
      */
-    public Attributes getContextEntry()
+    public Entry getContextEntry()
     {
         return contextEntry;
     }
@@ -149,7 +149,7 @@ public class Partition
      * @param contextEntry
      *      the new Context Entry
      */
-    public void setContextEntry( Attributes contextEntry )
+    public void setContextEntry( Entry contextEntry )
     {
         this.contextEntry = contextEntry;
     }

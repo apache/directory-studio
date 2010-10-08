@@ -21,16 +21,14 @@ package org.apache.directory.studio.apacheds.configuration.model;
 
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
 import java.io.StringReader;
 import java.util.Iterator;
 
-import javax.naming.NamingException;
-import javax.naming.directory.Attributes;
-import javax.naming.directory.BasicAttributes;
-
+import org.apache.directory.shared.ldap.entry.DefaultEntry;
+import org.apache.directory.shared.ldap.entry.Entry;
+import org.apache.directory.shared.ldap.entry.EntryAttribute;
 import org.apache.directory.shared.ldap.ldif.LdifReader;
 import org.apache.directory.shared.ldap.util.StringTools;
 import org.apache.directory.studio.apacheds.configuration.StudioEntityResolver;
@@ -191,13 +189,13 @@ public abstract class AbstractServerXmlIO implements ServerXmlIO
      *            The ldif format text
      * @return An Attributes.
      */
-    public Attributes readContextEntry( String text )
+    public Entry readContextEntry( String text )
     {
         StringReader strIn = new StringReader( text );
         BufferedReader in = new BufferedReader( strIn );
 
         String line = null;
-        Attributes attributes = new BasicAttributes( true );
+        Entry entry = new DefaultEntry();
 
         try
         {
@@ -215,33 +213,26 @@ public abstract class AbstractServerXmlIO implements ServerXmlIO
                     continue;
                 }
 
-                javax.naming.directory.Attribute attribute = LdifReader.parseAttributeValue( addedLine );
-                javax.naming.directory.Attribute oldAttribute = attributes.get( attribute.getID() );
+                EntryAttribute attribute = LdifReader.parseAttributeValue( addedLine );
+                EntryAttribute oldAttribute = entry.get( attribute.getId() );
 
                 if ( oldAttribute != null )
                 {
-                    try
-                    {
-                        oldAttribute.add( attribute.get() );
-                        attributes.put( oldAttribute );
-                    }
-                    catch ( NamingException ne )
-                    {
-                        // Do nothing
-                    }
+                    oldAttribute.add( attribute.get() );
+                    entry.put( oldAttribute );
                 }
                 else
                 {
-                    attributes.put( attribute );
+                    entry.put( attribute );
                 }
             }
         }
-        catch ( IOException ioe )
+        catch ( Exception e )
         {
             // Do nothing : we can't reach this point !
         }
 
-        return attributes;
+        return entry;
     }
 
 

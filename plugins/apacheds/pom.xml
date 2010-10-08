@@ -113,7 +113,7 @@
  org.apache.directory.studio.apacheds.configuration,
  org.apache.directory.studio.connection.core;resolution:=optional,
  org.apache.logging.log4j;bundle-version="${org.apache.logging.log4j.version}",
- org.apache.mina.core;bundle-version="${org.apache.mina.core.validversion}",
+ org.apache.mina.core;bundle-version="${org.apache.mina.core.version}",
  org.dom4j.dom4j;bundle-version="${org.dom4j.version}",
  org.eclipse.core.expressions,
  org.eclipse.core.runtime,
