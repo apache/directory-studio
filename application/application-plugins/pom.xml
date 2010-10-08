@@ -80,7 +80,7 @@
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.apache.directory.studio</groupId>
-                  <artifactId>org.apache.directory.shared.asn1</artifactId>
+                  <artifactId>org.apache.directory.shared.i18n</artifactId>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.apache.directory.studio</groupId>
@@ -89,10 +89,6 @@
                 <artifactItem>
                   <groupId>org.apache.directory.studio</groupId>
                   <artifactId>org.apache.directory.shared.ldap</artifactId>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.apache.directory.studio</groupId>
-                  <artifactId>org.apache.directory.shared.ldapconstants</artifactId>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.apache.directory.studio</groupId>

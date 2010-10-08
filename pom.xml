@@ -75,9 +75,9 @@
     <org.apache.commons.logging.version>1.1.1</org.apache.commons.logging.version>
     <org.apache.logging.log4j.version>1.2.14</org.apache.logging.log4j.version>
     <org.apache.httpcomponents.version>4.0</org.apache.httpcomponents.version>
-    <org.apache.directory.shared.version>0.9.17</org.apache.directory.shared.version>
-    <org.apache.mina.core.version>2.0.0-M6</org.apache.mina.core.version>
-    <org.apache.mina.core.validversion>2.0.0.M6</org.apache.mina.core.validversion>
+    <org.apache.directory.shared.version>0.9.20-SNAPSHOT</org.apache.directory.shared.version>
+    <org.apache.directory.shared.validversion>0.9.20.SNAPSHOT</org.apache.directory.shared.validversion>
+    <org.apache.mina.core.version>2.0.0</org.apache.mina.core.version>
     <org.bouncycastle.bcprovjdk15.version>140</org.bouncycastle.bcprovjdk15.version>
     <org.dom4j.version>1.6.1</org.dom4j.version>
     <org.slf4j.version>1.5.6</org.slf4j.version>
@@ -209,22 +209,17 @@
       </dependency>
       <dependency>
         <groupId>org.apache.directory.studio</groupId>
-        <artifactId>org.apache.directory.shared.asn1</artifactId>
-        <version>${org.apache.directory.shared.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.apache.directory.studio</groupId>
         <artifactId>org.apache.directory.shared.dsmlparser</artifactId>
         <version>${org.apache.directory.shared.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.directory.studio</groupId>
-        <artifactId>org.apache.directory.shared.ldap</artifactId>
+        <artifactId>org.apache.directory.shared.i18n</artifactId>
         <version>${org.apache.directory.shared.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.directory.studio</groupId>
-        <artifactId>org.apache.directory.shared.ldapconstants</artifactId>
+        <artifactId>org.apache.directory.shared.ldap</artifactId>
         <version>${org.apache.directory.shared.version}</version>
       </dependency>
       <dependency>
@@ -245,7 +240,7 @@
       <dependency>
         <groupId>org.apache.directory.studio</groupId>
         <artifactId>org.apache.mina.core</artifactId>
-        <version>${org.apache.mina.core.validversion}</version>
+        <version>${org.apache.mina.core.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.directory.studio</groupId>
@@ -1140,22 +1135,12 @@
       <!-- Apache Directory Shared -->
       <dependency>
         <groupId>org.apache.directory.shared</groupId>
+        <artifactId>shared-i18n</artifactId>
+        <version>${org.apache.directory.shared.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.directory.shared</groupId>
         <artifactId>shared-ldap</artifactId>
-        <version>${org.apache.directory.shared.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.apache.directory.shared</groupId>
-        <artifactId>shared-ldap-constants</artifactId>
-        <version>${org.apache.directory.shared.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.apache.directory.shared</groupId>
-        <artifactId>shared-asn1</artifactId>
-        <version>${org.apache.directory.shared.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.apache.directory.shared</groupId>
-        <artifactId>shared-converter</artifactId>
         <version>${org.apache.directory.shared.version}</version>
       </dependency>
       <dependency>
