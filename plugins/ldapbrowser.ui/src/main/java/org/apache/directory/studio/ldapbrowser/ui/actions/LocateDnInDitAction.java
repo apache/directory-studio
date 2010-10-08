@@ -21,9 +21,8 @@
 package org.apache.directory.studio.ldapbrowser.ui.actions;
 
 
-import javax.naming.InvalidNameException;
-
-import org.apache.directory.shared.ldap.name.LdapDN;
+import org.apache.directory.shared.ldap.exception.LdapInvalidDnException;
+import org.apache.directory.shared.ldap.name.DN;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearchResult;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
 import org.apache.directory.studio.ldapbrowser.ui.BrowserUIConstants;
@@ -82,13 +81,13 @@ public class LocateDnInDitAction extends LocateInDitAction
             try
             {
                 IValue value = getSelectedAttributeHierarchies()[0].getAttribute().getValues()[0];
-                if ( value.isString() && LdapDN.isValid( value.getStringValue() ) )
+                if ( value.isString() && DN.isValid( value.getStringValue() ) )
                 {
-                    return new ConnectionAndDn( value.getAttribute().getEntry().getBrowserConnection(), new LdapDN(
+                    return new ConnectionAndDn( value.getAttribute().getEntry().getBrowserConnection(), new DN(
                         value.getStringValue() ) );
                 }
             }
-            catch ( InvalidNameException e )
+            catch ( LdapInvalidDnException e )
             {
                 // no valid DN
             }
@@ -99,13 +98,13 @@ public class LocateDnInDitAction extends LocateInDitAction
             try
             {
                 IValue value = getSelectedValues()[0];
-                if ( value.isString() && LdapDN.isValid( value.getStringValue() ) )
+                if ( value.isString() && DN.isValid( value.getStringValue() ) )
                 {
-                    return new ConnectionAndDn( value.getAttribute().getEntry().getBrowserConnection(), new LdapDN(
+                    return new ConnectionAndDn( value.getAttribute().getEntry().getBrowserConnection(), new DN(
                         value.getStringValue() ) );
                 }
             }
-            catch ( InvalidNameException e )
+            catch ( LdapInvalidDnException e )
             {
                 // no valid DN
             }

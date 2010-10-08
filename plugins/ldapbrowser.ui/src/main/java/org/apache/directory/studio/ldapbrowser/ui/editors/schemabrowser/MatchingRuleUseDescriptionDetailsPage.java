@@ -23,9 +23,9 @@ package org.apache.directory.studio.ldapbrowser.ui.editors.schemabrowser;
 
 import java.util.List;
 
-import org.apache.directory.shared.ldap.schema.parsers.AttributeTypeDescription;
-import org.apache.directory.shared.ldap.schema.parsers.MatchingRuleDescription;
-import org.apache.directory.shared.ldap.schema.parsers.MatchingRuleUseDescription;
+import org.apache.directory.shared.ldap.schema.AttributeType;
+import org.apache.directory.shared.ldap.schema.MatchingRule;
+import org.apache.directory.shared.ldap.schema.MatchingRuleUse;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.Schema;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.SchemaUtils;
 import org.eclipse.osgi.util.NLS;
@@ -144,10 +144,10 @@ public class MatchingRuleUseDescriptionDetailsPage extends SchemaDetailsPage
      */
     public void setInput( Object input )
     {
-        MatchingRuleUseDescription mrud = null;
-        if ( input instanceof MatchingRuleUseDescription )
+        MatchingRuleUse mrud = null;
+        if ( input instanceof MatchingRuleUse )
         {
-            mrud = ( MatchingRuleUseDescription ) input;
+            mrud = ( MatchingRuleUse ) input;
         }
 
         // create main content
@@ -171,7 +171,7 @@ public class MatchingRuleUseDescriptionDetailsPage extends SchemaDetailsPage
      *
      * @param mrud the matching rule use description
      */
-    private void createMainContent( MatchingRuleUseDescription mrud )
+    private void createMainContent( MatchingRuleUse mrud )
     {
         // dispose old content
         if ( mainSection.getClient() != null )
@@ -190,7 +190,7 @@ public class MatchingRuleUseDescriptionDetailsPage extends SchemaDetailsPage
         {
             toolkit.createLabel( mainClient,
                 Messages.getString( "MatchingRuleUseDescriptionDetailsPage.NumericOID" ), SWT.NONE ); //$NON-NLS-1$
-            numericOidText = toolkit.createText( mainClient, getNonNullString( mrud.getNumericOid() ), SWT.NONE );
+            numericOidText = toolkit.createText( mainClient, getNonNullString( mrud.getOid() ), SWT.NONE );
             numericOidText.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
             numericOidText.setEditable( false );
 
@@ -201,8 +201,8 @@ public class MatchingRuleUseDescriptionDetailsPage extends SchemaDetailsPage
             nameLink.addHyperlinkListener( this );
 
             Schema schema = getSchema();
-            MatchingRuleDescription mrd = schema.hasMatchingRuleDescription( mrud.getNumericOid() ) ? schema
-                .getMatchingRuleDescription( mrud.getNumericOid() ) : null;
+            MatchingRule mrd = schema.hasMatchingRuleDescription( mrud.getOid() ) ? schema
+                .getMatchingRuleDescription( mrud.getOid() ) : null;
             nameLink
                 .setText( getNonNullString( mrd != null ? SchemaUtils.toString( mrd ) : SchemaUtils.toString( mrud ) ) );
             nameLink.setHref( mrd );
@@ -229,7 +229,7 @@ public class MatchingRuleUseDescriptionDetailsPage extends SchemaDetailsPage
      *
      * @param mrud the matching rule use description
      */
-    private void createAppliesContents( MatchingRuleUseDescription mrud )
+    private void createAppliesContents( MatchingRuleUse mrud )
     {
         // dispose old content
         if ( appliesSection.getClient() != null )
@@ -245,7 +245,7 @@ public class MatchingRuleUseDescriptionDetailsPage extends SchemaDetailsPage
         // create content
         if ( mrud != null )
         {
-            List<String> names = mrud.getApplicableAttributes();
+            List<String> names = mrud.getApplicableAttributeOids();
             if ( names != null && !names.isEmpty() )
             {
                 appliesSection
@@ -257,7 +257,7 @@ public class MatchingRuleUseDescriptionDetailsPage extends SchemaDetailsPage
                 {
                     if ( schema.hasAttributeTypeDescription( name ) )
                     {
-                        AttributeTypeDescription appliesAtd = schema.getAttributeTypeDescription( name );
+                        AttributeType appliesAtd = schema.getAttributeTypeDescription( name );
                         Hyperlink appliesLink = toolkit.createHyperlink( appliesClient, SchemaUtils
                             .toString( appliesAtd ), SWT.WRAP );
                         appliesLink.setHref( appliesAtd );

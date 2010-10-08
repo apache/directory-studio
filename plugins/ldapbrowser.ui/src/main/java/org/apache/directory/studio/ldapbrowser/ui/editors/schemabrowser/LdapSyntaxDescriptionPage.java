@@ -21,7 +21,7 @@
 package org.apache.directory.studio.ldapbrowser.ui.editors.schemabrowser;
 
 
-import org.apache.directory.shared.ldap.schema.parsers.LdapSyntaxDescription;
+import org.apache.directory.shared.ldap.schema.LdapSyntax;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.Schema;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.SchemaUtils;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
@@ -167,9 +167,9 @@ public class LdapSyntaxDescriptionPage extends SchemaPage
          */
         public String getColumnText( Object obj, int index )
         {
-            if ( obj instanceof LdapSyntaxDescription )
+            if ( obj instanceof LdapSyntax )
             {
-                return SchemaUtils.toString( ( LdapSyntaxDescription ) obj );
+                return SchemaUtils.toString( ( LdapSyntax ) obj );
             }
             return obj.toString();
         }
@@ -196,13 +196,13 @@ public class LdapSyntaxDescriptionPage extends SchemaPage
          */
         public int compare( Viewer viewer, Object e1, Object e2 )
         {
-            if ( e1 instanceof LdapSyntaxDescription )
+            if ( e1 instanceof LdapSyntax )
             {
-                e1 = SchemaUtils.toString( ( LdapSyntaxDescription ) e1 );
+                e1 = SchemaUtils.toString( ( LdapSyntax ) e1 );
             }
-            if ( e2 instanceof LdapSyntaxDescription )
+            if ( e2 instanceof LdapSyntax )
             {
-                e2 = SchemaUtils.toString( ( LdapSyntaxDescription ) e2 );
+                e2 = SchemaUtils.toString( ( LdapSyntax ) e2 );
             }
             return e1.toString().compareTo( e2.toString() );
         }
@@ -220,12 +220,12 @@ public class LdapSyntaxDescriptionPage extends SchemaPage
          */
         public boolean select( Viewer viewer, Object parentElement, Object element )
         {
-            if ( element instanceof LdapSyntaxDescription )
+            if ( element instanceof LdapSyntax )
             {
-                LdapSyntaxDescription lsd = ( LdapSyntaxDescription ) element;
+                LdapSyntax lsd = ( LdapSyntax ) element;
                 boolean matched = SchemaUtils.toString( lsd ).toLowerCase()
                     .indexOf( filterText.getText().toLowerCase() ) != -1
-                    || lsd.getNumericOid().toLowerCase().indexOf( filterText.getText().toLowerCase() ) != -1;
+                    || lsd.getOid().toLowerCase().indexOf( filterText.getText().toLowerCase() ) != -1;
                 return matched;
             }
             return false;

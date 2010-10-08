@@ -23,7 +23,7 @@ package org.apache.directory.studio.ldapbrowser.ui.editors.schemabrowser;
 
 import java.util.List;
 
-import org.apache.directory.shared.ldap.schema.parsers.AbstractSchemaDescription;
+import org.apache.directory.shared.ldap.schema.AbstractSchemaObject;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.Schema;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.SchemaUtils;
 import org.eclipse.swt.SWT;
@@ -91,10 +91,10 @@ public abstract class SchemaDetailsPage implements IHyperlinkListener
     public void linkActivated( HyperlinkEvent e )
     {
         Object obj = e.getHref();
-        if ( obj instanceof AbstractSchemaDescription )
+        if ( obj instanceof AbstractSchemaObject )
         {
             schemaPage.getSchemaBrowser().setInput(
-                new SchemaBrowserInput( schemaPage.getConnection(), ( AbstractSchemaDescription ) obj ) );
+                new SchemaBrowserInput( schemaPage.getConnection(), ( AbstractSchemaObject ) obj ) );
         }
     }
 
@@ -157,7 +157,7 @@ public abstract class SchemaDetailsPage implements IHyperlinkListener
      *
      * @param schemaPart the schema part to display
      */
-    protected void createRawContents( AbstractSchemaDescription asd )
+    protected void createRawContents( AbstractSchemaObject asd )
     {
 
         if ( rawSection.getClient() != null && !rawSection.getClient().isDisposed() )

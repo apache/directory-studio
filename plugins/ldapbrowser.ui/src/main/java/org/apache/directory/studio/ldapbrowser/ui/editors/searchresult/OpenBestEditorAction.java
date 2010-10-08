@@ -23,7 +23,7 @@ package org.apache.directory.studio.ldapbrowser.ui.editors.searchresult;
 
 import java.util.Collection;
 
-import org.apache.directory.shared.ldap.schema.parsers.AttributeTypeDescription;
+import org.apache.directory.shared.ldap.schema.AttributeType;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreConstants;
 import org.apache.directory.studio.ldapbrowser.core.model.AttributeHierarchy;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
@@ -159,8 +159,8 @@ public class OpenBestEditorAction extends AbstractOpenEditorAction
             {
                 // validate if value is allowed
                 IEntry entry = attributeHierarchy.getAttribute().getEntry();
-                Collection<AttributeTypeDescription> allAtds = SchemaUtils.getAllAttributeTypeDescriptions( entry );
-                AttributeTypeDescription atd = attributeHierarchy.getAttribute().getAttributeTypeDescription();
+                Collection<AttributeType> allAtds = SchemaUtils.getAllAttributeTypeDescriptions( entry );
+                AttributeType atd = attributeHierarchy.getAttribute().getAttributeTypeDescription();
                 if ( !allAtds.contains( atd ) )
                 {
                     message.append( NLS.bind( Messages.getString( "OpenBestEditorAction.AttributeNotInSubSchema" ), //$NON-NLS-1$

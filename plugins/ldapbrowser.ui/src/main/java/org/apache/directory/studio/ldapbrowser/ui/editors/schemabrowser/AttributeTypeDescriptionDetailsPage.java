@@ -23,11 +23,11 @@ package org.apache.directory.studio.ldapbrowser.ui.editors.schemabrowser;
 
 import java.util.Collection;
 
+import org.apache.directory.shared.ldap.schema.AttributeType;
+import org.apache.directory.shared.ldap.schema.LdapSyntax;
+import org.apache.directory.shared.ldap.schema.MatchingRule;
+import org.apache.directory.shared.ldap.schema.ObjectClass;
 import org.apache.directory.shared.ldap.schema.UsageEnum;
-import org.apache.directory.shared.ldap.schema.parsers.AttributeTypeDescription;
-import org.apache.directory.shared.ldap.schema.parsers.LdapSyntaxDescription;
-import org.apache.directory.shared.ldap.schema.parsers.MatchingRuleDescription;
-import org.apache.directory.shared.ldap.schema.parsers.ObjectClassDescription;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.SchemaUtils;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
@@ -344,10 +344,10 @@ public class AttributeTypeDescriptionDetailsPage extends SchemaDetailsPage
      */
     public void setInput( Object input )
     {
-        AttributeTypeDescription atd = null;
-        if ( input instanceof AttributeTypeDescription )
+        AttributeType atd = null;
+        if ( input instanceof AttributeType )
         {
-            atd = ( AttributeTypeDescription ) input;
+            atd = ( AttributeType ) input;
         }
 
         // create main content
@@ -362,8 +362,8 @@ public class AttributeTypeDescriptionDetailsPage extends SchemaDetailsPage
 
         // set syntax content
         String lsdOid = null;
-        LdapSyntaxDescription lsd = null;
-        int lsdLength = 0;
+        LdapSyntax lsd = null;
+        long lsdLength = 0;
         if ( atd != null )
         {
             lsdOid = SchemaUtils.getSyntaxNumericOidTransitive( atd, getSchema() );
@@ -373,17 +373,17 @@ public class AttributeTypeDescriptionDetailsPage extends SchemaDetailsPage
             }
             lsdLength = SchemaUtils.getSyntaxLengthTransitive( atd, getSchema() );
         }
-        syntaxLink.setText( getNonNullString( lsd != null ? lsd.getNumericOid() : lsdOid ) );
+        syntaxLink.setText( getNonNullString( lsd != null ? lsd.getOid() : lsdOid ) );
         syntaxLink.setHref( lsd );
         syntaxLink.setUnderlined( lsd != null );
         syntaxLink.setEnabled( lsd != null );
         syntaxDescText.setText( getNonNullString( lsd != null ? lsd.getDescription() : null ) );
-        lengthText.setText( getNonNullString( lsdLength > 0 ? Integer.toString( lsdLength ) : null ) );
+        lengthText.setText( getNonNullString( lsdLength > 0 ? Long.toString( lsdLength ) : null ) );
         syntaxSection.layout();
 
         // set matching rules content
         String emrOid = null;
-        MatchingRuleDescription emr = null;
+        MatchingRule emr = null;
         if ( atd != null )
         {
             emrOid = SchemaUtils.getEqualityMatchingRuleNameOrNumericOidTransitive( atd, getSchema() );
@@ -398,7 +398,7 @@ public class AttributeTypeDescriptionDetailsPage extends SchemaDetailsPage
         equalityLink.setEnabled( emr != null );
 
         String smrOid = null;
-        MatchingRuleDescription smr = null;
+        MatchingRule smr = null;
         if ( atd != null )
         {
             smrOid = SchemaUtils.getSubstringMatchingRuleNameOrNumericOidTransitive( atd, getSchema() );
@@ -413,7 +413,7 @@ public class AttributeTypeDescriptionDetailsPage extends SchemaDetailsPage
         substringLink.setEnabled( smr != null );
 
         String omrOid = null;
-        MatchingRuleDescription omr = null;
+        MatchingRule omr = null;
         if ( atd != null )
         {
             omrOid = SchemaUtils.getOrderingMatchingRuleNameOrNumericOidTransitive( atd, getSchema() );
@@ -447,7 +447,7 @@ public class AttributeTypeDescriptionDetailsPage extends SchemaDetailsPage
      *
      * @param atd the attribute type description
      */
-    private void createMainContent( AttributeTypeDescription atd )
+    private void createMainContent( AttributeType atd )
     {
         // dispose old content
         if ( mainSection.getClient() != null )
@@ -466,7 +466,7 @@ public class AttributeTypeDescriptionDetailsPage extends SchemaDetailsPage
         {
             toolkit.createLabel( mainClient,
                 Messages.getString( "AttributeTypeDescriptionDetailsPage.NumericOID" ), SWT.NONE ); //$NON-NLS-1$
-            numericOidText = toolkit.createText( mainClient, getNonNullString( atd.getNumericOid() ), SWT.NONE );
+            numericOidText = toolkit.createText( mainClient, getNonNullString( atd.getOid() ), SWT.NONE );
             numericOidText.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
             numericOidText.setEditable( false );
 
@@ -504,7 +504,7 @@ public class AttributeTypeDescriptionDetailsPage extends SchemaDetailsPage
      *
      * @param atd the attribute type description
      */
-    private void createOtherMatchContent( AttributeTypeDescription atd )
+    private void createOtherMatchContent( AttributeType atd )
     {
         // dispose old content
         if ( otherMatchSection.getClient() != null )
@@ -532,7 +532,7 @@ public class AttributeTypeDescriptionDetailsPage extends SchemaDetailsPage
                 {
                     if ( getSchema().hasMatchingRuleDescription( mrdName ) )
                     {
-                        MatchingRuleDescription mrd = getSchema().getMatchingRuleDescription( mrdName );
+                        MatchingRule mrd = getSchema().getMatchingRuleDescription( mrdName );
                         Hyperlink otherMatchLink = toolkit.createHyperlink( otherMatchClient, SchemaUtils
                             .toString( mrd ), SWT.WRAP );
                         otherMatchLink.setHref( mrd );
@@ -575,7 +575,7 @@ public class AttributeTypeDescriptionDetailsPage extends SchemaDetailsPage
      *
      * @param atd the attribute type description
      */
-    private void createSupertypeContent( AttributeTypeDescription atd )
+    private void createSupertypeContent( AttributeType atd )
     {
         // dispose old content
         if ( supertypeSection.getClient() != null )
@@ -592,14 +592,14 @@ public class AttributeTypeDescriptionDetailsPage extends SchemaDetailsPage
         // or a dash if no supertype exists.
         if ( atd != null )
         {
-            String superType = atd.getSuperType();
+            String superType = atd.getSuperiorOid();
             if ( superType != null )
             {
                 supertypeSection.setText( NLS.bind( Messages
                     .getString( "AttributeTypeDescriptionDetailsPage.SupertypeCount" ), new Object[] { 1 } ) ); //$NON-NLS-1$
                 if ( getSchema().hasAttributeTypeDescription( superType ) )
                 {
-                    AttributeTypeDescription supAtd = getSchema().getAttributeTypeDescription( superType );
+                    AttributeType supAtd = getSchema().getAttributeTypeDescription( superType );
                     Hyperlink superLink = toolkit.createHyperlink( superClient, SchemaUtils.toString( supAtd ),
                         SWT.WRAP );
                     superLink.setHref( supAtd );
@@ -641,7 +641,7 @@ public class AttributeTypeDescriptionDetailsPage extends SchemaDetailsPage
      *
      * @param atd the attribute type description
      */
-    private void createSubtypesContent( AttributeTypeDescription atd )
+    private void createSubtypesContent( AttributeType atd )
     {
         // dispose old content
         if ( subtypesSection.getClient() != null )
@@ -657,7 +657,7 @@ public class AttributeTypeDescriptionDetailsPage extends SchemaDetailsPage
         // create new content, either links to subtypes or a dash if no subtypes exist.
         if ( atd != null )
         {
-            Collection<AttributeTypeDescription> derivedAtds = SchemaUtils.getDerivedAttributeTypeDescriptions( atd,
+            Collection<AttributeType> derivedAtds = SchemaUtils.getDerivedAttributeTypeDescriptions( atd,
                 getSchema() );
             if ( derivedAtds != null && derivedAtds.size() > 0 )
             {
@@ -665,7 +665,7 @@ public class AttributeTypeDescriptionDetailsPage extends SchemaDetailsPage
                     .setText( NLS
                         .bind(
                             Messages.getString( "AttributeTypeDescriptionDetailsPage.SubtypesCount" ), new Object[] { derivedAtds.size() } ) ); //$NON-NLS-1$
-                for ( AttributeTypeDescription derivedAtd : derivedAtds )
+                for ( AttributeType derivedAtd : derivedAtds )
                 {
                     Hyperlink subAttributeTypeLink = toolkit.createHyperlink( subClient, SchemaUtils
                         .toString( derivedAtd ), SWT.WRAP );
@@ -702,7 +702,7 @@ public class AttributeTypeDescriptionDetailsPage extends SchemaDetailsPage
      *
      * @param atd the attribute type description
      */
-    private void createUsedAsMustContent( AttributeTypeDescription atd )
+    private void createUsedAsMustContent( AttributeType atd )
     {
         // dispose old content
         if ( usedAsMustSection.getClient() != null )
@@ -718,14 +718,14 @@ public class AttributeTypeDescriptionDetailsPage extends SchemaDetailsPage
         // create new content, either links to objectclasses or a dash
         if ( atd != null )
         {
-            Collection<ObjectClassDescription> usedAsMusts = SchemaUtils.getUsedAsMust( atd, getSchema() );
+            Collection<ObjectClass> usedAsMusts = SchemaUtils.getUsedAsMust( atd, getSchema() );
             if ( usedAsMusts != null && usedAsMusts.size() > 0 )
             {
                 usedAsMustSection
                     .setText( NLS
                         .bind(
                             Messages.getString( "AttributeTypeDescriptionDetailsPage.UsedAsMustCount" ), new Object[] { usedAsMusts.size() } ) ); //$NON-NLS-1$
-                for ( ObjectClassDescription ocd : usedAsMusts )
+                for ( ObjectClass ocd : usedAsMusts )
                 {
                     Hyperlink usedAsMustLink = toolkit.createHyperlink( mustClient, SchemaUtils.toString( ocd ),
                         SWT.WRAP );
@@ -762,7 +762,7 @@ public class AttributeTypeDescriptionDetailsPage extends SchemaDetailsPage
      *
      * @param atd the attribute type description
      */
-    private void createUsedAsMayContent( AttributeTypeDescription atd )
+    private void createUsedAsMayContent( AttributeType atd )
     {
         // dispose old content
         if ( usedAsMaySection.getClient() != null )
@@ -778,14 +778,14 @@ public class AttributeTypeDescriptionDetailsPage extends SchemaDetailsPage
         // create new content, either links to objectclasses or a dash
         if ( atd != null )
         {
-            Collection<ObjectClassDescription> usedAsMays = SchemaUtils.getUsedAsMay( atd, getSchema() );
+            Collection<ObjectClass> usedAsMays = SchemaUtils.getUsedAsMay( atd, getSchema() );
             if ( usedAsMays != null && usedAsMays.size() > 0 )
             {
                 usedAsMaySection
                     .setText( NLS
                         .bind(
                             Messages.getString( "AttributeTypeDescriptionDetailsPage.UsedAsMayCount" ), new Object[] { usedAsMays.size() } ) ); //$NON-NLS-1$
-                for ( ObjectClassDescription ocd : usedAsMays )
+                for ( ObjectClass ocd : usedAsMays )
                 {
                     Hyperlink usedAsMayLink = toolkit
                         .createHyperlink( mayClient, SchemaUtils.toString( ocd ), SWT.WRAP );

@@ -21,7 +21,7 @@
 package org.apache.directory.studio.ldapbrowser.ui.actions;
 
 
-import org.apache.directory.shared.ldap.name.LdapDN;
+import org.apache.directory.shared.ldap.name.DN;
 import org.apache.directory.studio.connection.core.Utils;
 import org.apache.directory.studio.ldapbrowser.common.dialogs.DnDialog;
 import org.apache.directory.studio.ldapbrowser.common.dialogs.TextDialog;
@@ -95,7 +95,7 @@ public class GotoDnAction extends LocateInDitAction
         {
             IBrowserConnection conn = ( IBrowserConnection ) getInput();
 
-            LdapDN dn = Utils.getLdapDn( getStringFromClipboard() );
+            DN dn = Utils.getLdapDn( getStringFromClipboard() );
 
             DnDialog dialog = new DnDialog(
                 getShell(),

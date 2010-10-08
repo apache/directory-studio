@@ -24,8 +24,8 @@ package org.apache.directory.studio.ldapbrowser.ui.editors.schemabrowser;
 import java.util.Collection;
 import java.util.List;
 
-import org.apache.directory.shared.ldap.schema.parsers.AttributeTypeDescription;
-import org.apache.directory.shared.ldap.schema.parsers.ObjectClassDescription;
+import org.apache.directory.shared.ldap.schema.AttributeType;
+import org.apache.directory.shared.ldap.schema.ObjectClass;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.SchemaUtils;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
@@ -176,10 +176,10 @@ public class ObjectClassDescriptionDetailsPage extends SchemaDetailsPage
      */
     public void setInput( Object input )
     {
-        ObjectClassDescription ocd = null;
-        if ( input instanceof ObjectClassDescription )
+        ObjectClass ocd = null;
+        if ( input instanceof ObjectClass )
         {
-            ocd = ( ObjectClassDescription ) input;
+            ocd = ( ObjectClass ) input;
         }
 
         // create main content
@@ -203,7 +203,7 @@ public class ObjectClassDescriptionDetailsPage extends SchemaDetailsPage
      *
      * @param ocd the object class description
      */
-    private void createMainContent( ObjectClassDescription ocd )
+    private void createMainContent( ObjectClass ocd )
     {
         // dispose old content
         if ( mainSection.getClient() != null )
@@ -222,7 +222,7 @@ public class ObjectClassDescriptionDetailsPage extends SchemaDetailsPage
         {
             toolkit.createLabel( mainClient,
                 Messages.getString( "ObjectClassDescriptionDetailsPage.NumericOID" ), SWT.NONE ); //$NON-NLS-1$
-            numericOidText = toolkit.createText( mainClient, getNonNullString( ocd.getNumericOid() ), SWT.NONE );
+            numericOidText = toolkit.createText( mainClient, getNonNullString( ocd.getOid() ), SWT.NONE );
             numericOidText.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
             numericOidText.setEditable( false );
 
@@ -241,7 +241,7 @@ public class ObjectClassDescriptionDetailsPage extends SchemaDetailsPage
             descText.setEditable( false );
 
             String kind = ""; //$NON-NLS-1$
-            switch ( ocd.getKind() )
+            switch ( ocd.getType() )
             {
                 case STRUCTURAL:
                     kind = Messages.getString( "ObjectClassDescriptionDetailsPage.Structural" ); //$NON-NLS-1$
@@ -275,7 +275,7 @@ public class ObjectClassDescriptionDetailsPage extends SchemaDetailsPage
      *
      * @param ocd the object class description
      */
-    private void createMustContents( ObjectClassDescription ocd )
+    private void createMustContents( ObjectClass ocd )
     {
         // dispose old content
         if ( mustSection.getClient() != null )
@@ -302,7 +302,7 @@ public class ObjectClassDescriptionDetailsPage extends SchemaDetailsPage
                 {
                     if ( getSchema().hasAttributeTypeDescription( name ) )
                     {
-                        AttributeTypeDescription mustAtd = getSchema().getAttributeTypeDescription( name );
+                        AttributeType mustAtd = getSchema().getAttributeTypeDescription( name );
                         Hyperlink mustLink = toolkit.createHyperlink( mustClient, SchemaUtils.toString( mustAtd ),
                             SWT.WRAP );
                         mustLink.setHref( mustAtd );
@@ -345,7 +345,7 @@ public class ObjectClassDescriptionDetailsPage extends SchemaDetailsPage
      *
      * @param ocd the object class description
      */
-    private void createMayContents( ObjectClassDescription ocd )
+    private void createMayContents( ObjectClass ocd )
     {
         // dispose old content
         if ( maySection.getClient() != null )
@@ -372,7 +372,7 @@ public class ObjectClassDescriptionDetailsPage extends SchemaDetailsPage
                 {
                     if ( getSchema().hasAttributeTypeDescription( name ) )
                     {
-                        AttributeTypeDescription mayAtd = getSchema().getAttributeTypeDescription( name );
+                        AttributeType mayAtd = getSchema().getAttributeTypeDescription( name );
                         Hyperlink mayLink = toolkit.createHyperlink( mayClient, SchemaUtils.toString( mayAtd ),
                             SWT.WRAP );
                         mayLink.setHref( mayAtd );
@@ -414,7 +414,7 @@ public class ObjectClassDescriptionDetailsPage extends SchemaDetailsPage
      *
      * @param ocd the object class description
      */
-    private void createSubclassContents( ObjectClassDescription ocd )
+    private void createSubclassContents( ObjectClass ocd )
     {
         // dispose old content
         if ( subclassesSection.getClient() != null )
@@ -430,14 +430,14 @@ public class ObjectClassDescriptionDetailsPage extends SchemaDetailsPage
         // create new content
         if ( ocd != null )
         {
-            List<ObjectClassDescription> subOcds = SchemaUtils.getSubObjectClassDescriptions( ocd, getSchema() );
+            List<ObjectClass> subOcds = SchemaUtils.getSubObjectClassDescriptions( ocd, getSchema() );
             if ( subOcds != null && subOcds.size() > 0 )
             {
                 subclassesSection
                     .setText( NLS
                         .bind(
                             Messages.getString( "ObjectClassDescriptionDetailsPage.SubclassesCount" ), new Object[] { subOcds.size() } ) ); //$NON-NLS-1$
-                for ( ObjectClassDescription subOcd : subOcds )
+                for ( ObjectClass subOcd : subOcds )
                 {
                     Hyperlink subLink = toolkit.createHyperlink( subClient, SchemaUtils.toString( subOcd ), SWT.WRAP );
                     subLink.setHref( subOcd );
@@ -472,7 +472,7 @@ public class ObjectClassDescriptionDetailsPage extends SchemaDetailsPage
      *
      * @param ocd the object class description
      */
-    private void createSuperclassContents( ObjectClassDescription ocd )
+    private void createSuperclassContents( ObjectClass ocd )
     {
         // dispose old content
         if ( superclassesSection.getClient() != null )
@@ -488,7 +488,7 @@ public class ObjectClassDescriptionDetailsPage extends SchemaDetailsPage
         // create new content
         if ( ocd != null )
         {
-            List<String> names = ocd.getSuperiorObjectClasses();
+            List<String> names = ocd.getSuperiorOids();
             if ( names != null && names.size() > 0 )
             {
                 superclassesSection
@@ -504,7 +504,7 @@ public class ObjectClassDescriptionDetailsPage extends SchemaDetailsPage
                 {
                     if ( getSchema().hasObjectClassDescription( name ) )
                     {
-                        ObjectClassDescription supOcd = getSchema().getObjectClassDescription( name );
+                        ObjectClass supOcd = getSchema().getObjectClassDescription( name );
                         Hyperlink superLink = toolkit.createHyperlink( supClient, SchemaUtils.toString( supOcd ),
                             SWT.WRAP );
                         superLink.setHref( supOcd );

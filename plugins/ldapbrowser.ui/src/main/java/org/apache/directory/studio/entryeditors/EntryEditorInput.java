@@ -140,7 +140,7 @@ public class EntryEditorInput implements IEditorInput
             }
             else
             {
-                return entry.getDn().getUpName();
+                return entry.getDn().getName();
             }
         }
 

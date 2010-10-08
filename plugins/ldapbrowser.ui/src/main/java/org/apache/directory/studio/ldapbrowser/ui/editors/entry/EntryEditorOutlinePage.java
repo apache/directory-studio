@@ -343,7 +343,7 @@ public class EntryEditorOutlinePage extends ContentOutlinePage
                 else
                 {
                     // Any other case
-                    return entry.getDn().getUpName();
+                    return entry.getDn().getName();
                 }
             }
 

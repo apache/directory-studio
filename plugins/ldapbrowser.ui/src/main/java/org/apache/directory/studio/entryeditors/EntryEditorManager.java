@@ -31,7 +31,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.directory.shared.ldap.name.LdapDN;
+import org.apache.directory.shared.ldap.name.DN;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.event.ConnectionEventRegistry;
 import org.apache.directory.studio.connection.core.event.ConnectionUpdateAdapter;
@@ -350,7 +350,7 @@ public class EntryEditorManager
                     if ( editor != null && editor.getEntryEditorInput().getResolvedEntry() != null )
                     {
                         IBrowserConnection bc = editor.getEntryEditorInput().getResolvedEntry().getBrowserConnection();
-                        LdapDN dn = editor.getEntryEditorInput().getResolvedEntry().getDn();
+                        DN dn = editor.getEntryEditorInput().getResolvedEntry().getDn();
                         if ( bc.getEntryFromCache( dn ) == null )
                         {
                             editorReferences.add( ref );

@@ -102,7 +102,7 @@ public class EntryEditorUtils
                 else
                 {
                     return NLS.bind( Messages.getString( "EntryEditorNavigationLocation.Entry" ), //$NON-NLS-1$
-                        input.getEntryInput().getDn().getUpName() ) + connectionName;
+                        input.getEntryInput().getDn().getName() ) + connectionName;
                 }
             }
             else if ( input.getSearchResultInput() != null )
@@ -116,7 +116,7 @@ public class EntryEditorUtils
                 else
                 {
                     return NLS.bind( Messages.getString( "EntryEditorNavigationLocation.SearchResult" ), //$NON-NLS-1$
-                        input.getSearchResultInput().getDn().getUpName() ) + connectionName; //$NON-NLS-1$
+                        input.getSearchResultInput().getDn().getName() ) + connectionName; //$NON-NLS-1$
                 }
             }
             else if ( input.getBookmarkInput() != null )
@@ -130,7 +130,7 @@ public class EntryEditorUtils
                 else
                 {
                     return NLS.bind( Messages.getString( "EntryEditorNavigationLocation.Bookmark" ), //$NON-NLS-1$
-                        input.getBookmarkInput().getDn().getUpName() ) + connectionName;
+                        input.getBookmarkInput().getDn().getName() ) + connectionName;
                 }
             }
             else

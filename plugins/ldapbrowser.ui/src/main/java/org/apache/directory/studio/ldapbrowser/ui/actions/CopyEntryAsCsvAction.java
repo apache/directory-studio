@@ -264,7 +264,7 @@ public class CopyEntryAsCsvAction extends CopyEntryAsAction
                     BrowserUIConstants.PREFERENCE_SEARCHRESULTEDITOR_SHOW_DN ) )
             {
                 text.append( quoteCharacter );
-                text.append( entries[e].getDn().getUpName() );
+                text.append( entries[e].getDn().getName() );
                 text.append( quoteCharacter );
                 text.append( attributeDelimiter );
 

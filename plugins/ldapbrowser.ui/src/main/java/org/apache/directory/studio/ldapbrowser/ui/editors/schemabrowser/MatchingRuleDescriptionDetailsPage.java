@@ -23,9 +23,9 @@ package org.apache.directory.studio.ldapbrowser.ui.editors.schemabrowser;
 
 import java.util.Collection;
 
-import org.apache.directory.shared.ldap.schema.parsers.AttributeTypeDescription;
-import org.apache.directory.shared.ldap.schema.parsers.LdapSyntaxDescription;
-import org.apache.directory.shared.ldap.schema.parsers.MatchingRuleDescription;
+import org.apache.directory.shared.ldap.schema.AttributeType;
+import org.apache.directory.shared.ldap.schema.LdapSyntax;
+import org.apache.directory.shared.ldap.schema.MatchingRule;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.Schema;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.SchemaUtils;
 import org.eclipse.osgi.util.NLS;
@@ -187,10 +187,10 @@ public class MatchingRuleDescriptionDetailsPage extends SchemaDetailsPage
      */
     public void setInput( Object input )
     {
-        MatchingRuleDescription mrd = null;
-        if ( input instanceof MatchingRuleDescription )
+        MatchingRule mrd = null;
+        if ( input instanceof MatchingRule )
         {
-            mrd = ( MatchingRuleDescription ) input;
+            mrd = ( MatchingRule ) input;
         }
 
         // create main content
@@ -201,17 +201,17 @@ public class MatchingRuleDescriptionDetailsPage extends SchemaDetailsPage
 
         // set syntax content
         String lsdOid = null;
-        LdapSyntaxDescription lsd = null;
+        LdapSyntax lsd = null;
         if ( mrd != null )
         {
             Schema schema = getSchema();
-            lsdOid = mrd.getSyntax();
+            lsdOid = mrd.getSyntaxOid();
             if ( lsdOid != null && schema.hasLdapSyntaxDescription( lsdOid ) )
             {
                 lsd = schema.getLdapSyntaxDescription( lsdOid );
             }
         }
-        syntaxLink.setText( getNonNullString( lsd != null ? lsd.getNumericOid() : lsdOid ) );
+        syntaxLink.setText( getNonNullString( lsd != null ? lsd.getOid() : lsdOid ) );
         syntaxLink.setHref( lsd );
         syntaxLink.setUnderlined( lsd != null );
         syntaxLink.setEnabled( lsd != null );
@@ -233,7 +233,7 @@ public class MatchingRuleDescriptionDetailsPage extends SchemaDetailsPage
      *
      * @param mrd the matching rule description
      */
-    private void createMainContent( MatchingRuleDescription mrd )
+    private void createMainContent( MatchingRule mrd )
     {
         // dispose old content
         if ( mainSection.getClient() != null )
@@ -252,7 +252,7 @@ public class MatchingRuleDescriptionDetailsPage extends SchemaDetailsPage
         {
             toolkit.createLabel( mainClient,
                 Messages.getString( "MatchingRuleDescriptionDetailsPage.NumericOID" ), SWT.NONE ); //$NON-NLS-1$
-            numericOidText = toolkit.createText( mainClient, getNonNullString( mrd.getNumericOid() ), SWT.NONE );
+            numericOidText = toolkit.createText( mainClient, getNonNullString( mrd.getOid() ), SWT.NONE );
             numericOidText.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
             numericOidText.setEditable( false );
 
@@ -282,7 +282,7 @@ public class MatchingRuleDescriptionDetailsPage extends SchemaDetailsPage
      *
      * @param mrd the matching rule description
      */
-    private void createUsedFromContents( MatchingRuleDescription mrd )
+    private void createUsedFromContents( MatchingRule mrd )
     {
         // dispose old content
         if ( usedFromSection.getClient() != null )
@@ -298,7 +298,7 @@ public class MatchingRuleDescriptionDetailsPage extends SchemaDetailsPage
         // create new content
         if ( mrd != null )
         {
-            Collection<AttributeTypeDescription> usedFromATDs = SchemaUtils.getUsedFromAttributeTypeDescriptions( mrd,
+            Collection<AttributeType> usedFromATDs = SchemaUtils.getUsedFromAttributeTypeDescriptions( mrd,
                 getSchema() );
             if ( usedFromATDs != null && usedFromATDs.size() > 0 )
             {
@@ -306,7 +306,7 @@ public class MatchingRuleDescriptionDetailsPage extends SchemaDetailsPage
                     .setText( NLS
                         .bind(
                             Messages.getString( "MatchingRuleDescriptionDetailsPage.UsedFromCount" ), new Object[] { usedFromATDs.size() } ) ); //$NON-NLS-1$
-                for ( AttributeTypeDescription atd : usedFromATDs )
+                for ( AttributeType atd : usedFromATDs )
                 {
                     Hyperlink usedFromLink = toolkit.createHyperlink( usedFromClient, SchemaUtils.toString( atd ),
                         SWT.WRAP );

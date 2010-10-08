@@ -21,7 +21,7 @@
 package org.apache.directory.studio.ldapbrowser.ui.dialogs.properties;
 
 
-import org.apache.directory.shared.ldap.schema.parsers.AttributeTypeDescription;
+import org.apache.directory.shared.ldap.schema.AttributeType;
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
@@ -293,9 +293,9 @@ public class AttributePropertyPage extends PropertyPage implements IWorkbenchPro
 
             if ( schema.hasAttributeTypeDescription( attribute.getDescription() ) )
             {
-                AttributeTypeDescription atd = schema.getAttributeTypeDescription( attribute.getDescription() );
+                AttributeType atd = schema.getAttributeTypeDescription( attribute.getDescription() );
 
-                atdOidText.setText( atd.getNumericOid() );
+                atdOidText.setText( atd.getOid() );
                 String atdNames = atd.getNames().toString();
                 atdNamesText.setText( atdNames.substring( 1, atdNames.length() - 1 ) );
                 atdDescText.setText( Utils.getNonNullString( atd.getDescription() ) );
@@ -307,12 +307,12 @@ public class AttributePropertyPage extends PropertyPage implements IWorkbenchPro
                 obsoleteFlag.setSelection( atd.isObsolete() );
 
                 String syntaxNumericOid = SchemaUtils.getSyntaxNumericOidTransitive( atd, schema );
-                int syntaxLength = SchemaUtils.getSyntaxLengthTransitive( atd, schema );
+                long syntaxLength = SchemaUtils.getSyntaxLengthTransitive( atd, schema );
                 String syntaxDescription = syntaxNumericOid != null ? schema
                     .getLdapSyntaxDescription( syntaxNumericOid ).getDescription() : null;
                 syntaxOidText.setText( Utils.getNonNullString( syntaxNumericOid ) );
                 syntaxDescText.setText( Utils.getNonNullString( syntaxDescription ) );
-                syntaxLengthText.setText( Utils.getNonNullString( syntaxLength > 0 ? Integer.toString( syntaxLength )
+                syntaxLengthText.setText( Utils.getNonNullString( syntaxLength > 0 ? Long.toString( syntaxLength )
                     : null ) );
 
                 equalityMatchingRuleText.setText( Utils.getNonNullString( SchemaUtils
