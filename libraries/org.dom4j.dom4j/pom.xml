@@ -86,7 +86,6 @@
           <manifestLocation>META-INF</manifestLocation>
           <instructions>
             <Bundle-SymbolicName>${artifactId}</Bundle-SymbolicName>
-            <Require-Bundle>org.apache.xml.commons.xmlapis;bundle-version="${org.apache.xml.commons.xmlapis.validversion}"</Require-Bundle>
             <Embed-Dependency>*;scope=compile|runtime</Embed-Dependency>
             <Embed-Directory>lib</Embed-Directory>
             <Embed-StripGroup>true</Embed-StripGroup>

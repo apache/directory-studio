@@ -78,8 +78,6 @@
     <org.apache.directory.shared.version>0.9.20-SNAPSHOT</org.apache.directory.shared.version>
     <org.apache.directory.shared.validversion>0.9.20.SNAPSHOT</org.apache.directory.shared.validversion>
     <org.apache.mina.core.version>2.0.0</org.apache.mina.core.version>
-    <org.apache.xml.commons.xmlapis.version>1.0.b2</org.apache.xml.commons.xmlapis.version>
-    <org.apache.xml.commons.xmlapis.validversion>1.0.0.b2</org.apache.xml.commons.xmlapis.validversion>
     <org.bouncycastle.bcprovjdk15.version>140</org.bouncycastle.bcprovjdk15.version>
     <org.dom4j.version>1.6.1</org.dom4j.version>
     <org.slf4j.version>1.5.6</org.slf4j.version>
@@ -243,11 +241,6 @@
         <groupId>org.apache.directory.studio</groupId>
         <artifactId>org.apache.mina.core</artifactId>
         <version>${org.apache.mina.core.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.apache.directory.studio</groupId>
-        <artifactId>org.apache.xml.commons.xmlapis</artifactId>
-        <version>${org.apache.xml.commons.xmlapis.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.directory.studio</groupId>
@@ -1171,11 +1164,6 @@
         <groupId>org.apache.mina</groupId>
         <artifactId>mina-core</artifactId>
         <version>${org.apache.mina.core.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>xml-apis</groupId>
-        <artifactId>xml-apis</artifactId>
-        <version>${org.apache.xml.commons.xmlapis.version}</version>
       </dependency>
       <dependency>
         <groupId>xerces</groupId>
