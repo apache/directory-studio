@@ -1152,7 +1152,10 @@ public class ObjectClassEditorOverviewPage extends FormPage
      */
     private void fillInSuperiorsTable()
     {
-        superiorsTableViewer.setInput( modifiedObjectClass.getSuperiorOids() );
+        if ( modifiedObjectClass.getSuperiorOids() != null )
+        {
+            superiorsTableViewer.setInput( modifiedObjectClass.getSuperiorOids() );
+        }
     }
 
 
@@ -1192,7 +1195,10 @@ public class ObjectClassEditorOverviewPage extends FormPage
      */
     private void fillInMandatoryAttributesTable()
     {
-        mandatoryAttributesTableViewer.setInput( modifiedObjectClass.getMustAttributeTypeOids() );
+        if ( modifiedObjectClass.getMustAttributeTypeOids() != null )
+        {
+            mandatoryAttributesTableViewer.setInput( modifiedObjectClass.getMustAttributeTypeOids() );
+        }
     }
 
 
@@ -1201,7 +1207,10 @@ public class ObjectClassEditorOverviewPage extends FormPage
      */
     private void fillInOptionalAttributesTable()
     {
-        optionalAttributesTableViewer.setInput( modifiedObjectClass.getMayAttributeTypeOids() );
+        if ( modifiedObjectClass.getMayAttributeTypeOids() != null )
+        {
+            optionalAttributesTableViewer.setInput( modifiedObjectClass.getMayAttributeTypeOids() );
+        }
     }
 
 

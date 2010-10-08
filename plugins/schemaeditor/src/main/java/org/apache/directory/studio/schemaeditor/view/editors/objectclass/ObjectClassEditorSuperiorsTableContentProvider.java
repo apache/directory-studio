@@ -62,11 +62,11 @@ public class ObjectClassEditorSuperiorsTableContentProvider implements IStructur
      */
     public Object[] getElements( Object inputElement )
     {
-        if ( inputElement instanceof String[] )
+        if ( inputElement instanceof List<?> )
         {
             List<Object> results = new ArrayList<Object>();
 
-            String[] superiors = ( String[] ) inputElement;
+            List<String> superiors = ( List<String> ) inputElement;
             for ( String superior : superiors )
             {
                 ObjectClassImpl oc = schemaHandler.getObjectClass( superior );

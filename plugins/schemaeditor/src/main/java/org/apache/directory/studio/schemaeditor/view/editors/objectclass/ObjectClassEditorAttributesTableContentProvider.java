@@ -58,11 +58,11 @@ public class ObjectClassEditorAttributesTableContentProvider implements IStructu
      */
     public Object[] getElements( Object inputElement )
     {
-        if ( inputElement instanceof String[] )
+        if ( inputElement instanceof List<?> )
         {
             List<Object> results = new ArrayList<Object>();
 
-            String[] attributes = ( String[] ) inputElement;
+            List<String> attributes = ( List<String> ) inputElement;
             for ( String attribute : attributes )
             {
                 AttributeTypeImpl at = schemaHandler.getAttributeType( attribute );
