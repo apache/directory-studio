@@ -96,7 +96,7 @@
             <Bundle-Localization>plugin</Bundle-Localization>
             <Require-Bundle>
  org.apache.commons.codec;bundle-version="${org.apache.commons.codec.version}",
- org.apache.directory.shared.ldap;bundle-version="${org.apache.directory.shared.version}"
+ org.apache.directory.shared.ldap;bundle-version="${org.apache.directory.shared.validversion}"
             </Require-Bundle>
             <Export-Package>org.apache.directory.studio.ldifparser.*</Export-Package>
             <Import-Package>!</Import-Package>

@@ -26,9 +26,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.naming.InvalidNameException;
-
-import org.apache.directory.shared.ldap.name.LdapDN;
+import org.apache.directory.shared.ldap.exception.LdapInvalidDnException;
+import org.apache.directory.shared.ldap.name.DN;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonConstants;
 import org.apache.directory.studio.ldapbrowser.common.widgets.browser.BrowserLabelProvider;
@@ -445,7 +444,7 @@ public class LdifOutlinePage extends ContentOutlinePage
                     LdifDnLine dnLine = record.getDnLine();
                     if ( dnLine != null )
                     {
-                        String dn = dnLine.getRawDn();
+                        String dn = dnLine.getUnfoldedDn();
                         if ( dn != null && "".equals( dn ) ) //$NON-NLS-1$
                         {
                             // Root DSE
@@ -457,9 +456,9 @@ public class LdifOutlinePage extends ContentOutlinePage
                             try
                             {
                                 return BrowserLabelProvider.getImageByObjectClass( ldifEditor.getConnection()
-                                    .getEntryFromCache( new LdapDN( dn ) ) );
+                                    .getEntryFromCache( new DN( dn ) ) );
                             }
-                            catch ( InvalidNameException e )
+                            catch ( LdapInvalidDnException e )
                             {
                                 // Will never occur
                             }

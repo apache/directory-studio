@@ -33,7 +33,7 @@ import java.util.Set;
 import org.apache.directory.shared.ldap.aci.ACIItemParser;
 import org.apache.directory.shared.ldap.aci.UserClass;
 import org.apache.directory.shared.ldap.aci.UserFirstACIItem;
-import org.apache.directory.shared.ldap.name.LdapDN;
+import org.apache.directory.shared.ldap.name.DN;
 import org.apache.directory.shared.ldap.subtree.SubtreeSpecification;
 import org.apache.directory.studio.valueeditors.AbstractDialogStringValueEditor;
 import org.eclipse.osgi.util.NLS;
@@ -166,8 +166,8 @@ public class UserClassWrapper
         if ( userClass.getClass() == UserClass.Name.class )
         {
             UserClass.Name name = ( UserClass.Name ) userClass;
-            Set<LdapDN> jndiNames = name.getNames();
-            for ( LdapDN jndiName : jndiNames )
+            Set<DN> jndiNames = name.getNames();
+            for ( DN jndiName : jndiNames )
             {
                 values.add( jndiName.toString() );
             }
@@ -175,8 +175,8 @@ public class UserClassWrapper
         else if ( userClass.getClass() == UserClass.UserGroup.class )
         {
             UserClass.UserGroup userGrops = ( UserClass.UserGroup ) userClass;
-            Set<LdapDN> jndiNames = userGrops.getNames();
-            for ( LdapDN jndiName : jndiNames )
+            Set<DN> jndiNames = userGrops.getNames();
+            for ( DN jndiName : jndiNames )
             {
                 values.add( jndiName.toString() );
             }
@@ -188,7 +188,7 @@ public class UserClassWrapper
             for ( SubtreeSpecification subtreeSpecification : subtreeSpecifications )
             {
                 StringBuilder buffer = new StringBuilder();
-                subtreeSpecification.printToBuffer( buffer );
+                subtreeSpecification.toString( buffer );
                 String s = buffer.toString();
                 values.add( s );
             }
