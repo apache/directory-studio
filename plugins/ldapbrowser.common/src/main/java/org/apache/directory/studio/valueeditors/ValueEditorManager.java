@@ -29,8 +29,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.directory.shared.ldap.schema.parsers.AttributeTypeDescription;
-import org.apache.directory.shared.ldap.schema.parsers.LdapSyntaxDescription;
+import org.apache.directory.shared.ldap.schema.AttributeType;
+import org.apache.directory.shared.ldap.schema.LdapSyntax;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonConstants;
 import org.apache.directory.studio.ldapbrowser.core.model.AttributeHierarchy;
@@ -241,13 +241,13 @@ public class ValueEditorManager
             return userSelectedValueEditor;
         }
 
-        AttributeTypeDescription atd = schema.getAttributeTypeDescription( attributeType );
+        AttributeType atd = schema.getAttributeTypeDescription( attributeType );
         // check attribute preferences
         Map<String, String> attributeValueEditorMap = BrowserCommonActivator.getDefault().getValueEditorsPreferences()
             .getAttributeValueEditorMap();
-        if ( atd.getNumericOid() != null && attributeValueEditorMap.containsKey( atd.getNumericOid().toLowerCase() ) )
+        if ( atd.getOid() != null && attributeValueEditorMap.containsKey( atd.getOid().toLowerCase() ) )
         {
-            return ( IValueEditor ) class2ValueEditors.get( attributeValueEditorMap.get( atd.getNumericOid()
+            return ( IValueEditor ) class2ValueEditors.get( attributeValueEditorMap.get( atd.getOid()
                 .toLowerCase() ) );
         }
         List<String> names = atd.getNames();
@@ -269,7 +269,7 @@ public class ValueEditorManager
         }
 
         // return default
-        LdapSyntaxDescription lsd = schema.getLdapSyntaxDescription( syntaxNumericOid );
+        LdapSyntax lsd = schema.getLdapSyntaxDescription( syntaxNumericOid );
         if ( SchemaUtils.isBinary( lsd ) )
         {
             return defaultBinaryValueEditor;
@@ -420,7 +420,7 @@ public class ValueEditorManager
     {
         List<IValueEditor> alternativeList = new ArrayList<IValueEditor>();
 
-        AttributeTypeDescription atd = schema.getAttributeTypeDescription( attributeName );
+        AttributeType atd = schema.getAttributeTypeDescription( attributeName );
 
         if ( SchemaUtils.isBinary( atd, schema ) )
         {

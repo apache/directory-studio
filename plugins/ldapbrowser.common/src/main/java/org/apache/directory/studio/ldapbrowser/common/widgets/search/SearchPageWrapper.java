@@ -29,8 +29,8 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.directory.shared.ldap.constants.SchemaConstants;
-import org.apache.directory.shared.ldap.name.LdapDN;
-import org.apache.directory.shared.ldap.schema.parsers.AttributeTypeDescription;
+import org.apache.directory.shared.ldap.name.DN;
+import org.apache.directory.shared.ldap.schema.AttributeType;
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.StudioControl;
@@ -662,7 +662,7 @@ public class SearchPageWrapper extends BrowserWidget
         if ( search.getBrowserConnection() != null )
         {
             IBrowserConnection browserConnection = search.getBrowserConnection();
-            LdapDN searchBase = search.getSearchBase();
+            DN searchBase = search.getSearchBase();
 
             if ( browserConnectionWidget != null )
             {
@@ -799,7 +799,7 @@ public class SearchPageWrapper extends BrowserWidget
                 {
                     if ( returnOperationalAttributesButton.getSelection() )
                     {
-                        Collection<AttributeTypeDescription> opAtds = SchemaUtils
+                        Collection<AttributeType> opAtds = SchemaUtils
                             .getOperationalAttributeDescriptions( browserConnectionWidget.getBrowserConnection()
                                 .getSchema() );
                         Collection<String> opAtdNames = SchemaUtils.getNames( opAtds );

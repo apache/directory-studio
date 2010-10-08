@@ -26,7 +26,7 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
-import org.apache.directory.shared.ldap.name.Rdn;
+import org.apache.directory.shared.ldap.name.RDN;
 import org.apache.directory.studio.ldapbrowser.common.dialogs.RenameEntryDialog;
 import org.apache.directory.studio.ldapbrowser.common.dialogs.SimulateRenameDialogImpl;
 import org.apache.directory.studio.ldapbrowser.core.jobs.RenameEntryRunnable;
@@ -141,7 +141,7 @@ public class RenameValueEditor extends CellEditor implements IValueEditor
                 RenameEntryDialog renameDialog = new RenameEntryDialog( parent.getShell(), entry );
                 if ( renameDialog.open() == Dialog.OK )
                 {
-                    Rdn newRdn = renameDialog.getRdn();
+                    RDN newRdn = renameDialog.getRdn();
                     if ( newRdn != null && !newRdn.equals( entry.getRdn() ) )
                     {
                         IEntry originalEntry = entry.getBrowserConnection().getEntryFromCache( entry.getDn() );

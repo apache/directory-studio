@@ -21,7 +21,7 @@
 package org.apache.directory.studio.ldapbrowser.common.actions;
 
 
-import org.apache.directory.shared.ldap.name.Rdn;
+import org.apache.directory.shared.ldap.name.RDN;
 import org.apache.directory.studio.ldapbrowser.common.dialogs.RenameEntryDialog;
 import org.apache.directory.studio.ldapbrowser.common.dialogs.SimulateRenameDialogImpl;
 import org.apache.directory.studio.ldapbrowser.core.jobs.RenameEntryRunnable;
@@ -194,7 +194,7 @@ public class RenameAction extends BrowserAction
         RenameEntryDialog renameDialog = new RenameEntryDialog( getShell(), entry );
         if ( renameDialog.open() == Dialog.OK )
         {
-            Rdn newRdn = renameDialog.getRdn();
+            RDN newRdn = renameDialog.getRdn();
             if ( newRdn != null && !newRdn.equals( entry.getRdn() ) )
             {
                 new StudioBrowserJob(

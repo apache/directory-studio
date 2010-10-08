@@ -25,9 +25,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 
-import org.apache.directory.shared.ldap.name.AttributeTypeAndValue;
-import org.apache.directory.shared.ldap.name.LdapDN;
-import org.apache.directory.shared.ldap.name.Rdn;
+import org.apache.directory.shared.ldap.name.AVA;
+import org.apache.directory.shared.ldap.name.DN;
+import org.apache.directory.shared.ldap.name.RDN;
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.connection.core.DnUtils;
 import org.apache.directory.studio.connection.ui.widgets.ExtendedContentAssistCommandAdapter;
@@ -62,10 +62,10 @@ public class DnBuilderWidget extends BrowserWidget implements ModifyListener
     private String[] attributeNames;
 
     /** The initial RDN. */
-    private Rdn currentRdn;
+    private RDN currentRdn;
 
     /** The initial parent DN. */
-    private LdapDN currentParentDn;
+    private DN currentParentDn;
 
     /** True if the RDN input elements should be shown. */
     private boolean showRDN;
@@ -77,7 +77,7 @@ public class DnBuilderWidget extends BrowserWidget implements ModifyListener
     private Shell shell;
 
     /** The selected parent DN. */
-    private LdapDN parentDn;
+    private DN parentDn;
 
     /** The entry widget label. */
     private Label parentEntryLabel;
@@ -92,7 +92,7 @@ public class DnBuilderWidget extends BrowserWidget implements ModifyListener
     private Composite rdnComposite;
 
     /** The resulting RDN. */
-    private Rdn rdn;
+    private RDN rdn;
 
     /** The list of RdnLines. */
     private ArrayList<RdnLine> rdnLineList;
@@ -133,7 +133,7 @@ public class DnBuilderWidget extends BrowserWidget implements ModifyListener
      * @param browserConnection the connection
      * @param parentDn the initial parent DN
      */
-    public void setInput( IBrowserConnection browserConnection, String[] attributeNames, Rdn rdn, LdapDN parentDn )
+    public void setInput( IBrowserConnection browserConnection, String[] attributeNames, RDN rdn, DN parentDn )
     {
         this.attributeNames = attributeNames;
         this.currentRdn = rdn;
@@ -168,13 +168,13 @@ public class DnBuilderWidget extends BrowserWidget implements ModifyListener
             else
             {
                 int i = 0;
-                Iterator<AttributeTypeAndValue> atavIterator = currentRdn.iterator();
+                Iterator<AVA> atavIterator = currentRdn.iterator();
                 while ( atavIterator.hasNext() )
                 {
-                    AttributeTypeAndValue atav = atavIterator.next();
+                    AVA ava = atavIterator.next();
                     addRdnLine( rdnComposite, i );
-                    rdnLineList.get( i ).rdnTypeCombo.setText( atav.getUpType() );
-                    rdnLineList.get( i ).rdnValueText.setText( atav.getNormValue().getString() );
+                    rdnLineList.get( i ).rdnTypeCombo.setText( ava.getUpType() );
+                    rdnLineList.get( i ).rdnValueText.setText( ava.getNormValue().getString() );
                     if ( i == 0 )
                     {
                         if ( "".equals( rdnLineList.get( i ).rdnTypeCombo ) ) //$NON-NLS-1$
@@ -206,7 +206,7 @@ public class DnBuilderWidget extends BrowserWidget implements ModifyListener
      * 
      * @return the RDN
      */
-    public Rdn getRdn()
+    public RDN getRdn()
     {
         return rdn;
     }
@@ -217,7 +217,7 @@ public class DnBuilderWidget extends BrowserWidget implements ModifyListener
      * 
      * @return the parent DN
      */
-    public LdapDN getParentDn()
+    public DN getParentDn()
     {
         return parentDn;
     }
@@ -340,7 +340,7 @@ public class DnBuilderWidget extends BrowserWidget implements ModifyListener
             try
             {
                 // calculate DN
-                parentDn = ( LdapDN ) parentEntryWidget.getDn().clone();
+                parentDn = parentEntryWidget.getDn();
             }
             catch ( Exception e )
             {
@@ -367,7 +367,7 @@ public class DnBuilderWidget extends BrowserWidget implements ModifyListener
             }
             else
             {
-                LdapDN dn;
+                DN dn;
                 if ( showParent && showRDN )
                 {
                     dn = DnUtils.composeDn( rdn, parentDn );
@@ -378,14 +378,14 @@ public class DnBuilderWidget extends BrowserWidget implements ModifyListener
                 }
                 else if ( showRDN )
                 {
-                    dn = new LdapDN();
+                    dn = new DN();
                     dn.add( rdn );
                 }
                 else
                 {
-                    dn = new LdapDN();
+                    dn = new DN();
                 }
-                previewText.setText( dn.getUpName() );
+                previewText.setText( dn.getName() );
             }
         }
 

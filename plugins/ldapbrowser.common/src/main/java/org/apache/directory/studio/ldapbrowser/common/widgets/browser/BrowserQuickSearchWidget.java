@@ -24,7 +24,7 @@ package org.apache.directory.studio.ldapbrowser.common.widgets.browser;
 import java.util.Arrays;
 import java.util.Collection;
 
-import org.apache.directory.shared.ldap.schema.parsers.AttributeTypeDescription;
+import org.apache.directory.shared.ldap.schema.AttributeType;
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.connection.ui.widgets.ExtendedContentAssistCommandAdapter;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
@@ -473,7 +473,7 @@ public class BrowserQuickSearchWidget
             String[] atdNames;
             if ( connection != null )
             {
-                Collection<AttributeTypeDescription> atds = connection.getSchema().getAttributeTypeDescriptions();
+                Collection<AttributeType> atds = connection.getSchema().getAttributeTypeDescriptions();
                 atdNames = SchemaUtils.getNames( atds ).toArray( EMPTY );
             }
             else

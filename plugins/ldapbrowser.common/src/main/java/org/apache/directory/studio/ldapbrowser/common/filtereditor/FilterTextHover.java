@@ -22,9 +22,9 @@ package org.apache.directory.studio.ldapbrowser.common.filtereditor;
 
 
 import org.apache.directory.shared.ldap.constants.SchemaConstants;
-import org.apache.directory.shared.ldap.schema.parsers.AttributeTypeDescription;
-import org.apache.directory.shared.ldap.schema.parsers.MatchingRuleDescription;
-import org.apache.directory.shared.ldap.schema.parsers.ObjectClassDescription;
+import org.apache.directory.shared.ldap.schema.AttributeType;
+import org.apache.directory.shared.ldap.schema.MatchingRule;
+import org.apache.directory.shared.ldap.schema.ObjectClass;
 import org.apache.directory.studio.ldapbrowser.core.model.filter.LdapFilter;
 import org.apache.directory.studio.ldapbrowser.core.model.filter.LdapFilterExtensibleComponent;
 import org.apache.directory.studio.ldapbrowser.core.model.filter.LdapFilterItemComponent;
@@ -94,7 +94,7 @@ public class FilterTextHover implements ITextHover
                         + fc.getAttributeToken().getLength() )
                 {
                     String attributeType = fc.getAttributeToken().getValue();
-                    AttributeTypeDescription attributeTypeDescription = schema
+                    AttributeType attributeTypeDescription = schema
                         .getAttributeTypeDescription( attributeType );
                     String ldifLine = SchemaUtils.getLdifLine( attributeTypeDescription );
                     return ldifLine;
@@ -105,7 +105,7 @@ public class FilterTextHover implements ITextHover
                     && hoverRegion.getOffset() <= fc.getValueToken().getOffset() + fc.getValueToken().getLength() )
                 {
                     String objectClass = fc.getValueToken().getValue();
-                    ObjectClassDescription objectClassDescription = schema.getObjectClassDescription( objectClass );
+                    ObjectClass objectClassDescription = schema.getObjectClassDescription( objectClass );
                     String ldifLine = SchemaUtils.getLdifLine( objectClassDescription );
                     return ldifLine;
                 }
@@ -119,7 +119,7 @@ public class FilterTextHover implements ITextHover
                         + fc.getAttributeToken().getLength() )
                 {
                     String attributeType = fc.getAttributeToken().getValue();
-                    AttributeTypeDescription attributeTypeDescription = schema
+                    AttributeType attributeTypeDescription = schema
                         .getAttributeTypeDescription( attributeType );
                     String ldifLine = SchemaUtils.getLdifLine( attributeTypeDescription );
                     return ldifLine;
@@ -130,7 +130,7 @@ public class FilterTextHover implements ITextHover
                         + fc.getMatchingRuleToken().getLength() )
                 {
                     String matchingRule = fc.getMatchingRuleToken().getValue();
-                    MatchingRuleDescription matchingRuleDescription = schema.getMatchingRuleDescription( matchingRule );
+                    MatchingRule matchingRuleDescription = schema.getMatchingRuleDescription( matchingRule );
                     String info = SchemaUtils.getLdifLine( matchingRuleDescription );
                     return info;
                 }

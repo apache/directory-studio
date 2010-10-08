@@ -21,7 +21,7 @@
 package org.apache.directory.studio.ldapbrowser.common.dialogs;
 
 
-import org.apache.directory.shared.ldap.name.LdapDN;
+import org.apache.directory.shared.ldap.name.DN;
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.connection.core.DnUtils;
 import org.apache.directory.studio.ldapbrowser.common.widgets.DnBuilderWidget;
@@ -59,7 +59,7 @@ public class MoveEntriesDialog extends Dialog implements WidgetModifyListener
     private Button okButton;
 
     /** The parent DN. */
-    private LdapDN parentDn;
+    private DN parentDn;
 
 
     /**
@@ -159,7 +159,7 @@ public class MoveEntriesDialog extends Dialog implements WidgetModifyListener
      * 
      * @return the parent dn
      */
-    public LdapDN getParentDn()
+    public DN getParentDn()
     {
         return parentDn;
     }

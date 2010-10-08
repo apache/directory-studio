@@ -25,14 +25,13 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 
-import javax.naming.InvalidNameException;
-
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.directory.shared.ldap.constants.SchemaConstants;
-import org.apache.directory.shared.ldap.name.AttributeTypeAndValue;
-import org.apache.directory.shared.ldap.name.LdapDN;
-import org.apache.directory.shared.ldap.name.Rdn;
-import org.apache.directory.shared.ldap.schema.parsers.AttributeTypeDescription;
+import org.apache.directory.shared.ldap.exception.LdapInvalidDnException;
+import org.apache.directory.shared.ldap.name.AVA;
+import org.apache.directory.shared.ldap.name.DN;
+import org.apache.directory.shared.ldap.name.RDN;
+import org.apache.directory.shared.ldap.schema.AttributeType;
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.connection.core.DnUtils;
 import org.apache.directory.studio.connection.ui.RunnableContextRunner;
@@ -132,7 +131,7 @@ public class NewEntryDnWizardPage extends WizardPage implements WidgetModifyList
     private void validate()
     {
         if ( wizard.isNewContextEntry() && !"".equals( contextEntryDnCombo.getText() ) //$NON-NLS-1$
-            && LdapDN.isValid( contextEntryDnCombo.getText() ) )
+            && DN.isValid( contextEntryDnCombo.getText() ) )
         {
             setPageComplete( true );
             saveState();
@@ -173,18 +172,18 @@ public class NewEntryDnWizardPage extends WizardPage implements WidgetModifyList
                 contextEntryDnCombo.setItems( values );
 
                 // preset combo text
-                if ( Arrays.asList( values ).contains( newEntry.getDn().getUpName() ) )
+                if ( Arrays.asList( values ).contains( newEntry.getDn().getName() ) )
                 {
-                    contextEntryDnCombo.setText( newEntry.getDn().getUpName() );
+                    contextEntryDnCombo.setText( newEntry.getDn().getName() );
                 }
             }
         }
         else
         {
-            Collection<AttributeTypeDescription> atds = SchemaUtils.getAllAttributeTypeDescriptions( newEntry );
+            Collection<AttributeType> atds = SchemaUtils.getAllAttributeTypeDescriptions( newEntry );
             String[] attributeNames = SchemaUtils.getNames( atds ).toArray( ArrayUtils.EMPTY_STRING_ARRAY );
 
-            LdapDN parentDn = null;
+            DN parentDn = null;
             if ( wizard.getSelectedEntry() != null && newEntry.getDn().equals( wizard.getSelectedEntry().getDn() )
                 && DnUtils.getParent( newEntry.getDn() ) != null )
             {
@@ -199,7 +198,7 @@ public class NewEntryDnWizardPage extends WizardPage implements WidgetModifyList
                 parentDn = DnUtils.getParent( newEntry.getDn() );
             }
 
-            Rdn rdn = newEntry.getRdn();
+            RDN rdn = newEntry.getRdn();
 
             dnBuilderWidget.setInput( wizard.getSelectedConnection(), attributeNames, rdn, parentDn );
         }
@@ -220,10 +219,10 @@ public class NewEntryDnWizardPage extends WizardPage implements WidgetModifyList
             // remove old RDN
             if ( newEntry.getRdn().size() > 0 )
             {
-                Iterator<AttributeTypeAndValue> atavIterator = newEntry.getRdn().iterator();
+                Iterator<AVA> atavIterator = newEntry.getRdn().iterator();
                 while ( atavIterator.hasNext() )
                 {
-                    AttributeTypeAndValue atav = atavIterator.next();
+                    AVA atav = atavIterator.next();
                     IAttribute attribute = newEntry.getAttribute( atav.getUpType() );
                     if ( attribute != null )
                     {
@@ -249,16 +248,16 @@ public class NewEntryDnWizardPage extends WizardPage implements WidgetModifyList
             }
 
             // set new DN
-            LdapDN dn;
+            DN dn;
             if ( wizard.isNewContextEntry() )
             {
                 try
                 {
-                    dn = new LdapDN( contextEntryDnCombo.getText() );
+                    dn = new DN( contextEntryDnCombo.getText() );
                 }
-                catch ( InvalidNameException e )
+                catch ( LdapInvalidDnException e )
                 {
-                    dn = LdapDN.EMPTY_LDAPDN;
+                    dn = DN.EMPTY_DN;
                 }
             }
             else
@@ -270,10 +269,10 @@ public class NewEntryDnWizardPage extends WizardPage implements WidgetModifyList
             // add new RDN
             if ( dn.getRdn().size() > 0 )
             {
-                Iterator<AttributeTypeAndValue> atavIterator = dn.getRdn().iterator();
+                Iterator<AVA> atavIterator = dn.getRdn().iterator();
                 while ( atavIterator.hasNext() )
                 {
-                    AttributeTypeAndValue atav = atavIterator.next();
+                    AVA atav = atavIterator.next();
                     IAttribute rdnAttribute = newEntry.getAttribute( atav.getUpType() );
                     if ( rdnAttribute == null )
                     {
@@ -345,9 +344,9 @@ public class NewEntryDnWizardPage extends WizardPage implements WidgetModifyList
         {
             dnBuilderWidget.validate();
 
-            Rdn rdn = dnBuilderWidget.getRdn();
-            LdapDN parentDn = dnBuilderWidget.getParentDn();
-            final LdapDN dn = DnUtils.composeDn( rdn, parentDn );
+            RDN rdn = dnBuilderWidget.getRdn();
+            DN parentDn = dnBuilderWidget.getParentDn();
+            final DN dn = DnUtils.composeDn( rdn, parentDn );
 
             // check if parent exists
             ReadEntryRunnable readEntryRunnable1 = new ReadEntryRunnable( wizard.getSelectedConnection(), parentDn );
@@ -393,7 +392,7 @@ public class NewEntryDnWizardPage extends WizardPage implements WidgetModifyList
         {
             try
             {
-                final LdapDN dn = new LdapDN( contextEntryDnCombo.getText() );
+                final DN dn = new DN( contextEntryDnCombo.getText() );
 
                 // check that new entry does not exists yet 
                 ReadEntryRunnable readEntryRunnable2 = new ReadEntryRunnable( wizard.getSelectedConnection(), dn );
@@ -414,7 +413,7 @@ public class NewEntryDnWizardPage extends WizardPage implements WidgetModifyList
                     return null;
                 }
             }
-            catch ( InvalidNameException e )
+            catch ( LdapInvalidDnException e )
             {
                 return null;
             }

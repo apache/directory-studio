@@ -21,9 +21,8 @@
 package org.apache.directory.studio.ldapbrowser.common.widgets.search;
 
 
-import javax.naming.InvalidNameException;
-
-import org.apache.directory.shared.ldap.name.LdapDN;
+import org.apache.directory.shared.ldap.exception.LdapInvalidDnException;
+import org.apache.directory.shared.ldap.name.DN;
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.connection.core.DnUtils;
 import org.apache.directory.studio.connection.ui.RunnableContextRunner;
@@ -74,10 +73,10 @@ public class EntryWidget extends BrowserWidget
     private IBrowserConnection browserConnection;
 
     /** The selected DN. */
-    private LdapDN dn;
+    private DN dn;
 
     /** The suffix. */
-    private LdapDN suffix;
+    private DN suffix;
 
     /** Flag indicating if using local name for the dn */
     boolean useLocalName;
@@ -99,7 +98,7 @@ public class EntryWidget extends BrowserWidget
      * @param browserConnection the connection
      * @param dn the initial DN
      */
-    public EntryWidget( IBrowserConnection browserConnection, LdapDN dn )
+    public EntryWidget( IBrowserConnection browserConnection, DN dn )
     {
         this( browserConnection, dn, null, false );
     }
@@ -113,7 +112,7 @@ public class EntryWidget extends BrowserWidget
      * @param suffix the suffix
      * @param useLocalName true to use local name for the DN
      */
-    public EntryWidget( IBrowserConnection browserConnection, LdapDN dn, LdapDN suffix, boolean useLocalName )
+    public EntryWidget( IBrowserConnection browserConnection, DN dn, DN suffix, boolean useLocalName )
     {
         this.browserConnection = browserConnection;
         this.dn = dn;
@@ -147,9 +146,9 @@ public class EntryWidget extends BrowserWidget
             {
                 try
                 {
-                    dn = new LdapDN( dnCombo.getText() );
+                    dn = new DN( dnCombo.getText() );
                 }
-                catch ( InvalidNameException e1 )
+                catch ( LdapInvalidDnException e1 )
                 {
                     dn = null;
                 }
@@ -200,7 +199,7 @@ public class EntryWidget extends BrowserWidget
                     }
 
                     // calculate initial DN
-                    LdapDN initialDN = dn;
+                    DN initialDN = dn;
                     if ( useLocalName && suffix != null && suffix.size() > 0 )
                     {
                         if ( initialDN != null && initialDN.size() > 0 )
@@ -256,7 +255,7 @@ public class EntryWidget extends BrowserWidget
     {
         if ( dnCombo != null && entryBrowseButton != null )
         {
-            dnCombo.setText( dn != null ? dn.getUpName() : "" ); //$NON-NLS-1$
+            dnCombo.setText( dn != null ? dn.getName() : "" ); //$NON-NLS-1$
         }
     }
 
@@ -303,7 +302,7 @@ public class EntryWidget extends BrowserWidget
      *
      * @return the suffix DN or <code>null</code> if not set
      */
-    public LdapDN getSuffix()
+    public DN getSuffix()
     {
         return suffix;
     }
@@ -314,7 +313,7 @@ public class EntryWidget extends BrowserWidget
      *
      * @return the DN or <code>null</code> if the DN isn't valid
      */
-    public LdapDN getDn()
+    public DN getDn()
     {
         return dn;
     }
@@ -337,7 +336,7 @@ public class EntryWidget extends BrowserWidget
      * @param dn the DN
      * @param browserConnection the connection
      */
-    public void setInput( IBrowserConnection browserConnection, LdapDN dn )
+    public void setInput( IBrowserConnection browserConnection, DN dn )
     {
         setInput( browserConnection, dn, null, false );
     }
@@ -351,7 +350,7 @@ public class EntryWidget extends BrowserWidget
      * @param suffix the suffix
      * @param useLocalName true to use local name for the DN
      */
-    public void setInput( IBrowserConnection browserConnection, LdapDN dn, LdapDN suffix, boolean useLocalName )
+    public void setInput( IBrowserConnection browserConnection, DN dn, DN suffix, boolean useLocalName )
     {
         if ( this.browserConnection != browserConnection || this.dn != dn || this.suffix != suffix )
         {

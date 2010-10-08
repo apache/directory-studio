@@ -152,7 +152,7 @@ public class CopyAction extends BrowserAction
             StringBuffer text = new StringBuffer();
             for ( int i = 0; i < entries.length; i++ )
             {
-                text.append( entries[i].getDn().getUpName() );
+                text.append( entries[i].getDn().getName() );
                 if ( i + 1 < entries.length )
                 {
                     text.append( BrowserCoreConstants.LINE_SEPARATOR );

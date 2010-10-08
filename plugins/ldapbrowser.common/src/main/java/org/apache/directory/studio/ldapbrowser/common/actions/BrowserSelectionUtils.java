@@ -29,7 +29,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.directory.shared.ldap.schema.parsers.AttributeTypeDescription;
+import org.apache.directory.shared.ldap.schema.AttributeType;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.ui.actions.SelectionUtils;
 import org.apache.directory.studio.ldapbrowser.common.widgets.browser.BrowserCategory;
@@ -326,10 +326,10 @@ public abstract class BrowserSelectionUtils extends SelectionUtils
      * @param selection the selection
      * @return an array with AttributeTypeDescription beans, may be empty.
      */
-    public static AttributeTypeDescription[] getAttributeTypeDescription( ISelection selection )
+    public static AttributeType[] getAttributeTypeDescription( ISelection selection )
     {
-        List<Object> list = getTypes( selection, AttributeTypeDescription.class );
-        return list.toArray( new AttributeTypeDescription[list.size()] );
+        List<Object> list = getTypes( selection, AttributeType.class );
+        return list.toArray( new AttributeType[list.size()] );
     }
 
 

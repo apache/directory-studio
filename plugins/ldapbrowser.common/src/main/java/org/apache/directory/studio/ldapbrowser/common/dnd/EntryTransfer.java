@@ -29,13 +29,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.directory.shared.ldap.name.LdapDN;
+import org.apache.directory.shared.ldap.name.DN;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonConstants;
-import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
 import org.apache.directory.studio.ldapbrowser.core.BrowserConnectionManager;
+import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
-
 import org.eclipse.swt.dnd.ByteArrayTransfer;
 import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.dnd.TransferData;
@@ -107,7 +106,7 @@ public class EntryTransfer extends ByteArrayTransfer
                     byte[] connectionId = entries[i].getBrowserConnection().getConnection().getId().getBytes( "UTF-8" ); //$NON-NLS-1$
                     writeOut.writeInt( connectionId.length );
                     writeOut.write( connectionId );
-                    byte[] dn = entries[i].getDn().getUpName().getBytes( "UTF-8" ); //$NON-NLS-1$
+                    byte[] dn = entries[i].getDn().getName().getBytes( "UTF-8" ); //$NON-NLS-1$
                     writeOut.writeInt( dn.length );
                     writeOut.write( dn );
                 }
@@ -170,7 +169,7 @@ public class EntryTransfer extends ByteArrayTransfer
                             int size = readIn.readInt();
                             byte[] dn = new byte[size];
                             readIn.read( dn );
-                            entry = connection.getEntryFromCache( new LdapDN( new String( dn, "UTF-8" ) ) ); //$NON-NLS-1$
+                            entry = connection.getEntryFromCache( new DN( new String( dn, "UTF-8" ) ) ); //$NON-NLS-1$
                         }
                         else
                         {

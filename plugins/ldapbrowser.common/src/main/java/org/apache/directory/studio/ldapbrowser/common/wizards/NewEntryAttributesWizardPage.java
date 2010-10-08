@@ -23,7 +23,7 @@ package org.apache.directory.studio.ldapbrowser.common.wizards;
 
 import java.util.Collection;
 
-import org.apache.directory.shared.ldap.schema.parsers.AttributeTypeDescription;
+import org.apache.directory.shared.ldap.schema.AttributeType;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonConstants;
 import org.apache.directory.studio.ldapbrowser.common.widgets.entryeditor.EntryEditorWidget;
@@ -185,10 +185,10 @@ public class NewEntryAttributesWizardPage extends WizardPage implements EntryUpd
                 // remove empty must attributes
                 // necessary when navigating back, modifying object classes
                 // and DN and navigation forward again.
-                Collection<AttributeTypeDescription> oldMusts = SchemaUtils.getMustAttributeTypeDescriptions( newEntry );
-                for ( AttributeTypeDescription oldMust : oldMusts )
+                Collection<AttributeType> oldMusts = SchemaUtils.getMustAttributeTypeDescriptions( newEntry );
+                for ( AttributeType oldMust : oldMusts )
                 {
-                    IAttribute attribute = newEntry.getAttribute( oldMust.getNumericOid() );
+                    IAttribute attribute = newEntry.getAttribute( oldMust.getOid() );
                     if ( attribute != null )
                     {
                         IValue[] values = attribute.getValues();
@@ -207,10 +207,10 @@ public class NewEntryAttributesWizardPage extends WizardPage implements EntryUpd
                 }
 
                 // add must attributes
-                Collection<AttributeTypeDescription> newMusts = SchemaUtils.getMustAttributeTypeDescriptions( newEntry );
-                for ( AttributeTypeDescription newMust : newMusts )
+                Collection<AttributeType> newMusts = SchemaUtils.getMustAttributeTypeDescriptions( newEntry );
+                for ( AttributeType newMust : newMusts )
                 {
-                    if ( newEntry.getAttributeWithSubtypes( newMust.getNumericOid() ) == null )
+                    if ( newEntry.getAttributeWithSubtypes( newMust.getOid() ) == null )
                     {
                         String friendlyIdentifier = SchemaUtils.getFriendlyIdentifier( newMust );
                         IAttribute att = new Attribute( newEntry, friendlyIdentifier );

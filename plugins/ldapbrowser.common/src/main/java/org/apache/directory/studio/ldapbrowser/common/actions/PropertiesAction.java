@@ -134,13 +134,13 @@ public class PropertiesAction extends BrowserAction
         {
             element = ( IAdaptable ) getSelectedEntries()[0];
             pageId = BrowserCommonConstants.PROP_ENTRY;
-            title = getSelectedEntries()[0].getDn().getUpName();
+            title = getSelectedEntries()[0].getDn().getName();
         }
         else if ( getSelectedSearchResults().length == 1 )
         {
             element = ( IAdaptable ) getSelectedSearchResults()[0];
             pageId = BrowserCommonConstants.PROP_ENTRY;
-            title = getSelectedSearchResults()[0].getDn().getUpName();
+            title = getSelectedSearchResults()[0].getDn().getName();
         }
 
         if ( element != null )

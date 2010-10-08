@@ -31,9 +31,9 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import org.apache.directory.shared.ldap.constants.SchemaConstants;
-import org.apache.directory.shared.ldap.schema.parsers.AttributeTypeDescription;
-import org.apache.directory.shared.ldap.schema.parsers.MatchingRuleDescription;
-import org.apache.directory.shared.ldap.schema.parsers.ObjectClassDescription;
+import org.apache.directory.shared.ldap.schema.AttributeType;
+import org.apache.directory.shared.ldap.schema.MatchingRule;
+import org.apache.directory.shared.ldap.schema.ObjectClass;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonConstants;
 import org.apache.directory.studio.ldapbrowser.core.model.filter.LdapFilter;
@@ -101,16 +101,16 @@ public class FilterContentAssistProcessor extends TemplateCompletionProcessor im
     private Schema schema;
 
     /** The possible attribute types. */
-    private Map<String, AttributeTypeDescription> possibleAttributeTypes;
+    private Map<String, AttributeType> possibleAttributeTypes;
 
     /** The possible filter types. */
     private Map<String, String> possibleFilterTypes;
 
     /** The possible object classes. */
-    private Map<String, ObjectClassDescription> possibleObjectClasses;
+    private Map<String, ObjectClass> possibleObjectClasses;
 
     /** The possible matching rules. */
-    private Map<String, MatchingRuleDescription> possibleMatchingRules;
+    private Map<String, MatchingRule> possibleMatchingRules;
 
 
     /**
@@ -168,17 +168,17 @@ public class FilterContentAssistProcessor extends TemplateCompletionProcessor im
     {
         this.schema = schema;
 
-        possibleAttributeTypes = new TreeMap<String, AttributeTypeDescription>( nameAndOidComparator );
+        possibleAttributeTypes = new TreeMap<String, AttributeType>( nameAndOidComparator );
         possibleFilterTypes = new LinkedHashMap<String, String>();
-        possibleObjectClasses = new TreeMap<String, ObjectClassDescription>( nameAndOidComparator );
-        possibleMatchingRules = new TreeMap<String, MatchingRuleDescription>( nameAndOidComparator );
+        possibleObjectClasses = new TreeMap<String, ObjectClass>( nameAndOidComparator );
+        possibleMatchingRules = new TreeMap<String, MatchingRule>( nameAndOidComparator );
 
         if ( schema != null )
         {
-            Collection<AttributeTypeDescription> attributeTypeDescriptions = schema.getAttributeTypeDescriptions();
-            for ( AttributeTypeDescription atd : attributeTypeDescriptions )
+            Collection<AttributeType> attributeTypeDescriptions = schema.getAttributeTypeDescriptions();
+            for ( AttributeType atd : attributeTypeDescriptions )
             {
-                possibleAttributeTypes.put( atd.getNumericOid(), atd );
+                possibleAttributeTypes.put( atd.getOid(), atd );
                 for ( String atdName : atd.getNames() )
                 {
                     possibleAttributeTypes.put( atdName, atd );
@@ -191,20 +191,20 @@ public class FilterContentAssistProcessor extends TemplateCompletionProcessor im
             possibleFilterTypes.put( ">=", Messages.getString( "FilterContentAssistProcessor.GreaterThanOrEquals" ) ); //$NON-NLS-1$ //$NON-NLS-2$
             possibleFilterTypes.put( "~=", Messages.getString( "FilterContentAssistProcessor.Approximately" ) ); //$NON-NLS-1$ //$NON-NLS-2$
 
-            Collection<ObjectClassDescription> ocds = schema.getObjectClassDescriptions();
-            for ( ObjectClassDescription ocd : ocds )
+            Collection<ObjectClass> ocds = schema.getObjectClassDescriptions();
+            for ( ObjectClass ocd : ocds )
             {
-                possibleObjectClasses.put( ocd.getNumericOid(), ocd );
+                possibleObjectClasses.put( ocd.getOid(), ocd );
                 for ( String name : ocd.getNames() )
                 {
                     possibleObjectClasses.put( name, ocd );
                 }
             }
 
-            Collection<MatchingRuleDescription> matchingRuleDescriptions = schema.getMatchingRuleDescriptions();
-            for ( MatchingRuleDescription description : matchingRuleDescriptions )
+            Collection<MatchingRule> matchingRuleDescriptions = schema.getMatchingRuleDescriptions();
+            for ( MatchingRule description : matchingRuleDescriptions )
             {
-                possibleMatchingRules.put( description.getNumericOid(), description );
+                possibleMatchingRules.put( description.getOid(), description );
                 for ( String name : description.getNames() )
                 {
                     possibleMatchingRules.put( name, description );
@@ -430,18 +430,18 @@ public class FilterContentAssistProcessor extends TemplateCompletionProcessor im
         {
             for ( String possibleAttributeType : possibleAttributeTypes.keySet() )
             {
-                AttributeTypeDescription description = possibleAttributeTypes.get( possibleAttributeType );
+                AttributeType description = possibleAttributeTypes.get( possibleAttributeType );
                 if ( possibleAttributeType.toUpperCase().startsWith( attributeType.toUpperCase() ) )
                 {
                     String replacementString = possibleAttributeType;
                     String displayString = possibleAttributeType;
-                    if ( displayString.equals( description.getNumericOid() ) )
+                    if ( displayString.equals( description.getOid() ) )
                     {
                         displayString += " (" + SchemaUtils.toString( description ) + ")"; //$NON-NLS-1$ //$NON-NLS-2$
                     }
                     else
                     {
-                        displayString += " (" + description.getNumericOid() + ")"; //$NON-NLS-1$ //$NON-NLS-2$
+                        displayString += " (" + description.getOid() + ")"; //$NON-NLS-1$ //$NON-NLS-2$
                     }
                     String info = SchemaUtils.getLdifLine( description );
                     ICompletionProposal proposal = new CompletionProposal( replacementString, offset, attributeType
@@ -505,18 +505,18 @@ public class FilterContentAssistProcessor extends TemplateCompletionProcessor im
         {
             for ( String possibleObjectClass : possibleObjectClasses.keySet() )
             {
-                ObjectClassDescription description = possibleObjectClasses.get( possibleObjectClass );
+                ObjectClass description = possibleObjectClasses.get( possibleObjectClass );
                 if ( possibleObjectClass.toUpperCase().startsWith( objectClass.toUpperCase() ) )
                 {
                     String replacementString = possibleObjectClass;
                     String displayString = possibleObjectClass;
-                    if ( displayString.equals( description.getNumericOid() ) )
+                    if ( displayString.equals( description.getOid() ) )
                     {
                         displayString += " (" + SchemaUtils.toString( description ) + ")"; //$NON-NLS-1$ //$NON-NLS-2$
                     }
                     else
                     {
-                        displayString += " (" + description.getNumericOid() + ")"; //$NON-NLS-1$ //$NON-NLS-2$
+                        displayString += " (" + description.getOid() + ")"; //$NON-NLS-1$ //$NON-NLS-2$
                     }
 
                     ICompletionProposal proposal = new CompletionProposal( replacementString, offset, objectClass
@@ -545,7 +545,7 @@ public class FilterContentAssistProcessor extends TemplateCompletionProcessor im
             {
                 if ( possibleMatchingRule.toUpperCase().startsWith( matchingRule.toUpperCase() ) )
                 {
-                    MatchingRuleDescription description = schema.getMatchingRuleDescription( possibleMatchingRule );
+                    MatchingRule description = schema.getMatchingRuleDescription( possibleMatchingRule );
                     String replacementString = possibleMatchingRule;
                     if ( equalsColonToken == null )
                     {
@@ -556,13 +556,13 @@ public class FilterContentAssistProcessor extends TemplateCompletionProcessor im
                         replacementString += "="; //$NON-NLS-1$
                     }
                     String displayString = possibleMatchingRule;
-                    if ( displayString.equals( description.getNumericOid() ) )
+                    if ( displayString.equals( description.getOid() ) )
                     {
                         displayString += " (" + SchemaUtils.toString( description ) + ")"; //$NON-NLS-1$ //$NON-NLS-2$
                     }
                     else
                     {
-                        displayString += " (" + description.getNumericOid() + ")"; //$NON-NLS-1$ //$NON-NLS-2$
+                        displayString += " (" + description.getOid() + ")"; //$NON-NLS-1$ //$NON-NLS-2$
                     }
                     String info = SchemaUtils.getLdifLine( description );
                     ICompletionProposal proposal = new CompletionProposal( replacementString, offset, matchingRule

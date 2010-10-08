@@ -21,8 +21,8 @@
 package org.apache.directory.studio.ldapbrowser.common.dialogs;
 
 
-import org.apache.directory.shared.ldap.name.LdapDN;
-import org.apache.directory.shared.ldap.name.Rdn;
+import org.apache.directory.shared.ldap.name.DN;
+import org.apache.directory.shared.ldap.name.RDN;
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.ldapbrowser.common.widgets.DnBuilderWidget;
 import org.apache.directory.studio.ldapbrowser.common.widgets.WidgetModifyEvent;
@@ -75,7 +75,7 @@ public class EntryExistsCopyStrategyDialogImpl extends Dialog implements EntryEx
     private DnBuilderWidget dnBuilderWidget;
 
     /** The new RDN. */
-    private Rdn rdn;
+    private RDN rdn;
 
     /** The strategy */
     private EntryExistsCopyStrategy strategy;
@@ -85,7 +85,7 @@ public class EntryExistsCopyStrategyDialogImpl extends Dialog implements EntryEx
 
     private IBrowserConnection browserConnection;
 
-    private LdapDN dn;
+    private DN dn;
 
 
     /**
@@ -163,7 +163,7 @@ public class EntryExistsCopyStrategyDialogImpl extends Dialog implements EntryEx
         composite.setLayoutData( gd );
 
         String text = NLS.bind(
-            Messages.getString( "EntryExistsCopyStrategyDialogImpl.SelectCopyStrategyDescription" ), dn.getUpName() ); //$NON-NLS-1$
+            Messages.getString( "EntryExistsCopyStrategyDialogImpl.SelectCopyStrategyDescription" ), dn.getName() ); //$NON-NLS-1$
         BaseWidgetUtils.createLabel( composite, text, 1 );
 
         Composite group2 = BaseWidgetUtils.createGroup( composite, "", 1 ); //$NON-NLS-1$
@@ -260,7 +260,7 @@ public class EntryExistsCopyStrategyDialogImpl extends Dialog implements EntryEx
     /**
      * {@inheritDoc}
      */
-    public Rdn getRdn()
+    public RDN getRdn()
     {
         return rdn;
     }
@@ -278,7 +278,7 @@ public class EntryExistsCopyStrategyDialogImpl extends Dialog implements EntryEx
     /**
      * {@inheritDoc}
      */
-    public void setExistingEntry( IBrowserConnection browserConnection, LdapDN dn )
+    public void setExistingEntry( IBrowserConnection browserConnection, DN dn )
     {
         this.browserConnection = browserConnection;
         this.dn = dn;

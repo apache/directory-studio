@@ -79,12 +79,12 @@ public class EntryEditorWidgetContentProvider implements ITreeContentProvider
             if ( newInput != null && newInput instanceof IEntry )
             {
                 IEntry entry = ( IEntry ) newInput;
-                dn = Messages.getString( "EntryEditorWidgetContentProvider.DNLabel" ) + entry.getDn().getUpName(); //$NON-NLS-1$
+                dn = Messages.getString( "EntryEditorWidgetContentProvider.DNLabel" ) + entry.getDn().getName(); //$NON-NLS-1$
             }
             else if ( newInput != null && newInput instanceof AttributeHierarchy )
             {
                 AttributeHierarchy ah = ( AttributeHierarchy ) newInput;
-                dn = Messages.getString( "EntryEditorWidgetContentProvider.DNLabel" ) + ah.getAttribute().getEntry().getDn().getUpName(); //$NON-NLS-1$
+                dn = Messages.getString( "EntryEditorWidgetContentProvider.DNLabel" ) + ah.getAttribute().getEntry().getDn().getName(); //$NON-NLS-1$
             }
             else
             {

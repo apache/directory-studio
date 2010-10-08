@@ -30,8 +30,8 @@ import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.directory.shared.ldap.schema.parsers.AttributeTypeDescription;
-import org.apache.directory.shared.ldap.schema.parsers.ObjectClassDescription;
+import org.apache.directory.shared.ldap.schema.AttributeType;
+import org.apache.directory.shared.ldap.schema.ObjectClass;
 import org.apache.directory.studio.connection.core.StudioControl;
 import org.apache.directory.studio.ldapbrowser.common.dialogs.DeleteDialog;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreConstants;
@@ -279,7 +279,7 @@ public class DeleteAction extends BrowserAction
             {
                 message.append( BrowserCoreConstants.LINE_SEPARATOR );
                 message.append( "  - " ); //$NON-NLS-1$
-                message.append( entry.getDn().getUpName() );
+                message.append( entry.getDn().getName() );
             }
         }
         else
@@ -446,12 +446,12 @@ public class DeleteAction extends BrowserAction
 
     protected void appendValuesWarnMessage( StringBuffer message, Collection<IValue> values )
     {
-        Map<AttributeTypeDescription, Integer> attributeNameToSelectedValuesCountMap = new HashMap<AttributeTypeDescription, Integer>();
-        Set<ObjectClassDescription> selectedObjectClasses = new HashSet<ObjectClassDescription>();
+        Map<AttributeType, Integer> attributeNameToSelectedValuesCountMap = new HashMap<AttributeType, Integer>();
+        Set<ObjectClass> selectedObjectClasses = new HashSet<ObjectClass>();
         for ( IValue value : values )
         {
             String type = value.getAttribute().getType();
-            AttributeTypeDescription atd = value.getAttribute().getAttributeTypeDescription();
+            AttributeType atd = value.getAttribute().getAttributeTypeDescription();
             AttributeHierarchy ah = value.getAttribute().getEntry().getAttributeWithSubtypes( type );
 
             // check if (part of) RDN is selected
@@ -506,17 +506,17 @@ public class DeleteAction extends BrowserAction
             IEntry entry = values.iterator().next().getAttribute().getEntry();
             Schema schema = entry.getBrowserConnection().getSchema();
             // get remaining attributes
-            Collection<ObjectClassDescription> remainingObjectClasses = entry.getObjectClassDescriptions();
+            Collection<ObjectClass> remainingObjectClasses = entry.getObjectClassDescriptions();
             remainingObjectClasses.removeAll( selectedObjectClasses );
-            Set<AttributeTypeDescription> remainingAttributeSet = new HashSet<AttributeTypeDescription>();
-            for ( ObjectClassDescription ocd : remainingObjectClasses )
+            Set<AttributeType> remainingAttributeSet = new HashSet<AttributeType>();
+            for ( ObjectClass ocd : remainingObjectClasses )
             {
                 {
                     Collection<String> mustAttrs = SchemaUtils.getMustAttributeTypeDescriptionNamesTransitive( ocd,
                         schema );
                     for ( String mustAttr : mustAttrs )
                     {
-                        AttributeTypeDescription atd = entry.getBrowserConnection().getSchema()
+                        AttributeType atd = entry.getBrowserConnection().getSchema()
                             .getAttributeTypeDescription( mustAttr );
                         remainingAttributeSet.add( atd );
                     }
@@ -524,7 +524,7 @@ public class DeleteAction extends BrowserAction
                         schema );
                     for ( String mayAttr : mayAttrs )
                     {
-                        AttributeTypeDescription atd = entry.getBrowserConnection().getSchema()
+                        AttributeType atd = entry.getBrowserConnection().getSchema()
                             .getAttributeTypeDescription( mayAttr );
                         remainingAttributeSet.add( atd );
                     }
