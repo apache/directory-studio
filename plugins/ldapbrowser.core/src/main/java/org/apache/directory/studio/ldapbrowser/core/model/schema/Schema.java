@@ -311,7 +311,7 @@ public class Schema
         for ( AttributeType atd : getAttributeTypeDescriptions() )
         {
             // assume all received syntaxes in attributes are valid -> create pseudo syntaxes if missing
-            String syntaxOid = atd.getSyntaxName();
+            String syntaxOid = atd.getSyntaxOid();
             if ( syntaxOid != null && !hasLdapSyntaxDescription( syntaxOid ) )
             {
                 LdapSyntax lsd = new LdapSyntax( syntaxOid );

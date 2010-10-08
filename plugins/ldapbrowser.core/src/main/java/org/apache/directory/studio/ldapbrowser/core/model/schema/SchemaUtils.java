@@ -657,9 +657,9 @@ public class SchemaUtils
      */
     public static String getSyntaxNumericOidTransitive( AttributeType atd, Schema schema )
     {
-        if ( atd.getSyntaxName() != null )
+        if ( atd.getSyntaxOid() != null )
         {
-            return atd.getSyntaxName();
+            return atd.getSyntaxOid();
         }
 
         if ( atd.getSuperiorOid() != null && schema.hasAttributeTypeDescription( atd.getSuperiorOid() ) )
