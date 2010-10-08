@@ -116,8 +116,7 @@
             <Require-Bundle>
  org.apache.commons.collections;bundle-version="${org.apache.commons.collections.version}",
  org.apache.commons.io;bundle-version="${org.apache.commons.io.version}",
- org.apache.directory.shared.asn1;bundle-version="${org.apache.directory.shared.version}",
- org.apache.directory.shared.ldap;bundle-version="${org.apache.directory.shared.version}",
+ org.apache.directory.shared.ldap;bundle-version="${org.apache.directory.shared.validversion}",
  org.apache.directory.studio.common.core,
  org.apache.directory.studio.common.ui,
  org.apache.directory.studio.connection.core,
@@ -153,26 +152,6 @@
   </build>
 
   <dependencies>
-  	<!-- Libraries dependencies -->
-  	<dependency>
-      <groupId>org.apache.directory.shared</groupId>
-      <artifactId>shared-converter</artifactId>
-      <exclusions>
-        <exclusion>
-          <groupId>antlr</groupId>
-          <artifactId>antlr</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>org.apache.directory.shared</groupId>
-          <artifactId>shared-ldap</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>org.slf4j</groupId>
-          <artifactId>slf4j-api</artifactId>
-        </exclusion>
-      </exclusions>
-    </dependency>
-    
     <!-- Apache Directory Studio library plugins dependencies -->
     <dependency>
       <groupId>org.apache.directory.studio</groupId>
@@ -182,11 +161,6 @@
     <dependency>
       <groupId>org.apache.directory.studio</groupId>
       <artifactId>org.apache.commons.collections</artifactId>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.directory.studio</groupId>
-      <artifactId>org.apache.directory.shared.asn1</artifactId>
       <scope>provided</scope>
     </dependency>
     <dependency>
@@ -318,6 +292,18 @@
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
+      <scope>test</scope>
+    </dependency>
+    
+  	<!-- SLF4J for test only -->
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-log4j12</artifactId>
       <scope>test</scope>
     </dependency>
   </dependencies>

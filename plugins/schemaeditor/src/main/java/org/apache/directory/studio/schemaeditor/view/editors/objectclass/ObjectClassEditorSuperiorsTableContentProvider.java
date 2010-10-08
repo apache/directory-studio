@@ -62,11 +62,11 @@ public class ObjectClassEditorSuperiorsTableContentProvider implements IStructur
      */
     public Object[] getElements( Object inputElement )
     {
-        if ( inputElement instanceof String[] )
+        if ( inputElement instanceof List<?> )
         {
             List<Object> results = new ArrayList<Object>();
 
-            String[] superiors = ( String[] ) inputElement;
+            List<String> superiors = ( List<String> ) inputElement;
             for ( String superior : superiors )
             {
                 ObjectClassImpl oc = schemaHandler.getObjectClass( superior );
@@ -87,33 +87,33 @@ public class ObjectClassEditorSuperiorsTableContentProvider implements IStructur
                 {
                     if ( o1 instanceof ObjectClassImpl && o2 instanceof ObjectClassImpl )
                     {
-                        String[] oc1Names = ( ( ObjectClassImpl ) o1 ).getNamesRef();
-                        String[] oc2Names = ( ( ObjectClassImpl ) o2 ).getNamesRef();
+                        List<String> oc1Names = ( ( ObjectClassImpl ) o1 ).getNames();
+                        List<String> oc2Names = ( ( ObjectClassImpl ) o2 ).getNames();
 
-                        if ( ( oc1Names != null ) && ( oc2Names != null ) && ( oc1Names.length > 0 )
-                            && ( oc2Names.length > 0 ) )
+                        if ( ( oc1Names != null ) && ( oc2Names != null ) && ( oc1Names.size() > 0 )
+                            && ( oc2Names.size() > 0 ) )
                         {
-                            return oc1Names[0].compareToIgnoreCase( oc2Names[0] );
+                            return oc1Names.get( 0 ).compareToIgnoreCase( oc2Names.get( 0 ) );
                         }
                     }
                     else if ( o1 instanceof ObjectClassImpl && o2 instanceof NonExistingObjectClass )
                     {
-                        String[] oc1Names = ( ( ObjectClassImpl ) o1 ).getNamesRef();
+                        List<String> oc1Names = ( ( ObjectClassImpl ) o1 ).getNames();
                         String oc2Name = ( ( NonExistingObjectClass ) o2 ).getName();
 
-                        if ( ( oc1Names != null ) && ( oc2Name != null ) && ( oc1Names.length > 0 ) )
+                        if ( ( oc1Names != null ) && ( oc2Name != null ) && ( oc1Names.size() > 0 ) )
                         {
-                            return oc1Names[0].compareToIgnoreCase( oc2Name );
+                            return oc1Names.get( 0 ).compareToIgnoreCase( oc2Name );
                         }
                     }
                     else if ( o1 instanceof NonExistingObjectClass && o2 instanceof ObjectClassImpl )
                     {
                         String oc1Name = ( ( NonExistingObjectClass ) o1 ).getName();
-                        String[] oc2Names = ( ( ObjectClassImpl ) o2 ).getNamesRef();
+                        List<String> oc2Names = ( ( ObjectClassImpl ) o2 ).getNames();
 
-                        if ( ( oc1Name != null ) && ( oc2Names != null ) && ( oc2Names.length > 0 ) )
+                        if ( ( oc1Name != null ) && ( oc2Names != null ) && ( oc2Names.size() > 0 ) )
                         {
-                            return oc1Name.compareToIgnoreCase( oc2Names[0] );
+                            return oc1Name.compareToIgnoreCase( oc2Names.get( 0 ) );
                         }
                     }
                     else if ( o1 instanceof NonExistingObjectClass && o2 instanceof NonExistingObjectClass )

@@ -21,6 +21,8 @@
 package org.apache.directory.studio.schemaeditor.view.editors.objectclass;
 
 
+import java.util.List;
+
 import org.apache.directory.studio.schemaeditor.model.ObjectClassImpl;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.osgi.util.NLS;
@@ -72,10 +74,10 @@ public class ObjectClassEditorInput implements IEditorInput
      */
     public String getName()
     {
-        String[] names = objectClass.getNamesRef();
-        if ( ( names != null ) && ( names.length > 0 ) )
+        List<String> names = objectClass.getNames();
+        if ( ( names != null ) && ( names.size() > 0 ) )
         {
-            return names[0];
+            return names.get( 0 );
         }
         else
         {
@@ -99,14 +101,13 @@ public class ObjectClassEditorInput implements IEditorInput
     public String getToolTipText()
     {
         return NLS.bind( Messages.getString( "ObjectClassEditorInput.FromSchema" ), new String[] //$NON-NLS-1$
-            { getName(), objectClass.getSchema() } );
+            { getName(), objectClass.getSchemaName() } );
     }
 
 
     /* (non-Javadoc)
      * @see org.eclipse.core.runtime.IAdaptable#getAdapter(java.lang.Class)
      */
-    @SuppressWarnings("unchecked")
     public Object getAdapter( Class adapter )
     {
         return null;

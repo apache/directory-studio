@@ -20,14 +20,7 @@
 package org.apache.directory.studio.schemaeditor.model;
 
 
-import javax.naming.NamingException;
-
-import org.apache.directory.shared.ldap.schema.AbstractAttributeType;
 import org.apache.directory.shared.ldap.schema.AttributeType;
-import org.apache.directory.shared.ldap.schema.MatchingRule;
-import org.apache.directory.shared.ldap.schema.MutableSchemaObject;
-import org.apache.directory.shared.ldap.schema.Syntax;
-import org.apache.directory.shared.ldap.schema.UsageEnum;
 
 
 /**
@@ -35,27 +28,9 @@ import org.apache.directory.shared.ldap.schema.UsageEnum;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class AttributeTypeImpl extends AbstractAttributeType implements MutableSchemaObject
+public class AttributeTypeImpl extends AttributeType
 {
     private static final long serialVersionUID = 1L;
-
-    /** The object OID */
-    private String objectOid;
-
-    /** The name of the superior */
-    private String superiorName;
-
-    /** The OID of the syntax */
-    private String syntaxOid;
-
-    /** The name of the equality matching rule */
-    private String equalityName;
-
-    /** The name of the ordering matching rule */
-    private String orderingName;
-
-    /** The name of the substr matching rule */
-    private String substrName;
 
     /** The schema object */
     private Schema schemaObject;
@@ -70,265 +45,6 @@ public class AttributeTypeImpl extends AbstractAttributeType implements MutableS
     public AttributeTypeImpl( String oid )
     {
         super( oid );
-        objectOid = oid;
-    }
-
-
-    /* (non-Javadoc)
-     * @see org.apache.directory.shared.ldap.schema.AbstractSchemaObject#setNames(java.lang.String[])
-     */
-    public void setNames( String[] names )
-    {
-        super.setNames( names );
-    }
-
-
-    /* (non-Javadoc)
-     * @see org.apache.directory.shared.ldap.schema.AbstractSchemaObject#getOid()
-     */
-    public String getOid()
-    {
-        return objectOid;
-    }
-
-
-    /**
-     * Set the OID.
-     *
-     * @param oid
-     *      the OID value
-     */
-    public void setOid( String oid )
-    {
-        objectOid = oid;
-    }
-
-
-    /* (non-Javadoc)
-     * @see org.apache.directory.shared.ldap.schema.AbstractSchemaObject#setDescription(java.lang.String)
-     */
-    public void setDescription( String description )
-    {
-        super.setDescription( description );
-    }
-
-
-    /* (non-Javadoc)
-     * @see org.apache.directory.shared.ldap.schema.AbstractSchemaObject#setObsolete(boolean)
-     */
-    public void setObsolete( boolean obsolete )
-    {
-        super.setObsolete( obsolete );
-    }
-
-
-    /* (non-Javadoc)
-     * @see org.apache.directory.shared.ldap.schema.AbstractAttributeType#setCanUserModify(boolean)
-     */
-    public void setCanUserModify( boolean canUserModify )
-    {
-        super.setCanUserModify( canUserModify );
-    }
-
-
-    /* (non-Javadoc)
-     * @see org.apache.directory.shared.ldap.schema.AbstractAttributeType#setCollective(boolean)
-     */
-    public void setCollective( boolean collective )
-    {
-        super.setCollective( collective );
-    }
-
-
-    /* (non-Javadoc)
-     * @see org.apache.directory.shared.ldap.schema.AbstractAttributeType#setSingleValue(boolean)
-     */
-    public void setSingleValue( boolean singleValue )
-    {
-        super.setSingleValue( singleValue );
-    }
-
-
-    /* (non-Javadoc)
-     * @see org.apache.directory.shared.ldap.schema.AbstractAttributeType#setUsage(org.apache.directory.shared.ldap.schema.UsageEnum)
-     */
-    public void setUsage( UsageEnum usage )
-    {
-        super.setUsage( usage );
-    }
-
-
-    /**
-     * Gets the superior name.
-     *
-     * @return
-     *      the superior name
-     */
-    public String getSuperiorName()
-    {
-        return superiorName;
-    }
-
-
-    /**
-     * Sets the superior name.
-     *
-     * @param superiorName
-     *      the superior name
-     */
-    public void setSuperiorName( String superiorName )
-    {
-        this.superiorName = superiorName;
-    }
-
-
-    /* (non-Javadoc)
-     * @see org.apache.directory.shared.ldap.schema.AttributeType#getSuperior()
-     */
-    public AttributeType getSuperior() throws NamingException
-    {
-        return null;
-    }
-
-
-    /**
-     * Gets the OID of the syntax.
-     * 
-     * @return
-     *      the OID of the syntax
-     */
-    public String getSyntaxOid()
-    {
-        return syntaxOid;
-    }
-
-
-    /**
-     * Sets the OID of the syntax.
-     *
-     * @param syntaxOid
-     *      the OID of the syntax
-     */
-    public void setSyntaxOid( String syntaxOid )
-    {
-        this.syntaxOid = syntaxOid;
-    }
-
-
-    /* (non-Javadoc)
-     * @see org.apache.directory.shared.ldap.schema.AttributeType#getSyntax()
-     */
-    public Syntax getSyntax() throws NamingException
-    {
-        return null;
-    }
-
-
-    /* (non-Javadoc)
-     * @see org.apache.directory.shared.ldap.schema.AbstractAttributeType#setLength(int)
-     */
-    public void setLength( int length )
-    {
-        super.setLength( length );
-    }
-
-
-    /**
-     * Gets the equality matching rule name.
-     * 
-     * @return
-     *      the equality matching rule name
-     */
-    public String getEqualityName()
-    {
-        return equalityName;
-    }
-
-
-    /**
-     * Sets the equality matching rule name.
-     * 
-     * @param equalityName
-     *      the equality matching rule name
-     */
-    public void setEqualityName( String equalityName )
-    {
-        this.equalityName = equalityName;
-    }
-
-
-    /* (non-Javadoc)
-     * @see org.apache.directory.shared.ldap.schema.AttributeType#getEquality()
-     */
-    public MatchingRule getEquality() throws NamingException
-    {
-        return null;
-    }
-
-
-    /**
-     * Gets the ordering matching rule name.
-     *
-     * @return
-     *      the ordering matching rule name
-     */
-    public String getOrderingName()
-    {
-        return orderingName;
-    }
-
-
-    /**
-     * Sets the ordering matching rule name.
-     *
-     * @param orderingName
-     *      the ordering matching rule name
-     */
-    public void setOrderingName( String orderingName )
-    {
-        this.orderingName = orderingName;
-    }
-
-
-    /* (non-Javadoc)
-     * @see org.apache.directory.shared.ldap.schema.AttributeType#getOrdering()
-     */
-    public MatchingRule getOrdering() throws NamingException
-    {
-        return null;
-    }
-
-
-    /**
-     * Gets the substring matching rule name.
-     *
-     * @return
-     *      the substring matching rule name
-     */
-    public String getSubstrName()
-    {
-        return substrName;
-    }
-
-
-    /**
-     * Sets the substring matching rule name.
-     *
-     * @param substrName
-     *      the substring matching rule name
-     */
-    public void setSubstrName( String substrName )
-    {
-        this.substrName = substrName;
-    }
-
-
-    /* (non-Javadoc)
-     * @see org.apache.directory.shared.ldap.schema.AttributeType#getSubstr()
-     */
-    public MatchingRule getSubstr() throws NamingException
-    {
-        return null;
     }
 
 
@@ -371,17 +87,17 @@ public class AttributeTypeImpl extends AbstractAttributeType implements MutableS
             }
 
             // Aliases
-            if ( ( getNamesRef() == null ) && ( at.getNamesRef() != null ) )
+            if ( ( getNames() == null ) && ( at.getNames() != null ) )
             {
                 return false;
             }
-            else if ( ( getNamesRef() != null ) && ( at.getNamesRef() == null ) )
+            else if ( ( getNames() != null ) && ( at.getNames() == null ) )
             {
                 return false;
             }
-            else if ( ( getNamesRef() != null ) && ( at.getNamesRef() != null ) )
+            else if ( ( getNames() != null ) && ( at.getNames() != null ) )
             {
-                if ( !getNamesRef().equals( at.getNamesRef() ) )
+                if ( !getNames().equals( at.getNames() ) )
                 {
                     return false;
                 }
@@ -405,17 +121,17 @@ public class AttributeTypeImpl extends AbstractAttributeType implements MutableS
             }
 
             // Superior
-            if ( ( getSuperiorName() == null ) && ( at.getSuperiorName() != null ) )
+            if ( ( getSuperiorOid() == null ) && ( at.getSuperiorOid() != null ) )
             {
                 return false;
             }
-            else if ( ( getSuperiorName() != null ) && ( at.getSuperiorName() == null ) )
+            else if ( ( getSuperiorOid() != null ) && ( at.getSuperiorOid() == null ) )
             {
                 return false;
             }
-            else if ( ( getSuperiorName() != null ) && ( at.getSuperiorName() != null ) )
+            else if ( ( getSuperiorOid() != null ) && ( at.getSuperiorOid() != null ) )
             {
-                if ( !getSuperiorName().equals( at.getSuperiorName() ) )
+                if ( !getSuperiorOid().equals( at.getSuperiorOid() ) )
                 {
                     return false;
                 }
@@ -456,7 +172,7 @@ public class AttributeTypeImpl extends AbstractAttributeType implements MutableS
             }
 
             // Syntax length
-            if ( getLength() != at.getLength() )
+            if ( getSyntaxLength() != at.getSyntaxLength() )
             {
                 return false;
             }
@@ -468,7 +184,7 @@ public class AttributeTypeImpl extends AbstractAttributeType implements MutableS
             }
 
             // Single value
-            if ( isSingleValue() != at.isSingleValue() )
+            if ( isSingleValued() != at.isSingleValued() )
             {
                 return false;
             }
@@ -480,57 +196,57 @@ public class AttributeTypeImpl extends AbstractAttributeType implements MutableS
             }
 
             // No User Modification
-            if ( isCanUserModify() != at.isCanUserModify() )
+            if ( isUserModifiable() != at.isUserModifiable() )
             {
                 return false;
             }
 
             // Equality matching rule
-            if ( ( getEqualityName() == null ) && ( at.getEqualityName() != null ) )
+            if ( ( getEqualityOid() == null ) && ( at.getEqualityOid() != null ) )
             {
                 return false;
             }
-            else if ( ( getEqualityName() != null ) && ( at.getEqualityName() == null ) )
+            else if ( ( getEqualityOid() != null ) && ( at.getEqualityOid() == null ) )
             {
                 return false;
             }
-            else if ( ( getEqualityName() != null ) && ( at.getEqualityName() != null ) )
+            else if ( ( getEqualityOid() != null ) && ( at.getEqualityOid() != null ) )
             {
-                if ( !getEqualityName().equals( at.getEqualityName() ) )
+                if ( !getEqualityOid().equals( at.getEqualityOid() ) )
                 {
                     return false;
                 }
             }
 
             // Ordering matching rule
-            if ( ( getOrderingName() == null ) && ( at.getOrderingName() != null ) )
+            if ( ( getOrderingOid() == null ) && ( at.getOrderingOid() != null ) )
             {
                 return false;
             }
-            else if ( ( getOrderingName() != null ) && ( at.getOrderingName() == null ) )
+            else if ( ( getOrderingOid() != null ) && ( at.getOrderingOid() == null ) )
             {
                 return false;
             }
-            else if ( ( getOrderingName() != null ) && ( at.getOrderingName() != null ) )
+            else if ( ( getOrderingOid() != null ) && ( at.getOrderingOid() != null ) )
             {
-                if ( !getOrderingName().equals( at.getOrderingName() ) )
+                if ( !getOrderingOid().equals( at.getOrderingOid() ) )
                 {
                     return false;
                 }
             }
 
             // Substring matching rule
-            if ( ( getSubstrName() == null ) && ( at.getSubstrName() != null ) )
+            if ( ( getSubstringOid() == null ) && ( at.getSubstringOid() != null ) )
             {
                 return false;
             }
-            else if ( ( getSubstrName() != null ) && ( at.getSubstrName() == null ) )
+            else if ( ( getSubstringOid() != null ) && ( at.getSubstringOid() == null ) )
             {
                 return false;
             }
-            else if ( ( getSubstrName() != null ) && ( at.getSubstrName() != null ) )
+            else if ( ( getSubstringOid() != null ) && ( at.getSubstringOid() != null ) )
             {
-                if ( !getSubstrName().equals( at.getSubstrName() ) )
+                if ( !getSubstringOid().equals( at.getSubstringOid() ) )
                 {
                     return false;
                 }

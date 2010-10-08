@@ -20,14 +20,7 @@
 package org.apache.directory.studio.schemaeditor.model;
 
 
-import java.util.Comparator;
-
-import javax.naming.NamingException;
-
-import org.apache.directory.shared.ldap.schema.AbstractMatchingRule;
-import org.apache.directory.shared.ldap.schema.MutableSchemaObject;
-import org.apache.directory.shared.ldap.schema.Normalizer;
-import org.apache.directory.shared.ldap.schema.Syntax;
+import org.apache.directory.shared.ldap.schema.MatchingRule;
 
 
 /**
@@ -35,39 +28,12 @@ import org.apache.directory.shared.ldap.schema.Syntax;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class MatchingRuleImpl extends AbstractMatchingRule implements MutableSchemaObject
+public class MatchingRuleImpl extends MatchingRule
 {
     private static final long serialVersionUID = 1L;
 
-    /** The OID of the syntax */
-    private String syntaxOid;
-
     /** The schema object */
     private Schema schemaObject;
-
-
-    /**
-     * Gets the OID of the syntax.
-     *
-     * @return
-     *      the OID of the syntax
-     */
-    public String getSyntaxOid()
-    {
-        return syntaxOid;
-    }
-
-
-    /**
-     * Sets the OID of the syntax.
-     *
-     * @param syntaxOid
-     *      the OID of the syntax
-     */
-    public void setSyntaxOid( String syntaxOid )
-    {
-        this.syntaxOid = syntaxOid;
-    }
 
 
     /**
@@ -79,60 +45,6 @@ public class MatchingRuleImpl extends AbstractMatchingRule implements MutableSch
     public MatchingRuleImpl( String oid )
     {
         super( oid );
-    }
-
-
-    /* (non-Javadoc)
-     * @see org.apache.directory.shared.ldap.schema.MatchingRule#getComparator()
-     */
-    public Comparator<?> getComparator() throws NamingException
-    {
-        return null;
-    }
-
-
-    /* (non-Javadoc)
-     * @see org.apache.directory.shared.ldap.schema.MatchingRule#getNormalizer()
-     */
-    public Normalizer getNormalizer() throws NamingException
-    {
-        return null;
-    }
-
-
-    /* (non-Javadoc)
-     * @see org.apache.directory.shared.ldap.schema.MatchingRule#getSyntax()
-     */
-    public Syntax getSyntax() throws NamingException
-    {
-        return null;
-    }
-
-
-    /* (non-Javadoc)
-     * @see org.apache.directory.shared.ldap.schema.AbstractSchemaObject#setDescription(java.lang.String)
-     */
-    public void setDescription( String description )
-    {
-        super.setDescription( description );
-    }
-
-
-    /* (non-Javadoc)
-     * @see org.apache.directory.shared.ldap.schema.AbstractSchemaObject#setNames(java.lang.String[])
-     */
-    public void setNames( String[] names )
-    {
-        super.setNames( names );
-    }
-
-
-    /* (non-Javadoc)
-     * @see org.apache.directory.shared.ldap.schema.AbstractSchemaObject#setObsolete(boolean)
-     */
-    public void setObsolete( boolean obsolete )
-    {
-        super.setObsolete( obsolete );
     }
 
 

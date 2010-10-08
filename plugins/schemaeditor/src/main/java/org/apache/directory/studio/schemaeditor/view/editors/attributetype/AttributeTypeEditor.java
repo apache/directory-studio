@@ -143,7 +143,7 @@ public class AttributeTypeEditor extends FormEditor
         modifiedAttributeType = PluginUtils.getClone( originalAttributeType );
 
         SchemaHandler schemaHandler = Activator.getDefault().getSchemaHandler();
-        originalSchema = schemaHandler.getSchema( originalAttributeType.getSchema() );
+        originalSchema = schemaHandler.getSchema( originalAttributeType.getSchemaName() );
         schemaHandler.addListener( originalAttributeType, attributeTypeListener );
         schemaHandler.addListener( schemaHandlerListener );
 

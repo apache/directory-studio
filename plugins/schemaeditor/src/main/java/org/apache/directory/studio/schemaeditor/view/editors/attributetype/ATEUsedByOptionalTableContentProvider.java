@@ -53,7 +53,7 @@ public class ATEUsedByOptionalTableContentProvider implements IStructuredContent
 
             List<String> names = new ArrayList<String>();
 
-            String[] atNames = inputAT.getNamesRef();
+            List<String> atNames = inputAT.getNames();
             if ( atNames != null )
             {
                 for ( String name : atNames )
@@ -65,7 +65,7 @@ public class ATEUsedByOptionalTableContentProvider implements IStructuredContent
             List<ObjectClassImpl> objectClasses = schemaHandler.getObjectClasses();
             for ( ObjectClassImpl oc : objectClasses )
             {
-                String[] mays = oc.getMayNamesList();
+                List<String> mays = oc.getMayAttributeTypeOids();
                 if ( mays != null )
                 {
                     for ( String may : mays )
@@ -85,13 +85,13 @@ public class ATEUsedByOptionalTableContentProvider implements IStructuredContent
                 {
                     if ( oc1 instanceof ObjectClassImpl && oc1 instanceof ObjectClassImpl )
                     {
-                        String[] oc1Names = ( ( ObjectClassImpl ) oc1 ).getNamesRef();
-                        String[] oc2Names = ( ( ObjectClassImpl ) oc2 ).getNamesRef();
+                        List<String> oc1Names = ( ( ObjectClassImpl ) oc1 ).getNames();
+                        List<String> oc2Names = ( ( ObjectClassImpl ) oc2 ).getNames();
 
-                        if ( ( oc1Names != null ) && ( oc2Names != null ) && ( oc1Names.length > 0 )
-                            && ( oc2Names.length > 0 ) )
+                        if ( ( oc1Names != null ) && ( oc2Names != null ) && ( oc1Names.size() > 0 )
+                            && ( oc2Names.size() > 0 ) )
                         {
-                            return oc1Names[0].compareToIgnoreCase( oc2Names[0] );
+                            return oc1Names.get( 0 ).compareToIgnoreCase( oc2Names.get( 0 ) );
                         }
                     }
 

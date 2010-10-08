@@ -441,14 +441,14 @@ public class SchemaChecker
         }
 
         // Checking aliases
-        String[] aliases = at.getNamesRef();
-        if ( ( aliases == null ) || ( aliases.length == 0 ) )
+        List<String> aliases = at.getNames();
+        if ( ( aliases == null ) || ( aliases.size() == 0 ) )
         {
             SchemaWarning warning = new NoAliasWarning( at );
             warningsList.add( warning );
             warningsMap.put( at, warning );
         }
-        else if ( ( aliases != null ) && ( aliases.length >= 1 ) )
+        else if ( ( aliases != null ) && ( aliases.size() >= 1 ) )
         {
             for ( String alias : aliases )
             {
@@ -470,7 +470,7 @@ public class SchemaChecker
         }
 
         // Checking superior
-        String superior = at.getSuperiorName();
+        String superior = at.getSuperiorOid();
         if ( ( superior != null ) && ( !"".equals( superior ) ) )
         {
             AttributeTypeImpl superiorAT = Activator.getDefault().getSchemaHandler().getAttributeType( superior );
@@ -530,7 +530,7 @@ public class SchemaChecker
         }
 
         // Equality matching rule
-        String equality = at.getEqualityName();
+        String equality = at.getEqualityOid();
         if ( ( equality != null ) && ( !"".equals( equality ) ) )
         {
             MatchingRuleImpl equalityMR = Activator.getDefault().getSchemaHandler().getMatchingRule( equality );
@@ -551,7 +551,7 @@ public class SchemaChecker
         }
 
         // Ordering matching rule
-        String ordering = at.getOrderingName();
+        String ordering = at.getOrderingOid();
         if ( ( ordering != null ) && ( !"".equals( ordering ) ) )
         {
             MatchingRuleImpl orderingMR = Activator.getDefault().getSchemaHandler().getMatchingRule( ordering );
@@ -572,7 +572,7 @@ public class SchemaChecker
         }
 
         // Substring matching rule
-        String substring = at.getSubstrName();
+        String substring = at.getSubstringOid();
         if ( ( substring != null ) && ( !"".equals( substring ) ) )
         {
             MatchingRuleImpl substringMR = Activator.getDefault().getSchemaHandler().getMatchingRule( substring );
@@ -625,14 +625,14 @@ public class SchemaChecker
         }
 
         // Checking aliases
-        String[] aliases = oc.getNamesRef();
-        if ( ( aliases == null ) || ( aliases.length == 0 ) )
+        List<String> aliases = oc.getNames();
+        if ( ( aliases == null ) || ( aliases.size() == 0 ) )
         {
             SchemaWarning warning = new NoAliasWarning( oc );
             warningsList.add( warning );
             warningsMap.put( oc, warning );
         }
-        else if ( ( aliases != null ) && ( aliases.length >= 1 ) )
+        else if ( ( aliases != null ) && ( aliases.size() >= 1 ) )
         {
             for ( String alias : aliases )
             {
@@ -654,8 +654,8 @@ public class SchemaChecker
         }
 
         // Checking superiors
-        String[] superiors = oc.getSuperClassesNames();
-        if ( ( superiors != null ) && ( superiors.length >= 1 ) )
+        List<String> superiors = oc.getSuperiorOids();
+        if ( ( superiors != null ) && ( superiors.size() >= 1 ) )
         {
             ObjectClassTypeEnum type = oc.getType();
 
@@ -706,8 +706,8 @@ public class SchemaChecker
         }
 
         // Checking mandatory and optional attributes
-        String[] mandatoryATNames = oc.getMustNamesList();
-        String[] optionalATNames = oc.getMayNamesList();
+        List<String> mandatoryATNames = oc.getMustAttributeTypeOids();
+        List<String> optionalATNames = oc.getMayAttributeTypeOids();
         if ( ( mandatoryATNames != null ) && ( optionalATNames != null ) )
         {
             for ( String mandatoryATName : mandatoryATNames )
@@ -1009,8 +1009,8 @@ public class SchemaChecker
         }
 
         // Checking aliases
-        String[] aliases = sc.getNamesRef();
-        if ( ( aliases != null ) && ( aliases.length > 0 ) )
+        List<String> aliases = sc.getNames();
+        if ( ( aliases != null ) && ( aliases.size() > 0 ) )
         {
             for ( String alias : aliases )
             {

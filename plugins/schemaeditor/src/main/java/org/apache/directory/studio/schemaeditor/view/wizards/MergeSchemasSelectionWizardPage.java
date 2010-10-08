@@ -182,10 +182,10 @@ public class MergeSchemasSelectionWizardPage extends AbstractWizardPage
                 else if ( element instanceof AttributeType )
                 {
                     AttributeType at = ( ( AttributeType ) element );
-                    String[] names = at.getNamesRef();
-                    if ( ( names != null ) && ( names.length > 0 ) )
+                    List<String> names = at.getNames();
+                    if ( ( names != null ) && ( names.size() > 0 ) )
                     {
-                        return names[0];
+                        return names.get(0);
                     }
                     else
                     {
@@ -195,10 +195,10 @@ public class MergeSchemasSelectionWizardPage extends AbstractWizardPage
                 else if ( element instanceof ObjectClass )
                 {
                     ObjectClass oc = ( ( ObjectClass ) element );
-                    String[] names = oc.getNamesRef();
-                    if ( ( names != null ) && ( names.length > 0 ) )
+                    List<String> names = oc.getNames();
+                    if ( ( names != null ) && ( names.size() > 0 ) )
                     {
-                        return names[0];
+                        return names.get(0);
                     }
                     else
                     {

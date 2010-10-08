@@ -65,56 +65,56 @@ public class SearchViewContentProvider implements IStructuredContentProvider, IT
         {
             public int compare( SchemaObject o1, SchemaObject o2 )
             {
-                String[] o1Names = null;
-                String[] o2Names = null;
+                List<String> o1Names = null;
+                List<String> o2Names = null;
 
                 if ( ( o1 instanceof AttributeTypeImpl ) && ( o2 instanceof AttributeTypeImpl ) )
                 {
                     AttributeTypeImpl at1 = ( AttributeTypeImpl ) o1;
                     AttributeTypeImpl at2 = ( AttributeTypeImpl ) o2;
 
-                    o1Names = at1.getNamesRef();
-                    o2Names = at2.getNamesRef();
+                    o1Names = at1.getNames();
+                    o2Names = at2.getNames();
                 }
                 else if ( ( o1 instanceof ObjectClassImpl ) && ( o2 instanceof ObjectClassImpl ) )
                 {
                     ObjectClassImpl oc1 = ( ObjectClassImpl ) o1;
                     ObjectClassImpl oc2 = ( ObjectClassImpl ) o2;
 
-                    o1Names = oc1.getNamesRef();
-                    o2Names = oc2.getNamesRef();
+                    o1Names = oc1.getNames();
+                    o2Names = oc2.getNames();
                 }
                 else if ( ( o1 instanceof AttributeTypeImpl ) && ( o2 instanceof ObjectClassImpl ) )
                 {
                     AttributeTypeImpl at = ( AttributeTypeImpl ) o1;
                     ObjectClassImpl oc = ( ObjectClassImpl ) o2;
 
-                    o1Names = at.getNamesRef();
-                    o2Names = oc.getNamesRef();
+                    o1Names = at.getNames();
+                    o2Names = oc.getNames();
                 }
                 else if ( ( o1 instanceof ObjectClassImpl ) && ( o2 instanceof AttributeTypeImpl ) )
                 {
                     ObjectClassImpl oc = ( ObjectClassImpl ) o1;
                     AttributeTypeImpl at = ( AttributeTypeImpl ) o2;
 
-                    o1Names = oc.getNamesRef();
-                    o2Names = at.getNamesRef();
+                    o1Names = oc.getNames();
+                    o2Names = at.getNames();
                 }
 
                 // Comparing the First Name
                 if ( ( o1Names != null ) && ( o2Names != null ) )
                 {
-                    if ( ( o1Names.length > 0 ) && ( o2Names.length > 0 ) )
+                    if ( ( o1Names.size() > 0 ) && ( o2Names.size() > 0 ) )
                     {
-                        return o1Names[0].compareToIgnoreCase( o2Names[0] );
+                        return o1Names.get(0).compareToIgnoreCase( o2Names.get(0) );
                     }
-                    else if ( ( o1Names.length == 0 ) && ( o2Names.length > 0 ) )
+                    else if ( ( o1Names.size() == 0 ) && ( o2Names.size() > 0 ) )
                     {
-                        return "".compareToIgnoreCase( o2Names[0] ); //$NON-NLS-1$
+                        return "".compareToIgnoreCase( o2Names.get(0) ); //$NON-NLS-1$
                     }
-                    else if ( ( o1Names.length > 0 ) && ( o2Names.length == 0 ) )
+                    else if ( ( o1Names.size() > 0 ) && ( o2Names.size() == 0 ) )
                     {
-                        return o1Names[0].compareToIgnoreCase( "" ); //$NON-NLS-1$
+                        return o1Names.get(0).compareToIgnoreCase( "" ); //$NON-NLS-1$
                     }
                 }
 

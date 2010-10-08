@@ -259,8 +259,8 @@ public class XMLSchemaFileExporter
         }
 
         // Aliases
-        String[] aliases = at.getNamesRef();
-        if ( ( aliases != null ) && ( aliases.length >= 1 ) )
+        List<String> aliases = at.getNames();
+        if ( ( aliases != null ) && ( aliases.size() >= 1 ) )
         {
             Element aliasesNode = atNode.addElement( ALIASES_TAG );
             for ( String alias : aliases )
@@ -277,7 +277,7 @@ public class XMLSchemaFileExporter
         }
 
         // Superior
-        String superior = at.getSuperiorName();
+        String superior = at.getSuperiorOid();
         if ( ( superior != null ) && ( !superior.equals( "" ) ) ) //$NON-NLS-1$
         {
             atNode.addElement( SUPERIOR_TAG ).setText( superior );
@@ -298,7 +298,7 @@ public class XMLSchemaFileExporter
         }
 
         // Syntax Length
-        int syntaxLength = at.getLength();
+        long syntaxLength = at.getSyntaxLength();
         if ( syntaxLength > 0 )
         {
             atNode.addElement( SYNTAX_LENGTH_TAG ).setText( "" + syntaxLength ); //$NON-NLS-1$
@@ -315,7 +315,7 @@ public class XMLSchemaFileExporter
         }
 
         // Single Value
-        if ( at.isSingleValue() )
+        if ( at.isSingleValued() )
         {
             atNode.addAttribute( SINGLE_VALUE_TAG, BOOLEAN_TRUE );
         }
@@ -335,7 +335,7 @@ public class XMLSchemaFileExporter
         }
 
         // No User Modification
-        if ( at.isCanUserModify() )
+        if ( at.isUserModifiable() )
         {
             atNode.addAttribute( NO_USER_MODIFICATION_TAG, BOOLEAN_FALSE );
         }
@@ -345,21 +345,21 @@ public class XMLSchemaFileExporter
         }
 
         // Equality
-        String equality = at.getEqualityName();
+        String equality = at.getEqualityOid();
         if ( ( equality != null ) && ( !equality.equals( "" ) ) ) //$NON-NLS-1$
         {
             atNode.addElement( EQUALITY_TAG ).setText( equality );
         }
 
         // Ordering
-        String ordering = at.getOrderingName();
+        String ordering = at.getOrderingOid();
         if ( ( ordering != null ) && ( !ordering.equals( "" ) ) ) //$NON-NLS-1$
         {
             atNode.addElement( ORDERING_TAG ).setText( ordering );
         }
 
         // Substring
-        String substring = at.getSubstrName();
+        String substring = at.getSubstringOid();
         if ( ( substring != null ) && ( !substring.equals( "" ) ) ) //$NON-NLS-1$
         {
             atNode.addElement( SUBSTRING_TAG ).setText( substring );
@@ -387,8 +387,8 @@ public class XMLSchemaFileExporter
         }
 
         // Aliases
-        String[] aliases = oc.getNamesRef();
-        if ( ( aliases != null ) && ( aliases.length >= 1 ) )
+        List<String> aliases = oc.getNames();
+        if ( ( aliases != null ) && ( aliases.size() >= 1 ) )
         {
             Element aliasesNode = ocNode.addElement( ALIASES_TAG );
             for ( String alias : aliases )
@@ -405,8 +405,8 @@ public class XMLSchemaFileExporter
         }
 
         // Superiors
-        String[] superiors = oc.getSuperClassesNames();
-        if ( ( superiors != null ) && ( superiors.length >= 1 ) )
+        List<String> superiors = oc.getSuperiorOids();
+        if ( ( superiors != null ) && ( superiors.size() >= 1 ) )
         {
             Element superiorsNode = ocNode.addElement( SUPERIORS_TAG );
             for ( String superior : superiors )
@@ -433,8 +433,8 @@ public class XMLSchemaFileExporter
         }
 
         // Mandatory Attribute Types
-        String[] mandatoryATs = oc.getMustNamesList();
-        if ( ( mandatoryATs != null ) && ( mandatoryATs.length >= 1 ) )
+        List<String> mandatoryATs = oc.getMustAttributeTypeOids();
+        if ( ( mandatoryATs != null ) && ( mandatoryATs.size() >= 1 ) )
         {
             Element mandatoryNode = ocNode.addElement( MANDATORY_TAG );
             for ( String mandatoryAT : mandatoryATs )
@@ -444,8 +444,8 @@ public class XMLSchemaFileExporter
         }
 
         // Optional Attribute Types
-        String[] optionalATs = oc.getMayNamesList();
-        if ( ( optionalATs != null ) && ( optionalATs.length >= 1 ) )
+        List<String> optionalATs = oc.getMayAttributeTypeOids();
+        if ( ( optionalATs != null ) && ( optionalATs.size() >= 1 ) )
         {
             Element optionalNode = ocNode.addElement( OPTIONAL_TAG );
             for ( String optionalAT : optionalATs )
@@ -476,8 +476,8 @@ public class XMLSchemaFileExporter
         }
 
         // Aliases
-        String[] aliases = mr.getNamesRef();
-        if ( ( aliases != null ) && ( aliases.length >= 1 ) )
+        List<String> aliases = mr.getNames();
+        if ( ( aliases != null ) && ( aliases.size() >= 1 ) )
         {
             Element aliasesNode = mrNode.addElement( ALIASES_TAG );
             for ( String alias : aliases )
@@ -535,8 +535,8 @@ public class XMLSchemaFileExporter
         }
 
         // Aliases
-        String[] aliases = syntax.getNamesRef();
-        if ( ( aliases != null ) && ( aliases.length >= 1 ) )
+        List<String> aliases = syntax.getNames();
+        if ( ( aliases != null ) && ( aliases.size() >= 1 ) )
         {
             Element aliasesNode = syntaxNode.addElement( ALIASES_TAG );
             for ( String alias : aliases )

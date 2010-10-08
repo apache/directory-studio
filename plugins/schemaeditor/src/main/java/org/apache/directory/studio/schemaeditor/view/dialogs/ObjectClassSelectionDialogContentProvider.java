@@ -85,26 +85,26 @@ public class ObjectClassSelectionDialogContentProvider implements IStructuredCon
             {
                 public int compare( ObjectClassImpl oc1, ObjectClassImpl oc2 )
                 {
-                    String[] oc1Names = ( ( ObjectClassImpl ) oc1 ).getNamesRef();
-                    String[] oc2Names = ( ( ObjectClassImpl ) oc2 ).getNamesRef();
+                    List<String> oc1Names = ( ( ObjectClassImpl ) oc1 ).getNames();
+                    List<String> oc2Names = ( ( ObjectClassImpl ) oc2 ).getNames();
 
-                    if ( ( oc1Names == null || oc1Names.length == 0 ) && ( oc2Names == null || oc2Names.length == 0 ) )
+                    if ( ( oc1Names == null || oc1Names.size() == 0 ) && ( oc2Names == null || oc2Names.size() == 0 ) )
                     {
                         return 0;
                     }
-                    else if ( ( oc1Names == null || oc1Names.length == 0 )
-                        && ( oc2Names != null && oc2Names.length > 0 ) )
+                    else if ( ( oc1Names == null || oc1Names.size() == 0 )
+                        && ( oc2Names != null && oc2Names.size() > 0 ) )
                     {
-                        return "".compareToIgnoreCase( oc2Names[0] ); //$NON-NLS-1$
+                        return "".compareToIgnoreCase( oc2Names.get( 0 ) ); //$NON-NLS-1$
                     }
-                    else if ( ( oc1Names != null && oc1Names.length > 0 )
-                        && ( oc2Names == null || oc2Names.length == 0 ) )
+                    else if ( ( oc1Names != null && oc1Names.size() > 0 )
+                        && ( oc2Names == null || oc2Names.size() == 0 ) )
                     {
-                        return oc1Names[0].compareToIgnoreCase( "" ); //$NON-NLS-1$
+                        return oc1Names.get( 0 ).compareToIgnoreCase( "" ); //$NON-NLS-1$
                     }
                     else
                     {
-                        return oc1Names[0].compareToIgnoreCase( oc2Names[0] );
+                        return oc1Names.get( 0 ).compareToIgnoreCase( oc2Names.get( 0 ) );
                     }
                 }
             } );
@@ -112,7 +112,7 @@ public class ObjectClassSelectionDialogContentProvider implements IStructuredCon
             // Searching for all matching elements
             for ( ObjectClassImpl oc : ocList )
             {
-                for ( String name : oc.getNamesRef() )
+                for ( String name : oc.getNames() )
                 {
                     Matcher m = pattern.matcher( name );
                     if ( m.matches() )

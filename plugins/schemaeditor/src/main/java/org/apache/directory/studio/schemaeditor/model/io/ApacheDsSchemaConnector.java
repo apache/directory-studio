@@ -223,25 +223,25 @@ public class ApacheDsSchemaConnector extends AbstractSchemaConnector implements 
                     {
                         case ATTRIBUTE_TYPE:
                             AttributeTypeImpl at = createAttributeType( searchResult );
-                            at.setSchema( name );
+                            at.setSchemaName( name );
                             at.setSchemaObject( schema );
                             schema.addAttributeType( at );
                             break;
                         case OBJECT_CLASS:
                             ObjectClassImpl oc = createObjectClass( searchResult );
-                            oc.setSchema( name );
+                            oc.setSchemaName( name );
                             oc.setSchemaObject( schema );
                             schema.addObjectClass( oc );
                             break;
                         case MATCHING_RULE:
                             MatchingRuleImpl mr = createMatchingRule( searchResult );
-                            mr.setSchema( name );
+                            mr.setSchemaName( name );
                             mr.setSchemaObject( schema );
                             schema.addMatchingRule( mr );
                             break;
                         case SYNTAX:
                             SyntaxImpl syntax = createSyntax( searchResult );
-                            syntax.setSchema( name );
+                            syntax.setSchemaName( name );
                             syntax.setSchemaObject( schema );
                             schema.addSyntax( syntax );
                             break;
@@ -318,16 +318,16 @@ public class ApacheDsSchemaConnector extends AbstractSchemaConnector implements 
         at.setNames( getNames( sr ) );
         at.setDescription( getDescription( sr ) );
         at.setObsolete( isObsolete( sr ) );
-        at.setSuperiorName( getSuperior( sr ) );
+        at.setSuperiorOid( getSuperior( sr ) );
         at.setUsage( getUsage( sr ) );
         at.setSyntaxOid( getSyntax( sr ) );
-        at.setLength( getSyntaxLength( sr ) );
+        at.setSyntaxLength( getSyntaxLength( sr ) );
         at.setCollective( isCollective( sr ) );
-        at.setSingleValue( isSingleValue( sr ) );
-        at.setCanUserModify( isCanUserModify( sr ) );
-        at.setEqualityName( getEquality( sr ) );
-        at.setOrderingName( getOrdering( sr ) );
-        at.setSubstrName( getSubstr( sr ) );
+        at.setSingleValued( isSingleValued( sr ) );
+        at.setUserModifiable( isUserModifiable( sr ) );
+        at.setEqualityOid( getEquality( sr ) );
+        at.setOrderingOid( getOrdering( sr ) );
+        at.setSubstringOid( getSubstring( sr ) );
         return at;
     }
 
@@ -348,10 +348,10 @@ public class ApacheDsSchemaConnector extends AbstractSchemaConnector implements 
         oc.setNames( getNames( sr ) );
         oc.setDescription( getDescription( sr ) );
         oc.setObsolete( isObsolete( sr ) );
-        oc.setSuperClassesNames( getSuperiors( sr ) );
+        oc.setSuperiorOids( getSuperiors( sr ) );
         oc.setType( getType( sr ) );
-        oc.setMayNamesList( getMay( sr ) );
-        oc.setMustNamesList( getMust( sr ) );
+        oc.setMayAttributeTypeOids( getMay( sr ) );
+        oc.setMustAttributeTypeOids( getMust( sr ) );
         return oc;
     }
 
@@ -653,7 +653,7 @@ public class ApacheDsSchemaConnector extends AbstractSchemaConnector implements 
      * @throws NamingException
      *      if an error occurrs when searching in the SearchResult
      */
-    private static boolean isSingleValue( SearchResult sr ) throws NamingException
+    private static boolean isSingleValued( SearchResult sr ) throws NamingException
     {
         Attribute at = sr.getAttributes().get( "m-singleValue" );
 
@@ -678,7 +678,7 @@ public class ApacheDsSchemaConnector extends AbstractSchemaConnector implements 
      * @throws NamingException
      *      if an error occurrs when searching in the SearchResult
      */
-    private static boolean isCanUserModify( SearchResult sr ) throws NamingException
+    private static boolean isUserModifiable( SearchResult sr ) throws NamingException
     {
         Attribute at = sr.getAttributes().get( "m-noUserModification" );
 
@@ -753,7 +753,7 @@ public class ApacheDsSchemaConnector extends AbstractSchemaConnector implements 
      * @throws NamingException
      *      if an error occurrs when searching in the SearchResult
      */
-    private static String getSubstr( SearchResult sr ) throws NamingException
+    private static String getSubstring( SearchResult sr ) throws NamingException
     {
         Attribute at = sr.getAttributes().get( "m-substr" );
 
@@ -778,7 +778,7 @@ public class ApacheDsSchemaConnector extends AbstractSchemaConnector implements 
      * @throws NamingException
      *      if an error occurrs when searching in the SearchResult
      */
-    private static String[] getSuperiors( SearchResult sr ) throws NamingException
+    private static List<String> getSuperiors( SearchResult sr ) throws NamingException
     {
         List<String> names = new ArrayList<String>();
 
@@ -792,7 +792,7 @@ public class ApacheDsSchemaConnector extends AbstractSchemaConnector implements 
             }
         }
 
-        return names.toArray( new String[0] );
+        return names;
     }
 
 
@@ -842,7 +842,7 @@ public class ApacheDsSchemaConnector extends AbstractSchemaConnector implements 
      * @throws NamingException
      *      if an error occurrs when searching in the SearchResult
      */
-    private static String[] getMay( SearchResult sr ) throws NamingException
+    private static List<String> getMay( SearchResult sr ) throws NamingException
     {
         List<String> names = new ArrayList<String>();
 
@@ -856,7 +856,7 @@ public class ApacheDsSchemaConnector extends AbstractSchemaConnector implements 
             }
         }
 
-        return names.toArray( new String[0] );
+        return names;
     }
 
 
@@ -870,7 +870,7 @@ public class ApacheDsSchemaConnector extends AbstractSchemaConnector implements 
      * @throws NamingException
      *      if an error occurrs when searching in the SearchResult
      */
-    private static String[] getMust( SearchResult sr ) throws NamingException
+    private static List<String> getMust( SearchResult sr ) throws NamingException
     {
         List<String> names = new ArrayList<String>();
 
@@ -884,7 +884,7 @@ public class ApacheDsSchemaConnector extends AbstractSchemaConnector implements 
             }
         }
 
-        return names.toArray( new String[0] );
+        return names;
     }
 
 

@@ -178,23 +178,23 @@ public class NewAttributeTypeMatchingRulesWizardPage extends WizardPage
                 {
                     if ( ( o1 instanceof MatchingRuleImpl ) && ( o2 instanceof MatchingRuleImpl ) )
                     {
-                        String[] o1Names = ( ( MatchingRuleImpl ) o1 ).getNamesRef();
-                        String[] o2Names = ( ( MatchingRuleImpl ) o2 ).getNamesRef();
+                        List<String> o1Names = ( ( MatchingRuleImpl ) o1 ).getNames();
+                        List<String> o2Names = ( ( MatchingRuleImpl ) o2 ).getNames();
 
                         // Comparing the First Name
                         if ( ( o1Names != null ) && ( o2Names != null ) )
                         {
-                            if ( ( o1Names.length > 0 ) && ( o2Names.length > 0 ) )
+                            if ( ( o1Names.size() > 0 ) && ( o2Names.size() > 0 ) )
                             {
-                                return o1Names[0].compareToIgnoreCase( o2Names[0] );
+                                return o1Names.get( 0 ).compareToIgnoreCase( o2Names.get( 0 ) );
                             }
-                            else if ( ( o1Names.length == 0 ) && ( o2Names.length > 0 ) )
+                            else if ( ( o1Names.size() == 0 ) && ( o2Names.size() > 0 ) )
                             {
-                                return "".compareToIgnoreCase( o2Names[0] ); //$NON-NLS-1$
+                                return "".compareToIgnoreCase( o2Names.get( 0 ) ); //$NON-NLS-1$
                             }
-                            else if ( ( o1Names.length > 0 ) && ( o2Names.length == 0 ) )
+                            else if ( ( o1Names.size() > 0 ) && ( o2Names.size() == 0 ) )
                             {
-                                return o1Names[0].compareToIgnoreCase( "" ); //$NON-NLS-1$
+                                return o1Names.get( 0 ).compareToIgnoreCase( "" ); //$NON-NLS-1$
                             }
                         }
                         else if ( ( o1 instanceof String ) && ( o2 instanceof MatchingRuleImpl ) )
@@ -239,8 +239,8 @@ public class NewAttributeTypeMatchingRulesWizardPage extends WizardPage
         {
             MatchingRuleImpl mr = ( ( MatchingRuleImpl ) selection );
 
-            String[] names = mr.getNamesRef();
-            if ( ( names != null ) && ( names.length > 0 ) )
+            List<String> names = mr.getNames();
+            if ( ( names != null ) && ( names.size() > 0 ) )
             {
                 return mr.getName();
             }
@@ -268,8 +268,8 @@ public class NewAttributeTypeMatchingRulesWizardPage extends WizardPage
         {
             MatchingRuleImpl mr = ( ( MatchingRuleImpl ) selection );
 
-            String[] names = mr.getNamesRef();
-            if ( ( names != null ) && ( names.length > 0 ) )
+            List<String> names = mr.getNames();
+            if ( ( names != null ) && ( names.size() > 0 ) )
             {
                 return mr.getName();
             }
@@ -297,8 +297,8 @@ public class NewAttributeTypeMatchingRulesWizardPage extends WizardPage
         {
             MatchingRuleImpl mr = ( ( MatchingRuleImpl ) selection );
 
-            String[] names = mr.getNamesRef();
-            if ( ( names != null ) && ( names.length > 0 ) )
+            List<String> names = mr.getNames();
+            if ( ( names != null ) && ( names.size() > 0 ) )
             {
                 return mr.getName();
             }

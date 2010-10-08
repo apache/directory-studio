@@ -105,7 +105,7 @@ public class SchemaImpl implements Schema
     {
         for ( AttributeTypeImpl at : attributeTypes )
         {
-            String[] aliases = at.getNamesRef();
+            List<String> aliases = at.getNames();
             if ( aliases != null )
             {
                 for ( String alias : aliases )
@@ -142,7 +142,7 @@ public class SchemaImpl implements Schema
     {
         for ( MatchingRuleImpl mr : matchingRules )
         {
-            String[] aliases = mr.getNamesRef();
+            List<String> aliases = mr.getNames();
             if ( aliases != null )
             {
                 for ( String alias : aliases )
@@ -197,7 +197,7 @@ public class SchemaImpl implements Schema
     {
         for ( ObjectClassImpl oc : objectClasses )
         {
-            String[] aliases = oc.getNamesRef();
+            List<String> aliases = oc.getNames();
             if ( aliases != null )
             {
                 for ( String alias : aliases )
@@ -234,7 +234,7 @@ public class SchemaImpl implements Schema
     {
         for ( SyntaxImpl syntax : syntaxes )
         {
-            String[] aliases = syntax.getNamesRef();
+            List<String> aliases = syntax.getNames();
             if ( aliases != null )
             {
                 for ( String alias : aliases )

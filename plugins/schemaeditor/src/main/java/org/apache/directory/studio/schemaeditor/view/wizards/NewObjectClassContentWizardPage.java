@@ -133,8 +133,8 @@ public class NewObjectClassContentWizardPage extends WizardPage
                 {
                     ObjectClassImpl oc = ( ObjectClassImpl ) element;
 
-                    String[] names = oc.getNamesRef();
-                    if ( ( names != null ) && ( names.length > 0 ) )
+                    List<String> names = oc.getNames();
+                    if ( ( names != null ) && ( names.size() > 0 ) )
                     {
                         return NLS
                             .bind(
@@ -284,12 +284,12 @@ public class NewObjectClassContentWizardPage extends WizardPage
         {
             public int compare( ObjectClassImpl o1, ObjectClassImpl o2 )
             {
-                String[] at1Names = o1.getNamesRef();
-                String[] at2Names = o2.getNamesRef();
+                List<String> at1Names = o1.getNames();
+                List<String> at2Names = o2.getNames();
 
-                if ( ( at1Names != null ) && ( at2Names != null ) && ( at1Names.length > 0 ) && ( at2Names.length > 0 ) )
+                if ( ( at1Names != null ) && ( at2Names != null ) && ( at1Names.size() > 0 ) && ( at2Names.size() > 0 ) )
                 {
-                    return at1Names[0].compareToIgnoreCase( at2Names[0] );
+                    return at1Names.get( 0 ).compareToIgnoreCase( at2Names.get( 0 ) );
                 }
 
                 // Default
@@ -307,16 +307,16 @@ public class NewObjectClassContentWizardPage extends WizardPage
      * @return
      *      the value of the superiors
      */
-    public String[] getSuperiorsNameValue()
+    public List<String> getSuperiorsNameValue()
     {
         List<String> names = new ArrayList<String>();
         for ( ObjectClassImpl oc : superiorsList )
         {
-            String[] aliases = oc.getNamesRef();
+            List<String> aliases = oc.getNames();
 
-            if ( ( aliases != null ) && ( aliases.length > 0 ) )
+            if ( ( aliases != null ) && ( aliases.size() > 0 ) )
             {
-                names.add( aliases[0] );
+                names.add( aliases.get( 0 ) );
             }
             else
             {
@@ -324,7 +324,7 @@ public class NewObjectClassContentWizardPage extends WizardPage
             }
         }
 
-        return names.toArray( new String[0] );
+        return names;
     }
 
 

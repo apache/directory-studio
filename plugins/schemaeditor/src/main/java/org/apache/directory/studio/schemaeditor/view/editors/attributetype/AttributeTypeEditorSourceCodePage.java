@@ -25,7 +25,7 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.util.List;
 
-import org.apache.directory.shared.ldap.schema.parsers.AttributeTypeLiteral;
+import org.apache.directory.shared.ldap.schema.AttributeType;
 import org.apache.directory.shared.ldap.schema.parsers.OpenLdapSchemaParser;
 import org.apache.directory.studio.schemaeditor.PluginConstants;
 import org.apache.directory.studio.schemaeditor.model.AttributeTypeImpl;
@@ -83,7 +83,7 @@ public class AttributeTypeEditorSourceCodePage extends FormPage
                 }
                 else
                 {
-                    updateAttributeType( ( AttributeTypeLiteral ) attributeTypes.get( 0 ) );
+                    updateAttributeType( ( AttributeType ) attributeTypes.get( 0 ) );
                 }
             }
             catch ( IOException e1 )
@@ -180,22 +180,22 @@ public class AttributeTypeEditorSourceCodePage extends FormPage
      * @param atl
      *            the Attribute Type Literal
      */
-    private void updateAttributeType( AttributeTypeLiteral atl )
+    private void updateAttributeType( AttributeType atl )
     {
-        modifiedAttributeType.setCanUserModify( !atl.isNoUserModification() );
         modifiedAttributeType.setCollective( atl.isCollective() );
         modifiedAttributeType.setDescription( atl.getDescription() );
-        modifiedAttributeType.setEqualityName( atl.getEquality() );
-        modifiedAttributeType.setLength( atl.getLength() );
+        modifiedAttributeType.setEqualityOid( atl.getEqualityOid() );
+        modifiedAttributeType.setSyntaxLength( atl.getSyntaxLength() );
         modifiedAttributeType.setNames( atl.getNames() );
         modifiedAttributeType.setObsolete( atl.isObsolete() );
         modifiedAttributeType.setOid( atl.getOid() );
-        modifiedAttributeType.setOrderingName( atl.getOrdering() );
-        modifiedAttributeType.setSingleValue( atl.isSingleValue() );
-        modifiedAttributeType.setSubstrName( atl.getSubstr() );
-        modifiedAttributeType.setSuperiorName( atl.getSuperior() );
-        modifiedAttributeType.setSyntaxOid( atl.getSyntax() );
+        modifiedAttributeType.setOrderingOid( atl.getOrderingOid() );
+        modifiedAttributeType.setSingleValued( atl.isSingleValued() );
+        modifiedAttributeType.setSubstringOid( atl.getSubstringOid() );
+        modifiedAttributeType.setSuperiorOid( atl.getSuperiorOid() );
+        modifiedAttributeType.setSyntaxOid( atl.getSyntaxOid() );
         modifiedAttributeType.setUsage( atl.getUsage() );
+        modifiedAttributeType.setUserModifiable( atl.isUserModifiable() );
     }
 
 

@@ -21,7 +21,6 @@ package org.apache.directory.studio.schemaeditor.view.wizards;
 
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -248,7 +247,7 @@ public class MergeSchemasWizard extends Wizard implements IImportWizard
             sourceAttributeType.getOid() );
         if ( targetAttributeType == null )
         {
-            for ( String name : sourceAttributeType.getNamesRef() )
+            for ( String name : sourceAttributeType.getNames() )
             {
                 targetAttributeType = targetProject.getSchemaHandler().getAttributeType( name );
                 if ( targetAttributeType != null )
@@ -263,7 +262,7 @@ public class MergeSchemasWizard extends Wizard implements IImportWizard
             sourceAttributeType.getOid() );
         if ( !oidOrAliasAlreadyTaken )
         {
-            for ( String name : sourceAttributeType.getNamesRef() )
+            for ( String name : sourceAttributeType.getNames() )
             {
                 oidOrAliasAlreadyTaken = targetProject.getSchemaHandler().isAliasOrOidAlreadyTaken( name );
                 if ( oidOrAliasAlreadyTaken )
@@ -296,21 +295,20 @@ public class MergeSchemasWizard extends Wizard implements IImportWizard
 
                 // clone attribute type
                 AttributeTypeImpl clonedAttributeType = new AttributeTypeImpl( sourceAttributeType.getOid() );
-                clonedAttributeType.setOid( sourceAttributeType.getOid() );
-                clonedAttributeType.setNames( sourceAttributeType.getNamesRef() );
+                clonedAttributeType.setNames( sourceAttributeType.getNames() );
                 clonedAttributeType.setDescription( sourceAttributeType.getDescription() );
-                clonedAttributeType.setSuperiorName( sourceAttributeType.getSuperiorName() );
+                clonedAttributeType.setSuperiorOid( sourceAttributeType.getSuperiorOid() );
                 clonedAttributeType.setUsage( sourceAttributeType.getUsage() );
                 clonedAttributeType.setSyntaxOid( sourceAttributeType.getSyntaxOid() );
-                clonedAttributeType.setLength( sourceAttributeType.getLength() );
+                clonedAttributeType.setSyntaxLength( sourceAttributeType.getSyntaxLength() );
                 clonedAttributeType.setObsolete( sourceAttributeType.isObsolete() );
                 clonedAttributeType.setCollective( sourceAttributeType.isCollective() );
-                clonedAttributeType.setSingleValue( sourceAttributeType.isSingleValue() );
-                clonedAttributeType.setCanUserModify( sourceAttributeType.isCanUserModify() );
-                clonedAttributeType.setEqualityName( sourceAttributeType.getEqualityName() );
-                clonedAttributeType.setOrderingName( sourceAttributeType.getOrderingName() );
-                clonedAttributeType.setSubstrName( sourceAttributeType.getSubstrName() );
-                clonedAttributeType.setSchema( targetSchema.getName() );
+                clonedAttributeType.setSingleValued( sourceAttributeType.isSingleValued() );
+                clonedAttributeType.setUserModifiable( sourceAttributeType.isUserModifiable() );
+                clonedAttributeType.setEqualityOid( sourceAttributeType.getEqualityOid() );
+                clonedAttributeType.setOrderingOid( sourceAttributeType.getOrderingOid() );
+                clonedAttributeType.setSubstringOid( sourceAttributeType.getSubstringOid() );
+                clonedAttributeType.setSchemaName( targetSchema.getName() );
                 clonedAttributeType.setSchemaObject( targetSchema );
 
                 // if no/unknown syntax: set "Directory String" syntax and appropriate matching rules
@@ -321,12 +319,14 @@ public class MergeSchemasWizard extends Wizard implements IImportWizard
                     {
                         errorMessages.add( NLS.bind( Messages.getString( "MergeSchemasWizard.ReplacedSyntax" ), //$NON-NLS-1$
                             new String[]
-                                { getIdString( sourceAttributeType ), clonedAttributeType.getSyntaxOid(),
+                                {
+                                    getIdString( sourceAttributeType ),
+                                    clonedAttributeType.getSyntaxOid(),
                                     "1.3.6.1.4.1.1466.115.121.1.15 (Directory String)" } ) ); //$NON-NLS-1$
                         clonedAttributeType.setSyntaxOid( "1.3.6.1.4.1.1466.115.121.1.15" );
-                        clonedAttributeType.setEqualityName( "caseIgnoreMatch" );
-                        clonedAttributeType.setOrderingName( null );
-                        clonedAttributeType.setSubstrName( "caseIgnoreSubstringsMatch" );
+                        clonedAttributeType.setEqualityOid( "caseIgnoreMatch" );
+                        clonedAttributeType.setOrderingOid( null );
+                        clonedAttributeType.setSubstringOid( "caseIgnoreSubstringsMatch" );
                     }
                 }
                 // TODO: if unknown (single) matching rule: set appropriate matching rule according to syntax
@@ -335,7 +335,7 @@ public class MergeSchemasWizard extends Wizard implements IImportWizard
                 // merge dependencies: super attribute type
                 if ( mergeDependencies )
                 {
-                    String superiorName = clonedAttributeType.getSuperiorName();
+                    String superiorName = clonedAttributeType.getSuperiorOid();
                     if ( superiorName != null )
                     {
                         AttributeTypeImpl superiorAttributeType = sourceAttributeType.getSchemaObject().getProject()
@@ -372,7 +372,7 @@ public class MergeSchemasWizard extends Wizard implements IImportWizard
             .getObjectClass( sourceObjectClass.getOid() );
         if ( targetObjectClass == null )
         {
-            for ( String name : sourceObjectClass.getNamesRef() )
+            for ( String name : sourceObjectClass.getNames() )
             {
                 targetObjectClass = targetProject.getSchemaHandler().getObjectClass( name );
                 if ( targetObjectClass != null )
@@ -387,7 +387,7 @@ public class MergeSchemasWizard extends Wizard implements IImportWizard
             sourceObjectClass.getOid() );
         if ( !oidOrAliasAlreadyTaken )
         {
-            for ( String name : sourceObjectClass.getNamesRef() )
+            for ( String name : sourceObjectClass.getNames() )
             {
                 oidOrAliasAlreadyTaken = targetProject.getSchemaHandler().isAliasOrOidAlreadyTaken( name );
                 if ( oidOrAliasAlreadyTaken )
@@ -421,20 +421,20 @@ public class MergeSchemasWizard extends Wizard implements IImportWizard
                 // create object class
                 ObjectClassImpl clonedObjectClass = new ObjectClassImpl( sourceObjectClass.getOid() );
                 clonedObjectClass.setOid( sourceObjectClass.getOid() );
-                clonedObjectClass.setNames( sourceObjectClass.getNamesRef() );
+                clonedObjectClass.setNames( sourceObjectClass.getNames() );
                 clonedObjectClass.setDescription( sourceObjectClass.getDescription() );
-                clonedObjectClass.setSuperClassesNames( sourceObjectClass.getSuperClassesNames() );
+                clonedObjectClass.setSuperiorOids( sourceObjectClass.getSuperiorOids() );
                 clonedObjectClass.setType( sourceObjectClass.getType() );
                 clonedObjectClass.setObsolete( sourceObjectClass.isObsolete() );
-                clonedObjectClass.setMustNamesList( sourceObjectClass.getMustNamesList() );
-                clonedObjectClass.setMayNamesList( sourceObjectClass.getMayNamesList() );
-                clonedObjectClass.setSchema( targetSchema.getName() );
+                clonedObjectClass.setMustAttributeTypeOids( sourceObjectClass.getMustAttributeTypeOids() );
+                clonedObjectClass.setMayAttributeTypeOids( sourceObjectClass.getMayAttributeTypeOids() );
+                clonedObjectClass.setSchemaName( targetSchema.getName() );
                 clonedObjectClass.setSchemaObject( targetSchema );
 
                 // merge dependencies: super object classes and must/may attributes
                 if ( mergeDependencies )
                 {
-                    String[] superClassesNames = clonedObjectClass.getSuperClassesNames();
+                    List<String> superClassesNames = clonedObjectClass.getSuperiorOids();
                     if ( superClassesNames != null )
                     {
                         for ( String superClassName : superClassesNames )
@@ -467,16 +467,16 @@ public class MergeSchemasWizard extends Wizard implements IImportWizard
                         }
                     }
 
-                    String[] mustNamesList = clonedObjectClass.getMustNamesList();
-                    String[] mayNamesList = clonedObjectClass.getMayNamesList();
+                    List<String> mustNamesList = clonedObjectClass.getMustAttributeTypeOids();
+                    List<String> mayNamesList = clonedObjectClass.getMayAttributeTypeOids();
                     List<String> attributeNames = new ArrayList<String>();
                     if ( mustNamesList != null )
                     {
-                        attributeNames.addAll( Arrays.asList( mustNamesList ) );
+                        attributeNames.addAll( mustNamesList );
                     }
                     if ( mayNamesList != null )
                     {
-                        attributeNames.addAll( Arrays.asList( mayNamesList ) );
+                        attributeNames.addAll( mayNamesList );
                     }
                     for ( String attributeName : attributeNames )
                     {
@@ -510,8 +510,8 @@ public class MergeSchemasWizard extends Wizard implements IImportWizard
         sourceMustAttributeNames.removeAll( targetMustAttributeNames );
         if ( !sourceMustAttributeNames.isEmpty() )
         {
-            sourceMustAttributeNames.addAll( Arrays.asList( targetObjectClass.getMustNamesList() ) );
-            targetObjectClass.setMustNamesList( sourceMustAttributeNames.toArray( new String[0] ) );
+            sourceMustAttributeNames.addAll( targetObjectClass.getMustAttributeTypeOids() );
+            targetObjectClass.setMustAttributeTypeOids( new ArrayList<String>( sourceMustAttributeNames ) );
         }
 
         // may
@@ -522,18 +522,18 @@ public class MergeSchemasWizard extends Wizard implements IImportWizard
         sourceMayAttributeNames.removeAll( targetMayAttributeNames );
         if ( !sourceMayAttributeNames.isEmpty() )
         {
-            sourceMayAttributeNames.addAll( Arrays.asList( targetObjectClass.getMayNamesList() ) );
-            targetObjectClass.setMayNamesList( sourceMayAttributeNames.toArray( new String[0] ) );
+            sourceMayAttributeNames.addAll( targetObjectClass.getMayAttributeTypeOids() );
+            targetObjectClass.setMayAttributeTypeOids( new ArrayList<String>( sourceMayAttributeNames ) );
         }
     }
 
 
     private void fetchAttributes( Set<String> attributeNameList, ObjectClassImpl oc, boolean must )
     {
-        String[] attributeNames = must ? oc.getMustNamesList() : oc.getMayNamesList();
-        attributeNameList.addAll( Arrays.asList( attributeNames ) );
+        List<String> attributeNames = must ? oc.getMustAttributeTypeOids() : oc.getMayAttributeTypeOids();
+        attributeNameList.addAll( attributeNames );
 
-        for ( String superClassName : oc.getSuperClassesNames() )
+        for ( String superClassName : oc.getSuperiorOids() )
         {
             ObjectClassImpl superObjectClass = oc.getSchemaObject().getProject().getSchemaHandler().getObjectClass(
                 superClassName );
@@ -546,9 +546,9 @@ public class MergeSchemasWizard extends Wizard implements IImportWizard
     {
         StringBuilder sb = new StringBuilder();
         sb.append( '[' );
-        if ( schemaObject.getNamesRef() != null )
+        if ( schemaObject.getNames() != null )
         {
-            for ( String name : schemaObject.getNamesRef() )
+            for ( String name : schemaObject.getNames() )
             {
                 sb.append( name );
                 sb.append( ',' );

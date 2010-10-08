@@ -704,7 +704,7 @@ public class SearchView extends ViewPart
                         // Aliases
                         if ( searchScope.contains( SearchInEnum.ALIASES ) )
                         {
-                            if ( checkArray( pattern, at.getNamesRef() ) )
+                            if ( checkList( pattern, at.getNames() ) )
                             {
                                 searchResults.add( at );
                                 continue;
@@ -734,7 +734,7 @@ public class SearchView extends ViewPart
                         // Superior
                         if ( searchScope.contains( SearchInEnum.SUPERIOR ) )
                         {
-                            if ( checkString( pattern, at.getSuperiorName() ) )
+                            if ( checkString( pattern, at.getSuperiorOid() ) )
                             {
                                 searchResults.add( at );
                                 continue;
@@ -755,21 +755,21 @@ public class SearchView extends ViewPart
                         if ( searchScope.contains( SearchInEnum.MATCHING_RULES ) )
                         {
                             // Equality
-                            if ( checkString( pattern, at.getEqualityName() ) )
+                            if ( checkString( pattern, at.getEqualityOid() ) )
                             {
                                 searchResults.add( at );
                                 continue;
                             }
 
                             // Ordering
-                            if ( checkString( pattern, at.getOrderingName() ) )
+                            if ( checkString( pattern, at.getOrderingOid() ) )
                             {
                                 searchResults.add( at );
                                 continue;
                             }
 
                             // Substring
-                            if ( checkString( pattern, at.getSubstrName() ) )
+                            if ( checkString( pattern, at.getSubstringOid() ) )
                             {
                                 searchResults.add( at );
                                 continue;
@@ -788,7 +788,7 @@ public class SearchView extends ViewPart
                         // Aliases
                         if ( searchScope.contains( SearchInEnum.ALIASES ) )
                         {
-                            if ( checkArray( pattern, oc.getNamesRef() ) )
+                            if ( checkList( pattern, oc.getNames() ) )
                             {
                                 searchResults.add( oc );
                                 continue;
@@ -818,7 +818,7 @@ public class SearchView extends ViewPart
                         // Superiors
                         if ( searchScope.contains( SearchInEnum.SUPERIORS ) )
                         {
-                            if ( checkArray( pattern, oc.getSuperClassesNames() ) )
+                            if ( checkList( pattern, oc.getSuperiorOids() ) )
                             {
                                 searchResults.add( oc );
                                 continue;
@@ -828,7 +828,7 @@ public class SearchView extends ViewPart
                         // Mandatory Attributes
                         if ( searchScope.contains( SearchInEnum.MANDATORY_ATTRIBUTES ) )
                         {
-                            if ( checkArray( pattern, oc.getMustNamesList() ) )
+                            if ( checkList( pattern, oc.getMustAttributeTypeOids() ) )
                             {
                                 searchResults.add( oc );
                                 continue;
@@ -838,7 +838,7 @@ public class SearchView extends ViewPart
                         // Optional Attributes
                         if ( searchScope.contains( SearchInEnum.OPTIONAL_ATTRIBUTES ) )
                         {
-                            if ( checkArray( pattern, oc.getMayNamesList() ) )
+                            if ( checkList( pattern, oc.getMayAttributeTypeOids() ) )
                             {
                                 searchResults.add( oc );
                                 continue;
@@ -858,16 +858,16 @@ public class SearchView extends ViewPart
      *
      * @param pattern
      *      the Regex pattern
-     * @param array
+     * @param list
      *      the array
      * @return
      *      true if the pattern matches one of the aliases, false, if not.
      */
-    private boolean checkArray( Pattern pattern, String[] array )
+    private boolean checkList( Pattern pattern, List<String> list )
     {
-        if ( array != null )
+        if ( list != null )
         {
-            for ( String string : array )
+            for ( String string : list )
             {
                 return pattern.matcher( string ).matches();
 

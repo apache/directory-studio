@@ -20,6 +20,8 @@
 package org.apache.directory.studio.schemaeditor.view;
 
 
+import java.util.List;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.widgets.MessageBox;
@@ -50,16 +52,16 @@ public class ViewUtils
      * @return
      *      a String representing all aliases
      */
-    public static String concateAliases( String[] aliases )
+    public static String concateAliases( List<String> aliases )
     {
         StringBuffer sb = new StringBuffer();
-        if ( aliases.length > 0 )
+        if ( aliases.size() > 0 )
         {
-            sb.append( aliases[0] );
-            for ( int i = 1; i < aliases.length; i++ )
+            sb.append( aliases.get( 0 ) );
+            for ( int i = 1; i < aliases.size(); i++ )
             {
                 sb.append( ", " ); //$NON-NLS-1$
-                sb.append( aliases[i] );
+                sb.append( aliases.get( i ) );
             }
         }
 

@@ -21,6 +21,8 @@
 package org.apache.directory.studio.schemaeditor.view.editors.schema;
 
 
+import java.util.List;
+
 import org.apache.directory.studio.schemaeditor.Activator;
 import org.apache.directory.studio.schemaeditor.PluginConstants;
 import org.apache.directory.studio.schemaeditor.model.AttributeTypeImpl;
@@ -67,8 +69,8 @@ public class SchemaEditorTableViewerLabelProvider extends LabelProvider implemen
         {
             ObjectClassImpl oc = ( ObjectClassImpl ) element;
 
-            String[] names = oc.getNamesRef();
-            if ( ( names != null ) && ( names.length > 0 ) )
+            List<String> names = oc.getNames();
+            if ( ( names != null ) && ( names.size() > 0 ) )
             {
                 return ViewUtils.concateAliases( names ) + "  -  (" + oc.getOid() + ")"; //$NON-NLS-1$ //$NON-NLS-2$
             }
@@ -82,8 +84,8 @@ public class SchemaEditorTableViewerLabelProvider extends LabelProvider implemen
         {
             AttributeTypeImpl at = ( AttributeTypeImpl ) element;
 
-            String[] names = at.getNamesRef();
-            if ( ( names != null ) && ( names.length > 0 ) )
+            List<String> names = at.getNames();
+            if ( ( names != null ) && ( names.size() > 0 ) )
             {
                 return ViewUtils.concateAliases( names ) + "  -  (" + at.getOid() + ")"; //$NON-NLS-1$ //$NON-NLS-2$
             }

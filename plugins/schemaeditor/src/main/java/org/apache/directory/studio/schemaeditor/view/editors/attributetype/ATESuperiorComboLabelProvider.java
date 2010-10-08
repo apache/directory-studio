@@ -20,6 +20,8 @@
 package org.apache.directory.studio.schemaeditor.view.editors.attributetype;
 
 
+import java.util.List;
+
 import org.apache.directory.studio.schemaeditor.model.AttributeTypeImpl;
 import org.apache.directory.studio.schemaeditor.view.ViewUtils;
 import org.apache.directory.studio.schemaeditor.view.editors.NonExistingAttributeType;
@@ -43,8 +45,8 @@ public class ATESuperiorComboLabelProvider extends LabelProvider
         {
             AttributeTypeImpl at = ( AttributeTypeImpl ) obj;
 
-            String[] names = at.getNamesRef();
-            if ( ( names != null ) && ( names.length > 0 ) )
+            List<String> names = at.getNames();
+            if ( ( names != null ) && ( names.size() > 0 ) )
             {
                 return ViewUtils.concateAliases( names ) + "  -  (" + at.getOid() + ")"; //$NON-NLS-1$ //$NON-NLS-2$
             }

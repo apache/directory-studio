@@ -179,7 +179,7 @@ public class DeleteSchemaElementAction extends Action implements IWorkbenchWindo
                 // Removing schema objects
                 for ( SchemaObject schemaObject : schemaObjectsList )
                 {
-                    if ( !schemasMap.containsKey( schemaObject.getSchema().toLowerCase() ) )
+                    if ( !schemasMap.containsKey( schemaObject.getSchemaName().toLowerCase() ) )
                     {
                         // If the schema object is not part of deleted schema, we need to delete it.
                         // But, we don't delete schema objects that are part of a deleted schema, since

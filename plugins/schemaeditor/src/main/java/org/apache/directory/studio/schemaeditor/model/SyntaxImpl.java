@@ -20,10 +20,7 @@
 package org.apache.directory.studio.schemaeditor.model;
 
 
-import javax.naming.NamingException;
-
-import org.apache.directory.shared.ldap.schema.AbstractSyntax;
-import org.apache.directory.shared.ldap.schema.SyntaxChecker;
+import org.apache.directory.shared.ldap.schema.LdapSyntax;
 
 
 /**
@@ -31,7 +28,7 @@ import org.apache.directory.shared.ldap.schema.SyntaxChecker;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class SyntaxImpl extends AbstractSyntax
+public class SyntaxImpl extends LdapSyntax
 {
     private static final long serialVersionUID = 1L;
 
@@ -48,51 +45,6 @@ public class SyntaxImpl extends AbstractSyntax
     public SyntaxImpl( String oid )
     {
         super( oid );
-    }
-
-
-    /* (non-Javadoc)
-     * @see org.apache.directory.shared.ldap.schema.AbstractSyntax#setHumanReadable(boolean)
-     */
-    public void setHumanReadable( boolean isHumanReadable )
-    {
-        super.setHumanReadable( isHumanReadable );
-    }
-
-
-    /* (non-Javadoc)
-     * @see org.apache.directory.shared.ldap.schema.AbstractSchemaObject#setDescription(java.lang.String)
-     */
-    public void setDescription( String description )
-    {
-        super.setDescription( description );
-    }
-
-
-    /* (non-Javadoc)
-     * @see org.apache.directory.shared.ldap.schema.AbstractSchemaObject#setNames(java.lang.String[])
-     */
-    public void setNames( String[] names )
-    {
-        super.setNames( names );
-    }
-
-
-    /* (non-Javadoc)
-     * @see org.apache.directory.shared.ldap.schema.AbstractSchemaObject#setObsolete(boolean)
-     */
-    public void setObsolete( boolean obsolete )
-    {
-        super.setObsolete( obsolete );
-    }
-
-
-    /* (non-Javadoc)
-     * @see org.apache.directory.shared.ldap.schema.Syntax#getSyntaxChecker()
-     */
-    public SyntaxChecker getSyntaxChecker() throws NamingException
-    {
-        return null;
     }
 
 

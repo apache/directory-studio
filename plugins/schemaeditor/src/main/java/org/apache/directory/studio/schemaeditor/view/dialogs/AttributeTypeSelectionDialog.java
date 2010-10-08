@@ -179,7 +179,7 @@ public class AttributeTypeSelectionDialog extends Dialog
                         chooseButton.setEnabled( true );
                     }
                     schemaIconLabel.setImage( Activator.getDefault().getImage( PluginConstants.IMG_SCHEMA ) );
-                    schemaNameLabel.setText( ( ( AttributeTypeImpl ) selection.getFirstElement() ).getSchema() );
+                    schemaNameLabel.setText( ( ( AttributeTypeImpl ) selection.getFirstElement() ).getSchemaName() );
                 }
             }
         } );

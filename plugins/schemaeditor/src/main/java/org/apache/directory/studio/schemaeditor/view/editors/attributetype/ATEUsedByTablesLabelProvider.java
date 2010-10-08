@@ -59,7 +59,7 @@ public class ATEUsedByTablesLabelProvider extends LabelProvider implements ITabl
     {
         if ( element instanceof ObjectClassImpl )
         {
-            return ViewUtils.concateAliases( ( ( ObjectClassImpl ) element ).getNamesRef() );
+            return ViewUtils.concateAliases( ( ( ObjectClassImpl ) element ).getNames() );
         }
 
         // Default

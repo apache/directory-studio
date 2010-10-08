@@ -21,6 +21,7 @@ package org.apache.directory.studio.schemaeditor.view.editors.attributetype;
 
 
 import java.util.Comparator;
+import java.util.List;
 
 import org.apache.directory.studio.schemaeditor.model.AttributeTypeImpl;
 import org.apache.directory.studio.schemaeditor.view.editors.NonExistingAttributeType;
@@ -40,32 +41,32 @@ public class ATESuperiorComboComparator implements Comparator<Object>
     {
         if ( o1 instanceof AttributeTypeImpl && o2 instanceof AttributeTypeImpl )
         {
-            String[] at1Names = ( ( AttributeTypeImpl ) o1 ).getNamesRef();
-            String[] at2Names = ( ( AttributeTypeImpl ) o2 ).getNamesRef();
+            List<String> at1Names = ( ( AttributeTypeImpl ) o1 ).getNames();
+            List<String> at2Names = ( ( AttributeTypeImpl ) o2 ).getNames();
 
-            if ( ( at1Names != null ) && ( at2Names != null ) && ( at1Names.length > 0 ) && ( at2Names.length > 0 ) )
+            if ( ( at1Names != null ) && ( at2Names != null ) && ( at1Names.size() > 0 ) && ( at2Names.size() > 0 ) )
             {
-                return at1Names[0].compareToIgnoreCase( at2Names[0] );
+                return at1Names.get( 0 ).compareToIgnoreCase( at2Names.get( 0 ) );
             }
         }
         else if ( o1 instanceof AttributeTypeImpl && o2 instanceof NonExistingAttributeType )
         {
-            String[] at1Names = ( ( AttributeTypeImpl ) o1 ).getNamesRef();
+            List<String> at1Names = ( ( AttributeTypeImpl ) o1 ).getNames();
             String at2Name = ( ( NonExistingAttributeType ) o2 ).getName();
 
-            if ( ( at1Names != null ) && ( at2Name != null ) && ( at1Names.length > 0 ) )
+            if ( ( at1Names != null ) && ( at2Name != null ) && ( at1Names.size() > 0 ) )
             {
-                return at1Names[0].compareToIgnoreCase( at2Name );
+                return at1Names.get( 0 ).compareToIgnoreCase( at2Name );
             }
         }
         else if ( o1 instanceof NonExistingAttributeType && o2 instanceof AttributeTypeImpl )
         {
             String at1Name = ( ( NonExistingAttributeType ) o1 ).getName();
-            String[] at2Names = ( ( AttributeTypeImpl ) o2 ).getNamesRef();
+            List<String> at2Names = ( ( AttributeTypeImpl ) o2 ).getNames();
 
-            if ( ( at1Name != null ) && ( at2Names != null ) && ( at2Names.length > 0 ) )
+            if ( ( at1Name != null ) && ( at2Names != null ) && ( at2Names.size() > 0 ) )
             {
-                return at1Name.compareToIgnoreCase( at2Names[0] );
+                return at1Name.compareToIgnoreCase( at2Names.get( 0 ) );
             }
         }
         else if ( o1 instanceof NonExistingAttributeType && o2 instanceof NonExistingAttributeType )

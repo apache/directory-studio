@@ -21,6 +21,8 @@
 package org.apache.directory.studio.schemaeditor.view.dialogs;
 
 
+import java.util.List;
+
 import org.apache.directory.studio.schemaeditor.Activator;
 import org.apache.directory.studio.schemaeditor.PluginConstants;
 import org.apache.directory.studio.schemaeditor.model.AttributeTypeImpl;
@@ -61,8 +63,8 @@ public class AttributeTypeSelectionDialogLabelProvider extends LabelProvider
         {
             AttributeTypeImpl at = ( AttributeTypeImpl ) element;
 
-            String[] names = at.getNamesRef();
-            if ( ( names != null ) && ( names.length > 0 ) )
+            List<String> names = at.getNames();
+            if ( ( names != null ) && ( names.size() > 0 ) )
             {
                 return ViewUtils.concateAliases( names ) + "  -  (" + at.getOid() + ")"; //$NON-NLS-1$ //$NON-NLS-2$
             }

@@ -20,7 +20,6 @@
 package org.apache.directory.studio.schemaeditor.model.hierarchy;
 
 
-import java.util.Arrays;
 import java.util.List;
 
 import org.apache.commons.collections.map.MultiValueMap;
@@ -80,7 +79,7 @@ public class HierarchyManager
         // Checking Aliases and OID
         checkAliasesAndOID( at );
 
-        String superiorName = at.getSuperiorName();
+        String superiorName = at.getSuperiorOid();
         if ( superiorName != null )
         // The attribute type has a superior
         {
@@ -122,8 +121,8 @@ public class HierarchyManager
         // Checking Aliases and OID
         checkAliasesAndOID( oc );
 
-        String[] superClasseNames = oc.getSuperClassesNames();
-        if ( ( superClasseNames != null ) && ( superClasseNames.length > 0 ) )
+        List<String> superClasseNames = oc.getSuperiorOids();
+        if ( ( superClasseNames != null ) && ( superClasseNames.size() > 0 ) )
         // The object class has one or more superiors
         {
             for ( String superClassName : superClasseNames )
@@ -232,7 +231,7 @@ public class HierarchyManager
     private void checkAliasesAndOID( SchemaObject object )
     {
         // Aliases
-        String[] aliases = object.getNamesRef();
+        List<String> aliases = object.getNames();
         if ( aliases != null )
         {
             for ( String alias : aliases )
@@ -408,7 +407,7 @@ public class HierarchyManager
     private void removeAttributeType( AttributeTypeImpl at )
     {
         // Removing the attribute type as child of its superior
-        String superiorName = at.getSuperiorName();
+        String superiorName = at.getSuperiorOid();
         if ( ( superiorName != null ) && ( !"".equals( superiorName ) ) ) //$NON-NLS-1$
         {
             AttributeTypeImpl superiorAT = schemaHandler.getAttributeType( superiorName );
@@ -438,7 +437,7 @@ public class HierarchyManager
 
                 parentsMap.put( child, root );
                 childrenMap.put( root, child );
-                String childSuperiorName = childAT.getSuperiorName();
+                String childSuperiorName = childAT.getSuperiorOid();
                 if ( ( childSuperiorName != null ) && ( !"".equals( childSuperiorName ) ) ) //$NON-NLS-1$
                 {
                     parentsMap.put( child, childSuperiorName.toLowerCase() );
@@ -455,8 +454,8 @@ public class HierarchyManager
     private void removeObjectClass( ObjectClassImpl oc )
     {
         // Removing the object class as child of its superiors
-        String[] superClassesNames = oc.getSuperClassesNames();
-        if ( ( superClassesNames != null ) && ( superClassesNames.length > 0 ) )
+        List<String> superClassesNames = oc.getSuperiorOids();
+        if ( ( superClassesNames != null ) && ( superClassesNames.size() > 0 ) )
         {
             for ( String superClassName : superClassesNames )
             {
@@ -510,8 +509,8 @@ public class HierarchyManager
 
                 parentsMap.put( child, root );
                 childrenMap.put( root, child );
-                String[] childSuperClassesNames = childOC.getSuperClassesNames();
-                if ( ( childSuperClassesNames != null ) && ( childSuperClassesNames.length > 0 ) )
+                List<String> childSuperClassesNames = childOC.getSuperiorOids();
+                if ( ( childSuperClassesNames != null ) && ( childSuperClassesNames.size() > 0 ) )
                 {
                     String correctSuperClassName = getCorrectSuperClassName( oc, childSuperClassesNames );
                     if ( correctSuperClassName != null )
@@ -533,11 +532,11 @@ public class HierarchyManager
     }
 
 
-    private String getCorrectSuperClassName( ObjectClassImpl oc, String[] childSuperClassesNames )
+    private String getCorrectSuperClassName( ObjectClassImpl oc, List<String> childSuperClassesNames )
     {
         if ( childSuperClassesNames != null )
         {
-            List<String> aliases = Arrays.asList( oc.getNamesRef() );
+            List<String> aliases = oc.getNames();
             if ( aliases != null )
             {
                 for ( String childSuperClassName : childSuperClassesNames )

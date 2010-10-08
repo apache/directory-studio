@@ -20,13 +20,7 @@
 package org.apache.directory.studio.schemaeditor.model;
 
 
-import javax.naming.NamingException;
-
-import org.apache.directory.shared.ldap.schema.AbstractSchemaObject;
-import org.apache.directory.shared.ldap.schema.AttributeType;
-import org.apache.directory.shared.ldap.schema.MutableSchemaObject;
 import org.apache.directory.shared.ldap.schema.ObjectClass;
-import org.apache.directory.shared.ldap.schema.ObjectClassTypeEnum;
 
 
 /**
@@ -34,24 +28,9 @@ import org.apache.directory.shared.ldap.schema.ObjectClassTypeEnum;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class ObjectClassImpl extends AbstractSchemaObject implements MutableSchemaObject, ObjectClass
+public class ObjectClassImpl extends ObjectClass
 {
     private static final long serialVersionUID = 1L;
-
-    /** The object OID */
-    private String objectOid;
-
-    /** The object class type */
-    private ObjectClassTypeEnum type;
-
-    /** The optional attribute type names list */
-    private String[] mayNamesList = new String[0];
-
-    /** The mandatory attribute type names list */
-    private String[] mustNamesList = new String[0];
-
-    /** The super class names list */
-    private String[] superClassesNames = new String[0];
 
     /** The schema object */
     private Schema schemaObject;
@@ -66,217 +45,6 @@ public class ObjectClassImpl extends AbstractSchemaObject implements MutableSche
     public ObjectClassImpl( String oid )
     {
         super( oid );
-        objectOid = oid;
-    }
-
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.apache.directory.shared.ldap.schema.AbstractSchemaObject#setNames(java.lang.String[])
-     */
-    public void setNames( String[] names )
-    {
-        super.setNames( names );
-    }
-
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.apache.directory.shared.ldap.schema.AbstractSchemaObject#getOid()
-     */
-    public String getOid()
-    {
-        return objectOid;
-    }
-
-
-    /**
-     * Set the OID.
-     * 
-     * @param oid
-     *            the OID value
-     */
-    public void setOid( String oid )
-    {
-        objectOid = oid;
-    }
-
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.apache.directory.shared.ldap.schema.AbstractSchemaObject#setDescription(java.lang.String)
-     */
-    public void setDescription( String description )
-    {
-        super.setDescription( description );
-    }
-
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.apache.directory.shared.ldap.schema.AbstractSchemaObject#setObsolete(boolean)
-     */
-    public void setObsolete( boolean obsolete )
-    {
-        super.setObsolete( obsolete );
-    }
-
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.apache.directory.shared.ldap.schema.ObjectClass#getType()
-     */
-    public ObjectClassTypeEnum getType()
-    {
-        return type;
-    }
-
-
-    /**
-     * Sets the type of the object class.
-     * 
-     * @param objectClassTypeEnum
-     *            the type of the object class
-     */
-    public void setType( ObjectClassTypeEnum objectClassTypeEnum )
-    {
-        this.type = objectClassTypeEnum;
-    }
-
-
-    /* (non-Javadoc)
-     * @see org.apache.directory.shared.ldap.schema.ObjectClass#isAbstract()
-     */
-    public boolean isAbstract()
-    {
-        return ObjectClassTypeEnum.ABSTRACT.equals( getType() );
-    }
-
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.apache.directory.shared.ldap.schema.ObjectClass#isAuxiliary()
-     */
-    public boolean isAuxiliary()
-    {
-        return ObjectClassTypeEnum.AUXILIARY.equals( getType() );
-    }
-
-
-    /* (non-Javadoc)
-     * @see org.apache.directory.shared.ldap.schema.ObjectClass#isStructural()
-     */
-    public boolean isStructural()
-    {
-        return ObjectClassTypeEnum.STRUCTURAL.equals( getType() );
-    }
-
-
-    /**
-     * gets the names of the super classes.
-     * 
-     * @return the names of the super classes
-     */
-    public String[] getSuperClassesNames()
-    {
-        return superClassesNames;
-    }
-
-
-    /**
-     * Sets the names of the super classes.
-     * 
-     * @param superClassesNames
-     *            the names of the super classes
-     */
-    public void setSuperClassesNames( String[] superClassesNames )
-    {
-        this.superClassesNames = superClassesNames;
-    }
-
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.apache.directory.shared.ldap.schema.ObjectClass#getSuperClasses()
-     */
-    public ObjectClass[] getSuperClasses() throws NamingException
-    {
-        return null;
-    }
-
-
-    /**
-     * Gets the names of the mandatory attribute types.
-     * 
-     * @return the names of the mandatory attribute types
-     */
-    public String[] getMustNamesList()
-    {
-        return mustNamesList;
-    }
-
-
-    /**
-     * Set the names of the mandatory attribute types.
-     * 
-     * @param mustNamesList
-     *            the names of the mandatory attribute types
-     */
-    public void setMustNamesList( String[] mustNamesList )
-    {
-        this.mustNamesList = mustNamesList;
-    }
-
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.apache.directory.shared.ldap.schema.ObjectClass#getMustList()
-     */
-    public AttributeType[] getMustList() throws NamingException
-    {
-        return null;
-    }
-
-
-    /**
-     * Gets the names of the optional attribute types.
-     * 
-     * @return the names of the optional attribute types
-     */
-    public String[] getMayNamesList()
-    {
-        return mayNamesList;
-    }
-
-
-    /**
-     * Sets the names of the optional attribute types.
-     * 
-     * @param mayNamesList
-     *            the names of the optional attribute types
-     */
-    public void setMayNamesList( String[] mayNamesList )
-    {
-        this.mayNamesList = mayNamesList;
-    }
-
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.apache.directory.shared.ldap.schema.ObjectClass#getMayList()
-     */
-    public AttributeType[] getMayList() throws NamingException
-    {
-        return null;
     }
 
 
@@ -321,17 +89,17 @@ public class ObjectClassImpl extends AbstractSchemaObject implements MutableSche
             }
 
             // Aliases
-            if ( ( getNamesRef() == null ) && ( oc.getNamesRef() != null ) )
+            if ( ( getNames() == null ) && ( oc.getNames() != null ) )
             {
                 return false;
             }
-            else if ( ( getNamesRef() != null ) && ( oc.getNamesRef() == null ) )
+            else if ( ( getNames() != null ) && ( oc.getNames() == null ) )
             {
                 return false;
             }
-            else if ( ( getNamesRef() != null ) && ( oc.getNamesRef() != null ) )
+            else if ( ( getNames() != null ) && ( oc.getNames() != null ) )
             {
-                if ( !getNamesRef().equals( oc.getNamesRef() ) )
+                if ( !getNames().equals( oc.getNames() ) )
                 {
                     return false;
                 }
@@ -355,17 +123,17 @@ public class ObjectClassImpl extends AbstractSchemaObject implements MutableSche
             }
 
             // Superiors
-            if ( ( getSuperClassesNames() == null ) && ( oc.getSuperClassesNames() != null ) )
+            if ( ( getSuperiorOids() == null ) && ( oc.getSuperiorOids() != null ) )
             {
                 return false;
             }
-            else if ( ( getSuperClassesNames() != null ) && ( oc.getSuperClassesNames() == null ) )
+            else if ( ( getSuperiorOids() != null ) && ( oc.getSuperiorOids() == null ) )
             {
                 return false;
             }
-            else if ( ( getSuperClassesNames() != null ) && ( oc.getSuperClassesNames() != null ) )
+            else if ( ( getSuperiorOids() != null ) && ( oc.getSuperiorOids() != null ) )
             {
-                if ( !getSuperClassesNames().equals( oc.getSuperClassesNames() ) )
+                if ( !getSuperiorOids().equals( oc.getSuperiorOids() ) )
                 {
                     return false;
                 }
@@ -384,34 +152,34 @@ public class ObjectClassImpl extends AbstractSchemaObject implements MutableSche
             }
 
             // Mandatory attributes
-            if ( ( getMustNamesList() == null ) && ( oc.getMustNamesList() != null ) )
+            if ( ( getMustAttributeTypeOids() == null ) && ( oc.getMustAttributeTypeOids() != null ) )
             {
                 return false;
             }
-            else if ( ( getMustNamesList() != null ) && ( oc.getMustNamesList() == null ) )
+            else if ( ( getMustAttributeTypeOids() != null ) && ( oc.getMustAttributeTypeOids() == null ) )
             {
                 return false;
             }
-            else if ( ( getMustNamesList() != null ) && ( oc.getMustNamesList() != null ) )
+            else if ( ( getMustAttributeTypeOids() != null ) && ( oc.getMustAttributeTypeOids() != null ) )
             {
-                if ( !getMustNamesList().equals( oc.getMustNamesList() ) )
+                if ( !getMustAttributeTypeOids().equals( oc.getMustAttributeTypeOids() ) )
                 {
                     return false;
                 }
             }
 
             // Optional attributes
-            if ( ( getMayNamesList() == null ) && ( oc.getMayNamesList() != null ) )
+            if ( ( getMayAttributeTypeOids() == null ) && ( oc.getMayAttributeTypeOids() != null ) )
             {
                 return false;
             }
-            else if ( ( getMayNamesList() != null ) && ( oc.getMayNamesList() == null ) )
+            else if ( ( getMayAttributeTypeOids() != null ) && ( oc.getMayAttributeTypeOids() == null ) )
             {
                 return false;
             }
-            else if ( ( getMayNamesList() != null ) && ( oc.getMayNamesList() != null ) )
+            else if ( ( getMayAttributeTypeOids() != null ) && ( oc.getMayAttributeTypeOids() != null ) )
             {
-                if ( !getMayNamesList().equals( oc.getMayNamesList() ) )
+                if ( !getMayAttributeTypeOids().equals( oc.getMayAttributeTypeOids() ) )
                 {
                     return false;
                 }

@@ -20,6 +20,8 @@
 package org.apache.directory.studio.schemaeditor.model.io;
 
 
+import java.util.List;
+
 import org.apache.directory.shared.ldap.schema.ObjectClassTypeEnum;
 import org.apache.directory.shared.ldap.schema.UsageEnum;
 import org.apache.directory.studio.schemaeditor.model.AttributeTypeImpl;
@@ -80,11 +82,11 @@ public class OpenLdapSchemaFileExporter
         sb.append( "attributetype ( " + at.getOid() + " \n" ); //$NON-NLS-1$ //$NON-NLS-2$
 
         // NAME(S)
-        String[] names = at.getNamesRef();
-        if ( ( names != null ) && ( names.length > 0 ) )
+        List<String> names = at.getNames();
+        if ( ( names != null ) && ( names.size() > 0 ) )
         {
             sb.append( "\tNAME " ); //$NON-NLS-1$
-            if ( names.length > 1 )
+            if ( names.size() > 1 )
             {
                 sb.append( "( " ); //$NON-NLS-1$
                 for ( String name : names )
@@ -95,7 +97,7 @@ public class OpenLdapSchemaFileExporter
             }
             else
             {
-                sb.append( "'" + names[0] + "' \n" ); //$NON-NLS-1$ //$NON-NLS-2$
+                sb.append( "'" + names.get( 0 ) + "' \n" ); //$NON-NLS-1$ //$NON-NLS-2$
             }
         }
 
@@ -112,42 +114,42 @@ public class OpenLdapSchemaFileExporter
         }
 
         // SUP
-        if ( ( at.getSuperiorName() != null ) && ( !at.getSuperiorName().equals( "" ) ) ) //$NON-NLS-1$
+        if ( ( at.getSuperiorOid() != null ) && ( !at.getSuperiorOid().equals( "" ) ) ) //$NON-NLS-1$
         {
-            sb.append( "\tSUP " + at.getSuperiorName() + " \n" ); //$NON-NLS-1$ //$NON-NLS-2$
+            sb.append( "\tSUP " + at.getSuperiorOid() + " \n" ); //$NON-NLS-1$ //$NON-NLS-2$
         }
 
         // EQUALITY
-        if ( ( at.getEqualityName() != null ) && ( !at.getEqualityName().equals( "" ) ) ) //$NON-NLS-1$
+        if ( ( at.getEqualityOid() != null ) && ( !at.getEqualityOid().equals( "" ) ) ) //$NON-NLS-1$
         {
-            sb.append( "\tEQUALITY " + at.getEqualityName() + " \n" ); //$NON-NLS-1$ //$NON-NLS-2$
+            sb.append( "\tEQUALITY " + at.getEqualityOid() + " \n" ); //$NON-NLS-1$ //$NON-NLS-2$
         }
 
         // ORDERING
-        if ( ( at.getOrderingName() != null ) && ( !at.getOrderingName().equals( "" ) ) ) //$NON-NLS-1$
+        if ( ( at.getOrderingOid() != null ) && ( !at.getOrderingOid().equals( "" ) ) ) //$NON-NLS-1$
         {
-            sb.append( "\tORDERING " + at.getOrderingName() + " \n" ); //$NON-NLS-1$ //$NON-NLS-2$
+            sb.append( "\tORDERING " + at.getOrderingOid() + " \n" ); //$NON-NLS-1$ //$NON-NLS-2$
         }
 
         // SUBSTR
-        if ( ( at.getSubstrName() != null ) && ( !at.getSubstrName().equals( "" ) ) ) //$NON-NLS-1$
+        if ( ( at.getSubstringOid() != null ) && ( !at.getSubstringOid().equals( "" ) ) ) //$NON-NLS-1$
         {
-            sb.append( "\tSUBSTR " + at.getSubstrName() + " \n" ); //$NON-NLS-1$ //$NON-NLS-2$
+            sb.append( "\tSUBSTR " + at.getSubstringOid() + " \n" ); //$NON-NLS-1$ //$NON-NLS-2$
         }
 
         // SYNTAX
         if ( ( at.getSyntaxOid() != null ) && ( !at.getSyntaxOid().equals( "" ) ) ) //$NON-NLS-1$
         {
             sb.append( "\tSYNTAX " + at.getSyntaxOid() ); //$NON-NLS-1$
-            if ( at.getLength() > 0 )
+            if ( at.getSyntaxLength() > 0 )
             {
-                sb.append( "{" + at.getLength() + "}" ); //$NON-NLS-1$ //$NON-NLS-2$
+                sb.append( "{" + at.getSyntaxLength() + "}" ); //$NON-NLS-1$ //$NON-NLS-2$
             }
             sb.append( " \n" ); //$NON-NLS-1$
         }
 
         // SINGLE-VALUE
-        if ( at.isSingleValue() )
+        if ( at.isSingleValued() )
         {
             sb.append( "\tSINGLE-VALUE \n" ); //$NON-NLS-1$
         }
@@ -159,7 +161,7 @@ public class OpenLdapSchemaFileExporter
         }
 
         // NO-USER-MODIFICATION
-        if ( !at.isCanUserModify() )
+        if ( !at.isUserModifiable() )
         {
             sb.append( "\tNO-USER-MODIFICATION \n" ); //$NON-NLS-1$
         }
@@ -210,11 +212,11 @@ public class OpenLdapSchemaFileExporter
         sb.append( "objectclass ( " + oc.getOid() + " \n" ); //$NON-NLS-1$ //$NON-NLS-2$
 
         // NAME(S)
-        String[] names = oc.getNamesRef();
-        if ( ( names != null ) && ( names.length > 0 ) )
+        List<String> names = oc.getNames();
+        if ( ( names != null ) && ( names.size() > 0 ) )
         {
             sb.append( "\tNAME " ); //$NON-NLS-1$
-            if ( names.length > 1 )
+            if ( names.size() > 1 )
             {
                 sb.append( "( " ); //$NON-NLS-1$
                 for ( String name : names )
@@ -225,7 +227,7 @@ public class OpenLdapSchemaFileExporter
             }
             else
             {
-                sb.append( "'" + names[0] + "' \n" ); //$NON-NLS-1$ //$NON-NLS-2$
+                sb.append( "'" + names.get( 0 ) + "' \n" ); //$NON-NLS-1$ //$NON-NLS-2$
             }
         }
 
@@ -242,21 +244,21 @@ public class OpenLdapSchemaFileExporter
         }
 
         // SUP
-        String[] superiors = oc.getSuperClassesNames();
-        if ( ( superiors != null ) && ( superiors.length != 0 ) )
+        List<String> superiors = oc.getSuperiorOids();
+        if ( ( superiors != null ) && ( superiors.size() != 0 ) )
         {
-            if ( superiors.length > 1 )
+            if ( superiors.size() > 1 )
             {
-                sb.append( "\tSUP (" + superiors[0] ); //$NON-NLS-1$
-                for ( int i = 1; i < superiors.length; i++ )
+                sb.append( "\tSUP (" + superiors.get( 0 ) ); //$NON-NLS-1$
+                for ( int i = 1; i < superiors.size(); i++ )
                 {
-                    sb.append( " $ " + superiors[i] ); //$NON-NLS-1$
+                    sb.append( " $ " + superiors.get( i ) ); //$NON-NLS-1$
                 }
                 sb.append( ") \n" ); //$NON-NLS-1$
             }
             else
             {
-                sb.append( "\tSUP " + superiors[0] + " \n" ); //$NON-NLS-1$ //$NON-NLS-2$
+                sb.append( "\tSUP " + superiors.get( 0 ) + " \n" ); //$NON-NLS-1$ //$NON-NLS-2$
             }
         }
 
@@ -276,42 +278,42 @@ public class OpenLdapSchemaFileExporter
         }
 
         // MUST
-        String[] must = oc.getMustNamesList();
-        if ( ( must != null ) && ( must.length != 0 ) )
+        List<String> must = oc.getMustAttributeTypeOids();
+        if ( ( must != null ) && ( must.size() != 0 ) )
         {
             sb.append( "\tMUST " ); //$NON-NLS-1$
-            if ( must.length > 1 )
+            if ( must.size() > 1 )
             {
-                sb.append( "( " + must[0] + " " ); //$NON-NLS-1$ //$NON-NLS-2$
-                for ( int i = 1; i < must.length; i++ )
+                sb.append( "( " + must.get( 0 ) + " " ); //$NON-NLS-1$ //$NON-NLS-2$
+                for ( int i = 1; i < must.size(); i++ )
                 {
-                    sb.append( "$ " + must[i] + " " ); //$NON-NLS-1$ //$NON-NLS-2$
+                    sb.append( "$ " + must.get( i ) + " " ); //$NON-NLS-1$ //$NON-NLS-2$
                 }
                 sb.append( ") \n" ); //$NON-NLS-1$
             }
-            else if ( must.length == 1 )
+            else if ( must.size() == 1 )
             {
-                sb.append( must[0] + " \n" ); //$NON-NLS-1$
+                sb.append( must.get( 0 ) + " \n" ); //$NON-NLS-1$
             }
         }
 
         // MAY
-        String[] may = oc.getMayNamesList();
-        if ( ( may != null ) && ( may.length != 0 ) )
+        List<String> may = oc.getMayAttributeTypeOids();
+        if ( ( may != null ) && ( may.size() != 0 ) )
         {
             sb.append( "\tMAY " ); //$NON-NLS-1$
-            if ( may.length > 1 )
+            if ( may.size() > 1 )
             {
-                sb.append( "( " + may[0] + " " ); //$NON-NLS-1$ //$NON-NLS-2$
-                for ( int i = 1; i < may.length; i++ )
+                sb.append( "( " + may.get( 0 ) + " " ); //$NON-NLS-1$ //$NON-NLS-2$
+                for ( int i = 1; i < may.size(); i++ )
                 {
-                    sb.append( "$ " + may[i] + " " ); //$NON-NLS-1$ //$NON-NLS-2$
+                    sb.append( "$ " + may.get( i ) + " " ); //$NON-NLS-1$ //$NON-NLS-2$
                 }
                 sb.append( ") \n" ); //$NON-NLS-1$
             }
-            else if ( may.length == 1 )
+            else if ( may.size() == 1 )
             {
-                sb.append( may[0] + " \n" ); //$NON-NLS-1$
+                sb.append( may.get( 0 ) + " \n" ); //$NON-NLS-1$
             }
         }
         // Closing the definition
