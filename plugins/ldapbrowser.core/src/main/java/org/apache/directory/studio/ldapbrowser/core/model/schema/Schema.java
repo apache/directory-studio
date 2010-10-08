@@ -180,8 +180,6 @@ public class Schema
         {
             // TODO: exception handling
             System.out.println( "Schema#loadFromLdif: " + e.toString() );
-            System.err.println( e.getMessage() );
-            e.printStackTrace();
         }
     }
 
