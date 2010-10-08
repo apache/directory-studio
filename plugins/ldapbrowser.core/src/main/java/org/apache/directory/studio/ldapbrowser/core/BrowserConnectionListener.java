@@ -25,7 +25,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import org.apache.directory.shared.ldap.schema.parsers.AttributeTypeDescription;
+import org.apache.directory.shared.ldap.schema.AttributeType;
+import org.apache.directory.shared.ldap.schema.parsers.AttributeTypeDescriptionSchemaParser;
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.IConnectionListener;
@@ -130,12 +131,12 @@ public class BrowserConnectionListener implements IConnectionListener
         List<String> binaryAttributeNames = new ArrayList<String>();
 
         Schema schema = browserConnection.getSchema();
-        Collection<AttributeTypeDescription> attributeTypeDescriptions = schema.getAttributeTypeDescriptions();
-        for ( AttributeTypeDescription atd : attributeTypeDescriptions )
+        Collection<AttributeType> attributeTypeDescriptions = schema.getAttributeTypeDescriptions();
+        for ( AttributeType atd : attributeTypeDescriptions )
         {
             if ( SchemaUtils.isBinary( atd, schema ) )
             {
-                String name = atd.getNames().isEmpty() ? atd.getNumericOid() : atd.getNames().get( 0 );
+                String name = atd.getNames().isEmpty() ? atd.getOid() : atd.getNames().get( 0 );
                 binaryAttributeNames.add( name );
             }
         }

@@ -24,9 +24,9 @@ package org.apache.directory.studio.ldapbrowser.core.model;
 import java.io.Serializable;
 import java.util.Collection;
 
-import org.apache.directory.shared.ldap.name.LdapDN;
-import org.apache.directory.shared.ldap.name.Rdn;
-import org.apache.directory.shared.ldap.schema.parsers.ObjectClassDescription;
+import org.apache.directory.shared.ldap.name.DN;
+import org.apache.directory.shared.ldap.name.RDN;
+import org.apache.directory.shared.ldap.schema.ObjectClass;
 import org.apache.directory.shared.ldap.util.LdapURL;
 import org.apache.directory.studio.connection.core.ConnectionPropertyPageProvider;
 import org.apache.directory.studio.connection.core.jobs.StudioConnectionBulkRunnableWithProgress;
@@ -170,7 +170,7 @@ public interface IEntry extends Serializable, IAdaptable, EntryPropertyPageProvi
      * 
      * @return the DN of this entry, never null.
      */
-    public abstract LdapDN getDn();
+    public abstract DN getDn();
 
 
     /**
@@ -178,7 +178,7 @@ public interface IEntry extends Serializable, IAdaptable, EntryPropertyPageProvi
      * 
      * @return the RDN of this entry, never null.
      */
-    public abstract Rdn getRdn();
+    public abstract RDN getRdn();
 
 
     /**
@@ -462,6 +462,6 @@ public interface IEntry extends Serializable, IAdaptable, EntryPropertyPageProvi
      * 
      * @return the object class descriptions of this entry
      */
-    public Collection<ObjectClassDescription> getObjectClassDescriptions();
+    public Collection<ObjectClass> getObjectClassDescriptions();
 
 }

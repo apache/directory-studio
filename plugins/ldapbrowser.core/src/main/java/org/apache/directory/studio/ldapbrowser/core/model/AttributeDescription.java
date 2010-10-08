@@ -29,8 +29,8 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.apache.directory.shared.ldap.constants.SchemaConstants;
-import org.apache.directory.shared.ldap.schema.parsers.AttributeTypeDescription;
-import org.apache.directory.shared.ldap.schema.parsers.ObjectClassDescription;
+import org.apache.directory.shared.ldap.schema.AttributeType;
+import org.apache.directory.shared.ldap.schema.ObjectClass;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.Schema;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.SchemaUtils;
 
@@ -166,8 +166,8 @@ public class AttributeDescription implements Serializable
             return description;
         }
 
-        AttributeTypeDescription atd = schema.getAttributeTypeDescription( parsedAttributeType );
-        String oidString = atd.getNumericOid();
+        AttributeType atd = schema.getAttributeTypeDescription( parsedAttributeType );
+        String oidString = atd.getOid();
 
         if ( !parsedLangList.isEmpty() )
         {
@@ -226,8 +226,8 @@ public class AttributeDescription implements Serializable
             return false;
         }
 
-        AttributeTypeDescription myAtd = schema.getAttributeTypeDescription( this.getParsedAttributeType() );
-        AttributeTypeDescription otherAtd = schema.getAttributeTypeDescription( other.getParsedAttributeType() );
+        AttributeType myAtd = schema.getAttributeTypeDescription( this.getParsedAttributeType() );
+        AttributeType otherAtd = schema.getAttributeTypeDescription( other.getParsedAttributeType() );
 
         // special case *: all user attributes (RFC4511)
         if ( SchemaConstants.ALL_USER_ATTRIBUTES.equals( other.description ) && !SchemaUtils.isOperational( myAtd ) )
@@ -246,7 +246,7 @@ public class AttributeDescription implements Serializable
         if ( other.description.length() > 1 && other.description.startsWith( "@" ) )
         {
             String objectClass = other.description.substring( 1 );
-            ObjectClassDescription ocd = schema.getObjectClassDescription( objectClass );
+            ObjectClass ocd = schema.getObjectClassDescription( objectClass );
             ocd.getMayAttributeTypes();
             ocd.getMustAttributeTypes();
 
@@ -255,7 +255,7 @@ public class AttributeDescription implements Serializable
             names.addAll( SchemaUtils.getMustAttributeTypeDescriptionNamesTransitive( ocd, schema ) );
             for ( String name : names )
             {
-                AttributeTypeDescription atd = schema.getAttributeTypeDescription( name );
+                AttributeType atd = schema.getAttributeTypeDescription( name );
                 if ( myAtd == atd )
                 {
                     return true;
@@ -266,8 +266,8 @@ public class AttributeDescription implements Serializable
         // check type
         if ( myAtd != otherAtd )
         {
-            AttributeTypeDescription superiorAtd = null;
-            String superiorName = myAtd.getSuperType();
+            AttributeType superiorAtd = null;
+            String superiorName = myAtd.getSuperiorOid();
             while ( superiorName != null )
             {
                 superiorAtd = schema.getAttributeTypeDescription( superiorName );
@@ -275,7 +275,7 @@ public class AttributeDescription implements Serializable
                 {
                     break;
                 }
-                superiorName = superiorAtd.getSuperType();
+                superiorName = superiorAtd.getSuperiorOid();
             }
             if ( superiorAtd != otherAtd )
             {

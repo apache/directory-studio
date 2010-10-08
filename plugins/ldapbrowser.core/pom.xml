@@ -111,10 +111,8 @@
  org.apache.commons.collections;bundle-version="${org.apache.commons.collections.version}",
  org.apache.commons.io;bundle-version="${org.apache.commons.io.version}",
  org.apache.commons.lang;bundle-version="${org.apache.commons.lang.version}",
- org.apache.directory.shared.asn1;bundle-version="${org.apache.directory.shared.version}",
- org.apache.directory.shared.ldap;bundle-version="${org.apache.directory.shared.version}",
- org.apache.directory.shared.ldapconstants;bundle-version="${org.apache.directory.shared.version}",
- org.apache.directory.shared.dsmlparser;bundle-version="${org.apache.directory.shared.version}",
+ org.apache.directory.shared.ldap;bundle-version="${org.apache.directory.shared.validversion}",
+ org.apache.directory.shared.dsmlparser;bundle-version="${org.apache.directory.shared.validversion}",
  org.apache.directory.studio.common.core,
  org.apache.directory.studio.connection.core,
  org.apache.directory.studio.ldifparser,
@@ -192,17 +190,7 @@
     </dependency>
     <dependency>
       <groupId>org.apache.directory.studio</groupId>
-      <artifactId>org.apache.directory.shared.asn1</artifactId>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.directory.studio</groupId>
       <artifactId>org.apache.directory.shared.ldap</artifactId>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.directory.studio</groupId>
-      <artifactId>org.apache.directory.shared.ldapconstants</artifactId>
       <scope>provided</scope>
     </dependency>
     <dependency>

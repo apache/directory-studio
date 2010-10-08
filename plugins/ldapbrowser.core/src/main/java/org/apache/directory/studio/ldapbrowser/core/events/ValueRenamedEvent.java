@@ -87,7 +87,7 @@ public class ValueRenamedEvent extends EntryModificationEvent
     public String toString()
     {
         return BrowserCoreMessages.bind( BrowserCoreMessages.event__renamed_oldval_by_newval_at_dn, new String[]
-            { getOldValue().toString(), getNewValue().toString(), getModifiedEntry().getDn().getUpName() } );
+            { getOldValue().toString(), getNewValue().toString(), getModifiedEntry().getDn().getName() } );
     }
 
 }

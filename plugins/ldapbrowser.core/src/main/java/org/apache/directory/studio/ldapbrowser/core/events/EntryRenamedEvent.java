@@ -82,7 +82,7 @@ public class EntryRenamedEvent extends EntryModificationEvent
     public String toString()
     {
         return BrowserCoreMessages.bind( BrowserCoreMessages.event__renamed_olddn_to_newdn, new String[]
-            { getOldEntry().getDn().getUpName(), getNewEntry().getDn().getUpName() } );
+            { getOldEntry().getDn().getName(), getNewEntry().getDn().getName() } );
     }
 
 }

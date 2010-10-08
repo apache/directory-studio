@@ -23,7 +23,7 @@ package org.apache.directory.studio.ldapbrowser.core.model;
 
 import java.io.Serializable;
 
-import org.apache.directory.shared.ldap.name.LdapDN;
+import org.apache.directory.shared.ldap.name.DN;
 import org.apache.directory.studio.connection.core.ConnectionPropertyPageProvider;
 import org.apache.directory.studio.ldapbrowser.core.propertypageproviders.EntryPropertyPageProvider;
 import org.eclipse.core.runtime.IAdaptable;
@@ -43,7 +43,7 @@ public interface ISearchResult extends Serializable, IAdaptable, EntryPropertyPa
      * 
      * @return the DN of the search result entry.
      */
-    public LdapDN getDn();
+    public DN getDn();
 
 
     /**

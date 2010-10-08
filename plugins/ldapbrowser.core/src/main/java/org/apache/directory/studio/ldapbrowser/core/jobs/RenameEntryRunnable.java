@@ -30,9 +30,10 @@ import javax.naming.ContextNotEmptyException;
 import javax.naming.directory.SearchControls;
 import javax.naming.ldap.Control;
 import javax.naming.ldap.ManageReferralControl;
+import javax.naming.ldap.Rdn;
 
-import org.apache.directory.shared.ldap.name.LdapDN;
-import org.apache.directory.shared.ldap.name.Rdn;
+import org.apache.directory.shared.ldap.name.DN;
+import org.apache.directory.shared.ldap.name.RDN;
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.DnUtils;
@@ -67,7 +68,7 @@ public class RenameEntryRunnable implements StudioConnectionBulkRunnableWithProg
     private IEntry oldEntry;
 
     /** The new RDN. */
-    private Rdn newRdn;
+    private RDN newRdn;
 
     /** The new entry. */
     private IEntry newEntry;
@@ -86,7 +87,7 @@ public class RenameEntryRunnable implements StudioConnectionBulkRunnableWithProg
      * @param newRdn the new RDN
      * @param dialog the dialog
      */
-    public RenameEntryRunnable( IEntry entry, Rdn newRdn, SimulateRenameDialog dialog )
+    public RenameEntryRunnable( IEntry entry, RDN newRdn, SimulateRenameDialog dialog )
     {
         this.browserConnection = entry.getBrowserConnection();
         this.oldEntry = entry;
@@ -141,13 +142,13 @@ public class RenameEntryRunnable implements StudioConnectionBulkRunnableWithProg
     public void run( StudioProgressMonitor monitor )
     {
         monitor.beginTask( BrowserCoreMessages.bind( BrowserCoreMessages.jobs__rename_entry_task, new String[]
-            { oldEntry.getDn().getUpName() } ), 3 );
+            { oldEntry.getDn().getName() } ), 3 );
         monitor.reportProgress( " " ); //$NON-NLS-1$
         monitor.worked( 1 );
 
-        LdapDN oldDn = oldEntry.getDn();
-        LdapDN parentDn = DnUtils.getParent( oldDn );
-        LdapDN newDn = DnUtils.composeDn( newRdn, parentDn );
+        DN oldDn = oldEntry.getDn();
+        DN parentDn = DnUtils.getParent( oldDn );
+        DN newDn = DnUtils.composeDn( newRdn, parentDn );
 
         // use a dummy monitor to be able to handle exceptions
         StudioProgressMonitor dummyMonitor = new StudioProgressMonitor( monitor );
@@ -274,12 +275,12 @@ public class RenameEntryRunnable implements StudioConnectionBulkRunnableWithProg
      * @param newDn the new DN
      * @param monitor the progress monitor
      */
-    static void renameEntry( IBrowserConnection browserConnection, IEntry entry, LdapDN newDn,
+    static void renameEntry( IBrowserConnection browserConnection, IEntry entry, DN newDn,
         StudioProgressMonitor monitor )
     {
         // DNs
-        String oldDnString = entry.getDn().getUpName();
-        String newDnString = newDn.getUpName();
+        String oldDnString = entry.getDn().getName();
+        String newDnString = newDn.getName();
 
         // ManageDsaIT control
         Control[] controls = null;

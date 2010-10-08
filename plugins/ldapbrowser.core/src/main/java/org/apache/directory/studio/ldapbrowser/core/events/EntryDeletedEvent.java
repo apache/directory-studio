@@ -52,7 +52,7 @@ public class EntryDeletedEvent extends EntryModificationEvent
     public String toString()
     {
         return BrowserCoreMessages.bind( BrowserCoreMessages.event__deleted_dn, new String[]
-            { getModifiedEntry().getDn().getUpName() } );
+            { getModifiedEntry().getDn().getName() } );
     }
 
 }

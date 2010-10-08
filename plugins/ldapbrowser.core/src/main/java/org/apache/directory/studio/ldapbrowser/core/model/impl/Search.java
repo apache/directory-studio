@@ -25,12 +25,12 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.directory.shared.ldap.name.LdapDN;
+import org.apache.directory.shared.ldap.name.DN;
 import org.apache.directory.shared.ldap.util.LdapURL;
 import org.apache.directory.studio.connection.core.Connection;
-import org.apache.directory.studio.connection.core.StudioControl;
 import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
 import org.apache.directory.studio.connection.core.Connection.ReferralHandlingMethod;
+import org.apache.directory.studio.connection.core.StudioControl;
 import org.apache.directory.studio.connection.core.jobs.StudioConnectionBulkRunnableWithProgress;
 import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
 import org.apache.directory.studio.ldapbrowser.core.events.SearchUpdateEvent;
@@ -151,7 +151,7 @@ public class Search implements ISearch
      * @param controls
      *                the controls
      */
-    public Search( String searchName, IBrowserConnection conn, LdapDN searchBase, String filter,
+    public Search( String searchName, IBrowserConnection conn, DN searchBase, String filter,
         String[] returningAttributes, SearchScope scope, int countLimit, int timeLimit,
         AliasDereferencingMethod aliasesDereferencingMethod, ReferralHandlingMethod referralsHandlingMethod,
         boolean initHasChildrenFlag, List<StudioControl> controls )
@@ -345,7 +345,7 @@ public class Search implements ISearch
     /**
      * {@inheritDoc}
      */
-    public LdapDN getSearchBase()
+    public DN getSearchBase()
     {
         return searchParameter.getSearchBase();
     }
@@ -354,7 +354,7 @@ public class Search implements ISearch
     /**
      * {@inheritDoc}
      */
-    public void setSearchBase( LdapDN searchBase )
+    public void setSearchBase( DN searchBase )
     {
         searchParameter.setSearchBase( searchBase );
         fireSearchUpdated( SearchUpdateEvent.EventDetail.SEARCH_PARAMETER_UPDATED );

@@ -28,7 +28,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 
 import org.apache.directory.shared.ldap.constants.SchemaConstants;
-import org.apache.directory.shared.ldap.schema.parsers.AttributeTypeDescription;
+import org.apache.directory.shared.ldap.schema.AttributeType;
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
@@ -125,7 +125,7 @@ public class InitializeAttributesRunnable implements StudioConnectionBulkRunnabl
         for ( int pi = 0; pi < entries.length && !monitor.isCanceled(); pi++ )
         {
             monitor.setTaskName( BrowserCoreMessages.bind( BrowserCoreMessages.jobs__init_entries_task, new String[]
-                { this.entries[pi].getDn().getUpName() } ) );
+                { this.entries[pi].getDn().getName() } ) );
             monitor.worked( 1 );
             if ( entries[pi].getBrowserConnection() != null )
             {
@@ -178,7 +178,7 @@ public class InitializeAttributesRunnable implements StudioConnectionBulkRunnabl
             }
             else
             {
-                Collection<AttributeTypeDescription> opAtds = SchemaUtils.getOperationalAttributeDescriptions( entry
+                Collection<AttributeType> opAtds = SchemaUtils.getOperationalAttributeDescriptions( entry
                     .getBrowserConnection().getSchema() );
                 Collection<String> atdNames = SchemaUtils.getNames( opAtds );
                 raSet.addAll( atdNames );
@@ -207,7 +207,7 @@ public class InitializeAttributesRunnable implements StudioConnectionBulkRunnabl
     {
         monitor.reportProgress( BrowserCoreMessages.bind( BrowserCoreMessages.jobs__init_entries_progress_att,
             new String[]
-                { entry.getDn().getUpName() } ) );
+                { entry.getDn().getName() } ) );
 
         if ( entry instanceof IRootDSE )
         {

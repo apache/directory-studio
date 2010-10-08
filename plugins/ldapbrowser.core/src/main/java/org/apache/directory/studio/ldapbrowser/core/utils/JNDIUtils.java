@@ -21,9 +21,8 @@
 package org.apache.directory.studio.ldapbrowser.core.utils;
 
 
-import javax.naming.NamingException;
-
-import org.apache.directory.shared.ldap.name.LdapDN;
+import org.apache.directory.shared.ldap.exception.LdapInvalidDnException;
+import org.apache.directory.shared.ldap.name.DN;
 
 
 /**
@@ -39,12 +38,12 @@ public class JNDIUtils
      *
      * @param sr the JNDI search result
      * @return the LdapDN 
-     * @throws NamingException
+     * @throws LdapInvalidDnException
      */
-    public static LdapDN getDn( javax.naming.directory.SearchResult sr ) throws NamingException
+    public static DN getDn( javax.naming.directory.SearchResult sr ) throws LdapInvalidDnException
     {
         String dn = sr.getNameInNamespace();
-        LdapDN ldapDn = new LdapDN( unescapeJndiName( dn ) );
+        DN ldapDn = new DN( unescapeJndiName( dn ) );
         return ldapDn;
     }
 

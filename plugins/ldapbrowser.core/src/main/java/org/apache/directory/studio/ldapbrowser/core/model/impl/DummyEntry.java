@@ -28,9 +28,9 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.directory.shared.ldap.constants.SchemaConstants;
-import org.apache.directory.shared.ldap.name.LdapDN;
-import org.apache.directory.shared.ldap.name.Rdn;
-import org.apache.directory.shared.ldap.schema.parsers.ObjectClassDescription;
+import org.apache.directory.shared.ldap.name.DN;
+import org.apache.directory.shared.ldap.name.RDN;
+import org.apache.directory.shared.ldap.schema.ObjectClass;
 import org.apache.directory.shared.ldap.util.LdapURL;
 import org.apache.directory.studio.connection.core.jobs.StudioConnectionBulkRunnableWithProgress;
 import org.apache.directory.studio.ldapbrowser.core.events.AttributeAddedEvent;
@@ -64,7 +64,7 @@ public class DummyEntry implements IEntry, ICompareableEntry
     private static final long serialVersionUID = 4833907766031149971L;
 
     /** The DN. */
-    private LdapDN dn;
+    private DN dn;
 
     /** The browser connection. */
     private IBrowserConnection browserConnection;
@@ -84,7 +84,7 @@ public class DummyEntry implements IEntry, ICompareableEntry
      * @param dn the DN
      * @param browserConnection the browser connection
      */
-    public DummyEntry( LdapDN dn, IBrowserConnection browserConnection )
+    public DummyEntry( DN dn, IBrowserConnection browserConnection )
     {
         this.dn = dn;
         this.browserConnection = browserConnection;
@@ -97,7 +97,7 @@ public class DummyEntry implements IEntry, ICompareableEntry
      * 
      * @param dn the new DN
      */
-    public void setDn( LdapDN dn )
+    public void setDn( DN dn )
     {
         this.dn = dn;
     }
@@ -208,7 +208,7 @@ public class DummyEntry implements IEntry, ICompareableEntry
     /**
      * {@inheritDoc}
      */
-    public LdapDN getDn()
+    public DN getDn()
     {
         return dn;
     }
@@ -235,10 +235,10 @@ public class DummyEntry implements IEntry, ICompareableEntry
     /**
      * {@inheritDoc}
      */
-    public Rdn getRdn()
+    public RDN getRdn()
     {
-        Rdn rdn = dn.getRdn();
-        return rdn == null ? new Rdn() : rdn;
+        RDN rdn = dn.getRdn();
+        return rdn == null ? new RDN() : rdn;
     }
 
 
@@ -528,9 +528,9 @@ public class DummyEntry implements IEntry, ICompareableEntry
     }
 
 
-    public Collection<ObjectClassDescription> getObjectClassDescriptions()
+    public Collection<ObjectClass> getObjectClassDescriptions()
     {
-        Collection<ObjectClassDescription> ocds = new ArrayList<ObjectClassDescription>();
+        Collection<ObjectClass> ocds = new ArrayList<ObjectClass>();
         IAttribute ocAttribute = getAttribute( SchemaConstants.OBJECT_CLASS_AT );
         if ( ocAttribute != null )
         {
@@ -538,7 +538,7 @@ public class DummyEntry implements IEntry, ICompareableEntry
             Schema schema = getBrowserConnection().getSchema();
             for ( String ocName : ocNames )
             {
-                ObjectClassDescription ocd = schema.getObjectClassDescription( ocName );
+                ObjectClass ocd = schema.getObjectClassDescription( ocName );
                 ocds.add( ocd );
             }
         }

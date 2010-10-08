@@ -23,9 +23,9 @@ package org.apache.directory.studio.ldapbrowser.core.model.impl;
 
 import java.util.Collection;
 
-import org.apache.directory.shared.ldap.name.LdapDN;
-import org.apache.directory.shared.ldap.name.Rdn;
-import org.apache.directory.shared.ldap.schema.parsers.ObjectClassDescription;
+import org.apache.directory.shared.ldap.name.DN;
+import org.apache.directory.shared.ldap.name.RDN;
+import org.apache.directory.shared.ldap.schema.ObjectClass;
 import org.apache.directory.shared.ldap.util.LdapURL;
 import org.apache.directory.studio.connection.core.jobs.StudioConnectionBulkRunnableWithProgress;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
@@ -55,7 +55,7 @@ public abstract class DelegateEntry implements IEntry
     protected String connectionId;
 
     /** The DN. */
-    protected LdapDN dn;
+    protected DN dn;
 
     /** The entry does not exist flag. */
     protected boolean entryDoesNotExist;
@@ -75,7 +75,7 @@ public abstract class DelegateEntry implements IEntry
      * @param browserConnection the browser connection of the delegate
      * @param dn the DN of the delegate
      */
-    protected DelegateEntry( IBrowserConnection browserConnection, LdapDN dn )
+    protected DelegateEntry( IBrowserConnection browserConnection, DN dn )
     {
         this.connectionId = browserConnection.getConnection() != null ? browserConnection.getConnection().getId()
             : null;
@@ -149,7 +149,7 @@ public abstract class DelegateEntry implements IEntry
     /**
      * {@inheritDoc}
      */
-    public LdapDN getDn()
+    public DN getDn()
     {
         if ( getDelegate() != null )
         {
@@ -397,7 +397,7 @@ public abstract class DelegateEntry implements IEntry
     /**
      * {@inheritDoc}
      */
-    public Rdn getRdn()
+    public RDN getRdn()
     {
         if ( getDelegate() != null )
         {
@@ -405,8 +405,8 @@ public abstract class DelegateEntry implements IEntry
         }
         else
         {
-            Rdn rdn = dn.getRdn();
-            return rdn == null ? new Rdn() : rdn;
+            RDN rdn = dn.getRdn();
+            return rdn == null ? new RDN() : rdn;
         }
     }
 
@@ -917,7 +917,7 @@ public abstract class DelegateEntry implements IEntry
     /**
      * {@inheritDoc}
      */
-    public Collection<ObjectClassDescription> getObjectClassDescriptions()
+    public Collection<ObjectClass> getObjectClassDescriptions()
     {
         if ( getDelegate() != null )
         {

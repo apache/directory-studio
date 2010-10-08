@@ -89,7 +89,7 @@ public class ValueAddedEvent extends EntryModificationEvent
     {
         return BrowserCoreMessages.bind( BrowserCoreMessages.event__added_val_to_att_at_dn, new String[]
             { getAddedValue().getStringValue(), getModifiedAttribute().getDescription(),
-                getModifiedEntry().getDn().getUpName() } );
+                getModifiedEntry().getDn().getName() } );
     }
 
 }

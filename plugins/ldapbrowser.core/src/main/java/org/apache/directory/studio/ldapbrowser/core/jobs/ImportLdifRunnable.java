@@ -35,7 +35,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import javax.naming.InvalidNameException;
 import javax.naming.NameAlreadyBoundException;
 import javax.naming.NamingException;
 import javax.naming.directory.Attribute;
@@ -48,7 +47,8 @@ import javax.naming.ldap.BasicControl;
 import javax.naming.ldap.Control;
 
 import org.apache.commons.codec.digest.DigestUtils;
-import org.apache.directory.shared.ldap.name.LdapDN;
+import org.apache.directory.shared.ldap.exception.LdapInvalidDnException;
+import org.apache.directory.shared.ldap.name.DN;
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.ConnectionCoreConstants;
@@ -289,9 +289,9 @@ public class ImportLdifRunnable implements StudioConnectionBulkRunnableWithProgr
                             logModification( browserConnection, logWriter, record, monitor );
 
                             // update cache and adjust attribute/children initialization flags
-                            LdapDN dn = new LdapDN( record.getDnLine().getValueAsString() );
+                            DN dn = new DN( record.getDnLine().getValueAsString() );
                             IEntry entry = browserConnection.getEntryFromCache( dn );
-                            LdapDN parentDn = DnUtils.getParent( dn );
+                            DN parentDn = DnUtils.getParent( dn );
                             IEntry parentEntry = null;
                             while ( parentEntry == null && parentDn != null )
                             {
@@ -325,7 +325,7 @@ public class ImportLdifRunnable implements StudioConnectionBulkRunnableWithProgr
                                 LdifChangeModDnRecord modDnRecord = ( LdifChangeModDnRecord ) record;
                                 if ( modDnRecord.getNewsuperiorLine() != null )
                                 {
-                                    LdapDN newSuperiorDn = new LdapDN( modDnRecord.getNewsuperiorLine()
+                                    DN newSuperiorDn = new DN( modDnRecord.getNewsuperiorLine()
                                         .getValueAsString() );
                                     IEntry newSuperiorEntry = browserConnection.getEntryFromCache( newSuperiorDn );
                                     if ( newSuperiorEntry != null )
@@ -400,9 +400,10 @@ public class ImportLdifRunnable implements StudioConnectionBulkRunnableWithProgr
      * @param monitor the progress monitor
      * 
      * @throws NamingException the naming exception
+     * @throws LdapInvalidDnException
      */
     static void importLdifRecord( IBrowserConnection browserConnection, LdifRecord record, boolean updateIfEntryExists,
-        StudioProgressMonitor monitor ) throws NamingException
+        StudioProgressMonitor monitor ) throws NamingException, LdapInvalidDnException
     {
         if ( !record.isValid() )
         {
@@ -423,7 +424,7 @@ public class ImportLdifRunnable implements StudioConnectionBulkRunnableWithProgr
                 {
                     dummyEntry = ModelConverter.ldifContentRecordToEntry( attrValRecord, browserConnection );
                 }
-                catch ( InvalidNameException e )
+                catch ( LdapInvalidDnException e )
                 {
                     monitor.reportError( e );
                     return;
@@ -437,7 +438,7 @@ public class ImportLdifRunnable implements StudioConnectionBulkRunnableWithProgr
                 {
                     dummyEntry = ModelConverter.ldifChangeAddRecordToEntry( changeAddRecord, browserConnection );
                 }
-                catch ( InvalidNameException e )
+                catch ( LdapInvalidDnException e )
                 {
                     monitor.reportError( e );
                     return;
@@ -521,16 +522,16 @@ public class ImportLdifRunnable implements StudioConnectionBulkRunnableWithProgr
                 String newRdn = modDnRecord.getNewrdnLine().getValueAsString();
                 boolean deleteOldRdn = modDnRecord.getDeloldrdnLine().isDeleteOldRdn();
 
-                LdapDN newDn;
+                DN newDn;
                 if ( modDnRecord.getNewsuperiorLine() != null )
                 {
                     newDn = DnUtils.composeDn( newRdn, modDnRecord.getNewsuperiorLine().getValueAsString() );
                 }
                 else
                 {
-                    LdapDN dnObject = new LdapDN( dn );
-                    LdapDN parent = DnUtils.getParent( dnObject );
-                    newDn = DnUtils.composeDn( newRdn, parent.getUpName() );
+                    DN dnObject = new DN( dn );
+                    DN parent = DnUtils.getParent( dnObject );
+                    newDn = DnUtils.composeDn( newRdn, parent.getName() );
                 }
 
                 browserConnection.getConnection().getJNDIConnectionWrapper()

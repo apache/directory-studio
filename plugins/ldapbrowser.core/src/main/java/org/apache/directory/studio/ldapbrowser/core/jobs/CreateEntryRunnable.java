@@ -117,7 +117,7 @@ public class CreateEntryRunnable implements StudioConnectionBulkRunnableWithProg
     public void run( StudioProgressMonitor monitor )
     {
         monitor.beginTask( BrowserCoreMessages.bind( BrowserCoreMessages.jobs__create_entry_task_1, new String[]
-            { entryToCreate.getDn().getUpName() } ), 2 + 1 );
+            { entryToCreate.getDn().getName() } ), 2 + 1 );
         monitor.reportProgress( " " ); //$NON-NLS-1$
         monitor.worked( 1 );
 
@@ -189,7 +189,7 @@ public class CreateEntryRunnable implements StudioConnectionBulkRunnableWithProg
     static void createEntry( IBrowserConnection browserConnection, IEntry entryToCreate, StudioProgressMonitor monitor )
     {
         // dn
-        String dn = entryToCreate.getDn().getUpName();
+        String dn = entryToCreate.getDn().getName();
 
         // attributes
         Attributes jndiAttributes = new BasicAttributes();

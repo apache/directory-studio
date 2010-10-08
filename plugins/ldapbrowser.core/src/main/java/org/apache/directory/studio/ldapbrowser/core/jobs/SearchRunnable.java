@@ -39,7 +39,7 @@ import javax.naming.ldap.Control;
 import javax.naming.ldap.PagedResultsResponseControl;
 
 import org.apache.directory.shared.ldap.constants.SchemaConstants;
-import org.apache.directory.shared.ldap.name.LdapDN;
+import org.apache.directory.shared.ldap.name.DN;
 import org.apache.directory.shared.ldap.util.LdapURL;
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.Connection;
@@ -326,7 +326,7 @@ public class SearchRunnable implements StudioConnectionBulkRunnableWithProgress
 
                         if ( searchContinuationUrl == null )
                         {
-                            LdapDN dn = JNDIUtils.getDn( sr );
+                            DN dn = JNDIUtils.getDn( sr );
                             IEntry entry = null;
 
                             Connection resultConnection = sr.getConnection();
@@ -455,7 +455,7 @@ public class SearchRunnable implements StudioConnectionBulkRunnableWithProgress
             return null;
         }
 
-        String searchBase = parameter.getSearchBase().getUpName();
+        String searchBase = parameter.getSearchBase().getName();
         SearchControls controls = new SearchControls();
         switch ( parameter.getScope() )
         {
@@ -602,22 +602,22 @@ public class SearchRunnable implements StudioConnectionBulkRunnableWithProgress
      * 
      * @return the created entry
      */
-    private static IEntry createAndCacheEntry( IBrowserConnection browserConnection, LdapDN dn,
+    private static IEntry createAndCacheEntry( IBrowserConnection browserConnection, DN dn,
         StudioProgressMonitor monitor )
     {
         StudioProgressMonitor dummyMonitor = new StudioProgressMonitor( monitor );
         IEntry entry = null;
 
         // build tree to parent
-        LinkedList<LdapDN> parentDnList = new LinkedList<LdapDN>();
-        LdapDN parentDN = dn;
+        LinkedList<DN> parentDnList = new LinkedList<DN>();
+        DN parentDN = dn;
         while ( parentDN != null && browserConnection.getEntryFromCache( parentDN ) == null )
         {
             parentDnList.addFirst( parentDN );
             parentDN = DnUtils.getParent( parentDN );
         }
 
-        for ( LdapDN aDN : parentDnList )
+        for ( DN aDN : parentDnList )
         {
             parentDN = DnUtils.getParent( aDN );
             if ( parentDN == null )

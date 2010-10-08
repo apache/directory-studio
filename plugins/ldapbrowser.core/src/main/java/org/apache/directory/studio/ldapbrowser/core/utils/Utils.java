@@ -35,22 +35,22 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.directory.shared.ldap.name.AttributeTypeAndValue;
-import org.apache.directory.shared.ldap.name.LdapDN;
-import org.apache.directory.shared.ldap.name.Rdn;
-import org.apache.directory.shared.ldap.schema.parsers.AttributeTypeDescription;
+import org.apache.directory.shared.ldap.name.AVA;
+import org.apache.directory.shared.ldap.name.DN;
+import org.apache.directory.shared.ldap.name.RDN;
+import org.apache.directory.shared.ldap.schema.AttributeType;
 import org.apache.directory.shared.ldap.util.LdapURL;
-import org.apache.directory.studio.connection.core.StudioControl;
 import org.apache.directory.studio.connection.core.ConnectionParameter.EncryptionMethod;
+import org.apache.directory.studio.connection.core.StudioControl;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreConstants;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection.ModifyMode;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection.ModifyOrder;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
-import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection.ModifyMode;
-import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection.ModifyOrder;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.Schema;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.SchemaUtils;
 import org.apache.directory.studio.ldifparser.LdifFormatParameters;
@@ -86,14 +86,14 @@ public class Utils
      * 
      * @return the oid string
      */
-    public static String getNormalizedOidString( LdapDN dn, Schema schema )
+    public static String getNormalizedOidString( DN dn, Schema schema )
     {
         StringBuffer sb = new StringBuffer();
 
-        Iterator<Rdn> it = dn.getRdns().iterator();
+        Iterator<RDN> it = dn.getRdns().iterator();
         while ( it.hasNext() )
         {
-            Rdn rdn = it.next();
+            RDN rdn = it.next();
             sb.append( getOidString( rdn, schema ) );
             if ( it.hasNext() )
             {
@@ -105,15 +105,15 @@ public class Utils
     }
 
 
-    private static String getOidString( Rdn rdn, Schema schema )
+    private static String getOidString( RDN rdn, Schema schema )
     {
         StringBuffer sb = new StringBuffer();
 
-        Iterator<AttributeTypeAndValue> it = rdn.iterator();
+        Iterator<AVA> it = rdn.iterator();
         while ( it.hasNext() )
         {
-            AttributeTypeAndValue atav = it.next();
-            sb.append( getOidString( atav, schema ) );
+            AVA ava = it.next();
+            sb.append( getOidString( ava, schema ) );
             if ( it.hasNext() )
             {
                 sb.append( '+' );
@@ -124,11 +124,11 @@ public class Utils
     }
 
 
-    private static String getOidString( AttributeTypeAndValue atav, Schema schema )
+    private static String getOidString( AVA ava, Schema schema )
     {
-        String oid = schema != null ? schema.getAttributeTypeDescription( atav.getNormType() ).getNumericOid() : atav
+        String oid = schema != null ? schema.getAttributeTypeDescription( ava.getNormType() ).getOid() : ava
             .getNormType();
-        return oid.trim().toLowerCase() + "=" + atav.getUpValue().getString().trim().toLowerCase(); //$NON-NLS-1$
+        return oid.trim().toLowerCase() + "=" + ava.getUpValue().getString().trim().toLowerCase(); //$NON-NLS-1$
     }
 
 
@@ -385,7 +385,7 @@ public class Utils
         }
 
         // prepare the LDIF record containing the modifications
-        LdifChangeModifyRecord record = new LdifChangeModifyRecord( LdifDnLine.create( newEntry.getDn().getUpName() ) );
+        LdifChangeModifyRecord record = new LdifChangeModifyRecord( LdifDnLine.create( newEntry.getDn().getName() ) );
         if ( newEntry.isReferral() )
         {
             record.addControl( LdifControlLine.create( StudioControl.MANAGEDSAIT_CONTROL.getOid(),
@@ -398,7 +398,7 @@ public class Utils
         {
             // get attribute type schema information
             Schema schema = oldEntry.getBrowserConnection().getSchema();
-            AttributeTypeDescription atd = schema.getAttributeTypeDescription( attributeDescription );
+            AttributeType atd = schema.getAttributeTypeDescription( attributeDescription );
             boolean hasEMR = SchemaUtils.getEqualityMatchingRuleNameOrNumericOidTransitive( atd, schema ) != null;
             boolean isReplaceForced = ( hasEMR && modifyMode == ModifyMode.REPLACE )
                 || ( !hasEMR && modifyModeNoEMR == ModifyMode.REPLACE );

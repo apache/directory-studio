@@ -27,6 +27,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import javax.naming.NamingException;
@@ -46,26 +47,24 @@ import org.apache.directory.shared.dsmlv2.reponse.ExtendedResponseDsml;
 import org.apache.directory.shared.dsmlv2.reponse.ModDNResponseDsml;
 import org.apache.directory.shared.dsmlv2.reponse.ModifyResponseDsml;
 import org.apache.directory.shared.dsmlv2.request.BatchRequest;
-import org.apache.directory.shared.ldap.codec.ControlCodec;
-import org.apache.directory.shared.ldap.codec.LdapConstants;
-import org.apache.directory.shared.ldap.codec.LdapMessageCodec;
-import org.apache.directory.shared.ldap.codec.LdapResultCodec;
-import org.apache.directory.shared.ldap.codec.add.AddRequestCodec;
-import org.apache.directory.shared.ldap.codec.bind.BindRequestCodec;
-import org.apache.directory.shared.ldap.codec.compare.CompareRequestCodec;
-import org.apache.directory.shared.ldap.codec.del.DelRequestCodec;
-import org.apache.directory.shared.ldap.codec.extended.ExtendedRequestCodec;
-import org.apache.directory.shared.ldap.codec.modify.ModifyRequestCodec;
-import org.apache.directory.shared.ldap.codec.modifyDn.ModifyDNRequestCodec;
-import org.apache.directory.shared.ldap.codec.search.SearchRequestCodec;
+import org.apache.directory.shared.ldap.codec.MessageTypeEnum;
 import org.apache.directory.shared.ldap.codec.util.LdapURLEncodingException;
 import org.apache.directory.shared.ldap.entry.Entry;
-import org.apache.directory.shared.ldap.entry.EntryAttribute;
 import org.apache.directory.shared.ldap.entry.Modification;
 import org.apache.directory.shared.ldap.entry.ModificationOperation;
-import org.apache.directory.shared.ldap.message.MessageTypeEnum;
+import org.apache.directory.shared.ldap.exception.LdapException;
+import org.apache.directory.shared.ldap.message.AddRequest;
+import org.apache.directory.shared.ldap.message.BindRequest;
+import org.apache.directory.shared.ldap.message.CompareRequest;
+import org.apache.directory.shared.ldap.message.DeleteRequest;
+import org.apache.directory.shared.ldap.message.ExtendedRequest;
+import org.apache.directory.shared.ldap.message.LdapResult;
+import org.apache.directory.shared.ldap.message.Message;
+import org.apache.directory.shared.ldap.message.ModifyDnRequest;
+import org.apache.directory.shared.ldap.message.ModifyRequest;
 import org.apache.directory.shared.ldap.message.ResultCodeEnum;
-import org.apache.directory.shared.ldap.name.LdapDN;
+import org.apache.directory.shared.ldap.message.SearchRequest;
+import org.apache.directory.shared.ldap.name.DN;
 import org.apache.directory.shared.ldap.util.AttributeUtils;
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.Connection;
@@ -270,41 +269,42 @@ public class ImportDsmlRunnable implements StudioConnectionBulkRunnableWithProgr
      *      the DSML batch response (can be <code>null</code>)
      * @throws NamingException 
      * @throws LdapURLEncodingException 
+     * @throws LdapException
      */
     private void processRequest( Object request, BatchResponseDsml batchResponseDsml, StudioProgressMonitor monitor )
-        throws NamingException, LdapURLEncodingException
+        throws NamingException, LdapURLEncodingException, LdapException
     {
-        if ( request instanceof BindRequestCodec )
+        if ( request instanceof BindRequest )
         {
-            processBindRequest( ( BindRequestCodec ) request, batchResponseDsml, monitor );
+            processBindRequest( ( BindRequest ) request, batchResponseDsml, monitor );
         }
-        else if ( request instanceof AddRequestCodec )
+        else if ( request instanceof AddRequest )
         {
-            processAddRequest( ( AddRequestCodec ) request, batchResponseDsml, monitor );
+            processAddRequest( ( AddRequest ) request, batchResponseDsml, monitor );
         }
-        else if ( request instanceof CompareRequestCodec )
+        else if ( request instanceof CompareRequest )
         {
-            processCompareRequest( ( CompareRequestCodec ) request, batchResponseDsml, monitor );
+            processCompareRequest( ( CompareRequest ) request, batchResponseDsml, monitor );
         }
-        else if ( request instanceof DelRequestCodec )
+        else if ( request instanceof DeleteRequest )
         {
-            processDelRequest( ( DelRequestCodec ) request, batchResponseDsml, monitor );
+            processDelRequest( ( DeleteRequest ) request, batchResponseDsml, monitor );
         }
-        else if ( request instanceof ExtendedRequestCodec )
+        else if ( request instanceof ExtendedRequest )
         {
-            processExtendedRequest( ( ExtendedRequestCodec ) request, batchResponseDsml, monitor );
+            processExtendedRequest( ( ExtendedRequest ) request, batchResponseDsml, monitor );
         }
-        else if ( request instanceof ModifyRequestCodec )
+        else if ( request instanceof ModifyRequest )
         {
-            processModifyRequest( ( ModifyRequestCodec ) request, batchResponseDsml, monitor );
+            processModifyRequest( ( ModifyRequest ) request, batchResponseDsml, monitor );
         }
-        else if ( request instanceof ModifyDNRequestCodec )
+        else if ( request instanceof ModifyDnRequest )
         {
-            processModifyDNRequest( ( ModifyDNRequestCodec ) request, batchResponseDsml, monitor );
+            processModifyDNRequest( ( ModifyDnRequest ) request, batchResponseDsml, monitor );
         }
-        else if ( request instanceof SearchRequestCodec )
+        else if ( request instanceof SearchRequest )
         {
-            processSearchRequest( ( SearchRequestCodec ) request, batchResponseDsml, monitor );
+            processSearchRequest( ( SearchRequest ) request, batchResponseDsml, monitor );
         }
     }
 
@@ -317,7 +317,7 @@ public class ImportDsmlRunnable implements StudioConnectionBulkRunnableWithProgr
      * @param batchResponseDsml
      *      the DSML batch response (can be <code>null</code>)
      */
-    private void processBindRequest( BindRequestCodec request, BatchResponseDsml batchResponseDsml,
+    private void processBindRequest( BindRequest request, BatchResponseDsml batchResponseDsml,
         StudioProgressMonitor monitor )
     {
         // We can not support extended requests at the moment,
@@ -327,10 +327,9 @@ public class ImportDsmlRunnable implements StudioConnectionBulkRunnableWithProgr
         if ( batchResponseDsml != null )
         {
             AuthResponseDsml authResponseDsml = new AuthResponseDsml();
-            LdapResultCodec ldapResult = new LdapResultCodec();
+            LdapResult ldapResult = authResponseDsml.getLdapResult();
             ldapResult.setResultCode( ResultCodeEnum.UNWILLING_TO_PERFORM );
             ldapResult.setErrorMessage( "This kind of request is not yet supported." );
-            authResponseDsml.setLdapResult( ldapResult );
             batchResponseDsml.addResponse( authResponseDsml );
         }
     }
@@ -344,7 +343,7 @@ public class ImportDsmlRunnable implements StudioConnectionBulkRunnableWithProgr
      * @param batchResponseDsml
      *      the DSML batch response (can be <code>null</code>)
      */
-    private void processAddRequest( AddRequestCodec request, BatchResponseDsml batchResponseDsml,
+    private void processAddRequest( AddRequest request, BatchResponseDsml batchResponseDsml,
         StudioProgressMonitor monitor )
     {
         // Executing the add request
@@ -352,22 +351,23 @@ public class ImportDsmlRunnable implements StudioConnectionBulkRunnableWithProgr
         browserConnection
             .getConnection()
             .getJNDIConnectionWrapper()
-            .createEntry( entry.getDn().getUpName(), AttributeUtils.toAttributes( entry ), getControls( request ),
+            .createEntry( entry.getDn().getName(), AttributeUtils.toAttributes( entry ), getControls( request ),
                 monitor, null );
 
         // Creating the response
         if ( batchResponseDsml != null )
         {
             AddResponseDsml addResponseDsml = new AddResponseDsml();
-            addResponseDsml.setLdapResult( getLdapResult( monitor, MessageTypeEnum.ADD_REQUEST ) );
-            addResponseDsml.getLdapResult().setMatchedDN( entry.getDn() );
+            LdapResult ldapResult = addResponseDsml.getLdapResult();
+            setLdapResultValuesFromMonitor( ldapResult, monitor, MessageTypeEnum.ADD_REQUEST );
+            ldapResult.setMatchedDn( entry.getDn() );
             batchResponseDsml.addResponse( addResponseDsml );
         }
 
         // Update cached entries
-        LdapDN dn = entry.getDn();
+        DN dn = entry.getDn();
         IEntry e = browserConnection.getEntryFromCache( dn );
-        LdapDN parentDn = DnUtils.getParent( dn );
+        DN parentDn = DnUtils.getParent( dn );
         IEntry parentEntry = parentDn != null ? browserConnection.getEntryFromCache( parentDn ) : null;
         if ( e != null )
         {
@@ -388,7 +388,7 @@ public class ImportDsmlRunnable implements StudioConnectionBulkRunnableWithProgr
      * @param batchResponseDsml
      *      the DSML batch response (can be <code>null</code>)
      */
-    private void processCompareRequest( CompareRequestCodec request, BatchResponseDsml batchResponseDsml,
+    private void processCompareRequest( CompareRequest request, BatchResponseDsml batchResponseDsml,
         StudioProgressMonitor monitor )
     {
         // We can not support extended requests at the moment,
@@ -398,10 +398,9 @@ public class ImportDsmlRunnable implements StudioConnectionBulkRunnableWithProgr
         if ( batchResponseDsml != null )
         {
             CompareResponseDsml compareResponseDsml = new CompareResponseDsml();
-            LdapResultCodec ldapResult = new LdapResultCodec();
+            LdapResult ldapResult = compareResponseDsml.getLdapResult();
             ldapResult.setResultCode( ResultCodeEnum.UNWILLING_TO_PERFORM );
             ldapResult.setErrorMessage( "This kind of request is not yet supported." );
-            compareResponseDsml.setLdapResult( ldapResult );
             batchResponseDsml.addResponse( compareResponseDsml );
         }
     }
@@ -415,26 +414,27 @@ public class ImportDsmlRunnable implements StudioConnectionBulkRunnableWithProgr
      * @param batchResponseDsml
      *      the DSML batch response (can be <code>null</code>)
      */
-    private void processDelRequest( DelRequestCodec request, BatchResponseDsml batchResponseDsml,
+    private void processDelRequest( DeleteRequest request, BatchResponseDsml batchResponseDsml,
         StudioProgressMonitor monitor )
     {
         // Executing the del request
         browserConnection.getConnection().getJNDIConnectionWrapper()
-            .deleteEntry( request.getEntry().getUpName(), getControls( request ), monitor, null );
+            .deleteEntry( request.getName().getName(), getControls( request ), monitor, null );
 
         // Creating the response
         if ( batchResponseDsml != null )
         {
             DelResponseDsml delResponseDsml = new DelResponseDsml();
-            delResponseDsml.setLdapResult( getLdapResult( monitor, MessageTypeEnum.DEL_REQUEST ) );
-            delResponseDsml.getLdapResult().setMatchedDN( request.getEntry() );
+            LdapResult ldapResult = delResponseDsml.getLdapResult();
+            setLdapResultValuesFromMonitor( ldapResult, monitor, MessageTypeEnum.ADD_REQUEST );
+            delResponseDsml.getLdapResult().setMatchedDn( request.getName() );
             batchResponseDsml.addResponse( delResponseDsml );
         }
 
         // Update cached entries
-        LdapDN dn = request.getEntry();
+        DN dn = request.getName();
         IEntry e = browserConnection.getEntryFromCache( dn );
-        LdapDN parentDn = DnUtils.getParent( dn );
+        DN parentDn = DnUtils.getParent( dn );
         IEntry parentEntry = parentDn != null ? browserConnection.getEntryFromCache( parentDn ) : null;
         if ( e != null )
         {
@@ -456,7 +456,7 @@ public class ImportDsmlRunnable implements StudioConnectionBulkRunnableWithProgr
      * @param batchResponseDsml
      *      the DSML batch response (can be <code>null</code>)
      */
-    private void processExtendedRequest( ExtendedRequestCodec request, BatchResponseDsml batchResponseDsml,
+    private void processExtendedRequest( ExtendedRequest request, BatchResponseDsml batchResponseDsml,
         StudioProgressMonitor monitor )
     {
         // We can not support extended requests at the moment,
@@ -466,10 +466,9 @@ public class ImportDsmlRunnable implements StudioConnectionBulkRunnableWithProgr
         if ( batchResponseDsml != null )
         {
             ExtendedResponseDsml extendedResponseDsml = new ExtendedResponseDsml();
-            LdapResultCodec ldapResult = new LdapResultCodec();
+            LdapResult ldapResult = extendedResponseDsml.getLdapResult();
             ldapResult.setResultCode( ResultCodeEnum.UNWILLING_TO_PERFORM );
             ldapResult.setErrorMessage( "This kind of request is not yet supported." );
-            extendedResponseDsml.setLdapResult( ldapResult );
             batchResponseDsml.addResponse( extendedResponseDsml );
         }
     }
@@ -483,7 +482,7 @@ public class ImportDsmlRunnable implements StudioConnectionBulkRunnableWithProgr
      * @param batchResponseDsml
      *      the DSML batch response (can be <code>null</code>)
      */
-    private void processModifyRequest( ModifyRequestCodec request, BatchResponseDsml batchResponseDsml,
+    private void processModifyRequest( ModifyRequest request, BatchResponseDsml batchResponseDsml,
         StudioProgressMonitor monitor )
     {
         // Creating the modification items
@@ -498,19 +497,20 @@ public class ImportDsmlRunnable implements StudioConnectionBulkRunnableWithProgr
         browserConnection
             .getConnection()
             .getJNDIConnectionWrapper()
-            .modifyEntry( request.getObject().getUpName(), modificationItems.toArray( new ModificationItem[0] ),
+            .modifyEntry( request.getName().getName(), modificationItems.toArray( new ModificationItem[0] ),
                 getControls( request ), monitor, null );
 
         // Creating the response
         if ( batchResponseDsml != null )
         {
             ModifyResponseDsml modifyResponseDsml = new ModifyResponseDsml();
-            modifyResponseDsml.setLdapResult( getLdapResult( monitor, MessageTypeEnum.MODIFY_REQUEST ) );
-            modifyResponseDsml.getLdapResult().setMatchedDN( request.getObject() );
+            LdapResult ldapResult = modifyResponseDsml.getLdapResult();
+            setLdapResultValuesFromMonitor( ldapResult, monitor, MessageTypeEnum.ADD_REQUEST );
+            modifyResponseDsml.getLdapResult().setMatchedDn( request.getName() );
             batchResponseDsml.addResponse( modifyResponseDsml );
         }
 
-        LdapDN dn = request.getObject();
+        DN dn = request.getName();
         IEntry e = browserConnection.getEntryFromCache( dn );
         if ( e != null )
         {
@@ -551,29 +551,30 @@ public class ImportDsmlRunnable implements StudioConnectionBulkRunnableWithProgr
      * @param batchResponseDsml
      *      the DSML batch response (can be <code>null</code>)
      */
-    private void processModifyDNRequest( ModifyDNRequestCodec request, BatchResponseDsml batchResponseDsml,
+    private void processModifyDNRequest( ModifyDnRequest request, BatchResponseDsml batchResponseDsml,
         StudioProgressMonitor monitor )
     {
         // Executing the modify DN request
         browserConnection
             .getConnection()
             .getJNDIConnectionWrapper()
-            .renameEntry( request.getEntry().getUpName(), request.getNewRDN().getUpName(), request.isDeleteOldRDN(),
+            .renameEntry( request.getName().getName(), request.getNewRdn().getName(), request.getDeleteOldRdn(),
                 getControls( request ), monitor, null );
 
         // Creating the response
         if ( batchResponseDsml != null )
         {
             ModDNResponseDsml modDNResponseDsml = new ModDNResponseDsml();
-            modDNResponseDsml.setLdapResult( getLdapResult( monitor, MessageTypeEnum.MOD_DN_REQUEST ) );
-            modDNResponseDsml.getLdapResult().setMatchedDN( request.getEntry() );
+            LdapResult ldapResult = modDNResponseDsml.getLdapResult();
+            setLdapResultValuesFromMonitor( ldapResult, monitor, MessageTypeEnum.ADD_REQUEST );
+            modDNResponseDsml.getLdapResult().setMatchedDn( request.getName() );
             batchResponseDsml.addResponse( modDNResponseDsml );
         }
 
         // Update cached entries
-        LdapDN dn = request.getEntry();
+        DN dn = request.getName();
         IEntry e = browserConnection.getEntryFromCache( dn );
-        LdapDN parentDn = DnUtils.getParent( dn );
+        DN parentDn = DnUtils.getParent( dn );
         IEntry parentEntry = parentDn != null ? browserConnection.getEntryFromCache( parentDn ) : null;
         if ( e != null )
         {
@@ -586,7 +587,7 @@ public class ImportDsmlRunnable implements StudioConnectionBulkRunnableWithProgr
         }
         if ( request.getNewSuperior() != null )
         {
-            LdapDN newSuperiorDn = request.getNewSuperior();
+            DN newSuperiorDn = request.getNewSuperior();
             IEntry newSuperiorEntry = browserConnection.getEntryFromCache( newSuperiorDn );
             if ( newSuperiorEntry != null )
             {
@@ -605,9 +606,10 @@ public class ImportDsmlRunnable implements StudioConnectionBulkRunnableWithProgr
      *      the DSML batch response (can be <code>null</code>)
      * @throws NamingException 
      * @throws LdapURLEncodingException 
+     * @throws LdapException
      */
-    private void processSearchRequest( SearchRequestCodec request, BatchResponseDsml batchResponseDsml,
-        StudioProgressMonitor monitor ) throws NamingException, LdapURLEncodingException
+    private void processSearchRequest( SearchRequest request, BatchResponseDsml batchResponseDsml,
+        StudioProgressMonitor monitor ) throws NamingException, LdapURLEncodingException, LdapException
     {
         // Creating the response
         if ( batchResponseDsml != null )
@@ -616,7 +618,7 @@ public class ImportDsmlRunnable implements StudioConnectionBulkRunnableWithProgr
             StudioNamingEnumeration ne = browserConnection
                 .getConnection()
                 .getJNDIConnectionWrapper()
-                .search( request.getBaseObject().getUpName(), request.getFilter().toString(),
+                .search( request.getBase().getName(), request.getFilter().toString(),
                     getSearchControls( request ), getAliasDereferencingMethod( request ),
                     ReferralHandlingMethod.IGNORE, getControls( request ), monitor, null );
 
@@ -635,7 +637,7 @@ public class ImportDsmlRunnable implements StudioConnectionBulkRunnableWithProgr
      * @return
      *      the associated {@link SearchControls} object
      */
-    private SearchControls getSearchControls( SearchRequestCodec request )
+    private SearchControls getSearchControls( SearchRequest request )
     {
         SearchControls controls = new SearchControls();
 
@@ -657,9 +659,9 @@ public class ImportDsmlRunnable implements StudioConnectionBulkRunnableWithProgr
 
         // Returning attributes
         List<String> returningAttributes = new ArrayList<String>();
-        for ( EntryAttribute entryAttribute : request.getAttributes() )
+        for ( String attribute : request.getAttributes() )
         {
-            returningAttributes.add( entryAttribute.getId() );
+            returningAttributes.add( attribute );
         }
         // If the returning attributes are empty, we need to return the user attributes
         // [Cf. RFC 2251 - "There are two special values which may be used: an empty 
@@ -690,17 +692,17 @@ public class ImportDsmlRunnable implements StudioConnectionBulkRunnableWithProgr
      * @return
      *      the associated {@link AliasDereferencingMethod} object
      */
-    private AliasDereferencingMethod getAliasDereferencingMethod( SearchRequestCodec request )
+    private AliasDereferencingMethod getAliasDereferencingMethod( SearchRequest request )
     {
         switch ( request.getDerefAliases() )
         {
-            case LdapConstants.NEVER_DEREF_ALIASES:
+            case NEVER_DEREF_ALIASES:
                 return AliasDereferencingMethod.NEVER;
-            case LdapConstants.DEREF_ALWAYS:
+            case DEREF_ALWAYS:
                 return AliasDereferencingMethod.ALWAYS;
-            case LdapConstants.DEREF_FINDING_BASE_OBJ:
+            case DEREF_FINDING_BASE_OBJ:
                 return AliasDereferencingMethod.FINDING;
-            case LdapConstants.DEREF_IN_SEARCHING:
+            case DEREF_IN_SEARCHING:
                 return AliasDereferencingMethod.SEARCH;
             default:
                 return AliasDereferencingMethod.NEVER;
@@ -708,16 +710,16 @@ public class ImportDsmlRunnable implements StudioConnectionBulkRunnableWithProgr
     }
 
 
-    private Control[] getControls( LdapMessageCodec request )
+    private Control[] getControls( Message request )
     {
-        List<ControlCodec> controls = request.getControls();
+        Collection<org.apache.directory.shared.ldap.message.control.Control> controls = request.getControls().values();
         if ( controls != null )
         {
             List<Control> jndiControls = new ArrayList<Control>();
-            for ( ControlCodec control : controls )
+            for ( org.apache.directory.shared.ldap.message.control.Control control : controls )
             {
-                Control jndiControl = new BasicControl( control.getControlType(), control.getCriticality(),
-                    control.getEncodedValue() );
+                Control jndiControl = new BasicControl( control.getOid(), control.isCritical(),
+                    control.getValue() );
                 jndiControls.add( jndiControl );
             }
             return jndiControls.toArray( new Control[jndiControls.size()] );
@@ -734,10 +736,9 @@ public class ImportDsmlRunnable implements StudioConnectionBulkRunnableWithProgr
      * @return
      *      the corresponding LDAP Result
      */
-    private LdapResultCodec getLdapResult( StudioProgressMonitor monitor, MessageTypeEnum messageType )
+    private void setLdapResultValuesFromMonitor( LdapResult ldapResult, StudioProgressMonitor monitor,
+        MessageTypeEnum messageType )
     {
-        LdapResultCodec ldapResult = new LdapResultCodec();
-
         if ( !monitor.errorsReported() )
         {
             ldapResult.setResultCode( ResultCodeEnum.SUCCESS );
@@ -756,7 +757,5 @@ public class ImportDsmlRunnable implements StudioConnectionBulkRunnableWithProgr
                 ldapResult.setErrorMessage( t.getMessage() );
             }
         }
-
-        return ldapResult;
     }
 }

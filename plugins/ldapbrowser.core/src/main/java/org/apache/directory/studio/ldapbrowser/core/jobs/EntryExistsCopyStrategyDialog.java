@@ -20,8 +20,8 @@
 package org.apache.directory.studio.ldapbrowser.core.jobs;
 
 
-import org.apache.directory.shared.ldap.name.LdapDN;
-import org.apache.directory.shared.ldap.name.Rdn;
+import org.apache.directory.shared.ldap.name.DN;
+import org.apache.directory.shared.ldap.name.RDN;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 
 
@@ -39,7 +39,7 @@ public interface EntryExistsCopyStrategyDialog
      * @param browserConnection the browser connection
      * @param newLdapDn the new DN
      */
-    void setExistingEntry( IBrowserConnection browserConnection, LdapDN newLdapDn );
+    void setExistingEntry( IBrowserConnection browserConnection, DN newLdapDn );
 
 
     /**
@@ -56,7 +56,7 @@ public interface EntryExistsCopyStrategyDialog
      * 
      * @return the RDN
      */
-    Rdn getRdn();
+    RDN getRdn();
 
 
     /**

@@ -21,8 +21,8 @@
 package org.apache.directory.studio.ldapbrowser.core.model.impl;
 
 
-import org.apache.directory.shared.ldap.name.LdapDN;
-import org.apache.directory.shared.ldap.name.Rdn;
+import org.apache.directory.shared.ldap.name.DN;
+import org.apache.directory.shared.ldap.name.RDN;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 
@@ -38,7 +38,7 @@ public class BaseDNEntry extends AbstractEntry
     private static final long serialVersionUID = -5444229580355372176L;
 
     /** The base DN. */
-    protected LdapDN baseDn;
+    protected DN baseDn;
 
     /** The browser connection. */
     protected IBrowserConnection browserConnection;
@@ -55,7 +55,7 @@ public class BaseDNEntry extends AbstractEntry
      * @param baseDn the base DN
      * @param browserConnection the browser connection
      */
-    public BaseDNEntry( LdapDN baseDn, IBrowserConnection browserConnection )
+    public BaseDNEntry( DN baseDn, IBrowserConnection browserConnection )
     {
         assert baseDn != null;
         assert browserConnection != null;
@@ -69,7 +69,7 @@ public class BaseDNEntry extends AbstractEntry
     /**
      * @see org.apache.directory.studio.ldapbrowser.core.model.IEntry#getDn()
      */
-    public LdapDN getDn()
+    public DN getDn()
     {
         return baseDn;
     }
@@ -96,7 +96,7 @@ public class BaseDNEntry extends AbstractEntry
     /**
      * @see org.apache.directory.studio.ldapbrowser.core.model.impl.AbstractEntry#setRdn(org.apache.directory.studio.ldapbrowser.core.model.RDN)
      */
-    protected void setRdn( Rdn newRdn )
+    protected void setRdn( RDN newRdn )
     {
     }
 

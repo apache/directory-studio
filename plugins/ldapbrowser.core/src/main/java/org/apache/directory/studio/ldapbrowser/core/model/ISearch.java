@@ -24,7 +24,7 @@ package org.apache.directory.studio.ldapbrowser.core.model;
 import java.io.Serializable;
 import java.util.List;
 
-import org.apache.directory.shared.ldap.name.LdapDN;
+import org.apache.directory.shared.ldap.name.DN;
 import org.apache.directory.shared.ldap.util.LdapURL;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.ConnectionPropertyPageProvider;
@@ -45,7 +45,7 @@ public interface ISearch extends Serializable, IAdaptable, SearchPropertyPagePro
 {
 
     /** Constant for empty search base */
-    public static final LdapDN EMPTY_SEARCH_BASE = new LdapDN(); //$NON-NLS-1$
+    public static final DN EMPTY_SEARCH_BASE = new DN(); //$NON-NLS-1$
 
     /** Constant for no returning attributes, an empty array */
     public static final String[] NO_ATTRIBUTES = new String[0];
@@ -275,7 +275,7 @@ public interface ISearch extends Serializable, IAdaptable, SearchPropertyPagePro
      * 
      * @return the search base
      */
-    public abstract LdapDN getSearchBase();
+    public abstract DN getSearchBase();
 
 
     /**
@@ -286,7 +286,7 @@ public interface ISearch extends Serializable, IAdaptable, SearchPropertyPagePro
      * 
      * @param searchBase the search base
      */
-    public abstract void setSearchBase( LdapDN searchBase );
+    public abstract void setSearchBase( DN searchBase );
 
 
     /**
