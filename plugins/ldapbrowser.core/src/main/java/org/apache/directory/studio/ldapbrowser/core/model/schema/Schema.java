@@ -180,6 +180,8 @@ public class Schema
         {
             // TODO: exception handling
             System.out.println( "Schema#loadFromLdif: " + e.toString() );
+            System.err.println( e.getMessage() );
+            e.printStackTrace();
         }
     }
 
@@ -343,7 +345,7 @@ public class Schema
             if ( matchingRule != null && !hasMatchingRuleDescription( matchingRule ) )
             {
                 MatchingRule mrd = new MatchingRule( matchingRule );
-                mrd.getNames().add( matchingRule );
+                mrd.addName( matchingRule );
                 addMatchingRule( mrd );
             }
         }
