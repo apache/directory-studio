@@ -37,10 +37,9 @@
     <module>org.apache.commons.io</module>
     <module>org.apache.commons.lang</module>
     <module>org.apache.commons.logging</module>
-    <module>org.apache.directory.shared.asn1</module>
     <module>org.apache.directory.shared.dsmlparser</module>
+    <module>org.apache.directory.shared.i18n</module>
     <module>org.apache.directory.shared.ldap</module>
-    <module>org.apache.directory.shared.ldapconstants</module>
     <module>org.apache.httpcomponents.httpclient</module>
     <module>org.apache.httpcomponents.httpcore</module>
     <module>org.apache.logging.log4j</module>
