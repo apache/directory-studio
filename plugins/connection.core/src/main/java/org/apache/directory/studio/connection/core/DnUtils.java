@@ -22,12 +22,13 @@ package org.apache.directory.studio.connection.core;
 
 import javax.naming.InvalidNameException;
 
-import org.apache.directory.shared.ldap.name.LdapDN;
-import org.apache.directory.shared.ldap.name.Rdn;
+import org.apache.directory.shared.ldap.exception.LdapInvalidDnException;
+import org.apache.directory.shared.ldap.name.DN;
+import org.apache.directory.shared.ldap.name.RDN;
 
 
 /**
- * Utility class for LdapDN specific stuff.
+ * Utility class for DN specific stuff.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
@@ -42,11 +43,9 @@ public class DnUtils
      * 
      * @return the composed DN
      */
-    public static LdapDN composeDn( Rdn rdn, LdapDN parent )
+    public static DN composeDn( RDN rdn, DN parent )
     {
-        LdapDN ldapDn = ( LdapDN ) parent.clone();
-        ldapDn.add( ( Rdn ) rdn.clone() );
-        return ldapDn;
+        return parent.add( rdn );
     }
 
 
@@ -58,7 +57,7 @@ public class DnUtils
      * 
      * @return the parent DN, null if the given DN hasn't a parent
      */
-    public static LdapDN getParent( LdapDN dn )
+    public static DN getParent( DN dn )
     {
         if ( dn.size() < 1 )
         {
@@ -66,7 +65,7 @@ public class DnUtils
         }
         else
         {
-            LdapDN parent = ( LdapDN ) dn.getPrefix( dn.size() - 1 );
+            DN parent = ( DN ) dn.getPrefix( dn.size() - 1 );
             return parent;
         }
     }
@@ -82,9 +81,16 @@ public class DnUtils
      * 
      * @throws InvalidNameException the invalid name exception
      */
-    public static LdapDN composeDn( String rdn, String parent ) throws InvalidNameException
+    public static DN composeDn( String rdn, String parent ) throws InvalidNameException
     {
-        return composeDn( new Rdn( rdn ), new LdapDN( parent ) );
+        try
+        {
+            return composeDn( new RDN( rdn ), new DN( parent ) );
+        }
+        catch ( LdapInvalidDnException e )
+        {
+            throw new InvalidNameException( e.getMessage() );
+        }
     }
 
 
@@ -96,13 +102,13 @@ public class DnUtils
      * 
      * @return the composed DN
      */
-    public static LdapDN composeDn( LdapDN prefix, LdapDN suffix )
+    public static DN composeDn( DN prefix, DN suffix )
     {
-        LdapDN ldapDn = ( LdapDN ) suffix.clone();
+        DN ldapDn = suffix;
 
         for ( int i = 0; i < prefix.size(); i++ )
         {
-            ldapDn.add( ( Rdn ) prefix.getRdn( i ).clone() );
+            ldapDn = ldapDn.add( ( RDN ) prefix.getRdn( i ).clone() );
         }
 
         return ldapDn;
@@ -117,7 +123,7 @@ public class DnUtils
      * 
      * @return the prefix
      */
-    public static LdapDN getPrefixName( LdapDN dn, LdapDN suffix )
+    public static DN getPrefixName( DN dn, DN suffix )
     {
         if ( suffix.size() < 1 )
         {
@@ -125,7 +131,7 @@ public class DnUtils
         }
         else
         {
-            LdapDN prefix = ( LdapDN ) dn.getSuffix( suffix.size() );
+            DN prefix = ( DN ) dn.getSuffix( suffix.size() );
             return prefix;
         }
     }
@@ -141,7 +147,7 @@ public class DnUtils
      * 
      * @throws InvalidNameException the invalid name exception
      */
-    public static Rdn composeRdn( String[] rdnTypes, String[] rdnValues ) throws InvalidNameException
+    public static RDN composeRdn( String[] rdnTypes, String[] rdnValues ) throws InvalidNameException
     {
         StringBuffer sb = new StringBuffer();
         for ( int i = 0; i < rdnTypes.length; i++ )
@@ -153,15 +159,15 @@ public class DnUtils
 
             sb.append( rdnTypes[i] );
             sb.append( '=' );
-            sb.append( Rdn.escapeValue( rdnValues[i] ) );
+            sb.append( RDN.escapeValue( rdnValues[i] ) );
         }
 
         String s = sb.toString();
         try
         {
-            if ( LdapDN.isValid( s ) )
+            if ( DN.isValid( s ) )
             {
-                Rdn rdn = new Rdn( sb.toString() );
+                RDN rdn = new RDN( sb.toString() );
                 return rdn;
             }
         }

@@ -66,7 +66,8 @@ import javax.security.auth.login.LoginException;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.directory.shared.ldap.codec.util.LdapURLEncodingException;
-import org.apache.directory.shared.ldap.name.LdapDN;
+import org.apache.directory.shared.ldap.exception.LdapInvalidDnException;
+import org.apache.directory.shared.ldap.name.DN;
 import org.apache.directory.shared.ldap.util.LdapURL;
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.Connection;
@@ -464,7 +465,7 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
                             Connection referralConnection = getReferralConnection( referral, monitor, this );
                             if ( referralConnection != null )
                             {
-                                String referralDn = referral.getLdapURLs().get( 0 ).getDn().getUpName();
+                                String referralDn = referral.getLdapURLs().get( 0 ).getDn().getName();
                                 referralConnection.getJNDIConnectionWrapper().modifyEntry( referralDn,
                                     modificationItems, controls, monitor, newReferralsInfo );
                             }
@@ -668,7 +669,7 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
                             Connection referralConnection = getReferralConnection( referral, monitor, this );
                             if ( referralConnection != null )
                             {
-                                String referralDn = referral.getLdapURLs().get( 0 ).getDn().getUpName();
+                                String referralDn = referral.getLdapURLs().get( 0 ).getDn().getName();
                                 referralConnection.getJNDIConnectionWrapper().createEntry( referralDn, attributes,
                                     controls, monitor, newReferralsInfo );
                             }
@@ -763,7 +764,7 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
                             Connection referralConnection = getReferralConnection( referral, monitor, this );
                             if ( referralConnection != null )
                             {
-                                String referralDn = referral.getLdapURLs().get( 0 ).getDn().getUpName();
+                                String referralDn = referral.getLdapURLs().get( 0 ).getDn().getName();
                                 referralConnection.getJNDIConnectionWrapper().deleteEntry( referralDn, controls,
                                     monitor, newReferralsInfo );
                             }
@@ -1586,7 +1587,7 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
             String info = ( String ) referralException.getReferralInfo();
             String name = referralException.getRemainingName().toString();
             LdapURL url = new LdapURL( info );
-            LdapDN dn = new LdapDN( name );
+            DN dn = new DN( name );
 
             if ( referral == null )
             {
@@ -1596,6 +1597,9 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
             referral.addUrl( url );
         }
         catch ( LdapURLEncodingException e )
+        {
+        }
+        catch ( LdapInvalidDnException e )
         {
         }
 

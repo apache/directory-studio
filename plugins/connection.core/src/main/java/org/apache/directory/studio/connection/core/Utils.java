@@ -25,10 +25,10 @@ import java.util.Arrays;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
-import javax.naming.InvalidNameException;
 import javax.naming.directory.SearchControls;
 
-import org.apache.directory.shared.ldap.name.LdapDN;
+import org.apache.directory.shared.ldap.exception.LdapInvalidDnException;
+import org.apache.directory.shared.ldap.name.DN;
 import org.apache.directory.shared.ldap.util.LdapURL;
 import org.apache.directory.shared.ldap.util.StringTools;
 import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
@@ -193,9 +193,9 @@ public class Utils
         url.setPort( connection.getPort() );
         try
         {
-            url.setDn( new LdapDN( searchBase ) );
+            url.setDn( new DN( searchBase ) );
         }
-        catch ( InvalidNameException e )
+        catch ( LdapInvalidDnException e )
         {
         }
         if ( attributes != null )
@@ -321,7 +321,7 @@ public class Utils
      * 
      * @return the DN as LdapDN
      */
-    public static LdapDN getLdapDn( String dn )
+    public static DN getLdapDn( String dn )
     {
         if ( dn == null )
         {
@@ -329,12 +329,11 @@ public class Utils
         }
         try
         {
-            return new LdapDN( dn );
+            return new DN( dn );
         }
-        catch ( InvalidNameException e )
+        catch ( LdapInvalidDnException e )
         {
             return null;
         }
     }
-
 }

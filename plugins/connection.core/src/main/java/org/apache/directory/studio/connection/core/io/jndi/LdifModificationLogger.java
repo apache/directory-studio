@@ -38,7 +38,6 @@ import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
-import javax.naming.InvalidNameException;
 import javax.naming.NamingEnumeration;
 import javax.naming.NamingException;
 import javax.naming.directory.Attribute;
@@ -48,15 +47,16 @@ import javax.naming.directory.ModificationItem;
 import javax.naming.directory.SearchControls;
 import javax.naming.ldap.Control;
 
-import org.apache.directory.shared.ldap.name.LdapDN;
-import org.apache.directory.shared.ldap.name.Rdn;
+import org.apache.directory.shared.ldap.exception.LdapInvalidDnException;
+import org.apache.directory.shared.ldap.name.DN;
+import org.apache.directory.shared.ldap.name.RDN;
 import org.apache.directory.studio.connection.core.Connection;
+import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
 import org.apache.directory.studio.connection.core.ConnectionCoreConstants;
 import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
 import org.apache.directory.studio.connection.core.ConnectionManager;
 import org.apache.directory.studio.connection.core.DnUtils;
 import org.apache.directory.studio.connection.core.IJndiLogger;
-import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
 import org.apache.directory.studio.ldifparser.LdifFormatParameters;
 import org.apache.directory.studio.ldifparser.model.container.LdifChangeAddRecord;
 import org.apache.directory.studio.ldifparser.model.container.LdifChangeDeleteRecord;
@@ -420,22 +420,22 @@ public class LdifModificationLogger implements IJndiLogger
 
         try
         {
-            LdapDN dn = new LdapDN( newDn );
-            Rdn newrdn = dn.getRdn();
-            LdapDN newsuperior = DnUtils.getParent( dn );
+            DN dn = new DN( newDn );
+            RDN newrdn = dn.getRdn();
+            DN newsuperior = DnUtils.getParent( dn );
 
             LdifChangeModDnRecord record = new LdifChangeModDnRecord( LdifDnLine.create( oldDn ) );
             addControlLines( record, controls );
             record.setChangeType( LdifChangeTypeLine.createModDn() );
-            record.setNewrdn( LdifNewrdnLine.create( newrdn.getUpName() ) );
+            record.setNewrdn( LdifNewrdnLine.create( newrdn.getName() ) );
             record.setDeloldrdn( deleteOldRdn ? LdifDeloldrdnLine.create1() : LdifDeloldrdnLine.create0() );
-            record.setNewsuperior( LdifNewsuperiorLine.create( newsuperior.getUpName() ) );
+            record.setNewsuperior( LdifNewsuperiorLine.create( newsuperior.getName() ) );
             record.finish( LdifSepLine.create() );
 
             String formattedString = record.toFormattedString( LdifFormatParameters.DEFAULT );
             log( formattedString, ex, connection );
         }
-        catch ( InvalidNameException e )
+        catch ( LdapInvalidDnException e )
         {
         }
     }
