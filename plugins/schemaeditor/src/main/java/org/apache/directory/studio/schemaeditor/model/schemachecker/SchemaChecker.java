@@ -470,7 +470,7 @@ public class SchemaChecker
         }
 
         // Checking superior
-        String superior = at.getSuperiorName();
+        String superior = at.getSuperiorOid();
         if ( ( superior != null ) && ( !"".equals( superior ) ) )
         {
             AttributeTypeImpl superiorAT = Activator.getDefault().getSchemaHandler().getAttributeType( superior );

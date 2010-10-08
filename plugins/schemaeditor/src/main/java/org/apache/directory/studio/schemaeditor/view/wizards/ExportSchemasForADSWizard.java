@@ -469,7 +469,7 @@ public class ExportSchemasForADSWizard extends Wizard implements IExportWizard
         for ( AttributeTypeImpl at : schema.getAttributeTypes() )
         {
             // Superior
-            String supName = at.getSuperiorName();
+            String supName = at.getSuperiorOid();
             if ( supName != null )
             {
                 AttributeTypeImpl sup = schemaHandler.getAttributeType( supName );

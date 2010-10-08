@@ -121,17 +121,17 @@ public class AttributeTypeImpl extends AttributeType
             }
 
             // Superior
-            if ( ( getSuperiorName() == null ) && ( at.getSuperiorName() != null ) )
+            if ( ( getSuperiorOid() == null ) && ( at.getSuperiorOid() != null ) )
             {
                 return false;
             }
-            else if ( ( getSuperiorName() != null ) && ( at.getSuperiorName() == null ) )
+            else if ( ( getSuperiorOid() != null ) && ( at.getSuperiorOid() == null ) )
             {
                 return false;
             }
-            else if ( ( getSuperiorName() != null ) && ( at.getSuperiorName() != null ) )
+            else if ( ( getSuperiorOid() != null ) && ( at.getSuperiorOid() != null ) )
             {
-                if ( !getSuperiorName().equals( at.getSuperiorName() ) )
+                if ( !getSuperiorOid().equals( at.getSuperiorOid() ) )
                 {
                     return false;
                 }
@@ -202,51 +202,51 @@ public class AttributeTypeImpl extends AttributeType
             }
 
             // Equality matching rule
-            if ( ( getEqualityName() == null ) && ( at.getEqualityName() != null ) )
+            if ( ( getEqualityOid() == null ) && ( at.getEqualityOid() != null ) )
             {
                 return false;
             }
-            else if ( ( getEqualityName() != null ) && ( at.getEqualityName() == null ) )
+            else if ( ( getEqualityOid() != null ) && ( at.getEqualityOid() == null ) )
             {
                 return false;
             }
-            else if ( ( getEqualityName() != null ) && ( at.getEqualityName() != null ) )
+            else if ( ( getEqualityOid() != null ) && ( at.getEqualityOid() != null ) )
             {
-                if ( !getEqualityName().equals( at.getEqualityName() ) )
+                if ( !getEqualityOid().equals( at.getEqualityOid() ) )
                 {
                     return false;
                 }
             }
 
             // Ordering matching rule
-            if ( ( getOrderingName() == null ) && ( at.getOrderingName() != null ) )
+            if ( ( getOrderingOid() == null ) && ( at.getOrderingOid() != null ) )
             {
                 return false;
             }
-            else if ( ( getOrderingName() != null ) && ( at.getOrderingName() == null ) )
+            else if ( ( getOrderingOid() != null ) && ( at.getOrderingOid() == null ) )
             {
                 return false;
             }
-            else if ( ( getOrderingName() != null ) && ( at.getOrderingName() != null ) )
+            else if ( ( getOrderingOid() != null ) && ( at.getOrderingOid() != null ) )
             {
-                if ( !getOrderingName().equals( at.getOrderingName() ) )
+                if ( !getOrderingOid().equals( at.getOrderingOid() ) )
                 {
                     return false;
                 }
             }
 
             // Substring matching rule
-            if ( ( getSubstringName() == null ) && ( at.getSubstringName() != null ) )
+            if ( ( getSubstringOid() == null ) && ( at.getSubstringOid() != null ) )
             {
                 return false;
             }
-            else if ( ( getSubstringName() != null ) && ( at.getSubstringName() == null ) )
+            else if ( ( getSubstringOid() != null ) && ( at.getSubstringOid() == null ) )
             {
                 return false;
             }
-            else if ( ( getSubstringName() != null ) && ( at.getSubstringName() != null ) )
+            else if ( ( getSubstringOid() != null ) && ( at.getSubstringOid() != null ) )
             {
-                if ( !getSubstringName().equals( at.getSubstringName() ) )
+                if ( !getSubstringOid().equals( at.getSubstringOid() ) )
                 {
                     return false;
                 }

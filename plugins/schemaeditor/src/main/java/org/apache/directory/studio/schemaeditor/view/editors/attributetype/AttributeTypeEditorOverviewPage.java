@@ -983,7 +983,7 @@ public class AttributeTypeEditorOverviewPage extends FormPage
     {
         supComboViewer.setInput( new ATESuperiorComboInput( originalAttributeType ) );
 
-        String supAtName = modifiedAttributeType.getSuperiorName();
+        String supAtName = modifiedAttributeType.getSuperiorOid();
         if ( supAtName == null )
         {
             supComboViewer.setSelection( new StructuredSelection( new NonExistingAttributeType(

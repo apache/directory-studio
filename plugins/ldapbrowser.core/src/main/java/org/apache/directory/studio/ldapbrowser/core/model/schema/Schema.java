@@ -320,9 +320,9 @@ public class Schema
             }
 
             // assume all received matching rules in attributes are valid -> create pseudo matching rules if missing
-            String emr = atd.getEqualityName();
-            String omr = atd.getOrderingName();
-            String smr = atd.getSubstringName();
+            String emr = atd.getEqualityOid();
+            String omr = atd.getOrderingOid();
+            String smr = atd.getSubstringOid();
             checkMatchingRules( emr, omr, smr );
         }
 
@@ -484,7 +484,12 @@ public class Schema
      */
     public boolean hasObjectClassDescription( String nameOrOid )
     {
-        return ocdMapByNameOrNumericOid.containsKey( nameOrOid.toLowerCase() );
+        if ( nameOrOid != null )
+        {
+            return ocdMapByNameOrNumericOid.containsKey( nameOrOid.toLowerCase() );
+        }
+
+        return false;
     }
 
 
@@ -565,7 +570,12 @@ public class Schema
      */
     public boolean hasAttributeTypeDescription( String nameOrOid )
     {
-        return atdMapByNameOrNumericOid.containsKey( nameOrOid.toLowerCase() );
+        if ( nameOrOid != null )
+        {
+            return atdMapByNameOrNumericOid.containsKey( nameOrOid.toLowerCase() );
+        }
+
+        return false;
     }
 
 
@@ -643,7 +653,12 @@ public class Schema
      */
     public boolean hasLdapSyntaxDescription( String numericOid )
     {
-        return lsdMapByNumericOid.containsKey( numericOid.toLowerCase() );
+        if ( numericOid != null )
+        {
+            return lsdMapByNumericOid.containsKey( numericOid.toLowerCase() );
+        }
+
+        return false;
     }
 
 
@@ -724,7 +739,12 @@ public class Schema
      */
     public boolean hasMatchingRuleDescription( String nameOrOid )
     {
-        return mrdMapByNameOrNumericOid.containsKey( nameOrOid.toLowerCase() );
+        if ( nameOrOid != null )
+        {
+            return mrdMapByNameOrNumericOid.containsKey( nameOrOid.toLowerCase() );
+        }
+
+        return false;
     }
 
 
@@ -803,7 +823,12 @@ public class Schema
      */
     public boolean hasMatchingRuleUseDescription( String nameOrOid )
     {
-        return mrudMapByNameOrNumericOid.containsKey( nameOrOid.toLowerCase() );
+        if ( nameOrOid != null )
+        {
+            return mrudMapByNameOrNumericOid.containsKey( nameOrOid.toLowerCase() );
+        }
+
+        return false;
     }
 
 

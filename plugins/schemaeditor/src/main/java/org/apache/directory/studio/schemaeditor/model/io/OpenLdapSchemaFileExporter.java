@@ -114,21 +114,21 @@ public class OpenLdapSchemaFileExporter
         }
 
         // SUP
-        if ( ( at.getSuperiorName() != null ) && ( !at.getSuperiorName().equals( "" ) ) ) //$NON-NLS-1$
+        if ( ( at.getSuperiorOid() != null ) && ( !at.getSuperiorOid().equals( "" ) ) ) //$NON-NLS-1$
         {
-            sb.append( "\tSUP " + at.getSuperiorName() + " \n" ); //$NON-NLS-1$ //$NON-NLS-2$
+            sb.append( "\tSUP " + at.getSuperiorOid() + " \n" ); //$NON-NLS-1$ //$NON-NLS-2$
         }
 
         // EQUALITY
-        if ( ( at.getEqualityName() != null ) && ( !at.getEqualityName().equals( "" ) ) ) //$NON-NLS-1$
+        if ( ( at.getEqualityOid() != null ) && ( !at.getEqualityOid().equals( "" ) ) ) //$NON-NLS-1$
         {
-            sb.append( "\tEQUALITY " + at.getEqualityName() + " \n" ); //$NON-NLS-1$ //$NON-NLS-2$
+            sb.append( "\tEQUALITY " + at.getEqualityOid() + " \n" ); //$NON-NLS-1$ //$NON-NLS-2$
         }
 
         // ORDERING
-        if ( ( at.getOrderingName() != null ) && ( !at.getOrderingName().equals( "" ) ) ) //$NON-NLS-1$
+        if ( ( at.getOrderingOid() != null ) && ( !at.getOrderingOid().equals( "" ) ) ) //$NON-NLS-1$
         {
-            sb.append( "\tORDERING " + at.getOrderingName() + " \n" ); //$NON-NLS-1$ //$NON-NLS-2$
+            sb.append( "\tORDERING " + at.getOrderingOid() + " \n" ); //$NON-NLS-1$ //$NON-NLS-2$
         }
 
         // SUBSTR

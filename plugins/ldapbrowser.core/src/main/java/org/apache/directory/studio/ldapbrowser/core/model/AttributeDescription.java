@@ -267,7 +267,7 @@ public class AttributeDescription implements Serializable
         if ( myAtd != otherAtd )
         {
             AttributeType superiorAtd = null;
-            String superiorName = myAtd.getSuperiorName();
+            String superiorName = myAtd.getSuperiorOid();
             while ( superiorName != null )
             {
                 superiorAtd = schema.getAttributeTypeDescription( superiorName );
@@ -275,7 +275,7 @@ public class AttributeDescription implements Serializable
                 {
                     break;
                 }
-                superiorName = superiorAtd.getSuperiorName();
+                superiorName = superiorAtd.getSuperiorOid();
             }
             if ( superiorAtd != otherAtd )
             {

@@ -122,7 +122,7 @@ public class DependenciesComputer
         throws DependencyComputerException
     {
         // Superior
-        String superior = attributeType.getSuperiorName();
+        String superior = attributeType.getSuperiorOid();
         if ( superior != null )
         {
             AttributeTypeImpl superiorAT = schemaHandler.getAttributeType( superior );
@@ -162,7 +162,7 @@ public class DependenciesComputer
         }
 
         // Equality Matching Rule
-        String equalityName = attributeType.getEqualityName();
+        String equalityName = attributeType.getEqualityOid();
         if ( equalityName != null )
         {
             MatchingRuleImpl equalityMatchingRule = schemaHandler.getMatchingRule( equalityName );
@@ -182,7 +182,7 @@ public class DependenciesComputer
         }
 
         // Ordering Matching Rule
-        String orderingName = attributeType.getEqualityName();
+        String orderingName = attributeType.getOrderingOid();
         if ( orderingName != null )
         {
             MatchingRuleImpl orderingMatchingRule = schemaHandler.getMatchingRule( orderingName );
@@ -202,7 +202,7 @@ public class DependenciesComputer
         }
 
         // Substring Matching Rule
-        String substringName = attributeType.getEqualityName();
+        String substringName = attributeType.getSubstringOid();
         if ( substringName != null )
         {
             MatchingRuleImpl substringMatchingRule = schemaHandler.getMatchingRule( substringName );

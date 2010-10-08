@@ -690,8 +690,8 @@ public class DifferenceEngine
      */
     private static PropertyDifference getSuperiorDifference( AttributeTypeImpl at1, AttributeTypeImpl at2 )
     {
-        String at1Superior = at1.getSuperiorName();
-        String at2Superior = at2.getSuperiorName();
+        String at1Superior = at1.getSuperiorOid();
+        String at2Superior = at2.getSuperiorOid();
 
         if ( ( at1Superior == null ) && ( at2Superior != null ) )
         {

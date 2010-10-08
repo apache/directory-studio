@@ -592,7 +592,7 @@ public class AttributeTypeDescriptionDetailsPage extends SchemaDetailsPage
         // or a dash if no supertype exists.
         if ( atd != null )
         {
-            String superType = atd.getSuperiorName();
+            String superType = atd.getSuperiorOid();
             if ( superType != null )
             {
                 supertypeSection.setText( NLS.bind( Messages

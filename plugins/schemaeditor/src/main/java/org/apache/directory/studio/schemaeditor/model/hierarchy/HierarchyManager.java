@@ -79,7 +79,7 @@ public class HierarchyManager
         // Checking Aliases and OID
         checkAliasesAndOID( at );
 
-        String superiorName = at.getSuperiorName();
+        String superiorName = at.getSuperiorOid();
         if ( superiorName != null )
         // The attribute type has a superior
         {
@@ -407,7 +407,7 @@ public class HierarchyManager
     private void removeAttributeType( AttributeTypeImpl at )
     {
         // Removing the attribute type as child of its superior
-        String superiorName = at.getSuperiorName();
+        String superiorName = at.getSuperiorOid();
         if ( ( superiorName != null ) && ( !"".equals( superiorName ) ) ) //$NON-NLS-1$
         {
             AttributeTypeImpl superiorAT = schemaHandler.getAttributeType( superiorName );
@@ -437,7 +437,7 @@ public class HierarchyManager
 
                 parentsMap.put( child, root );
                 childrenMap.put( root, child );
-                String childSuperiorName = childAT.getSuperiorName();
+                String childSuperiorName = childAT.getSuperiorOid();
                 if ( ( childSuperiorName != null ) && ( !"".equals( childSuperiorName ) ) ) //$NON-NLS-1$
                 {
                     parentsMap.put( child, childSuperiorName.toLowerCase() );

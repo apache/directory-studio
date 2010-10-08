@@ -126,7 +126,7 @@ public class ATESuperiorComboContentProvider implements IStructuredContentProvid
         }
         else
         {
-            String sup = at1.getSuperiorName();
+            String sup = at1.getSuperiorOid();
 
             if ( sup == null )
             {

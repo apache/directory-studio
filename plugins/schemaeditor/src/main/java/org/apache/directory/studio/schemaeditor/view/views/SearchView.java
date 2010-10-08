@@ -734,7 +734,7 @@ public class SearchView extends ViewPart
                         // Superior
                         if ( searchScope.contains( SearchInEnum.SUPERIOR ) )
                         {
-                            if ( checkString( pattern, at.getSuperiorName() ) )
+                            if ( checkString( pattern, at.getSuperiorOid() ) )
                             {
                                 searchResults.add( at );
                                 continue;

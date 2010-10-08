@@ -576,14 +576,14 @@ public class SchemaUtils
      */
     public static String getEqualityMatchingRuleNameOrNumericOidTransitive( AttributeType atd, Schema schema )
     {
-        if ( atd.getEqualityName() != null )
+        if ( atd.getEqualityOid() != null )
         {
-            return atd.getEqualityName();
+            return atd.getEqualityOid();
         }
 
-        if ( atd.getSuperiorName() != null && schema.hasAttributeTypeDescription( atd.getSuperiorName() ) )
+        if ( atd.getSuperiorOid() != null && schema.hasAttributeTypeDescription( atd.getSuperiorOid() ) )
         {
-            AttributeType superior = schema.getAttributeTypeDescription( atd.getSuperiorName() );
+            AttributeType superior = schema.getAttributeTypeDescription( atd.getSuperiorOid() );
             return getEqualityMatchingRuleNameOrNumericOidTransitive( superior, schema );
         }
 
@@ -603,14 +603,14 @@ public class SchemaUtils
      */
     public static String getSubstringMatchingRuleNameOrNumericOidTransitive( AttributeType atd, Schema schema )
     {
-        if ( atd.getSubstringName() != null )
+        if ( atd.getSubstringOid() != null )
         {
-            return atd.getSubstringName();
+            return atd.getSubstringOid();
         }
 
-        if ( atd.getSuperiorName() != null && schema.hasAttributeTypeDescription( atd.getSubstringName() ) )
+        if ( atd.getSuperiorOid() != null && schema.hasAttributeTypeDescription( atd.getSubstringOid() ) )
         {
-            AttributeType superior = schema.getAttributeTypeDescription( atd.getSubstringName() );
+            AttributeType superior = schema.getAttributeTypeDescription( atd.getSubstringOid() );
             return getSubstringMatchingRuleNameOrNumericOidTransitive( superior, schema );
         }
 
@@ -630,14 +630,14 @@ public class SchemaUtils
      */
     public static String getOrderingMatchingRuleNameOrNumericOidTransitive( AttributeType atd, Schema schema )
     {
-        if ( atd.getOrderingName() != null )
+        if ( atd.getOrderingOid() != null )
         {
-            return atd.getOrderingName();
+            return atd.getOrderingOid();
         }
 
-        if ( atd.getSuperiorName() != null && schema.hasAttributeTypeDescription( atd.getSuperiorName() ) )
+        if ( atd.getSuperiorOid() != null && schema.hasAttributeTypeDescription( atd.getSuperiorOid() ) )
         {
-            AttributeType superior = schema.getAttributeTypeDescription( atd.getSuperiorName() );
+            AttributeType superior = schema.getAttributeTypeDescription( atd.getSuperiorOid() );
             return getOrderingMatchingRuleNameOrNumericOidTransitive( superior, schema );
         }
 
@@ -662,9 +662,9 @@ public class SchemaUtils
             return atd.getSyntaxName();
         }
 
-        if ( atd.getSuperiorName() != null && schema.hasAttributeTypeDescription( atd.getSuperiorName() ) )
+        if ( atd.getSuperiorOid() != null && schema.hasAttributeTypeDescription( atd.getSuperiorOid() ) )
         {
-            AttributeType superior = schema.getAttributeTypeDescription( atd.getSuperiorName() );
+            AttributeType superior = schema.getAttributeTypeDescription( atd.getSuperiorOid() );
             return getSyntaxNumericOidTransitive( superior, schema );
         }
 
@@ -689,9 +689,9 @@ public class SchemaUtils
             return atd.getSyntaxLength();
         }
 
-        if ( atd.getSuperiorName() != null && schema.hasAttributeTypeDescription( atd.getSuperiorName() ) )
+        if ( atd.getSuperiorOid() != null && schema.hasAttributeTypeDescription( atd.getSuperiorOid() ) )
         {
-            AttributeType superior = schema.getAttributeTypeDescription( atd.getSuperiorName() );
+            AttributeType superior = schema.getAttributeTypeDescription( atd.getSuperiorOid() );
             return getSyntaxLengthTransitive( superior, schema );
         }
 
@@ -742,7 +742,7 @@ public class SchemaUtils
         Set<AttributeType> derivedAtds = new TreeSet<AttributeType>( schemaElementNameComparator );
         for ( AttributeType derivedAtd : schema.getAttributeTypeDescriptions() )
         {
-            String superType = derivedAtd.getSuperiorName();
+            String superType = derivedAtd.getSuperiorOid();
             if ( superType != null && getLowerCaseIdentifiers( atd ).contains( superType.toLowerCase() ) )
             {
                 derivedAtds.add( derivedAtd );

@@ -335,7 +335,7 @@ public class MergeSchemasWizard extends Wizard implements IImportWizard
                 // merge dependencies: super attribute type
                 if ( mergeDependencies )
                 {
-                    String superiorName = clonedAttributeType.getSuperiorName();
+                    String superiorName = clonedAttributeType.getSuperiorOid();
                     if ( superiorName != null )
                     {
                         AttributeTypeImpl superiorAttributeType = sourceAttributeType.getSchemaObject().getProject()

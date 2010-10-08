@@ -277,7 +277,7 @@ public class XMLSchemaFileExporter
         }
 
         // Superior
-        String superior = at.getSuperiorName();
+        String superior = at.getSuperiorOid();
         if ( ( superior != null ) && ( !superior.equals( "" ) ) ) //$NON-NLS-1$
         {
             atNode.addElement( SUPERIOR_TAG ).setText( superior );
