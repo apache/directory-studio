@@ -215,8 +215,8 @@ public class LdapServersUtils
     public static void startConsolePrinterThread( LdapServer server )
     {
         MessageConsole messageConsole = ConsolesManager.getDefault().getMessageConsole( server );
-        ConsolePrinterThread consolePrinter = new ConsolePrinterThread( LdapServersManager.getServerFolder( server ).append( "log" )
-            .append( "apacheds.log" ).toFile(), messageConsole.newMessageStream() );
+        ConsolePrinterThread consolePrinter = new ConsolePrinterThread( LdapServersManager.getServerFolder( server ).append( "log" ) //$NON-NLS-1$
+            .append( "apacheds.log" ).toFile(), messageConsole.newMessageStream() ); //$NON-NLS-1$
         consolePrinter.start();
 
         // Storing the console printer as a custom object in the LDAP Server for later use

@@ -89,7 +89,8 @@ public class ConsolesManager
         }
         else
         {
-            MessageConsole messageConsole = new MessageConsole( server.getName() + " [LDAP Server]", null );
+            MessageConsole messageConsole = new MessageConsole( server.getName()
+                + " " + Messages.getString( "ConsolesManager.LdapServer" ), null ); //$NON-NLS-1$ //$NON-NLS-2$
             consolesMap.put( server, messageConsole );
 
             ConsolePlugin.getDefault().getConsoleManager().addConsoles( new IConsole[]

@@ -62,7 +62,7 @@ public interface LdapServersPluginConstants
     public static final String CMD_NEW_SERVER = LdapServersPlugin.getDefault().getPluginProperties()
         .getString( "Cmd_NewServer_id" ); //$NON-NLS-1$
     public static final String CMD_OPEN_CONFIGURATION = LdapServersPlugin.getDefault().getPluginProperties()
-        .getString( "Cmd_OpenConfiguration_id" );
+        .getString( "Cmd_OpenConfiguration_id" ); //$NON-NLS-1$
     public static final String CMD_PROPERTIES = LdapServersPlugin.getDefault().getPluginProperties()
         .getString( "Cmd_Properties_id" ); //$NON-NLS-1$
     public static final String CMD_RENAME = LdapServersPlugin.getDefault().getPluginProperties()

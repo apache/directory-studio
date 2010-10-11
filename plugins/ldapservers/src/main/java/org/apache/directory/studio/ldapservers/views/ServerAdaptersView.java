@@ -60,7 +60,7 @@ public class ServerAdaptersView extends ViewPart
                 {
                     LdapServerAdapterExtension extension = ( LdapServerAdapterExtension ) element;
 
-                    return extension.getName() + " " + extension.getVersion();
+                    return extension.getName() + " " + extension.getVersion(); //$NON-NLS-1$
                 }
 
                 // TODO Auto-generated method stub
