@@ -114,7 +114,7 @@ public class ApacheDS153LdapServerAdapter implements LdapServerAdapter
             LOG4J_PROPERTIES ) );
 
         // Creating an empty log file
-        new File( confFolder, "apacheds.log" ).createNewFile();
+        new File( logFolder, "apacheds.log" ).createNewFile();
     }
 
 

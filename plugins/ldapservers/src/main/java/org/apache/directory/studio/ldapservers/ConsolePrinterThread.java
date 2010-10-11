@@ -49,7 +49,6 @@ public class ConsolePrinterThread extends Thread
                 }
 
                 reader.close();
-
             }
             catch ( FileNotFoundException e )
             {
@@ -64,14 +63,15 @@ public class ConsolePrinterThread extends Thread
                 // TODO Auto-generated catch block
                 e.printStackTrace();
             }
-
         }
     }
 
 
+    /**
+     * Closes the console printer (makes the thread stop).
+     */
     public void close()
     {
-        System.out.println( "close" );
         stop = true;
     }
 }
