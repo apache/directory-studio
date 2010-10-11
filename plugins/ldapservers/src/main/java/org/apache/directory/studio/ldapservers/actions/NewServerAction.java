@@ -31,6 +31,9 @@ import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.IWorkbenchWindowActionDelegate;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.console.ConsolePlugin;
+import org.eclipse.ui.console.IConsole;
+import org.eclipse.ui.console.MessageConsole;
 
 
 /**
@@ -59,6 +62,18 @@ public class NewServerAction extends Action implements IWorkbenchWindowActionDel
      */
     public void run()
     {
+//        MessageConsole messageConsole = new MessageConsole( "test", null );
+//
+//        ConsolePlugin.getDefault().getConsoleManager().addConsoles( new IConsole[]
+//            { messageConsole } );
+//
+//        messageConsole.newMessageStream().print( "message" );
+//
+//        if ( true )
+//        {
+//            return;
+//        }
+
         // Instantiates and initializes the wizard
         NewServerWizard wizard = new NewServerWizard();
         wizard.init( PlatformUI.getWorkbench(), StructuredSelection.EMPTY );

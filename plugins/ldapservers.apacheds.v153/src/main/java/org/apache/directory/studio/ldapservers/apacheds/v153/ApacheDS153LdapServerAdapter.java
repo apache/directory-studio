@@ -112,6 +112,9 @@ public class ApacheDS153LdapServerAdapter implements LdapServerAdapter
             SERVER_XML ) );
         LdapServersUtils.copyResource( bundle, resourceConfFolderPath.append( LOG4J_PROPERTIES ), new File( confFolder,
             LOG4J_PROPERTIES ) );
+
+        // Creating an empty log file
+        new File( confFolder, "apacheds.log" ).createNewFile();
     }
 
 
@@ -156,6 +159,9 @@ public class ApacheDS153LdapServerAdapter implements LdapServerAdapter
      */
     public void start( LdapServer server, StudioProgressMonitor monitor ) throws Exception
     {
+        // Starting the console printer thread
+        LdapServersUtils.startConsolePrinterThread( server );
+
         // Launching Apache DS
         ILaunch launch = LdapServersUtils.launchApacheDS( server, getServerLibrariesFolder(), libraries );
 
@@ -172,17 +178,11 @@ public class ApacheDS153LdapServerAdapter implements LdapServerAdapter
      */
     public void stop( LdapServer server, StudioProgressMonitor monitor ) throws Exception
     {
-        // Getting the launch
-        ILaunch launch = ( ILaunch ) server.removeCustomObject( LdapServersUtils.LAUNCH_CONFIGURATION_CUSTOM_OBJECT );
-        if ( ( launch != null ) && ( !launch.isTerminated() ) )
-        {
-            // Terminating the launch
-            launch.terminate();
-        }
-        else
-        {
-            throw new Exception( "The associated launch configuration could not be found or is already terminated." );
-        }
+        // Stopping the console printer thread
+        LdapServersUtils.stopConsolePrinterThread( server );
+
+        // Terminating the launch configuration
+        LdapServersUtils.terminateLaunchConfiguration( server );
     }
 
 

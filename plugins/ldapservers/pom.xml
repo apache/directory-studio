@@ -129,6 +129,7 @@
  org.eclipse.jdt.launching,
  org.eclipse.jface.text,
  org.eclipse.ui,
+ org.eclipse.ui.console,
  org.eclipse.ui.ide
             </Require-Bundle>
             <Embed-Dependency>*;scope=compile|runtime</Embed-Dependency>
@@ -285,6 +286,11 @@
     <dependency>
       <groupId>org.eclipse.ui</groupId>
       <artifactId>ide</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.ui</groupId>
+      <artifactId>console</artifactId>
       <scope>provided</scope>
     </dependency>
     <dependency>

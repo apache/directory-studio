@@ -52,6 +52,7 @@ import org.eclipse.jdt.launching.IRuntimeClasspathEntry;
 import org.eclipse.jdt.launching.IVMInstall;
 import org.eclipse.jdt.launching.JavaRuntime;
 import org.eclipse.osgi.util.NLS;
+import org.eclipse.ui.console.MessageConsole;
 import org.osgi.framework.Bundle;
 
 
@@ -62,6 +63,9 @@ public class LdapServersUtils
 {
     /** The ID of the launch configuration custom object */
     public static final String LAUNCH_CONFIGURATION_CUSTOM_OBJECT = "launchConfiguration"; //$NON-NLS-1$
+
+    /** The ID of the console printer custom object */
+    public static final String CONSOLE_PRINTER_CUSTOM_OBJECT = "consolePrinter"; //$NON-NLS-1$
 
 
     /**
@@ -203,6 +207,42 @@ public class LdapServersUtils
 
 
     /**
+     * Starts the console printer thread.
+     *
+     * @param server
+     *      the server
+     */
+    public static void startConsolePrinterThread( LdapServer server )
+    {
+        MessageConsole messageConsole = ConsolesManager.getDefault().getMessageConsole( server );
+        ConsolePrinterThread consolePrinter = new ConsolePrinterThread( LdapServersManager.getServerFolder( server ).append( "log" )
+            .append( "apacheds.log" ).toFile(), messageConsole.newMessageStream() );
+        consolePrinter.start();
+
+        // Storing the console printer as a custom object in the LDAP Server for later use
+        server.putCustomObject( CONSOLE_PRINTER_CUSTOM_OBJECT, consolePrinter );
+    }
+
+
+    /**
+     * Stops the console printer thread.
+     *
+     * @param server
+     *      the server
+     */
+    public static void stopConsolePrinterThread( LdapServer server )
+    {
+        // Getting the console printer
+        ConsolePrinterThread consolePrinter = ( ConsolePrinterThread ) server.removeCustomObject( CONSOLE_PRINTER_CUSTOM_OBJECT );
+        if ( ( consolePrinter != null ) && ( consolePrinter.isAlive() ) )
+        {
+            // Closing the console printer
+            consolePrinter.close();
+        }
+    }
+
+
+    /**
      * Launches Apache DS using a launch configuration.
      *
      * @param server
@@ -290,6 +330,29 @@ public class LdapServersUtils
         server.putCustomObject( LAUNCH_CONFIGURATION_CUSTOM_OBJECT, launch );
 
         return launch;
+    }
+
+
+    /**
+     * Terminates the launch configuration.
+     *
+     * @param server
+     *      the server
+     * @throws Exception
+     */
+    public static void terminateLaunchConfiguration( LdapServer server ) throws Exception
+    {
+        // Getting the launch
+        ILaunch launch = ( ILaunch ) server.removeCustomObject( LdapServersUtils.LAUNCH_CONFIGURATION_CUSTOM_OBJECT );
+        if ( ( launch != null ) && ( !launch.isTerminated() ) )
+        {
+            // Terminating the launch
+            launch.terminate();
+        }
+        else
+        {
+            throw new Exception( "The associated launch configuration could not be found or is already terminated." );
+        }
     }
 
 
