@@ -128,9 +128,9 @@
       </build>
     </profile>
     <!-- 
-      Building help and features modules are disabled by default. Add 
-      -Dstudio-full
-      to the commandline to add them to the build.
+      Building help and features modules are enabled by default. Add 
+      -P-studio-full
+      to the commandline to exclude them from the build.
     -->
     <profile>
       <id>studio-full</id>
