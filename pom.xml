@@ -1155,6 +1155,11 @@
         <artifactId>shared-ldap-schema</artifactId>
         <version>${org.apache.directory.shared.version}</version>
       </dependency>
+      <dependency>
+        <groupId>org.apache.directory.shared</groupId>
+        <artifactId>ldap-client-api</artifactId>
+        <version>${org.apache.directory.shared.version}</version>
+      </dependency>
 
       <!-- Other dependencies -->
       <dependency>
