@@ -90,6 +90,7 @@
   <modules>
     <!-- The 'repository' module must be the first one -->
     <module>repository</module>
+    <module>libraries</module>
     <module>plugins</module>
   </modules>
 
@@ -140,7 +141,6 @@
         </file>
      </activation>
       <modules>
-        <module>libraries</module>
         <module>helps</module>
         <module>features</module>
       </modules>
