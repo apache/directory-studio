@@ -1136,6 +1136,11 @@
       <!-- Apache Directory Shared -->
       <dependency>
         <groupId>org.apache.directory.shared</groupId>
+        <artifactId>shared-dsml-parser</artifactId>
+        <version>${org.apache.directory.shared.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.directory.shared</groupId>
         <artifactId>shared-i18n</artifactId>
         <version>${org.apache.directory.shared.version}</version>
       </dependency>
@@ -1146,7 +1151,7 @@
       </dependency>
       <dependency>
         <groupId>org.apache.directory.shared</groupId>
-        <artifactId>shared-dsml-parser</artifactId>
+        <artifactId>shared-ldap-schema</artifactId>
         <version>${org.apache.directory.shared.version}</version>
       </dependency>
 
