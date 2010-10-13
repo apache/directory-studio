@@ -90,6 +90,7 @@
  org.apache.commons.collections;bundle-version="${org.apache.commons.collections.version}",
  org.apache.commons.lang;bundle-version="${org.apache.commons.lang.version}",
  org.apache.directory.shared.i18n;bundle-version="${org.apache.directory.shared.validversion}",
+ org.apache.mina.core;bundle-version="${org.apache.mina.core.version}",
  org.apache.logging.log4j;bundle-version="${org.apache.logging.log4j.version}",
  org.slf4j.api;bundle-version="${org.slf4j.version}",
  org.slf4j.log4j12;bundle-version="${org.slf4j.version}"</Require-Bundle>
@@ -144,6 +145,10 @@
         <exclusion>
           <groupId>org.apache.directory.shared</groupId>
           <artifactId>shared-ldap-constants</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.apache.mina</groupId>
+          <artifactId>mina-core</artifactId>
         </exclusion>
         <exclusion>
           <groupId>org.slf4j</groupId>
