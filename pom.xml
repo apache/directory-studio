@@ -1333,7 +1333,7 @@
         <plugin>
           <groupId>org.apache.directory.studio</groupId>
           <artifactId>studio-maven-plugin</artifactId>
-          <version>1.0.4-SNAPSHOT</version>
+          <version>1.0.4</version>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
