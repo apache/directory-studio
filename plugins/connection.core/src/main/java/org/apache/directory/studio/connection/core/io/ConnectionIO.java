@@ -35,6 +35,7 @@ import org.apache.directory.studio.connection.core.ConnectionParameter.Authentic
 import org.apache.directory.studio.connection.core.ConnectionParameter.EncryptionMethod;
 import org.apache.directory.studio.connection.core.ConnectionParameter.Krb5Configuration;
 import org.apache.directory.studio.connection.core.ConnectionParameter.Krb5CredentialConfiguration;
+import org.apache.directory.studio.connection.core.ConnectionParameter.NetworkProvider;
 import org.apache.directory.studio.connection.core.ConnectionParameter.SaslQop;
 import org.apache.directory.studio.connection.core.ConnectionParameter.SaslSecurityStrength;
 import org.dom4j.Attribute;
@@ -62,6 +63,7 @@ public class ConnectionIO
     private static final String HOST_TAG = "host"; //$NON-NLS-1$
     private static final String PORT_TAG = "port"; //$NON-NLS-1$
     private static final String ENCRYPTION_METHOD_TAG = "encryptionMethod"; //$NON-NLS-1$
+    private static final String NETWORK_PROVIDER_TAG = "networkProvider"; //$NON-NLS-1$
     private static final String AUTH_METHOD_TAG = "authMethod"; //$NON-NLS-1$
     private static final String BIND_PRINCIPAL_TAG = "bindPrincipal"; //$NON-NLS-1$
     private static final String BIND_PASSWORD_TAG = "bindPassword"; //$NON-NLS-1$
@@ -193,6 +195,26 @@ public class ConnectionIO
                     + connection.getName() + "' as int value. Encryption Method value :" //$NON-NLS-1$
                     + encryptionMethodAttribute.getValue() );
             }
+        }
+
+        // Network Provider
+        Attribute networkProviderAttribute = element.attribute( NETWORK_PROVIDER_TAG );
+        if ( networkProviderAttribute != null )
+        {
+            try
+            {
+                connection.setNetworkProvider( NetworkProvider.valueOf( networkProviderAttribute.getValue() ) );
+            }
+            catch ( IllegalArgumentException e )
+            {
+                throw new ConnectionIOException( "Unable to parse 'Network Provider' of connection '" //$NON-NLS-1$
+                    + connection.getName() + "' as int value. Network Provider value :" //$NON-NLS-1$
+                    + networkProviderAttribute.getValue() );
+            }
+        }
+        else
+        {
+            connection.setNetworkProvider( NetworkProvider.JNDI );
         }
 
         // Auth Method
@@ -379,6 +401,9 @@ public class ConnectionIO
 
         // Encryption Method
         connectionElement.addAttribute( ENCRYPTION_METHOD_TAG, connection.getEncryptionMethod().toString() );
+
+        // Network Parameter
+        connectionElement.addAttribute( NETWORK_PROVIDER_TAG, connection.getNetworkProvider().toString() );
 
         // Auth Method
         connectionElement.addAttribute( AUTH_METHOD_TAG, connection.getAuthMethod().toString() );

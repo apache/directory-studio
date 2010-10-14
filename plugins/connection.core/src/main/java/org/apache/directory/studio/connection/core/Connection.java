@@ -24,6 +24,7 @@ package org.apache.directory.studio.connection.core;
 import org.apache.directory.shared.ldap.util.LdapURL;
 import org.apache.directory.studio.connection.core.ConnectionParameter.AuthenticationMethod;
 import org.apache.directory.studio.connection.core.ConnectionParameter.EncryptionMethod;
+import org.apache.directory.studio.connection.core.ConnectionParameter.NetworkProvider;
 import org.apache.directory.studio.connection.core.event.ConnectionEventRegistry;
 import org.apache.directory.studio.connection.core.io.jndi.JNDIConnectionWrapper;
 import org.eclipse.core.runtime.IAdaptable;
@@ -190,7 +191,7 @@ public class Connection implements ConnectionPropertyPageProvider, IAdaptable
     public Object clone()
     {
         ConnectionParameter cp = new ConnectionParameter( getName(), getHost(), getPort(), getEncryptionMethod(),
-            getAuthMethod(), getBindPrincipal(), getBindPassword(), getSaslRealm(), isReadOnly(),
+            getNetworkProvider(), getAuthMethod(), getBindPrincipal(), getBindPassword(), getSaslRealm(), isReadOnly(),
             getConnectionParameter().getExtendedProperties() );
 
         Connection clone = new Connection( cp );
@@ -278,6 +279,17 @@ public class Connection implements ConnectionPropertyPageProvider, IAdaptable
     public EncryptionMethod getEncryptionMethod()
     {
         return connectionParameter.getEncryptionMethod();
+    }
+
+
+    /**
+     * Gets the network provider.
+     * 
+     * @return the network provider
+     */
+    public NetworkProvider getNetworkProvider()
+    {
+        return connectionParameter.getNetworkProvider();
     }
 
 

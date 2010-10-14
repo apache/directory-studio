@@ -34,7 +34,6 @@ import java.util.UUID;
  */
 public class ConnectionParameter
 {
-
     /**
      * Enum for the used encryption method.
      * 
@@ -42,7 +41,6 @@ public class ConnectionParameter
      */
     public enum EncryptionMethod
     {
-
         /** No encryption. */
         NONE,
 
@@ -54,13 +52,26 @@ public class ConnectionParameter
     }
 
     /**
+     * Enum for the network provider.
+     * 
+     * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+     */
+    public enum NetworkProvider
+    {
+        /** No encryption. */
+        JNDI,
+
+        /** SSL encryption. */
+        APACHE_DIRECTORY_LDAP_API
+    }
+
+    /**
      * Enum for the used authentication method.
      * 
      * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
      */
     public enum AuthenticationMethod
     {
-
         /** No authentication, anonymous bind. */
         NONE,
 
@@ -112,6 +123,9 @@ public class ConnectionParameter
 
     /** The encryption method. */
     private EncryptionMethod encryptionMethod;
+
+    /** The network provider. */
+    private NetworkProvider networkProvider;
 
     /** The authentication method. */
     private AuthenticationMethod authMethod;
@@ -183,14 +197,15 @@ public class ConnectionParameter
      * @param extendedProperties the extended properties
      */
     public ConnectionParameter( String name, String host, int port, EncryptionMethod encryptionMethod,
-        AuthenticationMethod authMethod, String bindPrincipal, String bindPassword, String saslRealm,
-        boolean isReadOnly, Map<String, String> extendedProperties )
+        NetworkProvider networkProvider, AuthenticationMethod authMethod, String bindPrincipal, String bindPassword,
+        String saslRealm, boolean isReadOnly, Map<String, String> extendedProperties )
     {
         this.id = createId();
         this.name = name;
         this.host = host;
         this.port = port;
         this.encryptionMethod = encryptionMethod;
+        this.networkProvider = networkProvider;
         this.authMethod = authMethod;
         this.bindPrincipal = bindPrincipal;
         this.bindPassword = bindPassword;
@@ -333,6 +348,28 @@ public class ConnectionParameter
     public void setEncryptionMethod( EncryptionMethod encryptionMethod )
     {
         this.encryptionMethod = encryptionMethod;
+    }
+
+
+    /**
+     * Gets the network provider.
+     *
+     * @return the network provider
+     */
+    public NetworkProvider getNetworkProvider()
+    {
+        return networkProvider;
+    }
+
+
+    /**
+     * Sets the network provider.
+     *
+     * @param networkProvider the network provider
+     */
+    public void setNetworkProvider( NetworkProvider networkProvider )
+    {
+        this.networkProvider = networkProvider;
     }
 
 
