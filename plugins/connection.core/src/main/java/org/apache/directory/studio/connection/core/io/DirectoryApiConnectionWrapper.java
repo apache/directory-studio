@@ -23,6 +23,7 @@ package org.apache.directory.studio.connection.core.io;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 import javax.naming.NamingEnumeration;
 import javax.naming.directory.Attributes;
@@ -33,13 +34,23 @@ import javax.naming.ldap.Control;
 
 import org.apache.directory.ldap.client.api.LdapConnectionConfig;
 import org.apache.directory.ldap.client.api.LdapNetworkConnection;
+import org.apache.directory.shared.ldap.codec.MessageTypeEnum;
 import org.apache.directory.shared.ldap.codec.controls.ControlImpl;
 import org.apache.directory.shared.ldap.cursor.Cursor;
 import org.apache.directory.shared.ldap.exception.LdapException;
 import org.apache.directory.shared.ldap.filter.SearchScope;
+import org.apache.directory.shared.ldap.message.AbandonListener;
+import org.apache.directory.shared.ldap.message.AddRequest;
+import org.apache.directory.shared.ldap.message.AddRequestImpl;
 import org.apache.directory.shared.ldap.message.AliasDerefMode;
 import org.apache.directory.shared.ldap.message.ArrayNamingEnumeration;
+import org.apache.directory.shared.ldap.message.DeleteRequest;
+import org.apache.directory.shared.ldap.message.DeleteRequestImpl;
+import org.apache.directory.shared.ldap.message.MessageException;
+import org.apache.directory.shared.ldap.message.ModifyDnRequest;
+import org.apache.directory.shared.ldap.message.ModifyDnRequestImpl;
 import org.apache.directory.shared.ldap.message.Response;
+import org.apache.directory.shared.ldap.message.ResultResponse;
 import org.apache.directory.shared.ldap.message.SearchRequest;
 import org.apache.directory.shared.ldap.message.SearchRequestImpl;
 import org.apache.directory.shared.ldap.message.SearchResultEntry;
@@ -311,7 +322,7 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
         }
         else
         {
-            return null;
+            return new org.apache.directory.shared.ldap.message.control.Control[0];
         }
     }
 
@@ -357,6 +368,25 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
     public void renameEntry( final String oldDn, final String newDn, final boolean deleteOldRdn,
         final Control[] controls, final StudioProgressMonitor monitor, final ReferralsInfo referralsInfo )
     {
+        try
+        {
+            DN newName = new DN( newDn );
+
+            // Preparing the rename request
+            ModifyDnRequest request = new ModifyDnRequestImpl();
+            request.setName( new DN( oldDn ) );
+            request.setDeleteOldRdn( deleteOldRdn );
+            request.setNewRdn( newName.getRdn() );
+            request.setNewSuperior( newName.getParent() );
+            request.addAllControls( convertControls( controls ) );
+
+            // Performing the rename operation
+            getLdapConnection().modifyDn( request );
+        }
+        catch ( Exception e )
+        {
+            monitor.reportError( e );
+        }
     }
 
 
@@ -366,6 +396,21 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
     public void createEntry( final String dn, final Attributes attributes, final Control[] controls,
         final StudioProgressMonitor monitor, final ReferralsInfo referralsInfo )
     {
+        try
+        {
+            // Preparing the add request
+            AddRequest request = new AddRequestImpl();
+            request.setEntryDn( new DN( dn ) );
+            request.setEntry( AttributeUtils.toClientEntry( attributes, new DN( dn ) ) );
+            request.addAllControls( convertControls( controls ) );
+
+            // Performing the add operation
+            getLdapConnection().add( request );
+        }
+        catch ( Exception e )
+        {
+            monitor.reportError( e );
+        }
     }
 
 
@@ -375,5 +420,19 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
     public void deleteEntry( final String dn, final Control[] controls, final StudioProgressMonitor monitor,
         final ReferralsInfo referralsInfo )
     {
+        try
+        {
+            // Preparing the delete request
+            DeleteRequest request = new DeleteRequestImpl();
+            request.setName( new DN( dn ) );
+            request.addAllControls( convertControls( controls ) );
+
+            // Performing the delete operation
+            getLdapConnection().delete( request );
+        }
+        catch ( Exception e )
+        {
+            monitor.reportError( e );
+        }
     }
 }
