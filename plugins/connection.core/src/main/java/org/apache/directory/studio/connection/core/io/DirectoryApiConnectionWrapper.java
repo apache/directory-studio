@@ -23,10 +23,10 @@ package org.apache.directory.studio.connection.core.io;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 
 import javax.naming.NamingEnumeration;
 import javax.naming.directory.Attributes;
+import javax.naming.directory.DirContext;
 import javax.naming.directory.ModificationItem;
 import javax.naming.directory.SearchControls;
 import javax.naming.directory.SearchResult;
@@ -34,23 +34,24 @@ import javax.naming.ldap.Control;
 
 import org.apache.directory.ldap.client.api.LdapConnectionConfig;
 import org.apache.directory.ldap.client.api.LdapNetworkConnection;
-import org.apache.directory.shared.ldap.codec.MessageTypeEnum;
 import org.apache.directory.shared.ldap.codec.controls.ControlImpl;
 import org.apache.directory.shared.ldap.cursor.Cursor;
+import org.apache.directory.shared.ldap.entry.DefaultModification;
+import org.apache.directory.shared.ldap.entry.Modification;
+import org.apache.directory.shared.ldap.entry.ModificationOperation;
 import org.apache.directory.shared.ldap.exception.LdapException;
 import org.apache.directory.shared.ldap.filter.SearchScope;
-import org.apache.directory.shared.ldap.message.AbandonListener;
 import org.apache.directory.shared.ldap.message.AddRequest;
 import org.apache.directory.shared.ldap.message.AddRequestImpl;
 import org.apache.directory.shared.ldap.message.AliasDerefMode;
 import org.apache.directory.shared.ldap.message.ArrayNamingEnumeration;
 import org.apache.directory.shared.ldap.message.DeleteRequest;
 import org.apache.directory.shared.ldap.message.DeleteRequestImpl;
-import org.apache.directory.shared.ldap.message.MessageException;
 import org.apache.directory.shared.ldap.message.ModifyDnRequest;
 import org.apache.directory.shared.ldap.message.ModifyDnRequestImpl;
+import org.apache.directory.shared.ldap.message.ModifyRequest;
+import org.apache.directory.shared.ldap.message.ModifyRequestImpl;
 import org.apache.directory.shared.ldap.message.Response;
-import org.apache.directory.shared.ldap.message.ResultResponse;
 import org.apache.directory.shared.ldap.message.SearchRequest;
 import org.apache.directory.shared.ldap.message.SearchRequestImpl;
 import org.apache.directory.shared.ldap.message.SearchResultEntry;
@@ -359,6 +360,86 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
     public void modifyEntry( final String dn, final ModificationItem[] modificationItems, final Control[] controls,
         final StudioProgressMonitor monitor, final ReferralsInfo referralsInfo )
     {
+        try
+        {
+            // Preparing the modify request
+            ModifyRequest request = new ModifyRequestImpl();
+            request.setName( new DN( dn ) );
+            Modification[] modifications = convertModificationItems( modificationItems );
+            if ( modifications != null )
+            {
+                for ( Modification modification : modifications )
+                {
+                    request.addModification( modification );
+                }
+            }
+            request.addAllControls( convertControls( controls ) );
+
+            // Performing the modify operation
+            getLdapConnection().modify( request );
+        }
+        catch ( Exception e )
+        {
+            monitor.reportError( e );
+        }
+    }
+
+
+    /**
+     * Converts modification items.
+     *
+     * @param modificationItems
+     *      an array of modification items
+     * @return
+     *      an array of converted modifications
+     */
+    private Modification[] convertModificationItems( ModificationItem[] modificationItems )
+    {
+        if ( modificationItems != null )
+        {
+            List<Modification> modifications = new ArrayList<Modification>();
+
+            for ( ModificationItem modificationItem : modificationItems )
+            {
+                Modification modification = new DefaultModification();
+                modification.setAttribute( AttributeUtils.toClientAttribute( modificationItem.getAttribute() ) );
+                modification.setOperation( convertModificationOperation( modificationItem.getModificationOp() ) );
+                modifications.add( modification );
+            }
+
+            return modifications.toArray( new Modification[0] );
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+
+    /**
+     * Converts a modification operation.
+     *
+     * @param modificationOp
+     *      a modification operation
+     * @return
+     *      the converted modification operation
+     */
+    private ModificationOperation convertModificationOperation( int modificationOp )
+    {
+        if ( modificationOp == DirContext.ADD_ATTRIBUTE )
+        {
+            return ModificationOperation.ADD_ATTRIBUTE;
+        }
+        else if ( modificationOp == DirContext.REPLACE_ATTRIBUTE )
+        {
+            return ModificationOperation.REPLACE_ATTRIBUTE;
+        }
+        else if ( modificationOp == DirContext.REMOVE_ATTRIBUTE )
+        {
+            return ModificationOperation.REMOVE_ATTRIBUTE;
+        }
+
+        return null;
     }
 
 
@@ -370,12 +451,11 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
     {
         try
         {
-            DN newName = new DN( newDn );
-
             // Preparing the rename request
             ModifyDnRequest request = new ModifyDnRequestImpl();
             request.setName( new DN( oldDn ) );
             request.setDeleteOldRdn( deleteOldRdn );
+            DN newName = new DN( newDn );
             request.setNewRdn( newName.getRdn() );
             request.setNewSuperior( newName.getParent() );
             request.addAllControls( convertControls( controls ) );
