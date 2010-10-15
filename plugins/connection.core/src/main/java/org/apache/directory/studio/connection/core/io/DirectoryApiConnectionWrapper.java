@@ -20,36 +20,37 @@
 package org.apache.directory.studio.connection.core.io;
 
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
 import javax.naming.NamingEnumeration;
-import javax.naming.NamingException;
 import javax.naming.directory.Attributes;
 import javax.naming.directory.ModificationItem;
 import javax.naming.directory.SearchControls;
 import javax.naming.directory.SearchResult;
 import javax.naming.ldap.Control;
-import javax.naming.ldap.LdapContext;
 
 import org.apache.directory.ldap.client.api.LdapConnectionConfig;
 import org.apache.directory.ldap.client.api.LdapNetworkConnection;
+import org.apache.directory.shared.ldap.codec.controls.ControlImpl;
 import org.apache.directory.shared.ldap.cursor.Cursor;
 import org.apache.directory.shared.ldap.exception.LdapException;
-import org.apache.directory.shared.ldap.exception.LdapInvalidDnException;
 import org.apache.directory.shared.ldap.filter.SearchScope;
+import org.apache.directory.shared.ldap.message.AliasDerefMode;
 import org.apache.directory.shared.ldap.message.ArrayNamingEnumeration;
 import org.apache.directory.shared.ldap.message.Response;
+import org.apache.directory.shared.ldap.message.SearchRequest;
+import org.apache.directory.shared.ldap.message.SearchRequestImpl;
 import org.apache.directory.shared.ldap.message.SearchResultEntry;
+import org.apache.directory.shared.ldap.message.SearchResultReference;
 import org.apache.directory.shared.ldap.name.DN;
 import org.apache.directory.shared.ldap.util.AttributeUtils;
-import org.apache.directory.shared.ldap.util.JndiUtils;
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
 import org.apache.directory.studio.connection.core.Connection.ReferralHandlingMethod;
+import org.apache.directory.studio.connection.core.ConnectionParameter.EncryptionMethod;
 import org.apache.directory.studio.connection.core.io.jndi.ReferralsInfo;
 import org.apache.directory.studio.connection.core.io.jndi.StudioNamingEnumeration;
 
@@ -61,8 +62,10 @@ import org.apache.directory.studio.connection.core.io.jndi.StudioNamingEnumerati
  */
 public class DirectoryApiConnectionWrapper implements ConnectionWrapper
 {
+    /** The connection*/
     private Connection connection;
 
+    /** The LDAP Connection */
     private LdapNetworkConnection ldapConnection;
 
 
@@ -77,6 +80,12 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
     }
 
 
+    /**
+     * Gets the associated LDAP Connection.
+     *
+     * @return
+     *      the associated LDAP Connection
+     */
     private LdapNetworkConnection getLdapConnection()
     {
         if ( ldapConnection != null )
@@ -89,6 +98,7 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
         config.setLdapPort( connection.getPort() );
         config.setName( connection.getBindPrincipal() );
         config.setCredentials( connection.getBindPassword() );
+        config.setUseSsl( connection.getEncryptionMethod() == EncryptionMethod.LDAPS );
 
         ldapConnection = new LdapNetworkConnection( config );
 
@@ -97,33 +107,23 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
 
 
     /**
-     * Connects to the directory server.
-     * 
-     * @param monitor the progres monitor
+     * {@inheritDoc}
      */
     public void connect( StudioProgressMonitor monitor )
     {
         try
         {
-            System.out.println( "connect" );
-            boolean bool = getLdapConnection().connect();
-            System.out.println( "connect done " + bool );
+            getLdapConnection().connect();
         }
-        catch ( LdapException e )
+        catch ( Exception e )
         {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        catch ( IOException e )
-        {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            monitor.reportError( e );
         }
     }
 
 
     /**
-     * Disconnects from the directory server.
+     * {@inheritDoc}
      */
     public void disconnect()
     {
@@ -131,7 +131,7 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
         {
             getLdapConnection().close();
         }
-        catch ( IOException e )
+        catch ( Exception e )
         {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -140,34 +140,24 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
 
 
     /**
-     * Binds to the directory server.
-     * 
-     * @param monitor the progress monitor
+     * {@inheritDoc}
      */
     public void bind( StudioProgressMonitor monitor )
     {
         try
         {
-            System.out.println( "Bind" );
             getLdapConnection().bind( getLdapConnection().getConfig().getName(),
                 getLdapConnection().getConfig().getCredentials() );
-            System.out.println( "Bind done" );
         }
-        catch ( LdapException e )
+        catch ( Exception e )
         {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        catch ( IOException e )
-        {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            monitor.reportError( e );
         }
     }
 
 
-    /**
-     * Unbinds from the directory server.
+    /***
+     * {@inheritDoc}
      */
     public void unbind()
     {
@@ -184,9 +174,7 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
 
 
     /**
-     * Checks if is connected.
-     * 
-     * @return true, if is connected
+     * {@inheritDoc}
      */
     public boolean isConnected()
     {
@@ -195,9 +183,7 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
 
 
     /**
-     * Sets the binary attributes.
-     * 
-     * @param binaryAttributes the binary attributes
+     * {@inheritDoc}
      */
     public void setBinaryAttributes( Collection<String> binaryAttributes )
     {
@@ -205,40 +191,35 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
 
 
     /**
-     * Search.
-     * 
-     * @param searchBase the search base
-     * @param filter the filter
-     * @param searchControls the controls
-     * @param aliasesDereferencingMethod the aliases dereferencing method
-     * @param referralsHandlingMethod the referrals handling method
-     * @param controls the LDAP controls
-     * @param monitor the progress monitor
-     * @param referralsInfo the referrals info
-     * 
-     * @return the naming enumeration or null if an exception occurs.
+     * {@inheritDoc}
      */
     public StudioNamingEnumeration search( final String searchBase, final String filter,
         final SearchControls searchControls, final AliasDereferencingMethod aliasesDereferencingMethod,
         final ReferralHandlingMethod referralsHandlingMethod, final Control[] controls,
         final StudioProgressMonitor monitor, final ReferralsInfo referralsInfo )
     {
-        System.out.println( "search" );
-
         try
         {
-            Cursor<Response> cursor = getLdapConnection().search( new DN( searchBase ), filter,
-                getSearchScope( searchControls ), searchControls.getReturningAttributes() );
+            // Preparing the search request
+            SearchRequest request = new SearchRequestImpl();
+            request.setBase( new DN( searchBase ) );
+            request.setFilter( filter );
+            request.setScope( convertSearchScope( searchControls ) );
+            request.addAttributes( searchControls.getReturningAttributes() );
+            request.addAllControls( convertControls( controls ) );
+            request.setSizeLimit( searchControls.getCountLimit() );
+            request.setTimeLimit( searchControls.getTimeLimit() );
+            request.setDerefAliases( convertAliasDerefMode( aliasesDereferencingMethod ) );
 
+            // Performing the search operation
+            Cursor<Response> cursor = getLdapConnection().search( request );
+
+            // Creating the list of search results
             List<SearchResult> searchResults = new ArrayList<SearchResult>();
 
-            System.out.println( "base: " + searchBase );
-            System.out.println( "filter: " + filter );
-            System.out.println( "searchControls: " + searchControls );
-
+            // Converting each response as a search result
             while ( cursor.next() )
             {
-                System.out.println( "cursor.next()" );
                 Response response = cursor.get();
                 if ( response instanceof SearchResultEntry )
                 {
@@ -248,36 +229,38 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
                     sr.setNameInNamespace( sre.getObjectName().toString() );
                     searchResults.add( sr );
                 }
+                else if ( response instanceof SearchResultReference )
+                {
+                    // TODO Add support for referrals
+                }
             }
 
+            // Creating the naming enumeration with the list of search results
             NamingEnumeration<SearchResult> ne = new ArrayNamingEnumeration<SearchResult>(
                 searchResults.toArray( new SearchResult[0] ) );
 
+            // Returning the result of the search
             return new StudioNamingEnumeration( connection, null, ne, null, searchBase, filter, searchControls,
                 aliasesDereferencingMethod, referralsHandlingMethod, controls, 1, monitor, referralsInfo );
 
         }
-        catch ( LdapInvalidDnException e )
-        {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        catch ( LdapException e )
-        {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
         catch ( Exception e )
         {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            monitor.reportError( e );
+            return null;
         }
-
-        return null;
     }
 
 
-    private SearchScope getSearchScope( SearchControls searchControls )
+    /**
+     * Converts the search scope.
+     *
+     * @param searchControls
+     *      the search controls
+     * @return
+     *      the associated search scope
+     */
+    private SearchScope convertSearchScope( SearchControls searchControls )
     {
         int scope = searchControls.getSearchScope();
         if ( scope == SearchControls.OBJECT_SCOPE )
@@ -300,13 +283,67 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
 
 
     /**
-     * Modifies attributes of an entry.
-     * 
-     * @param dn the DN
-     * @param modificationItems the modification items
-     * @param controls the controls
-     * @param monitor the progress monitor
-     * @param referralsInfo the referrals info
+     * Converts the controls.
+     *
+     * @param controls
+     *      an array of controls
+     * @return
+     *      an array of converted controls
+     */
+    private org.apache.directory.shared.ldap.message.control.Control[] convertControls( Control[] controls )
+    {
+        if ( controls != null )
+        {
+            org.apache.directory.shared.ldap.message.control.Control[] returningControls = new org.apache.directory.shared.ldap.message.control.Control[controls.length];
+
+            for ( int i = 0; i < controls.length; i++ )
+            {
+                Control control = controls[i];
+                org.apache.directory.shared.ldap.message.control.Control returningControl = new ControlImpl(
+                    control.getID() );
+                returningControl.setValue( control.getEncodedValue() );
+                returningControl.setCritical( control.isCritical() );
+
+                returningControls[i] = returningControl;
+            }
+
+            return returningControls;
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+
+    /**
+     * Converts the Alias Dereferencing method.
+     *
+     * @param aliasesDereferencingMethod
+     *      the Alias Dereferencing method.
+     * @return
+     *      the converted Alias Dereferencing method.
+     */
+    private AliasDerefMode convertAliasDerefMode( AliasDereferencingMethod aliasesDereferencingMethod )
+    {
+        switch ( aliasesDereferencingMethod )
+        {
+            case ALWAYS:
+                return AliasDerefMode.DEREF_ALWAYS;
+            case FINDING:
+                return AliasDerefMode.DEREF_FINDING_BASE_OBJ;
+            case NEVER:
+                return AliasDerefMode.NEVER_DEREF_ALIASES;
+            case SEARCH:
+                return AliasDerefMode.DEREF_IN_SEARCHING;
+            default:
+                return AliasDerefMode.DEREF_ALWAYS;
+        }
+    }
+
+
+    /**
+     * {@inheritDoc}
      */
     public void modifyEntry( final String dn, final ModificationItem[] modificationItems, final Control[] controls,
         final StudioProgressMonitor monitor, final ReferralsInfo referralsInfo )
@@ -315,14 +352,7 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
 
 
     /**
-     * Renames an entry.
-     * 
-     * @param oldDn the old DN
-     * @param newDn the new DN
-     * @param deleteOldRdn true to delete the old RDN
-     * @param controls the controls
-     * @param monitor the progress monitor
-     * @param referralsInfo the referrals info
+     * {@inheritDoc}
      */
     public void renameEntry( final String oldDn, final String newDn, final boolean deleteOldRdn,
         final Control[] controls, final StudioProgressMonitor monitor, final ReferralsInfo referralsInfo )
@@ -331,13 +361,7 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
 
 
     /**
-     * Creates an entry.
-     * 
-     * @param dn the entry's DN
-     * @param attributes the entry's attributes
-     * @param controls the controls
-     * @param monitor the progress monitor
-     * @param referralsInfo the referrals info
+     * {@inheritDoc}
      */
     public void createEntry( final String dn, final Attributes attributes, final Control[] controls,
         final StudioProgressMonitor monitor, final ReferralsInfo referralsInfo )
@@ -346,12 +370,7 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
 
 
     /**
-     * Deletes an entry.
-     * 
-     * @param dn the DN of the entry to delete
-     * @param controls the controls
-     * @param monitor the progress monitor
-     * @param referralsInfo the referrals info
+     * {@inheritDoc}
      */
     public void deleteEntry( final String dn, final Control[] controls, final StudioProgressMonitor monitor,
         final ReferralsInfo referralsInfo )
