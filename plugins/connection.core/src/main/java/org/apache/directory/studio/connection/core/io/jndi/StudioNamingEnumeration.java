@@ -83,7 +83,7 @@ public class StudioNamingEnumeration implements NamingEnumeration<SearchResult>
      * @param monitor the progress monitor
      * @param referralsInfo the referrals info
      */
-    StudioNamingEnumeration( Connection connection, LdapContext ctx, NamingEnumeration<SearchResult> delegate,
+    public StudioNamingEnumeration( Connection connection, LdapContext ctx, NamingEnumeration<SearchResult> delegate,
         NamingException initialReferralException, String searchBase, String filter, SearchControls searchControls,
         AliasDereferencingMethod aliasesDereferencingMethod, ReferralHandlingMethod referralsHandlingMethod,
         Control[] controls, long requestNum, StudioProgressMonitor monitor, ReferralsInfo referralsInfo )

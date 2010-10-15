@@ -20,7 +20,18 @@
 package org.apache.directory.studio.connection.core.io;
 
 
+import java.util.Collection;
+
+import javax.naming.directory.Attributes;
+import javax.naming.directory.ModificationItem;
+import javax.naming.directory.SearchControls;
+import javax.naming.ldap.Control;
+
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
+import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
+import org.apache.directory.studio.connection.core.Connection.ReferralHandlingMethod;
+import org.apache.directory.studio.connection.core.io.jndi.ReferralsInfo;
+import org.apache.directory.studio.connection.core.io.jndi.StudioNamingEnumeration;
 
 
 /**
@@ -66,4 +77,83 @@ public interface ConnectionWrapper
      */
     public boolean isConnected();
 
+
+    /**
+     * Sets the binary attributes.
+     * 
+     * @param binaryAttributes the binary attributes
+     */
+    public void setBinaryAttributes( Collection<String> binaryAttributes );
+
+
+    /**
+     * Search.
+     * 
+     * @param searchBase the search base
+     * @param filter the filter
+     * @param searchControls the controls
+     * @param aliasesDereferencingMethod the aliases dereferencing method
+     * @param referralsHandlingMethod the referrals handling method
+     * @param controls the LDAP controls
+     * @param monitor the progress monitor
+     * @param referralsInfo the referrals info
+     * 
+     * @return the naming enumeration or null if an exception occurs.
+     */
+    public StudioNamingEnumeration search( final String searchBase, final String filter,
+        final SearchControls searchControls, final AliasDereferencingMethod aliasesDereferencingMethod,
+        final ReferralHandlingMethod referralsHandlingMethod, final Control[] controls,
+        final StudioProgressMonitor monitor, final ReferralsInfo referralsInfo );
+
+
+    /**
+     * Modifies attributes of an entry.
+     * 
+     * @param dn the DN
+     * @param modificationItems the modification items
+     * @param controls the controls
+     * @param monitor the progress monitor
+     * @param referralsInfo the referrals info
+     */
+    public void modifyEntry( final String dn, final ModificationItem[] modificationItems, final Control[] controls,
+        final StudioProgressMonitor monitor, final ReferralsInfo referralsInfo );
+
+
+    /**
+     * Renames an entry.
+     * 
+     * @param oldDn the old DN
+     * @param newDn the new DN
+     * @param deleteOldRdn true to delete the old RDN
+     * @param controls the controls
+     * @param monitor the progress monitor
+     * @param referralsInfo the referrals info
+     */
+    public void renameEntry( final String oldDn, final String newDn, final boolean deleteOldRdn,
+        final Control[] controls, final StudioProgressMonitor monitor, final ReferralsInfo referralsInfo );
+
+
+    /**
+     * Creates an entry.
+     * 
+     * @param dn the entry's DN
+     * @param attributes the entry's attributes
+     * @param controls the controls
+     * @param monitor the progress monitor
+     * @param referralsInfo the referrals info
+     */
+    public void createEntry( final String dn, final Attributes attributes, final Control[] controls,
+        final StudioProgressMonitor monitor, final ReferralsInfo referralsInfo );
+
+
+    /**
+     * Deletes an entry.
+     * 
+     * @param dn the DN of the entry to delete
+     * @param controls the controls
+     * @param monitor the progress monitor
+     * @param referralsInfo the referrals info
+     */
+    public void deleteEntry( final String dn, final Control[] controls, final StudioProgressMonitor monitor,
+        final ReferralsInfo referralsInfo );
 }

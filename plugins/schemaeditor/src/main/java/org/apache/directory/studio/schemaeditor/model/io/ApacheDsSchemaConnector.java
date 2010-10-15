@@ -35,7 +35,7 @@ import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
 import org.apache.directory.studio.connection.core.Connection.ReferralHandlingMethod;
-import org.apache.directory.studio.connection.core.io.jndi.JNDIConnectionWrapper;
+import org.apache.directory.studio.connection.core.io.ConnectionWrapper;
 import org.apache.directory.studio.schemaeditor.model.AttributeTypeImpl;
 import org.apache.directory.studio.schemaeditor.model.MatchingRuleImpl;
 import org.apache.directory.studio.schemaeditor.model.ObjectClassImpl;
@@ -94,7 +94,7 @@ public class ApacheDsSchemaConnector extends AbstractSchemaConnector implements 
     {
         List<Schema> schemas = new ArrayList<Schema>();
 
-        JNDIConnectionWrapper wrapper = connection.getJNDIConnectionWrapper();
+        ConnectionWrapper wrapper = connection.getJNDIConnectionWrapper();
 
         monitor.beginTask( Messages.getString( "GenericSchemaConnector.FetchingSchema" ), 1 ); //$NON-NLS-1$
 
@@ -146,7 +146,7 @@ public class ApacheDsSchemaConnector extends AbstractSchemaConnector implements 
      */
     public boolean isSuitableConnector( Connection connection, StudioProgressMonitor monitor )
     {
-        JNDIConnectionWrapper wrapper = connection.getJNDIConnectionWrapper();
+        ConnectionWrapper wrapper = connection.getJNDIConnectionWrapper();
 
         SearchControls constraintSearch = new SearchControls();
         constraintSearch.setSearchScope( SearchControls.OBJECT_SCOPE );
@@ -198,7 +198,7 @@ public class ApacheDsSchemaConnector extends AbstractSchemaConnector implements 
     }
 
 
-    private static Schema getSchema( JNDIConnectionWrapper wrapper, String name, StudioProgressMonitor monitor )
+    private static Schema getSchema( ConnectionWrapper wrapper, String name, StudioProgressMonitor monitor )
         throws NamingException
     {
         monitor.subTask( name ); //$NON-NLS-1$

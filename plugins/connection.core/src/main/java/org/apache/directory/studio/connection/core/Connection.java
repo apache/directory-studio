@@ -26,6 +26,8 @@ import org.apache.directory.studio.connection.core.ConnectionParameter.Authentic
 import org.apache.directory.studio.connection.core.ConnectionParameter.EncryptionMethod;
 import org.apache.directory.studio.connection.core.ConnectionParameter.NetworkProvider;
 import org.apache.directory.studio.connection.core.event.ConnectionEventRegistry;
+import org.apache.directory.studio.connection.core.io.ConnectionWrapper;
+import org.apache.directory.studio.connection.core.io.DirectoryApiConnectionWrapper;
 import org.apache.directory.studio.connection.core.io.jndi.JNDIConnectionWrapper;
 import org.eclipse.core.runtime.IAdaptable;
 
@@ -171,7 +173,7 @@ public class Connection implements ConnectionPropertyPageProvider, IAdaptable
 
     private ConnectionParameter connectionParameter;
 
-    private JNDIConnectionWrapper jndiConnectionWrapper;
+    private ConnectionWrapper jndiConnectionWrapper;
 
 
     /**
@@ -205,11 +207,11 @@ public class Connection implements ConnectionPropertyPageProvider, IAdaptable
      * 
      * @return the JNDI connection wrapper
      */
-    public JNDIConnectionWrapper getJNDIConnectionWrapper()
+    public ConnectionWrapper getJNDIConnectionWrapper()
     {
         if ( jndiConnectionWrapper == null )
         {
-            jndiConnectionWrapper = new JNDIConnectionWrapper( this );
+            jndiConnectionWrapper = new DirectoryApiConnectionWrapper( this );
         }
         return jndiConnectionWrapper;
     }
