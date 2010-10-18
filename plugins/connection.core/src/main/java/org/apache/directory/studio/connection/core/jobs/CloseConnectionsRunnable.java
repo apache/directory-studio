@@ -116,14 +116,14 @@ public class CloseConnectionsRunnable implements StudioConnectionBulkRunnableWit
 
         for ( Connection connection : connections )
         {
-            if ( connection.getJNDIConnectionWrapper().isConnected() )
+            if ( connection.getConnectionWrapper().isConnected() )
             {
                 monitor.setTaskName( Messages.bind( Messages.jobs__close_connections_task, new String[]
                     { connection.getName() } ) );
                 monitor.worked( 1 );
 
-                connection.getJNDIConnectionWrapper().unbind();
-                connection.getJNDIConnectionWrapper().disconnect();
+                connection.getConnectionWrapper().unbind();
+                connection.getConnectionWrapper().disconnect();
             }
         }
     }
@@ -136,7 +136,7 @@ public class CloseConnectionsRunnable implements StudioConnectionBulkRunnableWit
     {
         for ( Connection connection : connections )
         {
-            if ( !connection.getJNDIConnectionWrapper().isConnected() )
+            if ( !connection.getConnectionWrapper().isConnected() )
             {
                 for ( IConnectionListener listener : ConnectionCorePlugin.getDefault().getConnectionListeners() )
                 {
@@ -147,7 +147,7 @@ public class CloseConnectionsRunnable implements StudioConnectionBulkRunnableWit
 
         for ( Connection connection : connections )
         {
-            if ( !connection.getJNDIConnectionWrapper().isConnected() )
+            if ( !connection.getConnectionWrapper().isConnected() )
             {
                 ConnectionEventRegistry.fireConnectionClosed( connection, this );
             }

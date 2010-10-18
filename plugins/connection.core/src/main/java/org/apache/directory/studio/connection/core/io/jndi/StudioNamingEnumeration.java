@@ -377,7 +377,7 @@ public class StudioNamingEnumeration implements NamingEnumeration<SearchResult>
                 referralSearchControls.setDerefLinkFlag( searchControls.getDerefLinkFlag() );
                 referralSearchControls.setReturningObjFlag( searchControls.getReturningObjFlag() );
 
-                delegate = referralConnection.getJNDIConnectionWrapper().search( referralSearchBase, referralFilter,
+                delegate = referralConnection.getConnectionWrapper().search( referralSearchBase, referralFilter,
                     referralSearchControls, aliasesDereferencingMethod, referralsHandlingMethod, controls, monitor,
                     referralsInfo );
             }

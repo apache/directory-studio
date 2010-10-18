@@ -154,7 +154,7 @@ public class ConnectionCorePlugin extends Plugin
             Connection[] connections = connectionManager.getConnections();
             for ( int i = 0; i < connections.length; i++ )
             {
-                connections[i].getJNDIConnectionWrapper().disconnect();
+                connections[i].getConnectionWrapper().disconnect();
             }
             connectionManager = null;
         }

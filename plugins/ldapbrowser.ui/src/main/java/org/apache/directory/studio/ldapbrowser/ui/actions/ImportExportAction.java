@@ -311,7 +311,7 @@ public class ImportExportAction extends BrowserAction
     protected IBrowserConnection getConnection()
     {
         if ( getSelectedConnections().length > 0
-            && getSelectedConnections()[0].getJNDIConnectionWrapper().isConnected() )
+            && getSelectedConnections()[0].getConnectionWrapper().isConnected() )
         {
             Connection connection = getSelectedConnections()[0];
             IBrowserConnection browserConnection = BrowserCorePlugin.getDefault().getConnectionManager()

@@ -497,7 +497,7 @@ public class SearchRunnable implements StudioConnectionBulkRunnableWithProgress
 
         StudioNamingEnumeration result = browserConnection
             .getConnection()
-            .getJNDIConnectionWrapper()
+            .getConnectionWrapper()
             .search( searchBase, filter, controls, aliasesDereferencingMethod, referralsHandlingMethod, jndiControls,
                 monitor, null );
         return result;

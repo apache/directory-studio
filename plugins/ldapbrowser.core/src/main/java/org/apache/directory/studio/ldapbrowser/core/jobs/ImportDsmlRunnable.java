@@ -350,7 +350,7 @@ public class ImportDsmlRunnable implements StudioConnectionBulkRunnableWithProgr
         Entry entry = request.getEntry();
         browserConnection
             .getConnection()
-            .getJNDIConnectionWrapper()
+            .getConnectionWrapper()
             .createEntry( entry.getDn().getName(), AttributeUtils.toAttributes( entry ), getControls( request ),
                 monitor, null );
 
@@ -418,7 +418,7 @@ public class ImportDsmlRunnable implements StudioConnectionBulkRunnableWithProgr
         StudioProgressMonitor monitor )
     {
         // Executing the del request
-        browserConnection.getConnection().getJNDIConnectionWrapper()
+        browserConnection.getConnection().getConnectionWrapper()
             .deleteEntry( request.getName().getName(), getControls( request ), monitor, null );
 
         // Creating the response
@@ -496,7 +496,7 @@ public class ImportDsmlRunnable implements StudioConnectionBulkRunnableWithProgr
         // Executing the modify request
         browserConnection
             .getConnection()
-            .getJNDIConnectionWrapper()
+            .getConnectionWrapper()
             .modifyEntry( request.getName().getName(), modificationItems.toArray( new ModificationItem[0] ),
                 getControls( request ), monitor, null );
 
@@ -557,7 +557,7 @@ public class ImportDsmlRunnable implements StudioConnectionBulkRunnableWithProgr
         // Executing the modify DN request
         browserConnection
             .getConnection()
-            .getJNDIConnectionWrapper()
+            .getConnectionWrapper()
             .renameEntry( request.getName().getName(), request.getNewRdn().getName(), request.getDeleteOldRdn(),
                 getControls( request ), monitor, null );
 
@@ -617,7 +617,7 @@ public class ImportDsmlRunnable implements StudioConnectionBulkRunnableWithProgr
             // [Optimization] We're only searching if we need to produce a response
             StudioNamingEnumeration ne = browserConnection
                 .getConnection()
-                .getJNDIConnectionWrapper()
+                .getConnectionWrapper()
                 .search( request.getBase().getName(), request.getFilter().toString(),
                     getSearchControls( request ), getAliasDereferencingMethod( request ),
                     ReferralHandlingMethod.IGNORE, getControls( request ), monitor, null );

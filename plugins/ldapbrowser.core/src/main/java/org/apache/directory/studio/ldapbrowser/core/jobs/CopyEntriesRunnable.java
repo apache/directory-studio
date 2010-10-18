@@ -237,7 +237,7 @@ public class CopyEntriesRunnable implements StudioConnectionBulkRunnableWithProg
         NamingEnumeration<SearchResult> result = entryToCopy
             .getBrowserConnection()
             .getConnection()
-            .getJNDIConnectionWrapper()
+            .getConnectionWrapper()
             .search( entryToCopy.getDn().getName(), ISearch.FILTER_TRUE, searchControls,
                 AliasDereferencingMethod.NEVER, ReferralHandlingMethod.IGNORE, controls, monitor, null );
 
@@ -312,7 +312,7 @@ public class CopyEntriesRunnable implements StudioConnectionBulkRunnableWithProg
                 }
 
                 // create entry
-                targetBrowserConnection.getConnection().getJNDIConnectionWrapper()
+                targetBrowserConnection.getConnection().getConnectionWrapper()
                     .createEntry( newLdapDn.getName(), newAttributes, controls, dummyMonitor, null );
 
                 while ( dummyMonitor.errorsReported() )
@@ -352,7 +352,7 @@ public class CopyEntriesRunnable implements StudioConnectionBulkRunnableWithProg
                                     // modify entry
                                     targetBrowserConnection
                                         .getConnection()
-                                        .getJNDIConnectionWrapper()
+                                        .getConnectionWrapper()
                                         .modifyEntry( newLdapDn.getName(),
                                             mis.toArray( new ModificationItem[mis.size()] ), null, dummyMonitor, null );
 
@@ -375,7 +375,7 @@ public class CopyEntriesRunnable implements StudioConnectionBulkRunnableWithProg
                                     newLdapDn = DnUtils.composeDn( renamedRdn, parentDn );
 
                                     // create entry
-                                    targetBrowserConnection.getConnection().getJNDIConnectionWrapper()
+                                    targetBrowserConnection.getConnection().getConnectionWrapper()
                                         .createEntry( newLdapDn.getName(), newAttributes, null, dummyMonitor, null );
 
                                     break;
@@ -412,7 +412,7 @@ public class CopyEntriesRunnable implements StudioConnectionBulkRunnableWithProg
                         searchControls.setSearchScope( SearchControls.ONELEVEL_SCOPE );
                         NamingEnumeration<SearchResult> childEntries = sourceBrowserConnection
                             .getConnection()
-                            .getJNDIConnectionWrapper()
+                            .getConnectionWrapper()
                             .search( oldLdapDn.getName(), ISearch.FILTER_TRUE, searchControls,
                                 AliasDereferencingMethod.NEVER, ReferralHandlingMethod.IGNORE, null, monitor, null );
 

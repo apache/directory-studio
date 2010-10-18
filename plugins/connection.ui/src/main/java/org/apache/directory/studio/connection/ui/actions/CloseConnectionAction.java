@@ -89,7 +89,7 @@ public class CloseConnectionAction extends StudioAction
         boolean canClose = false;
         for ( int i = 0; i < getSelectedConnections().length; i++ )
         {
-            if ( getSelectedConnections()[i].getJNDIConnectionWrapper().isConnected() )
+            if ( getSelectedConnections()[i].getConnectionWrapper().isConnected() )
             {
                 canClose = true;
                 break;

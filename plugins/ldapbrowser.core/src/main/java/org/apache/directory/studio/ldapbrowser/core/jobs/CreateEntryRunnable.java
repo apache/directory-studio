@@ -180,7 +180,7 @@ public class CreateEntryRunnable implements StudioConnectionBulkRunnableWithProg
 
 
     /**
-     * Creates the entry using the underlying JNDI connection wrapper.
+     * Creates the entry using the underlying connection wrapper.
      * 
      * @param browserConnection the browser connection
      * @param entryToCreate the entry to create
@@ -221,7 +221,7 @@ public class CreateEntryRunnable implements StudioConnectionBulkRunnableWithProg
                 { new ManageReferralControl( false ) };
         }
 
-        browserConnection.getConnection().getJNDIConnectionWrapper()
+        browserConnection.getConnection().getConnectionWrapper()
             .createEntry( dn, jndiAttributes, controls, monitor, null );
     }
 }

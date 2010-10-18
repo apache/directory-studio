@@ -143,7 +143,7 @@ public class BrowserConnectionListener implements IConnectionListener
 
         if ( browserConnection.getConnection() != null )
         {
-            browserConnection.getConnection().getJNDIConnectionWrapper().setBinaryAttributes( binaryAttributeNames );
+            browserConnection.getConnection().getConnectionWrapper().setBinaryAttributes( binaryAttributeNames );
         }
     }
 

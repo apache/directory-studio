@@ -74,19 +74,19 @@ public class RunnableContextRunner
                 {
                     for ( Connection connection : connections )
                     {
-                        if ( connection != null && !connection.getJNDIConnectionWrapper().isConnected() )
+                        if ( connection != null && !connection.getConnectionWrapper().isConnected() )
                         {
                             spm[0].setTaskName( Messages.bind( Messages.jobs__open_connections_task, new String[]
                                 { connection.getName() } ) );
                             spm[0].worked( 1 );
 
-                            connection.getJNDIConnectionWrapper().connect( spm[0] );
-                            if ( connection.getJNDIConnectionWrapper().isConnected() )
+                            connection.getConnectionWrapper().connect( spm[0] );
+                            if ( connection.getConnectionWrapper().isConnected() )
                             {
-                                connection.getJNDIConnectionWrapper().bind( spm[0] );
+                                connection.getConnectionWrapper().bind( spm[0] );
                             }
 
-                            if ( connection.getJNDIConnectionWrapper().isConnected() )
+                            if ( connection.getConnectionWrapper().isConnected() )
                             {
                                 for ( IConnectionListener listener : ConnectionCorePlugin.getDefault()
                                     .getConnectionListeners() )

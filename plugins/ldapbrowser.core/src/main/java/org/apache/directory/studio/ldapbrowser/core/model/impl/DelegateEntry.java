@@ -103,7 +103,7 @@ public abstract class DelegateEntry implements IEntry
         delegate = browserConnection.getEntryFromCache( dn );
 
         if ( delegate != null
-            && !delegate.getBrowserConnection().getConnection().getJNDIConnectionWrapper().isConnected() )
+            && !delegate.getBrowserConnection().getConnection().getConnectionWrapper().isConnected() )
         {
             entryDoesNotExist = false;
             delegate = null;

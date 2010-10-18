@@ -173,7 +173,8 @@ public class Connection implements ConnectionPropertyPageProvider, IAdaptable
 
     private ConnectionParameter connectionParameter;
 
-    private ConnectionWrapper jndiConnectionWrapper;
+    /** The connection wrapper */
+    private ConnectionWrapper connectionWrapper;
 
 
     /**
@@ -207,13 +208,13 @@ public class Connection implements ConnectionPropertyPageProvider, IAdaptable
      * 
      * @return the JNDI connection wrapper
      */
-    public ConnectionWrapper getJNDIConnectionWrapper()
+    public ConnectionWrapper getConnectionWrapper()
     {
-        if ( jndiConnectionWrapper == null )
+        if ( connectionWrapper == null )
         {
-            jndiConnectionWrapper = new DirectoryApiConnectionWrapper( this );
+            connectionWrapper = new DirectoryApiConnectionWrapper( this );
         }
-        return jndiConnectionWrapper;
+        return connectionWrapper;
     }
 
 

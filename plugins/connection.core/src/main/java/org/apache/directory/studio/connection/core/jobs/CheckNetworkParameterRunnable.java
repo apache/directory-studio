@@ -78,8 +78,8 @@ public class CheckNetworkParameterRunnable implements StudioConnectionRunnableWi
         monitor.reportProgress( " " ); //$NON-NLS-1$
         monitor.worked( 1 );
 
-        connection.getJNDIConnectionWrapper().connect( monitor );
-        connection.getJNDIConnectionWrapper().disconnect();
+        connection.getConnectionWrapper().connect( monitor );
+        connection.getConnectionWrapper().disconnect();
     }
 
 

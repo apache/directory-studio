@@ -67,19 +67,19 @@ public class StudioConnectionJob extends StudioJob<StudioConnectionRunnableWithP
             {
                 for ( Connection connection : connections )
                 {
-                    if ( connection != null && !connection.getJNDIConnectionWrapper().isConnected() )
+                    if ( connection != null && !connection.getConnectionWrapper().isConnected() )
                     {
                         monitor.setTaskName( Messages.bind( Messages.jobs__open_connections_task, new String[]
                             { connection.getName() } ) );
                         monitor.worked( 1 );
 
-                        connection.getJNDIConnectionWrapper().connect( monitor );
-                        if ( connection.getJNDIConnectionWrapper().isConnected() )
+                        connection.getConnectionWrapper().connect( monitor );
+                        if ( connection.getConnectionWrapper().isConnected() )
                         {
-                            connection.getJNDIConnectionWrapper().bind( monitor );
+                            connection.getConnectionWrapper().bind( monitor );
                         }
 
-                        if ( connection.getJNDIConnectionWrapper().isConnected() )
+                        if ( connection.getConnectionWrapper().isConnected() )
                         {
                             for ( IConnectionListener listener : ConnectionCorePlugin.getDefault()
                                 .getConnectionListeners() )

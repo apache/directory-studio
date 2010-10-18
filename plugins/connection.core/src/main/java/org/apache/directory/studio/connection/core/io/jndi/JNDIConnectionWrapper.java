@@ -466,7 +466,7 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
                             if ( referralConnection != null )
                             {
                                 String referralDn = referral.getLdapURLs().get( 0 ).getDn().getName();
-                                referralConnection.getJNDIConnectionWrapper().modifyEntry( referralDn,
+                                referralConnection.getConnectionWrapper().modifyEntry( referralDn,
                                     modificationItems, controls, monitor, newReferralsInfo );
                             }
                             else
@@ -574,7 +574,7 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
                             Connection referralConnection = getReferralConnection( referral, monitor, this );
                             if ( referralConnection != null )
                             {
-                                referralConnection.getJNDIConnectionWrapper().renameEntry( oldDn, newDn, deleteOldRdn,
+                                referralConnection.getConnectionWrapper().renameEntry( oldDn, newDn, deleteOldRdn,
                                     controls, monitor, newReferralsInfo );
                             }
                             else
@@ -670,7 +670,7 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
                             if ( referralConnection != null )
                             {
                                 String referralDn = referral.getLdapURLs().get( 0 ).getDn().getName();
-                                referralConnection.getJNDIConnectionWrapper().createEntry( referralDn, attributes,
+                                referralConnection.getConnectionWrapper().createEntry( referralDn, attributes,
                                     controls, monitor, newReferralsInfo );
                             }
                             else
@@ -765,7 +765,7 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
                             if ( referralConnection != null )
                             {
                                 String referralDn = referral.getLdapURLs().get( 0 ).getDn().getName();
-                                referralConnection.getJNDIConnectionWrapper().deleteEntry( referralDn, controls,
+                                referralConnection.getConnectionWrapper().deleteEntry( referralDn, controls,
                                     monitor, newReferralsInfo );
                             }
                             else
@@ -1509,10 +1509,10 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
             referralConnection = referralHandler.getReferralConnection( referral.getLdapURLs() );
 
             // open connection if not yet open
-            if ( referralConnection != null && !referralConnection.getJNDIConnectionWrapper().isConnected() )
+            if ( referralConnection != null && !referralConnection.getConnectionWrapper().isConnected() )
             {
-                referralConnection.getJNDIConnectionWrapper().connect( monitor );
-                referralConnection.getJNDIConnectionWrapper().bind( monitor );
+                referralConnection.getConnectionWrapper().connect( monitor );
+                referralConnection.getConnectionWrapper().bind( monitor );
                 for ( IConnectionListener listener : ConnectionCorePlugin.getDefault().getConnectionListeners() )
                 {
                     listener.connectionOpened( referralConnection, monitor );

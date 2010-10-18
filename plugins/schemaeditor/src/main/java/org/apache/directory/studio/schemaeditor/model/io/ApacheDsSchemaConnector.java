@@ -94,7 +94,7 @@ public class ApacheDsSchemaConnector extends AbstractSchemaConnector implements 
     {
         List<Schema> schemas = new ArrayList<Schema>();
 
-        ConnectionWrapper wrapper = connection.getJNDIConnectionWrapper();
+        ConnectionWrapper wrapper = connection.getConnectionWrapper();
 
         monitor.beginTask( Messages.getString( "GenericSchemaConnector.FetchingSchema" ), 1 ); //$NON-NLS-1$
 
@@ -146,7 +146,7 @@ public class ApacheDsSchemaConnector extends AbstractSchemaConnector implements 
      */
     public boolean isSuitableConnector( Connection connection, StudioProgressMonitor monitor )
     {
-        ConnectionWrapper wrapper = connection.getJNDIConnectionWrapper();
+        ConnectionWrapper wrapper = connection.getConnectionWrapper();
 
         SearchControls constraintSearch = new SearchControls();
         constraintSearch.setSearchScope( SearchControls.OBJECT_SCOPE );

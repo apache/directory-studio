@@ -96,13 +96,13 @@ public class ConnectionLabelProvider extends LabelProvider
             if ( ( conn.getEncryptionMethod() == EncryptionMethod.LDAPS )
                 || ( conn.getEncryptionMethod() == EncryptionMethod.START_TLS ) )
             {
-                return conn.getJNDIConnectionWrapper().isConnected() ? ConnectionUIPlugin.getDefault().getImage(
+                return conn.getConnectionWrapper().isConnected() ? ConnectionUIPlugin.getDefault().getImage(
                     ConnectionUIConstants.IMG_CONNECTION_SSL_CONNECTED ) : ConnectionUIPlugin.getDefault().getImage(
                     ConnectionUIConstants.IMG_CONNECTION_SSL_DISCONNECTED );
             }
             else
             {
-                return conn.getJNDIConnectionWrapper().isConnected() ? ConnectionUIPlugin.getDefault().getImage(
+                return conn.getConnectionWrapper().isConnected() ? ConnectionUIPlugin.getDefault().getImage(
                     ConnectionUIConstants.IMG_CONNECTION_CONNECTED ) : ConnectionUIPlugin.getDefault().getImage(
                     ConnectionUIConstants.IMG_CONNECTION_DISCONNECTED );
             }
