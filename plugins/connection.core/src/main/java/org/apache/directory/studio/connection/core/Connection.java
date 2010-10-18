@@ -204,17 +204,57 @@ public class Connection implements ConnectionPropertyPageProvider, IAdaptable
 
 
     /**
-     * Gets the JNDI connection wrapper.
+     * Gets the connection wrapper.
      * 
-     * @return the JNDI connection wrapper
+     * @return the connection wrapper
      */
     public ConnectionWrapper getConnectionWrapper()
     {
-        if ( connectionWrapper == null )
+        switch ( connectionParameter.getNetworkProvider() )
+        {
+            case JNDI:
+                return getJndiConnectionWrapper();
+            case APACHE_DIRECTORY_LDAP_API:
+                return getDirectoryApiConnectionWrapper();
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Gets a JNDI connection wrapper.
+     *
+     * @return
+     *      a JNDI connection wrapper
+     */
+    private JNDIConnectionWrapper getJndiConnectionWrapper()
+    {
+        System.out.println( "getJndiConnectionWrapper" );
+        if ( ( connectionWrapper == null ) || !( connectionWrapper instanceof JNDIConnectionWrapper ) )
+        {
+            connectionWrapper = new JNDIConnectionWrapper( this );
+        }
+
+        return ( JNDIConnectionWrapper ) connectionWrapper;
+    }
+
+
+    /**
+     * Gets a Directory API connection wrapper.
+     *
+     * @return
+     *      a Directory API connection wrapper
+     */
+    private DirectoryApiConnectionWrapper getDirectoryApiConnectionWrapper()
+    {
+        System.out.println( "getDirectoryApiConnectionWrapper" );
+        if ( ( connectionWrapper == null ) || !( connectionWrapper instanceof DirectoryApiConnectionWrapper ) )
         {
             connectionWrapper = new DirectoryApiConnectionWrapper( this );
         }
-        return connectionWrapper;
+
+        return ( DirectoryApiConnectionWrapper ) connectionWrapper;
     }
 
 
