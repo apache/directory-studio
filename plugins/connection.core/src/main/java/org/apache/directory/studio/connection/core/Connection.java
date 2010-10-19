@@ -230,7 +230,6 @@ public class Connection implements ConnectionPropertyPageProvider, IAdaptable
      */
     private JNDIConnectionWrapper getJndiConnectionWrapper()
     {
-        System.out.println( "getJndiConnectionWrapper" );
         if ( ( connectionWrapper == null ) || !( connectionWrapper instanceof JNDIConnectionWrapper ) )
         {
             connectionWrapper = new JNDIConnectionWrapper( this );
@@ -248,7 +247,6 @@ public class Connection implements ConnectionPropertyPageProvider, IAdaptable
      */
     private DirectoryApiConnectionWrapper getDirectoryApiConnectionWrapper()
     {
-        System.out.println( "getDirectoryApiConnectionWrapper" );
         if ( ( connectionWrapper == null ) || !( connectionWrapper instanceof DirectoryApiConnectionWrapper ) )
         {
             connectionWrapper = new DirectoryApiConnectionWrapper( this );

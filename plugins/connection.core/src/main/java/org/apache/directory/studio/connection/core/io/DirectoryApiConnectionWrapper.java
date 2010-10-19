@@ -58,12 +58,15 @@ import org.apache.directory.shared.ldap.message.SearchResultEntry;
 import org.apache.directory.shared.ldap.message.SearchResultReference;
 import org.apache.directory.shared.ldap.name.DN;
 import org.apache.directory.shared.ldap.util.AttributeUtils;
+import org.apache.directory.shared.ldap.util.LdapURL;
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
 import org.apache.directory.studio.connection.core.Connection.ReferralHandlingMethod;
 import org.apache.directory.studio.connection.core.ConnectionParameter.EncryptionMethod;
 import org.apache.directory.studio.connection.core.io.jndi.ReferralsInfo;
+import org.apache.directory.studio.connection.core.io.jndi.StudioSearchResult;
+import org.apache.directory.studio.connection.core.io.jndi.ReferralsInfo.Referral;
 import org.apache.directory.studio.connection.core.io.jndi.StudioNamingEnumeration;
 
 
@@ -74,6 +77,9 @@ import org.apache.directory.studio.connection.core.io.jndi.StudioNamingEnumerati
  */
 public class DirectoryApiConnectionWrapper implements ConnectionWrapper
 {
+    /** The search request number */
+    private static int SEARCH_RESQUEST_NUM = 0;
+
     /** The connection*/
     private Connection connection;
 
@@ -210,6 +216,8 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
         final ReferralHandlingMethod referralsHandlingMethod, final Control[] controls,
         final StudioProgressMonitor monitor, final ReferralsInfo referralsInfo )
     {
+        final long requestNum = SEARCH_RESQUEST_NUM++;
+
         try
         {
             // Preparing the search request
@@ -226,34 +234,9 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
             // Performing the search operation
             Cursor<Response> cursor = getLdapConnection().search( request );
 
-            // Creating the list of search results
-            List<SearchResult> searchResults = new ArrayList<SearchResult>();
-
-            // Converting each response as a search result
-            while ( cursor.next() )
-            {
-                Response response = cursor.get();
-                if ( response instanceof SearchResultEntry )
-                {
-                    SearchResultEntry sre = ( SearchResultEntry ) response;
-                    SearchResult sr = new SearchResult( sre.getObjectName().toString(), null,
-                        AttributeUtils.toAttributes( sre.getEntry() ) );
-                    sr.setNameInNamespace( sre.getObjectName().toString() );
-                    searchResults.add( sr );
-                }
-                else if ( response instanceof SearchResultReference )
-                {
-                    // TODO Add support for referrals
-                }
-            }
-
-            // Creating the naming enumeration with the list of search results
-            NamingEnumeration<SearchResult> ne = new ArrayNamingEnumeration<SearchResult>(
-                searchResults.toArray( new SearchResult[0] ) );
-
             // Returning the result of the search
-            return new StudioNamingEnumeration( connection, null, ne, null, searchBase, filter, searchControls,
-                aliasesDereferencingMethod, referralsHandlingMethod, controls, 1, monitor, referralsInfo );
+            return new CursorNamingEnumeration( connection, cursor, searchBase, filter, searchControls,
+                aliasesDereferencingMethod, referralsHandlingMethod, controls, requestNum, monitor, referralsInfo );
 
         }
         catch ( Exception e )

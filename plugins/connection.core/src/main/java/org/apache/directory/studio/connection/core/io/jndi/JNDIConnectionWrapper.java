@@ -1500,7 +1500,7 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
      * 
      * @return the referral connection
      */
-    static Connection getReferralConnection( Referral referral, StudioProgressMonitor monitor, Object source )
+    public static Connection getReferralConnection( Referral referral, StudioProgressMonitor monitor, Object source )
     {
         Connection referralConnection = null;
         IReferralHandler referralHandler = ConnectionCorePlugin.getDefault().getReferralHandler();
