@@ -17,7 +17,7 @@
  *  under the License.
  *
  */
-package org.apache.directory.studio.connection.core.io;
+package org.apache.directory.studio.connection.core.io.api;
 
 
 import java.util.ArrayList;
@@ -32,7 +32,6 @@ import javax.naming.ldap.Control;
 import org.apache.directory.shared.ldap.cursor.Cursor;
 import org.apache.directory.shared.ldap.message.Referral;
 import org.apache.directory.shared.ldap.message.Response;
-import org.apache.directory.shared.ldap.message.SearchResultDone;
 import org.apache.directory.shared.ldap.message.SearchResultEntry;
 import org.apache.directory.shared.ldap.message.SearchResultReference;
 import org.apache.directory.shared.ldap.util.AttributeUtils;
@@ -41,9 +40,10 @@ import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
 import org.apache.directory.studio.connection.core.Connection.ReferralHandlingMethod;
+import org.apache.directory.studio.connection.core.io.AbstractStudioNamingEnumeration;
+import org.apache.directory.studio.connection.core.io.StudioNamingEnumeration;
 import org.apache.directory.studio.connection.core.io.jndi.JNDIConnectionWrapper;
 import org.apache.directory.studio.connection.core.io.jndi.ReferralsInfo;
-import org.apache.directory.studio.connection.core.io.jndi.StudioNamingEnumeration;
 import org.apache.directory.studio.connection.core.io.jndi.StudioSearchResult;
 
 
@@ -52,27 +52,13 @@ import org.apache.directory.studio.connection.core.io.jndi.StudioSearchResult;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class CursorNamingEnumeration extends StudioNamingEnumeration
+public class CursorStudioNamingEnumeration extends AbstractStudioNamingEnumeration
 {
-    private final Connection connection;
     private Cursor<Response> cursor;
     private SearchResultEntry currentSearchResultEntry;
-    private SearchResultDone searchResultDone;
     private List<Referral> referralsList = new ArrayList<Referral>();
     private List<String> currentReferralUrlsList;
-    private CursorNamingEnumeration cursorNamingEnumeration;
-
-    private long requestNum;
-    private long resultEntryCounter;
-
-    private String searchBase;
-    private String filter;
-    private SearchControls searchControls;
-    private AliasDereferencingMethod aliasesDereferencingMethod;
-    private ReferralHandlingMethod referralsHandlingMethod;
-    private Control[] controls;
-    private StudioProgressMonitor monitor;
-    private ReferralsInfo referralsInfo;
+    private StudioNamingEnumeration cursorNamingEnumeration;
 
 
     /**
@@ -89,17 +75,15 @@ public class CursorNamingEnumeration extends StudioNamingEnumeration
      * @param monitor the progress monitor
      * @param referralsInfo the referrals info
      */
-    public CursorNamingEnumeration( Connection connection, Cursor<Response> cursor,
+    public CursorStudioNamingEnumeration( Connection connection, Cursor<Response> cursor,
         String searchBase, String filter, SearchControls searchControls,
         AliasDereferencingMethod aliasesDereferencingMethod, ReferralHandlingMethod referralsHandlingMethod,
         Control[] controls, long requestNum, StudioProgressMonitor monitor, ReferralsInfo referralsInfo )
     {
-        super( connection, null, null, null, searchBase, filter, searchControls, aliasesDereferencingMethod,
+        super( connection, searchBase, filter, searchControls, aliasesDereferencingMethod,
             referralsHandlingMethod, controls, requestNum, monitor, referralsInfo );
         this.connection = connection;
         this.cursor = cursor;
-        this.requestNum = requestNum;
-        this.resultEntryCounter = 0;
 
         this.searchBase = searchBase;
         this.filter = filter;
@@ -161,11 +145,6 @@ public class CursorNamingEnumeration extends StudioNamingEnumeration
                         referralsList.add( ( ( SearchResultReference ) currentResponse ).getReferral() );
                     }
                 }
-                // Is it a search result done?
-                else if ( currentResponse instanceof SearchResultDone )
-                {
-                    searchResultDone = ( SearchResultDone ) currentResponse;
-                }
             }
 
             // Are we following referrals manually?
@@ -225,7 +204,7 @@ public class CursorNamingEnumeration extends StudioNamingEnumeration
                         referralSearchControls.setDerefLinkFlag( searchControls.getDerefLinkFlag() );
                         referralSearchControls.setReturningObjFlag( searchControls.getReturningObjFlag() );
 
-                        cursorNamingEnumeration = ( CursorNamingEnumeration ) referralConnection.getConnectionWrapper()
+                        cursorNamingEnumeration = referralConnection.getConnectionWrapper()
                             .search(
                                 referralSearchBase, referralFilter, referralSearchControls, aliasesDereferencingMethod,
                                 referralsHandlingMethod, controls, monitor, referralsInfo );

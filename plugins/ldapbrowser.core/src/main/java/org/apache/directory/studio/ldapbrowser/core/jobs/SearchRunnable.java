@@ -48,7 +48,7 @@ import org.apache.directory.studio.connection.core.Connection.ReferralHandlingMe
 import org.apache.directory.studio.connection.core.DnUtils;
 import org.apache.directory.studio.connection.core.StudioControl;
 import org.apache.directory.studio.connection.core.StudioPagedResultsControl;
-import org.apache.directory.studio.connection.core.io.jndi.StudioNamingEnumeration;
+import org.apache.directory.studio.connection.core.io.StudioNamingEnumeration;
 import org.apache.directory.studio.connection.core.io.jndi.StudioSearchResult;
 import org.apache.directory.studio.connection.core.jobs.StudioConnectionBulkRunnableWithProgress;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
@@ -320,7 +320,7 @@ public class SearchRunnable implements StudioConnectionBulkRunnableWithProgress
                     // iterate through the search result
                     while ( !monitor.isCanceled() && enumeration != null && enumeration.hasMore() )
                     {
-                        StudioSearchResult sr = enumeration.next();
+                        StudioSearchResult sr = ( StudioSearchResult ) enumeration.next();
                         boolean isContinuedSearchResult = sr.isContinuedSearchResult();
                         LdapURL searchContinuationUrl = sr.getSearchContinuationUrl();
 

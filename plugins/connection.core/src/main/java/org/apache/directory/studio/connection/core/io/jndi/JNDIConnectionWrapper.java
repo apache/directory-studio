@@ -327,7 +327,7 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
      * 
      * @return the naming enumeration or null if an exception occurs.
      */
-    public StudioNamingEnumeration search( final String searchBase, final String filter,
+    public JndiStudioNamingEnumeration search( final String searchBase, final String filter,
         final SearchControls searchControls, final AliasDereferencingMethod aliasesDereferencingMethod,
         final ReferralHandlingMethod referralsHandlingMethod, final Control[] controls,
         final StudioProgressMonitor monitor, final ReferralsInfo referralsInfo )
@@ -355,19 +355,19 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
                     // perform the search
                     NamingEnumeration<SearchResult> result = searchCtx.search( JNDIConnectionWrapper
                         .getSaveJndiName( searchBase ), filter, searchControls );
-                    namingEnumeration = new StudioNamingEnumeration( connection, searchCtx, result, null, searchBase,
+                    namingEnumeration = new JndiStudioNamingEnumeration( connection, searchCtx, result, null, searchBase,
                         filter, searchControls, aliasesDereferencingMethod, referralsHandlingMethod, controls,
                         requestNum, monitor, referralsInfo );
                 }
                 catch ( PartialResultException e )
                 {
-                    namingEnumeration = new StudioNamingEnumeration( connection, searchCtx, null, e, searchBase,
+                    namingEnumeration = new JndiStudioNamingEnumeration( connection, searchCtx, null, e, searchBase,
                         filter, searchControls, aliasesDereferencingMethod, referralsHandlingMethod, controls,
                         requestNum, monitor, referralsInfo );
                 }
                 catch ( ReferralException e )
                 {
-                    namingEnumeration = new StudioNamingEnumeration( connection, searchCtx, null, e, searchBase,
+                    namingEnumeration = new JndiStudioNamingEnumeration( connection, searchCtx, null, e, searchBase,
                         filter, searchControls, aliasesDereferencingMethod, referralsHandlingMethod, controls,
                         requestNum, monitor, referralsInfo );
                 }
@@ -1375,7 +1375,7 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
 
     abstract class InnerRunnable implements Runnable
     {
-        protected StudioNamingEnumeration namingEnumeration = null;
+        protected JndiStudioNamingEnumeration namingEnumeration = null;
         protected NamingException namingException = null;
         protected boolean canceled = false;
 
@@ -1396,7 +1396,7 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
          * 
          * @return the result
          */
-        public StudioNamingEnumeration getResult()
+        public JndiStudioNamingEnumeration getResult()
         {
             return namingEnumeration;
         }

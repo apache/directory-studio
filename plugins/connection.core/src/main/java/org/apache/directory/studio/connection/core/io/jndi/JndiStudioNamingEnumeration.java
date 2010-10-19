@@ -40,6 +40,7 @@ import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
 import org.apache.directory.studio.connection.core.Connection.ReferralHandlingMethod;
+import org.apache.directory.studio.connection.core.io.AbstractStudioNamingEnumeration;
 import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
 import org.apache.directory.studio.connection.core.IJndiLogger;
 
@@ -49,9 +50,8 @@ import org.apache.directory.studio.connection.core.IJndiLogger;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class StudioNamingEnumeration implements NamingEnumeration<SearchResult>
+public class JndiStudioNamingEnumeration extends AbstractStudioNamingEnumeration
 {
-    private final Connection connection;
     private final LdapContext ctx;
     private NamingEnumeration<SearchResult> initialNamingEnumeration;
     private NamingEnumeration<SearchResult> delegate;
@@ -59,15 +59,6 @@ public class StudioNamingEnumeration implements NamingEnumeration<SearchResult>
 
     private long requestNum;
     private long resultEntryCounter;
-
-    private String searchBase;
-    private String filter;
-    private SearchControls searchControls;
-    private AliasDereferencingMethod aliasesDereferencingMethod;
-    private ReferralHandlingMethod referralsHandlingMethod;
-    private Control[] controls;
-    private StudioProgressMonitor monitor;
-    private ReferralsInfo referralsInfo;
 
 
     /**
@@ -84,27 +75,20 @@ public class StudioNamingEnumeration implements NamingEnumeration<SearchResult>
      * @param monitor the progress monitor
      * @param referralsInfo the referrals info
      */
-    public StudioNamingEnumeration( Connection connection, LdapContext ctx, NamingEnumeration<SearchResult> delegate,
+    public JndiStudioNamingEnumeration( Connection connection, LdapContext ctx,
+        NamingEnumeration<SearchResult> delegate,
         NamingException initialReferralException, String searchBase, String filter, SearchControls searchControls,
         AliasDereferencingMethod aliasesDereferencingMethod, ReferralHandlingMethod referralsHandlingMethod,
         Control[] controls, long requestNum, StudioProgressMonitor monitor, ReferralsInfo referralsInfo )
     {
-        this.connection = connection;
+        super( connection, searchBase, filter, searchControls, aliasesDereferencingMethod, referralsHandlingMethod,
+            controls, requestNum, monitor, referralsInfo );
         this.ctx = ctx;
         this.initialNamingEnumeration = delegate;
         this.delegate = delegate;
         this.initialReferralException = initialReferralException;
         this.requestNum = requestNum;
         this.resultEntryCounter = 0;
-
-        this.searchBase = searchBase;
-        this.filter = filter;
-        this.searchControls = searchControls;
-        this.aliasesDereferencingMethod = aliasesDereferencingMethod;
-        this.referralsHandlingMethod = referralsHandlingMethod;
-        this.controls = controls;
-        this.monitor = monitor;
-        this.referralsInfo = referralsInfo;
     }
 
 
@@ -258,9 +242,9 @@ public class StudioNamingEnumeration implements NamingEnumeration<SearchResult>
      */
     public Connection getConnection()
     {
-        if ( delegate instanceof StudioNamingEnumeration )
+        if ( delegate instanceof JndiStudioNamingEnumeration )
         {
-            return ( ( StudioNamingEnumeration ) delegate ).getConnection();
+            return ( ( JndiStudioNamingEnumeration ) delegate ).getConnection();
         }
         else
         {

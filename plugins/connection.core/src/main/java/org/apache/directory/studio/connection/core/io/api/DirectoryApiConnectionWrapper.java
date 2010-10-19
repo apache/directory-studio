@@ -17,7 +17,7 @@
  *  under the License. 
  *  
  */
-package org.apache.directory.studio.connection.core.io;
+package org.apache.directory.studio.connection.core.io.api;
 
 
 import java.util.ArrayList;
@@ -58,8 +58,9 @@ import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
 import org.apache.directory.studio.connection.core.Connection.ReferralHandlingMethod;
 import org.apache.directory.studio.connection.core.ConnectionParameter.EncryptionMethod;
+import org.apache.directory.studio.connection.core.io.ConnectionWrapper;
+import org.apache.directory.studio.connection.core.io.StudioNamingEnumeration;
 import org.apache.directory.studio.connection.core.io.jndi.ReferralsInfo;
-import org.apache.directory.studio.connection.core.io.jndi.StudioNamingEnumeration;
 
 
 /**
@@ -227,7 +228,7 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
             Cursor<Response> cursor = getLdapConnection().search( request );
 
             // Returning the result of the search
-            return new CursorNamingEnumeration( connection, cursor, searchBase, filter, searchControls,
+            return new CursorStudioNamingEnumeration( connection, cursor, searchBase, filter, searchControls,
                 aliasesDereferencingMethod, referralsHandlingMethod, controls, requestNum, monitor, referralsInfo );
 
         }
