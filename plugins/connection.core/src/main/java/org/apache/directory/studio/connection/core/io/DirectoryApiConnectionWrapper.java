@@ -24,12 +24,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import javax.naming.NamingEnumeration;
 import javax.naming.directory.Attributes;
 import javax.naming.directory.DirContext;
 import javax.naming.directory.ModificationItem;
 import javax.naming.directory.SearchControls;
-import javax.naming.directory.SearchResult;
 import javax.naming.ldap.Control;
 
 import org.apache.directory.ldap.client.api.LdapConnectionConfig;
@@ -44,7 +42,6 @@ import org.apache.directory.shared.ldap.filter.SearchScope;
 import org.apache.directory.shared.ldap.message.AddRequest;
 import org.apache.directory.shared.ldap.message.AddRequestImpl;
 import org.apache.directory.shared.ldap.message.AliasDerefMode;
-import org.apache.directory.shared.ldap.message.ArrayNamingEnumeration;
 import org.apache.directory.shared.ldap.message.DeleteRequest;
 import org.apache.directory.shared.ldap.message.DeleteRequestImpl;
 import org.apache.directory.shared.ldap.message.ModifyDnRequest;
@@ -54,19 +51,14 @@ import org.apache.directory.shared.ldap.message.ModifyRequestImpl;
 import org.apache.directory.shared.ldap.message.Response;
 import org.apache.directory.shared.ldap.message.SearchRequest;
 import org.apache.directory.shared.ldap.message.SearchRequestImpl;
-import org.apache.directory.shared.ldap.message.SearchResultEntry;
-import org.apache.directory.shared.ldap.message.SearchResultReference;
 import org.apache.directory.shared.ldap.name.DN;
 import org.apache.directory.shared.ldap.util.AttributeUtils;
-import org.apache.directory.shared.ldap.util.LdapURL;
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
 import org.apache.directory.studio.connection.core.Connection.ReferralHandlingMethod;
 import org.apache.directory.studio.connection.core.ConnectionParameter.EncryptionMethod;
 import org.apache.directory.studio.connection.core.io.jndi.ReferralsInfo;
-import org.apache.directory.studio.connection.core.io.jndi.StudioSearchResult;
-import org.apache.directory.studio.connection.core.io.jndi.ReferralsInfo.Referral;
 import org.apache.directory.studio.connection.core.io.jndi.StudioNamingEnumeration;
 
 

@@ -26,6 +26,7 @@ import javax.naming.directory.ModificationItem;
 import javax.naming.directory.SearchControls;
 import javax.naming.ldap.Control;
 
+import org.apache.directory.shared.ldap.message.Referral;
 import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
 import org.apache.directory.studio.connection.core.io.jndi.ReferralsInfo;
 import org.apache.directory.studio.connection.core.io.jndi.StudioSearchResult;
@@ -178,7 +179,7 @@ public interface IJndiLogger
      * @param requestNum the request number
      * @param the naming exception if an error occurred, null otherwise
      */
-    public void logSearchResultReference( Connection connection, ReferralsInfo.Referral referral,
+    public void logSearchResultReference( Connection connection, Referral referral,
         ReferralsInfo referralsInfo, long requestNum, NamingException namingException );
 
 

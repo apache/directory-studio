@@ -20,18 +20,13 @@
 package org.apache.directory.studio.connection.core.io.jndi;
 
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Set;
 
 import javax.naming.LinkLoopException;
 
-import org.apache.directory.shared.ldap.name.DN;
-import org.apache.directory.shared.ldap.util.LdapURL;
-import org.apache.directory.studio.connection.core.Messages;
-import org.eclipse.osgi.util.NLS;
+import org.apache.directory.shared.ldap.message.Referral;
 
 
 /**
@@ -44,7 +39,7 @@ public class ReferralsInfo
 {
     private LinkedList<Referral> referralsToProcess = new LinkedList<Referral>();
 
-    private Set<LdapURL> processedUrls = new HashSet<LdapURL>();
+    private Set<String> processedUrls = new HashSet<String>();
 
 
     /**
@@ -73,7 +68,7 @@ public class ReferralsInfo
         if ( !referralsToProcess.isEmpty() )
         {
             Referral referral = referralsToProcess.removeFirst();
-            for ( LdapURL url : referral.urls )
+            for ( String url : referral.getLdapUrls() )
             {
                 processedUrls.add( url );
             }
@@ -95,58 +90,4 @@ public class ReferralsInfo
     {
         return !referralsToProcess.isEmpty();
     }
-
-    public class Referral
-    {
-        private List<LdapURL> urls = new ArrayList<LdapURL>();
-        private DN dn;
-
-
-        public Referral( DN dn )
-        {
-            this.dn = dn;
-        }
-
-
-        /**
-         * Gets the list of {@link LdapURL}.
-         * 
-         * @return the list of {@link LdapURL}
-         */
-        public List<LdapURL> getLdapURLs()
-        {
-            return urls;
-        }
-
-
-        /**
-         * Gets the DN.
-         * 
-         * @return the DN
-         */
-        public DN getDn()
-        {
-            return dn;
-        }
-
-
-        /**
-         * Adds the URL.
-         * 
-         * @param url the URL
-         * 
-         * @throws LinkLoopException if a loop was encountered.
-         */
-        public void addUrl( LdapURL url ) throws LinkLoopException
-        {
-            if ( processedUrls.contains( url ) )
-            {
-                throw new LinkLoopException( NLS.bind( Messages.error__loop_detected, url ) );
-            }
-
-            urls.add( url );
-        }
-
-    }
-
 }

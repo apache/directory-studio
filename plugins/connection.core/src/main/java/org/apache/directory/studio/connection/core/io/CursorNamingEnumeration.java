@@ -31,12 +31,10 @@ import javax.naming.ldap.Control;
 
 import org.apache.directory.shared.ldap.cursor.Cursor;
 import org.apache.directory.shared.ldap.message.Referral;
-import org.apache.directory.shared.ldap.message.ReferralImpl;
 import org.apache.directory.shared.ldap.message.Response;
 import org.apache.directory.shared.ldap.message.SearchResultDone;
 import org.apache.directory.shared.ldap.message.SearchResultEntry;
 import org.apache.directory.shared.ldap.message.SearchResultReference;
-import org.apache.directory.shared.ldap.name.DN;
 import org.apache.directory.shared.ldap.util.AttributeUtils;
 import org.apache.directory.shared.ldap.util.LdapURL;
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
@@ -205,26 +203,35 @@ public class CursorNamingEnumeration extends StudioNamingEnumeration
                     List<String> referralUrls = new ArrayList<String>( referral.getLdapUrls() );
                     LdapURL url = new LdapURL( referralUrls.get( 0 ) );
 
-                    String referralSearchBase = url.getDn() != null && !url.getDn().isEmpty() ? url.getDn().getName()
-                        : searchBase;
-                    String referralFilter = url.getFilter() != null && url.getFilter().length() == 0 ? url.getFilter()
-                        : filter;
-                    SearchControls referralSearchControls = new SearchControls();
-                    referralSearchControls.setSearchScope( url.getScope().getScope() > -1 ? url.getScope().getScope()
-                        : searchControls.getSearchScope() );
-                    referralSearchControls.setReturningAttributes( url.getAttributes() != null
-                        && url.getAttributes().size() > 0 ? url.getAttributes().toArray(
-                        new String[url.getAttributes().size()] ) : searchControls.getReturningAttributes() );
-                    referralSearchControls.setCountLimit( searchControls.getCountLimit() );
-                    referralSearchControls.setTimeLimit( searchControls.getTimeLimit() );
-                    referralSearchControls.setDerefLinkFlag( searchControls.getDerefLinkFlag() );
-                    referralSearchControls.setReturningObjFlag( searchControls.getReturningObjFlag() );
+                    Connection referralConnection = JNDIConnectionWrapper.getReferralConnection( referral, monitor,
+                        this );
+                    if ( referralConnection != null )
+                    {
+                        String referralSearchBase = url.getDn() != null && !url.getDn().isEmpty() ? url.getDn()
+                            .getName()
+                            : searchBase;
+                        String referralFilter = url.getFilter() != null && url.getFilter().length() == 0 ? url
+                            .getFilter()
+                            : filter;
+                        SearchControls referralSearchControls = new SearchControls();
+                        referralSearchControls.setSearchScope( url.getScope().getScope() > -1 ? url.getScope()
+                            .getScope()
+                            : searchControls.getSearchScope() );
+                        referralSearchControls.setReturningAttributes( url.getAttributes() != null
+                            && url.getAttributes().size() > 0 ? url.getAttributes().toArray(
+                            new String[url.getAttributes().size()] ) : searchControls.getReturningAttributes() );
+                        referralSearchControls.setCountLimit( searchControls.getCountLimit() );
+                        referralSearchControls.setTimeLimit( searchControls.getTimeLimit() );
+                        referralSearchControls.setDerefLinkFlag( searchControls.getDerefLinkFlag() );
+                        referralSearchControls.setReturningObjFlag( searchControls.getReturningObjFlag() );
 
-                    cursorNamingEnumeration = ( CursorNamingEnumeration ) connection.getConnectionWrapper().search(
-                        referralSearchBase, referralFilter, referralSearchControls, aliasesDereferencingMethod,
-                        referralsHandlingMethod, controls, monitor, referralsInfo );
+                        cursorNamingEnumeration = ( CursorNamingEnumeration ) referralConnection.getConnectionWrapper()
+                            .search(
+                                referralSearchBase, referralFilter, referralSearchControls, aliasesDereferencingMethod,
+                                referralsHandlingMethod, controls, monitor, referralsInfo );
 
-                    return cursorNamingEnumeration.hasMore();
+                        return cursorNamingEnumeration.hasMore();
+                    }
                 }
             }
 

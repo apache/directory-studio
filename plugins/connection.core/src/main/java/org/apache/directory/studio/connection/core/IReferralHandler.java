@@ -23,8 +23,6 @@ package org.apache.directory.studio.connection.core;
 
 import java.util.List;
 
-import org.apache.directory.shared.ldap.util.LdapURL;
-
 
 /**
  * Callback interface to request the target connection 
@@ -44,6 +42,6 @@ public interface IReferralHandler
      * @param referralURLs the referral URLs
      * @return the target connection, null to cancel referral chasing
      */
-    public Connection getReferralConnection( List<LdapURL> referralUrls );
+    public Connection getReferralConnection( List<String> referralUrls );
 
 }

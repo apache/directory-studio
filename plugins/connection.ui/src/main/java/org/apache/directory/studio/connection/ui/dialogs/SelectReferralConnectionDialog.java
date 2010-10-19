@@ -23,6 +23,7 @@ package org.apache.directory.studio.connection.ui.dialogs;
 
 import java.util.List;
 
+import org.apache.directory.shared.ldap.codec.util.LdapURLEncodingException;
 import org.apache.directory.shared.ldap.util.LdapURL;
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.connection.core.Connection;
@@ -59,7 +60,7 @@ public class SelectReferralConnectionDialog extends Dialog
 
     private String title;
 
-    private List<LdapURL> referralUrls;
+    private List<String> referralUrls;
 
     private Connection selectedConnection;
 
@@ -78,7 +79,7 @@ public class SelectReferralConnectionDialog extends Dialog
      * @param parentShell the parent shell
      * @param referralUrl the referral URL
      */
-    public SelectReferralConnectionDialog( Shell parentShell, List<LdapURL> referralUrls )
+    public SelectReferralConnectionDialog( Shell parentShell, List<String> referralUrls )
     {
         super( parentShell );
         super.setShellStyle( super.getShellStyle() | SWT.RESIZE );
@@ -166,9 +167,9 @@ public class SelectReferralConnectionDialog extends Dialog
 
         BaseWidgetUtils.createWrappedLabeledText( composite, Messages
             .getString( "SelectReferralConnectionDialog.SelectConnectionToHandleReferral" ), 1 ); //$NON-NLS-1$
-        for ( LdapURL url : referralUrls )
+        for ( String url : referralUrls )
         {
-            BaseWidgetUtils.createWrappedLabeledText( composite, " - " + url.toString(), 1 ); //$NON-NLS-1$
+            BaseWidgetUtils.createWrappedLabeledText( composite, " - " + url, 1 ); //$NON-NLS-1$
         }
 
         // create configuration
@@ -231,13 +232,21 @@ public class SelectReferralConnectionDialog extends Dialog
                 Connection connection = connections[i];
                 LdapURL connectionUrl = connection.getUrl();
                 String normalizedConnectionUrl = Utils.getSimpleNormalizedUrl( connectionUrl );
-                for ( LdapURL url : referralUrls )
+                for ( String url : referralUrls )
                 {
-                    if ( url != null && Utils.getSimpleNormalizedUrl( url ).equals( normalizedConnectionUrl ) )
+                    try
                     {
-                        mainWidget.getViewer().reveal( connection );
-                        mainWidget.getViewer().setSelection( new StructuredSelection( connection ), true );
-                        break;
+                        if ( url != null
+                            && Utils.getSimpleNormalizedUrl( new LdapURL( url ) ).equals( normalizedConnectionUrl ) )
+                        {
+                            mainWidget.getViewer().reveal( connection );
+                            mainWidget.getViewer().setSelection( new StructuredSelection( connection ), true );
+                            break;
+                        }
+                    }
+                    catch ( LdapURLEncodingException e )
+                    {
+                        // Will never occur
                     }
                 }
             }

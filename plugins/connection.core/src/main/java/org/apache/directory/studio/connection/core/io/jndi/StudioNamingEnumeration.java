@@ -33,6 +33,8 @@ import javax.naming.directory.SearchResult;
 import javax.naming.ldap.Control;
 import javax.naming.ldap.LdapContext;
 
+import org.apache.directory.shared.ldap.codec.util.LdapURLEncodingException;
+import org.apache.directory.shared.ldap.message.Referral;
 import org.apache.directory.shared.ldap.util.LdapURL;
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.Connection;
@@ -40,7 +42,6 @@ import org.apache.directory.studio.connection.core.Connection.AliasDereferencing
 import org.apache.directory.studio.connection.core.Connection.ReferralHandlingMethod;
 import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
 import org.apache.directory.studio.connection.core.IJndiLogger;
-import org.apache.directory.studio.connection.core.io.jndi.ReferralsInfo.Referral;
 
 
 /**
@@ -283,111 +284,126 @@ public class StudioNamingEnumeration implements NamingEnumeration<SearchResult>
 
     private boolean checkReferral()
     {
-        boolean done = false;
+        try
+        {
+            boolean done = false;
 
-        // ignore exception if referrals handling method is IGNORE
-        // follow referral if referrals handling method is FOLLOW
-        // follow manually if referrals handling method is FOLLOW_MANUALLY
-        if ( referralsHandlingMethod == ReferralHandlingMethod.IGNORE )
-        {
-            done = true;
-            delegate = null;
-        }
-        else if ( referralsHandlingMethod == ReferralHandlingMethod.FOLLOW_MANUALLY )
-        {
-            delegate = new NamingEnumeration<SearchResult>()
+            // ignore exception if referrals handling method is IGNORE
+            // follow referral if referrals handling method is FOLLOW
+            // follow manually if referrals handling method is FOLLOW_MANUALLY
+            if ( referralsHandlingMethod == ReferralHandlingMethod.IGNORE )
             {
-
-                List<LdapURL> urls = new ArrayList<LdapURL>();
+                done = true;
+                delegate = null;
+            }
+            else if ( referralsHandlingMethod == ReferralHandlingMethod.FOLLOW_MANUALLY )
+            {
+                delegate = new NamingEnumeration<SearchResult>()
                 {
-                    while ( referralsInfo.hasMoreReferrals() )
+
+                    List<String> urls = new ArrayList<String>();
+                    {
+                        while ( referralsInfo.hasMoreReferrals() )
                     {
                         Referral referral = referralsInfo.getNextReferral();
                         for ( IJndiLogger logger : ConnectionCorePlugin.getDefault().getJndiLoggers() )
                         {
                             logger.logSearchResultReference( connection, referral, referralsInfo, requestNum, null );
                         }
-                        urls.addAll( referral.getLdapURLs() );
+                        urls.addAll( referral.getLdapUrls() );
                     }
                 }
 
 
-                public SearchResult nextElement()
+                    public SearchResult nextElement()
                 {
                     throw new UnsupportedOperationException( "Call next() instead of nextElement() !" );
                 }
 
 
-                public boolean hasMoreElements()
+                    public boolean hasMoreElements()
                 {
                     throw new UnsupportedOperationException( "Call hasMore() instead of hasMoreElements() !" );
                 }
 
 
-                public SearchResult next() throws NamingException
+                    public SearchResult next() throws NamingException
                 {
-                    LdapURL url = urls.remove( 0 );
-                    SearchResult searchResult = new SearchResult( url.getDn().getName(), null, new BasicAttributes(),
-                        false );
-                    searchResult.setNameInNamespace( url.getDn().getName() );
-                    StudioSearchResult ssr = new StudioSearchResult( searchResult, null, false, url );
-                    return ssr;
+                    try
+                    {
+                        LdapURL url = new LdapURL( urls.remove( 0 ) );
+                        SearchResult searchResult = new SearchResult( url.getDn().getName(), null,
+                            new BasicAttributes(),
+                            false );
+                        searchResult.setNameInNamespace( url.getDn().getName() );
+                        StudioSearchResult ssr = new StudioSearchResult( searchResult, null, false, url );
+                        return ssr;
+                    }
+                    catch ( LdapURLEncodingException e )
+                    {
+                        throw new NamingException( e.getMessage() );
+                    }
                 }
 
 
-                public boolean hasMore() throws NamingException
+                    public boolean hasMore() throws NamingException
                 {
                     return !urls.isEmpty();
                 }
 
 
-                public void close() throws NamingException
+                    public void close() throws NamingException
                 {
                     urls.clear();
                     referralsInfo = null;
                 }
-            };
+                };
+            }
+            else if ( referralsHandlingMethod == ReferralHandlingMethod.FOLLOW )
+            {
+                Referral referral = referralsInfo.getNextReferral();
+                for ( IJndiLogger logger : ConnectionCorePlugin.getDefault().getJndiLoggers() )
+                {
+                    logger.logSearchResultReference( connection, referral, referralsInfo, requestNum, null );
+                }
+                List<String> urls = new ArrayList<String>( referral.getLdapUrls() );
+                LdapURL url = new LdapURL( urls.get( 0 ) );
+                Connection referralConnection = JNDIConnectionWrapper.getReferralConnection( referral, monitor, this );
+                if ( referralConnection != null )
+                {
+                    done = false;
+                    String referralSearchBase = url.getDn() != null && !url.getDn().isEmpty() ? url.getDn().getName()
+                        : searchBase;
+                    String referralFilter = url.getFilter() != null && url.getFilter().length() == 0 ? url.getFilter()
+                        : filter;
+                    SearchControls referralSearchControls = new SearchControls();
+                    referralSearchControls.setSearchScope( url.getScope().getScope() > -1 ? url.getScope().getScope()
+                        : searchControls
+                            .getSearchScope() );
+                    referralSearchControls.setReturningAttributes( url.getAttributes() != null
+                        && url.getAttributes().size() > 0 ? url.getAttributes().toArray(
+                        new String[url.getAttributes().size()] ) : searchControls.getReturningAttributes() );
+                    referralSearchControls.setCountLimit( searchControls.getCountLimit() );
+                    referralSearchControls.setTimeLimit( searchControls.getTimeLimit() );
+                    referralSearchControls.setDerefLinkFlag( searchControls.getDerefLinkFlag() );
+                    referralSearchControls.setReturningObjFlag( searchControls.getReturningObjFlag() );
+
+                    delegate = referralConnection.getConnectionWrapper().search( referralSearchBase, referralFilter,
+                        referralSearchControls, aliasesDereferencingMethod, referralsHandlingMethod, controls, monitor,
+                        referralsInfo );
+                }
+                else
+                {
+                    done = true;
+                    delegate = null;
+                }
+            }
+            return done;
         }
-        else if ( referralsHandlingMethod == ReferralHandlingMethod.FOLLOW )
+        catch ( LdapURLEncodingException e )
         {
-            Referral referral = referralsInfo.getNextReferral();
-            for ( IJndiLogger logger : ConnectionCorePlugin.getDefault().getJndiLoggers() )
-            {
-                logger.logSearchResultReference( connection, referral, referralsInfo, requestNum, null );
-            }
-
-            LdapURL url = referral.getLdapURLs().get( 0 );
-            Connection referralConnection = JNDIConnectionWrapper.getReferralConnection( referral, monitor, this );
-            if ( referralConnection != null )
-            {
-                done = false;
-                String referralSearchBase = url.getDn() != null && !url.getDn().isEmpty() ? url.getDn().getName()
-                    : searchBase;
-                String referralFilter = url.getFilter() != null && url.getFilter().length() == 0 ? url.getFilter()
-                    : filter;
-                SearchControls referralSearchControls = new SearchControls();
-                referralSearchControls.setSearchScope( url.getScope().getScope() > -1 ? url.getScope().getScope()
-                    : searchControls
-                        .getSearchScope() );
-                referralSearchControls.setReturningAttributes( url.getAttributes() != null
-                    && url.getAttributes().size() > 0 ? url.getAttributes().toArray(
-                    new String[url.getAttributes().size()] ) : searchControls.getReturningAttributes() );
-                referralSearchControls.setCountLimit( searchControls.getCountLimit() );
-                referralSearchControls.setTimeLimit( searchControls.getTimeLimit() );
-                referralSearchControls.setDerefLinkFlag( searchControls.getDerefLinkFlag() );
-                referralSearchControls.setReturningObjFlag( searchControls.getReturningObjFlag() );
-
-                delegate = referralConnection.getConnectionWrapper().search( referralSearchBase, referralFilter,
-                    referralSearchControls, aliasesDereferencingMethod, referralsHandlingMethod, controls, monitor,
-                    referralsInfo );
-            }
-            else
-            {
-                done = true;
-                delegate = null;
-            }
+            return false;
         }
-        return done;
     }
 
 }

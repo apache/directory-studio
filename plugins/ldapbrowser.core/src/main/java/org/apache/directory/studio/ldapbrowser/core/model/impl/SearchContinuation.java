@@ -151,8 +151,8 @@ public class SearchContinuation extends Search implements IContinuation
     public void resolve()
     {
         // get referral connection, exit if canceled
-        List<LdapURL> urls = new ArrayList<LdapURL>();
-        urls.add( searchContinuationURL );
+        List<String> urls = new ArrayList<String>();
+        urls.add( searchContinuationURL.toString() );
         Connection referralConnection = ConnectionCorePlugin.getDefault().getReferralHandler().getReferralConnection(
             urls );
         if ( referralConnection == null )
