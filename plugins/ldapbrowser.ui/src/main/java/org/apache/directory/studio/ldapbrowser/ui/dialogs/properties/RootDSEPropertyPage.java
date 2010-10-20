@@ -120,7 +120,7 @@ public class RootDSEPropertyPage extends PropertyPage implements IWorkbenchPrope
         Composite infoComposite = new Composite( tabFolder, SWT.NONE );
         GridLayout gl = new GridLayout( 2, false );
         infoComposite.setLayout( gl );
-        BaseWidgetUtils.createLabel( infoComposite, Messages.getString( "RootDSEPropertyPage.DirectoryTypw" ), 1 ); //$NON-NLS-1$
+        BaseWidgetUtils.createLabel( infoComposite, Messages.getString( "RootDSEPropertyPage.DirectoryType" ), 1 ); //$NON-NLS-1$
         Text typeText = BaseWidgetUtils.createWrappedLabeledText( infoComposite, "-", 1, 150 ); //$NON-NLS-1$
         if ( connection != null && connection.getRootDSE() != null )
         {
