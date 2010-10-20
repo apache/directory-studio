@@ -55,12 +55,14 @@ import org.apache.directory.shared.ldap.name.DN;
 import org.apache.directory.shared.ldap.util.AttributeUtils;
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.Connection;
+import org.apache.directory.studio.connection.core.Messages;
 import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
 import org.apache.directory.studio.connection.core.Connection.ReferralHandlingMethod;
 import org.apache.directory.studio.connection.core.ConnectionParameter.EncryptionMethod;
 import org.apache.directory.studio.connection.core.io.ConnectionWrapper;
 import org.apache.directory.studio.connection.core.io.StudioNamingEnumeration;
 import org.apache.directory.studio.connection.core.io.jndi.ReferralsInfo;
+import org.eclipse.osgi.util.NLS;
 
 
 /**
@@ -336,6 +338,12 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
     public void modifyEntry( final String dn, final ModificationItem[] modificationItems, final Control[] controls,
         final StudioProgressMonitor monitor, final ReferralsInfo referralsInfo )
     {
+        if ( connection.isReadOnly() )
+        {
+            monitor.reportError( NLS.bind( Messages.error__connection_is_readonly, connection.getName() ) );
+            return;
+        }
+
         try
         {
             // Preparing the modify request
@@ -425,6 +433,12 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
     public void renameEntry( final String oldDn, final String newDn, final boolean deleteOldRdn,
         final Control[] controls, final StudioProgressMonitor monitor, final ReferralsInfo referralsInfo )
     {
+        if ( connection.isReadOnly() )
+        {
+            monitor.reportError( NLS.bind( Messages.error__connection_is_readonly, connection.getName() ) );
+            return;
+        }
+
         try
         {
             // Preparing the rename request
@@ -452,6 +466,12 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
     public void createEntry( final String dn, final Attributes attributes, final Control[] controls,
         final StudioProgressMonitor monitor, final ReferralsInfo referralsInfo )
     {
+        if ( connection.isReadOnly() )
+        {
+            monitor.reportError( NLS.bind( Messages.error__connection_is_readonly, connection.getName() ) );
+            return;
+        }
+
         try
         {
             // Preparing the add request
@@ -476,6 +496,12 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
     public void deleteEntry( final String dn, final Control[] controls, final StudioProgressMonitor monitor,
         final ReferralsInfo referralsInfo )
     {
+        if ( connection.isReadOnly() )
+        {
+            monitor.reportError( NLS.bind( Messages.error__connection_is_readonly, connection.getName() ) );
+            return;
+        }
+
         try
         {
             // Preparing the delete request

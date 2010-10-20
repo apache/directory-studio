@@ -87,6 +87,7 @@ import org.apache.directory.studio.connection.core.Messages;
 import org.apache.directory.studio.connection.core.Utils;
 import org.apache.directory.studio.connection.core.event.ConnectionEventRegistry;
 import org.apache.directory.studio.connection.core.io.ConnectionWrapper;
+import org.apache.directory.studio.connection.core.io.ConnectionWrapperUtils;
 import org.eclipse.core.runtime.Preferences;
 import org.eclipse.osgi.util.NLS;
 
@@ -355,7 +356,8 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
                     // perform the search
                     NamingEnumeration<SearchResult> result = searchCtx.search( JNDIConnectionWrapper
                         .getSaveJndiName( searchBase ), filter, searchControls );
-                    namingEnumeration = new JndiStudioNamingEnumeration( connection, searchCtx, result, null, searchBase,
+                    namingEnumeration = new JndiStudioNamingEnumeration( connection, searchCtx, result, null,
+                        searchBase,
                         filter, searchControls, aliasesDereferencingMethod, referralsHandlingMethod, controls,
                         requestNum, monitor, referralsInfo );
                 }
@@ -462,7 +464,8 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
                         Referral referral = newReferralsInfo.getNextReferral();
                         if ( referral != null )
                         {
-                            Connection referralConnection = getReferralConnection( referral, monitor, this );
+                            Connection referralConnection = ConnectionWrapperUtils.getReferralConnection( referral,
+                                monitor, this );
                             if ( referralConnection != null )
                             {
                                 List<String> urls = new ArrayList<String>( referral.getLdapUrls() );
@@ -577,7 +580,8 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
                         Referral referral = newReferralsInfo.getNextReferral();
                         if ( referral != null )
                         {
-                            Connection referralConnection = getReferralConnection( referral, monitor, this );
+                            Connection referralConnection = ConnectionWrapperUtils.getReferralConnection( referral,
+                                monitor, this );
                             if ( referralConnection != null )
                             {
                                 referralConnection.getConnectionWrapper().renameEntry( oldDn, newDn, deleteOldRdn,
@@ -672,7 +676,8 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
                         Referral referral = newReferralsInfo.getNextReferral();
                         if ( referral != null )
                         {
-                            Connection referralConnection = getReferralConnection( referral, monitor, this );
+                            Connection referralConnection = ConnectionWrapperUtils.getReferralConnection( referral,
+                                monitor, this );
                             if ( referralConnection != null )
                             {
                                 List<String> urls = new ArrayList<String>( referral.getLdapUrls() );
@@ -773,7 +778,8 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
                         Referral referral = newReferralsInfo.getNextReferral();
                         if ( referral != null )
                         {
-                            Connection referralConnection = getReferralConnection( referral, monitor, this );
+                            Connection referralConnection = ConnectionWrapperUtils.getReferralConnection( referral,
+                                monitor, this );
                             if ( referralConnection != null )
                             {
                                 List<String> urls = new ArrayList<String>( referral.getLdapUrls() );
@@ -1506,40 +1512,6 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
         {
             return new LdapName( name );
         }
-    }
-
-
-    /**
-     * Gets the referral connection from the given URL.
-     * 
-     * @param url the URL
-     * @param monitor the progress monitor
-     * @param source the source
-     * 
-     * @return the referral connection
-     */
-    public static Connection getReferralConnection( Referral referral, StudioProgressMonitor monitor, Object source )
-    {
-        Connection referralConnection = null;
-        IReferralHandler referralHandler = ConnectionCorePlugin.getDefault().getReferralHandler();
-        if ( referralHandler != null )
-        {
-            referralConnection = referralHandler
-                .getReferralConnection( new ArrayList<String>( referral.getLdapUrls() ) );
-
-            // open connection if not yet open
-            if ( referralConnection != null && !referralConnection.getConnectionWrapper().isConnected() )
-            {
-                referralConnection.getConnectionWrapper().connect( monitor );
-                referralConnection.getConnectionWrapper().bind( monitor );
-                for ( IConnectionListener listener : ConnectionCorePlugin.getDefault().getConnectionListeners() )
-                {
-                    listener.connectionOpened( referralConnection, monitor );
-                }
-                ConnectionEventRegistry.fireConnectionOpened( referralConnection, source );
-            }
-        }
-        return referralConnection;
     }
 
 

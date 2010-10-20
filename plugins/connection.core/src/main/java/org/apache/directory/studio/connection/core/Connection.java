@@ -39,7 +39,6 @@ import org.eclipse.core.runtime.IAdaptable;
  */
 public class Connection implements ConnectionPropertyPageProvider, IAdaptable
 {
-
     /**
      * Enum for alias dereferencing method.
      * 
@@ -47,7 +46,6 @@ public class Connection implements ConnectionPropertyPageProvider, IAdaptable
      */
     public static enum AliasDereferencingMethod
     {
-
         /** Never. */
         NEVER(0),
 
@@ -112,7 +110,6 @@ public class Connection implements ConnectionPropertyPageProvider, IAdaptable
      */
     public static enum ReferralHandlingMethod
     {
-
         /** Ignore. */
         IGNORE(0),
 

@@ -41,6 +41,7 @@ import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
 import org.apache.directory.studio.connection.core.Connection.ReferralHandlingMethod;
 import org.apache.directory.studio.connection.core.io.AbstractStudioNamingEnumeration;
+import org.apache.directory.studio.connection.core.io.ConnectionWrapperUtils;
 import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
 import org.apache.directory.studio.connection.core.IJndiLogger;
 
@@ -352,7 +353,7 @@ public class JndiStudioNamingEnumeration extends AbstractStudioNamingEnumeration
                 }
                 List<String> urls = new ArrayList<String>( referral.getLdapUrls() );
                 LdapURL url = new LdapURL( urls.get( 0 ) );
-                Connection referralConnection = JNDIConnectionWrapper.getReferralConnection( referral, monitor, this );
+                Connection referralConnection = ConnectionWrapperUtils.getReferralConnection( referral, monitor, this );
                 if ( referralConnection != null )
                 {
                     done = false;
