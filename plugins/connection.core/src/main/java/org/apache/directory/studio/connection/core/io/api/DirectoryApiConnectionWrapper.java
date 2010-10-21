@@ -24,6 +24,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import javax.naming.CommunicationException;
+import javax.naming.InsufficientResourcesException;
+import javax.naming.NamingException;
+import javax.naming.ServiceUnavailableException;
 import javax.naming.directory.Attributes;
 import javax.naming.directory.DirContext;
 import javax.naming.directory.ModificationItem;
@@ -55,12 +59,16 @@ import org.apache.directory.shared.ldap.name.DN;
 import org.apache.directory.shared.ldap.util.AttributeUtils;
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.Connection;
-import org.apache.directory.studio.connection.core.Messages;
+import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
+import org.apache.directory.studio.connection.core.IAuthHandler;
+import org.apache.directory.studio.connection.core.ICredentials;
 import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
 import org.apache.directory.studio.connection.core.Connection.ReferralHandlingMethod;
 import org.apache.directory.studio.connection.core.ConnectionParameter.EncryptionMethod;
+import org.apache.directory.studio.connection.core.Messages;
 import org.apache.directory.studio.connection.core.io.ConnectionWrapper;
 import org.apache.directory.studio.connection.core.io.StudioNamingEnumeration;
+import org.apache.directory.studio.connection.core.io.jndi.CancelException;
 import org.apache.directory.studio.connection.core.io.jndi.ReferralsInfo;
 import org.eclipse.osgi.util.NLS;
 
@@ -80,6 +88,18 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
 
     /** The LDAP Connection */
     private LdapNetworkConnection ldapConnection;
+
+    /** Indicates if the wrapper is connected */
+    private boolean isConnected = false;
+
+    /** The current job thread */
+    private Thread jobThread;
+
+    /** The bind principal */
+    private String bindPrincipal;
+
+    /** The bind password */
+    private String bindPassword;
 
 
     /**
@@ -109,8 +129,8 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
         LdapConnectionConfig config = new LdapConnectionConfig();
         config.setLdapHost( connection.getHost() );
         config.setLdapPort( connection.getPort() );
-        config.setName( connection.getBindPrincipal() );
-        config.setCredentials( connection.getBindPassword() );
+        //        config.setName( connection.getBindPrincipal() );
+        //        config.setCredentials( connection.getBindPassword() );
         config.setUseSsl( connection.getEncryptionMethod() == EncryptionMethod.LDAPS );
 
         ldapConnection = new LdapNetworkConnection( config );
@@ -124,13 +144,47 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
      */
     public void connect( StudioProgressMonitor monitor )
     {
+        ldapConnection = null;
+        isConnected = false;
+        jobThread = null;
+
         try
         {
-            getLdapConnection().connect();
+            doConnect( monitor );
         }
         catch ( Exception e )
         {
+            disconnect();
             monitor.reportError( e );
+        }
+    }
+
+
+    private void doConnect( final StudioProgressMonitor monitor ) throws Exception
+    {
+        ldapConnection = null;
+        isConnected = true;
+
+        InnerRunnable runnable = new InnerRunnable()
+        {
+            public void run()
+            {
+                try
+                {
+                    boolean connected = getLdapConnection().connect();
+                }
+                catch ( Exception e )
+                {
+                    exception = e;
+                }
+            }
+        };
+
+        runAndMonitor( runnable, monitor );
+
+        if ( runnable.getException() != null )
+        {
+            throw runnable.getException();
         }
     }
 
@@ -159,12 +213,47 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
     {
         try
         {
-            getLdapConnection().bind( getLdapConnection().getConfig().getName(),
-                getLdapConnection().getConfig().getCredentials() );
+            doBind( monitor );
         }
         catch ( Exception e )
         {
+            disconnect();
             monitor.reportError( e );
+        }
+    }
+
+
+    private void doBind( final StudioProgressMonitor monitor ) throws Exception
+    {
+        if ( ldapConnection != null && isConnected )
+        {
+            // Setup credentials
+            IAuthHandler authHandler = ConnectionCorePlugin.getDefault().getAuthHandler();
+            if ( authHandler == null )
+            {
+                Exception exception = new Exception( Messages.model__no_auth_handler );
+                monitor.setCanceled( true );
+                monitor.reportError( Messages.model__no_auth_handler, exception );
+                throw exception;
+            }
+            ICredentials credentials = authHandler.getCredentials( connection.getConnectionParameter() );
+            if ( credentials == null )
+            {
+                Exception exception = new Exception();
+                monitor.setCanceled( true );
+                monitor.reportError( Messages.model__no_credentials, exception );
+                throw exception;
+            }
+            if ( credentials.getBindPrincipal() == null || credentials.getBindPassword() == null )
+            {
+                Exception exception = new Exception( Messages.model__no_credentials );
+                monitor.reportError( Messages.model__no_credentials, exception );
+                throw exception;
+            }
+            bindPrincipal = credentials.getBindPrincipal();
+            bindPassword = credentials.getBindPassword();
+
+            getLdapConnection().bind( bindPrincipal, bindPassword );
         }
     }
 
@@ -515,6 +604,164 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
         catch ( Exception e )
         {
             monitor.reportError( e );
+        }
+    }
+
+    /**
+     * Inner runnable used in connection wrapper operations.
+     *
+     * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+     */
+    abstract class InnerRunnable implements Runnable
+    {
+        protected StudioNamingEnumeration namingEnumeration = null;
+        protected Exception exception = null;
+        protected boolean canceled = false;
+
+
+        /**
+         * Gets the exception.
+         * 
+         * @return the exception
+         */
+        public Exception getException()
+        {
+            return exception;
+        }
+
+
+        /**
+         * Gets the result.
+         * 
+         * @return the result
+         */
+        public StudioNamingEnumeration getResult()
+        {
+            return namingEnumeration;
+        }
+
+
+        /**
+         * Checks if is canceled.
+         * 
+         * @return true, if is canceled
+         */
+        public boolean isCanceled()
+        {
+            return canceled;
+        }
+
+
+        /**
+         * Reset.
+         */
+        public void reset()
+        {
+            namingEnumeration = null;
+            exception = null;
+            canceled = false;
+        }
+    }
+
+
+    private void checkConnectionAndRunAndMonitor( final InnerRunnable runnable, final StudioProgressMonitor monitor )
+        throws Exception
+    {
+        // check connection
+        if ( !isConnected || ldapConnection == null )
+        {
+            doConnect( monitor );
+            doBind( monitor );
+        }
+        if ( ldapConnection == null )
+        {
+            throw new NamingException( "No Connection" );
+        }
+
+        // loop for reconnection
+        for ( int i = 0; i <= 1; i++ )
+        {
+            runAndMonitor( runnable, monitor );
+
+            // check reconnection
+            if ( i == 0
+                && runnable.getException() != null
+                && ( ( runnable.getException() instanceof CommunicationException )
+                    || ( runnable.getException() instanceof ServiceUnavailableException ) || ( runnable.getException() instanceof InsufficientResourcesException ) ) )
+            {
+
+                doConnect( monitor );
+                doBind( monitor );
+                runnable.reset();
+            }
+            else
+            {
+                break;
+            }
+        }
+    }
+
+
+    private void runAndMonitor( final InnerRunnable runnable, final StudioProgressMonitor monitor )
+        throws CancelException
+    {
+        if ( !monitor.isCanceled() )
+        {
+            // monitor
+            StudioProgressMonitor.CancelListener listener = new StudioProgressMonitor.CancelListener()
+            {
+                public void cancelRequested( StudioProgressMonitor.CancelEvent event )
+                {
+                    if ( monitor.isCanceled() )
+                    {
+                        if ( jobThread != null && jobThread.isAlive() )
+                        {
+                            jobThread.interrupt();
+                        }
+                        if ( ldapConnection != null )
+                        {
+                            try
+                            {
+                                ldapConnection.close();
+                            }
+                            catch ( Exception e )
+                            {
+                            }
+                            isConnected = false;
+                            ldapConnection = null;
+                            System.gc();
+                        }
+                        isConnected = false;
+                    }
+                }
+            };
+            monitor.addCancelListener( listener );
+            jobThread = Thread.currentThread();
+
+            // run
+            try
+            {
+                // try {
+                // Thread.sleep(5000);
+                // } catch (InterruptedException e) {
+                // System.out.println(System.currentTimeMillis() + ": sleep
+                // interrupted!");
+                // }
+                // System.out.println(System.currentTimeMillis() + ": " +
+                // runnable);
+
+                runnable.run();
+            }
+            finally
+            {
+                monitor.removeCancelListener( listener );
+                jobThread = null;
+            }
+
+            if ( monitor.isCanceled() )
+            {
+                throw new CancelException();
+            }
         }
     }
 }
