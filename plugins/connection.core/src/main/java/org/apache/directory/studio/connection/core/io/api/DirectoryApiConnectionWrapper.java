@@ -46,6 +46,7 @@ import org.apache.directory.shared.ldap.filter.SearchScope;
 import org.apache.directory.shared.ldap.message.AddRequest;
 import org.apache.directory.shared.ldap.message.AddRequestImpl;
 import org.apache.directory.shared.ldap.message.AliasDerefMode;
+import org.apache.directory.shared.ldap.message.BindResponse;
 import org.apache.directory.shared.ldap.message.DeleteRequest;
 import org.apache.directory.shared.ldap.message.DeleteRequestImpl;
 import org.apache.directory.shared.ldap.message.ModifyDnRequest;
@@ -129,8 +130,8 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
         LdapConnectionConfig config = new LdapConnectionConfig();
         config.setLdapHost( connection.getHost() );
         config.setLdapPort( connection.getPort() );
-        //        config.setName( connection.getBindPrincipal() );
-        //        config.setCredentials( connection.getBindPassword() );
+        config.setName( connection.getBindPrincipal() );
+        config.setCredentials( connection.getBindPassword() );
         config.setUseSsl( connection.getEncryptionMethod() == EncryptionMethod.LDAPS );
 
         ldapConnection = new LdapNetworkConnection( config );
@@ -172,6 +173,10 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
                 try
                 {
                     boolean connected = getLdapConnection().connect();
+                    if ( !connected )
+                    {
+                        throw new Exception( "Unable to connect" );
+                    }
                 }
                 catch ( Exception e )
                 {
@@ -227,33 +232,57 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
     {
         if ( ldapConnection != null && isConnected )
         {
-            // Setup credentials
-            IAuthHandler authHandler = ConnectionCorePlugin.getDefault().getAuthHandler();
-            if ( authHandler == null )
+            InnerRunnable runnable = new InnerRunnable()
             {
-                Exception exception = new Exception( Messages.model__no_auth_handler );
-                monitor.setCanceled( true );
-                monitor.reportError( Messages.model__no_auth_handler, exception );
-                throw exception;
-            }
-            ICredentials credentials = authHandler.getCredentials( connection.getConnectionParameter() );
-            if ( credentials == null )
-            {
-                Exception exception = new Exception();
-                monitor.setCanceled( true );
-                monitor.reportError( Messages.model__no_credentials, exception );
-                throw exception;
-            }
-            if ( credentials.getBindPrincipal() == null || credentials.getBindPassword() == null )
-            {
-                Exception exception = new Exception( Messages.model__no_credentials );
-                monitor.reportError( Messages.model__no_credentials, exception );
-                throw exception;
-            }
-            bindPrincipal = credentials.getBindPrincipal();
-            bindPassword = credentials.getBindPassword();
+                public void run()
+                {
+                    try
+                    {
+                        // Setup credentials
+                        IAuthHandler authHandler = ConnectionCorePlugin.getDefault().getAuthHandler();
+                        if ( authHandler == null )
+                        {
+                            Exception exception = new Exception( Messages.model__no_auth_handler );
+                            monitor.setCanceled( true );
+                            monitor.reportError( Messages.model__no_auth_handler, exception );
+                            throw exception;
+                        }
+                        ICredentials credentials = authHandler.getCredentials( connection.getConnectionParameter() );
+                        if ( credentials == null )
+                        {
+                            Exception exception = new Exception();
+                            monitor.setCanceled( true );
+                            monitor.reportError( Messages.model__no_credentials, exception );
+                            throw exception;
+                        }
+                        if ( credentials.getBindPrincipal() == null || credentials.getBindPassword() == null )
+                        {
+                            Exception exception = new Exception( Messages.model__no_credentials );
+                            monitor.reportError( Messages.model__no_credentials, exception );
+                            throw exception;
+                        }
+                        bindPrincipal = credentials.getBindPrincipal();
+                        bindPassword = credentials.getBindPassword();
 
-            getLdapConnection().bind( bindPrincipal, bindPassword );
+                        getLdapConnection().bind( bindPrincipal, bindPassword );
+                    }
+                    catch ( Exception e )
+                    {
+                        exception = e;
+                    }
+                }
+            };
+
+            runAndMonitor( runnable, monitor );
+
+            if ( runnable.getException() != null )
+            {
+                throw runnable.getException();
+            }
+        }
+        else
+        {
+            throw new Exception( "No Connection" );
         }
     }
 
@@ -302,31 +331,61 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
     {
         final long requestNum = SEARCH_RESQUEST_NUM++;
 
+        InnerRunnable runnable = new InnerRunnable()
+        {
+            public void run()
+            {
+                try
+                {
+                    // Preparing the search request
+                    SearchRequest request = new SearchRequestImpl();
+                    request.setBase( new DN( searchBase ) );
+                    request.setFilter( filter );
+                    request.setScope( convertSearchScope( searchControls ) );
+                    request.addAttributes( searchControls.getReturningAttributes() );
+                    request.addAllControls( convertControls( controls ) );
+                    request.setSizeLimit( searchControls.getCountLimit() );
+                    request.setTimeLimit( searchControls.getTimeLimit() );
+                    request.setDerefAliases( convertAliasDerefMode( aliasesDereferencingMethod ) );
+
+                    // Performing the search operation
+                    Cursor<Response> cursor = getLdapConnection().search( request );
+
+                    // Returning the result of the search
+                    namingEnumeration = new CursorStudioNamingEnumeration( connection, cursor, searchBase, filter,
+                        searchControls,
+                        aliasesDereferencingMethod, referralsHandlingMethod, controls, requestNum, monitor,
+                        referralsInfo );
+                }
+                catch ( Exception e )
+                {
+                    exception = e;
+                }
+            }
+        };
+
         try
         {
-            // Preparing the search request
-            SearchRequest request = new SearchRequestImpl();
-            request.setBase( new DN( searchBase ) );
-            request.setFilter( filter );
-            request.setScope( convertSearchScope( searchControls ) );
-            request.addAttributes( searchControls.getReturningAttributes() );
-            request.addAllControls( convertControls( controls ) );
-            request.setSizeLimit( searchControls.getCountLimit() );
-            request.setTimeLimit( searchControls.getTimeLimit() );
-            request.setDerefAliases( convertAliasDerefMode( aliasesDereferencingMethod ) );
-
-            // Performing the search operation
-            Cursor<Response> cursor = getLdapConnection().search( request );
-
-            // Returning the result of the search
-            return new CursorStudioNamingEnumeration( connection, cursor, searchBase, filter, searchControls,
-                aliasesDereferencingMethod, referralsHandlingMethod, controls, requestNum, monitor, referralsInfo );
-
+            checkConnectionAndRunAndMonitor( runnable, monitor );
         }
         catch ( Exception e )
         {
             monitor.reportError( e );
             return null;
+        }
+
+        if ( runnable.isCanceled() )
+        {
+            monitor.setCanceled( true );
+        }
+        if ( runnable.getException() != null )
+        {
+            monitor.reportError( runnable.getException() );
+            return null;
+        }
+        else
+        {
+            return runnable.getResult();
         }
     }
 
@@ -433,27 +492,51 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
             return;
         }
 
-        try
+        InnerRunnable runnable = new InnerRunnable()
         {
-            // Preparing the modify request
-            ModifyRequest request = new ModifyRequestImpl();
-            request.setName( new DN( dn ) );
-            Modification[] modifications = convertModificationItems( modificationItems );
-            if ( modifications != null )
+            public void run()
             {
-                for ( Modification modification : modifications )
+                try
                 {
-                    request.addModification( modification );
+                    // Preparing the modify request
+                    ModifyRequest request = new ModifyRequestImpl();
+                    request.setName( new DN( dn ) );
+                    Modification[] modifications = convertModificationItems( modificationItems );
+                    if ( modifications != null )
+                    {
+                        for ( Modification modification : modifications )
+                        {
+                            request.addModification( modification );
+                        }
+                    }
+                    request.addAllControls( convertControls( controls ) );
+
+                    // Performing the modify operation
+                    getLdapConnection().modify( request );
+                }
+                catch ( Exception e )
+                {
+                    exception = e;
                 }
             }
-            request.addAllControls( convertControls( controls ) );
+        };
 
-            // Performing the modify operation
-            getLdapConnection().modify( request );
+        try
+        {
+            checkConnectionAndRunAndMonitor( runnable, monitor );
         }
         catch ( Exception e )
         {
             monitor.reportError( e );
+        }
+
+        if ( runnable.isCanceled() )
+        {
+            monitor.setCanceled( true );
+        }
+        if ( runnable.getException() != null )
+        {
+            monitor.reportError( runnable.getException() );
         }
     }
 
@@ -528,23 +611,47 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
             return;
         }
 
+        InnerRunnable runnable = new InnerRunnable()
+        {
+            public void run()
+            {
+                try
+                {
+                    // Preparing the rename request
+                    ModifyDnRequest request = new ModifyDnRequestImpl();
+                    request.setName( new DN( oldDn ) );
+                    request.setDeleteOldRdn( deleteOldRdn );
+                    DN newName = new DN( newDn );
+                    request.setNewRdn( newName.getRdn() );
+                    request.setNewSuperior( newName.getParent() );
+                    request.addAllControls( convertControls( controls ) );
+
+                    // Performing the rename operation
+                    getLdapConnection().modifyDn( request );
+                }
+                catch ( Exception e )
+                {
+                    exception = e;
+                }
+            }
+        };
+
         try
         {
-            // Preparing the rename request
-            ModifyDnRequest request = new ModifyDnRequestImpl();
-            request.setName( new DN( oldDn ) );
-            request.setDeleteOldRdn( deleteOldRdn );
-            DN newName = new DN( newDn );
-            request.setNewRdn( newName.getRdn() );
-            request.setNewSuperior( newName.getParent() );
-            request.addAllControls( convertControls( controls ) );
-
-            // Performing the rename operation
-            getLdapConnection().modifyDn( request );
+            checkConnectionAndRunAndMonitor( runnable, monitor );
         }
         catch ( Exception e )
         {
             monitor.reportError( e );
+        }
+
+        if ( runnable.isCanceled() )
+        {
+            monitor.setCanceled( true );
+        }
+        if ( runnable.getException() != null )
+        {
+            monitor.reportError( runnable.getException() );
         }
     }
 
@@ -561,20 +668,44 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
             return;
         }
 
+        InnerRunnable runnable = new InnerRunnable()
+        {
+            public void run()
+            {
+                try
+                {
+                    // Preparing the add request
+                    AddRequest request = new AddRequestImpl();
+                    request.setEntryDn( new DN( dn ) );
+                    request.setEntry( AttributeUtils.toClientEntry( attributes, new DN( dn ) ) );
+                    request.addAllControls( convertControls( controls ) );
+
+                    // Performing the add operation
+                    getLdapConnection().add( request );
+                }
+                catch ( Exception e )
+                {
+                    exception = e;
+                }
+            }
+        };
+
         try
         {
-            // Preparing the add request
-            AddRequest request = new AddRequestImpl();
-            request.setEntryDn( new DN( dn ) );
-            request.setEntry( AttributeUtils.toClientEntry( attributes, new DN( dn ) ) );
-            request.addAllControls( convertControls( controls ) );
-
-            // Performing the add operation
-            getLdapConnection().add( request );
+            checkConnectionAndRunAndMonitor( runnable, monitor );
         }
         catch ( Exception e )
         {
             monitor.reportError( e );
+        }
+
+        if ( runnable.isCanceled() )
+        {
+            monitor.setCanceled( true );
+        }
+        if ( runnable.getException() != null )
+        {
+            monitor.reportError( runnable.getException() );
         }
     }
 
@@ -591,19 +722,43 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
             return;
         }
 
+        InnerRunnable runnable = new InnerRunnable()
+        {
+            public void run()
+            {
+                try
+                {
+                    // Preparing the delete request
+                    DeleteRequest request = new DeleteRequestImpl();
+                    request.setName( new DN( dn ) );
+                    request.addAllControls( convertControls( controls ) );
+
+                    // Performing the delete operation
+                    getLdapConnection().delete( request );
+                }
+                catch ( Exception e )
+                {
+                    exception = e;
+                }
+            }
+        };
+
         try
         {
-            // Preparing the delete request
-            DeleteRequest request = new DeleteRequestImpl();
-            request.setName( new DN( dn ) );
-            request.addAllControls( convertControls( controls ) );
-
-            // Performing the delete operation
-            getLdapConnection().delete( request );
+            checkConnectionAndRunAndMonitor( runnable, monitor );
         }
         catch ( Exception e )
         {
             monitor.reportError( e );
+        }
+
+        if ( runnable.isCanceled() )
+        {
+            monitor.setCanceled( true );
+        }
+        if ( runnable.getException() != null )
+        {
+            monitor.reportError( runnable.getException() );
         }
     }
 
