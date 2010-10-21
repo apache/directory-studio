@@ -58,8 +58,7 @@ public class CredentialsDialog extends InputDialog
     protected Control createDialogArea( Composite parent )
     {
         Composite composite = ( Composite ) super.createDialogArea( parent );
-        super.getText().setEchoChar( '*' );
+        super.getText().setEchoChar( '\u2022' );
         return composite;
     }
-
 }
