@@ -79,13 +79,10 @@ import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
 import org.apache.directory.studio.connection.core.ConnectionParameter;
 import org.apache.directory.studio.connection.core.ConnectionParameter.AuthenticationMethod;
 import org.apache.directory.studio.connection.core.IAuthHandler;
-import org.apache.directory.studio.connection.core.IConnectionListener;
 import org.apache.directory.studio.connection.core.ICredentials;
 import org.apache.directory.studio.connection.core.IJndiLogger;
-import org.apache.directory.studio.connection.core.IReferralHandler;
 import org.apache.directory.studio.connection.core.Messages;
 import org.apache.directory.studio.connection.core.Utils;
-import org.apache.directory.studio.connection.core.event.ConnectionEventRegistry;
 import org.apache.directory.studio.connection.core.io.ConnectionWrapper;
 import org.apache.directory.studio.connection.core.io.ConnectionWrapperUtils;
 import org.eclipse.core.runtime.Preferences;
@@ -106,7 +103,6 @@ import org.eclipse.osgi.util.NLS;
  */
 public class JNDIConnectionWrapper implements ConnectionWrapper
 {
-
     private static final String JAVA_NAMING_LDAP_DELETE_RDN = "java.naming.ldap.deleteRDN"; //$NON-NLS-1$
 
     private static final String AUTHMETHOD_NONE = "none"; //$NON-NLS-1$
@@ -443,7 +439,7 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
         {
             public void run()
             {
-                boolean logModifycation = true;
+                boolean logModification = true;
                 try
                 {
                     // create modify context
@@ -457,7 +453,7 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
                 }
                 catch ( ReferralException re )
                 {
-                    logModifycation = false;
+                    logModification = false;
                     try
                     {
                         ReferralsInfo newReferralsInfo = handleReferralException( re, referralsInfo );
@@ -496,7 +492,7 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
                     namingException = ne;
                 }
 
-                if ( logModifycation )
+                if ( logModification )
                 {
                     for ( IJndiLogger logger : getJndiLoggers() )
                     {
@@ -549,7 +545,7 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
         {
             public void run()
             {
-                boolean logModifycation = true;
+                boolean logModification = true;
                 try
                 {
                     // create modify context
@@ -573,7 +569,7 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
                 }
                 catch ( ReferralException re )
                 {
-                    logModifycation = false;
+                    logModification = false;
                     try
                     {
                         ReferralsInfo newReferralsInfo = handleReferralException( re, referralsInfo );
@@ -603,7 +599,7 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
                     namingException = ne;
                 }
 
-                if ( logModifycation )
+                if ( logModification )
                 {
                     for ( IJndiLogger logger : getJndiLoggers() )
                     {
@@ -757,7 +753,7 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
         {
             public void run()
             {
-                boolean logModifycation = true;
+                boolean logModification = true;
                 try
                 {
                     // create modify context
@@ -771,7 +767,7 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
                 }
                 catch ( ReferralException re )
                 {
-                    logModifycation = false;
+                    logModification = false;
                     try
                     {
                         ReferralsInfo newReferralsInfo = handleReferralException( re, referralsInfo );
@@ -808,7 +804,7 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
                     namingException = ne;
                 }
 
-                if ( logModifycation )
+                if ( logModification )
                 {
                     for ( IJndiLogger logger : getJndiLoggers() )
                     {
