@@ -655,7 +655,7 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
         {
             public void run()
             {
-                boolean logModifycation = true;
+                boolean logModification = true;
                 try
                 {
                     // create modify context
@@ -669,7 +669,7 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
                 }
                 catch ( ReferralException re )
                 {
-                    logModifycation = false;
+                    logModification = false;
                     try
                     {
                         ReferralsInfo newReferralsInfo = handleReferralException( re, referralsInfo );
@@ -706,7 +706,7 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
                     namingException = ne;
                 }
 
-                if ( logModifycation )
+                if ( logModification )
                 {
                     for ( IJndiLogger logger : getJndiLoggers() )
                     {
