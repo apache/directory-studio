@@ -20,6 +20,9 @@
 package org.apache.directory.studio.connection.core.io.api;
 
 
+import java.security.KeyStore;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -33,6 +36,9 @@ import javax.naming.directory.DirContext;
 import javax.naming.directory.ModificationItem;
 import javax.naming.directory.SearchControls;
 import javax.naming.ldap.Control;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.TrustManagerFactory;
+import javax.net.ssl.X509TrustManager;
 
 import org.apache.directory.ldap.client.api.LdapConnectionConfig;
 import org.apache.directory.ldap.client.api.LdapNetworkConnection;
@@ -41,12 +47,10 @@ import org.apache.directory.shared.ldap.cursor.Cursor;
 import org.apache.directory.shared.ldap.entry.DefaultModification;
 import org.apache.directory.shared.ldap.entry.Modification;
 import org.apache.directory.shared.ldap.entry.ModificationOperation;
-import org.apache.directory.shared.ldap.exception.LdapException;
 import org.apache.directory.shared.ldap.filter.SearchScope;
 import org.apache.directory.shared.ldap.message.AddRequest;
 import org.apache.directory.shared.ldap.message.AddRequestImpl;
 import org.apache.directory.shared.ldap.message.AliasDerefMode;
-import org.apache.directory.shared.ldap.message.BindResponse;
 import org.apache.directory.shared.ldap.message.DeleteRequest;
 import org.apache.directory.shared.ldap.message.DeleteRequestImpl;
 import org.apache.directory.shared.ldap.message.ModifyDnRequest;
@@ -60,17 +64,18 @@ import org.apache.directory.shared.ldap.name.DN;
 import org.apache.directory.shared.ldap.util.AttributeUtils;
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.Connection;
-import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
-import org.apache.directory.studio.connection.core.IAuthHandler;
-import org.apache.directory.studio.connection.core.ICredentials;
 import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
 import org.apache.directory.studio.connection.core.Connection.ReferralHandlingMethod;
+import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
 import org.apache.directory.studio.connection.core.ConnectionParameter.EncryptionMethod;
+import org.apache.directory.studio.connection.core.IAuthHandler;
+import org.apache.directory.studio.connection.core.ICredentials;
 import org.apache.directory.studio.connection.core.Messages;
 import org.apache.directory.studio.connection.core.io.ConnectionWrapper;
 import org.apache.directory.studio.connection.core.io.StudioNamingEnumeration;
 import org.apache.directory.studio.connection.core.io.jndi.CancelException;
 import org.apache.directory.studio.connection.core.io.jndi.ReferralsInfo;
+import org.apache.directory.studio.connection.core.io.jndi.StudioTrustManager;
 import org.eclipse.osgi.util.NLS;
 
 
@@ -119,6 +124,7 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
      *
      * @return
      *      the associated LDAP Connection
+     * @throws Exception 
      */
     private LdapNetworkConnection getLdapConnection()
     {
@@ -132,7 +138,34 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
         config.setLdapPort( connection.getPort() );
         config.setName( connection.getBindPrincipal() );
         config.setCredentials( connection.getBindPassword() );
-        config.setUseSsl( connection.getEncryptionMethod() == EncryptionMethod.LDAPS );
+        if ( connection.getEncryptionMethod() == EncryptionMethod.LDAPS )
+        {
+            config.setUseSsl( true );
+
+            try
+            {
+
+                // get default trust managers (using JVM "cacerts" key store)
+                TrustManagerFactory factory = TrustManagerFactory.getInstance( TrustManagerFactory
+                    .getDefaultAlgorithm() );
+                factory.init( ( KeyStore ) null );
+                TrustManager[] defaultTrustManagers = factory.getTrustManagers();
+
+                // create wrappers around the trust managers
+                StudioTrustManager[] trustManagers = new StudioTrustManager[defaultTrustManagers.length];
+                for ( int i = 0; i < defaultTrustManagers.length; i++ )
+                {
+                    trustManagers[i] = new StudioTrustManager( ( X509TrustManager ) defaultTrustManagers[i] );
+                    trustManagers[i].setHost( connection.getHost() );
+                }
+
+                config.setTrustManagers( trustManagers );
+            }
+            catch ( Exception e )
+            {
+                // TODO: handle exception
+            }
+        }
 
         ldapConnection = new LdapNetworkConnection( config );
 
@@ -292,15 +325,7 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
      */
     public void unbind()
     {
-        try
-        {
-            getLdapConnection().unBind();
-        }
-        catch ( LdapException e )
-        {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+        disconnect();
     }
 
 

@@ -49,7 +49,7 @@ import org.apache.http.conn.ssl.BrowserCompatHostnameVerifier;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-class StudioTrustManager implements X509TrustManager
+public class StudioTrustManager implements X509TrustManager
 {
     private X509TrustManager jvmTrustManager;
     private String host;
@@ -62,7 +62,7 @@ class StudioTrustManager implements X509TrustManager
      * 
      * @throws Exception the exception
      */
-    StudioTrustManager( X509TrustManager jvmTrustManager ) throws Exception
+    public StudioTrustManager( X509TrustManager jvmTrustManager ) throws Exception
     {
         this.jvmTrustManager = jvmTrustManager;
     }
@@ -73,7 +73,7 @@ class StudioTrustManager implements X509TrustManager
      * 
      * @param host the new host
      */
-    void setHost( String host )
+    public void setHost( String host )
     {
         this.host = host;
     }
