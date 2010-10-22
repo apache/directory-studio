@@ -40,6 +40,8 @@ import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
 import org.apache.directory.studio.connection.core.Connection.ReferralHandlingMethod;
+import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
+import org.apache.directory.studio.connection.core.IJndiLogger;
 import org.apache.directory.studio.connection.core.io.AbstractStudioNamingEnumeration;
 import org.apache.directory.studio.connection.core.io.ConnectionWrapperUtils;
 import org.apache.directory.studio.connection.core.io.StudioNamingEnumeration;
@@ -214,6 +216,11 @@ public class CursorStudioNamingEnumeration extends AbstractStudioNamingEnumerati
                 }
             }
 
+            for ( IJndiLogger logger : ConnectionCorePlugin.getDefault().getJndiLoggers() )
+            {
+                logger.logSearchResultDone( connection, resultEntryCounter, requestNum, null );
+            }
+
             return false;
         }
         catch ( Exception e )
@@ -241,6 +248,7 @@ public class CursorStudioNamingEnumeration extends AbstractStudioNamingEnumerati
         {
             if ( currentSearchResultEntry != null )
             {
+                resultEntryCounter++;
                 SearchResult sr = new SearchResult( currentSearchResultEntry.getObjectName().toString(), null,
                         AttributeUtils.toAttributes( currentSearchResultEntry.getEntry() ) );
                 sr.setNameInNamespace( currentSearchResultEntry.getObjectName().toString() );
@@ -256,6 +264,7 @@ public class CursorStudioNamingEnumeration extends AbstractStudioNamingEnumerati
                 // Checking the current referral's URLs list
                 if ( ( currentReferralUrlsList != null ) && ( currentReferralUrlsList.size() > 0 ) )
                 {
+                    resultEntryCounter++;
                     // Building an LDAP URL from the the url
                     LdapURL url = new LdapURL( currentReferralUrlsList.remove( 0 ) );
 
@@ -271,6 +280,7 @@ public class CursorStudioNamingEnumeration extends AbstractStudioNamingEnumerati
             // Are we following referrals automatically?
             else if ( referralsHandlingMethod == ReferralHandlingMethod.FOLLOW )
             {
+                resultEntryCounter++;
                 return new StudioSearchResult( cursorNamingEnumeration.next(), connection, true, null );
             }
 

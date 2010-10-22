@@ -21,8 +21,6 @@ package org.apache.directory.studio.connection.core.io.api;
 
 
 import java.security.KeyStore;
-import java.security.KeyStoreException;
-import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -70,6 +68,7 @@ import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
 import org.apache.directory.studio.connection.core.ConnectionParameter.EncryptionMethod;
 import org.apache.directory.studio.connection.core.IAuthHandler;
 import org.apache.directory.studio.connection.core.ICredentials;
+import org.apache.directory.studio.connection.core.IJndiLogger;
 import org.apache.directory.studio.connection.core.Messages;
 import org.apache.directory.studio.connection.core.io.ConnectionWrapper;
 import org.apache.directory.studio.connection.core.io.StudioNamingEnumeration;
@@ -144,7 +143,6 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
 
             try
             {
-
                 // get default trust managers (using JVM "cacerts" key store)
                 TrustManagerFactory factory = TrustManagerFactory.getInstance( TrustManagerFactory
                     .getDefaultAlgorithm() );
@@ -386,6 +384,27 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
                 {
                     exception = e;
                 }
+
+                NamingException ne = null;
+                if ( exception != null )
+                {
+                    ne = new NamingException( exception.getMessage() );
+                }
+
+                for ( IJndiLogger logger : getJndiLoggers() )
+                {
+                    if ( namingEnumeration != null )
+                    {
+                        logger.logSearchRequest( connection, searchBase, filter, searchControls,
+                            aliasesDereferencingMethod, controls, requestNum, ne );
+                    }
+                    else
+                    {
+                        logger.logSearchRequest( connection, searchBase, filter, searchControls,
+                            aliasesDereferencingMethod, controls, requestNum, ne );
+                        logger.logSearchResultDone( connection, 0, requestNum, ne );
+                    }
+                }
             }
         };
 
@@ -542,6 +561,17 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
                 catch ( Exception e )
                 {
                     exception = e;
+                }
+
+                NamingException ne = null;
+                if ( exception != null )
+                {
+                    ne = new NamingException( exception.getMessage() );
+                }
+
+                for ( IJndiLogger logger : getJndiLoggers() )
+                {
+                    logger.logChangetypeModify( connection, dn, modificationItems, controls, ne );
                 }
             }
         };
@@ -943,5 +973,11 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
                 throw new CancelException();
             }
         }
+    }
+
+
+    private List<IJndiLogger> getJndiLoggers()
+    {
+        return ConnectionCorePlugin.getDefault().getJndiLoggers();
     }
 }

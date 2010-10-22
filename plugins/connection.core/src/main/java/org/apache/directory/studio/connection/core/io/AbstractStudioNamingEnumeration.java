@@ -20,31 +20,14 @@
 package org.apache.directory.studio.connection.core.io;
 
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.naming.NamingException;
-import javax.naming.directory.BasicAttributes;
 import javax.naming.directory.SearchControls;
-import javax.naming.directory.SearchResult;
 import javax.naming.ldap.Control;
 
-import org.apache.directory.shared.ldap.cursor.Cursor;
-import org.apache.directory.shared.ldap.message.Referral;
-import org.apache.directory.shared.ldap.message.Response;
-import org.apache.directory.shared.ldap.message.SearchResultDone;
-import org.apache.directory.shared.ldap.message.SearchResultEntry;
-import org.apache.directory.shared.ldap.message.SearchResultReference;
-import org.apache.directory.shared.ldap.util.AttributeUtils;
-import org.apache.directory.shared.ldap.util.LdapURL;
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
 import org.apache.directory.studio.connection.core.Connection.ReferralHandlingMethod;
-import org.apache.directory.studio.connection.core.io.jndi.JNDIConnectionWrapper;
 import org.apache.directory.studio.connection.core.io.jndi.ReferralsInfo;
-import org.apache.directory.studio.connection.core.io.jndi.JndiStudioNamingEnumeration;
-import org.apache.directory.studio.connection.core.io.jndi.StudioSearchResult;
 
 
 /**
@@ -62,8 +45,10 @@ public abstract class AbstractStudioNamingEnumeration implements StudioNamingEnu
     protected AliasDereferencingMethod aliasesDereferencingMethod;
     protected ReferralHandlingMethod referralsHandlingMethod;
     protected Control[] controls;
+    protected long requestNum;
     protected StudioProgressMonitor monitor;
     protected ReferralsInfo referralsInfo;
+    protected long resultEntryCounter;
 
 
     /**
@@ -92,7 +77,9 @@ public abstract class AbstractStudioNamingEnumeration implements StudioNamingEnu
         this.aliasesDereferencingMethod = aliasesDereferencingMethod;
         this.referralsHandlingMethod = referralsHandlingMethod;
         this.controls = controls;
+        this.requestNum = requestNum;
         this.monitor = monitor;
         this.referralsInfo = referralsInfo;
+        this.resultEntryCounter = 0;
     }
 }

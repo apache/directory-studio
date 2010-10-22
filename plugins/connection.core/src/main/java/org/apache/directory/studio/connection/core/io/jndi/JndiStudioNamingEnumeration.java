@@ -58,9 +58,6 @@ public class JndiStudioNamingEnumeration extends AbstractStudioNamingEnumeration
     private NamingEnumeration<SearchResult> delegate;
     private NamingException initialReferralException;
 
-    private long requestNum;
-    private long resultEntryCounter;
-
 
     /**
      * Creates a new instance of ReferralNamingEnumeration.
@@ -89,7 +86,6 @@ public class JndiStudioNamingEnumeration extends AbstractStudioNamingEnumeration
         this.delegate = delegate;
         this.initialReferralException = initialReferralException;
         this.requestNum = requestNum;
-        this.resultEntryCounter = 0;
     }
 
 
