@@ -688,6 +688,17 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
                 {
                     exception = e;
                 }
+
+                NamingException ne = null;
+                if ( exception != null )
+                {
+                    ne = new NamingException( exception.getMessage() );
+                }
+
+                for ( IJndiLogger logger : getJndiLoggers() )
+                {
+                    logger.logChangetypeModDn( connection, oldDn, newDn, deleteOldRdn, controls, ne );
+                }
             }
         };
 
@@ -742,6 +753,17 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
                 {
                     exception = e;
                 }
+
+                NamingException ne = null;
+                if ( exception != null )
+                {
+                    ne = new NamingException( exception.getMessage() );
+                }
+
+                for ( IJndiLogger logger : getJndiLoggers() )
+                {
+                    logger.logChangetypeAdd( connection, dn, attributes, controls, ne );
+                }
             }
         };
 
@@ -794,6 +816,17 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
                 catch ( Exception e )
                 {
                     exception = e;
+                }
+
+                NamingException ne = null;
+                if ( exception != null )
+                {
+                    ne = new NamingException( exception.getMessage() );
+                }
+
+                for ( IJndiLogger logger : getJndiLoggers() )
+                {
+                    logger.logChangetypeDelete( connection, dn, controls, ne );
                 }
             }
         };
