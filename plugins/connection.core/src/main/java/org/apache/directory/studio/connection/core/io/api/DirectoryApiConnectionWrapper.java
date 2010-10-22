@@ -73,9 +73,9 @@ import org.apache.directory.studio.connection.core.ICredentials;
 import org.apache.directory.studio.connection.core.Messages;
 import org.apache.directory.studio.connection.core.io.ConnectionWrapper;
 import org.apache.directory.studio.connection.core.io.StudioNamingEnumeration;
+import org.apache.directory.studio.connection.core.io.StudioTrustManager;
 import org.apache.directory.studio.connection.core.io.jndi.CancelException;
 import org.apache.directory.studio.connection.core.io.jndi.ReferralsInfo;
-import org.apache.directory.studio.connection.core.io.jndi.StudioTrustManager;
 import org.eclipse.osgi.util.NLS;
 
 
