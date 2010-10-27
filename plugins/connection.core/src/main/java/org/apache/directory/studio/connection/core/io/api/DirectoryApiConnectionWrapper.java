@@ -48,14 +48,21 @@ import org.apache.directory.shared.ldap.entry.ModificationOperation;
 import org.apache.directory.shared.ldap.filter.SearchScope;
 import org.apache.directory.shared.ldap.message.AddRequest;
 import org.apache.directory.shared.ldap.message.AddRequestImpl;
+import org.apache.directory.shared.ldap.message.AddResponse;
 import org.apache.directory.shared.ldap.message.AliasDerefMode;
 import org.apache.directory.shared.ldap.message.DeleteRequest;
 import org.apache.directory.shared.ldap.message.DeleteRequestImpl;
+import org.apache.directory.shared.ldap.message.DeleteResponse;
+import org.apache.directory.shared.ldap.message.LdapResult;
 import org.apache.directory.shared.ldap.message.ModifyDnRequest;
 import org.apache.directory.shared.ldap.message.ModifyDnRequestImpl;
+import org.apache.directory.shared.ldap.message.ModifyDnResponse;
 import org.apache.directory.shared.ldap.message.ModifyRequest;
 import org.apache.directory.shared.ldap.message.ModifyRequestImpl;
+import org.apache.directory.shared.ldap.message.ModifyResponse;
 import org.apache.directory.shared.ldap.message.Response;
+import org.apache.directory.shared.ldap.message.ResultCodeEnum;
+import org.apache.directory.shared.ldap.message.ResultResponse;
 import org.apache.directory.shared.ldap.message.SearchRequest;
 import org.apache.directory.shared.ldap.message.SearchRequestImpl;
 import org.apache.directory.shared.ldap.name.DN;
@@ -65,6 +72,7 @@ import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
 import org.apache.directory.studio.connection.core.Connection.ReferralHandlingMethod;
 import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
+import org.apache.directory.studio.connection.core.ConnectionParameter;
 import org.apache.directory.studio.connection.core.ConnectionParameter.EncryptionMethod;
 import org.apache.directory.studio.connection.core.IAuthHandler;
 import org.apache.directory.studio.connection.core.ICredentials;
@@ -295,7 +303,22 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
                         bindPrincipal = credentials.getBindPrincipal();
                         bindPassword = credentials.getBindPassword();
 
-                        getLdapConnection().bind( bindPrincipal, bindPassword );
+                        // Simple Authentication
+                        if ( connection.getConnectionParameter().getAuthMethod() == ConnectionParameter.AuthenticationMethod.SIMPLE )
+                        {
+                            getLdapConnection().bind( bindPrincipal, bindPassword );
+                        }
+                        // CRAM-MD5 Authentication
+                        else if ( connection.getConnectionParameter().getAuthMethod() == ConnectionParameter.AuthenticationMethod.SASL_CRAM_MD5 )
+                        {
+                            getLdapConnection().bindCramMd5( bindPrincipal, bindPassword, null );
+                        }
+                        // DIGEST-MD5 Authentication
+                        else if ( connection.getConnectionParameter().getAuthMethod() == ConnectionParameter.AuthenticationMethod.SASL_DIGEST_MD5 )
+                        {
+                            getLdapConnection().bindDigestMd5( bindPrincipal, bindPassword, null,
+                                connection.getConnectionParameter().getSaslRealm() );
+                        }
                     }
                     catch ( Exception e )
                     {
@@ -556,7 +579,10 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
                     request.addAllControls( convertControls( controls ) );
 
                     // Performing the modify operation
-                    getLdapConnection().modify( request );
+                    ModifyResponse modifyResponse = getLdapConnection().modify( request );
+
+                    // Checking the response
+                    checkResponse( modifyResponse );
                 }
                 catch ( Exception e )
                 {
@@ -682,7 +708,10 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
                     request.addAllControls( convertControls( controls ) );
 
                     // Performing the rename operation
-                    getLdapConnection().modifyDn( request );
+                    ModifyDnResponse modifyDnResponse = getLdapConnection().modifyDn( request );
+
+                    // Checking the response
+                    checkResponse( modifyDnResponse );
                 }
                 catch ( Exception e )
                 {
@@ -747,7 +776,10 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
                     request.addAllControls( convertControls( controls ) );
 
                     // Performing the add operation
-                    getLdapConnection().add( request );
+                    AddResponse addResponse = getLdapConnection().add( request );
+
+                    // Checking the response
+                    checkResponse( addResponse );
                 }
                 catch ( Exception e )
                 {
@@ -811,7 +843,10 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
                     request.addAllControls( convertControls( controls ) );
 
                     // Performing the delete operation
-                    getLdapConnection().delete( request );
+                    DeleteResponse deleteResponse = getLdapConnection().delete( request );
+
+                    // Checking the response
+                    checkResponse( deleteResponse );
                 }
                 catch ( Exception e )
                 {
@@ -1012,5 +1047,26 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
     private List<IJndiLogger> getJndiLoggers()
     {
         return ConnectionCorePlugin.getDefault().getJndiLoggers();
+    }
+
+
+    /**
+     * Checks the given response.
+     *
+     * @param response
+     *      the response
+     * @throws Exception
+     *      if the LDAP result associated with the response is not a success
+     */
+    private void checkResponse( ResultResponse response ) throws Exception
+    {
+        if ( response != null )
+        {
+            LdapResult ldapResult = response.getLdapResult();
+            if ( ( ldapResult != null ) && !( ResultCodeEnum.SUCCESS.equals( ldapResult.getResultCode() ) ) )
+            {
+                throw new Exception( ldapResult.getResultCode().getResultCode() + " " + ldapResult.getErrorMessage() );
+            }
+        }
     }
 }

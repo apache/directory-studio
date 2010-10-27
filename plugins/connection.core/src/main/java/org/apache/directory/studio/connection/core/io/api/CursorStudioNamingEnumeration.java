@@ -20,18 +20,26 @@
 package org.apache.directory.studio.connection.core.io.api;
 
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 import javax.naming.NamingException;
 import javax.naming.directory.BasicAttributes;
 import javax.naming.directory.SearchControls;
 import javax.naming.directory.SearchResult;
+import javax.naming.ldap.BasicControl;
 import javax.naming.ldap.Control;
+import javax.naming.ldap.PagedResultsResponseControl;
 
+import org.apache.directory.ldap.client.api.SearchCursor;
+import org.apache.directory.shared.ldap.codec.search.controls.pagedSearch.PagedResultsControl;
 import org.apache.directory.shared.ldap.cursor.Cursor;
 import org.apache.directory.shared.ldap.message.Referral;
 import org.apache.directory.shared.ldap.message.Response;
+import org.apache.directory.shared.ldap.message.SearchResultDone;
 import org.apache.directory.shared.ldap.message.SearchResultEntry;
 import org.apache.directory.shared.ldap.message.SearchResultReference;
 import org.apache.directory.shared.ldap.util.AttributeUtils;
@@ -61,6 +69,7 @@ public class CursorStudioNamingEnumeration extends AbstractStudioNamingEnumerati
     private List<Referral> referralsList = new ArrayList<Referral>();
     private List<String> currentReferralUrlsList;
     private StudioNamingEnumeration cursorNamingEnumeration;
+    private SearchResultDone searchResultDone;
 
 
     /**
@@ -147,6 +156,12 @@ public class CursorStudioNamingEnumeration extends AbstractStudioNamingEnumerati
                         referralsList.add( ( ( SearchResultReference ) currentResponse ).getReferral() );
                     }
                 }
+            }
+
+            // Storing the search result done (if needed)
+            if ( searchResultDone == null )
+            {
+                searchResultDone = ( ( SearchCursor ) cursor ).getSearchDone();
             }
 
             // Are we following referrals manually?
@@ -322,8 +337,66 @@ public class CursorStudioNamingEnumeration extends AbstractStudioNamingEnumerati
      */
     public Control[] getResponseControls() throws NamingException
     {
-        //        return ctx != null ? ctx.getResponseControls() : null;
-        // TODO implement
+        if ( searchResultDone != null )
+        {
+            Map<String, org.apache.directory.shared.ldap.message.control.Control> controlsMap = searchResultDone
+                .getControls();
+            if ( ( controlsMap != null ) && ( controlsMap.size() > 0 ) )
+            {
+                return convertControls( controlsMap.values() );
+            }
+        }
+
         return new Control[0];
+    }
+
+
+    /**
+     * Converts the controls.
+     *
+     * @param controls
+     *      an array of controls
+     * @return
+     *      an array of converted controls
+     */
+    private Control[] convertControls( Collection<org.apache.directory.shared.ldap.message.control.Control> controls )
+    {
+        if ( controls != null )
+        {
+            List<Control> convertedControls = new ArrayList<Control>();
+
+            for ( org.apache.directory.shared.ldap.message.control.Control control : controls )
+            {
+                if ( PagedResultsResponseControl.OID.equals( control.getOid() ) )
+                {
+                    // Special case for the PagedResultsResponseControl
+                    try
+                    {
+                        PagedResultsResponseControl convertedControl = new PagedResultsResponseControl(
+                            control.getOid(),
+                            control.isCritical(), control.getValue() );
+                        convertedControls.add( convertedControl );
+                    }
+                    catch ( IOException e )
+                    {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
+                }
+                else
+                {
+                    // Default case
+                    Control convertedControl = new BasicControl( control.getOid(), control.isCritical(),
+                        control.getValue() );
+                    convertedControls.add( convertedControl );
+                }
+            }
+
+            return convertedControls.toArray( new Control[0] );
+        }
+        else
+        {
+            return new Control[0];
+        }
     }
 }
