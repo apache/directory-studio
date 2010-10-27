@@ -35,7 +35,6 @@ import javax.naming.ldap.Control;
 import javax.naming.ldap.PagedResultsResponseControl;
 
 import org.apache.directory.ldap.client.api.SearchCursor;
-import org.apache.directory.shared.ldap.codec.search.controls.pagedSearch.PagedResultsControl;
 import org.apache.directory.shared.ldap.cursor.Cursor;
 import org.apache.directory.shared.ldap.message.Referral;
 import org.apache.directory.shared.ldap.message.Response;
@@ -367,29 +366,30 @@ public class CursorStudioNamingEnumeration extends AbstractStudioNamingEnumerati
 
             for ( org.apache.directory.shared.ldap.message.control.Control control : controls )
             {
+                Control convertedControl = null;
+
                 if ( PagedResultsResponseControl.OID.equals( control.getOid() ) )
                 {
                     // Special case for the PagedResultsResponseControl
                     try
                     {
-                        PagedResultsResponseControl convertedControl = new PagedResultsResponseControl(
-                            control.getOid(),
-                            control.isCritical(), control.getValue() );
-                        convertedControls.add( convertedControl );
+                        convertedControl = new PagedResultsResponseControl( control.getOid(), control.isCritical(),
+                            control.getValue() );
                     }
                     catch ( IOException e )
                     {
-                        // TODO Auto-generated catch block
-                        e.printStackTrace();
+                        convertedControl = new BasicControl( control.getOid(), control.isCritical(),
+                            control.getValue() );
                     }
                 }
                 else
                 {
                     // Default case
-                    Control convertedControl = new BasicControl( control.getOid(), control.isCritical(),
+                    convertedControl = new BasicControl( control.getOid(), control.isCritical(),
                         control.getValue() );
-                    convertedControls.add( convertedControl );
                 }
+
+                convertedControls.add( convertedControl );
             }
 
             return convertedControls.toArray( new Control[0] );
