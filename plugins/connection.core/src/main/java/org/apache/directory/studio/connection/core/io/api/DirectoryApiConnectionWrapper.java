@@ -41,7 +41,7 @@ import javax.net.ssl.X509TrustManager;
 import org.apache.directory.ldap.client.api.LdapConnectionConfig;
 import org.apache.directory.ldap.client.api.LdapNetworkConnection;
 import org.apache.directory.shared.ldap.codec.controls.ControlImpl;
-import org.apache.directory.shared.ldap.cursor.Cursor;
+import org.apache.directory.shared.ldap.cursor.SearchCursor;
 import org.apache.directory.shared.ldap.entry.DefaultModification;
 import org.apache.directory.shared.ldap.entry.Modification;
 import org.apache.directory.shared.ldap.entry.ModificationOperation;
@@ -60,7 +60,6 @@ import org.apache.directory.shared.ldap.message.ModifyDnResponse;
 import org.apache.directory.shared.ldap.message.ModifyRequest;
 import org.apache.directory.shared.ldap.message.ModifyRequestImpl;
 import org.apache.directory.shared.ldap.message.ModifyResponse;
-import org.apache.directory.shared.ldap.message.Response;
 import org.apache.directory.shared.ldap.message.ResultCodeEnum;
 import org.apache.directory.shared.ldap.message.ResultResponse;
 import org.apache.directory.shared.ldap.message.SearchRequest;
@@ -395,7 +394,7 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
                     request.setDerefAliases( convertAliasDerefMode( aliasesDereferencingMethod ) );
 
                     // Performing the search operation
-                    Cursor<Response> cursor = getLdapConnection().search( request );
+                    SearchCursor cursor = getLdapConnection().search( request );
 
                     // Returning the result of the search
                     namingEnumeration = new CursorStudioNamingEnumeration( connection, cursor, searchBase, filter,

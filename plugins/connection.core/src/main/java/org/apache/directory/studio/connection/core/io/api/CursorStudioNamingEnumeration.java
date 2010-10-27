@@ -34,8 +34,7 @@ import javax.naming.ldap.BasicControl;
 import javax.naming.ldap.Control;
 import javax.naming.ldap.PagedResultsResponseControl;
 
-import org.apache.directory.ldap.client.api.SearchCursor;
-import org.apache.directory.shared.ldap.cursor.Cursor;
+import org.apache.directory.shared.ldap.cursor.SearchCursor;
 import org.apache.directory.shared.ldap.message.Referral;
 import org.apache.directory.shared.ldap.message.Response;
 import org.apache.directory.shared.ldap.message.SearchResultDone;
@@ -63,7 +62,7 @@ import org.apache.directory.studio.connection.core.io.jndi.StudioSearchResult;
  */
 public class CursorStudioNamingEnumeration extends AbstractStudioNamingEnumeration
 {
-    private Cursor<Response> cursor;
+    private SearchCursor cursor;
     private SearchResultEntry currentSearchResultEntry;
     private List<Referral> referralsList = new ArrayList<Referral>();
     private List<String> currentReferralUrlsList;
@@ -75,7 +74,7 @@ public class CursorStudioNamingEnumeration extends AbstractStudioNamingEnumerati
      * Creates a new instance of ReferralNamingEnumeration.
      * 
      * @param connection the connection
-     * @param ctx the JNDI context
+     * @param cursor the search cursor
      * @param searchBase the search base
      * @param filter the filter
      * @param searchControls the search controls
@@ -85,7 +84,7 @@ public class CursorStudioNamingEnumeration extends AbstractStudioNamingEnumerati
      * @param monitor the progress monitor
      * @param referralsInfo the referrals info
      */
-    public CursorStudioNamingEnumeration( Connection connection, Cursor<Response> cursor,
+    public CursorStudioNamingEnumeration( Connection connection, SearchCursor cursor,
         String searchBase, String filter, SearchControls searchControls,
         AliasDereferencingMethod aliasesDereferencingMethod, ReferralHandlingMethod referralsHandlingMethod,
         Control[] controls, long requestNum, StudioProgressMonitor monitor, ReferralsInfo referralsInfo )
@@ -160,7 +159,7 @@ public class CursorStudioNamingEnumeration extends AbstractStudioNamingEnumerati
             // Storing the search result done (if needed)
             if ( searchResultDone == null )
             {
-                searchResultDone = ( ( SearchCursor ) cursor ).getSearchDone();
+                searchResultDone = ( ( SearchCursor ) cursor ).getSearchResultDone();
             }
 
             // Are we following referrals manually?
