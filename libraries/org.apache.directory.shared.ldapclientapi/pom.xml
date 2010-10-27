@@ -89,6 +89,7 @@
             <Require-Bundle>org.antlr.antlr;bundle-version="${org.antlr.version}",
  org.apache.commons.collections;bundle-version="${org.apache.commons.collections.version}",
  org.apache.commons.lang;bundle-version="${org.apache.commons.lang.version}",
+ org.apache.commons.pool;bundle-version="${org.apache.commons.pool.version}",
  org.apache.directory.shared.i18n;bundle-version="${org.apache.directory.shared.validversion}",
  org.apache.directory.shared.ldap;bundle-version="${org.apache.directory.shared.validversion}",
  org.apache.mina.core;bundle-version="${org.apache.mina.core.version}",
