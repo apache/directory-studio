@@ -26,6 +26,7 @@ import java.util.Collection;
 import java.util.List;
 
 import javax.naming.CommunicationException;
+import javax.naming.ContextNotEmptyException;
 import javax.naming.InsufficientResourcesException;
 import javax.naming.NamingException;
 import javax.naming.ServiceUnavailableException;
@@ -1062,9 +1063,19 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
         if ( response != null )
         {
             LdapResult ldapResult = response.getLdapResult();
-            if ( ( ldapResult != null ) && !( ResultCodeEnum.SUCCESS.equals( ldapResult.getResultCode() ) ) )
+            if ( ldapResult != null )
             {
-                throw new Exception( ldapResult.getResultCode().getResultCode() + " " + ldapResult.getErrorMessage() );
+                // NOT_ALLOWED_ON_NON_LEAF error (thrown when deleting a entry with children
+                if ( ResultCodeEnum.NOT_ALLOWED_ON_NON_LEAF.equals( ldapResult.getResultCode() ) )
+                {
+                    throw new ContextNotEmptyException( ldapResult.getErrorMessage() );
+                }
+                // Different from SUCCESS, we throw a generic exception
+                else if ( !ResultCodeEnum.SUCCESS.equals( ldapResult.getResultCode() ) )
+                {
+                    throw new Exception( ldapResult.getResultCode().getResultCode() + " "
+                        + ldapResult.getErrorMessage() );
+                }
             }
         }
     }
