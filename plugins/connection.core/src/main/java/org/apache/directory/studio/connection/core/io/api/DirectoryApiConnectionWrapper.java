@@ -51,6 +51,7 @@ import org.apache.directory.shared.ldap.message.AddRequest;
 import org.apache.directory.shared.ldap.message.AddRequestImpl;
 import org.apache.directory.shared.ldap.message.AddResponse;
 import org.apache.directory.shared.ldap.message.AliasDerefMode;
+import org.apache.directory.shared.ldap.message.BindResponse;
 import org.apache.directory.shared.ldap.message.DeleteRequest;
 import org.apache.directory.shared.ldap.message.DeleteRequestImpl;
 import org.apache.directory.shared.ldap.message.DeleteResponse;
@@ -277,6 +278,8 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
                 {
                     try
                     {
+                        BindResponse bindResponse = null;
+
                         // Setup credentials
                         IAuthHandler authHandler = ConnectionCorePlugin.getDefault().getAuthHandler();
                         if ( authHandler == null )
@@ -306,19 +309,29 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
                         // Simple Authentication
                         if ( connection.getConnectionParameter().getAuthMethod() == ConnectionParameter.AuthenticationMethod.SIMPLE )
                         {
-                            getLdapConnection().bind( bindPrincipal, bindPassword );
+                            bindResponse = getLdapConnection().bind( bindPrincipal, bindPassword );
                         }
                         // CRAM-MD5 Authentication
                         else if ( connection.getConnectionParameter().getAuthMethod() == ConnectionParameter.AuthenticationMethod.SASL_CRAM_MD5 )
                         {
-                            getLdapConnection().bindCramMd5( bindPrincipal, bindPassword, null );
+                            bindResponse = getLdapConnection().bindCramMd5( bindPrincipal, bindPassword, null );
                         }
                         // DIGEST-MD5 Authentication
                         else if ( connection.getConnectionParameter().getAuthMethod() == ConnectionParameter.AuthenticationMethod.SASL_DIGEST_MD5 )
                         {
-                            getLdapConnection().bindDigestMd5( bindPrincipal, bindPassword, null,
+                            bindResponse = getLdapConnection().bindDigestMd5( bindPrincipal, bindPassword, null,
                                 connection.getConnectionParameter().getSaslRealm() );
                         }
+                        // GSSAPI Authentication
+                        else if ( connection.getConnectionParameter().getAuthMethod() == ConnectionParameter.AuthenticationMethod.SASL_GSSAPI )
+                        {
+                            bindResponse = getLdapConnection().bindGssApi( bindPrincipal, bindPassword,
+                                connection.getConnectionParameter().getSaslRealm(),
+                                connection.getConnectionParameter().getKrb5KdcHost(),
+                                connection.getConnectionParameter().getKrb5KdcPort() );
+                        }
+
+                        checkResponse( bindResponse );
                     }
                     catch ( Exception e )
                     {
@@ -1073,8 +1086,8 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
                 // Different from SUCCESS, we throw a generic exception
                 else if ( !ResultCodeEnum.SUCCESS.equals( ldapResult.getResultCode() ) )
                 {
-                    throw new Exception( ldapResult.getResultCode().getResultCode() + " "
-                        + ldapResult.getErrorMessage() );
+                    throw new Exception( NLS.bind( "[LDAP: error code {0} - {1}]", new String[]
+                        { ldapResult.getResultCode().getResultCode() + "", ldapResult.getErrorMessage() } ) );
                 }
             }
         }
