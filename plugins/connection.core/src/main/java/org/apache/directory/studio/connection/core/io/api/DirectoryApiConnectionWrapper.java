@@ -146,7 +146,8 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
         config.setLdapPort( connection.getPort() );
         config.setName( connection.getBindPrincipal() );
         config.setCredentials( connection.getBindPassword() );
-        if ( connection.getEncryptionMethod() == EncryptionMethod.LDAPS )
+        if ( ( connection.getEncryptionMethod() == EncryptionMethod.LDAPS )
+            || ( connection.getEncryptionMethod() == EncryptionMethod.START_TLS ) )
         {
             config.setUseSsl( true );
 
@@ -212,6 +213,11 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
             {
                 try
                 {
+                    if ( connection.getConnectionParameter().getEncryptionMethod() == ConnectionParameter.EncryptionMethod.START_TLS )
+                    {
+                        getLdapConnection().startTls();
+                    }
+
                     boolean connected = getLdapConnection().connect();
                     if ( !connected )
                     {
