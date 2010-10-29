@@ -213,15 +213,17 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
             {
                 try
                 {
-                    if ( connection.getConnectionParameter().getEncryptionMethod() == ConnectionParameter.EncryptionMethod.START_TLS )
-                    {
-                        getLdapConnection().startTls();
-                    }
-
+                    // Connecting
                     boolean connected = getLdapConnection().connect();
                     if ( !connected )
                     {
                         throw new Exception( "Unable to connect" );
+                    }
+
+                    // Start TLS
+                    if ( connection.getConnectionParameter().getEncryptionMethod() == ConnectionParameter.EncryptionMethod.START_TLS )
+                    {
+                        getLdapConnection().startTls();
                     }
                 }
                 catch ( Exception e )
