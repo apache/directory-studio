@@ -26,10 +26,10 @@
     <version>2.0.0-SNAPSHOT</version>
   </parent>
 
-  <artifactId>org.apache.directory.shared.ldap</artifactId>
+  <artifactId>org.apache.directory.shared.ldapclientapi</artifactId>
   <version>${org.apache.directory.shared.version}</version>
   
-  <name>Apache Directory Shared LDAP (for Apache Directory Studio)</name>
+  <name>Apache Directory LDAP Client API (for Apache Directory Studio)</name>
   <packaging>jar</packaging>
 
   <description />
@@ -89,7 +89,9 @@
             <Require-Bundle>org.antlr.antlr;bundle-version="${org.antlr.version}",
  org.apache.commons.collections;bundle-version="${org.apache.commons.collections.version}",
  org.apache.commons.lang;bundle-version="${org.apache.commons.lang.version}",
+ org.apache.commons.pool;bundle-version="${org.apache.commons.pool.version}",
  org.apache.directory.shared.i18n;bundle-version="${org.apache.directory.shared.validversion}",
+ org.apache.directory.shared.ldap;bundle-version="${org.apache.directory.shared.validversion}",
  org.apache.mina.core;bundle-version="${org.apache.mina.core.version}",
  org.apache.logging.log4j;bundle-version="${org.apache.logging.log4j.version}",
  org.slf4j.api;bundle-version="${org.slf4j.version}",
@@ -124,27 +126,19 @@
   <dependencies>
     <dependency>
       <groupId>org.apache.directory.shared</groupId>
-      <artifactId>shared-ldap</artifactId>
+      <artifactId>ldap-client-api</artifactId>
       <exclusions>
         <exclusion>
-          <groupId>antlr</groupId>
-          <artifactId>antlr</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>commons-lang</groupId>
-          <artifactId>commons-lang</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>commons-collections</groupId>
-          <artifactId>commons-collections</artifactId>
+          <groupId>commons-pool</groupId>
+          <artifactId>commons-pool</artifactId>
         </exclusion>
         <exclusion>
           <groupId>org.apache.directory.shared</groupId>
-          <artifactId>shared-i18n</artifactId>
+          <artifactId>shared-ldap</artifactId>
         </exclusion>
         <exclusion>
           <groupId>org.apache.directory.shared</groupId>
-          <artifactId>shared-ldap-constants</artifactId>
+          <artifactId>shared-ldap-schema</artifactId>
         </exclusion>
         <exclusion>
           <groupId>org.apache.mina</groupId>
