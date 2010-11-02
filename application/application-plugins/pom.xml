@@ -76,6 +76,10 @@
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.apache.directory.studio</groupId>
+                  <artifactId>org.apache.commons.pool</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.apache.directory.studio</groupId>
                   <artifactId>org.apache.commons.logging</artifactId>
                 </artifactItem>
                 <artifactItem>
@@ -89,6 +93,14 @@
                 <artifactItem>
                   <groupId>org.apache.directory.studio</groupId>
                   <artifactId>org.apache.directory.shared.ldap</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.apache.directory.studio</groupId>
+                  <artifactId>org.apache.directory.shared.ldapclientapi</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.apache.directory.studio</groupId>
+                  <artifactId>org.apache.directory.shared.ldapschema</artifactId>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.apache.directory.studio</groupId>

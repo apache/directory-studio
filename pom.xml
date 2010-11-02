@@ -73,11 +73,12 @@
     <org.apache.commons.io.version>1.3.1</org.apache.commons.io.version>
     <org.apache.commons.lang.version>2.3</org.apache.commons.lang.version>
     <org.apache.commons.logging.version>1.1.1</org.apache.commons.logging.version>
+    <org.apache.commons.pool.version>1.5.4</org.apache.commons.pool.version>
     <org.apache.logging.log4j.version>1.2.14</org.apache.logging.log4j.version>
     <org.apache.httpcomponents.version>4.0</org.apache.httpcomponents.version>
     <org.apache.directory.shared.version>0.9.20-SNAPSHOT</org.apache.directory.shared.version>
     <org.apache.directory.shared.validversion>0.9.20.SNAPSHOT</org.apache.directory.shared.validversion>
-    <org.apache.mina.core.version>2.0.0</org.apache.mina.core.version>
+    <org.apache.mina.core.version>2.0.1</org.apache.mina.core.version>
     <org.bouncycastle.bcprovjdk15.version>140</org.bouncycastle.bcprovjdk15.version>
     <org.dom4j.version>1.6.1</org.dom4j.version>
     <org.slf4j.version>1.5.6</org.slf4j.version>
@@ -205,6 +206,11 @@
       </dependency>
       <dependency>
         <groupId>org.apache.directory.studio</groupId>
+        <artifactId>org.apache.commons.pool</artifactId>
+        <version>${org.apache.commons.pool.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.directory.studio</groupId>
         <artifactId>org.apache.commons.logging</artifactId>
         <version>${org.apache.commons.logging.version}</version>
       </dependency>
@@ -221,6 +227,16 @@
       <dependency>
         <groupId>org.apache.directory.studio</groupId>
         <artifactId>org.apache.directory.shared.ldap</artifactId>
+        <version>${org.apache.directory.shared.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.directory.studio</groupId>
+        <artifactId>org.apache.directory.shared.ldapschema</artifactId>
+        <version>${org.apache.directory.shared.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.directory.studio</groupId>
+        <artifactId>org.apache.directory.shared.ldapclientapi</artifactId>
         <version>${org.apache.directory.shared.version}</version>
       </dependency>
       <dependency>
@@ -1136,6 +1152,11 @@
       <!-- Apache Directory Shared -->
       <dependency>
         <groupId>org.apache.directory.shared</groupId>
+        <artifactId>shared-dsml-parser</artifactId>
+        <version>${org.apache.directory.shared.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.directory.shared</groupId>
         <artifactId>shared-i18n</artifactId>
         <version>${org.apache.directory.shared.version}</version>
       </dependency>
@@ -1146,7 +1167,12 @@
       </dependency>
       <dependency>
         <groupId>org.apache.directory.shared</groupId>
-        <artifactId>shared-dsml-parser</artifactId>
+        <artifactId>shared-ldap-schema</artifactId>
+        <version>${org.apache.directory.shared.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.directory.shared</groupId>
+        <artifactId>ldap-client-api</artifactId>
         <version>${org.apache.directory.shared.version}</version>
       </dependency>
 
@@ -1199,6 +1225,16 @@
         <version>${org.dom4j.version}</version>
       </dependency>
       <dependency>
+        <groupId>commons-codec</groupId>
+        <artifactId>commons-codec</artifactId>
+        <version>${org.apache.commons.codec.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>commons-collections</groupId>
+        <artifactId>commons-collections</artifactId>
+        <version>${org.apache.commons.collections.version}</version>
+      </dependency>
+      <dependency>
         <groupId>commons-io</groupId>
         <artifactId>commons-io</artifactId>
         <version>${org.apache.commons.io.version}</version>
@@ -1214,14 +1250,9 @@
         <version>${org.apache.commons.logging.version}</version>
       </dependency>
       <dependency>
-        <groupId>commons-codec</groupId>
-        <artifactId>commons-codec</artifactId>
-        <version>${org.apache.commons.codec.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>commons-collections</groupId>
-        <artifactId>commons-collections</artifactId>
-        <version>${org.apache.commons.collections.version}</version>
+        <groupId>commons-pool</groupId>
+        <artifactId>commons-pool</artifactId>
+        <version>${org.apache.commons.pool.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.httpcomponents</groupId>
