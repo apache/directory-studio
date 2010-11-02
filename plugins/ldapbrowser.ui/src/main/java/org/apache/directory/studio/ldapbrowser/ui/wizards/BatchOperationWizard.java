@@ -110,7 +110,7 @@ public class BatchOperationWizard extends Wizard implements INewWizard
         // if(searches.length + entries.length + searchResults.length +
         // bookmarks.length > 0) {
         if ( connections.length > 0
-            && connections[0].getJNDIConnectionWrapper().isConnected()
+            && connections[0].getConnectionWrapper().isConnected()
             || searches.length + entries.length + searchResults.length + bookmarks.length + attributes.length
                 + values.length > 0 )
         {

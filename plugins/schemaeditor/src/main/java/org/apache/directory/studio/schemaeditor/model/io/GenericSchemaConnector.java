@@ -43,7 +43,7 @@ import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
 import org.apache.directory.studio.connection.core.Connection.ReferralHandlingMethod;
 import org.apache.directory.studio.connection.core.Utils;
-import org.apache.directory.studio.connection.core.io.jndi.JNDIConnectionWrapper;
+import org.apache.directory.studio.connection.core.io.ConnectionWrapper;
 import org.apache.directory.studio.schemaeditor.model.AttributeTypeImpl;
 import org.apache.directory.studio.schemaeditor.model.MatchingRuleImpl;
 import org.apache.directory.studio.schemaeditor.model.ObjectClassImpl;
@@ -80,7 +80,7 @@ public class GenericSchemaConnector extends AbstractSchemaConnector implements S
     {
         List<Schema> schemas = new ArrayList<Schema>();
 
-        JNDIConnectionWrapper wrapper = connection.getJNDIConnectionWrapper();
+        ConnectionWrapper wrapper = connection.getConnectionWrapper();
 
         monitor.beginTask( Messages.getString( "GenericSchemaConnector.FetchingSchema" ), 1 ); //$NON-NLS-1$
 
@@ -131,7 +131,7 @@ public class GenericSchemaConnector extends AbstractSchemaConnector implements S
 
     private static String getSubschemaSubentry( Connection connection, StudioProgressMonitor monitor )
     {
-        JNDIConnectionWrapper wrapper = connection.getJNDIConnectionWrapper();
+        ConnectionWrapper wrapper = connection.getConnectionWrapper();
 
         SearchControls constraintSearch = new SearchControls();
         constraintSearch.setSearchScope( SearchControls.OBJECT_SCOPE );
@@ -183,7 +183,7 @@ public class GenericSchemaConnector extends AbstractSchemaConnector implements S
     }
 
 
-    private static Schema getSchema( JNDIConnectionWrapper wrapper, SearchResult searchResult,
+    private static Schema getSchema( ConnectionWrapper wrapper, SearchResult searchResult,
         StudioProgressMonitor monitor ) throws NamingException, ParseException
     {
         // Creating the schema

@@ -47,14 +47,15 @@ import javax.naming.directory.SearchControls;
 import javax.naming.ldap.Control;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.directory.shared.ldap.message.Referral;
 import org.apache.directory.shared.ldap.util.LdapURL;
 import org.apache.directory.studio.connection.core.Connection;
+import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
 import org.apache.directory.studio.connection.core.ConnectionCoreConstants;
 import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
 import org.apache.directory.studio.connection.core.ConnectionManager;
 import org.apache.directory.studio.connection.core.IJndiLogger;
 import org.apache.directory.studio.connection.core.Utils;
-import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
 import org.apache.directory.studio.ldifparser.LdifFormatParameters;
 import org.apache.directory.studio.ldifparser.model.container.LdifContentRecord;
 import org.apache.directory.studio.ldifparser.model.lines.LdifAttrValLine;
@@ -410,7 +411,7 @@ public class LdifSearchLogger implements IJndiLogger
     /**
      * {@inheritDoc}
      */
-    public void logSearchResultReference( Connection connection, ReferralsInfo.Referral referral,
+    public void logSearchResultReference( Connection connection, Referral referral,
         ReferralsInfo referralsInfo, long requestNum, NamingException ex )
     {
         if ( !isSearchResultEntryLogEnabled() )
@@ -419,7 +420,7 @@ public class LdifSearchLogger implements IJndiLogger
         }
 
         Collection<LdifLineBase> lines = new ArrayList<LdifLineBase>();
-        lines.add( LdifCommentLine.create( "# reference : " + ( referral != null ? referral.getLdapURLs() : "null" ) ) ); //$NON-NLS-1$ //$NON-NLS-2$
+        lines.add( LdifCommentLine.create( "# reference : " + ( referral != null ? referral.getLdapUrls() : "null" ) ) ); //$NON-NLS-1$ //$NON-NLS-2$
         lines.add( LdifSepLine.create() );
 
         String formattedString = ""; //$NON-NLS-1$

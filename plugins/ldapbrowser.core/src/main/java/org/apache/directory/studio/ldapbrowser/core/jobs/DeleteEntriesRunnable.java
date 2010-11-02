@@ -297,7 +297,7 @@ public class DeleteEntriesRunnable implements StudioConnectionBulkRunnableWithPr
                 searchControls.setSearchScope( SearchControls.ONELEVEL_SCOPE );
                 NamingEnumeration<SearchResult> result = browserConnection
                     .getConnection()
-                    .getJNDIConnectionWrapper()
+                    .getConnectionWrapper()
                     .search( dn.getName(), ISearch.FILTER_TRUE, searchControls, aliasDereferencingMethod,
                         referralsHandlingMethod, null, dummyMonitor, null );
 
@@ -379,7 +379,7 @@ public class DeleteEntriesRunnable implements StudioConnectionBulkRunnableWithPr
         // delete entry
         if ( browserConnection.getConnection() != null )
         {
-            browserConnection.getConnection().getJNDIConnectionWrapper()
+            browserConnection.getConnection().getConnectionWrapper()
                 .deleteEntry( dn.getName(), controls, monitor, null );
         }
     }

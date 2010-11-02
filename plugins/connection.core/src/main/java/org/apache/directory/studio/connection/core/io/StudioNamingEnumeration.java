@@ -6,42 +6,49 @@
  *  to you under the Apache License, Version 2.0 (the
  *  "License"); you may not use this file except in compliance
  *  with the License.  You may obtain a copy of the License at
- *  
+ *
  *    http://www.apache.org/licenses/LICENSE-2.0
- *  
+ *
  *  Unless required by applicable law or agreed to in writing,
  *  software distributed under the License is distributed on an
  *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  *  KIND, either express or implied.  See the License for the
  *  specific language governing permissions and limitations
- *  under the License. 
- *  
+ *  under the License.
+ *
  */
+package org.apache.directory.studio.connection.core.io;
 
-package org.apache.directory.studio.connection.core;
 
+import javax.naming.NamingEnumeration;
+import javax.naming.NamingException;
+import javax.naming.directory.SearchResult;
+import javax.naming.ldap.Control;
 
-import java.util.List;
+import org.apache.directory.studio.connection.core.Connection;
 
 
 /**
- * Callback interface to request the target connection 
- * of a referral from a higher-level layer (from the UI plugin).
+ * A naming enumeration that handles referrals itself. 
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public interface IReferralHandler
+public interface StudioNamingEnumeration extends NamingEnumeration<SearchResult>
 {
+    /**
+     * Gets the connection.
+     * 
+     * @return the connection
+     */
+    public Connection getConnection();
+
 
     /**
-     * Gets the connection from this referral handler.
-     * The connection is used to continue a LDAP request.
-     * The referral handler may display a dialog to the user
-     * to select a proper connection.
+     * Gets the response controls.
      * 
-     * @param referralURLs the referral URLs
-     * @return the target connection, null to cancel referral chasing
+     * @return the response controls, may be null
+     * 
+     * @throws NamingException the naming exception
      */
-    public Connection getReferralConnection( List<String> referralUrls );
-
+    public Control[] getResponseControls() throws NamingException;
 }

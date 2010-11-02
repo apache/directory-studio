@@ -502,7 +502,7 @@ public class BrowserContentProvider implements ITreeContentProvider
                 {
                     // open connection when expanding DIT
                     if ( browserConnection.getConnection() != null
-                        && !browserConnection.getConnection().getJNDIConnectionWrapper().isConnected() )
+                        && !browserConnection.getConnection().getConnectionWrapper().isConnected() )
                     {
                         new StudioBrowserJob( new OpenConnectionsRunnable( browserConnection.getConnection() ) )
                             .execute();

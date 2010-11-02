@@ -147,8 +147,8 @@ public class ContinuedSearchResultEntry extends DelegateEntry implements IContin
     public void resolve()
     {
         // get referral connection, exit if canceled
-        List<LdapURL> urls = new ArrayList<LdapURL>();
-        urls.add( url );
+        List<String> urls = new ArrayList<String>();
+        urls.add( url.toString() );
         Connection referralConnection = ConnectionCorePlugin.getDefault().getReferralHandler().getReferralConnection(
             urls );
         if ( referralConnection == null )

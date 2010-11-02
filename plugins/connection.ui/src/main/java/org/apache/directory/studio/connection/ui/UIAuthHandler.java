@@ -63,10 +63,10 @@ public class UIAuthHandler implements IAuthHandler
                 {
                     CredentialsDialog dialog = new CredentialsDialog(
                         PlatformUI.getWorkbench().getDisplay().getActiveShell(),
-                        NLS
-                            .bind(
-                                Messages.getString( "UIAuthHandler.EnterPasswordFor" ), new String[] { connectionParameter.getName() } ), //$NON-NLS-1$
-                        Messages.getString( "UIAuthHandler.PleaseEnterPasswordOfUser" ) + connectionParameter.getBindPrincipal() + ":", "", null ); //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
+                        NLS.bind(
+                            Messages.getString( "UIAuthHandler.EnterPasswordFor" ), new String[] { connectionParameter.getName() } ), //$NON-NLS-1$
+                        NLS.bind(
+                            Messages.getString( "UIAuthHandler.PleaseEnterPasswordOfUser" ), connectionParameter.getBindPrincipal() ), "", null ); //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
                     if ( dialog.open() == CredentialsDialog.OK )
                     {
                         pw[0] = dialog.getValue();

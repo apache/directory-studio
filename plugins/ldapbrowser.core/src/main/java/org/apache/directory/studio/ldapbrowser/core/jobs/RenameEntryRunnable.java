@@ -292,7 +292,7 @@ public class RenameEntryRunnable implements StudioConnectionBulkRunnableWithProg
 
         if ( browserConnection.getConnection() != null )
         {
-            browserConnection.getConnection().getJNDIConnectionWrapper()
+            browserConnection.getConnection().getConnectionWrapper()
                 .renameEntry( oldDnString, newDnString, true, controls, monitor, null );
         }
     }

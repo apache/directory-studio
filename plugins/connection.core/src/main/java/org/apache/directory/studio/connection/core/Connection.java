@@ -24,7 +24,10 @@ package org.apache.directory.studio.connection.core;
 import org.apache.directory.shared.ldap.util.LdapURL;
 import org.apache.directory.studio.connection.core.ConnectionParameter.AuthenticationMethod;
 import org.apache.directory.studio.connection.core.ConnectionParameter.EncryptionMethod;
+import org.apache.directory.studio.connection.core.ConnectionParameter.NetworkProvider;
 import org.apache.directory.studio.connection.core.event.ConnectionEventRegistry;
+import org.apache.directory.studio.connection.core.io.ConnectionWrapper;
+import org.apache.directory.studio.connection.core.io.api.DirectoryApiConnectionWrapper;
 import org.apache.directory.studio.connection.core.io.jndi.JNDIConnectionWrapper;
 import org.eclipse.core.runtime.IAdaptable;
 
@@ -36,7 +39,6 @@ import org.eclipse.core.runtime.IAdaptable;
  */
 public class Connection implements ConnectionPropertyPageProvider, IAdaptable
 {
-
     /**
      * Enum for alias dereferencing method.
      * 
@@ -44,7 +46,6 @@ public class Connection implements ConnectionPropertyPageProvider, IAdaptable
      */
     public static enum AliasDereferencingMethod
     {
-
         /** Never. */
         NEVER(0),
 
@@ -109,7 +110,6 @@ public class Connection implements ConnectionPropertyPageProvider, IAdaptable
      */
     public static enum ReferralHandlingMethod
     {
-
         /** Ignore. */
         IGNORE(0),
 
@@ -170,7 +170,8 @@ public class Connection implements ConnectionPropertyPageProvider, IAdaptable
 
     private ConnectionParameter connectionParameter;
 
-    private JNDIConnectionWrapper jndiConnectionWrapper;
+    /** The connection wrapper */
+    private ConnectionWrapper connectionWrapper;
 
 
     /**
@@ -190,7 +191,7 @@ public class Connection implements ConnectionPropertyPageProvider, IAdaptable
     public Object clone()
     {
         ConnectionParameter cp = new ConnectionParameter( getName(), getHost(), getPort(), getEncryptionMethod(),
-            getAuthMethod(), getBindPrincipal(), getBindPassword(), getSaslRealm(), isReadOnly(),
+            getNetworkProvider(), getAuthMethod(), getBindPrincipal(), getBindPassword(), getSaslRealm(), isReadOnly(),
             getConnectionParameter().getExtendedProperties() );
 
         Connection clone = new Connection( cp );
@@ -200,17 +201,55 @@ public class Connection implements ConnectionPropertyPageProvider, IAdaptable
 
 
     /**
-     * Gets the JNDI connection wrapper.
+     * Gets the connection wrapper.
      * 
-     * @return the JNDI connection wrapper
+     * @return the connection wrapper
      */
-    public JNDIConnectionWrapper getJNDIConnectionWrapper()
+    public ConnectionWrapper getConnectionWrapper()
     {
-        if ( jndiConnectionWrapper == null )
+        switch ( connectionParameter.getNetworkProvider() )
         {
-            jndiConnectionWrapper = new JNDIConnectionWrapper( this );
+            case JNDI:
+                return getJndiConnectionWrapper();
+            case APACHE_DIRECTORY_LDAP_API:
+                return getDirectoryApiConnectionWrapper();
         }
-        return jndiConnectionWrapper;
+
+        return null;
+    }
+
+
+    /**
+     * Gets a JNDI connection wrapper.
+     *
+     * @return
+     *      a JNDI connection wrapper
+     */
+    private JNDIConnectionWrapper getJndiConnectionWrapper()
+    {
+        if ( ( connectionWrapper == null ) || !( connectionWrapper instanceof JNDIConnectionWrapper ) )
+        {
+            connectionWrapper = new JNDIConnectionWrapper( this );
+        }
+
+        return ( JNDIConnectionWrapper ) connectionWrapper;
+    }
+
+
+    /**
+     * Gets a Directory API connection wrapper.
+     *
+     * @return
+     *      a Directory API connection wrapper
+     */
+    private DirectoryApiConnectionWrapper getDirectoryApiConnectionWrapper()
+    {
+        if ( ( connectionWrapper == null ) || !( connectionWrapper instanceof DirectoryApiConnectionWrapper ) )
+        {
+            connectionWrapper = new DirectoryApiConnectionWrapper( this );
+        }
+
+        return ( DirectoryApiConnectionWrapper ) connectionWrapper;
     }
 
 
@@ -278,6 +317,17 @@ public class Connection implements ConnectionPropertyPageProvider, IAdaptable
     public EncryptionMethod getEncryptionMethod()
     {
         return connectionParameter.getEncryptionMethod();
+    }
+
+
+    /**
+     * Gets the network provider.
+     * 
+     * @return the network provider
+     */
+    public NetworkProvider getNetworkProvider()
+    {
+        return connectionParameter.getNetworkProvider();
     }
 
 

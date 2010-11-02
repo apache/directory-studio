@@ -33,6 +33,7 @@ import org.apache.directory.studio.connection.core.ConnectionCoreConstants;
 import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
 import org.apache.directory.studio.connection.core.ConnectionParameter;
 import org.apache.directory.studio.connection.core.ConnectionParameter.EncryptionMethod;
+import org.apache.directory.studio.connection.core.ConnectionParameter.NetworkProvider;
 import org.apache.directory.studio.connection.core.jobs.CheckNetworkParameterRunnable;
 import org.apache.directory.studio.connection.ui.AbstractConnectionParameterPage;
 import org.apache.directory.studio.connection.ui.ConnectionUIConstants;
@@ -64,7 +65,6 @@ import org.eclipse.swt.widgets.Text;
  */
 public class NetworkParameterPage extends AbstractConnectionParameterPage
 {
-
     private static final String X_CONNECTION_NAME = "X-CONNECTION-NAME"; //$NON-NLS-1$
 
     private static final String X_ENCRYPTION = "X-ENCRYPTION"; //$NON-NLS-1$
@@ -72,6 +72,12 @@ public class NetworkParameterPage extends AbstractConnectionParameterPage
     private static final String X_ENCRYPTION_LDAPS = "ldaps"; //$NON-NLS-1$
 
     private static final String X_ENCRYPTION_START_TLS = "StartTLS"; //$NON-NLS-1$
+
+    private static final String X_NETWORK_PROVIDER = "X-NETWORK-PROVIDER"; //$NON-NLS-1$
+
+    private static final String X_NETWORK_PROVIDER_JNDI = "JNDI"; //$NON-NLS-1$
+
+    private static final String X_NETWORK_PROVIDER_APACHE_DIRECTORY_LDAP_API = "ApacheDirectoryLdapApi"; //$NON-NLS-1$
 
     /** The connection name text widget */
     private Text nameText;
@@ -84,6 +90,9 @@ public class NetworkParameterPage extends AbstractConnectionParameterPage
 
     /** The combo to select the encryption method */
     private Combo encryptionMethodCombo;
+
+    /** The combo to select the network provider */
+    private Combo networkProviderCombo;
 
     /** The button to check the connection parameters */
     private Button checkConnectionButton;
@@ -150,7 +159,24 @@ public class NetworkParameterPage extends AbstractConnectionParameterPage
 
 
     /**
-     * Gets a temporary connection with all conection parameter 
+     * Gets the encyrption method.
+     * 
+     * @return the encyrption method
+     */
+    private ConnectionParameter.NetworkProvider getNetworkProvider()
+    {
+        switch ( networkProviderCombo.getSelectionIndex() )
+        {
+            case 1:
+                return ConnectionParameter.NetworkProvider.APACHE_DIRECTORY_LDAP_API;
+            default:
+                return ConnectionParameter.NetworkProvider.JNDI;
+        }
+    }
+
+
+    /**
+     * Gets a temporary connection with all connection parameter 
      * entered in this page. 
      *
      * @return a test connection
@@ -158,7 +184,7 @@ public class NetworkParameterPage extends AbstractConnectionParameterPage
     private Connection getTestConnection()
     {
         ConnectionParameter cp = new ConnectionParameter( null, getHostName(), getPort(), getEncyrptionMethod(),
-            ConnectionParameter.AuthenticationMethod.NONE, null, null, null, true, null );
+            getNetworkProvider(), ConnectionParameter.AuthenticationMethod.NONE, null, null, null, true, null );
         Connection conn = new Connection( cp );
         return conn;
     }
@@ -207,6 +233,11 @@ public class NetworkParameterPage extends AbstractConnectionParameterPage
             BaseWidgetUtils.createLabel( groupComposite, Messages
                 .getString( "NetworkParameterPage.WarningCertificateValidation" ), 2 ); //$NON-NLS-1$
         }
+
+        String[] networkProviders = new String[]
+            { "JNDI (Java Naming and Directory Interface)", "Apache Directory LDAP Client API" }; //$NON-NLS-1$
+        BaseWidgetUtils.createLabel( groupComposite, "Provider:", 1 ); //$NON-NLS-1$
+        networkProviderCombo = BaseWidgetUtils.createReadonlyCombo( groupComposite, networkProviders, index, 2 );
 
         BaseWidgetUtils.createSpacer( groupComposite, 2 );
         checkConnectionButton = new Button( groupComposite, SWT.PUSH );
@@ -263,9 +294,11 @@ public class NetworkParameterPage extends AbstractConnectionParameterPage
         nameText.setText( parameter.getName() );
         hostCombo.setText( parameter.getHost() );
         portCombo.setText( Integer.toString( parameter.getPort() ) );
-        int index = parameter.getEncryptionMethod() == EncryptionMethod.LDAPS ? 1
+        int encryptionMethodIndex = parameter.getEncryptionMethod() == EncryptionMethod.LDAPS ? 1
             : parameter.getEncryptionMethod() == EncryptionMethod.START_TLS ? 2 : 0;
-        encryptionMethodCombo.select( index );
+        encryptionMethodCombo.select( encryptionMethodIndex );
+        int networkProviderIndex = parameter.getNetworkProvider() == NetworkProvider.JNDI ? 0 : 1;
+        networkProviderCombo.select( networkProviderIndex );
     }
 
 
@@ -316,6 +349,14 @@ public class NetworkParameterPage extends AbstractConnectionParameterPage
             }
         } );
 
+        networkProviderCombo.addSelectionListener( new SelectionAdapter()
+        {
+            public void widgetSelected( SelectionEvent event )
+            {
+                connectionPageModified();
+            }
+        } );
+
         checkConnectionButton.addSelectionListener( new SelectionAdapter()
         {
             public void widgetSelected( SelectionEvent event )
@@ -343,6 +384,7 @@ public class NetworkParameterPage extends AbstractConnectionParameterPage
         parameter.setHost( getHostName() );
         parameter.setPort( getPort() );
         parameter.setEncryptionMethod( getEncyrptionMethod() );
+        parameter.setNetworkProvider( getNetworkProvider() );
     }
 
 
@@ -381,7 +423,8 @@ public class NetworkParameterPage extends AbstractConnectionParameterPage
     {
         return connectionParameter == null || !StringUtils.equals( connectionParameter.getHost(), getHostName() )
             || connectionParameter.getPort() != getPort()
-            || connectionParameter.getEncryptionMethod() != getEncyrptionMethod();
+            || connectionParameter.getEncryptionMethod() != getEncyrptionMethod()
+            || connectionParameter.getNetworkProvider() != getNetworkProvider();
     }
 
 
@@ -406,6 +449,17 @@ public class NetworkParameterPage extends AbstractConnectionParameterPage
                 break;
             case START_TLS:
                 ldapUrl.getExtensions().add( new Extension( false, X_ENCRYPTION, X_ENCRYPTION_START_TLS ) );
+                break;
+        }
+
+        switch ( parameter.getNetworkProvider() )
+        {
+            case JNDI:
+                ldapUrl.getExtensions().add( new Extension( false, X_NETWORK_PROVIDER, X_NETWORK_PROVIDER_JNDI ) );
+                break;
+            case APACHE_DIRECTORY_LDAP_API:
+                ldapUrl.getExtensions().add(
+                    new Extension( false, X_NETWORK_PROVIDER, X_NETWORK_PROVIDER_APACHE_DIRECTORY_LDAP_API ) );
                 break;
         }
     }
@@ -443,6 +497,18 @@ public class NetworkParameterPage extends AbstractConnectionParameterPage
         else
         {
             parameter.setEncryptionMethod( ConnectionParameter.EncryptionMethod.NONE );
+        }
+
+        // encryption method, none if unknown or absent 
+        String networkProvider = ldapUrl.getExtensionValue( X_NETWORK_PROVIDER );
+        if ( StringUtils.isNotEmpty( encryption ) && X_NETWORK_PROVIDER_JNDI.equalsIgnoreCase( networkProvider ) )
+        {
+            parameter.setNetworkProvider( ConnectionParameter.NetworkProvider.JNDI );
+        }
+        else if ( StringUtils.isNotEmpty( encryption )
+            && X_NETWORK_PROVIDER_APACHE_DIRECTORY_LDAP_API.equalsIgnoreCase( networkProvider ) )
+        {
+            parameter.setNetworkProvider( ConnectionParameter.NetworkProvider.APACHE_DIRECTORY_LDAP_API );
         }
     }
 }

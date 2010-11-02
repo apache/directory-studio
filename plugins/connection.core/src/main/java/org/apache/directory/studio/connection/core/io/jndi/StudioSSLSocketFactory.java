@@ -33,6 +33,8 @@ import javax.net.ssl.TrustManager;
 import javax.net.ssl.TrustManagerFactory;
 import javax.net.ssl.X509TrustManager;
 
+import org.apache.directory.studio.connection.core.io.StudioTrustManager;
+
 
 /**
  * A {@link SSLSocketFactory} that uses a custom {@link TrustManager} ({@link StudioTrustManager}).

@@ -88,7 +88,7 @@ public class OpenConnectionAction extends StudioAction
         boolean canOpen = false;
         for ( int i = 0; i < getSelectedConnections().length; i++ )
         {
-            if ( !getSelectedConnections()[i].getJNDIConnectionWrapper().isConnected() )
+            if ( !getSelectedConnections()[i].getConnectionWrapper().isConnected() )
             {
                 canOpen = true;
                 break;

@@ -461,7 +461,7 @@ public class ImportLdifRunnable implements StudioConnectionBulkRunnableWithProgr
                 }
             }
 
-            browserConnection.getConnection().getJNDIConnectionWrapper()
+            browserConnection.getConnection().getConnectionWrapper()
                 .createEntry( dn, jndiAttributes, getControls( record ), monitor, null );
 
             if ( monitor.errorsReported() && updateIfEntryExists
@@ -471,14 +471,14 @@ public class ImportLdifRunnable implements StudioConnectionBulkRunnableWithProgr
                 monitor.reset();
 
                 ModificationItem[] mis = ModelConverter.entryToReplaceModificationItems( dummyEntry );
-                browserConnection.getConnection().getJNDIConnectionWrapper()
+                browserConnection.getConnection().getConnectionWrapper()
                     .modifyEntry( dn, mis, getControls( record ), monitor, null );
             }
         }
         else if ( record instanceof LdifChangeDeleteRecord )
         {
             LdifChangeDeleteRecord changeDeleteRecord = ( LdifChangeDeleteRecord ) record;
-            browserConnection.getConnection().getJNDIConnectionWrapper()
+            browserConnection.getConnection().getConnectionWrapper()
                 .deleteEntry( dn, getControls( changeDeleteRecord ), monitor, null );
         }
         else if ( record instanceof LdifChangeModifyRecord )
@@ -511,7 +511,7 @@ public class ImportLdifRunnable implements StudioConnectionBulkRunnableWithProgr
                 }
             }
 
-            browserConnection.getConnection().getJNDIConnectionWrapper()
+            browserConnection.getConnection().getConnectionWrapper()
                 .modifyEntry( dn, mis, getControls( modifyRecord ), monitor, null );
         }
         else if ( record instanceof LdifChangeModDnRecord )
@@ -534,7 +534,7 @@ public class ImportLdifRunnable implements StudioConnectionBulkRunnableWithProgr
                     newDn = DnUtils.composeDn( newRdn, parent.getName() );
                 }
 
-                browserConnection.getConnection().getJNDIConnectionWrapper()
+                browserConnection.getConnection().getConnectionWrapper()
                     .renameEntry( dn, newDn.toString(), deleteOldRdn, getControls( modDnRecord ), monitor, null );
             }
         }

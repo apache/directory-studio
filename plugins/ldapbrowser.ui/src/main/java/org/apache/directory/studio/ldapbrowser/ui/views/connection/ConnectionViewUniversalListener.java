@@ -159,9 +159,9 @@ public class ConnectionViewUniversalListener extends ConnectionUniversalListener
      */
     private void toggleConnection( Connection connection )
     {
-        if ( connection.getJNDIConnectionWrapper().isConnected() )
+        if ( connection.getConnectionWrapper().isConnected() )
         {
-            connection.getJNDIConnectionWrapper().disconnect();
+            connection.getConnectionWrapper().disconnect();
         }
         else
         {

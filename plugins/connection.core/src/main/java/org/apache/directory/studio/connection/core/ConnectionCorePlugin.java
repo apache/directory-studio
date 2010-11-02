@@ -26,7 +26,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.PropertyResourceBundle;
 
-import org.apache.directory.shared.ldap.util.LdapURL;
 import org.apache.directory.studio.connection.core.event.CoreEventRunner;
 import org.apache.directory.studio.connection.core.event.EventRunner;
 import org.apache.directory.studio.connection.core.io.jndi.LdifModificationLogger;
@@ -154,7 +153,7 @@ public class ConnectionCorePlugin extends Plugin
             Connection[] connections = connectionManager.getConnections();
             for ( int i = 0; i < connections.length; i++ )
             {
-                connections[i].getJNDIConnectionWrapper().disconnect();
+                connections[i].getConnectionWrapper().disconnect();
             }
             connectionManager = null;
         }
@@ -309,7 +308,7 @@ public class ConnectionCorePlugin extends Plugin
             // that just cancels referral chasing
             referralHandler = new IReferralHandler()
             {
-                public Connection getReferralConnection( List<LdapURL> referralUrls )
+                public Connection getReferralConnection( List<String> referralUrls )
                 {
                     // null cancels referral chasing
                     return null;
