@@ -21,13 +21,6 @@
 package org.apache.directory.studio.connection.core;
 
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
-
-import org.apache.directory.studio.connection.core.event.ConnectionEventRegistry;
-
-
 /**
  * This class holds information about a directory server.
  *
