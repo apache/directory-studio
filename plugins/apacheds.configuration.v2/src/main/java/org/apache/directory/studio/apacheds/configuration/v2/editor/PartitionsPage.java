@@ -20,11 +20,9 @@
 package org.apache.directory.studio.apacheds.configuration.v2.editor;
 
 
-import org.apache.directory.studio.apacheds.configuration.v2.ApacheDS2ConfigurationPlugin;
-import org.eclipse.ui.forms.IManagedForm;
+import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.forms.editor.FormEditor;
-import org.eclipse.ui.forms.editor.FormPage;
-import org.eclipse.ui.forms.widgets.ScrolledForm;
+import org.eclipse.ui.forms.widgets.FormToolkit;
 
 
 /**
@@ -32,7 +30,7 @@ import org.eclipse.ui.forms.widgets.ScrolledForm;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class PartitionsPage extends FormPage
+public class PartitionsPage extends ServerConfigurationEditorPage
 {
     /** The Page ID*/
     public static final String ID = PartitionsPage.class.getName(); //$NON-NLS-1$
@@ -53,12 +51,10 @@ public class PartitionsPage extends FormPage
     }
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.ui.forms.editor.FormPage#createFormContent(org.eclipse.ui.forms.IManagedForm)
+    /**
+     * {@inheritDoc}
      */
-    protected void createFormContent( IManagedForm managedForm )
+    protected void createFormContent( Composite parent, FormToolkit toolkit )
     {
-        ScrolledForm form = managedForm.getForm();
-        form.setText( "Partitions" );
     }
 }

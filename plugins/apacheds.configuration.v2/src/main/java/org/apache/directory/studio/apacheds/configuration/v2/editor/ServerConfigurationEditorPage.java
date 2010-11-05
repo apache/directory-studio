@@ -20,6 +20,10 @@
 package org.apache.directory.studio.apacheds.configuration.v2.editor;
 
 
+import org.apache.directory.studio.apacheds.configuration.v2.actions.EditorExportConfigurationAction;
+import org.apache.directory.studio.apacheds.configuration.v2.actions.EditorImportConfigurationAction;
+import org.eclipse.jface.action.IToolBarManager;
+import org.eclipse.jface.action.Separator;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.forms.IManagedForm;
@@ -34,24 +38,17 @@ import org.eclipse.ui.forms.widgets.ScrolledForm;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class PasswordPolicyPage extends FormPage
+public abstract class ServerConfigurationEditorPage extends FormPage
 {
-    /** The Page ID*/
-    public static final String ID = PasswordPolicyPage.class.getName(); //$NON-NLS-1$
-
-    /** The Page Title */
-    private static final String TITLE = "Password Policy";
-
-
     /**
      * Creates a new instance of GeneralPage.
      *
      * @param editor
      *      the associated editor
      */
-    public PasswordPolicyPage( FormEditor editor )
+    public ServerConfigurationEditorPage( FormEditor editor, String id, String title )
     {
-        super( editor, ID, TITLE );
+        super( editor, id, title );
     }
 
 
@@ -61,12 +58,23 @@ public class PasswordPolicyPage extends FormPage
     protected void createFormContent( IManagedForm managedForm )
     {
         ScrolledForm form = managedForm.getForm();
-        form.setText( "Password Policy" );
+        form.setText( getTitle() );
 
         Composite parent = form.getBody();
         parent.setLayout( new GridLayout() );
 
         FormToolkit toolkit = managedForm.getToolkit();
         toolkit.decorateFormHeading( form.getForm() );
+
+        IToolBarManager toolbarManager = form.getToolBarManager();
+        toolbarManager.add( new EditorImportConfigurationAction() );
+        toolbarManager.add( new Separator() );
+        toolbarManager.add( new EditorExportConfigurationAction() );
+        toolbarManager.update( true );
+
+        createFormContent( parent, toolkit );
     }
+
+
+    protected abstract void createFormContent( Composite parent, FormToolkit toolkit );
 }

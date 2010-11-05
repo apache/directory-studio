@@ -17,44 +17,46 @@
  *  under the License. 
  *  
  */
-package org.apache.directory.studio.apacheds.configuration.v2.editor;
+
+package org.apache.directory.studio.apacheds.configuration.v2.actions;
 
 
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.ui.forms.editor.FormEditor;
-import org.eclipse.ui.forms.widgets.FormToolkit;
+import org.apache.directory.studio.apacheds.configuration.v2.ApacheDS2ConfigurationPlugin;
+import org.apache.directory.studio.apacheds.configuration.v2.ApacheDS2ConfigurationPluginConstants;
+import org.eclipse.jface.action.Action;
+import org.eclipse.jface.resource.ImageDescriptor;
 
 
 /**
- * This class represents the General Page of the Server Configuration Editor.
+ * This class implements the create connection action for an ApacheDS 1.5.7 server.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class LdapServerPage extends ServerConfigurationEditorPage
+public class EditorExportConfigurationAction extends Action
 {
-    /** The Page ID*/
-    public static final String ID = LdapServerPage.class.getName(); //$NON-NLS-1$
-
-    /** The Page Title */
-    private static final String TITLE = "LDAP/LDAPS Server";
-
-
     /**
-     * Creates a new instance of GeneralPage.
-     *
-     * @param editor
-     *      the associated editor
+     * {@inheritDoc}
      */
-    public LdapServerPage( FormEditor editor )
+    public ImageDescriptor getImageDescriptor()
     {
-        super( editor, ID, TITLE );
+        return ApacheDS2ConfigurationPlugin.getDefault().getImageDescriptor(
+            ApacheDS2ConfigurationPluginConstants.IMG_EXPORT );
     }
 
 
     /**
      * {@inheritDoc}
      */
-    protected void createFormContent( Composite parent, FormToolkit toolkit )
+    public String getText()
+    {
+        return "Export Configuration";
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public void run()
     {
     }
 }

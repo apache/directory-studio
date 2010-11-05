@@ -20,6 +20,8 @@
 package org.apache.directory.studio.apacheds.configuration.v2.editor;
 
 
+import org.apache.directory.studio.apacheds.configuration.v2.ApacheDS2ConfigurationPlugin;
+import org.apache.directory.studio.apacheds.configuration.v2.ApacheDS2ConfigurationPluginConstants;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IPersistableElement;
@@ -32,8 +34,8 @@ import org.eclipse.ui.IPersistableElement;
  */
 public class ServerConfigurationInput implements IEditorInput
 {
-    /* (non-Javadoc)
-     * @see org.eclipse.ui.IEditorInput#getToolTipText()
+    /**
+     * {@inheritDoc}
      */
     public String getToolTipText()
     {
@@ -41,8 +43,8 @@ public class ServerConfigurationInput implements IEditorInput
     }
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.ui.IEditorInput#getName()
+    /**
+     * {@inheritDoc}
      */
     public String getName()
     {
@@ -50,8 +52,8 @@ public class ServerConfigurationInput implements IEditorInput
     }
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.ui.IEditorInput#exists()
+    /**
+     * {@inheritDoc}
      */
     public boolean exists()
     {
@@ -59,17 +61,18 @@ public class ServerConfigurationInput implements IEditorInput
     }
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.ui.IEditorInput#getImageDescriptor()
+    /**
+     * {@inheritDoc}
      */
     public ImageDescriptor getImageDescriptor()
     {
-        return null;
+        return ApacheDS2ConfigurationPlugin.getDefault().getImageDescriptor(
+            ApacheDS2ConfigurationPluginConstants.IMG_EDITOR );
     }
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.ui.IEditorInput#getPersistable()
+    /**
+     * {@inheritDoc}
      */
     public IPersistableElement getPersistable()
     {
@@ -77,10 +80,9 @@ public class ServerConfigurationInput implements IEditorInput
     }
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.core.runtime.IAdaptable#getAdapter(java.lang.Class)
+    /**
+     * {@inheritDoc}
      */
-    @SuppressWarnings("unchecked")
     public Object getAdapter( Class adapter )
     {
         return null;

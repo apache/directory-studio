@@ -30,6 +30,9 @@ public interface ApacheDS2ConfigurationPluginConstants
     // ------
     // IMAGES
     // ------
+    public static final String IMG_EDITOR = "resources/icons/editor.gif"; //$NON-NLS-1$
+    public static final String IMG_EXPORT = "resources/icons/export.gif"; //$NON-NLS-1$
+    public static final String IMG_IMPORT = "resources/icons/import.gif"; //$NON-NLS-1$
     public static final String IMG_EXTENDED_OPERATION = "resources/icons/extended_operation.gif"; //$NON-NLS-1$
     public static final String IMG_HORIZONTAL_ORIENTATION = "resources/icons/horizontal_orientation.gif"; //$NON-NLS-1$
     public static final String IMG_INTERCEPTOR = "resources/icons/interceptor.gif"; //$NON-NLS-1$

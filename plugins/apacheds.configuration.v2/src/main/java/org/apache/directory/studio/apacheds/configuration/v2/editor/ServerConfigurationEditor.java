@@ -44,8 +44,8 @@ public class ServerConfigurationEditor extends FormEditor
     public static final String ID = ServerConfigurationEditor.class.getName();
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.ui.forms.editor.FormEditor#init(org.eclipse.ui.IEditorSite, org.eclipse.ui.IEditorInput)
+    /**
+     * {@inheritDoc}
      */
     public void init( IEditorSite site, IEditorInput input ) throws PartInitException
     {
@@ -54,8 +54,8 @@ public class ServerConfigurationEditor extends FormEditor
     }
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.ui.forms.editor.FormEditor#addPages()
+    /**
+     * {@inheritDoc}
      */
     protected void addPages()
     {
@@ -76,132 +76,24 @@ public class ServerConfigurationEditor extends FormEditor
     }
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.ui.part.EditorPart#doSave(org.eclipse.core.runtime.IProgressMonitor)
+    /**
+     * {@inheritDoc}
      */
     public void doSave( IProgressMonitor monitor )
     {
     }
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.ui.part.EditorPart#doSaveAs()
+    /**
+     * {@inheritDoc}
      */
     public void doSaveAs()
     {
     }
 
 
-    //    /**
-    //     * Performs the "Save as..." action.
-    //     *
-    //     * @param monitor
-    //     *      the monitor to use
-    //     * @throws Exception
-    //     */
-    //    private boolean doSaveAs( IProgressMonitor monitor ) throws Exception
-    //    {
-    //        // detect IDE or RCP:
-    //        // check if perspective org.eclipse.ui.resourcePerspective is available
-    //        boolean isIDE = ApacheDSConfigurationPluginUtils.isIDEEnvironment();
-    //
-    //        if ( isIDE )
-    //        {
-    //            // Asking the user for the location where to 'save as' the file
-    //            SaveAsDialog dialog = new SaveAsDialog( getSite().getShell() );
-    //            if ( !( getEditorInput() instanceof NonExistingServerConfigurationInput ) )
-    //            {
-    //                dialog.setOriginalFile( ResourcesPlugin.getWorkspace().getRoot().getFile(
-    //                    new Path( getEditorInput().getToolTipText() ) ) );
-    //            }
-    //            if ( dialog.open() != Dialog.OK )
-    //            {
-    //                return false;
-    //            }
-    //
-    //            // Getting if the resulting file
-    //            IFile file = ResourcesPlugin.getWorkspace().getRoot().getFile( dialog.getResult() );
-    //
-    //            // Creating the file if it does not exist
-    //            if ( !file.exists() )
-    //            {
-    //                file.create( new ByteArrayInputStream( "".getBytes() ), true, null ); //$NON-NLS-1$
-    //            }
-    //
-    //            // Creating the new input for the editor
-    //            FileEditorInput fei = new FileEditorInput( file );
-    //
-    //            // Saving the file to disk
-    //            saveEditorPages();
-    //            saveConfiguration( fei, monitor );
-    //
-    //            // Setting the new input to the editor
-    //            setInput( fei );
-    //        }
-    //        else
-    //        {
-    //            Shell shell = getSite().getShell();
-    //            boolean canOverwrite = false;
-    //            String path = null;
-    //
-    //            while ( !canOverwrite )
-    //            {
-    //                // Open FileDialog
-    //                FileDialog dialog = new FileDialog( shell, SWT.SAVE );
-    //                path = dialog.open();
-    //                if ( path == null )
-    //                {
-    //                    return false;
-    //                }
-    //
-    //                // Check whether file exists and if so, confirm overwrite
-    //                final File externalFile = new File( path );
-    //                if ( externalFile.exists() )
-    //                {
-    //                    String question = NLS.bind( Messages
-    //                        .getString( "ServerConfigurationEditor.TheFileAlreadyExistsReplace" ), path ); //$NON-NLS-1$
-    //                    MessageDialog overwriteDialog = new MessageDialog( shell, Messages
-    //                        .getString( "ServerConfigurationEditor.Question" ), null, question, //$NON-NLS-1$
-    //                        MessageDialog.QUESTION, new String[]
-    //                            { IDialogConstants.YES_LABEL, IDialogConstants.NO_LABEL, IDialogConstants.CANCEL_LABEL }, 0 );
-    //                    int overwrite = overwriteDialog.open();
-    //                    switch ( overwrite )
-    //                    {
-    //                        case 0: // Yes
-    //                            canOverwrite = true;
-    //                            break;
-    //                        case 1: // No
-    //                            break;
-    //                        case 2: // Cancel
-    //                        default:
-    //                            return false;
-    //                    }
-    //                }
-    //                else
-    //                {
-    //                    canOverwrite = true;
-    //                }
-    //            }
-    //
-    //            // Saving the file to disk
-    //            saveEditorPages();
-    //            saveConfiguration( path );
-    //
-    //            // Creating the new input for the editor
-    //            PathEditorInput newInput = new PathEditorInput( new Path( path ) );
-    //
-    //            // Setting the new input to the editor
-    //            setInput( newInput );
-    //        }
-    //
-    //        // Updating the title and tooltip texts
-    //        setPartName( getEditorInput().getName() );
-    //
-    //        return true;
-    //    }
-
-    /* (non-Javadoc)
-     * @see org.eclipse.ui.part.EditorPart#isSaveAsAllowed()
+    /**
+     * {@inheritDoc}
      */
     public boolean isSaveAsAllowed()
     {

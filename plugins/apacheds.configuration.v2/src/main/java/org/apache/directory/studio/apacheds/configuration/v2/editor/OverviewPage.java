@@ -40,12 +40,9 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.ui.forms.IManagedForm;
 import org.eclipse.ui.forms.editor.FormEditor;
-import org.eclipse.ui.forms.editor.FormPage;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.Hyperlink;
-import org.eclipse.ui.forms.widgets.ScrolledForm;
 import org.eclipse.ui.forms.widgets.Section;
 
 
@@ -54,7 +51,7 @@ import org.eclipse.ui.forms.widgets.Section;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class OverviewPage extends FormPage
+public class OverviewPage extends ServerConfigurationEditorPage
 {
     private static final Color GRAY_COLOR = new Color( null, 120, 120, 120 );
     private static final String TABULATION = "      ";
@@ -96,19 +93,11 @@ public class OverviewPage extends FormPage
     }
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.ui.forms.editor.FormPage#createFormContent(org.eclipse.ui.forms.IManagedForm)
+    /**
+     * {@inheritDoc}
      */
-    protected void createFormContent( IManagedForm managedForm )
+    protected void createFormContent( Composite parent, FormToolkit toolkit )
     {
-        ScrolledForm form = managedForm.getForm();
-        form.setText( "Overview" );
-
-        Composite parent = form.getBody();
-        parent.setLayout( new GridLayout() );
-
-        FormToolkit toolkit = managedForm.getToolkit();
-
         Composite composite = toolkit.createComposite( parent );
         GridLayout layout = new GridLayout();
         layout.numColumns = 2;
@@ -282,6 +271,15 @@ public class OverviewPage extends FormPage
         partitionsList.add( "dc=example,dc=com (id=example)" );
         partitionsList.add( "ou=system (id=system)" );
         partitionsTableViewer.setInput( partitionsList.toArray() );
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public void setFocus()
+    {
+        // Does Nothing
     }
 
 

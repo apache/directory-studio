@@ -20,10 +20,12 @@
 package org.apache.directory.studio.apacheds.configuration.v2.editor;
 
 
-import org.apache.directory.studio.apacheds.configuration.v2.ApacheDS2ConfigurationPlugin;
+import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.forms.IManagedForm;
 import org.eclipse.ui.forms.editor.FormEditor;
 import org.eclipse.ui.forms.editor.FormPage;
+import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.ScrolledForm;
 
 
@@ -53,12 +55,18 @@ public class ReplicationPage extends FormPage
     }
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.ui.forms.editor.FormPage#createFormContent(org.eclipse.ui.forms.IManagedForm)
+    /**
+     * {@inheritDoc}
      */
     protected void createFormContent( IManagedForm managedForm )
     {
         ScrolledForm form = managedForm.getForm();
         form.setText( "Replication" );
+
+        Composite parent = form.getBody();
+        parent.setLayout( new GridLayout() );
+
+        FormToolkit toolkit = managedForm.getToolkit();
+        toolkit.decorateFormHeading( form.getForm() );
     }
 }
