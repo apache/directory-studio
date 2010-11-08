@@ -62,9 +62,8 @@ public class ServerConfigurationEditor extends FormEditor
         try
         {
             addPage( new OverviewPage( this ) );
-            addPage( new LdapServerPage( this ) );
+            addPage( new LdapLdapsServersPage( this ) );
             addPage( new KerberosServerPage( this ) );
-            addPage( new AuthenticationPage( this ) );
             addPage( new PartitionsPage( this ) );
             addPage( new ReplicationPage( this ) );
         }

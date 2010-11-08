@@ -24,8 +24,16 @@ import org.apache.directory.studio.apacheds.configuration.v2.actions.EditorExpor
 import org.apache.directory.studio.apacheds.configuration.v2.actions.EditorImportConfigurationAction;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.Separator;
+import org.eclipse.osgi.util.NLS;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.VerifyEvent;
+import org.eclipse.swt.events.VerifyListener;
+import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.forms.IManagedForm;
 import org.eclipse.ui.forms.editor.FormEditor;
 import org.eclipse.ui.forms.editor.FormPage;
@@ -40,6 +48,10 @@ import org.eclipse.ui.forms.widgets.ScrolledForm;
  */
 public abstract class ServerConfigurationEditorPage extends FormPage
 {
+    protected static final Color GRAY_COLOR = new Color( null, 120, 120, 120 );
+    protected static final String TABULATION = "      ";
+
+
     /**
      * Creates a new instance of GeneralPage.
      *
@@ -77,4 +89,45 @@ public abstract class ServerConfigurationEditorPage extends FormPage
 
 
     protected abstract void createFormContent( Composite parent, FormToolkit toolkit );
+
+
+    /**
+     * Creates a Text that can be used to enter a port number.
+     *
+     * @param toolkit
+     *      the toolkit
+     * @param parent
+     *      the parent
+     * @return
+     *      a Text that can be used to enter a port number
+     */
+    protected Text createPortText( FormToolkit toolkit, Composite parent )
+    {
+        Text portText = toolkit.createText( parent, "" ); //$NON-NLS-1$
+        GridData gd = new GridData( SWT.NONE, SWT.NONE, false, false );
+        gd.widthHint = 42;
+        portText.setLayoutData( gd );
+        portText.addVerifyListener( new VerifyListener()
+        {
+            public void verifyText( VerifyEvent e )
+            {
+                if ( !e.text.matches( "[0-9]*" ) ) //$NON-NLS-1$
+                {
+                    e.doit = false;
+                }
+            }
+        } );
+        portText.setTextLimit( 5 );
+
+        return portText;
+    }
+
+
+    protected Label createDefaultValueLabel( FormToolkit toolkit, Composite parent, String text )
+    {
+        Label label = toolkit.createLabel( parent, NLS.bind( "(Default: {0})", text ) );
+        label.setForeground( GRAY_COLOR );
+
+        return label;
+    }
 }

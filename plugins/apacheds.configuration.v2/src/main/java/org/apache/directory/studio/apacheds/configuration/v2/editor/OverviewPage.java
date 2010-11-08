@@ -29,9 +29,6 @@ import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.VerifyEvent;
-import org.eclipse.swt.events.VerifyListener;
-import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -44,6 +41,8 @@ import org.eclipse.ui.forms.editor.FormEditor;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.Hyperlink;
 import org.eclipse.ui.forms.widgets.Section;
+import org.eclipse.ui.forms.widgets.TableWrapData;
+import org.eclipse.ui.forms.widgets.TableWrapLayout;
 
 
 /**
@@ -53,9 +52,6 @@ import org.eclipse.ui.forms.widgets.Section;
  */
 public class OverviewPage extends ServerConfigurationEditorPage
 {
-    private static final Color GRAY_COLOR = new Color( null, 120, 120, 120 );
-    private static final String TABULATION = "      ";
-
     /** The Page ID*/
     public static final String ID = OverviewPage.class.getName(); //$NON-NLS-1$
 
@@ -98,18 +94,26 @@ public class OverviewPage extends ServerConfigurationEditorPage
      */
     protected void createFormContent( Composite parent, FormToolkit toolkit )
     {
-        Composite composite = toolkit.createComposite( parent );
-        GridLayout layout = new GridLayout();
-        layout.numColumns = 2;
-        layout.makeColumnsEqualWidth = true;
-        composite.setLayout( layout );
-        GridData gridData = new GridData( SWT.FILL, SWT.NONE, true, false );
-        composite.setLayoutData( gridData );
+        TableWrapLayout twl = new TableWrapLayout();
+        twl.numColumns = 2;
+        parent.setLayout( twl );
 
-        createLdapServerSection( toolkit, composite );
-        createKerberosServerSection( toolkit, composite );
-        createPartitionsSection( toolkit, composite );
-        createOptionsSection( toolkit, composite );
+        Composite leftComposite = toolkit.createComposite( parent );
+        leftComposite.setLayout( new GridLayout() );
+        TableWrapData leftCompositeTableWrapData = new TableWrapData( TableWrapData.FILL, TableWrapData.TOP );
+        leftCompositeTableWrapData.grabHorizontal = true;
+        leftComposite.setLayoutData( leftCompositeTableWrapData );
+
+        Composite rightComposite = toolkit.createComposite( parent );
+        rightComposite.setLayout( new GridLayout() );
+        TableWrapData rightCompositeTableWrapData = new TableWrapData( TableWrapData.FILL, TableWrapData.TOP );
+        rightCompositeTableWrapData.grabHorizontal = true;
+        rightComposite.setLayoutData( rightCompositeTableWrapData );
+
+        createLdapServerSection( toolkit, leftComposite );
+        createPartitionsSection( toolkit, leftComposite );
+        createKerberosServerSection( toolkit, rightComposite );
+        createOptionsSection( toolkit, rightComposite );
 
         initUI();
     }
@@ -132,16 +136,14 @@ public class OverviewPage extends ServerConfigurationEditorPage
         toolkit.createLabel( composite, TABULATION );
         toolkit.createLabel( composite, "Port:" );
         ldapPortText = createPortText( toolkit, composite );
-        Label defaultLdapPortLabel = toolkit.createLabel( composite, "(Default: 10389)" );
-        defaultLdapPortLabel.setForeground( GRAY_COLOR );
+        createDefaultValueLabel( toolkit, composite, "10389" );
 
         enableLdapsCheckbox = toolkit.createButton( composite, "Enable LDAPS Server", SWT.CHECK );
         enableLdapsCheckbox.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, gridLayout.numColumns, 1 ) );
         toolkit.createLabel( composite, TABULATION );
         toolkit.createLabel( composite, "Port:" );
         ldapsPortText = createPortText( toolkit, composite );
-        Label defaultLdapsPortLabel = toolkit.createLabel( composite, "(Default: 10636)" );
-        defaultLdapsPortLabel.setForeground( GRAY_COLOR );
+        createDefaultValueLabel( toolkit, composite, "10636" );
 
         openLdapConfigurationLink = toolkit.createHyperlink( composite,
             "Advanced LDAP/LDAPS configuration...", SWT.NONE );
@@ -168,8 +170,7 @@ public class OverviewPage extends ServerConfigurationEditorPage
         toolkit.createLabel( composite, TABULATION );
         toolkit.createLabel( composite, "Port:" );
         kerberosPortText = createPortText( toolkit, composite );
-        Label defaultKerberosPortLabel = toolkit.createLabel( composite, "(Default: 60088)" );
-        defaultKerberosPortLabel.setForeground( GRAY_COLOR );
+        createDefaultValueLabel( toolkit, composite, "60088" );
 
         enableChangePasswordCheckbox = toolkit.createButton( composite, "Enable Kerberos Change Password Server",
             SWT.CHECK );
@@ -178,8 +179,7 @@ public class OverviewPage extends ServerConfigurationEditorPage
         toolkit.createLabel( composite, TABULATION );
         toolkit.createLabel( composite, "Port:" );
         changePasswordPortText = createPortText( toolkit, composite );
-        Label defaultChangePasswordPortLabel = toolkit.createLabel( composite, "(Default: 60464)" );
-        defaultChangePasswordPortLabel.setForeground( GRAY_COLOR );
+        createDefaultValueLabel( toolkit, composite, "60464" );
 
         openKerberosConfigurationLink = toolkit.createHyperlink( composite,
             "Advanced Kerberos configuration...", SWT.NONE );
@@ -280,37 +280,5 @@ public class OverviewPage extends ServerConfigurationEditorPage
     public void setFocus()
     {
         // Does Nothing
-    }
-
-
-    /**
-     * Creates a Text that can be used to enter a port number.
-     *
-     * @param toolkit
-     *      the toolkit
-     * @param parent
-     *      the parent
-     * @return
-     *      a Text that can be used to enter a port number
-     */
-    private Text createPortText( FormToolkit toolkit, Composite parent )
-    {
-        Text portText = toolkit.createText( parent, "" ); //$NON-NLS-1$
-        GridData gd = new GridData( SWT.NONE, SWT.NONE, false, false );
-        gd.widthHint = 42;
-        portText.setLayoutData( gd );
-        portText.addVerifyListener( new VerifyListener()
-        {
-            public void verifyText( VerifyEvent e )
-            {
-                if ( !e.text.matches( "[0-9]*" ) ) //$NON-NLS-1$
-                {
-                    e.doit = false;
-                }
-            }
-        } );
-        portText.setTextLimit( 5 );
-
-        return portText;
     }
 }
