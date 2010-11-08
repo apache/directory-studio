@@ -56,5 +56,7 @@ public class PartitionsPage extends ServerConfigurationEditorPage
      */
     protected void createFormContent( Composite parent, FormToolkit toolkit )
     {
+        PartitionsMasterDetailsBlock masterDetailsBlock = new PartitionsMasterDetailsBlock( this );
+        masterDetailsBlock.createContent( getManagedForm() );
     }
 }
