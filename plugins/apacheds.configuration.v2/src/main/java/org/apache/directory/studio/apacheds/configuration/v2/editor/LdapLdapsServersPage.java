@@ -55,6 +55,14 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
     private Text ldapPortText;
     private Button enableLdapsCheckbox;
     private Text ldapsPortText;
+    private Text maxTimeLimitText;
+    private Text maxSizeLimitText;
+    private Button authMechSimpleCheckbox;
+    private Button authMechCramMd5Checkbox;
+    private Button authMechDigestMd5Checkbox;
+    private Button authMechGssapiCheckbox;
+    private Button authMechNtlmCheckbox;
+    private Button authMechGssSpnegoCheckbox;
     private CheckboxTableViewer supportedMechanismsTableViewer;
     private Button editSupportedMechanismButton;
     private Button selectAllSupportedMechanismsButton;
@@ -98,7 +106,8 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
         rightComposite.setLayoutData( rightCompositeTableWrapData );
 
         createLdapServerSection( toolkit, leftComposite );
-        createLdapsServerSection( toolkit, leftComposite );
+        createLimitsSection( toolkit, leftComposite );
+        createAdvancedSection( toolkit, leftComposite );
         createSupportedAuthenticationMechanismsSection( toolkit, rightComposite );
         createSaslSettingsSection( toolkit, rightComposite );
 
@@ -109,7 +118,7 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
     private void createLdapServerSection( FormToolkit toolkit, Composite parent )
     {
         Section section = toolkit.createSection( parent, Section.TITLE_BAR );
-        section.setText( "LDAP Server" );
+        section.setText( "LDAP/LDAPS Servers" );
         section.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
         Composite composite = toolkit.createComposite( section );
         toolkit.paintBordersFor( composite );
@@ -124,20 +133,6 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
         toolkit.createLabel( composite, "Port:" );
         ldapPortText = createPortText( toolkit, composite );
         createDefaultValueLabel( toolkit, composite, "10389" );
-    }
-
-
-    private void createLdapsServerSection( FormToolkit toolkit, Composite parent )
-    {
-        Section section = toolkit.createSection( parent, Section.TITLE_BAR );
-        section.setText( "LDAPS Server" );
-        section.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
-        Composite composite = toolkit.createComposite( section );
-        toolkit.paintBordersFor( composite );
-        GridLayout gridLayout = new GridLayout( 4, false );
-        gridLayout.marginHeight = gridLayout.marginWidth = 0;
-        composite.setLayout( gridLayout );
-        section.setClient( composite );
 
         enableLdapsCheckbox = toolkit.createButton( composite, "Enable LDAPS Server", SWT.CHECK );
         enableLdapsCheckbox.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, gridLayout.numColumns, 1 ) );
@@ -145,6 +140,71 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
         toolkit.createLabel( composite, "Port:" );
         ldapsPortText = createPortText( toolkit, composite );
         createDefaultValueLabel( toolkit, composite, "10636" );
+    }
+
+
+    /**
+     * Creates the Limits Section
+     *
+     * @param toolkit
+     *      the toolkit to use
+     * @param parent
+     *      the parent composite
+     */
+    private void createLimitsSection( FormToolkit toolkit, Composite parent )
+    {
+        // Creation of the section
+        Section section = toolkit.createSection( parent, Section.TITLE_BAR );
+        section.setText( "Limits" );
+        section.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
+        Composite composite = toolkit.createComposite( section );
+        toolkit.paintBordersFor( composite );
+        GridLayout glayout = new GridLayout( 2, false );
+        composite.setLayout( glayout );
+        section.setClient( composite );
+
+        // Max. Time Limit
+        toolkit.createLabel( composite, "Max Time Limit (ms):" );
+        maxTimeLimitText = createIntegerText( toolkit, composite );
+        maxTimeLimitText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
+
+        // Max. Size Limit
+        toolkit.createLabel( composite, "Max Size Limit (entries):" );
+        maxSizeLimitText = createIntegerText( toolkit, composite );
+        maxSizeLimitText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
+    }
+
+
+    /**
+     * Creates the Advanced Section
+     *
+     * @param toolkit
+     *      the toolkit to use
+     * @param parent
+     *      the parent composite
+     */
+    private void createAdvancedSection( FormToolkit toolkit, Composite parent )
+    {
+        // Creation of the section
+        Section section = toolkit.createSection( parent, Section.TITLE_BAR | Section.TWISTIE | Section.COMPACT );
+        section.setText( "Advanced" );
+        section.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
+        Composite composite = toolkit.createComposite( section );
+        toolkit.paintBordersFor( composite );
+        GridLayout glayout = new GridLayout( 3, false );
+        composite.setLayout( glayout );
+        section.setClient( composite );
+
+        Button enableTlsCheckbox = toolkit.createButton( composite, "Enable TLS", SWT.CHECK );
+        enableTlsCheckbox.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 3, 1 ) );
+
+        Button enableServerSidePasswordHashingCheckbox = toolkit.createButton( composite, "Enable sever-side password hashing",
+            SWT.CHECK );
+        enableServerSidePasswordHashingCheckbox.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 3, 1 ) );
+        toolkit.createLabel( composite, "Hashing Method:" );
+        Text hashingMethodText = toolkit.createText( composite, "" );
+        hashingMethodText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
+        createDefaultValueLabel( toolkit, composite, "SSHA" );
     }
 
 
@@ -164,32 +224,39 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
         section.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
         Composite composite = toolkit.createComposite( section );
         toolkit.paintBordersFor( composite );
-        GridLayout glayout = new GridLayout( 2, false );
+        GridLayout glayout = new GridLayout( 3, true );
         composite.setLayout( glayout );
         section.setClient( composite );
 
+        authMechSimpleCheckbox = toolkit.createButton( composite, "Simple", SWT.CHECK );
+        authMechCramMd5Checkbox = toolkit.createButton( composite, "CRAM-MD5", SWT.CHECK );
+        authMechDigestMd5Checkbox = toolkit.createButton( composite, "DIGEST-MD5", SWT.CHECK );
+        authMechGssapiCheckbox = toolkit.createButton( composite, "GSSAPI", SWT.CHECK );
+        authMechNtlmCheckbox = toolkit.createButton( composite, "NTLM", SWT.CHECK );
+        authMechGssSpnegoCheckbox = toolkit.createButton( composite, "GSS_SPNEGO", SWT.CHECK );
+
         // Supported Authentication Mechanisms Table
-        Table supportedMechanismsTable = toolkit.createTable( composite, SWT.CHECK );
-        GridData gd = new GridData( SWT.FILL, SWT.NONE, true, false, 1, 3 );
-        gd.heightHint = 110;
-        supportedMechanismsTable.setLayoutData( gd );
-        supportedMechanismsTableViewer = new CheckboxTableViewer( supportedMechanismsTable );
-        supportedMechanismsTableViewer.setContentProvider( new ArrayContentProvider() );
-        supportedMechanismsTableViewer.setInput( new String[]
-            { "Simple", "CRAM-MD5", "DIGEST-MD5", "GSSAPI", "NTLM", "GSS_SPNEGO" } );
-
-        // Edit Button
-        editSupportedMechanismButton = toolkit.createButton( composite, "Edit", SWT.PUSH );
-        editSupportedMechanismButton.setLayoutData( new GridData( SWT.FILL, SWT.BEGINNING, false, false ) );
-        editSupportedMechanismButton.setEnabled( false );
-
-        // Select All Button
-        selectAllSupportedMechanismsButton = toolkit.createButton( composite, "Select All", SWT.PUSH );
-        selectAllSupportedMechanismsButton.setLayoutData( new GridData( SWT.FILL, SWT.BEGINNING, false, false ) );
-
-        // Deselect All Button
-        deselectAllSupportedMechanismsButton = toolkit.createButton( composite, "Deselect All", SWT.PUSH );
-        deselectAllSupportedMechanismsButton.setLayoutData( new GridData( SWT.FILL, SWT.BEGINNING, false, false ) );
+        //        Table supportedMechanismsTable = toolkit.createTable( composite, SWT.CHECK );
+        //        GridData gd = new GridData( SWT.FILL, SWT.NONE, true, false, 1, 3 );
+        //        gd.heightHint = 110;
+        //        supportedMechanismsTable.setLayoutData( gd );
+        //        supportedMechanismsTableViewer = new CheckboxTableViewer( supportedMechanismsTable );
+        //        supportedMechanismsTableViewer.setContentProvider( new ArrayContentProvider() );
+        //        supportedMechanismsTableViewer.setInput( new String[]
+        //            { "Simple", "CRAM-MD5", "DIGEST-MD5", "GSSAPI", "NTLM", "GSS_SPNEGO" } );
+        //
+        //        // Edit Button
+        //        editSupportedMechanismButton = toolkit.createButton( composite, "Edit", SWT.PUSH );
+        //        editSupportedMechanismButton.setLayoutData( new GridData( SWT.FILL, SWT.BEGINNING, false, false ) );
+        //        editSupportedMechanismButton.setEnabled( false );
+        //
+        //        // Select All Button
+        //        selectAllSupportedMechanismsButton = toolkit.createButton( composite, "Select All", SWT.PUSH );
+        //        selectAllSupportedMechanismsButton.setLayoutData( new GridData( SWT.FILL, SWT.BEGINNING, false, false ) );
+        //
+        //        // Deselect All Button
+        //        deselectAllSupportedMechanismsButton = toolkit.createButton( composite, "Deselect All", SWT.PUSH );
+        //        deselectAllSupportedMechanismsButton.setLayoutData( new GridData( SWT.FILL, SWT.BEGINNING, false, false ) );
     }
 
 

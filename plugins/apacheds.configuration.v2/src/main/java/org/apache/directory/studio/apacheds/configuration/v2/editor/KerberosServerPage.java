@@ -20,9 +20,17 @@
 package org.apache.directory.studio.apacheds.configuration.v2.editor;
 
 
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.forms.editor.FormEditor;
 import org.eclipse.ui.forms.widgets.FormToolkit;
+import org.eclipse.ui.forms.widgets.Section;
+import org.eclipse.ui.forms.widgets.TableWrapData;
+import org.eclipse.ui.forms.widgets.TableWrapLayout;
 
 
 /**
@@ -37,6 +45,14 @@ public class KerberosServerPage extends ServerConfigurationEditorPage
 
     /** The Page Title */
     private static final String TITLE = "Kerberos Server";
+
+    private Button enableKerberosCheckbox;
+
+    private Text kerberosPortText;
+
+    private Button enableChangePasswordCheckbox;
+
+    private Text changePasswordPortText;
 
 
     /**
@@ -56,5 +72,65 @@ public class KerberosServerPage extends ServerConfigurationEditorPage
      */
     protected void createFormContent( Composite parent, FormToolkit toolkit )
     {
+        TableWrapLayout twl = new TableWrapLayout();
+        twl.numColumns = 2;
+        parent.setLayout( twl );
+
+        Composite leftComposite = toolkit.createComposite( parent );
+        leftComposite.setLayout( new GridLayout() );
+        TableWrapData leftCompositeTableWrapData = new TableWrapData( TableWrapData.FILL, TableWrapData.TOP );
+        leftCompositeTableWrapData.grabHorizontal = true;
+        leftComposite.setLayoutData( leftCompositeTableWrapData );
+
+        Composite rightComposite = toolkit.createComposite( parent );
+        rightComposite.setLayout( new GridLayout() );
+        TableWrapData rightCompositeTableWrapData = new TableWrapData( TableWrapData.FILL, TableWrapData.TOP );
+        rightCompositeTableWrapData.grabHorizontal = true;
+        rightComposite.setLayoutData( rightCompositeTableWrapData );
+
+        createKerberosServerSection( toolkit, leftComposite );
+
+        initUI();
+    }
+
+
+    private void createKerberosServerSection( FormToolkit toolkit, Composite parent )
+    {
+        Section section = toolkit.createSection( parent, Section.TITLE_BAR );
+        section.setText( "Kerberos Server" );
+        section.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
+        Composite composite = toolkit.createComposite( section );
+        toolkit.paintBordersFor( composite );
+        GridLayout gridLayout = new GridLayout( 4, false );
+        gridLayout.marginHeight = gridLayout.marginWidth = 0;
+        composite.setLayout( gridLayout );
+        section.setClient( composite );
+
+        enableKerberosCheckbox = toolkit.createButton( composite, "Enable Kerberos Server", SWT.CHECK );
+        enableKerberosCheckbox
+            .setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, gridLayout.numColumns, 1 ) );
+        toolkit.createLabel( composite, TABULATION );
+        toolkit.createLabel( composite, "Port:" );
+        kerberosPortText = createPortText( toolkit, composite );
+        createDefaultValueLabel( toolkit, composite, "60088" );
+
+        enableChangePasswordCheckbox = toolkit.createButton( composite, "Enable Kerberos Change Password Server",
+            SWT.CHECK );
+        enableChangePasswordCheckbox.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false,
+            gridLayout.numColumns, 1 ) );
+        toolkit.createLabel( composite, TABULATION );
+        toolkit.createLabel( composite, "Port:" );
+        changePasswordPortText = createPortText( toolkit, composite );
+        createDefaultValueLabel( toolkit, composite, "60464" );
+    }
+
+
+    private void initUI()
+    {
+        enableKerberosCheckbox.setSelection( true );
+        kerberosPortText.setText( "60088" );
+
+        enableChangePasswordCheckbox.setSelection( true );
+        changePasswordPortText.setText( "60464" );
     }
 }

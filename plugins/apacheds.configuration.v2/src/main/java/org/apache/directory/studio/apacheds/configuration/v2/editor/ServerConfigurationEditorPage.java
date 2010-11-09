@@ -123,6 +123,37 @@ public abstract class ServerConfigurationEditorPage extends FormPage
     }
 
 
+    /**
+     * Creates a Text that can be used to enter an integer.
+     *
+     * @param toolkit
+     *      the toolkit
+     * @param parent
+     *      the parent
+     * @return
+     *      a Text that can be used to enter a port number
+     */
+    protected Text createIntegerText( FormToolkit toolkit, Composite parent )
+    {
+        Text integerText = toolkit.createText( parent, "" ); //$NON-NLS-1$
+        GridData gd = new GridData( SWT.NONE, SWT.NONE, false, false );
+        gd.widthHint = 42;
+        integerText.setLayoutData( gd );
+        integerText.addVerifyListener( new VerifyListener()
+        {
+            public void verifyText( VerifyEvent e )
+            {
+                if ( !e.text.matches( "[0-9]*" ) ) //$NON-NLS-1$
+                {
+                    e.doit = false;
+                }
+            }
+        } );
+
+        return integerText;
+    }
+
+
     protected Label createDefaultValueLabel( FormToolkit toolkit, Composite parent, String text )
     {
         Label label = toolkit.createLabel( parent, NLS.bind( "(Default: {0})", text ) );
