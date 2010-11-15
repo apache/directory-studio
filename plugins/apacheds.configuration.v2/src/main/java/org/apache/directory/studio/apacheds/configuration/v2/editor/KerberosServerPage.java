@@ -97,6 +97,7 @@ public class KerberosServerPage extends ServerConfigurationEditorPage
 
         createKerberosServerSection( toolkit, leftComposite );
         createKerberosSettingsSection( toolkit, rightComposite );
+        createTicketSettingsSection( toolkit, leftComposite );
 
         initUI();
     }
@@ -134,7 +135,7 @@ public class KerberosServerPage extends ServerConfigurationEditorPage
 
 
     /**
-     * Creates the SASL Settings Section
+     * Creates the Kerberos Settings Section
      *
      * @param toolkit
      *      the toolkit to use
@@ -181,6 +182,53 @@ public class KerberosServerPage extends ServerConfigurationEditorPage
         encryptionTypesText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
         Label defaultEncryptionTypesLabel = createDefaultValueLabel( toolkit, composite, "des-cbc-md5" );
         defaultEncryptionTypesLabel.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
+    }
+
+
+    /**
+     * Creates the Tickets Settings Section
+     *
+     * @param toolkit
+     *      the toolkit to use
+     * @param parent
+     *      the parent composite
+     */
+    private void createTicketSettingsSection( FormToolkit toolkit, Composite parent )
+    {
+        // Creation of the section
+        Section section = toolkit.createSection( parent, Section.TITLE_BAR );
+        section.setText( "Ticket Settings" );
+        section.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
+        Composite composite = toolkit.createComposite( section );
+        toolkit.paintBordersFor( composite );
+        GridLayout glayout = new GridLayout( 2, true );
+        composite.setLayout( glayout );
+        section.setClient( composite );
+
+        Button allowClockSkewButton = toolkit.createButton( composite, "Allow Clock Skew", SWT.CHECK );
+        Button verifyBodyChecksumButton = toolkit.createButton( composite, "Verify Body Checksum", SWT.CHECK );
+
+        Button allowEmptyAddressesButton = toolkit.createButton( composite, "Allow Empty Addresses", SWT.CHECK );
+        Button allowForwardableAddressesButton = toolkit.createButton( composite, "Allow Forwardable Addresses",
+            SWT.CHECK );
+
+        Button requirePreAuthenticationByEncryptedTimeStampButton = toolkit.createButton( composite,
+            "Require Pre-Authentication By Encrypted TimeStamp", SWT.CHECK );
+        Button allowPostdatedTicketsButtons = toolkit.createButton( composite, "Allow Postdated Tickets", SWT.CHECK );
+
+        Button allowRenewableTicketsButton = toolkit.createButton( composite, "Allow Renewable Tickets", SWT.CHECK );
+        toolkit.createLabel( composite, "" );
+
+        Composite maximumRenewableLifetimeComposite = toolkit.createComposite( composite );
+        maximumRenewableLifetimeComposite.setLayout( new GridLayout( 2, false ) );
+        toolkit.createLabel( maximumRenewableLifetimeComposite, "Maximum Renewable Lifetime:" );
+        Text maximumRenewableLifetimeText = createIntegerText( toolkit, maximumRenewableLifetimeComposite );
+
+        Composite maximumTicketLifetimeComposite = toolkit.createComposite( composite );
+        maximumTicketLifetimeComposite.setLayout( new GridLayout( 2, false ) );
+        toolkit.createLabel( maximumTicketLifetimeComposite, "Maximum Ticket Lifetime:" );
+        Text maximumTicketLifetimeText = createIntegerText( toolkit, maximumTicketLifetimeComposite );
+
     }
 
 
