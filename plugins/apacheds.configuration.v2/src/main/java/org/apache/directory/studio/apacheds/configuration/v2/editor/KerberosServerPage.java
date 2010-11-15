@@ -25,6 +25,7 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.forms.editor.FormEditor;
 import org.eclipse.ui.forms.widgets.FormToolkit;
@@ -46,13 +47,19 @@ public class KerberosServerPage extends ServerConfigurationEditorPage
     /** The Page Title */
     private static final String TITLE = "Kerberos Server";
 
+    // UI Fields
     private Button enableKerberosCheckbox;
-
     private Text kerberosPortText;
-
     private Button enableChangePasswordCheckbox;
-
     private Text changePasswordPortText;
+
+    private Text kdcPrincipalText;
+
+    private Text primaryKdcRealmText;
+
+    private Text kdcSearchBaseDnText;
+
+    private Text encryptionTypesText;
 
 
     /**
@@ -89,6 +96,7 @@ public class KerberosServerPage extends ServerConfigurationEditorPage
         rightComposite.setLayoutData( rightCompositeTableWrapData );
 
         createKerberosServerSection( toolkit, leftComposite );
+        createKerberosSettingsSection( toolkit, rightComposite );
 
         initUI();
     }
@@ -122,6 +130,57 @@ public class KerberosServerPage extends ServerConfigurationEditorPage
         toolkit.createLabel( composite, "Port:" );
         changePasswordPortText = createPortText( toolkit, composite );
         createDefaultValueLabel( toolkit, composite, "60464" );
+    }
+
+
+    /**
+     * Creates the SASL Settings Section
+     *
+     * @param toolkit
+     *      the toolkit to use
+     * @param parent
+     *      the parent composite
+     */
+    private void createKerberosSettingsSection( FormToolkit toolkit, Composite parent )
+    {
+        // Creation of the section
+        Section section = toolkit.createSection( parent, Section.TITLE_BAR );
+        section.setText( "Kerberos Settings" );
+        section.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
+        Composite composite = toolkit.createComposite( section );
+        toolkit.paintBordersFor( composite );
+        GridLayout glayout = new GridLayout( 2, false );
+        composite.setLayout( glayout );
+        section.setClient( composite );
+
+        // KDC Principal
+        toolkit.createLabel( composite, "KDC Principal:" );
+        kdcPrincipalText = toolkit.createText( composite, "" );
+        kdcPrincipalText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
+        Label defaultSaslHostLabel = createDefaultValueLabel( toolkit, composite, "krbtgt/EXAMPLE.COM@EXAMPLE.COM" );
+        defaultSaslHostLabel.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
+
+        // SASL Principal
+        toolkit.createLabel( composite, "Primary KDC Realm:" );
+        primaryKdcRealmText = toolkit.createText( composite, "" ); //$NON-NLS-1$
+        primaryKdcRealmText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
+        Label defaultSaslPrincipalLabel = createDefaultValueLabel( toolkit, composite,
+            "EXAMPLE.COM" );
+        defaultSaslPrincipalLabel.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
+
+        // Search Base DN
+        toolkit.createLabel( composite, "Search Base DN:" );
+        kdcSearchBaseDnText = toolkit.createText( composite, "" ); //$NON-NLS-1$
+        kdcSearchBaseDnText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
+        Label defaultSaslSearchBaseDnLabel = createDefaultValueLabel( toolkit, composite, "ou=users,dc=example,dc=com" );
+        defaultSaslSearchBaseDnLabel.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
+
+        // Encryption Types
+        toolkit.createLabel( composite, "Encryption Types:" );
+        encryptionTypesText = toolkit.createText( composite, "" ); //$NON-NLS-1$
+        encryptionTypesText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
+        Label defaultEncryptionTypesLabel = createDefaultValueLabel( toolkit, composite, "des-cbc-md5" );
+        defaultEncryptionTypesLabel.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
     }
 
 
