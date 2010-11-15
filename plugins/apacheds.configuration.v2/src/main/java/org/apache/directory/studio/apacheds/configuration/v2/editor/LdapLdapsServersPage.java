@@ -26,6 +26,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Table;
@@ -198,12 +199,16 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
         Button enableTlsCheckbox = toolkit.createButton( composite, "Enable TLS", SWT.CHECK );
         enableTlsCheckbox.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 3, 1 ) );
 
-        Button enableServerSidePasswordHashingCheckbox = toolkit.createButton( composite, "Enable sever-side password hashing",
+        Button enableServerSidePasswordHashingCheckbox = toolkit.createButton( composite,
+            "Enable sever-side password hashing",
             SWT.CHECK );
         enableServerSidePasswordHashingCheckbox.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 3, 1 ) );
         toolkit.createLabel( composite, "Hashing Method:" );
-        Text hashingMethodText = toolkit.createText( composite, "" );
-        hashingMethodText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
+        Combo hashingMethodCombo = new Combo( composite, SWT.DROP_DOWN | SWT.READ_ONLY );
+        hashingMethodCombo.setItems( new String[]
+            { "SSHA", "MD5" } );
+        toolkit.adapt( hashingMethodCombo );
+        hashingMethodCombo.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
         createDefaultValueLabel( toolkit, composite, "SSHA" );
     }
 
