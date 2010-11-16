@@ -6,16 +6,16 @@
  *  to you under the Apache License, Version 2.0 (the
  *  "License"); you may not use this file except in compliance
  *  with the License.  You may obtain a copy of the License at
- *  
+ *
  *    http://www.apache.org/licenses/LICENSE-2.0
- *  
+ *
  *  Unless required by applicable law or agreed to in writing,
  *  software distributed under the License is distributed on an
  *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  *  KIND, either express or implied.  See the License for the
  *  specific language governing permissions and limitations
- *  under the License. 
- *  
+ *  under the License.
+ *
  */
 
 package org.apache.directory.studio.test.integration.ui;
@@ -24,18 +24,13 @@ package org.apache.directory.studio.test.integration.ui;
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertTrue;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.apache.directory.server.core.integ.Level;
-import org.apache.directory.server.core.integ.annotations.CleanupLevel;
-import org.apache.directory.server.integ.SiRunner;
-import org.apache.directory.server.ldap.LdapServer;
-import org.apache.directory.shared.ldap.entry.Modification;
-import org.apache.directory.shared.ldap.entry.ModificationOperation;
-import org.apache.directory.shared.ldap.entry.client.ClientModification;
-import org.apache.directory.shared.ldap.entry.client.DefaultClientAttribute;
-import org.apache.directory.shared.ldap.name.LdapDN;
+import org.apache.directory.server.annotations.CreateLdapServer;
+import org.apache.directory.server.annotations.CreateTransport;
+import org.apache.directory.server.core.integ.AbstractLdapTestUnit;
+import org.apache.directory.server.core.integ.FrameworkRunner;
+import org.apache.directory.shared.ldap.message.ModifyRequest;
+import org.apache.directory.shared.ldap.message.ModifyRequestImpl;
+import org.apache.directory.shared.ldap.name.DN;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.ldapbrowser.core.BrowserConnectionManager;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
@@ -56,16 +51,15 @@ import org.junit.runner.RunWith;
 
 /**
  * Tests the Search dialog and Search category in the LDAP Browser view.
- * 
+ *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-@RunWith(SiRunner.class)
-@CleanupLevel(Level.SUITE)
-public class SearchTest
+@RunWith(FrameworkRunner.class)
+@CreateLdapServer(transports =
+    { @CreateTransport(protocol = "LDAP") })
+public class SearchTest extends AbstractLdapTestUnit
 {
-    public static LdapServer ldapServer;
-
     private StudioBot studioBot;
     private ConnectionsViewBot connectionsViewBot;
     private BrowserViewBot browserViewBot;
@@ -95,7 +89,7 @@ public class SearchTest
 
     /**
      * Test for DIRSTUDIO-490.
-     * 
+     *
      * Copy/Paste a search between connections and verify that the associated browser connection is correct.
      *
      * @throws Exception
@@ -147,7 +141,7 @@ public class SearchTest
 
     /**
      * Test for DIRSTUDIO-587 (UI flickers on quick search).
-     * 
+     *
      * When performing a quick search only one UI update should be fired.
      *
      * @throws Exception
@@ -167,7 +161,7 @@ public class SearchTest
 
         browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "Quick Search" );
 
-        // verify that only one events was fired 
+        // verify that only one events was fired
         long fireCount = fireCount1 - fireCount0;
         assertEquals( "Only 1 event firings expected when running quick search.", 1, fireCount );
     }
@@ -200,10 +194,10 @@ public class SearchTest
         assertEquals( "", srEditorBot.getContent( 1, 4 ) );
 
         // add description
-        List<Modification> modifications = new ArrayList<Modification>();
-        modifications.add( new ClientModification( ModificationOperation.REPLACE_ATTRIBUTE, new DefaultClientAttribute(
-            "description", "The 1st description." ) ) );
-        ldapServer.getDirectoryService().getAdminSession().modify( new LdapDN( "uid=admin,ou=system" ), modifications );
+        ModifyRequest request = new ModifyRequestImpl();
+        request.setName( new DN( "uid=admin,ou=system" ) );
+        request.replace( "description", "The 1st description." );
+        ldapServer.getDirectoryService().getAdminSession().modify( request );
 
         // refresh the search, using the toolbar icon
         srEditorBot.refresh();

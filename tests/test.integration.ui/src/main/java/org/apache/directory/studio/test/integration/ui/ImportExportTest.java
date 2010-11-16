@@ -6,16 +6,16 @@
  *  to you under the Apache License, Version 2.0 (the
  *  "License"); you may not use this file except in compliance
  *  with the License.  You may obtain a copy of the License at
- *  
+ *
  *    http://www.apache.org/licenses/LICENSE-2.0
- *  
+ *
  *  Unless required by applicable law or agreed to in writing,
  *  software distributed under the License is distributed on an
  *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  *  KIND, either express or implied.  See the License for the
  *  specific language governing permissions and limitations
- *  under the License. 
- *  
+ *  under the License.
+ *
  */
 
 package org.apache.directory.studio.test.integration.ui;
@@ -32,13 +32,14 @@ import java.util.List;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
-import org.apache.directory.server.core.integ.Level;
-import org.apache.directory.server.core.integ.annotations.ApplyLdifFiles;
-import org.apache.directory.server.core.integ.annotations.CleanupLevel;
+import org.apache.directory.server.annotations.CreateLdapServer;
+import org.apache.directory.server.annotations.CreateTransport;
+import org.apache.directory.server.core.annotations.ApplyLdifFiles;
+import org.apache.directory.server.core.integ.AbstractLdapTestUnit;
+import org.apache.directory.server.core.integ.FrameworkRunner;
 import org.apache.directory.server.core.partition.Partition;
 import org.apache.directory.server.core.partition.impl.btree.jdbm.JdbmPartition;
-import org.apache.directory.server.integ.SiRunner;
-import org.apache.directory.server.ldap.LdapServer;
+import org.apache.directory.shared.ldap.name.DN;
 import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
 import org.apache.directory.studio.test.integration.ui.bots.BrowserViewBot;
 import org.apache.directory.studio.test.integration.ui.bots.ConnectionsViewBot;
@@ -55,18 +56,17 @@ import org.junit.runner.RunWith;
 
 /**
  * Tests the import and export (LDIF, DSML).
- * 
+ *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-@RunWith(SiRunner.class)
-@CleanupLevel(Level.SUITE)
+@RunWith(FrameworkRunner.class)
+@CreateLdapServer(transports =
+    { @CreateTransport(protocol = "LDAP") })
 @ApplyLdifFiles(
-    { "ImportExportTest.ldif" })
-public class ImportExportTest
+    { "org/apache/directory/studio/test/integration/ui/ImportExportTest.ldif" })
+public class ImportExportTest extends AbstractLdapTestUnit
 {
-    public static LdapServer ldapServer;
-
     private StudioBot studioBot;
     private ConnectionsViewBot connectionsViewBot;
     private BrowserViewBot browserViewBot;
@@ -92,12 +92,12 @@ public class ImportExportTest
 
     /**
      * Test for DIRSTUDIO-395.
-     * 
+     *
      * <li>export an entry with German umlaut in DN to LDIF</li> <li>verify that
      * exported LDIF starts with the Base64 encoded DN</li> <li>delete the entry
      * </li> <li>import the exported LDIF</li> <li>verify that entry with umlaut
      * exists</li>
-     * 
+     *
      * @throws Exception
      *             the exception
      */
@@ -143,12 +143,12 @@ public class ImportExportTest
 
     /**
      * Test for DIRSTUDIO-395.
-     * 
+     *
      * <li>export an entry with German umlaut in DN to DSML</li> <li>verify that
      * exported DSML starts with the Base64 encoded DN</li> <li>delete the entry
      * </li> <li>import the exported DSML</li> <li>verify that entry with umlaut
      * exists</li>
-     * 
+     *
      * @throws Exception
      *             the exception
      */
@@ -171,8 +171,8 @@ public class ImportExportTest
 
         // verify that exported DSML contains the Base64 encoded DN
         String content = FileUtils.readFileToString( new File( file ), "UTF-8" );
-        assertTrue( "DSML must contain DN with umlaut.", content
-            .contains( "dn=\"cn=Wolfgang K\u00f6lbel,ou=users,ou=system\"" ) );
+        assertTrue( "DSML must contain DN with umlaut.",
+            content.contains( "dn=\"cn=Wolfgang K\u00f6lbel,ou=users,ou=system\"" ) );
 
         // delete entry
         DeleteDialogBot dialogBot = browserViewBot.openDeleteDialog();
@@ -193,10 +193,10 @@ public class ImportExportTest
 
     /**
      * Test for DIRSTUDIO-465.
-     * 
-     * Import a new context entry must refresh the root DSE and 
+     *
+     * Import a new context entry must refresh the root DSE and
      * show the new context entry in the LDAP Browser view.
-     * 
+     *
      * @throws Exception
      *             the exception
      */
@@ -206,7 +206,7 @@ public class ImportExportTest
         // add a new partition
         Partition partition = new JdbmPartition();
         partition.setId( "example" );
-        partition.setSuffix( "dc=example,dc=com" );
+        partition.setSuffix( new DN( "dc=example,dc=com" ) );
         ldapServer.getDirectoryService().addPartition( partition );
 
         // refresh root DSE and ensure that the partition is in root DSE
@@ -233,7 +233,7 @@ public class ImportExportTest
 
     /**
      * Test for DIRSTUDIO-489.
-     * 
+     *
      * Verify that there are no UI updates when importing an LDIF.
      *
      * @throws Exception
@@ -261,7 +261,7 @@ public class ImportExportTest
 
         browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users", "uid=User.1" );
 
-        // verify that only three two events were fired between Import 
+        // verify that only three two events were fired between Import
         long fireCount = fireCount1 - fireCount0;
         assertEquals( "Only 2 event firings expected when importing LDIF.", 2, fireCount );
     }

@@ -6,16 +6,16 @@
  *  to you under the Apache License, Version 2.0 (the
  *  "License"); you may not use this file except in compliance
  *  with the License.  You may obtain a copy of the License at
- *  
+ *
  *    http://www.apache.org/licenses/LICENSE-2.0
- *  
+ *
  *  Unless required by applicable law or agreed to in writing,
  *  software distributed under the License is distributed on an
  *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  *  KIND, either express or implied.  See the License for the
  *  specific language governing permissions and limitations
- *  under the License. 
- *  
+ *  under the License.
+ *
  */
 
 package org.apache.directory.studio.test.integration.ui;
@@ -23,11 +23,11 @@ package org.apache.directory.studio.test.integration.ui;
 
 import static junit.framework.Assert.assertTrue;
 
-import org.apache.directory.server.core.integ.Level;
-import org.apache.directory.server.core.integ.annotations.ApplyLdifFiles;
-import org.apache.directory.server.core.integ.annotations.CleanupLevel;
-import org.apache.directory.server.integ.SiRunner;
-import org.apache.directory.server.ldap.LdapServer;
+import org.apache.directory.server.annotations.CreateLdapServer;
+import org.apache.directory.server.annotations.CreateTransport;
+import org.apache.directory.server.core.annotations.ApplyLdifFiles;
+import org.apache.directory.server.core.integ.AbstractLdapTestUnit;
+import org.apache.directory.server.core.integ.FrameworkRunner;
 import org.apache.directory.studio.test.integration.ui.bots.BrowserViewBot;
 import org.apache.directory.studio.test.integration.ui.bots.ConnectionsViewBot;
 import org.apache.directory.studio.test.integration.ui.bots.RenameEntryDialogBot;
@@ -40,17 +40,17 @@ import org.junit.runner.RunWith;
 
 /**
  * Tests the rename entry dialog.
- * 
+ *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-@RunWith(SiRunner.class)
-@CleanupLevel(Level.SUITE)
-@ApplyLdifFiles("RenameEntryDialogTest.ldif")
-public class RenameEntryDialogTest
+@RunWith(FrameworkRunner.class)
+@CreateLdapServer(transports =
+    { @CreateTransport(protocol = "LDAP") })
+@ApplyLdifFiles(
+    { "org/apache/directory/studio/test/integration/ui/RenameEntryDialogTest.ldif" })
+public class RenameEntryDialogTest extends AbstractLdapTestUnit
 {
-    public static LdapServer ldapServer;
-
     private StudioBot studioBot;
     private ConnectionsViewBot connectionsViewBot;
     private BrowserViewBot browserViewBot;
@@ -76,9 +76,9 @@ public class RenameEntryDialogTest
 
     /**
      * Test for DIRSTUDIO-318.
-     * 
+     *
      * Renames a multi-valued RDN by changing both RDN attributes.
-     * 
+     *
      * @throws Exception
      *             the exception
      */
@@ -101,9 +101,9 @@ public class RenameEntryDialogTest
 
     /**
      * Test for DIRSTUDIO-484.
-     * 
+     *
      * Renames a RDN with escaped characters.
-     * 
+     *
      * @throws Exception
      *             the exception
      */
@@ -127,7 +127,7 @@ public class RenameEntryDialogTest
 
     /**
      * Test for DIRSTUDIO-589, DIRSTUDIO-591, DIRSHARED-38.
-     * 
+     *
      * Rename an entry with sharp in DN: cn=\#123456.
      */
     @Test
@@ -147,7 +147,7 @@ public class RenameEntryDialogTest
 
     /**
      * Test for DIRSHARED-39.
-     * 
+     *
      * Rename an entry with trailing space in RDN.
      */
     @Test

@@ -6,16 +6,16 @@
  *  to you under the Apache License, Version 2.0 (the
  *  "License"); you may not use this file except in compliance
  *  with the License.  You may obtain a copy of the License at
- *  
+ *
  *    http://www.apache.org/licenses/LICENSE-2.0
- *  
+ *
  *  Unless required by applicable law or agreed to in writing,
  *  software distributed under the License is distributed on an
  *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  *  KIND, either express or implied.  See the License for the
  *  specific language governing permissions and limitations
- *  under the License. 
- *  
+ *  under the License.
+ *
  */
 
 package org.apache.directory.studio.test.integration.ui;
@@ -24,10 +24,10 @@ package org.apache.directory.studio.test.integration.ui;
 import static junit.framework.Assert.assertTrue;
 import static junit.framework.Assert.fail;
 
-import org.apache.directory.server.core.integ.Level;
-import org.apache.directory.server.core.integ.annotations.CleanupLevel;
-import org.apache.directory.server.integ.SiRunner;
-import org.apache.directory.server.ldap.LdapServer;
+import org.apache.directory.server.annotations.CreateLdapServer;
+import org.apache.directory.server.annotations.CreateTransport;
+import org.apache.directory.server.core.integ.AbstractLdapTestUnit;
+import org.apache.directory.server.core.integ.FrameworkRunner;
 import org.apache.directory.studio.test.integration.ui.bots.BrowserViewBot;
 import org.apache.directory.studio.test.integration.ui.bots.ConnectionsViewBot;
 import org.apache.directory.studio.test.integration.ui.bots.DeleteDialogBot;
@@ -45,16 +45,15 @@ import org.junit.runner.RunWith;
 
 /**
  * Tests allocation of SWT Resources.
- * 
+ *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-@RunWith(SiRunner.class)
-@CleanupLevel(Level.SUITE)
-public class SwtResourcesTest
+@RunWith(FrameworkRunner.class)
+@CreateLdapServer(transports =
+    { @CreateTransport(protocol = "LDAP") })
+public class SwtResourcesTest extends AbstractLdapTestUnit
 {
-    public static LdapServer ldapServer;
-
     private StudioBot studioBot;
     private ConnectionsViewBot connectionsViewBot;
     private BrowserViewBot browserViewBot;
@@ -80,10 +79,10 @@ public class SwtResourcesTest
 
     /**
      * Test for DIRSTUDIO-319.
-     * 
+     *
      * Creates multiple entries using the New Entry wizard. Checks that we don't
      * allocate too much SWT resources during the run.
-     * 
+     *
      * @throws Exception
      *             the exception
      */
@@ -114,9 +113,9 @@ public class SwtResourcesTest
     /**
      * Ensure that we have not allocated more the 1000 SWT resources during the
      * complete test suite.
-     * 
+     *
      * 1000 is not a fix number but it is a good starting point.
-     * 
+     *
      * @throws Exception
      *             the exception
      */

@@ -6,16 +6,16 @@
  *  to you under the Apache License, Version 2.0 (the
  *  "License"); you may not use this file except in compliance
  *  with the License.  You may obtain a copy of the License at
- *  
+ *
  *    http://www.apache.org/licenses/LICENSE-2.0
- *  
+ *
  *  Unless required by applicable law or agreed to in writing,
  *  software distributed under the License is distributed on an
  *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  *  KIND, either express or implied.  See the License for the
  *  specific language governing permissions and limitations
- *  under the License. 
- *  
+ *  under the License.
+ *
  */
 
 package org.apache.directory.studio.test.integration.ui;
@@ -45,7 +45,7 @@ import org.junit.Test;
 
 /**
  * Tests the Apache DS Plugin's UI.
- * 
+ *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
@@ -125,7 +125,7 @@ public class ApacheDSPluginTest
 
 
     /**
-     * Verifies that the 'New Server' does not allow the creation of 
+     * Verifies that the 'New Server' does not allow the creation of
      * 2 servers with the same name.
      */
     @Test
@@ -245,7 +245,7 @@ public class ApacheDSPluginTest
 
         // Checking if the connection is open
         waitForConnectionOpened( connection );
-        assertTrue( connection.getJNDIConnectionWrapper().isConnected() );
+        assertTrue( connection.getConnectionWrapper().isConnected() );
 
         // Closing the connection
         connectionsViewBot.selectConnection( serverName );
@@ -253,7 +253,7 @@ public class ApacheDSPluginTest
 
         // Checking if the connection is closed
         waitForConnectionClosed( connection );
-        assertFalse( connection.getJNDIConnectionWrapper().isConnected() );
+        assertFalse( connection.getConnectionWrapper().isConnected() );
 
         // Deleting the connection
         connectionsViewBot.deleteTestConnections();
@@ -349,7 +349,7 @@ public class ApacheDSPluginTest
         {
             public boolean test() throws Exception
             {
-                return connection.getJNDIConnectionWrapper().isConnected();
+                return connection.getConnectionWrapper().isConnected();
             }
 
 
@@ -373,7 +373,7 @@ public class ApacheDSPluginTest
         {
             public boolean test() throws Exception
             {
-                return !connection.getJNDIConnectionWrapper().isConnected();
+                return !connection.getConnectionWrapper().isConnected();
             }
 
 

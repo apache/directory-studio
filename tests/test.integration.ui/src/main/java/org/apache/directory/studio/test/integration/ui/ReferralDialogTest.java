@@ -6,16 +6,16 @@
  *  to you under the Apache License, Version 2.0 (the
  *  "License"); you may not use this file except in compliance
  *  with the License.  You may obtain a copy of the License at
- *  
+ *
  *    http://www.apache.org/licenses/LICENSE-2.0
- *  
+ *
  *  Unless required by applicable law or agreed to in writing,
  *  software distributed under the License is distributed on an
  *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  *  KIND, either express or implied.  See the License for the
  *  specific language governing permissions and limitations
- *  under the License. 
- *  
+ *  under the License.
+ *
  */
 
 package org.apache.directory.studio.test.integration.ui;
@@ -25,13 +25,13 @@ import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertTrue;
 
-import org.apache.directory.server.core.entry.DefaultServerEntry;
-import org.apache.directory.server.core.entry.ServerEntry;
-import org.apache.directory.server.core.integ.Level;
-import org.apache.directory.server.core.integ.annotations.CleanupLevel;
-import org.apache.directory.server.integ.SiRunner;
-import org.apache.directory.server.ldap.LdapServer;
-import org.apache.directory.shared.ldap.name.LdapDN;
+import org.apache.directory.server.annotations.CreateLdapServer;
+import org.apache.directory.server.annotations.CreateTransport;
+import org.apache.directory.server.core.integ.AbstractLdapTestUnit;
+import org.apache.directory.server.core.integ.FrameworkRunner;
+import org.apache.directory.shared.ldap.entry.DefaultEntry;
+import org.apache.directory.shared.ldap.entry.Entry;
+import org.apache.directory.shared.ldap.name.DN;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.Connection.ReferralHandlingMethod;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
@@ -47,16 +47,15 @@ import org.junit.runner.RunWith;
 
 /**
  * Tests the referral dialog.
- * 
+ *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-@RunWith(SiRunner.class)
-@CleanupLevel(Level.SUITE)
-public class ReferralDialogTest
+@RunWith(FrameworkRunner.class)
+@CreateLdapServer(transports =
+    { @CreateTransport(protocol = "LDAP") })
+public class ReferralDialogTest extends AbstractLdapTestUnit
 {
-    public static LdapServer ldapServer;
-
     private StudioBot studioBot;
     private ConnectionsViewBot connectionsViewBot;
     private BrowserViewBot browserViewBot;
@@ -78,8 +77,8 @@ public class ReferralDialogTest
         browserViewBot = studioBot.getBrowserView();
 
         // create referral entry
-        ServerEntry entry = new DefaultServerEntry( ldapServer.getDirectoryService().getRegistries() );
-        entry.setDn( new LdapDN( "cn=referralDialogTest,ou=system" ) );
+        Entry entry = new DefaultEntry( service.getSchemaManager() );
+        entry.setDn( new DN( "cn=referralDialogTest,ou=system" ) );
         entry.add( "objectClass", "top", "referral", "extensibleObject" );
         entry.add( "cn", "referralDialogTest" );
         entry.add( "ref", "ldap://localhost:" + ldapServer.getPort() + "/ou=users,ou=system" );
@@ -105,7 +104,7 @@ public class ReferralDialogTest
 
     /**
      * Test for DIRSTUDIO-343.
-     * 
+     *
      * Follows a continuation reference.
      */
     @Test
@@ -133,7 +132,7 @@ public class ReferralDialogTest
 
     /**
      * Test for DIRSTUDIO-343.
-     * 
+     *
      * Does not follow a continuation reference by clicking the cancel button in
      * the referral dialog.
      */

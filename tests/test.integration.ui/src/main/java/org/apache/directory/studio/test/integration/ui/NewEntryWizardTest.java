@@ -6,16 +6,16 @@
  *  to you under the Apache License, Version 2.0 (the
  *  "License"); you may not use this file except in compliance
  *  with the License.  You may obtain a copy of the License at
- *  
+ *
  *    http://www.apache.org/licenses/LICENSE-2.0
- *  
+ *
  *  Unless required by applicable law or agreed to in writing,
  *  software distributed under the License is distributed on an
  *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  *  KIND, either express or implied.  See the License for the
  *  specific language governing permissions and limitations
- *  under the License. 
- *  
+ *  under the License.
+ *
  */
 
 package org.apache.directory.studio.test.integration.ui;
@@ -25,13 +25,13 @@ import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertTrue;
 
-import org.apache.directory.server.core.entry.DefaultServerEntry;
-import org.apache.directory.server.core.entry.ServerEntry;
-import org.apache.directory.server.core.integ.Level;
-import org.apache.directory.server.core.integ.annotations.CleanupLevel;
-import org.apache.directory.server.integ.SiRunner;
-import org.apache.directory.server.ldap.LdapServer;
-import org.apache.directory.shared.ldap.name.LdapDN;
+import org.apache.directory.server.annotations.CreateLdapServer;
+import org.apache.directory.server.annotations.CreateTransport;
+import org.apache.directory.server.core.integ.AbstractLdapTestUnit;
+import org.apache.directory.server.core.integ.FrameworkRunner;
+import org.apache.directory.shared.ldap.entry.DefaultEntry;
+import org.apache.directory.shared.ldap.entry.Entry;
+import org.apache.directory.shared.ldap.name.DN;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.Connection.ReferralHandlingMethod;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
@@ -50,16 +50,15 @@ import org.junit.runner.RunWith;
 
 /**
  * Tests the new entry wizard.
- * 
+ *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-@RunWith(SiRunner.class)
-@CleanupLevel(Level.SUITE)
-public class NewEntryWizardTest
+@RunWith(FrameworkRunner.class)
+@CreateLdapServer(transports =
+    { @CreateTransport(protocol = "LDAP") })
+public class NewEntryWizardTest extends AbstractLdapTestUnit
 {
-    public static LdapServer ldapServer;
-
     private StudioBot studioBot;
     private ConnectionsViewBot connectionsViewBot;
     private BrowserViewBot browserViewBot;
@@ -77,8 +76,8 @@ public class NewEntryWizardTest
         ApacheDsUtils.enableSchema( ldapServer, "nis" );
 
         // create referral entry
-        ServerEntry entry = new DefaultServerEntry( ldapServer.getDirectoryService().getRegistries() );
-        entry.setDn( new LdapDN( "cn=referral,ou=system" ) );
+        Entry entry = new DefaultEntry( service.getSchemaManager() );
+        entry.setDn( new DN( "cn=referral,ou=system" ) );
         entry.add( "objectClass", "top", "referral", "extensibleObject" );
         entry.add( "cn", "referralDialogTest" );
         entry.add( "ref", "ldap://localhost:" + ldapServer.getPort() + "/ou=users,ou=system" );
@@ -187,7 +186,7 @@ public class NewEntryWizardTest
 
     /**
      * Test for DIRSTUDIO-350.
-     * 
+     *
      * Create entries with upper case attribute types and ensures that the
      * retrieved entries still are in upper case.
      */
@@ -226,8 +225,8 @@ public class NewEntryWizardTest
 
         wizardBot.setRdnType( 1, "O" );
         wizardBot.setRdnValue( 1, "testCreateOrganizationEntry2" );
-        assertEquals( "O=testCreateOrganizationEntry2,O=testCreateOrganizationEntry,ou=system", wizardBot
-            .getDnPreview() );
+        assertEquals( "O=testCreateOrganizationEntry2,O=testCreateOrganizationEntry,ou=system",
+            wizardBot.getDnPreview() );
         wizardBot.clickNextButton();
 
         wizardBot.clickFinishButton();
@@ -241,7 +240,7 @@ public class NewEntryWizardTest
 
     /**
      * Test for DIRSTUDIO-360.
-     * 
+     *
      * Create entries with a slash '/' in the RDN value.
      */
     @Test
@@ -308,7 +307,7 @@ public class NewEntryWizardTest
 
         // click cancel button, check the wizard is not closed
         referralDialogBot.clickCancelButton();
-        // timing issues, use ugly sleep for now, should use some condition but have no idea. 
+        // timing issues, use ugly sleep for now, should use some condition but have no idea.
         SWTUtils.sleep( 1000 );
         assertTrue( wizardBot.isVisible() );
         assertTrue( wizardBot.isFinishButtonEnabled() );
@@ -364,7 +363,7 @@ public class NewEntryWizardTest
 
     /**
      * Test for DIRSTUDIO-589, DIRSTUDIO-591, DIRSHARED-38.
-     * 
+     *
      * Create an entry with sharp in DN: cn=\#123456.
      */
     @Test
@@ -394,7 +393,7 @@ public class NewEntryWizardTest
 
     /**
      * Test for DIRSTUDIO-603, DIRSHARED-41.
-     * 
+     *
      * Create an entry with multi-valued RDN and numeric OID (IP address) in RDN value.
      */
     @Test

@@ -6,16 +6,16 @@
  *  to you under the Apache License, Version 2.0 (the
  *  "License"); you may not use this file except in compliance
  *  with the License.  You may obtain a copy of the License at
- *  
+ *
  *    http://www.apache.org/licenses/LICENSE-2.0
- *  
+ *
  *  Unless required by applicable law or agreed to in writing,
  *  software distributed under the License is distributed on an
  *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  *  KIND, either express or implied.  See the License for the
  *  specific language governing permissions and limitations
- *  under the License. 
- *  
+ *  under the License.
+ *
  */
 
 package org.apache.directory.studio.test.integration.ui;
@@ -27,13 +27,13 @@ import static junit.framework.Assert.assertTrue;
 import static org.eclipse.swtbot.swt.finder.SWTBotTestCase.assertContains;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.directory.server.core.entry.ClonedServerEntry;
-import org.apache.directory.server.core.integ.Level;
-import org.apache.directory.server.core.integ.annotations.ApplyLdifFiles;
-import org.apache.directory.server.core.integ.annotations.CleanupLevel;
-import org.apache.directory.server.integ.SiRunner;
-import org.apache.directory.server.ldap.LdapServer;
-import org.apache.directory.shared.ldap.name.LdapDN;
+import org.apache.directory.server.annotations.CreateLdapServer;
+import org.apache.directory.server.annotations.CreateTransport;
+import org.apache.directory.server.core.annotations.ApplyLdifFiles;
+import org.apache.directory.server.core.integ.AbstractLdapTestUnit;
+import org.apache.directory.server.core.integ.FrameworkRunner;
+import org.apache.directory.shared.ldap.entry.Entry;
+import org.apache.directory.shared.ldap.name.DN;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.test.integration.ui.bots.BrowserViewBot;
 import org.apache.directory.studio.test.integration.ui.bots.ConnectionsViewBot;
@@ -53,18 +53,17 @@ import org.junit.runner.RunWith;
 
 /**
  * Tests the entry editor.
- * 
+ *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-@RunWith(SiRunner.class)
-@CleanupLevel(Level.SUITE)
+@RunWith(FrameworkRunner.class)
+@CreateLdapServer(transports =
+    { @CreateTransport(protocol = "LDAP") })
 @ApplyLdifFiles(
-    { "EntryEditorTest.ldif" })
-public class EntryEditorTest
+    { "org/apache/directory/studio/test/integration/ui/EntryEditorTest.ldif" })
+public class EntryEditorTest extends AbstractLdapTestUnit
 {
-    public static LdapServer ldapServer;
-
     private StudioBot studioBot;
     private ConnectionsViewBot connectionsViewBot;
     private BrowserViewBot browserViewBot;
@@ -92,7 +91,7 @@ public class EntryEditorTest
 
     /**
      * Test adding, editing and deleting of attributes in the entry editor.
-     * 
+     *
      * @throws Exception
      *             the exception
      */
@@ -117,8 +116,8 @@ public class EntryEditorTest
         entryEditorBot.typeValueAndFinish( "This is the 1st description." );
         assertEquals( 9, entryEditorBot.getAttributeValues().size() );
         assertTrue( entryEditorBot.getAttributeValues().contains( "description: This is the 1st description." ) );
-        assertContains( "add: description\ndescription: This is the 1st description.", modificationLogsViewBot
-            .getModificationLogsText() );
+        assertContains( "add: description\ndescription: This is the 1st description.",
+            modificationLogsViewBot.getModificationLogsText() );
 
         // add second value
         entryEditorBot.activate();
@@ -127,8 +126,8 @@ public class EntryEditorTest
         assertEquals( 10, entryEditorBot.getAttributeValues().size() );
         assertTrue( entryEditorBot.getAttributeValues().contains( "description: This is the 1st description." ) );
         assertTrue( entryEditorBot.getAttributeValues().contains( "description: This is the 2nd description." ) );
-        assertContains( "add: description\ndescription: This is the 2nd description.", modificationLogsViewBot
-            .getModificationLogsText() );
+        assertContains( "add: description\ndescription: This is the 2nd description.",
+            modificationLogsViewBot.getModificationLogsText() );
 
         // edit second value
         entryEditorBot.editValue( "description", "This is the 2nd description." );
@@ -138,18 +137,18 @@ public class EntryEditorTest
         assertTrue( entryEditorBot.getAttributeValues().contains( "description: This is the 1st description." ) );
         assertFalse( entryEditorBot.getAttributeValues().contains( "description: This is the 2nd description." ) );
         assertTrue( entryEditorBot.getAttributeValues().contains( "description: This is the 3rd description." ) );
-        assertContains( "delete: description\ndescription: This is the 2nd description.", modificationLogsViewBot
-            .getModificationLogsText() );
-        assertContains( "add: description\ndescription: This is the 3rd description.", modificationLogsViewBot
-            .getModificationLogsText() );
+        assertContains( "delete: description\ndescription: This is the 2nd description.",
+            modificationLogsViewBot.getModificationLogsText() );
+        assertContains( "add: description\ndescription: This is the 3rd description.",
+            modificationLogsViewBot.getModificationLogsText() );
 
         // delete second value
         entryEditorBot.deleteValue( "description", "This is the 3rd description." );
         assertEquals( 9, entryEditorBot.getAttributeValues().size() );
         assertTrue( entryEditorBot.getAttributeValues().contains( "description: This is the 1st description." ) );
         assertFalse( entryEditorBot.getAttributeValues().contains( "description: This is the 3rd description." ) );
-        assertContains( "delete: description\ndescription: This is the 3rd description.", modificationLogsViewBot
-            .getModificationLogsText() );
+        assertContains( "delete: description\ndescription: This is the 3rd description.",
+            modificationLogsViewBot.getModificationLogsText() );
 
         // edit 1st value
         entryEditorBot.editValue( "description", "This is the 1st description." );
@@ -157,8 +156,8 @@ public class EntryEditorTest
         assertEquals( 9, entryEditorBot.getAttributeValues().size() );
         assertFalse( entryEditorBot.getAttributeValues().contains( "description: This is the 1st description." ) );
         assertTrue( entryEditorBot.getAttributeValues().contains( "description: This is the final description." ) );
-        assertContains( "replace: description\ndescription: This is the final description.", modificationLogsViewBot
-            .getModificationLogsText() );
+        assertContains( "replace: description\ndescription: This is the final description.",
+            modificationLogsViewBot.getModificationLogsText() );
 
         // delete 1st value/attribute
         entryEditorBot.deleteValue( "description", "This is the final description." );
@@ -166,14 +165,14 @@ public class EntryEditorTest
         assertFalse( entryEditorBot.getAttributeValues().contains( "description: This is the final description." ) );
         assertContains( "delete: description\n-", modificationLogsViewBot.getModificationLogsText() );
 
-        assertEquals( "Expected 6 modifications.", 6, StringUtils.countMatches( modificationLogsViewBot
-            .getModificationLogsText(), "#!RESULT OK" ) );
+        assertEquals( "Expected 6 modifications.", 6,
+            StringUtils.countMatches( modificationLogsViewBot.getModificationLogsText(), "#!RESULT OK" ) );
     }
 
 
     /**
-     * DIRSTUDIO-483: DN Editor escapes all non-ascii characters 
-     * 
+     * DIRSTUDIO-483: DN Editor escapes all non-ascii characters
+     *
      * @throws Exception
      *             the exception
      */
@@ -211,15 +210,15 @@ public class EntryEditorTest
         assertEquals( "cn=\\#\\\\\\+\\, \\\"\u00F6\u00E9\\\",ou=users,ou=system", dnEditorBot.getDnText() );
         dnEditorBot.clickCancelButton();
 
-        assertEquals( "Expected 1 modification.", 1, StringUtils.countMatches( modificationLogsViewBot
-            .getModificationLogsText(), "#!RESULT OK" ) );
+        assertEquals( "Expected 1 modification.", 1,
+            StringUtils.countMatches( modificationLogsViewBot.getModificationLogsText(), "#!RESULT OK" ) );
     }
 
 
     /**
      * DIRSTUDIO-637: copy/paste of attributes no longer works.
      * Test copy/paste within entry editor.
-     * 
+     *
      * @throws Exception
      *             the exception
      */
@@ -250,8 +249,8 @@ public class EntryEditorTest
         entryEditorBot.getAttributeValues().contains( "uid: bjensen" );
 
         // assert pasted value was written to directory
-        ClonedServerEntry entry = ldapServer.getDirectoryService().getAdminSession().lookup(
-            new LdapDN( "cn=\\#\\\\\\+\\, \\\"\u00F6\u00E9\\\",ou=users,ou=system" ) );
+        Entry entry = ldapServer.getDirectoryService().getAdminSession()
+            .lookup( new DN( "cn=\\#\\\\\\+\\, \\\"\u00F6\u00E9\\\",ou=users,ou=system" ) );
         assertTrue( entry.contains( "uid", "bjensen" ) );
     }
 

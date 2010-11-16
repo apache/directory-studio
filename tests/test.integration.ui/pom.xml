@@ -6,9 +6,9 @@
   The ASF licenses this file to You under the Apache License, Version 2.0
   (the "License"); you may not use this file except in compliance with
   the License.  You may obtain a copy of the License at
-  
+
   http://www.apache.org/licenses/LICENSE-2.0
-  
+
   Unless required by applicable law or agreed to in writing, software
   distributed under the License is distributed on an "AS IS" BASIS,
   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -25,15 +25,15 @@
     <artifactId>parent-tests</artifactId>
     <version>2.0.0-SNAPSHOT</version>
   </parent>
-  
+
   <artifactId>test.integration.ui</artifactId>
   <name>Apache Directory Studio UI Integration Tests</name>
   <packaging>jar</packaging>
 
   <description></description>
-  
+
   <profiles>
-  
+
     <!--linux-x86  -->
     <profile>
       <id>linux-x86</id>
@@ -50,7 +50,7 @@
         <integration-plugins-folder>plugins</integration-plugins-folder>
       </properties>
     </profile>
-    
+
     <!-- linux-x86_64 -->
     <profile>
       <id>linux-x86_64</id>
@@ -66,8 +66,8 @@
         <integration-cmdline-params>-os linux -ws gtk -arch x86_64</integration-cmdline-params>
         <integration-plugins-folder>plugins</integration-plugins-folder>
       </properties>
-    </profile>  
-    
+    </profile>
+
     <!-- linux-ppc -->
     <profile>
       <id>linux-ppc</id>
@@ -83,8 +83,8 @@
         <integration-cmdline-params>-os linux -ws gtk -arch ppc</integration-cmdline-params>
         <integration-plugins-folder>plugins</integration-plugins-folder>
       </properties>
-    </profile>  
-    
+    </profile>
+
     <!--win32  -->
     <profile>
        <id>win32</id>
@@ -99,8 +99,8 @@
         <integration-cmdline-params>-os win32 -ws win32 -arch x86</integration-cmdline-params>
         <integration-plugins-folder>plugins</integration-plugins-folder>
       </properties>
-    </profile>  
-    
+    </profile>
+
     <!-- macosx -->
     <profile>
       <id>macosx</id>
@@ -115,8 +115,8 @@
         <integration-cmdline-params>-os macosx -ws carbon -arch x86</integration-cmdline-params>
         <integration-plugins-folder>Apache Directory Studio.app/Contents/Resources/Java/plugins</integration-plugins-folder>
       </properties>
-    </profile>  
-    
+    </profile>
+
     <!-- launch UI tests using eclipse test framework -->
     <profile>
       <id>integration-ui</id>
@@ -132,19 +132,19 @@
                 <phase>test</phase>
                 <configuration>
                   <tasks>
-                    
+
                     <!-- cleanup and recreate test-sandbox -->
                     <delete dir="target/test-sandbox"/>
                     <mkdir dir="target/test-sandbox"/>
                     <mkdir dir="target/test-sandbox/workspace"/>
-                    
+
                     <!-- copy complete eclipse distribution to test-sandbox -->
                     <copy todir="target/test-sandbox">
                       <fileset dir="${eclipse-home}">
                         <exclude name="plugins/org.junit4*/**"/>
                       </fileset>
                     </copy>
-                    
+
                     <!-- copy apache directory studio plugins to test-sandbox -->
                     <copy todir="target/test-sandbox">
                       <fileset dir="../target/distributions">
@@ -152,21 +152,21 @@
                       </fileset>
                       <regexpmapper from="${integration-regexp}" to="\2"/>
                     </copy>
-                    
+
                     <!-- copy SWTbot and eclipse testing plugins to test-sandbox -->
                     <copy todir="target/test-sandbox/${integration-plugins-folder}">
                       <fileset dir="resources/test-plugins">
                         <include name="**/*" />
                       </fileset>
                     </copy>
-                    
+
                     <!-- copy test-integration-ui plugin to test-sandbox -->
                     <copy todir="target/test-sandbox/${integration-plugins-folder}">
                       <fileset dir="target">
                         <include name="test.integration.ui-*.jar" />
                       </fileset>
                     </copy>
-                    
+
                     <!-- launch the tests -->
                     <java fork="true" failonerror="true" classname="org.eclipse.core.launcher.Main">
                       <jvmarg line="-Xmx1024m -XX:MaxPermSize=512m"/>
@@ -177,7 +177,7 @@
                         </fileset>
                       </classpath>
                     </java>
-                    
+
                   </tasks>
                 </configuration>
                 <goals>
@@ -191,7 +191,7 @@
       </build>
     </profile>
   </profiles>
-  
+
   <build>
     <resources>
       <resource>
@@ -211,10 +211,17 @@
         <configuration>
           <skip>false</skip>
           <pde>true</pde>
-          <additionalProjectnatures>
+          <buildcommands>
+            <buildcommand>org.eclipse.jdt.core.javabuilder</buildcommand>
+            <buildcommand>org.eclipse.pde.ManifestBuilder</buildcommand>
+            <buildcommand>org.eclipse.pde.SchemaBuilder</buildcommand>
+          </buildcommands>
+          <projectnatures>
+            <projectnature>org.eclipse.jem.workbench.JavaEMFNature</projectnature>
             <projectnature>org.eclipse.pde.PluginNature</projectnature>
             <projectnature>org.eclipse.jdt.core.javanature</projectnature>
-          </additionalProjectnatures>
+            <projectnature>org.eclipse.jem.beaninfo.BeanInfoNature</projectnature>
+          </projectnatures>
           <classpathContainers>
             <classpathContainer>org.eclipse.jdt.launching.JRE_CONTAINER</classpathContainer>
             <classpathContainer>org.eclipse.pde.core.requiredPlugins</classpathContainer>
@@ -253,17 +260,31 @@
         <extensions>true</extensions>
         <configuration>
           <manifestLocation>META-INF</manifestLocation>
-          <instructions>            
+          <instructions>
             <Bundle-SymbolicName>${groupId}.${artifactId};singleton:=true</Bundle-SymbolicName>
             <Bundle-Localization>plugin</Bundle-Localization>
             <Require-Bundle>org.eclipse.core.runtime,
  org.eclipse.ui,
+ org.apache.directory.studio.common.core,
+ org.apache.directory.studio.common.ui,
  org.apache.directory.studio.connection.core,
  org.apache.directory.studio.connection.ui,
  org.apache.directory.studio.ldapbrowser.common,
  org.apache.directory.studio.ldapbrowser.core,
  org.apache.directory.studio.ldapbrowser.ui,
  org.apache.directory.studio.apacheds,
+ org.apache.directory.shared.i18n,
+ org.apache.directory.shared.ldap,
+ org.apache.directory.shared.ldapschema,
+ org.apache.directory.shared.ldapclientapi,
+ org.apache.mina.core,
+ org.apache.commons.collections,
+ org.apache.commons.io,
+ org.apache.commons.lang,
+ org.bouncycastle.bcprovjdk15,
+ org.slf4j.api,
+ org.slf4j.log4j12,
+ org.apache.logging.log4j,
  org.junit4,
  org.eclipse.swtbot.junit4_x,
  org.eclipse.swtbot.swt.finder,
@@ -273,7 +294,7 @@
             <Embed-Dependency>*;scope=compile|runtime</Embed-Dependency>
             <Embed-Directory>lib</Embed-Directory>
             <Embed-StripGroup>true</Embed-StripGroup>
-            <Embed-Transitive>true</Embed-Transitive>  
+            <Embed-Transitive>true</Embed-Transitive>
             <Export-Package>!*</Export-Package>
             <Import-Package>!</Import-Package>
             <Private-Package>!</Private-Package>
@@ -282,9 +303,9 @@
         <executions>
           <execution>
             <phase>process-classes</phase>
-            <goals>    
+            <goals>
               <goal>manifest</goal>
-            </goals>   
+            </goals>
           </execution>
         </executions>
       </plugin>
@@ -300,46 +321,116 @@
   </build>
 
   <dependencies>
+    <!-- Apache Directory Studio library plugins dependencies -->
     <dependency>
-      <groupId>org.apache.directory.server</groupId>
-      <artifactId>apacheds-core-integ</artifactId>
-      <version>1.5.5</version>
-    </dependency> 
+      <groupId>org.apache.directory.studio</groupId>
+      <artifactId>org.bouncycastle.bcprovjdk15</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.directory.studio</groupId>
+      <artifactId>org.apache.commons.lang</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.directory.studio</groupId>
+      <artifactId>org.apache.commons.codec</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.directory.studio</groupId>
+      <artifactId>org.apache.directory.shared.ldap</artifactId>
+      <scope>provided</scope>
+    </dependency>
+
     <dependency>
       <groupId>org.apache.directory.server</groupId>
       <artifactId>apacheds-server-integ</artifactId>
-      <version>1.5.5</version>
-    </dependency> 
-    <dependency>
-      <groupId>org.apache.directory.shared</groupId>
-      <artifactId>shared-ldap</artifactId>
-      <version>0.9.17</version>
-      <scope>provided</scope>
-    </dependency> 
-    <dependency>
-      <groupId>org.apache.directory.shared</groupId>
-      <artifactId>shared-asn1</artifactId>
-      <version>0.9.17</version>
-      <scope>provided</scope>
-    </dependency> 
+      <version>1.5.8-SNAPSHOT</version>
+      <!-- These excluded dependencies are included as eclipse bundles -->
+      <exclusions>
+        <exclusion>
+          <groupId>org.apache.directory.shared</groupId>
+          <artifactId>shared-i18n</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.apache.directory.shared</groupId>
+          <artifactId>shared-ldap</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.apache.directory.shared</groupId>
+          <artifactId>shared-ldap-schema</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.apache.directory.shared</groupId>
+          <artifactId>ldap-client-api</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.apache.mina</groupId>
+          <artifactId>mina-core</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>bouncycastle</groupId>
+          <artifactId>bcprov-jdk15</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.slf4j</groupId>
+          <artifactId>slf4j-api</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.slf4j</groupId>
+          <artifactId>slf4j-log4j12</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>log4j</groupId>
+          <artifactId>log4j</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>commons-logging</groupId>
+          <artifactId>commons-logging</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>commons-logging</groupId>
+          <artifactId>commons-logging-api</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>commons-collections</groupId>
+          <artifactId>commons-collections</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>commons-io</groupId>
+          <artifactId>commons-io</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>commons-lang</groupId>
+          <artifactId>commons-lang</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>junit</groupId>
+          <artifactId>junit</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <scope>provided</scope>
     </dependency>
     <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-api</artifactId>
+      <groupId>org.apache.directory.studio</groupId>
+      <artifactId>org.apache.commons.io</artifactId>
+      <scope>provided</scope>
     </dependency>
     <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-log4j12</artifactId>
+      <groupId>org.apache.directory.studio</groupId>
+      <artifactId>common.core</artifactId>
+      <scope>provided</scope>
     </dependency>
     <dependency>
-      <groupId>log4j</groupId>
-      <artifactId>log4j</artifactId>
+      <groupId>org.apache.directory.studio</groupId>
+      <artifactId>common.ui</artifactId>
+      <scope>provided</scope>
     </dependency>
-    
     <dependency>
       <groupId>org.apache.directory.studio</groupId>
       <artifactId>connection.core</artifactId>
@@ -370,7 +461,7 @@
       <artifactId>apacheds</artifactId>
       <scope>provided</scope>
     </dependency>
-    
+
     <dependency>
       <groupId>org.eclipse.swtbot.swt</groupId>
       <artifactId>finder</artifactId>
@@ -386,7 +477,7 @@
       <artifactId>hamcrest-all</artifactId>
       <scope>provided</scope>
     </dependency>
-    
+
     <dependency>
       <groupId>org.eclipse</groupId>
       <artifactId>osgi</artifactId>
@@ -438,5 +529,5 @@
       <scope>provided</scope>
     </dependency>
   </dependencies>
-  
+
 </project>

@@ -6,16 +6,16 @@
  *  to you under the Apache License, Version 2.0 (the
  *  "License"); you may not use this file except in compliance
  *  with the License.  You may obtain a copy of the License at
- *  
+ *
  *    http://www.apache.org/licenses/LICENSE-2.0
- *  
+ *
  *  Unless required by applicable law or agreed to in writing,
  *  software distributed under the License is distributed on an
  *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  *  KIND, either express or implied.  See the License for the
  *  specific language governing permissions and limitations
- *  under the License. 
- *  
+ *  under the License.
+ *
  */
 
 package org.apache.directory.studio.test.integration.ui;
@@ -28,15 +28,14 @@ import static junit.framework.Assert.assertTrue;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.directory.server.core.entry.ClonedServerEntry;
-import org.apache.directory.server.core.entry.DefaultServerEntry;
-import org.apache.directory.server.core.entry.ServerEntry;
-import org.apache.directory.server.core.integ.Level;
-import org.apache.directory.server.core.integ.annotations.ApplyLdifFiles;
-import org.apache.directory.server.core.integ.annotations.CleanupLevel;
-import org.apache.directory.server.integ.SiRunner;
-import org.apache.directory.server.ldap.LdapServer;
-import org.apache.directory.shared.ldap.name.LdapDN;
+import org.apache.directory.server.annotations.CreateLdapServer;
+import org.apache.directory.server.annotations.CreateTransport;
+import org.apache.directory.server.core.annotations.ApplyLdifFiles;
+import org.apache.directory.server.core.integ.AbstractLdapTestUnit;
+import org.apache.directory.server.core.integ.FrameworkRunner;
+import org.apache.directory.shared.ldap.entry.DefaultEntry;
+import org.apache.directory.shared.ldap.entry.Entry;
+import org.apache.directory.shared.ldap.name.DN;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.Connection.ReferralHandlingMethod;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
@@ -62,18 +61,17 @@ import org.junit.runner.RunWith;
 
 /**
  * Tests the LDAP browser.
- * 
+ *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-@RunWith(SiRunner.class)
-@CleanupLevel(Level.SUITE)
+@RunWith(FrameworkRunner.class)
+@CreateLdapServer(transports =
+    { @CreateTransport(protocol = "LDAP") })
 @ApplyLdifFiles(
-    { "BrowserTest.ldif" })
-public class BrowserTest
+    { "org/apache/directory/studio/test/integration/ui/BrowserTest.ldif" })
+public class BrowserTest extends AbstractLdapTestUnit
 {
-    public static LdapServer ldapServer;
-
     private StudioBot studioBot;
     private ConnectionsViewBot connectionsViewBot;
     private BrowserViewBot browserViewBot;
@@ -89,6 +87,8 @@ public class BrowserTest
         studioBot = new StudioBot();
         studioBot.resetLdapPerspective();
         connectionsViewBot = studioBot.getConnectionView();
+        System.out.println(connectionsViewBot);
+        System.out.println(ldapServer);
         connection = connectionsViewBot.createTestConnection( "BrowserTest", ldapServer.getPort() );
         browserViewBot = studioBot.getBrowserView();
         searchLogsViewBot = studioBot.getSearchLogsViewBot();
@@ -105,8 +105,8 @@ public class BrowserTest
 
     /**
      * Test for DIRSTUDIO-463.
-     * 
-     * When expanding an entry in the browser only one search request 
+     *
+     * When expanding an entry in the browser only one search request
      * should be send to the server
      *
      * @throws Exception
@@ -136,7 +136,7 @@ public class BrowserTest
 
     /**
      * Test for DIRSTUDIO-512.
-     * 
+     *
      * Verify minimum UI updates when deleting multiple entries.
      *
      * @throws Exception
@@ -168,8 +168,8 @@ public class BrowserTest
 
     /**
      * Test for DIRSTUDIO-575.
-     * 
-     * When opening a bookmark the entry editor should be opened and the 
+     *
+     * When opening a bookmark the entry editor should be opened and the
      * bookmark entry's attributes should be displayed.
      *
      * @throws Exception
@@ -181,7 +181,7 @@ public class BrowserTest
         IBrowserConnection browserConnection = BrowserCorePlugin.getDefault().getConnectionManager()
             .getBrowserConnection( connection );
         browserConnection.getBookmarkManager().addBookmark(
-            new Bookmark( browserConnection, new LdapDN( "uid=user.1,ou=users,ou=system" ), "Existing Bookmark" ) );
+            new Bookmark( browserConnection, new DN( "uid=user.1,ou=users,ou=system" ), "Existing Bookmark" ) );
 
         // select the bookmark
         browserViewBot.selectEntry( "Bookmarks", "Existing Bookmark" );
@@ -200,7 +200,7 @@ public class BrowserTest
 
     /**
      * Test for DIRSTUDIO-481.
-     * 
+     *
      * Check proper operation of refresh action.
      *
      * @throws Exception
@@ -213,8 +213,8 @@ public class BrowserTest
         assertFalse( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=users", "cn=refresh" ) );
 
         // add the entry directly in the server
-        ServerEntry entry = new DefaultServerEntry( ldapServer.getDirectoryService().getRegistries() );
-        entry.setDn( new LdapDN( "cn=refresh,ou=users,ou=system" ) );
+        Entry entry = new DefaultEntry( service.getSchemaManager() );
+        entry.setDn( new DN( "cn=refresh,ou=users,ou=system" ) );
         entry.add( "objectClass", "top", "person" );
         entry.add( "cn", "refresh" );
         entry.add( "sn", "refresh" );
@@ -233,7 +233,7 @@ public class BrowserTest
         browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users", "cn=refresh" );
 
         // delete the entry directly in the server
-        ldapServer.getDirectoryService().getAdminSession().delete( new LdapDN( "cn=refresh,ou=users,ou=system" ) );
+        ldapServer.getDirectoryService().getAdminSession().delete( new DN( "cn=refresh,ou=users,ou=system" ) );
 
         // check the entry still is now visible in the tree
         assertTrue( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=users", "cn=refresh" ) );
@@ -250,7 +250,7 @@ public class BrowserTest
 
     /**
      * Test for DIRSTUDIO-481.
-     * 
+     *
      * Check proper operation of refresh action.
      *
      * @throws Exception
@@ -263,8 +263,8 @@ public class BrowserTest
         assertFalse( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=users", "cn=refresh" ) );
 
         // add the entry directly in the server
-        ServerEntry entry = new DefaultServerEntry( ldapServer.getDirectoryService().getRegistries() );
-        entry.setDn( new LdapDN( "cn=refresh,ou=users,ou=system" ) );
+        Entry entry = new DefaultEntry( service.getSchemaManager() );
+        entry.setDn( new DN( "cn=refresh,ou=users,ou=system" ) );
         entry.add( "objectClass", "top", "person" );
         entry.add( "cn", "refresh" );
         entry.add( "sn", "refresh" );
@@ -283,7 +283,7 @@ public class BrowserTest
         browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users", "cn=refresh" );
 
         // delete the entry directly in the server
-        ldapServer.getDirectoryService().getAdminSession().delete( new LdapDN( "cn=refresh,ou=users,ou=system" ) );
+        ldapServer.getDirectoryService().getAdminSession().delete( new DN( "cn=refresh,ou=users,ou=system" ) );
 
         // check the entry still is now visible in the tree
         assertTrue( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=users", "cn=refresh" ) );
@@ -300,7 +300,7 @@ public class BrowserTest
 
     /**
      * Test for DIRSTUDIO-481.
-     * 
+     *
      * Check proper operation of refresh action.
      *
      * @throws Exception
@@ -313,8 +313,8 @@ public class BrowserTest
         assertFalse( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=users", "cn=refresh" ) );
 
         // add the entry directly in the server
-        ServerEntry entry = new DefaultServerEntry( ldapServer.getDirectoryService().getRegistries() );
-        entry.setDn( new LdapDN( "cn=refresh,ou=users,ou=system" ) );
+        Entry entry = new DefaultEntry( service.getSchemaManager() );
+        entry.setDn( new DN( "cn=refresh,ou=users,ou=system" ) );
         entry.add( "objectClass", "top", "person" );
         entry.add( "cn", "refresh" );
         entry.add( "sn", "refresh" );
@@ -333,7 +333,7 @@ public class BrowserTest
         browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users", "cn=refresh" );
 
         // delete the entry directly in the server
-        ldapServer.getDirectoryService().getAdminSession().delete( new LdapDN( "cn=refresh,ou=users,ou=system" ) );
+        ldapServer.getDirectoryService().getAdminSession().delete( new DN( "cn=refresh,ou=users,ou=system" ) );
 
         // check the entry still is now visible in the tree
         assertTrue( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=users", "cn=refresh" ) );
@@ -350,7 +350,7 @@ public class BrowserTest
 
     /**
      * Test for DIRSTUDIO-481.
-     * 
+     *
      * Check proper operation of refresh action.
      *
      * @throws Exception
@@ -360,8 +360,8 @@ public class BrowserTest
     {
         // preparation: add referral entry and set referral handling
         String url = "ldap://localhost:" + ldapServer.getPort() + "/ou=users,ou=system";
-        ServerEntry refEntry = new DefaultServerEntry( ldapServer.getDirectoryService().getRegistries() );
-        refEntry.setDn( new LdapDN( "cn=referral,ou=system" ) );
+        Entry refEntry = new DefaultEntry( service.getSchemaManager() );
+        refEntry.setDn( new DN( "cn=referral,ou=system" ) );
         refEntry.add( "objectClass", "top", "referral", "extensibleObject" );
         refEntry.add( "cn", "referral" );
         refEntry.add( "ref", url );
@@ -379,8 +379,8 @@ public class BrowserTest
         assertFalse( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", url, "cn=refresh" ) );
 
         // add the entry directly in the server
-        ServerEntry entry = new DefaultServerEntry( ldapServer.getDirectoryService().getRegistries() );
-        entry.setDn( new LdapDN( "cn=refresh,ou=users,ou=system" ) );
+        Entry entry = new DefaultEntry( service.getSchemaManager() );
+        entry.setDn( new DN( "cn=refresh,ou=users,ou=system" ) );
         entry.add( "objectClass", "top", "person" );
         entry.add( "cn", "refresh" );
         entry.add( "sn", "refresh" );
@@ -399,7 +399,7 @@ public class BrowserTest
         browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", url, "cn=refresh" );
 
         // delete the entry directly in the server
-        ldapServer.getDirectoryService().getAdminSession().delete( new LdapDN( "cn=refresh,ou=users,ou=system" ) );
+        ldapServer.getDirectoryService().getAdminSession().delete( new DN( "cn=refresh,ou=users,ou=system" ) );
 
         // check the entry still is now visible in the tree
         assertTrue( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", url, "cn=refresh" ) );
@@ -468,7 +468,7 @@ public class BrowserTest
             ErrorDialog.AUTOMATED_MODE = errorDialogAutomatedMode;
         }
 
-        // check that modification logs is still empty 
+        // check that modification logs is still empty
         // to ensure that no modification was sent to the server
         assertEquals( "No modification expected", "", modificationLogsViewBot.getModificationLogsText() );
     }
@@ -484,8 +484,8 @@ public class BrowserTest
         ApacheDsUtils.enableSchema( ldapServer, "nis" );
 
         // create entry with multi-valued RDN containing an IP address value
-        ServerEntry entry = new DefaultServerEntry( ldapServer.getDirectoryService().getRegistries() );
-        entry.setDn( new LdapDN( "cn=loopback+ipHostNumber=127.0.0.1,ou=users,ou=system" ) );
+        Entry entry = new DefaultEntry( service.getSchemaManager() );
+        entry.setDn( new DN( "cn=loopback+ipHostNumber=127.0.0.1,ou=users,ou=system" ) );
         entry.add( "objectClass", "top", "device", "ipHost" );
         entry.add( "cn", "loopback" );
         entry.add( "ipHostNumber", "127.0.0.1" );
@@ -500,7 +500,7 @@ public class BrowserTest
     /**
      * DIRSTUDIO-637: copy/paste of attributes no longer works.
      * Test copy/paste of a value to a bookmark.
-     * 
+     *
      * @throws Exception
      *             the exception
      */
@@ -511,7 +511,7 @@ public class BrowserTest
         IBrowserConnection browserConnection = BrowserCorePlugin.getDefault().getConnectionManager()
             .getBrowserConnection( connection );
         browserConnection.getBookmarkManager().addBookmark(
-            new Bookmark( browserConnection, new LdapDN( "uid=user.2,ou=users,ou=system" ), "My Bookmark" ) );
+            new Bookmark( browserConnection, new DN( "uid=user.2,ou=users,ou=system" ), "My Bookmark" ) );
 
         // copy a value
         browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users", "uid=user.1" );
@@ -535,8 +535,8 @@ public class BrowserTest
         entryEditorBot.getAttributeValues().contains( "uid: user.1" );
 
         // assert pasted value was written to directory
-        ClonedServerEntry entry = ldapServer.getDirectoryService().getAdminSession().lookup(
-            new LdapDN( "uid=user.2,ou=users,ou=system" ) );
+        Entry entry = ldapServer.getDirectoryService().getAdminSession().lookup(
+            new DN( "uid=user.2,ou=users,ou=system" ) );
         assertTrue( entry.contains( "uid", "user.1" ) );
     }
 

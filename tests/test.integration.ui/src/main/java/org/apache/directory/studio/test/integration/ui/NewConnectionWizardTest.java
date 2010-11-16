@@ -6,16 +6,16 @@
  *  to you under the Apache License, Version 2.0 (the
  *  "License"); you may not use this file except in compliance
  *  with the License.  You may obtain a copy of the License at
- *  
+ *
  *    http://www.apache.org/licenses/LICENSE-2.0
- *  
+ *
  *  Unless required by applicable law or agreed to in writing,
  *  software distributed under the License is distributed on an
  *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  *  KIND, either express or implied.  See the License for the
  *  specific language governing permissions and limitations
- *  under the License. 
- *  
+ *  under the License.
+ *
  */
 
 package org.apache.directory.studio.test.integration.ui;
@@ -45,17 +45,16 @@ import java.util.List;
 
 import javax.security.auth.x500.X500Principal;
 
+import org.apache.directory.server.annotations.CreateLdapServer;
+import org.apache.directory.server.annotations.CreateTransport;
 import org.apache.directory.server.core.CoreSession;
-import org.apache.directory.server.core.entry.ClonedServerEntry;
-import org.apache.directory.server.core.integ.Level;
-import org.apache.directory.server.core.integ.annotations.CleanupLevel;
-import org.apache.directory.server.integ.SiRunner;
-import org.apache.directory.server.ldap.LdapServer;
+import org.apache.directory.server.core.integ.AbstractLdapTestUnit;
+import org.apache.directory.server.core.integ.FrameworkRunner;
+import org.apache.directory.shared.ldap.entry.Entry;
 import org.apache.directory.shared.ldap.entry.Modification;
-import org.apache.directory.shared.ldap.entry.ModificationOperation;
-import org.apache.directory.shared.ldap.entry.client.ClientModification;
-import org.apache.directory.shared.ldap.entry.client.DefaultClientAttribute;
-import org.apache.directory.shared.ldap.name.LdapDN;
+import org.apache.directory.shared.ldap.message.ModifyRequest;
+import org.apache.directory.shared.ldap.message.ModifyRequestImpl;
+import org.apache.directory.shared.ldap.name.DN;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
 import org.apache.directory.studio.connection.core.ConnectionManager;
@@ -75,16 +74,15 @@ import org.junit.runner.RunWith;
 
 /**
  * Tests the new connection wizard.
- * 
+ *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-@RunWith(SiRunner.class)
-@CleanupLevel(Level.CLASS)
-public class NewConnectionWizardTest
+@RunWith(FrameworkRunner.class)
+@CreateLdapServer(transports =
+    { @CreateTransport(protocol = "LDAP") })
+public class NewConnectionWizardTest extends AbstractLdapTestUnit
 {
-    public static LdapServer ldapServer;
-    public static LdapServer ldapsService;
     private File ksFile;
 
     private StudioBot studioBot;
@@ -96,17 +94,17 @@ public class NewConnectionWizardTest
     public void setUpLdaps() throws Exception
     {
         // TODO: setup LDAPS
-//        if ( ldapsService == null )
-//        {
-//            ldapsService = new LdapServer();
-//            ldapsService.setDirectoryService( ldapService.getDirectoryService() );
-//            int port = AvailablePortFinder.getNextAvailable( ldapService.getPort() + 10 );
-//            ldapsService.setTcpTransport( new TcpTransport( port ) );
-//            ldapsService.setEnabled( true );
-//            ldapsService.setEnableLdaps( true );
-//            ldapsService.setConfidentialityRequired( true );
-//            ldapsService.start();
-//        }
+        //        if ( ldapsService == null )
+        //        {
+        //            ldapsService = new LdapServer();
+        //            ldapsService.setDirectoryService( ldapService.getDirectoryService() );
+        //            int port = AvailablePortFinder.getNextAvailable( ldapService.getPort() + 10 );
+        //            ldapsService.setTcpTransport( new TcpTransport( port ) );
+        //            ldapsService.setEnabled( true );
+        //            ldapsService.setEnableLdaps( true );
+        //            ldapsService.setConfidentialityRequired( true );
+        //            ldapsService.start();
+        //        }
     }
 
 
@@ -231,7 +229,7 @@ public class NewConnectionWizardTest
         assertFalse( wizardBot.isFinishButtonEnabled() );
         assertTrue( wizardBot.isCancelButtonEnabled() );
 
-        // enter user again 
+        // enter user again
         wizardBot.typeUser( "uid=admin,ou=system" );
         // ensure "<Back" is enabled, "Next >" and "Finish" is enabled
         assertTrue( wizardBot.isBackButtonEnabled() );
@@ -413,17 +411,17 @@ public class NewConnectionWizardTest
 
         // disabled this test because it does not work properly
         // as it depends from the network connection settings.
-//        // enter connection parameter with non-routed IP address
-//        String ipAddress = "10.11.12.13";
-//        wizardBot.typeHost( ipAddress );
-//        wizardBot.typePort( ldapServer.getPort() );
-//
-//        // click "Check Network Parameter" button and get the result
-//        String result3 = wizardBot.clickCheckNetworkParameterButton();
-//        assertNotNull( "Expected Error", result3 );
-//        assertTrue( "'No route to host' or 'Network is unreachable' message must occur in error message", //
-//            result3.contains( "No route to host" ) || result3.contains( "Network is unreachable" ) );
-//        assertTrue( "IP address must occur in error message", result3.contains( ipAddress ) );
+        //        // enter connection parameter with non-routed IP address
+        //        String ipAddress = "10.11.12.13";
+        //        wizardBot.typeHost( ipAddress );
+        //        wizardBot.typePort( ldapServer.getPort() );
+        //
+        //        // click "Check Network Parameter" button and get the result
+        //        String result3 = wizardBot.clickCheckNetworkParameterButton();
+        //        assertNotNull( "Expected Error", result3 );
+        //        assertTrue( "'No route to host' or 'Network is unreachable' message must occur in error message", //
+        //            result3.contains( "No route to host" ) || result3.contains( "Network is unreachable" ) );
+        //        assertTrue( "IP address must occur in error message", result3.contains( ipAddress ) );
 
         wizardBot.clickCancelButton();
     }
@@ -479,15 +477,16 @@ public class NewConnectionWizardTest
 
 
     /**
-     * Tests StartTLS with an valid certificate. This is simulated 
+     * Tests StartTLS with an valid certificate. This is simulated
      * by putting the self-signed certificate into a temporary key store
      * and using this key store for JNDI
      */
     @Test
-    @Ignore // till DIRSERVER-1373 is fixed
+    @Ignore
+    // till DIRSERVER-1373 is fixed
     public void testStartTlsCertificateValidationOK() throws Exception
     {
-        // prepare certificate 
+        // prepare certificate
         Date startDate = new Date( System.currentTimeMillis() - YEAR_MILLIS );
         Date endDate = new Date( System.currentTimeMillis() + YEAR_MILLIS );
         updateCertificate( "cn=localhost", "cn=localhost", startDate, endDate );
@@ -527,10 +526,11 @@ public class NewConnectionWizardTest
      * Tests StartTLS with an expired certificate.
      */
     @Test
-    @Ignore // till DIRSERVER-1373 is fixed
+    @Ignore
+    // till DIRSERVER-1373 is fixed
     public void testStartTlsCertificateValidationExpired() throws Exception
     {
-        // prepare certificate 
+        // prepare certificate
         Date startDate = new Date( System.currentTimeMillis() - YEAR_MILLIS - YEAR_MILLIS );
         Date endDate = new Date( System.currentTimeMillis() - YEAR_MILLIS );
         updateCertificate( "cn=localhost", "cn=localhost", startDate, endDate );
@@ -562,10 +562,11 @@ public class NewConnectionWizardTest
      * Tests SSL with an not yet valid certificate.
      */
     @Test
-    @Ignore // till DIRSERVER-1373 is fixed
+    @Ignore
+    // till DIRSERVER-1373 is fixed
     public void testStartTlsCertificateValidationNotYetValid() throws Exception
     {
-        // prepare certificate 
+        // prepare certificate
         Date startDate = new Date( System.currentTimeMillis() + YEAR_MILLIS );
         Date endDate = new Date( System.currentTimeMillis() + YEAR_MILLIS + YEAR_MILLIS );
         updateCertificate( "cn=localhost", "cn=localhost", startDate, endDate );
@@ -597,10 +598,11 @@ public class NewConnectionWizardTest
      * Tests StartTLS with an invalid certificate (unknown issuer).
      */
     @Test
-    @Ignore // till DIRSERVER-1373 is fixed
+    @Ignore
+    // till DIRSERVER-1373 is fixed
     public void testStartTlsCertificateValidationIssuerUnknown() throws Exception
     {
-        // prepare certificate 
+        // prepare certificate
         Date startDate = new Date( System.currentTimeMillis() - YEAR_MILLIS );
         Date endDate = new Date( System.currentTimeMillis() + YEAR_MILLIS );
         updateCertificate( "cn=TheUnknownStuntman", "cn=localhost", startDate, endDate );
@@ -633,10 +635,11 @@ public class NewConnectionWizardTest
      * doesn't match the server's host name (localhost)
      */
     @Test
-    @Ignore // till DIRSERVER-1373 is fixed
+    @Ignore
+    // till DIRSERVER-1373 is fixed
     public void testStartTlsCertificateValidationHostnameMismatch() throws Exception
     {
-        // prepare certificate 
+        // prepare certificate
         Date startDate = new Date( System.currentTimeMillis() - YEAR_MILLIS );
         Date endDate = new Date( System.currentTimeMillis() + YEAR_MILLIS );
         updateCertificate( "cn=TheUnknownStuntman", "cn=ldap.example.com", startDate, endDate );
@@ -674,10 +677,11 @@ public class NewConnectionWizardTest
      * @throws Exception
      */
     @Test
-    @Ignore // till DIRSERVER-1373 is fixed
+    @Ignore
+    // till DIRSERVER-1373 is fixed
     public void testStartTlsCertificateDontTrust() throws Exception
     {
-        // prepare certificate 
+        // prepare certificate
         Date startDate = new Date( System.currentTimeMillis() - YEAR_MILLIS );
         Date endDate = new Date( System.currentTimeMillis() + YEAR_MILLIS );
         updateCertificate( "cn=TheUnknownStuntman", "cn=localhost", startDate, endDate );
@@ -741,10 +745,11 @@ public class NewConnectionWizardTest
      * @throws Exception
      */
     @Test
-    @Ignore // till DIRSERVER-1373 is fixed
+    @Ignore
+    // till DIRSERVER-1373 is fixed
     public void testStartTlsCertificateTrustTemporary() throws Exception
     {
-        // prepare certificate 
+        // prepare certificate
         Date startDate = new Date( System.currentTimeMillis() - YEAR_MILLIS );
         Date endDate = new Date( System.currentTimeMillis() + YEAR_MILLIS );
         updateCertificate( "cn=TheUnknownStuntman", "cn=localhost2", startDate, endDate );
@@ -787,10 +792,11 @@ public class NewConnectionWizardTest
      * @throws Exception
      */
     @Test
-    @Ignore // till DIRSERVER-1373 is fixed
+    @Ignore
+    // till DIRSERVER-1373 is fixed
     public void testStartTlsCertificateTrustPermanent() throws Exception
     {
-        // prepare certificate 
+        // prepare certificate
         Date startDate = new Date( System.currentTimeMillis() - YEAR_MILLIS );
         Date endDate = new Date( System.currentTimeMillis() + YEAR_MILLIS );
         updateCertificate( "cn=TheUnknownStuntman", "cn=localhost3", startDate, endDate );
@@ -824,15 +830,16 @@ public class NewConnectionWizardTest
 
 
     /**
-     * Tests ldaps:// with an valid certificate. This is simulated 
+     * Tests ldaps:// with an valid certificate. This is simulated
      * by putting the self-signed certificate into a temporary key store
      * and using this key store for JNDI
      */
     @Test
-    @Ignore // till DIRSERVER-1373 is fixed
+    @Ignore
+    // till DIRSERVER-1373 is fixed
     public void testLdapsCertificateValidationOK() throws Exception
     {
-        // prepare certificate 
+        // prepare certificate
         Date startDate = new Date( System.currentTimeMillis() - YEAR_MILLIS );
         Date endDate = new Date( System.currentTimeMillis() + YEAR_MILLIS );
         updateCertificate( "cn=localhost", "cn=localhost", startDate, endDate );
@@ -848,7 +855,7 @@ public class NewConnectionWizardTest
         // enter connection parameter and authentication parameter
         wizardBot.typeConnectionName( "NewConnectionWizardTest" );
         wizardBot.typeHost( "localhost" );
-        wizardBot.typePort( ldapsService.getPort() );
+        wizardBot.typePort( ldapServer.getPortSSL() );
         wizardBot.selectLdapsEncryption();
         wizardBot.clickNextButton();
         wizardBot.typeUser( "uid=admin,ou=system" );
@@ -863,10 +870,11 @@ public class NewConnectionWizardTest
 
 
     @Test
-    @Ignore // till DIRSERVER-1373 is fixed
+    @Ignore
+    // till DIRSERVER-1373 is fixed
     public void testLdapsCertificateValidationNotOK() throws Exception
     {
-        // prepare certificate 
+        // prepare certificate
         Date startDate = new Date( System.currentTimeMillis() + YEAR_MILLIS );
         Date endDate = new Date( System.currentTimeMillis() + YEAR_MILLIS + YEAR_MILLIS );
         updateCertificate( "cn=localhost", "cn=localhost", startDate, endDate );
@@ -874,7 +882,7 @@ public class NewConnectionWizardTest
         // enter connection parameter and authentication parameter
         wizardBot.typeConnectionName( "NewConnectionWizardTest" );
         wizardBot.typeHost( "localhost" );
-        wizardBot.typePort( ldapsService.getPort() );
+        wizardBot.typePort( ldapServer.getPortSSL() );
         wizardBot.selectLdapsEncryption();
         wizardBot.clickNextButton();
         wizardBot.typeUser( "uid=admin,ou=system" );
@@ -904,10 +912,11 @@ public class NewConnectionWizardTest
      * @throws Exception
      */
     @Test
-    @Ignore // till DIRSERVER-1373 is fixed
+    @Ignore
+    // till DIRSERVER-1373 is fixed
     public void testLdapsCertificateDontTrust() throws Exception
     {
-        // prepare certificate 
+        // prepare certificate
         Date startDate = new Date( System.currentTimeMillis() - YEAR_MILLIS );
         Date endDate = new Date( System.currentTimeMillis() + YEAR_MILLIS );
         updateCertificate( "cn=TheUnknownStuntman", "cn=localhost4", startDate, endDate );
@@ -915,7 +924,7 @@ public class NewConnectionWizardTest
         // enter connection parameter and authentication parameter
         wizardBot.typeConnectionName( "NewConnectionWizardTest" );
         wizardBot.typeHost( "localhost" );
-        wizardBot.typePort( ldapsService.getPort() );
+        wizardBot.typePort( ldapServer.getPortSSL() );
         wizardBot.selectLdapsEncryption();
         wizardBot.clickNextButton();
         wizardBot.typeUser( "uid=admin,ou=system" );
@@ -962,10 +971,11 @@ public class NewConnectionWizardTest
      * @throws Exception
      */
     @Test
-    @Ignore // till DIRSERVER-1373 is fixed
+    @Ignore
+    // till DIRSERVER-1373 is fixed
     public void testLdapsCertificateTrustTemporary() throws Exception
     {
-        // prepare certificate 
+        // prepare certificate
         Date startDate = new Date( System.currentTimeMillis() - YEAR_MILLIS );
         Date endDate = new Date( System.currentTimeMillis() + YEAR_MILLIS );
         updateCertificate( "cn=TheUnknownStuntman", "cn=localhost5", startDate, endDate );
@@ -973,7 +983,7 @@ public class NewConnectionWizardTest
         // enter connection parameter and authentication parameter
         wizardBot.typeConnectionName( "NewConnectionWizardTest" );
         wizardBot.typeHost( "localhost" );
-        wizardBot.typePort( ldapsService.getPort() );
+        wizardBot.typePort( ldapServer.getPortSSL() );
         wizardBot.selectLdapsEncryption();
         wizardBot.clickNextButton();
         wizardBot.typeUser( "uid=admin,ou=system" );
@@ -1008,10 +1018,11 @@ public class NewConnectionWizardTest
      * @throws Exception
      */
     @Test
-    @Ignore // till DIRSERVER-1373 is fixed
+    @Ignore
+    // till DIRSERVER-1373 is fixed
     public void testLdapsCertificateTrustPermanent() throws Exception
     {
-        // prepare certificate 
+        // prepare certificate
         Date startDate = new Date( System.currentTimeMillis() - YEAR_MILLIS );
         Date endDate = new Date( System.currentTimeMillis() + YEAR_MILLIS );
         updateCertificate( "cn=TheUnknownStuntman", "cn=localhost6", startDate, endDate );
@@ -1019,7 +1030,7 @@ public class NewConnectionWizardTest
         // enter connection parameter and authentication parameter
         wizardBot.typeConnectionName( "NewConnectionWizardTest" );
         wizardBot.typeHost( "localhost" );
-        wizardBot.typePort( ldapsService.getPort() );
+        wizardBot.typePort( ldapServer.getPortSSL() );
         wizardBot.selectLdapsEncryption();
         wizardBot.clickNextButton();
         wizardBot.typeUser( "uid=admin,ou=system" );
@@ -1046,18 +1057,18 @@ public class NewConnectionWizardTest
         wizardBot.clickCancelButton();
     }
 
-    /* 
+    /*
      * Eventually we have to make several of these parameters configurable,
      * however note to pass export restrictions we must use a key size of
      * 512 or less here as the default.  Users can configure this setting
-     * later based on their own legal situations.  This is required to 
+     * later based on their own legal situations.  This is required to
      * classify ApacheDS in the ECCN 5D002 category.  Please see the following
      * page for more information:
-     * 
+     *
      *    http://www.apache.org/dev/crypto.html
-     * 
+     *
      * Also ApacheDS must be classified on the following page:
-     * 
+     *
      *    http://www.apache.org/licenses/exports
      */
     private static final int KEY_SIZE = 512;
@@ -1072,16 +1083,16 @@ public class NewConnectionWizardTest
 
 
     /**
-     * 
+     *
      */
     private void updateCertificate( String issuerDN, String subjectDN, Date startDate, Date expiryDate )
         throws Exception
     {
-        LdapDN dn = new LdapDN( PRINCIPAL );
+        DN dn = new DN( PRINCIPAL );
         List<Modification> modifications = new ArrayList<Modification>();
 
         // Get old key algorithm
-        ClonedServerEntry entry = ldapServer.getDirectoryService().getAdminSession().lookup( dn );
+        Entry entry = ldapServer.getDirectoryService().getAdminSession().lookup( dn );
         String keyAlgo = entry.get( KEY_ALGORITHM_AT ).getString();
 
         // Generate key pair
@@ -1089,19 +1100,11 @@ public class NewConnectionWizardTest
         generator.initialize( KEY_SIZE );
         KeyPair keypair = generator.genKeyPair();
 
-        // Generate the private key attributes 
+        // Generate the private key attributes
         PrivateKey privateKey = keypair.getPrivate();
-        modifications.add( new ClientModification( ModificationOperation.REPLACE_ATTRIBUTE, new DefaultClientAttribute(
-            PRIVATE_KEY_AT, privateKey.getEncoded() ) ) );
-        modifications.add( new ClientModification( ModificationOperation.REPLACE_ATTRIBUTE, new DefaultClientAttribute(
-            PRIVATE_KEY_FORMAT_AT, privateKey.getFormat() ) ) );
 
         // Generate public key
         PublicKey publicKey = keypair.getPublic();
-        modifications.add( new ClientModification( ModificationOperation.REPLACE_ATTRIBUTE, new DefaultClientAttribute(
-            PUBLIC_KEY_AT, publicKey.getEncoded() ) ) );
-        modifications.add( new ClientModification( ModificationOperation.REPLACE_ATTRIBUTE, new DefaultClientAttribute(
-            PUBLIC_KEY_FORMAT_AT, publicKey.getFormat() ) ) );
 
         // Generate the self-signed certificate
         BigInteger serialNumber = BigInteger.valueOf( System.currentTimeMillis() );
@@ -1116,12 +1119,17 @@ public class NewConnectionWizardTest
         certGen.setPublicKey( publicKey );
         certGen.setSignatureAlgorithm( "SHA1With" + keyAlgo );
         X509Certificate cert = certGen.generate( privateKey, "BC" );
-        modifications.add( new ClientModification( ModificationOperation.REPLACE_ATTRIBUTE, new DefaultClientAttribute(
-            USER_CERTIFICATE_AT, cert.getEncoded() ) ) );
 
         // Write the modifications
+        ModifyRequest request = new ModifyRequestImpl();
+        request.setName( dn );
+        request.replace( PRIVATE_KEY_AT, privateKey.getEncoded() );
+        request.replace( PRIVATE_KEY_FORMAT_AT, privateKey.getFormat() );
+        request.replace( PUBLIC_KEY_AT, publicKey.getEncoded() );
+        request.replace( PUBLIC_KEY_FORMAT_AT, publicKey.getFormat() );
+        request.replace( USER_CERTIFICATE_AT, cert.getEncoded() );
         ldapServer.getDirectoryService().getAdminSession().modify( dn, modifications );
-        
+
         // TODO: activate when DIRSERVER-1373 is fixed
         //ldapService.reloadSslContext();
         //ldapsService.reloadSslContext();
@@ -1137,7 +1145,7 @@ public class NewConnectionWizardTest
         ksFile = File.createTempFile( "testStore", "ks" );
 
         CoreSession session = ldapServer.getDirectoryService().getAdminSession();
-        ClonedServerEntry entry = session.lookup( new LdapDN( "uid=admin,ou=system" ), new String[]
+        Entry entry = session.lookup( new DN( "uid=admin,ou=system" ), new String[]
             { USER_CERTIFICATE_AT } );
         byte[] userCertificate = entry.get( USER_CERTIFICATE_AT ).getBytes();
         assertNotNull( userCertificate );

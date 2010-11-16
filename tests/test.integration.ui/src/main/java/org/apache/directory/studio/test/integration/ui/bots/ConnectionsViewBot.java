@@ -6,16 +6,16 @@
  *  to you under the Apache License, Version 2.0 (the
  *  "License"); you may not use this file except in compliance
  *  with the License.  You may obtain a copy of the License at
- *  
+ *
  *    http://www.apache.org/licenses/LICENSE-2.0
- *  
+ *
  *  Unless required by applicable law or agreed to in writing,
  *  software distributed under the License is distributed on an
  *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  *  KIND, either express or implied.  See the License for the
  *  specific language governing permissions and limitations
- *  under the License. 
- *  
+ *  under the License.
+ *
  */
 package org.apache.directory.studio.test.integration.ui.bots;
 
@@ -28,6 +28,7 @@ import org.apache.directory.studio.connection.core.ConnectionManager;
 import org.apache.directory.studio.connection.core.ConnectionParameter;
 import org.apache.directory.studio.connection.core.ConnectionParameter.AuthenticationMethod;
 import org.apache.directory.studio.connection.core.ConnectionParameter.EncryptionMethod;
+import org.apache.directory.studio.connection.core.ConnectionParameter.NetworkProvider;
 import org.apache.directory.studio.connection.core.jobs.OpenConnectionsRunnable;
 import org.apache.directory.studio.connection.core.jobs.StudioConnectionJob;
 import org.apache.directory.studio.test.integration.ui.ContextMenuHelper;
@@ -55,7 +56,7 @@ public class ConnectionsViewBot
     {
         getConnectionsTree().contextMenu( "Open Connection" ).click();
     }
-    
+
 
     public void closeSelectedConnections()
     {
@@ -124,14 +125,14 @@ public class ConnectionsViewBot
 
     /**
      * Creates the test connection.
-     * 
+     *
      * @param name
      *            the name of the connection
      * @param port
      *            the port to use
-     * 
+     *
      * @return the connection
-     * 
+     *
      */
     public Connection createTestConnection( String name, int port ) throws Exception
     {
@@ -139,6 +140,7 @@ public class ConnectionsViewBot
 
         ConnectionManager connectionManager = ConnectionCorePlugin.getDefault().getConnectionManager();
         ConnectionParameter connectionParameter = new ConnectionParameter();
+        connectionParameter.setNetworkProvider( NetworkProvider.JNDI );
         connectionParameter.setName( name );
         connectionParameter.setHost( "localhost" );
         connectionParameter.setPort( port );
