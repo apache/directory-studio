@@ -94,7 +94,7 @@
  org.apache.directory.server.i18n;bundle-version="${org.apache.directory.server.validversion}",
  org.apache.directory.shared.i18n;bundle-version="${org.apache.directory.shared.validversion}",
  org.apache.directory.shared.ldap;bundle-version="${org.apache.directory.shared.validversion}",
- org.apache.directory.shared.ldapclientapi;bundle-version="${org.apache.directory.shared.validversion}",
+ org.apache.directory.shared.ldap.client.api;bundle-version="${org.apache.directory.shared.validversion}",
  org.apache.directory.shared.ldap.schema;bundle-version="${org.apache.directory.shared.validversion}",
  org.apache.mina.core;bundle-version="${org.apache.mina.core.version}",
  org.apache.logging.log4j;bundle-version="${org.apache.logging.log4j.version}",
