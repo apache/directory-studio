@@ -40,6 +40,7 @@
     <module>org.apache.commons.logging</module>
     <module>org.apache.commons.pool</module>
     <module>org.apache.directory.server.core.api</module>
+    <module>org.apache.directory.server.core.avl</module>
     <module>org.apache.directory.server.core.constants</module>
     <module>org.apache.directory.server.i18n</module>
     <module>org.apache.directory.server.xdbm.partition</module>

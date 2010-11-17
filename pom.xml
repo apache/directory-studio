@@ -1187,6 +1187,11 @@
       </dependency>
       <dependency>
         <groupId>org.apache.directory.server</groupId>
+        <artifactId>apacheds-core-avl</artifactId>
+        <version>${org.apache.directory.server.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.directory.server</groupId>
         <artifactId>apacheds-core-constants</artifactId>
         <version>${org.apache.directory.server.version}</version>
       </dependency>
