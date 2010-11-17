@@ -92,7 +92,7 @@
  org.apache.directory.server.i18n;bundle-version="${org.apache.directory.server.validversion}",
  org.apache.directory.shared.i18n;bundle-version="${org.apache.directory.shared.validversion}",
  org.apache.directory.shared.ldap;bundle-version="${org.apache.directory.shared.validversion}",
- org.apache.directory.shared.ldapschema;bundle-version="${org.apache.directory.shared.validversion}",
+ org.apache.directory.shared.ldap.schema;bundle-version="${org.apache.directory.shared.validversion}",
  org.slf4j.api;bundle-version="${org.slf4j.version}"</Require-Bundle>
             <Embed-Dependency>*;scope=compile|runtime</Embed-Dependency>
             <Embed-Directory>lib</Embed-Directory>

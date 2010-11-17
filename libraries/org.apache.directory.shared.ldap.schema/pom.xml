@@ -26,7 +26,7 @@
     <version>2.0.0-SNAPSHOT</version>
   </parent>
 
-  <artifactId>org.apache.directory.shared.ldapschema</artifactId>
+  <artifactId>org.apache.directory.shared.ldap.schema</artifactId>
   <version>${org.apache.directory.shared.version}</version>
   
   <name>Apache Directory Shared LDAP Schema (for Apache Directory Studio)</name>

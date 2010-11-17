@@ -181,7 +181,12 @@
 
   <dependencyManagement>
     <dependencies>
-      <!-- Apache Directory Studio -->
+      <!-- Apache Directory Studio Libraries -->
+      <dependency>
+        <groupId>org.apache.directory.studio</groupId>
+        <artifactId>net.sf.ehcache.core</artifactId>
+        <version>${net.sf.ehcache.version}</version>
+      </dependency>
       <dependency>
         <groupId>org.apache.directory.studio</groupId>
         <artifactId>org.antlr.antlr</artifactId>
@@ -209,13 +214,38 @@
       </dependency>
       <dependency>
         <groupId>org.apache.directory.studio</groupId>
+        <artifactId>org.apache.commons.logging</artifactId>
+        <version>${org.apache.commons.logging.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.directory.studio</groupId>
         <artifactId>org.apache.commons.pool</artifactId>
         <version>${org.apache.commons.pool.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.directory.studio</groupId>
-        <artifactId>org.apache.commons.logging</artifactId>
-        <version>${org.apache.commons.logging.version}</version>
+        <artifactId>org.apache.directory.server.core.api</artifactId>
+        <version>${org.apache.directory.server.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.directory.studio</groupId>
+        <artifactId>org.apache.directory.server.core.avl</artifactId>
+        <version>${org.apache.directory.server.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.directory.studio</groupId>
+        <artifactId>org.apache.directory.server.core.constants</artifactId>
+        <version>${org.apache.directory.server.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.directory.studio</groupId>
+        <artifactId>org.apache.directory.server.i18n</artifactId>
+        <version>${org.apache.directory.server.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.directory.studio</groupId>
+        <artifactId>org.apache.directory.server.xdbm.partition</artifactId>
+        <version>${org.apache.directory.server.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.directory.studio</groupId>
@@ -234,12 +264,12 @@
       </dependency>
       <dependency>
         <groupId>org.apache.directory.studio</groupId>
-        <artifactId>org.apache.directory.shared.ldapschema</artifactId>
+        <artifactId>org.apache.directory.shared.ldapclientapi</artifactId>
         <version>${org.apache.directory.shared.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.directory.studio</groupId>
-        <artifactId>org.apache.directory.shared.ldapclientapi</artifactId>
+        <artifactId>org.apache.directory.shared.ldap.schema</artifactId>
         <version>${org.apache.directory.shared.version}</version>
       </dependency>
       <dependency>
@@ -288,7 +318,7 @@
         <version>${org.xpp3.validversion}</version>
       </dependency>
       
-      
+      <!-- Apache Directory Studio Plugins -->
       <dependency>
         <groupId>org.apache.directory.studio</groupId>
         <artifactId>aciitemeditor</artifactId>

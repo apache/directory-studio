@@ -48,7 +48,7 @@
     <module>org.apache.directory.shared.i18n</module>
     <module>org.apache.directory.shared.ldap</module>
     <module>org.apache.directory.shared.ldapclientapi</module>
-    <module>org.apache.directory.shared.ldapschema</module>
+    <module>org.apache.directory.shared.ldap.schema</module>
     <module>org.apache.httpcomponents.httpclient</module>
     <module>org.apache.httpcomponents.httpcore</module>
     <module>org.apache.logging.log4j</module>
