@@ -136,9 +136,6 @@ public abstract class ServerConfigurationEditorPage extends FormPage
     protected Text createIntegerText( FormToolkit toolkit, Composite parent )
     {
         Text integerText = toolkit.createText( parent, "" ); //$NON-NLS-1$
-        GridData gd = new GridData( SWT.NONE, SWT.NONE, false, false );
-        gd.widthHint = 42;
-        integerText.setLayoutData( gd );
         integerText.addVerifyListener( new VerifyListener()
         {
             public void verifyText( VerifyEvent e )
