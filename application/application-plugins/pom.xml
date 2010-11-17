@@ -96,11 +96,11 @@
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.apache.directory.studio</groupId>
-                  <artifactId>org.apache.directory.shared.ldapclientapi</artifactId>
+                  <artifactId>org.apache.directory.shared.ldap.client.api</artifactId>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.apache.directory.studio</groupId>
-                  <artifactId>org.apache.directory.shared.ldapschema</artifactId>
+                  <artifactId>org.apache.directory.shared.ldap.schema</artifactId>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.apache.directory.studio</groupId>
