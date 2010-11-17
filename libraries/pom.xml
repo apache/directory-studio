@@ -31,6 +31,7 @@
   <packaging>pom</packaging>
 
   <modules>
+    <module>net.sf.ehcache.core</module>
     <module>org.antlr.antlr</module>
     <module>org.apache.commons.codec</module>
     <module>org.apache.commons.collections</module>
@@ -38,6 +39,9 @@
     <module>org.apache.commons.lang</module>
     <module>org.apache.commons.logging</module>
     <module>org.apache.commons.pool</module>
+    <module>org.apache.directory.server.core.api</module>
+    <module>org.apache.directory.server.core.constants</module>
+    <module>org.apache.directory.server.i18n</module>
     <module>org.apache.directory.shared.dsmlparser</module>
     <module>org.apache.directory.shared.i18n</module>
     <module>org.apache.directory.shared.ldap</module>
