@@ -26,7 +26,7 @@
     <version>2.0.0-SNAPSHOT</version>
   </parent>
 
-  <artifactId>org.apache.directory.shared.dsmlparser</artifactId>
+  <artifactId>org.apache.directory.shared.dsml.parser</artifactId>
   <version>${org.apache.directory.shared.version}</version>
   
   <name>Apache Directory DSML Parser (for Apache Directory Studio)</name>

@@ -249,7 +249,7 @@
       </dependency>
       <dependency>
         <groupId>org.apache.directory.studio</groupId>
-        <artifactId>org.apache.directory.shared.dsmlparser</artifactId>
+        <artifactId>org.apache.directory.shared.dsml.parser</artifactId>
         <version>${org.apache.directory.shared.version}</version>
       </dependency>
       <dependency>
