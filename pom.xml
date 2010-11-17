@@ -1195,6 +1195,11 @@
         <artifactId>apacheds-i18n</artifactId>
         <version>${org.apache.directory.server.version}</version>
       </dependency>
+      <dependency>
+        <groupId>org.apache.directory.server</groupId>
+        <artifactId>apacheds-xdbm-partition</artifactId>
+        <version>${org.apache.directory.server.version}</version>
+      </dependency>
 
       <!-- Other dependencies -->
       <dependency>
