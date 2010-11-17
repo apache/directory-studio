@@ -26,7 +26,7 @@
     <version>2.0.0-SNAPSHOT</version>
   </parent>
 
-  <artifactId>org.apache.directory.shared.ldapclientapi</artifactId>
+  <artifactId>org.apache.directory.shared.ldap.client.api</artifactId>
   <version>${org.apache.directory.shared.version}</version>
   
   <name>Apache Directory LDAP Client API (for Apache Directory Studio)</name>

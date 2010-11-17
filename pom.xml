@@ -264,7 +264,7 @@
       </dependency>
       <dependency>
         <groupId>org.apache.directory.studio</groupId>
-        <artifactId>org.apache.directory.shared.ldapclientapi</artifactId>
+        <artifactId>org.apache.directory.shared.ldap.client.api</artifactId>
         <version>${org.apache.directory.shared.version}</version>
       </dependency>
       <dependency>
