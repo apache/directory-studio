@@ -224,6 +224,11 @@
       </dependency>
       <dependency>
         <groupId>org.apache.directory.studio</groupId>
+        <artifactId>org.apache.directory.server.config</artifactId>
+        <version>${org.apache.directory.server.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.directory.studio</groupId>
         <artifactId>org.apache.directory.server.core.api</artifactId>
         <version>${org.apache.directory.server.version}</version>
       </dependency>
@@ -240,6 +245,11 @@
       <dependency>
         <groupId>org.apache.directory.studio</groupId>
         <artifactId>org.apache.directory.server.i18n</artifactId>
+        <version>${org.apache.directory.server.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.directory.studio</groupId>
+        <artifactId>org.apache.directory.server.ldif.partition</artifactId>
         <version>${org.apache.directory.server.version}</version>
       </dependency>
       <dependency>
@@ -1228,6 +1238,11 @@
       <dependency>
         <groupId>org.apache.directory.server</groupId>
         <artifactId>apacheds-i18n</artifactId>
+        <version>${org.apache.directory.server.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.directory.server</groupId>
+        <artifactId>apacheds-ldif-partition</artifactId>
         <version>${org.apache.directory.server.version}</version>
       </dependency>
       <dependency>
