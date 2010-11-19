@@ -20,6 +20,8 @@
 package org.apache.directory.studio.apacheds.configuration.v2.editor;
 
 
+import org.apache.directory.server.config.beans.ConfigBean;
+import org.apache.directory.server.config.beans.LdapServerBean;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.CheckboxTableViewer;
 import org.eclipse.swt.SWT;
@@ -79,7 +81,7 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
      * @param editor
      *      the associated editor
      */
-    public LdapLdapsServersPage( FormEditor editor )
+    public LdapLdapsServersPage( ServerConfigurationEditor editor )
     {
         super( editor, ID, TITLE );
     }
@@ -311,14 +313,18 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
 
     private void initUI()
     {
-        enableLdapCheckbox.setSelection( true );
-        ldapPortText.setText( "10389" );
+        ConfigBean configBean = getConfigBean();
+
+        LdapServerBean ldapServerBean = configBean.getDirectoryServiceBean().getLdapServerBean();
+
+        enableLdapCheckbox.setSelection( ldapServerBean.isEnabled() );
+        ldapPortText.setText( ldapServerBean.getTransports()[0].getSystemPort() + "" );
 
         enableLdapsCheckbox.setSelection( true );
         ldapsPortText.setText( "10636" );
 
-        saslHostText.setText( "ldap.example.com" );
-        saslPrincipalText.setText( "ldap/ldap.example.com@EXAMPLE.COM" );
-        saslSearchBaseDnText.setText( "ou=users,dc=example,dc=com" );
+        saslHostText.setText( ldapServerBean.getLdapServerSaslHost() );
+        saslPrincipalText.setText( ldapServerBean.getLdapServerSaslPrincipal() );
+        saslSearchBaseDnText.setText( ldapServerBean.getSearchBaseDn().toString() );
     }
 }

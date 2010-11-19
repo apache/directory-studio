@@ -23,6 +23,11 @@ package org.apache.directory.studio.apacheds.configuration.v2.editor;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.directory.server.config.beans.ChangePasswordServerBean;
+import org.apache.directory.server.config.beans.ConfigBean;
+import org.apache.directory.server.config.beans.DirectoryServiceBean;
+import org.apache.directory.server.config.beans.KdcServerBean;
+import org.apache.directory.server.config.beans.LdapServerBean;
 import org.apache.directory.studio.apacheds.configuration.v2.ApacheDS2ConfigurationPlugin;
 import org.apache.directory.studio.apacheds.configuration.v2.ApacheDS2ConfigurationPluginConstants;
 import org.eclipse.jface.viewers.ArrayContentProvider;
@@ -37,7 +42,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.ui.forms.editor.FormEditor;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.Hyperlink;
 import org.eclipse.ui.forms.widgets.Section;
@@ -83,7 +87,7 @@ public class OverviewPage extends ServerConfigurationEditorPage
      * @param editor
      *      the associated editor
      */
-    public OverviewPage( FormEditor editor )
+    public OverviewPage( ServerConfigurationEditor editor )
     {
         super( editor, ID, TITLE );
     }
@@ -254,23 +258,34 @@ public class OverviewPage extends ServerConfigurationEditorPage
 
     private void initUI()
     {
-        enableLdapCheckbox.setSelection( true );
-        ldapPortText.setText( "10389" );
+        ConfigBean configBean = getConfigBean();
+
+        DirectoryServiceBean directoryServiceBean = configBean.getDirectoryServiceBean();
+
+        LdapServerBean ldapServerBean = directoryServiceBean.getLdapServerBean();
+        KdcServerBean kdcServerBean = directoryServiceBean.getKdcServerBean();
+        ChangePasswordServerBean changePasswordServerBean = directoryServiceBean.getChangePasswordServerBean();
+
+        enableLdapCheckbox.setSelection( ldapServerBean.isEnabled() );
+        ldapPortText.setText( ldapServerBean.getTransports()[0].getSystemPort() + "" );
 
         enableLdapsCheckbox.setSelection( true );
         ldapsPortText.setText( "10636" );
 
-        enableKerberosCheckbox.setSelection( true );
-        kerberosPortText.setText( "60088" );
+        enableKerberosCheckbox.setSelection( kdcServerBean.isEnabled() );
+        kerberosPortText.setText( "" + kdcServerBean.getTransports()[0].getSystemPort() );
 
-        enableChangePasswordCheckbox.setSelection( true );
-        changePasswordPortText.setText( "60464" );
+        enableChangePasswordCheckbox.setSelection( changePasswordServerBean.isEnabled() );
+        changePasswordPortText.setText( "" + changePasswordServerBean.getTransports()[0].getSystemPort() );
 
         partitionsLabel.setText( "There are 2 partitions defined:" );
         List<String> partitionsList = new ArrayList<String>();
         partitionsList.add( "dc=example,dc=com (id=example)" );
         partitionsList.add( "ou=system (id=system)" );
         partitionsTableViewer.setInput( partitionsList.toArray() );
+
+        allowAnonymousAccessCheckbox.setSelection( directoryServiceBean.isDsAllowAnonymousAccess() );
+        enableAccesControlCheckbox.setSelection( directoryServiceBean.isDsAccessControlEnabled() );
     }
 
 

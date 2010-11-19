@@ -20,6 +20,7 @@
 package org.apache.directory.studio.apacheds.configuration.v2.editor;
 
 
+import org.apache.directory.server.config.beans.ConfigBean;
 import org.apache.directory.studio.apacheds.configuration.v2.actions.EditorAddPageAction;
 import org.apache.directory.studio.apacheds.configuration.v2.actions.EditorExportConfigurationAction;
 import org.apache.directory.studio.apacheds.configuration.v2.actions.EditorImportConfigurationAction;
@@ -59,9 +60,27 @@ public abstract class ServerConfigurationEditorPage extends FormPage
      * @param editor
      *      the associated editor
      */
-    public ServerConfigurationEditorPage( FormEditor editor, String id, String title )
+    public ServerConfigurationEditorPage( ServerConfigurationEditor editor, String id, String title )
     {
         super( editor, id, title );
+    }
+
+
+    /**
+     * TODO getConfigBean.
+     *
+     * @return
+     */
+    public ConfigBean getConfigBean()
+    {
+        FormEditor editor = getEditor();
+
+        if ( editor instanceof ServerConfigurationEditor )
+        {
+            return ( ( ServerConfigurationEditor ) editor ).getConfigBean();
+        }
+
+        return null;
     }
 
 

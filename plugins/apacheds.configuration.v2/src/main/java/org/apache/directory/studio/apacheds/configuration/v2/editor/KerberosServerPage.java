@@ -20,6 +20,10 @@
 package org.apache.directory.studio.apacheds.configuration.v2.editor;
 
 
+import org.apache.directory.server.config.beans.ChangePasswordServerBean;
+import org.apache.directory.server.config.beans.ConfigBean;
+import org.apache.directory.server.config.beans.KdcServerBean;
+import org.apache.directory.server.config.beans.LdapServerBean;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -52,14 +56,19 @@ public class KerberosServerPage extends ServerConfigurationEditorPage
     private Text kerberosPortText;
     private Button enableChangePasswordCheckbox;
     private Text changePasswordPortText;
-
     private Text kdcPrincipalText;
-
     private Text primaryKdcRealmText;
-
     private Text kdcSearchBaseDnText;
-
     private Text encryptionTypesText;
+    private Button allowClockSkewButton;
+    private Button verifyBodyChecksumButton;
+    private Button allowEmptyAddressesButton;
+    private Button allowForwardableAddressesButton;
+    private Button requirePreAuthenticationByEncryptedTimeStampButton;
+    private Button allowPostdatedTicketsButtons;
+    private Button allowRenewableTicketsButton;
+    private Text maximumRenewableLifetimeText;
+    private Text maximumTicketLifetimeText;
 
 
     /**
@@ -68,7 +77,7 @@ public class KerberosServerPage extends ServerConfigurationEditorPage
      * @param editor
      *      the associated editor
      */
-    public KerberosServerPage( FormEditor editor )
+    public KerberosServerPage( ServerConfigurationEditor editor )
     {
         super( editor, ID, TITLE );
     }
@@ -205,39 +214,58 @@ public class KerberosServerPage extends ServerConfigurationEditorPage
         composite.setLayout( glayout );
         section.setClient( composite );
 
-        Button allowClockSkewButton = toolkit.createButton( composite, "Allow Clock Skew", SWT.CHECK );
-        Button verifyBodyChecksumButton = toolkit.createButton( composite, "Verify Body Checksum", SWT.CHECK );
+        allowClockSkewButton = toolkit.createButton( composite, "Allow Clock Skew", SWT.CHECK );
+        verifyBodyChecksumButton = toolkit.createButton( composite, "Verify Body Checksum", SWT.CHECK );
 
-        Button allowEmptyAddressesButton = toolkit.createButton( composite, "Allow Empty Addresses", SWT.CHECK );
-        Button allowForwardableAddressesButton = toolkit.createButton( composite, "Allow Forwardable Addresses",
+        allowEmptyAddressesButton = toolkit.createButton( composite, "Allow Empty Addresses", SWT.CHECK );
+        allowForwardableAddressesButton = toolkit.createButton( composite, "Allow Forwardable Addresses",
             SWT.CHECK );
 
-        Button requirePreAuthenticationByEncryptedTimeStampButton = toolkit.createButton( composite,
+        requirePreAuthenticationByEncryptedTimeStampButton = toolkit.createButton( composite,
             "Require Pre-Authentication By Encrypted TimeStamp", SWT.CHECK );
-        Button allowPostdatedTicketsButtons = toolkit.createButton( composite, "Allow Postdated Tickets", SWT.CHECK );
+        allowPostdatedTicketsButtons = toolkit.createButton( composite, "Allow Postdated Tickets", SWT.CHECK );
 
-        Button allowRenewableTicketsButton = toolkit.createButton( composite, "Allow Renewable Tickets", SWT.CHECK );
+        allowRenewableTicketsButton = toolkit.createButton( composite, "Allow Renewable Tickets", SWT.CHECK );
         toolkit.createLabel( composite, "" );
 
         Composite maximumRenewableLifetimeComposite = toolkit.createComposite( composite );
         maximumRenewableLifetimeComposite.setLayout( new GridLayout( 2, false ) );
         toolkit.createLabel( maximumRenewableLifetimeComposite, "Maximum Renewable Lifetime:" );
-        Text maximumRenewableLifetimeText = createIntegerText( toolkit, maximumRenewableLifetimeComposite );
+        maximumRenewableLifetimeText = createIntegerText( toolkit, maximumRenewableLifetimeComposite );
 
         Composite maximumTicketLifetimeComposite = toolkit.createComposite( composite );
         maximumTicketLifetimeComposite.setLayout( new GridLayout( 2, false ) );
         toolkit.createLabel( maximumTicketLifetimeComposite, "Maximum Ticket Lifetime:" );
-        Text maximumTicketLifetimeText = createIntegerText( toolkit, maximumTicketLifetimeComposite );
+        maximumTicketLifetimeText = createIntegerText( toolkit, maximumTicketLifetimeComposite );
 
     }
 
 
     private void initUI()
     {
-        enableKerberosCheckbox.setSelection( true );
-        kerberosPortText.setText( "60088" );
+        ConfigBean configBean = getConfigBean();
 
-        enableChangePasswordCheckbox.setSelection( true );
-        changePasswordPortText.setText( "60464" );
+        KdcServerBean kdcServerBean = configBean.getDirectoryServiceBean().getKdcServerBean();
+        ChangePasswordServerBean changePasswordServerBean = configBean.getDirectoryServiceBean()
+            .getChangePasswordServerBean();
+
+        enableKerberosCheckbox.setSelection( kdcServerBean.isEnabled() );
+        kerberosPortText.setText( "" + kdcServerBean.getTransports()[0].getSystemPort() );
+
+        enableChangePasswordCheckbox.setSelection( changePasswordServerBean.isEnabled() );
+        changePasswordPortText.setText( "" + changePasswordServerBean.getTransports()[0].getSystemPort() );
+
+        kdcPrincipalText.setText( kdcServerBean.getKrbKdcPrincipal().toString() );
+        kdcSearchBaseDnText.setText( kdcServerBean.getSearchBaseDn().toString() );
+        encryptionTypesText.setText( kdcServerBean.getKrbEncryptionTypes().toString() );
+
+        verifyBodyChecksumButton.setSelection( kdcServerBean.isKrbBodyChecksumVerified() );
+        allowEmptyAddressesButton.setSelection( kdcServerBean.isKrbEmptyAddressesAllowed() );
+        allowForwardableAddressesButton.setSelection( kdcServerBean.isKrbForwardableAllowed() );
+        requirePreAuthenticationByEncryptedTimeStampButton.setSelection( kdcServerBean.isKrbPaEncTimestampRequired() );
+        allowPostdatedTicketsButtons.setSelection( kdcServerBean.isKrbPostdatedAllowed() );
+        allowRenewableTicketsButton.setSelection( kdcServerBean.isKrbRenewableAllowed() );
+        maximumRenewableLifetimeText.setText( kdcServerBean.getKrbMaximumRenewableLifetime() + "" );
+        maximumTicketLifetimeText.setText( kdcServerBean.getKrbMaximumTicketLifetime() + "" );
     }
 }

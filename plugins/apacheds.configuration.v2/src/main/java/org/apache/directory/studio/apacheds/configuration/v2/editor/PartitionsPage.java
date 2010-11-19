@@ -45,7 +45,7 @@ public class PartitionsPage extends ServerConfigurationEditorPage
      * @param editor
      *      the associated editor
      */
-    public PartitionsPage( FormEditor editor )
+    public PartitionsPage( ServerConfigurationEditor editor )
     {
         super( editor, ID, TITLE );
     }
