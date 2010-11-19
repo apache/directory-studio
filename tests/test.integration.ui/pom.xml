@@ -275,13 +275,13 @@
  org.apache.directory.studio.apacheds,
  org.apache.directory.shared.i18n,
  org.apache.directory.shared.ldap,
- org.apache.directory.shared.ldapschema,
- org.apache.directory.shared.ldapclientapi,
+ org.apache.directory.shared.ldap.schema,
+ org.apache.directory.shared.ldap.client.api,
  org.apache.mina.core,
  org.apache.commons.collections,
  org.apache.commons.io,
  org.apache.commons.lang,
- org.bouncycastle.bcprovjdk15,
+ org.bouncycastle.bcprov.jdk15,
  org.slf4j.api,
  org.slf4j.log4j12,
  org.apache.logging.log4j,
@@ -324,7 +324,7 @@
     <!-- Apache Directory Studio library plugins dependencies -->
     <dependency>
       <groupId>org.apache.directory.studio</groupId>
-      <artifactId>org.bouncycastle.bcprovjdk15</artifactId>
+      <artifactId>org.bouncycastle.bcprov.jdk15</artifactId>
       <scope>provided</scope>
     </dependency>
     <dependency>
