@@ -20,6 +20,7 @@
 package org.apache.directory.studio.apacheds.configuration.v2.editor;
 
 
+import org.apache.directory.studio.apacheds.configuration.v2.actions.EditorAddPageAction;
 import org.apache.directory.studio.apacheds.configuration.v2.actions.EditorExportConfigurationAction;
 import org.apache.directory.studio.apacheds.configuration.v2.actions.EditorImportConfigurationAction;
 import org.eclipse.jface.action.IToolBarManager;
@@ -82,6 +83,8 @@ public abstract class ServerConfigurationEditorPage extends FormPage
         toolbarManager.add( new EditorImportConfigurationAction() );
         toolbarManager.add( new Separator() );
         toolbarManager.add( new EditorExportConfigurationAction() );
+        toolbarManager.add( new Separator() );
+        toolbarManager.add( new EditorAddPageAction( ( ServerConfigurationEditor ) getEditor() ) );
         toolbarManager.update( true );
 
         createFormContent( parent, toolkit );

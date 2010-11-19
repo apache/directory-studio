@@ -21,6 +21,18 @@
 package org.apache.directory.studio.apacheds.configuration.v2.actions;
 
 
+import java.io.File;
+import java.util.List;
+
+import org.apache.directory.server.config.ConfigPartitionReader;
+import org.apache.directory.server.config.beans.ConfigBean;
+import org.apache.directory.server.core.partition.ldif.SingleFileLdifPartition;
+import org.apache.directory.shared.ldap.name.DN;
+import org.apache.directory.shared.ldap.schema.SchemaManager;
+import org.apache.directory.shared.ldap.schema.loader.ldif.LdifSchemaLoader;
+import org.apache.directory.shared.ldap.schema.manager.impl.DefaultSchemaManager;
+import org.apache.directory.shared.ldap.schema.registries.SchemaLoader;
+import org.apache.directory.shared.ldap.util.LdapExceptionUtils;
 import org.apache.directory.studio.apacheds.configuration.v2.editor.ServerConfigurationEditor;
 import org.apache.directory.studio.apacheds.configuration.v2.editor.ServerConfigurationInput;
 import org.eclipse.jface.action.IAction;
@@ -44,14 +56,21 @@ public class OpenConfigurationAction implements IObjectActionDelegate
      */
     public void run( IAction action )
     {
-        System.out.println( "Action!" );
-        IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
         try
         {
-            page.openEditor( new ServerConfigurationInput(),
-                ServerConfigurationEditor.ID );
+            IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
+            try
+            {
+                page.openEditor( new ServerConfigurationInput(),
+                    ServerConfigurationEditor.ID );
+            }
+            catch ( PartInitException e )
+            {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
         }
-        catch ( PartInitException e )
+        catch ( Exception e )
         {
             // TODO Auto-generated catch block
             e.printStackTrace();

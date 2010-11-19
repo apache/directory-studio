@@ -20,6 +20,12 @@
 package org.apache.directory.studio.apacheds.configuration.v2.editor;
 
 
+import org.apache.directory.server.config.beans.ConfigBean;
+import org.apache.directory.studio.apacheds.configuration.v2.ApacheDS2ConfigurationPlugin;
+import org.apache.directory.studio.apacheds.configuration.v2.ApacheDS2ConfigurationPluginConstants;
+import org.apache.directory.studio.apacheds.configuration.v2.jobs.LoadConfigurationRunnable;
+import org.apache.directory.studio.common.core.jobs.StudioJob;
+import org.apache.directory.studio.common.core.jobs.StudioRunnableWithProgress;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Platform;
@@ -43,6 +49,9 @@ public class ServerConfigurationEditor extends FormEditor
     /** The Page ID*/
     public static final String ID = ServerConfigurationEditor.class.getName();
 
+    /** The configuration bean */
+    private ConfigBean configBean;
+
 
     /**
      * {@inheritDoc}
@@ -51,6 +60,11 @@ public class ServerConfigurationEditor extends FormEditor
     {
         super.init( site, input );
         setPartName( input.getName() );
+
+
+        // Creating and scheduling the job to delete the server
+        StudioJob<StudioRunnableWithProgress> job = new StudioJob<StudioRunnableWithProgress>( new LoadConfigurationRunnable( this ) );
+        job.schedule();
     }
 
 
@@ -61,11 +75,15 @@ public class ServerConfigurationEditor extends FormEditor
     {
         try
         {
-            addPage( new OverviewPage( this ) );
-            addPage( new LdapLdapsServersPage( this ) );
-            addPage( new KerberosServerPage( this ) );
-            addPage( new PartitionsPage( this ) );
-            addPage( new ReplicationPage( this ) );
+            addPage( new LoadingPage( this ) );
+            setPageImage( 0, ApacheDS2ConfigurationPlugin.getDefault().getImage(
+                ApacheDS2ConfigurationPluginConstants.IMG_IMPORT ) );
+
+            //            addPage( new OverviewPage( this ) );
+            //            addPage( new LdapLdapsServersPage( this ) );
+            //            addPage( new KerberosServerPage( this ) );
+            //            addPage( new PartitionsPage( this ) );
+            //            addPage( new ReplicationPage( this ) );
         }
         catch ( PartInitException e )
         {
@@ -99,6 +117,65 @@ public class ServerConfigurationEditor extends FormEditor
         return true;
     }
 
+
+    /**
+     * Gets the configuration bean.
+     *
+     * @return
+     *      the configuration bean
+     */
+    public ConfigBean getConfigBean()
+    {
+        return configBean;
+    }
+
+
+    /**
+     * Sets the configuration bean.
+     *
+     * @param configBean
+     *      the configuration bean
+     */
+    public void setConfigBean( ConfigBean configBean )
+    {
+        this.configBean = configBean;
+    }
+
+
+    /**
+     * TODO configBeanLoaded.
+     *
+     * @param configBean
+     * @throws PartInitException
+     */
+    public void configBeanLoaded( ConfigBean configBean ) throws PartInitException
+    {
+        setConfigBean( configBean );
+        
+        hideLoadingPageAndDisplayConfigPages();
+    }
+
+
+    /**
+     * TODO hideLoadingPageAndDisplayConfigPages.
+     *
+     * @throws PartInitException
+     */
+    private void hideLoadingPageAndDisplayConfigPages() throws PartInitException
+    {
+        // Removing the loading page
+        removePage( 0 );
+        
+        // Adding the configuration pages
+        addPage( new OverviewPage( this ) );
+        addPage( new LdapLdapsServersPage( this ) );
+        addPage( new KerberosServerPage( this ) );
+        addPage( new PartitionsPage( this ) );
+        addPage( new ReplicationPage( this ) );
+        
+        // Activating the first page
+        setActivePage( 0 );
+    }
 }
 
 /**
