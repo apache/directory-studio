@@ -26,8 +26,8 @@
     <version>2.0.0-SNAPSHOT</version>
   </parent>
 
-  <artifactId>org.bouncycastle.bcprovjdk15</artifactId>
-  <version>${org.bouncycastle.bcprovjdk15.version}</version>
+  <artifactId>org.bouncycastle.bcprov.jdk15</artifactId>
+  <version>${org.bouncycastle.bcprov.jdk15.version}</version>
   
   <name>Legion of the Bouncy Castle Java Cryptography APIs (for Apache Directory Studio)</name>
   <packaging>jar</packaging>

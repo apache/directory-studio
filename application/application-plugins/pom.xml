@@ -120,7 +120,7 @@
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.apache.directory.studio</groupId>
-                  <artifactId>org.bouncycastle.bcprovjdk15</artifactId>
+                  <artifactId>org.bouncycastle.bcprov.jdk15</artifactId>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.apache.directory.studio</groupId>

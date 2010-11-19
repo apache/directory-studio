@@ -119,7 +119,7 @@
  org.apache.directory.studio.common.core,
  org.apache.directory.studio.common.ui,
  org.apache.directory.studio.connection.core,
- org.bouncycastle.bcprovjdk15;bundle-version="${org.bouncycastle.bcprovjdk15.version}",
+ org.bouncycastle.bcprov.jdk15;bundle-version="${org.bouncycastle.bcprov.jdk15.version}",
  org.eclipse.core.runtime,
  org.eclipse.ui,
  org.eclipse.ui.forms,
@@ -168,16 +168,11 @@
       <artifactId>connection.core</artifactId>
       <scope>provided</scope>
     </dependency>
-    <dependency>
-      <groupId>org.apache.directory.studio</groupId>
-      <artifactId>org.slf4j.log4j12</artifactId>
-      <scope>provided</scope>
-    </dependency>
     
     <!-- Apache Directory Studio library plugins dependencies -->
     <dependency>
       <groupId>org.apache.directory.studio</groupId>
-      <artifactId>org.bouncycastle.bcprovjdk15</artifactId>
+      <artifactId>org.bouncycastle.bcprov.jdk15</artifactId>
       <scope>provided</scope>
     </dependency>
     <dependency>
@@ -193,6 +188,11 @@
     <dependency>
       <groupId>org.apache.directory.studio</groupId>
       <artifactId>org.apache.directory.shared.ldap</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.directory.studio</groupId>
+      <artifactId>org.slf4j.log4j12</artifactId>
       <scope>provided</scope>
     </dependency>
     
