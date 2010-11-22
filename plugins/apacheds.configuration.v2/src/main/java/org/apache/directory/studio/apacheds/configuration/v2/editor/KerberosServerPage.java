@@ -21,9 +21,15 @@ package org.apache.directory.studio.apacheds.configuration.v2.editor;
 
 
 import org.apache.directory.server.config.beans.ChangePasswordServerBean;
-import org.apache.directory.server.config.beans.ConfigBean;
 import org.apache.directory.server.config.beans.KdcServerBean;
+import org.apache.directory.server.config.beans.TransportBean;
+import org.apache.directory.shared.ldap.exception.LdapInvalidDnException;
+import org.apache.directory.shared.ldap.name.DN;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -58,13 +64,13 @@ public class KerberosServerPage extends ServerConfigurationEditorPage
     private Text primaryKdcRealmText;
     private Text kdcSearchBaseDnText;
     private Text encryptionTypesText;
-    private Button allowClockSkewButton;
-    private Button verifyBodyChecksumButton;
-    private Button allowEmptyAddressesButton;
-    private Button allowForwardableAddressesButton;
-    private Button requirePreAuthenticationByEncryptedTimeStampButton;
-    private Button allowPostdatedTicketsButtons;
-    private Button allowRenewableTicketsButton;
+    private Button allowClockSkewCheckbox;
+    private Button verifyBodyChecksumCheckbox;
+    private Button allowEmptyAddressesCheckbox;
+    private Button allowForwardableAddressesCheckbox;
+    private Button requirePreAuthByEncryptedTimestampCheckbox;
+    private Button allowPostdatedTicketsCheckbox;
+    private Button allowRenewableTicketsCheckbox;
     private Text maximumRenewableLifetimeText;
     private Text maximumTicketLifetimeText;
 
@@ -214,18 +220,18 @@ public class KerberosServerPage extends ServerConfigurationEditorPage
         composite.setLayout( glayout );
         section.setClient( composite );
 
-        allowClockSkewButton = toolkit.createButton( composite, "Allow Clock Skew", SWT.CHECK );
-        verifyBodyChecksumButton = toolkit.createButton( composite, "Verify Body Checksum", SWT.CHECK );
+        allowClockSkewCheckbox = toolkit.createButton( composite, "Allow Clock Skew", SWT.CHECK );
+        verifyBodyChecksumCheckbox = toolkit.createButton( composite, "Verify Body Checksum", SWT.CHECK );
 
-        allowEmptyAddressesButton = toolkit.createButton( composite, "Allow Empty Addresses", SWT.CHECK );
-        allowForwardableAddressesButton = toolkit.createButton( composite, "Allow Forwardable Addresses",
+        allowEmptyAddressesCheckbox = toolkit.createButton( composite, "Allow Empty Addresses", SWT.CHECK );
+        allowForwardableAddressesCheckbox = toolkit.createButton( composite, "Allow Forwardable Addresses",
             SWT.CHECK );
 
-        requirePreAuthenticationByEncryptedTimeStampButton = toolkit.createButton( composite,
+        requirePreAuthByEncryptedTimestampCheckbox = toolkit.createButton( composite,
             "Require Pre-Authentication By Encrypted TimeStamp", SWT.CHECK );
-        allowPostdatedTicketsButtons = toolkit.createButton( composite, "Allow Postdated Tickets", SWT.CHECK );
+        allowPostdatedTicketsCheckbox = toolkit.createButton( composite, "Allow Postdated Tickets", SWT.CHECK );
 
-        allowRenewableTicketsButton = toolkit.createButton( composite, "Allow Renewable Tickets", SWT.CHECK );
+        allowRenewableTicketsCheckbox = toolkit.createButton( composite, "Allow Renewable Tickets", SWT.CHECK );
         toolkit.createLabel( composite, "" );
 
         Composite maximumRenewableLifetimeComposite = toolkit.createComposite( composite );
@@ -242,28 +248,25 @@ public class KerberosServerPage extends ServerConfigurationEditorPage
 
     private void initUI()
     {
-        ConfigBean configBean = getConfigBean();
-
-        KdcServerBean kdcServerBean = configBean.getDirectoryServiceBean().getKdcServerBean();
-        ChangePasswordServerBean changePasswordServerBean = configBean.getDirectoryServiceBean()
-            .getChangePasswordServerBean();
+        KdcServerBean kdcServerBean = getKdcServerBean();
+        ChangePasswordServerBean changePasswordServerBean = getChangePasswordServerBean();
 
         enableKerberosCheckbox.setSelection( kdcServerBean.isEnabled() );
-        kerberosPortText.setText( "" + kdcServerBean.getTransports()[0].getSystemPort() );
+        kerberosPortText.setText( "" + getKdcServerTransportBean().getSystemPort() );
 
         enableChangePasswordCheckbox.setSelection( changePasswordServerBean.isEnabled() );
-        changePasswordPortText.setText( "" + changePasswordServerBean.getTransports()[0].getSystemPort() );
+        changePasswordPortText.setText( "" + getChangePasswordServerTransportBean().getSystemPort() );
 
         kdcPrincipalText.setText( kdcServerBean.getKrbKdcPrincipal().toString() );
         kdcSearchBaseDnText.setText( kdcServerBean.getSearchBaseDn().toString() );
         encryptionTypesText.setText( kdcServerBean.getKrbEncryptionTypes().toString() );
 
-        verifyBodyChecksumButton.setSelection( kdcServerBean.isKrbBodyChecksumVerified() );
-        allowEmptyAddressesButton.setSelection( kdcServerBean.isKrbEmptyAddressesAllowed() );
-        allowForwardableAddressesButton.setSelection( kdcServerBean.isKrbForwardableAllowed() );
-        requirePreAuthenticationByEncryptedTimeStampButton.setSelection( kdcServerBean.isKrbPaEncTimestampRequired() );
-        allowPostdatedTicketsButtons.setSelection( kdcServerBean.isKrbPostdatedAllowed() );
-        allowRenewableTicketsButton.setSelection( kdcServerBean.isKrbRenewableAllowed() );
+        verifyBodyChecksumCheckbox.setSelection( kdcServerBean.isKrbBodyChecksumVerified() );
+        allowEmptyAddressesCheckbox.setSelection( kdcServerBean.isKrbEmptyAddressesAllowed() );
+        allowForwardableAddressesCheckbox.setSelection( kdcServerBean.isKrbForwardableAllowed() );
+        requirePreAuthByEncryptedTimestampCheckbox.setSelection( kdcServerBean.isKrbPaEncTimestampRequired() );
+        allowPostdatedTicketsCheckbox.setSelection( kdcServerBean.isKrbPostdatedAllowed() );
+        allowRenewableTicketsCheckbox.setSelection( kdcServerBean.isKrbRenewableAllowed() );
         maximumRenewableLifetimeText.setText( kdcServerBean.getKrbMaximumRenewableLifetime() + "" );
         maximumTicketLifetimeText.setText( kdcServerBean.getKrbMaximumTicketLifetime() + "" );
     }
@@ -274,22 +277,276 @@ public class KerberosServerPage extends ServerConfigurationEditorPage
      */
     private void addListeners()
     {
+        // Enable Kerberos Checkbox
         addDirtyListener( enableKerberosCheckbox );
+        enableKerberosCheckbox.addSelectionListener( new SelectionAdapter()
+        {
+            public void widgetSelected( SelectionEvent e )
+            {
+                getKdcServerBean().setEnabled( enableKerberosCheckbox.getSelection() );
+            }
+        } );
+
+        // Kerberos Port Text
         addDirtyListener( kerberosPortText );
+        kerberosPortText.addModifyListener( new ModifyListener()
+        {
+            public void modifyText( ModifyEvent e )
+            {
+                getKdcServerTransportBean().setSystemPort( Integer.parseInt( kerberosPortText.getText() ) );
+            }
+        } );
+
+        // Enable Change Password Checkbox
         addDirtyListener( enableChangePasswordCheckbox );
+        enableChangePasswordCheckbox.addSelectionListener( new SelectionAdapter()
+        {
+            public void widgetSelected( SelectionEvent e )
+            {
+                getChangePasswordServerBean().setEnabled( enableChangePasswordCheckbox.getSelection() );
+            }
+        } );
+
+        // Change Password Port Text
         addDirtyListener( changePasswordPortText );
+        changePasswordPortText.addModifyListener( new ModifyListener()
+        {
+            public void modifyText( ModifyEvent e )
+            {
+                getChangePasswordServerTransportBean().setSystemPort(
+                    Integer.parseInt( changePasswordPortText.getText() ) );
+            }
+        } );
+
+        // KDC Principal Text
         addDirtyListener( kdcPrincipalText );
+        kdcPrincipalText.addModifyListener( new ModifyListener()
+        {
+            public void modifyText( ModifyEvent e )
+            {
+                getKdcServerBean().setKrbKdcPrincipal( kdcPrincipalText.getText() );
+            }
+        } );
+
+        // Primary KDC Text
         addDirtyListener( primaryKdcRealmText );
+        primaryKdcRealmText.addModifyListener( new ModifyListener()
+        {
+            public void modifyText( ModifyEvent e )
+            {
+                getKdcServerBean().setKrbPrimaryRealm( primaryKdcRealmText.getText() );
+            }
+        } );
+
+        // KDC Search Base DN Text
         addDirtyListener( kdcSearchBaseDnText );
+        kdcSearchBaseDnText.addModifyListener( new ModifyListener()
+        {
+            public void modifyText( ModifyEvent e )
+            {
+                String searchBaseDnValue = kdcSearchBaseDnText.getText();
+
+                try
+                {
+                    DN searchBaseDn = new DN( searchBaseDnValue );
+                    getKdcServerBean().setSearchBaseDn( searchBaseDn );
+                }
+                catch ( LdapInvalidDnException e1 )
+                {
+                    // TODO Auto-generated catch block
+                    e1.printStackTrace();
+                }
+            }
+        } );
+
+        // Encryption Types Text
         addDirtyListener( encryptionTypesText );
-        addDirtyListener( allowClockSkewButton );
-        addDirtyListener( verifyBodyChecksumButton );
-        addDirtyListener( allowEmptyAddressesButton );
-        addDirtyListener( allowForwardableAddressesButton );
-        addDirtyListener( requirePreAuthenticationByEncryptedTimeStampButton );
-        addDirtyListener( allowPostdatedTicketsButtons );
-        addDirtyListener( allowRenewableTicketsButton );
+        // TODO A Text Control is probably not the most appropriate one
+
+        addDirtyListener( allowClockSkewCheckbox );
+        // TODO A Checkbox Control is probably not the most appropriate one
+
+        // Verify Body Checksum Checkbox
+        addDirtyListener( verifyBodyChecksumCheckbox );
+        verifyBodyChecksumCheckbox.addSelectionListener( new SelectionAdapter()
+        {
+            public void widgetSelected( SelectionEvent e )
+            {
+                getKdcServerBean().setKrbBodyChecksumVerified( verifyBodyChecksumCheckbox.getSelection() );
+            }
+        } );
+
+        // Allow Empty Addresses Checkbox
+        addDirtyListener( allowEmptyAddressesCheckbox );
+        allowEmptyAddressesCheckbox.addSelectionListener( new SelectionAdapter()
+        {
+            public void widgetSelected( SelectionEvent e )
+            {
+                getKdcServerBean().setKrbEmptyAddressesAllowed( allowEmptyAddressesCheckbox.getSelection() );
+            }
+        } );
+
+        // Allow Forwardable Addresses Checkbox
+        addDirtyListener( allowForwardableAddressesCheckbox );
+        allowForwardableAddressesCheckbox.addSelectionListener( new SelectionAdapter()
+        {
+            public void widgetSelected( SelectionEvent e )
+            {
+                getKdcServerBean().setKrbForwardableAllowed( allowForwardableAddressesCheckbox.getSelection() );
+            }
+        } );
+
+        // Require Pre-Authentication By Encrypted Timestamp Checkbox
+        addDirtyListener( requirePreAuthByEncryptedTimestampCheckbox );
+        requirePreAuthByEncryptedTimestampCheckbox.addSelectionListener( new SelectionAdapter()
+        {
+            public void widgetSelected( SelectionEvent e )
+            {
+                getKdcServerBean().setKrbPaEncTimestampRequired(
+                    requirePreAuthByEncryptedTimestampCheckbox.getSelection() );
+            }
+        } );
+
+        // Allow Postdated Tickets Checkbox
+        addDirtyListener( allowPostdatedTicketsCheckbox );
+        allowPostdatedTicketsCheckbox.addSelectionListener( new SelectionAdapter()
+        {
+            public void widgetSelected( SelectionEvent e )
+            {
+                getKdcServerBean().setKrbPostdatedAllowed( allowPostdatedTicketsCheckbox.getSelection() );
+            }
+        } );
+
+        // Allow Renewable Tickets Checkbox
+        addDirtyListener( allowRenewableTicketsCheckbox );
+        allowRenewableTicketsCheckbox.addSelectionListener( new SelectionAdapter()
+        {
+            public void widgetSelected( SelectionEvent e )
+            {
+                getKdcServerBean().setKrbRenewableAllowed( allowRenewableTicketsCheckbox.getSelection() );
+            }
+        } );
+
+        // Maximum Renewable Lifetime Text
         addDirtyListener( maximumRenewableLifetimeText );
+
+        // Maximum Ticket Lifetime Text
         addDirtyListener( maximumTicketLifetimeText );
+    }
+
+
+    /**
+     * Gets the KDC Server bean.
+     *
+     * @return
+     *      the KDC Server bean
+     */
+    private KdcServerBean getKdcServerBean()
+    {
+        KdcServerBean kdcServerBean = getDirectoryServiceBean().getKdcServerBean();
+
+        if ( kdcServerBean == null )
+        {
+            kdcServerBean = new KdcServerBean();
+            getDirectoryServiceBean().addServers( kdcServerBean );
+        }
+
+        return kdcServerBean;
+    }
+
+
+    /**
+     * Gets the Change Password Server bean.
+     *
+     * @return
+     *      the Change Password Server bean
+     */
+    private ChangePasswordServerBean getChangePasswordServerBean()
+    {
+        ChangePasswordServerBean changePasswordServerBean = getDirectoryServiceBean().getChangePasswordServerBean();
+
+        if ( changePasswordServerBean == null )
+        {
+            changePasswordServerBean = new ChangePasswordServerBean();
+            getDirectoryServiceBean().addServers( changePasswordServerBean );
+        }
+
+        return changePasswordServerBean;
+    }
+
+
+    /**
+     * Gets the KDC Server Transport bean.
+     * 
+     * @return
+     *       the KDC Server Transport bean
+     */
+    private TransportBean getKdcServerTransportBean()
+    {
+        KdcServerBean kdcServerBean = getKdcServerBean();
+
+        TransportBean transportBean = null;
+
+        // Looking for the transport in the list
+        TransportBean[] kdcServerTransportBeans = kdcServerBean.getTransports();
+        if ( kdcServerTransportBeans != null )
+        {
+            for ( TransportBean kdcServerTransportBean : kdcServerTransportBeans )
+            {
+                if ( "tcp".equals( kdcServerTransportBean.getTransportId() ) ) // TODO can either 'tcp' or 'udp'
+                {
+                    transportBean = kdcServerTransportBean;
+                    break;
+                }
+            }
+        }
+
+        // No corresponding transport has been found
+        if ( transportBean == null )
+        {
+            transportBean = new TransportBean();
+            transportBean.setTransportId( "tcp" ); // TODO can either 'tcp' or 'udp'
+            kdcServerBean.addTransports( transportBean );
+        }
+
+        return transportBean;
+    }
+
+
+    /**
+     * Gets the Change Password Server Transport bean.
+     * 
+     * @return
+     *       the Change Password Server Transport bean
+     */
+    private TransportBean getChangePasswordServerTransportBean()
+    {
+        ChangePasswordServerBean changePasswordServerBean = getChangePasswordServerBean();
+
+        TransportBean transportBean = null;
+
+        // Looking for the transport in the list
+        TransportBean[] changePasswordServerTransportBeans = changePasswordServerBean.getTransports();
+        if ( changePasswordServerTransportBeans != null )
+        {
+            for ( TransportBean changePasswordServerTransportBean : changePasswordServerTransportBeans )
+            {
+                if ( "tcp".equals( changePasswordServerTransportBean.getTransportId() ) ) // TODO can either 'tcp' or 'udp'
+                {
+                    transportBean = changePasswordServerTransportBean;
+                    break;
+                }
+            }
+        }
+
+        // No corresponding transport has been found
+        if ( transportBean == null )
+        {
+            transportBean = new TransportBean();
+            transportBean.setTransportId( "tcp" ); // TODO can either 'tcp' or 'udp'
+            changePasswordServerBean.addTransports( transportBean );
+        }
+
+        return transportBean;
     }
 }
