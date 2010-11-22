@@ -153,7 +153,7 @@ public class ServerConfigurationEditor extends FormEditor
      * @param configBean
      *      the configuration bean
      */
-    private void setConfigBean( ConfigBean configBean )
+    public void setConfigBean( ConfigBean configBean )
     {
         this.configBean = configBean;
     }

@@ -47,8 +47,10 @@ import org.eclipse.swt.widgets.Display;
  */
 public class LoadConfigurationRunnable implements StudioRunnableWithProgress
 {
+    /** The associated editor */
     private ServerConfigurationEditor editor;
 
+    /** The configuration bean */
     private ConfigBean configBean;
 
 

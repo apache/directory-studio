@@ -20,20 +20,22 @@
 package org.apache.directory.studio.apacheds.configuration.v2.editor;
 
 
-import org.apache.directory.server.config.beans.ConfigBean;
 import org.apache.directory.server.config.beans.LdapServerBean;
-import org.eclipse.jface.viewers.ArrayContentProvider;
-import org.eclipse.jface.viewers.CheckboxTableViewer;
+import org.apache.directory.server.config.beans.TransportBean;
+import org.apache.directory.shared.ldap.exception.LdapInvalidDnException;
+import org.apache.directory.shared.ldap.name.DN;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.ui.forms.editor.FormEditor;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.Section;
 import org.eclipse.ui.forms.widgets.TableWrapData;
@@ -311,15 +313,13 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
 
     private void initUI()
     {
-        ConfigBean configBean = getConfigBean();
-
-        LdapServerBean ldapServerBean = configBean.getDirectoryServiceBean().getLdapServerBean();
+        LdapServerBean ldapServerBean = getLdapServerBean();
 
         enableLdapCheckbox.setSelection( ldapServerBean.isEnabled() );
-        ldapPortText.setText( ldapServerBean.getTransports()[0].getSystemPort() + "" );
+        ldapPortText.setText( getLdapServerTransportBean().getSystemPort() + "" );
 
         enableLdapsCheckbox.setSelection( true );
-        ldapsPortText.setText( "10636" );
+        ldapsPortText.setText( getLdapsServerTransportBean().getSystemPort() + "" );
 
         saslHostText.setText( ldapServerBean.getLdapServerSaslHost() );
         saslPrincipalText.setText( ldapServerBean.getLdapServerSaslPrincipal() );
@@ -332,20 +332,193 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
      */
     private void addListeners()
     {
+        // Enable LDAP Checkbox
         addDirtyListener( enableLdapCheckbox );
+        enableLdapCheckbox.addSelectionListener( new SelectionAdapter()
+        {
+            public void widgetSelected( SelectionEvent e )
+            {
+                getLdapServerTransportBean().setEnabled( enableLdapCheckbox.getSelection() );
+            }
+        } );
+
+        // LDAP Port Text
         addDirtyListener( ldapPortText );
+        ldapPortText.addModifyListener( new ModifyListener()
+        {
+            public void modifyText( ModifyEvent e )
+            {
+                getLdapsServerTransportBean().setSystemPort( Integer.parseInt( ldapPortText.getText() ) );
+            }
+        } );
+
+        // Enable LDAPS Checkbox
         addDirtyListener( enableLdapsCheckbox );
+        enableLdapsCheckbox.addSelectionListener( new SelectionAdapter()
+        {
+            public void widgetSelected( SelectionEvent e )
+            {
+                getLdapsServerTransportBean().setEnabled( enableLdapsCheckbox.getSelection() );
+            }
+        } );
+
+        // LDAPS Port Text
         addDirtyListener( ldapsPortText );
+        ldapsPortText.addModifyListener( new ModifyListener()
+        {
+            public void modifyText( ModifyEvent e )
+            {
+                getLdapsServerTransportBean().setSystemPort( Integer.parseInt( ldapsPortText.getText() ) );
+            }
+        } );
+
+        // Max Time Limit Text
         addDirtyListener( maxTimeLimitText );
+
+        // Max Size Limit Text
         addDirtyListener( maxSizeLimitText );
+
+        // Auth Mechanisms Simple Checkbox
         addDirtyListener( authMechSimpleCheckbox );
+
+        // Auth Mechanisms CRAM-MD5 Checkbox
         addDirtyListener( authMechCramMd5Checkbox );
+
+        // Auth Mechanisms DIGEST-MD5 Checkbox
         addDirtyListener( authMechDigestMd5Checkbox );
+
+        // Auth Mechanisms GSSAPI Checkbox
         addDirtyListener( authMechGssapiCheckbox );
+
+        // Auth Mechanisms NTLM Checkbox
         addDirtyListener( authMechNtlmCheckbox );
+
+        // Auth Mechanisms GSS SPENEGO Checkbox
         addDirtyListener( authMechGssSpnegoCheckbox );
+
+        // SASL Host Text
         addDirtyListener( saslHostText );
+        saslHostText.addModifyListener( new ModifyListener()
+        {
+            public void modifyText( ModifyEvent e )
+            {
+                getLdapServerBean().setLdapServerSaslHost( saslHostText.getText() );
+            }
+        } );
+
+        // SASL Principal Text
         addDirtyListener( saslPrincipalText );
+        saslPrincipalText.addModifyListener( new ModifyListener()
+        {
+            public void modifyText( ModifyEvent e )
+            {
+                getLdapServerBean().setLdapServerSaslPrincipal( saslPrincipalText.getText() );
+            }
+        } );
+
+        // SASL Seach Base DN Text
         addDirtyListener( saslSearchBaseDnText );
+        saslSearchBaseDnText.addModifyListener( new ModifyListener()
+        {
+            public void modifyText( ModifyEvent e )
+            {
+                String searchBaseDnValue = saslSearchBaseDnText.getText();
+
+                try
+                {
+                    DN searchBaseDn = new DN( searchBaseDnValue );
+                    getLdapServerBean().setSearchBaseDn( searchBaseDn );
+                }
+                catch ( LdapInvalidDnException e1 )
+                {
+                    // TODO Auto-generated catch block
+                    e1.printStackTrace();
+                }
+            }
+        } );
+    }
+
+
+    /**
+     * Gets the LDAP Server bean.
+     *
+     * @return
+     *      the LDAP Server bean
+     */
+    private LdapServerBean getLdapServerBean()
+    {
+        LdapServerBean ldapServerBean = getDirectoryServiceBean().getLdapServerBean();
+
+        if ( ldapServerBean == null )
+        {
+            ldapServerBean = new LdapServerBean();
+            getDirectoryServiceBean().addServers( ldapServerBean );
+        }
+
+        return ldapServerBean;
+    }
+
+
+    /**
+     * Gets the LDAP Server transport bean.
+     *
+     * @return
+     *      the LDAP Server transport bean
+     */
+    private TransportBean getLdapServerTransportBean()
+    {
+        return getTransportBean( "ldap" );
+    }
+
+
+    /**
+     * Gets the LDAPS Server transport bean.
+     *
+     * @return
+     *      the LDAPS Server transport bean
+     */
+    private TransportBean getLdapsServerTransportBean()
+    {
+        return getTransportBean( "ldaps" );
+    }
+
+
+    /**
+     * Gets a transport bean based on its id.
+     *
+     * @param id
+     *      the id
+     * @return
+     *      the corresponding transport bean
+     */
+    private TransportBean getTransportBean( String id )
+    {
+        LdapServerBean ldapServerBean = getLdapServerBean();
+
+        TransportBean transportBean = null;
+
+        // Looking for the transport in the list
+        TransportBean[] ldapServerTransportBeans = ldapServerBean.getTransports();
+        if ( ldapServerTransportBeans != null )
+        {
+            for ( TransportBean ldapServerTransportBean : ldapServerTransportBeans )
+            {
+                if ( id.equals( ldapServerTransportBean.getTransportId() ) )
+                {
+                    transportBean = ldapServerTransportBean;
+                    break;
+                }
+            }
+        }
+
+        // No corresponding transport has been found
+        if ( transportBean == null )
+        {
+            transportBean = new TransportBean();
+            transportBean.setTransportId( id );
+            ldapServerBean.addTransports( transportBean );
+        }
+
+        return transportBean;
     }
 }

@@ -21,6 +21,7 @@ package org.apache.directory.studio.apacheds.configuration.v2.editor;
 
 
 import org.apache.directory.server.config.beans.ConfigBean;
+import org.apache.directory.server.config.beans.DirectoryServiceBean;
 import org.apache.directory.studio.apacheds.configuration.v2.actions.EditorAddPageAction;
 import org.apache.directory.studio.apacheds.configuration.v2.actions.EditorExportConfigurationAction;
 import org.apache.directory.studio.apacheds.configuration.v2.actions.EditorImportConfigurationAction;
@@ -43,7 +44,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.forms.IManagedForm;
-import org.eclipse.ui.forms.editor.FormEditor;
 import org.eclipse.ui.forms.editor.FormPage;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.ScrolledForm;
@@ -96,14 +96,7 @@ public abstract class ServerConfigurationEditorPage extends FormPage
      */
     public ServerConfigurationEditor getServerConfigurationEditor()
     {
-        FormEditor editor = getEditor();
-
-        if ( editor instanceof ServerConfigurationEditor )
-        {
-            return ( ServerConfigurationEditor ) editor;
-        }
-
-        return null;
+        return ( ServerConfigurationEditor ) getEditor();
     }
 
 
@@ -112,12 +105,7 @@ public abstract class ServerConfigurationEditorPage extends FormPage
      */
     private void setEditorDirty()
     {
-        ServerConfigurationEditor editor = getServerConfigurationEditor();
-
-        if ( editor != null )
-        {
-            editor.setDirty( true );
-        }
+        getServerConfigurationEditor().setDirty( true );
     }
 
 
@@ -129,14 +117,35 @@ public abstract class ServerConfigurationEditorPage extends FormPage
      */
     public ConfigBean getConfigBean()
     {
-        ServerConfigurationEditor editor = getServerConfigurationEditor();
+        ConfigBean configBean = getServerConfigurationEditor().getConfigBean();
 
-        if ( editor != null )
+        if ( configBean == null )
         {
-            return editor.getConfigBean();
+            configBean = new ConfigBean();
+            getServerConfigurationEditor().setConfigBean( configBean );
         }
 
-        return null;
+        return configBean;
+    }
+
+
+    /**
+     * Gets the directory service associated with the editor.
+     *
+     * @return
+     *      the directory service bean associated with the editor
+     */
+    public DirectoryServiceBean getDirectoryServiceBean()
+    {
+        DirectoryServiceBean directoryServiceBean = getConfigBean().getDirectoryServiceBean();
+
+        if ( directoryServiceBean == null )
+        {
+            directoryServiceBean = new DirectoryServiceBean();
+            getConfigBean().addDirectoryService( directoryServiceBean );
+        }
+
+        return directoryServiceBean;
     }
 
 
@@ -230,12 +239,16 @@ public abstract class ServerConfigurationEditorPage extends FormPage
 
 
     /**
-     * TODO createDefaultValueLabel.
+     * Creates default value Label.
      *
      * @param toolkit
+     *      the toolkit
      * @param parent
+     *      the parent
      * @param text
+     *      the text string
      * @return
+     *      a default value Label
      */
     protected Label createDefaultValueLabel( FormToolkit toolkit, Composite parent, String text )
     {
@@ -246,12 +259,24 @@ public abstract class ServerConfigurationEditorPage extends FormPage
     }
 
 
+    /**
+     * Adds a 'dirty' listener to the given Text.
+     *
+     * @param text
+     *      the Text control
+     */
     public void addDirtyListener( Text text )
     {
         text.addModifyListener( dirtyModifyListener );
     }
 
 
+    /**
+     * Adds a 'dirty' listener to the given Button.
+     *
+     * @param button
+     *      the Button control
+     */
     public void addDirtyListener( Button button )
     {
         button.addSelectionListener( dirtySelectionListener );
