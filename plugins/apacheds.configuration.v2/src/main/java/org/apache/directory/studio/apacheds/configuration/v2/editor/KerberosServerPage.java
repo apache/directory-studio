@@ -51,7 +51,7 @@ public class KerberosServerPage extends ServerConfigurationEditorPage
     /** The Page Title */
     private static final String TITLE = "Kerberos Server";
 
-    // UI Fields
+    // UI Controls
     private Button enableKerberosCheckbox;
     private Text kerberosPortText;
     private Button enableChangePasswordCheckbox;
@@ -109,6 +109,8 @@ public class KerberosServerPage extends ServerConfigurationEditorPage
         createTicketSettingsSection( toolkit, leftComposite );
 
         initUI();
+
+        addListeners();
     }
 
 
@@ -237,7 +239,6 @@ public class KerberosServerPage extends ServerConfigurationEditorPage
         maximumTicketLifetimeComposite.setLayout( new GridLayout( 2, false ) );
         toolkit.createLabel( maximumTicketLifetimeComposite, "Maximum Ticket Lifetime:" );
         maximumTicketLifetimeText = createIntegerText( toolkit, maximumTicketLifetimeComposite );
-
     }
 
 
@@ -267,5 +268,30 @@ public class KerberosServerPage extends ServerConfigurationEditorPage
         allowRenewableTicketsButton.setSelection( kdcServerBean.isKrbRenewableAllowed() );
         maximumRenewableLifetimeText.setText( kdcServerBean.getKrbMaximumRenewableLifetime() + "" );
         maximumTicketLifetimeText.setText( kdcServerBean.getKrbMaximumTicketLifetime() + "" );
+    }
+
+
+    /**
+     * Adds listeners to UI Controls.
+     */
+    private void addListeners()
+    {
+        addDirtyListener( enableKerberosCheckbox );
+        addDirtyListener( kerberosPortText );
+        addDirtyListener( enableChangePasswordCheckbox );
+        addDirtyListener( changePasswordPortText );
+        addDirtyListener( kdcPrincipalText );
+        addDirtyListener( primaryKdcRealmText );
+        addDirtyListener( kdcSearchBaseDnText );
+        addDirtyListener( encryptionTypesText );
+        addDirtyListener( allowClockSkewButton );
+        addDirtyListener( verifyBodyChecksumButton );
+        addDirtyListener( allowEmptyAddressesButton );
+        addDirtyListener( allowForwardableAddressesButton );
+        addDirtyListener( requirePreAuthenticationByEncryptedTimeStampButton );
+        addDirtyListener( allowPostdatedTicketsButtons );
+        addDirtyListener( allowRenewableTicketsButton );
+        addDirtyListener( maximumRenewableLifetimeText );
+        addDirtyListener( maximumTicketLifetimeText );
     }
 }

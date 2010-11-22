@@ -28,11 +28,17 @@ import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.events.VerifyEvent;
 import org.eclipse.swt.events.VerifyListener;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
@@ -53,6 +59,22 @@ public abstract class ServerConfigurationEditorPage extends FormPage
     protected static final Color GRAY_COLOR = new Color( null, 120, 120, 120 );
     protected static final String TABULATION = "      ";
 
+    private ModifyListener dirtyModifyListener = new ModifyListener()
+    {
+        public void modifyText( ModifyEvent e )
+        {
+            setEditorDirty();
+        }
+    };
+
+    private SelectionListener dirtySelectionListener = new SelectionAdapter()
+    {
+        public void widgetSelected( SelectionEvent e )
+        {
+            setEditorDirty();
+        }
+    };
+
 
     /**
      * Creates a new instance of GeneralPage.
@@ -67,17 +89,51 @@ public abstract class ServerConfigurationEditorPage extends FormPage
 
 
     /**
-     * TODO getConfigBean.
+     * Gets the ServerConfigurationEditor object associated with the page.
      *
      * @return
+     *      the ServerConfigurationEditor object associated with the page
      */
-    public ConfigBean getConfigBean()
+    public ServerConfigurationEditor getServerConfigurationEditor()
     {
         FormEditor editor = getEditor();
 
         if ( editor instanceof ServerConfigurationEditor )
         {
-            return ( ( ServerConfigurationEditor ) editor ).getConfigBean();
+            return ( ServerConfigurationEditor ) editor;
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Sets the associated editor dirty.
+     */
+    private void setEditorDirty()
+    {
+        ServerConfigurationEditor editor = getServerConfigurationEditor();
+
+        if ( editor != null )
+        {
+            editor.setDirty( true );
+        }
+    }
+
+
+    /**
+     * Gets the configuration bean associated with the editor.
+     *
+     * @return
+     *      the configuration bean associated with the editor
+     */
+    public ConfigBean getConfigBean()
+    {
+        ServerConfigurationEditor editor = getServerConfigurationEditor();
+
+        if ( editor != null )
+        {
+            return editor.getConfigBean();
         }
 
         return null;
@@ -173,11 +229,31 @@ public abstract class ServerConfigurationEditorPage extends FormPage
     }
 
 
+    /**
+     * TODO createDefaultValueLabel.
+     *
+     * @param toolkit
+     * @param parent
+     * @param text
+     * @return
+     */
     protected Label createDefaultValueLabel( FormToolkit toolkit, Composite parent, String text )
     {
         Label label = toolkit.createLabel( parent, NLS.bind( "(Default: {0})", text ) );
         label.setForeground( GRAY_COLOR );
 
         return label;
+    }
+
+
+    public void addDirtyListener( Text text )
+    {
+        text.addModifyListener( dirtyModifyListener );
+    }
+
+
+    public void addDirtyListener( Button button )
+    {
+        button.addSelectionListener( dirtySelectionListener );
     }
 }

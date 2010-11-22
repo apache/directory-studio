@@ -53,7 +53,7 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
     /** The Page Title */
     private static final String TITLE = "LDAP/LDAPS Servers";
 
-    // UI Fields
+    // UI Controls
     private Button enableLdapCheckbox;
     private Text ldapPortText;
     private Button enableLdapsCheckbox;
@@ -66,10 +66,6 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
     private Button authMechGssapiCheckbox;
     private Button authMechNtlmCheckbox;
     private Button authMechGssSpnegoCheckbox;
-    private CheckboxTableViewer supportedMechanismsTableViewer;
-    private Button editSupportedMechanismButton;
-    private Button selectAllSupportedMechanismsButton;
-    private Button deselectAllSupportedMechanismsButton;
     private Text saslHostText;
     private Text saslPrincipalText;
     private Text saslSearchBaseDnText;
@@ -115,6 +111,8 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
         createSaslSettingsSection( toolkit, rightComposite );
 
         initUI();
+
+        addListeners();
     }
 
 
@@ -326,5 +324,28 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
         saslHostText.setText( ldapServerBean.getLdapServerSaslHost() );
         saslPrincipalText.setText( ldapServerBean.getLdapServerSaslPrincipal() );
         saslSearchBaseDnText.setText( ldapServerBean.getSearchBaseDn().toString() );
+    }
+
+
+    /**
+     * Adds listeners to UI Controls.
+     */
+    private void addListeners()
+    {
+        addDirtyListener( enableLdapCheckbox );
+        addDirtyListener( ldapPortText );
+        addDirtyListener( enableLdapsCheckbox );
+        addDirtyListener( ldapsPortText );
+        addDirtyListener( maxTimeLimitText );
+        addDirtyListener( maxSizeLimitText );
+        addDirtyListener( authMechSimpleCheckbox );
+        addDirtyListener( authMechCramMd5Checkbox );
+        addDirtyListener( authMechDigestMd5Checkbox );
+        addDirtyListener( authMechGssapiCheckbox );
+        addDirtyListener( authMechNtlmCheckbox );
+        addDirtyListener( authMechGssSpnegoCheckbox );
+        addDirtyListener( saslHostText );
+        addDirtyListener( saslPrincipalText );
+        addDirtyListener( saslSearchBaseDnText );
     }
 }

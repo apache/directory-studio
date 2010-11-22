@@ -21,8 +21,6 @@ package org.apache.directory.studio.apacheds.configuration.v2.editor;
 
 
 import org.apache.directory.server.config.beans.ConfigBean;
-import org.apache.directory.studio.apacheds.configuration.v2.ApacheDS2ConfigurationPlugin;
-import org.apache.directory.studio.apacheds.configuration.v2.ApacheDS2ConfigurationPluginConstants;
 import org.apache.directory.studio.apacheds.configuration.v2.jobs.LoadConfigurationRunnable;
 import org.apache.directory.studio.common.core.jobs.StudioJob;
 import org.apache.directory.studio.common.core.jobs.StudioRunnableWithProgress;
@@ -46,8 +44,11 @@ import org.eclipse.ui.forms.editor.FormEditor;
  */
 public class ServerConfigurationEditor extends FormEditor
 {
-    /** The Page ID*/
+    /** The Editor ID */
     public static final String ID = ServerConfigurationEditor.class.getName();
+
+    /** The flag indicating if the editor is dirty */
+    private boolean dirty = false;
 
     /** The configuration bean */
     private ConfigBean configBean;
@@ -61,9 +62,11 @@ public class ServerConfigurationEditor extends FormEditor
         super.init( site, input );
         setPartName( input.getName() );
 
+        System.out.println( ID );
 
         // Creating and scheduling the job to delete the server
-        StudioJob<StudioRunnableWithProgress> job = new StudioJob<StudioRunnableWithProgress>( new LoadConfigurationRunnable( this ) );
+        StudioJob<StudioRunnableWithProgress> job = new StudioJob<StudioRunnableWithProgress>(
+            new LoadConfigurationRunnable( this ) );
         job.schedule();
     }
 
@@ -76,14 +79,6 @@ public class ServerConfigurationEditor extends FormEditor
         try
         {
             addPage( new LoadingPage( this ) );
-            setPageImage( 0, ApacheDS2ConfigurationPlugin.getDefault().getImage(
-                ApacheDS2ConfigurationPluginConstants.IMG_IMPORT ) );
-
-            //            addPage( new OverviewPage( this ) );
-            //            addPage( new LdapLdapsServersPage( this ) );
-            //            addPage( new KerberosServerPage( this ) );
-            //            addPage( new PartitionsPage( this ) );
-            //            addPage( new ReplicationPage( this ) );
         }
         catch ( PartInitException e )
         {
@@ -119,6 +114,28 @@ public class ServerConfigurationEditor extends FormEditor
 
 
     /**
+     * {@inheritDoc}
+     */
+    public boolean isDirty()
+    {
+        return dirty;
+    }
+
+
+    /**
+     * Sets the 'dirty' flag.
+     *
+     * @param dirty
+     *      the 'dirty' flag
+     */
+    public void setDirty( boolean dirty )
+    {
+        this.dirty = dirty;
+        firePropertyChange( PROP_DIRTY );
+    }
+
+
+    /**
      * Gets the configuration bean.
      *
      * @return
@@ -136,46 +153,53 @@ public class ServerConfigurationEditor extends FormEditor
      * @param configBean
      *      the configuration bean
      */
-    public void setConfigBean( ConfigBean configBean )
+    private void setConfigBean( ConfigBean configBean )
     {
         this.configBean = configBean;
     }
 
 
     /**
-     * TODO configBeanLoaded.
+     * This method is called by the job responsible for loading the configuration.
      *
      * @param configBean
-     * @throws PartInitException
+     *      the loaded configuration bean
      */
-    public void configBeanLoaded( ConfigBean configBean ) throws PartInitException
+    public void configBeanLoaded( ConfigBean configBean )
     {
         setConfigBean( configBean );
-        
+
         hideLoadingPageAndDisplayConfigPages();
     }
 
 
     /**
-     * TODO hideLoadingPageAndDisplayConfigPages.
-     *
-     * @throws PartInitException
+     * Hides the loading page and displays the standard configuration pages.
      */
-    private void hideLoadingPageAndDisplayConfigPages() throws PartInitException
+    private void hideLoadingPageAndDisplayConfigPages()
     {
         // Removing the loading page
         removePage( 0 );
-        
+
         // Adding the configuration pages
-        addPage( new OverviewPage( this ) );
-        addPage( new LdapLdapsServersPage( this ) );
-        addPage( new KerberosServerPage( this ) );
-        addPage( new PartitionsPage( this ) );
-        addPage( new ReplicationPage( this ) );
-        
+        try
+        {
+            addPage( new OverviewPage( this ) );
+            addPage( new LdapLdapsServersPage( this ) );
+            addPage( new KerberosServerPage( this ) );
+            addPage( new PartitionsPage( this ) );
+            addPage( new ReplicationPage( this ) );
+        }
+        catch ( PartInitException e )
+        {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
         // Activating the first page
         setActivePage( 0 );
     }
+
 }
 
 /**

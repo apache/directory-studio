@@ -120,6 +120,8 @@ public class OverviewPage extends ServerConfigurationEditorPage
         createOptionsSection( toolkit, rightComposite );
 
         initUI();
+        
+        addListeners();
     }
 
 
@@ -290,10 +292,18 @@ public class OverviewPage extends ServerConfigurationEditorPage
 
 
     /**
-     * {@inheritDoc}
+     * Adds listeners to UI Controls.
      */
-    public void setFocus()
+    private void addListeners()
     {
-        // Does Nothing
+        addDirtyListener( enableLdapCheckbox );
+        addDirtyListener( ldapPortText );
+        addDirtyListener( enableLdapsCheckbox );
+        addDirtyListener( ldapsPortText );
+        addDirtyListener( enableKerberosCheckbox );
+        addDirtyListener( kerberosPortText );
+        addDirtyListener( enableChangePasswordCheckbox );
+        addDirtyListener( allowAnonymousAccessCheckbox );
+        addDirtyListener( enableAccesControlCheckbox );
     }
 }

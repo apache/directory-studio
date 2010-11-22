@@ -38,7 +38,6 @@ import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.common.core.jobs.StudioRunnableWithProgress;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.ui.PartInitException;
 
 
 /**
@@ -49,7 +48,7 @@ import org.eclipse.ui.PartInitException;
 public class LoadConfigurationRunnable implements StudioRunnableWithProgress
 {
     private ServerConfigurationEditor editor;
-    
+
     private ConfigBean configBean;
 
 
@@ -71,7 +70,7 @@ public class LoadConfigurationRunnable implements StudioRunnableWithProgress
      */
     public String getErrorMessage()
     {
-        return "Unable to load the configuration";
+        return "Unable to load the configuration.";
     }
 
 
@@ -101,22 +100,14 @@ public class LoadConfigurationRunnable implements StudioRunnableWithProgress
         try
         {
             initConfigBean();
-            
+
             Display.getDefault().asyncExec( new Runnable()
             {
                 public void run()
                 {
-                    try
-                    {
-                        editor.configBeanLoaded( configBean );
-                    }
-                    catch ( PartInitException e )
-                    {
-                        // TODO Auto-generated catch block
-                        e.printStackTrace();
-                    }
+                    editor.configBeanLoaded( configBean );
                 }
-            });
+            } );
         }
         catch ( Exception e )
         {
@@ -124,7 +115,7 @@ public class LoadConfigurationRunnable implements StudioRunnableWithProgress
             monitor.reportError( e );
         }
     }
-    
+
 
     private void initConfigBean() throws Exception
     {
