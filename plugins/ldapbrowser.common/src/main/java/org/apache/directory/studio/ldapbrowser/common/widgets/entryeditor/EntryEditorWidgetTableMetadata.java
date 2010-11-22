@@ -22,13 +22,23 @@ package org.apache.directory.studio.ldapbrowser.common.widgets.entryeditor;
 
 
 /**
- * The EntryEditorWidgetTableMetadata interface contains some constants used
+ * The EntryEditorWidgetTableMetadata class contains some constants used
  * by the entry editor widget.
+ * Final reference -> class shouldn't be extended
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public interface EntryEditorWidgetTableMetadata
+public final class EntryEditorWidgetTableMetadata
 {
+
+    /**
+     *  Ensures no construction of this class, also ensures there is no need for final keyword above
+     *  (Implicit super constructor is not visible for default constructor),
+     *  but is still self documenting.
+     */
+    private EntryEditorWidgetTableMetadata()
+    {
+    }
 
     /** The Constant KEY_COLUMN_INDEX. */
     public static final int KEY_COLUMN_INDEX = 0;

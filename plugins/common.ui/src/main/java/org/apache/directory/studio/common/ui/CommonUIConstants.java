@@ -23,11 +23,21 @@ package org.apache.directory.studio.common.ui;
 
 /**
  * Constants used in the connection UI plugin.
+ * Final reference -> class shouldn't be extended
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public interface CommonUIConstants
+public final class CommonUIConstants
 {
+    /**
+     *  Ensures no construction of this class, also ensures there is no need for final keyword above
+     *  (Implicit super constructor is not visible for default constructor),
+     *  but is still self documenting.
+     */
+    private CommonUIConstants()
+    {
+    }
+
     /** The plug-in ID */
     public static final String PLUGIN_ID = CommonUIPlugin.getDefault().getPluginProperties().getString( "Plugin_id" ); //$NON-NLS-1$
 

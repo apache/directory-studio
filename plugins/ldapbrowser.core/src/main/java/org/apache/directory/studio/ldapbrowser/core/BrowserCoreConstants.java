@@ -27,11 +27,21 @@ import java.io.OutputStreamWriter;
 
 /**
  * This class contains all the constants used by the Browser Core Plugin
+ * Final reference -> class shouldn't be extended
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public interface BrowserCoreConstants
+public final class BrowserCoreConstants
 {
+    /**
+     *  Ensures no construction of this class, also ensures there is no need for final keyword above
+     *  (Implicit super constructor is not visible for default constructor),
+     *  but is still self documenting.
+     */
+    private BrowserCoreConstants()
+    {
+    }
+
     /** The plug-in ID */
     public static final String PLUGIN_ID = BrowserCorePlugin.getDefault().getPluginProperties().getString( "Plugin_id" );
 

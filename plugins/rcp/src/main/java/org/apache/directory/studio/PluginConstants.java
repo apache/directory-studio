@@ -21,12 +21,22 @@ package org.apache.directory.studio;
 
 
 /**
- * This interface contains all the Constants used in the Plugin.
+ * This class contains all the Constants used in the Plugin.
+ * Final reference -> class shouldn't be extended
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public interface PluginConstants
+public final class PluginConstants
 {
+
+    /**
+     *  Ensures no construction of this class, also ensures there is no need for final keyword above
+     *  (Implicit super constructor is not visible for default constructor),
+     *  but is still self documenting.
+     */
+    private PluginConstants()
+    {
+    }
 
     /** The Add Extension Action ID */
     public static final String ACTION_ADD_EXTENSION_ID = Activator.getDefault().getPluginProperties().getString(

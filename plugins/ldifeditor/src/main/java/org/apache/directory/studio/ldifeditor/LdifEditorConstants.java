@@ -22,11 +22,21 @@ package org.apache.directory.studio.ldifeditor;
 
 /**
  * Constants for the LDIF editor.
+ * Final reference -> class shouldn't be extended
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public interface LdifEditorConstants
+public final class LdifEditorConstants
 {
+    /**
+     *  Ensures no construction of this class, also ensures there is no need for final keyword above
+     *  (Implicit super constructor is not visible for default constructor),
+     *  but is still self documenting.
+     */
+    private LdifEditorConstants()
+    {
+    }
+
     /** The plug-in ID */
     public static final String PLUGIN_ID = LdifEditorActivator.getDefault().getPluginProperties().getString(
         "Plugin_id" ); //$NON-NLS-1$
