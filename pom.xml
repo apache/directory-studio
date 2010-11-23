@@ -366,6 +366,11 @@
       </dependency>
       <dependency>
         <groupId>org.apache.directory.studio</groupId>
+        <artifactId>apacheds.configuration.v2</artifactId>
+        <version>${pom.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.directory.studio</groupId>
         <artifactId>apacheds.configuration.feature</artifactId>
         <version>${pom.version}</version>
       </dependency>

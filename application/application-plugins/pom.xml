@@ -52,11 +52,11 @@
                 <!-- Apache Directory Studio library plugins dependencies -->
                 <artifactItem>
                   <groupId>org.apache.directory.studio</groupId>
-                  <artifactId>org.antlr.antlr</artifactId>
+                  <artifactId>net.sf.ehcache.core</artifactId>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.apache.directory.studio</groupId>
-                  <artifactId>org.apache.commons.codec</artifactId>
+                  <artifactId>org.antlr.antlr</artifactId>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.apache.directory.studio</groupId>
@@ -76,19 +76,51 @@
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.apache.directory.studio</groupId>
-                  <artifactId>org.apache.commons.pool</artifactId>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.apache.directory.studio</groupId>
                   <artifactId>org.apache.commons.logging</artifactId>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.apache.directory.studio</groupId>
-                  <artifactId>org.apache.directory.shared.i18n</artifactId>
+                  <artifactId>org.apache.commons.pool</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.apache.directory.studio</groupId>
+                  <artifactId>org.apache.directory.server.config</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.apache.directory.studio</groupId>
+                  <artifactId>org.apache.directory.server.core</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.apache.directory.studio</groupId>
+                  <artifactId>org.apache.directory.server.core.api</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.apache.directory.studio</groupId>
+                  <artifactId>org.apache.directory.server.core.avl</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.apache.directory.studio</groupId>
+                  <artifactId>org.apache.directory.server.core.constants</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.apache.directory.studio</groupId>
+                  <artifactId>org.apache.directory.server.i18n</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.apache.directory.studio</groupId>
+                  <artifactId>org.apache.directory.server.ldif.partition</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.apache.directory.studio</groupId>
+                  <artifactId>org.apache.directory.server.xdbm.partition</artifactId>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.apache.directory.studio</groupId>
                   <artifactId>org.apache.directory.shared.dsml.parser</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.apache.directory.studio</groupId>
+                  <artifactId>org.apache.directory.shared.i18n</artifactId>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.apache.directory.studio</groupId>
@@ -142,10 +174,6 @@
                 <!-- Apache Directory Studio plugins dependencies -->
                 <artifactItem>
                   <groupId>org.apache.directory.studio</groupId>
-                  <artifactId>org.apache.mina.core</artifactId>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.apache.directory.studio</groupId>
                   <artifactId>aciitemeditor</artifactId>
                 </artifactItem>
                 <artifactItem>
@@ -155,6 +183,10 @@
                 <artifactItem>
                   <groupId>org.apache.directory.studio</groupId>
                   <artifactId>apacheds.configuration</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.apache.directory.studio</groupId>
+                  <artifactId>apacheds.configuration.v2</artifactId>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.apache.directory.studio</groupId>
