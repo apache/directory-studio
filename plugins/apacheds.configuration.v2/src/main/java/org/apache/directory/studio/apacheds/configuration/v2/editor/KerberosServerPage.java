@@ -429,9 +429,25 @@ public class KerberosServerPage extends ServerConfigurationEditorPage
 
         // Maximum Renewable Lifetime Text
         addDirtyListener( maximumRenewableLifetimeText );
+        maximumRenewableLifetimeText.addModifyListener( new ModifyListener()
+        {
+            public void modifyText( ModifyEvent e )
+            {
+                getKdcServerBean().setKrbMaximumRenewableLifetime(
+                    Integer.parseInt( maximumRenewableLifetimeText.getText() ) );
+            }
+        } );
 
         // Maximum Ticket Lifetime Text
         addDirtyListener( maximumTicketLifetimeText );
+        maximumTicketLifetimeText.addModifyListener( new ModifyListener()
+        {
+            public void modifyText( ModifyEvent e )
+            {
+                getKdcServerBean()
+                    .setKrbMaximumTicketLifetime( Integer.parseInt( maximumTicketLifetimeText.getText() ) );
+            }
+        } );
     }
 
 
