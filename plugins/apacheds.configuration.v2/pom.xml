@@ -120,7 +120,6 @@
  org.apache.directory.studio.common.core,
  org.apache.directory.studio.connection.core,
  org.apache.directory.studio.connection.ui,
- org.apache.logging.log4j;bundle-version="${org.apache.logging.log4j.version}",
  org.eclipse.core.runtime,
  org.eclipse.core.resources,
  org.eclipse.ui,
@@ -186,11 +185,6 @@
     <dependency>
       <groupId>org.apache.directory.studio</groupId>
       <artifactId>org.apache.directory.shared.ldap.schema</artifactId>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.directory.studio</groupId>
-      <artifactId>org.apache.logging.log4j</artifactId>
       <scope>provided</scope>
     </dependency>
     
