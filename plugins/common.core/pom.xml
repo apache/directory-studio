@@ -98,9 +98,11 @@
           <manifestLocation>META-INF</manifestLocation>
           <instructions>            
             <Bundle-SymbolicName>${groupId}.${artifactId};singleton:=true</Bundle-SymbolicName>
+            <Eclipse-RegisterBuddy>org.apache.logging.log4j</Eclipse-RegisterBuddy>
             <Bundle-Localization>plugin</Bundle-Localization>
             <Eclipse-LazyStart>true</Eclipse-LazyStart>
             <Require-Bundle>org.apache.commons.lang;bundle-version="${org.apache.commons.lang.version}",
+ org.apache.logging.log4j;bundle-version="${org.apache.logging.log4j.version}",
  org.eclipse.core.runtime</Require-Bundle>
             <Export-Package>org.apache.directory.studio.*</Export-Package>
             <Import-Package>!</Import-Package>
