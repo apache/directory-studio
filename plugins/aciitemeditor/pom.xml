@@ -109,8 +109,7 @@
             <Bundle-Localization>plugin</Bundle-Localization>
             <Eclipse-LazyStart>true</Eclipse-LazyStart>
             <Bundle-Activator>org.apache.directory.studio.aciitemeditor.Activator</Bundle-Activator>
-            <Require-Bundle>
- org.apache.directory.shared.ldap;bundle-version="${org.apache.directory.shared.validversion}",
+            <Require-Bundle>org.apache.directory.shared.ldap;bundle-version="${org.apache.directory.shared.validversion}",
  org.apache.directory.studio.common.ui,
  org.apache.directory.studio.connection.core,
  org.apache.directory.studio.connection.ui,
@@ -123,8 +122,7 @@
  org.eclipse.jface.text,
  org.eclipse.ui,
  org.eclipse.ui.editors,
- org.eclipse.ui.workbench.texteditor
-            </Require-Bundle>
+ org.eclipse.ui.workbench.texteditor</Require-Bundle>
             <Export-Package>!*</Export-Package>
             <Import-Package>!*</Import-Package>
           </instructions>

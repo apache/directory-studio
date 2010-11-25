@@ -169,6 +169,7 @@ public abstract class ServerConfigurationEditorPage extends FormPage
         toolbarManager.add( new EditorExportConfigurationAction() );
         toolbarManager.add( new Separator() );
         toolbarManager.add( new EditorAddPageAction( ( ServerConfigurationEditor ) getEditor() ) );
+        
         toolbarManager.update( true );
 
         createFormContent( parent, toolkit );

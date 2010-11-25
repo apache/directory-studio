@@ -96,10 +96,7 @@
  org.apache.directory.shared.ldap;bundle-version="${org.apache.directory.shared.validversion}",
  org.apache.directory.shared.ldap.client.api;bundle-version="${org.apache.directory.shared.validversion}",
  org.apache.directory.shared.ldap.schema;bundle-version="${org.apache.directory.shared.validversion}",
- org.apache.mina.core;bundle-version="${org.apache.mina.core.version}",
- org.apache.logging.log4j;bundle-version="${org.apache.logging.log4j.version}",
- org.slf4j.api;bundle-version="${org.slf4j.version}",
- org.slf4j.log4j12;bundle-version="${org.slf4j.version}"</Require-Bundle>
+ org.slf4j.api;bundle-version="${org.slf4j.version}"</Require-Bundle>
             <Embed-Dependency>*;scope=compile|runtime</Embed-Dependency>
             <Embed-Directory>lib</Embed-Directory>
             <Embed-StripGroup>true</Embed-StripGroup>
@@ -177,6 +174,61 @@
           <artifactId>slf4j-api</artifactId>
         </exclusion>
       </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.directory.studio</groupId>
+      <artifactId>net.sf.ehcache.core</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.directory.studio</groupId>
+      <artifactId>org.apache.commons.collections</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.directory.studio</groupId>
+      <artifactId>org.apache.commons.io</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.directory.studio</groupId>
+      <artifactId>org.apache.commons.lang</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.directory.studio</groupId>
+      <artifactId>org.apache.directory.server.core.constants</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.directory.studio</groupId>
+      <artifactId>org.apache.directory.server.i18n</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.directory.studio</groupId>
+      <artifactId>org.apache.directory.shared.i18n</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.directory.studio</groupId>
+      <artifactId>org.apache.directory.shared.ldap</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.directory.studio</groupId>
+      <artifactId>org.apache.directory.shared.ldap.client.api</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.directory.studio</groupId>
+      <artifactId>org.apache.directory.shared.ldap.schema</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.directory.studio</groupId>
+      <artifactId>org.apache.directory.shared.i18n</artifactId>
+      <scope>provided</scope>
     </dependency>
   </dependencies>
   

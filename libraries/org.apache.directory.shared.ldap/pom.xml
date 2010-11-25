@@ -91,9 +91,7 @@
  org.apache.commons.lang;bundle-version="${org.apache.commons.lang.version}",
  org.apache.directory.shared.i18n;bundle-version="${org.apache.directory.shared.validversion}",
  org.apache.mina.core;bundle-version="${org.apache.mina.core.version}",
- org.apache.logging.log4j;bundle-version="${org.apache.logging.log4j.version}",
- org.slf4j.api;bundle-version="${org.slf4j.version}",
- org.slf4j.log4j12;bundle-version="${org.slf4j.version}"</Require-Bundle>
+ org.slf4j.api;bundle-version="${org.slf4j.version}"</Require-Bundle>
             <Embed-Dependency>*;scope=compile|runtime</Embed-Dependency>
             <Embed-Directory>lib</Embed-Directory>
             <Embed-StripGroup>true</Embed-StripGroup>
@@ -143,10 +141,6 @@
           <artifactId>shared-i18n</artifactId>
         </exclusion>
         <exclusion>
-          <groupId>org.apache.directory.shared</groupId>
-          <artifactId>shared-ldap-constants</artifactId>
-        </exclusion>
-        <exclusion>
           <groupId>org.apache.mina</groupId>
           <artifactId>mina-core</artifactId>
         </exclusion>
@@ -155,6 +149,36 @@
           <artifactId>slf4j-api</artifactId>
         </exclusion>
       </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.directory.studio</groupId>
+      <artifactId>org.antlr.antlr</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.directory.studio</groupId>
+      <artifactId>org.apache.commons.lang</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.directory.studio</groupId>
+      <artifactId>org.apache.commons.collections</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.directory.studio</groupId>
+      <artifactId>org.apache.directory.shared.i18n</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.directory.studio</groupId>
+      <artifactId>org.apache.mina.core</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.directory.studio</groupId>
+      <artifactId>org.slf4j.api</artifactId>
+      <scope>provided</scope>
     </dependency>
   </dependencies>
   

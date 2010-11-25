@@ -112,8 +112,7 @@
             <Bundle-Localization>plugin</Bundle-Localization>
             <Eclipse-LazyStart>true</Eclipse-LazyStart>
             <Bundle-Activator>org.apache.directory.studio.valueeditors.ValueEditorsActivator</Bundle-Activator>
-            <Require-Bundle>
- org.apache.commons.codec;bundle-version="${org.apache.commons.codec.version}",
+            <Require-Bundle>org.apache.commons.codec;bundle-version="${org.apache.commons.codec.version}",
  org.apache.commons.io;bundle-version="${org.apache.commons.io.version}",
  org.apache.directory.shared.ldap;bundle-version="${org.apache.directory.shared.validversion}",
  org.apache.directory.studio.common.ui,
@@ -122,8 +121,7 @@
  org.apache.directory.studio.ldapbrowser.core,
  org.apache.directory.studio.ldapbrowser.common,
  org.eclipse.core.runtime,
- org.eclipse.ui
-            </Require-Bundle>
+ org.eclipse.ui</Require-Bundle>
             <Embed-Dependency>*;scope=compile|runtime</Embed-Dependency>
             <Embed-Directory>lib</Embed-Directory>
             <Embed-StripGroup>true</Embed-StripGroup>

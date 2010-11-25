@@ -114,8 +114,7 @@
             <Bundle-Localization>plugin</Bundle-Localization>
             <Eclipse-LazyStart>true</Eclipse-LazyStart>
             <Bundle-Activator>org.apache.directory.studio.ldapservers.apacheds.v157.ApacheDS157Plugin</Bundle-Activator>
-            <Require-Bundle>
- org.apache.directory.studio.apacheds.configuration,
+            <Require-Bundle>org.apache.directory.studio.apacheds.configuration,
  org.apache.directory.studio.common.core,
  org.apache.directory.studio.common.ui,
  org.apache.directory.studio.connection.core,
@@ -128,8 +127,7 @@
  org.eclipse.jdt.launching,
  org.eclipse.jface.text,
  org.eclipse.ui,
- org.eclipse.ui.ide
-            </Require-Bundle>
+ org.eclipse.ui.ide</Require-Bundle>
             <Export-Package>org.apache.directory.studio.*</Export-Package>
             <Import-Package>!</Import-Package>
             <Private-Package>!</Private-Package>

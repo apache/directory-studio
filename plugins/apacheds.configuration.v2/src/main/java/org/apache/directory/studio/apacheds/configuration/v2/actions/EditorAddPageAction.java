@@ -21,13 +21,17 @@
 package org.apache.directory.studio.apacheds.configuration.v2.actions;
 
 
+import java.io.File;
+
+import org.apache.directory.shared.ldap.schema.SchemaManager;
+import org.apache.directory.shared.ldap.schema.loader.ldif.LdifSchemaLoader;
+import org.apache.directory.shared.ldap.schema.manager.impl.DefaultSchemaManager;
+import org.apache.directory.shared.ldap.schema.registries.SchemaLoader;
 import org.apache.directory.studio.apacheds.configuration.v2.ApacheDS2ConfigurationPlugin;
 import org.apache.directory.studio.apacheds.configuration.v2.ApacheDS2ConfigurationPluginConstants;
 import org.apache.directory.studio.apacheds.configuration.v2.editor.ServerConfigurationEditor;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.ui.PartInitException;
-import org.eclipse.ui.forms.editor.FormPage;
 
 
 /**
@@ -72,13 +76,25 @@ public class EditorAddPageAction extends Action
     {
         try
         {
-            editor.removePage( 0 );
-            editor.addPage( new FormPage( "id", "title" ) );
+            long t1 = System.currentTimeMillis();
+            //SchemaLoader schemaLoader = new SingleLdifSchemaLoader();
+            SchemaLoader schemaLoader = new LdifSchemaLoader( new File(
+                "/Users/pajbam/Development/Apache/ApacheDS/shared/ldap-schema/src/main/resources/schema" ) );
+            SchemaManager schemaManager = new DefaultSchemaManager( schemaLoader );
+
+            // We have to load the schema now, otherwise we won't be able
+            // to initialize the Partitions, as we won't be able to parse 
+            // and normalize their suffix DN
+            schemaManager.loadAllEnabled();
+            //        schemaManager.loadWithDeps( "adsconfig" );
+
+            long t2 = System.currentTimeMillis();
+
+            System.out.println( "Time = " + ( t2 - t1 ) + "ms" );
         }
-        catch ( PartInitException e )
+        catch ( Exception e )
         {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            // TODO: handle exception
         }
     }
 }

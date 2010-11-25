@@ -86,9 +86,7 @@
           <manifestLocation>META-INF</manifestLocation>
           <instructions>
             <Bundle-SymbolicName>${artifactId}</Bundle-SymbolicName>
-            <Require-Bundle>org.apache.logging.log4j;bundle-version="${org.apache.logging.log4j.version}",
- org.slf4j.api;bundle-version="${org.slf4j.version}",
- org.slf4j.log4j12;bundle-version="${org.slf4j.version}"</Require-Bundle>
+            <Require-Bundle>org.slf4j.api;bundle-version="${org.slf4j.version}"</Require-Bundle>
             <Embed-Dependency>*;scope=compile|runtime</Embed-Dependency>
             <Embed-Directory>lib</Embed-Directory>
             <Embed-StripGroup>true</Embed-StripGroup>

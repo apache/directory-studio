@@ -120,11 +120,11 @@
  org.apache.directory.studio.common.core,
  org.apache.directory.studio.connection.core,
  org.apache.directory.studio.connection.ui,
+ org.apache.logging.log4j;bundle-version="${org.apache.logging.log4j.version}",
  org.eclipse.core.runtime,
  org.eclipse.core.resources,
  org.eclipse.ui,
- org.eclipse.ui.forms
-            </Require-Bundle>
+ org.eclipse.ui.forms</Require-Bundle>
             <Export-Package>org.apache.directory.studio.apacheds.configuration.v2*</Export-Package>
             <Import-Package>!</Import-Package>
             <Private-Package>!</Private-Package>
@@ -186,6 +186,11 @@
     <dependency>
       <groupId>org.apache.directory.studio</groupId>
       <artifactId>org.apache.directory.shared.ldap.schema</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.directory.studio</groupId>
+      <artifactId>org.apache.logging.log4j</artifactId>
       <scope>provided</scope>
     </dependency>
     
@@ -267,7 +272,6 @@
       <artifactId>resources</artifactId>
       <scope>provided</scope>
     </dependency>
-
   </dependencies>
 
 </project>

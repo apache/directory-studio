@@ -86,14 +86,11 @@
           <manifestLocation>META-INF</manifestLocation>
           <instructions>
             <Bundle-SymbolicName>${artifactId}</Bundle-SymbolicName>
-            <Require-Bundle>org.apache.commons.collections;bundle-version="${org.apache.commons.collections.version}",
- org.apache.directory.shared.i18n;bundle-version="${org.apache.directory.shared.validversion}",
+            <Require-Bundle>org.apache.directory.shared.i18n;bundle-version="${org.apache.directory.shared.validversion}",
  org.apache.directory.shared.ldap;bundle-version="${org.apache.directory.shared.validversion}",
- org.apache.logging.log4j;bundle-version="${org.apache.logging.log4j.version}",
  org.dom4j.dom4j;bundle-version="${org.dom4j.version}",
  org.xpp3.xpp3;bundle-version="${org.xpp3.validversion}",
- org.slf4j.api;bundle-version="${org.slf4j.version}",
- org.slf4j.log4j12;bundle-version="${org.slf4j.version}"</Require-Bundle>
+ org.slf4j.api;bundle-version="${org.slf4j.version}"</Require-Bundle>
             <Embed-Dependency>*;scope=compile|runtime</Embed-Dependency>
             <Embed-Directory>lib</Embed-Directory>
             <Embed-StripGroup>true</Embed-StripGroup>
@@ -151,6 +148,31 @@
           <artifactId>xpp3</artifactId>
         </exclusion>
       </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.directory.studio</groupId>
+      <artifactId>org.dom4j.dom4j</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.directory.studio</groupId>
+      <artifactId>org.apache.directory.shared.i18n</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.directory.studio</groupId>
+      <artifactId>org.apache.directory.shared.ldap</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.directory.studio</groupId>
+      <artifactId>org.slf4j.api</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.directory.studio</groupId>
+      <artifactId>org.xpp3.xpp3</artifactId>
+      <scope>provided</scope>
     </dependency>
   </dependencies>
   

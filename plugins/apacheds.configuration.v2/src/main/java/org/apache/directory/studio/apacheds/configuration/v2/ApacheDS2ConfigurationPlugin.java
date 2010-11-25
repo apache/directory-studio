@@ -24,6 +24,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.PropertyResourceBundle;
 
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
@@ -63,6 +65,11 @@ public class ApacheDS2ConfigurationPlugin extends AbstractUIPlugin
     public void start( BundleContext context ) throws Exception
     {
         super.start( context );
+        
+        Logger rootLogger = Logger.getRootLogger();
+        
+        System.out.println( rootLogger );
+        rootLogger.setLevel( Level.OFF );
     }
 
 

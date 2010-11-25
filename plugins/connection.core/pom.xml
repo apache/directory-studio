@@ -105,8 +105,7 @@
             <Bundle-Localization>plugin</Bundle-Localization>
             <Eclipse-LazyStart>true</Eclipse-LazyStart>
             <Bundle-Activator>org.apache.directory.studio.connection.core.ConnectionCorePlugin</Bundle-Activator>
-            <Require-Bundle>
- org.apache.commons.codec;bundle-version="${org.apache.commons.codec.version}",
+            <Require-Bundle>org.apache.commons.codec;bundle-version="${org.apache.commons.codec.version}",
  org.apache.commons.io;bundle-version="${org.apache.commons.io.version}",
  org.apache.commons.lang;bundle-version="${org.apache.commons.lang.version}",
  org.apache.directory.shared.ldap;bundle-version="${org.apache.directory.shared.validversion}",
@@ -115,8 +114,7 @@
  org.apache.directory.studio.ldifparser,
  org.apache.httpcomponents.httpclient;bundle-version="${org.apache.httpcomponents.version}",
  org.dom4j.dom4j;bundle-version="${org.dom4j.version}",
- org.eclipse.core.runtime
-            </Require-Bundle>
+ org.eclipse.core.runtime</Require-Bundle>
             <Export-Package>org.apache.directory.studio.connection.core.*</Export-Package>
             <Import-Package>!</Import-Package>
             <Private-Package>!</Private-Package>

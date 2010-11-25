@@ -29,7 +29,9 @@ import org.apache.directory.server.config.beans.ConfigBean;
 import org.apache.directory.server.core.partition.ldif.SingleFileLdifPartition;
 import org.apache.directory.shared.ldap.name.DN;
 import org.apache.directory.shared.ldap.schema.SchemaManager;
+import org.apache.directory.shared.ldap.schema.loader.ldif.JarLdifSchemaLoader;
 import org.apache.directory.shared.ldap.schema.loader.ldif.LdifSchemaLoader;
+import org.apache.directory.shared.ldap.schema.loader.ldif.SingleLdifSchemaLoader;
 import org.apache.directory.shared.ldap.schema.manager.impl.DefaultSchemaManager;
 import org.apache.directory.shared.ldap.schema.registries.SchemaLoader;
 import org.apache.directory.shared.ldap.util.LdapExceptionUtils;
@@ -119,19 +121,19 @@ public class LoadConfigurationRunnable implements StudioRunnableWithProgress
     }
 
 
-    private void initConfigBean() throws Exception
+    public void initConfigBean() throws Exception
     {
-        SchemaLoader loader = new LdifSchemaLoader( new File(
-            "/Users/pajbam/Development/Apache/ApacheDS/shared/ldap-schema/src/main/resources/schema" ) );
-        SchemaManager schemaManager = new DefaultSchemaManager( loader );
-
         long t1 = System.currentTimeMillis();
+        //SchemaLoader schemaLoader = new SingleLdifSchemaLoader();
+        SchemaLoader schemaLoader = new JarLdifSchemaLoader();
+        SchemaManager schemaManager = new DefaultSchemaManager( schemaLoader );
+
 
         // We have to load the schema now, otherwise we won't be able
         // to initialize the Partitions, as we won't be able to parse 
         // and normalize their suffix DN
-        //schemaManager.loadAllEnabled();
-        schemaManager.loadWithDeps( "adsconfig" );
+        schemaManager.loadAllEnabled();
+//        schemaManager.loadWithDeps( "adsconfig" );
 
         long t2 = System.currentTimeMillis();
 

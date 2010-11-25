@@ -112,8 +112,7 @@
             <Bundle-Localization>plugin</Bundle-Localization>
             <Eclipse-LazyStart>true</Eclipse-LazyStart>
             <Bundle-Activator>org.apache.directory.studio.connection.ui.ConnectionUIPlugin</Bundle-Activator>
-            <Require-Bundle>
- org.apache.commons.codec;bundle-version="${org.apache.commons.codec.version}",
+            <Require-Bundle>org.apache.commons.codec;bundle-version="${org.apache.commons.codec.version}",
  org.apache.commons.lang;bundle-version="${org.apache.commons.lang.version}",
  org.apache.directory.shared.ldap;bundle-version="${org.apache.directory.shared.validversion}",
  org.apache.directory.studio.common.core,
@@ -123,8 +122,7 @@
  org.eclipse.core.runtime,
  org.eclipse.ui,
  org.eclipse.ui.forms,
- org.eclipse.ui.workbench.texteditor
-            </Require-Bundle>
+ org.eclipse.ui.workbench.texteditor</Require-Bundle>
             <Export-Package>org.apache.directory.studio.*</Export-Package>
             <Import-Package>org.slf4j.impl;version="${org.slf4j.version}"</Import-Package>
             <Private-Package>!</Private-Package>
