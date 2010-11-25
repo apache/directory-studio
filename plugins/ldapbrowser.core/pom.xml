@@ -123,7 +123,7 @@
             <Embed-Directory>lib</Embed-Directory>
             <Embed-StripGroup>true</Embed-StripGroup>
             <Export-Package>org.apache.directory.studio.ldapbrowser.core.*</Export-Package>
-            <Import-Package>org.slf4j.impl;version="${org.slf4j.version}"</Import-Package>
+            <Import-Package>!</Import-Package>
             <Private-Package>!</Private-Package>
           </instructions>
         </configuration>

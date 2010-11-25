@@ -134,7 +134,7 @@
  org.eclipse.ui.workbench.texteditor,
  org.eclipse.search</Require-Bundle>
             <Export-Package>org.apache.directory.studio.ldifeditor.*</Export-Package>
-            <Import-Package>org.slf4j.impl;version="${org.slf4j.version}"</Import-Package>
+            <Import-Package>!</Import-Package>
             <Private-Package>!</Private-Package>
           </instructions>
         </configuration>

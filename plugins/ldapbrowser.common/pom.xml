@@ -125,7 +125,7 @@
  org.eclipse.ui.editors,
  org.eclipse.ui.workbench.texteditor</Require-Bundle>
             <Export-Package>org.apache.directory.studio.ldapbrowser.common.*, org.apache.directory.studio.valueeditors.*</Export-Package>
-            <Import-Package>org.slf4j.impl;version="${org.slf4j.version}"</Import-Package>
+            <Import-Package>!</Import-Package>
             <Private-Package>!</Private-Package>
           </instructions>
         </configuration>
@@ -165,11 +165,6 @@
     <dependency>
       <groupId>org.apache.directory.studio</groupId>
       <artifactId>org.apache.directory.shared.ldap</artifactId>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.directory.studio</groupId>
-      <artifactId>org.slf4j.log4j12</artifactId>
       <scope>provided</scope>
     </dependency>
     
