@@ -22,8 +22,15 @@ package org.apache.directory.studio.apacheds.configuration.v2;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.List;
 import java.util.PropertyResourceBundle;
 
+import org.apache.directory.shared.ldap.schema.SchemaManager;
+import org.apache.directory.shared.ldap.schema.loader.ldif.JarLdifSchemaLoader;
+import org.apache.directory.shared.ldap.schema.loader.ldif.LdifSchemaLoader;
+import org.apache.directory.shared.ldap.schema.manager.impl.DefaultSchemaManager;
+import org.apache.directory.shared.ldap.schema.registries.SchemaLoader;
+import org.apache.directory.shared.ldap.util.LdapExceptionUtils;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
@@ -46,6 +53,9 @@ public class ApacheDS2ConfigurationPlugin extends AbstractUIPlugin
     /** The plugin properties */
     private PropertyResourceBundle properties;
 
+    /** The schema manager */
+    private SchemaManager schemaManager;
+
 
     /**
      * Creates a new instance of ApacheDS2ConfigurationPlugin.
@@ -63,8 +73,6 @@ public class ApacheDS2ConfigurationPlugin extends AbstractUIPlugin
     public void start( BundleContext context ) throws Exception
     {
         super.start( context );
-        
-        System.out.println("start ApacheDS2Configuration");
     }
 
 
@@ -75,6 +83,37 @@ public class ApacheDS2ConfigurationPlugin extends AbstractUIPlugin
     public void stop( BundleContext context ) throws Exception
     {
         super.stop( context );
+    }
+
+
+    /**
+     * Gets the schema manager.
+     *
+     * @return
+     *      the schema manager
+     * @throws Exception
+     *      if an error occurs when initializing the schema manager
+     */
+    public SchemaManager getSchemaManager() throws Exception
+    {
+        // Is the schema manager initialized?
+        if ( schemaManager == null )
+        {
+            // Initializing the schema loader and schema manager
+            SchemaLoader loader = new JarLdifSchemaLoader();
+            schemaManager = new DefaultSchemaManager( loader );
+
+            // Loading only the 'adsconfig' schema with its dependencies
+            schemaManager.loadWithDeps( "adsconfig" );
+
+            // Checking if no error occurred when loading the schemas
+            if ( schemaManager.getErrors().size() != 0 )
+            {
+                throw new Exception( "Could not load the schema correctly." );
+            }
+        }
+
+        return schemaManager;
     }
 
 
