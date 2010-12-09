@@ -35,6 +35,7 @@ import org.apache.directory.shared.ldap.schema.loader.ldif.SingleLdifSchemaLoade
 import org.apache.directory.shared.ldap.schema.manager.impl.DefaultSchemaManager;
 import org.apache.directory.shared.ldap.schema.registries.SchemaLoader;
 import org.apache.directory.shared.ldap.util.LdapExceptionUtils;
+import org.apache.directory.studio.apacheds.configuration.v2.ApacheDS2ConfigurationPlugin;
 import org.apache.directory.studio.apacheds.configuration.v2.editor.ServerConfigurationEditor;
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.common.core.jobs.StudioRunnableWithProgress;
@@ -124,16 +125,8 @@ public class LoadConfigurationRunnable implements StudioRunnableWithProgress
     public void initConfigBean() throws Exception
     {
         long t1 = System.currentTimeMillis();
-        //SchemaLoader schemaLoader = new SingleLdifSchemaLoader();
-        SchemaLoader schemaLoader = new JarLdifSchemaLoader();
-        SchemaManager schemaManager = new DefaultSchemaManager( schemaLoader );
-
-
-        // We have to load the schema now, otherwise we won't be able
-        // to initialize the Partitions, as we won't be able to parse 
-        // and normalize their suffix DN
-        schemaManager.loadAllEnabled();
-//        schemaManager.loadWithDeps( "adsconfig" );
+        
+        SchemaManager schemaManager = ApacheDS2ConfigurationPlugin.getDefault().getSchemaManager();
 
         long t2 = System.currentTimeMillis();
 
