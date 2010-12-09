@@ -28,7 +28,7 @@
             id="%Editor_ServerConfigurationEditor_id"
             name="%Editor_ServerConfigurationEditor_name">
          <contentTypeBinding
-               contentTypeId="org.apache.directory.studio.apacheds.configuration.contenttype">
+               contentTypeId="%ContentType_ServerConfiguration_id">
          </contentTypeBinding>
       </editor>
    </extension>
