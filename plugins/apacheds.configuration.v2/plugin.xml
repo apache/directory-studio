@@ -23,11 +23,23 @@
          point="org.eclipse.ui.editors">
       <editor
             class="org.apache.directory.studio.apacheds.configuration.v2.editor.ServerConfigurationEditor"
-            default="true"
+            default="false"
             icon="resources/icons/editor.gif"
             id="%Editor_ServerConfigurationEditor_id"
             name="%Editor_ServerConfigurationEditor_name">
+         <contentTypeBinding
+               contentTypeId="%ContentType_ServerConfiguration_id">
+         </contentTypeBinding>
       </editor>
+   </extension>
+   <extension
+         point="org.eclipse.core.contenttype.contentTypes">
+      <content-type
+            describer="org.apache.directory.studio.apacheds.configuration.v2.ApacheDS2ConfigurationContentDescriber"
+            file-names="config.ldif"
+            id="%ContentType_ServerConfiguration_id"
+            name="%ContentType_ServerConfiguration_name">
+      </content-type>
    </extension>
    <extension
          point="org.eclipse.ui.popupMenus">
