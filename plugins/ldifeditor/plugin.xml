@@ -24,7 +24,7 @@
     <editor
           class="org.apache.directory.studio.ldifeditor.editor.LdifEditor"
           contributorClass="org.apache.directory.studio.ldifeditor.editor.LdifEditorContributor"
-          default="true"
+          default="false"
           extensions="ldif, ldiflog"
           icon="resources/icons/ldifeditor.gif"
           id="%Editor_LdifEditor_id"
