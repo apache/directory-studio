@@ -22,15 +22,12 @@ package org.apache.directory.studio.apacheds.configuration.v2;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.List;
 import java.util.PropertyResourceBundle;
 
 import org.apache.directory.shared.ldap.schema.SchemaManager;
 import org.apache.directory.shared.ldap.schema.loader.ldif.JarLdifSchemaLoader;
-import org.apache.directory.shared.ldap.schema.loader.ldif.LdifSchemaLoader;
 import org.apache.directory.shared.ldap.schema.manager.impl.DefaultSchemaManager;
 import org.apache.directory.shared.ldap.schema.registries.SchemaLoader;
-import org.apache.directory.shared.ldap.util.LdapExceptionUtils;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
