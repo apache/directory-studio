@@ -120,6 +120,7 @@
  org.apache.directory.studio.common.core,
  org.apache.directory.studio.connection.core,
  org.apache.directory.studio.connection.ui,
+ org.eclipse.core.contenttype,
  org.eclipse.core.runtime,
  org.eclipse.core.resources,
  org.eclipse.ui,
@@ -219,6 +220,11 @@
     <dependency>
       <groupId>org.eclipse.core</groupId>
       <artifactId>commands</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.core</groupId>
+      <artifactId>contenttype</artifactId>
       <scope>provided</scope>
     </dependency>
     <dependency>
