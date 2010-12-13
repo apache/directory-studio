@@ -33,6 +33,8 @@ import org.apache.directory.shared.ldap.schema.loader.ldif.LdifSchemaLoader;
 import org.apache.directory.shared.ldap.schema.manager.impl.DefaultSchemaManager;
 import org.apache.directory.shared.ldap.schema.registries.SchemaLoader;
 import org.apache.directory.shared.ldap.util.LdapExceptionUtils;
+import org.apache.directory.studio.apacheds.configuration.v2.ApacheDS2ConfigurationPlugin;
+import org.apache.directory.studio.apacheds.configuration.v2.editor.NewServerConfigurationInput;
 import org.apache.directory.studio.apacheds.configuration.v2.editor.ServerConfigurationEditor;
 import org.apache.directory.studio.apacheds.configuration.v2.editor.ServerConfigurationInput;
 import org.eclipse.jface.action.IAction;
@@ -61,8 +63,7 @@ public class OpenConfigurationAction implements IObjectActionDelegate
             IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
             try
             {
-                page.openEditor( new ServerConfigurationInput(),
-                    ServerConfigurationEditor.ID );
+                page.openEditor( new NewServerConfigurationInput(), ServerConfigurationEditor.ID );
             }
             catch ( PartInitException e )
             {

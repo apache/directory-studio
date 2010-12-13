@@ -21,26 +21,21 @@
 package org.apache.directory.studio.apacheds.configuration.v2.jobs;
 
 
-import java.io.File;
 import java.util.List;
 
 import org.apache.directory.server.config.ConfigPartitionReader;
+import org.apache.directory.server.config.ReadOnlyConfigurationPartition;
 import org.apache.directory.server.config.beans.ConfigBean;
-import org.apache.directory.server.core.partition.ldif.SingleFileLdifPartition;
-import org.apache.directory.shared.ldap.name.DN;
 import org.apache.directory.shared.ldap.schema.SchemaManager;
-import org.apache.directory.shared.ldap.schema.loader.ldif.JarLdifSchemaLoader;
-import org.apache.directory.shared.ldap.schema.loader.ldif.LdifSchemaLoader;
-import org.apache.directory.shared.ldap.schema.loader.ldif.SingleLdifSchemaLoader;
-import org.apache.directory.shared.ldap.schema.manager.impl.DefaultSchemaManager;
-import org.apache.directory.shared.ldap.schema.registries.SchemaLoader;
 import org.apache.directory.shared.ldap.util.LdapExceptionUtils;
 import org.apache.directory.studio.apacheds.configuration.v2.ApacheDS2ConfigurationPlugin;
+import org.apache.directory.studio.apacheds.configuration.v2.editor.NewServerConfigurationInput;
 import org.apache.directory.studio.apacheds.configuration.v2.editor.ServerConfigurationEditor;
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.common.core.jobs.StudioRunnableWithProgress;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.ui.IEditorInput;
 
 
 /**
@@ -52,9 +47,6 @@ public class LoadConfigurationRunnable implements StudioRunnableWithProgress
 {
     /** The associated editor */
     private ServerConfigurationEditor editor;
-
-    /** The configuration bean */
-    private ConfigBean configBean;
 
 
     /**
@@ -102,17 +94,30 @@ public class LoadConfigurationRunnable implements StudioRunnableWithProgress
      */
     public void run( StudioProgressMonitor monitor )
     {
+        IEditorInput input = editor.getEditorInput();
+
+        ConfigBean configBean = null;
         try
         {
-            initConfigBean();
-
-            Display.getDefault().asyncExec( new Runnable()
+            // If the input is a NewServerConfigurationInput, then we only 
+            // need to get the server configuration and return
+            if ( input instanceof NewServerConfigurationInput )
             {
-                public void run()
+                configBean = getNewDefaultConfiguration();
+            }
+
+            if ( configBean != null )
+            {
+                final ConfigBean finalConfigBean = configBean;
+
+                Display.getDefault().asyncExec( new Runnable()
                 {
-                    editor.configBeanLoaded( configBean );
+                    public void run()
+                {
+                    editor.configurationLoaded( finalConfigBean );
                 }
-            } );
+                } );
+            }
         }
         catch ( Exception e )
         {
@@ -122,10 +127,17 @@ public class LoadConfigurationRunnable implements StudioRunnableWithProgress
     }
 
 
-    public void initConfigBean() throws Exception
+    /**
+     * Gets a new default configuration.
+     *
+     * @return
+     *      a new default configuration
+     * @throws Exception
+     */
+    public ConfigBean getNewDefaultConfiguration() throws Exception
     {
         long t1 = System.currentTimeMillis();
-        
+
         SchemaManager schemaManager = ApacheDS2ConfigurationPlugin.getDefault().getSchemaManager();
 
         long t2 = System.currentTimeMillis();
@@ -139,24 +151,22 @@ public class LoadConfigurationRunnable implements StudioRunnableWithProgress
             throw new Exception( "Schema load failed : " + LdapExceptionUtils.printErrors( errors ) );
         }
 
-        SingleFileLdifPartition configPartition = new SingleFileLdifPartition(
-            "/Users/pajbam/Development/Apache/ApacheDS/apacheds/server-config/src/main/resources/config.ldif" );
-        configPartition.setId( "config" );
-        configPartition.setSuffix( new DN( "ou=config" ) );
-        configPartition.setSchemaManager( schemaManager );
+        ReadOnlyConfigurationPartition configurationPartition = new ReadOnlyConfigurationPartition(
+            ApacheDS2ConfigurationPlugin.class.getResourceAsStream( "config.ldif" ), schemaManager );
+        configurationPartition.initialize();
 
-        configPartition.initialize();
-        ConfigPartitionReader cpReader = new ConfigPartitionReader( configPartition, new File(
-            "/Users/pajbam/Development/Apache/ApacheDS/apacheds/server-config/src/main/resources/" ) );
+        ConfigPartitionReader cpReader = new ConfigPartitionReader( configurationPartition );
 
         t1 = System.currentTimeMillis();
 
-        configBean = cpReader.readConfig( new DN( "ou=config" ) );
+        ConfigBean configBean = cpReader.readConfig();
 
         t2 = System.currentTimeMillis();
 
         System.out.println( "Time = " + ( t2 - t1 ) + "ms" );
 
         //            System.out.println( configBean );
+
+        return configBean;
     }
 }

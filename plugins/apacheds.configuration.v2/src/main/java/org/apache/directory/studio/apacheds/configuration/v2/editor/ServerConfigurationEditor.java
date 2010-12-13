@@ -20,21 +20,41 @@
 package org.apache.directory.studio.apacheds.configuration.v2.editor;
 
 
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.lang.reflect.InvocationTargetException;
+
+import org.apache.directory.server.config.ConfigWriter;
 import org.apache.directory.server.config.beans.ConfigBean;
+import org.apache.directory.studio.apacheds.configuration.v2.ApacheDS2ConfigurationPlugin;
 import org.apache.directory.studio.apacheds.configuration.v2.jobs.LoadConfigurationRunnable;
 import org.apache.directory.studio.common.core.jobs.StudioJob;
 import org.apache.directory.studio.common.core.jobs.StudioRunnableWithProgress;
+import org.apache.directory.studio.common.ui.CommonUIUtils;
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.jface.dialogs.Dialog;
+import org.eclipse.jface.dialogs.IDialogConstants;
+import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.osgi.util.NLS;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.FileDialog;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.IPathEditorInput;
 import org.eclipse.ui.IPersistableElement;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.dialogs.SaveAsDialog;
 import org.eclipse.ui.forms.editor.FormEditor;
+import org.eclipse.ui.part.FileEditorInput;
 
 
 /**
@@ -61,10 +81,19 @@ public class ServerConfigurationEditor extends FormEditor
     {
         super.init( site, input );
         setPartName( input.getName() );
+        
+        readConfiguration();
+    }
 
-        System.out.println( ID );
 
-        // Creating and scheduling the job to delete the server
+    /**
+     * Reads the configuration
+     */
+    private void readConfiguration()
+    {
+        IEditorInput input = getEditorInput();
+
+        // Creating and scheduling the job to load the configuration
         StudioJob<StudioRunnableWithProgress> job = new StudioJob<StudioRunnableWithProgress>(
             new LoadConfigurationRunnable( this ) );
         job.schedule();
@@ -93,6 +122,99 @@ public class ServerConfigurationEditor extends FormEditor
      */
     public void doSave( IProgressMonitor monitor )
     {
+        if ( dirty )
+        {
+            monitor.beginTask( "Saving the server configuration", IProgressMonitor.UNKNOWN );
+
+            try
+            {
+                IEditorInput input = getEditorInput();
+                String inputClassName = input.getClass().getName();
+                boolean success = false;
+                if ( input instanceof FileEditorInput )
+                // FileEditorInput class is used when the file is opened
+                // from a project in the workspace.
+                {
+                    // Saving the ServerConfiguration to disk
+                    saveConfiguration( ( FileEditorInput ) input, monitor );
+                    success = true;
+                }
+                else if ( input instanceof IPathEditorInput )
+                {
+                    // Saving the ServerConfiguration to disk
+                    saveConfiguration( ( ( IPathEditorInput ) input ).getPath().toFile() );
+                    success = true;
+                }
+                else if ( inputClassName.equals( "org.eclipse.ui.internal.editors.text.JavaFileEditorInput" ) //$NON-NLS-1$
+                    || inputClassName.equals( "org.eclipse.ui.ide.FileStoreEditorInput" ) ) //$NON-NLS-1$
+                // The class 'org.eclipse.ui.internal.editors.text.JavaFileEditorInput'
+                // is used when opening a file from the menu File > Open... in Eclipse 3.2.x
+                // The class 'org.eclipse.ui.ide.FileStoreEditorInput' is used when
+                // opening a file from the menu File > Open... in Eclipse 3.3.x
+                {
+                    // Saving the ServerConfiguration to disk
+                    saveConfiguration( input.getToolTipText() );
+                    success = true;
+                }
+                else if ( input instanceof NewServerConfigurationInput )
+                {
+                    // The 'ServerConfigurationEditorInput' class is used when a
+                    // new Server Configuration File is created.
+
+                    // We are saving this as if it is a "Save as..." action.
+                    success = doSaveAs( monitor );
+                }
+
+                setDirty( !success );
+                monitor.done();
+            }
+            catch ( Exception e )
+            {
+                e.printStackTrace();
+            }
+        }
+    }
+
+
+    /**
+     * Saves the configuration.
+     *
+     * @param fei
+     *      the file editor input
+     * @param monitor
+     *      the monitor
+     * @throws Exception
+     */
+    private void saveConfiguration( FileEditorInput fei, IProgressMonitor monitor ) throws Exception
+    {
+        fei.getFile().setContents( new ByteArrayInputStream( getConfigWriter().writeToString().getBytes() ), true,
+            true, monitor );
+    }
+
+
+    /**
+     * Saves the configuration.
+     *
+     * @param file
+     *      the file
+     * @throws Exception
+     */
+    private void saveConfiguration( File file ) throws Exception
+    {
+        getConfigWriter().writeToFile( file );
+    }
+
+
+    /**
+     * Saves the configuration.
+     *
+     * @param path
+     *      the path
+     * @throws Exception
+     */
+    private void saveConfiguration( String path ) throws Exception
+    {
+        saveConfiguration( new File( path ) );
     }
 
 
@@ -101,6 +223,138 @@ public class ServerConfigurationEditor extends FormEditor
      */
     public void doSaveAs()
     {
+        try
+        {
+            getSite().getWorkbenchWindow().run( false, false, new IRunnableWithProgress()
+            {
+                public void run( IProgressMonitor monitor ) throws InvocationTargetException, InterruptedException
+                {
+                    try
+                    {
+                        monitor
+                            .beginTask( "Saving The Server Configuration", IProgressMonitor.UNKNOWN );
+                        boolean success = doSaveAs( monitor );
+                        setDirty( !success );
+                        monitor.done();
+                    }
+                    catch ( Exception e )
+                    {
+                        // TODO handle the exception
+                    }
+                }
+            } );
+        }
+        catch ( Exception e )
+        {
+            // TODO handle the exception
+            e.printStackTrace();
+        }
+    }
+
+
+    /**
+     * Performs the "Save as..." action.
+     *
+     * @param monitor
+     *      the monitor to use
+     * @throws Exception
+     */
+    private boolean doSaveAs( IProgressMonitor monitor ) throws Exception
+    {
+        // detect IDE or RCP:
+        // check if perspective org.eclipse.ui.resourcePerspective is available
+        boolean isIDE = CommonUIUtils.isIDEEnvironment();
+
+        if ( isIDE )
+        {
+            // Asking the user for the location where to 'save as' the file
+            SaveAsDialog dialog = new SaveAsDialog( getSite().getShell() );
+            if ( !( getEditorInput() instanceof NewServerConfigurationInput ) )
+            {
+                dialog.setOriginalFile( ResourcesPlugin.getWorkspace().getRoot().getFile(
+                    new Path( getEditorInput().getToolTipText() ) ) );
+            }
+            if ( dialog.open() != Dialog.OK )
+            {
+                return false;
+            }
+
+            // Getting if the resulting file
+            IFile file = ResourcesPlugin.getWorkspace().getRoot().getFile( dialog.getResult() );
+
+            // Creating the file if it does not exist
+            if ( !file.exists() )
+            {
+                file.create( new ByteArrayInputStream( "".getBytes() ), true, null ); //$NON-NLS-1$
+            }
+
+            // Creating the new input for the editor
+            FileEditorInput fei = new FileEditorInput( file );
+
+            // Saving the file to disk
+            saveConfiguration( fei, monitor );
+
+            // Setting the new input to the editor
+            setInput( fei );
+        }
+        else
+        {
+            Shell shell = getSite().getShell();
+            boolean canOverwrite = false;
+            String path = null;
+
+            while ( !canOverwrite )
+            {
+                // Open FileDialog
+                FileDialog dialog = new FileDialog( shell, SWT.SAVE );
+                path = dialog.open();
+                if ( path == null )
+                {
+                    return false;
+                }
+
+                // Check whether file exists and if so, confirm overwrite
+                final File externalFile = new File( path );
+                if ( externalFile.exists() )
+                {
+                    String question = NLS.bind(
+                        "The file \"{0}\" already exists. Do you want to replace the existing file?", path ); //$NON-NLS-1$
+                    MessageDialog overwriteDialog = new MessageDialog( shell, "Question", null, question, //$NON-NLS-1$
+                        MessageDialog.QUESTION, new String[]
+                            { IDialogConstants.YES_LABEL, IDialogConstants.NO_LABEL, IDialogConstants.CANCEL_LABEL }, 0 );
+                    int overwrite = overwriteDialog.open();
+                    switch ( overwrite )
+                    {
+                        case 0: // Yes
+                            canOverwrite = true;
+                            break;
+                        case 1: // No
+                            break;
+                        case 2: // Cancel
+                        default:
+                            return false;
+                    }
+                }
+                else
+                {
+                    canOverwrite = true;
+                }
+            }
+
+            // Saving the file to disk
+            saveConfiguration( path );
+
+            // Creating the new input for the editor
+            PathEditorInput newInput = new PathEditorInput( new Path( path ) );
+
+            // Setting the new input to the editor
+            setInput( newInput );
+        }
+
+        // Updating the title and tooltip texts
+        setPartName( getEditorInput().getName() );
+
+        return true;
     }
 
 
@@ -148,12 +402,12 @@ public class ServerConfigurationEditor extends FormEditor
 
 
     /**
-     * Sets the configuration bean.
+     * Sets the configuration.
      *
      * @param configBean
      *      the configuration bean
      */
-    public void setConfigBean( ConfigBean configBean )
+    public void setConfiguration( ConfigBean configBean )
     {
         this.configBean = configBean;
     }
@@ -165,9 +419,9 @@ public class ServerConfigurationEditor extends FormEditor
      * @param configBean
      *      the loaded configuration bean
      */
-    public void configBeanLoaded( ConfigBean configBean )
+    public void configurationLoaded( ConfigBean configBean )
     {
-        setConfigBean( configBean );
+        setConfiguration( configBean );
 
         hideLoadingPageAndDisplayConfigPages();
     }
@@ -200,6 +454,18 @@ public class ServerConfigurationEditor extends FormEditor
         setActivePage( 0 );
     }
 
+
+    /**
+     * Gets the configuration writer.
+     *
+     * @return
+     *      the configuration writer
+     * @throws Exception
+     */
+    private ConfigWriter getConfigWriter() throws Exception
+    {
+        return new ConfigWriter( ApacheDS2ConfigurationPlugin.getDefault().getSchemaManager(), configBean );
+    }
 }
 
 /**

@@ -26,8 +26,7 @@
             default="false"
             icon="resources/icons/editor.gif"
             id="%Editor_ServerConfigurationEditor_id"
-            name="%Editor_ServerConfigurationEditor_name"
-            filenames="config.ldif">
+            name="%Editor_ServerConfigurationEditor_name">
          <contentTypeBinding
                contentTypeId="%ContentType_ServerConfiguration_id">
          </contentTypeBinding>

@@ -122,7 +122,7 @@ public abstract class ServerConfigurationEditorPage extends FormPage
         if ( configBean == null )
         {
             configBean = new ConfigBean();
-            getServerConfigurationEditor().setConfigBean( configBean );
+            getServerConfigurationEditor().setConfiguration( configBean );
         }
 
         return configBean;
