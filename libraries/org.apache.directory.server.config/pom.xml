@@ -88,6 +88,7 @@
             <Bundle-SymbolicName>${artifactId}</Bundle-SymbolicName>
             <Require-Bundle>org.apache.directory.server.core.api;bundle-version="${org.apache.directory.server.validversion}",
  org.apache.directory.server.i18n;bundle-version="${org.apache.directory.server.validversion}",
+ org.apache.directory.server.ldif.partition;bundle-version="${org.apache.directory.server.validversion}",
  org.apache.directory.server.xdbm.partition;bundle-version="${org.apache.directory.server.validversion}",
  org.apache.directory.shared.ldap;bundle-version="${org.apache.directory.shared.validversion}",
  org.slf4j.api;bundle-version="${org.slf4j.version}"</Require-Bundle>
@@ -130,6 +131,10 @@
         <exclusion>
           <groupId>org.apache.directory.server</groupId>
           <artifactId>apacheds-i18n</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.apache.directory.server</groupId>
+          <artifactId>apacheds-ldif-partition</artifactId>
         </exclusion>
         <exclusion>
           <groupId>org.apache.directory.server</groupId>
