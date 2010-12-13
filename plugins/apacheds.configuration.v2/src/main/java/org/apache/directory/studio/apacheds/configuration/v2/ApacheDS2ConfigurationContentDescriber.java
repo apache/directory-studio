@@ -75,10 +75,6 @@ public class ApacheDS2ConfigurationContentDescriber implements ITextContentDescr
      */
     public int describe( Reader contents, IContentDescription description ) throws IOException
     {
-        long t1 = System.currentTimeMillis();
-
-        System.out.println( "describe" );
-
         LdifReader reader = null;
         try
         {
@@ -95,7 +91,6 @@ public class ApacheDS2ConfigurationContentDescriber implements ITextContentDescr
             {
                 reader.close();
             }
-            System.out.println( System.currentTimeMillis() - t1 );
         }
     }
 
@@ -105,9 +100,6 @@ public class ApacheDS2ConfigurationContentDescriber implements ITextContentDescr
      */
     public int describe( InputStream contents, IContentDescription description ) throws IOException
     {
-        long t1 = System.currentTimeMillis();
-        System.out.println( "describe" );
-
         LdifReader reader = null;
         try
         {
@@ -124,7 +116,6 @@ public class ApacheDS2ConfigurationContentDescriber implements ITextContentDescr
             {
                 reader.close();
             }
-            System.out.println( System.currentTimeMillis() - t1 );
         }
     }
 
@@ -184,8 +175,6 @@ public class ApacheDS2ConfigurationContentDescriber implements ITextContentDescr
                 }
             }
         }
-
-        System.out.println( checkedEntries );
 
         // Checking if we found both entries
         if ( configEntryFound && directoryServiceEntryFound )
