@@ -24,6 +24,7 @@ package org.apache.directory.studio.ldifeditor.editor;
 import java.io.File;
 import java.util.ResourceBundle;
 
+import org.apache.directory.studio.common.ui.CommonUIUtils;
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.ConnectionFolder;
@@ -719,7 +720,7 @@ public class LdifEditor extends TextEditor implements ILdifEditor, ConnectionUpd
     {
         // detect IDE or RCP:
         // check if perspective org.eclipse.ui.resourcePerspective is available
-        boolean isIDE = BrowserCommonActivator.isIDEEnvironment();
+        boolean isIDE = CommonUIUtils.isIDEEnvironment();
 
         if ( isIDE )
         {

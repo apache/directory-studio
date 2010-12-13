@@ -322,44 +322,6 @@ public class BrowserCommonActivator extends AbstractUIPlugin
 
 
     /**
-     * Checks, if this plugins runs in the Eclipse IDE or in RCP environment.
-     * This is done by looking for the Resource perspective extensions.
-     *
-     * @return true if this plugin runs in IDE environment
-     */
-    public static boolean isIDEEnvironment()
-    {
-        IExtensionPoint extensionPoint = Platform.getExtensionRegistry().getExtensionPoint(
-            "org.eclipse.ui.perspectives" ); //$NON-NLS-1$
-        if ( extensionPoint != null )
-        {
-            IExtension[] extensions = extensionPoint.getExtensions();
-            if ( extensions != null )
-            {
-                for ( int i = 0; i < extensions.length; i++ )
-                {
-                    IExtension extension = extensions[i];
-                    IConfigurationElement[] elements = extension.getConfigurationElements();
-                    for ( int j = 0; j < elements.length; j++ )
-                    {
-                        IConfigurationElement element = elements[j];
-                        if ( element.getName().equals( "perspective" ) ) //$NON-NLS-1$
-                        {
-                            if ( "org.eclipse.ui.resourcePerspective".equals( element.getAttribute( "id" ) ) ) //$NON-NLS-1$ //$NON-NLS-2$
-                            {
-                                return true;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        return false;
-    }
-
-
-    /**
      * Gets the event runner.
      *
      * @return the event runner

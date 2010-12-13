@@ -32,7 +32,6 @@ import java.lang.reflect.InvocationTargetException;
 
 import org.apache.directory.studio.apacheds.configuration.ApacheDSConfigurationPlugin;
 import org.apache.directory.studio.apacheds.configuration.ApacheDSConfigurationPluginConstants;
-import org.apache.directory.studio.apacheds.configuration.ApacheDSConfigurationPluginUtils;
 import org.apache.directory.studio.apacheds.configuration.model.ServerConfiguration;
 import org.apache.directory.studio.apacheds.configuration.model.ServerXmlIO;
 import org.apache.directory.studio.apacheds.configuration.model.ServerXmlIOException;
@@ -44,6 +43,7 @@ import org.apache.directory.studio.apacheds.configuration.model.v154.ServerXmlIO
 import org.apache.directory.studio.apacheds.configuration.model.v155.ServerXmlIOV155;
 import org.apache.directory.studio.apacheds.configuration.model.v156.ServerXmlIOV156;
 import org.apache.directory.studio.apacheds.configuration.model.v157.ServerXmlIOV157;
+import org.apache.directory.studio.common.ui.CommonUIUtils;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
@@ -648,7 +648,7 @@ public class ServerConfigurationEditor extends FormEditor
     {
         // detect IDE or RCP:
         // check if perspective org.eclipse.ui.resourcePerspective is available
-        boolean isIDE = ApacheDSConfigurationPluginUtils.isIDEEnvironment();
+        boolean isIDE = CommonUIUtils.isIDEEnvironment();
 
         if ( isIDE )
         {

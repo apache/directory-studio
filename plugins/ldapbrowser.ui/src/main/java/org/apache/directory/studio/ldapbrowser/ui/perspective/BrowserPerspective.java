@@ -21,8 +21,8 @@
 package org.apache.directory.studio.ldapbrowser.ui.perspective;
 
 
+import org.apache.directory.studio.common.ui.CommonUIUtils;
 import org.apache.directory.studio.connection.ui.wizards.NewConnectionWizard;
-import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
 import org.apache.directory.studio.ldapbrowser.common.wizards.NewContextEntryWizard;
 import org.apache.directory.studio.ldapbrowser.common.wizards.NewEntryWizard;
 import org.apache.directory.studio.ldapbrowser.ui.BrowserUIConstants;
@@ -136,7 +136,7 @@ public class BrowserPerspective implements IPerspectiveFactory
         logFolder.addPlaceholder( "*" ); //$NON-NLS-1$
 
         // non-closable?
-        boolean isIDE = BrowserCommonActivator.isIDEEnvironment();
+        boolean isIDE = CommonUIUtils.isIDEEnvironment();
         if ( !isIDE )
         {
             layout.getViewLayout( BrowserView.getId() ).setCloseable( false );
