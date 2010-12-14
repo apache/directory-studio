@@ -275,6 +275,11 @@
       <scope>provided</scope>
     </dependency>
     <dependency>
+      <groupId>org.eclipse.ui</groupId>
+      <artifactId>ide</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
       <groupId>org.eclipse.core</groupId>
       <artifactId>resources</artifactId>
       <scope>provided</scope>
