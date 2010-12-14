@@ -91,8 +91,6 @@ public class ServerConfigurationEditor extends FormEditor
      */
     private void readConfiguration()
     {
-        IEditorInput input = getEditorInput();
-
         // Creating and scheduling the job to load the configuration
         StudioJob<StudioRunnableWithProgress> job = new StudioJob<StudioRunnableWithProgress>(
             new LoadConfigurationRunnable( this ) );
