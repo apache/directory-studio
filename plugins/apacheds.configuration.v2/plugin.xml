@@ -60,4 +60,19 @@
          </visibility>-->
       </objectContribution>
    </extension>
+   <extension
+         point="org.eclipse.ui.newWizards">
+      <category
+            id="%NewWizards_Category_id"
+            name="%NewWizards_Category_name" />
+      <wizard
+            canFinishEarly="true"
+            category="%NewWizards_Category_id"
+            class="org.apache.directory.studio.apacheds.configuration.v2.wizards.NewApacheDSConfigurationFileWizard"
+            hasPages="false"
+            icon="resources/icons/editor_new.gif"
+            id="%NewWizards_NewApacheDSConfigurationFileWizard_id"
+            name="%NewWizards_NewApacheDSConfigurationFileWizard_name"
+            project="false"/>
+   </extension>
 </plugin>
