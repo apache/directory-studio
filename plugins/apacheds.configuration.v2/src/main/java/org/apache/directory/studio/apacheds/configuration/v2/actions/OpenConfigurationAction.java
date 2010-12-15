@@ -34,11 +34,14 @@ import org.apache.directory.shared.ldap.schema.manager.impl.DefaultSchemaManager
 import org.apache.directory.shared.ldap.schema.registries.SchemaLoader;
 import org.apache.directory.shared.ldap.util.LdapExceptionUtils;
 import org.apache.directory.studio.apacheds.configuration.v2.ApacheDS2ConfigurationPlugin;
+import org.apache.directory.studio.apacheds.configuration.v2.editor.ConnectionServerConfigurationInput;
 import org.apache.directory.studio.apacheds.configuration.v2.editor.NewServerConfigurationInput;
 import org.apache.directory.studio.apacheds.configuration.v2.editor.ServerConfigurationEditor;
 import org.apache.directory.studio.apacheds.configuration.v2.editor.ServerConfigurationInput;
+import org.apache.directory.studio.connection.core.Connection;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.ui.IObjectActionDelegate;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchPart;
@@ -53,28 +56,36 @@ import org.eclipse.ui.PlatformUI;
  */
 public class OpenConfigurationAction implements IObjectActionDelegate
 {
+    /** The selected connection */
+    private Connection selectedConnection;
+
+
     /**
      * {@inheritDoc}
      */
     public void run( IAction action )
     {
-        try
+        if ( selectedConnection != null )
         {
-            IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
             try
             {
-                page.openEditor( new NewServerConfigurationInput(), ServerConfigurationEditor.ID );
+                IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
+                try
+                {
+                    page.openEditor( new ConnectionServerConfigurationInput( selectedConnection ),
+                        ServerConfigurationEditor.ID );
+                }
+                catch ( PartInitException e )
+                {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
             }
-            catch ( PartInitException e )
+            catch ( Exception e )
             {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
             }
-        }
-        catch ( Exception e )
-        {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
         }
     }
 
@@ -84,8 +95,15 @@ public class OpenConfigurationAction implements IObjectActionDelegate
      */
     public void selectionChanged( IAction action, ISelection selection )
     {
-        // TODO Auto-generated method stub
-
+        StructuredSelection structuredSelection = ( StructuredSelection ) selection;
+        if ( ( structuredSelection.size() == 1 ) && ( structuredSelection.getFirstElement() instanceof Connection ) )
+        {
+            selectedConnection = ( Connection ) structuredSelection.getFirstElement();
+        }
+        else
+        {
+            selectedConnection = null;
+        }
     }
 
 
@@ -94,7 +112,6 @@ public class OpenConfigurationAction implements IObjectActionDelegate
      */
     public void setActivePart( IAction action, IWorkbenchPart targetPart )
     {
-        // TODO Auto-generated method stub
-
+        // Nothing to do
     }
 }

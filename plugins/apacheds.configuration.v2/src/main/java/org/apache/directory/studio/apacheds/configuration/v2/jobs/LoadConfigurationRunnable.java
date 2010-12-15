@@ -23,19 +23,35 @@ package org.apache.directory.studio.apacheds.configuration.v2.jobs;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.naming.directory.SearchControls;
+import javax.naming.directory.SearchResult;
+import javax.naming.ldap.Control;
 
 import org.apache.directory.server.config.ConfigPartitionReader;
 import org.apache.directory.server.config.ReadOnlyConfigurationPartition;
 import org.apache.directory.server.config.beans.ConfigBean;
+import org.apache.directory.server.core.partition.impl.btree.BTreePartition;
+import org.apache.directory.shared.ldap.entry.DefaultEntry;
+import org.apache.directory.shared.ldap.entry.Entry;
+import org.apache.directory.shared.ldap.exception.LdapException;
+import org.apache.directory.shared.ldap.name.DN;
 import org.apache.directory.shared.ldap.schema.SchemaManager;
+import org.apache.directory.shared.ldap.util.AttributeUtils;
 import org.apache.directory.studio.apacheds.configuration.v2.ApacheDS2ConfigurationPlugin;
+import org.apache.directory.studio.apacheds.configuration.v2.editor.ConnectionServerConfigurationInput;
 import org.apache.directory.studio.apacheds.configuration.v2.editor.NewServerConfigurationInput;
 import org.apache.directory.studio.apacheds.configuration.v2.editor.ServerConfigurationEditor;
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.common.core.jobs.StudioRunnableWithProgress;
-import org.eclipse.core.runtime.CoreException;
+import org.apache.directory.studio.connection.core.Connection;
+import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
+import org.apache.directory.studio.connection.core.Connection.ReferralHandlingMethod;
+import org.apache.directory.studio.connection.core.io.ConnectionWrapper;
+import org.apache.directory.studio.connection.core.io.StudioNamingEnumeration;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IEditorInput;
@@ -104,7 +120,7 @@ public class LoadConfigurationRunnable implements StudioRunnableWithProgress
         ConfigBean configBean = null;
         try
         {
-            configBean = getConfiguration( input );
+            configBean = getConfiguration( input, monitor );
             if ( configBean != null )
             {
                 final ConfigBean finalConfigBean = configBean;
@@ -128,62 +144,46 @@ public class LoadConfigurationRunnable implements StudioRunnableWithProgress
 
     /**
      * Gets a new default configuration.
-     *
+     * 
+     * @param input
+     *      the editor input
+     * @param monitor
+     *      the studio progress monitor
      * @return
-     *      a new default configuration
+     *      the configuration
      * @throws Exception
      */
-    public ConfigBean getConfiguration( IEditorInput input ) throws Exception
+    public ConfigBean getConfiguration( IEditorInput input, StudioProgressMonitor monitor ) throws Exception
     {
         // Getting the schema manager
         SchemaManager schemaManager = ApacheDS2ConfigurationPlugin.getDefault().getSchemaManager();
 
-        // Getting an input stream to the configuration
-        InputStream is = getInputStream( input );
-        if ( is != null )
-        {
-            // Creating a partition associated from the input stream
-            ReadOnlyConfigurationPartition configurationPartition = new ReadOnlyConfigurationPartition(
-                ApacheDS2ConfigurationPlugin.class.getResourceAsStream( "config.ldif" ), schemaManager );
-            configurationPartition.initialize();
-
-            // Reading the configuration partition
-            ConfigPartitionReader cpReader = new ConfigPartitionReader( configurationPartition );
-            return cpReader.readConfig();
-        }
-
-        return null;
-    }
-
-
-    /**
-     * Gets an input stream from the editor input.
-     *
-     * @param input
-     *      the editor input
-     * @return
-     *      an input stream from the editor input, or <code>null</code>
-     * @throws CoreException
-     * @throws FileNotFoundException
-     */
-    private InputStream getInputStream( IEditorInput input ) throws CoreException, FileNotFoundException
-    {
         String inputClassName = input.getClass().getName();
         // If the input is a NewServerConfigurationInput, then we only 
         // need to get the server configuration and return
         if ( input instanceof NewServerConfigurationInput )
         {
-            return ApacheDS2ConfigurationPlugin.class.getResourceAsStream( "config.ldif" );
+            InputStream is = ApacheDS2ConfigurationPlugin.class.getResourceAsStream( "config.ldif" );
+            return readConfiguration( schemaManager, is );
+        }
+        // If the input is a ConnectionServerConfigurationInput, then we 
+        // read the server configuration from the selected connection
+        if ( input instanceof ConnectionServerConfigurationInput )
+        {
+            Connection connection = ( ( ConnectionServerConfigurationInput ) input ).getConnection();
+            return readConfiguration( schemaManager, connection, monitor );
         }
         else if ( input instanceof FileEditorInput )
         // The 'FileEditorInput' class is used when the file is opened
         // from a project in the workspace.
         {
-            return ( ( FileEditorInput ) input ).getFile().getContents();
+            InputStream is = ( ( FileEditorInput ) input ).getFile().getContents();
+            return readConfiguration( schemaManager, is );
         }
         else if ( input instanceof IPathEditorInput )
         {
-            return new FileInputStream( new File( ( ( IPathEditorInput ) input ).getPath().toOSString() ) );
+            InputStream is = new FileInputStream( new File( ( ( IPathEditorInput ) input ).getPath().toOSString() ) );
+            return readConfiguration( schemaManager, is );
         }
         else if ( inputClassName.equals( "org.eclipse.ui.internal.editors.text.JavaFileEditorInput" ) //$NON-NLS-1$
             || inputClassName.equals( "org.eclipse.ui.ide.FileStoreEditorInput" ) ) //$NON-NLS-1$
@@ -193,7 +193,165 @@ public class LoadConfigurationRunnable implements StudioRunnableWithProgress
         // opening a file from the menu File > Open... in Eclipse 3.3.x
         {
             // We use the tooltip to get the full path of the file
-            return new FileInputStream( new File( input.getToolTipText() ) );
+            InputStream is = new FileInputStream( new File( input.getToolTipText() ) );
+            return readConfiguration( schemaManager, is );
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Reads the configuration from the given input stream.
+     *
+     * @param schemaManager
+     *      the schema manager
+     * @param is
+     *      the input stream
+     * @return
+     *      the associated configuration bean
+     * @throws Exception
+     */
+    private ConfigBean readConfiguration( SchemaManager schemaManager, InputStream is ) throws Exception
+    {
+        if ( is != null )
+        {
+            // Creating a partition associated from the input stream
+            ReadOnlyConfigurationPartition configurationPartition = new ReadOnlyConfigurationPartition(
+                ApacheDS2ConfigurationPlugin.class.getResourceAsStream( "config.ldif" ), schemaManager );
+            configurationPartition.initialize();
+
+            // Reading the configuration partition
+            return readConfiguration( configurationPartition );
+
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Reads the configuration from the given partition.
+     *
+     * @param partition
+     *      the configuration partition
+     * @return
+     *      the associated configuration bean
+     * @throws LdapException
+     */
+    private ConfigBean readConfiguration( BTreePartition<Long> partition ) throws LdapException
+    {
+        if ( partition != null )
+        {
+            ConfigPartitionReader cpReader = new ConfigPartitionReader( partition );
+            return cpReader.readConfig();
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Reads the configuration from the given connection.
+     *
+     * @param schemaManager
+     *      the schema manager
+     * @param connection
+     *      the connection
+     * @param monitor 
+     *      the studio progress monitor
+     * @return
+     *      the associated configuration bean
+     * @throws Exception
+     */
+    private ConfigBean readConfiguration( SchemaManager schemaManager, Connection connection,
+        StudioProgressMonitor monitor ) throws Exception
+    {
+        if ( connection != null )
+        {
+            ConnectionWrapper connectionWrapper = connection.getConnectionWrapper();
+
+            // Creating and initializing the configuration partition
+            EntryBasedConfigurationPartition configurationPartition = new EntryBasedConfigurationPartition(
+                schemaManager );
+            configurationPartition.initialize();
+
+            // Preparing a few search objects
+            SearchControls searchControls = new SearchControls();
+            searchControls.setSearchScope( SearchControls.OBJECT_SCOPE );
+            searchControls.setReturningAttributes( new String[]
+                { "*" } );
+            String searchBase = "ou=config";
+            String filter = "(objectClass=*)";
+            AliasDereferencingMethod aliasDereferencingMethod = AliasDereferencingMethod.ALWAYS;
+            ReferralHandlingMethod referralHandlingMethod = ReferralHandlingMethod.IGNORE;
+            Control[] controls = new Control[0];
+
+            // Looking for the 'ou=config' base entry
+            Entry configEntry = null;
+            StudioNamingEnumeration enumeration = connectionWrapper.search( searchBase, filter, searchControls,
+                aliasDereferencingMethod, referralHandlingMethod, controls, monitor, null );
+            if ( enumeration.hasMore() )
+            {
+                // Creating the 'ou=config' base entry
+                SearchResult searchResult = ( SearchResult ) enumeration.next();
+                configEntry = new DefaultEntry( schemaManager, AttributeUtils.toClientEntry(
+                    searchResult.getAttributes(), new DN( searchResult.getName() ) ) );
+            }
+            enumeration.close();
+
+            // Verifying we found the 'ou=config' base entry
+            if ( configEntry == null )
+            {
+                // TODO throw a new error
+            }
+
+            // Creating a list to hold the entries that needs to be checked
+            // for children and added to the partition
+            List<Entry> entries = new ArrayList<Entry>();
+            entries.add( configEntry );
+
+            // Updating the search scope to 'One Level'
+            searchControls.setSearchScope( SearchControls.ONELEVEL_SCOPE );
+
+            // Flag used to determine if the current entry is the context entry
+            boolean isContextEntry = true;
+
+            // Looping on the entries list until it's empty
+            while ( !entries.isEmpty() )
+            {
+                // Removing the first entry from the list
+                Entry entry = entries.remove( 0 );
+
+                // Special handling for the context entry
+                if ( isContextEntry )
+                {
+                    // Setting the context entry of the partition
+                    configurationPartition.setContextEntry( entry );
+                    isContextEntry = false;
+                }
+
+                // Adding the entry to the partition
+                configurationPartition.addEntry( entry );
+
+                // Looking for the children of the entry
+                StudioNamingEnumeration childrenEnumeration = connectionWrapper.search( entry.getDn().toString(),
+                    filter, searchControls, aliasDereferencingMethod, referralHandlingMethod, new Control[0], monitor,
+                    null );
+                while ( childrenEnumeration.hasMore() )
+                {
+                    // Creating the child entry
+                    SearchResult searchResult = ( SearchResult ) childrenEnumeration.next();
+                    Entry childEntry = new DefaultEntry( schemaManager, AttributeUtils.toClientEntry(
+                        searchResult.getAttributes(), new DN( searchResult.getName() ) ) );
+
+                    // Adding the children to the list of entries
+                    entries.add( childEntry );
+                }
+                childrenEnumeration.close();
+            }
+
+            return readConfiguration( configurationPartition );
         }
 
         return null;
