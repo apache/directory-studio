@@ -20,6 +20,7 @@
 package org.apache.directory.studio.apacheds.configuration.v2.editor;
 
 
+import org.apache.directory.studio.apacheds.configuration.v2.jobs.EntryBasedConfigurationPartition;
 import org.apache.directory.studio.connection.core.Connection;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.osgi.util.NLS;
@@ -37,6 +38,9 @@ public class ConnectionServerConfigurationInput implements IEditorInput
     /** The connection */
     private Connection connection;
 
+    /** The original configuration partition */
+    private EntryBasedConfigurationPartition originalPartition;
+
 
     /**
      * Creates a new instance of ConnectionServerConfigurationInput.
@@ -49,7 +53,7 @@ public class ConnectionServerConfigurationInput implements IEditorInput
         this.connection = connection;
     }
 
-    
+
     /**
      * Gets the connection.
      *
@@ -60,6 +64,31 @@ public class ConnectionServerConfigurationInput implements IEditorInput
     {
         return connection;
     }
+
+
+    /**
+     * Gets the original configuration partition.
+     *
+     * @return
+     *      the original configuration partition
+     */
+    public EntryBasedConfigurationPartition getOriginalPartition()
+    {
+        return originalPartition;
+    }
+
+
+    /**
+     * Sets the original configuration partition.
+     *
+     * @param originalPartition
+     *      the original configuration 
+     */
+    public void setOriginalPartition( EntryBasedConfigurationPartition originalPartition )
+    {
+        this.originalPartition = originalPartition;
+    }
+
 
     /**
      * {@inheritDoc}

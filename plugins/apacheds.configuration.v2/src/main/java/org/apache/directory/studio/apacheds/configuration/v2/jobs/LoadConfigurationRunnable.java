@@ -47,7 +47,6 @@ import org.apache.directory.studio.apacheds.configuration.v2.editor.NewServerCon
 import org.apache.directory.studio.apacheds.configuration.v2.editor.ServerConfigurationEditor;
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.common.core.jobs.StudioRunnableWithProgress;
-import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
 import org.apache.directory.studio.connection.core.Connection.ReferralHandlingMethod;
 import org.apache.directory.studio.connection.core.io.ConnectionWrapper;
@@ -170,8 +169,7 @@ public class LoadConfigurationRunnable implements StudioRunnableWithProgress
         // read the server configuration from the selected connection
         if ( input instanceof ConnectionServerConfigurationInput )
         {
-            Connection connection = ( ( ConnectionServerConfigurationInput ) input ).getConnection();
-            return readConfiguration( schemaManager, connection, monitor );
+            return readConfiguration( schemaManager, ( ConnectionServerConfigurationInput ) input, monitor );
         }
         else if ( input instanceof FileEditorInput )
         // The 'FileEditorInput' class is used when the file is opened
@@ -256,20 +254,20 @@ public class LoadConfigurationRunnable implements StudioRunnableWithProgress
      *
      * @param schemaManager
      *      the schema manager
-     * @param connection
-     *      the connection
+     * @param input
+     *      the editor input
      * @param monitor 
      *      the studio progress monitor
      * @return
      *      the associated configuration bean
      * @throws Exception
      */
-    private ConfigBean readConfiguration( SchemaManager schemaManager, Connection connection,
+    private ConfigBean readConfiguration( SchemaManager schemaManager, ConnectionServerConfigurationInput input,
         StudioProgressMonitor monitor ) throws Exception
     {
-        if ( connection != null )
+        if ( input != null )
         {
-            ConnectionWrapper connectionWrapper = connection.getConnectionWrapper();
+            ConnectionWrapper connectionWrapper = input.getConnection().getConnectionWrapper();
 
             // Creating and initializing the configuration partition
             EntryBasedConfigurationPartition configurationPartition = new EntryBasedConfigurationPartition(
@@ -350,6 +348,9 @@ public class LoadConfigurationRunnable implements StudioRunnableWithProgress
                 }
                 childrenEnumeration.close();
             }
+
+            // Setting the created partition to the input
+            input.setOriginalPartition( configurationPartition );
 
             return readConfiguration( configurationPartition );
         }

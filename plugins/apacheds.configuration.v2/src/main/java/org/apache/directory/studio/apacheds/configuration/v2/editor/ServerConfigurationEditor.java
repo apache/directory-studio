@@ -23,11 +23,18 @@ package org.apache.directory.studio.apacheds.configuration.v2.editor;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
+import java.util.List;
 
 import org.apache.directory.server.config.ConfigWriter;
+import org.apache.directory.server.config.ConfigurationException;
 import org.apache.directory.server.config.beans.ConfigBean;
+import org.apache.directory.shared.ldap.entry.DefaultEntry;
+import org.apache.directory.shared.ldap.ldif.LdifEntry;
+import org.apache.directory.shared.ldap.schema.SchemaManager;
 import org.apache.directory.studio.apacheds.configuration.v2.ApacheDS2ConfigurationPlugin;
+import org.apache.directory.studio.apacheds.configuration.v2.jobs.EntryBasedConfigurationPartition;
 import org.apache.directory.studio.apacheds.configuration.v2.jobs.LoadConfigurationRunnable;
+import org.apache.directory.studio.apacheds.configuration.v2.jobs.PartitionsDiffComputer;
 import org.apache.directory.studio.common.core.jobs.StudioJob;
 import org.apache.directory.studio.common.core.jobs.StudioRunnableWithProgress;
 import org.apache.directory.studio.common.ui.CommonUIUtils;
@@ -81,7 +88,7 @@ public class ServerConfigurationEditor extends FormEditor
     {
         super.init( site, input );
         setPartName( input.getName() );
-        
+
         readConfiguration();
     }
 
@@ -137,6 +144,14 @@ public class ServerConfigurationEditor extends FormEditor
                     saveConfiguration( ( FileEditorInput ) input, monitor );
                     success = true;
                 }
+                // If the input is a ConnectionServerConfigurationInput, then we 
+                // read the server configuration from the selected connection
+                if ( input instanceof ConnectionServerConfigurationInput )
+                {
+                    // Saving the ServerConfiguration to the connection
+                    saveConfiguration( ( ConnectionServerConfigurationInput ) input, monitor );
+                    success = true;
+                }
                 else if ( input instanceof IPathEditorInput )
                 {
                     // Saving the ServerConfiguration to disk
@@ -177,16 +192,54 @@ public class ServerConfigurationEditor extends FormEditor
     /**
      * Saves the configuration.
      *
-     * @param fei
+     * @param input
      *      the file editor input
      * @param monitor
      *      the monitor
      * @throws Exception
      */
-    private void saveConfiguration( FileEditorInput fei, IProgressMonitor monitor ) throws Exception
+    private void saveConfiguration( FileEditorInput input, IProgressMonitor monitor ) throws Exception
     {
-        fei.getFile().setContents( new ByteArrayInputStream( getConfigWriter().writeToString().getBytes() ), true,
+        input.getFile().setContents( new ByteArrayInputStream( getConfigWriter().writeToString().getBytes() ), true,
             true, monitor );
+    }
+
+
+    /**
+     * Saves the configuration.
+     *
+     * @param input
+     *      the connection server configuration input
+     * @param monitor
+     *      the monitor
+     * @throws ConfigurationException 
+     * @throws Exception
+     */
+    private void saveConfiguration( ConnectionServerConfigurationInput input, IProgressMonitor monitor )
+        throws ConfigurationException, Exception
+    {
+        // Getting the original configuration partition
+        EntryBasedConfigurationPartition originalPartition = input.getOriginalPartition();
+
+        // Creating a new configuration partition
+        SchemaManager schemaManager = ApacheDS2ConfigurationPlugin.getDefault().getSchemaManager();
+        EntryBasedConfigurationPartition newconfigurationPartition = new EntryBasedConfigurationPartition(
+            schemaManager );
+        newconfigurationPartition.initialize();
+        List<LdifEntry> convertedLdifEntries = getConfigWriter().getConvertedLdifEntries();
+        for ( LdifEntry ldifEntry : convertedLdifEntries )
+        {
+            newconfigurationPartition.addEntry( new DefaultEntry( schemaManager, ldifEntry.getEntry() ) );
+        }
+
+        // Comparing both partitions to get the list of modifications to be applied
+        PartitionsDiffComputer partitionsDiffComputer = new PartitionsDiffComputer();
+        partitionsDiffComputer.setOriginalPartition( originalPartition );
+        partitionsDiffComputer.setDestinationPartition( newconfigurationPartition );
+        List<LdifEntry> modificationsList = partitionsDiffComputer.computeModifications( new String[]
+            { "*" } );
+
+        System.out.println( modificationsList );
     }
 
 
