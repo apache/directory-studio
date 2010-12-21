@@ -27,8 +27,8 @@
     <name>Apache Directory Studio</name>
     <homepage rdf:resource="http://directory.apache.org/studio/" />
     <asfext:pmc rdf:resource="http://directory.apache.org" />
-    <shortdesc>Apache Directory Studio is a complete LDAP tooling platform.</shortdesc>
-    <description>Apache Directory Studio is a complete directory tooling platform intended to be used with any LDAP server however it is particularly designed for use with the ApacheDS. It is an Eclipse RCP application, composed of several Eclipse (OSGi) plugins, that can be easily upgraded with additional ones. These plugins can even run within Eclipse itself.</description>
+    <shortdesc>The Eclipse based LDAP browser and directory client</shortdesc>
+    <description>Apache Directory Studio is a complete directory tooling platform intended to be used with any LDAP server however it is particularly designed for use with ApacheDS. It is an Eclipse RCP application, composed of several Eclipse (OSGi) plugins, that can be easily upgraded with additional ones. These plugins can even run within Eclipse itself.</description>
     <bug-database rdf:resource="http://issues.apache.org/jira/browse/DIRSTUDIO" />
     <mailing-list rdf:resource="http://directory.apache.org/community%26resources/mailing-lists-and-irc.html" />
     <download-page rdf:resource="http://directory.apache.org/studio/downloads.html" />
