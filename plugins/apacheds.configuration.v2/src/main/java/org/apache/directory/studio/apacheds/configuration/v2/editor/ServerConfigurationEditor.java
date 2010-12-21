@@ -38,6 +38,9 @@ import org.apache.directory.studio.apacheds.configuration.v2.jobs.PartitionsDiff
 import org.apache.directory.studio.common.core.jobs.StudioJob;
 import org.apache.directory.studio.common.core.jobs.StudioRunnableWithProgress;
 import org.apache.directory.studio.common.ui.CommonUIUtils;
+import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
+import org.apache.directory.studio.ldapbrowser.core.jobs.ExecuteLdifRunnable;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IPath;
@@ -183,6 +186,7 @@ public class ServerConfigurationEditor extends FormEditor
             }
             catch ( Exception e )
             {
+                // TODO
                 e.printStackTrace();
             }
         }
@@ -212,6 +216,9 @@ public class ServerConfigurationEditor extends FormEditor
      *      the connection server configuration input
      * @param monitor
      *      the monitor
+     * @return
+     *      <code>true</code> if the operation is successful,
+     *      <code>false</code> if not
      * @throws ConfigurationException 
      * @throws Exception
      */
@@ -240,6 +247,32 @@ public class ServerConfigurationEditor extends FormEditor
             { "*" } );
 
         System.out.println( modificationsList );
+
+        // Building the resulting LDIF
+        StringBuilder modificationsLdif = new StringBuilder();
+        for ( LdifEntry ldifEntry : modificationsList )
+        {
+            modificationsLdif.append( ldifEntry.toString() );
+        }
+
+        // Getting the browser connection associated with the 
+        IBrowserConnection browserConnection = BrowserCorePlugin.getDefault().getConnectionManager()
+            .getBrowserConnection( input.getConnection() );
+
+        // Creating and scheduling the job to update the configuration with the resulting LDIF
+        ExecuteLdifRunnable executeLdifRunnable = new ExecuteLdifRunnable( browserConnection,
+            modificationsLdif.toString(), true,
+            true );
+        StudioJob<StudioRunnableWithProgress> job = new StudioJob<StudioRunnableWithProgress>( executeLdifRunnable );
+        job.schedule();
+
+        // Waiting for the runnable to finish
+        job.join();
+        
+        System.out.println( "swapping partition");
+
+        // Swapping the new configuration partition
+        input.setOriginalPartition( newconfigurationPartition );
     }
 
 
