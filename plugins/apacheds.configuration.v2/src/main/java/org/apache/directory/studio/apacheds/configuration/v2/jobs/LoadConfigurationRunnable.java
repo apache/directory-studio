@@ -35,6 +35,7 @@ import org.apache.directory.server.config.ConfigPartitionReader;
 import org.apache.directory.server.config.ReadOnlyConfigurationPartition;
 import org.apache.directory.server.config.beans.ConfigBean;
 import org.apache.directory.server.core.partition.impl.btree.BTreePartition;
+import org.apache.directory.shared.ldap.constants.SchemaConstants;
 import org.apache.directory.shared.ldap.entry.DefaultEntry;
 import org.apache.directory.shared.ldap.entry.Entry;
 import org.apache.directory.shared.ldap.exception.LdapException;
@@ -51,6 +52,14 @@ import org.apache.directory.studio.connection.core.Connection.AliasDereferencing
 import org.apache.directory.studio.connection.core.Connection.ReferralHandlingMethod;
 import org.apache.directory.studio.connection.core.io.ConnectionWrapper;
 import org.apache.directory.studio.connection.core.io.StudioNamingEnumeration;
+import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
+import org.apache.directory.studio.ldapbrowser.core.events.BrowserConnectionUpdateEvent;
+import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
+import org.apache.directory.studio.ldapbrowser.core.events.SearchUpdateEvent;
+import org.apache.directory.studio.ldapbrowser.core.jobs.SearchRunnable;
+import org.apache.directory.studio.ldapbrowser.core.model.ISearch.SearchScope;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
+import org.apache.directory.studio.ldapbrowser.core.model.SearchParameter;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IEditorInput;
@@ -267,28 +276,27 @@ public class LoadConfigurationRunnable implements StudioRunnableWithProgress
     {
         if ( input != null )
         {
-            ConnectionWrapper connectionWrapper = input.getConnection().getConnectionWrapper();
+
+            // Getting the browser connection associated with the 
+            IBrowserConnection browserConnection = BrowserCorePlugin.getDefault().getConnectionManager()
+                .getBrowserConnection( input.getConnection() );
 
             // Creating and initializing the configuration partition
             EntryBasedConfigurationPartition configurationPartition = new EntryBasedConfigurationPartition(
                 schemaManager );
             configurationPartition.initialize();
 
-            // Preparing a few search objects
-            SearchControls searchControls = new SearchControls();
-            searchControls.setSearchScope( SearchControls.OBJECT_SCOPE );
-            searchControls.setReturningAttributes( new String[]
-                { "*" } );
-            String searchBase = "ou=config";
-            String filter = "(objectClass=*)";
-            AliasDereferencingMethod aliasDereferencingMethod = AliasDereferencingMethod.ALWAYS;
-            ReferralHandlingMethod referralHandlingMethod = ReferralHandlingMethod.IGNORE;
-            Control[] controls = new Control[0];
+            // Creating the search parameter
+            SearchParameter configSearchParameter = new SearchParameter();
+            configSearchParameter.setSearchBase( new DN( "ou=config" ) );
+            configSearchParameter.setFilter( "(objectClass=*)" );
+            configSearchParameter.setScope( SearchScope.OBJECT );
+            configSearchParameter.setReturningAttributes( SchemaConstants.ALL_USER_ATTRIBUTES_ARRAY );
 
             // Looking for the 'ou=config' base entry
             Entry configEntry = null;
-            StudioNamingEnumeration enumeration = connectionWrapper.search( searchBase, filter, searchControls,
-                aliasDereferencingMethod, referralHandlingMethod, controls, monitor, null );
+            StudioNamingEnumeration enumeration = SearchRunnable.search( browserConnection, configSearchParameter,
+                monitor );
             if ( enumeration.hasMore() )
             {
                 // Creating the 'ou=config' base entry
@@ -308,9 +316,6 @@ public class LoadConfigurationRunnable implements StudioRunnableWithProgress
             // for children and added to the partition
             List<Entry> entries = new ArrayList<Entry>();
             entries.add( configEntry );
-
-            // Updating the search scope to 'One Level'
-            searchControls.setSearchScope( SearchControls.ONELEVEL_SCOPE );
 
             // Flag used to determine if the current entry is the context entry
             boolean isContextEntry = true;
@@ -332,10 +337,15 @@ public class LoadConfigurationRunnable implements StudioRunnableWithProgress
                 // Adding the entry to the partition
                 configurationPartition.addEntry( entry );
 
+                SearchParameter searchParameter = new SearchParameter();
+                searchParameter.setSearchBase( entry.getDn() );
+                searchParameter.setFilter( "(objectClass=*)" );
+                searchParameter.setScope( SearchScope.ONELEVEL );
+                searchParameter.setReturningAttributes( SchemaConstants.ALL_USER_ATTRIBUTES_ARRAY );
+
                 // Looking for the children of the entry
-                StudioNamingEnumeration childrenEnumeration = connectionWrapper.search( entry.getDn().toString(),
-                    filter, searchControls, aliasDereferencingMethod, referralHandlingMethod, new Control[0], monitor,
-                    null );
+                StudioNamingEnumeration childrenEnumeration = SearchRunnable.search( browserConnection,
+                    searchParameter, monitor );
                 while ( childrenEnumeration.hasMore() )
                 {
                     // Creating the child entry

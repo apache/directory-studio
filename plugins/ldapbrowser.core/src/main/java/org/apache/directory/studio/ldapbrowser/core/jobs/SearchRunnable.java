@@ -447,7 +447,7 @@ public class SearchRunnable implements StudioConnectionBulkRunnableWithProgress
     }
 
 
-    static StudioNamingEnumeration search( IBrowserConnection browserConnection, SearchParameter parameter,
+    public static StudioNamingEnumeration search( IBrowserConnection browserConnection, SearchParameter parameter,
         StudioProgressMonitor monitor )
     {
         if ( browserConnection == null )
