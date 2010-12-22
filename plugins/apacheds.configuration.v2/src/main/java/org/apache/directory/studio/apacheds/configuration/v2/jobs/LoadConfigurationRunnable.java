@@ -27,9 +27,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.naming.directory.SearchControls;
 import javax.naming.directory.SearchResult;
-import javax.naming.ldap.Control;
 
 import org.apache.directory.server.config.ConfigPartitionReader;
 import org.apache.directory.server.config.ReadOnlyConfigurationPartition;
@@ -48,17 +46,11 @@ import org.apache.directory.studio.apacheds.configuration.v2.editor.NewServerCon
 import org.apache.directory.studio.apacheds.configuration.v2.editor.ServerConfigurationEditor;
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.common.core.jobs.StudioRunnableWithProgress;
-import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
-import org.apache.directory.studio.connection.core.Connection.ReferralHandlingMethod;
-import org.apache.directory.studio.connection.core.io.ConnectionWrapper;
 import org.apache.directory.studio.connection.core.io.StudioNamingEnumeration;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
-import org.apache.directory.studio.ldapbrowser.core.events.BrowserConnectionUpdateEvent;
-import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
-import org.apache.directory.studio.ldapbrowser.core.events.SearchUpdateEvent;
 import org.apache.directory.studio.ldapbrowser.core.jobs.SearchRunnable;
-import org.apache.directory.studio.ldapbrowser.core.model.ISearch.SearchScope;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
+import org.apache.directory.studio.ldapbrowser.core.model.ISearch.SearchScope;
 import org.apache.directory.studio.ldapbrowser.core.model.SearchParameter;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.swt.widgets.Display;
