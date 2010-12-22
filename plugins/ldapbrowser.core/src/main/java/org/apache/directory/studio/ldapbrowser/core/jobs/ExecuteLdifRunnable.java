@@ -120,13 +120,20 @@ public class ExecuteLdifRunnable implements StudioConnectionBulkRunnableWithProg
      */
     public void run( StudioProgressMonitor monitor )
     {
+        executeLdif( browserConnection, ldif, updateIfEntryExists, continueOnError, monitor );
+    }
+
+
+    public static void executeLdif( IBrowserConnection browserConnection, String ldif, boolean updateIfEntryExists,
+        boolean continueOnError, StudioProgressMonitor monitor )
+    {
         monitor.beginTask( BrowserCoreMessages.jobs__execute_ldif_task, 2 );
         monitor.reportProgress( " " ); //$NON-NLS-1$
         monitor.worked( 1 );
 
         try
         {
-            Reader ldifReader = new StringReader( this.ldif );
+            Reader ldifReader = new StringReader( ldif );
             LdifParser parser = new LdifParser();
             LdifEnumeration enumeration = parser.parse( ldifReader );
 

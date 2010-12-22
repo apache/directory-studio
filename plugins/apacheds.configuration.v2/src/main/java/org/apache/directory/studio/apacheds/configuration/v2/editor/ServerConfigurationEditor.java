@@ -36,10 +36,12 @@ import org.apache.directory.studio.apacheds.configuration.v2.jobs.EntryBasedConf
 import org.apache.directory.studio.apacheds.configuration.v2.jobs.LoadConfigurationRunnable;
 import org.apache.directory.studio.apacheds.configuration.v2.jobs.PartitionsDiffComputer;
 import org.apache.directory.studio.common.core.jobs.StudioJob;
+import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.common.core.jobs.StudioRunnableWithProgress;
 import org.apache.directory.studio.common.ui.CommonUIUtils;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
 import org.apache.directory.studio.ldapbrowser.core.jobs.ExecuteLdifRunnable;
+import org.apache.directory.studio.ldapbrowser.core.jobs.ImportLdifRunnable;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -259,20 +261,25 @@ public class ServerConfigurationEditor extends FormEditor
         IBrowserConnection browserConnection = BrowserCorePlugin.getDefault().getConnectionManager()
             .getBrowserConnection( input.getConnection() );
 
-        // Creating and scheduling the job to update the configuration with the resulting LDIF
-        ExecuteLdifRunnable executeLdifRunnable = new ExecuteLdifRunnable( browserConnection,
-            modificationsLdif.toString(), true,
-            true );
-        StudioJob<StudioRunnableWithProgress> job = new StudioJob<StudioRunnableWithProgress>( executeLdifRunnable );
-        job.schedule();
+        // Creating a StudioProgressMonitor to run the LDIF with
+        StudioProgressMonitor studioProgressMonitor = new StudioProgressMonitor( monitor );
 
-        // Waiting for the runnable to finish
-        job.join();
-        
-        System.out.println( "swapping partition");
+        // Updating the configuration with the resulting LDIF
+        ExecuteLdifRunnable.executeLdif( browserConnection, modificationsLdif.toString(), true, true,
+            studioProgressMonitor );
 
-        // Swapping the new configuration partition
-        input.setOriginalPartition( newconfigurationPartition );
+        // Checking if there were errors during the execution of the LDIF
+        if ( studioProgressMonitor.errorsReported() )
+        {
+            
+        }
+        else
+        {
+            System.out.println( "swapping partition" );
+
+            // Swapping the new configuration partition
+            input.setOriginalPartition( newconfigurationPartition );
+        }
     }
 
 
