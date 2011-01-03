@@ -271,7 +271,7 @@ public class ServerConfigurationEditor extends FormEditor
         // Checking if there were errors during the execution of the LDIF
         if ( studioProgressMonitor.errorsReported() )
         {
-            
+            // TODO handle error
         }
         else
         {

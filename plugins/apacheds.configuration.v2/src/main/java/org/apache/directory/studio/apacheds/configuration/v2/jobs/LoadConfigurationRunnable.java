@@ -289,6 +289,14 @@ public class LoadConfigurationRunnable implements StudioRunnableWithProgress
             Entry configEntry = null;
             StudioNamingEnumeration enumeration = SearchRunnable.search( browserConnection, configSearchParameter,
                 monitor );
+
+            // Checking if an error occurred
+            if ( monitor.errorsReported() )
+            {
+                return null;
+            }
+
+            // Getting the entry
             if ( enumeration.hasMore() )
             {
                 // Creating the 'ou=config' base entry
@@ -338,6 +346,13 @@ public class LoadConfigurationRunnable implements StudioRunnableWithProgress
                 // Looking for the children of the entry
                 StudioNamingEnumeration childrenEnumeration = SearchRunnable.search( browserConnection,
                     searchParameter, monitor );
+
+                // Checking if an error occurred
+                if ( monitor.errorsReported() )
+                {
+                    return null;
+                }
+
                 while ( childrenEnumeration.hasMore() )
                 {
                     // Creating the child entry
