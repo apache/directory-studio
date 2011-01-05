@@ -567,21 +567,27 @@
     </dependency>
     <dependency>
       <groupId>org.apache.directory.studio.launcher.macosx</groupId>
-      <artifactId>x86_64</artifactId>
-      <type>zip</type>
-      <version>2.0</version>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.directory.studio.launcher.macosx</groupId>
       <artifactId>x86</artifactId>
       <type>zip</type>
       <version>2.0</version>
     </dependency>
     <dependency>
-      <groupId>org.apache.directory.studio</groupId>
-      <artifactId>launcher-win32</artifactId>
-      <type>tar.gz</type>
-      <version>1.1.0</version>
+      <groupId>org.apache.directory.studio.launcher.macosx</groupId>
+      <artifactId>x86_64</artifactId>
+      <type>zip</type>
+      <version>2.0</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.directory.studio.launcher.win32</groupId>
+      <artifactId>x86</artifactId>
+      <type>zip</type>
+      <version>2.0</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.directory.studio.launcher.win32</groupId>
+      <artifactId>x86_64</artifactId>
+      <type>zip</type>
+      <version>2.0</version>
     </dependency>
 	
 	<!-- Eclipse dependencies -->

@@ -62,18 +62,23 @@
     </dependency>
     <dependency>
       <groupId>org.apache.directory.studio.launcher.macosx</groupId>
-      <artifactId>x86_64</artifactId>
-      <type>zip</type>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.directory.studio.launcher.macosx</groupId>
       <artifactId>x86</artifactId>
       <type>zip</type>
     </dependency>
     <dependency>
-      <groupId>org.apache.directory.studio</groupId>
-      <artifactId>launcher-win32</artifactId>
-      <type>tar.gz</type>
+      <groupId>org.apache.directory.studio.launcher.macosx</groupId>
+      <artifactId>x86_64</artifactId>
+      <type>zip</type>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.directory.studio.launcher.win32</groupId>
+      <artifactId>x86</artifactId>
+      <type>zip</type>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.directory.studio.launcher.win32</groupId>
+      <artifactId>x86_64</artifactId>
+      <type>zip</type>
     </dependency>
 	
 	<!-- Eclipse dependencies -->
