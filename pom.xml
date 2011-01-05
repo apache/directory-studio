@@ -554,16 +554,16 @@
       
     <!-- Apache Directory Studio launchers dependencies -->
     <dependency>
-      <groupId>org.apache.directory.studio</groupId>
-      <artifactId>launcher-linux-x86</artifactId>
-      <type>tar.gz</type>
-      <version>1.1.0</version>
+      <groupId>org.apache.directory.studio.launcher.linux</groupId>
+      <artifactId>x86</artifactId>
+      <type>zip</type>
+      <version>2.0</version>
     </dependency>
     <dependency>
-      <groupId>org.apache.directory.studio</groupId>
-      <artifactId>launcher-linux-x86_64</artifactId>
-      <type>tar.gz</type>
-      <version>1.1.0</version>
+      <groupId>org.apache.directory.studio.launcher.linux</groupId>
+      <artifactId>x86_64</artifactId>
+      <type>zip</type>
+      <version>2.0</version>
     </dependency>
     <dependency>
       <groupId>org.apache.directory.studio.launcher.macosx</groupId>
