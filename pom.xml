@@ -572,6 +572,12 @@
       <version>2.0</version>
     </dependency>
     <dependency>
+      <groupId>org.apache.directory.studio.launcher.macosx</groupId>
+      <artifactId>x86</artifactId>
+      <type>zip</type>
+      <version>2.0</version>
+    </dependency>
+    <dependency>
       <groupId>org.apache.directory.studio</groupId>
       <artifactId>launcher-win32</artifactId>
       <type>tar.gz</type>
@@ -814,6 +820,12 @@
     <dependency>
       <groupId>org.eclipse.equinox.launcher.cocoa.macosx</groupId>
       <artifactId>x86_64</artifactId>
+      <version>1.1.1.R36x_v20100810</version>
+      <type>zip</type>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.equinox.launcher.cocoa</groupId>
+      <artifactId>macosx</artifactId>
       <version>1.1.1.R36x_v20100810</version>
       <type>zip</type>
     </dependency>
@@ -1130,6 +1142,11 @@
     <dependency>
       <groupId>org.eclipse.swt.cocoa.macosx</groupId>
       <artifactId>x86_64</artifactId>
+      <version>3.6.1.v3655c</version>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.swt.cocoa</groupId>
+      <artifactId>macosx</artifactId>
       <version>3.6.1.v3655c</version>
     </dependency>
     <dependency>

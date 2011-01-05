@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata>
+  <groupId>org.eclipse.swt.cocoa</groupId>
+  <artifactId>macosx</artifactId>
+  <versioning>
+    <release>3.6.1.v3655c</release>
+    <versions>
+      <version>3.6.1.v3655c</version>
+    </versions>
+    <lastUpdated>20110105135612</lastUpdated>
+  </versioning>
+</metadata>

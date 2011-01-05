@@ -54,7 +54,7 @@
               <artifactItems>
                 <artifactItem>
                   <groupId>org.apache.directory.studio.launcher.macosx</groupId>
-                  <artifactId>x86_64</artifactId>
+                  <artifactId>x86</artifactId>
                   <type>zip</type>
                 </artifactItem>
               </artifactItems>
@@ -73,20 +73,20 @@
                   <groupId>org.apache.directory.studio</groupId>
                   <artifactId>application-plugins</artifactId>
                   <type>zip</type>
-                  <version>${project.version}</version> <!-- TODO -->
+                  <version>${project.version}</version>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.apache.directory.studio</groupId>
                   <artifactId>application-eclipse-plugins</artifactId>
                   <type>zip</type>
-                  <version>${project.version}</version> <!-- TODO -->
+                  <version>${project.version}</version>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.apache.directory.studio</groupId>
                   <artifactId>application-features</artifactId>
                   <classifier>unpacked</classifier>
                   <type>zip</type>
-                  <version>${project.version}</version> <!-- TODO -->
+                  <version>${project.version}</version>
                 </artifactItem>
               </artifactItems>
             </configuration>
@@ -152,8 +152,8 @@
                   <artifactId>cocoa</artifactId>
                 </artifactItem>
                 <artifactItem>
-                  <groupId>org.eclipse.swt.cocoa.macosx</groupId>
-                  <artifactId>x86_64</artifactId>
+                  <groupId>org.eclipse.swt.cocoa</groupId>
+                  <artifactId>macosx</artifactId>
                 </artifactItem>
               </artifactItems>
             </configuration>
@@ -169,8 +169,8 @@
             <outputDirectory>${plugins-dir}</outputDirectory>
             <artifactItems>
               <artifactItem>
-                  <groupId>org.eclipse.equinox.launcher.cocoa.macosx</groupId>
-                  <artifactId>x86_64</artifactId>
+                  <groupId>org.eclipse.equinox.launcher.cocoa</groupId>
+                  <artifactId>macosx</artifactId>
   				  <type>zip</type>
               </artifactItem>
             </artifactItems>
