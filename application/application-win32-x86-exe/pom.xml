@@ -26,14 +26,15 @@
     <version>2.0.0-SNAPSHOT</version>
   </parent>
   
-  <artifactId>ApacheDirectoryStudio-macosx-dmg</artifactId>
-  <name>Apache Directory Studio Application Mac OS X DMG</name>
+  <artifactId>ApacheDirectoryStudio-win32-x86-exe</artifactId>
+  <name>Apache Directory Studio Application Win32 x86 Exe</name>
   <packaging>pom</packaging>
   
   <properties>
-    <dmg-dir>${project.build.directory}/ApacheDirectoryStudio-macosx-${version}</dmg-dir>
-    <tmp-dmg>${project.build.directory}/ApacheDirectoryStudio-macosx-${version}-tmp.dmg</tmp-dmg>
-    <final-dmg>${project.build.directory}/ApacheDirectoryStudio-macosx-${version}.dmg</final-dmg>
+    <tmp-dir>${project.build.directory}/ApacheDirectoryStudio-win32-x86-exe-tmp</tmp-dir>
+    <files-dir>${tmp-dir}/files</files-dir>
+    <installer-file-name>ApacheDirectoryStudio-win32-x86-${version}.exe</installer-file-name>
+    <installers.makensis>makensis</installers.makensis>
   </properties>
   
   <build>
@@ -51,9 +52,9 @@
               <artifactItems>
                 <artifactItem>
                   <groupId>org.apache.directory.studio</groupId>
-                  <artifactId>ApacheDirectoryStudio-macosx</artifactId>
+                  <artifactId>ApacheDirectoryStudio-win32-x86</artifactId>
                   <type>zip</type>
-                  <version>${project.version}</version> <!-- TODO -->
+                  <version>${project.version}</version>
                   <outputDirectory>${project.build.directory}</outputDirectory>
                 </artifactItem>
               </artifactItems>
@@ -70,11 +71,19 @@
             <phase>process-resources</phase>
             <configuration>
               <target>
-                <unzip dest="${project.build.directory}">
-                    <fileset dir="${project.build.directory}" includes="ApacheDirectoryStudio-macosx-*.zip"/>
+                <unzip dest="${tmp-dir}">
+                    <fileset dir="${project.build.directory}" includes="ApacheDirectoryStudio-win32-*.zip"/>
                 </unzip>
-                <copy file="src/main/resources/DS_Store" tofile="${dmg-dir}/.DS_Store"/>
-                <copy file="src/main/resources/background.png" tofile="${dmg-dir}/.background/background.png"/>
+                <copy file="src/main/resources/installer.nsi" todir="${tmp-dir}">
+                  <filterset>
+                    <filter token="version" value="${project.version}" />
+                    <filter token="installer-file-name" value="${installer-file-name}" />
+                  </filterset>
+                </copy>
+                <copy file="src/main/resources/AdvUninstLog.nsh" todir="${tmp-dir}"/>
+                <copy file="src/main/resources/header_studio.bmp" todir="${tmp-dir}"/>
+                <copy file="src/main/resources/studio-installer.ico" todir="${tmp-dir}"/>
+                <copy file="src/main/resources/welcome_studio.bmp" todir="${tmp-dir}"/>
               </target>
             </configuration>
             <goals>
@@ -90,69 +99,15 @@
         <version>1.1</version>
         <executions>
           <execution>
-            <id>create-applications-link</id>
             <phase>package</phase>
             <goals>
               <goal>exec</goal>
             </goals>
               <configuration>
-                <executable>ln</executable>
+                <workingDirectory>${tmp-dir}</workingDirectory>
+                <executable>${installers.makensis}</executable>
                 <arguments>
-                  <argument>-s</argument>
-                  <argument>/Applications</argument>
-                  <argument>${dmg-dir}/Applications</argument>
-                </arguments>
-            </configuration>
-          </execution>
-          <execution>
-            <id>makehybrid</id>
-            <phase>package</phase>
-            <goals>
-              <goal>exec</goal>
-            </goals>
-              <configuration>
-                <executable>hdiutil</executable>
-                <arguments>
-                  <argument>makehybrid</argument>
-                  <argument>-hfs</argument>
-                  <argument>-hfs-volume-name</argument>
-                  <argument>Apache Directory Studio</argument>
-                  <argument>-hfs-openfolder</argument>
-                  <argument>${dmg-dir}</argument>
-                  <argument>${dmg-dir}</argument>
-                  <argument>-o</argument>
-                  <argument>${tmp-dmg}</argument>
-                </arguments>
-            </configuration>
-          </execution>
-          <execution>
-            <id>convert</id>
-            <phase>package</phase>
-            <goals>
-              <goal>exec</goal>
-            </goals>
-              <configuration>
-                <executable>hdiutil</executable>
-                <arguments>
-                  <argument>convert</argument>
-                  <argument>-format</argument>
-                  <argument>UDZO</argument>
-                  <argument>${tmp-dmg}</argument>
-                  <argument>-o</argument>
-                  <argument>${final-dmg}</argument>
-                </arguments>
-            </configuration>
-          </execution>
-          <execution>
-            <id>remove-tmp-dmg</id>
-            <phase>package</phase>
-            <goals>
-              <goal>exec</goal>
-            </goals>
-              <configuration>
-                <executable>rm</executable>
-                <arguments>
-                  <argument>${tmp-dmg}</argument>
+                  <argument>installer.nsi</argument>
                 </arguments>
             </configuration>
           </execution>

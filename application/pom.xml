@@ -41,6 +41,7 @@
   </modules>
   
   <profiles>
+    <!-- Linux 32 Bit -->
     <profile>
       <id>linux-x86</id>
       <activation>
@@ -54,6 +55,7 @@
         <module>application-linux-x86</module>
       </modules>
     </profile>
+    <!-- Linux 64 Bit -->
     <profile>
       <id>linux-x86_64</id>
       <activation>
@@ -67,20 +69,37 @@
         <module>application-linux-x86_64</module>
       </modules>
     </profile>
+    <!-- Mac OS X 32 Bit -->
     <profile>
-      <id>macosx</id>
+      <id>macosx-x86</id>
       <activation>
         <os>
+          <arch>x86</arch>
           <family>unix</family>
           <name>mac os x</name>
         </os>
       </activation>
       <modules>
-        <module>application-macosx</module>
+        <module>application-macosx-x86</module>
       </modules>
     </profile>
+    <!-- Mac OS X 64 Bit -->
     <profile>
-      <id>win32</id>
+      <id>macosx-x86_64</id>
+      <activation>
+        <os>
+          <arch>x86_64</arch>
+          <family>unix</family>
+          <name>mac os x</name>
+        </os>
+      </activation>
+      <modules>
+        <module>application-macosx-x86_64</module>
+      </modules>
+    </profile>
+    <!-- Windows 32 Bit -->
+    <profile>
+      <id>win32-x86</id>
       <activation>
         <os>
           <arch>x86</arch>
@@ -88,34 +107,62 @@
         </os>
       </activation>
       <modules>
-        <module>application-win32</module>
+        <module>application-win32-x86</module>
       </modules>
     </profile>
+    <!-- Windows 64 Bit -->
+    <profile>
+      <id>win32-x86_64</id>
+      <activation>
+        <os>
+          <arch>x86_64</arch>
+          <family>windows</family>
+        </os>
+      </activation>
+      <modules>
+        <module>application-win32-x86_64</module>
+      </modules>
+    </profile>
+    <!-- Update Site -->
     <profile>
       <id>updatesite</id>
       <modules>
         <module>application-updatesite</module>
       </modules>
     </profile>
+    <!-- Release -->
     <profile>
       <id>release</id>
       <modules>
         <module>application-updatesite</module>
-        <module>application-macosx-dmg</module>
-        <module>application-win32-exe</module>
+        <module>application-linux-x86</module>
+        <module>application-linux-x86_64</module>
+        <module>application-macosx-x86</module>
+        <module>application-macosx-x86-dmg</module>
+        <module>application-macosx-x86_64</module>
+        <module>application-macosx-x86_64-dmg</module>
+        <module>application-win32-x86</module>
+        <module>application-win32-x86-exe</module>
+        <module>application-win32-x86_64</module>
+        <module>application-win32-x86_64-exe</module>
         <module>application-release</module>
       </modules>
     </profile>
+    <!-- Installers -->
     <profile>
       <id>installers</id>
       <modules>
+        <module>application-updatesite</module>
         <module>application-linux-x86</module>
         <module>application-linux-x86_64</module>
-        <module>application-macosx</module>
-        <module>application-macosx-dmg</module>
-        <module>application-win32</module>
-        <module>application-win32-exe</module>
-        <module>application-updatesite</module>
+        <module>application-macosx-x86</module>
+        <module>application-macosx-x86-dmg</module>
+        <module>application-macosx-x86_64</module>
+        <module>application-macosx-x86_64-dmg</module>
+        <module>application-win32-x86</module>
+        <module>application-win32-x86-exe</module>
+        <module>application-win32-x86_64</module>
+        <module>application-win32-x86_64-exe</module>
       </modules>
     </profile>
   </profiles>

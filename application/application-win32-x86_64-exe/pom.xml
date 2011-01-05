@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Licensed to the Apache Software Foundation (ASF) under one or more
+  contributor license agreements.  See the NOTICE file distributed with
+  this work for additional information regarding copyright ownership.
+  The ASF licenses this file to You under the Apache License, Version 2.0
+  (the "License"); you may not use this file except in compliance with
+  the License.  You may obtain a copy of the License at
+  
+  http://www.apache.org/licenses/LICENSE-2.0
+  
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<!--
+  @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>org.apache.directory.studio</groupId>
+    <artifactId>application</artifactId>
+    <version>2.0.0-SNAPSHOT</version>
+  </parent>
+  
+  <artifactId>ApacheDirectoryStudio-win32-x86_64-exe</artifactId>
+  <name>Apache Directory Studio Application Win32 x86_64 Exe</name>
+  <packaging>pom</packaging>
+  
+  <properties>
+    <tmp-dir>${project.build.directory}/ApacheDirectoryStudio-win32-x86_64-exe-tmp</tmp-dir>
+    <files-dir>${tmp-dir}/files</files-dir>
+    <installer-file-name>ApacheDirectoryStudio-win32-x86_64-${version}.exe</installer-file-name>
+    <installers.makensis>makensis</installers.makensis>
+  </properties>
+  
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <executions>
+          <execution>
+            <phase>generate-resources</phase>
+            <goals>
+              <goal>copy</goal>
+            </goals>
+            <configuration>
+              <artifactItems>
+                <artifactItem>
+                  <groupId>org.apache.directory.studio</groupId>
+                  <artifactId>ApacheDirectoryStudio-win32-x86_64</artifactId>
+                  <type>zip</type>
+                  <version>${project.version}</version>
+                  <outputDirectory>${project.build.directory}</outputDirectory>
+                </artifactItem>
+              </artifactItems>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-antrun-plugin</artifactId>
+        <executions>
+          <execution>
+            <phase>process-resources</phase>
+            <configuration>
+              <target>
+                <unzip dest="${tmp-dir}">
+                    <fileset dir="${project.build.directory}" includes="ApacheDirectoryStudio-win32-*.zip"/>
+                </unzip>
+                <copy file="src/main/resources/installer.nsi" todir="${tmp-dir}">
+                  <filterset>
+                    <filter token="version" value="${project.version}" />
+                    <filter token="installer-file-name" value="${installer-file-name}" />
+                  </filterset>
+                </copy>
+                <copy file="src/main/resources/AdvUninstLog.nsh" todir="${tmp-dir}"/>
+                <copy file="src/main/resources/header_studio.bmp" todir="${tmp-dir}"/>
+                <copy file="src/main/resources/studio-installer.ico" todir="${tmp-dir}"/>
+                <copy file="src/main/resources/welcome_studio.bmp" todir="${tmp-dir}"/>
+              </target>
+            </configuration>
+            <goals>
+              <goal>run</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>exec-maven-plugin</artifactId>
+        <version>1.1</version>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>exec</goal>
+            </goals>
+              <configuration>
+                <workingDirectory>${tmp-dir}</workingDirectory>
+                <executable>${installers.makensis}</executable>
+                <arguments>
+                  <argument>installer.nsi</argument>
+                </arguments>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+  
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-assembly-plugin</artifactId>
+        <executions>
+          <!-- Create the distribution file -->
+          <execution>
+            <phase>package</phase>
+            <configuration>
+              <descriptors>
+                <descriptor>src/main/assembly/assembly.xml</descriptor>
+              </descriptors>
+            </configuration>
+            <goals>
+              <goal>attached</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+  
+</project>
