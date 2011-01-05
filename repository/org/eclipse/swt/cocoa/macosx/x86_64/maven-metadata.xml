@@ -2,11 +2,12 @@
 <metadata>
   <groupId>org.eclipse.swt.cocoa.macosx</groupId>
   <artifactId>x86_64</artifactId>
-  <version>3.5.2.v3557f</version>
   <versioning>
+    <release>3.6.1.v3655c</release>
     <versions>
+      <version>3.6.1.v3655c</version>
       <version>3.5.2.v3557f</version>
     </versions>
-    <lastUpdated>20100318160636</lastUpdated>
+    <lastUpdated>20110104132232</lastUpdated>
   </versioning>
 </metadata>
