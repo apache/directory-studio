@@ -1,14 +1,16 @@
-<?xml version="1.0" encoding="UTF-8"?><metadata>
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata>
   <groupId>org.eclipse.jdt</groupId>
   <artifactId>debug</artifactId>
-  <version>3.3.1.v20070719_r331</version>
   <versioning>
+    <release>3.6.1.v20100715_r361</release>
     <versions>
+      <version>3.6.1.v20100715_r361</version>
       <version>3.3.1.v20070719_r331</version>
       <version>3.4.0.v20080604</version>
       <version>3.4.1.v20081216_r342</version>
       <version>3.5.0.v20090526</version>
     </versions>
-    <lastUpdated>20090820121111</lastUpdated>
+    <lastUpdated>20110104175247</lastUpdated>
   </versioning>
 </metadata>

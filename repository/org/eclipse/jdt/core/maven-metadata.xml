@@ -2,15 +2,16 @@
 <metadata>
   <groupId>org.eclipse.jdt</groupId>
   <artifactId>core</artifactId>
-  <version>3.3.3.v_793_R33x</version>
   <versioning>
+    <release>3.6.1.v_A68_R36x</release>
     <versions>
+      <version>3.6.1.v_A68_R36x</version>
       <version>3.3.3.v_793_R33x</version>
       <version>3.4.0.v_874</version>
       <version>3.4.4.v_894_R34x</version>
       <version>3.5.0.v_963</version>
       <version>3.5.2.v_981_R35x</version>
     </versions>
-    <lastUpdated>20100318160436</lastUpdated>
+    <lastUpdated>20110104132134</lastUpdated>
   </versioning>
 </metadata>

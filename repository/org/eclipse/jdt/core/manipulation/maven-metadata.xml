@@ -1,13 +1,15 @@
-<?xml version="1.0" encoding="UTF-8"?><metadata>
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata>
   <groupId>org.eclipse.jdt.core</groupId>
   <artifactId>manipulation</artifactId>
-  <version>1.1.0.v20070606-0010</version>
   <versioning>
+    <release>1.3.0.v20100520-0800</release>
     <versions>
+      <version>1.3.0.v20100520-0800</version>
       <version>1.1.0.v20070606-0010</version>
       <version>1.2.0.v20080603-2000</version>
       <version>1.3.0.v20090603</version>
     </versions>
-    <lastUpdated>20090819134236</lastUpdated>
+    <lastUpdated>20110104132130</lastUpdated>
   </versioning>
 </metadata>
