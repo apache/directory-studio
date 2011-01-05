@@ -170,6 +170,10 @@
       <artifactId>x86</artifactId>
     </dependency>
     <dependency>
+      <groupId>org.eclipse.core.filesystem.win32</groupId>
+      <artifactId>x86_64</artifactId>
+    </dependency>
+    <dependency>
       <groupId>org.eclipse.core</groupId>
       <artifactId>jobs</artifactId>
     </dependency>
@@ -286,6 +290,11 @@
     <dependency>
       <groupId>org.eclipse.equinox.launcher.win32.win32</groupId>
       <artifactId>x86</artifactId>
+      <type>zip</type>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.equinox.launcher.win32.win32</groupId>
+      <artifactId>x86_64</artifactId>
       <type>zip</type>
     </dependency>
     <dependency>
@@ -541,6 +550,10 @@
     <dependency>
       <groupId>org.eclipse.swt.win32.win32</groupId>
       <artifactId>x86</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.swt.win32.win32</groupId>
+      <artifactId>x86_64</artifactId>
     </dependency>
     <dependency>
       <groupId>org.eclipse.team</groupId>

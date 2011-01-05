@@ -2,15 +2,16 @@
 <metadata>
   <groupId>org.eclipse.swt.win32.win32</groupId>
   <artifactId>x86</artifactId>
-  <version>3.3.3.v3349</version>
   <versioning>
+    <release>3.6.1.v3655c</release>
     <versions>
+      <version>3.6.1.v3655c</version>
       <version>3.3.3.v3349</version>
       <version>3.4.0.v3448f</version>
       <version>3.4.1.v3452b</version>
       <version>3.5.0.v3550b</version>
       <version>3.5.2.v3557f</version>
     </versions>
-    <lastUpdated>20100322141608</lastUpdated>
+    <lastUpdated>20110105151720</lastUpdated>
   </versioning>
 </metadata>
