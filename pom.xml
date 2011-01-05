@@ -1279,7 +1279,7 @@
     <dependency>
       <groupId>org.eclipse.ui.workbench</groupId>
       <artifactId>compatibility</artifactId>
-      <version>3.2.0.I20090429-1800</version>
+      <version>3.2.100.I20100511-0800</version>
       <type>zip</type>
     </dependency>
     <dependency>
