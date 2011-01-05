@@ -61,9 +61,9 @@
       <type>tar.gz</type>
     </dependency>
     <dependency>
-      <groupId>org.apache.directory.studio</groupId>
-      <artifactId>launcher-macosx</artifactId>
-      <type>tar.gz</type>
+      <groupId>org.apache.directory.studio.launcher.macosx</groupId>
+      <artifactId>x86_64</artifactId>
+      <type>zip</type>
     </dependency>
     <dependency>
       <groupId>org.apache.directory.studio</groupId>
@@ -177,10 +177,6 @@
       <artifactId>resources</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.eclipse.core.resources</groupId>
-      <artifactId>compatibility</artifactId>
-    </dependency>
-    <dependency>
       <groupId>org.eclipse.core</groupId>
       <artifactId>runtime</artifactId>
     </dependency>
@@ -226,6 +222,11 @@
       <artifactId>filetransfer</artifactId>
     </dependency>
     <dependency>
+      <groupId>org.eclipse.epp.package</groupId>
+      <artifactId>java</artifactId>
+      <type>zip</type>
+    </dependency>
+    <dependency>
       <groupId>org.eclipse.equinox</groupId>
       <artifactId>app</artifactId>
     </dependency>
@@ -258,8 +259,8 @@
       <artifactId>launcher</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.eclipse.equinox.launcher.carbon</groupId>
-      <artifactId>macosx</artifactId>
+      <groupId>org.eclipse.equinox.launcher.cocoa.macosx</groupId>
+      <artifactId>x86_64</artifactId>
       <type>zip</type>
     </dependency>
     <dependency>
@@ -283,11 +284,43 @@
     </dependency>
     <dependency>
       <groupId>org.eclipse.equinox.p2</groupId>
+      <artifactId>console</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.equinox.p2</groupId>
       <artifactId>core</artifactId>
     </dependency>
     <dependency>
       <groupId>org.eclipse.equinox.p2</groupId>
+      <artifactId>director</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.equinox.p2.director</groupId>
+      <artifactId>app</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.equinox.p2</groupId>
+      <artifactId>directorywatcher</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.equinox.p2</groupId>
+      <artifactId>discovery</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.equinox.p2.discovery</groupId>
+      <artifactId>compatibility</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.equinox.p2</groupId>
       <artifactId>engine</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.equinox.p2</groupId>
+      <artifactId>extensionlocation</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.equinox.p2</groupId>
+      <artifactId>garbagecollector</artifactId>
     </dependency>
     <dependency>
       <groupId>org.eclipse.equinox.p2</groupId>
@@ -299,11 +332,67 @@
     </dependency>
     <dependency>
       <groupId>org.eclipse.equinox.p2.metadata</groupId>
+      <artifactId>generator</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.equinox.p2.metadata</groupId>
       <artifactId>repository</artifactId>
     </dependency>
     <dependency>
       <groupId>org.eclipse.equinox.p2</groupId>
+      <artifactId>operations</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.equinox.p2</groupId>
+      <artifactId>publisher</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.equinox.p2</groupId>
+      <artifactId>ql</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.equinox.p2.reconciler</groupId>
+      <artifactId>dropins</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.equinox.p2</groupId>
       <artifactId>repository</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.equinox.p2.repository</groupId>
+      <artifactId>tools</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.equinox.p2.touchpoint</groupId>
+      <artifactId>eclipse</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.equinox.p2.touchpoint</groupId>
+      <artifactId>natives</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.equinox.p2</groupId>
+      <artifactId>ui</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.equinox.p2.ui</groupId>
+      <artifactId>discovery</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.equinox.p2.ui</groupId>
+      <artifactId>sdk</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.equinox.p2.ui.sdk</groupId>
+      <artifactId>scheduler</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.equinox.p2</groupId>
+      <artifactId>updatechecker</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.equinox.p2</groupId>
+      <artifactId>updatesite</artifactId>
     </dependency>
     <dependency>
       <groupId>org.eclipse.equinox</groupId>
@@ -316,6 +405,14 @@
     <dependency>
       <groupId>org.eclipse.equinox</groupId>
       <artifactId>security</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.equinox</groupId>
+      <artifactId>simpleconfigurator</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.equinox.simpleconfigurator</groupId>
+      <artifactId>manipulator</artifactId>
     </dependency>
     <dependency>
       <groupId>org.eclipse</groupId>
@@ -400,6 +497,11 @@
     </dependency>
     <dependency>
       <groupId>org.eclipse</groupId>
+      <artifactId>platform</artifactId>
+      <type>zip</type>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse</groupId>
       <artifactId>rcp</artifactId>
     </dependency>
     <dependency>
@@ -411,8 +513,8 @@
       <artifactId>swt</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.eclipse.swt.carbon</groupId>
-      <artifactId>macosx</artifactId>
+      <groupId>org.eclipse.swt.cocoa.macosx</groupId>
+      <artifactId>x86_64</artifactId>
     </dependency>
     <dependency>
       <groupId>org.eclipse.swt.gtk.linux</groupId>
@@ -444,7 +546,7 @@
     </dependency>
     <dependency>
       <groupId>org.eclipse.ui</groupId>
-      <artifactId>carbon</artifactId>
+      <artifactId>cocoa</artifactId>
     </dependency>
     <dependency>
       <groupId>org.eclipse.ui</groupId>
@@ -577,13 +679,5 @@
     </dependency>
 
   </dependencies>
-
-  <repositories>
-    <repository>
-      <id>studio.repository</id>
-      <name>Studio Provided Repository</name>
-      <url>file://${pom.basedir}</url>
-    </repository>
-  </repositories>
 
 </project>
