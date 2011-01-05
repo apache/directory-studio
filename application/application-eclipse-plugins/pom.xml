@@ -139,10 +139,6 @@
 			      <artifactId>resources</artifactId>
 			    </artifactItem>
 			    <artifactItem>
-			      <groupId>org.eclipse.core.resources</groupId>
-			      <artifactId>compatibility</artifactId>
-			    </artifactItem>
-			    <artifactItem>
 			      <groupId>org.eclipse.core</groupId>
 			      <artifactId>runtime</artifactId>
 			    </artifactItem>
@@ -220,11 +216,43 @@
 			    </artifactItem>
 			    <artifactItem>
 			      <groupId>org.eclipse.equinox.p2</groupId>
+			      <artifactId>console</artifactId>
+			    </artifactItem>
+			    <artifactItem>
+			      <groupId>org.eclipse.equinox.p2</groupId>
 			      <artifactId>core</artifactId>
 			    </artifactItem>
 			    <artifactItem>
 			      <groupId>org.eclipse.equinox.p2</groupId>
+			      <artifactId>director</artifactId>
+			    </artifactItem>
+			    <artifactItem>
+			      <groupId>org.eclipse.equinox.p2.director</groupId>
+			      <artifactId>app</artifactId>
+			    </artifactItem>
+			    <artifactItem>
+			      <groupId>org.eclipse.equinox.p2</groupId>
+			      <artifactId>directorywatcher</artifactId>
+			    </artifactItem>
+			    <artifactItem>
+			      <groupId>org.eclipse.equinox.p2</groupId>
+			      <artifactId>discovery</artifactId>
+			    </artifactItem>
+			    <artifactItem>
+			      <groupId>org.eclipse.equinox.p2.discovery</groupId>
+			      <artifactId>compatibility</artifactId>
+			    </artifactItem>
+			    <artifactItem>
+			      <groupId>org.eclipse.equinox.p2</groupId>
 			      <artifactId>engine</artifactId>
+			    </artifactItem>
+			    <artifactItem>
+			      <groupId>org.eclipse.equinox.p2</groupId>
+			      <artifactId>extensionlocation</artifactId>
+			    </artifactItem>
+			    <artifactItem>
+			      <groupId>org.eclipse.equinox.p2</groupId>
+			      <artifactId>garbagecollector</artifactId>
 			    </artifactItem>
 			    <artifactItem>
 			      <groupId>org.eclipse.equinox.p2</groupId>
@@ -236,11 +264,67 @@
 			    </artifactItem>
 			    <artifactItem>
 			      <groupId>org.eclipse.equinox.p2.metadata</groupId>
+			      <artifactId>generator</artifactId>
+			    </artifactItem>
+			    <artifactItem>
+			      <groupId>org.eclipse.equinox.p2.metadata</groupId>
 			      <artifactId>repository</artifactId>
 			    </artifactItem>
 			    <artifactItem>
 			      <groupId>org.eclipse.equinox.p2</groupId>
+			      <artifactId>operations</artifactId>
+			    </artifactItem>
+			    <artifactItem>
+			      <groupId>org.eclipse.equinox.p2</groupId>
+			      <artifactId>publisher</artifactId>
+			    </artifactItem>
+			    <artifactItem>
+			      <groupId>org.eclipse.equinox.p2</groupId>
+			      <artifactId>ql</artifactId>
+			    </artifactItem>
+			    <artifactItem>
+			      <groupId>org.eclipse.equinox.p2.reconciler</groupId>
+			      <artifactId>dropins</artifactId>
+			    </artifactItem>
+			    <artifactItem>
+			      <groupId>org.eclipse.equinox.p2</groupId>
 			      <artifactId>repository</artifactId>
+			    </artifactItem>
+			    <artifactItem>
+			      <groupId>org.eclipse.equinox.p2.repository</groupId>
+			      <artifactId>tools</artifactId>
+			    </artifactItem>
+			    <artifactItem>
+			      <groupId>org.eclipse.equinox.p2.touchpoint</groupId>
+			      <artifactId>eclipse</artifactId>
+			    </artifactItem>
+			    <artifactItem>
+			      <groupId>org.eclipse.equinox.p2.touchpoint</groupId>
+			      <artifactId>natives</artifactId>
+			    </artifactItem>
+			    <artifactItem>
+			      <groupId>org.eclipse.equinox.p2</groupId>
+			      <artifactId>ui</artifactId>
+			    </artifactItem>
+			    <artifactItem>
+			      <groupId>org.eclipse.equinox.p2.ui</groupId>
+			      <artifactId>discovery</artifactId>
+			    </artifactItem>
+			    <artifactItem>
+			      <groupId>org.eclipse.equinox.p2.ui</groupId>
+			      <artifactId>sdk</artifactId>
+			    </artifactItem>
+			    <artifactItem>
+			      <groupId>org.eclipse.equinox.p2.ui.sdk</groupId>
+			      <artifactId>scheduler</artifactId>
+			    </artifactItem>
+			    <artifactItem>
+			      <groupId>org.eclipse.equinox.p2</groupId>
+			      <artifactId>updatechecker</artifactId>
+			    </artifactItem>
+			    <artifactItem>
+			      <groupId>org.eclipse.equinox.p2</groupId>
+			      <artifactId>updatesite</artifactId>
 			    </artifactItem>
 			    <artifactItem>
 			      <groupId>org.eclipse.equinox</groupId>
@@ -253,6 +337,14 @@
 			    <artifactItem>
 			      <groupId>org.eclipse.equinox</groupId>
 			      <artifactId>security</artifactId>
+			    </artifactItem>
+			    <artifactItem>
+			      <groupId>org.eclipse.equinox</groupId>
+			      <artifactId>simpleconfigurator</artifactId>
+			    </artifactItem>
+			    <artifactItem>
+			      <groupId>org.eclipse.equinox.simpleconfigurator</groupId>
+			      <artifactId>manipulator</artifactId>
 			    </artifactItem>
 			    <artifactItem>
 			      <groupId>org.eclipse</groupId>
@@ -456,6 +548,16 @@
                 <artifactItem>
                   <groupId>org.eclipse.core.runtime.compatibility</groupId>
                   <artifactId>registry</artifactId>
+                  <type>zip</type>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.eclipse.epp.package</groupId>
+                  <artifactId>java</artifactId>
+                  <type>zip</type>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.eclipse</groupId>
+                  <artifactId>platform</artifactId>
                   <type>zip</type>
                 </artifactItem>
               </artifactItems>
