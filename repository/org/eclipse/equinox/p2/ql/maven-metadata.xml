@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata>
+  <groupId>org.eclipse.equinox.p2</groupId>
+  <artifactId>ql</artifactId>
+  <versioning>
+    <release>2.0.0.v20100503a</release>
+    <versions>
+      <version>2.0.0.v20100503a</version>
+    </versions>
+    <lastUpdated>20110104132017</lastUpdated>
+  </versioning>
+</metadata>

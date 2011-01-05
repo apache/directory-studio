@@ -2,14 +2,15 @@
 <metadata>
   <groupId>org.eclipse.equinox</groupId>
   <artifactId>common</artifactId>
-  <version>3.3.0-v20070426</version>
   <versioning>
+    <release>3.6.0.v20100503</release>
     <versions>
+      <version>3.6.0.v20100503</version>
       <version>3.3.0-v20070426</version>
       <version>3.4.0.v20080421-2006</version>
       <version>3.5.0.v20090520-1800</version>
       <version>3.5.1.R35x_v20090807-1100</version>
     </versions>
-    <lastUpdated>20100318160215</lastUpdated>
+    <lastUpdated>20110104131858</lastUpdated>
   </versioning>
 </metadata>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata>
+  <groupId>org.eclipse.equinox.p2.touchpoint</groupId>
+  <artifactId>eclipse</artifactId>
+  <versioning>
+    <release>2.0.2.R36x_v20100823</release>
+    <versions>
+      <version>2.0.2.R36x_v20100823</version>
+    </versions>
+    <lastUpdated>20110104132030</lastUpdated>
+  </versioning>
+</metadata>

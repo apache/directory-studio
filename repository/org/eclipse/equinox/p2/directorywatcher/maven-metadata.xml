@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata>
+  <groupId>org.eclipse.equinox.p2</groupId>
+  <artifactId>directorywatcher</artifactId>
+  <versioning>
+    <release>1.0.202.R36x_v20100727</release>
+    <versions>
+      <version>1.0.202.R36x_v20100727</version>
+    </versions>
+    <lastUpdated>20110104131938</lastUpdated>
+  </versioning>
+</metadata>

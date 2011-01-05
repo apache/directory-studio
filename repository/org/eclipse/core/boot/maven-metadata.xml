@@ -1,12 +1,14 @@
-<?xml version="1.0" encoding="UTF-8"?><metadata>
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata>
   <groupId>org.eclipse.core</groupId>
   <artifactId>boot</artifactId>
-  <version>3.1.100-v20060603</version>
   <versioning>
+    <release>3.1.200.v20100505</release>
     <versions>
+      <version>3.1.200.v20100505</version>
       <version>3.1.100-v20060603</version>
       <version>3.1.100.v20080218</version>
     </versions>
-    <lastUpdated>20080903114644</lastUpdated>
+    <lastUpdated>20110104131739</lastUpdated>
   </versioning>
 </metadata>
