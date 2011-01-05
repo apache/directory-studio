@@ -2,14 +2,15 @@
 <metadata>
   <groupId>com.ibm</groupId>
   <artifactId>icu</artifactId>
-  <version>3.6.1-v20070906</version>
   <versioning>
+    <release>4.2.1.v20100412</release>
     <versions>
+      <version>4.2.1.v20100412</version>
       <version>3.6.1-v20070906</version>
       <version>3.8.1.v20080530</version>
       <version>4.0.1.v20090415</version>
       <version>4.0.1.v20090822</version>
     </versions>
-    <lastUpdated>20100318155857</lastUpdated>
+    <lastUpdated>20110104131707</lastUpdated>
   </versioning>
 </metadata>
