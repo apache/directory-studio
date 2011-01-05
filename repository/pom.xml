@@ -51,14 +51,14 @@
   <dependencies>
     <!-- Apache Directory Studio launchers dependencies -->
     <dependency>
-      <groupId>org.apache.directory.studio</groupId>
-      <artifactId>launcher-linux-x86</artifactId>
-      <type>tar.gz</type>
+      <groupId>org.apache.directory.studio.launcher.linux</groupId>
+      <artifactId>x86</artifactId>
+      <type>zip</type>
     </dependency>
     <dependency>
-      <groupId>org.apache.directory.studio</groupId>
-      <artifactId>launcher-linux-x86_64</artifactId>
-      <type>tar.gz</type>
+      <groupId>org.apache.directory.studio.launcher.linux</groupId>
+      <artifactId>x86_64</artifactId>
+      <type>zip</type>
     </dependency>
     <dependency>
       <groupId>org.apache.directory.studio.launcher.macosx</groupId>

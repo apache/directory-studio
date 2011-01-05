@@ -44,18 +44,18 @@
         <artifactId>maven-dependency-plugin</artifactId>
         <executions>
           <execution>
-            <id>copy-studio-launcher-linux-x86</id>
+            <id>unpack-launcher</id>
             <phase>generate-resources</phase>
             <goals>
-              <goal>copy</goal>
+              <goal>unpack</goal>
             </goals>
             <configuration>
+              <outputDirectory>${app-dir}</outputDirectory>
               <artifactItems>
                 <artifactItem>
-                  <groupId>org.apache.directory.studio</groupId>
-                  <artifactId>launcher-linux-x86</artifactId>
-                  <type>tar.gz</type>
-                  <outputDirectory>${project.build.directory}</outputDirectory>
+                  <groupId>org.apache.directory.studio.launcher.linux</groupId>
+                  <artifactId>x86</artifactId>
+                  <type>zip</type>
                 </artifactItem>
               </artifactItems>
             </configuration>
