@@ -1,13 +1,15 @@
-<?xml version="1.0" encoding="UTF-8"?><metadata>
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata>
   <groupId>org.eclipse.ui.workbench</groupId>
   <artifactId>compatibility</artifactId>
-  <version>3.2.0.I20070319-0010</version>
   <versioning>
+    <release>3.2.100.I20100511-0800</release>
     <versions>
+      <version>3.2.100.I20100511-0800</version>
       <version>3.2.0.I20070319-0010</version>
       <version>3.2.0.I20080509-2000</version>
       <version>3.2.0.I20090429-1800</version>
     </versions>
-    <lastUpdated>20090820120710</lastUpdated>
+    <lastUpdated>20110104175254</lastUpdated>
   </versioning>
 </metadata>

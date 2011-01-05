@@ -2,9 +2,10 @@
 <metadata>
   <groupId>org.eclipse.ui</groupId>
   <artifactId>ide</artifactId>
-  <version>3.3.2.M20080207-0800-studio</version>
   <versioning>
+    <release>3.6.1.M20100825-0800</release>
     <versions>
+      <version>3.6.1.M20100825-0800</version>
       <version>3.3.2.M20080207-0800-studio</version>
       <version>3.4.0.I20080606-1300</version>
       <version>3.4.0.I20080606-1300-studio</version>
@@ -14,6 +15,6 @@
       <version>3.5.2.M20100113-0800</version>
       <version>3.5.2.M20100113-0800-studio</version>
     </versions>
-    <lastUpdated>20100322173048</lastUpdated>
+    <lastUpdated>20110104132307</lastUpdated>
   </versioning>
 </metadata>

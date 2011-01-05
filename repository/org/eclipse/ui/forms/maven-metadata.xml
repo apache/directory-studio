@@ -2,15 +2,16 @@
 <metadata>
   <groupId>org.eclipse.ui</groupId>
   <artifactId>forms</artifactId>
-  <version>3.3.0.v20070511</version>
   <versioning>
+    <release>3.5.2.r36_v20100702</release>
     <versions>
+      <version>3.5.2.r36_v20100702</version>
       <version>3.3.0.v20070511</version>
       <version>3.3.100.v20080611</version>
       <version>3.3.103.v20081027_34x</version>
       <version>3.4.0.v20090526</version>
       <version>3.4.1.v20090714_35x</version>
     </versions>
-    <lastUpdated>20100318160719</lastUpdated>
+    <lastUpdated>20110104132300</lastUpdated>
   </versioning>
 </metadata>
