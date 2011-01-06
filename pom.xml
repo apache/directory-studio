@@ -1254,7 +1254,7 @@
     <dependency>
       <groupId>org.eclipse.ui</groupId>
       <artifactId>ide</artifactId>
-      <version>3.6.1.M20100825-0800</version>
+      <version>3.6.1.M20100825-0800-studio</version>
     </dependency>
     <dependency>
       <groupId>org.eclipse.ui.ide</groupId>
