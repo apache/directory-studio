@@ -541,11 +541,6 @@
     </dependency>
     <dependency>
       <groupId>org.eclipse</groupId>
-      <artifactId>platform</artifactId>
-      <type>zip</type>
-    </dependency>
-    <dependency>
-      <groupId>org.eclipse</groupId>
       <artifactId>rcp</artifactId>
     </dependency>
     <dependency>

@@ -1162,12 +1162,6 @@
     </dependency>
     <dependency>
       <groupId>org.eclipse</groupId>
-      <artifactId>platform</artifactId>
-      <version>3.6.1.v201009090800</version>
-      <type>zip</type>
-    </dependency>
-    <dependency>
-      <groupId>org.eclipse</groupId>
       <artifactId>rcp</artifactId>
       <version>3.6.0.v201009090800</version>
     </dependency>

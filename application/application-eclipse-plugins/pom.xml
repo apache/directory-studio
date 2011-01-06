@@ -555,11 +555,6 @@
                   <artifactId>java</artifactId>
                   <type>zip</type>
                 </artifactItem>
-                <artifactItem>
-                  <groupId>org.eclipse</groupId>
-                  <artifactId>platform</artifactId>
-                  <type>zip</type>
-                </artifactItem>
               </artifactItems>
             </configuration>
           </execution>
