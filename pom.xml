@@ -785,7 +785,7 @@
     <dependency>
       <groupId>org.eclipse.debug</groupId>
       <artifactId>ui</artifactId>
-      <version>3.6.1.v20100901_r361</version>
+      <version>3.6.1.v20100901_r361-studio</version>
     </dependency>
     <dependency>
       <groupId>org.eclipse</groupId>

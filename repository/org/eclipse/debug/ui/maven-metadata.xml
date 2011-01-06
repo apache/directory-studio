@@ -5,6 +5,7 @@
   <versioning>
     <release>3.6.1.v20100901_r361</release>
     <versions>
+      <version>3.6.1.v20100901_r361-studio</version>
       <version>3.6.1.v20100901_r361</version>
       <version>3.3.2.v20080117_r332-studio</version>
       <version>3.4.0.v20080529-1300</version>
@@ -15,6 +16,6 @@
       <version>3.5.2.v20091028_r352</version>
       <version>3.5.2.v20091028_r352-studio</version>
     </versions>
-    <lastUpdated>20110104131839</lastUpdated>
+    <lastUpdated>20110106131359</lastUpdated>
   </versioning>
 </metadata>
