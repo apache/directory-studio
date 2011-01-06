@@ -1244,7 +1244,7 @@
     <dependency>
       <groupId>org.eclipse.ui</groupId>
       <artifactId>editors</artifactId>
-      <version>3.6.1.r361_v20100825-0800</version>
+      <version>3.6.1.r361_v20100825-0800-studio</version>
     </dependency>
     <dependency>
       <groupId>org.eclipse.ui</groupId>
