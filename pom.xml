@@ -1284,7 +1284,7 @@
     <dependency>
       <groupId>org.eclipse.ui</groupId>
       <artifactId>views</artifactId>
-      <version>3.5.0.I20100527-0800</version>
+      <version>3.5.0.I20100527-0800-studio</version>
     </dependency>
     <dependency>
       <groupId>org.eclipse.ui.views.properties</groupId>
