@@ -1259,7 +1259,7 @@
     <dependency>
       <groupId>org.eclipse.ui.ide</groupId>
       <artifactId>application</artifactId>
-      <version>1.0.201.M20100707-0800</version>
+      <version>1.0.201.M20100707-0800-studio</version>
     </dependency>
     <dependency>
       <groupId>org.eclipse.ui</groupId>
