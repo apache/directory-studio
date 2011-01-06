@@ -73,20 +73,20 @@
                   <groupId>org.apache.directory.studio</groupId>
                   <artifactId>application-plugins</artifactId>
                   <type>zip</type>
-                  <version>${project.version}</version> <!-- TODO -->
+                  <version>${project.version}</version>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.apache.directory.studio</groupId>
                   <artifactId>application-eclipse-plugins</artifactId>
                   <type>zip</type>
-                  <version>${project.version}</version> <!-- TODO -->
+                  <version>${project.version}</version>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.apache.directory.studio</groupId>
                   <artifactId>application-features</artifactId>
                   <classifier>unpacked</classifier>
                   <type>zip</type>
-                  <version>${project.version}</version> <!-- TODO -->
+                  <version>${project.version}</version>
                 </artifactItem>
               </artifactItems>
             </configuration>
@@ -156,6 +156,14 @@
               <artifactItems>
                 <artifactItem>
                   <groupId>org.eclipse.core.filesystem.win32</groupId>
+                  <artifactId>x86</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.eclipse.core.net.win32</groupId>
+                  <artifactId>x86</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.eclipse.core.resources.win32</groupId>
                   <artifactId>x86</artifactId>
                 </artifactItem>
                 <artifactItem>

@@ -722,9 +722,34 @@
       <version>1.2.100.I20100511-0800</version>
     </dependency>
     <dependency>
+      <groupId>org.eclipse.core.net.linux</groupId>
+      <artifactId>x86</artifactId>
+      <version>1.1.100.R36x_v20100825-0800</version>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.core.net.linux</groupId>
+      <artifactId>x86_64</artifactId>
+      <version>1.1.0.I20100505-1245</version>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.core.net.win32</groupId>
+      <artifactId>x86</artifactId>
+      <version>1.0.100.I20100511-0800</version>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.core.net.win32</groupId>
+      <artifactId>x86_64</artifactId>
+      <version>1.0.100.I20100505-1245</version>
+    </dependency>
+    <dependency>
       <groupId>org.eclipse.core</groupId>
       <artifactId>resources</artifactId>
       <version>3.6.0.R36x_v20100825-0600</version>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.core.resources.win32</groupId>
+      <artifactId>x86</artifactId>
+      <version>3.5.100.v20100505-1345</version>
     </dependency>
     <dependency>
       <groupId>org.eclipse.core</groupId>

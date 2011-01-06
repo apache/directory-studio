@@ -187,8 +187,28 @@
       <artifactId>net</artifactId>
     </dependency>
     <dependency>
+      <groupId>org.eclipse.core.net.linux</groupId>
+      <artifactId>x86</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.core.net.linux</groupId>
+      <artifactId>x86_64</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.core.net.win32</groupId>
+      <artifactId>x86</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.core.net.win32</groupId>
+      <artifactId>x86_64</artifactId>
+    </dependency>
+    <dependency>
       <groupId>org.eclipse.core</groupId>
       <artifactId>resources</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.core.resources.win32</groupId>
+      <artifactId>x86</artifactId>
     </dependency>
     <dependency>
       <groupId>org.eclipse.core</groupId>

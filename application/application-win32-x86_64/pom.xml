@@ -156,11 +156,15 @@
               <artifactItems>
                 <artifactItem>
                   <groupId>org.eclipse.core.filesystem.win32</groupId>
-                  <artifactId>x86</artifactId>
+                  <artifactId>x86_64</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.eclipse.core.net.win32</groupId>
+                  <artifactId>x86_64</artifactId>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.eclipse.swt.win32.win32</groupId>
-                  <artifactId>x86</artifactId>
+                  <artifactId>x86_64</artifactId>
                 </artifactItem>
               </artifactItems>
             </configuration>

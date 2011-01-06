@@ -159,6 +159,10 @@
                   <artifactId>x86_64</artifactId>
                 </artifactItem>
                 <artifactItem>
+                  <groupId>org.eclipse.core.net.linux</groupId>
+                  <artifactId>x86_64</artifactId>
+                </artifactItem>
+                <artifactItem>
                   <groupId>org.eclipse.swt.gtk.linux</groupId>
                   <artifactId>x86_64</artifactId>
                 </artifactItem>
