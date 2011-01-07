@@ -63,14 +63,28 @@
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.apache.directory.studio</groupId>
-                  <artifactId>ApacheDirectoryStudio-macosx-dmg</artifactId>
+                  <artifactId>ApacheDirectoryStudio-macosx-x86-dmg</artifactId>
                   <type>zip</type>
                   <version>${project.version}</version> <!-- TODO -->
                   <outputDirectory>${project.build.directory}</outputDirectory>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.apache.directory.studio</groupId>
-                  <artifactId>ApacheDirectoryStudio-win32-exe</artifactId>
+                  <artifactId>ApacheDirectoryStudio-macosx-x86_64-dmg</artifactId>
+                  <type>zip</type>
+                  <version>${project.version}</version> <!-- TODO -->
+                  <outputDirectory>${project.build.directory}</outputDirectory>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.apache.directory.studio</groupId>
+                  <artifactId>ApacheDirectoryStudio-win32-x86-exe</artifactId>
+                  <type>zip</type>
+                  <version>${project.version}</version> <!-- TODO -->
+                  <outputDirectory>${project.build.directory}</outputDirectory>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.apache.directory.studio</groupId>
+                  <artifactId>ApacheDirectoryStudio-win32-x86_64-exe</artifactId>
                   <type>zip</type>
                   <version>${project.version}</version> <!-- TODO -->
                   <outputDirectory>${project.build.directory}</outputDirectory>
@@ -108,8 +122,10 @@
                 <unzip dest="${project.build.directory}">
                     <fileset dir="${project.build.directory}" includes="ApacheDirectoryStudio-*.zip"/>
                 </unzip>
-                <copy file="${project.build.directory}/ApacheDirectoryStudio-macosx-dmg-${version}/ApacheDirectoryStudio-macosx-${version}.dmg" todir="${release-dir}" />
-                <copy file="${project.build.directory}/ApacheDirectoryStudio-win32-exe-${version}/ApacheDirectoryStudio-win32-${version}.exe" todir="${release-dir}" />
+                <copy file="${project.build.directory}/ApacheDirectoryStudio-macosx-x86-dmg-${version}/ApacheDirectoryStudio-macosx-x86-${version}.dmg" todir="${release-dir}" />
+                <copy file="${project.build.directory}/ApacheDirectoryStudio-macosx-x86_64-dmg-${version}/ApacheDirectoryStudio-macosx-x86_64-${version}.dmg" todir="${release-dir}" />
+                <copy file="${project.build.directory}/ApacheDirectoryStudio-win32-x86-exe-${version}/ApacheDirectoryStudio-win32-x86-${version}.exe" todir="${release-dir}" />
+                <copy file="${project.build.directory}/ApacheDirectoryStudio-win32-x86_64-exe-${version}/ApacheDirectoryStudio-win32-x86_64-${version}.exe" todir="${release-dir}" />
                 <copy todir="${release-dir}/updatesite">
                   <fileset dir="${project.build.directory}/ApacheDirectoryStudio-updatesite-${version}"/>
                 </copy>

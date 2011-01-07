@@ -26,7 +26,7 @@
     !define WelcomeImage "welcome_studio.bmp"
     !define HeaderImage "header_studio.bmp"
     !define OutFile "../@installer-file-name@"
-    !define SourceFolder "ApacheDirectoryStudio-win32-${Version}"
+    !define SourceFolder "ApacheDirectoryStudio-win32-x86_64-${Version}"
     !define INSTDIR_REG_ROOT "HKLM"
     !define INSTDIR_REG_KEY "Software\Microsoft\Windows\CurrentVersion\Uninstall\${Application}"
 
