@@ -580,6 +580,7 @@
                   <outputDirectory>${language-packs-dir}</outputDirectory>
                   <includes>eclipse/plugins/**</includes>
                   <excludes>
+                    eclipse/plugins/test.flex.root.nl*,
                     eclipse/plugins/security.a.nl*,
                     eclipse/plugins/security.a.frag.a.nl*,
                     eclipse/plugins/org.junit4.nl*,
@@ -655,12 +656,17 @@
                     eclipse/plugins/org.eclipse.equinox.device.nl*,
                     eclipse/plugins/org.eclipse.equinox.concurrent.nl*,
                     eclipse/plugins/org.eclipse.equinox.cm.nl*,
+                    eclipse/plugins/org.eclipse.debug.tests.nl*,
                     eclipse/plugins/org.eclipse.debug.examples.ui.nl*,
                     eclipse/plugins/org.eclipse.cvs.nl*,
+                    eclipse/plugins/org.eclipse.core.tests.runtime.nl*,
                     eclipse/plugins/org.eclipse.core.resources.jmx.nl*,
                     eclipse/plugins/org.eclipse.core.net.win32*,
                     eclipse/plugins/org.eclipse.core.net.linux*,
                     eclipse/plugins/org.eclipse.core.filebuffers.tests.nl*,
+                    eclipse/plugins/org.eclipse.core.filesystem.solaris*,
+                    eclipse/plugins/org.eclipse.core.filesystem.aix*,
+                    eclipse/plugins/org.eclipse.core.externaltools.nl*,
                     eclipse/plugins/org.eclipse.core.expressions.tests.nl*,
                     eclipse/plugins/org.eclipse.core.databinding.beans.nl*,
                     eclipse/plugins/org.eclipse.compare.win32.nl*,
@@ -676,6 +682,7 @@
                   <outputDirectory>${language-packs-dir}</outputDirectory>
                   <includes>eclipse/plugins/**</includes>
                   <excludes>
+                    eclipse/plugins/test.flex.root.nl*,
                     eclipse/plugins/security.a.nl*,
                     eclipse/plugins/security.a.frag.a.nl*,
                     eclipse/plugins/org.junit4.nl*,
@@ -751,12 +758,17 @@
                     eclipse/plugins/org.eclipse.equinox.device.nl*,
                     eclipse/plugins/org.eclipse.equinox.concurrent.nl*,
                     eclipse/plugins/org.eclipse.equinox.cm.nl*,
+                    eclipse/plugins/org.eclipse.debug.tests.nl*,
                     eclipse/plugins/org.eclipse.debug.examples.ui.nl*,
                     eclipse/plugins/org.eclipse.cvs.nl*,
+                    eclipse/plugins/org.eclipse.core.tests.runtime.nl*,
                     eclipse/plugins/org.eclipse.core.resources.jmx.nl*,
                     eclipse/plugins/org.eclipse.core.net.win32*,
                     eclipse/plugins/org.eclipse.core.net.linux*,
                     eclipse/plugins/org.eclipse.core.filebuffers.tests.nl*,
+                    eclipse/plugins/org.eclipse.core.filesystem.solaris*,
+                    eclipse/plugins/org.eclipse.core.filesystem.aix*,
+                    eclipse/plugins/org.eclipse.core.externaltools.nl*,
                     eclipse/plugins/org.eclipse.core.expressions.tests.nl*,
                     eclipse/plugins/org.eclipse.core.databinding.beans.nl*,
                     eclipse/plugins/org.eclipse.compare.win32.nl*,
