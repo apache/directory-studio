@@ -550,11 +550,6 @@
                   <artifactId>registry</artifactId>
                   <type>zip</type>
                 </artifactItem>
-                <artifactItem>
-                  <groupId>org.eclipse.epp.package</groupId>
-                  <artifactId>java</artifactId>
-                  <type>zip</type>
-                </artifactItem>
               </artifactItems>
             </configuration>
           </execution>
