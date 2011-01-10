@@ -323,7 +323,7 @@ public class ServerConfigurationEditor extends FormEditor
                     try
                     {
                         monitor
-                            .beginTask( "Saving The Server Configuration", IProgressMonitor.UNKNOWN );
+                            .beginTask( "Saving Server Configuration", IProgressMonitor.UNKNOWN );
                         boolean success = doSaveAs( monitor );
                         setDirty( !success );
                         monitor.done();
@@ -342,7 +342,6 @@ public class ServerConfigurationEditor extends FormEditor
         }
     }
 
-
     /**
      * Performs the "Save as..." action.
      *
@@ -360,11 +359,35 @@ public class ServerConfigurationEditor extends FormEditor
         {
             // Asking the user for the location where to 'save as' the file
             SaveAsDialog dialog = new SaveAsDialog( getSite().getShell() );
-            if ( !( getEditorInput() instanceof NewServerConfigurationInput ) )
+
+            IEditorInput input = getEditorInput();
+            String inputClassName = input.getClass().getName();
+            if ( input instanceof FileEditorInput )
+            // FileEditorInput class is used when the file is opened
+            // from a project in the workspace.
             {
-                dialog.setOriginalFile( ResourcesPlugin.getWorkspace().getRoot().getFile(
-                    new Path( getEditorInput().getToolTipText() ) ) );
+                dialog.setOriginalFile( ( ( FileEditorInput ) input ).getFile() );
             }
+            else if ( input instanceof IPathEditorInput )
+            {
+                dialog.setOriginalFile( ResourcesPlugin.getWorkspace().getRoot()
+                    .getFile( ( ( IPathEditorInput ) input ).getPath() ) );
+            }
+            else if ( inputClassName.equals( "org.eclipse.ui.internal.editors.text.JavaFileEditorInput" ) //$NON-NLS-1$
+                || inputClassName.equals( "org.eclipse.ui.ide.FileStoreEditorInput" ) ) //$NON-NLS-1$
+            // The class 'org.eclipse.ui.internal.editors.text.JavaFileEditorInput'
+            // is used when opening a file from the menu File > Open... in Eclipse 3.2.x
+            // The class 'org.eclipse.ui.ide.FileStoreEditorInput' is used when
+            // opening a file from the menu File > Open... in Eclipse 3.3.x
+            {
+                dialog.setOriginalFile( ResourcesPlugin.getWorkspace().getRoot()
+                    .getFile( new Path( input.getToolTipText() ) ) );
+            }
+            else
+            {
+                dialog.setOriginalName( "config.ldif" );
+            }
+
             if ( dialog.open() != Dialog.OK )
             {
                 return false;
