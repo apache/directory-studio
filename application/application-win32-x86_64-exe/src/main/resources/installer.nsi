@@ -49,7 +49,7 @@
     OutFile "${OutFile}"
     
     # Default install directory
-    InstallDir "$PROGRAMFILES\${Application}"
+    InstallDir "$PROGRAMFILES64\${Application}"
     
     # Branding text
     BrandingText "${Application} - ${Version}"
