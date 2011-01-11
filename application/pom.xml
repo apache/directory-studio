@@ -55,12 +55,26 @@
         <module>application-linux-x86</module>
       </modules>
     </profile>
-    <!-- Linux 64 Bit -->
+    <!-- Linux 64 Bit, in Sun JDK/Oracle/OpenJDK os.arch is 'amd64' -->
+    <profile>
+      <id>linux-amd64</id>
+      <activation>
+        <os>
+          <arch>amd64</arch>
+          <family>unix</family>
+          <name>linux</name>
+        </os>
+      </activation>
+      <modules>
+        <module>application-linux-x86_64</module>
+      </modules>
+    </profile>
+    <!-- Linux 64 Bit, in Harmony os.arch is 'x86_64' -->
     <profile>
       <id>linux-x86_64</id>
       <activation>
         <os>
-          <arch>amd64</arch>
+          <arch>x86_64</arch>
           <family>unix</family>
           <name>linux</name>
         </os>
@@ -110,7 +124,20 @@
         <module>application-win32-x86</module>
       </modules>
     </profile>
-    <!-- Windows 64 Bit -->
+    <!-- Windows 64 Bit, in Sun JDK/Oracle/OpenJDK os.arch is 'amd64' -->
+    <profile>
+      <id>win32-amd64</id>
+      <activation>
+        <os>
+          <arch>amd64</arch>
+          <family>windows</family>
+        </os>
+      </activation>
+      <modules>
+        <module>application-win32-x86_64</module>
+      </modules>
+    </profile>
+    <!-- Windows 64 Bit, in Harmony os.arch is 'x86_64' -->
     <profile>
       <id>win32-x86_64</id>
       <activation>
