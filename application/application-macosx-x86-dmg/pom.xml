@@ -45,7 +45,7 @@
           <execution>
             <phase>generate-resources</phase>
             <goals>
-              <goal>copy</goal>
+              <goal>unpack</goal>
             </goals>
             <configuration>
               <artifactItems>
@@ -53,7 +53,7 @@
                   <groupId>org.apache.directory.studio</groupId>
                   <artifactId>ApacheDirectoryStudio-macosx-x86</artifactId>
                   <type>zip</type>
-                  <version>${project.version}</version> <!-- TODO -->
+                  <version>${project.version}</version>
                   <outputDirectory>${project.build.directory}</outputDirectory>
                 </artifactItem>
               </artifactItems>
@@ -70,9 +70,7 @@
             <phase>process-resources</phase>
             <configuration>
               <target>
-                <unzip dest="${project.build.directory}">
-                    <fileset dir="${project.build.directory}" includes="ApacheDirectoryStudio-macosx-*.zip"/>
-                </unzip>
+                <chmod file="${dmg-dir}/Apache Directory Studio.app/Contents/MacOS/ApacheDirectoryStudio" perm="755"/>
                 <copy file="src/main/resources/DS_Store" tofile="${dmg-dir}/.DS_Store"/>
                 <copy file="src/main/resources/background.png" tofile="${dmg-dir}/.background/background.png"/>
               </target>
