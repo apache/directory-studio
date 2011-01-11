@@ -73,20 +73,20 @@
                   <groupId>org.apache.directory.studio</groupId>
                   <artifactId>application-plugins</artifactId>
                   <type>zip</type>
-                  <version>${project.version}</version> <!-- TODO -->
+                  <version>${project.version}</version>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.apache.directory.studio</groupId>
                   <artifactId>application-eclipse-plugins</artifactId>
                   <type>zip</type>
-                  <version>${project.version}</version> <!-- TODO -->
+                  <version>${project.version}</version>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.apache.directory.studio</groupId>
                   <artifactId>application-features</artifactId>
                   <classifier>unpacked</classifier>
                   <type>zip</type>
-                  <version>${project.version}</version> <!-- TODO -->
+                  <version>${project.version}</version>
                 </artifactItem>
               </artifactItems>
             </configuration>
@@ -181,7 +181,7 @@
             <artifactItems>
               <artifactItem>
                 <groupId>org.eclipse.equinox.launcher.win32.win32</groupId>
-                <artifactId>x86</artifactId>
+                <artifactId>x86_64</artifactId>
                 <type>zip</type>
               </artifactItem>
             </artifactItems>
