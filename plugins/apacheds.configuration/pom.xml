@@ -116,6 +116,7 @@
  org.eclipse.core.runtime,
  org.eclipse.jface.text,
  org.eclipse.ui,
+ org.eclipse.ui.editors,
  org.eclipse.ui.forms,
  org.eclipse.ui.ide,
  org.dom4j.dom4j;bundle-version="${org.dom4j.version}"</Require-Bundle>
@@ -189,6 +190,11 @@
     <dependency>
       <groupId>org.eclipse</groupId>
       <artifactId>jface</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.ui</groupId>
+      <artifactId>editors</artifactId>
       <scope>provided</scope>
     </dependency>
     <dependency>

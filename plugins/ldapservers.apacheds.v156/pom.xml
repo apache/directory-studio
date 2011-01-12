@@ -127,6 +127,7 @@
  org.eclipse.jdt.launching,
  org.eclipse.jface.text,
  org.eclipse.ui,
+ org.eclipse.ui.editors,
  org.eclipse.ui.ide</Require-Bundle>
             <Export-Package>org.apache.directory.studio.*</Export-Package>
             <Import-Package>!</Import-Package>

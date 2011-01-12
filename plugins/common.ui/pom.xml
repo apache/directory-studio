@@ -113,7 +113,8 @@
             <Eclipse-LazyStart>true</Eclipse-LazyStart>
             <Bundle-Activator>org.apache.directory.studio.common.ui.CommonUIPlugin</Bundle-Activator>
             <Require-Bundle>org.eclipse.core.runtime,
- org.eclipse.ui</Require-Bundle>
+ org.eclipse.ui,
+ org.eclipse.ui.editors</Require-Bundle>
             <Export-Package>org.apache.directory.studio.*</Export-Package>
             <Import-Package>!</Import-Package>
             <Private-Package>!</Private-Package>
@@ -190,6 +191,11 @@
     <dependency>
       <groupId>org.eclipse</groupId>
       <artifactId>ui</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.ui</groupId>
+      <artifactId>editors</artifactId>
       <scope>provided</scope>
     </dependency>
   </dependencies>

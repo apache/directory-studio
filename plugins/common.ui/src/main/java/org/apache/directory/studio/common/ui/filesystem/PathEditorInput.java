@@ -8,7 +8,7 @@
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
-package org.apache.directory.studio.ldifeditor.editor;
+package org.apache.directory.studio.common.ui.filesystem;
 
 
 import org.eclipse.core.runtime.IPath;
@@ -21,11 +21,7 @@ import org.eclipse.ui.editors.text.ILocationProvider;
 
 
 /**
- * EditorInput that stores a path.
- */
-
-/**
- * This EditorInput is used to open LDIF files that are located in the local file system.
+ * This EditorInput is used to open files that are located in the local file system.
  * 
  * Inspired from org.eclipse.ui.internal.editors.text.NonExistingFileEditorInput.java
  *
@@ -33,13 +29,11 @@ import org.eclipse.ui.editors.text.ILocationProvider;
  */
 public class PathEditorInput implements IPathEditorInput, ILocationProvider
 {
-
     /** The absolute path in local file system */
     private IPath path;
 
 
     /**
-     * 
      * Creates a new instance of PathEditorInput.
      *
      * @param path the absolute path
@@ -84,9 +78,9 @@ public class PathEditorInput implements IPathEditorInput, ILocationProvider
     }
 
 
-    /*
-     * @see org.eclipse.ui.IEditorInput#exists()
-     */
+    /**
+     * {@inheritDoc}
+     * */
     public boolean exists()
     {
         return path.toFile().exists();
@@ -94,8 +88,8 @@ public class PathEditorInput implements IPathEditorInput, ILocationProvider
 
 
     /**
-     * Returns the LDIF file image.
-     */
+     * {@inheritDoc}
+     * */
     public ImageDescriptor getImageDescriptor()
     {
         return PlatformUI.getWorkbench().getEditorRegistry().getImageDescriptor( path.toString() );
@@ -145,9 +139,9 @@ public class PathEditorInput implements IPathEditorInput, ILocationProvider
     }
 
 
-    /*
-     * @see org.eclipse.ui.IEditorInput#getPersistable()
-     */
+    /**
+     * {@inheritDoc}
+     * */
     public IPersistableElement getPersistable()
     {
         return null;

@@ -39,21 +39,18 @@ import org.apache.directory.studio.common.core.jobs.StudioJob;
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.common.core.jobs.StudioRunnableWithProgress;
 import org.apache.directory.studio.common.ui.CommonUIUtils;
+import org.apache.directory.studio.common.ui.filesystem.PathEditorInput;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
 import org.apache.directory.studio.ldapbrowser.core.jobs.ExecuteLdifRunnable;
-import org.apache.directory.studio.ldapbrowser.core.jobs.ImportLdifRunnable;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
-import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.FileDialog;
@@ -61,9 +58,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.IPathEditorInput;
-import org.eclipse.ui.IPersistableElement;
 import org.eclipse.ui.PartInitException;
-import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.SaveAsDialog;
 import org.eclipse.ui.forms.editor.FormEditor;
 import org.eclipse.ui.part.FileEditorInput;
@@ -342,6 +337,7 @@ public class ServerConfigurationEditor extends FormEditor
         }
     }
 
+
     /**
      * Performs the "Save as..." action.
      *
@@ -579,143 +575,5 @@ public class ServerConfigurationEditor extends FormEditor
     private ConfigWriter getConfigWriter() throws Exception
     {
         return new ConfigWriter( ApacheDS2ConfigurationPlugin.getDefault().getSchemaManager(), configBean );
-    }
-}
-
-/**
- * This IEditorInput is used to open files that are located in the local file system.
- * 
- * Inspired from org.eclipse.ui.internal.editors.text.NonExistingFileEditorInput.java
- *
- * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- */
-class PathEditorInput implements IPathEditorInput
-{
-    /** The absolute path in local file system */
-    private IPath path;
-
-
-    /**
-     * 
-     * Creates a new instance of PathEditorInput.
-     *
-     * @param path the absolute path
-     */
-    public PathEditorInput( IPath path )
-    {
-        if ( path == null )
-        {
-            throw new IllegalArgumentException();
-        }
-
-        this.path = path;
-    }
-
-
-    /**
-     * Returns hash code of the path.
-     */
-    public int hashCode()
-    {
-        return path.hashCode();
-    }
-
-
-    /** 
-     * This implemention just compares the paths
-     */
-    public boolean equals( Object o )
-    {
-        if ( this == o )
-        {
-            return true;
-        }
-
-        if ( o instanceof PathEditorInput )
-        {
-            PathEditorInput input = ( PathEditorInput ) o;
-            return path.equals( input.path );
-        }
-
-        return false;
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    public boolean exists()
-    {
-        return path.toFile().exists();
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    public ImageDescriptor getImageDescriptor()
-    {
-        return PlatformUI.getWorkbench().getEditorRegistry().getImageDescriptor( path.toString() );
-    }
-
-
-    /**
-     * Returns the file name only.
-     */
-    public String getName()
-    {
-        return path.toFile().getName();
-        //return path.toString();
-    }
-
-
-    /**
-     * Returns the complete path. 
-     */
-    public String getToolTipText()
-    {
-        return path.makeRelative().toOSString();
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    public IPath getPath()
-    {
-        return path;
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    public Object getAdapter( Class adapter )
-    {
-        return Platform.getAdapterManager().getAdapter( this, adapter );
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    public IPersistableElement getPersistable()
-    {
-        return null;
-    }
-
-
-    /**
-     * Returns the path.
-     */
-    public IPath getErrorMessage( Object element )
-    {
-        if ( element instanceof PathEditorInput )
-        {
-            PathEditorInput input = ( PathEditorInput ) element;
-            return input.getPath();
-        }
-
-        return null;
     }
 }

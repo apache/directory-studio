@@ -32,9 +32,9 @@ import org.apache.directory.studio.apacheds.configuration.model.ServerXmlIOExcep
 import org.apache.directory.studio.apacheds.configuration.model.v155.ServerConfigurationV155;
 import org.apache.directory.studio.apacheds.configuration.model.v155.ServerXmlIOV155;
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
+import org.apache.directory.studio.common.ui.filesystem.PathEditorInput;
 import org.apache.directory.studio.ldapservers.LdapServersManager;
 import org.apache.directory.studio.ldapservers.LdapServersUtils;
-import org.apache.directory.studio.ldapservers.jobs.PathEditorInput;
 import org.apache.directory.studio.ldapservers.model.LdapServer;
 import org.apache.directory.studio.ldapservers.model.LdapServerAdapter;
 import org.eclipse.core.runtime.IPath;
