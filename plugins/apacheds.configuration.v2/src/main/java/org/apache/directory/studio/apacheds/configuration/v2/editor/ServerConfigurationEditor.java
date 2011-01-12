@@ -38,28 +38,15 @@ import org.apache.directory.studio.apacheds.configuration.v2.jobs.PartitionsDiff
 import org.apache.directory.studio.common.core.jobs.StudioJob;
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.common.core.jobs.StudioRunnableWithProgress;
-import org.apache.directory.studio.common.ui.CommonUIUtils;
-import org.apache.directory.studio.common.ui.filesystem.PathEditorInput;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
 import org.apache.directory.studio.ldapbrowser.core.jobs.ExecuteLdifRunnable;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
-import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.Path;
-import org.eclipse.jface.dialogs.Dialog;
-import org.eclipse.jface.dialogs.IDialogConstants;
-import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
-import org.eclipse.osgi.util.NLS;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.FileDialog;
-import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.IPathEditorInput;
 import org.eclipse.ui.PartInitException;
-import org.eclipse.ui.dialogs.SaveAsDialog;
 import org.eclipse.ui.forms.editor.FormEditor;
 import org.eclipse.ui.part.FileEditorInput;
 
@@ -88,6 +75,14 @@ public class ServerConfigurationEditor extends FormEditor
     {
         super.init( site, input );
         setPartName( input.getName() );
+
+        // Checking if the input is a new server configuration file
+        if ( input instanceof NewServerConfigurationInput )
+        {
+            // New server configuration file have a dirty state 
+            // set to true since they are not saved yet
+            setDirty( true );
+        }
 
         readConfiguration();
     }
@@ -317,10 +312,8 @@ public class ServerConfigurationEditor extends FormEditor
                 {
                     try
                     {
-                        monitor
-                            .beginTask( "Saving Server Configuration", IProgressMonitor.UNKNOWN );
-                        boolean success = doSaveAs( monitor );
-                        setDirty( !success );
+                        monitor.beginTask( "Saving Server Configuration", IProgressMonitor.UNKNOWN );
+                        doSaveAs( monitor );
                         monitor.done();
                     }
                     catch ( Exception e )
@@ -347,124 +340,25 @@ public class ServerConfigurationEditor extends FormEditor
      */
     private boolean doSaveAs( IProgressMonitor monitor ) throws Exception
     {
-        // detect IDE or RCP:
-        // check if perspective org.eclipse.ui.resourcePerspective is available
-        boolean isIDE = CommonUIUtils.isIDEEnvironment();
+        // Saving the configuration as a new file and getting the associated new editor input
+        IEditorInput newInput = ServerConfigurationEditorUtils.doSaveAs( monitor, getSite().getShell(),
+            getEditorInput(), getConfigWriter() );
 
-        if ( isIDE )
+        // Checking if the 'save as' is successful 
+        boolean success = newInput != null;
+        if ( success )
         {
-            // Asking the user for the location where to 'save as' the file
-            SaveAsDialog dialog = new SaveAsDialog( getSite().getShell() );
-
-            IEditorInput input = getEditorInput();
-            String inputClassName = input.getClass().getName();
-            if ( input instanceof FileEditorInput )
-            // FileEditorInput class is used when the file is opened
-            // from a project in the workspace.
-            {
-                dialog.setOriginalFile( ( ( FileEditorInput ) input ).getFile() );
-            }
-            else if ( input instanceof IPathEditorInput )
-            {
-                dialog.setOriginalFile( ResourcesPlugin.getWorkspace().getRoot()
-                    .getFile( ( ( IPathEditorInput ) input ).getPath() ) );
-            }
-            else if ( inputClassName.equals( "org.eclipse.ui.internal.editors.text.JavaFileEditorInput" ) //$NON-NLS-1$
-                || inputClassName.equals( "org.eclipse.ui.ide.FileStoreEditorInput" ) ) //$NON-NLS-1$
-            // The class 'org.eclipse.ui.internal.editors.text.JavaFileEditorInput'
-            // is used when opening a file from the menu File > Open... in Eclipse 3.2.x
-            // The class 'org.eclipse.ui.ide.FileStoreEditorInput' is used when
-            // opening a file from the menu File > Open... in Eclipse 3.3.x
-            {
-                dialog.setOriginalFile( ResourcesPlugin.getWorkspace().getRoot()
-                    .getFile( new Path( input.getToolTipText() ) ) );
-            }
-            else
-            {
-                dialog.setOriginalName( "config.ldif" );
-            }
-
-            if ( dialog.open() != Dialog.OK )
-            {
-                return false;
-            }
-
-            // Getting if the resulting file
-            IFile file = ResourcesPlugin.getWorkspace().getRoot().getFile( dialog.getResult() );
-
-            // Creating the file if it does not exist
-            if ( !file.exists() )
-            {
-                file.create( new ByteArrayInputStream( "".getBytes() ), true, null ); //$NON-NLS-1$
-            }
-
-            // Creating the new input for the editor
-            FileEditorInput fei = new FileEditorInput( file );
-
-            // Saving the file to disk
-            saveConfiguration( fei, monitor );
-
-            // Setting the new input to the editor
-            setInput( fei );
-        }
-        else
-        {
-            Shell shell = getSite().getShell();
-            boolean canOverwrite = false;
-            String path = null;
-
-            while ( !canOverwrite )
-            {
-                // Open FileDialog
-                FileDialog dialog = new FileDialog( shell, SWT.SAVE );
-                path = dialog.open();
-                if ( path == null )
-                {
-                    return false;
-                }
-
-                // Check whether file exists and if so, confirm overwrite
-                final File externalFile = new File( path );
-                if ( externalFile.exists() )
-                {
-                    String question = NLS.bind(
-                        "The file \"{0}\" already exists. Do you want to replace the existing file?", path ); //$NON-NLS-1$
-                    MessageDialog overwriteDialog = new MessageDialog( shell, "Question", null, question, //$NON-NLS-1$
-                        MessageDialog.QUESTION, new String[]
-                            { IDialogConstants.YES_LABEL, IDialogConstants.NO_LABEL, IDialogConstants.CANCEL_LABEL }, 0 );
-                    int overwrite = overwriteDialog.open();
-                    switch ( overwrite )
-                    {
-                        case 0: // Yes
-                            canOverwrite = true;
-                            break;
-                        case 1: // No
-                            break;
-                        case 2: // Cancel
-                        default:
-                            return false;
-                    }
-                }
-                else
-                {
-                    canOverwrite = true;
-                }
-            }
-
-            // Saving the file to disk
-            saveConfiguration( path );
-
-            // Creating the new input for the editor
-            PathEditorInput newInput = new PathEditorInput( new Path( path ) );
-
             // Setting the new input to the editor
             setInput( newInput );
+
+            // Resetting the dirty state of the editor
+            setDirty( false );
+
+            // Updating the title and tooltip texts
+            setPartName( getEditorInput().getName() );
         }
 
-        // Updating the title and tooltip texts
-        setPartName( getEditorInput().getName() );
-
-        return true;
+        return success;
     }
 
 
@@ -572,7 +466,7 @@ public class ServerConfigurationEditor extends FormEditor
      *      the configuration writer
      * @throws Exception
      */
-    private ConfigWriter getConfigWriter() throws Exception
+    public ConfigWriter getConfigWriter() throws Exception
     {
         return new ConfigWriter( ApacheDS2ConfigurationPlugin.getDefault().getSchemaManager(), configBean );
     }

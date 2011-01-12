@@ -21,10 +21,17 @@
 package org.apache.directory.studio.apacheds.configuration.v2.actions;
 
 
+import java.lang.reflect.InvocationTargetException;
+
 import org.apache.directory.studio.apacheds.configuration.v2.ApacheDS2ConfigurationPlugin;
 import org.apache.directory.studio.apacheds.configuration.v2.ApacheDS2ConfigurationPluginConstants;
+import org.apache.directory.studio.apacheds.configuration.v2.editor.ServerConfigurationEditor;
+import org.apache.directory.studio.apacheds.configuration.v2.editor.ServerConfigurationEditorUtils;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.action.Action;
+import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.ui.IEditorInput;
 
 
 /**
@@ -34,6 +41,22 @@ import org.eclipse.jface.resource.ImageDescriptor;
  */
 public class EditorExportConfigurationAction extends Action
 {
+    /** The associated editor */
+    private ServerConfigurationEditor editor;
+
+
+    /**
+     * Creates a new instance of EditorExportConfigurationAction.
+     *
+     * @param editor
+     *      the associated editor
+     */
+    public EditorExportConfigurationAction( ServerConfigurationEditor editor )
+    {
+        this.editor = editor;
+    }
+
+
     /**
      * {@inheritDoc}
      */
@@ -58,5 +81,31 @@ public class EditorExportConfigurationAction extends Action
      */
     public void run()
     {
+        try
+        {
+            editor.getSite().getWorkbenchWindow().run( false, false, new IRunnableWithProgress()
+            {
+                public void run( IProgressMonitor monitor ) throws InvocationTargetException, InterruptedException
+                {
+                    try
+                    {
+                        // Saving the configuration as a new file and getting the associated new editor input
+                        IEditorInput newInput = ServerConfigurationEditorUtils.doSaveAs( monitor, editor.getSite()
+                            .getShell(),
+                            editor.getEditorInput(), editor.getConfigWriter() );
+                    }
+                    catch ( Exception e )
+                    {
+                        // TODO handle the exception
+                    }
+                }
+            } );
+        }
+        catch ( Exception e )
+        {
+            // TODO handle the exception
+            e.printStackTrace();
+        }
+
     }
 }

@@ -22,7 +22,6 @@ package org.apache.directory.studio.apacheds.configuration.v2.editor;
 
 import org.apache.directory.server.config.beans.ConfigBean;
 import org.apache.directory.server.config.beans.DirectoryServiceBean;
-import org.apache.directory.studio.apacheds.configuration.v2.actions.EditorAddPageAction;
 import org.apache.directory.studio.apacheds.configuration.v2.actions.EditorExportConfigurationAction;
 import org.apache.directory.studio.apacheds.configuration.v2.actions.EditorImportConfigurationAction;
 import org.eclipse.jface.action.IToolBarManager;
@@ -166,16 +165,22 @@ public abstract class ServerConfigurationEditorPage extends FormPage
         IToolBarManager toolbarManager = form.getToolBarManager();
         toolbarManager.add( new EditorImportConfigurationAction() );
         toolbarManager.add( new Separator() );
-        toolbarManager.add( new EditorExportConfigurationAction() );
-        toolbarManager.add( new Separator() );
-        toolbarManager.add( new EditorAddPageAction( ( ServerConfigurationEditor ) getEditor() ) );
-        
+        toolbarManager.add( new EditorExportConfigurationAction( ( ServerConfigurationEditor ) getEditor() ) );
+
         toolbarManager.update( true );
 
         createFormContent( parent, toolkit );
     }
 
 
+    /**
+     * Subclasses must implement this method to create the content of their form.
+     *
+     * @param parent
+     *      the parent element
+     * @param toolkit
+     *      the form toolkit
+     */
     protected abstract void createFormContent( Composite parent, FormToolkit toolkit );
 
 

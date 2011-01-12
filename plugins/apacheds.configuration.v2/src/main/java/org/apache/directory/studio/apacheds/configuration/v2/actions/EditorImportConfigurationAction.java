@@ -21,10 +21,13 @@
 package org.apache.directory.studio.apacheds.configuration.v2.actions;
 
 
+import java.util.jar.JarFile;
+
 import org.apache.directory.studio.apacheds.configuration.v2.ApacheDS2ConfigurationPlugin;
 import org.apache.directory.studio.apacheds.configuration.v2.ApacheDS2ConfigurationPluginConstants;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.ui.dialogs.SaveAsDialog;
 
 
 /**
@@ -58,5 +61,6 @@ public class EditorImportConfigurationAction extends Action
      */
     public void run()
     {
+        
     }
 }

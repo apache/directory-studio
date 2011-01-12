@@ -124,13 +124,14 @@ public class LoadConfigurationRunnable implements StudioRunnableWithProgress
             if ( configBean != null )
             {
                 final ConfigBean finalConfigBean = configBean;
+                final IEditorInput finalInput = input;
 
                 Display.getDefault().asyncExec( new Runnable()
                 {
                     public void run()
-                {
-                    editor.configurationLoaded( finalConfigBean );
-                }
+                    {
+                        editor.configurationLoaded( finalConfigBean );
+                    }
                 } );
             }
         }
