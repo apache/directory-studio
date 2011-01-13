@@ -51,49 +51,49 @@
                   <groupId>org.apache.directory.studio</groupId>
                   <artifactId>ApacheDirectoryStudio-linux-x86</artifactId>
                   <type>tar.gz</type>
-                  <version>${project.version}</version> <!-- TODO -->
+                  <version>${project.version}</version>
                   <outputDirectory>${release-dir}</outputDirectory>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.apache.directory.studio</groupId>
                   <artifactId>ApacheDirectoryStudio-linux-x86_64</artifactId>
                   <type>tar.gz</type>
-                  <version>${project.version}</version> <!-- TODO -->
+                  <version>${project.version}</version>
                   <outputDirectory>${release-dir}</outputDirectory>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.apache.directory.studio</groupId>
                   <artifactId>ApacheDirectoryStudio-macosx-x86-dmg</artifactId>
                   <type>zip</type>
-                  <version>${project.version}</version> <!-- TODO -->
+                  <version>${project.version}</version>
                   <outputDirectory>${project.build.directory}</outputDirectory>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.apache.directory.studio</groupId>
                   <artifactId>ApacheDirectoryStudio-macosx-x86_64-dmg</artifactId>
                   <type>zip</type>
-                  <version>${project.version}</version> <!-- TODO -->
+                  <version>${project.version}</version>
                   <outputDirectory>${project.build.directory}</outputDirectory>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.apache.directory.studio</groupId>
                   <artifactId>ApacheDirectoryStudio-win32-x86-exe</artifactId>
                   <type>zip</type>
-                  <version>${project.version}</version> <!-- TODO -->
+                  <version>${project.version}</version>
                   <outputDirectory>${project.build.directory}</outputDirectory>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.apache.directory.studio</groupId>
                   <artifactId>ApacheDirectoryStudio-win32-x86_64-exe</artifactId>
                   <type>zip</type>
-                  <version>${project.version}</version> <!-- TODO -->
+                  <version>${project.version}</version>
                   <outputDirectory>${project.build.directory}</outputDirectory>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.apache.directory.studio</groupId>
                   <artifactId>ApacheDirectoryStudio-updatesite</artifactId>
                   <type>zip</type>
-                  <version>${project.version}</version> <!-- TODO -->
+                  <version>${project.version}</version>
                   <outputDirectory>${release-dir}</outputDirectory>
                 </artifactItem>
                 <artifactItem>
@@ -101,7 +101,7 @@
                   <artifactId>ApacheDirectoryStudio-updatesite</artifactId>
                   <classifier>pao</classifier>
                   <type>zip</type>
-                  <version>${project.version}</version> <!-- TODO -->
+                  <version>${project.version}</version>
                   <outputDirectory>${project.build.directory}</outputDirectory>
                 </artifactItem>
               </artifactItems>

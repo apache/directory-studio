@@ -63,8 +63,8 @@
       Set default of various URLs for deployment repositories/paths/....
       Can be overwritten in the settings.xml
     -->
-    <studio.dist.url>${pom.distributionManagement.repository.url}</studio.dist.url>
-    <distMgmtSiteUrl>scpexe://people.apache.org/www/directory.apache.org/studio/gen-docs/${version}</distMgmtSiteUrl>
+    <studio.dist.url>${project.distributionManagement.repository.url}</studio.dist.url>
+    <distMgmtSiteUrl>scpexe://people.apache.org/www/directory.apache.org/studio/gen-docs/${project.version}</distMgmtSiteUrl>
     
     <!-- Set versions for depending projects -->
     <org.antlr.version>2.7.7</org.antlr.version>
@@ -337,192 +337,192 @@
       <dependency>
         <groupId>org.apache.directory.studio</groupId>
         <artifactId>aciitemeditor</artifactId>
-        <version>${pom.version}</version>
+        <version>${project.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.directory.studio</groupId>
         <artifactId>apacheds</artifactId>
-        <version>${pom.version}</version>
+        <version>${project.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.directory.studio</groupId>
         <artifactId>apacheds.feature</artifactId>
-        <version>${pom.version}</version>
+        <version>${project.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.directory.studio</groupId>
         <artifactId>apacheds.help</artifactId>
-        <version>${pom.version}</version>
+        <version>${project.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.directory.studio</groupId>
         <artifactId>apacheds-launcher</artifactId>
-        <version>${pom.version}</version>
+        <version>${project.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.directory.studio</groupId>
         <artifactId>apacheds.configuration</artifactId>
-        <version>${pom.version}</version>
+        <version>${project.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.directory.studio</groupId>
         <artifactId>apacheds.configuration.v2</artifactId>
-        <version>${pom.version}</version>
+        <version>${project.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.directory.studio</groupId>
         <artifactId>apacheds.configuration.feature</artifactId>
-        <version>${pom.version}</version>
+        <version>${project.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.directory.studio</groupId>
         <artifactId>apacheds.configuration.help</artifactId>
-        <version>${pom.version}</version>
+        <version>${project.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.directory.studio</groupId>
         <artifactId>common.ui</artifactId>
-        <version>${pom.version}</version>
+        <version>${project.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.directory.studio</groupId>
         <artifactId>common.core</artifactId>
-        <version>${pom.version}</version>
+        <version>${project.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.directory.studio</groupId>
         <artifactId>connection.core</artifactId>
-        <version>${pom.version}</version>
+        <version>${project.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.directory.studio</groupId>
         <artifactId>connection.ui</artifactId>
-        <version>${pom.version}</version>
+        <version>${project.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.directory.studio</groupId>
         <artifactId>ldapbrowser.common</artifactId>
-        <version>${pom.version}</version>
+        <version>${project.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.directory.studio</groupId>
         <artifactId>ldapbrowser.core</artifactId>
-        <version>${pom.version}</version>
+        <version>${project.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.directory.studio</groupId>
         <artifactId>ldapbrowser.feature</artifactId>
-        <version>${pom.version}</version>
+        <version>${project.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.directory.studio</groupId>
         <artifactId>ldapbrowser.help</artifactId>
-        <version>${pom.version}</version>
+        <version>${project.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.directory.studio</groupId>
         <artifactId>ldapbrowser.ui</artifactId>
-        <version>${pom.version}</version>
+        <version>${project.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.directory.studio</groupId>
         <artifactId>ldapservers</artifactId>
-        <version>${pom.version}</version>
+        <version>${project.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.directory.studio</groupId>
         <artifactId>ldapservers.apacheds.v153</artifactId>
-        <version>${pom.version}</version>
+        <version>${project.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.directory.studio</groupId>
         <artifactId>ldapservers.apacheds.v154</artifactId>
-        <version>${pom.version}</version>
+        <version>${project.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.directory.studio</groupId>
         <artifactId>ldapservers.apacheds.v155</artifactId>
-        <version>${pom.version}</version>
+        <version>${project.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.directory.studio</groupId>
         <artifactId>ldapservers.apacheds.v156</artifactId>
-        <version>${pom.version}</version>
+        <version>${project.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.directory.studio</groupId>
         <artifactId>ldapservers.apacheds.v157</artifactId>
-        <version>${pom.version}</version>
+        <version>${project.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.directory.studio</groupId>
         <artifactId>ldifeditor</artifactId>
-        <version>${pom.version}</version>
+        <version>${project.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.directory.studio</groupId>
         <artifactId>ldifeditor.feature</artifactId>
-        <version>${pom.version}</version>
+        <version>${project.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.directory.studio</groupId>
         <artifactId>ldifeditor.help</artifactId>
-        <version>${pom.version}</version>
+        <version>${project.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.directory.studio</groupId>
         <artifactId>ldifparser</artifactId>
-        <version>${pom.version}</version>
+        <version>${project.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.directory.studio</groupId>
         <artifactId>rcp</artifactId>
-        <version>${pom.version}</version>
+        <version>${project.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.directory.studio</groupId>
         <artifactId>rcp.feature</artifactId>
-        <version>${pom.version}</version>
+        <version>${project.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.directory.studio</groupId>
         <artifactId>rcp.help</artifactId>
-        <version>${pom.version}</version>
+        <version>${project.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.directory.studio</groupId>
         <artifactId>schemaeditor</artifactId>
-        <version>${pom.version}</version>
+        <version>${project.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.directory.studio</groupId>
         <artifactId>schemaeditor.feature</artifactId>
-        <version>${pom.version}</version>
+        <version>${project.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.directory.studio</groupId>
         <artifactId>schemaeditor.help</artifactId>
-        <version>${pom.version}</version>
+        <version>${project.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.directory.studio</groupId>
         <artifactId>test.integration.core</artifactId>
-        <version>${pom.version}</version>
+        <version>${project.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.directory.studio</groupId>
         <artifactId>test.integration.ui</artifactId>
-        <version>${pom.version}</version>
+        <version>${project.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.directory.studio</groupId>
         <artifactId>updatesite</artifactId>
-        <version>${pom.version}</version>
+        <version>${project.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.directory.studio</groupId>
         <artifactId>valueeditors</artifactId>
-        <version>${pom.version}</version>
+        <version>${project.version}</version>
       </dependency>
       
       <!-- Maven -->
@@ -1716,12 +1716,16 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-report-plugin</artifactId>
+        <version>2.6</version>
         <configuration>
+          <argLine>-Xmx1024m -XX:MaxPermSize=512m</argLine>
           <aggregate>true</aggregate>
         </configuration>
       </plugin>
       <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jxr-plugin</artifactId>
+        <version>2.2</version>
         <configuration>
           <aggregate>true</aggregate>
         </configuration>
@@ -1746,6 +1750,7 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>taglist-maven-plugin</artifactId>
+        <version>2.4</version>
         <configuration>
           <tags>
             <tag>TODO</tag>
@@ -1758,10 +1763,11 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
+        <version>2.7</version>
         <configuration>
-          <linksource>true</linksource>
-          <minmemory>128m</minmemory>
+          <minmemory>512m</minmemory>
           <maxmemory>1g</maxmemory>
+          <linksource>true</linksource>
         </configuration>
         <reportSets>
           <reportSet>
@@ -1777,14 +1783,17 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>findbugs-maven-plugin</artifactId>
+        <version>2.3.1</version>
       </plugin>
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>cobertura-maven-plugin</artifactId>
+        <version>2.4</version>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-checkstyle-plugin</artifactId>
+        <version>2.6</version>
       </plugin>
       <plugin>
         <groupId>org.codehaus.mojo</groupId>

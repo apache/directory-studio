@@ -54,14 +54,14 @@
                   <groupId>org.apache.directory.studio</groupId>
                   <artifactId>application-plugins</artifactId>
                   <type>zip</type>
-                  <version>${project.version}</version> <!-- TODO -->
+                  <version>${project.version}</version>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.apache.directory.studio</groupId>
                   <artifactId>application-features</artifactId>
                   <classifier>packed</classifier>
                   <type>zip</type>
-                  <version>${project.version}</version> <!-- TODO -->
+                  <version>${project.version}</version>
                 </artifactItem>
               </artifactItems>
             </configuration>
