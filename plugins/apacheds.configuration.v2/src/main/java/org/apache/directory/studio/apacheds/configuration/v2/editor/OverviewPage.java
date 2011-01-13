@@ -119,9 +119,7 @@ public class OverviewPage extends ServerConfigurationEditorPage
         createKerberosServerSection( toolkit, rightComposite );
         createOptionsSection( toolkit, rightComposite );
 
-        initUI();
-        
-        addListeners();
+        refreshUI();
     }
 
 
@@ -258,8 +256,47 @@ public class OverviewPage extends ServerConfigurationEditorPage
     }
 
 
-    private void initUI()
+    /**
+     * Adds listeners to UI Controls.
+     */
+    private void addListeners()
     {
+        addDirtyListener( enableLdapCheckbox );
+        addDirtyListener( ldapPortText );
+        addDirtyListener( enableLdapsCheckbox );
+        addDirtyListener( ldapsPortText );
+        addDirtyListener( enableKerberosCheckbox );
+        addDirtyListener( kerberosPortText );
+        addDirtyListener( enableChangePasswordCheckbox );
+        addDirtyListener( allowAnonymousAccessCheckbox );
+        addDirtyListener( enableAccesControlCheckbox );
+    }
+
+
+    /**
+     * Removes listeners to UI Controls.
+     */
+    private void removeListeners()
+    {
+        removeDirtyListener( enableLdapCheckbox );
+        removeDirtyListener( ldapPortText );
+        removeDirtyListener( enableLdapsCheckbox );
+        removeDirtyListener( ldapsPortText );
+        removeDirtyListener( enableKerberosCheckbox );
+        removeDirtyListener( kerberosPortText );
+        removeDirtyListener( enableChangePasswordCheckbox );
+        removeDirtyListener( allowAnonymousAccessCheckbox );
+        removeDirtyListener( enableAccesControlCheckbox );
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    protected void refreshUI()
+    {
+        removeListeners();
+
         ConfigBean configBean = getConfigBean();
 
         DirectoryServiceBean directoryServiceBean = configBean.getDirectoryServiceBean();
@@ -288,22 +325,7 @@ public class OverviewPage extends ServerConfigurationEditorPage
 
         allowAnonymousAccessCheckbox.setSelection( directoryServiceBean.isDsAllowAnonymousAccess() );
         enableAccesControlCheckbox.setSelection( directoryServiceBean.isDsAccessControlEnabled() );
-    }
 
-
-    /**
-     * Adds listeners to UI Controls.
-     */
-    private void addListeners()
-    {
-        addDirtyListener( enableLdapCheckbox );
-        addDirtyListener( ldapPortText );
-        addDirtyListener( enableLdapsCheckbox );
-        addDirtyListener( ldapsPortText );
-        addDirtyListener( enableKerberosCheckbox );
-        addDirtyListener( kerberosPortText );
-        addDirtyListener( enableChangePasswordCheckbox );
-        addDirtyListener( allowAnonymousAccessCheckbox );
-        addDirtyListener( enableAccesControlCheckbox );
+        addListeners();
     }
 }

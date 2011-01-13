@@ -117,20 +117,16 @@ public class LoadConfigurationRunnable implements StudioRunnableWithProgress
     {
         IEditorInput input = editor.getEditorInput();
 
-        ConfigBean configBean = null;
         try
         {
-            configBean = getConfiguration( input, monitor );
+            final ConfigBean configBean = getConfiguration( input, monitor );
             if ( configBean != null )
             {
-                final ConfigBean finalConfigBean = configBean;
-                final IEditorInput finalInput = input;
-
                 Display.getDefault().asyncExec( new Runnable()
                 {
                     public void run()
                     {
-                        editor.configurationLoaded( finalConfigBean );
+                        editor.configurationLoaded( configBean );
                     }
                 } );
             }
@@ -144,7 +140,7 @@ public class LoadConfigurationRunnable implements StudioRunnableWithProgress
 
 
     /**
-     * Gets a new default configuration.
+     * Gets the configuration from the input.
      * 
      * @param input
      *      the editor input
@@ -156,34 +152,31 @@ public class LoadConfigurationRunnable implements StudioRunnableWithProgress
      */
     public ConfigBean getConfiguration( IEditorInput input, StudioProgressMonitor monitor ) throws Exception
     {
-        // Getting the schema manager
-        SchemaManager schemaManager = ApacheDS2ConfigurationPlugin.getDefault().getSchemaManager();
-
         String inputClassName = input.getClass().getName();
         // If the input is a NewServerConfigurationInput, then we only 
         // need to get the server configuration and return
         if ( input instanceof NewServerConfigurationInput )
         {
             InputStream is = ApacheDS2ConfigurationPlugin.class.getResourceAsStream( "config.ldif" );
-            return readConfiguration( schemaManager, is );
+            return readConfiguration( is );
         }
         // If the input is a ConnectionServerConfigurationInput, then we 
         // read the server configuration from the selected connection
         if ( input instanceof ConnectionServerConfigurationInput )
         {
-            return readConfiguration( schemaManager, ( ConnectionServerConfigurationInput ) input, monitor );
+            return readConfiguration( ( ConnectionServerConfigurationInput ) input, monitor );
         }
         else if ( input instanceof FileEditorInput )
         // The 'FileEditorInput' class is used when the file is opened
         // from a project in the workspace.
         {
             InputStream is = ( ( FileEditorInput ) input ).getFile().getContents();
-            return readConfiguration( schemaManager, is );
+            return readConfiguration( is );
         }
         else if ( input instanceof IPathEditorInput )
         {
             InputStream is = new FileInputStream( new File( ( ( IPathEditorInput ) input ).getPath().toOSString() ) );
-            return readConfiguration( schemaManager, is );
+            return readConfiguration( is );
         }
         else if ( inputClassName.equals( "org.eclipse.ui.internal.editors.text.JavaFileEditorInput" ) //$NON-NLS-1$
             || inputClassName.equals( "org.eclipse.ui.ide.FileStoreEditorInput" ) ) //$NON-NLS-1$
@@ -194,7 +187,7 @@ public class LoadConfigurationRunnable implements StudioRunnableWithProgress
         {
             // We use the tooltip to get the full path of the file
             InputStream is = new FileInputStream( new File( input.getToolTipText() ) );
-            return readConfiguration( schemaManager, is );
+            return readConfiguration( is );
         }
 
         return null;
@@ -204,21 +197,19 @@ public class LoadConfigurationRunnable implements StudioRunnableWithProgress
     /**
      * Reads the configuration from the given input stream.
      *
-     * @param schemaManager
-     *      the schema manager
      * @param is
      *      the input stream
      * @return
      *      the associated configuration bean
      * @throws Exception
      */
-    private ConfigBean readConfiguration( SchemaManager schemaManager, InputStream is ) throws Exception
+    public static ConfigBean readConfiguration( InputStream is ) throws Exception
     {
         if ( is != null )
         {
             // Creating a partition associated from the input stream
             ReadOnlyConfigurationPartition configurationPartition = new ReadOnlyConfigurationPartition( is,
-                schemaManager );
+                ApacheDS2ConfigurationPlugin.getDefault().getSchemaManager() );
             configurationPartition.initialize();
 
             // Reading the configuration partition
@@ -239,7 +230,7 @@ public class LoadConfigurationRunnable implements StudioRunnableWithProgress
      *      the associated configuration bean
      * @throws LdapException
      */
-    private ConfigBean readConfiguration( BTreePartition<Long> partition ) throws LdapException
+    private static ConfigBean readConfiguration( BTreePartition<Long> partition ) throws LdapException
     {
         if ( partition != null )
         {
@@ -254,8 +245,6 @@ public class LoadConfigurationRunnable implements StudioRunnableWithProgress
     /**
      * Reads the configuration from the given connection.
      *
-     * @param schemaManager
-     *      the schema manager
      * @param input
      *      the editor input
      * @param monitor 
@@ -264,11 +253,12 @@ public class LoadConfigurationRunnable implements StudioRunnableWithProgress
      *      the associated configuration bean
      * @throws Exception
      */
-    private ConfigBean readConfiguration( SchemaManager schemaManager, ConnectionServerConfigurationInput input,
+    private ConfigBean readConfiguration( ConnectionServerConfigurationInput input,
         StudioProgressMonitor monitor ) throws Exception
     {
         if ( input != null )
         {
+            SchemaManager schemaManager = ApacheDS2ConfigurationPlugin.getDefault().getSchemaManager();
 
             // Getting the browser connection associated with the 
             IBrowserConnection browserConnection = BrowserCorePlugin.getDefault().getConnectionManager()

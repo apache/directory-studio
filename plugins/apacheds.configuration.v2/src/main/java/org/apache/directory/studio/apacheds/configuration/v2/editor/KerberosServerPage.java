@@ -74,6 +74,128 @@ public class KerberosServerPage extends ServerConfigurationEditorPage
     private Text maximumRenewableLifetimeText;
     private Text maximumTicketLifetimeText;
 
+    // UI Controls Listeners
+    private SelectionAdapter enableKerberosCheckboxListener = new SelectionAdapter()
+    {
+        public void widgetSelected( SelectionEvent e )
+        {
+            getKdcServerBean().setEnabled( enableKerberosCheckbox.getSelection() );
+        }
+    };
+    private ModifyListener kerberosPortTextListener = new ModifyListener()
+    {
+        public void modifyText( ModifyEvent e )
+        {
+            getKdcServerTransportBean().setSystemPort( Integer.parseInt( kerberosPortText.getText() ) );
+        }
+    };
+    private SelectionAdapter enableChangePasswordCheckboxListener = new SelectionAdapter()
+    {
+        public void widgetSelected( SelectionEvent e )
+        {
+            getChangePasswordServerBean().setEnabled( enableChangePasswordCheckbox.getSelection() );
+        }
+    };
+    private ModifyListener changePasswordPortTextListener = new ModifyListener()
+    {
+        public void modifyText( ModifyEvent e )
+        {
+            getChangePasswordServerTransportBean().setSystemPort(
+                Integer.parseInt( changePasswordPortText.getText() ) );
+        }
+    };
+    private ModifyListener kdcPrincipalTextListener = new ModifyListener()
+    {
+        public void modifyText( ModifyEvent e )
+        {
+            getKdcServerBean().setKrbKdcPrincipal( kdcPrincipalText.getText() );
+        }
+    };
+    private ModifyListener primaryKdcRealmTextListener = new ModifyListener()
+    {
+        public void modifyText( ModifyEvent e )
+        {
+            getKdcServerBean().setKrbPrimaryRealm( primaryKdcRealmText.getText() );
+        }
+    };
+    private ModifyListener kdcSearchBaseDnTextListener = new ModifyListener()
+    {
+        public void modifyText( ModifyEvent e )
+        {
+            String searchBaseDnValue = kdcSearchBaseDnText.getText();
+
+            try
+            {
+                DN searchBaseDn = new DN( searchBaseDnValue );
+                getKdcServerBean().setSearchBaseDn( searchBaseDn );
+            }
+            catch ( LdapInvalidDnException e1 )
+            {
+                // TODO Auto-generated catch block
+                e1.printStackTrace();
+            }
+        }
+    };
+    private SelectionAdapter verifyBodyChecksumCheckboxListener = new SelectionAdapter()
+    {
+        public void widgetSelected( SelectionEvent e )
+        {
+            getKdcServerBean().setKrbBodyChecksumVerified( verifyBodyChecksumCheckbox.getSelection() );
+        }
+    };
+    private SelectionAdapter allowEmptyAddressesCheckboxListener = new SelectionAdapter()
+    {
+        public void widgetSelected( SelectionEvent e )
+        {
+            getKdcServerBean().setKrbEmptyAddressesAllowed( allowEmptyAddressesCheckbox.getSelection() );
+        }
+    };
+    private SelectionAdapter allowForwardableAddressesCheckboxListener = new SelectionAdapter()
+    {
+        public void widgetSelected( SelectionEvent e )
+        {
+            getKdcServerBean().setKrbForwardableAllowed( allowForwardableAddressesCheckbox.getSelection() );
+        }
+    };
+    private SelectionAdapter requirePreAuthByEncryptedTimestampCheckboxListener = new SelectionAdapter()
+    {
+        public void widgetSelected( SelectionEvent e )
+        {
+            getKdcServerBean().setKrbPaEncTimestampRequired(
+                requirePreAuthByEncryptedTimestampCheckbox.getSelection() );
+        }
+    };
+    private SelectionAdapter allowPostdatedTicketsCheckboxListener = new SelectionAdapter()
+    {
+        public void widgetSelected( SelectionEvent e )
+        {
+            getKdcServerBean().setKrbPostdatedAllowed( allowPostdatedTicketsCheckbox.getSelection() );
+        }
+    };
+    private SelectionAdapter allowRenewableTicketsCheckboxListener = new SelectionAdapter()
+    {
+        public void widgetSelected( SelectionEvent e )
+        {
+            getKdcServerBean().setKrbRenewableAllowed( allowRenewableTicketsCheckbox.getSelection() );
+        }
+    };
+    private ModifyListener maximumRenewableLifetimeTextListener = new ModifyListener()
+    {
+        public void modifyText( ModifyEvent e )
+        {
+            getKdcServerBean().setKrbMaximumRenewableLifetime(
+                Integer.parseInt( maximumRenewableLifetimeText.getText() ) );
+        }
+    };
+    private ModifyListener maximumTicketLifetimeTextListener = new ModifyListener()
+    {
+        public void modifyText( ModifyEvent e )
+        {
+            getKdcServerBean()
+                .setKrbMaximumTicketLifetime( Integer.parseInt( maximumTicketLifetimeText.getText() ) );
+        }
+    };
+
 
     /**
      * Creates a new instance of GeneralPage.
@@ -112,9 +234,7 @@ public class KerberosServerPage extends ServerConfigurationEditorPage
         createKerberosSettingsSection( toolkit, rightComposite );
         createTicketSettingsSection( toolkit, leftComposite );
 
-        initUI();
-
-        addListeners();
+        refreshUI();
     }
 
 
@@ -246,8 +366,13 @@ public class KerberosServerPage extends ServerConfigurationEditorPage
     }
 
 
-    private void initUI()
+    /**
+     * {@inheritDoc}
+     */
+    protected void refreshUI()
     {
+        removeListeners();
+
         KdcServerBean kdcServerBean = getKdcServerBean();
         ChangePasswordServerBean changePasswordServerBean = getChangePasswordServerBean();
 
@@ -269,6 +394,8 @@ public class KerberosServerPage extends ServerConfigurationEditorPage
         allowRenewableTicketsCheckbox.setSelection( kdcServerBean.isKrbRenewableAllowed() );
         maximumRenewableLifetimeText.setText( kdcServerBean.getKrbMaximumRenewableLifetime() + "" );
         maximumTicketLifetimeText.setText( kdcServerBean.getKrbMaximumTicketLifetime() + "" );
+
+        addListeners();
     }
 
 
@@ -279,85 +406,31 @@ public class KerberosServerPage extends ServerConfigurationEditorPage
     {
         // Enable Kerberos Checkbox
         addDirtyListener( enableKerberosCheckbox );
-        enableKerberosCheckbox.addSelectionListener( new SelectionAdapter()
-        {
-            public void widgetSelected( SelectionEvent e )
-            {
-                getKdcServerBean().setEnabled( enableKerberosCheckbox.getSelection() );
-            }
-        } );
+        addSelectionListener( enableKerberosCheckbox, enableKerberosCheckboxListener );
 
         // Kerberos Port Text
         addDirtyListener( kerberosPortText );
-        kerberosPortText.addModifyListener( new ModifyListener()
-        {
-            public void modifyText( ModifyEvent e )
-            {
-                getKdcServerTransportBean().setSystemPort( Integer.parseInt( kerberosPortText.getText() ) );
-            }
-        } );
+        addModifyListener( kerberosPortText, kerberosPortTextListener );
 
         // Enable Change Password Checkbox
         addDirtyListener( enableChangePasswordCheckbox );
-        enableChangePasswordCheckbox.addSelectionListener( new SelectionAdapter()
-        {
-            public void widgetSelected( SelectionEvent e )
-            {
-                getChangePasswordServerBean().setEnabled( enableChangePasswordCheckbox.getSelection() );
-            }
-        } );
+        addSelectionListener( enableChangePasswordCheckbox, enableChangePasswordCheckboxListener );
 
         // Change Password Port Text
         addDirtyListener( changePasswordPortText );
-        changePasswordPortText.addModifyListener( new ModifyListener()
-        {
-            public void modifyText( ModifyEvent e )
-            {
-                getChangePasswordServerTransportBean().setSystemPort(
-                    Integer.parseInt( changePasswordPortText.getText() ) );
-            }
-        } );
+        addModifyListener( changePasswordPortText, changePasswordPortTextListener );
 
         // KDC Principal Text
         addDirtyListener( kdcPrincipalText );
-        kdcPrincipalText.addModifyListener( new ModifyListener()
-        {
-            public void modifyText( ModifyEvent e )
-            {
-                getKdcServerBean().setKrbKdcPrincipal( kdcPrincipalText.getText() );
-            }
-        } );
+        addModifyListener( kdcPrincipalText, kdcPrincipalTextListener );
 
         // Primary KDC Text
         addDirtyListener( primaryKdcRealmText );
-        primaryKdcRealmText.addModifyListener( new ModifyListener()
-        {
-            public void modifyText( ModifyEvent e )
-            {
-                getKdcServerBean().setKrbPrimaryRealm( primaryKdcRealmText.getText() );
-            }
-        } );
+        addModifyListener( primaryKdcRealmText, primaryKdcRealmTextListener );
 
         // KDC Search Base DN Text
         addDirtyListener( kdcSearchBaseDnText );
-        kdcSearchBaseDnText.addModifyListener( new ModifyListener()
-        {
-            public void modifyText( ModifyEvent e )
-            {
-                String searchBaseDnValue = kdcSearchBaseDnText.getText();
-
-                try
-                {
-                    DN searchBaseDn = new DN( searchBaseDnValue );
-                    getKdcServerBean().setSearchBaseDn( searchBaseDn );
-                }
-                catch ( LdapInvalidDnException e1 )
-                {
-                    // TODO Auto-generated catch block
-                    e1.printStackTrace();
-                }
-            }
-        } );
+        addModifyListener( kdcSearchBaseDnText, kdcSearchBaseDnTextListener );
 
         // Encryption Types Text
         addDirtyListener( encryptionTypesText );
@@ -368,86 +441,111 @@ public class KerberosServerPage extends ServerConfigurationEditorPage
 
         // Verify Body Checksum Checkbox
         addDirtyListener( verifyBodyChecksumCheckbox );
-        verifyBodyChecksumCheckbox.addSelectionListener( new SelectionAdapter()
-        {
-            public void widgetSelected( SelectionEvent e )
-            {
-                getKdcServerBean().setKrbBodyChecksumVerified( verifyBodyChecksumCheckbox.getSelection() );
-            }
-        } );
+        addSelectionListener( verifyBodyChecksumCheckbox, verifyBodyChecksumCheckboxListener );
 
         // Allow Empty Addresses Checkbox
         addDirtyListener( allowEmptyAddressesCheckbox );
-        allowEmptyAddressesCheckbox.addSelectionListener( new SelectionAdapter()
-        {
-            public void widgetSelected( SelectionEvent e )
-            {
-                getKdcServerBean().setKrbEmptyAddressesAllowed( allowEmptyAddressesCheckbox.getSelection() );
-            }
-        } );
+        addSelectionListener( allowEmptyAddressesCheckbox, allowEmptyAddressesCheckboxListener );
 
         // Allow Forwardable Addresses Checkbox
         addDirtyListener( allowForwardableAddressesCheckbox );
-        allowForwardableAddressesCheckbox.addSelectionListener( new SelectionAdapter()
-        {
-            public void widgetSelected( SelectionEvent e )
-            {
-                getKdcServerBean().setKrbForwardableAllowed( allowForwardableAddressesCheckbox.getSelection() );
-            }
-        } );
+        addSelectionListener( allowForwardableAddressesCheckbox, allowForwardableAddressesCheckboxListener );
 
         // Require Pre-Authentication By Encrypted Timestamp Checkbox
         addDirtyListener( requirePreAuthByEncryptedTimestampCheckbox );
-        requirePreAuthByEncryptedTimestampCheckbox.addSelectionListener( new SelectionAdapter()
-        {
-            public void widgetSelected( SelectionEvent e )
-            {
-                getKdcServerBean().setKrbPaEncTimestampRequired(
-                    requirePreAuthByEncryptedTimestampCheckbox.getSelection() );
-            }
-        } );
+        addSelectionListener( requirePreAuthByEncryptedTimestampCheckbox,
+            requirePreAuthByEncryptedTimestampCheckboxListener );
 
         // Allow Postdated Tickets Checkbox
         addDirtyListener( allowPostdatedTicketsCheckbox );
-        allowPostdatedTicketsCheckbox.addSelectionListener( new SelectionAdapter()
-        {
-            public void widgetSelected( SelectionEvent e )
-            {
-                getKdcServerBean().setKrbPostdatedAllowed( allowPostdatedTicketsCheckbox.getSelection() );
-            }
-        } );
+        addSelectionListener( allowPostdatedTicketsCheckbox, allowPostdatedTicketsCheckboxListener );
 
         // Allow Renewable Tickets Checkbox
         addDirtyListener( allowRenewableTicketsCheckbox );
-        allowRenewableTicketsCheckbox.addSelectionListener( new SelectionAdapter()
-        {
-            public void widgetSelected( SelectionEvent e )
-            {
-                getKdcServerBean().setKrbRenewableAllowed( allowRenewableTicketsCheckbox.getSelection() );
-            }
-        } );
+        addSelectionListener( allowRenewableTicketsCheckbox, allowRenewableTicketsCheckboxListener );
 
         // Maximum Renewable Lifetime Text
         addDirtyListener( maximumRenewableLifetimeText );
-        maximumRenewableLifetimeText.addModifyListener( new ModifyListener()
-        {
-            public void modifyText( ModifyEvent e )
-            {
-                getKdcServerBean().setKrbMaximumRenewableLifetime(
-                    Integer.parseInt( maximumRenewableLifetimeText.getText() ) );
-            }
-        } );
+        addModifyListener( maximumRenewableLifetimeText, maximumRenewableLifetimeTextListener );
 
         // Maximum Ticket Lifetime Text
         addDirtyListener( maximumTicketLifetimeText );
-        maximumTicketLifetimeText.addModifyListener( new ModifyListener()
-        {
-            public void modifyText( ModifyEvent e )
-            {
-                getKdcServerBean()
-                    .setKrbMaximumTicketLifetime( Integer.parseInt( maximumTicketLifetimeText.getText() ) );
-            }
-        } );
+        addModifyListener( maximumTicketLifetimeText, maximumTicketLifetimeTextListener );
+    }
+
+
+    /**
+     * Removes listeners to UI Controls.
+     */
+    private void removeListeners()
+    {
+        // Enable Kerberos Checkbox
+        removeDirtyListener( enableKerberosCheckbox );
+        removeSelectionListener( enableKerberosCheckbox, enableKerberosCheckboxListener );
+
+        // Kerberos Port Text
+        removeDirtyListener( kerberosPortText );
+        removeModifyListener( kerberosPortText, kerberosPortTextListener );
+
+        // Enable Change Password Checkbox
+        removeDirtyListener( enableChangePasswordCheckbox );
+        removeSelectionListener( enableChangePasswordCheckbox, enableChangePasswordCheckboxListener );
+
+        // Change Password Port Text
+        removeDirtyListener( changePasswordPortText );
+        removeModifyListener( changePasswordPortText, changePasswordPortTextListener );
+
+        // KDC Principal Text
+        removeDirtyListener( kdcPrincipalText );
+        removeModifyListener( kdcPrincipalText, kdcPrincipalTextListener );
+
+        // Primary KDC Text
+        removeDirtyListener( primaryKdcRealmText );
+        removeModifyListener( primaryKdcRealmText, primaryKdcRealmTextListener );
+
+        // KDC Search Base DN Text
+        removeDirtyListener( kdcSearchBaseDnText );
+        removeModifyListener( kdcSearchBaseDnText, kdcSearchBaseDnTextListener );
+
+        // Encryption Types Text
+        removeDirtyListener( encryptionTypesText );
+        // TODO A Text Control is probably not the most appropriate one
+
+        removeDirtyListener( allowClockSkewCheckbox );
+        // TODO A Checkbox Control is probably not the most appropriate one
+
+        // Verify Body Checksum Checkbox
+        removeDirtyListener( verifyBodyChecksumCheckbox );
+        removeSelectionListener( verifyBodyChecksumCheckbox, verifyBodyChecksumCheckboxListener );
+
+        // Allow Empty Addresses Checkbox
+        removeDirtyListener( allowEmptyAddressesCheckbox );
+        removeSelectionListener( allowEmptyAddressesCheckbox, allowEmptyAddressesCheckboxListener );
+
+        // Allow Forwardable Addresses Checkbox
+        removeDirtyListener( allowForwardableAddressesCheckbox );
+        removeSelectionListener( allowForwardableAddressesCheckbox, allowForwardableAddressesCheckboxListener );
+
+        // Require Pre-Authentication By Encrypted Timestamp Checkbox
+        removeDirtyListener( requirePreAuthByEncryptedTimestampCheckbox );
+        removeSelectionListener( requirePreAuthByEncryptedTimestampCheckbox,
+            requirePreAuthByEncryptedTimestampCheckboxListener );
+
+        // Allow Postdated Tickets Checkbox
+        removeDirtyListener( allowPostdatedTicketsCheckbox );
+        removeSelectionListener( allowPostdatedTicketsCheckbox, allowPostdatedTicketsCheckboxListener );
+
+        // Allow Renewable Tickets Checkbox
+        removeDirtyListener( allowRenewableTicketsCheckbox );
+        removeSelectionListener( allowRenewableTicketsCheckbox, allowRenewableTicketsCheckboxListener );
+
+        // Maximum Renewable Lifetime Text
+        removeDirtyListener( maximumRenewableLifetimeText );
+        removeModifyListener( maximumRenewableLifetimeText, maximumRenewableLifetimeTextListener );
+
+        // Maximum Ticket Lifetime Text
+        removeDirtyListener( maximumTicketLifetimeText );
+        removeModifyListener( maximumTicketLifetimeText, maximumTicketLifetimeTextListener );
     }
 
 

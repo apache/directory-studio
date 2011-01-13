@@ -72,6 +72,68 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
     private Text saslPrincipalText;
     private Text saslSearchBaseDnText;
 
+    // UI Control Listeners
+    private SelectionAdapter enableLdapCheckboxListener = new SelectionAdapter()
+    {
+        public void widgetSelected( SelectionEvent e )
+        {
+            getLdapServerTransportBean().setEnabled( enableLdapCheckbox.getSelection() );
+        }
+    };
+    private ModifyListener ldapPortTextListener = new ModifyListener()
+    {
+        public void modifyText( ModifyEvent e )
+        {
+            getLdapsServerTransportBean().setSystemPort( Integer.parseInt( ldapPortText.getText() ) );
+        }
+    };
+    private SelectionAdapter enableLdapsCheckboxListener = new SelectionAdapter()
+    {
+        public void widgetSelected( SelectionEvent e )
+        {
+            getLdapsServerTransportBean().setEnabled( enableLdapsCheckbox.getSelection() );
+        }
+    };
+    private ModifyListener ldapsPortTextListener = new ModifyListener()
+    {
+        public void modifyText( ModifyEvent e )
+        {
+            getLdapsServerTransportBean().setSystemPort( Integer.parseInt( ldapsPortText.getText() ) );
+        }
+    };
+    private ModifyListener saslHostTextListener = new ModifyListener()
+    {
+        public void modifyText( ModifyEvent e )
+        {
+            getLdapServerBean().setLdapServerSaslHost( saslHostText.getText() );
+        }
+    };
+    private ModifyListener saslPrincipalTextListener = new ModifyListener()
+    {
+        public void modifyText( ModifyEvent e )
+        {
+            getLdapServerBean().setLdapServerSaslPrincipal( saslPrincipalText.getText() );
+        }
+    };
+    private ModifyListener saslSearchBaseDnTextListener = new ModifyListener()
+    {
+        public void modifyText( ModifyEvent e )
+        {
+            String searchBaseDnValue = saslSearchBaseDnText.getText();
+
+            try
+            {
+                DN searchBaseDn = new DN( searchBaseDnValue );
+                getLdapServerBean().setSearchBaseDn( searchBaseDn );
+            }
+            catch ( LdapInvalidDnException e1 )
+            {
+                // TODO Auto-generated catch block
+                e1.printStackTrace();
+            }
+        }
+    };
+
 
     /**
      * Creates a new instance of GeneralPage.
@@ -112,9 +174,7 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
         createSupportedAuthenticationMechanismsSection( toolkit, rightComposite );
         createSaslSettingsSection( toolkit, rightComposite );
 
-        initUI();
-
-        addListeners();
+        refreshUI();
     }
 
 
@@ -311,8 +371,13 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
     }
 
 
-    private void initUI()
+    /**
+     * {@inheritDoc}
+     */
+    protected void refreshUI()
     {
+        removeListeners();
+
         LdapServerBean ldapServerBean = getLdapServerBean();
 
         enableLdapCheckbox.setSelection( ldapServerBean.isEnabled() );
@@ -324,6 +389,8 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
         saslHostText.setText( ldapServerBean.getLdapServerSaslHost() );
         saslPrincipalText.setText( ldapServerBean.getLdapServerSaslPrincipal() );
         saslSearchBaseDnText.setText( ldapServerBean.getSearchBaseDn().toString() );
+
+        addListeners();
     }
 
 
@@ -334,43 +401,19 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
     {
         // Enable LDAP Checkbox
         addDirtyListener( enableLdapCheckbox );
-        enableLdapCheckbox.addSelectionListener( new SelectionAdapter()
-        {
-            public void widgetSelected( SelectionEvent e )
-            {
-                getLdapServerTransportBean().setEnabled( enableLdapCheckbox.getSelection() );
-            }
-        } );
+        addSelectionListener( enableLdapCheckbox, enableLdapCheckboxListener );
 
         // LDAP Port Text
         addDirtyListener( ldapPortText );
-        ldapPortText.addModifyListener( new ModifyListener()
-        {
-            public void modifyText( ModifyEvent e )
-            {
-                getLdapsServerTransportBean().setSystemPort( Integer.parseInt( ldapPortText.getText() ) );
-            }
-        } );
+        addModifyListener( ldapPortText, ldapPortTextListener );
 
         // Enable LDAPS Checkbox
         addDirtyListener( enableLdapsCheckbox );
-        enableLdapsCheckbox.addSelectionListener( new SelectionAdapter()
-        {
-            public void widgetSelected( SelectionEvent e )
-            {
-                getLdapsServerTransportBean().setEnabled( enableLdapsCheckbox.getSelection() );
-            }
-        } );
+        addSelectionListener( enableLdapsCheckbox, enableLdapsCheckboxListener );
 
         // LDAPS Port Text
         addDirtyListener( ldapsPortText );
-        ldapsPortText.addModifyListener( new ModifyListener()
-        {
-            public void modifyText( ModifyEvent e )
-            {
-                getLdapsServerTransportBean().setSystemPort( Integer.parseInt( ldapsPortText.getText() ) );
-            }
-        } );
+        addModifyListener( ldapsPortText, ldapsPortTextListener );
 
         // Max Time Limit Text
         addDirtyListener( maxTimeLimitText );
@@ -398,44 +441,74 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
 
         // SASL Host Text
         addDirtyListener( saslHostText );
-        saslHostText.addModifyListener( new ModifyListener()
-        {
-            public void modifyText( ModifyEvent e )
-            {
-                getLdapServerBean().setLdapServerSaslHost( saslHostText.getText() );
-            }
-        } );
+        addModifyListener( saslHostText, saslHostTextListener );
 
         // SASL Principal Text
         addDirtyListener( saslPrincipalText );
-        saslPrincipalText.addModifyListener( new ModifyListener()
-        {
-            public void modifyText( ModifyEvent e )
-            {
-                getLdapServerBean().setLdapServerSaslPrincipal( saslPrincipalText.getText() );
-            }
-        } );
+        addModifyListener( saslPrincipalText, saslPrincipalTextListener );
 
         // SASL Seach Base DN Text
         addDirtyListener( saslSearchBaseDnText );
-        saslSearchBaseDnText.addModifyListener( new ModifyListener()
-        {
-            public void modifyText( ModifyEvent e )
-            {
-                String searchBaseDnValue = saslSearchBaseDnText.getText();
+        addModifyListener( saslSearchBaseDnText, saslSearchBaseDnTextListener );
+    }
 
-                try
-                {
-                    DN searchBaseDn = new DN( searchBaseDnValue );
-                    getLdapServerBean().setSearchBaseDn( searchBaseDn );
-                }
-                catch ( LdapInvalidDnException e1 )
-                {
-                    // TODO Auto-generated catch block
-                    e1.printStackTrace();
-                }
-            }
-        } );
+
+    /**
+     * Removes listeners to UI Controls.
+     */
+    private void removeListeners()
+    {
+        // Enable LDAP Checkbox
+        removeDirtyListener( enableLdapCheckbox );
+        removeSelectionListener( enableLdapCheckbox, enableLdapCheckboxListener );
+
+        // LDAP Port Text
+        removeDirtyListener( ldapPortText );
+        removeModifyListener( ldapPortText, ldapPortTextListener );
+
+        // Enable LDAPS Checkbox
+        removeDirtyListener( enableLdapsCheckbox );
+        removeSelectionListener( enableLdapsCheckbox, enableLdapsCheckboxListener );
+
+        // LDAPS Port Text
+        removeDirtyListener( ldapsPortText );
+        removeModifyListener( ldapsPortText, ldapsPortTextListener );
+
+        // Max Time Limit Text
+        removeDirtyListener( maxTimeLimitText );
+
+        // Max Size Limit Text
+        removeDirtyListener( maxSizeLimitText );
+
+        // Auth Mechanisms Simple Checkbox
+        removeDirtyListener( authMechSimpleCheckbox );
+
+        // Auth Mechanisms CRAM-MD5 Checkbox
+        removeDirtyListener( authMechCramMd5Checkbox );
+
+        // Auth Mechanisms DIGEST-MD5 Checkbox
+        removeDirtyListener( authMechDigestMd5Checkbox );
+
+        // Auth Mechanisms GSSAPI Checkbox
+        removeDirtyListener( authMechGssapiCheckbox );
+
+        // Auth Mechanisms NTLM Checkbox
+        removeDirtyListener( authMechNtlmCheckbox );
+
+        // Auth Mechanisms GSS SPENEGO Checkbox
+        removeDirtyListener( authMechGssSpnegoCheckbox );
+
+        // SASL Host Text
+        removeDirtyListener( saslHostText );
+        removeModifyListener( saslHostText, saslHostTextListener );
+
+        // SASL Principal Text
+        removeDirtyListener( saslPrincipalText );
+        removeModifyListener( saslPrincipalText, saslPrincipalTextListener );
+
+        // SASL Seach Base DN Text
+        removeDirtyListener( saslSearchBaseDnText );
+        removeModifyListener( saslSearchBaseDnText, saslSearchBaseDnTextListener );
     }
 
 

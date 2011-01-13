@@ -39,7 +39,7 @@ public class PartitionsPage extends ServerConfigurationEditorPage
 
 
     /**
-     * Creates a new instance of GeneralPage.
+     * Creates a new instance of PartitionsPage.
      *
      * @param editor
      *      the associated editor
@@ -57,5 +57,15 @@ public class PartitionsPage extends ServerConfigurationEditorPage
     {
         PartitionsMasterDetailsBlock masterDetailsBlock = new PartitionsMasterDetailsBlock( this );
         masterDetailsBlock.createContent( getManagedForm() );
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    protected void refreshUI()
+    {
+        // TODO Auto-generated method stub
+
     }
 }

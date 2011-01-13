@@ -67,6 +67,14 @@ public class ServerConfigurationEditor extends FormEditor
     /** The configuration bean */
     private ConfigBean configBean;
 
+    // The pages
+    private LoadingPage loadingPage;
+    private OverviewPage overviewPage;
+    private LdapLdapsServersPage ldapLdapsServersPage;
+    private KerberosServerPage kerberosServerPage;
+    private PartitionsPage partitionsPage;
+    private ReplicationPage replicationPage;
+
 
     /**
      * {@inheritDoc}
@@ -107,7 +115,8 @@ public class ServerConfigurationEditor extends FormEditor
     {
         try
         {
-            addPage( new LoadingPage( this ) );
+            loadingPage = new LoadingPage( this );
+            addPage( loadingPage );
         }
         catch ( PartInitException e )
         {
@@ -418,6 +427,24 @@ public class ServerConfigurationEditor extends FormEditor
 
 
     /**
+     * Resets the configuration and refresh the UI.
+     *
+     * @param configBean
+     *      the configuration bean
+     */
+    public void resetConfiguration( ConfigBean configBean )
+    {
+        setConfiguration( configBean );
+
+        overviewPage.refreshUI();
+        ldapLdapsServersPage.refreshUI();
+        kerberosServerPage.refreshUI();
+        partitionsPage.refreshUI();
+        replicationPage.refreshUI();
+    }
+
+
+    /**
      * This method is called by the job responsible for loading the configuration.
      *
      * @param configBean
@@ -442,11 +469,16 @@ public class ServerConfigurationEditor extends FormEditor
         // Adding the configuration pages
         try
         {
-            addPage( new OverviewPage( this ) );
-            addPage( new LdapLdapsServersPage( this ) );
-            addPage( new KerberosServerPage( this ) );
-            addPage( new PartitionsPage( this ) );
-            addPage( new ReplicationPage( this ) );
+            overviewPage = new OverviewPage( this );
+            addPage( overviewPage );
+            ldapLdapsServersPage = new LdapLdapsServersPage( this );
+            addPage( ldapLdapsServersPage );
+            kerberosServerPage = new KerberosServerPage( this );
+            addPage( kerberosServerPage );
+            partitionsPage = new PartitionsPage( this );
+            addPage( partitionsPage );
+            replicationPage = new ReplicationPage( this );
+            addPage( replicationPage );
         }
         catch ( PartInitException e )
         {

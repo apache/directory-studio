@@ -20,13 +20,8 @@
 package org.apache.directory.studio.apacheds.configuration.v2.editor;
 
 
-import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.ui.forms.IManagedForm;
-import org.eclipse.ui.forms.editor.FormEditor;
-import org.eclipse.ui.forms.editor.FormPage;
 import org.eclipse.ui.forms.widgets.FormToolkit;
-import org.eclipse.ui.forms.widgets.ScrolledForm;
 
 
 /**
@@ -34,7 +29,7 @@ import org.eclipse.ui.forms.widgets.ScrolledForm;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class ReplicationPage extends FormPage
+public class ReplicationPage extends ServerConfigurationEditorPage
 {
     /** The Page ID*/
     public static final String ID = ReplicationPage.class.getName(); //$NON-NLS-1$
@@ -44,12 +39,12 @@ public class ReplicationPage extends FormPage
 
 
     /**
-     * Creates a new instance of GeneralPage.
+     * Creates a new instance of ReplicationPage.
      *
      * @param editor
      *      the associated editor
      */
-    public ReplicationPage( FormEditor editor )
+    public ReplicationPage( ServerConfigurationEditor editor )
     {
         super( editor, ID, TITLE );
     }
@@ -58,15 +53,17 @@ public class ReplicationPage extends FormPage
     /**
      * {@inheritDoc}
      */
-    protected void createFormContent( IManagedForm managedForm )
+    protected void createFormContent( Composite parent, FormToolkit toolkit )
     {
-        ScrolledForm form = managedForm.getForm();
-        form.setText( "Replication" );
+    }
 
-        Composite parent = form.getBody();
-        parent.setLayout( new GridLayout() );
 
-        FormToolkit toolkit = managedForm.getToolkit();
-        toolkit.decorateFormHeading( form.getForm() );
+    /**
+     * {@inheritDoc}
+     */
+    protected void refreshUI()
+    {
+        // TODO Auto-generated method stub
+
     }
 }

@@ -162,10 +162,12 @@ public abstract class ServerConfigurationEditorPage extends FormPage
         FormToolkit toolkit = managedForm.getToolkit();
         toolkit.decorateFormHeading( form.getForm() );
 
+        ServerConfigurationEditor editor = ( ServerConfigurationEditor ) getEditor();
+
         IToolBarManager toolbarManager = form.getToolBarManager();
-        toolbarManager.add( new EditorImportConfigurationAction() );
+        toolbarManager.add( new EditorImportConfigurationAction( editor ) );
         toolbarManager.add( new Separator() );
-        toolbarManager.add( new EditorExportConfigurationAction( ( ServerConfigurationEditor ) getEditor() ) );
+        toolbarManager.add( new EditorExportConfigurationAction( editor ) );
 
         toolbarManager.update( true );
 
@@ -182,6 +184,12 @@ public abstract class ServerConfigurationEditorPage extends FormPage
      *      the form toolkit
      */
     protected abstract void createFormContent( Composite parent, FormToolkit toolkit );
+
+
+    /**
+     * Refreshes the UI.
+     */
+    protected abstract void refreshUI();
 
 
     /**
@@ -266,6 +274,74 @@ public abstract class ServerConfigurationEditorPage extends FormPage
 
 
     /**
+     * Adds a modify listener to the given Text.
+     *
+     * @param text
+     *      the Text control
+     * @param listener
+     *      the listener
+     */
+    public void addModifyListener( Text text, ModifyListener listener )
+    {
+        if ( ( text != null ) && ( !text.isDisposed() ) && ( listener != null ) )
+        {
+            text.addModifyListener( listener );
+        }
+    }
+
+
+    /**
+     * Adds a selection listener to the given Button.
+     *
+     * @param button
+     *      the Button control
+     * @param listener
+     *      the listener
+     */
+    public void addSelectionListener( Button button, SelectionListener listener )
+    {
+        if ( ( button != null ) && ( !button.isDisposed() ) && ( listener != null ) )
+        {
+            button.addSelectionListener( listener );
+        }
+    }
+
+
+    /**
+     * Removes a modify listener to the given Text.
+     *
+     * @param text
+     *      the Text control
+     * @param listener
+     *      the listener
+     */
+    public void removeModifyListener( Text text, ModifyListener listener )
+    {
+        if ( ( text != null ) && ( !text.isDisposed() ) && ( listener != null ) )
+        {
+            text.removeModifyListener( listener );
+        }
+    }
+
+
+    /**
+     * Removes a selection listener to the given Button.
+     *
+     * @param button
+     *      the Button control
+     * @param listener
+     *      the listener
+     */
+    public void removeSelectionListener( Button button, SelectionListener listener )
+    {
+        if ( ( button != null ) && ( !button.isDisposed() ) && ( listener != null ) )
+        {
+            button.removeSelectionListener( listener );
+        }
+    }
+
+
+    /**
      * Adds a 'dirty' listener to the given Text.
      *
      * @param text
@@ -286,5 +362,29 @@ public abstract class ServerConfigurationEditorPage extends FormPage
     public void addDirtyListener( Button button )
     {
         button.addSelectionListener( dirtySelectionListener );
+    }
+
+
+    /**
+     * Removes a 'dirty' listener to the given Text.
+     *
+     * @param text
+     *      the Text control
+     */
+    public void removeDirtyListener( Text text )
+    {
+        removeModifyListener( text, dirtyModifyListener );
+    }
+
+
+    /**
+     * Removes a 'dirty' listener to the given Button.
+     *
+     * @param button
+     *      the Button control
+     */
+    public void removeDirtyListener( Button button )
+    {
+        removeSelectionListener( button, dirtySelectionListener );
     }
 }
