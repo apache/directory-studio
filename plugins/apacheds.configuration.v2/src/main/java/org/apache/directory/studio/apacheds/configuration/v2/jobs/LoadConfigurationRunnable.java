@@ -217,8 +217,8 @@ public class LoadConfigurationRunnable implements StudioRunnableWithProgress
         if ( is != null )
         {
             // Creating a partition associated from the input stream
-            ReadOnlyConfigurationPartition configurationPartition = new ReadOnlyConfigurationPartition(
-                ApacheDS2ConfigurationPlugin.class.getResourceAsStream( "config.ldif" ), schemaManager );
+            ReadOnlyConfigurationPartition configurationPartition = new ReadOnlyConfigurationPartition( is,
+                schemaManager );
             configurationPartition.initialize();
 
             // Reading the configuration partition
