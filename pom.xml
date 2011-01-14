@@ -1482,18 +1482,6 @@
         <version>${org.antlr.version}</version>
       </dependency>
       <dependency>
-        <groupId>docbook</groupId>
-        <artifactId>docbook-xml</artifactId>
-        <type>zip</type>
-        <version>4.5</version>
-      </dependency>
-      <dependency>
-        <groupId>docbook</groupId>
-        <artifactId>docbook-xsl</artifactId>
-        <type>zip</type>
-        <version>1.71.1</version>
-      </dependency>
-      <dependency>
         <groupId>dom4j</groupId>
         <artifactId>dom4j</artifactId>
         <version>${org.dom4j.version}</version>
