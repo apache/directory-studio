@@ -37,6 +37,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.dialogs.Dialog;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.FileDialog;
@@ -96,8 +97,6 @@ public class EditorImportConfigurationAction extends Action
     {
         try
         {
-            // TODO Add confirmation ?
-
             // The input stream that will be used to load the configuration
             InputStream inputStream = null;
 
@@ -149,6 +148,13 @@ public class EditorImportConfigurationAction extends Action
 
             // Checking if we found an input stream
             if ( inputStream == null )
+            {
+                return;
+            }
+
+            // Requiring  a confirmation from the user
+            if ( !MessageDialog.openConfirm( editor.getSite().getShell(), "Overwrite Existing Configuration",
+                "Are you sure you want to overwrite the existing configuration with the selected file?" ) )
             {
                 return;
             }
