@@ -349,7 +349,7 @@ public abstract class ServerConfigurationEditorPage extends FormPage
      */
     public void addDirtyListener( Text text )
     {
-        text.addModifyListener( dirtyModifyListener );
+        addModifyListener( text, dirtyModifyListener );
     }
 
 
@@ -361,7 +361,7 @@ public abstract class ServerConfigurationEditorPage extends FormPage
      */
     public void addDirtyListener( Button button )
     {
-        button.addSelectionListener( dirtySelectionListener );
+        addSelectionListener( button, dirtySelectionListener );
     }
 
 
