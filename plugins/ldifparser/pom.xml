@@ -92,7 +92,7 @@
         <configuration>
           <manifestLocation>META-INF</manifestLocation>
           <instructions>            
-            <Bundle-SymbolicName>${groupId}.${artifactId};singleton:=true</Bundle-SymbolicName>
+            <Bundle-SymbolicName>${project.groupId}.${project.artifactId};singleton:=true</Bundle-SymbolicName>
             <Bundle-Localization>plugin</Bundle-Localization>
             <Require-Bundle>org.apache.commons.codec;bundle-version="${org.apache.commons.codec.version}",
  org.apache.directory.shared.ldap;bundle-version="${org.apache.directory.shared.validversion}"</Require-Bundle>

@@ -108,7 +108,7 @@
         <configuration>
           <manifestLocation>META-INF</manifestLocation>
           <instructions>            
-            <Bundle-SymbolicName>${groupId}.${artifactId};singleton:=true</Bundle-SymbolicName>
+            <Bundle-SymbolicName>${project.groupId}.${project.artifactId};singleton:=true</Bundle-SymbolicName>
             <Bundle-Localization>plugin</Bundle-Localization>
             <Eclipse-LazyStart>true</Eclipse-LazyStart>
             <Bundle-Activator>org.apache.directory.studio.connection.ui.ConnectionUIPlugin</Bundle-Activator>
@@ -171,38 +171,6 @@
       <artifactId>org.apache.directory.shared.ldap</artifactId>
       <scope>provided</scope>
     </dependency>
-    <!-- Start sub-dependencies of provided plugins -->
-    <dependency>
-      <groupId>org.apache.directory.studio</groupId>
-      <artifactId>org.antlr.antlr</artifactId>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.directory.studio</groupId>
-      <artifactId>org.apache.commons.collections</artifactId>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.directory.studio</groupId>
-      <artifactId>org.apache.commons.lang</artifactId>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.directory.studio</groupId>
-      <artifactId>org.apache.directory.shared.i18n</artifactId>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.directory.studio</groupId>
-      <artifactId>org.apache.mina.core</artifactId>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.directory.studio</groupId>
-      <artifactId>org.slf4j.api</artifactId>
-      <scope>provided</scope>
-    </dependency>
-    <!-- End sub-dependencies of provided plugins -->
     
   	<!-- Apache Directory Studio plugins dependencies -->
     <dependency>

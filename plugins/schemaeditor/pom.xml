@@ -108,7 +108,7 @@
         <configuration>
           <manifestLocation>META-INF</manifestLocation>
           <instructions>            
-            <Bundle-SymbolicName>${groupId}.${artifactId};singleton:=true</Bundle-SymbolicName>
+            <Bundle-SymbolicName>${project.groupId}.${project.artifactId};singleton:=true</Bundle-SymbolicName>
             <Eclipse-BuddyPolicy>registered</Eclipse-BuddyPolicy>
             <Bundle-Localization>plugin</Bundle-Localization>
             <Eclipse-LazyStart>true</Eclipse-LazyStart>

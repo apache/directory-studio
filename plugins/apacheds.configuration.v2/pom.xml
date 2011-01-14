@@ -106,7 +106,7 @@
         <configuration>
           <manifestLocation>META-INF</manifestLocation>
           <instructions>            
-            <Bundle-SymbolicName>${groupId}.${artifactId};singleton:=true</Bundle-SymbolicName>
+            <Bundle-SymbolicName>${project.groupId}.${project.artifactId};singleton:=true</Bundle-SymbolicName>
             <Bundle-Localization>plugin</Bundle-Localization>
             <Eclipse-LazyStart>true</Eclipse-LazyStart>
             <Bundle-Activator>org.apache.directory.studio.apacheds.configuration.v2.ApacheDS2ConfigurationPlugin</Bundle-Activator>

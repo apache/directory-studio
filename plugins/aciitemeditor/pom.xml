@@ -105,7 +105,7 @@
         <configuration>
           <manifestLocation>META-INF</manifestLocation>
           <instructions>            
-            <Bundle-SymbolicName>${groupId}.${artifactId};singleton:=true</Bundle-SymbolicName>
+            <Bundle-SymbolicName>${project.groupId}.${project.artifactId};singleton:=true</Bundle-SymbolicName>
             <Bundle-Localization>plugin</Bundle-Localization>
             <Eclipse-LazyStart>true</Eclipse-LazyStart>
             <Bundle-Activator>org.apache.directory.studio.aciitemeditor.Activator</Bundle-Activator>
@@ -160,11 +160,6 @@
     <dependency>
       <groupId>org.apache.directory.studio</groupId>
       <artifactId>common.ui</artifactId>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.directory.studio</groupId>
-      <artifactId>ldapbrowser.common</artifactId>
       <scope>provided</scope>
     </dependency>
     <dependency>
