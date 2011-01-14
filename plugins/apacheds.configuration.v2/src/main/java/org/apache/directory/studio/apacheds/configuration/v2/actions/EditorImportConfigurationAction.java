@@ -97,6 +97,20 @@ public class EditorImportConfigurationAction extends Action
     {
         try
         {
+            // Checking if the editor has unsaved modifications
+            if ( editor.isDirty() )
+            {
+                // Requiring a confirmation from the user before discarding the unsaved modifications
+                if ( !MessageDialog
+                    .openConfirm(
+                        editor.getSite().getShell(),
+                        "Unsaved modifications",
+                        "The configuration has unsaved modifications. All recent changes will be lost. Are you sure you want to continue?" ) )
+                {
+                    return;
+                }
+            }
+
             // The input stream that will be used to load the configuration
             InputStream inputStream = null;
 
@@ -152,7 +166,7 @@ public class EditorImportConfigurationAction extends Action
                 return;
             }
 
-            // Requiring  a confirmation from the user
+            // Requiring a confirmation from the user
             if ( !MessageDialog.openConfirm( editor.getSite().getShell(), "Overwrite Existing Configuration",
                 "Are you sure you want to overwrite the existing configuration with the selected file?" ) )
             {
