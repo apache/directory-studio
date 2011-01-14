@@ -100,7 +100,7 @@
                     </move>
 
                     <!-- Create PDF -->
-                    <xslt basedir="target/docbook" in="target/docbook/documents/0_index.xml" out="target/pdf/${artifactId}.fo" style="target/docbook/docbook-xsl/fo/docbook.xsl">
+                    <xslt basedir="target/docbook" in="target/docbook/documents/0_index.xml" out="target/pdf/${project.artifactId}.fo" style="target/docbook/docbook-xsl/fo/docbook.xsl">
                       <param name="manifest.in.base.dir" expression="0" />
                       <param name="generate.section.toc.level" expression="5" />
                       <param name="toc.max.depth" expression="3" />
@@ -114,7 +114,7 @@
                       <outputproperty name="encoding" value="iso8859_1" />
                       <outputproperty name="indent" value="es" />
                     </xslt>
-                    <fop format="application/pdf" basedir="target/pdf" fofile="target/pdf/${artifactId}.fo" outfile="target/pdf/${name}.pdf" />
+                    <fop format="application/pdf" basedir="target/pdf" fofile="target/pdf/${project.artifactId}.fo" outfile="target/pdf/${name}.pdf" />
 
                     <!-- Create HTML -->
                     <xslt in="target/docbook/documents/0_index.xml" out="target/html/index.html" style="target/docbook/docbook-xsl/html/chunk.xsl">
@@ -231,7 +231,7 @@
         <configuration>
           <manifestLocation>META-INF</manifestLocation>
           <instructions>            
-            <Bundle-SymbolicName>${groupId}.${artifactId};singleton:=true</Bundle-SymbolicName>
+            <Bundle-SymbolicName>${project.groupId}.${project.artifactId};singleton:=true</Bundle-SymbolicName>
             <Bundle-Localization>plugin</Bundle-Localization>
             <Eclipse-LazyStart>true</Eclipse-LazyStart>
             <Export-Package>!</Export-Package>
