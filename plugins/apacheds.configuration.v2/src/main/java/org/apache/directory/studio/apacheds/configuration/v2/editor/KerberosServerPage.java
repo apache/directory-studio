@@ -376,24 +376,24 @@ public class KerberosServerPage extends ServerConfigurationEditorPage
         KdcServerBean kdcServerBean = getKdcServerBean();
         ChangePasswordServerBean changePasswordServerBean = getChangePasswordServerBean();
 
-        enableKerberosCheckbox.setSelection( kdcServerBean.isEnabled() );
-        kerberosPortText.setText( "" + getKdcServerTransportBean().getSystemPort() );
+        setSelection( enableKerberosCheckbox, kdcServerBean.isEnabled() );
+        setText(kerberosPortText,"" + getKdcServerTransportBean().getSystemPort() );
 
-        enableChangePasswordCheckbox.setSelection( changePasswordServerBean.isEnabled() );
-        changePasswordPortText.setText( "" + getChangePasswordServerTransportBean().getSystemPort() );
+        setSelection(enableChangePasswordCheckbox, changePasswordServerBean.isEnabled() );
+        setText(changePasswordPortText, "" + getChangePasswordServerTransportBean().getSystemPort() );
 
-        kdcPrincipalText.setText( kdcServerBean.getKrbKdcPrincipal().toString() );
-        kdcSearchBaseDnText.setText( kdcServerBean.getSearchBaseDn().toString() );
-        encryptionTypesText.setText( kdcServerBean.getKrbEncryptionTypes().toString() );
+        setText(kdcPrincipalText, kdcServerBean.getKrbKdcPrincipal().toString() );
+        setText(kdcSearchBaseDnText, kdcServerBean.getSearchBaseDn().toString() );
+        setText(encryptionTypesText, kdcServerBean.getKrbEncryptionTypes().toString() );
 
-        verifyBodyChecksumCheckbox.setSelection( kdcServerBean.isKrbBodyChecksumVerified() );
-        allowEmptyAddressesCheckbox.setSelection( kdcServerBean.isKrbEmptyAddressesAllowed() );
-        allowForwardableAddressesCheckbox.setSelection( kdcServerBean.isKrbForwardableAllowed() );
-        requirePreAuthByEncryptedTimestampCheckbox.setSelection( kdcServerBean.isKrbPaEncTimestampRequired() );
-        allowPostdatedTicketsCheckbox.setSelection( kdcServerBean.isKrbPostdatedAllowed() );
-        allowRenewableTicketsCheckbox.setSelection( kdcServerBean.isKrbRenewableAllowed() );
-        maximumRenewableLifetimeText.setText( kdcServerBean.getKrbMaximumRenewableLifetime() + "" );
-        maximumTicketLifetimeText.setText( kdcServerBean.getKrbMaximumTicketLifetime() + "" );
+        setSelection(verifyBodyChecksumCheckbox, kdcServerBean.isKrbBodyChecksumVerified() );
+        setSelection( allowEmptyAddressesCheckbox, kdcServerBean.isKrbEmptyAddressesAllowed() );
+        setSelection(allowForwardableAddressesCheckbox, kdcServerBean.isKrbForwardableAllowed() );
+        setSelection(requirePreAuthByEncryptedTimestampCheckbox, kdcServerBean.isKrbPaEncTimestampRequired() );
+        setSelection( allowPostdatedTicketsCheckbox, kdcServerBean.isKrbPostdatedAllowed() );
+        setSelection(allowRenewableTicketsCheckbox, kdcServerBean.isKrbRenewableAllowed() );
+        setText(maximumRenewableLifetimeText, kdcServerBean.getKrbMaximumRenewableLifetime() + "" );
+        setText(maximumTicketLifetimeText, kdcServerBean.getKrbMaximumTicketLifetime() + "" );
 
         addListeners();
     }

@@ -387,4 +387,44 @@ public abstract class ServerConfigurationEditorPage extends FormPage
     {
         removeSelectionListener( button, dirtySelectionListener );
     }
+
+
+    /**
+     * Sets the selection state of the button widget.
+     * <p>
+     * Verifies that the button exists and is not disposed 
+     * before applying the new selection state.
+     *
+     * @param button
+     *      the button
+     * @param selected
+     *      the new selection state
+     */
+    public void setSelection( Button button, boolean selected )
+    {
+        if ( ( button != null ) && ( !button.isDisposed() ) )
+        {
+            button.setSelection( selected );
+        }
+    }
+
+
+    /**
+     * Sets the contents of the text widget.
+     * <p>
+     * Verifies that the button exists and is not disposed 
+     * before applying the new text.
+     *
+     * @param text
+     *      the text
+     * @param string
+     *       the new text
+     */
+    public void setText( Text text, String string )
+    {
+        if ( ( text != null ) && ( !text.isDisposed() ) )
+        {
+            text.setText( string );
+        }
+    }
 }

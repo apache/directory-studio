@@ -380,15 +380,15 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
 
         LdapServerBean ldapServerBean = getLdapServerBean();
 
-        enableLdapCheckbox.setSelection( ldapServerBean.isEnabled() );
-        ldapPortText.setText( getLdapServerTransportBean().getSystemPort() + "" );
+        setSelection( enableLdapCheckbox, ldapServerBean.isEnabled() );
+        setText( ldapPortText, getLdapServerTransportBean().getSystemPort() + "" );
 
-        enableLdapsCheckbox.setSelection( true );
-        ldapsPortText.setText( getLdapsServerTransportBean().getSystemPort() + "" );
+        setSelection( enableLdapsCheckbox, true );
+        setText( ldapsPortText, getLdapsServerTransportBean().getSystemPort() + "" );
 
-        saslHostText.setText( ldapServerBean.getLdapServerSaslHost() );
-        saslPrincipalText.setText( ldapServerBean.getLdapServerSaslPrincipal() );
-        saslSearchBaseDnText.setText( ldapServerBean.getSearchBaseDn().toString() );
+        setText( saslHostText, ldapServerBean.getLdapServerSaslHost() );
+        setText( saslPrincipalText, ldapServerBean.getLdapServerSaslPrincipal() );
+        setText( saslSearchBaseDnText, ldapServerBean.getSearchBaseDn().toString() );
 
         addListeners();
     }
