@@ -85,7 +85,7 @@
         <configuration>
           <manifestLocation>META-INF</manifestLocation>
           <instructions>
-            <Bundle-SymbolicName>${artifactId}</Bundle-SymbolicName>
+            <Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
             <Require-Bundle>org.apache.commons.io;bundle-version="${org.apache.commons.io.version}",
  org.apache.directory.server.core.api;bundle-version="${org.apache.directory.server.validversion}",
  org.apache.directory.server.core.avl;bundle-version="${org.apache.directory.server.validversion}",

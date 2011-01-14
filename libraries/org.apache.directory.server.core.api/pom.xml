@@ -85,7 +85,7 @@
         <configuration>
           <manifestLocation>META-INF</manifestLocation>
           <instructions>
-            <Bundle-SymbolicName>${artifactId}</Bundle-SymbolicName>
+            <Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
             <Require-Bundle>net.sf.ehcache.core;bundle-version="${net.sf.ehcache.version}",
  org.apache.commons.collections;bundle-version="${org.apache.commons.collections.version}",
  org.apache.commons.lang;bundle-version="${org.apache.commons.lang.version}",

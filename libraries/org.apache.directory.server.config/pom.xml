@@ -85,7 +85,7 @@
         <configuration>
           <manifestLocation>META-INF</manifestLocation>
           <instructions>
-            <Bundle-SymbolicName>${artifactId}</Bundle-SymbolicName>
+            <Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
             <Require-Bundle>org.apache.directory.server.core.api;bundle-version="${org.apache.directory.server.validversion}",
  org.apache.directory.server.i18n;bundle-version="${org.apache.directory.server.validversion}",
  org.apache.directory.server.ldif.partition;bundle-version="${org.apache.directory.server.validversion}",

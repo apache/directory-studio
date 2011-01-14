@@ -85,7 +85,7 @@
         <configuration>
           <manifestLocation>META-INF</manifestLocation>
           <instructions>
-            <Bundle-SymbolicName>${artifactId}</Bundle-SymbolicName>
+            <Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
             <Require-Bundle>org.apache.commons.codec;bundle-version="${org.apache.commons.codec.version}",
  org.apache.commons.logging;bundle-version="${org.apache.commons.logging.version}",
  org.apache.httpcomponents.httpcore;bundle-version="${org.apache.httpcomponents.version}"</Require-Bundle>
