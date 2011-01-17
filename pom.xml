@@ -264,7 +264,7 @@
       </dependency>
       <dependency>
         <groupId>org.apache.directory.studio</groupId>
-        <artifactId>org.apache.directory.shared.dsml.parser</artifactId>
+        <artifactId>org.apache.directory.shared.dsmlv2.parser</artifactId>
         <version>${org.apache.directory.shared.version}</version>
       </dependency>
       <dependency>

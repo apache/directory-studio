@@ -113,6 +113,7 @@
  org.apache.directory.studio.common.core,
  org.apache.directory.studio.ldifparser,
  org.apache.httpcomponents.httpclient;bundle-version="${org.apache.httpcomponents.version}",
+ org.apache.mina.core;bundle-version="${org.apache.mina.core.version}",
  org.dom4j.dom4j;bundle-version="${org.dom4j.version}",
  org.eclipse.core.runtime</Require-Bundle>
             <Export-Package>org.apache.directory.studio.connection.core.*</Export-Package>
