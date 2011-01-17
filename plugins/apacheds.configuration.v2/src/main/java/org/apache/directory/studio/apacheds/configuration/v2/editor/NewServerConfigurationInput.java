@@ -20,7 +20,6 @@
 package org.apache.directory.studio.apacheds.configuration.v2.editor;
 
 
-import org.apache.directory.server.config.beans.ConfigBean;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IPersistableElement;

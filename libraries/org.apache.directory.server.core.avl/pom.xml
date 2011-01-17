@@ -141,18 +141,18 @@
       </exclusions>
     </dependency>
     <dependency>
-      <groupId>org.apache.directory.studio</groupId>
-      <artifactId>org.apache.directory.shared.i18n</artifactId>
+      <groupId>org.apache.directory.shared</groupId>
+      <artifactId>shared-i18n</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.directory.shared</groupId>
+      <artifactId>shared-ldap</artifactId>
       <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.directory.studio</groupId>
       <artifactId>org.apache.commons.lang</artifactId>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.directory.studio</groupId>
-      <artifactId>org.apache.directory.shared.ldap</artifactId>
       <scope>provided</scope>
     </dependency>
     <dependency>

@@ -117,47 +117,15 @@
   <dependencies>
     <!-- Apache Directory Studio library plugins dependencies -->
     <dependency>
+      <groupId>org.apache.directory.shared</groupId>
+      <artifactId>shared-ldap</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
       <groupId>org.apache.directory.studio</groupId>
       <artifactId>org.apache.commons.codec</artifactId>
       <scope>provided</scope>
     </dependency>
-    <!-- start 'org.apache.directory.shared.ldap' and sub-dependencies -->
-    <dependency>
-      <groupId>org.apache.directory.studio</groupId>
-      <artifactId>org.apache.directory.shared.ldap</artifactId>
-      <scope>provided</scope>
-    </dependency>
-        <dependency>
-          <groupId>org.apache.directory.studio</groupId>
-          <artifactId>org.antlr.antlr</artifactId>
-          <scope>provided</scope>
-        </dependency>
-        <dependency>
-          <groupId>org.apache.directory.studio</groupId>
-          <artifactId>org.apache.commons.collections</artifactId>
-          <scope>provided</scope>
-        </dependency>
-        <dependency>
-          <groupId>org.apache.directory.studio</groupId>
-          <artifactId>org.apache.commons.lang</artifactId>
-          <scope>provided</scope>
-        </dependency>
-        <dependency>
-          <groupId>org.apache.directory.studio</groupId>
-          <artifactId>org.apache.directory.shared.i18n</artifactId>
-          <scope>provided</scope>
-        </dependency>
-        <dependency>
-          <groupId>org.apache.directory.studio</groupId>
-          <artifactId>org.apache.mina.core</artifactId>
-          <scope>provided</scope>
-        </dependency>
-        <dependency>
-          <groupId>org.apache.directory.studio</groupId>
-          <artifactId>org.slf4j.api</artifactId>
-          <scope>provided</scope>
-        </dependency>    
-    <!-- end 'org.apache.directory.shared.ldap' and sub-dependencies -->
     
   	<!-- JUnit for test only -->
     <dependency>

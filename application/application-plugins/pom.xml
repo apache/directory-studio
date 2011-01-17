@@ -51,6 +51,26 @@
               <artifactItems>
                 <!-- Apache Directory Studio library plugins dependencies -->
                 <artifactItem>
+                  <groupId>org.apache.directory.shared</groupId>
+                  <artifactId>ldap-client-api</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.apache.directory.shared</groupId>
+                  <artifactId>shared-dsml-parser</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.apache.directory.shared</groupId>
+                  <artifactId>shared-i18n</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.apache.directory.shared</groupId>
+                  <artifactId>shared-ldap</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.apache.directory.shared</groupId>
+                  <artifactId>shared-ldap-schema</artifactId>
+                </artifactItem>
+                <artifactItem>
                   <groupId>org.apache.directory.studio</groupId>
                   <artifactId>net.sf.ehcache.core</artifactId>
                 </artifactItem>
@@ -113,26 +133,6 @@
                 <artifactItem>
                   <groupId>org.apache.directory.studio</groupId>
                   <artifactId>org.apache.directory.server.xdbm.partition</artifactId>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.apache.directory.studio</groupId>
-                  <artifactId>org.apache.directory.shared.dsmlv2.parser</artifactId>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.apache.directory.studio</groupId>
-                  <artifactId>org.apache.directory.shared.i18n</artifactId>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.apache.directory.studio</groupId>
-                  <artifactId>org.apache.directory.shared.ldap</artifactId>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.apache.directory.studio</groupId>
-                  <artifactId>org.apache.directory.shared.ldap.client.api</artifactId>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.apache.directory.studio</groupId>
-                  <artifactId>org.apache.directory.shared.ldap.schema</artifactId>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.apache.directory.studio</groupId>

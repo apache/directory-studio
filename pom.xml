@@ -264,31 +264,6 @@
       </dependency>
       <dependency>
         <groupId>org.apache.directory.studio</groupId>
-        <artifactId>org.apache.directory.shared.dsmlv2.parser</artifactId>
-        <version>${org.apache.directory.shared.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.apache.directory.studio</groupId>
-        <artifactId>org.apache.directory.shared.i18n</artifactId>
-        <version>${org.apache.directory.shared.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.apache.directory.studio</groupId>
-        <artifactId>org.apache.directory.shared.ldap</artifactId>
-        <version>${org.apache.directory.shared.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.apache.directory.studio</groupId>
-        <artifactId>org.apache.directory.shared.ldap.client.api</artifactId>
-        <version>${org.apache.directory.shared.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.apache.directory.studio</groupId>
-        <artifactId>org.apache.directory.shared.ldap.schema</artifactId>
-        <version>${org.apache.directory.shared.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.apache.directory.studio</groupId>
         <artifactId>org.apache.httpcomponents.httpclient</artifactId>
         <version>${org.apache.httpcomponents.version}</version>
       </dependency>
@@ -1384,6 +1359,11 @@
       <!-- Apache Directory Shared -->
       <dependency>
         <groupId>org.apache.directory.shared</groupId>
+        <artifactId>ldap-client-api</artifactId>
+        <version>${org.apache.directory.shared.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.directory.shared</groupId>
         <artifactId>shared-dsml-parser</artifactId>
         <version>${org.apache.directory.shared.version}</version>
       </dependency>
@@ -1400,11 +1380,6 @@
       <dependency>
         <groupId>org.apache.directory.shared</groupId>
         <artifactId>shared-ldap-schema</artifactId>
-        <version>${org.apache.directory.shared.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.apache.directory.shared</groupId>
-        <artifactId>ldap-client-api</artifactId>
         <version>${org.apache.directory.shared.version}</version>
       </dependency>
       

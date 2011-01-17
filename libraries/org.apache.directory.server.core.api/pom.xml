@@ -206,28 +206,23 @@
       <scope>provided</scope>
     </dependency>
     <dependency>
-      <groupId>org.apache.directory.studio</groupId>
-      <artifactId>org.apache.directory.shared.i18n</artifactId>
+      <groupId>org.apache.directory.shared</groupId>
+      <artifactId>ldap-client-api</artifactId>
       <scope>provided</scope>
     </dependency>
     <dependency>
-      <groupId>org.apache.directory.studio</groupId>
-      <artifactId>org.apache.directory.shared.ldap</artifactId>
+      <groupId>org.apache.directory.shared</groupId>
+      <artifactId>shared-i18n</artifactId>
       <scope>provided</scope>
     </dependency>
     <dependency>
-      <groupId>org.apache.directory.studio</groupId>
-      <artifactId>org.apache.directory.shared.ldap.client.api</artifactId>
+      <groupId>org.apache.directory.shared</groupId>
+      <artifactId>shared-ldap</artifactId>
       <scope>provided</scope>
     </dependency>
     <dependency>
-      <groupId>org.apache.directory.studio</groupId>
-      <artifactId>org.apache.directory.shared.ldap.schema</artifactId>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.directory.studio</groupId>
-      <artifactId>org.apache.directory.shared.i18n</artifactId>
+      <groupId>org.apache.directory.shared</groupId>
+      <artifactId>shared-ldap-schema</artifactId>
       <scope>provided</scope>
     </dependency>
   </dependencies>
