@@ -47,7 +47,7 @@
     <module>org.apache.directory.server.i18n</module>
     <module>org.apache.directory.server.ldif.partition</module>
     <module>org.apache.directory.server.xdbm.partition</module>
-    <module>org.apache.directory.shared.dsml.parser</module>
+    <module>org.apache.directory.shared.dsmlv2.parser</module>
     <module>org.apache.directory.shared.i18n</module>
     <module>org.apache.directory.shared.ldap</module>
     <module>org.apache.directory.shared.ldap.client.api</module>
