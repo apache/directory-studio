@@ -34,7 +34,7 @@ import org.eclipse.ui.forms.widgets.ScrolledForm;
 
 
 /**
- * This class represents the General Page of the Server Configuration Editor.
+ * This class represents the Loading Page of the Server Configuration Editor.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */

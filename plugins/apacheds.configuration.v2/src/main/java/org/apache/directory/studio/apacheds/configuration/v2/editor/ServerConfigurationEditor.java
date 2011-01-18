@@ -43,6 +43,8 @@ import org.apache.directory.studio.ldapbrowser.core.jobs.ExecuteLdifRunnable;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.operation.IRunnableWithProgress;
+import org.eclipse.swt.custom.CTabFolder;
+import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.IPathEditorInput;
@@ -122,6 +124,31 @@ public class ServerConfigurationEditor extends FormEditor
         {
             // TODO Auto-generated catch block
             e.printStackTrace();
+        }
+
+        showOrHideTabFolder();
+    }
+
+
+    /**
+     * Shows or hides the tab folder depending on
+     * the number of pages.
+     */
+    private void showOrHideTabFolder()
+    {
+        Composite container = getContainer();
+        if ( container instanceof CTabFolder )
+        {
+            CTabFolder folder = ( CTabFolder ) container;
+            if ( getPageCount() == 1 )
+            {
+                folder.setTabHeight( 0 );
+            }
+            else
+            {
+                folder.setTabHeight( -1 );
+            }
+            folder.layout( true, true );
         }
     }
 
@@ -445,7 +472,8 @@ public class ServerConfigurationEditor extends FormEditor
 
 
     /**
-     * This method is called by the job responsible for loading the configuration.
+     * This method is called by the job responsible for loading the 
+     * configuration when it has been fully and correctly loaded.
      *
      * @param configBean
      *      the loaded configuration bean
@@ -455,6 +483,23 @@ public class ServerConfigurationEditor extends FormEditor
         setConfiguration( configBean );
 
         hideLoadingPageAndDisplayConfigPages();
+    }
+
+
+    /**
+     * This method is called by the job responsible for loading the
+     * configuration when it failed to load it.
+     *
+     * @param exception
+     *      the exception
+     */
+    public void configurationLoadFailed( Exception exception )
+    {
+        // Overriding the default dirty setting 
+        // (especially in the case of a new configuration file)
+        setDirty( false );
+
+        hideLoadingPageAndDisplayErrorPage( exception );
     }
 
 
@@ -488,6 +533,37 @@ public class ServerConfigurationEditor extends FormEditor
 
         // Activating the first page
         setActivePage( 0 );
+
+        showOrHideTabFolder();
+    }
+
+
+    /**
+     * Hides the loading page and displays the error page.
+     *
+     * @param exception
+     *      the exception
+     */
+    private void hideLoadingPageAndDisplayErrorPage( Exception exception )
+    {
+        // Removing the loading page
+        removePage( 0 );
+
+        // Adding the error page
+        try
+        {
+            addPage( new ErrorPage( this, exception ) );
+        }
+        catch ( PartInitException e )
+        {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        // Activating the first page
+        setActivePage( 0 );
+
+        showOrHideTabFolder();
     }
 
 

@@ -133,8 +133,15 @@ public class LoadConfigurationRunnable implements StudioRunnableWithProgress
         }
         catch ( Exception e )
         {
-            // Reporting the error to the monitor
-            monitor.reportError( e );
+            // Reporting the error to the editor
+            final Exception exception = e;
+            Display.getDefault().asyncExec( new Runnable()
+            {
+                public void run()
+            {
+                editor.configurationLoadFailed( exception );
+            }
+            } );
         }
     }
 

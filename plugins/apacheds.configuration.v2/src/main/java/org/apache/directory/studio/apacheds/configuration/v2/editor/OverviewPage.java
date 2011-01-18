@@ -62,7 +62,7 @@ public class OverviewPage extends ServerConfigurationEditorPage
     /** The Page Title */
     private static final String TITLE = "Overview";
 
-    // UI Fields
+    // UI Controls
     private Button enableLdapCheckbox;
     private Text ldapPortText;
     private Button enableLdapsCheckbox;
