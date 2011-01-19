@@ -142,4 +142,41 @@ public class ConnectionServerConfigurationInput implements IEditorInput
     {
         return null;
     }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public boolean equals( Object obj )
+    {
+        if ( obj == null )
+        {
+            return false;
+        }
+
+        if ( obj instanceof ConnectionServerConfigurationInput )
+        {
+            ConnectionServerConfigurationInput input = ( ConnectionServerConfigurationInput ) obj;
+            if ( input.exists() && exists() )
+            {
+                Connection inputConnection = input.getConnection();
+
+                if ( ( inputConnection != null ) && ( inputConnection != null ) )
+                {
+                    return inputConnection.equals( connection );
+                }
+            }
+        }
+
+        return false;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public int hashCode()
+    {
+        return connection.hashCode();
+    }
 }
