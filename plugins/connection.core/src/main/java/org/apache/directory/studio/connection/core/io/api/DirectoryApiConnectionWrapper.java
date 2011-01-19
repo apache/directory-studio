@@ -25,11 +25,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import javax.naming.CommunicationException;
 import javax.naming.ContextNotEmptyException;
-import javax.naming.InsufficientResourcesException;
 import javax.naming.NamingException;
-import javax.naming.ServiceUnavailableException;
 import javax.naming.directory.Attributes;
 import javax.naming.directory.DirContext;
 import javax.naming.directory.ModificationItem;
@@ -41,6 +38,7 @@ import javax.net.ssl.X509TrustManager;
 
 import org.apache.directory.ldap.client.api.LdapConnectionConfig;
 import org.apache.directory.ldap.client.api.LdapNetworkConnection;
+import org.apache.directory.ldap.client.api.exception.InvalidConnectionException;
 import org.apache.directory.shared.ldap.codec.controls.ControlImpl;
 import org.apache.directory.shared.ldap.cursor.SearchCursor;
 import org.apache.directory.shared.ldap.entry.DefaultModification;
@@ -115,6 +113,8 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
     /** The bind password */
     private String bindPassword;
 
+    private LdapConnectionConfig ldapConnectionConfig;
+
 
     /**
      * Creates a new instance of JNDIConnectionContext.
@@ -134,7 +134,7 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
      *      the associated LDAP Connection
      * @throws Exception 
      */
-    private LdapNetworkConnection getLdapConnection()
+    private LdapNetworkConnection getLdapConnections()
     {
         if ( ldapConnection != null )
         {
@@ -171,7 +171,8 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
             }
             catch ( Exception e )
             {
-                // TODO: handle exception
+                e.printStackTrace();
+                throw new RuntimeException( e );
             }
         }
 
@@ -207,14 +208,51 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
         ldapConnection = null;
         isConnected = true;
 
+        ldapConnectionConfig = new LdapConnectionConfig();
+        ldapConnectionConfig.setLdapHost( connection.getHost() );
+        ldapConnectionConfig.setLdapPort( connection.getPort() );
+        ldapConnectionConfig.setName( connection.getBindPrincipal() );
+        ldapConnectionConfig.setCredentials( connection.getBindPassword() );
+        if ( ( connection.getEncryptionMethod() == EncryptionMethod.LDAPS )
+            || ( connection.getEncryptionMethod() == EncryptionMethod.START_TLS ) )
+        {
+            ldapConnectionConfig.setUseSsl( true );
+
+            try
+            {
+                // get default trust managers (using JVM "cacerts" key store)
+                TrustManagerFactory factory = TrustManagerFactory.getInstance( TrustManagerFactory
+                    .getDefaultAlgorithm() );
+                factory.init( ( KeyStore ) null );
+                TrustManager[] defaultTrustManagers = factory.getTrustManagers();
+
+                // create wrappers around the trust managers
+                StudioTrustManager[] trustManagers = new StudioTrustManager[defaultTrustManagers.length];
+                for ( int i = 0; i < defaultTrustManagers.length; i++ )
+                {
+                    trustManagers[i] = new StudioTrustManager( ( X509TrustManager ) defaultTrustManagers[i] );
+                    trustManagers[i].setHost( connection.getHost() );
+                }
+
+                ldapConnectionConfig.setTrustManagers( trustManagers );
+            }
+            catch ( Exception e )
+            {
+                e.printStackTrace();
+                throw new RuntimeException( e );
+            }
+        }
+
         InnerRunnable runnable = new InnerRunnable()
         {
             public void run()
             {
                 try
                 {
+                    ldapConnection = new LdapNetworkConnection( ldapConnectionConfig );
+
                     // Connecting
-                    boolean connected = getLdapConnection().connect();
+                    boolean connected = ldapConnection.connect();
                     if ( !connected )
                     {
                         throw new Exception( "Unable to connect" );
@@ -223,12 +261,28 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
                     // Start TLS
                     if ( connection.getConnectionParameter().getEncryptionMethod() == ConnectionParameter.EncryptionMethod.START_TLS )
                     {
-                        getLdapConnection().startTls();
+                        ldapConnection.startTls();
                     }
                 }
                 catch ( Exception e )
                 {
                     exception = e;
+                    try
+                    {
+                        if ( ldapConnection != null )
+                        {
+                            ldapConnection.close();
+
+                        }
+                    }
+                    catch ( Exception exception )
+                    {
+                        // Nothing to do
+                    }
+                    finally
+                    {
+                        ldapConnection = null;
+                    }
                 }
             }
         };
@@ -247,15 +301,26 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
      */
     public void disconnect()
     {
-        try
+        if ( jobThread != null )
         {
-            getLdapConnection().close();
+            Thread t = jobThread;
+            jobThread = null;
+            t.interrupt();
         }
-        catch ( Exception e )
+        if ( ldapConnection != null )
         {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            try
+            {
+                ldapConnection.close();
+            }
+            catch ( Exception e )
+            {
+                // ignore
+            }
+            ldapConnection = null;
         }
+        isConnected = false;
+        System.gc();
     }
 
 
@@ -317,23 +382,23 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
                         // Simple Authentication
                         if ( connection.getConnectionParameter().getAuthMethod() == ConnectionParameter.AuthenticationMethod.SIMPLE )
                         {
-                            bindResponse = getLdapConnection().bind( bindPrincipal, bindPassword );
+                            bindResponse = ldapConnection.bind( bindPrincipal, bindPassword );
                         }
                         // CRAM-MD5 Authentication
                         else if ( connection.getConnectionParameter().getAuthMethod() == ConnectionParameter.AuthenticationMethod.SASL_CRAM_MD5 )
                         {
-                            bindResponse = getLdapConnection().bindCramMd5( bindPrincipal, bindPassword, null );
+                            bindResponse = ldapConnection.bindCramMd5( bindPrincipal, bindPassword, null );
                         }
                         // DIGEST-MD5 Authentication
                         else if ( connection.getConnectionParameter().getAuthMethod() == ConnectionParameter.AuthenticationMethod.SASL_DIGEST_MD5 )
                         {
-                            bindResponse = getLdapConnection().bindDigestMd5( bindPrincipal, bindPassword, null,
+                            bindResponse = ldapConnection.bindDigestMd5( bindPrincipal, bindPassword, null,
                                 connection.getConnectionParameter().getSaslRealm() );
                         }
                         // GSSAPI Authentication
                         else if ( connection.getConnectionParameter().getAuthMethod() == ConnectionParameter.AuthenticationMethod.SASL_GSSAPI )
                         {
-                            bindResponse = getLdapConnection().bindGssApi( bindPrincipal, bindPassword,
+                            bindResponse = ldapConnection.bindGssApi( bindPrincipal, bindPassword,
                                 connection.getConnectionParameter().getSaslRealm(),
                                 connection.getConnectionParameter().getKrb5KdcHost(),
                                 connection.getConnectionParameter().getKrb5KdcPort() );
@@ -376,7 +441,7 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
      */
     public boolean isConnected()
     {
-        return getLdapConnection().isConnected();
+        return ( ldapConnection != null && ldapConnection.isConnected() );
     }
 
 
@@ -416,7 +481,7 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
                     request.setDerefAliases( convertAliasDerefMode( aliasesDereferencingMethod ) );
 
                     // Performing the search operation
-                    SearchCursor cursor = getLdapConnection().search( request );
+                    SearchCursor cursor = ldapConnection.search( request );
 
                     // Returning the result of the search
                     namingEnumeration = new CursorStudioNamingEnumeration( connection, cursor, searchBase, filter,
@@ -600,7 +665,7 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
                     request.addAllControls( convertControls( controls ) );
 
                     // Performing the modify operation
-                    ModifyResponse modifyResponse = getLdapConnection().modify( request );
+                    ModifyResponse modifyResponse = ldapConnection.modify( request );
 
                     // Checking the response
                     checkResponse( modifyResponse );
@@ -729,7 +794,7 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
                     request.addAllControls( convertControls( controls ) );
 
                     // Performing the rename operation
-                    ModifyDnResponse modifyDnResponse = getLdapConnection().modifyDn( request );
+                    ModifyDnResponse modifyDnResponse = ldapConnection.modifyDn( request );
 
                     // Checking the response
                     checkResponse( modifyDnResponse );
@@ -797,7 +862,7 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
                     request.addAllControls( convertControls( controls ) );
 
                     // Performing the add operation
-                    AddResponse addResponse = getLdapConnection().add( request );
+                    AddResponse addResponse = ldapConnection.add( request );
 
                     // Checking the response
                     checkResponse( addResponse );
@@ -864,7 +929,7 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
                     request.addAllControls( convertControls( controls ) );
 
                     // Performing the delete operation
-                    DeleteResponse deleteResponse = getLdapConnection().delete( request );
+                    DeleteResponse deleteResponse = ldapConnection.delete( request );
 
                     // Checking the response
                     checkResponse( deleteResponse );
@@ -985,10 +1050,8 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
             // check reconnection
             if ( i == 0
                 && runnable.getException() != null
-                && ( ( runnable.getException() instanceof CommunicationException )
-                    || ( runnable.getException() instanceof ServiceUnavailableException ) || ( runnable.getException() instanceof InsufficientResourcesException ) ) )
+                && ( ( runnable.getException() instanceof InvalidConnectionException ) ) )
             {
-
                 doConnect( monitor );
                 doBind( monitor );
                 runnable.reset();
