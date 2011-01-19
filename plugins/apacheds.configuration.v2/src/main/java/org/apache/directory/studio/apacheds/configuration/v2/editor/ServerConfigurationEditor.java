@@ -20,27 +20,14 @@
 package org.apache.directory.studio.apacheds.configuration.v2.editor;
 
 
-import java.io.ByteArrayInputStream;
-import java.io.File;
 import java.lang.reflect.InvocationTargetException;
-import java.util.List;
 
 import org.apache.directory.server.config.ConfigWriter;
-import org.apache.directory.server.config.ConfigurationException;
 import org.apache.directory.server.config.beans.ConfigBean;
-import org.apache.directory.shared.ldap.entry.DefaultEntry;
-import org.apache.directory.shared.ldap.ldif.LdifEntry;
-import org.apache.directory.shared.ldap.schema.SchemaManager;
 import org.apache.directory.studio.apacheds.configuration.v2.ApacheDS2ConfigurationPlugin;
-import org.apache.directory.studio.apacheds.configuration.v2.jobs.EntryBasedConfigurationPartition;
 import org.apache.directory.studio.apacheds.configuration.v2.jobs.LoadConfigurationRunnable;
-import org.apache.directory.studio.apacheds.configuration.v2.jobs.PartitionsDiffComputer;
 import org.apache.directory.studio.common.core.jobs.StudioJob;
-import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.common.core.jobs.StudioRunnableWithProgress;
-import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
-import org.apache.directory.studio.ldapbrowser.core.jobs.ExecuteLdifRunnable;
-import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.swt.custom.CTabFolder;
@@ -172,7 +159,8 @@ public class ServerConfigurationEditor extends FormEditor
                 // from a project in the workspace.
                 {
                     // Saving the ServerConfiguration to disk
-                    saveConfiguration( ( FileEditorInput ) input, monitor );
+                    ServerConfigurationEditorUtils.saveConfiguration( ( FileEditorInput ) input, getConfigWriter(),
+                        monitor );
                     success = true;
                 }
                 // If the input is a ConnectionServerConfigurationInput, then we 
@@ -180,13 +168,15 @@ public class ServerConfigurationEditor extends FormEditor
                 if ( input instanceof ConnectionServerConfigurationInput )
                 {
                     // Saving the ServerConfiguration to the connection
-                    saveConfiguration( ( ConnectionServerConfigurationInput ) input, monitor );
+                    ServerConfigurationEditorUtils.saveConfiguration( ( ConnectionServerConfigurationInput ) input,
+                        getConfigWriter(), monitor );
                     success = true;
                 }
                 else if ( input instanceof IPathEditorInput )
                 {
                     // Saving the ServerConfiguration to disk
-                    saveConfiguration( ( ( IPathEditorInput ) input ).getPath().toFile() );
+                    ServerConfigurationEditorUtils
+                        .saveConfiguration( ( ( IPathEditorInput ) input ).getPath().toFile(), getConfigWriter() );
                     success = true;
                 }
                 else if ( inputClassName.equals( "org.eclipse.ui.internal.editors.text.JavaFileEditorInput" ) //$NON-NLS-1$
@@ -197,7 +187,7 @@ public class ServerConfigurationEditor extends FormEditor
                 // opening a file from the menu File > Open... in Eclipse 3.3.x
                 {
                     // Saving the ServerConfiguration to disk
-                    saveConfiguration( input.getToolTipText() );
+                    ServerConfigurationEditorUtils.saveConfiguration( input.getToolTipText(), getConfigWriter() );
                     success = true;
                 }
                 else if ( input instanceof NewServerConfigurationInput )
@@ -218,120 +208,6 @@ public class ServerConfigurationEditor extends FormEditor
                 e.printStackTrace();
             }
         }
-    }
-
-
-    /**
-     * Saves the configuration.
-     *
-     * @param input
-     *      the file editor input
-     * @param monitor
-     *      the monitor
-     * @throws Exception
-     */
-    private void saveConfiguration( FileEditorInput input, IProgressMonitor monitor ) throws Exception
-    {
-        input.getFile().setContents( new ByteArrayInputStream( getConfigWriter().writeToString().getBytes() ), true,
-            true, monitor );
-    }
-
-
-    /**
-     * Saves the configuration.
-     *
-     * @param input
-     *      the connection server configuration input
-     * @param monitor
-     *      the monitor
-     * @return
-     *      <code>true</code> if the operation is successful,
-     *      <code>false</code> if not
-     * @throws ConfigurationException 
-     * @throws Exception
-     */
-    private void saveConfiguration( ConnectionServerConfigurationInput input, IProgressMonitor monitor )
-        throws ConfigurationException, Exception
-    {
-        // Getting the original configuration partition
-        EntryBasedConfigurationPartition originalPartition = input.getOriginalPartition();
-
-        // Creating a new configuration partition
-        SchemaManager schemaManager = ApacheDS2ConfigurationPlugin.getDefault().getSchemaManager();
-        EntryBasedConfigurationPartition newconfigurationPartition = new EntryBasedConfigurationPartition(
-            schemaManager );
-        newconfigurationPartition.initialize();
-        List<LdifEntry> convertedLdifEntries = getConfigWriter().getConvertedLdifEntries();
-        for ( LdifEntry ldifEntry : convertedLdifEntries )
-        {
-            newconfigurationPartition.addEntry( new DefaultEntry( schemaManager, ldifEntry.getEntry() ) );
-        }
-
-        // Comparing both partitions to get the list of modifications to be applied
-        PartitionsDiffComputer partitionsDiffComputer = new PartitionsDiffComputer();
-        partitionsDiffComputer.setOriginalPartition( originalPartition );
-        partitionsDiffComputer.setDestinationPartition( newconfigurationPartition );
-        List<LdifEntry> modificationsList = partitionsDiffComputer.computeModifications( new String[]
-            { "*" } );
-
-        System.out.println( modificationsList );
-
-        // Building the resulting LDIF
-        StringBuilder modificationsLdif = new StringBuilder();
-        for ( LdifEntry ldifEntry : modificationsList )
-        {
-            modificationsLdif.append( ldifEntry.toString() );
-        }
-
-        // Getting the browser connection associated with the 
-        IBrowserConnection browserConnection = BrowserCorePlugin.getDefault().getConnectionManager()
-            .getBrowserConnection( input.getConnection() );
-
-        // Creating a StudioProgressMonitor to run the LDIF with
-        StudioProgressMonitor studioProgressMonitor = new StudioProgressMonitor( monitor );
-
-        // Updating the configuration with the resulting LDIF
-        ExecuteLdifRunnable.executeLdif( browserConnection, modificationsLdif.toString(), true, true,
-            studioProgressMonitor );
-
-        // Checking if there were errors during the execution of the LDIF
-        if ( studioProgressMonitor.errorsReported() )
-        {
-            // TODO handle error
-        }
-        else
-        {
-            System.out.println( "swapping partition" );
-
-            // Swapping the new configuration partition
-            input.setOriginalPartition( newconfigurationPartition );
-        }
-    }
-
-
-    /**
-     * Saves the configuration.
-     *
-     * @param file
-     *      the file
-     * @throws Exception
-     */
-    private void saveConfiguration( File file ) throws Exception
-    {
-        getConfigWriter().writeToFile( file );
-    }
-
-
-    /**
-     * Saves the configuration.
-     *
-     * @param path
-     *      the path
-     * @throws Exception
-     */
-    private void saveConfiguration( String path ) throws Exception
-    {
-        saveConfiguration( new File( path ) );
     }
 
 

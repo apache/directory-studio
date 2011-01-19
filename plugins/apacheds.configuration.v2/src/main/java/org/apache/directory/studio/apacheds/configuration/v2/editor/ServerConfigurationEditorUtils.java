@@ -25,7 +25,7 @@ import java.io.File;
 import java.util.List;
 
 import org.apache.directory.server.config.ConfigWriter;
-import org.apache.directory.server.config.ConfigurationException;
+import org.apache.directory.shared.ldap.constants.SchemaConstants;
 import org.apache.directory.shared.ldap.entry.DefaultEntry;
 import org.apache.directory.shared.ldap.ldif.LdifEntry;
 import org.apache.directory.shared.ldap.schema.SchemaManager;
@@ -41,6 +41,7 @@ import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
@@ -66,17 +67,15 @@ public class ServerConfigurationEditorUtils
      * Performs the "Save as..." action.
      *
      * @param monitor
-     *      the monitor to use
-     * @throws Exception
-     */
-    /**
-     * TODO doSaveAs.
-     *
-     * @param monitor
+     *      the monitor
      * @param shell
+     *      the shell
      * @param input
+     *      the editor input
      * @param configWriter
+     *      the configuration writer
      * @return
+     *      the new input for the editor
      * @throws Exception
      */
     public static IEditorInput doSaveAs( IProgressMonitor monitor, Shell shell, IEditorInput input,
@@ -226,12 +225,11 @@ public class ServerConfigurationEditorUtils
      * @return
      *      <code>true</code> if the operation is successful,
      *      <code>false</code> if not
-     * @throws ConfigurationException 
      * @throws Exception
      */
     public static void saveConfiguration( ConnectionServerConfigurationInput input, ConfigWriter configWriter,
         IProgressMonitor monitor )
-        throws ConfigurationException, Exception
+        throws Exception
     {
         // Getting the original configuration partition
         EntryBasedConfigurationPartition originalPartition = input.getOriginalPartition();
@@ -252,7 +250,7 @@ public class ServerConfigurationEditorUtils
         partitionsDiffComputer.setOriginalPartition( originalPartition );
         partitionsDiffComputer.setDestinationPartition( newconfigurationPartition );
         List<LdifEntry> modificationsList = partitionsDiffComputer.computeModifications( new String[]
-            { "*" } );
+            { SchemaConstants.ALL_USER_ATTRIBUTES } );
 
         System.out.println( modificationsList );
 
