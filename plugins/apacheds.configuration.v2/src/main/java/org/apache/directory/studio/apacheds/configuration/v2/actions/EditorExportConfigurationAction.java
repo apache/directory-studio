@@ -31,7 +31,6 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.ui.IEditorInput;
 
 
 /**
@@ -89,13 +88,12 @@ public class EditorExportConfigurationAction extends Action
                 {
                     try
                     {
-                        // Saving the configuration as a new file and getting the associated new editor input
-                        IEditorInput newInput = ServerConfigurationEditorUtils.doSaveAs( monitor, editor.getSite()
-                            .getShell(),
-                            editor.getEditorInput(), editor.getConfigWriter() );
+                        ServerConfigurationEditorUtils.doSaveAs( monitor, editor.getSite()
+                            .getShell(), editor.getEditorInput(), editor.getConfigWriter() );
                     }
                     catch ( Exception e )
                     {
+
                         // TODO handle the exception
                     }
                 }

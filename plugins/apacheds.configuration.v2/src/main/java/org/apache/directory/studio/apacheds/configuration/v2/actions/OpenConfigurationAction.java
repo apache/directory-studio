@@ -21,23 +21,8 @@
 package org.apache.directory.studio.apacheds.configuration.v2.actions;
 
 
-import java.io.File;
-import java.util.List;
-
-import org.apache.directory.server.config.ConfigPartitionReader;
-import org.apache.directory.server.config.beans.ConfigBean;
-import org.apache.directory.server.core.partition.ldif.SingleFileLdifPartition;
-import org.apache.directory.shared.ldap.name.DN;
-import org.apache.directory.shared.ldap.schema.SchemaManager;
-import org.apache.directory.shared.ldap.schema.registries.SchemaLoader;
-import org.apache.directory.shared.ldap.schemaloader.LdifSchemaLoader;
-import org.apache.directory.shared.ldap.schemamanager.impl.DefaultSchemaManager;
-import org.apache.directory.shared.ldap.util.LdapExceptionUtils;
-import org.apache.directory.studio.apacheds.configuration.v2.ApacheDS2ConfigurationPlugin;
 import org.apache.directory.studio.apacheds.configuration.v2.editor.ConnectionServerConfigurationInput;
-import org.apache.directory.studio.apacheds.configuration.v2.editor.NewServerConfigurationInput;
 import org.apache.directory.studio.apacheds.configuration.v2.editor.ServerConfigurationEditor;
-import org.apache.directory.studio.apacheds.configuration.v2.editor.ServerConfigurationInput;
 import org.apache.directory.studio.connection.core.Connection;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;

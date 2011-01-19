@@ -133,14 +133,17 @@ public class LoadConfigurationRunnable implements StudioRunnableWithProgress
         }
         catch ( Exception e )
         {
+            // Reporting the error to the monitor
+            monitor.reportError( e );
+            
             // Reporting the error to the editor
             final Exception exception = e;
             Display.getDefault().asyncExec( new Runnable()
             {
                 public void run()
-            {
-                editor.configurationLoadFailed( exception );
-            }
+                {
+                    editor.configurationLoadFailed( exception );
+                }
             } );
         }
     }
@@ -291,7 +294,7 @@ public class LoadConfigurationRunnable implements StudioRunnableWithProgress
             // Checking if an error occurred
             if ( monitor.errorsReported() )
             {
-                return null;
+                throw monitor.getException();
             }
 
             // Getting the entry
@@ -348,7 +351,7 @@ public class LoadConfigurationRunnable implements StudioRunnableWithProgress
                 // Checking if an error occurred
                 if ( monitor.errorsReported() )
                 {
-                    return null;
+                    throw monitor.getException();
                 }
 
                 while ( childrenEnumeration.hasMore() )
