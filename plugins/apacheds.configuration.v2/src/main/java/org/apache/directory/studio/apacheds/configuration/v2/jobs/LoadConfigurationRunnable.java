@@ -37,6 +37,7 @@ import org.apache.directory.shared.ldap.constants.SchemaConstants;
 import org.apache.directory.shared.ldap.entry.DefaultEntry;
 import org.apache.directory.shared.ldap.entry.Entry;
 import org.apache.directory.shared.ldap.exception.LdapException;
+import org.apache.directory.shared.ldap.exception.LdapNoSuchObjectException;
 import org.apache.directory.shared.ldap.name.DN;
 import org.apache.directory.shared.ldap.schema.SchemaManager;
 import org.apache.directory.shared.ldap.util.AttributeUtils;
@@ -60,7 +61,7 @@ import org.eclipse.ui.part.FileEditorInput;
 
 
 /**
- * This class implements a {@link Job} that is used to delete an LDAP Server.
+ * This class implements a {@link Job} that is used to load a server configuration.
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
@@ -71,10 +72,10 @@ public class LoadConfigurationRunnable implements StudioRunnableWithProgress
 
 
     /**
-     * Creates a new instance of StartLdapServerRunnable.
+     * Creates a new instance of LoadConfigurationRunnable.
      * 
-     * @param server
-     *            the LDAP Server
+     * @param editor
+     *            the editor
      */
     public LoadConfigurationRunnable( ServerConfigurationEditor editor )
     {
@@ -106,7 +107,7 @@ public class LoadConfigurationRunnable implements StudioRunnableWithProgress
      */
     public String getName()
     {
-        return "Load configuration";
+        return "Load Configuration";
     }
 
 
@@ -135,7 +136,7 @@ public class LoadConfigurationRunnable implements StudioRunnableWithProgress
         {
             // Reporting the error to the monitor
             monitor.reportError( e );
-            
+
             // Reporting the error to the editor
             final Exception exception = e;
             Display.getDefault().asyncExec( new Runnable()
@@ -310,7 +311,7 @@ public class LoadConfigurationRunnable implements StudioRunnableWithProgress
             // Verifying we found the 'ou=config' base entry
             if ( configEntry == null )
             {
-                // TODO throw a new error
+                throw new LdapNoSuchObjectException( "Unable to find the 'ou=config' base entry." );
             }
 
             // Creating a list to hold the entries that needs to be checked

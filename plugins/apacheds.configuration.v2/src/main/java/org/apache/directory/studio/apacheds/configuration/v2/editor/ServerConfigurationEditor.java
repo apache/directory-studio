@@ -26,18 +26,18 @@ import org.apache.directory.server.config.ConfigWriter;
 import org.apache.directory.server.config.beans.ConfigBean;
 import org.apache.directory.studio.apacheds.configuration.v2.ApacheDS2ConfigurationPlugin;
 import org.apache.directory.studio.apacheds.configuration.v2.jobs.LoadConfigurationRunnable;
+import org.apache.directory.studio.apacheds.configuration.v2.jobs.SaveConfigurationRunnable;
 import org.apache.directory.studio.common.core.jobs.StudioJob;
 import org.apache.directory.studio.common.core.jobs.StudioRunnableWithProgress;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.swt.custom.CTabFolder;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorSite;
-import org.eclipse.ui.IPathEditorInput;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.forms.editor.FormEditor;
-import org.eclipse.ui.part.FileEditorInput;
 
 
 /**
@@ -145,69 +145,9 @@ public class ServerConfigurationEditor extends FormEditor
      */
     public void doSave( IProgressMonitor monitor )
     {
-        if ( dirty )
-        {
-            monitor.beginTask( "Saving the server configuration", IProgressMonitor.UNKNOWN );
-
-            try
-            {
-                IEditorInput input = getEditorInput();
-                String inputClassName = input.getClass().getName();
-                boolean success = false;
-                if ( input instanceof FileEditorInput )
-                // FileEditorInput class is used when the file is opened
-                // from a project in the workspace.
-                {
-                    // Saving the ServerConfiguration to disk
-                    ServerConfigurationEditorUtils.saveConfiguration( ( FileEditorInput ) input, getConfigWriter(),
-                        monitor );
-                    success = true;
-                }
-                // If the input is a ConnectionServerConfigurationInput, then we 
-                // read the server configuration from the selected connection
-                if ( input instanceof ConnectionServerConfigurationInput )
-                {
-                    // Saving the ServerConfiguration to the connection
-                    ServerConfigurationEditorUtils.saveConfiguration( ( ConnectionServerConfigurationInput ) input,
-                        getConfigWriter(), monitor );
-                    success = true;
-                }
-                else if ( input instanceof IPathEditorInput )
-                {
-                    // Saving the ServerConfiguration to disk
-                    ServerConfigurationEditorUtils
-                        .saveConfiguration( ( ( IPathEditorInput ) input ).getPath().toFile(), getConfigWriter() );
-                    success = true;
-                }
-                else if ( inputClassName.equals( "org.eclipse.ui.internal.editors.text.JavaFileEditorInput" ) //$NON-NLS-1$
-                    || inputClassName.equals( "org.eclipse.ui.ide.FileStoreEditorInput" ) ) //$NON-NLS-1$
-                // The class 'org.eclipse.ui.internal.editors.text.JavaFileEditorInput'
-                // is used when opening a file from the menu File > Open... in Eclipse 3.2.x
-                // The class 'org.eclipse.ui.ide.FileStoreEditorInput' is used when
-                // opening a file from the menu File > Open... in Eclipse 3.3.x
-                {
-                    // Saving the ServerConfiguration to disk
-                    ServerConfigurationEditorUtils.saveConfiguration( input.getToolTipText(), getConfigWriter() );
-                    success = true;
-                }
-                else if ( input instanceof NewServerConfigurationInput )
-                {
-                    // The 'ServerConfigurationEditorInput' class is used when a
-                    // new Server Configuration File is created.
-
-                    // We are saving this as if it is a "Save as..." action.
-                    success = doSaveAs( monitor );
-                }
-
-                setDirty( !success );
-                monitor.done();
-            }
-            catch ( Exception e )
-            {
-                // TODO
-                e.printStackTrace();
-            }
-        }
+        StudioJob<StudioRunnableWithProgress> job = new StudioJob<StudioRunnableWithProgress>(
+            new SaveConfigurationRunnable( this ) );
+        job.schedule();
     }
 
 
@@ -250,7 +190,7 @@ public class ServerConfigurationEditor extends FormEditor
      *      the monitor to use
      * @throws Exception
      */
-    private boolean doSaveAs( IProgressMonitor monitor ) throws Exception
+    public boolean doSaveAs( IProgressMonitor monitor ) throws Exception
     {
         // Saving the configuration as a new file and getting the associated new editor input
         IEditorInput newInput = ServerConfigurationEditorUtils.doSaveAs( monitor, getSite().getShell(),
@@ -301,7 +241,14 @@ public class ServerConfigurationEditor extends FormEditor
     public void setDirty( boolean dirty )
     {
         this.dirty = dirty;
-        firePropertyChange( PROP_DIRTY );
+
+        Display.getDefault().asyncExec( new Runnable()
+        {
+            public void run()
+            {
+                firePropertyChange( PROP_DIRTY );
+            }
+        } );
     }
 
 

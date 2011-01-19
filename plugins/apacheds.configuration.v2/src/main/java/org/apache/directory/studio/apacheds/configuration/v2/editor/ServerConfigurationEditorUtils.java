@@ -266,7 +266,7 @@ public class ServerConfigurationEditorUtils
             .getBrowserConnection( input.getConnection() );
 
         // Creating a StudioProgressMonitor to run the LDIF with
-        StudioProgressMonitor studioProgressMonitor = new StudioProgressMonitor( monitor );
+        StudioProgressMonitor studioProgressMonitor = new StudioProgressMonitor( new NullProgressMonitor() );
 
         // Updating the configuration with the resulting LDIF
         ExecuteLdifRunnable.executeLdif( browserConnection, modificationsLdif.toString(), true, true,
@@ -275,7 +275,7 @@ public class ServerConfigurationEditorUtils
         // Checking if there were errors during the execution of the LDIF
         if ( studioProgressMonitor.errorsReported() )
         {
-            // TODO handle error
+            throw new Exception( "Changes could not be saved to the connection." );
         }
         else
         {

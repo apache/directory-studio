@@ -55,6 +55,7 @@ import org.eclipse.ui.model.WorkbenchLabelProvider;
 public class EditorImportConfigurationAction extends Action
 {
     private static final String DIALOG_TITLE = "Select Configuration File";
+
     /** The associated editor */
     private ServerConfigurationEditor editor;
 
@@ -184,7 +185,6 @@ public class EditorImportConfigurationAction extends Action
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-
     }
 
 
