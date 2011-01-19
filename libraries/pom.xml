@@ -56,7 +56,6 @@
     <module>org.slf4j.api</module>
     <module>org.slf4j.log4j12</module>
     <module>org.xpp3.xpp3</module>
-    <module>shared</module>
   </modules>
 
   <build>
