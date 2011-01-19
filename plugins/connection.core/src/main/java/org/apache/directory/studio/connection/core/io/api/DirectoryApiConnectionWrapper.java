@@ -98,6 +98,9 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
     /** The connection*/
     private Connection connection;
 
+    /** The LDAP Connection Configuration */
+    private LdapConnectionConfig ldapConnectionConfig;
+
     /** The LDAP Connection */
     private LdapNetworkConnection ldapConnection;
 
@@ -113,8 +116,6 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
     /** The bind password */
     private String bindPassword;
 
-    private LdapConnectionConfig ldapConnectionConfig;
-
 
     /**
      * Creates a new instance of JNDIConnectionContext.
@@ -124,61 +125,6 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
     public DirectoryApiConnectionWrapper( Connection connection )
     {
         this.connection = connection;
-    }
-
-
-    /**
-     * Gets the associated LDAP Connection.
-     *
-     * @return
-     *      the associated LDAP Connection
-     * @throws Exception 
-     */
-    private LdapNetworkConnection getLdapConnections()
-    {
-        if ( ldapConnection != null )
-        {
-            return ldapConnection;
-        }
-
-        LdapConnectionConfig config = new LdapConnectionConfig();
-        config.setLdapHost( connection.getHost() );
-        config.setLdapPort( connection.getPort() );
-        config.setName( connection.getBindPrincipal() );
-        config.setCredentials( connection.getBindPassword() );
-        if ( ( connection.getEncryptionMethod() == EncryptionMethod.LDAPS )
-            || ( connection.getEncryptionMethod() == EncryptionMethod.START_TLS ) )
-        {
-            config.setUseSsl( true );
-
-            try
-            {
-                // get default trust managers (using JVM "cacerts" key store)
-                TrustManagerFactory factory = TrustManagerFactory.getInstance( TrustManagerFactory
-                    .getDefaultAlgorithm() );
-                factory.init( ( KeyStore ) null );
-                TrustManager[] defaultTrustManagers = factory.getTrustManagers();
-
-                // create wrappers around the trust managers
-                StudioTrustManager[] trustManagers = new StudioTrustManager[defaultTrustManagers.length];
-                for ( int i = 0; i < defaultTrustManagers.length; i++ )
-                {
-                    trustManagers[i] = new StudioTrustManager( ( X509TrustManager ) defaultTrustManagers[i] );
-                    trustManagers[i].setHost( connection.getHost() );
-                }
-
-                config.setTrustManagers( trustManagers );
-            }
-            catch ( Exception e )
-            {
-                e.printStackTrace();
-                throw new RuntimeException( e );
-            }
-        }
-
-        ldapConnection = new LdapNetworkConnection( config );
-
-        return ldapConnection;
     }
 
 
