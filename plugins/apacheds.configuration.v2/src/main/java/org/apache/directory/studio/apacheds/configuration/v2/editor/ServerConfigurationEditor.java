@@ -207,7 +207,13 @@ public class ServerConfigurationEditor extends FormEditor
             setDirty( false );
 
             // Updating the title and tooltip texts
-            setPartName( getEditorInput().getName() );
+            Display.getDefault().syncExec( new Runnable()
+            {
+                public void run()
+                {
+                    setPartName( getEditorInput().getName() );
+                }
+            } );
         }
 
         return success;
