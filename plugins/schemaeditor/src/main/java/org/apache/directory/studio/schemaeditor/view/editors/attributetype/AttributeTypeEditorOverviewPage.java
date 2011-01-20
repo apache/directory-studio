@@ -24,7 +24,7 @@ package org.apache.directory.studio.schemaeditor.view.editors.attributetype;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.directory.shared.asn1.primitives.OID;
+import org.apache.directory.shared.asn1.util.OID;
 import org.apache.directory.shared.ldap.schema.UsageEnum;
 import org.apache.directory.studio.schemaeditor.Activator;
 import org.apache.directory.studio.schemaeditor.PluginConstants;
@@ -323,7 +323,7 @@ public class AttributeTypeEditorOverviewPage extends FormPage
 
             String oid = oidText.getText();
 
-            if ( OID.isOID( oid ) )
+            if ( OID.isOID(oid) )
             {
                 if ( ( originalAttributeType.getOid().equals( oid ) )
                     || !( schemaHandler.isAliasOrOidAlreadyTaken( oid ) ) )
