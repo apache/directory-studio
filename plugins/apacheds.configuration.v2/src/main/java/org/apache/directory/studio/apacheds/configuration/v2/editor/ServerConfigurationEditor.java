@@ -193,7 +193,7 @@ public class ServerConfigurationEditor extends FormEditor
     public boolean doSaveAs( IProgressMonitor monitor ) throws Exception
     {
         // Saving the configuration as a new file and getting the associated new editor input
-        IEditorInput newInput = ServerConfigurationEditorUtils.doSaveAs( monitor, getSite().getShell(),
+        IEditorInput newInput = ServerConfigurationEditorUtils.saveAs( monitor, getSite().getShell(),
             getEditorInput(), getConfigWriter() );
 
         // Checking if the 'save as' is successful 

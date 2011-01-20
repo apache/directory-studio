@@ -48,6 +48,7 @@ import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IEditorInput;
@@ -78,7 +79,7 @@ public class ServerConfigurationEditorUtils
      *      the new input for the editor
      * @throws Exception
      */
-    public static IEditorInput doSaveAs( IProgressMonitor monitor, Shell shell, IEditorInput input,
+    public static IEditorInput saveAs( IProgressMonitor monitor, Shell shell, IEditorInput input,
         ConfigWriter configWriter )
         throws Exception
     {
@@ -89,7 +90,7 @@ public class ServerConfigurationEditorUtils
         if ( isIDE )
         {
             // Asking the user for the location where to 'save as' the file
-            SaveAsDialog dialog = new SaveAsDialog( shell );
+            final SaveAsDialog dialog = new SaveAsDialog( shell );
 
             String inputClassName = input.getClass().getName();
             if ( input instanceof FileEditorInput )
@@ -118,7 +119,8 @@ public class ServerConfigurationEditorUtils
                 dialog.setOriginalName( "config.ldif" );
             }
 
-            if ( dialog.open() != Dialog.OK )
+            // Open the dialog
+            if ( openDialogInUIThread( dialog ) != Dialog.OK )
             {
                 return null;
             }
@@ -148,8 +150,8 @@ public class ServerConfigurationEditorUtils
             while ( !canOverwrite )
             {
                 // Open FileDialog
-                FileDialog dialog = new FileDialog( shell, SWT.SAVE );
-                path = dialog.open();
+                final FileDialog dialog = new FileDialog( shell, SWT.SAVE );
+                path = openFileDialogInUIThread( dialog );
                 if ( path == null )
                 {
                     return null;
@@ -164,7 +166,7 @@ public class ServerConfigurationEditorUtils
                     MessageDialog overwriteDialog = new MessageDialog( shell, "Question", null, question, //$NON-NLS-1$
                         MessageDialog.QUESTION, new String[]
                             { IDialogConstants.YES_LABEL, IDialogConstants.NO_LABEL, IDialogConstants.CANCEL_LABEL }, 0 );
-                    int overwrite = overwriteDialog.open();
+                    int overwrite = openDialogInUIThread( overwriteDialog );
                     switch ( overwrite )
                     {
                         case 0: // Yes
@@ -191,6 +193,94 @@ public class ServerConfigurationEditorUtils
 
             return newInput;
         }
+    }
+
+
+    /**
+     * Opens a {@link Dialog} in the UI thread.
+     *
+     * @param dialog
+     *      the dialog
+     * @return
+     *      the result of the dialog
+     */
+    private static int openDialogInUIThread( final Dialog dialog )
+    {
+        // Defining our own encapsulating class for the result
+        class DialogResult
+        {
+            private int result;
+
+
+            public int getResult()
+            {
+                return result;
+            }
+
+
+            public void setResult( int result )
+            {
+                this.result = result;
+            }
+        }
+
+        // Creating an object to hold the result
+        final DialogResult result = new DialogResult();
+
+        // Opening the dialog in the UI thread
+        Display.getDefault().syncExec( new Runnable()
+        {
+            public void run()
+            {
+                result.setResult( dialog.open() );
+            }
+        } );
+
+        return result.getResult();
+    }
+
+
+    /**
+     * Opens a {@link FileDialog} in the UI thread.
+     *
+     * @param dialog
+     *      the file dialog
+     * @return
+     *      the result of the dialog
+     */
+    private static String openFileDialogInUIThread( final FileDialog dialog )
+    {
+        // Defining our own encapsulating class for the result
+        class DialogResult
+        {
+            private String result;
+
+
+            public String getResult()
+            {
+                return result;
+            }
+
+
+            public void setResult( String result )
+            {
+                this.result = result;
+            }
+        }
+
+        // Creating an object to hold the result
+        final DialogResult result = new DialogResult();
+
+        // Opening the dialog in the UI thread
+        Display.getDefault().syncExec( new Runnable()
+        {
+            public void run()
+            {
+                result.setResult( dialog.open() );
+            }
+        } );
+
+        return result.getResult();
     }
 
 

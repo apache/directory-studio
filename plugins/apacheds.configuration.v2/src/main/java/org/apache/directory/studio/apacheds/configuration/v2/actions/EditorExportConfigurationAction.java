@@ -88,7 +88,7 @@ public class EditorExportConfigurationAction extends Action
                 {
                     try
                     {
-                        ServerConfigurationEditorUtils.doSaveAs( monitor, editor.getSite()
+                        ServerConfigurationEditorUtils.saveAs( monitor, editor.getSite()
                             .getShell(), editor.getEditorInput(), editor.getConfigWriter() );
                     }
                     catch ( Exception e )
