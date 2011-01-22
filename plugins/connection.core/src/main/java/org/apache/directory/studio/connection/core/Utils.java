@@ -30,7 +30,7 @@ import javax.naming.directory.SearchControls;
 import org.apache.directory.shared.ldap.exception.LdapInvalidDnException;
 import org.apache.directory.shared.ldap.name.DN;
 import org.apache.directory.shared.ldap.util.LdapURL;
-import org.apache.directory.shared.ldap.util.StringTools;
+import org.apache.directory.shared.util.Strings;
 import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
 import org.apache.directory.studio.connection.core.ConnectionParameter.EncryptionMethod;
 
@@ -146,7 +146,7 @@ public class Utils
             return null;
         }
 
-        byte[] b = StringTools.getBytesUtf8( s );
+        byte[] b = Strings.getBytesUtf8(s);
         StringBuffer sb = new StringBuffer();
         for ( int i = 0; i < b.length; i++ )
         {

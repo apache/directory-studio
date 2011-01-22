@@ -34,7 +34,7 @@ import java.util.Map;
 
 import org.apache.directory.shared.ldap.exception.LdapInvalidDnException;
 import org.apache.directory.shared.ldap.name.DN;
-import org.apache.directory.shared.ldap.util.Base64;
+import org.apache.directory.shared.util.Base64;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.StudioControl;
 import org.apache.directory.studio.connection.core.io.ConnectionIOException;
@@ -499,7 +499,7 @@ public class BrowserConnectionIO
             oos.writeObject( studioControl );
             oos.close();
             byte[] bytes = baos.toByteArray();
-            String controlsValue = new String( Base64.encode( bytes ) );
+            String controlsValue = new String( Base64.encode(bytes) );
 
             Element controlElement = controlsElement.addElement( CONTROL_TAG );
             controlElement.addAttribute( VALUE_TAG, controlsValue );

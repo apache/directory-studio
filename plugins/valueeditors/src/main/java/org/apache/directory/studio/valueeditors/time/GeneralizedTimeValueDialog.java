@@ -31,7 +31,7 @@ import java.util.Map;
 import java.util.SimpleTimeZone;
 import java.util.TimeZone;
 
-import org.apache.directory.shared.ldap.util.GeneralizedTime;
+import org.apache.directory.shared.util.GeneralizedTime;
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.valueeditors.ValueEditorsActivator;
 import org.apache.directory.studio.valueeditors.ValueEditorsConstants;

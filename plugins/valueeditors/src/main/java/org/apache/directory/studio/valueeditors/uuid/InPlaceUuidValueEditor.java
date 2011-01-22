@@ -22,7 +22,7 @@ package org.apache.directory.studio.valueeditors.uuid;
 
 
 import org.apache.commons.codec.binary.Hex;
-import org.apache.directory.shared.ldap.util.StringTools;
+import org.apache.directory.shared.util.Strings;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
 import org.apache.directory.studio.valueeditors.HexValueEditor;
 
@@ -51,8 +51,8 @@ public class InPlaceUuidValueEditor extends HexValueEditor
             if ( rawValue instanceof byte[] )
             {
                 byte[] bytes = ( byte[] ) rawValue;
-                String string = StringTools.utf8ToString( bytes );
-                if ( string.matches( UUID_REGEX ) || StringTools.isEmpty( string ) )
+                String string = Strings.utf8ToString(bytes);
+                if ( string.matches( UUID_REGEX ) || Strings.isEmpty(string) )
                 {
                     return string;
                 }

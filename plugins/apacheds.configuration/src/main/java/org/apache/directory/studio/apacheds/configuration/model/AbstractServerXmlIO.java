@@ -30,7 +30,7 @@ import org.apache.directory.shared.ldap.entry.DefaultEntry;
 import org.apache.directory.shared.ldap.entry.Entry;
 import org.apache.directory.shared.ldap.entry.EntryAttribute;
 import org.apache.directory.shared.ldap.ldif.LdifReader;
-import org.apache.directory.shared.ldap.util.StringTools;
+import org.apache.directory.shared.util.Strings;
 import org.apache.directory.studio.apacheds.configuration.StudioEntityResolver;
 import org.dom4j.Document;
 import org.dom4j.Element;
@@ -208,7 +208,7 @@ public abstract class AbstractServerXmlIO implements ServerXmlIO
 
                 String addedLine = line.trim();
 
-                if ( StringTools.isEmpty( addedLine ) )
+                if ( Strings.isEmpty(addedLine) )
                 {
                     continue;
                 }
