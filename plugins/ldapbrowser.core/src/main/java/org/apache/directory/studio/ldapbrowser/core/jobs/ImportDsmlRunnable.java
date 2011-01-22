@@ -48,7 +48,8 @@ import org.apache.directory.shared.dsmlv2.reponse.ModDNResponseDsml;
 import org.apache.directory.shared.dsmlv2.reponse.ModifyResponseDsml;
 import org.apache.directory.shared.dsmlv2.request.BatchRequest;
 import org.apache.directory.shared.ldap.codec.MessageTypeEnum;
-import org.apache.directory.shared.ldap.codec.util.LdapURLEncodingException;
+import org.apache.directory.shared.ldap.entry.AttributeUtils;
+import org.apache.directory.shared.ldap.exception.LdapURLEncodingException;
 import org.apache.directory.shared.ldap.entry.Entry;
 import org.apache.directory.shared.ldap.entry.Modification;
 import org.apache.directory.shared.ldap.entry.ModificationOperation;
@@ -65,7 +66,6 @@ import org.apache.directory.shared.ldap.message.ModifyRequest;
 import org.apache.directory.shared.ldap.message.ResultCodeEnum;
 import org.apache.directory.shared.ldap.message.SearchRequest;
 import org.apache.directory.shared.ldap.name.DN;
-import org.apache.directory.shared.ldap.util.AttributeUtils;
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
@@ -351,7 +351,7 @@ public class ImportDsmlRunnable implements StudioConnectionBulkRunnableWithProgr
         browserConnection
             .getConnection()
             .getConnectionWrapper()
-            .createEntry( entry.getDn().getName(), AttributeUtils.toAttributes( entry ), getControls( request ),
+            .createEntry( entry.getDn().getName(), AttributeUtils.toAttributes(entry), getControls( request ),
                 monitor, null );
 
         // Creating the response

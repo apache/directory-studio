@@ -21,8 +21,8 @@
 package org.apache.directory.studio.ldapbrowser.common.widgets.connection;
 
 
-import org.apache.directory.shared.ldap.util.LdapURL;
-import org.apache.directory.shared.ldap.util.LdapURL.Extension;
+import org.apache.directory.shared.ldap.filter.LdapURL;
+import org.apache.directory.shared.ldap.filter.LdapURL.Extension;
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.connection.core.ConnectionParameter;
 import org.apache.directory.studio.connection.ui.AbstractConnectionParameterPage;

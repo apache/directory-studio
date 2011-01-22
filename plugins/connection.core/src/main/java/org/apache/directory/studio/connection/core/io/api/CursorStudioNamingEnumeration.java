@@ -35,13 +35,13 @@ import javax.naming.ldap.Control;
 import javax.naming.ldap.PagedResultsResponseControl;
 
 import org.apache.directory.shared.ldap.cursor.SearchCursor;
+import org.apache.directory.shared.ldap.entry.AttributeUtils;
+import org.apache.directory.shared.ldap.filter.LdapURL;
 import org.apache.directory.shared.ldap.message.Referral;
 import org.apache.directory.shared.ldap.message.Response;
 import org.apache.directory.shared.ldap.message.SearchResultDone;
 import org.apache.directory.shared.ldap.message.SearchResultEntry;
 import org.apache.directory.shared.ldap.message.SearchResultReference;
-import org.apache.directory.shared.ldap.util.AttributeUtils;
-import org.apache.directory.shared.ldap.util.LdapURL;
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
@@ -263,7 +263,7 @@ public class CursorStudioNamingEnumeration extends AbstractStudioNamingEnumerati
             {
                 resultEntryCounter++;
                 SearchResult sr = new SearchResult( currentSearchResultEntry.getObjectName().toString(), null,
-                        AttributeUtils.toAttributes( currentSearchResultEntry.getEntry() ) );
+                        AttributeUtils.toAttributes(currentSearchResultEntry.getEntry()) );
                 sr.setNameInNamespace( currentSearchResultEntry.getObjectName().toString() );
 
                 // Converting the SearchResult to a StudioSearchResult

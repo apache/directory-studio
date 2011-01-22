@@ -41,6 +41,7 @@ import org.apache.directory.ldap.client.api.LdapNetworkConnection;
 import org.apache.directory.ldap.client.api.exception.InvalidConnectionException;
 import org.apache.directory.shared.ldap.codec.controls.ControlImpl;
 import org.apache.directory.shared.ldap.cursor.SearchCursor;
+import org.apache.directory.shared.ldap.entry.AttributeUtils;
 import org.apache.directory.shared.ldap.entry.DefaultModification;
 import org.apache.directory.shared.ldap.entry.Modification;
 import org.apache.directory.shared.ldap.entry.ModificationOperation;
@@ -65,7 +66,6 @@ import org.apache.directory.shared.ldap.message.ResultResponse;
 import org.apache.directory.shared.ldap.message.SearchRequest;
 import org.apache.directory.shared.ldap.message.SearchRequestImpl;
 import org.apache.directory.shared.ldap.name.DN;
-import org.apache.directory.shared.ldap.util.AttributeUtils;
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
@@ -671,7 +671,7 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
             for ( ModificationItem modificationItem : modificationItems )
             {
                 Modification modification = new DefaultModification();
-                modification.setAttribute( AttributeUtils.toClientAttribute( modificationItem.getAttribute() ) );
+                modification.setAttribute( AttributeUtils.toClientAttribute(modificationItem.getAttribute()) );
                 modification.setOperation( convertModificationOperation( modificationItem.getModificationOp() ) );
                 modifications.add( modification );
             }

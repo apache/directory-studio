@@ -21,7 +21,7 @@
 package org.apache.directory.studio.ldapbrowser.core.model;
 
 
-import org.apache.directory.shared.ldap.util.LdapURL;
+import org.apache.directory.shared.ldap.filter.LdapURL;
 
 
 /**

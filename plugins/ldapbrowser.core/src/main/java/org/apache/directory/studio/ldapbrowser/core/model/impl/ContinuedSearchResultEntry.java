@@ -24,8 +24,8 @@ package org.apache.directory.studio.ldapbrowser.core.model.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.directory.shared.ldap.filter.LdapURL;
 import org.apache.directory.shared.ldap.name.DN;
-import org.apache.directory.shared.ldap.util.LdapURL;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
 import org.apache.directory.studio.ldapbrowser.core.jobs.InitializeAttributesRunnable;
