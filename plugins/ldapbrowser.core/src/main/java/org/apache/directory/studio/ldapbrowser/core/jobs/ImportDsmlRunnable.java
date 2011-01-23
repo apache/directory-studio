@@ -709,11 +709,11 @@ public class ImportDsmlRunnable implements StudioConnectionBulkRunnableWithProgr
 
     private Control[] getControls( Message request )
     {
-        Collection<org.apache.directory.shared.ldap.message.control.Control> controls = request.getControls().values();
+        Collection<org.apache.directory.shared.ldap.model.message.Control> controls = request.getControls().values();
         if ( controls != null )
         {
             List<Control> jndiControls = new ArrayList<Control>();
-            for ( org.apache.directory.shared.ldap.message.control.Control control : controls )
+            for ( org.apache.directory.shared.ldap.model.message.Control control : controls )
             {
                 Control jndiControl = new BasicControl( control.getOid(), control.isCritical(),
                     control.getValue() );

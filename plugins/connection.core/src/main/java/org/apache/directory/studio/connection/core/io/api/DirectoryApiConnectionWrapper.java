@@ -525,16 +525,16 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
      * @return
      *      an array of converted controls
      */
-    private org.apache.directory.shared.ldap.message.control.Control[] convertControls( Control[] controls )
+    private org.apache.directory.shared.ldap.model.message.Control[] convertControls( Control[] controls )
     {
         if ( controls != null )
         {
-            org.apache.directory.shared.ldap.message.control.Control[] returningControls = new org.apache.directory.shared.ldap.message.control.Control[controls.length];
+            org.apache.directory.shared.ldap.model.message.Control[] returningControls = new org.apache.directory.shared.ldap.model.message.Control[controls.length];
 
             for ( int i = 0; i < controls.length; i++ )
             {
                 Control control = controls[i];
-                org.apache.directory.shared.ldap.message.control.Control returningControl = new ControlImpl(
+                org.apache.directory.shared.ldap.model.message.Control returningControl = new ControlImpl(
                     control.getID() );
                 returningControl.setValue( control.getEncodedValue() );
                 returningControl.setCritical( control.isCritical() );
@@ -546,7 +546,7 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
         }
         else
         {
-            return new org.apache.directory.shared.ldap.message.control.Control[0];
+            return new org.apache.directory.shared.ldap.model.message.Control[0];
         }
     }
 

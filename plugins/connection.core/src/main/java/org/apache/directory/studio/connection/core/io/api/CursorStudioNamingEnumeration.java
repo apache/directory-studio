@@ -337,7 +337,7 @@ public class CursorStudioNamingEnumeration extends AbstractStudioNamingEnumerati
     {
         if ( searchResultDone != null )
         {
-            Map<String, org.apache.directory.shared.ldap.message.control.Control> controlsMap = searchResultDone
+            Map<String, org.apache.directory.shared.ldap.model.message.Control> controlsMap = searchResultDone
                 .getControls();
             if ( ( controlsMap != null ) && ( controlsMap.size() > 0 ) )
             {
@@ -357,13 +357,13 @@ public class CursorStudioNamingEnumeration extends AbstractStudioNamingEnumerati
      * @return
      *      an array of converted controls
      */
-    private Control[] convertControls( Collection<org.apache.directory.shared.ldap.message.control.Control> controls )
+    private Control[] convertControls( Collection<org.apache.directory.shared.ldap.model.message.Control> controls )
     {
         if ( controls != null )
         {
             List<Control> convertedControls = new ArrayList<Control>();
 
-            for ( org.apache.directory.shared.ldap.message.control.Control control : controls )
+            for ( org.apache.directory.shared.ldap.model.message.Control control : controls )
             {
                 Control convertedControl = null;
 
