@@ -21,7 +21,7 @@
 package org.apache.directory.studio.ldapbrowser.ui.wizards;
 
 
-import org.apache.directory.shared.ldap.name.DN;
+import org.apache.directory.shared.ldap.name.Dn;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.ui.RunnableContextRunner;
 import org.apache.directory.studio.ldapbrowser.common.actions.BrowserSelectionUtils;
@@ -293,7 +293,7 @@ public class BatchOperationWizard extends Wizard implements INewWizard
             }
 
             // get DNs
-            DN[] dns = applyOnPage.getApplyOnDns();
+            Dn[] dns = applyOnPage.getApplyOnDns();
             if ( dns == null )
             {
                 if ( applyOnPage.getApplyOnSearch() != null )
@@ -308,7 +308,7 @@ public class BatchOperationWizard extends Wizard implements INewWizard
                         if ( status.isOK() )
                         {
                             ISearchResult[] srs = search.getSearchResults();
-                            dns = new DN[srs.length];
+                            dns = new Dn[srs.length];
                             for ( int i = 0; i < srs.length; i++ )
                             {
                                 dns[i] = srs[i].getDn();

@@ -590,7 +590,7 @@ RFC 4511                         LDAPv3                        June 2006
                        -- 72-79 unused --
                   other                        (80),
                   ...  },
-             matchedDN          LDAPDN,
+             matchedDn          LDAPDN,
              diagnosticMessage  LDAPString,
              referral           [3] Referral OPTIONAL }
 
@@ -622,12 +622,12 @@ RFC 4511                         LDAPv3                        June 2006
 
    For certain result codes (typically, but not restricted to
    noSuchObject, aliasProblem, invalidDNSyntax, and
-   aliasDereferencingProblem), the matchedDN field is set (subject to
+   aliasDereferencingProblem), the matchedDn field is set (subject to
    access controls) to the name of the last entry (object or alias) used
    in finding the target (or base) object.  This will be a truncated
    form of the provided name or, if an alias was dereferenced while
    attempting to locate the entry, of the resulting name.  Otherwise,
-   the matchedDN field is empty.
+   the matchedDn field is empty.
 
 4.1.10.  Referral
 
@@ -1835,7 +1835,7 @@ RFC 4511                         LDAPv3                        June 2006
    client attempted to add <CN=JS,DC=Example,DC=NET>, the
    <DC=Example,DC=NET> entry did not exist, and the <DC=NET> entry did
    exist, then the server would return the noSuchObject result code with
-   the matchedDN field containing <DC=NET>.
+   the matchedDn field containing <DC=NET>.
 
    Upon receipt of an Add Request, a server will attempt to add the
    requested entry.  The result of the Add attempt will be returned to
@@ -1941,7 +1941,7 @@ RFC 4511                         LDAPv3                        June 2006
    client attempted to add <CN=JS,DC=Example,DC=NET>, the
    <DC=Example,DC=NET> entry did not exist, and the <DC=NET> entry did
    exist, then the server would return the noSuchObject result code with
-   the matchedDN field containing <DC=NET>.
+   the matchedDn field containing <DC=NET>.
 
    If the deleteoldrdn field is TRUE, the attribute values forming the
    old RDN (but not the new RDN) are deleted from the entry.  If the
@@ -2476,7 +2476,7 @@ RFC 4511                         LDAPv3                        June 2006
    confidentiality measures are not in place.  Clients are advised to
    reject referrals from the StartTLS operation.
 
-   The matchedDN and diagnosticMessage fields, as well as some
+   The matchedDn and diagnosticMessage fields, as well as some
    resultCode values (e.g., attributeOrValueExists and
    entryAlreadyExists), could disclose the presence or absence of
    specific data in the directory that is subject to access and other
@@ -3116,7 +3116,7 @@ RFC 4511                         LDAPv3                        June 2006
                        -- 72-79 unused --
                   other                        (80),
                   ...  },
-             matchedDN          LDAPDN,
+             matchedDn          LDAPDN,
              diagnosticMessage  LDAPString,
              referral           [3] Referral OPTIONAL }
 
@@ -3389,7 +3389,7 @@ C.1.9.  Section 4.1.10 (Result Message)
    - Renamed "errorMessage" to "diagnosticMessage" as it is allowed to
      be sent for non-error results.
    - Moved some language into Appendix A, and referred the reader there.
-   - Allowed matchedDN to be present for other result codes than those
+   - Allowed matchedDn to be present for other result codes than those
      listed in RFC 2251.
    - Renamed the code "strongAuthRequired" to "strongerAuthRequired" to
      clarify that this code may often be returned to indicate that a
@@ -3629,7 +3629,7 @@ C.1.28.  Section 7 (Security Considerations)
    - Warned against following referrals that may have been injected in
      the data stream.
    - Noted that servers should protect information equally, whether in
-     an error condition or not, and mentioned matchedDN,
+     an error condition or not, and mentioned matchedDn,
      diagnosticMessage, and resultCodes specifically.
    - Added a note regarding malformed and long encodings.
 

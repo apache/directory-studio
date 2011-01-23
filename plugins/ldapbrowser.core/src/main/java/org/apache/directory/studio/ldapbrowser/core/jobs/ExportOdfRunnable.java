@@ -81,7 +81,7 @@ public class ExportOdfRunnable implements StudioConnectionRunnableWithProgress
      * @param exportOdfFilename the ODF filename
      * @param browserConnection the browser connection
      * @param searchParameter the search parameter
-     * @param exportDn true to export the DN
+     * @param exportDn true to export the Dn
      */
     public ExportOdfRunnable( String exportOdfFilename, IBrowserConnection browserConnection,
         SearchParameter searchParameter, boolean exportDn )

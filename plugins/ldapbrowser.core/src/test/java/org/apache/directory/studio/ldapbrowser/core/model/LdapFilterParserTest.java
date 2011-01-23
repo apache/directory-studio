@@ -324,7 +324,7 @@ public class LdapFilterParserTest extends TestCase
      * Tests an extensible filter.
      * 
      * From RFC4515:
-     * The fourth example denotes an equality match, except that DN
+     * The fourth example denotes an equality match, except that Dn
      * components should be considered part of the entry when doing the
      * match.
      */
@@ -360,14 +360,14 @@ public class LdapFilterParserTest extends TestCase
      * From RFC4515:
      * The sixth and final example is also a filter that should be applied
      * to any attribute supporting the matching rule given.  Attributes
-     * supporting the matching rule contained in the DN should also be
+     * supporting the matching rule contained in the Dn should also be
      * considered.
      */
     public void testExtensibleFilterRFC4515_6()
     {
-        parser.parse( "(:DN:2.4.6.8.10:=Dino)" );
-        assertEquals( "(:DN:2.4.6.8.10:=Dino)", parser.getModel().toString() );
-        assertEquals( "(:DN:2.4.6.8.10:=Dino)", parser.getModel().toUserProvidedString() );
+        parser.parse( "(:Dn:2.4.6.8.10:=Dino)" );
+        assertEquals( "(:Dn:2.4.6.8.10:=Dino)", parser.getModel().toString() );
+        assertEquals( "(:Dn:2.4.6.8.10:=Dino)", parser.getModel().toUserProvidedString() );
         assertTrue( parser.getModel().isValid() );
     }
 

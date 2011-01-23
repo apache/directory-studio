@@ -36,9 +36,9 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.directory.shared.ldap.filter.LdapURL;
-import org.apache.directory.shared.ldap.name.AVA;
-import org.apache.directory.shared.ldap.name.DN;
-import org.apache.directory.shared.ldap.name.RDN;
+import org.apache.directory.shared.ldap.name.Ava;
+import org.apache.directory.shared.ldap.name.Dn;
+import org.apache.directory.shared.ldap.name.Rdn;
 import org.apache.directory.shared.ldap.schema.AttributeType;
 import org.apache.directory.studio.connection.core.ConnectionParameter.EncryptionMethod;
 import org.apache.directory.studio.connection.core.StudioControl;
@@ -71,7 +71,7 @@ public class Utils
 {
 
     /**
-     * Transforms the given DN into a normalized String, usable by the schema cache.
+     * Transforms the given Dn into a normalized String, usable by the schema cache.
      * The following transformations are performed:
      * <ul>
      *   <li>The attribute type is replaced by the OID
@@ -81,19 +81,19 @@ public class Utils
      * 2.5.4.4=bar
      * 
      * 
-     * @param dn the DN
+     * @param dn the Dn
      * @param schema the schema
      * 
      * @return the oid string
      */
-    public static String getNormalizedOidString( DN dn, Schema schema )
+    public static String getNormalizedOidString( Dn dn, Schema schema )
     {
         StringBuffer sb = new StringBuffer();
 
-        Iterator<RDN> it = dn.getRdns().iterator();
+        Iterator<Rdn> it = dn.getRdns().iterator();
         while ( it.hasNext() )
         {
-            RDN rdn = it.next();
+            Rdn rdn = it.next();
             sb.append( getOidString( rdn, schema ) );
             if ( it.hasNext() )
             {
@@ -105,14 +105,14 @@ public class Utils
     }
 
 
-    private static String getOidString( RDN rdn, Schema schema )
+    private static String getOidString( Rdn rdn, Schema schema )
     {
         StringBuffer sb = new StringBuffer();
 
-        Iterator<AVA> it = rdn.iterator();
+        Iterator<Ava> it = rdn.iterator();
         while ( it.hasNext() )
         {
-            AVA ava = it.next();
+            Ava ava = it.next();
             sb.append( getOidString( ava, schema ) );
             if ( it.hasNext() )
             {
@@ -124,7 +124,7 @@ public class Utils
     }
 
 
-    private static String getOidString( AVA ava, Schema schema )
+    private static String getOidString( Ava ava, Schema schema )
     {
         String oid = schema != null ? schema.getAttributeTypeDescription( ava.getNormType() ).getOid() : ava
             .getNormType();

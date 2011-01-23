@@ -21,7 +21,7 @@
 package org.apache.directory.studio.ldapbrowser.ui.actions;
 
 
-import org.apache.directory.shared.ldap.name.DN;
+import org.apache.directory.shared.ldap.name.Dn;
 import org.apache.directory.studio.connection.core.Utils;
 import org.apache.directory.studio.ldapbrowser.common.dialogs.DnDialog;
 import org.apache.directory.studio.ldapbrowser.common.dialogs.TextDialog;
@@ -35,7 +35,7 @@ import org.eclipse.swt.widgets.Display;
 
 
 /**
- * This action locates a DN that the user entered into a dialog.
+ * This action locates a Dn that the user entered into a dialog.
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
@@ -86,8 +86,8 @@ public class GotoDnAction extends LocateInDitAction
 
 
     /**
-     * This implementation returns a connection and DN if th user put
-     * a valid DN into the dialog
+     * This implementation returns a connection and Dn if th user put
+     * a valid Dn into the dialog
      */
     protected ConnectionAndDn getConnectionAndDn()
     {
@@ -95,7 +95,7 @@ public class GotoDnAction extends LocateInDitAction
         {
             IBrowserConnection conn = ( IBrowserConnection ) getInput();
 
-            DN dn = Utils.getLdapDn( getStringFromClipboard() );
+            Dn dn = Utils.getLdapDn( getStringFromClipboard() );
 
             DnDialog dialog = new DnDialog(
                 getShell(),

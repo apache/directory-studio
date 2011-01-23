@@ -23,7 +23,7 @@ package org.apache.directory.studio.ldapbrowser.core.jobs;
 
 import java.util.List;
 
-import org.apache.directory.shared.ldap.name.DN;
+import org.apache.directory.shared.ldap.name.Dn;
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
@@ -49,8 +49,8 @@ public class ReadEntryRunnable implements StudioConnectionBulkRunnableWithProgre
     /** The browser connection. */
     private IBrowserConnection browserConnection;
 
-    /** The DN of the entry. */
-    private DN dn;
+    /** The Dn of the entry. */
+    private Dn dn;
 
     /** The entry read from directory. */
     private IEntry readEntry;
@@ -60,9 +60,9 @@ public class ReadEntryRunnable implements StudioConnectionBulkRunnableWithProgre
      * Creates a new instance of ReadEntryRunnable.
      * 
      * @param browserConnection the browser connection
-     * @param dn the DN of the entry
+     * @param dn the Dn of the entry
      */
-    public ReadEntryRunnable( IBrowserConnection browserConnection, DN dn )
+    public ReadEntryRunnable( IBrowserConnection browserConnection, Dn dn )
     {
         this.browserConnection = browserConnection;
         this.dn = dn;
@@ -138,13 +138,13 @@ public class ReadEntryRunnable implements StudioConnectionBulkRunnableWithProgre
      * Gets the entry, either from the BrowserConnection's cache or from the directory.
      * 
      * @param browserConnection the browser connection
-     * @param dn the DN of the entry
+     * @param dn the Dn of the entry
      * @param controls the LDAP controls
      * @param monitor the progress monitor
      * 
      * @return the read entry
      */
-    static IEntry getEntry( IBrowserConnection browserConnection, DN dn, List<StudioControl> controls,
+    static IEntry getEntry( IBrowserConnection browserConnection, Dn dn, List<StudioControl> controls,
         StudioProgressMonitor monitor )
     {
         try

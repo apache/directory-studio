@@ -158,7 +158,7 @@ public class LdifUtils
      *
      * @param dn the dn to check
      *
-     * @return true, if must encode DN
+     * @return true, if must encode Dn
      */
     public static boolean mustEncodeDN( String dn )
     {

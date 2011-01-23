@@ -25,7 +25,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.directory.shared.ldap.name.DN;
+import org.apache.directory.shared.ldap.name.Dn;
 import org.apache.directory.shared.ldap.filter.LdapURL;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
@@ -128,8 +128,8 @@ public class Search implements ISearch
      * @param conn
      *                the connection of the search
      * @param searchBase
-     *                the base DN of the search, a null search base will be
-     *                transformed to an empty DN.
+     *                the base Dn of the search, a null search base will be
+     *                transformed to an empty Dn.
      * @param filter
      *                the filter to use, null or empty filters will be
      *                transformed to (objectClass=*)
@@ -151,7 +151,7 @@ public class Search implements ISearch
      * @param controls
      *                the controls
      */
-    public Search( String searchName, IBrowserConnection conn, DN searchBase, String filter,
+    public Search( String searchName, IBrowserConnection conn, Dn searchBase, String filter,
         String[] returningAttributes, SearchScope scope, int countLimit, int timeLimit,
         AliasDereferencingMethod aliasesDereferencingMethod, ReferralHandlingMethod referralsHandlingMethod,
         boolean initHasChildrenFlag, List<StudioControl> controls )
@@ -345,7 +345,7 @@ public class Search implements ISearch
     /**
      * {@inheritDoc}
      */
-    public DN getSearchBase()
+    public Dn getSearchBase()
     {
         return searchParameter.getSearchBase();
     }
@@ -354,7 +354,7 @@ public class Search implements ISearch
     /**
      * {@inheritDoc}
      */
-    public void setSearchBase( DN searchBase )
+    public void setSearchBase( Dn searchBase )
     {
         searchParameter.setSearchBase( searchBase );
         fireSearchUpdated( SearchUpdateEvent.EventDetail.SEARCH_PARAMETER_UPDATED );

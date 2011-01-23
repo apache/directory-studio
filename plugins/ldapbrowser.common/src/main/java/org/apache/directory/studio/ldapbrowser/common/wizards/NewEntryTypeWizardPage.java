@@ -21,7 +21,7 @@
 package org.apache.directory.studio.ldapbrowser.common.wizards;
 
 
-import org.apache.directory.shared.ldap.name.DN;
+import org.apache.directory.shared.ldap.name.Dn;
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.connection.ui.RunnableContextRunner;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
@@ -141,7 +141,7 @@ public class NewEntryTypeWizardPage extends WizardPage implements WidgetModifyLi
         if ( templateButton.getSelection() )
         {
             final IBrowserConnection browserConnection = entryWidget.getBrowserConnection();
-            final DN dn = entryWidget.getDn();
+            final Dn dn = entryWidget.getDn();
             IEntry templateEntry = null;
 
             if ( browserConnection == null )
@@ -173,7 +173,7 @@ public class NewEntryTypeWizardPage extends WizardPage implements WidgetModifyLi
                 return null;
             }
 
-            // check if selected DN exists
+            // check if selected Dn exists
             ReadEntryRunnable readEntryRunnable = new ReadEntryRunnable( browserConnection, dn );
             RunnableContextRunner.execute( readEntryRunnable, getContainer(), false );
             templateEntry = readEntryRunnable.getReadEntry();
@@ -227,7 +227,7 @@ public class NewEntryTypeWizardPage extends WizardPage implements WidgetModifyLi
         }
         else
         {
-            wizard.setPrototypeEntry( new DummyEntry( new DN(), wizard.getSelectedConnection() ) );
+            wizard.setPrototypeEntry( new DummyEntry( new Dn(), wizard.getSelectedConnection() ) );
         }
 
         return super.getNextPage();

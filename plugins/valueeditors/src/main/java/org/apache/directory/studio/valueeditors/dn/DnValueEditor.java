@@ -22,7 +22,7 @@ package org.apache.directory.studio.valueeditors.dn;
 
 
 import org.apache.directory.shared.ldap.exception.LdapInvalidDnException;
-import org.apache.directory.shared.ldap.name.DN;
+import org.apache.directory.shared.ldap.name.Dn;
 import org.apache.directory.studio.ldapbrowser.common.dialogs.DnDialog;
 import org.apache.directory.studio.ldapbrowser.common.dialogs.TextDialog;
 import org.apache.directory.studio.ldapbrowser.core.model.AttributeHierarchy;
@@ -52,10 +52,10 @@ public class DnValueEditor extends AbstractDialogStringValueEditor
         if ( value != null && value instanceof DnValueEditorRawValueWrapper )
         {
             DnValueEditorRawValueWrapper wrapper = ( DnValueEditorRawValueWrapper ) value;
-            DN dn;
+            Dn dn;
             try
             {
-                dn = wrapper.dn != null ? new DN( wrapper.dn ) : null;
+                dn = wrapper.dn != null ? new Dn( wrapper.dn ) : null;
             }
             catch ( LdapInvalidDnException e )
             {
@@ -77,11 +77,11 @@ public class DnValueEditor extends AbstractDialogStringValueEditor
      * {@inheritDoc}
      *
      * Returns a DnValueEditorRawValueWrapper with the connection of
-     * the attribute hierarchy and a null DN if there are no values
+     * the attribute hierarchy and a null Dn if there are no values
      * in attributeHierarchy.
      *
      * Returns a DnValueEditorRawValueWrapper with the connection of
-     * the attribute hierarchy and a DN if there is one value
+     * the attribute hierarchy and a Dn if there is one value
      * in attributeHierarchy.
      */
     public Object getRawValue( AttributeHierarchy attributeHierarchy )
@@ -111,7 +111,7 @@ public class DnValueEditor extends AbstractDialogStringValueEditor
      * {@inheritDoc}
      *
      * Returns a DnValueEditorRawValueWrapper with the connection of
-     * the value and a DN build from the given value.
+     * the value and a Dn build from the given value.
      */
     public Object getRawValue( IValue value )
     {
@@ -136,7 +136,7 @@ public class DnValueEditor extends AbstractDialogStringValueEditor
         /** The connection, used in DnDialog to browse for an entry */
         private IBrowserConnection connection;
 
-        /** The DN, used as initial value in DnDialog */
+        /** The Dn, used as initial value in DnDialog */
         private String dn;
 
 
@@ -144,7 +144,7 @@ public class DnValueEditor extends AbstractDialogStringValueEditor
          * Creates a new instance of DnValueEditorRawValueWrapper.
          *
          * @param connection the connection
-         * @param dn the DN
+         * @param dn the Dn
          */
         private DnValueEditorRawValueWrapper( IBrowserConnection connection, String dn )
         {

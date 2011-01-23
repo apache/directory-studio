@@ -23,7 +23,7 @@ package org.apache.directory.studio.ldapbrowser.core.model;
 
 import java.io.Serializable;
 
-import org.apache.directory.shared.ldap.name.DN;
+import org.apache.directory.shared.ldap.name.Dn;
 
 
 /**
@@ -38,8 +38,8 @@ public class BookmarkParameter implements Serializable
     /** The serialVersionUID. */
     private static final long serialVersionUID = 105108281861642267L;
 
-    /** The target DN. */
-    private DN dn;
+    /** The target Dn. */
+    private Dn dn;
 
     /** The symbolic name. */
     private String name;
@@ -56,10 +56,10 @@ public class BookmarkParameter implements Serializable
     /**
      * Creates a new instance of BookmarkParameter.
      *
-     * @param dn the target DN
+     * @param dn the target Dn
      * @param name the symbolic name
      */
-    public BookmarkParameter( DN dn, String name )
+    public BookmarkParameter( Dn dn, String name )
     {
         this.dn = dn;
         this.name = name;
@@ -67,22 +67,22 @@ public class BookmarkParameter implements Serializable
 
 
     /**
-     * Gets the target DN.
+     * Gets the target Dn.
      * 
-     * @return the target DN
+     * @return the target Dn
      */
-    public DN getDn()
+    public Dn getDn()
     {
         return dn;
     }
 
 
     /**
-     * Sets the target DN.
+     * Sets the target Dn.
      * 
-     * @param dn the target DN
+     * @param dn the target Dn
      */
-    public void setDn( DN dn )
+    public void setDn( Dn dn )
     {
         this.dn = dn;
     }

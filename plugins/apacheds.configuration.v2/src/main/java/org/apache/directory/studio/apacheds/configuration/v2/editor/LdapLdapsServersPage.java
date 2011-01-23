@@ -23,7 +23,7 @@ package org.apache.directory.studio.apacheds.configuration.v2.editor;
 import org.apache.directory.server.config.beans.LdapServerBean;
 import org.apache.directory.server.config.beans.TransportBean;
 import org.apache.directory.shared.ldap.exception.LdapInvalidDnException;
-import org.apache.directory.shared.ldap.name.DN;
+import org.apache.directory.shared.ldap.name.Dn;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
@@ -123,7 +123,7 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
 
             try
             {
-                DN searchBaseDn = new DN( searchBaseDnValue );
+                Dn searchBaseDn = new Dn( searchBaseDnValue );
                 getLdapServerBean().setSearchBaseDn( searchBaseDn );
             }
             catch ( LdapInvalidDnException e1 )
@@ -362,8 +362,8 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
             "ldap/ldap.example.com@EXAMPLE.COM" );
         defaultSaslPrincipalLabel.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
 
-        // Search Base DN
-        toolkit.createLabel( composite, "Search Base DN:" );
+        // Search Base Dn
+        toolkit.createLabel( composite, "Search Base Dn:" );
         saslSearchBaseDnText = toolkit.createText( composite, "" ); //$NON-NLS-1$
         saslSearchBaseDnText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
         Label defaultSaslSearchBaseDnLabel = createDefaultValueLabel( toolkit, composite, "ou=users,dc=example,dc=com" );
@@ -447,7 +447,7 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
         addDirtyListener( saslPrincipalText );
         addModifyListener( saslPrincipalText, saslPrincipalTextListener );
 
-        // SASL Seach Base DN Text
+        // SASL Seach Base Dn Text
         addDirtyListener( saslSearchBaseDnText );
         addModifyListener( saslSearchBaseDnText, saslSearchBaseDnTextListener );
     }
@@ -506,7 +506,7 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
         removeDirtyListener( saslPrincipalText );
         removeModifyListener( saslPrincipalText, saslPrincipalTextListener );
 
-        // SASL Seach Base DN Text
+        // SASL Seach Base Dn Text
         removeDirtyListener( saslSearchBaseDnText );
         removeModifyListener( saslSearchBaseDnText, saslSearchBaseDnTextListener );
     }

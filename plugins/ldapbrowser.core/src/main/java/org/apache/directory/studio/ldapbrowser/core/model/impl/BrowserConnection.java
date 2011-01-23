@@ -26,7 +26,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.directory.shared.ldap.exception.LdapInvalidDnException;
-import org.apache.directory.shared.ldap.name.DN;
+import org.apache.directory.shared.ldap.name.Dn;
 import org.apache.directory.shared.ldap.filter.LdapURL;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
@@ -164,7 +164,7 @@ public class BrowserConnection implements IBrowserConnection, Serializable
     /**
      * {@inheritDoc}
      */
-    public IEntry getEntryFromCache( DN dn )
+    public IEntry getEntryFromCache( Dn dn )
     {
         if ( dn == null )
         {
@@ -206,11 +206,11 @@ public class BrowserConnection implements IBrowserConnection, Serializable
     /**
      * {@inheritDoc}
      */
-    public DN getBaseDN()
+    public Dn getBaseDN()
     {
         try
         {
-            return new DN( connection.getConnectionParameter().getExtendedProperty( CONNECTION_PARAMETER_BASE_DN ) );
+            return new Dn( connection.getConnectionParameter().getExtendedProperty( CONNECTION_PARAMETER_BASE_DN ) );
         }
         catch ( LdapInvalidDnException e )
         {
@@ -222,9 +222,9 @@ public class BrowserConnection implements IBrowserConnection, Serializable
     /**
      * {@inheritDoc}
      */
-    public void setBaseDN( DN baseDN )
+    public void setBaseDN( Dn baseDn)
     {
-        connection.getConnectionParameter().setExtendedProperty( CONNECTION_PARAMETER_BASE_DN, baseDN.toString() );
+        connection.getConnectionParameter().setExtendedProperty( CONNECTION_PARAMETER_BASE_DN, baseDn.toString() );
         ConnectionEventRegistry.fireConnectionUpdated( connection, this );
     }
 
@@ -609,9 +609,9 @@ public class BrowserConnection implements IBrowserConnection, Serializable
     /**
      * Removes the entry from the cache.
      * 
-     * @param dn the DN of the entry to remove from cache
+     * @param dn the Dn of the entry to remove from cache
      */
-    protected synchronized void uncacheEntry( DN dn )
+    protected synchronized void uncacheEntry( Dn dn )
     {
         dnToEntryCache.remove( Utils.getNormalizedOidString( dn, getSchema() ) );
     }

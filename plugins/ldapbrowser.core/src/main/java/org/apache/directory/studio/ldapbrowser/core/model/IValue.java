@@ -248,9 +248,9 @@ public interface IValue extends Serializable, IAdaptable, ValuePropertyPageProvi
 
 
     /**
-     * Returns true if this value is part of its entry's RDN.
+     * Returns true if this value is part of its entry's Rdn.
      * 
-     * @return true if this value is part of its entry's RDN.
+     * @return true if this value is part of its entry's Rdn.
      */
     public abstract boolean isRdnPart();
 

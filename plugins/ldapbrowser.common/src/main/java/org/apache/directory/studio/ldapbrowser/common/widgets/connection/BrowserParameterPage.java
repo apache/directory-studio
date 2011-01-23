@@ -25,7 +25,7 @@ import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.directory.shared.ldap.filter.LdapURL;
-import org.apache.directory.shared.ldap.name.DN;
+import org.apache.directory.shared.ldap.name.Dn;
 import org.apache.directory.shared.ldap.filter.LdapURL.Extension;
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.connection.core.Connection;
@@ -66,7 +66,7 @@ import org.eclipse.swt.widgets.Text;
 public class BrowserParameterPage extends AbstractConnectionParameterPage
 {
 
-    private static final String X_BASE_DN = "X-BASE-DN"; //$NON-NLS-1$
+    private static final String X_BASE_DN = "X-BASE-Dn"; //$NON-NLS-1$
 
     private static final String X_COUNT_LIMIT = "X-COUNT-LIMIT"; //$NON-NLS-1$
 
@@ -98,13 +98,13 @@ public class BrowserParameterPage extends AbstractConnectionParameterPage
 
     private static final String X_PAGED_SEARCH_SCROLL_MODE = "X-PAGED-SEARCH-SCROLL-MODE"; //$NON-NLS-1$
 
-    /** The checkbox to fetch the base DN's from namingContexts whenever opening the connection */
+    /** The checkbox to fetch the base Dn's from namingContexts whenever opening the connection */
     private Button autoFetchBaseDnsButton;
 
-    /** The button to fetch the base DN's from namingContexts attribute */
+    /** The button to fetch the base Dn's from namingContexts attribute */
     private Button fetchBaseDnsButton;
 
-    /** The combo that displays the fetched base DN's */
+    /** The combo that displays the fetched base Dn's */
     private Combo baseDNCombo;
 
     /** The widget with the count and time limits */
@@ -147,10 +147,10 @@ public class BrowserParameterPage extends AbstractConnectionParameterPage
 
 
     /**
-     * Returns true if base DN's should be fetched 
+     * Returns true if base Dn's should be fetched
      * whenever opening the connection.
      * 
-     * @return true, if base DN's should be fetched
+     * @return true, if base Dn's should be fetched
      */
     private boolean isAutoFetchBaseDns()
     {
@@ -159,9 +159,9 @@ public class BrowserParameterPage extends AbstractConnectionParameterPage
 
 
     /**
-     * Gets the base DN.
+     * Gets the base Dn.
      * 
-     * @return the base DN
+     * @return the base Dn
      */
     private String getBaseDN()
     {
@@ -320,7 +320,7 @@ public class BrowserParameterPage extends AbstractConnectionParameterPage
 
 
     /**
-     * Adds the base DN input.
+     * Adds the base Dn input.
      * 
      * @param parent the parent
      */
@@ -448,7 +448,7 @@ public class BrowserParameterPage extends AbstractConnectionParameterPage
         errorMessage = null;
         if ( !isAutoFetchBaseDns() )
         {
-            if ( !DN.isValid( getBaseDN() ) )
+            if ( !Dn.isValid(getBaseDN()) )
             {
                 message = Messages.getString( "BrowserParameterPage.EnterValidBaseDN" ); //$NON-NLS-1$
             }
@@ -830,7 +830,7 @@ public class BrowserParameterPage extends AbstractConnectionParameterPage
      */
     public void mergeLdapUrlToParameters( LdapURL ldapUrl, ConnectionParameter parameter )
     {
-        // base DN, get from Root DSE if absent, may be empty 
+        // base Dn, get from Root DSE if absent, may be empty
         String baseDn = ldapUrl.getExtensionValue( X_BASE_DN );
         if ( baseDn == null )
         {

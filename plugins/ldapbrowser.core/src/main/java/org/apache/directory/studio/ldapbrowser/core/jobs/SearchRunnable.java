@@ -40,7 +40,7 @@ import javax.naming.ldap.PagedResultsResponseControl;
 
 import org.apache.directory.shared.ldap.constants.SchemaConstants;
 import org.apache.directory.shared.ldap.filter.LdapURL;
-import org.apache.directory.shared.ldap.name.DN;
+import org.apache.directory.shared.ldap.name.Dn;
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
@@ -326,7 +326,7 @@ public class SearchRunnable implements StudioConnectionBulkRunnableWithProgress
 
                         if ( searchContinuationUrl == null )
                         {
-                            DN dn = JNDIUtils.getDn( sr );
+                            Dn dn = JNDIUtils.getDn( sr );
                             IEntry entry = null;
 
                             Connection resultConnection = sr.getConnection();
@@ -597,39 +597,39 @@ public class SearchRunnable implements StudioConnectionBulkRunnableWithProgress
      * Creates the entry and puts it into the BrowserConnection's entry cache.
      * 
      * @param browserConnection the browser connection
-     * @param dn the DN of the entry
+     * @param dn the Dn of the entry
      * @param monitor 
      * 
      * @return the created entry
      */
-    private static IEntry createAndCacheEntry( IBrowserConnection browserConnection, DN dn,
+    private static IEntry createAndCacheEntry( IBrowserConnection browserConnection, Dn dn,
         StudioProgressMonitor monitor )
     {
         StudioProgressMonitor dummyMonitor = new StudioProgressMonitor( monitor );
         IEntry entry = null;
 
         // build tree to parent
-        LinkedList<DN> parentDnList = new LinkedList<DN>();
-        DN parentDN = dn;
-        while ( parentDN != null && browserConnection.getEntryFromCache( parentDN ) == null )
+        LinkedList<Dn> parentDnList = new LinkedList<Dn>();
+        Dn parentDn = dn;
+        while ( parentDn != null && browserConnection.getEntryFromCache(parentDn) == null )
         {
-            parentDnList.addFirst( parentDN );
-            parentDN = DnUtils.getParent( parentDN );
+            parentDnList.addFirst(parentDn);
+            parentDn = DnUtils.getParent(parentDn);
         }
 
-        for ( DN aDN : parentDnList )
+        for ( Dn aDn : parentDnList )
         {
-            parentDN = DnUtils.getParent( aDN );
-            if ( parentDN == null )
+            parentDn = DnUtils.getParent(aDn);
+            if ( parentDn == null )
             {
                 // only the root DSE has a null parent
                 entry = browserConnection.getRootDSE();
             }
-            else if ( !parentDN.isEmpty() && browserConnection.getEntryFromCache( parentDN ) != null )
+            else if ( !parentDn.isEmpty() && browserConnection.getEntryFromCache(parentDn) != null )
             {
                 // a normal entry has a parent but the parent isn't the rootDSE
-                IEntry parentEntry = browserConnection.getEntryFromCache( parentDN );
-                entry = new Entry( parentEntry, aDN.getRdn() );
+                IEntry parentEntry = browserConnection.getEntryFromCache(parentDn);
+                entry = new Entry( parentEntry, aDn.getRdn() );
                 entry.setDirectoryEntry( true );
                 parentEntry.addChild( entry );
                 parentEntry.setChildrenInitialized( true );
@@ -639,10 +639,10 @@ public class SearchRunnable implements StudioConnectionBulkRunnableWithProgress
             }
             else
             {
-                // we have a base DN, check if the entry really exists in LDAP
+                // we have a base Dn, check if the entry really exists in LDAP
                 // this is to avoid that a node "dc=com" is created for "dc=example,dc=com" context entry
                 SearchParameter searchParameter = new SearchParameter();
-                searchParameter.setSearchBase( aDN );
+                searchParameter.setSearchBase(aDn);
                 searchParameter.setFilter( null );
                 searchParameter.setReturningAttributes( ISearch.NO_ATTRIBUTES );
                 searchParameter.setScope( SearchScope.OBJECT );
@@ -657,8 +657,8 @@ public class SearchRunnable implements StudioConnectionBulkRunnableWithProgress
                 {
                     if ( enumeration != null && enumeration.hasMore() )
                     {
-                        // create base DN entry
-                        entry = new BaseDNEntry( aDN, browserConnection );
+                        // create base Dn entry
+                        entry = new BaseDNEntry(aDn, browserConnection );
                         browserConnection.getRootDSE().addChild( entry );
                         browserConnection.cacheEntry( entry );
                         enumeration.close();

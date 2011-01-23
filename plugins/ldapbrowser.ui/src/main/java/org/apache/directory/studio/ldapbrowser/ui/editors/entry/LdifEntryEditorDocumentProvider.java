@@ -24,7 +24,7 @@ package org.apache.directory.studio.ldapbrowser.ui.editors.entry;
 import java.util.Arrays;
 
 import org.apache.directory.shared.ldap.exception.LdapInvalidDnException;
-import org.apache.directory.shared.ldap.name.DN;
+import org.apache.directory.shared.ldap.name.Dn;
 import org.apache.directory.studio.entryeditors.EntryEditorInput;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
@@ -100,8 +100,8 @@ public class LdifEntryEditorDocumentProvider extends LdifDocumentProvider
         EntryEditorInput input = getEntryEditorInput( element );
         try
         {
-            DN newDN = new DN( records[0].getDnLine().getValueAsString() );
-            if ( !newDN.equals( input.getResolvedEntry().getDn() ) )
+            Dn newDn = new Dn( records[0].getDnLine().getValueAsString() );
+            if ( !newDn.equals( input.getResolvedEntry().getDn() ) )
             {
                 throw new CoreException( new Status( IStatus.ERROR, BrowserUIConstants.PLUGIN_ID, NLS.bind( Messages
                     .getString( "LdifEntryEditorDocumentProvider.ModDnNotSupported" ), records[0].getInvalidString() ) ) ); //$NON-NLS-1$

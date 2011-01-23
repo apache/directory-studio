@@ -32,7 +32,7 @@ import javax.naming.directory.DirContext;
 import javax.naming.directory.ModificationItem;
 
 import org.apache.directory.shared.ldap.exception.LdapInvalidDnException;
-import org.apache.directory.shared.ldap.name.DN;
+import org.apache.directory.shared.ldap.name.Dn;
 import org.apache.directory.studio.connection.core.StudioControl;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreConstants;
 import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
@@ -111,7 +111,7 @@ public class ModelConverter
 
         EventRegistry.suspendEventFiringInCurrentThread();
 
-        DummyEntry entry = new DummyEntry( new DN( ldifRecord.getDnLine().getValueAsString() ), connection );
+        DummyEntry entry = new DummyEntry( new Dn( ldifRecord.getDnLine().getValueAsString() ), connection );
 
         for ( int i = 0; i < parts.length; i++ )
         {
@@ -278,7 +278,7 @@ public class ModelConverter
     }
 
 
-    public static LdifDnLine dnToLdifDnLine( DN dn )
+    public static LdifDnLine dnToLdifDnLine( Dn dn )
     {
         LdifDnLine line = LdifDnLine.create( dn.getName() );
         return line;

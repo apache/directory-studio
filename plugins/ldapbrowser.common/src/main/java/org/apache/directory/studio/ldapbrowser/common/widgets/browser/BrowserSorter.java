@@ -23,7 +23,7 @@ package org.apache.directory.studio.ldapbrowser.common.widgets.browser;
 
 import java.math.BigInteger;
 
-import org.apache.directory.shared.ldap.name.RDN;
+import org.apache.directory.shared.ldap.name.Rdn;
 import org.apache.directory.studio.connection.core.jobs.StudioConnectionRunnableWithProgress;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreConstants;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
@@ -322,8 +322,8 @@ public class BrowserSorter extends ViewerSorter
      */
     private int compareRdns( IEntry entry1, IEntry entry2 )
     {
-        RDN rdn1 = entry1.getRdn();
-        RDN rdn2 = entry2.getRdn();
+        Rdn rdn1 = entry1.getRdn();
+        Rdn rdn2 = entry2.getRdn();
 
         if ( rdn1 == null && rdn2 == null )
         {
@@ -345,7 +345,7 @@ public class BrowserSorter extends ViewerSorter
 
 
     /**
-     * Compares the RDN values of two IEntry objects.
+     * Compares the Rdn values of two IEntry objects.
      * Numeric values are compared as numeric.
      *  
      * @param entry1 the first entry
@@ -368,8 +368,8 @@ public class BrowserSorter extends ViewerSorter
         }
         else
         {
-            RDN rdn1 = entry1.getRdn();
-            RDN rdn2 = entry2.getRdn();
+            Rdn rdn1 = entry1.getRdn();
+            Rdn rdn2 = entry2.getRdn();
 
             if ( ( rdn1 == null || rdn1.getName() == null || "".equals( rdn1.getName() ) ) //$NON-NLS-1$
                 && ( rdn2 == null || rdn2.getName() == null || "".equals( rdn2.getName() ) ) ) //$NON-NLS-1$

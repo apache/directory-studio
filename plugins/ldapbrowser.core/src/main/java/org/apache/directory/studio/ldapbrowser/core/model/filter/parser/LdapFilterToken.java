@@ -89,10 +89,10 @@ public class LdapFilterToken implements Comparable<LdapFilterToken>
     /** The token identifier for the attribute type in extensible filters. */
     public static final int EXTENSIBLE_ATTRIBUTE = 61;
 
-    /** The token identifier for the colon before the DN flag in extensible filters. */
+    /** The token identifier for the colon before the Dn flag in extensible filters. */
     public static final int EXTENSIBLE_DNATTR_COLON = 62;
 
-    /** The token identifier for the DN flag in extensible filters. */
+    /** The token identifier for the Dn flag in extensible filters. */
     public static final int EXTENSIBLE_DNATTR = 63;
 
     /** The token identifier for the colon before the matching rule OID in extensible filters. */

@@ -78,7 +78,7 @@ public class LdifDnLineTest extends TestCase
 
     /**
      * Test for DIRSTUDIO-598
-     * (Base64 encoded DN marked as invalid in LDIF editor)
+     * (Base64 encoded Dn marked as invalid in LDIF editor)
      */
     public void testIsValid()
     {

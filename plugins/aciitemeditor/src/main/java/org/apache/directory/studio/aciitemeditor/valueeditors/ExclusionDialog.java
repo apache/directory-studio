@@ -24,7 +24,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.directory.shared.ldap.exception.LdapInvalidDnException;
-import org.apache.directory.shared.ldap.name.DN;
+import org.apache.directory.shared.ldap.name.Dn;
 import org.apache.directory.studio.aciitemeditor.Activator;
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.ldapbrowser.common.widgets.WidgetModifyEvent;
@@ -58,18 +58,18 @@ class ExclusionDialog extends Dialog
     private IBrowserConnection connection;
 
     /** The base. */
-    private DN base;
+    private Dn base;
 
     /** The initial type. */
     private String initialType;
 
-    /** The initial DN */
+    /** The initial Dn */
     private String initalDN;
 
     /** The return type */
     private String returnType;
 
-    /** The return DN */
+    /** The return Dn */
     private String returnDN;
 
     private static final String EMPTY = ""; //$NON-NLS-1$
@@ -87,10 +87,10 @@ class ExclusionDialog extends Dialog
      *
      * @param parentShell the parent shell
      * @param connection the connection
-     * @param base the base DN
+     * @param base the base Dn
      * @param exclusion the exclusion string
      */
-    protected ExclusionDialog( Shell parentShell, IBrowserConnection connection, DN base, String exclusion )
+    protected ExclusionDialog( Shell parentShell, IBrowserConnection connection, Dn base, String exclusion )
     {
         super( parentShell );
         this.connection = connection;
@@ -172,7 +172,7 @@ class ExclusionDialog extends Dialog
         entryWidget.createWidget( composite );
         try
         {
-            DN dn = new DN( initalDN );
+            Dn dn = new Dn( initalDN );
             entryWidget.setInput( connection, dn, base, true );
         }
         catch ( LdapInvalidDnException e )
@@ -219,10 +219,10 @@ class ExclusionDialog extends Dialog
 
 
     /**
-     * Gets the DN.
+     * Gets the Dn.
      *
      * @return
-     *      the DN, null if canceled
+     *      the Dn, null if canceled
      */
     public String getDN()
     {

@@ -55,7 +55,7 @@ public class EntryMovedEvent extends EntryModificationEvent
 
 
     /**
-     * Gets the new entry with the new DN.
+     * Gets the new entry with the new Dn.
      * 
      * @return the new entry
      */
@@ -66,7 +66,7 @@ public class EntryMovedEvent extends EntryModificationEvent
 
 
     /**
-     * Gets the old entry with the old DN.
+     * Gets the old entry with the old Dn.
      * 
      * @return the old entry
      */

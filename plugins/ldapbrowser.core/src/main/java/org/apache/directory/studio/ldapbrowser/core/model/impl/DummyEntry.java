@@ -29,8 +29,8 @@ import java.util.Map;
 
 import org.apache.directory.shared.ldap.constants.SchemaConstants;
 import org.apache.directory.shared.ldap.filter.LdapURL;
-import org.apache.directory.shared.ldap.name.DN;
-import org.apache.directory.shared.ldap.name.RDN;
+import org.apache.directory.shared.ldap.name.Dn;
+import org.apache.directory.shared.ldap.name.Rdn;
 import org.apache.directory.shared.ldap.schema.ObjectClass;
 import org.apache.directory.studio.connection.core.jobs.StudioConnectionBulkRunnableWithProgress;
 import org.apache.directory.studio.ldapbrowser.core.events.AttributeAddedEvent;
@@ -63,8 +63,8 @@ public class DummyEntry implements IEntry, ICompareableEntry
 
     private static final long serialVersionUID = 4833907766031149971L;
 
-    /** The DN. */
-    private DN dn;
+    /** The Dn. */
+    private Dn dn;
 
     /** The browser connection. */
     private IBrowserConnection browserConnection;
@@ -81,10 +81,10 @@ public class DummyEntry implements IEntry, ICompareableEntry
     /**
      * Creates a new instance of DummyEntry.
      * 
-     * @param dn the DN
+     * @param dn the Dn
      * @param browserConnection the browser connection
      */
-    public DummyEntry( DN dn, IBrowserConnection browserConnection )
+    public DummyEntry( Dn dn, IBrowserConnection browserConnection )
     {
         this.dn = dn;
         this.browserConnection = browserConnection;
@@ -93,11 +93,11 @@ public class DummyEntry implements IEntry, ICompareableEntry
 
 
     /**
-     * Sets the DN.
+     * Sets the Dn.
      * 
-     * @param dn the new DN
+     * @param dn the new Dn
      */
-    public void setDn( DN dn )
+    public void setDn( Dn dn )
     {
         this.dn = dn;
     }
@@ -208,7 +208,7 @@ public class DummyEntry implements IEntry, ICompareableEntry
     /**
      * {@inheritDoc}
      */
-    public DN getDn()
+    public Dn getDn()
     {
         return dn;
     }
@@ -235,10 +235,10 @@ public class DummyEntry implements IEntry, ICompareableEntry
     /**
      * {@inheritDoc}
      */
-    public RDN getRdn()
+    public Rdn getRdn()
     {
-        RDN rdn = dn.getRdn();
-        return rdn == null ? new RDN() : rdn;
+        Rdn rdn = dn.getRdn();
+        return rdn == null ? new Rdn() : rdn;
     }
 
 

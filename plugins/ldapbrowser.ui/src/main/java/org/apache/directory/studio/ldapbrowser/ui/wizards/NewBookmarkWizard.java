@@ -21,7 +21,7 @@
 package org.apache.directory.studio.ldapbrowser.ui.wizards;
 
 
-import org.apache.directory.shared.ldap.name.DN;
+import org.apache.directory.shared.ldap.name.Dn;
 import org.apache.directory.studio.ldapbrowser.common.widgets.browser.BrowserCategory;
 import org.apache.directory.studio.ldapbrowser.common.widgets.browser.BrowserEntryPage;
 import org.apache.directory.studio.ldapbrowser.common.widgets.browser.BrowserSearchResultPage;
@@ -88,7 +88,7 @@ public class NewBookmarkWizard extends Wizard implements INewWizard
     public void init( IWorkbench workbench, IStructuredSelection selection )
     {
         // determine the currently selected entry, used 
-        // to preset the bookmark target DN
+        // to preset the bookmark target Dn
         Object o = selection.getFirstElement();
         if ( o instanceof IEntry )
         {
@@ -199,7 +199,7 @@ public class NewBookmarkWizard extends Wizard implements INewWizard
         if ( selectedEntry != null )
         {
             String name = mainPage.getBookmarkName();
-            DN dn = mainPage.getBookmarkDn();
+            Dn dn = mainPage.getBookmarkDn();
             IBookmark bookmark = new Bookmark( selectedEntry.getBrowserConnection(), dn, name );
             selectedEntry.getBrowserConnection().getBookmarkManager().addBookmark( bookmark );
         }

@@ -21,7 +21,7 @@
 package org.apache.directory.studio.ldapbrowser.common.dialogs;
 
 
-import org.apache.directory.shared.ldap.name.DN;
+import org.apache.directory.shared.ldap.name.Dn;
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.ldapbrowser.core.jobs.SimulateRenameDialog;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
@@ -54,11 +54,11 @@ public class SimulateRenameDialogImpl extends Dialog implements SimulateRenameDi
     /** The browser connection. */
     private IBrowserConnection browserConnection;
 
-    /** The old DN. */
-    private DN oldDn;
+    /** The old Dn. */
+    private Dn oldDn;
 
-    /** The new DN. */
-    private DN newDn;
+    /** The new Dn. */
+    private Dn newDn;
 
 
     /**
@@ -155,7 +155,7 @@ public class SimulateRenameDialogImpl extends Dialog implements SimulateRenameDi
     /**
      * {@inheritDoc}
      */
-    public void setEntryInfo( IBrowserConnection browserConnection, DN oldDn, DN newDn )
+    public void setEntryInfo( IBrowserConnection browserConnection, Dn oldDn, Dn newDn )
     {
         this.browserConnection = browserConnection;
         this.oldDn = oldDn;

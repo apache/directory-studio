@@ -30,10 +30,9 @@ import javax.naming.ContextNotEmptyException;
 import javax.naming.directory.SearchControls;
 import javax.naming.ldap.Control;
 import javax.naming.ldap.ManageReferralControl;
-import javax.naming.ldap.Rdn;
 
-import org.apache.directory.shared.ldap.name.DN;
-import org.apache.directory.shared.ldap.name.RDN;
+import org.apache.directory.shared.ldap.name.Dn;
+import org.apache.directory.shared.ldap.name.Rdn;
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.DnUtils;
@@ -67,8 +66,8 @@ public class RenameEntryRunnable implements StudioConnectionBulkRunnableWithProg
     /** The old entry. */
     private IEntry oldEntry;
 
-    /** The new RDN. */
-    private RDN newRdn;
+    /** The new Rdn. */
+    private Rdn newRdn;
 
     /** The new entry. */
     private IEntry newEntry;
@@ -84,10 +83,10 @@ public class RenameEntryRunnable implements StudioConnectionBulkRunnableWithProg
      * Creates a new instance of RenameEntryRunnable.
      * 
      * @param entry the entry to rename
-     * @param newRdn the new RDN
+     * @param newRdn the new Rdn
      * @param dialog the dialog
      */
-    public RenameEntryRunnable( IEntry entry, RDN newRdn, SimulateRenameDialog dialog )
+    public RenameEntryRunnable( IEntry entry, Rdn newRdn, SimulateRenameDialog dialog )
     {
         this.browserConnection = entry.getBrowserConnection();
         this.oldEntry = entry;
@@ -146,9 +145,9 @@ public class RenameEntryRunnable implements StudioConnectionBulkRunnableWithProg
         monitor.reportProgress( " " ); //$NON-NLS-1$
         monitor.worked( 1 );
 
-        DN oldDn = oldEntry.getDn();
-        DN parentDn = DnUtils.getParent( oldDn );
-        DN newDn = DnUtils.composeDn( newRdn, parentDn );
+        Dn oldDn = oldEntry.getDn();
+        Dn parentDn = DnUtils.getParent( oldDn );
+        Dn newDn = DnUtils.composeDn( newRdn, parentDn );
 
         // use a dummy monitor to be able to handle exceptions
         StudioProgressMonitor dummyMonitor = new StudioProgressMonitor( monitor );
@@ -272,10 +271,10 @@ public class RenameEntryRunnable implements StudioConnectionBulkRunnableWithProg
      * 
      * @param browserConnection the browser connection
      * @param entry the entry to move/rename
-     * @param newDn the new DN
+     * @param newDn the new Dn
      * @param monitor the progress monitor
      */
-    static void renameEntry( IBrowserConnection browserConnection, IEntry entry, DN newDn,
+    static void renameEntry( IBrowserConnection browserConnection, IEntry entry, Dn newDn,
         StudioProgressMonitor monitor )
     {
         // DNs

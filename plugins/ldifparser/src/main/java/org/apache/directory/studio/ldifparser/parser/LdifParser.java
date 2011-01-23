@@ -271,7 +271,7 @@ public class LdifParser
             return false;
         }
 
-        // get DN
+        // get Dn
         LdifToken dnValueTypeToken = null;
         LdifToken dnToken = null;
         LdifToken dnSepToken = null;

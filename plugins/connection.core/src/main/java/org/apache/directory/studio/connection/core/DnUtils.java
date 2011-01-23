@@ -23,12 +23,12 @@ package org.apache.directory.studio.connection.core;
 import javax.naming.InvalidNameException;
 
 import org.apache.directory.shared.ldap.exception.LdapInvalidDnException;
-import org.apache.directory.shared.ldap.name.DN;
-import org.apache.directory.shared.ldap.name.RDN;
+import org.apache.directory.shared.ldap.name.Dn;
+import org.apache.directory.shared.ldap.name.Rdn;
 
 
 /**
- * Utility class for DN specific stuff.
+ * Utility class for Dn specific stuff.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
@@ -36,28 +36,28 @@ public class DnUtils
 {
 
     /**
-     * Composes an DN based on the given RDN and DN.
+     * Composes an Dn based on the given Rdn and Dn.
      * 
-     * @param rdn the RDN
-     * @param parent the parent DN
+     * @param rdn the Rdn
+     * @param parent the parent Dn
      * 
-     * @return the composed DN
+     * @return the composed Dn
      */
-    public static DN composeDn( RDN rdn, DN parent )
+    public static Dn composeDn( Rdn rdn, Dn parent )
     {
         return parent.add( rdn );
     }
 
 
     /**
-     * Gets the parent DN of the given DN or null if the given 
-     * DN hasn't a parent.
+     * Gets the parent Dn of the given Dn or null if the given
+     * Dn hasn't a parent.
      * 
-     * @param dn the DN
+     * @param dn the Dn
      * 
-     * @return the parent DN, null if the given DN hasn't a parent
+     * @return the parent Dn, null if the given Dn hasn't a parent
      */
-    public static DN getParent( DN dn )
+    public static Dn getParent( Dn dn )
     {
         if ( dn.size() < 1 )
         {
@@ -65,27 +65,27 @@ public class DnUtils
         }
         else
         {
-            DN parent = ( DN ) dn.getPrefix( dn.size() - 1 );
+            Dn parent = (Dn) dn.getPrefix( dn.size() - 1 );
             return parent;
         }
     }
 
 
     /**
-     * Compose an DN based on the given RDN and DN.
+     * Compose an Dn based on the given Rdn and Dn.
      * 
-     * @param rdn the RDN
-     * @param parent the parent DN
+     * @param rdn the Rdn
+     * @param parent the parent Dn
      * 
-     * @return the composed RDN
+     * @return the composed Rdn
      * 
      * @throws InvalidNameException the invalid name exception
      */
-    public static DN composeDn( String rdn, String parent ) throws InvalidNameException
+    public static Dn composeDn( String rdn, String parent ) throws InvalidNameException
     {
         try
         {
-            return composeDn( new RDN( rdn ), new DN( parent ) );
+            return composeDn( new Rdn( rdn ), new Dn( parent ) );
         }
         catch ( LdapInvalidDnException e )
         {
@@ -95,20 +95,20 @@ public class DnUtils
 
 
     /**
-     * Composes an DN based on the given prefix and suffix.
+     * Composes an Dn based on the given prefix and suffix.
      * 
      * @param prefix the prefix
      * @param suffix the suffix
      * 
-     * @return the composed DN
+     * @return the composed Dn
      */
-    public static DN composeDn( DN prefix, DN suffix )
+    public static Dn composeDn( Dn prefix, Dn suffix )
     {
-        DN ldapDn = suffix;
+        Dn ldapDn = suffix;
 
         for ( int i = 0; i < prefix.size(); i++ )
         {
-            ldapDn = ldapDn.add( ( RDN ) prefix.getRdn( i ).clone() );
+            ldapDn = ldapDn.add( (Rdn) prefix.getRdn( i ).clone() );
         }
 
         return ldapDn;
@@ -116,14 +116,14 @@ public class DnUtils
 
 
     /**
-     * Gets the prefix, cuts the suffix from the given DN.
+     * Gets the prefix, cuts the suffix from the given Dn.
      * 
-     * @param dn the DN
+     * @param dn the Dn
      * @param suffix the suffix
      * 
      * @return the prefix
      */
-    public static DN getPrefixName( DN dn, DN suffix )
+    public static Dn getPrefixName( Dn dn, Dn suffix )
     {
         if ( suffix.size() < 1 )
         {
@@ -131,23 +131,23 @@ public class DnUtils
         }
         else
         {
-            DN prefix = ( DN ) dn.getSuffix( suffix.size() );
+            Dn prefix = (Dn) dn.getSuffix( suffix.size() );
             return prefix;
         }
     }
 
 
     /**
-     * Composes an RDN based on the given types and values.
+     * Composes an Rdn based on the given types and values.
      * 
      * @param rdnTypes the types
      * @param rdnValues the values
      * 
-     * @return the RDN
+     * @return the Rdn
      * 
      * @throws InvalidNameException the invalid name exception
      */
-    public static RDN composeRdn( String[] rdnTypes, String[] rdnValues ) throws InvalidNameException
+    public static Rdn composeRdn( String[] rdnTypes, String[] rdnValues ) throws InvalidNameException
     {
         StringBuffer sb = new StringBuffer();
         for ( int i = 0; i < rdnTypes.length; i++ )
@@ -159,15 +159,15 @@ public class DnUtils
 
             sb.append( rdnTypes[i] );
             sb.append( '=' );
-            sb.append( RDN.escapeValue( rdnValues[i] ) );
+            sb.append( Rdn.escapeValue(rdnValues[i]) );
         }
 
         String s = sb.toString();
         try
         {
-            if ( DN.isValid( s ) )
+            if ( Dn.isValid(s) )
             {
-                RDN rdn = new RDN( sb.toString() );
+                Rdn rdn = new Rdn( sb.toString() );
                 return rdn;
             }
         }

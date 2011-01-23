@@ -25,7 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.directory.shared.ldap.filter.LdapURL;
-import org.apache.directory.shared.ldap.name.DN;
+import org.apache.directory.shared.ldap.name.Dn;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
 import org.apache.directory.studio.ldapbrowser.core.jobs.InitializeAttributesRunnable;
@@ -67,9 +67,9 @@ public class ContinuedSearchResultEntry extends DelegateEntry implements IContin
      * Sets the internal state of the target connection to "resolved".
      * 
      * @param connection the connection of the continued search
-     * @param dn the DN of the entry
+     * @param dn the Dn of the entry
      */
-    public ContinuedSearchResultEntry( IBrowserConnection connection, DN dn )
+    public ContinuedSearchResultEntry( IBrowserConnection connection, Dn dn )
     {
         super( connection, dn );
         this.state = State.RESOLVED;

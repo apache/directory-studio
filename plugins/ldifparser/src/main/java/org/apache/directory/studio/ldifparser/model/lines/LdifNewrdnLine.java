@@ -82,11 +82,11 @@ public class LdifNewrdnLine extends LdifValueLineBase
     {
         if ( this.getUnfoldedNewrdnSpec().length() == 0 )
         {
-            return "Missing new RDN spec 'newrdn'";
+            return "Missing new Rdn spec 'newrdn'";
         }
         else if ( this.getUnfoldedNewrdn().length() == 0 )
         {
-            return "Missing new RDN";
+            return "Missing new Rdn";
         }
         else
         {

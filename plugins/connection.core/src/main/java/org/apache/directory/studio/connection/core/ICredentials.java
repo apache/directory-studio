@@ -38,7 +38,7 @@ public interface ICredentials
 
 
     /**
-     * Gets the bind principal, typically a DN.
+     * Gets the bind principal, typically a Dn.
      * 
      * @return the bind principal
      */

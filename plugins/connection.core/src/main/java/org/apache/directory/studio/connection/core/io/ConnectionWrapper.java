@@ -109,7 +109,7 @@ public interface ConnectionWrapper
     /**
      * Modifies attributes of an entry.
      * 
-     * @param dn the DN
+     * @param dn the Dn
      * @param modificationItems the modification items
      * @param controls the controls
      * @param monitor the progress monitor
@@ -122,9 +122,9 @@ public interface ConnectionWrapper
     /**
      * Renames an entry.
      * 
-     * @param oldDn the old DN
-     * @param newDn the new DN
-     * @param deleteOldRdn true to delete the old RDN
+     * @param oldDn the old Dn
+     * @param newDn the new Dn
+     * @param deleteOldRdn true to delete the old Rdn
      * @param controls the controls
      * @param monitor the progress monitor
      * @param referralsInfo the referrals info
@@ -136,7 +136,7 @@ public interface ConnectionWrapper
     /**
      * Creates an entry.
      * 
-     * @param dn the entry's DN
+     * @param dn the entry's Dn
      * @param attributes the entry's attributes
      * @param controls the controls
      * @param monitor the progress monitor
@@ -149,7 +149,7 @@ public interface ConnectionWrapper
     /**
      * Deletes an entry.
      * 
-     * @param dn the DN of the entry to delete
+     * @param dn the Dn of the entry to delete
      * @param controls the controls
      * @param monitor the progress monitor
      * @param referralsInfo the referrals info

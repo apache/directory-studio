@@ -91,11 +91,11 @@ public class LdifDeloldrdnLine extends LdifValueLineBase
     {
         if ( this.getUnfoldedDeleteOldrdnSpec().length() == 0 )
         {
-            return "Missing delete old RDN spec 'deleteoldrdn'";
+            return "Missing delete old Rdn spec 'deleteoldrdn'";
         }
         else if ( !"0".equals( getUnfoldedDeleteOldrdn() ) && !"1".equals( getUnfoldedDeleteOldrdn() ) )
         {
-            return "Invalid value of delete old RDN, must be '0' or '1'";
+            return "Invalid value of delete old Rdn, must be '0' or '1'";
         }
         else
         {

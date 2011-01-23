@@ -30,7 +30,7 @@ import org.eclipse.jface.viewers.TreeViewer;
 
 /**
  * The OpenBestEditorAction is used to edit a value with the default value editor.
- * This is either the best value editor or in case of an RDN attribute the rename
+ * This is either the best value editor or in case of an Rdn attribute the rename
  * action is invoked.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>

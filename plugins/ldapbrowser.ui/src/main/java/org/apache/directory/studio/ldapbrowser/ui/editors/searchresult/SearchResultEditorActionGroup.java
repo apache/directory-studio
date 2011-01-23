@@ -73,7 +73,7 @@ import org.eclipse.ui.actions.ContributionItemFactory;
 public class SearchResultEditorActionGroup implements ActionHandlerManager, IMenuListener
 {
 
-    /** The show DN action. */
+    /** The show Dn action. */
     private ShowDNAction showDNAction;
 
     /** The show links action. */

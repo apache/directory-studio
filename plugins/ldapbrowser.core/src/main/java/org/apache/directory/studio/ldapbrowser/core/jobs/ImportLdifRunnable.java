@@ -48,7 +48,7 @@ import javax.naming.ldap.Control;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.directory.shared.ldap.exception.LdapInvalidDnException;
-import org.apache.directory.shared.ldap.name.DN;
+import org.apache.directory.shared.ldap.name.Dn;
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.ConnectionCoreConstants;
@@ -289,9 +289,9 @@ public class ImportLdifRunnable implements StudioConnectionBulkRunnableWithProgr
                             logModification( browserConnection, logWriter, record, monitor );
 
                             // update cache and adjust attribute/children initialization flags
-                            DN dn = new DN( record.getDnLine().getValueAsString() );
+                            Dn dn = new Dn( record.getDnLine().getValueAsString() );
                             IEntry entry = browserConnection.getEntryFromCache( dn );
-                            DN parentDn = DnUtils.getParent( dn );
+                            Dn parentDn = DnUtils.getParent( dn );
                             IEntry parentEntry = null;
                             while ( parentEntry == null && parentDn != null )
                             {
@@ -325,7 +325,7 @@ public class ImportLdifRunnable implements StudioConnectionBulkRunnableWithProgr
                                 LdifChangeModDnRecord modDnRecord = ( LdifChangeModDnRecord ) record;
                                 if ( modDnRecord.getNewsuperiorLine() != null )
                                 {
-                                    DN newSuperiorDn = new DN( modDnRecord.getNewsuperiorLine()
+                                    Dn newSuperiorDn = new Dn( modDnRecord.getNewsuperiorLine()
                                         .getValueAsString() );
                                     IEntry newSuperiorEntry = browserConnection.getEntryFromCache( newSuperiorDn );
                                     if ( newSuperiorEntry != null )
@@ -522,15 +522,15 @@ public class ImportLdifRunnable implements StudioConnectionBulkRunnableWithProgr
                 String newRdn = modDnRecord.getNewrdnLine().getValueAsString();
                 boolean deleteOldRdn = modDnRecord.getDeloldrdnLine().isDeleteOldRdn();
 
-                DN newDn;
+                Dn newDn;
                 if ( modDnRecord.getNewsuperiorLine() != null )
                 {
                     newDn = DnUtils.composeDn( newRdn, modDnRecord.getNewsuperiorLine().getValueAsString() );
                 }
                 else
                 {
-                    DN dnObject = new DN( dn );
-                    DN parent = DnUtils.getParent( dnObject );
+                    Dn dnObject = new Dn( dn );
+                    Dn parent = DnUtils.getParent( dnObject );
                     newDn = DnUtils.composeDn( newRdn, parent.getName() );
                 }
 

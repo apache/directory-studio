@@ -183,7 +183,7 @@ public abstract class AbstractServerXmlIO implements ServerXmlIO
 
 
     /**
-     * Reads an entry (without DN)
+     * Reads an entry (without Dn)
      * 
      * @param text
      *            The ldif format text

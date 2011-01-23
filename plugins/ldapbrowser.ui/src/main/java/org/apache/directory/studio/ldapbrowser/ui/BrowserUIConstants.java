@@ -43,7 +43,7 @@ public final class BrowserUIConstants
 
     public static final String ENTRY_EDITOR_EXTENSION_POINT = "org.apache.directory.studio.entryeditors"; //$NON-NLS-1$
 
-    public static final String DN = "DN"; //$NON-NLS-1$
+    public static final String DN = "Dn"; //$NON-NLS-1$
 
     public static final String PREFERENCE_BROWSER_LINK_WITH_EDITOR = "browserLinkWithEditor"; //$NON-NLS-1$
     public static final String PREFERENCE_SEARCHRESULTEDITOR_SHOW_DN = "searchResultEditorShowDn"; //$NON-NLS-1$

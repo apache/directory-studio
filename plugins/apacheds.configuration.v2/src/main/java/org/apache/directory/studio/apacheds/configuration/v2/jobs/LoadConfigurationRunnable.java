@@ -38,7 +38,7 @@ import org.apache.directory.shared.ldap.entry.DefaultEntry;
 import org.apache.directory.shared.ldap.entry.Entry;
 import org.apache.directory.shared.ldap.exception.LdapException;
 import org.apache.directory.shared.ldap.exception.LdapNoSuchObjectException;
-import org.apache.directory.shared.ldap.name.DN;
+import org.apache.directory.shared.ldap.name.Dn;
 import org.apache.directory.shared.ldap.schema.SchemaManager;
 import org.apache.directory.shared.ldap.entry.AttributeUtils;
 import org.apache.directory.studio.apacheds.configuration.v2.ApacheDS2ConfigurationPlugin;
@@ -282,7 +282,7 @@ public class LoadConfigurationRunnable implements StudioRunnableWithProgress
 
             // Creating the search parameter
             SearchParameter configSearchParameter = new SearchParameter();
-            configSearchParameter.setSearchBase( new DN( "ou=config" ) );
+            configSearchParameter.setSearchBase( new Dn( "ou=config" ) );
             configSearchParameter.setFilter( "(objectClass=*)" );
             configSearchParameter.setScope( SearchScope.OBJECT );
             configSearchParameter.setReturningAttributes( SchemaConstants.ALL_USER_ATTRIBUTES_ARRAY );
@@ -304,7 +304,7 @@ public class LoadConfigurationRunnable implements StudioRunnableWithProgress
                 // Creating the 'ou=config' base entry
                 SearchResult searchResult = ( SearchResult ) enumeration.next();
                 configEntry = new DefaultEntry( schemaManager, AttributeUtils.toClientEntry(
-                    searchResult.getAttributes(), new DN( searchResult.getNameInNamespace() ) ) );
+                    searchResult.getAttributes(), new Dn( searchResult.getNameInNamespace() ) ) );
             }
             enumeration.close();
 
@@ -360,7 +360,7 @@ public class LoadConfigurationRunnable implements StudioRunnableWithProgress
                     // Creating the child entry
                     SearchResult searchResult = ( SearchResult ) childrenEnumeration.next();
                     Entry childEntry = new DefaultEntry( schemaManager, AttributeUtils.toClientEntry(
-                        searchResult.getAttributes(), new DN( searchResult.getNameInNamespace() ) ) );
+                        searchResult.getAttributes(), new Dn( searchResult.getNameInNamespace() ) ) );
 
                     // Adding the children to the list of entries
                     entries.add( childEntry );

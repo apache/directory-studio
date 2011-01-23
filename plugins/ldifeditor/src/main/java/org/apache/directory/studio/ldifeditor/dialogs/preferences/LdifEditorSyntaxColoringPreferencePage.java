@@ -83,7 +83,7 @@ public class LdifEditorSyntaxColoringPreferencePage extends PreferencePage imple
         + BrowserCoreConstants.LINE_SEPARATOR + "changetype: delete" + BrowserCoreConstants.LINE_SEPARATOR + "" //$NON-NLS-1$ //$NON-NLS-2$
         + BrowserCoreConstants.LINE_SEPARATOR
 
-        + "# Modify DN record" + BrowserCoreConstants.LINE_SEPARATOR + "dn: cn=moddn record" //$NON-NLS-1$ //$NON-NLS-2$
+        + "# Modify Dn record" + BrowserCoreConstants.LINE_SEPARATOR + "dn: cn=moddn record" //$NON-NLS-1$ //$NON-NLS-2$
         + BrowserCoreConstants.LINE_SEPARATOR + "changetype: moddn" + BrowserCoreConstants.LINE_SEPARATOR //$NON-NLS-1$
         + "newrdn: cn=new rdn" + BrowserCoreConstants.LINE_SEPARATOR + "deleteoldrdn: 1" //$NON-NLS-1$ //$NON-NLS-2$
         + BrowserCoreConstants.LINE_SEPARATOR + "newsuperior: cn=new superior" + BrowserCoreConstants.LINE_SEPARATOR //$NON-NLS-1$
@@ -235,7 +235,7 @@ public class LdifEditorSyntaxColoringPreferencePage extends PreferencePage imple
         syntaxItems[0] = new SyntaxItem(
             Messages.getString( "LdifEditorSyntaxColoringPreferencePage.Comments" ), LdifEditorConstants.PREFERENCE_LDIFEDITOR_SYNTAX_COMMENT ); //$NON-NLS-1$
         syntaxItems[1] = new SyntaxItem(
-            Messages.getString( "LdifEditorSyntaxColoringPreferencePage.DN" ), LdifEditorConstants.PREFERENCE_LDIFEDITOR_SYNTAX_DN ); //$NON-NLS-1$
+            Messages.getString( "LdifEditorSyntaxColoringPreferencePage.Dn" ), LdifEditorConstants.PREFERENCE_LDIFEDITOR_SYNTAX_DN ); //$NON-NLS-1$
         syntaxItems[2] = new SyntaxItem( Messages
             .getString( "LdifEditorSyntaxColoringPreferencePage.AttributeDescriptions" ), //$NON-NLS-1$
             LdifEditorConstants.PREFERENCE_LDIFEDITOR_SYNTAX_ATTRIBUTE );

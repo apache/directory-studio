@@ -21,10 +21,8 @@
 package org.apache.directory.studio.ldifeditor.editor.actions;
 
 
-import javax.naming.InvalidNameException;
-
 import org.apache.directory.shared.ldap.exception.LdapInvalidDnException;
-import org.apache.directory.shared.ldap.name.DN;
+import org.apache.directory.shared.ldap.name.Dn;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonConstants;
 import org.apache.directory.studio.ldapbrowser.common.wizards.AttributeWizard;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
@@ -122,7 +120,7 @@ public class EditLdifAttributeAction extends AbstractLdifAction
                 }
                 else if ( containers[0] instanceof LdifChangeModifyRecord )
                 {
-                    dummyEntry = new DummyEntry( new DN(), dummyConnection );
+                    dummyEntry = new DummyEntry( new Dn(), dummyConnection );
                 }
 
                 AttributeWizard wizard = new AttributeWizard( Messages

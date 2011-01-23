@@ -24,7 +24,7 @@ package org.apache.directory.studio.ldapbrowser.core.model;
 import java.io.Serializable;
 
 import org.apache.directory.shared.ldap.filter.LdapURL;
-import org.apache.directory.shared.ldap.name.DN;
+import org.apache.directory.shared.ldap.name.Dn;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.ConnectionPropertyPageProvider;
 import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
@@ -162,7 +162,7 @@ public interface IBrowserConnection extends Serializable, IAdaptable, Connection
     /** The key for the connection parameter "Get Base DNs from Root DSE". */
     public static String CONNECTION_PARAMETER_FETCH_BASE_DNS = "ldapbrowser.fetchBaseDns";
 
-    /** The key for the connection parameter "Base DN". */
+    /** The key for the connection parameter "Base Dn". */
     public static String CONNECTION_PARAMETER_BASE_DN = "ldapbrowser.baseDn";
 
     /** The key for the connection parameter "Count Limit". */
@@ -215,17 +215,17 @@ public interface IBrowserConnection extends Serializable, IAdaptable, Connection
 
     /**
      * Gets the flag whether the base DNs is retrieved
-     * from Root DSE or whether the base DN is defined manually.
+     * from Root DSE or whether the base Dn is defined manually.
      * 
      * @return true, if the base DNs are fetched from Root DSE, 
-     *         false, if the base DN is defined manually
+     *         false, if the base Dn is defined manually
      */
     public abstract boolean isFetchBaseDNs();
 
 
     /**
      * Sets the flag whether the base DNs should be retrieved
-     * from Root DSE or whether the base DN is defined manually.
+     * from Root DSE or whether the base Dn is defined manually.
      * 
      * @param fetchBaseDNs true to get the base DNs from Root DSE,
      *                     false to define one manually
@@ -234,19 +234,19 @@ public interface IBrowserConnection extends Serializable, IAdaptable, Connection
 
 
     /**
-     * Gets the manually defined base DN.
+     * Gets the manually defined base Dn.
      * 
      * @return the manually defined base ND
      */
-    public abstract DN getBaseDN();
+    public abstract Dn getBaseDN();
 
 
     /**
-     * Sets the manually defined base DN.
+     * Sets the manually defined base Dn.
      * 
-     * @param baseDN the new base DN
+     * @param baseDn the new base Dn
      */
-    public abstract void setBaseDN( DN baseDN );
+    public abstract void setBaseDN( Dn baseDn);
 
 
     /**
@@ -500,11 +500,11 @@ public interface IBrowserConnection extends Serializable, IAdaptable, Connection
     /**
      * Gets the entry from cache.
      * 
-     * @param dn the DN of the entry
+     * @param dn the Dn of the entry
      * 
      * @return the entry from cache or null if the entry isn't cached
      */
-    public abstract IEntry getEntryFromCache( DN dn );
+    public abstract IEntry getEntryFromCache( Dn dn );
 
 
     /**

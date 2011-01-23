@@ -95,7 +95,7 @@ import org.eclipse.osgi.util.NLS;
  * - asychron + cancelable
  * - SSL certificate
  * - manages broken/closed connections
- * - delete old RDN
+ * - delete old Rdn
  * - exception handling 
  * - referral handling
  *
@@ -420,7 +420,7 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
     /**
      * Modifies attributes of an entry.
      * 
-     * @param dn the DN
+     * @param dn the Dn
      * @param modificationItems the modification items
      * @param controls the controls
      * @param monitor the progress monitor
@@ -525,9 +525,9 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
     /**
      * Renames an entry.
      * 
-     * @param oldDn the old DN
-     * @param newDn the new DN
-     * @param deleteOldRdn true to delete the old RDN
+     * @param oldDn the old Dn
+     * @param newDn the new Dn
+     * @param deleteOldRdn true to delete the old Rdn
      * @param controls the controls
      * @param monitor the progress monitor
      * @param referralsInfo the referrals info
@@ -554,7 +554,7 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
                     // use "throw" as we handle referrals manually
                     modCtx.addToEnvironment( Context.REFERRAL, REFERRAL_THROW );
 
-                    // delete old RDN
+                    // delete old Rdn
                     if ( deleteOldRdn )
                     {
                         modCtx.addToEnvironment( JAVA_NAMING_LDAP_DELETE_RDN, "true" ); //$NON-NLS-1$
@@ -632,7 +632,7 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
     /**
      * Creates an entry.
      * 
-     * @param dn the entry's DN
+     * @param dn the entry's Dn
      * @param attributes the entry's attributes
      * @param controls the controls
      * @param monitor the progress monitor
@@ -735,7 +735,7 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
     /**
      * Deletes an entry.
      * 
-     * @param dn the DN of the entry to delete
+     * @param dn the Dn of the entry to delete
      * @param controls the controls
      * @param monitor the progress monitor
      * @param referralsInfo the referrals info
@@ -1469,7 +1469,7 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
      * <p>
      * In JNDI we have could use the following classes for names:
      * <ul>
-     * <li>DN as String</li>
+     * <li>Dn as String</li>
      * <li>javax.naming.CompositeName</li>
      * <li>javax.naming.ldap.LdapName (since Java5)</li>
      * <li>org.apache.directory.shared.ldap.name.LdapDN</li>
@@ -1477,22 +1477,22 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
      * <p>
      * There are some drawbacks when using this classes:
      * <ul>
-     * <li>When passing DN as String, JNDI doesn't handle slashes '/' correctly.
+     * <li>When passing Dn as String, JNDI doesn't handle slashes '/' correctly.
      * So we must use a Name object here.</li>
      * <li>With CompositeName we have the same problem with slashes '/'.</li>
      * <li>When using LdapDN from shared-ldap, JNDI uses the toString() method
      * and LdapDN.toString() returns the normalized ATAV, but we need the
      * user provided ATAV.</li>
-     * <li>When using LdapName for the empty DN (Root DSE) JNDI _sometimes_ throws
+     * <li>When using LdapName for the empty Dn (Root DSE) JNDI _sometimes_ throws
      * an Exception (java.lang.IndexOutOfBoundsException: Posn: -1, Size: 0
      * at javax.naming.ldap.LdapName.getPrefix(LdapName.java:240)).</li>
      * <li>Using LdapDN for the RootDSE doesn't work with Apache Harmony because
      * its JNDI provider only accepts intstances of CompositeName or LdapName.</li>
      * </ul>
      * <p>
-     * So we use LdapName as default and the CompositeName for the empty DN.
+     * So we use LdapName as default and the CompositeName for the empty Dn.
      * 
-     * @param name the DN
+     * @param name the Dn
      * 
      * @return the save JNDI name
      * 

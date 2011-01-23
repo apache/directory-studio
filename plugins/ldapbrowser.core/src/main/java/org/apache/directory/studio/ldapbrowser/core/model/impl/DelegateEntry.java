@@ -23,8 +23,8 @@ package org.apache.directory.studio.ldapbrowser.core.model.impl;
 
 import java.util.Collection;
 
-import org.apache.directory.shared.ldap.name.DN;
-import org.apache.directory.shared.ldap.name.RDN;
+import org.apache.directory.shared.ldap.name.Dn;
+import org.apache.directory.shared.ldap.name.Rdn;
 import org.apache.directory.shared.ldap.schema.ObjectClass;
 import org.apache.directory.shared.ldap.filter.LdapURL;
 import org.apache.directory.studio.connection.core.jobs.StudioConnectionBulkRunnableWithProgress;
@@ -54,8 +54,8 @@ public abstract class DelegateEntry implements IEntry
     /** The connection id. */
     protected String connectionId;
 
-    /** The DN. */
-    protected DN dn;
+    /** The Dn. */
+    protected Dn dn;
 
     /** The entry does not exist flag. */
     protected boolean entryDoesNotExist;
@@ -73,9 +73,9 @@ public abstract class DelegateEntry implements IEntry
      * Creates a new instance of DelegateEntry.
      * 
      * @param browserConnection the browser connection of the delegate
-     * @param dn the DN of the delegate
+     * @param dn the Dn of the delegate
      */
-    protected DelegateEntry( IBrowserConnection browserConnection, DN dn )
+    protected DelegateEntry( IBrowserConnection browserConnection, Dn dn )
     {
         this.connectionId = browserConnection.getConnection() != null ? browserConnection.getConnection().getId()
             : null;
@@ -149,7 +149,7 @@ public abstract class DelegateEntry implements IEntry
     /**
      * {@inheritDoc}
      */
-    public DN getDn()
+    public Dn getDn()
     {
         if ( getDelegate() != null )
         {
@@ -397,7 +397,7 @@ public abstract class DelegateEntry implements IEntry
     /**
      * {@inheritDoc}
      */
-    public RDN getRdn()
+    public Rdn getRdn()
     {
         if ( getDelegate() != null )
         {
@@ -405,8 +405,8 @@ public abstract class DelegateEntry implements IEntry
         }
         else
         {
-            RDN rdn = dn.getRdn();
-            return rdn == null ? new RDN() : rdn;
+            Rdn rdn = dn.getRdn();
+            return rdn == null ? new Rdn() : rdn;
         }
     }
 

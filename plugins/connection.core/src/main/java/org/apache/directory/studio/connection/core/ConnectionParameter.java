@@ -130,7 +130,7 @@ public class ConnectionParameter
     /** The authentication method. */
     private AuthenticationMethod authMethod;
 
-    /** The bind principal, typically a DN. */
+    /** The bind principal, typically a Dn. */
     private String bindPrincipal;
 
     /** The bind password. */

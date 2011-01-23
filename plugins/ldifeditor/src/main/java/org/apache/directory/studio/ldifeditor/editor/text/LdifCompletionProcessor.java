@@ -66,7 +66,7 @@ import org.eclipse.swt.graphics.Image;
 public class LdifCompletionProcessor extends TemplateCompletionProcessor
 {
 
-    // private final static String DN = "dn: ";
+    // private final static String Dn = "dn: ";
     private final static String CT_ADD = "changetype: add" + BrowserCoreConstants.LINE_SEPARATOR; //$NON-NLS-1$
 
     private final static String CT_MODIFY = "changetype: modify" + BrowserCoreConstants.LINE_SEPARATOR; //$NON-NLS-1$

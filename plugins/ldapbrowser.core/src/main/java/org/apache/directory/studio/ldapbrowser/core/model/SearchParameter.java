@@ -26,7 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.directory.shared.ldap.constants.SchemaConstants;
-import org.apache.directory.shared.ldap.name.DN;
+import org.apache.directory.shared.ldap.name.Dn;
 import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
 import org.apache.directory.studio.connection.core.Connection.ReferralHandlingMethod;
 import org.apache.directory.studio.connection.core.StudioControl;
@@ -49,7 +49,7 @@ public class SearchParameter implements Serializable
     private String name;
 
     /** The search base. */
-    private DN searchBase;
+    private Dn searchBase;
 
     /** The filter. */
     private String filter;
@@ -287,7 +287,7 @@ public class SearchParameter implements Serializable
      * 
      * @return the search base
      */
-    public DN getSearchBase()
+    public Dn getSearchBase()
     {
         return searchBase;
     }
@@ -298,7 +298,7 @@ public class SearchParameter implements Serializable
      * 
      * @param searchBase the search base
      */
-    public void setSearchBase( DN searchBase )
+    public void setSearchBase( Dn searchBase )
     {
         assert searchBase != null;
         this.searchBase = searchBase;

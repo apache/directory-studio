@@ -56,7 +56,7 @@ public class SearchResultEditorLabelProvider extends LabelProvider implements IT
     /** The search. */
     private ISearch search;
 
-    /** The show DN flag. */
+    /** The show Dn flag. */
     private boolean showDn;
 
 
@@ -76,7 +76,7 @@ public class SearchResultEditorLabelProvider extends LabelProvider implements IT
      * Called when the input of the viewer has been changed.
      * 
      * @param newSearch the new search
-     * @param showDn the show DN flag
+     * @param showDn the show Dn flag
      */
     public void inputChanged( ISearch newSearch, boolean showDn )
     {

@@ -54,7 +54,7 @@ import org.eclipse.ui.dialogs.PropertyPage;
 public class SchemaPropertyPage extends PropertyPage implements IWorkbenchPropertyPage
 {
 
-    /** Text field containing the DN of the schema entry. */
+    /** Text field containing the Dn of the schema entry. */
     private Text dnText;
 
     /** Text field containing the create timestamp of the schema entry. */

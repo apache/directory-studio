@@ -24,7 +24,7 @@ import org.apache.directory.server.config.beans.ChangePasswordServerBean;
 import org.apache.directory.server.config.beans.KdcServerBean;
 import org.apache.directory.server.config.beans.TransportBean;
 import org.apache.directory.shared.ldap.exception.LdapInvalidDnException;
-import org.apache.directory.shared.ldap.name.DN;
+import org.apache.directory.shared.ldap.name.Dn;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
@@ -126,7 +126,7 @@ public class KerberosServerPage extends ServerConfigurationEditorPage
 
             try
             {
-                DN searchBaseDn = new DN( searchBaseDnValue );
+                Dn searchBaseDn = new Dn( searchBaseDnValue );
                 getKdcServerBean().setSearchBaseDn( searchBaseDn );
             }
             catch ( LdapInvalidDnException e1 )
@@ -304,8 +304,8 @@ public class KerberosServerPage extends ServerConfigurationEditorPage
             "EXAMPLE.COM" );
         defaultSaslPrincipalLabel.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
 
-        // Search Base DN
-        toolkit.createLabel( composite, "Search Base DN:" );
+        // Search Base Dn
+        toolkit.createLabel( composite, "Search Base Dn:" );
         kdcSearchBaseDnText = toolkit.createText( composite, "" ); //$NON-NLS-1$
         kdcSearchBaseDnText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
         Label defaultSaslSearchBaseDnLabel = createDefaultValueLabel( toolkit, composite, "ou=users,dc=example,dc=com" );
@@ -428,7 +428,7 @@ public class KerberosServerPage extends ServerConfigurationEditorPage
         addDirtyListener( primaryKdcRealmText );
         addModifyListener( primaryKdcRealmText, primaryKdcRealmTextListener );
 
-        // KDC Search Base DN Text
+        // KDC Search Base Dn Text
         addDirtyListener( kdcSearchBaseDnText );
         addModifyListener( kdcSearchBaseDnText, kdcSearchBaseDnTextListener );
 
@@ -503,7 +503,7 @@ public class KerberosServerPage extends ServerConfigurationEditorPage
         removeDirtyListener( primaryKdcRealmText );
         removeModifyListener( primaryKdcRealmText, primaryKdcRealmTextListener );
 
-        // KDC Search Base DN Text
+        // KDC Search Base Dn Text
         removeDirtyListener( kdcSearchBaseDnText );
         removeModifyListener( kdcSearchBaseDnText, kdcSearchBaseDnTextListener );
 

@@ -39,7 +39,7 @@ public class ExportOdfFromWizardPage extends ExportBaseFromWizardPage
      * {@link SearchPageWrapper} with
      * <ul> 
      * <li>hidden name
-     * <li>visible and checked return DN checkbox
+     * <li>visible and checked return Dn checkbox
      * <li>visible all attributes checkbox
      * <li>visible operational attributes checkbox
      * </ul> 

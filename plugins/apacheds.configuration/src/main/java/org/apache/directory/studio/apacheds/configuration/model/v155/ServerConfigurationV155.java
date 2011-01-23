@@ -71,7 +71,7 @@ public class ServerConfigurationV155 extends AbstractServerConfiguration impleme
     /** The SASL Realms */
     private List<String> saslRealms;
 
-    /** The Search Base DN */
+    /** The Search Base Dn */
     private String searchBaseDn;
 
     // Protocols
@@ -422,10 +422,10 @@ public class ServerConfigurationV155 extends AbstractServerConfiguration impleme
 
 
     /**
-     * Gets the Search Base DN.
+     * Gets the Search Base Dn.
      *
      * @return
-     *      the Search Base DN
+     *      the Search Base Dn
      */
     public String getSearchBaseDn()
     {
@@ -923,7 +923,7 @@ public class ServerConfigurationV155 extends AbstractServerConfiguration impleme
 
 
     /**
-     * Sets the Search Base DN
+     * Sets the Search Base Dn
      *
      * @param searchBaseDn
      *      the new value

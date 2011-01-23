@@ -29,7 +29,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.directory.shared.ldap.name.DN;
+import org.apache.directory.shared.ldap.name.Dn;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonConstants;
 import org.apache.directory.studio.ldapbrowser.core.BrowserConnectionManager;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
@@ -42,7 +42,7 @@ import org.eclipse.swt.dnd.TransferData;
 
 /**
  * A {@link Transfer} that could be used to transfer {@link IEntry} objects.
- * Note that only the connection id and entry's DN is converted to a platform specific 
+ * Note that only the connection id and entry's Dn is converted to a platform specific
  * representation, not the complete object.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
@@ -83,7 +83,7 @@ public class EntryTransfer extends ByteArrayTransfer
      * {@inheritDoc}
      * 
      * This implementation only accepts {@link IEntry} objects. 
-     * It just converts the id of the connection and the entry's DN
+     * It just converts the id of the connection and the entry's Dn
      * to the platform specific representation.
      */
     public void javaToNative( Object object, TransferData transferData )
@@ -128,9 +128,9 @@ public class EntryTransfer extends ByteArrayTransfer
      * {@inheritDoc}
      * 
      * This implementation just converts the platform specific representation
-     * to the connection id and entry DN and invokes 
+     * to the connection id and entry Dn and invokes
      * {@link BrowserConnectionManager#getBrowserConnectionById(String)} to get the
-     * {@link IBrowserConnection} object and {@link IBrowserConnection#getEntryFromCache(DN)}
+     * {@link IBrowserConnection} object and {@link IBrowserConnection#getEntryFromCache(org.apache.directory.shared.ldap.name.Dn)}
      * to get the {@link IEntry} object.
      */
     public Object nativeToJava( TransferData transferData )
@@ -169,7 +169,7 @@ public class EntryTransfer extends ByteArrayTransfer
                             int size = readIn.readInt();
                             byte[] dn = new byte[size];
                             readIn.read( dn );
-                            entry = connection.getEntryFromCache( new DN( new String( dn, "UTF-8" ) ) ); //$NON-NLS-1$
+                            entry = connection.getEntryFromCache( new Dn( new String( dn, "UTF-8" ) ) ); //$NON-NLS-1$
                         }
                         else
                         {

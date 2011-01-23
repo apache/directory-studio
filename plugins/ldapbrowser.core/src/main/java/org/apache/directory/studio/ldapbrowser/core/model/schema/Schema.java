@@ -36,7 +36,7 @@ import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.directory.shared.ldap.constants.SchemaConstants;
-import org.apache.directory.shared.ldap.name.DN;
+import org.apache.directory.shared.ldap.name.Dn;
 import org.apache.directory.shared.ldap.schema.AttributeType;
 import org.apache.directory.shared.ldap.schema.LdapSyntax;
 import org.apache.directory.shared.ldap.schema.MatchingRule;
@@ -120,7 +120,7 @@ public class Schema
 
     private LdifContentRecord schemaRecord;
 
-    private DN dn;
+    private Dn dn;
 
     private String createTimestamp;
 
@@ -232,7 +232,7 @@ public class Schema
     private void parseSchemaRecord( LdifContentRecord schemaRecord ) throws Exception
     {
         setSchemaRecord( schemaRecord );
-        setDn( new DN( schemaRecord.getDnLine().getValueAsString() ) );
+        setDn( new Dn( schemaRecord.getDnLine().getValueAsString() ) );
 
         ObjectClassDescriptionSchemaParser ocdPparser = new ObjectClassDescriptionSchemaParser();
         ocdPparser.setQuirksMode( true );
@@ -374,22 +374,22 @@ public class Schema
 
 
     /**
-     * Gets the DN of the schema record, may be null.
+     * Gets the Dn of the schema record, may be null.
      * 
-     * @return the DN of the schema record, may be null
+     * @return the Dn of the schema record, may be null
      */
-    public DN getDn()
+    public Dn getDn()
     {
         return dn;
     }
 
 
     /**
-     * Sets the DN.
+     * Sets the Dn.
      * 
-     * @param dn the new DN
+     * @param dn the new Dn
      */
-    public void setDn( DN dn )
+    public void setDn( Dn dn )
     {
         this.dn = dn;
     }

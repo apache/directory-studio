@@ -28,7 +28,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 
 import org.apache.directory.shared.ldap.constants.SchemaConstants;
-import org.apache.directory.shared.ldap.name.RDN;
+import org.apache.directory.shared.ldap.name.Rdn;
 import org.apache.directory.shared.ldap.schema.ObjectClass;
 import org.apache.directory.shared.ldap.filter.LdapURL;
 import org.apache.directory.studio.connection.core.Connection;
@@ -110,11 +110,11 @@ public abstract class AbstractEntry implements IEntry, ICompareableEntry
 
 
     /**
-     * Sets the RDN.
+     * Sets the Rdn.
      * 
-     * @param newRdn the new RDN
+     * @param newRdn the new Rdn
      */
-    protected abstract void setRdn( RDN newRdn );
+    protected abstract void setRdn( Rdn newRdn );
 
 
     /**
@@ -383,10 +383,10 @@ public abstract class AbstractEntry implements IEntry, ICompareableEntry
     /**
      * {@inheritDoc}
      */
-    public RDN getRdn()
+    public Rdn getRdn()
     {
-        RDN rdn = getDn().getRdn();
-        return rdn == null ? new RDN() : rdn;
+        Rdn rdn = getDn().getRdn();
+        return rdn == null ? new Rdn() : rdn;
     }
 
 

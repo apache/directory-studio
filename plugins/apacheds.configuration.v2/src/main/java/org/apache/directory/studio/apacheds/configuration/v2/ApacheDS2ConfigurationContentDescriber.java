@@ -28,7 +28,7 @@ import org.apache.directory.shared.ldap.exception.LdapException;
 import org.apache.directory.shared.ldap.exception.LdapInvalidDnException;
 import org.apache.directory.shared.ldap.ldif.LdifEntry;
 import org.apache.directory.shared.ldap.ldif.LdifReader;
-import org.apache.directory.shared.ldap.name.DN;
+import org.apache.directory.shared.ldap.name.Dn;
 import org.eclipse.core.runtime.QualifiedName;
 import org.eclipse.core.runtime.content.IContentDescription;
 import org.eclipse.core.runtime.content.ITextContentDescriber;
@@ -44,11 +44,11 @@ public class ApacheDS2ConfigurationContentDescriber implements ITextContentDescr
     /** The maximum number of entries to search before determining the file as invalid */
     private static int MAX_NUMBER_ENTRIES_SEARCH = 10;
 
-    /** The DN of the config entry ('ou=config')*/
-    private DN configEntryDn;
+    /** The Dn of the config entry ('ou=config')*/
+    private Dn configEntryDn;
 
-    /** The DN of the directory service entry ('ads-directoryServiceId=default,ou=config') */
-    private DN directoryServiceDn;
+    /** The Dn of the directory service entry ('ads-directoryServiceId=default,ou=config') */
+    private Dn directoryServiceDn;
 
 
     /**
@@ -59,8 +59,8 @@ public class ApacheDS2ConfigurationContentDescriber implements ITextContentDescr
         // Initializing DNs
         try
         {
-            configEntryDn = new DN( "ou=config" );
-            directoryServiceDn = new DN( "ads-directoryServiceId=default,ou=config" );
+            configEntryDn = new Dn( "ou=config" );
+            directoryServiceDn = new Dn( "ads-directoryServiceId=default,ou=config" );
         }
         catch ( LdapInvalidDnException e )
         {

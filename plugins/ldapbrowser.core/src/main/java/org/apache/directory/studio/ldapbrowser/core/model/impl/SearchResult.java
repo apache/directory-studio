@@ -23,7 +23,7 @@ package org.apache.directory.studio.ldapbrowser.core.model.impl;
 
 import java.util.ArrayList;
 
-import org.apache.directory.shared.ldap.name.DN;
+import org.apache.directory.shared.ldap.name.Dn;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.ldapbrowser.core.internal.search.LdapSearchPageScoreComputer;
 import org.apache.directory.studio.ldapbrowser.core.model.AttributeHierarchy;
@@ -73,7 +73,7 @@ public class SearchResult implements ISearchResult
     /**
      * {@inheritDoc}
      */
-    public DN getDn()
+    public Dn getDn()
     {
         return entry.getDn();
     }

@@ -21,7 +21,7 @@
 package org.apache.directory.studio.ldapbrowser.core.model.impl;
 
 
-import org.apache.directory.shared.ldap.name.DN;
+import org.apache.directory.shared.ldap.name.Dn;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.ldapbrowser.core.events.BookmarkUpdateEvent;
 import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
@@ -80,10 +80,10 @@ public class Bookmark implements IBookmark
      * Creates a new instance of Bookmark.
      *
      * @param connection the connection
-     * @param dn the target DN
+     * @param dn the target Dn
      * @param name the symbolic name
      */
-    public Bookmark( IBrowserConnection connection, DN dn, String name )
+    public Bookmark( IBrowserConnection connection, Dn dn, String name )
     {
         this.connection = connection;
         this.bookmarkParameter = new BookmarkParameter( dn, name );
@@ -94,7 +94,7 @@ public class Bookmark implements IBookmark
     /**
      * {@inheritDoc}
      */
-    public DN getDn()
+    public Dn getDn()
     {
         return this.bookmarkParameter.getDn();
     }
@@ -103,7 +103,7 @@ public class Bookmark implements IBookmark
     /**
      * {@inheritDoc}
      */
-    public void setDn( DN dn )
+    public void setDn( Dn dn )
     {
         this.bookmarkParameter.setDn( dn );
         this.fireBookmarkUpdated( BookmarkUpdateEvent.Detail.BOOKMARK_UPDATED );

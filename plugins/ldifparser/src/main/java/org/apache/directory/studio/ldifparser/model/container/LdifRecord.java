@@ -95,7 +95,7 @@ public abstract class LdifRecord extends LdifContainer
         LdifSepLine sepLine = getSepLine();
 
         if ( dnLine == null )
-            return "Record must start with DN";
+            return "Record must start with Dn";
         else if ( !dnLine.isValid() )
             return dnLine.getInvalidString();
 

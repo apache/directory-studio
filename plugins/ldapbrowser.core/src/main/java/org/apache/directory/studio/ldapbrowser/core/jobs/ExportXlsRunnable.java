@@ -78,7 +78,7 @@ public class ExportXlsRunnable implements StudioConnectionRunnableWithProgress
      * @param exportLdifFilename the export ldif filename
      * @param browserConnection the browser connection
      * @param searchParameter the search parameter
-     * @param exportDn true to export the DN
+     * @param exportDn true to export the Dn
      */
     public ExportXlsRunnable( String exportLdifFilename, IBrowserConnection browserConnection,
         SearchParameter searchParameter, boolean exportDn )

@@ -21,7 +21,7 @@
 package org.apache.directory.studio.ldifparser.model.lines;
 
 
-import org.apache.directory.shared.ldap.name.DN;
+import org.apache.directory.shared.ldap.name.Dn;
 import org.apache.directory.studio.ldifparser.LdifParserConstants;
 import org.apache.directory.studio.ldifparser.LdifUtils;
 
@@ -75,7 +75,7 @@ public class LdifDnLine extends LdifValueLineBase
 
     public boolean isValid()
     {
-        return super.isValid() && DN.isValid( getValueAsString() );
+        return super.isValid() && Dn.isValid(getValueAsString());
     }
 
 
@@ -83,15 +83,15 @@ public class LdifDnLine extends LdifValueLineBase
     {
         if ( this.getUnfoldedDnSpec().length() == 0 )
         {
-            return "Missing DN spec 'dn'";
+            return "Missing Dn spec 'dn'";
         }
         else if ( this.getUnfoldedDn().length() == 0 )
         {
-            return "Missing DN";
+            return "Missing Dn";
         }
-        else if ( !DN.isValid( getValueAsString() ) )
+        else if ( !Dn.isValid(getValueAsString()) )
         {
-            return "Invalid DN";
+            return "Invalid Dn";
         }
         else
         {

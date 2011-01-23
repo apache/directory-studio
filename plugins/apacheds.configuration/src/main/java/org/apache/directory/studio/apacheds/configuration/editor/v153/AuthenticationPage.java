@@ -215,8 +215,8 @@ public class AuthenticationPage extends FormPage implements SaveableFormPage
         saslPrincipalText = toolkit.createText( client, "" );
         saslPrincipalText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
 
-        // Search Base DN
-        toolkit.createLabel( client, "Search Base DN:" );
+        // Search Base Dn
+        toolkit.createLabel( client, "Search Base Dn:" );
         searchBaseDnText = toolkit.createText( client, "" );
         searchBaseDnText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
     }
@@ -324,7 +324,7 @@ public class AuthenticationPage extends FormPage implements SaveableFormPage
         // SASL Principal
         saslPrincipalText.setText( configuration.getSaslPrincipal() );
 
-        // Search Base DN
+        // Search Base Dn
         searchBaseDnText.setText( configuration.getSearchBaseDn() );
 
         // SASL Quality Of Protection
@@ -413,7 +413,7 @@ public class AuthenticationPage extends FormPage implements SaveableFormPage
         // SASL Principal
         saslPrincipalText.addModifyListener( modifyListener );
 
-        // Search Base DN
+        // Search Base Dn
         searchBaseDnText.addModifyListener( modifyListener );
 
         // SASL Quality Of Protection
@@ -598,7 +598,7 @@ public class AuthenticationPage extends FormPage implements SaveableFormPage
             configuration.setSaslPrincipal( saslPrincipalText.getText() );
         }
 
-        // Search Base DN
+        // Search Base Dn
         if ( ( searchBaseDnText != null ) && ( !searchBaseDnText.isDisposed() ) )
         {
             configuration.setSearchBaseDn( searchBaseDnText.getText() );

@@ -314,7 +314,7 @@ public class ValueEditorManager
             return entryValueEditor;
         }
 
-        // special case RDN attribute: always return rename editor
+        // special case Rdn attribute: always return rename editor
         if ( userSelectedValueEditor == null && value.isRdnPart() && renameValueEditor != null )
         {
             return renameValueEditor;
@@ -371,7 +371,7 @@ public class ValueEditorManager
             && attributeHierarchy.getAttributeDescription().equalsIgnoreCase(
                 attributeHierarchy.getAttribute().getValues()[0].getAttribute().getDescription() ) )
         {
-            // special case RDN: always return MV-editor
+            // special case Rdn: always return MV-editor
             if ( userSelectedValueEditor == null && attributeHierarchy.getAttribute().getValues()[0].isRdnPart() )
             {
                 if ( renameValueEditor != null )
@@ -489,7 +489,7 @@ public class ValueEditorManager
             return new IValueEditor[0];
         }
 
-        // special case RDN: no alternative to the rename editor, except the MV editor
+        // special case Rdn: no alternative to the rename editor, except the MV editor
         // perhaps this should be moved somewhere else
         if ( multiValuedValueEditor != null )
         {

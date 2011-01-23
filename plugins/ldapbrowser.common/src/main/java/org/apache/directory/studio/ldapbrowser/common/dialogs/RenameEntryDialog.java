@@ -24,7 +24,7 @@ package org.apache.directory.studio.ldapbrowser.common.dialogs;
 import java.util.Collection;
 
 import org.apache.commons.lang.ArrayUtils;
-import org.apache.directory.shared.ldap.name.RDN;
+import org.apache.directory.shared.ldap.name.Rdn;
 import org.apache.directory.shared.ldap.schema.AttributeType;
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
@@ -44,14 +44,14 @@ import org.eclipse.swt.widgets.Shell;
 
 
 /**
- * A dialog to enter the new RDN of an entry.
+ * A dialog to enter the new Rdn of an entry.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public class RenameEntryDialog extends Dialog implements WidgetModifyListener
 {
 
-    /** The "Delete old RDN" dialog setting . */
+    /** The "Delete old Rdn" dialog setting . */
     private static final String DELETE_OLD_RDN_DIALOGSETTING_KEY = RenameEntryDialog.class.getName() + ".deleteOldRdn"; //$NON-NLS-1$
 
     /** The dialog title. */
@@ -67,7 +67,7 @@ public class RenameEntryDialog extends Dialog implements WidgetModifyListener
     private Button okButton;
 
     /** The new rdn. */
-    private RDN rdn;
+    private Rdn rdn;
 
 
     /**
@@ -172,7 +172,7 @@ public class RenameEntryDialog extends Dialog implements WidgetModifyListener
      * 
      * @return the rdn
      */
-    public RDN getRdn()
+    public Rdn getRdn()
     {
         return rdn;
     }

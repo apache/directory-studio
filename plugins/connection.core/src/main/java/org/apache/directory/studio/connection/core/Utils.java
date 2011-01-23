@@ -29,7 +29,7 @@ import javax.naming.directory.SearchControls;
 
 import org.apache.directory.shared.ldap.exception.LdapInvalidDnException;
 import org.apache.directory.shared.ldap.filter.LdapURL;
-import org.apache.directory.shared.ldap.name.DN;
+import org.apache.directory.shared.ldap.name.Dn;
 import org.apache.directory.shared.util.Strings;
 import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
 import org.apache.directory.studio.connection.core.ConnectionParameter.EncryptionMethod;
@@ -193,7 +193,7 @@ public class Utils
         url.setPort( connection.getPort() );
         try
         {
-            url.setDn( new DN( searchBase ) );
+            url.setDn( new Dn( searchBase ) );
         }
         catch ( LdapInvalidDnException e )
         {
@@ -317,11 +317,11 @@ public class Utils
      * Gets the LdapDN from the given String or null if the 
      * String can't be parsed.
      * 
-     * @param dn the DN as String
+     * @param dn the Dn as String
      * 
-     * @return the DN as LdapDN
+     * @return the Dn as LdapDN
      */
-    public static DN getLdapDn( String dn )
+    public static Dn getLdapDn( String dn )
     {
         if ( dn == null )
         {
@@ -329,7 +329,7 @@ public class Utils
         }
         try
         {
-            return new DN( dn );
+            return new Dn( dn );
         }
         catch ( LdapInvalidDnException e )
         {

@@ -57,7 +57,7 @@ public class SearchResultEditorSorter extends ViewerSorter implements SelectionL
     /** The columns. */
     private TableColumn[] columns;
 
-    /** The show DN flag. */
+    /** The show Dn flag. */
     private boolean showDn;
 
     /** The sort property. */
@@ -91,7 +91,7 @@ public class SearchResultEditorSorter extends ViewerSorter implements SelectionL
      * Called when the input of the viewer has been changed.
      * 
      * @param newSearch the new search
-     * @param showDn the show DN flag
+     * @param showDn the show Dn flag
      */
     public void inputChanged( ISearch newSearch, boolean showDn )
     {

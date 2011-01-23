@@ -21,7 +21,7 @@
 package org.apache.directory.studio.ldapbrowser.ui.actions;
 
 
-import org.apache.directory.shared.ldap.name.DN;
+import org.apache.directory.shared.ldap.name.Dn;
 import org.apache.directory.studio.connection.ui.RunnableContextRunner;
 import org.apache.directory.studio.ldapbrowser.common.actions.BrowserAction;
 import org.apache.directory.studio.ldapbrowser.core.jobs.ReadEntryRunnable;
@@ -36,7 +36,7 @@ import org.eclipse.ui.PlatformUI;
 
 
 /**
- * This action is used to locate and open an entry by its DN in DIT.
+ * This action is used to locate and open an entry by its Dn in DIT.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
@@ -51,7 +51,7 @@ public abstract class LocateInDitAction extends BrowserAction
         if ( connectionAndDn != null )
         {
             IBrowserConnection connection = connectionAndDn.connection;
-            DN dn = connectionAndDn.dn;
+            Dn dn = connectionAndDn.dn;
 
             IEntry entry = connection.getEntryFromCache( dn );
             if ( entry == null )
@@ -106,14 +106,14 @@ public abstract class LocateInDitAction extends BrowserAction
 
 
     /**
-     * Get the connection and DN to open.
+     * Get the connection and Dn to open.
      * 
      * @return a ConnectionAndDn bean, or null.
      */
     protected abstract ConnectionAndDn getConnectionAndDn();
 
     /**
-     * Inner class to get connection and DN of the entry to locate.
+     * Inner class to get connection and Dn of the entry to locate.
      *
      * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
      */
@@ -122,17 +122,17 @@ public abstract class LocateInDitAction extends BrowserAction
         /** The connection */
         private IBrowserConnection connection;
 
-        /** The DN */
-        private DN dn;
+        /** The Dn */
+        private Dn dn;
 
 
         /**
          * Creates a new instance of ConnectionAndDn.
          *
          * @param connection the connection
-         * @param dn the DN
+         * @param dn the Dn
          */
-        protected ConnectionAndDn( IBrowserConnection connection, DN dn )
+        protected ConnectionAndDn( IBrowserConnection connection, Dn dn )
         {
             this.connection = connection;
             this.dn = dn;

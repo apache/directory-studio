@@ -22,7 +22,7 @@ package org.apache.directory.studio.ldapbrowser.common.widgets.search;
 
 
 import org.apache.directory.shared.ldap.exception.LdapInvalidDnException;
-import org.apache.directory.shared.ldap.name.DN;
+import org.apache.directory.shared.ldap.name.Dn;
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.connection.core.DnUtils;
 import org.apache.directory.studio.connection.ui.RunnableContextRunner;
@@ -49,9 +49,9 @@ import org.eclipse.swt.widgets.Composite;
  * The EntryWidget could be used to select an entry.
  * It is composed
  * <ul>
- * <li>a combo to manually enter an DN or to choose one from
+ * <li>a combo to manually enter an Dn or to choose one from
  *     the history
- * <li>an up button to switch to the parent's DN
+ * <li>an up button to switch to the parent's Dn
  * <li>a browse button to open a {@link SelectEntryDialog}
  * </ul>
  *
@@ -60,7 +60,7 @@ import org.eclipse.swt.widgets.Composite;
 public class EntryWidget extends BrowserWidget
 {
 
-    /** The DN combo. */
+    /** The Dn combo. */
     private Combo dnCombo;
 
     /** The up button. */
@@ -72,11 +72,11 @@ public class EntryWidget extends BrowserWidget
     /** The connection. */
     private IBrowserConnection browserConnection;
 
-    /** The selected DN. */
-    private DN dn;
+    /** The selected Dn. */
+    private Dn dn;
 
     /** The suffix. */
-    private DN suffix;
+    private Dn suffix;
 
     /** Flag indicating if using local name for the dn */
     boolean useLocalName;
@@ -96,9 +96,9 @@ public class EntryWidget extends BrowserWidget
      * Creates a new instance of EntryWidget.
      *
      * @param browserConnection the connection
-     * @param dn the initial DN
+     * @param dn the initial Dn
      */
-    public EntryWidget( IBrowserConnection browserConnection, DN dn )
+    public EntryWidget( IBrowserConnection browserConnection, Dn dn )
     {
         this( browserConnection, dn, null, false );
     }
@@ -108,11 +108,11 @@ public class EntryWidget extends BrowserWidget
      * Creates a new instance of EntryWidget.
      *
      * @param browserConnection the connection
-     * @param dn the initial DN
+     * @param dn the initial Dn
      * @param suffix the suffix
-     * @param useLocalName true to use local name for the DN
+     * @param useLocalName true to use local name for the Dn
      */
-    public EntryWidget( IBrowserConnection browserConnection, DN dn, DN suffix, boolean useLocalName )
+    public EntryWidget( IBrowserConnection browserConnection, Dn dn, Dn suffix, boolean useLocalName )
     {
         this.browserConnection = browserConnection;
         this.dn = dn;
@@ -129,7 +129,7 @@ public class EntryWidget extends BrowserWidget
     public void createWidget( final Composite parent )
     {
 
-        // DN combo
+        // Dn combo
         Composite textAndUpComposite = BaseWidgetUtils.createColumnContainer( parent, 2, 1 );
         dnCombo = BaseWidgetUtils.createCombo( textAndUpComposite, new String[0], -1, 1 );
         GridData gd = new GridData( GridData.FILL_HORIZONTAL );
@@ -137,7 +137,7 @@ public class EntryWidget extends BrowserWidget
         gd.widthHint = 200;
         dnCombo.setLayoutData( gd );
 
-        // DN history
+        // Dn history
         String[] history = HistoryUtils.load( BrowserCommonConstants.DIALOGSETTING_KEY_DN_HISTORY );
         dnCombo.setItems( history );
         dnCombo.addModifyListener( new ModifyListener()
@@ -146,7 +146,7 @@ public class EntryWidget extends BrowserWidget
             {
                 try
                 {
-                    dn = new DN( dnCombo.getText() );
+                    dn = new Dn( dnCombo.getText() );
                 }
                 catch ( LdapInvalidDnException e1 )
                 {
@@ -198,24 +198,24 @@ public class EntryWidget extends BrowserWidget
                         }
                     }
 
-                    // calculate initial DN
-                    DN initialDN = dn;
+                    // calculate initial Dn
+                    Dn initialDn = dn;
                     if ( useLocalName && suffix != null && suffix.size() > 0 )
                     {
-                        if ( initialDN != null && initialDN.size() > 0 )
+                        if ( initialDn != null && initialDn.size() > 0 )
                         {
-                            initialDN = DnUtils.composeDn( initialDN, suffix );
+                            initialDn = DnUtils.composeDn(initialDn, suffix );
                         }
                     }
 
                     // get initial entry
                     IEntry entry = rootEntry;
-                    if ( initialDN != null && initialDN.size() > 0 )
+                    if ( initialDn != null && initialDn.size() > 0 )
                     {
-                        entry = browserConnection.getEntryFromCache( initialDN );
+                        entry = browserConnection.getEntryFromCache(initialDn);
                         if ( entry == null )
                         {
-                            ReadEntryRunnable runnable = new ReadEntryRunnable( browserConnection, initialDN );
+                            ReadEntryRunnable runnable = new ReadEntryRunnable( browserConnection, initialDn);
                             RunnableContextRunner.execute( runnable, null, true );
                             entry = runnable.getReadEntry();
                         }
@@ -227,7 +227,7 @@ public class EntryWidget extends BrowserWidget
                     dialog.open();
                     IEntry selectedEntry = dialog.getSelectedEntry();
 
-                    // get selected DN
+                    // get selected Dn
                     if ( selectedEntry != null )
                     {
                         dn = selectedEntry.getDn();
@@ -249,7 +249,7 @@ public class EntryWidget extends BrowserWidget
 
 
     /**
-     * Notifies that the DN has been changed.
+     * Notifies that the Dn has been changed.
      */
     private void dnChanged()
     {
@@ -298,22 +298,22 @@ public class EntryWidget extends BrowserWidget
 
 
     /**
-     * Gets the suffix DN or <code>null</code> if not set.
+     * Gets the suffix Dn or <code>null</code> if not set.
      *
-     * @return the suffix DN or <code>null</code> if not set
+     * @return the suffix Dn or <code>null</code> if not set
      */
-    public DN getSuffix()
+    public Dn getSuffix()
     {
         return suffix;
     }
 
 
     /**
-     * Gets the DN or <code>null</code> if the DN isn't valid.
+     * Gets the Dn or <code>null</code> if the Dn isn't valid.
      *
-     * @return the DN or <code>null</code> if the DN isn't valid
+     * @return the Dn or <code>null</code> if the Dn isn't valid
      */
-    public DN getDn()
+    public Dn getDn()
     {
         return dn;
     }
@@ -333,10 +333,10 @@ public class EntryWidget extends BrowserWidget
     /**
      * Sets the input.
      *
-     * @param dn the DN
+     * @param dn the Dn
      * @param browserConnection the connection
      */
-    public void setInput( IBrowserConnection browserConnection, DN dn )
+    public void setInput( IBrowserConnection browserConnection, Dn dn )
     {
         setInput( browserConnection, dn, null, false );
     }
@@ -346,11 +346,11 @@ public class EntryWidget extends BrowserWidget
      * Sets the input.
      *
      * @param browserConnection the connection
-     * @param dn the DN
+     * @param dn the Dn
      * @param suffix the suffix
-     * @param useLocalName true to use local name for the DN
+     * @param useLocalName true to use local name for the Dn
      */
-    public void setInput( IBrowserConnection browserConnection, DN dn, DN suffix, boolean useLocalName )
+    public void setInput( IBrowserConnection browserConnection, Dn dn, Dn suffix, boolean useLocalName )
     {
         if ( this.browserConnection != browserConnection || this.dn != dn || this.suffix != suffix )
         {

@@ -177,7 +177,7 @@ public class OpenBestEditorAction extends AbstractOpenEditorAction
                 message.append( BrowserCoreConstants.LINE_SEPARATOR );
             }
 
-            // validate modification of RDN
+            // validate modification of Rdn
             if ( value.isRdnPart() && cellEditor != valueEditorManager.getRenameValueEditor() )
             {
                 message.append( NLS.bind( Messages.getString( "OpenBestEditorAction.ValueIsRdnPart" ), //$NON-NLS-1$ 

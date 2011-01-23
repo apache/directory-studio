@@ -20,7 +20,7 @@
 package org.apache.directory.studio.aciitemeditor.valueeditors;
 
 
-import org.apache.directory.shared.ldap.name.DN;
+import org.apache.directory.shared.ldap.name.Dn;
 import org.apache.directory.studio.ldapbrowser.common.dialogs.TextDialog;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
@@ -77,7 +77,7 @@ public class SubtreeValueEditor extends AbstractDialogStringValueEditor
             SubtreeSpecificationValueWrapper wrapper = ( SubtreeSpecificationValueWrapper ) value;
 
             SubtreeSpecificationDialog dialog = new SubtreeSpecificationDialog( shell, wrapper.connection,
-                wrapper.subentryDN, wrapper.subtreeSpecification, refinementOrFilterVisible, useLocalName );
+                wrapper.subentryDn, wrapper.subtreeSpecification, refinementOrFilterVisible, useLocalName );
             if ( dialog.open() == TextDialog.OK && dialog.getSubtreeSpecificationValue() != null )
             {
                 setValue( dialog.getSubtreeSpecificationValue() );
@@ -97,7 +97,7 @@ public class SubtreeValueEditor extends AbstractDialogStringValueEditor
         if ( o != null && o instanceof String )
         {
             IBrowserConnection connection = value.getAttribute().getEntry().getBrowserConnection();
-            DN dn = value.getAttribute().getEntry().getDn();
+            Dn dn = value.getAttribute().getEntry().getDn();
             return new SubtreeSpecificationValueWrapper( connection, dn, value.getStringValue() );
         }
 
@@ -115,8 +115,8 @@ public class SubtreeValueEditor extends AbstractDialogStringValueEditor
         /** The connection, used in DnDialog to browse for an entry */
         private IBrowserConnection connection;
 
-        /** The subentry's DN */
-        private DN subentryDN;
+        /** The subentry's Dn */
+        private Dn subentryDn;
 
         /** The subtreeSpecification */
         private String subtreeSpecification;
@@ -128,15 +128,15 @@ public class SubtreeValueEditor extends AbstractDialogStringValueEditor
          * @param connection
          *      the connection
          * @param subentryDn
-         *      the DN of the subentry
+         *      the Dn of the subentry
          * @param subtreeSpecification
          *      the subtreeSpecification
          */
-        private SubtreeSpecificationValueWrapper( IBrowserConnection connection, DN subentryDN,
+        private SubtreeSpecificationValueWrapper( IBrowserConnection connection, Dn subentryDn,
             String subtreeSpecification )
         {
             this.connection = connection;
-            this.subentryDN = subentryDN;
+            this.subentryDn = subentryDn;
             this.subtreeSpecification = subtreeSpecification;
         }
 

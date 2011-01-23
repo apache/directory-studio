@@ -65,7 +65,7 @@ import org.apache.directory.shared.ldap.message.ResultCodeEnum;
 import org.apache.directory.shared.ldap.message.ResultResponse;
 import org.apache.directory.shared.ldap.message.SearchRequest;
 import org.apache.directory.shared.ldap.message.SearchRequestImpl;
-import org.apache.directory.shared.ldap.name.DN;
+import org.apache.directory.shared.ldap.name.Dn;
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
@@ -417,7 +417,7 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
                 {
                     // Preparing the search request
                     SearchRequest request = new SearchRequestImpl();
-                    request.setBase( new DN( searchBase ) );
+                    request.setBase( new Dn( searchBase ) );
                     request.setFilter( filter );
                     request.setScope( convertSearchScope( searchControls ) );
                     request.addAttributes( searchControls.getReturningAttributes() );
@@ -599,7 +599,7 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
                 {
                     // Preparing the modify request
                     ModifyRequest request = new ModifyRequestImpl();
-                    request.setName( new DN( dn ) );
+                    request.setName( new Dn( dn ) );
                     Modification[] modifications = convertModificationItems( modificationItems );
                     if ( modifications != null )
                     {
@@ -732,9 +732,9 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
                 {
                     // Preparing the rename request
                     ModifyDnRequest request = new ModifyDnRequestImpl();
-                    request.setName( new DN( oldDn ) );
+                    request.setName( new Dn( oldDn ) );
                     request.setDeleteOldRdn( deleteOldRdn );
-                    DN newName = new DN( newDn );
+                    Dn newName = new Dn( newDn );
                     request.setNewRdn( newName.getRdn() );
                     request.setNewSuperior( newName.getParent() );
                     request.addAllControls( convertControls( controls ) );
@@ -803,8 +803,8 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
                 {
                     // Preparing the add request
                     AddRequest request = new AddRequestImpl();
-                    request.setEntryDn( new DN( dn ) );
-                    request.setEntry( AttributeUtils.toClientEntry( attributes, new DN( dn ) ) );
+                    request.setEntryDn( new Dn( dn ) );
+                    request.setEntry( AttributeUtils.toClientEntry( attributes, new Dn( dn ) ) );
                     request.addAllControls( convertControls( controls ) );
 
                     // Performing the add operation
@@ -871,7 +871,7 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
                 {
                     // Preparing the delete request
                     DeleteRequest request = new DeleteRequestImpl();
-                    request.setName( new DN( dn ) );
+                    request.setName( new Dn( dn ) );
                     request.addAllControls( convertControls( controls ) );
 
                     // Performing the delete operation

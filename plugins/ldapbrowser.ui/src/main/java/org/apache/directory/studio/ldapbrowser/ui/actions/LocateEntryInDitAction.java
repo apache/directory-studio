@@ -90,7 +90,7 @@ public class LocateEntryInDitAction extends LocateInDitAction
 
 
     /**
-     * This implementation returns a connection and DN if the a search result or bookmark
+     * This implementation returns a connection and Dn if the a search result or bookmark
      * is selected.
      */
     protected ConnectionAndDn getConnectionAndDn()

@@ -52,7 +52,7 @@ import org.apache.directory.studio.schemaeditor.model.SyntaxImpl;
 public class ApacheDsSchemaConnector extends AbstractSchemaConnector implements SchemaConnector
 {
 
-    /** The Schema DN */
+    /** The Schema Dn */
     public static final String SCHEMA_DN = "ou=schema";
 
     /** The name of the metaAttributeType object class */

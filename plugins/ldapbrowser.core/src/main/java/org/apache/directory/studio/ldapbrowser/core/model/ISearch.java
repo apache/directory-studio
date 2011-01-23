@@ -25,7 +25,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import org.apache.directory.shared.ldap.filter.LdapURL;
-import org.apache.directory.shared.ldap.name.DN;
+import org.apache.directory.shared.ldap.name.Dn;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.ConnectionPropertyPageProvider;
 import org.apache.directory.studio.connection.core.StudioControl;
@@ -45,7 +45,7 @@ public interface ISearch extends Serializable, IAdaptable, SearchPropertyPagePro
 {
 
     /** Constant for empty search base */
-    public static final DN EMPTY_SEARCH_BASE = new DN(); //$NON-NLS-1$
+    public static final Dn EMPTY_SEARCH_BASE = new Dn(); //$NON-NLS-1$
 
     /** Constant for no returning attributes, an empty array */
     public static final String[] NO_ATTRIBUTES = new String[0];
@@ -275,18 +275,18 @@ public interface ISearch extends Serializable, IAdaptable, SearchPropertyPagePro
      * 
      * @return the search base
      */
-    public abstract DN getSearchBase();
+    public abstract Dn getSearchBase();
 
 
     /**
      * Sets the search base, a null search base will be
-     * transformed to an empty DN.
+     * transformed to an empty Dn.
      * 
      * Calling this method causes firing a search update event.
      * 
      * @param searchBase the search base
      */
-    public abstract void setSearchBase( DN searchBase );
+    public abstract void setSearchBase( Dn searchBase );
 
 
     /**

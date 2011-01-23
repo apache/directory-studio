@@ -28,9 +28,9 @@ import java.util.Iterator;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.directory.shared.ldap.constants.SchemaConstants;
 import org.apache.directory.shared.ldap.exception.LdapInvalidDnException;
-import org.apache.directory.shared.ldap.name.AVA;
-import org.apache.directory.shared.ldap.name.DN;
-import org.apache.directory.shared.ldap.name.RDN;
+import org.apache.directory.shared.ldap.name.Ava;
+import org.apache.directory.shared.ldap.name.Dn;
+import org.apache.directory.shared.ldap.name.Rdn;
 import org.apache.directory.shared.ldap.schema.AttributeType;
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.connection.core.DnUtils;
@@ -74,13 +74,13 @@ public class NewEntryDnWizardPage extends WizardPage implements WidgetModifyList
     /** The wizard. */
     private NewEntryWizard wizard;
 
-    /** The DN builder widget. */
+    /** The Dn builder widget. */
     private DnBuilderWidget dnBuilderWidget;
 
-    /** The context entry DN combo. */
+    /** The context entry Dn combo. */
     private Combo contextEntryDnCombo;
 
-    /** The content proposal adapter for the context entry DN combo. */
+    /** The content proposal adapter for the context entry Dn combo. */
     private ContentProposalAdapter contextEntryDnComboCPA;
 
 
@@ -131,7 +131,7 @@ public class NewEntryDnWizardPage extends WizardPage implements WidgetModifyList
     private void validate()
     {
         if ( wizard.isNewContextEntry() && !"".equals( contextEntryDnCombo.getText() ) //$NON-NLS-1$
-            && DN.isValid( contextEntryDnCombo.getText() ) )
+            && Dn.isValid(contextEntryDnCombo.getText()) )
         {
             setPageComplete( true );
             saveState();
@@ -150,7 +150,7 @@ public class NewEntryDnWizardPage extends WizardPage implements WidgetModifyList
 
 
     /**
-     * Initializes the DN builder widget with the DN of 
+     * Initializes the Dn builder widget with the Dn of
      * the prototype entry. Called when this page becomes visible.
      */
     private void loadState()
@@ -183,7 +183,7 @@ public class NewEntryDnWizardPage extends WizardPage implements WidgetModifyList
             Collection<AttributeType> atds = SchemaUtils.getAllAttributeTypeDescriptions( newEntry );
             String[] attributeNames = SchemaUtils.getNames( atds ).toArray( ArrayUtils.EMPTY_STRING_ARRAY );
 
-            DN parentDn = null;
+            Dn parentDn = null;
             if ( wizard.getSelectedEntry() != null && newEntry.getDn().equals( wizard.getSelectedEntry().getDn() )
                 && DnUtils.getParent( newEntry.getDn() ) != null )
             {
@@ -198,7 +198,7 @@ public class NewEntryDnWizardPage extends WizardPage implements WidgetModifyList
                 parentDn = DnUtils.getParent( newEntry.getDn() );
             }
 
-            RDN rdn = newEntry.getRdn();
+            Rdn rdn = newEntry.getRdn();
 
             dnBuilderWidget.setInput( wizard.getSelectedConnection(), attributeNames, rdn, parentDn );
         }
@@ -206,7 +206,7 @@ public class NewEntryDnWizardPage extends WizardPage implements WidgetModifyList
 
 
     /**
-     * Saves the DN of the DN builder widget to the prototype entry.
+     * Saves the Dn of the Dn builder widget to the prototype entry.
      */
     private void saveState()
     {
@@ -216,13 +216,13 @@ public class NewEntryDnWizardPage extends WizardPage implements WidgetModifyList
         {
             EventRegistry.suspendEventFiringInCurrentThread();
 
-            // remove old RDN
+            // remove old Rdn
             if ( newEntry.getRdn().size() > 0 )
             {
-                Iterator<AVA> atavIterator = newEntry.getRdn().iterator();
+                Iterator<Ava> atavIterator = newEntry.getRdn().iterator();
                 while ( atavIterator.hasNext() )
                 {
-                    AVA atav = atavIterator.next();
+                    Ava atav = atavIterator.next();
                     IAttribute attribute = newEntry.getAttribute( atav.getUpType() );
                     if ( attribute != null )
                     {
@@ -247,17 +247,17 @@ public class NewEntryDnWizardPage extends WizardPage implements WidgetModifyList
                 }
             }
 
-            // set new DN
-            DN dn;
+            // set new Dn
+            Dn dn;
             if ( wizard.isNewContextEntry() )
             {
                 try
                 {
-                    dn = new DN( contextEntryDnCombo.getText() );
+                    dn = new Dn( contextEntryDnCombo.getText() );
                 }
                 catch ( LdapInvalidDnException e )
                 {
-                    dn = DN.EMPTY_DN;
+                    dn = Dn.EMPTY_DN;
                 }
             }
             else
@@ -266,13 +266,13 @@ public class NewEntryDnWizardPage extends WizardPage implements WidgetModifyList
             }
             newEntry.setDn( dn );
 
-            // add new RDN
+            // add new Rdn
             if ( dn.getRdn().size() > 0 )
             {
-                Iterator<AVA> atavIterator = dn.getRdn().iterator();
+                Iterator<Ava> atavIterator = dn.getRdn().iterator();
                 while ( atavIterator.hasNext() )
                 {
-                    AVA atav = atavIterator.next();
+                    Ava atav = atavIterator.next();
                     IAttribute rdnAttribute = newEntry.getAttribute( atav.getUpType() );
                     if ( rdnAttribute == null )
                     {
@@ -299,8 +299,8 @@ public class NewEntryDnWizardPage extends WizardPage implements WidgetModifyList
     /**
      * {@inheritDoc}
      * 
-     * This implementation initializes DN builder widghet with the
-     * DN of the protoype entry.
+     * This implementation initializes Dn builder widghet with the
+     * Dn of the protoype entry.
      */
     public void setVisible( boolean visible )
     {
@@ -336,7 +336,7 @@ public class NewEntryDnWizardPage extends WizardPage implements WidgetModifyList
      * {@inheritDoc}
      * 
      * This implementation invokes a {@link ReadEntryRunnable} to check if an
-     * entry with the composed DN already exists.
+     * entry with the composed Dn already exists.
      */
     public IWizardPage getNextPage()
     {
@@ -344,9 +344,9 @@ public class NewEntryDnWizardPage extends WizardPage implements WidgetModifyList
         {
             dnBuilderWidget.validate();
 
-            RDN rdn = dnBuilderWidget.getRdn();
-            DN parentDn = dnBuilderWidget.getParentDn();
-            final DN dn = DnUtils.composeDn( rdn, parentDn );
+            Rdn rdn = dnBuilderWidget.getRdn();
+            Dn parentDn = dnBuilderWidget.getParentDn();
+            final Dn dn = DnUtils.composeDn( rdn, parentDn );
 
             // check if parent exists
             ReadEntryRunnable readEntryRunnable1 = new ReadEntryRunnable( wizard.getSelectedConnection(), parentDn );
@@ -392,7 +392,7 @@ public class NewEntryDnWizardPage extends WizardPage implements WidgetModifyList
         {
             try
             {
-                final DN dn = new DN( contextEntryDnCombo.getText() );
+                final Dn dn = new Dn( contextEntryDnCombo.getText() );
 
                 // check that new entry does not exists yet 
                 ReadEntryRunnable readEntryRunnable2 = new ReadEntryRunnable( wizard.getSelectedConnection(), dn );

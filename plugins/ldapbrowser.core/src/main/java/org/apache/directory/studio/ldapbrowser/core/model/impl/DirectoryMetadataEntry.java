@@ -21,7 +21,7 @@
 package org.apache.directory.studio.ldapbrowser.core.model.impl;
 
 
-import org.apache.directory.shared.ldap.name.DN;
+import org.apache.directory.shared.ldap.name.Dn;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 
 
@@ -48,10 +48,10 @@ public class DirectoryMetadataEntry extends BaseDNEntry
     /**
      * Creates a new instance of DirectoryMetadataEntry.
      * 
-     * @param dn the DN
+     * @param dn the Dn
      * @param browserConnection the browser connection
      */
-    public DirectoryMetadataEntry( DN dn, IBrowserConnection browserConnection )
+    public DirectoryMetadataEntry( Dn dn, IBrowserConnection browserConnection )
     {
         super();
         this.baseDn = dn;

@@ -925,7 +925,7 @@ RFC 2251                         LDAPv3                    December 1997
                                         -- 72-79 unused --
                              other                        (80) },
                              -- 81-90 reserved for APIs --
-                matchedDN       LDAPDN,
+                matchedDn       LDAPDN,
                 errorMessage    LDAPString,
                 referral        [3] Referral OPTIONAL }
 
@@ -961,12 +961,12 @@ RFC 2251                         LDAPv3                    December 1997
    the LDAPResult type MUST contain a zero length string.
 
    For result codes of noSuchObject, aliasProblem, invalidDNSyntax and
-   aliasDereferencingProblem, the matchedDN field is set to the name of
+   aliasDereferencingProblem, the matchedDn field is set to the name of
    the lowest entry (object or alias) in the directory that was matched.
    If no aliases were dereferenced while attempting to locate the entry,
    this will be a truncated form of the name provided, or if aliases
    were dereferenced, of the resulting name, as defined in section 12.5
-   of X.511 [8]. The matchedDN field is to be set to a zero length
+   of X.511 [8]. The matchedDn field is to be set to a zero length
    string with all other result codes.
 
 4.1.11. Referral
@@ -1921,7 +1921,7 @@ RFC 2251                         LDAPv3                    December 1997
    MUST exist.  For example, if the client attempted to add
    "CN=JS,O=Foo,C=US", the "O=Foo,C=US" entry did not exist, and the
    "C=US" entry did exist, then the server would return the error
-   noSuchObject with the matchedDN field containing "C=US".  If the
+   noSuchObject with the matchedDn field containing "C=US".  If the
    parent entry exists but is not in a naming context held by the
    server, the server SHOULD return a referral to the server holding the
    parent entry.
@@ -2542,7 +2542,7 @@ RFC 2251                         LDAPv3                    December 1997
                                         -- 72-79 unused --
                              other                        (80) },
                              -- 81-90 reserved for APIs --
-                matchedDN       LDAPDN,
+                matchedDn       LDAPDN,
                 errorMessage    LDAPString,
                 referral        [3] Referral OPTIONAL }
 

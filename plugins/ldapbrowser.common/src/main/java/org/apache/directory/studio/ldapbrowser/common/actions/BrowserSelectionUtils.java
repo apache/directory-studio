@@ -68,9 +68,9 @@ public abstract class BrowserSelectionUtils extends SelectionUtils
      * search base and filter:
      * <ul>
      *   <li>ISearch: all parameters are copied to the prototype search (clone)
-     *   <li>IEntry or ISearchResult or IBookmark: DN is used as search base
+     *   <li>IEntry or ISearchResult or IBookmark: Dn is used as search base
      *   <li>IEntry: children filter is used as filter
-     *   <li>IAttribute or IValue: the entry's DN is used as search base, 
+     *   <li>IAttribute or IValue: the entry's Dn is used as search base,
      *       the filter is built using the name-value-pairs (query by example). 
      * </ul>
      * 

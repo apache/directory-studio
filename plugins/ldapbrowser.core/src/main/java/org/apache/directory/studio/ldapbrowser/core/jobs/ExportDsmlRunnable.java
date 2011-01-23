@@ -53,7 +53,7 @@ import org.apache.directory.shared.ldap.message.LdapResult;
 import org.apache.directory.shared.ldap.message.ResultCodeEnum;
 import org.apache.directory.shared.ldap.message.SearchResultDone;
 import org.apache.directory.shared.ldap.message.SearchResultDoneImpl;
-import org.apache.directory.shared.ldap.name.DN;
+import org.apache.directory.shared.ldap.name.Dn;
 import org.apache.directory.shared.ldap.filter.LdapURL;
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.Connection;
@@ -340,7 +340,7 @@ public class ExportDsmlRunnable implements StudioConnectionRunnableWithProgress
         throws LdapException, LdapURLEncodingException
     {
         Entry entry = AttributeUtils.toClientEntry(searchResult.getAttributes(),
-                new DN(searchResult.getNameInNamespace()));
+                new Dn(searchResult.getNameInNamespace()));
 
         if ( isReferral( entry ) )
         {
@@ -481,7 +481,7 @@ public class ExportDsmlRunnable implements StudioConnectionRunnableWithProgress
     {
         AddRequestDsml ar = new AddRequestDsml();
         Entry entry = AttributeUtils.toClientEntry( searchResult.getAttributes(),
-            new DN( searchResult.getNameInNamespace() ) );
+            new Dn( searchResult.getNameInNamespace() ) );
         ar.setEntry( entry );
 
         return ar;

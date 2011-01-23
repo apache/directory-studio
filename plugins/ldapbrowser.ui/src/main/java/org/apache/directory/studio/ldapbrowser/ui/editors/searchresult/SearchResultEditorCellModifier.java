@@ -84,7 +84,7 @@ public class SearchResultEditorCellModifier implements ICellModifier
             ISearchResult result = ( ISearchResult ) element;
             AttributeHierarchy ah = result.getAttributeWithSubtypes( property );
 
-            // check DN
+            // check Dn
             if ( BrowserUIConstants.DN.equals( property ) )
             {
                 return false;

@@ -47,7 +47,7 @@ public final class ValueEditorsConstants
     /** The relative path to the address editor icon */
     public static final String IMG_ADDRESSEDITOR = "resources/icons/addresseditor.gif"; //$NON-NLS-1$
 
-    /** The relative path to the DN editor icon */
+    /** The relative path to the Dn editor icon */
     public static final String IMG_DNEDITOR = "resources/icons/dneditor.gif"; //$NON-NLS-1$
 
     /** The relative path to the password editor icon */

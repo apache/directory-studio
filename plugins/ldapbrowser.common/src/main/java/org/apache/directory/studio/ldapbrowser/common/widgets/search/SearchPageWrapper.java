@@ -29,7 +29,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.directory.shared.ldap.constants.SchemaConstants;
-import org.apache.directory.shared.ldap.name.DN;
+import org.apache.directory.shared.ldap.name.Dn;
 import org.apache.directory.shared.ldap.schema.AttributeType;
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.connection.core.Connection;
@@ -102,10 +102,10 @@ public class SearchPageWrapper extends BrowserWidget
     /** Style for read-only returning attributes field */
     public static final int RETURNINGATTRIBUTES_READONLY = 1 << 10;
 
-    /** Style for visible return DN checkbox */
+    /** Style for visible return Dn checkbox */
     public static final int RETURN_DN_VISIBLE = 1 << 11;
 
-    /** Style for checked return DN checkbox */
+    /** Style for checked return Dn checkbox */
     public static final int RETURN_DN_CHECKED = 1 << 12;
 
     /** Style for visible return all attributes checkbox */
@@ -662,7 +662,7 @@ public class SearchPageWrapper extends BrowserWidget
         if ( search.getBrowserConnection() != null )
         {
             IBrowserConnection browserConnection = search.getBrowserConnection();
-            DN searchBase = search.getSearchBase();
+            Dn searchBase = search.getSearchBase();
 
             if ( browserConnectionWidget != null )
             {

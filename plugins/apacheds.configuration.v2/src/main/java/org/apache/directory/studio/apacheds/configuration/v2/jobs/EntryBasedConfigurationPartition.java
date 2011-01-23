@@ -32,11 +32,10 @@ import org.apache.directory.server.core.interceptor.context.MoveOperationContext
 import org.apache.directory.server.core.interceptor.context.RenameOperationContext;
 import org.apache.directory.server.core.partition.impl.avl.AvlPartition;
 import org.apache.directory.server.core.partition.ldif.AbstractLdifPartition;
-import org.apache.directory.server.xdbm.impl.avl.AvlStore;
 import org.apache.directory.shared.ldap.constants.SchemaConstants;
 import org.apache.directory.shared.ldap.entry.Entry;
 import org.apache.directory.shared.ldap.exception.LdapException;
-import org.apache.directory.shared.ldap.name.DN;
+import org.apache.directory.shared.ldap.name.Dn;
 import org.apache.directory.shared.ldap.schema.SchemaManager;
 
 
@@ -69,7 +68,7 @@ public class EntryBasedConfigurationPartition extends AbstractLdifPartition
         // Initializing the wrapped partition
         setWrappedPartition( new AvlPartition() );
         setId( "config" );
-        setSuffix( new DN( "ou=config" ) );
+        setSuffix( new Dn( "ou=config" ) );
         wrappedPartition.setSchemaManager( schemaManager );
         wrappedPartition.initialize();
 

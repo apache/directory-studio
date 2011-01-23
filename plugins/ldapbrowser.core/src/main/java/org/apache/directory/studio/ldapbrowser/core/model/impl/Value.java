@@ -23,7 +23,7 @@ package org.apache.directory.studio.ldapbrowser.core.model.impl;
 
 import java.util.Iterator;
 
-import org.apache.directory.shared.ldap.name.AVA;
+import org.apache.directory.shared.ldap.name.Ava;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.ldapbrowser.core.internal.search.LdapSearchPageScoreComputer;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
@@ -305,10 +305,10 @@ public class Value implements IValue
      */
     public boolean isRdnPart()
     {
-        Iterator<AVA> atavIterator = getAttribute().getEntry().getRdn().iterator();
+        Iterator<Ava> atavIterator = getAttribute().getEntry().getRdn().iterator();
         while ( atavIterator.hasNext() )
         {
-            AVA ava = atavIterator.next();
+            Ava ava = atavIterator.next();
             if ( getAttribute().getDescription().equals( ava.getUpType() )
                 && getStringValue().equals( ava.getNormValue().getString() ) )
             {

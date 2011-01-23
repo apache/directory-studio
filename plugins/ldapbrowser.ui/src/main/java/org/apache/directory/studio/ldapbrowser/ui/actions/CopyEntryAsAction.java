@@ -45,7 +45,7 @@ import org.eclipse.swt.widgets.Display;
 public abstract class CopyEntryAsAction extends BrowserAction
 {
     /**
-     * Returns DN only Mode.
+     * Returns Dn only Mode.
      */
     public static final int MODE_DN_ONLY = 1;
 

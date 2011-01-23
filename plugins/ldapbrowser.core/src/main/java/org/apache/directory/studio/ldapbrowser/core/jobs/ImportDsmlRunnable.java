@@ -65,7 +65,7 @@ import org.apache.directory.shared.ldap.message.ModifyDnRequest;
 import org.apache.directory.shared.ldap.message.ModifyRequest;
 import org.apache.directory.shared.ldap.message.ResultCodeEnum;
 import org.apache.directory.shared.ldap.message.SearchRequest;
-import org.apache.directory.shared.ldap.name.DN;
+import org.apache.directory.shared.ldap.name.Dn;
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
@@ -365,9 +365,9 @@ public class ImportDsmlRunnable implements StudioConnectionBulkRunnableWithProgr
         }
 
         // Update cached entries
-        DN dn = entry.getDn();
+        Dn dn = entry.getDn();
         IEntry e = browserConnection.getEntryFromCache( dn );
-        DN parentDn = DnUtils.getParent( dn );
+        Dn parentDn = DnUtils.getParent( dn );
         IEntry parentEntry = parentDn != null ? browserConnection.getEntryFromCache( parentDn ) : null;
         if ( e != null )
         {
@@ -432,9 +432,9 @@ public class ImportDsmlRunnable implements StudioConnectionBulkRunnableWithProgr
         }
 
         // Update cached entries
-        DN dn = request.getName();
+        Dn dn = request.getName();
         IEntry e = browserConnection.getEntryFromCache( dn );
-        DN parentDn = DnUtils.getParent( dn );
+        Dn parentDn = DnUtils.getParent( dn );
         IEntry parentEntry = parentDn != null ? browserConnection.getEntryFromCache( parentDn ) : null;
         if ( e != null )
         {
@@ -510,7 +510,7 @@ public class ImportDsmlRunnable implements StudioConnectionBulkRunnableWithProgr
             batchResponseDsml.addResponse( modifyResponseDsml );
         }
 
-        DN dn = request.getName();
+        Dn dn = request.getName();
         IEntry e = browserConnection.getEntryFromCache( dn );
         if ( e != null )
         {
@@ -544,7 +544,7 @@ public class ImportDsmlRunnable implements StudioConnectionBulkRunnableWithProgr
 
 
     /**
-     * Processes a modify DN request.
+     * Processes a modify Dn request.
      * 
      * @param request
      *      the request
@@ -554,7 +554,7 @@ public class ImportDsmlRunnable implements StudioConnectionBulkRunnableWithProgr
     private void processModifyDNRequest( ModifyDnRequest request, BatchResponseDsml batchResponseDsml,
         StudioProgressMonitor monitor )
     {
-        // Executing the modify DN request
+        // Executing the modify Dn request
         browserConnection
             .getConnection()
             .getConnectionWrapper()
@@ -572,9 +572,9 @@ public class ImportDsmlRunnable implements StudioConnectionBulkRunnableWithProgr
         }
 
         // Update cached entries
-        DN dn = request.getName();
+        Dn dn = request.getName();
         IEntry e = browserConnection.getEntryFromCache( dn );
-        DN parentDn = DnUtils.getParent( dn );
+        Dn parentDn = DnUtils.getParent( dn );
         IEntry parentEntry = parentDn != null ? browserConnection.getEntryFromCache( parentDn ) : null;
         if ( e != null )
         {
@@ -587,7 +587,7 @@ public class ImportDsmlRunnable implements StudioConnectionBulkRunnableWithProgr
         }
         if ( request.getNewSuperior() != null )
         {
-            DN newSuperiorDn = request.getNewSuperior();
+            Dn newSuperiorDn = request.getNewSuperior();
             IEntry newSuperiorEntry = browserConnection.getEntryFromCache( newSuperiorDn );
             if ( newSuperiorEntry != null )
             {

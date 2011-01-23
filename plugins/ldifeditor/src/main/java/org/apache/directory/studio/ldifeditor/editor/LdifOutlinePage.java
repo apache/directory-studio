@@ -27,7 +27,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.directory.shared.ldap.exception.LdapInvalidDnException;
-import org.apache.directory.shared.ldap.name.DN;
+import org.apache.directory.shared.ldap.name.Dn;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonConstants;
 import org.apache.directory.studio.ldapbrowser.common.widgets.browser.BrowserLabelProvider;
@@ -456,7 +456,7 @@ public class LdifOutlinePage extends ContentOutlinePage
                             try
                             {
                                 return BrowserLabelProvider.getImageByObjectClass( ldifEditor.getConnection()
-                                    .getEntryFromCache( new DN( dn ) ) );
+                                    .getEntryFromCache( new Dn( dn ) ) );
                             }
                             catch ( LdapInvalidDnException e )
                             {

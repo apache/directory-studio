@@ -21,8 +21,8 @@
 package org.apache.directory.studio.ldapbrowser.common.dialogs;
 
 
-import org.apache.directory.shared.ldap.name.DN;
-import org.apache.directory.shared.ldap.name.RDN;
+import org.apache.directory.shared.ldap.name.Dn;
+import org.apache.directory.shared.ldap.name.Rdn;
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.ldapbrowser.common.widgets.DnBuilderWidget;
 import org.apache.directory.studio.ldapbrowser.common.widgets.WidgetModifyEvent;
@@ -71,11 +71,11 @@ public class EntryExistsCopyStrategyDialogImpl extends Dialog implements EntryEx
     //    /** The remember check box. */
     //    private Button rememberCheckbox;
 
-    /** The DN builder widget. */
+    /** The Dn builder widget. */
     private DnBuilderWidget dnBuilderWidget;
 
-    /** The new RDN. */
-    private RDN rdn;
+    /** The new Rdn. */
+    private Rdn rdn;
 
     /** The strategy */
     private EntryExistsCopyStrategy strategy;
@@ -85,7 +85,7 @@ public class EntryExistsCopyStrategyDialogImpl extends Dialog implements EntryEx
 
     private IBrowserConnection browserConnection;
 
-    private DN dn;
+    private Dn dn;
 
 
     /**
@@ -260,7 +260,7 @@ public class EntryExistsCopyStrategyDialogImpl extends Dialog implements EntryEx
     /**
      * {@inheritDoc}
      */
-    public RDN getRdn()
+    public Rdn getRdn()
     {
         return rdn;
     }
@@ -278,7 +278,7 @@ public class EntryExistsCopyStrategyDialogImpl extends Dialog implements EntryEx
     /**
      * {@inheritDoc}
      */
-    public void setExistingEntry( IBrowserConnection browserConnection, DN dn )
+    public void setExistingEntry( IBrowserConnection browserConnection, Dn dn )
     {
         this.browserConnection = browserConnection;
         this.dn = dn;

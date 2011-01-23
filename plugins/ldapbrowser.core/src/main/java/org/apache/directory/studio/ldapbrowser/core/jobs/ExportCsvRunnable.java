@@ -77,7 +77,7 @@ public class ExportCsvRunnable implements StudioConnectionRunnableWithProgress
      * @param exportCsvFilename the filename of the csv file
      * @param browserConnection the browser connection
      * @param searchParameter the search parameter
-     * @param exportDn true to export the DN
+     * @param exportDn true to export the Dn
      */
     public ExportCsvRunnable( String exportCsvFilename, IBrowserConnection browserConnection,
         SearchParameter searchParameter, boolean exportDn )

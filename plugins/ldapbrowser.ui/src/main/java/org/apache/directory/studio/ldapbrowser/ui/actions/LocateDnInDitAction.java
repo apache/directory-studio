@@ -22,7 +22,7 @@ package org.apache.directory.studio.ldapbrowser.ui.actions;
 
 
 import org.apache.directory.shared.ldap.exception.LdapInvalidDnException;
-import org.apache.directory.shared.ldap.name.DN;
+import org.apache.directory.shared.ldap.name.Dn;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearchResult;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
 import org.apache.directory.studio.ldapbrowser.ui.BrowserUIConstants;
@@ -32,7 +32,7 @@ import org.eclipse.jface.resource.ImageDescriptor;
 
 /**
  * This action is used within the entry editor and search result editor 
- * to locate and open the entry identified by the DN under the cursor. 
+ * to locate and open the entry identified by the Dn under the cursor.
  * 
  * Example: Attribute "seeAlso" with value "ou=test" is selected in entry edtor. 
  * Then this action is enabled and opens entry "ou=test" in DIT. 
@@ -68,8 +68,8 @@ public class LocateDnInDitAction extends LocateInDitAction
 
 
     /**
-     * This implementation returns a connection and DN if the selected attribute or value
-     * contains a valid DN.
+     * This implementation returns a connection and Dn if the selected attribute or value
+     * contains a valid Dn.
      */
     protected ConnectionAndDn getConnectionAndDn()
     {
@@ -81,15 +81,15 @@ public class LocateDnInDitAction extends LocateInDitAction
             try
             {
                 IValue value = getSelectedAttributeHierarchies()[0].getAttribute().getValues()[0];
-                if ( value.isString() && DN.isValid( value.getStringValue() ) )
+                if ( value.isString() && Dn.isValid(value.getStringValue()) )
                 {
-                    return new ConnectionAndDn( value.getAttribute().getEntry().getBrowserConnection(), new DN(
+                    return new ConnectionAndDn( value.getAttribute().getEntry().getBrowserConnection(), new Dn(
                         value.getStringValue() ) );
                 }
             }
             catch ( LdapInvalidDnException e )
             {
-                // no valid DN
+                // no valid Dn
             }
         }
 
@@ -98,15 +98,15 @@ public class LocateDnInDitAction extends LocateInDitAction
             try
             {
                 IValue value = getSelectedValues()[0];
-                if ( value.isString() && DN.isValid( value.getStringValue() ) )
+                if ( value.isString() && Dn.isValid(value.getStringValue()) )
                 {
-                    return new ConnectionAndDn( value.getAttribute().getEntry().getBrowserConnection(), new DN(
+                    return new ConnectionAndDn( value.getAttribute().getEntry().getBrowserConnection(), new Dn(
                         value.getStringValue() ) );
                 }
             }
             catch ( LdapInvalidDnException e )
             {
-                // no valid DN
+                // no valid Dn
             }
         }
 

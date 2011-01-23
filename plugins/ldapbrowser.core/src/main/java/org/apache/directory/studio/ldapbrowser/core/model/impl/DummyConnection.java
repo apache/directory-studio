@@ -22,7 +22,7 @@ package org.apache.directory.studio.ldapbrowser.core.model.impl;
 
 
 import org.apache.directory.shared.ldap.filter.LdapURL;
-import org.apache.directory.shared.ldap.name.DN;
+import org.apache.directory.shared.ldap.name.Dn;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.ldapbrowser.core.BookmarkManager;
 import org.apache.directory.studio.ldapbrowser.core.SearchManager;
@@ -61,9 +61,9 @@ public class DummyConnection implements IBrowserConnection
     /** 
      * {@inheritDoc}
      */
-    public DN getBaseDN()
+    public Dn getBaseDN()
     {
-        return DN.EMPTY_DN;
+        return Dn.EMPTY_DN;
     }
 
 
@@ -97,7 +97,7 @@ public class DummyConnection implements IBrowserConnection
     /** 
      * {@inheritDoc}
      */
-    public IEntry getEntryFromCache( DN dn )
+    public IEntry getEntryFromCache( Dn dn )
     {
         return null;
     }
@@ -151,7 +151,7 @@ public class DummyConnection implements IBrowserConnection
     /** 
      * {@inheritDoc}
      */
-    public void setBaseDN( DN baseDN )
+    public void setBaseDN( Dn baseDn)
     {
     }
 

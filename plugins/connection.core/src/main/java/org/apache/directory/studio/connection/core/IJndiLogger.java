@@ -44,7 +44,7 @@ public interface IJndiLogger
      * Logs a changetype:add.
      * 
      * @param connection the connection
-     * @param dn the DN
+     * @param dn the Dn
      * @param attributes the attributes
      * @param controls the controls
      * @param ex the naming exception if an error occurred, null otherwise
@@ -57,7 +57,7 @@ public interface IJndiLogger
      * Logs a changetype:delete.
      * 
      * @param connection the connection
-     * @param dn the DN
+     * @param dn the Dn
      * @param controls the controls
      * @param ex the naming exception if an error occurred, null otherwise
      * 
@@ -70,7 +70,7 @@ public interface IJndiLogger
      * Logs a changetype:modify.
      * 
      * @param connection the connection
-     * @param dn the DN
+     * @param dn the Dn
      * @param modificationItems the modification items
      * @param ex the naming exception if an error occurred, null otherwise
      * @param controls the controls
@@ -83,9 +83,9 @@ public interface IJndiLogger
      * Logs a changetype:moddn.
      * 
      * @param connection the connection
-     * @param oldDn the old DN
-     * @param newDn the new DN
-     * @param deleteOldRdn the delete old RDN
+     * @param oldDn the old Dn
+     * @param newDn the new Dn
+     * @param deleteOldRdn the delete old Rdn
      * @param controls the controls
      * @param ex the naming exception if an error occurred, null otherwise
      */

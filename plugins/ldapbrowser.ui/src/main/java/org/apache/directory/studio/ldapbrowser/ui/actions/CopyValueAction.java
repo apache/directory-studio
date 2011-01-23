@@ -26,7 +26,7 @@ import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-import org.apache.directory.shared.ldap.name.DN;
+import org.apache.directory.shared.ldap.name.Dn;
 import org.apache.directory.studio.ldapbrowser.common.actions.BrowserAction;
 import org.apache.directory.studio.ldapbrowser.common.actions.CopyAction;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreConstants;
@@ -216,7 +216,7 @@ public class CopyValueAction extends BrowserAction
         }
         else if ( getSelectedSearchResults().length > 0 )
         {
-            DN dn = getSelectedSearchResults()[0].getDn();
+            Dn dn = getSelectedSearchResults()[0].getDn();
             switch ( mode )
             {
                 case UTF8:

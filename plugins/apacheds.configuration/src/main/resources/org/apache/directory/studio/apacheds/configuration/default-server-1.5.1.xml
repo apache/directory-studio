@@ -120,7 +120,7 @@
       </list>
     </property>
     
-    <!-- The base DN containing users that can be SASL authenticated.       -->
+    <!-- The base Dn containing users that can be SASL authenticated.       -->
     <property name="searchBaseDn" value="ou=users,ou=system" />
     
     <!-- SSL CONFIG CAN GO HERE-->

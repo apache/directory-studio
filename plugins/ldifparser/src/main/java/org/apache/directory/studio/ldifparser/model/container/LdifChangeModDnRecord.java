@@ -139,11 +139,11 @@ public class LdifChangeModDnRecord extends LdifChangeRecord
     {
         if ( this.getNewrdnLine() == null )
         {
-            return "Missing new RDN";
+            return "Missing new Rdn";
         }
         else if ( this.getDeloldrdnLine() == null )
         {
-            return "Missing delete old RDN";
+            return "Missing delete old Rdn";
         }
         else
         {

@@ -39,7 +39,7 @@ public class ExportCsvFromWizardPage extends ExportBaseFromWizardPage
      * {@link SearchPageWrapper} with
      * <ul> 
      * <li>hidden name
-     * <li>visible and checked return DN checkbox
+     * <li>visible and checked return Dn checkbox
      * <li>invisible all attributes checkbox
      * <li>invisible operational attributes checkbox
      * </ul> 

@@ -21,7 +21,7 @@
 package org.apache.directory.studio.ldapbrowser.common.dialogs;
 
 
-import org.apache.directory.shared.ldap.name.DN;
+import org.apache.directory.shared.ldap.name.Dn;
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonConstants;
@@ -39,7 +39,7 @@ import org.eclipse.swt.widgets.Shell;
 
 
 /**
- * The DnDialog is used from the DN value editor to edit and select a DN.
+ * The DnDialog is used from the Dn value editor to edit and select a Dn.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
@@ -60,7 +60,7 @@ public class DnDialog extends Dialog
     private IBrowserConnection connection;
 
     /** The dn */
-    private DN dn;
+    private Dn dn;
 
 
     /**
@@ -70,9 +70,9 @@ public class DnDialog extends Dialog
      * @param title the title of the dialog
      * @param description the description of the dialog
      * @param connection the connection used to browse the directory
-     * @param dn the initial DN, may be null
+     * @param dn the initial Dn, may be null
      */
-    public DnDialog( Shell parentShell, String title, String description, IBrowserConnection connection, DN dn )
+    public DnDialog( Shell parentShell, String title, String description, IBrowserConnection connection, Dn dn )
     {
         super( parentShell );
         super.setShellStyle( super.getShellStyle() | SWT.RESIZE );
@@ -165,7 +165,7 @@ public class DnDialog extends Dialog
      * 
      * @return the dn
      */
-    public DN getDn()
+    public Dn getDn()
     {
         return dn;
     }

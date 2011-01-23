@@ -22,7 +22,7 @@ package org.apache.directory.studio.ldapbrowser.ui.editors.entry;
 
 
 import org.apache.directory.shared.ldap.exception.LdapInvalidDnException;
-import org.apache.directory.shared.ldap.name.DN;
+import org.apache.directory.shared.ldap.name.Dn;
 import org.apache.directory.studio.entryeditors.EntryEditorExtension;
 import org.apache.directory.studio.entryeditors.EntryEditorInput;
 import org.apache.directory.studio.entryeditors.EntryEditorManager;
@@ -81,14 +81,14 @@ public class EntryEditorNavigationLocation extends NavigationLocation
             {
                 IEntry entry = eei.getEntryInput();
                 memento.putString( "TYPE", "IEntry" ); //$NON-NLS-1$ //$NON-NLS-2$
-                memento.putString( "DN", entry.getDn().getName() ); //$NON-NLS-1$
+                memento.putString( "Dn", entry.getDn().getName() ); //$NON-NLS-1$
                 memento.putString( "CONNECTION", entry.getBrowserConnection().getConnection().getId() ); //$NON-NLS-1$
             }
             else if ( eei.getSearchResultInput() != null )
             {
                 ISearchResult searchResult = eei.getSearchResultInput();
                 memento.putString( "TYPE", "ISearchResult" ); //$NON-NLS-1$ //$NON-NLS-2$
-                memento.putString( "DN", searchResult.getDn().getName() ); //$NON-NLS-1$
+                memento.putString( "Dn", searchResult.getDn().getName() ); //$NON-NLS-1$
                 memento.putString( "SEARCH", searchResult.getSearch().getName() ); //$NON-NLS-1$
                 memento.putString(
                     "CONNECTION", searchResult.getSearch().getBrowserConnection().getConnection().getId() ); //$NON-NLS-1$
@@ -119,7 +119,7 @@ public class EntryEditorNavigationLocation extends NavigationLocation
             {
                 IBrowserConnection connection = BrowserCorePlugin.getDefault().getConnectionManager()
                     .getBrowserConnectionById( memento.getString( "CONNECTION" ) ); //$NON-NLS-1$
-                DN dn = new DN( memento.getString( "DN" ) ); //$NON-NLS-1$
+                Dn dn = new Dn( memento.getString( "Dn" ) ); //$NON-NLS-1$
                 IEntry entry = connection.getEntryFromCache( dn );
                 super.setInput( new EntryEditorInput( entry, entryEditorExtension ) );
             }
@@ -129,7 +129,7 @@ public class EntryEditorNavigationLocation extends NavigationLocation
                     .getBrowserConnectionById( memento.getString( "CONNECTION" ) ); //$NON-NLS-1$
                 ISearch search = connection.getSearchManager().getSearch( memento.getString( "SEARCH" ) ); //$NON-NLS-1$
                 ISearchResult[] searchResults = search.getSearchResults();
-                DN dn = new DN( memento.getString( "DN" ) ); //$NON-NLS-1$
+                Dn dn = new Dn( memento.getString( "Dn" ) ); //$NON-NLS-1$
                 for ( int i = 0; i < searchResults.length; i++ )
                 {
                     if ( dn.equals( searchResults[i].getDn() ) )

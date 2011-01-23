@@ -87,7 +87,7 @@ public class LdifNewsuperiorLine extends LdifValueLineBase
         }
         else if ( this.getUnfoldedNewSuperiorDn().length() == 0 )
         {
-            return "Missing new superior DN";
+            return "Missing new superior Dn";
         }
         else
         {

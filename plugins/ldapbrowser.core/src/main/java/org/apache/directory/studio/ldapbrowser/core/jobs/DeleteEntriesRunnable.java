@@ -37,7 +37,7 @@ import javax.naming.ldap.BasicControl;
 import javax.naming.ldap.Control;
 import javax.naming.ldap.ManageReferralControl;
 
-import org.apache.directory.shared.ldap.name.DN;
+import org.apache.directory.shared.ldap.name.Dn;
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
@@ -254,7 +254,7 @@ public class DeleteEntriesRunnable implements StudioConnectionBulkRunnableWithPr
      * </ol>
      * 
      * @param browserConnection the browser connection
-     * @param dn the DN to delete
+     * @param dn the Dn to delete
      * @param useManageDsaItControl true to use the ManageDsaIT control
      * @param useTreeDeleteControl true to use the tree delete control
      * @param numberOfDeletedEntries the number of deleted entries
@@ -263,7 +263,7 @@ public class DeleteEntriesRunnable implements StudioConnectionBulkRunnableWithPr
      * 
      * @return the cumulative number of deleted entries
      */
-    static int optimisticDeleteEntryRecursive( IBrowserConnection browserConnection, DN dn,
+    static int optimisticDeleteEntryRecursive( IBrowserConnection browserConnection, Dn dn,
         boolean useManageDsaItControl, boolean useTreeDeleteControl, int numberOfDeletedEntries,
         StudioProgressMonitor dummyMonitor, StudioProgressMonitor monitor )
     {
@@ -307,7 +307,7 @@ public class DeleteEntriesRunnable implements StudioConnectionBulkRunnableWithPr
                     while ( !dummyMonitor.isCanceled() && !dummyMonitor.errorsReported() && result.hasMore() )
                     {
                         SearchResult sr = result.next();
-                        DN childDn = JNDIUtils.getDn( sr );
+                        Dn childDn = JNDIUtils.getDn( sr );
 
                         numberOfDeletedEntries = optimisticDeleteEntryRecursive( browserConnection, childDn, false,
                             false, numberOfDeletedEntries, dummyMonitor, monitor );
@@ -357,7 +357,7 @@ public class DeleteEntriesRunnable implements StudioConnectionBulkRunnableWithPr
     }
 
 
-    static void deleteEntry( IBrowserConnection browserConnection, DN dn, boolean useManageDsaItControl,
+    static void deleteEntry( IBrowserConnection browserConnection, Dn dn, boolean useManageDsaItControl,
         boolean useTreeDeleteControl, StudioProgressMonitor monitor )
     {
         // controls

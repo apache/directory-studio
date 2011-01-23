@@ -454,7 +454,7 @@ public class DeleteAction extends BrowserAction
             AttributeType atd = value.getAttribute().getAttributeTypeDescription();
             AttributeHierarchy ah = value.getAttribute().getEntry().getAttributeWithSubtypes( type );
 
-            // check if (part of) RDN is selected
+            // check if (part of) Rdn is selected
             if ( value.isRdnPart() )
             {
                 message.append( NLS.bind( Messages.getString( "DeleteAction.DeletePartOfRDN" ), value.toString() ) ); //$NON-NLS-1$

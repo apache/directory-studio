@@ -33,7 +33,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.directory.shared.ldap.exception.LdapInvalidDnException;
-import org.apache.directory.shared.ldap.name.DN;
+import org.apache.directory.shared.ldap.name.Dn;
 import org.apache.directory.shared.util.Base64;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.StudioControl;
@@ -197,7 +197,7 @@ public class BrowserConnectionIO
         {
             try
             {
-                searchParameter.setSearchBase( new DN( searchBaseAttribute.getValue() ) );
+                searchParameter.setSearchBase( new Dn( searchBaseAttribute.getValue() ) );
             }
             catch ( LdapInvalidDnException e )
             {
@@ -360,17 +360,17 @@ public class BrowserConnectionIO
             bookmarkParameter.setName( nameAttribute.getValue() );
         }
 
-        // DN
+        // Dn
         Attribute dnAttribute = bookmarkParameterElement.attribute( DN_TAG );
         if ( dnAttribute != null )
         {
             try
             {
-                bookmarkParameter.setDn( new DN( dnAttribute.getValue() ) );
+                bookmarkParameter.setDn( new Dn( dnAttribute.getValue() ) );
             }
             catch ( LdapInvalidDnException e )
             {
-                throw new ConnectionIOException( "Unable to parse 'DN' of bookmark '" + bookmarkParameter.getName()
+                throw new ConnectionIOException( "Unable to parse 'Dn' of bookmark '" + bookmarkParameter.getName()
                     + "' :" + dnAttribute.getValue() );
             }
         }
@@ -512,7 +512,7 @@ public class BrowserConnectionIO
         // Name
         bookmarkParameterElement.addAttribute( NAME_TAG, bookmarkParameter.getName() );
 
-        // DN
+        // Dn
         String dn = bookmarkParameter.getDn() != null ? bookmarkParameter.getDn().getName() : "";
         bookmarkParameterElement.addAttribute( DN_TAG, dn );
     }

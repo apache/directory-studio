@@ -27,7 +27,7 @@ import org.eclipse.jface.action.Action;
 
 
 /**
- * Action to show/hide the DN column.
+ * Action to show/hide the Dn column.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */

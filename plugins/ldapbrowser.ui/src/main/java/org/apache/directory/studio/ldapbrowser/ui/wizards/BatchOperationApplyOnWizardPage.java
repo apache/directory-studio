@@ -27,7 +27,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.directory.shared.ldap.exception.LdapInvalidDnException;
-import org.apache.directory.shared.ldap.name.DN;
+import org.apache.directory.shared.ldap.name.Dn;
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.ldapbrowser.common.actions.BrowserSelectionUtils;
@@ -61,7 +61,7 @@ public class BatchOperationApplyOnWizardPage extends WizardPage
 
     private String[] initCurrentSelectionTexts;
 
-    private DN[][] initCurrentSelectionDns;
+    private Dn[][] initCurrentSelectionDns;
 
     private ISearch initSearch;
 
@@ -168,7 +168,7 @@ public class BatchOperationApplyOnWizardPage extends WizardPage
     }
 
 
-    public DN[] getApplyOnDns()
+    public Dn[] getApplyOnDns()
     {
         if ( currentSelectionButton.getSelection() )
         {
@@ -232,18 +232,18 @@ public class BatchOperationApplyOnWizardPage extends WizardPage
         IValue[] values = BrowserSelectionUtils.getValues( selection );
 
         List<String> textList = new ArrayList<String>();
-        List<DN[]> dnsList = new ArrayList<DN[]>();
+        List<Dn[]> dnsList = new ArrayList<Dn[]>();
 
         if ( attributes.length + values.length > 0 )
         {
-            Set<DN> internalDnSet = new LinkedHashSet<DN>();
+            Set<Dn> internalDnSet = new LinkedHashSet<Dn>();
             for ( int v = 0; v < values.length; v++ )
             {
                 if ( values[v].isString() )
                 {
                     try
                     {
-                        DN dn = new DN( values[v].getStringValue() );
+                        Dn dn = new Dn( values[v].getStringValue() );
                         internalDnSet.add( dn );
                     }
                     catch ( LdapInvalidDnException e )
@@ -261,7 +261,7 @@ public class BatchOperationApplyOnWizardPage extends WizardPage
                     {
                         try
                         {
-                            DN dn = new DN( vals[v].getStringValue() );
+                            Dn dn = new Dn( vals[v].getStringValue() );
                             internalDnSet.add( dn );
                         }
                         catch ( LdapInvalidDnException e )
@@ -273,7 +273,7 @@ public class BatchOperationApplyOnWizardPage extends WizardPage
 
             if ( !internalDnSet.isEmpty() )
             {
-                dnsList.add( internalDnSet.toArray( new DN[internalDnSet.size()] ) );
+                dnsList.add( internalDnSet.toArray( new Dn[internalDnSet.size()] ) );
                 textList
                     .add( NLS
                         .bind(
@@ -282,14 +282,14 @@ public class BatchOperationApplyOnWizardPage extends WizardPage
         }
         if ( searches.length == 1 && searches[0].getSearchResults() != null )
         {
-            Set<DN> internalDnSet = new LinkedHashSet<DN>();
+            Set<Dn> internalDnSet = new LinkedHashSet<Dn>();
             ISearchResult[] srs = searches[0].getSearchResults();
             for ( int i = 0; i < srs.length; i++ )
             {
                 internalDnSet.add( srs[i].getDn() );
             }
 
-            dnsList.add( internalDnSet.toArray( new DN[internalDnSet.size()] ) );
+            dnsList.add( internalDnSet.toArray( new Dn[internalDnSet.size()] ) );
             textList
                 .add( NLS
                     .bind(
@@ -297,7 +297,7 @@ public class BatchOperationApplyOnWizardPage extends WizardPage
         }
         if ( entries.length + searchResults.length + bookmarks.length > 0 )
         {
-            Set<DN> internalDnSet = new LinkedHashSet<DN>();
+            Set<Dn> internalDnSet = new LinkedHashSet<Dn>();
             for ( int i = 0; i < entries.length; i++ )
             {
                 internalDnSet.add( entries[i].getDn() );
@@ -311,7 +311,7 @@ public class BatchOperationApplyOnWizardPage extends WizardPage
                 internalDnSet.add( bookmarks[i].getDn() );
             }
 
-            dnsList.add( internalDnSet.toArray( new DN[internalDnSet.size()] ) );
+            dnsList.add( internalDnSet.toArray( new Dn[internalDnSet.size()] ) );
             textList
                 .add( NLS
                     .bind(
@@ -319,7 +319,7 @@ public class BatchOperationApplyOnWizardPage extends WizardPage
         }
 
         this.initCurrentSelectionTexts = textList.toArray( new String[textList.size()] );
-        this.initCurrentSelectionDns = dnsList.toArray( new DN[0][0] );
+        this.initCurrentSelectionDns = dnsList.toArray( new Dn[0][0] );
 
     }
 

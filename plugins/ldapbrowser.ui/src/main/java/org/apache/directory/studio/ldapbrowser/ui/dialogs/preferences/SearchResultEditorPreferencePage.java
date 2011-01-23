@@ -41,7 +41,7 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
 public class SearchResultEditorPreferencePage extends PreferencePage implements IWorkbenchPreferencePage
 {
 
-    /** The show DN button. */
+    /** The show Dn button. */
     private Button showDnButton;
 
     /** The show links button. */

@@ -25,9 +25,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 
-import org.apache.directory.shared.ldap.name.AVA;
-import org.apache.directory.shared.ldap.name.DN;
-import org.apache.directory.shared.ldap.name.RDN;
+import org.apache.directory.shared.ldap.name.Ava;
+import org.apache.directory.shared.ldap.name.Dn;
+import org.apache.directory.shared.ldap.name.Rdn;
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.connection.core.DnUtils;
 import org.apache.directory.studio.connection.ui.widgets.ExtendedContentAssistCommandAdapter;
@@ -50,8 +50,8 @@ import org.eclipse.swt.widgets.Text;
 
 
 /**
- * The DnBuilderWidget provides input elements to select a parent DN
- * and to build a (multivalued) RDN.
+ * The DnBuilderWidget provides input elements to select a parent Dn
+ * and to build a (multivalued) Rdn.
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
@@ -61,38 +61,38 @@ public class DnBuilderWidget extends BrowserWidget implements ModifyListener
     /** The attribute names that could be selected from drop-down list. */
     private String[] attributeNames;
 
-    /** The initial RDN. */
-    private RDN currentRdn;
+    /** The initial Rdn. */
+    private Rdn currentRdn;
 
-    /** The initial parent DN. */
-    private DN currentParentDn;
+    /** The initial parent Dn. */
+    private Dn currentParentDn;
 
-    /** True if the RDN input elements should be shown. */
+    /** True if the Rdn input elements should be shown. */
     private boolean showRDN;
 
-    /** True if the parent DN input elements should be shown. */
+    /** True if the parent Dn input elements should be shown. */
     private boolean showParent;
 
     /** The shell. */
     private Shell shell;
 
-    /** The selected parent DN. */
-    private DN parentDn;
+    /** The selected parent Dn. */
+    private Dn parentDn;
 
     /** The entry widget label. */
     private Label parentEntryLabel;
 
-    /** The entry widget to enter/select the parent DN. */
+    /** The entry widget to enter/select the parent Dn. */
     private EntryWidget parentEntryWidget;
 
-    /** The RDN label */
+    /** The Rdn label */
     private Label rdnLabel;
 
     /** The composite that contains the RdnLines. */
     private Composite rdnComposite;
 
-    /** The resulting RDN. */
-    private RDN rdn;
+    /** The resulting Rdn. */
+    private Rdn rdn;
 
     /** The list of RdnLines. */
     private ArrayList<RdnLine> rdnLineList;
@@ -107,8 +107,8 @@ public class DnBuilderWidget extends BrowserWidget implements ModifyListener
     /**
      * Creates a new instance of DnBuilderWidget.
      * 
-     * @param showParent true if the parent DN input elements should be shown
-     * @param showRDN true if the RDN input elements should be shown
+     * @param showParent true if the parent Dn input elements should be shown
+     * @param showRDN true if the Rdn input elements should be shown
      */
     public DnBuilderWidget( boolean showRDN, boolean showParent )
     {
@@ -128,12 +128,12 @@ public class DnBuilderWidget extends BrowserWidget implements ModifyListener
     /**
      * Sets the input.
      * 
-     * @param rdn the initial RDN
+     * @param rdn the initial Rdn
      * @param attributeNames the attribute names that could be selected from drop-down list
      * @param browserConnection the connection
-     * @param parentDn the initial parent DN
+     * @param parentDn the initial parent Dn
      */
-    public void setInput( IBrowserConnection browserConnection, String[] attributeNames, RDN rdn, DN parentDn )
+    public void setInput( IBrowserConnection browserConnection, String[] attributeNames, Rdn rdn, Dn parentDn )
     {
         this.attributeNames = attributeNames;
         this.currentRdn = rdn;
@@ -168,10 +168,10 @@ public class DnBuilderWidget extends BrowserWidget implements ModifyListener
             else
             {
                 int i = 0;
-                Iterator<AVA> atavIterator = currentRdn.iterator();
+                Iterator<Ava> atavIterator = currentRdn.iterator();
                 while ( atavIterator.hasNext() )
                 {
-                    AVA ava = atavIterator.next();
+                    Ava ava = atavIterator.next();
                     addRdnLine( rdnComposite, i );
                     rdnLineList.get( i ).rdnTypeCombo.setText( ava.getUpType() );
                     rdnLineList.get( i ).rdnValueText.setText( ava.getNormValue().getString() );
@@ -202,22 +202,22 @@ public class DnBuilderWidget extends BrowserWidget implements ModifyListener
 
 
     /**
-     * Gets the RDN.
+     * Gets the Rdn.
      * 
-     * @return the RDN
+     * @return the Rdn
      */
-    public RDN getRdn()
+    public Rdn getRdn()
     {
         return rdn;
     }
 
 
     /**
-     * Gets the parent DN.
+     * Gets the parent Dn.
      * 
-     * @return the parent DN
+     * @return the parent Dn
      */
-    public DN getParentDn()
+    public Dn getParentDn()
     {
         return parentDn;
     }
@@ -254,10 +254,10 @@ public class DnBuilderWidget extends BrowserWidget implements ModifyListener
             BaseWidgetUtils.createSpacer( composite, 3 );
         }
 
-        // draw RDN group
+        // draw Rdn group
         if ( showRDN )
         {
-            rdnLabel = BaseWidgetUtils.createLabel( composite, Messages.getString( "DnBuilderWidget.RDN" ), 1 ); //$NON-NLS-1$
+            rdnLabel = BaseWidgetUtils.createLabel( composite, Messages.getString( "DnBuilderWidget.Rdn" ), 1 ); //$NON-NLS-1$
             rdnComposite = BaseWidgetUtils.createColumnContainer( composite, 5, 2 );
             rdnLineList = new ArrayList<RdnLine>();
             BaseWidgetUtils.createSpacer( composite, 3 );
@@ -307,7 +307,7 @@ public class DnBuilderWidget extends BrowserWidget implements ModifyListener
         {
             try
             {
-                // calculate RDN
+                // calculate Rdn
                 String[] rdnTypes = new String[rdnLineList.size()];
                 String[] rdnValues = new String[rdnLineList.size()];
                 for ( int i = 0; i < rdnLineList.size(); i++ )
@@ -339,7 +339,7 @@ public class DnBuilderWidget extends BrowserWidget implements ModifyListener
         {
             try
             {
-                // calculate DN
+                // calculate Dn
                 parentDn = parentEntryWidget.getDn();
             }
             catch ( Exception e )
@@ -367,7 +367,7 @@ public class DnBuilderWidget extends BrowserWidget implements ModifyListener
             }
             else
             {
-                DN dn;
+                Dn dn;
                 if ( showParent && showRDN )
                 {
                     dn = DnUtils.composeDn( rdn, parentDn );
@@ -378,12 +378,12 @@ public class DnBuilderWidget extends BrowserWidget implements ModifyListener
                 }
                 else if ( showRDN )
                 {
-                    dn = new DN();
+                    dn = new Dn();
                     dn.add( rdn );
                 }
                 else
                 {
-                    dn = new DN();
+                    dn = new Dn();
                 }
                 previewText.setText( dn.getName() );
             }
@@ -394,9 +394,9 @@ public class DnBuilderWidget extends BrowserWidget implements ModifyListener
 
 
     /**
-     * Adds an RDN line at the given index.
+     * Adds an Rdn line at the given index.
      * 
-     * @param rdnComposite the RDN composite
+     * @param rdnComposite the Rdn composite
      * @param index the index
      */
     private void addRdnLine( Composite rdnComposite, int index )
@@ -448,11 +448,11 @@ public class DnBuilderWidget extends BrowserWidget implements ModifyListener
 
 
     /**
-     * Creates and returns an RDN line.
+     * Creates and returns an Rdn line.
      * 
-     * @param rdnComposite the RDN composite
+     * @param rdnComposite the Rdn composite
      * 
-     * @return the created RDN line
+     * @return the created Rdn line
      */
     private RdnLine createRdnLine( final Composite rdnComposite )
     {
@@ -527,9 +527,9 @@ public class DnBuilderWidget extends BrowserWidget implements ModifyListener
 
 
     /**
-     * Delete thd RDN line on the given index.
+     * Delete thd Rdn line on the given index.
      * 
-     * @param rdnComposite the RDN composite
+     * @param rdnComposite the Rdn composite
      * @param index the index
      */
     private void deleteRdnLine( Composite rdnComposite, int index )
@@ -552,9 +552,9 @@ public class DnBuilderWidget extends BrowserWidget implements ModifyListener
 
     /**
      * The Class RdnLine is a wrapper for all input elements
-     * of an RDN line. It contains a combo for the RDN attribute, 
-     * an input field for the RDN value and + and - buttons
-     * to add and remove other RDN lines. It looks like this:
+     * of an Rdn line. It contains a combo for the Rdn attribute,
+     * an input field for the Rdn value and + and - buttons
+     * to add and remove other Rdn lines. It looks like this:
      * <pre>
      * --------------------------------------------------
      * | attribute type v | = | attribute value | + | - |

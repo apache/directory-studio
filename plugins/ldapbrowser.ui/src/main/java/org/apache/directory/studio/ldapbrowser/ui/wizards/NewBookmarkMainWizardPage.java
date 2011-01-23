@@ -21,7 +21,7 @@
 package org.apache.directory.studio.ldapbrowser.ui.wizards;
 
 
-import org.apache.directory.shared.ldap.name.DN;
+import org.apache.directory.shared.ldap.name.Dn;
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.ldapbrowser.common.widgets.WidgetModifyEvent;
 import org.apache.directory.studio.ldapbrowser.common.widgets.WidgetModifyListener;
@@ -39,7 +39,7 @@ import org.eclipse.swt.widgets.Text;
 
 /**
  * The NewBookmarkMainWizardPage is used to specify the bookmark name
- * and the DN of the target entry.
+ * and the Dn of the target entry.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
@@ -157,7 +157,7 @@ public class NewBookmarkMainWizardPage extends WizardPage implements WidgetModif
      * 
      * @return the bookmark dn
      */
-    public DN getBookmarkDn()
+    public Dn getBookmarkDn()
     {
         return bookmarkEntryWidget.getDn();
     }

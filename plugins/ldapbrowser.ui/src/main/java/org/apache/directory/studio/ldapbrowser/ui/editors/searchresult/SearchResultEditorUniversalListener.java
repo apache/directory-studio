@@ -222,13 +222,13 @@ public class SearchResultEditorUniversalListener implements SearchUpdateListener
         }
     };
 
-    /** The listener used to handle clicks to the DN hyper link */
+    /** The listener used to handle clicks to the Dn hyper link */
     private IHyperlinkListener dnHyperlinkListener = new IHyperlinkListener()
     {
         /**
          * {@inheritDoc}
          *
-         * This implementation opens the search result when clicking thd DN link.
+         * This implementation opens the search result when clicking thd Dn link.
          */
         public void linkActivated( HyperlinkEvent e )
         {
@@ -256,7 +256,7 @@ public class SearchResultEditorUniversalListener implements SearchUpdateListener
         }
     };
 
-    /** This listener removes the DN link when then mouse exits the hyperlink control */
+    /** This listener removes the Dn link when then mouse exits the hyperlink control */
     private MouseTrackListener dnMouseTrackListener = new MouseTrackListener()
     {
         /**
@@ -270,7 +270,7 @@ public class SearchResultEditorUniversalListener implements SearchUpdateListener
         /**
          * {@inheritDoc}
          *
-         * This implementation removed the DN link.
+         * This implementation removed the Dn link.
          */
         public void mouseExit( MouseEvent e )
         {
@@ -287,13 +287,13 @@ public class SearchResultEditorUniversalListener implements SearchUpdateListener
         }
     };
 
-    /** This listener renders the DN hyperlink when the mouse cursor moves over the DN */
+    /** This listener renders the Dn hyperlink when the mouse cursor moves over the Dn */
     private MouseMoveListener cursorMouseMoveListener = new MouseMoveListener()
     {
         /**
          * {@inheritDoc}
          *
-         * This implementation renders the DN link.
+         * This implementation renders the Dn link.
          */
         public void mouseMove( MouseEvent e )
         {
@@ -301,7 +301,7 @@ public class SearchResultEditorUniversalListener implements SearchUpdateListener
             {
                 TableItem item = cursor.getRow();
                 if ( cursor.getColumn() == 0
-                    && "DN".equalsIgnoreCase( cursor.getRow().getParent().getColumns()[0].getText() ) ) //$NON-NLS-1$
+                    && "Dn".equalsIgnoreCase( cursor.getRow().getParent().getColumns()[0].getText() ) ) //$NON-NLS-1$
                 {
                     checkDnLink( item );
                 }
@@ -309,13 +309,13 @@ public class SearchResultEditorUniversalListener implements SearchUpdateListener
         }
     };
 
-    /** This listener renders the DN link when the mouse cursor moves over the DN */
+    /** This listener renders the Dn link when the mouse cursor moves over the Dn */
     private MouseMoveListener viewerMouseMoveListener = new MouseMoveListener()
     {
         /**
          * {@inheritDoc}
          *
-         * This implementation renders the DN link.
+         * This implementation renders the Dn link.
          */
         public void mouseMove( MouseEvent e )
         {
@@ -324,7 +324,7 @@ public class SearchResultEditorUniversalListener implements SearchUpdateListener
                 TableItem item = viewer.getTable().getItem( new Point( e.x, e.y ) );
                 viewer.getTable().getColumns()[0].getWidth();
                 if ( e.x > 0 && e.x < viewer.getTable().getColumns()[0].getWidth()
-                    && "DN".equalsIgnoreCase( viewer.getTable().getColumns()[0].getText() ) ) //$NON-NLS-1$
+                    && "Dn".equalsIgnoreCase( viewer.getTable().getColumns()[0].getText() ) ) //$NON-NLS-1$
                 {
                     checkDnLink( item );
                 }
@@ -600,7 +600,7 @@ public class SearchResultEditorUniversalListener implements SearchUpdateListener
             if ( showDn )
             {
                 attributes = new String[selectedSearch.getReturningAttributes().length + 1];
-                attributes[0] = "DN"; //$NON-NLS-1$
+                attributes[0] = "Dn"; //$NON-NLS-1$
                 System.arraycopy( selectedSearch.getReturningAttributes(), 0, attributes, 1, attributes.length - 1 );
             }
             else
@@ -650,7 +650,7 @@ public class SearchResultEditorUniversalListener implements SearchUpdateListener
         else
         {
             viewer.setInput( null );
-            columns[0].setText( "DN" ); //$NON-NLS-1$
+            columns[0].setText( "Dn" ); //$NON-NLS-1$
             columns[0].pack();
             usedColumns = 1;
         }
@@ -693,7 +693,7 @@ public class SearchResultEditorUniversalListener implements SearchUpdateListener
 
 
     /**
-     * Renders the DN link.
+     * Renders the Dn link.
      *
      * @param item the table item
      */

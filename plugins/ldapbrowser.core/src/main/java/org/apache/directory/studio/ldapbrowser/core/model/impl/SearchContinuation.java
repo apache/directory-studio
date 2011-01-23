@@ -59,10 +59,10 @@ public class SearchContinuation extends Search implements IContinuation
     /**
      * Creates a new instance of ContinuedSearchResultEntry.
      * 
-     * @param dn the DN
+     * @param dn the Dn
      * @param resultBrowserConnection the connection 
      * @param connection the connection of the continued search
-     * @param dn the DN of the entry
+     * @param dn the Dn of the entry
      */
     public SearchContinuation( ISearch originalSearch, LdapURL searchContinuationURL )
     {

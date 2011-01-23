@@ -23,7 +23,7 @@ package org.apache.directory.studio.ldapbrowser.core.model;
 
 import java.io.Serializable;
 
-import org.apache.directory.shared.ldap.name.DN;
+import org.apache.directory.shared.ldap.name.Dn;
 import org.apache.directory.studio.connection.core.ConnectionPropertyPageProvider;
 import org.apache.directory.studio.ldapbrowser.core.propertypageproviders.BookmarkPropertyPageProvider;
 import org.apache.directory.studio.ldapbrowser.core.propertypageproviders.EntryPropertyPageProvider;
@@ -32,7 +32,7 @@ import org.eclipse.core.runtime.IAdaptable;
 
 /**
  * An IBookmark is used as shortcut to an entry in the DIT.
- * The target entry is defined by a connection a DN.
+ * The target entry is defined by a connection a Dn.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
@@ -41,19 +41,19 @@ public interface IBookmark extends Serializable, IAdaptable, BookmarkPropertyPag
 {
 
     /**
-     * Gets the target DN.
+     * Gets the target Dn.
      * 
-     * @return the DN
+     * @return the Dn
      */
-    public DN getDn();
+    public Dn getDn();
 
 
     /**
-     * Sets the target DN.
+     * Sets the target Dn.
      * 
-     * @param dn the DN
+     * @param dn the Dn
      */
-    public void setDn( DN dn );
+    public void setDn( Dn dn );
 
 
     /**

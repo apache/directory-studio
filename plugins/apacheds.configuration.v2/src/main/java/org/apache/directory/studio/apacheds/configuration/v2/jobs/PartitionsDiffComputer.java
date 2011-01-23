@@ -43,7 +43,7 @@ import org.apache.directory.shared.ldap.filter.SearchScope;
 import org.apache.directory.shared.ldap.ldif.ChangeType;
 import org.apache.directory.shared.ldap.ldif.LdifEntry;
 import org.apache.directory.shared.ldap.message.AliasDerefMode;
-import org.apache.directory.shared.ldap.name.DN;
+import org.apache.directory.shared.ldap.name.Dn;
 import org.apache.directory.shared.ldap.schema.AttributeType;
 import org.apache.directory.shared.ldap.schema.AttributeTypeOptions;
 import org.apache.directory.shared.ldap.schema.SchemaManager;
@@ -87,12 +87,12 @@ public class PartitionsDiffComputer
     }
 
 
-    public List<LdifEntry> computeModifications( DN baseDN, String[] attributeIds ) throws Exception
+    public List<LdifEntry> computeModifications( Dn baseDn, String[] attributeIds ) throws Exception
     {
         // Checking partitions
         checkPartitions();
 
-        return comparePartitions( baseDN, attributeIds );
+        return comparePartitions(baseDn, attributeIds );
     }
 
 
@@ -142,15 +142,15 @@ public class PartitionsDiffComputer
     /**
      * Compare the two partitions.
      *
-     * @param baseDN
-     *      the base DN
+     * @param baseDn
+     *      the base Dn
      * @param attributeIds
      *      the IDs of the attributes
      * @return
      *      a list containing LDIF entries with all modifications
      * @throws Exception
      */
-    public List<LdifEntry> comparePartitions( DN baseDN, String[] attributeIds ) throws PartitionsDiffException
+    public List<LdifEntry> comparePartitions( Dn baseDn, String[] attributeIds ) throws PartitionsDiffException
     {
         // Creating the list containing all modifications
         List<LdifEntry> modifications = new ArrayList<LdifEntry>();
@@ -159,7 +159,7 @@ public class PartitionsDiffComputer
         {
             // Looking up the original base entry
             Entry originalBaseEntry = originalPartition
-                .lookup( new LookupOperationContext( null, baseDN, attributeIds ) );
+                .lookup( new LookupOperationContext( null, baseDn, attributeIds ) );
             if ( originalBaseEntry == null )
             {
                 throw new PartitionsDiffException( "Unable to find the base entry in the original partition." );

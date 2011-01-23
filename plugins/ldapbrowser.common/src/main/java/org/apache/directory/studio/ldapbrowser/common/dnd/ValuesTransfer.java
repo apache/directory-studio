@@ -29,7 +29,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.directory.shared.ldap.name.DN;
+import org.apache.directory.shared.ldap.name.Dn;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonConstants;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
@@ -82,7 +82,7 @@ public class ValuesTransfer extends ByteArrayTransfer
      * {@inheritDoc}
      * 
      * This implementation only accepts {@link IValue} objects. 
-     * It converts the id of the connection, the entry's DN, the 
+     * It converts the id of the connection, the entry's Dn, the
      * attribute description and the value to the platform specific 
      * representation.
      */
@@ -146,7 +146,7 @@ public class ValuesTransfer extends ByteArrayTransfer
      * {@inheritDoc}
      * 
      * This implementation converts the platform specific representation
-     * to the connection name, entry DN, attribute description and value and
+     * to the connection name, entry Dn, attribute description and value and
      * restores the {@link IValue} object. 
      */
     public Object nativeToJava( TransferData transferData )
@@ -185,7 +185,7 @@ public class ValuesTransfer extends ByteArrayTransfer
                             int size = readIn.readInt();
                             byte[] dn = new byte[size];
                             readIn.read( dn );
-                            entry = connection.getEntryFromCache( new DN( new String( dn, "UTF-8" ) ) ); //$NON-NLS-1$
+                            entry = connection.getEntryFromCache( new Dn( new String( dn, "UTF-8" ) ) ); //$NON-NLS-1$
                         }
                         else
                         {

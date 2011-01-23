@@ -42,7 +42,7 @@ public class Credentials implements ICredentials
     /**
      * Creates a new instance of Credentials.
      *
-     * @param bindPrincipal the bind principal, typically a DN
+     * @param bindPrincipal the bind principal, typically a Dn
      * @param bindPassword the bind password
      * @param connectionParameter the connection parameter
      */

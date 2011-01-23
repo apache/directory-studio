@@ -483,7 +483,7 @@ public class ServerXmlIOV151 extends AbstractServerXmlIO implements ServerXmlIO
             }
         }
 
-        // Search Base DN
+        // Search Base Dn
         String searchBaseDn = readBeanProperty( "searchBaseDn", ldapConfiguration ); //$NON-NLS-1$
         if ( searchBaseDn != null )
         {
@@ -1144,7 +1144,7 @@ public class ServerXmlIOV151 extends AbstractServerXmlIO implements ServerXmlIO
             }
         }
 
-        // Search Base DN
+        // Search Base Dn
         propertyElement = ldapConfiguration.addElement( "property" ); //$NON-NLS-1$
         propertyElement.addAttribute( "name", "searchBaseDN" ); //$NON-NLS-1$ //$NON-NLS-2$
         propertyElement.addAttribute( "value", serverConfiguration.getSearchBaseDn() ); //$NON-NLS-1$

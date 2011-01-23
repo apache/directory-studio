@@ -184,7 +184,7 @@ public class NewEntryAttributesWizardPage extends WizardPage implements EntryUpd
 
                 // remove empty must attributes
                 // necessary when navigating back, modifying object classes
-                // and DN and navigation forward again.
+                // and Dn and navigation forward again.
                 Collection<AttributeType> oldMusts = SchemaUtils.getMustAttributeTypeDescriptions( newEntry );
                 for ( AttributeType oldMust : oldMusts )
                 {

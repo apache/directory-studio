@@ -24,8 +24,8 @@ package org.apache.directory.studio.ldapbrowser.core.model;
 import java.io.Serializable;
 import java.util.Collection;
 
-import org.apache.directory.shared.ldap.name.DN;
-import org.apache.directory.shared.ldap.name.RDN;
+import org.apache.directory.shared.ldap.name.Dn;
+import org.apache.directory.shared.ldap.name.Rdn;
 import org.apache.directory.shared.ldap.schema.ObjectClass;
 import org.apache.directory.shared.ldap.filter.LdapURL;
 import org.apache.directory.studio.connection.core.ConnectionPropertyPageProvider;
@@ -166,19 +166,19 @@ public interface IEntry extends Serializable, IAdaptable, EntryPropertyPageProvi
 
 
     /**
-     * Gets the DN of this entry, never null.
+     * Gets the Dn of this entry, never null.
      * 
-     * @return the DN of this entry, never null.
+     * @return the Dn of this entry, never null.
      */
-    public abstract DN getDn();
+    public abstract Dn getDn();
 
 
     /**
-     * Gets the RDN of this entry, never null.
+     * Gets the Rdn of this entry, never null.
      * 
-     * @return the RDN of this entry, never null.
+     * @return the Rdn of this entry, never null.
      */
-    public abstract RDN getRdn();
+    public abstract Rdn getRdn();
 
 
     /**

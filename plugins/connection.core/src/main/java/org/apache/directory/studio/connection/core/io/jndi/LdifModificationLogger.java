@@ -49,8 +49,8 @@ import javax.naming.ldap.Control;
 
 import org.apache.directory.shared.ldap.exception.LdapInvalidDnException;
 import org.apache.directory.shared.ldap.message.Referral;
-import org.apache.directory.shared.ldap.name.DN;
-import org.apache.directory.shared.ldap.name.RDN;
+import org.apache.directory.shared.ldap.name.Dn;
+import org.apache.directory.shared.ldap.name.Rdn;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
 import org.apache.directory.studio.connection.core.ConnectionCoreConstants;
@@ -421,9 +421,9 @@ public class LdifModificationLogger implements IJndiLogger
 
         try
         {
-            DN dn = new DN( newDn );
-            RDN newrdn = dn.getRdn();
-            DN newsuperior = DnUtils.getParent( dn );
+            Dn dn = new Dn( newDn );
+            Rdn newrdn = dn.getRdn();
+            Dn newsuperior = DnUtils.getParent( dn );
 
             LdifChangeModDnRecord record = new LdifChangeModDnRecord( LdifDnLine.create( oldDn ) );
             addControlLines( record, controls );
