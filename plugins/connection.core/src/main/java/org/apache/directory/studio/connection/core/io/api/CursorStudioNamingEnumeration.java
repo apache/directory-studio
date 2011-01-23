@@ -34,7 +34,7 @@ import javax.naming.ldap.BasicControl;
 import javax.naming.ldap.Control;
 import javax.naming.ldap.PagedResultsResponseControl;
 
-import org.apache.directory.shared.ldap.cursor.SearchCursor;
+import org.apache.directory.shared.ldap.model.cursor.SearchCursor;
 import org.apache.directory.shared.ldap.entry.AttributeUtils;
 import org.apache.directory.shared.ldap.filter.LdapURL;
 import org.apache.directory.shared.ldap.model.message.Referral;
