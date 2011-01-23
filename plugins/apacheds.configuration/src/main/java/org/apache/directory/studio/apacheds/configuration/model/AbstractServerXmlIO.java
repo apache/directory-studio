@@ -29,7 +29,7 @@ import java.util.Iterator;
 import org.apache.directory.shared.ldap.entry.DefaultEntry;
 import org.apache.directory.shared.ldap.entry.Entry;
 import org.apache.directory.shared.ldap.entry.EntryAttribute;
-import org.apache.directory.shared.ldap.ldif.LdifReader;
+import org.apache.directory.shared.ldap.model.ldif.LdifReader;
 import org.apache.directory.shared.util.Strings;
 import org.apache.directory.studio.apacheds.configuration.StudioEntityResolver;
 import org.dom4j.Document;
