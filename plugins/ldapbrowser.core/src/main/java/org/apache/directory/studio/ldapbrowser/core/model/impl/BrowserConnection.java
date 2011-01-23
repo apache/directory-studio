@@ -25,7 +25,7 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.directory.shared.ldap.exception.LdapInvalidDnException;
+import org.apache.directory.shared.ldap.model.exception.LdapInvalidDnException;
 import org.apache.directory.shared.ldap.name.Dn;
 import org.apache.directory.shared.ldap.filter.LdapURL;
 import org.apache.directory.studio.connection.core.Connection;

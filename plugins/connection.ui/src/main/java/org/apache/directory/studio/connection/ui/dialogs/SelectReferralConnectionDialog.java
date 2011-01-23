@@ -23,7 +23,7 @@ package org.apache.directory.studio.connection.ui.dialogs;
 
 import java.util.List;
 
-import org.apache.directory.shared.ldap.exception.LdapURLEncodingException;
+import org.apache.directory.shared.ldap.model.exception.LdapURLEncodingException;
 import org.apache.directory.shared.ldap.filter.LdapURL;
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.connection.core.Connection;

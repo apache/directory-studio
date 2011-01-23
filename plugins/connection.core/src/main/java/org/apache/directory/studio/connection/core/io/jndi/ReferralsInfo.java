@@ -26,7 +26,7 @@ import java.util.Set;
 
 import javax.naming.LinkLoopException;
 
-import org.apache.directory.shared.ldap.message.Referral;
+import org.apache.directory.shared.ldap.model.message.Referral;
 
 
 /**

@@ -42,16 +42,16 @@ import org.apache.directory.shared.dsmlv2.reponse.SearchResultEntryDsml;
 import org.apache.directory.shared.dsmlv2.reponse.SearchResultReferenceDsml;
 import org.apache.directory.shared.dsmlv2.request.AddRequestDsml;
 import org.apache.directory.shared.dsmlv2.request.BatchRequestDsml;
-import org.apache.directory.shared.ldap.codec.MessageTypeEnum;
+import org.apache.directory.shared.ldap.model.exception.LdapURLEncodingException;
+import org.apache.directory.shared.ldap.model.message.MessageTypeEnum;
 import org.apache.directory.shared.ldap.entry.AttributeUtils;
-import org.apache.directory.shared.ldap.exception.LdapURLEncodingException;
 import org.apache.directory.shared.ldap.entry.Entry;
 import org.apache.directory.shared.ldap.entry.EntryAttribute;
 import org.apache.directory.shared.ldap.entry.Value;
-import org.apache.directory.shared.ldap.exception.LdapException;
-import org.apache.directory.shared.ldap.message.LdapResult;
-import org.apache.directory.shared.ldap.message.ResultCodeEnum;
-import org.apache.directory.shared.ldap.message.SearchResultDone;
+import org.apache.directory.shared.ldap.model.exception.LdapException;
+import org.apache.directory.shared.ldap.model.message.LdapResult;
+import org.apache.directory.shared.ldap.model.message.ResultCodeEnum;
+import org.apache.directory.shared.ldap.model.message.SearchResultDone;
 import org.apache.directory.shared.ldap.message.SearchResultDoneImpl;
 import org.apache.directory.shared.ldap.name.Dn;
 import org.apache.directory.shared.ldap.filter.LdapURL;
@@ -261,7 +261,7 @@ public class ExportDsmlRunnable implements StudioConnectionRunnableWithProgress
      * @param searchParameter 
      *      the search parameter
      * @throws LdapURLEncodingException 
-     * @throws LdapException
+     * @throws org.apache.directory.shared.ldap.model.exception.LdapException
      */
     public static void processAsDsmlResponse( StudioNamingEnumeration ne, BatchResponseDsml batchResponse,
         StudioProgressMonitor monitor, SearchParameter searchParameter ) throws LdapURLEncodingException, LdapException
@@ -334,7 +334,7 @@ public class ExportDsmlRunnable implements StudioConnectionRunnableWithProgress
      *      the search result
      * @return
      *      the associated search result entry DSML
-     * @throws LdapException
+     * @throws org.apache.directory.shared.ldap.model.exception.LdapException
      */
     private static DsmlDecorator convertSearchResultToDsml( SearchResult searchResult, SearchParameter searchParameter )
         throws LdapException, LdapURLEncodingException

@@ -21,7 +21,7 @@
 package org.apache.directory.studio.ldapbrowser.ui.editors.entry;
 
 
-import org.apache.directory.shared.ldap.exception.LdapInvalidDnException;
+import org.apache.directory.shared.ldap.model.exception.LdapInvalidDnException;
 import org.apache.directory.shared.ldap.name.Dn;
 import org.apache.directory.studio.entryeditors.EntryEditorExtension;
 import org.apache.directory.studio.entryeditors.EntryEditorInput;

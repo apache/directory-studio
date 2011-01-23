@@ -28,7 +28,7 @@ import org.apache.directory.shared.ldap.entry.DefaultEntryAttribute;
 import org.apache.directory.shared.ldap.entry.Entry;
 import org.apache.directory.shared.ldap.entry.EntryAttribute;
 import org.apache.directory.shared.ldap.entry.Value;
-import org.apache.directory.shared.ldap.exception.LdapException;
+import org.apache.directory.shared.ldap.model.exception.LdapException;
 import org.apache.directory.studio.apacheds.configuration.editor.v152.dialogs.AttributeValueDialog;
 import org.apache.directory.studio.apacheds.configuration.editor.v152.dialogs.AttributeValueObject;
 import org.apache.directory.studio.apacheds.configuration.editor.v152.dialogs.IndexedAttributeDialog;

@@ -26,7 +26,7 @@ import javax.naming.directory.ModificationItem;
 import javax.naming.directory.SearchControls;
 import javax.naming.ldap.Control;
 
-import org.apache.directory.shared.ldap.message.Referral;
+import org.apache.directory.shared.ldap.model.message.Referral;
 import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
 import org.apache.directory.studio.connection.core.io.jndi.ReferralsInfo;
 import org.apache.directory.studio.connection.core.io.jndi.StudioSearchResult;

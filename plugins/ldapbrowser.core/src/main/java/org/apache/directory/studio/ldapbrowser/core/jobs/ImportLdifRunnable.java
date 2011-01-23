@@ -47,7 +47,7 @@ import javax.naming.ldap.BasicControl;
 import javax.naming.ldap.Control;
 
 import org.apache.commons.codec.digest.DigestUtils;
-import org.apache.directory.shared.ldap.exception.LdapInvalidDnException;
+import org.apache.directory.shared.ldap.model.exception.LdapInvalidDnException;
 import org.apache.directory.shared.ldap.name.Dn;
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.Connection;

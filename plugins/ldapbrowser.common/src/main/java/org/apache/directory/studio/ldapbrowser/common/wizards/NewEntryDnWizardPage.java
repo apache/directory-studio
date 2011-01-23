@@ -27,7 +27,7 @@ import java.util.Iterator;
 
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.directory.shared.ldap.constants.SchemaConstants;
-import org.apache.directory.shared.ldap.exception.LdapInvalidDnException;
+import org.apache.directory.shared.ldap.model.exception.LdapInvalidDnException;
 import org.apache.directory.shared.ldap.name.Ava;
 import org.apache.directory.shared.ldap.name.Dn;
 import org.apache.directory.shared.ldap.name.Rdn;

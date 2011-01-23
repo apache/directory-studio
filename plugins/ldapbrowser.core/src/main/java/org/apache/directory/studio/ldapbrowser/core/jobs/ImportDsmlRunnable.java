@@ -47,24 +47,21 @@ import org.apache.directory.shared.dsmlv2.reponse.ExtendedResponseDsml;
 import org.apache.directory.shared.dsmlv2.reponse.ModDNResponseDsml;
 import org.apache.directory.shared.dsmlv2.reponse.ModifyResponseDsml;
 import org.apache.directory.shared.dsmlv2.request.BatchRequest;
-import org.apache.directory.shared.ldap.codec.MessageTypeEnum;
+import org.apache.directory.shared.ldap.model.message.*;
 import org.apache.directory.shared.ldap.entry.AttributeUtils;
-import org.apache.directory.shared.ldap.exception.LdapURLEncodingException;
+import org.apache.directory.shared.ldap.model.exception.LdapURLEncodingException;
 import org.apache.directory.shared.ldap.entry.Entry;
 import org.apache.directory.shared.ldap.entry.Modification;
 import org.apache.directory.shared.ldap.entry.ModificationOperation;
-import org.apache.directory.shared.ldap.exception.LdapException;
-import org.apache.directory.shared.ldap.message.AddRequest;
-import org.apache.directory.shared.ldap.message.BindRequest;
-import org.apache.directory.shared.ldap.message.CompareRequest;
-import org.apache.directory.shared.ldap.message.DeleteRequest;
-import org.apache.directory.shared.ldap.message.ExtendedRequest;
-import org.apache.directory.shared.ldap.message.LdapResult;
-import org.apache.directory.shared.ldap.message.Message;
-import org.apache.directory.shared.ldap.message.ModifyDnRequest;
-import org.apache.directory.shared.ldap.message.ModifyRequest;
-import org.apache.directory.shared.ldap.message.ResultCodeEnum;
-import org.apache.directory.shared.ldap.message.SearchRequest;
+import org.apache.directory.shared.ldap.model.exception.LdapException;
+import org.apache.directory.shared.ldap.model.message.AddRequest;
+import org.apache.directory.shared.ldap.model.message.BindRequest;
+import org.apache.directory.shared.ldap.model.message.CompareRequest;
+import org.apache.directory.shared.ldap.model.message.DeleteRequest;
+import org.apache.directory.shared.ldap.model.message.ExtendedRequest;
+import org.apache.directory.shared.ldap.model.message.LdapResult;
+import org.apache.directory.shared.ldap.model.message.ModifyDnRequest;
+import org.apache.directory.shared.ldap.model.message.SearchRequest;
 import org.apache.directory.shared.ldap.name.Dn;
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.Connection;
@@ -268,19 +265,19 @@ public class ImportDsmlRunnable implements StudioConnectionBulkRunnableWithProgr
      * @param batchResponseDsml
      *      the DSML batch response (can be <code>null</code>)
      * @throws NamingException 
-     * @throws LdapURLEncodingException 
+     * @throws org.apache.directory.shared.ldap.model.exception.LdapURLEncodingException
      * @throws LdapException
      */
     private void processRequest( Object request, BatchResponseDsml batchResponseDsml, StudioProgressMonitor monitor )
         throws NamingException, LdapURLEncodingException, LdapException
     {
-        if ( request instanceof BindRequest )
+        if ( request instanceof BindRequest)
         {
             processBindRequest( ( BindRequest ) request, batchResponseDsml, monitor );
         }
         else if ( request instanceof AddRequest )
         {
-            processAddRequest( ( AddRequest ) request, batchResponseDsml, monitor );
+            processAddRequest( (AddRequest) request, batchResponseDsml, monitor );
         }
         else if ( request instanceof CompareRequest )
         {
@@ -605,8 +602,8 @@ public class ImportDsmlRunnable implements StudioConnectionBulkRunnableWithProgr
      * @param batchResponseDsml
      *      the DSML batch response (can be <code>null</code>)
      * @throws NamingException 
-     * @throws LdapURLEncodingException 
-     * @throws LdapException
+     * @throws org.apache.directory.shared.ldap.model.exception.LdapURLEncodingException
+     * @throws org.apache.directory.shared.ldap.model.exception.LdapException
      */
     private void processSearchRequest( SearchRequest request, BatchResponseDsml batchResponseDsml,
         StudioProgressMonitor monitor ) throws NamingException, LdapURLEncodingException, LdapException

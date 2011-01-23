@@ -36,7 +36,7 @@ import javax.naming.NamingException;
 
 import org.apache.directory.shared.converter.schema.AttributeTypeHolder;
 import org.apache.directory.shared.converter.schema.ObjectClassHolder;
-import org.apache.directory.shared.ldap.exception.LdapException;
+import org.apache.directory.shared.ldap.model.exception.LdapException;
 import org.apache.directory.studio.schemaeditor.Activator;
 import org.apache.directory.studio.schemaeditor.PluginUtils;
 import org.apache.directory.studio.schemaeditor.controller.SchemaHandler;

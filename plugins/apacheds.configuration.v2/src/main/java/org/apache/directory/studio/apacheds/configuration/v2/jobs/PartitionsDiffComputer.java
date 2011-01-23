@@ -37,12 +37,12 @@ import org.apache.directory.shared.ldap.entry.EntryAttribute;
 import org.apache.directory.shared.ldap.entry.Modification;
 import org.apache.directory.shared.ldap.entry.ModificationOperation;
 import org.apache.directory.shared.ldap.entry.Value;
-import org.apache.directory.shared.ldap.exception.LdapException;
+import org.apache.directory.shared.ldap.model.exception.LdapException;
 import org.apache.directory.shared.ldap.filter.FilterParser;
 import org.apache.directory.shared.ldap.filter.SearchScope;
 import org.apache.directory.shared.ldap.ldif.ChangeType;
 import org.apache.directory.shared.ldap.ldif.LdifEntry;
-import org.apache.directory.shared.ldap.message.AliasDerefMode;
+import org.apache.directory.shared.ldap.model.message.AliasDerefMode;
 import org.apache.directory.shared.ldap.name.Dn;
 import org.apache.directory.shared.ldap.schema.AttributeType;
 import org.apache.directory.shared.ldap.schema.AttributeTypeOptions;
@@ -246,7 +246,7 @@ public class PartitionsDiffComputer
      *      the attribute IDs
      * @param soc
      *      the search operation context
-     * @throws LdapException
+     * @throws org.apache.directory.shared.ldap.model.exception.LdapException
      */
     private void setReturningAttributes( SchemaManager schemaManager, String[] attributeIds,
         SearchOperationContext soc ) throws LdapException

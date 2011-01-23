@@ -21,7 +21,7 @@
 package org.apache.directory.studio.valueeditors.dn;
 
 
-import org.apache.directory.shared.ldap.exception.LdapInvalidDnException;
+import org.apache.directory.shared.ldap.model.exception.LdapInvalidDnException;
 import org.apache.directory.shared.ldap.name.Dn;
 import org.apache.directory.studio.ldapbrowser.common.dialogs.DnDialog;
 import org.apache.directory.studio.ldapbrowser.common.dialogs.TextDialog;
