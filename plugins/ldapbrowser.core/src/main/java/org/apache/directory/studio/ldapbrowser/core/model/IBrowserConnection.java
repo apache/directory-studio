@@ -24,7 +24,7 @@ package org.apache.directory.studio.ldapbrowser.core.model;
 import java.io.Serializable;
 
 import org.apache.directory.shared.ldap.model.filter.LdapURL;
-import org.apache.directory.shared.ldap.name.Dn;
+import org.apache.directory.shared.ldap.model.name.Dn;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.ConnectionPropertyPageProvider;
 import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;

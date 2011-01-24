@@ -23,8 +23,8 @@ package org.apache.directory.studio.connection.core;
 import javax.naming.InvalidNameException;
 
 import org.apache.directory.shared.ldap.model.exception.LdapInvalidDnException;
-import org.apache.directory.shared.ldap.name.Dn;
-import org.apache.directory.shared.ldap.name.Rdn;
+import org.apache.directory.shared.ldap.model.name.Dn;
+import org.apache.directory.shared.ldap.model.name.Rdn;
 
 
 /**
