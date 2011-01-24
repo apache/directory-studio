@@ -31,9 +31,9 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import org.apache.directory.shared.ldap.model.constants.SchemaConstants;
-import org.apache.directory.shared.ldap.schema.AttributeType;
-import org.apache.directory.shared.ldap.schema.MatchingRule;
-import org.apache.directory.shared.ldap.schema.ObjectClass;
+import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.MatchingRule;
+import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonConstants;
 import org.apache.directory.studio.ldapbrowser.core.model.filter.LdapFilter;

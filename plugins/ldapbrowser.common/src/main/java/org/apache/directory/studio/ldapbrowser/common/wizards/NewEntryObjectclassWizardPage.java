@@ -27,8 +27,8 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.apache.directory.shared.ldap.model.constants.SchemaConstants;
-import org.apache.directory.shared.ldap.schema.ObjectClass;
-import org.apache.directory.shared.ldap.schema.ObjectClassTypeEnum;
+import org.apache.directory.shared.ldap.model.schema.ObjectClass;
+import org.apache.directory.shared.ldap.model.schema.ObjectClassTypeEnum;
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.connection.ui.RunnableContextRunner;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;

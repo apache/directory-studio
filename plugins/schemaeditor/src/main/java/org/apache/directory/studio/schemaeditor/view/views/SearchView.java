@@ -26,7 +26,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Pattern;
 
-import org.apache.directory.shared.ldap.schema.SchemaObject;
+import org.apache.directory.shared.ldap.model.schema.SchemaObject;
 import org.apache.directory.studio.schemaeditor.Activator;
 import org.apache.directory.studio.schemaeditor.PluginConstants;
 import org.apache.directory.studio.schemaeditor.PluginUtils;

@@ -20,14 +20,13 @@
 package org.apache.directory.studio.schemaeditor.model.difference;
 
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import junit.framework.TestCase;
 
-import org.apache.directory.shared.ldap.schema.ObjectClassTypeEnum;
-import org.apache.directory.shared.ldap.schema.UsageEnum;
+import org.apache.directory.shared.ldap.model.schema.ObjectClassTypeEnum;
+import org.apache.directory.shared.ldap.model.schema.UsageEnum;
 import org.apache.directory.studio.schemaeditor.model.AttributeTypeImpl;
 import org.apache.directory.studio.schemaeditor.model.ObjectClassImpl;
 

@@ -29,7 +29,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.directory.shared.ldap.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.AttributeType;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.ui.actions.SelectionUtils;
 import org.apache.directory.studio.ldapbrowser.common.widgets.browser.BrowserCategory;

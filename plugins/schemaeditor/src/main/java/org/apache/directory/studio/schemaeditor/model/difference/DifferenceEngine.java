@@ -25,9 +25,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.directory.shared.ldap.schema.ObjectClassTypeEnum;
-import org.apache.directory.shared.ldap.schema.SchemaObject;
-import org.apache.directory.shared.ldap.schema.UsageEnum;
+import org.apache.directory.shared.ldap.model.schema.ObjectClassTypeEnum;
+import org.apache.directory.shared.ldap.model.schema.SchemaObject;
+import org.apache.directory.shared.ldap.model.schema.UsageEnum;
 import org.apache.directory.studio.schemaeditor.model.AttributeTypeImpl;
 import org.apache.directory.studio.schemaeditor.model.ObjectClassImpl;
 import org.apache.directory.studio.schemaeditor.model.Schema;

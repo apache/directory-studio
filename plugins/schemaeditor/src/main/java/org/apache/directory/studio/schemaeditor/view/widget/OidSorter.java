@@ -23,7 +23,7 @@ package org.apache.directory.studio.schemaeditor.view.widget;
 
 import java.util.Comparator;
 
-import org.apache.directory.shared.ldap.schema.SchemaObject;
+import org.apache.directory.shared.ldap.model.schema.SchemaObject;
 import org.apache.directory.studio.schemaeditor.model.difference.AttributeTypeDifference;
 import org.apache.directory.studio.schemaeditor.model.difference.ObjectClassDifference;
 

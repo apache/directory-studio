@@ -25,7 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.directory.shared.asn1.util.OID;
-import org.apache.directory.shared.ldap.schema.UsageEnum;
+import org.apache.directory.shared.ldap.model.schema.UsageEnum;
 import org.apache.directory.studio.schemaeditor.Activator;
 import org.apache.directory.studio.schemaeditor.PluginConstants;
 import org.apache.directory.studio.schemaeditor.controller.SchemaHandler;

@@ -31,7 +31,7 @@ import org.apache.directory.shared.ldap.model.exception.LdapInvalidDnException;
 import org.apache.directory.shared.ldap.model.name.Ava;
 import org.apache.directory.shared.ldap.model.name.Dn;
 import org.apache.directory.shared.ldap.model.name.Rdn;
-import org.apache.directory.shared.ldap.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.AttributeType;
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.connection.core.DnUtils;
 import org.apache.directory.studio.connection.ui.RunnableContextRunner;

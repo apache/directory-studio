@@ -30,8 +30,8 @@ import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.directory.shared.ldap.schema.AttributeType;
-import org.apache.directory.shared.ldap.schema.ObjectClass;
+import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.studio.connection.core.StudioControl;
 import org.apache.directory.studio.ldapbrowser.common.dialogs.DeleteDialog;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreConstants;

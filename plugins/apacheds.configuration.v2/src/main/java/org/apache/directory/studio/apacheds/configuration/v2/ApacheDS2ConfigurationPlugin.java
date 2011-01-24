@@ -24,7 +24,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.PropertyResourceBundle;
 
-import org.apache.directory.shared.ldap.schema.SchemaManager;
+import org.apache.directory.shared.ldap.model.schema.SchemaManager;
 import org.apache.directory.shared.ldap.schema.registries.SchemaLoader;
 import org.apache.directory.shared.ldap.schemaloader.JarLdifSchemaLoader;
 import org.apache.directory.shared.ldap.schemamanager.impl.DefaultSchemaManager;

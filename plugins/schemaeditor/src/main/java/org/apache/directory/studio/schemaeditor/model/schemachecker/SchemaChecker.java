@@ -25,9 +25,9 @@ import java.util.List;
 
 import org.apache.commons.collections.MultiMap;
 import org.apache.commons.collections.map.MultiValueMap;
-import org.apache.directory.shared.ldap.schema.ObjectClassTypeEnum;
-import org.apache.directory.shared.ldap.schema.SchemaObject;
-import org.apache.directory.shared.ldap.schema.UsageEnum;
+import org.apache.directory.shared.ldap.model.schema.ObjectClassTypeEnum;
+import org.apache.directory.shared.ldap.model.schema.SchemaObject;
+import org.apache.directory.shared.ldap.model.schema.UsageEnum;
 import org.apache.directory.studio.schemaeditor.Activator;
 import org.apache.directory.studio.schemaeditor.controller.ProjectsHandlerAdapter;
 import org.apache.directory.studio.schemaeditor.controller.SchemaHandler;

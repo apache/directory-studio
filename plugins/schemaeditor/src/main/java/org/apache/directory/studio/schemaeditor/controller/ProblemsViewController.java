@@ -20,7 +20,7 @@
 package org.apache.directory.studio.schemaeditor.controller;
 
 
-import org.apache.directory.shared.ldap.schema.SchemaObject;
+import org.apache.directory.shared.ldap.model.schema.SchemaObject;
 import org.apache.directory.studio.schemaeditor.Activator;
 import org.apache.directory.studio.schemaeditor.PluginUtils;
 import org.apache.directory.studio.schemaeditor.model.AttributeTypeImpl;

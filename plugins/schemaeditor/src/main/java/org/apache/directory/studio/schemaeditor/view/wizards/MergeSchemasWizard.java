@@ -27,7 +27,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.directory.shared.ldap.schema.AbstractSchemaObject;
+import org.apache.directory.shared.ldap.model.schema.AbstractSchemaObject;
 import org.apache.directory.studio.schemaeditor.Activator;
 import org.apache.directory.studio.schemaeditor.model.AttributeTypeImpl;
 import org.apache.directory.studio.schemaeditor.model.ObjectClassImpl;

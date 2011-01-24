@@ -25,7 +25,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import org.apache.directory.shared.ldap.schema.ObjectClassTypeEnum;
+import org.apache.directory.shared.ldap.model.schema.ObjectClassTypeEnum;
 import org.apache.directory.studio.schemaeditor.Activator;
 import org.apache.directory.studio.schemaeditor.PluginConstants;
 import org.apache.directory.studio.schemaeditor.model.ObjectClassImpl;

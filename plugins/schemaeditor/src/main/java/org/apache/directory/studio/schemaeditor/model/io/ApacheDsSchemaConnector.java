@@ -29,8 +29,8 @@ import javax.naming.directory.Attribute;
 import javax.naming.directory.SearchControls;
 import javax.naming.directory.SearchResult;
 
-import org.apache.directory.shared.ldap.schema.ObjectClassTypeEnum;
-import org.apache.directory.shared.ldap.schema.UsageEnum;
+import org.apache.directory.shared.ldap.model.schema.ObjectClassTypeEnum;
+import org.apache.directory.shared.ldap.model.schema.UsageEnum;
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;

@@ -23,8 +23,8 @@ package org.apache.directory.studio.ldapbrowser.common.widgets.browser;
 
 import java.util.Collection;
 
-import org.apache.directory.shared.ldap.schema.ObjectClass;
-import org.apache.directory.shared.ldap.schema.ObjectClassTypeEnum;
+import org.apache.directory.shared.ldap.model.schema.ObjectClass;
+import org.apache.directory.shared.ldap.model.schema.ObjectClassTypeEnum;
 import org.apache.directory.studio.connection.core.Utils;
 import org.apache.directory.studio.connection.core.jobs.StudioConnectionRunnableWithProgress;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;

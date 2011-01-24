@@ -30,10 +30,10 @@ import javax.naming.directory.Attribute;
 import javax.naming.directory.SearchControls;
 import javax.naming.directory.SearchResult;
 
-import org.apache.directory.shared.ldap.schema.AttributeType;
-import org.apache.directory.shared.ldap.schema.LdapSyntax;
-import org.apache.directory.shared.ldap.schema.MatchingRule;
-import org.apache.directory.shared.ldap.schema.ObjectClass;
+import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
+import org.apache.directory.shared.ldap.model.schema.MatchingRule;
+import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.shared.ldap.schema.parsers.AttributeTypeDescriptionSchemaParser;
 import org.apache.directory.shared.ldap.schema.parsers.LdapSyntaxDescriptionSchemaParser;
 import org.apache.directory.shared.ldap.schema.parsers.MatchingRuleDescriptionSchemaParser;

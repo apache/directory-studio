@@ -20,7 +20,7 @@
 package org.apache.directory.studio.schemaeditor.model.schemachecker;
 
 
-import org.apache.directory.shared.ldap.schema.SchemaObject;
+import org.apache.directory.shared.ldap.model.schema.SchemaObject;
 
 
 /**

@@ -24,7 +24,7 @@ package org.apache.directory.studio.ldapbrowser.common.widgets.browser;
 import java.util.Arrays;
 import java.util.Collection;
 
-import org.apache.directory.shared.ldap.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.AttributeType;
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.connection.ui.widgets.ExtendedContentAssistCommandAdapter;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;

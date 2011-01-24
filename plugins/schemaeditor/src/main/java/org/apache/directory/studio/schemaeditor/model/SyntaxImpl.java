@@ -20,7 +20,7 @@
 package org.apache.directory.studio.schemaeditor.model;
 
 
-import org.apache.directory.shared.ldap.schema.LdapSyntax;
+import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
 
 
 /**

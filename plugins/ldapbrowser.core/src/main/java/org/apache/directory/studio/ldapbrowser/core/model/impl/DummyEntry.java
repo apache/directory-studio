@@ -31,7 +31,7 @@ import org.apache.directory.shared.ldap.model.constants.SchemaConstants;
 import org.apache.directory.shared.ldap.model.filter.LdapURL;
 import org.apache.directory.shared.ldap.model.name.Dn;
 import org.apache.directory.shared.ldap.model.name.Rdn;
-import org.apache.directory.shared.ldap.schema.ObjectClass;
+import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.studio.connection.core.jobs.StudioConnectionBulkRunnableWithProgress;
 import org.apache.directory.studio.ldapbrowser.core.events.AttributeAddedEvent;
 import org.apache.directory.studio.ldapbrowser.core.events.AttributeDeletedEvent;

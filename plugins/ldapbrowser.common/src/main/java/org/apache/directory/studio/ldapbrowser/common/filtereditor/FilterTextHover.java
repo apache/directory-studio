@@ -22,9 +22,9 @@ package org.apache.directory.studio.ldapbrowser.common.filtereditor;
 
 
 import org.apache.directory.shared.ldap.model.constants.SchemaConstants;
-import org.apache.directory.shared.ldap.schema.AttributeType;
-import org.apache.directory.shared.ldap.schema.MatchingRule;
-import org.apache.directory.shared.ldap.schema.ObjectClass;
+import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.MatchingRule;
+import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.studio.ldapbrowser.core.model.filter.LdapFilter;
 import org.apache.directory.studio.ldapbrowser.core.model.filter.LdapFilterExtensibleComponent;
 import org.apache.directory.studio.ldapbrowser.core.model.filter.LdapFilterItemComponent;

@@ -23,7 +23,7 @@ package org.apache.directory.studio.ldapbrowser.ui.editors.searchresult;
 
 import java.util.Collection;
 
-import org.apache.directory.shared.ldap.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.AttributeType;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreConstants;
 import org.apache.directory.studio.ldapbrowser.core.model.AttributeHierarchy;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;

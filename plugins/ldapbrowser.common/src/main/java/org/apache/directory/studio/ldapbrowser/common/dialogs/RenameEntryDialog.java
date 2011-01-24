@@ -25,7 +25,7 @@ import java.util.Collection;
 
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.directory.shared.ldap.model.name.Rdn;
-import org.apache.directory.shared.ldap.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.AttributeType;
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
 import org.apache.directory.studio.ldapbrowser.common.widgets.DnBuilderWidget;

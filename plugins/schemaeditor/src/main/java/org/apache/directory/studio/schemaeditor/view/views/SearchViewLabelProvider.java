@@ -22,7 +22,7 @@ package org.apache.directory.studio.schemaeditor.view.views;
 
 import java.util.List;
 
-import org.apache.directory.shared.ldap.schema.SchemaObject;
+import org.apache.directory.shared.ldap.model.schema.SchemaObject;
 import org.apache.directory.studio.schemaeditor.Activator;
 import org.apache.directory.studio.schemaeditor.PluginConstants;
 import org.apache.directory.studio.schemaeditor.model.AttributeTypeImpl;

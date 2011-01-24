@@ -39,7 +39,7 @@ import org.apache.directory.shared.ldap.model.entry.Entry;
 import org.apache.directory.shared.ldap.model.exception.LdapException;
 import org.apache.directory.shared.ldap.model.exception.LdapNoSuchObjectException;
 import org.apache.directory.shared.ldap.model.name.Dn;
-import org.apache.directory.shared.ldap.schema.SchemaManager;
+import org.apache.directory.shared.ldap.model.schema.SchemaManager;
 import org.apache.directory.shared.ldap.model.entry.AttributeUtils;
 import org.apache.directory.studio.apacheds.configuration.v2.ApacheDS2ConfigurationPlugin;
 import org.apache.directory.studio.apacheds.configuration.v2.editor.ConnectionServerConfigurationInput;
