@@ -28,7 +28,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.directory.shared.ldap.constants.SchemaConstants;
-import org.apache.directory.shared.ldap.filter.LdapURL;
+import org.apache.directory.shared.ldap.model.filter.LdapURL;
 import org.apache.directory.shared.ldap.name.Dn;
 import org.apache.directory.shared.ldap.name.Rdn;
 import org.apache.directory.shared.ldap.schema.ObjectClass;

@@ -20,7 +20,7 @@
 package org.apache.directory.studio.connection.ui;
 
 
-import org.apache.directory.shared.ldap.filter.LdapURL;
+import org.apache.directory.shared.ldap.model.filter.LdapURL;
 import org.apache.directory.studio.connection.core.ConnectionParameter;
 import org.eclipse.jface.operation.IRunnableContext;
 import org.eclipse.swt.widgets.Composite;

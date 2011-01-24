@@ -35,7 +35,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.directory.shared.ldap.filter.LdapURL;
+import org.apache.directory.shared.ldap.model.filter.LdapURL;
 import org.apache.directory.shared.ldap.name.Ava;
 import org.apache.directory.shared.ldap.name.Dn;
 import org.apache.directory.shared.ldap.name.Rdn;

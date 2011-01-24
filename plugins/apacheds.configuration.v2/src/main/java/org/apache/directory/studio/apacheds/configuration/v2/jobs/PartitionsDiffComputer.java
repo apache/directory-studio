@@ -37,8 +37,8 @@ import org.apache.directory.shared.ldap.model.entry.*;
 import org.apache.directory.shared.ldap.model.entry.Modification;
 import org.apache.directory.shared.ldap.model.entry.ModificationOperation;
 import org.apache.directory.shared.ldap.model.exception.LdapException;
-import org.apache.directory.shared.ldap.filter.FilterParser;
-import org.apache.directory.shared.ldap.filter.SearchScope;
+import org.apache.directory.shared.ldap.model.filter.FilterParser;
+import org.apache.directory.shared.ldap.model.filter.SearchScope;
 import org.apache.directory.shared.ldap.model.ldif.ChangeType;
 import org.apache.directory.shared.ldap.model.ldif.LdifEntry;
 import org.apache.directory.shared.ldap.model.message.AliasDerefMode;
@@ -216,7 +216,7 @@ public class PartitionsDiffComputer
                 setReturningAttributes( originalPartition.getSchemaManager(), attributeIds, soc );
                 soc.setDn( originalEntry.getDn() );
                 soc.setScope( SearchScope.ONELEVEL );
-                soc.setFilter( FilterParser.parse( originalPartition.getSchemaManager(), "(objectClass=*)" ) );
+                soc.setFilter( FilterParser.parse(originalPartition.getSchemaManager(), "(objectClass=*)") );
                 soc.setAliasDerefMode( AliasDerefMode.DEREF_ALWAYS );
 
                 // Looking for the children of the current entry

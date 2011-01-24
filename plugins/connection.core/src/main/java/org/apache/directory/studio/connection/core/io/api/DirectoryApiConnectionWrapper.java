@@ -42,7 +42,7 @@ import org.apache.directory.ldap.client.api.exception.InvalidConnectionException
 import org.apache.directory.shared.ldap.codec.controls.ControlImpl;
 import org.apache.directory.shared.ldap.model.cursor.SearchCursor;
 import org.apache.directory.shared.ldap.model.entry.DefaultModification;
-import org.apache.directory.shared.ldap.filter.SearchScope;
+import org.apache.directory.shared.ldap.model.filter.SearchScope;
 import org.apache.directory.shared.ldap.model.entry.AttributeUtils;
 import org.apache.directory.shared.ldap.model.entry.Modification;
 import org.apache.directory.shared.ldap.model.entry.ModificationOperation;

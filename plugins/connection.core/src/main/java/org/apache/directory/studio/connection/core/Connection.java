@@ -21,7 +21,7 @@
 package org.apache.directory.studio.connection.core;
 
 
-import org.apache.directory.shared.ldap.filter.LdapURL;
+import org.apache.directory.shared.ldap.model.filter.LdapURL;
 import org.apache.directory.studio.connection.core.ConnectionParameter.AuthenticationMethod;
 import org.apache.directory.studio.connection.core.ConnectionParameter.EncryptionMethod;
 import org.apache.directory.studio.connection.core.ConnectionParameter.NetworkProvider;

@@ -21,7 +21,7 @@
 package org.apache.directory.studio.ldapbrowser.ui.actions;
 
 
-import org.apache.directory.shared.ldap.filter.LdapURL;
+import org.apache.directory.shared.ldap.model.filter.LdapURL;
 import org.apache.directory.studio.ldapbrowser.common.actions.BrowserAction;
 import org.apache.directory.studio.ldapbrowser.common.actions.CopyAction;
 import org.apache.directory.studio.ldapbrowser.ui.BrowserUIConstants;

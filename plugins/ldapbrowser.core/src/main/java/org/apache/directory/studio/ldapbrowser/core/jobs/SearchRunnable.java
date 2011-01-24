@@ -39,7 +39,7 @@ import javax.naming.ldap.Control;
 import javax.naming.ldap.PagedResultsResponseControl;
 
 import org.apache.directory.shared.ldap.constants.SchemaConstants;
-import org.apache.directory.shared.ldap.filter.LdapURL;
+import org.apache.directory.shared.ldap.model.filter.LdapURL;
 import org.apache.directory.shared.ldap.name.Dn;
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.Connection;

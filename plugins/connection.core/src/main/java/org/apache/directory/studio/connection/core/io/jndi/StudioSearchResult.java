@@ -22,7 +22,7 @@ package org.apache.directory.studio.connection.core.io.jndi;
 
 import javax.naming.directory.SearchResult;
 
-import org.apache.directory.shared.ldap.filter.LdapURL;
+import org.apache.directory.shared.ldap.model.filter.LdapURL;
 import org.apache.directory.studio.connection.core.Connection;
 
 

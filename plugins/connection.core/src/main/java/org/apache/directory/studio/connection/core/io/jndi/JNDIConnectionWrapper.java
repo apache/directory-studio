@@ -67,7 +67,7 @@ import javax.security.auth.login.LoginException;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.directory.shared.ldap.model.exception.LdapURLEncodingException;
-import org.apache.directory.shared.ldap.filter.LdapURL;
+import org.apache.directory.shared.ldap.model.filter.LdapURL;
 import org.apache.directory.shared.ldap.model.message.Referral;
 import org.apache.directory.shared.ldap.message.ReferralImpl;
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
