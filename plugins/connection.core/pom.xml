@@ -108,8 +108,10 @@
             <Require-Bundle>org.apache.commons.codec;bundle-version="${org.apache.commons.codec.version}",
  org.apache.commons.io;bundle-version="${org.apache.commons.io.version}",
  org.apache.commons.lang;bundle-version="${org.apache.commons.lang.version}",
+ org.apache.directory.shared.asn1.api;bundle-version="${org.apache.directory.shared.validversion}",
  org.apache.directory.shared.ldap;bundle-version="${org.apache.directory.shared.validversion}",
  org.apache.directory.shared.ldap.client.api;bundle-version="${org.apache.directory.shared.validversion}",
+ org.apache.directory.shared.util;bundle-version="${org.apache.directory.shared.validversion}",
  org.apache.directory.studio.common.core,
  org.apache.directory.studio.ldifparser,
  org.apache.httpcomponents.httpclient;bundle-version="${org.apache.httpcomponents.version}",
@@ -151,7 +153,17 @@
     </dependency>
     <dependency>
       <groupId>org.apache.directory.shared</groupId>
+      <artifactId>shared-asn1-api</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.directory.shared</groupId>
       <artifactId>shared-ldap</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.directory.shared</groupId>
+      <artifactId>shared-util</artifactId>
       <scope>provided</scope>
     </dependency>
     <dependency>

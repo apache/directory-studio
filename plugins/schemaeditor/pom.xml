@@ -115,6 +115,7 @@
             <Bundle-Activator>org.apache.directory.studio.schemaeditor.Activator</Bundle-Activator>
             <Require-Bundle>org.apache.commons.collections;bundle-version="${org.apache.commons.collections.version}",
                org.apache.commons.io;bundle-version="${org.apache.commons.io.version}",
+               org.apache.directory.shared.asn1.api;bundle-version="${org.apache.directory.shared.validversion}",
                org.apache.directory.shared.ldap;bundle-version="${org.apache.directory.shared.validversion}",
                org.apache.directory.shared.ldap.schema.converter;bundle-version="${org.apache.directory.shared.validversion}",
                org.apache.directory.studio.common.core,
@@ -153,6 +154,11 @@
 
   <dependencies>
     <!-- Apache Directory Studio library plugins dependencies -->
+    <dependency>
+      <groupId>org.apache.directory.shared</groupId>
+      <artifactId>shared-asn1-api</artifactId>
+      <scope>provided</scope>
+    </dependency>
     <dependency>
       <groupId>org.apache.directory.shared</groupId>
       <artifactId>shared-ldap</artifactId>
