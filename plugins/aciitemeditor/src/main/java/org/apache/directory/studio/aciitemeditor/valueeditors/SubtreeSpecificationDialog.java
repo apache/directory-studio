@@ -27,9 +27,9 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.directory.shared.ldap.model.name.Dn;
-import org.apache.directory.shared.ldap.subtree.BaseSubtreeSpecification;
-import org.apache.directory.shared.ldap.subtree.SubtreeSpecification;
-import org.apache.directory.shared.ldap.subtree.SubtreeSpecificationParser;
+import org.apache.directory.shared.ldap.model.subtree.BaseSubtreeSpecification;
+import org.apache.directory.shared.ldap.model.subtree.SubtreeSpecificationParser;
+import org.apache.directory.shared.ldap.model.subtree.SubtreeSpecification;
 import org.apache.directory.studio.aciitemeditor.Activator;
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.connection.core.DnUtils;
