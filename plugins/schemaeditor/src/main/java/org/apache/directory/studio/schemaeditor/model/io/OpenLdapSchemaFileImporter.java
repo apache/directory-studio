@@ -31,7 +31,7 @@ import java.util.regex.MatchResult;
 
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
-import org.apache.directory.shared.ldap.schema.parsers.OpenLdapSchemaParser;
+import org.apache.directory.shared.ldap.model.schema.parsers.OpenLdapSchemaParser;
 import org.apache.directory.studio.schemaeditor.model.AttributeTypeImpl;
 import org.apache.directory.studio.schemaeditor.model.ObjectClassImpl;
 import org.apache.directory.studio.schemaeditor.model.Schema;
