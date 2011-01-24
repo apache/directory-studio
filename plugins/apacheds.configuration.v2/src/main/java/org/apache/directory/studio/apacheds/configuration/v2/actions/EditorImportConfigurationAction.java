@@ -39,8 +39,10 @@ import org.eclipse.jface.action.Action;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.FileDialog;
+import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.ui.dialogs.ElementTreeSelectionDialog;
 import org.eclipse.ui.dialogs.ISelectionStatusValidator;
 import org.eclipse.ui.model.WorkbenchContentProvider;
@@ -168,8 +170,11 @@ public class EditorImportConfigurationAction extends Action
             }
 
             // Requiring a confirmation from the user
-            if ( !MessageDialog.openConfirm( editor.getSite().getShell(), "Overwrite Existing Configuration",
-                "Are you sure you want to overwrite the existing configuration with the selected file?" ) )
+            if ( !MessageDialog
+                .openConfirm(
+                    editor.getSite().getShell(),
+                    "Overwrite Existing Configuration",
+                    "Are you sure you want to overwrite the existing configuration with the contents of the selected file?" ) )
             {
                 return;
             }
@@ -182,8 +187,13 @@ public class EditorImportConfigurationAction extends Action
         }
         catch ( Exception e )
         {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            MessageDialog
+                .openError(
+                    editor.getSite().getShell(),
+                    "Error Importing Configuration File",
+                    NLS.bind(
+                        "An error occurred when importing the selected file:\n{0}\n\nIt does not seem to be a correct LDIF configuration file.",
+                        e.getMessage() ) );
         }
     }
 
