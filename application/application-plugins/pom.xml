@@ -56,6 +56,14 @@
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.apache.directory.shared</groupId>
+                  <artifactId>shared-asn1-api</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.apache.directory.shared</groupId>
+                  <artifactId>shared-asn1-ber</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.apache.directory.shared</groupId>
                   <artifactId>shared-dsml-parser</artifactId>
                 </artifactItem>
                 <artifactItem>
@@ -69,6 +77,14 @@
                 <artifactItem>
                   <groupId>org.apache.directory.shared</groupId>
                   <artifactId>shared-ldap-schema</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.apache.directory.shared</groupId>
+                  <artifactId>shared-ldap-schema-converter</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.apache.directory.shared</groupId>
+                  <artifactId>shared-util</artifactId>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.apache.directory.studio</groupId>
