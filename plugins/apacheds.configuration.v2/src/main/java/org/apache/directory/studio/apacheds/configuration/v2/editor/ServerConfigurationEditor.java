@@ -292,6 +292,8 @@ public class ServerConfigurationEditor extends FormEditor
     {
         setConfiguration( configBean );
 
+        setDirty( true );
+
         overviewPage.refreshUI();
         ldapLdapsServersPage.refreshUI();
         kerberosServerPage.refreshUI();
