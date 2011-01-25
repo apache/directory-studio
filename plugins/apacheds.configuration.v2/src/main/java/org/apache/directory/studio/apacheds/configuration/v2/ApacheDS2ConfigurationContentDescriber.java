@@ -42,7 +42,7 @@ import org.eclipse.core.runtime.content.ITextContentDescriber;
 public class ApacheDS2ConfigurationContentDescriber implements ITextContentDescriber
 {
     /** The maximum number of entries to search before determining the file as invalid */
-    private static int MAX_NUMBER_ENTRIES_SEARCH = 10;
+    private static final int MAX_NUMBER_ENTRIES_SEARCH = 10;
 
     /** The Dn of the config entry ('ou=config')*/
     private Dn configEntryDn;
@@ -66,7 +66,6 @@ public class ApacheDS2ConfigurationContentDescriber implements ITextContentDescr
         {
             // Will never occur.
         }
-
     }
 
 
