@@ -34,6 +34,10 @@ import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -81,6 +85,40 @@ public class OverviewPage extends ServerConfigurationEditorPage
     private TableViewer partitionsTableViewer;
     private Button allowAnonymousAccessCheckbox;
     private Button enableAccesControlCheckbox;
+
+    // UI Control Listeners
+    private SelectionAdapter enableLdapCheckboxListener = new SelectionAdapter()
+    {
+        public void widgetSelected( SelectionEvent e )
+        {
+            LdapLdapsServersPage.getLdapServerTransportBean( getDirectoryServiceBean() ).setEnabled(
+                enableLdapCheckbox.getSelection() );
+        }
+    };
+    private ModifyListener ldapPortTextListener = new ModifyListener()
+    {
+        public void modifyText( ModifyEvent e )
+        {
+            LdapLdapsServersPage.getLdapServerTransportBean( getDirectoryServiceBean() ).setSystemPort(
+                Integer.parseInt( ldapPortText.getText() ) );
+        }
+    };
+    private SelectionAdapter enableLdapsCheckboxListener = new SelectionAdapter()
+    {
+        public void widgetSelected( SelectionEvent e )
+        {
+            LdapLdapsServersPage.getLdapsServerTransportBean( getDirectoryServiceBean() ).setEnabled(
+                enableLdapsCheckbox.getSelection() );
+        }
+    };
+    private ModifyListener ldapsPortTextListener = new ModifyListener()
+    {
+        public void modifyText( ModifyEvent e )
+        {
+            LdapLdapsServersPage.getLdapsServerTransportBean( getDirectoryServiceBean() ).setSystemPort(
+                Integer.parseInt( ldapsPortText.getText() ) );
+        }
+    };
 
 
     /**
@@ -291,10 +329,22 @@ public class OverviewPage extends ServerConfigurationEditorPage
      */
     private void addListeners()
     {
+        // Enable LDAP Checkbox
         addDirtyListener( enableLdapCheckbox );
+        addSelectionListener( enableLdapCheckbox, enableLdapCheckboxListener );
+
+        // LDAP Port Text
         addDirtyListener( ldapPortText );
+        addModifyListener( ldapPortText, ldapPortTextListener );
+
+        // Enable LDAPS Checkbox
         addDirtyListener( enableLdapsCheckbox );
+        addSelectionListener( enableLdapsCheckbox, enableLdapsCheckboxListener );
+
+        // LDAPS Port Text
         addDirtyListener( ldapsPortText );
+        addModifyListener( ldapsPortText, ldapsPortTextListener );
+
         addDirtyListener( enableKerberosCheckbox );
         addDirtyListener( kerberosPortText );
         addDirtyListener( enableChangePasswordCheckbox );
@@ -308,10 +358,22 @@ public class OverviewPage extends ServerConfigurationEditorPage
      */
     private void removeListeners()
     {
+        // Enable LDAP Checkbox
         removeDirtyListener( enableLdapCheckbox );
+        removeSelectionListener( enableLdapCheckbox, enableLdapCheckboxListener );
+
+        // LDAP Port Text
         removeDirtyListener( ldapPortText );
+        removeModifyListener( ldapPortText, ldapPortTextListener );
+
+        // Enable LDAPS Checkbox
         removeDirtyListener( enableLdapsCheckbox );
+        removeSelectionListener( enableLdapsCheckbox, enableLdapsCheckboxListener );
+
+        // LDAPS Port Text
         removeDirtyListener( ldapsPortText );
+        removeModifyListener( ldapsPortText, ldapsPortTextListener );
+
         removeDirtyListener( enableKerberosCheckbox );
         removeDirtyListener( kerberosPortText );
         removeDirtyListener( enableChangePasswordCheckbox );

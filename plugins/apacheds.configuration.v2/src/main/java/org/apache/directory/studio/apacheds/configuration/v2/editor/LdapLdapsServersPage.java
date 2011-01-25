@@ -93,7 +93,7 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
     {
         public void modifyText( ModifyEvent e )
         {
-            getLdapsServerTransportBean().setSystemPort( Integer.parseInt( ldapPortText.getText() ) );
+            getLdapServerTransportBean().setSystemPort( Integer.parseInt( ldapPortText.getText() ) );
         }
     };
     private SelectionAdapter enableLdapsCheckboxListener = new SelectionAdapter()
