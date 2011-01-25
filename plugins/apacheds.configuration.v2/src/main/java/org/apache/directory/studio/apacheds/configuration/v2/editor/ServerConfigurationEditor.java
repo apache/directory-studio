@@ -31,6 +31,8 @@ import org.apache.directory.studio.apacheds.configuration.v2.jobs.SaveConfigurat
 import org.apache.directory.studio.common.core.jobs.StudioJob;
 import org.apache.directory.studio.common.core.jobs.StudioRunnableWithProgress;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.jface.dialogs.IPageChangedListener;
+import org.eclipse.jface.dialogs.PageChangedEvent;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.swt.custom.CTabFolder;
 import org.eclipse.swt.widgets.Composite;
@@ -46,7 +48,7 @@ import org.eclipse.ui.forms.editor.FormEditor;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class ServerConfigurationEditor extends FormEditor
+public class ServerConfigurationEditor extends FormEditor implements IPageChangedListener
 {
     /** The Editor ID */
     public static final String ID = ServerConfigurationEditor.class.getName();
@@ -82,6 +84,8 @@ public class ServerConfigurationEditor extends FormEditor
             setDirty( true );
         }
 
+        addPageChangedListener( this );
+
         readConfiguration();
     }
 
@@ -95,6 +99,20 @@ public class ServerConfigurationEditor extends FormEditor
         StudioJob<StudioRunnableWithProgress> job = new StudioJob<StudioRunnableWithProgress>(
             new LoadConfigurationRunnable( this ) );
         job.schedule();
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public void pageChanged( PageChangedEvent event )
+    {
+        Object selectedPage = event.getSelectedPage();
+
+        if ( selectedPage instanceof ServerConfigurationEditorPage )
+        {
+            ( ( ServerConfigurationEditorPage ) selectedPage ).refreshUI();
+        }
     }
 
 
