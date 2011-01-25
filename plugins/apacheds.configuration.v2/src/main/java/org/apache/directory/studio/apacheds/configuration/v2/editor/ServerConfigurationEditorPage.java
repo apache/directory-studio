@@ -40,6 +40,7 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.forms.IManagedForm;
@@ -281,7 +282,7 @@ public abstract class ServerConfigurationEditorPage extends FormPage
      * @param listener
      *      the listener
      */
-    public void addModifyListener( Text text, ModifyListener listener )
+    protected void addModifyListener( Text text, ModifyListener listener )
     {
         if ( ( text != null ) && ( !text.isDisposed() ) && ( listener != null ) )
         {
@@ -298,7 +299,7 @@ public abstract class ServerConfigurationEditorPage extends FormPage
      * @param listener
      *      the listener
      */
-    public void addSelectionListener( Button button, SelectionListener listener )
+    protected void addSelectionListener( Button button, SelectionListener listener )
     {
         if ( ( button != null ) && ( !button.isDisposed() ) && ( listener != null ) )
         {
@@ -315,7 +316,7 @@ public abstract class ServerConfigurationEditorPage extends FormPage
      * @param listener
      *      the listener
      */
-    public void removeModifyListener( Text text, ModifyListener listener )
+    protected void removeModifyListener( Text text, ModifyListener listener )
     {
         if ( ( text != null ) && ( !text.isDisposed() ) && ( listener != null ) )
         {
@@ -332,7 +333,7 @@ public abstract class ServerConfigurationEditorPage extends FormPage
      * @param listener
      *      the listener
      */
-    public void removeSelectionListener( Button button, SelectionListener listener )
+    protected void removeSelectionListener( Button button, SelectionListener listener )
     {
         if ( ( button != null ) && ( !button.isDisposed() ) && ( listener != null ) )
         {
@@ -347,7 +348,7 @@ public abstract class ServerConfigurationEditorPage extends FormPage
      * @param text
      *      the Text control
      */
-    public void addDirtyListener( Text text )
+    protected void addDirtyListener( Text text )
     {
         addModifyListener( text, dirtyModifyListener );
     }
@@ -359,7 +360,7 @@ public abstract class ServerConfigurationEditorPage extends FormPage
      * @param button
      *      the Button control
      */
-    public void addDirtyListener( Button button )
+    protected void addDirtyListener( Button button )
     {
         addSelectionListener( button, dirtySelectionListener );
     }
@@ -371,7 +372,7 @@ public abstract class ServerConfigurationEditorPage extends FormPage
      * @param text
      *      the Text control
      */
-    public void removeDirtyListener( Text text )
+    protected void removeDirtyListener( Text text )
     {
         removeModifyListener( text, dirtyModifyListener );
     }
@@ -383,7 +384,7 @@ public abstract class ServerConfigurationEditorPage extends FormPage
      * @param button
      *      the Button control
      */
-    public void removeDirtyListener( Button button )
+    protected void removeDirtyListener( Button button )
     {
         removeSelectionListener( button, dirtySelectionListener );
     }
@@ -400,7 +401,7 @@ public abstract class ServerConfigurationEditorPage extends FormPage
      * @param selected
      *      the new selection state
      */
-    public void setSelection( Button button, boolean selected )
+    protected void setSelection( Button button, boolean selected )
     {
         if ( ( button != null ) && ( !button.isDisposed() ) )
         {
@@ -420,11 +421,20 @@ public abstract class ServerConfigurationEditorPage extends FormPage
      * @param string
      *       the new text
      */
-    public void setText( Text text, String string )
+    protected void setText( Text text, String string )
     {
         if ( ( text != null ) && ( !text.isDisposed() ) )
         {
             text.setText( string );
+        }
+    }
+
+
+    protected void setFocus( Control control )
+    {
+        if ( ( control != null ) && ( !control.isDisposed() ) )
+        {
+            control.setFocus();
         }
     }
 }
