@@ -21,16 +21,15 @@
 package org.apache.directory.studio.apacheds.configuration.v2.actions;
 
 
-import java.lang.reflect.InvocationTargetException;
-
 import org.apache.directory.studio.apacheds.configuration.v2.ApacheDS2ConfigurationPlugin;
 import org.apache.directory.studio.apacheds.configuration.v2.ApacheDS2ConfigurationPluginConstants;
 import org.apache.directory.studio.apacheds.configuration.v2.editor.ServerConfigurationEditor;
 import org.apache.directory.studio.apacheds.configuration.v2.editor.ServerConfigurationEditorUtils;
-import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jface.action.Action;
-import org.eclipse.jface.operation.IRunnableWithProgress;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.osgi.util.NLS;
 
 
 /**
@@ -82,28 +81,13 @@ public class EditorExportConfigurationAction extends Action
     {
         try
         {
-            editor.getSite().getWorkbenchWindow().run( false, false, new IRunnableWithProgress()
-            {
-                public void run( IProgressMonitor monitor ) throws InvocationTargetException, InterruptedException
-                {
-                    try
-                    {
-                        ServerConfigurationEditorUtils.saveAs( monitor, editor.getSite()
+            ServerConfigurationEditorUtils.saveAs( new NullProgressMonitor(), editor.getSite()
                             .getShell(), editor.getEditorInput(), editor.getConfigWriter() );
-                    }
-                    catch ( Exception e )
-                    {
-
-                        // TODO handle the exception
-                    }
-                }
-            } );
         }
         catch ( Exception e )
         {
-            // TODO handle the exception
-            e.printStackTrace();
+            MessageDialog.openError( editor.getSite().getShell(), "Error Exporting Configuration File",
+                NLS.bind( "An error occurred when exporting the selected file:\n{0}", e.getMessage() ) );
         }
-
     }
 }
