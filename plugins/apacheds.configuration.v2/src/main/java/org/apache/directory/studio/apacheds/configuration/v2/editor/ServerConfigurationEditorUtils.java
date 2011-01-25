@@ -369,8 +369,6 @@ public class ServerConfigurationEditorUtils
         }
         else
         {
-            System.out.println( "swapping partition" );
-
             // Swapping the new configuration partition
             input.setOriginalPartition( newconfigurationPartition );
         }

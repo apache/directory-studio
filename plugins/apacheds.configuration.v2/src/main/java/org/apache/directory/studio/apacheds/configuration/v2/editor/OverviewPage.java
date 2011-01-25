@@ -27,7 +27,7 @@ import org.apache.directory.server.config.beans.ChangePasswordServerBean;
 import org.apache.directory.server.config.beans.ConfigBean;
 import org.apache.directory.server.config.beans.DirectoryServiceBean;
 import org.apache.directory.server.config.beans.KdcServerBean;
-import org.apache.directory.server.config.beans.LdapServerBean;
+import org.apache.directory.server.config.beans.TransportBean;
 import org.apache.directory.studio.apacheds.configuration.v2.ApacheDS2ConfigurationPlugin;
 import org.apache.directory.studio.apacheds.configuration.v2.ApacheDS2ConfigurationPluginConstants;
 import org.eclipse.jface.viewers.ArrayContentProvider;
@@ -44,7 +44,6 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.forms.events.HyperlinkAdapter;
 import org.eclipse.ui.forms.events.HyperlinkEvent;
-import org.eclipse.ui.forms.events.IHyperlinkListener;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.Hyperlink;
 import org.eclipse.ui.forms.widgets.Section;
@@ -332,15 +331,17 @@ public class OverviewPage extends ServerConfigurationEditorPage
 
         DirectoryServiceBean directoryServiceBean = configBean.getDirectoryServiceBean();
 
-        LdapServerBean ldapServerBean = directoryServiceBean.getLdapServerBean();
         KdcServerBean kdcServerBean = directoryServiceBean.getKdcServerBean();
         ChangePasswordServerBean changePasswordServerBean = directoryServiceBean.getChangePasswordServerBean();
 
-        enableLdapCheckbox.setSelection( ldapServerBean.isEnabled() );
-        ldapPortText.setText( ldapServerBean.getTransports()[0].getSystemPort() + "" );
+        TransportBean ldapServerTransportBean = LdapLdapsServersPage.getLdapServerTransportBean( directoryServiceBean );
+        setSelection( enableLdapCheckbox, ldapServerTransportBean.isEnabled() );
+        setText( ldapPortText, ldapServerTransportBean.getSystemPort() + "" );
 
-        enableLdapsCheckbox.setSelection( true );
-        ldapsPortText.setText( "10636" );
+        TransportBean ldapsServerTransportBean = LdapLdapsServersPage
+            .getLdapsServerTransportBean( directoryServiceBean );
+        setSelection( enableLdapsCheckbox, ldapsServerTransportBean.isEnabled() );
+        setText( ldapsPortText, ldapsServerTransportBean.getSystemPort() + "" );
 
         enableKerberosCheckbox.setSelection( kdcServerBean.isEnabled() );
         kerberosPortText.setText( "" + kdcServerBean.getTransports()[0].getSystemPort() );
