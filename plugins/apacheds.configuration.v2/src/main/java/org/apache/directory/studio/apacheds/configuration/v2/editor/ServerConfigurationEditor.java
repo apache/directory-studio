@@ -403,14 +403,17 @@ public class ServerConfigurationEditor extends FormEditor
      */
     public void showPage( Class<?> pageClass )
     {
-        Enumeration<Object> enumeration = pages.elements();
-        while ( enumeration.hasMoreElements() )
+        if ( pageClass != null )
         {
-            Object page = enumeration.nextElement();
-            if ( pageClass.isInstance( page ) )
+            Enumeration<Object> enumeration = pages.elements();
+            while ( enumeration.hasMoreElements() )
             {
-                setActivePage( pages.indexOf( page ) );
-                return;
+                Object page = enumeration.nextElement();
+                if ( pageClass.isInstance( page ) )
+                {
+                    setActivePage( pages.indexOf( page ) );
+                    return;
+                }
             }
         }
     }
