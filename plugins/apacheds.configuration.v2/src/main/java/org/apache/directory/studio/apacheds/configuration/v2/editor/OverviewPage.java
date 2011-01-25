@@ -42,6 +42,9 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.ui.forms.events.HyperlinkAdapter;
+import org.eclipse.ui.forms.events.HyperlinkEvent;
+import org.eclipse.ui.forms.events.IHyperlinkListener;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.Hyperlink;
 import org.eclipse.ui.forms.widgets.Section;
@@ -153,6 +156,13 @@ public class OverviewPage extends ServerConfigurationEditorPage
             "Advanced LDAP/LDAPS configuration...", SWT.NONE );
         openLdapConfigurationLink.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false,
             gridLayout.numColumns, 1 ) );
+        openLdapConfigurationLink.addHyperlinkListener( new HyperlinkAdapter()
+        {
+            public void linkActivated( HyperlinkEvent e )
+            {
+                getServerConfigurationEditor().showPage( LdapLdapsServersPage.class );
+            }
+        } );
     }
 
 
@@ -189,6 +199,13 @@ public class OverviewPage extends ServerConfigurationEditorPage
             "Advanced Kerberos configuration...", SWT.NONE );
         openKerberosConfigurationLink.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false,
             gridLayout.numColumns, 1 ) );
+        openKerberosConfigurationLink.addHyperlinkListener( new HyperlinkAdapter()
+        {
+            public void linkActivated( HyperlinkEvent e )
+            {
+                getServerConfigurationEditor().showPage( KerberosServerPage.class );
+            }
+        } );
     }
 
 
@@ -226,6 +243,13 @@ public class OverviewPage extends ServerConfigurationEditorPage
             "Advanced Partitions configuration...", SWT.NONE );
         openPartitionsConfigurationLink.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false,
             gridLayout.numColumns, 1 ) );
+        openPartitionsConfigurationLink.addHyperlinkListener( new HyperlinkAdapter()
+        {
+            public void linkActivated( HyperlinkEvent e )
+            {
+                getServerConfigurationEditor().showPage( PartitionsPage.class );
+            }
+        } );
     }
 
 
@@ -253,6 +277,13 @@ public class OverviewPage extends ServerConfigurationEditorPage
             "Advanced Options configuration...", SWT.NONE );
         openOptionsConfigurationLink.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false,
             gridLayout.numColumns, 1 ) );
+        openOptionsConfigurationLink.addHyperlinkListener( new HyperlinkAdapter()
+        {
+            public void linkActivated( HyperlinkEvent e )
+            {
+                getServerConfigurationEditor().showPage( null );
+            }
+        } );
     }
 
 

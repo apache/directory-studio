@@ -21,6 +21,7 @@ package org.apache.directory.studio.apacheds.configuration.v2.editor;
 
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.Enumeration;
 
 import org.apache.directory.server.config.ConfigWriter;
 import org.apache.directory.server.config.beans.ConfigBean;
@@ -109,8 +110,6 @@ public class ServerConfigurationEditor extends FormEditor
         }
         catch ( PartInitException e )
         {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
         }
 
         showOrHideTabFolder();
@@ -387,14 +386,33 @@ public class ServerConfigurationEditor extends FormEditor
         }
         catch ( PartInitException e )
         {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
         }
 
         // Activating the first page
         setActivePage( 0 );
 
         showOrHideTabFolder();
+    }
+
+
+    /**
+     * Set a particular page as active if it is found in the pages vector.
+     *
+     * @param pageClass
+     *      the class of the page
+     */
+    public void showPage( Class<?> pageClass )
+    {
+        Enumeration<Object> enumeration = pages.elements();
+        while ( enumeration.hasMoreElements() )
+        {
+            Object page = enumeration.nextElement();
+            if ( pageClass.isInstance( page ) )
+            {
+                setActivePage( pages.indexOf( page ) );
+                return;
+            }
+        }
     }
 
 
