@@ -59,8 +59,7 @@ public class NewApacheDSConfigurationFileWizard extends Wizard implements INewWi
         }
         catch ( PartInitException e )
         {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            // Should never happen
             return false;
         }
 
