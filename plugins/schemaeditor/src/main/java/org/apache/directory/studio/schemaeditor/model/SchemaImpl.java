@@ -23,6 +23,11 @@ package org.apache.directory.studio.schemaeditor.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
+import org.apache.directory.shared.ldap.model.schema.MatchingRule;
+import org.apache.directory.shared.ldap.model.schema.ObjectClass;
+
 
 /**
  * This class represents a schema.
@@ -38,16 +43,16 @@ public class SchemaImpl implements Schema
     private Project project;
 
     /** The AttributeType List */
-    private List<AttributeTypeImpl> attributeTypes = new ArrayList<AttributeTypeImpl>();
+    private List<AttributeType> attributeTypes = new ArrayList<AttributeType>();
 
     /** The ObjectClass List */
-    private List<ObjectClassImpl> objectClasses = new ArrayList<ObjectClassImpl>();
+    private List<ObjectClass> objectClasses = new ArrayList<ObjectClass>();
 
     /** The MatchingRule List */
-    private List<MatchingRuleImpl> matchingRules = new ArrayList<MatchingRuleImpl>();
+    private List<MatchingRule> matchingRules = new ArrayList<MatchingRule>();
 
     /** The Syntax List */
-    private List<SyntaxImpl> syntaxes = new ArrayList<SyntaxImpl>();
+    private List<LdapSyntax> syntaxes = new ArrayList<LdapSyntax>();
 
 
     /**
@@ -65,7 +70,7 @@ public class SchemaImpl implements Schema
     /* (non-Javadoc)
      * @see org.apache.directory.studio.schemaeditor.model.Schema#addAttributeType(org.apache.directory.shared.ldap.schema.AttributeType)
      */
-    public boolean addAttributeType( AttributeTypeImpl at )
+    public boolean addAttributeType( AttributeType at )
     {
         return attributeTypes.add( at );
     }
@@ -74,7 +79,7 @@ public class SchemaImpl implements Schema
     /* (non-Javadoc)
      * @see org.apache.directory.studio.schemaeditor.model.Schema#addMatchingRule(org.apache.directory.shared.ldap.schema.MatchingRule)
      */
-    public boolean addMatchingRule( MatchingRuleImpl mr )
+    public boolean addMatchingRule( MatchingRule mr )
     {
         return matchingRules.add( mr );
     }
@@ -83,7 +88,7 @@ public class SchemaImpl implements Schema
     /* (non-Javadoc)
      * @see org.apache.directory.studio.schemaeditor.model.Schema#addObjectClass(org.apache.directory.shared.ldap.schema.ObjectClass)
      */
-    public boolean addObjectClass( ObjectClassImpl oc )
+    public boolean addObjectClass( ObjectClass oc )
     {
         return objectClasses.add( oc );
     }
@@ -92,7 +97,7 @@ public class SchemaImpl implements Schema
     /* (non-Javadoc)
      * @see org.apache.directory.studio.schemaeditor.model.Schema#addSyntax(org.apache.directory.shared.ldap.schema.Syntax)
      */
-    public boolean addSyntax( SyntaxImpl syntax )
+    public boolean addSyntax( LdapSyntax syntax )
     {
         return syntaxes.add( syntax );
     }
@@ -101,9 +106,9 @@ public class SchemaImpl implements Schema
     /* (non-Javadoc)
      * @see org.apache.directory.studio.schemaeditor.model.Schema#getAttributeType(java.lang.String)
      */
-    public AttributeTypeImpl getAttributeType( String id )
+    public AttributeType getAttributeType( String id )
     {
-        for ( AttributeTypeImpl at : attributeTypes )
+        for ( AttributeType at : attributeTypes )
         {
             List<String> aliases = at.getNames();
             if ( aliases != null )
@@ -129,7 +134,7 @@ public class SchemaImpl implements Schema
     /* (non-Javadoc)
      * @see org.apache.directory.studio.schemaeditor.model.Schema#getAttributeTypes()
      */
-    public List<AttributeTypeImpl> getAttributeTypes()
+    public List<AttributeType> getAttributeTypes()
     {
         return attributeTypes;
     }
@@ -138,9 +143,9 @@ public class SchemaImpl implements Schema
     /* (non-Javadoc)
      * @see org.apache.directory.studio.schemaeditor.model.Schema#getMatchingRule(java.lang.String)
      */
-    public MatchingRuleImpl getMatchingRule( String id )
+    public MatchingRule getMatchingRule( String id )
     {
-        for ( MatchingRuleImpl mr : matchingRules )
+        for ( MatchingRule mr : matchingRules )
         {
             List<String> aliases = mr.getNames();
             if ( aliases != null )
@@ -166,7 +171,7 @@ public class SchemaImpl implements Schema
     /* (non-Javadoc)
      * @see org.apache.directory.studio.schemaeditor.model.Schema#getMatchingRules()
      */
-    public List<MatchingRuleImpl> getMatchingRules()
+    public List<MatchingRule> getMatchingRules()
     {
         return matchingRules;
     }
@@ -193,9 +198,9 @@ public class SchemaImpl implements Schema
     /* (non-Javadoc)
      * @see org.apache.directory.studio.schemaeditor.model.Schema#getObjectClass(java.lang.String)
      */
-    public ObjectClassImpl getObjectClass( String id )
+    public ObjectClass getObjectClass( String id )
     {
-        for ( ObjectClassImpl oc : objectClasses )
+        for ( ObjectClass oc : objectClasses )
         {
             List<String> aliases = oc.getNames();
             if ( aliases != null )
@@ -221,7 +226,7 @@ public class SchemaImpl implements Schema
     /* (non-Javadoc)
      * @see org.apache.directory.studio.schemaeditor.model.Schema#getObjectClasses()
      */
-    public List<ObjectClassImpl> getObjectClasses()
+    public List<ObjectClass> getObjectClasses()
     {
         return objectClasses;
     }
@@ -230,9 +235,9 @@ public class SchemaImpl implements Schema
     /* (non-Javadoc)
      * @see org.apache.directory.studio.schemaeditor.model.Schema#getSyntax(java.lang.String)
      */
-    public SyntaxImpl getSyntax( String id )
+    public LdapSyntax getSyntax( String id )
     {
-        for ( SyntaxImpl syntax : syntaxes )
+        for ( LdapSyntax syntax : syntaxes )
         {
             List<String> aliases = syntax.getNames();
             if ( aliases != null )
@@ -258,7 +263,7 @@ public class SchemaImpl implements Schema
     /* (non-Javadoc)
      * @see org.apache.directory.studio.schemaeditor.model.Schema#getSyntaxes()
      */
-    public List<SyntaxImpl> getSyntaxes()
+    public List<LdapSyntax> getSyntaxes()
     {
         return syntaxes;
     }
@@ -267,7 +272,7 @@ public class SchemaImpl implements Schema
     /* (non-Javadoc)
      * @see org.apache.directory.studio.schemaeditor.model.Schema#removeAttributeType(org.apache.directory.shared.ldap.schema.AttributeType)
      */
-    public boolean removeAttributeType( AttributeTypeImpl at )
+    public boolean removeAttributeType( AttributeType at )
     {
         return attributeTypes.remove( at );
     }
@@ -276,7 +281,7 @@ public class SchemaImpl implements Schema
     /* (non-Javadoc)
      * @see org.apache.directory.studio.schemaeditor.model.Schema#removeMatchingRule(org.apache.directory.shared.ldap.schema.MatchingRule)
      */
-    public boolean removeMatchingRule( MatchingRuleImpl mr )
+    public boolean removeMatchingRule( MatchingRule mr )
     {
         return matchingRules.remove( mr );
     }
@@ -285,7 +290,7 @@ public class SchemaImpl implements Schema
     /* (non-Javadoc)
      * @see org.apache.directory.studio.schemaeditor.model.Schema#removeObjectClass(org.apache.directory.shared.ldap.schema.ObjectClass)
      */
-    public boolean removeObjectClass( ObjectClassImpl oc )
+    public boolean removeObjectClass( ObjectClass oc )
     {
         return objectClasses.remove( oc );
     }
@@ -294,7 +299,7 @@ public class SchemaImpl implements Schema
     /* (non-Javadoc)
      * @see org.apache.directory.studio.schemaeditor.model.Schema#removeSyntax(org.apache.directory.shared.ldap.schema.Syntax)
      */
-    public boolean removeSyntax( SyntaxImpl syntax )
+    public boolean removeSyntax( LdapSyntax syntax )
     {
         return syntaxes.remove( syntax );
     }

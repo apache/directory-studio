@@ -28,9 +28,9 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.directory.shared.ldap.model.schema.AttributeType;
 import org.apache.directory.studio.schemaeditor.Activator;
 import org.apache.directory.studio.schemaeditor.controller.SchemaHandler;
-import org.apache.directory.studio.schemaeditor.model.AttributeTypeImpl;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.Viewer;
 
@@ -46,13 +46,13 @@ public class AttributeTypeSelectionDialogContentProvider implements IStructuredC
     private SchemaHandler schemaHandler;
 
     /** The hidden Object Classes */
-    private List<AttributeTypeImpl> hiddenAttributeTypes;
+    private List<AttributeType> hiddenAttributeTypes;
 
 
     /**
      * Creates a new instance of AttributeTypeSelectionDialogContentProvider.
      */
-    public AttributeTypeSelectionDialogContentProvider( List<AttributeTypeImpl> hiddenAttributeTypes )
+    public AttributeTypeSelectionDialogContentProvider( List<AttributeType> hiddenAttributeTypes )
     {
         this.hiddenAttributeTypes = hiddenAttributeTypes;
         schemaHandler = Activator.getDefault().getSchemaHandler();
@@ -66,7 +66,7 @@ public class AttributeTypeSelectionDialogContentProvider implements IStructuredC
     {
         if ( inputElement instanceof String )
         {
-            ArrayList<AttributeTypeImpl> results = new ArrayList<AttributeTypeImpl>();
+            ArrayList<AttributeType> results = new ArrayList<AttributeType>();
 
             String searchText = ( String ) inputElement;
 
@@ -78,15 +78,15 @@ public class AttributeTypeSelectionDialogContentProvider implements IStructuredC
 
             Pattern pattern = Pattern.compile( searchRegexp, Pattern.CASE_INSENSITIVE );
 
-            List<AttributeTypeImpl> atList = schemaHandler.getAttributeTypes();
+            List<AttributeType> atList = schemaHandler.getAttributeTypes();
 
             // Sorting the list
-            Collections.sort( atList, new Comparator<AttributeTypeImpl>()
+            Collections.sort( atList, new Comparator<AttributeType>()
             {
-                public int compare( AttributeTypeImpl at1, AttributeTypeImpl at2 )
+                public int compare( AttributeType at1, AttributeType at2 )
                 {
-                    List<String> at1Names = ( ( AttributeTypeImpl ) at1 ).getNames();
-                    List<String> at2Names = ( ( AttributeTypeImpl ) at2 ).getNames();
+                    List<String> at1Names = ( ( AttributeType ) at1 ).getNames();
+                    List<String> at2Names = ( ( AttributeType ) at2 ).getNames();
 
                     if ( ( at1Names == null || at1Names.size() == 0 ) && ( at2Names == null || at2Names.size() == 0 ) )
                     {
@@ -110,7 +110,7 @@ public class AttributeTypeSelectionDialogContentProvider implements IStructuredC
             } );
 
             // Searching for all matching elements
-            for ( AttributeTypeImpl at : atList )
+            for ( AttributeType at : atList )
             {
                 for ( String name : at.getNames() )
                 {

@@ -22,10 +22,10 @@ package org.apache.directory.studio.schemaeditor.view.widget;
 
 import java.util.List;
 
+import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.studio.schemaeditor.Activator;
 import org.apache.directory.studio.schemaeditor.PluginConstants;
-import org.apache.directory.studio.schemaeditor.model.AttributeTypeImpl;
-import org.apache.directory.studio.schemaeditor.model.ObjectClassImpl;
 import org.apache.directory.studio.schemaeditor.model.Schema;
 import org.apache.directory.studio.schemaeditor.model.difference.AttributeTypeDifference;
 import org.apache.directory.studio.schemaeditor.model.difference.ObjectClassDifference;
@@ -93,21 +93,21 @@ public class DifferencesWidgetSchemaLabelProvider extends LabelProvider
         {
             AttributeTypeDifference atd = ( AttributeTypeDifference ) element;
 
-            AttributeTypeImpl at = null;
+            AttributeType at = null;
 
             switch ( atd.getType() )
             {
                 case ADDED:
-                    at = ( ( AttributeTypeImpl ) atd.getDestination() );
+                    at = ( ( AttributeType ) atd.getDestination() );
                     break;
                 case MODIFIED:
-                    at = ( ( AttributeTypeImpl ) atd.getDestination() );
+                    at = ( ( AttributeType ) atd.getDestination() );
                     break;
                 case REMOVED:
-                    at = ( ( AttributeTypeImpl ) atd.getSource() );
+                    at = ( ( AttributeType ) atd.getSource() );
                     break;
                 case IDENTICAL:
-                    at = ( ( AttributeTypeImpl ) atd.getDestination() );
+                    at = ( ( AttributeType ) atd.getDestination() );
                     break;
             }
 
@@ -164,21 +164,21 @@ public class DifferencesWidgetSchemaLabelProvider extends LabelProvider
         {
             ObjectClassDifference ocd = ( ObjectClassDifference ) element;
 
-            ObjectClassImpl oc = null;
+            ObjectClass oc = null;
 
             switch ( ocd.getType() )
             {
                 case ADDED:
-                    oc = ( ( ObjectClassImpl ) ocd.getDestination() );
+                    oc = ( ( ObjectClass ) ocd.getDestination() );
                     break;
                 case MODIFIED:
-                    oc = ( ( ObjectClassImpl ) ocd.getDestination() );
+                    oc = ( ( ObjectClass ) ocd.getDestination() );
                     break;
                 case REMOVED:
-                    oc = ( ( ObjectClassImpl ) ocd.getSource() );
+                    oc = ( ( ObjectClass ) ocd.getSource() );
                     break;
                 case IDENTICAL:
-                    oc = ( ( ObjectClassImpl ) ocd.getDestination() );
+                    oc = ( ( ObjectClass ) ocd.getDestination() );
                     break;
             }
 
@@ -246,21 +246,21 @@ public class DifferencesWidgetSchemaLabelProvider extends LabelProvider
             {
                 AttributeTypeDifference atd = ( AttributeTypeDifference ) element;
 
-                AttributeTypeImpl at = null;
+                AttributeType at = null;
 
                 switch ( atd.getType() )
                 {
                     case ADDED:
-                        at = ( ( AttributeTypeImpl ) atd.getDestination() );
+                        at = ( ( AttributeType ) atd.getDestination() );
                         break;
                     case MODIFIED:
-                        at = ( ( AttributeTypeImpl ) atd.getDestination() );
+                        at = ( ( AttributeType ) atd.getDestination() );
                         break;
                     case REMOVED:
-                        at = ( ( AttributeTypeImpl ) atd.getSource() );
+                        at = ( ( AttributeType ) atd.getSource() );
                         break;
                     case IDENTICAL:
-                        at = ( ( AttributeTypeImpl ) atd.getDestination() );
+                        at = ( ( AttributeType ) atd.getDestination() );
                         break;
                 }
 
@@ -297,21 +297,21 @@ public class DifferencesWidgetSchemaLabelProvider extends LabelProvider
             {
                 ObjectClassDifference ocd = ( ObjectClassDifference ) element;
 
-                ObjectClassImpl oc = null;
+                ObjectClass oc = null;
 
                 switch ( ocd.getType() )
                 {
                     case ADDED:
-                        oc = ( ( ObjectClassImpl ) ocd.getDestination() );
+                        oc = ( ( ObjectClass ) ocd.getDestination() );
                         break;
                     case MODIFIED:
-                        oc = ( ( ObjectClassImpl ) ocd.getDestination() );
+                        oc = ( ( ObjectClass ) ocd.getDestination() );
                         break;
                     case REMOVED:
-                        oc = ( ( ObjectClassImpl ) ocd.getSource() );
+                        oc = ( ( ObjectClass ) ocd.getSource() );
                         break;
                     case IDENTICAL:
-                        oc = ( ( ObjectClassImpl ) ocd.getDestination() );
+                        oc = ( ( ObjectClass ) ocd.getDestination() );
                         break;
                 }
 

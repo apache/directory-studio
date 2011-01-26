@@ -26,14 +26,14 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.shared.ldap.model.schema.SchemaObject;
 import org.apache.directory.studio.schemaeditor.Activator;
 import org.apache.directory.studio.schemaeditor.PluginConstants;
 import org.apache.directory.studio.schemaeditor.PluginUtils;
 import org.apache.directory.studio.schemaeditor.controller.SchemaHandler;
 import org.apache.directory.studio.schemaeditor.controller.SearchViewController;
-import org.apache.directory.studio.schemaeditor.model.AttributeTypeImpl;
-import org.apache.directory.studio.schemaeditor.model.ObjectClassImpl;
 import org.apache.directory.studio.schemaeditor.view.ViewUtils;
 import org.apache.directory.studio.schemaeditor.view.editors.attributetype.AttributeTypeEditor;
 import org.apache.directory.studio.schemaeditor.view.editors.attributetype.AttributeTypeEditorInput;
@@ -552,14 +552,14 @@ public class SearchView extends ViewPart
                 String editorId = null;
 
                 // Here is the double clicked item
-                if ( item instanceof AttributeTypeImpl )
+                if ( item instanceof AttributeType )
                 {
-                    input = new AttributeTypeEditorInput( ( AttributeTypeImpl ) item );
+                    input = new AttributeTypeEditorInput( ( AttributeType ) item );
                     editorId = AttributeTypeEditor.ID;
                 }
-                else if ( item instanceof ObjectClassImpl )
+                else if ( item instanceof ObjectClass )
                 {
-                    input = new ObjectClassEditorInput( ( ObjectClassImpl ) item );
+                    input = new ObjectClassEditorInput( ( ObjectClass ) item );
                     editorId = ObjectClassEditor.ID;
                 }
 
@@ -698,8 +698,8 @@ public class SearchView extends ViewPart
                     || ( scope == PluginConstants.PREFS_SEARCH_PAGE_SCOPE_AT_ONLY ) )
                 {
                     // Looping on attribute types
-                    List<AttributeTypeImpl> attributeTypes = schemaHandler.getAttributeTypes();
-                    for ( AttributeTypeImpl at : attributeTypes )
+                    List<AttributeType> attributeTypes = schemaHandler.getAttributeTypes();
+                    for ( AttributeType at : attributeTypes )
                     {
                         // Aliases
                         if ( searchScope.contains( SearchInEnum.ALIASES ) )
@@ -782,8 +782,8 @@ public class SearchView extends ViewPart
                     || ( scope == PluginConstants.PREFS_SEARCH_PAGE_SCOPE_OC_ONLY ) )
                 {
                     // Looping on object classes
-                    List<ObjectClassImpl> objectClasses = schemaHandler.getObjectClasses();
-                    for ( ObjectClassImpl oc : objectClasses )
+                    List<ObjectClass> objectClasses = schemaHandler.getObjectClasses();
+                    for ( ObjectClass oc : objectClasses )
                     {
                         // Aliases
                         if ( searchScope.contains( SearchInEnum.ALIASES ) )

@@ -20,12 +20,12 @@
 package org.apache.directory.studio.schemaeditor.view.views;
 
 
+import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.shared.ldap.model.schema.ObjectClassTypeEnum;
 import org.apache.directory.shared.ldap.model.schema.SchemaObject;
 import org.apache.directory.studio.schemaeditor.Activator;
 import org.apache.directory.studio.schemaeditor.PluginConstants;
-import org.apache.directory.studio.schemaeditor.model.AttributeTypeImpl;
-import org.apache.directory.studio.schemaeditor.model.ObjectClassImpl;
 import org.apache.directory.studio.schemaeditor.model.schemachecker.ClassTypeHierarchyError;
 import org.apache.directory.studio.schemaeditor.model.schemachecker.DifferentCollectiveAsSuperiorError;
 import org.apache.directory.studio.schemaeditor.model.schemachecker.DifferentUsageAsSuperiorError;
@@ -146,13 +146,13 @@ public class ProblemsViewLabelProvider extends LabelProvider implements ITableLa
             DuplicateAliasError duplicateAliasError = ( DuplicateAliasError ) element;
 
             SchemaObject duplicate = duplicateAliasError.getDuplicate();
-            if ( duplicate instanceof AttributeTypeImpl )
+            if ( duplicate instanceof AttributeType )
             {
                 return NLS
                     .bind(
                         Messages.getString( "ProblemsViewLabelProvider.DuplicateAliasErrorAttributeType" ), new String[] { duplicateAliasError.getAlias(), duplicate.getOid() } ); //$NON-NLS-1$
             }
-            else if ( duplicate instanceof ObjectClassImpl )
+            else if ( duplicate instanceof ObjectClass )
             {
                 return NLS
                     .bind(
@@ -163,13 +163,13 @@ public class ProblemsViewLabelProvider extends LabelProvider implements ITableLa
         {
             DuplicateOidError duplicateOidError = ( DuplicateOidError ) element;
             SchemaObject duplicate = duplicateOidError.getDuplicate();
-            if ( duplicate instanceof AttributeTypeImpl )
+            if ( duplicate instanceof AttributeType )
             {
                 return NLS
                     .bind(
                         Messages.getString( "ProblemsViewLabelProvider.DuplicateOidErrorAttributeType" ), new String[] { duplicateOidError.getOid(), duplicate.getName() } ); //$NON-NLS-1$
             }
-            else if ( duplicate instanceof ObjectClassImpl )
+            else if ( duplicate instanceof ObjectClass )
             {
                 return NLS
                     .bind(
@@ -222,13 +222,13 @@ public class ProblemsViewLabelProvider extends LabelProvider implements ITableLa
         {
             NoAliasWarning noAliasWarning = ( NoAliasWarning ) element;
             SchemaObject source = noAliasWarning.getSource();
-            if ( source instanceof AttributeTypeImpl )
+            if ( source instanceof AttributeType )
             {
                 return NLS
                     .bind(
                         Messages.getString( "ProblemsViewLabelProvider.NoAliasWarningAttributeType" ), new String[] { source.getOid() } ); //$NON-NLS-1$
             }
-            else if ( source instanceof ObjectClassImpl )
+            else if ( source instanceof ObjectClass )
             {
                 return NLS
                     .bind(
@@ -238,8 +238,8 @@ public class ProblemsViewLabelProvider extends LabelProvider implements ITableLa
         else if ( element instanceof ClassTypeHierarchyError )
         {
             ClassTypeHierarchyError classTypeHierarchyError = ( ClassTypeHierarchyError ) element;
-            ObjectClassImpl source = ( ObjectClassImpl ) classTypeHierarchyError.getSource();
-            ObjectClassImpl superior = ( ObjectClassImpl ) classTypeHierarchyError.getSuperior();
+            ObjectClass source = ( ObjectClass ) classTypeHierarchyError.getSource();
+            ObjectClass superior = ( ObjectClass ) classTypeHierarchyError.getSuperior();
             if ( source.getType().equals( ObjectClassTypeEnum.ABSTRACT ) )
             {
                 if ( superior.getType().equals( ObjectClassTypeEnum.STRUCTURAL ) )
@@ -277,8 +277,8 @@ public class ProblemsViewLabelProvider extends LabelProvider implements ITableLa
         else if ( element instanceof DifferentUsageAsSuperiorError )
         {
             DifferentUsageAsSuperiorError differentUsageAsSuperiorError = ( DifferentUsageAsSuperiorError ) element;
-            AttributeTypeImpl source = ( AttributeTypeImpl ) differentUsageAsSuperiorError.getSource();
-            AttributeTypeImpl superior = ( AttributeTypeImpl ) differentUsageAsSuperiorError.getSuperior();
+            AttributeType source = ( AttributeType ) differentUsageAsSuperiorError.getSource();
+            AttributeType superior = ( AttributeType ) differentUsageAsSuperiorError.getSuperior();
             return NLS
                 .bind(
                     Messages.getString( "ProblemsViewLabelProvider.AttributeTypeUsage" ), new String[] { getDisplayName( source ), getDisplayName( superior ) } ); //$NON-NLS-1$
@@ -286,8 +286,8 @@ public class ProblemsViewLabelProvider extends LabelProvider implements ITableLa
         else if ( element instanceof DifferentCollectiveAsSuperiorError )
         {
             DifferentCollectiveAsSuperiorError differentCollectiveAsSuperiorError = ( DifferentCollectiveAsSuperiorError ) element;
-            AttributeTypeImpl source = ( AttributeTypeImpl ) differentCollectiveAsSuperiorError.getSource();
-            AttributeTypeImpl superior = ( AttributeTypeImpl ) differentCollectiveAsSuperiorError.getSuperior();
+            AttributeType source = ( AttributeType ) differentCollectiveAsSuperiorError.getSource();
+            AttributeType superior = ( AttributeType ) differentCollectiveAsSuperiorError.getSuperior();
             return NLS
                 .bind(
                     Messages.getString( "ProblemsViewLabelProvider.AttributeTypeCollective" ), new String[] { getDisplayName( source ), getDisplayName( superior ) } ); //$NON-NLS-1$

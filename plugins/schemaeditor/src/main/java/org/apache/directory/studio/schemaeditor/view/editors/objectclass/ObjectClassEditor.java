@@ -21,6 +21,7 @@
 package org.apache.directory.studio.schemaeditor.view.editors.objectclass;
 
 
+import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.studio.schemaeditor.Activator;
 import org.apache.directory.studio.schemaeditor.PluginConstants;
 import org.apache.directory.studio.schemaeditor.PluginUtils;
@@ -29,7 +30,6 @@ import org.apache.directory.studio.schemaeditor.controller.ObjectClassListener;
 import org.apache.directory.studio.schemaeditor.controller.SchemaHandler;
 import org.apache.directory.studio.schemaeditor.controller.SchemaHandlerAdapter;
 import org.apache.directory.studio.schemaeditor.controller.SchemaHandlerListener;
-import org.apache.directory.studio.schemaeditor.model.ObjectClassImpl;
 import org.apache.directory.studio.schemaeditor.model.Schema;
 import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -68,10 +68,10 @@ public class ObjectClassEditor extends FormEditor
     private boolean dirty = false;
 
     /** The original object class */
-    private ObjectClassImpl originalObjectClass;
+    private ObjectClass originalObjectClass;
 
     /** The object class used to save modifications */
-    private ObjectClassImpl modifiedObjectClass;
+    private ObjectClass modifiedObjectClass;
 
     /** The originalSchema */
     private Schema originalSchema;
@@ -251,7 +251,7 @@ public class ObjectClassEditor extends FormEditor
      * @return
      *      the original object class
      */
-    public ObjectClassImpl getOriginalObjectClass()
+    public ObjectClass getOriginalObjectClass()
     {
         return originalObjectClass;
     }
@@ -263,7 +263,7 @@ public class ObjectClassEditor extends FormEditor
      * @return
      *      the modified object class
      */
-    public ObjectClassImpl getModifiedObjectClass()
+    public ObjectClass getModifiedObjectClass()
     {
         return modifiedObjectClass;
     }
@@ -275,7 +275,7 @@ public class ObjectClassEditor extends FormEditor
      * @param modifiedObjectClass
      *      the modified object class to set.
      */
-    public void setModifiedObjectClass( ObjectClassImpl modifiedObjectClass )
+    public void setModifiedObjectClass( ObjectClass modifiedObjectClass )
     {
         this.modifiedObjectClass = modifiedObjectClass;
     }

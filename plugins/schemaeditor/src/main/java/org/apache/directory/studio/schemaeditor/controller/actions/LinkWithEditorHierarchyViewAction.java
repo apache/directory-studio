@@ -20,11 +20,11 @@
 package org.apache.directory.studio.schemaeditor.controller.actions;
 
 
+import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.shared.ldap.model.schema.SchemaObject;
 import org.apache.directory.studio.schemaeditor.Activator;
 import org.apache.directory.studio.schemaeditor.PluginConstants;
-import org.apache.directory.studio.schemaeditor.model.AttributeTypeImpl;
-import org.apache.directory.studio.schemaeditor.model.ObjectClassImpl;
 import org.apache.directory.studio.schemaeditor.view.editors.attributetype.AttributeTypeEditor;
 import org.apache.directory.studio.schemaeditor.view.editors.objectclass.ObjectClassEditor;
 import org.apache.directory.studio.schemaeditor.view.views.HierarchyView;
@@ -199,11 +199,11 @@ public class LinkWithEditorHierarchyViewAction extends Action
      */
     private void linkViewWithEditor( SchemaObject schemaElement )
     {
-        if ( schemaElement instanceof AttributeTypeImpl )
+        if ( schemaElement instanceof AttributeType )
         {
             view.setInput( schemaElement );
         }
-        else if ( schemaElement instanceof ObjectClassImpl )
+        else if ( schemaElement instanceof ObjectClass )
         {
             view.setInput( schemaElement );
         }

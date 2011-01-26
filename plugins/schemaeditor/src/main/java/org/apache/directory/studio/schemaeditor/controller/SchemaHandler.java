@@ -25,12 +25,12 @@ import java.util.List;
 
 import org.apache.commons.collections.MultiMap;
 import org.apache.commons.collections.map.MultiValueMap;
+import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
+import org.apache.directory.shared.ldap.model.schema.MatchingRule;
+import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.shared.ldap.model.schema.SchemaObject;
-import org.apache.directory.studio.schemaeditor.model.AttributeTypeImpl;
-import org.apache.directory.studio.schemaeditor.model.MatchingRuleImpl;
-import org.apache.directory.studio.schemaeditor.model.ObjectClassImpl;
 import org.apache.directory.studio.schemaeditor.model.Schema;
-import org.apache.directory.studio.schemaeditor.model.SyntaxImpl;
 
 
 /**
@@ -49,13 +49,13 @@ public class SchemaHandler
     /** The schemas List */
     private List<Schema> schemasList;
     /** The attribute types List */
-    private List<AttributeTypeImpl> attributeTypesList;
+    private List<AttributeType> attributeTypesList;
     /** The matching rules List */
-    private List<MatchingRuleImpl> matchingRulesList;
+    private List<MatchingRule> matchingRulesList;
     /** The object classes List */
-    private List<ObjectClassImpl> objectClassesList;
+    private List<ObjectClass> objectClassesList;
     /** The syntaxes List */
-    private List<SyntaxImpl> syntaxesList;
+    private List<LdapSyntax> syntaxesList;
 
     //
     // The MultiMap (for fast searching)
@@ -87,10 +87,10 @@ public class SchemaHandler
     {
         // Lists
         schemasList = new ArrayList<Schema>();
-        attributeTypesList = new ArrayList<AttributeTypeImpl>();
-        matchingRulesList = new ArrayList<MatchingRuleImpl>();;
-        objectClassesList = new ArrayList<ObjectClassImpl>();
-        syntaxesList = new ArrayList<SyntaxImpl>();
+        attributeTypesList = new ArrayList<AttributeType>();
+        matchingRulesList = new ArrayList<MatchingRule>();;
+        objectClassesList = new ArrayList<ObjectClass>();
+        syntaxesList = new ArrayList<LdapSyntax>();
 
         // Maps
         schemasMap = new MultiValueMap();
@@ -113,7 +113,7 @@ public class SchemaHandler
      * @return
      *      the List of all the attribute types
      */
-    public List<AttributeTypeImpl> getAttributeTypes()
+    public List<AttributeType> getAttributeTypes()
     {
         return attributeTypesList;
     }
@@ -125,7 +125,7 @@ public class SchemaHandler
      * @return
      *      the List of all the matching rules
      */
-    public List<MatchingRuleImpl> getMatchingRules()
+    public List<MatchingRule> getMatchingRules()
     {
         return matchingRulesList;
     }
@@ -137,7 +137,7 @@ public class SchemaHandler
      * @return
      *      the List of all the object classes
      */
-    public List<ObjectClassImpl> getObjectClasses()
+    public List<ObjectClass> getObjectClasses()
     {
         return objectClassesList;
     }
@@ -161,7 +161,7 @@ public class SchemaHandler
      * @return
      *      the List of all the matching rules
      */
-    public List<SyntaxImpl> getSyntaxes()
+    public List<LdapSyntax> getSyntaxes()
     {
         return syntaxesList;
     }
@@ -175,13 +175,13 @@ public class SchemaHandler
      * @return
      *      the corresponding attribute type, or null if no one is found
      */
-    public AttributeTypeImpl getAttributeType( String id )
+    public AttributeType getAttributeType( String id )
     {
         List<?> list = getAttributeTypeList( id.toLowerCase() );
 
         if ( ( list != null ) && ( list.size() >= 1 ) )
         {
-            return ( AttributeTypeImpl ) list.get( 0 );
+            return ( AttributeType ) list.get( 0 );
         }
         else
         {
@@ -212,13 +212,13 @@ public class SchemaHandler
      * @return
      *      the corresponding matching rule, or null if no one is found
      */
-    public MatchingRuleImpl getMatchingRule( String id )
+    public MatchingRule getMatchingRule( String id )
     {
         List<?> list = getMatchingRuleList( id.toLowerCase() );
 
         if ( ( list != null ) && ( list.size() >= 1 ) )
         {
-            return ( MatchingRuleImpl ) list.get( 0 );
+            return ( MatchingRule ) list.get( 0 );
         }
         else
         {
@@ -249,13 +249,13 @@ public class SchemaHandler
      * @return
      *      the corresponding object class, or null if no one is found
      */
-    public ObjectClassImpl getObjectClass( String id )
+    public ObjectClass getObjectClass( String id )
     {
         List<?> list = getObjectClassList( id.toLowerCase() );
 
         if ( ( list != null ) && ( list.size() >= 1 ) )
         {
-            return ( ObjectClassImpl ) list.get( 0 );
+            return ( ObjectClass ) list.get( 0 );
         }
         else
         {
@@ -323,13 +323,13 @@ public class SchemaHandler
      * @return
      *      the corresponding syntax, or null if no one is found
      */
-    public SyntaxImpl getSyntax( String id )
+    public LdapSyntax getSyntax( String id )
     {
         List<?> list = getSyntaxList( id.toLowerCase() );
 
         if ( ( list != null ) && ( list.size() >= 1 ) )
         {
-            return ( SyntaxImpl ) list.get( 0 );
+            return ( LdapSyntax ) list.get( 0 );
         }
         else
         {
@@ -418,7 +418,7 @@ public class SchemaHandler
      * @param listener
      *      the listener
      */
-    public void addListener( AttributeTypeImpl at, AttributeTypeListener listener )
+    public void addListener( AttributeType at, AttributeTypeListener listener )
     {
         if ( !attributeTypeListeners.containsValue( at, listener ) )
         {
@@ -435,7 +435,7 @@ public class SchemaHandler
      * @param listener
      *      the listener
      */
-    public void removeListener( AttributeTypeImpl at, AttributeTypeListener listener )
+    public void removeListener( AttributeType at, AttributeTypeListener listener )
     {
         attributeTypeListeners.remove( at, listener );
     }
@@ -449,7 +449,7 @@ public class SchemaHandler
      * @param listener
      *      the listener
      */
-    public void addListener( ObjectClassImpl oc, ObjectClassListener listener )
+    public void addListener( ObjectClass oc, ObjectClassListener listener )
     {
         if ( !objectClassListeners.containsValue( oc, listener ) )
         {
@@ -466,7 +466,7 @@ public class SchemaHandler
      * @param listener
      *      the listener
      */
-    public void removeListener( ObjectClassImpl oc, ObjectClassListener listener )
+    public void removeListener( ObjectClass oc, ObjectClassListener listener )
     {
         objectClassListeners.remove( oc, listener );
     }
@@ -485,25 +485,25 @@ public class SchemaHandler
         schemasMap.put( schema.getName().toLowerCase(), schema );
 
         // Adding its attribute types
-        for ( AttributeTypeImpl at : schema.getAttributeTypes() )
+        for ( AttributeType at : schema.getAttributeTypes() )
         {
             addSchemaObject( at );
         }
 
         // Adding its matching rules
-        for ( MatchingRuleImpl mr : schema.getMatchingRules() )
+        for ( MatchingRule mr : schema.getMatchingRules() )
         {
             addSchemaObject( mr );
         }
 
         // Adding its object classes
-        for ( ObjectClassImpl oc : schema.getObjectClasses() )
+        for ( ObjectClass oc : schema.getObjectClasses() )
         {
             addSchemaObject( oc );
         }
 
         // Adding its syntaxes
-        for ( SyntaxImpl syntax : schema.getSyntaxes() )
+        for ( LdapSyntax syntax : schema.getSyntaxes() )
         {
             addSchemaObject( syntax );
         }
@@ -520,9 +520,9 @@ public class SchemaHandler
      */
     private void addSchemaObject( SchemaObject object )
     {
-        if ( object instanceof AttributeTypeImpl )
+        if ( object instanceof AttributeType )
         {
-            AttributeTypeImpl at = ( AttributeTypeImpl ) object;
+            AttributeType at = ( AttributeType ) object;
             attributeTypesList.add( at );
             List<String> names = at.getNames();
             if ( names != null )
@@ -534,9 +534,9 @@ public class SchemaHandler
             }
             attributeTypesMap.put( at.getOid(), at );
         }
-        else if ( object instanceof MatchingRuleImpl )
+        else if ( object instanceof MatchingRule )
         {
-            MatchingRuleImpl mr = ( MatchingRuleImpl ) object;
+            MatchingRule mr = ( MatchingRule ) object;
             matchingRulesList.add( mr );
             List<String> names = mr.getNames();
             if ( names != null )
@@ -548,9 +548,9 @@ public class SchemaHandler
             }
             matchingRulesMap.put( mr.getOid(), mr );
         }
-        else if ( object instanceof ObjectClassImpl )
+        else if ( object instanceof ObjectClass )
         {
-            ObjectClassImpl oc = ( ObjectClassImpl ) object;
+            ObjectClass oc = ( ObjectClass ) object;
             objectClassesList.add( oc );
             List<String> names = oc.getNames();
             if ( names != null )
@@ -562,9 +562,9 @@ public class SchemaHandler
             }
             objectClassesMap.put( oc.getOid(), oc );
         }
-        else if ( object instanceof SyntaxImpl )
+        else if ( object instanceof LdapSyntax )
         {
-            SyntaxImpl syntax = ( SyntaxImpl ) object;
+            LdapSyntax syntax = ( LdapSyntax ) object;
             syntaxesList.add( syntax );
             List<String> names = syntax.getNames();
             if ( names != null )
@@ -592,25 +592,25 @@ public class SchemaHandler
         schemasMap.remove( schema.getName().toLowerCase() );
 
         // Removing its attribute types
-        for ( AttributeTypeImpl at : schema.getAttributeTypes() )
+        for ( AttributeType at : schema.getAttributeTypes() )
         {
             removeSchemaObject( at );
         }
 
         // Removing its matching rules
-        for ( MatchingRuleImpl mr : schema.getMatchingRules() )
+        for ( MatchingRule mr : schema.getMatchingRules() )
         {
             removeSchemaObject( mr );
         }
 
         // Removing its object classes
-        for ( ObjectClassImpl oc : schema.getObjectClasses() )
+        for ( ObjectClass oc : schema.getObjectClasses() )
         {
             removeSchemaObject( oc );
         }
 
         // Removing its syntaxes
-        for ( SyntaxImpl syntax : schema.getSyntaxes() )
+        for ( LdapSyntax syntax : schema.getSyntaxes() )
         {
             removeSchemaObject( syntax );
         }
@@ -627,9 +627,9 @@ public class SchemaHandler
      */
     private void removeSchemaObject( SchemaObject object )
     {
-        if ( object instanceof AttributeTypeImpl )
+        if ( object instanceof AttributeType )
         {
-            AttributeTypeImpl at = ( AttributeTypeImpl ) object;
+            AttributeType at = ( AttributeType ) object;
             attributeTypesList.remove( at );
             List<String> names = at.getNames();
             if ( names != null )
@@ -641,9 +641,9 @@ public class SchemaHandler
             }
             attributeTypesMap.remove( at.getOid() );
         }
-        else if ( object instanceof MatchingRuleImpl )
+        else if ( object instanceof MatchingRule )
         {
-            MatchingRuleImpl mr = ( MatchingRuleImpl ) object;
+            MatchingRule mr = ( MatchingRule ) object;
             matchingRulesList.remove( mr );
             List<String> names = mr.getNames();
             if ( names != null )
@@ -655,9 +655,9 @@ public class SchemaHandler
             }
             matchingRulesMap.remove( mr.getOid() );
         }
-        else if ( object instanceof ObjectClassImpl )
+        else if ( object instanceof ObjectClass )
         {
-            ObjectClassImpl oc = ( ObjectClassImpl ) object;
+            ObjectClass oc = ( ObjectClass ) object;
             objectClassesList.remove( oc );
             List<String> names = oc.getNames();
             if ( names != null )
@@ -669,9 +669,9 @@ public class SchemaHandler
             }
             objectClassesMap.remove( oc.getOid() );
         }
-        else if ( object instanceof SyntaxImpl )
+        else if ( object instanceof LdapSyntax )
         {
-            SyntaxImpl syntax = ( SyntaxImpl ) object;
+            LdapSyntax syntax = ( LdapSyntax ) object;
             syntaxesList.remove( syntax );
             List<String> names = syntax.getNames();
             if ( names != null )
@@ -692,7 +692,7 @@ public class SchemaHandler
      * @param at
      *      the attribute type
      */
-    public void addAttributeType( AttributeTypeImpl at )
+    public void addAttributeType( AttributeType at )
     {
         Schema schema = getSchema( at.getSchemaName() );
 
@@ -718,7 +718,7 @@ public class SchemaHandler
      * @param at2
      *      the destination attribute type
      */
-    public void modifyAttributeType( AttributeTypeImpl at1, AttributeTypeImpl at2 )
+    public void modifyAttributeType( AttributeType at1, AttributeType at2 )
     {
         // Removing the references (in case of the names or oid have changed)
         removeSchemaObject( at1 );
@@ -753,7 +753,7 @@ public class SchemaHandler
      * @param at
      *      the attribute type
      */
-    public void removeAttributeType( AttributeTypeImpl at )
+    public void removeAttributeType( AttributeType at )
     {
         Schema schema = getSchema( at.getSchemaName() );
 
@@ -776,7 +776,7 @@ public class SchemaHandler
      * @param oc
      *      the object class
      */
-    public void addObjectClass( ObjectClassImpl oc )
+    public void addObjectClass( ObjectClass oc )
     {
         Schema schema = getSchema( oc.getSchemaName() );
 
@@ -802,7 +802,7 @@ public class SchemaHandler
      * @param oc2
      *      the destination object class  
      */
-    public void modifyObjectClass( ObjectClassImpl oc1, ObjectClassImpl oc2 )
+    public void modifyObjectClass( ObjectClass oc1, ObjectClass oc2 )
     {
         // Removing the references (in case of the names or oid have changed)
         removeSchemaObject( oc1 );
@@ -831,7 +831,7 @@ public class SchemaHandler
      * @param oc
      *      the object class
      */
-    public void removeObjectClass( ObjectClassImpl oc )
+    public void removeObjectClass( ObjectClass oc )
     {
         Schema schema = getSchema( oc.getSchemaName() );
 
@@ -883,7 +883,7 @@ public class SchemaHandler
      * @param at
      *      the added attribute type
      */
-    private void notifyAttributeTypeAdded( AttributeTypeImpl at )
+    private void notifyAttributeTypeAdded( AttributeType at )
     {
         // SchemaHandler Listeners
         for ( SchemaHandlerListener listener : schemaHandlerListeners.toArray( new SchemaHandlerListener[0] ) )
@@ -909,7 +909,7 @@ public class SchemaHandler
      * @param at
      *      the modified attribute type
      */
-    private void notifyAttributeTypeModified( AttributeTypeImpl at )
+    private void notifyAttributeTypeModified( AttributeType at )
     {
         // SchemaHandler Listeners
         for ( SchemaHandlerListener listener : schemaHandlerListeners.toArray( new SchemaHandlerListener[0] ) )
@@ -935,7 +935,7 @@ public class SchemaHandler
      * @param at
      *      the removed attribute type
      */
-    private void notifyAttributeTypeRemoved( AttributeTypeImpl at )
+    private void notifyAttributeTypeRemoved( AttributeType at )
     {
         // SchemaHandler Listeners
         for ( SchemaHandlerListener listener : schemaHandlerListeners.toArray( new SchemaHandlerListener[0] ) )
@@ -971,7 +971,7 @@ public class SchemaHandler
      * @param oc
      *      the added object class
      */
-    private void notifyObjectClassAdded( ObjectClassImpl oc )
+    private void notifyObjectClassAdded( ObjectClass oc )
     {
         // SchemaHandler Listeners
         for ( SchemaHandlerListener listener : schemaHandlerListeners.toArray( new SchemaHandlerListener[0] ) )
@@ -997,7 +997,7 @@ public class SchemaHandler
      * @param oc
      *      the modified object class
      */
-    private void notifyObjectClassModified( ObjectClassImpl oc )
+    private void notifyObjectClassModified( ObjectClass oc )
     {
         // SchemaHandler Listeners
         for ( SchemaHandlerListener listener : schemaHandlerListeners.toArray( new SchemaHandlerListener[0] ) )
@@ -1023,7 +1023,7 @@ public class SchemaHandler
      * @param oc
      *      the removed object class
      */
-    private void notifyObjectClassRemoved( ObjectClassImpl oc )
+    private void notifyObjectClassRemoved( ObjectClass oc )
     {
         // SchemaHandler Listeners
         for ( SchemaHandlerListener listener : schemaHandlerListeners.toArray( new SchemaHandlerListener[0] ) )
@@ -1059,7 +1059,7 @@ public class SchemaHandler
      * @param mr
      *      the added matching rule
      */
-    private void notifyMatchingRuleAdded( MatchingRuleImpl mr )
+    private void notifyMatchingRuleAdded( MatchingRule mr )
     {
         // SchemaHandler Listeners
         for ( SchemaHandlerListener listener : schemaHandlerListeners.toArray( new SchemaHandlerListener[0] ) )
@@ -1085,7 +1085,7 @@ public class SchemaHandler
      * @param mr
      *      the modified matching rule
      */
-    private void notifyMatchingRuleModified( MatchingRuleImpl mr )
+    private void notifyMatchingRuleModified( MatchingRule mr )
     {
         // SchemaHandler Listeners
         for ( SchemaHandlerListener listener : schemaHandlerListeners.toArray( new SchemaHandlerListener[0] ) )
@@ -1111,7 +1111,7 @@ public class SchemaHandler
      * @param mr
      *      the removed matching rule
      */
-    private void notifyMatchingRuleRemoved( MatchingRuleImpl mr )
+    private void notifyMatchingRuleRemoved( MatchingRule mr )
     {
         // SchemaHandler Listeners
         for ( SchemaHandlerListener listener : schemaHandlerListeners.toArray( new SchemaHandlerListener[0] ) )
@@ -1137,7 +1137,7 @@ public class SchemaHandler
      * @param syntax
      *      the added syntax
      */
-    private void notifySyntaxRuleAdded( SyntaxImpl syntax )
+    private void notifySyntaxRuleAdded( LdapSyntax syntax )
     {
         // SchemaHandler Listeners
         for ( SchemaHandlerListener listener : schemaHandlerListeners.toArray( new SchemaHandlerListener[0] ) )
@@ -1163,7 +1163,7 @@ public class SchemaHandler
      * @param syntax
      *      the modified syntax
      */
-    private void notifySyntaxRuleModified( SyntaxImpl syntax )
+    private void notifySyntaxRuleModified( LdapSyntax syntax )
     {
         // SchemaHandler Listeners
         for ( SchemaHandlerListener listener : schemaHandlerListeners.toArray( new SchemaHandlerListener[0] ) )
@@ -1189,7 +1189,7 @@ public class SchemaHandler
      * @param syntax
      *      the removed syntax
      */
-    private void notifySyntaxRemoved( SyntaxImpl syntax )
+    private void notifySyntaxRemoved( LdapSyntax syntax )
     {
         // SchemaHandler Listeners
         for ( SchemaHandlerListener listener : schemaHandlerListeners.toArray( new SchemaHandlerListener[0] ) )

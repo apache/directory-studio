@@ -22,11 +22,11 @@ package org.apache.directory.studio.schemaeditor.view.views;
 
 import java.util.List;
 
+import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.shared.ldap.model.schema.SchemaObject;
 import org.apache.directory.studio.schemaeditor.Activator;
 import org.apache.directory.studio.schemaeditor.PluginConstants;
-import org.apache.directory.studio.schemaeditor.model.AttributeTypeImpl;
-import org.apache.directory.studio.schemaeditor.model.ObjectClassImpl;
 import org.apache.directory.studio.schemaeditor.view.ViewUtils;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.viewers.LabelProvider;
@@ -71,9 +71,9 @@ public class SearchViewLabelProvider extends LabelProvider
             .getInt( PluginConstants.PREFS_SEARCH_VIEW_SECONDARY_LABEL_ABBREVIATE_MAX_LENGTH );
         boolean schemaLabelDisplay = store.getBoolean( PluginConstants.PREFS_SEARCH_VIEW_SCHEMA_LABEL_DISPLAY );
 
-        if ( element instanceof AttributeTypeImpl )
+        if ( element instanceof AttributeType )
         {
-            AttributeTypeImpl at = ( AttributeTypeImpl ) element;
+            AttributeType at = ( AttributeType ) element;
 
             // Label
             if ( labelValue == PluginConstants.PREFS_SEARCH_VIEW_LABEL_FIRST_NAME )
@@ -124,9 +124,9 @@ public class SearchViewLabelProvider extends LabelProvider
                 label = label.substring( 0, abbreviateMaxLength ) + "..."; //$NON-NLS-1$
             }
         }
-        else if ( element instanceof ObjectClassImpl )
+        else if ( element instanceof ObjectClass )
         {
-            ObjectClassImpl oc = ( ObjectClassImpl ) element;
+            ObjectClass oc = ( ObjectClass ) element;
 
             // Label
             if ( labelValue == PluginConstants.PREFS_SEARCH_VIEW_LABEL_FIRST_NAME )
@@ -182,9 +182,9 @@ public class SearchViewLabelProvider extends LabelProvider
         if ( secondaryLabelDisplay )
         {
             String secondaryLabel = ""; //$NON-NLS-1$
-            if ( element instanceof AttributeTypeImpl )
+            if ( element instanceof AttributeType )
             {
-                AttributeTypeImpl at = ( AttributeTypeImpl ) element;
+                AttributeType at = ( AttributeType ) element;
 
                 if ( secondaryLabelValue == PluginConstants.PREFS_SEARCH_VIEW_LABEL_FIRST_NAME )
                 {
@@ -215,9 +215,9 @@ public class SearchViewLabelProvider extends LabelProvider
                     secondaryLabel = at.getOid();
                 }
             }
-            else if ( element instanceof ObjectClassImpl )
+            else if ( element instanceof ObjectClass )
             {
-                ObjectClassImpl oc = ( ObjectClassImpl ) element;
+                ObjectClass oc = ( ObjectClass ) element;
 
                 if ( secondaryLabelValue == PluginConstants.PREFS_SEARCH_VIEW_LABEL_FIRST_NAME )
                 {
@@ -277,11 +277,11 @@ public class SearchViewLabelProvider extends LabelProvider
      */
     public Image getImage( Object element )
     {
-        if ( element instanceof AttributeTypeImpl )
+        if ( element instanceof AttributeType )
         {
             return Activator.getDefault().getImage( PluginConstants.IMG_ATTRIBUTE_TYPE );
         }
-        else if ( element instanceof ObjectClassImpl )
+        else if ( element instanceof ObjectClass )
         {
             return Activator.getDefault().getImage( PluginConstants.IMG_OBJECT_CLASS );
         }

@@ -20,7 +20,7 @@
 package org.apache.directory.studio.schemaeditor.view.editors.attributetype;
 
 
-import org.apache.directory.studio.schemaeditor.model.SyntaxImpl;
+import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
 import org.apache.directory.studio.schemaeditor.view.editors.NonExistingSyntax;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.osgi.util.NLS;
@@ -38,9 +38,9 @@ public class ATESyntaxComboLabelProvider extends LabelProvider
      */
     public String getText( Object obj )
     {
-        if ( obj instanceof SyntaxImpl )
+        if ( obj instanceof LdapSyntax )
         {
-            SyntaxImpl syntax = ( SyntaxImpl ) obj;
+            LdapSyntax syntax = ( LdapSyntax ) obj;
 
             String name = syntax.getName();
             if ( name != null )

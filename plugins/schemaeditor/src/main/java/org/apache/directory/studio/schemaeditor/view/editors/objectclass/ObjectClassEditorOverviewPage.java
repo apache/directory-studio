@@ -25,16 +25,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.directory.shared.asn1.util.OID;
+import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
+import org.apache.directory.shared.ldap.model.schema.MatchingRule;
+import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.shared.ldap.model.schema.ObjectClassTypeEnum;
 import org.apache.directory.studio.schemaeditor.Activator;
 import org.apache.directory.studio.schemaeditor.PluginConstants;
 import org.apache.directory.studio.schemaeditor.controller.SchemaHandler;
 import org.apache.directory.studio.schemaeditor.controller.SchemaHandlerListener;
-import org.apache.directory.studio.schemaeditor.model.AttributeTypeImpl;
-import org.apache.directory.studio.schemaeditor.model.MatchingRuleImpl;
-import org.apache.directory.studio.schemaeditor.model.ObjectClassImpl;
 import org.apache.directory.studio.schemaeditor.model.Schema;
-import org.apache.directory.studio.schemaeditor.model.SyntaxImpl;
 import org.apache.directory.studio.schemaeditor.model.alias.Alias;
 import org.apache.directory.studio.schemaeditor.model.alias.AliasWithError;
 import org.apache.directory.studio.schemaeditor.model.alias.AliasesStringParser;
@@ -96,10 +96,10 @@ public class ObjectClassEditorOverviewPage extends FormPage
     public static final String ID = ObjectClassEditor.ID + "overviewPage"; //$NON-NLS-1$
 
     /** The original object class */
-    private ObjectClassImpl originalObjectClass;
+    private ObjectClass originalObjectClass;
 
     /** The modified object class */
-    private ObjectClassImpl modifiedObjectClass;
+    private ObjectClass modifiedObjectClass;
 
     /** The original schema */
     private Schema originalSchema;
@@ -113,7 +113,7 @@ public class ObjectClassEditorOverviewPage extends FormPage
         /* (non-Javadoc)
          * @see org.apache.directory.studio.schemaeditor.controller.SchemaHandlerListener#attributeTypeAdded(org.apache.directory.studio.schemaeditor.model.AttributeTypeImpl)
          */
-        public void attributeTypeAdded( AttributeTypeImpl at )
+        public void attributeTypeAdded( AttributeType at )
         {
             refreshUI();
         }
@@ -122,7 +122,7 @@ public class ObjectClassEditorOverviewPage extends FormPage
         /* (non-Javadoc)
          * @see org.apache.directory.studio.schemaeditor.controller.SchemaHandlerListener#attributeTypeModified(org.apache.directory.studio.schemaeditor.model.AttributeTypeImpl)
          */
-        public void attributeTypeModified( AttributeTypeImpl at )
+        public void attributeTypeModified( AttributeType at )
         {
             refreshUI();
         }
@@ -131,7 +131,7 @@ public class ObjectClassEditorOverviewPage extends FormPage
         /* (non-Javadoc)
          * @see org.apache.directory.studio.schemaeditor.controller.SchemaHandlerListener#attributeTypeRemoved(org.apache.directory.studio.schemaeditor.model.AttributeTypeImpl)
          */
-        public void attributeTypeRemoved( AttributeTypeImpl at )
+        public void attributeTypeRemoved( AttributeType at )
         {
             refreshUI();
         }
@@ -140,7 +140,7 @@ public class ObjectClassEditorOverviewPage extends FormPage
         /* (non-Javadoc)
          * @see org.apache.directory.studio.schemaeditor.controller.SchemaHandlerListener#matchingRuleAdded(org.apache.directory.studio.schemaeditor.model.MatchingRuleImpl)
          */
-        public void matchingRuleAdded( MatchingRuleImpl mr )
+        public void matchingRuleAdded( MatchingRule mr )
         {
             refreshUI();
         }
@@ -149,7 +149,7 @@ public class ObjectClassEditorOverviewPage extends FormPage
         /* (non-Javadoc)
          * @see org.apache.directory.studio.schemaeditor.controller.SchemaHandlerListener#matchingRuleModified(org.apache.directory.studio.schemaeditor.model.MatchingRuleImpl)
          */
-        public void matchingRuleModified( MatchingRuleImpl mr )
+        public void matchingRuleModified( MatchingRule mr )
         {
             refreshUI();
         }
@@ -158,7 +158,7 @@ public class ObjectClassEditorOverviewPage extends FormPage
         /* (non-Javadoc)
          * @see org.apache.directory.studio.schemaeditor.controller.SchemaHandlerListener#matchingRuleRemoved(org.apache.directory.studio.schemaeditor.model.MatchingRuleImpl)
          */
-        public void matchingRuleRemoved( MatchingRuleImpl mr )
+        public void matchingRuleRemoved( MatchingRule mr )
         {
             refreshUI();
         }
@@ -167,7 +167,7 @@ public class ObjectClassEditorOverviewPage extends FormPage
         /* (non-Javadoc)
          * @see org.apache.directory.studio.schemaeditor.controller.SchemaHandlerListener#objectClassAdded(org.apache.directory.studio.schemaeditor.model.ObjectClassImpl)
          */
-        public void objectClassAdded( ObjectClassImpl oc )
+        public void objectClassAdded( ObjectClass oc )
         {
             refreshUI();
         }
@@ -176,7 +176,7 @@ public class ObjectClassEditorOverviewPage extends FormPage
         /* (non-Javadoc)
          * @see org.apache.directory.studio.schemaeditor.controller.SchemaHandlerListener#objectClassModified(org.apache.directory.studio.schemaeditor.model.ObjectClassImpl)
          */
-        public void objectClassModified( ObjectClassImpl oc )
+        public void objectClassModified( ObjectClass oc )
         {
             refreshUI();
         }
@@ -185,7 +185,7 @@ public class ObjectClassEditorOverviewPage extends FormPage
         /* (non-Javadoc)
          * @see org.apache.directory.studio.schemaeditor.controller.SchemaHandlerListener#objectClassRemoved(org.apache.directory.studio.schemaeditor.model.ObjectClassImpl)
          */
-        public void objectClassRemoved( ObjectClassImpl oc )
+        public void objectClassRemoved( ObjectClass oc )
         {
             if ( !oc.equals( originalObjectClass ) )
             {
@@ -218,7 +218,7 @@ public class ObjectClassEditorOverviewPage extends FormPage
         /* (non-Javadoc)
          * @see org.apache.directory.studio.schemaeditor.controller.SchemaHandlerListener#syntaxAdded(org.apache.directory.studio.schemaeditor.model.SyntaxImpl)
          */
-        public void syntaxAdded( SyntaxImpl syntax )
+        public void syntaxAdded( LdapSyntax syntax )
         {
             refreshUI();
         }
@@ -227,7 +227,7 @@ public class ObjectClassEditorOverviewPage extends FormPage
         /* (non-Javadoc)
          * @see org.apache.directory.studio.schemaeditor.controller.SchemaHandlerListener#syntaxModified(org.apache.directory.studio.schemaeditor.model.SyntaxImpl)
          */
-        public void syntaxModified( SyntaxImpl syntax )
+        public void syntaxModified( LdapSyntax syntax )
         {
             refreshUI();
         }
@@ -236,7 +236,7 @@ public class ObjectClassEditorOverviewPage extends FormPage
         /* (non-Javadoc)
          * @see org.apache.directory.studio.schemaeditor.controller.SchemaHandlerListener#syntaxRemoved(org.apache.directory.studio.schemaeditor.model.SyntaxImpl)
          */
-        public void syntaxRemoved( SyntaxImpl syntax )
+        public void syntaxRemoved( LdapSyntax syntax )
         {
             refreshUI();
         }
@@ -324,7 +324,7 @@ public class ObjectClassEditorOverviewPage extends FormPage
 
             String oid = oidText.getText();
 
-            if ( OID.isOID(oid) )
+            if ( OID.isOID( oid ) )
             {
                 if ( ( originalObjectClass.getOid().equals( oid ) )
                     || !( schemaHandler.isAliasOrOidAlreadyTaken( oid ) ) )
@@ -436,12 +436,12 @@ public class ObjectClassEditorOverviewPage extends FormPage
             Object selectedElement = selection.getFirstElement();
             if ( selectedElement != null )
             {
-                if ( selectedElement instanceof AttributeTypeImpl )
+                if ( selectedElement instanceof AttributeType )
                 {
                     IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
                     try
                     {
-                        page.openEditor( new AttributeTypeEditorInput( ( AttributeTypeImpl ) selectedElement ),
+                        page.openEditor( new AttributeTypeEditorInput( ( AttributeType ) selectedElement ),
                             AttributeTypeEditor.ID );
                     }
                     catch ( PartInitException exception )
@@ -470,27 +470,27 @@ public class ObjectClassEditorOverviewPage extends FormPage
         public void widgetSelected( SelectionEvent e )
         {
             AttributeTypeSelectionDialog dialog = new AttributeTypeSelectionDialog();
-            List<AttributeTypeImpl> hiddenATs = new ArrayList<AttributeTypeImpl>();
+            List<AttributeType> hiddenATs = new ArrayList<AttributeType>();
             List<String> mustsHidden = modifiedObjectClass.getMustAttributeTypeOids();
             if ( mustsHidden != null )
             {
                 for ( String must : mustsHidden )
                 {
-                    AttributeTypeImpl at = schemaHandler.getAttributeType( must );
+                    AttributeType at = schemaHandler.getAttributeType( must );
                     if ( at != null )
                     {
                         hiddenATs.add( at );
                     }
                 }
             }
-            dialog.setHiddenAttributeTypes( hiddenATs.toArray( new AttributeTypeImpl[0] ) );
+            dialog.setHiddenAttributeTypes( hiddenATs.toArray( new AttributeType[0] ) );
 
             if ( dialog.open() != Window.OK )
             {
                 return;
             }
 
-            AttributeTypeImpl at = dialog.getSelectedAttributeType();
+            AttributeType at = dialog.getSelectedAttributeType();
             if ( at == null )
             {
                 return;
@@ -542,9 +542,9 @@ public class ObjectClassEditorOverviewPage extends FormPage
                     newMusts.add( must );
                 }
 
-                if ( selectedElement instanceof AttributeTypeImpl )
+                if ( selectedElement instanceof AttributeType )
                 {
-                    for ( String name : ( ( AttributeTypeImpl ) selectedElement ).getNames() )
+                    for ( String name : ( ( AttributeType ) selectedElement ).getNames() )
                     {
                         newMusts.remove( name );
                     }
@@ -578,12 +578,12 @@ public class ObjectClassEditorOverviewPage extends FormPage
             Object selectedElement = selection.getFirstElement();
             if ( selectedElement != null )
             {
-                if ( selectedElement instanceof AttributeTypeImpl )
+                if ( selectedElement instanceof AttributeType )
                 {
                     IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
                     try
                     {
-                        page.openEditor( new AttributeTypeEditorInput( ( AttributeTypeImpl ) selectedElement ),
+                        page.openEditor( new AttributeTypeEditorInput( ( AttributeType ) selectedElement ),
                             AttributeTypeEditor.ID );
                     }
                     catch ( PartInitException exception )
@@ -607,27 +607,27 @@ public class ObjectClassEditorOverviewPage extends FormPage
         public void widgetSelected( SelectionEvent e )
         {
             AttributeTypeSelectionDialog dialog = new AttributeTypeSelectionDialog();
-            List<AttributeTypeImpl> hiddenATs = new ArrayList<AttributeTypeImpl>();
+            List<AttributeType> hiddenATs = new ArrayList<AttributeType>();
             List<String> maysHidden = modifiedObjectClass.getMayAttributeTypeOids();
             if ( maysHidden != null )
             {
                 for ( String may : maysHidden )
                 {
-                    AttributeTypeImpl at = schemaHandler.getAttributeType( may );
+                    AttributeType at = schemaHandler.getAttributeType( may );
                     if ( at != null )
                     {
                         hiddenATs.add( at );
                     }
                 }
             }
-            dialog.setHiddenAttributeTypes( hiddenATs.toArray( new AttributeTypeImpl[0] ) );
+            dialog.setHiddenAttributeTypes( hiddenATs.toArray( new AttributeType[0] ) );
 
             if ( dialog.open() != Window.OK )
             {
                 return;
             }
 
-            AttributeTypeImpl at = dialog.getSelectedAttributeType();
+            AttributeType at = dialog.getSelectedAttributeType();
             if ( at == null )
             {
                 return;
@@ -679,9 +679,9 @@ public class ObjectClassEditorOverviewPage extends FormPage
                     newMays.add( may );
                 }
 
-                if ( selectedElement instanceof AttributeTypeImpl )
+                if ( selectedElement instanceof AttributeType )
                 {
-                    for ( String name : ( ( AttributeTypeImpl ) selectedElement ).getNames() )
+                    for ( String name : ( ( AttributeType ) selectedElement ).getNames() )
                     {
                         newMays.remove( name );
                     }
@@ -715,12 +715,12 @@ public class ObjectClassEditorOverviewPage extends FormPage
             Object selectedElement = selection.getFirstElement();
             if ( selectedElement != null )
             {
-                if ( selectedElement instanceof ObjectClassImpl )
+                if ( selectedElement instanceof ObjectClass )
                 {
                     IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
                     try
                     {
-                        page.openEditor( new ObjectClassEditorInput( ( ObjectClassImpl ) selectedElement ),
+                        page.openEditor( new ObjectClassEditorInput( ( ObjectClass ) selectedElement ),
                             ObjectClassEditor.ID );
                     }
                     catch ( PartInitException exception )
@@ -744,24 +744,24 @@ public class ObjectClassEditorOverviewPage extends FormPage
         public void widgetSelected( SelectionEvent e )
         {
             ObjectClassSelectionDialog dialog = new ObjectClassSelectionDialog();
-            List<ObjectClassImpl> hiddenOCs = new ArrayList<ObjectClassImpl>();
+            List<ObjectClass> hiddenOCs = new ArrayList<ObjectClass>();
             for ( String sup : modifiedObjectClass.getSuperiorOids() )
             {
-                ObjectClassImpl oc = schemaHandler.getObjectClass( sup );
+                ObjectClass oc = schemaHandler.getObjectClass( sup );
                 if ( oc != null )
                 {
                     hiddenOCs.add( oc );
                 }
             }
             hiddenOCs.add( originalObjectClass );
-            dialog.setHiddenObjectClasses( hiddenOCs.toArray( new ObjectClassImpl[0] ) );
+            dialog.setHiddenObjectClasses( hiddenOCs.toArray( new ObjectClass[0] ) );
 
             if ( dialog.open() != Window.OK )
             {
                 return;
             }
 
-            ObjectClassImpl oc = dialog.getSelectedObjectClass();
+            ObjectClass oc = dialog.getSelectedObjectClass();
             if ( oc == null )
             {
                 return;
@@ -810,9 +810,9 @@ public class ObjectClassEditorOverviewPage extends FormPage
                     superiors.add( sup );
                 }
 
-                if ( selectedElement instanceof ObjectClassImpl )
+                if ( selectedElement instanceof ObjectClass )
                 {
-                    for ( String name : ( ( ObjectClassImpl ) selectedElement ).getNames() )
+                    for ( String name : ( ( ObjectClass ) selectedElement ).getNames() )
                     {
                         superiors.remove( name );
                     }

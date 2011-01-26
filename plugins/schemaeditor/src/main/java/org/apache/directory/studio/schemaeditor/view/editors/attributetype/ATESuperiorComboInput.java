@@ -23,7 +23,7 @@ package org.apache.directory.studio.schemaeditor.view.editors.attributetype;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.directory.studio.schemaeditor.model.AttributeTypeImpl;
+import org.apache.directory.shared.ldap.model.schema.AttributeType;
 
 
 /**
@@ -34,7 +34,7 @@ import org.apache.directory.studio.schemaeditor.model.AttributeTypeImpl;
 public class ATESuperiorComboInput
 {
     /** The attribute type */
-    private AttributeTypeImpl at;
+    private AttributeType at;
 
     /** The children */
     private List<Object> children;
@@ -46,7 +46,7 @@ public class ATESuperiorComboInput
      * @param at
      *      the Attribute Type
      */
-    public ATESuperiorComboInput( AttributeTypeImpl at )
+    public ATESuperiorComboInput( AttributeType at )
     {
         this.at = at;
     }
@@ -58,7 +58,7 @@ public class ATESuperiorComboInput
      * @return
      *      the attribute type
      */
-    public AttributeTypeImpl getAttributeType()
+    public AttributeType getAttributeType()
     {
         return at;
     }

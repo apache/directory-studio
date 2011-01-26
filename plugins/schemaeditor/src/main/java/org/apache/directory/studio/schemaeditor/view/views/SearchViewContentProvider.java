@@ -25,11 +25,11 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.shared.ldap.model.schema.SchemaObject;
 import org.apache.directory.studio.schemaeditor.Activator;
 import org.apache.directory.studio.schemaeditor.PluginConstants;
-import org.apache.directory.studio.schemaeditor.model.AttributeTypeImpl;
-import org.apache.directory.studio.schemaeditor.model.ObjectClassImpl;
 import org.apache.directory.studio.schemaeditor.view.wrappers.TreeNode;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
@@ -68,34 +68,34 @@ public class SearchViewContentProvider implements IStructuredContentProvider, IT
                 List<String> o1Names = null;
                 List<String> o2Names = null;
 
-                if ( ( o1 instanceof AttributeTypeImpl ) && ( o2 instanceof AttributeTypeImpl ) )
+                if ( ( o1 instanceof AttributeType ) && ( o2 instanceof AttributeType ) )
                 {
-                    AttributeTypeImpl at1 = ( AttributeTypeImpl ) o1;
-                    AttributeTypeImpl at2 = ( AttributeTypeImpl ) o2;
+                    AttributeType at1 = ( AttributeType ) o1;
+                    AttributeType at2 = ( AttributeType ) o2;
 
                     o1Names = at1.getNames();
                     o2Names = at2.getNames();
                 }
-                else if ( ( o1 instanceof ObjectClassImpl ) && ( o2 instanceof ObjectClassImpl ) )
+                else if ( ( o1 instanceof ObjectClass ) && ( o2 instanceof ObjectClass ) )
                 {
-                    ObjectClassImpl oc1 = ( ObjectClassImpl ) o1;
-                    ObjectClassImpl oc2 = ( ObjectClassImpl ) o2;
+                    ObjectClass oc1 = ( ObjectClass ) o1;
+                    ObjectClass oc2 = ( ObjectClass ) o2;
 
                     o1Names = oc1.getNames();
                     o2Names = oc2.getNames();
                 }
-                else if ( ( o1 instanceof AttributeTypeImpl ) && ( o2 instanceof ObjectClassImpl ) )
+                else if ( ( o1 instanceof AttributeType ) && ( o2 instanceof ObjectClass ) )
                 {
-                    AttributeTypeImpl at = ( AttributeTypeImpl ) o1;
-                    ObjectClassImpl oc = ( ObjectClassImpl ) o2;
+                    AttributeType at = ( AttributeType ) o1;
+                    ObjectClass oc = ( ObjectClass ) o2;
 
                     o1Names = at.getNames();
                     o2Names = oc.getNames();
                 }
-                else if ( ( o1 instanceof ObjectClassImpl ) && ( o2 instanceof AttributeTypeImpl ) )
+                else if ( ( o1 instanceof ObjectClass ) && ( o2 instanceof AttributeType ) )
                 {
-                    ObjectClassImpl oc = ( ObjectClassImpl ) o1;
-                    AttributeTypeImpl at = ( AttributeTypeImpl ) o2;
+                    ObjectClass oc = ( ObjectClass ) o1;
+                    AttributeType at = ( AttributeType ) o2;
 
                     o1Names = oc.getNames();
                     o2Names = at.getNames();
@@ -106,15 +106,15 @@ public class SearchViewContentProvider implements IStructuredContentProvider, IT
                 {
                     if ( ( o1Names.size() > 0 ) && ( o2Names.size() > 0 ) )
                     {
-                        return o1Names.get(0).compareToIgnoreCase( o2Names.get(0) );
+                        return o1Names.get( 0 ).compareToIgnoreCase( o2Names.get( 0 ) );
                     }
                     else if ( ( o1Names.size() == 0 ) && ( o2Names.size() > 0 ) )
                     {
-                        return "".compareToIgnoreCase( o2Names.get(0) ); //$NON-NLS-1$
+                        return "".compareToIgnoreCase( o2Names.get( 0 ) ); //$NON-NLS-1$
                     }
                     else if ( ( o1Names.size() > 0 ) && ( o2Names.size() == 0 ) )
                     {
-                        return o1Names.get(0).compareToIgnoreCase( "" ); //$NON-NLS-1$
+                        return o1Names.get( 0 ).compareToIgnoreCase( "" ); //$NON-NLS-1$
                     }
                 }
 
@@ -127,31 +127,31 @@ public class SearchViewContentProvider implements IStructuredContentProvider, IT
         {
             public int compare( SchemaObject o1, SchemaObject o2 )
             {
-                if ( ( o1 instanceof AttributeTypeImpl ) && ( o2 instanceof AttributeTypeImpl ) )
+                if ( ( o1 instanceof AttributeType ) && ( o2 instanceof AttributeType ) )
                 {
-                    AttributeTypeImpl at1 = ( AttributeTypeImpl ) o1;
-                    AttributeTypeImpl at2 = ( AttributeTypeImpl ) o2;
+                    AttributeType at1 = ( AttributeType ) o1;
+                    AttributeType at2 = ( AttributeType ) o2;
 
                     return at1.getOid().compareToIgnoreCase( at2.getOid() );
                 }
-                else if ( ( o1 instanceof ObjectClassImpl ) && ( o2 instanceof ObjectClassImpl ) )
+                else if ( ( o1 instanceof ObjectClass ) && ( o2 instanceof ObjectClass ) )
                 {
-                    ObjectClassImpl oc1 = ( ObjectClassImpl ) o1;
-                    ObjectClassImpl oc2 = ( ObjectClassImpl ) o2;
+                    ObjectClass oc1 = ( ObjectClass ) o1;
+                    ObjectClass oc2 = ( ObjectClass ) o2;
 
                     return oc1.getOid().compareToIgnoreCase( oc2.getOid() );
                 }
-                else if ( ( o1 instanceof AttributeTypeImpl ) && ( o2 instanceof ObjectClassImpl ) )
+                else if ( ( o1 instanceof AttributeType ) && ( o2 instanceof ObjectClass ) )
                 {
-                    AttributeTypeImpl at = ( AttributeTypeImpl ) o1;
-                    ObjectClassImpl oc = ( ObjectClassImpl ) o2;
+                    AttributeType at = ( AttributeType ) o1;
+                    ObjectClass oc = ( ObjectClass ) o2;
 
                     return at.getOid().compareToIgnoreCase( oc.getOid() );
                 }
-                else if ( ( o1 instanceof ObjectClassImpl ) && ( o2 instanceof AttributeTypeImpl ) )
+                else if ( ( o1 instanceof ObjectClass ) && ( o2 instanceof AttributeType ) )
                 {
-                    ObjectClassImpl oc = ( ObjectClassImpl ) o1;
-                    AttributeTypeImpl at = ( AttributeTypeImpl ) o2;
+                    ObjectClass oc = ( ObjectClass ) o1;
+                    AttributeType at = ( AttributeType ) o2;
 
                     return oc.getOid().compareToIgnoreCase( at.getOid() );
                 }
@@ -208,18 +208,18 @@ public class SearchViewContentProvider implements IStructuredContentProvider, IT
 
             if ( group == PluginConstants.PREFS_SEARCH_VIEW_GROUPING_ATTRIBUTE_TYPES_FIRST )
             {
-                List<AttributeTypeImpl> attributeTypes = new ArrayList<AttributeTypeImpl>();
-                List<ObjectClassImpl> objectClasses = new ArrayList<ObjectClassImpl>();
+                List<AttributeType> attributeTypes = new ArrayList<AttributeType>();
+                List<ObjectClass> objectClasses = new ArrayList<ObjectClass>();
 
                 for ( SchemaObject searchResult : searchResults )
                 {
-                    if ( searchResult instanceof AttributeTypeImpl )
+                    if ( searchResult instanceof AttributeType )
                     {
-                        attributeTypes.add( ( AttributeTypeImpl ) searchResult );
+                        attributeTypes.add( ( AttributeType ) searchResult );
                     }
-                    else if ( searchResult instanceof ObjectClassImpl )
+                    else if ( searchResult instanceof ObjectClass )
                     {
-                        objectClasses.add( ( ObjectClassImpl ) searchResult );
+                        objectClasses.add( ( ObjectClass ) searchResult );
                     }
                 }
 
@@ -247,18 +247,18 @@ public class SearchViewContentProvider implements IStructuredContentProvider, IT
             }
             else if ( group == PluginConstants.PREFS_SEARCH_VIEW_GROUPING_OBJECT_CLASSES_FIRST )
             {
-                List<AttributeTypeImpl> attributeTypes = new ArrayList<AttributeTypeImpl>();
-                List<ObjectClassImpl> objectClasses = new ArrayList<ObjectClassImpl>();
+                List<AttributeType> attributeTypes = new ArrayList<AttributeType>();
+                List<ObjectClass> objectClasses = new ArrayList<ObjectClass>();
 
                 for ( SchemaObject searchResult : searchResults )
                 {
-                    if ( searchResult instanceof AttributeTypeImpl )
+                    if ( searchResult instanceof AttributeType )
                     {
-                        attributeTypes.add( ( AttributeTypeImpl ) searchResult );
+                        attributeTypes.add( ( AttributeType ) searchResult );
                     }
-                    else if ( searchResult instanceof ObjectClassImpl )
+                    else if ( searchResult instanceof ObjectClass )
                     {
-                        objectClasses.add( ( ObjectClassImpl ) searchResult );
+                        objectClasses.add( ( ObjectClass ) searchResult );
                     }
                 }
 

@@ -21,6 +21,7 @@
 package org.apache.directory.studio.schemaeditor.view.editors.attributetype;
 
 
+import org.apache.directory.shared.ldap.model.schema.AttributeType;
 import org.apache.directory.studio.schemaeditor.Activator;
 import org.apache.directory.studio.schemaeditor.PluginConstants;
 import org.apache.directory.studio.schemaeditor.PluginUtils;
@@ -29,7 +30,6 @@ import org.apache.directory.studio.schemaeditor.controller.AttributeTypeListener
 import org.apache.directory.studio.schemaeditor.controller.SchemaHandler;
 import org.apache.directory.studio.schemaeditor.controller.SchemaHandlerAdapter;
 import org.apache.directory.studio.schemaeditor.controller.SchemaHandlerListener;
-import org.apache.directory.studio.schemaeditor.model.AttributeTypeImpl;
 import org.apache.directory.studio.schemaeditor.model.Schema;
 import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -69,10 +69,10 @@ public class AttributeTypeEditor extends FormEditor
     private AttributeTypeEditorUsedByPage usedBy;
 
     /** The original attribute type */
-    private AttributeTypeImpl originalAttributeType;
+    private AttributeType originalAttributeType;
 
     /** The attribute type used to save modifications */
-    private AttributeTypeImpl modifiedAttributeType;
+    private AttributeType modifiedAttributeType;
 
     /** The originalSchema */
     private Schema originalSchema;
@@ -254,7 +254,7 @@ public class AttributeTypeEditor extends FormEditor
      * @return
      *      the original attribute type
      */
-    public AttributeTypeImpl getOriginalAttributeType()
+    public AttributeType getOriginalAttributeType()
     {
         return originalAttributeType;
     }
@@ -266,7 +266,7 @@ public class AttributeTypeEditor extends FormEditor
      * @return
      *      the modified attribute type
      */
-    public AttributeTypeImpl getModifiedAttributeType()
+    public AttributeType getModifiedAttributeType()
     {
         return modifiedAttributeType;
     }
@@ -278,7 +278,7 @@ public class AttributeTypeEditor extends FormEditor
      * @param modifiedAttributeType
      *      the modified attribute type to set.
      */
-    public void setModifiedAttributeType( AttributeTypeImpl modifiedAttributeType )
+    public void setModifiedAttributeType( AttributeType modifiedAttributeType )
     {
         this.modifiedAttributeType = modifiedAttributeType;
     }

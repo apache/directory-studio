@@ -23,8 +23,8 @@ package org.apache.directory.studio.schemaeditor.view.wrappers;
 
 import java.util.Comparator;
 
-import org.apache.directory.studio.schemaeditor.model.AttributeTypeImpl;
-import org.apache.directory.studio.schemaeditor.model.ObjectClassImpl;
+import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 
 
 /**
@@ -39,29 +39,29 @@ public class OidSorter implements Comparator<TreeNode>
     {
         if ( ( o1 instanceof AttributeTypeWrapper ) && ( o2 instanceof AttributeTypeWrapper ) )
         {
-            AttributeTypeImpl at1 = ( ( AttributeTypeWrapper ) o1 ).getAttributeType();
-            AttributeTypeImpl at2 = ( ( AttributeTypeWrapper ) o2 ).getAttributeType();
+            AttributeType at1 = ( ( AttributeTypeWrapper ) o1 ).getAttributeType();
+            AttributeType at2 = ( ( AttributeTypeWrapper ) o2 ).getAttributeType();
 
             return at1.getOid().compareToIgnoreCase( at2.getOid() );
         }
         else if ( ( o1 instanceof ObjectClassWrapper ) && ( o2 instanceof ObjectClassWrapper ) )
         {
-            ObjectClassImpl oc1 = ( ( ObjectClassWrapper ) o1 ).getObjectClass();
-            ObjectClassImpl oc2 = ( ( ObjectClassWrapper ) o2 ).getObjectClass();
+            ObjectClass oc1 = ( ( ObjectClassWrapper ) o1 ).getObjectClass();
+            ObjectClass oc2 = ( ( ObjectClassWrapper ) o2 ).getObjectClass();
 
             return oc1.getOid().compareToIgnoreCase( oc2.getOid() );
         }
         else if ( ( o1 instanceof AttributeTypeWrapper ) && ( o2 instanceof ObjectClassWrapper ) )
         {
-            AttributeTypeImpl at = ( ( AttributeTypeWrapper ) o1 ).getAttributeType();
-            ObjectClassImpl oc = ( ( ObjectClassWrapper ) o2 ).getObjectClass();
+            AttributeType at = ( ( AttributeTypeWrapper ) o1 ).getAttributeType();
+            ObjectClass oc = ( ( ObjectClassWrapper ) o2 ).getObjectClass();
 
             return at.getOid().compareToIgnoreCase( oc.getOid() );
         }
         else if ( ( o1 instanceof ObjectClassWrapper ) && ( o2 instanceof AttributeTypeWrapper ) )
         {
-            ObjectClassImpl oc = ( ( ObjectClassWrapper ) o1 ).getObjectClass();
-            AttributeTypeImpl at = ( ( AttributeTypeWrapper ) o2 ).getAttributeType();
+            ObjectClass oc = ( ( ObjectClassWrapper ) o1 ).getObjectClass();
+            AttributeType at = ( ( AttributeTypeWrapper ) o2 ).getAttributeType();
 
             return oc.getOid().compareToIgnoreCase( at.getOid() );
         }

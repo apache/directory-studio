@@ -22,7 +22,7 @@ package org.apache.directory.studio.schemaeditor.view.editors.attributetype;
 
 import java.util.List;
 
-import org.apache.directory.studio.schemaeditor.model.AttributeTypeImpl;
+import org.apache.directory.shared.ldap.model.schema.AttributeType;
 import org.apache.directory.studio.schemaeditor.view.ViewUtils;
 import org.apache.directory.studio.schemaeditor.view.editors.NonExistingAttributeType;
 import org.eclipse.jface.viewers.LabelProvider;
@@ -41,9 +41,9 @@ public class ATESuperiorComboLabelProvider extends LabelProvider
      */
     public String getText( Object obj )
     {
-        if ( obj instanceof AttributeTypeImpl )
+        if ( obj instanceof AttributeType )
         {
-            AttributeTypeImpl at = ( AttributeTypeImpl ) obj;
+            AttributeType at = ( AttributeType ) obj;
 
             List<String> names = at.getNames();
             if ( ( names != null ) && ( names.size() > 0 ) )

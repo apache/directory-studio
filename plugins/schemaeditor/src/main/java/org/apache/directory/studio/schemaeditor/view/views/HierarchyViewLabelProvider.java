@@ -23,10 +23,10 @@ package org.apache.directory.studio.schemaeditor.view.views;
 
 import java.util.List;
 
+import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.studio.schemaeditor.Activator;
 import org.apache.directory.studio.schemaeditor.PluginConstants;
-import org.apache.directory.studio.schemaeditor.model.AttributeTypeImpl;
-import org.apache.directory.studio.schemaeditor.model.ObjectClassImpl;
 import org.apache.directory.studio.schemaeditor.view.ViewUtils;
 import org.apache.directory.studio.schemaeditor.view.wrappers.AttributeTypeWrapper;
 import org.apache.directory.studio.schemaeditor.view.wrappers.ObjectClassWrapper;
@@ -81,7 +81,7 @@ public class HierarchyViewLabelProvider extends LabelProvider
 
         if ( obj instanceof AttributeTypeWrapper )
         {
-            AttributeTypeImpl at = ( ( AttributeTypeWrapper ) obj ).getAttributeType();
+            AttributeType at = ( ( AttributeTypeWrapper ) obj ).getAttributeType();
 
             // Label
             if ( labelValue == PluginConstants.PREFS_HIERARCHY_VIEW_LABEL_FIRST_NAME )
@@ -134,7 +134,7 @@ public class HierarchyViewLabelProvider extends LabelProvider
         }
         else if ( obj instanceof ObjectClassWrapper )
         {
-            ObjectClassImpl oc = ( ( ObjectClassWrapper ) obj ).getObjectClass();
+            ObjectClass oc = ( ( ObjectClassWrapper ) obj ).getObjectClass();
 
             // Label
             if ( labelValue == PluginConstants.PREFS_HIERARCHY_VIEW_LABEL_FIRST_NAME )
@@ -192,7 +192,7 @@ public class HierarchyViewLabelProvider extends LabelProvider
             String secondaryLabel = ""; //$NON-NLS-1$
             if ( obj instanceof AttributeTypeWrapper )
             {
-                AttributeTypeImpl at = ( ( AttributeTypeWrapper ) obj ).getAttributeType();
+                AttributeType at = ( ( AttributeTypeWrapper ) obj ).getAttributeType();
 
                 if ( secondaryLabelValue == PluginConstants.PREFS_HIERARCHY_VIEW_LABEL_FIRST_NAME )
                 {
@@ -225,7 +225,7 @@ public class HierarchyViewLabelProvider extends LabelProvider
             }
             else if ( obj instanceof ObjectClassWrapper )
             {
-                ObjectClassImpl oc = ( ( ObjectClassWrapper ) obj ).getObjectClass();
+                ObjectClass oc = ( ( ObjectClassWrapper ) obj ).getObjectClass();
 
                 if ( secondaryLabelValue == PluginConstants.PREFS_HIERARCHY_VIEW_LABEL_FIRST_NAME )
                 {

@@ -23,9 +23,9 @@ package org.apache.directory.studio.schemaeditor.view.editors.objectclass;
 
 import java.util.List;
 
+import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.studio.schemaeditor.Activator;
 import org.apache.directory.studio.schemaeditor.PluginConstants;
-import org.apache.directory.studio.schemaeditor.model.ObjectClassImpl;
 import org.apache.directory.studio.schemaeditor.view.ViewUtils;
 import org.apache.directory.studio.schemaeditor.view.editors.NonExistingObjectClass;
 import org.eclipse.jface.viewers.ITableLabelProvider;
@@ -46,7 +46,7 @@ public class ObjectClassEditorSuperiorsTableLabelProvider extends LabelProvider 
      */
     public Image getColumnImage( Object element, int columnIndex )
     {
-        if ( ( element instanceof ObjectClassImpl ) || ( element instanceof NonExistingObjectClass ) )
+        if ( ( element instanceof ObjectClass ) || ( element instanceof NonExistingObjectClass ) )
         {
             return Activator.getDefault().getImage( PluginConstants.IMG_OBJECT_CLASS );
         }
@@ -61,9 +61,9 @@ public class ObjectClassEditorSuperiorsTableLabelProvider extends LabelProvider 
      */
     public String getColumnText( Object element, int columnIndex )
     {
-        if ( element instanceof ObjectClassImpl )
+        if ( element instanceof ObjectClass )
         {
-            ObjectClassImpl oc = ( ObjectClassImpl ) element;
+            ObjectClass oc = ( ObjectClass ) element;
 
             List<String> names = oc.getNames();
             if ( ( names != null ) && ( names.size() > 0 ) )

@@ -23,9 +23,9 @@ package org.apache.directory.studio.schemaeditor.view.dialogs;
 
 import java.util.List;
 
+import org.apache.directory.shared.ldap.model.schema.AttributeType;
 import org.apache.directory.studio.schemaeditor.Activator;
 import org.apache.directory.studio.schemaeditor.PluginConstants;
-import org.apache.directory.studio.schemaeditor.model.AttributeTypeImpl;
 import org.apache.directory.studio.schemaeditor.view.ViewUtils;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.osgi.util.NLS;
@@ -44,7 +44,7 @@ public class AttributeTypeSelectionDialogLabelProvider extends LabelProvider
      */
     public Image getImage( Object element )
     {
-        if ( element instanceof AttributeTypeImpl )
+        if ( element instanceof AttributeType )
         {
             return Activator.getDefault().getImage( PluginConstants.IMG_ATTRIBUTE_TYPE );
         }
@@ -59,9 +59,9 @@ public class AttributeTypeSelectionDialogLabelProvider extends LabelProvider
      */
     public String getText( Object element )
     {
-        if ( element instanceof AttributeTypeImpl )
+        if ( element instanceof AttributeType )
         {
-            AttributeTypeImpl at = ( AttributeTypeImpl ) element;
+            AttributeType at = ( AttributeType ) element;
 
             List<String> names = at.getNames();
             if ( ( names != null ) && ( names.size() > 0 ) )

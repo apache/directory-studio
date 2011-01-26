@@ -23,7 +23,7 @@ package org.apache.directory.studio.schemaeditor.view.editors.objectclass;
 
 import java.util.List;
 
-import org.apache.directory.studio.schemaeditor.model.ObjectClassImpl;
+import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.ui.IEditorInput;
@@ -35,7 +35,7 @@ import org.eclipse.ui.IPersistableElement;
  */
 public class ObjectClassEditorInput implements IEditorInput
 {
-    private ObjectClassImpl objectClass;
+    private ObjectClass objectClass;
 
 
     /**
@@ -44,7 +44,7 @@ public class ObjectClassEditorInput implements IEditorInput
      * @param obj
      *      the object class
      */
-    public ObjectClassEditorInput( ObjectClassImpl obj )
+    public ObjectClassEditorInput( ObjectClass obj )
     {
         super();
         objectClass = obj;
@@ -134,7 +134,7 @@ public class ObjectClassEditorInput implements IEditorInput
      * @return
      *      the input object class
      */
-    public ObjectClassImpl getObjectClass()
+    public ObjectClass getObjectClass()
     {
         return this.objectClass;
     }

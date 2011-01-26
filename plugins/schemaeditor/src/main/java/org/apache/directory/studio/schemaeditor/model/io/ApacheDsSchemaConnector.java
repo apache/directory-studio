@@ -29,6 +29,10 @@ import javax.naming.directory.Attribute;
 import javax.naming.directory.SearchControls;
 import javax.naming.directory.SearchResult;
 
+import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
+import org.apache.directory.shared.ldap.model.schema.MatchingRule;
+import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.shared.ldap.model.schema.ObjectClassTypeEnum;
 import org.apache.directory.shared.ldap.model.schema.UsageEnum;
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
@@ -36,12 +40,8 @@ import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
 import org.apache.directory.studio.connection.core.Connection.ReferralHandlingMethod;
 import org.apache.directory.studio.connection.core.io.ConnectionWrapper;
-import org.apache.directory.studio.schemaeditor.model.AttributeTypeImpl;
-import org.apache.directory.studio.schemaeditor.model.MatchingRuleImpl;
-import org.apache.directory.studio.schemaeditor.model.ObjectClassImpl;
 import org.apache.directory.studio.schemaeditor.model.Schema;
 import org.apache.directory.studio.schemaeditor.model.SchemaImpl;
-import org.apache.directory.studio.schemaeditor.model.SyntaxImpl;
 
 
 /**
@@ -222,27 +222,23 @@ public class ApacheDsSchemaConnector extends AbstractSchemaConnector implements 
                     switch ( getNodeType( searchResult ) )
                     {
                         case ATTRIBUTE_TYPE:
-                            AttributeTypeImpl at = createAttributeType( searchResult );
+                            AttributeType at = createAttributeType( searchResult );
                             at.setSchemaName( name );
-                            at.setSchemaObject( schema );
                             schema.addAttributeType( at );
                             break;
                         case OBJECT_CLASS:
-                            ObjectClassImpl oc = createObjectClass( searchResult );
+                            ObjectClass oc = createObjectClass( searchResult );
                             oc.setSchemaName( name );
-                            oc.setSchemaObject( schema );
                             schema.addObjectClass( oc );
                             break;
                         case MATCHING_RULE:
-                            MatchingRuleImpl mr = createMatchingRule( searchResult );
+                            MatchingRule mr = createMatchingRule( searchResult );
                             mr.setSchemaName( name );
-                            mr.setSchemaObject( schema );
                             schema.addMatchingRule( mr );
                             break;
                         case SYNTAX:
-                            SyntaxImpl syntax = createSyntax( searchResult );
+                            LdapSyntax syntax = createSyntax( searchResult );
                             syntax.setSchemaName( name );
-                            syntax.setSchemaObject( schema );
                             schema.addSyntax( syntax );
                             break;
                         default:
@@ -312,9 +308,9 @@ public class ApacheDsSchemaConnector extends AbstractSchemaConnector implements 
      * AttributeTypeImpl could be created
      * @throws NamingException 
      */
-    private static AttributeTypeImpl createAttributeType( SearchResult sr ) throws NamingException
+    private static AttributeType createAttributeType( SearchResult sr ) throws NamingException
     {
-        AttributeTypeImpl at = new AttributeTypeImpl( getOid( sr ) );
+        AttributeType at = new AttributeType( getOid( sr ) );
         at.setNames( getNames( sr ) );
         at.setDescription( getDescription( sr ) );
         at.setObsolete( isObsolete( sr ) );
@@ -342,9 +338,9 @@ public class ApacheDsSchemaConnector extends AbstractSchemaConnector implements 
      * ObjectClassImpl could be created
      * @throws NamingException 
      */
-    private static ObjectClassImpl createObjectClass( SearchResult sr ) throws NamingException
+    private static ObjectClass createObjectClass( SearchResult sr ) throws NamingException
     {
-        ObjectClassImpl oc = new ObjectClassImpl( getOid( sr ) );
+        ObjectClass oc = new ObjectClass( getOid( sr ) );
         oc.setNames( getNames( sr ) );
         oc.setDescription( getDescription( sr ) );
         oc.setObsolete( isObsolete( sr ) );
@@ -366,9 +362,9 @@ public class ApacheDsSchemaConnector extends AbstractSchemaConnector implements 
      * ObjectClass could be created
      * @throws NamingException 
      */
-    private static MatchingRuleImpl createMatchingRule( SearchResult sr ) throws NamingException
+    private static MatchingRule createMatchingRule( SearchResult sr ) throws NamingException
     {
-        MatchingRuleImpl mr = new MatchingRuleImpl( getOid( sr ) );
+        MatchingRule mr = new MatchingRule( getOid( sr ) );
         mr.setNames( getNames( sr ) );
         mr.setDescription( getDescription( sr ) );
         mr.setObsolete( isObsolete( sr ) );
@@ -387,9 +383,9 @@ public class ApacheDsSchemaConnector extends AbstractSchemaConnector implements 
      * ObjectClass could be created
      * @throws NamingException 
      */
-    private static SyntaxImpl createSyntax( SearchResult sr ) throws NamingException
+    private static LdapSyntax createSyntax( SearchResult sr ) throws NamingException
     {
-        SyntaxImpl syntax = new SyntaxImpl( getOid( sr ) );
+        LdapSyntax syntax = new LdapSyntax( getOid( sr ) );
         syntax.setNames( getNames( sr ) );
         syntax.setDescription( getDescription( sr ) );
         syntax.setObsolete( isObsolete( sr ) );

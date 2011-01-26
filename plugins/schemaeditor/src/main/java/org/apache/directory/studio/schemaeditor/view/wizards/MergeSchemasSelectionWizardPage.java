@@ -29,8 +29,6 @@ import org.apache.directory.shared.ldap.model.schema.AttributeType;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.studio.schemaeditor.Activator;
 import org.apache.directory.studio.schemaeditor.PluginConstants;
-import org.apache.directory.studio.schemaeditor.model.AttributeTypeImpl;
-import org.apache.directory.studio.schemaeditor.model.ObjectClassImpl;
 import org.apache.directory.studio.schemaeditor.model.Project;
 import org.apache.directory.studio.schemaeditor.model.ProjectType;
 import org.apache.directory.studio.schemaeditor.model.Schema;
@@ -146,13 +144,13 @@ public class MergeSchemasSelectionWizardPage extends AbstractWizardPage
                 if ( parentElement instanceof AttributeTypeFolder )
                 {
                     AttributeTypeFolder folder = ( AttributeTypeFolder ) parentElement;
-                    List<AttributeTypeImpl> attributeTypes = folder.schema.getAttributeTypes();
+                    List<AttributeType> attributeTypes = folder.schema.getAttributeTypes();
                     return attributeTypes.toArray();
                 }
                 if ( parentElement instanceof ObjectClassFolder )
                 {
                     ObjectClassFolder folder = ( ObjectClassFolder ) parentElement;
-                    List<ObjectClassImpl> objectClasses = folder.schema.getObjectClasses();
+                    List<ObjectClass> objectClasses = folder.schema.getObjectClasses();
                     return objectClasses.toArray();
                 }
 

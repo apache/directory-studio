@@ -26,12 +26,12 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.shared.ldap.model.schema.SchemaObject;
 import org.apache.directory.studio.schemaeditor.Activator;
 import org.apache.directory.studio.schemaeditor.PluginConstants;
 import org.apache.directory.studio.schemaeditor.controller.SchemaHandler;
-import org.apache.directory.studio.schemaeditor.model.AttributeTypeImpl;
-import org.apache.directory.studio.schemaeditor.model.ObjectClassImpl;
 import org.apache.directory.studio.schemaeditor.model.Schema;
 import org.apache.directory.studio.schemaeditor.view.wrappers.AttributeTypeWrapper;
 import org.apache.directory.studio.schemaeditor.view.wrappers.ObjectClassWrapper;
@@ -165,12 +165,12 @@ public class DeleteSchemaElementAction extends Action implements IWorkbenchWindo
                     }
                     else if ( selectedItem instanceof AttributeTypeWrapper )
                     {
-                        AttributeTypeImpl at = ( ( AttributeTypeWrapper ) selectedItem ).getAttributeType();
+                        AttributeType at = ( ( AttributeTypeWrapper ) selectedItem ).getAttributeType();
                         schemaObjectsList.add( at );
                     }
                     else if ( selectedItem instanceof ObjectClassWrapper )
                     {
-                        ObjectClassImpl oc = ( ( ObjectClassWrapper ) selectedItem ).getObjectClass();
+                        ObjectClass oc = ( ( ObjectClassWrapper ) selectedItem ).getObjectClass();
                         schemaObjectsList.add( oc );
                     }
                 }
@@ -184,13 +184,13 @@ public class DeleteSchemaElementAction extends Action implements IWorkbenchWindo
                         // If the schema object is not part of deleted schema, we need to delete it.
                         // But, we don't delete schema objects that are part of a deleted schema, since
                         // deleting the schema will also delete this schema object.
-                        if ( schemaObject instanceof AttributeTypeImpl )
+                        if ( schemaObject instanceof AttributeType )
                         {
-                            schemaHandler.removeAttributeType( ( AttributeTypeImpl ) schemaObject );
+                            schemaHandler.removeAttributeType( ( AttributeType ) schemaObject );
                         }
-                        else if ( schemaObject instanceof ObjectClassImpl )
+                        else if ( schemaObject instanceof ObjectClass )
                         {
-                            schemaHandler.removeObjectClass( ( ObjectClassImpl ) schemaObject );
+                            schemaHandler.removeObjectClass( ( ObjectClass ) schemaObject );
                         }
                     }
                 }

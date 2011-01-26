@@ -24,10 +24,10 @@ package org.apache.directory.studio.schemaeditor.view.views;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.studio.schemaeditor.Activator;
 import org.apache.directory.studio.schemaeditor.PluginConstants;
-import org.apache.directory.studio.schemaeditor.model.AttributeTypeImpl;
-import org.apache.directory.studio.schemaeditor.model.ObjectClassImpl;
 import org.apache.directory.studio.schemaeditor.model.hierarchy.HierarchyManager;
 import org.apache.directory.studio.schemaeditor.view.wrappers.AttributeTypeWrapper;
 import org.apache.directory.studio.schemaeditor.view.wrappers.ObjectClassWrapper;
@@ -60,15 +60,15 @@ public class HierarchyViewContentProvider implements IStructuredContentProvider,
     {
         List<TreeNode> children = new ArrayList<TreeNode>();
 
-        if ( parentElement instanceof ObjectClassImpl )
+        if ( parentElement instanceof ObjectClass )
         {
-            ObjectClassImpl oc = ( ObjectClassImpl ) parentElement;
+            ObjectClass oc = ( ObjectClass ) parentElement;
 
             children = createTypeHierarchyObjectClass( oc );
         }
-        else if ( parentElement instanceof AttributeTypeImpl )
+        else if ( parentElement instanceof AttributeType )
         {
-            AttributeTypeImpl at = ( AttributeTypeImpl ) parentElement;
+            AttributeType at = ( AttributeType ) parentElement;
 
             children = createTypeHierarchyAttributeType( at );
         }
@@ -89,7 +89,7 @@ public class HierarchyViewContentProvider implements IStructuredContentProvider,
      * @return
      *      the Type Hierarchy for an object class
      */
-    private List<TreeNode> createTypeHierarchyObjectClass( ObjectClassImpl oc )
+    private List<TreeNode> createTypeHierarchyObjectClass( ObjectClass oc )
     {
         List<TreeNode> children = new ArrayList<TreeNode>();
 
@@ -143,9 +143,9 @@ public class HierarchyViewContentProvider implements IStructuredContentProvider,
         {
             for ( Object parent : parents )
             {
-                if ( parent instanceof ObjectClassImpl )
+                if ( parent instanceof ObjectClass )
                 {
-                    ObjectClassImpl parentOC = ( ObjectClassImpl ) parent;
+                    ObjectClass parentOC = ( ObjectClass ) parent;
                     ObjectClassWrapper duplicatedOCW = ( ObjectClassWrapper ) duplicateTreeNode( ocw );
 
                     ObjectClassWrapper ocw2 = new ObjectClassWrapper( parentOC );
@@ -211,7 +211,7 @@ public class HierarchyViewContentProvider implements IStructuredContentProvider,
      * @return
      *      the Type Hierarchy for an attribute type
      */
-    private List<TreeNode> createTypeHierarchyAttributeType( AttributeTypeImpl at )
+    private List<TreeNode> createTypeHierarchyAttributeType( AttributeType at )
     {
         List<TreeNode> children = new ArrayList<TreeNode>();
         HierarchyManager hierarchyManager = new HierarchyManager();
@@ -230,9 +230,9 @@ public class HierarchyViewContentProvider implements IStructuredContentProvider,
             while ( ( parents != null ) && ( parents.size() == 1 ) )
             {
                 Object parent = parents.get( 0 );
-                if ( parent instanceof AttributeTypeImpl )
+                if ( parent instanceof AttributeType )
                 {
-                    AttributeTypeImpl parentAT = ( AttributeTypeImpl ) parent;
+                    AttributeType parentAT = ( AttributeType ) parent;
 
                     AttributeTypeWrapper atw2 = new AttributeTypeWrapper( parentAT );
                     atw.setParent( atw2 );
@@ -257,9 +257,9 @@ public class HierarchyViewContentProvider implements IStructuredContentProvider,
             while ( ( parents != null ) && ( parents.size() == 1 ) )
             {
                 Object parent = parents.get( 0 );
-                if ( parent instanceof AttributeTypeImpl )
+                if ( parent instanceof AttributeType )
                 {
-                    AttributeTypeImpl parentAT = ( AttributeTypeImpl ) parent;
+                    AttributeType parentAT = ( AttributeType ) parent;
 
                     AttributeTypeWrapper atw2 = new AttributeTypeWrapper( parentAT );
                     atw.setParent( atw2 );
@@ -304,15 +304,15 @@ public class HierarchyViewContentProvider implements IStructuredContentProvider,
             for ( Object child : children )
             {
                 TreeNode childNode = null;
-                if ( child instanceof AttributeTypeImpl )
+                if ( child instanceof AttributeType )
                 {
-                    AttributeTypeImpl at = ( AttributeTypeImpl ) child;
+                    AttributeType at = ( AttributeType ) child;
                     childNode = new AttributeTypeWrapper( at, node );
                     node.addChild( childNode );
                 }
-                else if ( child instanceof ObjectClassImpl )
+                else if ( child instanceof ObjectClass )
                 {
-                    ObjectClassImpl oc = ( ObjectClassImpl ) child;
+                    ObjectClass oc = ( ObjectClass ) child;
                     childNode = new ObjectClassWrapper( oc, node );
                     node.addChild( childNode );
                 }

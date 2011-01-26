@@ -26,14 +26,14 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
+import org.apache.directory.shared.ldap.model.schema.MatchingRule;
+import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.shared.ldap.model.schema.ObjectClassTypeEnum;
 import org.apache.directory.shared.ldap.model.schema.UsageEnum;
-import org.apache.directory.studio.schemaeditor.model.AttributeTypeImpl;
-import org.apache.directory.studio.schemaeditor.model.MatchingRuleImpl;
-import org.apache.directory.studio.schemaeditor.model.ObjectClassImpl;
 import org.apache.directory.studio.schemaeditor.model.Schema;
 import org.apache.directory.studio.schemaeditor.model.SchemaImpl;
-import org.apache.directory.studio.schemaeditor.model.SyntaxImpl;
 import org.dom4j.Attribute;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
@@ -308,13 +308,13 @@ public class XMLSchemaFileImporter
      */
     private static void readAttributeType( Element element, Schema schema ) throws XMLSchemaFileImportException
     {
-        AttributeTypeImpl at = null;
+        AttributeType at = null;
 
         // OID
         Attribute oidAttribute = element.attribute( OID_TAG );
         if ( ( oidAttribute != null ) && ( !oidAttribute.getValue().equals( "" ) ) ) //$NON-NLS-1$
         {
-            at = new AttributeTypeImpl( oidAttribute.getValue() );
+            at = new AttributeType( oidAttribute.getValue() );
         }
         else
         {
@@ -323,7 +323,6 @@ public class XMLSchemaFileImporter
 
         // Schema
         at.setSchemaName( schema.getName() );
-        at.setSchemaObject( schema );
 
         // Aliases
         Element aliasesElement = element.element( ALIASES_TAG );
@@ -479,13 +478,13 @@ public class XMLSchemaFileImporter
      */
     private static void readObjectClass( Element element, Schema schema ) throws XMLSchemaFileImportException
     {
-        ObjectClassImpl oc = null;
+        ObjectClass oc = null;
 
         // OID
         Attribute oidAttribute = element.attribute( OID_TAG );
         if ( ( oidAttribute != null ) && ( !oidAttribute.getValue().equals( "" ) ) ) //$NON-NLS-1$
         {
-            oc = new ObjectClassImpl( oidAttribute.getValue() );
+            oc = new ObjectClass( oidAttribute.getValue() );
         }
         else
         {
@@ -494,7 +493,6 @@ public class XMLSchemaFileImporter
 
         // Schema
         oc.setSchemaName( schema.getName() );
-        oc.setSchemaObject( schema );
 
         // Aliases
         Element aliasesElement = element.element( ALIASES_TAG );
@@ -627,13 +625,13 @@ public class XMLSchemaFileImporter
      */
     private static void readMatchingRule( Element element, Schema schema ) throws XMLSchemaFileImportException
     {
-        MatchingRuleImpl mr = null;
+        MatchingRule mr = null;
 
         // OID
         Attribute oidAttribute = element.attribute( OID_TAG );
         if ( ( oidAttribute != null ) && ( !oidAttribute.getValue().equals( "" ) ) ) //$NON-NLS-1$
         {
-            mr = new MatchingRuleImpl( oidAttribute.getValue() );
+            mr = new MatchingRule( oidAttribute.getValue() );
         }
         else
         {
@@ -642,7 +640,6 @@ public class XMLSchemaFileImporter
 
         // Schema
         mr.setSchemaName( schema.getName() );
-        mr.setSchemaObject( schema );
 
         // Aliases
         Element aliasesElement = element.element( ALIASES_TAG );
@@ -719,13 +716,13 @@ public class XMLSchemaFileImporter
      */
     private static void readSyntax( Element element, Schema schema ) throws XMLSchemaFileImportException
     {
-        SyntaxImpl syntax = null;
+        LdapSyntax syntax = null;
 
         // OID
         Attribute oidAttribute = element.attribute( OID_TAG );
         if ( ( oidAttribute != null ) && ( !oidAttribute.getValue().equals( "" ) ) ) //$NON-NLS-1$
         {
-            syntax = new SyntaxImpl( oidAttribute.getValue() );
+            syntax = new LdapSyntax( oidAttribute.getValue() );
         }
         else
         {
@@ -734,7 +731,6 @@ public class XMLSchemaFileImporter
 
         // Schema
         syntax.setSchemaName( schema.getName() );
-        syntax.setSchemaObject( schema );
 
         // Aliases
         Element aliasesElement = element.element( ALIASES_TAG );

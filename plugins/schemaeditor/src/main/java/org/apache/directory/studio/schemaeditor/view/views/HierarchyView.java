@@ -22,12 +22,12 @@ package org.apache.directory.studio.schemaeditor.view.views;
 
 import java.util.List;
 
+import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.shared.ldap.model.schema.SchemaObject;
 import org.apache.directory.studio.schemaeditor.Activator;
 import org.apache.directory.studio.schemaeditor.PluginConstants;
 import org.apache.directory.studio.schemaeditor.controller.HierarchyViewController;
-import org.apache.directory.studio.schemaeditor.model.AttributeTypeImpl;
-import org.apache.directory.studio.schemaeditor.model.ObjectClassImpl;
 import org.apache.directory.studio.schemaeditor.view.ViewUtils;
 import org.eclipse.jface.viewers.DecoratingLabelProvider;
 import org.eclipse.jface.viewers.TreeViewer;
@@ -153,13 +153,13 @@ public class HierarchyView extends ViewPart
         }
         else
         {
-            if ( input instanceof AttributeTypeImpl )
+            if ( input instanceof AttributeType )
             {
-                setOverviewLabel( ( AttributeTypeImpl ) input );
+                setOverviewLabel( ( AttributeType ) input );
             }
-            else if ( input instanceof ObjectClassImpl )
+            else if ( input instanceof ObjectClass )
             {
-                setOverviewLabel( ( ObjectClassImpl ) input );
+                setOverviewLabel( ( ObjectClass ) input );
             }
             else
             {

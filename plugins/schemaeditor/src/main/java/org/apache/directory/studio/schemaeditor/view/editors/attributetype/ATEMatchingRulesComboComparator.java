@@ -23,7 +23,7 @@ package org.apache.directory.studio.schemaeditor.view.editors.attributetype;
 import java.util.Comparator;
 import java.util.List;
 
-import org.apache.directory.studio.schemaeditor.model.MatchingRuleImpl;
+import org.apache.directory.shared.ldap.model.schema.MatchingRule;
 import org.apache.directory.studio.schemaeditor.view.editors.NonExistingMatchingRule;
 
 
@@ -39,19 +39,19 @@ public class ATEMatchingRulesComboComparator implements Comparator<Object>
      */
     public int compare( Object o1, Object o2 )
     {
-        if ( o1 instanceof MatchingRuleImpl && o2 instanceof MatchingRuleImpl )
+        if ( o1 instanceof MatchingRule && o2 instanceof MatchingRule )
         {
-            List<String> mr1Names = ( ( MatchingRuleImpl ) o1 ).getNames();
-            List<String> mr2Names = ( ( MatchingRuleImpl ) o2 ).getNames();
+            List<String> mr1Names = ( ( MatchingRule ) o1 ).getNames();
+            List<String> mr2Names = ( ( MatchingRule ) o2 ).getNames();
 
             if ( ( mr1Names != null ) && ( mr2Names != null ) && ( mr1Names.size() > 0 ) && ( mr2Names.size() > 0 ) )
             {
                 return mr1Names.get( 0 ).compareToIgnoreCase( mr2Names.get( 0 ) );
             }
         }
-        else if ( o1 instanceof MatchingRuleImpl && o2 instanceof NonExistingMatchingRule )
+        else if ( o1 instanceof MatchingRule && o2 instanceof NonExistingMatchingRule )
         {
-            List<String> mr1Names = ( ( MatchingRuleImpl ) o1 ).getNames();
+            List<String> mr1Names = ( ( MatchingRule ) o1 ).getNames();
             String mr2Name = ( ( NonExistingMatchingRule ) o2 ).getName();
 
             if ( ( mr1Names != null ) && ( mr2Name != null ) && ( mr1Names.size() > 0 ) )
@@ -59,10 +59,10 @@ public class ATEMatchingRulesComboComparator implements Comparator<Object>
                 return mr1Names.get( 0 ).compareToIgnoreCase( mr2Name );
             }
         }
-        else if ( o1 instanceof NonExistingMatchingRule && o2 instanceof MatchingRuleImpl )
+        else if ( o1 instanceof NonExistingMatchingRule && o2 instanceof MatchingRule )
         {
             String mr1Name = ( ( NonExistingMatchingRule ) o1 ).getName();
-            List<String> mr2Names = ( ( MatchingRuleImpl ) o2 ).getNames();
+            List<String> mr2Names = ( ( MatchingRule ) o2 ).getNames();
 
             if ( ( mr1Name != null ) && ( mr2Names != null ) && ( mr2Names.size() > 0 ) )
             {

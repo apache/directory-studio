@@ -25,9 +25,9 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.studio.schemaeditor.Activator;
 import org.apache.directory.studio.schemaeditor.controller.SchemaHandler;
-import org.apache.directory.studio.schemaeditor.model.ObjectClassImpl;
 import org.apache.directory.studio.schemaeditor.view.editors.NonExistingObjectClass;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.Viewer;
@@ -69,7 +69,7 @@ public class ObjectClassEditorSuperiorsTableContentProvider implements IStructur
             List<String> superiors = ( List<String> ) inputElement;
             for ( String superior : superiors )
             {
-                ObjectClassImpl oc = schemaHandler.getObjectClass( superior );
+                ObjectClass oc = schemaHandler.getObjectClass( superior );
                 if ( oc != null )
                 {
                     results.add( oc );
@@ -85,10 +85,10 @@ public class ObjectClassEditorSuperiorsTableContentProvider implements IStructur
             {
                 public int compare( Object o1, Object o2 )
                 {
-                    if ( o1 instanceof ObjectClassImpl && o2 instanceof ObjectClassImpl )
+                    if ( o1 instanceof ObjectClass && o2 instanceof ObjectClass )
                     {
-                        List<String> oc1Names = ( ( ObjectClassImpl ) o1 ).getNames();
-                        List<String> oc2Names = ( ( ObjectClassImpl ) o2 ).getNames();
+                        List<String> oc1Names = ( ( ObjectClass ) o1 ).getNames();
+                        List<String> oc2Names = ( ( ObjectClass ) o2 ).getNames();
 
                         if ( ( oc1Names != null ) && ( oc2Names != null ) && ( oc1Names.size() > 0 )
                             && ( oc2Names.size() > 0 ) )
@@ -96,9 +96,9 @@ public class ObjectClassEditorSuperiorsTableContentProvider implements IStructur
                             return oc1Names.get( 0 ).compareToIgnoreCase( oc2Names.get( 0 ) );
                         }
                     }
-                    else if ( o1 instanceof ObjectClassImpl && o2 instanceof NonExistingObjectClass )
+                    else if ( o1 instanceof ObjectClass && o2 instanceof NonExistingObjectClass )
                     {
-                        List<String> oc1Names = ( ( ObjectClassImpl ) o1 ).getNames();
+                        List<String> oc1Names = ( ( ObjectClass ) o1 ).getNames();
                         String oc2Name = ( ( NonExistingObjectClass ) o2 ).getName();
 
                         if ( ( oc1Names != null ) && ( oc2Name != null ) && ( oc1Names.size() > 0 ) )
@@ -106,10 +106,10 @@ public class ObjectClassEditorSuperiorsTableContentProvider implements IStructur
                             return oc1Names.get( 0 ).compareToIgnoreCase( oc2Name );
                         }
                     }
-                    else if ( o1 instanceof NonExistingObjectClass && o2 instanceof ObjectClassImpl )
+                    else if ( o1 instanceof NonExistingObjectClass && o2 instanceof ObjectClass )
                     {
                         String oc1Name = ( ( NonExistingObjectClass ) o1 ).getName();
-                        List<String> oc2Names = ( ( ObjectClassImpl ) o2 ).getNames();
+                        List<String> oc2Names = ( ( ObjectClass ) o2 ).getNames();
 
                         if ( ( oc1Name != null ) && ( oc2Names != null ) && ( oc2Names.size() > 0 ) )
                         {

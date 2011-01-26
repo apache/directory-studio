@@ -25,9 +25,9 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import org.apache.directory.shared.ldap.model.schema.AttributeType;
 import org.apache.directory.studio.schemaeditor.Activator;
 import org.apache.directory.studio.schemaeditor.PluginConstants;
-import org.apache.directory.studio.schemaeditor.model.AttributeTypeImpl;
 import org.apache.directory.studio.schemaeditor.view.ViewUtils;
 import org.apache.directory.studio.schemaeditor.view.dialogs.AttributeTypeSelectionDialog;
 import org.eclipse.jface.dialogs.Dialog;
@@ -61,7 +61,7 @@ import org.eclipse.swt.widgets.Table;
 public class NewObjectClassMandatoryAttributesPage extends WizardPage
 {
     /** The mandatory attribute types list */
-    private List<AttributeTypeImpl> mandatoryAttributeTypesList;
+    private List<AttributeType> mandatoryAttributeTypesList;
 
     // UI Fields
     private TableViewer mandatoryAttributeTypesTableViewer;
@@ -79,7 +79,7 @@ public class NewObjectClassMandatoryAttributesPage extends WizardPage
         setDescription( Messages
             .getString( "NewObjectClassMandatoryAttributesPage.SpecifiyMandatoryAttributeTypeForObjectClass" ) ); //$NON-NLS-1$
         setImageDescriptor( Activator.getDefault().getImageDescriptor( PluginConstants.IMG_OBJECT_CLASS_NEW_WIZARD ) );
-        mandatoryAttributeTypesList = new ArrayList<AttributeTypeImpl>();
+        mandatoryAttributeTypesList = new ArrayList<AttributeType>();
     }
 
 
@@ -110,7 +110,7 @@ public class NewObjectClassMandatoryAttributesPage extends WizardPage
         {
             public Image getImage( Object element )
             {
-                if ( element instanceof AttributeTypeImpl )
+                if ( element instanceof AttributeType )
                 {
                     return Activator.getDefault().getImage( PluginConstants.IMG_ATTRIBUTE_TYPE );
                 }
@@ -122,9 +122,9 @@ public class NewObjectClassMandatoryAttributesPage extends WizardPage
 
             public String getText( Object element )
             {
-                if ( element instanceof AttributeTypeImpl )
+                if ( element instanceof AttributeType )
                 {
-                    AttributeTypeImpl at = ( AttributeTypeImpl ) element;
+                    AttributeType at = ( AttributeType ) element;
 
                     List<String> names = at.getNames();
                     if ( ( names != null ) && ( names.size() > 0 ) )
@@ -186,7 +186,7 @@ public class NewObjectClassMandatoryAttributesPage extends WizardPage
     private void addMandatoryAttributeType()
     {
         AttributeTypeSelectionDialog dialog = new AttributeTypeSelectionDialog();
-        List<AttributeTypeImpl> hiddenAttributes = new ArrayList<AttributeTypeImpl>();
+        List<AttributeType> hiddenAttributes = new ArrayList<AttributeType>();
         hiddenAttributes.addAll( mandatoryAttributeTypesList );
         dialog.setHiddenAttributeTypes( hiddenAttributes );
         if ( dialog.open() == Dialog.OK )
@@ -217,9 +217,9 @@ public class NewObjectClassMandatoryAttributesPage extends WizardPage
      */
     private void updateMandatoryAttributeTypesTableTable()
     {
-        Collections.sort( mandatoryAttributeTypesList, new Comparator<AttributeTypeImpl>()
+        Collections.sort( mandatoryAttributeTypesList, new Comparator<AttributeType>()
         {
-            public int compare( AttributeTypeImpl o1, AttributeTypeImpl o2 )
+            public int compare( AttributeType o1, AttributeType o2 )
             {
                 List<String> at1Names = o1.getNames();
                 List<String> at2Names = o2.getNames();
@@ -244,7 +244,7 @@ public class NewObjectClassMandatoryAttributesPage extends WizardPage
      * @return
      *      the mandatory attributes types
      */
-    public List<AttributeTypeImpl> getMandatoryAttributeTypes()
+    public List<AttributeType> getMandatoryAttributeTypes()
     {
         return mandatoryAttributeTypesList;
     }
@@ -259,7 +259,7 @@ public class NewObjectClassMandatoryAttributesPage extends WizardPage
     public List<String> getMandatoryAttributeTypesNames()
     {
         List<String> names = new ArrayList<String>();
-        for ( AttributeTypeImpl at : mandatoryAttributeTypesList )
+        for ( AttributeType at : mandatoryAttributeTypesList )
         {
             names.add( at.getName() );
         }

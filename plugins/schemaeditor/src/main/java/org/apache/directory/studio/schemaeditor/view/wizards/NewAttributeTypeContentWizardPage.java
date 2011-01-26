@@ -25,12 +25,12 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
 import org.apache.directory.shared.ldap.model.schema.UsageEnum;
 import org.apache.directory.studio.schemaeditor.Activator;
 import org.apache.directory.studio.schemaeditor.PluginConstants;
 import org.apache.directory.studio.schemaeditor.controller.SchemaHandler;
-import org.apache.directory.studio.schemaeditor.model.AttributeTypeImpl;
-import org.apache.directory.studio.schemaeditor.model.SyntaxImpl;
 import org.apache.directory.studio.schemaeditor.view.dialogs.AttributeTypeSelectionDialog;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.viewers.ArrayContentProvider;
@@ -129,7 +129,7 @@ public class NewAttributeTypeContentWizardPage extends AbstractWizardPage
                 AttributeTypeSelectionDialog dialog = new AttributeTypeSelectionDialog();
                 if ( dialog.open() == Dialog.OK )
                 {
-                    AttributeTypeImpl selectedAT = dialog.getSelectedAttributeType();
+                    AttributeType selectedAT = dialog.getSelectedAttributeType();
                     List<String> aliases = selectedAT.getNames();
                     if ( ( aliases != null ) && ( aliases.size() > 0 ) )
                     {
@@ -175,9 +175,9 @@ public class NewAttributeTypeContentWizardPage extends AbstractWizardPage
         {
             public String getText( Object element )
             {
-                if ( element instanceof SyntaxImpl )
+                if ( element instanceof LdapSyntax )
                 {
-                    SyntaxImpl syntax = ( SyntaxImpl ) element;
+                    LdapSyntax syntax = ( LdapSyntax ) element;
 
                     String name = syntax.getName();
                     if ( name != null )
@@ -261,10 +261,10 @@ public class NewAttributeTypeContentWizardPage extends AbstractWizardPage
             {
                 public int compare( Object o1, Object o2 )
                 {
-                    if ( ( o1 instanceof SyntaxImpl ) && ( o2 instanceof SyntaxImpl ) )
+                    if ( ( o1 instanceof LdapSyntax ) && ( o2 instanceof LdapSyntax ) )
                     {
-                        List<String> o1Names = ( ( SyntaxImpl ) o1 ).getNames();
-                        List<String> o2Names = ( ( SyntaxImpl ) o2 ).getNames();
+                        List<String> o1Names = ( ( LdapSyntax ) o1 ).getNames();
+                        List<String> o2Names = ( ( LdapSyntax ) o2 ).getNames();
 
                         // Comparing the First Name
                         if ( ( o1Names != null ) && ( o2Names != null ) )
@@ -283,11 +283,11 @@ public class NewAttributeTypeContentWizardPage extends AbstractWizardPage
                             }
                         }
                     }
-                    else if ( ( o1 instanceof String ) && ( o2 instanceof SyntaxImpl ) )
+                    else if ( ( o1 instanceof String ) && ( o2 instanceof LdapSyntax ) )
                     {
                         return Integer.MIN_VALUE;
                     }
-                    else if ( ( o1 instanceof SyntaxImpl ) && ( o2 instanceof String ) )
+                    else if ( ( o1 instanceof LdapSyntax ) && ( o2 instanceof String ) )
                     {
                         return Integer.MAX_VALUE;
                     }
@@ -395,9 +395,9 @@ public class NewAttributeTypeContentWizardPage extends AbstractWizardPage
     {
         Object selection = ( ( StructuredSelection ) syntaxComboViewer.getSelection() ).getFirstElement();
 
-        if ( selection instanceof SyntaxImpl )
+        if ( selection instanceof LdapSyntax )
         {
-            return ( ( SyntaxImpl ) selection ).getOid();
+            return ( ( LdapSyntax ) selection ).getOid();
         }
 
         return null;

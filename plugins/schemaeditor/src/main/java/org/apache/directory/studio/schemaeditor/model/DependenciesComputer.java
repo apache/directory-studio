@@ -27,6 +27,10 @@ import java.util.List;
 
 import org.apache.commons.collections.MultiMap;
 import org.apache.commons.collections.map.MultiValueMap;
+import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
+import org.apache.directory.shared.ldap.model.schema.MatchingRule;
+import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.shared.ldap.model.schema.SchemaObject;
 import org.apache.directory.studio.schemaeditor.controller.SchemaHandler;
 import org.eclipse.osgi.util.NLS;
@@ -84,19 +88,19 @@ public class DependenciesComputer
             // Computing dependencies
             for ( Schema schema : this.schemasList )
             {
-                List<AttributeTypeImpl> attributeTypes = schema.getAttributeTypes();
+                List<AttributeType> attributeTypes = schema.getAttributeTypes();
                 if ( attributeTypes != null )
                 {
-                    for ( AttributeTypeImpl attributeType : attributeTypes )
+                    for ( AttributeType attributeType : attributeTypes )
                     {
                         computeDependencies( schema, attributeType );
                     }
                 }
 
-                List<ObjectClassImpl> objectClasses = schema.getObjectClasses();
+                List<ObjectClass> objectClasses = schema.getObjectClasses();
                 if ( objectClasses != null )
                 {
-                    for ( ObjectClassImpl objectClass : objectClasses )
+                    for ( ObjectClass objectClass : objectClasses )
                     {
                         computeDependencies( schema, objectClass );
                     }
@@ -118,14 +122,14 @@ public class DependenciesComputer
      *      the attribute type
      * @throws DependencyComputerException 
      */
-    private void computeDependencies( Schema schema, AttributeTypeImpl attributeType )
+    private void computeDependencies( Schema schema, AttributeType attributeType )
         throws DependencyComputerException
     {
         // Superior
         String superior = attributeType.getSuperiorOid();
         if ( superior != null )
         {
-            AttributeTypeImpl superiorAT = schemaHandler.getAttributeType( superior );
+            AttributeType superiorAT = schemaHandler.getAttributeType( superior );
             if ( superiorAT == null )
             {
                 throw new DependencyComputerException( NLS.bind( Messages
@@ -145,7 +149,7 @@ public class DependenciesComputer
         String syntaxOID = attributeType.getSyntaxOid();
         if ( syntaxOID != null )
         {
-            SyntaxImpl syntax = schemaHandler.getSyntax( syntaxOID );
+            LdapSyntax syntax = schemaHandler.getSyntax( syntaxOID );
             if ( syntax == null )
             {
                 throw new DependencyComputerException( NLS.bind(
@@ -165,7 +169,7 @@ public class DependenciesComputer
         String equalityName = attributeType.getEqualityOid();
         if ( equalityName != null )
         {
-            MatchingRuleImpl equalityMatchingRule = schemaHandler.getMatchingRule( equalityName );
+            MatchingRule equalityMatchingRule = schemaHandler.getMatchingRule( equalityName );
             if ( equalityMatchingRule == null )
             {
                 throw new DependencyComputerException( NLS.bind(
@@ -185,7 +189,7 @@ public class DependenciesComputer
         String orderingName = attributeType.getOrderingOid();
         if ( orderingName != null )
         {
-            MatchingRuleImpl orderingMatchingRule = schemaHandler.getMatchingRule( orderingName );
+            MatchingRule orderingMatchingRule = schemaHandler.getMatchingRule( orderingName );
             if ( orderingMatchingRule == null )
             {
                 throw new DependencyComputerException( NLS.bind(
@@ -205,7 +209,7 @@ public class DependenciesComputer
         String substringName = attributeType.getSubstringOid();
         if ( substringName != null )
         {
-            MatchingRuleImpl substringMatchingRule = schemaHandler.getMatchingRule( substringName );
+            MatchingRule substringMatchingRule = schemaHandler.getMatchingRule( substringName );
             if ( substringMatchingRule == null )
             {
                 throw new DependencyComputerException( NLS.bind(
@@ -232,7 +236,7 @@ public class DependenciesComputer
      *      the object class
      * @throws DependencyComputerException 
      */
-    private void computeDependencies( Schema schema, ObjectClassImpl objectClass ) throws DependencyComputerException
+    private void computeDependencies( Schema schema, ObjectClass objectClass ) throws DependencyComputerException
     {
         // Super Classes
         List<String> superClassesNames = objectClass.getSuperiorOids();
@@ -240,7 +244,7 @@ public class DependenciesComputer
         {
             for ( String superClassName : superClassesNames )
             {
-                ObjectClassImpl superObjectClass = schemaHandler.getObjectClass( superClassName );
+                ObjectClass superObjectClass = schemaHandler.getObjectClass( superClassName );
                 if ( superObjectClass == null )
                 {
                     throw new DependencyComputerException( NLS.bind( Messages
@@ -263,7 +267,7 @@ public class DependenciesComputer
         {
             for ( String optionalAttributeTypeName : optionalAttributeTypes )
             {
-                AttributeTypeImpl optionalAttributeType = schemaHandler.getAttributeType( optionalAttributeTypeName );
+                AttributeType optionalAttributeType = schemaHandler.getAttributeType( optionalAttributeTypeName );
                 if ( optionalAttributeType == null )
                 {
                     throw new DependencyComputerException( NLS.bind( Messages
@@ -286,7 +290,7 @@ public class DependenciesComputer
         {
             for ( String mandatoryAttributeTypeName : mandatoryAttributeTypes )
             {
-                AttributeTypeImpl mandatoryAttributeType = schemaHandler.getAttributeType( mandatoryAttributeTypeName );
+                AttributeType mandatoryAttributeType = schemaHandler.getAttributeType( mandatoryAttributeTypeName );
                 if ( mandatoryAttributeType == null )
                 {
                     throw new DependencyComputerException( NLS.bind( Messages

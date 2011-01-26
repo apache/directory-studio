@@ -28,9 +28,9 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.studio.schemaeditor.Activator;
 import org.apache.directory.studio.schemaeditor.controller.SchemaHandler;
-import org.apache.directory.studio.schemaeditor.model.ObjectClassImpl;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.Viewer;
 
@@ -46,13 +46,13 @@ public class ObjectClassSelectionDialogContentProvider implements IStructuredCon
     private SchemaHandler schemaHandler;
 
     /** The hidden object classes */
-    private List<ObjectClassImpl> hiddenObjectClasses;
+    private List<ObjectClass> hiddenObjectClasses;
 
 
     /**
      * Creates a new instance of ObjectClassSelectionDialogContentProvider.
      */
-    public ObjectClassSelectionDialogContentProvider( List<ObjectClassImpl> hiddenObjectClasses )
+    public ObjectClassSelectionDialogContentProvider( List<ObjectClass> hiddenObjectClasses )
     {
         schemaHandler = Activator.getDefault().getSchemaHandler();
         this.hiddenObjectClasses = hiddenObjectClasses;
@@ -66,7 +66,7 @@ public class ObjectClassSelectionDialogContentProvider implements IStructuredCon
     {
         if ( inputElement instanceof String )
         {
-            ArrayList<ObjectClassImpl> results = new ArrayList<ObjectClassImpl>();
+            ArrayList<ObjectClass> results = new ArrayList<ObjectClass>();
 
             String searchText = ( String ) inputElement;
 
@@ -78,15 +78,15 @@ public class ObjectClassSelectionDialogContentProvider implements IStructuredCon
 
             Pattern pattern = Pattern.compile( searchRegexp, Pattern.CASE_INSENSITIVE );
 
-            List<ObjectClassImpl> ocList = schemaHandler.getObjectClasses();
+            List<ObjectClass> ocList = schemaHandler.getObjectClasses();
 
             // Sorting the list
-            Collections.sort( ocList, new Comparator<ObjectClassImpl>()
+            Collections.sort( ocList, new Comparator<ObjectClass>()
             {
-                public int compare( ObjectClassImpl oc1, ObjectClassImpl oc2 )
+                public int compare( ObjectClass oc1, ObjectClass oc2 )
                 {
-                    List<String> oc1Names = ( ( ObjectClassImpl ) oc1 ).getNames();
-                    List<String> oc2Names = ( ( ObjectClassImpl ) oc2 ).getNames();
+                    List<String> oc1Names = ( ( ObjectClass ) oc1 ).getNames();
+                    List<String> oc2Names = ( ( ObjectClass ) oc2 ).getNames();
 
                     if ( ( oc1Names == null || oc1Names.size() == 0 ) && ( oc2Names == null || oc2Names.size() == 0 ) )
                     {
@@ -110,7 +110,7 @@ public class ObjectClassSelectionDialogContentProvider implements IStructuredCon
             } );
 
             // Searching for all matching elements
-            for ( ObjectClassImpl oc : ocList )
+            for ( ObjectClass oc : ocList )
             {
                 for ( String name : oc.getNames() )
                 {

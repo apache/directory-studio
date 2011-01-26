@@ -23,9 +23,9 @@ package org.apache.directory.studio.schemaeditor.view.editors.objectclass;
 
 import java.util.List;
 
+import org.apache.directory.shared.ldap.model.schema.AttributeType;
 import org.apache.directory.studio.schemaeditor.Activator;
 import org.apache.directory.studio.schemaeditor.PluginConstants;
-import org.apache.directory.studio.schemaeditor.model.AttributeTypeImpl;
 import org.apache.directory.studio.schemaeditor.view.ViewUtils;
 import org.apache.directory.studio.schemaeditor.view.editors.NonExistingAttributeType;
 import org.eclipse.jface.viewers.ITableLabelProvider;
@@ -46,7 +46,7 @@ public class ObjectClassEditorAttributesTableLabelProvider extends LabelProvider
      */
     public Image getColumnImage( Object element, int columnIndex )
     {
-        if ( ( element instanceof AttributeTypeImpl ) || ( element instanceof NonExistingAttributeType ) )
+        if ( ( element instanceof AttributeType ) || ( element instanceof NonExistingAttributeType ) )
         {
             return Activator.getDefault().getImage( PluginConstants.IMG_ATTRIBUTE_TYPE );
         }
@@ -61,9 +61,9 @@ public class ObjectClassEditorAttributesTableLabelProvider extends LabelProvider
      */
     public String getColumnText( Object element, int columnIndex )
     {
-        if ( element instanceof AttributeTypeImpl )
+        if ( element instanceof AttributeType )
         {
-            AttributeTypeImpl at = ( AttributeTypeImpl ) element;
+            AttributeType at = ( AttributeType ) element;
 
             List<String> names = at.getNames();
             if ( ( names != null ) && ( names.size() > 0 ) )

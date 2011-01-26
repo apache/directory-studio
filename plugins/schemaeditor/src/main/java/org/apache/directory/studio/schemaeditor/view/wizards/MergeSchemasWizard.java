@@ -28,9 +28,9 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.directory.shared.ldap.model.schema.AbstractSchemaObject;
+import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.studio.schemaeditor.Activator;
-import org.apache.directory.studio.schemaeditor.model.AttributeTypeImpl;
-import org.apache.directory.studio.schemaeditor.model.ObjectClassImpl;
 import org.apache.directory.studio.schemaeditor.model.Project;
 import org.apache.directory.studio.schemaeditor.model.Schema;
 import org.apache.directory.studio.schemaeditor.model.SchemaImpl;
@@ -139,8 +139,8 @@ public class MergeSchemasWizard extends Wizard implements IImportWizard
             {
                 AttributeTypeFolder atf = ( AttributeTypeFolder ) sourceObject;
                 Schema targetSchema = getTargetSchema( atf.schema.getProject(), targetProject, targetSchemas );
-                List<AttributeTypeImpl> sourceAttributeTypes = atf.schema.getAttributeTypes();
-                for ( AttributeTypeImpl sourceAttributeType : sourceAttributeTypes )
+                List<AttributeType> sourceAttributeTypes = atf.schema.getAttributeTypes();
+                for ( AttributeType sourceAttributeType : sourceAttributeTypes )
                 {
                     mergeAttributeType( sourceAttributeType, targetProject, targetSchema, processedObjects,
                         errorMessages, replaceUnknownSyntax, mergeDependencies, pullUpAttributes );
@@ -150,24 +150,28 @@ public class MergeSchemasWizard extends Wizard implements IImportWizard
             {
                 ObjectClassFolder ocf = ( ObjectClassFolder ) sourceObject;
                 Schema targetSchema = getTargetSchema( ocf.schema.getProject(), targetProject, targetSchemas );
-                List<ObjectClassImpl> sourceObjectClasses = ocf.schema.getObjectClasses();
-                for ( ObjectClassImpl sourceObjectClass : sourceObjectClasses )
+                List<ObjectClass> sourceObjectClasses = ocf.schema.getObjectClasses();
+                for ( ObjectClass sourceObjectClass : sourceObjectClasses )
                 {
                     mergeObjectClass( sourceObjectClass, targetProject, targetSchema, processedObjects, errorMessages,
                         replaceUnknownSyntax, mergeDependencies, pullUpAttributes );
                 }
             }
-            if ( sourceObject instanceof AttributeTypeImpl )
+            if ( sourceObject instanceof AttributeType )
             {
-                AttributeTypeImpl at = ( AttributeTypeImpl ) sourceObject;
-                Schema targetSchema = getTargetSchema( at.getSchemaObject().getProject(), targetProject, targetSchemas );
+                AttributeType at = ( AttributeType ) sourceObject;
+                Schema targetSchema = getTargetSchema(
+                    Activator.getDefault().getSchemaHandler().getSchema( at.getSchemaName() ).getProject(),
+                    targetProject, targetSchemas );
                 mergeAttributeType( at, targetProject, targetSchema, processedObjects, errorMessages,
                     replaceUnknownSyntax, mergeDependencies, pullUpAttributes );
             }
-            if ( sourceObject instanceof ObjectClassImpl )
+            if ( sourceObject instanceof ObjectClass )
             {
-                ObjectClassImpl oc = ( ObjectClassImpl ) sourceObject;
-                Schema targetSchema = getTargetSchema( oc.getSchemaObject().getProject(), targetProject, targetSchemas );
+                ObjectClass oc = ( ObjectClass ) sourceObject;
+                Schema targetSchema = getTargetSchema(
+                    Activator.getDefault().getSchemaHandler().getSchema( oc.getSchemaName() ).getProject(),
+                    targetProject, targetSchemas );
                 mergeObjectClass( oc, targetProject, targetSchema, processedObjects, errorMessages,
                     replaceUnknownSyntax, mergeDependencies, pullUpAttributes );
             }
@@ -213,15 +217,15 @@ public class MergeSchemasWizard extends Wizard implements IImportWizard
         Set<Object> processedObjects, List<String> errorMessages, boolean replaceUnknownSyntax,
         boolean mergeDependencies, boolean pullUpAttributes )
     {
-        List<AttributeTypeImpl> sourceAttributeTypes = sourceSchema.getAttributeTypes();
-        for ( AttributeTypeImpl sourceAttributeType : sourceAttributeTypes )
+        List<AttributeType> sourceAttributeTypes = sourceSchema.getAttributeTypes();
+        for ( AttributeType sourceAttributeType : sourceAttributeTypes )
         {
             mergeAttributeType( sourceAttributeType, targetProject, targetSchema, processedObjects, errorMessages,
                 replaceUnknownSyntax, mergeDependencies, pullUpAttributes );
         }
 
-        List<ObjectClassImpl> sourceObjectClasses = sourceSchema.getObjectClasses();
-        for ( ObjectClassImpl sourceObjectClass : sourceObjectClasses )
+        List<ObjectClass> sourceObjectClasses = sourceSchema.getObjectClasses();
+        for ( ObjectClass sourceObjectClass : sourceObjectClasses )
         {
             mergeObjectClass( sourceObjectClass, targetProject, targetSchema, processedObjects, errorMessages,
                 replaceUnknownSyntax, mergeDependencies, pullUpAttributes );
@@ -232,7 +236,7 @@ public class MergeSchemasWizard extends Wizard implements IImportWizard
     /**
      * Merges the given attribute type to the targetSchema. 
      */
-    private void mergeAttributeType( AttributeTypeImpl sourceAttributeType, Project targetProject, Schema targetSchema,
+    private void mergeAttributeType( AttributeType sourceAttributeType, Project targetProject, Schema targetSchema,
         Set<Object> processedObjects, List<String> errorMessages, boolean replaceUnknownSyntax,
         boolean mergeDependencies, boolean pullUpAttributes )
     {
@@ -243,7 +247,7 @@ public class MergeSchemasWizard extends Wizard implements IImportWizard
         processedObjects.add( sourceAttributeType );
 
         // check if attribute (identified by OID or name) already exists in the project
-        AttributeTypeImpl targetAttributeType = targetProject.getSchemaHandler().getAttributeType(
+        AttributeType targetAttributeType = targetProject.getSchemaHandler().getAttributeType(
             sourceAttributeType.getOid() );
         if ( targetAttributeType == null )
         {
@@ -287,14 +291,14 @@ public class MergeSchemasWizard extends Wizard implements IImportWizard
             else
             {
                 // remove attribute type if already there from previous merge
-                AttributeTypeImpl at = targetSchema.getAttributeType( sourceAttributeType.getOid() );
+                AttributeType at = targetSchema.getAttributeType( sourceAttributeType.getOid() );
                 if ( at != null )
                 {
                     targetSchema.removeAttributeType( at );
                 }
 
                 // clone attribute type
-                AttributeTypeImpl clonedAttributeType = new AttributeTypeImpl( sourceAttributeType.getOid() );
+                AttributeType clonedAttributeType = new AttributeType( sourceAttributeType.getOid() );
                 clonedAttributeType.setNames( sourceAttributeType.getNames() );
                 clonedAttributeType.setDescription( sourceAttributeType.getDescription() );
                 clonedAttributeType.setSuperiorOid( sourceAttributeType.getSuperiorOid() );
@@ -309,7 +313,6 @@ public class MergeSchemasWizard extends Wizard implements IImportWizard
                 clonedAttributeType.setOrderingOid( sourceAttributeType.getOrderingOid() );
                 clonedAttributeType.setSubstringOid( sourceAttributeType.getSubstringOid() );
                 clonedAttributeType.setSchemaName( targetSchema.getName() );
-                clonedAttributeType.setSchemaObject( targetSchema );
 
                 // if no/unknown syntax: set "Directory String" syntax and appropriate matching rules
                 if ( replaceUnknownSyntax )
@@ -338,8 +341,8 @@ public class MergeSchemasWizard extends Wizard implements IImportWizard
                     String superiorName = clonedAttributeType.getSuperiorOid();
                     if ( superiorName != null )
                     {
-                        AttributeTypeImpl superiorAttributeType = sourceAttributeType.getSchemaObject().getProject()
-                            .getSchemaHandler().getAttributeType( superiorName );
+                        AttributeType superiorAttributeType = Activator.getDefault().getSchemaHandler()
+                            .getAttributeType( superiorName );
                         if ( superiorAttributeType != null )
                         {
                             mergeAttributeType( superiorAttributeType, targetProject, targetSchema, processedObjects,
@@ -357,7 +360,7 @@ public class MergeSchemasWizard extends Wizard implements IImportWizard
     /**
      * Merges the given object class to the targetSchema. 
      */
-    private void mergeObjectClass( ObjectClassImpl sourceObjectClass, Project targetProject, Schema targetSchema,
+    private void mergeObjectClass( ObjectClass sourceObjectClass, Project targetProject, Schema targetSchema,
         Set<Object> processedObjects, List<String> errorMessages, boolean replaceUnknownSyntax,
         boolean mergeDependencies, boolean pullUpAttributes )
     {
@@ -368,7 +371,7 @@ public class MergeSchemasWizard extends Wizard implements IImportWizard
         processedObjects.add( sourceObjectClass );
 
         // check if object class (identified by OID or alias name) already exists in the target project
-        ObjectClassImpl targetObjectClass = targetProject.getSchemaHandler()
+        ObjectClass targetObjectClass = targetProject.getSchemaHandler()
             .getObjectClass( sourceObjectClass.getOid() );
         if ( targetObjectClass == null )
         {
@@ -412,14 +415,14 @@ public class MergeSchemasWizard extends Wizard implements IImportWizard
             else
             {
                 // remove object class if already there from previous merge
-                ObjectClassImpl oc = targetSchema.getObjectClass( sourceObjectClass.getOid() );
+                ObjectClass oc = targetSchema.getObjectClass( sourceObjectClass.getOid() );
                 if ( oc != null )
                 {
                     targetSchema.removeObjectClass( oc );
                 }
 
                 // create object class
-                ObjectClassImpl clonedObjectClass = new ObjectClassImpl( sourceObjectClass.getOid() );
+                ObjectClass clonedObjectClass = new ObjectClass( sourceObjectClass.getOid() );
                 clonedObjectClass.setOid( sourceObjectClass.getOid() );
                 clonedObjectClass.setNames( sourceObjectClass.getNames() );
                 clonedObjectClass.setDescription( sourceObjectClass.getDescription() );
@@ -429,7 +432,6 @@ public class MergeSchemasWizard extends Wizard implements IImportWizard
                 clonedObjectClass.setMustAttributeTypeOids( sourceObjectClass.getMustAttributeTypeOids() );
                 clonedObjectClass.setMayAttributeTypeOids( sourceObjectClass.getMayAttributeTypeOids() );
                 clonedObjectClass.setSchemaName( targetSchema.getName() );
-                clonedObjectClass.setSchemaObject( targetSchema );
 
                 // merge dependencies: super object classes and must/may attributes
                 if ( mergeDependencies )
@@ -441,9 +443,8 @@ public class MergeSchemasWizard extends Wizard implements IImportWizard
                         {
                             if ( superClassName != null )
                             {
-                                ObjectClassImpl superSourceObjectClass = sourceObjectClass.getSchemaObject()
-                                    .getProject().getSchemaHandler().getObjectClass( superClassName );
-                                ObjectClassImpl superTargetObjectClass = targetProject.getSchemaHandler()
+                                ObjectClass superSourceObjectClass = Activator.getDefault().getSchemaHandler().getObjectClass( superClassName );
+                                ObjectClass superTargetObjectClass = targetProject.getSchemaHandler()
                                     .getObjectClass( superClassName );
                                 if ( superSourceObjectClass != null )
                                 {
@@ -482,8 +483,7 @@ public class MergeSchemasWizard extends Wizard implements IImportWizard
                     {
                         if ( attributeName != null )
                         {
-                            AttributeTypeImpl attributeType = sourceObjectClass.getSchemaObject().getProject()
-                                .getSchemaHandler().getAttributeType( attributeName );
+                            AttributeType attributeType = Activator.getDefault().getSchemaHandler().getAttributeType( attributeName );
                             if ( attributeType != null )
                             {
                                 mergeAttributeType( attributeType, targetProject, targetSchema, processedObjects,
@@ -499,8 +499,8 @@ public class MergeSchemasWizard extends Wizard implements IImportWizard
     }
 
 
-    private void pullUpAttributes( ObjectClassImpl targetObjectClass, ObjectClassImpl sourceSuperObjectClass,
-        ObjectClassImpl targetSuperObjectClass )
+    private void pullUpAttributes( ObjectClass targetObjectClass, ObjectClass sourceSuperObjectClass,
+        ObjectClass targetSuperObjectClass )
     {
         // must
         Set<String> sourceMustAttributeNames = new HashSet<String>();
@@ -528,14 +528,14 @@ public class MergeSchemasWizard extends Wizard implements IImportWizard
     }
 
 
-    private void fetchAttributes( Set<String> attributeNameList, ObjectClassImpl oc, boolean must )
+    private void fetchAttributes( Set<String> attributeNameList, ObjectClass oc, boolean must )
     {
         List<String> attributeNames = must ? oc.getMustAttributeTypeOids() : oc.getMayAttributeTypeOids();
         attributeNameList.addAll( attributeNames );
 
         for ( String superClassName : oc.getSuperiorOids() )
         {
-            ObjectClassImpl superObjectClass = oc.getSchemaObject().getProject().getSchemaHandler().getObjectClass(
+            ObjectClass superObjectClass = Activator.getDefault().getSchemaHandler().getObjectClass(
                 superClassName );
             fetchAttributes( attributeNameList, superObjectClass, must );
         }

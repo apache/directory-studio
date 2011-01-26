@@ -21,14 +21,14 @@
 package org.apache.directory.studio.schemaeditor.view.editors.schema;
 
 
+import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.studio.schemaeditor.Activator;
 import org.apache.directory.studio.schemaeditor.PluginConstants;
 import org.apache.directory.studio.schemaeditor.PluginUtils;
 import org.apache.directory.studio.schemaeditor.controller.SchemaAdapter;
 import org.apache.directory.studio.schemaeditor.controller.SchemaHandler;
 import org.apache.directory.studio.schemaeditor.controller.SchemaListener;
-import org.apache.directory.studio.schemaeditor.model.AttributeTypeImpl;
-import org.apache.directory.studio.schemaeditor.model.ObjectClassImpl;
 import org.apache.directory.studio.schemaeditor.model.Schema;
 import org.apache.directory.studio.schemaeditor.view.ViewUtils;
 import org.apache.directory.studio.schemaeditor.view.editors.attributetype.AttributeTypeEditor;
@@ -75,7 +75,7 @@ public class SchemaEditorOverviewPage extends FormPage
         /* (non-Javadoc)
          * @see org.apache.directory.studio.schemaeditor.controller.SchemaListener#attributeTypeAdded(org.apache.directory.studio.schemaeditor.model.AttributeTypeImpl)
          */
-        public void attributeTypeAdded( AttributeTypeImpl at )
+        public void attributeTypeAdded( AttributeType at )
         {
             fillInUiFields();
         }
@@ -84,7 +84,7 @@ public class SchemaEditorOverviewPage extends FormPage
         /* (non-Javadoc)
          * @see org.apache.directory.studio.schemaeditor.controller.SchemaListener#attributeTypeModified(org.apache.directory.studio.schemaeditor.model.AttributeTypeImpl)
          */
-        public void attributeTypeModified( AttributeTypeImpl at )
+        public void attributeTypeModified( AttributeType at )
         {
             fillInUiFields();
         }
@@ -93,7 +93,7 @@ public class SchemaEditorOverviewPage extends FormPage
         /* (non-Javadoc)
          * @see org.apache.directory.studio.schemaeditor.controller.SchemaListener#attributeTypeRemoved(org.apache.directory.studio.schemaeditor.model.AttributeTypeImpl)
          */
-        public void attributeTypeRemoved( AttributeTypeImpl at )
+        public void attributeTypeRemoved( AttributeType at )
         {
             fillInUiFields();
         }
@@ -102,7 +102,7 @@ public class SchemaEditorOverviewPage extends FormPage
         /* (non-Javadoc)
          * @see org.apache.directory.studio.schemaeditor.controller.SchemaListener#objectClassAdded(org.apache.directory.studio.schemaeditor.model.ObjectClassImpl)
          */
-        public void objectClassAdded( ObjectClassImpl oc )
+        public void objectClassAdded( ObjectClass oc )
         {
             fillInUiFields();
         }
@@ -111,7 +111,7 @@ public class SchemaEditorOverviewPage extends FormPage
         /* (non-Javadoc)
          * @see org.apache.directory.studio.schemaeditor.controller.SchemaListener#objectClassModified(org.apache.directory.studio.schemaeditor.model.ObjectClassImpl)
          */
-        public void objectClassModified( ObjectClassImpl oc )
+        public void objectClassModified( ObjectClass oc )
         {
             fillInUiFields();
         }
@@ -120,7 +120,7 @@ public class SchemaEditorOverviewPage extends FormPage
         /* (non-Javadoc)
          * @see org.apache.directory.studio.schemaeditor.controller.SchemaListener#objectClassRemoved(org.apache.directory.studio.schemaeditor.model.ObjectClassImpl)
          */
-        public void objectClassRemoved( ObjectClassImpl oc )
+        public void objectClassRemoved( ObjectClass oc )
         {
             fillInUiFields();
         }
@@ -143,7 +143,7 @@ public class SchemaEditorOverviewPage extends FormPage
 
             if ( !selection.isEmpty() )
             {
-                AttributeTypeImpl at = ( AttributeTypeImpl ) selection.getFirstElement();
+                AttributeType at = ( AttributeType ) selection.getFirstElement();
 
                 try
                 {
@@ -172,7 +172,7 @@ public class SchemaEditorOverviewPage extends FormPage
 
             if ( !selection.isEmpty() )
             {
-                ObjectClassImpl oc = ( ObjectClassImpl ) selection.getFirstElement();
+                ObjectClass oc = ( ObjectClass ) selection.getFirstElement();
 
                 try
                 {

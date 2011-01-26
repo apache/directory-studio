@@ -20,10 +20,10 @@
 package org.apache.directory.studio.schemaeditor.controller;
 
 
-import org.apache.directory.studio.schemaeditor.model.AttributeTypeImpl;
-import org.apache.directory.studio.schemaeditor.model.MatchingRuleImpl;
-import org.apache.directory.studio.schemaeditor.model.ObjectClassImpl;
-import org.apache.directory.studio.schemaeditor.model.SyntaxImpl;
+import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
+import org.apache.directory.shared.ldap.model.schema.MatchingRule;
+import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 
 
 /**
@@ -40,7 +40,7 @@ public abstract class SchemaAdapter implements SchemaListener
     /* (non-Javadoc)
      * @see org.apache.directory.studio.schemaeditor.model.SchemaListener#attributeTypeAdded(org.apache.directory.studio.schemaeditor.model.AttributeTypeImpl)
      */
-    public void attributeTypeAdded( AttributeTypeImpl at )
+    public void attributeTypeAdded( AttributeType at )
     {
     }
 
@@ -48,7 +48,7 @@ public abstract class SchemaAdapter implements SchemaListener
     /* (non-Javadoc)
      * @see org.apache.directory.studio.schemaeditor.model.SchemaListener#attributeTypeModified(org.apache.directory.studio.schemaeditor.model.AttributeTypeImpl)
      */
-    public void attributeTypeModified( AttributeTypeImpl at )
+    public void attributeTypeModified( AttributeType at )
     {
     }
 
@@ -56,7 +56,7 @@ public abstract class SchemaAdapter implements SchemaListener
     /* (non-Javadoc)
      * @see org.apache.directory.studio.schemaeditor.model.SchemaListener#attributeTypeRemoved(org.apache.directory.studio.schemaeditor.model.AttributeTypeImpl)
      */
-    public void attributeTypeRemoved( AttributeTypeImpl at )
+    public void attributeTypeRemoved( AttributeType at )
     {
     }
 
@@ -64,7 +64,7 @@ public abstract class SchemaAdapter implements SchemaListener
     /* (non-Javadoc)
      * @see org.apache.directory.studio.schemaeditor.model.SchemaListener#matchingRuleAdded(org.apache.directory.studio.schemaeditor.model.MatchingRuleImpl)
      */
-    public void matchingRuleAdded( MatchingRuleImpl mr )
+    public void matchingRuleAdded( MatchingRule mr )
     {
     }
 
@@ -72,7 +72,7 @@ public abstract class SchemaAdapter implements SchemaListener
     /* (non-Javadoc)
      * @see org.apache.directory.studio.schemaeditor.model.SchemaListener#matchingRuleModified(org.apache.directory.studio.schemaeditor.model.MatchingRuleImpl)
      */
-    public void matchingRuleModified( MatchingRuleImpl mr )
+    public void matchingRuleModified( MatchingRule mr )
     {
     }
 
@@ -80,7 +80,7 @@ public abstract class SchemaAdapter implements SchemaListener
     /* (non-Javadoc)
      * @see org.apache.directory.studio.schemaeditor.model.SchemaListener#matchingRuleRemoved(org.apache.directory.studio.schemaeditor.model.MatchingRuleImpl)
      */
-    public void matchingRuleRemoved( MatchingRuleImpl mr )
+    public void matchingRuleRemoved( MatchingRule mr )
     {
     }
 
@@ -88,7 +88,7 @@ public abstract class SchemaAdapter implements SchemaListener
     /* (non-Javadoc)
      * @see org.apache.directory.studio.schemaeditor.model.SchemaListener#objectClassAdded(org.apache.directory.studio.schemaeditor.model.ObjectClassImpl)
      */
-    public void objectClassAdded( ObjectClassImpl oc )
+    public void objectClassAdded( ObjectClass oc )
     {
     }
 
@@ -96,7 +96,7 @@ public abstract class SchemaAdapter implements SchemaListener
     /* (non-Javadoc)
      * @see org.apache.directory.studio.schemaeditor.model.SchemaListener#objectClassModified(org.apache.directory.studio.schemaeditor.model.ObjectClassImpl)
      */
-    public void objectClassModified( ObjectClassImpl oc )
+    public void objectClassModified( ObjectClass oc )
     {
     }
 
@@ -104,7 +104,7 @@ public abstract class SchemaAdapter implements SchemaListener
     /* (non-Javadoc)
      * @see org.apache.directory.studio.schemaeditor.model.SchemaListener#objectClassRemoved(org.apache.directory.studio.schemaeditor.model.ObjectClassImpl)
      */
-    public void objectClassRemoved( ObjectClassImpl oc )
+    public void objectClassRemoved( ObjectClass oc )
     {
     }
 
@@ -112,7 +112,7 @@ public abstract class SchemaAdapter implements SchemaListener
     /* (non-Javadoc)
      * @see org.apache.directory.studio.schemaeditor.model.SchemaListener#syntaxAdded(org.apache.directory.studio.schemaeditor.model.SyntaxImpl)
      */
-    public void syntaxAdded( SyntaxImpl syntax )
+    public void syntaxAdded( LdapSyntax syntax )
     {
     }
 
@@ -120,7 +120,7 @@ public abstract class SchemaAdapter implements SchemaListener
     /* (non-Javadoc)
      * @see org.apache.directory.studio.schemaeditor.model.SchemaListener#syntaxModified(org.apache.directory.studio.schemaeditor.model.SyntaxImpl)
      */
-    public void syntaxModified( SyntaxImpl syntax )
+    public void syntaxModified( LdapSyntax syntax )
     {
     }
 
@@ -128,7 +128,7 @@ public abstract class SchemaAdapter implements SchemaListener
     /* (non-Javadoc)
      * @see org.apache.directory.studio.schemaeditor.model.SchemaListener#syntaxRemoved(org.apache.directory.studio.schemaeditor.model.SyntaxImpl)
      */
-    public void syntaxRemoved( SyntaxImpl syntax )
+    public void syntaxRemoved( LdapSyntax syntax )
     {
     }
 }

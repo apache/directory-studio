@@ -28,7 +28,6 @@ import java.util.List;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.shared.ldap.model.schema.parsers.OpenLdapSchemaParser;
 import org.apache.directory.studio.schemaeditor.PluginConstants;
-import org.apache.directory.studio.schemaeditor.model.ObjectClassImpl;
 import org.apache.directory.studio.schemaeditor.model.io.OpenLdapSchemaFileExporter;
 import org.apache.directory.studio.schemaeditor.view.widget.SchemaSourceViewer;
 import org.eclipse.jface.resource.JFaceResources;
@@ -60,7 +59,7 @@ public class ObjectClassEditorSourceCodePage extends FormPage
     public static final String TITLE = "Source Code"; //$NON-NLS-1$
 
     /** The modified object class */
-    private ObjectClassImpl modifiedObjectClass;
+    private ObjectClass modifiedObjectClass;
 
     /** The Schema Source Viewer */
     private SchemaSourceViewer schemaSourceViewer;

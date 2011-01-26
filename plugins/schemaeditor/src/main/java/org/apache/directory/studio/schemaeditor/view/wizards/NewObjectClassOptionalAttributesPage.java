@@ -25,9 +25,9 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import org.apache.directory.shared.ldap.model.schema.AttributeType;
 import org.apache.directory.studio.schemaeditor.Activator;
 import org.apache.directory.studio.schemaeditor.PluginConstants;
-import org.apache.directory.studio.schemaeditor.model.AttributeTypeImpl;
 import org.apache.directory.studio.schemaeditor.view.ViewUtils;
 import org.apache.directory.studio.schemaeditor.view.dialogs.AttributeTypeSelectionDialog;
 import org.eclipse.jface.dialogs.Dialog;
@@ -61,7 +61,7 @@ import org.eclipse.swt.widgets.Table;
 public class NewObjectClassOptionalAttributesPage extends WizardPage
 {
     /** The optional attribute types list */
-    private List<AttributeTypeImpl> optionalAttributeTypesList;
+    private List<AttributeType> optionalAttributeTypesList;
 
     // UI Fields
     private TableViewer optionalAttributeTypesTableViewer;
@@ -79,7 +79,7 @@ public class NewObjectClassOptionalAttributesPage extends WizardPage
         setDescription( Messages
             .getString( "NewObjectClassOptionalAttributesPage.SpecifiyOptionalAttributeTypesForObjectClass" ) ); //$NON-NLS-1$
         setImageDescriptor( Activator.getDefault().getImageDescriptor( PluginConstants.IMG_OBJECT_CLASS_NEW_WIZARD ) );
-        optionalAttributeTypesList = new ArrayList<AttributeTypeImpl>();
+        optionalAttributeTypesList = new ArrayList<AttributeType>();
     }
 
 
@@ -110,7 +110,7 @@ public class NewObjectClassOptionalAttributesPage extends WizardPage
         {
             public Image getImage( Object element )
             {
-                if ( element instanceof AttributeTypeImpl )
+                if ( element instanceof AttributeType )
                 {
                     return Activator.getDefault().getImage( PluginConstants.IMG_ATTRIBUTE_TYPE );
                 }
@@ -122,9 +122,9 @@ public class NewObjectClassOptionalAttributesPage extends WizardPage
 
             public String getText( Object element )
             {
-                if ( element instanceof AttributeTypeImpl )
+                if ( element instanceof AttributeType )
                 {
-                    AttributeTypeImpl at = ( AttributeTypeImpl ) element;
+                    AttributeType at = ( AttributeType ) element;
 
                     List<String> names = at.getNames();
                     if ( ( names != null ) && ( names.size() > 0 ) )
@@ -186,7 +186,7 @@ public class NewObjectClassOptionalAttributesPage extends WizardPage
     private void addOptionalAttributeType()
     {
         AttributeTypeSelectionDialog dialog = new AttributeTypeSelectionDialog();
-        List<AttributeTypeImpl> hiddenAttributes = new ArrayList<AttributeTypeImpl>();
+        List<AttributeType> hiddenAttributes = new ArrayList<AttributeType>();
         hiddenAttributes.addAll( optionalAttributeTypesList );
         dialog.setHiddenAttributeTypes( hiddenAttributes );
         if ( dialog.open() == Dialog.OK )
@@ -217,9 +217,9 @@ public class NewObjectClassOptionalAttributesPage extends WizardPage
      */
     private void updateOptionalAttributeTypesTableTable()
     {
-        Collections.sort( optionalAttributeTypesList, new Comparator<AttributeTypeImpl>()
+        Collections.sort( optionalAttributeTypesList, new Comparator<AttributeType>()
         {
-            public int compare( AttributeTypeImpl o1, AttributeTypeImpl o2 )
+            public int compare( AttributeType o1, AttributeType o2 )
             {
                 List<String> at1Names = o1.getNames();
                 List<String> at2Names = o2.getNames();
@@ -244,7 +244,7 @@ public class NewObjectClassOptionalAttributesPage extends WizardPage
      * @return
      *      the optional attributes types
      */
-    public List<AttributeTypeImpl> getOptionalAttributeTypes()
+    public List<AttributeType> getOptionalAttributeTypes()
     {
         return optionalAttributeTypesList;
     }
@@ -259,7 +259,7 @@ public class NewObjectClassOptionalAttributesPage extends WizardPage
     public List<String> getOptionalAttributeTypesNames()
     {
         List<String> names = new ArrayList<String>();
-        for ( AttributeTypeImpl at : optionalAttributeTypesList )
+        for ( AttributeType at : optionalAttributeTypesList )
         {
             names.add( at.getName() );
         }

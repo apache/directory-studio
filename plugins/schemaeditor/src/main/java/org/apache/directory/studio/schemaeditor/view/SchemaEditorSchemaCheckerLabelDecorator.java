@@ -22,10 +22,10 @@ package org.apache.directory.studio.schemaeditor.view;
 
 import java.util.List;
 
+import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.studio.schemaeditor.Activator;
 import org.apache.directory.studio.schemaeditor.PluginConstants;
-import org.apache.directory.studio.schemaeditor.model.AttributeTypeImpl;
-import org.apache.directory.studio.schemaeditor.model.ObjectClassImpl;
 import org.apache.directory.studio.schemaeditor.model.Schema;
 import org.apache.directory.studio.schemaeditor.model.schemachecker.SchemaChecker;
 import org.apache.directory.studio.schemaeditor.view.wrappers.AttributeTypeWrapper;
@@ -57,7 +57,7 @@ public class SchemaEditorSchemaCheckerLabelDecorator extends LabelProvider imple
 
         if ( element instanceof AttributeTypeWrapper )
         {
-            AttributeTypeImpl at = ( ( AttributeTypeWrapper ) element ).getAttributeType();
+            AttributeType at = ( ( AttributeTypeWrapper ) element ).getAttributeType();
 
             if ( schemaChecker.hasErrors( at ) )
             {
@@ -72,7 +72,7 @@ public class SchemaEditorSchemaCheckerLabelDecorator extends LabelProvider imple
         }
         else if ( element instanceof ObjectClassWrapper )
         {
-            ObjectClassImpl oc = ( ( ObjectClassWrapper ) element ).getObjectClass();
+            ObjectClass oc = ( ( ObjectClassWrapper ) element ).getObjectClass();
 
             if ( schemaChecker.hasErrors( oc ) )
             {
@@ -89,7 +89,7 @@ public class SchemaEditorSchemaCheckerLabelDecorator extends LabelProvider imple
         {
             Schema schema = ( ( SchemaWrapper ) element ).getSchema();
 
-            for ( AttributeTypeImpl at : schema.getAttributeTypes() )
+            for ( AttributeType at : schema.getAttributeTypes() )
             {
                 if ( schemaChecker.hasErrors( at ) )
                 {
@@ -103,7 +103,7 @@ public class SchemaEditorSchemaCheckerLabelDecorator extends LabelProvider imple
                 }
             }
 
-            for ( ObjectClassImpl oc : schema.getObjectClasses() )
+            for ( ObjectClass oc : schema.getObjectClasses() )
             {
                 if ( schemaChecker.hasErrors( oc ) )
                 {
@@ -180,7 +180,7 @@ public class SchemaEditorSchemaCheckerLabelDecorator extends LabelProvider imple
             {
                 if ( child instanceof AttributeTypeWrapper )
                 {
-                    AttributeTypeImpl at = ( ( AttributeTypeWrapper ) child ).getAttributeType();
+                    AttributeType at = ( ( AttributeTypeWrapper ) child ).getAttributeType();
 
                     if ( schemaChecker.hasWarnings( at ) )
                     {
@@ -196,7 +196,7 @@ public class SchemaEditorSchemaCheckerLabelDecorator extends LabelProvider imple
                 }
                 else if ( child instanceof ObjectClassWrapper )
                 {
-                    ObjectClassImpl oc = ( ( ObjectClassWrapper ) child ).getObjectClass();
+                    ObjectClass oc = ( ( ObjectClassWrapper ) child ).getObjectClass();
 
                     if ( schemaChecker.hasWarnings( oc ) )
                     {
@@ -235,7 +235,7 @@ public class SchemaEditorSchemaCheckerLabelDecorator extends LabelProvider imple
             {
                 if ( child instanceof AttributeTypeWrapper )
                 {
-                    AttributeTypeImpl at = ( ( AttributeTypeWrapper ) child ).getAttributeType();
+                    AttributeType at = ( ( AttributeTypeWrapper ) child ).getAttributeType();
 
                     if ( schemaChecker.hasErrors( at ) )
                     {
@@ -251,7 +251,7 @@ public class SchemaEditorSchemaCheckerLabelDecorator extends LabelProvider imple
                 }
                 else if ( child instanceof ObjectClassWrapper )
                 {
-                    ObjectClassImpl oc = ( ( ObjectClassWrapper ) child ).getObjectClass();
+                    ObjectClass oc = ( ( ObjectClassWrapper ) child ).getObjectClass();
 
                     if ( schemaChecker.hasErrors( oc ) )
                     {

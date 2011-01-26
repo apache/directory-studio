@@ -23,11 +23,11 @@ package org.apache.directory.studio.schemaeditor.model.hierarchy;
 import java.util.List;
 
 import org.apache.commons.collections.map.MultiValueMap;
+import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.shared.ldap.model.schema.SchemaObject;
 import org.apache.directory.studio.schemaeditor.Activator;
 import org.apache.directory.studio.schemaeditor.controller.SchemaHandler;
-import org.apache.directory.studio.schemaeditor.model.AttributeTypeImpl;
-import org.apache.directory.studio.schemaeditor.model.ObjectClassImpl;
 import org.apache.directory.studio.schemaeditor.model.Schema;
 
 
@@ -74,7 +74,7 @@ public class HierarchyManager
      * @param at
      *      the attribute type
      */
-    private void addAttributeType( AttributeTypeImpl at )
+    private void addAttributeType( AttributeType at )
     {
         // Checking Aliases and OID
         checkAliasesAndOID( at );
@@ -83,7 +83,7 @@ public class HierarchyManager
         if ( superiorName != null )
         // The attribute type has a superior
         {
-            AttributeTypeImpl superior = schemaHandler.getAttributeType( superiorName );
+            AttributeType superior = schemaHandler.getAttributeType( superiorName );
             if ( superior != null )
             // The superior attribute type object exists
             {
@@ -116,7 +116,7 @@ public class HierarchyManager
      * @param oc
      *      the object class
      */
-    private void addObjectClass( ObjectClassImpl oc )
+    private void addObjectClass( ObjectClass oc )
     {
         // Checking Aliases and OID
         checkAliasesAndOID( oc );
@@ -127,7 +127,7 @@ public class HierarchyManager
         {
             for ( String superClassName : superClasseNames )
             {
-                ObjectClassImpl superClass = schemaHandler.getObjectClass( superClassName );
+                ObjectClass superClass = schemaHandler.getObjectClass( superClassName );
                 if ( superClass == null )
                 {
                     parentsMap.put( oc, superClassName.toLowerCase() );
@@ -146,7 +146,7 @@ public class HierarchyManager
         // Then, it is a child of the "top (2.5.6.0)" object class
         // (Unless it is the "top (2.5.6.0)" object class itself)
         {
-            ObjectClassImpl topOC = schemaHandler.getObjectClass( "2.5.6.0" );
+            ObjectClass topOC = schemaHandler.getObjectClass( "2.5.6.0" );
             if ( oc.equals( topOC ) )
             // The given object class is the "top (2.5.6.0)" object class
             {
@@ -179,7 +179,7 @@ public class HierarchyManager
      * @param at
      *      the added attribute type
      */
-    public void attributeTypeAdded( AttributeTypeImpl at )
+    public void attributeTypeAdded( AttributeType at )
     {
         addAttributeType( at );
     }
@@ -191,7 +191,7 @@ public class HierarchyManager
      * @param at
      *      the modified attribute type
      */
-    public void attributeTypeModified( AttributeTypeImpl at )
+    public void attributeTypeModified( AttributeType at )
     {
         // Removing the attribute type
         List<Object> parents = getParents( at );
@@ -216,7 +216,7 @@ public class HierarchyManager
      * @param at
      *      the removed attribute type
      */
-    public void attributeTypeRemoved( AttributeTypeImpl at )
+    public void attributeTypeRemoved( AttributeType at )
     {
         removeAttributeType( at );
     }
@@ -334,13 +334,13 @@ public class HierarchyManager
             for ( Schema schema : schemaHandler.getSchemas() )
             {
                 // Looping on the attribute types
-                for ( AttributeTypeImpl at : schema.getAttributeTypes() )
+                for ( AttributeType at : schema.getAttributeTypes() )
                 {
                     addAttributeType( at );
                 }
 
                 // Looping on the object classes
-                for ( ObjectClassImpl oc : schema.getObjectClasses() )
+                for ( ObjectClass oc : schema.getObjectClasses() )
                 {
                     addObjectClass( oc );
                 }
@@ -355,7 +355,7 @@ public class HierarchyManager
      * @param oc
      *      the added object class
      */
-    public void objectClassAdded( ObjectClassImpl oc )
+    public void objectClassAdded( ObjectClass oc )
     {
         addObjectClass( oc );
     }
@@ -367,7 +367,7 @@ public class HierarchyManager
      * @param oc
      *      the modified object class
      */
-    public void objectClassModified( ObjectClassImpl oc )
+    public void objectClassModified( ObjectClass oc )
     {
         // Removing the object class type
         List<Object> parents = getParents( oc );
@@ -392,7 +392,7 @@ public class HierarchyManager
      * @param oc
      *      the removed object class
      */
-    public void objectClassRemoved( ObjectClassImpl oc )
+    public void objectClassRemoved( ObjectClass oc )
     {
         removeObjectClass( oc );
     }
@@ -404,13 +404,13 @@ public class HierarchyManager
      * @param at
      *      the attribute type
      */
-    private void removeAttributeType( AttributeTypeImpl at )
+    private void removeAttributeType( AttributeType at )
     {
         // Removing the attribute type as child of its superior
         String superiorName = at.getSuperiorOid();
         if ( ( superiorName != null ) && ( !"".equals( superiorName ) ) ) //$NON-NLS-1$
         {
-            AttributeTypeImpl superiorAT = schemaHandler.getAttributeType( superiorName );
+            AttributeType superiorAT = schemaHandler.getAttributeType( superiorName );
             if ( superiorAT == null )
             {
                 childrenMap.remove( superiorName.toLowerCase(), at );
@@ -431,7 +431,7 @@ public class HierarchyManager
         {
             for ( Object child : children )
             {
-                AttributeTypeImpl childAT = ( AttributeTypeImpl ) child;
+                AttributeType childAT = ( AttributeType ) child;
 
                 parentsMap.remove( child, at );
 
@@ -451,7 +451,7 @@ public class HierarchyManager
     }
 
 
-    private void removeObjectClass( ObjectClassImpl oc )
+    private void removeObjectClass( ObjectClass oc )
     {
         // Removing the object class as child of its superiors
         List<String> superClassesNames = oc.getSuperiorOids();
@@ -461,7 +461,7 @@ public class HierarchyManager
             {
                 if ( !"".equals( superClassName ) ) //$NON-NLS-1$
                 {
-                    ObjectClassImpl superClassOC = schemaHandler.getObjectClass( superClassName );
+                    ObjectClass superClassOC = schemaHandler.getObjectClass( superClassName );
                     if ( superClassOC == null )
                     {
                         childrenMap.remove( superClassName.toLowerCase(), oc );
@@ -483,7 +483,7 @@ public class HierarchyManager
             }
             else
             {
-                ObjectClassImpl topOC = schemaHandler.getObjectClass( "2.5.6.0" );
+                ObjectClass topOC = schemaHandler.getObjectClass( "2.5.6.0" );
                 if ( topOC != null )
                 // The "top (2.5.6.0)" object class exists
                 {
@@ -503,7 +503,7 @@ public class HierarchyManager
         {
             for ( Object child : children )
             {
-                ObjectClassImpl childOC = ( ObjectClassImpl ) child;
+                ObjectClass childOC = ( ObjectClass ) child;
 
                 parentsMap.remove( child, oc );
 
@@ -532,7 +532,7 @@ public class HierarchyManager
     }
 
 
-    private String getCorrectSuperClassName( ObjectClassImpl oc, List<String> childSuperClassesNames )
+    private String getCorrectSuperClassName( ObjectClass oc, List<String> childSuperClassesNames )
     {
         if ( childSuperClassesNames != null )
         {

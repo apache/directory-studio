@@ -20,10 +20,10 @@
 package org.apache.directory.studio.schemaeditor.view.wizards;
 
 
+import org.apache.directory.shared.ldap.model.schema.AttributeType;
 import org.apache.directory.studio.schemaeditor.Activator;
 import org.apache.directory.studio.schemaeditor.PluginConstants;
 import org.apache.directory.studio.schemaeditor.PluginUtils;
-import org.apache.directory.studio.schemaeditor.model.AttributeTypeImpl;
 import org.apache.directory.studio.schemaeditor.model.Schema;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
@@ -73,9 +73,8 @@ public class NewAttributeTypeWizard extends Wizard implements INewWizard
     public boolean performFinish()
     {
         // Creating the new attribute type
-        AttributeTypeImpl newAT = new AttributeTypeImpl( generalPage.getOidValue() );
+        AttributeType newAT = new AttributeType( generalPage.getOidValue() );
         newAT.setSchemaName( generalPage.getSchemaValue() );
-        newAT.setSchemaObject( Activator.getDefault().getSchemaHandler().getSchema( generalPage.getSchemaValue() ) );
         newAT.setNames( generalPage.getAliasesValue() );
         newAT.setDescription( generalPage.getDescriptionValue() );
         newAT.setSuperiorOid( contentPage.getSuperiorValue() );

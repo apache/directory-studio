@@ -25,10 +25,10 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.studio.schemaeditor.Activator;
 import org.apache.directory.studio.schemaeditor.controller.SchemaHandler;
-import org.apache.directory.studio.schemaeditor.model.AttributeTypeImpl;
-import org.apache.directory.studio.schemaeditor.model.ObjectClassImpl;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.Viewer;
 
@@ -45,10 +45,10 @@ public class ATEUsedByOptionalTableContentProvider implements IStructuredContent
      */
     public Object[] getElements( Object inputElement )
     {
-        if ( inputElement instanceof AttributeTypeImpl )
+        if ( inputElement instanceof AttributeType )
         {
-            List<ObjectClassImpl> results = new ArrayList<ObjectClassImpl>();
-            AttributeTypeImpl inputAT = ( AttributeTypeImpl ) inputElement;
+            List<ObjectClass> results = new ArrayList<ObjectClass>();
+            AttributeType inputAT = ( AttributeType ) inputElement;
             SchemaHandler schemaHandler = Activator.getDefault().getSchemaHandler();
 
             List<String> names = new ArrayList<String>();
@@ -62,8 +62,8 @@ public class ATEUsedByOptionalTableContentProvider implements IStructuredContent
                 }
             }
 
-            List<ObjectClassImpl> objectClasses = schemaHandler.getObjectClasses();
-            for ( ObjectClassImpl oc : objectClasses )
+            List<ObjectClass> objectClasses = schemaHandler.getObjectClasses();
+            for ( ObjectClass oc : objectClasses )
             {
                 List<String> mays = oc.getMayAttributeTypeOids();
                 if ( mays != null )
@@ -79,14 +79,14 @@ public class ATEUsedByOptionalTableContentProvider implements IStructuredContent
             }
 
             // Sorting Results
-            Collections.sort( results, new Comparator<ObjectClassImpl>()
+            Collections.sort( results, new Comparator<ObjectClass>()
             {
-                public int compare( ObjectClassImpl oc1, ObjectClassImpl oc2 )
+                public int compare( ObjectClass oc1, ObjectClass oc2 )
                 {
-                    if ( oc1 instanceof ObjectClassImpl && oc1 instanceof ObjectClassImpl )
+                    if ( oc1 instanceof ObjectClass && oc1 instanceof ObjectClass )
                     {
-                        List<String> oc1Names = ( ( ObjectClassImpl ) oc1 ).getNames();
-                        List<String> oc2Names = ( ( ObjectClassImpl ) oc2 ).getNames();
+                        List<String> oc1Names = ( ( ObjectClass ) oc1 ).getNames();
+                        List<String> oc2Names = ( ( ObjectClass ) oc2 ).getNames();
 
                         if ( ( oc1Names != null ) && ( oc2Names != null ) && ( oc1Names.size() > 0 )
                             && ( oc2Names.size() > 0 ) )

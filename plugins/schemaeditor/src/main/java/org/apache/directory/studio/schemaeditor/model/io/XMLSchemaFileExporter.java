@@ -25,13 +25,13 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.List;
 
+import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
+import org.apache.directory.shared.ldap.model.schema.MatchingRule;
+import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.shared.ldap.model.schema.ObjectClassTypeEnum;
 import org.apache.directory.shared.ldap.model.schema.UsageEnum;
-import org.apache.directory.studio.schemaeditor.model.AttributeTypeImpl;
-import org.apache.directory.studio.schemaeditor.model.MatchingRuleImpl;
-import org.apache.directory.studio.schemaeditor.model.ObjectClassImpl;
 import org.apache.directory.studio.schemaeditor.model.Schema;
-import org.apache.directory.studio.schemaeditor.model.SyntaxImpl;
 import org.dom4j.Branch;
 import org.dom4j.Document;
 import org.dom4j.DocumentHelper;
@@ -193,44 +193,44 @@ public class XMLSchemaFileExporter
             }
 
             // Attribute Types
-            List<AttributeTypeImpl> ats = schema.getAttributeTypes();
+            List<AttributeType> ats = schema.getAttributeTypes();
             if ( ( ats != null ) && ( ats.size() >= 1 ) )
             {
                 Element attributeTypesNode = element.addElement( ATTRIBUTE_TYPES_TAG );
-                for ( AttributeTypeImpl at : ats )
+                for ( AttributeType at : ats )
                 {
                     toXml( at, attributeTypesNode );
                 }
             }
 
             // Object Classes
-            List<ObjectClassImpl> ocs = schema.getObjectClasses();
+            List<ObjectClass> ocs = schema.getObjectClasses();
             if ( ( ocs != null ) && ( ocs.size() >= 1 ) )
             {
                 Element objectClassesNode = element.addElement( OBJECT_CLASSES_TAG );
-                for ( ObjectClassImpl oc : ocs )
+                for ( ObjectClass oc : ocs )
                 {
                     toXml( oc, objectClassesNode );
                 }
             }
 
             // Matching Rules
-            List<MatchingRuleImpl> mrs = schema.getMatchingRules();
+            List<MatchingRule> mrs = schema.getMatchingRules();
             if ( ( mrs != null ) && ( mrs.size() >= 1 ) )
             {
                 Element matchingRulesNode = element.addElement( MATCHING_RULES_TAG );
-                for ( MatchingRuleImpl mr : mrs )
+                for ( MatchingRule mr : mrs )
                 {
                     toXml( mr, matchingRulesNode );
                 }
             }
 
             // Syntaxes
-            List<SyntaxImpl> syntaxes = schema.getSyntaxes();
+            List<LdapSyntax> syntaxes = schema.getSyntaxes();
             if ( ( syntaxes != null ) && ( syntaxes.size() >= 1 ) )
             {
                 Element syntaxesNode = element.addElement( SYNTAXES_TAG );
-                for ( SyntaxImpl syntax : syntaxes )
+                for ( LdapSyntax syntax : syntaxes )
                 {
                     toXml( syntax, syntaxesNode );
                 }
@@ -247,7 +247,7 @@ public class XMLSchemaFileExporter
      * @param root
      *      the root Element
      */
-    private static void toXml( AttributeTypeImpl at, Element root )
+    private static void toXml( AttributeType at, Element root )
     {
         Element atNode = root.addElement( ATTRIBUTE_TYPE_TAG );
 
@@ -375,7 +375,7 @@ public class XMLSchemaFileExporter
      * @param root
      *      the root Element
      */
-    private static void toXml( ObjectClassImpl oc, Element root )
+    private static void toXml( ObjectClass oc, Element root )
     {
         Element ocNode = root.addElement( OBJECT_CLASS_TAG );
 
@@ -464,7 +464,7 @@ public class XMLSchemaFileExporter
      * @param root
      *      the root Element
      */
-    private static void toXml( MatchingRuleImpl mr, Element root )
+    private static void toXml( MatchingRule mr, Element root )
     {
         Element mrNode = root.addElement( MATCHING_RULE_TAG );
 
@@ -523,7 +523,7 @@ public class XMLSchemaFileExporter
      * @return
      *      the corresponding source code representation
      */
-    private static void toXml( SyntaxImpl syntax, Element root )
+    private static void toXml( LdapSyntax syntax, Element root )
     {
         Element syntaxNode = root.addElement( SYNTAX_TAG );
 

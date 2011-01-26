@@ -25,8 +25,8 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import org.apache.directory.studio.schemaeditor.model.AttributeTypeImpl;
-import org.apache.directory.studio.schemaeditor.model.ObjectClassImpl;
+import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.Viewer;
 
@@ -58,10 +58,10 @@ public class SchemaEditorTableViewerContentProvider implements IStructuredConten
             {
                 public int compare( Object o1, Object o2 )
                 {
-                    if ( o1 instanceof AttributeTypeImpl && o2 instanceof AttributeTypeImpl )
+                    if ( o1 instanceof AttributeType && o2 instanceof AttributeType )
                     {
-                        List<String> at1Names = ( ( AttributeTypeImpl ) o1 ).getNames();
-                        List<String> at2Names = ( ( AttributeTypeImpl ) o2 ).getNames();
+                        List<String> at1Names = ( ( AttributeType ) o1 ).getNames();
+                        List<String> at2Names = ( ( AttributeType ) o2 ).getNames();
 
                         if ( ( at1Names != null ) && ( at2Names != null ) && ( at1Names.size() > 0 )
                             && ( at2Names.size() > 0 ) )
@@ -69,10 +69,10 @@ public class SchemaEditorTableViewerContentProvider implements IStructuredConten
                             return at1Names.get( 0 ).compareToIgnoreCase( at2Names.get( 0 ) );
                         }
                     }
-                    else if ( o1 instanceof ObjectClassImpl && o2 instanceof ObjectClassImpl )
+                    else if ( o1 instanceof ObjectClass && o2 instanceof ObjectClass )
                     {
-                        List<String> oc1Names = ( ( ObjectClassImpl ) o1 ).getNames();
-                        List<String> oc2Names = ( ( ObjectClassImpl ) o2 ).getNames();
+                        List<String> oc1Names = ( ( ObjectClass ) o1 ).getNames();
+                        List<String> oc2Names = ( ( ObjectClass ) o2 ).getNames();
 
                         if ( ( oc1Names != null ) && ( oc2Names != null ) && ( oc1Names.size() > 0 )
                             && ( oc2Names.size() > 0 ) )

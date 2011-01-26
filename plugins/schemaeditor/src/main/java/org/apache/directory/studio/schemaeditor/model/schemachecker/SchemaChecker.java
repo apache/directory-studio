@@ -25,6 +25,10 @@ import java.util.List;
 
 import org.apache.commons.collections.MultiMap;
 import org.apache.commons.collections.map.MultiValueMap;
+import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
+import org.apache.directory.shared.ldap.model.schema.MatchingRule;
+import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.shared.ldap.model.schema.ObjectClassTypeEnum;
 import org.apache.directory.shared.ldap.model.schema.SchemaObject;
 import org.apache.directory.shared.ldap.model.schema.UsageEnum;
@@ -33,12 +37,8 @@ import org.apache.directory.studio.schemaeditor.controller.ProjectsHandlerAdapte
 import org.apache.directory.studio.schemaeditor.controller.SchemaHandler;
 import org.apache.directory.studio.schemaeditor.controller.SchemaHandlerAdapter;
 import org.apache.directory.studio.schemaeditor.controller.SchemaHandlerListener;
-import org.apache.directory.studio.schemaeditor.model.AttributeTypeImpl;
-import org.apache.directory.studio.schemaeditor.model.MatchingRuleImpl;
-import org.apache.directory.studio.schemaeditor.model.ObjectClassImpl;
 import org.apache.directory.studio.schemaeditor.model.Project;
 import org.apache.directory.studio.schemaeditor.model.Schema;
-import org.apache.directory.studio.schemaeditor.model.SyntaxImpl;
 import org.apache.directory.studio.schemaeditor.model.schemachecker.NonExistingMatchingRuleError.NonExistingMatchingRuleErrorEnum;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -85,7 +85,7 @@ public class SchemaChecker
     /** The SchemaHandlerListener */
     private SchemaHandlerListener schemaHandlerListener = new SchemaHandlerAdapter()
     {
-        public void attributeTypeAdded( AttributeTypeImpl at )
+        public void attributeTypeAdded( AttributeType at )
         {
             synchronized ( this )
             {
@@ -100,7 +100,7 @@ public class SchemaChecker
         }
 
 
-        public void attributeTypeModified( AttributeTypeImpl at )
+        public void attributeTypeModified( AttributeType at )
         {
             synchronized ( this )
             {
@@ -120,7 +120,7 @@ public class SchemaChecker
         }
 
 
-        public void attributeTypeRemoved( AttributeTypeImpl at )
+        public void attributeTypeRemoved( AttributeType at )
         {
             synchronized ( this )
             {
@@ -140,7 +140,7 @@ public class SchemaChecker
         }
 
 
-        public void objectClassAdded( ObjectClassImpl oc )
+        public void objectClassAdded( ObjectClass oc )
         {
             synchronized ( this )
             {
@@ -155,7 +155,7 @@ public class SchemaChecker
         }
 
 
-        public void objectClassModified( ObjectClassImpl oc )
+        public void objectClassModified( ObjectClass oc )
         {
             synchronized ( this )
             {
@@ -175,7 +175,7 @@ public class SchemaChecker
         }
 
 
-        public void objectClassRemoved( ObjectClassImpl oc )
+        public void objectClassRemoved( ObjectClass oc )
         {
             synchronized ( this )
             {
@@ -199,14 +199,14 @@ public class SchemaChecker
         {
             synchronized ( this )
             {
-                List<AttributeTypeImpl> ats = schema.getAttributeTypes();
-                for ( AttributeTypeImpl at : ats )
+                List<AttributeType> ats = schema.getAttributeTypes();
+                for ( AttributeType at : ats )
                 {
                     checkAttributeType( at );
                 }
 
-                List<ObjectClassImpl> ocs = schema.getObjectClasses();
-                for ( ObjectClassImpl oc : ocs )
+                List<ObjectClass> ocs = schema.getObjectClasses();
+                for ( ObjectClass oc : ocs )
                 {
                     checkObjectClass( oc );
                 }
@@ -220,14 +220,14 @@ public class SchemaChecker
         {
             synchronized ( this )
             {
-                List<AttributeTypeImpl> ats = schema.getAttributeTypes();
-                for ( AttributeTypeImpl at : ats )
+                List<AttributeType> ats = schema.getAttributeTypes();
+                for ( AttributeType at : ats )
                 {
                     removeSchemaObject( at );
                 }
 
-                List<ObjectClassImpl> ocs = schema.getObjectClasses();
-                for ( ObjectClassImpl oc : ocs )
+                List<ObjectClass> ocs = schema.getObjectClasses();
+                for ( ObjectClass oc : ocs )
                 {
                     removeSchemaObject( oc );
                 }
@@ -382,14 +382,14 @@ public class SchemaChecker
                     {
                         monitor.subTask( schema.getName() );
 
-                        List<AttributeTypeImpl> ats = schema.getAttributeTypes();
-                        for ( AttributeTypeImpl at : ats )
+                        List<AttributeType> ats = schema.getAttributeTypes();
+                        for ( AttributeType at : ats )
                         {
                             checkAttributeType( at );
                         }
 
-                        List<ObjectClassImpl> ocs = schema.getObjectClasses();
-                        for ( ObjectClassImpl oc : ocs )
+                        List<ObjectClass> ocs = schema.getObjectClasses();
+                        for ( ObjectClass oc : ocs )
                         {
                             checkObjectClass( oc );
                         }
@@ -416,7 +416,7 @@ public class SchemaChecker
      * @param at
      *      an attribute type
      */
-    private void checkAttributeType( AttributeTypeImpl at )
+    private void checkAttributeType( AttributeType at )
     {
         removeSchemaObject( at );
 
@@ -473,7 +473,7 @@ public class SchemaChecker
         String superior = at.getSuperiorOid();
         if ( ( superior != null ) && ( !"".equals( superior ) ) )
         {
-            AttributeTypeImpl superiorAT = Activator.getDefault().getSchemaHandler().getAttributeType( superior );
+            AttributeType superiorAT = Activator.getDefault().getSchemaHandler().getAttributeType( superior );
             if ( superiorAT == null )
             {
                 SchemaError error = new NonExistingATSuperiorError( at, superior );
@@ -513,7 +513,7 @@ public class SchemaChecker
         String syntaxOid = at.getSyntaxOid();
         if ( ( syntaxOid != null ) && ( !"".equals( syntaxOid ) ) )
         {
-            SyntaxImpl syntax = Activator.getDefault().getSchemaHandler().getSyntax( syntaxOid );
+            LdapSyntax syntax = Activator.getDefault().getSchemaHandler().getSyntax( syntaxOid );
             if ( syntax == null )
             {
                 SchemaError error = new NonExistingSyntaxError( at, syntaxOid );
@@ -533,7 +533,7 @@ public class SchemaChecker
         String equality = at.getEqualityOid();
         if ( ( equality != null ) && ( !"".equals( equality ) ) )
         {
-            MatchingRuleImpl equalityMR = Activator.getDefault().getSchemaHandler().getMatchingRule( equality );
+            MatchingRule equalityMR = Activator.getDefault().getSchemaHandler().getMatchingRule( equality );
             if ( equalityMR == null )
             {
                 SchemaError error = new NonExistingMatchingRuleError( at, equality,
@@ -554,7 +554,7 @@ public class SchemaChecker
         String ordering = at.getOrderingOid();
         if ( ( ordering != null ) && ( !"".equals( ordering ) ) )
         {
-            MatchingRuleImpl orderingMR = Activator.getDefault().getSchemaHandler().getMatchingRule( ordering );
+            MatchingRule orderingMR = Activator.getDefault().getSchemaHandler().getMatchingRule( ordering );
             if ( orderingMR == null )
             {
                 SchemaError error = new NonExistingMatchingRuleError( at, ordering,
@@ -575,7 +575,7 @@ public class SchemaChecker
         String substring = at.getSubstringOid();
         if ( ( substring != null ) && ( !"".equals( substring ) ) )
         {
-            MatchingRuleImpl substringMR = Activator.getDefault().getSchemaHandler().getMatchingRule( substring );
+            MatchingRule substringMR = Activator.getDefault().getSchemaHandler().getMatchingRule( substring );
             if ( substringMR == null )
             {
                 SchemaError error = new NonExistingMatchingRuleError( at, substring,
@@ -600,7 +600,7 @@ public class SchemaChecker
      * @param oc
      *      an object class
      */
-    private void checkObjectClass( ObjectClassImpl oc )
+    private void checkObjectClass( ObjectClass oc )
     {
         removeSchemaObject( oc );
 
@@ -661,7 +661,7 @@ public class SchemaChecker
 
             for ( String superior : superiors )
             {
-                ObjectClassImpl superiorOC = Activator.getDefault().getSchemaHandler().getObjectClass( superior );
+                ObjectClass superiorOC = Activator.getDefault().getSchemaHandler().getObjectClass( superior );
                 if ( superiorOC == null )
                 {
                     SchemaError error = new NonExistingOCSuperiorError( oc, superior );
@@ -712,7 +712,7 @@ public class SchemaChecker
         {
             for ( String mandatoryATName : mandatoryATNames )
             {
-                AttributeTypeImpl mandatoryAT = Activator.getDefault().getSchemaHandler().getAttributeType(
+                AttributeType mandatoryAT = Activator.getDefault().getSchemaHandler().getAttributeType(
                     mandatoryATName );
                 if ( mandatoryAT == null )
                 {
@@ -731,7 +731,7 @@ public class SchemaChecker
 
             for ( String optionalATName : optionalATNames )
             {
-                AttributeTypeImpl optionalAT = Activator.getDefault().getSchemaHandler().getAttributeType(
+                AttributeType optionalAT = Activator.getDefault().getSchemaHandler().getAttributeType(
                     optionalATName );
                 if ( optionalAT == null )
                 {
@@ -964,13 +964,13 @@ public class SchemaChecker
         {
             for ( Object object : deps )
             {
-                if ( object instanceof AttributeTypeImpl )
+                if ( object instanceof AttributeType )
                 {
-                    checkAttributeType( ( AttributeTypeImpl ) object );
+                    checkAttributeType( ( AttributeType ) object );
                 }
-                else if ( object instanceof ObjectClassImpl )
+                else if ( object instanceof ObjectClass )
                 {
-                    checkObjectClass( ( ObjectClassImpl ) object );
+                    checkObjectClass( ( ObjectClass ) object );
                 }
             }
         }

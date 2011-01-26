@@ -22,6 +22,11 @@ package org.apache.directory.studio.schemaeditor.model;
 
 import java.util.List;
 
+import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
+import org.apache.directory.shared.ldap.model.schema.MatchingRule;
+import org.apache.directory.shared.ldap.model.schema.ObjectClass;
+
 
 /**
  * This interface represents a Schema.
@@ -72,7 +77,7 @@ public interface Schema
      * @return
      * 		all the ObjectClassImpl objects contained in the Schema
      */
-    public List<ObjectClassImpl> getObjectClasses();
+    public List<ObjectClass> getObjectClasses();
 
 
     /**
@@ -81,7 +86,7 @@ public interface Schema
      * @return
      * 		all the AttributeTypeImpl objects contained in the Schema
      */
-    public List<AttributeTypeImpl> getAttributeTypes();
+    public List<AttributeType> getAttributeTypes();
 
 
     /**
@@ -90,7 +95,7 @@ public interface Schema
      * @return
      *      all the MatchingRuleImpl objects contained in the Schema
      */
-    public List<MatchingRuleImpl> getMatchingRules();
+    public List<MatchingRule> getMatchingRules();
 
 
     /**
@@ -99,7 +104,7 @@ public interface Schema
      * @return
      *      all the SyntaxImpl objects contained in the Schema
      */
-    public List<SyntaxImpl> getSyntaxes();
+    public List<LdapSyntax> getSyntaxes();
 
 
     /**
@@ -111,7 +116,7 @@ public interface Schema
      * 		the ObjectClassImpl identified by the given id, or null if the 
      * ObjectClassImpl has not been found
      */
-    public ObjectClassImpl getObjectClass( String id );
+    public ObjectClass getObjectClass( String id );
 
 
     /**
@@ -123,7 +128,7 @@ public interface Schema
      * 		the AttributeTypeImpl identified by the given id, or null if the 
      * AttributeTypeImpl has not been found
      */
-    public AttributeTypeImpl getAttributeType( String id );
+    public AttributeType getAttributeType( String id );
 
 
     /**
@@ -135,7 +140,7 @@ public interface Schema
      *      the MatchingRuleImpl identified by the given id, or null if the 
      * MatchingRuleImpl has not been found
      */
-    public MatchingRuleImpl getMatchingRule( String id );
+    public MatchingRule getMatchingRule( String id );
 
 
     /**
@@ -147,7 +152,7 @@ public interface Schema
      *      the SyntaxImpl identified by the given id, or null if the 
      * SyntaxImpl has not been found
      */
-    public SyntaxImpl getSyntax( String id );
+    public LdapSyntax getSyntax( String id );
 
 
     /**
@@ -156,7 +161,7 @@ public interface Schema
      * @param oc
      *      the ObjectClassImpl
      */
-    public boolean addObjectClass( ObjectClassImpl oc );
+    public boolean addObjectClass( ObjectClass oc );
 
 
     /**
@@ -165,7 +170,7 @@ public interface Schema
      * @param at
      *      the AttributeTypeImpl
      */
-    public boolean addAttributeType( AttributeTypeImpl at );
+    public boolean addAttributeType( AttributeType at );
 
 
     /**
@@ -174,7 +179,7 @@ public interface Schema
      * @param mr
      *      the MatchingRuleImpl
      */
-    public boolean addMatchingRule( MatchingRuleImpl mr );
+    public boolean addMatchingRule( MatchingRule mr );
 
 
     /**
@@ -183,7 +188,7 @@ public interface Schema
      * @param syntax
      *      the SyntaxImpl
      */
-    public boolean addSyntax( SyntaxImpl syntax );
+    public boolean addSyntax( LdapSyntax syntax );
 
 
     /**
@@ -192,7 +197,7 @@ public interface Schema
      * @param oc
      *      the ObjectClassImpl
      */
-    public boolean removeObjectClass( ObjectClassImpl oc );
+    public boolean removeObjectClass( ObjectClass oc );
 
 
     /**
@@ -201,7 +206,7 @@ public interface Schema
      * @param at
      *      the AttributeTypeImpl
      */
-    public boolean removeAttributeType( AttributeTypeImpl at );
+    public boolean removeAttributeType( AttributeType at );
 
 
     /**
@@ -210,7 +215,7 @@ public interface Schema
      * @param mr
      *      the MatchingRuleImpl
      */
-    public boolean removeMatchingRule( MatchingRuleImpl mr );
+    public boolean removeMatchingRule( MatchingRule mr );
 
 
     /**
@@ -219,5 +224,5 @@ public interface Schema
      * @param syntax
      *      the SyntaxImpl
      */
-    public boolean removeSyntax( SyntaxImpl syntax );
+    public boolean removeSyntax( LdapSyntax syntax );
 }

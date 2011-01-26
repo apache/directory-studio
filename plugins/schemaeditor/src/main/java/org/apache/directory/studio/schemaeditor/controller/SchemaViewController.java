@@ -23,6 +23,8 @@ package org.apache.directory.studio.schemaeditor.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.studio.schemaeditor.Activator;
 import org.apache.directory.studio.schemaeditor.PluginConstants;
 import org.apache.directory.studio.schemaeditor.PluginUtils;
@@ -45,8 +47,6 @@ import org.apache.directory.studio.schemaeditor.controller.actions.OpenSchemaVie
 import org.apache.directory.studio.schemaeditor.controller.actions.OpenTypeHierarchyAction;
 import org.apache.directory.studio.schemaeditor.controller.actions.SwitchSchemaPresentationToFlatAction;
 import org.apache.directory.studio.schemaeditor.controller.actions.SwitchSchemaPresentationToHierarchicalAction;
-import org.apache.directory.studio.schemaeditor.model.AttributeTypeImpl;
-import org.apache.directory.studio.schemaeditor.model.ObjectClassImpl;
 import org.apache.directory.studio.schemaeditor.model.Project;
 import org.apache.directory.studio.schemaeditor.model.Schema;
 import org.apache.directory.studio.schemaeditor.view.ViewUtils;
@@ -111,7 +111,7 @@ public class SchemaViewController
         /* (non-Javadoc)
          * @see org.apache.directory.studio.schemaeditor.controller.SchemaHandlerListener#attributeTypeAdded(org.apache.directory.studio.schemaeditor.model.AttributeTypeImpl)
          */
-        public void attributeTypeAdded( AttributeTypeImpl at )
+        public void attributeTypeAdded( AttributeType at )
         {
             SchemaViewContentProvider contentProvider = ( SchemaViewContentProvider ) viewer.getContentProvider();
             contentProvider.attributeTypeAdded( at );
@@ -128,7 +128,7 @@ public class SchemaViewController
         /* (non-Javadoc)
          * @see org.apache.directory.studio.schemaeditor.controller.SchemaHandlerListener#attributeTypeModified(org.apache.directory.studio.schemaeditor.model.AttributeTypeImpl)
          */
-        public void attributeTypeModified( AttributeTypeImpl at )
+        public void attributeTypeModified( AttributeType at )
         {
             ( ( SchemaViewContentProvider ) viewer.getContentProvider() ).attributeTypeModified( at );
             view.refresh();
@@ -138,7 +138,7 @@ public class SchemaViewController
         /* (non-Javadoc)
          * @see org.apache.directory.studio.schemaeditor.controller.SchemaHandlerListener#attributeTypeRemoved(org.apache.directory.studio.schemaeditor.model.AttributeTypeImpl)
          */
-        public void attributeTypeRemoved( AttributeTypeImpl at )
+        public void attributeTypeRemoved( AttributeType at )
         {
             ( ( SchemaViewContentProvider ) viewer.getContentProvider() ).attributeTypeRemoved( at );
             view.refresh();
@@ -148,7 +148,7 @@ public class SchemaViewController
         /* (non-Javadoc)
          * @see org.apache.directory.studio.schemaeditor.controller.SchemaHandlerListener#objectClassAdded(org.apache.directory.studio.schemaeditor.model.ObjectClassImpl)
          */
-        public void objectClassAdded( ObjectClassImpl oc )
+        public void objectClassAdded( ObjectClass oc )
         {
             SchemaViewContentProvider contentProvider = ( SchemaViewContentProvider ) viewer.getContentProvider();
             contentProvider.objectClassAdded( oc );
@@ -165,7 +165,7 @@ public class SchemaViewController
         /* (non-Javadoc)
          * @see org.apache.directory.studio.schemaeditor.controller.SchemaHandlerListener#objectClassModified(org.apache.directory.studio.schemaeditor.model.ObjectClassImpl)
          */
-        public void objectClassModified( ObjectClassImpl oc )
+        public void objectClassModified( ObjectClass oc )
         {
             ( ( SchemaViewContentProvider ) viewer.getContentProvider() ).objectClassModified( oc );
             view.refresh();
@@ -175,7 +175,7 @@ public class SchemaViewController
         /* (non-Javadoc)
          * @see org.apache.directory.studio.schemaeditor.controller.SchemaHandlerListener#objectClassRemoved(org.apache.directory.studio.schemaeditor.model.ObjectClassImpl)
          */
-        public void objectClassRemoved( ObjectClassImpl oc )
+        public void objectClassRemoved( ObjectClass oc )
         {
             ( ( SchemaViewContentProvider ) viewer.getContentProvider() ).objectClassRemoved( oc );
             view.refresh();

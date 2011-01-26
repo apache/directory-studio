@@ -24,9 +24,9 @@ package org.apache.directory.studio.schemaeditor.view.dialogs;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.studio.schemaeditor.Activator;
 import org.apache.directory.studio.schemaeditor.PluginConstants;
-import org.apache.directory.studio.schemaeditor.model.ObjectClassImpl;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -62,10 +62,10 @@ import org.eclipse.ui.PlatformUI;
 public class ObjectClassSelectionDialog extends Dialog
 {
     /** The selected object class */
-    private ObjectClassImpl selectedObjectClass;
+    private ObjectClass selectedObjectClass;
 
     /** The hidden Object Classes */
-    private List<ObjectClassImpl> hiddenObjectClasses;
+    private List<ObjectClass> hiddenObjectClasses;
 
     // UI Fields
     private Text searchText;
@@ -82,7 +82,7 @@ public class ObjectClassSelectionDialog extends Dialog
     public ObjectClassSelectionDialog()
     {
         super( PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell() );
-        hiddenObjectClasses = new ArrayList<ObjectClassImpl>();
+        hiddenObjectClasses = new ArrayList<ObjectClass>();
     }
 
 
@@ -179,7 +179,7 @@ public class ObjectClassSelectionDialog extends Dialog
                         chooseButton.setEnabled( true );
                     }
                     schemaIconLabel.setImage( Activator.getDefault().getImage( PluginConstants.IMG_SCHEMA ) );
-                    schemaNameLabel.setText( ( ( ObjectClassImpl ) selection.getFirstElement() ).getSchemaName() );
+                    schemaNameLabel.setText( ( ( ObjectClass ) selection.getFirstElement() ).getSchemaName() );
                 }
             }
         } );
@@ -256,7 +256,7 @@ public class ObjectClassSelectionDialog extends Dialog
         }
         else
         {
-            selectedObjectClass = ( ObjectClassImpl ) selection.getFirstElement();
+            selectedObjectClass = ( ObjectClass ) selection.getFirstElement();
         }
 
         super.okPressed();
@@ -269,7 +269,7 @@ public class ObjectClassSelectionDialog extends Dialog
      * @return 
      *      the selected Object Class
      */
-    public ObjectClassImpl getSelectedObjectClass()
+    public ObjectClass getSelectedObjectClass()
     {
         return selectedObjectClass;
     }
@@ -281,7 +281,7 @@ public class ObjectClassSelectionDialog extends Dialog
      * @param list
      *      a list of Object Classes to hide
      */
-    public void setHiddenObjectClasses( List<ObjectClassImpl> list )
+    public void setHiddenObjectClasses( List<ObjectClass> list )
     {
         hiddenObjectClasses = list;
     }
@@ -293,9 +293,9 @@ public class ObjectClassSelectionDialog extends Dialog
      * @param objectClasses
      *      an array of Object Classes to hide
      */
-    public void setHiddenObjectClasses( ObjectClassImpl[] objectClasses )
+    public void setHiddenObjectClasses( ObjectClass[] objectClasses )
     {
-        for ( ObjectClassImpl objectClass : objectClasses )
+        for ( ObjectClass objectClass : objectClasses )
         {
             hiddenObjectClasses.add( objectClass );
         }

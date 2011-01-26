@@ -25,10 +25,10 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.shared.ldap.model.schema.ObjectClassTypeEnum;
 import org.apache.directory.studio.schemaeditor.Activator;
 import org.apache.directory.studio.schemaeditor.PluginConstants;
-import org.apache.directory.studio.schemaeditor.model.ObjectClassImpl;
 import org.apache.directory.studio.schemaeditor.view.ViewUtils;
 import org.apache.directory.studio.schemaeditor.view.dialogs.ObjectClassSelectionDialog;
 import org.eclipse.jface.dialogs.Dialog;
@@ -64,7 +64,7 @@ import org.eclipse.swt.widgets.Table;
 public class NewObjectClassContentWizardPage extends WizardPage
 {
     /** The superiors object classes */
-    private List<ObjectClassImpl> superiorsList;
+    private List<ObjectClass> superiorsList;
 
     /** The type of the object class */
     private ObjectClassTypeEnum type = ObjectClassTypeEnum.STRUCTURAL;
@@ -88,7 +88,7 @@ public class NewObjectClassContentWizardPage extends WizardPage
         setTitle( Messages.getString( "NewObjectClassContentWizardPage.ObjectClassContent" ) ); //$NON-NLS-1$
         setDescription( Messages.getString( "NewObjectClassContentWizardPage.EnterObjectClassContent" ) ); //$NON-NLS-1$
         setImageDescriptor( Activator.getDefault().getImageDescriptor( PluginConstants.IMG_OBJECT_CLASS_NEW_WIZARD ) );
-        superiorsList = new ArrayList<ObjectClassImpl>();
+        superiorsList = new ArrayList<ObjectClass>();
     }
 
 
@@ -117,7 +117,7 @@ public class NewObjectClassContentWizardPage extends WizardPage
         {
             public Image getImage( Object element )
             {
-                if ( element instanceof ObjectClassImpl )
+                if ( element instanceof ObjectClass )
                 {
                     return Activator.getDefault().getImage( PluginConstants.IMG_OBJECT_CLASS );
                 }
@@ -129,9 +129,9 @@ public class NewObjectClassContentWizardPage extends WizardPage
 
             public String getText( Object element )
             {
-                if ( element instanceof ObjectClassImpl )
+                if ( element instanceof ObjectClass )
                 {
-                    ObjectClassImpl oc = ( ObjectClassImpl ) element;
+                    ObjectClass oc = ( ObjectClass ) element;
 
                     List<String> names = oc.getNames();
                     if ( ( names != null ) && ( names.size() > 0 ) )
@@ -280,9 +280,9 @@ public class NewObjectClassContentWizardPage extends WizardPage
      */
     private void updateSuperiorsTable()
     {
-        Collections.sort( superiorsList, new Comparator<ObjectClassImpl>()
+        Collections.sort( superiorsList, new Comparator<ObjectClass>()
         {
-            public int compare( ObjectClassImpl o1, ObjectClassImpl o2 )
+            public int compare( ObjectClass o1, ObjectClass o2 )
             {
                 List<String> at1Names = o1.getNames();
                 List<String> at2Names = o2.getNames();
@@ -310,7 +310,7 @@ public class NewObjectClassContentWizardPage extends WizardPage
     public List<String> getSuperiorsNameValue()
     {
         List<String> names = new ArrayList<String>();
-        for ( ObjectClassImpl oc : superiorsList )
+        for ( ObjectClass oc : superiorsList )
         {
             List<String> aliases = oc.getNames();
 

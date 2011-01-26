@@ -24,9 +24,9 @@ package org.apache.directory.studio.schemaeditor.view.dialogs;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.directory.shared.ldap.model.schema.AttributeType;
 import org.apache.directory.studio.schemaeditor.Activator;
 import org.apache.directory.studio.schemaeditor.PluginConstants;
-import org.apache.directory.studio.schemaeditor.model.AttributeTypeImpl;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -62,10 +62,10 @@ import org.eclipse.ui.PlatformUI;
 public class AttributeTypeSelectionDialog extends Dialog
 {
     /** The selected attribute type */
-    private AttributeTypeImpl selectedAttributeType;
+    private AttributeType selectedAttributeType;
 
     /** The hidden attribute types */
-    private List<AttributeTypeImpl> hiddenAttributeTypes;
+    private List<AttributeType> hiddenAttributeTypes;
 
     // UI Fields
     private Text searchText;
@@ -82,7 +82,7 @@ public class AttributeTypeSelectionDialog extends Dialog
     public AttributeTypeSelectionDialog()
     {
         super( PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell() );
-        hiddenAttributeTypes = new ArrayList<AttributeTypeImpl>();
+        hiddenAttributeTypes = new ArrayList<AttributeType>();
     }
 
 
@@ -179,7 +179,7 @@ public class AttributeTypeSelectionDialog extends Dialog
                         chooseButton.setEnabled( true );
                     }
                     schemaIconLabel.setImage( Activator.getDefault().getImage( PluginConstants.IMG_SCHEMA ) );
-                    schemaNameLabel.setText( ( ( AttributeTypeImpl ) selection.getFirstElement() ).getSchemaName() );
+                    schemaNameLabel.setText( ( ( AttributeType ) selection.getFirstElement() ).getSchemaName() );
                 }
             }
         } );
@@ -255,7 +255,7 @@ public class AttributeTypeSelectionDialog extends Dialog
         }
         else
         {
-            selectedAttributeType = ( AttributeTypeImpl ) selection.getFirstElement();
+            selectedAttributeType = ( AttributeType ) selection.getFirstElement();
         }
 
         super.okPressed();
@@ -268,7 +268,7 @@ public class AttributeTypeSelectionDialog extends Dialog
      * @return
      *      the selected Attribute Type
      */
-    public AttributeTypeImpl getSelectedAttributeType()
+    public AttributeType getSelectedAttributeType()
     {
         return selectedAttributeType;
     }
@@ -280,7 +280,7 @@ public class AttributeTypeSelectionDialog extends Dialog
      * @param list
      *      a list of Attribute Types to hide
      */
-    public void setHiddenAttributeTypes( List<AttributeTypeImpl> list )
+    public void setHiddenAttributeTypes( List<AttributeType> list )
     {
         hiddenAttributeTypes = list;
     }
@@ -292,9 +292,9 @@ public class AttributeTypeSelectionDialog extends Dialog
      * @param attributeTypes
      *      an array of Attribute Types to hide
      */
-    public void setHiddenAttributeTypes( AttributeTypeImpl[] attributeTypes )
+    public void setHiddenAttributeTypes( AttributeType[] attributeTypes )
     {
-        for ( AttributeTypeImpl objectClass : attributeTypes )
+        for ( AttributeType objectClass : attributeTypes )
         {
             hiddenAttributeTypes.add( objectClass );
         }

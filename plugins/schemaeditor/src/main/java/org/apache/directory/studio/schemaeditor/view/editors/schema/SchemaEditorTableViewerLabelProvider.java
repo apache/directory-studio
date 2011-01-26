@@ -23,10 +23,10 @@ package org.apache.directory.studio.schemaeditor.view.editors.schema;
 
 import java.util.List;
 
+import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.studio.schemaeditor.Activator;
 import org.apache.directory.studio.schemaeditor.PluginConstants;
-import org.apache.directory.studio.schemaeditor.model.AttributeTypeImpl;
-import org.apache.directory.studio.schemaeditor.model.ObjectClassImpl;
 import org.apache.directory.studio.schemaeditor.view.ViewUtils;
 import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
@@ -46,11 +46,11 @@ public class SchemaEditorTableViewerLabelProvider extends LabelProvider implemen
      */
     public Image getColumnImage( Object element, int columnIndex )
     {
-        if ( element instanceof ObjectClassImpl )
+        if ( element instanceof ObjectClass )
         {
             return Activator.getDefault().getImage( PluginConstants.IMG_OBJECT_CLASS );
         }
-        else if ( element instanceof AttributeTypeImpl )
+        else if ( element instanceof AttributeType )
         {
             return Activator.getDefault().getImage( PluginConstants.IMG_ATTRIBUTE_TYPE );
         }
@@ -65,9 +65,9 @@ public class SchemaEditorTableViewerLabelProvider extends LabelProvider implemen
      */
     public String getColumnText( Object element, int columnIndex )
     {
-        if ( element instanceof ObjectClassImpl )
+        if ( element instanceof ObjectClass )
         {
-            ObjectClassImpl oc = ( ObjectClassImpl ) element;
+            ObjectClass oc = ( ObjectClass ) element;
 
             List<String> names = oc.getNames();
             if ( ( names != null ) && ( names.size() > 0 ) )
@@ -80,9 +80,9 @@ public class SchemaEditorTableViewerLabelProvider extends LabelProvider implemen
                     Messages.getString( "SchemaEditorTableViewerLabelProvider.None" ), new String[] { oc.getOid() } ); //$NON-NLS-1$
             }
         }
-        else if ( element instanceof AttributeTypeImpl )
+        else if ( element instanceof AttributeType )
         {
-            AttributeTypeImpl at = ( AttributeTypeImpl ) element;
+            AttributeType at = ( AttributeType ) element;
 
             List<String> names = at.getNames();
             if ( ( names != null ) && ( names.size() > 0 ) )

@@ -20,10 +20,10 @@
 package org.apache.directory.studio.schemaeditor.view.wizards;
 
 
+import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.studio.schemaeditor.Activator;
 import org.apache.directory.studio.schemaeditor.PluginConstants;
 import org.apache.directory.studio.schemaeditor.PluginUtils;
-import org.apache.directory.studio.schemaeditor.model.ObjectClassImpl;
 import org.apache.directory.studio.schemaeditor.model.Schema;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
@@ -76,9 +76,8 @@ public class NewObjectClassWizard extends Wizard implements INewWizard
     public boolean performFinish()
     {
         // Creating the new object class
-        ObjectClassImpl newOC = new ObjectClassImpl( generalPage.getOidValue() );
+        ObjectClass newOC = new ObjectClass( generalPage.getOidValue() );
         newOC.setSchemaName( generalPage.getSchemaValue() );
-        newOC.setSchemaObject( Activator.getDefault().getSchemaHandler().getSchema( generalPage.getSchemaValue() ) );
         newOC.setNames( generalPage.getAliasesValue() );
         newOC.setDescription( generalPage.getDescriptionValue() );
         newOC.setSuperiorOids( contentPage.getSuperiorsNameValue() );

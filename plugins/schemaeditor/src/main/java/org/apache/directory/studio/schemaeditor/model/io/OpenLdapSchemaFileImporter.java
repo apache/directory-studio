@@ -32,8 +32,6 @@ import java.util.regex.MatchResult;
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.shared.ldap.model.schema.parsers.OpenLdapSchemaParser;
-import org.apache.directory.studio.schemaeditor.model.AttributeTypeImpl;
-import org.apache.directory.studio.schemaeditor.model.ObjectClassImpl;
 import org.apache.directory.studio.schemaeditor.model.Schema;
 import org.apache.directory.studio.schemaeditor.model.SchemaImpl;
 import org.eclipse.osgi.util.NLS;
@@ -98,18 +96,16 @@ public class OpenLdapSchemaFileImporter
         List<?> ats = parser.getAttributeTypes();
         for ( int i = 0; i < ats.size(); i++ )
         {
-            AttributeTypeImpl at = convertAttributeType( ( AttributeType ) ats.get( i ) );
+            AttributeType at = convertAttributeType( ( AttributeType ) ats.get( i ) );
             at.setSchemaName( schemaName );
-            at.setSchemaObject( schema );
             schema.addAttributeType( at );
         }
 
         List<?> ocs = parser.getObjectClassTypes();
         for ( int i = 0; i < ocs.size(); i++ )
         {
-            ObjectClassImpl oc = convertObjectClass( ( ObjectClass ) ocs.get( i ) );
+            ObjectClass oc = convertObjectClass( ( ObjectClass ) ocs.get( i ) );
             oc.setSchemaName( schemaName );
-            oc.setSchemaObject( schema );
             schema.addObjectClass( oc );
         }
 
@@ -147,9 +143,9 @@ public class OpenLdapSchemaFileImporter
      * @return
      *      the corresponding AttributeTypeImpl
      */
-    private static final AttributeTypeImpl convertAttributeType( AttributeType at )
+    private static final AttributeType convertAttributeType( AttributeType at )
     {
-        AttributeTypeImpl newAT = new AttributeTypeImpl( at.getOid() );
+        AttributeType newAT = new AttributeType( at.getOid() );
         newAT.setNames( at.getNames() );
         newAT.setDescription( at.getDescription() );
         newAT.setSuperiorOid( at.getSuperiorOid() );
@@ -176,9 +172,9 @@ public class OpenLdapSchemaFileImporter
      * @return
      *      the corresponding ObjectClassImpl
      */
-    private static final ObjectClassImpl convertObjectClass( ObjectClass oc )
+    private static final ObjectClass convertObjectClass( ObjectClass oc )
     {
-        ObjectClassImpl newOC = new ObjectClassImpl( oc.getOid() );
+        ObjectClass newOC = new ObjectClass( oc.getOid() );
         newOC.setNames( oc.getNames() );
         newOC.setDescription( oc.getDescription() );
         newOC.setSuperiorOids( oc.getSuperiorOids() );

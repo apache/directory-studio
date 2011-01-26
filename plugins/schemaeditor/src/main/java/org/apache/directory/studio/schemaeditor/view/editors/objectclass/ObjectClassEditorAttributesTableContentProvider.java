@@ -25,9 +25,9 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import org.apache.directory.shared.ldap.model.schema.AttributeType;
 import org.apache.directory.studio.schemaeditor.Activator;
 import org.apache.directory.studio.schemaeditor.controller.SchemaHandler;
-import org.apache.directory.studio.schemaeditor.model.AttributeTypeImpl;
 import org.apache.directory.studio.schemaeditor.view.editors.NonExistingAttributeType;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.Viewer;
@@ -65,7 +65,7 @@ public class ObjectClassEditorAttributesTableContentProvider implements IStructu
             List<String> attributes = ( List<String> ) inputElement;
             for ( String attribute : attributes )
             {
-                AttributeTypeImpl at = schemaHandler.getAttributeType( attribute );
+                AttributeType at = schemaHandler.getAttributeType( attribute );
                 if ( at != null )
                 {
                     results.add( at );
@@ -81,10 +81,10 @@ public class ObjectClassEditorAttributesTableContentProvider implements IStructu
             {
                 public int compare( Object o1, Object o2 )
                 {
-                    if ( o1 instanceof AttributeTypeImpl && o2 instanceof AttributeTypeImpl )
+                    if ( o1 instanceof AttributeType && o2 instanceof AttributeType )
                     {
-                        List<String> at1Names = ( ( AttributeTypeImpl ) o1 ).getNames();
-                        List<String> at2Names = ( ( AttributeTypeImpl ) o2 ).getNames();
+                        List<String> at1Names = ( ( AttributeType ) o1 ).getNames();
+                        List<String> at2Names = ( ( AttributeType ) o2 ).getNames();
 
                         if ( ( at1Names != null ) && ( at2Names != null ) && ( at1Names.size() > 0 )
                             && ( at2Names.size() > 0 ) )
@@ -92,9 +92,9 @@ public class ObjectClassEditorAttributesTableContentProvider implements IStructu
                             return at1Names.get( 0 ).compareToIgnoreCase( at2Names.get( 0 ) );
                         }
                     }
-                    else if ( o1 instanceof AttributeTypeImpl && o2 instanceof NonExistingAttributeType )
+                    else if ( o1 instanceof AttributeType && o2 instanceof NonExistingAttributeType )
                     {
-                        List<String> at1Names = ( ( AttributeTypeImpl ) o1 ).getNames();
+                        List<String> at1Names = ( ( AttributeType ) o1 ).getNames();
                         String at2Name = ( ( NonExistingAttributeType ) o2 ).getName();
 
                         if ( ( at1Names != null ) && ( at2Name != null ) && ( at1Names.size() > 0 ) )
@@ -102,10 +102,10 @@ public class ObjectClassEditorAttributesTableContentProvider implements IStructu
                             return at1Names.get( 0 ).compareToIgnoreCase( at2Name );
                         }
                     }
-                    else if ( o1 instanceof NonExistingAttributeType && o2 instanceof AttributeTypeImpl )
+                    else if ( o1 instanceof NonExistingAttributeType && o2 instanceof AttributeType )
                     {
                         String at1Name = ( ( NonExistingAttributeType ) o1 ).getName();
-                        List<String> at2Names = ( ( AttributeTypeImpl ) o2 ).getNames();
+                        List<String> at2Names = ( ( AttributeType ) o2 ).getNames();
 
                         if ( ( at1Name != null ) && ( at2Names != null ) && ( at2Names.size() > 0 ) )
                         {

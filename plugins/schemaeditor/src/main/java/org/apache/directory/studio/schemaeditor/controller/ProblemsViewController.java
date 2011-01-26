@@ -20,11 +20,11 @@
 package org.apache.directory.studio.schemaeditor.controller;
 
 
+import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.shared.ldap.model.schema.SchemaObject;
 import org.apache.directory.studio.schemaeditor.Activator;
 import org.apache.directory.studio.schemaeditor.PluginUtils;
-import org.apache.directory.studio.schemaeditor.model.AttributeTypeImpl;
-import org.apache.directory.studio.schemaeditor.model.ObjectClassImpl;
 import org.apache.directory.studio.schemaeditor.model.schemachecker.SchemaCheckerListener;
 import org.apache.directory.studio.schemaeditor.view.ViewUtils;
 import org.apache.directory.studio.schemaeditor.view.editors.attributetype.AttributeTypeEditor;
@@ -115,14 +115,14 @@ public class ProblemsViewController
                 {
                     SchemaObject object = ( ( SchemaErrorWrapper ) objectSelection ).getSchemaError().getSource();
 
-                    if ( object instanceof AttributeTypeImpl )
+                    if ( object instanceof AttributeType )
                     {
-                        input = new AttributeTypeEditorInput( ( AttributeTypeImpl ) object );
+                        input = new AttributeTypeEditorInput( ( AttributeType ) object );
                         editorId = AttributeTypeEditor.ID;
                     }
-                    else if ( object instanceof ObjectClassImpl )
+                    else if ( object instanceof ObjectClass )
                     {
-                        input = new ObjectClassEditorInput( ( ObjectClassImpl ) object );
+                        input = new ObjectClassEditorInput( ( ObjectClass ) object );
                         editorId = ObjectClassEditor.ID;
                     }
                 }
@@ -130,14 +130,14 @@ public class ProblemsViewController
                 {
                     SchemaObject object = ( ( SchemaWarningWrapper ) objectSelection ).getSchemaWarning().getSource();
 
-                    if ( object instanceof AttributeTypeImpl )
+                    if ( object instanceof AttributeType )
                     {
-                        input = new AttributeTypeEditorInput( ( AttributeTypeImpl ) object );
+                        input = new AttributeTypeEditorInput( ( AttributeType ) object );
                         editorId = AttributeTypeEditor.ID;
                     }
-                    else if ( object instanceof ObjectClassImpl )
+                    else if ( object instanceof ObjectClass )
                     {
-                        input = new ObjectClassEditorInput( ( ObjectClassImpl ) object );
+                        input = new ObjectClassEditorInput( ( ObjectClass ) object );
                         editorId = ObjectClassEditor.ID;
                     }
                 }

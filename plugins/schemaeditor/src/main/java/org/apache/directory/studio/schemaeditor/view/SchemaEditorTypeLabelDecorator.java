@@ -20,12 +20,12 @@
 package org.apache.directory.studio.schemaeditor.view;
 
 
+import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.shared.ldap.model.schema.ObjectClassTypeEnum;
 import org.apache.directory.shared.ldap.model.schema.UsageEnum;
 import org.apache.directory.studio.schemaeditor.Activator;
 import org.apache.directory.studio.schemaeditor.PluginConstants;
-import org.apache.directory.studio.schemaeditor.model.AttributeTypeImpl;
-import org.apache.directory.studio.schemaeditor.model.ObjectClassImpl;
 import org.apache.directory.studio.schemaeditor.view.wrappers.AttributeTypeWrapper;
 import org.apache.directory.studio.schemaeditor.view.wrappers.ObjectClassWrapper;
 import org.eclipse.jface.viewers.IDecoration;
@@ -80,9 +80,9 @@ public class SchemaEditorTypeLabelDecorator extends LabelProvider implements ILi
                     PluginConstants.IMG_OBJECT_CLASS_OVERLAY_AUXILIARY ), IDecoration.BOTTOM_RIGHT );
             }
         }
-        else if ( element instanceof AttributeTypeImpl )
+        else if ( element instanceof AttributeType )
         {
-            UsageEnum usage = ( ( AttributeTypeImpl ) element ).getUsage();
+            UsageEnum usage = ( ( AttributeType ) element ).getUsage();
             if ( usage == UsageEnum.USER_APPLICATIONS )
             {
                 decoration.addOverlay( Activator.getDefault().getImageDescriptor(
@@ -95,9 +95,9 @@ public class SchemaEditorTypeLabelDecorator extends LabelProvider implements ILi
                     PluginConstants.IMG_ATTRIBUTE_TYPE_OVERLAY_OPERATION ), IDecoration.BOTTOM_RIGHT );
             }
         }
-        else if ( element instanceof ObjectClassImpl )
+        else if ( element instanceof ObjectClass )
         {
-            ObjectClassTypeEnum classType = ( ( ObjectClassImpl ) element ).getType();
+            ObjectClassTypeEnum classType = ( ( ObjectClass ) element ).getType();
             if ( classType == ObjectClassTypeEnum.ABSTRACT )
             {
                 decoration.addOverlay( Activator.getDefault().getImageDescriptor(

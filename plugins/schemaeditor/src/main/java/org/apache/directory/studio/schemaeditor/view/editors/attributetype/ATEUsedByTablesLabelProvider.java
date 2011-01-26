@@ -21,9 +21,9 @@
 package org.apache.directory.studio.schemaeditor.view.editors.attributetype;
 
 
+import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.studio.schemaeditor.Activator;
 import org.apache.directory.studio.schemaeditor.PluginConstants;
-import org.apache.directory.studio.schemaeditor.model.ObjectClassImpl;
 import org.apache.directory.studio.schemaeditor.view.ViewUtils;
 import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
@@ -42,7 +42,7 @@ public class ATEUsedByTablesLabelProvider extends LabelProvider implements ITabl
      */
     public Image getColumnImage( Object element, int columnIndex )
     {
-        if ( element instanceof ObjectClassImpl )
+        if ( element instanceof ObjectClass )
         {
             return Activator.getDefault().getImage( PluginConstants.IMG_OBJECT_CLASS );
         }
@@ -57,9 +57,9 @@ public class ATEUsedByTablesLabelProvider extends LabelProvider implements ITabl
      */
     public String getColumnText( Object element, int columnIndex )
     {
-        if ( element instanceof ObjectClassImpl )
+        if ( element instanceof ObjectClass )
         {
-            return ViewUtils.concateAliases( ( ( ObjectClassImpl ) element ).getNames() );
+            return ViewUtils.concateAliases( ( ( ObjectClass ) element ).getNames() );
         }
 
         // Default

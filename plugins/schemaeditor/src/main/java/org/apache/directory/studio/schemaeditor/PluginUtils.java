@@ -33,11 +33,11 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
 import org.apache.directory.studio.schemaeditor.controller.ProjectsHandler;
-import org.apache.directory.studio.schemaeditor.model.AttributeTypeImpl;
-import org.apache.directory.studio.schemaeditor.model.ObjectClassImpl;
 import org.apache.directory.studio.schemaeditor.model.Project;
 import org.apache.directory.studio.schemaeditor.model.Schema;
 import org.apache.directory.studio.schemaeditor.model.io.ProjectsExporter;
@@ -87,12 +87,11 @@ public class PluginUtils
      * @return
      *      a clone of the given attribute type
      */
-    public static AttributeTypeImpl getClone( AttributeTypeImpl at )
+    public static AttributeType getClone( AttributeType at )
     {
-        AttributeTypeImpl clone = new AttributeTypeImpl( at.getOid() );
+        AttributeType clone = new AttributeType( at.getOid() );
         clone.setNames( at.getNames() );
         clone.setSchemaName( at.getSchemaName() );
-        clone.setSchemaObject( at.getSchemaObject() );
         clone.setDescription( at.getDescription() );
         clone.setSuperiorOid( at.getSuperiorOid() );
         clone.setUsage( at.getUsage() );
@@ -118,12 +117,11 @@ public class PluginUtils
      * @return
      *      a clone of the given object class
      */
-    public static ObjectClassImpl getClone( ObjectClassImpl oc )
+    public static ObjectClass getClone( ObjectClass oc )
     {
-        ObjectClassImpl clone = new ObjectClassImpl( oc.getOid() );
+        ObjectClass clone = new ObjectClass( oc.getOid() );
         clone.setNames( oc.getNames() );
         clone.setSchemaName( oc.getSchemaName() );
-        clone.setSchemaObject( oc.getSchemaObject() );
         clone.setDescription( oc.getDescription() );
         clone.setSuperiorOids( oc.getSuperiorOids() );
         clone.setType( oc.getType() );

@@ -23,9 +23,9 @@ package org.apache.directory.studio.schemaeditor.view.dialogs;
 
 import java.util.List;
 
+import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.studio.schemaeditor.Activator;
 import org.apache.directory.studio.schemaeditor.PluginConstants;
-import org.apache.directory.studio.schemaeditor.model.ObjectClassImpl;
 import org.apache.directory.studio.schemaeditor.view.ViewUtils;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.osgi.util.NLS;
@@ -44,7 +44,7 @@ public class ObjectClassSelectionDialogLabelProvider extends LabelProvider
      */
     public Image getImage( Object element )
     {
-        if ( element instanceof ObjectClassImpl )
+        if ( element instanceof ObjectClass )
         {
             return Activator.getDefault().getImage( PluginConstants.IMG_OBJECT_CLASS );
         }
@@ -59,9 +59,9 @@ public class ObjectClassSelectionDialogLabelProvider extends LabelProvider
      */
     public String getText( Object element )
     {
-        if ( element instanceof ObjectClassImpl )
+        if ( element instanceof ObjectClass )
         {
-            ObjectClassImpl oc = ( ObjectClassImpl ) element;
+            ObjectClass oc = ( ObjectClass ) element;
 
             List<String> names = oc.getNames();
             if ( ( names != null ) && ( names.size() > 0 ) )

@@ -22,10 +22,10 @@ package org.apache.directory.studio.schemaeditor.model.io;
 
 import java.util.List;
 
+import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.shared.ldap.model.schema.ObjectClassTypeEnum;
 import org.apache.directory.shared.ldap.model.schema.UsageEnum;
-import org.apache.directory.studio.schemaeditor.model.AttributeTypeImpl;
-import org.apache.directory.studio.schemaeditor.model.ObjectClassImpl;
 import org.apache.directory.studio.schemaeditor.model.Schema;
 
 
@@ -49,13 +49,13 @@ public class OpenLdapSchemaFileExporter
     {
         StringBuffer sb = new StringBuffer();
 
-        for ( AttributeTypeImpl at : schema.getAttributeTypes() )
+        for ( AttributeType at : schema.getAttributeTypes() )
         {
             sb.append( toSourceCode( at ) );
             sb.append( "\n" ); //$NON-NLS-1$
         }
 
-        for ( ObjectClassImpl oc : schema.getObjectClasses() )
+        for ( ObjectClass oc : schema.getObjectClasses() )
         {
             sb.append( toSourceCode( oc ) );
             sb.append( "\n" ); //$NON-NLS-1$
@@ -74,7 +74,7 @@ public class OpenLdapSchemaFileExporter
      * @return
      *      the corresponding source code representation
      */
-    public static String toSourceCode( AttributeTypeImpl at )
+    public static String toSourceCode( AttributeType at )
     {
         StringBuffer sb = new StringBuffer();
 
@@ -204,7 +204,7 @@ public class OpenLdapSchemaFileExporter
      * @return
      *      the corresponding source code representation
      */
-    public static String toSourceCode( ObjectClassImpl oc )
+    public static String toSourceCode( ObjectClass oc )
     {
         StringBuffer sb = new StringBuffer();
 

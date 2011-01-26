@@ -23,13 +23,13 @@ package org.apache.directory.studio.schemaeditor.view.editors.attributetype;
 
 import java.util.List;
 
+import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.studio.schemaeditor.Activator;
 import org.apache.directory.studio.schemaeditor.PluginConstants;
 import org.apache.directory.studio.schemaeditor.controller.SchemaHandler;
 import org.apache.directory.studio.schemaeditor.controller.SchemaHandlerAdapter;
 import org.apache.directory.studio.schemaeditor.controller.SchemaHandlerListener;
-import org.apache.directory.studio.schemaeditor.model.AttributeTypeImpl;
-import org.apache.directory.studio.schemaeditor.model.ObjectClassImpl;
 import org.apache.directory.studio.schemaeditor.model.Schema;
 import org.apache.directory.studio.schemaeditor.view.ViewUtils;
 import org.apache.directory.studio.schemaeditor.view.editors.objectclass.ObjectClassEditor;
@@ -65,10 +65,10 @@ public class AttributeTypeEditorUsedByPage extends FormPage
     public static final String ID = AttributeTypeEditor.ID + "usedByPage"; //$NON-NLS-1$
 
     /** The modified attribute type */
-    private AttributeTypeImpl modifiedAttributeType;
+    private AttributeType modifiedAttributeType;
 
     /** The original attribute type */
-    private AttributeTypeImpl originalAttributeType;
+    private AttributeType originalAttributeType;
 
     /** The Schema Handler */
     private SchemaHandler schemaHandler;
@@ -79,7 +79,7 @@ public class AttributeTypeEditorUsedByPage extends FormPage
         /* (non-Javadoc)
          * @see org.apache.directory.studio.schemaeditor.controller.SchemaHandlerListener#attributeTypeAdded(org.apache.directory.studio.schemaeditor.model.AttributeTypeImpl)
          */
-        public void attributeTypeAdded( AttributeTypeImpl at )
+        public void attributeTypeAdded( AttributeType at )
         {
             refreshTableViewers();
         }
@@ -88,7 +88,7 @@ public class AttributeTypeEditorUsedByPage extends FormPage
         /* (non-Javadoc)
          * @see org.apache.directory.studio.schemaeditor.controller.SchemaHandlerListener#attributeTypeModified(org.apache.directory.studio.schemaeditor.model.AttributeTypeImpl)
          */
-        public void attributeTypeModified( AttributeTypeImpl at )
+        public void attributeTypeModified( AttributeType at )
         {
             refreshTableViewers();
         }
@@ -97,7 +97,7 @@ public class AttributeTypeEditorUsedByPage extends FormPage
         /* (non-Javadoc)
          * @see org.apache.directory.studio.schemaeditor.controller.SchemaHandlerListener#attributeTypeRemoved(org.apache.directory.studio.schemaeditor.model.AttributeTypeImpl)
          */
-        public void attributeTypeRemoved( AttributeTypeImpl at )
+        public void attributeTypeRemoved( AttributeType at )
         {
             refreshTableViewers();
         }
@@ -106,7 +106,7 @@ public class AttributeTypeEditorUsedByPage extends FormPage
         /* (non-Javadoc)
          * @see org.apache.directory.studio.schemaeditor.controller.SchemaHandlerListener#objectClassAdded(org.apache.directory.studio.schemaeditor.model.ObjectClassImpl)
          */
-        public void objectClassAdded( ObjectClassImpl oc )
+        public void objectClassAdded( ObjectClass oc )
         {
             refreshTableViewers();
         }
@@ -115,7 +115,7 @@ public class AttributeTypeEditorUsedByPage extends FormPage
         /* (non-Javadoc)
          * @see org.apache.directory.studio.schemaeditor.controller.SchemaHandlerListener#objectClassModified(org.apache.directory.studio.schemaeditor.model.ObjectClassImpl)
          */
-        public void objectClassModified( ObjectClassImpl oc )
+        public void objectClassModified( ObjectClass oc )
         {
             refreshTableViewers();
         }
@@ -124,7 +124,7 @@ public class AttributeTypeEditorUsedByPage extends FormPage
         /* (non-Javadoc)
          * @see org.apache.directory.studio.schemaeditor.controller.SchemaHandlerListener#objectClassRemoved(org.apache.directory.studio.schemaeditor.model.ObjectClassImpl)
          */
-        public void objectClassRemoved( ObjectClassImpl oc )
+        public void objectClassRemoved( ObjectClass oc )
         {
             refreshTableViewers();
         }
@@ -163,12 +163,12 @@ public class AttributeTypeEditorUsedByPage extends FormPage
             Object selectedItem = ( ( StructuredSelection ) mandatoryAttributeTableViewer.getSelection() )
                 .getFirstElement();
 
-            if ( selectedItem instanceof ObjectClassImpl )
+            if ( selectedItem instanceof ObjectClass )
             {
                 IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
                 try
                 {
-                    page.openEditor( new ObjectClassEditorInput( ( ObjectClassImpl ) selectedItem ),
+                    page.openEditor( new ObjectClassEditorInput( ( ObjectClass ) selectedItem ),
                         ObjectClassEditor.ID );
                 }
                 catch ( PartInitException exception )
@@ -187,12 +187,12 @@ public class AttributeTypeEditorUsedByPage extends FormPage
             Object selectedItem = ( ( StructuredSelection ) optionalAttibuteTableViewer.getSelection() )
                 .getFirstElement();
 
-            if ( selectedItem instanceof ObjectClassImpl )
+            if ( selectedItem instanceof ObjectClass )
             {
                 IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
                 try
                 {
-                    page.openEditor( new ObjectClassEditorInput( ( ObjectClassImpl ) selectedItem ),
+                    page.openEditor( new ObjectClassEditorInput( ( ObjectClass ) selectedItem ),
                         ObjectClassEditor.ID );
                 }
                 catch ( PartInitException exception )

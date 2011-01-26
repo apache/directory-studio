@@ -20,11 +20,11 @@
 package org.apache.directory.studio.schemaeditor.controller;
 
 
-import org.apache.directory.studio.schemaeditor.model.AttributeTypeImpl;
-import org.apache.directory.studio.schemaeditor.model.MatchingRuleImpl;
-import org.apache.directory.studio.schemaeditor.model.ObjectClassImpl;
+import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
+import org.apache.directory.shared.ldap.model.schema.MatchingRule;
+import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.studio.schemaeditor.model.Schema;
-import org.apache.directory.studio.schemaeditor.model.SyntaxImpl;
 
 
 /**
@@ -41,7 +41,7 @@ public interface SchemaHandlerListener
      * @param at
      *      the added attribute type
      */
-    public void attributeTypeAdded( AttributeTypeImpl at );
+    public void attributeTypeAdded( AttributeType at );
 
 
     /**
@@ -50,7 +50,7 @@ public interface SchemaHandlerListener
      * @param at
      *      the modified attribute type
      */
-    public void attributeTypeModified( AttributeTypeImpl at );
+    public void attributeTypeModified( AttributeType at );
 
 
     /**
@@ -59,7 +59,7 @@ public interface SchemaHandlerListener
      * @param at
      *      the removed attribute type
      */
-    public void attributeTypeRemoved( AttributeTypeImpl at );
+    public void attributeTypeRemoved( AttributeType at );
 
 
     /**
@@ -68,7 +68,7 @@ public interface SchemaHandlerListener
      * @param mr
      *      the added matching rule
      */
-    public void matchingRuleAdded( MatchingRuleImpl mr );
+    public void matchingRuleAdded( MatchingRule mr );
 
 
     /**
@@ -77,7 +77,7 @@ public interface SchemaHandlerListener
      * @param mr
      *      the modified matching rule
      */
-    public void matchingRuleModified( MatchingRuleImpl mr );
+    public void matchingRuleModified( MatchingRule mr );
 
 
     /**
@@ -86,7 +86,7 @@ public interface SchemaHandlerListener
      * @param mr
      *      the removed matching rule
      */
-    public void matchingRuleRemoved( MatchingRuleImpl mr );
+    public void matchingRuleRemoved( MatchingRule mr );
 
 
     /**
@@ -95,7 +95,7 @@ public interface SchemaHandlerListener
      * @param oc
      *      the added object class
      */
-    public void objectClassAdded( ObjectClassImpl oc );
+    public void objectClassAdded( ObjectClass oc );
 
 
     /**
@@ -104,7 +104,7 @@ public interface SchemaHandlerListener
      * @param oc
      *      the modified object class
      */
-    public void objectClassModified( ObjectClassImpl oc );
+    public void objectClassModified( ObjectClass oc );
 
 
     /**
@@ -113,7 +113,7 @@ public interface SchemaHandlerListener
      * @param oc
      *      the removed attribute type
      */
-    public void objectClassRemoved( ObjectClassImpl oc );
+    public void objectClassRemoved( ObjectClass oc );
 
 
     /**
@@ -140,7 +140,7 @@ public interface SchemaHandlerListener
      * @param syntax
      *      the added syntax
      */
-    public void syntaxAdded( SyntaxImpl syntax );
+    public void syntaxAdded( LdapSyntax syntax );
 
 
     /**
@@ -149,7 +149,7 @@ public interface SchemaHandlerListener
      * @param syntax
      *      the modified syntax
      */
-    public void syntaxModified( SyntaxImpl syntax );
+    public void syntaxModified( LdapSyntax syntax );
 
 
     /**
@@ -158,5 +158,5 @@ public interface SchemaHandlerListener
      * @param syntax
      *      the removed syntax
      */
-    public void syntaxRemoved( SyntaxImpl syntax );
+    public void syntaxRemoved( LdapSyntax syntax );
 }

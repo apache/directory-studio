@@ -23,7 +23,7 @@ package org.apache.directory.studio.schemaeditor.view.editors.attributetype;
 
 import java.util.List;
 
-import org.apache.directory.studio.schemaeditor.model.AttributeTypeImpl;
+import org.apache.directory.shared.ldap.model.schema.AttributeType;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.ui.IEditorInput;
@@ -36,7 +36,7 @@ import org.eclipse.ui.IPersistableElement;
 public class AttributeTypeEditorInput implements IEditorInput
 {
     /** The input attribute type */
-    private AttributeTypeImpl attributeType;
+    private AttributeType attributeType;
 
 
     /**
@@ -45,7 +45,7 @@ public class AttributeTypeEditorInput implements IEditorInput
      * @param at
      *      the input attribute type
      */
-    public AttributeTypeEditorInput( AttributeTypeImpl at )
+    public AttributeTypeEditorInput( AttributeType at )
     {
         attributeType = at;
     }
@@ -143,7 +143,7 @@ public class AttributeTypeEditorInput implements IEditorInput
      * @return
      *      the input Attribute Type
      */
-    public AttributeTypeImpl getAttributeType()
+    public AttributeType getAttributeType()
     {
         return this.attributeType;
     }

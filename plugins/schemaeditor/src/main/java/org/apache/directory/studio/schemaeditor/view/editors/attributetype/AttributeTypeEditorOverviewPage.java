@@ -25,16 +25,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.directory.shared.asn1.util.OID;
+import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
+import org.apache.directory.shared.ldap.model.schema.MatchingRule;
+import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.shared.ldap.model.schema.UsageEnum;
 import org.apache.directory.studio.schemaeditor.Activator;
 import org.apache.directory.studio.schemaeditor.PluginConstants;
 import org.apache.directory.studio.schemaeditor.controller.SchemaHandler;
 import org.apache.directory.studio.schemaeditor.controller.SchemaHandlerListener;
-import org.apache.directory.studio.schemaeditor.model.AttributeTypeImpl;
-import org.apache.directory.studio.schemaeditor.model.MatchingRuleImpl;
-import org.apache.directory.studio.schemaeditor.model.ObjectClassImpl;
 import org.apache.directory.studio.schemaeditor.model.Schema;
-import org.apache.directory.studio.schemaeditor.model.SyntaxImpl;
 import org.apache.directory.studio.schemaeditor.model.alias.Alias;
 import org.apache.directory.studio.schemaeditor.model.alias.AliasWithError;
 import org.apache.directory.studio.schemaeditor.model.alias.AliasesStringParser;
@@ -91,10 +91,10 @@ public class AttributeTypeEditorOverviewPage extends FormPage
     public static final String ID = AttributeTypeEditor.ID + ".overviewPage"; //$NON-NLS-1$
 
     /** The original object class */
-    private AttributeTypeImpl originalAttributeType;
+    private AttributeType originalAttributeType;
 
     /** The modified object class */
-    private AttributeTypeImpl modifiedAttributeType;
+    private AttributeType modifiedAttributeType;
 
     /** The original schema */
     private Schema originalSchema;
@@ -108,7 +108,7 @@ public class AttributeTypeEditorOverviewPage extends FormPage
         /* (non-Javadoc)
          * @see org.apache.directory.studio.schemaeditor.controller.SchemaHandlerListener#attributeTypeAdded(org.apache.directory.studio.schemaeditor.model.AttributeTypeImpl)
          */
-        public void attributeTypeAdded( AttributeTypeImpl at )
+        public void attributeTypeAdded( AttributeType at )
         {
             refreshUI();
         }
@@ -117,7 +117,7 @@ public class AttributeTypeEditorOverviewPage extends FormPage
         /* (non-Javadoc)
          * @see org.apache.directory.studio.schemaeditor.controller.SchemaHandlerListener#attributeTypeModified(org.apache.directory.studio.schemaeditor.model.AttributeTypeImpl)
          */
-        public void attributeTypeModified( AttributeTypeImpl at )
+        public void attributeTypeModified( AttributeType at )
         {
             refreshUI();
         }
@@ -126,7 +126,7 @@ public class AttributeTypeEditorOverviewPage extends FormPage
         /* (non-Javadoc)
          * @see org.apache.directory.studio.schemaeditor.controller.SchemaHandlerListener#attributeTypeRemoved(org.apache.directory.studio.schemaeditor.model.AttributeTypeImpl)
          */
-        public void attributeTypeRemoved( AttributeTypeImpl at )
+        public void attributeTypeRemoved( AttributeType at )
         {
             if ( !at.equals( originalAttributeType ) )
             {
@@ -138,7 +138,7 @@ public class AttributeTypeEditorOverviewPage extends FormPage
         /* (non-Javadoc)
          * @see org.apache.directory.studio.schemaeditor.controller.SchemaHandlerListener#matchingRuleAdded(org.apache.directory.studio.schemaeditor.model.MatchingRuleImpl)
          */
-        public void matchingRuleAdded( MatchingRuleImpl mr )
+        public void matchingRuleAdded( MatchingRule mr )
         {
             refreshUI();
         }
@@ -147,7 +147,7 @@ public class AttributeTypeEditorOverviewPage extends FormPage
         /* (non-Javadoc)
          * @see org.apache.directory.studio.schemaeditor.controller.SchemaHandlerListener#matchingRuleModified(org.apache.directory.studio.schemaeditor.model.MatchingRuleImpl)
          */
-        public void matchingRuleModified( MatchingRuleImpl mr )
+        public void matchingRuleModified( MatchingRule mr )
         {
             refreshUI();
         }
@@ -156,7 +156,7 @@ public class AttributeTypeEditorOverviewPage extends FormPage
         /* (non-Javadoc)
          * @see org.apache.directory.studio.schemaeditor.controller.SchemaHandlerListener#matchingRuleRemoved(org.apache.directory.studio.schemaeditor.model.MatchingRuleImpl)
          */
-        public void matchingRuleRemoved( MatchingRuleImpl mr )
+        public void matchingRuleRemoved( MatchingRule mr )
         {
             refreshUI();
         }
@@ -165,7 +165,7 @@ public class AttributeTypeEditorOverviewPage extends FormPage
         /* (non-Javadoc)
          * @see org.apache.directory.studio.schemaeditor.controller.SchemaHandlerListener#objectClassAdded(org.apache.directory.studio.schemaeditor.model.ObjectClassImpl)
          */
-        public void objectClassAdded( ObjectClassImpl oc )
+        public void objectClassAdded( ObjectClass oc )
         {
             refreshUI();
         }
@@ -174,7 +174,7 @@ public class AttributeTypeEditorOverviewPage extends FormPage
         /* (non-Javadoc)
          * @see org.apache.directory.studio.schemaeditor.controller.SchemaHandlerListener#objectClassModified(org.apache.directory.studio.schemaeditor.model.ObjectClassImpl)
          */
-        public void objectClassModified( ObjectClassImpl oc )
+        public void objectClassModified( ObjectClass oc )
         {
             refreshUI();
         }
@@ -183,7 +183,7 @@ public class AttributeTypeEditorOverviewPage extends FormPage
         /* (non-Javadoc)
          * @see org.apache.directory.studio.schemaeditor.controller.SchemaHandlerListener#objectClassRemoved(org.apache.directory.studio.schemaeditor.model.ObjectClassImpl)
          */
-        public void objectClassRemoved( ObjectClassImpl oc )
+        public void objectClassRemoved( ObjectClass oc )
         {
             refreshUI();
         }
@@ -213,7 +213,7 @@ public class AttributeTypeEditorOverviewPage extends FormPage
         /* (non-Javadoc)
          * @see org.apache.directory.studio.schemaeditor.controller.SchemaHandlerListener#syntaxAdded(org.apache.directory.studio.schemaeditor.model.SyntaxImpl)
          */
-        public void syntaxAdded( SyntaxImpl syntax )
+        public void syntaxAdded( LdapSyntax syntax )
         {
             refreshUI();
         }
@@ -222,7 +222,7 @@ public class AttributeTypeEditorOverviewPage extends FormPage
         /* (non-Javadoc)
          * @see org.apache.directory.studio.schemaeditor.controller.SchemaHandlerListener#syntaxModified(org.apache.directory.studio.schemaeditor.model.SyntaxImpl)
          */
-        public void syntaxModified( SyntaxImpl syntax )
+        public void syntaxModified( LdapSyntax syntax )
         {
             refreshUI();
         }
@@ -231,7 +231,7 @@ public class AttributeTypeEditorOverviewPage extends FormPage
         /* (non-Javadoc)
          * @see org.apache.directory.studio.schemaeditor.controller.SchemaHandlerListener#syntaxRemoved(org.apache.directory.studio.schemaeditor.model.SyntaxImpl)
          */
-        public void syntaxRemoved( SyntaxImpl syntax )
+        public void syntaxRemoved( LdapSyntax syntax )
         {
             refreshUI();
         }
@@ -323,7 +323,7 @@ public class AttributeTypeEditorOverviewPage extends FormPage
 
             String oid = oidText.getText();
 
-            if ( OID.isOID(oid) )
+            if ( OID.isOID( oid ) )
             {
                 if ( ( originalAttributeType.getOid().equals( oid ) )
                     || !( schemaHandler.isAliasOrOidAlreadyTaken( oid ) ) )
@@ -397,11 +397,11 @@ public class AttributeTypeEditorOverviewPage extends FormPage
         {
             Object selectedItem = ( ( StructuredSelection ) supComboViewer.getSelection() ).getFirstElement();
 
-            if ( selectedItem instanceof AttributeTypeImpl )
+            if ( selectedItem instanceof AttributeType )
             {
                 IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
 
-                AttributeTypeEditorInput input = new AttributeTypeEditorInput( ( AttributeTypeImpl ) selectedItem );
+                AttributeTypeEditorInput input = new AttributeTypeEditorInput( ( AttributeType ) selectedItem );
                 try
                 {
                     page.openEditor( input, AttributeTypeEditor.ID );
@@ -421,9 +421,9 @@ public class AttributeTypeEditorOverviewPage extends FormPage
         {
             Object selectedItem = ( ( StructuredSelection ) supComboViewer.getSelection() ).getFirstElement();
 
-            if ( selectedItem instanceof AttributeTypeImpl )
+            if ( selectedItem instanceof AttributeType )
             {
-                AttributeTypeImpl at = ( AttributeTypeImpl ) selectedItem;
+                AttributeType at = ( AttributeType ) selectedItem;
                 List<String> names = at.getNames();
                 if ( ( names != null ) && ( names.size() > 0 ) )
                 {
@@ -483,9 +483,9 @@ public class AttributeTypeEditorOverviewPage extends FormPage
         {
             Object selectedItem = ( ( StructuredSelection ) syntaxComboViewer.getSelection() ).getFirstElement();
 
-            if ( selectedItem instanceof SyntaxImpl )
+            if ( selectedItem instanceof LdapSyntax )
             {
-                modifiedAttributeType.setSyntaxOid( ( ( SyntaxImpl ) selectedItem ).getOid() );
+                modifiedAttributeType.setSyntaxOid( ( ( LdapSyntax ) selectedItem ).getOid() );
             }
             else if ( selectedItem instanceof NonExistingSyntax )
             {
@@ -580,9 +580,9 @@ public class AttributeTypeEditorOverviewPage extends FormPage
         {
             Object selectedItem = ( ( StructuredSelection ) equalityComboViewer.getSelection() ).getFirstElement();
 
-            if ( selectedItem instanceof MatchingRuleImpl )
+            if ( selectedItem instanceof MatchingRule )
             {
-                modifiedAttributeType.setEqualityOid( ( ( MatchingRuleImpl ) selectedItem ).getName() );
+                modifiedAttributeType.setEqualityOid( ( ( MatchingRule ) selectedItem ).getName() );
             }
             else if ( selectedItem instanceof NonExistingMatchingRule )
             {
@@ -608,9 +608,9 @@ public class AttributeTypeEditorOverviewPage extends FormPage
         {
             Object selectedItem = ( ( StructuredSelection ) orderingComboViewer.getSelection() ).getFirstElement();
 
-            if ( selectedItem instanceof MatchingRuleImpl )
+            if ( selectedItem instanceof MatchingRule )
             {
-                modifiedAttributeType.setOrderingOid( ( ( MatchingRuleImpl ) selectedItem ).getName() );
+                modifiedAttributeType.setOrderingOid( ( ( MatchingRule ) selectedItem ).getName() );
             }
             else if ( selectedItem instanceof NonExistingMatchingRule )
             {
@@ -636,9 +636,9 @@ public class AttributeTypeEditorOverviewPage extends FormPage
         {
             Object selectedItem = ( ( StructuredSelection ) substringComboViewer.getSelection() ).getFirstElement();
 
-            if ( selectedItem instanceof MatchingRuleImpl )
+            if ( selectedItem instanceof MatchingRule )
             {
-                modifiedAttributeType.setSubstringOid( ( ( MatchingRuleImpl ) selectedItem ).getName() );
+                modifiedAttributeType.setSubstringOid( ( ( MatchingRule ) selectedItem ).getName() );
             }
             else if ( selectedItem instanceof NonExistingMatchingRule )
             {
@@ -991,7 +991,7 @@ public class AttributeTypeEditorOverviewPage extends FormPage
         }
         else
         {
-            AttributeTypeImpl supAT = schemaHandler.getAttributeType( supAtName );
+            AttributeType supAT = schemaHandler.getAttributeType( supAtName );
             if ( supAT != null )
             {
                 supComboViewer.setSelection( new StructuredSelection( supAT ), true );
@@ -1050,7 +1050,7 @@ public class AttributeTypeEditorOverviewPage extends FormPage
         }
         else
         {
-            SyntaxImpl syntax = schemaHandler.getSyntax( syntaxOID );
+            LdapSyntax syntax = schemaHandler.getSyntax( syntaxOID );
             if ( syntax != null )
             {
                 syntaxComboViewer.setSelection( new StructuredSelection( syntax ), true );
@@ -1085,7 +1085,7 @@ public class AttributeTypeEditorOverviewPage extends FormPage
         }
         else
         {
-            MatchingRuleImpl matchingRule = schemaHandler.getMatchingRule( equalityName );
+            MatchingRule matchingRule = schemaHandler.getMatchingRule( equalityName );
             if ( matchingRule != null )
             {
                 equalityComboViewer.setSelection( new StructuredSelection( matchingRule ), true );
@@ -1120,7 +1120,7 @@ public class AttributeTypeEditorOverviewPage extends FormPage
         }
         else
         {
-            MatchingRuleImpl matchingRule = schemaHandler.getMatchingRule( orderingName );
+            MatchingRule matchingRule = schemaHandler.getMatchingRule( orderingName );
             if ( matchingRule != null )
             {
                 orderingComboViewer.setSelection( new StructuredSelection( matchingRule ), true );
@@ -1156,7 +1156,7 @@ public class AttributeTypeEditorOverviewPage extends FormPage
         }
         else
         {
-            MatchingRuleImpl matchingRule = schemaHandler.getMatchingRule( substringName );
+            MatchingRule matchingRule = schemaHandler.getMatchingRule( substringName );
             if ( matchingRule != null )
             {
                 substringComboViewer.setSelection( new StructuredSelection( matchingRule ), true );

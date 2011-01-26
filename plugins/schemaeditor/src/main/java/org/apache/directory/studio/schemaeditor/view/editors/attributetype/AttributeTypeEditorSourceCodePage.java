@@ -28,7 +28,6 @@ import java.util.List;
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
 import org.apache.directory.shared.ldap.model.schema.parsers.OpenLdapSchemaParser;
 import org.apache.directory.studio.schemaeditor.PluginConstants;
-import org.apache.directory.studio.schemaeditor.model.AttributeTypeImpl;
 import org.apache.directory.studio.schemaeditor.model.io.OpenLdapSchemaFileExporter;
 import org.apache.directory.studio.schemaeditor.view.widget.SchemaSourceViewer;
 import org.eclipse.jface.resource.JFaceResources;
@@ -57,7 +56,7 @@ public class AttributeTypeEditorSourceCodePage extends FormPage
     public static final String ID = AttributeTypeEditor.ID + "sourceCodePage"; //$NON-NLS-1$
 
     /** The modified attribute type */
-    private AttributeTypeImpl modifiedAttributeType;
+    private AttributeType modifiedAttributeType;
 
     /** The Schema Source Viewer */
     private SchemaSourceViewer schemaSourceViewer;
