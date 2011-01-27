@@ -167,7 +167,7 @@ public class MergeSchemasSelectionWizardPage extends AbstractWizardPage
                 }
                 else if ( element instanceof Schema )
                 {
-                    return ( ( Schema ) element ).getName();
+                    return ( ( Schema ) element ).getSchemaName();
                 }
                 else if ( element instanceof ObjectClassFolder )
                 {

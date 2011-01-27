@@ -33,7 +33,6 @@ import org.apache.directory.shared.ldap.model.schema.AttributeType;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.shared.ldap.model.schema.parsers.OpenLdapSchemaParser;
 import org.apache.directory.studio.schemaeditor.model.Schema;
-import org.apache.directory.studio.schemaeditor.model.SchemaImpl;
 import org.eclipse.osgi.util.NLS;
 
 
@@ -91,7 +90,7 @@ public class OpenLdapSchemaFileImporter
 
         String schemaName = getNameFromPath( path );
 
-        Schema schema = new SchemaImpl( schemaName );
+        Schema schema = new Schema( schemaName );
 
         List<?> ats = parser.getAttributeTypes();
         for ( int i = 0; i < ats.size(); i++ )

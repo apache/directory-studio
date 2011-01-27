@@ -33,7 +33,6 @@ import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.shared.ldap.model.schema.ObjectClassTypeEnum;
 import org.apache.directory.shared.ldap.model.schema.UsageEnum;
 import org.apache.directory.studio.schemaeditor.model.Schema;
-import org.apache.directory.studio.schemaeditor.model.SchemaImpl;
 import org.dom4j.Attribute;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
@@ -201,10 +200,7 @@ public class XMLSchemaFileImporter
     public static Schema readSchema( Element element, String path ) throws XMLSchemaFileImportException
     {
         // Creating the schema with an empty name
-        Schema schema = new SchemaImpl( null );
-
-        // Name
-        schema.setName( getSchemaName( element, path ) );
+        Schema schema = new Schema( getSchemaName( element, path ) );
 
         // Attribute Types
         readAttributeTypes( element, schema );
@@ -322,7 +318,7 @@ public class XMLSchemaFileImporter
         }
 
         // Schema
-        at.setSchemaName( schema.getName() );
+        at.setSchemaName( schema.getSchemaName() );
 
         // Aliases
         Element aliasesElement = element.element( ALIASES_TAG );
@@ -492,7 +488,7 @@ public class XMLSchemaFileImporter
         }
 
         // Schema
-        oc.setSchemaName( schema.getName() );
+        oc.setSchemaName( schema.getSchemaName() );
 
         // Aliases
         Element aliasesElement = element.element( ALIASES_TAG );
@@ -639,7 +635,7 @@ public class XMLSchemaFileImporter
         }
 
         // Schema
-        mr.setSchemaName( schema.getName() );
+        mr.setSchemaName( schema.getSchemaName() );
 
         // Aliases
         Element aliasesElement = element.element( ALIASES_TAG );
@@ -730,7 +726,7 @@ public class XMLSchemaFileImporter
         }
 
         // Schema
-        syntax.setSchemaName( schema.getName() );
+        syntax.setSchemaName( schema.getSchemaName() );
 
         // Aliases
         Element aliasesElement = element.element( ALIASES_TAG );

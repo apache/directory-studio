@@ -90,12 +90,12 @@ public class ExportSchemasAsXmlWizard extends Wizard implements IExportWizard
                             Messages.getString( "ExportSchemasAsXmlWizard.ExportingSchemas" ), selectedSchemas.length ); //$NON-NLS-1$
                         for ( Schema schema : selectedSchemas )
                         {
-                            monitor.subTask( schema.getName() );
+                            monitor.subTask( schema.getSchemaName() );
 
                             try
                             {
                                 BufferedWriter buffWriter = new BufferedWriter( new FileWriter( exportDirectory + "/" //$NON-NLS-1$
-                                    + schema.getName() + ".xml" ) ); //$NON-NLS-1$
+                                    + schema.getSchemaName() + ".xml" ) ); //$NON-NLS-1$
                                 buffWriter.write( XMLSchemaFileExporter.toXml( schema ) );
                                 buffWriter.close();
                             }
@@ -105,10 +105,10 @@ public class ExportSchemasAsXmlWizard extends Wizard implements IExportWizard
                                     .logError(
                                         NLS
                                             .bind(
-                                                Messages.getString( "ExportSchemasAsXmlWizard.ErrorWhenSavingSchema" ), new String[] { schema.getName() } ), e ); //$NON-NLS-1$
+                                                Messages.getString( "ExportSchemasAsXmlWizard.ErrorWhenSavingSchema" ), new String[] { schema.getSchemaName() } ), e ); //$NON-NLS-1$
                                 ViewUtils
                                     .displayErrorMessageBox(
-                                        Messages.getString( "ExportSchemasAsXmlWizard.Error" ), NLS.bind( Messages.getString( "ExportSchemasAsXmlWizard.ErrorWhenSavingSchema" ), new String[] { schema.getName() } ) ); //$NON-NLS-1$ //$NON-NLS-2$
+                                        Messages.getString( "ExportSchemasAsXmlWizard.Error" ), NLS.bind( Messages.getString( "ExportSchemasAsXmlWizard.ErrorWhenSavingSchema" ), new String[] { schema.getSchemaName() } ) ); //$NON-NLS-1$ //$NON-NLS-2$
                             }
                             monitor.worked( 1 );
                         }

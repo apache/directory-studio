@@ -45,7 +45,6 @@ import org.apache.directory.studio.connection.core.Connection.ReferralHandlingMe
 import org.apache.directory.studio.connection.core.Utils;
 import org.apache.directory.studio.connection.core.io.ConnectionWrapper;
 import org.apache.directory.studio.schemaeditor.model.Schema;
-import org.apache.directory.studio.schemaeditor.model.SchemaImpl;
 
 
 /**
@@ -183,7 +182,7 @@ public class GenericSchemaConnector extends AbstractSchemaConnector implements S
         StudioProgressMonitor monitor ) throws NamingException, ParseException
     {
         // Creating the schema
-        Schema schema = new SchemaImpl( "schema" ); //$NON-NLS-1$
+        Schema schema = new Schema( "schema" ); //$NON-NLS-1$
 
         Attribute attributeTypesAttribute = searchResult.getAttributes().get( "attributeTypes" );
         if ( attributeTypesAttribute != null )
@@ -212,7 +211,7 @@ public class GenericSchemaConnector extends AbstractSchemaConnector implements S
                     impl.setEqualityOid( atd.getEqualityOid() );
                     impl.setOrderingOid( atd.getOrderingOid() );
                     impl.setSubstringOid( atd.getSubstringOid() );
-                    impl.setSchemaName( schema.getName() );
+                    impl.setSchemaName( schema.getSchemaName() );
 
                     // Active Directory hack
                     if ( impl.getSyntaxOid() != null && "OctetString".equalsIgnoreCase( impl.getSyntaxOid() ) ) //$NON-NLS-1$
@@ -246,7 +245,7 @@ public class GenericSchemaConnector extends AbstractSchemaConnector implements S
                     impl.setObsolete( ocd.isObsolete() );
                     impl.setMustAttributeTypeOids( ocd.getMustAttributeTypeOids() );
                     impl.setMayAttributeTypeOids( ocd.getMayAttributeTypeOids() );
-                    impl.setSchemaName( schema.getName() );
+                    impl.setSchemaName( schema.getSchemaName() );
 
                     schema.addObjectClass( impl );
                 }
@@ -272,7 +271,7 @@ public class GenericSchemaConnector extends AbstractSchemaConnector implements S
                         { lsd.getDescription() } );
                     //impl.setObsolete( lsd.isObsolete() );
                     impl.setHumanReadable( true );
-                    impl.setSchemaName( schema.getName() );
+                    impl.setSchemaName( schema.getSchemaName() );
 
                     schema.addSyntax( impl );
                 }
@@ -285,7 +284,7 @@ public class GenericSchemaConnector extends AbstractSchemaConnector implements S
             if ( syntaxOid != null && schema.getSyntax( syntaxOid ) == null )
             {
                 LdapSyntax impl = new LdapSyntax( syntaxOid );
-                impl.setSchemaName( schema.getName() );
+                impl.setSchemaName( schema.getSchemaName() );
                 String oidDescription = Utils.getOidDescription( syntaxOid );
                 impl.setDescription( oidDescription != null ? oidDescription : "Dummy" ); //$NON-NLS-1$
                 impl.setNames( new String[]
@@ -312,7 +311,7 @@ public class GenericSchemaConnector extends AbstractSchemaConnector implements S
                     impl.setNames( mrd.getNames().toArray( new String[0] ) );
                     impl.setObsolete( mrd.isObsolete() );
                     impl.setSyntaxOid( mrd.getSyntaxOid() );
-                    impl.setSchemaName( schema.getName() );
+                    impl.setSchemaName( schema.getSchemaName() );
 
                     schema.addMatchingRule( impl );
                 }
@@ -338,7 +337,7 @@ public class GenericSchemaConnector extends AbstractSchemaConnector implements S
             if ( matchingRuleName != null && schema.getMatchingRule( matchingRuleName ) == null )
             {
                 MatchingRule impl = new MatchingRule( matchingRuleName );
-                impl.setSchemaName( schema.getName() );
+                impl.setSchemaName( schema.getSchemaName() );
                 impl.setDescription( "Dummy" ); //$NON-NLS-1$
                 impl.setNames( new String[]
                     { matchingRuleName } );

@@ -59,18 +59,18 @@ public class DifferenceEngine
         Map<String, Schema> mapL1 = new HashMap<String, Schema>();
         for ( Schema schema : l1 )
         {
-            mapL1.put( schema.getName().toLowerCase(), schema );
+            mapL1.put( schema.getSchemaName().toLowerCase(), schema );
         }
         Map<String, Schema> mapL2 = new HashMap<String, Schema>();
         for ( Schema schema : l2 )
         {
-            mapL2.put( schema.getName().toLowerCase(), schema );
+            mapL2.put( schema.getSchemaName().toLowerCase(), schema );
         }
 
         // Looping on schemas from the first list
         for ( Schema schemaFromL1 : l1 )
         {
-            Schema schemaFromL2 = mapL2.get( schemaFromL1.getName().toLowerCase() );
+            Schema schemaFromL2 = mapL2.get( schemaFromL1.getSchemaName().toLowerCase() );
             if ( schemaFromL2 == null )
             {
                 SchemaDifference schemaDifference = new SchemaDifference( schemaFromL1, null, DifferenceType.REMOVED );
@@ -207,7 +207,7 @@ public class DifferenceEngine
         // Looping on schemas from the second list
         for ( Schema schemaFromL2 : l2 )
         {
-            Schema schemaFromL1 = mapL1.get( schemaFromL2.getName().toLowerCase() );
+            Schema schemaFromL1 = mapL1.get( schemaFromL2.getSchemaName().toLowerCase() );
             if ( schemaFromL1 == null )
             {
                 SchemaDifference schemaDifference = new SchemaDifference( null, schemaFromL2, DifferenceType.ADDED );

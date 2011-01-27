@@ -80,7 +80,7 @@ public class SchemaViewLabelProvider extends LabelProvider
         {
             SchemaWrapper sw = ( SchemaWrapper ) element;
 
-            return sw.getSchema().getName();
+            return sw.getSchema().getSchemaName();
         }
         else if ( element instanceof AttributeTypeWrapper )
         {

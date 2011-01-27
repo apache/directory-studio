@@ -47,32 +47,32 @@ public class SchemaDifferenceSorter implements Comparator<Object>
             switch ( sd1.getType() )
             {
                 case ADDED:
-                    name1 = ( ( Schema ) sd1.getDestination() ).getName();
+                    name1 = ( ( Schema ) sd1.getDestination() ).getSchemaName();
                     break;
                 case MODIFIED:
-                    name1 = ( ( Schema ) sd1.getDestination() ).getName();
+                    name1 = ( ( Schema ) sd1.getDestination() ).getSchemaName();
                     break;
                 case REMOVED:
-                    name1 = ( ( Schema ) sd1.getSource() ).getName();
+                    name1 = ( ( Schema ) sd1.getSource() ).getSchemaName();
                     break;
                 case IDENTICAL:
-                    name1 = ( ( Schema ) sd1.getDestination() ).getName();
+                    name1 = ( ( Schema ) sd1.getDestination() ).getSchemaName();
                     break;
             }
 
             switch ( sd2.getType() )
             {
                 case ADDED:
-                    name2 = ( ( Schema ) sd2.getDestination() ).getName();
+                    name2 = ( ( Schema ) sd2.getDestination() ).getSchemaName();
                     break;
                 case MODIFIED:
-                    name2 = ( ( Schema ) sd2.getDestination() ).getName();
+                    name2 = ( ( Schema ) sd2.getDestination() ).getSchemaName();
                     break;
                 case REMOVED:
-                    name2 = ( ( Schema ) sd2.getSource() ).getName();
+                    name2 = ( ( Schema ) sd2.getSource() ).getSchemaName();
                     break;
                 case IDENTICAL:
-                    name2 = ( ( Schema ) sd2.getDestination() ).getName();
+                    name2 = ( ( Schema ) sd2.getDestination() ).getSchemaName();
                     break;
             }
 

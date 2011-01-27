@@ -74,7 +74,7 @@ public class ImportCoreSchemasWizardPage extends AbstractWizardPage
             List<String> schemaNames = new ArrayList<String>();
             for ( Schema schema : schemas )
             {
-                schemaNames.add( schema.getName() );
+                schemaNames.add( schema.getSchemaName() );
             }
 
             coreSchemaSelectionWidget.setGrayedCoreSchemas( schemaNames.toArray( new String[0] ) );

@@ -482,7 +482,7 @@ public class SchemaHandler
     {
         // Adding the schema
         schemasList.add( schema );
-        schemasMap.put( schema.getName().toLowerCase(), schema );
+        schemasMap.put( schema.getSchemaName().toLowerCase(), schema );
 
         // Adding its attribute types
         for ( AttributeType at : schema.getAttributeTypes() )
@@ -589,7 +589,7 @@ public class SchemaHandler
     {
         // Removing the schema
         schemasList.remove( schema );
-        schemasMap.remove( schema.getName().toLowerCase() );
+        schemasMap.remove( schema.getSchemaName().toLowerCase() );
 
         // Removing its attribute types
         for ( AttributeType at : schema.getAttributeTypes() )

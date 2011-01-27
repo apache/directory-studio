@@ -105,7 +105,7 @@ public class ExportSchemasForADSWizard extends Wizard implements IExportWizard
                             Messages.getString( "ExportSchemasForADSWizard.ExportingSchemas" ), selectedSchemas.length ); //$NON-NLS-1$
                         for ( Schema schema : selectedSchemas )
                         {
-                            monitor.subTask( schema.getName() );
+                            monitor.subTask( schema.getSchemaName() );
 
                             StringBuffer sb = new StringBuffer();
                             DateFormat format = DateFormat.getDateTimeInstance( DateFormat.LONG, DateFormat.MEDIUM );
@@ -120,7 +120,7 @@ public class ExportSchemasForADSWizard extends Wizard implements IExportWizard
                                 toLdif( schema, sb );
 
                                 BufferedWriter buffWriter = new BufferedWriter( new FileWriter( exportDirectory + "/" //$NON-NLS-1$
-                                    + schema.getName() + ".ldif" ) ); //$NON-NLS-1$
+                                    + schema.getSchemaName() + ".ldif" ) ); //$NON-NLS-1$
                                 buffWriter.write( sb.toString() );
                                 buffWriter.close();
                             }
@@ -130,10 +130,10 @@ public class ExportSchemasForADSWizard extends Wizard implements IExportWizard
                                     .logError(
                                         NLS
                                             .bind(
-                                                Messages.getString( "ExportSchemasForADSWizard.ErrorSavingSchema" ), new String[] { schema.getName() } ), e ); //$NON-NLS-1$
+                                                Messages.getString( "ExportSchemasForADSWizard.ErrorSavingSchema" ), new String[] { schema.getSchemaName() } ), e ); //$NON-NLS-1$
                                 ViewUtils
                                     .displayErrorMessageBox(
-                                        Messages.getString( "ExportSchemasForADSWizard.Error" ), NLS.bind( Messages.getString( "ExportSchemasForADSWizard.ErrorSavingSchema" ), new String[] { schema.getName() } ) ); //$NON-NLS-1$ //$NON-NLS-2$
+                                        Messages.getString( "ExportSchemasForADSWizard.Error" ), NLS.bind( Messages.getString( "ExportSchemasForADSWizard.ErrorSavingSchema" ), new String[] { schema.getSchemaName() } ) ); //$NON-NLS-1$ //$NON-NLS-2$
                             }
                             monitor.worked( 1 );
                         }
@@ -181,10 +181,10 @@ public class ExportSchemasForADSWizard extends Wizard implements IExportWizard
                                     .logError(
                                         NLS
                                             .bind(
-                                                Messages.getString( "ExportSchemasForADSWizard.ErrorSavingSchema" ), new String[] { schema.getName() } ), e ); //$NON-NLS-1$
+                                                Messages.getString( "ExportSchemasForADSWizard.ErrorSavingSchema" ), new String[] { schema.getSchemaName() } ), e ); //$NON-NLS-1$
                                 ViewUtils
                                     .displayErrorMessageBox(
-                                        Messages.getString( "ExportSchemasForADSWizard.Error" ), NLS.bind( Messages.getString( "ExportSchemasForADSWizard.ErrorSavingSchema" ), new String[] { schema.getName() } ) ); //$NON-NLS-1$ //$NON-NLS-2$
+                                        Messages.getString( "ExportSchemasForADSWizard.Error" ), NLS.bind( Messages.getString( "ExportSchemasForADSWizard.ErrorSavingSchema" ), new String[] { schema.getSchemaName() } ) ); //$NON-NLS-1$ //$NON-NLS-2$
                             }
                         }
 
@@ -237,12 +237,12 @@ public class ExportSchemasForADSWizard extends Wizard implements IExportWizard
         sb
             .append( NLS
                 .bind(
-                    Messages.getString( "ExportSchemasForADSWizard.SchemaComment" ), new String[] { schema.getName().toUpperCase() } ) ); //$NON-NLS-1$ 
+                    Messages.getString( "ExportSchemasForADSWizard.SchemaComment" ), new String[] { schema.getSchemaName().toUpperCase() } ) ); //$NON-NLS-1$ 
 
-        sb.append( "dn: cn=" + schema.getName() + ", ou=schema\n" ); //$NON-NLS-1$ //$NON-NLS-2$
+        sb.append( "dn: cn=" + schema.getSchemaName() + ", ou=schema\n" ); //$NON-NLS-1$ //$NON-NLS-2$
         sb.append( "objectclass: metaSchema\n" ); //$NON-NLS-1$
         sb.append( "objectclass: top\n" ); //$NON-NLS-1$
-        sb.append( "cn: " + schema.getName() + "\n" ); //$NON-NLS-1$ //$NON-NLS-2$
+        sb.append( "cn: " + schema.getSchemaName() + "\n" ); //$NON-NLS-1$ //$NON-NLS-2$
         String[] schemaDependencies = getSchemaDependencies( schema );
         for ( String schemaName : schemaDependencies )
         {
@@ -251,7 +251,7 @@ public class ExportSchemasForADSWizard extends Wizard implements IExportWizard
         sb.append( "\n" ); //$NON-NLS-1$
 
         // Generation the Attribute Types Node
-        sb.append( "dn: ou=attributeTypes, cn=" + schema.getName() + ", ou=schema\n" ); //$NON-NLS-1$ //$NON-NLS-2$
+        sb.append( "dn: ou=attributeTypes, cn=" + schema.getSchemaName() + ", ou=schema\n" ); //$NON-NLS-1$ //$NON-NLS-2$
         sb.append( "objectclass: organizationalUnit\n" ); //$NON-NLS-1$
         sb.append( "objectclass: top\n" ); //$NON-NLS-1$
         sb.append( "ou: attributetypes\n" ); //$NON-NLS-1$
@@ -280,60 +280,60 @@ public class ExportSchemasForADSWizard extends Wizard implements IExportWizard
             holder.setOidLen( new Long( at.getSyntaxLength() ).intValue() );
             holder.setUsage( at.getUsage() );
 
-            sb.append( holder.toLdif( schema.getName() ) + "\n" ); //$NON-NLS-1$
+            sb.append( holder.toLdif( schema.getSchemaName() ) + "\n" ); //$NON-NLS-1$
         }
 
         // Generation the Comparators Node
-        sb.append( "dn: ou=comparators, cn=" + schema.getName() + ", ou=schema\n" ); //$NON-NLS-1$ //$NON-NLS-2$
+        sb.append( "dn: ou=comparators, cn=" + schema.getSchemaName() + ", ou=schema\n" ); //$NON-NLS-1$ //$NON-NLS-2$
         sb.append( "objectclass: organizationalUnit\n" ); //$NON-NLS-1$
         sb.append( "objectclass: top\n" ); //$NON-NLS-1$
         sb.append( "ou: comparators\n" ); //$NON-NLS-1$
         sb.append( "\n" ); //$NON-NLS-1$
 
         // Generation the DIT Content Rules Node
-        sb.append( "dn: ou=ditContentRules, cn=" + schema.getName() + ", ou=schema\n" ); //$NON-NLS-1$ //$NON-NLS-2$
+        sb.append( "dn: ou=ditContentRules, cn=" + schema.getSchemaName() + ", ou=schema\n" ); //$NON-NLS-1$ //$NON-NLS-2$
         sb.append( "objectclass: organizationalUnit\n" ); //$NON-NLS-1$
         sb.append( "objectclass: top\n" ); //$NON-NLS-1$
         sb.append( "ou: ditcontentrules\n" ); //$NON-NLS-1$
         sb.append( "\n" ); //$NON-NLS-1$
 
         // Generation the DIT Structure RulesNode
-        sb.append( "dn: ou=ditStructureRules, cn=" + schema.getName() + ", ou=schema\n" ); //$NON-NLS-1$ //$NON-NLS-2$
+        sb.append( "dn: ou=ditStructureRules, cn=" + schema.getSchemaName() + ", ou=schema\n" ); //$NON-NLS-1$ //$NON-NLS-2$
         sb.append( "objectclass: organizationalUnit\n" ); //$NON-NLS-1$
         sb.append( "objectclass: top\n" ); //$NON-NLS-1$
         sb.append( "ou: ditstructurerules\n" ); //$NON-NLS-1$
         sb.append( "\n" ); //$NON-NLS-1$
 
         // Generation the Matching Rules Node
-        sb.append( "dn: ou=matchingRules, cn=" + schema.getName() + ", ou=schema\n" ); //$NON-NLS-1$ //$NON-NLS-2$
+        sb.append( "dn: ou=matchingRules, cn=" + schema.getSchemaName() + ", ou=schema\n" ); //$NON-NLS-1$ //$NON-NLS-2$
         sb.append( "objectclass: organizationalUnit\n" ); //$NON-NLS-1$
         sb.append( "objectclass: top\n" ); //$NON-NLS-1$
         sb.append( "ou: matchingrules\n" ); //$NON-NLS-1$
         sb.append( "\n" ); //$NON-NLS-1$
 
         // Generation the Matching Rule Use Node
-        sb.append( "dn: ou=matchingRuleUse, cn=" + schema.getName() + ", ou=schema\n" ); //$NON-NLS-1$ //$NON-NLS-2$
+        sb.append( "dn: ou=matchingRuleUse, cn=" + schema.getSchemaName() + ", ou=schema\n" ); //$NON-NLS-1$ //$NON-NLS-2$
         sb.append( "objectclass: organizationalUnit\n" ); //$NON-NLS-1$
         sb.append( "objectclass: top\n" ); //$NON-NLS-1$
         sb.append( "ou: matchingruleuse\n" ); //$NON-NLS-1$
         sb.append( "\n" ); //$NON-NLS-1$
 
         // Generation the Name Forms Node
-        sb.append( "dn: ou=nameForms, cn=" + schema.getName() + ", ou=schema\n" ); //$NON-NLS-1$ //$NON-NLS-2$
+        sb.append( "dn: ou=nameForms, cn=" + schema.getSchemaName() + ", ou=schema\n" ); //$NON-NLS-1$ //$NON-NLS-2$
         sb.append( "objectclass: organizationalUnit\n" ); //$NON-NLS-1$
         sb.append( "objectclass: top\n" ); //$NON-NLS-1$
         sb.append( "ou: nameforms\n" ); //$NON-NLS-1$
         sb.append( "\n" ); //$NON-NLS-1$
 
         // Generation the Normalizers Node
-        sb.append( "dn: ou=normalizers, cn=" + schema.getName() + ", ou=schema\n" ); //$NON-NLS-1$ //$NON-NLS-2$
+        sb.append( "dn: ou=normalizers, cn=" + schema.getSchemaName() + ", ou=schema\n" ); //$NON-NLS-1$ //$NON-NLS-2$
         sb.append( "objectclass: organizationalUnit\n" ); //$NON-NLS-1$
         sb.append( "objectclass: top\n" ); //$NON-NLS-1$
         sb.append( "ou: normalizers\n" ); //$NON-NLS-1$
         sb.append( "\n" ); //$NON-NLS-1$
 
         // Generation the Object Classes Node
-        sb.append( "dn: ou=objectClasses, cn=" + schema.getName() + ", ou=schema\n" ); //$NON-NLS-1$ //$NON-NLS-2$
+        sb.append( "dn: ou=objectClasses, cn=" + schema.getSchemaName() + ", ou=schema\n" ); //$NON-NLS-1$ //$NON-NLS-2$
         sb.append( "objectclass: organizationalUnit\n" ); //$NON-NLS-1$
         sb.append( "objectclass: top\n" ); //$NON-NLS-1$
         sb.append( "ou: objectClasses\n" ); //$NON-NLS-1$
@@ -372,18 +372,18 @@ public class ExportSchemasForADSWizard extends Wizard implements IExportWizard
             holder.setSuperiors( superiorList );
             holder.setObsolete( oc.isObsolete() );
 
-            sb.append( holder.toLdif( schema.getName() ) + "\n" ); //$NON-NLS-1$
+            sb.append( holder.toLdif( schema.getSchemaName() ) + "\n" ); //$NON-NLS-1$
         }
 
         // Generation the Syntax Checkers Node
-        sb.append( "dn: ou=syntaxCheckers, cn=" + schema.getName() + ", ou=schema\n" ); //$NON-NLS-1$ //$NON-NLS-2$
+        sb.append( "dn: ou=syntaxCheckers, cn=" + schema.getSchemaName() + ", ou=schema\n" ); //$NON-NLS-1$ //$NON-NLS-2$
         sb.append( "objectclass: organizationalUnit\n" ); //$NON-NLS-1$
         sb.append( "objectclass: top\n" ); //$NON-NLS-1$
         sb.append( "ou: syntaxcheckers\n" ); //$NON-NLS-1$
         sb.append( "\n" ); //$NON-NLS-1$
 
         // Generation the Syntaxes Node
-        sb.append( "dn: ou=syntaxes, cn=" + schema.getName() + ", ou=schema\n" ); //$NON-NLS-1$ //$NON-NLS-2$
+        sb.append( "dn: ou=syntaxes, cn=" + schema.getSchemaName() + ", ou=schema\n" ); //$NON-NLS-1$ //$NON-NLS-2$
         sb.append( "objectclass: organizationalUnit\n" ); //$NON-NLS-1$
         sb.append( "objectclass: top\n" ); //$NON-NLS-1$
         sb.append( "ou: syntaxes\n" ); //$NON-NLS-1$
@@ -475,7 +475,7 @@ public class ExportSchemasForADSWizard extends Wizard implements IExportWizard
                 AttributeType sup = schemaHandler.getAttributeType( supName );
                 if ( sup != null )
                 {
-                    if ( !schema.getName().toLowerCase().equals( sup.getSchemaName().toLowerCase() ) )
+                    if ( !schema.getSchemaName().toLowerCase().equals( sup.getSchemaName().toLowerCase() ) )
                     {
                         schemaNames.add( sup.getSchemaName() );
                     }
@@ -495,7 +495,7 @@ public class ExportSchemasForADSWizard extends Wizard implements IExportWizard
                     ObjectClass sup = schemaHandler.getObjectClass( supName );
                     if ( sup != null )
                     {
-                        if ( !schema.getName().toLowerCase().equals( sup.getSchemaName().toLowerCase() ) )
+                        if ( !schema.getSchemaName().toLowerCase().equals( sup.getSchemaName().toLowerCase() ) )
                         {
                             schemaNames.add( sup.getSchemaName() );
                         }
@@ -512,7 +512,7 @@ public class ExportSchemasForADSWizard extends Wizard implements IExportWizard
                     AttributeType may = schemaHandler.getAttributeType( mayName );
                     if ( may != null )
                     {
-                        if ( !schema.getName().toLowerCase().equals( may.getSchemaName().toLowerCase() ) )
+                        if ( !schema.getSchemaName().toLowerCase().equals( may.getSchemaName().toLowerCase() ) )
                         {
                             schemaNames.add( may.getSchemaName() );
                         }
@@ -530,7 +530,7 @@ public class ExportSchemasForADSWizard extends Wizard implements IExportWizard
                     AttributeType must = schemaHandler.getAttributeType( mustName );
                     if ( must != null )
                     {
-                        if ( !schema.getName().toLowerCase().equals( must.getSchemaName().toLowerCase() ) )
+                        if ( !schema.getSchemaName().toLowerCase().equals( must.getSchemaName().toLowerCase() ) )
                         {
                             schemaNames.add( must.getSchemaName() );
                         }

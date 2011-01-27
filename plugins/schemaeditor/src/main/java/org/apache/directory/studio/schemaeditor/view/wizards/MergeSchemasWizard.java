@@ -33,7 +33,6 @@ import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.studio.schemaeditor.Activator;
 import org.apache.directory.studio.schemaeditor.model.Project;
 import org.apache.directory.studio.schemaeditor.model.Schema;
-import org.apache.directory.studio.schemaeditor.model.SchemaImpl;
 import org.apache.directory.studio.schemaeditor.view.dialogs.MessageDialogWithTextarea;
 import org.apache.directory.studio.schemaeditor.view.wizards.MergeSchemasSelectionWizardPage.AttributeTypeFolder;
 import org.apache.directory.studio.schemaeditor.view.wizards.MergeSchemasSelectionWizardPage.ObjectClassFolder;
@@ -202,7 +201,7 @@ public class MergeSchemasWizard extends Wizard implements IImportWizard
         }
         else
         {
-            targetSchema = new SchemaImpl( targetSchemaName );
+            targetSchema = new Schema( targetSchemaName );
             targetSchema.setProject( targetProject );
         }
         targetSchemas.put( targetSchemaName, targetSchema );
@@ -312,7 +311,7 @@ public class MergeSchemasWizard extends Wizard implements IImportWizard
                 clonedAttributeType.setEqualityOid( sourceAttributeType.getEqualityOid() );
                 clonedAttributeType.setOrderingOid( sourceAttributeType.getOrderingOid() );
                 clonedAttributeType.setSubstringOid( sourceAttributeType.getSubstringOid() );
-                clonedAttributeType.setSchemaName( targetSchema.getName() );
+                clonedAttributeType.setSchemaName( targetSchema.getSchemaName() );
 
                 // if no/unknown syntax: set "Directory String" syntax and appropriate matching rules
                 if ( replaceUnknownSyntax )
@@ -431,7 +430,7 @@ public class MergeSchemasWizard extends Wizard implements IImportWizard
                 clonedObjectClass.setObsolete( sourceObjectClass.isObsolete() );
                 clonedObjectClass.setMustAttributeTypeOids( sourceObjectClass.getMustAttributeTypeOids() );
                 clonedObjectClass.setMayAttributeTypeOids( sourceObjectClass.getMayAttributeTypeOids() );
-                clonedObjectClass.setSchemaName( targetSchema.getName() );
+                clonedObjectClass.setSchemaName( targetSchema.getSchemaName() );
 
                 // merge dependencies: super object classes and must/may attributes
                 if ( mergeDependencies )

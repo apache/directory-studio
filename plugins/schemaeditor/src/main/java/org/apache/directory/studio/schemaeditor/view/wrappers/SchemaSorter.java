@@ -41,7 +41,7 @@ public class SchemaSorter implements Comparator<TreeNode>
             Schema s1 = ( ( SchemaWrapper ) o1 ).getSchema();
             Schema s2 = ( ( SchemaWrapper ) o2 ).getSchema();
 
-            return s1.getName().compareToIgnoreCase( s2.getName() );
+            return s1.getSchemaName().compareToIgnoreCase( s2.getSchemaName() );
         }
 
         // Default

@@ -41,7 +41,6 @@ import org.apache.directory.studio.connection.core.Connection.AliasDereferencing
 import org.apache.directory.studio.connection.core.Connection.ReferralHandlingMethod;
 import org.apache.directory.studio.connection.core.io.ConnectionWrapper;
 import org.apache.directory.studio.schemaeditor.model.Schema;
-import org.apache.directory.studio.schemaeditor.model.SchemaImpl;
 
 
 /**
@@ -204,7 +203,7 @@ public class ApacheDsSchemaConnector extends AbstractSchemaConnector implements 
         monitor.subTask( name ); //$NON-NLS-1$
 
         // Creating the schema
-        Schema schema = new SchemaImpl( name );
+        Schema schema = new Schema( name );
 
         // Looking for the nodes of the schema
         SearchControls constraintSearch = new SearchControls();

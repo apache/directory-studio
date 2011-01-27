@@ -131,7 +131,7 @@ public class ExportSchemasAsXmlWizardPage extends AbstractWizardPage
             {
                 if ( element instanceof Schema )
                 {
-                    return ( ( Schema ) element ).getName();
+                    return ( ( Schema ) element ).getSchemaName();
                 }
 
                 // Default
@@ -290,7 +290,7 @@ public class ExportSchemasAsXmlWizardPage extends AbstractWizardPage
             {
                 public int compare( Schema o1, Schema o2 )
                 {
-                    return o1.getName().compareToIgnoreCase( o2.getName() );
+                    return o1.getSchemaName().compareToIgnoreCase( o2.getSchemaName() );
                 }
             } );
 

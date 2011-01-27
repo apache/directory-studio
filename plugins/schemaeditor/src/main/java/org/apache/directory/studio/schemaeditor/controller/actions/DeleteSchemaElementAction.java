@@ -161,7 +161,7 @@ public class DeleteSchemaElementAction extends Action implements IWorkbenchWindo
                     if ( selectedItem instanceof SchemaWrapper )
                     {
                         Schema schema = ( ( SchemaWrapper ) selectedItem ).getSchema();
-                        schemasMap.put( schema.getName().toLowerCase(), schema );
+                        schemasMap.put( schema.getSchemaName().toLowerCase(), schema );
                     }
                     else if ( selectedItem instanceof AttributeTypeWrapper )
                     {

@@ -80,13 +80,13 @@ public class DifferencesWidgetSchemaLabelProvider extends LabelProvider
             switch ( sd.getType() )
             {
                 case ADDED:
-                    return ( ( Schema ) sd.getDestination() ).getName();
+                    return ( ( Schema ) sd.getDestination() ).getSchemaName();
                 case MODIFIED:
-                    return ( ( Schema ) sd.getDestination() ).getName();
+                    return ( ( Schema ) sd.getDestination() ).getSchemaName();
                 case REMOVED:
-                    return ( ( Schema ) sd.getSource() ).getName();
+                    return ( ( Schema ) sd.getSource() ).getSchemaName();
                 case IDENTICAL:
-                    return ( ( Schema ) sd.getDestination() ).getName();
+                    return ( ( Schema ) sd.getDestination() ).getSchemaName();
             }
         }
         else if ( element instanceof AttributeTypeDifference )

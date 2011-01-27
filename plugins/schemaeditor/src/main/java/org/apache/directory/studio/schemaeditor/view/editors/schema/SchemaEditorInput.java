@@ -69,7 +69,7 @@ public class SchemaEditorInput implements IEditorInput
      */
     public String getName()
     {
-        return this.schema.getName();
+        return this.schema.getSchemaName();
     }
 
 

@@ -247,7 +247,7 @@ public class SchemaEditorOverviewPage extends FormPage
             | Section.TITLE_BAR );
         attributeTypesSection.setDescription( NLS.bind(
             Messages.getString( "SchemaEditorOverviewPage.SchemaAttribute" ), new String[] //$NON-NLS-1$
-            { schema.getName() } ) );
+            { schema.getSchemaName() } ) );
         attributeTypesSection.setText( Messages.getString( "SchemaEditorOverviewPage.AttributeTypes" ) ); //$NON-NLS-1$
 
         // Creating the layout of the section
@@ -280,7 +280,7 @@ public class SchemaEditorOverviewPage extends FormPage
             | Section.TITLE_BAR );
         objectClassesSection.setDescription( NLS.bind( Messages
             .getString( "SchemaEditorOverviewPage.SchemaObjectClasses" ), new String[] //$NON-NLS-1$
-            { schema.getName() } ) );
+            { schema.getSchemaName() } ) );
         objectClassesSection.setText( Messages.getString( "SchemaEditorOverviewPage.ObjectClasses" ) ); //$NON-NLS-1$
 
         // Creating the layout of the section

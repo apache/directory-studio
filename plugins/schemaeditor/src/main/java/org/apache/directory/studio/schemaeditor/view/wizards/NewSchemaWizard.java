@@ -22,7 +22,7 @@ package org.apache.directory.studio.schemaeditor.view.wizards;
 
 import org.apache.directory.studio.schemaeditor.Activator;
 import org.apache.directory.studio.schemaeditor.PluginConstants;
-import org.apache.directory.studio.schemaeditor.model.SchemaImpl;
+import org.apache.directory.studio.schemaeditor.model.Schema;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.ui.INewWizard;
@@ -60,7 +60,7 @@ public class NewSchemaWizard extends Wizard implements INewWizard
      */
     public boolean performFinish()
     {
-        SchemaImpl schema = new SchemaImpl( page.getSchemaName() );
+        Schema schema = new Schema( page.getSchemaName() );
         schema.setProject( Activator.getDefault().getProjectsHandler().getOpenProject() );
         Activator.getDefault().getSchemaHandler().addSchema( schema );
 

@@ -20,209 +20,372 @@
 package org.apache.directory.studio.schemaeditor.model;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
 import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
 import org.apache.directory.shared.ldap.model.schema.MatchingRule;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
+import org.apache.directory.shared.ldap.model.schema.registries.DefaultSchema;
 
 
 /**
- * This interface represents a Schema.
- * 
+ * This class represents a schema.
+ *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public interface Schema
+public class Schema extends DefaultSchema
 {
+    /** The project */
+    private Project project;
+
+    /** The AttributeType List */
+    private List<AttributeType> attributeTypes = new ArrayList<AttributeType>();
+
+    /** The ObjectClass List */
+    private List<ObjectClass> objectClasses = new ArrayList<ObjectClass>();
+
+    /** The MatchingRule List */
+    private List<MatchingRule> matchingRules = new ArrayList<MatchingRule>();
+
+    /** The Syntax List */
+    private List<LdapSyntax> syntaxes = new ArrayList<LdapSyntax>();
+
+
     /**
-     * Gets the name of the Schema.
+     * Creates a new instance of Schema.
+     *
+     * @param name
+     *      the name of the schema
+     */
+    public Schema( String name )
+    {
+        super( name );
+    }
+
+
+    /**
+     * Adds an AttributeType to the Schema.
+     * 
+     * @param at
+     *      the AttributeType
+     */
+    public boolean addAttributeType( AttributeType at )
+    {
+        return attributeTypes.add( at );
+    }
+
+
+    /**
+     * Adds a MatchingRule from the Schema.
+     * 
+     * @param mr
+     *      the MatchingRule
+     */
+    public boolean addMatchingRule( MatchingRule mr )
+    {
+        return matchingRules.add( mr );
+    }
+
+
+    /**
+     * Adds an ObjectClass to the Schema.
+     * 
+     * @param oc
+     *      the ObjectClass
+     */
+    public boolean addObjectClass( ObjectClass oc )
+    {
+        return objectClasses.add( oc );
+    }
+
+
+    /**
+     * Adds a Syntax from the Schema.
+     * 
+     * @param syntax
+     *      the Syntax
+     */
+    public boolean addSyntax( LdapSyntax syntax )
+    {
+        return syntaxes.add( syntax );
+    }
+
+
+    /**
+     * Gets the AttributeType identified by the given id.
+     * 
+     * @param id
+     *      the name or the oid of the AttributeType
+     * @return
+     *      the AttributeType identified by the given id, or null if the 
+     * AttributeType has not been found
+     */
+    public AttributeType getAttributeType( String id )
+    {
+        for ( AttributeType at : attributeTypes )
+        {
+            List<String> aliases = at.getNames();
+            if ( aliases != null )
+            {
+                for ( String alias : aliases )
+                {
+                    if ( alias.equalsIgnoreCase( id ) )
+                    {
+                        return at;
+                    }
+                }
+            }
+            if ( at.getOid().equalsIgnoreCase( id ) )
+            {
+                return at;
+            }
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Gets all the AttributeType objects contained in the Schema.
      * 
      * @return
-     * 		the name of the Schema
+     *      all the AttributeType objects contained in the Schema
      */
-    public String getName();
+    public List<AttributeType> getAttributeTypes()
+    {
+        return attributeTypes;
+    }
 
 
     /**
-     * Sets the name of the Schema.
+     * Gets the MatchingRule identified by the given id.
      * 
-     * @param name
-     * 		the name of the schema
+     * @param id
+     *      the name or the oid of the MatchingRule
+     * @return
+     *      the MatchingRule identified by the given id, or null if the 
+     * MatchingRule has not been found
      */
-    public void setName( String name );
+    public MatchingRule getMatchingRule( String id )
+    {
+        for ( MatchingRule mr : matchingRules )
+        {
+            List<String> aliases = mr.getNames();
+            if ( aliases != null )
+            {
+                for ( String alias : aliases )
+                {
+                    if ( alias.equalsIgnoreCase( id ) )
+                    {
+                        return mr;
+                    }
+                }
+            }
+            if ( mr.getOid().equalsIgnoreCase( id ) )
+            {
+                return mr;
+            }
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Gets all the MatchingRule objects contained in the Schema.
+     * 
+     * @return
+     *      all the MatchingRule objects contained in the Schema
+     */
+    public List<MatchingRule> getMatchingRules()
+    {
+        return matchingRules;
+    }
 
 
     /**
      * Gets the project of the Schema.
      * 
      * @return
-     * 		the project of the Schema
+     *      the project of the Schema
      */
-    public Project getProject();
+    public Project getProject()
+    {
+        return project;
+    }
+
+
+    /**
+     * Gets the ObjectClass identified by the given id.
+     * 
+     * @param id
+     *      the name or the oid of the ObjectClass
+     * @return
+     *      the ObjectClass identified by the given id, or null if the 
+     * ObjectClass has not been found
+     */
+    public ObjectClass getObjectClass( String id )
+    {
+        for ( ObjectClass oc : objectClasses )
+        {
+            List<String> aliases = oc.getNames();
+            if ( aliases != null )
+            {
+                for ( String alias : aliases )
+                {
+                    if ( alias.equalsIgnoreCase( id ) )
+                    {
+                        return oc;
+                    }
+                }
+            }
+            if ( oc.getOid().equalsIgnoreCase( id ) )
+            {
+                return oc;
+            }
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Gets all the ObjectClass objects contained in the Schema.
+     * 
+     * @return
+     *      all the ObjectClass objects contained in the Schema
+     */
+    public List<ObjectClass> getObjectClasses()
+    {
+        return objectClasses;
+    }
+
+
+    /**
+     * Gets the Syntax identified by the given id.
+     * 
+     * @param id
+     *      the name or the oid of the Syntax
+     * @return
+     *      the Syntax identified by the given id, or null if the 
+     * Syntax has not been found
+     */
+    public LdapSyntax getSyntax( String id )
+    {
+        for ( LdapSyntax syntax : syntaxes )
+        {
+            List<String> aliases = syntax.getNames();
+            if ( aliases != null )
+            {
+                for ( String alias : aliases )
+                {
+                    if ( alias.equalsIgnoreCase( id ) )
+                    {
+                        return syntax;
+                    }
+                }
+            }
+            if ( syntax.getOid().equalsIgnoreCase( id ) )
+            {
+                return syntax;
+            }
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Gets all the Syntax objects contained in the Schema.
+     * 
+     * @return
+     *      all the Syntax objects contained in the Schema
+     */
+    public List<LdapSyntax> getSyntaxes()
+    {
+        return syntaxes;
+    }
+
+
+    /**
+     * Removes an AttributeType from the Schema.
+     * 
+     * @param at
+     *      the AttributeType
+     */
+    public boolean removeAttributeType( AttributeType at )
+    {
+        return attributeTypes.remove( at );
+    }
+
+
+    /**
+     * Removes a MatchingRule from the Schema.
+     * 
+     * @param mr
+     *      the MatchingRule
+     */
+    public boolean removeMatchingRule( MatchingRule mr )
+    {
+        return matchingRules.remove( mr );
+    }
+
+
+    /**
+     * Removes an ObjectClass from the Schema.
+     *
+     * @param oc
+     *      the ObjectClass
+     */
+    public boolean removeObjectClass( ObjectClass oc )
+    {
+        return objectClasses.remove( oc );
+    }
+
+
+    /**
+     * Removes a Syntax from the Schema.
+     * 
+     * @param syntax
+     *      the Syntax
+     */
+    public boolean removeSyntax( LdapSyntax syntax )
+    {
+        return syntaxes.remove( syntax );
+    }
+
+
+    /**
+     * Sets the name of the schema.
+     *
+     * @param schemaName
+     *      the name of the schema
+     */
+    public void setSchemaName( String schemaName )
+    {
+        this.name = schemaName;
+    }
 
 
     /**
      * Sets the project of the Schema.
      * 
      * @param name
-     * 		the project of the schema
+     *      the project of the schema
      */
-    public void setProject( Project project );
+    public void setProject( Project project )
+    {
+        this.project = project;
+    }
 
 
     /**
-     * Gets all the ObjectClassImpl objects contained in the Schema.
-     * 
-     * @return
-     * 		all the ObjectClassImpl objects contained in the Schema
+     * {@inheritDoc}
      */
-    public List<ObjectClass> getObjectClasses();
-
-
-    /**
-     * Gets all the AttributeTypeImpl objects contained in the Schema.
-     * 
-     * @return
-     * 		all the AttributeTypeImpl objects contained in the Schema
-     */
-    public List<AttributeType> getAttributeTypes();
-
-
-    /**
-     * Gets all the MatchingRuleImpl objects contained in the Schema.
-     * 
-     * @return
-     *      all the MatchingRuleImpl objects contained in the Schema
-     */
-    public List<MatchingRule> getMatchingRules();
-
-
-    /**
-     * Gets all the SyntaxImpl objects contained in the Schema.
-     * 
-     * @return
-     *      all the SyntaxImpl objects contained in the Schema
-     */
-    public List<LdapSyntax> getSyntaxes();
-
-
-    /**
-     * Gets the ObjectClassImpl identified by the given id.
-     * 
-     * @param id
-     * 		the name or the oid of the ObjectClassImpl
-     * @return
-     * 		the ObjectClassImpl identified by the given id, or null if the 
-     * ObjectClassImpl has not been found
-     */
-    public ObjectClass getObjectClass( String id );
-
-
-    /**
-     * Gets the AttributeTypeImpl identified by the given id.
-     * 
-     * @param id
-     * 		the name or the oid of the AttributeTypeImpl
-     * @return
-     * 		the AttributeTypeImpl identified by the given id, or null if the 
-     * AttributeTypeImpl has not been found
-     */
-    public AttributeType getAttributeType( String id );
-
-
-    /**
-     * Gets the MatchingRuleImpl identified by the given id.
-     * 
-     * @param id
-     *      the name or the oid of the MatchingRuleImpl
-     * @return
-     *      the MatchingRuleImpl identified by the given id, or null if the 
-     * MatchingRuleImpl has not been found
-     */
-    public MatchingRule getMatchingRule( String id );
-
-
-    /**
-     * Gets the SyntaxImpl identified by the given id.
-     * 
-     * @param id
-     *      the name or the oid of the SyntaxImpl
-     * @return
-     *      the SyntaxImpl identified by the given id, or null if the 
-     * SyntaxImpl has not been found
-     */
-    public LdapSyntax getSyntax( String id );
-
-
-    /**
-     * Adds an ObjectClassImpl to the Schema.
-     * 
-     * @param oc
-     *      the ObjectClassImpl
-     */
-    public boolean addObjectClass( ObjectClass oc );
-
-
-    /**
-     * Adds an AttributeTypeImpl to the Schema.
-     * 
-     * @param at
-     *      the AttributeTypeImpl
-     */
-    public boolean addAttributeType( AttributeType at );
-
-
-    /**
-     * Adds a MatchingRuleImpl from the Schema.
-     * 
-     * @param mr
-     *      the MatchingRuleImpl
-     */
-    public boolean addMatchingRule( MatchingRule mr );
-
-
-    /**
-     * Adds a SyntaxImpl from the Schema.
-     * 
-     * @param syntax
-     *      the SyntaxImpl
-     */
-    public boolean addSyntax( LdapSyntax syntax );
-
-
-    /**
-     * Removes an ObjectClassImpl from the Schema.
-     *
-     * @param oc
-     *      the ObjectClassImpl
-     */
-    public boolean removeObjectClass( ObjectClass oc );
-
-
-    /**
-     * Removes an AttributeTypeImpl from the Schema.
-     * 
-     * @param at
-     *      the AttributeTypeImpl
-     */
-    public boolean removeAttributeType( AttributeType at );
-
-
-    /**
-     * Removes a MatchingRuleImpl from the Schema.
-     * 
-     * @param mr
-     *      the MatchingRuleImpl
-     */
-    public boolean removeMatchingRule( MatchingRule mr );
-
-
-    /**
-     * Removes a SyntaxImpl from the Schema.
-     * 
-     * @param syntax
-     *      the SyntaxImpl
-     */
-    public boolean removeSyntax( LdapSyntax syntax );
+    public String toString()
+    {
+        return getSchemaName();
+    }
 }

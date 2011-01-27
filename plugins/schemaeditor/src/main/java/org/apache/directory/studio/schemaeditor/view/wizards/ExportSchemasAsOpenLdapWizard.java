@@ -87,12 +87,12 @@ public class ExportSchemasAsOpenLdapWizard extends Wizard implements IExportWiza
                         Messages.getString( "ExportSchemasAsOpenLdapWizard.ExportingSchemas" ), selectedSchemas.length ); //$NON-NLS-1$
                     for ( Schema schema : selectedSchemas )
                     {
-                        monitor.subTask( schema.getName() );
+                        monitor.subTask( schema.getSchemaName() );
 
                         try
                         {
                             BufferedWriter buffWriter = new BufferedWriter( new FileWriter( exportDirectory + "/" //$NON-NLS-1$
-                                + schema.getName() + ".schema" ) ); //$NON-NLS-1$
+                                + schema.getSchemaName() + ".schema" ) ); //$NON-NLS-1$
                             buffWriter.write( OpenLdapSchemaFileExporter.toSourceCode( schema ) );
                             buffWriter.close();
                         }
@@ -102,11 +102,11 @@ public class ExportSchemasAsOpenLdapWizard extends Wizard implements IExportWiza
                                 .logError(
                                     NLS
                                         .bind(
-                                            Messages.getString( "ExportSchemasAsOpenLdapWizard.ErrorSavingSchema" ), new String[] { schema.getName() } ), //$NON-NLS-1$
+                                            Messages.getString( "ExportSchemasAsOpenLdapWizard.ErrorSavingSchema" ), new String[] { schema.getSchemaName() } ), //$NON-NLS-1$
                                     e );
                             ViewUtils
                                 .displayErrorMessageBox(
-                                    Messages.getString( "ExportSchemasAsOpenLdapWizard.Error" ), NLS.bind( Messages.getString( "ExportSchemasAsOpenLdapWizard.ErrorSavingSchema" ), new String[] { schema.getName() } ) ); //$NON-NLS-1$ //$NON-NLS-2$
+                                    Messages.getString( "ExportSchemasAsOpenLdapWizard.Error" ), NLS.bind( Messages.getString( "ExportSchemasAsOpenLdapWizard.ErrorSavingSchema" ), new String[] { schema.getSchemaName() } ) ); //$NON-NLS-1$ //$NON-NLS-2$
                         }
                         monitor.worked( 1 );
                     }

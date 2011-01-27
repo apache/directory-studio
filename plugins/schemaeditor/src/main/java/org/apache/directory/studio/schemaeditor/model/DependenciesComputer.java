@@ -322,7 +322,7 @@ public class DependenciesComputer
     private void computeSchemaDependency( Schema schema, SchemaObject object ) throws DependencyComputerException
     {
         String schemaName = object.getSchemaName();
-        if ( !schemaName.equalsIgnoreCase( schema.getName() ) )
+        if ( !schemaName.equalsIgnoreCase( schema.getSchemaName() ) )
         {
             Schema schemaFromSuperiorAT = schemaHandler.getSchema( schemaName );
             if ( schemaFromSuperiorAT == null )

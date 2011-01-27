@@ -186,7 +186,7 @@ public class XMLSchemaFileExporter
         if ( schema != null )
         {
             // Name 
-            String name = schema.getName();
+            String name = schema.getSchemaName();
             if ( ( name != null ) && ( !name.equals( "" ) ) ) //$NON-NLS-1$
             {
                 element.addAttribute( NAME_TAG, name );

@@ -380,7 +380,7 @@ public class SchemaChecker
 
                     for ( Schema schema : schemas )
                     {
-                        monitor.subTask( schema.getName() );
+                        monitor.subTask( schema.getSchemaName() );
 
                         List<AttributeType> ats = schema.getAttributeTypes();
                         for ( AttributeType at : ats )
