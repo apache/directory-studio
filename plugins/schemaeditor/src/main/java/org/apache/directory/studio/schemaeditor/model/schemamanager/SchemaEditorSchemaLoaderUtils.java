@@ -32,6 +32,8 @@ import org.apache.directory.shared.ldap.model.exception.LdapInvalidDnException;
 import org.apache.directory.shared.ldap.model.name.Dn;
 import org.apache.directory.shared.ldap.model.name.Rdn;
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
+import org.apache.directory.shared.ldap.model.schema.MatchingRule;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.shared.ldap.model.schema.ObjectClassTypeEnum;
 import org.apache.directory.shared.ldap.model.schema.SchemaObject;
@@ -50,6 +52,8 @@ public class SchemaEditorSchemaLoaderUtils
     private static final String M_DESCRIPTION = "m-description";
     private static final String M_EQUALITY = "m-equality";
     private static final String M_LENGTH = "m-length";
+    private static final String M_MAY = "m-may";
+    private static final String M_MUST = "m-must";
     private static final String M_NAME = "m-name";
     private static final String M_NO_USER_MODIFICATION = "m-noUserModification";
     private static final String M_OBSOLETE = "m-obsolete";
@@ -58,7 +62,9 @@ public class SchemaEditorSchemaLoaderUtils
     private static final String M_SINGLE_VALUE = "m-singleValue";
     private static final String M_SUBSTR = "m-substr";
     private static final String M_SUP_ATTRIBUTE_TYPE = "m-supAttributeType";
+    private static final String M_SUP_OBJECT_CLASS = "m-supObjectClass";
     private static final String M_SYNTAX = "m-syntax";
+    private static final String M_TYPE_OBJECT_CLASS = "m-typeObjectClass";
     private static final String M_USAGE = "m-usage";
     private static final String TRUE = "TRUE";
 
@@ -117,6 +123,37 @@ public class SchemaEditorSchemaLoaderUtils
     /**
      * Converts the given object class to an equivalent entry representation.
      *
+     * @param matchingRule
+     *      the matching rule
+     * @return
+     *      the object class converted to an equivalent entry representation
+     * @throws LdapException
+     */
+    public Entry toEntry( MatchingRule matchingRule ) throws LdapException
+    {
+        // Creating a blank entry
+        Entry entry = new DefaultEntry();
+
+        // Setting calculated DN
+        entry.setDn( getDn( matchingRule, SchemaConstants.MATCHING_RULES_PATH ) );
+
+        // Values common to all schema objects
+        addSchemaObjectValues( matchingRule, SchemaConstants.META_MATCHING_RULE_OC, entry );
+
+        String syntax = matchingRule.getSyntaxOid();
+        if ( !Strings.isEmpty( syntax ) )
+        {
+            EntryAttribute attribute = new DefaultEntryAttribute( M_SYNTAX, syntax );
+            entry.add( attribute );
+        }
+
+        return entry;
+    }
+
+
+    /**
+     * Converts the given object class to an equivalent entry representation.
+     *
      * @param objectClass
      *      the object class
      * @return
@@ -145,6 +182,30 @@ public class SchemaEditorSchemaLoaderUtils
 
         // Mays value
         addMaysValue( objectClass, entry );
+
+        return entry;
+    }
+
+
+    /**
+     * Converts the given object class to an equivalent entry representation.
+     *
+     * @param syntax
+     *      the syntax
+     * @return
+     *      the object class converted to an equivalent entry representation
+     * @throws LdapException
+     */
+    public Entry toEntry( LdapSyntax syntax ) throws LdapException
+    {
+        // Creating a blank entry
+        Entry entry = new DefaultEntry();
+
+        // Setting calculated DN
+        entry.setDn( getDn( syntax, SchemaConstants.MATCHING_RULES_PATH ) );
+
+        // Values common to all schema objects
+        addSchemaObjectValues( syntax, SchemaConstants.META_MATCHING_RULE_OC, entry );
 
         return entry;
     }
@@ -506,7 +567,7 @@ public class SchemaEditorSchemaLoaderUtils
         List<String> superiors = objectClass.getSuperiorOids();
         if ( ( superiors != null ) && ( superiors.size() > 0 ) )
         {
-            EntryAttribute attribute = new DefaultEntryAttribute( "m-supObjectClass" );
+            EntryAttribute attribute = new DefaultEntryAttribute( M_SUP_OBJECT_CLASS );
             entry.add( attribute );
 
             for ( String superior : superiors )
@@ -531,7 +592,7 @@ public class SchemaEditorSchemaLoaderUtils
         ObjectClassTypeEnum classType = objectClass.getType();
         if ( classType != ObjectClassTypeEnum.STRUCTURAL )
         {
-            EntryAttribute attribute = new DefaultEntryAttribute( "m-typeObjectClass", classType.toString() );
+            EntryAttribute attribute = new DefaultEntryAttribute( M_TYPE_OBJECT_CLASS, classType.toString() );
             entry.add( attribute );
         }
     }
@@ -551,7 +612,7 @@ public class SchemaEditorSchemaLoaderUtils
         List<String> musts = objectClass.getMustAttributeTypeOids();
         if ( ( musts != null ) && ( musts.size() > 0 ) )
         {
-            EntryAttribute attribute = new DefaultEntryAttribute( "m-must" );
+            EntryAttribute attribute = new DefaultEntryAttribute( M_MUST );
             entry.add( attribute );
 
             for ( String must : musts )
@@ -576,7 +637,7 @@ public class SchemaEditorSchemaLoaderUtils
         List<String> mays = objectClass.getMayAttributeTypeOids();
         if ( ( mays != null ) && ( mays.size() > 0 ) )
         {
-            EntryAttribute attribute = new DefaultEntryAttribute( "m-may" );
+            EntryAttribute attribute = new DefaultEntryAttribute( M_MAY );
             entry.add( attribute );
 
             for ( String may : mays )
