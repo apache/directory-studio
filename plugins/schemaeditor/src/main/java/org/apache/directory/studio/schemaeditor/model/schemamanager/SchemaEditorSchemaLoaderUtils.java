@@ -32,6 +32,8 @@ import org.apache.directory.shared.ldap.model.exception.LdapInvalidDnException;
 import org.apache.directory.shared.ldap.model.name.Dn;
 import org.apache.directory.shared.ldap.model.name.Rdn;
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.ObjectClass;
+import org.apache.directory.shared.ldap.model.schema.ObjectClassTypeEnum;
 import org.apache.directory.shared.ldap.model.schema.SchemaObject;
 import org.apache.directory.shared.ldap.model.schema.UsageEnum;
 import org.apache.directory.shared.util.Strings;
@@ -113,6 +115,42 @@ public class SchemaEditorSchemaLoaderUtils
 
 
     /**
+     * Converts the given object class to an equivalent entry representation.
+     *
+     * @param objectClass
+     *      the object class
+     * @return
+     *      the object class converted to an equivalent entry representation
+     * @throws LdapException
+     */
+    public Entry toEntry( ObjectClass objectClass ) throws LdapException
+    {
+        // Creating a blank entry
+        Entry entry = new DefaultEntry();
+
+        // Setting calculated DN
+        entry.setDn( getDn( objectClass, SchemaConstants.OBJECT_CLASSES_PATH ) );
+
+        // Values common to all schema objects
+        addSchemaObjectValues( objectClass, SchemaConstants.META_OBJECT_CLASS_OC, entry );
+
+        // Superiors value
+        addSuperiorsValue( objectClass, entry );
+
+        // Class type value
+        addClassTypeValue( objectClass, entry );
+
+        // Musts value
+        addMustsValue( objectClass, entry );
+
+        // Mays value
+        addMaysValue( objectClass, entry );
+
+        return entry;
+    }
+
+
+    /**
      * Returns the DN for the given schema object in the given object path.
      *
      * @param schemaObject
@@ -159,7 +197,7 @@ public class SchemaEditorSchemaLoaderUtils
         // Description
         addDescriptionValue( schemaObject, entry );
 
-        // Obsolete (only if true)
+        // Obsolete
         addObsoleteValue( schemaObject, entry );
     }
 
@@ -450,6 +488,101 @@ public class SchemaEditorSchemaLoaderUtils
         {
             EntryAttribute attribute = new DefaultEntryAttribute( M_USAGE, usage.render() );
             entry.add( attribute );
+        }
+    }
+
+
+    /**
+     * Adds the superiors value.
+     *
+     * @param objectClass
+     *      the object class
+     * @param entry
+     *      the entry
+     * @throws LdapException
+     */
+    private void addSuperiorsValue( ObjectClass objectClass, Entry entry ) throws LdapException
+    {
+        List<String> superiors = objectClass.getSuperiorOids();
+        if ( ( superiors != null ) && ( superiors.size() > 0 ) )
+        {
+            EntryAttribute attribute = new DefaultEntryAttribute( "m-supObjectClass" );
+            entry.add( attribute );
+
+            for ( String superior : superiors )
+            {
+                attribute.add( superior );
+            }
+        }
+    }
+
+
+    /**
+     * Adds class type value.
+     *
+     * @param objectClass
+     *      the object class
+     * @param entry
+     *      the entry
+     * @throws LdapException
+     */
+    private void addClassTypeValue( ObjectClass objectClass, Entry entry ) throws LdapException
+    {
+        ObjectClassTypeEnum classType = objectClass.getType();
+        if ( classType != ObjectClassTypeEnum.STRUCTURAL )
+        {
+            EntryAttribute attribute = new DefaultEntryAttribute( "m-typeObjectClass", classType.toString() );
+            entry.add( attribute );
+        }
+    }
+
+
+    /**
+     * Adds musts value.
+     *
+     * @param objectClass
+     *      the object class
+     * @param entry
+     *      the entry
+     * @throws LdapException
+     */
+    private void addMustsValue( ObjectClass objectClass, Entry entry ) throws LdapException
+    {
+        List<String> musts = objectClass.getMustAttributeTypeOids();
+        if ( ( musts != null ) && ( musts.size() > 0 ) )
+        {
+            EntryAttribute attribute = new DefaultEntryAttribute( "m-must" );
+            entry.add( attribute );
+
+            for ( String must : musts )
+            {
+                attribute.add( must );
+            }
+        }
+    }
+
+
+    /**
+     * Adds mays value.
+     *
+     * @param objectClass
+     *      the object class
+     * @param entry
+     *      the entry
+     * @throws LdapException
+     */
+    private void addMaysValue( ObjectClass objectClass, Entry entry ) throws LdapException
+    {
+        List<String> mays = objectClass.getMayAttributeTypeOids();
+        if ( ( mays != null ) && ( mays.size() > 0 ) )
+        {
+            EntryAttribute attribute = new DefaultEntryAttribute( "m-may" );
+            entry.add( attribute );
+
+            for ( String may : mays )
+            {
+                attribute.add( may );
+            }
         }
     }
 }
