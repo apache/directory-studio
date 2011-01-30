@@ -37,6 +37,8 @@ import javax.naming.directory.SearchControls;
 import javax.naming.ldap.Control;
 
 import org.apache.commons.codec.digest.DigestUtils;
+
+import org.apache.directory.shared.asn1.EncoderException;
 import org.apache.directory.shared.dsmlv2.Dsmlv2Parser;
 import org.apache.directory.shared.dsmlv2.reponse.AddResponseDsml;
 import org.apache.directory.shared.dsmlv2.reponse.AuthResponseDsml;
@@ -47,6 +49,8 @@ import org.apache.directory.shared.dsmlv2.reponse.ExtendedResponseDsml;
 import org.apache.directory.shared.dsmlv2.reponse.ModDNResponseDsml;
 import org.apache.directory.shared.dsmlv2.reponse.ModifyResponseDsml;
 import org.apache.directory.shared.dsmlv2.request.BatchRequest;
+import org.apache.directory.shared.ldap.codec.DefaultLdapCodecService;
+import org.apache.directory.shared.ldap.codec.ILdapCodecService;
 import org.apache.directory.shared.ldap.model.entry.*;
 import org.apache.directory.shared.ldap.model.message.*;
 import org.apache.directory.shared.ldap.model.entry.AttributeUtils;
@@ -77,8 +81,6 @@ import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.SearchParameter;
 
-import com.sun.jndi.ldap.BasicControl;
-
 
 /**
  * Runnable to import a DSML File into a LDAP server
@@ -95,6 +97,12 @@ public class ImportDsmlRunnable implements StudioConnectionBulkRunnableWithProgr
 
     /** The Save file to use */
     private File responseFile;
+    
+    /** 
+     * LDAP Codec used by DSML parser
+     * @TODO by Alex - this should be removed completely
+     */
+    private ILdapCodecService codec = new DefaultLdapCodecService();
 
 
     /**
@@ -323,7 +331,7 @@ public class ImportDsmlRunnable implements StudioConnectionBulkRunnableWithProgr
         // Creating the response
         if ( batchResponseDsml != null )
         {
-            AuthResponseDsml authResponseDsml = new AuthResponseDsml();
+            AuthResponseDsml authResponseDsml = new AuthResponseDsml( codec );
             LdapResult ldapResult = authResponseDsml.getLdapResult();
             ldapResult.setResultCode( ResultCodeEnum.UNWILLING_TO_PERFORM );
             ldapResult.setErrorMessage( "This kind of request is not yet supported." );
@@ -354,7 +362,7 @@ public class ImportDsmlRunnable implements StudioConnectionBulkRunnableWithProgr
         // Creating the response
         if ( batchResponseDsml != null )
         {
-            AddResponseDsml addResponseDsml = new AddResponseDsml();
+            AddResponseDsml addResponseDsml = new AddResponseDsml( codec );
             LdapResult ldapResult = addResponseDsml.getLdapResult();
             setLdapResultValuesFromMonitor( ldapResult, monitor, MessageTypeEnum.ADD_REQUEST );
             ldapResult.setMatchedDn( entry.getDn() );
@@ -394,7 +402,7 @@ public class ImportDsmlRunnable implements StudioConnectionBulkRunnableWithProgr
         // Creating the response
         if ( batchResponseDsml != null )
         {
-            CompareResponseDsml compareResponseDsml = new CompareResponseDsml();
+            CompareResponseDsml compareResponseDsml = new CompareResponseDsml( codec );
             LdapResult ldapResult = compareResponseDsml.getLdapResult();
             ldapResult.setResultCode( ResultCodeEnum.UNWILLING_TO_PERFORM );
             ldapResult.setErrorMessage( "This kind of request is not yet supported." );
@@ -421,7 +429,7 @@ public class ImportDsmlRunnable implements StudioConnectionBulkRunnableWithProgr
         // Creating the response
         if ( batchResponseDsml != null )
         {
-            DelResponseDsml delResponseDsml = new DelResponseDsml();
+            DelResponseDsml delResponseDsml = new DelResponseDsml( codec );
             LdapResult ldapResult = delResponseDsml.getLdapResult();
             setLdapResultValuesFromMonitor( ldapResult, monitor, MessageTypeEnum.ADD_REQUEST );
             delResponseDsml.getLdapResult().setMatchedDn( request.getName() );
@@ -462,7 +470,7 @@ public class ImportDsmlRunnable implements StudioConnectionBulkRunnableWithProgr
         // Creating the response
         if ( batchResponseDsml != null )
         {
-            ExtendedResponseDsml extendedResponseDsml = new ExtendedResponseDsml();
+            ExtendedResponseDsml extendedResponseDsml = new ExtendedResponseDsml( codec );
             LdapResult ldapResult = extendedResponseDsml.getLdapResult();
             ldapResult.setResultCode( ResultCodeEnum.UNWILLING_TO_PERFORM );
             ldapResult.setErrorMessage( "This kind of request is not yet supported." );
@@ -500,7 +508,7 @@ public class ImportDsmlRunnable implements StudioConnectionBulkRunnableWithProgr
         // Creating the response
         if ( batchResponseDsml != null )
         {
-            ModifyResponseDsml modifyResponseDsml = new ModifyResponseDsml();
+            ModifyResponseDsml modifyResponseDsml = new ModifyResponseDsml( codec );
             LdapResult ldapResult = modifyResponseDsml.getLdapResult();
             setLdapResultValuesFromMonitor( ldapResult, monitor, MessageTypeEnum.ADD_REQUEST );
             modifyResponseDsml.getLdapResult().setMatchedDn( request.getName() );
@@ -561,7 +569,7 @@ public class ImportDsmlRunnable implements StudioConnectionBulkRunnableWithProgr
         // Creating the response
         if ( batchResponseDsml != null )
         {
-            ModDNResponseDsml modDNResponseDsml = new ModDNResponseDsml();
+            ModDNResponseDsml modDNResponseDsml = new ModDNResponseDsml( codec );
             LdapResult ldapResult = modDNResponseDsml.getLdapResult();
             setLdapResultValuesFromMonitor( ldapResult, monitor, MessageTypeEnum.ADD_REQUEST );
             modDNResponseDsml.getLdapResult().setMatchedDn( request.getName() );
@@ -715,9 +723,14 @@ public class ImportDsmlRunnable implements StudioConnectionBulkRunnableWithProgr
             List<Control> jndiControls = new ArrayList<Control>();
             for ( org.apache.directory.shared.ldap.model.message.Control control : controls )
             {
-                Control jndiControl = new BasicControl( control.getOid(), control.isCritical(),
-                    control.getValue() );
-                jndiControls.add( jndiControl );
+                try
+                {
+                    jndiControls.add( codec.toJndiControl( control ) );
+                }
+                catch ( EncoderException e )
+                {
+                    throw new RuntimeException( e );
+                }
             }
             return jndiControls.toArray( new Control[jndiControls.size()] );
         }

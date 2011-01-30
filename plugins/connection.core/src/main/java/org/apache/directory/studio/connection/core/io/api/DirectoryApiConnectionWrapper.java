@@ -39,30 +39,13 @@ import javax.net.ssl.X509TrustManager;
 import org.apache.directory.ldap.client.api.LdapConnectionConfig;
 import org.apache.directory.ldap.client.api.LdapNetworkConnection;
 import org.apache.directory.ldap.client.api.exception.InvalidConnectionException;
-import org.apache.directory.shared.ldap.codec.controls.ControlImpl;
 import org.apache.directory.shared.ldap.model.cursor.SearchCursor;
 import org.apache.directory.shared.ldap.model.entry.DefaultModification;
 import org.apache.directory.shared.ldap.model.filter.SearchScope;
 import org.apache.directory.shared.ldap.model.entry.AttributeUtils;
 import org.apache.directory.shared.ldap.model.entry.Modification;
 import org.apache.directory.shared.ldap.model.entry.ModificationOperation;
-import org.apache.directory.shared.ldap.model.message.AddRequest;
-import org.apache.directory.shared.ldap.model.message.AddRequestImpl;
-import org.apache.directory.shared.ldap.model.message.AddResponse;
 import org.apache.directory.shared.ldap.model.message.*;
-import org.apache.directory.shared.ldap.model.message.DeleteRequest;
-import org.apache.directory.shared.ldap.model.message.DeleteRequestImpl;
-import org.apache.directory.shared.ldap.model.message.LdapResult;
-import org.apache.directory.shared.ldap.model.message.ModifyDnRequest;
-import org.apache.directory.shared.ldap.model.message.ModifyDnRequestImpl;
-import org.apache.directory.shared.ldap.model.message.ModifyDnResponse;
-import org.apache.directory.shared.ldap.model.message.ModifyRequest;
-import org.apache.directory.shared.ldap.model.message.ModifyRequestImpl;
-import org.apache.directory.shared.ldap.model.message.ModifyResponse;
-import org.apache.directory.shared.ldap.model.message.DeleteResponse;
-import org.apache.directory.shared.ldap.model.message.ResultResponse;
-import org.apache.directory.shared.ldap.model.message.SearchRequest;
-import org.apache.directory.shared.ldap.model.message.SearchRequestImpl;
 import org.apache.directory.shared.ldap.model.name.Dn;
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.Connection;
@@ -526,19 +509,20 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
      *      an array of converted controls
      */
     private org.apache.directory.shared.ldap.model.message.Control[] convertControls( Control[] controls )
+        throws Exception
     {
         if ( controls != null )
         {
-            org.apache.directory.shared.ldap.model.message.Control[] returningControls = new org.apache.directory.shared.ldap.model.message.Control[controls.length];
+            org.apache.directory.shared.ldap.model.message.Control[] returningControls = 
+                new org.apache.directory.shared.ldap.model.message.Control[controls.length];
 
             for ( int i = 0; i < controls.length; i++ )
             {
                 Control control = controls[i];
-                org.apache.directory.shared.ldap.model.message.Control returningControl = new ControlImpl(
-                    control.getID() );
-                returningControl.setValue( control.getEncodedValue() );
-                returningControl.setCritical( control.isCritical() );
-
+                
+                org.apache.directory.shared.ldap.model.message.Control returningControl;
+                    returningControl = ldapConnection.getCodecService().fromJndiControl( control );
+                
                 returningControls[i] = returningControl;
             }
 

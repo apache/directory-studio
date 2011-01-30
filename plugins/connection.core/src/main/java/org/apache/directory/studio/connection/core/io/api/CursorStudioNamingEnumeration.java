@@ -34,14 +34,13 @@ import javax.naming.ldap.BasicControl;
 import javax.naming.ldap.Control;
 import javax.naming.ldap.PagedResultsResponseControl;
 
+import org.apache.directory.shared.ldap.codec.DefaultLdapCodecService;
+import org.apache.directory.shared.ldap.codec.ICodecControl;
+import org.apache.directory.shared.ldap.codec.ILdapCodecService;
 import org.apache.directory.shared.ldap.model.cursor.SearchCursor;
 import org.apache.directory.shared.ldap.model.entry.AttributeUtils;
 import org.apache.directory.shared.ldap.model.filter.LdapURL;
-import org.apache.directory.shared.ldap.model.message.Referral;
 import org.apache.directory.shared.ldap.model.message.*;
-import org.apache.directory.shared.ldap.model.message.Response;
-import org.apache.directory.shared.ldap.model.message.SearchResultDone;
-import org.apache.directory.shared.ldap.model.message.SearchResultReference;
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
@@ -69,6 +68,9 @@ public class CursorStudioNamingEnumeration extends AbstractStudioNamingEnumerati
     private StudioNamingEnumeration cursorNamingEnumeration;
     private SearchResultDone searchResultDone;
 
+    // @TODO: By Alex: temporary fix until things are in order (needs to be fixed)
+    private ILdapCodecService codec = new DefaultLdapCodecService();
+    
 
     /**
      * Creates a new instance of ReferralNamingEnumeration.
@@ -366,26 +368,36 @@ public class CursorStudioNamingEnumeration extends AbstractStudioNamingEnumerati
             for ( org.apache.directory.shared.ldap.model.message.Control control : controls )
             {
                 Control convertedControl = null;
+                ICodecControl<? extends org.apache.directory.shared.ldap.model.message.Control> wrapped = null;
+
+                if ( control instanceof ICodecControl )
+                {
+                    wrapped = ( ICodecControl<?> ) control;
+                }
+                else
+                {
+                    wrapped = codec.decorate( control );
+                }
 
                 if ( PagedResultsResponseControl.OID.equals( control.getOid() ) )
                 {
                     // Special case for the PagedResultsResponseControl
                     try
                     {
-                        convertedControl = new PagedResultsResponseControl( control.getOid(), control.isCritical(),
-                            control.getValue() );
+                        convertedControl = new PagedResultsResponseControl( wrapped.getOid(), wrapped.isCritical(),
+                            wrapped.getValue() );
                     }
                     catch ( IOException e )
                     {
-                        convertedControl = new BasicControl( control.getOid(), control.isCritical(),
-                            control.getValue() );
+                        convertedControl = new BasicControl( wrapped.getOid(), wrapped.isCritical(),
+                            wrapped.getValue() );
                     }
                 }
                 else
                 {
                     // Default case
-                    convertedControl = new BasicControl( control.getOid(), control.isCritical(),
-                        control.getValue() );
+                    convertedControl = new BasicControl( wrapped.getOid(), wrapped.isCritical(),
+                        wrapped.getValue() );
                 }
 
                 convertedControls.add( convertedControl );

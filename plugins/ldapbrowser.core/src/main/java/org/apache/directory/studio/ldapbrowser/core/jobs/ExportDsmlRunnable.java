@@ -42,6 +42,8 @@ import org.apache.directory.shared.dsmlv2.reponse.SearchResultEntryDsml;
 import org.apache.directory.shared.dsmlv2.reponse.SearchResultReferenceDsml;
 import org.apache.directory.shared.dsmlv2.request.AddRequestDsml;
 import org.apache.directory.shared.dsmlv2.request.BatchRequestDsml;
+import org.apache.directory.shared.ldap.codec.DefaultLdapCodecService;
+import org.apache.directory.shared.ldap.codec.ILdapCodecService;
 import org.apache.directory.shared.ldap.model.entry.AttributeUtils;
 import org.apache.directory.shared.ldap.model.entry.Entry;
 import org.apache.directory.shared.ldap.model.exception.LdapURLEncodingException;
@@ -89,6 +91,14 @@ public class ExportDsmlRunnable implements StudioConnectionRunnableWithProgress
 
     /** The type of the export */
     private ExportDsmlJobType type = ExportDsmlJobType.RESPONSE;
+    
+    /** 
+     * The LDAP Codec - for now need by the DSML Parser 
+     * @TODO - this should be removed - no reason why the DSML parser needs it
+     * @TODO - hate to make it static like this but methods are static
+     */
+    private static ILdapCodecService codec = new DefaultLdapCodecService();
+    
 
     /**
      * This enum contains the two possible export types.
@@ -264,7 +274,7 @@ public class ExportDsmlRunnable implements StudioConnectionRunnableWithProgress
         StudioProgressMonitor monitor, SearchParameter searchParameter ) throws LdapURLEncodingException, LdapException
     {
         // Creating and adding the search response
-        SearchResponseDsml sr = new SearchResponseDsml();
+        SearchResponseDsml sr = new SearchResponseDsml( codec );
         batchResponse.addResponse( sr );
 
         try
@@ -320,7 +330,7 @@ public class ExportDsmlRunnable implements StudioConnectionRunnableWithProgress
                 ldapResult.setErrorMessage( t.getMessage() );
             }
         }
-        sr.addResponse( new SearchResultDoneDsml( srd ) );
+        sr.addResponse( new SearchResultDoneDsml( codec, srd ) );
     }
 
 
@@ -342,7 +352,7 @@ public class ExportDsmlRunnable implements StudioConnectionRunnableWithProgress
         if ( isReferral( entry ) )
         {
             // The search result is a referral
-            SearchResultReferenceDsml srr = new SearchResultReferenceDsml();
+            SearchResultReferenceDsml srr = new SearchResultReferenceDsml( codec );
 
             // Getting the 'ref' attribute
             EntryAttribute refAttribute = entry.get( ExportDsmlRunnable.REF_ATTRIBUTETYPE_NAME );
@@ -368,7 +378,7 @@ public class ExportDsmlRunnable implements StudioConnectionRunnableWithProgress
         else
         {
             // The search result is NOT a referral
-            SearchResultEntryDsml sre = new SearchResultEntryDsml();
+            SearchResultEntryDsml sre = new SearchResultEntryDsml( codec );
             sre.setEntry( entry );
 
             return sre;
@@ -476,7 +486,7 @@ public class ExportDsmlRunnable implements StudioConnectionRunnableWithProgress
     private AddRequestDsml convertToAddRequestDsml( SearchResult searchResult )
         throws LdapException
     {
-        AddRequestDsml ar = new AddRequestDsml();
+        AddRequestDsml ar = new AddRequestDsml( codec );
         Entry entry = AttributeUtils.toClientEntry( searchResult.getAttributes(),
             new Dn( searchResult.getNameInNamespace() ) );
         ar.setEntry( entry );
