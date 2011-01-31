@@ -78,7 +78,7 @@ public class SchemaEditorSchemaLoaderUtils
      *      the attribute type converted to an equivalent entry representation
      * @throws LdapException
      */
-    public Entry toEntry( AttributeType attributeType ) throws LdapException
+    public static Entry toEntry( AttributeType attributeType ) throws LdapException
     {
         // Creating a blank entry
         Entry entry = new DefaultEntry();
@@ -129,7 +129,7 @@ public class SchemaEditorSchemaLoaderUtils
      *      the object class converted to an equivalent entry representation
      * @throws LdapException
      */
-    public Entry toEntry( MatchingRule matchingRule ) throws LdapException
+    public static Entry toEntry( MatchingRule matchingRule ) throws LdapException
     {
         // Creating a blank entry
         Entry entry = new DefaultEntry();
@@ -160,7 +160,7 @@ public class SchemaEditorSchemaLoaderUtils
      *      the object class converted to an equivalent entry representation
      * @throws LdapException
      */
-    public Entry toEntry( ObjectClass objectClass ) throws LdapException
+    public static Entry toEntry( ObjectClass objectClass ) throws LdapException
     {
         // Creating a blank entry
         Entry entry = new DefaultEntry();
@@ -196,7 +196,7 @@ public class SchemaEditorSchemaLoaderUtils
      *      the object class converted to an equivalent entry representation
      * @throws LdapException
      */
-    public Entry toEntry( LdapSyntax syntax ) throws LdapException
+    public static Entry toEntry( LdapSyntax syntax ) throws LdapException
     {
         // Creating a blank entry
         Entry entry = new DefaultEntry();
@@ -222,7 +222,7 @@ public class SchemaEditorSchemaLoaderUtils
      *      the DN for the given schema object in the given object path
      * @throws LdapInvalidDnException
      */
-    private Dn getDn( SchemaObject schemaObject, String objectPath ) throws LdapInvalidDnException
+    private static Dn getDn( SchemaObject schemaObject, String objectPath ) throws LdapInvalidDnException
     {
         return Dn.EMPTY_DN
             .add( new Rdn( M_OID, schemaObject.getOid() ) )
@@ -243,7 +243,7 @@ public class SchemaEditorSchemaLoaderUtils
      *      the entry
      * @throws LdapException
      */
-    private void addSchemaObjectValues( SchemaObject schemaObject, String objectClassValue, Entry entry )
+    private static void addSchemaObjectValues( SchemaObject schemaObject, String objectClassValue, Entry entry )
         throws LdapException
     {
         // ObjectClass
@@ -274,7 +274,7 @@ public class SchemaEditorSchemaLoaderUtils
      *      the entry
      * @throws LdapException
      */
-    private void addObjectClassValue( SchemaObject schemaObject, String objectClassValue, Entry entry )
+    private static void addObjectClassValue( SchemaObject schemaObject, String objectClassValue, Entry entry )
         throws LdapException
     {
         EntryAttribute objectClassAttribute = new DefaultEntryAttribute( SchemaConstants.OBJECT_CLASS_AT );
@@ -294,7 +294,7 @@ public class SchemaEditorSchemaLoaderUtils
      *      the entry
      * @throws LdapException
      */
-    private void addOidValue( SchemaObject schemaObject, Entry entry ) throws LdapException
+    private static void addOidValue( SchemaObject schemaObject, Entry entry ) throws LdapException
     {
         String oid = schemaObject.getOid();
         if ( !Strings.isEmpty( oid ) )
@@ -314,7 +314,7 @@ public class SchemaEditorSchemaLoaderUtils
      *      the entry
      * @throws LdapException
      */
-    private void addNamesValue( SchemaObject schemaObject, Entry entry ) throws LdapException
+    private static void addNamesValue( SchemaObject schemaObject, Entry entry ) throws LdapException
     {
         List<String> names = schemaObject.getNames();
         if ( ( names != null ) && ( names.size() > 0 ) )
@@ -339,7 +339,7 @@ public class SchemaEditorSchemaLoaderUtils
      *      the entry
      * @throws LdapException
      */
-    private void addDescriptionValue( SchemaObject schemaObject, Entry entry ) throws LdapException
+    private static void addDescriptionValue( SchemaObject schemaObject, Entry entry ) throws LdapException
     {
         String description = schemaObject.getDescription();
         if ( !Strings.isEmpty( description ) )
@@ -359,7 +359,7 @@ public class SchemaEditorSchemaLoaderUtils
      *      the entry
      * @throws LdapException
      */
-    private void addObsoleteValue( SchemaObject schemaObject, Entry entry ) throws LdapException
+    private static void addObsoleteValue( SchemaObject schemaObject, Entry entry ) throws LdapException
     {
         if ( schemaObject.isObsolete() )
         {
@@ -378,7 +378,7 @@ public class SchemaEditorSchemaLoaderUtils
      *      the entry
      * @throws LdapException
      */
-    private void addSuperiorValue( AttributeType attributeType, Entry entry ) throws LdapException
+    private static void addSuperiorValue( AttributeType attributeType, Entry entry ) throws LdapException
     {
         String superior = attributeType.getSuperiorName();
         if ( !Strings.isEmpty( superior ) )
@@ -398,7 +398,7 @@ public class SchemaEditorSchemaLoaderUtils
      *      the entry
      * @throws LdapException
      */
-    private void addEqualityValue( AttributeType attributeType, Entry entry ) throws LdapException
+    private static void addEqualityValue( AttributeType attributeType, Entry entry ) throws LdapException
     {
         String equality = attributeType.getEqualityName();
         if ( !Strings.isEmpty( equality ) )
@@ -418,7 +418,7 @@ public class SchemaEditorSchemaLoaderUtils
      *      the entry
      * @throws LdapException
      */
-    private void addOrderingValue( AttributeType attributeType, Entry entry ) throws LdapException
+    private static void addOrderingValue( AttributeType attributeType, Entry entry ) throws LdapException
     {
         String ordering = attributeType.getOrderingName();
         if ( !Strings.isEmpty( ordering ) )
@@ -438,7 +438,7 @@ public class SchemaEditorSchemaLoaderUtils
      *      the entry
      * @throws LdapException
      */
-    private void addSubstrValue( AttributeType attributeType, Entry entry ) throws LdapException
+    private static void addSubstrValue( AttributeType attributeType, Entry entry ) throws LdapException
     {
         String substr = attributeType.getSubstringName();
         if ( !Strings.isEmpty( substr ) )
@@ -458,7 +458,7 @@ public class SchemaEditorSchemaLoaderUtils
      *      the entry
      * @throws LdapException
      */
-    private void addSyntaxValue( AttributeType attributeType, Entry entry ) throws LdapException
+    private static void addSyntaxValue( AttributeType attributeType, Entry entry ) throws LdapException
     {
         String syntax = attributeType.getSyntaxName();
         if ( !Strings.isEmpty( syntax ) )
@@ -485,7 +485,7 @@ public class SchemaEditorSchemaLoaderUtils
      *      the entry
      * @throws LdapException
      */
-    private void addSingleValueValue( AttributeType attributeType, Entry entry ) throws LdapException
+    private static void addSingleValueValue( AttributeType attributeType, Entry entry ) throws LdapException
     {
         if ( attributeType.isSingleValued() )
         {
@@ -504,7 +504,7 @@ public class SchemaEditorSchemaLoaderUtils
      *      the entry
      * @throws LdapException
      */
-    private void addCollectiveValue( AttributeType attributeType, Entry entry ) throws LdapException
+    private static void addCollectiveValue( AttributeType attributeType, Entry entry ) throws LdapException
     {
         if ( attributeType.isCollective() )
         {
@@ -523,7 +523,7 @@ public class SchemaEditorSchemaLoaderUtils
      *      the entry
      * @throws LdapException
      */
-    private void addNoUserModificationValue( AttributeType attributeType, Entry entry ) throws LdapException
+    private static void addNoUserModificationValue( AttributeType attributeType, Entry entry ) throws LdapException
     {
         if ( !attributeType.isUserModifiable() )
         {
@@ -542,7 +542,7 @@ public class SchemaEditorSchemaLoaderUtils
      *      the entry
      * @throws LdapException
      */
-    private void addUsageValue( AttributeType attributeType, Entry entry ) throws LdapException
+    private static void addUsageValue( AttributeType attributeType, Entry entry ) throws LdapException
     {
         UsageEnum usage = attributeType.getUsage();
         if ( usage != UsageEnum.USER_APPLICATIONS )
@@ -562,7 +562,7 @@ public class SchemaEditorSchemaLoaderUtils
      *      the entry
      * @throws LdapException
      */
-    private void addSuperiorsValue( ObjectClass objectClass, Entry entry ) throws LdapException
+    private static void addSuperiorsValue( ObjectClass objectClass, Entry entry ) throws LdapException
     {
         List<String> superiors = objectClass.getSuperiorOids();
         if ( ( superiors != null ) && ( superiors.size() > 0 ) )
@@ -587,7 +587,7 @@ public class SchemaEditorSchemaLoaderUtils
      *      the entry
      * @throws LdapException
      */
-    private void addClassTypeValue( ObjectClass objectClass, Entry entry ) throws LdapException
+    private static void addClassTypeValue( ObjectClass objectClass, Entry entry ) throws LdapException
     {
         ObjectClassTypeEnum classType = objectClass.getType();
         if ( classType != ObjectClassTypeEnum.STRUCTURAL )
@@ -607,7 +607,7 @@ public class SchemaEditorSchemaLoaderUtils
      *      the entry
      * @throws LdapException
      */
-    private void addMustsValue( ObjectClass objectClass, Entry entry ) throws LdapException
+    private static void addMustsValue( ObjectClass objectClass, Entry entry ) throws LdapException
     {
         List<String> musts = objectClass.getMustAttributeTypeOids();
         if ( ( musts != null ) && ( musts.size() > 0 ) )
@@ -632,7 +632,7 @@ public class SchemaEditorSchemaLoaderUtils
      *      the entry
      * @throws LdapException
      */
-    private void addMaysValue( ObjectClass objectClass, Entry entry ) throws LdapException
+    private static void addMaysValue( ObjectClass objectClass, Entry entry ) throws LdapException
     {
         List<String> mays = objectClass.getMayAttributeTypeOids();
         if ( ( mays != null ) && ( mays.size() > 0 ) )
