@@ -199,6 +199,7 @@
             <id>assembly-distribution-linux-x86</id>
             <phase>package</phase>
             <configuration>
+              <appendAssemblyId>false</appendAssemblyId>
               <descriptors>
                 <descriptor>src/main/assembly/application.xml</descriptor>
               </descriptors>

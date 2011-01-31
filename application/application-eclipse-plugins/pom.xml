@@ -803,6 +803,7 @@
             <execution>
               <phase>package</phase>
               <configuration>
+                <appendAssemblyId>false</appendAssemblyId>
                 <descriptors>
                   <descriptor>src/main/assembly/plugins.xml</descriptor>
                 </descriptors>

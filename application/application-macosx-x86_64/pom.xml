@@ -188,6 +188,7 @@
             <id>assembly-distribution-macosx</id>
             <phase>package</phase>
             <configuration>
+              <appendAssemblyId>false</appendAssemblyId>
               <descriptors>
                 <descriptor>src/main/assembly/application.xml</descriptor>
               </descriptors>
