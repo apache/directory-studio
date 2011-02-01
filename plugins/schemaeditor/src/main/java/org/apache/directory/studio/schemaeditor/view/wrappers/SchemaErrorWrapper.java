@@ -20,7 +20,7 @@
 package org.apache.directory.studio.schemaeditor.view.wrappers;
 
 
-import org.apache.directory.studio.schemaeditor.model.schemachecker.SchemaError;
+import org.apache.directory.shared.ldap.model.exception.LdapSchemaException;
 
 
 /**
@@ -30,8 +30,8 @@ import org.apache.directory.studio.schemaeditor.model.schemachecker.SchemaError;
  */
 public class SchemaErrorWrapper extends AbstractTreeNode
 {
-    /** The wrapped SchemaError */
-    private SchemaError schemaError;
+    /** The wrapper {@link LdapSchemaException} */
+    private LdapSchemaException ldapSchemaException;
 
 
     /**
@@ -40,10 +40,10 @@ public class SchemaErrorWrapper extends AbstractTreeNode
      * @param error
      *      the wrapped SchemaError
      */
-    public SchemaErrorWrapper( SchemaError error )
+    public SchemaErrorWrapper( LdapSchemaException ldapSchemaException )
     {
         super( null );
-        schemaError = error;
+        this.ldapSchemaException = ldapSchemaException;
     }
 
 
@@ -55,22 +55,22 @@ public class SchemaErrorWrapper extends AbstractTreeNode
      * @param parent
      *      the parent TreeNode
      */
-    public SchemaErrorWrapper( SchemaError error, TreeNode parent )
+    public SchemaErrorWrapper( LdapSchemaException ldapSchemaException, TreeNode parent )
     {
         super( parent );
-        schemaError = error;
+        this.ldapSchemaException = ldapSchemaException;
     }
 
 
     /**
-     * Gets the wrapped SchemaError.
+     * Gets the wrapped {@link LdapSchemaException}.
      *
      * @return
      *      the wrapped SchemaError
      */
-    public SchemaError getSchemaError()
+    public LdapSchemaException getLdapSchemaException()
     {
-        return schemaError;
+        return ldapSchemaException;
     }
 
 
@@ -94,7 +94,7 @@ public class SchemaErrorWrapper extends AbstractTreeNode
             {
                 SchemaErrorWrapper sww = ( SchemaErrorWrapper ) obj;
 
-                if ( ( schemaError != null ) && ( !schemaError.equals( sww.getSchemaError() ) ) )
+                if ( ( ldapSchemaException != null ) && ( !ldapSchemaException.equals( sww.getLdapSchemaException() ) ) )
                 {
                     return false;
                 }
@@ -115,9 +115,9 @@ public class SchemaErrorWrapper extends AbstractTreeNode
     {
         int result = super.hashCode();
 
-        if ( schemaError != null )
+        if ( ldapSchemaException != null )
         {
-            result = 37 * result + schemaError.hashCode();
+            result = 37 * result + ldapSchemaException.hashCode();
         }
 
         return result;

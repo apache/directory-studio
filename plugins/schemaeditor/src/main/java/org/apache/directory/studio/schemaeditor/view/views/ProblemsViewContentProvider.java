@@ -23,10 +23,9 @@ package org.apache.directory.studio.schemaeditor.view.views;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.directory.shared.ldap.model.exception.LdapSchemaException;
 import org.apache.directory.studio.schemaeditor.Activator;
 import org.apache.directory.studio.schemaeditor.model.schemachecker.SchemaChecker;
-import org.apache.directory.studio.schemaeditor.model.schemachecker.SchemaError;
-import org.apache.directory.studio.schemaeditor.model.schemachecker.SchemaWarning;
 import org.apache.directory.studio.schemaeditor.view.wrappers.Folder;
 import org.apache.directory.studio.schemaeditor.view.wrappers.Folder.FolderType;
 import org.apache.directory.studio.schemaeditor.view.wrappers.ProblemsViewRoot;
@@ -98,27 +97,31 @@ public class ProblemsViewContentProvider implements IStructuredContentProvider, 
 
                 if ( schemaChecker != null )
                 {
-                    SchemaError[] errors = schemaChecker.getErrors().toArray( new SchemaError[0] );
-                    if ( !( errors.length == 0 ) )
+                    List<Throwable> errors = schemaChecker.getErrors();
+                    if ( !( errors.size() == 0 ) )
                     {
                         Folder errorsFolder = new Folder( FolderType.ERROR, root );
                         root.addChild( errorsFolder );
-                        for ( SchemaError error : errors )
+                        for ( Throwable error : errors )
                         {
-                            errorsFolder.addChild( new SchemaErrorWrapper( error, errorsFolder ) );
+                            if ( error instanceof LdapSchemaException )
+                            {
+                                errorsFolder.addChild( new SchemaErrorWrapper( ( LdapSchemaException ) error,
+                                    errorsFolder ) );
+                            }
                         }
                     }
 
-                    SchemaWarning[] warnings = schemaChecker.getWarnings().toArray( new SchemaWarning[0] );
-                    if ( !( warnings.length == 0 ) )
-                    {
-                        Folder warningsFolder = new Folder( FolderType.WARNING, root );
-                        root.addChild( warningsFolder );
-                        for ( SchemaWarning warning : warnings )
-                        {
-                            warningsFolder.addChild( new SchemaWarningWrapper( warning, warningsFolder ) );
-                        }
-                    }
+//                    SchemaWarning[] warnings = schemaChecker.getWarnings().toArray( new SchemaWarning[0] );
+//                    if ( !( warnings.length == 0 ) )
+//                    {
+//                        Folder warningsFolder = new Folder( FolderType.WARNING, root );
+//                        root.addChild( warningsFolder );
+//                        for ( SchemaWarning warning : warnings )
+//                        {
+//                            warningsFolder.addChild( new SchemaWarningWrapper( warning, warningsFolder ) );
+//                        }
+//                    }
                 }
             }
 

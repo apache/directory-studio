@@ -20,7 +20,6 @@
 package org.apache.directory.studio.schemaeditor.view.wrappers;
 
 
-import org.apache.directory.studio.schemaeditor.model.schemachecker.SchemaWarning;
 
 
 /**
@@ -31,7 +30,7 @@ import org.apache.directory.studio.schemaeditor.model.schemachecker.SchemaWarnin
 public class SchemaWarningWrapper extends AbstractTreeNode
 {
     /** The wrapped SchemaError */
-    private SchemaWarning schemaWarning;
+    private Object schemaWarning;
 
 
     /**
@@ -40,7 +39,7 @@ public class SchemaWarningWrapper extends AbstractTreeNode
      * @param warning
      *      the wrapped SchemaWarning
      */
-    public SchemaWarningWrapper( SchemaWarning warning )
+    public SchemaWarningWrapper( Object warning )
     {
         super( null );
         schemaWarning = warning;
@@ -55,7 +54,7 @@ public class SchemaWarningWrapper extends AbstractTreeNode
      * @param parent
      *      the parent TreeNode
      */
-    public SchemaWarningWrapper( SchemaWarning warning, TreeNode parent )
+    public SchemaWarningWrapper( Object warning, TreeNode parent )
     {
         super( parent );
         schemaWarning = warning;
@@ -68,7 +67,7 @@ public class SchemaWarningWrapper extends AbstractTreeNode
      * @return
      *      the wrapped SchemaWarning
      */
-    public SchemaWarning getSchemaWarning()
+    public Object getSchemaWarning()
     {
         return schemaWarning;
     }

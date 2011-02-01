@@ -43,6 +43,7 @@ import org.apache.directory.studio.schemaeditor.model.Project;
  */
 public class SchemaEditorSchemaLoader extends AbstractSchemaLoader
 {
+    /** The currently open project */
     private Project project;
 
 
@@ -62,13 +63,15 @@ public class SchemaEditorSchemaLoader extends AbstractSchemaLoader
      */
     private void initializeSchemas()
     {
-        project = Activator.getDefault().getProjectsHandler().getProjects().get( 0 );
-
-        List<org.apache.directory.studio.schemaeditor.model.Schema> schemaObjects = project.getSchemaHandler()
-            .getSchemas();
-        for ( org.apache.directory.studio.schemaeditor.model.Schema schemaObject : schemaObjects )
+        project = Activator.getDefault().getProjectsHandler().getOpenProject();
+        if ( project != null )
         {
-            schemaMap.put( schemaObject.getSchemaName(), schemaObject );
+            List<org.apache.directory.studio.schemaeditor.model.Schema> schemaObjects = project.getSchemaHandler()
+                .getSchemas();
+            for ( org.apache.directory.studio.schemaeditor.model.Schema schemaObject : schemaObjects )
+            {
+                schemaMap.put( schemaObject.getSchemaName(), schemaObject );
+            }
         }
     }
 
@@ -78,9 +81,7 @@ public class SchemaEditorSchemaLoader extends AbstractSchemaLoader
      */
     public List<Entry> loadComparators( Schema... schemas ) throws LdapException, IOException
     {
-        List<Entry> comparatorList = new ArrayList<Entry>();
-
-        return comparatorList;
+        return new ArrayList<Entry>();
     }
 
 
@@ -89,9 +90,7 @@ public class SchemaEditorSchemaLoader extends AbstractSchemaLoader
      */
     public List<Entry> loadSyntaxCheckers( Schema... schemas ) throws LdapException, IOException
     {
-        List<Entry> syntaxCheckerList = new ArrayList<Entry>();
-
-        return syntaxCheckerList;
+        return new ArrayList<Entry>();
     }
 
 
@@ -100,9 +99,7 @@ public class SchemaEditorSchemaLoader extends AbstractSchemaLoader
      */
     public List<Entry> loadNormalizers( Schema... schemas ) throws LdapException, IOException
     {
-        List<Entry> normalizerList = new ArrayList<Entry>();
-
-        return normalizerList;
+        return new ArrayList<Entry>();
     }
 
 
@@ -113,13 +110,16 @@ public class SchemaEditorSchemaLoader extends AbstractSchemaLoader
     {
         List<Entry> matchingRuleList = new ArrayList<Entry>();
 
-        for ( Schema schema : schemas )
+        if ( project != null )
         {
-            List<MatchingRule> matchingRules = project.getSchemaHandler().getSchema( schema.getSchemaName() )
-                .getMatchingRules();
-            for ( MatchingRule matchingRule : matchingRules )
+            for ( Schema schema : schemas )
             {
-                matchingRuleList.add( SchemaEditorSchemaLoaderUtils.toEntry( matchingRule ) );
+                List<MatchingRule> matchingRules = project.getSchemaHandler().getSchema( schema.getSchemaName() )
+                    .getMatchingRules();
+                for ( MatchingRule matchingRule : matchingRules )
+                {
+                    matchingRuleList.add( SchemaEditorSchemaLoaderUtils.toEntry( matchingRule ) );
+                }
             }
         }
 
@@ -134,12 +134,16 @@ public class SchemaEditorSchemaLoader extends AbstractSchemaLoader
     {
         List<Entry> syntaxList = new ArrayList<Entry>();
 
-        for ( Schema schema : schemas )
+        if ( project != null )
         {
-            List<LdapSyntax> syntaxes = project.getSchemaHandler().getSchema( schema.getSchemaName() ).getSyntaxes();
-            for ( LdapSyntax syntax : syntaxes )
+            for ( Schema schema : schemas )
             {
-                syntaxList.add( SchemaEditorSchemaLoaderUtils.toEntry( syntax ) );
+                List<LdapSyntax> syntaxes = project.getSchemaHandler().getSchema( schema.getSchemaName() )
+                    .getSyntaxes();
+                for ( LdapSyntax syntax : syntaxes )
+                {
+                    syntaxList.add( SchemaEditorSchemaLoaderUtils.toEntry( syntax ) );
+                }
             }
         }
 
@@ -154,13 +158,16 @@ public class SchemaEditorSchemaLoader extends AbstractSchemaLoader
     {
         List<Entry> attributeTypeList = new ArrayList<Entry>();
 
-        for ( Schema schema : schemas )
+        if ( project != null )
         {
-            List<AttributeType> attributeTypes = project.getSchemaHandler().getSchema( schema.getSchemaName() )
-                .getAttributeTypes();
-            for ( AttributeType attributeType : attributeTypes )
+            for ( Schema schema : schemas )
             {
-                attributeTypeList.add( SchemaEditorSchemaLoaderUtils.toEntry( attributeType ) );
+                List<AttributeType> attributeTypes = project.getSchemaHandler().getSchema( schema.getSchemaName() )
+                    .getAttributeTypes();
+                for ( AttributeType attributeType : attributeTypes )
+                {
+                    attributeTypeList.add( SchemaEditorSchemaLoaderUtils.toEntry( attributeType ) );
+                }
             }
         }
 
@@ -173,9 +180,7 @@ public class SchemaEditorSchemaLoader extends AbstractSchemaLoader
      */
     public List<Entry> loadMatchingRuleUses( Schema... schemas ) throws LdapException, IOException
     {
-        List<Entry> matchingRuleUseList = new ArrayList<Entry>();
-
-        return matchingRuleUseList;
+        return new ArrayList<Entry>();
     }
 
 
@@ -184,9 +189,7 @@ public class SchemaEditorSchemaLoader extends AbstractSchemaLoader
      */
     public List<Entry> loadNameForms( Schema... schemas ) throws LdapException, IOException
     {
-        List<Entry> nameFormList = new ArrayList<Entry>();
-
-        return nameFormList;
+        return new ArrayList<Entry>();
     }
 
 
@@ -195,9 +198,7 @@ public class SchemaEditorSchemaLoader extends AbstractSchemaLoader
      */
     public List<Entry> loadDitContentRules( Schema... schemas ) throws LdapException, IOException
     {
-        List<Entry> ditContentRuleList = new ArrayList<Entry>();
-
-        return ditContentRuleList;
+        return new ArrayList<Entry>();
     }
 
 
@@ -206,9 +207,7 @@ public class SchemaEditorSchemaLoader extends AbstractSchemaLoader
      */
     public List<Entry> loadDitStructureRules( Schema... schemas ) throws LdapException, IOException
     {
-        List<Entry> ditStructureRuleList = new ArrayList<Entry>();
-
-        return ditStructureRuleList;
+        return new ArrayList<Entry>();
     }
 
 
@@ -219,13 +218,16 @@ public class SchemaEditorSchemaLoader extends AbstractSchemaLoader
     {
         List<Entry> objectClassList = new ArrayList<Entry>();
 
-        for ( Schema schema : schemas )
+        if ( project != null )
         {
-            List<ObjectClass> objectClasses = project.getSchemaHandler().getSchema( schema.getSchemaName() )
-                .getObjectClasses();
-            for ( ObjectClass objectClass : objectClasses )
+            for ( Schema schema : schemas )
             {
-                objectClassList.add( SchemaEditorSchemaLoaderUtils.toEntry( objectClass ) );
+                List<ObjectClass> objectClasses = project.getSchemaHandler().getSchema( schema.getSchemaName() )
+                    .getObjectClasses();
+                for ( ObjectClass objectClass : objectClasses )
+                {
+                    objectClassList.add( SchemaEditorSchemaLoaderUtils.toEntry( objectClass ) );
+                }
             }
         }
 

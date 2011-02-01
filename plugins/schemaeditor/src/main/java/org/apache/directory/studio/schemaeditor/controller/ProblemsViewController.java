@@ -113,7 +113,7 @@ public class ProblemsViewController
                 // Selecting the right editor and input
                 if ( objectSelection instanceof SchemaErrorWrapper )
                 {
-                    SchemaObject object = ( ( SchemaErrorWrapper ) objectSelection ).getSchemaError().getSource();
+                    SchemaObject object = ( ( SchemaErrorWrapper ) objectSelection ).getLdapSchemaException().getSource();
 
                     if ( object instanceof AttributeType )
                     {
@@ -128,18 +128,19 @@ public class ProblemsViewController
                 }
                 else if ( objectSelection instanceof SchemaWarningWrapper )
                 {
-                    SchemaObject object = ( ( SchemaWarningWrapper ) objectSelection ).getSchemaWarning().getSource();
-
-                    if ( object instanceof AttributeType )
-                    {
-                        input = new AttributeTypeEditorInput( ( AttributeType ) object );
-                        editorId = AttributeTypeEditor.ID;
-                    }
-                    else if ( object instanceof ObjectClass )
-                    {
-                        input = new ObjectClassEditorInput( ( ObjectClass ) object );
-                        editorId = ObjectClassEditor.ID;
-                    }
+                    // TODO
+//                    SchemaObject object = ( ( SchemaWarningWrapper ) objectSelection ).getSchemaWarning().getSource();
+//
+//                    if ( object instanceof AttributeType )
+//                    {
+//                        input = new AttributeTypeEditorInput( ( AttributeType ) object );
+//                        editorId = AttributeTypeEditor.ID;
+//                    }
+//                    else if ( object instanceof ObjectClass )
+//                    {
+//                        input = new ObjectClassEditorInput( ( ObjectClass ) object );
+//                        editorId = ObjectClassEditor.ID;
+//                    }
                 }
                 else if ( ( objectSelection instanceof Folder ) )
                 {
