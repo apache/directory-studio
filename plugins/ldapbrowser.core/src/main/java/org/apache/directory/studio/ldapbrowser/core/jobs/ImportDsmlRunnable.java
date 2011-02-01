@@ -192,7 +192,7 @@ public class ImportDsmlRunnable implements StudioConnectionBulkRunnableWithProgr
         try
         {
             // Parsing the file
-            Dsmlv2Parser parser = new Dsmlv2Parser();
+            Dsmlv2Parser parser = new Dsmlv2Parser( codec );
             parser.setInput( new FileInputStream( dsmlFile ), "UTF-8" );
             parser.parseAllRequests();
 
