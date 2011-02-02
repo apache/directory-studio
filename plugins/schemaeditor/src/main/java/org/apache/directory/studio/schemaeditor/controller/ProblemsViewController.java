@@ -113,34 +113,37 @@ public class ProblemsViewController
                 // Selecting the right editor and input
                 if ( objectSelection instanceof SchemaErrorWrapper )
                 {
-                    SchemaObject object = ( ( SchemaErrorWrapper ) objectSelection ).getLdapSchemaException().getSource();
+                    SchemaObject object = ( ( SchemaErrorWrapper ) objectSelection ).getLdapSchemaException()
+                        .getSourceObject();
 
                     if ( object instanceof AttributeType )
                     {
-                        input = new AttributeTypeEditorInput( ( AttributeType ) object );
+                        input = new AttributeTypeEditorInput( Activator.getDefault().getSchemaHandler()
+                            .getAttributeType( object.getOid() ) );
                         editorId = AttributeTypeEditor.ID;
                     }
                     else if ( object instanceof ObjectClass )
                     {
-                        input = new ObjectClassEditorInput( ( ObjectClass ) object );
+                        input = new ObjectClassEditorInput( Activator.getDefault().getSchemaHandler()
+                            .getObjectClass( object.getOid() ) );
                         editorId = ObjectClassEditor.ID;
                     }
                 }
                 else if ( objectSelection instanceof SchemaWarningWrapper )
                 {
                     // TODO
-//                    SchemaObject object = ( ( SchemaWarningWrapper ) objectSelection ).getSchemaWarning().getSource();
-//
-//                    if ( object instanceof AttributeType )
-//                    {
-//                        input = new AttributeTypeEditorInput( ( AttributeType ) object );
-//                        editorId = AttributeTypeEditor.ID;
-//                    }
-//                    else if ( object instanceof ObjectClass )
-//                    {
-//                        input = new ObjectClassEditorInput( ( ObjectClass ) object );
-//                        editorId = ObjectClassEditor.ID;
-//                    }
+                    //                    SchemaObject object = ( ( SchemaWarningWrapper ) objectSelection ).getSchemaWarning().getSource();
+                    //
+                    //                    if ( object instanceof AttributeType )
+                    //                    {
+                    //                        input = new AttributeTypeEditorInput( ( AttributeType ) object );
+                    //                        editorId = AttributeTypeEditor.ID;
+                    //                    }
+                    //                    else if ( object instanceof ObjectClass )
+                    //                    {
+                    //                        input = new ObjectClassEditorInput( ( ObjectClass ) object );
+                    //                        editorId = ObjectClassEditor.ID;
+                    //                    }
                 }
                 else if ( ( objectSelection instanceof Folder ) )
                 {

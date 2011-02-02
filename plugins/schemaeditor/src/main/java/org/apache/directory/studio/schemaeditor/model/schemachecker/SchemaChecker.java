@@ -288,7 +288,7 @@ public class SchemaChecker
                     if ( error instanceof LdapSchemaException )
                     {
                         LdapSchemaException ldapSchemaException = (LdapSchemaException) error;
-                        SchemaObject source = ldapSchemaException.getSource();
+                        SchemaObject source = ldapSchemaException.getSourceObject();
                         if ( source != null )
                         {
                             errorsMap.put( source, ldapSchemaException );
