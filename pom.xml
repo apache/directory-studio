@@ -25,6 +25,7 @@
     <artifactId>project</artifactId>
     <version>19</version>
   </parent>
+  
 
   <groupId>org.apache.directory.studio</groupId>
   <artifactId>parent</artifactId>
@@ -1370,16 +1371,6 @@
       <dependency>
         <groupId>org.apache.directory.shared</groupId>
         <artifactId>ldap-client-api</artifactId>
-        <version>${org.apache.directory.shared.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.apache.directory.shared</groupId>
-        <artifactId>shared-asn1-api</artifactId>
-        <version>${org.apache.directory.shared.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.apache.directory.shared</groupId>
-        <artifactId>shared-asn1-ber</artifactId>
         <version>${org.apache.directory.shared.version}</version>
       </dependency>
       <dependency>

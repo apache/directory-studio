@@ -112,6 +112,7 @@ public class ProblemsViewContentProvider implements IStructuredContentProvider, 
                         }
                     }
 
+                    // TODO
 //                    SchemaWarning[] warnings = schemaChecker.getWarnings().toArray( new SchemaWarning[0] );
 //                    if ( !( warnings.length == 0 ) )
 //                    {

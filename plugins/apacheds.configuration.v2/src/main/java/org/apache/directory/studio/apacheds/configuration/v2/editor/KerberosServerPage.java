@@ -21,6 +21,7 @@ package org.apache.directory.studio.apacheds.configuration.v2.editor;
 
 
 import org.apache.directory.server.config.beans.ChangePasswordServerBean;
+import org.apache.directory.server.config.beans.DirectoryServiceBean;
 import org.apache.directory.server.config.beans.KdcServerBean;
 import org.apache.directory.server.config.beans.TransportBean;
 import org.apache.directory.shared.ldap.model.exception.LdapInvalidDnException;
@@ -377,23 +378,23 @@ public class KerberosServerPage extends ServerConfigurationEditorPage
         ChangePasswordServerBean changePasswordServerBean = getChangePasswordServerBean();
 
         setSelection( enableKerberosCheckbox, kdcServerBean.isEnabled() );
-        setText(kerberosPortText,"" + getKdcServerTransportBean().getSystemPort() );
+        setText( kerberosPortText, "" + getKdcServerTransportBean().getSystemPort() );
 
-        setSelection(enableChangePasswordCheckbox, changePasswordServerBean.isEnabled() );
-        setText(changePasswordPortText, "" + getChangePasswordServerTransportBean().getSystemPort() );
+        setSelection( enableChangePasswordCheckbox, changePasswordServerBean.isEnabled() );
+        setText( changePasswordPortText, "" + getChangePasswordServerTransportBean().getSystemPort() );
 
-        setText(kdcPrincipalText, kdcServerBean.getKrbKdcPrincipal().toString() );
-        setText(kdcSearchBaseDnText, kdcServerBean.getSearchBaseDn().toString() );
-        setText(encryptionTypesText, kdcServerBean.getKrbEncryptionTypes().toString() );
+        setText( kdcPrincipalText, kdcServerBean.getKrbKdcPrincipal().toString() );
+        setText( kdcSearchBaseDnText, kdcServerBean.getSearchBaseDn().toString() );
+        setText( encryptionTypesText, kdcServerBean.getKrbEncryptionTypes().toString() );
 
-        setSelection(verifyBodyChecksumCheckbox, kdcServerBean.isKrbBodyChecksumVerified() );
+        setSelection( verifyBodyChecksumCheckbox, kdcServerBean.isKrbBodyChecksumVerified() );
         setSelection( allowEmptyAddressesCheckbox, kdcServerBean.isKrbEmptyAddressesAllowed() );
-        setSelection(allowForwardableAddressesCheckbox, kdcServerBean.isKrbForwardableAllowed() );
-        setSelection(requirePreAuthByEncryptedTimestampCheckbox, kdcServerBean.isKrbPaEncTimestampRequired() );
+        setSelection( allowForwardableAddressesCheckbox, kdcServerBean.isKrbForwardableAllowed() );
+        setSelection( requirePreAuthByEncryptedTimestampCheckbox, kdcServerBean.isKrbPaEncTimestampRequired() );
         setSelection( allowPostdatedTicketsCheckbox, kdcServerBean.isKrbPostdatedAllowed() );
-        setSelection(allowRenewableTicketsCheckbox, kdcServerBean.isKrbRenewableAllowed() );
-        setText(maximumRenewableLifetimeText, kdcServerBean.getKrbMaximumRenewableLifetime() + "" );
-        setText(maximumTicketLifetimeText, kdcServerBean.getKrbMaximumTicketLifetime() + "" );
+        setSelection( allowRenewableTicketsCheckbox, kdcServerBean.isKrbRenewableAllowed() );
+        setText( maximumRenewableLifetimeText, kdcServerBean.getKrbMaximumRenewableLifetime() + "" );
+        setText( maximumTicketLifetimeText, kdcServerBean.getKrbMaximumTicketLifetime() + "" );
 
         addListeners();
     }
@@ -557,12 +558,26 @@ public class KerberosServerPage extends ServerConfigurationEditorPage
      */
     private KdcServerBean getKdcServerBean()
     {
-        KdcServerBean kdcServerBean = getDirectoryServiceBean().getKdcServerBean();
+        return getKdcServerBean( getDirectoryServiceBean() );
+    }
+
+
+    /**
+     * Gets the KDC Server bean.
+     *
+     * @param directoryServiceBean
+     *      the directory service bean
+     * @return
+     *      the KDC Server bean
+     */
+    public static KdcServerBean getKdcServerBean( DirectoryServiceBean directoryServiceBean )
+    {
+        KdcServerBean kdcServerBean = directoryServiceBean.getKdcServerBean();
 
         if ( kdcServerBean == null )
         {
             kdcServerBean = new KdcServerBean();
-            getDirectoryServiceBean().addServers( kdcServerBean );
+            directoryServiceBean.addServers( kdcServerBean );
         }
 
         return kdcServerBean;
@@ -577,12 +592,26 @@ public class KerberosServerPage extends ServerConfigurationEditorPage
      */
     private ChangePasswordServerBean getChangePasswordServerBean()
     {
-        ChangePasswordServerBean changePasswordServerBean = getDirectoryServiceBean().getChangePasswordServerBean();
+        return getChangePasswordServerBean( getDirectoryServiceBean() );
+    }
+
+
+    /**
+     * Gets the Change Password Server bean.
+     *
+     * @param directoryServiceBean
+     *      the directory service bean
+     * @return
+     *      the Change Password Server bean
+     */
+    public static ChangePasswordServerBean getChangePasswordServerBean( DirectoryServiceBean directoryServiceBean )
+    {
+        ChangePasswordServerBean changePasswordServerBean = directoryServiceBean.getChangePasswordServerBean();
 
         if ( changePasswordServerBean == null )
         {
             changePasswordServerBean = new ChangePasswordServerBean();
-            getDirectoryServiceBean().addServers( changePasswordServerBean );
+            directoryServiceBean.addServers( changePasswordServerBean );
         }
 
         return changePasswordServerBean;
