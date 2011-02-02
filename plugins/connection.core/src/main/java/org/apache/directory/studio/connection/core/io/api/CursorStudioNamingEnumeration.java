@@ -35,8 +35,8 @@ import javax.naming.ldap.Control;
 import javax.naming.ldap.PagedResultsResponseControl;
 
 import org.apache.directory.shared.ldap.codec.DefaultLdapCodecService;
-import org.apache.directory.shared.ldap.codec.ICodecControl;
-import org.apache.directory.shared.ldap.codec.ILdapCodecService;
+import org.apache.directory.shared.ldap.codec.api.ICodecControl;
+import org.apache.directory.shared.ldap.codec.api.ILdapCodecService;
 import org.apache.directory.shared.ldap.model.cursor.SearchCursor;
 import org.apache.directory.shared.ldap.model.entry.AttributeUtils;
 import org.apache.directory.shared.ldap.model.filter.LdapURL;
@@ -372,7 +372,7 @@ public class CursorStudioNamingEnumeration extends AbstractStudioNamingEnumerati
 
                 if ( control instanceof ICodecControl )
                 {
-                    wrapped = ( ICodecControl<?> ) control;
+                    wrapped = (org.apache.directory.shared.ldap.codec.api.ICodecControl<?> ) control;
                 }
                 else
                 {
