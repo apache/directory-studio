@@ -27,12 +27,15 @@ import org.apache.commons.collections.MultiMap;
 import org.apache.commons.collections.map.MultiValueMap;
 import org.apache.directory.shared.ldap.model.exception.LdapSchemaException;
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
+import org.apache.directory.shared.ldap.model.schema.MatchingRule;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.shared.ldap.model.schema.SchemaManager;
 import org.apache.directory.shared.ldap.model.schema.SchemaObject;
 import org.apache.directory.shared.ldap.schemamanager.impl.DefaultSchemaManager;
 import org.apache.directory.studio.schemaeditor.Activator;
 import org.apache.directory.studio.schemaeditor.controller.ProjectsHandlerAdapter;
+import org.apache.directory.studio.schemaeditor.controller.SchemaHandler;
 import org.apache.directory.studio.schemaeditor.controller.SchemaHandlerAdapter;
 import org.apache.directory.studio.schemaeditor.controller.SchemaHandlerListener;
 import org.apache.directory.studio.schemaeditor.model.Project;
@@ -78,8 +81,7 @@ public class SchemaChecker
         {
             synchronized ( this )
             {
-
-                notifyListeners();
+                recheckWholeSchema();
             }
         }
 
@@ -88,8 +90,7 @@ public class SchemaChecker
         {
             synchronized ( this )
             {
-
-                notifyListeners();
+                recheckWholeSchema();
             }
         }
 
@@ -98,8 +99,7 @@ public class SchemaChecker
         {
             synchronized ( this )
             {
-
-                notifyListeners();
+                recheckWholeSchema();
             }
         }
 
@@ -108,8 +108,7 @@ public class SchemaChecker
         {
             synchronized ( this )
             {
-
-                notifyListeners();
+                recheckWholeSchema();
             }
         }
 
@@ -118,8 +117,7 @@ public class SchemaChecker
         {
             synchronized ( this )
             {
-
-                notifyListeners();
+                recheckWholeSchema();
             }
         }
 
@@ -128,8 +126,7 @@ public class SchemaChecker
         {
             synchronized ( this )
             {
-
-                notifyListeners();
+                recheckWholeSchema();
             }
         }
 
@@ -138,8 +135,7 @@ public class SchemaChecker
         {
             synchronized ( this )
             {
-
-                notifyListeners();
+                recheckWholeSchema();
             }
         }
 
@@ -148,8 +144,7 @@ public class SchemaChecker
         {
             synchronized ( this )
             {
-
-                notifyListeners();
+                recheckWholeSchema();
             }
         }
     };
@@ -161,7 +156,7 @@ public class SchemaChecker
     private SchemaChecker()
     {
         listeners = new ArrayList<SchemaCheckerListener>();
-        
+
         schemaManager = new DefaultSchemaManager( new SchemaEditorSchemaLoader() );
         errorsMap = new MultiValueMap();
 
@@ -211,8 +206,7 @@ public class SchemaChecker
             {
                 Activator.getDefault().getSchemaHandler().addListener( schemaHandlerListener );
                 listeningToModifications = true;
-                checkWholeSchema();
-                notifyListeners();
+                recheckWholeSchema();
             }
         }
     }
@@ -241,10 +235,7 @@ public class SchemaChecker
     {
         synchronized ( this )
         {
-            schemaManager = new DefaultSchemaManager( new SchemaEditorSchemaLoader() );
-            errorsMap = new MultiValueMap();
-            
-            checkWholeSchema();
+            recheckWholeSchema();
         }
     }
 
@@ -266,7 +257,7 @@ public class SchemaChecker
     /**
      * Checks the whole schema.
      */
-    private synchronized void checkWholeSchema()
+    private synchronized void recheckWholeSchema()
     {
         Job job = new Job( "Checking Schema" )
         {
@@ -274,6 +265,7 @@ public class SchemaChecker
             {
                 try
                 {
+                    schemaManager = new DefaultSchemaManager( new SchemaEditorSchemaLoader() );
                     schemaManager.loadAllEnabled();
                 }
                 catch ( Exception e )
@@ -282,19 +274,7 @@ public class SchemaChecker
                     e.printStackTrace();
                 }
 
-                errorsList = schemaManager.getErrors();
-                for ( Throwable error : errorsList )
-                {
-                    if ( error instanceof LdapSchemaException )
-                    {
-                        LdapSchemaException ldapSchemaException = (LdapSchemaException) error;
-                        SchemaObject source = ldapSchemaException.getSource();
-                        if ( source != null )
-                        {
-                            errorsMap.put( source, ldapSchemaException );
-                        }
-                    }
-                }
+                updateErrorsList();
 
                 notifyListeners();
                 monitor.done();
@@ -303,6 +283,44 @@ public class SchemaChecker
             }
         };
         job.schedule();
+    }
+
+
+    private void updateErrorsList()
+    {
+        errorsMap.clear();
+        errorsList = schemaManager.getErrors();
+        for ( Throwable error : errorsList )
+        {
+            if ( error instanceof LdapSchemaException )
+            {
+                LdapSchemaException ldapSchemaException = ( LdapSchemaException ) error;
+                SchemaObject source = ldapSchemaException.getSourceObject();
+                if ( source != null )
+                {
+                    SchemaHandler schemaHandler = Activator.getDefault().getSchemaHandler();
+
+                    if ( source instanceof AttributeType )
+                    {
+                        source = schemaHandler.getAttributeType( source.getOid() );
+                    }
+                    else if ( source instanceof LdapSyntax )
+                    {
+                        source = schemaHandler.getSyntax( source.getOid() );
+                    }
+                    else if ( source instanceof MatchingRule )
+                    {
+                        source = schemaHandler.getMatchingRule( source.getOid() );
+                    }
+                    else if ( source instanceof ObjectClass )
+                    {
+                        source = schemaHandler.getObjectClass( source.getOid() );
+                    }
+
+                    errorsMap.put( source, ldapSchemaException );
+                }
+            }
+        }
     }
 
 
@@ -418,7 +436,7 @@ public class SchemaChecker
     public List<Object> getWarnings( SchemaObject so )
     {
         return new ArrayList<Object>();
-     //   return ( List<?> ) warningsMap.get( so );
+        //   return ( List<?> ) warningsMap.get( so );
     }
 
 
@@ -443,4 +461,5 @@ public class SchemaChecker
             return warnings.size() > 0;
         }
     }
+
 }

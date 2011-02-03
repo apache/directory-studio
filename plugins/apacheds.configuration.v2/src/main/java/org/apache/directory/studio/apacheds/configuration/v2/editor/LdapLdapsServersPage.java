@@ -50,9 +50,11 @@ import org.eclipse.ui.forms.widgets.TableWrapLayout;
  */
 public class LdapLdapsServersPage extends ServerConfigurationEditorPage
 {
-    private static final int LDAPS_DEFAULT_PORT = 10636;
+    private static final String DEFAULT_ADDRESS = "0.0.0.0";
 
-    private static final int LDAP_DEFAULT_PORT = 10389;
+    private static final int DEFAULT_PORT_LDAPS = 10636;
+
+    private static final int DEFAULT_PORT_LDAP = 10389;
 
     private static final String TRANSPORT_ID_LDAP = "ldap";
 
@@ -538,6 +540,8 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
     /**
      * Gets the LDAP Server bean.
      *
+     * @param directoryServiceBean
+     *      the directory service bean
      * @return
      *      the LDAP Server bean
      */
@@ -574,11 +578,6 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
      *      the directory service bean
      * @return
      *      the LDAP Server transport bean
-     */
-    /**
-     * TODO getLdapServerTransportBean.
-     *
-     * @return
      */
     public static TransportBean getLdapServerTransportBean( DirectoryServiceBean directoryServiceBean )
     {
@@ -629,6 +628,8 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
     /**
      * Gets a transport bean based on its id.
      *
+     * @param directoryServiceBean
+     *      the directory service bean
      * @param id
      *      the id
      * @return
@@ -663,15 +664,18 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
 
             // ID
             transportBean.setTransportId( id );
+            
+            // Address
+            transportBean.setTransportAddress( DEFAULT_ADDRESS );
 
             // Port
             if ( TRANSPORT_ID_LDAP.equals( id ) )
             {
-                transportBean.setSystemPort( LDAP_DEFAULT_PORT );
+                transportBean.setSystemPort( DEFAULT_PORT_LDAP );
             }
             else if ( TRANSPORT_ID_LDAPS.equals( id ) )
             {
-                transportBean.setSystemPort( LDAPS_DEFAULT_PORT );
+                transportBean.setSystemPort( DEFAULT_PORT_LDAPS );
             }
 
             // SSL

@@ -163,8 +163,8 @@
                   <artifactId>org.apache.logging.log4j</artifactId>
                 </artifactItem>
                 <artifactItem>
-                  <groupId>org.apache.directory.studio</groupId>
-                  <artifactId>org.apache.mina.core</artifactId>
+                  <groupId>org.apache.mina</groupId>
+                  <artifactId>mina-core</artifactId>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.apache.directory.studio</groupId>
