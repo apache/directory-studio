@@ -22,10 +22,13 @@ package org.apache.directory.studio.schemaeditor.view.views;
 
 import org.apache.directory.shared.ldap.model.exception.LdapSchemaException;
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
+import org.apache.directory.shared.ldap.model.schema.MatchingRule;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.shared.ldap.model.schema.SchemaObject;
 import org.apache.directory.studio.schemaeditor.Activator;
 import org.apache.directory.studio.schemaeditor.PluginConstants;
+import org.apache.directory.studio.schemaeditor.controller.SchemaHandler;
 import org.apache.directory.studio.schemaeditor.view.wrappers.Folder;
 import org.apache.directory.studio.schemaeditor.view.wrappers.SchemaErrorWrapper;
 import org.apache.directory.studio.schemaeditor.view.wrappers.SchemaWarningWrapper;
@@ -156,9 +159,9 @@ public class ProblemsViewLabelProvider extends LabelProvider implements ITableLa
                 case AT_NONEXISTENT_EQUALITY_MATCHING_RULE:
                     return getMessageATNonExistentEqualityMatchingRule( exception );
                 case AT_NONEXISTENT_ORDERING_MATCHING_RULE:
-                    return getMessageNonExistentOrderingMatchingRule( exception );
+                    return getMessageATNonExistentOrderingMatchingRule( exception );
                 case AT_NONEXISTENT_SUBSTRING_MATCHING_RULE:
-                    return getMessageNonExistentSubstringMatchingRule( exception );
+                    return getMessageATNonExistentSubstringMatchingRule( exception );
                 case AT_MUST_HAVE_SAME_USAGE_THAN_SUPERIOR:
                     return getMessageATMustHaveSameUsageThanSuperior( exception );
                 case AT_USER_APPLICATIONS_USAGE_MUST_BE_USER_MODIFIABLE:
@@ -169,9 +172,8 @@ public class ProblemsViewLabelProvider extends LabelProvider implements ITableLa
                     return getMessageATCollectiveCannotBeSingleValued( exception );
 
                     // Codes for Object Class
-
                 case OC_ABSTRACT_MUST_INHERIT_FROM_ABSTRACT_OC:
-                    return getMessageOCAbstractOCMustInheritFromAbstractOC( exception );
+                    return getMessageOCAbstractMustInheritFromAbstractOC( exception );
                 case OC_AUXILIARY_CANNOT_INHERIT_FROM_STRUCTURAL_OC:
                     return getMessageOCAuxiliaryCannotInheritFromStructuralOC( exception );
                 case OC_STRUCTURAL_CANNOT_INHERIT_FROM_AUXILIARY_OC:
@@ -194,8 +196,8 @@ public class ProblemsViewLabelProvider extends LabelProvider implements ITableLa
                     return getMessageOCNonExistentMayAT( exception );
                 case OC_DUPLICATE_AT_IN_MAY_AND_MUST:
                     return getMessageOCDuplicateATInMayAndMust( exception );
-                    // Codes for Matching Rule
 
+                    // Codes for Matching Rule
                 case MR_NONEXISTENT_SYNTAX:
                     return getMessageMRNonExistentSyntax( exception );
             }
@@ -203,83 +205,6 @@ public class ProblemsViewLabelProvider extends LabelProvider implements ITableLa
 
         return ""; //$NON-NLS-1$
 
-        //        if ( element instanceof DuplicateAliasError )
-        //        {
-        //            DuplicateAliasError duplicateAliasError = ( DuplicateAliasError ) element;
-        //
-        //            SchemaObject duplicate = duplicateAliasError.getDuplicate();
-        //            if ( duplicate instanceof AttributeType )
-        //            {
-        //                return NLS
-        //                        .bind(
-        //                            Messages.getString( "ProblemsViewLabelProvider.DuplicateAliasErrorAttributeType" ), new String[] { duplicateAliasError.getAlias(), duplicate.getOid() } ); //$NON-NLS-1$
-        //            }
-        //            else if ( duplicate instanceof ObjectClass )
-        //            {
-        //                return NLS
-        //                        .bind(
-        //                            Messages.getString( "ProblemsViewLabelProvider.DuplicateAliasErrorObjectClass" ), new String[] { duplicateAliasError.getAlias(), duplicate.getOid() } ); //$NON-NLS-1$
-        //            }
-        //        }
-        //        else if ( element instanceof DuplicateOidError )
-        //        {
-        //            DuplicateOidError duplicateOidError = ( DuplicateOidError ) element;
-        //            SchemaObject duplicate = duplicateOidError.getDuplicate();
-        //            if ( duplicate instanceof AttributeType )
-        //            {
-        //                return NLS
-        //                        .bind(
-        //                            Messages.getString( "ProblemsViewLabelProvider.DuplicateOidErrorAttributeType" ), new String[] { duplicateOidError.getOid(), duplicate.getName() } ); //$NON-NLS-1$
-        //            }
-        //            else if ( duplicate instanceof ObjectClass )
-        //            {
-        //                return NLS
-        //                        .bind(
-        //                            Messages.getString( "ProblemsViewLabelProvider.DuplicateOidErrorObjectClass" ), new String[] { duplicateOidError.getOid(), duplicate.getName() } ); //$NON-NLS-1$
-        //            }
-        //        }
-        //        else if ( element instanceof NonExistingATSuperiorError )
-        //        {
-        //            NonExistingATSuperiorError nonExistingATSuperiorError = ( NonExistingATSuperiorError ) element;
-        //            return NLS
-        //                    .bind(
-        //                        Messages.getString( "ProblemsViewLabelProvider.NonExistingSuperiorAttribute" ), new String[] { nonExistingATSuperiorError.getSuperiorAlias() } ); //$NON-NLS-1$
-        //        }
-        //        else if ( element instanceof NonExistingOCSuperiorError )
-        //        {
-        //            NonExistingOCSuperiorError nonExistingOCSuperiorError = ( NonExistingOCSuperiorError ) element;
-        //            return NLS
-        //                    .bind(
-        //                        Messages.getString( "ProblemsViewLabelProvider.NonExistingSuperiorObject" ), new String[] { nonExistingOCSuperiorError.getSuperiorAlias() } ); //$NON-NLS-1$
-        //        }
-        //        else if ( element instanceof NonExistingMandatoryATError )
-        //        {
-        //            NonExistingMandatoryATError nonExistingMandatoryATError = ( NonExistingMandatoryATError ) element;
-        //            return NLS
-        //                    .bind(
-        //                        Messages.getString( "ProblemsViewLabelProvider.NonExistingMandatoryAttribute" ), new String[] { nonExistingMandatoryATError.getAlias() } ); //$NON-NLS-1$
-        //        }
-        //        else if ( element instanceof NonExistingOptionalATError )
-        //        {
-        //            NonExistingOptionalATError nonExistingOptionalATError = ( NonExistingOptionalATError ) element;
-        //            return NLS
-        //                    .bind(
-        //                        Messages.getString( "ProblemsViewLabelProvider.NonExistingOptionalAttribute" ), new String[] { nonExistingOptionalATError.getAlias() } ); //$NON-NLS-1$
-        //        }
-        //        else if ( element instanceof NonExistingSyntaxError )
-        //        {
-        //            NonExistingSyntaxError nonExistingSyntaxError = ( NonExistingSyntaxError ) element;
-        //            return NLS
-        //                    .bind(
-        //                        Messages.getString( "ProblemsViewLabelProvider.NonExistingSyntax" ), new String[] { nonExistingSyntaxError.getSyntaxOid() } ); //$NON-NLS-1$
-        //        }
-        //        else if ( element instanceof NonExistingMatchingRuleError )
-        //        {
-        //            NonExistingMatchingRuleError nonExistingMatchingRuleError = ( NonExistingMatchingRuleError ) element;
-        //            return NLS
-        //                    .bind(
-        //                        Messages.getString( "ProblemsViewLabelProvider.NonExistingMatchingRule" ), new String[] { nonExistingMatchingRuleError.getMatchingRuleAlias() } ); //$NON-NLS-1$
-        //        }
         //        else if ( element instanceof NoAliasWarning )
         //        {
         //            NoAliasWarning noAliasWarning = ( NoAliasWarning ) element;
@@ -297,65 +222,6 @@ public class ProblemsViewLabelProvider extends LabelProvider implements ITableLa
         //                            Messages.getString( "ProblemsViewLabelProvider.NoAliasWarningObjectClass" ), new String[] { source.getOid() } ); //$NON-NLS-1$
         //            }
         //        }
-        //        else if ( element instanceof ClassTypeHierarchyError )
-        //        {
-        //            ClassTypeHierarchyError classTypeHierarchyError = ( ClassTypeHierarchyError ) element;
-        //            ObjectClass source = ( ObjectClass ) classTypeHierarchyError.getSourceObject();
-        //            ObjectClass superior = ( ObjectClass ) classTypeHierarchyError.getSuperior();
-        //            if ( source.getType().equals( ObjectClassTypeEnum.ABSTRACT ) )
-        //            {
-        //                if ( superior.getType().equals( ObjectClassTypeEnum.STRUCTURAL ) )
-        //                {
-        //                    return NLS
-        //                            .bind(
-        //                                Messages
-        //                                    .getString( "ProblemsViewLabelProvider.ClassTypeHierarchyErrorAbstractStructuralObject" ), new String[] { getDisplayName( source ), getDisplayName( superior ) } ); //$NON-NLS-1$
-        //                }
-        //                else if ( superior.getType().equals( ObjectClassTypeEnum.AUXILIARY ) )
-        //                {
-        //                    return NLS
-        //                            .bind(
-        //                                Messages
-        //                                    .getString( "ProblemsViewLabelProvider.ClassTypeHierarchyErrorAbstractAuxiliaryObject" ), new String[] { getDisplayName( source ), getDisplayName( superior ) } ); //$NON-NLS-1$
-        //                }
-        //            }
-        //            else if ( source.getType().equals( ObjectClassTypeEnum.AUXILIARY ) )
-        //            {
-        //                if ( superior.getType().equals( ObjectClassTypeEnum.STRUCTURAL ) )
-        //                {
-        //                    return NLS
-        //                            .bind(
-        //                                Messages
-        //                                    .getString( "ProblemsViewLabelProvider.ClassTypeHierarchyErrorAuxiliaryStructuralObject" ), new String[] { getDisplayName( source ), getDisplayName( superior ) } ); //$NON-NLS-1$
-        //                }
-        //                else
-        //                {
-        //                    return NLS
-        //                            .bind(
-        //                                Messages.getString( "ProblemsViewLabelProvider.ClassTypeHierarchyErrorAuxiliary" ), new String[] { getDisplayName( source ) } ); //$NON-NLS-1$
-        //                }
-        //            }
-        //        }
-        //        else if ( element instanceof DifferentUsageAsSuperiorError )
-        //        {
-        //            DifferentUsageAsSuperiorError differentUsageAsSuperiorError = ( DifferentUsageAsSuperiorError ) element;
-        //            AttributeType source = ( AttributeType ) differentUsageAsSuperiorError.getSourceObject();
-        //            AttributeType superior = ( AttributeType ) differentUsageAsSuperiorError.getSuperior();
-        //            return NLS
-        //                    .bind(
-        //                        Messages.getString( "ProblemsViewLabelProvider.AttributeTypeUsage" ), new String[] { getDisplayName( source ), getDisplayName( superior ) } ); //$NON-NLS-1$
-        //        }
-        //        else if ( element instanceof DifferentCollectiveAsSuperiorError )
-        //        {
-        //            DifferentCollectiveAsSuperiorError differentCollectiveAsSuperiorError = ( DifferentCollectiveAsSuperiorError ) element;
-        //            AttributeType source = ( AttributeType ) differentCollectiveAsSuperiorError.getSourceObject();
-        //            AttributeType superior = ( AttributeType ) differentCollectiveAsSuperiorError.getSuperior();
-        //            return NLS
-        //                    .bind(
-        //                        Messages.getString( "ProblemsViewLabelProvider.AttributeTypeCollective" ), new String[] { getDisplayName( source ), getDisplayName( superior ) } ); //$NON-NLS-1$
-        //        }
-
-        //        return ""; //$NON-NLS-1$
     }
 
 
@@ -363,13 +229,14 @@ public class ProblemsViewLabelProvider extends LabelProvider implements ITableLa
     {
         SchemaObject duplicate = exception.getOtherObject();
         String message = null;
+
         if ( duplicate instanceof AttributeType )
         {
-            message = Messages.getString( "ProblemsViewLabelProvider.DuplicateAliasErrorAttributeType" ); //$NON-NLS-1$
+            message = Messages.getString( "ProblemsViewLabelProvider.NameAlreadyRegisteredAT" ); //$NON-NLS-1$
         }
         else if ( duplicate instanceof ObjectClass )
         {
-            message = Messages.getString( "ProblemsViewLabelProvider.DuplicateAliasErrorObjectClass" ); //$NON-NLS-1$
+            message = Messages.getString( "ProblemsViewLabelProvider.NameAlreadyRegisteredOC" ); //$NON-NLS-1$
         }
 
         return NLS.bind( message, new String[]
@@ -381,14 +248,16 @@ public class ProblemsViewLabelProvider extends LabelProvider implements ITableLa
     {
         SchemaObject duplicate = exception.getOtherObject();
         String message = null;
+
         if ( duplicate instanceof AttributeType )
         {
-            message = Messages.getString( "ProblemsViewLabelProvider.DuplicateOidErrorAttributeType" ); //$NON-NLS-1$
+            message = Messages.getString( "ProblemsViewLabelProvider.OidAlreadyRegisteredAT" ); //$NON-NLS-1$
         }
         else if ( duplicate instanceof ObjectClass )
         {
-            message = Messages.getString( "ProblemsViewLabelProvider.DuplicateOidErrorObjectClass" ); //$NON-NLS-1$
+            message = Messages.getString( "ProblemsViewLabelProvider.OidAlreadyRegisteredOC" ); //$NON-NLS-1$
         }
+
         return NLS.bind( message, new String[]
             { exception.getRelatedId(), duplicate.getName() } );
     }
@@ -396,183 +265,177 @@ public class ProblemsViewLabelProvider extends LabelProvider implements ITableLa
 
     private String getMessageNonExistentSchema( LdapSchemaException exception )
     {
-        // TODO Auto-generated method stub
-        return null;
+        return NLS.bind( Messages.getString( "ProblemsViewLabelProvider.NonExistentSchema" ), new String[]//$NON-NLS-1$
+            { exception.getRelatedId() } );
     }
 
 
     private String getMessageATNonExistentSuperior( LdapSchemaException exception )
     {
-        // TODO Auto-generated method stub
-        return null;
+        return NLS.bind( Messages.getString( "ProblemsViewLabelProvider.ATNonExistentSuperior" ), new String[]//$NON-NLS-1$
+            { exception.getRelatedId() } );
     }
 
 
     private String getMessageATCannotSubtypeCollectiveAT( LdapSchemaException exception )
     {
-        // TODO Auto-generated method stub
-        return null;
+        return Messages.getString( "ProblemsViewLabelProvider.ATCannotSubtypeCollectiveAT" ); //$NON-NLS-1$;
     }
 
 
     private String getMessageATCycleTypeHierarchy( LdapSchemaException exception )
     {
-        // TODO Auto-generated method stub
-        return null;
+        return Messages.getString( "ProblemsViewLabelProvider.ATCycleTypeHierarchy" ); //$NON-NLS-1$;
     }
 
 
     private String getMessageATNonExistentSyntax( LdapSchemaException exception )
     {
-        // TODO Auto-generated method stub
-        return null;
+        return NLS.bind( Messages.getString( "ProblemsViewLabelProvider.NonExistentSyntax" ), new String[]//$NON-NLS-1$
+            { exception.getRelatedId() } );
     }
 
 
     private String getMessageATSyntaxOrSuperiorRequired( LdapSchemaException exception )
     {
-        // TODO Auto-generated method stub
-        return null;
+        return NLS.bind( Messages.getString( "ProblemsViewLabelProvider.ATSyntaxOrSuperiorRequired" ), new String[]//$NON-NLS-1$
+            { exception.getRelatedId() } );
     }
 
 
     private String getMessageATNonExistentEqualityMatchingRule( LdapSchemaException exception )
     {
-        // TODO Auto-generated method stub
-        return null;
+        return NLS.bind(
+            Messages.getString( "ProblemsViewLabelProvider.ATNonExistentEqualityMatchingRule" ), new String[]//$NON-NLS-1$
+            { exception.getRelatedId() } );
     }
 
 
-    private String getMessageNonExistentOrderingMatchingRule( LdapSchemaException exception )
+    private String getMessageATNonExistentOrderingMatchingRule( LdapSchemaException exception )
     {
-        // TODO Auto-generated method stub
-        return null;
+        return NLS.bind(
+            Messages.getString( "ProblemsViewLabelProvider.ATNonExistentOrderingMatchingRule" ), new String[]//$NON-NLS-1$
+            { exception.getRelatedId() } );
     }
 
 
-    private String getMessageNonExistentSubstringMatchingRule( LdapSchemaException exception )
+    private String getMessageATNonExistentSubstringMatchingRule( LdapSchemaException exception )
     {
-        // TODO Auto-generated method stub
-        return null;
+        return NLS.bind(
+            Messages.getString( "ProblemsViewLabelProvider.ATNonExistentSubstringMatchingRule" ), new String[]//$NON-NLS-1$
+            { exception.getRelatedId() } );
     }
 
 
     private String getMessageATMustHaveSameUsageThanSuperior( LdapSchemaException exception )
     {
-        // TODO Auto-generated method stub
-        return null;
+        return Messages.getString( "ProblemsViewLabelProvider.ATMustHaveSameUsageThanSuperior" );
     }
 
 
     private String getMessageATUserApplicationsUsageMustBeUserModifiable( LdapSchemaException exception )
     {
-        // TODO Auto-generated method stub
-        return null;
+        return Messages.getString( "ProblemsViewLabelProvider.ATUserApplicationsUsageMustBeUserModifiable" );
     }
 
 
     private String getMessageATCollectiveMustHaveUserApplicationsUsage( LdapSchemaException exception )
     {
-        // TODO Auto-generated method stub
-        return null;
+        return Messages.getString( "ProblemsViewLabelProvider.ATCollectiveMustHaveUserApplicationsUsage" );
     }
 
 
     private String getMessageATCollectiveCannotBeSingleValued( LdapSchemaException exception )
     {
-        // TODO Auto-generated method stub
-        return null;
+        return Messages.getString( "ProblemsViewLabelProvider.ATCollectiveCannotBeSingleValued" );
     }
 
 
-    private String getMessageOCAbstractOCMustInheritFromAbstractOC( LdapSchemaException exception )
+    private String getMessageOCAbstractMustInheritFromAbstractOC( LdapSchemaException exception )
     {
-        // TODO Auto-generated method stub
-        return null;
+        return Messages.getString( "ProblemsViewLabelProvider.OCAbstractMustInheritFromAbstractOC" );
     }
 
 
     private String getMessageOCAuxiliaryCannotInheritFromStructuralOC( LdapSchemaException exception )
     {
-        // TODO Auto-generated method stub
-        return null;
+        return Messages.getString( "ProblemsViewLabelProvider.OCAuxiliaryCannotInheritFromStructuralOC" );
     }
 
 
     private String getMessageOCStructuralCannotInheritFromAuxiliaryOC( LdapSchemaException exception )
     {
-        // TODO Auto-generated method stub
-        return null;
+        return Messages.getString( "ProblemsViewLabelProvider.OCStructuralCannotInheritFromAuxiliaryOC" );
     }
 
 
     private String getMessageOCNonExistentSuperior( LdapSchemaException exception )
     {
-        // TODO Auto-generated method stub
-        return null;
+        return NLS.bind( Messages.getString( "ProblemsViewLabelProvider.OCNonExistentSuperior" ), new String[]//$NON-NLS-1$
+            { exception.getRelatedId() } );
     }
 
 
     private String getMessageOCCycleClassHierarchy( LdapSchemaException exception )
     {
-        // TODO Auto-generated method stub
-        return null;
+        return Messages.getString( "ProblemsViewLabelProvider.OCCycleClassHierarchy" );
     }
 
 
     private String getMessageOCCollectiveNotAllowedInMust( LdapSchemaException exception )
     {
-        // TODO Auto-generated method stub
-        return null;
+        return NLS.bind( Messages.getString( "ProblemsViewLabelProvider.OCCollectiveNotAllowedInMust" ), new String[]//$NON-NLS-1$
+            { exception.getRelatedId() } );
     }
 
 
     private String getMessageOCCollectiveNotAllowedInMay( LdapSchemaException exception )
     {
-        // TODO Auto-generated method stub
-        return null;
+        return NLS.bind( Messages.getString( "ProblemsViewLabelProvider.OCCollectiveNotAllowedInMay" ), new String[]//$NON-NLS-1$
+            { exception.getRelatedId() } );
     }
 
 
     private String getMessageOCDuplicateATInMust( LdapSchemaException exception )
     {
-        // TODO Auto-generated method stub
-        return null;
+        return NLS.bind( Messages.getString( "ProblemsViewLabelProvider.OCDuplicateATInMust" ), new String[]//$NON-NLS-1$
+            { exception.getRelatedId() } );
     }
 
 
     private String getMessageOCDuplicateATInMay( LdapSchemaException exception )
     {
-        // TODO Auto-generated method stub
-        return null;
+        return NLS.bind( Messages.getString( "ProblemsViewLabelProvider.OCDuplicateATInMay" ), new String[]//$NON-NLS-1$
+            { exception.getRelatedId() } );
     }
 
 
     private String getMessageOCNonExistentMustAT( LdapSchemaException exception )
     {
-        // TODO Auto-generated method stub
-        return null;
+        return NLS.bind( Messages.getString( "ProblemsViewLabelProvider.OCNonExistentMustAT" ), new String[]//$NON-NLS-1$
+            { exception.getRelatedId() } );
     }
 
 
     private String getMessageOCNonExistentMayAT( LdapSchemaException exception )
     {
-        // TODO Auto-generated method stub
-        return null;
+        return NLS.bind( Messages.getString( "ProblemsViewLabelProvider.OCNonExistentMayAT" ), new String[] //$NON-NLS-1$
+            { exception.getRelatedId() } );
+
     }
 
 
     private String getMessageOCDuplicateATInMayAndMust( LdapSchemaException exception )
     {
-        // TODO Auto-generated method stub
-        return null;
+        return NLS.bind( Messages.getString( "ProblemsViewLabelProvider.OCDuplicateATInMayAndMust" ), new String[] //$NON-NLS-1$;
+            { exception.getRelatedId() } );
     }
 
 
     private String getMessageMRNonExistentSyntax( LdapSchemaException exception )
     {
-        // TODO Auto-generated method stub
-        return null;
+        return NLS.bind( Messages.getString( "ProblemsViewLabelProvider.NonExistentSyntax" ), new String[] //$NON-NLS-1$;
+            { exception.getRelatedId() } );
     }
 
 
@@ -586,8 +449,8 @@ public class ProblemsViewLabelProvider extends LabelProvider implements ITableLa
      */
     private String getDisplayName( SchemaObject so )
     {
-        String name = so.getName();
-
+        SchemaObject schemaObject = getSchemaObject( so );
+        String name = schemaObject.getName();
         if ( ( name != null ) && ( !name.equals( "" ) ) ) //$NON-NLS-1$
         {
             return name;
@@ -596,5 +459,39 @@ public class ProblemsViewLabelProvider extends LabelProvider implements ITableLa
         {
             return so.getOid();
         }
+    }
+
+
+    /**
+     * Gets the original {@link SchemaObject} from the {@link SchemaHandler}.
+     *
+     * @param so
+     *      the schema object
+     * @return
+     *      the original schema object from the schema handler.
+     */
+    private SchemaObject getSchemaObject( SchemaObject so )
+    {
+        SchemaHandler schemaHandler = Activator.getDefault().getSchemaHandler();
+        SchemaObject schemaObject = null;
+
+        if ( so instanceof AttributeType )
+        {
+            schemaObject = schemaHandler.getAttributeType( so.getOid() );
+        }
+        else if ( so instanceof LdapSyntax )
+        {
+            schemaObject = schemaHandler.getSyntax( so.getOid() );
+        }
+        else if ( so instanceof MatchingRule )
+        {
+            schemaObject = schemaHandler.getMatchingRule( so.getOid() );
+        }
+        else if ( so instanceof ObjectClass )
+        {
+            schemaObject = schemaHandler.getObjectClass( so.getOid() );
+        }
+
+        return schemaObject;
     }
 }
