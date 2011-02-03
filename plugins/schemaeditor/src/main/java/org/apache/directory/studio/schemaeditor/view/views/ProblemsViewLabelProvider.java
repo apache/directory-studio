@@ -449,16 +449,28 @@ public class ProblemsViewLabelProvider extends LabelProvider implements ITableLa
      */
     private String getDisplayName( SchemaObject so )
     {
-        SchemaObject schemaObject = getSchemaObject( so );
-        String name = schemaObject.getName();
-        if ( ( name != null ) && ( !name.equals( "" ) ) ) //$NON-NLS-1$
+        if ( so != null )
         {
-            return name;
+            SchemaObject schemaObject = getSchemaObject( so );
+            if ( schemaObject != null )
+            {
+                String name = schemaObject.getName();
+                if ( ( name != null ) && ( !name.equals( "" ) ) ) // $NON-NLS-1$
+                {
+                    return name;
+                }
+                else
+                {
+                    return so.getOid();
+                }
+            }
+            else
+            {
+                return so.getOid();
+            }
         }
-        else
-        {
-            return so.getOid();
-        }
+
+        return ""; // $NON-NLS-1$
     }
 
 
