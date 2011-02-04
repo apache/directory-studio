@@ -376,7 +376,7 @@ public class CursorStudioNamingEnumeration extends AbstractStudioNamingEnumerati
                 }
                 else
                 {
-                    wrapped = codec.decorate( control );
+                    wrapped = codec.newControl( control );
                 }
 
                 if ( PagedResultsResponseControl.OID.equals( control.getOid() ) )
