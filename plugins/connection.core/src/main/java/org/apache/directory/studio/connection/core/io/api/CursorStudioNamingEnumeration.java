@@ -35,8 +35,8 @@ import javax.naming.ldap.Control;
 import javax.naming.ldap.PagedResultsResponseControl;
 
 import org.apache.directory.shared.ldap.codec.DefaultLdapCodecService;
-import org.apache.directory.shared.ldap.codec.ICodecControl;
-import org.apache.directory.shared.ldap.codec.ILdapCodecService;
+import org.apache.directory.shared.ldap.codec.CodecControl;
+import org.apache.directory.shared.ldap.codec.LdapCodecService;
 import org.apache.directory.shared.ldap.model.cursor.SearchCursor;
 import org.apache.directory.shared.ldap.model.entry.AttributeUtils;
 import org.apache.directory.shared.ldap.model.filter.LdapURL;
@@ -69,7 +69,7 @@ public class CursorStudioNamingEnumeration extends AbstractStudioNamingEnumerati
     private SearchResultDone searchResultDone;
 
     // @TODO: By Alex: temporary fix until things are in order (needs to be fixed)
-    private ILdapCodecService codec = new DefaultLdapCodecService();
+    private LdapCodecService codec = new DefaultLdapCodecService();
     
 
     /**
@@ -368,11 +368,11 @@ public class CursorStudioNamingEnumeration extends AbstractStudioNamingEnumerati
             for ( org.apache.directory.shared.ldap.model.message.Control control : controls )
             {
                 Control convertedControl = null;
-                ICodecControl<? extends org.apache.directory.shared.ldap.model.message.Control> wrapped = null;
+                CodecControl<? extends org.apache.directory.shared.ldap.model.message.Control> wrapped = null;
 
-                if ( control instanceof ICodecControl )
+                if ( control instanceof CodecControl )
                 {
-                    wrapped = ( ICodecControl<?> ) control;
+                    wrapped = ( CodecControl<?> ) control;
                 }
                 else
                 {
