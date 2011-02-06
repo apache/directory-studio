@@ -41,8 +41,8 @@ import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.directory.shared.asn1.EncoderException;
 import org.apache.directory.shared.dsmlv2.Dsmlv2Parser;
 import org.apache.directory.shared.dsmlv2.reponse.AddResponseDsml;
-import org.apache.directory.shared.dsmlv2.reponse.AuthResponseDsml;
 import org.apache.directory.shared.dsmlv2.reponse.BatchResponseDsml;
+import org.apache.directory.shared.dsmlv2.reponse.BindResponseDsml;
 import org.apache.directory.shared.dsmlv2.reponse.CompareResponseDsml;
 import org.apache.directory.shared.dsmlv2.reponse.DelResponseDsml;
 import org.apache.directory.shared.dsmlv2.reponse.ExtendedResponseDsml;
@@ -331,7 +331,7 @@ public class ImportDsmlRunnable implements StudioConnectionBulkRunnableWithProgr
         // Creating the response
         if ( batchResponseDsml != null )
         {
-            AuthResponseDsml authResponseDsml = new AuthResponseDsml( codec );
+            BindResponseDsml authResponseDsml = new BindResponseDsml( codec );
             LdapResult ldapResult = authResponseDsml.getLdapResult();
             ldapResult.setResultCode( ResultCodeEnum.UNWILLING_TO_PERFORM );
             ldapResult.setErrorMessage( "This kind of request is not yet supported." );
