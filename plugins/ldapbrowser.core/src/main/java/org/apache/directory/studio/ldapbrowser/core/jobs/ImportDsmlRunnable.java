@@ -50,6 +50,7 @@ import org.apache.directory.shared.dsmlv2.reponse.ExtendedResponseDsml;
 import org.apache.directory.shared.dsmlv2.reponse.ModDNResponseDsml;
 import org.apache.directory.shared.dsmlv2.reponse.ModifyResponseDsml;
 import org.apache.directory.shared.dsmlv2.request.BatchRequestDsml;
+import org.apache.directory.shared.dsmlv2.request.Dsmlv2Grammar;
 import org.apache.directory.shared.ldap.codec.DefaultLdapCodecService;
 import org.apache.directory.shared.ldap.codec.LdapCodecService;
 import org.apache.directory.shared.ldap.model.entry.*;
@@ -193,7 +194,8 @@ public class ImportDsmlRunnable implements StudioConnectionBulkRunnableWithProgr
         try
         {
             // Parsing the file
-            Dsmlv2Parser parser = new Dsmlv2Parser( codec );
+            Dsmlv2Grammar grammar = new Dsmlv2Grammar( codec );
+            Dsmlv2Parser parser = new Dsmlv2Parser( grammar );
             parser.setInput( new FileInputStream( dsmlFile ), "UTF-8" );
             parser.parseAllRequests();
 
