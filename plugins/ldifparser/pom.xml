@@ -95,7 +95,9 @@
             <Bundle-SymbolicName>${project.groupId}.${project.artifactId};singleton:=true</Bundle-SymbolicName>
             <Bundle-Localization>plugin</Bundle-Localization>
             <Require-Bundle>org.apache.commons.codec;bundle-version="${org.apache.commons.codec.version}",
- org.apache.directory.shared.ldap;bundle-version="${org.apache.directory.shared.validversion}"</Require-Bundle>
+ org.apache.directory.shared.ldap.model;bundle-version="${org.apache.directory.shared.validversion}",
+ org.apache.directory.shared.ldap;bundle-version="${org.apache.directory.shared.validversion}"
+            </Require-Bundle>
             <Export-Package>org.apache.directory.studio.ldifparser.*</Export-Package>
             <Import-Package>!</Import-Package>
             <Private-Package>!</Private-Package>
