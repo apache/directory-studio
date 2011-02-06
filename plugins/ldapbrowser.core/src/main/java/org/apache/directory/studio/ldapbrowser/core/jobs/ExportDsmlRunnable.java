@@ -343,7 +343,7 @@ public class ExportDsmlRunnable implements StudioConnectionRunnableWithProgress
      *      the associated search result entry DSML
      * @throws org.apache.directory.shared.ldap.model.exception.LdapException
      */
-    private static DsmlDecorator convertSearchResultToDsml( SearchResult searchResult, SearchParameter searchParameter )
+    private static DsmlDecorator<? extends Response> convertSearchResultToDsml( SearchResult searchResult, SearchParameter searchParameter )
         throws LdapException, LdapURLEncodingException
     {
         Entry entry = AttributeUtils.toClientEntry(searchResult.getAttributes(),
