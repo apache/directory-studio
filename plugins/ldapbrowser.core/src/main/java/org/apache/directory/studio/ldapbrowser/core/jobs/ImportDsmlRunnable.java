@@ -39,18 +39,20 @@ import javax.naming.ldap.Control;
 import org.apache.commons.codec.digest.DigestUtils;
 
 import org.apache.directory.shared.asn1.EncoderException;
+import org.apache.directory.shared.dsmlv2.DsmlDecorator;
 import org.apache.directory.shared.dsmlv2.Dsmlv2Parser;
 import org.apache.directory.shared.dsmlv2.reponse.AddResponseDsml;
-import org.apache.directory.shared.dsmlv2.reponse.AuthResponseDsml;
 import org.apache.directory.shared.dsmlv2.reponse.BatchResponseDsml;
+import org.apache.directory.shared.dsmlv2.reponse.BindResponseDsml;
 import org.apache.directory.shared.dsmlv2.reponse.CompareResponseDsml;
 import org.apache.directory.shared.dsmlv2.reponse.DelResponseDsml;
 import org.apache.directory.shared.dsmlv2.reponse.ExtendedResponseDsml;
 import org.apache.directory.shared.dsmlv2.reponse.ModDNResponseDsml;
 import org.apache.directory.shared.dsmlv2.reponse.ModifyResponseDsml;
-import org.apache.directory.shared.dsmlv2.request.BatchRequest;
-import org.apache.directory.shared.ldap.codec.DefaultLdapCodecService;
-import org.apache.directory.shared.ldap.codec.ILdapCodecService;
+import org.apache.directory.shared.dsmlv2.request.BatchRequestDsml;
+import org.apache.directory.shared.dsmlv2.request.Dsmlv2Grammar;
+import org.apache.directory.shared.ldap.codec.api.DefaultLdapCodecService;
+import org.apache.directory.shared.ldap.codec.api.LdapCodecService;
 import org.apache.directory.shared.ldap.model.entry.*;
 import org.apache.directory.shared.ldap.model.message.*;
 import org.apache.directory.shared.ldap.model.entry.AttributeUtils;
@@ -102,7 +104,7 @@ public class ImportDsmlRunnable implements StudioConnectionBulkRunnableWithProgr
      * LDAP Codec used by DSML parser
      * @TODO by Alex - this should be removed completely
      */
-    private ILdapCodecService codec = new DefaultLdapCodecService();
+    private LdapCodecService codec = new DefaultLdapCodecService();
 
 
     /**
@@ -192,12 +194,13 @@ public class ImportDsmlRunnable implements StudioConnectionBulkRunnableWithProgr
         try
         {
             // Parsing the file
-            Dsmlv2Parser parser = new Dsmlv2Parser( codec );
+            Dsmlv2Grammar grammar = new Dsmlv2Grammar( codec );
+            Dsmlv2Parser parser = new Dsmlv2Parser( grammar );
             parser.setInput( new FileInputStream( dsmlFile ), "UTF-8" );
             parser.parseAllRequests();
 
             // Getting the batch request
-            BatchRequest batchRequest = parser.getBatchRequest();
+            BatchRequestDsml batchRequest = parser.getBatchRequest();
 
             // Creating a DSML batch response (only if needed)
             BatchResponseDsml batchResponseDsml = null;
@@ -214,8 +217,8 @@ public class ImportDsmlRunnable implements StudioConnectionBulkRunnableWithProgr
             StudioProgressMonitor dummyMonitor = new StudioProgressMonitor( monitor );
 
             // Processing each request
-            List<?> requests = batchRequest.getRequests();
-            for ( Object request : requests )
+            List<DsmlDecorator<? extends Request>> requests = batchRequest.getRequests();
+            for ( DsmlDecorator<? extends Request> request : requests )
             {
                 // Processing the request
                 processRequest( request, batchResponseDsml, dummyMonitor );
@@ -276,40 +279,39 @@ public class ImportDsmlRunnable implements StudioConnectionBulkRunnableWithProgr
      * @throws org.apache.directory.shared.ldap.model.exception.LdapURLEncodingException
      * @throws LdapException
      */
-    private void processRequest( Object request, BatchResponseDsml batchResponseDsml, StudioProgressMonitor monitor )
+    private void processRequest( DsmlDecorator<? extends Request> request, BatchResponseDsml batchResponseDsml, StudioProgressMonitor monitor )
         throws NamingException, LdapURLEncodingException, LdapException
     {
-        if ( request instanceof BindRequest)
+        switch( request.getDecorated().getType() )
         {
-            processBindRequest( ( BindRequest ) request, batchResponseDsml, monitor );
-        }
-        else if ( request instanceof AddRequest )
-        {
-            processAddRequest( (AddRequest) request, batchResponseDsml, monitor );
-        }
-        else if ( request instanceof CompareRequest )
-        {
-            processCompareRequest( ( CompareRequest ) request, batchResponseDsml, monitor );
-        }
-        else if ( request instanceof DeleteRequest )
-        {
-            processDelRequest( ( DeleteRequest ) request, batchResponseDsml, monitor );
-        }
-        else if ( request instanceof ExtendedRequest )
-        {
-            processExtendedRequest( ( ExtendedRequest ) request, batchResponseDsml, monitor );
-        }
-        else if ( request instanceof ModifyRequest )
-        {
-            processModifyRequest( ( ModifyRequest ) request, batchResponseDsml, monitor );
-        }
-        else if ( request instanceof ModifyDnRequest )
-        {
-            processModifyDNRequest( ( ModifyDnRequest ) request, batchResponseDsml, monitor );
-        }
-        else if ( request instanceof SearchRequest )
-        {
-            processSearchRequest( ( SearchRequest ) request, batchResponseDsml, monitor );
+            case BIND_REQUEST:
+                processBindRequest( ( BindRequest ) request, batchResponseDsml, monitor );
+                break;
+            case ADD_REQUEST:
+                processAddRequest( (AddRequest) request, batchResponseDsml, monitor );
+                break;
+            case COMPARE_REQUEST:
+                processCompareRequest( ( CompareRequest ) request, batchResponseDsml, monitor );
+                break;
+            case DEL_REQUEST:
+                processDelRequest( ( DeleteRequest ) request, batchResponseDsml, monitor );
+                break;
+            case EXTENDED_REQUEST:
+                processExtendedRequest( ( ExtendedRequest ) request, batchResponseDsml, monitor );
+                break;
+            case MODIFY_REQUEST:
+                processModifyRequest( ( ModifyRequest ) request, batchResponseDsml, monitor );
+                break;
+            case MODIFYDN_REQUEST:
+                processModifyDNRequest( ( ModifyDnRequest ) request, batchResponseDsml, monitor );
+                break;
+            case SEARCH_REQUEST:
+                processSearchRequest( ( SearchRequest ) request, batchResponseDsml, monitor );
+                break;
+            default:
+                throw new IllegalArgumentException( 
+                    "Should not be encountering a request type of: " 
+                    + request.getDecorated().getType() );
         }
     }
 
@@ -331,7 +333,7 @@ public class ImportDsmlRunnable implements StudioConnectionBulkRunnableWithProgr
         // Creating the response
         if ( batchResponseDsml != null )
         {
-            AuthResponseDsml authResponseDsml = new AuthResponseDsml( codec );
+            BindResponseDsml authResponseDsml = new BindResponseDsml( codec );
             LdapResult ldapResult = authResponseDsml.getLdapResult();
             ldapResult.setResultCode( ResultCodeEnum.UNWILLING_TO_PERFORM );
             ldapResult.setErrorMessage( "This kind of request is not yet supported." );
