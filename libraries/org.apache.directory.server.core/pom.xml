@@ -94,6 +94,8 @@
  org.apache.directory.shared.i18n;bundle-version="${org.apache.directory.shared.validversion}",
  org.apache.directory.shared.ldap;bundle-version="${org.apache.directory.shared.validversion}",
  org.apache.directory.shared.ldap.client.api;bundle-version="${org.apache.directory.shared.validversion}",
+ org.apache.directory.shared.ldap.codec;bundle-version="${org.apache.directory.shared.validversion}",
+ org.apache.directory.shared.ldap.model;bundle-version="${org.apache.directory.shared.validversion}",
  org.apache.directory.shared.ldap.schema;bundle-version="${org.apache.directory.shared.validversion}",
  org.apache.directory.shared.util;bundle-version="${org.apache.directory.shared.validversion}",
  org.bouncycastle.bcprov.jdk15;bundle-version="${org.bouncycastle.bcprov.jdk15.version}",
@@ -168,6 +170,14 @@
         </exclusion>
         <exclusion>
           <groupId>org.apache.directory.shared</groupId>
+          <artifactId>shared-ldap-codec</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.apache.directory.shared</groupId>
+          <artifactId>shared-ldap-model</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.apache.directory.shared</groupId>
           <artifactId>shared-ldap-schema</artifactId>
         </exclusion>
         <exclusion>
@@ -213,6 +223,16 @@
     <dependency>
       <groupId>org.apache.directory.shared</groupId>
       <artifactId>shared-ldap</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.directory.shared</groupId>
+      <artifactId>shared-ldap-codec</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.directory.shared</groupId>
+      <artifactId>shared-ldap-model</artifactId>
       <scope>provided</scope>
     </dependency>
     <dependency>

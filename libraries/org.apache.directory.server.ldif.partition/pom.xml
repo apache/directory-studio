@@ -94,7 +94,10 @@
  org.apache.directory.server.xdbm.partition;bundle-version="${org.apache.directory.server.validversion}",
  org.apache.directory.shared.i18n;bundle-version="${org.apache.directory.shared.validversion}",
  org.apache.directory.shared.ldap;bundle-version="${org.apache.directory.shared.validversion}",
+ org.apache.directory.shared.ldap;bundle-version="${org.apache.directory.shared.validversion}",
+ org.apache.directory.shared.ldap.model;bundle-version="${org.apache.directory.shared.validversion}",
  org.apache.directory.shared.ldap.schema;bundle-version="${org.apache.directory.shared.validversion}",
+ org.apache.directory.shared.util;bundle-version="${org.apache.directory.shared.validversion}",
  org.slf4j.api;bundle-version="${org.slf4j.version}"</Require-Bundle>
             <Embed-Dependency>*;scope=compile|runtime</Embed-Dependency>
             <Embed-Directory>lib</Embed-Directory>
@@ -162,7 +165,15 @@
         </exclusion>
         <exclusion>
           <groupId>org.apache.directory.shared</groupId>
+          <artifactId>shared-ldap-model</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.apache.directory.shared</groupId>
           <artifactId>shared-ldap-schema</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.apache.directory.shared</groupId>
+          <artifactId>shared-util</artifactId>
         </exclusion>
         <exclusion>
           <groupId>org.slf4j</groupId>
@@ -182,7 +193,17 @@
     </dependency>
     <dependency>
       <groupId>org.apache.directory.shared</groupId>
+      <artifactId>shared-ldap-model</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.directory.shared</groupId>
       <artifactId>shared-ldap-schema</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.directory.shared</groupId>
+      <artifactId>shared-util</artifactId>
       <scope>provided</scope>
     </dependency>
     <dependency>
