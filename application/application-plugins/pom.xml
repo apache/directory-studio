@@ -76,6 +76,14 @@
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.apache.directory.shared</groupId>
+                  <artifactId>shared-ldap-codec</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.apache.directory.shared</groupId>
+                  <artifactId>shared-ldap-model</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.apache.directory.shared</groupId>
                   <artifactId>shared-ldap-schema</artifactId>
                 </artifactItem>
                 <artifactItem>
