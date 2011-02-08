@@ -81,7 +81,7 @@
     <org.apache.directory.shared.validversion>0.9.20.SNAPSHOT</org.apache.directory.shared.validversion>
     <org.apache.directory.server.version>1.5.8-SNAPSHOT</org.apache.directory.server.version>
     <org.apache.directory.server.validversion>1.5.8.SNAPSHOT</org.apache.directory.server.validversion>
-    <org.apache.felix.version>3.0.0</org.apache.felix.version>
+    <org.apache.felix.version>3.0.8</org.apache.felix.version>
     <org.apache.mina.core.version>2.0.2</org.apache.mina.core.version>
     <org.bouncycastle.bcprov.jdk15.version>140</org.bouncycastle.bcprov.jdk15.version>
     <org.dom4j.version>1.6.1</org.dom4j.version>
