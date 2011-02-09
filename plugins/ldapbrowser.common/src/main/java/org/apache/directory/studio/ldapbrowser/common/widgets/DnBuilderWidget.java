@@ -257,7 +257,7 @@ public class DnBuilderWidget extends BrowserWidget implements ModifyListener
         // draw Rdn group
         if ( showRDN )
         {
-            rdnLabel = BaseWidgetUtils.createLabel( composite, Messages.getString( "DnBuilderWidget.Rdn" ), 1 ); //$NON-NLS-1$
+            rdnLabel = BaseWidgetUtils.createLabel( composite, Messages.getString( "DnBuilderWidget.RDN" ), 1 ); //$NON-NLS-1$
             rdnComposite = BaseWidgetUtils.createColumnContainer( composite, 5, 2 );
             rdnLineList = new ArrayList<RdnLine>();
             BaseWidgetUtils.createSpacer( composite, 3 );
@@ -267,7 +267,7 @@ public class DnBuilderWidget extends BrowserWidget implements ModifyListener
         if ( showRDN )
         {
             previewLabel = BaseWidgetUtils.createLabel( composite, showParent ? Messages
-                .getString( "DnBuilderWidget.DNPreview" ) : Messages.getString( "DnBuilderWidget.RDNPrevei" ), 1 ); //$NON-NLS-1$ //$NON-NLS-2$
+                .getString( "DnBuilderWidget.DNPreview" ) : Messages.getString( "DnBuilderWidget.RDNPreview" ), 1 ); //$NON-NLS-1$ //$NON-NLS-2$
             previewText = BaseWidgetUtils.createReadonlyText( composite, "", 2 ); //$NON-NLS-1$
             BaseWidgetUtils.createSpacer( composite, 3 );
         }
