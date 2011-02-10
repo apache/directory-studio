@@ -143,7 +143,7 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
         if ( ( connection.getEncryptionMethod() == EncryptionMethod.LDAPS )
             || ( connection.getEncryptionMethod() == EncryptionMethod.START_TLS ) )
         {
-            ldapConnectionConfig.setUseSsl( true );
+            ldapConnectionConfig.setUseSsl( connection.getEncryptionMethod() == EncryptionMethod.LDAPS );
 
             try
             {
@@ -513,16 +513,16 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
     {
         if ( controls != null )
         {
-            org.apache.directory.shared.ldap.model.message.Control[] returningControls = 
+            org.apache.directory.shared.ldap.model.message.Control[] returningControls =
                 new org.apache.directory.shared.ldap.model.message.Control[controls.length];
 
             for ( int i = 0; i < controls.length; i++ )
             {
                 Control control = controls[i];
-                
+
                 org.apache.directory.shared.ldap.model.message.Control returningControl;
-                    returningControl = ldapConnection.getCodecService().fromJndiControl( control );
-                
+                returningControl = ldapConnection.getCodecService().fromJndiControl( control );
+
                 returningControls[i] = returningControl;
             }
 
@@ -653,7 +653,7 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
             for ( ModificationItem modificationItem : modificationItems )
             {
                 Modification modification = new DefaultModification();
-                modification.setAttribute( AttributeUtils.toClientAttribute(modificationItem.getAttribute()) );
+                modification.setAttribute( AttributeUtils.toClientAttribute( modificationItem.getAttribute() ) );
                 modification.setOperation( convertModificationOperation( modificationItem.getModificationOp() ) );
                 modifications.add( modification );
             }
