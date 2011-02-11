@@ -326,7 +326,7 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
                         else if ( connection.getConnectionParameter().getAuthMethod() == ConnectionParameter.AuthenticationMethod.SASL_GSSAPI )
                         {
                             bindResponse = ldapConnection.bindGssApi( bindPrincipal, bindPassword,
-                                connection.getConnectionParameter().getSaslRealm(),
+                                connection.getConnectionParameter().getKrb5Realm(),
                                 connection.getConnectionParameter().getKrb5KdcHost(),
                                 connection.getConnectionParameter().getKrb5KdcPort() );
                         }
