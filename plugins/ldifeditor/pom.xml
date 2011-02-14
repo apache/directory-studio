@@ -162,12 +162,6 @@
 
   <dependencies>
     <!-- Apache Directory Studio library plugins dependencies -->
-    <dependency>
-      <groupId>org.apache.directory.shared</groupId>
-      <artifactId>shared-ldap</artifactId>
-      <scope>provided</scope>
-    </dependency>
-    
   	<!-- Apache Directory Studio plugins dependencies -->
     <dependency>
       <groupId>org.apache.directory.studio</groupId>

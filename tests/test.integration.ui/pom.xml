@@ -355,10 +355,6 @@
         </exclusion>
         <exclusion>
           <groupId>org.apache.directory.shared</groupId>
-          <artifactId>shared-ldap</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>org.apache.directory.shared</groupId>
           <artifactId>shared-ldap-schema</artifactId>
         </exclusion>
         <exclusion>

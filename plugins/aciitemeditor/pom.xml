@@ -153,12 +153,6 @@
     <!-- Apache Directory Studio library plugins dependencies -->
     <dependency>
       <groupId>org.apache.directory.shared</groupId>
-      <artifactId>shared-ldap</artifactId>
-      <scope>provided</scope>
-    </dependency>
-    
-    <dependency>
-      <groupId>org.apache.directory.shared</groupId>
       <artifactId>shared-ldap-extras-aci</artifactId>
     </dependency>
 
