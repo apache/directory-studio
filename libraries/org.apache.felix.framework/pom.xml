@@ -90,7 +90,7 @@
             <Embed-Directory>lib</Embed-Directory>
             <Embed-StripGroup>true</Embed-StripGroup>
             <Export-Package>*</Export-Package>
-            <Import-Package>!</Import-Package>
+            <Import-Package>!android.dalvik,!dalvik.system,*</Import-Package>
           </instructions>
         </configuration>
         <executions>
