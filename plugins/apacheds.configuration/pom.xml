@@ -110,8 +110,7 @@
             <Bundle-Localization>plugin</Bundle-Localization>
             <Eclipse-LazyStart>true</Eclipse-LazyStart>
             <Bundle-Activator>org.apache.directory.studio.apacheds.configuration.ApacheDSConfigurationPlugin</Bundle-Activator>
-            <Require-Bundle>org.apache.directory.shared.ldap;bundle-version="${org.apache.directory.shared.validversion}",
- org.apache.directory.shared.ldap.model;bundle-version="${org.apache.directory.shared.validversion}",
+            <Require-Bundle>org.apache.directory.shared.ldap.model;bundle-version="${org.apache.directory.shared.validversion}",
  org.apache.directory.shared.util;bundle-version="${org.apache.directory.shared.validversion}",
  org.apache.directory.studio.common.ui,
  org.eclipse.core.resources,
@@ -150,6 +149,11 @@
 
   <dependencies>
   	<!-- Apache Directory Studio library plugins dependencies -->
+    <dependency>
+      <groupId>org.apache.directory.shared</groupId>
+      <artifactId>shared-ldap-model</artifactId>
+      <scope>provided</scope>
+    </dependency>
     <dependency>
       <groupId>org.apache.directory.shared</groupId>
       <artifactId>shared-util</artifactId>

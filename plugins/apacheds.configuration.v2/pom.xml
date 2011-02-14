@@ -115,7 +115,6 @@
  org.apache.directory.server.config;bundle-version="${org.apache.directory.server.validversion}",
  org.apache.directory.server.ldif.partition;bundle-version="${org.apache.directory.server.validversion}",
  org.apache.directory.server.xdbm.partition;bundle-version="${org.apache.directory.server.validversion}",
- org.apache.directory.shared.ldap;bundle-version="${org.apache.directory.shared.validversion}",
  org.apache.directory.shared.ldap.model;bundle-version="${org.apache.directory.shared.validversion}",
  org.apache.directory.shared.ldap.schema;bundle-version="${org.apache.directory.shared.validversion}",
  org.apache.directory.studio.common.core,
