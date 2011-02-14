@@ -1396,6 +1396,11 @@
       </dependency>
       <dependency>
         <groupId>org.apache.directory.shared</groupId>
+        <artifactId>shared-ldap-extras-aci</artifactId>
+        <version>${org.apache.directory.shared.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.directory.shared</groupId>
         <artifactId>shared-ldap-codec</artifactId>
         <version>${org.apache.directory.shared.version}</version>
       </dependency>

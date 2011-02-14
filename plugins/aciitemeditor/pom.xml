@@ -157,6 +157,11 @@
       <scope>provided</scope>
     </dependency>
     
+    <dependency>
+      <groupId>org.apache.directory.shared</groupId>
+      <artifactId>shared-ldap-extras-aci</artifactId>
+    </dependency>
+
   	<!-- Apache Directory Studio plugins dependencies -->
     <dependency>
       <groupId>org.apache.directory.studio</groupId>
