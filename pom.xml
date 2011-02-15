@@ -23,7 +23,7 @@
   <parent>
     <groupId>org.apache.directory.project</groupId>
     <artifactId>project</artifactId>
-    <version>19</version>
+    <version>20</version>
   </parent>
   
 
@@ -77,8 +77,8 @@
     <org.apache.commons.pool.version>1.5.5</org.apache.commons.pool.version>
     <org.apache.logging.log4j.version>1.2.14</org.apache.logging.log4j.version>
     <org.apache.httpcomponents.version>4.0</org.apache.httpcomponents.version>
-    <org.apache.directory.shared.version>0.9.20-SNAPSHOT</org.apache.directory.shared.version>
-    <org.apache.directory.shared.validversion>0.9.20.SNAPSHOT</org.apache.directory.shared.validversion>
+    <org.apache.directory.shared.version>1.0.0-M1-SNAPSHOT</org.apache.directory.shared.version>
+    <org.apache.directory.shared.validversion>1.0.0.M1-SNAPSHOT</org.apache.directory.shared.validversion>
     <org.apache.directory.server.version>1.5.8-SNAPSHOT</org.apache.directory.server.version>
     <org.apache.directory.server.validversion>1.5.8.SNAPSHOT</org.apache.directory.server.validversion>
     <org.apache.felix.version>3.0.8</org.apache.felix.version>
