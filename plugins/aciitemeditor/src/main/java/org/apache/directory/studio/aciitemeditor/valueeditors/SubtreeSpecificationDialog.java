@@ -28,8 +28,8 @@ import java.util.Set;
 
 import org.apache.directory.shared.ldap.model.name.Dn;
 import org.apache.directory.shared.ldap.model.subtree.BaseSubtreeSpecification;
-import org.apache.directory.shared.ldap.model.subtree.SubtreeSpecificationParser;
 import org.apache.directory.shared.ldap.model.subtree.SubtreeSpecification;
+import org.apache.directory.shared.ldap.model.subtree.SubtreeSpecificationParser;
 import org.apache.directory.studio.aciitemeditor.Activator;
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.connection.core.DnUtils;
@@ -217,7 +217,7 @@ class SubtreeSpecificationDialog extends Dialog
         BaseWidgetUtils.createLabel( composite, Messages.getString( "SubtreeValueEditor.label.base" ), 1 ); //$NON-NLS-1$
 
         Dn base = subtreeSpecification.getBase();
-        Dn suffix = subentryDn != null ? DnUtils.getParent(subentryDn) : null;
+        Dn suffix = subentryDn != null ? subentryDn.getParent() : null;
         entryWidget = new EntryWidget( connection, base, suffix, useLocalName );
         entryWidget.createWidget( composite );
         entryWidget.addWidgetModifyListener( new WidgetModifyListener()
@@ -653,10 +653,14 @@ class SubtreeSpecificationDialog extends Dialog
     private void addValueExclusionsTable()
     {
         Dn chopBase = subtreeSpecification.getBase();
-        if ( useLocalName && subentryDn != null && DnUtils.getParent(subentryDn) != null )
+        if ( useLocalName && ( subentryDn != null ) )
         {
-            Dn suffix = subentryDn != null ? DnUtils.getParent(subentryDn) : null;
-            chopBase = DnUtils.composeDn( chopBase, suffix );
+            Dn suffix = subentryDn.getParent();
+            
+            if ( !Dn.isNullOrEmpty( suffix ) )
+            {
+                chopBase = DnUtils.composeDn( chopBase, suffix );
+            }
         }
 
         ExclusionDialog dialog = new ExclusionDialog( getShell(), connection, chopBase, "" ); //$NON-NLS-1$
@@ -681,10 +685,14 @@ class SubtreeSpecificationDialog extends Dialog
         if ( oldValue != null )
         {
             Dn chopBase = subtreeSpecification.getBase();
-            if ( useLocalName && subentryDn != null && DnUtils.getParent(subentryDn) != null )
+            if ( useLocalName && ( subentryDn != null ) )
             {
-                Dn suffix = subentryDn != null ? DnUtils.getParent(subentryDn) : null;
-                chopBase = DnUtils.composeDn( chopBase, suffix );
+                Dn suffix = subentryDn.getParent();
+                
+                if ( !Dn.isNullOrEmpty( suffix ) )
+                {
+                    chopBase = DnUtils.composeDn( chopBase, suffix );
+                }
             }
 
             ExclusionDialog dialog = new ExclusionDialog( getShell(), connection, chopBase, oldValue );
