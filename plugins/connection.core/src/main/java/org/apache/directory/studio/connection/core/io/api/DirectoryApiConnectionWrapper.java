@@ -36,6 +36,9 @@ import javax.net.ssl.TrustManager;
 import javax.net.ssl.TrustManagerFactory;
 import javax.net.ssl.X509TrustManager;
 
+import org.apache.directory.ldap.client.api.CramMd5Request;
+import org.apache.directory.ldap.client.api.DigestMd5Request;
+import org.apache.directory.ldap.client.api.GssApiRequest;
 import org.apache.directory.ldap.client.api.LdapConnectionConfig;
 import org.apache.directory.ldap.client.api.LdapNetworkConnection;
 import org.apache.directory.ldap.client.api.exception.InvalidConnectionException;
@@ -314,21 +317,33 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
                         // CRAM-MD5 Authentication
                         else if ( connection.getConnectionParameter().getAuthMethod() == ConnectionParameter.AuthenticationMethod.SASL_CRAM_MD5 )
                         {
-                            bindResponse = ldapConnection.bindCramMd5( bindPrincipal, bindPassword, null );
+                            CramMd5Request cramMd5Request = new CramMd5Request();
+                            cramMd5Request.setUsername( bindPrincipal );
+                            cramMd5Request.setCredentials( bindPassword );
+
+                            bindResponse = ldapConnection.bind( cramMd5Request );
                         }
                         // DIGEST-MD5 Authentication
                         else if ( connection.getConnectionParameter().getAuthMethod() == ConnectionParameter.AuthenticationMethod.SASL_DIGEST_MD5 )
                         {
-                            bindResponse = ldapConnection.bindDigestMd5( bindPrincipal, bindPassword, null,
-                                connection.getConnectionParameter().getSaslRealm() );
+                            DigestMd5Request digestMd5Request = new DigestMd5Request();
+                            digestMd5Request.setUsername( bindPrincipal );
+                            digestMd5Request.setCredentials( bindPassword );
+                            digestMd5Request.setRealmName( connection.getConnectionParameter().getSaslRealm() );
+
+                            bindResponse = ldapConnection.bind( digestMd5Request );
                         }
                         // GSSAPI Authentication
                         else if ( connection.getConnectionParameter().getAuthMethod() == ConnectionParameter.AuthenticationMethod.SASL_GSSAPI )
                         {
-                            bindResponse = ldapConnection.bindGssApi( bindPrincipal, bindPassword,
-                                connection.getConnectionParameter().getKrb5Realm(),
-                                connection.getConnectionParameter().getKrb5KdcHost(),
-                                connection.getConnectionParameter().getKrb5KdcPort() );
+                            GssApiRequest gssApiRequest = new GssApiRequest();
+                            gssApiRequest.setUsername( bindPrincipal );
+                            gssApiRequest.setCredentials( bindPassword );
+                            gssApiRequest.setRealmName( connection.getConnectionParameter().getKrb5Realm() );
+                            gssApiRequest.setKdcHost( connection.getConnectionParameter().getKrb5KdcHost() );
+                            gssApiRequest.setKdcPort( connection.getConnectionParameter().getKrb5KdcPort() );
+
+                            bindResponse = ldapConnection.bind( gssApiRequest );
                         }
 
                         checkResponse( bindResponse );
