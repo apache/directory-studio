@@ -167,10 +167,6 @@
                   <artifactId>org.apache.logging.log4j</artifactId>
                 </artifactItem>
                 <artifactItem>
-                  <groupId>org.apache.felix</groupId>
-                  <artifactId>org.apache.felix.framework</artifactId>
-                </artifactItem>
-                <artifactItem>
                   <groupId>org.apache.mina</groupId>
                   <artifactId>mina-core</artifactId>
                 </artifactItem>
