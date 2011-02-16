@@ -23,7 +23,6 @@ package org.apache.directory.studio.ldapbrowser.common.dialogs;
 
 import org.apache.directory.shared.ldap.model.name.Dn;
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
-import org.apache.directory.studio.connection.core.DnUtils;
 import org.apache.directory.studio.ldapbrowser.common.widgets.DnBuilderWidget;
 import org.apache.directory.studio.ldapbrowser.common.widgets.WidgetModifyEvent;
 import org.apache.directory.studio.ldapbrowser.common.widgets.WidgetModifyListener;
@@ -135,7 +134,7 @@ public class MoveEntriesDialog extends Dialog implements WidgetModifyListener
         dnBuilderWidget.addWidgetModifyListener( this );
         dnBuilderWidget.createContents( composite );
         dnBuilderWidget
-            .setInput( entries[0].getBrowserConnection(), null, null, DnUtils.getParent( entries[0].getDn() ) );
+            .setInput( entries[0].getBrowserConnection(), null, null, entries[0].getDn().getParent() );
 
         applyDialogFont( composite );
         return composite;
