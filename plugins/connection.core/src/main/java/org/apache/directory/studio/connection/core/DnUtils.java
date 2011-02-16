@@ -50,28 +50,6 @@ public class DnUtils
 
 
     /**
-     * Gets the parent Dn of the given Dn or null if the given
-     * Dn hasn't a parent.
-     * 
-     * @param dn the Dn
-     * 
-     * @return the parent Dn, null if the given Dn hasn't a parent
-     */
-    public static Dn getParent( Dn dn )
-    {
-        if ( dn.size() < 1 )
-        {
-            return null;
-        }
-        else
-        {
-            Dn parent = (Dn) dn.getPrefix( dn.size() - 1 );
-            return parent;
-        }
-    }
-
-
-    /**
      * Compose an Dn based on the given Rdn and Dn.
      * 
      * @param rdn the Rdn
