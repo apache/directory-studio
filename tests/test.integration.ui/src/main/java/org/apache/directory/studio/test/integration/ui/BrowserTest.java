@@ -33,9 +33,9 @@ import org.apache.directory.server.annotations.CreateTransport;
 import org.apache.directory.server.core.annotations.ApplyLdifFiles;
 import org.apache.directory.server.core.integ.AbstractLdapTestUnit;
 import org.apache.directory.server.core.integ.FrameworkRunner;
-import org.apache.directory.shared.ldap.entry.DefaultEntry;
-import org.apache.directory.shared.ldap.entry.Entry;
-import org.apache.directory.shared.ldap.name.DN;
+import org.apache.directory.shared.ldap.model.entry.DefaultEntry;
+import org.apache.directory.shared.ldap.model.entry.Entry;
+import org.apache.directory.shared.ldap.model.name.Dn;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.Connection.ReferralHandlingMethod;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
@@ -87,8 +87,8 @@ public class BrowserTest extends AbstractLdapTestUnit
         studioBot = new StudioBot();
         studioBot.resetLdapPerspective();
         connectionsViewBot = studioBot.getConnectionView();
-        System.out.println(connectionsViewBot);
-        System.out.println(ldapServer);
+        System.out.println( connectionsViewBot );
+        System.out.println( ldapServer );
         connection = connectionsViewBot.createTestConnection( "BrowserTest", ldapServer.getPort() );
         browserViewBot = studioBot.getBrowserView();
         searchLogsViewBot = studioBot.getSearchLogsViewBot();
@@ -181,7 +181,7 @@ public class BrowserTest extends AbstractLdapTestUnit
         IBrowserConnection browserConnection = BrowserCorePlugin.getDefault().getConnectionManager()
             .getBrowserConnection( connection );
         browserConnection.getBookmarkManager().addBookmark(
-            new Bookmark( browserConnection, new DN( "uid=user.1,ou=users,ou=system" ), "Existing Bookmark" ) );
+            new Bookmark( browserConnection, new Dn( "uid=user.1,ou=users,ou=system" ), "Existing Bookmark" ) );
 
         // select the bookmark
         browserViewBot.selectEntry( "Bookmarks", "Existing Bookmark" );
@@ -214,7 +214,7 @@ public class BrowserTest extends AbstractLdapTestUnit
 
         // add the entry directly in the server
         Entry entry = new DefaultEntry( service.getSchemaManager() );
-        entry.setDn( new DN( "cn=refresh,ou=users,ou=system" ) );
+        entry.setDn( new Dn( "cn=refresh,ou=users,ou=system" ) );
         entry.add( "objectClass", "top", "person" );
         entry.add( "cn", "refresh" );
         entry.add( "sn", "refresh" );
@@ -233,7 +233,7 @@ public class BrowserTest extends AbstractLdapTestUnit
         browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users", "cn=refresh" );
 
         // delete the entry directly in the server
-        ldapServer.getDirectoryService().getAdminSession().delete( new DN( "cn=refresh,ou=users,ou=system" ) );
+        ldapServer.getDirectoryService().getAdminSession().delete( new Dn( "cn=refresh,ou=users,ou=system" ) );
 
         // check the entry still is now visible in the tree
         assertTrue( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=users", "cn=refresh" ) );
@@ -264,7 +264,7 @@ public class BrowserTest extends AbstractLdapTestUnit
 
         // add the entry directly in the server
         Entry entry = new DefaultEntry( service.getSchemaManager() );
-        entry.setDn( new DN( "cn=refresh,ou=users,ou=system" ) );
+        entry.setDn( new Dn( "cn=refresh,ou=users,ou=system" ) );
         entry.add( "objectClass", "top", "person" );
         entry.add( "cn", "refresh" );
         entry.add( "sn", "refresh" );
@@ -283,7 +283,7 @@ public class BrowserTest extends AbstractLdapTestUnit
         browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users", "cn=refresh" );
 
         // delete the entry directly in the server
-        ldapServer.getDirectoryService().getAdminSession().delete( new DN( "cn=refresh,ou=users,ou=system" ) );
+        ldapServer.getDirectoryService().getAdminSession().delete( new Dn( "cn=refresh,ou=users,ou=system" ) );
 
         // check the entry still is now visible in the tree
         assertTrue( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=users", "cn=refresh" ) );
@@ -314,7 +314,7 @@ public class BrowserTest extends AbstractLdapTestUnit
 
         // add the entry directly in the server
         Entry entry = new DefaultEntry( service.getSchemaManager() );
-        entry.setDn( new DN( "cn=refresh,ou=users,ou=system" ) );
+        entry.setDn( new Dn( "cn=refresh,ou=users,ou=system" ) );
         entry.add( "objectClass", "top", "person" );
         entry.add( "cn", "refresh" );
         entry.add( "sn", "refresh" );
@@ -333,7 +333,7 @@ public class BrowserTest extends AbstractLdapTestUnit
         browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users", "cn=refresh" );
 
         // delete the entry directly in the server
-        ldapServer.getDirectoryService().getAdminSession().delete( new DN( "cn=refresh,ou=users,ou=system" ) );
+        ldapServer.getDirectoryService().getAdminSession().delete( new Dn( "cn=refresh,ou=users,ou=system" ) );
 
         // check the entry still is now visible in the tree
         assertTrue( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=users", "cn=refresh" ) );
@@ -361,7 +361,7 @@ public class BrowserTest extends AbstractLdapTestUnit
         // preparation: add referral entry and set referral handling
         String url = "ldap://localhost:" + ldapServer.getPort() + "/ou=users,ou=system";
         Entry refEntry = new DefaultEntry( service.getSchemaManager() );
-        refEntry.setDn( new DN( "cn=referral,ou=system" ) );
+        refEntry.setDn( new Dn( "cn=referral,ou=system" ) );
         refEntry.add( "objectClass", "top", "referral", "extensibleObject" );
         refEntry.add( "cn", "referral" );
         refEntry.add( "ref", url );
@@ -380,7 +380,7 @@ public class BrowserTest extends AbstractLdapTestUnit
 
         // add the entry directly in the server
         Entry entry = new DefaultEntry( service.getSchemaManager() );
-        entry.setDn( new DN( "cn=refresh,ou=users,ou=system" ) );
+        entry.setDn( new Dn( "cn=refresh,ou=users,ou=system" ) );
         entry.add( "objectClass", "top", "person" );
         entry.add( "cn", "refresh" );
         entry.add( "sn", "refresh" );
@@ -399,7 +399,7 @@ public class BrowserTest extends AbstractLdapTestUnit
         browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", url, "cn=refresh" );
 
         // delete the entry directly in the server
-        ldapServer.getDirectoryService().getAdminSession().delete( new DN( "cn=refresh,ou=users,ou=system" ) );
+        ldapServer.getDirectoryService().getAdminSession().delete( new Dn( "cn=refresh,ou=users,ou=system" ) );
 
         // check the entry still is now visible in the tree
         assertTrue( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", url, "cn=refresh" ) );
@@ -485,7 +485,7 @@ public class BrowserTest extends AbstractLdapTestUnit
 
         // create entry with multi-valued RDN containing an IP address value
         Entry entry = new DefaultEntry( service.getSchemaManager() );
-        entry.setDn( new DN( "cn=loopback+ipHostNumber=127.0.0.1,ou=users,ou=system" ) );
+        entry.setDn( new Dn( "cn=loopback+ipHostNumber=127.0.0.1,ou=users,ou=system" ) );
         entry.add( "objectClass", "top", "device", "ipHost" );
         entry.add( "cn", "loopback" );
         entry.add( "ipHostNumber", "127.0.0.1" );
@@ -511,7 +511,7 @@ public class BrowserTest extends AbstractLdapTestUnit
         IBrowserConnection browserConnection = BrowserCorePlugin.getDefault().getConnectionManager()
             .getBrowserConnection( connection );
         browserConnection.getBookmarkManager().addBookmark(
-            new Bookmark( browserConnection, new DN( "uid=user.2,ou=users,ou=system" ), "My Bookmark" ) );
+            new Bookmark( browserConnection, new Dn( "uid=user.2,ou=users,ou=system" ), "My Bookmark" ) );
 
         // copy a value
         browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users", "uid=user.1" );
@@ -536,7 +536,7 @@ public class BrowserTest extends AbstractLdapTestUnit
 
         // assert pasted value was written to directory
         Entry entry = ldapServer.getDirectoryService().getAdminSession().lookup(
-            new DN( "uid=user.2,ou=users,ou=system" ) );
+            new Dn( "uid=user.2,ou=users,ou=system" ) );
         assertTrue( entry.contains( "uid", "user.1" ) );
     }
 

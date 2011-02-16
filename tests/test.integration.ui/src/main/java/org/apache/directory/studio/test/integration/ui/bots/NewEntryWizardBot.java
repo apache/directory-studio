@@ -20,7 +20,7 @@
 package org.apache.directory.studio.test.integration.ui.bots;
 
 
-import org.apache.directory.shared.ldap.name.DN;
+import org.apache.directory.shared.ldap.model.name.Dn;
 
 
 public class NewEntryWizardBot extends WizardBot
@@ -106,7 +106,7 @@ public class NewEntryWizardBot extends WizardBot
         for ( int i = 0;; i++ )
         {
             String text = bot.text( 1 ).getText();
-            if ( DN.isValid( text ) )
+            if ( Dn.isValid( text ) )
             {
                 return text;
             }

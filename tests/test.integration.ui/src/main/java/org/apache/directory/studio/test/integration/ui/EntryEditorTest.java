@@ -32,8 +32,8 @@ import org.apache.directory.server.annotations.CreateTransport;
 import org.apache.directory.server.core.annotations.ApplyLdifFiles;
 import org.apache.directory.server.core.integ.AbstractLdapTestUnit;
 import org.apache.directory.server.core.integ.FrameworkRunner;
-import org.apache.directory.shared.ldap.entry.Entry;
-import org.apache.directory.shared.ldap.name.DN;
+import org.apache.directory.shared.ldap.model.entry.Entry;
+import org.apache.directory.shared.ldap.model.name.Dn;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.test.integration.ui.bots.BrowserViewBot;
 import org.apache.directory.studio.test.integration.ui.bots.ConnectionsViewBot;
@@ -250,7 +250,7 @@ public class EntryEditorTest extends AbstractLdapTestUnit
 
         // assert pasted value was written to directory
         Entry entry = ldapServer.getDirectoryService().getAdminSession()
-            .lookup( new DN( "cn=\\#\\\\\\+\\, \\\"\u00F6\u00E9\\\",ou=users,ou=system" ) );
+            .lookup( new Dn( "cn=\\#\\\\\\+\\, \\\"\u00F6\u00E9\\\",ou=users,ou=system" ) );
         assertTrue( entry.contains( "uid", "bjensen" ) );
     }
 
