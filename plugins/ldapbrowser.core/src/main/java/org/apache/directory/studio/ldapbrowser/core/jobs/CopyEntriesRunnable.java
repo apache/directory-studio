@@ -40,8 +40,8 @@ import javax.naming.ldap.ManageReferralControl;
 
 import org.apache.directory.shared.ldap.model.constants.SchemaConstants;
 import org.apache.directory.shared.ldap.model.name.Ava;
-import org.apache.directory.shared.ldap.model.name.Rdn;
 import org.apache.directory.shared.ldap.model.name.Dn;
+import org.apache.directory.shared.ldap.model.name.Rdn;
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
@@ -245,7 +245,7 @@ public class CopyEntriesRunnable implements StudioConnectionBulkRunnableWithProg
         Dn parentDn = parent.getDn();
         if ( parentDn.isEmpty() )
         {
-            parentDn = DnUtils.getParent( entryToCopy.getDn() );
+            parentDn = entryToCopy.getDn().getParent();
         }
         numberOfCopiedEntries = copyEntryRecursive( entryToCopy.getBrowserConnection(), result,
             parent.getBrowserConnection(), parentDn, newRdn, scope, numberOfCopiedEntries, dialog, dummyMonitor,

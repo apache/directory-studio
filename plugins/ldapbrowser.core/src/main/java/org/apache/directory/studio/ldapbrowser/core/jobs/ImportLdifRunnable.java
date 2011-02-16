@@ -291,12 +291,12 @@ public class ImportLdifRunnable implements StudioConnectionBulkRunnableWithProgr
                             // update cache and adjust attribute/children initialization flags
                             Dn dn = new Dn( record.getDnLine().getValueAsString() );
                             IEntry entry = browserConnection.getEntryFromCache( dn );
-                            Dn parentDn = DnUtils.getParent( dn );
+                            Dn parentDn = dn.getParent();
                             IEntry parentEntry = null;
                             while ( parentEntry == null && parentDn != null )
                             {
                                 parentEntry = browserConnection.getEntryFromCache( parentDn );
-                                parentDn = DnUtils.getParent( parentDn );
+                                parentDn = parentDn.getParent();
                             }
 
                             if ( record instanceof LdifChangeDeleteRecord )
@@ -530,7 +530,7 @@ public class ImportLdifRunnable implements StudioConnectionBulkRunnableWithProgr
                 else
                 {
                     Dn dnObject = new Dn( dn );
-                    Dn parent = DnUtils.getParent( dnObject );
+                    Dn parent = dnObject.getParent();
                     newDn = DnUtils.composeDn( newRdn, parent.getName() );
                 }
 

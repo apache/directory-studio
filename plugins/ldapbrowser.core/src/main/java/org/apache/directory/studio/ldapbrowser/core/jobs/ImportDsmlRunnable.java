@@ -37,7 +37,6 @@ import javax.naming.directory.SearchControls;
 import javax.naming.ldap.Control;
 
 import org.apache.commons.codec.digest.DigestUtils;
-
 import org.apache.directory.shared.asn1.EncoderException;
 import org.apache.directory.shared.dsmlv2.DsmlDecorator;
 import org.apache.directory.shared.dsmlv2.Dsmlv2Parser;
@@ -53,27 +52,30 @@ import org.apache.directory.shared.dsmlv2.request.BatchRequestDsml;
 import org.apache.directory.shared.dsmlv2.request.Dsmlv2Grammar;
 import org.apache.directory.shared.ldap.codec.api.LdapCodecService;
 import org.apache.directory.shared.ldap.codec.api.LdapCodecServiceFactory;
-import org.apache.directory.shared.ldap.model.entry.*;
-import org.apache.directory.shared.ldap.model.message.*;
 import org.apache.directory.shared.ldap.model.entry.AttributeUtils;
-import org.apache.directory.shared.ldap.model.exception.LdapURLEncodingException;
 import org.apache.directory.shared.ldap.model.entry.Entry;
+import org.apache.directory.shared.ldap.model.entry.Modification;
 import org.apache.directory.shared.ldap.model.entry.ModificationOperation;
 import org.apache.directory.shared.ldap.model.exception.LdapException;
+import org.apache.directory.shared.ldap.model.exception.LdapURLEncodingException;
 import org.apache.directory.shared.ldap.model.message.AddRequest;
 import org.apache.directory.shared.ldap.model.message.BindRequest;
 import org.apache.directory.shared.ldap.model.message.CompareRequest;
 import org.apache.directory.shared.ldap.model.message.DeleteRequest;
 import org.apache.directory.shared.ldap.model.message.ExtendedRequest;
 import org.apache.directory.shared.ldap.model.message.LdapResult;
+import org.apache.directory.shared.ldap.model.message.Message;
+import org.apache.directory.shared.ldap.model.message.MessageTypeEnum;
 import org.apache.directory.shared.ldap.model.message.ModifyDnRequest;
+import org.apache.directory.shared.ldap.model.message.ModifyRequest;
+import org.apache.directory.shared.ldap.model.message.Request;
+import org.apache.directory.shared.ldap.model.message.ResultCodeEnum;
 import org.apache.directory.shared.ldap.model.message.SearchRequest;
 import org.apache.directory.shared.ldap.model.name.Dn;
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
 import org.apache.directory.studio.connection.core.Connection.ReferralHandlingMethod;
-import org.apache.directory.studio.connection.core.DnUtils;
 import org.apache.directory.studio.connection.core.io.StudioNamingEnumeration;
 import org.apache.directory.studio.connection.core.jobs.StudioConnectionBulkRunnableWithProgress;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
@@ -374,7 +376,7 @@ public class ImportDsmlRunnable implements StudioConnectionBulkRunnableWithProgr
         // Update cached entries
         Dn dn = entry.getDn();
         IEntry e = browserConnection.getEntryFromCache( dn );
-        Dn parentDn = DnUtils.getParent( dn );
+        Dn parentDn = dn.getParent();
         IEntry parentEntry = parentDn != null ? browserConnection.getEntryFromCache( parentDn ) : null;
         if ( e != null )
         {
@@ -441,7 +443,7 @@ public class ImportDsmlRunnable implements StudioConnectionBulkRunnableWithProgr
         // Update cached entries
         Dn dn = request.getName();
         IEntry e = browserConnection.getEntryFromCache( dn );
-        Dn parentDn = DnUtils.getParent( dn );
+        Dn parentDn = dn.getParent();
         IEntry parentEntry = parentDn != null ? browserConnection.getEntryFromCache( parentDn ) : null;
         if ( e != null )
         {
@@ -581,7 +583,7 @@ public class ImportDsmlRunnable implements StudioConnectionBulkRunnableWithProgr
         // Update cached entries
         Dn dn = request.getName();
         IEntry e = browserConnection.getEntryFromCache( dn );
-        Dn parentDn = DnUtils.getParent( dn );
+        Dn parentDn = dn.getParent();
         IEntry parentEntry = parentDn != null ? browserConnection.getEntryFromCache( parentDn ) : null;
         if ( e != null )
         {

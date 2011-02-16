@@ -146,7 +146,7 @@ public class RenameEntryRunnable implements StudioConnectionBulkRunnableWithProg
         monitor.worked( 1 );
 
         Dn oldDn = oldEntry.getDn();
-        Dn parentDn = DnUtils.getParent( oldDn );
+        Dn parentDn = oldDn.getParent();
         Dn newDn = DnUtils.composeDn( newRdn, parentDn );
 
         // use a dummy monitor to be able to handle exceptions
