@@ -183,19 +183,12 @@ public class NewEntryDnWizardPage extends WizardPage implements WidgetModifyList
             Collection<AttributeType> atds = SchemaUtils.getAllAttributeTypeDescriptions( newEntry );
             String[] attributeNames = SchemaUtils.getNames( atds ).toArray( ArrayUtils.EMPTY_STRING_ARRAY );
 
-            Dn parentDn = null;
-            if ( wizard.getSelectedEntry() != null && newEntry.getDn().equals( wizard.getSelectedEntry().getDn() )
-                && DnUtils.getParent( newEntry.getDn() ) != null )
-            {
-                parentDn = DnUtils.getParent( newEntry.getDn() );
-            }
-            else if ( wizard.getSelectedEntry() != null )
+            Dn parentDn = newEntry.getDn().getParent();
+            
+            if ( wizard.getSelectedEntry() != null && !Dn.isNullOrEmpty( parentDn ) 
+                && ( !newEntry.getDn().equals( wizard.getSelectedEntry().getDn() ) ) )
             {
                 parentDn = wizard.getSelectedEntry().getDn();
-            }
-            else if ( DnUtils.getParent( newEntry.getDn() ) != null )
-            {
-                parentDn = DnUtils.getParent( newEntry.getDn() );
             }
 
             Rdn rdn = newEntry.getRdn();
