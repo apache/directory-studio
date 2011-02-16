@@ -51,8 +51,8 @@ import org.apache.directory.shared.dsmlv2.reponse.ModDNResponseDsml;
 import org.apache.directory.shared.dsmlv2.reponse.ModifyResponseDsml;
 import org.apache.directory.shared.dsmlv2.request.BatchRequestDsml;
 import org.apache.directory.shared.dsmlv2.request.Dsmlv2Grammar;
-import org.apache.directory.shared.ldap.codec.api.DefaultLdapCodecService;
 import org.apache.directory.shared.ldap.codec.api.LdapCodecService;
+import org.apache.directory.shared.ldap.codec.api.LdapCodecServiceFactory;
 import org.apache.directory.shared.ldap.model.entry.*;
 import org.apache.directory.shared.ldap.model.message.*;
 import org.apache.directory.shared.ldap.model.entry.AttributeUtils;
@@ -104,7 +104,7 @@ public class ImportDsmlRunnable implements StudioConnectionBulkRunnableWithProgr
      * LDAP Codec used by DSML parser
      * @TODO by Alex - this should be removed completely
      */
-    private LdapCodecService codec = new DefaultLdapCodecService();
+    private LdapCodecService codec = LdapCodecServiceFactory.getSingleton();
 
 
     /**
