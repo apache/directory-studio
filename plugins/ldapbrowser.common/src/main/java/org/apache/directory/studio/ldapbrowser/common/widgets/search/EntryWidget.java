@@ -167,9 +167,10 @@ public class EntryWidget extends BrowserWidget
         {
             public void widgetSelected( SelectionEvent e )
             {
-                if ( dn != null && DnUtils.getParent( dn ) != null )
+                if ( !Dn.isNullOrEmpty( dn ) )
                 {
-                    dn = DnUtils.getParent( dn );
+                    dn = dn.getParent();
+                    
                     dnChanged();
                     internalSetEnabled();
                     notifyListeners();
@@ -283,7 +284,7 @@ public class EntryWidget extends BrowserWidget
      */
     private void internalSetEnabled()
     {
-        upButton.setEnabled( dn != null && DnUtils.getParent( dn ) != null && dnCombo.isEnabled() );
+        upButton.setEnabled( !Dn.isNullOrEmpty( dn ) && dnCombo.isEnabled() );
         entryBrowseButton.setEnabled( browserConnection != null && dnCombo.isEnabled() );
     }
 
