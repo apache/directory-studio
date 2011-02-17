@@ -63,9 +63,12 @@ import javax.security.auth.login.AppConfigurationEntry.LoginModuleControlFlag;
 import javax.security.auth.login.Configuration;
 import javax.security.auth.login.LoginContext;
 import javax.security.auth.login.LoginException;
+import javax.security.sasl.Sasl;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.directory.shared.ldap.model.constants.SaslQoP;
+import org.apache.directory.shared.ldap.model.constants.SaslSecurityStrength;
 import org.apache.directory.shared.ldap.model.exception.LdapURLEncodingException;
 import org.apache.directory.shared.ldap.model.filter.LdapURL;
 import org.apache.directory.shared.ldap.model.message.Referral;
@@ -1019,37 +1022,37 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
                             switch ( connection.getConnectionParameter().getSaslQop() )
                             {
                                 case AUTH:
-                                    context.addToEnvironment( "javax.security.sasl.qop", "auth" );
+                                    context.addToEnvironment( Sasl.QOP, SaslQoP.AUTH.getValue() );
                                     break;
                                 case AUTH_INT:
-                                    context.addToEnvironment( "javax.security.sasl.qop", "auth-int" );
+                                    context.addToEnvironment( Sasl.QOP, SaslQoP.AUTH_INT.getValue() );
                                     break;
-                                case AUTH_INT_PRIV:
-                                    context.addToEnvironment( "javax.security.sasl.qop", "auth-conf" );
+                                case AUTH_CONF:
+                                    context.addToEnvironment( Sasl.QOP, SaslQoP.AUTH_CONF.getValue() );
                                     break;
                             }
 
                             // Request mutual authentication
                             if ( connection.getConnectionParameter().isSaslMutualAuthentication() )
                             {
-                                context.addToEnvironment( "javax.security.sasl.server.authentication", "true" );
+                                context.addToEnvironment( Sasl.SERVER_AUTH, "true" );
                             }
                             else
                             {
-                                context.removeFromEnvironment( "javax.security.sasl.server.authentication" );
+                                context.removeFromEnvironment( Sasl.SERVER_AUTH );
                             }
 
                             // Request cryptographic protection strength
                             switch ( connection.getConnectionParameter().getSaslSecurityStrength() )
                             {
                                 case HIGH:
-                                    context.addToEnvironment( "javax.security.sasl.strength", "high" );
+                                    context.addToEnvironment( Sasl.STRENGTH, SaslSecurityStrength.HIGH.getValue() );
                                     break;
                                 case MEDIUM:
-                                    context.addToEnvironment( "javax.security.sasl.strength", "medium" );
+                                    context.addToEnvironment( Sasl.STRENGTH, SaslSecurityStrength.MEDIUM.getValue() );
                                     break;
                                 case LOW:
-                                    context.addToEnvironment( "javax.security.sasl.strength", "low" );
+                                    context.addToEnvironment( Sasl.STRENGTH, SaslSecurityStrength.LOW.getValue() );
                                     break;
                             }
                         }
@@ -1116,7 +1119,6 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
 
             if ( !useKrb5SystemProperties )
             {
-
                 // Kerberos Configuration
                 switch ( connection.getConnectionParameter().getKrb5Configuration() )
                 {

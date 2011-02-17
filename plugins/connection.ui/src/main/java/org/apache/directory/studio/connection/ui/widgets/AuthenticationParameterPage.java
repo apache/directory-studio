@@ -22,6 +22,8 @@ package org.apache.directory.studio.connection.ui.widgets;
 
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.directory.shared.ldap.model.constants.SaslQoP;
+import org.apache.directory.shared.ldap.model.constants.SaslSecurityStrength;
 import org.apache.directory.shared.ldap.model.filter.LdapURL;
 import org.apache.directory.shared.ldap.model.filter.LdapURL.Extension;
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
@@ -32,8 +34,6 @@ import org.apache.directory.studio.connection.core.ConnectionParameter;
 import org.apache.directory.studio.connection.core.ConnectionParameter.AuthenticationMethod;
 import org.apache.directory.studio.connection.core.ConnectionParameter.Krb5Configuration;
 import org.apache.directory.studio.connection.core.ConnectionParameter.Krb5CredentialConfiguration;
-import org.apache.directory.studio.connection.core.ConnectionParameter.SaslQop;
-import org.apache.directory.studio.connection.core.ConnectionParameter.SaslSecurityStrength;
 import org.apache.directory.studio.connection.core.jobs.CheckBindRunnable;
 import org.apache.directory.studio.connection.ui.AbstractConnectionParameterPage;
 import org.apache.directory.studio.connection.ui.ConnectionUIConstants;
@@ -58,6 +58,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Group;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.forms.events.ExpansionAdapter;
 import org.eclipse.ui.forms.events.ExpansionEvent;
@@ -204,16 +205,16 @@ public class AuthenticationParameterPage extends AbstractConnectionParameterPage
     }
 
 
-    private SaslQop getSaslQop()
+    private SaslQoP getSaslQop()
     {
         switch ( saslQopCombo.getSelectionIndex() )
         {
             case 1:
-                return SaslQop.AUTH_INT;
+                return SaslQoP.AUTH_INT;
             case 2:
-                return SaslQop.AUTH_INT_PRIV;
+                return SaslQoP.AUTH_CONF;
             default:
-                return SaslQop.AUTH;
+                return SaslQoP.AUTH;
         }
     }
 
@@ -599,8 +600,8 @@ public class AuthenticationParameterPage extends AbstractConnectionParameterPage
         saveBindPasswordButton.setSelection( parameter.getBindPassword() != null );
 
         saslRealmText.setText( parameter.getSaslRealm() != null ? parameter.getSaslRealm() : "" ); //$NON-NLS-1$
-        int qopIndex = parameter.getSaslQop() == SaslQop.AUTH_INT ? 1
-            : parameter.getSaslQop() == SaslQop.AUTH_INT_PRIV ? 2 : 0;
+        int qopIndex = parameter.getSaslQop() == SaslQoP.AUTH_INT ? 1
+            : parameter.getSaslQop() == SaslQoP.AUTH_CONF ? 2 : 0;
         saslQopCombo.select( qopIndex );
         int securityStrengthIndex = parameter.getSaslSecurityStrength() == SaslSecurityStrength.MEDIUM ? 1 : parameter
             .getSaslSecurityStrength() == SaslSecurityStrength.LOW ? 2 : 0;
@@ -927,7 +928,7 @@ public class AuthenticationParameterPage extends AbstractConnectionParameterPage
                     case AUTH_INT:
                         ldapUrl.getExtensions().add( new Extension( false, X_SASL_QOP, X_SASL_QOP_AUTH_INT ) );
                         break;
-                    case AUTH_INT_PRIV:
+                    case AUTH_CONF:
                         ldapUrl.getExtensions().add( new Extension( false, X_SASL_QOP, X_SASL_QOP_AUTH_INT_PRIV ) );
                         break;
                 }
@@ -1045,15 +1046,15 @@ public class AuthenticationParameterPage extends AbstractConnectionParameterPage
         String saslQop = ldapUrl.getExtensionValue( X_SASL_QOP );
         if ( StringUtils.isNotEmpty( saslQop ) && X_SASL_QOP_AUTH_INT.equalsIgnoreCase( saslQop ) )
         {
-            parameter.setSaslQop( SaslQop.AUTH_INT );
+            parameter.setSaslQop( SaslQoP.AUTH_INT );
         }
         else if ( StringUtils.isNotEmpty( saslQop ) && X_SASL_QOP_AUTH_INT_PRIV.equalsIgnoreCase( saslQop ) )
         {
-            parameter.setSaslQop( SaslQop.AUTH_INT_PRIV );
+            parameter.setSaslQop( SaslQoP.AUTH_CONF );
         }
         else
         {
-            parameter.setSaslQop( SaslQop.AUTH );
+            parameter.setSaslQop( SaslQoP.AUTH );
         }
 
         // SASL security strength, default to HIGH

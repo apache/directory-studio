@@ -25,6 +25,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+import org.apache.directory.shared.ldap.model.constants.SaslQoP;
+import org.apache.directory.shared.ldap.model.constants.SaslSecurityStrength;
+
 
 /**
  * A Bean class to hold the connection parameters.
@@ -89,16 +92,6 @@ public class ConnectionParameter
 
     }
 
-    public enum SaslQop
-    {
-        AUTH, AUTH_INT, AUTH_INT_PRIV
-    }
-
-    public enum SaslSecurityStrength
-    {
-        LOW, MEDIUM, HIGH
-    }
-
     public enum Krb5CredentialConfiguration
     {
         USE_NATIVE, OBTAIN_TGT
@@ -140,7 +133,7 @@ public class ConnectionParameter
     private String saslRealm;
 
     /** The SASL qualitiy of protection. */
-    private SaslQop saslQop = SaslQop.AUTH;
+    private SaslQoP saslQop = SaslQoP.AUTH;
 
     /** The SASL security strength. */
     private SaslSecurityStrength saslSecurityStrength = SaslSecurityStrength.HIGH;
@@ -470,7 +463,7 @@ public class ConnectionParameter
      * 
      * @return the SASL qualitiy of protection
      */
-    public SaslQop getSaslQop()
+    public SaslQoP getSaslQop()
     {
         return saslQop;
     }
@@ -481,7 +474,7 @@ public class ConnectionParameter
      * 
      * @param saslQop the new SASL qualitiy of protection
      */
-    public void setSaslQop( SaslQop saslQop )
+    public void setSaslQop( SaslQoP saslQop )
     {
         this.saslQop = saslQop;
     }
