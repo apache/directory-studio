@@ -33,7 +33,6 @@ import javax.naming.directory.SearchControls;
 import org.apache.directory.shared.ldap.model.name.Dn;
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.Connection;
-import org.apache.directory.studio.connection.core.DnUtils;
 import org.apache.directory.studio.connection.core.StudioControl;
 import org.apache.directory.studio.connection.core.jobs.StudioConnectionBulkRunnableWithProgress;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
@@ -162,7 +161,7 @@ public class MoveEntriesRunnable implements StudioConnectionBulkRunnableWithProg
 
             IEntry oldEntry = oldEntries[i];
             Dn oldDn = oldEntry.getDn();
-            Dn newDn = DnUtils.composeDn( oldDn.getRdn(), parentDn );
+            Dn newDn = parentDn.add( oldDn.getRdn() );
 
             // try to move entry
             RenameEntryRunnable.renameEntry( browserConnection, oldEntry, newDn, dummyMonitor );

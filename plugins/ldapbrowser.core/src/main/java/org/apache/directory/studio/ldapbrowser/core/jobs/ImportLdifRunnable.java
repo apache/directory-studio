@@ -52,7 +52,6 @@ import org.apache.directory.shared.ldap.model.name.Dn;
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.ConnectionCoreConstants;
-import org.apache.directory.studio.connection.core.DnUtils;
 import org.apache.directory.studio.connection.core.jobs.StudioConnectionBulkRunnableWithProgress;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.ldapbrowser.core.events.BulkModificationEvent;
@@ -525,13 +524,13 @@ public class ImportLdifRunnable implements StudioConnectionBulkRunnableWithProgr
                 Dn newDn;
                 if ( modDnRecord.getNewsuperiorLine() != null )
                 {
-                    newDn = DnUtils.composeDn( newRdn, modDnRecord.getNewsuperiorLine().getValueAsString() );
+                    newDn = new Dn( newRdn, modDnRecord.getNewsuperiorLine().getValueAsString() );
                 }
                 else
                 {
                     Dn dnObject = new Dn( dn );
                     Dn parent = dnObject.getParent();
-                    newDn = DnUtils.composeDn( newRdn, parent.getName() );
+                    newDn = new Dn( newRdn, parent.getName() );
                 }
 
                 browserConnection.getConnection().getConnectionWrapper()

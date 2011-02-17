@@ -205,7 +205,7 @@ public class EntryWidget extends BrowserWidget
                     {
                         if ( initialDn != null && initialDn.size() > 0 )
                         {
-                            initialDn = DnUtils.composeDn(initialDn, suffix );
+                            initialDn = initialDn.addAll( suffix );
                         }
                     }
 

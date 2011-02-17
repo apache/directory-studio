@@ -35,7 +35,6 @@ import org.apache.directory.shared.ldap.model.name.Dn;
 import org.apache.directory.shared.ldap.model.name.Rdn;
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.Connection;
-import org.apache.directory.studio.connection.core.DnUtils;
 import org.apache.directory.studio.connection.core.StudioControl;
 import org.apache.directory.studio.connection.core.jobs.StudioConnectionBulkRunnableWithProgress;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
@@ -147,7 +146,7 @@ public class RenameEntryRunnable implements StudioConnectionBulkRunnableWithProg
 
         Dn oldDn = oldEntry.getDn();
         Dn parentDn = oldDn.getParent();
-        Dn newDn = DnUtils.composeDn( newRdn, parentDn );
+        Dn newDn = parentDn.add( newRdn );
 
         // use a dummy monitor to be able to handle exceptions
         StudioProgressMonitor dummyMonitor = new StudioProgressMonitor( monitor );

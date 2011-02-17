@@ -370,7 +370,7 @@ public class DnBuilderWidget extends BrowserWidget implements ModifyListener
                 Dn dn;
                 if ( showParent && showRDN )
                 {
-                    dn = DnUtils.composeDn( rdn, parentDn );
+                    dn = parentDn.add( rdn );
                 }
                 else if ( showParent )
                 {

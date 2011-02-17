@@ -46,7 +46,6 @@ import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
 import org.apache.directory.studio.connection.core.Connection.ReferralHandlingMethod;
-import org.apache.directory.studio.connection.core.DnUtils;
 import org.apache.directory.studio.connection.core.jobs.StudioConnectionBulkRunnableWithProgress;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.ldapbrowser.core.events.BulkModificationEvent;
@@ -297,7 +296,7 @@ public class CopyEntriesRunnable implements StudioConnectionBulkRunnableWithProg
                 {
                     newRdn = forceNewRdn;
                 }
-                Dn newLdapDn = DnUtils.composeDn( newRdn, parentDn );
+                Dn newLdapDn = parentDn.add( newRdn );
 
                 // apply new Rdn to the attributes
                 applyNewRdn( newAttributes, oldRdn, newRdn );
@@ -372,7 +371,7 @@ public class CopyEntriesRunnable implements StudioConnectionBulkRunnableWithProg
                                     applyNewRdn( newAttributes, newRdn, renamedRdn );
 
                                     // compose new Dn
-                                    newLdapDn = DnUtils.composeDn( renamedRdn, parentDn );
+                                    newLdapDn = parentDn.add( renamedRdn );
 
                                     // create entry
                                     targetBrowserConnection.getConnection().getConnectionWrapper()

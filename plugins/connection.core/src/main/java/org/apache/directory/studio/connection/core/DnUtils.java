@@ -22,7 +22,6 @@ package org.apache.directory.studio.connection.core;
 
 import javax.naming.InvalidNameException;
 
-import org.apache.directory.shared.ldap.model.exception.LdapInvalidDnException;
 import org.apache.directory.shared.ldap.model.name.Dn;
 import org.apache.directory.shared.ldap.model.name.Rdn;
 
@@ -34,65 +33,6 @@ import org.apache.directory.shared.ldap.model.name.Rdn;
  */
 public class DnUtils
 {
-
-    /**
-     * Composes an Dn based on the given Rdn and Dn.
-     * 
-     * @param rdn the Rdn
-     * @param parent the parent Dn
-     * 
-     * @return the composed Dn
-     */
-    public static Dn composeDn( Rdn rdn, Dn parent )
-    {
-        return parent.add( rdn );
-    }
-
-
-    /**
-     * Compose an Dn based on the given Rdn and Dn.
-     * 
-     * @param rdn the Rdn
-     * @param parent the parent Dn
-     * 
-     * @return the composed Rdn
-     * 
-     * @throws InvalidNameException the invalid name exception
-     */
-    public static Dn composeDn( String rdn, String parent ) throws InvalidNameException
-    {
-        try
-        {
-            return composeDn( new Rdn( rdn ), new Dn( parent ) );
-        }
-        catch ( LdapInvalidDnException e )
-        {
-            throw new InvalidNameException( e.getMessage() );
-        }
-    }
-
-
-    /**
-     * Composes an Dn based on the given prefix and suffix.
-     * 
-     * @param prefix the prefix
-     * @param suffix the suffix
-     * 
-     * @return the composed Dn
-     */
-    public static Dn composeDn( Dn prefix, Dn suffix )
-    {
-        Dn ldapDn = suffix;
-
-        for ( int i = 0; i < prefix.size(); i++ )
-        {
-            ldapDn = ldapDn.add( (Rdn) prefix.getRdn( i ).clone() );
-        }
-
-        return ldapDn;
-    }
-
-
     /**
      * Gets the prefix, cuts the suffix from the given Dn.
      * 

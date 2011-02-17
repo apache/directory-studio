@@ -32,7 +32,6 @@ import org.apache.directory.shared.ldap.model.subtree.SubtreeSpecification;
 import org.apache.directory.shared.ldap.model.subtree.SubtreeSpecificationParser;
 import org.apache.directory.studio.aciitemeditor.Activator;
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
-import org.apache.directory.studio.connection.core.DnUtils;
 import org.apache.directory.studio.ldapbrowser.common.dialogs.TextDialog;
 import org.apache.directory.studio.ldapbrowser.common.widgets.WidgetModifyEvent;
 import org.apache.directory.studio.ldapbrowser.common.widgets.WidgetModifyListener;
@@ -659,7 +658,7 @@ class SubtreeSpecificationDialog extends Dialog
             
             if ( !Dn.isNullOrEmpty( suffix ) )
             {
-                chopBase = DnUtils.composeDn( chopBase, suffix );
+                chopBase = chopBase.addAll( suffix );
             }
         }
 
@@ -691,7 +690,7 @@ class SubtreeSpecificationDialog extends Dialog
                 
                 if ( !Dn.isNullOrEmpty( suffix ) )
                 {
-                    chopBase = DnUtils.composeDn( chopBase, suffix );
+                    chopBase = chopBase.addAll( suffix );
                 }
             }
 
