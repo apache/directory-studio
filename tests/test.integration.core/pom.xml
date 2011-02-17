@@ -251,9 +251,10 @@
         <configuration>
           <manifestLocation>META-INF</manifestLocation>
           <instructions>            
-            <Bundle-SymbolicName>${groupId}.${artifactId};singleton:=true</Bundle-SymbolicName>
+            <Bundle-SymbolicName>${project.groupId}.${project.artifactId};singleton:=true</Bundle-SymbolicName>
             <Bundle-Localization>plugin</Bundle-Localization>
             <Require-Bundle>org.eclipse.core.runtime,
+ org.apache.directory.studio.common.core,
  org.apache.directory.studio.connection.core,
  org.junit
             </Require-Bundle>
@@ -290,22 +291,22 @@
     <dependency>
       <groupId>org.apache.directory.server</groupId>
       <artifactId>apacheds-server-unit</artifactId>
-      <version>1.5.5-SNAPSHOT</version>
+      <version>1.5.5</version>
     </dependency> 
     <dependency>
       <groupId>org.apache.directory.server</groupId>
       <artifactId>apacheds-core-integ</artifactId>
-      <version>1.5.5-SNAPSHOT</version>
+      <version>1.5.5</version>
     </dependency> 
     <dependency>
       <groupId>org.apache.directory.shared</groupId>
       <artifactId>shared-ldap</artifactId>
-      <version>0.9.15-SNAPSHOT</version>
+      <version>0.9.15</version>
     </dependency> 
     <dependency>
       <groupId>org.apache.directory.shared</groupId>
       <artifactId>shared-asn1</artifactId>
-      <version>0.9.15-SNAPSHOT</version>
+      <version>0.9.15</version>
     </dependency> 
     <dependency>
       <groupId>junit</groupId>
@@ -325,6 +326,11 @@
       <artifactId>log4j</artifactId>
     </dependency>
     
+    <dependency>
+      <groupId>org.apache.directory.studio</groupId>
+      <artifactId>common.core</artifactId>
+      <scope>provided</scope>
+    </dependency>
     <dependency>
       <groupId>org.apache.directory.studio</groupId>
       <artifactId>connection.core</artifactId>

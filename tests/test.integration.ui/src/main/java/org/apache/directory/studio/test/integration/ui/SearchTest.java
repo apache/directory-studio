@@ -28,9 +28,9 @@ import org.apache.directory.server.annotations.CreateLdapServer;
 import org.apache.directory.server.annotations.CreateTransport;
 import org.apache.directory.server.core.integ.AbstractLdapTestUnit;
 import org.apache.directory.server.core.integ.FrameworkRunner;
-import org.apache.directory.shared.ldap.message.ModifyRequest;
-import org.apache.directory.shared.ldap.message.ModifyRequestImpl;
-import org.apache.directory.shared.ldap.name.DN;
+import org.apache.directory.shared.ldap.model.message.ModifyRequest;
+import org.apache.directory.shared.ldap.model.message.ModifyRequestImpl;
+import org.apache.directory.shared.ldap.model.name.Dn;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.ldapbrowser.core.BrowserConnectionManager;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
@@ -195,7 +195,7 @@ public class SearchTest extends AbstractLdapTestUnit
 
         // add description
         ModifyRequest request = new ModifyRequestImpl();
-        request.setName( new DN( "uid=admin,ou=system" ) );
+        request.setName( new Dn( "uid=admin,ou=system" ) );
         request.replace( "description", "The 1st description." );
         ldapServer.getDirectoryService().getAdminSession().modify( request );
 

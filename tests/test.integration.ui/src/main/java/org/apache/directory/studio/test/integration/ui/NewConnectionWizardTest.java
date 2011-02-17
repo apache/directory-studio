@@ -50,11 +50,11 @@ import org.apache.directory.server.annotations.CreateTransport;
 import org.apache.directory.server.core.CoreSession;
 import org.apache.directory.server.core.integ.AbstractLdapTestUnit;
 import org.apache.directory.server.core.integ.FrameworkRunner;
-import org.apache.directory.shared.ldap.entry.Entry;
-import org.apache.directory.shared.ldap.entry.Modification;
-import org.apache.directory.shared.ldap.message.ModifyRequest;
-import org.apache.directory.shared.ldap.message.ModifyRequestImpl;
-import org.apache.directory.shared.ldap.name.DN;
+import org.apache.directory.shared.ldap.model.entry.Entry;
+import org.apache.directory.shared.ldap.model.entry.Modification;
+import org.apache.directory.shared.ldap.model.message.ModifyRequest;
+import org.apache.directory.shared.ldap.model.message.ModifyRequestImpl;
+import org.apache.directory.shared.ldap.model.name.Dn;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
 import org.apache.directory.studio.connection.core.ConnectionManager;
@@ -1088,7 +1088,7 @@ public class NewConnectionWizardTest extends AbstractLdapTestUnit
     private void updateCertificate( String issuerDN, String subjectDN, Date startDate, Date expiryDate )
         throws Exception
     {
-        DN dn = new DN( PRINCIPAL );
+        Dn dn = new Dn( PRINCIPAL );
         List<Modification> modifications = new ArrayList<Modification>();
 
         // Get old key algorithm
@@ -1145,7 +1145,7 @@ public class NewConnectionWizardTest extends AbstractLdapTestUnit
         ksFile = File.createTempFile( "testStore", "ks" );
 
         CoreSession session = ldapServer.getDirectoryService().getAdminSession();
-        Entry entry = session.lookup( new DN( "uid=admin,ou=system" ), new String[]
+        Entry entry = session.lookup( new Dn( "uid=admin,ou=system" ), new String[]
             { USER_CERTIFICATE_AT } );
         byte[] userCertificate = entry.get( USER_CERTIFICATE_AT ).getBytes();
         assertNotNull( userCertificate );
