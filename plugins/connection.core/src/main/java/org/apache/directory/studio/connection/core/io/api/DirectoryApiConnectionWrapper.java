@@ -23,6 +23,7 @@ package org.apache.directory.studio.connection.core.io.api;
 import java.security.KeyStore;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.naming.ContextNotEmptyException;
@@ -35,6 +36,9 @@ import javax.naming.ldap.Control;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.TrustManagerFactory;
 import javax.net.ssl.X509TrustManager;
+import javax.security.auth.login.AppConfigurationEntry;
+import javax.security.auth.login.Configuration;
+import javax.security.auth.login.AppConfigurationEntry.LoginModuleControlFlag;
 
 import org.apache.directory.ldap.client.api.CramMd5Request;
 import org.apache.directory.ldap.client.api.DigestMd5Request;
@@ -57,6 +61,7 @@ import org.apache.directory.studio.connection.core.Connection.ReferralHandlingMe
 import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
 import org.apache.directory.studio.connection.core.ConnectionParameter;
 import org.apache.directory.studio.connection.core.ConnectionParameter.EncryptionMethod;
+import org.apache.directory.studio.connection.core.ConnectionCoreConstants;
 import org.apache.directory.studio.connection.core.IAuthHandler;
 import org.apache.directory.studio.connection.core.ICredentials;
 import org.apache.directory.studio.connection.core.IJndiLogger;
@@ -66,6 +71,7 @@ import org.apache.directory.studio.connection.core.io.StudioNamingEnumeration;
 import org.apache.directory.studio.connection.core.io.StudioTrustManager;
 import org.apache.directory.studio.connection.core.io.jndi.CancelException;
 import org.apache.directory.studio.connection.core.io.jndi.ReferralsInfo;
+import org.eclipse.core.runtime.Preferences;
 import org.eclipse.osgi.util.NLS;
 
 
@@ -322,8 +328,10 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
                             cramMd5Request.setUsername( bindPrincipal );
                             cramMd5Request.setCredentials( bindPassword );
                             cramMd5Request.setQualityOfProtection( connection.getConnectionParameter().getSaslQop() );
-                            cramMd5Request.setSecurityStrength( connection.getConnectionParameter().getSaslSecurityStrength() );
-                            cramMd5Request.setMutualAuthentication( connection.getConnectionParameter().isSaslMutualAuthentication() );
+                            cramMd5Request.setSecurityStrength( connection.getConnectionParameter()
+                                .getSaslSecurityStrength() );
+                            cramMd5Request.setMutualAuthentication( connection.getConnectionParameter()
+                                .isSaslMutualAuthentication() );
 
                             bindResponse = ldapConnection.bind( cramMd5Request );
                         }
@@ -335,8 +343,10 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
                             digestMd5Request.setCredentials( bindPassword );
                             digestMd5Request.setRealmName( connection.getConnectionParameter().getSaslRealm() );
                             digestMd5Request.setQualityOfProtection( connection.getConnectionParameter().getSaslQop() );
-                            digestMd5Request.setSecurityStrength( connection.getConnectionParameter().getSaslSecurityStrength() );
-                            digestMd5Request.setMutualAuthentication( connection.getConnectionParameter().isSaslMutualAuthentication() );
+                            digestMd5Request.setSecurityStrength( connection.getConnectionParameter()
+                                .getSaslSecurityStrength() );
+                            digestMd5Request.setMutualAuthentication( connection.getConnectionParameter()
+                                .isSaslMutualAuthentication() );
 
                             bindResponse = ldapConnection.bind( digestMd5Request );
                         }
@@ -344,16 +354,29 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
                         else if ( connection.getConnectionParameter().getAuthMethod() == ConnectionParameter.AuthenticationMethod.SASL_GSSAPI )
                         {
                             GssApiRequest gssApiRequest = new GssApiRequest();
-                            gssApiRequest.setUsername( bindPrincipal );
-                            gssApiRequest.setCredentials( bindPassword );
-                            gssApiRequest.setQualityOfProtection( connection.getConnectionParameter().getSaslQop() );
-                            gssApiRequest.setSecurityStrength( connection.getConnectionParameter().getSaslSecurityStrength() );
-                            gssApiRequest.setMutualAuthentication( connection.getConnectionParameter().isSaslMutualAuthentication() );
-                            
-                            switch ( connection.getConnectionParameter().getKrb5Configuration() )
+
+                            Preferences preferences = ConnectionCorePlugin.getDefault().getPluginPreferences();
+                            boolean useKrb5SystemProperties = preferences
+                                .getBoolean( ConnectionCoreConstants.PREFERENCE_USE_KRB5_SYSTEM_PROPERTIES );
+                            String krb5LoginModule = preferences
+                                .getString( ConnectionCoreConstants.PREFERENCE_KRB5_LOGIN_MODULE );
+
+                            if ( !useKrb5SystemProperties )
                             {
-                                case FILE:
-                                    gssApiRequest.setKrb5ConfFilePath( connection.getConnectionParameter().getKrb5ConfigurationFile() );
+                                gssApiRequest.setUsername( bindPrincipal );
+                                gssApiRequest.setCredentials( bindPassword );
+                                gssApiRequest.setQualityOfProtection( connection.getConnectionParameter().getSaslQop() );
+                                gssApiRequest.setSecurityStrength( connection.getConnectionParameter()
+                                    .getSaslSecurityStrength() );
+                                gssApiRequest.setMutualAuthentication( connection.getConnectionParameter()
+                                    .isSaslMutualAuthentication() );
+                                gssApiRequest.setLoginModuleConfiguration( new InnerConfiguration( krb5LoginModule ) );
+
+                                switch ( connection.getConnectionParameter().getKrb5Configuration() )
+                                {
+                                    case FILE:
+                                    gssApiRequest.setKrb5ConfFilePath( connection.getConnectionParameter()
+                                        .getKrb5ConfigurationFile() );
                                     break;
                                 case MANUAL:
                                     gssApiRequest.setRealmName( connection.getConnectionParameter().getKrb5Realm() );
@@ -361,13 +384,14 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
                                     gssApiRequest.setKdcPort( connection.getConnectionParameter().getKrb5KdcPort() );
                                     break;
                             }
-
-                            bindResponse = ldapConnection.bind( gssApiRequest );
                         }
 
-                        checkResponse( bindResponse );
+                        bindResponse = ldapConnection.bind( gssApiRequest );
                     }
-                    catch ( Exception e )
+
+                    checkResponse( bindResponse );
+                }
+                catch ( Exception e )
                     {
                         exception = e;
                     }
@@ -1086,6 +1110,49 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
             {
                 throw new CancelException();
             }
+        }
+    }
+
+    private final class InnerConfiguration extends Configuration
+    {
+        private String krb5LoginModule;
+        private AppConfigurationEntry[] configList = null;
+
+
+        public InnerConfiguration( String krb5LoginModule )
+        {
+            this.krb5LoginModule = krb5LoginModule;
+        }
+
+
+        public AppConfigurationEntry[] getAppConfigurationEntry( String applicationName )
+        {
+            if ( configList == null )
+            {
+                HashMap<String, Object> options = new HashMap<String, Object>();
+
+                // TODO: this only works for Sun JVM
+                options.put( "refreshKrb5Config", "true" );
+                switch ( connection.getConnectionParameter().getKrb5CredentialConfiguration() )
+                {
+                    case USE_NATIVE:
+                        options.put( "useTicketCache", "true" );
+                        options.put( "doNotPrompt", "true" );
+                        break;
+                    case OBTAIN_TGT:
+                        options.put( "doNotPrompt", "false" );
+                        break;
+                }
+
+                configList = new AppConfigurationEntry[1];
+                configList[0] = new AppConfigurationEntry( krb5LoginModule, LoginModuleControlFlag.REQUIRED, options );
+            }
+            return configList;
+        }
+
+
+        public void refresh()
+        {
         }
     }
 
