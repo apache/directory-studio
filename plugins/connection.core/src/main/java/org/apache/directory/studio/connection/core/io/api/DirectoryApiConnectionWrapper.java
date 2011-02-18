@@ -241,6 +241,7 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
         {
             try
             {
+                ldapConnection.unBind();
                 ldapConnection.close();
             }
             catch ( Exception e )
@@ -320,6 +321,9 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
                             CramMd5Request cramMd5Request = new CramMd5Request();
                             cramMd5Request.setUsername( bindPrincipal );
                             cramMd5Request.setCredentials( bindPassword );
+                            cramMd5Request.setQualityOfProtection( connection.getConnectionParameter().getSaslQop() );
+                            cramMd5Request.setSecurityStrength( connection.getConnectionParameter().getSaslSecurityStrength() );
+                            cramMd5Request.setMutualAuthentication( connection.getConnectionParameter().isSaslMutualAuthentication() );
 
                             bindResponse = ldapConnection.bind( cramMd5Request );
                         }
@@ -330,6 +334,9 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
                             digestMd5Request.setUsername( bindPrincipal );
                             digestMd5Request.setCredentials( bindPassword );
                             digestMd5Request.setRealmName( connection.getConnectionParameter().getSaslRealm() );
+                            digestMd5Request.setQualityOfProtection( connection.getConnectionParameter().getSaslQop() );
+                            digestMd5Request.setSecurityStrength( connection.getConnectionParameter().getSaslSecurityStrength() );
+                            digestMd5Request.setMutualAuthentication( connection.getConnectionParameter().isSaslMutualAuthentication() );
 
                             bindResponse = ldapConnection.bind( digestMd5Request );
                         }
@@ -339,9 +346,21 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
                             GssApiRequest gssApiRequest = new GssApiRequest();
                             gssApiRequest.setUsername( bindPrincipal );
                             gssApiRequest.setCredentials( bindPassword );
-                            gssApiRequest.setRealmName( connection.getConnectionParameter().getKrb5Realm() );
-                            gssApiRequest.setKdcHost( connection.getConnectionParameter().getKrb5KdcHost() );
-                            gssApiRequest.setKdcPort( connection.getConnectionParameter().getKrb5KdcPort() );
+                            gssApiRequest.setQualityOfProtection( connection.getConnectionParameter().getSaslQop() );
+                            gssApiRequest.setSecurityStrength( connection.getConnectionParameter().getSaslSecurityStrength() );
+                            gssApiRequest.setMutualAuthentication( connection.getConnectionParameter().isSaslMutualAuthentication() );
+                            
+                            switch ( connection.getConnectionParameter().getKrb5Configuration() )
+                            {
+                                case FILE:
+                                    gssApiRequest.setKrb5ConfFilePath( connection.getConnectionParameter().getKrb5ConfigurationFile() );
+                                    break;
+                                case MANUAL:
+                                    gssApiRequest.setRealmName( connection.getConnectionParameter().getKrb5Realm() );
+                                    gssApiRequest.setKdcHost( connection.getConnectionParameter().getKrb5KdcHost() );
+                                    gssApiRequest.setKdcPort( connection.getConnectionParameter().getKrb5KdcPort() );
+                                    break;
+                            }
 
                             bindResponse = ldapConnection.bind( gssApiRequest );
                         }
