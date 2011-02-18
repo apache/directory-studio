@@ -375,23 +375,23 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
                                 switch ( connection.getConnectionParameter().getKrb5Configuration() )
                                 {
                                     case FILE:
-                                    gssApiRequest.setKrb5ConfFilePath( connection.getConnectionParameter()
-                                        .getKrb5ConfigurationFile() );
-                                    break;
-                                case MANUAL:
-                                    gssApiRequest.setRealmName( connection.getConnectionParameter().getKrb5Realm() );
-                                    gssApiRequest.setKdcHost( connection.getConnectionParameter().getKrb5KdcHost() );
-                                    gssApiRequest.setKdcPort( connection.getConnectionParameter().getKrb5KdcPort() );
-                                    break;
+                                        gssApiRequest.setKrb5ConfFilePath( connection.getConnectionParameter()
+                                            .getKrb5ConfigurationFile() );
+                                        break;
+                                    case MANUAL:
+                                        gssApiRequest.setRealmName( connection.getConnectionParameter().getKrb5Realm() );
+                                        gssApiRequest.setKdcHost( connection.getConnectionParameter().getKrb5KdcHost() );
+                                        gssApiRequest.setKdcPort( connection.getConnectionParameter().getKrb5KdcPort() );
+                                        break;
+                                }
                             }
+
+                            bindResponse = ldapConnection.bind( gssApiRequest );
                         }
 
-                        bindResponse = ldapConnection.bind( gssApiRequest );
+                        checkResponse( bindResponse );
                     }
-
-                    checkResponse( bindResponse );
-                }
-                catch ( Exception e )
+                    catch ( Exception e )
                     {
                         exception = e;
                     }
