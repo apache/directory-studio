@@ -118,12 +118,6 @@
   <dependencies>
     <!-- Apache Directory Studio library plugins dependencies -->
     <dependency>
-      <groupId>org.apache.directory.shared</groupId>
-      <artifactId>shared-ldap-model</artifactId>
-      <scope>provided</scope>
-    </dependency>
-    
-    <dependency>
       <groupId>org.apache.directory.studio</groupId>
       <artifactId>org.apache.commons.codec</artifactId>
       <scope>provided</scope>
