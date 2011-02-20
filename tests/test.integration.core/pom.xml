@@ -250,7 +250,7 @@
         <extensions>true</extensions>
         <configuration>
           <manifestLocation>META-INF</manifestLocation>
-          <instructions>
+          <instructions>            
             <Bundle-SymbolicName>${project.groupId}.${project.artifactId};singleton:=true</Bundle-SymbolicName>
             <Bundle-Localization>plugin</Bundle-Localization>
             <Require-Bundle>org.eclipse.core.runtime,

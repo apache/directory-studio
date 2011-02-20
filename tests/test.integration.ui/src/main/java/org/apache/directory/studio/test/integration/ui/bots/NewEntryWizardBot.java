@@ -19,8 +19,9 @@
  */
 package org.apache.directory.studio.test.integration.ui.bots;
 
-
 import org.apache.directory.shared.ldap.model.name.Dn;
+
+
 
 
 public class NewEntryWizardBot extends WizardBot
