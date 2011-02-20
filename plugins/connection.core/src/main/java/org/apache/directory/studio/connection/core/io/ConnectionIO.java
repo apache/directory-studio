@@ -26,9 +26,11 @@ import java.io.OutputStream;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.Set;
 import java.util.Map.Entry;
+import java.util.Set;
 
+import org.apache.directory.shared.ldap.model.constants.SaslQoP;
+import org.apache.directory.shared.ldap.model.constants.SaslSecurityStrength;
 import org.apache.directory.studio.connection.core.ConnectionFolder;
 import org.apache.directory.studio.connection.core.ConnectionParameter;
 import org.apache.directory.studio.connection.core.ConnectionParameter.AuthenticationMethod;
@@ -36,8 +38,6 @@ import org.apache.directory.studio.connection.core.ConnectionParameter.Encryptio
 import org.apache.directory.studio.connection.core.ConnectionParameter.Krb5Configuration;
 import org.apache.directory.studio.connection.core.ConnectionParameter.Krb5CredentialConfiguration;
 import org.apache.directory.studio.connection.core.ConnectionParameter.NetworkProvider;
-import org.apache.directory.studio.connection.core.ConnectionParameter.SaslQop;
-import org.apache.directory.studio.connection.core.ConnectionParameter.SaslSecurityStrength;
 import org.dom4j.Attribute;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
@@ -258,7 +258,15 @@ public class ConnectionIO
         Attribute saslQopAttribute = element.attribute( SASL_QOP_TAG );
         if ( saslQopAttribute != null )
         {
-            connection.setSaslQop( SaslQop.valueOf( saslQopAttribute.getValue() ) );
+            if ( "AUTH_INT_PRIV".equals( saslQopAttribute.getValue() ) )
+            {
+                // Used for legacy setting (before we used SaslQop enum from Shared)
+                connection.setSaslQop( SaslQoP.AUTH_CONF );
+            }
+            else
+            {
+                connection.setSaslQop( SaslQoP.valueOf( saslQopAttribute.getValue() ) );
+            }
         }
 
         // SASL Security Strength

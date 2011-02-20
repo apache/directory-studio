@@ -87,8 +87,8 @@ public class BrowserTest extends AbstractLdapTestUnit
         studioBot = new StudioBot();
         studioBot.resetLdapPerspective();
         connectionsViewBot = studioBot.getConnectionView();
-        System.out.println(connectionsViewBot);
-        System.out.println(ldapServer);
+        System.out.println( connectionsViewBot );
+        System.out.println( ldapServer );
         connection = connectionsViewBot.createTestConnection( "BrowserTest", ldapServer.getPort() );
         browserViewBot = studioBot.getBrowserView();
         searchLogsViewBot = studioBot.getSearchLogsViewBot();

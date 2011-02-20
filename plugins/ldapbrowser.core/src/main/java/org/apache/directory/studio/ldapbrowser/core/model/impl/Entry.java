@@ -21,9 +21,8 @@
 package org.apache.directory.studio.ldapbrowser.core.model.impl;
 
 
-import org.apache.directory.shared.ldap.model.name.Rdn;
 import org.apache.directory.shared.ldap.model.name.Dn;
-import org.apache.directory.studio.connection.core.DnUtils;
+import org.apache.directory.shared.ldap.model.name.Rdn;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 
@@ -82,7 +81,7 @@ public class Entry extends AbstractEntry
      */
     public Dn getDn()
     {
-        Dn dn = DnUtils.composeDn( rdn, parent.getDn() );
+        Dn dn = parent.getDn().add( rdn );
         return dn;
     }
 

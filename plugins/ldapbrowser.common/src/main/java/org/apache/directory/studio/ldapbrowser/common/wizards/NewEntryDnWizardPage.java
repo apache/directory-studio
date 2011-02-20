@@ -33,7 +33,6 @@ import org.apache.directory.shared.ldap.model.name.Dn;
 import org.apache.directory.shared.ldap.model.name.Rdn;
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
-import org.apache.directory.studio.connection.core.DnUtils;
 import org.apache.directory.studio.connection.ui.RunnableContextRunner;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonConstants;
@@ -183,19 +182,12 @@ public class NewEntryDnWizardPage extends WizardPage implements WidgetModifyList
             Collection<AttributeType> atds = SchemaUtils.getAllAttributeTypeDescriptions( newEntry );
             String[] attributeNames = SchemaUtils.getNames( atds ).toArray( ArrayUtils.EMPTY_STRING_ARRAY );
 
-            Dn parentDn = null;
-            if ( wizard.getSelectedEntry() != null && newEntry.getDn().equals( wizard.getSelectedEntry().getDn() )
-                && DnUtils.getParent( newEntry.getDn() ) != null )
-            {
-                parentDn = DnUtils.getParent( newEntry.getDn() );
-            }
-            else if ( wizard.getSelectedEntry() != null )
+            Dn parentDn = newEntry.getDn().getParent();
+            
+            if ( wizard.getSelectedEntry() != null && !Dn.isNullOrEmpty( parentDn ) 
+                && ( !newEntry.getDn().equals( wizard.getSelectedEntry().getDn() ) ) )
             {
                 parentDn = wizard.getSelectedEntry().getDn();
-            }
-            else if ( DnUtils.getParent( newEntry.getDn() ) != null )
-            {
-                parentDn = DnUtils.getParent( newEntry.getDn() );
             }
 
             Rdn rdn = newEntry.getRdn();
@@ -262,7 +254,7 @@ public class NewEntryDnWizardPage extends WizardPage implements WidgetModifyList
             }
             else
             {
-                dn = DnUtils.composeDn( dnBuilderWidget.getRdn(), dnBuilderWidget.getParentDn() );
+                dn = dnBuilderWidget.getParentDn().add( dnBuilderWidget.getRdn() );
             }
             newEntry.setDn( dn );
 
@@ -346,7 +338,7 @@ public class NewEntryDnWizardPage extends WizardPage implements WidgetModifyList
 
             Rdn rdn = dnBuilderWidget.getRdn();
             Dn parentDn = dnBuilderWidget.getParentDn();
-            final Dn dn = DnUtils.composeDn( rdn, parentDn );
+            final Dn dn = parentDn.add(  rdn );
 
             // check if parent exists
             ReadEntryRunnable readEntryRunnable1 = new ReadEntryRunnable( wizard.getSelectedConnection(), parentDn );

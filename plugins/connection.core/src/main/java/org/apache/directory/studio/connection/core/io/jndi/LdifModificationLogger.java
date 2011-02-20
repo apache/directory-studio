@@ -56,7 +56,6 @@ import org.apache.directory.studio.connection.core.Connection.AliasDereferencing
 import org.apache.directory.studio.connection.core.ConnectionCoreConstants;
 import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
 import org.apache.directory.studio.connection.core.ConnectionManager;
-import org.apache.directory.studio.connection.core.DnUtils;
 import org.apache.directory.studio.connection.core.IJndiLogger;
 import org.apache.directory.studio.ldifparser.LdifFormatParameters;
 import org.apache.directory.studio.ldifparser.model.container.LdifChangeAddRecord;
@@ -423,7 +422,7 @@ public class LdifModificationLogger implements IJndiLogger
         {
             Dn dn = new Dn( newDn );
             Rdn newrdn = dn.getRdn();
-            Dn newsuperior = DnUtils.getParent( dn );
+            Dn newsuperior = dn.getParent();
 
             LdifChangeModDnRecord record = new LdifChangeModDnRecord( LdifDnLine.create( oldDn ) );
             addControlLines( record, controls );

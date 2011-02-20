@@ -45,7 +45,6 @@ import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
 import org.apache.directory.studio.connection.core.Connection.ReferralHandlingMethod;
-import org.apache.directory.studio.connection.core.DnUtils;
 import org.apache.directory.studio.connection.core.StudioControl;
 import org.apache.directory.studio.connection.core.StudioPagedResultsControl;
 import org.apache.directory.studio.connection.core.io.StudioNamingEnumeration;
@@ -614,12 +613,12 @@ public class SearchRunnable implements StudioConnectionBulkRunnableWithProgress
         while ( parentDn != null && browserConnection.getEntryFromCache(parentDn) == null )
         {
             parentDnList.addFirst(parentDn);
-            parentDn = DnUtils.getParent(parentDn);
+            parentDn = parentDn.getParent();
         }
 
         for ( Dn aDn : parentDnList )
         {
-            parentDn = DnUtils.getParent(aDn);
+            parentDn = aDn.getParent();
             if ( parentDn == null )
             {
                 // only the root DSE has a null parent

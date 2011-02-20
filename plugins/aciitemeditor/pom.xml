@@ -109,7 +109,7 @@
             <Bundle-Localization>plugin</Bundle-Localization>
             <Eclipse-LazyStart>true</Eclipse-LazyStart>
             <Bundle-Activator>org.apache.directory.studio.aciitemeditor.Activator</Bundle-Activator>
-            <Require-Bundle>org.apache.directory.shared.ldap;bundle-version="${org.apache.directory.shared.validversion}",
+            <Require-Bundle>
  org.apache.directory.shared.ldap.model;bundle-version="${org.apache.directory.shared.validversion}",
  org.apache.directory.studio.common.ui,
  org.apache.directory.studio.connection.core,
@@ -153,10 +153,13 @@
     <!-- Apache Directory Studio library plugins dependencies -->
     <dependency>
       <groupId>org.apache.directory.shared</groupId>
-      <artifactId>shared-ldap</artifactId>
-      <scope>provided</scope>
+      <artifactId>shared-ldap-model</artifactId>
     </dependency>
-    
+    <dependency>
+      <groupId>org.apache.directory.shared</groupId>
+      <artifactId>shared-ldap-extras-aci</artifactId>
+    </dependency>
+
   	<!-- Apache Directory Studio plugins dependencies -->
     <dependency>
       <groupId>org.apache.directory.studio</groupId>

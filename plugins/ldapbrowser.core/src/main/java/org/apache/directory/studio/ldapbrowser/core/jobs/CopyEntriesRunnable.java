@@ -40,13 +40,12 @@ import javax.naming.ldap.ManageReferralControl;
 
 import org.apache.directory.shared.ldap.model.constants.SchemaConstants;
 import org.apache.directory.shared.ldap.model.name.Ava;
-import org.apache.directory.shared.ldap.model.name.Rdn;
 import org.apache.directory.shared.ldap.model.name.Dn;
+import org.apache.directory.shared.ldap.model.name.Rdn;
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
 import org.apache.directory.studio.connection.core.Connection.ReferralHandlingMethod;
-import org.apache.directory.studio.connection.core.DnUtils;
 import org.apache.directory.studio.connection.core.jobs.StudioConnectionBulkRunnableWithProgress;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.ldapbrowser.core.events.BulkModificationEvent;
@@ -245,7 +244,7 @@ public class CopyEntriesRunnable implements StudioConnectionBulkRunnableWithProg
         Dn parentDn = parent.getDn();
         if ( parentDn.isEmpty() )
         {
-            parentDn = DnUtils.getParent( entryToCopy.getDn() );
+            parentDn = entryToCopy.getDn().getParent();
         }
         numberOfCopiedEntries = copyEntryRecursive( entryToCopy.getBrowserConnection(), result,
             parent.getBrowserConnection(), parentDn, newRdn, scope, numberOfCopiedEntries, dialog, dummyMonitor,
@@ -297,7 +296,7 @@ public class CopyEntriesRunnable implements StudioConnectionBulkRunnableWithProg
                 {
                     newRdn = forceNewRdn;
                 }
-                Dn newLdapDn = DnUtils.composeDn( newRdn, parentDn );
+                Dn newLdapDn = parentDn.add( newRdn );
 
                 // apply new Rdn to the attributes
                 applyNewRdn( newAttributes, oldRdn, newRdn );
@@ -372,7 +371,7 @@ public class CopyEntriesRunnable implements StudioConnectionBulkRunnableWithProg
                                     applyNewRdn( newAttributes, newRdn, renamedRdn );
 
                                     // compose new Dn
-                                    newLdapDn = DnUtils.composeDn( renamedRdn, parentDn );
+                                    newLdapDn = parentDn.add( renamedRdn );
 
                                     // create entry
                                     targetBrowserConnection.getConnection().getConnectionWrapper()

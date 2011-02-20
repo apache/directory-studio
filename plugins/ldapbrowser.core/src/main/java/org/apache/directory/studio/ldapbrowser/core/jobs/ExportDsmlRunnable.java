@@ -42,8 +42,8 @@ import org.apache.directory.shared.dsmlv2.reponse.SearchResultEntryDsml;
 import org.apache.directory.shared.dsmlv2.reponse.SearchResultReferenceDsml;
 import org.apache.directory.shared.dsmlv2.request.AddRequestDsml;
 import org.apache.directory.shared.dsmlv2.request.BatchRequestDsml;
-import org.apache.directory.shared.ldap.codec.api.DefaultLdapCodecService;
 import org.apache.directory.shared.ldap.codec.api.LdapCodecService;
+import org.apache.directory.shared.ldap.codec.api.LdapCodecServiceFactory;
 import org.apache.directory.shared.ldap.model.entry.AttributeUtils;
 import org.apache.directory.shared.ldap.model.entry.Entry;
 import org.apache.directory.shared.ldap.model.exception.LdapURLEncodingException;
@@ -97,7 +97,7 @@ public class ExportDsmlRunnable implements StudioConnectionRunnableWithProgress
      * @TODO - this should be removed - no reason why the DSML parser needs it
      * @TODO - hate to make it static like this but methods are static
      */
-    private static LdapCodecService codec = new DefaultLdapCodecService();
+    private static LdapCodecService codec = LdapCodecServiceFactory.getSingleton();
     
 
     /**

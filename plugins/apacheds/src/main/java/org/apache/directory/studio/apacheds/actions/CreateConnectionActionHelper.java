@@ -31,6 +31,7 @@ import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
 import org.apache.directory.studio.connection.core.ConnectionParameter;
 import org.apache.directory.studio.connection.core.ConnectionParameter.AuthenticationMethod;
 import org.apache.directory.studio.connection.core.ConnectionParameter.EncryptionMethod;
+import org.apache.directory.studio.connection.core.ConnectionParameter.NetworkProvider;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.osgi.util.NLS;
@@ -131,7 +132,10 @@ public class CreateConnectionActionHelper
 
         // Name
         connectionParameter.setName( serverName );
-
+        
+        // Network Provider
+        connectionParameter.setNetworkProvider( NetworkProvider.JNDI );
+        
         // Creating the connection
         Connection connection = new Connection( connectionParameter );
 

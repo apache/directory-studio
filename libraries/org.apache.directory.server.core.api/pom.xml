@@ -93,11 +93,13 @@
  org.apache.directory.server.core.constants;bundle-version="${org.apache.directory.server.validversion}",
  org.apache.directory.server.i18n;bundle-version="${org.apache.directory.server.validversion}",
  org.apache.directory.shared.i18n;bundle-version="${org.apache.directory.shared.validversion}",
- org.apache.directory.shared.ldap;bundle-version="${org.apache.directory.shared.validversion}",
  org.apache.directory.shared.ldap.client.api;bundle-version="${org.apache.directory.shared.validversion}",
+ org.apache.directory.shared.asn1.api;bundle-version="${org.apache.directory.shared.validversion}",
  org.apache.directory.shared.ldap.codec;bundle-version="${org.apache.directory.shared.validversion}",
+ org.apache.directory.shared.ldap.extras.util;bundle-version="${org.apache.directory.shared.validversion}",
  org.apache.directory.shared.ldap.model;bundle-version="${org.apache.directory.shared.validversion}",
  org.apache.directory.shared.ldap.schema;bundle-version="${org.apache.directory.shared.validversion}",
+ org.apache.directory.shared.util;bundle-version="${org.apache.directory.shared.validversion}",
  org.slf4j.api;bundle-version="${org.slf4j.version}"</Require-Bundle>
             <Embed-Dependency>*;scope=compile|runtime</Embed-Dependency>
             <Embed-Directory>lib</Embed-Directory>
@@ -165,11 +167,11 @@
         </exclusion>
         <exclusion>
           <groupId>org.apache.directory.shared</groupId>
-          <artifactId>shared-ldap</artifactId>
+          <artifactId>shared-ldap-codec-standalone</artifactId>
         </exclusion>
         <exclusion>
           <groupId>org.apache.directory.shared</groupId>
-          <artifactId>shared-ldap-codec</artifactId>
+          <artifactId>shared-ldap-extras-util</artifactId>
         </exclusion>
         <exclusion>
           <groupId>org.apache.directory.shared</groupId>
@@ -240,12 +242,12 @@
     </dependency>
     <dependency>
       <groupId>org.apache.directory.shared</groupId>
-      <artifactId>shared-ldap</artifactId>
+      <artifactId>shared-ldap-codec-standalone</artifactId>
       <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.directory.shared</groupId>
-      <artifactId>shared-ldap-codec</artifactId>
+      <artifactId>shared-ldap-extras-util</artifactId>
       <scope>provided</scope>
     </dependency>
     <dependency>

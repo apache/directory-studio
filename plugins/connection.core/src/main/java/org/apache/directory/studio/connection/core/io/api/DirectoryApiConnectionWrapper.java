@@ -23,6 +23,7 @@ package org.apache.directory.studio.connection.core.io.api;
 import java.security.KeyStore;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.naming.ContextNotEmptyException;
@@ -35,6 +36,9 @@ import javax.naming.ldap.Control;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.TrustManagerFactory;
 import javax.net.ssl.X509TrustManager;
+import javax.security.auth.login.AppConfigurationEntry;
+import javax.security.auth.login.Configuration;
+import javax.security.auth.login.AppConfigurationEntry.LoginModuleControlFlag;
 
 import org.apache.directory.ldap.client.api.CramMd5Request;
 import org.apache.directory.ldap.client.api.DigestMd5Request;
@@ -57,6 +61,7 @@ import org.apache.directory.studio.connection.core.Connection.ReferralHandlingMe
 import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
 import org.apache.directory.studio.connection.core.ConnectionParameter;
 import org.apache.directory.studio.connection.core.ConnectionParameter.EncryptionMethod;
+import org.apache.directory.studio.connection.core.ConnectionCoreConstants;
 import org.apache.directory.studio.connection.core.IAuthHandler;
 import org.apache.directory.studio.connection.core.ICredentials;
 import org.apache.directory.studio.connection.core.IJndiLogger;
@@ -66,6 +71,7 @@ import org.apache.directory.studio.connection.core.io.StudioNamingEnumeration;
 import org.apache.directory.studio.connection.core.io.StudioTrustManager;
 import org.apache.directory.studio.connection.core.io.jndi.CancelException;
 import org.apache.directory.studio.connection.core.io.jndi.ReferralsInfo;
+import org.eclipse.core.runtime.Preferences;
 import org.eclipse.osgi.util.NLS;
 
 
@@ -241,6 +247,7 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
         {
             try
             {
+                ldapConnection.unBind();
                 ldapConnection.close();
             }
             catch ( Exception e )
@@ -1067,6 +1074,49 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
             {
                 throw new CancelException();
             }
+        }
+    }
+
+    private final class InnerConfiguration extends Configuration
+    {
+        private String krb5LoginModule;
+        private AppConfigurationEntry[] configList = null;
+
+
+        public InnerConfiguration( String krb5LoginModule )
+        {
+            this.krb5LoginModule = krb5LoginModule;
+        }
+
+
+        public AppConfigurationEntry[] getAppConfigurationEntry( String applicationName )
+        {
+            if ( configList == null )
+            {
+                HashMap<String, Object> options = new HashMap<String, Object>();
+
+                // TODO: this only works for Sun JVM
+                options.put( "refreshKrb5Config", "true" );
+                switch ( connection.getConnectionParameter().getKrb5CredentialConfiguration() )
+                {
+                    case USE_NATIVE:
+                        options.put( "useTicketCache", "true" );
+                        options.put( "doNotPrompt", "true" );
+                        break;
+                    case OBTAIN_TGT:
+                        options.put( "doNotPrompt", "false" );
+                        break;
+                }
+
+                configList = new AppConfigurationEntry[1];
+                configList[0] = new AppConfigurationEntry( krb5LoginModule, LoginModuleControlFlag.REQUIRED, options );
+            }
+            return configList;
+        }
+
+
+        public void refresh()
+        {
         }
     }
 

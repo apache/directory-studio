@@ -274,7 +274,6 @@
  org.apache.directory.studio.ldapbrowser.ui,
  org.apache.directory.studio.apacheds,
  org.apache.directory.shared.i18n,
- org.apache.directory.shared.ldap,
  org.apache.directory.shared.ldap.schema,
  org.apache.directory.shared.ldap.client.api,
  org.apache.mina.core,
@@ -352,10 +351,6 @@
         <exclusion>
           <groupId>org.apache.directory.shared</groupId>
           <artifactId>shared-i18n</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>org.apache.directory.shared</groupId>
-          <artifactId>shared-ldap</artifactId>
         </exclusion>
         <exclusion>
           <groupId>org.apache.directory.shared</groupId>

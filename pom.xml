@@ -1385,17 +1385,32 @@
       </dependency>
       <dependency>
         <groupId>org.apache.directory.shared</groupId>
-        <artifactId>shared-ldap</artifactId>
+        <artifactId>shared-ldap-codec</artifactId>
+        <version>${org.apache.directory.shared.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.directory.shared</groupId>
+        <artifactId>shared-ldap-codec-standalone</artifactId>
+        <version>${org.apache.directory.shared.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.directory.shared</groupId>
+        <artifactId>shared-ldap-extras-aci</artifactId>
+        <version>${org.apache.directory.shared.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.directory.shared</groupId>
+        <artifactId>shared-ldap-extras-trigger</artifactId>
+        <version>${org.apache.directory.shared.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.directory.shared</groupId>
+        <artifactId>shared-ldap-extras-util</artifactId>
         <version>${org.apache.directory.shared.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.directory.shared</groupId>
         <artifactId>shared-ldap-model</artifactId>
-        <version>${org.apache.directory.shared.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.apache.directory.shared</groupId>
-        <artifactId>shared-ldap-codec</artifactId>
         <version>${org.apache.directory.shared.version}</version>
       </dependency>
       <dependency>

@@ -52,7 +52,6 @@ import org.apache.directory.shared.ldap.model.name.Dn;
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.ConnectionCoreConstants;
-import org.apache.directory.studio.connection.core.DnUtils;
 import org.apache.directory.studio.connection.core.jobs.StudioConnectionBulkRunnableWithProgress;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.ldapbrowser.core.events.BulkModificationEvent;
@@ -291,12 +290,12 @@ public class ImportLdifRunnable implements StudioConnectionBulkRunnableWithProgr
                             // update cache and adjust attribute/children initialization flags
                             Dn dn = new Dn( record.getDnLine().getValueAsString() );
                             IEntry entry = browserConnection.getEntryFromCache( dn );
-                            Dn parentDn = DnUtils.getParent( dn );
+                            Dn parentDn = dn.getParent();
                             IEntry parentEntry = null;
                             while ( parentEntry == null && parentDn != null )
                             {
                                 parentEntry = browserConnection.getEntryFromCache( parentDn );
-                                parentDn = DnUtils.getParent( parentDn );
+                                parentDn = parentDn.getParent();
                             }
 
                             if ( record instanceof LdifChangeDeleteRecord )
@@ -525,13 +524,13 @@ public class ImportLdifRunnable implements StudioConnectionBulkRunnableWithProgr
                 Dn newDn;
                 if ( modDnRecord.getNewsuperiorLine() != null )
                 {
-                    newDn = DnUtils.composeDn( newRdn, modDnRecord.getNewsuperiorLine().getValueAsString() );
+                    newDn = new Dn( newRdn, modDnRecord.getNewsuperiorLine().getValueAsString() );
                 }
                 else
                 {
                     Dn dnObject = new Dn( dn );
-                    Dn parent = DnUtils.getParent( dnObject );
-                    newDn = DnUtils.composeDn( newRdn, parent.getName() );
+                    Dn parent = dnObject.getParent();
+                    newDn = new Dn( newRdn, parent.getName() );
                 }
 
                 browserConnection.getConnection().getConnectionWrapper()
