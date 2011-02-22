@@ -158,7 +158,6 @@ public class Connection implements ConnectionPropertyPageProvider, IAdaptable
                 case 1:
                     return FOLLOW;
                 case 2:
-                    //return MANAGE;
                     return FOLLOW_MANUALLY;
                 case 3:
                     return FOLLOW_MANUALLY;
@@ -220,36 +219,36 @@ public class Connection implements ConnectionPropertyPageProvider, IAdaptable
 
 
     /**
-     * Gets a JNDI connection wrapper.
+     * Gets the JNDI connection wrapper.
      *
      * @return
-     *      a JNDI connection wrapper
+     *      the JNDI connection wrapper
      */
-    private JNDIConnectionWrapper getJndiConnectionWrapper()
+    private ConnectionWrapper getJndiConnectionWrapper()
     {
         if ( ( connectionWrapper == null ) || !( connectionWrapper instanceof JNDIConnectionWrapper ) )
         {
             connectionWrapper = new JNDIConnectionWrapper( this );
         }
 
-        return ( JNDIConnectionWrapper ) connectionWrapper;
+        return connectionWrapper;
     }
 
 
     /**
-     * Gets a Directory API connection wrapper.
+     * Gets the Directory API connection wrapper.
      *
      * @return
-     *      a Directory API connection wrapper
+     *      the Directory API connection wrapper
      */
-    private DirectoryApiConnectionWrapper getDirectoryApiConnectionWrapper()
+    private ConnectionWrapper getDirectoryApiConnectionWrapper()
     {
         if ( ( connectionWrapper == null ) || !( connectionWrapper instanceof DirectoryApiConnectionWrapper ) )
         {
             connectionWrapper = new DirectoryApiConnectionWrapper( this );
         }
 
-        return ( DirectoryApiConnectionWrapper ) connectionWrapper;
+        return connectionWrapper;
     }
 
 
