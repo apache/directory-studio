@@ -50,7 +50,6 @@ import org.eclipse.ui.dialogs.PropertyPage;
  */
 public class RootDSEPropertyPage extends PropertyPage implements IWorkbenchPropertyPage
 {
-
     /** The tab folder. */
     private TabFolder tabFolder;
 
