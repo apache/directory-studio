@@ -304,7 +304,7 @@ public class LdapServer implements IAdaptable
      */
     public Object getAdapter( Class adapter )
     {
-        if ( adapter.isAssignableFrom(  IActionFilter.class ))
+        if ( adapter.isAssignableFrom( IActionFilter.class ) )
         {
             return LdapServerActionFilterAdapter.getInstance();
         }
