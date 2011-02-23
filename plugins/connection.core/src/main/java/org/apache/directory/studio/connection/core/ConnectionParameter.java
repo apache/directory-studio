@@ -21,7 +21,10 @@
 package org.apache.directory.studio.connection.core;
 
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -459,9 +462,9 @@ public class ConnectionParameter
 
 
     /**
-     * Gets the SASL qualitiy of protection.
+     * Gets the SASL quality of protection.
      * 
-     * @return the SASL qualitiy of protection
+     * @return the SASL quality of protection
      */
     public SaslQoP getSaslQop()
     {
@@ -700,6 +703,52 @@ public class ConnectionParameter
     public String getExtendedProperty( String key )
     {
         return extendedProperties.get( key );
+    }
+
+
+    /**
+     * Sets the extended list string property.
+     * 
+     * @param key the key
+     * @param value the value
+     */
+    public void setExtendedListStringProperty( String key, List<String> value )
+    {
+        StringBuilder sb = new StringBuilder();
+        if ( ( value != null ) && ( !value.isEmpty() ) )
+        {
+            for ( String string : value )
+            {
+                sb.append( string );
+                sb.append( ';' );
+            }
+            sb.deleteCharAt( sb.length() - 1 );
+        }
+
+        extendedProperties.put( key, sb.toString() );
+    }
+
+
+    /**
+     * Gets the extended list string property.
+     * 
+     * @param key the key
+     * 
+     * @return the extended list string property or <code>null</code> if the property doesn't exist
+     */
+    public List<String> getExtendedListStringProperty( String key )
+    {
+        String s = extendedProperties.get( key );
+        if ( s != null )
+        {
+            String[] array = s.split( ";" );
+            if ( ( array != null ) && ( array.length > 0 ) )
+            {
+                return new ArrayList<String>( Arrays.asList( array ) );
+            }
+        }
+
+        return null;
     }
 
 

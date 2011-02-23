@@ -21,15 +21,20 @@
 package org.apache.directory.studio.connection.core;
 
 
+import org.apache.directory.shared.ldap.model.constants.SaslQoP;
+import org.apache.directory.shared.ldap.model.constants.SaslSecurityStrength;
 import org.apache.directory.shared.ldap.model.filter.LdapURL;
 import org.apache.directory.studio.connection.core.ConnectionParameter.AuthenticationMethod;
 import org.apache.directory.studio.connection.core.ConnectionParameter.EncryptionMethod;
+import org.apache.directory.studio.connection.core.ConnectionParameter.Krb5Configuration;
+import org.apache.directory.studio.connection.core.ConnectionParameter.Krb5CredentialConfiguration;
 import org.apache.directory.studio.connection.core.ConnectionParameter.NetworkProvider;
 import org.apache.directory.studio.connection.core.event.ConnectionEventRegistry;
 import org.apache.directory.studio.connection.core.io.ConnectionWrapper;
 import org.apache.directory.studio.connection.core.io.api.DirectoryApiConnectionWrapper;
 import org.apache.directory.studio.connection.core.io.jndi.JNDIConnectionWrapper;
 import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.ui.IActionFilter;
 
 
 /**
@@ -167,10 +172,14 @@ public class Connection implements ConnectionPropertyPageProvider, IAdaptable
         }
     }
 
+    /** The connection parameter */
     private ConnectionParameter connectionParameter;
 
     /** The connection wrapper */
     private ConnectionWrapper connectionWrapper;
+
+    /** The detected connection properties */
+    private DetectedConnectionProperties detectedConnectionProperties;
 
 
     /**
@@ -181,6 +190,7 @@ public class Connection implements ConnectionPropertyPageProvider, IAdaptable
     public Connection( ConnectionParameter connectionParameter )
     {
         this.connectionParameter = connectionParameter;
+        detectedConnectionProperties = new DetectedConnectionProperties( this );
     }
 
 
@@ -272,6 +282,28 @@ public class Connection implements ConnectionPropertyPageProvider, IAdaptable
     {
         this.connectionParameter = connectionParameter;
         ConnectionEventRegistry.fireConnectionUpdated( this, this );
+    }
+
+
+    /**
+     * Gets the detected connection properties.
+     *
+     * @return the detected connection properties
+     */
+    public DetectedConnectionProperties getDetectedConnectionProperties()
+    {
+        return detectedConnectionProperties;
+    }
+
+
+    /**
+     * Sets the detected connection properties.
+     *
+     * @param detectedConnectionProperties  the detected connection properties
+     */
+    public void setDetectedConnectionProperties( DetectedConnectionProperties detectedConnectionProperties )
+    {
+        this.detectedConnectionProperties = detectedConnectionProperties;
     }
 
 
@@ -382,6 +414,105 @@ public class Connection implements ConnectionPropertyPageProvider, IAdaptable
     public String getSaslRealm()
     {
         return connectionParameter.getSaslRealm();
+    }
+
+
+    /**
+     * Gets the SASL quality of protection.
+     * 
+     * @return the SASL quality of protection
+     */
+    public SaslQoP getSaslQop()
+    {
+        return connectionParameter.getSaslQop();
+    }
+
+
+    /**
+     * Gets the SASL security strength.
+     * 
+     * @return the SASL security strength
+     */
+    public SaslSecurityStrength getSaslSecurityStrength()
+    {
+        return connectionParameter.getSaslSecurityStrength();
+    }
+
+
+    /**
+     * Checks if is SASL mutual authentication.
+     * 
+     * @return true, if is SASL mutual authentication
+     */
+    public boolean isSaslMutualAuthentication()
+    {
+        return connectionParameter.isSaslMutualAuthentication();
+    }
+
+
+    /**
+     * Gets the Kerberos credential configuration.
+     * 
+     * @return the Kerberos credential configuration
+     */
+    public Krb5CredentialConfiguration getKrb5CredentialConfiguration()
+    {
+        return connectionParameter.getKrb5CredentialConfiguration();
+    }
+
+
+    /**
+     * Gets the Kerberos configuration.
+     * 
+     * @return the Kerberos configuration
+     */
+    public Krb5Configuration getKrb5Configuration()
+    {
+        return connectionParameter.getKrb5Configuration();
+    }
+
+
+    /**
+     * Gets the Kerberos configuration file.
+     * 
+     * @return the Kerberos configuration file
+     */
+    public String getKrb5ConfigurationFile()
+    {
+        return connectionParameter.getKrb5ConfigurationFile();
+    }
+
+
+    /**
+     * Gets the Kerberos realm.
+     * 
+     * @return the Kerberos realm
+     */
+    public String getKrb5Realm()
+    {
+        return connectionParameter.getKrb5Realm();
+    }
+
+
+    /**
+     * Gets the Kerberos KDC host.
+     * 
+     * @return the Kerberos KDC host
+     */
+    public String getKrb5KdcHost()
+    {
+        return connectionParameter.getKrb5KdcHost();
+    }
+
+
+    /**
+     * Gets the Kerberos KDC port.
+     * 
+     * @return the Kerberos KDCport
+     */
+    public int getKrb5KdcPort()
+    {
+        return connectionParameter.getKrb5KdcPort();
     }
 
 
@@ -517,6 +648,10 @@ public class Connection implements ConnectionPropertyPageProvider, IAdaptable
         if ( adapter == Connection.class )
         {
             return this;
+        }
+        else if ( adapter.isAssignableFrom( IActionFilter.class ) )
+        {
+            return ConnectionActionFilterAdapter.getInstance();
         }
 
         return null;

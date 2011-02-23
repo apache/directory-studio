@@ -22,6 +22,7 @@ package org.apache.directory.studio.ldapbrowser.core.jobs;
 
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -33,6 +34,8 @@ import org.apache.directory.shared.ldap.model.exception.LdapInvalidDnException;
 import org.apache.directory.shared.ldap.model.name.Dn;
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.Connection;
+import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
+import org.apache.directory.studio.connection.core.DetectedConnectionProperties;
 import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
 import org.apache.directory.studio.connection.core.Connection.ReferralHandlingMethod;
 import org.apache.directory.studio.connection.core.jobs.StudioConnectionBulkRunnableWithProgress;
@@ -295,6 +298,23 @@ public class InitializeRootDSERunnable implements StudioConnectionBulkRunnableWi
         browserConnection.getRootDSE().setChildrenInitialized( true );
         browserConnection.getRootDSE().setHasChildrenHint( true );
         browserConnection.getRootDSE().setDirectoryEntry( true );
+
+        // Set detected connection properties
+        DetectedConnectionProperties detectedConnectionProperties = browserConnection.getConnection()
+            .getDetectedConnectionProperties();
+        detectedConnectionProperties.setVendorName( browserConnection.getRootDSE().getAttribute( "vendorName" )
+            .getStringValue() );
+        detectedConnectionProperties.setVendorVersion( browserConnection.getRootDSE().getAttribute( "vendorVersion" )
+            .getStringValue() );
+        detectedConnectionProperties.setSupportedControls( Arrays.asList( browserConnection.getRootDSE()
+            .getAttribute( "supportedControl" ).getStringValues() ) );
+        detectedConnectionProperties.setSupportedExtensions( Arrays.asList( browserConnection.getRootDSE()
+            .getAttribute( "supportedExtension" ).getStringValues() ) );
+        detectedConnectionProperties.setSupportedFeatures( Arrays.asList( browserConnection.getRootDSE()
+            .getAttribute( "supportedFeatures" ).getStringValues() ) );
+
+        ConnectionCorePlugin.getDefault().getConnectionManager()
+            .connectionUpdated( browserConnection.getConnection() );
     }
 
 

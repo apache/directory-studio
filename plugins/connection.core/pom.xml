@@ -118,7 +118,8 @@
  org.apache.httpcomponents.httpclient;bundle-version="${org.apache.httpcomponents.version}",
  org.apache.mina.core;bundle-version="${org.apache.mina.core.version}",
  org.dom4j.dom4j;bundle-version="${org.dom4j.version}",
- org.eclipse.core.runtime</Require-Bundle>
+ org.eclipse.core.runtime,
+ org.eclipse.ui</Require-Bundle>
             <Export-Package>org.apache.directory.studio.connection.core.*</Export-Package>
             <Import-Package>!</Import-Package>
             <Private-Package>!</Private-Package>
@@ -206,6 +207,11 @@
     </dependency>
     
 	<!-- Eclipse plugins dependencies -->
+    <dependency>
+      <groupId>org.eclipse.ui</groupId>
+      <artifactId>workbench</artifactId>
+      <scope>provided</scope>
+    </dependency>
     <dependency>
       <groupId>org.eclipse</groupId>
       <artifactId>osgi</artifactId>
