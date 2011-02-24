@@ -60,7 +60,7 @@
          	   </objectState>
                <objectState
          	      name="vendorVersion"
-         	      value="1.5.8-SNAPSHOT">
+         	      value="1.5.8">
          	   </objectState>
          	</and>
          </visibility>

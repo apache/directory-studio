@@ -196,7 +196,10 @@ public class ConnectionActionFilterAdapter implements IActionFilter
             // VENDOR VERSION
             else if ( VENDOR_VERSION.equals( name ) )
             {
-                return value.equals( "" + connection.getDetectedConnectionProperties().getVendorVersion() );
+                if ( connection.getDetectedConnectionProperties().getVendorVersion() != null )
+                {
+                    return connection.getDetectedConnectionProperties().getVendorVersion().indexOf( value ) != -1;
+                }
             }
             // SERVER TYPE
             else if ( SERVER_TYPE.equals( name ) )
