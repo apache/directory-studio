@@ -71,73 +71,30 @@ public class DetectedConnectionProperties
     }
 
 
-    public String getVendorName()
+    /**
+     * Gets the server type.
+     *
+     * @return the server type
+     */
+    public ConnectionServerType getServerType()
     {
-        return connection.getConnectionParameter().getExtendedProperty( CONNECTION_PARAMETER_VENDOR_NAME );
+        try
+        {
+            return ConnectionServerType.valueOf( connection.getConnectionParameter().getExtendedProperty(
+                CONNECTION_PARAMETER_SERVER_TYPE ) );
+        }
+        catch ( IllegalArgumentException e )
+        {
+            return ConnectionServerType.UNKNOWN;
+        }
     }
 
 
-    public void setVendorName( String vendorName )
-    {
-        connection.getConnectionParameter().setExtendedProperty( CONNECTION_PARAMETER_VENDOR_NAME, vendorName );
-    }
-
-
-    public String getVendorVersion()
-    {
-        return connection.getConnectionParameter().getExtendedProperty( CONNECTION_PARAMETER_VENDOR_VERSION );
-    }
-
-
-    public void setVendorVersion( String vendorVersion )
-    {
-        connection.getConnectionParameter().setExtendedProperty( CONNECTION_PARAMETER_VENDOR_VERSION, vendorVersion );
-    }
-
-
-    public Object getServerType()
-    {
-        return connection.getConnectionParameter().getExtendedProperty( CONNECTION_PARAMETER_SERVER_TYPE );
-    }
-
-
-    public void setServerType( Object serverType )
-    {
-        connection.getConnectionParameter().setExtendedProperty( CONNECTION_PARAMETER_SERVER_TYPE,
-            serverType.toString() );
-    }
-
-
-    public List<String> getSupportedLdapVersions()
-    {
-        return connection.getConnectionParameter().getExtendedListStringProperty(
-            CONNECTION_PARAMETER_SUPPORTED_LDAP_VERSIONS );
-    }
-
-
-    public void setSupportedLdapVersions( List<String> supportedLdapVersions )
-    {
-        connection.getConnectionParameter().setExtendedListStringProperty(
-            CONNECTION_PARAMETER_SUPPORTED_LDAP_VERSIONS,
-            supportedLdapVersions );
-    }
-
-
-    public List<String> getSupportedSaslMechanisms()
-    {
-        return connection.getConnectionParameter().getExtendedListStringProperty(
-            CONNECTION_PARAMETER_SUPPORTED_SASL_MECHANISMS );
-    }
-
-
-    public void setSupportedSaslMechanisms( List<String> supportedSaslMechanisms )
-    {
-        connection.getConnectionParameter().setExtendedListStringProperty(
-            CONNECTION_PARAMETER_SUPPORTED_SASL_MECHANISMS,
-            supportedSaslMechanisms );
-    }
-
-
+    /**
+     * Gets the supported controls.
+     *
+     * @return the supported controls
+     */
     public List<String> getSupportedControls()
     {
         return connection.getConnectionParameter().getExtendedListStringProperty(
@@ -145,6 +102,93 @@ public class DetectedConnectionProperties
     }
 
 
+    /**
+     * Gets the supported extensions.
+     *
+     * @return the supported extensions
+     */
+    public List<String> getSupportedExtensions()
+    {
+        return connection.getConnectionParameter().getExtendedListStringProperty(
+            CONNECTION_PARAMETER_SUPPORTED_EXTENSIONS );
+    }
+
+
+    /**
+     * Gets the supported features.
+     *
+     * @return the supported features
+     */
+    public List<String> getSupportedFeatures()
+    {
+        return connection.getConnectionParameter().getExtendedListStringProperty(
+            CONNECTION_PARAMETER_SUPPORTED_FEATURES );
+    }
+
+
+    /**
+     * Gets the supported LDAP versions.
+     *
+     * @return the supported LDAP versions
+     */
+    public List<String> getSupportedLdapVersions()
+    {
+        return connection.getConnectionParameter().getExtendedListStringProperty(
+            CONNECTION_PARAMETER_SUPPORTED_LDAP_VERSIONS );
+    }
+
+
+    /**
+     * Gets the supported SASL mechanisms.
+     *
+     * @return the supported SASL mechanisms
+     */
+    public List<String> getSupportedSaslMechanisms()
+    {
+        return connection.getConnectionParameter().getExtendedListStringProperty(
+            CONNECTION_PARAMETER_SUPPORTED_SASL_MECHANISMS );
+    }
+
+
+    /**
+     * Gets the vendor name.
+     *
+     * @return the vendor name
+     */
+    public String getVendorName()
+    {
+        return connection.getConnectionParameter().getExtendedProperty( CONNECTION_PARAMETER_VENDOR_NAME );
+    }
+
+
+    /**
+     * Gets the vendor version.
+     *
+     * @return the vendor version
+     */
+    public String getVendorVersion()
+    {
+        return connection.getConnectionParameter().getExtendedProperty( CONNECTION_PARAMETER_VENDOR_VERSION );
+    }
+
+
+    /**
+     * Sets the server type.
+     *
+     * @param serverType the server type
+     */
+    public void setServerType( Object serverType )
+    {
+        connection.getConnectionParameter().setExtendedProperty( CONNECTION_PARAMETER_SERVER_TYPE,
+            serverType.toString() );
+    }
+
+
+    /**
+     * Sets the supported controls.
+     *
+     * @param supportedControls the supported controls
+     */
     public void setSupportedControls( List<String> supportedControls )
     {
         connection.getConnectionParameter().setExtendedListStringProperty(
@@ -153,13 +197,11 @@ public class DetectedConnectionProperties
     }
 
 
-    public List<String> getSupportedExtensions()
-    {
-        return connection.getConnectionParameter().getExtendedListStringProperty(
-            CONNECTION_PARAMETER_SUPPORTED_EXTENSIONS );
-    }
-
-
+    /**
+     * Sets the supported extensions.
+     *
+     * @param supportedExtensions the supported extensions
+     */
     public void setSupportedExtensions( List<String> supportedExtensions )
     {
         connection.getConnectionParameter().setExtendedListStringProperty(
@@ -168,17 +210,64 @@ public class DetectedConnectionProperties
     }
 
 
-    public List<String> getSupportedFeatures()
-    {
-        return connection.getConnectionParameter().getExtendedListStringProperty(
-            CONNECTION_PARAMETER_SUPPORTED_FEATURES );
-    }
-
-
+    /**
+     * Sets the supported features.
+     *
+     * @param supportedFeatures the supported features
+     */
     public void setSupportedFeatures( List<String> supportedFeatures )
     {
         connection.getConnectionParameter().setExtendedListStringProperty(
             CONNECTION_PARAMETER_SUPPORTED_FEATURES,
             supportedFeatures );
+    }
+
+
+    /**
+     * Sets the supported LDAP versions.
+     *
+     * @param supportedLdapVersions the supported LDAP versions
+     */
+    public void setSupportedLdapVersions( List<String> supportedLdapVersions )
+    {
+        connection.getConnectionParameter().setExtendedListStringProperty(
+            CONNECTION_PARAMETER_SUPPORTED_LDAP_VERSIONS,
+            supportedLdapVersions );
+    }
+
+
+    /**
+     * Sets the supported SASL mechanisms.
+     *
+     * @param supportedSaslMechanisms
+     *      the supported SASL mechanisms
+     */
+    public void setSupportedSaslMechanisms( List<String> supportedSaslMechanisms )
+    {
+        connection.getConnectionParameter().setExtendedListStringProperty(
+            CONNECTION_PARAMETER_SUPPORTED_SASL_MECHANISMS,
+            supportedSaslMechanisms );
+    }
+
+
+    /**
+     * Sets the vendor name.
+     *
+     * @param vendorName the vendor name
+     */
+    public void setVendorName( String vendorName )
+    {
+        connection.getConnectionParameter().setExtendedProperty( CONNECTION_PARAMETER_VENDOR_NAME, vendorName );
+    }
+
+
+    /**
+     * Sets the vendor version.
+     *
+     * @param vendorVersion the vendor version
+     */
+    public void setVendorVersion( String vendorVersion )
+    {
+        connection.getConnectionParameter().setExtendedProperty( CONNECTION_PARAMETER_VENDOR_VERSION, vendorVersion );
     }
 }

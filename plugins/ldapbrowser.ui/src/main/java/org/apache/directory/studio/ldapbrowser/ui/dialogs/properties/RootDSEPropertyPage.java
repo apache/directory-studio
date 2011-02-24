@@ -24,12 +24,12 @@ package org.apache.directory.studio.ldapbrowser.ui.dialogs.properties;
 import org.apache.commons.lang.StringUtils;
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.connection.core.Connection;
+import org.apache.directory.studio.connection.core.ConnectionServerType;
 import org.apache.directory.studio.connection.core.Utils;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreConstants;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
-import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
+import org.apache.directory.studio.ldapbrowser.core.jobs.ServerTypeDetector;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
-import org.apache.directory.studio.ldapbrowser.core.model.IRootDSE;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridLayout;
@@ -124,24 +124,60 @@ public class RootDSEPropertyPage extends PropertyPage implements IWorkbenchPrope
         if ( connection != null && connection.getRootDSE() != null )
         {
             // Try to detect LDAP server from RootDSE
-            IRootDSE rootDSE = connection.getRootDSE();
-            String type = detectOpenLDAP( rootDSE );
-            if ( type == null )
+            ConnectionServerType serverType = ServerTypeDetector.detectServerType( connection.getRootDSE() );
+            if ( serverType != null )
             {
-                type = detectSiemensDirX( rootDSE );
-                if ( type == null )
+                switch ( serverType )
                 {
-                    type = detectActiveDirectory( rootDSE );
-                    if ( type == null )
-                    {
-                        type = detectByVendorName( rootDSE );
-                    }
+                    case APACHEDS:
+                        typeText.setText( Messages.getString( "RootDSEPropertyPage.ApacheDirectoryServer" ) ); //$NON-NLS-1$
+                        break;
+                    case IBM_DIRECTORY_SERVER:
+                        typeText.setText( Messages.getString( "RootDSEPropertyPage.IBMDirectory" ) ); //$NON-NLS-1$
+                        break;
+                    case IBM_SECUREWAY_DIRECTORY:
+                        typeText.setText( Messages.getString( "RootDSEPropertyPage.IBMSecureWay" ) ); //$NON-NLS-1$
+                        break;
+                    case IBM_TIVOLI_DIRECTORY_SERVER:
+                        typeText.setText( Messages.getString( "RootDSEPropertyPage.IBMTivoli" ) ); //$NON-NLS-1$
+                        break;
+                    case MICROSOFT_ACTIVE_DIRECTORY_2000:
+                        typeText.setText( Messages.getString( "RootDSEPropertyPage.MSAD2000" ) ); //$NON-NLS-1$
+                        break;
+                    case MICROSOFT_ACTIVE_DIRECTORY_2003:
+                        typeText.setText( Messages.getString( "RootDSEPropertyPage.MSAD2003" ) ); //$NON-NLS-1$
+                        break;
+                    case NETSCAPE:
+                        typeText.setText( Messages.getString( "RootDSEPropertyPage.NetscapeDirectoryServer" ) ); //$NON-NLS-1$
+                        break;
+                    case NOVELL:
+                        typeText.setText( Messages.getString( "RootDSEPropertyPage.NovellEDirectory" ) ); //$NON-NLS-1$
+                        break;
+                    case OPENLDAP:
+                        typeText.setText( Messages.getString( "RootDSEPropertyPage.OpenLDAP" ) ); //$NON-NLS-1$
+                        break;
+                    case OPENLDAP_2_0:
+                        typeText.setText( Messages.getString( "RootDSEPropertyPage.OpenLDAP20" ) ); //$NON-NLS-1$
+                        break;
+                    case OPENLDAP_2_1:
+                        typeText.setText( Messages.getString( "RootDSEPropertyPage.OpenLDAP21" ) ); //$NON-NLS-1$
+                        break;
+                    case OPENLDAP_2_2:
+                        typeText.setText( Messages.getString( "RootDSEPropertyPage.OpenLDAP22" ) ); //$NON-NLS-1$
+                        break;
+                    case OPENLDAP_2_3:
+                        typeText.setText( Messages.getString( "RootDSEPropertyPage.OpenLDAP23" ) ); //$NON-NLS-1$
+                        break;
+                    case OPENLDAP_2_4:
+                        typeText.setText( Messages.getString( "RootDSEPropertyPage.OpenLDAP24" ) ); //$NON-NLS-1$
+                        break;
+                    case SIEMENS_DIRX:
+                        typeText.setText( Messages.getString( "RootDSEPropertyPage.SiemensDirX" ) ); //$NON-NLS-1$
+                        break;
+                    case SUN_DIRECTORY_SERVER:
+                        typeText.setText( Messages.getString( "RootDSEPropertyPage.SunDirectoryServer" ) ); //$NON-NLS-1$
+                        break;
                 }
-            }
-
-            if ( type != null )
-            {
-                typeText.setText( type );
             }
         }
         addInfo( connection, infoComposite, "vendorName", Messages.getString( "RootDSEPropertyPage.VendorName" ) ); //$NON-NLS-1$ //$NON-NLS-2$
@@ -182,228 +218,6 @@ public class RootDSEPropertyPage extends PropertyPage implements IWorkbenchPrope
         featuresTab.setControl( featureComposite );
 
         return tabFolder;
-    }
-
-
-    /** 
-     * Check various LDAP servers via vendorName attribute.
-     * 
-     * @param rootDSE
-     */
-    private String detectByVendorName( IRootDSE rootDSE )
-    {
-        String result = null;
-
-        IAttribute vnAttribute = rootDSE.getAttribute( "vendorName" ); //$NON-NLS-1$
-        IAttribute vvAttribute = rootDSE.getAttribute( "vendorVersion" ); //$NON-NLS-1$
-
-        if ( vnAttribute != null && vnAttribute.getStringValues().length > 0 && vvAttribute != null
-            && vvAttribute.getStringValues().length > 0 )
-        {
-
-            String vendorName = vnAttribute.getStringValues()[0];
-            String vendorVersion = vvAttribute.getStringValues()[0];
-
-            if ( vendorName.indexOf( "Apache Software Foundation" ) > -1 ) //$NON-NLS-1$
-            {
-                result = Messages.getString( "RootDSEPropertyPage.ApacheDirectoryServer" ); //$NON-NLS-1$
-            }
-            if ( vendorName.indexOf( "Novell" ) > -1 //$NON-NLS-1$
-                || vendorVersion.indexOf( "eDirectory" ) > -1 ) //$NON-NLS-1$
-            {
-                result = Messages.getString( "RootDSEPropertyPage.NovellEDirectory" ); //$NON-NLS-1$
-            }
-            if ( vendorName.indexOf( "Sun" ) > -1 //$NON-NLS-1$
-                || vendorVersion.indexOf( "Sun" ) > -1 ) //$NON-NLS-1$
-            {
-                result = Messages.getString( "RootDSEPropertyPage.SunDirectoryServer" ); //$NON-NLS-1$
-            }
-            if ( vendorName.indexOf( "Netscape" ) > -1 //$NON-NLS-1$
-                || vendorVersion.indexOf( "Netscape" ) > -1 ) //$NON-NLS-1$
-            {
-                result = Messages.getString( "RootDSEPropertyPage.NetscapeDirectoryServer" ); //$NON-NLS-1$
-            }
-
-            // IBM
-            if ( vendorName.indexOf( "International Business Machines" ) > -1 ) { //$NON-NLS-1$
-
-                // IBM SecureWay Directory
-                String[] iswVersions =
-                    { "3.2", "3.2.1", "3.2.2" }; //$NON-NLS-1$
-                for ( String version : iswVersions )
-                {
-                    if ( vendorVersion.indexOf( version ) > -1 )
-                    {
-                        result = Messages.getString( "RootDSEPropertyPage.IBMSecureWay" ); //$NON-NLS-1$
-                    }
-                }
-
-                // IBM Directory Server
-                String[] idsVersions =
-                    { "4.1", "5.1" }; //$NON-NLS-1$
-                for ( String version : idsVersions )
-                {
-                    if ( vendorVersion.indexOf( version ) > -1 )
-                    {
-                        result = Messages.getString( "RootDSEPropertyPage.IBMDirectory" ); //$NON-NLS-1$
-                    }
-                }
-
-                // IBM Tivoli Directory Server
-                String[] tdsVersions =
-                    { "5.2", "6.0", "6.1", "6.2" }; //$NON-NLS-1$
-                for ( String version : tdsVersions )
-                {
-                    if ( vendorVersion.indexOf( version ) > -1 )
-                    {
-                        result = Messages.getString( "RootDSEPropertyPage.IBMTivoli" ); //$NON-NLS-1$
-                    }
-                }
-            }
-        }
-
-        return result;
-    }
-
-
-    /**
-     * Tries to detect a Microsoft Active Directory.
-     * 
-     * @param rootDSE
-     * @return name of directory type, or null if no Active Directory server server was detected
-     */
-    private String detectActiveDirectory( IRootDSE rootDSE )
-    {
-        String result = null;
-
-        // check active directory
-        IAttribute rdncAttribute = rootDSE.getAttribute( "rootDomainNamingContext" ); //$NON-NLS-1$
-        if ( rdncAttribute != null )
-        {
-            IAttribute ffAttribute = rootDSE.getAttribute( "forestFunctionality" ); //$NON-NLS-1$
-            if ( ffAttribute != null )
-            {
-                result = Messages.getString( "RootDSEPropertyPage.MSAD2003" ); //$NON-NLS-1$
-            }
-            else
-            {
-                result = Messages.getString( "RootDSEPropertyPage.MSAD2000" ); //$NON-NLS-1$
-            }
-        }
-
-        return result;
-    }
-
-
-    /**
-     * Tries to detect a Siemens DirX server.
-     * 
-     * @param rootDSE 
-     * @return name of directory type, or null if no DirX server server was detected
-     */
-    private String detectSiemensDirX( IRootDSE rootDSE )
-    {
-        String result = null;
-
-        IAttribute ssseAttribute = rootDSE.getAttribute( "subSchemaSubentry" ); //$NON-NLS-1$
-        if ( ssseAttribute != null )
-        {
-            for ( int i = 0; i < ssseAttribute.getStringValues().length; i++ )
-            {
-                if ( "cn=LDAPGlobalSchemaSubentry".equals( ssseAttribute.getStringValues()[i] ) ) //$NON-NLS-1$
-                {
-                    result = Messages.getString( "RootDSEPropertyPage.SiemesDirX" ); //$NON-NLS-1$
-                }
-            }
-        }
-
-        return result;
-    }
-
-
-    /**
-     * Tries to detect an OpenLDAP server
-     * 
-     * @param rootDSE
-     * @return name (and sometimes version) of directory type, or null if no OpenLDAP server was detected
-     */
-    private String detectOpenLDAP( IRootDSE rootDSE )
-    {
-        String result = null;
-        boolean typeDetected = false;
-
-        // check OpenLDAP
-        IAttribute ocAttribute = rootDSE.getAttribute( "objectClass" ); //$NON-NLS-1$
-        if ( ocAttribute != null )
-        {
-            for ( int i = 0; i < ocAttribute.getStringValues().length; i++ )
-            {
-                if ( "OpenLDAProotDSE".equals( ocAttribute.getStringValues()[i] ) ) //$NON-NLS-1$
-                {
-                    IAttribute ccAttribute = rootDSE.getAttribute( "configContext" ); //$NON-NLS-1$
-                    if ( ccAttribute != null )
-                    {
-                        result = Messages.getString( "RootDSEPropertyPage.openLDAP23" ); //$NON-NLS-1$
-                        typeDetected = true;
-                    }
-                    if ( !typeDetected )
-                    {
-                        IAttribute scAttribute = rootDSE.getAttribute( "supportedControl" ); //$NON-NLS-1$
-                        if ( scAttribute != null )
-                        {
-                            for ( int sci = 0; sci < scAttribute.getStringValues().length; sci++ )
-                            {
-                                // if("1.2.840.113556.1.4.319".equals(scAttribute.getStringValues()[sci]))
-                                // {
-                                if ( "2.16.840.1.113730.3.4.18".equals( scAttribute.getStringValues()[sci] ) ) //$NON-NLS-1$
-                                {
-                                    result = Messages.getString( "RootDSEPropertyPage.OpenLDAP22" ); //$NON-NLS-1$
-                                    typeDetected = true;
-                                }
-                            }
-                        }
-
-                    }
-                    if ( !typeDetected )
-                    {
-                        IAttribute seAttribute = rootDSE.getAttribute( "supportedExtension" ); //$NON-NLS-1$
-                        if ( seAttribute != null )
-                        {
-                            for ( int sei = 0; sei < seAttribute.getStringValues().length; sei++ )
-                            {
-                                if ( "1.3.6.1.4.1.4203.1.11.3".equals( seAttribute.getStringValues()[sei] ) ) //$NON-NLS-1$
-                                {
-                                    result = Messages.getString( "RootDSEPropertyPage.OpenLDAP21" ); //$NON-NLS-1$
-                                    typeDetected = true;
-                                }
-                            }
-                        }
-                    }
-                    if ( !typeDetected )
-                    {
-                        IAttribute sfAttribute = rootDSE.getAttribute( "supportedFeatures" ); //$NON-NLS-1$
-                        if ( sfAttribute != null )
-                        {
-                            for ( int sfi = 0; sfi < sfAttribute.getStringValues().length; sfi++ )
-                            {
-                                if ( "1.3.6.1.4.1.4203.1.5.4".equals( sfAttribute.getStringValues()[sfi] ) ) //$NON-NLS-1$
-                                {
-                                    result = Messages.getString( "RootDSEPropertyPage.OpenLDAP20" ); //$NON-NLS-1$
-                                    typeDetected = true;
-                                }
-                            }
-                        }
-                    }
-                    if ( !typeDetected )
-                    {
-                        result = Messages.getString( "RootDSEPropertyPage.OpenLDAP" ); //$NON-NLS-1$
-                        typeDetected = true;
-                    }
-                }
-            }
-        }
-
-        return result;
     }
 
 

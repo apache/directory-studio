@@ -34,10 +34,10 @@ import org.apache.directory.shared.ldap.model.exception.LdapInvalidDnException;
 import org.apache.directory.shared.ldap.model.name.Dn;
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.Connection;
-import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
-import org.apache.directory.studio.connection.core.DetectedConnectionProperties;
 import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
 import org.apache.directory.studio.connection.core.Connection.ReferralHandlingMethod;
+import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
+import org.apache.directory.studio.connection.core.DetectedConnectionProperties;
 import org.apache.directory.studio.connection.core.jobs.StudioConnectionBulkRunnableWithProgress;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.ldapbrowser.core.events.AttributesInitializedEvent;
@@ -312,6 +312,8 @@ public class InitializeRootDSERunnable implements StudioConnectionBulkRunnableWi
             .getAttribute( "supportedExtension" ).getStringValues() ) );
         detectedConnectionProperties.setSupportedFeatures( Arrays.asList( browserConnection.getRootDSE()
             .getAttribute( "supportedFeatures" ).getStringValues() ) );
+        detectedConnectionProperties
+            .setServerType( ServerTypeDetector.detectServerType( browserConnection.getRootDSE() ) );
 
         ConnectionCorePlugin.getDefault().getConnectionManager()
             .connectionUpdated( browserConnection.getConnection() );
