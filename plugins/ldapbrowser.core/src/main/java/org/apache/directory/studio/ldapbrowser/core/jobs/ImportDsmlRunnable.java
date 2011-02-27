@@ -17,7 +17,6 @@
  *  under the License. 
  *  
  */
-
 package org.apache.directory.studio.ldapbrowser.core.jobs;
 
 
@@ -196,7 +195,7 @@ public class ImportDsmlRunnable implements StudioConnectionBulkRunnableWithProgr
         try
         {
             // Parsing the file
-            Dsmlv2Grammar grammar = new Dsmlv2Grammar( codec );
+            Dsmlv2Grammar grammar = new Dsmlv2Grammar();
             Dsmlv2Parser parser = new Dsmlv2Parser( grammar );
             parser.setInput( new FileInputStream( dsmlFile ), "UTF-8" );
             parser.parseAllRequests();
@@ -299,7 +298,7 @@ public class ImportDsmlRunnable implements StudioConnectionBulkRunnableWithProgr
                 processDelRequest( ( DeleteRequest ) request, batchResponseDsml, monitor );
                 break;
             case EXTENDED_REQUEST:
-                processExtendedRequest( ( ExtendedRequest ) request, batchResponseDsml, monitor );
+                processExtendedRequest( ( ExtendedRequest<?> ) request, batchResponseDsml, monitor );
                 break;
             case MODIFY_REQUEST:
                 processModifyRequest( ( ModifyRequest ) request, batchResponseDsml, monitor );
@@ -465,7 +464,7 @@ public class ImportDsmlRunnable implements StudioConnectionBulkRunnableWithProgr
      * @param batchResponseDsml
      *      the DSML batch response (can be <code>null</code>)
      */
-    private void processExtendedRequest( ExtendedRequest request, BatchResponseDsml batchResponseDsml,
+    private void processExtendedRequest( ExtendedRequest<?> request, BatchResponseDsml batchResponseDsml,
         StudioProgressMonitor monitor )
     {
         // We can not support extended requests at the moment,
