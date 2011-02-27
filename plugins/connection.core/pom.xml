@@ -150,7 +150,7 @@
     <!-- Apache Directory Studio library plugins dependencies -->
     <dependency>
       <groupId>org.apache.directory.shared</groupId>
-      <artifactId>ldap-client-api</artifactId>
+      <artifactId>shared-ldap-client-api</artifactId>
       <scope>provided</scope>
     </dependency>
     <dependency>
