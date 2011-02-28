@@ -72,7 +72,7 @@
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.apache.directory.shared</groupId>
-                  <artifactId>shared-ldap-codec</artifactId>
+                  <artifactId>shared-ldap-codec-core</artifactId>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.apache.directory.shared</groupId>
