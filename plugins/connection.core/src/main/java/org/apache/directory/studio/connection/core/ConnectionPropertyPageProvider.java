@@ -27,11 +27,10 @@ import org.eclipse.core.runtime.IAdaptable;
 /**
  * Tagging interface for objects that provide input for the connection
  * property page. Implementations must also implement the IAdaptable interface
- * and the getAdaptable() metho must return the right {@link Connection} object. 
+ * and the getAdaptable() method must return the right {@link Connection} object. 
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public interface ConnectionPropertyPageProvider extends IAdaptable
 {
-
 }

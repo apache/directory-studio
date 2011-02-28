@@ -52,12 +52,18 @@
                id="%OpenConfigurationAction_id"
                label="%OpenConfigurationAction_label">
          </action>
-         <!--<visibility>
+         <visibility>
+            <and>
                <objectState
-                     name="name"
-                     value="value">
-               </objectState>
-         </visibility>-->
+         	      name="vendorName"
+         	      value="Apache Software Foundation">
+         	   </objectState>
+               <objectState
+         	      name="vendorVersion"
+         	      value="1.5.8">
+         	   </objectState>
+         	</and>
+         </visibility>
       </objectContribution>
    </extension>
    <extension
@@ -75,4 +81,5 @@
             name="%NewWizards_NewApacheDSConfigurationFileWizard_name"
             project="false"/>
    </extension>
+
 </plugin>

@@ -17,24 +17,16 @@
  *  under the License. 
  *  
  */
-
 package org.apache.directory.studio.connection.core;
 
 
 /**
- * This class holds information about a directory server.
+ * This enum contains all detectable directory server types.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class DirectoryServerInfo
+public enum ConnectionServerType
 {
-    /**
-     * This enum contains all detectable directory server types.
-     *
-     * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
-     */
-    public static enum DirectoryServerType
-    {
         APACHEDS,
         IBM_DIRECTORY_SERVER,
         IBM_SECUREWAY_DIRECTORY,
@@ -44,65 +36,12 @@ public class DirectoryServerInfo
         NETSCAPE,
         NOVELL,
         OPENLDAP,
-        OPENDS,
-        OPENDJ,
+        OPENLDAP_2_0,
+        OPENLDAP_2_1,
+        OPENLDAP_2_2,
+        OPENLDAP_2_3,
+        OPENLDAP_2_4,
         SIEMENS_DIRX,
         SUN_DIRECTORY_SERVER,
-        UNKNOWN
-    }
-
-    /** The type */
-    private DirectoryServerType type;
-
-    /** The version */
-    private String version;
-
-
-    /**
-     * Gets the type.
-     *
-     * @return
-     *      the type
-     */
-    public DirectoryServerType getType()
-    {
-        return type;
-    }
-
-
-    /**
-     * Sets the type.
-     *
-     * @param type
-     *      the type
-     */
-    public void setType( DirectoryServerType type )
-    {
-        this.type = type;
-    }
-
-
-    /**
-     * Gets the version.
-     *
-     * @return
-     *      the version
-     */
-    public String getVersion()
-    {
-        return version;
-    }
-
-
-    /**
-     * Sets the version.
-     *
-     * @param version
-     *      the version
-     */
-    public void setVersion( String version )
-    {
-        this.version = version;
-    }
-
+        UNKNOWN;
 }

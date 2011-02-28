@@ -52,7 +52,7 @@
                 <!-- Apache Directory Studio library plugins dependencies -->
                 <artifactItem>
                   <groupId>org.apache.directory.shared</groupId>
-                  <artifactId>ldap-client-api</artifactId>
+                  <artifactId>shared-ldap-client-api</artifactId>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.apache.directory.shared</groupId>
