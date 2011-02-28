@@ -1415,7 +1415,7 @@
       </dependency>
       <dependency>
         <groupId>org.apache.directory.shared</groupId>
-        <artifactId>shared-ldap-schema</artifactId>
+        <artifactId>shared-ldap-schema-data</artifactId>
         <version>${org.apache.directory.shared.version}</version>
       </dependency>
       <dependency>
