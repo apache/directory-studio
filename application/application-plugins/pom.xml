@@ -92,7 +92,7 @@
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.apache.directory.shared</groupId>
-                  <artifactId>shared-ldap-protocol-codec</artifactId>
+                  <artifactId>shared-ldap-net-mina</artifactId>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.apache.directory.shared</groupId>
