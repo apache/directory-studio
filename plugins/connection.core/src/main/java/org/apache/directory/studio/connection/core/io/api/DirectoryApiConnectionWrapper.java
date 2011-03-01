@@ -37,8 +37,8 @@ import javax.net.ssl.TrustManager;
 import javax.net.ssl.TrustManagerFactory;
 import javax.net.ssl.X509TrustManager;
 import javax.security.auth.login.AppConfigurationEntry;
-import javax.security.auth.login.Configuration;
 import javax.security.auth.login.AppConfigurationEntry.LoginModuleControlFlag;
+import javax.security.auth.login.Configuration;
 
 import org.apache.directory.ldap.client.api.CramMd5Request;
 import org.apache.directory.ldap.client.api.DigestMd5Request;
@@ -46,13 +46,32 @@ import org.apache.directory.ldap.client.api.GssApiRequest;
 import org.apache.directory.ldap.client.api.LdapConnectionConfig;
 import org.apache.directory.ldap.client.api.LdapNetworkConnection;
 import org.apache.directory.ldap.client.api.exception.InvalidConnectionException;
+import org.apache.directory.shared.ldap.codec.protocol.mina.LdapProtocolCodecActivator;
 import org.apache.directory.shared.ldap.model.cursor.SearchCursor;
-import org.apache.directory.shared.ldap.model.entry.DefaultModification;
-import org.apache.directory.shared.ldap.model.filter.SearchScope;
 import org.apache.directory.shared.ldap.model.entry.AttributeUtils;
+import org.apache.directory.shared.ldap.model.entry.DefaultModification;
 import org.apache.directory.shared.ldap.model.entry.Modification;
 import org.apache.directory.shared.ldap.model.entry.ModificationOperation;
-import org.apache.directory.shared.ldap.model.message.*;
+import org.apache.directory.shared.ldap.model.filter.SearchScope;
+import org.apache.directory.shared.ldap.model.message.AddRequest;
+import org.apache.directory.shared.ldap.model.message.AddRequestImpl;
+import org.apache.directory.shared.ldap.model.message.AddResponse;
+import org.apache.directory.shared.ldap.model.message.AliasDerefMode;
+import org.apache.directory.shared.ldap.model.message.BindResponse;
+import org.apache.directory.shared.ldap.model.message.DeleteRequest;
+import org.apache.directory.shared.ldap.model.message.DeleteRequestImpl;
+import org.apache.directory.shared.ldap.model.message.DeleteResponse;
+import org.apache.directory.shared.ldap.model.message.LdapResult;
+import org.apache.directory.shared.ldap.model.message.ModifyDnRequest;
+import org.apache.directory.shared.ldap.model.message.ModifyDnRequestImpl;
+import org.apache.directory.shared.ldap.model.message.ModifyDnResponse;
+import org.apache.directory.shared.ldap.model.message.ModifyRequest;
+import org.apache.directory.shared.ldap.model.message.ModifyRequestImpl;
+import org.apache.directory.shared.ldap.model.message.ModifyResponse;
+import org.apache.directory.shared.ldap.model.message.ResultCodeEnum;
+import org.apache.directory.shared.ldap.model.message.ResultResponse;
+import org.apache.directory.shared.ldap.model.message.SearchRequest;
+import org.apache.directory.shared.ldap.model.message.SearchRequestImpl;
 import org.apache.directory.shared.ldap.model.name.Dn;
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.Connection;
@@ -61,7 +80,6 @@ import org.apache.directory.studio.connection.core.Connection.ReferralHandlingMe
 import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
 import org.apache.directory.studio.connection.core.ConnectionParameter;
 import org.apache.directory.studio.connection.core.ConnectionParameter.EncryptionMethod;
-import org.apache.directory.studio.connection.core.ConnectionCoreConstants;
 import org.apache.directory.studio.connection.core.IAuthHandler;
 import org.apache.directory.studio.connection.core.ICredentials;
 import org.apache.directory.studio.connection.core.IJndiLogger;
@@ -71,7 +89,6 @@ import org.apache.directory.studio.connection.core.io.StudioNamingEnumeration;
 import org.apache.directory.studio.connection.core.io.StudioTrustManager;
 import org.apache.directory.studio.connection.core.io.jndi.CancelException;
 import org.apache.directory.studio.connection.core.io.jndi.ReferralsInfo;
-import org.eclipse.core.runtime.Preferences;
 import org.eclipse.osgi.util.NLS;
 
 
@@ -115,6 +132,13 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
     public DirectoryApiConnectionWrapper( Connection connection )
     {
         this.connection = connection;
+
+        // Nasty hack to get the 'org.apache.directory.shared.ldap.protocol.codec'
+        // bundle started.
+        // Instantiating one of this bundle class will trigger the start of the bundle
+        // thanks to the lazy activation policy
+        // DO NOT REMOVE
+        LdapProtocolCodecActivator.lazyStart();
     }
 
 

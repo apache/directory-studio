@@ -149,7 +149,7 @@
         </exclusion>
         <exclusion>
           <groupId>org.apache.directory.shared</groupId>
-          <artifactId>shared-ldap-schema</artifactId>
+          <artifactId>shared-ldap-schema-data</artifactId>
         </exclusion>
         <exclusion>
           <groupId>org.apache.directory.shared</groupId>
@@ -172,7 +172,7 @@
     </dependency>
     <dependency>
       <groupId>org.apache.directory.shared</groupId>
-      <artifactId>shared-ldap-schema</artifactId>
+      <artifactId>shared-ldap-schema-data</artifactId>
       <scope>provided</scope>
     </dependency>
     <dependency>
