@@ -1385,7 +1385,7 @@
       </dependency>
       <dependency>
         <groupId>org.apache.directory.shared</groupId>
-        <artifactId>shared-ldap-codec</artifactId>
+        <artifactId>shared-ldap-codec-core</artifactId>
         <version>${org.apache.directory.shared.version}</version>
       </dependency>
       <dependency>
