@@ -46,6 +46,7 @@ import org.apache.directory.ldap.client.api.GssApiRequest;
 import org.apache.directory.ldap.client.api.LdapConnectionConfig;
 import org.apache.directory.ldap.client.api.LdapNetworkConnection;
 import org.apache.directory.ldap.client.api.exception.InvalidConnectionException;
+import org.apache.directory.shared.ldap.codec.protocol.mina.LdapProtocolCodecFactory;
 import org.apache.directory.shared.ldap.model.cursor.SearchCursor;
 import org.apache.directory.shared.ldap.model.entry.AttributeUtils;
 import org.apache.directory.shared.ldap.model.entry.DefaultModification;
@@ -131,6 +132,13 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
     public DirectoryApiConnectionWrapper( Connection connection )
     {
         this.connection = connection;
+
+        // Nasty hack to get the 'org.apache.directory.shared.ldap.protocol.codec'
+        // bundle started.
+        // Instantiating one of this bundle class will trigger the start of the bundle
+        // thanks to the lazy activation policy
+        // DO NOT REMOVE
+        new LdapProtocolCodecFactory();
     }
 
 
