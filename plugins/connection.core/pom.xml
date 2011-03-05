@@ -109,9 +109,10 @@
  org.apache.commons.io;bundle-version="${org.apache.commons.io.version}",
  org.apache.commons.lang;bundle-version="${org.apache.commons.lang.version}",
  org.apache.directory.shared.asn1.api;bundle-version="${org.apache.directory.shared.validversion}",
- org.apache.directory.shared.ldap.model;bundle-version="${org.apache.directory.shared.validversion}",
- org.apache.directory.shared.ldap.codec;bundle-version="${org.apache.directory.shared.validversion}",
  org.apache.directory.shared.ldap.client.api;bundle-version="${org.apache.directory.shared.validversion}",
+ org.apache.directory.shared.ldap.codec.core;bundle-version="${org.apache.directory.shared.validversion}",
+ org.apache.directory.shared.ldap.model;bundle-version="${org.apache.directory.shared.validversion}",
+ org.apache.directory.shared.ldap.net.mina;bundle-version="${org.apache.directory.shared.validversion}",
  org.apache.directory.shared.util;bundle-version="${org.apache.directory.shared.validversion}",
  org.apache.directory.studio.common.core,
  org.apache.directory.studio.ldifparser,
@@ -165,7 +166,12 @@
     </dependency>
     <dependency>
       <groupId>org.apache.directory.shared</groupId>
-      <artifactId>shared-ldap-codec</artifactId>
+      <artifactId>shared-ldap-codec-core</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.directory.shared</groupId>
+      <artifactId>shared-ldap-net-mina</artifactId>
       <scope>provided</scope>
     </dependency>
     <dependency>

@@ -95,7 +95,7 @@
  org.apache.directory.shared.i18n;bundle-version="${org.apache.directory.shared.validversion}",
  org.apache.directory.shared.ldap.client.api;bundle-version="${org.apache.directory.shared.validversion}",
  org.apache.directory.shared.asn1.api;bundle-version="${org.apache.directory.shared.validversion}",
- org.apache.directory.shared.ldap.codec;bundle-version="${org.apache.directory.shared.validversion}",
+ org.apache.directory.shared.ldap.codec.core;bundle-version="${org.apache.directory.shared.validversion}",
  org.apache.directory.shared.ldap.extras.util;bundle-version="${org.apache.directory.shared.validversion}",
  org.apache.directory.shared.ldap.model;bundle-version="${org.apache.directory.shared.validversion}",
  org.apache.directory.shared.ldap.schema;bundle-version="${org.apache.directory.shared.validversion}",
@@ -171,7 +171,7 @@
         </exclusion>
         <exclusion>
           <groupId>org.apache.directory.shared</groupId>
-          <artifactId>shared-ldap-extras-util</artifactId>
+          <artifactId>shared-ldap-codec-core</artifactId>
         </exclusion>
         <exclusion>
           <groupId>org.apache.directory.shared</groupId>
@@ -179,11 +179,15 @@
         </exclusion>
         <exclusion>
           <groupId>org.apache.directory.shared</groupId>
-          <artifactId>shared-ldap-schema</artifactId>
+          <artifactId>shared-ldap-schema-data</artifactId>
         </exclusion>
         <exclusion>
           <groupId>org.apache.directory.shared</groupId>
           <artifactId>shared-util</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.apache.directory.shared</groupId>
+          <artifactId>shared-ldap-extras-util</artifactId>
         </exclusion>
         <exclusion>
           <groupId>net.sf.ehcache</groupId>
@@ -247,7 +251,7 @@
     </dependency>
     <dependency>
       <groupId>org.apache.directory.shared</groupId>
-      <artifactId>shared-ldap-extras-util</artifactId>
+      <artifactId>shared-ldap-codec-core</artifactId>
       <scope>provided</scope>
     </dependency>
     <dependency>
@@ -257,12 +261,17 @@
     </dependency>
     <dependency>
       <groupId>org.apache.directory.shared</groupId>
-      <artifactId>shared-ldap-schema</artifactId>
+      <artifactId>shared-ldap-schema-data</artifactId>
       <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.directory.shared</groupId>
       <artifactId>shared-util</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.directory.shared</groupId>
+      <artifactId>shared-ldap-extras-util</artifactId>
       <scope>provided</scope>
     </dependency>
     <dependency>
