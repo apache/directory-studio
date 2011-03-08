@@ -46,6 +46,21 @@
         </configuration>
       </plugin>
     </plugins>
+    
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.apache.rat</groupId>
+          <artifactId>apache-rat-plugin</artifactId>
+          <configuration>
+            <excludeSubProjects>false</excludeSubProjects>
+            <excludes>
+              <exclude>**/*</exclude>
+            </excludes>
+          </configuration>
+         </plugin>
+      </plugins>
+    </pluginManagement>
   </build>
 
   <dependencies>
