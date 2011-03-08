@@ -80,9 +80,10 @@ public class SearchResultEditorSorter extends ViewerSorter implements SelectionL
         sortOrder = BrowserCoreConstants.SORT_ORDER_NONE;
 
         columns = contentProvider.getViewer().getTable().getColumns();
-        for ( int i = 0; i < columns.length; i++ )
+
+        for ( TableColumn column : columns )
         {
-            columns[i].addSelectionListener( this );
+            column.addSelectionListener( this );
         }
     }
 
@@ -98,22 +99,29 @@ public class SearchResultEditorSorter extends ViewerSorter implements SelectionL
         this.search = newSearch;
         this.showDn = showDn;
 
-        for ( int i = 0; columns != null && i < columns.length; i++ )
+        if ( columns != null )
         {
-            columns[i].removeSelectionListener( this );
+            for ( TableColumn column : columns )
+            {
+                column.removeSelectionListener( this );
+            }
         }
+        
         columns = contentProvider.getViewer().getTable().getColumns();
-        for ( int i = 0; i < columns.length; i++ )
+        
+        for ( TableColumn column : columns )
         {
-            columns[i].addSelectionListener( this );
+            column.addSelectionListener( this );
         }
 
         // check sort column
         int visibleColumns = search.getReturningAttributes().length;
+        
         if ( showDn )
         {
             visibleColumns++;
         }
+        
         if ( visibleColumns < sortBy + 1 )
         {
             setSortColumn( 0 );
@@ -125,13 +133,17 @@ public class SearchResultEditorSorter extends ViewerSorter implements SelectionL
 
     public void dispose()
     {
-        for ( int i = 0; columns != null && i < columns.length; i++ )
+        if ( columns != null )
         {
-            if ( !columns[i].isDisposed() )
+            for ( TableColumn column : columns )
             {
-                columns[i].removeSelectionListener( this );
+                if ( !column.isDisposed() )
+                {
+                    column.removeSelectionListener( this );
+                }
             }
         }
+        
         columns = null;
         search = null;
         contentProvider = null;
@@ -179,15 +191,17 @@ public class SearchResultEditorSorter extends ViewerSorter implements SelectionL
             sortBy = index;
             sortOrder = BrowserCoreConstants.SORT_ORDER_ASCENDING;
         }
+        
         if ( sortOrder == BrowserCoreConstants.SORT_ORDER_NONE )
         {
             sortBy = BrowserCoreConstants.SORT_BY_NONE;
         }
 
         TableColumn[] columns = contentProvider.getViewer().getTable().getColumns();
-        for ( int i = 0; i < columns.length; i++ )
+        
+        for ( TableColumn column : columns )
         {
-            columns[i].setImage( null );
+            column.setImage( null );
         }
 
         if ( sortOrder == BrowserCoreConstants.SORT_ORDER_ASCENDING )
@@ -256,26 +270,30 @@ public class SearchResultEditorSorter extends ViewerSorter implements SelectionL
         IEntry entry1 = sr1.getEntry();
         IEntry entry2 = sr2.getEntry();
 
-        if ( ( entry1 == null ) && ( entry2 == null ) )
+        if ( entry1 == null )
         {
-            return equal();
+            if ( entry2 == null )
+            {
+                return equal();
+            }
+            else
+            {
+                return lessThan();
+            }
         }
-        else if ( ( entry1 != null ) && ( entry2 == null ) )
+        else if ( entry2 == null )
         {
             return greaterThan();
-        }
-        else if ( ( entry1 == null ) && ( entry2 != null ) )
-        {
-            return lessThan();
         }
         else
         {
             String attributeName;
-            if ( showDn && sortBy == 0 )
+            
+            if ( showDn && ( sortBy == 0 ) )
             {
                 attributeName = BrowserUIConstants.DN;
             }
-            else if ( showDn && sortBy > 0 )
+            else if ( showDn && ( sortBy > 0 ) )
             {
                 attributeName = search.getReturningAttributes()[sortBy - 1];
             }
@@ -293,15 +311,19 @@ public class SearchResultEditorSorter extends ViewerSorter implements SelectionL
             {
                 AttributeHierarchy ah1 = entry1.getAttributeWithSubtypes( attributeName );
                 AttributeHierarchy ah2 = entry2.getAttributeWithSubtypes( attributeName );
-                if ( ah1 == null && ah2 == null )
+                
+                if ( ah1 == null )
                 {
-                    return equal();
+                    if ( ah2 == null )
+                    {
+                        return equal();
+                    }
+                    else
+                    {
+                        return lessThan();
+                    }
                 }
-                else if ( ah1 == null && ah2 != null )
-                {
-                    return lessThan();
-                }
-                else if ( ah1 != null && ah2 == null )
+                else if ( ah2 == null )
                 {
                     return greaterThan();
                 }
