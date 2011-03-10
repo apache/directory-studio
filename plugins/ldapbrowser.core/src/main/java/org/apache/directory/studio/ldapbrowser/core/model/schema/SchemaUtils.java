@@ -31,6 +31,7 @@ import java.util.TreeSet;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.directory.shared.ldap.model.constants.SchemaConstants;
+import org.apache.directory.shared.ldap.model.schema.AbstractMutableSchemaObject;
 import org.apache.directory.shared.ldap.model.schema.AbstractSchemaObject;
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
 import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
@@ -165,9 +166,9 @@ public class SchemaUtils
         }
     };
 
-    private static final Comparator<AbstractSchemaObject> schemaElementNameComparator = new Comparator<AbstractSchemaObject>()
+    private static final Comparator<AbstractMutableSchemaObject> schemaElementNameComparator = new Comparator<AbstractMutableSchemaObject>()
     {
-        public int compare( AbstractSchemaObject s1, AbstractSchemaObject s2 )
+        public int compare( AbstractMutableSchemaObject s1, AbstractMutableSchemaObject s2 )
         {
             return SchemaUtils.toString( s1 ).compareToIgnoreCase( SchemaUtils.toString( s2 ) );
         }
@@ -181,7 +182,7 @@ public class SchemaUtils
      * 
      * @return the names
      */
-    public static Collection<String> getNames( Collection<? extends AbstractSchemaObject> asds )
+    public static Collection<String> getNames( Collection<? extends AbstractMutableSchemaObject> asds )
     {
         Set<String> nameSet = new TreeSet<String>( nameAndOidComparator );
         for ( AbstractSchemaObject asd : asds )
@@ -199,7 +200,7 @@ public class SchemaUtils
      * 
      * @return the names
      */
-    public static String[] getNamesAsArray( Collection<? extends AbstractSchemaObject> asds )
+    public static String[] getNamesAsArray( Collection<? extends AbstractMutableSchemaObject> asds )
     {
         return getNames( asds ).toArray( new String[0] );
     }
@@ -210,7 +211,7 @@ public class SchemaUtils
      * 
      * @return the numeric OIDs of the given schema descriptions
      */
-    public static Collection<String> getNumericOids( Collection<? extends AbstractSchemaObject> descriptions )
+    public static Collection<String> getNumericOids( Collection<? extends AbstractMutableSchemaObject> descriptions )
     {
         Set<String> oids = new HashSet<String>();
         for ( AbstractSchemaObject asd : descriptions )
