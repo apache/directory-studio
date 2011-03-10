@@ -25,7 +25,7 @@ import java.util.List;
 import org.apache.commons.collections.map.MultiValueMap;
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
-import org.apache.directory.shared.ldap.model.schema.SchemaObject;
+import org.apache.directory.shared.ldap.model.schema.MutableSchemaObject;
 import org.apache.directory.studio.schemaeditor.Activator;
 import org.apache.directory.studio.schemaeditor.controller.SchemaHandler;
 import org.apache.directory.studio.schemaeditor.model.Schema;
@@ -228,7 +228,7 @@ public class HierarchyManager
      * @param object
      *      an attribute type or an object class.
      */
-    private void checkAliasesAndOID( SchemaObject object )
+    private void checkAliasesAndOID( MutableSchemaObject object )
     {
         // Aliases
         List<String> aliases = object.getNames();

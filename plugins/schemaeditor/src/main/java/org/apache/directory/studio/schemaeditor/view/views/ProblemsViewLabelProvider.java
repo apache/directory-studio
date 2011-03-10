@@ -25,6 +25,7 @@ import org.apache.directory.shared.ldap.model.schema.AttributeType;
 import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
 import org.apache.directory.shared.ldap.model.schema.MatchingRule;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
+import org.apache.directory.shared.ldap.model.schema.MutableSchemaObject;
 import org.apache.directory.shared.ldap.model.schema.SchemaObject;
 import org.apache.directory.studio.schemaeditor.Activator;
 import org.apache.directory.studio.schemaeditor.PluginConstants;
@@ -475,7 +476,7 @@ public class ProblemsViewLabelProvider extends LabelProvider implements ITableLa
 
 
     /**
-     * Gets the original {@link SchemaObject} from the {@link SchemaHandler}.
+     * Gets the original {@link MutableSchemaObject} from the {@link SchemaHandler}.
      *
      * @param so
      *      the schema object

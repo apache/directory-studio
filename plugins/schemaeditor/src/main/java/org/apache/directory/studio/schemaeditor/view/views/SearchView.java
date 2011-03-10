@@ -28,7 +28,7 @@ import java.util.regex.Pattern;
 
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
-import org.apache.directory.shared.ldap.model.schema.SchemaObject;
+import org.apache.directory.shared.ldap.model.schema.MutableSchemaObject;
 import org.apache.directory.studio.schemaeditor.Activator;
 import org.apache.directory.studio.schemaeditor.PluginConstants;
 import org.apache.directory.studio.schemaeditor.PluginUtils;
@@ -662,7 +662,7 @@ public class SearchView extends ViewPart
             validateSearchField();
         }
 
-        List<SchemaObject> results = search( searchString, searchIn, scope );
+        List<MutableSchemaObject> results = search( searchString, searchIn, scope );
         setSearchResultsLabel( searchString, results.size() );
         resultsTableViewer.setInput( results );
     }
@@ -678,9 +678,9 @@ public class SearchView extends ViewPart
      * @param scope
      *      the scope
      */
-    private List<SchemaObject> search( String searchString, SearchInEnum[] searchIn, int scope )
+    private List<MutableSchemaObject> search( String searchString, SearchInEnum[] searchIn, int scope )
     {
-        List<SchemaObject> searchResults = new ArrayList<SchemaObject>();
+        List<MutableSchemaObject> searchResults = new ArrayList<MutableSchemaObject>();
 
         if ( searchString != null )
         {

@@ -27,6 +27,7 @@ import java.util.List;
 
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
+import org.apache.directory.shared.ldap.model.schema.MutableSchemaObject;
 import org.apache.directory.shared.ldap.model.schema.SchemaObject;
 import org.apache.directory.studio.schemaeditor.Activator;
 import org.apache.directory.studio.schemaeditor.PluginConstants;
@@ -48,10 +49,10 @@ public class SearchViewContentProvider implements IStructuredContentProvider, IT
     private IPreferenceStore store;
 
     /** The FirstName Sorter */
-    private Comparator<SchemaObject> firstNameSorter;
+    private Comparator<MutableSchemaObject> firstNameSorter;
 
     /** The OID Sorter */
-    private Comparator<SchemaObject> oidSorter;
+    private Comparator<MutableSchemaObject> oidSorter;
 
 
     /**
@@ -61,9 +62,9 @@ public class SearchViewContentProvider implements IStructuredContentProvider, IT
     {
         store = Activator.getDefault().getPreferenceStore();
 
-        firstNameSorter = new Comparator<SchemaObject>()
+        firstNameSorter = new Comparator<MutableSchemaObject>()
         {
-            public int compare( SchemaObject o1, SchemaObject o2 )
+            public int compare( MutableSchemaObject o1, MutableSchemaObject o2 )
             {
                 List<String> o1Names = null;
                 List<String> o2Names = null;
@@ -123,9 +124,9 @@ public class SearchViewContentProvider implements IStructuredContentProvider, IT
             }
         };
 
-        oidSorter = new Comparator<SchemaObject>()
+        oidSorter = new Comparator<MutableSchemaObject>()
         {
-            public int compare( SchemaObject o1, SchemaObject o2 )
+            public int compare( MutableSchemaObject o1, MutableSchemaObject o2 )
             {
                 if ( ( o1 instanceof AttributeType ) && ( o2 instanceof AttributeType ) )
                 {
@@ -196,7 +197,7 @@ public class SearchViewContentProvider implements IStructuredContentProvider, IT
     @SuppressWarnings("unchecked")
     public Object[] getChildren( Object parentElement )
     {
-        List<SchemaObject> children = new ArrayList<SchemaObject>();
+        List<MutableSchemaObject> children = new ArrayList<MutableSchemaObject>();
 
         int group = store.getInt( PluginConstants.PREFS_SEARCH_VIEW_GROUPING );
         int sortBy = store.getInt( PluginConstants.PREFS_SEARCH_VIEW_SORTING_BY );
@@ -204,7 +205,7 @@ public class SearchViewContentProvider implements IStructuredContentProvider, IT
 
         if ( parentElement instanceof List )
         {
-            List<SchemaObject> searchResults = ( List<SchemaObject> ) parentElement;
+            List<MutableSchemaObject> searchResults = ( List<MutableSchemaObject> ) parentElement;
 
             if ( group == PluginConstants.PREFS_SEARCH_VIEW_GROUPING_ATTRIBUTE_TYPES_FIRST )
             {

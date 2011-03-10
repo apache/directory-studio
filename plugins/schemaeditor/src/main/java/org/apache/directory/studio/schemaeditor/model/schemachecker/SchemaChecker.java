@@ -31,6 +31,7 @@ import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
 import org.apache.directory.shared.ldap.model.schema.MatchingRule;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.shared.ldap.model.schema.SchemaManager;
+import org.apache.directory.shared.ldap.model.schema.MutableSchemaObject;
 import org.apache.directory.shared.ldap.model.schema.SchemaObject;
 import org.apache.directory.shared.ldap.schemamanager.impl.DefaultSchemaManager;
 import org.apache.directory.studio.schemaeditor.Activator;
@@ -396,7 +397,7 @@ public class SchemaChecker
      * @return
      *      the associated errors
      */
-    public List<?> getErrors( SchemaObject so )
+    public List<?> getErrors( MutableSchemaObject so )
     {
         return ( List<?> ) errorsMap.get( so );
     }
@@ -410,7 +411,7 @@ public class SchemaChecker
      * @return
      *      true if the given Schema Object has errors.
      */
-    public boolean hasErrors( SchemaObject so )
+    public boolean hasErrors( MutableSchemaObject so )
     {
         List<?> errors = getErrors( so );
 

@@ -20,7 +20,7 @@
 package org.apache.directory.studio.schemaeditor.controller.actions;
 
 
-import org.apache.directory.shared.ldap.model.schema.SchemaObject;
+import org.apache.directory.shared.ldap.model.schema.MutableSchemaObject;
 import org.apache.directory.studio.schemaeditor.PluginConstants;
 import org.apache.directory.studio.schemaeditor.PluginUtils;
 import org.apache.directory.studio.schemaeditor.view.ViewUtils;
@@ -151,7 +151,7 @@ public class OpenTypeHierarchyAction extends Action implements IWorkbenchWindowA
      * @param element
      *      the element to open
      */
-    private void openTypeHierarchy( SchemaObject element )
+    private void openTypeHierarchy( MutableSchemaObject element )
     {
         HierarchyView view = ( HierarchyView ) PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
             .findView( HierarchyView.ID );

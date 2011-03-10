@@ -22,7 +22,7 @@ package org.apache.directory.studio.schemaeditor.controller.actions;
 
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
-import org.apache.directory.shared.ldap.model.schema.SchemaObject;
+import org.apache.directory.shared.ldap.model.schema.MutableSchemaObject;
 import org.apache.directory.studio.schemaeditor.Activator;
 import org.apache.directory.studio.schemaeditor.PluginConstants;
 import org.apache.directory.studio.schemaeditor.view.editors.attributetype.AttributeTypeEditor;
@@ -197,7 +197,7 @@ public class LinkWithEditorHierarchyViewAction extends Action
      * @param schemaElement
      *      the Schema Element
      */
-    private void linkViewWithEditor( SchemaObject schemaElement )
+    private void linkViewWithEditor( MutableSchemaObject schemaElement )
     {
         if ( schemaElement instanceof AttributeType )
         {

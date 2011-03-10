@@ -28,6 +28,7 @@ import java.util.Map;
 
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
+import org.apache.directory.shared.ldap.model.schema.MutableSchemaObject;
 import org.apache.directory.shared.ldap.model.schema.SchemaObject;
 import org.apache.directory.studio.schemaeditor.Activator;
 import org.apache.directory.studio.schemaeditor.PluginConstants;
@@ -153,7 +154,7 @@ public class DeleteSchemaElementAction extends Action implements IWorkbenchWindo
             {
 
                 Map<String, Schema> schemasMap = new HashMap<String, Schema>();
-                List<SchemaObject> schemaObjectsList = new ArrayList<SchemaObject>();
+                List<MutableSchemaObject> schemaObjectsList = new ArrayList<MutableSchemaObject>();
 
                 for ( Iterator<?> iterator = selection.iterator(); iterator.hasNext(); )
                 {

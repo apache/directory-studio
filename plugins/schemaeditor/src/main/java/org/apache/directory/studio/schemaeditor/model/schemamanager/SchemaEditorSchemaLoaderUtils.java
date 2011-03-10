@@ -36,6 +36,7 @@ import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
 import org.apache.directory.shared.ldap.model.schema.MatchingRule;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.shared.ldap.model.schema.ObjectClassTypeEnum;
+import org.apache.directory.shared.ldap.model.schema.MutableSchemaObject;
 import org.apache.directory.shared.ldap.model.schema.SchemaObject;
 import org.apache.directory.shared.ldap.model.schema.UsageEnum;
 import org.apache.directory.shared.util.Strings;
@@ -233,7 +234,7 @@ public class SchemaEditorSchemaLoaderUtils
 
 
     /**
-     * Adds the values common to all {@link SchemaObject}(s) to the entry.
+     * Adds the values common to all {@link MutableSchemaObject}(s) to the entry.
      *
      * @param schemaObject
      *      the schema object
