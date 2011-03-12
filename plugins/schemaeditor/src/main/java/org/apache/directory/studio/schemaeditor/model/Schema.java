@@ -25,8 +25,9 @@ import java.util.List;
 
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
 import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
-import org.apache.directory.shared.ldap.model.schema.MutableLdapSyntaxImpl;
 import org.apache.directory.shared.ldap.model.schema.MatchingRule;
+import org.apache.directory.shared.ldap.model.schema.MutableLdapSyntaxImpl;
+import org.apache.directory.shared.ldap.model.schema.MutableMatchingRuleImpl;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.shared.ldap.model.schema.registries.DefaultSchema;
 
@@ -48,7 +49,7 @@ public class Schema extends DefaultSchema
     private List<ObjectClass> objectClasses = new ArrayList<ObjectClass>();
 
     /** The MatchingRule List */
-    private List<MatchingRule> matchingRules = new ArrayList<MatchingRule>();
+    private List<MutableMatchingRuleImpl> matchingRules = new ArrayList<MutableMatchingRuleImpl>();
 
     /** The Syntax List */
     private List<MutableLdapSyntaxImpl> syntaxes = new ArrayList<MutableLdapSyntaxImpl>();
@@ -84,7 +85,7 @@ public class Schema extends DefaultSchema
      * @param mr
      *      the MatchingRule
      */
-    public boolean addMatchingRule( MatchingRule mr )
+    public boolean addMatchingRule( MutableMatchingRuleImpl mr )
     {
         return matchingRules.add( mr );
     }
@@ -171,7 +172,7 @@ public class Schema extends DefaultSchema
      */
     public MatchingRule getMatchingRule( String id )
     {
-        for ( MatchingRule mr : matchingRules )
+        for ( MutableMatchingRuleImpl mr : matchingRules )
         {
             List<String> aliases = mr.getNames();
             if ( aliases != null )
@@ -200,7 +201,7 @@ public class Schema extends DefaultSchema
      * @return
      *      all the MatchingRule objects contained in the Schema
      */
-    public List<MatchingRule> getMatchingRules()
+    public List<MutableMatchingRuleImpl> getMatchingRules()
     {
         return matchingRules;
     }
@@ -328,7 +329,7 @@ public class Schema extends DefaultSchema
      * @param mr
      *      the MatchingRule
      */
-    public boolean removeMatchingRule( MatchingRule mr )
+    public boolean removeMatchingRule( MutableMatchingRuleImpl mr )
     {
         return matchingRules.remove( mr );
     }

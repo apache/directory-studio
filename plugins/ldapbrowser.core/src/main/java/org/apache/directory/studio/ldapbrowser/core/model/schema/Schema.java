@@ -39,7 +39,7 @@ import org.apache.directory.shared.ldap.model.constants.SchemaConstants;
 import org.apache.directory.shared.ldap.model.name.Dn;
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
 import org.apache.directory.shared.ldap.model.schema.MutableLdapSyntaxImpl;
-import org.apache.directory.shared.ldap.model.schema.MatchingRule;
+import org.apache.directory.shared.ldap.model.schema.MutableMatchingRuleImpl;
 import org.apache.directory.shared.ldap.model.schema.MatchingRuleUse;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.shared.ldap.model.schema.UsageEnum;
@@ -132,7 +132,7 @@ public class Schema
 
     private Map<String, MutableLdapSyntaxImpl> lsdMapByNumericOid;
 
-    private Map<String, MatchingRule> mrdMapByNameOrNumericOid;
+    private Map<String, MutableMatchingRuleImpl> mrdMapByNameOrNumericOid;
 
     private Map<String, MatchingRuleUse> mrudMapByNameOrNumericOid;
 
@@ -149,7 +149,7 @@ public class Schema
         this.ocdMapByNameOrNumericOid = new HashMap<String, ObjectClass>();
         this.atdMapByNameOrNumericOid = new HashMap<String, AttributeType>();
         this.lsdMapByNumericOid = new HashMap<String, MutableLdapSyntaxImpl>();
-        this.mrdMapByNameOrNumericOid = new HashMap<String, MatchingRule>();
+        this.mrdMapByNameOrNumericOid = new HashMap<String, MutableMatchingRuleImpl>();
         this.mrudMapByNameOrNumericOid = new HashMap<String, MatchingRuleUse>();
     }
 
@@ -281,7 +281,7 @@ public class Schema
                 }
                 else if ( attributeName.equalsIgnoreCase( SchemaConstants.MATCHING_RULES_AT ) )
                 {
-                    MatchingRule mrd = mrdParser.parseMatchingRuleDescription( value );
+                    MutableMatchingRuleImpl mrd = mrdParser.parseMatchingRuleDescription( value );
                     mrd.addExtension( RAW_SCHEMA_DEFINITION_LDIF_VALUE, ldifValues );
                     addMatchingRule( mrd );
                 }
@@ -342,7 +342,7 @@ public class Schema
         {
             if ( matchingRule != null && !hasMatchingRuleDescription( matchingRule ) )
             {
-                MatchingRule mrd = new MatchingRule( matchingRule );
+                MutableMatchingRuleImpl mrd = new MutableMatchingRuleImpl( matchingRule );
                 mrd.addName( matchingRule );
                 addMatchingRule( mrd );
             }
@@ -701,7 +701,7 @@ public class Schema
      * 
      * @param mrud the matching rule description
      */
-    private void addMatchingRule( MatchingRule mrd )
+    private void addMatchingRule( MutableMatchingRuleImpl mrd )
     {
         if ( mrd.getOid() != null )
         {
@@ -722,9 +722,9 @@ public class Schema
      * 
      * @return the matching rule descriptions
      */
-    public Collection<MatchingRule> getMatchingRuleDescriptions()
+    public Collection<MutableMatchingRuleImpl> getMatchingRuleDescriptions()
     {
-        Set<MatchingRule> set = new HashSet<MatchingRule>( mrdMapByNameOrNumericOid.values() );
+        Set<MutableMatchingRuleImpl> set = new HashSet<MutableMatchingRuleImpl>( mrdMapByNameOrNumericOid.values() );
         return set;
     }
 
@@ -757,7 +757,7 @@ public class Schema
      * 
      * @return the matching rule description or the default or a dummy
      */
-    public MatchingRule getMatchingRuleDescription( String nameOrOid )
+    public MutableMatchingRuleImpl getMatchingRuleDescription( String nameOrOid )
     {
         if ( mrdMapByNameOrNumericOid.containsKey( nameOrOid.toLowerCase() ) )
         {
@@ -770,7 +770,7 @@ public class Schema
         else
         {
             // DUMMY
-            MatchingRule mrd = new MatchingRule( nameOrOid );
+            MutableMatchingRuleImpl mrd = new MutableMatchingRuleImpl( nameOrOid );
             mrd.setExtensions( DUMMY_EXTENSIONS );
             return mrd;
         }

@@ -29,7 +29,7 @@ import org.apache.commons.collections.MultiMap;
 import org.apache.commons.collections.map.MultiValueMap;
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
 import org.apache.directory.shared.ldap.model.schema.MutableLdapSyntaxImpl;
-import org.apache.directory.shared.ldap.model.schema.MatchingRule;
+import org.apache.directory.shared.ldap.model.schema.MutableMatchingRuleImpl;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.shared.ldap.model.schema.SchemaObject;
 import org.apache.directory.studio.schemaeditor.controller.SchemaHandler;
@@ -169,7 +169,7 @@ public class DependenciesComputer
         String equalityName = attributeType.getEqualityOid();
         if ( equalityName != null )
         {
-            MatchingRule equalityMatchingRule = schemaHandler.getMatchingRule( equalityName );
+            MutableMatchingRuleImpl equalityMatchingRule = schemaHandler.getMatchingRule( equalityName );
             if ( equalityMatchingRule == null )
             {
                 throw new DependencyComputerException( NLS.bind(
@@ -189,7 +189,7 @@ public class DependenciesComputer
         String orderingName = attributeType.getOrderingOid();
         if ( orderingName != null )
         {
-            MatchingRule orderingMatchingRule = schemaHandler.getMatchingRule( orderingName );
+            MutableMatchingRuleImpl orderingMatchingRule = schemaHandler.getMatchingRule( orderingName );
             if ( orderingMatchingRule == null )
             {
                 throw new DependencyComputerException( NLS.bind(
@@ -209,7 +209,7 @@ public class DependenciesComputer
         String substringName = attributeType.getSubstringOid();
         if ( substringName != null )
         {
-            MatchingRule substringMatchingRule = schemaHandler.getMatchingRule( substringName );
+            MutableMatchingRuleImpl substringMatchingRule = schemaHandler.getMatchingRule( substringName );
             if ( substringMatchingRule == null )
             {
                 throw new DependencyComputerException( NLS.bind(

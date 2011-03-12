@@ -36,7 +36,7 @@ import org.apache.directory.shared.ldap.model.schema.AbstractSchemaObject;
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
 import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
 import org.apache.directory.shared.ldap.model.schema.MutableLdapSyntaxImpl;
-import org.apache.directory.shared.ldap.model.schema.MatchingRule;
+import org.apache.directory.shared.ldap.model.schema.MutableMatchingRuleImpl;
 import org.apache.directory.shared.ldap.model.schema.MatchingRuleUse;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.shared.ldap.model.schema.ObjectClassTypeEnum;
@@ -540,7 +540,7 @@ public class SchemaUtils
      * equality, substring or ordering matching
      */
     public static Collection<AttributeType> getUsedFromAttributeTypeDescriptions(
-        MatchingRule mrd, Schema schema )
+        MutableMatchingRuleImpl mrd, Schema schema )
     {
         Set<AttributeType> usedFromSet = new TreeSet<AttributeType>( schemaElementNameComparator );
         for ( AttributeType atd : schema.getAttributeTypeDescriptions() )

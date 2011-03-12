@@ -25,7 +25,7 @@ import java.util.Collection;
 
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
 import org.apache.directory.shared.ldap.model.schema.MutableLdapSyntaxImpl;
-import org.apache.directory.shared.ldap.model.schema.MatchingRule;
+import org.apache.directory.shared.ldap.model.schema.MutableMatchingRuleImpl;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.shared.ldap.model.schema.UsageEnum;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.SchemaUtils;
@@ -383,7 +383,7 @@ public class AttributeTypeDescriptionDetailsPage extends SchemaDetailsPage
 
         // set matching rules content
         String emrOid = null;
-        MatchingRule emr = null;
+        MutableMatchingRuleImpl emr = null;
         if ( atd != null )
         {
             emrOid = SchemaUtils.getEqualityMatchingRuleNameOrNumericOidTransitive( atd, getSchema() );
@@ -398,7 +398,7 @@ public class AttributeTypeDescriptionDetailsPage extends SchemaDetailsPage
         equalityLink.setEnabled( emr != null );
 
         String smrOid = null;
-        MatchingRule smr = null;
+        MutableMatchingRuleImpl smr = null;
         if ( atd != null )
         {
             smrOid = SchemaUtils.getSubstringMatchingRuleNameOrNumericOidTransitive( atd, getSchema() );
@@ -413,7 +413,7 @@ public class AttributeTypeDescriptionDetailsPage extends SchemaDetailsPage
         substringLink.setEnabled( smr != null );
 
         String omrOid = null;
-        MatchingRule omr = null;
+        MutableMatchingRuleImpl omr = null;
         if ( atd != null )
         {
             omrOid = SchemaUtils.getOrderingMatchingRuleNameOrNumericOidTransitive( atd, getSchema() );
@@ -532,7 +532,7 @@ public class AttributeTypeDescriptionDetailsPage extends SchemaDetailsPage
                 {
                     if ( getSchema().hasMatchingRuleDescription( mrdName ) )
                     {
-                        MatchingRule mrd = getSchema().getMatchingRuleDescription( mrdName );
+                        MutableMatchingRuleImpl mrd = getSchema().getMatchingRuleDescription( mrdName );
                         Hyperlink otherMatchLink = toolkit.createHyperlink( otherMatchClient, SchemaUtils
                             .toString( mrd ), SWT.WRAP );
                         otherMatchLink.setHref( mrd );

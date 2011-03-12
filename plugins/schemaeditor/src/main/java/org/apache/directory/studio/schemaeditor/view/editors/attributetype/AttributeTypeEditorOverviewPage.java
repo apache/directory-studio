@@ -27,8 +27,9 @@ import java.util.List;
 import org.apache.directory.shared.asn1.util.OID;
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
 import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
-import org.apache.directory.shared.ldap.model.schema.MutableLdapSyntaxImpl;
 import org.apache.directory.shared.ldap.model.schema.MatchingRule;
+import org.apache.directory.shared.ldap.model.schema.MutableLdapSyntaxImpl;
+import org.apache.directory.shared.ldap.model.schema.MutableMatchingRuleImpl;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.shared.ldap.model.schema.UsageEnum;
 import org.apache.directory.studio.schemaeditor.Activator;
@@ -583,7 +584,7 @@ public class AttributeTypeEditorOverviewPage extends FormPage
 
             if ( selectedItem instanceof MatchingRule )
             {
-                modifiedAttributeType.setEqualityOid( ( ( MatchingRule ) selectedItem ).getName() );
+                modifiedAttributeType.setEqualityOid( ( ( MutableMatchingRuleImpl ) selectedItem ).getName() );
             }
             else if ( selectedItem instanceof NonExistingMatchingRule )
             {
@@ -611,7 +612,7 @@ public class AttributeTypeEditorOverviewPage extends FormPage
 
             if ( selectedItem instanceof MatchingRule )
             {
-                modifiedAttributeType.setOrderingOid( ( ( MatchingRule ) selectedItem ).getName() );
+                modifiedAttributeType.setOrderingOid( ( ( MutableMatchingRuleImpl ) selectedItem ).getName() );
             }
             else if ( selectedItem instanceof NonExistingMatchingRule )
             {
@@ -639,7 +640,7 @@ public class AttributeTypeEditorOverviewPage extends FormPage
 
             if ( selectedItem instanceof MatchingRule )
             {
-                modifiedAttributeType.setSubstringOid( ( ( MatchingRule ) selectedItem ).getName() );
+                modifiedAttributeType.setSubstringOid( ( ( MutableMatchingRuleImpl ) selectedItem ).getName() );
             }
             else if ( selectedItem instanceof NonExistingMatchingRule )
             {
@@ -1086,7 +1087,7 @@ public class AttributeTypeEditorOverviewPage extends FormPage
         }
         else
         {
-            MatchingRule matchingRule = schemaHandler.getMatchingRule( equalityName );
+            MutableMatchingRuleImpl matchingRule = schemaHandler.getMatchingRule( equalityName );
             if ( matchingRule != null )
             {
                 equalityComboViewer.setSelection( new StructuredSelection( matchingRule ), true );
@@ -1121,7 +1122,7 @@ public class AttributeTypeEditorOverviewPage extends FormPage
         }
         else
         {
-            MatchingRule matchingRule = schemaHandler.getMatchingRule( orderingName );
+            MutableMatchingRuleImpl matchingRule = schemaHandler.getMatchingRule( orderingName );
             if ( matchingRule != null )
             {
                 orderingComboViewer.setSelection( new StructuredSelection( matchingRule ), true );
@@ -1157,7 +1158,7 @@ public class AttributeTypeEditorOverviewPage extends FormPage
         }
         else
         {
-            MatchingRule matchingRule = schemaHandler.getMatchingRule( substringName );
+            MutableMatchingRuleImpl matchingRule = schemaHandler.getMatchingRule( substringName );
             if ( matchingRule != null )
             {
                 substringComboViewer.setSelection( new StructuredSelection( matchingRule ), true );

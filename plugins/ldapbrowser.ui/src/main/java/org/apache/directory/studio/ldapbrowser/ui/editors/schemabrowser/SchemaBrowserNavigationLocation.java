@@ -24,8 +24,9 @@ package org.apache.directory.studio.ldapbrowser.ui.editors.schemabrowser;
 import org.apache.directory.shared.ldap.model.schema.AbstractSchemaObject;
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
 import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
-import org.apache.directory.shared.ldap.model.schema.MutableLdapSyntaxImpl;
 import org.apache.directory.shared.ldap.model.schema.MatchingRule;
+import org.apache.directory.shared.ldap.model.schema.MutableLdapSyntaxImpl;
+import org.apache.directory.shared.ldap.model.schema.MutableMatchingRuleImpl;
 import org.apache.directory.shared.ldap.model.schema.MatchingRuleUse;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
@@ -132,7 +133,7 @@ public class SchemaBrowserNavigationLocation extends NavigationLocation
         {
             schemaElement = connection.getSchema().getLdapSyntaxDescription( schemaElementOid );
         }
-        else if ( MatchingRule.class.getName().equals( schemaElementType ) )
+        else if ( MutableMatchingRuleImpl.class.getName().equals( schemaElementType ) )
         {
             schemaElement = connection.getSchema().getMatchingRuleDescription( schemaElementOid );
         }

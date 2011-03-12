@@ -21,7 +21,7 @@
 package org.apache.directory.studio.ldapbrowser.ui.editors.schemabrowser;
 
 
-import org.apache.directory.shared.ldap.model.schema.MatchingRule;
+import org.apache.directory.shared.ldap.model.schema.MutableMatchingRuleImpl;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.Schema;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.SchemaUtils;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
@@ -167,9 +167,9 @@ public class MatchingRuleDescriptionPage extends SchemaPage
          */
         public String getColumnText( Object obj, int index )
         {
-            if ( obj instanceof MatchingRule )
+            if ( obj instanceof MutableMatchingRuleImpl )
             {
-                return SchemaUtils.toString( ( MatchingRule ) obj );
+                return SchemaUtils.toString( ( MutableMatchingRuleImpl ) obj );
             }
             return obj.toString();
         }
@@ -196,13 +196,13 @@ public class MatchingRuleDescriptionPage extends SchemaPage
          */
         public int compare( Viewer viewer, Object e1, Object e2 )
         {
-            if ( e1 instanceof MatchingRule )
+            if ( e1 instanceof MutableMatchingRuleImpl )
             {
-                e1 = SchemaUtils.toString( ( MatchingRule ) e1 );
+                e1 = SchemaUtils.toString( ( MutableMatchingRuleImpl ) e1 );
             }
-            if ( e2 instanceof MatchingRule )
+            if ( e2 instanceof MutableMatchingRuleImpl )
             {
-                e2 = SchemaUtils.toString( ( MatchingRule ) e2 );
+                e2 = SchemaUtils.toString( ( MutableMatchingRuleImpl ) e2 );
             }
             return e1.toString().compareTo( e2.toString() );
         }
@@ -220,9 +220,9 @@ public class MatchingRuleDescriptionPage extends SchemaPage
          */
         public boolean select( Viewer viewer, Object parentElement, Object element )
         {
-            if ( element instanceof MatchingRule )
+            if ( element instanceof MutableMatchingRuleImpl )
             {
-                MatchingRule mrd = ( MatchingRule ) element;
+                MutableMatchingRuleImpl mrd = ( MutableMatchingRuleImpl ) element;
                 boolean matched = SchemaUtils.toString( mrd ).toLowerCase()
                     .indexOf( filterText.getText().toLowerCase() ) != -1
                     || mrd.getOid().toLowerCase().indexOf( filterText.getText().toLowerCase() ) != -1;

@@ -32,7 +32,7 @@ import javax.naming.directory.SearchResult;
 
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
 import org.apache.directory.shared.ldap.model.schema.MutableLdapSyntaxImpl;
-import org.apache.directory.shared.ldap.model.schema.MatchingRule;
+import org.apache.directory.shared.ldap.model.schema.MutableMatchingRuleImpl;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.shared.ldap.model.schema.parsers.AttributeTypeDescriptionSchemaParser;
 import org.apache.directory.shared.ldap.model.schema.parsers.LdapSyntaxDescriptionSchemaParser;
@@ -304,9 +304,9 @@ public class GenericSchemaConnector extends AbstractSchemaConnector implements S
                     String value = ( String ) ne.nextElement();
                     MatchingRuleDescriptionSchemaParser parser = new MatchingRuleDescriptionSchemaParser();
                     parser.setQuirksMode( true );
-                    MatchingRule mrd = parser.parseMatchingRuleDescription( value );
+                    MutableMatchingRuleImpl mrd = parser.parseMatchingRuleDescription( value );
 
-                    MatchingRule impl = new MatchingRule( mrd.getOid() );
+                    MutableMatchingRuleImpl impl = new MutableMatchingRuleImpl( mrd.getOid() );
                     impl.setDescription( mrd.getDescription() );
                     impl.setNames( mrd.getNames().toArray( new String[0] ) );
                     impl.setObsolete( mrd.isObsolete() );
@@ -336,7 +336,7 @@ public class GenericSchemaConnector extends AbstractSchemaConnector implements S
         {
             if ( matchingRuleName != null && schema.getMatchingRule( matchingRuleName ) == null )
             {
-                MatchingRule impl = new MatchingRule( matchingRuleName );
+                MutableMatchingRuleImpl impl = new MutableMatchingRuleImpl( matchingRuleName );
                 impl.setSchemaName( schema.getSchemaName() );
                 impl.setDescription( "Dummy" ); //$NON-NLS-1$
                 impl.setNames( new String[]

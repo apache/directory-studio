@@ -32,7 +32,7 @@ import java.util.TreeMap;
 
 import org.apache.directory.shared.ldap.model.constants.SchemaConstants;
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
-import org.apache.directory.shared.ldap.model.schema.MatchingRule;
+import org.apache.directory.shared.ldap.model.schema.MutableMatchingRuleImpl;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonConstants;
@@ -110,7 +110,7 @@ public class FilterContentAssistProcessor extends TemplateCompletionProcessor im
     private Map<String, ObjectClass> possibleObjectClasses;
 
     /** The possible matching rules. */
-    private Map<String, MatchingRule> possibleMatchingRules;
+    private Map<String, MutableMatchingRuleImpl> possibleMatchingRules;
 
 
     /**
@@ -171,7 +171,7 @@ public class FilterContentAssistProcessor extends TemplateCompletionProcessor im
         possibleAttributeTypes = new TreeMap<String, AttributeType>( nameAndOidComparator );
         possibleFilterTypes = new LinkedHashMap<String, String>();
         possibleObjectClasses = new TreeMap<String, ObjectClass>( nameAndOidComparator );
-        possibleMatchingRules = new TreeMap<String, MatchingRule>( nameAndOidComparator );
+        possibleMatchingRules = new TreeMap<String, MutableMatchingRuleImpl>( nameAndOidComparator );
 
         if ( schema != null )
         {
@@ -201,8 +201,8 @@ public class FilterContentAssistProcessor extends TemplateCompletionProcessor im
                 }
             }
 
-            Collection<MatchingRule> matchingRuleDescriptions = schema.getMatchingRuleDescriptions();
-            for ( MatchingRule description : matchingRuleDescriptions )
+            Collection<MutableMatchingRuleImpl> matchingRuleDescriptions = schema.getMatchingRuleDescriptions();
+            for ( MutableMatchingRuleImpl description : matchingRuleDescriptions )
             {
                 possibleMatchingRules.put( description.getOid(), description );
                 for ( String name : description.getNames() )
@@ -545,7 +545,7 @@ public class FilterContentAssistProcessor extends TemplateCompletionProcessor im
             {
                 if ( possibleMatchingRule.toUpperCase().startsWith( matchingRule.toUpperCase() ) )
                 {
-                    MatchingRule description = schema.getMatchingRuleDescription( possibleMatchingRule );
+                    MutableMatchingRuleImpl description = schema.getMatchingRuleDescription( possibleMatchingRule );
                     String replacementString = possibleMatchingRule;
                     if ( equalsColonToken == null )
                     {

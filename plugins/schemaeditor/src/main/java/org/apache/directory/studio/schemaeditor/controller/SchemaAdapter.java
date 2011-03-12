@@ -22,7 +22,7 @@ package org.apache.directory.studio.schemaeditor.controller;
 
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
 import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
-import org.apache.directory.shared.ldap.model.schema.MatchingRule;
+import org.apache.directory.shared.ldap.model.schema.MutableMatchingRuleImpl;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 
 
@@ -64,7 +64,7 @@ public abstract class SchemaAdapter implements SchemaListener
     /* (non-Javadoc)
      * @see org.apache.directory.studio.schemaeditor.model.SchemaListener#matchingRuleAdded(org.apache.directory.studio.schemaeditor.model.MatchingRuleImpl)
      */
-    public void matchingRuleAdded( MatchingRule mr )
+    public void matchingRuleAdded( MutableMatchingRuleImpl mr )
     {
     }
 
@@ -72,7 +72,7 @@ public abstract class SchemaAdapter implements SchemaListener
     /* (non-Javadoc)
      * @see org.apache.directory.studio.schemaeditor.model.SchemaListener#matchingRuleModified(org.apache.directory.studio.schemaeditor.model.MatchingRuleImpl)
      */
-    public void matchingRuleModified( MatchingRule mr )
+    public void matchingRuleModified( MutableMatchingRuleImpl mr )
     {
     }
 
@@ -80,7 +80,7 @@ public abstract class SchemaAdapter implements SchemaListener
     /* (non-Javadoc)
      * @see org.apache.directory.studio.schemaeditor.model.SchemaListener#matchingRuleRemoved(org.apache.directory.studio.schemaeditor.model.MatchingRuleImpl)
      */
-    public void matchingRuleRemoved( MatchingRule mr )
+    public void matchingRuleRemoved( MutableMatchingRuleImpl mr )
     {
     }
 

@@ -23,7 +23,7 @@ package org.apache.directory.studio.schemaeditor.view.views;
 import org.apache.directory.shared.ldap.model.exception.LdapSchemaException;
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
 import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
-import org.apache.directory.shared.ldap.model.schema.MatchingRule;
+import org.apache.directory.shared.ldap.model.schema.MutableMatchingRuleImpl;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.shared.ldap.model.schema.MutableSchemaObject;
 import org.apache.directory.shared.ldap.model.schema.SchemaObject;
@@ -496,7 +496,7 @@ public class ProblemsViewLabelProvider extends LabelProvider implements ITableLa
         {
             schemaObject = schemaHandler.getSyntax( so.getOid() );
         }
-        else if ( so instanceof MatchingRule )
+        else if ( so instanceof MutableMatchingRuleImpl )
         {
             schemaObject = schemaHandler.getMatchingRule( so.getOid() );
         }

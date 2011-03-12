@@ -24,8 +24,9 @@ package org.apache.directory.studio.ldapbrowser.ui.editors.schemabrowser;
 import java.util.Collection;
 
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
-import org.apache.directory.shared.ldap.model.schema.MutableLdapSyntaxImpl;
 import org.apache.directory.shared.ldap.model.schema.MatchingRule;
+import org.apache.directory.shared.ldap.model.schema.MutableLdapSyntaxImpl;
+import org.apache.directory.shared.ldap.model.schema.MutableMatchingRuleImpl;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.Schema;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.SchemaUtils;
 import org.eclipse.osgi.util.NLS;
@@ -187,10 +188,10 @@ public class MatchingRuleDescriptionDetailsPage extends SchemaDetailsPage
      */
     public void setInput( Object input )
     {
-        MatchingRule mrd = null;
+        MutableMatchingRuleImpl mrd = null;
         if ( input instanceof MatchingRule )
         {
-            mrd = ( MatchingRule ) input;
+            mrd = ( MutableMatchingRuleImpl ) input;
         }
 
         // create main content
@@ -233,7 +234,7 @@ public class MatchingRuleDescriptionDetailsPage extends SchemaDetailsPage
      *
      * @param mrd the matching rule description
      */
-    private void createMainContent( MatchingRule mrd )
+    private void createMainContent( MutableMatchingRuleImpl mrd )
     {
         // dispose old content
         if ( mainSection.getClient() != null )
@@ -282,7 +283,7 @@ public class MatchingRuleDescriptionDetailsPage extends SchemaDetailsPage
      *
      * @param mrd the matching rule description
      */
-    private void createUsedFromContents( MatchingRule mrd )
+    private void createUsedFromContents( MutableMatchingRuleImpl mrd )
     {
         // dispose old content
         if ( usedFromSection.getClient() != null )

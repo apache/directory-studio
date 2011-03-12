@@ -28,7 +28,7 @@ import java.util.List;
 
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
 import org.apache.directory.shared.ldap.model.schema.MutableLdapSyntaxImpl;
-import org.apache.directory.shared.ldap.model.schema.MatchingRule;
+import org.apache.directory.shared.ldap.model.schema.MutableMatchingRuleImpl;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.shared.ldap.model.schema.ObjectClassTypeEnum;
 import org.apache.directory.shared.ldap.model.schema.UsageEnum;
@@ -621,13 +621,13 @@ public class XMLSchemaFileImporter
      */
     private static void readMatchingRule( Element element, Schema schema ) throws XMLSchemaFileImportException
     {
-        MatchingRule mr = null;
+        MutableMatchingRuleImpl mr = null;
 
         // OID
         Attribute oidAttribute = element.attribute( OID_TAG );
         if ( ( oidAttribute != null ) && ( !oidAttribute.getValue().equals( "" ) ) ) //$NON-NLS-1$
         {
-            mr = new MatchingRule( oidAttribute.getValue() );
+            mr = new MutableMatchingRuleImpl( oidAttribute.getValue() );
         }
         else
         {

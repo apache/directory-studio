@@ -28,7 +28,7 @@ import org.apache.commons.collections.map.MultiValueMap;
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
 import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
 import org.apache.directory.shared.ldap.model.schema.MutableLdapSyntaxImpl;
-import org.apache.directory.shared.ldap.model.schema.MatchingRule;
+import org.apache.directory.shared.ldap.model.schema.MutableMatchingRuleImpl;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.shared.ldap.model.schema.SchemaObject;
 import org.apache.directory.studio.schemaeditor.model.Schema;
@@ -52,7 +52,7 @@ public class SchemaHandler
     /** The attribute types List */
     private List<AttributeType> attributeTypesList;
     /** The matching rules List */
-    private List<MatchingRule> matchingRulesList;
+    private List<MutableMatchingRuleImpl> matchingRulesList;
     /** The object classes List */
     private List<ObjectClass> objectClassesList;
     /** The syntaxes List */
@@ -89,7 +89,7 @@ public class SchemaHandler
         // Lists
         schemasList = new ArrayList<Schema>();
         attributeTypesList = new ArrayList<AttributeType>();
-        matchingRulesList = new ArrayList<MatchingRule>();;
+        matchingRulesList = new ArrayList<MutableMatchingRuleImpl>();;
         objectClassesList = new ArrayList<ObjectClass>();
         syntaxesList = new ArrayList<MutableLdapSyntaxImpl>();
 
@@ -126,7 +126,7 @@ public class SchemaHandler
      * @return
      *      the List of all the matching rules
      */
-    public List<MatchingRule> getMatchingRules()
+    public List<MutableMatchingRuleImpl> getMatchingRules()
     {
         return matchingRulesList;
     }
@@ -213,13 +213,13 @@ public class SchemaHandler
      * @return
      *      the corresponding matching rule, or null if no one is found
      */
-    public MatchingRule getMatchingRule( String id )
+    public MutableMatchingRuleImpl getMatchingRule( String id )
     {
         List<?> list = getMatchingRuleList( id.toLowerCase() );
 
         if ( ( list != null ) && ( list.size() >= 1 ) )
         {
-            return ( MatchingRule ) list.get( 0 );
+            return ( MutableMatchingRuleImpl ) list.get( 0 );
         }
         else
         {
@@ -492,7 +492,7 @@ public class SchemaHandler
         }
 
         // Adding its matching rules
-        for ( MatchingRule mr : schema.getMatchingRules() )
+        for ( MutableMatchingRuleImpl mr : schema.getMatchingRules() )
         {
             addSchemaObject( mr );
         }
@@ -535,9 +535,9 @@ public class SchemaHandler
             }
             attributeTypesMap.put( at.getOid(), at );
         }
-        else if ( object instanceof MatchingRule )
+        else if ( object instanceof MutableMatchingRuleImpl )
         {
-            MatchingRule mr = ( MatchingRule ) object;
+            MutableMatchingRuleImpl mr = ( MutableMatchingRuleImpl ) object;
             matchingRulesList.add( mr );
             List<String> names = mr.getNames();
             if ( names != null )
@@ -599,7 +599,7 @@ public class SchemaHandler
         }
 
         // Removing its matching rules
-        for ( MatchingRule mr : schema.getMatchingRules() )
+        for ( MutableMatchingRuleImpl mr : schema.getMatchingRules() )
         {
             removeSchemaObject( mr );
         }
@@ -642,9 +642,9 @@ public class SchemaHandler
             }
             attributeTypesMap.remove( at.getOid() );
         }
-        else if ( object instanceof MatchingRule )
+        else if ( object instanceof MutableMatchingRuleImpl )
         {
-            MatchingRule mr = ( MatchingRule ) object;
+            MutableMatchingRuleImpl mr = ( MutableMatchingRuleImpl ) object;
             matchingRulesList.remove( mr );
             List<String> names = mr.getNames();
             if ( names != null )
@@ -1060,7 +1060,7 @@ public class SchemaHandler
      * @param mr
      *      the added matching rule
      */
-    private void notifyMatchingRuleAdded( MatchingRule mr )
+    private void notifyMatchingRuleAdded( MutableMatchingRuleImpl mr )
     {
         // SchemaHandler Listeners
         for ( SchemaHandlerListener listener : schemaHandlerListeners.toArray( new SchemaHandlerListener[0] ) )
@@ -1086,7 +1086,7 @@ public class SchemaHandler
      * @param mr
      *      the modified matching rule
      */
-    private void notifyMatchingRuleModified( MatchingRule mr )
+    private void notifyMatchingRuleModified( MutableMatchingRuleImpl mr )
     {
         // SchemaHandler Listeners
         for ( SchemaHandlerListener listener : schemaHandlerListeners.toArray( new SchemaHandlerListener[0] ) )
@@ -1112,7 +1112,7 @@ public class SchemaHandler
      * @param mr
      *      the removed matching rule
      */
-    private void notifyMatchingRuleRemoved( MatchingRule mr )
+    private void notifyMatchingRuleRemoved( MutableMatchingRuleImpl mr )
     {
         // SchemaHandler Listeners
         for ( SchemaHandlerListener listener : schemaHandlerListeners.toArray( new SchemaHandlerListener[0] ) )

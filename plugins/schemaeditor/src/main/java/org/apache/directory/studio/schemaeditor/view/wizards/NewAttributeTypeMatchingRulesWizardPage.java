@@ -25,7 +25,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import org.apache.directory.shared.ldap.model.schema.MatchingRule;
+import org.apache.directory.shared.ldap.model.schema.MutableMatchingRuleImpl;
 import org.apache.directory.studio.schemaeditor.Activator;
 import org.apache.directory.studio.schemaeditor.PluginConstants;
 import org.apache.directory.studio.schemaeditor.controller.SchemaHandler;
@@ -65,9 +65,9 @@ public class NewAttributeTypeMatchingRulesWizardPage extends WizardPage
          */
         public String getText( Object element )
         {
-            if ( element instanceof MatchingRule )
+            if ( element instanceof MutableMatchingRuleImpl )
             {
-                MatchingRule mr = ( MatchingRule ) element;
+                MutableMatchingRuleImpl mr = ( MutableMatchingRuleImpl ) element;
 
                 String name = mr.getName();
                 if ( name != null )
@@ -176,10 +176,10 @@ public class NewAttributeTypeMatchingRulesWizardPage extends WizardPage
 
                 public int compare( Object o1, Object o2 )
                 {
-                    if ( ( o1 instanceof MatchingRule ) && ( o2 instanceof MatchingRule ) )
+                    if ( ( o1 instanceof MutableMatchingRuleImpl ) && ( o2 instanceof MutableMatchingRuleImpl ) )
                     {
-                        List<String> o1Names = ( ( MatchingRule ) o1 ).getNames();
-                        List<String> o2Names = ( ( MatchingRule ) o2 ).getNames();
+                        List<String> o1Names = ( ( MutableMatchingRuleImpl ) o1 ).getNames();
+                        List<String> o2Names = ( ( MutableMatchingRuleImpl ) o2 ).getNames();
 
                         // Comparing the First Name
                         if ( ( o1Names != null ) && ( o2Names != null ) )
@@ -197,11 +197,11 @@ public class NewAttributeTypeMatchingRulesWizardPage extends WizardPage
                                 return o1Names.get( 0 ).compareToIgnoreCase( "" ); //$NON-NLS-1$
                             }
                         }
-                        else if ( ( o1 instanceof String ) && ( o2 instanceof MatchingRule ) )
+                        else if ( ( o1 instanceof String ) && ( o2 instanceof MutableMatchingRuleImpl ) )
                         {
                             return Integer.MIN_VALUE;
                         }
-                        else if ( ( o1 instanceof MatchingRule ) && ( o2 instanceof String ) )
+                        else if ( ( o1 instanceof MutableMatchingRuleImpl ) && ( o2 instanceof String ) )
                         {
                             return Integer.MAX_VALUE;
                         }
@@ -235,9 +235,9 @@ public class NewAttributeTypeMatchingRulesWizardPage extends WizardPage
     {
         Object selection = ( ( StructuredSelection ) equalityComboViewer.getSelection() ).getFirstElement();
 
-        if ( selection instanceof MatchingRule )
+        if ( selection instanceof MutableMatchingRuleImpl )
         {
-            MatchingRule mr = ( ( MatchingRule ) selection );
+            MutableMatchingRuleImpl mr = ( ( MutableMatchingRuleImpl ) selection );
 
             List<String> names = mr.getNames();
             if ( ( names != null ) && ( names.size() > 0 ) )
@@ -264,9 +264,9 @@ public class NewAttributeTypeMatchingRulesWizardPage extends WizardPage
     {
         Object selection = ( ( StructuredSelection ) orderingComboViewer.getSelection() ).getFirstElement();
 
-        if ( selection instanceof MatchingRule )
+        if ( selection instanceof MutableMatchingRuleImpl )
         {
-            MatchingRule mr = ( ( MatchingRule ) selection );
+            MutableMatchingRuleImpl mr = ( ( MutableMatchingRuleImpl ) selection );
 
             List<String> names = mr.getNames();
             if ( ( names != null ) && ( names.size() > 0 ) )
@@ -293,9 +293,9 @@ public class NewAttributeTypeMatchingRulesWizardPage extends WizardPage
     {
         Object selection = ( ( StructuredSelection ) substringComboViewer.getSelection() ).getFirstElement();
 
-        if ( selection instanceof MatchingRule )
+        if ( selection instanceof MutableMatchingRuleImpl )
         {
-            MatchingRule mr = ( ( MatchingRule ) selection );
+            MutableMatchingRuleImpl mr = ( ( MutableMatchingRuleImpl ) selection );
 
             List<String> names = mr.getNames();
             if ( ( names != null ) && ( names.size() > 0 ) )

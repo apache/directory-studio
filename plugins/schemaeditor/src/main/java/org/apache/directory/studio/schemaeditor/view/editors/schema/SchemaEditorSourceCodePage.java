@@ -23,7 +23,7 @@ package org.apache.directory.studio.schemaeditor.view.editors.schema;
 
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
 import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
-import org.apache.directory.shared.ldap.model.schema.MatchingRule;
+import org.apache.directory.shared.ldap.model.schema.MutableMatchingRuleImpl;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.studio.schemaeditor.Activator;
 import org.apache.directory.studio.schemaeditor.PluginConstants;
@@ -95,7 +95,7 @@ public class SchemaEditorSourceCodePage extends FormPage
         /* (non-Javadoc)
          * @see org.apache.directory.studio.schemaeditor.controller.SchemaListener#matchingRuleAdded(org.apache.directory.studio.schemaeditor.model.MatchingRuleImpl)
          */
-        public void matchingRuleAdded( MatchingRule mr )
+        public void matchingRuleAdded( MutableMatchingRuleImpl mr )
         {
             fillInUiFields();
         }
@@ -104,7 +104,7 @@ public class SchemaEditorSourceCodePage extends FormPage
         /* (non-Javadoc)
          * @see org.apache.directory.studio.schemaeditor.controller.SchemaListener#matchingRuleModified(org.apache.directory.studio.schemaeditor.model.MatchingRuleImpl)
          */
-        public void matchingRuleModified( MatchingRule mr )
+        public void matchingRuleModified( MutableMatchingRuleImpl mr )
         {
             fillInUiFields();
         }
@@ -113,7 +113,7 @@ public class SchemaEditorSourceCodePage extends FormPage
         /* (non-Javadoc)
          * @see org.apache.directory.studio.schemaeditor.controller.SchemaListener#matchingRuleRemoved(org.apache.directory.studio.schemaeditor.model.MatchingRuleImpl)
          */
-        public void matchingRuleRemoved( MatchingRule mr )
+        public void matchingRuleRemoved( MutableMatchingRuleImpl mr )
         {
             fillInUiFields();
         }

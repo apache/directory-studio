@@ -23,7 +23,7 @@ package org.apache.directory.studio.ldapbrowser.ui.actions;
 
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
 import org.apache.directory.shared.ldap.model.schema.MutableLdapSyntaxImpl;
-import org.apache.directory.shared.ldap.model.schema.MatchingRule;
+import org.apache.directory.shared.ldap.model.schema.MutableMatchingRuleImpl;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.ldapbrowser.common.actions.BrowserAction;
@@ -414,7 +414,7 @@ public class OpenSchemaBrowserAction extends BrowserAction
      * @return
      *      the Equality Matching Rule Description
      */
-    private MatchingRule getEmrd()
+    private MutableMatchingRuleImpl getEmrd()
     {
         if ( getConnection() != null )
         {
@@ -439,7 +439,7 @@ public class OpenSchemaBrowserAction extends BrowserAction
      * @return
      *      the Substring Matching Rule Description
      */
-    private MatchingRule getSmrd()
+    private MutableMatchingRuleImpl getSmrd()
     {
         if ( getConnection() != null )
         {
@@ -464,7 +464,7 @@ public class OpenSchemaBrowserAction extends BrowserAction
      * @return
      *      the Ordering Matching Rule Description
      */
-    private MatchingRule getOmrd()
+    private MutableMatchingRuleImpl getOmrd()
     {
         if ( getConnection() != null )
         {

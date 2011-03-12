@@ -22,7 +22,7 @@ package org.apache.directory.studio.schemaeditor.controller;
 
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
 import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
-import org.apache.directory.shared.ldap.model.schema.MatchingRule;
+import org.apache.directory.shared.ldap.model.schema.MutableMatchingRuleImpl;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 
 
@@ -67,7 +67,7 @@ public interface SchemaListener
      * @param mr
      *      the added matching rule
      */
-    public void matchingRuleAdded( MatchingRule mr );
+    public void matchingRuleAdded( MutableMatchingRuleImpl mr );
 
 
     /**
@@ -76,7 +76,7 @@ public interface SchemaListener
      * @param mr
      *      the modified matching rule
      */
-    public void matchingRuleModified( MatchingRule mr );
+    public void matchingRuleModified( MutableMatchingRuleImpl mr );
 
 
     /**
@@ -85,7 +85,7 @@ public interface SchemaListener
      * @param mr
      *      the removed matching rule
      */
-    public void matchingRuleRemoved( MatchingRule mr );
+    public void matchingRuleRemoved( MutableMatchingRuleImpl mr );
 
 
     /**

@@ -31,7 +31,7 @@ import javax.naming.directory.SearchResult;
 
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
 import org.apache.directory.shared.ldap.model.schema.MutableLdapSyntaxImpl;
-import org.apache.directory.shared.ldap.model.schema.MatchingRule;
+import org.apache.directory.shared.ldap.model.schema.MutableMatchingRuleImpl;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.shared.ldap.model.schema.ObjectClassTypeEnum;
 import org.apache.directory.shared.ldap.model.schema.UsageEnum;
@@ -231,7 +231,7 @@ public class ApacheDsSchemaConnector extends AbstractSchemaConnector implements 
                             schema.addObjectClass( oc );
                             break;
                         case MATCHING_RULE:
-                            MatchingRule mr = createMatchingRule( searchResult );
+                            MutableMatchingRuleImpl mr = createMatchingRule( searchResult );
                             mr.setSchemaName( name );
                             schema.addMatchingRule( mr );
                             break;
@@ -361,9 +361,9 @@ public class ApacheDsSchemaConnector extends AbstractSchemaConnector implements 
      * ObjectClass could be created
      * @throws NamingException 
      */
-    private static MatchingRule createMatchingRule( SearchResult sr ) throws NamingException
+    private static MutableMatchingRuleImpl createMatchingRule( SearchResult sr ) throws NamingException
     {
-        MatchingRule mr = new MatchingRule( getOid( sr ) );
+        MutableMatchingRuleImpl mr = new MutableMatchingRuleImpl( getOid( sr ) );
         mr.setNames( getNames( sr ) );
         mr.setDescription( getDescription( sr ) );
         mr.setObsolete( isObsolete( sr ) );
