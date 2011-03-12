@@ -22,6 +22,7 @@ package org.apache.directory.studio.ldapbrowser.ui.editors.schemabrowser;
 
 
 import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
+import org.apache.directory.shared.ldap.model.schema.MutableLdapSyntaxImpl;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.Schema;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.SchemaUtils;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
@@ -169,7 +170,7 @@ public class LdapSyntaxDescriptionPage extends SchemaPage
         {
             if ( obj instanceof LdapSyntax )
             {
-                return SchemaUtils.toString( ( LdapSyntax ) obj );
+                return SchemaUtils.toString( ( MutableLdapSyntaxImpl ) obj );
             }
             return obj.toString();
         }
@@ -198,11 +199,11 @@ public class LdapSyntaxDescriptionPage extends SchemaPage
         {
             if ( e1 instanceof LdapSyntax )
             {
-                e1 = SchemaUtils.toString( ( LdapSyntax ) e1 );
+                e1 = SchemaUtils.toString( ( MutableLdapSyntaxImpl ) e1 );
             }
             if ( e2 instanceof LdapSyntax )
             {
-                e2 = SchemaUtils.toString( ( LdapSyntax ) e2 );
+                e2 = SchemaUtils.toString( ( MutableLdapSyntaxImpl ) e2 );
             }
             return e1.toString().compareTo( e2.toString() );
         }
@@ -222,7 +223,7 @@ public class LdapSyntaxDescriptionPage extends SchemaPage
         {
             if ( element instanceof LdapSyntax )
             {
-                LdapSyntax lsd = ( LdapSyntax ) element;
+                MutableLdapSyntaxImpl lsd = ( MutableLdapSyntaxImpl ) element;
                 boolean matched = SchemaUtils.toString( lsd ).toLowerCase()
                     .indexOf( filterText.getText().toLowerCase() ) != -1
                     || lsd.getOid().toLowerCase().indexOf( filterText.getText().toLowerCase() ) != -1;

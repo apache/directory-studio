@@ -24,6 +24,7 @@ import java.util.Collections;
 import java.util.List;
 
 import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
+import org.apache.directory.shared.ldap.model.schema.MutableLdapSyntaxImpl;
 import org.apache.directory.studio.schemaeditor.Activator;
 import org.apache.directory.studio.schemaeditor.view.editors.NonExistingSyntax;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
@@ -52,7 +53,7 @@ public class ATESyntaxComboContentProvider implements IStructuredContentProvider
                 input.addChild( new NonExistingSyntax( NonExistingSyntax.NONE ) );
 
                 // Creating Children
-                List<LdapSyntax> syntaxes = Activator.getDefault().getSchemaHandler().getSyntaxes();
+                List<MutableLdapSyntaxImpl> syntaxes = Activator.getDefault().getSchemaHandler().getSyntaxes();
                 for ( LdapSyntax syntax : syntaxes )
                 {
                     input.addChild( syntax );

@@ -26,7 +26,7 @@ import java.io.OutputStream;
 import java.util.List;
 
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
-import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
+import org.apache.directory.shared.ldap.model.schema.MutableLdapSyntaxImpl;
 import org.apache.directory.shared.ldap.model.schema.MatchingRule;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.shared.ldap.model.schema.ObjectClassTypeEnum;
@@ -226,11 +226,11 @@ public class XMLSchemaFileExporter
             }
 
             // Syntaxes
-            List<LdapSyntax> syntaxes = schema.getSyntaxes();
+            List<MutableLdapSyntaxImpl> syntaxes = schema.getSyntaxes();
             if ( ( syntaxes != null ) && ( syntaxes.size() >= 1 ) )
             {
                 Element syntaxesNode = element.addElement( SYNTAXES_TAG );
-                for ( LdapSyntax syntax : syntaxes )
+                for ( MutableLdapSyntaxImpl syntax : syntaxes )
                 {
                     toXml( syntax, syntaxesNode );
                 }
@@ -523,7 +523,7 @@ public class XMLSchemaFileExporter
      * @return
      *      the corresponding source code representation
      */
-    private static void toXml( LdapSyntax syntax, Element root )
+    private static void toXml( MutableLdapSyntaxImpl syntax, Element root )
     {
         Element syntaxNode = root.addElement( SYNTAX_TAG );
 

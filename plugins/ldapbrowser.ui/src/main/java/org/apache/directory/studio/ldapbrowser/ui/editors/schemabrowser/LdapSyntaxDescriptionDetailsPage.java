@@ -25,6 +25,7 @@ import java.util.Collection;
 
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
 import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
+import org.apache.directory.shared.ldap.model.schema.MutableLdapSyntaxImpl;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.SchemaUtils;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
@@ -110,10 +111,10 @@ public class LdapSyntaxDescriptionDetailsPage extends SchemaDetailsPage
      */
     public void setInput( Object input )
     {
-        LdapSyntax lsd = null;
+        MutableLdapSyntaxImpl lsd = null;
         if ( input instanceof LdapSyntax )
         {
-            lsd = ( LdapSyntax ) input;
+            lsd = ( MutableLdapSyntaxImpl ) input;
         }
 
         createMainContent( lsd );
@@ -131,7 +132,7 @@ public class LdapSyntaxDescriptionDetailsPage extends SchemaDetailsPage
      *
      * @param lsd the syntax description
      */
-    private void createMainContent( LdapSyntax lsd )
+    private void createMainContent( MutableLdapSyntaxImpl lsd )
     {
         // dispose old content
         if ( mainSection.getClient() != null )
@@ -175,7 +176,7 @@ public class LdapSyntaxDescriptionDetailsPage extends SchemaDetailsPage
      *
      * @param lsd the syntax description
      */
-    private void createUsedFromContents( LdapSyntax lsd )
+    private void createUsedFromContents( MutableLdapSyntaxImpl lsd )
     {
         // dispose old content
         if ( usedFromSection.getClient() != null && !usedFromSection.getClient().isDisposed() )

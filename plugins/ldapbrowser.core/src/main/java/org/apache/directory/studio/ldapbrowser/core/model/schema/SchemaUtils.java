@@ -35,6 +35,7 @@ import org.apache.directory.shared.ldap.model.schema.AbstractMutableSchemaObject
 import org.apache.directory.shared.ldap.model.schema.AbstractSchemaObject;
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
 import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
+import org.apache.directory.shared.ldap.model.schema.MutableLdapSyntaxImpl;
 import org.apache.directory.shared.ldap.model.schema.MatchingRule;
 import org.apache.directory.shared.ldap.model.schema.MatchingRuleUse;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
@@ -428,7 +429,7 @@ public class SchemaUtils
      * 
      * @return false if the syntax is defined as binary
      */
-    public static boolean isString( LdapSyntax lsd )
+    public static boolean isString( MutableLdapSyntaxImpl lsd )
     {
         return !isBinary( lsd );
     }
@@ -442,7 +443,7 @@ public class SchemaUtils
      * 
      * @return true if the syntax is defined as binary
      */
-    public static boolean isBinary( LdapSyntax lsd )
+    public static boolean isBinary( MutableLdapSyntaxImpl lsd )
     {
         // check user-defined binary syntaxes
         Set<String> binarySyntaxOids = BrowserCorePlugin.getDefault().getCorePreferences()
@@ -496,7 +497,7 @@ public class SchemaUtils
         String syntax = getSyntaxNumericOidTransitive( atd, schema );
         if ( syntax != null && schema.hasLdapSyntaxDescription( syntax ) )
         {
-            LdapSyntax lsd = schema.getLdapSyntaxDescription( syntax );
+            MutableLdapSyntaxImpl lsd = schema.getLdapSyntaxDescription( syntax );
             return isBinary( lsd );
         }
 
@@ -512,7 +513,7 @@ public class SchemaUtils
      * 
      * @return all attribute type description using this syntax description
      */
-    public static Collection<AttributeType> getUsedFromAttributeTypeDescriptions( LdapSyntax lsd,
+    public static Collection<AttributeType> getUsedFromAttributeTypeDescriptions( MutableLdapSyntaxImpl lsd,
         Schema schema )
     {
         Set<AttributeType> usedFroms = new TreeSet<AttributeType>( schemaElementNameComparator );

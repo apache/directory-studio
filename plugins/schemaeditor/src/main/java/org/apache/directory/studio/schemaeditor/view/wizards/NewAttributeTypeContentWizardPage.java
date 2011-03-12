@@ -27,6 +27,7 @@ import java.util.List;
 
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
 import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
+import org.apache.directory.shared.ldap.model.schema.MutableLdapSyntaxImpl;
 import org.apache.directory.shared.ldap.model.schema.UsageEnum;
 import org.apache.directory.studio.schemaeditor.Activator;
 import org.apache.directory.studio.schemaeditor.PluginConstants;
@@ -177,7 +178,7 @@ public class NewAttributeTypeContentWizardPage extends AbstractWizardPage
             {
                 if ( element instanceof LdapSyntax )
                 {
-                    LdapSyntax syntax = ( LdapSyntax ) element;
+                    MutableLdapSyntaxImpl syntax = ( MutableLdapSyntaxImpl ) element;
 
                     String name = syntax.getName();
                     if ( name != null )
@@ -263,8 +264,8 @@ public class NewAttributeTypeContentWizardPage extends AbstractWizardPage
                 {
                     if ( ( o1 instanceof LdapSyntax ) && ( o2 instanceof LdapSyntax ) )
                     {
-                        List<String> o1Names = ( ( LdapSyntax ) o1 ).getNames();
-                        List<String> o2Names = ( ( LdapSyntax ) o2 ).getNames();
+                        List<String> o1Names = ( ( MutableLdapSyntaxImpl ) o1 ).getNames();
+                        List<String> o2Names = ( ( MutableLdapSyntaxImpl ) o2 ).getNames();
 
                         // Comparing the First Name
                         if ( ( o1Names != null ) && ( o2Names != null ) )
@@ -397,7 +398,7 @@ public class NewAttributeTypeContentWizardPage extends AbstractWizardPage
 
         if ( selection instanceof LdapSyntax )
         {
-            return ( ( LdapSyntax ) selection ).getOid();
+            return ( ( MutableLdapSyntaxImpl ) selection ).getOid();
         }
 
         return null;

@@ -24,7 +24,7 @@ package org.apache.directory.studio.ldapbrowser.ui.editors.schemabrowser;
 import java.util.Collection;
 
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
-import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
+import org.apache.directory.shared.ldap.model.schema.MutableLdapSyntaxImpl;
 import org.apache.directory.shared.ldap.model.schema.MatchingRule;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.Schema;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.SchemaUtils;
@@ -201,7 +201,7 @@ public class MatchingRuleDescriptionDetailsPage extends SchemaDetailsPage
 
         // set syntax content
         String lsdOid = null;
-        LdapSyntax lsd = null;
+        MutableLdapSyntaxImpl lsd = null;
         if ( mrd != null )
         {
             Schema schema = getSchema();

@@ -31,7 +31,7 @@ import javax.naming.directory.SearchControls;
 import javax.naming.directory.SearchResult;
 
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
-import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
+import org.apache.directory.shared.ldap.model.schema.MutableLdapSyntaxImpl;
 import org.apache.directory.shared.ldap.model.schema.MatchingRule;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.shared.ldap.model.schema.parsers.AttributeTypeDescriptionSchemaParser;
@@ -263,9 +263,9 @@ public class GenericSchemaConnector extends AbstractSchemaConnector implements S
                     String value = ( String ) ne.nextElement();
                     LdapSyntaxDescriptionSchemaParser parser = new LdapSyntaxDescriptionSchemaParser();
                     parser.setQuirksMode( true );
-                    LdapSyntax lsd = parser.parseLdapSyntaxDescription( value );
+                    MutableLdapSyntaxImpl lsd = parser.parseLdapSyntaxDescription( value );
 
-                    LdapSyntax impl = new LdapSyntax( lsd.getOid() );
+                    MutableLdapSyntaxImpl impl = new MutableLdapSyntaxImpl( lsd.getOid() );
                     impl.setDescription( lsd.getDescription() );
                     impl.setNames( new String[]
                         { lsd.getDescription() } );
@@ -283,7 +283,7 @@ public class GenericSchemaConnector extends AbstractSchemaConnector implements S
             String syntaxOid = at.getSyntaxOid();
             if ( syntaxOid != null && schema.getSyntax( syntaxOid ) == null )
             {
-                LdapSyntax impl = new LdapSyntax( syntaxOid );
+                MutableLdapSyntaxImpl impl = new MutableLdapSyntaxImpl( syntaxOid );
                 impl.setSchemaName( schema.getSchemaName() );
                 String oidDescription = Utils.getOidDescription( syntaxOid );
                 impl.setDescription( oidDescription != null ? oidDescription : "Dummy" ); //$NON-NLS-1$

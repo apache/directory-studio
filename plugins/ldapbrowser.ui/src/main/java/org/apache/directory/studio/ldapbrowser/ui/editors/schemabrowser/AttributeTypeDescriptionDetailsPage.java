@@ -24,7 +24,7 @@ package org.apache.directory.studio.ldapbrowser.ui.editors.schemabrowser;
 import java.util.Collection;
 
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
-import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
+import org.apache.directory.shared.ldap.model.schema.MutableLdapSyntaxImpl;
 import org.apache.directory.shared.ldap.model.schema.MatchingRule;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.shared.ldap.model.schema.UsageEnum;
@@ -362,7 +362,7 @@ public class AttributeTypeDescriptionDetailsPage extends SchemaDetailsPage
 
         // set syntax content
         String lsdOid = null;
-        LdapSyntax lsd = null;
+        MutableLdapSyntaxImpl lsd = null;
         long lsdLength = 0;
         if ( atd != null )
         {

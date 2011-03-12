@@ -25,6 +25,7 @@ import java.util.List;
 
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
 import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
+import org.apache.directory.shared.ldap.model.schema.MutableLdapSyntaxImpl;
 import org.apache.directory.shared.ldap.model.schema.MatchingRule;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.shared.ldap.model.schema.registries.DefaultSchema;
@@ -50,7 +51,7 @@ public class Schema extends DefaultSchema
     private List<MatchingRule> matchingRules = new ArrayList<MatchingRule>();
 
     /** The Syntax List */
-    private List<LdapSyntax> syntaxes = new ArrayList<LdapSyntax>();
+    private List<MutableLdapSyntaxImpl> syntaxes = new ArrayList<MutableLdapSyntaxImpl>();
 
 
     /**
@@ -107,7 +108,7 @@ public class Schema extends DefaultSchema
      * @param syntax
      *      the Syntax
      */
-    public boolean addSyntax( LdapSyntax syntax )
+    public boolean addSyntax( MutableLdapSyntaxImpl syntax )
     {
         return syntaxes.add( syntax );
     }
@@ -274,7 +275,7 @@ public class Schema extends DefaultSchema
      */
     public LdapSyntax getSyntax( String id )
     {
-        for ( LdapSyntax syntax : syntaxes )
+        for ( MutableLdapSyntaxImpl syntax : syntaxes )
         {
             List<String> aliases = syntax.getNames();
             if ( aliases != null )
@@ -303,7 +304,7 @@ public class Schema extends DefaultSchema
      * @return
      *      all the Syntax objects contained in the Schema
      */
-    public List<LdapSyntax> getSyntaxes()
+    public List<MutableLdapSyntaxImpl> getSyntaxes()
     {
         return syntaxes;
     }
@@ -351,7 +352,7 @@ public class Schema extends DefaultSchema
      * @param syntax
      *      the Syntax
      */
-    public boolean removeSyntax( LdapSyntax syntax )
+    public boolean removeSyntax( MutableLdapSyntaxImpl syntax )
     {
         return syntaxes.remove( syntax );
     }

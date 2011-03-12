@@ -27,6 +27,7 @@ import java.util.List;
 import org.apache.directory.shared.asn1.util.OID;
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
 import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
+import org.apache.directory.shared.ldap.model.schema.MutableLdapSyntaxImpl;
 import org.apache.directory.shared.ldap.model.schema.MatchingRule;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.shared.ldap.model.schema.UsageEnum;
@@ -485,7 +486,7 @@ public class AttributeTypeEditorOverviewPage extends FormPage
 
             if ( selectedItem instanceof LdapSyntax )
             {
-                modifiedAttributeType.setSyntaxOid( ( ( LdapSyntax ) selectedItem ).getOid() );
+                modifiedAttributeType.setSyntaxOid( ( ( MutableLdapSyntaxImpl ) selectedItem ).getOid() );
             }
             else if ( selectedItem instanceof NonExistingSyntax )
             {
@@ -1050,7 +1051,7 @@ public class AttributeTypeEditorOverviewPage extends FormPage
         }
         else
         {
-            LdapSyntax syntax = schemaHandler.getSyntax( syntaxOID );
+            MutableLdapSyntaxImpl syntax = schemaHandler.getSyntax( syntaxOID );
             if ( syntax != null )
             {
                 syntaxComboViewer.setSelection( new StructuredSelection( syntax ), true );

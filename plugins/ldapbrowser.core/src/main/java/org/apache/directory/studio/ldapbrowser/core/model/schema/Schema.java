@@ -38,7 +38,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.directory.shared.ldap.model.constants.SchemaConstants;
 import org.apache.directory.shared.ldap.model.name.Dn;
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
-import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
+import org.apache.directory.shared.ldap.model.schema.MutableLdapSyntaxImpl;
 import org.apache.directory.shared.ldap.model.schema.MatchingRule;
 import org.apache.directory.shared.ldap.model.schema.MatchingRuleUse;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
@@ -72,10 +72,10 @@ public class Schema
 
     public static final String DN_SYNTAX_OID = "1.3.6.1.4.1.1466.115.121.1.12";
 
-    public static final LdapSyntax DUMMY_LDAP_SYNTAX;
+    public static final MutableLdapSyntaxImpl DUMMY_LDAP_SYNTAX;
     static
     {
-        DUMMY_LDAP_SYNTAX = new LdapSyntax( "", "" );
+        DUMMY_LDAP_SYNTAX = new MutableLdapSyntaxImpl( "", "" );
     }
 
     public static final HashMap<String, List<String>> DUMMY_EXTENSIONS;
@@ -130,7 +130,7 @@ public class Schema
 
     private Map<String, AttributeType> atdMapByNameOrNumericOid;
 
-    private Map<String, LdapSyntax> lsdMapByNumericOid;
+    private Map<String, MutableLdapSyntaxImpl> lsdMapByNumericOid;
 
     private Map<String, MatchingRule> mrdMapByNameOrNumericOid;
 
@@ -148,7 +148,7 @@ public class Schema
         this.modifyTimestamp = null;
         this.ocdMapByNameOrNumericOid = new HashMap<String, ObjectClass>();
         this.atdMapByNameOrNumericOid = new HashMap<String, AttributeType>();
-        this.lsdMapByNumericOid = new HashMap<String, LdapSyntax>();
+        this.lsdMapByNumericOid = new HashMap<String, MutableLdapSyntaxImpl>();
         this.mrdMapByNameOrNumericOid = new HashMap<String, MatchingRule>();
         this.mrudMapByNameOrNumericOid = new HashMap<String, MatchingRuleUse>();
     }
@@ -270,7 +270,7 @@ public class Schema
                 }
                 else if ( attributeName.equalsIgnoreCase( SchemaConstants.LDAP_SYNTAXES_AT ) )
                 {
-                    LdapSyntax lsd = lsdParser.parseLdapSyntaxDescription( value );
+                    MutableLdapSyntaxImpl lsd = lsdParser.parseLdapSyntaxDescription( value );
                     if ( StringUtils.isEmpty( lsd.getDescription() )
                         && Utils.getOidDescription( lsd.getOid() ) != null )
                     {
@@ -314,7 +314,7 @@ public class Schema
             String syntaxOid = atd.getSyntaxOid();
             if ( syntaxOid != null && !hasLdapSyntaxDescription( syntaxOid ) )
             {
-                LdapSyntax lsd = new LdapSyntax( syntaxOid );
+                MutableLdapSyntaxImpl lsd = new MutableLdapSyntaxImpl( syntaxOid );
                 lsd.setDescription( Utils.getOidDescription( syntaxOid ) );
                 addLdapSyntax( lsd );
             }
@@ -623,7 +623,7 @@ public class Schema
      * 
      * @param lsd the LDAP syntax description
      */
-    private void addLdapSyntax( LdapSyntax lsd )
+    private void addLdapSyntax( MutableLdapSyntaxImpl lsd )
     {
         if ( lsd.getOid() != null )
         {
@@ -637,9 +637,9 @@ public class Schema
      * 
      * @return the LDAP syntax descriptions
      */
-    public Collection<LdapSyntax> getLdapSyntaxDescriptions()
+    public Collection<MutableLdapSyntaxImpl> getLdapSyntaxDescriptions()
     {
-        Set<LdapSyntax> set = new HashSet<LdapSyntax>( lsdMapByNumericOid.values() );
+        Set<MutableLdapSyntaxImpl> set = new HashSet<MutableLdapSyntaxImpl>( lsdMapByNumericOid.values() );
         return set;
     }
 
@@ -670,7 +670,7 @@ public class Schema
      * 
      * @return the attribute type description or the default or a dummy
      */
-    public LdapSyntax getLdapSyntaxDescription( String numericOid )
+    public MutableLdapSyntaxImpl getLdapSyntaxDescription( String numericOid )
     {
         if ( numericOid == null )
         {
@@ -687,7 +687,7 @@ public class Schema
         else
         {
             // DUMMY
-            LdapSyntax lsd = new LdapSyntax( numericOid );
+            MutableLdapSyntaxImpl lsd = new MutableLdapSyntaxImpl( numericOid );
             lsd.setExtensions( DUMMY_EXTENSIONS );
             return lsd;
         }

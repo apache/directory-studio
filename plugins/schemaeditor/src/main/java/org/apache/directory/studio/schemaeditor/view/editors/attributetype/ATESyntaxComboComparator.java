@@ -24,6 +24,7 @@ import java.util.Comparator;
 import java.util.List;
 
 import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
+import org.apache.directory.shared.ldap.model.schema.MutableLdapSyntaxImpl;
 import org.apache.directory.studio.schemaeditor.view.editors.NonExistingSyntax;
 
 
@@ -41,8 +42,8 @@ public class ATESyntaxComboComparator implements Comparator<Object>
     {
         if ( o1 instanceof LdapSyntax && o2 instanceof LdapSyntax )
         {
-            List<String> syntax1Names = ( ( LdapSyntax ) o1 ).getNames();
-            List<String> syntax2Names = ( ( LdapSyntax ) o2 ).getNames();
+            List<String> syntax1Names = ( ( MutableLdapSyntaxImpl ) o1 ).getNames();
+            List<String> syntax2Names = ( ( MutableLdapSyntaxImpl ) o2 ).getNames();
 
             if ( ( syntax1Names != null ) && ( syntax2Names != null ) && ( syntax1Names.size() > 0 )
                 && ( syntax2Names.size() > 0 ) )
@@ -52,7 +53,7 @@ public class ATESyntaxComboComparator implements Comparator<Object>
         }
         else if ( o1 instanceof LdapSyntax && o2 instanceof NonExistingSyntax )
         {
-            List<String> syntax1Names = ( ( LdapSyntax ) o1 ).getNames();
+            List<String> syntax1Names = ( ( MutableLdapSyntaxImpl ) o1 ).getNames();
             String syntax2Name = ( ( NonExistingSyntax ) o2 ).getName();
 
             if ( ( syntax1Names != null ) && ( syntax2Name != null ) && ( syntax1Names.size() > 0 ) )
@@ -63,7 +64,7 @@ public class ATESyntaxComboComparator implements Comparator<Object>
         else if ( o1 instanceof NonExistingSyntax && o2 instanceof LdapSyntax )
         {
             String syntax1Name = ( ( NonExistingSyntax ) o1 ).getName();
-            List<String> syntax2Names = ( ( LdapSyntax ) o2 ).getNames();
+            List<String> syntax2Names = ( ( MutableLdapSyntaxImpl ) o2 ).getNames();
 
             if ( ( syntax1Name != null ) && ( syntax2Names != null ) && ( syntax2Names.size() > 0 ) )
             {

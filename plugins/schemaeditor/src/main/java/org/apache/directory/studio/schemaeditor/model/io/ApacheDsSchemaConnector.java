@@ -30,7 +30,7 @@ import javax.naming.directory.SearchControls;
 import javax.naming.directory.SearchResult;
 
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
-import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
+import org.apache.directory.shared.ldap.model.schema.MutableLdapSyntaxImpl;
 import org.apache.directory.shared.ldap.model.schema.MatchingRule;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.shared.ldap.model.schema.ObjectClassTypeEnum;
@@ -236,7 +236,7 @@ public class ApacheDsSchemaConnector extends AbstractSchemaConnector implements 
                             schema.addMatchingRule( mr );
                             break;
                         case SYNTAX:
-                            LdapSyntax syntax = createSyntax( searchResult );
+                            MutableLdapSyntaxImpl syntax = createSyntax( searchResult );
                             syntax.setSchemaName( name );
                             schema.addSyntax( syntax );
                             break;
@@ -382,9 +382,9 @@ public class ApacheDsSchemaConnector extends AbstractSchemaConnector implements 
      * ObjectClass could be created
      * @throws NamingException 
      */
-    private static LdapSyntax createSyntax( SearchResult sr ) throws NamingException
+    private static MutableLdapSyntaxImpl createSyntax( SearchResult sr ) throws NamingException
     {
-        LdapSyntax syntax = new LdapSyntax( getOid( sr ) );
+        MutableLdapSyntaxImpl syntax = new MutableLdapSyntaxImpl( getOid( sr ) );
         syntax.setNames( getNames( sr ) );
         syntax.setDescription( getDescription( sr ) );
         syntax.setObsolete( isObsolete( sr ) );

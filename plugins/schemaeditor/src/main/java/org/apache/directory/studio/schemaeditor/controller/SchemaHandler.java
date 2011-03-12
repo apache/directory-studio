@@ -27,6 +27,7 @@ import org.apache.commons.collections.MultiMap;
 import org.apache.commons.collections.map.MultiValueMap;
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
 import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
+import org.apache.directory.shared.ldap.model.schema.MutableLdapSyntaxImpl;
 import org.apache.directory.shared.ldap.model.schema.MatchingRule;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.shared.ldap.model.schema.SchemaObject;
@@ -55,7 +56,7 @@ public class SchemaHandler
     /** The object classes List */
     private List<ObjectClass> objectClassesList;
     /** The syntaxes List */
-    private List<LdapSyntax> syntaxesList;
+    private List<MutableLdapSyntaxImpl> syntaxesList;
 
     //
     // The MultiMap (for fast searching)
@@ -90,7 +91,7 @@ public class SchemaHandler
         attributeTypesList = new ArrayList<AttributeType>();
         matchingRulesList = new ArrayList<MatchingRule>();;
         objectClassesList = new ArrayList<ObjectClass>();
-        syntaxesList = new ArrayList<LdapSyntax>();
+        syntaxesList = new ArrayList<MutableLdapSyntaxImpl>();
 
         // Maps
         schemasMap = new MultiValueMap();
@@ -161,7 +162,7 @@ public class SchemaHandler
      * @return
      *      the List of all the matching rules
      */
-    public List<LdapSyntax> getSyntaxes()
+    public List<MutableLdapSyntaxImpl> getSyntaxes()
     {
         return syntaxesList;
     }
@@ -323,13 +324,13 @@ public class SchemaHandler
      * @return
      *      the corresponding syntax, or null if no one is found
      */
-    public LdapSyntax getSyntax( String id )
+    public MutableLdapSyntaxImpl getSyntax( String id )
     {
         List<?> list = getSyntaxList( id.toLowerCase() );
 
         if ( ( list != null ) && ( list.size() >= 1 ) )
         {
-            return ( LdapSyntax ) list.get( 0 );
+            return ( MutableLdapSyntaxImpl ) list.get( 0 );
         }
         else
         {
@@ -503,7 +504,7 @@ public class SchemaHandler
         }
 
         // Adding its syntaxes
-        for ( LdapSyntax syntax : schema.getSyntaxes() )
+        for ( MutableLdapSyntaxImpl syntax : schema.getSyntaxes() )
         {
             addSchemaObject( syntax );
         }
@@ -564,7 +565,7 @@ public class SchemaHandler
         }
         else if ( object instanceof LdapSyntax )
         {
-            LdapSyntax syntax = ( LdapSyntax ) object;
+            MutableLdapSyntaxImpl syntax = ( MutableLdapSyntaxImpl ) object;
             syntaxesList.add( syntax );
             List<String> names = syntax.getNames();
             if ( names != null )
@@ -610,7 +611,7 @@ public class SchemaHandler
         }
 
         // Removing its syntaxes
-        for ( LdapSyntax syntax : schema.getSyntaxes() )
+        for ( MutableLdapSyntaxImpl syntax : schema.getSyntaxes() )
         {
             removeSchemaObject( syntax );
         }
@@ -671,7 +672,7 @@ public class SchemaHandler
         }
         else if ( object instanceof LdapSyntax )
         {
-            LdapSyntax syntax = ( LdapSyntax ) object;
+            MutableLdapSyntaxImpl syntax = ( MutableLdapSyntaxImpl ) object;
             syntaxesList.remove( syntax );
             List<String> names = syntax.getNames();
             if ( names != null )
@@ -1137,7 +1138,7 @@ public class SchemaHandler
      * @param syntax
      *      the added syntax
      */
-    private void notifySyntaxRuleAdded( LdapSyntax syntax )
+    private void notifySyntaxRuleAdded( MutableLdapSyntaxImpl syntax )
     {
         // SchemaHandler Listeners
         for ( SchemaHandlerListener listener : schemaHandlerListeners.toArray( new SchemaHandlerListener[0] ) )
@@ -1163,7 +1164,7 @@ public class SchemaHandler
      * @param syntax
      *      the modified syntax
      */
-    private void notifySyntaxRuleModified( LdapSyntax syntax )
+    private void notifySyntaxRuleModified( MutableLdapSyntaxImpl syntax )
     {
         // SchemaHandler Listeners
         for ( SchemaHandlerListener listener : schemaHandlerListeners.toArray( new SchemaHandlerListener[0] ) )
@@ -1189,7 +1190,7 @@ public class SchemaHandler
      * @param syntax
      *      the removed syntax
      */
-    private void notifySyntaxRemoved( LdapSyntax syntax )
+    private void notifySyntaxRemoved( MutableLdapSyntaxImpl syntax )
     {
         // SchemaHandler Listeners
         for ( SchemaHandlerListener listener : schemaHandlerListeners.toArray( new SchemaHandlerListener[0] ) )

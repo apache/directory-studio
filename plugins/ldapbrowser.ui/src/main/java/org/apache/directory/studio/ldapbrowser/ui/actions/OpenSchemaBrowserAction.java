@@ -22,7 +22,7 @@ package org.apache.directory.studio.ldapbrowser.ui.actions;
 
 
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
-import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
+import org.apache.directory.shared.ldap.model.schema.MutableLdapSyntaxImpl;
 import org.apache.directory.shared.ldap.model.schema.MatchingRule;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.studio.connection.core.Connection;
@@ -281,7 +281,7 @@ public class OpenSchemaBrowserAction extends BrowserAction
      * @return
      *      the LDAP Syntax Description
      */
-    private LdapSyntax getLsd()
+    private MutableLdapSyntaxImpl getLsd()
     {
         if ( getConnection() != null )
         {

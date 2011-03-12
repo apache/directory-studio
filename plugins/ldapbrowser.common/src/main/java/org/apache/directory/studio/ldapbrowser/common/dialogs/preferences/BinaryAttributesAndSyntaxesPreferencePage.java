@@ -29,7 +29,7 @@ import java.util.SortedMap;
 import java.util.TreeMap;
 
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
-import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
+import org.apache.directory.shared.ldap.model.schema.MutableLdapSyntaxImpl;
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.connection.core.Utils;
 import org.apache.directory.studio.ldapbrowser.core.BrowserConnectionManager;
@@ -80,10 +80,10 @@ public class BinaryAttributesAndSyntaxesPreferencePage extends PreferencePage im
     private String[] attributeNamesAndOids;
 
     /** Map with syntax OID => syntax description */
-    private SortedMap<String, LdapSyntax> syntaxOid2LsdMap;
+    private SortedMap<String, MutableLdapSyntaxImpl> syntaxOid2LsdMap;
 
     /** Map with syntax DESC => syntax description */
-    private SortedMap<String, LdapSyntax> syntaxDesc2LsdMap;
+    private SortedMap<String, MutableLdapSyntaxImpl> syntaxDesc2LsdMap;
 
     /** The syntax OIDs. */
     private String[] syntaxOids;
@@ -164,8 +164,8 @@ public class BinaryAttributesAndSyntaxesPreferencePage extends PreferencePage im
             .size(), attributeOid2AtdMap.size() );
 
         // init available syntaxes
-        syntaxOid2LsdMap = new TreeMap<String, LdapSyntax>();
-        syntaxDesc2LsdMap = new TreeMap<String, LdapSyntax>();
+        syntaxOid2LsdMap = new TreeMap<String, MutableLdapSyntaxImpl>();
+        syntaxDesc2LsdMap = new TreeMap<String, MutableLdapSyntaxImpl>();
         for ( IBrowserConnection browserConnection : connections )
         {
             Schema schema = browserConnection.getSchema();
@@ -214,8 +214,8 @@ public class BinaryAttributesAndSyntaxesPreferencePage extends PreferencePage im
 
     private void createSyntaxMaps( Schema schema )
     {
-        Collection<LdapSyntax> lsds = schema.getLdapSyntaxDescriptions();
-        for ( LdapSyntax lsd : lsds )
+        Collection<MutableLdapSyntaxImpl> lsds = schema.getLdapSyntaxDescriptions();
+        for ( MutableLdapSyntaxImpl lsd : lsds )
         {
             syntaxOid2LsdMap.put( lsd.getOid(), lsd );
 
@@ -543,7 +543,7 @@ public class BinaryAttributesAndSyntaxesPreferencePage extends PreferencePage im
                     {
                         if ( syntaxOid2LsdMap.containsKey( syntax.getSyntaxNumericOid() ) )
                         {
-                            LdapSyntax lsd = ( LdapSyntax ) syntaxOid2LsdMap.get( syntax
+                            MutableLdapSyntaxImpl lsd = ( MutableLdapSyntaxImpl ) syntaxOid2LsdMap.get( syntax
                                 .getSyntaxNumericOid() );
                             return SchemaUtils.toString( lsd );
                         }

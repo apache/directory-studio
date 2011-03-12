@@ -27,7 +27,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
-import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
+import org.apache.directory.shared.ldap.model.schema.MutableLdapSyntaxImpl;
 import org.apache.directory.shared.ldap.model.schema.MatchingRule;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.shared.ldap.model.schema.ObjectClassTypeEnum;
@@ -712,13 +712,13 @@ public class XMLSchemaFileImporter
      */
     private static void readSyntax( Element element, Schema schema ) throws XMLSchemaFileImportException
     {
-        LdapSyntax syntax = null;
+        MutableLdapSyntaxImpl syntax = null;
 
         // OID
         Attribute oidAttribute = element.attribute( OID_TAG );
         if ( ( oidAttribute != null ) && ( !oidAttribute.getValue().equals( "" ) ) ) //$NON-NLS-1$
         {
-            syntax = new LdapSyntax( oidAttribute.getValue() );
+            syntax = new MutableLdapSyntaxImpl( oidAttribute.getValue() );
         }
         else
         {

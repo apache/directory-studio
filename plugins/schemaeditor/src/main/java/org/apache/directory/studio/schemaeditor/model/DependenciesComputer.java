@@ -28,7 +28,7 @@ import java.util.List;
 import org.apache.commons.collections.MultiMap;
 import org.apache.commons.collections.map.MultiValueMap;
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
-import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
+import org.apache.directory.shared.ldap.model.schema.MutableLdapSyntaxImpl;
 import org.apache.directory.shared.ldap.model.schema.MatchingRule;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.shared.ldap.model.schema.SchemaObject;
@@ -149,7 +149,7 @@ public class DependenciesComputer
         String syntaxOID = attributeType.getSyntaxOid();
         if ( syntaxOID != null )
         {
-            LdapSyntax syntax = schemaHandler.getSyntax( syntaxOID );
+            MutableLdapSyntaxImpl syntax = schemaHandler.getSyntax( syntaxOID );
             if ( syntax == null )
             {
                 throw new DependencyComputerException( NLS.bind(
