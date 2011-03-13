@@ -23,6 +23,7 @@ package org.apache.directory.studio.schemaeditor.view.editors.attributetype;
 import java.util.Collections;
 import java.util.List;
 
+import org.apache.directory.shared.ldap.model.schema.MatchingRule;
 import org.apache.directory.shared.ldap.model.schema.MutableMatchingRuleImpl;
 import org.apache.directory.studio.schemaeditor.Activator;
 import org.apache.directory.studio.schemaeditor.view.editors.NonExistingMatchingRule;
@@ -54,7 +55,7 @@ public class ATEMatchingRulesComboContentProvider implements IStructuredContentP
                 // Creating Children
                 List<MutableMatchingRuleImpl> equalityMatchingRules = Activator.getDefault().getSchemaHandler()
                     .getMatchingRules();
-                for ( MutableMatchingRuleImpl matchingRule : equalityMatchingRules )
+                for ( MatchingRule matchingRule : equalityMatchingRules )
                 {
                     input.addChild( matchingRule );
                 }

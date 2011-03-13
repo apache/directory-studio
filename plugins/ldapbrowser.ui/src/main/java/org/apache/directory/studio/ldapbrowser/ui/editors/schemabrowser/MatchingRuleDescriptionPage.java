@@ -21,6 +21,7 @@
 package org.apache.directory.studio.ldapbrowser.ui.editors.schemabrowser;
 
 
+import org.apache.directory.shared.ldap.model.schema.MatchingRule;
 import org.apache.directory.shared.ldap.model.schema.MutableMatchingRuleImpl;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.Schema;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.SchemaUtils;
@@ -167,7 +168,7 @@ public class MatchingRuleDescriptionPage extends SchemaPage
          */
         public String getColumnText( Object obj, int index )
         {
-            if ( obj instanceof MutableMatchingRuleImpl )
+            if ( obj instanceof MatchingRule )
             {
                 return SchemaUtils.toString( ( MutableMatchingRuleImpl ) obj );
             }
@@ -196,11 +197,11 @@ public class MatchingRuleDescriptionPage extends SchemaPage
          */
         public int compare( Viewer viewer, Object e1, Object e2 )
         {
-            if ( e1 instanceof MutableMatchingRuleImpl )
+            if ( e1 instanceof MatchingRule )
             {
                 e1 = SchemaUtils.toString( ( MutableMatchingRuleImpl ) e1 );
             }
-            if ( e2 instanceof MutableMatchingRuleImpl )
+            if ( e2 instanceof MatchingRule )
             {
                 e2 = SchemaUtils.toString( ( MutableMatchingRuleImpl ) e2 );
             }
@@ -220,7 +221,7 @@ public class MatchingRuleDescriptionPage extends SchemaPage
          */
         public boolean select( Viewer viewer, Object parentElement, Object element )
         {
-            if ( element instanceof MutableMatchingRuleImpl )
+            if ( element instanceof MatchingRule )
             {
                 MutableMatchingRuleImpl mrd = ( MutableMatchingRuleImpl ) element;
                 boolean matched = SchemaUtils.toString( mrd ).toLowerCase()

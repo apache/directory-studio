@@ -20,6 +20,7 @@
 package org.apache.directory.studio.schemaeditor.view.editors.attributetype;
 
 
+import org.apache.directory.shared.ldap.model.schema.MatchingRule;
 import org.apache.directory.shared.ldap.model.schema.MutableMatchingRuleImpl;
 import org.apache.directory.studio.schemaeditor.view.editors.NonExistingMatchingRule;
 import org.eclipse.jface.viewers.LabelProvider;
@@ -38,7 +39,7 @@ public class ATEMatchingRulesComboLabelProvider extends LabelProvider
      */
     public String getText( Object obj )
     {
-        if ( obj instanceof MutableMatchingRuleImpl )
+        if ( obj instanceof MatchingRule )
         {
             MutableMatchingRuleImpl mr = ( MutableMatchingRuleImpl ) obj;
 

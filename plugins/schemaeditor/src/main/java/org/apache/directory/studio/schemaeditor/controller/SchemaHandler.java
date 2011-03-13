@@ -27,6 +27,7 @@ import org.apache.commons.collections.MultiMap;
 import org.apache.commons.collections.map.MultiValueMap;
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
 import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
+import org.apache.directory.shared.ldap.model.schema.MatchingRule;
 import org.apache.directory.shared.ldap.model.schema.MutableLdapSyntaxImpl;
 import org.apache.directory.shared.ldap.model.schema.MutableMatchingRuleImpl;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
@@ -535,7 +536,7 @@ public class SchemaHandler
             }
             attributeTypesMap.put( at.getOid(), at );
         }
-        else if ( object instanceof MutableMatchingRuleImpl )
+        else if ( object instanceof MatchingRule )
         {
             MutableMatchingRuleImpl mr = ( MutableMatchingRuleImpl ) object;
             matchingRulesList.add( mr );
@@ -642,7 +643,7 @@ public class SchemaHandler
             }
             attributeTypesMap.remove( at.getOid() );
         }
-        else if ( object instanceof MutableMatchingRuleImpl )
+        else if ( object instanceof MatchingRule )
         {
             MutableMatchingRuleImpl mr = ( MutableMatchingRuleImpl ) object;
             matchingRulesList.remove( mr );
