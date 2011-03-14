@@ -25,7 +25,7 @@ do
     # MD5
     if [ ! -f "$FILE.md5" ];
     then
-        openssl md5 < "$FILE" | cut "-d " -f1 > "$FILE.md5"
+        openssl md5 < "$FILE" | cut "-d " -f2 > "$FILE.md5"
         echo "  - Generated '$FILE.md5'"
     else
         echo "  - Skipped '$FILE.md5' (file already existing)"
