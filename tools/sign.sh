@@ -17,9 +17,9 @@ for FILE in $(find . -not '(' -name "*.md5" -or -name "*.sha1" -or -name "*.asc"
 
     echo -n "Signing: $FILE ... "
 
-    openssl md5 < "$FILE" | cut "-d " -f1 > "$FILE.md5"
+    openssl md5 < "$FILE" | cut "-d " -f2 > "$FILE.md5"
     
-    gpg --print-md SHA1 "$FILE" > "$FILE".sha
+    gpg --print-md SHA1 "$FILE" > "$FILE".sha1
 
     echo "$PASSWORD" | gpg --default-key "$DEFAULT_KEY" --detach-sign --armor --no-tty --yes --passphrase-fd 0 "$FILE" && echo done.
 done
