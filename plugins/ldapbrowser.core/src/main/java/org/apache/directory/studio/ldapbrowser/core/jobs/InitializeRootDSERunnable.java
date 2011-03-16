@@ -302,16 +302,34 @@ public class InitializeRootDSERunnable implements StudioConnectionBulkRunnableWi
         // Set detected connection properties
         DetectedConnectionProperties detectedConnectionProperties = browserConnection.getConnection()
             .getDetectedConnectionProperties();
-        detectedConnectionProperties.setVendorName( browserConnection.getRootDSE().getAttribute( "vendorName" )
-            .getStringValue() );
-        detectedConnectionProperties.setVendorVersion( browserConnection.getRootDSE().getAttribute( "vendorVersion" )
-            .getStringValue() );
-        detectedConnectionProperties.setSupportedControls( Arrays.asList( browserConnection.getRootDSE()
-            .getAttribute( "supportedControl" ).getStringValues() ) );
-        detectedConnectionProperties.setSupportedExtensions( Arrays.asList( browserConnection.getRootDSE()
-            .getAttribute( "supportedExtension" ).getStringValues() ) );
-        detectedConnectionProperties.setSupportedFeatures( Arrays.asList( browserConnection.getRootDSE()
-            .getAttribute( "supportedFeatures" ).getStringValues() ) );
+        IAttribute vendorNameAttribute = browserConnection.getRootDSE().getAttribute( "vendorName" );
+        if ( ( vendorNameAttribute != null ) && ( vendorNameAttribute.getValueSize() > 0 ) )
+        {
+            detectedConnectionProperties.setVendorName( vendorNameAttribute.getStringValue() );
+        }
+        IAttribute vendorVersionAttribute = browserConnection.getRootDSE().getAttribute( "vendorVersion" );
+        if ( ( vendorVersionAttribute != null ) && ( vendorVersionAttribute.getValueSize() > 0 ) )
+        {
+            detectedConnectionProperties.setVendorVersion( vendorVersionAttribute.getStringValue() );
+        }
+        IAttribute supportedControlAttribute = browserConnection.getRootDSE().getAttribute( "supportedControl" );
+        if ( ( supportedControlAttribute != null ) && ( supportedControlAttribute.getValueSize() > 0 ) )
+        {
+            detectedConnectionProperties.setSupportedControls( Arrays.asList( supportedControlAttribute
+                .getStringValues() ) );
+        }
+        IAttribute supportedExtensionAttribute = browserConnection.getRootDSE().getAttribute( "supportedExtension" );
+        if ( ( supportedExtensionAttribute != null ) && ( supportedExtensionAttribute.getValueSize() > 0 ) )
+        {
+            detectedConnectionProperties.setSupportedExtensions( Arrays.asList( supportedExtensionAttribute
+                .getStringValues() ) );
+        }
+        IAttribute supportedFeaturesAttribute = browserConnection.getRootDSE().getAttribute( "supportedFeatures" );
+        if ( ( supportedFeaturesAttribute != null ) && ( supportedFeaturesAttribute.getValueSize() > 0 ) )
+        {
+            detectedConnectionProperties.setSupportedFeatures( Arrays.asList( supportedFeaturesAttribute
+                .getStringValues() ) );
+        }
         detectedConnectionProperties
             .setServerType( ServerTypeDetector.detectServerType( browserConnection.getRootDSE() ) );
 
