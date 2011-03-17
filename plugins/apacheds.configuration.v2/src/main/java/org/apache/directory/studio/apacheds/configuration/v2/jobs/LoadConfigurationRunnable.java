@@ -271,7 +271,7 @@ public class LoadConfigurationRunnable implements StudioRunnableWithProgress
         {
             SchemaManager schemaManager = ApacheDS2ConfigurationPlugin.getDefault().getSchemaManager();
 
-            // Getting the browser connection associated with the 
+            // Getting the browser connection associated with the connection in the input
             IBrowserConnection browserConnection = BrowserCorePlugin.getDefault().getConnectionManager()
                 .getBrowserConnection( input.getConnection() );
 
