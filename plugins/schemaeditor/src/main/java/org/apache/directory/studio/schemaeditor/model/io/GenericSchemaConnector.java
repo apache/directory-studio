@@ -31,7 +31,10 @@ import javax.naming.directory.SearchControls;
 import javax.naming.directory.SearchResult;
 
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
+import org.apache.directory.shared.ldap.model.schema.MutableLdapSyntax;
 import org.apache.directory.shared.ldap.model.schema.MutableLdapSyntaxImpl;
+import org.apache.directory.shared.ldap.model.schema.MutableMatchingRule;
 import org.apache.directory.shared.ldap.model.schema.MutableMatchingRuleImpl;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.shared.ldap.model.schema.parsers.AttributeTypeDescriptionSchemaParser;
@@ -263,9 +266,9 @@ public class GenericSchemaConnector extends AbstractSchemaConnector implements S
                     String value = ( String ) ne.nextElement();
                     LdapSyntaxDescriptionSchemaParser parser = new LdapSyntaxDescriptionSchemaParser();
                     parser.setQuirksMode( true );
-                    MutableLdapSyntaxImpl lsd = parser.parseLdapSyntaxDescription( value );
+                    LdapSyntax lsd = parser.parseLdapSyntaxDescription( value );
 
-                    MutableLdapSyntaxImpl impl = new MutableLdapSyntaxImpl( lsd.getOid() );
+                    MutableLdapSyntax impl = new MutableLdapSyntaxImpl( lsd.getOid() );
                     impl.setDescription( lsd.getDescription() );
                     impl.setNames( new String[]
                         { lsd.getDescription() } );
@@ -304,9 +307,9 @@ public class GenericSchemaConnector extends AbstractSchemaConnector implements S
                     String value = ( String ) ne.nextElement();
                     MatchingRuleDescriptionSchemaParser parser = new MatchingRuleDescriptionSchemaParser();
                     parser.setQuirksMode( true );
-                    MutableMatchingRuleImpl mrd = parser.parseMatchingRuleDescription( value );
+                    MutableMatchingRule mrd = parser.parseMatchingRuleDescription( value );
 
-                    MutableMatchingRuleImpl impl = new MutableMatchingRuleImpl( mrd.getOid() );
+                    MutableMatchingRule impl = new MutableMatchingRuleImpl( mrd.getOid() );
                     impl.setDescription( mrd.getDescription() );
                     impl.setNames( mrd.getNames().toArray( new String[0] ) );
                     impl.setObsolete( mrd.isObsolete() );

@@ -26,8 +26,8 @@ import java.io.OutputStream;
 import java.util.List;
 
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
-import org.apache.directory.shared.ldap.model.schema.MutableLdapSyntaxImpl;
-import org.apache.directory.shared.ldap.model.schema.MutableMatchingRuleImpl;
+import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
+import org.apache.directory.shared.ldap.model.schema.MatchingRule;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.shared.ldap.model.schema.ObjectClassTypeEnum;
 import org.apache.directory.shared.ldap.model.schema.UsageEnum;
@@ -215,22 +215,22 @@ public class XMLSchemaFileExporter
             }
 
             // Matching Rules
-            List<MutableMatchingRuleImpl> mrs = schema.getMatchingRules();
+            List<MatchingRule> mrs = schema.getMatchingRules();
             if ( ( mrs != null ) && ( mrs.size() >= 1 ) )
             {
                 Element matchingRulesNode = element.addElement( MATCHING_RULES_TAG );
-                for ( MutableMatchingRuleImpl mr : mrs )
+                for ( MatchingRule mr : mrs )
                 {
                     toXml( mr, matchingRulesNode );
                 }
             }
 
             // Syntaxes
-            List<MutableLdapSyntaxImpl> syntaxes = schema.getSyntaxes();
+            List<LdapSyntax> syntaxes = schema.getSyntaxes();
             if ( ( syntaxes != null ) && ( syntaxes.size() >= 1 ) )
             {
                 Element syntaxesNode = element.addElement( SYNTAXES_TAG );
-                for ( MutableLdapSyntaxImpl syntax : syntaxes )
+                for ( LdapSyntax syntax : syntaxes )
                 {
                     toXml( syntax, syntaxesNode );
                 }
@@ -464,7 +464,7 @@ public class XMLSchemaFileExporter
      * @param root
      *      the root Element
      */
-    private static void toXml( MutableMatchingRuleImpl mr, Element root )
+    private static void toXml( MatchingRule mr, Element root )
     {
         Element mrNode = root.addElement( MATCHING_RULE_TAG );
 
@@ -523,7 +523,7 @@ public class XMLSchemaFileExporter
      * @return
      *      the corresponding source code representation
      */
-    private static void toXml( MutableLdapSyntaxImpl syntax, Element root )
+    private static void toXml( LdapSyntax syntax, Element root )
     {
         Element syntaxNode = root.addElement( SYNTAX_TAG );
 

@@ -17,18 +17,15 @@
  *  under the License. 
  *  
  */
-
 package org.apache.directory.studio.ldapbrowser.ui.editors.schemabrowser;
 
 
-import org.apache.directory.shared.ldap.model.schema.AbstractSchemaObject;
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
 import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
 import org.apache.directory.shared.ldap.model.schema.MatchingRule;
-import org.apache.directory.shared.ldap.model.schema.MutableLdapSyntaxImpl;
-import org.apache.directory.shared.ldap.model.schema.MutableMatchingRuleImpl;
 import org.apache.directory.shared.ldap.model.schema.MatchingRuleUse;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
+import org.apache.directory.shared.ldap.model.schema.SchemaObject;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.SchemaUtils;
@@ -62,7 +59,7 @@ public class SchemaBrowserNavigationLocation extends NavigationLocation
      */
     public String getText()
     {
-        AbstractSchemaObject schemaElement = getSchemaElement();
+        SchemaObject schemaElement = getSchemaElement();
         if ( schemaElement != null )
         {
             if ( schemaElement instanceof ObjectClass )
@@ -104,7 +101,7 @@ public class SchemaBrowserNavigationLocation extends NavigationLocation
     public void saveState( IMemento memento )
     {
         IBrowserConnection connection = getConnection();
-        AbstractSchemaObject schemaElement = getSchemaElement();
+        SchemaObject schemaElement = getSchemaElement();
         memento.putString( "CONNECTION", connection.getConnection().getId() ); //$NON-NLS-1$
         memento.putString( "SCHEMAELEMENTYPE", schemaElement.getClass().getName() ); //$NON-NLS-1$
         memento.putString( "SCHEMAELEMENTOID", schemaElement.getOid() ); //$NON-NLS-1$
@@ -120,24 +117,25 @@ public class SchemaBrowserNavigationLocation extends NavigationLocation
             memento.getString( "CONNECTION" ) ); //$NON-NLS-1$
         String schemaElementType = memento.getString( "SCHEMAELEMENTYPE" ); //$NON-NLS-1$
         String schemaElementOid = memento.getString( "SCHEMAELEMENTOID" ); //$NON-NLS-1$
-        AbstractSchemaObject schemaElement = null;
-        if ( ObjectClass.class.getName().equals( schemaElementType ) )
+        SchemaObject schemaElement = null;
+        
+        if ( schemaElementType.contains( ObjectClass.class.getName() ) )
         {
             schemaElement = connection.getSchema().getObjectClassDescription( schemaElementOid );
         }
-        else if ( AttributeType.class.getName().equals( schemaElementType ) )
+        else if ( schemaElementType.contains( AttributeType.class.getName() ) )
         {
             schemaElement = connection.getSchema().getAttributeTypeDescription( schemaElementOid );
         }
-        else if ( MutableLdapSyntaxImpl.class.getName().equals( schemaElementType ) )
+        else if ( schemaElementType.contains( LdapSyntax.class.getName() ) )
         {
             schemaElement = connection.getSchema().getLdapSyntaxDescription( schemaElementOid );
         }
-        else if ( MutableMatchingRuleImpl.class.getName().equals( schemaElementType ) )
+        else if ( schemaElementType.contains( MatchingRule.class.getName() ) )
         {
             schemaElement = connection.getSchema().getMatchingRuleDescription( schemaElementOid );
         }
-        else if ( MatchingRuleUse.class.getName().equals( schemaElementType ) )
+        else if ( schemaElementType.contains( MatchingRuleUse.class.getName() ) )
         {
             schemaElement = connection.getSchema().getMatchingRuleUseDescription( schemaElementOid );
         }
@@ -184,8 +182,8 @@ public class SchemaBrowserNavigationLocation extends NavigationLocation
         }
 
         SchemaBrowserNavigationLocation location = ( SchemaBrowserNavigationLocation ) currentLocation;
-        AbstractSchemaObject other = location.getSchemaElement();
-        AbstractSchemaObject element = getSchemaElement();
+        SchemaObject other = location.getSchemaElement();
+        SchemaObject element = getSchemaElement();
 
         if ( other == null && element == null )
         {
@@ -215,14 +213,14 @@ public class SchemaBrowserNavigationLocation extends NavigationLocation
      *
      * @return the schema element
      */
-    private AbstractSchemaObject getSchemaElement()
+    private SchemaObject getSchemaElement()
     {
 
         Object editorInput = getInput();
         if ( editorInput != null && editorInput instanceof SchemaBrowserInput )
         {
             SchemaBrowserInput schemaBrowserInput = ( SchemaBrowserInput ) editorInput;
-            AbstractSchemaObject schemaElement = schemaBrowserInput.getSchemaElement();
+            SchemaObject schemaElement = schemaBrowserInput.getSchemaElement();
             if ( schemaElement != null )
             {
                 return schemaElement;

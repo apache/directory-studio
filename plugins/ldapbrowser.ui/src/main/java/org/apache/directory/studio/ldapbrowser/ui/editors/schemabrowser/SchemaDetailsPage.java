@@ -21,10 +21,7 @@
 package org.apache.directory.studio.ldapbrowser.ui.editors.schemabrowser;
 
 
-import java.util.List;
-
-import org.apache.directory.shared.ldap.model.schema.AbstractMutableSchemaObject;
-import org.apache.directory.shared.ldap.model.schema.AbstractSchemaObject;
+import org.apache.directory.shared.ldap.model.schema.SchemaObject;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.Schema;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.SchemaUtils;
 import org.eclipse.swt.SWT;
@@ -92,10 +89,10 @@ public abstract class SchemaDetailsPage implements IHyperlinkListener
     public void linkActivated( HyperlinkEvent e )
     {
         Object obj = e.getHref();
-        if ( obj instanceof AbstractMutableSchemaObject )
+        if ( obj instanceof SchemaObject )
         {
             schemaPage.getSchemaBrowser().setInput(
-                new SchemaBrowserInput( schemaPage.getConnection(), ( AbstractSchemaObject ) obj ) );
+                new SchemaBrowserInput( schemaPage.getConnection(), ( SchemaObject ) obj ) );
         }
     }
 
@@ -158,7 +155,7 @@ public abstract class SchemaDetailsPage implements IHyperlinkListener
      *
      * @param schemaPart the schema part to display
      */
-    protected void createRawContents( AbstractSchemaObject asd )
+    protected void createRawContents( SchemaObject asd )
     {
 
         if ( rawSection.getClient() != null && !rawSection.getClient().isDisposed() )
@@ -208,22 +205,4 @@ public abstract class SchemaDetailsPage implements IHyperlinkListener
     {
         return s == null ? "-" : s; //$NON-NLS-1$
     }
-
-
-    /**
-     * Helper method, return a dash "-" if the given string is null. 
-     *
-     * @param s the string
-     * @return the given string or a dash "-" if the given string is null.
-     */
-    private String getNonNullString( List<String> s )
-    {
-        if ( s == null || s.isEmpty() )
-        {
-            return "-"; //$NON-NLS-1$
-        }
-
-        return s.get( 0 );
-    }
-
 }

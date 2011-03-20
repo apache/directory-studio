@@ -17,13 +17,12 @@
  *  under the License. 
  *  
  */
-
 package org.apache.directory.studio.ldapbrowser.ui.actions;
 
 
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
-import org.apache.directory.shared.ldap.model.schema.MutableLdapSyntaxImpl;
-import org.apache.directory.shared.ldap.model.schema.MutableMatchingRuleImpl;
+import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
+import org.apache.directory.shared.ldap.model.schema.MatchingRule;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.ldapbrowser.common.actions.BrowserAction;
@@ -281,7 +280,7 @@ public class OpenSchemaBrowserAction extends BrowserAction
      * @return
      *      the LDAP Syntax Description
      */
-    private MutableLdapSyntaxImpl getLsd()
+    private LdapSyntax getLsd()
     {
         if ( getConnection() != null )
         {
@@ -414,7 +413,7 @@ public class OpenSchemaBrowserAction extends BrowserAction
      * @return
      *      the Equality Matching Rule Description
      */
-    private MutableMatchingRuleImpl getEmrd()
+    private MatchingRule getEmrd()
     {
         if ( getConnection() != null )
         {
@@ -439,7 +438,7 @@ public class OpenSchemaBrowserAction extends BrowserAction
      * @return
      *      the Substring Matching Rule Description
      */
-    private MutableMatchingRuleImpl getSmrd()
+    private MatchingRule getSmrd()
     {
         if ( getConnection() != null )
         {
@@ -464,7 +463,7 @@ public class OpenSchemaBrowserAction extends BrowserAction
      * @return
      *      the Ordering Matching Rule Description
      */
-    private MutableMatchingRuleImpl getOmrd()
+    private MatchingRule getOmrd()
     {
         if ( getConnection() != null )
         {

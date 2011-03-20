@@ -17,11 +17,10 @@
  *  under the License. 
  *  
  */
-
 package org.apache.directory.studio.ldapbrowser.ui.editors.schemabrowser;
 
 
-import org.apache.directory.shared.ldap.model.schema.AbstractSchemaObject;
+import org.apache.directory.shared.ldap.model.schema.SchemaObject;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.ui.BrowserUIConstants;
 import org.apache.directory.studio.ldapbrowser.ui.BrowserUIPlugin;
@@ -54,7 +53,7 @@ public class SchemaBrowserInput implements IEditorInput
     private IBrowserConnection connection;
 
     /** The schema element */
-    private AbstractSchemaObject schemaElement;
+    private SchemaObject schemaElement;
 
     /** One instance hack flag */
     private static boolean oneInstanceHackEnabled = true;
@@ -66,7 +65,7 @@ public class SchemaBrowserInput implements IEditorInput
      * @param connection the connection
      * @param schemaElement the schema element input
      */
-    public SchemaBrowserInput( IBrowserConnection connection, AbstractSchemaObject schemaElement )
+    public SchemaBrowserInput( IBrowserConnection connection, SchemaObject schemaElement )
     {
         this.connection = connection;
         this.schemaElement = schemaElement;
@@ -139,7 +138,7 @@ public class SchemaBrowserInput implements IEditorInput
     /**
      * {@inheritDoc}
      */
-    public Object getAdapter( Class adapter )
+    public Object getAdapter( @SuppressWarnings("rawtypes") Class adapter )
     {
         return null;
     }
@@ -162,7 +161,7 @@ public class SchemaBrowserInput implements IEditorInput
      *
      * @return the schema element or null
      */
-    public AbstractSchemaObject getSchemaElement()
+    public SchemaObject getSchemaElement()
     {
         return schemaElement;
     }

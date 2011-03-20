@@ -28,8 +28,6 @@ import org.apache.directory.shared.asn1.util.OID;
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
 import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
 import org.apache.directory.shared.ldap.model.schema.MatchingRule;
-import org.apache.directory.shared.ldap.model.schema.MutableLdapSyntaxImpl;
-import org.apache.directory.shared.ldap.model.schema.MutableMatchingRuleImpl;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.shared.ldap.model.schema.UsageEnum;
 import org.apache.directory.studio.schemaeditor.Activator;
@@ -487,7 +485,7 @@ public class AttributeTypeEditorOverviewPage extends FormPage
 
             if ( selectedItem instanceof LdapSyntax )
             {
-                modifiedAttributeType.setSyntaxOid( ( ( MutableLdapSyntaxImpl ) selectedItem ).getOid() );
+                modifiedAttributeType.setSyntaxOid( ( ( LdapSyntax ) selectedItem ).getOid() );
             }
             else if ( selectedItem instanceof NonExistingSyntax )
             {
@@ -584,7 +582,7 @@ public class AttributeTypeEditorOverviewPage extends FormPage
 
             if ( selectedItem instanceof MatchingRule )
             {
-                modifiedAttributeType.setEqualityOid( ( ( MutableMatchingRuleImpl ) selectedItem ).getName() );
+                modifiedAttributeType.setEqualityOid( ( ( MatchingRule ) selectedItem ).getName() );
             }
             else if ( selectedItem instanceof NonExistingMatchingRule )
             {
@@ -612,7 +610,7 @@ public class AttributeTypeEditorOverviewPage extends FormPage
 
             if ( selectedItem instanceof MatchingRule )
             {
-                modifiedAttributeType.setOrderingOid( ( ( MutableMatchingRuleImpl ) selectedItem ).getName() );
+                modifiedAttributeType.setOrderingOid( ( ( MatchingRule ) selectedItem ).getName() );
             }
             else if ( selectedItem instanceof NonExistingMatchingRule )
             {
@@ -640,7 +638,7 @@ public class AttributeTypeEditorOverviewPage extends FormPage
 
             if ( selectedItem instanceof MatchingRule )
             {
-                modifiedAttributeType.setSubstringOid( ( ( MutableMatchingRuleImpl ) selectedItem ).getName() );
+                modifiedAttributeType.setSubstringOid( ( ( MatchingRule ) selectedItem ).getName() );
             }
             else if ( selectedItem instanceof NonExistingMatchingRule )
             {
@@ -1052,7 +1050,7 @@ public class AttributeTypeEditorOverviewPage extends FormPage
         }
         else
         {
-            MutableLdapSyntaxImpl syntax = schemaHandler.getSyntax( syntaxOID );
+            LdapSyntax syntax = schemaHandler.getSyntax( syntaxOID );
             if ( syntax != null )
             {
                 syntaxComboViewer.setSelection( new StructuredSelection( syntax ), true );
@@ -1087,7 +1085,7 @@ public class AttributeTypeEditorOverviewPage extends FormPage
         }
         else
         {
-            MutableMatchingRuleImpl matchingRule = schemaHandler.getMatchingRule( equalityName );
+            MatchingRule matchingRule = schemaHandler.getMatchingRule( equalityName );
             if ( matchingRule != null )
             {
                 equalityComboViewer.setSelection( new StructuredSelection( matchingRule ), true );
@@ -1122,7 +1120,7 @@ public class AttributeTypeEditorOverviewPage extends FormPage
         }
         else
         {
-            MutableMatchingRuleImpl matchingRule = schemaHandler.getMatchingRule( orderingName );
+            MatchingRule matchingRule = schemaHandler.getMatchingRule( orderingName );
             if ( matchingRule != null )
             {
                 orderingComboViewer.setSelection( new StructuredSelection( matchingRule ), true );
@@ -1158,7 +1156,7 @@ public class AttributeTypeEditorOverviewPage extends FormPage
         }
         else
         {
-            MutableMatchingRuleImpl matchingRule = schemaHandler.getMatchingRule( substringName );
+            MatchingRule matchingRule = schemaHandler.getMatchingRule( substringName );
             if ( matchingRule != null )
             {
                 substringComboViewer.setSelection( new StructuredSelection( matchingRule ), true );

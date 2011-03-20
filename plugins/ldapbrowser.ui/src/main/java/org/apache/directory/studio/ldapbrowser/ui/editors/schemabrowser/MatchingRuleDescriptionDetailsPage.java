@@ -17,16 +17,14 @@
  *  under the License. 
  *  
  */
-
 package org.apache.directory.studio.ldapbrowser.ui.editors.schemabrowser;
 
 
 import java.util.Collection;
 
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
 import org.apache.directory.shared.ldap.model.schema.MatchingRule;
-import org.apache.directory.shared.ldap.model.schema.MutableLdapSyntaxImpl;
-import org.apache.directory.shared.ldap.model.schema.MutableMatchingRuleImpl;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.Schema;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.SchemaUtils;
 import org.eclipse.osgi.util.NLS;
@@ -188,10 +186,10 @@ public class MatchingRuleDescriptionDetailsPage extends SchemaDetailsPage
      */
     public void setInput( Object input )
     {
-        MutableMatchingRuleImpl mrd = null;
+        MatchingRule mrd = null;
         if ( input instanceof MatchingRule )
         {
-            mrd = ( MutableMatchingRuleImpl ) input;
+            mrd = ( MatchingRule ) input;
         }
 
         // create main content
@@ -202,7 +200,7 @@ public class MatchingRuleDescriptionDetailsPage extends SchemaDetailsPage
 
         // set syntax content
         String lsdOid = null;
-        MutableLdapSyntaxImpl lsd = null;
+        LdapSyntax lsd = null;
         if ( mrd != null )
         {
             Schema schema = getSchema();
@@ -234,7 +232,7 @@ public class MatchingRuleDescriptionDetailsPage extends SchemaDetailsPage
      *
      * @param mrd the matching rule description
      */
-    private void createMainContent( MutableMatchingRuleImpl mrd )
+    private void createMainContent( MatchingRule mrd )
     {
         // dispose old content
         if ( mainSection.getClient() != null )
@@ -283,7 +281,7 @@ public class MatchingRuleDescriptionDetailsPage extends SchemaDetailsPage
      *
      * @param mrd the matching rule description
      */
-    private void createUsedFromContents( MutableMatchingRuleImpl mrd )
+    private void createUsedFromContents( MatchingRule mrd )
     {
         // dispose old content
         if ( usedFromSection.getClient() != null )

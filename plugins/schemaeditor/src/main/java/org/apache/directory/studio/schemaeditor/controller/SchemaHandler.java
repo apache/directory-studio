@@ -28,8 +28,8 @@ import org.apache.commons.collections.map.MultiValueMap;
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
 import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
 import org.apache.directory.shared.ldap.model.schema.MatchingRule;
-import org.apache.directory.shared.ldap.model.schema.MutableLdapSyntaxImpl;
-import org.apache.directory.shared.ldap.model.schema.MutableMatchingRuleImpl;
+import org.apache.directory.shared.ldap.model.schema.MutableLdapSyntax;
+import org.apache.directory.shared.ldap.model.schema.MutableMatchingRule;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.shared.ldap.model.schema.SchemaObject;
 import org.apache.directory.studio.schemaeditor.model.Schema;
@@ -53,11 +53,11 @@ public class SchemaHandler
     /** The attribute types List */
     private List<AttributeType> attributeTypesList;
     /** The matching rules List */
-    private List<MutableMatchingRuleImpl> matchingRulesList;
+    private List<MatchingRule> matchingRulesList;
     /** The object classes List */
     private List<ObjectClass> objectClassesList;
     /** The syntaxes List */
-    private List<MutableLdapSyntaxImpl> syntaxesList;
+    private List<LdapSyntax> syntaxesList;
 
     //
     // The MultiMap (for fast searching)
@@ -90,9 +90,9 @@ public class SchemaHandler
         // Lists
         schemasList = new ArrayList<Schema>();
         attributeTypesList = new ArrayList<AttributeType>();
-        matchingRulesList = new ArrayList<MutableMatchingRuleImpl>();;
+        matchingRulesList = new ArrayList<MatchingRule>();;
         objectClassesList = new ArrayList<ObjectClass>();
-        syntaxesList = new ArrayList<MutableLdapSyntaxImpl>();
+        syntaxesList = new ArrayList<LdapSyntax>();
 
         // Maps
         schemasMap = new MultiValueMap();
@@ -127,7 +127,7 @@ public class SchemaHandler
      * @return
      *      the List of all the matching rules
      */
-    public List<MutableMatchingRuleImpl> getMatchingRules()
+    public List<MatchingRule> getMatchingRules()
     {
         return matchingRulesList;
     }
@@ -163,7 +163,7 @@ public class SchemaHandler
      * @return
      *      the List of all the matching rules
      */
-    public List<MutableLdapSyntaxImpl> getSyntaxes()
+    public List<LdapSyntax> getSyntaxes()
     {
         return syntaxesList;
     }
@@ -214,13 +214,13 @@ public class SchemaHandler
      * @return
      *      the corresponding matching rule, or null if no one is found
      */
-    public MutableMatchingRuleImpl getMatchingRule( String id )
+    public MutableMatchingRule getMatchingRule( String id )
     {
         List<?> list = getMatchingRuleList( id.toLowerCase() );
 
         if ( ( list != null ) && ( list.size() >= 1 ) )
         {
-            return ( MutableMatchingRuleImpl ) list.get( 0 );
+            return ( MutableMatchingRule ) list.get( 0 );
         }
         else
         {
@@ -325,13 +325,13 @@ public class SchemaHandler
      * @return
      *      the corresponding syntax, or null if no one is found
      */
-    public MutableLdapSyntaxImpl getSyntax( String id )
+    public MutableLdapSyntax getSyntax( String id )
     {
         List<?> list = getSyntaxList( id.toLowerCase() );
 
         if ( ( list != null ) && ( list.size() >= 1 ) )
         {
-            return ( MutableLdapSyntaxImpl ) list.get( 0 );
+            return ( MutableLdapSyntax ) list.get( 0 );
         }
         else
         {
@@ -493,7 +493,7 @@ public class SchemaHandler
         }
 
         // Adding its matching rules
-        for ( MutableMatchingRuleImpl mr : schema.getMatchingRules() )
+        for ( MatchingRule mr : schema.getMatchingRules() )
         {
             addSchemaObject( mr );
         }
@@ -505,7 +505,7 @@ public class SchemaHandler
         }
 
         // Adding its syntaxes
-        for ( MutableLdapSyntaxImpl syntax : schema.getSyntaxes() )
+        for ( LdapSyntax syntax : schema.getSyntaxes() )
         {
             addSchemaObject( syntax );
         }
@@ -538,7 +538,7 @@ public class SchemaHandler
         }
         else if ( object instanceof MatchingRule )
         {
-            MutableMatchingRuleImpl mr = ( MutableMatchingRuleImpl ) object;
+            MutableMatchingRule mr = ( MutableMatchingRule ) object;
             matchingRulesList.add( mr );
             List<String> names = mr.getNames();
             if ( names != null )
@@ -566,7 +566,7 @@ public class SchemaHandler
         }
         else if ( object instanceof LdapSyntax )
         {
-            MutableLdapSyntaxImpl syntax = ( MutableLdapSyntaxImpl ) object;
+            MutableLdapSyntax syntax = ( MutableLdapSyntax ) object;
             syntaxesList.add( syntax );
             List<String> names = syntax.getNames();
             if ( names != null )
@@ -600,7 +600,7 @@ public class SchemaHandler
         }
 
         // Removing its matching rules
-        for ( MutableMatchingRuleImpl mr : schema.getMatchingRules() )
+        for ( MatchingRule mr : schema.getMatchingRules() )
         {
             removeSchemaObject( mr );
         }
@@ -612,7 +612,7 @@ public class SchemaHandler
         }
 
         // Removing its syntaxes
-        for ( MutableLdapSyntaxImpl syntax : schema.getSyntaxes() )
+        for ( LdapSyntax syntax : schema.getSyntaxes() )
         {
             removeSchemaObject( syntax );
         }
@@ -645,7 +645,7 @@ public class SchemaHandler
         }
         else if ( object instanceof MatchingRule )
         {
-            MutableMatchingRuleImpl mr = ( MutableMatchingRuleImpl ) object;
+            MutableMatchingRule mr = ( MutableMatchingRule ) object;
             matchingRulesList.remove( mr );
             List<String> names = mr.getNames();
             if ( names != null )
@@ -673,7 +673,7 @@ public class SchemaHandler
         }
         else if ( object instanceof LdapSyntax )
         {
-            MutableLdapSyntaxImpl syntax = ( MutableLdapSyntaxImpl ) object;
+            MutableLdapSyntax syntax = ( MutableLdapSyntax ) object;
             syntaxesList.remove( syntax );
             List<String> names = syntax.getNames();
             if ( names != null )
@@ -1050,162 +1050,6 @@ public class SchemaHandler
             for ( Object object : ocListeners.toArray() )
             {
                 ( ( ObjectClassListener ) object ).objectClassRemoved();
-            }
-        }
-    }
-
-
-    /**
-     * Notifies the SchemaHandler listeners that a matching rule has been added.
-     *
-     * @param mr
-     *      the added matching rule
-     */
-    private void notifyMatchingRuleAdded( MutableMatchingRuleImpl mr )
-    {
-        // SchemaHandler Listeners
-        for ( SchemaHandlerListener listener : schemaHandlerListeners.toArray( new SchemaHandlerListener[0] ) )
-        {
-            listener.matchingRuleAdded( mr );
-        }
-
-        // Schema Listeners
-        List<?> listeners = ( List<?> ) schemaListeners.get( getSchema( mr.getSchemaName() ) );
-        if ( listeners != null )
-        {
-            for ( Object object : listeners.toArray() )
-            {
-                ( ( SchemaListener ) object ).matchingRuleAdded( mr );
-            }
-        }
-    }
-
-
-    /**
-     * Notifies the SchemaHandler listeners that a matching rule has been modified.
-     *
-     * @param mr
-     *      the modified matching rule
-     */
-    private void notifyMatchingRuleModified( MutableMatchingRuleImpl mr )
-    {
-        // SchemaHandler Listeners
-        for ( SchemaHandlerListener listener : schemaHandlerListeners.toArray( new SchemaHandlerListener[0] ) )
-        {
-            listener.matchingRuleModified( mr );
-        }
-
-        // Schema Listeners
-        List<?> listeners = ( List<?> ) schemaListeners.get( getSchema( mr.getSchemaName() ) );
-        if ( listeners != null )
-        {
-            for ( Object object : listeners.toArray() )
-            {
-                ( ( SchemaListener ) object ).matchingRuleModified( mr );
-            }
-        }
-    }
-
-
-    /**
-     * Notifies the SchemaHandler listeners that a matching rule has been removed.
-     *
-     * @param mr
-     *      the removed matching rule
-     */
-    private void notifyMatchingRuleRemoved( MutableMatchingRuleImpl mr )
-    {
-        // SchemaHandler Listeners
-        for ( SchemaHandlerListener listener : schemaHandlerListeners.toArray( new SchemaHandlerListener[0] ) )
-        {
-            listener.matchingRuleRemoved( mr );
-        }
-
-        // Schema Listeners
-        List<?> listeners = ( List<?> ) schemaListeners.get( getSchema( mr.getSchemaName() ) );
-        if ( listeners != null )
-        {
-            for ( Object object : listeners.toArray() )
-            {
-                ( ( SchemaListener ) object ).matchingRuleRemoved( mr );
-            }
-        }
-    }
-
-
-    /**
-     * Notifies the SchemaHandler listeners that a syntax has been added.
-     *
-     * @param syntax
-     *      the added syntax
-     */
-    private void notifySyntaxRuleAdded( MutableLdapSyntaxImpl syntax )
-    {
-        // SchemaHandler Listeners
-        for ( SchemaHandlerListener listener : schemaHandlerListeners.toArray( new SchemaHandlerListener[0] ) )
-        {
-            listener.syntaxAdded( syntax );
-        }
-
-        // Schema Listeners
-        List<?> listeners = ( List<?> ) schemaListeners.get( getSchema( syntax.getSchemaName() ) );
-        if ( listeners != null )
-        {
-            for ( Object object : listeners.toArray() )
-            {
-                ( ( SchemaListener ) object ).syntaxAdded( syntax );
-            }
-        }
-    }
-
-
-    /**
-     * Notifies the SchemaHandler listeners that a syntax has been modified.
-     *
-     * @param syntax
-     *      the modified syntax
-     */
-    private void notifySyntaxRuleModified( MutableLdapSyntaxImpl syntax )
-    {
-        // SchemaHandler Listeners
-        for ( SchemaHandlerListener listener : schemaHandlerListeners.toArray( new SchemaHandlerListener[0] ) )
-        {
-            listener.syntaxModified( syntax );
-        }
-
-        // Schema Listeners
-        List<?> listeners = ( List<?> ) schemaListeners.get( getSchema( syntax.getSchemaName() ) );
-        if ( listeners != null )
-        {
-            for ( Object object : listeners.toArray() )
-            {
-                ( ( SchemaListener ) object ).syntaxModified( syntax );
-            }
-        }
-    }
-
-
-    /**
-     * Notifies the SchemaHandler listeners that a syntax has been removed.
-     *
-     * @param syntax
-     *      the removed syntax
-     */
-    private void notifySyntaxRemoved( MutableLdapSyntaxImpl syntax )
-    {
-        // SchemaHandler Listeners
-        for ( SchemaHandlerListener listener : schemaHandlerListeners.toArray( new SchemaHandlerListener[0] ) )
-        {
-            listener.syntaxRemoved( syntax );
-        }
-
-        // Schema Listeners
-        List<?> listeners = ( List<?> ) schemaListeners.get( getSchema( syntax.getSchemaName() ) );
-        if ( listeners != null )
-        {
-            for ( Object object : listeners.toArray() )
-            {
-                ( ( SchemaListener ) object ).syntaxRemoved( syntax );
             }
         }
     }

@@ -32,11 +32,11 @@ import org.apache.directory.shared.ldap.model.exception.LdapInvalidDnException;
 import org.apache.directory.shared.ldap.model.name.Dn;
 import org.apache.directory.shared.ldap.model.name.Rdn;
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
-import org.apache.directory.shared.ldap.model.schema.MutableLdapSyntaxImpl;
-import org.apache.directory.shared.ldap.model.schema.MutableMatchingRuleImpl;
+import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
+import org.apache.directory.shared.ldap.model.schema.MatchingRule;
+import org.apache.directory.shared.ldap.model.schema.MutableSchemaObject;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.shared.ldap.model.schema.ObjectClassTypeEnum;
-import org.apache.directory.shared.ldap.model.schema.MutableSchemaObject;
 import org.apache.directory.shared.ldap.model.schema.SchemaObject;
 import org.apache.directory.shared.ldap.model.schema.UsageEnum;
 import org.apache.directory.shared.util.Strings;
@@ -130,7 +130,7 @@ public class SchemaEditorSchemaLoaderUtils
      *      the object class converted to an equivalent entry representation
      * @throws LdapException
      */
-    public static Entry toEntry( MutableMatchingRuleImpl matchingRule ) throws LdapException
+    public static Entry toEntry( MatchingRule matchingRule ) throws LdapException
     {
         // Creating a blank entry
         Entry entry = new DefaultEntry();
@@ -197,7 +197,7 @@ public class SchemaEditorSchemaLoaderUtils
      *      the object class converted to an equivalent entry representation
      * @throws LdapException
      */
-    public static Entry toEntry( MutableLdapSyntaxImpl syntax ) throws LdapException
+    public static Entry toEntry( LdapSyntax syntax ) throws LdapException
     {
         // Creating a blank entry
         Entry entry = new DefaultEntry();

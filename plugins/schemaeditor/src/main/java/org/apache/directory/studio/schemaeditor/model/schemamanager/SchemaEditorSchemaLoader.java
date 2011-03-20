@@ -27,8 +27,8 @@ import java.util.List;
 import org.apache.directory.shared.ldap.model.entry.Entry;
 import org.apache.directory.shared.ldap.model.exception.LdapException;
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
-import org.apache.directory.shared.ldap.model.schema.MutableLdapSyntaxImpl;
-import org.apache.directory.shared.ldap.model.schema.MutableMatchingRuleImpl;
+import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
+import org.apache.directory.shared.ldap.model.schema.MatchingRule;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.shared.ldap.model.schema.registries.AbstractSchemaLoader;
 import org.apache.directory.shared.ldap.model.schema.registries.Schema;
@@ -114,9 +114,9 @@ public class SchemaEditorSchemaLoader extends AbstractSchemaLoader
         {
             for ( Schema schema : schemas )
             {
-                List<MutableMatchingRuleImpl> matchingRules = project.getSchemaHandler().getSchema( schema.getSchemaName() )
+                List<MatchingRule> matchingRules = project.getSchemaHandler().getSchema( schema.getSchemaName() )
                     .getMatchingRules();
-                for ( MutableMatchingRuleImpl matchingRule : matchingRules )
+                for ( MatchingRule matchingRule : matchingRules )
                 {
                     matchingRuleList.add( SchemaEditorSchemaLoaderUtils.toEntry( matchingRule ) );
                 }
@@ -138,9 +138,9 @@ public class SchemaEditorSchemaLoader extends AbstractSchemaLoader
         {
             for ( Schema schema : schemas )
             {
-                List<MutableLdapSyntaxImpl> syntaxes = project.getSchemaHandler().getSchema( schema.getSchemaName() )
+                List<LdapSyntax> syntaxes = project.getSchemaHandler().getSchema( schema.getSchemaName() )
                     .getSyntaxes();
-                for ( MutableLdapSyntaxImpl syntax : syntaxes )
+                for ( LdapSyntax syntax : syntaxes )
                 {
                     syntaxList.add( SchemaEditorSchemaLoaderUtils.toEntry( syntax ) );
                 }

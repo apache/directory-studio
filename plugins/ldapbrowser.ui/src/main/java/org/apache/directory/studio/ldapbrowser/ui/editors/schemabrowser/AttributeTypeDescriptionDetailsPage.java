@@ -24,8 +24,8 @@ package org.apache.directory.studio.ldapbrowser.ui.editors.schemabrowser;
 import java.util.Collection;
 
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
-import org.apache.directory.shared.ldap.model.schema.MutableLdapSyntaxImpl;
-import org.apache.directory.shared.ldap.model.schema.MutableMatchingRuleImpl;
+import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
+import org.apache.directory.shared.ldap.model.schema.MatchingRule;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.shared.ldap.model.schema.UsageEnum;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.SchemaUtils;
@@ -362,7 +362,7 @@ public class AttributeTypeDescriptionDetailsPage extends SchemaDetailsPage
 
         // set syntax content
         String lsdOid = null;
-        MutableLdapSyntaxImpl lsd = null;
+        LdapSyntax lsd = null;
         long lsdLength = 0;
         if ( atd != null )
         {
@@ -383,7 +383,7 @@ public class AttributeTypeDescriptionDetailsPage extends SchemaDetailsPage
 
         // set matching rules content
         String emrOid = null;
-        MutableMatchingRuleImpl emr = null;
+        MatchingRule emr = null;
         if ( atd != null )
         {
             emrOid = SchemaUtils.getEqualityMatchingRuleNameOrNumericOidTransitive( atd, getSchema() );
@@ -398,7 +398,7 @@ public class AttributeTypeDescriptionDetailsPage extends SchemaDetailsPage
         equalityLink.setEnabled( emr != null );
 
         String smrOid = null;
-        MutableMatchingRuleImpl smr = null;
+        MatchingRule smr = null;
         if ( atd != null )
         {
             smrOid = SchemaUtils.getSubstringMatchingRuleNameOrNumericOidTransitive( atd, getSchema() );
@@ -413,7 +413,7 @@ public class AttributeTypeDescriptionDetailsPage extends SchemaDetailsPage
         substringLink.setEnabled( smr != null );
 
         String omrOid = null;
-        MutableMatchingRuleImpl omr = null;
+        MatchingRule omr = null;
         if ( atd != null )
         {
             omrOid = SchemaUtils.getOrderingMatchingRuleNameOrNumericOidTransitive( atd, getSchema() );
@@ -532,7 +532,7 @@ public class AttributeTypeDescriptionDetailsPage extends SchemaDetailsPage
                 {
                     if ( getSchema().hasMatchingRuleDescription( mrdName ) )
                     {
-                        MutableMatchingRuleImpl mrd = getSchema().getMatchingRuleDescription( mrdName );
+                        MatchingRule mrd = getSchema().getMatchingRuleDescription( mrdName );
                         Hyperlink otherMatchLink = toolkit.createHyperlink( otherMatchClient, SchemaUtils
                             .toString( mrd ), SWT.WRAP );
                         otherMatchLink.setHref( mrd );

@@ -21,12 +21,12 @@
 package org.apache.directory.studio.ldapbrowser.ui.editors.schemabrowser;
 
 
-import org.apache.directory.shared.ldap.model.schema.AbstractSchemaObject;
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
 import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
 import org.apache.directory.shared.ldap.model.schema.MatchingRule;
 import org.apache.directory.shared.ldap.model.schema.MatchingRuleUse;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
+import org.apache.directory.shared.ldap.model.schema.SchemaObject;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.ui.BrowserUIConstants;
 import org.apache.directory.studio.ldapbrowser.ui.BrowserUIPlugin;
@@ -203,7 +203,7 @@ public class SchemaBrowser extends EditorPart implements INavigationLocationProv
             setConnection( connection );
 
             // set schema element and activate tab
-            AbstractSchemaObject schemaElement = sbi.getSchemaElement();
+            SchemaObject schemaElement = sbi.getSchemaElement();
             if ( schemaElement instanceof ObjectClass )
             {
                 ocdPage.select( schemaElement );

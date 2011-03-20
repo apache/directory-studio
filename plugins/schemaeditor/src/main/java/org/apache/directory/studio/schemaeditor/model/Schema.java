@@ -26,8 +26,8 @@ import java.util.List;
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
 import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
 import org.apache.directory.shared.ldap.model.schema.MatchingRule;
-import org.apache.directory.shared.ldap.model.schema.MutableLdapSyntaxImpl;
-import org.apache.directory.shared.ldap.model.schema.MutableMatchingRuleImpl;
+import org.apache.directory.shared.ldap.model.schema.MutableLdapSyntax;
+import org.apache.directory.shared.ldap.model.schema.MutableMatchingRule;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.shared.ldap.model.schema.registries.DefaultSchema;
 
@@ -49,10 +49,10 @@ public class Schema extends DefaultSchema
     private List<ObjectClass> objectClasses = new ArrayList<ObjectClass>();
 
     /** The MatchingRule List */
-    private List<MutableMatchingRuleImpl> matchingRules = new ArrayList<MutableMatchingRuleImpl>();
+    private List<MatchingRule> matchingRules = new ArrayList<MatchingRule>();
 
     /** The Syntax List */
-    private List<MutableLdapSyntaxImpl> syntaxes = new ArrayList<MutableLdapSyntaxImpl>();
+    private List<LdapSyntax> syntaxes = new ArrayList<LdapSyntax>();
 
 
     /**
@@ -85,7 +85,7 @@ public class Schema extends DefaultSchema
      * @param mr
      *      the MatchingRule
      */
-    public boolean addMatchingRule( MutableMatchingRuleImpl mr )
+    public boolean addMatchingRule( MutableMatchingRule mr )
     {
         return matchingRules.add( mr );
     }
@@ -109,7 +109,7 @@ public class Schema extends DefaultSchema
      * @param syntax
      *      the Syntax
      */
-    public boolean addSyntax( MutableLdapSyntaxImpl syntax )
+    public boolean addSyntax( MutableLdapSyntax syntax )
     {
         return syntaxes.add( syntax );
     }
@@ -172,7 +172,7 @@ public class Schema extends DefaultSchema
      */
     public MatchingRule getMatchingRule( String id )
     {
-        for ( MutableMatchingRuleImpl mr : matchingRules )
+        for ( MatchingRule mr : matchingRules )
         {
             List<String> aliases = mr.getNames();
             if ( aliases != null )
@@ -201,7 +201,7 @@ public class Schema extends DefaultSchema
      * @return
      *      all the MatchingRule objects contained in the Schema
      */
-    public List<MutableMatchingRuleImpl> getMatchingRules()
+    public List<MatchingRule> getMatchingRules()
     {
         return matchingRules;
     }
@@ -276,7 +276,7 @@ public class Schema extends DefaultSchema
      */
     public LdapSyntax getSyntax( String id )
     {
-        for ( MutableLdapSyntaxImpl syntax : syntaxes )
+        for ( LdapSyntax syntax : syntaxes )
         {
             List<String> aliases = syntax.getNames();
             if ( aliases != null )
@@ -305,7 +305,7 @@ public class Schema extends DefaultSchema
      * @return
      *      all the Syntax objects contained in the Schema
      */
-    public List<MutableLdapSyntaxImpl> getSyntaxes()
+    public List<LdapSyntax> getSyntaxes()
     {
         return syntaxes;
     }
@@ -329,7 +329,7 @@ public class Schema extends DefaultSchema
      * @param mr
      *      the MatchingRule
      */
-    public boolean removeMatchingRule( MutableMatchingRuleImpl mr )
+    public boolean removeMatchingRule( MutableMatchingRule mr )
     {
         return matchingRules.remove( mr );
     }
@@ -353,7 +353,7 @@ public class Schema extends DefaultSchema
      * @param syntax
      *      the Syntax
      */
-    public boolean removeSyntax( MutableLdapSyntaxImpl syntax )
+    public boolean removeSyntax( MutableLdapSyntax syntax )
     {
         return syntaxes.remove( syntax );
     }
