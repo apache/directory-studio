@@ -25,7 +25,7 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.util.List;
 
-import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.MutableAttributeTypeImpl;
 import org.apache.directory.shared.ldap.model.schema.parsers.OpenLdapSchemaParser;
 import org.apache.directory.studio.schemaeditor.PluginConstants;
 import org.apache.directory.studio.schemaeditor.model.io.OpenLdapSchemaFileExporter;
@@ -56,7 +56,7 @@ public class AttributeTypeEditorSourceCodePage extends FormPage
     public static final String ID = AttributeTypeEditor.ID + "sourceCodePage"; //$NON-NLS-1$
 
     /** The modified attribute type */
-    private AttributeType modifiedAttributeType;
+    private MutableAttributeTypeImpl modifiedAttributeType;
 
     /** The Schema Source Viewer */
     private SchemaSourceViewer schemaSourceViewer;
@@ -82,7 +82,7 @@ public class AttributeTypeEditorSourceCodePage extends FormPage
                 }
                 else
                 {
-                    updateAttributeType( ( AttributeType ) attributeTypes.get( 0 ) );
+                    updateAttributeType( ( MutableAttributeTypeImpl ) attributeTypes.get( 0 ) );
                 }
             }
             catch ( IOException e1 )
@@ -179,7 +179,7 @@ public class AttributeTypeEditorSourceCodePage extends FormPage
      * @param atl
      *            the Attribute Type Literal
      */
-    private void updateAttributeType( AttributeType atl )
+    private void updateAttributeType( MutableAttributeTypeImpl atl )
     {
         modifiedAttributeType.setCollective( atl.isCollective() );
         modifiedAttributeType.setDescription( atl.getDescription() );

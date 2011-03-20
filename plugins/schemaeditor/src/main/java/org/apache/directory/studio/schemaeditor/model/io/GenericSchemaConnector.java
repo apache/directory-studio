@@ -30,7 +30,7 @@ import javax.naming.directory.Attribute;
 import javax.naming.directory.SearchControls;
 import javax.naming.directory.SearchResult;
 
-import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.MutableAttributeTypeImpl;
 import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
 import org.apache.directory.shared.ldap.model.schema.MutableLdapSyntax;
 import org.apache.directory.shared.ldap.model.schema.MutableLdapSyntaxImpl;
@@ -198,9 +198,9 @@ public class GenericSchemaConnector extends AbstractSchemaConnector implements S
                     String value = ( String ) ne.nextElement();
                     AttributeTypeDescriptionSchemaParser parser = new AttributeTypeDescriptionSchemaParser();
                     parser.setQuirksMode( true );
-                    AttributeType atd = parser.parseAttributeTypeDescription( value );
+                    MutableAttributeTypeImpl atd = parser.parseAttributeTypeDescription( value );
 
-                    AttributeType impl = new AttributeType( atd.getOid() );
+                    MutableAttributeTypeImpl impl = new MutableAttributeTypeImpl( atd.getOid() );
                     impl.setNames( atd.getNames().toArray( new String[0] ) );
                     impl.setDescription( atd.getDescription() );
                     impl.setSuperiorOid( atd.getSuperiorOid() );
@@ -281,7 +281,7 @@ public class GenericSchemaConnector extends AbstractSchemaConnector implements S
             }
         }
         // if online: assume all received syntaxes in attributes are valid -> create dummy syntaxes if missing
-        for ( AttributeType at : schema.getAttributeTypes() )
+        for ( MutableAttributeTypeImpl at : schema.getAttributeTypes() )
         {
             String syntaxOid = at.getSyntaxOid();
             if ( syntaxOid != null && schema.getSyntax( syntaxOid ) == null )
@@ -321,7 +321,7 @@ public class GenericSchemaConnector extends AbstractSchemaConnector implements S
             }
         }
         // if online: assume all received matching rules in attributes are valid -> create dummy matching rules if missing
-        for ( AttributeType at : schema.getAttributeTypes() )
+        for ( MutableAttributeTypeImpl at : schema.getAttributeTypes() )
         {
             String equalityName = at.getEqualityOid();
             String orderingName = at.getOrderingOid();

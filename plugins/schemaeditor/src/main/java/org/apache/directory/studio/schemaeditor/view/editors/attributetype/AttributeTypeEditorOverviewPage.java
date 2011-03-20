@@ -25,7 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.directory.shared.asn1.util.OID;
-import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.MutableAttributeTypeImpl;
 import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
 import org.apache.directory.shared.ldap.model.schema.MatchingRule;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
@@ -91,10 +91,10 @@ public class AttributeTypeEditorOverviewPage extends FormPage
     public static final String ID = AttributeTypeEditor.ID + ".overviewPage"; //$NON-NLS-1$
 
     /** The original object class */
-    private AttributeType originalAttributeType;
+    private MutableAttributeTypeImpl originalAttributeType;
 
     /** The modified object class */
-    private AttributeType modifiedAttributeType;
+    private MutableAttributeTypeImpl modifiedAttributeType;
 
     /** The original schema */
     private Schema originalSchema;
@@ -108,7 +108,7 @@ public class AttributeTypeEditorOverviewPage extends FormPage
         /* (non-Javadoc)
          * @see org.apache.directory.studio.schemaeditor.controller.SchemaHandlerListener#attributeTypeAdded(org.apache.directory.studio.schemaeditor.model.AttributeTypeImpl)
          */
-        public void attributeTypeAdded( AttributeType at )
+        public void attributeTypeAdded( MutableAttributeTypeImpl at )
         {
             refreshUI();
         }
@@ -117,7 +117,7 @@ public class AttributeTypeEditorOverviewPage extends FormPage
         /* (non-Javadoc)
          * @see org.apache.directory.studio.schemaeditor.controller.SchemaHandlerListener#attributeTypeModified(org.apache.directory.studio.schemaeditor.model.AttributeTypeImpl)
          */
-        public void attributeTypeModified( AttributeType at )
+        public void attributeTypeModified( MutableAttributeTypeImpl at )
         {
             refreshUI();
         }
@@ -126,7 +126,7 @@ public class AttributeTypeEditorOverviewPage extends FormPage
         /* (non-Javadoc)
          * @see org.apache.directory.studio.schemaeditor.controller.SchemaHandlerListener#attributeTypeRemoved(org.apache.directory.studio.schemaeditor.model.AttributeTypeImpl)
          */
-        public void attributeTypeRemoved( AttributeType at )
+        public void attributeTypeRemoved( MutableAttributeTypeImpl at )
         {
             if ( !at.equals( originalAttributeType ) )
             {
@@ -397,11 +397,11 @@ public class AttributeTypeEditorOverviewPage extends FormPage
         {
             Object selectedItem = ( ( StructuredSelection ) supComboViewer.getSelection() ).getFirstElement();
 
-            if ( selectedItem instanceof AttributeType )
+            if ( selectedItem instanceof MutableAttributeTypeImpl )
             {
                 IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
 
-                AttributeTypeEditorInput input = new AttributeTypeEditorInput( ( AttributeType ) selectedItem );
+                AttributeTypeEditorInput input = new AttributeTypeEditorInput( ( MutableAttributeTypeImpl ) selectedItem );
                 try
                 {
                     page.openEditor( input, AttributeTypeEditor.ID );
@@ -421,9 +421,9 @@ public class AttributeTypeEditorOverviewPage extends FormPage
         {
             Object selectedItem = ( ( StructuredSelection ) supComboViewer.getSelection() ).getFirstElement();
 
-            if ( selectedItem instanceof AttributeType )
+            if ( selectedItem instanceof MutableAttributeTypeImpl )
             {
-                AttributeType at = ( AttributeType ) selectedItem;
+                MutableAttributeTypeImpl at = ( MutableAttributeTypeImpl ) selectedItem;
                 List<String> names = at.getNames();
                 if ( ( names != null ) && ( names.size() > 0 ) )
                 {
@@ -991,7 +991,7 @@ public class AttributeTypeEditorOverviewPage extends FormPage
         }
         else
         {
-            AttributeType supAT = schemaHandler.getAttributeType( supAtName );
+            MutableAttributeTypeImpl supAT = schemaHandler.getAttributeType( supAtName );
             if ( supAT != null )
             {
                 supComboViewer.setSelection( new StructuredSelection( supAT ), true );

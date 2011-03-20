@@ -23,7 +23,7 @@ package org.apache.directory.studio.schemaeditor.model.hierarchy;
 import java.util.List;
 
 import org.apache.commons.collections.map.MultiValueMap;
-import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.MutableAttributeTypeImpl;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.shared.ldap.model.schema.MutableSchemaObject;
 import org.apache.directory.studio.schemaeditor.Activator;
@@ -74,7 +74,7 @@ public class HierarchyManager
      * @param at
      *      the attribute type
      */
-    private void addAttributeType( AttributeType at )
+    private void addAttributeType( MutableAttributeTypeImpl at )
     {
         // Checking Aliases and OID
         checkAliasesAndOID( at );
@@ -83,7 +83,7 @@ public class HierarchyManager
         if ( superiorName != null )
         // The attribute type has a superior
         {
-            AttributeType superior = schemaHandler.getAttributeType( superiorName );
+            MutableAttributeTypeImpl superior = schemaHandler.getAttributeType( superiorName );
             if ( superior != null )
             // The superior attribute type object exists
             {
@@ -179,7 +179,7 @@ public class HierarchyManager
      * @param at
      *      the added attribute type
      */
-    public void attributeTypeAdded( AttributeType at )
+    public void attributeTypeAdded( MutableAttributeTypeImpl at )
     {
         addAttributeType( at );
     }
@@ -191,7 +191,7 @@ public class HierarchyManager
      * @param at
      *      the modified attribute type
      */
-    public void attributeTypeModified( AttributeType at )
+    public void attributeTypeModified( MutableAttributeTypeImpl at )
     {
         // Removing the attribute type
         List<Object> parents = getParents( at );
@@ -216,7 +216,7 @@ public class HierarchyManager
      * @param at
      *      the removed attribute type
      */
-    public void attributeTypeRemoved( AttributeType at )
+    public void attributeTypeRemoved( MutableAttributeTypeImpl at )
     {
         removeAttributeType( at );
     }
@@ -334,7 +334,7 @@ public class HierarchyManager
             for ( Schema schema : schemaHandler.getSchemas() )
             {
                 // Looping on the attribute types
-                for ( AttributeType at : schema.getAttributeTypes() )
+                for ( MutableAttributeTypeImpl at : schema.getAttributeTypes() )
                 {
                     addAttributeType( at );
                 }
@@ -404,13 +404,13 @@ public class HierarchyManager
      * @param at
      *      the attribute type
      */
-    private void removeAttributeType( AttributeType at )
+    private void removeAttributeType( MutableAttributeTypeImpl at )
     {
         // Removing the attribute type as child of its superior
         String superiorName = at.getSuperiorOid();
         if ( ( superiorName != null ) && ( !"".equals( superiorName ) ) ) //$NON-NLS-1$
         {
-            AttributeType superiorAT = schemaHandler.getAttributeType( superiorName );
+            MutableAttributeTypeImpl superiorAT = schemaHandler.getAttributeType( superiorName );
             if ( superiorAT == null )
             {
                 childrenMap.remove( superiorName.toLowerCase(), at );
@@ -431,7 +431,7 @@ public class HierarchyManager
         {
             for ( Object child : children )
             {
-                AttributeType childAT = ( AttributeType ) child;
+                MutableAttributeTypeImpl childAT = ( MutableAttributeTypeImpl ) child;
 
                 parentsMap.remove( child, at );
 

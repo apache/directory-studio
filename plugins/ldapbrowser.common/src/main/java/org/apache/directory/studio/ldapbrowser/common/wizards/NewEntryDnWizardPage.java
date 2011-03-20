@@ -31,7 +31,7 @@ import org.apache.directory.shared.ldap.model.exception.LdapInvalidDnException;
 import org.apache.directory.shared.ldap.model.name.Ava;
 import org.apache.directory.shared.ldap.model.name.Dn;
 import org.apache.directory.shared.ldap.model.name.Rdn;
-import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.MutableAttributeTypeImpl;
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.connection.ui.RunnableContextRunner;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
@@ -179,7 +179,7 @@ public class NewEntryDnWizardPage extends WizardPage implements WidgetModifyList
         }
         else
         {
-            Collection<AttributeType> atds = SchemaUtils.getAllAttributeTypeDescriptions( newEntry );
+            Collection<MutableAttributeTypeImpl> atds = SchemaUtils.getAllAttributeTypeDescriptions( newEntry );
             String[] attributeNames = SchemaUtils.getNames( atds ).toArray( ArrayUtils.EMPTY_STRING_ARRAY );
 
             Dn parentDn = newEntry.getDn().getParent();

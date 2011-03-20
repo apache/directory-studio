@@ -31,7 +31,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import org.apache.directory.shared.ldap.model.constants.SchemaConstants;
-import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.MutableAttributeTypeImpl;
 import org.apache.directory.shared.ldap.model.schema.MutableMatchingRule;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
@@ -101,7 +101,7 @@ public class FilterContentAssistProcessor extends TemplateCompletionProcessor im
     private Schema schema;
 
     /** The possible attribute types. */
-    private Map<String, AttributeType> possibleAttributeTypes;
+    private Map<String, MutableAttributeTypeImpl> possibleAttributeTypes;
 
     /** The possible filter types. */
     private Map<String, String> possibleFilterTypes;
@@ -168,15 +168,15 @@ public class FilterContentAssistProcessor extends TemplateCompletionProcessor im
     {
         this.schema = schema;
 
-        possibleAttributeTypes = new TreeMap<String, AttributeType>( nameAndOidComparator );
+        possibleAttributeTypes = new TreeMap<String, MutableAttributeTypeImpl>( nameAndOidComparator );
         possibleFilterTypes = new LinkedHashMap<String, String>();
         possibleObjectClasses = new TreeMap<String, ObjectClass>( nameAndOidComparator );
         possibleMatchingRules = new TreeMap<String, MutableMatchingRule>( nameAndOidComparator );
 
         if ( schema != null )
         {
-            Collection<AttributeType> attributeTypeDescriptions = schema.getAttributeTypeDescriptions();
-            for ( AttributeType atd : attributeTypeDescriptions )
+            Collection<MutableAttributeTypeImpl> attributeTypeDescriptions = schema.getAttributeTypeDescriptions();
+            for ( MutableAttributeTypeImpl atd : attributeTypeDescriptions )
             {
                 possibleAttributeTypes.put( atd.getOid(), atd );
                 for ( String atdName : atd.getNames() )
@@ -430,7 +430,7 @@ public class FilterContentAssistProcessor extends TemplateCompletionProcessor im
         {
             for ( String possibleAttributeType : possibleAttributeTypes.keySet() )
             {
-                AttributeType description = possibleAttributeTypes.get( possibleAttributeType );
+                MutableAttributeTypeImpl description = possibleAttributeTypes.get( possibleAttributeType );
                 if ( possibleAttributeType.toUpperCase().startsWith( attributeType.toUpperCase() ) )
                 {
                     String replacementString = possibleAttributeType;

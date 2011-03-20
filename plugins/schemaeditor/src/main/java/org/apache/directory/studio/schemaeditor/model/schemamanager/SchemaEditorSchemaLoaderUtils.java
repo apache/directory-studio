@@ -31,7 +31,7 @@ import org.apache.directory.shared.ldap.model.exception.LdapException;
 import org.apache.directory.shared.ldap.model.exception.LdapInvalidDnException;
 import org.apache.directory.shared.ldap.model.name.Dn;
 import org.apache.directory.shared.ldap.model.name.Rdn;
-import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.MutableAttributeTypeImpl;
 import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
 import org.apache.directory.shared.ldap.model.schema.MatchingRule;
 import org.apache.directory.shared.ldap.model.schema.MutableSchemaObject;
@@ -79,7 +79,7 @@ public class SchemaEditorSchemaLoaderUtils
      *      the attribute type converted to an equivalent entry representation
      * @throws LdapException
      */
-    public static Entry toEntry( AttributeType attributeType ) throws LdapException
+    public static Entry toEntry( MutableAttributeTypeImpl attributeType ) throws LdapException
     {
         // Creating a blank entry
         Entry entry = new DefaultEntry();
@@ -379,7 +379,7 @@ public class SchemaEditorSchemaLoaderUtils
      *      the entry
      * @throws LdapException
      */
-    private static void addSuperiorValue( AttributeType attributeType, Entry entry ) throws LdapException
+    private static void addSuperiorValue( MutableAttributeTypeImpl attributeType, Entry entry ) throws LdapException
     {
         String superior = attributeType.getSuperiorName();
         if ( !Strings.isEmpty( superior ) )
@@ -399,7 +399,7 @@ public class SchemaEditorSchemaLoaderUtils
      *      the entry
      * @throws LdapException
      */
-    private static void addEqualityValue( AttributeType attributeType, Entry entry ) throws LdapException
+    private static void addEqualityValue( MutableAttributeTypeImpl attributeType, Entry entry ) throws LdapException
     {
         String equality = attributeType.getEqualityName();
         if ( !Strings.isEmpty( equality ) )
@@ -419,7 +419,7 @@ public class SchemaEditorSchemaLoaderUtils
      *      the entry
      * @throws LdapException
      */
-    private static void addOrderingValue( AttributeType attributeType, Entry entry ) throws LdapException
+    private static void addOrderingValue( MutableAttributeTypeImpl attributeType, Entry entry ) throws LdapException
     {
         String ordering = attributeType.getOrderingName();
         if ( !Strings.isEmpty( ordering ) )
@@ -439,7 +439,7 @@ public class SchemaEditorSchemaLoaderUtils
      *      the entry
      * @throws LdapException
      */
-    private static void addSubstrValue( AttributeType attributeType, Entry entry ) throws LdapException
+    private static void addSubstrValue( MutableAttributeTypeImpl attributeType, Entry entry ) throws LdapException
     {
         String substr = attributeType.getSubstringName();
         if ( !Strings.isEmpty( substr ) )
@@ -459,7 +459,7 @@ public class SchemaEditorSchemaLoaderUtils
      *      the entry
      * @throws LdapException
      */
-    private static void addSyntaxValue( AttributeType attributeType, Entry entry ) throws LdapException
+    private static void addSyntaxValue( MutableAttributeTypeImpl attributeType, Entry entry ) throws LdapException
     {
         String syntax = attributeType.getSyntaxName();
         if ( !Strings.isEmpty( syntax ) )
@@ -486,7 +486,7 @@ public class SchemaEditorSchemaLoaderUtils
      *      the entry
      * @throws LdapException
      */
-    private static void addSingleValueValue( AttributeType attributeType, Entry entry ) throws LdapException
+    private static void addSingleValueValue( MutableAttributeTypeImpl attributeType, Entry entry ) throws LdapException
     {
         if ( attributeType.isSingleValued() )
         {
@@ -505,7 +505,7 @@ public class SchemaEditorSchemaLoaderUtils
      *      the entry
      * @throws LdapException
      */
-    private static void addCollectiveValue( AttributeType attributeType, Entry entry ) throws LdapException
+    private static void addCollectiveValue( MutableAttributeTypeImpl attributeType, Entry entry ) throws LdapException
     {
         if ( attributeType.isCollective() )
         {
@@ -524,7 +524,7 @@ public class SchemaEditorSchemaLoaderUtils
      *      the entry
      * @throws LdapException
      */
-    private static void addNoUserModificationValue( AttributeType attributeType, Entry entry ) throws LdapException
+    private static void addNoUserModificationValue( MutableAttributeTypeImpl attributeType, Entry entry ) throws LdapException
     {
         if ( !attributeType.isUserModifiable() )
         {
@@ -543,7 +543,7 @@ public class SchemaEditorSchemaLoaderUtils
      *      the entry
      * @throws LdapException
      */
-    private static void addUsageValue( AttributeType attributeType, Entry entry ) throws LdapException
+    private static void addUsageValue( MutableAttributeTypeImpl attributeType, Entry entry ) throws LdapException
     {
         UsageEnum usage = attributeType.getUsage();
         if ( usage != UsageEnum.USER_APPLICATIONS )

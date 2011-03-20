@@ -22,7 +22,7 @@ package org.apache.directory.studio.ldapbrowser.ui.editors.schemabrowser;
 
 import java.util.List;
 
-import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.MutableAttributeTypeImpl;
 import org.apache.directory.shared.ldap.model.schema.MatchingRule;
 import org.apache.directory.shared.ldap.model.schema.MatchingRuleUse;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.Schema;
@@ -256,7 +256,7 @@ public class MatchingRuleUseDescriptionDetailsPage extends SchemaDetailsPage
                 {
                     if ( schema.hasAttributeTypeDescription( name ) )
                     {
-                        AttributeType appliesAtd = schema.getAttributeTypeDescription( name );
+                        MutableAttributeTypeImpl appliesAtd = schema.getAttributeTypeDescription( name );
                         Hyperlink appliesLink = toolkit.createHyperlink( appliesClient, SchemaUtils
                             .toString( appliesAtd ), SWT.WRAP );
                         appliesLink.setHref( appliesAtd );

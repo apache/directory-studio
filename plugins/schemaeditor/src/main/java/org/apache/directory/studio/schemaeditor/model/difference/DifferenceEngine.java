@@ -25,7 +25,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.MutableAttributeTypeImpl;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.shared.ldap.model.schema.ObjectClassTypeEnum;
 import org.apache.directory.shared.ldap.model.schema.SchemaObject;
@@ -77,7 +77,7 @@ public class DifferenceEngine
                 differences.add( schemaDifference );
 
                 // Adding attribute types
-                for ( AttributeType at : schemaFromL1.getAttributeTypes() )
+                for ( MutableAttributeTypeImpl at : schemaFromL1.getAttributeTypes() )
                 {
                     schemaDifference.addAttributeTypeDifference( new AttributeTypeDifference( null, at,
                         DifferenceType.REMOVED ) );
@@ -97,21 +97,21 @@ public class DifferenceEngine
                 differences.add( schemaDifference );
 
                 // Building Maps for attribute types
-                Map<String, AttributeType> atMapL1 = new HashMap<String, AttributeType>();
-                for ( AttributeType at : schemaFromL1.getAttributeTypes() )
+                Map<String, MutableAttributeTypeImpl> atMapL1 = new HashMap<String, MutableAttributeTypeImpl>();
+                for ( MutableAttributeTypeImpl at : schemaFromL1.getAttributeTypes() )
                 {
                     atMapL1.put( at.getOid(), at );
                 }
-                Map<String, AttributeType> atMapL2 = new HashMap<String, AttributeType>();
-                for ( AttributeType at : schemaFromL2.getAttributeTypes() )
+                Map<String, MutableAttributeTypeImpl> atMapL2 = new HashMap<String, MutableAttributeTypeImpl>();
+                for ( MutableAttributeTypeImpl at : schemaFromL2.getAttributeTypes() )
                 {
                     atMapL2.put( at.getOid(), at );
                 }
 
                 // Looping on the attribute types from the Schema from the first list
-                for ( AttributeType atFromL1 : schemaFromL1.getAttributeTypes() )
+                for ( MutableAttributeTypeImpl atFromL1 : schemaFromL1.getAttributeTypes() )
                 {
-                    AttributeType atFromL2 = atMapL2.get( atFromL1.getOid() );
+                    MutableAttributeTypeImpl atFromL2 = atMapL2.get( atFromL1.getOid() );
                     if ( atFromL2 == null )
                     {
                         AttributeTypeDifference attributeTypeDifference = new AttributeTypeDifference( atFromL1, null,
@@ -136,9 +136,9 @@ public class DifferenceEngine
                 }
 
                 // Looping on the attribute types from the Schema from the second list
-                for ( AttributeType atFromL2 : schemaFromL2.getAttributeTypes() )
+                for ( MutableAttributeTypeImpl atFromL2 : schemaFromL2.getAttributeTypes() )
                 {
-                    AttributeType atFromL1 = atMapL1.get( atFromL2.getOid() );
+                    MutableAttributeTypeImpl atFromL1 = atMapL1.get( atFromL2.getOid() );
                     if ( atFromL1 == null )
                     {
                         AttributeTypeDifference attributeTypeDifference = new AttributeTypeDifference( null, atFromL2,
@@ -214,7 +214,7 @@ public class DifferenceEngine
                 differences.add( schemaDifference );
 
                 // Adding attribute types
-                for ( AttributeType at : schemaFromL2.getAttributeTypes() )
+                for ( MutableAttributeTypeImpl at : schemaFromL2.getAttributeTypes() )
                 {
                     schemaDifference.addAttributeTypeDifference( new AttributeTypeDifference( null, at,
                         DifferenceType.ADDED ) );
@@ -294,7 +294,7 @@ public class DifferenceEngine
      * @return
      *      the differences between two AttributeType Objects.
      */
-    public static List<PropertyDifference> getDifferences( AttributeType at1, AttributeType at2 )
+    public static List<PropertyDifference> getDifferences( MutableAttributeTypeImpl at1, MutableAttributeTypeImpl at2 )
     {
         List<PropertyDifference> differences = new ArrayList<PropertyDifference>();
 
@@ -661,7 +661,7 @@ public class DifferenceEngine
      * @return
      *      the 'Usage' difference between the two AttributeType Objects
      */
-    private static PropertyDifference getUsageDifference( AttributeType at1, AttributeType at2 )
+    private static PropertyDifference getUsageDifference( MutableAttributeTypeImpl at1, MutableAttributeTypeImpl at2 )
     {
         UsageEnum at1Usage = at1.getUsage();
         UsageEnum at2Usage = at2.getUsage();
@@ -688,7 +688,7 @@ public class DifferenceEngine
      * @return
      *      the 'Superior' difference between the two AttributeType Objects
      */
-    private static PropertyDifference getSuperiorDifference( AttributeType at1, AttributeType at2 )
+    private static PropertyDifference getSuperiorDifference( MutableAttributeTypeImpl at1, MutableAttributeTypeImpl at2 )
     {
         String at1Superior = at1.getSuperiorOid();
         String at2Superior = at2.getSuperiorOid();
@@ -730,7 +730,7 @@ public class DifferenceEngine
      * @return
      *      the 'Syntax' difference between the two AttributeType Objects
      */
-    private static PropertyDifference getSyntaxDifference( AttributeType at1, AttributeType at2 )
+    private static PropertyDifference getSyntaxDifference( MutableAttributeTypeImpl at1, MutableAttributeTypeImpl at2 )
     {
         String at1Syntax = at1.getSyntaxOid();
         String at2Syntax = at2.getSyntaxOid();
@@ -772,7 +772,7 @@ public class DifferenceEngine
      * @return
      *      the 'Syntax length' difference between the two AttributeType Objects
      */
-    private static PropertyDifference getSyntaxLengthDifference( AttributeType at1, AttributeType at2 )
+    private static PropertyDifference getSyntaxLengthDifference( MutableAttributeTypeImpl at1, MutableAttributeTypeImpl at2 )
     {
         long at1SyntaxLength = at1.getSyntaxLength();
         long at2SyntaxLength = at2.getSyntaxLength();
@@ -814,7 +814,7 @@ public class DifferenceEngine
      * @return
      *      the 'Single value' difference between the two AttributeType Objects
      */
-    private static PropertyDifference getSingleValueDifference( AttributeType at1, AttributeType at2 )
+    private static PropertyDifference getSingleValueDifference( MutableAttributeTypeImpl at1, MutableAttributeTypeImpl at2 )
     {
         boolean at1SingleValued = at1.isSingleValued();
         boolean at2SingleValued = at2.isSingleValued();
@@ -841,7 +841,7 @@ public class DifferenceEngine
      * @return
      *      the 'Collective' difference between the two AttributeType Objects
      */
-    private static PropertyDifference getCollectiveDifference( AttributeType at1, AttributeType at2 )
+    private static PropertyDifference getCollectiveDifference( MutableAttributeTypeImpl at1, MutableAttributeTypeImpl at2 )
     {
         boolean at1Collective = at1.isCollective();
         boolean at2Collective = at2.isCollective();
@@ -868,7 +868,7 @@ public class DifferenceEngine
      * @return
      *      the 'No user modification' difference between the two AttributeType Objects
      */
-    private static PropertyDifference getNoUserModificationDifference( AttributeType at1, AttributeType at2 )
+    private static PropertyDifference getNoUserModificationDifference( MutableAttributeTypeImpl at1, MutableAttributeTypeImpl at2 )
     {
         boolean at1IsUserModifiable = at1.isUserModifiable();
         boolean at2IsUserModifiable = at2.isUserModifiable();
@@ -895,7 +895,7 @@ public class DifferenceEngine
      * @return
      *      the 'Equality' difference between the two AttributeType Objects
      */
-    private static PropertyDifference getEqualityDifference( AttributeType at1, AttributeType at2 )
+    private static PropertyDifference getEqualityDifference( MutableAttributeTypeImpl at1, MutableAttributeTypeImpl at2 )
     {
         String at1Equality = at1.getEqualityOid();
         String at2Equality = at2.getEqualityOid();
@@ -937,7 +937,7 @@ public class DifferenceEngine
      * @return
      *      the 'Ordering' difference between the two AttributeType Objects
      */
-    private static PropertyDifference getOrderingDifference( AttributeType at1, AttributeType at2 )
+    private static PropertyDifference getOrderingDifference( MutableAttributeTypeImpl at1, MutableAttributeTypeImpl at2 )
     {
         String at1Ordering = at1.getOrderingOid();
         String at2Ordering = at2.getOrderingOid();
@@ -979,7 +979,7 @@ public class DifferenceEngine
      * @return
      *      the 'Substring' difference between the two AttributeType Objects
      */
-    private static PropertyDifference getSubstringDifference( AttributeType at1, AttributeType at2 )
+    private static PropertyDifference getSubstringDifference( MutableAttributeTypeImpl at1, MutableAttributeTypeImpl at2 )
     {
         String at1Substring = at1.getSubstringOid();
         String at2Substring = at2.getSubstringOid();

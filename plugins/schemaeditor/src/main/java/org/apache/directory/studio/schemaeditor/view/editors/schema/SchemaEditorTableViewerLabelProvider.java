@@ -23,7 +23,7 @@ package org.apache.directory.studio.schemaeditor.view.editors.schema;
 
 import java.util.List;
 
-import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.MutableAttributeTypeImpl;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.studio.schemaeditor.Activator;
 import org.apache.directory.studio.schemaeditor.PluginConstants;
@@ -50,7 +50,7 @@ public class SchemaEditorTableViewerLabelProvider extends LabelProvider implemen
         {
             return Activator.getDefault().getImage( PluginConstants.IMG_OBJECT_CLASS );
         }
-        else if ( element instanceof AttributeType )
+        else if ( element instanceof MutableAttributeTypeImpl )
         {
             return Activator.getDefault().getImage( PluginConstants.IMG_ATTRIBUTE_TYPE );
         }
@@ -80,9 +80,9 @@ public class SchemaEditorTableViewerLabelProvider extends LabelProvider implemen
                     Messages.getString( "SchemaEditorTableViewerLabelProvider.None" ), new String[] { oc.getOid() } ); //$NON-NLS-1$
             }
         }
-        else if ( element instanceof AttributeType )
+        else if ( element instanceof MutableAttributeTypeImpl )
         {
-            AttributeType at = ( AttributeType ) element;
+            MutableAttributeTypeImpl at = ( MutableAttributeTypeImpl ) element;
 
             List<String> names = at.getNames();
             if ( ( names != null ) && ( names.size() > 0 ) )

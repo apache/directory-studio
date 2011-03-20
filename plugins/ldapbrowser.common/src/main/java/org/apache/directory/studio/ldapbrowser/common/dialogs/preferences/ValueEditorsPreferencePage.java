@@ -30,7 +30,7 @@ import java.util.Map;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
-import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.MutableAttributeTypeImpl;
 import org.apache.directory.shared.ldap.model.schema.MutableLdapSyntax;
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
@@ -78,10 +78,10 @@ public class ValueEditorsPreferencePage extends PreferencePage implements IWorkb
     private SortedMap<String, ValueEditorExtension> class2ValueEditorExtensionMap;
 
     /** Map with attribute OID => attribute type description */
-    private SortedMap<String, AttributeType> attributeOid2AtdMap;
+    private SortedMap<String, MutableAttributeTypeImpl> attributeOid2AtdMap;
 
     /** Map with attribute name => attribute type description */
-    private SortedMap<String, AttributeType> attributeNames2AtdMap;
+    private SortedMap<String, MutableAttributeTypeImpl> attributeNames2AtdMap;
 
     /** The attribute names and OIDs. */
     private String[] attributeTypesAndOids;
@@ -187,8 +187,8 @@ public class ValueEditorsPreferencePage extends PreferencePage implements IWorkb
         }
 
         // init available attribute types
-        attributeNames2AtdMap = new TreeMap<String, AttributeType>();
-        attributeOid2AtdMap = new TreeMap<String, AttributeType>();
+        attributeNames2AtdMap = new TreeMap<String, MutableAttributeTypeImpl>();
+        attributeOid2AtdMap = new TreeMap<String, MutableAttributeTypeImpl>();
         BrowserConnectionManager cm = BrowserCorePlugin.getDefault().getConnectionManager();
         IBrowserConnection[] connections = cm.getBrowserConnections();
         for ( IBrowserConnection browserConnection : connections )
@@ -243,8 +243,8 @@ public class ValueEditorsPreferencePage extends PreferencePage implements IWorkb
 
     private void createAttributeMaps( Schema schema )
     {
-        Collection<AttributeType> atds = schema.getAttributeTypeDescriptions();
-        for ( AttributeType atd : atds )
+        Collection<MutableAttributeTypeImpl> atds = schema.getAttributeTypeDescriptions();
+        for ( MutableAttributeTypeImpl atd : atds )
         {
             attributeOid2AtdMap.put( atd.getOid(), atd );
 
@@ -549,7 +549,7 @@ public class ValueEditorsPreferencePage extends PreferencePage implements IWorkb
                     {
                         if ( attributeNames2AtdMap.containsKey( relation.getAttributeNumericOidOrType() ) )
                         {
-                            AttributeType atd = ( AttributeType ) attributeNames2AtdMap
+                            MutableAttributeTypeImpl atd = ( MutableAttributeTypeImpl ) attributeNames2AtdMap
                                 .get( relation.getAttributeNumericOidOrType() );
                             String s = atd.getOid();
                             for ( String name : atd.getNames() )
@@ -563,7 +563,7 @@ public class ValueEditorsPreferencePage extends PreferencePage implements IWorkb
                         }
                         else if ( attributeOid2AtdMap.containsKey( relation.getAttributeNumericOidOrType() ) )
                         {
-                            AttributeType atd = ( AttributeType ) attributeOid2AtdMap
+                            MutableAttributeTypeImpl atd = ( MutableAttributeTypeImpl ) attributeOid2AtdMap
                                 .get( relation.getAttributeNumericOidOrType() );
                             return atd.toString();
                         }

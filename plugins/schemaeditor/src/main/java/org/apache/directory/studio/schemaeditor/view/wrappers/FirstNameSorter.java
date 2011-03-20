@@ -24,7 +24,7 @@ package org.apache.directory.studio.schemaeditor.view.wrappers;
 import java.util.Comparator;
 import java.util.List;
 
-import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.MutableAttributeTypeImpl;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 
 
@@ -43,8 +43,8 @@ public class FirstNameSorter implements Comparator<TreeNode>
 
         if ( ( o1 instanceof AttributeTypeWrapper ) && ( o2 instanceof AttributeTypeWrapper ) )
         {
-            AttributeType at1 = ( ( AttributeTypeWrapper ) o1 ).getAttributeType();
-            AttributeType at2 = ( ( AttributeTypeWrapper ) o2 ).getAttributeType();
+            MutableAttributeTypeImpl at1 = ( ( AttributeTypeWrapper ) o1 ).getAttributeType();
+            MutableAttributeTypeImpl at2 = ( ( AttributeTypeWrapper ) o2 ).getAttributeType();
 
             o1Names = at1.getNames();
             o2Names = at2.getNames();
@@ -59,7 +59,7 @@ public class FirstNameSorter implements Comparator<TreeNode>
         }
         else if ( ( o1 instanceof AttributeTypeWrapper ) && ( o2 instanceof ObjectClassWrapper ) )
         {
-            AttributeType at = ( ( AttributeTypeWrapper ) o1 ).getAttributeType();
+            MutableAttributeTypeImpl at = ( ( AttributeTypeWrapper ) o1 ).getAttributeType();
             ObjectClass oc = ( ( ObjectClassWrapper ) o2 ).getObjectClass();
 
             o1Names = at.getNames();
@@ -68,7 +68,7 @@ public class FirstNameSorter implements Comparator<TreeNode>
         else if ( ( o1 instanceof ObjectClassWrapper ) && ( o2 instanceof AttributeTypeWrapper ) )
         {
             ObjectClass oc = ( ( ObjectClassWrapper ) o1 ).getObjectClass();
-            AttributeType at = ( ( AttributeTypeWrapper ) o2 ).getAttributeType();
+            MutableAttributeTypeImpl at = ( ( AttributeTypeWrapper ) o2 ).getAttributeType();
 
             o1Names = oc.getNames();
             o2Names = at.getNames();

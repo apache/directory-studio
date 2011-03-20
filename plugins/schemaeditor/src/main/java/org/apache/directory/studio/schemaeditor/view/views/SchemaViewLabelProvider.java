@@ -22,7 +22,7 @@ package org.apache.directory.studio.schemaeditor.view.views;
 
 import java.util.List;
 
-import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.MutableAttributeTypeImpl;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.studio.schemaeditor.Activator;
 import org.apache.directory.studio.schemaeditor.PluginConstants;
@@ -84,7 +84,7 @@ public class SchemaViewLabelProvider extends LabelProvider
         }
         else if ( element instanceof AttributeTypeWrapper )
         {
-            AttributeType at = ( ( AttributeTypeWrapper ) element ).getAttributeType();
+            MutableAttributeTypeImpl at = ( ( AttributeTypeWrapper ) element ).getAttributeType();
 
             // Label
             if ( labelValue == PluginConstants.PREFS_SCHEMA_VIEW_LABEL_FIRST_NAME )
@@ -208,7 +208,7 @@ public class SchemaViewLabelProvider extends LabelProvider
             String secondaryLabel = ""; //$NON-NLS-1$
             if ( element instanceof AttributeTypeWrapper )
             {
-                AttributeType at = ( ( AttributeTypeWrapper ) element ).getAttributeType();
+                MutableAttributeTypeImpl at = ( ( AttributeTypeWrapper ) element ).getAttributeType();
 
                 if ( secondaryLabelValue == PluginConstants.PREFS_SCHEMA_VIEW_LABEL_FIRST_NAME )
                 {

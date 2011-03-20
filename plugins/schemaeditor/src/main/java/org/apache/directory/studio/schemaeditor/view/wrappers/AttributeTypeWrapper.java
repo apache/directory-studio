@@ -20,7 +20,7 @@
 package org.apache.directory.studio.schemaeditor.view.wrappers;
 
 
-import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.MutableAttributeTypeImpl;
 import org.eclipse.osgi.util.NLS;
 
 
@@ -32,7 +32,7 @@ import org.eclipse.osgi.util.NLS;
 public class AttributeTypeWrapper extends AbstractTreeNode
 {
     /** The wrapped AttributeType */
-    private AttributeType attributeType;
+    private MutableAttributeTypeImpl attributeType;
 
 
     /**
@@ -41,7 +41,7 @@ public class AttributeTypeWrapper extends AbstractTreeNode
      * @param at
      *      the wrapped AttributeType
      */
-    public AttributeTypeWrapper( AttributeType at )
+    public AttributeTypeWrapper( MutableAttributeTypeImpl at )
     {
         super( null );
         attributeType = at;
@@ -56,7 +56,7 @@ public class AttributeTypeWrapper extends AbstractTreeNode
      * @param parent
      *      the parent TreeNode
      */
-    public AttributeTypeWrapper( AttributeType at, TreeNode parent )
+    public AttributeTypeWrapper( MutableAttributeTypeImpl at, TreeNode parent )
     {
         super( parent );
         attributeType = at;
@@ -69,7 +69,7 @@ public class AttributeTypeWrapper extends AbstractTreeNode
      * @return
      *      the wrapped AttributeType
      */
-    public AttributeType getAttributeType()
+    public MutableAttributeTypeImpl getAttributeType()
     {
         return attributeType;
     }

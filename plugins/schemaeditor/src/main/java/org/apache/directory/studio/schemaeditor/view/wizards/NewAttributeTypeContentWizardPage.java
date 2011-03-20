@@ -25,7 +25,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.MutableAttributeTypeImpl;
 import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
 import org.apache.directory.shared.ldap.model.schema.MutableLdapSyntaxImpl;
 import org.apache.directory.shared.ldap.model.schema.UsageEnum;
@@ -130,7 +130,7 @@ public class NewAttributeTypeContentWizardPage extends AbstractWizardPage
                 AttributeTypeSelectionDialog dialog = new AttributeTypeSelectionDialog();
                 if ( dialog.open() == Dialog.OK )
                 {
-                    AttributeType selectedAT = dialog.getSelectedAttributeType();
+                    MutableAttributeTypeImpl selectedAT = dialog.getSelectedAttributeType();
                     List<String> aliases = selectedAT.getNames();
                     if ( ( aliases != null ) && ( aliases.size() > 0 ) )
                     {

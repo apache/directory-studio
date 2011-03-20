@@ -26,7 +26,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.MutableAttributeTypeImpl;
 import org.apache.directory.shared.ldap.model.schema.MutableLdapSyntaxImpl;
 import org.apache.directory.shared.ldap.model.schema.MutableMatchingRuleImpl;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
@@ -304,13 +304,13 @@ public class XMLSchemaFileImporter
      */
     private static void readAttributeType( Element element, Schema schema ) throws XMLSchemaFileImportException
     {
-        AttributeType at = null;
+        MutableAttributeTypeImpl at = null;
 
         // OID
         Attribute oidAttribute = element.attribute( OID_TAG );
         if ( ( oidAttribute != null ) && ( !oidAttribute.getValue().equals( "" ) ) ) //$NON-NLS-1$
         {
-            at = new AttributeType( oidAttribute.getValue() );
+            at = new MutableAttributeTypeImpl( oidAttribute.getValue() );
         }
         else
         {

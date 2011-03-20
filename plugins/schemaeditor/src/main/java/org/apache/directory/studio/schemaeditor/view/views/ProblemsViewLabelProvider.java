@@ -21,7 +21,7 @@ package org.apache.directory.studio.schemaeditor.view.views;
 
 
 import org.apache.directory.shared.ldap.model.exception.LdapSchemaException;
-import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.MutableAttributeTypeImpl;
 import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
 import org.apache.directory.shared.ldap.model.schema.MatchingRule;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
@@ -231,7 +231,7 @@ public class ProblemsViewLabelProvider extends LabelProvider implements ITableLa
         SchemaObject duplicate = exception.getOtherObject();
         String message = null;
 
-        if ( duplicate instanceof AttributeType )
+        if ( duplicate instanceof MutableAttributeTypeImpl )
         {
             message = Messages.getString( "ProblemsViewLabelProvider.NameAlreadyRegisteredAT" ); //$NON-NLS-1$
         }
@@ -250,7 +250,7 @@ public class ProblemsViewLabelProvider extends LabelProvider implements ITableLa
         SchemaObject duplicate = exception.getOtherObject();
         String message = null;
 
-        if ( duplicate instanceof AttributeType )
+        if ( duplicate instanceof MutableAttributeTypeImpl )
         {
             message = Messages.getString( "ProblemsViewLabelProvider.OidAlreadyRegisteredAT" ); //$NON-NLS-1$
         }
@@ -488,7 +488,7 @@ public class ProblemsViewLabelProvider extends LabelProvider implements ITableLa
         SchemaHandler schemaHandler = Activator.getDefault().getSchemaHandler();
         SchemaObject schemaObject = null;
 
-        if ( so instanceof AttributeType )
+        if ( so instanceof MutableAttributeTypeImpl )
         {
             schemaObject = schemaHandler.getAttributeType( so.getOid() );
         }

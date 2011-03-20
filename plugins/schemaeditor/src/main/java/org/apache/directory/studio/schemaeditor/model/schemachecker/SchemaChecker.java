@@ -26,7 +26,7 @@ import java.util.List;
 import org.apache.commons.collections.MultiMap;
 import org.apache.commons.collections.map.MultiValueMap;
 import org.apache.directory.shared.ldap.model.exception.LdapSchemaException;
-import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.MutableAttributeTypeImpl;
 import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
 import org.apache.directory.shared.ldap.model.schema.MatchingRule;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
@@ -78,7 +78,7 @@ public class SchemaChecker
     /** The SchemaHandlerListener */
     private SchemaHandlerListener schemaHandlerListener = new SchemaHandlerAdapter()
     {
-        public void attributeTypeAdded( AttributeType at )
+        public void attributeTypeAdded( MutableAttributeTypeImpl at )
         {
             synchronized ( this )
             {
@@ -87,7 +87,7 @@ public class SchemaChecker
         }
 
 
-        public void attributeTypeModified( AttributeType at )
+        public void attributeTypeModified( MutableAttributeTypeImpl at )
         {
             synchronized ( this )
             {
@@ -96,7 +96,7 @@ public class SchemaChecker
         }
 
 
-        public void attributeTypeRemoved( AttributeType at )
+        public void attributeTypeRemoved( MutableAttributeTypeImpl at )
         {
             synchronized ( this )
             {
@@ -301,7 +301,7 @@ public class SchemaChecker
                 {
                     SchemaHandler schemaHandler = Activator.getDefault().getSchemaHandler();
 
-                    if ( source instanceof AttributeType )
+                    if ( source instanceof MutableAttributeTypeImpl )
                     {
                         source = schemaHandler.getAttributeType( source.getOid() );
                     }

@@ -21,7 +21,7 @@
 package org.apache.directory.studio.ldapbrowser.ui.dialogs.properties;
 
 
-import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.MutableAttributeTypeImpl;
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
@@ -293,7 +293,7 @@ public class AttributePropertyPage extends PropertyPage implements IWorkbenchPro
 
             if ( schema.hasAttributeTypeDescription( attribute.getDescription() ) )
             {
-                AttributeType atd = schema.getAttributeTypeDescription( attribute.getDescription() );
+                MutableAttributeTypeImpl atd = schema.getAttributeTypeDescription( attribute.getDescription() );
 
                 atdOidText.setText( atd.getOid() );
                 String atdNames = atd.getNames().toString();

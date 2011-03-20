@@ -23,7 +23,7 @@ package org.apache.directory.studio.schemaeditor.view.editors.attributetype;
 
 import java.util.List;
 
-import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.MutableAttributeTypeImpl;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.studio.schemaeditor.Activator;
 import org.apache.directory.studio.schemaeditor.PluginConstants;
@@ -65,10 +65,10 @@ public class AttributeTypeEditorUsedByPage extends FormPage
     public static final String ID = AttributeTypeEditor.ID + "usedByPage"; //$NON-NLS-1$
 
     /** The modified attribute type */
-    private AttributeType modifiedAttributeType;
+    private MutableAttributeTypeImpl modifiedAttributeType;
 
     /** The original attribute type */
-    private AttributeType originalAttributeType;
+    private MutableAttributeTypeImpl originalAttributeType;
 
     /** The Schema Handler */
     private SchemaHandler schemaHandler;
@@ -79,7 +79,7 @@ public class AttributeTypeEditorUsedByPage extends FormPage
         /* (non-Javadoc)
          * @see org.apache.directory.studio.schemaeditor.controller.SchemaHandlerListener#attributeTypeAdded(org.apache.directory.studio.schemaeditor.model.AttributeTypeImpl)
          */
-        public void attributeTypeAdded( AttributeType at )
+        public void attributeTypeAdded( MutableAttributeTypeImpl at )
         {
             refreshTableViewers();
         }
@@ -88,7 +88,7 @@ public class AttributeTypeEditorUsedByPage extends FormPage
         /* (non-Javadoc)
          * @see org.apache.directory.studio.schemaeditor.controller.SchemaHandlerListener#attributeTypeModified(org.apache.directory.studio.schemaeditor.model.AttributeTypeImpl)
          */
-        public void attributeTypeModified( AttributeType at )
+        public void attributeTypeModified( MutableAttributeTypeImpl at )
         {
             refreshTableViewers();
         }
@@ -97,7 +97,7 @@ public class AttributeTypeEditorUsedByPage extends FormPage
         /* (non-Javadoc)
          * @see org.apache.directory.studio.schemaeditor.controller.SchemaHandlerListener#attributeTypeRemoved(org.apache.directory.studio.schemaeditor.model.AttributeTypeImpl)
          */
-        public void attributeTypeRemoved( AttributeType at )
+        public void attributeTypeRemoved( MutableAttributeTypeImpl at )
         {
             refreshTableViewers();
         }

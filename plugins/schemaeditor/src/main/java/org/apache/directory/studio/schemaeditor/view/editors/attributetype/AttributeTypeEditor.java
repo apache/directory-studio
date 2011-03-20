@@ -21,7 +21,7 @@
 package org.apache.directory.studio.schemaeditor.view.editors.attributetype;
 
 
-import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.MutableAttributeTypeImpl;
 import org.apache.directory.studio.schemaeditor.Activator;
 import org.apache.directory.studio.schemaeditor.PluginConstants;
 import org.apache.directory.studio.schemaeditor.PluginUtils;
@@ -69,10 +69,10 @@ public class AttributeTypeEditor extends FormEditor
     private AttributeTypeEditorUsedByPage usedBy;
 
     /** The original attribute type */
-    private AttributeType originalAttributeType;
+    private MutableAttributeTypeImpl originalAttributeType;
 
     /** The attribute type used to save modifications */
-    private AttributeType modifiedAttributeType;
+    private MutableAttributeTypeImpl modifiedAttributeType;
 
     /** The originalSchema */
     private Schema originalSchema;
@@ -254,7 +254,7 @@ public class AttributeTypeEditor extends FormEditor
      * @return
      *      the original attribute type
      */
-    public AttributeType getOriginalAttributeType()
+    public MutableAttributeTypeImpl getOriginalAttributeType()
     {
         return originalAttributeType;
     }
@@ -266,7 +266,7 @@ public class AttributeTypeEditor extends FormEditor
      * @return
      *      the modified attribute type
      */
-    public AttributeType getModifiedAttributeType()
+    public MutableAttributeTypeImpl getModifiedAttributeType()
     {
         return modifiedAttributeType;
     }
@@ -278,7 +278,7 @@ public class AttributeTypeEditor extends FormEditor
      * @param modifiedAttributeType
      *      the modified attribute type to set.
      */
-    public void setModifiedAttributeType( AttributeType modifiedAttributeType )
+    public void setModifiedAttributeType( MutableAttributeTypeImpl modifiedAttributeType )
     {
         this.modifiedAttributeType = modifiedAttributeType;
     }

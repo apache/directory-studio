@@ -25,7 +25,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.MutableAttributeTypeImpl;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.Viewer;
@@ -58,10 +58,10 @@ public class SchemaEditorTableViewerContentProvider implements IStructuredConten
             {
                 public int compare( Object o1, Object o2 )
                 {
-                    if ( o1 instanceof AttributeType && o2 instanceof AttributeType )
+                    if ( o1 instanceof MutableAttributeTypeImpl && o2 instanceof MutableAttributeTypeImpl )
                     {
-                        List<String> at1Names = ( ( AttributeType ) o1 ).getNames();
-                        List<String> at2Names = ( ( AttributeType ) o2 ).getNames();
+                        List<String> at1Names = ( ( MutableAttributeTypeImpl ) o1 ).getNames();
+                        List<String> at2Names = ( ( MutableAttributeTypeImpl ) o2 ).getNames();
 
                         if ( ( at1Names != null ) && ( at2Names != null ) && ( at1Names.size() > 0 )
                             && ( at2Names.size() > 0 ) )

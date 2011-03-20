@@ -25,7 +25,7 @@ import java.util.List;
 
 import org.apache.commons.collections.MultiMap;
 import org.apache.commons.collections.map.MultiValueMap;
-import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.MutableAttributeTypeImpl;
 import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
 import org.apache.directory.shared.ldap.model.schema.MatchingRule;
 import org.apache.directory.shared.ldap.model.schema.MutableLdapSyntax;
@@ -51,7 +51,7 @@ public class SchemaHandler
     /** The schemas List */
     private List<Schema> schemasList;
     /** The attribute types List */
-    private List<AttributeType> attributeTypesList;
+    private List<MutableAttributeTypeImpl> attributeTypesList;
     /** The matching rules List */
     private List<MatchingRule> matchingRulesList;
     /** The object classes List */
@@ -89,7 +89,7 @@ public class SchemaHandler
     {
         // Lists
         schemasList = new ArrayList<Schema>();
-        attributeTypesList = new ArrayList<AttributeType>();
+        attributeTypesList = new ArrayList<MutableAttributeTypeImpl>();
         matchingRulesList = new ArrayList<MatchingRule>();;
         objectClassesList = new ArrayList<ObjectClass>();
         syntaxesList = new ArrayList<LdapSyntax>();
@@ -115,7 +115,7 @@ public class SchemaHandler
      * @return
      *      the List of all the attribute types
      */
-    public List<AttributeType> getAttributeTypes()
+    public List<MutableAttributeTypeImpl> getAttributeTypes()
     {
         return attributeTypesList;
     }
@@ -177,13 +177,13 @@ public class SchemaHandler
      * @return
      *      the corresponding attribute type, or null if no one is found
      */
-    public AttributeType getAttributeType( String id )
+    public MutableAttributeTypeImpl getAttributeType( String id )
     {
         List<?> list = getAttributeTypeList( id.toLowerCase() );
 
         if ( ( list != null ) && ( list.size() >= 1 ) )
         {
-            return ( AttributeType ) list.get( 0 );
+            return ( MutableAttributeTypeImpl ) list.get( 0 );
         }
         else
         {
@@ -420,7 +420,7 @@ public class SchemaHandler
      * @param listener
      *      the listener
      */
-    public void addListener( AttributeType at, AttributeTypeListener listener )
+    public void addListener( MutableAttributeTypeImpl at, AttributeTypeListener listener )
     {
         if ( !attributeTypeListeners.containsValue( at, listener ) )
         {
@@ -437,7 +437,7 @@ public class SchemaHandler
      * @param listener
      *      the listener
      */
-    public void removeListener( AttributeType at, AttributeTypeListener listener )
+    public void removeListener( MutableAttributeTypeImpl at, AttributeTypeListener listener )
     {
         attributeTypeListeners.remove( at, listener );
     }
@@ -487,7 +487,7 @@ public class SchemaHandler
         schemasMap.put( schema.getSchemaName().toLowerCase(), schema );
 
         // Adding its attribute types
-        for ( AttributeType at : schema.getAttributeTypes() )
+        for ( MutableAttributeTypeImpl at : schema.getAttributeTypes() )
         {
             addSchemaObject( at );
         }
@@ -522,9 +522,9 @@ public class SchemaHandler
      */
     private void addSchemaObject( SchemaObject object )
     {
-        if ( object instanceof AttributeType )
+        if ( object instanceof MutableAttributeTypeImpl )
         {
-            AttributeType at = ( AttributeType ) object;
+            MutableAttributeTypeImpl at = ( MutableAttributeTypeImpl ) object;
             attributeTypesList.add( at );
             List<String> names = at.getNames();
             if ( names != null )
@@ -594,7 +594,7 @@ public class SchemaHandler
         schemasMap.remove( schema.getSchemaName().toLowerCase() );
 
         // Removing its attribute types
-        for ( AttributeType at : schema.getAttributeTypes() )
+        for ( MutableAttributeTypeImpl at : schema.getAttributeTypes() )
         {
             removeSchemaObject( at );
         }
@@ -629,9 +629,9 @@ public class SchemaHandler
      */
     private void removeSchemaObject( SchemaObject object )
     {
-        if ( object instanceof AttributeType )
+        if ( object instanceof MutableAttributeTypeImpl )
         {
-            AttributeType at = ( AttributeType ) object;
+            MutableAttributeTypeImpl at = ( MutableAttributeTypeImpl ) object;
             attributeTypesList.remove( at );
             List<String> names = at.getNames();
             if ( names != null )
@@ -694,7 +694,7 @@ public class SchemaHandler
      * @param at
      *      the attribute type
      */
-    public void addAttributeType( AttributeType at )
+    public void addAttributeType( MutableAttributeTypeImpl at )
     {
         Schema schema = getSchema( at.getSchemaName() );
 
@@ -720,7 +720,7 @@ public class SchemaHandler
      * @param at2
      *      the destination attribute type
      */
-    public void modifyAttributeType( AttributeType at1, AttributeType at2 )
+    public void modifyAttributeType( MutableAttributeTypeImpl at1, MutableAttributeTypeImpl at2 )
     {
         // Removing the references (in case of the names or oid have changed)
         removeSchemaObject( at1 );
@@ -755,7 +755,7 @@ public class SchemaHandler
      * @param at
      *      the attribute type
      */
-    public void removeAttributeType( AttributeType at )
+    public void removeAttributeType( MutableAttributeTypeImpl at )
     {
         Schema schema = getSchema( at.getSchemaName() );
 
@@ -885,7 +885,7 @@ public class SchemaHandler
      * @param at
      *      the added attribute type
      */
-    private void notifyAttributeTypeAdded( AttributeType at )
+    private void notifyAttributeTypeAdded( MutableAttributeTypeImpl at )
     {
         // SchemaHandler Listeners
         for ( SchemaHandlerListener listener : schemaHandlerListeners.toArray( new SchemaHandlerListener[0] ) )
@@ -911,7 +911,7 @@ public class SchemaHandler
      * @param at
      *      the modified attribute type
      */
-    private void notifyAttributeTypeModified( AttributeType at )
+    private void notifyAttributeTypeModified( MutableAttributeTypeImpl at )
     {
         // SchemaHandler Listeners
         for ( SchemaHandlerListener listener : schemaHandlerListeners.toArray( new SchemaHandlerListener[0] ) )
@@ -937,7 +937,7 @@ public class SchemaHandler
      * @param at
      *      the removed attribute type
      */
-    private void notifyAttributeTypeRemoved( AttributeType at )
+    private void notifyAttributeTypeRemoved( MutableAttributeTypeImpl at )
     {
         // SchemaHandler Listeners
         for ( SchemaHandlerListener listener : schemaHandlerListeners.toArray( new SchemaHandlerListener[0] ) )

@@ -20,7 +20,7 @@
 package org.apache.directory.studio.schemaeditor.controller;
 
 
-import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.MutableAttributeTypeImpl;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.shared.ldap.model.schema.SchemaObject;
 import org.apache.directory.studio.schemaeditor.Activator;
@@ -116,7 +116,7 @@ public class ProblemsViewController
                     SchemaObject object = ( ( SchemaErrorWrapper ) objectSelection ).getLdapSchemaException()
                         .getSourceObject();
 
-                    if ( object instanceof AttributeType )
+                    if ( object instanceof MutableAttributeTypeImpl )
                     {
                         input = new AttributeTypeEditorInput( Activator.getDefault().getSchemaHandler()
                             .getAttributeType( object.getOid() ) );

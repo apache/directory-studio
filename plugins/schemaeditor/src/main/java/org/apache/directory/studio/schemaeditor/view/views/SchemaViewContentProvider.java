@@ -25,7 +25,7 @@ import java.util.Collections;
 import java.util.List;
 
 import org.apache.commons.collections.map.MultiValueMap;
-import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.MutableAttributeTypeImpl;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.studio.schemaeditor.Activator;
 import org.apache.directory.studio.schemaeditor.PluginConstants;
@@ -176,9 +176,9 @@ public class SchemaViewContentProvider implements IStructuredContentProvider, IT
                                 TreeNode childNode = null;
 
                                 // Creating the wrapper
-                                if ( rootChild instanceof AttributeType )
+                                if ( rootChild instanceof MutableAttributeTypeImpl )
                                 {
-                                    AttributeType at = ( AttributeType ) rootChild;
+                                    MutableAttributeTypeImpl at = ( MutableAttributeTypeImpl ) rootChild;
                                     childNode = new AttributeTypeWrapper( at, atFolder );
                                     atFolder.addChild( childNode );
                                 }
@@ -310,9 +310,9 @@ public class SchemaViewContentProvider implements IStructuredContentProvider, IT
             for ( Object child : children )
             {
                 TreeNode childNode = null;
-                if ( child instanceof AttributeType )
+                if ( child instanceof MutableAttributeTypeImpl )
                 {
-                    AttributeType at = ( AttributeType ) child;
+                    MutableAttributeTypeImpl at = ( MutableAttributeTypeImpl ) child;
                     childNode = new AttributeTypeWrapper( at, node );
                     node.addChild( childNode );
                 }
@@ -458,7 +458,7 @@ public class SchemaViewContentProvider implements IStructuredContentProvider, IT
      * @param at
      *      the added attribute type
      */
-    public void attributeTypeAdded( AttributeType at )
+    public void attributeTypeAdded( MutableAttributeTypeImpl at )
     {
         int presentation = store.getInt( PluginConstants.PREFS_SCHEMA_VIEW_SCHEMA_PRESENTATION );
         if ( presentation == PluginConstants.PREFS_SCHEMA_VIEW_SCHEMA_PRESENTATION_FLAT )
@@ -479,7 +479,7 @@ public class SchemaViewContentProvider implements IStructuredContentProvider, IT
      * @param at
      *      the added attribute type
      */
-    public void attributeTypeAddedFlatPresentation( AttributeType at )
+    public void attributeTypeAddedFlatPresentation( MutableAttributeTypeImpl at )
     {
         SchemaWrapper schemaWrapper = ( SchemaWrapper ) getWrapper( Activator.getDefault().getSchemaHandler()
             .getSchema( at.getSchemaName() ) );
@@ -516,7 +516,7 @@ public class SchemaViewContentProvider implements IStructuredContentProvider, IT
      * @param at
      *      the added attribute type
      */
-    public void attributeTypeAddedHierarchicalPresentation( AttributeType at )
+    public void attributeTypeAddedHierarchicalPresentation( MutableAttributeTypeImpl at )
     {
         hierarchyManager.attributeTypeAdded( at );
 
@@ -575,9 +575,9 @@ public class SchemaViewContentProvider implements IStructuredContentProvider, IT
 
                 for ( TreeNode createdWrapper : createdWrappers )
                 {
-                    AttributeTypeWrapper atw = new AttributeTypeWrapper( ( AttributeType ) child, createdWrapper );
+                    AttributeTypeWrapper atw = new AttributeTypeWrapper( ( MutableAttributeTypeImpl ) child, createdWrapper );
                     atw.getParent().addChild( atw );
-                    elementsToWrappersMap.put( ( AttributeType ) child, atw );
+                    elementsToWrappersMap.put( ( MutableAttributeTypeImpl ) child, atw );
                 }
             }
         }
@@ -590,7 +590,7 @@ public class SchemaViewContentProvider implements IStructuredContentProvider, IT
      * @param at
      *      the modified attribute type
      */
-    public void attributeTypeModified( AttributeType at )
+    public void attributeTypeModified( MutableAttributeTypeImpl at )
     {
         int presentation = store.getInt( PluginConstants.PREFS_SCHEMA_VIEW_SCHEMA_PRESENTATION );
         if ( presentation == PluginConstants.PREFS_SCHEMA_VIEW_SCHEMA_PRESENTATION_FLAT )
@@ -611,7 +611,7 @@ public class SchemaViewContentProvider implements IStructuredContentProvider, IT
      * @param at
      *      the modified attribute type
      */
-    public void attributeTypeModifiedFlatPresentation( AttributeType at )
+    public void attributeTypeModifiedFlatPresentation( MutableAttributeTypeImpl at )
     {
         // Nothing to do
     }
@@ -624,7 +624,7 @@ public class SchemaViewContentProvider implements IStructuredContentProvider, IT
      * @param at
      *      the modified attribute type
      */
-    public void attributeTypeModifiedHierarchicalPresentation( AttributeType at )
+    public void attributeTypeModifiedHierarchicalPresentation( MutableAttributeTypeImpl at )
     {
         // Propagating the modification to the hierarchy manager
         hierarchyManager.attributeTypeModified( at );
@@ -691,7 +691,7 @@ public class SchemaViewContentProvider implements IStructuredContentProvider, IT
      * @param at
      *      the removed attribute type
      */
-    public void attributeTypeRemoved( AttributeType at )
+    public void attributeTypeRemoved( MutableAttributeTypeImpl at )
     {
         int presentation = store.getInt( PluginConstants.PREFS_SCHEMA_VIEW_SCHEMA_PRESENTATION );
         if ( presentation == PluginConstants.PREFS_SCHEMA_VIEW_SCHEMA_PRESENTATION_FLAT )
@@ -712,7 +712,7 @@ public class SchemaViewContentProvider implements IStructuredContentProvider, IT
      * @param at
      *      the removed attribute type
      */
-    private void attributeTypeRemovedFlatPresentation( AttributeType at )
+    private void attributeTypeRemovedFlatPresentation( MutableAttributeTypeImpl at )
     {
         AttributeTypeWrapper atw = ( AttributeTypeWrapper ) getWrapper( at );
         if ( atw != null )
@@ -730,7 +730,7 @@ public class SchemaViewContentProvider implements IStructuredContentProvider, IT
      * @param at
      *      the removed attribute type
      */
-    private void attributeTypeRemovedHierarchicalPresentation( AttributeType at )
+    private void attributeTypeRemovedHierarchicalPresentation( MutableAttributeTypeImpl at )
     {
         // Creating children nodes of the AT 
         // and attaching them to the root
@@ -750,7 +750,7 @@ public class SchemaViewContentProvider implements IStructuredContentProvider, IT
                             Folder folder = ( Folder ) rootChild;
                             if ( folder.getType().equals( FolderType.ATTRIBUTE_TYPE ) )
                             {
-                                atw = new AttributeTypeWrapper( ( AttributeType ) child, folder );
+                                atw = new AttributeTypeWrapper( ( MutableAttributeTypeImpl ) child, folder );
                                 break;
                             }
                         }
@@ -758,11 +758,11 @@ public class SchemaViewContentProvider implements IStructuredContentProvider, IT
                 }
                 else if ( group == PluginConstants.PREFS_SCHEMA_VIEW_GROUPING_MIXED )
                 {
-                    atw = new AttributeTypeWrapper( ( AttributeType ) child, root );
+                    atw = new AttributeTypeWrapper( ( MutableAttributeTypeImpl ) child, root );
                 }
 
                 atw.getParent().addChild( atw );
-                elementsToWrappersMap.put( ( AttributeType ) child, atw );
+                elementsToWrappersMap.put( ( MutableAttributeTypeImpl ) child, atw );
             }
         }
 
@@ -1250,7 +1250,7 @@ public class SchemaViewContentProvider implements IStructuredContentProvider, IT
      */
     private void schemaAddedHierarchicalPresentation( Schema schema )
     {
-        for ( AttributeType at : schema.getAttributeTypes() )
+        for ( MutableAttributeTypeImpl at : schema.getAttributeTypes() )
         {
             attributeTypeAddedHierarchicalPresentation( at );
         }
@@ -1310,7 +1310,7 @@ public class SchemaViewContentProvider implements IStructuredContentProvider, IT
      */
     private void schemaRemovedHierarchicalPresentation( Schema schema )
     {
-        for ( AttributeType at : schema.getAttributeTypes() )
+        for ( MutableAttributeTypeImpl at : schema.getAttributeTypes() )
         {
             attributeTypeRemovedHierarchicalPresentation( at );
         }
@@ -1339,7 +1339,7 @@ public class SchemaViewContentProvider implements IStructuredContentProvider, IT
             Folder atFolder = new Folder( FolderType.ATTRIBUTE_TYPE, schemaWrapper );
             schemaWrapper.addChild( atFolder );
 
-            for ( AttributeType attributeType : schema.getAttributeTypes() )
+            for ( MutableAttributeTypeImpl attributeType : schema.getAttributeTypes() )
             {
                 AttributeTypeWrapper atw = new AttributeTypeWrapper( attributeType, atFolder );
                 atw.getParent().addChild( atw );
@@ -1358,7 +1358,7 @@ public class SchemaViewContentProvider implements IStructuredContentProvider, IT
         }
         else if ( group == PluginConstants.PREFS_SCHEMA_VIEW_GROUPING_MIXED )
         {
-            for ( AttributeType attributeType : schema.getAttributeTypes() )
+            for ( MutableAttributeTypeImpl attributeType : schema.getAttributeTypes() )
             {
                 AttributeTypeWrapper atw = new AttributeTypeWrapper( attributeType, schemaWrapper );
                 atw.getParent().addChild( atw );

@@ -22,7 +22,7 @@ package org.apache.directory.studio.ldapbrowser.ui.editors.schemabrowser;
 
 import java.util.Collection;
 
-import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.MutableAttributeTypeImpl;
 import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
 import org.apache.directory.shared.ldap.model.schema.MatchingRule;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.Schema;
@@ -297,7 +297,7 @@ public class MatchingRuleDescriptionDetailsPage extends SchemaDetailsPage
         // create new content
         if ( mrd != null )
         {
-            Collection<AttributeType> usedFromATDs = SchemaUtils.getUsedFromAttributeTypeDescriptions( mrd,
+            Collection<MutableAttributeTypeImpl> usedFromATDs = SchemaUtils.getUsedFromAttributeTypeDescriptions( mrd,
                 getSchema() );
             if ( usedFromATDs != null && usedFromATDs.size() > 0 )
             {
@@ -305,7 +305,7 @@ public class MatchingRuleDescriptionDetailsPage extends SchemaDetailsPage
                     .setText( NLS
                         .bind(
                             Messages.getString( "MatchingRuleDescriptionDetailsPage.UsedFromCount" ), new Object[] { usedFromATDs.size() } ) ); //$NON-NLS-1$
-                for ( AttributeType atd : usedFromATDs )
+                for ( MutableAttributeTypeImpl atd : usedFromATDs )
                 {
                     Hyperlink usedFromLink = toolkit.createHyperlink( usedFromClient, SchemaUtils.toString( atd ),
                         SWT.WRAP );

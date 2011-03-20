@@ -28,7 +28,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.directory.shared.ldap.model.schema.AbstractSchemaObject;
-import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.MutableAttributeTypeImpl;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.studio.schemaeditor.Activator;
 import org.apache.directory.studio.schemaeditor.model.Project;
@@ -138,8 +138,8 @@ public class MergeSchemasWizard extends Wizard implements IImportWizard
             {
                 AttributeTypeFolder atf = ( AttributeTypeFolder ) sourceObject;
                 Schema targetSchema = getTargetSchema( atf.schema.getProject(), targetProject, targetSchemas );
-                List<AttributeType> sourceAttributeTypes = atf.schema.getAttributeTypes();
-                for ( AttributeType sourceAttributeType : sourceAttributeTypes )
+                List<MutableAttributeTypeImpl> sourceAttributeTypes = atf.schema.getAttributeTypes();
+                for ( MutableAttributeTypeImpl sourceAttributeType : sourceAttributeTypes )
                 {
                     mergeAttributeType( sourceAttributeType, targetProject, targetSchema, processedObjects,
                         errorMessages, replaceUnknownSyntax, mergeDependencies, pullUpAttributes );
@@ -156,9 +156,9 @@ public class MergeSchemasWizard extends Wizard implements IImportWizard
                         replaceUnknownSyntax, mergeDependencies, pullUpAttributes );
                 }
             }
-            if ( sourceObject instanceof AttributeType )
+            if ( sourceObject instanceof MutableAttributeTypeImpl )
             {
-                AttributeType at = ( AttributeType ) sourceObject;
+                MutableAttributeTypeImpl at = ( MutableAttributeTypeImpl ) sourceObject;
                 Schema targetSchema = getTargetSchema(
                     Activator.getDefault().getSchemaHandler().getSchema( at.getSchemaName() ).getProject(),
                     targetProject, targetSchemas );
@@ -216,8 +216,8 @@ public class MergeSchemasWizard extends Wizard implements IImportWizard
         Set<Object> processedObjects, List<String> errorMessages, boolean replaceUnknownSyntax,
         boolean mergeDependencies, boolean pullUpAttributes )
     {
-        List<AttributeType> sourceAttributeTypes = sourceSchema.getAttributeTypes();
-        for ( AttributeType sourceAttributeType : sourceAttributeTypes )
+        List<MutableAttributeTypeImpl> sourceAttributeTypes = sourceSchema.getAttributeTypes();
+        for ( MutableAttributeTypeImpl sourceAttributeType : sourceAttributeTypes )
         {
             mergeAttributeType( sourceAttributeType, targetProject, targetSchema, processedObjects, errorMessages,
                 replaceUnknownSyntax, mergeDependencies, pullUpAttributes );
@@ -235,7 +235,7 @@ public class MergeSchemasWizard extends Wizard implements IImportWizard
     /**
      * Merges the given attribute type to the targetSchema. 
      */
-    private void mergeAttributeType( AttributeType sourceAttributeType, Project targetProject, Schema targetSchema,
+    private void mergeAttributeType( MutableAttributeTypeImpl sourceAttributeType, Project targetProject, Schema targetSchema,
         Set<Object> processedObjects, List<String> errorMessages, boolean replaceUnknownSyntax,
         boolean mergeDependencies, boolean pullUpAttributes )
     {
@@ -246,7 +246,7 @@ public class MergeSchemasWizard extends Wizard implements IImportWizard
         processedObjects.add( sourceAttributeType );
 
         // check if attribute (identified by OID or name) already exists in the project
-        AttributeType targetAttributeType = targetProject.getSchemaHandler().getAttributeType(
+        MutableAttributeTypeImpl targetAttributeType = targetProject.getSchemaHandler().getAttributeType(
             sourceAttributeType.getOid() );
         if ( targetAttributeType == null )
         {
@@ -290,14 +290,14 @@ public class MergeSchemasWizard extends Wizard implements IImportWizard
             else
             {
                 // remove attribute type if already there from previous merge
-                AttributeType at = targetSchema.getAttributeType( sourceAttributeType.getOid() );
+                MutableAttributeTypeImpl at = targetSchema.getAttributeType( sourceAttributeType.getOid() );
                 if ( at != null )
                 {
                     targetSchema.removeAttributeType( at );
                 }
 
                 // clone attribute type
-                AttributeType clonedAttributeType = new AttributeType( sourceAttributeType.getOid() );
+                MutableAttributeTypeImpl clonedAttributeType = new MutableAttributeTypeImpl( sourceAttributeType.getOid() );
                 clonedAttributeType.setNames( sourceAttributeType.getNames() );
                 clonedAttributeType.setDescription( sourceAttributeType.getDescription() );
                 clonedAttributeType.setSuperiorOid( sourceAttributeType.getSuperiorOid() );
@@ -340,7 +340,7 @@ public class MergeSchemasWizard extends Wizard implements IImportWizard
                     String superiorName = clonedAttributeType.getSuperiorOid();
                     if ( superiorName != null )
                     {
-                        AttributeType superiorAttributeType = Activator.getDefault().getSchemaHandler()
+                        MutableAttributeTypeImpl superiorAttributeType = Activator.getDefault().getSchemaHandler()
                             .getAttributeType( superiorName );
                         if ( superiorAttributeType != null )
                         {
@@ -482,7 +482,7 @@ public class MergeSchemasWizard extends Wizard implements IImportWizard
                     {
                         if ( attributeName != null )
                         {
-                            AttributeType attributeType = Activator.getDefault().getSchemaHandler().getAttributeType( attributeName );
+                            MutableAttributeTypeImpl attributeType = Activator.getDefault().getSchemaHandler().getAttributeType( attributeName );
                             if ( attributeType != null )
                             {
                                 mergeAttributeType( attributeType, targetProject, targetSchema, processedObjects,

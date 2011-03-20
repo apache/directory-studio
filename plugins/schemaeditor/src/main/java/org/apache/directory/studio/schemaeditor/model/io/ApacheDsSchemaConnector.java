@@ -29,7 +29,7 @@ import javax.naming.directory.Attribute;
 import javax.naming.directory.SearchControls;
 import javax.naming.directory.SearchResult;
 
-import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.MutableAttributeTypeImpl;
 import org.apache.directory.shared.ldap.model.schema.MutableLdapSyntaxImpl;
 import org.apache.directory.shared.ldap.model.schema.MutableMatchingRuleImpl;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
@@ -221,7 +221,7 @@ public class ApacheDsSchemaConnector extends AbstractSchemaConnector implements 
                     switch ( getNodeType( searchResult ) )
                     {
                         case ATTRIBUTE_TYPE:
-                            AttributeType at = createAttributeType( searchResult );
+                            MutableAttributeTypeImpl at = createAttributeType( searchResult );
                             at.setSchemaName( name );
                             schema.addAttributeType( at );
                             break;
@@ -307,9 +307,9 @@ public class ApacheDsSchemaConnector extends AbstractSchemaConnector implements 
      * AttributeTypeImpl could be created
      * @throws NamingException 
      */
-    private static AttributeType createAttributeType( SearchResult sr ) throws NamingException
+    private static MutableAttributeTypeImpl createAttributeType( SearchResult sr ) throws NamingException
     {
-        AttributeType at = new AttributeType( getOid( sr ) );
+        MutableAttributeTypeImpl at = new MutableAttributeTypeImpl( getOid( sr ) );
         at.setNames( getNames( sr ) );
         at.setDescription( getDescription( sr ) );
         at.setObsolete( isObsolete( sr ) );

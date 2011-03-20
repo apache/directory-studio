@@ -23,7 +23,7 @@ package org.apache.directory.studio.schemaeditor.view.editors.attributetype;
 import java.util.Collections;
 import java.util.List;
 
-import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.MutableAttributeTypeImpl;
 import org.apache.directory.studio.schemaeditor.Activator;
 import org.apache.directory.studio.schemaeditor.controller.SchemaHandler;
 import org.apache.directory.studio.schemaeditor.view.editors.NonExistingAttributeType;
@@ -62,14 +62,14 @@ public class ATESuperiorComboContentProvider implements IStructuredContentProvid
 
             if ( input.getChildren().isEmpty() )
             {
-                AttributeType editorAT = input.getAttributeType();
+                MutableAttributeTypeImpl editorAT = input.getAttributeType();
 
                 // Creating the '(None)' item
                 input.addChild( new NonExistingAttributeType( NonExistingAttributeType.NONE ) );
 
                 // Creating Children
-                List<AttributeType> ats = schemaHandler.getAttributeTypes();
-                for ( AttributeType at : ats )
+                List<MutableAttributeTypeImpl> ats = schemaHandler.getAttributeTypes();
+                for ( MutableAttributeTypeImpl at : ats )
                 {
                     if ( !isSubType( at, editorAT ) )
                     {
@@ -118,7 +118,7 @@ public class ATESuperiorComboContentProvider implements IStructuredContentProvid
      * @return
      *      true if at1 is a sub type of at2
      */
-    private boolean isSubType( AttributeType at1, AttributeType at2 )
+    private boolean isSubType( MutableAttributeTypeImpl at1, MutableAttributeTypeImpl at2 )
     {
         if ( at1.equals( at2 ) )
         {
@@ -134,7 +134,7 @@ public class ATESuperiorComboContentProvider implements IStructuredContentProvid
             }
             else
             {
-                AttributeType supAT = schemaHandler.getAttributeType( sup );
+                MutableAttributeTypeImpl supAT = schemaHandler.getAttributeType( sup );
                 if ( supAT == null )
                 {
                     return false;

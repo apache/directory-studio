@@ -21,7 +21,7 @@
 package org.apache.directory.studio.schemaeditor.view.editors.schema;
 
 
-import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.MutableAttributeTypeImpl;
 import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
 import org.apache.directory.shared.ldap.model.schema.MatchingRule;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
@@ -68,7 +68,7 @@ public class SchemaEditorSourceCodePage extends FormPage
         /* (non-Javadoc)
          * @see org.apache.directory.studio.schemaeditor.controller.SchemaListener#attributeTypeAdded(org.apache.directory.studio.schemaeditor.model.AttributeTypeImpl)
          */
-        public void attributeTypeAdded( AttributeType at )
+        public void attributeTypeAdded( MutableAttributeTypeImpl at )
         {
             fillInUiFields();
         }
@@ -77,7 +77,7 @@ public class SchemaEditorSourceCodePage extends FormPage
         /* (non-Javadoc)
          * @see org.apache.directory.studio.schemaeditor.controller.SchemaListener#attributeTypeModified(org.apache.directory.studio.schemaeditor.model.AttributeTypeImpl)
          */
-        public void attributeTypeModified( AttributeType at )
+        public void attributeTypeModified( MutableAttributeTypeImpl at )
         {
             fillInUiFields();
         }
@@ -86,7 +86,7 @@ public class SchemaEditorSourceCodePage extends FormPage
         /* (non-Javadoc)
          * @see org.apache.directory.studio.schemaeditor.controller.SchemaListener#attributeTypeRemoved(org.apache.directory.studio.schemaeditor.model.AttributeTypeImpl)
          */
-        public void attributeTypeRemoved( AttributeType at )
+        public void attributeTypeRemoved( MutableAttributeTypeImpl at )
         {
             fillInUiFields();
         }

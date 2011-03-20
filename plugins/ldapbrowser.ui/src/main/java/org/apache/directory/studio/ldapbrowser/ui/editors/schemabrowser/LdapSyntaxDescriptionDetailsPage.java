@@ -23,7 +23,7 @@ package org.apache.directory.studio.ldapbrowser.ui.editors.schemabrowser;
 
 import java.util.Collection;
 
-import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.MutableAttributeTypeImpl;
 import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
 import org.apache.directory.shared.ldap.model.schema.MutableLdapSyntaxImpl;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.SchemaUtils;
@@ -192,7 +192,7 @@ public class LdapSyntaxDescriptionDetailsPage extends SchemaDetailsPage
         // create content
         if ( lsd != null )
         {
-            Collection<AttributeType> usedFromATDs = SchemaUtils.getUsedFromAttributeTypeDescriptions( lsd,
+            Collection<MutableAttributeTypeImpl> usedFromATDs = SchemaUtils.getUsedFromAttributeTypeDescriptions( lsd,
                 getSchema() );
             if ( usedFromATDs != null && !usedFromATDs.isEmpty() )
             {
@@ -200,7 +200,7 @@ public class LdapSyntaxDescriptionDetailsPage extends SchemaDetailsPage
                     .setText( NLS
                         .bind(
                             Messages.getString( "LdapSyntaxDescriptionDetailsPage.UsedFromCount" ), new Object[] { usedFromATDs.size() } ) ); //$NON-NLS-1$
-                for ( AttributeType atd : usedFromATDs )
+                for ( MutableAttributeTypeImpl atd : usedFromATDs )
                 {
                     Hyperlink usedFromLink = toolkit.createHyperlink( usedFromClient, SchemaUtils.toString( atd ),
                         SWT.WRAP );

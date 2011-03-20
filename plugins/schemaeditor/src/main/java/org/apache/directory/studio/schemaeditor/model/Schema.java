@@ -23,7 +23,7 @@ package org.apache.directory.studio.schemaeditor.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.MutableAttributeTypeImpl;
 import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
 import org.apache.directory.shared.ldap.model.schema.MatchingRule;
 import org.apache.directory.shared.ldap.model.schema.MutableLdapSyntax;
@@ -43,7 +43,7 @@ public class Schema extends DefaultSchema
     private Project project;
 
     /** The AttributeType List */
-    private List<AttributeType> attributeTypes = new ArrayList<AttributeType>();
+    private List<MutableAttributeTypeImpl> attributeTypes = new ArrayList<MutableAttributeTypeImpl>();
 
     /** The ObjectClass List */
     private List<ObjectClass> objectClasses = new ArrayList<ObjectClass>();
@@ -73,7 +73,7 @@ public class Schema extends DefaultSchema
      * @param at
      *      the AttributeType
      */
-    public boolean addAttributeType( AttributeType at )
+    public boolean addAttributeType( MutableAttributeTypeImpl at )
     {
         return attributeTypes.add( at );
     }
@@ -124,9 +124,9 @@ public class Schema extends DefaultSchema
      *      the AttributeType identified by the given id, or null if the 
      * AttributeType has not been found
      */
-    public AttributeType getAttributeType( String id )
+    public MutableAttributeTypeImpl getAttributeType( String id )
     {
-        for ( AttributeType at : attributeTypes )
+        for ( MutableAttributeTypeImpl at : attributeTypes )
         {
             List<String> aliases = at.getNames();
             if ( aliases != null )
@@ -155,7 +155,7 @@ public class Schema extends DefaultSchema
      * @return
      *      all the AttributeType objects contained in the Schema
      */
-    public List<AttributeType> getAttributeTypes()
+    public List<MutableAttributeTypeImpl> getAttributeTypes()
     {
         return attributeTypes;
     }
@@ -317,7 +317,7 @@ public class Schema extends DefaultSchema
      * @param at
      *      the AttributeType
      */
-    public boolean removeAttributeType( AttributeType at )
+    public boolean removeAttributeType( MutableAttributeTypeImpl at )
     {
         return attributeTypes.remove( at );
     }

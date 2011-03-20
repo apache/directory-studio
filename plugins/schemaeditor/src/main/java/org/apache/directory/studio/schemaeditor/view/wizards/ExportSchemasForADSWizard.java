@@ -37,7 +37,7 @@ import javax.naming.NamingException;
 import org.apache.directory.shared.converter.schema.AttributeTypeHolder;
 import org.apache.directory.shared.converter.schema.ObjectClassHolder;
 import org.apache.directory.shared.ldap.model.exception.LdapException;
-import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.MutableAttributeTypeImpl;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.studio.schemaeditor.Activator;
 import org.apache.directory.studio.schemaeditor.PluginUtils;
@@ -258,7 +258,7 @@ public class ExportSchemasForADSWizard extends Wizard implements IExportWizard
         sb.append( "\n" ); //$NON-NLS-1$
 
         // Generating LDIF for Attributes Types
-        for ( AttributeType at : schema.getAttributeTypes() )
+        for ( MutableAttributeTypeImpl at : schema.getAttributeTypes() )
         {
             AttributeTypeHolder holder = new AttributeTypeHolder( at.getOid() );
             holder.setCollective( at.isCollective() );
@@ -466,13 +466,13 @@ public class ExportSchemasForADSWizard extends Wizard implements IExportWizard
         SchemaHandler schemaHandler = Activator.getDefault().getSchemaHandler();
 
         // Looping on Attribute Types
-        for ( AttributeType at : schema.getAttributeTypes() )
+        for ( MutableAttributeTypeImpl at : schema.getAttributeTypes() )
         {
             // Superior
             String supName = at.getSuperiorOid();
             if ( supName != null )
             {
-                AttributeType sup = schemaHandler.getAttributeType( supName );
+                MutableAttributeTypeImpl sup = schemaHandler.getAttributeType( supName );
                 if ( sup != null )
                 {
                     if ( !schema.getSchemaName().toLowerCase().equals( sup.getSchemaName().toLowerCase() ) )
@@ -509,7 +509,7 @@ public class ExportSchemasForADSWizard extends Wizard implements IExportWizard
             {
                 for ( String mayName : mayNames )
                 {
-                    AttributeType may = schemaHandler.getAttributeType( mayName );
+                    MutableAttributeTypeImpl may = schemaHandler.getAttributeType( mayName );
                     if ( may != null )
                     {
                         if ( !schema.getSchemaName().toLowerCase().equals( may.getSchemaName().toLowerCase() ) )
@@ -527,7 +527,7 @@ public class ExportSchemasForADSWizard extends Wizard implements IExportWizard
             {
                 for ( String mustName : oc.getMustAttributeTypeOids() )
                 {
-                    AttributeType must = schemaHandler.getAttributeType( mustName );
+                    MutableAttributeTypeImpl must = schemaHandler.getAttributeType( mustName );
                     if ( must != null )
                     {
                         if ( !schema.getSchemaName().toLowerCase().equals( must.getSchemaName().toLowerCase() ) )

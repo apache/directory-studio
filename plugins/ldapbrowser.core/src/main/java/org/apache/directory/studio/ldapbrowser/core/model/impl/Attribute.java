@@ -27,7 +27,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.apache.directory.shared.ldap.model.constants.SchemaConstants;
-import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.MutableAttributeTypeImpl;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.ldapbrowser.core.events.EmptyValueAddedEvent;
@@ -131,7 +131,7 @@ public class Attribute implements IAttribute
         }
         else
         {
-            Collection<AttributeType> mustAtds = SchemaUtils.getMustAttributeTypeDescriptions( entry );
+            Collection<MutableAttributeTypeImpl> mustAtds = SchemaUtils.getMustAttributeTypeDescriptions( entry );
             return mustAtds.contains( getAttributeTypeDescription() );
         }
     }
@@ -434,7 +434,7 @@ public class Attribute implements IAttribute
     /**
      * {@inheritDoc}
      */
-    public AttributeType getAttributeTypeDescription()
+    public MutableAttributeTypeImpl getAttributeTypeDescription()
     {
         return getEntry().getBrowserConnection().getSchema().getAttributeTypeDescription( getType() );
     }

@@ -37,7 +37,7 @@ import java.util.Set;
 import org.apache.commons.lang.StringUtils;
 import org.apache.directory.shared.ldap.model.constants.SchemaConstants;
 import org.apache.directory.shared.ldap.model.name.Dn;
-import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.MutableAttributeTypeImpl;
 import org.apache.directory.shared.ldap.model.schema.MutableLdapSyntax;
 import org.apache.directory.shared.ldap.model.schema.MutableLdapSyntaxImpl;
 import org.apache.directory.shared.ldap.model.schema.MutableMatchingRule;
@@ -126,7 +126,7 @@ public class Schema
 
     private Map<String, ObjectClass> ocdMapByNameOrNumericOid;
 
-    private Map<String, AttributeType> atdMapByNameOrNumericOid;
+    private Map<String, MutableAttributeTypeImpl> atdMapByNameOrNumericOid;
 
     private Map<String, MutableLdapSyntax> lsdMapByNumericOid;
 
@@ -145,7 +145,7 @@ public class Schema
         this.createTimestamp = null;
         this.modifyTimestamp = null;
         this.ocdMapByNameOrNumericOid = new HashMap<String, ObjectClass>();
-        this.atdMapByNameOrNumericOid = new HashMap<String, AttributeType>();
+        this.atdMapByNameOrNumericOid = new HashMap<String, MutableAttributeTypeImpl>();
         this.lsdMapByNumericOid = new HashMap<String, MutableLdapSyntax>();
         this.mrdMapByNameOrNumericOid = new HashMap<String, MutableMatchingRule>();
         this.mrudMapByNameOrNumericOid = new HashMap<String, MatchingRuleUse>();
@@ -262,7 +262,7 @@ public class Schema
                 }
                 else if ( attributeName.equalsIgnoreCase( SchemaConstants.ATTRIBUTE_TYPES_AT ) )
                 {
-                    AttributeType atd = atdParser.parseAttributeTypeDescription( value );
+                    MutableAttributeTypeImpl atd = atdParser.parseAttributeTypeDescription( value );
                     atd.addExtension( RAW_SCHEMA_DEFINITION_LDIF_VALUE, ldifValues );
                     addAttributeType( atd );
                 }
@@ -306,7 +306,7 @@ public class Schema
             }
         }
 
-        for ( AttributeType atd : getAttributeTypeDescriptions() )
+        for ( MutableAttributeTypeImpl atd : getAttributeTypeDescriptions() )
         {
             // assume all received syntaxes in attributes are valid -> create pseudo syntaxes if missing
             String syntaxOid = atd.getSyntaxOid();
@@ -327,7 +327,7 @@ public class Schema
         // set extensibleObject may attributes
         ObjectClass extensibleObjectOcd = this
             .getObjectClassDescription( SchemaConstants.EXTENSIBLE_OBJECT_OC );
-        Collection<AttributeType> userAtds = SchemaUtils.getUserAttributeDescriptions( this );
+        Collection<MutableAttributeTypeImpl> userAtds = SchemaUtils.getUserAttributeDescriptions( this );
         Collection<String> atdNames = SchemaUtils.getNames( userAtds );
         List<String> atdNames2 = new ArrayList<String>( atdNames );
         extensibleObjectOcd.setMayAttributeTypeOids( atdNames2 );
@@ -530,7 +530,7 @@ public class Schema
      * 
      * @param atd the attribute type description
      */
-    private void addAttributeType( AttributeType atd )
+    private void addAttributeType( MutableAttributeTypeImpl atd )
     {
         if ( atd.getOid() != null )
         {
@@ -551,9 +551,9 @@ public class Schema
      * 
      * @return the attribute type descriptions
      */
-    public Collection<AttributeType> getAttributeTypeDescriptions()
+    public Collection<MutableAttributeTypeImpl> getAttributeTypeDescriptions()
     {
-        Set<AttributeType> set = new HashSet<AttributeType>( atdMapByNameOrNumericOid.values() );
+        Set<MutableAttributeTypeImpl> set = new HashSet<MutableAttributeTypeImpl>( atdMapByNameOrNumericOid.values() );
         return set;
     }
 
@@ -586,7 +586,7 @@ public class Schema
      * 
      * @return the attribute type description, or the default or a dummy
      */
-    public AttributeType getAttributeTypeDescription( String nameOrOid )
+    public MutableAttributeTypeImpl getAttributeTypeDescription( String nameOrOid )
     {
         AttributeDescription ad = new AttributeDescription( nameOrOid );
         String attributeType = ad.getParsedAttributeType();
@@ -604,7 +604,7 @@ public class Schema
             // DUMMY
             List<String> attributeTypes = new ArrayList<String>();
             attributeTypes.add( attributeType );
-            AttributeType atd = new AttributeType( attributeType );
+            MutableAttributeTypeImpl atd = new MutableAttributeTypeImpl( attributeType );
             atd.setNames( attributeTypes );
             atd.setUserModifiable( true );
             atd.setUsage( UsageEnum.USER_APPLICATIONS );

@@ -20,7 +20,7 @@
 package org.apache.directory.studio.schemaeditor.view;
 
 
-import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.MutableAttributeTypeImpl;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.shared.ldap.model.schema.ObjectClassTypeEnum;
 import org.apache.directory.shared.ldap.model.schema.UsageEnum;
@@ -80,9 +80,9 @@ public class SchemaEditorTypeLabelDecorator extends LabelProvider implements ILi
                     PluginConstants.IMG_OBJECT_CLASS_OVERLAY_AUXILIARY ), IDecoration.BOTTOM_RIGHT );
             }
         }
-        else if ( element instanceof AttributeType )
+        else if ( element instanceof MutableAttributeTypeImpl )
         {
-            UsageEnum usage = ( ( AttributeType ) element ).getUsage();
+            UsageEnum usage = ( ( MutableAttributeTypeImpl ) element ).getUsage();
             if ( usage == UsageEnum.USER_APPLICATIONS )
             {
                 decoration.addOverlay( Activator.getDefault().getImageDescriptor(

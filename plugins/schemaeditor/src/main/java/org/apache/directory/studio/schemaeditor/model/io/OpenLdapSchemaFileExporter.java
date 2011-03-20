@@ -22,7 +22,7 @@ package org.apache.directory.studio.schemaeditor.model.io;
 
 import java.util.List;
 
-import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.MutableAttributeTypeImpl;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.shared.ldap.model.schema.ObjectClassTypeEnum;
 import org.apache.directory.shared.ldap.model.schema.UsageEnum;
@@ -49,7 +49,7 @@ public class OpenLdapSchemaFileExporter
     {
         StringBuffer sb = new StringBuffer();
 
-        for ( AttributeType at : schema.getAttributeTypes() )
+        for ( MutableAttributeTypeImpl at : schema.getAttributeTypes() )
         {
             sb.append( toSourceCode( at ) );
             sb.append( "\n" ); //$NON-NLS-1$
@@ -74,7 +74,7 @@ public class OpenLdapSchemaFileExporter
      * @return
      *      the corresponding source code representation
      */
-    public static String toSourceCode( AttributeType at )
+    public static String toSourceCode( MutableAttributeTypeImpl at )
     {
         StringBuffer sb = new StringBuffer();
 

@@ -24,7 +24,7 @@ package org.apache.directory.studio.schemaeditor.view.dialogs;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.MutableAttributeTypeImpl;
 import org.apache.directory.studio.schemaeditor.Activator;
 import org.apache.directory.studio.schemaeditor.PluginConstants;
 import org.eclipse.jface.dialogs.Dialog;
@@ -62,10 +62,10 @@ import org.eclipse.ui.PlatformUI;
 public class AttributeTypeSelectionDialog extends Dialog
 {
     /** The selected attribute type */
-    private AttributeType selectedAttributeType;
+    private MutableAttributeTypeImpl selectedAttributeType;
 
     /** The hidden attribute types */
-    private List<AttributeType> hiddenAttributeTypes;
+    private List<MutableAttributeTypeImpl> hiddenAttributeTypes;
 
     // UI Fields
     private Text searchText;
@@ -82,7 +82,7 @@ public class AttributeTypeSelectionDialog extends Dialog
     public AttributeTypeSelectionDialog()
     {
         super( PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell() );
-        hiddenAttributeTypes = new ArrayList<AttributeType>();
+        hiddenAttributeTypes = new ArrayList<MutableAttributeTypeImpl>();
     }
 
 
@@ -179,7 +179,7 @@ public class AttributeTypeSelectionDialog extends Dialog
                         chooseButton.setEnabled( true );
                     }
                     schemaIconLabel.setImage( Activator.getDefault().getImage( PluginConstants.IMG_SCHEMA ) );
-                    schemaNameLabel.setText( ( ( AttributeType ) selection.getFirstElement() ).getSchemaName() );
+                    schemaNameLabel.setText( ( ( MutableAttributeTypeImpl ) selection.getFirstElement() ).getSchemaName() );
                 }
             }
         } );
@@ -255,7 +255,7 @@ public class AttributeTypeSelectionDialog extends Dialog
         }
         else
         {
-            selectedAttributeType = ( AttributeType ) selection.getFirstElement();
+            selectedAttributeType = ( MutableAttributeTypeImpl ) selection.getFirstElement();
         }
 
         super.okPressed();
@@ -268,7 +268,7 @@ public class AttributeTypeSelectionDialog extends Dialog
      * @return
      *      the selected Attribute Type
      */
-    public AttributeType getSelectedAttributeType()
+    public MutableAttributeTypeImpl getSelectedAttributeType()
     {
         return selectedAttributeType;
     }
@@ -280,7 +280,7 @@ public class AttributeTypeSelectionDialog extends Dialog
      * @param list
      *      a list of Attribute Types to hide
      */
-    public void setHiddenAttributeTypes( List<AttributeType> list )
+    public void setHiddenAttributeTypes( List<MutableAttributeTypeImpl> list )
     {
         hiddenAttributeTypes = list;
     }
@@ -292,9 +292,9 @@ public class AttributeTypeSelectionDialog extends Dialog
      * @param attributeTypes
      *      an array of Attribute Types to hide
      */
-    public void setHiddenAttributeTypes( AttributeType[] attributeTypes )
+    public void setHiddenAttributeTypes( MutableAttributeTypeImpl[] attributeTypes )
     {
-        for ( AttributeType objectClass : attributeTypes )
+        for ( MutableAttributeTypeImpl objectClass : attributeTypes )
         {
             hiddenAttributeTypes.add( objectClass );
         }

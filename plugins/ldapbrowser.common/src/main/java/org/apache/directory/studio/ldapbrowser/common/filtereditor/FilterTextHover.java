@@ -22,7 +22,7 @@ package org.apache.directory.studio.ldapbrowser.common.filtereditor;
 
 
 import org.apache.directory.shared.ldap.model.constants.SchemaConstants;
-import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.MutableAttributeTypeImpl;
 import org.apache.directory.shared.ldap.model.schema.MutableMatchingRule;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.studio.ldapbrowser.core.model.filter.LdapFilter;
@@ -94,7 +94,7 @@ public class FilterTextHover implements ITextHover
                         + fc.getAttributeToken().getLength() )
                 {
                     String attributeType = fc.getAttributeToken().getValue();
-                    AttributeType attributeTypeDescription = schema
+                    MutableAttributeTypeImpl attributeTypeDescription = schema
                         .getAttributeTypeDescription( attributeType );
                     String ldifLine = SchemaUtils.getLdifLine( attributeTypeDescription );
                     return ldifLine;
@@ -119,7 +119,7 @@ public class FilterTextHover implements ITextHover
                         + fc.getAttributeToken().getLength() )
                 {
                     String attributeType = fc.getAttributeToken().getValue();
-                    AttributeType attributeTypeDescription = schema
+                    MutableAttributeTypeImpl attributeTypeDescription = schema
                         .getAttributeTypeDescription( attributeType );
                     String ldifLine = SchemaUtils.getLdifLine( attributeTypeDescription );
                     return ldifLine;

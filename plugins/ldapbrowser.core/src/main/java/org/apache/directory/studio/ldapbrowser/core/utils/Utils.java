@@ -39,7 +39,7 @@ import org.apache.directory.shared.ldap.model.filter.LdapURL;
 import org.apache.directory.shared.ldap.model.name.Ava;
 import org.apache.directory.shared.ldap.model.name.Rdn;
 import org.apache.directory.shared.ldap.model.name.Dn;
-import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.MutableAttributeTypeImpl;
 import org.apache.directory.studio.connection.core.ConnectionParameter.EncryptionMethod;
 import org.apache.directory.studio.connection.core.StudioControl;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreConstants;
@@ -398,7 +398,7 @@ public class Utils
         {
             // get attribute type schema information
             Schema schema = oldEntry.getBrowserConnection().getSchema();
-            AttributeType atd = schema.getAttributeTypeDescription( attributeDescription );
+            MutableAttributeTypeImpl atd = schema.getAttributeTypeDescription( attributeDescription );
             boolean hasEMR = SchemaUtils.getEqualityMatchingRuleNameOrNumericOidTransitive( atd, schema ) != null;
             boolean isReplaceForced = ( hasEMR && modifyMode == ModifyMode.REPLACE )
                 || ( !hasEMR && modifyModeNoEMR == ModifyMode.REPLACE );

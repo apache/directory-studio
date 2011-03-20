@@ -20,7 +20,7 @@
 package org.apache.directory.studio.schemaeditor.controller;
 
 
-import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.MutableAttributeTypeImpl;
 import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
 import org.apache.directory.shared.ldap.model.schema.MatchingRule;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
@@ -41,7 +41,7 @@ public interface SchemaHandlerListener
      * @param at
      *      the added attribute type
      */
-    public void attributeTypeAdded( AttributeType at );
+    public void attributeTypeAdded( MutableAttributeTypeImpl at );
 
 
     /**
@@ -50,7 +50,7 @@ public interface SchemaHandlerListener
      * @param at
      *      the modified attribute type
      */
-    public void attributeTypeModified( AttributeType at );
+    public void attributeTypeModified( MutableAttributeTypeImpl at );
 
 
     /**
@@ -59,7 +59,7 @@ public interface SchemaHandlerListener
      * @param at
      *      the removed attribute type
      */
-    public void attributeTypeRemoved( AttributeType at );
+    public void attributeTypeRemoved( MutableAttributeTypeImpl at );
 
 
     /**

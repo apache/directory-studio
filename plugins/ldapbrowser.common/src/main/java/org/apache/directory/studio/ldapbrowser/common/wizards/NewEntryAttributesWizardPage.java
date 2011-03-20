@@ -23,7 +23,7 @@ package org.apache.directory.studio.ldapbrowser.common.wizards;
 
 import java.util.Collection;
 
-import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.MutableAttributeTypeImpl;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonConstants;
 import org.apache.directory.studio.ldapbrowser.common.widgets.entryeditor.EntryEditorWidget;
@@ -185,8 +185,8 @@ public class NewEntryAttributesWizardPage extends WizardPage implements EntryUpd
                 // remove empty must attributes
                 // necessary when navigating back, modifying object classes
                 // and Dn and navigation forward again.
-                Collection<AttributeType> oldMusts = SchemaUtils.getMustAttributeTypeDescriptions( newEntry );
-                for ( AttributeType oldMust : oldMusts )
+                Collection<MutableAttributeTypeImpl> oldMusts = SchemaUtils.getMustAttributeTypeDescriptions( newEntry );
+                for ( MutableAttributeTypeImpl oldMust : oldMusts )
                 {
                     IAttribute attribute = newEntry.getAttribute( oldMust.getOid() );
                     if ( attribute != null )
@@ -207,8 +207,8 @@ public class NewEntryAttributesWizardPage extends WizardPage implements EntryUpd
                 }
 
                 // add must attributes
-                Collection<AttributeType> newMusts = SchemaUtils.getMustAttributeTypeDescriptions( newEntry );
-                for ( AttributeType newMust : newMusts )
+                Collection<MutableAttributeTypeImpl> newMusts = SchemaUtils.getMustAttributeTypeDescriptions( newEntry );
+                for ( MutableAttributeTypeImpl newMust : newMusts )
                 {
                     if ( newEntry.getAttributeWithSubtypes( newMust.getOid() ) == null )
                     {

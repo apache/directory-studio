@@ -25,7 +25,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.MutableAttributeTypeImpl;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.shared.ldap.model.schema.MutableSchemaObject;
 import org.apache.directory.shared.ldap.model.schema.SchemaObject;
@@ -69,10 +69,10 @@ public class SearchViewContentProvider implements IStructuredContentProvider, IT
                 List<String> o1Names = null;
                 List<String> o2Names = null;
 
-                if ( ( o1 instanceof AttributeType ) && ( o2 instanceof AttributeType ) )
+                if ( ( o1 instanceof MutableAttributeTypeImpl ) && ( o2 instanceof MutableAttributeTypeImpl ) )
                 {
-                    AttributeType at1 = ( AttributeType ) o1;
-                    AttributeType at2 = ( AttributeType ) o2;
+                    MutableAttributeTypeImpl at1 = ( MutableAttributeTypeImpl ) o1;
+                    MutableAttributeTypeImpl at2 = ( MutableAttributeTypeImpl ) o2;
 
                     o1Names = at1.getNames();
                     o2Names = at2.getNames();
@@ -85,18 +85,18 @@ public class SearchViewContentProvider implements IStructuredContentProvider, IT
                     o1Names = oc1.getNames();
                     o2Names = oc2.getNames();
                 }
-                else if ( ( o1 instanceof AttributeType ) && ( o2 instanceof ObjectClass ) )
+                else if ( ( o1 instanceof MutableAttributeTypeImpl ) && ( o2 instanceof ObjectClass ) )
                 {
-                    AttributeType at = ( AttributeType ) o1;
+                    MutableAttributeTypeImpl at = ( MutableAttributeTypeImpl ) o1;
                     ObjectClass oc = ( ObjectClass ) o2;
 
                     o1Names = at.getNames();
                     o2Names = oc.getNames();
                 }
-                else if ( ( o1 instanceof ObjectClass ) && ( o2 instanceof AttributeType ) )
+                else if ( ( o1 instanceof ObjectClass ) && ( o2 instanceof MutableAttributeTypeImpl ) )
                 {
                     ObjectClass oc = ( ObjectClass ) o1;
-                    AttributeType at = ( AttributeType ) o2;
+                    MutableAttributeTypeImpl at = ( MutableAttributeTypeImpl ) o2;
 
                     o1Names = oc.getNames();
                     o2Names = at.getNames();
@@ -128,10 +128,10 @@ public class SearchViewContentProvider implements IStructuredContentProvider, IT
         {
             public int compare( MutableSchemaObject o1, MutableSchemaObject o2 )
             {
-                if ( ( o1 instanceof AttributeType ) && ( o2 instanceof AttributeType ) )
+                if ( ( o1 instanceof MutableAttributeTypeImpl ) && ( o2 instanceof MutableAttributeTypeImpl ) )
                 {
-                    AttributeType at1 = ( AttributeType ) o1;
-                    AttributeType at2 = ( AttributeType ) o2;
+                    MutableAttributeTypeImpl at1 = ( MutableAttributeTypeImpl ) o1;
+                    MutableAttributeTypeImpl at2 = ( MutableAttributeTypeImpl ) o2;
 
                     return at1.getOid().compareToIgnoreCase( at2.getOid() );
                 }
@@ -142,17 +142,17 @@ public class SearchViewContentProvider implements IStructuredContentProvider, IT
 
                     return oc1.getOid().compareToIgnoreCase( oc2.getOid() );
                 }
-                else if ( ( o1 instanceof AttributeType ) && ( o2 instanceof ObjectClass ) )
+                else if ( ( o1 instanceof MutableAttributeTypeImpl ) && ( o2 instanceof ObjectClass ) )
                 {
-                    AttributeType at = ( AttributeType ) o1;
+                    MutableAttributeTypeImpl at = ( MutableAttributeTypeImpl ) o1;
                     ObjectClass oc = ( ObjectClass ) o2;
 
                     return at.getOid().compareToIgnoreCase( oc.getOid() );
                 }
-                else if ( ( o1 instanceof ObjectClass ) && ( o2 instanceof AttributeType ) )
+                else if ( ( o1 instanceof ObjectClass ) && ( o2 instanceof MutableAttributeTypeImpl ) )
                 {
                     ObjectClass oc = ( ObjectClass ) o1;
-                    AttributeType at = ( AttributeType ) o2;
+                    MutableAttributeTypeImpl at = ( MutableAttributeTypeImpl ) o2;
 
                     return oc.getOid().compareToIgnoreCase( at.getOid() );
                 }
@@ -209,14 +209,14 @@ public class SearchViewContentProvider implements IStructuredContentProvider, IT
 
             if ( group == PluginConstants.PREFS_SEARCH_VIEW_GROUPING_ATTRIBUTE_TYPES_FIRST )
             {
-                List<AttributeType> attributeTypes = new ArrayList<AttributeType>();
+                List<MutableAttributeTypeImpl> attributeTypes = new ArrayList<MutableAttributeTypeImpl>();
                 List<ObjectClass> objectClasses = new ArrayList<ObjectClass>();
 
                 for ( SchemaObject searchResult : searchResults )
                 {
-                    if ( searchResult instanceof AttributeType )
+                    if ( searchResult instanceof MutableAttributeTypeImpl )
                     {
-                        attributeTypes.add( ( AttributeType ) searchResult );
+                        attributeTypes.add( ( MutableAttributeTypeImpl ) searchResult );
                     }
                     else if ( searchResult instanceof ObjectClass )
                     {
@@ -248,14 +248,14 @@ public class SearchViewContentProvider implements IStructuredContentProvider, IT
             }
             else if ( group == PluginConstants.PREFS_SEARCH_VIEW_GROUPING_OBJECT_CLASSES_FIRST )
             {
-                List<AttributeType> attributeTypes = new ArrayList<AttributeType>();
+                List<MutableAttributeTypeImpl> attributeTypes = new ArrayList<MutableAttributeTypeImpl>();
                 List<ObjectClass> objectClasses = new ArrayList<ObjectClass>();
 
                 for ( SchemaObject searchResult : searchResults )
                 {
-                    if ( searchResult instanceof AttributeType )
+                    if ( searchResult instanceof MutableAttributeTypeImpl )
                     {
-                        attributeTypes.add( ( AttributeType ) searchResult );
+                        attributeTypes.add( ( MutableAttributeTypeImpl ) searchResult );
                     }
                     else if ( searchResult instanceof ObjectClass )
                     {

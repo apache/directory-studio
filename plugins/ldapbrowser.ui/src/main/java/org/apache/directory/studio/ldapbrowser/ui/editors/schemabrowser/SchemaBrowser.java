@@ -21,7 +21,7 @@
 package org.apache.directory.studio.ldapbrowser.ui.editors.schemabrowser;
 
 
-import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.MutableAttributeTypeImpl;
 import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
 import org.apache.directory.shared.ldap.model.schema.MatchingRule;
 import org.apache.directory.shared.ldap.model.schema.MatchingRuleUse;
@@ -209,7 +209,7 @@ public class SchemaBrowser extends EditorPart implements INavigationLocationProv
                 ocdPage.select( schemaElement );
                 tabFolder.setSelection( ocdTab );
             }
-            else if ( schemaElement instanceof AttributeType )
+            else if ( schemaElement instanceof MutableAttributeTypeImpl )
             {
                 atdPage.select( schemaElement );
                 tabFolder.setSelection( atdTab );

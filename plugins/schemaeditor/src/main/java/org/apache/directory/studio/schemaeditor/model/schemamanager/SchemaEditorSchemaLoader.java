@@ -26,7 +26,7 @@ import java.util.List;
 
 import org.apache.directory.shared.ldap.model.entry.Entry;
 import org.apache.directory.shared.ldap.model.exception.LdapException;
-import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.MutableAttributeTypeImpl;
 import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
 import org.apache.directory.shared.ldap.model.schema.MatchingRule;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
@@ -162,9 +162,9 @@ public class SchemaEditorSchemaLoader extends AbstractSchemaLoader
         {
             for ( Schema schema : schemas )
             {
-                List<AttributeType> attributeTypes = project.getSchemaHandler().getSchema( schema.getSchemaName() )
+                List<MutableAttributeTypeImpl> attributeTypes = project.getSchemaHandler().getSchema( schema.getSchemaName() )
                     .getAttributeTypes();
-                for ( AttributeType attributeType : attributeTypes )
+                for ( MutableAttributeTypeImpl attributeType : attributeTypes )
                 {
                     attributeTypeList.add( SchemaEditorSchemaLoaderUtils.toEntry( attributeType ) );
                 }

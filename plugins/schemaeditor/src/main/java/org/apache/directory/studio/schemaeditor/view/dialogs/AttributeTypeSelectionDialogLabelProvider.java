@@ -23,7 +23,7 @@ package org.apache.directory.studio.schemaeditor.view.dialogs;
 
 import java.util.List;
 
-import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.MutableAttributeTypeImpl;
 import org.apache.directory.studio.schemaeditor.Activator;
 import org.apache.directory.studio.schemaeditor.PluginConstants;
 import org.apache.directory.studio.schemaeditor.view.ViewUtils;
@@ -44,7 +44,7 @@ public class AttributeTypeSelectionDialogLabelProvider extends LabelProvider
      */
     public Image getImage( Object element )
     {
-        if ( element instanceof AttributeType )
+        if ( element instanceof MutableAttributeTypeImpl )
         {
             return Activator.getDefault().getImage( PluginConstants.IMG_ATTRIBUTE_TYPE );
         }
@@ -59,9 +59,9 @@ public class AttributeTypeSelectionDialogLabelProvider extends LabelProvider
      */
     public String getText( Object element )
     {
-        if ( element instanceof AttributeType )
+        if ( element instanceof MutableAttributeTypeImpl )
         {
-            AttributeType at = ( AttributeType ) element;
+            MutableAttributeTypeImpl at = ( MutableAttributeTypeImpl ) element;
 
             List<String> names = at.getNames();
             if ( ( names != null ) && ( names.size() > 0 ) )

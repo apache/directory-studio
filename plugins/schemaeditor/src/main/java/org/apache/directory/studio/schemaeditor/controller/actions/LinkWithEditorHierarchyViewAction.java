@@ -20,7 +20,7 @@
 package org.apache.directory.studio.schemaeditor.controller.actions;
 
 
-import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.MutableAttributeTypeImpl;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.shared.ldap.model.schema.MutableSchemaObject;
 import org.apache.directory.studio.schemaeditor.Activator;
@@ -199,7 +199,7 @@ public class LinkWithEditorHierarchyViewAction extends Action
      */
     private void linkViewWithEditor( MutableSchemaObject schemaElement )
     {
-        if ( schemaElement instanceof AttributeType )
+        if ( schemaElement instanceof MutableAttributeTypeImpl )
         {
             view.setInput( schemaElement );
         }

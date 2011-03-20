@@ -26,7 +26,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Pattern;
 
-import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.MutableAttributeTypeImpl;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.shared.ldap.model.schema.MutableSchemaObject;
 import org.apache.directory.studio.schemaeditor.Activator;
@@ -552,9 +552,9 @@ public class SearchView extends ViewPart
                 String editorId = null;
 
                 // Here is the double clicked item
-                if ( item instanceof AttributeType )
+                if ( item instanceof MutableAttributeTypeImpl )
                 {
-                    input = new AttributeTypeEditorInput( ( AttributeType ) item );
+                    input = new AttributeTypeEditorInput( ( MutableAttributeTypeImpl ) item );
                     editorId = AttributeTypeEditor.ID;
                 }
                 else if ( item instanceof ObjectClass )
@@ -698,8 +698,8 @@ public class SearchView extends ViewPart
                     || ( scope == PluginConstants.PREFS_SEARCH_PAGE_SCOPE_AT_ONLY ) )
                 {
                     // Looping on attribute types
-                    List<AttributeType> attributeTypes = schemaHandler.getAttributeTypes();
-                    for ( AttributeType at : attributeTypes )
+                    List<MutableAttributeTypeImpl> attributeTypes = schemaHandler.getAttributeTypes();
+                    for ( MutableAttributeTypeImpl at : attributeTypes )
                     {
                         // Aliases
                         if ( searchScope.contains( SearchInEnum.ALIASES ) )

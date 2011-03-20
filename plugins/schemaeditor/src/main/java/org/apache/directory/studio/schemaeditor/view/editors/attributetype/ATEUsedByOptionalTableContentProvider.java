@@ -25,7 +25,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.MutableAttributeTypeImpl;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.studio.schemaeditor.Activator;
 import org.apache.directory.studio.schemaeditor.controller.SchemaHandler;
@@ -45,10 +45,10 @@ public class ATEUsedByOptionalTableContentProvider implements IStructuredContent
      */
     public Object[] getElements( Object inputElement )
     {
-        if ( inputElement instanceof AttributeType )
+        if ( inputElement instanceof MutableAttributeTypeImpl )
         {
             List<ObjectClass> results = new ArrayList<ObjectClass>();
-            AttributeType inputAT = ( AttributeType ) inputElement;
+            MutableAttributeTypeImpl inputAT = ( MutableAttributeTypeImpl ) inputElement;
             SchemaHandler schemaHandler = Activator.getDefault().getSchemaHandler();
 
             List<String> names = new ArrayList<String>();

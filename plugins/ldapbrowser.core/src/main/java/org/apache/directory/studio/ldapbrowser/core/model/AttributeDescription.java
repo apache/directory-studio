@@ -29,7 +29,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.apache.directory.shared.ldap.model.constants.SchemaConstants;
-import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.MutableAttributeTypeImpl;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.Schema;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.SchemaUtils;
@@ -166,7 +166,7 @@ public class AttributeDescription implements Serializable
             return description;
         }
 
-        AttributeType atd = schema.getAttributeTypeDescription( parsedAttributeType );
+        MutableAttributeTypeImpl atd = schema.getAttributeTypeDescription( parsedAttributeType );
         String oidString = atd.getOid();
 
         if ( !parsedLangList.isEmpty() )
@@ -226,8 +226,8 @@ public class AttributeDescription implements Serializable
             return false;
         }
 
-        AttributeType myAtd = schema.getAttributeTypeDescription( this.getParsedAttributeType() );
-        AttributeType otherAtd = schema.getAttributeTypeDescription( other.getParsedAttributeType() );
+        MutableAttributeTypeImpl myAtd = schema.getAttributeTypeDescription( this.getParsedAttributeType() );
+        MutableAttributeTypeImpl otherAtd = schema.getAttributeTypeDescription( other.getParsedAttributeType() );
 
         // special case *: all user attributes (RFC4511)
         if ( SchemaConstants.ALL_USER_ATTRIBUTES.equals( other.description ) && !SchemaUtils.isOperational( myAtd ) )
@@ -255,7 +255,7 @@ public class AttributeDescription implements Serializable
             names.addAll( SchemaUtils.getMustAttributeTypeDescriptionNamesTransitive( ocd, schema ) );
             for ( String name : names )
             {
-                AttributeType atd = schema.getAttributeTypeDescription( name );
+                MutableAttributeTypeImpl atd = schema.getAttributeTypeDescription( name );
                 if ( myAtd == atd )
                 {
                     return true;
@@ -266,7 +266,7 @@ public class AttributeDescription implements Serializable
         // check type
         if ( myAtd != otherAtd )
         {
-            AttributeType superiorAtd = null;
+            MutableAttributeTypeImpl superiorAtd = null;
             String superiorName = myAtd.getSuperiorOid();
             while ( superiorName != null )
             {

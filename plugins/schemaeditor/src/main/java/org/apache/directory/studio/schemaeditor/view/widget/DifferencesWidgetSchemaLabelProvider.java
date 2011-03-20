@@ -22,7 +22,7 @@ package org.apache.directory.studio.schemaeditor.view.widget;
 
 import java.util.List;
 
-import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.MutableAttributeTypeImpl;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.studio.schemaeditor.Activator;
 import org.apache.directory.studio.schemaeditor.PluginConstants;
@@ -93,21 +93,21 @@ public class DifferencesWidgetSchemaLabelProvider extends LabelProvider
         {
             AttributeTypeDifference atd = ( AttributeTypeDifference ) element;
 
-            AttributeType at = null;
+            MutableAttributeTypeImpl at = null;
 
             switch ( atd.getType() )
             {
                 case ADDED:
-                    at = ( ( AttributeType ) atd.getDestination() );
+                    at = ( ( MutableAttributeTypeImpl ) atd.getDestination() );
                     break;
                 case MODIFIED:
-                    at = ( ( AttributeType ) atd.getDestination() );
+                    at = ( ( MutableAttributeTypeImpl ) atd.getDestination() );
                     break;
                 case REMOVED:
-                    at = ( ( AttributeType ) atd.getSource() );
+                    at = ( ( MutableAttributeTypeImpl ) atd.getSource() );
                     break;
                 case IDENTICAL:
-                    at = ( ( AttributeType ) atd.getDestination() );
+                    at = ( ( MutableAttributeTypeImpl ) atd.getDestination() );
                     break;
             }
 
@@ -246,21 +246,21 @@ public class DifferencesWidgetSchemaLabelProvider extends LabelProvider
             {
                 AttributeTypeDifference atd = ( AttributeTypeDifference ) element;
 
-                AttributeType at = null;
+                MutableAttributeTypeImpl at = null;
 
                 switch ( atd.getType() )
                 {
                     case ADDED:
-                        at = ( ( AttributeType ) atd.getDestination() );
+                        at = ( ( MutableAttributeTypeImpl ) atd.getDestination() );
                         break;
                     case MODIFIED:
-                        at = ( ( AttributeType ) atd.getDestination() );
+                        at = ( ( MutableAttributeTypeImpl ) atd.getDestination() );
                         break;
                     case REMOVED:
-                        at = ( ( AttributeType ) atd.getSource() );
+                        at = ( ( MutableAttributeTypeImpl ) atd.getSource() );
                         break;
                     case IDENTICAL:
-                        at = ( ( AttributeType ) atd.getDestination() );
+                        at = ( ( MutableAttributeTypeImpl ) atd.getDestination() );
                         break;
                 }
 

@@ -25,7 +25,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.MutableAttributeTypeImpl;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.studio.schemaeditor.Activator;
 import org.apache.directory.studio.schemaeditor.PluginConstants;
@@ -144,7 +144,7 @@ public class MergeSchemasSelectionWizardPage extends AbstractWizardPage
                 if ( parentElement instanceof AttributeTypeFolder )
                 {
                     AttributeTypeFolder folder = ( AttributeTypeFolder ) parentElement;
-                    List<AttributeType> attributeTypes = folder.schema.getAttributeTypes();
+                    List<MutableAttributeTypeImpl> attributeTypes = folder.schema.getAttributeTypes();
                     return attributeTypes.toArray();
                 }
                 if ( parentElement instanceof ObjectClassFolder )
@@ -177,9 +177,9 @@ public class MergeSchemasSelectionWizardPage extends AbstractWizardPage
                 {
                     return Messages.getString( "MergeSchemasSelectionWizardPage.AttributeTypes" ); //$NON-NLS-1$
                 }
-                else if ( element instanceof AttributeType )
+                else if ( element instanceof MutableAttributeTypeImpl )
                 {
-                    AttributeType at = ( ( AttributeType ) element );
+                    MutableAttributeTypeImpl at = ( ( MutableAttributeTypeImpl ) element );
                     List<String> names = at.getNames();
                     if ( ( names != null ) && ( names.size() > 0 ) )
                     {
@@ -234,7 +234,7 @@ public class MergeSchemasSelectionWizardPage extends AbstractWizardPage
                 {
                     return Activator.getDefault().getImage( PluginConstants.IMG_FOLDER_AT );
                 }
-                else if ( element instanceof AttributeType )
+                else if ( element instanceof MutableAttributeTypeImpl )
                 {
                     return Activator.getDefault().getImage( PluginConstants.IMG_ATTRIBUTE_TYPE );
                 }

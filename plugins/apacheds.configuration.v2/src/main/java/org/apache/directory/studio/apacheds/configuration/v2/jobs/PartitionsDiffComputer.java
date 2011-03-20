@@ -43,7 +43,7 @@ import org.apache.directory.shared.ldap.model.ldif.ChangeType;
 import org.apache.directory.shared.ldap.model.ldif.LdifEntry;
 import org.apache.directory.shared.ldap.model.message.AliasDerefMode;
 import org.apache.directory.shared.ldap.model.name.Dn;
-import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.MutableAttributeTypeImpl;
 import org.apache.directory.shared.ldap.model.schema.AttributeTypeOptions;
 import org.apache.directory.shared.ldap.model.schema.SchemaManager;
 import org.apache.directory.shared.ldap.model.schema.SchemaUtils;
@@ -277,7 +277,7 @@ public class PartitionsDiffComputer
                 String id = SchemaUtils.stripOptions( returnAttribute );
                 Set<String> options = SchemaUtils.getOptions( returnAttribute );
 
-                AttributeType attributeType = schemaManager.lookupAttributeTypeRegistry( id );
+                MutableAttributeTypeImpl attributeType = schemaManager.lookupAttributeTypeRegistry( id );
                 AttributeTypeOptions attrOptions = new AttributeTypeOptions( attributeType, options );
 
                 returningAttributes.add( attrOptions );
@@ -309,12 +309,12 @@ public class PartitionsDiffComputer
     private void compareEntries( Entry originalEntry, Entry destinationEntry, LdifEntry modificationEntry )
     {
         // Creating a list to store the already evaluated attribute type
-        List<AttributeType> evaluatedATs = new ArrayList<AttributeType>();
+        List<MutableAttributeTypeImpl> evaluatedATs = new ArrayList<MutableAttributeTypeImpl>();
 
         // Checking attributes of the original entry
         for ( EntryAttribute originalAttribute : originalEntry )
         {
-            AttributeType originalAttributeType = originalAttribute.getAttributeType();
+            MutableAttributeTypeImpl originalAttributeType = originalAttribute.getAttributeType();
 
             // We're only working on 'userApplications' attributes
             if ( originalAttributeType.getUsage() == UsageEnum.USER_APPLICATIONS )
@@ -342,7 +342,7 @@ public class PartitionsDiffComputer
         // Checking attributes of the destination entry
         for ( EntryAttribute destinationAttribute : destinationEntry )
         {
-            AttributeType destinationAttributeType = destinationAttribute.getAttributeType();
+            MutableAttributeTypeImpl destinationAttributeType = destinationAttribute.getAttributeType();
 
             // We're only working on 'userApplications' attributes
             if ( destinationAttributeType.getUsage() == UsageEnum.USER_APPLICATIONS )

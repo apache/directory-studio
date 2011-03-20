@@ -46,7 +46,7 @@ import org.apache.directory.shared.ldap.aci.protectedItem.RestrictedByElem;
 import org.apache.directory.shared.ldap.aci.protectedItem.RestrictedByItem;
 import org.apache.directory.shared.ldap.aci.protectedItem.SelfValueItem;
 import org.apache.directory.shared.ldap.model.entry.EntryAttribute;
-import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.MutableAttributeTypeImpl;
 import org.apache.directory.studio.valueeditors.AbstractDialogStringValueEditor;
 import org.eclipse.osgi.util.NLS;
 
@@ -206,18 +206,18 @@ public class ProtectedItemWrapper
         if ( item.getClass() == AttributeTypeItem.class )
         {
             AttributeTypeItem at = ( AttributeTypeItem ) item;
-            for ( Iterator<AttributeType> it = at.iterator(); it.hasNext(); )
+            for ( Iterator<MutableAttributeTypeImpl> it = at.iterator(); it.hasNext(); )
             {
-                AttributeType attributeType = it.next();
+                MutableAttributeTypeImpl attributeType = it.next();
                 values.add( attributeType.toString() );
             }
         }
         else if ( item.getClass() == AllAttributeValuesItem.class )
         {
             AllAttributeValuesItem aav = ( AllAttributeValuesItem ) item;
-            for ( Iterator<AttributeType> it = aav.iterator(); it.hasNext(); )
+            for ( Iterator<MutableAttributeTypeImpl> it = aav.iterator(); it.hasNext(); )
             {
-                AttributeType attributeType = it.next();
+                MutableAttributeTypeImpl attributeType = it.next();
                 values.add( attributeType.toString() );
             }
         }
@@ -233,9 +233,9 @@ public class ProtectedItemWrapper
         else if ( item.getClass() == SelfValueItem.class )
         {
             SelfValueItem sv = ( SelfValueItem ) item;
-            for ( Iterator<AttributeType> it = sv.iterator(); it.hasNext(); )
+            for ( Iterator<MutableAttributeTypeImpl> it = sv.iterator(); it.hasNext(); )
             {
-                AttributeType attributeType = it.next();
+                MutableAttributeTypeImpl attributeType = it.next();
                 values.add( attributeType.toString() );
             }
         }

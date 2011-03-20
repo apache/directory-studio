@@ -27,7 +27,7 @@ import java.util.List;
 
 import org.apache.commons.collections.MultiMap;
 import org.apache.commons.collections.map.MultiValueMap;
-import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.MutableAttributeTypeImpl;
 import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
 import org.apache.directory.shared.ldap.model.schema.MatchingRule;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
@@ -88,10 +88,10 @@ public class DependenciesComputer
             // Computing dependencies
             for ( Schema schema : this.schemasList )
             {
-                List<AttributeType> attributeTypes = schema.getAttributeTypes();
+                List<MutableAttributeTypeImpl> attributeTypes = schema.getAttributeTypes();
                 if ( attributeTypes != null )
                 {
-                    for ( AttributeType attributeType : attributeTypes )
+                    for ( MutableAttributeTypeImpl attributeType : attributeTypes )
                     {
                         computeDependencies( schema, attributeType );
                     }
@@ -122,14 +122,14 @@ public class DependenciesComputer
      *      the attribute type
      * @throws DependencyComputerException 
      */
-    private void computeDependencies( Schema schema, AttributeType attributeType )
+    private void computeDependencies( Schema schema, MutableAttributeTypeImpl attributeType )
         throws DependencyComputerException
     {
         // Superior
         String superior = attributeType.getSuperiorOid();
         if ( superior != null )
         {
-            AttributeType superiorAT = schemaHandler.getAttributeType( superior );
+            MutableAttributeTypeImpl superiorAT = schemaHandler.getAttributeType( superior );
             if ( superiorAT == null )
             {
                 throw new DependencyComputerException( NLS.bind( Messages
@@ -267,7 +267,7 @@ public class DependenciesComputer
         {
             for ( String optionalAttributeTypeName : optionalAttributeTypes )
             {
-                AttributeType optionalAttributeType = schemaHandler.getAttributeType( optionalAttributeTypeName );
+                MutableAttributeTypeImpl optionalAttributeType = schemaHandler.getAttributeType( optionalAttributeTypeName );
                 if ( optionalAttributeType == null )
                 {
                     throw new DependencyComputerException( NLS.bind( Messages
@@ -290,7 +290,7 @@ public class DependenciesComputer
         {
             for ( String mandatoryAttributeTypeName : mandatoryAttributeTypes )
             {
-                AttributeType mandatoryAttributeType = schemaHandler.getAttributeType( mandatoryAttributeTypeName );
+                MutableAttributeTypeImpl mandatoryAttributeType = schemaHandler.getAttributeType( mandatoryAttributeTypeName );
                 if ( mandatoryAttributeType == null )
                 {
                     throw new DependencyComputerException( NLS.bind( Messages

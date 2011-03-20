@@ -25,7 +25,7 @@ import java.util.Collection;
 
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.directory.shared.ldap.model.name.Rdn;
-import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.MutableAttributeTypeImpl;
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
 import org.apache.directory.studio.ldapbrowser.common.widgets.DnBuilderWidget;
@@ -146,7 +146,7 @@ public class RenameEntryDialog extends Dialog implements WidgetModifyListener
         dnBuilderWidget = new DnBuilderWidget( true, false );
         dnBuilderWidget.addWidgetModifyListener( this );
         dnBuilderWidget.createContents( composite );
-        Collection<AttributeType> allAtds = SchemaUtils.getAllAttributeTypeDescriptions( entry );
+        Collection<MutableAttributeTypeImpl> allAtds = SchemaUtils.getAllAttributeTypeDescriptions( entry );
         String[] allAttributeNames = SchemaUtils.getNames( allAtds ).toArray( ArrayUtils.EMPTY_STRING_ARRAY );
         dnBuilderWidget.setInput( entry.getBrowserConnection(), allAttributeNames, entry.getRdn(), null );
 

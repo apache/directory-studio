@@ -26,7 +26,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.MutableAttributeTypeImpl;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.shared.ldap.model.schema.MutableSchemaObject;
 import org.apache.directory.shared.ldap.model.schema.SchemaObject;
@@ -166,7 +166,7 @@ public class DeleteSchemaElementAction extends Action implements IWorkbenchWindo
                     }
                     else if ( selectedItem instanceof AttributeTypeWrapper )
                     {
-                        AttributeType at = ( ( AttributeTypeWrapper ) selectedItem ).getAttributeType();
+                        MutableAttributeTypeImpl at = ( ( AttributeTypeWrapper ) selectedItem ).getAttributeType();
                         schemaObjectsList.add( at );
                     }
                     else if ( selectedItem instanceof ObjectClassWrapper )
@@ -185,9 +185,9 @@ public class DeleteSchemaElementAction extends Action implements IWorkbenchWindo
                         // If the schema object is not part of deleted schema, we need to delete it.
                         // But, we don't delete schema objects that are part of a deleted schema, since
                         // deleting the schema will also delete this schema object.
-                        if ( schemaObject instanceof AttributeType )
+                        if ( schemaObject instanceof MutableAttributeTypeImpl )
                         {
-                            schemaHandler.removeAttributeType( ( AttributeType ) schemaObject );
+                            schemaHandler.removeAttributeType( ( MutableAttributeTypeImpl ) schemaObject );
                         }
                         else if ( schemaObject instanceof ObjectClass )
                         {

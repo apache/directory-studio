@@ -22,7 +22,7 @@ package org.apache.directory.studio.schemaeditor.view.views;
 
 import java.util.List;
 
-import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.MutableAttributeTypeImpl;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.shared.ldap.model.schema.SchemaObject;
 import org.apache.directory.studio.schemaeditor.Activator;
@@ -153,9 +153,9 @@ public class HierarchyView extends ViewPart
         }
         else
         {
-            if ( input instanceof AttributeType )
+            if ( input instanceof MutableAttributeTypeImpl )
             {
-                setOverviewLabel( ( AttributeType ) input );
+                setOverviewLabel( ( MutableAttributeTypeImpl ) input );
             }
             else if ( input instanceof ObjectClass )
             {

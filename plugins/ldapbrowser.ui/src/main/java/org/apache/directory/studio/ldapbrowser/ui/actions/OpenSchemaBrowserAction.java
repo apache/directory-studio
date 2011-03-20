@@ -20,7 +20,7 @@
 package org.apache.directory.studio.ldapbrowser.ui.actions;
 
 
-import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.MutableAttributeTypeImpl;
 import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
 import org.apache.directory.shared.ldap.model.schema.MatchingRule;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
@@ -285,7 +285,7 @@ public class OpenSchemaBrowserAction extends BrowserAction
         if ( getConnection() != null )
         {
             Schema schema = getConnection().getSchema();
-            AttributeType atd = getAtd();
+            MutableAttributeTypeImpl atd = getAtd();
 
             if ( atd != null && SchemaUtils.getSyntaxNumericOidTransitive( atd, schema ) != null
                 && schema.hasLdapSyntaxDescription( SchemaUtils.getSyntaxNumericOidTransitive( atd, schema ) ) )
@@ -329,11 +329,11 @@ public class OpenSchemaBrowserAction extends BrowserAction
      * @return
      *      the Attribute Type Description
      */
-    private AttributeType getAtd()
+    private MutableAttributeTypeImpl getAtd()
     {
         if ( ( getSelectedValues().length + getSelectedAttributes().length ) + getSelectedAttributeHierarchies().length == 1 )
         {
-            AttributeType atd = null;
+            MutableAttributeTypeImpl atd = null;
             if ( getSelectedValues().length == 1 )
             {
                 atd = getSelectedValues()[0].getAttribute().getAttributeTypeDescription();
@@ -418,7 +418,7 @@ public class OpenSchemaBrowserAction extends BrowserAction
         if ( getConnection() != null )
         {
             Schema schema = getConnection().getSchema();
-            AttributeType atd = getAtd();
+            MutableAttributeTypeImpl atd = getAtd();
             if ( atd != null
                 && SchemaUtils.getEqualityMatchingRuleNameOrNumericOidTransitive( atd, schema ) != null
                 && schema.hasLdapSyntaxDescription( SchemaUtils.getEqualityMatchingRuleNameOrNumericOidTransitive( atd,
@@ -443,7 +443,7 @@ public class OpenSchemaBrowserAction extends BrowserAction
         if ( getConnection() != null )
         {
             Schema schema = getConnection().getSchema();
-            AttributeType atd = getAtd();
+            MutableAttributeTypeImpl atd = getAtd();
             if ( atd != null
                 && SchemaUtils.getSubstringMatchingRuleNameOrNumericOidTransitive( atd, schema ) != null
                 && schema.hasLdapSyntaxDescription( SchemaUtils.getSubstringMatchingRuleNameOrNumericOidTransitive(
@@ -468,7 +468,7 @@ public class OpenSchemaBrowserAction extends BrowserAction
         if ( getConnection() != null )
         {
             Schema schema = getConnection().getSchema();
-            AttributeType atd = getAtd();
+            MutableAttributeTypeImpl atd = getAtd();
             if ( atd != null
                 && SchemaUtils.getOrderingMatchingRuleNameOrNumericOidTransitive( atd, schema ) != null
                 && schema.hasLdapSyntaxDescription( SchemaUtils.getOrderingMatchingRuleNameOrNumericOidTransitive( atd,

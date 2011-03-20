@@ -30,7 +30,7 @@ import java.util.Set;
 
 import org.apache.directory.shared.ldap.model.constants.SchemaConstants;
 import org.apache.directory.shared.ldap.model.name.Dn;
-import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.MutableAttributeTypeImpl;
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.StudioControl;
@@ -799,7 +799,7 @@ public class SearchPageWrapper extends BrowserWidget
                 {
                     if ( returnOperationalAttributesButton.getSelection() )
                     {
-                        Collection<AttributeType> opAtds = SchemaUtils
+                        Collection<MutableAttributeTypeImpl> opAtds = SchemaUtils
                             .getOperationalAttributeDescriptions( browserConnectionWidget.getBrowserConnection()
                                 .getSchema() );
                         Collection<String> opAtdNames = SchemaUtils.getNames( opAtds );

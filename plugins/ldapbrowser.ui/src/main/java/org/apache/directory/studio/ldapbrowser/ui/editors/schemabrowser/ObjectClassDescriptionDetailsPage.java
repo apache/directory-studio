@@ -24,7 +24,7 @@ package org.apache.directory.studio.ldapbrowser.ui.editors.schemabrowser;
 import java.util.Collection;
 import java.util.List;
 
-import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.MutableAttributeTypeImpl;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.SchemaUtils;
 import org.eclipse.osgi.util.NLS;
@@ -302,7 +302,7 @@ public class ObjectClassDescriptionDetailsPage extends SchemaDetailsPage
                 {
                     if ( getSchema().hasAttributeTypeDescription( name ) )
                     {
-                        AttributeType mustAtd = getSchema().getAttributeTypeDescription( name );
+                        MutableAttributeTypeImpl mustAtd = getSchema().getAttributeTypeDescription( name );
                         Hyperlink mustLink = toolkit.createHyperlink( mustClient, SchemaUtils.toString( mustAtd ),
                             SWT.WRAP );
                         mustLink.setHref( mustAtd );
@@ -372,7 +372,7 @@ public class ObjectClassDescriptionDetailsPage extends SchemaDetailsPage
                 {
                     if ( getSchema().hasAttributeTypeDescription( name ) )
                     {
-                        AttributeType mayAtd = getSchema().getAttributeTypeDescription( name );
+                        MutableAttributeTypeImpl mayAtd = getSchema().getAttributeTypeDescription( name );
                         Hyperlink mayLink = toolkit.createHyperlink( mayClient, SchemaUtils.toString( mayAtd ),
                             SWT.WRAP );
                         mayLink.setHref( mayAtd );

@@ -25,7 +25,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.List;
 
-import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.MutableAttributeTypeImpl;
 import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
 import org.apache.directory.shared.ldap.model.schema.MatchingRule;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
@@ -193,11 +193,11 @@ public class XMLSchemaFileExporter
             }
 
             // Attribute Types
-            List<AttributeType> ats = schema.getAttributeTypes();
+            List<MutableAttributeTypeImpl> ats = schema.getAttributeTypes();
             if ( ( ats != null ) && ( ats.size() >= 1 ) )
             {
                 Element attributeTypesNode = element.addElement( ATTRIBUTE_TYPES_TAG );
-                for ( AttributeType at : ats )
+                for ( MutableAttributeTypeImpl at : ats )
                 {
                     toXml( at, attributeTypesNode );
                 }
@@ -247,7 +247,7 @@ public class XMLSchemaFileExporter
      * @param root
      *      the root Element
      */
-    private static void toXml( AttributeType at, Element root )
+    private static void toXml( MutableAttributeTypeImpl at, Element root )
     {
         Element atNode = root.addElement( ATTRIBUTE_TYPE_TAG );
 

@@ -23,7 +23,7 @@ package org.apache.directory.studio.schemaeditor.controller;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.MutableAttributeTypeImpl;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.studio.schemaeditor.Activator;
 import org.apache.directory.studio.schemaeditor.PluginConstants;
@@ -111,7 +111,7 @@ public class SchemaViewController
         /* (non-Javadoc)
          * @see org.apache.directory.studio.schemaeditor.controller.SchemaHandlerListener#attributeTypeAdded(org.apache.directory.studio.schemaeditor.model.AttributeTypeImpl)
          */
-        public void attributeTypeAdded( AttributeType at )
+        public void attributeTypeAdded( MutableAttributeTypeImpl at )
         {
             SchemaViewContentProvider contentProvider = ( SchemaViewContentProvider ) viewer.getContentProvider();
             contentProvider.attributeTypeAdded( at );
@@ -128,7 +128,7 @@ public class SchemaViewController
         /* (non-Javadoc)
          * @see org.apache.directory.studio.schemaeditor.controller.SchemaHandlerListener#attributeTypeModified(org.apache.directory.studio.schemaeditor.model.AttributeTypeImpl)
          */
-        public void attributeTypeModified( AttributeType at )
+        public void attributeTypeModified( MutableAttributeTypeImpl at )
         {
             ( ( SchemaViewContentProvider ) viewer.getContentProvider() ).attributeTypeModified( at );
             view.refresh();
@@ -138,7 +138,7 @@ public class SchemaViewController
         /* (non-Javadoc)
          * @see org.apache.directory.studio.schemaeditor.controller.SchemaHandlerListener#attributeTypeRemoved(org.apache.directory.studio.schemaeditor.model.AttributeTypeImpl)
          */
-        public void attributeTypeRemoved( AttributeType at )
+        public void attributeTypeRemoved( MutableAttributeTypeImpl at )
         {
             ( ( SchemaViewContentProvider ) viewer.getContentProvider() ).attributeTypeRemoved( at );
             view.refresh();

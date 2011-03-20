@@ -22,7 +22,7 @@ package org.apache.directory.studio.schemaeditor.view.views;
 
 import java.util.List;
 
-import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.MutableAttributeTypeImpl;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.shared.ldap.model.schema.SchemaObject;
 import org.apache.directory.studio.schemaeditor.Activator;
@@ -71,9 +71,9 @@ public class SearchViewLabelProvider extends LabelProvider
             .getInt( PluginConstants.PREFS_SEARCH_VIEW_SECONDARY_LABEL_ABBREVIATE_MAX_LENGTH );
         boolean schemaLabelDisplay = store.getBoolean( PluginConstants.PREFS_SEARCH_VIEW_SCHEMA_LABEL_DISPLAY );
 
-        if ( element instanceof AttributeType )
+        if ( element instanceof MutableAttributeTypeImpl )
         {
-            AttributeType at = ( AttributeType ) element;
+            MutableAttributeTypeImpl at = ( MutableAttributeTypeImpl ) element;
 
             // Label
             if ( labelValue == PluginConstants.PREFS_SEARCH_VIEW_LABEL_FIRST_NAME )
@@ -182,9 +182,9 @@ public class SearchViewLabelProvider extends LabelProvider
         if ( secondaryLabelDisplay )
         {
             String secondaryLabel = ""; //$NON-NLS-1$
-            if ( element instanceof AttributeType )
+            if ( element instanceof MutableAttributeTypeImpl )
             {
-                AttributeType at = ( AttributeType ) element;
+                MutableAttributeTypeImpl at = ( MutableAttributeTypeImpl ) element;
 
                 if ( secondaryLabelValue == PluginConstants.PREFS_SEARCH_VIEW_LABEL_FIRST_NAME )
                 {
@@ -277,7 +277,7 @@ public class SearchViewLabelProvider extends LabelProvider
      */
     public Image getImage( Object element )
     {
-        if ( element instanceof AttributeType )
+        if ( element instanceof MutableAttributeTypeImpl )
         {
             return Activator.getDefault().getImage( PluginConstants.IMG_ATTRIBUTE_TYPE );
         }

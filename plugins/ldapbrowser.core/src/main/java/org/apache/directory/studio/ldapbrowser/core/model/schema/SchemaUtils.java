@@ -31,7 +31,7 @@ import java.util.TreeSet;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.directory.shared.ldap.model.constants.SchemaConstants;
-import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.MutableAttributeTypeImpl;
 import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
 import org.apache.directory.shared.ldap.model.schema.MatchingRule;
 import org.apache.directory.shared.ldap.model.schema.MatchingRuleUse;
@@ -275,10 +275,10 @@ public class SchemaUtils
      * 
      * @return all operational attributes types
      */
-    public static Collection<AttributeType> getOperationalAttributeDescriptions( Schema schema )
+    public static Collection<MutableAttributeTypeImpl> getOperationalAttributeDescriptions( Schema schema )
     {
-        Set<AttributeType> operationalAtds = new HashSet<AttributeType>();
-        for ( AttributeType atd : schema.getAttributeTypeDescriptions() )
+        Set<MutableAttributeTypeImpl> operationalAtds = new HashSet<MutableAttributeTypeImpl>();
+        for ( MutableAttributeTypeImpl atd : schema.getAttributeTypeDescriptions() )
         {
             if ( isOperational( atd ) )
             {
@@ -296,10 +296,10 @@ public class SchemaUtils
      * 
      * @return all user attributes type descriptions
      */
-    public static Collection<AttributeType> getUserAttributeDescriptions( Schema schema )
+    public static Collection<MutableAttributeTypeImpl> getUserAttributeDescriptions( Schema schema )
     {
-        Set<AttributeType> userAtds = new HashSet<AttributeType>();
-        for ( AttributeType atd : schema.getAttributeTypeDescriptions() )
+        Set<MutableAttributeTypeImpl> userAtds = new HashSet<MutableAttributeTypeImpl>();
+        for ( MutableAttributeTypeImpl atd : schema.getAttributeTypeDescriptions() )
         {
             if ( !isOperational( atd ) )
             {
@@ -323,14 +323,14 @@ public class SchemaUtils
      * 
      * @return true, if is operational
      */
-    public static boolean isOperational( AttributeType atd )
+    public static boolean isOperational( MutableAttributeTypeImpl atd )
     {
         return atd.getUsage() != UsageEnum.USER_APPLICATIONS || atd.getExtensions() == Schema.DUMMY_EXTENSIONS
             || CollectionUtils.containsAny( OPERATIONAL_ATTRIBUTES_OIDS_AND_NAMES, getLowerCaseIdentifiers( atd ) );
     }
 
 
-    public static boolean isModifiable( AttributeType atd )
+    public static boolean isModifiable( MutableAttributeTypeImpl atd )
     {
         if ( atd == null )
         {
@@ -361,16 +361,16 @@ public class SchemaUtils
      * 
      * @return the must attribute type descriptions of all object class descriptions of the given entry.
      */
-    public static Collection<AttributeType> getMustAttributeTypeDescriptions( IEntry entry )
+    public static Collection<MutableAttributeTypeImpl> getMustAttributeTypeDescriptions( IEntry entry )
     {
         Schema schema = entry.getBrowserConnection().getSchema();
-        Collection<AttributeType> atds = new HashSet<AttributeType>();
+        Collection<MutableAttributeTypeImpl> atds = new HashSet<MutableAttributeTypeImpl>();
         for ( ObjectClass ocd : entry.getObjectClassDescriptions() )
         {
             Collection<String> musts = getMustAttributeTypeDescriptionNamesTransitive( ocd, schema );
             for ( String must : musts )
             {
-                AttributeType atd = schema.getAttributeTypeDescription( must );
+                MutableAttributeTypeImpl atd = schema.getAttributeTypeDescription( must );
                 atds.add( atd );
             }
         }
@@ -385,16 +385,16 @@ public class SchemaUtils
      * 
      * @return the may attribute type descriptions of all object class descriptions of the given entry.
      */
-    public static Collection<AttributeType> getMayAttributeTypeDescriptions( IEntry entry )
+    public static Collection<MutableAttributeTypeImpl> getMayAttributeTypeDescriptions( IEntry entry )
     {
         Schema schema = entry.getBrowserConnection().getSchema();
-        Collection<AttributeType> atds = new HashSet<AttributeType>();
+        Collection<MutableAttributeTypeImpl> atds = new HashSet<MutableAttributeTypeImpl>();
         for ( ObjectClass ocd : entry.getObjectClassDescriptions() )
         {
             Collection<String> mays = getMayAttributeTypeDescriptionNamesTransitive( ocd, schema );
             for ( String may : mays )
             {
-                AttributeType atd = schema.getAttributeTypeDescription( may );
+                MutableAttributeTypeImpl atd = schema.getAttributeTypeDescription( may );
                 atds.add( atd );
             }
         }
@@ -409,9 +409,9 @@ public class SchemaUtils
      * 
      * @return all attribute type descriptions of all object class descriptions of the given entry.
      */
-    public static Collection<AttributeType> getAllAttributeTypeDescriptions( IEntry entry )
+    public static Collection<MutableAttributeTypeImpl> getAllAttributeTypeDescriptions( IEntry entry )
     {
-        Collection<AttributeType> atds = new HashSet<AttributeType>();
+        Collection<MutableAttributeTypeImpl> atds = new HashSet<MutableAttributeTypeImpl>();
         atds.addAll( getMustAttributeTypeDescriptions( entry ) );
         atds.addAll( getMayAttributeTypeDescriptions( entry ) );
         return atds;
@@ -459,7 +459,7 @@ public class SchemaUtils
      * 
      * @return false if the attribute type is defined as binary
      */
-    public static boolean isString( AttributeType atd, Schema schema )
+    public static boolean isString( MutableAttributeTypeImpl atd, Schema schema )
     {
         return !isBinary( atd, schema );
     }
@@ -474,7 +474,7 @@ public class SchemaUtils
      * 
      * @return true if the attribute type is defined as binary
      */
-    public static boolean isBinary( AttributeType atd, Schema schema )
+    public static boolean isBinary( MutableAttributeTypeImpl atd, Schema schema )
     {
         // check user-defined binary attribute types
         Set<String> binaryAttributeOidsAndNames = BrowserCorePlugin.getDefault().getCorePreferences()
@@ -511,10 +511,10 @@ public class SchemaUtils
      * 
      * @return all attribute type description using this syntax description
      */
-    public static Collection<AttributeType> getUsedFromAttributeTypeDescriptions( LdapSyntax lsd, Schema schema )
+    public static Collection<MutableAttributeTypeImpl> getUsedFromAttributeTypeDescriptions( LdapSyntax lsd, Schema schema )
     {
-        Set<AttributeType> usedFroms = new TreeSet<AttributeType>( schemaElementNameComparator );
-        for ( AttributeType atd : schema.getAttributeTypeDescriptions() )
+        Set<MutableAttributeTypeImpl> usedFroms = new TreeSet<MutableAttributeTypeImpl>( schemaElementNameComparator );
+        for ( MutableAttributeTypeImpl atd : schema.getAttributeTypeDescriptions() )
         {
             String syntax = getSyntaxNumericOidTransitive( atd, schema );
             if ( syntax != null && lsd.getOid() != null
@@ -536,10 +536,10 @@ public class SchemaUtils
      * @return all attribute type descriptions using this matching rule for
      * equality, substring or ordering matching
      */
-    public static Collection<AttributeType> getUsedFromAttributeTypeDescriptions( MatchingRule mrd, Schema schema )
+    public static Collection<MutableAttributeTypeImpl> getUsedFromAttributeTypeDescriptions( MatchingRule mrd, Schema schema )
     {
-        Set<AttributeType> usedFromSet = new TreeSet<AttributeType>( schemaElementNameComparator );
-        for ( AttributeType atd : schema.getAttributeTypeDescriptions() )
+        Set<MutableAttributeTypeImpl> usedFromSet = new TreeSet<MutableAttributeTypeImpl>( schemaElementNameComparator );
+        for ( MutableAttributeTypeImpl atd : schema.getAttributeTypeDescriptions() )
         {
             Collection<String> lowerCaseIdentifiers = getLowerCaseIdentifiers( mrd );
             String emr = getEqualityMatchingRuleNameOrNumericOidTransitive( atd, schema );
@@ -572,7 +572,7 @@ public class SchemaUtils
      * @return the equality matching rule description name or OID of the given or the
      *         superior attribute type description, may be null
      */
-    public static String getEqualityMatchingRuleNameOrNumericOidTransitive( AttributeType atd, Schema schema )
+    public static String getEqualityMatchingRuleNameOrNumericOidTransitive( MutableAttributeTypeImpl atd, Schema schema )
     {
         if ( atd.getEqualityOid() != null )
         {
@@ -581,7 +581,7 @@ public class SchemaUtils
 
         if ( atd.getSuperiorOid() != null && schema.hasAttributeTypeDescription( atd.getSuperiorOid() ) )
         {
-            AttributeType superior = schema.getAttributeTypeDescription( atd.getSuperiorOid() );
+            MutableAttributeTypeImpl superior = schema.getAttributeTypeDescription( atd.getSuperiorOid() );
             return getEqualityMatchingRuleNameOrNumericOidTransitive( superior, schema );
         }
 
@@ -599,7 +599,7 @@ public class SchemaUtils
      * @return the substring matching rule description name or OID of the given or the
      *         superior attribute type description, may be null
      */
-    public static String getSubstringMatchingRuleNameOrNumericOidTransitive( AttributeType atd, Schema schema )
+    public static String getSubstringMatchingRuleNameOrNumericOidTransitive( MutableAttributeTypeImpl atd, Schema schema )
     {
         if ( atd.getSubstringOid() != null )
         {
@@ -608,7 +608,7 @@ public class SchemaUtils
 
         if ( atd.getSuperiorOid() != null && schema.hasAttributeTypeDescription( atd.getSubstringOid() ) )
         {
-            AttributeType superior = schema.getAttributeTypeDescription( atd.getSubstringOid() );
+            MutableAttributeTypeImpl superior = schema.getAttributeTypeDescription( atd.getSubstringOid() );
             return getSubstringMatchingRuleNameOrNumericOidTransitive( superior, schema );
         }
 
@@ -626,7 +626,7 @@ public class SchemaUtils
      * @return the ordering matching rule description name or OID of the given or the
      *         superior attribute type description, may be null
      */
-    public static String getOrderingMatchingRuleNameOrNumericOidTransitive( AttributeType atd, Schema schema )
+    public static String getOrderingMatchingRuleNameOrNumericOidTransitive( MutableAttributeTypeImpl atd, Schema schema )
     {
         if ( atd.getOrderingOid() != null )
         {
@@ -635,7 +635,7 @@ public class SchemaUtils
 
         if ( atd.getSuperiorOid() != null && schema.hasAttributeTypeDescription( atd.getSuperiorOid() ) )
         {
-            AttributeType superior = schema.getAttributeTypeDescription( atd.getSuperiorOid() );
+            MutableAttributeTypeImpl superior = schema.getAttributeTypeDescription( atd.getSuperiorOid() );
             return getOrderingMatchingRuleNameOrNumericOidTransitive( superior, schema );
         }
 
@@ -653,7 +653,7 @@ public class SchemaUtils
      * @return the syntax description OID of the given or the
      *         superior attribute type description, may be null
      */
-    public static String getSyntaxNumericOidTransitive( AttributeType atd, Schema schema )
+    public static String getSyntaxNumericOidTransitive( MutableAttributeTypeImpl atd, Schema schema )
     {
         if ( atd.getSyntaxOid() != null )
         {
@@ -662,7 +662,7 @@ public class SchemaUtils
 
         if ( atd.getSuperiorOid() != null && schema.hasAttributeTypeDescription( atd.getSuperiorOid() ) )
         {
-            AttributeType superior = schema.getAttributeTypeDescription( atd.getSuperiorOid() );
+            MutableAttributeTypeImpl superior = schema.getAttributeTypeDescription( atd.getSuperiorOid() );
             return getSyntaxNumericOidTransitive( superior, schema );
         }
 
@@ -680,7 +680,7 @@ public class SchemaUtils
      * @return the syntax length of the given or the
      *         superior attribute type description, may be null
      */
-    public static long getSyntaxLengthTransitive( AttributeType atd, Schema schema )
+    public static long getSyntaxLengthTransitive( MutableAttributeTypeImpl atd, Schema schema )
     {
         if ( atd.getSyntaxLength() != 0 )
         {
@@ -689,7 +689,7 @@ public class SchemaUtils
 
         if ( atd.getSuperiorOid() != null && schema.hasAttributeTypeDescription( atd.getSuperiorOid() ) )
         {
-            AttributeType superior = schema.getAttributeTypeDescription( atd.getSuperiorOid() );
+            MutableAttributeTypeImpl superior = schema.getAttributeTypeDescription( atd.getSuperiorOid() );
             return getSyntaxLengthTransitive( superior, schema );
         }
 
@@ -709,7 +709,7 @@ public class SchemaUtils
      *         description applies to according to the schema's matching 
      *         rule use descriptions
      */
-    public static Collection<String> getOtherMatchingRuleDescriptionNames( AttributeType atd, Schema schema )
+    public static Collection<String> getOtherMatchingRuleDescriptionNames( MutableAttributeTypeImpl atd, Schema schema )
     {
         Set<String> otherMatchingRules = new TreeSet<String>( nameAndOidComparator );
         for ( MatchingRuleUse mrud : schema.getMatchingRuleUseDescriptions() )
@@ -734,11 +734,11 @@ public class SchemaUtils
      * @return all attribute type descriptions using this attribute type
      *         description as superior
      */
-    public static Collection<AttributeType> getDerivedAttributeTypeDescriptions(
-        AttributeType atd, Schema schema )
+    public static Collection<MutableAttributeTypeImpl> getDerivedAttributeTypeDescriptions(
+        MutableAttributeTypeImpl atd, Schema schema )
     {
-        Set<AttributeType> derivedAtds = new TreeSet<AttributeType>( schemaElementNameComparator );
-        for ( AttributeType derivedAtd : schema.getAttributeTypeDescriptions() )
+        Set<MutableAttributeTypeImpl> derivedAtds = new TreeSet<MutableAttributeTypeImpl>( schemaElementNameComparator );
+        for ( MutableAttributeTypeImpl derivedAtd : schema.getAttributeTypeDescriptions() )
         {
             String superType = derivedAtd.getSuperiorOid();
             if ( superType != null && getLowerCaseIdentifiers( atd ).contains( superType.toLowerCase() ) )
@@ -760,7 +760,7 @@ public class SchemaUtils
      * @return all object class description using the given attribute type
      *         description as must attribute
      */
-    public static Collection<ObjectClass> getUsedAsMust( AttributeType atd, Schema schema )
+    public static Collection<ObjectClass> getUsedAsMust( MutableAttributeTypeImpl atd, Schema schema )
     {
         Collection<String> lowerCaseIdentifiers = getLowerCaseIdentifiers( atd );
         Set<ObjectClass> ocds = new TreeSet<ObjectClass>( schemaElementNameComparator );
@@ -786,7 +786,7 @@ public class SchemaUtils
      * @return all object class description using the given attribute type
      *         description as may attribute
      */
-    public static Collection<ObjectClass> getUsedAsMay( AttributeType atd, Schema schema )
+    public static Collection<ObjectClass> getUsedAsMay( MutableAttributeTypeImpl atd, Schema schema )
     {
         Collection<String> lowerCaseIdentifiers = getLowerCaseIdentifiers( atd );
         Set<ObjectClass> ocds = new TreeSet<ObjectClass>( schemaElementNameComparator );
@@ -1017,8 +1017,8 @@ public class SchemaUtils
             }
 
             // check must-attributes
-            Collection<AttributeType> mustAtds = getMustAttributeTypeDescriptions( entry );
-            for ( AttributeType mustAtd : mustAtds )
+            Collection<MutableAttributeTypeImpl> mustAtds = getMustAttributeTypeDescriptions( entry );
+            for ( MutableAttributeTypeImpl mustAtd : mustAtds )
             {
                 AttributeHierarchy ah = entry.getAttributeWithSubtypes( mustAtd.getOid() );
                 if ( ah == null )
@@ -1029,12 +1029,12 @@ public class SchemaUtils
             }
 
             // check unallowed attributes
-            Collection<AttributeType> allAtds = getAllAttributeTypeDescriptions( entry );
+            Collection<MutableAttributeTypeImpl> allAtds = getAllAttributeTypeDescriptions( entry );
             for ( IAttribute attribute : entry.getAttributes() )
             {
                 if ( !attribute.isOperationalAttribute() )
                 {
-                    AttributeType atd = attribute.getAttributeTypeDescription();
+                    MutableAttributeTypeImpl atd = attribute.getAttributeTypeDescription();
                     if ( !allAtds.contains( atd ) )
                     {
                         messages.add( NLS.bind( Messages.getString( "SchemaUtils.AttributeNotAllowed" ), attribute //$NON-NLS-1$

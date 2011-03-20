@@ -26,7 +26,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.MutableAttributeTypeImpl;
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.connection.ui.widgets.ExtendedContentAssistCommandAdapter;
 import org.apache.directory.studio.ldapbrowser.common.widgets.ListContentProposalProvider;
@@ -115,13 +115,13 @@ public class AttributeTypeWizardPage extends WizardPage
         this.initialShowSubschemaAttributesOnly = initialShowSubschemaAttributesOnly;
         this.initialHideExistingAttributes = initialHideExistingAttributes;
 
-        Collection<AttributeType> atds = initialEntry.getBrowserConnection().getSchema()
+        Collection<MutableAttributeTypeImpl> atds = initialEntry.getBrowserConnection().getSchema()
             .getAttributeTypeDescriptions();
         Collection<String> atdNames = SchemaUtils.getNames( atds );
         possibleAttributeTypes = atdNames.toArray( new String[atdNames.size()] );
         Arrays.sort( possibleAttributeTypes );
 
-        Collection<AttributeType> allAtds = SchemaUtils.getAllAttributeTypeDescriptions( initialEntry );
+        Collection<MutableAttributeTypeImpl> allAtds = SchemaUtils.getAllAttributeTypeDescriptions( initialEntry );
         Collection<String> names = SchemaUtils.getNames( allAtds );
         possibleAttributeTypesSubschemaOnly = names.toArray( new String[0] );
         Arrays.sort( possibleAttributeTypesSubschemaOnly );

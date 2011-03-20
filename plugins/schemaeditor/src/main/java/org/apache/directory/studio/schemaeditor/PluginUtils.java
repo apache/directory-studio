@@ -33,7 +33,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.MutableAttributeTypeImpl;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
@@ -87,9 +87,9 @@ public class PluginUtils
      * @return
      *      a clone of the given attribute type
      */
-    public static AttributeType getClone( AttributeType at )
+    public static MutableAttributeTypeImpl getClone( MutableAttributeTypeImpl at )
     {
-        AttributeType clone = new AttributeType( at.getOid() );
+        MutableAttributeTypeImpl clone = new MutableAttributeTypeImpl( at.getOid() );
         clone.setNames( at.getNames() );
         clone.setSchemaName( at.getSchemaName() );
         clone.setDescription( at.getDescription() );

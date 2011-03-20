@@ -23,7 +23,7 @@ package org.apache.directory.studio.schemaeditor.view.views;
 
 import java.util.List;
 
-import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.MutableAttributeTypeImpl;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.studio.schemaeditor.Activator;
 import org.apache.directory.studio.schemaeditor.PluginConstants;
@@ -81,7 +81,7 @@ public class HierarchyViewLabelProvider extends LabelProvider
 
         if ( obj instanceof AttributeTypeWrapper )
         {
-            AttributeType at = ( ( AttributeTypeWrapper ) obj ).getAttributeType();
+            MutableAttributeTypeImpl at = ( ( AttributeTypeWrapper ) obj ).getAttributeType();
 
             // Label
             if ( labelValue == PluginConstants.PREFS_HIERARCHY_VIEW_LABEL_FIRST_NAME )
@@ -192,7 +192,7 @@ public class HierarchyViewLabelProvider extends LabelProvider
             String secondaryLabel = ""; //$NON-NLS-1$
             if ( obj instanceof AttributeTypeWrapper )
             {
-                AttributeType at = ( ( AttributeTypeWrapper ) obj ).getAttributeType();
+                MutableAttributeTypeImpl at = ( ( AttributeTypeWrapper ) obj ).getAttributeType();
 
                 if ( secondaryLabelValue == PluginConstants.PREFS_HIERARCHY_VIEW_LABEL_FIRST_NAME )
                 {

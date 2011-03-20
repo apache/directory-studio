@@ -28,7 +28,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.MutableAttributeTypeImpl;
 import org.apache.directory.shared.ldap.model.schema.MutableLdapSyntax;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonConstants;
@@ -240,7 +240,7 @@ public class ValueEditorManager
             return userSelectedValueEditor;
         }
 
-        AttributeType atd = schema.getAttributeTypeDescription( attributeType );
+        MutableAttributeTypeImpl atd = schema.getAttributeTypeDescription( attributeType );
         // check attribute preferences
         Map<String, String> attributeValueEditorMap = BrowserCommonActivator.getDefault().getValueEditorsPreferences()
             .getAttributeValueEditorMap();
@@ -419,7 +419,7 @@ public class ValueEditorManager
     {
         List<IValueEditor> alternativeList = new ArrayList<IValueEditor>();
 
-        AttributeType atd = schema.getAttributeTypeDescription( attributeName );
+        MutableAttributeTypeImpl atd = schema.getAttributeTypeDescription( attributeName );
 
         if ( SchemaUtils.isBinary( atd, schema ) )
         {

@@ -24,7 +24,7 @@ package org.apache.directory.studio.schemaeditor.view.views;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.MutableAttributeTypeImpl;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.studio.schemaeditor.Activator;
 import org.apache.directory.studio.schemaeditor.PluginConstants;
@@ -66,9 +66,9 @@ public class HierarchyViewContentProvider implements IStructuredContentProvider,
 
             children = createTypeHierarchyObjectClass( oc );
         }
-        else if ( parentElement instanceof AttributeType )
+        else if ( parentElement instanceof MutableAttributeTypeImpl )
         {
-            AttributeType at = ( AttributeType ) parentElement;
+            MutableAttributeTypeImpl at = ( MutableAttributeTypeImpl ) parentElement;
 
             children = createTypeHierarchyAttributeType( at );
         }
@@ -211,7 +211,7 @@ public class HierarchyViewContentProvider implements IStructuredContentProvider,
      * @return
      *      the Type Hierarchy for an attribute type
      */
-    private List<TreeNode> createTypeHierarchyAttributeType( AttributeType at )
+    private List<TreeNode> createTypeHierarchyAttributeType( MutableAttributeTypeImpl at )
     {
         List<TreeNode> children = new ArrayList<TreeNode>();
         HierarchyManager hierarchyManager = new HierarchyManager();
@@ -230,9 +230,9 @@ public class HierarchyViewContentProvider implements IStructuredContentProvider,
             while ( ( parents != null ) && ( parents.size() == 1 ) )
             {
                 Object parent = parents.get( 0 );
-                if ( parent instanceof AttributeType )
+                if ( parent instanceof MutableAttributeTypeImpl )
                 {
-                    AttributeType parentAT = ( AttributeType ) parent;
+                    MutableAttributeTypeImpl parentAT = ( MutableAttributeTypeImpl ) parent;
 
                     AttributeTypeWrapper atw2 = new AttributeTypeWrapper( parentAT );
                     atw.setParent( atw2 );
@@ -257,9 +257,9 @@ public class HierarchyViewContentProvider implements IStructuredContentProvider,
             while ( ( parents != null ) && ( parents.size() == 1 ) )
             {
                 Object parent = parents.get( 0 );
-                if ( parent instanceof AttributeType )
+                if ( parent instanceof MutableAttributeTypeImpl )
                 {
-                    AttributeType parentAT = ( AttributeType ) parent;
+                    MutableAttributeTypeImpl parentAT = ( MutableAttributeTypeImpl ) parent;
 
                     AttributeTypeWrapper atw2 = new AttributeTypeWrapper( parentAT );
                     atw.setParent( atw2 );
@@ -304,9 +304,9 @@ public class HierarchyViewContentProvider implements IStructuredContentProvider,
             for ( Object child : children )
             {
                 TreeNode childNode = null;
-                if ( child instanceof AttributeType )
+                if ( child instanceof MutableAttributeTypeImpl )
                 {
-                    AttributeType at = ( AttributeType ) child;
+                    MutableAttributeTypeImpl at = ( MutableAttributeTypeImpl ) child;
                     childNode = new AttributeTypeWrapper( at, node );
                     node.addChild( childNode );
                 }

@@ -20,7 +20,7 @@
 package org.apache.directory.studio.ldapbrowser.ui.editors.schemabrowser;
 
 
-import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.MutableAttributeTypeImpl;
 import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
 import org.apache.directory.shared.ldap.model.schema.MatchingRule;
 import org.apache.directory.shared.ldap.model.schema.MatchingRuleUse;
@@ -67,7 +67,7 @@ public class SchemaBrowserNavigationLocation extends NavigationLocation
 
                 return Messages.getString( "SchemaBrowserNavigationLocation.ObjectClass" ) + SchemaUtils.toString( schemaElement ); //$NON-NLS-1$
             }
-            else if ( schemaElement instanceof AttributeType )
+            else if ( schemaElement instanceof MutableAttributeTypeImpl )
             {
                 return Messages.getString( "SchemaBrowserNavigationLocation.AttributeType" ) + SchemaUtils.toString( schemaElement ); //$NON-NLS-1$
             }
@@ -123,7 +123,7 @@ public class SchemaBrowserNavigationLocation extends NavigationLocation
         {
             schemaElement = connection.getSchema().getObjectClassDescription( schemaElementOid );
         }
-        else if ( schemaElementType.contains( AttributeType.class.getName() ) )
+        else if ( schemaElementType.contains( MutableAttributeTypeImpl.class.getName() ) )
         {
             schemaElement = connection.getSchema().getAttributeTypeDescription( schemaElementOid );
         }

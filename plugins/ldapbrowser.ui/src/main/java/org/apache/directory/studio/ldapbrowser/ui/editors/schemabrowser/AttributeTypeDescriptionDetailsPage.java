@@ -23,7 +23,7 @@ package org.apache.directory.studio.ldapbrowser.ui.editors.schemabrowser;
 
 import java.util.Collection;
 
-import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.MutableAttributeTypeImpl;
 import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
 import org.apache.directory.shared.ldap.model.schema.MatchingRule;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
@@ -344,10 +344,10 @@ public class AttributeTypeDescriptionDetailsPage extends SchemaDetailsPage
      */
     public void setInput( Object input )
     {
-        AttributeType atd = null;
-        if ( input instanceof AttributeType )
+        MutableAttributeTypeImpl atd = null;
+        if ( input instanceof MutableAttributeTypeImpl )
         {
-            atd = ( AttributeType ) input;
+            atd = ( MutableAttributeTypeImpl ) input;
         }
 
         // create main content
@@ -447,7 +447,7 @@ public class AttributeTypeDescriptionDetailsPage extends SchemaDetailsPage
      *
      * @param atd the attribute type description
      */
-    private void createMainContent( AttributeType atd )
+    private void createMainContent( MutableAttributeTypeImpl atd )
     {
         // dispose old content
         if ( mainSection.getClient() != null )
@@ -504,7 +504,7 @@ public class AttributeTypeDescriptionDetailsPage extends SchemaDetailsPage
      *
      * @param atd the attribute type description
      */
-    private void createOtherMatchContent( AttributeType atd )
+    private void createOtherMatchContent( MutableAttributeTypeImpl atd )
     {
         // dispose old content
         if ( otherMatchSection.getClient() != null )
@@ -575,7 +575,7 @@ public class AttributeTypeDescriptionDetailsPage extends SchemaDetailsPage
      *
      * @param atd the attribute type description
      */
-    private void createSupertypeContent( AttributeType atd )
+    private void createSupertypeContent( MutableAttributeTypeImpl atd )
     {
         // dispose old content
         if ( supertypeSection.getClient() != null )
@@ -599,7 +599,7 @@ public class AttributeTypeDescriptionDetailsPage extends SchemaDetailsPage
                     .getString( "AttributeTypeDescriptionDetailsPage.SupertypeCount" ), new Object[] { 1 } ) ); //$NON-NLS-1$
                 if ( getSchema().hasAttributeTypeDescription( superType ) )
                 {
-                    AttributeType supAtd = getSchema().getAttributeTypeDescription( superType );
+                    MutableAttributeTypeImpl supAtd = getSchema().getAttributeTypeDescription( superType );
                     Hyperlink superLink = toolkit.createHyperlink( superClient, SchemaUtils.toString( supAtd ),
                         SWT.WRAP );
                     superLink.setHref( supAtd );
@@ -641,7 +641,7 @@ public class AttributeTypeDescriptionDetailsPage extends SchemaDetailsPage
      *
      * @param atd the attribute type description
      */
-    private void createSubtypesContent( AttributeType atd )
+    private void createSubtypesContent( MutableAttributeTypeImpl atd )
     {
         // dispose old content
         if ( subtypesSection.getClient() != null )
@@ -657,7 +657,7 @@ public class AttributeTypeDescriptionDetailsPage extends SchemaDetailsPage
         // create new content, either links to subtypes or a dash if no subtypes exist.
         if ( atd != null )
         {
-            Collection<AttributeType> derivedAtds = SchemaUtils.getDerivedAttributeTypeDescriptions( atd,
+            Collection<MutableAttributeTypeImpl> derivedAtds = SchemaUtils.getDerivedAttributeTypeDescriptions( atd,
                 getSchema() );
             if ( derivedAtds != null && derivedAtds.size() > 0 )
             {
@@ -665,7 +665,7 @@ public class AttributeTypeDescriptionDetailsPage extends SchemaDetailsPage
                     .setText( NLS
                         .bind(
                             Messages.getString( "AttributeTypeDescriptionDetailsPage.SubtypesCount" ), new Object[] { derivedAtds.size() } ) ); //$NON-NLS-1$
-                for ( AttributeType derivedAtd : derivedAtds )
+                for ( MutableAttributeTypeImpl derivedAtd : derivedAtds )
                 {
                     Hyperlink subAttributeTypeLink = toolkit.createHyperlink( subClient, SchemaUtils
                         .toString( derivedAtd ), SWT.WRAP );
@@ -702,7 +702,7 @@ public class AttributeTypeDescriptionDetailsPage extends SchemaDetailsPage
      *
      * @param atd the attribute type description
      */
-    private void createUsedAsMustContent( AttributeType atd )
+    private void createUsedAsMustContent( MutableAttributeTypeImpl atd )
     {
         // dispose old content
         if ( usedAsMustSection.getClient() != null )
@@ -762,7 +762,7 @@ public class AttributeTypeDescriptionDetailsPage extends SchemaDetailsPage
      *
      * @param atd the attribute type description
      */
-    private void createUsedAsMayContent( AttributeType atd )
+    private void createUsedAsMayContent( MutableAttributeTypeImpl atd )
     {
         // dispose old content
         if ( usedAsMaySection.getClient() != null )

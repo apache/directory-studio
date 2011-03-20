@@ -25,7 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.directory.shared.asn1.util.OID;
-import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.MutableAttributeTypeImpl;
 import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
 import org.apache.directory.shared.ldap.model.schema.MatchingRule;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
@@ -113,7 +113,7 @@ public class ObjectClassEditorOverviewPage extends FormPage
         /* (non-Javadoc)
          * @see org.apache.directory.studio.schemaeditor.controller.SchemaHandlerListener#attributeTypeAdded(org.apache.directory.studio.schemaeditor.model.AttributeTypeImpl)
          */
-        public void attributeTypeAdded( AttributeType at )
+        public void attributeTypeAdded( MutableAttributeTypeImpl at )
         {
             refreshUI();
         }
@@ -122,7 +122,7 @@ public class ObjectClassEditorOverviewPage extends FormPage
         /* (non-Javadoc)
          * @see org.apache.directory.studio.schemaeditor.controller.SchemaHandlerListener#attributeTypeModified(org.apache.directory.studio.schemaeditor.model.AttributeTypeImpl)
          */
-        public void attributeTypeModified( AttributeType at )
+        public void attributeTypeModified( MutableAttributeTypeImpl at )
         {
             refreshUI();
         }
@@ -131,7 +131,7 @@ public class ObjectClassEditorOverviewPage extends FormPage
         /* (non-Javadoc)
          * @see org.apache.directory.studio.schemaeditor.controller.SchemaHandlerListener#attributeTypeRemoved(org.apache.directory.studio.schemaeditor.model.AttributeTypeImpl)
          */
-        public void attributeTypeRemoved( AttributeType at )
+        public void attributeTypeRemoved( MutableAttributeTypeImpl at )
         {
             refreshUI();
         }
@@ -436,12 +436,12 @@ public class ObjectClassEditorOverviewPage extends FormPage
             Object selectedElement = selection.getFirstElement();
             if ( selectedElement != null )
             {
-                if ( selectedElement instanceof AttributeType )
+                if ( selectedElement instanceof MutableAttributeTypeImpl )
                 {
                     IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
                     try
                     {
-                        page.openEditor( new AttributeTypeEditorInput( ( AttributeType ) selectedElement ),
+                        page.openEditor( new AttributeTypeEditorInput( ( MutableAttributeTypeImpl ) selectedElement ),
                             AttributeTypeEditor.ID );
                     }
                     catch ( PartInitException exception )
@@ -470,27 +470,27 @@ public class ObjectClassEditorOverviewPage extends FormPage
         public void widgetSelected( SelectionEvent e )
         {
             AttributeTypeSelectionDialog dialog = new AttributeTypeSelectionDialog();
-            List<AttributeType> hiddenATs = new ArrayList<AttributeType>();
+            List<MutableAttributeTypeImpl> hiddenATs = new ArrayList<MutableAttributeTypeImpl>();
             List<String> mustsHidden = modifiedObjectClass.getMustAttributeTypeOids();
             if ( mustsHidden != null )
             {
                 for ( String must : mustsHidden )
                 {
-                    AttributeType at = schemaHandler.getAttributeType( must );
+                    MutableAttributeTypeImpl at = schemaHandler.getAttributeType( must );
                     if ( at != null )
                     {
                         hiddenATs.add( at );
                     }
                 }
             }
-            dialog.setHiddenAttributeTypes( hiddenATs.toArray( new AttributeType[0] ) );
+            dialog.setHiddenAttributeTypes( hiddenATs.toArray( new MutableAttributeTypeImpl[0] ) );
 
             if ( dialog.open() != Window.OK )
             {
                 return;
             }
 
-            AttributeType at = dialog.getSelectedAttributeType();
+            MutableAttributeTypeImpl at = dialog.getSelectedAttributeType();
             if ( at == null )
             {
                 return;
@@ -542,9 +542,9 @@ public class ObjectClassEditorOverviewPage extends FormPage
                     newMusts.add( must );
                 }
 
-                if ( selectedElement instanceof AttributeType )
+                if ( selectedElement instanceof MutableAttributeTypeImpl )
                 {
-                    for ( String name : ( ( AttributeType ) selectedElement ).getNames() )
+                    for ( String name : ( ( MutableAttributeTypeImpl ) selectedElement ).getNames() )
                     {
                         newMusts.remove( name );
                     }
@@ -578,12 +578,12 @@ public class ObjectClassEditorOverviewPage extends FormPage
             Object selectedElement = selection.getFirstElement();
             if ( selectedElement != null )
             {
-                if ( selectedElement instanceof AttributeType )
+                if ( selectedElement instanceof MutableAttributeTypeImpl )
                 {
                     IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
                     try
                     {
-                        page.openEditor( new AttributeTypeEditorInput( ( AttributeType ) selectedElement ),
+                        page.openEditor( new AttributeTypeEditorInput( ( MutableAttributeTypeImpl ) selectedElement ),
                             AttributeTypeEditor.ID );
                     }
                     catch ( PartInitException exception )
@@ -607,27 +607,27 @@ public class ObjectClassEditorOverviewPage extends FormPage
         public void widgetSelected( SelectionEvent e )
         {
             AttributeTypeSelectionDialog dialog = new AttributeTypeSelectionDialog();
-            List<AttributeType> hiddenATs = new ArrayList<AttributeType>();
+            List<MutableAttributeTypeImpl> hiddenATs = new ArrayList<MutableAttributeTypeImpl>();
             List<String> maysHidden = modifiedObjectClass.getMayAttributeTypeOids();
             if ( maysHidden != null )
             {
                 for ( String may : maysHidden )
                 {
-                    AttributeType at = schemaHandler.getAttributeType( may );
+                    MutableAttributeTypeImpl at = schemaHandler.getAttributeType( may );
                     if ( at != null )
                     {
                         hiddenATs.add( at );
                     }
                 }
             }
-            dialog.setHiddenAttributeTypes( hiddenATs.toArray( new AttributeType[0] ) );
+            dialog.setHiddenAttributeTypes( hiddenATs.toArray( new MutableAttributeTypeImpl[0] ) );
 
             if ( dialog.open() != Window.OK )
             {
                 return;
             }
 
-            AttributeType at = dialog.getSelectedAttributeType();
+            MutableAttributeTypeImpl at = dialog.getSelectedAttributeType();
             if ( at == null )
             {
                 return;
@@ -679,9 +679,9 @@ public class ObjectClassEditorOverviewPage extends FormPage
                     newMays.add( may );
                 }
 
-                if ( selectedElement instanceof AttributeType )
+                if ( selectedElement instanceof MutableAttributeTypeImpl )
                 {
-                    for ( String name : ( ( AttributeType ) selectedElement ).getNames() )
+                    for ( String name : ( ( MutableAttributeTypeImpl ) selectedElement ).getNames() )
                     {
                         newMays.remove( name );
                     }

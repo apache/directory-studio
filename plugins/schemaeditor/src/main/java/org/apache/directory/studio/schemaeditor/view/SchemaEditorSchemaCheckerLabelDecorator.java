@@ -22,7 +22,7 @@ package org.apache.directory.studio.schemaeditor.view;
 
 import java.util.List;
 
-import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.MutableAttributeTypeImpl;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.studio.schemaeditor.Activator;
 import org.apache.directory.studio.schemaeditor.PluginConstants;
@@ -57,7 +57,7 @@ public class SchemaEditorSchemaCheckerLabelDecorator extends LabelProvider imple
 
         if ( element instanceof AttributeTypeWrapper )
         {
-            AttributeType at = ( ( AttributeTypeWrapper ) element ).getAttributeType();
+            MutableAttributeTypeImpl at = ( ( AttributeTypeWrapper ) element ).getAttributeType();
 
             if ( schemaChecker.hasErrors( at ) )
             {
@@ -89,7 +89,7 @@ public class SchemaEditorSchemaCheckerLabelDecorator extends LabelProvider imple
         {
             Schema schema = ( ( SchemaWrapper ) element ).getSchema();
 
-            for ( AttributeType at : schema.getAttributeTypes() )
+            for ( MutableAttributeTypeImpl at : schema.getAttributeTypes() )
             {
                 if ( schemaChecker.hasErrors( at ) )
                 {
@@ -180,7 +180,7 @@ public class SchemaEditorSchemaCheckerLabelDecorator extends LabelProvider imple
             {
                 if ( child instanceof AttributeTypeWrapper )
                 {
-                    AttributeType at = ( ( AttributeTypeWrapper ) child ).getAttributeType();
+                    MutableAttributeTypeImpl at = ( ( AttributeTypeWrapper ) child ).getAttributeType();
 
                     if ( schemaChecker.hasWarnings( at ) )
                     {
@@ -235,7 +235,7 @@ public class SchemaEditorSchemaCheckerLabelDecorator extends LabelProvider imple
             {
                 if ( child instanceof AttributeTypeWrapper )
                 {
-                    AttributeType at = ( ( AttributeTypeWrapper ) child ).getAttributeType();
+                    MutableAttributeTypeImpl at = ( ( AttributeTypeWrapper ) child ).getAttributeType();
 
                     if ( schemaChecker.hasErrors( at ) )
                     {

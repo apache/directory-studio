@@ -22,7 +22,7 @@ package org.apache.directory.studio.ldapbrowser.ui.editors.schemabrowser;
 
 
 import org.apache.directory.shared.ldap.model.schema.AbstractSchemaObject;
-import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.MutableAttributeTypeImpl;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.Schema;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.SchemaUtils;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
@@ -168,7 +168,7 @@ public class AttributeTypeDescriptionPage extends SchemaPage
          */
         public String getColumnText( Object obj, int index )
         {
-            if ( obj instanceof AttributeType )
+            if ( obj instanceof MutableAttributeTypeImpl )
             {
                 return SchemaUtils.toString( ( AbstractSchemaObject ) obj );
             }
@@ -197,11 +197,11 @@ public class AttributeTypeDescriptionPage extends SchemaPage
          */
         public int compare( Viewer viewer, Object e1, Object e2 )
         {
-            if ( e1 instanceof AttributeType )
+            if ( e1 instanceof MutableAttributeTypeImpl )
             {
                 e1 = SchemaUtils.toString( ( AbstractSchemaObject ) e1 );
             }
-            if ( e2 instanceof AttributeType )
+            if ( e2 instanceof MutableAttributeTypeImpl )
             {
                 e2 = SchemaUtils.toString( ( AbstractSchemaObject ) e2 );
             }
@@ -221,9 +221,9 @@ public class AttributeTypeDescriptionPage extends SchemaPage
          */
         public boolean select( Viewer viewer, Object parentElement, Object element )
         {
-            if ( element instanceof AttributeType )
+            if ( element instanceof MutableAttributeTypeImpl )
             {
-                AttributeType atd = ( AttributeType ) element;
+                MutableAttributeTypeImpl atd = ( MutableAttributeTypeImpl ) element;
                 boolean matched = SchemaUtils.toString( atd ).toLowerCase()
                     .indexOf( filterText.getText().toLowerCase() ) != -1
                     || atd.getOid().toLowerCase().indexOf( filterText.getText().toLowerCase() ) != -1;
