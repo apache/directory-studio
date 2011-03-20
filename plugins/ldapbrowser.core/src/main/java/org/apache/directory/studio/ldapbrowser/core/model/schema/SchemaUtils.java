@@ -31,15 +31,13 @@ import java.util.TreeSet;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.directory.shared.ldap.model.constants.SchemaConstants;
-import org.apache.directory.shared.ldap.model.schema.AbstractMutableSchemaObject;
-import org.apache.directory.shared.ldap.model.schema.AbstractSchemaObject;
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
 import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
-import org.apache.directory.shared.ldap.model.schema.MutableLdapSyntaxImpl;
-import org.apache.directory.shared.ldap.model.schema.MutableMatchingRuleImpl;
+import org.apache.directory.shared.ldap.model.schema.MatchingRule;
 import org.apache.directory.shared.ldap.model.schema.MatchingRuleUse;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.shared.ldap.model.schema.ObjectClassTypeEnum;
+import org.apache.directory.shared.ldap.model.schema.SchemaObject;
 import org.apache.directory.shared.ldap.model.schema.UsageEnum;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
 import org.apache.directory.studio.ldapbrowser.core.model.AttributeHierarchy;
@@ -167,9 +165,9 @@ public class SchemaUtils
         }
     };
 
-    private static final Comparator<AbstractMutableSchemaObject> schemaElementNameComparator = new Comparator<AbstractMutableSchemaObject>()
+    private static final Comparator<SchemaObject> schemaElementNameComparator = new Comparator<SchemaObject>()
     {
-        public int compare( AbstractMutableSchemaObject s1, AbstractMutableSchemaObject s2 )
+        public int compare( SchemaObject s1, SchemaObject s2 )
         {
             return SchemaUtils.toString( s1 ).compareToIgnoreCase( SchemaUtils.toString( s2 ) );
         }
@@ -183,10 +181,10 @@ public class SchemaUtils
      * 
      * @return the names
      */
-    public static Collection<String> getNames( Collection<? extends AbstractMutableSchemaObject> asds )
+    public static Collection<String> getNames( Collection<? extends SchemaObject> asds )
     {
         Set<String> nameSet = new TreeSet<String>( nameAndOidComparator );
-        for ( AbstractSchemaObject asd : asds )
+        for ( SchemaObject asd : asds )
         {
             nameSet.addAll( asd.getNames() );
         }
@@ -201,7 +199,7 @@ public class SchemaUtils
      * 
      * @return the names
      */
-    public static String[] getNamesAsArray( Collection<? extends AbstractMutableSchemaObject> asds )
+    public static String[] getNamesAsArray( Collection<? extends SchemaObject> asds )
     {
         return getNames( asds ).toArray( new String[0] );
     }
@@ -212,10 +210,10 @@ public class SchemaUtils
      * 
      * @return the numeric OIDs of the given schema descriptions
      */
-    public static Collection<String> getNumericOids( Collection<? extends AbstractMutableSchemaObject> descriptions )
+    public static Collection<String> getNumericOids( Collection<? extends SchemaObject> descriptions )
     {
         Set<String> oids = new HashSet<String>();
-        for ( AbstractSchemaObject asd : descriptions )
+        for ( SchemaObject asd : descriptions )
         {
             oids.add( asd.getOid() );
 
@@ -231,7 +229,7 @@ public class SchemaUtils
      * 
      * @return the identifiers
      */
-    public static Collection<String> getLowerCaseIdentifiers( AbstractSchemaObject asd )
+    public static Collection<String> getLowerCaseIdentifiers( SchemaObject asd )
     {
         Set<String> identiers = new HashSet<String>();
         if ( asd.getOid() != null )
@@ -260,7 +258,7 @@ public class SchemaUtils
      * 
      * @return the friendly identifier
      */
-    public static String getFriendlyIdentifier( AbstractSchemaObject asd )
+    public static String getFriendlyIdentifier( SchemaObject asd )
     {
         if ( asd.getNames() != null && !asd.getNames().isEmpty() )
         {
@@ -429,7 +427,7 @@ public class SchemaUtils
      * 
      * @return false if the syntax is defined as binary
      */
-    public static boolean isString( MutableLdapSyntaxImpl lsd )
+    public static boolean isString( LdapSyntax lsd )
     {
         return !isBinary( lsd );
     }
@@ -443,7 +441,7 @@ public class SchemaUtils
      * 
      * @return true if the syntax is defined as binary
      */
-    public static boolean isBinary( MutableLdapSyntaxImpl lsd )
+    public static boolean isBinary( LdapSyntax lsd )
     {
         // check user-defined binary syntaxes
         Set<String> binarySyntaxOids = BrowserCorePlugin.getDefault().getCorePreferences()
@@ -497,7 +495,7 @@ public class SchemaUtils
         String syntax = getSyntaxNumericOidTransitive( atd, schema );
         if ( syntax != null && schema.hasLdapSyntaxDescription( syntax ) )
         {
-            MutableLdapSyntaxImpl lsd = schema.getLdapSyntaxDescription( syntax );
+            LdapSyntax lsd = schema.getLdapSyntaxDescription( syntax );
             return isBinary( lsd );
         }
 
@@ -513,8 +511,7 @@ public class SchemaUtils
      * 
      * @return all attribute type description using this syntax description
      */
-    public static Collection<AttributeType> getUsedFromAttributeTypeDescriptions( MutableLdapSyntaxImpl lsd,
-        Schema schema )
+    public static Collection<AttributeType> getUsedFromAttributeTypeDescriptions( LdapSyntax lsd, Schema schema )
     {
         Set<AttributeType> usedFroms = new TreeSet<AttributeType>( schemaElementNameComparator );
         for ( AttributeType atd : schema.getAttributeTypeDescriptions() )
@@ -539,8 +536,7 @@ public class SchemaUtils
      * @return all attribute type descriptions using this matching rule for
      * equality, substring or ordering matching
      */
-    public static Collection<AttributeType> getUsedFromAttributeTypeDescriptions(
-        MutableMatchingRuleImpl mrd, Schema schema )
+    public static Collection<AttributeType> getUsedFromAttributeTypeDescriptions( MatchingRule mrd, Schema schema )
     {
         Set<AttributeType> usedFromSet = new TreeSet<AttributeType>( schemaElementNameComparator );
         for ( AttributeType atd : schema.getAttributeTypeDescriptions() )
@@ -918,7 +914,7 @@ public class SchemaUtils
      * @param asd the schema element
      * @return the LDIF line of the given schema element, may be null
      */
-    public static String getLdifLine( AbstractSchemaObject asd )
+    public static String getLdifLine( SchemaObject asd )
     {
         List<String> ldifLines = asd.getExtensions().get( Schema.RAW_SCHEMA_DEFINITION_LDIF_VALUE );
         String ldifLine = ldifLines != null && !ldifLines.isEmpty() ? ldifLines.get( 0 ) : null;
@@ -947,7 +943,7 @@ public class SchemaUtils
      * 
      * @return the string representation of the given schema element
      */
-    public static String toString( AbstractSchemaObject asd )
+    public static String toString( SchemaObject asd )
     {
         StringBuffer sb = new StringBuffer();
         if ( asd instanceof LdapSyntax )

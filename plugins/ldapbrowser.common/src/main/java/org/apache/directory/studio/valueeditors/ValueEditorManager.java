@@ -17,7 +17,6 @@
  *  under the License. 
  *  
  */
-
 package org.apache.directory.studio.valueeditors;
 
 
@@ -30,7 +29,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
-import org.apache.directory.shared.ldap.model.schema.MutableLdapSyntaxImpl;
+import org.apache.directory.shared.ldap.model.schema.MutableLdapSyntax;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonConstants;
 import org.apache.directory.studio.ldapbrowser.core.model.AttributeHierarchy;
@@ -269,7 +268,7 @@ public class ValueEditorManager
         }
 
         // return default
-        MutableLdapSyntaxImpl lsd = schema.getLdapSyntaxDescription( syntaxNumericOid );
+        MutableLdapSyntax lsd = schema.getLdapSyntaxDescription( syntaxNumericOid );
         if ( SchemaUtils.isBinary( lsd ) )
         {
             return defaultBinaryValueEditor;

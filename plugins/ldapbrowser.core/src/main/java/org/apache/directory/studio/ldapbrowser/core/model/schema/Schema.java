@@ -38,16 +38,14 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.directory.shared.ldap.model.constants.SchemaConstants;
 import org.apache.directory.shared.ldap.model.name.Dn;
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.MutableLdapSyntax;
 import org.apache.directory.shared.ldap.model.schema.MutableLdapSyntaxImpl;
+import org.apache.directory.shared.ldap.model.schema.MutableMatchingRule;
 import org.apache.directory.shared.ldap.model.schema.MutableMatchingRuleImpl;
 import org.apache.directory.shared.ldap.model.schema.MatchingRuleUse;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.shared.ldap.model.schema.UsageEnum;
 import org.apache.directory.shared.ldap.model.schema.parsers.*;
-import org.apache.directory.shared.ldap.model.schema.parsers.LdapSyntaxDescriptionSchemaParser;
-import org.apache.directory.shared.ldap.model.schema.parsers.MatchingRuleDescriptionSchemaParser;
-import org.apache.directory.shared.ldap.model.schema.parsers.MatchingRuleUseDescriptionSchemaParser;
-import org.apache.directory.shared.ldap.model.schema.parsers.ObjectClassDescriptionSchemaParser;
 import org.apache.directory.studio.connection.core.Utils;
 import org.apache.directory.studio.ldapbrowser.core.model.AttributeDescription;
 import org.apache.directory.studio.ldifparser.LdifFormatParameters;
@@ -130,9 +128,9 @@ public class Schema
 
     private Map<String, AttributeType> atdMapByNameOrNumericOid;
 
-    private Map<String, MutableLdapSyntaxImpl> lsdMapByNumericOid;
+    private Map<String, MutableLdapSyntax> lsdMapByNumericOid;
 
-    private Map<String, MutableMatchingRuleImpl> mrdMapByNameOrNumericOid;
+    private Map<String, MutableMatchingRule> mrdMapByNameOrNumericOid;
 
     private Map<String, MatchingRuleUse> mrudMapByNameOrNumericOid;
 
@@ -148,8 +146,8 @@ public class Schema
         this.modifyTimestamp = null;
         this.ocdMapByNameOrNumericOid = new HashMap<String, ObjectClass>();
         this.atdMapByNameOrNumericOid = new HashMap<String, AttributeType>();
-        this.lsdMapByNumericOid = new HashMap<String, MutableLdapSyntaxImpl>();
-        this.mrdMapByNameOrNumericOid = new HashMap<String, MutableMatchingRuleImpl>();
+        this.lsdMapByNumericOid = new HashMap<String, MutableLdapSyntax>();
+        this.mrdMapByNameOrNumericOid = new HashMap<String, MutableMatchingRule>();
         this.mrudMapByNameOrNumericOid = new HashMap<String, MatchingRuleUse>();
     }
 
@@ -270,7 +268,7 @@ public class Schema
                 }
                 else if ( attributeName.equalsIgnoreCase( SchemaConstants.LDAP_SYNTAXES_AT ) )
                 {
-                    MutableLdapSyntaxImpl lsd = lsdParser.parseLdapSyntaxDescription( value );
+                    MutableLdapSyntax lsd = lsdParser.parseLdapSyntaxDescription( value );
                     if ( StringUtils.isEmpty( lsd.getDescription() )
                         && Utils.getOidDescription( lsd.getOid() ) != null )
                     {
@@ -281,7 +279,7 @@ public class Schema
                 }
                 else if ( attributeName.equalsIgnoreCase( SchemaConstants.MATCHING_RULES_AT ) )
                 {
-                    MutableMatchingRuleImpl mrd = mrdParser.parseMatchingRuleDescription( value );
+                    MutableMatchingRule mrd = mrdParser.parseMatchingRuleDescription( value );
                     mrd.addExtension( RAW_SCHEMA_DEFINITION_LDIF_VALUE, ldifValues );
                     addMatchingRule( mrd );
                 }
@@ -623,7 +621,7 @@ public class Schema
      * 
      * @param lsd the LDAP syntax description
      */
-    private void addLdapSyntax( MutableLdapSyntaxImpl lsd )
+    private void addLdapSyntax( MutableLdapSyntax lsd )
     {
         if ( lsd.getOid() != null )
         {
@@ -637,9 +635,9 @@ public class Schema
      * 
      * @return the LDAP syntax descriptions
      */
-    public Collection<MutableLdapSyntaxImpl> getLdapSyntaxDescriptions()
+    public Collection<MutableLdapSyntax> getLdapSyntaxDescriptions()
     {
-        Set<MutableLdapSyntaxImpl> set = new HashSet<MutableLdapSyntaxImpl>( lsdMapByNumericOid.values() );
+        Set<MutableLdapSyntax> set = new HashSet<MutableLdapSyntax>( lsdMapByNumericOid.values() );
         return set;
     }
 
@@ -670,7 +668,7 @@ public class Schema
      * 
      * @return the attribute type description or the default or a dummy
      */
-    public MutableLdapSyntaxImpl getLdapSyntaxDescription( String numericOid )
+    public MutableLdapSyntax getLdapSyntaxDescription( String numericOid )
     {
         if ( numericOid == null )
         {
@@ -701,7 +699,7 @@ public class Schema
      * 
      * @param mrud the matching rule description
      */
-    private void addMatchingRule( MutableMatchingRuleImpl mrd )
+    private void addMatchingRule( MutableMatchingRule mrd )
     {
         if ( mrd.getOid() != null )
         {
@@ -722,9 +720,9 @@ public class Schema
      * 
      * @return the matching rule descriptions
      */
-    public Collection<MutableMatchingRuleImpl> getMatchingRuleDescriptions()
+    public Collection<MutableMatchingRule> getMatchingRuleDescriptions()
     {
-        Set<MutableMatchingRuleImpl> set = new HashSet<MutableMatchingRuleImpl>( mrdMapByNameOrNumericOid.values() );
+        Set<MutableMatchingRule> set = new HashSet<MutableMatchingRule>( mrdMapByNameOrNumericOid.values() );
         return set;
     }
 
@@ -757,7 +755,7 @@ public class Schema
      * 
      * @return the matching rule description or the default or a dummy
      */
-    public MutableMatchingRuleImpl getMatchingRuleDescription( String nameOrOid )
+    public MutableMatchingRule getMatchingRuleDescription( String nameOrOid )
     {
         if ( mrdMapByNameOrNumericOid.containsKey( nameOrOid.toLowerCase() ) )
         {
