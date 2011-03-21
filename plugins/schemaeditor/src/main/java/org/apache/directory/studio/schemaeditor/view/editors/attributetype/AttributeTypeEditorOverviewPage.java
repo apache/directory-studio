@@ -24,7 +24,7 @@ package org.apache.directory.studio.schemaeditor.view.editors.attributetype;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.directory.shared.asn1.util.OID;
+import org.apache.directory.shared.asn1.util.Oid;
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
 import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
 import org.apache.directory.shared.ldap.model.schema.MatchingRule;
@@ -323,7 +323,7 @@ public class AttributeTypeEditorOverviewPage extends FormPage
 
             String oid = oidText.getText();
 
-            if ( OID.isOID( oid ) )
+            if ( Oid.isOid( oid ) )
             {
                 if ( ( originalAttributeType.getOid().equals( oid ) )
                     || !( schemaHandler.isAliasOrOidAlreadyTaken( oid ) ) )

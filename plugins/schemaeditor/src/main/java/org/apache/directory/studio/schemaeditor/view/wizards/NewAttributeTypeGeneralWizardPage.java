@@ -25,7 +25,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import org.apache.directory.shared.asn1.util.OID;
+import org.apache.directory.shared.asn1.util.Oid;
 import org.apache.directory.studio.schemaeditor.Activator;
 import org.apache.directory.studio.schemaeditor.PluginConstants;
 import org.apache.directory.studio.schemaeditor.PluginUtils;
@@ -330,12 +330,12 @@ public class NewAttributeTypeGeneralWizardPage extends AbstractWizardPage
             displayErrorMessage( Messages.getString( "NewAttributeTypeGeneralWizardPage.ErrorNoOIDSpecified" ) ); //$NON-NLS-1$
             return;
         }
-        if ( ( !oidCombo.getText().equals( "" ) ) && ( !OID.isOID( oidCombo.getText() ) ) ) //$NON-NLS-1$
+        if ( ( !oidCombo.getText().equals( "" ) ) && ( !Oid.isOid( oidCombo.getText() ) ) ) //$NON-NLS-1$
         {
             displayErrorMessage( Messages.getString( "NewAttributeTypeGeneralWizardPage.ErrorIncorrectOID" ) ); //$NON-NLS-1$
             return;
         }
-        if ( ( !oidCombo.getText().equals( "" ) ) && ( OID.isOID( oidCombo.getText() ) ) //$NON-NLS-1$
+        if ( ( !oidCombo.getText().equals( "" ) ) && ( Oid.isOid( oidCombo.getText() ) ) //$NON-NLS-1$
             && ( schemaHandler.isAliasOrOidAlreadyTaken( oidCombo.getText() ) ) )
         {
             displayErrorMessage( Messages.getString( "NewAttributeTypeGeneralWizardPage.ErrorObjectOIDExists" ) ); //$NON-NLS-1$
