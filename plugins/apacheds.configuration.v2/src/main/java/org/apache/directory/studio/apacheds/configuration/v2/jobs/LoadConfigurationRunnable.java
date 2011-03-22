@@ -314,7 +314,7 @@ public class LoadConfigurationRunnable implements StudioRunnableWithProgress
                 throw new LdapNoSuchObjectException( "Unable to find the 'ou=config' base entry." );
             }
 
-            // Creating a list to hold the entries that needs to be checked
+            // Creating a list to hold the entries that need to be checked
             // for children and added to the partition
             List<Entry> entries = new ArrayList<Entry>();
             entries.add( configEntry );
