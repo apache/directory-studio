@@ -22,6 +22,7 @@ package org.apache.directory.studio.connection.core;
 
 import javax.naming.InvalidNameException;
 
+import org.apache.directory.shared.ldap.model.exception.LdapInvalidDnException;
 import org.apache.directory.shared.ldap.model.name.Dn;
 import org.apache.directory.shared.ldap.model.name.Rdn;
 
@@ -41,7 +42,7 @@ public class DnUtils
      * 
      * @return the prefix
      */
-    public static Dn getPrefixName( Dn dn, Dn suffix )
+    public static Dn getPrefixName( Dn dn, Dn suffix ) 
     {
         if ( suffix.size() < 1 )
         {
@@ -49,8 +50,16 @@ public class DnUtils
         }
         else
         {
-            Dn prefix = (Dn) dn.getSuffix( suffix.size() );
-            return prefix;
+            try
+            {
+                Dn prefix = dn.getDescendantOf( suffix );
+                
+                return prefix;
+            }
+            catch ( LdapInvalidDnException lide )
+            {
+                return null;
+            }
         }
     }
 
