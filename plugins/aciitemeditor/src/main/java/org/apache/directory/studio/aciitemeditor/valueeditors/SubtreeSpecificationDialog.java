@@ -26,6 +26,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.directory.shared.ldap.model.exception.LdapInvalidDnException;
 import org.apache.directory.shared.ldap.model.name.Dn;
 import org.apache.directory.shared.ldap.model.subtree.BaseSubtreeSpecification;
 import org.apache.directory.shared.ldap.model.subtree.SubtreeSpecification;
@@ -652,17 +653,26 @@ class SubtreeSpecificationDialog extends Dialog
     private void addValueExclusionsTable()
     {
         Dn chopBase = subtreeSpecification.getBase();
+        
         if ( useLocalName && ( subentryDn != null ) )
         {
             Dn suffix = subentryDn.getParent();
             
             if ( !Dn.isNullOrEmpty( suffix ) )
             {
-                chopBase = chopBase.addAll( suffix );
+                try
+                { 
+                    chopBase = chopBase.addAll( suffix );
+                }
+                catch ( LdapInvalidDnException lide )
+                {
+                    // Do nothing 
+                }
             }
         }
 
         ExclusionDialog dialog = new ExclusionDialog( getShell(), connection, chopBase, "" ); //$NON-NLS-1$
+        
         if ( dialog.open() == TextDialog.OK && !SubtreeValueEditor.EMPTY.equals( dialog.getType() )
             && !SubtreeValueEditor.EMPTY.equals( dialog.getDN() ) )
         {
@@ -684,17 +694,27 @@ class SubtreeSpecificationDialog extends Dialog
         if ( oldValue != null )
         {
             Dn chopBase = subtreeSpecification.getBase();
+            
             if ( useLocalName && ( subentryDn != null ) )
             {
                 Dn suffix = subentryDn.getParent();
                 
                 if ( !Dn.isNullOrEmpty( suffix ) )
                 {
-                    chopBase = chopBase.addAll( suffix );
+                    try
+                    {
+                        chopBase = chopBase.addAll( suffix );
+                    }
+                    catch ( LdapInvalidDnException lide )
+                    {
+                        // Do nothing 
+                    }
+
                 }
             }
 
             ExclusionDialog dialog = new ExclusionDialog( getShell(), connection, chopBase, oldValue );
+            
             if ( dialog.open() == TextDialog.OK && !SubtreeValueEditor.EMPTY.equals( dialog.getType() )
                 && !SubtreeValueEditor.EMPTY.equals( dialog.getDN() ) )
             {

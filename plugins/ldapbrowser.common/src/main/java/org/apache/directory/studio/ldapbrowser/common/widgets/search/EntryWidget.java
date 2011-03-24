@@ -201,11 +201,19 @@ public class EntryWidget extends BrowserWidget
 
                     // calculate initial Dn
                     Dn initialDn = dn;
+                    
                     if ( useLocalName && suffix != null && suffix.size() > 0 )
                     {
                         if ( initialDn != null && initialDn.size() > 0 )
                         {
-                            initialDn = initialDn.addAll( suffix );
+                            try
+                            {         
+                                initialDn = initialDn.addAll( suffix );
+                            }
+                            catch ( LdapInvalidDnException lide )
+                            {
+                                // Do nothing 
+                            }
                         }
                     }
 
