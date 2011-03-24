@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 
+import org.apache.directory.shared.ldap.model.exception.LdapInvalidDnException;
 import org.apache.directory.shared.ldap.model.name.Ava;
 import org.apache.directory.shared.ldap.model.name.Dn;
 import org.apache.directory.shared.ldap.model.name.Rdn;
@@ -303,6 +304,7 @@ public class DnBuilderWidget extends BrowserWidget implements ModifyListener
     public void validate()
     {
         Exception rdnE = null;
+        
         if ( showRDN )
         {
             try
@@ -310,6 +312,7 @@ public class DnBuilderWidget extends BrowserWidget implements ModifyListener
                 // calculate Rdn
                 String[] rdnTypes = new String[rdnLineList.size()];
                 String[] rdnValues = new String[rdnLineList.size()];
+                
                 for ( int i = 0; i < rdnLineList.size(); i++ )
                 {
                     RdnLine rdnLine = ( RdnLine ) rdnLineList.get( i );
@@ -325,6 +328,7 @@ public class DnBuilderWidget extends BrowserWidget implements ModifyListener
                         rdnLine.rdnDeleteButton.setEnabled( false );
                     }
                 }
+                
                 rdn = DnUtils.composeRdn( rdnTypes, rdnValues );
             }
             catch ( Exception e )
@@ -335,6 +339,7 @@ public class DnBuilderWidget extends BrowserWidget implements ModifyListener
         }
 
         Exception parentE = null;
+        
         if ( showParent )
         {
             try
@@ -350,10 +355,12 @@ public class DnBuilderWidget extends BrowserWidget implements ModifyListener
         }
 
         String s = ""; //$NON-NLS-1$
+        
         if ( rdnE != null )
         {
             s += rdnE.getMessage() != null ? rdnE.getMessage() : Messages.getString( "DnBuilderWidget.ErrorInRDN" ); //$NON-NLS-1$
         }
+        
         if ( parentE != null )
         {
             s += ", " + parentE.getMessage() != null ? parentE.getMessage() : Messages.getString( "DnBuilderWidget.ErrorInParentDN" ); //$NON-NLS-1$ //$NON-NLS-2$
@@ -370,7 +377,15 @@ public class DnBuilderWidget extends BrowserWidget implements ModifyListener
                 Dn dn;
                 if ( showParent && showRDN )
                 {
-                    dn = parentDn.add( rdn );
+                    try
+                    {
+                        dn = parentDn.add( rdn );
+                    }
+                    catch ( LdapInvalidDnException lide )
+                    {
+                        // Do nothing
+                        dn = Dn.EMPTY_DN;
+                    }
                 }
                 else if ( showParent )
                 {
@@ -378,13 +393,21 @@ public class DnBuilderWidget extends BrowserWidget implements ModifyListener
                 }
                 else if ( showRDN )
                 {
-                    dn = new Dn();
-                    dn.add( rdn );
+                    try
+                    {
+                        dn = new Dn( rdn );
+                    }
+                    catch ( LdapInvalidDnException lide )
+                    {
+                        // Do nothing
+                        dn = Dn.EMPTY_DN;
+                    }
                 }
                 else
                 {
-                    dn = new Dn();
+                    dn = Dn.EMPTY_DN;
                 }
+                
                 previewText.setText( dn.getName() );
             }
         }

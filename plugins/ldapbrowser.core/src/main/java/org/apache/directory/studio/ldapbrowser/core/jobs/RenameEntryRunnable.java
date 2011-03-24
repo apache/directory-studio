@@ -31,6 +31,7 @@ import javax.naming.directory.SearchControls;
 import javax.naming.ldap.Control;
 import javax.naming.ldap.ManageReferralControl;
 
+import org.apache.directory.shared.ldap.model.exception.LdapInvalidDnException;
 import org.apache.directory.shared.ldap.model.name.Dn;
 import org.apache.directory.shared.ldap.model.name.Rdn;
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
@@ -146,7 +147,16 @@ public class RenameEntryRunnable implements StudioConnectionBulkRunnableWithProg
 
         Dn oldDn = oldEntry.getDn();
         Dn parentDn = oldDn.getParent();
-        Dn newDn = parentDn.add( newRdn );
+        Dn newDn = null;
+        
+        try
+        {
+            newDn = parentDn.add( newRdn );
+        }
+        catch ( LdapInvalidDnException lide )
+        {
+            newDn = Dn.EMPTY_DN;
+        }
 
         // use a dummy monitor to be able to handle exceptions
         StudioProgressMonitor dummyMonitor = new StudioProgressMonitor( monitor );

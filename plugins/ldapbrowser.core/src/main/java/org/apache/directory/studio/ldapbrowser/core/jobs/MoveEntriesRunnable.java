@@ -30,6 +30,7 @@ import java.util.Set;
 import javax.naming.ContextNotEmptyException;
 import javax.naming.directory.SearchControls;
 
+import org.apache.directory.shared.ldap.model.exception.LdapInvalidDnException;
 import org.apache.directory.shared.ldap.model.name.Dn;
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.Connection;
@@ -161,7 +162,17 @@ public class MoveEntriesRunnable implements StudioConnectionBulkRunnableWithProg
 
             IEntry oldEntry = oldEntries[i];
             Dn oldDn = oldEntry.getDn();
-            Dn newDn = parentDn.add( oldDn.getRdn() );
+            
+            Dn newDn = null;
+            
+            try
+            {
+                newDn = parentDn.add( oldDn.getRdn() );
+            }
+            catch ( LdapInvalidDnException lide )
+            {
+                newDn = Dn.EMPTY_DN;
+            }
 
             // try to move entry
             RenameEntryRunnable.renameEntry( browserConnection, oldEntry, newDn, dummyMonitor );

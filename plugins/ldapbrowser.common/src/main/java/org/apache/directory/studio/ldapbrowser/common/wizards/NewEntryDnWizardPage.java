@@ -241,6 +241,7 @@ public class NewEntryDnWizardPage extends WizardPage implements WidgetModifyList
 
             // set new Dn
             Dn dn;
+            
             if ( wizard.isNewContextEntry() )
             {
                 try
@@ -254,7 +255,15 @@ public class NewEntryDnWizardPage extends WizardPage implements WidgetModifyList
             }
             else
             {
-                dn = dnBuilderWidget.getParentDn().add( dnBuilderWidget.getRdn() );
+                try
+                {
+                    dn = dnBuilderWidget.getParentDn().add( dnBuilderWidget.getRdn() );
+                }
+                catch ( LdapInvalidDnException lide )
+                {
+                    // Do nothing
+                    dn = Dn.EMPTY_DN;
+                }
             }
             newEntry.setDn( dn );
 
@@ -338,45 +347,57 @@ public class NewEntryDnWizardPage extends WizardPage implements WidgetModifyList
 
             Rdn rdn = dnBuilderWidget.getRdn();
             Dn parentDn = dnBuilderWidget.getParentDn();
-            final Dn dn = parentDn.add(  rdn );
-
-            // check if parent exists
-            ReadEntryRunnable readEntryRunnable1 = new ReadEntryRunnable( wizard.getSelectedConnection(), parentDn );
-            RunnableContextRunner.execute( readEntryRunnable1, getContainer(), false );
-            IEntry parentEntry = readEntryRunnable1.getReadEntry();
-            if ( parentEntry == null )
+            
+            try
             {
-                getShell().getDisplay().syncExec( new Runnable()
+                final Dn dn = parentDn.add( rdn );
+
+                // check if parent exists
+                ReadEntryRunnable readEntryRunnable1 = new ReadEntryRunnable( wizard.getSelectedConnection(), parentDn );
+                RunnableContextRunner.execute( readEntryRunnable1, getContainer(), false );
+                IEntry parentEntry = readEntryRunnable1.getReadEntry();
+                
+                if ( parentEntry == null )
                 {
-                    public void run()
+                    getShell().getDisplay().syncExec( new Runnable()
                     {
-                        MessageDialog
-                            .openError( getShell(),
-                                Messages.getString( "NewEntryDnWizardPage.Error" ), //$NON-NLS-1$
-                                NLS
-                                    .bind(
-                                        Messages.getString( "NewEntryDnWizardPage.ParentDoesNotExist" ), dnBuilderWidget.getParentDn().toString() ) ); //$NON-NLS-1$
-                    }
-                } );
-                return null;
+                        public void run()
+                        {
+                            MessageDialog
+                                .openError( getShell(),
+                                    Messages.getString( "NewEntryDnWizardPage.Error" ), //$NON-NLS-1$
+                                    NLS
+                                        .bind(
+                                            Messages.getString( "NewEntryDnWizardPage.ParentDoesNotExist" ), dnBuilderWidget.getParentDn().toString() ) ); //$NON-NLS-1$
+                        }
+                    } );
+                    
+                    return null;
+                }
+
+                // check that new entry does not exists yet 
+                ReadEntryRunnable readEntryRunnable2 = new ReadEntryRunnable( wizard.getSelectedConnection(), dn );
+                RunnableContextRunner.execute( readEntryRunnable2, getContainer(), false );
+                IEntry entry = readEntryRunnable2.getReadEntry();
+                
+                if ( entry != null )
+                {
+                    getShell().getDisplay().syncExec( new Runnable()
+                    {
+                        public void run()
+                        {
+                            MessageDialog
+                                .openError(
+                                    getShell(),
+                                    Messages.getString( "NewEntryDnWizardPage.Error" ), NLS.bind( Messages.getString( "NewEntryDnWizardPage.EntryAlreadyExists" ), dn.toString() ) ); //$NON-NLS-1$ //$NON-NLS-2$
+                        }
+                    } );
+                    
+                    return null;
+                }
             }
-
-            // check that new entry does not exists yet 
-            ReadEntryRunnable readEntryRunnable2 = new ReadEntryRunnable( wizard.getSelectedConnection(), dn );
-            RunnableContextRunner.execute( readEntryRunnable2, getContainer(), false );
-            IEntry entry = readEntryRunnable2.getReadEntry();
-            if ( entry != null )
+            catch ( LdapInvalidDnException lide )
             {
-                getShell().getDisplay().syncExec( new Runnable()
-                {
-                    public void run()
-                    {
-                        MessageDialog
-                            .openError(
-                                getShell(),
-                                Messages.getString( "NewEntryDnWizardPage.Error" ), NLS.bind( Messages.getString( "NewEntryDnWizardPage.EntryAlreadyExists" ), dn.toString() ) ); //$NON-NLS-1$ //$NON-NLS-2$
-                    }
-                } );
                 return null;
             }
         }
