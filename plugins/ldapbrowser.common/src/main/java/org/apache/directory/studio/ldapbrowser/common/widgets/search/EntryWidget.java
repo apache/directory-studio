@@ -208,7 +208,7 @@ public class EntryWidget extends BrowserWidget
                         {
                             try
                             {         
-                                initialDn = initialDn.addAll( suffix );
+                                initialDn = initialDn.add( suffix );
                             }
                             catch ( LdapInvalidDnException lide )
                             {

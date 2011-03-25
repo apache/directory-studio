@@ -662,7 +662,7 @@ class SubtreeSpecificationDialog extends Dialog
             {
                 try
                 { 
-                    chopBase = chopBase.addAll( suffix );
+                    chopBase = chopBase.add( suffix );
                 }
                 catch ( LdapInvalidDnException lide )
                 {
@@ -703,7 +703,7 @@ class SubtreeSpecificationDialog extends Dialog
                 {
                     try
                     {
-                        chopBase = chopBase.addAll( suffix );
+                        chopBase = chopBase.add( suffix );
                     }
                     catch ( LdapInvalidDnException lide )
                     {
