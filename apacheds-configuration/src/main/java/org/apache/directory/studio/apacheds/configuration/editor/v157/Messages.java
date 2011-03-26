@@ -17,7 +17,7 @@
  *  under the License. 
  *  
  */
-package org.apache.directory.studio.apacheds.configuration.editor.v156.dialogs;
+package org.apache.directory.studio.apacheds.configuration.editor.v157;
 
 
 import java.util.MissingResourceException;
@@ -26,7 +26,7 @@ import java.util.ResourceBundle;
 
 public class Messages
 {
-    private static final String BUNDLE_NAME = "org.apache.directory.studio.apacheds.configuration.editor.v156.dialogs.messages"; //$NON-NLS-1$
+    private static final String BUNDLE_NAME = "org.apache.directory.studio.apacheds.configuration.editor.v157.messages"; //$NON-NLS-1$
 
     private static final ResourceBundle RESOURCE_BUNDLE = ResourceBundle.getBundle( BUNDLE_NAME );
 

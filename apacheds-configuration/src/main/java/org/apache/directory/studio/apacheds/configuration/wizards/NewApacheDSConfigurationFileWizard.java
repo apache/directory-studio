@@ -33,6 +33,7 @@ import org.apache.directory.studio.apacheds.configuration.model.v153.ServerXmlIO
 import org.apache.directory.studio.apacheds.configuration.model.v154.ServerXmlIOV154;
 import org.apache.directory.studio.apacheds.configuration.model.v155.ServerXmlIOV155;
 import org.apache.directory.studio.apacheds.configuration.model.v156.ServerXmlIOV156;
+import org.apache.directory.studio.apacheds.configuration.model.v157.ServerXmlIOV157;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.swt.SWT;
@@ -81,6 +82,11 @@ public class NewApacheDSConfigurationFileWizard extends Wizard implements INewWi
             ServerXmlIO serverXmlIO = null;
             switch ( page.getTargetVersion() )
             {
+                case VERSION_1_5_7:
+                    serverXmlIO = new ServerXmlIOV157();
+                    serverConfiguration = serverXmlIO.parse( ApacheDSConfigurationPlugin.class
+                        .getResourceAsStream( "default-server-1.5.7.xml" ) ); //$NON-NLS-1$
+                    break;
                 case VERSION_1_5_6:
                     serverXmlIO = new ServerXmlIOV156();
                     serverConfiguration = serverXmlIO.parse( ApacheDSConfigurationPlugin.class
