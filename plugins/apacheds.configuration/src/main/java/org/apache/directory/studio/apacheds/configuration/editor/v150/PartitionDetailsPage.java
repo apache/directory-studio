@@ -24,10 +24,12 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.apache.directory.shared.ldap.model.entry.*;
+import org.apache.directory.shared.ldap.model.entry.DefaultEntryAttribute;
 import org.apache.directory.shared.ldap.model.entry.Entry;
 import org.apache.directory.shared.ldap.model.entry.EntryAttribute;
+import org.apache.directory.shared.ldap.model.entry.Value;
 import org.apache.directory.shared.ldap.model.exception.LdapException;
+import org.apache.directory.shared.ldap.model.exception.LdapInvalidAttributeValueException;
 import org.apache.directory.studio.apacheds.configuration.editor.v150.dialogs.AttributeValueDialog;
 import org.apache.directory.studio.apacheds.configuration.editor.v150.dialogs.AttributeValueObject;
 import org.apache.directory.studio.apacheds.configuration.editor.v150.dialogs.IndexedAttributeDialog;
@@ -165,10 +167,18 @@ public class PartitionDetailsPage implements IDetailsPage
             {
                 AttributeValueObject newAttributeValueObject = dialog.getAttributeValueObject();
                 EntryAttribute attribute = contextEntry.get( newAttributeValueObject.getAttribute() );
+                
                 if ( attribute != null )
                 {
-                    attribute.add( newAttributeValueObject.getValue() );
-                }
+                    try
+                    {
+                        attribute.add( newAttributeValueObject.getValue() );
+                    }
+                    catch ( LdapInvalidAttributeValueException liave )
+                    {
+                        // TODO : handle the exception
+                    }
+}
                 else
                 {
                     try
@@ -784,9 +794,17 @@ public class PartitionDetailsPage implements IDetailsPage
 
                 AttributeValueObject newAttributeValueObject = dialog.getAttributeValueObject();
                 attribute = contextEntry.get( newAttributeValueObject.getAttribute() );
+                
                 if ( attribute != null )
                 {
-                    attribute.add( newAttributeValueObject.getValue() );
+                    try
+                    {
+                        attribute.add( newAttributeValueObject.getValue() );
+                    }
+                    catch ( LdapInvalidAttributeValueException liave )
+                    {
+                        // TODO : handle the exception
+                    }
                 }
                 else
                 {

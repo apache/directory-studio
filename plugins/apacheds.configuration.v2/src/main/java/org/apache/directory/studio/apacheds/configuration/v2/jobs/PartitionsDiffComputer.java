@@ -33,10 +33,12 @@ import org.apache.directory.shared.ldap.model.constants.SchemaConstants;
 import org.apache.directory.shared.ldap.model.entry.DefaultEntryAttribute;
 import org.apache.directory.shared.ldap.model.entry.DefaultModification;
 import org.apache.directory.shared.ldap.model.entry.Entry;
-import org.apache.directory.shared.ldap.model.entry.*;
+import org.apache.directory.shared.ldap.model.entry.EntryAttribute;
 import org.apache.directory.shared.ldap.model.entry.Modification;
 import org.apache.directory.shared.ldap.model.entry.ModificationOperation;
+import org.apache.directory.shared.ldap.model.entry.Value;
 import org.apache.directory.shared.ldap.model.exception.LdapException;
+import org.apache.directory.shared.ldap.model.exception.LdapInvalidAttributeValueException;
 import org.apache.directory.shared.ldap.model.filter.FilterParser;
 import org.apache.directory.shared.ldap.model.filter.SearchScope;
 import org.apache.directory.shared.ldap.model.ldif.ChangeType;
@@ -355,9 +357,17 @@ public class PartitionsDiffComputer
                     modification.setOperation( ModificationOperation.ADD_ATTRIBUTE );
                     EntryAttribute attribute = new DefaultEntryAttribute( destinationAttributeType );
                     modification.setAttribute( attribute );
+                    
                     for ( Value<?> value : destinationAttribute )
                     {
-                        attribute.add( value );
+                        try
+                        {
+                            attribute.add( value );
+                        }
+                        catch ( LdapInvalidAttributeValueException liave )
+                        {
+                            // TODO : handle the exception
+                        }
                     }
 
                     modificationEntry.addModificationItem( modification );
@@ -394,7 +404,15 @@ public class PartitionsDiffComputer
                 modification.setOperation( ModificationOperation.REMOVE_ATTRIBUTE );
                 EntryAttribute attribute = new DefaultEntryAttribute( originalAttribute.getAttributeType() );
                 modification.setAttribute( attribute );
-                attribute.add( originalValue );
+                
+                try
+                {
+                    attribute.add( originalValue );
+                }
+                catch ( LdapInvalidAttributeValueException liave )
+                {
+                    // TODO : handle the exception
+                }
 
                 modificationEntry.addModificationItem( modification );
             }
@@ -412,7 +430,15 @@ public class PartitionsDiffComputer
                 modification.setOperation( ModificationOperation.ADD_ATTRIBUTE );
                 EntryAttribute attribute = new DefaultEntryAttribute( originalAttribute.getAttributeType() );
                 modification.setAttribute( attribute );
-                attribute.add( destinationValue );
+                
+                try
+                { 
+                    attribute.add( destinationValue );
+                }
+                catch ( LdapInvalidAttributeValueException liave )
+                {
+                    // TODO : handle the exception
+                }
 
                 modificationEntry.addModificationItem( modification );
             }

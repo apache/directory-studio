@@ -52,6 +52,7 @@ import org.apache.directory.shared.ldap.model.entry.AttributeUtils;
 import org.apache.directory.shared.ldap.model.entry.DefaultModification;
 import org.apache.directory.shared.ldap.model.entry.Modification;
 import org.apache.directory.shared.ldap.model.entry.ModificationOperation;
+import org.apache.directory.shared.ldap.model.exception.LdapInvalidAttributeValueException;
 import org.apache.directory.shared.ldap.model.filter.SearchScope;
 import org.apache.directory.shared.ldap.model.message.AddRequest;
 import org.apache.directory.shared.ldap.model.message.AddRequestImpl;
@@ -699,7 +700,16 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
             for ( ModificationItem modificationItem : modificationItems )
             {
                 Modification modification = new DefaultModification();
-                modification.setAttribute( AttributeUtils.toClientAttribute( modificationItem.getAttribute() ) );
+                
+                try
+                {
+                    modification.setAttribute( AttributeUtils.toClientAttribute( modificationItem.getAttribute() ) );
+                }
+                catch ( LdapInvalidAttributeValueException liave )
+                {
+                    // TODO : handle the exception
+                }
+
                 modification.setOperation( convertModificationOperation( modificationItem.getModificationOp() ) );
                 modifications.add( modification );
             }
