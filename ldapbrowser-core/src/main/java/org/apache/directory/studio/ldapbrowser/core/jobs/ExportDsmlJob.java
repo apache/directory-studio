@@ -61,7 +61,7 @@ import org.apache.directory.studio.connection.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.SearchParameter;
-
+import org.apache.directory.studio.ldapbrowser.core.utils.JNDIUtils;
 
 /**
  * This class implements a Job for Exporting a part of a LDAP Server into a DSML File.
@@ -252,16 +252,38 @@ public class ExportDsmlJob extends AbstractEclipseJob
         SearchResponseDsml sr = new SearchResponseDsml();
         batchResponse.addResponse( sr );
 
-        if ( !monitor.errorsReported() )
+        try
         {
-            // Creating and adding a search result entry or reference for each result
-            while ( ne.hasMore() )
+            int count = 0;
+
+            if ( !monitor.errorsReported() )
             {
-                SearchResult searchResult = ( SearchResult ) ne.next();
-                sr.addResponse( convertSearchResultToDsml( searchResult, searchParameter ) );
+                // Creating and adding a search result entry or reference for each result
+                while ( ne.hasMore() )
+                {
+                    SearchResult searchResult = ( SearchResult ) ne.next();
+                    sr.addResponse( convertSearchResultToDsml( searchResult, searchParameter ) );
+
+                    count++;
+                    monitor.reportProgress( BrowserCoreMessages.bind( BrowserCoreMessages.jobs__export_progress,
+                        new String[]
+                                   { Integer.toString( count ) } ) );
+                }
             }
         }
-
+        catch ( NamingException e )
+        {
+            int ldapStatusCode = JNDIUtils.getLdapStatusCode( e );
+            if ( ldapStatusCode == 3 || ldapStatusCode == 4 || ldapStatusCode == 11 )
+            {
+                // ignore
+            }
+            else
+            {
+                monitor.reportError( e );
+            }
+        }
+        
         // Creating and adding a search result done at the end of the results
         SearchResultDoneCodec srd = new SearchResultDoneCodec();
         LdapResultCodec ldapResult = new LdapResultCodec();
@@ -391,14 +413,36 @@ public class ExportDsmlJob extends AbstractEclipseJob
         // Creating the batch request
         BatchRequestDsml batchRequest = new BatchRequestDsml();
 
-        if ( !monitor.errorsReported() )
+        try
         {
-            // Creating and adding an add request for each result
-            while ( ne.hasMore() )
+            int count = 0;
+
+            if ( !monitor.errorsReported() )
             {
-                SearchResult searchResult = ( SearchResult ) ne.next();
-                AddRequestDsml arDsml = convertToAddRequestDsml( searchResult );
-                batchRequest.addRequest( arDsml );
+                // Creating and adding an add request for each result
+                while ( ne.hasMore() )
+                {
+                    SearchResult searchResult = ( SearchResult ) ne.next();
+                    AddRequestDsml arDsml = convertToAddRequestDsml( searchResult );
+                    batchRequest.addRequest( arDsml );
+
+                    count++;
+                    monitor.reportProgress( BrowserCoreMessages.bind( BrowserCoreMessages.jobs__export_progress,
+                        new String[]
+                                   { Integer.toString( count ) } ) );
+                }
+            }
+        }
+        catch ( NamingException e )
+        {
+            int ldapStatusCode = JNDIUtils.getLdapStatusCode( e );
+            if ( ldapStatusCode == 3 || ldapStatusCode == 4 || ldapStatusCode == 11 )
+            {
+                // ignore
+            }
+            else
+            {
+                monitor.reportError( e );
             }
         }
 
