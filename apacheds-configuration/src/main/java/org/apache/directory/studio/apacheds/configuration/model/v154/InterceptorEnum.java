@@ -51,6 +51,10 @@ public enum InterceptorEnum
     OPERATIONAL_ATTRIBUTE(
         Messages.getString( "InterceptorEnum.OperationalAttribute" ), Messages.getString( "InterceptorEnum.OperationalAttributeDescription" )), //$NON-NLS-1$ //$NON-NLS-2$
 
+    /** The KeyDerivation Interceptor */
+    KEY_DERIVATION(Messages.getString( "InterceptorEnum.KeyDerivation" ), Messages
+        .getString( "InterceptorEnum.KeyDerivationDescription" )),
+
     /** The Schema Interceptor */
     SCHEMA(Messages.getString( "InterceptorEnum.Schema" ), Messages.getString( "InterceptorEnum.SchemaDescription" )), //$NON-NLS-1$ //$NON-NLS-2$
 
