@@ -146,11 +146,10 @@
                     </copy>
                     
                     <!-- copy apache directory studio plugins to test-sandbox -->
-                    <copy todir="target/test-sandbox">
-                      <fileset dir="../target/distributions">
-                        <include name="ApacheDirectoryStudio-*/**/plugins/org.apache.directory*"/>
+                    <copy todir="target/test-sandbox/${integration-plugins-folder}">
+                      <fileset dir="../application/application-plugins/target/plugins">
+                        <include name="org.apache.directory*"/>
                       </fileset>
-                      <regexpmapper from="${integration-regexp}" to="\2"/>
                     </copy>
                     
                     <!-- copy SWTbot and eclipse testing plugins to test-sandbox -->
