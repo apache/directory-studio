@@ -80,8 +80,16 @@ public class DetectedConnectionProperties
     {
         try
         {
-            return ConnectionServerType.valueOf( connection.getConnectionParameter().getExtendedProperty(
-                CONNECTION_PARAMETER_SERVER_TYPE ) );
+            String serverType = connection.getConnectionParameter().getExtendedProperty( CONNECTION_PARAMETER_SERVER_TYPE );
+            
+            if ( serverType != null )
+            {
+                return ConnectionServerType.valueOf( serverType );
+            }
+            else
+            {
+                return ConnectionServerType.UNKNOWN;
+            }
         }
         catch ( IllegalArgumentException e )
         {
