@@ -28,10 +28,10 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.directory.shared.ldap.model.constants.SchemaConstants;
-import org.apache.directory.shared.ldap.model.filter.LdapURL;
 import org.apache.directory.shared.ldap.model.name.Dn;
 import org.apache.directory.shared.ldap.model.name.Rdn;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
+import org.apache.directory.shared.ldap.model.url.LdapUrl;
 import org.apache.directory.studio.connection.core.jobs.StudioConnectionBulkRunnableWithProgress;
 import org.apache.directory.studio.ldapbrowser.core.events.AttributeAddedEvent;
 import org.apache.directory.studio.ldapbrowser.core.events.AttributeDeletedEvent;
@@ -217,7 +217,7 @@ public class DummyEntry implements IEntry, ICompareableEntry
     /**
      * {@inheritDoc}
      */
-    public LdapURL getUrl()
+    public LdapUrl getUrl()
     {
         return Utils.getLdapURL( this );
     }

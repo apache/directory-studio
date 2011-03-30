@@ -26,7 +26,7 @@ import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.directory.shared.ldap.model.exception.LdapURLEncodingException;
-import org.apache.directory.shared.ldap.model.filter.LdapURL;
+import org.apache.directory.shared.ldap.model.url.LdapUrl;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.ConnectionCoreConstants;
 import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
@@ -211,7 +211,7 @@ public class PasteAction extends StudioAction
                 {
                     try
                     {
-                        LdapURL ldapUrl = new LdapURL( line );
+                        LdapUrl ldapUrl = new LdapUrl( line );
                         ConnectionParameter parameter = new ConnectionParameter();
                         for ( ConnectionParameterPage connectionParameterPage : connectionParameterPages )
                         {

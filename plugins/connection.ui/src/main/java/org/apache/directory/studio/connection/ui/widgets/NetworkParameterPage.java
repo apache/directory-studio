@@ -25,8 +25,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.directory.shared.ldap.model.filter.LdapURL;
-import org.apache.directory.shared.ldap.model.filter.LdapURL.Extension;
+import org.apache.directory.shared.ldap.model.url.LdapUrl;
+import org.apache.directory.shared.ldap.model.url.LdapUrl.Extension;
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.ConnectionCoreConstants;
@@ -431,7 +431,7 @@ public class NetworkParameterPage extends AbstractConnectionParameterPage
     /**
      * {@inheritDoc}
      */
-    public void mergeParametersToLdapURL( ConnectionParameter parameter, LdapURL ldapUrl )
+    public void mergeParametersToLdapURL( ConnectionParameter parameter, LdapUrl ldapUrl )
     {
         ldapUrl.getExtensions().add( new Extension( false, X_CONNECTION_NAME, parameter.getName() ) );
 
@@ -468,7 +468,7 @@ public class NetworkParameterPage extends AbstractConnectionParameterPage
     /**
      * {@inheritDoc}
      */
-    public void mergeLdapUrlToParameters( LdapURL ldapUrl, ConnectionParameter parameter )
+    public void mergeLdapUrlToParameters( LdapUrl ldapUrl, ConnectionParameter parameter )
     {
         // connection name, current date if absent
         String name = ldapUrl.getExtensionValue( X_CONNECTION_NAME );

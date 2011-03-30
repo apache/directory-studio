@@ -24,9 +24,9 @@ package org.apache.directory.studio.ldapbrowser.common.widgets.connection;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.directory.shared.ldap.model.filter.LdapURL;
 import org.apache.directory.shared.ldap.model.name.Dn;
-import org.apache.directory.shared.ldap.model.filter.LdapURL.Extension;
+import org.apache.directory.shared.ldap.model.url.LdapUrl;
+import org.apache.directory.shared.ldap.model.url.LdapUrl.Extension;
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.ConnectionParameter;
@@ -721,7 +721,7 @@ public class BrowserParameterPage extends AbstractConnectionParameterPage
     /**
      * {@inheritDoc}
      */
-    public void mergeParametersToLdapURL( ConnectionParameter parameter, LdapURL ldapUrl )
+    public void mergeParametersToLdapURL( ConnectionParameter parameter, LdapUrl ldapUrl )
     {
         boolean fetchBaseDns = parameter
             .getExtendedBoolProperty( IBrowserConnection.CONNECTION_PARAMETER_FETCH_BASE_DNS );
@@ -828,7 +828,7 @@ public class BrowserParameterPage extends AbstractConnectionParameterPage
     /**
      * {@inheritDoc}
      */
-    public void mergeLdapUrlToParameters( LdapURL ldapUrl, ConnectionParameter parameter )
+    public void mergeLdapUrlToParameters( LdapUrl ldapUrl, ConnectionParameter parameter )
     {
         // base Dn, get from Root DSE if absent, may be empty
         String baseDn = ldapUrl.getExtensionValue( X_BASE_DN );

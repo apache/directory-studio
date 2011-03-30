@@ -47,8 +47,8 @@ import javax.naming.directory.SearchControls;
 import javax.naming.ldap.Control;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.directory.shared.ldap.model.filter.LdapURL;
 import org.apache.directory.shared.ldap.model.message.Referral;
+import org.apache.directory.shared.ldap.model.url.LdapUrl;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
 import org.apache.directory.studio.connection.core.ConnectionCoreConstants;
@@ -314,7 +314,7 @@ public class LdifSearchLogger implements IJndiLogger
                     : "neverDerefAliases (0)"; //$NON-NLS-1$
 
         // build LDAP URL
-        LdapURL url = Utils.getLdapURL( connection, searchBase, searchControls.getSearchScope(), filter, searchControls
+        LdapUrl url = Utils.getLdapURL( connection, searchBase, searchControls.getSearchScope(), filter, searchControls
             .getReturningAttributes() );
 
         // build command line

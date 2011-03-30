@@ -22,7 +22,7 @@ package org.apache.directory.studio.connection.core.io.jndi;
 
 import javax.naming.directory.SearchResult;
 
-import org.apache.directory.shared.ldap.model.filter.LdapURL;
+import org.apache.directory.shared.ldap.model.url.LdapUrl;
 import org.apache.directory.studio.connection.core.Connection;
 
 
@@ -44,7 +44,7 @@ public class StudioSearchResult extends SearchResult
     private boolean isContinuedSearchResult;
 
     /** The URL with information on how to continue the search. */
-    private LdapURL searchContinuationUrl;
+    private LdapUrl searchContinuationUrl;
 
 
     /**
@@ -56,7 +56,7 @@ public class StudioSearchResult extends SearchResult
      * @param searchContinuationUrl the URL with information on how to continue the search
      */
     public StudioSearchResult( SearchResult searchResult, Connection connection, boolean isContinuedSearchResult,
-        LdapURL searchContinuationUrl )
+        LdapUrl searchContinuationUrl )
     {
         super( searchResult.getName(), searchResult.getClassName(), searchResult.getObject(), searchResult
             .getAttributes(), searchResult.isRelative() );
@@ -105,7 +105,7 @@ public class StudioSearchResult extends SearchResult
      * 
      * @return the URL with information on how to continue the search
      */
-    public LdapURL getSearchContinuationUrl()
+    public LdapUrl getSearchContinuationUrl()
     {
         return searchContinuationUrl;
     }

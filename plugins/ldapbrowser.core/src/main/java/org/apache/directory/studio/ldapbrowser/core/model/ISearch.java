@@ -24,8 +24,9 @@ package org.apache.directory.studio.ldapbrowser.core.model;
 import java.io.Serializable;
 import java.util.List;
 
-import org.apache.directory.shared.ldap.model.filter.LdapURL;
+import org.apache.directory.shared.ldap.model.message.SearchScope;
 import org.apache.directory.shared.ldap.model.name.Dn;
+import org.apache.directory.shared.ldap.model.url.LdapUrl;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.ConnectionPropertyPageProvider;
 import org.apache.directory.studio.connection.core.StudioControl;
@@ -69,72 +70,11 @@ public interface ISearch extends Serializable, IAdaptable, SearchPropertyPagePro
     public static final String FILTER_ALIAS_OR_REFERRAL = "(|(objectClass=alias)(objectClass=referral))"; //$NON-NLS-1$
 
     /**
-     * Enum for the used search scope.
-     * 
-     * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
-     */
-    public enum SearchScope
-    {
-
-        /** Object. */
-        OBJECT(0),
-
-        /** Onelevel. */
-        ONELEVEL(1),
-
-        /** Subtree. */
-        SUBTREE(2);
-
-        private final int ordinal;
-
-
-        private SearchScope( int ordinal )
-        {
-            this.ordinal = ordinal;
-        }
-
-
-        /**
-         * Gets the ordinal.
-         * 
-         * @return the ordinal
-         */
-        public int getOrdinal()
-        {
-            return ordinal;
-        }
-
-
-        /**
-         * Gets the SearchScope by ordinal.
-         * 
-         * @param ordinal the ordinal
-         * 
-         * @return the SearchScope
-         */
-        public static SearchScope getByOrdinal( int ordinal )
-        {
-            switch ( ordinal )
-            {
-                case 0:
-                    return OBJECT;
-                case 1:
-                    return ONELEVEL;
-                case 2:
-                    return SUBTREE;
-                default:
-                    return null;
-            }
-        }
-    }
-
-
-    /**
      * Gets the LDAP URL of this search.
      * 
      * @return the LDAP URL of this search
      */
-    public abstract LdapURL getUrl();
+    public abstract LdapUrl getUrl();
 
 
     /**

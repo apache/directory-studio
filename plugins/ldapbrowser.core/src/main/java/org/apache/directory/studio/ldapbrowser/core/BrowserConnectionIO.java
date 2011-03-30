@@ -33,6 +33,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.directory.shared.ldap.model.exception.LdapInvalidDnException;
+import org.apache.directory.shared.ldap.model.message.SearchScope;
 import org.apache.directory.shared.ldap.model.name.Dn;
 import org.apache.directory.shared.util.Base64;
 import org.apache.directory.studio.connection.core.Connection;
@@ -42,7 +43,6 @@ import org.apache.directory.studio.ldapbrowser.core.model.BookmarkParameter;
 import org.apache.directory.studio.ldapbrowser.core.model.IBookmark;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
-import org.apache.directory.studio.ldapbrowser.core.model.ISearch.SearchScope;
 import org.apache.directory.studio.ldapbrowser.core.model.SearchParameter;
 import org.apache.directory.studio.ldapbrowser.core.model.impl.Bookmark;
 import org.apache.directory.studio.ldapbrowser.core.model.impl.Search;

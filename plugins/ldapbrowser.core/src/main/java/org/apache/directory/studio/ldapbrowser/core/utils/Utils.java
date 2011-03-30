@@ -35,11 +35,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.directory.shared.ldap.model.filter.LdapURL;
 import org.apache.directory.shared.ldap.model.name.Ava;
-import org.apache.directory.shared.ldap.model.name.Rdn;
 import org.apache.directory.shared.ldap.model.name.Dn;
+import org.apache.directory.shared.ldap.model.name.Rdn;
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.url.LdapUrl;
 import org.apache.directory.studio.connection.core.ConnectionParameter.EncryptionMethod;
 import org.apache.directory.studio.connection.core.StudioControl;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreConstants;
@@ -285,18 +285,18 @@ public class Utils
      * @param entry the entry
      * @return the LDAP URL
      */
-    public static LdapURL getLdapURL( IBrowserConnection browserConnection )
+    public static LdapUrl getLdapURL( IBrowserConnection browserConnection )
     {
-        LdapURL url = new LdapURL();
+        LdapUrl url = new LdapUrl();
         if ( browserConnection.getConnection() != null )
         {
             if ( browserConnection.getConnection().getEncryptionMethod() == EncryptionMethod.LDAPS )
             {
-                url.setScheme( LdapURL.LDAPS_SCHEME );
+                url.setScheme( LdapUrl.LDAPS_SCHEME );
             }
             else
             {
-                url.setScheme( LdapURL.LDAP_SCHEME );
+                url.setScheme( LdapUrl.LDAP_SCHEME );
             }
             url.setHost( browserConnection.getConnection().getHost() );
             url.setPort( browserConnection.getConnection().getPort() );
@@ -318,9 +318,9 @@ public class Utils
      * @param entry the entry
      * @return the LDAP URL
      */
-    public static LdapURL getLdapURL( IEntry entry )
+    public static LdapUrl getLdapURL( IEntry entry )
     {
-        LdapURL url = getLdapURL( entry.getBrowserConnection() );
+        LdapUrl url = getLdapURL( entry.getBrowserConnection() );
         url.setDn( entry.getDn() );
         return url;
     }
@@ -342,15 +342,15 @@ public class Utils
      * @param search the search
      * @return the LDAP URL
      */
-    public static LdapURL getLdapURL( ISearch search )
+    public static LdapUrl getLdapURL( ISearch search )
     {
-        LdapURL url = getLdapURL( search.getBrowserConnection() );
+        LdapUrl url = getLdapURL( search.getBrowserConnection() );
         url.setDn( search.getSearchBase() );
         if ( search.getReturningAttributes() != null )
         {
             url.setAttributes( Arrays.asList( search.getReturningAttributes() ) );
         }
-        url.setScope( search.getScope().getOrdinal() );
+        url.setScope( search.getScope().getScope() );
         url.setFilter( search.getFilter() );
         return url;
     }

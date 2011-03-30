@@ -21,8 +21,8 @@
 package org.apache.directory.studio.ldapbrowser.common.widgets.connection;
 
 
-import org.apache.directory.shared.ldap.model.filter.LdapURL;
-import org.apache.directory.shared.ldap.model.filter.LdapURL.Extension;
+import org.apache.directory.shared.ldap.model.url.LdapUrl;
+import org.apache.directory.shared.ldap.model.url.LdapUrl.Extension;
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.connection.core.ConnectionParameter;
 import org.apache.directory.studio.connection.ui.AbstractConnectionParameterPage;
@@ -276,7 +276,7 @@ public class EditorParameterPage extends AbstractConnectionParameterPage
     /**
      * {@inheritDoc}
      */
-    public void mergeParametersToLdapURL( ConnectionParameter parameter, LdapURL ldapUrl )
+    public void mergeParametersToLdapURL( ConnectionParameter parameter, LdapUrl ldapUrl )
     {
         int modifyMode = parameter.getExtendedIntProperty( IBrowserConnection.CONNECTION_PARAMETER_MODIFY_MODE );
         if ( modifyMode != 0 )
@@ -308,7 +308,7 @@ public class EditorParameterPage extends AbstractConnectionParameterPage
     /**
      * {@inheritDoc}
      */
-    public void mergeLdapUrlToParameters( LdapURL ldapUrl, ConnectionParameter parameter )
+    public void mergeLdapUrlToParameters( LdapUrl ldapUrl, ConnectionParameter parameter )
     {
         // modify mode, DEFAULT if non-numeric or absent 
         String modifyMode = ldapUrl.getExtensionValue( X_MODIFY_MODE );

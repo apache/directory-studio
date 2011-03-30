@@ -23,7 +23,7 @@ package org.apache.directory.studio.connection.core;
 
 import org.apache.directory.shared.ldap.model.constants.SaslQoP;
 import org.apache.directory.shared.ldap.model.constants.SaslSecurityStrength;
-import org.apache.directory.shared.ldap.model.filter.LdapURL;
+import org.apache.directory.shared.ldap.model.url.LdapUrl;
 import org.apache.directory.studio.connection.core.ConnectionParameter.AuthenticationMethod;
 import org.apache.directory.studio.connection.core.ConnectionParameter.EncryptionMethod;
 import org.apache.directory.studio.connection.core.ConnectionParameter.Krb5Configuration;
@@ -663,9 +663,9 @@ public class Connection implements ConnectionPropertyPageProvider, IAdaptable
      * 
      * @return the LDAP URL
      */
-    public LdapURL getUrl()
+    public LdapUrl getUrl()
     {
-        LdapURL url = new LdapURL();
+        LdapUrl url = new LdapUrl();
         url.setHost( getHost() );
         url.setPort( getPort() );
         return url;

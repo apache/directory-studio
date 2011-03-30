@@ -34,16 +34,16 @@ import javax.naming.ldap.Control;
 import javax.naming.ldap.LdapContext;
 
 import org.apache.directory.shared.ldap.model.exception.LdapURLEncodingException;
-import org.apache.directory.shared.ldap.model.filter.LdapURL;
 import org.apache.directory.shared.ldap.model.message.Referral;
+import org.apache.directory.shared.ldap.model.url.LdapUrl;
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
 import org.apache.directory.studio.connection.core.Connection.ReferralHandlingMethod;
-import org.apache.directory.studio.connection.core.io.AbstractStudioNamingEnumeration;
-import org.apache.directory.studio.connection.core.io.ConnectionWrapperUtils;
 import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
 import org.apache.directory.studio.connection.core.IJndiLogger;
+import org.apache.directory.studio.connection.core.io.AbstractStudioNamingEnumeration;
+import org.apache.directory.studio.connection.core.io.ConnectionWrapperUtils;
 
 
 /**
@@ -312,7 +312,7 @@ public class JndiStudioNamingEnumeration extends AbstractStudioNamingEnumeration
                 {
                     try
                     {
-                        LdapURL url = new LdapURL( urls.remove( 0 ) );
+                        LdapUrl url = new LdapUrl( urls.remove( 0 ) );
                         SearchResult searchResult = new SearchResult( url.getDn().getName(), null,
                             new BasicAttributes(),
                             false );
@@ -348,7 +348,7 @@ public class JndiStudioNamingEnumeration extends AbstractStudioNamingEnumeration
                     logger.logSearchResultReference( connection, referral, referralsInfo, requestNum, null );
                 }
                 List<String> urls = new ArrayList<String>( referral.getLdapUrls() );
-                LdapURL url = new LdapURL( urls.get( 0 ) );
+                LdapUrl url = new LdapUrl( urls.get( 0 ) );
                 Connection referralConnection = ConnectionWrapperUtils.getReferralConnection( referral, monitor, this );
                 if ( referralConnection != null )
                 {

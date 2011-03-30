@@ -21,7 +21,7 @@
 package org.apache.directory.studio.ldapbrowser.core.model;
 
 
-import org.apache.directory.shared.ldap.model.filter.LdapURL;
+import org.apache.directory.shared.ldap.model.url.LdapUrl;
 
 
 /**
@@ -64,5 +64,5 @@ public interface IContinuation
      * 
      * @return the search continuation URL
      */
-    LdapURL getUrl();
+    LdapUrl getUrl();
 }

@@ -39,8 +39,12 @@ import org.apache.directory.shared.ldap.codec.api.LdapCodecService;
 import org.apache.directory.shared.ldap.codec.api.LdapCodecServiceFactory;
 import org.apache.directory.shared.ldap.model.cursor.SearchCursor;
 import org.apache.directory.shared.ldap.model.entry.AttributeUtils;
-import org.apache.directory.shared.ldap.model.filter.LdapURL;
-import org.apache.directory.shared.ldap.model.message.*;
+import org.apache.directory.shared.ldap.model.message.Referral;
+import org.apache.directory.shared.ldap.model.message.Response;
+import org.apache.directory.shared.ldap.model.message.SearchResultDone;
+import org.apache.directory.shared.ldap.model.message.SearchResultEntry;
+import org.apache.directory.shared.ldap.model.message.SearchResultReference;
+import org.apache.directory.shared.ldap.model.url.LdapUrl;
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
@@ -197,7 +201,7 @@ public class CursorStudioNamingEnumeration extends AbstractStudioNamingEnumerati
                 {
                     Referral referral = referralsList.remove( 0 );
                     List<String> referralUrls = new ArrayList<String>( referral.getLdapUrls() );
-                    LdapURL url = new LdapURL( referralUrls.get( 0 ) );
+                    LdapUrl url = new LdapUrl( referralUrls.get( 0 ) );
 
                     Connection referralConnection = ConnectionWrapperUtils.getReferralConnection( referral, monitor,
                         this );
@@ -281,7 +285,7 @@ public class CursorStudioNamingEnumeration extends AbstractStudioNamingEnumerati
                 {
                     resultEntryCounter++;
                     // Building an LDAP URL from the the url
-                    LdapURL url = new LdapURL( currentReferralUrlsList.remove( 0 ) );
+                    LdapUrl url = new LdapUrl( currentReferralUrlsList.remove( 0 ) );
 
                     // Building the search result
                     SearchResult searchResult = new SearchResult( url.getDn().getName(), null,

@@ -24,7 +24,8 @@ package org.apache.directory.studio.ldapbrowser.core.model.impl;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.directory.shared.ldap.model.filter.LdapURL;
+import org.apache.directory.shared.ldap.model.message.SearchScope;
+import org.apache.directory.shared.ldap.model.url.LdapUrl;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
@@ -47,7 +48,7 @@ public class SearchContinuation extends Search implements IContinuation
     private static final long serialVersionUID = 9039452279802784225L;
 
     /** The search continuation URL */
-    private LdapURL searchContinuationURL;
+    private LdapUrl searchContinuationURL;
 
     /** The state */
     private State state;
@@ -64,7 +65,7 @@ public class SearchContinuation extends Search implements IContinuation
      * @param connection the connection of the continued search
      * @param dn the Dn of the entry
      */
-    public SearchContinuation( ISearch originalSearch, LdapURL searchContinuationURL )
+    public SearchContinuation( ISearch originalSearch, LdapUrl searchContinuationURL )
     {
         super( null, ( SearchParameter ) originalSearch.getSearchParameter().clone() );
         this.searchContinuationURL = searchContinuationURL;
@@ -172,7 +173,7 @@ public class SearchContinuation extends Search implements IContinuation
     /**
      * {@inheritDoc}
      */
-    public LdapURL getUrl()
+    public LdapUrl getUrl()
     {
         return searchContinuationURL;
     }

@@ -24,8 +24,8 @@ package org.apache.directory.studio.connection.ui.widgets;
 import org.apache.commons.lang.StringUtils;
 import org.apache.directory.shared.ldap.model.constants.SaslQoP;
 import org.apache.directory.shared.ldap.model.constants.SaslSecurityStrength;
-import org.apache.directory.shared.ldap.model.filter.LdapURL;
-import org.apache.directory.shared.ldap.model.filter.LdapURL.Extension;
+import org.apache.directory.shared.ldap.model.url.LdapUrl;
+import org.apache.directory.shared.ldap.model.url.LdapUrl.Extension;
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.ConnectionCoreConstants;
@@ -58,7 +58,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Group;
-import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.forms.events.ExpansionAdapter;
 import org.eclipse.ui.forms.events.ExpansionEvent;
@@ -871,7 +870,7 @@ public class AuthenticationParameterPage extends AbstractConnectionParameterPage
     /**
      * {@inheritDoc}
      */
-    public void mergeParametersToLdapURL( ConnectionParameter parameter, LdapURL ldapUrl )
+    public void mergeParametersToLdapURL( ConnectionParameter parameter, LdapUrl ldapUrl )
     {
         switch ( parameter.getAuthMethod() )
         {
@@ -995,7 +994,7 @@ public class AuthenticationParameterPage extends AbstractConnectionParameterPage
     /**
      * {@inheritDoc}
      */
-    public void mergeLdapUrlToParameters( LdapURL ldapUrl, ConnectionParameter parameter )
+    public void mergeLdapUrlToParameters( LdapUrl ldapUrl, ConnectionParameter parameter )
     {
         // bind user and password, none if empty or absent
         String principal = ldapUrl.getExtensionValue( X_BIND_USER );

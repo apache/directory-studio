@@ -70,9 +70,9 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.directory.shared.ldap.model.constants.SaslQoP;
 import org.apache.directory.shared.ldap.model.constants.SaslSecurityStrength;
 import org.apache.directory.shared.ldap.model.exception.LdapURLEncodingException;
-import org.apache.directory.shared.ldap.model.filter.LdapURL;
 import org.apache.directory.shared.ldap.model.message.Referral;
 import org.apache.directory.shared.ldap.model.message.ReferralImpl;
+import org.apache.directory.shared.ldap.model.url.LdapUrl;
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
@@ -469,7 +469,7 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
                             {
                                 List<String> urls = new ArrayList<String>( referral.getLdapUrls() );
 
-                                String referralDn = new LdapURL( urls.get( 0 ) ).getDn().getName();
+                                String referralDn = new LdapUrl( urls.get( 0 ) ).getDn().getName();
                                 referralConnection.getConnectionWrapper().modifyEntry( referralDn,
                                     modificationItems, controls, monitor, newReferralsInfo );
                             }
@@ -681,7 +681,7 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
                             {
                                 List<String> urls = new ArrayList<String>( referral.getLdapUrls() );
 
-                                String referralDn = new LdapURL( urls.get( 0 ) ).getDn().getName();
+                                String referralDn = new LdapUrl( urls.get( 0 ) ).getDn().getName();
                                 referralConnection.getConnectionWrapper().createEntry( referralDn, attributes,
                                     controls, monitor, newReferralsInfo );
                             }
@@ -783,7 +783,7 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
                             {
                                 List<String> urls = new ArrayList<String>( referral.getLdapUrls() );
 
-                                String referralDn = new LdapURL( urls.get( 0 ) ).getDn().getName();
+                                String referralDn = new LdapUrl( urls.get( 0 ) ).getDn().getName();
                                 referralConnection.getConnectionWrapper().deleteEntry( referralDn, controls,
                                     monitor, newReferralsInfo );
                             }
@@ -870,7 +870,7 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
         // ldaps://
         if ( useLdaps )
         {
-            environment.put( Context.PROVIDER_URL, LdapURL.LDAPS_SCHEME + host + ':' + port );
+            environment.put( Context.PROVIDER_URL, LdapUrl.LDAPS_SCHEME + host + ':' + port );
             environment.put( Context.SECURITY_PROTOCOL, "ssl" ); //$NON-NLS-1$
             // host name verification is done in StudioTrustManager
             environment.put( JAVA_NAMING_LDAP_FACTORY_SOCKET, validateCertificates ? StudioSSLSocketFactory.class
@@ -878,7 +878,7 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
         }
         else
         {
-            environment.put( Context.PROVIDER_URL, LdapURL.LDAP_SCHEME + host + ':' + port );
+            environment.put( Context.PROVIDER_URL, LdapUrl.LDAP_SCHEME + host + ':' + port );
         }
 
         if ( binaryAttributes != null )

@@ -26,7 +26,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.directory.shared.ldap.model.exception.LdapURLEncodingException;
-import org.apache.directory.shared.ldap.model.filter.LdapURL;
+import org.apache.directory.shared.ldap.model.url.LdapUrl;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
 import org.apache.directory.studio.connection.core.IReferralHandler;
@@ -73,7 +73,7 @@ public class ConnectionUIReferralHandler extends ConnectionUpdateAdapter impleme
             // check cache
             for ( String url : referralUrls )
             {
-                String normalizedUrl = Utils.getSimpleNormalizedUrl( new LdapURL( url ) );
+                String normalizedUrl = Utils.getSimpleNormalizedUrl( new LdapUrl( url ) );
 
                 if ( referralUrlToReferralConnectionCache.containsKey( normalizedUrl ) )
                 {
@@ -115,7 +115,7 @@ public class ConnectionUIReferralHandler extends ConnectionUpdateAdapter impleme
             {
                 for ( String url : referralUrls )
                 {
-                    String normalizedUrl = Utils.getSimpleNormalizedUrl( new LdapURL( url ) );
+                    String normalizedUrl = Utils.getSimpleNormalizedUrl( new LdapUrl( url ) );
                     referralUrlToReferralConnectionCache.put( normalizedUrl, referralConnections[0] );
                 }
             }

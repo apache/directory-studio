@@ -24,8 +24,8 @@ package org.apache.directory.studio.ldapbrowser.core.model.impl;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.directory.shared.ldap.model.filter.LdapURL;
 import org.apache.directory.shared.ldap.model.name.Dn;
+import org.apache.directory.shared.ldap.model.url.LdapUrl;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
 import org.apache.directory.studio.ldapbrowser.core.jobs.InitializeAttributesRunnable;
@@ -47,7 +47,7 @@ public class ContinuedSearchResultEntry extends DelegateEntry implements IContin
     private static final long serialVersionUID = -6351277968774226912L;
 
     /** The search continuation URL. */
-    private LdapURL url;
+    private LdapUrl url;
 
     /** The state. */
     private State state;
@@ -83,7 +83,7 @@ public class ContinuedSearchResultEntry extends DelegateEntry implements IContin
      * 
      * @param url the new unresolved
      */
-    public void setUnresolved( LdapURL url )
+    public void setUnresolved( LdapUrl url )
     {
         this.state = State.UNRESOLVED;
         this.url = url;
@@ -135,7 +135,7 @@ public class ContinuedSearchResultEntry extends DelegateEntry implements IContin
     /**
      * {@inheritDoc}
      */
-    public LdapURL getUrl()
+    public LdapUrl getUrl()
     {
         return url != null ? url : super.getUrl();
     }

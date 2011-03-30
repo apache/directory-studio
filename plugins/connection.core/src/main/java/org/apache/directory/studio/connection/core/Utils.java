@@ -28,8 +28,8 @@ import java.util.ResourceBundle;
 import javax.naming.directory.SearchControls;
 
 import org.apache.directory.shared.ldap.model.exception.LdapInvalidDnException;
-import org.apache.directory.shared.ldap.model.filter.LdapURL;
 import org.apache.directory.shared.ldap.model.name.Dn;
+import org.apache.directory.shared.ldap.model.url.LdapUrl;
 import org.apache.directory.shared.util.Strings;
 import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
 import org.apache.directory.studio.connection.core.ConnectionParameter.EncryptionMethod;
@@ -183,12 +183,12 @@ public class Utils
      * 
      * @return the LDAP URL for the given search parameters
      */
-    public static LdapURL getLdapURL( Connection connection, String searchBase, int scope, String filter,
+    public static LdapUrl getLdapURL( Connection connection, String searchBase, int scope, String filter,
         String[] attributes )
     {
-        LdapURL url = new LdapURL();
-        url.setScheme( connection.getEncryptionMethod() == EncryptionMethod.LDAPS ? LdapURL.LDAPS_SCHEME
-            : LdapURL.LDAP_SCHEME );
+        LdapUrl url = new LdapUrl();
+        url.setScheme( connection.getEncryptionMethod() == EncryptionMethod.LDAPS ? LdapUrl.LDAPS_SCHEME
+            : LdapUrl.LDAP_SCHEME );
         url.setHost( connection.getHost() );
         url.setPort( connection.getPort() );
         try
@@ -215,7 +215,7 @@ public class Utils
      * 
      * @return the simple normalized form of the LDAP URL
      */
-    public static String getSimpleNormalizedUrl( LdapURL url )
+    public static String getSimpleNormalizedUrl( LdapUrl url )
     {
         return url.getScheme() + ( url.getHost() != null ? url.getHost().toLowerCase() : "" ) + ":" + url.getPort();
     }
@@ -244,7 +244,7 @@ public class Utils
         cmdLine.append( "ldapsearch" ); //$NON-NLS-1$
 
         cmdLine.append( " -H " ).append( //$NON-NLS-1$
-            connection.getEncryptionMethod() == EncryptionMethod.LDAPS ? LdapURL.LDAPS_SCHEME : LdapURL.LDAP_SCHEME )
+            connection.getEncryptionMethod() == EncryptionMethod.LDAPS ? LdapUrl.LDAPS_SCHEME : LdapUrl.LDAP_SCHEME )
             .append( connection.getHost() ).append( ":" ).append( connection.getPort() ); //$NON-NLS-1$
 
         if ( connection.getEncryptionMethod() == EncryptionMethod.START_TLS )

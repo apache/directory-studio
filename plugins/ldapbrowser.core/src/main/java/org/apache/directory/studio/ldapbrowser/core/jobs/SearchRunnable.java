@@ -39,8 +39,9 @@ import javax.naming.ldap.Control;
 import javax.naming.ldap.PagedResultsResponseControl;
 
 import org.apache.directory.shared.ldap.model.constants.SchemaConstants;
-import org.apache.directory.shared.ldap.model.filter.LdapURL;
+import org.apache.directory.shared.ldap.model.message.SearchScope;
 import org.apache.directory.shared.ldap.model.name.Dn;
+import org.apache.directory.shared.ldap.model.url.LdapUrl;
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
@@ -59,7 +60,6 @@ import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
-import org.apache.directory.studio.ldapbrowser.core.model.ISearch.SearchScope;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearchResult;
 import org.apache.directory.studio.ldapbrowser.core.model.SearchParameter;
 import org.apache.directory.studio.ldapbrowser.core.model.impl.BaseDNEntry;
@@ -321,7 +321,7 @@ public class SearchRunnable implements StudioConnectionBulkRunnableWithProgress
                     {
                         StudioSearchResult sr = ( StudioSearchResult ) enumeration.next();
                         boolean isContinuedSearchResult = sr.isContinuedSearchResult();
-                        LdapURL searchContinuationUrl = sr.getSearchContinuationUrl();
+                        LdapUrl searchContinuationUrl = sr.getSearchContinuationUrl();
 
                         if ( searchContinuationUrl == null )
                         {
@@ -456,7 +456,9 @@ public class SearchRunnable implements StudioConnectionBulkRunnableWithProgress
 
         String searchBase = parameter.getSearchBase().getName();
         SearchControls controls = new SearchControls();
-        switch ( parameter.getScope() )
+        SearchScope scope = parameter.getScope();
+        
+        switch ( scope )
         {
             case OBJECT:
                 controls.setSearchScope( SearchControls.OBJECT_SCOPE );
@@ -470,6 +472,7 @@ public class SearchRunnable implements StudioConnectionBulkRunnableWithProgress
             default:
                 controls.setSearchScope( SearchControls.ONELEVEL_SCOPE );
         }
+        
         controls.setReturningAttributes( parameter.getReturningAttributes() );
         controls.setCountLimit( parameter.getCountLimit() );
         int timeLimit = parameter.getTimeLimit() * 1000;

@@ -20,7 +20,7 @@
 package org.apache.directory.studio.connection.ui;
 
 
-import org.apache.directory.shared.ldap.model.filter.LdapURL;
+import org.apache.directory.shared.ldap.model.url.LdapUrl;
 import org.apache.directory.studio.connection.core.ConnectionParameter;
 import org.eclipse.jface.operation.IRunnableContext;
 import org.eclipse.swt.widgets.Composite;
@@ -200,7 +200,7 @@ public interface ConnectionParameterPage
      * @param parameter the source connection parameter
      * @param ldapUrl the target LDAP URL
      */
-    public void mergeParametersToLdapURL( ConnectionParameter parameter, LdapURL ldapUrl );
+    public void mergeParametersToLdapURL( ConnectionParameter parameter, LdapUrl ldapUrl );
 
 
     /**
@@ -209,5 +209,5 @@ public interface ConnectionParameterPage
      * @param ldapUrl the source LDAP URL
      * @param parameter the target connection parameter
      */
-    public void mergeLdapUrlToParameters( LdapURL ldapUrl, ConnectionParameter parameter );
+    public void mergeLdapUrlToParameters( LdapUrl ldapUrl, ConnectionParameter parameter );
 }

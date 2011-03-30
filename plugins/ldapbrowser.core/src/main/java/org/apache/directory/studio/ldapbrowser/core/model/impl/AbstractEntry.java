@@ -30,7 +30,7 @@ import java.util.List;
 import org.apache.directory.shared.ldap.model.constants.SchemaConstants;
 import org.apache.directory.shared.ldap.model.name.Rdn;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
-import org.apache.directory.shared.ldap.model.filter.LdapURL;
+import org.apache.directory.shared.ldap.model.url.LdapUrl;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.jobs.StudioConnectionBulkRunnableWithProgress;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
@@ -918,7 +918,7 @@ public abstract class AbstractEntry implements IEntry, ICompareableEntry
     /**
      * {@inheritDoc}
      */
-    public LdapURL getUrl()
+    public LdapUrl getUrl()
     {
         return Utils.getLdapURL( this );
     }

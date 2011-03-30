@@ -21,7 +21,7 @@
 package org.apache.directory.studio.ldapbrowser.ui.actions;
 
 
-import org.apache.directory.shared.ldap.model.filter.LdapURL;
+import org.apache.directory.shared.ldap.model.url.LdapUrl;
 import org.apache.directory.studio.ldapbrowser.common.actions.BrowserAction;
 import org.apache.directory.studio.ldapbrowser.common.actions.CopyAction;
 import org.apache.directory.studio.ldapbrowser.ui.BrowserUIConstants;
@@ -52,7 +52,7 @@ public class CopyUrlAction extends BrowserAction
      */
     public void run()
     {
-        LdapURL url = null;
+        LdapUrl url = null;
         if ( getSelectedSearches().length > 0 )
         {
             url = getSelectedSearches()[0].getUrl();
