@@ -448,7 +448,10 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
                     request.setBase( new Dn( searchBase ) );
                     request.setFilter( filter );
                     request.setScope( convertSearchScope( searchControls ) );
-                    request.addAttributes( searchControls.getReturningAttributes() );
+                    if ( searchControls.getReturningAttributes() != null )
+                    {
+                        request.addAttributes( searchControls.getReturningAttributes() );
+                    }
                     request.addAllControls( convertControls( controls ) );
                     request.setSizeLimit( searchControls.getCountLimit() );
                     request.setTimeLimit( searchControls.getTimeLimit() );
@@ -700,7 +703,7 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
             for ( ModificationItem modificationItem : modificationItems )
             {
                 Modification modification = new DefaultModification();
-                
+
                 try
                 {
                     modification.setAttribute( AttributeUtils.toClientAttribute( modificationItem.getAttribute() ) );
