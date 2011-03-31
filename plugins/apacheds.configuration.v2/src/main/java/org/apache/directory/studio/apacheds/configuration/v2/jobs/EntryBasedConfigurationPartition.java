@@ -128,7 +128,6 @@ public class EntryBasedConfigurationPartition extends AbstractLdifPartition
      */
     public void add( AddOperationContext addOperationContext ) throws LdapException
     {
-        System.out.println( "add" );
         wrappedPartition.add( addOperationContext );
     }
 
