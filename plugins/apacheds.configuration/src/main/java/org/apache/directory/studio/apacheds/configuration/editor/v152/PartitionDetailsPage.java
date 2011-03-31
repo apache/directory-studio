@@ -26,7 +26,7 @@ import java.util.List;
 
 import org.apache.directory.shared.ldap.model.entry.DefaultEntryAttribute;
 import org.apache.directory.shared.ldap.model.entry.Entry;
-import org.apache.directory.shared.ldap.model.entry.EntryAttribute;
+import org.apache.directory.shared.ldap.model.entry.Attribute;
 import org.apache.directory.shared.ldap.model.entry.Value;
 import org.apache.directory.shared.ldap.model.exception.LdapException;
 import org.apache.directory.shared.ldap.model.exception.LdapInvalidAttributeValueException;
@@ -166,7 +166,7 @@ public class PartitionDetailsPage implements IDetailsPage
             if ( Dialog.OK == dialog.open() && dialog.isDirty() )
             {
                 AttributeValueObject newAttributeValueObject = dialog.getAttributeValueObject();
-                EntryAttribute attribute = contextEntry.get( newAttributeValueObject.getAttribute() );
+                Attribute attribute = contextEntry.get( newAttributeValueObject.getAttribute() );
                 
                 if ( attribute != null )
                 {
@@ -219,7 +219,7 @@ public class PartitionDetailsPage implements IDetailsPage
             {
                 AttributeValueObject attributeValueObject = ( AttributeValueObject ) selection.getFirstElement();
 
-                EntryAttribute attribute = contextEntry.get( attributeValueObject.getAttribute() );
+                Attribute attribute = contextEntry.get( attributeValueObject.getAttribute() );
                 if ( attribute != null )
                 {
                     attribute.remove( attributeValueObject.getValue() );
@@ -423,10 +423,10 @@ public class PartitionDetailsPage implements IDetailsPage
                 List<AttributeValueObject> elements = new ArrayList<AttributeValueObject>();
                 Entry entry = ( Entry ) inputElement;
 
-                Iterator<EntryAttribute> attributes = entry.iterator();
+                Iterator<Attribute> attributes = entry.iterator();
                 while ( attributes.hasNext() )
                 {
-                    EntryAttribute attribute = attributes.next();
+                    Attribute attribute = attributes.next();
 
                     Iterator<Value<?>> values = attribute.iterator();
                     while ( values.hasNext() )
@@ -786,7 +786,7 @@ public class PartitionDetailsPage implements IDetailsPage
             AttributeValueDialog dialog = new AttributeValueDialog( attributeValueObject );
             if ( Dialog.OK == dialog.open() && dialog.isDirty() )
             {
-                EntryAttribute attribute = contextEntry.get( oldId );
+                Attribute attribute = contextEntry.get( oldId );
                 if ( attribute != null )
                 {
                     attribute.remove( oldValue );

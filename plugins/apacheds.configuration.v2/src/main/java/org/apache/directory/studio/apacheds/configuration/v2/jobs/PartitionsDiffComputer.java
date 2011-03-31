@@ -33,7 +33,7 @@ import org.apache.directory.shared.ldap.model.constants.SchemaConstants;
 import org.apache.directory.shared.ldap.model.entry.DefaultEntryAttribute;
 import org.apache.directory.shared.ldap.model.entry.DefaultModification;
 import org.apache.directory.shared.ldap.model.entry.Entry;
-import org.apache.directory.shared.ldap.model.entry.EntryAttribute;
+import org.apache.directory.shared.ldap.model.entry.Attribute;
 import org.apache.directory.shared.ldap.model.entry.Modification;
 import org.apache.directory.shared.ldap.model.entry.ModificationOperation;
 import org.apache.directory.shared.ldap.model.entry.Value;
@@ -314,14 +314,14 @@ public class PartitionsDiffComputer
         List<AttributeType> evaluatedATs = new ArrayList<AttributeType>();
 
         // Checking attributes of the original entry
-        for ( EntryAttribute originalAttribute : originalEntry )
+        for ( Attribute originalAttribute : originalEntry )
         {
             AttributeType originalAttributeType = originalAttribute.getAttributeType();
 
             // We're only working on 'userApplications' attributes
             if ( originalAttributeType.getUsage() == UsageEnum.USER_APPLICATIONS )
             {
-                EntryAttribute destinationAttribute = destinationEntry.get( originalAttributeType );
+                Attribute destinationAttribute = destinationEntry.get( originalAttributeType );
                 if ( destinationAttribute == null )
                 {
                     // Creating a modification for the removed AT
@@ -342,7 +342,7 @@ public class PartitionsDiffComputer
         }
 
         // Checking attributes of the destination entry
-        for ( EntryAttribute destinationAttribute : destinationEntry )
+        for ( Attribute destinationAttribute : destinationEntry )
         {
             AttributeType destinationAttributeType = destinationAttribute.getAttributeType();
 
@@ -355,7 +355,7 @@ public class PartitionsDiffComputer
                     // Creating a modification for the added AT
                     Modification modification = new DefaultModification();
                     modification.setOperation( ModificationOperation.ADD_ATTRIBUTE );
-                    EntryAttribute attribute = new DefaultEntryAttribute( destinationAttributeType );
+                    Attribute attribute = new DefaultEntryAttribute( destinationAttributeType );
                     modification.setAttribute( attribute );
                     
                     for ( Value<?> value : destinationAttribute )
@@ -388,7 +388,7 @@ public class PartitionsDiffComputer
      *      the modification LDIF entry holding the modifications 
      *      between both attributes
      */
-    private void compareAttributes( EntryAttribute originalAttribute, EntryAttribute destinationAttribute,
+    private void compareAttributes( Attribute originalAttribute, Attribute destinationAttribute,
         LdifEntry modificationEntry )
     {
         // Creating a list to store the already evaluated values
@@ -402,7 +402,7 @@ public class PartitionsDiffComputer
                 // Creating a modification for the removed AT value
                 Modification modification = new DefaultModification();
                 modification.setOperation( ModificationOperation.REMOVE_ATTRIBUTE );
-                EntryAttribute attribute = new DefaultEntryAttribute( originalAttribute.getAttributeType() );
+                Attribute attribute = new DefaultEntryAttribute( originalAttribute.getAttributeType() );
                 modification.setAttribute( attribute );
                 
                 try
@@ -428,7 +428,7 @@ public class PartitionsDiffComputer
                 // Creating a modification for the added AT value
                 Modification modification = new DefaultModification();
                 modification.setOperation( ModificationOperation.ADD_ATTRIBUTE );
-                EntryAttribute attribute = new DefaultEntryAttribute( originalAttribute.getAttributeType() );
+                Attribute attribute = new DefaultEntryAttribute( originalAttribute.getAttributeType() );
                 modification.setAttribute( attribute );
                 
                 try

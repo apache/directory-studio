@@ -45,7 +45,7 @@ import org.apache.directory.shared.ldap.aci.protectedItem.RangeOfValuesItem;
 import org.apache.directory.shared.ldap.aci.protectedItem.RestrictedByElem;
 import org.apache.directory.shared.ldap.aci.protectedItem.RestrictedByItem;
 import org.apache.directory.shared.ldap.aci.protectedItem.SelfValueItem;
-import org.apache.directory.shared.ldap.model.entry.EntryAttribute;
+import org.apache.directory.shared.ldap.model.entry.Attribute;
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
 import org.apache.directory.studio.valueeditors.AbstractDialogStringValueEditor;
 import org.eclipse.osgi.util.NLS;
@@ -224,9 +224,9 @@ public class ProtectedItemWrapper
         else if ( item.getClass() == AttributeValueItem.class )
         {
             AttributeValueItem av = ( AttributeValueItem ) item;
-            for ( Iterator<EntryAttribute> it = av.iterator(); it.hasNext(); )
+            for ( Iterator<Attribute> it = av.iterator(); it.hasNext(); )
             {
-                EntryAttribute entryAttribute = it.next();
+                Attribute entryAttribute = it.next();
                 values.add( entryAttribute.getId() + "=" + entryAttribute.get() ); //$NON-NLS-1$
             }
         }

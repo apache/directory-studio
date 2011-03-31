@@ -26,7 +26,7 @@ import org.apache.directory.shared.ldap.model.constants.SchemaConstants;
 import org.apache.directory.shared.ldap.model.entry.DefaultEntry;
 import org.apache.directory.shared.ldap.model.entry.DefaultEntryAttribute;
 import org.apache.directory.shared.ldap.model.entry.Entry;
-import org.apache.directory.shared.ldap.model.entry.EntryAttribute;
+import org.apache.directory.shared.ldap.model.entry.Attribute;
 import org.apache.directory.shared.ldap.model.exception.LdapException;
 import org.apache.directory.shared.ldap.model.exception.LdapInvalidDnException;
 import org.apache.directory.shared.ldap.model.name.Dn;
@@ -143,7 +143,7 @@ public class SchemaEditorSchemaLoaderUtils
         String syntax = matchingRule.getSyntaxOid();
         if ( !Strings.isEmpty( syntax ) )
         {
-            EntryAttribute attribute = new DefaultEntryAttribute( M_SYNTAX, syntax );
+            Attribute attribute = new DefaultEntryAttribute( M_SYNTAX, syntax );
             entry.add( attribute );
         }
 
@@ -277,7 +277,7 @@ public class SchemaEditorSchemaLoaderUtils
     private static void addObjectClassValue( SchemaObject schemaObject, String objectClassValue, Entry entry )
         throws LdapException
     {
-        EntryAttribute objectClassAttribute = new DefaultEntryAttribute( SchemaConstants.OBJECT_CLASS_AT );
+        Attribute objectClassAttribute = new DefaultEntryAttribute( SchemaConstants.OBJECT_CLASS_AT );
         entry.add( objectClassAttribute );
         objectClassAttribute.add( SchemaConstants.TOP_OC );
         objectClassAttribute.add( SchemaConstants.META_TOP_OC );
@@ -299,7 +299,7 @@ public class SchemaEditorSchemaLoaderUtils
         String oid = schemaObject.getOid();
         if ( !Strings.isEmpty( oid ) )
         {
-            EntryAttribute attribute = new DefaultEntryAttribute( M_OID, oid );
+            Attribute attribute = new DefaultEntryAttribute( M_OID, oid );
             entry.add( attribute );
         }
     }
@@ -319,7 +319,7 @@ public class SchemaEditorSchemaLoaderUtils
         List<String> names = schemaObject.getNames();
         if ( ( names != null ) && ( names.size() > 0 ) )
         {
-            EntryAttribute attribute = new DefaultEntryAttribute( M_NAME );
+            Attribute attribute = new DefaultEntryAttribute( M_NAME );
             entry.add( attribute );
 
             for ( String name : names )
@@ -344,7 +344,7 @@ public class SchemaEditorSchemaLoaderUtils
         String description = schemaObject.getDescription();
         if ( !Strings.isEmpty( description ) )
         {
-            EntryAttribute attribute = new DefaultEntryAttribute( M_DESCRIPTION, description );
+            Attribute attribute = new DefaultEntryAttribute( M_DESCRIPTION, description );
             entry.add( attribute );
         }
     }
@@ -363,7 +363,7 @@ public class SchemaEditorSchemaLoaderUtils
     {
         if ( schemaObject.isObsolete() )
         {
-            EntryAttribute attribute = new DefaultEntryAttribute( M_OBSOLETE, TRUE );
+            Attribute attribute = new DefaultEntryAttribute( M_OBSOLETE, TRUE );
             entry.add( attribute );
         }
     }
@@ -383,7 +383,7 @@ public class SchemaEditorSchemaLoaderUtils
         String superior = attributeType.getSuperiorName();
         if ( !Strings.isEmpty( superior ) )
         {
-            EntryAttribute attribute = new DefaultEntryAttribute( M_SUP_ATTRIBUTE_TYPE, superior );
+            Attribute attribute = new DefaultEntryAttribute( M_SUP_ATTRIBUTE_TYPE, superior );
             entry.add( attribute );
         }
     }
@@ -403,7 +403,7 @@ public class SchemaEditorSchemaLoaderUtils
         String equality = attributeType.getEqualityName();
         if ( !Strings.isEmpty( equality ) )
         {
-            EntryAttribute attribute = new DefaultEntryAttribute( M_EQUALITY, equality );
+            Attribute attribute = new DefaultEntryAttribute( M_EQUALITY, equality );
             entry.add( attribute );
         }
     }
@@ -423,7 +423,7 @@ public class SchemaEditorSchemaLoaderUtils
         String ordering = attributeType.getOrderingName();
         if ( !Strings.isEmpty( ordering ) )
         {
-            EntryAttribute attribute = new DefaultEntryAttribute( M_ORDERING, ordering );
+            Attribute attribute = new DefaultEntryAttribute( M_ORDERING, ordering );
             entry.add( attribute );
         }
     }
@@ -443,7 +443,7 @@ public class SchemaEditorSchemaLoaderUtils
         String substr = attributeType.getSubstringName();
         if ( !Strings.isEmpty( substr ) )
         {
-            EntryAttribute attribute = new DefaultEntryAttribute( M_SUBSTR, substr );
+            Attribute attribute = new DefaultEntryAttribute( M_SUBSTR, substr );
             entry.add( attribute );
         }
     }
@@ -463,7 +463,7 @@ public class SchemaEditorSchemaLoaderUtils
         String syntax = attributeType.getSyntaxName();
         if ( !Strings.isEmpty( syntax ) )
         {
-            EntryAttribute attribute = new DefaultEntryAttribute( M_SYNTAX, syntax );
+            Attribute attribute = new DefaultEntryAttribute( M_SYNTAX, syntax );
             entry.add( attribute );
 
             long syntaxLength = attributeType.getSyntaxLength();
@@ -489,7 +489,7 @@ public class SchemaEditorSchemaLoaderUtils
     {
         if ( attributeType.isSingleValued() )
         {
-            EntryAttribute attribute = new DefaultEntryAttribute( M_SINGLE_VALUE, TRUE );
+            Attribute attribute = new DefaultEntryAttribute( M_SINGLE_VALUE, TRUE );
             entry.add( attribute );
         }
     }
@@ -508,7 +508,7 @@ public class SchemaEditorSchemaLoaderUtils
     {
         if ( attributeType.isCollective() )
         {
-            EntryAttribute attribute = new DefaultEntryAttribute( M_COLLECTIVE, TRUE );
+            Attribute attribute = new DefaultEntryAttribute( M_COLLECTIVE, TRUE );
             entry.add( attribute );
         }
     }
@@ -527,7 +527,7 @@ public class SchemaEditorSchemaLoaderUtils
     {
         if ( !attributeType.isUserModifiable() )
         {
-            EntryAttribute attribute = new DefaultEntryAttribute( M_NO_USER_MODIFICATION, TRUE );
+            Attribute attribute = new DefaultEntryAttribute( M_NO_USER_MODIFICATION, TRUE );
             entry.add( attribute );
         }
     }
@@ -547,7 +547,7 @@ public class SchemaEditorSchemaLoaderUtils
         UsageEnum usage = attributeType.getUsage();
         if ( usage != UsageEnum.USER_APPLICATIONS )
         {
-            EntryAttribute attribute = new DefaultEntryAttribute( M_USAGE, usage.render() );
+            Attribute attribute = new DefaultEntryAttribute( M_USAGE, usage.render() );
             entry.add( attribute );
         }
     }
@@ -567,7 +567,7 @@ public class SchemaEditorSchemaLoaderUtils
         List<String> superiors = objectClass.getSuperiorOids();
         if ( ( superiors != null ) && ( superiors.size() > 0 ) )
         {
-            EntryAttribute attribute = new DefaultEntryAttribute( M_SUP_OBJECT_CLASS );
+            Attribute attribute = new DefaultEntryAttribute( M_SUP_OBJECT_CLASS );
             entry.add( attribute );
 
             for ( String superior : superiors )
@@ -592,7 +592,7 @@ public class SchemaEditorSchemaLoaderUtils
         ObjectClassTypeEnum classType = objectClass.getType();
         if ( classType != ObjectClassTypeEnum.STRUCTURAL )
         {
-            EntryAttribute attribute = new DefaultEntryAttribute( M_TYPE_OBJECT_CLASS, classType.toString() );
+            Attribute attribute = new DefaultEntryAttribute( M_TYPE_OBJECT_CLASS, classType.toString() );
             entry.add( attribute );
         }
     }
@@ -612,7 +612,7 @@ public class SchemaEditorSchemaLoaderUtils
         List<String> musts = objectClass.getMustAttributeTypeOids();
         if ( ( musts != null ) && ( musts.size() > 0 ) )
         {
-            EntryAttribute attribute = new DefaultEntryAttribute( M_MUST );
+            Attribute attribute = new DefaultEntryAttribute( M_MUST );
             entry.add( attribute );
 
             for ( String must : musts )
@@ -637,7 +637,7 @@ public class SchemaEditorSchemaLoaderUtils
         List<String> mays = objectClass.getMayAttributeTypeOids();
         if ( ( mays != null ) && ( mays.size() > 0 ) )
         {
-            EntryAttribute attribute = new DefaultEntryAttribute( M_MAY );
+            Attribute attribute = new DefaultEntryAttribute( M_MAY );
             entry.add( attribute );
 
             for ( String may : mays )

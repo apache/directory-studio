@@ -28,7 +28,7 @@ import java.util.Iterator;
 
 import org.apache.directory.shared.ldap.model.entry.DefaultEntry;
 import org.apache.directory.shared.ldap.model.entry.Entry;
-import org.apache.directory.shared.ldap.model.entry.EntryAttribute;
+import org.apache.directory.shared.ldap.model.entry.Attribute;
 import org.apache.directory.shared.ldap.model.ldif.LdifReader;
 import org.apache.directory.shared.util.Strings;
 import org.apache.directory.studio.apacheds.configuration.StudioEntityResolver;
@@ -213,8 +213,8 @@ public abstract class AbstractServerXmlIO implements ServerXmlIO
                     continue;
                 }
 
-                EntryAttribute attribute = LdifReader.parseAttributeValue( addedLine );
-                EntryAttribute oldAttribute = entry.get( attribute.getId() );
+                Attribute attribute = LdifReader.parseAttributeValue( addedLine );
+                Attribute oldAttribute = entry.get( attribute.getId() );
 
                 if ( oldAttribute != null )
                 {

@@ -46,7 +46,7 @@ import org.apache.directory.shared.ldap.codec.api.LdapCodecService;
 import org.apache.directory.shared.ldap.codec.api.LdapCodecServiceFactory;
 import org.apache.directory.shared.ldap.model.entry.AttributeUtils;
 import org.apache.directory.shared.ldap.model.entry.Entry;
-import org.apache.directory.shared.ldap.model.entry.EntryAttribute;
+import org.apache.directory.shared.ldap.model.entry.Attribute;
 import org.apache.directory.shared.ldap.model.entry.Value;
 import org.apache.directory.shared.ldap.model.exception.LdapException;
 import org.apache.directory.shared.ldap.model.exception.LdapURLEncodingException;
@@ -359,7 +359,7 @@ public class ExportDsmlRunnable implements StudioConnectionRunnableWithProgress
             SearchResultReferenceDsml srr = new SearchResultReferenceDsml( codec );
 
             // Getting the 'ref' attribute
-            EntryAttribute refAttribute = entry.get( ExportDsmlRunnable.REF_ATTRIBUTETYPE_NAME );
+            Attribute refAttribute = entry.get( ExportDsmlRunnable.REF_ATTRIBUTETYPE_NAME );
             if ( refAttribute == null )
             {
                 // If we did not get it by its name, let's get it by its OID
@@ -403,7 +403,7 @@ public class ExportDsmlRunnable implements StudioConnectionRunnableWithProgress
         if ( entry != null )
         {
             // Getting the 'objectClass' Attribute
-            EntryAttribute objectClassAttribute = entry.get( ExportDsmlRunnable.OBJECTCLASS_OBJECTCLASS_NAME );
+            Attribute objectClassAttribute = entry.get( ExportDsmlRunnable.OBJECTCLASS_OBJECTCLASS_NAME );
             if ( objectClassAttribute == null )
             {
                 objectClassAttribute = entry.get( ExportDsmlRunnable.OBJECTCLASS_OBJECTCLASS_OID );

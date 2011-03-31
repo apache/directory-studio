@@ -30,7 +30,7 @@ import java.util.List;
 
 import org.apache.directory.shared.ldap.model.entry.DefaultEntry;
 import org.apache.directory.shared.ldap.model.entry.Entry;
-import org.apache.directory.shared.ldap.model.entry.EntryAttribute;
+import org.apache.directory.shared.ldap.model.entry.Attribute;
 import org.apache.directory.shared.ldap.model.entry.Value;
 import org.apache.directory.studio.apacheds.configuration.StudioEntityResolver;
 import org.apache.directory.studio.apacheds.configuration.model.AbstractServerXmlIO;
@@ -999,10 +999,10 @@ public class ServerXmlIOV150 extends AbstractServerXmlIO implements ServerXmlIO
 
             Entry contextEntry = partition.getContextEntry();
             StringBuffer sb = new StringBuffer();
-            Iterator<EntryAttribute> attributes = contextEntry.iterator();
+            Iterator<Attribute> attributes = contextEntry.iterator();
             while ( attributes.hasNext() )
             {
-                EntryAttribute attribute = attributes.next();
+                Attribute attribute = attributes.next();
                 Iterator<Value<?>> values = attribute.iterator();
                 while ( values.hasNext() )
                 {
