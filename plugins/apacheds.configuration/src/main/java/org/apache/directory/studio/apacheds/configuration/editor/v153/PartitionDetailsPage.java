@@ -24,7 +24,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.apache.directory.shared.ldap.model.entry.DefaultEntryAttribute;
+import org.apache.directory.shared.ldap.model.entry.DefaultAttribute;
 import org.apache.directory.shared.ldap.model.entry.Entry;
 import org.apache.directory.shared.ldap.model.entry.Attribute;
 import org.apache.directory.shared.ldap.model.entry.Value;
@@ -183,7 +183,7 @@ public class PartitionDetailsPage implements IDetailsPage
                 {
                     try
                     {
-                        contextEntry.put( new DefaultEntryAttribute( newAttributeValueObject.getAttribute(),
+                        contextEntry.put( new DefaultAttribute( newAttributeValueObject.getAttribute(),
                             newAttributeValueObject.getValue() ) );
                     }
                     catch ( LdapException e1 )
@@ -808,7 +808,7 @@ public class PartitionDetailsPage implements IDetailsPage
                 {
                     try
                     {
-                        contextEntry.put( new DefaultEntryAttribute( newAttributeValueObject.getAttribute(),
+                        contextEntry.put( new DefaultAttribute( newAttributeValueObject.getAttribute(),
                             newAttributeValueObject.getValue() ) );
                     }
                     catch ( LdapException e )

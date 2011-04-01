@@ -30,7 +30,7 @@ import org.apache.directory.server.core.interceptor.context.LookupOperationConte
 import org.apache.directory.server.core.interceptor.context.SearchOperationContext;
 import org.apache.directory.server.core.partition.Partition;
 import org.apache.directory.shared.ldap.model.constants.SchemaConstants;
-import org.apache.directory.shared.ldap.model.entry.DefaultEntryAttribute;
+import org.apache.directory.shared.ldap.model.entry.DefaultAttribute;
 import org.apache.directory.shared.ldap.model.entry.DefaultModification;
 import org.apache.directory.shared.ldap.model.entry.Entry;
 import org.apache.directory.shared.ldap.model.entry.Attribute;
@@ -327,7 +327,7 @@ public class PartitionsDiffComputer
                     // Creating a modification for the removed AT
                     Modification modification = new DefaultModification();
                     modification.setOperation( ModificationOperation.REMOVE_ATTRIBUTE );
-                    modification.setAttribute( new DefaultEntryAttribute( originalAttribute.getAttributeType() ) );
+                    modification.setAttribute( new DefaultAttribute( originalAttribute.getAttributeType() ) );
 
                     modificationEntry.addModificationItem( modification );
                 }
@@ -355,7 +355,7 @@ public class PartitionsDiffComputer
                     // Creating a modification for the added AT
                     Modification modification = new DefaultModification();
                     modification.setOperation( ModificationOperation.ADD_ATTRIBUTE );
-                    Attribute attribute = new DefaultEntryAttribute( destinationAttributeType );
+                    Attribute attribute = new DefaultAttribute( destinationAttributeType );
                     modification.setAttribute( attribute );
                     
                     for ( Value<?> value : destinationAttribute )
@@ -402,7 +402,7 @@ public class PartitionsDiffComputer
                 // Creating a modification for the removed AT value
                 Modification modification = new DefaultModification();
                 modification.setOperation( ModificationOperation.REMOVE_ATTRIBUTE );
-                Attribute attribute = new DefaultEntryAttribute( originalAttribute.getAttributeType() );
+                Attribute attribute = new DefaultAttribute( originalAttribute.getAttributeType() );
                 modification.setAttribute( attribute );
                 
                 try
@@ -428,7 +428,7 @@ public class PartitionsDiffComputer
                 // Creating a modification for the added AT value
                 Modification modification = new DefaultModification();
                 modification.setOperation( ModificationOperation.ADD_ATTRIBUTE );
-                Attribute attribute = new DefaultEntryAttribute( originalAttribute.getAttributeType() );
+                Attribute attribute = new DefaultAttribute( originalAttribute.getAttributeType() );
                 modification.setAttribute( attribute );
                 
                 try
