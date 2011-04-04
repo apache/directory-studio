@@ -350,7 +350,7 @@ public class ExportDsmlRunnable implements StudioConnectionRunnableWithProgress
     private static DsmlDecorator<? extends Response> convertSearchResultToDsml( SearchResult searchResult, SearchParameter searchParameter )
         throws LdapException, LdapURLEncodingException
     {
-        Entry entry = AttributeUtils.toClientEntry(searchResult.getAttributes(),
+        Entry entry = AttributeUtils.toEntry(searchResult.getAttributes(),
                 new Dn(searchResult.getNameInNamespace()));
 
         if ( isReferral( entry ) )
@@ -491,7 +491,7 @@ public class ExportDsmlRunnable implements StudioConnectionRunnableWithProgress
         throws LdapException
     {
         AddRequestDsml ar = new AddRequestDsml( codec );
-        Entry entry = AttributeUtils.toClientEntry( searchResult.getAttributes(),
+        Entry entry = AttributeUtils.toEntry( searchResult.getAttributes(),
             new Dn( searchResult.getNameInNamespace() ) );
         ar.setEntry( entry );
 

@@ -706,7 +706,7 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
 
                 try
                 {
-                    modification.setAttribute( AttributeUtils.toClientAttribute( modificationItem.getAttribute() ) );
+                    modification.setAttribute( AttributeUtils.toApiAttribute( modificationItem.getAttribute() ) );
                 }
                 catch ( LdapInvalidAttributeValueException liave )
                 {
@@ -845,7 +845,7 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
                     // Preparing the add request
                     AddRequest request = new AddRequestImpl();
                     request.setEntryDn( new Dn( dn ) );
-                    request.setEntry( AttributeUtils.toClientEntry( attributes, new Dn( dn ) ) );
+                    request.setEntry( AttributeUtils.toEntry( attributes, new Dn( dn ) ) );
                     request.addAllControls( convertControls( controls ) );
 
                     // Performing the add operation

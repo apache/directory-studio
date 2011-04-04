@@ -498,7 +498,7 @@ public class ImportDsmlRunnable implements StudioConnectionBulkRunnableWithProgr
         for ( Modification modification : request.getModifications() )
         {
             modificationItems.add( new ModificationItem( convertModificationOperation( modification.getOperation() ),
-                AttributeUtils.toAttribute( modification.getAttribute() ) ) );
+                AttributeUtils.toJndiAttribute( modification.getAttribute() ) ) );
         }
 
         // Executing the modify request

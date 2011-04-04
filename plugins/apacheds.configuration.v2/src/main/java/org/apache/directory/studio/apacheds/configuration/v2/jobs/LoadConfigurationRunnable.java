@@ -303,7 +303,7 @@ public class LoadConfigurationRunnable implements StudioRunnableWithProgress
             {
                 // Creating the 'ou=config' base entry
                 SearchResult searchResult = ( SearchResult ) enumeration.next();
-                configEntry = new DefaultEntry( schemaManager, AttributeUtils.toClientEntry(
+                configEntry = new DefaultEntry( schemaManager, AttributeUtils.toEntry(
                     searchResult.getAttributes(), new Dn( searchResult.getNameInNamespace() ) ) );
             }
             enumeration.close();
@@ -359,7 +359,7 @@ public class LoadConfigurationRunnable implements StudioRunnableWithProgress
                 {
                     // Creating the child entry
                     SearchResult searchResult = ( SearchResult ) childrenEnumeration.next();
-                    Entry childEntry = new DefaultEntry( schemaManager, AttributeUtils.toClientEntry(
+                    Entry childEntry = new DefaultEntry( schemaManager, AttributeUtils.toEntry(
                         searchResult.getAttributes(), new Dn( searchResult.getNameInNamespace() ) ) );
 
                     // Adding the children to the list of entries
