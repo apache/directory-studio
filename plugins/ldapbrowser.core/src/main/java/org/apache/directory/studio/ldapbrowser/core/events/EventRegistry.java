@@ -84,7 +84,6 @@ public class EventRegistry extends ConnectionEventRegistry
                 };
             }
         };
-        System.out.println( "fireSearchUpdated() " + searchUpdateEvent + " - " + source );
         searchUpdateEventManager.fire( factory );
     }
 
@@ -136,7 +135,6 @@ public class EventRegistry extends ConnectionEventRegistry
                 };
             }
         };
-        System.out.println( "fireBookmarkUpdated() " + bookmarkUpdateEvent + " - " + source );
         bookmarkUpdateEventManager.fire( factory );
     }
 
@@ -189,7 +187,6 @@ public class EventRegistry extends ConnectionEventRegistry
                 };
             }
         };
-        System.out.println( "fireBrowserConnectionUpdated() " + browserConnectionUpdateEvent + " - " + source );
         browserConnectionUpdateEventManager.fire( factory );
     }
 
@@ -248,7 +245,6 @@ public class EventRegistry extends ConnectionEventRegistry
                 return "EventRunnableFactory [entryUpdateEvent=" + entryUpdateEvent + "]";
             }
         };
-        System.out.println( "fireEntryUpdated() " + entryUpdateEvent + " - " + source );
         entryUpdateEventManager.fire( factory );
     }
 
