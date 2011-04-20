@@ -325,7 +325,8 @@ public class SchemaUtils
      */
     public static boolean isOperational( AttributeType atd )
     {
-        return atd.getUsage() != UsageEnum.USER_APPLICATIONS || atd.getExtensions() == Schema.DUMMY_EXTENSIONS
+        return !UsageEnum.USER_APPLICATIONS.equals( atd.getUsage() )
+            || Schema.DUMMY_EXTENSIONS.equals( atd.getExtensions() )
             || CollectionUtils.containsAny( OPERATIONAL_ATTRIBUTES_OIDS_AND_NAMES, getLowerCaseIdentifiers( atd ) );
     }
 
