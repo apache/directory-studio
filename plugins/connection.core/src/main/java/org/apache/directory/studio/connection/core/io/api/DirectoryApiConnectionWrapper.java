@@ -1225,13 +1225,13 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
                 // NOT_ALLOWED_ON_NON_LEAF error (thrown when deleting a entry with children
                 if ( ResultCodeEnum.NOT_ALLOWED_ON_NON_LEAF.equals( ldapResult.getResultCode() ) )
                 {
-                    throw new ContextNotEmptyException( ldapResult.getErrorMessage() );
+                    throw new ContextNotEmptyException( ldapResult.getDiagnosticMessage() );
                 }
                 // Different from SUCCESS, we throw a generic exception
                 else if ( !ResultCodeEnum.SUCCESS.equals( ldapResult.getResultCode() ) )
                 {
                     throw new Exception( NLS.bind( "[LDAP: error code {0} - {1}]", new String[]
-                        { ldapResult.getResultCode().getResultCode() + "", ldapResult.getErrorMessage() } ) );
+                        { ldapResult.getResultCode().getResultCode() + "", ldapResult.getDiagnosticMessage() } ) );
                 }
             }
         }

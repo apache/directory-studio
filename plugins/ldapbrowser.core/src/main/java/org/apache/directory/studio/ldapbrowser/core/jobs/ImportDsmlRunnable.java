@@ -337,7 +337,7 @@ public class ImportDsmlRunnable implements StudioConnectionBulkRunnableWithProgr
             BindResponseDsml authResponseDsml = new BindResponseDsml( codec );
             LdapResult ldapResult = authResponseDsml.getLdapResult();
             ldapResult.setResultCode( ResultCodeEnum.UNWILLING_TO_PERFORM );
-            ldapResult.setErrorMessage( "This kind of request is not yet supported." );
+            ldapResult.setDiagnosticMessage( "This kind of request is not yet supported." );
             batchResponseDsml.addResponse( authResponseDsml );
         }
     }
@@ -408,7 +408,7 @@ public class ImportDsmlRunnable implements StudioConnectionBulkRunnableWithProgr
             CompareResponseDsml compareResponseDsml = new CompareResponseDsml( codec );
             LdapResult ldapResult = compareResponseDsml.getLdapResult();
             ldapResult.setResultCode( ResultCodeEnum.UNWILLING_TO_PERFORM );
-            ldapResult.setErrorMessage( "This kind of request is not yet supported." );
+            ldapResult.setDiagnosticMessage( "This kind of request is not yet supported." );
             batchResponseDsml.addResponse( compareResponseDsml );
         }
     }
@@ -476,7 +476,7 @@ public class ImportDsmlRunnable implements StudioConnectionBulkRunnableWithProgr
             ExtendedResponseDsml extendedResponseDsml = new ExtendedResponseDsml( codec );
             LdapResult ldapResult = extendedResponseDsml.getLdapResult();
             ldapResult.setResultCode( ResultCodeEnum.UNWILLING_TO_PERFORM );
-            ldapResult.setErrorMessage( "This kind of request is not yet supported." );
+            ldapResult.setDiagnosticMessage( "This kind of request is not yet supported." );
             batchResponseDsml.addResponse( extendedResponseDsml );
         }
     }
@@ -767,7 +767,7 @@ public class ImportDsmlRunnable implements StudioConnectionBulkRunnableWithProgr
             // Setting the error message if there's one
             if ( t.getMessage() != null )
             {
-                ldapResult.setErrorMessage( t.getMessage() );
+                ldapResult.setDiagnosticMessage( t.getMessage() );
             }
         }
     }
