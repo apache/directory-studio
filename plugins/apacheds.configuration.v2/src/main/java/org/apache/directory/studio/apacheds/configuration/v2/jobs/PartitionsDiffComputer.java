@@ -206,7 +206,7 @@ public class PartitionsDiffComputer
                 {
                     if ( modificationEntryChangeType == ChangeType.Delete
                         || ( modificationEntryChangeType == ChangeType.Modify && modificationEntry
-                            .getModificationItems().size() > 0 ) )
+                            .getModifications().size() > 0 ) )
                     {
                         // Adding the modification entry to the list
                         modifications.add( modificationEntry );
@@ -329,7 +329,7 @@ public class PartitionsDiffComputer
                     modification.setOperation( ModificationOperation.REMOVE_ATTRIBUTE );
                     modification.setAttribute( new DefaultAttribute( originalAttribute.getAttributeType() ) );
 
-                    modificationEntry.addModificationItem( modification );
+                    modificationEntry.addModification( modification );
                 }
                 else
                 {
@@ -370,7 +370,7 @@ public class PartitionsDiffComputer
                         }
                     }
 
-                    modificationEntry.addModificationItem( modification );
+                    modificationEntry.addModification( modification );
                 }
             }
         }
@@ -414,7 +414,7 @@ public class PartitionsDiffComputer
                     // TODO : handle the exception
                 }
 
-                modificationEntry.addModificationItem( modification );
+                modificationEntry.addModification( modification );
             }
 
             evaluatedValues.add( originalValue );
@@ -440,7 +440,7 @@ public class PartitionsDiffComputer
                     // TODO : handle the exception
                 }
 
-                modificationEntry.addModificationItem( modification );
+                modificationEntry.addModification( modification );
             }
         }
     }
