@@ -184,16 +184,22 @@ public class NewEntryDnWizardPage extends WizardPage implements WidgetModifyList
 
             Dn parentDn = null;
 
-            if ( ( wizard.getSelectedEntry() != null )
-                && ( newEntry.getDn().equals( wizard.getSelectedEntry().getDn() ) ) && !Dn.isNullOrEmpty( newEntry.getDn().getParent() ) )
+            boolean hasSelectedEntry = wizard.getSelectedEntry() != null;
+            boolean newEntryParentDnNotNullOrEmpty = !Dn.isNullOrEmpty( newEntry.getDn().getParent() );
+            boolean newEntryDnEqualsSelectedEntryDn = newEntry.getDn().equals( wizard.getSelectedEntry().getDn() );
+
+            if ( hasSelectedEntry )
             {
-                parentDn = newEntry.getDn().getParent();
+                if ( newEntryDnEqualsSelectedEntryDn && newEntryParentDnNotNullOrEmpty )
+                {
+                    parentDn = newEntry.getDn().getParent();
+                }
+                else
+                {
+                    parentDn = wizard.getSelectedEntry().getDn();
+                }
             }
-            else if ( wizard.getSelectedEntry() != null )
-            {
-                parentDn = wizard.getSelectedEntry().getDn();
-            }
-            else if ( !Dn.isNullOrEmpty( parentDn ) )
+            else if ( newEntryParentDnNotNullOrEmpty )
             {
                 parentDn = newEntry.getDn().getParent();
             }
