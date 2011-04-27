@@ -130,7 +130,7 @@ public class NewEntryDnWizardPage extends WizardPage implements WidgetModifyList
     private void validate()
     {
         if ( wizard.isNewContextEntry() && !"".equals( contextEntryDnCombo.getText() ) //$NON-NLS-1$
-            && Dn.isValid(contextEntryDnCombo.getText()) )
+            && Dn.isValid( contextEntryDnCombo.getText() ) )
         {
             setPageComplete( true );
             saveState();
@@ -182,12 +182,20 @@ public class NewEntryDnWizardPage extends WizardPage implements WidgetModifyList
             Collection<AttributeType> atds = SchemaUtils.getAllAttributeTypeDescriptions( newEntry );
             String[] attributeNames = SchemaUtils.getNames( atds ).toArray( ArrayUtils.EMPTY_STRING_ARRAY );
 
-            Dn parentDn = newEntry.getDn().getParent();
-            
-            if ( wizard.getSelectedEntry() != null && !Dn.isNullOrEmpty( parentDn ) 
-                && ( !newEntry.getDn().equals( wizard.getSelectedEntry().getDn() ) ) )
+            Dn parentDn = null;
+
+            if ( ( wizard.getSelectedEntry() != null )
+                && ( newEntry.getDn().equals( wizard.getSelectedEntry().getDn() ) ) && !Dn.isNullOrEmpty( newEntry.getDn().getParent() ) )
+            {
+                parentDn = newEntry.getDn().getParent();
+            }
+            else if ( wizard.getSelectedEntry() != null )
             {
                 parentDn = wizard.getSelectedEntry().getDn();
+            }
+            else if ( !Dn.isNullOrEmpty( parentDn ) )
+            {
+                parentDn = newEntry.getDn().getParent();
             }
 
             Rdn rdn = newEntry.getRdn();
@@ -241,7 +249,7 @@ public class NewEntryDnWizardPage extends WizardPage implements WidgetModifyList
 
             // set new Dn
             Dn dn;
-            
+
             if ( wizard.isNewContextEntry() )
             {
                 try
@@ -347,7 +355,7 @@ public class NewEntryDnWizardPage extends WizardPage implements WidgetModifyList
 
             Rdn rdn = dnBuilderWidget.getRdn();
             Dn parentDn = dnBuilderWidget.getParentDn();
-            
+
             try
             {
                 final Dn dn = parentDn.add( rdn );
@@ -356,7 +364,7 @@ public class NewEntryDnWizardPage extends WizardPage implements WidgetModifyList
                 ReadEntryRunnable readEntryRunnable1 = new ReadEntryRunnable( wizard.getSelectedConnection(), parentDn );
                 RunnableContextRunner.execute( readEntryRunnable1, getContainer(), false );
                 IEntry parentEntry = readEntryRunnable1.getReadEntry();
-                
+
                 if ( parentEntry == null )
                 {
                     getShell().getDisplay().syncExec( new Runnable()
@@ -371,7 +379,7 @@ public class NewEntryDnWizardPage extends WizardPage implements WidgetModifyList
                                             Messages.getString( "NewEntryDnWizardPage.ParentDoesNotExist" ), dnBuilderWidget.getParentDn().toString() ) ); //$NON-NLS-1$
                         }
                     } );
-                    
+
                     return null;
                 }
 
@@ -379,7 +387,7 @@ public class NewEntryDnWizardPage extends WizardPage implements WidgetModifyList
                 ReadEntryRunnable readEntryRunnable2 = new ReadEntryRunnable( wizard.getSelectedConnection(), dn );
                 RunnableContextRunner.execute( readEntryRunnable2, getContainer(), false );
                 IEntry entry = readEntryRunnable2.getReadEntry();
-                
+
                 if ( entry != null )
                 {
                     getShell().getDisplay().syncExec( new Runnable()
@@ -392,7 +400,7 @@ public class NewEntryDnWizardPage extends WizardPage implements WidgetModifyList
                                     Messages.getString( "NewEntryDnWizardPage.Error" ), NLS.bind( Messages.getString( "NewEntryDnWizardPage.EntryAlreadyExists" ), dn.toString() ) ); //$NON-NLS-1$ //$NON-NLS-2$
                         }
                     } );
-                    
+
                     return null;
                 }
             }
