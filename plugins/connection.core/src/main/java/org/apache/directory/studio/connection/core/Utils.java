@@ -59,6 +59,21 @@ public class Utils
         }
     }
 
+    public static ResourceBundle resultCodeDescriptions = null;
+    // Load RessourceBundle with OID descriptions
+    static
+    {
+        try
+        {
+            resultCodeDescriptions = ResourceBundle
+                .getBundle( "org.apache.directory.studio.connection.core.ResultCodeDescriptions" );
+        }
+        catch ( Exception e )
+        {
+            e.printStackTrace();
+        }
+    }
+
 
     /**
      * Gets the textual OID description for the given numeric OID.
@@ -73,8 +88,31 @@ public class Utils
         {
             try
             {
-                String description = oidDescriptions.getString( oid );
-                return description;
+                return oidDescriptions.getString( oid );
+            }
+            catch ( MissingResourceException ignored )
+            {
+            }
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Gets the textual result code description for the given numeric result code.
+     * 
+     * @param code the result code
+     * 
+     * @return the OID description, null if the numeric OID is unknown
+     */
+    public static String getResultCodeDescription( int code )
+    {
+        if ( resultCodeDescriptions != null )
+        {
+            try
+            {
+                return resultCodeDescriptions.getString( "" + code );
             }
             catch ( MissingResourceException ignored )
             {
@@ -146,7 +184,7 @@ public class Utils
             return null;
         }
 
-        byte[] b = Strings.getBytesUtf8(s);
+        byte[] b = Strings.getBytesUtf8( s );
         StringBuffer sb = new StringBuffer();
         for ( int i = 0; i < b.length; i++ )
         {

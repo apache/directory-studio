@@ -40,6 +40,7 @@ import javax.security.auth.login.AppConfigurationEntry;
 import javax.security.auth.login.AppConfigurationEntry.LoginModuleControlFlag;
 import javax.security.auth.login.Configuration;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.directory.ldap.client.api.CramMd5Request;
 import org.apache.directory.ldap.client.api.DigestMd5Request;
 import org.apache.directory.ldap.client.api.GssApiRequest;
@@ -86,6 +87,7 @@ import org.apache.directory.studio.connection.core.IAuthHandler;
 import org.apache.directory.studio.connection.core.ICredentials;
 import org.apache.directory.studio.connection.core.IJndiLogger;
 import org.apache.directory.studio.connection.core.Messages;
+import org.apache.directory.studio.connection.core.Utils;
 import org.apache.directory.studio.connection.core.io.ConnectionWrapper;
 import org.apache.directory.studio.connection.core.io.StudioNamingEnumeration;
 import org.apache.directory.studio.connection.core.io.StudioTrustManager;
@@ -1230,8 +1232,18 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
                 // Different from SUCCESS, we throw a generic exception
                 else if ( !ResultCodeEnum.SUCCESS.equals( ldapResult.getResultCode() ) )
                 {
+                    int code = ldapResult.getResultCode().getResultCode();
+                    String message = ldapResult.getDiagnosticMessage();
+
+                    // Checking if we got a message from the LDAP result
+                    if ( StringUtils.isEmpty( message ) )
+                    {
+                        // Assigning the generic result code description
+                        message = Utils.getResultCodeDescription( code );
+                    }
+
                     throw new Exception( NLS.bind( "[LDAP: error code {0} - {1}]", new String[]
-                        { ldapResult.getResultCode().getResultCode() + "", ldapResult.getDiagnosticMessage() } ) );
+                        { code + "", message } ) );
                 }
             }
         }
