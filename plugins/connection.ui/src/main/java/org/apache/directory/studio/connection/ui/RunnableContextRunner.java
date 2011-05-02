@@ -28,6 +28,7 @@ import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
 import org.apache.directory.studio.connection.core.IConnectionListener;
 import org.apache.directory.studio.connection.core.Messages;
 import org.apache.directory.studio.connection.core.event.ConnectionEventRegistry;
+import org.apache.directory.studio.connection.core.jobs.StudioConnectionBulkRunnableWithProgress;
 import org.apache.directory.studio.connection.core.jobs.StudioConnectionRunnableWithProgress;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -103,9 +104,9 @@ public class RunnableContextRunner
                 {
                     try
                     {
-                        if ( runnable instanceof StudioBulkRunnableWithProgress )
+                        if ( runnable instanceof StudioConnectionBulkRunnableWithProgress )
                         {
-                            StudioBulkRunnableWithProgress bulkRunnable = ( StudioBulkRunnableWithProgress ) runnable;
+                            StudioConnectionBulkRunnableWithProgress bulkRunnable = ( StudioConnectionBulkRunnableWithProgress ) runnable;
                             ConnectionEventRegistry.suspendEventFiringInCurrentThread();
                             try
                             {
