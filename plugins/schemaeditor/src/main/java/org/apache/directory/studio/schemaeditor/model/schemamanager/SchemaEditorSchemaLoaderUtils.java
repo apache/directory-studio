@@ -225,10 +225,10 @@ public class SchemaEditorSchemaLoaderUtils
     private static Dn getDn( SchemaObject schemaObject, String objectPath ) throws LdapInvalidDnException
     {
         return Dn.EMPTY_DN
-            .add( new Rdn( M_OID, schemaObject.getOid() ) )
-            .add( new Rdn( objectPath ) )
+            .add( new Rdn( SchemaConstants.OU_SCHEMA ) )
             .add( new Rdn( SchemaConstants.CN_AT, schemaObject.getSchemaName() ) )
-            .add( new Rdn( SchemaConstants.OU_SCHEMA ) );
+            .add( new Rdn( objectPath ) )
+            .add( new Rdn( M_OID, schemaObject.getOid() ) );
     }
 
 
