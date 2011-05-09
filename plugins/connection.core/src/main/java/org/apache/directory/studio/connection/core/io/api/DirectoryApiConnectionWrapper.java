@@ -58,6 +58,8 @@ import org.apache.directory.shared.ldap.model.message.AddRequest;
 import org.apache.directory.shared.ldap.model.message.AddRequestImpl;
 import org.apache.directory.shared.ldap.model.message.AddResponse;
 import org.apache.directory.shared.ldap.model.message.AliasDerefMode;
+import org.apache.directory.shared.ldap.model.message.BindRequest;
+import org.apache.directory.shared.ldap.model.message.BindRequestImpl;
 import org.apache.directory.shared.ldap.model.message.BindResponse;
 import org.apache.directory.shared.ldap.model.message.DeleteRequest;
 import org.apache.directory.shared.ldap.model.message.DeleteRequestImpl;
@@ -348,7 +350,9 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
                         // Simple Authentication
                         if ( connection.getConnectionParameter().getAuthMethod() == ConnectionParameter.AuthenticationMethod.SIMPLE )
                         {
-                            bindResponse = ldapConnection.bind( bindPrincipal, bindPassword );
+                            BindRequest bindRequest = new BindRequestImpl();
+                            bindRequest.setName( new Dn( bindPrincipal ) );
+                            bindResponse = ldapConnection.bind( bindRequest );
                         }
                         // CRAM-MD5 Authentication
                         else if ( connection.getConnectionParameter().getAuthMethod() == ConnectionParameter.AuthenticationMethod.SASL_CRAM_MD5 )
