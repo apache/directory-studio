@@ -226,7 +226,7 @@ public class SchemaEditorSchemaLoaderUtils
     {
         return Dn.EMPTY_DN
             .add( new Rdn( SchemaConstants.OU_SCHEMA ) )
-            .add( new Rdn( SchemaConstants.CN_AT, schemaObject.getSchemaName() ) )
+            .add( new Rdn( SchemaConstants.CN_AT, Rdn.escapeValue( schemaObject.getSchemaName() ) ) )
             .add( new Rdn( objectPath ) )
             .add( new Rdn( M_OID, schemaObject.getOid() ) );
     }
