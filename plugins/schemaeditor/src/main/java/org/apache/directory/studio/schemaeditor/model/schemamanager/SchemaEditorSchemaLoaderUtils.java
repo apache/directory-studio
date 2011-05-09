@@ -84,7 +84,7 @@ public class SchemaEditorSchemaLoaderUtils
         Entry entry = new DefaultEntry();
 
         // Setting calculated DN
-        entry.setDn( getDn( attributeType, SchemaConstants.ATTRIBUTES_TYPE_PATH ) );
+        entry.setDn( getDn( attributeType, SchemaConstants.ATTRIBUTE_TYPES_PATH ) );
 
         // Values common to all schema objects
         addSchemaObjectValues( attributeType, SchemaConstants.META_ATTRIBUTE_TYPE_OC, entry );
