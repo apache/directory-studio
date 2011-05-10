@@ -352,6 +352,7 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
                         {
                             BindRequest bindRequest = new BindRequestImpl();
                             bindRequest.setName( new Dn( bindPrincipal ) );
+                            bindRequest.setCredentials( bindPassword );
                             bindResponse = ldapConnection.bind( bindRequest );
                         }
                         // CRAM-MD5 Authentication
