@@ -35,8 +35,8 @@ import javax.naming.ldap.Control;
 import javax.naming.ldap.PagedResultsResponseControl;
 
 import org.apache.directory.shared.ldap.codec.api.CodecControl;
-import org.apache.directory.shared.ldap.codec.api.LdapCodecService;
-import org.apache.directory.shared.ldap.codec.api.LdapCodecServiceFactory;
+import org.apache.directory.shared.ldap.codec.api.LdapApiService;
+import org.apache.directory.shared.ldap.codec.api.LdapApiServiceFactory;
 import org.apache.directory.shared.ldap.model.cursor.SearchCursor;
 import org.apache.directory.shared.ldap.model.entry.AttributeUtils;
 import org.apache.directory.shared.ldap.model.message.Referral;
@@ -73,7 +73,7 @@ public class CursorStudioNamingEnumeration extends AbstractStudioNamingEnumerati
     private SearchResultDone searchResultDone;
 
     // @TODO: By Alex: temporary fix until things are in order (needs to be fixed)
-    private LdapCodecService codec = LdapCodecServiceFactory.getSingleton();
+    private LdapApiService codec = LdapApiServiceFactory.getSingleton();
     
 
     /**
