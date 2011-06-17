@@ -129,7 +129,7 @@
  org.eclipse.ui,
  org.eclipse.ui.editors,
  org.eclipse.ui.ide</Require-Bundle>
-            <Export-Package>org.apache.directory.studio.*</Export-Package>
+            <Export-Package>org.apache.directory.studio.ldapservers.apacheds.v154.*</Export-Package>
             <Import-Package>!</Import-Package>
             <Private-Package>!</Private-Package>
           </instructions>

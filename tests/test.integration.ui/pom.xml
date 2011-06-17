@@ -294,7 +294,7 @@
             <Embed-Directory>lib</Embed-Directory>
             <Embed-StripGroup>true</Embed-StripGroup>
             <Embed-Transitive>true</Embed-Transitive>
-            <Export-Package>!*</Export-Package>
+            <_exportcontents>!*</_exportcontents>
             <Import-Package>!</Import-Package>
             <Private-Package>!</Private-Package>
           </instructions>

@@ -90,7 +90,7 @@
             <Embed-Dependency>*;scope=compile|runtime</Embed-Dependency>
             <Embed-Directory>lib</Embed-Directory>
             <Embed-StripGroup>true</Embed-StripGroup>
-            <Export-Package>*</Export-Package>
+            <_exportcontents>!lib,*</_exportcontents>
             <Import-Package>!</Import-Package>
           </instructions>
         </configuration>

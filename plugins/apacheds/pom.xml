@@ -127,7 +127,17 @@
             <Embed-Directory>lib</Embed-Directory>
             <Embed-StripGroup>true</Embed-StripGroup>
             <Embed-Transitive>true</Embed-Transitive>
-            <Export-Package>org.apache.directory.studio.apacheds.*</Export-Package>
+            <Export-Package>
+            	org.apache.directory.studio.apacheds,
+            	org.apache.directory.studio.apacheds.actions,
+            	org.apache.directory.studio.apacheds.dialogs,
+            	org.apache.directory.studio.apacheds.jobs,
+            	org.apache.directory.studio.apacheds.model,
+            	org.apache.directory.studio.apacheds.prefs,
+            	org.apache.directory.studio.apacheds.properties,
+            	org.apache.directory.studio.apacheds.views,
+            	org.apache.directory.studio.apacheds.wizards
+            </Export-Package>
             <Import-Package>!</Import-Package>
             <Private-Package>!</Private-Package>
           </instructions>

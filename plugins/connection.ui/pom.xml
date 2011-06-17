@@ -123,7 +123,7 @@
  org.eclipse.ui,
  org.eclipse.ui.forms,
  org.eclipse.ui.workbench.texteditor</Require-Bundle>
-            <Export-Package>org.apache.directory.studio.*</Export-Package>
+            <Export-Package>org.apache.directory.studio.connection.ui.*,org.apache.directory.studio.utils.*</Export-Package>
             <Import-Package>!</Import-Package>
             <Private-Package>!</Private-Package>
           </instructions>
