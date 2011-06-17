@@ -21,7 +21,6 @@
 package org.apache.directory.studio.valueeditors.address;
 
 
-import org.apache.directory.studio.ldapbrowser.common.dialogs.TextDialog;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
 import org.apache.directory.studio.valueeditors.AbstractDialogStringValueEditor;
 import org.eclipse.swt.widgets.Shell;
@@ -30,7 +29,7 @@ import org.eclipse.swt.widgets.Shell;
 /**
  * Implementation of IValueEditor for syntax 1.3.6.1.4.1.1466.115.121.1.41 
  * (Postal Address). In the displayed value the $ separators are replaced
- * by commas. In the opened AddressDialog the $ separators are recplaced by 
+ * by commas. In the opened AddressDialog the $ separators are replaced by 
  * line breaks.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
@@ -49,7 +48,7 @@ public class AddressValueEditor extends AbstractDialogStringValueEditor
         if ( value != null && value instanceof String )
         {
             AddressDialog dialog = new AddressDialog( shell, ( String ) value );
-            if ( dialog.open() == TextDialog.OK && !"".equals( dialog.getAddress() ) ) //$NON-NLS-1$
+            if ( dialog.open() == AddressDialog.OK && !"".equals( dialog.getAddress() ) ) //$NON-NLS-1$
             {
                 setValue( dialog.getAddress() );
                 return true;
