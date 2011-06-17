@@ -342,8 +342,6 @@ public class ServerConfigurationEditorUtils
         List<LdifEntry> modificationsList = partitionsDiffComputer.computeModifications( new String[]
             { SchemaConstants.ALL_USER_ATTRIBUTES } );
 
-        System.out.println( modificationsList );
-
         // Building the resulting LDIF
         StringBuilder modificationsLdif = new StringBuilder();
         for ( LdifEntry ldifEntry : modificationsList )
