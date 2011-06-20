@@ -25,15 +25,16 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.directory.server.core.entry.ClonedServerEntry;
 import org.apache.directory.server.core.filtering.EntryFilteringCursor;
 import org.apache.directory.server.core.interceptor.context.LookupOperationContext;
 import org.apache.directory.server.core.interceptor.context.SearchOperationContext;
 import org.apache.directory.server.core.partition.Partition;
 import org.apache.directory.shared.ldap.model.constants.SchemaConstants;
+import org.apache.directory.shared.ldap.model.entry.Attribute;
 import org.apache.directory.shared.ldap.model.entry.DefaultAttribute;
 import org.apache.directory.shared.ldap.model.entry.DefaultModification;
 import org.apache.directory.shared.ldap.model.entry.Entry;
-import org.apache.directory.shared.ldap.model.entry.Attribute;
 import org.apache.directory.shared.ldap.model.entry.Modification;
 import org.apache.directory.shared.ldap.model.entry.ModificationOperation;
 import org.apache.directory.shared.ldap.model.entry.Value;
@@ -223,9 +224,10 @@ public class PartitionsDiffComputer
 
                 // Looking for the children of the current entry
                 EntryFilteringCursor cursor = originalPartition.search( soc );
+                
                 while ( cursor.next() )
                 {
-                    originalEntries.add( cursor.get().getClonedEntry() );
+                    originalEntries.add( ((ClonedServerEntry)cursor.get()).getClonedEntry() );
                 }
             }
         }
