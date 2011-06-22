@@ -32,5 +32,5 @@ public interface ACIITemConstants
 
     /** The ID for ACI Item Template */
     public static final String ACI_ITEM_TEMPLATE_ID = Activator.getDefault().getPluginProperties().getString(
-        "CtxType_AciItem_Template_id" );; //$NON-NLS-1$
+        "CtxType_AciItem_Template_id" ); //$NON-NLS-1$
 }
