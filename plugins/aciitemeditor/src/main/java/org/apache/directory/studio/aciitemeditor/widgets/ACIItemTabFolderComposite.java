@@ -69,7 +69,7 @@ public class ACIItemTabFolderComposite extends Composite
     /** Tehe source tab */
     private TabItem sourceTab;
 
-    /** The inner container of the visual tab */
+    /** The inner container of the source tab */
     private Composite sourceContainer;
 
     /** The source editor composite */
