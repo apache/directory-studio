@@ -163,33 +163,33 @@ public class ACICodeScanner extends RuleBasedScanner
         WordRule wr = new WordRule( new AciWordDetector(), undefined );
 
         // Adding Keywords
-        for ( int i = 0; i < aciKeywords.length; ++i )
+        for ( String aciKeyword : aciKeywords )
         {
-            wr.addWord( aciKeywords[i], keyword );
+            wr.addWord( aciKeyword, keyword );
         }
 
         // Adding GrantValues
-        for ( int i = 0; i < aciGrantValues.length; ++i )
+        for ( String aciGrantValue : aciGrantValues )
         {
-            wr.addWord( aciGrantValues[i], grantValue );
+            wr.addWord( aciGrantValue, grantValue );
         }
 
         // Adding DenyValues
-        for ( int i = 0; i < aciDenyValues.length; ++i )
+        for ( String aciDenyValue : aciDenyValues )
         {
-            wr.addWord( aciDenyValues[i], denyValue );
+            wr.addWord( aciDenyValue, denyValue );
         }
 
         // Adding itemOrUserFirstSectionPartition
-        for ( int i = 0; i < itemOrUserFirstSectionPartition.length; ++i )
+        for ( String itemOrUserFirstSectionPartitionValue : itemOrUserFirstSectionPartition )
         {
-            wr.addWord( itemOrUserFirstSectionPartition[i], itemOrUserFirst );
+            wr.addWord( itemOrUserFirstSectionPartitionValue, itemOrUserFirst );
         }
 
         // Adding User
-        for ( int i = 0; i < userSection.length; ++i )
+        for ( String userSectionValue : userSection )
         {
-            wr.addWord( userSection[i], user );
+            wr.addWord( userSectionValue, user );
         }
 
         wr.addWord( identificationTagPartition, identification );
