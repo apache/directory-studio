@@ -400,16 +400,16 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
                                 gssApiRequest.setUsername( bindPrincipal );
                                 gssApiRequest.setCredentials( bindPassword );
                                 gssApiRequest.setQualityOfProtection( connection
-                                                                .getConnectionParameter().getSaslQop() );
+                                    .getConnectionParameter().getSaslQop() );
                                 gssApiRequest.setSecurityStrength( connection
-                                                                .getConnectionParameter()
-                                                                .getSaslSecurityStrength() );
+                                    .getConnectionParameter()
+                                    .getSaslSecurityStrength() );
                                 gssApiRequest.setMutualAuthentication( connection
-                                                                .getConnectionParameter()
-                                                                .isSaslMutualAuthentication() );
+                                    .getConnectionParameter()
+                                    .isSaslMutualAuthentication() );
                                 gssApiRequest
-                                                                .setLoginModuleConfiguration( new InnerConfiguration(
-                                                                    krb5LoginModule ) );
+                                    .setLoginModuleConfiguration( new InnerConfiguration(
+                                        krb5LoginModule ) );
 
                                 switch ( connection.getConnectionParameter().getKrb5Configuration() )
                                 {
@@ -618,12 +618,7 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
 
             for ( int i = 0; i < controls.length; i++ )
             {
-                Control control = controls[i];
-
-                org.apache.directory.shared.ldap.model.message.Control returningControl;
-                returningControl = ldapConnection.getCodecService().fromJndiControl( control );
-
-                returningControls[i] = returningControl;
+                returningControls[i] = ldapConnection.getCodecService().fromJndiControl( controls[i] );
             }
 
             return returningControls;
