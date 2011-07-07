@@ -195,8 +195,6 @@ public class BrowserCoreMessages extends NLS
 
     public static String model__unknown_host;
 
-    public static String jobs__error_occurred;
-
     public static String jobs__check_bind_name;
 
     public static String jobs__check_bind_task;
@@ -300,10 +298,6 @@ public class BrowserCoreMessages extends NLS
     public static String jobs__export_dsml_error;
 
     public static String jobs__export_progress;
-
-    public static String jobs__progressmonitor_check_cancellation;
-
-    public static String jobs__progressmonitor_report_progress;
 
     public static String jobs__export_xls_name;
 

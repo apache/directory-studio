@@ -63,8 +63,6 @@ public class Messages extends NLS
     public static String model__no_auth_handler;
     public static String model__no_credentials;
 
-    public static String jobs__progressmonitor_check_cancellation;
-
     public static String jobs__check_bind_name;
     public static String jobs__check_bind_task;
     public static String jobs__check_bind_error;
