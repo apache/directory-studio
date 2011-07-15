@@ -32,7 +32,7 @@ import javax.naming.directory.SearchResult;
 import org.apache.directory.server.config.ConfigPartitionReader;
 import org.apache.directory.server.config.ReadOnlyConfigurationPartition;
 import org.apache.directory.server.config.beans.ConfigBean;
-import org.apache.directory.server.core.partition.impl.btree.BTreePartition;
+import org.apache.directory.server.core.partition.impl.btree.AbstractBTreePartition;
 import org.apache.directory.shared.ldap.model.constants.SchemaConstants;
 import org.apache.directory.shared.ldap.model.entry.AttributeUtils;
 import org.apache.directory.shared.ldap.model.entry.DefaultEntry;
@@ -241,7 +241,7 @@ public class LoadConfigurationRunnable implements StudioRunnableWithProgress
      *      the associated configuration bean
      * @throws LdapException
      */
-    private static ConfigBean readConfiguration( BTreePartition<Long> partition ) throws LdapException
+    private static ConfigBean readConfiguration( AbstractBTreePartition<Long> partition ) throws LdapException
     {
         if ( partition != null )
         {
