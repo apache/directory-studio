@@ -826,7 +826,7 @@
     <dependency>
       <groupId>org.eclipse.equinox.launcher.cocoa</groupId>
       <artifactId>macosx</artifactId>
-      <version>1.1.1.R36x_v20100810</version>
+      <version>1.1.100.v20110502</version>
       <type>zip</type>
     </dependency>
     <dependency>
@@ -1148,7 +1148,7 @@
     <dependency>
       <groupId>org.eclipse.swt.cocoa</groupId>
       <artifactId>macosx</artifactId>
-      <version>3.6.1.v3655c</version>
+      <version>3.7.0.v3735b</version>
     </dependency>
     <dependency>
       <groupId>org.eclipse.swt.cocoa.macosx</groupId>
