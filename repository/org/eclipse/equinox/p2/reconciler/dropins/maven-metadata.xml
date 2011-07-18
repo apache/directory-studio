@@ -3,10 +3,11 @@
   <groupId>org.eclipse.equinox.p2.reconciler</groupId>
   <artifactId>dropins</artifactId>
   <versioning>
-    <release>1.1.0.v20100525</release>
+    <release>1.1.100.v20110510</release>
     <versions>
       <version>1.1.0.v20100525</version>
+      <version>1.1.100.v20110510</version>
     </versions>
-    <lastUpdated>20110104132020</lastUpdated>
+    <lastUpdated>20110718112847</lastUpdated>
   </versioning>
 </metadata>

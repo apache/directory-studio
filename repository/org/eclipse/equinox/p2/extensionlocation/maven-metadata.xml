@@ -3,10 +3,11 @@
   <groupId>org.eclipse.equinox.p2</groupId>
   <artifactId>extensionlocation</artifactId>
   <versioning>
-    <release>1.2.0.v20100518</release>
+    <release>1.2.100.v20110510</release>
     <versions>
       <version>1.2.0.v20100518</version>
+      <version>1.2.100.v20110510</version>
     </versions>
-    <lastUpdated>20110104131951</lastUpdated>
+    <lastUpdated>20110718112727</lastUpdated>
   </versioning>
 </metadata>
