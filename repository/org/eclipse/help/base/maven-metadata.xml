@@ -3,7 +3,7 @@
   <groupId>org.eclipse.help</groupId>
   <artifactId>base</artifactId>
   <versioning>
-    <release>3.5.2.v201009090800</release>
+    <release>3.6.0.v201106131736</release>
     <versions>
       <version>3.5.2.v201009090800</version>
       <version>3.3.1.v20070813_33x</version>
@@ -11,7 +11,8 @@
       <version>3.3.103.v20090128_34x</version>
       <version>3.4.0.v200906111540</version>
       <version>3.4.0.v201002111343</version>
+      <version>3.6.0.v201106131736</version>
     </versions>
-    <lastUpdated>20110104132117</lastUpdated>
+    <lastUpdated>20110718113201</lastUpdated>
   </versioning>
 </metadata>
