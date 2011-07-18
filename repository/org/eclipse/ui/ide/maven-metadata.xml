@@ -3,7 +3,7 @@
   <groupId>org.eclipse.ui</groupId>
   <artifactId>ide</artifactId>
   <versioning>
-    <release>3.6.1.M20100825-0800</release>
+    <release>3.7.0.I20110519-0100</release>
     <versions>
       <version>3.6.1.M20100825-0800-studio</version>
       <version>3.6.1.M20100825-0800</version>
@@ -15,7 +15,8 @@
       <version>3.5.0.I20090525-2000-studio</version>
       <version>3.5.2.M20100113-0800</version>
       <version>3.5.2.M20100113-0800-studio</version>
+      <version>3.7.0.I20110519-0100</version>
     </versions>
-    <lastUpdated>20110106153032</lastUpdated>
+    <lastUpdated>20110718113822</lastUpdated>
   </versioning>
 </metadata>

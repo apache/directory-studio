@@ -3,11 +3,12 @@
   <groupId>org.mortbay.jetty</groupId>
   <artifactId>util</artifactId>
   <versioning>
-    <release>6.1.23.v201004211559</release>
+    <release>6.1.23.v201012071420</release>
     <versions>
       <version>6.1.23.v201004211559</version>
       <version>6.1.15.v200905182336</version>
+      <version>6.1.23.v201012071420</version>
     </versions>
-    <lastUpdated>20110104132358</lastUpdated>
+    <lastUpdated>20110718114118</lastUpdated>
   </versioning>
 </metadata>
