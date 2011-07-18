@@ -3,12 +3,13 @@
   <groupId>org.eclipse.core.databinding</groupId>
   <artifactId>property</artifactId>
   <versioning>
-    <release>1.3.0.I20100601-0800</release>
+    <release>1.4.0.I20110222-0800</release>
     <versions>
       <version>1.3.0.I20100601-0800</version>
       <version>1.2.0.I20090526-2000</version>
       <version>1.2.0.M20090819-0800</version>
+      <version>1.4.0.I20110222-0800</version>
     </versions>
-    <lastUpdated>20110104131752</lastUpdated>
+    <lastUpdated>20110718112014</lastUpdated>
   </versioning>
 </metadata>

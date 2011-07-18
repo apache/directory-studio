@@ -3,11 +3,12 @@
   <groupId>org.eclipse.compare</groupId>
   <artifactId>core</artifactId>
   <versioning>
-    <release>3.5.100.I20100526-0800</release>
+    <release>3.5.200.I20110208-0800</release>
     <versions>
       <version>3.5.100.I20100526-0800</version>
       <version>3.5.0.I20090430-0408</version>
+      <version>3.5.200.I20110208-0800</version>
     </versions>
-    <lastUpdated>20110104131733</lastUpdated>
+    <lastUpdated>20110718111927</lastUpdated>
   </versioning>
 </metadata>

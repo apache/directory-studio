@@ -3,14 +3,15 @@
   <groupId>org.eclipse.core</groupId>
   <artifactId>contenttype</artifactId>
   <versioning>
-    <release>3.4.100.v20100505-1235</release>
+    <release>3.4.100.v20110423-0524</release>
     <versions>
       <version>3.4.100.v20100505-1235</version>
       <version>3.2.100-v20070319</version>
       <version>3.3.0.v20080604-1400</version>
       <version>3.4.0.v20090429-1800</version>
       <version>3.4.1.R35x_v20090826-0451</version>
+      <version>3.4.100.v20110423-0524</version>
     </versions>
-    <lastUpdated>20110104131745</lastUpdated>
+    <lastUpdated>20110718111951</lastUpdated>
   </versioning>
 </metadata>

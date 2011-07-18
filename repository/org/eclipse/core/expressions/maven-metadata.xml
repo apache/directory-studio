@@ -3,7 +3,7 @@
   <groupId>org.eclipse.core</groupId>
   <artifactId>expressions</artifactId>
   <versioning>
-    <release>3.4.200.v20100505</release>
+    <release>3.4.300.v20110228</release>
     <versions>
       <version>3.4.200.v20100505</version>
       <version>3.3.0-v20070606-0010</version>
@@ -11,7 +11,8 @@
       <version>3.4.1.r342_v20081203-0800</version>
       <version>3.4.100.v20090429-1800</version>
       <version>3.4.101.R35x_v20100209</version>
+      <version>3.4.300.v20110228</version>
     </versions>
-    <lastUpdated>20110104131759</lastUpdated>
+    <lastUpdated>20110718112037</lastUpdated>
   </versioning>
 </metadata>
