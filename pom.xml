@@ -1073,7 +1073,7 @@
     <dependency>
       <groupId>org.eclipse.jdt.debug</groupId>
       <artifactId>ui</artifactId>
-      <version>3.6.0.v20110512</version>
+      <version>3.6.0.v20110512-studio</version>
     </dependency>
     <dependency>
       <groupId>org.eclipse.jdt</groupId>
