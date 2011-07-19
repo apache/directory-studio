@@ -685,7 +685,7 @@
     <dependency>
       <groupId>org.eclipse.core.filesystem.win32</groupId>
       <artifactId>x86_64</artifactId>
-      <version>1.1.201.R36x_v20100727-0745</version>
+      <version>1.1.300.v20110423-0524</version>
     </dependency>
     <dependency>
       <groupId>org.eclipse.core</groupId>
@@ -715,7 +715,7 @@
     <dependency>
       <groupId>org.eclipse.core.net.win32</groupId>
       <artifactId>x86_64</artifactId>
-      <version>1.0.100.I20100505-1245</version>
+      <version>1.0.100.I20110331-0827</version>
     </dependency>
     <dependency>
       <groupId>org.eclipse.core</groupId>
@@ -856,7 +856,7 @@
     <dependency>
       <groupId>org.eclipse.equinox.launcher.win32.win32</groupId>
       <artifactId>x86_64</artifactId>
-      <version>1.1.1.R36x_v20100810</version>
+      <version>1.1.100.v20110502</version>
       <type>zip</type>
     </dependency>
     <dependency>
@@ -1173,7 +1173,7 @@
     <dependency>
       <groupId>org.eclipse.swt.win32.win32</groupId>
       <artifactId>x86_64</artifactId>
-      <version>3.6.1.v3655c</version>
+      <version>3.7.0.v3735b</version>
     </dependency>
     <dependency>
       <groupId>org.eclipse.team</groupId>
