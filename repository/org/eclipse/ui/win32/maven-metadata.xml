@@ -1,13 +1,15 @@
-<?xml version="1.0" encoding="UTF-8"?><metadata>
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata>
   <groupId>org.eclipse.ui</groupId>
   <artifactId>win32</artifactId>
-  <version>3.2.100-I20070319-0010</version>
   <versioning>
+    <release>3.2.200.I20100509-0800</release>
     <versions>
       <version>3.2.100-I20070319-0010</version>
       <version>3.2.100.v20080408-0800</version>
       <version>3.2.100.v20090429-1800</version>
+      <version>3.2.200.I20100509-0800</version>
     </versions>
-    <lastUpdated>20090820084050</lastUpdated>
+    <lastUpdated>20110719091832</lastUpdated>
   </versioning>
 </metadata>
