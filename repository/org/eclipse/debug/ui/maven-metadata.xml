@@ -3,7 +3,7 @@
   <groupId>org.eclipse.debug</groupId>
   <artifactId>ui</artifactId>
   <versioning>
-    <release>3.7.0.v20110518</release>
+    <release>3.7.0.v20110518-studio</release>
     <versions>
       <version>3.6.1.v20100901_r361-studio</version>
       <version>3.6.1.v20100901_r361</version>
@@ -16,7 +16,8 @@
       <version>3.5.2.v20091028_r352</version>
       <version>3.5.2.v20091028_r352-studio</version>
       <version>3.7.0.v20110518</version>
+      <version>3.7.0.v20110518-studio</version>
     </versions>
-    <lastUpdated>20110718112247</lastUpdated>
+    <lastUpdated>20110719133319</lastUpdated>
   </versioning>
 </metadata>
