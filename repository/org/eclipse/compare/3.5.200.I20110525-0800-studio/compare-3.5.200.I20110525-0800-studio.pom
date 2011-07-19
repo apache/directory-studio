@@ -4,5 +4,5 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.eclipse</groupId>
   <artifactId>compare</artifactId>
-  <version>3.5.200.I20110525-0800</version>
+  <version>3.5.200.I20110525-0800-studio</version>
 </project>
