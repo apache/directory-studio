@@ -1088,7 +1088,7 @@
     <dependency>
       <groupId>org.eclipse.jdt</groupId>
       <artifactId>ui</artifactId>
-      <version>3.7.0.v20110531-1200</version>
+      <version>3.7.0.v20110531-1200-studio</version>
     </dependency>
     <dependency>
       <groupId>org.eclipse</groupId>
