@@ -1208,7 +1208,7 @@
     <dependency>
       <groupId>org.eclipse.ui</groupId>
       <artifactId>editors</artifactId>
-      <version>3.7.0.v20110517-0800</version>
+      <version>3.7.0.v20110517-0800-studio</version>
     </dependency>
     <dependency>
       <groupId>org.eclipse.ui</groupId>

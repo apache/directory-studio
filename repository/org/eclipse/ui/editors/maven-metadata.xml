@@ -3,7 +3,7 @@
   <groupId>org.eclipse.ui</groupId>
   <artifactId>editors</artifactId>
   <versioning>
-    <release>3.7.0.v20110517-0800</release>
+    <release>3.7.0.v20110517-0800-studio</release>
     <versions>
       <version>3.6.1.r361_v20100825-0800-studio</version>
       <version>3.6.1.r361_v20100825-0800</version>
@@ -13,7 +13,8 @@
       <version>3.5.0.v20090527-2000</version>
       <version>3.5.0.v20090527-2000-studio</version>
       <version>3.7.0.v20110517-0800</version>
+      <version>3.7.0.v20110517-0800-studio</version>
     </versions>
-    <lastUpdated>20110718113743</lastUpdated>
+    <lastUpdated>20110720105350</lastUpdated>
   </versioning>
 </metadata>
