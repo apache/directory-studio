@@ -4,5 +4,5 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.eclipse.ui</groupId>
   <artifactId>views</artifactId>
-  <version>3.6.0.I20110412-0800</version>
+  <version>3.6.0.I20110412-0800-studio</version>
 </project>
