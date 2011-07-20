@@ -1183,7 +1183,7 @@
     <dependency>
       <groupId>org.eclipse.team</groupId>
       <artifactId>ui</artifactId>
-      <version>3.6.100.I20110525-0800</version>
+      <version>3.6.100.I20110525-0800-studio</version>
     </dependency>
     <dependency>
       <groupId>org.eclipse</groupId>
