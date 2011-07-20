@@ -4,5 +4,5 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.eclipse.ui.ide</groupId>
   <artifactId>application</artifactId>
-  <version>1.0.300.I20110306-2000</version>
+  <version>1.0.300.I20110306-2000-studio</version>
 </project>
