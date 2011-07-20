@@ -1218,7 +1218,7 @@
     <dependency>
       <groupId>org.eclipse.ui</groupId>
       <artifactId>ide</artifactId>
-      <version>3.7.0.I20110519-0100</version>
+      <version>3.7.0.I20110519-0100-studio</version>
     </dependency>
     <dependency>
       <groupId>org.eclipse.ui.ide</groupId>
