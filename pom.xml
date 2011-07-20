@@ -24,6 +24,7 @@
     <groupId>org.apache.directory.project</groupId>
     <artifactId>project</artifactId>
     <version>22</version>
+    <relativePath></relativePath>
   </parent>
   
 
@@ -92,13 +93,6 @@
     <findbugs.annotations.version>1.0.0</findbugs.annotations.version>
   </properties>
 
-  <modules>
-    <!-- The 'repository' module must be the first one -->
-    <module>repository</module>
-    <module>libraries</module>
-    <module>plugins</module>
-  </modules>
-
   <profiles>
     <!-- Skip tests -->
     <profile>
@@ -134,12 +128,60 @@
       </build>
     </profile>
     <!-- 
-      Building help and features modules are enabled by default. Add 
-      -P-studio-full
-      to the commandline to exclude them from the build.
+      Building repository module is enabled by default. Add 
+      -P-libraries
+      to the commandline to exclude it from the build.
     -->
     <profile>
-      <id>studio-full</id>
+      <id>repository</id>
+     <activation>
+        <file>
+          <exists>pom.xml</exists>
+        </file>
+     </activation>
+      <modules>
+        <module>repository</module>
+      </modules>
+    </profile>
+    <!-- 
+      Building libraries module is enabled by default. Add 
+      -P-libraries
+      to the commandline to exclude it from the build.
+    -->
+    <profile>
+      <id>libraries</id>
+     <activation>
+        <file>
+          <exists>pom.xml</exists>
+        </file>
+     </activation>
+      <modules>
+        <module>libraries</module>
+      </modules>
+    </profile>
+    <!-- 
+      Building plugins module is enabled by default. Add 
+      -P-plugins
+      to the commandline to exclude it from the build.
+    -->
+    <profile>
+      <id>plugins</id>
+     <activation>
+        <file>
+          <exists>pom.xml</exists>
+        </file>
+     </activation>
+      <modules>
+        <module>plugins</module>
+      </modules>
+    </profile>
+    <!-- 
+      Building helps module is enabled by default. Add 
+      -P-helps
+      to the commandline to exclude it from the build.
+    -->
+    <profile>
+      <id>helps</id>
      <activation>
         <file>
           <exists>pom.xml</exists>
@@ -147,6 +189,21 @@
      </activation>
       <modules>
         <module>helps</module>
+      </modules>
+    </profile>
+    <!-- 
+      Building features module is enabled by default. Add 
+      -P-features
+      to the commandline to exclude it from the build.
+    -->
+    <profile>
+      <id>features</id>
+     <activation>
+        <file>
+          <exists>pom.xml</exists>
+        </file>
+     </activation>
+      <modules>
         <module>features</module>
       </modules>
     </profile>
@@ -161,14 +218,13 @@
         <module>tests</module>
       </modules>
     </profile>
-    <!--
-      Add the 'application' module as a profile to force it being built
-      AFTER all the orther modules, otherwise we run into a backlog
-      of at least 1 iteration because the 'application' modules would be
-      built before the other modules...
+    <!-- 
+      Building application module is enabled by default. Add 
+      -P-application
+      to the commandline to exclude it from the build.
     -->
     <profile>
-      <id>build-application</id>
+      <id>application</id>
       <activation>
         <file>
           <exists>pom.xml</exists>
