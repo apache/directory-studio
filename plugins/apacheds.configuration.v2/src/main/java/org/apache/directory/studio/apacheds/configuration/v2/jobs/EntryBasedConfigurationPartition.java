@@ -29,6 +29,7 @@ import org.apache.directory.server.core.partition.ldif.AbstractLdifPartition;
 import org.apache.directory.shared.ldap.model.constants.SchemaConstants;
 import org.apache.directory.shared.ldap.model.entry.Entry;
 import org.apache.directory.shared.ldap.model.exception.LdapException;
+import org.apache.directory.shared.ldap.model.name.Dn;
 import org.apache.directory.shared.ldap.model.schema.SchemaManager;
 
 
@@ -59,6 +60,9 @@ public class EntryBasedConfigurationPartition extends AbstractLdifPartition
     protected void doInit() throws InvalidNameException, Exception
     {
         setId( "config" );
+        setSuffixDn( new Dn( "ou=config" ) );
+        
+        super.doInit();
     }
 
 
