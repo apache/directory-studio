@@ -25,17 +25,10 @@ import java.util.UUID;
 import javax.naming.InvalidNameException;
 
 import org.apache.directory.server.core.interceptor.context.AddOperationContext;
-import org.apache.directory.server.core.interceptor.context.BindOperationContext;
-import org.apache.directory.server.core.interceptor.context.ModifyOperationContext;
-import org.apache.directory.server.core.interceptor.context.MoveAndRenameOperationContext;
-import org.apache.directory.server.core.interceptor.context.MoveOperationContext;
-import org.apache.directory.server.core.interceptor.context.RenameOperationContext;
-import org.apache.directory.server.core.partition.impl.avl.AvlPartition;
 import org.apache.directory.server.core.partition.ldif.AbstractLdifPartition;
 import org.apache.directory.shared.ldap.model.constants.SchemaConstants;
 import org.apache.directory.shared.ldap.model.entry.Entry;
 import org.apache.directory.shared.ldap.model.exception.LdapException;
-import org.apache.directory.shared.ldap.model.name.Dn;
 import org.apache.directory.shared.ldap.model.schema.SchemaManager;
 
 
@@ -56,7 +49,7 @@ public class EntryBasedConfigurationPartition extends AbstractLdifPartition
      */
     public EntryBasedConfigurationPartition( SchemaManager schemaManager )
     {
-        setSchemaManager( schemaManager );
+        super( schemaManager );
     }
 
 
@@ -65,15 +58,7 @@ public class EntryBasedConfigurationPartition extends AbstractLdifPartition
      */
     protected void doInit() throws InvalidNameException, Exception
     {
-        // Initializing the wrapped partition
-        setWrappedPartition( new AvlPartition() );
         setId( "config" );
-        setSuffix( new Dn( "ou=config" ) );
-        wrappedPartition.setSchemaManager( schemaManager );
-        wrappedPartition.initialize();
-
-        // Getting the search engine
-        searchEngine = wrappedPartition.getSearchEngine();
     }
 
 
@@ -90,7 +75,7 @@ public class EntryBasedConfigurationPartition extends AbstractLdifPartition
         addMandatoryOpAt( entry );
 
         // Storing the entry
-        wrappedPartition.getStore().add( entry );
+        add( new AddOperationContext( null, entry ) );
     }
 
 
@@ -111,68 +96,5 @@ public class EntryBasedConfigurationPartition extends AbstractLdifPartition
             String uuid = UUID.randomUUID().toString();
             entry.add( SchemaConstants.ENTRY_UUID_AT, uuid );
         }
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    public void bind( BindOperationContext bindOperationContext ) throws LdapException
-    {
-        wrappedPartition.bind( bindOperationContext );
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    public void add( AddOperationContext addOperationContext ) throws LdapException
-    {
-        wrappedPartition.add( addOperationContext );
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    public void delete( Long id ) throws LdapException
-    {
-        wrappedPartition.delete( id );
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    public void modify( ModifyOperationContext modifyOperationContext ) throws LdapException
-    {
-        wrappedPartition.modify( modifyOperationContext );
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    public void move( MoveOperationContext moveOperationContext ) throws LdapException
-    {
-        wrappedPartition.move( moveOperationContext );
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    public void moveAndRename( MoveAndRenameOperationContext moveAndRenameOperationContext ) throws LdapException
-    {
-        wrappedPartition.moveAndRename( moveAndRenameOperationContext );
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    public void rename( RenameOperationContext renameOperationContext ) throws LdapException
-    {
-        wrappedPartition.rename( renameOperationContext );
     }
 }

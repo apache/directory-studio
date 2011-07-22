@@ -78,14 +78,14 @@ public class PartitionsDiffComputer
     {
         // Using the original partition suffix as base 
         // '*' for all user attributes, '+' for all operational attributes
-        return computeModifications( originalPartition.getSuffix(), new String[]
+        return computeModifications( originalPartition.getSuffixDn(), new String[]
             { "*", "+" } );
     }
 
 
     public List<LdifEntry> computeModifications( String[] attributeIds ) throws Exception
     {
-        return computeModifications( originalPartition.getSuffix(), attributeIds );
+        return computeModifications( originalPartition.getSuffixDn(), attributeIds );
     }
 
 
@@ -94,7 +94,7 @@ public class PartitionsDiffComputer
         // Checking partitions
         checkPartitions();
 
-        return comparePartitions(baseDn, attributeIds );
+        return comparePartitions( baseDn, attributeIds );
     }
 
 
@@ -116,7 +116,7 @@ public class PartitionsDiffComputer
             {
                 throw new PartitionsDiffException( "The original partition must be intialized." );
             }
-            else if ( originalPartition.getSuffix() == null )
+            else if ( originalPartition.getSuffixDn() == null )
             {
                 throw new PartitionsDiffException( "The original suffix is null." );
             }
@@ -133,7 +133,7 @@ public class PartitionsDiffComputer
             {
                 throw new PartitionsDiffException( "The destination partition must be intialized." );
             }
-            else if ( destinationPartition.getSuffix() == null )
+            else if ( destinationPartition.getSuffixDn() == null )
             {
                 throw new PartitionsDiffException( "The destination suffix is null." );
             }
@@ -219,15 +219,15 @@ public class PartitionsDiffComputer
                 setReturningAttributes( originalPartition.getSchemaManager(), attributeIds, soc );
                 soc.setDn( originalEntry.getDn() );
                 soc.setScope( SearchScope.ONELEVEL );
-                soc.setFilter( FilterParser.parse(originalPartition.getSchemaManager(), "(objectClass=*)") );
+                soc.setFilter( FilterParser.parse( originalPartition.getSchemaManager(), "(objectClass=*)" ) );
                 soc.setAliasDerefMode( AliasDerefMode.DEREF_ALWAYS );
 
                 // Looking for the children of the current entry
                 EntryFilteringCursor cursor = originalPartition.search( soc );
-                
+
                 while ( cursor.next() )
                 {
-                    originalEntries.add( ((ClonedServerEntry)cursor.get()).getClonedEntry() );
+                    originalEntries.add( ( ( ClonedServerEntry ) cursor.get() ).getClonedEntry() );
                 }
             }
         }
@@ -359,7 +359,7 @@ public class PartitionsDiffComputer
                     modification.setOperation( ModificationOperation.ADD_ATTRIBUTE );
                     Attribute attribute = new DefaultAttribute( destinationAttributeType );
                     modification.setAttribute( attribute );
-                    
+
                     for ( Value<?> value : destinationAttribute )
                     {
                         try
@@ -406,7 +406,7 @@ public class PartitionsDiffComputer
                 modification.setOperation( ModificationOperation.REMOVE_ATTRIBUTE );
                 Attribute attribute = new DefaultAttribute( originalAttribute.getAttributeType() );
                 modification.setAttribute( attribute );
-                
+
                 try
                 {
                     attribute.add( originalValue );
@@ -432,9 +432,9 @@ public class PartitionsDiffComputer
                 modification.setOperation( ModificationOperation.ADD_ATTRIBUTE );
                 Attribute attribute = new DefaultAttribute( originalAttribute.getAttributeType() );
                 modification.setAttribute( attribute );
-                
+
                 try
-                { 
+                {
                     attribute.add( destinationValue );
                 }
                 catch ( LdapInvalidAttributeValueException liave )
