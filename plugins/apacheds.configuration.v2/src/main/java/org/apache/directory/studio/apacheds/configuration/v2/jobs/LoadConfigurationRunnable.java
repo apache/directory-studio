@@ -319,22 +319,12 @@ public class LoadConfigurationRunnable implements StudioRunnableWithProgress
             List<Entry> entries = new ArrayList<Entry>();
             entries.add( configEntry );
 
-            // Flag used to determine if the current entry is the context entry
-            boolean isContextEntry = true;
-
             // Looping on the entries list until it's empty
             while ( !entries.isEmpty() )
             {
                 // Removing the first entry from the list
                 Entry entry = entries.remove( 0 );
 
-                // Special handling for the context entry
-                if ( isContextEntry )
-                {
-                    // Setting the context entry of the partition
-                    configurationPartition.setContextEntry( entry );
-                    isContextEntry = false;
-                }
 
                 // Adding the entry to the partition
                 configurationPartition.addEntry( entry );
