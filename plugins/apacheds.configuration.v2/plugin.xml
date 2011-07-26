@@ -58,10 +58,18 @@
          	      name="vendorName"
          	      value="Apache Software Foundation">
          	   </objectState>
-               <objectState
-         	      name="vendorVersion"
-         	      value="2.0.0-M2">
-         	   </objectState>
+         	   <or>
+                 <objectState
+         	        name="vendorVersion"
+         	        value="2.0.0-M2">
+         	     </objectState>
+         	     <!-- Special case to handle ApacheDS servers launched via Eclipse -->
+         	     <!-- TODO: Should be removed before a release -->
+                 <objectState
+         	        name="vendorVersion"
+         	        value="${pom.version}">
+         	     </objectState>
+         	   </or>
          	</and>
          </visibility>
       </objectContribution>
