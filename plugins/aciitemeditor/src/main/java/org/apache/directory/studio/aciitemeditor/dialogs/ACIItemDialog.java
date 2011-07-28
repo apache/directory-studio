@@ -46,6 +46,8 @@ import org.eclipse.swt.widgets.Shell;
  */
 public class ACIItemDialog extends Dialog
 {
+    private static final int FORMAT_BUTTON = 987654321;
+    private static final int CHECK_SYNTAX_BUTTON = 876543210;
 
     /** The context containing the initial value, passed by the constructor */
     private ACIItemValueWithContext context;
@@ -92,16 +94,14 @@ public class ACIItemDialog extends Dialog
 
 
     /**
-     * {@inheritDoc}
-     * 
-     * This implementation additionally adds the Format button.
+     * @see org.eclipse.jface.dialogs.Dialog#createButtonsForButtonBar(org.eclipse.swt.widgets.Composite)
      */
-    protected Control createButtonBar( Composite parent )
+    protected void createButtonsForButtonBar( Composite parent )
     {
-        Composite composite = ( Composite ) super.createButtonBar( parent );
-        super.createButton( composite, 987654321, Messages.getString( "ACIItemDialog.button.format" ), false ); //$NON-NLS-1$
-        super.createButton( composite, 876543210, Messages.getString( "ACIItemDialog.button.checkSyntax" ), false ); //$NON-NLS-1$
-        return composite;
+        createButton( parent, FORMAT_BUTTON, Messages.getString( "ACIItemDialog.button.format" ), false ); //$NON-NLS-1$
+        createButton( parent, CHECK_SYNTAX_BUTTON, Messages.getString( "ACIItemDialog.button.checkSyntax" ), false ); //$NON-NLS-1$
+        createButton( parent, IDialogConstants.OK_ID, IDialogConstants.OK_LABEL, false );
+        createButton( parent, IDialogConstants.CANCEL_ID, IDialogConstants.CANCEL_LABEL, false );
     }
 
 
@@ -112,11 +112,11 @@ public class ACIItemDialog extends Dialog
      */
     protected void buttonPressed( int buttonId )
     {
-        if ( buttonId == 987654321 )
+        if ( buttonId == FORMAT_BUTTON )
         {
             tabFolderComposite.format();
         }
-        if ( buttonId == 876543210 )
+        if ( buttonId == CHECK_SYNTAX_BUTTON )
         {
             try
             {
