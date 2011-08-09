@@ -77,8 +77,25 @@ public class BaseWidgetUtils
      */
     public static Composite createColumnContainer( Composite parent, int columnCount, int span )
     {
+        return createColumnContainer( parent, columnCount, false, span );
+    }
+
+
+    /**
+     * Creates a SWT {@link Composite} under the given parent. 
+     * A GridLayout with the given number of columns is used.
+     *
+     * @param parent the parent
+     * @param columnCount the number of columns
+     * @param makeColumnsEqualWidth if the columns width should be equal
+     * @param span the horizontal span
+     * @return the created composite
+     */
+    public static Composite createColumnContainer( Composite parent, int columnCount, boolean makeColumnsEqualWidth,
+        int span )
+    {
         Composite container = new Composite( parent, SWT.NONE );
-        GridLayout gl = new GridLayout( columnCount, false );
+        GridLayout gl = new GridLayout( columnCount, makeColumnsEqualWidth );
         gl.marginHeight = gl.marginWidth = 0;
         container.setLayout( gl );
         GridData gd = new GridData( GridData.FILL_HORIZONTAL );
