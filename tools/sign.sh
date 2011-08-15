@@ -9,7 +9,7 @@ read PASSWORD
 stty echo
 echo ""
 
-for FILE in $(find . -not '(' -name "*.md5" -or -name "*.sha1" -or -name "*.asc" ')' -and -type f) ; do
+for FILE in $(find . -not '(' -name "sign.sh" -or -name ".*" -or -name "*.md5" -or -name "*.sha1" -or -name "*.asc" ')' -and -type f) ;
     if [ -f "$FILE.asc" ]; then
         echo "Skipping: $FILE"
         continue
@@ -17,9 +17,30 @@ for FILE in $(find . -not '(' -name "*.md5" -or -name "*.sha1" -or -name "*.asc"
 
     echo -n "Signing: $FILE ... "
 
-    openssl md5 < "$FILE" | cut "-d " -f2 > "$FILE.md5"
-    
-    gpg --print-md SHA1 "$FILE" > "$FILE".sha1
+    # MD5
+    if [ ! -f "$FILE.md5" ];
+    then
+        openssl md5 < "$FILE" | cut "-d " -f2 > "$FILE.md5"
+        echo "  - Generated '$FILE.md5'"
+    else
+        echo "  - Skipped '$FILE.md5' (file already existing)"
+    fi
 
-    echo "$PASSWORD" | gpg --default-key "$DEFAULT_KEY" --detach-sign --armor --no-tty --yes --passphrase-fd 0 "$FILE" && echo done.
+    # SHA1
+    if [ ! -f "$FILE.sha1" ];
+    then
+        gpg --print-md SHA1 "$FILE" > "$FILE".sha1
+        echo "  - Generated '$FILE.sha1'"
+    else
+        echo "  - Skipped '$FILE.sha1' (file already existing)"
+    fi
+ 
+    # ASC
+    if [ ! -f "$FILE.asc" ];
+    then
+        echo "$PASSWORD" | gpg --detach-sign --armor --no-tty --yes --passphrase-fd 0 "$FILE"
+        echo "  - Generated '$FILE.asc'"
+    else
+        echo "  - Skipped '$FILE.asc' (file already existing)"
+    fi
 done
