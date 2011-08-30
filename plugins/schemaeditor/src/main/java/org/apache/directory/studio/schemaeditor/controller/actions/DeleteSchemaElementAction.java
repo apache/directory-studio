@@ -29,6 +29,7 @@ import java.util.Map;
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.shared.ldap.model.schema.SchemaObject;
+import org.apache.directory.shared.util.Strings;
 import org.apache.directory.studio.schemaeditor.Activator;
 import org.apache.directory.studio.schemaeditor.PluginConstants;
 import org.apache.directory.studio.schemaeditor.controller.SchemaHandler;
@@ -161,7 +162,7 @@ public class DeleteSchemaElementAction extends Action implements IWorkbenchWindo
                     if ( selectedItem instanceof SchemaWrapper )
                     {
                         Schema schema = ( ( SchemaWrapper ) selectedItem ).getSchema();
-                        schemasMap.put( schema.getSchemaName().toLowerCase(), schema );
+                        schemasMap.put( Strings.toLowerCase( schema.getSchemaName() ), schema );
                     }
                     else if ( selectedItem instanceof AttributeTypeWrapper )
                     {
@@ -179,7 +180,7 @@ public class DeleteSchemaElementAction extends Action implements IWorkbenchWindo
                 // Removing schema objects
                 for ( SchemaObject schemaObject : schemaObjectsList )
                 {
-                    if ( !schemasMap.containsKey( schemaObject.getSchemaName().toLowerCase() ) )
+                    if ( !schemasMap.containsKey( Strings.toLowerCase( schemaObject.getSchemaName() ) ) )
                     {
                         // If the schema object is not part of deleted schema, we need to delete it.
                         // But, we don't delete schema objects that are part of a deleted schema, since

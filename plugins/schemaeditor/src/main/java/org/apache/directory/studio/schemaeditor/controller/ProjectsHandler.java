@@ -26,6 +26,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.collections.map.MultiValueMap;
+import org.apache.directory.shared.util.Strings;
 import org.apache.directory.studio.schemaeditor.model.Project;
 import org.apache.directory.studio.schemaeditor.model.Project.ProjectState;
 
@@ -96,7 +97,7 @@ public class ProjectsHandler
     public void addProject( Project project )
     {
         projectsList.add( project );
-        projectsMap.put( project.getName().toLowerCase(), project );
+        projectsMap.put( Strings.toLowerCase( project.getName() ), project );
 
         notifyProjectAdded( project );
     }
@@ -111,7 +112,7 @@ public class ProjectsHandler
     public void removeProject( Project project )
     {
         projectsList.remove( project );
-        projectsMap.remove( project.getName().toLowerCase() );
+        projectsMap.remove( Strings.toLowerCase( project.getName() ) );
 
         notifyProjectRemoved( project );
     }
@@ -127,7 +128,7 @@ public class ProjectsHandler
      */
     public Project getProject( String name )
     {
-        return projectsMap.get( name.toLowerCase() );
+        return projectsMap.get( Strings.toLowerCase( name ) );
     }
 
 
@@ -153,9 +154,9 @@ public class ProjectsHandler
      */
     public void renameProject( Project project, String name )
     {
-        projectsMap.remove( project.getName().toLowerCase() );
+        projectsMap.remove( Strings.toLowerCase( project.getName() ) );
         project.setName( name );
-        projectsMap.put( name.toLowerCase(), project );
+        projectsMap.put( Strings.toLowerCase( name ), project );
 
         notifyProjectRenamed( project );
     }
@@ -171,7 +172,7 @@ public class ProjectsHandler
      */
     public boolean isProjectNameAlreadyTaken( String name )
     {
-        return projectsMap.containsKey( name.toLowerCase() );
+        return projectsMap.containsKey( Strings.toLowerCase( name ) );
     }
 
 

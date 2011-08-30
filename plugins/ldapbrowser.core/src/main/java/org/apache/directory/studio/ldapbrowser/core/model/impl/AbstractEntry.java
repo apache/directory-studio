@@ -31,6 +31,7 @@ import org.apache.directory.shared.ldap.model.constants.SchemaConstants;
 import org.apache.directory.shared.ldap.model.name.Rdn;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.shared.ldap.model.url.LdapUrl;
+import org.apache.directory.shared.util.Strings;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.jobs.StudioConnectionBulkRunnableWithProgress;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
@@ -190,12 +191,12 @@ public abstract class AbstractEntry implements IEntry, ICompareableEntry
                 getBrowserConnectionImpl().setAttributeInfo( this, ai );
             }
 
-            if ( ai.attributeMap.containsKey( oidString.toLowerCase() ) )
+            if ( ai.attributeMap.containsKey( Strings.toLowerCase( oidString ) ) )
             {
                 throw new IllegalArgumentException( BrowserCoreMessages.model__attribute_already_exists );
             }
 
-            ai.attributeMap.put( oidString.toLowerCase(), attributeToAdd );
+            ai.attributeMap.put( Strings.toLowerCase( oidString ), attributeToAdd );
         }
 
         entryModified( new AttributeAddedEvent( getBrowserConnectionImpl(), this, attributeToAdd ) );
@@ -222,10 +223,10 @@ public abstract class AbstractEntry implements IEntry, ICompareableEntry
             String oidString = attributeToDelete.getAttributeDescription().toOidString(
                 getBrowserConnection().getSchema() );
             AttributeInfo ai = getBrowserConnectionImpl().getAttributeInfo( this );
-            if ( ai != null && ai.attributeMap != null && ai.attributeMap.containsKey( oidString.toLowerCase() ) )
+            if ( ai != null && ai.attributeMap != null && ai.attributeMap.containsKey( Strings.toLowerCase( oidString ) ) )
             {
-                attributeToDelete = ( IAttribute ) ai.attributeMap.get( oidString.toLowerCase() );
-                ai.attributeMap.remove( oidString.toLowerCase() );
+                attributeToDelete = ( IAttribute ) ai.attributeMap.get( Strings.toLowerCase( oidString ) );
+                ai.attributeMap.remove( Strings.toLowerCase( oidString ) );
                 if ( ai.attributeMap.isEmpty() )
                 {
                     getBrowserConnectionImpl().setAttributeInfo( this, null );
@@ -568,7 +569,7 @@ public abstract class AbstractEntry implements IEntry, ICompareableEntry
             }
             else
             {
-                return ( IAttribute ) ai.attributeMap.get( oidString.toLowerCase() );
+                return ( IAttribute ) ai.attributeMap.get( Strings.toLowerCase( oidString ) );
             }
         }
     }

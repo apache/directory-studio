@@ -39,6 +39,7 @@ import org.apache.directory.shared.converter.schema.ObjectClassHolder;
 import org.apache.directory.shared.ldap.model.exception.LdapException;
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
+import org.apache.directory.shared.util.Strings;
 import org.apache.directory.studio.schemaeditor.Activator;
 import org.apache.directory.studio.schemaeditor.PluginUtils;
 import org.apache.directory.studio.schemaeditor.controller.SchemaHandler;
@@ -408,7 +409,7 @@ public class ExportSchemasForADSWizard extends Wizard implements IExportWizard
         {
             for ( String name : oc.getNames() )
             {
-                objectClassNames.add( name.toLowerCase() );
+                objectClassNames.add( Strings.toLowerCase( name ) );
             }
         }
 
@@ -425,14 +426,14 @@ public class ExportSchemasForADSWizard extends Wizard implements IExportWizard
                 ObjectClass oc = unsortedIterator.next();
                 for ( String superName : oc.getSuperiorOids() )
                 {
-                    if ( !objectClassNames.contains( superName.toLowerCase() )
-                        || movedObjectClasses.contains( superName.toLowerCase() ) )
+                    if ( !objectClassNames.contains( Strings.toLowerCase( superName ) )
+                        || movedObjectClasses.contains( Strings.toLowerCase( superName ) ) )
                     {
                         unsortedIterator.remove();
                         sortedObjectClasses.add( oc );
                         for ( String name : oc.getNames() )
                         {
-                            movedObjectClasses.add( name.toLowerCase() );
+                            movedObjectClasses.add( Strings.toLowerCase( name ) );
                         }
                         moved = true;
                         break;
@@ -475,7 +476,7 @@ public class ExportSchemasForADSWizard extends Wizard implements IExportWizard
                 AttributeType sup = schemaHandler.getAttributeType( supName );
                 if ( sup != null )
                 {
-                    if ( !schema.getSchemaName().toLowerCase().equals( sup.getSchemaName().toLowerCase() ) )
+                    if ( !Strings.toLowerCase( schema.getSchemaName() ).equals( Strings.toLowerCase( sup.getSchemaName() ) ) )
                     {
                         schemaNames.add( sup.getSchemaName() );
                     }
@@ -495,7 +496,7 @@ public class ExportSchemasForADSWizard extends Wizard implements IExportWizard
                     ObjectClass sup = schemaHandler.getObjectClass( supName );
                     if ( sup != null )
                     {
-                        if ( !schema.getSchemaName().toLowerCase().equals( sup.getSchemaName().toLowerCase() ) )
+                        if ( !Strings.toLowerCase( schema.getSchemaName() ).equals( Strings.toLowerCase( sup.getSchemaName() ) ) )
                         {
                             schemaNames.add( sup.getSchemaName() );
                         }
@@ -512,7 +513,7 @@ public class ExportSchemasForADSWizard extends Wizard implements IExportWizard
                     AttributeType may = schemaHandler.getAttributeType( mayName );
                     if ( may != null )
                     {
-                        if ( !schema.getSchemaName().toLowerCase().equals( may.getSchemaName().toLowerCase() ) )
+                        if ( !Strings.toLowerCase( schema.getSchemaName() ).equals( Strings.toLowerCase( may.getSchemaName() ) ) )
                         {
                             schemaNames.add( may.getSchemaName() );
                         }
@@ -530,7 +531,7 @@ public class ExportSchemasForADSWizard extends Wizard implements IExportWizard
                     AttributeType must = schemaHandler.getAttributeType( mustName );
                     if ( must != null )
                     {
-                        if ( !schema.getSchemaName().toLowerCase().equals( must.getSchemaName().toLowerCase() ) )
+                        if ( !Strings.toLowerCase( schema.getSchemaName() ).equals( Strings.toLowerCase( must.getSchemaName() ) ) )
                         {
                             schemaNames.add( must.getSchemaName() );
                         }

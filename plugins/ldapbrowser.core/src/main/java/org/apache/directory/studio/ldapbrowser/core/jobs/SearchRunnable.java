@@ -42,6 +42,7 @@ import org.apache.directory.shared.ldap.model.constants.SchemaConstants;
 import org.apache.directory.shared.ldap.model.message.SearchScope;
 import org.apache.directory.shared.ldap.model.name.Dn;
 import org.apache.directory.shared.ldap.model.url.LdapUrl;
+import org.apache.directory.shared.util.Strings;
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
@@ -576,7 +577,7 @@ public class SearchRunnable implements StudioConnectionBulkRunnableWithProgress
                 String[] supportedControls = scAttribute.getStringValues();
                 for ( int i = 0; i < supportedControls.length; i++ )
                 {
-                    supportedConrolSet.add( supportedControls[i].toLowerCase() );
+                    supportedConrolSet.add( Strings.toLowerCase( supportedControls[i] ) );
                 }
             }
 
@@ -584,7 +585,7 @@ public class SearchRunnable implements StudioConnectionBulkRunnableWithProgress
             for ( Iterator<StudioControl> it = controls.iterator(); it.hasNext(); )
             {
                 StudioControl control = it.next();
-                if ( !supportedConrolSet.contains( control.getOid().toLowerCase() ) )
+                if ( !supportedConrolSet.contains( Strings.toLowerCase( control.getOid() ) ) )
                 {
                     it.remove();
                 }

@@ -27,6 +27,7 @@ import java.util.List;
 
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
+import org.apache.directory.shared.util.Strings;
 import org.apache.directory.studio.schemaeditor.Activator;
 import org.apache.directory.studio.schemaeditor.controller.SchemaHandler;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
@@ -58,7 +59,7 @@ public class ATEUsedByOptionalTableContentProvider implements IStructuredContent
             {
                 for ( String name : atNames )
                 {
-                    names.add( name.toLowerCase() );
+                    names.add( Strings.toLowerCase( name ) );
                 }
             }
 
@@ -70,7 +71,7 @@ public class ATEUsedByOptionalTableContentProvider implements IStructuredContent
                 {
                     for ( String may : mays )
                     {
-                        if ( names.contains( may.toLowerCase() ) )
+                        if ( names.contains( Strings.toLowerCase( may ) ) )
                         {
                             results.add( oc );
                         }

@@ -31,6 +31,7 @@ import java.util.List;
 import org.apache.directory.shared.ldap.model.constants.SchemaConstants;
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
+import org.apache.directory.shared.util.Strings;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.Schema;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.SchemaUtils;
 
@@ -302,7 +303,7 @@ public class AttributeDescription implements Serializable
                 String otherLang = otherIt.next();
                 if ( otherLang.endsWith( "-" ) )
                 {
-                    if ( myLang.toLowerCase().startsWith( otherLang.toLowerCase() ) )
+                    if ( Strings.toLowerCase( myLang ).startsWith( Strings.toLowerCase( otherLang ) ) )
                     {
                         otherIt.remove();
                     }

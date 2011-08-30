@@ -22,6 +22,7 @@ package org.apache.directory.studio.ldapbrowser.ui.editors.schemabrowser;
 
 
 import org.apache.directory.shared.ldap.model.schema.MatchingRule;
+import org.apache.directory.shared.util.Strings;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.Schema;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.SchemaUtils;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
@@ -223,9 +224,9 @@ public class MatchingRuleDescriptionPage extends SchemaPage
             if ( element instanceof MatchingRule )
             {
                 MatchingRule mrd = ( MatchingRule ) element;
-                boolean matched = SchemaUtils.toString( mrd ).toLowerCase()
-                    .indexOf( filterText.getText().toLowerCase() ) != -1
-                    || mrd.getOid().toLowerCase().indexOf( filterText.getText().toLowerCase() ) != -1;
+                boolean matched = Strings.toLowerCase( SchemaUtils.toString( mrd ) )
+                    .indexOf( Strings.toLowerCase( filterText.getText() ) ) != -1
+                    || Strings.toLowerCase( mrd.getOid() ).indexOf( Strings.toLowerCase( filterText.getText() ) ) != -1;
                 return matched;
             }
             return false;

@@ -31,6 +31,7 @@ import java.util.Set;
 
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
 import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
+import org.apache.directory.shared.util.Strings;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonConstants;
 import org.apache.directory.studio.ldapbrowser.core.model.AttributeHierarchy;
@@ -245,17 +246,17 @@ public class ValueEditorManager
         // check attribute preferences
         Map<String, String> attributeValueEditorMap = BrowserCommonActivator.getDefault().getValueEditorsPreferences()
             .getAttributeValueEditorMap();
-        if ( atd.getOid() != null && attributeValueEditorMap.containsKey( atd.getOid().toLowerCase() ) )
+        if ( atd.getOid() != null && attributeValueEditorMap.containsKey( Strings.toLowerCase( atd.getOid() ) ) )
         {
-            return ( IValueEditor ) class2ValueEditors.get( attributeValueEditorMap.get( atd.getOid()
-                .toLowerCase() ) );
+            return ( IValueEditor ) class2ValueEditors.get( attributeValueEditorMap.get( Strings.toLowerCase( atd.getOid()
+                 ) ) );
         }
         List<String> names = atd.getNames();
         for ( String name : names )
         {
-            if ( attributeValueEditorMap.containsKey( name.toLowerCase() ) )
+            if ( attributeValueEditorMap.containsKey( Strings.toLowerCase( name ) ) )
             {
-                return ( IValueEditor ) class2ValueEditors.get( attributeValueEditorMap.get( name.toLowerCase() ) );
+                return ( IValueEditor ) class2ValueEditors.get( attributeValueEditorMap.get( Strings.toLowerCase( name ) ) );
             }
         }
 
@@ -263,9 +264,9 @@ public class ValueEditorManager
         String syntaxNumericOid = SchemaUtils.getSyntaxNumericOidTransitive( atd, schema );
         Map<String, String> syntaxValueEditorMap = BrowserCommonActivator.getDefault().getValueEditorsPreferences()
             .getSyntaxValueEditorMap();
-        if ( syntaxNumericOid != null && syntaxValueEditorMap.containsKey( syntaxNumericOid.toLowerCase() ) )
+        if ( syntaxNumericOid != null && syntaxValueEditorMap.containsKey( Strings.toLowerCase( syntaxNumericOid ) ) )
         {
-            return ( IValueEditor ) class2ValueEditors.get( syntaxValueEditorMap.get( syntaxNumericOid.toLowerCase() ) );
+            return ( IValueEditor ) class2ValueEditors.get( syntaxValueEditorMap.get( Strings.toLowerCase( syntaxNumericOid ) ) );
         }
 
         // return default

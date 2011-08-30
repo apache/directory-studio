@@ -85,6 +85,6 @@ public class InPlaceUuidValueEditor extends HexValueEditor
         sb.append( hex, 16, 4 );
         sb.append( '-' );
         sb.append( hex, 20, 12 );
-        return sb.toString().toLowerCase();
+        return Strings.toLowerCase( sb.toString() );
     }
 }

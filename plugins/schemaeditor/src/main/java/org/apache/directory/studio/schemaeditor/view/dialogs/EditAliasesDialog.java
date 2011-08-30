@@ -24,6 +24,7 @@ package org.apache.directory.studio.schemaeditor.view.dialogs;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.directory.shared.util.Strings;
 import org.apache.directory.studio.schemaeditor.Activator;
 import org.apache.directory.studio.schemaeditor.PluginUtils;
 import org.eclipse.jface.action.Action;
@@ -115,9 +116,9 @@ public class EditAliasesDialog extends Dialog
         {
             for ( String alias : aliases )
             {
-                initialLowerCasedAliases.add( alias.toLowerCase() );
+                initialLowerCasedAliases.add( Strings.toLowerCase( alias ) );
                 this.aliases.add( alias );
-                lowerCasedAliases.add( alias.toLowerCase() );
+                lowerCasedAliases.add( Strings.toLowerCase( alias ) );
             }
         }
 
@@ -328,7 +329,7 @@ public class EditAliasesDialog extends Dialog
         for ( TableItem item : selectedItems )
         {
             aliases.remove( item.getText() );
-            lowerCasedAliases.remove( item.getText().toLowerCase() );
+            lowerCasedAliases.remove( Strings.toLowerCase( item.getText() ) );
         }
         dirty = true;
     }
@@ -403,11 +404,11 @@ public class EditAliasesDialog extends Dialog
             if ( !oldText.equals( newText ) )
             {
                 aliases.remove( oldText );
-                lowerCasedAliases.remove( oldText.toLowerCase() );
+                lowerCasedAliases.remove( Strings.toLowerCase( oldText ) );
                 if ( !newText.equals( "" ) ) //$NON-NLS-1$
                 {
                     aliases.add( newText );
-                    lowerCasedAliases.add( newText.toLowerCase() );
+                    lowerCasedAliases.add( Strings.toLowerCase( newText ) );
                 }
                 item.setText( newText );
                 dirty = true;
@@ -442,7 +443,7 @@ public class EditAliasesDialog extends Dialog
         for ( String alias : aliases )
         {
             if ( ( Activator.getDefault().getSchemaHandler().isAliasOrOidAlreadyTaken( alias ) )
-                && ( !initialLowerCasedAliases.contains( alias.toLowerCase() ) ) )
+                && ( !initialLowerCasedAliases.contains( Strings.toLowerCase( alias ) ) ) )
             {
                 errorComposite.setVisible( true );
                 errorLabel.setText( Messages.getString( "EditAliasesDialog.ElementWithSameAliasExists" ) ); //$NON-NLS-1$

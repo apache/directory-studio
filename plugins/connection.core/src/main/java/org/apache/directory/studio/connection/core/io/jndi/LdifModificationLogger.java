@@ -52,6 +52,7 @@ import org.apache.directory.shared.ldap.model.message.Referral;
 import org.apache.directory.shared.ldap.model.name.Dn;
 import org.apache.directory.shared.ldap.model.name.Rdn;
 import org.apache.directory.shared.util.DateUtils;
+import org.apache.directory.shared.util.Strings;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
 import org.apache.directory.studio.connection.core.ConnectionCoreConstants;
@@ -289,7 +290,8 @@ public class LdifModificationLogger implements IJndiLogger
                 while ( valueEnumeration.hasMore() )
                 {
                     Object o = valueEnumeration.next();
-                    if ( maskedAttributes.contains( attributeName.toLowerCase() ) )
+
+                    if ( maskedAttributes.contains( Strings.toLowerCase( attributeName ) ) )
                     {
                         record.addAttrVal( LdifAttrValLine.create( attributeName, "**********" ) ); //$NON-NLS-1$
                     }
@@ -378,7 +380,7 @@ public class LdifModificationLogger implements IJndiLogger
                 while ( valueEnumeration.hasMore() )
                 {
                     Object o = valueEnumeration.next();
-                    if ( maskedAttributes.contains( attributeDescription.toLowerCase() ) )
+                    if ( maskedAttributes.contains( Strings.toLowerCase( attributeDescription ) ) )
                     {
                         modSpec.addAttrVal( LdifAttrValLine.create( attributeDescription, "**********" ) ); //$NON-NLS-1$
                     }
@@ -624,9 +626,10 @@ public class LdifModificationLogger implements IJndiLogger
         String maskedAttributeString = ConnectionCorePlugin.getDefault().getPluginPreferences().getString(
             ConnectionCoreConstants.PREFERENCE_MODIFICATIONLOGS_MASKED_ATTRIBUTES );
         String[] splitted = maskedAttributeString.split( "," ); //$NON-NLS-1$
+
         for ( String s : splitted )
         {
-            maskedAttributes.add( s.toLowerCase() );
+            maskedAttributes.add( Strings.toLowerCase( s ) );
         }
 
         return maskedAttributes;

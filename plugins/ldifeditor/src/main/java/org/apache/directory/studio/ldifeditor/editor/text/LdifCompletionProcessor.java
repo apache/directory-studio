@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.apache.directory.shared.util.Strings;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreConstants;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.Schema;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.SchemaUtils;
@@ -46,7 +47,6 @@ import org.apache.directory.studio.ldifparser.model.container.LdifSepContainer;
 import org.apache.directory.studio.ldifparser.model.lines.LdifAttrValLine;
 import org.apache.directory.studio.ldifparser.model.lines.LdifChangeTypeLine;
 import org.apache.directory.studio.ldifparser.model.lines.LdifSepLine;
-
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
@@ -229,7 +229,7 @@ public class LdifCompletionProcessor extends TemplateCompletionProcessor
                     for ( String attributeName : attributeNames )
                     {
                         if ( rawAttributeDescription.length() == 0
-                            || attributeName.toLowerCase().startsWith( rawAttributeDescription.toLowerCase() ) )
+                            || Strings.toLowerCase( attributeName ).startsWith( Strings.toLowerCase( rawAttributeDescription ) ) )
                         {
 
                             String proposal = attributeName;

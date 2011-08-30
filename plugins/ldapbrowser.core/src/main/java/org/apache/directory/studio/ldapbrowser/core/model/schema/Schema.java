@@ -43,11 +43,12 @@ import org.apache.directory.shared.ldap.model.schema.MatchingRule;
 import org.apache.directory.shared.ldap.model.schema.MatchingRuleUse;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.shared.ldap.model.schema.UsageEnum;
-import org.apache.directory.shared.ldap.model.schema.parsers.*;
+import org.apache.directory.shared.ldap.model.schema.parsers.AttributeTypeDescriptionSchemaParser;
 import org.apache.directory.shared.ldap.model.schema.parsers.LdapSyntaxDescriptionSchemaParser;
 import org.apache.directory.shared.ldap.model.schema.parsers.MatchingRuleDescriptionSchemaParser;
 import org.apache.directory.shared.ldap.model.schema.parsers.MatchingRuleUseDescriptionSchemaParser;
 import org.apache.directory.shared.ldap.model.schema.parsers.ObjectClassDescriptionSchemaParser;
+import org.apache.directory.shared.util.Strings;
 import org.apache.directory.studio.connection.core.Utils;
 import org.apache.directory.studio.ldapbrowser.core.model.AttributeDescription;
 import org.apache.directory.studio.ldifparser.LdifFormatParameters;
@@ -450,13 +451,13 @@ public class Schema
     {
         if ( ocd.getOid() != null )
         {
-            ocdMapByNameOrNumericOid.put( ocd.getOid().toLowerCase(), ocd );
+            ocdMapByNameOrNumericOid.put( Strings.toLowerCase( ocd.getOid() ), ocd );
         }
         if ( ocd.getNames() != null && !ocd.getNames().isEmpty() )
         {
             for ( String ocdName : ocd.getNames() )
             {
-                ocdMapByNameOrNumericOid.put( ocdName.toLowerCase(), ocd );
+                ocdMapByNameOrNumericOid.put( Strings.toLowerCase( ocdName ), ocd );
             }
         }
     }
@@ -486,7 +487,7 @@ public class Schema
     {
         if ( nameOrOid != null )
         {
-            return ocdMapByNameOrNumericOid.containsKey( nameOrOid.toLowerCase() );
+            return ocdMapByNameOrNumericOid.containsKey( Strings.toLowerCase( nameOrOid ) );
         }
 
         return false;
@@ -504,9 +505,9 @@ public class Schema
      */
     public ObjectClass getObjectClassDescription( String nameOrOid )
     {
-        if ( ocdMapByNameOrNumericOid.containsKey( nameOrOid.toLowerCase() ) )
+        if ( ocdMapByNameOrNumericOid.containsKey( Strings.toLowerCase( nameOrOid ) ) )
         {
-            return ocdMapByNameOrNumericOid.get( nameOrOid.toLowerCase() );
+            return ocdMapByNameOrNumericOid.get( Strings.toLowerCase( nameOrOid ) );
         }
         else if ( !isDefault() )
         {
@@ -536,13 +537,13 @@ public class Schema
     {
         if ( atd.getOid() != null )
         {
-            atdMapByNameOrNumericOid.put( atd.getOid().toLowerCase(), atd );
+            atdMapByNameOrNumericOid.put( Strings.toLowerCase( atd.getOid() ), atd );
         }
         if ( atd.getNames() != null && !atd.getNames().isEmpty() )
         {
             for ( String atdName : atd.getNames() )
             {
-                atdMapByNameOrNumericOid.put( atdName.toLowerCase(), atd );
+                atdMapByNameOrNumericOid.put( Strings.toLowerCase( atdName ), atd );
             }
         }
     }
@@ -572,7 +573,7 @@ public class Schema
     {
         if ( nameOrOid != null )
         {
-            return atdMapByNameOrNumericOid.containsKey( nameOrOid.toLowerCase() );
+            return atdMapByNameOrNumericOid.containsKey( Strings.toLowerCase( nameOrOid ) );
         }
 
         return false;
@@ -593,9 +594,9 @@ public class Schema
         AttributeDescription ad = new AttributeDescription( nameOrOid );
         String attributeType = ad.getParsedAttributeType();
 
-        if ( atdMapByNameOrNumericOid.containsKey( attributeType.toLowerCase() ) )
+        if ( atdMapByNameOrNumericOid.containsKey( Strings.toLowerCase( attributeType ) ) )
         {
-            return atdMapByNameOrNumericOid.get( attributeType.toLowerCase() );
+            return atdMapByNameOrNumericOid.get( Strings.toLowerCase( attributeType ) );
         }
         else if ( !isDefault() )
         {
@@ -627,7 +628,7 @@ public class Schema
     {
         if ( lsd.getOid() != null )
         {
-            lsdMapByNumericOid.put( lsd.getOid().toLowerCase(), lsd );
+            lsdMapByNumericOid.put( Strings.toLowerCase( lsd.getOid() ), lsd );
         }
     }
 
@@ -655,7 +656,7 @@ public class Schema
     {
         if ( numericOid != null )
         {
-            return lsdMapByNumericOid.containsKey( numericOid.toLowerCase() );
+            return lsdMapByNumericOid.containsKey( Strings.toLowerCase( numericOid ) );
         }
 
         return false;
@@ -676,9 +677,9 @@ public class Schema
         {
             return DUMMY_LDAP_SYNTAX;
         }
-        else if ( lsdMapByNumericOid.containsKey( numericOid.toLowerCase() ) )
+        else if ( lsdMapByNumericOid.containsKey( Strings.toLowerCase( numericOid ) ) )
         {
-            return lsdMapByNumericOid.get( numericOid.toLowerCase() );
+            return lsdMapByNumericOid.get( Strings.toLowerCase( numericOid ) );
         }
         else if ( !isDefault() )
         {
@@ -705,13 +706,13 @@ public class Schema
     {
         if ( mrd.getOid() != null )
         {
-            mrdMapByNameOrNumericOid.put( mrd.getOid().toLowerCase(), mrd );
+            mrdMapByNameOrNumericOid.put( Strings.toLowerCase( mrd.getOid() ), mrd );
         }
         if ( mrd.getNames() != null && !mrd.getNames().isEmpty() )
         {
             for ( String mrdName : mrd.getNames() )
             {
-                mrdMapByNameOrNumericOid.put( mrdName.toLowerCase(), mrd );
+                mrdMapByNameOrNumericOid.put( Strings.toLowerCase( mrdName ), mrd );
             }
         }
     }
@@ -741,7 +742,7 @@ public class Schema
     {
         if ( nameOrOid != null )
         {
-            return mrdMapByNameOrNumericOid.containsKey( nameOrOid.toLowerCase() );
+            return mrdMapByNameOrNumericOid.containsKey( Strings.toLowerCase( nameOrOid ) );
         }
 
         return false;
@@ -759,9 +760,9 @@ public class Schema
      */
     public MatchingRule getMatchingRuleDescription( String nameOrOid )
     {
-        if ( mrdMapByNameOrNumericOid.containsKey( nameOrOid.toLowerCase() ) )
+        if ( mrdMapByNameOrNumericOid.containsKey( Strings.toLowerCase( nameOrOid ) ) )
         {
-            return mrdMapByNameOrNumericOid.get( nameOrOid.toLowerCase() );
+            return mrdMapByNameOrNumericOid.get( Strings.toLowerCase( nameOrOid ) );
         }
         else if ( !isDefault() )
         {
@@ -788,13 +789,13 @@ public class Schema
     {
         if ( mrud.getOid() != null )
         {
-            mrudMapByNameOrNumericOid.put( mrud.getOid().toLowerCase(), mrud );
+            mrudMapByNameOrNumericOid.put( Strings.toLowerCase( mrud.getOid() ), mrud );
         }
         if ( mrud.getNames() != null && !mrud.getNames().isEmpty() )
         {
             for ( String mrudName : mrud.getNames() )
             {
-                mrudMapByNameOrNumericOid.put( mrudName.toLowerCase(), mrud );
+                mrudMapByNameOrNumericOid.put( Strings.toLowerCase( mrudName ), mrud );
             }
         }
     }
@@ -825,7 +826,7 @@ public class Schema
     {
         if ( nameOrOid != null )
         {
-            return mrudMapByNameOrNumericOid.containsKey( nameOrOid.toLowerCase() );
+            return mrudMapByNameOrNumericOid.containsKey( Strings.toLowerCase( nameOrOid ) );
         }
 
         return false;
@@ -843,9 +844,9 @@ public class Schema
      */
     public MatchingRuleUse getMatchingRuleUseDescription( String nameOrOid )
     {
-        if ( mrudMapByNameOrNumericOid.containsKey( nameOrOid.toLowerCase() ) )
+        if ( mrudMapByNameOrNumericOid.containsKey( Strings.toLowerCase( nameOrOid ) ) )
         {
-            return mrudMapByNameOrNumericOid.get( nameOrOid.toLowerCase() );
+            return mrudMapByNameOrNumericOid.get( Strings.toLowerCase( nameOrOid ) );
         }
         else if ( !isDefault() )
         {

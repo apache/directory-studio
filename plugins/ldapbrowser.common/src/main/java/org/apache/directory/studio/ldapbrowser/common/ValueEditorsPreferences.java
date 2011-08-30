@@ -24,6 +24,7 @@ package org.apache.directory.studio.ldapbrowser.common;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.directory.shared.util.Strings;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.AttributeValueEditorRelation;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.SyntaxValueEditorRelation;
 import org.apache.directory.studio.ldapbrowser.core.utils.Utils;
@@ -61,7 +62,7 @@ public class ValueEditorsPreferences
             {
                 if ( relations[i].getAttributeNumericOidOrType() != null )
                 {
-                    attributeValueEditorCache.put( relations[i].getAttributeNumericOidOrType().toLowerCase(),
+                    attributeValueEditorCache.put( Strings.toLowerCase( relations[i].getAttributeNumericOidOrType() ),
                         relations[i].getValueEditorClassName() );
                 }
             }
@@ -151,7 +152,7 @@ public class ValueEditorsPreferences
             {
                 if ( relations[i].getSyntaxOID() != null )
                 {
-                    syntaxValueEditorCache.put( relations[i].getSyntaxOID().toLowerCase(), relations[i]
+                    syntaxValueEditorCache.put( Strings.toLowerCase( relations[i].getSyntaxOID() ), relations[i]
                         .getValueEditorClassName() );
                 }
             }

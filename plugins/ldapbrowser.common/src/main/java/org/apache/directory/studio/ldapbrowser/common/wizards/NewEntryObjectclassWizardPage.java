@@ -29,6 +29,7 @@ import java.util.List;
 import org.apache.directory.shared.ldap.model.constants.SchemaConstants;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.shared.ldap.model.schema.ObjectClassTypeEnum;
+import org.apache.directory.shared.util.Strings;
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.connection.ui.RunnableContextRunner;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
@@ -585,7 +586,7 @@ public class NewEntryObjectclassWizardPage extends WizardPage
                 Collection<String> lowerCaseIdentifiers = SchemaUtils.getLowerCaseIdentifiers( ocd );
                 for ( String s : lowerCaseIdentifiers )
                 {
-                    if ( s.toLowerCase().startsWith( filterText.getText().toLowerCase() ) )
+                    if ( Strings.toLowerCase( s ).startsWith( Strings.toLowerCase( filterText.getText() ) ) )
                     {
                         return true;
                     }

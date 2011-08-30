@@ -40,6 +40,7 @@ import org.apache.directory.shared.ldap.model.name.Dn;
 import org.apache.directory.shared.ldap.model.name.Rdn;
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
 import org.apache.directory.shared.ldap.model.url.LdapUrl;
+import org.apache.directory.shared.util.Strings;
 import org.apache.directory.studio.connection.core.ConnectionParameter.EncryptionMethod;
 import org.apache.directory.studio.connection.core.StudioControl;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreConstants;
@@ -128,7 +129,7 @@ public class Utils
     {
         String oid = schema != null ? schema.getAttributeTypeDescription( ava.getNormType() ).getOid() : ava
             .getNormType();
-        return oid.trim().toLowerCase() + "=" + ava.getUpValue().getString().trim().toLowerCase(); //$NON-NLS-1$
+        return Strings.toLowerCase( Strings.trim( oid ) ) + "=" + Strings.toLowerCase( Strings.trim( ava.getUpValue().getString() ) ); //$NON-NLS-1$
     }
 
 

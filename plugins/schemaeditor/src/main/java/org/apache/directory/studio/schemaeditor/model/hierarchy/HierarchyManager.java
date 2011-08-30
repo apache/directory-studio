@@ -26,6 +26,7 @@ import org.apache.commons.collections.map.MultiValueMap;
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.shared.ldap.model.schema.SchemaObject;
+import org.apache.directory.shared.util.Strings;
 import org.apache.directory.studio.schemaeditor.Activator;
 import org.apache.directory.studio.schemaeditor.controller.SchemaHandler;
 import org.apache.directory.studio.schemaeditor.model.Schema;
@@ -95,8 +96,8 @@ public class HierarchyManager
             {
                 // Then, its parent is the name of its superior and
                 // it becomes the children of it and the RootObject
-                parentsMap.put( at, superiorName.toLowerCase() );
-                childrenMap.put( superiorName.toLowerCase(), at );
+                parentsMap.put( at, Strings.toLowerCase( superiorName ) );
+                childrenMap.put( Strings.toLowerCase( superiorName ), at );
                 childrenMap.put( root, at );
             }
         }
@@ -130,8 +131,8 @@ public class HierarchyManager
                 ObjectClass superClass = schemaHandler.getObjectClass( superClassName );
                 if ( superClass == null )
                 {
-                    parentsMap.put( oc, superClassName.toLowerCase() );
-                    childrenMap.put( superClassName.toLowerCase(), oc );
+                    parentsMap.put( oc, Strings.toLowerCase( superClassName ) );
+                    childrenMap.put( Strings.toLowerCase( superClassName ), oc );
                     childrenMap.put( root, oc );
                 }
                 else
@@ -238,16 +239,16 @@ public class HierarchyManager
             {
                 // Looking for children objects for this alias value
                 @SuppressWarnings("unchecked")
-                List<Object> children = ( List<Object> ) childrenMap.get( alias.toLowerCase() );
+                List<Object> children = ( List<Object> ) childrenMap.get( Strings.toLowerCase( alias ) );
                 if ( children != null )
                 {
                     for ( Object value : children )
                     {
                         childrenMap.put( object, value );
-                        parentsMap.remove( value, alias.toLowerCase() );
+                        parentsMap.remove( value, Strings.toLowerCase( alias ) );
                         parentsMap.put( value, object );
                     }
-                    childrenMap.remove( alias.toLowerCase() );
+                    childrenMap.remove( Strings.toLowerCase( alias ) );
                 }
             }
         }
@@ -258,7 +259,7 @@ public class HierarchyManager
         {
             // Looking for children objects for this OID value
             @SuppressWarnings("unchecked")
-            List<Object> children = ( List<Object> ) childrenMap.get( oid.toLowerCase() );
+            List<Object> children = ( List<Object> ) childrenMap.get( Strings.toLowerCase( oid ) );
             if ( children != null )
             {
                 for ( Object value : children )
@@ -268,11 +269,11 @@ public class HierarchyManager
                     {
                         childrenMap.remove( root, value );
                     }
-                    parentsMap.remove( value, oid.toLowerCase() );
+                    parentsMap.remove( value, Strings.toLowerCase( oid ) );
                     parentsMap.put( value, object );
 
                 }
-                childrenMap.remove( oid.toLowerCase() );
+                childrenMap.remove( Strings.toLowerCase( oid ) );
             }
         }
     }
@@ -413,7 +414,7 @@ public class HierarchyManager
             AttributeType superiorAT = schemaHandler.getAttributeType( superiorName );
             if ( superiorAT == null )
             {
-                childrenMap.remove( superiorName.toLowerCase(), at );
+                childrenMap.remove( Strings.toLowerCase( superiorName ), at );
             }
             else
             {
@@ -440,8 +441,8 @@ public class HierarchyManager
                 String childSuperiorName = childAT.getSuperiorOid();
                 if ( ( childSuperiorName != null ) && ( !"".equals( childSuperiorName ) ) ) //$NON-NLS-1$
                 {
-                    parentsMap.put( child, childSuperiorName.toLowerCase() );
-                    childrenMap.put( childSuperiorName.toLowerCase(), child );
+                    parentsMap.put( child, Strings.toLowerCase( childSuperiorName ) );
+                    childrenMap.put( Strings.toLowerCase( childSuperiorName ), child );
                 }
             }
         }
@@ -464,7 +465,7 @@ public class HierarchyManager
                     ObjectClass superClassOC = schemaHandler.getObjectClass( superClassName );
                     if ( superClassOC == null )
                     {
-                        childrenMap.remove( superClassName.toLowerCase(), oc );
+                        childrenMap.remove( Strings.toLowerCase( superClassName ), oc );
                         childrenMap.remove( root, oc );
                     }
                     else
@@ -515,8 +516,8 @@ public class HierarchyManager
                     String correctSuperClassName = getCorrectSuperClassName( oc, childSuperClassesNames );
                     if ( correctSuperClassName != null )
                     {
-                        parentsMap.put( child, correctSuperClassName.toLowerCase() );
-                        childrenMap.put( correctSuperClassName.toLowerCase(), child );
+                        parentsMap.put( child, Strings.toLowerCase( correctSuperClassName ) );
+                        childrenMap.put( Strings.toLowerCase( correctSuperClassName ), child );
                     }
                 }
                 else

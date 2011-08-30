@@ -255,7 +255,7 @@ public class Utils
      */
     public static String getSimpleNormalizedUrl( LdapUrl url )
     {
-        return url.getScheme() + ( url.getHost() != null ? url.getHost().toLowerCase() : "" ) + ":" + url.getPort();
+        return url.getScheme() + ( url.getHost() != null ? Strings.toLowerCase( url.getHost() ) : "" ) + ":" + url.getPort();
     }
 
 

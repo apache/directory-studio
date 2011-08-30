@@ -23,6 +23,7 @@ package org.apache.directory.studio.ldapbrowser.ui.editors.schemabrowser;
 
 import org.apache.directory.shared.ldap.model.schema.AbstractSchemaObject;
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.util.Strings;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.Schema;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.SchemaUtils;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
@@ -224,9 +225,9 @@ public class AttributeTypeDescriptionPage extends SchemaPage
             if ( element instanceof AttributeType )
             {
                 AttributeType atd = ( AttributeType ) element;
-                boolean matched = SchemaUtils.toString( atd ).toLowerCase()
-                    .indexOf( filterText.getText().toLowerCase() ) != -1
-                    || atd.getOid().toLowerCase().indexOf( filterText.getText().toLowerCase() ) != -1;
+                boolean matched = Strings.toLowerCase( SchemaUtils.toString( atd ) )
+                    .indexOf( Strings.toLowerCase( filterText.getText() ) ) != -1
+                    || Strings.toLowerCase( atd.getOid() ).indexOf( Strings.toLowerCase( filterText.getText() ) ) != -1;
                 return matched;
             }
             return false;

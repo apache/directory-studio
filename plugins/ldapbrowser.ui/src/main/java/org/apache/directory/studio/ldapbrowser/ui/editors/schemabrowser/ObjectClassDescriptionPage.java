@@ -22,6 +22,7 @@ package org.apache.directory.studio.ldapbrowser.ui.editors.schemabrowser;
 
 
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
+import org.apache.directory.shared.util.Strings;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.Schema;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.SchemaUtils;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
@@ -223,9 +224,9 @@ public class ObjectClassDescriptionPage extends SchemaPage
             if ( element instanceof ObjectClass )
             {
                 ObjectClass ocd = ( ObjectClass ) element;
-                boolean matched = SchemaUtils.toString( ocd ).toLowerCase()
-                    .indexOf( filterText.getText().toLowerCase() ) != -1
-                    || ocd.getOid().toLowerCase().indexOf( filterText.getText().toLowerCase() ) != -1;
+                boolean matched = Strings.toLowerCase( SchemaUtils.toString( ocd ) )
+                    .indexOf( Strings.toLowerCase( filterText.getText() ) ) != -1
+                    || Strings.toLowerCase( ocd.getOid() ).indexOf( Strings.toLowerCase( filterText.getText() ) ) != -1;
                 return matched;
             }
             return false;

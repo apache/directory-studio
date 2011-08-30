@@ -22,6 +22,7 @@ package org.apache.directory.studio.ldapbrowser.ui.editors.schemabrowser;
 
 
 import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
+import org.apache.directory.shared.util.Strings;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.Schema;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.SchemaUtils;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
@@ -223,9 +224,9 @@ public class LdapSyntaxDescriptionPage extends SchemaPage
             if ( element instanceof LdapSyntax )
             {
                 LdapSyntax lsd = ( LdapSyntax ) element;
-                boolean matched = SchemaUtils.toString( lsd ).toLowerCase()
-                    .indexOf( filterText.getText().toLowerCase() ) != -1
-                    || lsd.getOid().toLowerCase().indexOf( filterText.getText().toLowerCase() ) != -1;
+                boolean matched = Strings.toLowerCase( SchemaUtils.toString( lsd ) )
+                    .indexOf( Strings.toLowerCase( filterText.getText() ) ) != -1
+                    || Strings.toLowerCase( lsd.getOid() ).indexOf( Strings.toLowerCase( filterText.getText() ) ) != -1;
                 return matched;
             }
             return false;

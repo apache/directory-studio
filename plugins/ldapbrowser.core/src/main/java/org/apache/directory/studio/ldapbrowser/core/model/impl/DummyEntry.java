@@ -32,6 +32,7 @@ import org.apache.directory.shared.ldap.model.name.Dn;
 import org.apache.directory.shared.ldap.model.name.Rdn;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.shared.ldap.model.url.LdapUrl;
+import org.apache.directory.shared.util.Strings;
 import org.apache.directory.studio.connection.core.jobs.StudioConnectionBulkRunnableWithProgress;
 import org.apache.directory.studio.ldapbrowser.core.events.AttributeAddedEvent;
 import org.apache.directory.studio.ldapbrowser.core.events.AttributeDeletedEvent;
@@ -109,7 +110,7 @@ public class DummyEntry implements IEntry, ICompareableEntry
     public void addAttribute( IAttribute attributeToAdd )
     {
         String oidString = attributeToAdd.getAttributeDescription().toOidString( getBrowserConnection().getSchema() );
-        attributeMap.put( oidString.toLowerCase(), attributeToAdd );
+        attributeMap.put( Strings.toLowerCase( oidString ), attributeToAdd );
         EventRegistry.fireEntryUpdated( new AttributeAddedEvent( attributeToAdd.getEntry().getBrowserConnection(),
             this, attributeToAdd ), this );
     }
@@ -129,7 +130,7 @@ public class DummyEntry implements IEntry, ICompareableEntry
     public void deleteAttribute( IAttribute attributeToDelete )
     {
         String oidString = attributeToDelete.getAttributeDescription().toOidString( getBrowserConnection().getSchema() );
-        attributeMap.remove( oidString.toLowerCase() );
+        attributeMap.remove( Strings.toLowerCase( oidString ) );
         EventRegistry.fireEntryUpdated( new AttributeDeletedEvent( attributeToDelete.getEntry().getBrowserConnection(),
             this, attributeToDelete ), this );
     }
@@ -147,7 +148,7 @@ public class DummyEntry implements IEntry, ICompareableEntry
     {
         AttributeDescription ad = new AttributeDescription( attributeDescription );
         String oidString = ad.toOidString( getBrowserConnection().getSchema() );
-        return attributeMap.get( oidString.toLowerCase() );
+        return attributeMap.get( Strings.toLowerCase( oidString ) );
     }
 
 

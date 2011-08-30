@@ -30,6 +30,7 @@ import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
 import org.apache.directory.shared.ldap.model.schema.MatchingRule;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.shared.ldap.model.schema.SchemaObject;
+import org.apache.directory.shared.util.Strings;
 import org.apache.directory.studio.schemaeditor.model.Schema;
 
 
@@ -177,7 +178,7 @@ public class SchemaHandler
      */
     public AttributeType getAttributeType( String id )
     {
-        List<?> list = getAttributeTypeList( id.toLowerCase() );
+        List<?> list = getAttributeTypeList( Strings.toLowerCase( id ) );
 
         if ( ( list != null ) && ( list.size() >= 1 ) )
         {
@@ -200,7 +201,7 @@ public class SchemaHandler
      */
     public List<?> getAttributeTypeList( String id )
     {
-        return ( List<?> ) attributeTypesMap.get( id.toLowerCase() );
+        return ( List<?> ) attributeTypesMap.get( Strings.toLowerCase( id ) );
     }
 
 
@@ -214,7 +215,7 @@ public class SchemaHandler
      */
     public MatchingRule getMatchingRule( String id )
     {
-        List<?> list = getMatchingRuleList( id.toLowerCase() );
+        List<?> list = getMatchingRuleList( Strings.toLowerCase( id ) );
 
         if ( ( list != null ) && ( list.size() >= 1 ) )
         {
@@ -237,7 +238,7 @@ public class SchemaHandler
      */
     public List<?> getMatchingRuleList( String id )
     {
-        return ( List<?> ) matchingRulesMap.get( id.toLowerCase() );
+        return ( List<?> ) matchingRulesMap.get( Strings.toLowerCase( id ) );
     }
 
 
@@ -251,7 +252,7 @@ public class SchemaHandler
      */
     public ObjectClass getObjectClass( String id )
     {
-        List<?> list = getObjectClassList( id.toLowerCase() );
+        List<?> list = getObjectClassList( Strings.toLowerCase( id ) );
 
         if ( ( list != null ) && ( list.size() >= 1 ) )
         {
@@ -274,7 +275,7 @@ public class SchemaHandler
      */
     public List<?> getObjectClassList( String id )
     {
-        return ( List<?> ) objectClassesMap.get( id.toLowerCase() );
+        return ( List<?> ) objectClassesMap.get( Strings.toLowerCase( id ) );
     }
 
 
@@ -288,7 +289,7 @@ public class SchemaHandler
      */
     public Schema getSchema( String name )
     {
-        List<?> list = getSchemaList( name.toLowerCase() );
+        List<?> list = getSchemaList( Strings.toLowerCase( name ) );
 
         if ( ( list != null ) && ( list.size() >= 1 ) )
         {
@@ -311,7 +312,7 @@ public class SchemaHandler
      */
     public List<?> getSchemaList( String name )
     {
-        return ( List<?> ) schemasMap.get( name.toLowerCase() );
+        return ( List<?> ) schemasMap.get( Strings.toLowerCase( name ) );
     }
 
 
@@ -325,7 +326,7 @@ public class SchemaHandler
      */
     public LdapSyntax getSyntax( String id )
     {
-        List<?> list = getSyntaxList( id.toLowerCase() );
+        List<?> list = getSyntaxList( Strings.toLowerCase( id ) );
 
         if ( ( list != null ) && ( list.size() >= 1 ) )
         {
@@ -348,7 +349,7 @@ public class SchemaHandler
      */
     public List<?> getSyntaxList( String id )
     {
-        return ( List<?> ) syntaxesMap.get( id.toLowerCase() );
+        return ( List<?> ) syntaxesMap.get( Strings.toLowerCase( id ) );
     }
 
 
@@ -482,7 +483,7 @@ public class SchemaHandler
     {
         // Adding the schema
         schemasList.add( schema );
-        schemasMap.put( schema.getSchemaName().toLowerCase(), schema );
+        schemasMap.put( Strings.toLowerCase( schema.getSchemaName() ), schema );
 
         // Adding its attribute types
         for ( AttributeType at : schema.getAttributeTypes() )
@@ -529,7 +530,7 @@ public class SchemaHandler
             {
                 for ( String name : names )
                 {
-                    attributeTypesMap.put( name.toLowerCase(), at );
+                    attributeTypesMap.put( Strings.toLowerCase( name ), at );
                 }
             }
             attributeTypesMap.put( at.getOid(), at );
@@ -543,7 +544,7 @@ public class SchemaHandler
             {
                 for ( String name : names )
                 {
-                    matchingRulesMap.put( name.toLowerCase(), mr );
+                    matchingRulesMap.put( Strings.toLowerCase( name ), mr );
                 }
             }
             matchingRulesMap.put( mr.getOid(), mr );
@@ -557,7 +558,7 @@ public class SchemaHandler
             {
                 for ( String name : names )
                 {
-                    objectClassesMap.put( name.toLowerCase(), oc );
+                    objectClassesMap.put( Strings.toLowerCase( name ), oc );
                 }
             }
             objectClassesMap.put( oc.getOid(), oc );
@@ -571,7 +572,7 @@ public class SchemaHandler
             {
                 for ( String name : names )
                 {
-                    syntaxesMap.put( name.toLowerCase(), syntax );
+                    syntaxesMap.put( Strings.toLowerCase( name ), syntax );
                 }
             }
             syntaxesMap.put( syntax.getOid(), syntax );
@@ -589,7 +590,7 @@ public class SchemaHandler
     {
         // Removing the schema
         schemasList.remove( schema );
-        schemasMap.remove( schema.getSchemaName().toLowerCase() );
+        schemasMap.remove( Strings.toLowerCase( schema.getSchemaName() ) );
 
         // Removing its attribute types
         for ( AttributeType at : schema.getAttributeTypes() )
@@ -636,7 +637,7 @@ public class SchemaHandler
             {
                 for ( String name : names )
                 {
-                    attributeTypesMap.remove( name.toLowerCase() );
+                    attributeTypesMap.remove( Strings.toLowerCase( name ) );
                 }
             }
             attributeTypesMap.remove( at.getOid() );
@@ -650,7 +651,7 @@ public class SchemaHandler
             {
                 for ( String name : names )
                 {
-                    matchingRulesMap.remove( name.toLowerCase() );
+                    matchingRulesMap.remove( Strings.toLowerCase( name ) );
                 }
             }
             matchingRulesMap.remove( mr.getOid() );
@@ -664,7 +665,7 @@ public class SchemaHandler
             {
                 for ( String name : names )
                 {
-                    objectClassesMap.remove( name.toLowerCase() );
+                    objectClassesMap.remove( Strings.toLowerCase( name ) );
                 }
             }
             objectClassesMap.remove( oc.getOid() );
@@ -678,7 +679,7 @@ public class SchemaHandler
             {
                 for ( String name : names )
                 {
-                    syntaxesMap.remove( name.toLowerCase() );
+                    syntaxesMap.remove( Strings.toLowerCase( name ) );
                 }
             }
             syntaxesMap.remove( syntax.getOid() );
@@ -1219,7 +1220,7 @@ public class SchemaHandler
      */
     public boolean isAliasOrOidAlreadyTaken( String id )
     {
-        String lowerCasedId = id.toLowerCase();
+        String lowerCasedId = Strings.toLowerCase( id );
         if ( attributeTypesMap.containsKey( lowerCasedId ) )
         {
             return true;
@@ -1251,6 +1252,6 @@ public class SchemaHandler
      */
     public boolean isSchemaNameAlreadyTaken( String name )
     {
-        return schemasMap.containsKey( name.toLowerCase() );
+        return schemasMap.containsKey( Strings.toLowerCase( name ) );
     }
 }
