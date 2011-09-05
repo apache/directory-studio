@@ -131,7 +131,8 @@
                 </copy>
                 <copy file="src/main/resources/sign.sh" todir="${release-dir}">
                   <filterset>
-                    <filter token="password" value="${gpg.passphrase}" />
+                    <filter token="gpg.keyname" value="${gpg.keyname}" />
+                    <filter token="gpg.passphrase" value="${gpg.passphrase}" />
                   </filterset>
                 </copy>
               </tasks>
