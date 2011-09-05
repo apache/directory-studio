@@ -1,15 +1,15 @@
 #!/bin/sh
 
-echo -n "PGP Key ID: "
+echo "PGP Key ID: "
 read DEFAULT_KEY
 
-echo -n "PGP Key Password: "
+echo "PGP Key Password: "
 stty -echo
 read PASSWORD
 stty echo
 echo ""
 
-for FILE in $(find . -not '(' -name "sign.sh" -or -name ".*" -or -name "*.md5" -or -name "*.sha1" -or -name "*.asc" ')' -and -type f) ; do
+for FILE in $(find . -maxdepth 1 -not '(' -name "sign.sh" -or -name ".*" -or -name "*.md5" -or -name "*.sha1" -or -name "*.asc" ')' -and -type f) ; do
     if [ -f "$FILE.asc" ]; then
         echo "Skipping: $FILE"
         continue
@@ -29,7 +29,7 @@ for FILE in $(find . -not '(' -name "sign.sh" -or -name ".*" -or -name "*.md5" -
     # SHA1
     if [ ! -f "$FILE.sha1" ];
     then
-        gpg --print-md SHA1 "$FILE" > "$FILE".sha1
+        gpg --default-key "$DEFAULT_KEY" --print-md SHA1 "$FILE" > "$FILE".sha1
         echo "  - Generated '$FILE.sha1'"
     else
         echo "  - Skipped '$FILE.sha1' (file already existing)"
@@ -38,7 +38,7 @@ for FILE in $(find . -not '(' -name "sign.sh" -or -name ".*" -or -name "*.md5" -
     # ASC
     if [ ! -f "$FILE.asc" ];
     then
-        echo "$PASSWORD" | gpg --detach-sign --armor --no-tty --yes --passphrase-fd 0 "$FILE"
+        echo "$PASSWORD" | gpg --default-key "$DEFAULT_KEY" --detach-sign --armor --no-tty --yes --passphrase-fd 0 "$FILE"
         echo "  - Generated '$FILE.asc'"
     else
         echo "  - Skipped '$FILE.asc' (file already existing)"
