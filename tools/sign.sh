@@ -31,7 +31,7 @@ for FILE in $(find . -maxdepth 1 -not '(' -name "sign.sh" -or -name ".*" -or -na
         continue
     fi
 
-    echo -n "Signing: $FILE ... "
+    echo "Signing: $FILE ... "
 
     # MD5
     if [ ! -f "$FILE.md5" ];
