@@ -98,21 +98,6 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-antrun-plugin</artifactId>
         <executions>
-          <!-- Unpack the Studio launcher for Linux x86_64 -->
-          <execution>
-            <id>unpack-studio-launcher-linux-x86_64</id>
-            <phase>generate-resources</phase>
-            <configuration>
-              <target>
-                <untar dest="${app-dir}" compression="gzip">
-                    <fileset dir="${project.build.directory}" includes="launcher-linux-x86_64*.tar.gz"/>
-                </untar>
-              </target>
-            </configuration>
-            <goals>
-              <goal>run</goal>
-            </goals>
-          </execution>
           <!-- Copy plugins and features -->
           <execution>
             <id>copy-plugins-features</id>
