@@ -26,7 +26,6 @@
     <version>23</version>
     <relativePath></relativePath>
   </parent>
-  
 
   <groupId>org.apache.directory.studio</groupId>
   <artifactId>parent</artifactId>
@@ -41,11 +40,6 @@
     <system>JIRA</system>
     <url>http://issues.apache.org/jira/browse/DIRSTUDIO</url>
   </issueManagement>
-
-  <organization>
-    <name>Apache Software Foundation</name>
-    <url>http://www.apache.org</url>
-  </organization>
 
   <scm>
     <connection>scm:svn:http://svn.apache.org/repos/asf/directory/studio/trunk/</connection>
