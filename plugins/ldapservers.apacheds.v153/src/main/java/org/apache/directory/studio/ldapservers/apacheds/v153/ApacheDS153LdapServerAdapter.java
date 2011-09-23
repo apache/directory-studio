@@ -96,7 +96,7 @@ public class ApacheDS153LdapServerAdapter implements LdapServerAdapter
         // Creating server folder structure
         monitor.subTask( "creating server folder structure" );
         File serverFolder = LdapServersManager.getServerFolder( server ).toFile();
-        File confFolder = new File( serverFolder, "conf" );
+        File confFolder = new File( serverFolder, CONF );
         confFolder.mkdir();
         File ldifFolder = new File( serverFolder, "ldif" );
         ldifFolder.mkdir();
@@ -141,7 +141,7 @@ public class ApacheDS153LdapServerAdapter implements LdapServerAdapter
                 try
                 {
                     PathEditorInput input = new PathEditorInput( LdapServersManager.getServerFolder( server )
-                        .append( "conf" ).append( "server.xml" ) ); //$NON-NLS-1$ //$NON-NLS-2$
+                        .append( CONF ).append( SERVER_XML ) );
                     PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
                         .openEditor( input, ServerConfigurationEditor.ID );
                 }
@@ -211,8 +211,8 @@ public class ApacheDS153LdapServerAdapter implements LdapServerAdapter
     public static ServerConfigurationV153 getServerConfiguration( LdapServer server ) throws ServerXmlIOException,
         FileNotFoundException
     {
-        InputStream fis = new FileInputStream( LdapServersManager.getServerFolder( server ).append( "conf" )
-            .append( "server.xml" ).toFile() );
+        InputStream fis = new FileInputStream( LdapServersManager.getServerFolder( server ).append( CONF )
+            .append( SERVER_XML ).toFile() );
 
         ServerXmlIOV153 serverXmlIOV153 = new ServerXmlIOV153();
         return ( ServerConfigurationV153 ) serverXmlIOV153.parse( fis );
