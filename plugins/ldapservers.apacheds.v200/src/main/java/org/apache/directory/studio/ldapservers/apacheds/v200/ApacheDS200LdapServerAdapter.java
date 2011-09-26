@@ -24,15 +24,20 @@ package org.apache.directory.studio.ldapservers.apacheds.v200;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.directory.studio.apacheds.configuration.editor.ServerConfigurationEditor;
-import org.apache.directory.studio.apacheds.configuration.model.ServerXmlIOException;
-import org.apache.directory.studio.apacheds.configuration.model.v157.ServerConfigurationV157;
-import org.apache.directory.studio.apacheds.configuration.model.v157.ServerXmlIOV157;
+import org.apache.directory.server.config.beans.ChangePasswordServerBean;
+import org.apache.directory.server.config.beans.ConfigBean;
+import org.apache.directory.server.config.beans.DirectoryServiceBean;
+import org.apache.directory.server.config.beans.DnsServerBean;
+import org.apache.directory.server.config.beans.KdcServerBean;
+import org.apache.directory.server.config.beans.LdapServerBean;
+import org.apache.directory.server.config.beans.NtpServerBean;
+import org.apache.directory.server.config.beans.TransportBean;
+import org.apache.directory.studio.apacheds.configuration.v2.editor.ServerConfigurationEditor;
+import org.apache.directory.studio.apacheds.configuration.v2.jobs.LoadConfigurationRunnable;
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.common.ui.filesystem.PathEditorInput;
 import org.apache.directory.studio.ldapservers.LdapServersManager;
@@ -95,7 +100,7 @@ public class ApacheDS200LdapServerAdapter implements LdapServerAdapter
         // Creating server folder structure
         monitor.subTask( "creating server folder structure" );
         File serverFolder = LdapServersManager.getServerFolder( server ).toFile();
-        File confFolder = new File( serverFolder, "conf" );
+        File confFolder = new File( serverFolder, CONF );
         confFolder.mkdir();
         File ldifFolder = new File( serverFolder, "ldif" );
         ldifFolder.mkdir();
@@ -140,7 +145,7 @@ public class ApacheDS200LdapServerAdapter implements LdapServerAdapter
                 try
                 {
                     PathEditorInput input = new PathEditorInput( LdapServersManager.getServerFolder( server )
-                        .append( "conf" ).append( "server.xml" ) ); //$NON-NLS-1$ //$NON-NLS-2$
+                        .append( CONF ).append( CONFIG_LDIF ) );
                     PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
                         .openEditor( input, ServerConfigurationEditor.ID );
                 }
@@ -168,7 +173,7 @@ public class ApacheDS200LdapServerAdapter implements LdapServerAdapter
         LdapServersUtils.startTerminateListenerThread( server, launch );
 
         // Running the startup listener watchdog
-//        LdapServersUtils.runStartupListenerWatchdog( server, getTestingPort( server ) );
+        LdapServersUtils.runStartupListenerWatchdog( server, getTestingPort( server ) );
     }
 
 
@@ -189,8 +194,9 @@ public class ApacheDS200LdapServerAdapter implements LdapServerAdapter
         // Creating a new editable launch configuration
         ILaunchConfigurationType type = DebugPlugin.getDefault().getLaunchManager()
             .getLaunchConfigurationType( IJavaLaunchConfigurationConstants.ID_JAVA_APPLICATION );
-        ILaunchConfigurationWorkingCopy workingCopy = type.newInstance( null, NLS.bind( "Starting {0}", new String[]
-            { server.getName() } ) );
+        ILaunchConfigurationWorkingCopy workingCopy = type.newInstance( null,
+            NLS.bind( Messages.getString( "ApacheDS200LdapServerAdapter.Starting" ), new String[] //$NON-NLS-1$
+                { server.getName() } ) );
 
         // Setting the JRE container path attribute
         workingCopy.setAttribute( IJavaLaunchConfigurationConstants.ATTR_JRE_CONTAINER_PATH, vmInstall
@@ -227,7 +233,7 @@ public class ApacheDS200LdapServerAdapter implements LdapServerAdapter
         // Creating the VM arguments string
         StringBuffer vmArguments = new StringBuffer();
         vmArguments.append( "-Dlog4j.configuration=file:\"" //$NON-NLS-1$
-            + serverFolderPath.append( "conf" ).append( "log4j.properties" ).toOSString() + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+            + serverFolderPath.append( CONF ).append( LOG4J_PROPERTIES ).toOSString() + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         vmArguments.append( " " ); //$NON-NLS-1$
         vmArguments.append( "-Dapacheds.var.dir=\"" + serverFolderPath.toOSString() + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
         vmArguments.append( " " ); //$NON-NLS-1$
@@ -313,17 +319,16 @@ public class ApacheDS200LdapServerAdapter implements LdapServerAdapter
     *      the server
     * @return
     *      the associated server configuration
+     * @throws Exception 
     * @throws ServerXmlIOException 
     * @throws FileNotFoundException 
     */
-    public static ServerConfigurationV157 getServerConfiguration( LdapServer server ) throws ServerXmlIOException,
-        FileNotFoundException
+    public static ConfigBean getServerConfiguration( LdapServer server ) throws Exception
     {
-        InputStream fis = new FileInputStream( LdapServersManager.getServerFolder( server ).append( "conf" )
-            .append( "server.xml" ).toFile() );
+        InputStream fis = new FileInputStream( LdapServersManager.getServerFolder( server ).append( CONF )
+            .append( CONFIG_LDIF ).toFile() );
 
-        ServerXmlIOV157 serverXmlIOV157 = new ServerXmlIOV157();
-        return ( ServerConfigurationV157 ) serverXmlIOV157.parse( fis );
+        return LoadConfigurationRunnable.readConfiguration( fis );
     }
 
 
@@ -334,46 +339,432 @@ public class ApacheDS200LdapServerAdapter implements LdapServerAdapter
      *      the 1.5.6 server configuration
      * @return
      *      the testing port
-     * @throws IOException 
+     * @throws Exception 
      * @throws ServerXmlIOException 
      */
-    private int getTestingPort( LdapServer server ) throws ServerXmlIOException, IOException
+    private int getTestingPort( LdapServer server ) throws Exception
     {
-        ServerConfigurationV157 configuration = getServerConfiguration( server );
+        ConfigBean configuration = getServerConfiguration( server );
 
         // LDAP
-        if ( configuration.isEnableLdap() )
+        if ( isEnableLdap( configuration ) )
         {
-            return configuration.getLdapPort();
+            return getLdapPort( configuration );
         }
         // LDAPS
-        else if ( configuration.isEnableLdaps() )
+        else if ( isEnableLdaps( configuration ) )
         {
-            return configuration.getLdapsPort();
+            return getLdapsPort( configuration );
         }
         // Kerberos
-        else if ( configuration.isEnableKerberos() )
+        else if ( isEnableKerberos( configuration ) )
         {
-            return configuration.getKerberosPort();
+            return getKerberosPort( configuration );
         }
         // DNS
-        else if ( configuration.isEnableDns() )
+        else if ( isEnableDns( configuration ) )
         {
-            return configuration.getDnsPort();
+            return getDnsPort( configuration );
         }
         // NTP
-        else if ( configuration.isEnableNtp() )
+        else if ( isEnableNtp( configuration ) )
         {
-            return configuration.getNtpPort();
+            return getNtpPort( configuration );
         }
         // ChangePassword
-        else if ( configuration.isEnableChangePassword() )
+        else if ( isEnableChangePassword( configuration ) )
         {
-            return configuration.getChangePasswordPort();
+            return getChangePasswordPort( configuration );
         }
         else
         {
             return 0;
         }
+    }
+
+
+    /**
+     * Indicates if the LDAP Server is enabled.
+     *
+     * @param configuration the configuration
+     * @return <code>true</code> if the LDAP Server is enabled,
+     *         <code>false</code> if not.
+     */
+    public static boolean isEnableLdap( ConfigBean configuration )
+    {
+        TransportBean ldapServerTransportBean = getLdapServerTransportBean( configuration );
+
+        if ( ldapServerTransportBean != null )
+        {
+            return ldapServerTransportBean.isEnabled();
+        }
+
+        return false;
+    }
+
+
+    /**
+     * Indicates if the LDAPS Server is enabled.
+     *
+     * @param configuration the configuration
+     * @return <code>true</code> if the LDAPS Server is enabled,
+     *         <code>false</code> if not.
+     */
+    public static boolean isEnableLdaps( ConfigBean configuration )
+    {
+        TransportBean ldapsServerTransportBean = getLdapsServerTransportBean( configuration );
+
+        if ( ldapsServerTransportBean != null )
+        {
+            return ldapsServerTransportBean.isEnabled();
+        }
+
+        return false;
+    }
+
+
+    /**
+     * Gets the LDAP Server transport bean.
+     *
+     * @param configuration the configuration
+     * @return the LDAP Server transport bean.
+     */
+    private static TransportBean getLdapServerTransportBean( ConfigBean configuration )
+    {
+        return getLdapServerTransportBean( configuration, "ldap" );
+    }
+
+
+    /**
+     * Gets the LDAPS Server transport bean.
+     *
+     * @param configuration the configuration
+     * @return the LDAPS Server transport bean.
+     */
+    private static TransportBean getLdapsServerTransportBean( ConfigBean configuration )
+    {
+        return getLdapServerTransportBean( configuration, "ldaps" );
+    }
+
+
+    /**
+     * Gets the corresponding LDAP Server transport bean.
+     *
+     * @param configuration the configuration
+     * @param id the id
+     * @return the corresponding LDAP Server transport bean.
+     */
+    private static TransportBean getLdapServerTransportBean( ConfigBean configuration, String id )
+    {
+        DirectoryServiceBean directoryServiceBean = configuration.getDirectoryServiceBean();
+
+        if ( directoryServiceBean != null )
+        {
+            LdapServerBean ldapServerBean = directoryServiceBean.getLdapServerBean();
+
+            if ( ldapServerBean != null )
+            {
+                // Looking for the transport in the list
+                TransportBean[] ldapServerTransportBeans = ldapServerBean.getTransports();
+                if ( ldapServerTransportBeans != null )
+                {
+                    for ( TransportBean ldapServerTransportBean : ldapServerTransportBeans )
+                    {
+                        if ( id.equals( ldapServerTransportBean.getTransportId() ) )
+                        {
+                            return ldapServerTransportBean;
+                        }
+                    }
+                }
+            }
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Indicates if the Kerberos Server is enabled.
+     *
+     * @param configuration the configuration
+     * @return <code>true</code> if the Kerberos Server is enabled,
+     *         <code>false</code> if not.
+     */
+    public static boolean isEnableKerberos( ConfigBean configuration )
+    {
+        DirectoryServiceBean directoryServiceBean = configuration.getDirectoryServiceBean();
+
+        if ( directoryServiceBean != null )
+        {
+            KdcServerBean kdcServerBean = directoryServiceBean.getKdcServerBean();
+
+            if ( kdcServerBean != null )
+            {
+                kdcServerBean.isEnabled();
+            }
+        }
+
+        return false;
+    }
+
+
+    /**
+     * Indicates if the DNS Server is enabled.
+     *
+     * @param configuration the configuration
+     * @return <code>true</code> if the DNS Server is enabled,
+     *         <code>false</code> if not.
+     */
+    public static boolean isEnableDns( ConfigBean configuration )
+    {
+        DirectoryServiceBean directoryServiceBean = configuration.getDirectoryServiceBean();
+
+        if ( directoryServiceBean != null )
+        {
+            DnsServerBean dnsServerBean = directoryServiceBean.getDnsServerBean();
+
+            if ( dnsServerBean != null )
+            {
+                dnsServerBean.isEnabled();
+            }
+        }
+
+        return false;
+    }
+
+
+    /**
+     * Indicates if the NTP Server is enabled.
+     *
+     * @param configuration the configuration
+     * @return <code>true</code> if the NTP Server is enabled,
+     *         <code>false</code> if not.
+     */
+    public static boolean isEnableNtp( ConfigBean configuration )
+    {
+        DirectoryServiceBean directoryServiceBean = configuration.getDirectoryServiceBean();
+
+        if ( directoryServiceBean != null )
+        {
+            NtpServerBean ntpServerBean = directoryServiceBean.getNtpServerBean();
+
+            if ( ntpServerBean != null )
+            {
+                ntpServerBean.isEnabled();
+            }
+        }
+
+        return false;
+    }
+
+
+    /**
+     * Indicates if the Change Password Server is enabled.
+     *
+     * @param configuration the configuration
+     * @return <code>true</code> if the Change Password Server is enabled,
+     *         <code>false</code> if not.
+     */
+    public static boolean isEnableChangePassword( ConfigBean configuration )
+    {
+        DirectoryServiceBean directoryServiceBean = configuration.getDirectoryServiceBean();
+
+        if ( directoryServiceBean != null )
+        {
+            ChangePasswordServerBean changePasswordServerBean = directoryServiceBean.getChangePasswordServerBean();
+
+            if ( changePasswordServerBean != null )
+            {
+                changePasswordServerBean.isEnabled();
+            }
+        }
+
+        return false;
+    }
+
+
+    /**
+     * Gets the LDAP port.
+     *
+     * @param configuration the configuration
+     * @return the LDAP port
+     */
+    public static int getLdapPort( ConfigBean configuration )
+    {
+        TransportBean ldapServerTransportBean = getLdapServerTransportBean( configuration );
+
+        if ( ldapServerTransportBean != null )
+        {
+            return ldapServerTransportBean.getSystemPort();
+        }
+
+        return 0;
+    }
+
+
+    /**
+     * Gets the LDAPS port.
+     *
+     * @param configuration the configuration
+     * @return the LDAPS port
+     */
+    public static int getLdapsPort( ConfigBean configuration )
+    {
+        TransportBean ldapsServerTransportBean = getLdapsServerTransportBean( configuration );
+
+        if ( ldapsServerTransportBean != null )
+        {
+            return ldapsServerTransportBean.getSystemPort();
+        }
+
+        return 0;
+    }
+
+
+    /**
+     * Gets the Kerberos port.
+     *
+     * @param configuration the configuration
+     * @return the Kerberos port
+     */
+    public static int getKerberosPort( ConfigBean configuration )
+    {
+        DirectoryServiceBean directoryServiceBean = configuration.getDirectoryServiceBean();
+
+        if ( directoryServiceBean != null )
+        {
+            KdcServerBean kdcServerBean = directoryServiceBean.getKdcServerBean();
+
+            if ( kdcServerBean != null )
+            {
+                // Looking for the transport in the list
+                TransportBean[] kdcServerTransportBeans = kdcServerBean.getTransports();
+
+                if ( kdcServerTransportBeans != null )
+                {
+                    for ( TransportBean kdcServerTransportBean : kdcServerTransportBeans )
+                    {
+                        if ( ( "tcp".equals( kdcServerTransportBean.getTransportId() ) )
+                            || ( "udp".equals( kdcServerTransportBean.getTransportId() ) ) )
+                        {
+                            return kdcServerTransportBean.getSystemPort();
+                        }
+                    }
+                }
+            }
+        }
+
+        return 0;
+    }
+
+
+    /**
+     * Gets the DNS port.
+     *
+     * @param configuration the configuration
+     * @return the DNS port
+     */
+    public static int getDnsPort( ConfigBean configuration )
+    {
+        DirectoryServiceBean directoryServiceBean = configuration.getDirectoryServiceBean();
+
+        if ( directoryServiceBean != null )
+        {
+            DnsServerBean dnsServerBean = directoryServiceBean.getDnsServerBean();
+
+            if ( dnsServerBean != null )
+            {
+                // Looking for the transport in the list
+                TransportBean[] dnsServerTransportBeans = dnsServerBean.getTransports();
+
+                if ( dnsServerTransportBeans != null )
+                {
+                    for ( TransportBean dnsServerTransportBean : dnsServerTransportBeans )
+                    {
+                        if ( ( "tcp".equals( dnsServerTransportBean.getTransportId() ) )
+                            || ( "udp".equals( dnsServerTransportBean.getTransportId() ) ) )
+                        {
+                            return dnsServerTransportBean.getSystemPort();
+                        }
+                    }
+                }
+            }
+        }
+
+        return 0;
+    }
+
+
+    /**
+     * Gets the NTP port.
+     *
+     * @param configuration the configuration
+     * @return the NTP port
+     */
+    public static int getNtpPort( ConfigBean configuration )
+    {
+        DirectoryServiceBean directoryServiceBean = configuration.getDirectoryServiceBean();
+
+        if ( directoryServiceBean != null )
+        {
+            NtpServerBean ntpServerBean = directoryServiceBean.getNtpServerBean();
+
+            if ( ntpServerBean != null )
+            {
+                // Looking for the transport in the list
+                TransportBean[] ntpServerTransportBeans = ntpServerBean.getTransports();
+
+                if ( ntpServerTransportBeans != null )
+                {
+                    for ( TransportBean ntpServerTransportBean : ntpServerTransportBeans )
+                    {
+                        if ( ( "tcp".equals( ntpServerTransportBean.getTransportId() ) )
+                            || ( "udp".equals( ntpServerTransportBean.getTransportId() ) ) )
+                        {
+                            return ntpServerTransportBean.getSystemPort();
+                        }
+                    }
+                }
+            }
+        }
+
+        return 0;
+    }
+
+
+    /**
+     * Gets the Change Password port.
+     *
+     * @param configuration the configuration
+     * @return the Change Password port
+     */
+    public static int getChangePasswordPort( ConfigBean configuration )
+    {
+        DirectoryServiceBean directoryServiceBean = configuration.getDirectoryServiceBean();
+
+        if ( directoryServiceBean != null )
+        {
+            ChangePasswordServerBean changePasswordServerBean = directoryServiceBean.getChangePasswordServerBean();
+
+            if ( changePasswordServerBean != null )
+            {
+                // Looking for the transport in the list
+                TransportBean[] changePasswordServerTransportBeans = changePasswordServerBean.getTransports();
+
+                if ( changePasswordServerTransportBeans != null )
+                {
+                    for ( TransportBean changePasswordServerTransportBean : changePasswordServerTransportBeans )
+                    {
+                        if ( ( "tcp".equals( changePasswordServerTransportBean.getTransportId() ) )
+                            || ( "udp".equals( changePasswordServerTransportBean.getTransportId() ) ) )
+                        {
+                            return changePasswordServerTransportBean.getSystemPort();
+                        }
+                    }
+                }
+            }
+        }
+
+        return 0;
     }
 }

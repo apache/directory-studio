@@ -21,7 +21,7 @@
 package org.apache.directory.studio.ldapservers.apacheds.v200;
 
 
-import org.apache.directory.studio.apacheds.configuration.model.v157.ServerConfigurationV157;
+import org.apache.directory.server.config.beans.ConfigBean;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.ConnectionParameter;
 import org.apache.directory.studio.connection.core.ConnectionParameter.AuthenticationMethod;
@@ -66,23 +66,23 @@ public class CreateConnectionAction implements IObjectActionDelegate
                 // Getting the server
                 LdapServer server = ( LdapServer ) selection.getFirstElement();
 
-                // Checking that the server is really an ApacheDS 1.5.7 server
+                // Checking that the server is really an ApacheDS 2.0.0 server
                 // TODO
                 if ( !EXTENSION_ID.equalsIgnoreCase( server.getLdapServerAdapterExtension().getId() ) )
                 {
                     String message = Messages.getString( "CreateConnectionAction.UnableReadServerConfiguration" ) //$NON-NLS-1$
                         + "\n\n" // TODO
-                        + Messages.getString( "CreateConnectionAction.NotA157Server" ); //$NON-NLS-1$
+                        + Messages.getString( "CreateConnectionAction.NotA200Server" ); //$NON-NLS-1$
 
                     reportErrorReadingServerConfiguration( view, message );
                     return;
                 }
 
-                // Parsing the 'server.xml' file
-                ServerConfigurationV157 serverConfiguration = null;
+                // Parsing the 'config.ldif' file
+                ConfigBean configuration = null;
                 try
                 {
-                    serverConfiguration = ApacheDS200LdapServerAdapter.getServerConfiguration( server );
+                    configuration = ApacheDS200LdapServerAdapter.getServerConfiguration( server );
                 }
                 catch ( Exception e )
                 {
@@ -95,7 +95,7 @@ public class CreateConnectionAction implements IObjectActionDelegate
                 }
 
                 // Checking if we could read the 'server.xml' file
-                if ( serverConfiguration == null )
+                if ( configuration == null )
                 {
                     reportErrorReadingServerConfiguration( view,
                         Messages.getString( "CreateConnectionAction.UnableReadServerConfiguration" ) ); //$NON-NLS-1$
@@ -103,10 +103,10 @@ public class CreateConnectionAction implements IObjectActionDelegate
                 }
 
                 // Checking is LDAP and/or LDAPS is/are enabled
-                if ( ( serverConfiguration.isEnableLdap() ) || ( serverConfiguration.isEnableLdaps() ) )
+                if ( ( ApacheDS200LdapServerAdapter.isEnableLdap( configuration ) ) || ( ApacheDS200LdapServerAdapter.isEnableLdaps( configuration ) ) )
                 {
                     // Creating the connection using the helper class
-                    createConnection( server, serverConfiguration );
+                    createConnection( server, configuration );
                 }
                 else
                 {
@@ -145,7 +145,7 @@ public class CreateConnectionAction implements IObjectActionDelegate
     /**
      * Creates the connection
      */
-    private void createConnection( LdapServer server, ServerConfigurationV157 configuration )
+    private void createConnection( LdapServer server, ConfigBean configuration )
     {
         // Creating the connection parameter object
         ConnectionParameter connectionParameter = new ConnectionParameter();
@@ -154,15 +154,15 @@ public class CreateConnectionAction implements IObjectActionDelegate
         connectionParameter.setAuthMethod( AuthenticationMethod.SIMPLE );
 
         // LDAP or LDAPS?
-        if ( configuration.isEnableLdap() )
+        if ( ApacheDS200LdapServerAdapter.isEnableLdap( configuration ) )
         {
             connectionParameter.setEncryptionMethod( EncryptionMethod.NONE );
-            connectionParameter.setPort( configuration.getLdapPort() );
+            connectionParameter.setPort( ApacheDS200LdapServerAdapter.getLdapPort( configuration ) );
         }
-        else if ( configuration.isEnableLdaps() )
+        else if ( ApacheDS200LdapServerAdapter.isEnableLdaps( configuration ) )
         {
             connectionParameter.setEncryptionMethod( EncryptionMethod.LDAPS );
-            connectionParameter.setPort( configuration.getLdapsPort() );
+            connectionParameter.setPort( ApacheDS200LdapServerAdapter.getLdapsPort( configuration ) );
         }
 
         // Bind password
@@ -176,13 +176,14 @@ public class CreateConnectionAction implements IObjectActionDelegate
 
         // Name
         connectionParameter.setName( server.getName() );
-        
+
         // Network Provider
         connectionParameter.setNetworkProvider( NetworkProvider.JNDI );
 
         // Creating the connection
         CreateConnectionActionHelper.createLdapBrowserConnection( server, new Connection( connectionParameter ) );
     }
+
 
 
     /**
