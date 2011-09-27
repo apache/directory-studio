@@ -158,8 +158,8 @@ public class ApacheDS200Plugin extends AbstractUIPlugin
                 // We can't use the PLUGIN_ID constant since loading the plugin.properties file has failed,
                 // So we're using a default plugin id.
                 getLog().log(
-                    new Status( Status.ERROR, "org.apache.directory.studio.ldapservers.apacheds.v157", Status.OK, //$NON-NLS-1$
-                        Messages.getString( "ApacheDS157Plugin.UnableGetPluginProperties" ), e ) ); //$NON-NLS-1$
+                    new Status( Status.ERROR, "org.apache.directory.studio.ldapservers.apacheds.v200", Status.OK, //$NON-NLS-1$
+                        Messages.getString( "ApacheDS200Plugin.UnableGetPluginProperties" ), e ) ); //$NON-NLS-1$
             }
         }
 
