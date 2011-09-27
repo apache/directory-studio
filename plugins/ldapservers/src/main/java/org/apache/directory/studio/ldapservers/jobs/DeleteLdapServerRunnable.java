@@ -27,6 +27,7 @@ import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.common.core.jobs.StudioRunnableWithProgress;
 import org.apache.directory.studio.ldapservers.LdapServersManager;
 import org.apache.directory.studio.ldapservers.model.LdapServer;
+import org.apache.directory.studio.ldapservers.model.LdapServerAdapter;
 import org.apache.directory.studio.ldapservers.model.LdapServerStatus;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.osgi.util.NLS;
@@ -113,7 +114,11 @@ public class DeleteLdapServerRunnable implements StudioRunnableWithProgress
             deleteDirectory( LdapServersManager.getServerFolder( server ).toFile() );
 
             // Letting the LDAP Server Adapter finish the deletion of the server
-            server.getLdapServerAdapterExtension().getInstance().delete( server, monitor );
+            LdapServerAdapter ldapServerAdapter = server.getLdapServerAdapterExtension().getInstance();
+            if ( ldapServerAdapter != null )
+            {
+                ldapServerAdapter.delete( server, monitor );
+            }
         }
         catch ( InterruptedException e )
         {
