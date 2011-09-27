@@ -68,7 +68,17 @@ public class LdapServerAdapterExtensionsLabelProvider extends LabelProvider
         {
             LdapServerAdapterExtension extension = ( LdapServerAdapterExtension ) element;
 
-            return extension.getName() + " " + extension.getVersion(); //$NON-NLS-1$
+            String version = extension.getVersion();
+
+            if ( ( version != null ) && ( !version.equals( "" ) ) ) //$NON-NLS-1$
+            {
+
+                return extension.getName() + " " + version; //$NON-NLS-1$
+            }
+            else
+            {
+                return extension.getName();
+            }
         }
 
         return super.getText( element );
