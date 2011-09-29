@@ -68,6 +68,18 @@
             </instanceof>
          </enabledWhen>
       </page>
+      <page
+            class="org.apache.directory.studio.ldapservers.properties.ServerPropertyConfigurationPage"
+            id="org.apache.directory.studio.ldapservers.properties.ServerPropertyConfigurationPage"
+            category="org.apache.directory.studio.ldapservers.properties.ServerPropertyPage"
+            name="Configuration">
+         <enabledWhen>
+            <instanceof
+                  value="org.apache.directory.studio.ldapservers.model.LdapServer">
+            </instanceof>
+         </enabledWhen>
+            <filter name="hasConfigurationPage" value="true"/> 
+      </page>
    </extension>
    
    <extension

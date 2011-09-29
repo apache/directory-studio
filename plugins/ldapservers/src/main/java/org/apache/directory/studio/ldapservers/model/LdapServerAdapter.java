@@ -21,7 +21,11 @@
 package org.apache.directory.studio.ldapservers.model;
 
 
+import java.util.List;
+
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
+import org.eclipse.jface.wizard.IWizardPage;
+import org.eclipse.jface.wizard.WizardPage;
 
 
 /**

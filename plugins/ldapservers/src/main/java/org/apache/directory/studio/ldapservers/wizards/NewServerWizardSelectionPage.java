@@ -46,11 +46,11 @@ import org.eclipse.swt.widgets.Tree;
 
 
 /**
- * This class implements the wizard page for the new server wizard.
+ * This class implements the wizard page for the new server wizard selection page.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class NewServerWizardPage extends WizardPage
+public class NewServerWizardSelectionPage extends WizardPage
 {
     /** The servers handler */
     private LdapServersManager ldapServersManager;
@@ -69,11 +69,11 @@ public class NewServerWizardPage extends WizardPage
 
 
     /**
-     * Creates a new instance of NewServerWizardPage.
+     * Creates a new instance of NewServerWizardSelectionPage.
      */
-    public NewServerWizardPage()
+    public NewServerWizardSelectionPage()
     {
-        super( NewServerWizardPage.class.getCanonicalName() );
+        super( NewServerWizardSelectionPage.class.getCanonicalName() );
         setTitle( "Create an LDAP Server" );
         setDescription( "Please choose the type of server and specify a name to create a new server." );
         setImageDescriptor( LdapServersPlugin.getDefault().getImageDescriptor(
@@ -104,7 +104,7 @@ public class NewServerWizardPage extends WizardPage
         // LDAP Server Adapters Tree Viewer
         ldapServerAdaptersTreeViewer = new TreeViewer( new Tree( composite, SWT.SINGLE | SWT.H_SCROLL | SWT.V_SCROLL
             | SWT.BORDER ) );
-        GridData gd = new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 );
+        GridData gd = new GridData( SWT.FILL, SWT.FILL, true, true, 2, 1 );
         gd.heightHint = 90;
         ldapServerAdaptersTreeViewer.getTree().setLayoutData( gd );
         contentProvider = new LdapServerAdapterExtensionsContentProvider();
@@ -197,6 +197,8 @@ public class NewServerWizardPage extends WizardPage
                 // Assigning an automatic name to the LDAP Server based on the selected LDAP Server Adapter Extension
                 serverNameText.setText( getServerName( ( StructuredSelection ) ldapServerAdaptersTreeViewer
                     .getSelection() ) );
+                
+//                getContainer().updateButtons();
 
                 validate();
             }

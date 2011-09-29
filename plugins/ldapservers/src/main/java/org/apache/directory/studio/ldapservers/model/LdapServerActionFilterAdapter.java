@@ -44,6 +44,7 @@ public class LdapServerActionFilterAdapter implements IActionFilter
     private static final Object EXTENSION_NAME = "extensionName";
     private static final Object EXTENSION_VERSION = "extensionVersion";
     private static final Object EXTENSION_VENDOR = "extensionVendor";
+    private static final Object HAS_CONFIGURATION_PAGE = "hasConfigurationPage";
 
     /** The class instance */
     private static LdapServerActionFilterAdapter INSTANCE = new LdapServerActionFilterAdapter();
@@ -137,6 +138,17 @@ public class LdapServerActionFilterAdapter implements IActionFilter
                 {
                     return value.equals( server.getLdapServerAdapterExtension().getVendor() );
                 }
+            }
+            // HAS CONFIGURATION PAGE
+            else if ( HAS_CONFIGURATION_PAGE.equals( name ) )
+            {
+                String configurationPageClassName = server.getLdapServerAdapterExtension()
+                    .getConfigurationPageClassName();
+
+                boolean hasConfigurationPage = ( ( configurationPageClassName != null ) && ( !""
+                    .equals( configurationPageClassName ) ) );
+
+                return value.equalsIgnoreCase( hasConfigurationPage ? "true" : "false" );
             }
         }
 

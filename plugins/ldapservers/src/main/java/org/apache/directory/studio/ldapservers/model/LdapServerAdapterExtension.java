@@ -21,6 +21,9 @@
 package org.apache.directory.studio.ldapservers.model;
 
 
+import org.apache.directory.studio.ldapservers.LdapServerAdapterExtensionsManager;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.jface.resource.ImageDescriptor;
 
 
@@ -32,6 +35,9 @@ import org.eclipse.jface.resource.ImageDescriptor;
  */
 public class LdapServerAdapterExtension
 {
+    /** The extension point configuration */
+    private IConfigurationElement extensionPointConfiguration;
+
     /** The ID */
     private String id;
 
@@ -56,6 +62,9 @@ public class LdapServerAdapterExtension
     /** The icon */
     private ImageDescriptor icon;
 
+    /** The configuration page class name */
+    private String configurationPageClassName;
+
 
     /**
      * Gets the class name.
@@ -70,6 +79,38 @@ public class LdapServerAdapterExtension
 
 
     /**
+     * Gets the configuration page class name.
+     *
+     * @return
+     *      the configuration page class name
+     */
+    public String getConfigurationPageClassName()
+    {
+        return configurationPageClassName;
+    }
+
+
+    /**
+     * Gets a new configuration page instance.
+     *
+     * @return
+     *      a new configuration page instance
+     */
+    public LdapServerAdapterConfigurationPage getNewConfigurationPageInstance()
+    {
+        try
+        {
+            return ( LdapServerAdapterConfigurationPage ) extensionPointConfiguration
+                .createExecutableExtension( LdapServerAdapterExtensionsManager.CONFIGURATION_PAGE_ATTR );
+        }
+        catch ( CoreException e )
+        {
+            return null;
+        }
+    }
+
+
+    /**
      * Gets the description.
      *
      * @return
@@ -78,6 +119,18 @@ public class LdapServerAdapterExtension
     public String getDescription()
     {
         return description;
+    }
+
+
+    /**
+     * Gets the extension point configuration.
+     *
+     * @return
+     *      the extension point configuration
+     */
+    public IConfigurationElement getExtensionPointConfiguration()
+    {
+        return extensionPointConfiguration;
     }
 
 
@@ -166,6 +219,18 @@ public class LdapServerAdapterExtension
 
 
     /**
+     * Sets the configuration page class name.
+     *
+     * @param configurationPageClassName
+     *      the configuration page class name
+     */
+    public void setConfigurationPageClassName( String configurationPageClassName )
+    {
+        this.configurationPageClassName = configurationPageClassName;
+    }
+
+
+    /**
      * Sets the description.
      *
      * @param description
@@ -174,6 +239,18 @@ public class LdapServerAdapterExtension
     public void setDescription( String description )
     {
         this.description = description;
+    }
+
+
+    /**
+     * Sets the extension point configuration.
+     *
+     * @param IConfigurationElement
+     *      the extension point configuration
+     */
+    public void setExtensionPointConfiguration( IConfigurationElement extensionPointConfiguration )
+    {
+        this.extensionPointConfiguration = extensionPointConfiguration;
     }
 
 

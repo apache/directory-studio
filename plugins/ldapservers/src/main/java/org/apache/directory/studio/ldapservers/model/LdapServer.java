@@ -57,6 +57,9 @@ public class LdapServer implements IAdaptable
     /** The Map for custom objects */
     private Map<String, Object> customObjectsMap = new HashMap<String, Object>();
 
+    /** The Map for configuration parameters  */
+    private Map<String, Object> configurationParameters = new HashMap<String, Object>();
+
 
     /**
      * Creates a new instance of LDAP Server.
@@ -128,6 +131,33 @@ public class LdapServer implements IAdaptable
 
 
     /**
+     * Returns the value to which the specified key is mapped, 
+     * or null if no mapping for the key is found.
+     *
+     * @param key
+     *      the key
+     * @return
+     *      the value to which the specified key is mapped, 
+     *      or null if no mapping for the key is found.
+     */
+    public Object getConfigurationParameter( String key )
+    {
+        return configurationParameters.get( key );
+    }
+
+
+    /**
+     * Gets the configuration parameters.
+     * 
+     * @return the configuration parameters
+     */
+    public Map<String, Object> getConfigurationParameters()
+    {
+        return configurationParameters;
+    }
+
+
+    /**
      * Gets the id of the server.
      *
      * @return
@@ -190,6 +220,20 @@ public class LdapServer implements IAdaptable
 
 
     /**
+     * Associates the specified value with the specified key.
+     *
+     * @param key
+     *      the key
+     * @param value
+     *      the value
+     */
+    public void putConfigurationParameter( String key, Object value )
+    {
+        configurationParameters.put( key, value );
+    }
+
+
+    /**
      * Removes the value to which the specified key is mapped.
      * <p>
      * Returns the value previously associated the key,
@@ -201,6 +245,21 @@ public class LdapServer implements IAdaptable
     public Object removeCustomObject( String key )
     {
         return customObjectsMap.remove( key );
+    }
+
+
+    /**
+     * Removes the value to which the specified key is mapped.
+     * <p>
+     * Returns the value previously associated the key,
+     * or null if there was no mapping for the key.
+     *
+     * @param key
+     * @return
+     */
+    public Object removeConfigurationParameter( String key )
+    {
+        return configurationParameters.remove( key );
     }
 
 
@@ -311,5 +370,4 @@ public class LdapServer implements IAdaptable
 
         return null;
     }
-
 }

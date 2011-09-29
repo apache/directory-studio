@@ -26,6 +26,9 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 
 import org.apache.directory.studio.ldapservers.model.LdapServer;
 import org.apache.directory.studio.ldapservers.model.LdapServerAdapterExtension;
@@ -56,6 +59,11 @@ public class LdapServersManagerIO
     private static final String ADAPTER_NAME_ATTRIBUTE = "adapterName"; //$NON-NLS-1$
     private static final String ADAPTER_VENDOR_ATTRIBUTE = "adapterVendor"; //$NON-NLS-1$
     private static final String ADAPTER_VERSION_ATTRIBUTE = "adapterVersion"; //$NON-NLS-1$
+    private static final String CONFIGURATION_PARAMETERS_TAG = "configurationParameters"; //$NON-NLS-1$
+    private static final String ENTRY_TAG = "entry"; //$NON-NLS-1$
+    private static final String KEY_ATTRIBUTE = "key"; //$NON-NLS-1$
+    private static final String TYPE_ATTRIBUTE = "type"; //$NON-NLS-1$
+    private static final String VALUE_ATTRIBUTE = "value"; //$NON-NLS-1$
 
 
     /**
@@ -180,7 +188,67 @@ public class LdapServersManagerIO
             // TODO No Adapter ID, throw an error ?
         }
 
+        // Configuration Parameters
+        Element configurationParametersElement = element.element( CONFIGURATION_PARAMETERS_TAG );
+        if ( configurationParametersElement != null )
+        {
+            for ( Iterator<?> i = configurationParametersElement.elementIterator( ENTRY_TAG ); i.hasNext(); )
+            {
+                readConfigurationParameter( server, ( Element ) i.next() );
+            }
+        }
+
         return server;
+    }
+
+
+    /**
+     * Reads a configuration parameter.
+     *
+     * @param server the server
+     * @param element the element
+     */
+    private static void readConfigurationParameter( LdapServer server, Element element )
+    {
+        // Key
+        Attribute keyAttribute = element.attribute( KEY_ATTRIBUTE );
+        String key = null;
+        if ( keyAttribute != null )
+        {
+            key = keyAttribute.getValue();
+
+            // Value
+            Attribute valueAttribute = element.attribute( VALUE_ATTRIBUTE );
+            String value = null;
+            if ( valueAttribute != null )
+            {
+                value = valueAttribute.getValue();
+            }
+
+            // Type
+            Attribute typeAttribute = element.attribute( TYPE_ATTRIBUTE );
+            String type = null;
+            if ( typeAttribute != null )
+            {
+                type = typeAttribute.getValue();
+            }
+
+            // Integer value
+            if ( ( type != null ) && ( type.equalsIgnoreCase( Integer.class.getCanonicalName() ) ) )
+            {
+                server.putConfigurationParameter( key, Integer.parseInt( value ) );
+            }
+            // Boolean value
+            else if ( ( type != null ) && ( type.equalsIgnoreCase( Boolean.class.getCanonicalName() ) ) )
+            {
+                server.putConfigurationParameter( key, Boolean.parseBoolean( value ) );
+            }
+            // String value (default type)
+            else
+            {
+                server.putConfigurationParameter( key, value );
+            }
+        }
     }
 
 
@@ -249,5 +317,47 @@ public class LdapServersManagerIO
 
         // Adapter Version
         serverElement.addAttribute( ADAPTER_VERSION_ATTRIBUTE, server.getLdapServerAdapterExtension().getVersion() );
+
+        // Configuration Parameters
+        Map<String, Object> configurationParametersMap = server.getConfigurationParameters();
+        if ( ( configurationParametersMap != null ) && ( configurationParametersMap.size() > 0 ) )
+        {
+            addConfigurationParameters( configurationParametersMap, serverElement );
+        }
+    }
+
+
+    /**
+     * Adds the XML representation of the configuration elements to the given parent. 
+     *
+     * @param map the configuration elements map
+     * @param element the parent element
+     */
+    private static void addConfigurationParameters( Map<String, Object> map, Element parent )
+    {
+        // Configuration Parameters element
+        Element configurationParametersElement = parent.addElement( CONFIGURATION_PARAMETERS_TAG );
+
+        // Get the keys of the map
+        Set<Entry<String, Object>> entriesSet = map.entrySet();
+
+        for ( Entry<String, Object> entry : entriesSet )
+        {
+            // Entry element
+            Element entryElement = configurationParametersElement.addElement( ENTRY_TAG );
+
+            // Key
+            entryElement.addAttribute( KEY_ATTRIBUTE, entry.getKey() );
+
+            // Value
+            Object value = entry.getValue();
+            entryElement.addAttribute( VALUE_ATTRIBUTE, value.toString() );
+
+            // Type
+            if ( value.getClass() != String.class )
+            {
+                entryElement.addAttribute( TYPE_ATTRIBUTE, value.getClass().getCanonicalName() );
+            }
+        }
     }
 }

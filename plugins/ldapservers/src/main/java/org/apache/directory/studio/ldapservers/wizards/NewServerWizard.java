@@ -20,13 +20,20 @@
 package org.apache.directory.studio.ldapservers.wizards;
 
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
+import org.apache.directory.studio.ldapservers.LdapServerAdapterExtensionsManager;
 import org.apache.directory.studio.ldapservers.LdapServersManager;
 import org.apache.directory.studio.ldapservers.model.LdapServer;
+import org.apache.directory.studio.ldapservers.model.LdapServerAdapterConfigurationPage;
 import org.apache.directory.studio.ldapservers.model.LdapServerAdapterExtension;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
@@ -40,7 +47,9 @@ import org.eclipse.ui.IWorkbench;
 public class NewServerWizard extends Wizard implements INewWizard
 {
     /** The wizard page */
-    private NewServerWizardPage page;
+    private NewServerWizardSelectionPage adapterSelectionPage;
+
+    private Map<String, NewServerWizardConfigurationPage> configurationPages = new HashMap<String, NewServerWizardConfigurationPage>();
 
 
     /**
@@ -48,8 +57,31 @@ public class NewServerWizard extends Wizard implements INewWizard
      */
     public void addPages()
     {
-        page = new NewServerWizardPage();
-        addPage( page );
+        adapterSelectionPage = new NewServerWizardSelectionPage();
+        addPage( adapterSelectionPage );
+
+        List<LdapServerAdapterExtension> ldapServerAdapterExtensions = LdapServerAdapterExtensionsManager.getDefault()
+            .getLdapServerAdapterExtensions();
+        for ( LdapServerAdapterExtension ldapServerAdapterExtension : ldapServerAdapterExtensions )
+        {
+            String configurationPageClassName = ldapServerAdapterExtension.getConfigurationPageClassName();
+            if ( ( configurationPageClassName != null ) && ( !"".equals( configurationPageClassName ) ) )
+            {
+                try
+                {
+                    LdapServerAdapterConfigurationPage configurationPage = ldapServerAdapterExtension
+                        .getNewConfigurationPageInstance();
+                    NewServerWizardConfigurationPage configurationWizardPage = new NewServerWizardConfigurationPage(
+                        configurationPage );
+                    configurationPages.put( ldapServerAdapterExtension.getId(), configurationWizardPage );
+                    addPage( configurationWizardPage );
+                }
+                catch ( Exception e )
+                {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 
 
@@ -59,9 +91,23 @@ public class NewServerWizard extends Wizard implements INewWizard
     public boolean performFinish()
     {
         // Getting server name and adapter extension
-        final String serverName = page.getServerName();
-        final LdapServerAdapterExtension adapterExtension = page.getLdapServerAdapterExtension();
+        final String serverName = adapterSelectionPage.getServerName();
+        final LdapServerAdapterExtension adapterExtension = adapterSelectionPage.getLdapServerAdapterExtension();
 
+        // Getting the configuration page (in any
+        NewServerWizardConfigurationPage configurationPage = getConfigurationPage();
+        
+        // Creating the new server
+        final LdapServer server = new LdapServer();
+        server.setName( serverName );
+        server.setLdapServerAdapterExtension( adapterExtension );
+        
+        // Saving the configuration page (is any)
+        if ( configurationPage != null )
+        {
+            configurationPage.saveConfiguration( server );
+        }
+        
         try
         {
             getContainer().run( true, false, new IRunnableWithProgress()
@@ -74,11 +120,6 @@ public class NewServerWizard extends Wizard implements INewWizard
                     // Setting the title
                     spm.beginTask( "Creating LDAP Server: ", IProgressMonitor.UNKNOWN );
                     spm.subTask( "creating server folder" );
-
-                    // Creating the new server
-                    LdapServer server = new LdapServer();
-                    server.setName( serverName );
-                    server.setLdapServerAdapterExtension( adapterExtension );
 
                     // Adding the new server to the servers handler
                     LdapServersManager.getDefault().addServer( server );
@@ -117,5 +158,70 @@ public class NewServerWizard extends Wizard implements INewWizard
     public void init( IWorkbench workbench, IStructuredSelection selection )
     {
         setNeedsProgressMonitor( true );
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public IWizardPage getNextPage( IWizardPage page )
+    {
+        IWizardPage configurationPage = getConfigurationPage();
+
+        if ( adapterSelectionPage.equals( page ) )
+        {
+            return configurationPage;
+        }
+
+        return null;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public boolean canFinish()
+    {
+        if ( adapterSelectionPage.isPageComplete() )
+        {
+            IWizardPage configurationPage = getConfigurationPage();
+
+            if ( configurationPage != null )
+            {
+                return configurationPage.isPageComplete();
+            }
+            else
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+
+    /**
+     * Gets the configuration page corresponding to the currently
+     * selected LDAP Server Adapter Extension.
+     *
+     * @return the configuration page corresponding to the currently
+     * selected LDAP Server Adapter Extension.
+     */
+    private NewServerWizardConfigurationPage getConfigurationPage()
+    {
+        LdapServerAdapterExtension ldapServerAdapterExtension = adapterSelectionPage
+            .getLdapServerAdapterExtension();
+
+        if ( ldapServerAdapterExtension != null )
+        {
+            String configurationPageClassName = ldapServerAdapterExtension.getConfigurationPageClassName();
+
+            if ( ( configurationPageClassName != null ) && ( !"".equals( configurationPageClassName ) ) )
+            {
+                return configurationPages.get( ldapServerAdapterExtension.getId() );
+            }
+        }
+
+        return null;
     }
 }
