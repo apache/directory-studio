@@ -90,16 +90,6 @@ public class StopLdapServerRunnable implements StudioRunnableWithProgress
     {
         // Setting the status on the server to 'stopping'
         server.setStatus( LdapServerStatus.STOPPING );
-        
-        try
-        {
-            Thread.sleep( 10000 );
-        }
-        catch ( InterruptedException e1 )
-        {
-            // TODO Auto-generated catch block
-            e1.printStackTrace();
-        }
 
         // Starting a new watchdog thread
         StopLdapServerWatchDogThread.runNewWatchDogThread( server );
