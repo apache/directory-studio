@@ -65,7 +65,7 @@ public class NewServerWizard extends Wizard implements INewWizard
         for ( LdapServerAdapterExtension ldapServerAdapterExtension : ldapServerAdapterExtensions )
         {
             String configurationPageClassName = ldapServerAdapterExtension.getConfigurationPageClassName();
-            if ( ( configurationPageClassName != null ) && ( !"".equals( configurationPageClassName ) ) )
+            if ( ( configurationPageClassName != null ) && ( !"".equals( configurationPageClassName ) ) ) //$NON-NLS-1$
             {
                 try
                 {
@@ -96,18 +96,18 @@ public class NewServerWizard extends Wizard implements INewWizard
 
         // Getting the configuration page (in any
         NewServerWizardConfigurationPage configurationPage = getConfigurationPage();
-        
+
         // Creating the new server
         final LdapServer server = new LdapServer();
         server.setName( serverName );
         server.setLdapServerAdapterExtension( adapterExtension );
-        
+
         // Saving the configuration page (is any)
         if ( configurationPage != null )
         {
             configurationPage.saveConfiguration( server );
         }
-        
+
         try
         {
             getContainer().run( true, false, new IRunnableWithProgress()
@@ -118,8 +118,8 @@ public class NewServerWizard extends Wizard implements INewWizard
                     StudioProgressMonitor spm = new StudioProgressMonitor( monitor );
 
                     // Setting the title
-                    spm.beginTask( "Creating LDAP Server: ", IProgressMonitor.UNKNOWN );
-                    spm.subTask( "creating server folder" );
+                    spm.beginTask( Messages.getString("NewServerWizard.CreatingLdapServer"), IProgressMonitor.UNKNOWN ); //$NON-NLS-1$
+                    spm.subTask( Messages.getString("NewServerWizard.CreatingServerFolder") ); //$NON-NLS-1$
 
                     // Adding the new server to the servers handler
                     LdapServersManager.getDefault().addServer( server );
@@ -157,6 +157,7 @@ public class NewServerWizard extends Wizard implements INewWizard
      */
     public void init( IWorkbench workbench, IStructuredSelection selection )
     {
+        setWindowTitle( Messages.getString( "NewServerWizard.NewLdapServer" ) ); //$NON-NLS-1$
         setNeedsProgressMonitor( true );
     }
 
@@ -216,7 +217,7 @@ public class NewServerWizard extends Wizard implements INewWizard
         {
             String configurationPageClassName = ldapServerAdapterExtension.getConfigurationPageClassName();
 
-            if ( ( configurationPageClassName != null ) && ( !"".equals( configurationPageClassName ) ) )
+            if ( ( configurationPageClassName != null ) && ( !"".equals( configurationPageClassName ) ) ) //$NON-NLS-1$
             {
                 return configurationPages.get( ldapServerAdapterExtension.getId() );
             }

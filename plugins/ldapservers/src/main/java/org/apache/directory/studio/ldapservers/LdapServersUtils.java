@@ -152,14 +152,10 @@ public class LdapServersUtils
         // Creating the thread
         Thread thread = new Thread()
         {
-            /** The debug event listener */
-            private IDebugEventSetListener debugEventSetListener;
-
-
             public void run()
             {
-                // Creating the listener
-                debugEventSetListener = new IDebugEventSetListener()
+                // Adding the listener
+                DebugPlugin.getDefault().addDebugEventListener( new IDebugEventSetListener()
                 {
                     public void handleDebugEvents( DebugEvent[] events )
                     {
@@ -185,7 +181,7 @@ public class LdapServersUtils
                                         server.setStatus( LdapServerStatus.STOPPED );
 
                                         // Removing the listener
-                                        DebugPlugin.getDefault().removeDebugEventListener( debugEventSetListener );
+                                        DebugPlugin.getDefault().removeDebugEventListener( this );
 
                                         // ... and we exit the thread
                                         return;
@@ -194,10 +190,7 @@ public class LdapServersUtils
                             }
                         }
                     }
-                };
-
-                // Adding the listener
-                DebugPlugin.getDefault().addDebugEventListener( debugEventSetListener );
+                } );
             }
         };
 
@@ -214,9 +207,23 @@ public class LdapServersUtils
      */
     public static void startConsolePrinterThread( LdapServer server )
     {
+        startConsolePrinterThread( server, LdapServersManager.getServerFolder( server )
+            .append( "log" ) //$NON-NLS-1$
+            .append( "apacheds.log" ).toFile() );//$NON-NLS-1$
+    }
+
+
+    /**
+     * Starts the console printer thread.
+     *
+     * @param server
+     *      the server
+     */
+    public static void startConsolePrinterThread( LdapServer server, File serverLogsFile )
+    {
         MessageConsole messageConsole = ConsolesManager.getDefault().getMessageConsole( server );
-        ConsolePrinterThread consolePrinter = new ConsolePrinterThread( LdapServersManager.getServerFolder( server ).append( "log" ) //$NON-NLS-1$
-            .append( "apacheds.log" ).toFile(), messageConsole.newMessageStream() ); //$NON-NLS-1$
+        ConsolePrinterThread consolePrinter = new ConsolePrinterThread( serverLogsFile,
+            messageConsole.newMessageStream() );
         consolePrinter.start();
 
         // Storing the console printer as a custom object in the LDAP Server for later use
@@ -233,7 +240,8 @@ public class LdapServersUtils
     public static void stopConsolePrinterThread( LdapServer server )
     {
         // Getting the console printer
-        ConsolePrinterThread consolePrinter = ( ConsolePrinterThread ) server.removeCustomObject( CONSOLE_PRINTER_CUSTOM_OBJECT );
+        ConsolePrinterThread consolePrinter = ( ConsolePrinterThread ) server
+            .removeCustomObject( CONSOLE_PRINTER_CUSTOM_OBJECT );
         if ( ( consolePrinter != null ) && ( consolePrinter.isAlive() ) )
         {
             // Closing the console printer
@@ -243,7 +251,7 @@ public class LdapServersUtils
 
 
     /**
-     * Launches Apache DS using a launch configuration.
+     * Launches ApacheDS using a launch configuration.
      *
      * @param server
      *      the server
@@ -263,8 +271,9 @@ public class LdapServersUtils
         // Creating a new editable launch configuration
         ILaunchConfigurationType type = DebugPlugin.getDefault().getLaunchManager()
             .getLaunchConfigurationType( IJavaLaunchConfigurationConstants.ID_JAVA_APPLICATION );
-        ILaunchConfigurationWorkingCopy workingCopy = type.newInstance( null, NLS.bind( "Starting {0}", new String[]
-            { server.getName() } ) );
+        ILaunchConfigurationWorkingCopy workingCopy = type.newInstance( null,
+            NLS.bind( Messages.getString( "LdapServersUtils.Starting" ), new String[] //$NON-NLS-1$
+                { server.getName() } ) );
 
         // Setting the JRE container path attribute
         workingCopy.setAttribute( IJavaLaunchConfigurationConstants.ATTR_JRE_CONTAINER_PATH, vmInstall
