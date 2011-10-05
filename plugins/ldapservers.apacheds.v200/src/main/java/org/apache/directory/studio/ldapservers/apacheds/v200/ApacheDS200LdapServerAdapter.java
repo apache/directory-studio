@@ -44,6 +44,7 @@ import org.apache.directory.studio.ldapservers.LdapServersManager;
 import org.apache.directory.studio.ldapservers.LdapServersUtils;
 import org.apache.directory.studio.ldapservers.model.LdapServer;
 import org.apache.directory.studio.ldapservers.model.LdapServerAdapter;
+import org.apache.mina.util.AvailablePortFinder;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
@@ -766,5 +767,93 @@ public class ApacheDS200LdapServerAdapter implements LdapServerAdapter
         }
 
         return 0;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public String[] checkPortsBeforeServerStart( LdapServer server )
+    {
+        List<String> alreadyInUseProtocolPortsList = new ArrayList<String>();
+
+        try
+        {
+            ConfigBean configuration = getServerConfiguration( server );
+
+            // LDAP
+            if ( isEnableLdap( configuration ) )
+            {
+                if ( !AvailablePortFinder.available( getLdapPort( configuration ) ) )
+                {
+                    alreadyInUseProtocolPortsList
+                        .add( NLS.bind(
+                            Messages.getString( "ApacheDS200LdapServerAdapter.LDAPPort" ), new Object[] { getLdapPort( configuration ) } ) ); //$NON-NLS-1$
+                }
+            }
+
+            // LDAPS
+            if ( isEnableLdaps( configuration ) )
+            {
+                if ( !AvailablePortFinder.available( getLdapsPort( configuration ) ) )
+                {
+                    alreadyInUseProtocolPortsList
+                        .add( NLS.bind(
+                            Messages.getString( "ApacheDS200LdapServerAdapter.LDAPSPort" ), new Object[] { getLdapsPort( configuration ) } ) ); //$NON-NLS-1$
+                }
+            }
+
+            // Kerberos
+            if ( isEnableKerberos( configuration ) )
+            {
+                if ( !AvailablePortFinder.available( getKerberosPort( configuration ) ) )
+                {
+                    alreadyInUseProtocolPortsList
+                        .add( NLS
+                            .bind(
+                                Messages.getString( "ApacheDS200LdapServerAdapter.KerberosPort" ), new Object[] { getKerberosPort( configuration ) } ) ); //$NON-NLS-1$
+                }
+            }
+
+            // DNS
+            if ( isEnableDns( configuration ) )
+            {
+                if ( !AvailablePortFinder.available( getDnsPort( configuration ) ) )
+                {
+                    alreadyInUseProtocolPortsList
+                        .add( NLS.bind(
+                            Messages.getString( "ApacheDS200LdapServerAdapter.DNSPort" ), new Object[] { getDnsPort( configuration ) } ) ); //$NON-NLS-1$
+                }
+            }
+
+            // NTP
+            if ( isEnableNtp( configuration ) )
+            {
+                if ( !AvailablePortFinder.available( getNtpPort( configuration ) ) )
+                {
+                    alreadyInUseProtocolPortsList.add( NLS.bind(
+                        Messages.getString( "ApacheDS200LdapServerAdapter.NTPPort" ), new Object[] //$NON-NLS-1$
+                        { getNtpPort( configuration ) } ) );
+                }
+            }
+
+            // Change Password
+            if ( isEnableChangePassword( configuration ) )
+            {
+                if ( !AvailablePortFinder.available( getChangePasswordPort( configuration ) ) )
+                {
+                    alreadyInUseProtocolPortsList
+                        .add( NLS
+                            .bind(
+                                Messages.getString( "ApacheDS200LdapServerAdapter.ChangePasswordPort" ), new Object[] { getChangePasswordPort( configuration ) } ) ); //$NON-NLS-1$
+                }
+            }
+        }
+        catch ( Exception e )
+        {
+            System.out.println( e );
+        }
+
+        return alreadyInUseProtocolPortsList.toArray( new String[0] );
     }
 }

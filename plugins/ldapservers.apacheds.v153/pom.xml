@@ -119,6 +119,7 @@
  org.apache.directory.studio.common.ui,
  org.apache.directory.studio.connection.core,
  org.apache.directory.studio.ldapservers,
+ org.apache.mina.core;bundle-version="${org.apache.mina.core.version}",
  org.dom4j.dom4j;bundle-version="${org.dom4j.version}",
  org.eclipse.core.runtime,
  org.eclipse.core.resources,
@@ -402,6 +403,11 @@
 
   <dependencies>
     <!-- Apache Directory Studio library plugins dependencies -->
+    <dependency>
+      <groupId>org.apache.directory.studio</groupId>
+      <artifactId>org.apache.mina.core</artifactId>
+      <scope>provided</scope>
+    </dependency>
     <dependency>
       <groupId>org.apache.directory.studio</groupId>
       <artifactId>org.dom4j.dom4j</artifactId>

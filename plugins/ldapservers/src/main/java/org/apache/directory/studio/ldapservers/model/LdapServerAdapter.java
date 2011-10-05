@@ -21,11 +21,7 @@
 package org.apache.directory.studio.ldapservers.model;
 
 
-import java.util.List;
-
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
-import org.eclipse.jface.wizard.IWizardPage;
-import org.eclipse.jface.wizard.WizardPage;
 
 
 /**
@@ -96,4 +92,15 @@ public interface LdapServerAdapter
      *      if an error occurs when restarting the server
      */
     public void stop( LdapServer server, StudioProgressMonitor monitor ) throws Exception;
+
+
+    /**
+     * Checks the ports before the server start.
+     * <p>
+     * The return strings must have the following format: {PROTOCOL} ({PORT})
+     *
+     * @param server the server
+     * @return an array of error message, one for each port being already used.
+     */
+    public String[] checkPortsBeforeServerStart( LdapServer server );
 }

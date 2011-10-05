@@ -26,6 +26,8 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.directory.studio.apacheds.configuration.editor.ServerConfigurationEditor;
 import org.apache.directory.studio.apacheds.configuration.model.ServerXmlIOException;
@@ -37,9 +39,11 @@ import org.apache.directory.studio.ldapservers.LdapServersManager;
 import org.apache.directory.studio.ldapservers.LdapServersUtils;
 import org.apache.directory.studio.ldapservers.model.LdapServer;
 import org.apache.directory.studio.ldapservers.model.LdapServerAdapter;
+import org.apache.mina.util.AvailablePortFinder;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.debug.core.ILaunch;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
@@ -269,5 +273,93 @@ public class ApacheDS154LdapServerAdapter implements LdapServerAdapter
         {
             return 0;
         }
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public String[] checkPortsBeforeServerStart( LdapServer server )
+    {
+        List<String> alreadyInUseProtocolPortsList = new ArrayList<String>();
+
+        try
+        {
+            ServerConfigurationV154 configuration = getServerConfiguration( server );
+
+            // LDAP
+            if ( configuration.isEnableLdap() )
+            {
+                if ( !AvailablePortFinder.available( configuration.getLdapPort() ) )
+                {
+                    alreadyInUseProtocolPortsList
+                        .add( NLS.bind(
+                            Messages.getString( "ApacheDS154LdapServerAdapter.LDAPPort" ), new Object[] { configuration.getLdapPort() } ) ); //$NON-NLS-1$
+                }
+            }
+
+            // LDAPS
+            if ( configuration.isEnableLdaps() )
+            {
+                if ( !AvailablePortFinder.available( configuration.getLdapsPort() ) )
+                {
+                    alreadyInUseProtocolPortsList
+                        .add( NLS.bind(
+                            Messages.getString( "ApacheDS154LdapServerAdapter.LDAPSPort" ), new Object[] { configuration.getLdapsPort() } ) ); //$NON-NLS-1$
+                }
+            }
+
+            // Kerberos
+            if ( configuration.isEnableKerberos() )
+            {
+                if ( !AvailablePortFinder.available( configuration.getKerberosPort() ) )
+                {
+                    alreadyInUseProtocolPortsList
+                        .add( NLS
+                            .bind(
+                                Messages.getString( "ApacheDS154LdapServerAdapter.KerberosPort" ), new Object[] { configuration.getKerberosPort() } ) ); //$NON-NLS-1$
+                }
+            }
+
+            // DNS
+            if ( configuration.isEnableDns() )
+            {
+                if ( !AvailablePortFinder.available( configuration.getDnsPort() ) )
+                {
+                    alreadyInUseProtocolPortsList
+                        .add( NLS.bind(
+                            Messages.getString( "ApacheDS154LdapServerAdapter.DNSPort" ), new Object[] { configuration.getDnsPort() } ) ); //$NON-NLS-1$
+                }
+            }
+
+            // NTP
+            if ( configuration.isEnableNtp() )
+            {
+                if ( !AvailablePortFinder.available( configuration.getNtpPort() ) )
+                {
+                    alreadyInUseProtocolPortsList.add( NLS.bind(
+                        Messages.getString( "ApacheDS154LdapServerAdapter.NTPPort" ), new Object[] //$NON-NLS-1$
+                        { configuration.getNtpPort() } ) );
+                }
+            }
+
+            // Change Password
+            if ( configuration.isEnableChangePassword() )
+            {
+                if ( !AvailablePortFinder.available( configuration.getChangePasswordPort() ) )
+                {
+                    alreadyInUseProtocolPortsList
+                        .add( NLS
+                            .bind(
+                                Messages.getString( "ApacheDS154LdapServerAdapter.ChangePasswordPort" ), new Object[] { configuration.getChangePasswordPort() } ) ); //$NON-NLS-1$
+                }
+            }
+        }
+        catch ( Exception e )
+        {
+            System.out.println( e );
+        }
+
+        return alreadyInUseProtocolPortsList.toArray( new String[0] );
     }
 }

@@ -110,6 +110,15 @@ public class UnknownLdapServerAdapterExtension extends LdapServerAdapterExtensio
                     }
                 } );
             }
+
+
+            /**
+             * {@inheritDoc}
+             */
+            public String[] checkPortsBeforeServerStart( LdapServer server )
+            {
+                return new String[0];
+            }
         } );
 
     }

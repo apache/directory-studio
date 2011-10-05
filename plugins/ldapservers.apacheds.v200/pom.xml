@@ -122,6 +122,7 @@
  org.apache.directory.studio.common.ui,
  org.apache.directory.studio.connection.core,
  org.apache.directory.studio.ldapservers,
+ org.apache.mina.core;bundle-version="${org.apache.mina.core.version}",
  org.eclipse.core.runtime,
  org.eclipse.core.resources,
  org.eclipse.debug.core,
@@ -199,6 +200,11 @@
     <dependency>
       <groupId>org.apache.directory.studio</groupId>
       <artifactId>org.apache.directory.server.xdbm.partition</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.directory.studio</groupId>
+      <artifactId>org.apache.mina.core</artifactId>
       <scope>provided</scope>
     </dependency>
     
