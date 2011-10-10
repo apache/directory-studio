@@ -50,7 +50,8 @@
                class="org.apache.directory.studio.apacheds.configuration.v2.actions.OpenConfigurationAction"
                enablesFor="1"
                id="%OpenConfigurationAction_id"
-               label="%OpenConfigurationAction_label">
+               label="%OpenConfigurationAction_label"
+               icon="resources/icons/editor.gif">
          </action>
          <visibility>
             <and>
