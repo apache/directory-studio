@@ -27,9 +27,9 @@ import java.util.Set;
 
 import org.apache.directory.server.core.entry.ClonedServerEntry;
 import org.apache.directory.server.core.filtering.EntryFilteringCursor;
-import org.apache.directory.server.core.api.interceptor.context.LookupOperationContext;
-import org.apache.directory.server.core.api.interceptor.context.SearchOperationContext;
-import org.apache.directory.server.core.api.partition.Partition;
+import org.apache.directory.server.core.interceptor.context.LookupOperationContext;
+import org.apache.directory.server.core.interceptor.context.SearchOperationContext;
+import org.apache.directory.server.core.partition.Partition;
 import org.apache.directory.shared.ldap.model.constants.SchemaConstants;
 import org.apache.directory.shared.ldap.model.entry.Attribute;
 import org.apache.directory.shared.ldap.model.entry.DefaultAttribute;
@@ -228,6 +228,66 @@ public class PartitionsDiffComputer
                 while ( cursor.next() )
                 {
                     originalEntries.add( ( ( ClonedServerEntry ) cursor.get() ).getClonedEntry() );
+                }
+            }
+
+            // Looking up the destination base entry
+            Entry destinationBaseEntry = destinationPartition
+                .lookup( new LookupOperationContext( null, baseDn, attributeIds ) );
+            if ( destinationBaseEntry == null )
+            {
+                throw new PartitionsDiffException( "Unable to find the base entry in the destination partition." );
+            }
+
+            // Creating the list containing all the destination entries to be processed
+            // and adding it the destination base entry
+            List<Entry> destinationEntries = new ArrayList<Entry>();
+            destinationEntries.add( originalBaseEntry );
+
+            // Looping until all destination entries are being processed
+            while ( destinationEntries.size() > 0 )
+            {
+                // Getting the first destination entry from the list
+                Entry destinationEntry = destinationEntries.remove( 0 );
+
+                // Looking for the equivalent entry in the destination partition
+                Entry originalEntry = originalPartition.lookup( new LookupOperationContext( null, destinationEntry
+                    .getDn(), attributeIds ) );
+                // We're only looking for new entries, modified or removed 
+                // entries have already been computed
+                if ( originalEntry == null )
+                {
+                    // Creating a modification entry to hold all modifications
+                    LdifEntry modificationEntry = new LdifEntry();
+                    modificationEntry.setDn( destinationEntry.getDn() );
+
+                    // Setting the changetype to addition
+                    modificationEntry.setChangeType( ChangeType.Add );
+
+                    // Copying attributes
+                    for ( Attribute attribute : destinationEntry )
+                    {
+                        modificationEntry.addAttribute( attribute );
+                    }
+
+                    // Adding the modification entry to the list
+                    modifications.add( modificationEntry );
+                }
+
+                // Creating a search operation context to get the children of the current entry
+                SearchOperationContext soc = new SearchOperationContext( null );
+                setReturningAttributes( destinationPartition.getSchemaManager(), attributeIds, soc );
+                soc.setDn( destinationEntry.getDn() );
+                soc.setScope( SearchScope.ONELEVEL );
+                soc.setFilter( FilterParser.parse( destinationPartition.getSchemaManager(), "(objectClass=*)" ) );
+                soc.setAliasDerefMode( AliasDerefMode.DEREF_ALWAYS );
+
+                // Looking for the children of the current entry
+                EntryFilteringCursor cursor = destinationPartition.search( soc );
+
+                while ( cursor.next() )
+                {
+                    destinationEntries.add( ( ( ClonedServerEntry ) cursor.get() ).getClonedEntry() );
                 }
             }
         }
