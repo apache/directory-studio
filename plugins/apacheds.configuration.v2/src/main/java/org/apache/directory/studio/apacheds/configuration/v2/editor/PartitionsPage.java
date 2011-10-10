@@ -20,6 +20,12 @@
 package org.apache.directory.studio.apacheds.configuration.v2.editor;
 
 
+import org.apache.directory.server.config.beans.PartitionBean;
+import org.apache.directory.studio.apacheds.configuration.v2.ApacheDS2ConfigurationPlugin;
+import org.apache.directory.studio.apacheds.configuration.v2.ApacheDS2ConfigurationPluginConstants;
+import org.eclipse.jface.viewers.LabelProvider;
+import org.eclipse.osgi.util.NLS;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 
@@ -36,6 +42,44 @@ public class PartitionsPage extends ServerConfigurationEditorPage
 
     /** The Page Title */
     private static final String TITLE = "Partitions";
+
+    /** The label provider for partition table viewers */
+    public static LabelProvider PARTITIONS_LABEL_PROVIDER = new LabelProvider()
+    {
+        public String getText( Object element )
+        {
+            if ( element instanceof PartitionBean )
+            {
+                PartitionBean partition = ( PartitionBean ) element;
+
+                return NLS.bind( "{0} ({1})", partition.getPartitionId(), partition.getPartitionSuffix() );
+            }
+
+            return super.getText( element );
+        }
+
+
+        public Image getImage( Object element )
+        {
+            if ( element instanceof PartitionBean )
+            {
+                PartitionBean partition = ( PartitionBean ) element;
+
+                if ( isSystemPartition( partition ) )
+                {
+                    return ApacheDS2ConfigurationPlugin.getDefault().getImage(
+                        ApacheDS2ConfigurationPluginConstants.IMG_PARTITION_SYSTEM );
+                }
+                else
+                {
+                    return ApacheDS2ConfigurationPlugin.getDefault().getImage(
+                        ApacheDS2ConfigurationPluginConstants.IMG_PARTITION );
+                }
+            }
+
+            return super.getImage( element );
+        }
+    };
 
 
     /**
@@ -65,7 +109,19 @@ public class PartitionsPage extends ServerConfigurationEditorPage
      */
     protected void refreshUI()
     {
-        // TODO Auto-generated method stub
+        // TODO
+    }
 
+
+    /**
+     * Indicates if the given partition is the system partition.
+     *
+     * @param partition the partition
+     * @return <code>true</code> if the partition is the system partition,
+     *         <code>false</code> if not.
+     */
+    public static boolean isSystemPartition( PartitionBean partition )
+    {
+        return "system".equalsIgnoreCase( partition.getPartitionId() );
     }
 }

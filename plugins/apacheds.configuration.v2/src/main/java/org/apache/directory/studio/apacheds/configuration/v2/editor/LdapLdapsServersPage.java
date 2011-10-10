@@ -266,7 +266,7 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
         section.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
         Composite composite = toolkit.createComposite( section );
         toolkit.paintBordersFor( composite );
-        GridLayout glayout = new GridLayout( 3, false );
+        GridLayout glayout = new GridLayout( 2, false );
         composite.setLayout( glayout );
         section.setClient( composite );
 
@@ -274,7 +274,7 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
         enableTlsCheckbox.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 3, 1 ) );
 
         Button enableServerSidePasswordHashingCheckbox = toolkit.createButton( composite,
-            "Enable sever-side password hashing",
+            "Enable sever-side password\nhashing",
             SWT.CHECK );
         enableServerSidePasswordHashingCheckbox.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 3, 1 ) );
         toolkit.createLabel( composite, "Hashing Method:" );
@@ -282,6 +282,7 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
         hashingMethodCombo.setItems( new String[]
             { "SSHA", "MD5" } );
         toolkit.adapt( hashingMethodCombo );
+        hashingMethodCombo.setText( "SSHA" );
         hashingMethodCombo.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
         createDefaultValueLabel( toolkit, composite, "SSHA" );
     }
@@ -303,7 +304,7 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
         section.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
         Composite composite = toolkit.createComposite( section );
         toolkit.paintBordersFor( composite );
-        GridLayout glayout = new GridLayout( 3, true );
+        GridLayout glayout = new GridLayout( 3, false );
         composite.setLayout( glayout );
         section.setClient( composite );
 
@@ -312,7 +313,7 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
         authMechDigestMd5Checkbox = toolkit.createButton( composite, "DIGEST-MD5", SWT.CHECK );
         authMechGssapiCheckbox = toolkit.createButton( composite, "GSSAPI", SWT.CHECK );
         authMechNtlmCheckbox = toolkit.createButton( composite, "NTLM", SWT.CHECK );
-        authMechGssSpnegoCheckbox = toolkit.createButton( composite, "GSS_SPNEGO", SWT.CHECK );
+        authMechGssSpnegoCheckbox = toolkit.createButton( composite, "GSS-SPNEGO", SWT.CHECK );
 
         // Supported Authentication Mechanisms Table
         //        Table supportedMechanismsTable = toolkit.createTable( composite, SWT.CHECK );
@@ -362,14 +363,14 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
         // SASL Host
         toolkit.createLabel( composite, "SASL Host:" );
         saslHostText = toolkit.createText( composite, "" );
-        saslHostText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
+        setGridDataWithDefaultWidth( saslHostText, new GridData( SWT.FILL, SWT.NONE, true, false ) );
         Label defaultSaslHostLabel = createDefaultValueLabel( toolkit, composite, "ldap.example.com" );
         defaultSaslHostLabel.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
 
         // SASL Principal
         toolkit.createLabel( composite, "SASL Principal:" );
         saslPrincipalText = toolkit.createText( composite, "" ); //$NON-NLS-1$
-        saslPrincipalText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
+        setGridDataWithDefaultWidth( saslPrincipalText, new GridData( SWT.FILL, SWT.NONE, true, false ) );
         Label defaultSaslPrincipalLabel = createDefaultValueLabel( toolkit, composite,
             "ldap/ldap.example.com@EXAMPLE.COM" );
         defaultSaslPrincipalLabel.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
@@ -377,7 +378,7 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
         // Search Base Dn
         toolkit.createLabel( composite, "Search Base Dn:" );
         saslSearchBaseDnText = toolkit.createText( composite, "" ); //$NON-NLS-1$
-        saslSearchBaseDnText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
+        setGridDataWithDefaultWidth( saslSearchBaseDnText, new GridData( SWT.FILL, SWT.NONE, true, false ) );
         Label defaultSaslSearchBaseDnLabel = createDefaultValueLabel( toolkit, composite, "ou=users,dc=example,dc=com" );
         defaultSaslSearchBaseDnLabel.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
     }
@@ -664,7 +665,7 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
 
             // ID
             transportBean.setTransportId( id );
-            
+
             // Address
             transportBean.setTransportAddress( DEFAULT_ADDRESS );
 

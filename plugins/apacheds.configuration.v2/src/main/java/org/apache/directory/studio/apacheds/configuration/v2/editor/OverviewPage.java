@@ -20,19 +20,20 @@
 package org.apache.directory.studio.apacheds.configuration.v2.editor;
 
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.directory.server.config.beans.ChangePasswordServerBean;
 import org.apache.directory.server.config.beans.ConfigBean;
 import org.apache.directory.server.config.beans.DirectoryServiceBean;
 import org.apache.directory.server.config.beans.KdcServerBean;
+import org.apache.directory.server.config.beans.PartitionBean;
 import org.apache.directory.server.config.beans.TransportBean;
 import org.apache.directory.studio.apacheds.configuration.v2.ApacheDS2ConfigurationPlugin;
 import org.apache.directory.studio.apacheds.configuration.v2.ApacheDS2ConfigurationPluginConstants;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.TableViewer;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
@@ -267,14 +268,7 @@ public class OverviewPage extends ServerConfigurationEditorPage
         partitionsTable.setLayoutData( gd );
         partitionsTableViewer = new TableViewer( partitionsTable );
         partitionsTableViewer.setContentProvider( new ArrayContentProvider() );
-        partitionsTableViewer.setLabelProvider( new LabelProvider()
-        {
-            public Image getImage( Object element )
-            {
-                return ApacheDS2ConfigurationPlugin.getDefault().getImage(
-                    ApacheDS2ConfigurationPluginConstants.IMG_PARTITION );
-            };
-        } );
+        partitionsTableViewer.setLabelProvider( PartitionsPage.PARTITIONS_LABEL_PROVIDER );
 
         openPartitionsConfigurationLink = toolkit.createHyperlink( composite,
             "Advanced Partitions configuration...", SWT.NONE );
@@ -411,11 +405,9 @@ public class OverviewPage extends ServerConfigurationEditorPage
         enableChangePasswordCheckbox.setSelection( changePasswordServerBean.isEnabled() );
         changePasswordPortText.setText( "" + changePasswordServerBean.getTransports()[0].getSystemPort() );
 
-        partitionsLabel.setText( "There are 2 partitions defined:" );
-        List<String> partitionsList = new ArrayList<String>();
-        partitionsList.add( "dc=example,dc=com (id=example)" );
-        partitionsList.add( "ou=system (id=system)" );
-        partitionsTableViewer.setInput( partitionsList.toArray() );
+        List<PartitionBean> partitions = directoryServiceBean.getPartitions();
+        partitionsLabel.setText( NLS.bind( "There are {0} partitions defined:", partitions.size() ) );
+        partitionsTableViewer.setInput( partitions.toArray() );
 
         allowAnonymousAccessCheckbox.setSelection( directoryServiceBean.isDsAllowAnonymousAccess() );
         enableAccesControlCheckbox.setSelection( directoryServiceBean.isDsAccessControlEnabled() );

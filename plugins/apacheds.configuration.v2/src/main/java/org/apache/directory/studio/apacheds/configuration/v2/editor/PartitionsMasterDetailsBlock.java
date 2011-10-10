@@ -20,15 +20,24 @@
 package org.apache.directory.studio.apacheds.configuration.v2.editor;
 
 
-import org.apache.directory.studio.apacheds.configuration.v2.ApacheDS2ConfigurationPlugin;
-import org.apache.directory.studio.apacheds.configuration.v2.ApacheDS2ConfigurationPluginConstants;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.directory.server.config.beans.IndexBean;
+import org.apache.directory.server.config.beans.JdbmIndexBean;
+import org.apache.directory.server.config.beans.JdbmPartitionBean;
+import org.apache.directory.server.config.beans.PartitionBean;
+import org.apache.directory.shared.ldap.model.entry.Entry;
+import org.apache.directory.shared.ldap.model.exception.LdapInvalidDnException;
+import org.apache.directory.shared.ldap.model.name.Dn;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
-import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -38,7 +47,6 @@ import org.eclipse.ui.forms.DetailsPart;
 import org.eclipse.ui.forms.IManagedForm;
 import org.eclipse.ui.forms.MasterDetailsBlock;
 import org.eclipse.ui.forms.SectionPart;
-import org.eclipse.ui.forms.editor.FormPage;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.Section;
 
@@ -50,8 +58,10 @@ import org.eclipse.ui.forms.widgets.Section;
  */
 public class PartitionsMasterDetailsBlock extends MasterDetailsBlock
 {
+    private static final String NEW_ID = "partition";
+
     /** The associated page */
-    private FormPage page;
+    private PartitionsPage page;
 
     /** The Details Page */
     private PartitionDetailsPage detailsPage;
@@ -68,7 +78,7 @@ public class PartitionsMasterDetailsBlock extends MasterDetailsBlock
      * @param page
      *      the associated page
      */
-    public PartitionsMasterDetailsBlock( FormPage page )
+    public PartitionsMasterDetailsBlock( PartitionsPage page )
     {
         this.page = page;
     }
@@ -113,14 +123,7 @@ public class PartitionsMasterDetailsBlock extends MasterDetailsBlock
             }
         } );
         viewer.setContentProvider( new ArrayContentProvider() );
-        viewer.setLabelProvider( new LabelProvider()
-        {
-            public Image getImage( Object element )
-            {
-                return ApacheDS2ConfigurationPlugin.getDefault().getImage(
-                    ApacheDS2ConfigurationPluginConstants.IMG_PARTITION );
-            };
-        } );
+        viewer.setLabelProvider( PartitionsPage.PARTITIONS_LABEL_PROVIDER );
 
         // Creating the button(s)
         addButton = toolkit.createButton( client, "Add", SWT.PUSH );
@@ -131,6 +134,7 @@ public class PartitionsMasterDetailsBlock extends MasterDetailsBlock
         deleteButton.setLayoutData( new GridData( SWT.FILL, SWT.BEGINNING, false, false ) );
 
         initFromInput();
+        addListeners();
     }
 
 
@@ -139,8 +143,145 @@ public class PartitionsMasterDetailsBlock extends MasterDetailsBlock
      */
     private void initFromInput()
     {
-        viewer.setInput( new String[]
-            { "ou=system", "dc=example,dc=com" } );
+        viewer.setInput( page.getConfigBean().getDirectoryServiceBean().getPartitions() );
+    }
+
+
+    /**
+     * Add listeners to UI fields.
+     */
+    private void addListeners()
+    {
+        viewer.addSelectionChangedListener( new ISelectionChangedListener()
+        {
+            public void selectionChanged( SelectionChangedEvent event )
+            {
+                viewer.refresh();
+
+                deleteButton.setEnabled( !event.getSelection().isEmpty() );
+                StructuredSelection selection = ( StructuredSelection ) viewer.getSelection();
+                if ( !selection.isEmpty() )
+                {
+                    JdbmPartitionBean partition = ( JdbmPartitionBean ) selection.getFirstElement();
+                    if ( PartitionsPage.isSystemPartition( partition ) )
+                    {
+                        deleteButton.setEnabled( false );
+                    }
+                }
+            }
+        } );
+
+        addButton.addSelectionListener( new SelectionAdapter()
+        {
+            public void widgetSelected( SelectionEvent e )
+            {
+                String newId = getNewId();
+
+                JdbmPartitionBean newPartitionBean = new JdbmPartitionBean();
+                newPartitionBean.setPartitionId( newId );
+                try
+                {
+                    newPartitionBean.setPartitionSuffix( new Dn( "dc=" + newId + ",dc=com" ) );
+                }
+                catch ( LdapInvalidDnException e1 )
+                {
+                    // TODO Auto-generated catch block
+                    e1.printStackTrace();
+                }
+
+                // Default values
+                newPartitionBean.setPartitionCacheSize( 100 );
+                newPartitionBean.setJdbmPartitionOptimizerEnabled( true );
+                newPartitionBean.setPartitionSyncOnWrite( true );
+                List<IndexBean> indexes = new ArrayList<IndexBean>();
+                indexes.add( createJdbmIndex( "apacheAlias", 100 ) );
+                indexes.add( createJdbmIndex( "apacheOneAlias", 100 ) );
+                indexes.add( createJdbmIndex( "apacheOneLevel", 100 ) );
+                indexes.add( createJdbmIndex( "apachePresence", 100 ) );
+                indexes.add( createJdbmIndex( "apacheRdn", 100 ) );
+                indexes.add( createJdbmIndex( "apacheSubAlias", 100 ) );
+                indexes.add( createJdbmIndex( "apacheSubLevel", 100 ) );
+                indexes.add( createJdbmIndex( "dc", 100 ) );
+                indexes.add( createJdbmIndex( "entryCSN", 100 ) );
+                indexes.add( createJdbmIndex( "entryUUID", 100 ) );
+                indexes.add( createJdbmIndex( "krbPrincipalName", 100 ) );
+                indexes.add( createJdbmIndex( "objectClass", 100 ) );
+                indexes.add( createJdbmIndex( "ou", 100 ) );
+                indexes.add( createJdbmIndex( "uid", 100 ) );
+                newPartitionBean.setIndexes( indexes );
+
+                page.getConfigBean().getDirectoryServiceBean().addPartitions( newPartitionBean );
+                viewer.refresh();
+                viewer.setSelection( new StructuredSelection( newPartitionBean ) );
+                setEditorDirty();
+            }
+        } );
+
+        deleteButton.addSelectionListener( new SelectionAdapter()
+        {
+            public void widgetSelected( SelectionEvent e )
+            {
+                StructuredSelection selection = ( StructuredSelection ) viewer.getSelection();
+                if ( !selection.isEmpty() )
+                {
+                    JdbmPartitionBean partition = ( JdbmPartitionBean ) selection.getFirstElement();
+                    if ( !PartitionsPage.isSystemPartition( partition ) )
+                    {
+                        page.getConfigBean().getDirectoryServiceBean().getPartitions().remove( partition );
+                        viewer.refresh();
+                        setEditorDirty();
+                    }
+                }
+            }
+        } );
+    }
+
+
+    /**
+     * Gets a new ID for a new Partition.
+     *
+     * @return 
+     *      a new ID for a new Partition
+     */
+    private String getNewId()
+    {
+        int counter = 1;
+        String name = NEW_ID;
+        boolean ok = false;
+
+        while ( !ok )
+        {
+            ok = true;
+            name = NEW_ID + counter;
+
+            for ( PartitionBean partition : page.getConfigBean().getDirectoryServiceBean().getPartitions() )
+            {
+                if ( partition.getPartitionId().equalsIgnoreCase( name ) )
+                {
+                    ok = false;
+                }
+            }
+            counter++;
+        }
+
+        return name;
+    }
+
+
+    /**
+     * Create a JDBM Index with the given index attribute id and cache size.
+     *
+     * @param indexAttributeId the attribute id
+     * @param indexCacheSize the cache size
+     */
+    private JdbmIndexBean<String, Entry> createJdbmIndex( String indexAttributeId, int indexCacheSize )
+    {
+        JdbmIndexBean<String, Entry> index = new JdbmIndexBean<String, Entry>();
+
+        index.setIndexAttributeId( indexAttributeId );
+        index.setIndexCacheSize( indexCacheSize );
+
+        return index;
     }
 
 
@@ -150,7 +291,7 @@ public class PartitionsMasterDetailsBlock extends MasterDetailsBlock
     protected void registerPages( DetailsPart detailsPart )
     {
         detailsPage = new PartitionDetailsPage( this );
-        detailsPart.registerPage( String.class, detailsPage );
+        detailsPart.registerPage( JdbmPartitionBean.class, detailsPage );
     }
 
 
@@ -161,4 +302,22 @@ public class PartitionsMasterDetailsBlock extends MasterDetailsBlock
 
     }
 
+
+    /**
+     * Sets the Editor as dirty.
+     */
+    public void setEditorDirty()
+    {
+        ( ( ServerConfigurationEditor ) page.getEditor() ).setDirty( true );
+    }
+
+
+    /**
+     * Saves the necessary elements to the input model.
+     */
+    public void save()
+    {
+        detailsPage.commit( true );
+        //        viewer.setInput( partitions );
+    }
 }

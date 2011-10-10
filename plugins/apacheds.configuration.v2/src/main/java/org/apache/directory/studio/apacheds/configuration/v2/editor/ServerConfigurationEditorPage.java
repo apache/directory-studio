@@ -267,7 +267,7 @@ public abstract class ServerConfigurationEditorPage extends FormPage
      */
     protected Label createDefaultValueLabel( FormToolkit toolkit, Composite parent, String text )
     {
-        Label label = toolkit.createLabel( parent, NLS.bind( "(Default: {0})", text ) );
+        Label label = toolkit.createLabel( parent, NLS.bind( "(Default: {0})", text ), SWT.WRAP );
         label.setForeground( GRAY_COLOR );
 
         return label;
@@ -430,11 +430,30 @@ public abstract class ServerConfigurationEditorPage extends FormPage
     }
 
 
+    /**
+     * Sets the focus to the given control.
+     *
+     * @param control the control
+     */
     protected void setFocus( Control control )
     {
         if ( ( control != null ) && ( !control.isDisposed() ) )
         {
             control.setFocus();
         }
+    }
+
+
+    /**
+     * Sets the given {@link GridData} to the control
+     * and sets the width to a default value.
+     *
+     * @param control the control
+     * @param gd the grid data
+     */
+    protected void setGridDataWithDefaultWidth( Control control, GridData gd )
+    {
+        gd.widthHint = 50;
+        control.setLayoutData( gd );
     }
 }

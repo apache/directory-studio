@@ -20,7 +20,11 @@
 package org.apache.directory.studio.apacheds.configuration.v2.editor;
 
 
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 
 
@@ -55,6 +59,12 @@ public class ReplicationPage extends ServerConfigurationEditorPage
      */
     protected void createFormContent( Composite parent, FormToolkit toolkit )
     {
+        Composite composite = toolkit.createComposite( parent );
+        composite.setLayout( new GridLayout() );
+        composite.setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, true ) );
+
+        Label label = toolkit.createLabel( composite, "Coming soon..." );
+        label.setLayoutData( new GridData( SWT.CENTER, SWT.CENTER, true, true ) );
     }
 
 
@@ -64,6 +74,5 @@ public class ReplicationPage extends ServerConfigurationEditorPage
     protected void refreshUI()
     {
         // TODO Auto-generated method stub
-
     }
 }
