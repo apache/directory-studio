@@ -81,8 +81,8 @@ public class StopAction extends Action implements IWorkbenchWindowActionDelegate
     }
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.jface.action.Action#run()
+    /**
+     * {@inheritDoc}
      */
     public void run()
     {

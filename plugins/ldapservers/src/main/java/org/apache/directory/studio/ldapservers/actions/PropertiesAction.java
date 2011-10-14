@@ -80,8 +80,8 @@ public class PropertiesAction extends Action implements IWorkbenchWindowActionDe
     }
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.jface.action.Action#run()
+    /**
+     * {@inheritDoc}
      */
     public void run()
     {

@@ -86,8 +86,8 @@ public class StartAction extends Action implements IWorkbenchWindowActionDelegat
     }
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.jface.action.Action#run()
+    /**
+     * {@inheritDoc}
      */
     public void run()
     {

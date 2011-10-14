@@ -124,8 +124,8 @@ public class ServersView extends ViewPart
     };
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.ui.part.WorkbenchPart#createPartControl(org.eclipse.swt.widgets.Composite)
+    /**
+     * {@inheritDoc}
      */
     public void createPartControl( Composite parent )
     {
@@ -191,8 +191,8 @@ public class ServersView extends ViewPart
     }
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.ui.part.ViewPart#init(org.eclipse.ui.IViewSite, org.eclipse.ui.IMemento)
+    /**
+     * {@inheritDoc}
      */
     public void init( IViewSite site, IMemento memento ) throws PartInitException
     {
@@ -213,8 +213,8 @@ public class ServersView extends ViewPart
     }
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.ui.part.ViewPart#saveState(org.eclipse.ui.IMemento)
+    /**
+     * {@inheritDoc}
      */
     public void saveState( IMemento memento )
     {
@@ -230,8 +230,8 @@ public class ServersView extends ViewPart
     }
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.ui.part.WorkbenchPart#setFocus()
+    /**
+     * {@inheritDoc}
      */
     public void setFocus()
     {
@@ -515,8 +515,8 @@ public class ServersView extends ViewPart
     }
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.ui.part.WorkbenchPart#dispose()
+    /**
+     * {@inheritDoc}
      */
     public void dispose()
     {
