@@ -96,9 +96,8 @@ public class PartitionsMasterDetailsBlock extends MasterDetailsBlock
         partitions = serverConfiguration.getPartitions();
     }
 
-
-    /* (non-Javadoc)
-     * @see org.eclipse.ui.forms.MasterDetailsBlock#createMasterPart(org.eclipse.ui.forms.IManagedForm, org.eclipse.swt.widgets.Composite)
+    /**
+     * {@inheritDoc}
      */
     protected void createMasterPart( final IManagedForm managedForm, Composite parent )
     {
@@ -276,10 +275,8 @@ public class PartitionsMasterDetailsBlock extends MasterDetailsBlock
 
         return name;
     }
-
-
-    /* (non-Javadoc)
-     * @see org.eclipse.ui.forms.MasterDetailsBlock#createToolBarActions(org.eclipse.ui.forms.IManagedForm)
+    /**
+     * {@inheritDoc}
      */
     protected void createToolBarActions( IManagedForm managedForm )
     {
@@ -315,9 +312,8 @@ public class PartitionsMasterDetailsBlock extends MasterDetailsBlock
         form.getToolBarManager().add( verticalAction );
     }
 
-
-    /* (non-Javadoc)
-     * @see org.eclipse.ui.forms.MasterDetailsBlock#registerPages(org.eclipse.ui.forms.DetailsPart)
+    /**
+     * {@inheritDoc}
      */
     protected void registerPages( DetailsPart detailsPart )
     {

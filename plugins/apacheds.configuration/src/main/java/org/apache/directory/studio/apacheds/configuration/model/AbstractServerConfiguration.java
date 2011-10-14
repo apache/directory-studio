@@ -46,8 +46,8 @@ public abstract class AbstractServerConfiguration implements ServerConfiguration
     }
 
 
-    /* (non-Javadoc)
-     * @see org.apache.directory.studio.apacheds.configuration.model.ServerConfiguration#getVersion()
+    /**
+     * {@inheritDoc}
      */
     public ServerConfigurationVersionEnum getVersion()
     {

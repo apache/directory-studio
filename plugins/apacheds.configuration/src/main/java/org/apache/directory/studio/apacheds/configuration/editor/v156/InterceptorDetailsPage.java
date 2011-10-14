@@ -73,8 +73,8 @@ public class InterceptorDetailsPage implements IDetailsPage
     }
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.ui.forms.IDetailsPage#createContents(org.eclipse.swt.widgets.Composite)
+    /**
+     * {@inheritDoc}
      */
     public void createContents( Composite parent )
     {
@@ -129,8 +129,8 @@ public class InterceptorDetailsPage implements IDetailsPage
     }
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.ui.forms.IPartSelectionListener#selectionChanged(org.eclipse.ui.forms.IFormPart, org.eclipse.jface.viewers.ISelection)
+    /**
+     * {@inheritDoc}
      */
     public void selectionChanged( IFormPart part, ISelection selection )
     {
@@ -147,24 +147,24 @@ public class InterceptorDetailsPage implements IDetailsPage
     }
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.ui.forms.IFormPart#commit(boolean)
+    /**
+     * {@inheritDoc}
      */
     public void commit( boolean onSave )
     {
     }
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.ui.forms.IFormPart#dispose()
+    /**
+     * {@inheritDoc}
      */
     public void dispose()
     {
     }
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.ui.forms.IFormPart#initialize(org.eclipse.ui.forms.IManagedForm)
+    /**
+     * {@inheritDoc}
      */
     public void initialize( IManagedForm form )
     {
@@ -172,8 +172,8 @@ public class InterceptorDetailsPage implements IDetailsPage
     }
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.ui.forms.IFormPart#isDirty()
+    /**
+     * {@inheritDoc}
      */
     public boolean isDirty()
     {
@@ -181,8 +181,8 @@ public class InterceptorDetailsPage implements IDetailsPage
     }
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.ui.forms.IFormPart#isStale()
+    /**
+     * {@inheritDoc}
      */
     public boolean isStale()
     {
@@ -190,8 +190,8 @@ public class InterceptorDetailsPage implements IDetailsPage
     }
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.ui.forms.IFormPart#refresh()
+    /**
+     * {@inheritDoc}
      */
     public void refresh()
     {
@@ -205,8 +205,8 @@ public class InterceptorDetailsPage implements IDetailsPage
     }
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.ui.forms.IFormPart#setFocus()
+    /**
+     * {@inheritDoc}
      */
     public void setFocus()
     {
@@ -214,8 +214,8 @@ public class InterceptorDetailsPage implements IDetailsPage
     }
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.ui.forms.IFormPart#setFormInput(java.lang.Object)
+    /**
+     * {@inheritDoc}
      */
     public boolean setFormInput( Object input )
     {

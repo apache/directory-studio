@@ -101,8 +101,8 @@ public class ServerConfigurationEditor extends FormEditor
     private FormPage extendedOperationsPage;
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.ui.forms.editor.FormEditor#init(org.eclipse.ui.IEditorSite, org.eclipse.ui.IEditorInput)
+    /**
+     * {@inheritDoc}
      */
     public void init( IEditorSite site, IEditorInput input ) throws PartInitException
     {
@@ -225,8 +225,8 @@ public class ServerConfigurationEditor extends FormEditor
     }
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.ui.forms.editor.FormEditor#addPages()
+    /**
+     * {@inheritDoc}
      */
     protected void addPages()
     {
@@ -413,8 +413,8 @@ public class ServerConfigurationEditor extends FormEditor
     }
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.ui.part.EditorPart#doSave(org.eclipse.core.runtime.IProgressMonitor)
+    /**
+     * {@inheritDoc}
      */
     public void doSave( IProgressMonitor monitor )
     {
@@ -585,8 +585,8 @@ public class ServerConfigurationEditor extends FormEditor
     }
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.ui.part.EditorPart#doSaveAs()
+    /**
+     * {@inheritDoc}
      */
     public void doSaveAs()
     {
@@ -744,8 +744,8 @@ public class ServerConfigurationEditor extends FormEditor
     }
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.ui.part.EditorPart#isSaveAsAllowed()
+    /**
+     * {@inheritDoc}
      */
     public boolean isSaveAsAllowed()
     {
@@ -753,8 +753,8 @@ public class ServerConfigurationEditor extends FormEditor
     }
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.ui.forms.editor.FormEditor#isDirty()
+    /**
+     * {@inheritDoc}
      */
     public boolean isDirty()
     {

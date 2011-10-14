@@ -42,8 +42,8 @@ public class ApacheDSConfigurationContentDescriber implements ITextContentDescri
         { IContentDescription.CHARSET, IContentDescription.BYTE_ORDER_MARK };
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.core.runtime.content.ITextContentDescriber#describe(java.io.Reader, org.eclipse.core.runtime.content.IContentDescription)
+    /**
+     * {@inheritDoc}
      */
     public int describe( Reader contents, IContentDescription description ) throws IOException
     {
@@ -58,8 +58,8 @@ public class ApacheDSConfigurationContentDescriber implements ITextContentDescri
     }
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.core.runtime.content.IContentDescriber#describe(java.io.InputStream, org.eclipse.core.runtime.content.IContentDescription)
+    /**
+     * {@inheritDoc}
      */
     public int describe( InputStream contents, IContentDescription description ) throws IOException
     {
@@ -74,8 +74,8 @@ public class ApacheDSConfigurationContentDescriber implements ITextContentDescri
     }
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.core.runtime.content.IContentDescriber#getSupportedOptions()
+    /**
+     * {@inheritDoc}
      */
     public QualifiedName[] getSupportedOptions()
     {

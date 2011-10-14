@@ -30,9 +30,6 @@ public enum ServerConfigurationVersionEnum
     /** Version 1.5.7 */
     VERSION_1_5_7
     {
-        /* (non-Javadoc)
-         * @see java.lang.Enum#toString()
-         */
         public String toString()
         {
             return Messages.getString( "ServerConfigurationVersionEnum.Version157" ); //$NON-NLS-1$
@@ -41,9 +38,6 @@ public enum ServerConfigurationVersionEnum
     /** Version 1.5.6 */
     VERSION_1_5_6
     {
-        /* (non-Javadoc)
-         * @see java.lang.Enum#toString()
-         */
         public String toString()
         {
             return Messages.getString( "ServerConfigurationVersionEnum.Version156" ); //$NON-NLS-1$
@@ -52,9 +46,6 @@ public enum ServerConfigurationVersionEnum
     /** Version 1.5.5 */
     VERSION_1_5_5
     {
-        /* (non-Javadoc)
-         * @see java.lang.Enum#toString()
-         */
         public String toString()
         {
             return Messages.getString( "ServerConfigurationVersionEnum.Version155" ); //$NON-NLS-1$
@@ -63,9 +54,6 @@ public enum ServerConfigurationVersionEnum
     /** Version 1.5.4 */
     VERSION_1_5_4
     {
-        /* (non-Javadoc)
-         * @see java.lang.Enum#toString()
-         */
         public String toString()
         {
             return Messages.getString( "ServerConfigurationVersionEnum.Version154" ); //$NON-NLS-1$
@@ -75,9 +63,6 @@ public enum ServerConfigurationVersionEnum
     /** Version 1.5.3 */
     VERSION_1_5_3
     {
-        /* (non-Javadoc)
-         * @see java.lang.Enum#toString()
-         */
         public String toString()
         {
             return Messages.getString( "ServerConfigurationVersionEnum.Version153" ); //$NON-NLS-1$
@@ -87,9 +72,6 @@ public enum ServerConfigurationVersionEnum
     /** Version 1.5.2 */
     VERSION_1_5_2
     {
-        /* (non-Javadoc)
-         * @see java.lang.Enum#toString()
-         */
         public String toString()
         {
             return Messages.getString( "ServerConfigurationVersionEnum.Version152" ); //$NON-NLS-1$
@@ -99,9 +81,6 @@ public enum ServerConfigurationVersionEnum
     /** Version 1.5.1 */
     VERSION_1_5_1
     {
-        /* (non-Javadoc)
-         * @see java.lang.Enum#toString()
-         */
         public String toString()
         {
             return Messages.getString( "ServerConfigurationVersionEnum.Version151" ); //$NON-NLS-1$
@@ -111,9 +90,6 @@ public enum ServerConfigurationVersionEnum
     /** Version 1.5.0 */
     VERSION_1_5_0
     {
-        /* (non-Javadoc)
-         * @see java.lang.Enum#toString()
-         */
         public String toString()
         {
             return Messages.getString( "ServerConfigurationVersionEnum.Version150" ); //$NON-NLS-1$

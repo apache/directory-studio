@@ -58,9 +58,8 @@ public class ExtendedOperationsPage extends FormPage
         super( editor, ID, TITLE );
     }
 
-
-    /* (non-Javadoc)
-     * @see org.eclipse.ui.forms.editor.FormPage#createFormContent(org.eclipse.ui.forms.IManagedForm)
+    /**
+     * {@inheritDoc}
      */
     protected void createFormContent( IManagedForm managedForm )
     {

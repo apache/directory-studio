@@ -112,8 +112,8 @@ public enum SupportedMechanismEnum
     }
 
 
-    /* (non-Javadoc)
-     * @see java.lang.Enum#toString()
+    /**
+     * {@inheritDoc}
      */
     public String toString()
     {

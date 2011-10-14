@@ -96,9 +96,8 @@ public class AttributeValueObject
         this.value = value;
     }
 
-
-    /* (non-Javadoc)
-     * @see java.lang.Object#toString()
+    /**
+     * {@inheritDoc}
      */
     public String toString()
     {

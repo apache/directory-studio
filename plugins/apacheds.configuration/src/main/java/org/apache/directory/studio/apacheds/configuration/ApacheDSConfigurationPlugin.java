@@ -63,8 +63,15 @@ public class ApacheDSConfigurationPlugin extends AbstractUIPlugin
     private PropertyResourceBundle properties;
 
     private ServerXmlIO[] serverXmlIOs = new ServerXmlIO[]
-        {  new ServerXmlIOV157(), new ServerXmlIOV156(), new ServerXmlIOV155(), new ServerXmlIOV154(), new ServerXmlIOV153(),
-            new ServerXmlIOV152(), new ServerXmlIOV151(), new ServerXmlIOV150(), };
+        {
+            new ServerXmlIOV157(),
+            new ServerXmlIOV156(),
+            new ServerXmlIOV155(),
+            new ServerXmlIOV154(),
+            new ServerXmlIOV153(),
+            new ServerXmlIOV152(),
+            new ServerXmlIOV151(),
+            new ServerXmlIOV150(), };
 
 
     /**
@@ -76,9 +83,8 @@ public class ApacheDSConfigurationPlugin extends AbstractUIPlugin
     }
 
 
-    /*
-     * (non-Javadoc)
-     * @see org.eclipse.ui.plugin.AbstractUIPlugin#start(org.osgi.framework.BundleContext)
+    /**
+     * {@inheritDoc}
      */
     public void start( BundleContext context ) throws Exception
     {
@@ -86,9 +92,8 @@ public class ApacheDSConfigurationPlugin extends AbstractUIPlugin
     }
 
 
-    /*
-     * (non-Javadoc)
-     * @see org.eclipse.ui.plugin.AbstractUIPlugin#stop(org.osgi.framework.BundleContext)
+    /**
+     * {@inheritDoc}
      */
     public void stop( BundleContext context ) throws Exception
     {

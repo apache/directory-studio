@@ -84,8 +84,8 @@ public class ServerXmlIOV151 extends AbstractServerXmlIO implements ServerXmlIO
     }
 
 
-    /* (non-Javadoc)
-     * @see org.apache.directory.studio.apacheds.configuration.model.ServerXmlIO#parse(java.io.InputStream)
+    /**
+     * {@inheritDoc}
      */
     public ServerConfiguration parse( InputStream is ) throws ServerXmlIOException
     {
@@ -886,8 +886,8 @@ public class ServerXmlIOV151 extends AbstractServerXmlIO implements ServerXmlIO
     }
 
 
-    /* (non-Javadoc)
-     * @see org.apache.directory.studio.apacheds.configuration.model.ServerXmlIO#toXml(org.apache.directory.studio.apacheds.configuration.model.ServerConfiguration)
+    /**
+     * {@inheritDoc}
      */
     public String toXml( ServerConfiguration serverConfiguration ) throws IOException
     {

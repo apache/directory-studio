@@ -96,8 +96,8 @@ public class InterceptorsMasterDetailsBlock extends MasterDetailsBlock
     }
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.ui.forms.MasterDetailsBlock#createMasterPart(org.eclipse.ui.forms.IManagedForm, org.eclipse.swt.widgets.Composite)
+    /**
+     * {@inheritDoc}
      */
     protected void createMasterPart( final IManagedForm managedForm, Composite parent )
     {
@@ -308,8 +308,8 @@ public class InterceptorsMasterDetailsBlock extends MasterDetailsBlock
     }
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.ui.forms.MasterDetailsBlock#createToolBarActions(org.eclipse.ui.forms.IManagedForm)
+    /**
+     * {@inheritDoc}
      */
     protected void createToolBarActions( IManagedForm managedForm )
     {
@@ -346,8 +346,8 @@ public class InterceptorsMasterDetailsBlock extends MasterDetailsBlock
     }
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.ui.forms.MasterDetailsBlock#registerPages(org.eclipse.ui.forms.DetailsPart)
+    /**
+     * {@inheritDoc}
      */
     protected void registerPages( DetailsPart detailsPart )
     {

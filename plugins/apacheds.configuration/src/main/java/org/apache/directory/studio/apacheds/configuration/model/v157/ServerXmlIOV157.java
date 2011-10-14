@@ -170,8 +170,8 @@ public class ServerXmlIOV157 extends AbstractServerXmlIO implements ServerXmlIO
     }
 
 
-    /* (non-Javadoc)
-     * @see org.apache.directory.studio.apacheds.configuration.model.ServerXmlIO#parse(java.io.InputStream)
+    /**
+     * {@inheritDoc}
      */
     public ServerConfiguration parse( InputStream is ) throws ServerXmlIOException
     {
@@ -1160,8 +1160,8 @@ public class ServerXmlIOV157 extends AbstractServerXmlIO implements ServerXmlIO
     }
 
 
-    /* (non-Javadoc)
-     * @see org.apache.directory.studio.apacheds.configuration.model.ServerXmlIO#toXml(org.apache.directory.studio.apacheds.configuration.model.ServerConfiguration)
+    /**
+     * {@inheritDoc}
      */
     public String toXml( ServerConfiguration serverConfiguration ) throws IOException
     {
@@ -1403,7 +1403,7 @@ public class ServerXmlIOV157 extends AbstractServerXmlIO implements ServerXmlIO
     private void createInterceptors( Element interceptorsElement, ServerConfigurationV157 serverConfiguration )
     {
         List<InterceptorEnum> interceptors = serverConfiguration.getInterceptors();
-        
+
         for ( InterceptorEnum interceptor : interceptors )
         {
             switch ( interceptor )

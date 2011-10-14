@@ -64,8 +64,8 @@ public class NtlmProviderDialog extends Dialog
     }
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.jface.window.Window#configureShell(org.eclipse.swt.widgets.Shell)
+    /**
+     * {@inheritDoc}
      */
     protected void configureShell( Shell newShell )
     {
@@ -74,8 +74,8 @@ public class NtlmProviderDialog extends Dialog
     }
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.jface.dialogs.Dialog#createDialogArea(org.eclipse.swt.widgets.Composite)
+    /**
+     * {@inheritDoc}
      */
     protected Control createDialogArea( Composite parent )
     {
@@ -121,8 +121,8 @@ public class NtlmProviderDialog extends Dialog
     }
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.jface.dialogs.Dialog#okPressed()
+    /**
+     * {@inheritDoc}
      */
     protected void okPressed()
     {

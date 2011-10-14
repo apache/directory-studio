@@ -208,7 +208,7 @@ public abstract class AbstractServerXmlIO implements ServerXmlIO
 
                 String addedLine = line.trim();
 
-                if ( Strings.isEmpty(addedLine) )
+                if ( Strings.isEmpty( addedLine ) )
                 {
                     continue;
                 }
@@ -236,8 +236,8 @@ public abstract class AbstractServerXmlIO implements ServerXmlIO
     }
 
 
-    /* (non-Javadoc)
-     * @see org.apache.directory.studio.apacheds.configuration.model.ServerXmlIO#isValid(java.io.InputStream)
+    /**
+     * {@inheritDoc}
      */
     public final boolean isValid( InputStream is )
     {
@@ -255,8 +255,8 @@ public abstract class AbstractServerXmlIO implements ServerXmlIO
     }
 
 
-    /* (non-Javadoc)
-     * @see org.apache.directory.studio.apacheds.configuration.model.ServerXmlIO#isValid(java.io.Reader)
+    /**
+     * {@inheritDoc}
      */
     public final boolean isValid( Reader reader )
     {
