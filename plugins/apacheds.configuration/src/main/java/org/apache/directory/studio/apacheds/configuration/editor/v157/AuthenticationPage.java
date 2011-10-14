@@ -24,12 +24,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.directory.studio.apacheds.configuration.ApacheDSConfigurationPluginConstants;
-import org.apache.directory.studio.apacheds.configuration.editor.SaveableFormPage;
 import org.apache.directory.studio.apacheds.configuration.editor.ServerConfigurationEditor;
 import org.apache.directory.studio.apacheds.configuration.editor.v157.dialogs.NtlmProviderDialog;
 import org.apache.directory.studio.apacheds.configuration.editor.v157.dialogs.SaslRealmDialog;
 import org.apache.directory.studio.apacheds.configuration.model.v157.ServerConfigurationV157;
 import org.apache.directory.studio.apacheds.configuration.model.v157.SupportedMechanismEnum;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.CheckStateChangedEvent;
@@ -67,7 +67,7 @@ import org.eclipse.ui.forms.widgets.TableWrapLayout;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class AuthenticationPage extends FormPage implements SaveableFormPage
+public class AuthenticationPage extends FormPage
 {
     /** The Page ID */
     public static final String ID = ServerConfigurationEditor.ID + ".V157.AuthenticationPage"; //$NON-NLS-1$
@@ -496,10 +496,10 @@ public class AuthenticationPage extends FormPage implements SaveableFormPage
     }
 
 
-    /* (non-Javadoc)
-     * @see org.apache.directory.studio.apacheds.configuration.editor.SavableWizardPage#save()
+    /**
+     * {@inheritDoc}
      */
-    public void save()
+    public void doSave( IProgressMonitor monitor )
     {
         ServerConfigurationV157 configuration = ( ServerConfigurationV157 ) ( ( ServerConfigurationEditor ) getEditor() )
             .getServerConfiguration();

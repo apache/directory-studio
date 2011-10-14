@@ -23,10 +23,10 @@ package org.apache.directory.studio.apacheds.configuration.editor.v150;
 import java.util.List;
 
 import org.apache.directory.studio.apacheds.configuration.ApacheDSConfigurationPluginConstants;
-import org.apache.directory.studio.apacheds.configuration.editor.SaveableFormPage;
 import org.apache.directory.studio.apacheds.configuration.editor.ServerConfigurationEditor;
 import org.apache.directory.studio.apacheds.configuration.editor.v150.dialogs.BinaryAttributeDialog;
 import org.apache.directory.studio.apacheds.configuration.model.v150.ServerConfigurationV150;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.viewers.ArrayContentProvider;
@@ -68,7 +68,7 @@ import org.eclipse.ui.forms.widgets.TableWrapLayout;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class GeneralPage extends FormPage implements SaveableFormPage
+public class GeneralPage extends FormPage
 {
     /** The Page ID*/
     public static final String ID = ServerConfigurationEditor.ID + ".BasicPage";
@@ -617,10 +617,10 @@ public class GeneralPage extends FormPage implements SaveableFormPage
     }
 
 
-    /* (non-Javadoc)
-     * @see org.apache.directory.studio.apacheds.configuration.editor.SavableWizardPage#save()
+    /**
+     * {@inheritDoc}
      */
-    public void save()
+    public void doSave( IProgressMonitor monitor )
     {
         ServerConfigurationV150 serverConfiguration = ( ServerConfigurationV150 ) ( ( ServerConfigurationEditor ) getEditor() )
             .getServerConfiguration();

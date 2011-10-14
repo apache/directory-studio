@@ -21,9 +21,9 @@ package org.apache.directory.studio.apacheds.configuration.editor.v154;
 
 
 import org.apache.directory.studio.apacheds.configuration.ApacheDSConfigurationPluginConstants;
-import org.apache.directory.studio.apacheds.configuration.editor.SaveableFormPage;
 import org.apache.directory.studio.apacheds.configuration.editor.ServerConfigurationEditor;
 import org.apache.directory.studio.apacheds.configuration.model.v154.ServerConfigurationV154;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
@@ -53,7 +53,7 @@ import org.eclipse.ui.forms.widgets.TableWrapLayout;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class GeneralPage extends FormPage implements SaveableFormPage
+public class GeneralPage extends FormPage
 {
     /** The Page ID*/
     public static final String ID = ServerConfigurationEditor.ID + ".V154.GeneralPage"; //$NON-NLS-1$
@@ -547,10 +547,10 @@ public class GeneralPage extends FormPage implements SaveableFormPage
     }
 
 
-    /* (non-Javadoc)
-     * @see org.apache.directory.studio.apacheds.configuration.editor.SavableWizardPage#save()
+    /**
+     * {@inheritDoc}
      */
-    public void save()
+    public void doSave( IProgressMonitor monitor )
     {
         ServerConfigurationV154 configuration = ( ServerConfigurationV154 ) ( ( ServerConfigurationEditor ) getEditor() )
             .getServerConfiguration();

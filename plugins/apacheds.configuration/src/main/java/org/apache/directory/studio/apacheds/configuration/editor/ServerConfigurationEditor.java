@@ -67,6 +67,7 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.SaveAsDialog;
 import org.eclipse.ui.forms.editor.FormEditor;
+import org.eclipse.ui.forms.editor.FormPage;
 import org.eclipse.ui.part.FileEditorInput;
 
 
@@ -93,11 +94,11 @@ public class ServerConfigurationEditor extends FormEditor
     private String errorMessage;
 
     // The Pages
-    private SaveableFormPage generalPage;
-    private SaveableFormPage authenticationPage;
-    private SaveableFormPage partitionsPage;
-    private SaveableFormPage interceptorsPage;
-    private SaveableFormPage extendedOperationsPage;
+    private FormPage generalPage;
+    private FormPage authenticationPage;
+    private FormPage partitionsPage;
+    private FormPage interceptorsPage;
+    private FormPage extendedOperationsPage;
 
 
     /* (non-Javadoc)
@@ -421,7 +422,7 @@ public class ServerConfigurationEditor extends FormEditor
             Messages.getString( "ServerConfigurationEditor.SavingTheServerConfiguration" ), IProgressMonitor.UNKNOWN ); //$NON-NLS-1$
 
         // Saving the editor pages
-        saveEditorPages();
+        saveEditorPages( monitor );
 
         try
         {
@@ -486,65 +487,65 @@ public class ServerConfigurationEditor extends FormEditor
      * @param monitor
      *      the monitor to use
      */
-    private void saveEditorPages()
+    private void saveEditorPages( IProgressMonitor monitor )
     {
         if ( serverConfiguration != null )
         {
             switch ( serverConfiguration.getVersion() )
             {
                 case VERSION_1_5_7:
-                    generalPage.save();
-                    authenticationPage.save();
-                    partitionsPage.save();
-                    interceptorsPage.save();
-                    extendedOperationsPage.save();
+                    generalPage.doSave( monitor );
+                    authenticationPage.doSave( monitor );
+                    partitionsPage.doSave( monitor );
+                    interceptorsPage.doSave( monitor );
+                    extendedOperationsPage.doSave( monitor );
                     break;
                 case VERSION_1_5_6:
-                    generalPage.save();
-                    authenticationPage.save();
-                    partitionsPage.save();
-                    interceptorsPage.save();
-                    extendedOperationsPage.save();
+                    generalPage.doSave( monitor );
+                    authenticationPage.doSave( monitor );
+                    partitionsPage.doSave( monitor );
+                    interceptorsPage.doSave( monitor );
+                    extendedOperationsPage.doSave( monitor );
                     break;
                 case VERSION_1_5_5:
-                    generalPage.save();
-                    authenticationPage.save();
-                    partitionsPage.save();
-                    interceptorsPage.save();
-                    extendedOperationsPage.save();
+                    generalPage.doSave( monitor );
+                    authenticationPage.doSave( monitor );
+                    partitionsPage.doSave( monitor );
+                    interceptorsPage.doSave( monitor );
+                    extendedOperationsPage.doSave( monitor );
                     break;
                 case VERSION_1_5_4:
-                    generalPage.save();
-                    authenticationPage.save();
-                    partitionsPage.save();
-                    interceptorsPage.save();
-                    extendedOperationsPage.save();
+                    generalPage.doSave( monitor );
+                    authenticationPage.doSave( monitor );
+                    partitionsPage.doSave( monitor );
+                    interceptorsPage.doSave( monitor );
+                    extendedOperationsPage.doSave( monitor );
                     break;
                 case VERSION_1_5_3:
-                    generalPage.save();
-                    authenticationPage.save();
-                    partitionsPage.save();
-                    interceptorsPage.save();
-                    extendedOperationsPage.save();
+                    generalPage.doSave( monitor );
+                    authenticationPage.doSave( monitor );
+                    partitionsPage.doSave( monitor );
+                    interceptorsPage.doSave( monitor );
+                    extendedOperationsPage.doSave( monitor );
                     break;
                 case VERSION_1_5_2:
-                    generalPage.save();
-                    authenticationPage.save();
-                    partitionsPage.save();
-                    interceptorsPage.save();
-                    extendedOperationsPage.save();
+                    generalPage.doSave( monitor );
+                    authenticationPage.doSave( monitor );
+                    partitionsPage.doSave( monitor );
+                    interceptorsPage.doSave( monitor );
+                    extendedOperationsPage.doSave( monitor );
                     break;
                 case VERSION_1_5_1:
-                    generalPage.save();
-                    partitionsPage.save();
-                    interceptorsPage.save();
-                    extendedOperationsPage.save();
+                    generalPage.doSave( monitor );
+                    partitionsPage.doSave( monitor );
+                    interceptorsPage.doSave( monitor );
+                    extendedOperationsPage.doSave( monitor );
                     break;
                 case VERSION_1_5_0:
-                    generalPage.save();
-                    partitionsPage.save();
-                    interceptorsPage.save();
-                    extendedOperationsPage.save();
+                    generalPage.doSave( monitor );
+                    partitionsPage.doSave( monitor );
+                    interceptorsPage.doSave( monitor );
+                    extendedOperationsPage.doSave( monitor );
                     break;
             }
         }
@@ -600,7 +601,7 @@ public class ServerConfigurationEditor extends FormEditor
                         monitor
                             .beginTask(
                                 Messages.getString( "ServerConfigurationEditor.SavingTheServerConfiguration" ), IProgressMonitor.UNKNOWN ); //$NON-NLS-1$
-                        saveEditorPages();
+                        saveEditorPages( monitor );
                         boolean success = doSaveAs( monitor );
                         setDirty( !success );
                         monitor.done();
@@ -674,7 +675,7 @@ public class ServerConfigurationEditor extends FormEditor
             FileEditorInput fei = new FileEditorInput( file );
 
             // Saving the file to disk
-            saveEditorPages();
+            saveEditorPages( monitor );
             saveConfiguration( fei, monitor );
 
             // Setting the new input to the editor
@@ -726,7 +727,7 @@ public class ServerConfigurationEditor extends FormEditor
             }
 
             // Saving the file to disk
-            saveEditorPages();
+            saveEditorPages( monitor );
             saveConfiguration( path );
 
             // Creating the new input for the editor

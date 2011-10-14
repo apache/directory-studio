@@ -21,8 +21,8 @@ package org.apache.directory.studio.apacheds.configuration.editor.v153;
 
 
 import org.apache.directory.studio.apacheds.configuration.ApacheDSConfigurationPluginConstants;
-import org.apache.directory.studio.apacheds.configuration.editor.SaveableFormPage;
 import org.apache.directory.studio.apacheds.configuration.editor.ServerConfigurationEditor;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.forms.IManagedForm;
 import org.eclipse.ui.forms.editor.FormEditor;
@@ -35,7 +35,7 @@ import org.eclipse.ui.forms.widgets.ScrolledForm;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class ExtendedOperationsPage extends FormPage implements SaveableFormPage
+public class ExtendedOperationsPage extends FormPage
 {
     /** The Page ID*/
     public static final String ID = ServerConfigurationEditor.ID + ".V153.ExtendedOperationsPage";
@@ -74,10 +74,10 @@ public class ExtendedOperationsPage extends FormPage implements SaveableFormPage
     }
 
 
-    /* (non-Javadoc)
-     * @see org.apache.directory.studio.apacheds.configuration.editor.SavableWizardPage#save()
+    /**
+     * {@inheritDoc}
      */
-    public void save()
+    public void doSave( IProgressMonitor monitor )
     {
         if ( masterDetailsBlock != null )
         {
