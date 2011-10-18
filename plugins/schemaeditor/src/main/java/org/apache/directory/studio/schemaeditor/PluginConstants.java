@@ -427,7 +427,7 @@ public final class PluginConstants
     /** The File Dialog path for 'Export Schemas to XML files' */
     public static final String FILE_DIALOG_EXPORT_SCHEMAS_XML = PluginConstants.PLUGIN_ID
         + ".fileDialog.exportSchemasXML";
-    /** The File Dialog path for 'Export Schemas for Apache DS' */
+    /** The File Dialog path for 'Export Schemas for ApacheDS' */
     public static final String FILE_DIALOG_EXPORT_SCHEMAS_APACHE_DS = PluginConstants.PLUGIN_ID
         + ".fileDialog.exportSchemasApacheDS";
     /** The File Dialog path for 'Import Schema Projects' */

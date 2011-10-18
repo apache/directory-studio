@@ -55,7 +55,7 @@ import org.eclipse.ui.IWorkbench;
 
 
 /**
- * This class represents the wizard to export schemas for Apache DS.
+ * This class represents the wizard to export schemas for ApacheDS.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
@@ -223,7 +223,7 @@ public class ExportSchemasForADSWizard extends Wizard implements IExportWizard
 
 
     /**
-     * Converts the given schema as its LDIF for Apache DS representation and stores it into the given StringBuffer.
+     * Converts the given schema as its LDIF for ApacheDS representation and stores it into the given StringBuffer.
      *
      * @param schema
      *      the schema

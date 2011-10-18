@@ -166,7 +166,7 @@ public class ApacheDS153LdapServerAdapter implements LdapServerAdapter
         // Starting the console printer thread
         LdapServersUtils.startConsolePrinterThread( server );
 
-        // Launching Apache DS
+        // Launching ApacheDS
         ILaunch launch = LdapServersUtils.launchApacheDS( server, getServerLibrariesFolder(), libraries );
 
         // Starting the "terminate" listener thread

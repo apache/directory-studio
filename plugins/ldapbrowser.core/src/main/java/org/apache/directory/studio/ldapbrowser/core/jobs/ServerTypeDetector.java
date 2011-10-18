@@ -52,7 +52,7 @@ public class ServerTypeDetector
             String vendorName = vnAttribute.getStringValues()[0];
             String vendorVersion = vvAttribute.getStringValues()[0];
 
-            // Apache DS
+            // ApacheDS
             serverType = detectApacheDS( vendorName );
             if ( !ConnectionServerType.UNKNOWN.equals( serverType ) )
             {

@@ -59,7 +59,7 @@ public class CoreSchemasSelectionWidget
         APACHE_DS, OPENLDAP
     }
 
-    /** The array containing the 'core' from Apache DS */
+    /** The array containing the 'core' from ApacheDS */
     private static final String[] coreSchemasFromApacheDS = new String[]
         { "apache", "apachedns", "apachemeta", "autofs", "collective", "corba", "core", "cosine", "dhcp", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$ //$NON-NLS-9$
             "inetorgperson", "java", "krb5kdc", "mozilla", "nis", "samba", "system" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
@@ -95,7 +95,7 @@ public class CoreSchemasSelectionWidget
         serverTypeGroup.setLayout( new GridLayout( 2, false ) );
         serverTypeGroup.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
 
-        // Type Apache DS Button
+        // Type ApacheDS Button
         typeApacheDSButton = new Button( serverTypeGroup, SWT.RADIO );
         typeApacheDSButton.setText( Messages.getString( "CoreSchemasSelectionWidget.ApacheDS" ) ); //$NON-NLS-1$
         typeApacheDSButton.addSelectionListener( new SelectionAdapter()
@@ -234,7 +234,7 @@ public class CoreSchemasSelectionWidget
      * @param selectedButton
      *      the selected button:
      *      <ul>
-     *      <li>{@link ServerTypeEnum}.APACHE_DS for the "Apache DS" button</li>
+     *      <li>{@link ServerTypeEnum}.APACHE_DS for the "ApacheDS" button</li>
      *      <li>{@link ServerTypeEnum}.OPENLDAP for the "OpenLDAP" button</li>
      *      </ul>
      */
@@ -259,7 +259,7 @@ public class CoreSchemasSelectionWidget
 
 
     /**
-     * Re-initializes the Table Viewer with the 'core' schemas from Apache DS.
+     * Re-initializes the Table Viewer with the 'core' schemas from ApacheDS.
      */
     private void resetTableViewerWithCoreSchemasFromApacheDS()
     {

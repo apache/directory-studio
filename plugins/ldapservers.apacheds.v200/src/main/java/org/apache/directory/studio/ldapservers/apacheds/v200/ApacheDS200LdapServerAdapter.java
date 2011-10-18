@@ -167,7 +167,7 @@ public class ApacheDS200LdapServerAdapter implements LdapServerAdapter
         // Starting the console printer thread
         LdapServersUtils.startConsolePrinterThread( server );
 
-        // Launching Apache DS
+        // Launching ApacheDS
         ILaunch launch = launchApacheDS( server );
 
         // Starting the "terminate" listener thread
@@ -179,7 +179,7 @@ public class ApacheDS200LdapServerAdapter implements LdapServerAdapter
 
 
     /**
-     * Launches Apache DS using a launch configuration.
+     * Launches ApacheDS using a launch configuration.
      *
      * @param server
      *      the server

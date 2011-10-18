@@ -44,7 +44,7 @@ import org.apache.directory.studio.schemaeditor.model.Schema;
 
 
 /**
- * A Schema Connector for Apache DS.
+ * A Schema Connector for ApacheDS.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */

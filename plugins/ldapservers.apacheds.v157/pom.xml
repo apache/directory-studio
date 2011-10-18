@@ -153,13 +153,13 @@
           <skip>true</skip>
         </configuration>
       </plugin>
-      <!-- Copying Apache DS 1.5.6 Libraries -->
+      <!-- Copying ApacheDS 1.5.7 Libraries -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-dependency-plugin</artifactId>
         <executions>
           <execution>
-            <id>copy-apacheds-1.5.6-libraries</id>
+            <id>copy-apacheds-1.5.7-libraries</id>
             <phase>process-resources</phase>
             <goals>
               <goal>copy</goal>
