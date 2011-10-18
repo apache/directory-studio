@@ -41,7 +41,7 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
 
 
 /**
- * This class implements the Colors And Fonts preference page for the Apache DS plugin.
+ * This class implements the Colors And Fonts preference page for the ApacheDS plugin.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */

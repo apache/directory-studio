@@ -140,7 +140,7 @@ public class ServersHandlerIO
             }
             // <!> Compatibility mode <!>
             // if the server does not have a version attribute, this means it's an
-            // Apache DS 1.5.3 server
+            // ApacheDS 1.5.3 server
             else
             {
                 server.setVersion( ServerVersion.VERSION_1_5_3 );
@@ -148,7 +148,7 @@ public class ServersHandlerIO
         }
         // <!> Compatibility mode <!>
         // if the server does not have a version attribute, this means it's an
-        // Apache DS 1.5.3 server
+        // ApacheDS 1.5.3 server
         else
         {
             server.setVersion( ServerVersion.VERSION_1_5_3 );

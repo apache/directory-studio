@@ -48,7 +48,7 @@ import org.eclipse.ui.dialogs.PreferencesUtil;
 
 
 /**
- * This class implements the Servers Logs preference page for the Apache DS plugin.
+ * This class implements the Servers Logs preference page for the ApacheDS plugin.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */

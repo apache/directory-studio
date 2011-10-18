@@ -27,7 +27,7 @@
   </parent>
   
   <artifactId>apacheds.configuration.v2</artifactId>
-  <name>Apache Directory Studio Apache DS 2.0 Configuration</name>
+  <name>Apache Directory Studio ApacheDS 2.0 Configuration</name>
   <packaging>jar</packaging>
 
   <description />

@@ -21,7 +21,7 @@ package org.apache.directory.studio.apacheds.model;
 
 
 /**
- * This enum represents the version of an Apache DS server.
+ * This enum represents the version of an ApacheDS server.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */

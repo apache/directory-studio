@@ -137,7 +137,7 @@ public class LaunchServerJob extends Job
                 + e.getMessage() );
         }
 
-        // Launching Apache DS
+        // Launching ApacheDS
         launchApacheDS();
 
         // Starting the startup listener thread
@@ -538,7 +538,7 @@ public class LaunchServerJob extends Job
 
     /**
      * Launches a Log4J {@link SocketServer} which will be used to redirect the
-     * logs of Apache DS to the console.
+     * logs of ApacheDS to the console.
      * 
      * @param port
      *            the port
@@ -585,7 +585,7 @@ public class LaunchServerJob extends Job
 
 
     /**
-     * Launches Apache DS using a launch configuration.
+     * Launches ApacheDS using a launch configuration.
      */
     private void launchApacheDS()
     {

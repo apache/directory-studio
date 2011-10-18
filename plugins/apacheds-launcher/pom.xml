@@ -27,7 +27,7 @@
 	</parent>
 
 	<artifactId>apacheds-launcher</artifactId>
-	<name>Apache Directory Studio Apache DS Launcher</name>
+	<name>Apache Directory Studio ApacheDS Launcher</name>
 	<packaging>jar</packaging>
 
 	<description />

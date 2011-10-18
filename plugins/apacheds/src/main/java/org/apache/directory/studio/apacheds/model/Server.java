@@ -29,7 +29,7 @@ import org.eclipse.core.runtime.IAdaptable;
 
 
 /**
- * This class represents an Apache DS server.
+ * This class represents an ApacheDS server.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */

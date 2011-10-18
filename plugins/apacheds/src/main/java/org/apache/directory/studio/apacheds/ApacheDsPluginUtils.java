@@ -79,7 +79,7 @@ public class ApacheDsPluginUtils
             librariesFolder.mkdir();
         }
 
-        // Specific Apache DS folder
+        // Specific ApacheDS folder
         IPath apacheDsFolderPath = librariesFolderPath.append( APACHEDS + "-" + server.getVersion() );
         File apacheDsFolder = new File( apacheDsFolderPath.toOSString() );
         if ( !apacheDsFolder.exists() )
@@ -110,13 +110,13 @@ public class ApacheDsPluginUtils
 
 
     /**
-     * Gets an array containing the names of the Apache DS libraries, according
+     * Gets an array containing the names of the ApacheDS libraries, according
      * to the given server.
      *
      * @param server
      *      the server
      * @return
-     *      an array containing the names of the Apache DS libraries, according
+     *      an array containing the names of the ApacheDS libraries, according
      * to the given server
      */
     public static String[] getApacheDsLibraries( Server server )
@@ -286,12 +286,12 @@ public class ApacheDsPluginUtils
 
 
     /**
-     * Get the path to the Apache DS libraries folder.
+     * Get the path to the ApacheDS libraries folder.
      *
      * @param server
      *      the server
      * @return
-     *      the path to the Apache DS libraries folder
+     *      the path to the ApacheDS libraries folder
      */
     public static IPath getApacheDsLibrariesFolder( Server server )
     {
@@ -301,10 +301,10 @@ public class ApacheDsPluginUtils
 
 
     /**
-     * Get the path to the Apache DS servers folder.
+     * Get the path to the ApacheDS servers folder.
      *
      * @return
-     *      the path to the Apache DS server folder
+     *      the path to the ApacheDS server folder
      */
     public static IPath getApacheDsServersFolder()
     {
@@ -320,7 +320,7 @@ public class ApacheDsPluginUtils
      */
     public static void createNewServerFolder( String id )
     {
-        // Checking if the Apache DS servers folder exists
+        // Checking if the ApacheDS servers folder exists
         checkApacheDsServersFolder();
 
         // Creating the server folder
@@ -501,7 +501,7 @@ public class ApacheDsPluginUtils
 
 
     /**
-     * Verifies that the Apache DS server folder exists.
+     * Verifies that the ApacheDS server folder exists.
      * If it does not exists, it creates it.
      */
     private static void checkApacheDsServersFolder()

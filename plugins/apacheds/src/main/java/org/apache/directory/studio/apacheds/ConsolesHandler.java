@@ -91,7 +91,7 @@ public class ConsolesHandler
         {
             Server server = ServersHandler.getDefault().getServerById( serverId );
 
-            LogMessageConsole logMessageConsole = new LogMessageConsole( "Apache DS - " + server.getName() );
+            LogMessageConsole logMessageConsole = new LogMessageConsole( "ApacheDS - " + server.getName() );
 
             consolesMap.put( serverId, logMessageConsole );
 
