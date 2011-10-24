@@ -44,8 +44,8 @@ public class Application implements IApplication
     private static Logger logger = LoggerFactory.getLogger( Application.class );
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.equinox.app.IApplication#start(org.eclipse.equinox.app.IApplicationContext)
+    /**
+     * {@inheritDoc}
      */
     public Object start( IApplicationContext context ) throws Exception
     {
@@ -72,8 +72,8 @@ public class Application implements IApplication
     }
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.equinox.app.IApplication#stop()
+    /**
+     * {@inheritDoc}
      */
     public void stop()
     {
