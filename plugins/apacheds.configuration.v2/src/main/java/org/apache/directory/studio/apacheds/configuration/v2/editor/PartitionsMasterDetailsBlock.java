@@ -228,7 +228,6 @@ public class PartitionsMasterDetailsBlock extends MasterDetailsBlock
                     if ( !PartitionsPage.isSystemPartition( partition ) )
                     {
                         page.getConfigBean().getDirectoryServiceBean().getPartitions().remove( partition );
-                        viewer.refresh();
                         setEditorDirty();
                     }
                 }
@@ -309,6 +308,7 @@ public class PartitionsMasterDetailsBlock extends MasterDetailsBlock
     public void setEditorDirty()
     {
         ( ( ServerConfigurationEditor ) page.getEditor() ).setDirty( true );
+        viewer.refresh();
     }
 
 
@@ -318,6 +318,5 @@ public class PartitionsMasterDetailsBlock extends MasterDetailsBlock
     public void save()
     {
         detailsPage.commit( true );
-        //        viewer.setInput( partitions );
     }
 }
