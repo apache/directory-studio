@@ -62,8 +62,8 @@ public class EntryEditorMenuManager extends MenuManager implements IMenuListener
     }
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.jface.action.IMenuListener#menuAboutToShow(org.eclipse.jface.action.IMenuManager)
+    /**
+     * {@inheritDoc}
      */
     public void menuAboutToShow( IMenuManager manager )
     {
