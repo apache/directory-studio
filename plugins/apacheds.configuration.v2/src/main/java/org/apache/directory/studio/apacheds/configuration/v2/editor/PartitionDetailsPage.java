@@ -180,8 +180,8 @@ public class PartitionDetailsPage implements IDetailsPage
     }
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.ui.forms.IDetailsPage#createContents(org.eclipse.swt.widgets.Composite)
+    /**
+     * {@inheritDoc}
      */
     public void createContents( Composite parent )
     {
@@ -352,8 +352,8 @@ public class PartitionDetailsPage implements IDetailsPage
     }
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.ui.forms.IPartSelectionListener#selectionChanged(org.eclipse.ui.forms.IFormPart, org.eclipse.jface.viewers.ISelection)
+    /**
+     * {@inheritDoc}
      */
     public void selectionChanged( IFormPart part, ISelection selection )
     {
@@ -370,8 +370,8 @@ public class PartitionDetailsPage implements IDetailsPage
     }
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.ui.forms.IFormPart#commit(boolean)
+    /**
+     * {@inheritDoc}
      */
     public void commit( boolean onSave )
     {
@@ -394,16 +394,16 @@ public class PartitionDetailsPage implements IDetailsPage
     }
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.ui.forms.IFormPart#dispose()
+    /**
+     * {@inheritDoc}
      */
     public void dispose()
     {
     }
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.ui.forms.IFormPart#initialize(org.eclipse.ui.forms.IManagedForm)
+    /**
+     * {@inheritDoc}
      */
     public void initialize( IManagedForm form )
     {
@@ -411,8 +411,8 @@ public class PartitionDetailsPage implements IDetailsPage
     }
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.ui.forms.IFormPart#isDirty()
+    /**
+     * {@inheritDoc}
      */
     public boolean isDirty()
     {
@@ -420,8 +420,8 @@ public class PartitionDetailsPage implements IDetailsPage
     }
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.ui.forms.IFormPart#isStale()
+    /**
+     * {@inheritDoc}
      */
     public boolean isStale()
     {
@@ -429,8 +429,8 @@ public class PartitionDetailsPage implements IDetailsPage
     }
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.ui.forms.IFormPart#refresh()
+    /**
+     * {@inheritDoc}
      */
     public void refresh()
     {
