@@ -54,8 +54,10 @@ public class LinkWithEditorHierarchyViewAction extends Action
     /** The listener listening on changes on editors */
     private IPartListener2 editorListener = new IPartListener2()
     {
-        /* (non-Javadoc)
-         * @see org.eclipse.ui.IPartListener2#partVisible(org.eclipse.ui.IWorkbenchPartReference)
+
+
+        /**
+         * {@inheritDoc}
          */
         public void partVisible( IWorkbenchPartReference partRef )
         {
@@ -72,56 +74,56 @@ public class LinkWithEditorHierarchyViewAction extends Action
         }
 
 
-        /* (non-Javadoc)
-         * @see org.eclipse.ui.IPartListener2#partActivated(org.eclipse.ui.IWorkbenchPartReference)
+        /**
+         * {@inheritDoc}
          */
         public void partActivated( IWorkbenchPartReference partRef )
         {
         }
 
 
-        /* (non-Javadoc)
-         * @see org.eclipse.ui.IPartListener2#partClosed(org.eclipse.ui.IWorkbenchPartReference)
+        /**
+         * {@inheritDoc}
          */
         public void partClosed( IWorkbenchPartReference partRef )
         {
         }
 
 
-        /* (non-Javadoc)
-         * @see org.eclipse.ui.IPartListener2#partDeactivated(org.eclipse.ui.IWorkbenchPartReference)
+        /**
+         * {@inheritDoc}
          */
         public void partDeactivated( IWorkbenchPartReference partRef )
         {
         }
 
 
-        /* (non-Javadoc)
-         * @see org.eclipse.ui.IPartListener2#partHidden(org.eclipse.ui.IWorkbenchPartReference)
+        /**
+         * {@inheritDoc}
          */
         public void partHidden( IWorkbenchPartReference partRef )
         {
         }
 
 
-        /* (non-Javadoc)
-         * @see org.eclipse.ui.IPartListener2#partInputChanged(org.eclipse.ui.IWorkbenchPartReference)
+        /**
+         * {@inheritDoc}
          */
         public void partInputChanged( IWorkbenchPartReference partRef )
         {
         }
 
 
-        /* (non-Javadoc)
-         * @see org.eclipse.ui.IPartListener2#partOpened(org.eclipse.ui.IWorkbenchPartReference)
+        /**
+         * {@inheritDoc}
          */
         public void partOpened( IWorkbenchPartReference partRef )
         {
         }
 
 
-        /* (non-Javadoc)
-         * @see org.eclipse.ui.IPartListener2#partBroughtToTop(org.eclipse.ui.IWorkbenchPartReference)
+        /**
+         * {@inheritDoc}
          */
         public void partBroughtToTop( IWorkbenchPartReference partRef )
         {
@@ -160,8 +162,8 @@ public class LinkWithEditorHierarchyViewAction extends Action
     }
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.jface.action.Action#run()
+    /**
+     * {@inheritDoc}
      */
     public void run()
     {

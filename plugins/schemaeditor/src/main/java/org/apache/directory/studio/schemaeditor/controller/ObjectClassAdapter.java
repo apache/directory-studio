@@ -31,16 +31,16 @@ package org.apache.directory.studio.schemaeditor.controller;
  */
 public abstract class ObjectClassAdapter implements ObjectClassListener
 {
-    /* (non-Javadoc)
-     * @see org.apache.directory.studio.schemaeditor.model.ObjectClassListener#objectClassModified()
+    /**
+     * {@inheritDoc}
      */
     public void objectClassModified()
     {
     }
 
 
-    /* (non-Javadoc)
-     * @see org.apache.directory.studio.schemaeditor.model.ObjectClassListener#objectClassRemoved()
+    /**
+     * {@inheritDoc}
      */
     public void objectClassRemoved()
     {

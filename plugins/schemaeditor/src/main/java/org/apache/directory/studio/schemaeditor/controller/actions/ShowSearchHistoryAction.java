@@ -65,10 +65,8 @@ public class ShowSearchHistoryAction extends Action implements IWorkbenchWindowA
     }
 
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.action.Action#run()
+    /**
+     * {@inheritDoc}
      */
     public void run()
     {
@@ -77,8 +75,8 @@ public class ShowSearchHistoryAction extends Action implements IWorkbenchWindowA
     }
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.ui.IActionDelegate#run(org.eclipse.jface.action.IAction)
+    /**
+     * {@inheritDoc}
      */
     public void run( IAction action )
     {
@@ -86,8 +84,8 @@ public class ShowSearchHistoryAction extends Action implements IWorkbenchWindowA
     }
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.ui.IWorkbenchWindowActionDelegate#dispose()
+    /**
+     * {@inheritDoc}
      */
     public void dispose()
     {
@@ -95,8 +93,8 @@ public class ShowSearchHistoryAction extends Action implements IWorkbenchWindowA
     }
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.ui.IWorkbenchWindowActionDelegate#init(org.eclipse.ui.IWorkbenchWindow)
+    /**
+     * {@inheritDoc}
      */
     public void init( IWorkbenchWindow window )
     {
@@ -104,8 +102,8 @@ public class ShowSearchHistoryAction extends Action implements IWorkbenchWindowA
     }
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.ui.IActionDelegate#selectionChanged(org.eclipse.jface.action.IAction, org.eclipse.jface.viewers.ISelection)
+    /**
+     * {@inheritDoc}
      */
     public void selectionChanged( IAction action, ISelection selection )
     {
@@ -134,8 +132,8 @@ class MenuCreator implements IMenuCreator
     }
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.jface.action.IMenuCreator#dispose()
+    /**
+     * {@inheritDoc}
      */
     public void dispose()
     {
@@ -147,8 +145,8 @@ class MenuCreator implements IMenuCreator
     }
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.jface.action.IMenuCreator#getMenu(org.eclipse.swt.widgets.Control)
+    /**
+     * {@inheritDoc}
      */
     public Menu getMenu( Control parent )
     {
@@ -211,8 +209,8 @@ class MenuCreator implements IMenuCreator
     }
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.jface.action.IMenuCreator#getMenu(org.eclipse.swt.widgets.Menu)
+    /**
+     * {@inheritDoc}
      */
     public Menu getMenu( Menu parent )
     {

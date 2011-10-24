@@ -34,24 +34,24 @@ import org.apache.directory.studio.schemaeditor.model.Project;
  */
 public class ProjectsHandlerAdapter implements ProjectsHandlerListener
 {
-    /* (non-Javadoc)
-     * @see org.apache.directory.studio.schemaeditor.controller.ProjectsHandlerListener#projectAdded(org.apache.directory.studio.schemaeditor.model.Project)
+    /**
+     * {@inheritDoc}
      */
     public void projectAdded( Project project )
     {
     }
 
 
-    /* (non-Javadoc)
-     * @see org.apache.directory.studio.schemaeditor.controller.ProjectsHandlerListener#projectRemoved(org.apache.directory.studio.schemaeditor.model.Project)
+    /**
+     * {@inheritDoc}
      */
     public void projectRemoved( Project project )
     {
     }
 
 
-    /* (non-Javadoc)
-     * @see org.apache.directory.studio.schemaeditor.controller.ProjectsHandlerListener#openProjectChanged(org.apache.directory.studio.schemaeditor.model.Project, org.apache.directory.studio.schemaeditor.model.Project)
+    /**
+     * {@inheritDoc}
      */
     public void openProjectChanged( Project oldProject, Project newProject )
     {

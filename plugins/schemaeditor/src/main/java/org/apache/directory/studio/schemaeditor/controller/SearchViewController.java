@@ -142,8 +142,8 @@ public class SearchViewController
     {
         Activator.getDefault().getPreferenceStore().addPropertyChangeListener( new IPropertyChangeListener()
         {
-            /* (non-Javadoc)
-             * @see org.eclipse.jface.util.IPropertyChangeListener#propertyChange(org.eclipse.jface.util.PropertyChangeEvent)
+            /**
+             * {@inheritDoc}
              */
             public void propertyChange( PropertyChangeEvent event )
             {

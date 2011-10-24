@@ -37,96 +37,96 @@ import org.apache.directory.shared.ldap.model.schema.ObjectClass;
  */
 public abstract class SchemaAdapter implements SchemaListener
 {
-    /* (non-Javadoc)
-     * @see org.apache.directory.studio.schemaeditor.model.SchemaListener#attributeTypeAdded(org.apache.directory.studio.schemaeditor.model.AttributeTypeImpl)
+    /**
+     * {@inheritDoc}
      */
     public void attributeTypeAdded( AttributeType at )
     {
     }
 
 
-    /* (non-Javadoc)
-     * @see org.apache.directory.studio.schemaeditor.model.SchemaListener#attributeTypeModified(org.apache.directory.studio.schemaeditor.model.AttributeTypeImpl)
+    /**
+     * {@inheritDoc}
      */
     public void attributeTypeModified( AttributeType at )
     {
     }
 
 
-    /* (non-Javadoc)
-     * @see org.apache.directory.studio.schemaeditor.model.SchemaListener#attributeTypeRemoved(org.apache.directory.studio.schemaeditor.model.AttributeTypeImpl)
+    /**
+     * {@inheritDoc}
      */
     public void attributeTypeRemoved( AttributeType at )
     {
     }
 
 
-    /* (non-Javadoc)
-     * @see org.apache.directory.studio.schemaeditor.model.SchemaListener#matchingRuleAdded(org.apache.directory.studio.schemaeditor.model.MatchingRuleImpl)
+    /**
+     * {@inheritDoc}
      */
     public void matchingRuleAdded( MatchingRule mr )
     {
     }
 
 
-    /* (non-Javadoc)
-     * @see org.apache.directory.studio.schemaeditor.model.SchemaListener#matchingRuleModified(org.apache.directory.studio.schemaeditor.model.MatchingRuleImpl)
+    /**
+     * {@inheritDoc}
      */
     public void matchingRuleModified( MatchingRule mr )
     {
     }
 
 
-    /* (non-Javadoc)
-     * @see org.apache.directory.studio.schemaeditor.model.SchemaListener#matchingRuleRemoved(org.apache.directory.studio.schemaeditor.model.MatchingRuleImpl)
+    /**
+     * {@inheritDoc}
      */
     public void matchingRuleRemoved( MatchingRule mr )
     {
     }
 
 
-    /* (non-Javadoc)
-     * @see org.apache.directory.studio.schemaeditor.model.SchemaListener#objectClassAdded(org.apache.directory.studio.schemaeditor.model.ObjectClassImpl)
+    /**
+     * {@inheritDoc}
      */
     public void objectClassAdded( ObjectClass oc )
     {
     }
 
 
-    /* (non-Javadoc)
-     * @see org.apache.directory.studio.schemaeditor.model.SchemaListener#objectClassModified(org.apache.directory.studio.schemaeditor.model.ObjectClassImpl)
+    /**
+     * {@inheritDoc}
      */
     public void objectClassModified( ObjectClass oc )
     {
     }
 
 
-    /* (non-Javadoc)
-     * @see org.apache.directory.studio.schemaeditor.model.SchemaListener#objectClassRemoved(org.apache.directory.studio.schemaeditor.model.ObjectClassImpl)
+    /**
+     * {@inheritDoc}
      */
     public void objectClassRemoved( ObjectClass oc )
     {
     }
 
 
-    /* (non-Javadoc)
-     * @see org.apache.directory.studio.schemaeditor.model.SchemaListener#syntaxAdded(org.apache.directory.studio.schemaeditor.model.SyntaxImpl)
+    /**
+     * {@inheritDoc}
      */
     public void syntaxAdded( LdapSyntax syntax )
     {
     }
 
 
-    /* (non-Javadoc)
-     * @see org.apache.directory.studio.schemaeditor.model.SchemaListener#syntaxModified(org.apache.directory.studio.schemaeditor.model.SyntaxImpl)
+    /**
+     * {@inheritDoc}
      */
     public void syntaxModified( LdapSyntax syntax )
     {
     }
 
 
-    /* (non-Javadoc)
-     * @see org.apache.directory.studio.schemaeditor.model.SchemaListener#syntaxRemoved(org.apache.directory.studio.schemaeditor.model.SyntaxImpl)
+    /**
+     * {@inheritDoc}
      */
     public void syntaxRemoved( LdapSyntax syntax )
     {

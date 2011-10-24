@@ -64,10 +64,10 @@ public class LinkWithEditorSchemaViewAction extends Action implements IWorkbench
     /** The listener listening on changes on editors */
     private IPartListener2 editorListener = new IPartListener2()
     {
-        /*
-         * (non-Javadoc)
-         * 
-         * @see org.eclipse.ui.IPartListener2#partVisible(org.eclipse.ui.IWorkbenchPartReference)
+
+
+        /**
+         * {@inheritDoc}
          */
         public void partVisible( IWorkbenchPartReference partRef )
         {
@@ -94,70 +94,56 @@ public class LinkWithEditorSchemaViewAction extends Action implements IWorkbench
         }
 
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see org.eclipse.ui.IPartListener2#partActivated(org.eclipse.ui.IWorkbenchPartReference)
+        /**
+         * {@inheritDoc}
          */
         public void partActivated( IWorkbenchPartReference partRef )
         {
         }
 
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see org.eclipse.ui.IPartListener2#partClosed(org.eclipse.ui.IWorkbenchPartReference)
+        /**
+         * {@inheritDoc}
          */
         public void partClosed( IWorkbenchPartReference partRef )
         {
         }
 
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see org.eclipse.ui.IPartListener2#partDeactivated(org.eclipse.ui.IWorkbenchPartReference)
+        /**
+         * {@inheritDoc}
          */
         public void partDeactivated( IWorkbenchPartReference partRef )
         {
         }
 
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see org.eclipse.ui.IPartListener2#partHidden(org.eclipse.ui.IWorkbenchPartReference)
+        /**
+         * {@inheritDoc}
          */
         public void partHidden( IWorkbenchPartReference partRef )
         {
         }
 
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see org.eclipse.ui.IPartListener2#partInputChanged(org.eclipse.ui.IWorkbenchPartReference)
+        /**
+         * {@inheritDoc}
          */
         public void partInputChanged( IWorkbenchPartReference partRef )
         {
         }
 
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see org.eclipse.ui.IPartListener2#partOpened(org.eclipse.ui.IWorkbenchPartReference)
+        /**
+         * {@inheritDoc}
          */
         public void partOpened( IWorkbenchPartReference partRef )
         {
         }
 
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see org.eclipse.ui.IPartListener2#partBroughtToTop(org.eclipse.ui.IWorkbenchPartReference)
+        /**
+         * {@inheritDoc}
          */
         public void partBroughtToTop( IWorkbenchPartReference partRef )
         {
@@ -167,11 +153,8 @@ public class LinkWithEditorSchemaViewAction extends Action implements IWorkbench
     /** The listener listening on changes on the view */
     private ISelectionListener viewListener = new ISelectionListener()
     {
-        /*
-         * (non-Javadoc)
-         * 
-         * @see org.eclipse.ui.ISelectionListener#selectionChanged(org.eclipse.ui.IWorkbenchPart,
-         *      org.eclipse.jface.viewers.ISelection)
+        /**
+         * {@inheritDoc}
          */
         public void selectionChanged( IWorkbenchPart part, ISelection selection )
         {
@@ -217,10 +200,8 @@ public class LinkWithEditorSchemaViewAction extends Action implements IWorkbench
     }
 
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.action.Action#run()
+    /**
+     * {@inheritDoc}
      */
     public void run()
     {
@@ -328,10 +309,8 @@ public class LinkWithEditorSchemaViewAction extends Action implements IWorkbench
     }
 
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.ui.IActionDelegate#run(org.eclipse.jface.action.IAction)
+    /**
+     * {@inheritDoc}
      */
     public void run( IAction action )
     {
@@ -339,10 +318,8 @@ public class LinkWithEditorSchemaViewAction extends Action implements IWorkbench
     }
 
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.ui.IWorkbenchWindowActionDelegate#dispose()
+    /**
+     * {@inheritDoc}
      */
     public void dispose()
     {
@@ -350,10 +327,8 @@ public class LinkWithEditorSchemaViewAction extends Action implements IWorkbench
     }
 
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.ui.IWorkbenchWindowActionDelegate#init(org.eclipse.ui.IWorkbenchWindow)
+    /**
+     * {@inheritDoc}
      */
     public void init( IWorkbenchWindow window )
     {
@@ -361,11 +336,8 @@ public class LinkWithEditorSchemaViewAction extends Action implements IWorkbench
     }
 
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.ui.IActionDelegate#selectionChanged(org.eclipse.jface.action.IAction,
-     *      org.eclipse.jface.viewers.ISelection)
+    /**
+     * {@inheritDoc}
      */
     public void selectionChanged( IAction action, ISelection selection )
     {

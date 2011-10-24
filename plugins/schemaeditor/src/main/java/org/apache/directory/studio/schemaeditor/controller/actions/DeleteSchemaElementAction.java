@@ -112,8 +112,8 @@ public class DeleteSchemaElementAction extends Action implements IWorkbenchWindo
     }
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.jface.action.Action#run()
+    /**
+     * {@inheritDoc}
      */
     public void run()
     {
@@ -206,8 +206,8 @@ public class DeleteSchemaElementAction extends Action implements IWorkbenchWindo
     }
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.ui.IActionDelegate#run(org.eclipse.jface.action.IAction)
+    /**
+     * {@inheritDoc}
      */
     public void run( IAction action )
     {
@@ -215,8 +215,8 @@ public class DeleteSchemaElementAction extends Action implements IWorkbenchWindo
     }
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.ui.IWorkbenchWindowActionDelegate#dispose()
+    /**
+     * {@inheritDoc}
      */
     public void dispose()
     {
@@ -224,8 +224,8 @@ public class DeleteSchemaElementAction extends Action implements IWorkbenchWindo
     }
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.ui.IWorkbenchWindowActionDelegate#init(org.eclipse.ui.IWorkbenchWindow)
+    /**
+     * {@inheritDoc}
      */
     public void init( IWorkbenchWindow window )
     {
@@ -233,8 +233,8 @@ public class DeleteSchemaElementAction extends Action implements IWorkbenchWindo
     }
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.ui.IActionDelegate#selectionChanged(org.eclipse.jface.action.IAction, org.eclipse.jface.viewers.ISelection)
+    /**
+     * {@inheritDoc}
      */
     public void selectionChanged( IAction action, ISelection selection )
     {

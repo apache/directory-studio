@@ -108,8 +108,9 @@ public class SchemaViewController
     /** The SchemaHandlerListener */
     private SchemaHandlerListener schemaHandlerListener = new SchemaHandlerAdapter()
     {
-        /* (non-Javadoc)
-         * @see org.apache.directory.studio.schemaeditor.controller.SchemaHandlerListener#attributeTypeAdded(org.apache.directory.studio.schemaeditor.model.AttributeTypeImpl)
+
+        /**
+         * {@inheritDoc}
          */
         public void attributeTypeAdded( AttributeType at )
         {
@@ -125,8 +126,8 @@ public class SchemaViewController
         }
 
 
-        /* (non-Javadoc)
-         * @see org.apache.directory.studio.schemaeditor.controller.SchemaHandlerListener#attributeTypeModified(org.apache.directory.studio.schemaeditor.model.AttributeTypeImpl)
+        /**
+         * {@inheritDoc}
          */
         public void attributeTypeModified( AttributeType at )
         {
@@ -135,8 +136,8 @@ public class SchemaViewController
         }
 
 
-        /* (non-Javadoc)
-         * @see org.apache.directory.studio.schemaeditor.controller.SchemaHandlerListener#attributeTypeRemoved(org.apache.directory.studio.schemaeditor.model.AttributeTypeImpl)
+        /**
+         * {@inheritDoc}
          */
         public void attributeTypeRemoved( AttributeType at )
         {
@@ -145,8 +146,8 @@ public class SchemaViewController
         }
 
 
-        /* (non-Javadoc)
-         * @see org.apache.directory.studio.schemaeditor.controller.SchemaHandlerListener#objectClassAdded(org.apache.directory.studio.schemaeditor.model.ObjectClassImpl)
+        /**
+         * {@inheritDoc}
          */
         public void objectClassAdded( ObjectClass oc )
         {
@@ -162,8 +163,8 @@ public class SchemaViewController
         }
 
 
-        /* (non-Javadoc)
-         * @see org.apache.directory.studio.schemaeditor.controller.SchemaHandlerListener#objectClassModified(org.apache.directory.studio.schemaeditor.model.ObjectClassImpl)
+        /**
+         * {@inheritDoc}
          */
         public void objectClassModified( ObjectClass oc )
         {
@@ -172,8 +173,8 @@ public class SchemaViewController
         }
 
 
-        /* (non-Javadoc)
-         * @see org.apache.directory.studio.schemaeditor.controller.SchemaHandlerListener#objectClassRemoved(org.apache.directory.studio.schemaeditor.model.ObjectClassImpl)
+        /**
+         * {@inheritDoc}
          */
         public void objectClassRemoved( ObjectClass oc )
         {
@@ -182,8 +183,8 @@ public class SchemaViewController
         }
 
 
-        /* (non-Javadoc)
-         * @see org.apache.directory.studio.schemaeditor.controller.SchemaHandlerListener#schemaAdded(org.apache.directory.studio.schemaeditor.model.Schema)
+        /**
+         * {@inheritDoc}
          */
         public void schemaAdded( Schema schema )
         {
@@ -207,8 +208,8 @@ public class SchemaViewController
         }
 
 
-        /* (non-Javadoc)
-         * @see org.apache.directory.studio.schemaeditor.controller.SchemaHandlerListener#schemaRemoved(org.apache.directory.studio.schemaeditor.model.Schema)
+        /**
+         * {@inheritDoc}
          */
         public void schemaRemoved( Schema schema )
         {
@@ -551,8 +552,8 @@ public class SchemaViewController
     {
         Activator.getDefault().getPreferenceStore().addPropertyChangeListener( new IPropertyChangeListener()
         {
-            /* (non-Javadoc)
-             * @see org.eclipse.jface.util.IPropertyChangeListener#propertyChange(org.eclipse.jface.util.PropertyChangeEvent)
+            /**
+             * {@inheritDoc}
              */
             public void propertyChange( PropertyChangeEvent event )
             {

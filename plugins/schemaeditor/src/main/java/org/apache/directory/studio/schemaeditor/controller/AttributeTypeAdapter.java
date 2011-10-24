@@ -31,16 +31,16 @@ package org.apache.directory.studio.schemaeditor.controller;
  */
 public abstract class AttributeTypeAdapter implements AttributeTypeListener
 {
-    /* (non-Javadoc)
-     * @see org.apache.directory.studio.schemaeditor.model.AttributeTypeListener#attributeTypeModified()
+    /**
+     * {@inheritDoc}
      */
     public void attributeTypeModified()
     {
     }
 
 
-    /* (non-Javadoc)
-     * @see org.apache.directory.studio.schemaeditor.model.AttributeTypeListener#attributeTypeRemoved()
+    /**
+     * {@inheritDoc}
      */
     public void attributeTypeRemoved()
     {

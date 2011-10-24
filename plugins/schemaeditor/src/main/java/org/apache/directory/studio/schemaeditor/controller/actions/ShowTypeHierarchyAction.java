@@ -53,8 +53,8 @@ public class ShowTypeHierarchyAction extends Action
     }
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.jface.action.Action#run()
+    /**
+     * {@inheritDoc}
      */
     public void run()
     {

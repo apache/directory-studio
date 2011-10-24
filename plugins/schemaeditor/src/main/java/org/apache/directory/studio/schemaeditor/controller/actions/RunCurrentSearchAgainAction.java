@@ -54,10 +54,8 @@ public class RunCurrentSearchAgainAction extends Action implements IWorkbenchWin
     }
 
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.action.Action#run()
+    /**
+     * {@inheritDoc}
      */
     public void run()
     {
@@ -65,8 +63,8 @@ public class RunCurrentSearchAgainAction extends Action implements IWorkbenchWin
     }
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.ui.IActionDelegate#run(org.eclipse.jface.action.IAction)
+    /**
+     * {@inheritDoc}
      */
     public void run( IAction action )
     {
@@ -74,8 +72,8 @@ public class RunCurrentSearchAgainAction extends Action implements IWorkbenchWin
     }
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.ui.IWorkbenchWindowActionDelegate#dispose()
+    /**
+     * {@inheritDoc}
      */
     public void dispose()
     {
@@ -83,8 +81,8 @@ public class RunCurrentSearchAgainAction extends Action implements IWorkbenchWin
     }
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.ui.IWorkbenchWindowActionDelegate#init(org.eclipse.ui.IWorkbenchWindow)
+    /**
+     * {@inheritDoc}
      */
     public void init( IWorkbenchWindow window )
     {
@@ -92,8 +90,8 @@ public class RunCurrentSearchAgainAction extends Action implements IWorkbenchWin
     }
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.ui.IActionDelegate#selectionChanged(org.eclipse.jface.action.IAction, org.eclipse.jface.viewers.ISelection)
+    /**
+     * {@inheritDoc}
      */
     public void selectionChanged( IAction action, ISelection selection )
     {
