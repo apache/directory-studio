@@ -42,8 +42,8 @@ import org.eclipse.jface.text.source.SourceViewerConfiguration;
  */
 public class ACISourceViewerConfiguration extends SourceViewerConfiguration
 {
-    /* (non-Javadoc)
-     * @see org.eclipse.jface.text.source.SourceViewerConfiguration#getPresentationReconciler(org.eclipse.jface.text.source.ISourceViewer)
+    /**
+     * {@inheritDoc}
      */
     public IPresentationReconciler getPresentationReconciler( ISourceViewer sourceViewer )
     {
@@ -59,8 +59,8 @@ public class ACISourceViewerConfiguration extends SourceViewerConfiguration
     }
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.jface.text.source.SourceViewerConfiguration#getContentAssistant(org.eclipse.jface.text.source.ISourceViewer)
+    /**
+     * {@inheritDoc}
      */
     public IContentAssistant getContentAssistant( ISourceViewer sourceViewer )
     {
@@ -78,8 +78,8 @@ public class ACISourceViewerConfiguration extends SourceViewerConfiguration
     }
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.jface.text.source.SourceViewerConfiguration#getContentFormatter(org.eclipse.jface.text.source.ISourceViewer)
+    /**
+     * {@inheritDoc}
      */
     public IContentFormatter getContentFormatter( ISourceViewer sourceViewer )
     {
@@ -89,5 +89,4 @@ public class ACISourceViewerConfiguration extends SourceViewerConfiguration
         formatter.setFormattingStrategy( formattingStrategy, IDocument.DEFAULT_CONTENT_TYPE );
         return formatter;
     }
-
 }

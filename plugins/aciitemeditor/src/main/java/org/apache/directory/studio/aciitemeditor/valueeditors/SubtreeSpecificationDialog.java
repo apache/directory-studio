@@ -169,8 +169,8 @@ class SubtreeSpecificationDialog extends Dialog
     }
 
 
-    /** (non-Javadoc)
-     * @see org.eclipse.jface.window.Window#configureShell(org.eclipse.swt.widgets.Shell)
+    /**
+     * {@inheritDoc}
      */
     protected void configureShell( Shell newShell )
     {
@@ -180,8 +180,8 @@ class SubtreeSpecificationDialog extends Dialog
     }
 
 
-    /** (non-Javadoc)
-     * @see org.eclipse.jface.dialogs.Dialog#okPressed()
+    /**
+     * {@inheritDoc}
      */
     protected void okPressed()
     {
@@ -202,8 +202,8 @@ class SubtreeSpecificationDialog extends Dialog
     }
 
 
-    /** (non-Javadoc)
-     * @see org.eclipse.jface.dialogs.Dialog#createDialogArea(org.eclipse.swt.widgets.Composite)
+    /**
+     * {@inheritDoc}
      */
     protected Control createDialogArea( Composite parent )
     {
@@ -653,15 +653,15 @@ class SubtreeSpecificationDialog extends Dialog
     private void addValueExclusionsTable()
     {
         Dn chopBase = subtreeSpecification.getBase();
-        
+
         if ( useLocalName && ( subentryDn != null ) )
         {
             Dn suffix = subentryDn.getParent();
-            
+
             if ( !Dn.isNullOrEmpty( suffix ) )
             {
                 try
-                { 
+                {
                     chopBase = chopBase.add( suffix );
                 }
                 catch ( LdapInvalidDnException lide )
@@ -672,7 +672,7 @@ class SubtreeSpecificationDialog extends Dialog
         }
 
         ExclusionDialog dialog = new ExclusionDialog( getShell(), connection, chopBase, "" ); //$NON-NLS-1$
-        
+
         if ( dialog.open() == TextDialog.OK && !SubtreeValueEditor.EMPTY.equals( dialog.getType() )
             && !SubtreeValueEditor.EMPTY.equals( dialog.getDN() ) )
         {
@@ -694,11 +694,11 @@ class SubtreeSpecificationDialog extends Dialog
         if ( oldValue != null )
         {
             Dn chopBase = subtreeSpecification.getBase();
-            
+
             if ( useLocalName && ( subentryDn != null ) )
             {
                 Dn suffix = subentryDn.getParent();
-                
+
                 if ( !Dn.isNullOrEmpty( suffix ) )
                 {
                     try
@@ -714,7 +714,7 @@ class SubtreeSpecificationDialog extends Dialog
             }
 
             ExclusionDialog dialog = new ExclusionDialog( getShell(), connection, chopBase, oldValue );
-            
+
             if ( dialog.open() == TextDialog.OK && !SubtreeValueEditor.EMPTY.equals( dialog.getType() )
                 && !SubtreeValueEditor.EMPTY.equals( dialog.getDN() ) )
             {

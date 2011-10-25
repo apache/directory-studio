@@ -44,8 +44,8 @@ import org.eclipse.swt.graphics.Image;
  */
 public class ACIContentAssistProcessor extends TemplateCompletionProcessor
 {
-    /* (non-Javadoc)
-     * @see org.eclipse.jface.text.templates.TemplateCompletionProcessor#computeCompletionProposals(org.eclipse.jface.text.ITextViewer, int)
+    /**
+     * {@inheritDoc}
      */
     public ICompletionProposal[] computeCompletionProposals( ITextViewer viewer, int offset )
     {
@@ -62,8 +62,8 @@ public class ACIContentAssistProcessor extends TemplateCompletionProcessor
     }
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.jface.text.templates.TemplateCompletionProcessor#computeContextInformation(org.eclipse.jface.text.ITextViewer, int)
+    /**
+     * {@inheritDoc}
      */
     public IContextInformation[] computeContextInformation( ITextViewer viewer, int offset )
     {
@@ -71,8 +71,8 @@ public class ACIContentAssistProcessor extends TemplateCompletionProcessor
     }
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.jface.text.templates.TemplateCompletionProcessor#getCompletionProposalAutoActivationCharacters()
+    /**
+     * {@inheritDoc}
      */
     public char[] getCompletionProposalAutoActivationCharacters()
     {
@@ -91,8 +91,8 @@ public class ACIContentAssistProcessor extends TemplateCompletionProcessor
     }
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.jface.text.templates.TemplateCompletionProcessor#getContextInformationAutoActivationCharacters()
+    /**
+     * {@inheritDoc}
      */
     public char[] getContextInformationAutoActivationCharacters()
     {
@@ -100,8 +100,8 @@ public class ACIContentAssistProcessor extends TemplateCompletionProcessor
     }
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.jface.text.templates.TemplateCompletionProcessor#getContextInformationValidator()
+    /**
+     * {@inheritDoc}
      */
     public IContextInformationValidator getContextInformationValidator()
     {
@@ -109,8 +109,8 @@ public class ACIContentAssistProcessor extends TemplateCompletionProcessor
     }
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.jface.text.templates.TemplateCompletionProcessor#getErrorMessage()
+    /**
+     * {@inheritDoc}
      */
     public String getErrorMessage()
     {
@@ -118,10 +118,9 @@ public class ACIContentAssistProcessor extends TemplateCompletionProcessor
     }
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.jface.text.templates.TemplateCompletionProcessor#getContextType(org.eclipse.jface.text.ITextViewer, org.eclipse.jface.text.IRegion)
+    /**
+     * {@inheritDoc}
      */
-    @Override
     protected TemplateContextType getContextType( ITextViewer viewer, IRegion region )
     {
         return Activator.getDefault().getAciTemplateContextTypeRegistry().getContextType(
@@ -129,20 +128,18 @@ public class ACIContentAssistProcessor extends TemplateCompletionProcessor
     }
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.jface.text.templates.TemplateCompletionProcessor#getImage(org.eclipse.jface.text.templates.Template)
+    /**
+     * {@inheritDoc}
      */
-    @Override
     protected Image getImage( Template template )
     {
         return null;
     }
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.jface.text.templates.TemplateCompletionProcessor#getTemplates(java.lang.String)
+    /**
+     * {@inheritDoc}
      */
-    @Override
     protected Template[] getTemplates( String contextTypeId )
     {
         return Activator.getDefault().getAciTemplateStore().getTemplates( contextTypeId );

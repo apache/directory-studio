@@ -93,8 +93,8 @@ public class DialogContentAssistant extends SubjectControlContentAssistant imple
     }
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.jface.text.contentassist.ContentAssistant#install(org.eclipse.jface.text.ITextViewer)
+    /**
+     * {@inheritDoc}
      */
     public void install( ITextViewer viewer )
     {
@@ -117,8 +117,8 @@ public class DialogContentAssistant extends SubjectControlContentAssistant imple
     }
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.jface.text.contentassist.ContentAssistant#uninstall()
+    /**
+     * {@inheritDoc}
      */
     public void uninstall()
     {
@@ -139,8 +139,8 @@ public class DialogContentAssistant extends SubjectControlContentAssistant imple
     }
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.jface.text.contentassist.ContentAssistant#restoreCompletionProposalPopupSize()
+    /**
+     * {@inheritDoc}
      */
     protected Point restoreCompletionProposalPopupSize()
     {
@@ -149,8 +149,8 @@ public class DialogContentAssistant extends SubjectControlContentAssistant imple
     }
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.jface.text.contentassist.ContentAssistant#showPossibleCompletions()
+    /**
+     * {@inheritDoc}
      */
     public String showPossibleCompletions()
     {
@@ -159,8 +159,8 @@ public class DialogContentAssistant extends SubjectControlContentAssistant imple
     }
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.jface.text.contentassist.ContentAssistant#possibleCompletionsClosed()
+    /**
+     * {@inheritDoc}
      */
     protected void possibleCompletionsClosed()
     {
@@ -169,8 +169,8 @@ public class DialogContentAssistant extends SubjectControlContentAssistant imple
     }
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.swt.events.FocusListener#focusGained(org.eclipse.swt.events.FocusEvent)
+    /**
+     * {@inheritDoc}
      */
     public void focusGained( FocusEvent e )
     {
@@ -192,8 +192,8 @@ public class DialogContentAssistant extends SubjectControlContentAssistant imple
     }
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.swt.events.FocusListener#focusLost(org.eclipse.swt.events.FocusEvent)
+    /**
+     * {@inheritDoc}
      */
     public void focusLost( FocusEvent e )
     {
