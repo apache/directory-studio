@@ -34,8 +34,8 @@ import org.apache.directory.studio.schemaeditor.view.editors.NonExistingAttribut
  */
 public class ATESuperiorComboComparator implements Comparator<Object>
 {
-    /* (non-Javadoc)
-     * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
+    /**
+     * {@inheritDoc}
      */
     public int compare( Object o1, Object o2 )
     {

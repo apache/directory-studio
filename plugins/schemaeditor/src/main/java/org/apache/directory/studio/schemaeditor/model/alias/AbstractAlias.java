@@ -43,8 +43,8 @@ public abstract class AbstractAlias implements Alias
     }
 
 
-    /* (non-Javadoc)
-     * @see IAlias#getAlias()
+    /**
+     * {@inheritDoc}
      */
     public String getAlias()
     {
@@ -52,8 +52,8 @@ public abstract class AbstractAlias implements Alias
     }
 
 
-    /* (non-Javadoc)
-     * @see java.lang.Object#toString()
+    /**
+     * {@inheritDoc}
      */
     public String toString()
     {

@@ -52,8 +52,8 @@ public class ExportSchemasAsOpenLdapWizard extends Wizard implements IExportWiza
     private ExportSchemasAsOpenLdapWizardPage page;
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.jface.wizard.Wizard#addPages()
+    /**
+     * {@inheritDoc}
      */
     public void addPages()
     {
@@ -66,8 +66,8 @@ public class ExportSchemasAsOpenLdapWizard extends Wizard implements IExportWiza
     }
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.jface.wizard.Wizard#performFinish()
+    /**
+     * {@inheritDoc}
      */
     public boolean performFinish()
     {
@@ -127,8 +127,8 @@ public class ExportSchemasAsOpenLdapWizard extends Wizard implements IExportWiza
     }
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.ui.IWorkbenchWizard#init(org.eclipse.ui.IWorkbench, org.eclipse.jface.viewers.IStructuredSelection)
+    /**
+     * {@inheritDoc}
      */
     public void init( IWorkbench workbench, IStructuredSelection selection )
     {

@@ -120,8 +120,8 @@ public class Folder extends AbstractTreeNode
     }
 
 
-    /* (non-Javadoc)
-     * @see java.lang.Object#equals(java.lang.Object)
+    /**
+     * {@inheritDoc}
      */
     public boolean equals( Object obj )
     {
@@ -151,8 +151,8 @@ public class Folder extends AbstractTreeNode
     }
 
 
-    /* (non-Javadoc)
-     * @see org.apache.directory.studio.schemaeditor.view.wrappers.AbstractTreeNode#hashCode()
+    /**
+     * {@inheritDoc}
      */
     public int hashCode()
     {
@@ -172,8 +172,8 @@ public class Folder extends AbstractTreeNode
     }
 
 
-    /* (non-Javadoc)
-     * @see java.lang.Object#toString()
+    /**
+     * {@inheritDoc}
      */
     public String toString()
     {

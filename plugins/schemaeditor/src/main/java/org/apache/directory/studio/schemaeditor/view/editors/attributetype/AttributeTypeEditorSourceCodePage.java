@@ -109,10 +109,8 @@ public class AttributeTypeEditorSourceCodePage extends FormPage
     }
 
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.ui.forms.editor.FormPage#createFormContent(org.eclipse.ui.forms.IManagedForm)
+    /**
+     * {@inheritDoc}
      */
     protected void createFormContent( IManagedForm managedForm )
     {
@@ -161,10 +159,8 @@ public class AttributeTypeEditorSourceCodePage extends FormPage
     }
 
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.ui.forms.editor.FormPage#canLeaveThePage()
+    /**
+     * {@inheritDoc}
      */
     public boolean canLeaveThePage()
     {

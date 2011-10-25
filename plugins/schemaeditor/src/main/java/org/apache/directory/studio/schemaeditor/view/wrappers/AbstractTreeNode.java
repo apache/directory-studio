@@ -51,8 +51,8 @@ public abstract class AbstractTreeNode implements TreeNode
     }
 
 
-    /* (non-Javadoc)
-     * @see org.apache.directory.studio.schemas.view.viewers.wrappers.ITreeNode#hasChildren()
+    /**
+     * {@inheritDoc}
      */
     public boolean hasChildren()
     {
@@ -65,8 +65,8 @@ public abstract class AbstractTreeNode implements TreeNode
     }
 
 
-    /* (non-Javadoc)
-     * @see org.apache.directory.studio.schemas.view.viewers.wrappers.ITreeNode#getParent()
+    /**
+     * {@inheritDoc}
      */
     public TreeNode getParent()
     {
@@ -74,8 +74,8 @@ public abstract class AbstractTreeNode implements TreeNode
     }
 
 
-    /* (non-Javadoc)
-     * @see org.apache.directory.studio.schemas.view.viewers.wrappers.ITreeNode#setParent(org.apache.directory.studio.schemas.view.viewers.wrappers.ITreeNode)
+    /**
+     * {@inheritDoc}
      */
     public void setParent( TreeNode parent )
     {
@@ -83,8 +83,8 @@ public abstract class AbstractTreeNode implements TreeNode
     }
 
 
-    /* (non-Javadoc)
-     * @see org.apache.directory.studio.schemas.view.viewers.wrappers.ITreeNode#getChildren()
+    /**
+     * {@inheritDoc}
      */
     public List<TreeNode> getChildren()
     {
@@ -97,8 +97,8 @@ public abstract class AbstractTreeNode implements TreeNode
     }
 
 
-    /* (non-Javadoc)
-     * @see org.apache.directory.studio.schemas.view.viewers.wrappers.ITreeNode#addChild(org.apache.directory.studio.schemas.view.viewers.wrappers.ITreeNode)
+    /**
+     * {@inheritDoc}
      */
     public void addChild( TreeNode node )
     {
@@ -114,8 +114,8 @@ public abstract class AbstractTreeNode implements TreeNode
     }
 
 
-    /* (non-Javadoc)
-     * @see org.apache.directory.studio.schemas.view.viewers.wrappers.ITreeNode#removeChild(org.apache.directory.studio.schemas.view.viewers.wrappers.ITreeNode)
+    /**
+     * {@inheritDoc}
      */
     public void removeChild( TreeNode node )
     {
@@ -126,8 +126,8 @@ public abstract class AbstractTreeNode implements TreeNode
     }
 
 
-    /* (non-Javadoc)
-     * @see org.apache.directory.studio.schemas.view.viewers.wrappers.ITreeNode#addAllChildren(java.util.Collection)
+    /**
+     * {@inheritDoc}
      */
     public boolean addAllChildren( Collection<? extends TreeNode> c )
     {
@@ -140,8 +140,8 @@ public abstract class AbstractTreeNode implements TreeNode
     }
 
 
-    /* (non-Javadoc)
-     * @see java.lang.Object#equals(java.lang.Object)
+    /**
+     * {@inheritDoc}
      */
     public boolean equals( Object obj )
     {
@@ -162,8 +162,8 @@ public abstract class AbstractTreeNode implements TreeNode
     }
 
 
-    /* (non-Javadoc)
-     * @see java.lang.Object#hashCode()
+    /**
+     * {@inheritDoc}
      */
     public int hashCode()
     {

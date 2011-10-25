@@ -73,8 +73,8 @@ public class SchemaWarningWrapper extends AbstractTreeNode
     }
 
 
-    /* (non-Javadoc)
-     * @see org.apache.directory.studio.schemaeditor.view.wrappers.AbstractTreeNode#hasChildren()
+    /**
+     * {@inheritDoc}
      */
     public boolean hasChildren()
     {
@@ -82,8 +82,8 @@ public class SchemaWarningWrapper extends AbstractTreeNode
     }
 
 
-    /* (non-Javadoc)
-     * @see org.apache.directory.studio.schemaeditor.view.wrappers.AbstractTreeNode#equals(java.lang.Object)
+    /**
+     * {@inheritDoc}
      */
     public boolean equals( Object obj )
     {
@@ -107,8 +107,8 @@ public class SchemaWarningWrapper extends AbstractTreeNode
     }
 
 
-    /* (non-Javadoc)
-     * @see org.apache.directory.studio.schemaeditor.view.wrappers.AbstractTreeNode#hashCode()
+    /**
+     * {@inheritDoc}
      */
     public int hashCode()
     {

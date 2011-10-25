@@ -75,8 +75,8 @@ public class ObjectClassWrapper extends AbstractTreeNode
     }
 
 
-    /* (non-Javadoc)
-     * @see org.apache.directory.studio.schemaeditor.view.wrappers.AbstractTreeNode#equals(java.lang.Object)
+    /**
+     * {@inheritDoc}
      */
     public boolean equals( Object obj )
     {
@@ -100,8 +100,8 @@ public class ObjectClassWrapper extends AbstractTreeNode
     }
 
 
-    /* (non-Javadoc)
-     * @see org.apache.directory.studio.schemaeditor.view.wrappers.AbstractTreeNode#hashCode()
+    /**
+     * {@inheritDoc}
      */
     public int hashCode()
     {
@@ -116,8 +116,8 @@ public class ObjectClassWrapper extends AbstractTreeNode
     }
 
 
-    /* (non-Javadoc)
-     * @see java.lang.Object#toString()
+    /**
+     * {@inheritDoc}
      */
     public String toString()
     {

@@ -83,8 +83,8 @@ public class SearchPage extends DialogPage implements ISearchPage
     }
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.jface.dialogs.IDialogPage#createControl(org.eclipse.swt.widgets.Composite)
+    /**
+     * {@inheritDoc}
      */
     public void createControl( Composite parent )
     {
@@ -286,8 +286,8 @@ public class SearchPage extends DialogPage implements ISearchPage
     }
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.search.ui.ISearchPage#performAction()
+    /**
+     * {@inheritDoc}
      */
     public boolean performAction()
     {
@@ -363,8 +363,8 @@ public class SearchPage extends DialogPage implements ISearchPage
     }
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.search.ui.ISearchPage#setContainer(org.eclipse.search.ui.ISearchPageContainer)
+    /**
+     * {@inheritDoc}
      */
     public void setContainer( ISearchPageContainer container )
     {
@@ -372,8 +372,8 @@ public class SearchPage extends DialogPage implements ISearchPage
     }
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.jface.dialogs.DialogPage#setVisible(boolean)
+    /**
+     * {@inheritDoc}
      */
     public void setVisible( boolean visible )
     {

@@ -51,8 +51,8 @@ public class ObjectClassEditorInput implements IEditorInput
     }
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.ui.IEditorInput#exists()
+    /**
+     * {@inheritDoc}
      */
     public boolean exists()
     {
@@ -60,8 +60,8 @@ public class ObjectClassEditorInput implements IEditorInput
     }
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.ui.IEditorInput#getImageDescriptor()
+    /**
+     * {@inheritDoc}
      */
     public ImageDescriptor getImageDescriptor()
     {
@@ -69,8 +69,8 @@ public class ObjectClassEditorInput implements IEditorInput
     }
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.ui.IEditorInput#getName()
+    /**
+     * {@inheritDoc}
      */
     public String getName()
     {
@@ -86,8 +86,8 @@ public class ObjectClassEditorInput implements IEditorInput
     }
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.ui.IEditorInput#getPersistable()
+    /**
+     * {@inheritDoc}
      */
     public IPersistableElement getPersistable()
     {
@@ -95,8 +95,8 @@ public class ObjectClassEditorInput implements IEditorInput
     }
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.ui.IEditorInput#getToolTipText()
+    /**
+     * {@inheritDoc}
      */
     public String getToolTipText()
     {
@@ -105,8 +105,8 @@ public class ObjectClassEditorInput implements IEditorInput
     }
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.core.runtime.IAdaptable#getAdapter(java.lang.Class)
+    /**
+     * {@inheritDoc}
      */
     public Object getAdapter( Class adapter )
     {
@@ -114,8 +114,8 @@ public class ObjectClassEditorInput implements IEditorInput
     }
 
 
-    /* (non-Javadoc)
-     * @see java.lang.Object#equals(java.lang.Object)
+    /**
+     * {@inheritDoc}
      */
     public boolean equals( Object obj )
     {

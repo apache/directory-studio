@@ -56,8 +56,8 @@ public class DifferencesWidgetSchemaLabelProvider extends LabelProvider
     }
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.jface.viewers.LabelProvider#getText(java.lang.Object)
+    /**
+     * {@inheritDoc}
      */
     public String getText( Object element )
     {
@@ -357,8 +357,8 @@ public class DifferencesWidgetSchemaLabelProvider extends LabelProvider
     }
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.jface.viewers.LabelProvider#getImage(java.lang.Object)
+    /**
+     * {@inheritDoc}
      */
     public Image getImage( Object element )
     {

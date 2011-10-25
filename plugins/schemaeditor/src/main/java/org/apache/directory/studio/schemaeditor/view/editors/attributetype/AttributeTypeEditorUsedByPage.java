@@ -76,8 +76,8 @@ public class AttributeTypeEditorUsedByPage extends FormPage
     /** The Schema listener */
     private SchemaHandlerListener schemaHandlerListener = new SchemaHandlerAdapter()
     {
-        /* (non-Javadoc)
-         * @see org.apache.directory.studio.schemaeditor.controller.SchemaHandlerListener#attributeTypeAdded(org.apache.directory.studio.schemaeditor.model.AttributeTypeImpl)
+        /**
+         * {@inheritDoc}
          */
         public void attributeTypeAdded( AttributeType at )
         {
@@ -85,8 +85,8 @@ public class AttributeTypeEditorUsedByPage extends FormPage
         }
 
 
-        /* (non-Javadoc)
-         * @see org.apache.directory.studio.schemaeditor.controller.SchemaHandlerListener#attributeTypeModified(org.apache.directory.studio.schemaeditor.model.AttributeTypeImpl)
+        /**
+         * {@inheritDoc}
          */
         public void attributeTypeModified( AttributeType at )
         {
@@ -94,8 +94,8 @@ public class AttributeTypeEditorUsedByPage extends FormPage
         }
 
 
-        /* (non-Javadoc)
-         * @see org.apache.directory.studio.schemaeditor.controller.SchemaHandlerListener#attributeTypeRemoved(org.apache.directory.studio.schemaeditor.model.AttributeTypeImpl)
+        /**
+         * {@inheritDoc}
          */
         public void attributeTypeRemoved( AttributeType at )
         {
@@ -103,8 +103,8 @@ public class AttributeTypeEditorUsedByPage extends FormPage
         }
 
 
-        /* (non-Javadoc)
-         * @see org.apache.directory.studio.schemaeditor.controller.SchemaHandlerListener#objectClassAdded(org.apache.directory.studio.schemaeditor.model.ObjectClassImpl)
+        /**
+         * {@inheritDoc}
          */
         public void objectClassAdded( ObjectClass oc )
         {
@@ -112,8 +112,8 @@ public class AttributeTypeEditorUsedByPage extends FormPage
         }
 
 
-        /* (non-Javadoc)
-         * @see org.apache.directory.studio.schemaeditor.controller.SchemaHandlerListener#objectClassModified(org.apache.directory.studio.schemaeditor.model.ObjectClassImpl)
+        /**
+         * {@inheritDoc}
          */
         public void objectClassModified( ObjectClass oc )
         {
@@ -121,8 +121,8 @@ public class AttributeTypeEditorUsedByPage extends FormPage
         }
 
 
-        /* (non-Javadoc)
-         * @see org.apache.directory.studio.schemaeditor.controller.SchemaHandlerListener#objectClassRemoved(org.apache.directory.studio.schemaeditor.model.ObjectClassImpl)
+        /**
+         * {@inheritDoc}
          */
         public void objectClassRemoved( ObjectClass oc )
         {
@@ -130,8 +130,8 @@ public class AttributeTypeEditorUsedByPage extends FormPage
         }
 
 
-        /* (non-Javadoc)
-         * @see org.apache.directory.studio.schemaeditor.controller.SchemaHandlerListener#schemaAdded(org.apache.directory.studio.schemaeditor.model.Schema)
+        /**
+         * {@inheritDoc}
          */
         public void schemaAdded( Schema schema )
         {
@@ -139,8 +139,8 @@ public class AttributeTypeEditorUsedByPage extends FormPage
         }
 
 
-        /* (non-Javadoc)
-         * @see org.apache.directory.studio.schemaeditor.controller.SchemaHandlerListener#schemaRemoved(org.apache.directory.studio.schemaeditor.model.Schema)
+        /**
+         * {@inheritDoc}
          */
         public void schemaRemoved( Schema schema )
         {
@@ -218,8 +218,8 @@ public class AttributeTypeEditorUsedByPage extends FormPage
     }
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.ui.forms.editor.FormPage#createFormContent(org.eclipse.ui.forms.IManagedForm)
+    /**
+     * {@inheritDoc}
      */
     protected void createFormContent( IManagedForm managedForm )
     {
@@ -381,8 +381,8 @@ public class AttributeTypeEditorUsedByPage extends FormPage
     }
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.ui.forms.editor.FormPage#dispose()
+    /**
+     * {@inheritDoc}
      */
     public void dispose()
     {

@@ -64,8 +64,8 @@ public abstract class AbstractPropertyDifference extends AbstractDifference impl
     }
 
 
-    /* (non-Javadoc)
-     * @see org.apache.directory.studio.schemaeditor.model.difference.PropertyDifference#getNewValue()
+    /**
+     * {@inheritDoc}
      */
     public Object getNewValue()
     {
@@ -73,8 +73,8 @@ public abstract class AbstractPropertyDifference extends AbstractDifference impl
     }
 
 
-    /* (non-Javadoc)
-     * @see org.apache.directory.studio.schemaeditor.model.difference.PropertyDifference#setNewValue(java.lang.Object)
+    /**
+     * {@inheritDoc}
      */
     public void setNewValue( Object newValue )
     {
@@ -82,8 +82,8 @@ public abstract class AbstractPropertyDifference extends AbstractDifference impl
     }
 
 
-    /* (non-Javadoc)
-     * @see org.apache.directory.studio.schemaeditor.model.difference.PropertyDifference#getOldValue()
+    /**
+     * {@inheritDoc}
      */
     public Object getOldValue()
     {
@@ -91,8 +91,8 @@ public abstract class AbstractPropertyDifference extends AbstractDifference impl
     }
 
 
-    /* (non-Javadoc)
-     * @see org.apache.directory.studio.schemaeditor.model.difference.PropertyDifference#setOldValue(java.lang.Object)
+    /**
+     * {@inheritDoc}
      */
     public void setOldValue( Object oldValue )
     {

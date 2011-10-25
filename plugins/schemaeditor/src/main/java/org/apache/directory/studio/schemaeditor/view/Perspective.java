@@ -54,8 +54,8 @@ public class Perspective implements IPerspectiveFactory
     public static final String bottomFolderId = PluginConstants.PERSPECTIVE_BOTTOM_FOLDER_ID;
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.ui.IPerspectiveFactory#createInitialLayout(org.eclipse.ui.IPageLayout)
+    /**
+     * {@inheritDoc}
      */
     public void createInitialLayout( IPageLayout layout )
     {

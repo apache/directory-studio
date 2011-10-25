@@ -65,8 +65,8 @@ public class SchemaEditorSourceCodePage extends FormPage
     // Listerner
     private SchemaListener schemaListener = new SchemaListener()
     {
-        /* (non-Javadoc)
-         * @see org.apache.directory.studio.schemaeditor.controller.SchemaListener#attributeTypeAdded(org.apache.directory.studio.schemaeditor.model.AttributeTypeImpl)
+        /**
+         * {@inheritDoc}
          */
         public void attributeTypeAdded( AttributeType at )
         {
@@ -74,8 +74,8 @@ public class SchemaEditorSourceCodePage extends FormPage
         }
 
 
-        /* (non-Javadoc)
-         * @see org.apache.directory.studio.schemaeditor.controller.SchemaListener#attributeTypeModified(org.apache.directory.studio.schemaeditor.model.AttributeTypeImpl)
+        /**
+         * {@inheritDoc}
          */
         public void attributeTypeModified( AttributeType at )
         {
@@ -83,8 +83,8 @@ public class SchemaEditorSourceCodePage extends FormPage
         }
 
 
-        /* (non-Javadoc)
-         * @see org.apache.directory.studio.schemaeditor.controller.SchemaListener#attributeTypeRemoved(org.apache.directory.studio.schemaeditor.model.AttributeTypeImpl)
+        /**
+         * {@inheritDoc}
          */
         public void attributeTypeRemoved( AttributeType at )
         {
@@ -92,8 +92,8 @@ public class SchemaEditorSourceCodePage extends FormPage
         }
 
 
-        /* (non-Javadoc)
-         * @see org.apache.directory.studio.schemaeditor.controller.SchemaListener#matchingRuleAdded(org.apache.directory.studio.schemaeditor.model.MatchingRuleImpl)
+        /**
+         * {@inheritDoc}
          */
         public void matchingRuleAdded( MatchingRule mr )
         {
@@ -101,8 +101,8 @@ public class SchemaEditorSourceCodePage extends FormPage
         }
 
 
-        /* (non-Javadoc)
-         * @see org.apache.directory.studio.schemaeditor.controller.SchemaListener#matchingRuleModified(org.apache.directory.studio.schemaeditor.model.MatchingRuleImpl)
+        /**
+         * {@inheritDoc}
          */
         public void matchingRuleModified( MatchingRule mr )
         {
@@ -110,8 +110,8 @@ public class SchemaEditorSourceCodePage extends FormPage
         }
 
 
-        /* (non-Javadoc)
-         * @see org.apache.directory.studio.schemaeditor.controller.SchemaListener#matchingRuleRemoved(org.apache.directory.studio.schemaeditor.model.MatchingRuleImpl)
+        /**
+         * {@inheritDoc}
          */
         public void matchingRuleRemoved( MatchingRule mr )
         {
@@ -119,8 +119,8 @@ public class SchemaEditorSourceCodePage extends FormPage
         }
 
 
-        /* (non-Javadoc)
-         * @see org.apache.directory.studio.schemaeditor.controller.SchemaListener#objectClassAdded(org.apache.directory.studio.schemaeditor.model.ObjectClassImpl)
+        /**
+         * {@inheritDoc}
          */
         public void objectClassAdded( ObjectClass oc )
         {
@@ -128,8 +128,8 @@ public class SchemaEditorSourceCodePage extends FormPage
         }
 
 
-        /* (non-Javadoc)
-         * @see org.apache.directory.studio.schemaeditor.controller.SchemaListener#objectClassModified(org.apache.directory.studio.schemaeditor.model.ObjectClassImpl)
+        /**
+         * {@inheritDoc}
          */
         public void objectClassModified( ObjectClass oc )
         {
@@ -137,8 +137,8 @@ public class SchemaEditorSourceCodePage extends FormPage
         }
 
 
-        /* (non-Javadoc)
-         * @see org.apache.directory.studio.schemaeditor.controller.SchemaListener#objectClassRemoved(org.apache.directory.studio.schemaeditor.model.ObjectClassImpl)
+        /**
+         * {@inheritDoc}
          */
         public void objectClassRemoved( ObjectClass oc )
         {
@@ -146,8 +146,8 @@ public class SchemaEditorSourceCodePage extends FormPage
         }
 
 
-        /* (non-Javadoc)
-         * @see org.apache.directory.studio.schemaeditor.controller.SchemaListener#syntaxAdded(org.apache.directory.studio.schemaeditor.model.SyntaxImpl)
+        /**
+         * {@inheritDoc}
          */
         public void syntaxAdded( LdapSyntax syntax )
         {
@@ -155,8 +155,8 @@ public class SchemaEditorSourceCodePage extends FormPage
         }
 
 
-        /* (non-Javadoc)
-         * @see org.apache.directory.studio.schemaeditor.controller.SchemaListener#syntaxModified(org.apache.directory.studio.schemaeditor.model.SyntaxImpl)
+        /**
+         * {@inheritDoc}
          */
         public void syntaxModified( LdapSyntax syntax )
         {
@@ -164,8 +164,8 @@ public class SchemaEditorSourceCodePage extends FormPage
         }
 
 
-        /* (non-Javadoc)
-         * @see org.apache.directory.studio.schemaeditor.controller.SchemaListener#syntaxRemoved(org.apache.directory.studio.schemaeditor.model.SyntaxImpl)
+        /**
+         * {@inheritDoc}
          */
         public void syntaxRemoved( LdapSyntax syntax )
         {
@@ -186,8 +186,8 @@ public class SchemaEditorSourceCodePage extends FormPage
     }
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.ui.forms.editor.FormPage#createFormContent(org.eclipse.ui.forms.IManagedForm)
+    /**
+     * {@inheritDoc}
      */
     protected void createFormContent( IManagedForm managedForm )
     {
@@ -251,8 +251,8 @@ public class SchemaEditorSourceCodePage extends FormPage
     }
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.ui.forms.editor.FormPage#dispose()
+    /**
+     * {@inheritDoc}
      */
     public void dispose()
     {

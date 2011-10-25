@@ -46,8 +46,8 @@ public class SchemaEditorInput implements IEditorInput
     }
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.ui.IEditorInput#exists()
+    /**
+     * {@inheritDoc}
      */
     public boolean exists()
     {
@@ -55,8 +55,8 @@ public class SchemaEditorInput implements IEditorInput
     }
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.ui.IEditorInput#getImageDescriptor()
+    /**
+     * {@inheritDoc}
      */
     public ImageDescriptor getImageDescriptor()
     {
@@ -64,8 +64,8 @@ public class SchemaEditorInput implements IEditorInput
     }
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.ui.IEditorInput#getName()
+    /**
+     * {@inheritDoc}
      */
     public String getName()
     {
@@ -73,8 +73,8 @@ public class SchemaEditorInput implements IEditorInput
     }
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.ui.IEditorInput#getPersistable()
+    /**
+     * {@inheritDoc}
      */
     public IPersistableElement getPersistable()
     {
@@ -82,8 +82,8 @@ public class SchemaEditorInput implements IEditorInput
     }
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.ui.IEditorInput#getToolTipText()
+    /**
+     * {@inheritDoc}
      */
     public String getToolTipText()
     {
@@ -91,18 +91,17 @@ public class SchemaEditorInput implements IEditorInput
     }
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.core.runtime.IAdaptable#getAdapter(java.lang.Class)
+    /**
+     * {@inheritDoc}
      */
-    @SuppressWarnings("unchecked")
     public Object getAdapter( Class adapter )
     {
         return null;
     }
 
 
-    /* (non-Javadoc)
-     * @see java.lang.Object#equals(java.lang.Object)
+    /**
+     * {@inheritDoc}
      */
     public boolean equals( Object obj )
     {

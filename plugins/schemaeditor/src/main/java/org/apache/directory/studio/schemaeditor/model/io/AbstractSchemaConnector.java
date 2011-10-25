@@ -41,8 +41,8 @@ public abstract class AbstractSchemaConnector implements SchemaConnector
     private String description;
 
 
-    /* (non-Javadoc)
-     * @see org.apache.directory.studio.schemaeditor.model.io.SchemaConnector#getDecription()
+    /**
+     * {@inheritDoc}
      */
     public String getDescription()
     {
@@ -50,8 +50,8 @@ public abstract class AbstractSchemaConnector implements SchemaConnector
     }
 
 
-    /* (non-Javadoc)
-     * @see org.apache.directory.studio.schemaeditor.model.io.SchemaConnector#getId()
+    /**
+     * {@inheritDoc}
      */
     public String getId()
     {
@@ -59,8 +59,8 @@ public abstract class AbstractSchemaConnector implements SchemaConnector
     }
 
 
-    /* (non-Javadoc)
-     * @see org.apache.directory.studio.schemaeditor.model.io.SchemaConnector#getName()
+    /**
+     * {@inheritDoc}
      */
     public String getName()
     {
@@ -68,8 +68,8 @@ public abstract class AbstractSchemaConnector implements SchemaConnector
     }
 
 
-    /* (non-Javadoc)
-     * @see org.apache.directory.studio.schemaeditor.model.io.SchemaConnector#isSuitableConnector(org.apache.directory.studio.connection.core.Connection, org.apache.directory.studio.connection.core.StudioProgressMonitor)
+    /**
+     * {@inheritDoc}
      */
     public boolean isSuitableConnector( Connection connection, StudioProgressMonitor monitor )
     {
@@ -77,8 +77,8 @@ public abstract class AbstractSchemaConnector implements SchemaConnector
     }
 
 
-    /* (non-Javadoc)
-     * @see org.apache.directory.studio.schemaeditor.model.io.SchemaConnector#setDescription(java.lang.String)
+    /**
+     * {@inheritDoc}
      */
     public void setDescription( String description )
     {
@@ -86,8 +86,8 @@ public abstract class AbstractSchemaConnector implements SchemaConnector
     }
 
 
-    /* (non-Javadoc)
-     * @see org.apache.directory.studio.schemaeditor.model.io.SchemaConnector#setId(java.lang.String)
+    /**
+     * {@inheritDoc}
      */
     public void setId( String id )
     {
@@ -95,8 +95,8 @@ public abstract class AbstractSchemaConnector implements SchemaConnector
     }
 
 
-    /* (non-Javadoc)
-     * @see org.apache.directory.studio.schemaeditor.model.io.SchemaConnector#setName(java.lang.String)
+    /**
+     * {@inheritDoc}
      */
     public void setName( String name )
     {

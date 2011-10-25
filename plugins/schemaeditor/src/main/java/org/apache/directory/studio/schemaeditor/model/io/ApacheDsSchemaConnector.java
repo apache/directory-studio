@@ -76,8 +76,8 @@ public class ApacheDsSchemaConnector extends AbstractSchemaConnector implements 
     }
 
 
-    /* (non-Javadoc)
-     * @see org.apache.directory.studio.schemaeditor.model.io.SchemaConnector#exportSchema(org.apache.directory.studio.connection.core.Connection, org.apache.directory.studio.connection.core.StudioProgressMonitor)
+    /**
+     * {@inheritDoc}
      */
     public void exportSchema( Connection connection, StudioProgressMonitor monitor )
     {
@@ -86,8 +86,8 @@ public class ApacheDsSchemaConnector extends AbstractSchemaConnector implements 
     }
 
 
-    /* (non-Javadoc)
-     * @see org.apache.directory.studio.schemaeditor.model.io.SchemaConnector#importSchema(org.apache.directory.studio.connection.core.Connection, org.apache.directory.studio.connection.core.StudioProgressMonitor)
+    /**
+     * {@inheritDoc}
      */
     public List<Schema> importSchema( Connection connection, StudioProgressMonitor monitor )
     {
@@ -140,8 +140,8 @@ public class ApacheDsSchemaConnector extends AbstractSchemaConnector implements 
     }
 
 
-    /* (non-Javadoc)
-     * @see org.apache.directory.studio.schemaeditor.model.io.AbstractSchemaConnector#isSuitableConnector(org.apache.directory.studio.connection.core.Connection, org.apache.directory.studio.connection.core.StudioProgressMonitor)
+    /**
+     * {@inheritDoc}
      */
     public boolean isSuitableConnector( Connection connection, StudioProgressMonitor monitor )
     {

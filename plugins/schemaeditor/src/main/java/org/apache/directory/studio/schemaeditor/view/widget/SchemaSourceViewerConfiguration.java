@@ -36,8 +36,8 @@ import org.eclipse.jface.text.source.SourceViewerConfiguration;
  */
 public class SchemaSourceViewerConfiguration extends SourceViewerConfiguration
 {
-    /* (non-Javadoc)
-     * @see org.eclipse.jface.text.source.SourceViewerConfiguration#getPresentationReconciler(org.eclipse.jface.text.source.ISourceViewer)
+    /**
+     * {@inheritDoc}
      */
     public IPresentationReconciler getPresentationReconciler( ISourceViewer sourceViewer )
     {

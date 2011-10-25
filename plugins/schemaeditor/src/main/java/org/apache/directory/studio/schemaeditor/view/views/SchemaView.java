@@ -48,8 +48,8 @@ public class SchemaView extends ViewPart
     private TreeViewer treeViewer;
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.ui.part.WorkbenchPart#createPartControl(org.eclipse.swt.widgets.Composite)
+    /**
+     * {@inheritDoc}
      */
     public void createPartControl( Composite parent )
     {
@@ -79,8 +79,8 @@ public class SchemaView extends ViewPart
     }
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.ui.part.WorkbenchPart#setFocus()
+    /**
+     * {@inheritDoc}
      */
     public void setFocus()
     {

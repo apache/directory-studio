@@ -29,8 +29,8 @@ import java.util.Comparator;
  */
 public class ProjectSorter implements Comparator<TreeNode>
 {
-    /* (non-Javadoc)
-     * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
+    /**
+     * {@inheritDoc}
      */
     public int compare( TreeNode tn1, TreeNode tn2 )
     {

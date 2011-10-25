@@ -61,8 +61,8 @@ public class HierarchyView extends ViewPart
     private Label overviewLabel;
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.ui.part.WorkbenchPart#createPartControl(org.eclipse.swt.widgets.Composite)
+    /**
+     * {@inheritDoc}
      */
     public void createPartControl( Composite parent )
     {
@@ -112,8 +112,8 @@ public class HierarchyView extends ViewPart
     }
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.ui.part.WorkbenchPart#setFocus()
+    /**
+     * {@inheritDoc}
      */
     public void setFocus()
     {
@@ -195,8 +195,8 @@ public class HierarchyView extends ViewPart
     }
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.ui.part.WorkbenchPart#dispose()
+    /**
+     * {@inheritDoc}
      */
     public void dispose()
     {

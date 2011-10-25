@@ -101,10 +101,9 @@ public class SearchView extends ViewPart
     private Composite parent;
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.ui.part.WorkbenchPart#createPartControl(org.eclipse.swt.widgets.Composite)
+    /**
+     * {@inheritDoc}
      */
-    @Override
     public void createPartControl( Composite parent )
     {
         // Help Context for Dynamic Help
@@ -584,8 +583,8 @@ public class SearchView extends ViewPart
     }
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.ui.part.WorkbenchPart#setFocus()
+    /**
+     * {@inheritDoc}
      */
     public void setFocus()
     {

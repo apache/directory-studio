@@ -113,8 +113,8 @@ public class SchemaCodeScanner extends RuleBasedScanner
      */
     static class SchemaWordDetector implements IWordDetector
     {
-        /* (non-Javadoc)
-         * @see org.eclipse.jface.text.rules.IWordDetector#isWordPart(char)
+        /**
+         * {@inheritDoc}
          */
         public boolean isWordPart( char c )
         {
@@ -123,8 +123,8 @@ public class SchemaCodeScanner extends RuleBasedScanner
         }
 
 
-        /* (non-Javadoc)
-         * @see org.eclipse.jface.text.rules.IWordDetector#isWordStart(char)
+        /**
+         * {@inheritDoc}
          */
         public boolean isWordStart( char c )
         {
@@ -139,8 +139,8 @@ public class SchemaCodeScanner extends RuleBasedScanner
      */
     static class SchemaOIDDetector implements IWordDetector
     {
-        /* (non-Javadoc)
-         * @see org.eclipse.jface.text.rules.IWordDetector#isWordPart(char)
+        /**
+         * {@inheritDoc}
          */
         public boolean isWordPart( char c )
         {
@@ -148,8 +148,8 @@ public class SchemaCodeScanner extends RuleBasedScanner
         }
 
 
-        /* (non-Javadoc)
-         * @see org.eclipse.jface.text.rules.IWordDetector#isWordStart(char)
+        /**
+         * {@inheritDoc}
          */
         public boolean isWordStart( char c )
         {

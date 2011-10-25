@@ -103,8 +103,8 @@ public class NewAttributeTypeGeneralWizardPage extends AbstractWizardPage
     }
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.jface.dialogs.IDialogPage#createControl(org.eclipse.swt.widgets.Composite)
+    /**
+     * {@inheritDoc}
      */
     public void createControl( Composite parent )
     {
@@ -127,8 +127,8 @@ public class NewAttributeTypeGeneralWizardPage extends AbstractWizardPage
         schemaComboViewer.setContentProvider( new ArrayContentProvider() );
         schemaComboViewer.setLabelProvider( new LabelProvider()
         {
-            /* (non-Javadoc)
-             * @see org.eclipse.jface.viewers.LabelProvider#getText(java.lang.Object)
+            /**
+             * {@inheritDoc}
              */
             public String getText( Object element )
             {
@@ -143,8 +143,8 @@ public class NewAttributeTypeGeneralWizardPage extends AbstractWizardPage
         } );
         schemaComboViewer.addSelectionChangedListener( new ISelectionChangedListener()
         {
-            /* (non-Javadoc)
-             * @see org.eclipse.jface.viewers.ISelectionChangedListener#selectionChanged(org.eclipse.jface.viewers.SelectionChangedEvent)
+            /**
+             * {@inheritDoc}
              */
             public void selectionChanged( SelectionChangedEvent event )
             {
@@ -165,8 +165,8 @@ public class NewAttributeTypeGeneralWizardPage extends AbstractWizardPage
         oidCombo.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
         oidCombo.addModifyListener( new ModifyListener()
         {
-            /* (non-Javadoc)
-             * @see org.eclipse.swt.events.ModifyListener#modifyText(org.eclipse.swt.events.ModifyEvent)
+            /**
+             * {@inheritDoc}
              */
             public void modifyText( ModifyEvent arg0 )
             {
@@ -175,8 +175,8 @@ public class NewAttributeTypeGeneralWizardPage extends AbstractWizardPage
         } );
         oidCombo.addVerifyListener( new VerifyListener()
         {
-            /* (non-Javadoc)
-             * @see org.eclipse.swt.events.VerifyListener#verifyText(org.eclipse.swt.events.VerifyEvent)
+            /**
+             * {@inheritDoc}
              */
             public void verifyText( VerifyEvent e )
             {
@@ -213,8 +213,8 @@ public class NewAttributeTypeGeneralWizardPage extends AbstractWizardPage
         aliasesButton.setText( Messages.getString( "NewAttributeTypeGeneralWizardPage.Edit" ) ); //$NON-NLS-1$
         aliasesButton.addSelectionListener( new SelectionAdapter()
         {
-            /* (non-Javadoc)
-             * @see org.eclipse.swt.events.SelectionAdapter#widgetSelected(org.eclipse.swt.events.SelectionEvent)
+            /**
+             * {@inheritDoc}
              */
             public void widgetSelected( SelectionEvent arg0 )
             {
@@ -257,8 +257,8 @@ public class NewAttributeTypeGeneralWizardPage extends AbstractWizardPage
         descriptionText.setLayoutData( descriptionGridData );
         descriptionText.addModifyListener( new ModifyListener()
         {
-            /* (non-Javadoc)
-             * @see org.eclipse.swt.events.ModifyListener#modifyText(org.eclipse.swt.events.ModifyEvent)
+            /**
+             * {@inheritDoc}
              */
             public void modifyText( ModifyEvent arg0 )
             {

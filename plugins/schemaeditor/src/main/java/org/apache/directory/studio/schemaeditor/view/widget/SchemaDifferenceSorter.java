@@ -32,8 +32,8 @@ import org.apache.directory.studio.schemaeditor.model.difference.SchemaDifferenc
  */
 public class SchemaDifferenceSorter implements Comparator<Object>
 {
-    /* (non-Javadoc)
-     * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
+    /**
+     * {@inheritDoc}
      */
     public int compare( Object o1, Object o2 )
     {

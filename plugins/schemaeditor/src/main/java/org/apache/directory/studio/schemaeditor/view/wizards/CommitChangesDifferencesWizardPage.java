@@ -57,8 +57,8 @@ public class CommitChangesDifferencesWizardPage extends WizardPage
     }
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.jface.dialogs.IDialogPage#createControl(org.eclipse.swt.widgets.Composite)
+    /**
+     * {@inheritDoc}
      */
     public void createControl( Composite parent )
     {
@@ -87,8 +87,8 @@ public class CommitChangesDifferencesWizardPage extends WizardPage
     }
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.jface.dialogs.DialogPage#dispose()
+    /**
+     * {@inheritDoc}
      */
     public void dispose()
     {

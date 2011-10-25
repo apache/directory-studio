@@ -46,8 +46,8 @@ public abstract class AbstractAliasWithError extends AbstractAlias implements Al
     }
 
 
-    /* (non-Javadoc)
-     * @see AliasWithError#getErrorChar()
+    /**
+     * {@inheritDoc}
      */
     public char getErrorChar()
     {

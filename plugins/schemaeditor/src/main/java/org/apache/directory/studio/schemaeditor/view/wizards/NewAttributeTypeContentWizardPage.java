@@ -92,8 +92,8 @@ public class NewAttributeTypeContentWizardPage extends AbstractWizardPage
     }
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.jface.dialogs.IDialogPage#createControl(org.eclipse.swt.widgets.Composite)
+    /**
+     * {@inheritDoc}
      */
     public void createControl( Composite parent )
     {

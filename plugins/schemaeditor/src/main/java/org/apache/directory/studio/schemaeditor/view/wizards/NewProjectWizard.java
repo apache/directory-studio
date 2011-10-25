@@ -60,8 +60,8 @@ public class NewProjectWizard extends Wizard implements INewWizard
     private NewProjectWizardSchemasSelectionPage schemasSelectionPage;
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.jface.wizard.Wizard#addPages()
+    /**
+     * {@inheritDoc}
      */
     public void addPages()
     {
@@ -77,8 +77,8 @@ public class NewProjectWizard extends Wizard implements INewWizard
     }
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.jface.wizard.Wizard#performFinish()
+    /**
+     * {@inheritDoc}
      */
     public boolean performFinish()
     {
@@ -224,8 +224,8 @@ public class NewProjectWizard extends Wizard implements INewWizard
     }
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.jface.wizard.Wizard#getNextPage(org.eclipse.jface.wizard.IWizardPage)
+    /**
+     * {@inheritDoc}
      */
     public IWizardPage getNextPage( IWizardPage page )
     {
@@ -246,8 +246,8 @@ public class NewProjectWizard extends Wizard implements INewWizard
     }
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.jface.wizard.Wizard#getPreviousPage(org.eclipse.jface.wizard.IWizardPage)
+    /**
+     * {@inheritDoc}
      */
     public IWizardPage getPreviousPage( IWizardPage page )
     {
@@ -261,8 +261,8 @@ public class NewProjectWizard extends Wizard implements INewWizard
     }
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.jface.wizard.Wizard#canFinish()
+    /**
+     * {@inheritDoc}
      */
     public boolean canFinish()
     {
@@ -287,8 +287,8 @@ public class NewProjectWizard extends Wizard implements INewWizard
     }
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.ui.IWorkbenchWizard#init(org.eclipse.ui.IWorkbench, org.eclipse.jface.viewers.IStructuredSelection)
+    /**
+     * {@inheritDoc}
      */
     public void init( IWorkbench workbench, IStructuredSelection selection )
     {

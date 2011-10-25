@@ -41,8 +41,8 @@ import org.eclipse.swt.graphics.Image;
  */
 public class ObjectClassEditorAttributesTableLabelProvider extends LabelProvider implements ITableLabelProvider
 {
-    /* (non-Javadoc)
-     * @see org.eclipse.jface.viewers.ITableLabelProvider#getColumnImage(java.lang.Object, int)
+    /**
+     * {@inheritDoc}
      */
     public Image getColumnImage( Object element, int columnIndex )
     {
@@ -56,8 +56,8 @@ public class ObjectClassEditorAttributesTableLabelProvider extends LabelProvider
     }
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.jface.viewers.ITableLabelProvider#getColumnText(java.lang.Object, int)
+    /**
+     * {@inheritDoc}
      */
     public String getColumnText( Object element, int columnIndex )
     {

@@ -32,8 +32,8 @@ import org.apache.directory.shared.ldap.model.schema.ObjectClass;
  */
 public class OidSorter implements Comparator<TreeNode>
 {
-    /* (non-Javadoc)
-     * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
+    /**
+     * {@inheritDoc}
      */
     public int compare( TreeNode o1, TreeNode o2 )
     {

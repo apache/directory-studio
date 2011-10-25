@@ -67,8 +67,8 @@ public class DifferencesWidgetSchemaContentProvider implements IStructuredConten
     }
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.jface.viewers.IStructuredContentProvider#getElements(java.lang.Object)
+    /**
+     * {@inheritDoc}
      */
     public Object[] getElements( Object inputElement )
     {
@@ -76,8 +76,8 @@ public class DifferencesWidgetSchemaContentProvider implements IStructuredConten
     }
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.jface.viewers.IContentProvider#dispose()
+    /**
+     * {@inheritDoc}
      */
     public void dispose()
     {
@@ -85,8 +85,8 @@ public class DifferencesWidgetSchemaContentProvider implements IStructuredConten
     }
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.jface.viewers.IContentProvider#inputChanged(org.eclipse.jface.viewers.Viewer, java.lang.Object, java.lang.Object)
+    /**
+     * {@inheritDoc}
      */
     public void inputChanged( Viewer viewer, Object oldInput, Object newInput )
     {
@@ -94,8 +94,8 @@ public class DifferencesWidgetSchemaContentProvider implements IStructuredConten
     }
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.jface.viewers.ITreeContentProvider#getChildren(java.lang.Object)
+    /**
+     * {@inheritDoc}
      */
     @SuppressWarnings("unchecked")
     public Object[] getChildren( Object parentElement )
@@ -175,8 +175,8 @@ public class DifferencesWidgetSchemaContentProvider implements IStructuredConten
     }
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.jface.viewers.ITreeContentProvider#getParent(java.lang.Object)
+    /**
+     * {@inheritDoc}
      */
     public Object getParent( Object element )
     {
@@ -185,8 +185,8 @@ public class DifferencesWidgetSchemaContentProvider implements IStructuredConten
     }
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.jface.viewers.ITreeContentProvider#hasChildren(java.lang.Object)
+    /**
+     * {@inheritDoc}
      */
     public boolean hasChildren( Object element )
     {

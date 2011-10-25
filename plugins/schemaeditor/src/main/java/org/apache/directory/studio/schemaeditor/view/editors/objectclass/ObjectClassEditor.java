@@ -125,8 +125,8 @@ public class ObjectClassEditor extends FormEditor
     };
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.ui.forms.editor.FormEditor#init(org.eclipse.ui.IEditorSite, org.eclipse.ui.IEditorInput)
+    /**
+     * {@inheritDoc}
      */
     public void init( IEditorSite site, IEditorInput input ) throws PartInitException
     {
@@ -150,8 +150,8 @@ public class ObjectClassEditor extends FormEditor
     }
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.ui.forms.editor.FormEditor#dispose()
+    /**
+     * {@inheritDoc}
      */
     public void dispose()
     {
@@ -163,10 +163,9 @@ public class ObjectClassEditor extends FormEditor
     }
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.ui.forms.editor.FormEditor#addPages()
+    /**
+     * {@inheritDoc}
      */
-    @Override
     protected void addPages()
     {
         try
@@ -183,8 +182,8 @@ public class ObjectClassEditor extends FormEditor
     }
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.ui.part.EditorPart#doSave(org.eclipse.core.runtime.IProgressMonitor)
+    /**
+     * {@inheritDoc}
      */
     public void doSave( IProgressMonitor monitor )
     {
@@ -206,16 +205,16 @@ public class ObjectClassEditor extends FormEditor
     }
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.ui.part.EditorPart#doSaveAs()
+    /**
+     * {@inheritDoc}
      */
     public void doSaveAs()
     {
     }
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.ui.part.EditorPart#isSaveAsAllowed()
+    /**
+     * {@inheritDoc}
      */
     public boolean isSaveAsAllowed()
     {
@@ -223,8 +222,8 @@ public class ObjectClassEditor extends FormEditor
     }
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.ui.forms.editor.FormEditor#isDirty()
+    /**
+     * {@inheritDoc}
      */
     public boolean isDirty()
     {

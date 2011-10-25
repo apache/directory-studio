@@ -70,8 +70,8 @@ public class AbstractDifference implements Difference
     }
 
 
-    /* (non-Javadoc)
-     * @see org.apache.directory.studio.schemaeditor.model.difference.Difference#getDestination()
+    /**
+     * {@inheritDoc}
      */
     public Object getDestination()
     {
@@ -79,8 +79,8 @@ public class AbstractDifference implements Difference
     }
 
 
-    /* (non-Javadoc)
-     * @see org.apache.directory.studio.schemaeditor.model.difference.Difference#setDestination(java.lang.Object)
+    /**
+     * {@inheritDoc}
      */
     public void setDestination( Object destination )
     {
@@ -88,8 +88,8 @@ public class AbstractDifference implements Difference
     }
 
 
-    /* (non-Javadoc)
-     * @see org.apache.directory.studio.schemaeditor.model.difference.Difference#getSource()
+    /**
+     * {@inheritDoc}
      */
     public Object getSource()
     {
@@ -97,8 +97,8 @@ public class AbstractDifference implements Difference
     }
 
 
-    /* (non-Javadoc)
-     * @see org.apache.directory.studio.schemaeditor.model.difference.Difference#setSource(java.lang.Object)
+    /**
+     * {@inheritDoc}
      */
     public void setSource( Object source )
     {
@@ -106,8 +106,8 @@ public class AbstractDifference implements Difference
     }
 
 
-    /* (non-Javadoc)
-     * @see org.apache.directory.studio.schemaeditor.model.difference.Difference#getType()
+    /**
+     * {@inheritDoc}
      */
     public DifferenceType getType()
     {
@@ -115,8 +115,8 @@ public class AbstractDifference implements Difference
     }
 
 
-    /* (non-Javadoc)
-     * @see org.apache.directory.studio.schemaeditor.model.difference.Difference#setType(org.apache.directory.studio.schemaeditor.model.difference.DifferenceType)
+    /**
+     * {@inheritDoc}
      */
     public void setType( DifferenceType type )
     {

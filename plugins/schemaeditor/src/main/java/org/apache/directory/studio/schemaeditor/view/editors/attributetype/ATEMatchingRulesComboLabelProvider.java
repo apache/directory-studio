@@ -33,8 +33,8 @@ import org.eclipse.osgi.util.NLS;
  */
 public class ATEMatchingRulesComboLabelProvider extends LabelProvider
 {
-    /* (non-Javadoc)
-     * @see org.eclipse.jface.viewers.LabelProvider#getText(java.lang.Object)
+    /**
+     * {@inheritDoc}
      */
     public String getText( Object obj )
     {

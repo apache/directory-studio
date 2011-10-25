@@ -49,8 +49,8 @@ import org.apache.directory.studio.schemaeditor.model.difference.UsageDifference
  */
 public class PropertySorter implements Comparator<PropertyDifference>
 {
-    /* (non-Javadoc)
-     * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
+    /**
+     * {@inheritDoc}
      */
     public int compare( PropertyDifference diff1, PropertyDifference diff2 )
     {

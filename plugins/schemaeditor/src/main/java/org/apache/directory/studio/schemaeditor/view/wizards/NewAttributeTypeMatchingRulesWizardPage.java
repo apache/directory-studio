@@ -60,8 +60,8 @@ public class NewAttributeTypeMatchingRulesWizardPage extends WizardPage
     /** The LabelProvider */
     private LabelProvider labelProvider = new LabelProvider()
     {
-        /* (non-Javadoc)
-         * @see org.eclipse.jface.viewers.LabelProvider#getText(java.lang.Object)
+        /**
+         * {@inheritDoc}
          */
         public String getText( Object element )
         {
@@ -108,8 +108,8 @@ public class NewAttributeTypeMatchingRulesWizardPage extends WizardPage
     }
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.jface.dialogs.IDialogPage#createControl(org.eclipse.swt.widgets.Composite)
+    /**
+     * {@inheritDoc}
      */
     public void createControl( Composite parent )
     {

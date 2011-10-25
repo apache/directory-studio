@@ -59,8 +59,8 @@ public class ImportSchemasFromXmlWizard extends Wizard implements IImportWizard
     private ImportSchemasFromXmlWizardPage page;
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.jface.wizard.Wizard#addPages()
+    /**
+     * {@inheritDoc}
      */
     public void addPages()
     {
@@ -72,8 +72,8 @@ public class ImportSchemasFromXmlWizard extends Wizard implements IImportWizard
     }
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.jface.wizard.Wizard#performFinish()
+    /**
+     * {@inheritDoc}
      */
     public boolean performFinish()
     {
@@ -166,8 +166,8 @@ public class ImportSchemasFromXmlWizard extends Wizard implements IImportWizard
     }
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.ui.IWorkbenchWizard#init(org.eclipse.ui.IWorkbench, org.eclipse.jface.viewers.IStructuredSelection)
+    /**
+     * {@inheritDoc}
      */
     public void init( IWorkbench workbench, IStructuredSelection selection )
     {

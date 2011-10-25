@@ -100,8 +100,8 @@ public class ExportSchemasAsXmlWizardPage extends AbstractWizardPage
     }
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.jface.dialogs.IDialogPage#createControl(org.eclipse.swt.widgets.Composite)
+    /**
+     * {@inheritDoc}
      */
     public void createControl( Composite parent )
     {
@@ -258,8 +258,8 @@ public class ExportSchemasAsXmlWizardPage extends AbstractWizardPage
         exportSingleFileButton.setText( Messages.getString( "ExportSchemasAsXmlWizardPage.Browse" ) ); //$NON-NLS-1$
         exportSingleFileButton.addSelectionListener( new SelectionAdapter()
         {
-            /* (non-Javadoc)
-             * @see org.eclipse.swt.events.SelectionAdapter#widgetSelected(org.eclipse.swt.events.SelectionEvent)
+            /**
+             * {@inheritDoc}
              */
             public void widgetSelected( SelectionEvent e )
             {

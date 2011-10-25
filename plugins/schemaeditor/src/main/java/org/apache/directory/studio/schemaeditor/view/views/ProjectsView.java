@@ -46,8 +46,8 @@ public class ProjectsView extends ViewPart
     private TableViewer tableViewer;
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.ui.part.WorkbenchPart#createPartControl(org.eclipse.swt.widgets.Composite)
+    /**
+     * {@inheritDoc}
      */
     public void createPartControl( Composite parent )
     {
@@ -73,8 +73,8 @@ public class ProjectsView extends ViewPart
     }
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.ui.part.WorkbenchPart#setFocus()
+    /**
+     * {@inheritDoc}
      */
     public void setFocus()
     {
