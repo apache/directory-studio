@@ -27,24 +27,24 @@ package org.apache.directory.studio.apacheds.model;
  */
 public class ServersHandlerAdapter implements ServersHandlerListener
 {
-    /* (non-Javadoc)
-     * @see org.apache.directory.studio.apacheds.model.ServersHandlerListener#serverAdded(org.apache.directory.studio.apacheds.model.Server)
+    /**
+     * {@inheritDoc}
      */
     public void serverAdded( Server server )
     {
     }
 
 
-    /* (non-Javadoc)
-     * @see org.apache.directory.studio.apacheds.model.ServersHandlerListener#serverRemoved(org.apache.directory.studio.apacheds.model.Server)
+    /**
+     * {@inheritDoc}
      */
     public void serverRemoved( Server server )
     {
     }
 
 
-    /* (non-Javadoc)
-     * @see org.apache.directory.studio.apacheds.model.ServersHandlerListener#serverUpdated(org.apache.directory.studio.apacheds.model.Server)
+    /**
+     * {@inheritDoc}
      */
     public void serverUpdated( Server server )
     {

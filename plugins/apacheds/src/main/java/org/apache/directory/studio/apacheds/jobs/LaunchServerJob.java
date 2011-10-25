@@ -106,10 +106,8 @@ public class LaunchServerJob extends Job
     }
 
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.core.runtime.jobs.Job#run(org.eclipse.core.runtime.IProgressMonitor)
+    /**
+     * {@inheritDoc}
      */
     protected IStatus run( IProgressMonitor monitor )
     {

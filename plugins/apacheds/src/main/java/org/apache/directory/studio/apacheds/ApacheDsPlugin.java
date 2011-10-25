@@ -68,9 +68,8 @@ public class ApacheDsPlugin extends AbstractUIPlugin
     }
 
 
-    /*
-     * (non-Javadoc)
-     * @see org.eclipse.ui.plugin.AbstractUIPlugin#start(org.osgi.framework.BundleContext)
+    /**
+     * {@inheritDoc}
      */
     public void start( BundleContext context ) throws Exception
     {
@@ -86,8 +85,7 @@ public class ApacheDsPlugin extends AbstractUIPlugin
 
 
     /**
-     * (non-Javadoc)
-     * @see org.eclipse.ui.plugin.AbstractUIPlugin#stop(org.osgi.framework.BundleContext)
+     * {@inheritDoc}
      */
     public void stop( BundleContext context ) throws Exception
     {

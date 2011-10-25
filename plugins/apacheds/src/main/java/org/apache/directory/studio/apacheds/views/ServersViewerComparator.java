@@ -187,8 +187,8 @@ public class ServersViewerComparator extends ViewerComparator
     }
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.jface.viewers.ViewerComparator#compare(org.eclipse.jface.viewers.Viewer, java.lang.Object, java.lang.Object)
+    /**
+     * {@inheritDoc}
      */
     public int compare( Viewer viewer, Object e1, Object e2 )
     {

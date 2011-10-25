@@ -49,8 +49,8 @@ public class MainPage extends PreferencePage implements IWorkbenchPreferencePage
     }
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.jface.preference.PreferencePage#createContents(org.eclipse.swt.widgets.Composite)
+    /**
+     * {@inheritDoc}
      */
     protected Control createContents( Composite parent )
     {
@@ -62,8 +62,8 @@ public class MainPage extends PreferencePage implements IWorkbenchPreferencePage
     }
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.ui.IWorkbenchPreferencePage#init(org.eclipse.ui.IWorkbench)
+    /**
+     * {@inheritDoc}
      */
     public void init( IWorkbench workbench )
     {

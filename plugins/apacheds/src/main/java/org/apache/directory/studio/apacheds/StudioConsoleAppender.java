@@ -75,8 +75,8 @@ public class StudioConsoleAppender extends AppenderSkeleton
     }
 
 
-    /* (non-Javadoc)
-     * @see org.apache.log4j.AppenderSkeleton#append(org.apache.log4j.spi.LoggingEvent)
+    /**
+     * {@inheritDoc}
      */
     protected void append( LoggingEvent event )
     {
@@ -121,8 +121,8 @@ public class StudioConsoleAppender extends AppenderSkeleton
     }
 
 
-    /* (non-Javadoc)
-     * @see org.apache.log4j.AppenderSkeleton#close()
+    /**
+     * {@inheritDoc}
      */
     public void close()
     {
@@ -130,8 +130,8 @@ public class StudioConsoleAppender extends AppenderSkeleton
     }
 
 
-    /* (non-Javadoc)
-     * @see org.apache.log4j.AppenderSkeleton#requiresLayout()
+    /**
+     * {@inheritDoc}
      */
     public boolean requiresLayout()
     {

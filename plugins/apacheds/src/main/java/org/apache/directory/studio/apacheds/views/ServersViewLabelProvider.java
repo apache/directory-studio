@@ -42,8 +42,8 @@ public class ServersViewLabelProvider extends LabelProvider implements ITableLab
     private int count = 1;
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.jface.viewers.ITableLabelProvider#getColumnText(java.lang.Object, int)
+    /**
+     * {@inheritDoc}
      */
     public String getColumnText( Object element, int columnIndex )
     {
@@ -95,8 +95,8 @@ public class ServersViewLabelProvider extends LabelProvider implements ITableLab
     }
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.jface.viewers.ITableLabelProvider#getColumnImage(java.lang.Object, int)
+    /**
+     * {@inheritDoc}
      */
     public Image getColumnImage( Object element, int columnIndex )
     {

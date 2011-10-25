@@ -296,8 +296,8 @@ public class Server implements IAdaptable
     }
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.core.runtime.IAdaptable#getAdapter(java.lang.Class)
+    /**
+     * {@inheritDoc}
      */
     public Object getAdapter( Class adapter )
     {

@@ -30,9 +30,6 @@ public enum ServerVersion
     /** Version 1.5.6 */
     VERSION_1_5_6
     {
-        /* (non-Javadoc)
-         * @see java.lang.Enum#toString()
-         */
         public String toString()
         {
             return "1.5.6"; //$NON-NLS-1$
@@ -41,9 +38,6 @@ public enum ServerVersion
     /** Version 1.5.5 */
     VERSION_1_5_5
     {
-        /* (non-Javadoc)
-         * @see java.lang.Enum#toString()
-         */
         public String toString()
         {
             return "1.5.5"; //$NON-NLS-1$
@@ -52,9 +46,6 @@ public enum ServerVersion
     /** Version 1.5.4 */
     VERSION_1_5_4
     {
-        /* (non-Javadoc)
-         * @see java.lang.Enum#toString()
-         */
         public String toString()
         {
             return "1.5.4"; //$NON-NLS-1$
@@ -64,9 +55,6 @@ public enum ServerVersion
     /** Version 1.5.3 */
     VERSION_1_5_3
     {
-        /* (non-Javadoc)
-         * @see java.lang.Enum#toString()
-         */
         public String toString()
         {
             return "1.5.3"; //$NON-NLS-1$

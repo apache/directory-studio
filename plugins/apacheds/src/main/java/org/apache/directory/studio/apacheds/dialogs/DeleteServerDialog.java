@@ -60,8 +60,8 @@ public class DeleteServerDialog extends MessageDialog
     }
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.jface.dialogs.MessageDialog#buttonPressed(int)
+    /**
+     * {@inheritDoc}
      */
     protected void buttonPressed( int buttonId )
     {
