@@ -275,13 +275,13 @@ public class ImageDialog extends Dialog
         if ( currentImageRawData != null && currentImageRawData.length > 0 )
         {
             currentImageContainer = new Composite( tabFolder, SWT.NONE );
-            GridLayout currentLayout = new GridLayout( 1, false );
+            GridLayout currentLayout = new GridLayout();
             currentLayout.marginHeight = convertVerticalDLUsToPixels( IDialogConstants.VERTICAL_MARGIN );
             currentLayout.marginWidth = convertHorizontalDLUsToPixels( IDialogConstants.HORIZONTAL_MARGIN );
             currentLayout.verticalSpacing = convertVerticalDLUsToPixels( IDialogConstants.VERTICAL_SPACING );
             currentLayout.horizontalSpacing = convertHorizontalDLUsToPixels( IDialogConstants.HORIZONTAL_SPACING );
             currentImageContainer.setLayout( currentLayout );
-            currentImageContainer.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
+            currentImageContainer.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
 
             currentImageLabel = createImageLabel( currentImageContainer );
 
@@ -343,13 +343,13 @@ public class ImageDialog extends Dialog
 
         // new image
         newImageContainer = new Composite( tabFolder, SWT.NONE );
-        GridLayout newLayout = new GridLayout( 1, false );
+        GridLayout newLayout = new GridLayout();
         newLayout.marginHeight = convertVerticalDLUsToPixels( IDialogConstants.VERTICAL_MARGIN );
         newLayout.marginWidth = convertHorizontalDLUsToPixels( IDialogConstants.HORIZONTAL_MARGIN );
         newLayout.verticalSpacing = convertVerticalDLUsToPixels( IDialogConstants.VERTICAL_SPACING );
         newLayout.horizontalSpacing = convertHorizontalDLUsToPixels( IDialogConstants.HORIZONTAL_SPACING );
         newImageContainer.setLayout( newLayout );
-        newImageContainer.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
+        newImageContainer.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
 
         newImageLabel = createImageLabel( newImageContainer );
 
@@ -361,7 +361,7 @@ public class ImageDialog extends Dialog
 
         Composite newImageSelectContainer = createImageInfoContainer( newImageContainer );
         newImageFilenameText = new Text( newImageSelectContainer, SWT.SINGLE | SWT.BORDER );
-        GridData gd = new GridData( GridData.GRAB_HORIZONTAL | GridData.HORIZONTAL_ALIGN_FILL );
+        GridData gd = new GridData( SWT.FILL, SWT.CENTER, true, false );
         newImageFilenameText.setLayoutData( gd );
         newImageFilenameText.addModifyListener( new ModifyListener()
         {
@@ -624,9 +624,8 @@ public class ImageDialog extends Dialog
     private Label createImageLabel( Composite parent )
     {
         Composite labelComposite = new Composite( parent, SWT.BORDER );
-        GridLayout gl = new GridLayout( 1, true );
-        labelComposite.setLayout( gl );
-        GridData gd = new GridData( GridData.GRAB_HORIZONTAL | GridData.HORIZONTAL_ALIGN_FILL );
+        labelComposite.setLayout( new GridLayout() );
+        GridData gd = new GridData( SWT.FILL, SWT.FILL, true, true );
         gd.widthHint = MAX_WIDTH;
         gd.heightHint = MAX_HEIGHT;
         labelComposite.setLayoutData( gd );
