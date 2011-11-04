@@ -52,11 +52,7 @@
                 <artifactItems>
                   <artifactItem>
                     <groupId>org.apache.directory.studio</groupId>
-                    <artifactId>rcp.feature</artifactId>
-                  </artifactItem>
-                  <artifactItem>
-                    <groupId>org.apache.directory.studio</groupId>
-                    <artifactId>schemaeditor.feature</artifactId>
+                    <artifactId>apacheds.configuration.feature</artifactId>
                   </artifactItem>
                   <artifactItem>
                     <groupId>org.apache.directory.studio</groupId>
@@ -64,15 +60,19 @@
                   </artifactItem>
                   <artifactItem>
                     <groupId>org.apache.directory.studio</groupId>
+                    <artifactId>ldapservers.feature</artifactId>
+                  </artifactItem>
+                  <artifactItem>
+                    <groupId>org.apache.directory.studio</groupId>
                     <artifactId>ldifeditor.feature</artifactId>
                   </artifactItem>
                   <artifactItem>
                     <groupId>org.apache.directory.studio</groupId>
-                    <artifactId>apacheds.configuration.feature</artifactId>
+                    <artifactId>rcp.feature</artifactId>
                   </artifactItem>
                   <artifactItem>
                     <groupId>org.apache.directory.studio</groupId>
-                    <artifactId>apacheds.feature</artifactId>
+                    <artifactId>schemaeditor.feature</artifactId>
                   </artifactItem>
                 </artifactItems>
               </configuration>
@@ -88,11 +88,7 @@
                 <artifactItems>
                   <artifactItem>
                     <groupId>org.apache.directory.studio</groupId>
-                    <artifactId>rcp.feature</artifactId>
-                  </artifactItem>
-                  <artifactItem>
-                    <groupId>org.apache.directory.studio</groupId>
-                    <artifactId>schemaeditor.feature</artifactId>
+                    <artifactId>apacheds.configuration.feature</artifactId>
                   </artifactItem>
                   <artifactItem>
                     <groupId>org.apache.directory.studio</groupId>
@@ -100,15 +96,19 @@
                   </artifactItem>
                   <artifactItem>
                     <groupId>org.apache.directory.studio</groupId>
+                    <artifactId>ldapservers.feature</artifactId>
+                  </artifactItem>
+                  <artifactItem>
+                    <groupId>org.apache.directory.studio</groupId>
                     <artifactId>ldifeditor.feature</artifactId>
                   </artifactItem>
                   <artifactItem>
                     <groupId>org.apache.directory.studio</groupId>
-                    <artifactId>apacheds.configuration.feature</artifactId>
+                    <artifactId>rcp.feature</artifactId>
                   </artifactItem>
                   <artifactItem>
                     <groupId>org.apache.directory.studio</groupId>
-                    <artifactId>apacheds.feature</artifactId>
+                    <artifactId>schemaeditor.feature</artifactId>
                   </artifactItem>
                 </artifactItems>
               </configuration>

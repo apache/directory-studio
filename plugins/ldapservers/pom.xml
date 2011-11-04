@@ -39,6 +39,8 @@
         <includes>
           <include>plugin*.properties</include>
           <include>plugin.xml</include>
+          <include>about.ini</include>
+          <include>studio.png</include>
         </includes>
       </resource>
       <resource>
