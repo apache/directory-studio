@@ -48,6 +48,10 @@ import org.apache.directory.studio.apacheds.configuration.v2.editor.NewServerCon
 import org.apache.directory.studio.apacheds.configuration.v2.editor.ServerConfigurationEditor;
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.common.core.jobs.StudioRunnableWithProgress;
+import org.apache.directory.studio.connection.core.Connection;
+import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
+import org.apache.directory.studio.connection.core.IConnectionListener;
+import org.apache.directory.studio.connection.core.event.ConnectionEventRegistry;
 import org.apache.directory.studio.connection.core.io.StudioNamingEnumeration;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
 import org.apache.directory.studio.ldapbrowser.core.jobs.SearchRunnable;
@@ -280,6 +284,9 @@ public class LoadConfigurationRunnable implements StudioRunnableWithProgress
                 schemaManager );
             configurationPartition.initialize();
 
+            // Opening the connection
+            openConnection( input, monitor );
+
             // Creating the search parameter
             SearchParameter configSearchParameter = new SearchParameter();
             configSearchParameter.setSearchBase( new Dn( "ou=config" ) );
@@ -325,7 +332,6 @@ public class LoadConfigurationRunnable implements StudioRunnableWithProgress
                 // Removing the first entry from the list
                 Entry entry = entries.remove( 0 );
 
-
                 // Adding the entry to the partition
                 configurationPartition.addEntry( entry );
 
@@ -365,5 +371,36 @@ public class LoadConfigurationRunnable implements StudioRunnableWithProgress
         }
 
         return null;
+    }
+
+
+    /**
+     * Opens the connection.
+     *
+     * @param input the input
+     * @param monitor the monitor
+     */
+    private void openConnection( ConnectionServerConfigurationInput input, StudioProgressMonitor monitor )
+    {
+        Connection connection = input.getConnection();
+
+        if ( connection != null && !connection.getConnectionWrapper().isConnected() )
+        {
+            connection.getConnectionWrapper().connect( monitor );
+            if ( connection.getConnectionWrapper().isConnected() )
+            {
+                connection.getConnectionWrapper().bind( monitor );
+            }
+
+            if ( connection.getConnectionWrapper().isConnected() )
+            {
+                for ( IConnectionListener listener : ConnectionCorePlugin.getDefault()
+                    .getConnectionListeners() )
+                {
+                    listener.connectionOpened( connection, monitor );
+                }
+                ConnectionEventRegistry.fireConnectionOpened( connection, input );
+            }
+        }
     }
 }
