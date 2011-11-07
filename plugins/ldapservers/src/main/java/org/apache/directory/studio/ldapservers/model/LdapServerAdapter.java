@@ -102,5 +102,5 @@ public interface LdapServerAdapter
      * @param server the server
      * @return an array of error message, one for each port being already used.
      */
-    public String[] checkPortsBeforeServerStart( LdapServer server );
+    public String[] checkPortsBeforeServerStart( LdapServer server ) throws Exception;
 }

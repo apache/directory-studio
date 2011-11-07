@@ -278,13 +278,11 @@ public class ApacheDS155LdapServerAdapter implements LdapServerAdapter
     /**
      * {@inheritDoc}
      */
-    public String[] checkPortsBeforeServerStart( LdapServer server )
+    public String[] checkPortsBeforeServerStart( LdapServer server ) throws Exception
     {
         List<String> alreadyInUseProtocolPortsList = new ArrayList<String>();
 
-        try
-        {
-            ServerConfigurationV155 configuration = getServerConfiguration( server );
+        ServerConfigurationV155 configuration = getServerConfiguration( server );
 
         // LDAP
         if ( configuration.isEnableLdap() )
@@ -353,11 +351,6 @@ public class ApacheDS155LdapServerAdapter implements LdapServerAdapter
                             Messages.getString( "ApacheDS155LdapServerAdapter.ChangePasswordPort" ), new Object[] { configuration.getChangePasswordPort() } ) ); //$NON-NLS-1$
             }
         }
-    }
-    catch ( Exception e )
-    {
-        System.out.println( e );
-    }
 
         return alreadyInUseProtocolPortsList.toArray( new String[0] );
     }

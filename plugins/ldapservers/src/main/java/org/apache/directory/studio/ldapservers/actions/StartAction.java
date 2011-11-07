@@ -105,50 +105,62 @@ public class StartAction extends Action implements IWorkbenchWindowActionDelegat
                 {
                     LdapServerAdapter ldapServerAdapter = ldapServerAdapterExtension.getInstance();
 
-                    // Getting the ports already in use
-                    String[] portsAlreadyInUse = ldapServerAdapter.checkPortsBeforeServerStart( server );
-                    if ( ( portsAlreadyInUse == null ) || ( portsAlreadyInUse.length > 0 ) )
+                    try
                     {
-                        String title = null;
-                        String message = null;
 
-                        if ( portsAlreadyInUse.length == 1 )
+                        // Getting the ports already in use
+                        String[] portsAlreadyInUse = ldapServerAdapter.checkPortsBeforeServerStart( server );
+                        if ( ( portsAlreadyInUse == null ) || ( portsAlreadyInUse.length > 0 ) )
                         {
-                            title = Messages.getString( "StartAction.PortInUse" ); //$NON-NLS-1$
-                            message = NLS
-                                .bind(
-                                    Messages.getString( "StartAction.PortOfProtocolInUse" ), new String[] { portsAlreadyInUse[0] } ); //$NON-NLS-1$
-                        }
-                        else
-                        {
-                            title = Messages.getString( "StartAction.PortsInUse" ); //$NON-NLS-1$
-                            message = Messages.getString( "StartAction.PortsOfProtocolsInUse" ); //$NON-NLS-1$
-                            for ( String portAlreadyInUse : portsAlreadyInUse )
+                            String title = null;
+                            String message = null;
+
+                            if ( portsAlreadyInUse.length == 1 )
                             {
-                                message += "\n    - " + portAlreadyInUse; //$NON-NLS-1$
+                                title = Messages.getString( "StartAction.PortInUse" ); //$NON-NLS-1$
+                                message = NLS
+                                    .bind(
+                                        Messages.getString( "StartAction.PortOfProtocolInUse" ), new String[] { portsAlreadyInUse[0] } ); //$NON-NLS-1$
+                            }
+                            else
+                            {
+                                title = Messages.getString( "StartAction.PortsInUse" ); //$NON-NLS-1$
+                                message = Messages.getString( "StartAction.PortsOfProtocolsInUse" ); //$NON-NLS-1$
+                                for ( String portAlreadyInUse : portsAlreadyInUse )
+                                {
+                                    message += "\n    - " + portAlreadyInUse; //$NON-NLS-1$
+                                }
+                            }
+
+                            message += "\n\n" + Messages.getString( "StartAction.Continue" ); //$NON-NLS-1$
+
+                            MessageDialog dialog = new MessageDialog( view.getSite().getShell(), title, null, message,
+                                MessageDialog.WARNING, new String[]
+                                    { IDialogConstants.OK_LABEL, IDialogConstants.CANCEL_LABEL }, MessageDialog.OK );
+                            if ( dialog.open() == MessageDialog.CANCEL )
+                            {
+                                return;
                             }
                         }
 
-                        message += "\n\n" + Messages.getString( "StartAction.Continue" ); //$NON-NLS-1$
-
-                        MessageDialog dialog = new MessageDialog( view.getSite().getShell(), title, null, message,
-                            MessageDialog.WARNING, new String[]
-                                { IDialogConstants.OK_LABEL, IDialogConstants.CANCEL_LABEL }, MessageDialog.OK );
-                        if ( dialog.open() == MessageDialog.CANCEL )
-                        {
-                            return;
-                        }
+                        // Creating and scheduling the job to start the server
+                        StudioLdapServerJob job = new StudioLdapServerJob( new StartLdapServerRunnable( server ) );
+                        job.schedule();
                     }
-
-                    // Creating and scheduling the job to start the server
-                    StudioLdapServerJob job = new StudioLdapServerJob( new StartLdapServerRunnable( server ) );
-                    job.schedule();
+                    catch ( Exception e )
+                    {
+                        // Showing an error in case no LDAP Server Adapter can be found
+                        MessageDialog.openError( view.getSite().getShell(), "Error Starting Server",
+                            NLS.bind( "The server ''{0}'' cannot be started." + "\n" + "Cause: {1}", server.getName(),
+                                e.getMessage() ) );
+                    }
                 }
                 else
                 {
                     // Showing an error in case no LDAP Server Adapter can be found
                     MessageDialog.openError( view.getSite().getShell(), "No LDAP Server Adapter",
-                        "This server can't be started.\nNo LDAP Server Adapter could be found for this server." );
+                        NLS.bind( "The server ''{0}'' cannot be started." + "\n"
+                            + "No LDAP Server Adapter could be found for this server.", server.getName() ) );
                 }
             }
         }
