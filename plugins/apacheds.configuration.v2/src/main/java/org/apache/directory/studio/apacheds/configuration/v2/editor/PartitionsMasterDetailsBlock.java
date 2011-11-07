@@ -30,11 +30,13 @@ import org.apache.directory.server.config.beans.PartitionBean;
 import org.apache.directory.shared.ldap.model.entry.Entry;
 import org.apache.directory.shared.ldap.model.exception.LdapInvalidDnException;
 import org.apache.directory.shared.ldap.model.name.Dn;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -158,8 +160,13 @@ public class PartitionsMasterDetailsBlock extends MasterDetailsBlock
             {
                 viewer.refresh();
 
-                deleteButton.setEnabled( !event.getSelection().isEmpty() );
+                // Getting the selection of the table viewer
                 StructuredSelection selection = ( StructuredSelection ) viewer.getSelection();
+
+                // Delete button is enabled when something is selected
+                deleteButton.setEnabled( !selection.isEmpty() );
+
+                // Delete button is not enabled in the case of the system partition
                 if ( !selection.isEmpty() )
                 {
                     JdbmPartitionBean partition = ( JdbmPartitionBean ) selection.getFirstElement();
@@ -175,45 +182,7 @@ public class PartitionsMasterDetailsBlock extends MasterDetailsBlock
         {
             public void widgetSelected( SelectionEvent e )
             {
-                String newId = getNewId();
-
-                JdbmPartitionBean newPartitionBean = new JdbmPartitionBean();
-                newPartitionBean.setPartitionId( newId );
-                try
-                {
-                    newPartitionBean.setPartitionSuffix( new Dn( "dc=" + newId + ",dc=com" ) );
-                }
-                catch ( LdapInvalidDnException e1 )
-                {
-                    // TODO Auto-generated catch block
-                    e1.printStackTrace();
-                }
-
-                // Default values
-                newPartitionBean.setPartitionCacheSize( 100 );
-                newPartitionBean.setJdbmPartitionOptimizerEnabled( true );
-                newPartitionBean.setPartitionSyncOnWrite( true );
-                List<IndexBean> indexes = new ArrayList<IndexBean>();
-                indexes.add( createJdbmIndex( "apacheAlias", 100 ) );
-                indexes.add( createJdbmIndex( "apacheOneAlias", 100 ) );
-                indexes.add( createJdbmIndex( "apacheOneLevel", 100 ) );
-                indexes.add( createJdbmIndex( "apachePresence", 100 ) );
-                indexes.add( createJdbmIndex( "apacheRdn", 100 ) );
-                indexes.add( createJdbmIndex( "apacheSubAlias", 100 ) );
-                indexes.add( createJdbmIndex( "apacheSubLevel", 100 ) );
-                indexes.add( createJdbmIndex( "dc", 100 ) );
-                indexes.add( createJdbmIndex( "entryCSN", 100 ) );
-                indexes.add( createJdbmIndex( "entryUUID", 100 ) );
-                indexes.add( createJdbmIndex( "krbPrincipalName", 100 ) );
-                indexes.add( createJdbmIndex( "objectClass", 100 ) );
-                indexes.add( createJdbmIndex( "ou", 100 ) );
-                indexes.add( createJdbmIndex( "uid", 100 ) );
-                newPartitionBean.setIndexes( indexes );
-
-                page.getConfigBean().getDirectoryServiceBean().addPartitions( newPartitionBean );
-                viewer.refresh();
-                viewer.setSelection( new StructuredSelection( newPartitionBean ) );
-                setEditorDirty();
+                addNewPartition();
             }
         } );
 
@@ -221,18 +190,55 @@ public class PartitionsMasterDetailsBlock extends MasterDetailsBlock
         {
             public void widgetSelected( SelectionEvent e )
             {
-                StructuredSelection selection = ( StructuredSelection ) viewer.getSelection();
-                if ( !selection.isEmpty() )
-                {
-                    JdbmPartitionBean partition = ( JdbmPartitionBean ) selection.getFirstElement();
-                    if ( !PartitionsPage.isSystemPartition( partition ) )
-                    {
-                        page.getConfigBean().getDirectoryServiceBean().getPartitions().remove( partition );
-                        setEditorDirty();
-                    }
-                }
+                deleteSelectedPartition();
             }
         } );
+    }
+
+
+    /**
+     * This method is called when the 'Add' button is clicked.
+     */
+    private void addNewPartition()
+    {
+        String newId = getNewId();
+
+        JdbmPartitionBean newPartitionBean = new JdbmPartitionBean();
+        newPartitionBean.setPartitionId( newId );
+        try
+        {
+            newPartitionBean.setPartitionSuffix( new Dn( "dc=" + newId + ",dc=com" ) );
+        }
+        catch ( LdapInvalidDnException e1 )
+        {
+            // Will never happen
+        }
+
+        // Default values
+        newPartitionBean.setPartitionCacheSize( 100 );
+        newPartitionBean.setJdbmPartitionOptimizerEnabled( true );
+        newPartitionBean.setPartitionSyncOnWrite( true );
+        List<IndexBean> indexes = new ArrayList<IndexBean>();
+        indexes.add( createJdbmIndex( "apacheAlias", 100 ) );
+        indexes.add( createJdbmIndex( "apacheOneAlias", 100 ) );
+        indexes.add( createJdbmIndex( "apacheOneLevel", 100 ) );
+        indexes.add( createJdbmIndex( "apachePresence", 100 ) );
+        indexes.add( createJdbmIndex( "apacheRdn", 100 ) );
+        indexes.add( createJdbmIndex( "apacheSubAlias", 100 ) );
+        indexes.add( createJdbmIndex( "apacheSubLevel", 100 ) );
+        indexes.add( createJdbmIndex( "dc", 100 ) );
+        indexes.add( createJdbmIndex( "entryCSN", 100 ) );
+        indexes.add( createJdbmIndex( "entryUUID", 100 ) );
+        indexes.add( createJdbmIndex( "krbPrincipalName", 100 ) );
+        indexes.add( createJdbmIndex( "objectClass", 100 ) );
+        indexes.add( createJdbmIndex( "ou", 100 ) );
+        indexes.add( createJdbmIndex( "uid", 100 ) );
+        newPartitionBean.setIndexes( indexes );
+
+        page.getConfigBean().getDirectoryServiceBean().addPartitions( newPartitionBean );
+        viewer.refresh();
+        viewer.setSelection( new StructuredSelection( newPartitionBean ) );
+        setEditorDirty();
     }
 
 
@@ -268,6 +274,31 @@ public class PartitionsMasterDetailsBlock extends MasterDetailsBlock
 
 
     /**
+     * This method is called when the 'Delete' button is clicked.
+     */
+    private void deleteSelectedPartition()
+    {
+        StructuredSelection selection = ( StructuredSelection ) viewer.getSelection();
+        if ( !selection.isEmpty() )
+        {
+            JdbmPartitionBean partition = ( JdbmPartitionBean ) selection.getFirstElement();
+            if ( !PartitionsPage.isSystemPartition( partition ) )
+            {
+                if ( MessageDialog.openConfirm(
+                    page.getManagedForm().getForm().getShell(),
+                    "Confirm Delete",
+                    NLS.bind( "Are you sure you want to delete partition ''{0} ({1})''?", partition.getPartitionId(),
+                        partition.getPartitionSuffix() ) ) )
+                {
+                    page.getConfigBean().getDirectoryServiceBean().getPartitions().remove( partition );
+                    setEditorDirty();
+                }
+            }
+        }
+    }
+
+
+    /**
      * Create a JDBM Index with the given index attribute id and cache size.
      *
      * @param indexAttributeId the attribute id
@@ -294,7 +325,9 @@ public class PartitionsMasterDetailsBlock extends MasterDetailsBlock
     }
 
 
-    @Override
+    /**
+     * {@inheritDoc}
+     */
     protected void createToolBarActions( IManagedForm managedForm )
     {
         // TODO Auto-generated method stub

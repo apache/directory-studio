@@ -406,7 +406,15 @@ public class OverviewPage extends ServerConfigurationEditorPage
         changePasswordPortText.setText( "" + changePasswordServerBean.getTransports()[0].getSystemPort() );
 
         List<PartitionBean> partitions = directoryServiceBean.getPartitions();
-        partitionsLabel.setText( NLS.bind( "There are {0} partitions defined:", partitions.size() ) );
+        if ( partitions.size() == 1 )
+        {
+            partitionsLabel.setText( "There is one partition defined:" );
+        }
+        else
+        {
+            partitionsLabel.setText( NLS.bind( "There are {0} partitions defined:", partitions.size() ) );
+        }
+
         partitionsTableViewer.setInput( partitions.toArray() );
 
         allowAnonymousAccessCheckbox.setSelection( directoryServiceBean.isDsAllowAnonymousAccess() );

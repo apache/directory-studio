@@ -106,7 +106,7 @@ public class EditorImportConfigurationAction extends Action
                 if ( !MessageDialog
                     .openConfirm(
                         editor.getSite().getShell(),
-                        "Unsaved modifications",
+                        "Unsaved Modifications",
                         "The configuration has unsaved modifications. All recent changes will be lost. Are you sure you want to continue?" ) )
                 {
                     return;

@@ -31,6 +31,7 @@ import org.apache.directory.shared.ldap.model.name.Dn;
 import org.apache.directory.studio.apacheds.configuration.v2.dialogs.IndexDialog;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
@@ -507,7 +508,7 @@ public class PartitionDetailsPage implements IDetailsPage
     {
         JdbmIndexBean<String, Entry> newIndex = new JdbmIndexBean<String, Entry>();
         newIndex.setIndexAttributeId( "" ); //$NON-NLS-1$
-        newIndex.setIndexCacheSize( 1000 );
+        newIndex.setIndexCacheSize( 100 );
 
         IndexDialog dialog = new IndexDialog( newIndex );
         if ( Dialog.OK == dialog.open() )
@@ -531,10 +532,14 @@ public class PartitionDetailsPage implements IDetailsPage
         {
             JdbmIndexBean<String, Entry> selectedIndex = ( JdbmIndexBean<String, Entry> ) selection.getFirstElement();
 
-            indexesList.remove( selectedIndex );
-            indexesTableViewer.refresh();
-            masterDetailsBlock.setEditorDirty();
-            dirty = true;
+            if ( MessageDialog.openConfirm( mform.getForm().getShell(), "Confirm Delete",
+                NLS.bind( "Are you sure you want to delete index ''{0}''?", selectedIndex.getIndexAttributeId() ) ) )
+            {
+                indexesList.remove( selectedIndex );
+                indexesTableViewer.refresh();
+                masterDetailsBlock.setEditorDirty();
+                dirty = true;
+            }
         }
     }
 }
