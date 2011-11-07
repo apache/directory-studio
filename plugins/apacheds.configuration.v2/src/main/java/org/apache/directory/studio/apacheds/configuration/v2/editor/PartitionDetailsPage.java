@@ -28,6 +28,8 @@ import org.apache.directory.server.config.beans.JdbmPartitionBean;
 import org.apache.directory.shared.ldap.model.entry.Entry;
 import org.apache.directory.shared.ldap.model.exception.LdapInvalidDnException;
 import org.apache.directory.shared.ldap.model.name.Dn;
+import org.apache.directory.studio.apacheds.configuration.v2.ApacheDS2ConfigurationPlugin;
+import org.apache.directory.studio.apacheds.configuration.v2.ApacheDS2ConfigurationPluginConstants;
 import org.apache.directory.studio.apacheds.configuration.v2.dialogs.IndexDialog;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
@@ -51,6 +53,7 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.events.VerifyEvent;
 import org.eclipse.swt.events.VerifyListener;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -297,6 +300,18 @@ public class PartitionDetailsPage implements IDetailsPage
 
                 return super.getText( element );
             }
+
+
+            public Image getImage( Object element )
+            {
+                if ( element instanceof JdbmIndexBean )
+                {
+                    return ApacheDS2ConfigurationPlugin.getDefault().getImage(
+                        ApacheDS2ConfigurationPluginConstants.IMG_INDEX );
+                }
+
+                return super.getImage( element );
+            };
         } );
 
         GridData buttonsGD = new GridData( SWT.FILL, SWT.BEGINNING, false, false );
