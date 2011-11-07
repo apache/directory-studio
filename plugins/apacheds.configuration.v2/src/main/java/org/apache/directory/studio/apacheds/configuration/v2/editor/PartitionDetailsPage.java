@@ -318,14 +318,15 @@ public class PartitionDetailsPage implements IDetailsPage
         // Edit button
         indexesEditButton = toolkit.createButton( indexedAttributesClient, "Edit", SWT.PUSH );
         indexesEditButton.setEnabled( false );
-        indexesEditButton.setLayoutData( createNewButtonGridData());
+        indexesEditButton.setLayoutData( createNewButtonGridData() );
 
         // Delete button
         indexesDeleteButton = toolkit.createButton( indexedAttributesClient, "Delete", SWT.PUSH );
         indexesDeleteButton.setEnabled( false );
         indexesDeleteButton.setLayoutData( createNewButtonGridData() );
     }
-    
+
+
     /**
      * Create a new button grid data.
      *
@@ -460,9 +461,13 @@ public class PartitionDetailsPage implements IDetailsPage
     {
         removeListeners();
 
+        // Checking if the selected partition is the system partition
+        boolean isPartition = PartitionsPage.isSystemPartition( input );
+
         // ID
         String id = input.getPartitionId();
         idText.setText( ( id == null ) ? "" : id ); //$NON-NLS-1$
+        idText.setEnabled( !isPartition );
 
         // Cache Size
         cacheSizeText.setText( "" + input.getPartitionCacheSize() ); //$NON-NLS-1$
@@ -470,6 +475,7 @@ public class PartitionDetailsPage implements IDetailsPage
         // Suffix
         Dn suffix = input.getPartitionSuffix();
         suffixText.setText( ( suffix == null ) ? "" : suffix.toString() ); //$NON-NLS-1$
+        suffixText.setEnabled( !isPartition );
 
         // Enable Optimizer
         enableOptimizerCheckbox.setSelection( input.isJdbmPartitionOptimizerEnabled() );
