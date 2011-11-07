@@ -40,6 +40,7 @@ public interface LdapServerAdapter
      * @param monitor
      *      the progress monitor
      * @throws Exception
+     *      if an error occurs when adding the server
      */
     public void add( LdapServer server, StudioProgressMonitor monitor ) throws Exception;
 
@@ -52,6 +53,7 @@ public interface LdapServerAdapter
      * @param monitor
      *      the progress monitor
      * @throws Exception
+     *      if an error occurs when deleting the server
      */
     public void delete( LdapServer server, StudioProgressMonitor monitor ) throws Exception;
 
@@ -64,6 +66,7 @@ public interface LdapServerAdapter
      * @param monitor
      *      the progress monitor
      * @throws Exception
+     *      if an error occurs when opening the configuration of the server
      */
     public void openConfiguration( LdapServer server, StudioProgressMonitor monitor ) throws Exception;
 
@@ -76,7 +79,7 @@ public interface LdapServerAdapter
      * @param monitor
      *      the progress monitor
      * @throws Exception
-     *      if an error occurs when restarting the server
+     *      if an error occurs when starting the server
      */
     public void start( LdapServer server, StudioProgressMonitor monitor ) throws Exception;
 
@@ -89,18 +92,20 @@ public interface LdapServerAdapter
      * @param monitor
      *      the progress monitor
      * @throws Exception
-     *      if an error occurs when restarting the server
+     *      if an error occurs when stopping the server
      */
     public void stop( LdapServer server, StudioProgressMonitor monitor ) throws Exception;
 
 
     /**
-     * Checks the ports before the server start.
+     * Checks the ports before the server starts.
      * <p>
      * The return strings must have the following format: {PROTOCOL} ({PORT})
      *
      * @param server the server
      * @return an array of error message, one for each port being already used.
+     * @throws Exception
+     *      if an error occurs when checking the ports before the server starts
      */
     public String[] checkPortsBeforeServerStart( LdapServer server ) throws Exception;
 }
