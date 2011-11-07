@@ -88,9 +88,6 @@ public class PartitionDetailsPage implements IDetailsPage
     /** The Indexes List */
     private List<IndexBean> indexesList;
 
-    /** The dirty flag */
-    private boolean dirty = false;
-
     // UI fields
     private Text idText;
     private Text cacheSizeText;
@@ -108,9 +105,8 @@ public class PartitionDetailsPage implements IDetailsPage
     {
         public void modifyText( ModifyEvent e )
         {
-            masterDetailsBlock.setEditorDirty();
-            dirty = true;
             commit( true );
+            masterDetailsBlock.setEditorDirty();
         }
     };
 
@@ -119,9 +115,8 @@ public class PartitionDetailsPage implements IDetailsPage
     {
         public void widgetSelected( SelectionEvent e )
         {
-            masterDetailsBlock.setEditorDirty();
-            dirty = true;
             commit( true );
+            masterDetailsBlock.setEditorDirty();
         }
     };
 
@@ -270,6 +265,7 @@ public class PartitionDetailsPage implements IDetailsPage
      */
     private void createIndexesSection( Composite parent, FormToolkit toolkit )
     {
+        // Section
         Section indexedAttributesSection = toolkit.createSection( parent, Section.DESCRIPTION | Section.TITLE_BAR );
         indexedAttributesSection.marginWidth = 10;
         indexedAttributesSection.setText( "Indexed Attributes" );
@@ -280,6 +276,7 @@ public class PartitionDetailsPage implements IDetailsPage
         indexedAttributesClient.setLayout( new GridLayout( 2, false ) );
         indexedAttributesSection.setClient( indexedAttributesClient );
 
+        // TableViewer
         Table indexedAttributesTable = toolkit.createTable( indexedAttributesClient, SWT.NONE );
         GridData gd = new GridData( SWT.FILL, SWT.NONE, true, false, 1, 3 );
         gd.heightHint = 80;
@@ -314,19 +311,31 @@ public class PartitionDetailsPage implements IDetailsPage
             };
         } );
 
-        GridData buttonsGD = new GridData( SWT.FILL, SWT.BEGINNING, false, false );
-        buttonsGD.widthHint = IDialogConstants.BUTTON_WIDTH;
-
+        // Add button
         indexesAddButton = toolkit.createButton( indexedAttributesClient, "Add", SWT.PUSH );
-        indexesAddButton.setLayoutData( buttonsGD );
+        indexesAddButton.setLayoutData( createNewButtonGridData() );
 
+        // Edit button
         indexesEditButton = toolkit.createButton( indexedAttributesClient, "Edit", SWT.PUSH );
         indexesEditButton.setEnabled( false );
-        indexesEditButton.setLayoutData( buttonsGD );
+        indexesEditButton.setLayoutData( createNewButtonGridData());
 
+        // Delete button
         indexesDeleteButton = toolkit.createButton( indexedAttributesClient, "Delete", SWT.PUSH );
         indexesDeleteButton.setEnabled( false );
-        indexesDeleteButton.setLayoutData( buttonsGD );
+        indexesDeleteButton.setLayoutData( createNewButtonGridData() );
+    }
+    
+    /**
+     * Create a new button grid data.
+     *
+     * @return the new button grid data
+     */
+    private GridData createNewButtonGridData()
+    {
+        GridData gd = new GridData( SWT.FILL, SWT.BEGINNING, false, false );
+        gd.widthHint = IDialogConstants.BUTTON_WIDTH;
+        return gd;
     }
 
 
@@ -401,8 +410,7 @@ public class PartitionDetailsPage implements IDetailsPage
             }
             catch ( LdapInvalidDnException e )
             {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
+                // Stay silent
             }
             input.setJdbmPartitionOptimizerEnabled( enableOptimizerCheckbox.getSelection() );
             input.setPartitionSyncOnWrite( synchOnWriteCheckbox.getSelection() );
@@ -432,7 +440,7 @@ public class PartitionDetailsPage implements IDetailsPage
      */
     public boolean isDirty()
     {
-        return dirty;
+        return false;
     }
 
 
@@ -510,7 +518,6 @@ public class PartitionDetailsPage implements IDetailsPage
             {
                 indexesTableViewer.refresh();
                 masterDetailsBlock.setEditorDirty();
-                dirty = true;
             }
         }
     }
@@ -532,7 +539,6 @@ public class PartitionDetailsPage implements IDetailsPage
             indexesTableViewer.refresh();
             indexesTableViewer.setSelection( new StructuredSelection( dialog.getIndex() ) );
             masterDetailsBlock.setEditorDirty();
-            dirty = true;
         }
     }
 
@@ -553,7 +559,6 @@ public class PartitionDetailsPage implements IDetailsPage
                 indexesList.remove( selectedIndex );
                 indexesTableViewer.refresh();
                 masterDetailsBlock.setEditorDirty();
-                dirty = true;
             }
         }
     }
