@@ -20,9 +20,13 @@
 package org.apache.directory.studio.apacheds.configuration.v2.editor;
 
 
+import java.util.List;
+
 import org.apache.directory.server.config.beans.DirectoryServiceBean;
 import org.apache.directory.server.config.beans.LdapServerBean;
+import org.apache.directory.server.config.beans.SaslMechHandlerBean;
 import org.apache.directory.server.config.beans.TransportBean;
+import org.apache.directory.shared.ldap.model.constants.SupportedSaslMechanisms;
 import org.apache.directory.shared.ldap.model.exception.LdapInvalidDnException;
 import org.apache.directory.shared.ldap.model.name.Dn;
 import org.eclipse.swt.SWT;
@@ -51,14 +55,11 @@ import org.eclipse.ui.forms.widgets.TableWrapLayout;
 public class LdapLdapsServersPage extends ServerConfigurationEditorPage
 {
     private static final String DEFAULT_ADDRESS = "0.0.0.0";
-
     private static final int DEFAULT_PORT_LDAPS = 10636;
-
     private static final int DEFAULT_PORT_LDAP = 10389;
-
     private static final String TRANSPORT_ID_LDAP = "ldap";
-
     private static final String TRANSPORT_ID_LDAPS = "ldaps";
+    private static final String SASL_MECHANISMS_SIMPLE = "SIMPLE";
 
     /** The Page ID*/
     public static final String ID = LdapLdapsServersPage.class.getName(); //$NON-NLS-1$
@@ -78,7 +79,9 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
     private Button authMechDigestMd5Checkbox;
     private Button authMechGssapiCheckbox;
     private Button authMechNtlmCheckbox;
+    private Text authMechNtlmText;
     private Button authMechGssSpnegoCheckbox;
+    private Text authMechGssSpnegoText;
     private Text saslHostText;
     private Text saslPrincipalText;
     private Text saslSearchBaseDnText;
@@ -143,6 +146,71 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
                 e1.printStackTrace();
 
             }
+        }
+    };
+    private SelectionAdapter authMechSimpleCheckboxListener = new SelectionAdapter()
+    {
+        public void widgetSelected( SelectionEvent e )
+        {
+            setEnableSupportedAuthenticationMechanism( SASL_MECHANISMS_SIMPLE, authMechSimpleCheckbox.getSelection() );
+        };
+    };
+    private SelectionAdapter authMechGssapiCheckboxListener = new SelectionAdapter()
+    {
+        public void widgetSelected( SelectionEvent e )
+        {
+            setEnableSupportedAuthenticationMechanism( SupportedSaslMechanisms.GSSAPI,
+                authMechGssapiCheckbox.getSelection() );
+        };
+    };
+    private SelectionAdapter authMechCramMd5CheckboxListener = new SelectionAdapter()
+    {
+        public void widgetSelected( SelectionEvent e )
+        {
+            setEnableSupportedAuthenticationMechanism( SupportedSaslMechanisms.CRAM_MD5,
+                authMechCramMd5Checkbox.getSelection() );
+        };
+    };
+    private SelectionAdapter authMechDigestMd5CheckboxListener = new SelectionAdapter()
+    {
+        public void widgetSelected( SelectionEvent e )
+        {
+            setEnableSupportedAuthenticationMechanism( SupportedSaslMechanisms.DIGEST_MD5,
+                authMechDigestMd5Checkbox.getSelection() );
+        };
+    };
+    private SelectionAdapter authMechGssSpnegoCheckboxListener = new SelectionAdapter()
+    {
+        public void widgetSelected( SelectionEvent e )
+        {
+            setEnableSupportedAuthenticationMechanism( SupportedSaslMechanisms.GSS_SPNEGO,
+                authMechGssSpnegoCheckbox.getSelection() );
+            authMechGssSpnegoText.setEnabled( authMechGssSpnegoCheckbox.getSelection() );
+        };
+    };
+    private ModifyListener authMechGssSpnegoTextListener = new ModifyListener()
+    {
+        public void modifyText( ModifyEvent e )
+        {
+            setNtlmMechProviderSupportedAuthenticationMechanism( SupportedSaslMechanisms.GSS_SPNEGO,
+                authMechGssSpnegoText.getText() );
+        }
+    };
+    private SelectionAdapter authMechNtlmCheckboxListener = new SelectionAdapter()
+    {
+        public void widgetSelected( SelectionEvent e )
+        {
+            setEnableSupportedAuthenticationMechanism( SupportedSaslMechanisms.NTLM,
+                authMechNtlmCheckbox.getSelection() );
+            authMechNtlmText.setEnabled( authMechNtlmCheckbox.getSelection() );
+        };
+    };
+    private ModifyListener authMechNtlmTextListener = new ModifyListener()
+    {
+        public void modifyText( ModifyEvent e )
+        {
+            setNtlmMechProviderSupportedAuthenticationMechanism( SupportedSaslMechanisms.NTLM,
+                authMechNtlmText.getText() );
         }
     };
 
@@ -303,40 +371,46 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
         section.setText( "Supported Authentication Mechanisms" );
         section.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
         Composite composite = toolkit.createComposite( section );
+        composite.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
         toolkit.paintBordersFor( composite );
-        GridLayout glayout = new GridLayout( 3, false );
-        composite.setLayout( glayout );
+        composite.setLayout( new GridLayout( 4, true ) );
         section.setClient( composite );
 
+        // Simple
         authMechSimpleCheckbox = toolkit.createButton( composite, "Simple", SWT.CHECK );
-        authMechCramMd5Checkbox = toolkit.createButton( composite, "CRAM-MD5", SWT.CHECK );
-        authMechDigestMd5Checkbox = toolkit.createButton( composite, "DIGEST-MD5", SWT.CHECK );
-        authMechGssapiCheckbox = toolkit.createButton( composite, "GSSAPI", SWT.CHECK );
-        authMechNtlmCheckbox = toolkit.createButton( composite, "NTLM", SWT.CHECK );
-        authMechGssSpnegoCheckbox = toolkit.createButton( composite, "GSS-SPNEGO", SWT.CHECK );
+        authMechSimpleCheckbox.setLayoutData( new GridData( SWT.FILL, SWT.CENTER, true, false ) );
 
-        // Supported Authentication Mechanisms Table
-        //        Table supportedMechanismsTable = toolkit.createTable( composite, SWT.CHECK );
-        //        GridData gd = new GridData( SWT.FILL, SWT.NONE, true, false, 1, 3 );
-        //        gd.heightHint = 110;
-        //        supportedMechanismsTable.setLayoutData( gd );
-        //        supportedMechanismsTableViewer = new CheckboxTableViewer( supportedMechanismsTable );
-        //        supportedMechanismsTableViewer.setContentProvider( new ArrayContentProvider() );
-        //        supportedMechanismsTableViewer.setInput( new String[]
-        //            { "Simple", "CRAM-MD5", "DIGEST-MD5", "GSSAPI", "NTLM", "GSS_SPNEGO" } );
-        //
-        //        // Edit Button
-        //        editSupportedMechanismButton = toolkit.createButton( composite, "Edit", SWT.PUSH );
-        //        editSupportedMechanismButton.setLayoutData( new GridData( SWT.FILL, SWT.BEGINNING, false, false ) );
-        //        editSupportedMechanismButton.setEnabled( false );
-        //
-        //        // Select All Button
-        //        selectAllSupportedMechanismsButton = toolkit.createButton( composite, "Select All", SWT.PUSH );
-        //        selectAllSupportedMechanismsButton.setLayoutData( new GridData( SWT.FILL, SWT.BEGINNING, false, false ) );
-        //
-        //        // Deselect All Button
-        //        deselectAllSupportedMechanismsButton = toolkit.createButton( composite, "Deselect All", SWT.PUSH );
-        //        deselectAllSupportedMechanismsButton.setLayoutData( new GridData( SWT.FILL, SWT.BEGINNING, false, false ) );
+        // GSSAPI
+        authMechGssapiCheckbox = toolkit.createButton( composite, "GSSAPI", SWT.CHECK );
+        authMechGssapiCheckbox.setLayoutData( new GridData( SWT.FILL, SWT.CENTER, true, false ) );
+
+        // CRAM-MD5
+        authMechCramMd5Checkbox = toolkit.createButton( composite, "CRAM-MD5", SWT.CHECK );
+        authMechCramMd5Checkbox.setLayoutData( new GridData( SWT.FILL, SWT.CENTER, true, false ) );
+
+        // DIGEST-MD5
+        authMechDigestMd5Checkbox = toolkit.createButton( composite, "DIGEST-MD5", SWT.CHECK );
+        authMechDigestMd5Checkbox.setLayoutData( new GridData( SWT.FILL, SWT.CENTER, true, false ) );
+
+        // NTLM
+        authMechNtlmCheckbox = toolkit.createButton( composite, "NTLM", SWT.CHECK );
+        authMechNtlmCheckbox.setLayoutData( new GridData( SWT.FILL, SWT.CENTER, true, false ) );
+        Composite authMechNtlmComposite = toolkit.createComposite( composite );
+        authMechNtlmComposite.setLayout( new GridLayout( 2, false ) );
+        toolkit.createLabel( authMechNtlmComposite, "Provider:" );
+        authMechNtlmText = toolkit.createText( authMechNtlmComposite, "" );
+        authMechNtlmText.setLayoutData( new GridData( SWT.FILL, SWT.CENTER, true, false ) );
+        authMechNtlmComposite.setLayoutData( new GridData( SWT.FILL, SWT.CENTER, false, false, 3, 1 ) );
+
+        // GSS-SPENEGO
+        authMechGssSpnegoCheckbox = toolkit.createButton( composite, "GSS-SPNEGO", SWT.CHECK );
+        authMechGssSpnegoCheckbox.setLayoutData( new GridData( SWT.FILL, SWT.CENTER, true, false ) );
+        Composite authMechGssSpnegoComposite = toolkit.createComposite( composite );
+        authMechGssSpnegoComposite.setLayout( new GridLayout( 2, false ) );
+        toolkit.createLabel( authMechGssSpnegoComposite, "Provider:" );
+        authMechGssSpnegoText = toolkit.createText( authMechGssSpnegoComposite, "" );
+        authMechGssSpnegoText.setLayoutData( new GridData( SWT.FILL, SWT.CENTER, true, false ) );
+        authMechGssSpnegoComposite.setLayoutData( new GridData( SWT.FILL, SWT.CENTER, true, false, 3, 1 ) );
     }
 
 
@@ -413,21 +487,29 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
 
         // Auth Mechanisms Simple Checkbox
         addDirtyListener( authMechSimpleCheckbox );
-
-        // Auth Mechanisms CRAM-MD5 Checkbox
-        addDirtyListener( authMechCramMd5Checkbox );
-
-        // Auth Mechanisms DIGEST-MD5 Checkbox
-        addDirtyListener( authMechDigestMd5Checkbox );
+        addSelectionListener( authMechSimpleCheckbox, authMechSimpleCheckboxListener );
 
         // Auth Mechanisms GSSAPI Checkbox
         addDirtyListener( authMechGssapiCheckbox );
+        addSelectionListener( authMechGssapiCheckbox, authMechGssapiCheckboxListener );
+
+        // Auth Mechanisms CRAM-MD5 Checkbox
+        addDirtyListener( authMechCramMd5Checkbox );
+        addSelectionListener( authMechCramMd5Checkbox, authMechCramMd5CheckboxListener );
+
+        // Auth Mechanisms DIGEST-MD5 Checkbox
+        addDirtyListener( authMechDigestMd5Checkbox );
+        addSelectionListener( authMechDigestMd5Checkbox, authMechDigestMd5CheckboxListener );
 
         // Auth Mechanisms NTLM Checkbox
         addDirtyListener( authMechNtlmCheckbox );
+        addSelectionListener( authMechNtlmCheckbox, authMechNtlmCheckboxListener );
+        addModifyListener( authMechNtlmText, authMechNtlmTextListener );
 
         // Auth Mechanisms GSS SPENEGO Checkbox
         addDirtyListener( authMechGssSpnegoCheckbox );
+        addSelectionListener( authMechGssSpnegoCheckbox, authMechGssSpnegoCheckboxListener );
+        addModifyListener( authMechGssSpnegoText, authMechGssSpnegoTextListener );
 
         // SASL Host Text
         addDirtyListener( saslHostText );
@@ -472,21 +554,29 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
 
         // Auth Mechanisms Simple Checkbox
         removeDirtyListener( authMechSimpleCheckbox );
+        removeSelectionListener( authMechSimpleCheckbox, authMechSimpleCheckboxListener );
 
         // Auth Mechanisms CRAM-MD5 Checkbox
         removeDirtyListener( authMechCramMd5Checkbox );
+        removeSelectionListener( authMechCramMd5Checkbox, authMechCramMd5CheckboxListener );
 
         // Auth Mechanisms DIGEST-MD5 Checkbox
         removeDirtyListener( authMechDigestMd5Checkbox );
+        removeSelectionListener( authMechDigestMd5Checkbox, authMechDigestMd5CheckboxListener );
 
         // Auth Mechanisms GSSAPI Checkbox
         removeDirtyListener( authMechGssapiCheckbox );
+        removeSelectionListener( authMechGssapiCheckbox, authMechGssapiCheckboxListener );
 
         // Auth Mechanisms NTLM Checkbox
         removeDirtyListener( authMechNtlmCheckbox );
+        removeSelectionListener( authMechNtlmCheckbox, authMechNtlmCheckboxListener );
+        removeModifyListener( authMechNtlmText, authMechNtlmTextListener );
 
         // Auth Mechanisms GSS SPENEGO Checkbox
         removeDirtyListener( authMechGssSpnegoCheckbox );
+        removeSelectionListener( authMechGssSpnegoCheckbox, authMechGssSpnegoCheckboxListener );
+        removeModifyListener( authMechGssSpnegoText, authMechGssSpnegoTextListener );
 
         // SASL Host Text
         removeDirtyListener( saslHostText );
@@ -509,20 +599,114 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
     {
         removeListeners();
 
+        // LDAP Server
         TransportBean ldapServerTransportBean = getLdapServerTransportBean();
         setSelection( enableLdapCheckbox, ldapServerTransportBean.isEnabled() );
         setText( ldapPortText, ldapServerTransportBean.getSystemPort() + "" );
 
+        // LDAPS Server
         TransportBean ldapsServerTransportBean = getLdapsServerTransportBean();
         setSelection( enableLdapsCheckbox, ldapsServerTransportBean.isEnabled() );
         setText( ldapsPortText, ldapsServerTransportBean.getSystemPort() + "" );
 
+        // SASL Properties
         LdapServerBean ldapServerBean = getLdapServerBean();
         setText( saslHostText, ldapServerBean.getLdapServerSaslHost() );
         setText( saslPrincipalText, ldapServerBean.getLdapServerSaslPrincipal() );
         setText( saslSearchBaseDnText, ldapServerBean.getSearchBaseDn().toString() );
 
+        // Supported Auth Mechanisms
+        List<SaslMechHandlerBean> saslMechHandlers = ldapServerBean.getSaslMechHandlers();
+        uncheckAllSupportedAuthenticationMechanisms();
+        for ( SaslMechHandlerBean saslMechHandler : saslMechHandlers )
+        {
+            if ( SASL_MECHANISMS_SIMPLE.equalsIgnoreCase( saslMechHandler.getSaslMechName() ) )
+            {
+                authMechSimpleCheckbox.setSelection( saslMechHandler.isEnabled() );
+            }
+            else if ( SupportedSaslMechanisms.GSSAPI.equalsIgnoreCase( saslMechHandler.getSaslMechName() ) )
+            {
+                authMechGssapiCheckbox.setSelection( saslMechHandler.isEnabled() );
+            }
+            if ( SupportedSaslMechanisms.CRAM_MD5.equalsIgnoreCase( saslMechHandler.getSaslMechName() ) )
+            {
+                authMechCramMd5Checkbox.setSelection( saslMechHandler.isEnabled() );
+            }
+            else if ( SupportedSaslMechanisms.DIGEST_MD5.equalsIgnoreCase( saslMechHandler.getSaslMechName() ) )
+            {
+                authMechDigestMd5Checkbox.setSelection( saslMechHandler.isEnabled() );
+            }
+            else if ( SupportedSaslMechanisms.GSS_SPNEGO.equalsIgnoreCase( saslMechHandler.getSaslMechName() ) )
+            {
+                authMechGssSpnegoCheckbox.setSelection( saslMechHandler.isEnabled() );
+                authMechGssSpnegoText.setEnabled( saslMechHandler.isEnabled() );
+                authMechGssSpnegoText.setText( saslMechHandler.getNtlmMechProvider() );
+            }
+            else if ( SupportedSaslMechanisms.NTLM.equalsIgnoreCase( saslMechHandler.getSaslMechName() ) )
+            {
+                authMechNtlmCheckbox.setSelection( saslMechHandler.isEnabled() );
+                authMechNtlmText.setEnabled( saslMechHandler.isEnabled() );
+                authMechNtlmText.setText( saslMechHandler.getNtlmMechProvider() );
+            }
+        }
+
         addListeners();
+    }
+
+
+    /**
+     * Unchecks all supported authentication mechanisns checkboxes.
+     */
+    private void uncheckAllSupportedAuthenticationMechanisms()
+    {
+        authMechSimpleCheckbox.setSelection( false );
+        authMechCramMd5Checkbox.setSelection( false );
+        authMechDigestMd5Checkbox.setSelection( false );
+        authMechGssapiCheckbox.setSelection( false );
+        authMechNtlmCheckbox.setSelection( false );
+        authMechNtlmText.setEnabled( false );
+        authMechGssSpnegoCheckbox.setSelection( false );
+        authMechGssSpnegoText.setEnabled( false );
+    }
+
+
+    /**
+     * Sets the enabled flag for the given support authentication mechanism.
+     *
+     * @param mechanismName the mechanism name
+     * @param enabled the enabled flag
+     */
+    private void setEnableSupportedAuthenticationMechanism( String mechanismName, boolean enabled )
+    {
+        List<SaslMechHandlerBean> saslMechHandlers = getLdapServerBean().getSaslMechHandlers();
+        for ( SaslMechHandlerBean saslMechHandler : saslMechHandlers )
+        {
+            if ( mechanismName.equalsIgnoreCase( saslMechHandler.getSaslMechName() ) )
+            {
+                saslMechHandler.setEnabled( enabled );
+                return;
+            }
+        }
+    }
+
+
+    /**
+     * Sets the NTLM mechanism provider for the given support authentication mechanism.
+     *
+     * @param mechanismName the mechanism name
+     * @param ntlmMechProvider the NTLM mechanism provider
+     */
+    private void setNtlmMechProviderSupportedAuthenticationMechanism( String mechanismName, String ntlmMechProvider )
+    {
+        List<SaslMechHandlerBean> saslMechHandlers = getLdapServerBean().getSaslMechHandlers();
+        for ( SaslMechHandlerBean saslMechHandler : saslMechHandlers )
+        {
+            if ( mechanismName.equalsIgnoreCase( saslMechHandler.getSaslMechName() ) )
+            {
+                saslMechHandler.setNtlmMechProvider( ntlmMechProvider );
+                return;
+            }
+        }
     }
 
 
