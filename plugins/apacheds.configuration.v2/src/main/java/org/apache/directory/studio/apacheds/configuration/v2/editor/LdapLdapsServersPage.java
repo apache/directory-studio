@@ -86,7 +86,7 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
     private Text saslPrincipalText;
     private Text saslSearchBaseDnText;
 
-    // UI Control Listeners
+    // UI Controls Listeners
     private SelectionAdapter enableLdapCheckboxListener = new SelectionAdapter()
     {
         public void widgetSelected( SelectionEvent e )
@@ -142,9 +142,7 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
             }
             catch ( LdapInvalidDnException e1 )
             {
-                // TODO Auto-generated catch block
-                e1.printStackTrace();
-
+                // Stay silent
             }
         }
     };
@@ -211,6 +209,20 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
         {
             setNtlmMechProviderSupportedAuthenticationMechanism( SupportedSaslMechanisms.NTLM,
                 authMechNtlmText.getText() );
+        }
+    };
+    private ModifyListener maxTimeLimitTextListener = new ModifyListener()
+    {
+        public void modifyText( ModifyEvent e )
+        {
+            getLdapServerBean().setLdapServerMaxTimeLimit( Integer.parseInt( maxTimeLimitText.getText() ) );
+        }
+    };
+    private ModifyListener maxSizeLimitTextListener = new ModifyListener()
+    {
+        public void modifyText( ModifyEvent e )
+        {
+            getLdapServerBean().setLdapServerMaxSizeLimit( Integer.parseInt( maxSizeLimitText.getText() ) );
         }
     };
 
@@ -481,9 +493,11 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
 
         // Max Time Limit Text
         addDirtyListener( maxTimeLimitText );
+        addModifyListener( maxTimeLimitText, maxTimeLimitTextListener );
 
         // Max Size Limit Text
         addDirtyListener( maxSizeLimitText );
+        addModifyListener( maxSizeLimitText, maxSizeLimitTextListener );
 
         // Auth Mechanisms Simple Checkbox
         addDirtyListener( authMechSimpleCheckbox );
@@ -548,9 +562,11 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
 
         // Max Time Limit Text
         removeDirtyListener( maxTimeLimitText );
+        removeModifyListener( maxTimeLimitText, maxTimeLimitTextListener );
 
         // Max Size Limit Text
         removeDirtyListener( maxSizeLimitText );
+        removeModifyListener( maxSizeLimitText, maxSizeLimitTextListener );
 
         // Auth Mechanisms Simple Checkbox
         removeDirtyListener( authMechSimpleCheckbox );
@@ -649,6 +665,10 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
                 authMechNtlmText.setText( saslMechHandler.getNtlmMechProvider() );
             }
         }
+
+        // Limits
+        setText( maxTimeLimitText, "" + ldapServerBean.getLdapServerMaxTimeLimit() );
+        setText( maxSizeLimitText, "" + ldapServerBean.getLdapServerMaxSizeLimit() );
 
         addListeners();
     }
