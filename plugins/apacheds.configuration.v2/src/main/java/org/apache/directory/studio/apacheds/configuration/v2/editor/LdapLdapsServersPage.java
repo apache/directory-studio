@@ -414,7 +414,7 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
         authMechNtlmText.setLayoutData( new GridData( SWT.FILL, SWT.CENTER, true, false ) );
         authMechNtlmComposite.setLayoutData( new GridData( SWT.FILL, SWT.CENTER, false, false, 3, 1 ) );
 
-        // GSS-SPENEGO
+        // GSS-SPNEGO
         authMechGssSpnegoCheckbox = toolkit.createButton( composite, "GSS-SPNEGO", SWT.CHECK );
         authMechGssSpnegoCheckbox.setLayoutData( new GridData( SWT.FILL, SWT.CENTER, true, false ) );
         Composite authMechGssSpnegoComposite = toolkit.createComposite( composite );
@@ -518,11 +518,18 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
         // Auth Mechanisms NTLM Checkbox
         addDirtyListener( authMechNtlmCheckbox );
         addSelectionListener( authMechNtlmCheckbox, authMechNtlmCheckboxListener );
+        
+        // Auth Mechanisms NTLM Text
+        addDirtyListener( authMechNtlmText );
         addModifyListener( authMechNtlmText, authMechNtlmTextListener );
 
-        // Auth Mechanisms GSS SPENEGO Checkbox
+        // Auth Mechanisms GSS SPNEGO Checkbox
         addDirtyListener( authMechGssSpnegoCheckbox );
         addSelectionListener( authMechGssSpnegoCheckbox, authMechGssSpnegoCheckboxListener );
+        addModifyListener( authMechGssSpnegoText, authMechGssSpnegoTextListener );
+
+        // Auth Mechanisms GSS SPNEGO Text
+        addDirtyListener( authMechGssSpnegoText );
         addModifyListener( authMechGssSpnegoText, authMechGssSpnegoTextListener );
 
         // SASL Host Text
@@ -589,9 +596,17 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
         removeSelectionListener( authMechNtlmCheckbox, authMechNtlmCheckboxListener );
         removeModifyListener( authMechNtlmText, authMechNtlmTextListener );
 
-        // Auth Mechanisms GSS SPENEGO Checkbox
+        // Auth Mechanisms NTLM Text
+        removeDirtyListener( authMechNtlmText );
+        removeModifyListener( authMechNtlmText, authMechNtlmTextListener );
+
+        // Auth Mechanisms GSS SPNEGO Checkbox
         removeDirtyListener( authMechGssSpnegoCheckbox );
         removeSelectionListener( authMechGssSpnegoCheckbox, authMechGssSpnegoCheckboxListener );
+        removeModifyListener( authMechGssSpnegoText, authMechGssSpnegoTextListener );
+
+        // Auth Mechanisms GSS SPNEGO Text
+        removeDirtyListener( authMechGssSpnegoText );
         removeModifyListener( authMechGssSpnegoText, authMechGssSpnegoTextListener );
 
         // SASL Host Text
