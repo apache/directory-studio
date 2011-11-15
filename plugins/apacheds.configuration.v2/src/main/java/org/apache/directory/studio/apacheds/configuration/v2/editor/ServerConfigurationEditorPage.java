@@ -445,6 +445,21 @@ public abstract class ServerConfigurationEditorPage extends FormPage
 
 
     /**
+     * Sets the enabled state to the given control.
+     *
+     * @param control the control
+     * @param enabled the enabled state
+     */
+    protected void setEnabled( Control control, boolean enabled )
+    {
+        if ( ( control != null ) && ( !control.isDisposed() ) )
+        {
+            control.setEnabled( enabled );
+        }
+    }
+
+
+    /**
      * Sets the given {@link GridData} to the control
      * and sets the width to a default value.
      *
