@@ -21,6 +21,7 @@ package org.apache.directory.studio.apacheds.configuration.v2.jobs;
 
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -230,6 +231,11 @@ public class PartitionsDiffComputer
                     originalEntries.add( ( ( ClonedServerEntry ) cursor.get() ).getClonedEntry() );
                 }
             }
+            
+            // Reversing the list to allow deletion of leafs first (otherwise we would be deleting
+            // higher nodes with children first).
+            // Order for modified entries does not matter.
+            Collections.reverse( modifications );
 
             // Looking up the destination base entry
             Entry destinationBaseEntry = destinationPartition
