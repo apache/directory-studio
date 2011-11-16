@@ -26,6 +26,10 @@ import org.apache.directory.studio.apacheds.configuration.v2.actions.EditorExpor
 import org.apache.directory.studio.apacheds.configuration.v2.actions.EditorImportConfigurationAction;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.Separator;
+import org.eclipse.jface.viewers.ISelectionChangedListener;
+import org.eclipse.jface.viewers.SelectionChangedEvent;
+import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
@@ -59,6 +63,7 @@ public abstract class ServerConfigurationEditorPage extends FormPage
     protected static final Color GRAY_COLOR = new Color( null, 120, 120, 120 );
     protected static final String TABULATION = "      ";
 
+    // Dirty listeners
     private ModifyListener dirtyModifyListener = new ModifyListener()
     {
         public void modifyText( ModifyEvent e )
@@ -66,10 +71,16 @@ public abstract class ServerConfigurationEditorPage extends FormPage
             setEditorDirty();
         }
     };
-
     private SelectionListener dirtySelectionListener = new SelectionAdapter()
     {
         public void widgetSelected( SelectionEvent e )
+        {
+            setEditorDirty();
+        }
+    };
+    private ISelectionChangedListener dirtySelectionChangedListener = new ISelectionChangedListener()
+    {
+        public void selectionChanged( SelectionChangedEvent event )
         {
             setEditorDirty();
         }
@@ -103,7 +114,7 @@ public abstract class ServerConfigurationEditorPage extends FormPage
     /**
      * Sets the associated editor dirty.
      */
-    private void setEditorDirty()
+    protected void setEditorDirty()
     {
         getServerConfigurationEditor().setDirty( true );
     }
@@ -292,6 +303,24 @@ public abstract class ServerConfigurationEditorPage extends FormPage
 
 
     /**
+     * Adds a selection changed listener to the given Viewer.
+     *
+     * @param viewer
+     *      the viewer control
+     * @param listener
+     *      the listener
+     */
+    protected void addSelectionChangedListener( Viewer viewer, ISelectionChangedListener listener )
+    {
+        if ( ( viewer != null ) && ( viewer.getControl() != null ) && ( !viewer.getControl().isDisposed() )
+            && ( listener != null ) )
+        {
+            viewer.addSelectionChangedListener( listener );
+        }
+    }
+
+
+    /**
      * Adds a selection listener to the given Button.
      *
      * @param button
@@ -321,6 +350,24 @@ public abstract class ServerConfigurationEditorPage extends FormPage
         if ( ( text != null ) && ( !text.isDisposed() ) && ( listener != null ) )
         {
             text.removeModifyListener( listener );
+        }
+    }
+
+
+    /**
+     * Removes a selection changed listener to the given Viewer.
+     *
+     * @param viewer
+     *      the viewer control
+     * @param listener
+     *      the listener
+     */
+    protected void removeSelectionChangedListener( Viewer viewer, ISelectionChangedListener listener )
+    {
+        if ( ( viewer != null ) && ( viewer.getControl() != null ) && ( !viewer.getControl().isDisposed() )
+            && ( listener != null ) )
+        {
+            viewer.removeSelectionChangedListener( listener );
         }
     }
 
@@ -367,6 +414,18 @@ public abstract class ServerConfigurationEditorPage extends FormPage
 
 
     /**
+     * Adds a 'dirty' listener to the given Viewer.
+     *
+     * @param viewer
+     *      the viewer control
+     */
+    protected void addDirtyListener( Viewer viewer )
+    {
+        addSelectionChangedListener( viewer, dirtySelectionChangedListener );
+    }
+
+
+    /**
      * Removes a 'dirty' listener to the given Text.
      *
      * @param text
@@ -391,6 +450,18 @@ public abstract class ServerConfigurationEditorPage extends FormPage
 
 
     /**
+     * Removes a 'dirty' listener to the given Viewer.
+     *
+     * @param viewer
+     *      the viewer control
+     */
+    protected void removeDirtyListener( Viewer viewer )
+    {
+        removeSelectionChangedListener( viewer, dirtySelectionChangedListener );
+    }
+
+
+    /**
      * Sets the selection state of the button widget.
      * <p>
      * Verifies that the button exists and is not disposed 
@@ -406,6 +477,26 @@ public abstract class ServerConfigurationEditorPage extends FormPage
         if ( ( button != null ) && ( !button.isDisposed() ) )
         {
             button.setSelection( selected );
+        }
+    }
+
+
+    /**
+     * Sets the selection of the viewer widget.
+     * <p>
+     * Verifies that the viewer exists and is not disposed 
+     * before applying the new selection.
+     *
+     * @param button
+     *      the button
+     * @param selection
+     *      the new selection
+     */
+    protected void setSelection( Viewer viewer, Object selection )
+    {
+        if ( ( viewer != null ) && ( viewer.getControl() != null ) && ( !viewer.getControl().isDisposed() ) )
+        {
+            viewer.setSelection( new StructuredSelection( selection ) );
         }
     }
 

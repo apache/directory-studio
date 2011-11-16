@@ -23,12 +23,21 @@ package org.apache.directory.studio.apacheds.configuration.v2.editor;
 import java.util.List;
 
 import org.apache.directory.server.config.beans.DirectoryServiceBean;
+import org.apache.directory.server.config.beans.ExtendedOpHandlerBean;
+import org.apache.directory.server.config.beans.InterceptorBean;
 import org.apache.directory.server.config.beans.LdapServerBean;
 import org.apache.directory.server.config.beans.SaslMechHandlerBean;
 import org.apache.directory.server.config.beans.TransportBean;
+import org.apache.directory.shared.ldap.model.constants.LdapSecurityConstants;
 import org.apache.directory.shared.ldap.model.constants.SupportedSaslMechanisms;
 import org.apache.directory.shared.ldap.model.exception.LdapInvalidDnException;
 import org.apache.directory.shared.ldap.model.name.Dn;
+import org.eclipse.jface.viewers.ArrayContentProvider;
+import org.eclipse.jface.viewers.ComboViewer;
+import org.eclipse.jface.viewers.ISelectionChangedListener;
+import org.eclipse.jface.viewers.LabelProvider;
+import org.eclipse.jface.viewers.SelectionChangedEvent;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
@@ -60,6 +69,19 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
     private static final String TRANSPORT_ID_LDAP = "ldap";
     private static final String TRANSPORT_ID_LDAPS = "ldaps";
     private static final String SASL_MECHANISMS_SIMPLE = "SIMPLE";
+    private static final String START_TLS_HANDLER_ID = "starttlshandler";
+    private static final String START_TLS_HANDLER_CLASS = "org.apache.directory.server.ldap.handlers.extended.StartTlsHandler";
+    private static final String FQCN_HASHING_INTERCEPTOR_SSHA512 = "org.apache.directory.server.core.hash.Ssha512PasswordHashingInterceptor";
+    private static final String FQCN_HASHING_INTERCEPTOR_SHA512 = "org.apache.directory.server.core.hash.Sha512PasswordHashingInterceptor";
+    private static final String FQCN_HASHING_INTERCEPTOR_SSHA384 = "org.apache.directory.server.core.hash.Ssha384PasswordHashingInterceptor";
+    private static final String FQCN_HASHING_INTERCEPTOR_SHA384 = "org.apache.directory.server.core.hash.Sha384PasswordHashingInterceptor";
+    private static final String FQCN_HASHING_INTERCEPTOR_SSHA256 = "org.apache.directory.server.core.hash.Ssha256PasswordHashingInterceptor";
+    private static final String FQCN_HASHING_INTERCEPTOR_SHA256 = "org.apache.directory.server.core.hash.Sha256PasswordHashingInterceptor";
+    private static final String FQCN_HASHING_INTERCEPTOR_CRYPT = "org.apache.directory.server.core.hash.CryptPasswordHashingInterceptor";
+    private static final String FQCN_HASHING_INTERCEPTOR_SMD5 = "org.apache.directory.server.core.hash.Smd5PasswordHashingInterceptor";
+    private static final String FQCN_HASHING_INTERCEPTOR_MD5 = "org.apache.directory.server.core.hash.Md5PasswordHashingInterceptor";
+    private static final String FQCN_HASHING_INTERCEPTOR_SSHA = "org.apache.directory.server.core.hash.SshaPasswordHashingInterceptor";
+    private static final String FQCN_HASHING_INTERCEPTOR_SHA = "org.apache.directory.server.core.hash.ShaPasswordHashingInterceptor";
 
     /** The Page ID*/
     public static final String ID = LdapLdapsServersPage.class.getName(); //$NON-NLS-1$
@@ -85,6 +107,9 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
     private Text saslHostText;
     private Text saslPrincipalText;
     private Text saslSearchBaseDnText;
+    private Button enableTlsCheckbox;
+    private Button enableServerSidePasswordHashingCheckbox;
+    private ComboViewer hashingMethodComboViewer;
 
     // UI Controls Listeners
     private SelectionAdapter enableLdapCheckboxListener = new SelectionAdapter()
@@ -92,6 +117,7 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
         public void widgetSelected( SelectionEvent e )
         {
             getLdapServerTransportBean().setEnabled( enableLdapCheckbox.getSelection() );
+            setEnabled( ldapPortText, enableLdapCheckbox.getSelection() );
         }
     };
     private ModifyListener ldapPortTextListener = new ModifyListener()
@@ -106,6 +132,7 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
         public void widgetSelected( SelectionEvent e )
         {
             getLdapsServerTransportBean().setEnabled( enableLdapsCheckbox.getSelection() );
+            setEnabled( ldapsPortText, enableLdapsCheckbox.getSelection() );
         }
     };
     private ModifyListener ldapsPortTextListener = new ModifyListener()
@@ -183,7 +210,7 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
         {
             setEnableSupportedAuthenticationMechanism( SupportedSaslMechanisms.GSS_SPNEGO,
                 authMechGssSpnegoCheckbox.getSelection() );
-            authMechGssSpnegoText.setEnabled( authMechGssSpnegoCheckbox.getSelection() );
+            setEnabled( authMechGssSpnegoText, authMechGssSpnegoCheckbox.getSelection() );
         };
     };
     private ModifyListener authMechGssSpnegoTextListener = new ModifyListener()
@@ -200,7 +227,7 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
         {
             setEnableSupportedAuthenticationMechanism( SupportedSaslMechanisms.NTLM,
                 authMechNtlmCheckbox.getSelection() );
-            authMechNtlmText.setEnabled( authMechNtlmCheckbox.getSelection() );
+            setEnabled( authMechNtlmText, authMechNtlmCheckbox.getSelection() );
         };
     };
     private ModifyListener authMechNtlmTextListener = new ModifyListener()
@@ -223,6 +250,37 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
         public void modifyText( ModifyEvent e )
         {
             getLdapServerBean().setLdapServerMaxSizeLimit( Integer.parseInt( maxSizeLimitText.getText() ) );
+        }
+    };
+    private SelectionAdapter enableTlsCheckboxListener = new SelectionAdapter()
+    {
+        public void widgetSelected( SelectionEvent e )
+        {
+            setEnableTls( enableTlsCheckbox.getSelection() );
+        }
+    };
+    private SelectionAdapter enableServerSidePasswordHashingCheckboxListener = new SelectionAdapter()
+    {
+        public void widgetSelected( SelectionEvent e )
+        {
+            setEnabled( hashingMethodComboViewer.getCombo(), enableServerSidePasswordHashingCheckbox.getSelection() );
+            if ( enableServerSidePasswordHashingCheckbox.getSelection() )
+            {
+                deleteHashingMethodInterceptor();
+                addHashingMethodInterceptor();
+            }
+            else
+            {
+                deleteHashingMethodInterceptor();
+            }
+        }
+    };
+    private ISelectionChangedListener hashingMethodComboViewerListener = new ISelectionChangedListener()
+    {
+        public void selectionChanged( SelectionChangedEvent event )
+        {
+            deleteHashingMethodInterceptor();
+            addHashingMethodInterceptor();
         }
     };
 
@@ -346,25 +404,85 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
         section.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
         Composite composite = toolkit.createComposite( section );
         toolkit.paintBordersFor( composite );
-        GridLayout glayout = new GridLayout( 2, false );
+        GridLayout glayout = new GridLayout( 3, false );
         composite.setLayout( glayout );
         section.setClient( composite );
 
-        Button enableTlsCheckbox = toolkit.createButton( composite, "Enable TLS", SWT.CHECK );
+        // Enable TLS
+        enableTlsCheckbox = toolkit.createButton( composite, "Enable TLS", SWT.CHECK );
         enableTlsCheckbox.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 3, 1 ) );
 
-        Button enableServerSidePasswordHashingCheckbox = toolkit.createButton( composite,
-            "Enable sever-side password\nhashing",
+        // Enable Server-side Password Hashing Checkbox
+        enableServerSidePasswordHashingCheckbox = toolkit.createButton( composite,
+            "Enable server-side password\nhashing",
             SWT.CHECK );
         enableServerSidePasswordHashingCheckbox.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 3, 1 ) );
+
+        // Server-side Password Hashing Combo
+        toolkit.createLabel( composite, "   " );
         toolkit.createLabel( composite, "Hashing Method:" );
-        Combo hashingMethodCombo = new Combo( composite, SWT.DROP_DOWN | SWT.READ_ONLY );
-        hashingMethodCombo.setItems( new String[]
-            { "SSHA", "MD5" } );
-        toolkit.adapt( hashingMethodCombo );
-        hashingMethodCombo.setText( "SSHA" );
+        Combo hashingMethodCombo = new Combo( composite, SWT.READ_ONLY | SWT.SINGLE );
         hashingMethodCombo.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
-        createDefaultValueLabel( toolkit, composite, "SSHA" );
+        toolkit.adapt( hashingMethodCombo );
+        hashingMethodComboViewer = new ComboViewer( hashingMethodCombo );
+        hashingMethodComboViewer.setContentProvider( new ArrayContentProvider() );
+        hashingMethodComboViewer.setLabelProvider( new LabelProvider()
+        {
+            public String getText( Object element )
+            {
+                if ( element instanceof LdapSecurityConstants )
+                {
+                    LdapSecurityConstants hashingMethod = ( LdapSecurityConstants ) element;
+
+                    switch ( hashingMethod )
+                    {
+                        case HASH_METHOD_SHA:
+                            return "SHA";
+                        case HASH_METHOD_SSHA:
+                            return "SSHA";
+                        case HASH_METHOD_MD5:
+                            return "MD5";
+                        case HASH_METHOD_SMD5:
+                            return "SMD5";
+                        case HASH_METHOD_CRYPT:
+                            return "CRYPT";
+                        case HASH_METHOD_SHA256:
+                            return "SHA-256";
+                        case HASH_METHOD_SSHA256:
+                            return "SSHA-256";
+                        case HASH_METHOD_SHA384:
+                            return "SHA-384";
+                        case HASH_METHOD_SSHA384:
+                            return "SSHA-384";
+                        case HASH_METHOD_SHA512:
+                            return "SHA-512";
+                        case HASH_METHOD_SSHA512:
+                            return "SSHA-512";
+                    }
+                }
+
+                return super.getText( element );
+            }
+        } );
+        Object[] hashingMethods = new Object[]
+            {
+                LdapSecurityConstants.HASH_METHOD_SHA,
+                LdapSecurityConstants.HASH_METHOD_SSHA,
+                LdapSecurityConstants.HASH_METHOD_MD5,
+                LdapSecurityConstants.HASH_METHOD_SMD5,
+                LdapSecurityConstants.HASH_METHOD_CRYPT,
+                LdapSecurityConstants.HASH_METHOD_SHA256,
+                LdapSecurityConstants.HASH_METHOD_SSHA256,
+                LdapSecurityConstants.HASH_METHOD_SHA384,
+                LdapSecurityConstants.HASH_METHOD_SSHA384,
+                LdapSecurityConstants.HASH_METHOD_SHA512,
+                LdapSecurityConstants.HASH_METHOD_SSHA512
+        };
+        hashingMethodComboViewer.setInput( hashingMethods );
+        setSelection( hashingMethodComboViewer, LdapSecurityConstants.HASH_METHOD_SSHA );
+        toolkit.createLabel( composite, "   " );
+        Label defaultLabel = createDefaultValueLabel( toolkit, composite, "SSHA" );
+        defaultLabel.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
     }
 
 
@@ -491,14 +609,6 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
         addDirtyListener( ldapsPortText );
         addModifyListener( ldapsPortText, ldapsPortTextListener );
 
-        // Max Time Limit Text
-        addDirtyListener( maxTimeLimitText );
-        addModifyListener( maxTimeLimitText, maxTimeLimitTextListener );
-
-        // Max Size Limit Text
-        addDirtyListener( maxSizeLimitText );
-        addModifyListener( maxSizeLimitText, maxSizeLimitTextListener );
-
         // Auth Mechanisms Simple Checkbox
         addDirtyListener( authMechSimpleCheckbox );
         addSelectionListener( authMechSimpleCheckbox, authMechSimpleCheckboxListener );
@@ -518,7 +628,7 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
         // Auth Mechanisms NTLM Checkbox
         addDirtyListener( authMechNtlmCheckbox );
         addSelectionListener( authMechNtlmCheckbox, authMechNtlmCheckboxListener );
-        
+
         // Auth Mechanisms NTLM Text
         addDirtyListener( authMechNtlmText );
         addModifyListener( authMechNtlmText, authMechNtlmTextListener );
@@ -543,6 +653,26 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
         // SASL Seach Base Dn Text
         addDirtyListener( saslSearchBaseDnText );
         addModifyListener( saslSearchBaseDnText, saslSearchBaseDnTextListener );
+
+        // Max Time Limit Text
+        addDirtyListener( maxTimeLimitText );
+        addModifyListener( maxTimeLimitText, maxTimeLimitTextListener );
+
+        // Max Size Limit Text
+        addDirtyListener( maxSizeLimitText );
+        addModifyListener( maxSizeLimitText, maxSizeLimitTextListener );
+
+        // Enable TLS Checkbox
+        addDirtyListener( enableTlsCheckbox );
+        addSelectionListener( enableTlsCheckbox, enableTlsCheckboxListener );
+
+        // Hashing Method Checkbox
+        addDirtyListener( enableServerSidePasswordHashingCheckbox );
+        addSelectionListener( enableServerSidePasswordHashingCheckbox, enableServerSidePasswordHashingCheckboxListener );
+
+        // Hashing Method Combo Viewer
+        addDirtyListener( hashingMethodComboViewer );
+        addSelectionChangedListener( hashingMethodComboViewer, hashingMethodComboViewerListener );
     }
 
 
@@ -566,14 +696,6 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
         // LDAPS Port Text
         removeDirtyListener( ldapsPortText );
         removeModifyListener( ldapsPortText, ldapsPortTextListener );
-
-        // Max Time Limit Text
-        removeDirtyListener( maxTimeLimitText );
-        removeModifyListener( maxTimeLimitText, maxTimeLimitTextListener );
-
-        // Max Size Limit Text
-        removeDirtyListener( maxSizeLimitText );
-        removeModifyListener( maxSizeLimitText, maxSizeLimitTextListener );
 
         // Auth Mechanisms Simple Checkbox
         removeDirtyListener( authMechSimpleCheckbox );
@@ -620,6 +742,23 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
         // SASL Seach Base Dn Text
         removeDirtyListener( saslSearchBaseDnText );
         removeModifyListener( saslSearchBaseDnText, saslSearchBaseDnTextListener );
+
+        // Max Time Limit Text
+        removeDirtyListener( maxTimeLimitText );
+        removeModifyListener( maxTimeLimitText, maxTimeLimitTextListener );
+
+        // Max Size Limit Text
+        removeDirtyListener( maxSizeLimitText );
+        removeModifyListener( maxSizeLimitText, maxSizeLimitTextListener );
+
+        // Hashing Method Checkbox
+        removeDirtyListener( enableServerSidePasswordHashingCheckbox );
+        removeSelectionListener( enableServerSidePasswordHashingCheckbox,
+            enableServerSidePasswordHashingCheckboxListener );
+
+        // Hashing Method Combo Viewer
+        removeDirtyListener( hashingMethodComboViewer );
+        removeSelectionChangedListener( hashingMethodComboViewer, hashingMethodComboViewerListener );
     }
 
 
@@ -633,11 +772,13 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
         // LDAP Server
         TransportBean ldapServerTransportBean = getLdapServerTransportBean();
         setSelection( enableLdapCheckbox, ldapServerTransportBean.isEnabled() );
+        setEnabled( ldapPortText, enableLdapCheckbox.getSelection() );
         setText( ldapPortText, ldapServerTransportBean.getSystemPort() + "" );
 
         // LDAPS Server
         TransportBean ldapsServerTransportBean = getLdapsServerTransportBean();
         setSelection( enableLdapsCheckbox, ldapsServerTransportBean.isEnabled() );
+        setEnabled( enableLdapsCheckbox, enableLdapsCheckbox.getSelection() );
         setText( ldapsPortText, ldapsServerTransportBean.getSystemPort() + "" );
 
         // SASL Properties
@@ -653,37 +794,68 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
         {
             if ( SASL_MECHANISMS_SIMPLE.equalsIgnoreCase( saslMechHandler.getSaslMechName() ) )
             {
-                authMechSimpleCheckbox.setSelection( saslMechHandler.isEnabled() );
+                setSelection( authMechSimpleCheckbox, saslMechHandler.isEnabled() );
             }
             else if ( SupportedSaslMechanisms.GSSAPI.equalsIgnoreCase( saslMechHandler.getSaslMechName() ) )
             {
-                authMechGssapiCheckbox.setSelection( saslMechHandler.isEnabled() );
+                setSelection( authMechGssapiCheckbox, saslMechHandler.isEnabled() );
             }
             if ( SupportedSaslMechanisms.CRAM_MD5.equalsIgnoreCase( saslMechHandler.getSaslMechName() ) )
             {
-                authMechCramMd5Checkbox.setSelection( saslMechHandler.isEnabled() );
+                setSelection( authMechCramMd5Checkbox, saslMechHandler.isEnabled() );
             }
             else if ( SupportedSaslMechanisms.DIGEST_MD5.equalsIgnoreCase( saslMechHandler.getSaslMechName() ) )
             {
-                authMechDigestMd5Checkbox.setSelection( saslMechHandler.isEnabled() );
+                setSelection( authMechDigestMd5Checkbox, saslMechHandler.isEnabled() );
             }
             else if ( SupportedSaslMechanisms.GSS_SPNEGO.equalsIgnoreCase( saslMechHandler.getSaslMechName() ) )
             {
-                authMechGssSpnegoCheckbox.setSelection( saslMechHandler.isEnabled() );
-                authMechGssSpnegoText.setEnabled( saslMechHandler.isEnabled() );
-                authMechGssSpnegoText.setText( saslMechHandler.getNtlmMechProvider() );
+                setSelection( authMechGssSpnegoCheckbox, saslMechHandler.isEnabled() );
+                setEnabled( authMechGssSpnegoText, saslMechHandler.isEnabled() );
+                setText( authMechGssSpnegoText, saslMechHandler.getNtlmMechProvider() );
             }
             else if ( SupportedSaslMechanisms.NTLM.equalsIgnoreCase( saslMechHandler.getSaslMechName() ) )
             {
-                authMechNtlmCheckbox.setSelection( saslMechHandler.isEnabled() );
-                authMechNtlmText.setEnabled( saslMechHandler.isEnabled() );
-                authMechNtlmText.setText( saslMechHandler.getNtlmMechProvider() );
+                setSelection( authMechNtlmCheckbox, saslMechHandler.isEnabled() );
+                setEnabled( authMechNtlmText, saslMechHandler.isEnabled() );
+                setText( authMechNtlmText, saslMechHandler.getNtlmMechProvider() );
             }
         }
 
         // Limits
         setText( maxTimeLimitText, "" + ldapServerBean.getLdapServerMaxTimeLimit() );
         setText( maxSizeLimitText, "" + ldapServerBean.getLdapServerMaxSizeLimit() );
+
+        // Enable TLS Checkbox
+        setSelection( enableTlsCheckbox, getTlsExtendedOpHandlerBean().isEnabled() );
+
+        // Hashing Method widgets
+        InterceptorBean hashingMethodInterceptor = getHashingMethodInterceptor();
+        if ( hashingMethodInterceptor == null )
+        {
+            // No hashing method interceptor
+            setSelection( enableServerSidePasswordHashingCheckbox, false );
+            setEnabled( hashingMethodComboViewer.getCombo(), enableServerSidePasswordHashingCheckbox.getSelection() );
+            setSelection( hashingMethodComboViewer, LdapSecurityConstants.HASH_METHOD_SSHA );
+        }
+        else
+        {
+            LdapSecurityConstants hashingMethod = getHashingMethodFromInterceptor( hashingMethodInterceptor );
+            if ( hashingMethod != null )
+            {
+                // Setting selection for the hashing method
+                setSelection( enableServerSidePasswordHashingCheckbox, hashingMethodInterceptor.isEnabled() );
+                setEnabled( hashingMethodComboViewer.getCombo(), enableServerSidePasswordHashingCheckbox.getSelection() );
+                setSelection( hashingMethodComboViewer, hashingMethod );
+            }
+            else
+            {
+                // Couldn't determine which hashing method is used
+                setSelection( enableServerSidePasswordHashingCheckbox, false );
+                setEnabled( hashingMethodComboViewer.getCombo(), enableServerSidePasswordHashingCheckbox.getSelection() );
+                setSelection( hashingMethodComboViewer, LdapSecurityConstants.HASH_METHOD_SSHA );
+            }
+        }
 
         addListeners();
     }
@@ -694,14 +866,14 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
      */
     private void uncheckAllSupportedAuthenticationMechanisms()
     {
-        authMechSimpleCheckbox.setSelection( false );
-        authMechCramMd5Checkbox.setSelection( false );
-        authMechDigestMd5Checkbox.setSelection( false );
-        authMechGssapiCheckbox.setSelection( false );
-        authMechNtlmCheckbox.setSelection( false );
-        authMechNtlmText.setEnabled( false );
-        authMechGssSpnegoCheckbox.setSelection( false );
-        authMechGssSpnegoText.setEnabled( false );
+        setSelection( authMechSimpleCheckbox, false );
+        setSelection( authMechCramMd5Checkbox, false );
+        setSelection( authMechDigestMd5Checkbox, false );
+        setSelection( authMechGssapiCheckbox, false );
+        setSelection( authMechNtlmCheckbox, false );
+        setEnabled( authMechNtlmText, false );
+        setSelection( authMechGssSpnegoCheckbox, false );
+        setEnabled( authMechGssSpnegoText, false );
     }
 
 
@@ -907,4 +1079,263 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
 
         return transportBean;
     }
+
+
+    /**
+     * Enables/disables TLS.
+     *
+     * @param enabled the enabled state
+     */
+    private void setEnableTls( boolean enabled )
+    {
+        getTlsExtendedOpHandlerBean().setEnabled( enabled );
+    }
+
+
+    /**
+     * Gets the TLS extended operation handler.
+     *
+     * @return the TLS extended operation handler
+     */
+    private ExtendedOpHandlerBean getTlsExtendedOpHandlerBean()
+    {
+        // Getting the LDAP Server
+        LdapServerBean ldapServerBean = getLdapServerBean();
+
+        // Getting the list of extended operation handlers
+        List<ExtendedOpHandlerBean> extendedOpHandlers = ldapServerBean.getExtendedOps();
+        for ( ExtendedOpHandlerBean extendedOpHandlerBean : extendedOpHandlers )
+        {
+            // Looking for the Start TLS extended operation handler 
+            if ( START_TLS_HANDLER_ID.equalsIgnoreCase( extendedOpHandlerBean.getExtendedOpId() ) )
+            {
+                return extendedOpHandlerBean;
+            }
+        }
+
+        // We haven't found a corresponding extended operation handler,
+        // we need to create it
+        ExtendedOpHandlerBean extendedOpHandlerBean = new ExtendedOpHandlerBean();
+        extendedOpHandlerBean.setExtendedOpId( START_TLS_HANDLER_ID );
+        extendedOpHandlerBean.setExtendedOpHandlerClass( START_TLS_HANDLER_CLASS );
+        extendedOpHandlerBean.setEnabled( false );
+        extendedOpHandlers.add( extendedOpHandlerBean );
+        return extendedOpHandlerBean;
+    }
+
+
+    /**
+     * Creates the hashing method interceptor.
+     *
+     * @param hashingMethod the hashing method
+     * @return the corresponding hashing method interceptor
+     */
+    private InterceptorBean createHashingMethodInterceptor( LdapSecurityConstants hashingMethod )
+    {
+        InterceptorBean hashingMethodInterceptor = new InterceptorBean();
+
+        switch ( hashingMethod )
+        {
+            case HASH_METHOD_SHA:
+                hashingMethodInterceptor.setInterceptorClassName( FQCN_HASHING_INTERCEPTOR_SHA );
+                break;
+            case HASH_METHOD_SSHA:
+            default:
+                hashingMethodInterceptor.setInterceptorClassName( FQCN_HASHING_INTERCEPTOR_SSHA );
+                break;
+            case HASH_METHOD_MD5:
+                hashingMethodInterceptor.setInterceptorClassName( FQCN_HASHING_INTERCEPTOR_MD5 );
+                break;
+            case HASH_METHOD_SMD5:
+                hashingMethodInterceptor.setInterceptorClassName( FQCN_HASHING_INTERCEPTOR_SMD5 );
+                break;
+            case HASH_METHOD_CRYPT:
+                hashingMethodInterceptor.setInterceptorClassName( FQCN_HASHING_INTERCEPTOR_CRYPT );
+                break;
+            case HASH_METHOD_SHA256:
+                hashingMethodInterceptor.setInterceptorClassName( FQCN_HASHING_INTERCEPTOR_SHA256 );
+                break;
+            case HASH_METHOD_SSHA256:
+                hashingMethodInterceptor.setInterceptorClassName( FQCN_HASHING_INTERCEPTOR_SSHA256 );
+                break;
+            case HASH_METHOD_SHA384:
+                hashingMethodInterceptor.setInterceptorClassName( FQCN_HASHING_INTERCEPTOR_SHA384 );
+                break;
+            case HASH_METHOD_SSHA384:
+                hashingMethodInterceptor.setInterceptorClassName( FQCN_HASHING_INTERCEPTOR_SSHA384 );
+                break;
+            case HASH_METHOD_SHA512:
+                hashingMethodInterceptor.setInterceptorClassName( FQCN_HASHING_INTERCEPTOR_SHA512 );
+                break;
+            case HASH_METHOD_SSHA512:
+                hashingMethodInterceptor.setInterceptorClassName( FQCN_HASHING_INTERCEPTOR_SSHA512 );
+                break;
+        }
+
+        hashingMethodInterceptor.setInterceptorId( getHashingMethodInterceptorId( hashingMethodInterceptor
+            .getInterceptorClassName() ) );
+        hashingMethodInterceptor.setEnabled( true );
+
+        return hashingMethodInterceptor;
+    }
+
+
+    /**
+     * Gets the hashing method interceptor id from the given 
+     * fully qualified class name (FQCN).
+     *
+     * @param fqcn the fqcn
+     * @return the hashing method interceptor id
+     */
+    private String getHashingMethodInterceptorId( String fqcn )
+    {
+        if ( fqcn != null )
+        {
+            String id = fqcn.replace( "org.apache.directory.server.core.hash.", "" );
+
+            if ( id.length() > 0 )
+            {
+                char firstChar = id.charAt( 0 );
+                char lowerCasedFirstChar = Character.toLowerCase( firstChar );
+
+                return lowerCasedFirstChar + id.substring( 1 );
+            }
+
+            return id;
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Gets the hashing method interceptor if it can be found.
+     *
+     * @return the hashing method interceptor, or <code>null</code>
+     */
+    private InterceptorBean getHashingMethodInterceptor()
+    {
+        List<InterceptorBean> interceptors = getDirectoryServiceBean().getInterceptors();
+        for ( InterceptorBean interceptor : interceptors )
+        {
+            String interceptorId = interceptor.getInterceptorId();
+
+            if ( interceptorId.equalsIgnoreCase( getHashingMethodInterceptorId( FQCN_HASHING_INTERCEPTOR_SHA ) )
+                || interceptorId.equalsIgnoreCase( getHashingMethodInterceptorId( FQCN_HASHING_INTERCEPTOR_SSHA ) )
+                || interceptorId.equalsIgnoreCase( getHashingMethodInterceptorId( FQCN_HASHING_INTERCEPTOR_MD5 ) )
+                || interceptorId.equalsIgnoreCase( getHashingMethodInterceptorId( FQCN_HASHING_INTERCEPTOR_SMD5 ) )
+                || interceptorId.equalsIgnoreCase( getHashingMethodInterceptorId( FQCN_HASHING_INTERCEPTOR_CRYPT ) )
+                || interceptorId.equalsIgnoreCase( getHashingMethodInterceptorId( FQCN_HASHING_INTERCEPTOR_SHA256 ) )
+                || interceptorId.equalsIgnoreCase( getHashingMethodInterceptorId( FQCN_HASHING_INTERCEPTOR_SSHA256 ) )
+                || interceptorId.equalsIgnoreCase( getHashingMethodInterceptorId( FQCN_HASHING_INTERCEPTOR_SHA384 ) )
+                || interceptorId.equalsIgnoreCase( getHashingMethodInterceptorId( FQCN_HASHING_INTERCEPTOR_SSHA384 ) )
+                || interceptorId.equalsIgnoreCase( getHashingMethodInterceptorId( FQCN_HASHING_INTERCEPTOR_SHA512 ) )
+                || interceptorId.equalsIgnoreCase( getHashingMethodInterceptorId( FQCN_HASHING_INTERCEPTOR_SSHA512 ) ) )
+            {
+                return interceptor;
+            }
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Gets the hashing method from the interceptor.
+     *
+     * @param interceptor the interceptor
+     * @return the hashing method from the interceptor
+     */
+    private LdapSecurityConstants getHashingMethodFromInterceptor( InterceptorBean interceptor )
+    {
+        if ( interceptor != null )
+        {
+            String interceptorId = interceptor.getInterceptorId();
+
+            if ( interceptorId.equalsIgnoreCase( getHashingMethodInterceptorId( FQCN_HASHING_INTERCEPTOR_SHA ) ) )
+            {
+                return LdapSecurityConstants.HASH_METHOD_SHA;
+            }
+            else if ( interceptorId.equalsIgnoreCase( getHashingMethodInterceptorId( FQCN_HASHING_INTERCEPTOR_SSHA ) ) )
+            {
+                return LdapSecurityConstants.HASH_METHOD_SSHA;
+            }
+            else if ( interceptorId.equalsIgnoreCase( getHashingMethodInterceptorId( FQCN_HASHING_INTERCEPTOR_MD5 ) ) )
+            {
+                return LdapSecurityConstants.HASH_METHOD_MD5;
+            }
+            else if ( interceptorId.equalsIgnoreCase( getHashingMethodInterceptorId( FQCN_HASHING_INTERCEPTOR_SMD5 ) ) )
+            {
+                return LdapSecurityConstants.HASH_METHOD_SMD5;
+            }
+            else if ( interceptorId.equalsIgnoreCase( getHashingMethodInterceptorId( FQCN_HASHING_INTERCEPTOR_CRYPT ) ) )
+            {
+                return LdapSecurityConstants.HASH_METHOD_SMD5;
+            }
+            else if ( interceptorId.equalsIgnoreCase( getHashingMethodInterceptorId( FQCN_HASHING_INTERCEPTOR_SHA256 ) ) )
+            {
+                return LdapSecurityConstants.HASH_METHOD_SHA256;
+            }
+            else if ( interceptorId
+                .equalsIgnoreCase( getHashingMethodInterceptorId( FQCN_HASHING_INTERCEPTOR_SSHA256 ) ) )
+            {
+                return LdapSecurityConstants.HASH_METHOD_SSHA256;
+            }
+            else if ( interceptorId.equalsIgnoreCase( getHashingMethodInterceptorId( FQCN_HASHING_INTERCEPTOR_SHA384 ) ) )
+            {
+                return LdapSecurityConstants.HASH_METHOD_SHA384;
+            }
+            else if ( interceptorId
+                .equalsIgnoreCase( getHashingMethodInterceptorId( FQCN_HASHING_INTERCEPTOR_SSHA384 ) ) )
+            {
+                return LdapSecurityConstants.HASH_METHOD_SSHA384;
+            }
+            else if ( interceptorId.equalsIgnoreCase( getHashingMethodInterceptorId( FQCN_HASHING_INTERCEPTOR_SHA512 ) ) )
+            {
+                return LdapSecurityConstants.HASH_METHOD_SHA512;
+            }
+            else if ( interceptorId
+                .equalsIgnoreCase( getHashingMethodInterceptorId( FQCN_HASHING_INTERCEPTOR_SSHA512 ) ) )
+            {
+                return LdapSecurityConstants.HASH_METHOD_SSHA512;
+            }
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Adds a new hashing method interceptor, based on the current selection.
+     */
+    private void addHashingMethodInterceptor()
+    {
+        StructuredSelection selection = ( StructuredSelection ) hashingMethodComboViewer.getSelection();
+        if ( !selection.isEmpty() )
+        {
+            LdapSecurityConstants hashingMethod = ( LdapSecurityConstants ) selection.getFirstElement();
+            if ( hashingMethod != null )
+            {
+                InterceptorBean hashingMethodInterceptor = createHashingMethodInterceptor( hashingMethod );
+
+                DirectoryServiceBean directoryServiceBean = getDirectoryServiceBean();
+
+                directoryServiceBean.getInterceptors().add( hashingMethodInterceptor );
+            }
+        }
+    }
+
+
+    /**
+     * Deletes the hashing method interceptor.
+     */
+    private void deleteHashingMethodInterceptor()
+    {
+        InterceptorBean hashingMethodInterceptor = getHashingMethodInterceptor();
+        DirectoryServiceBean directoryServiceBean = getDirectoryServiceBean();
+
+        directoryServiceBean.getInterceptors().remove( hashingMethodInterceptor );
+        // TODO Do something better for the removal (edit other interceptors orderid)
+    }
+
 }
