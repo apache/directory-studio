@@ -254,6 +254,7 @@ public class OverviewPage extends ServerConfigurationEditorPage
      */
     private void createLdapLdapsServersSection( FormToolkit toolkit, Composite parent )
     {
+        // Creation of the section
         Section section = toolkit.createSection( parent, Section.TITLE_BAR );
         section.setText( "LDAP/LDAPS Servers" );
         section.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
@@ -264,20 +265,27 @@ public class OverviewPage extends ServerConfigurationEditorPage
         composite.setLayout( gridLayout );
         section.setClient( composite );
 
+        // Enable LDAP Server Checkbox
         enableLdapCheckbox = toolkit.createButton( composite, "Enable LDAP Server", SWT.CHECK );
         enableLdapCheckbox.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, gridLayout.numColumns, 1 ) );
+        
+        // LDAP Server Port Text
         toolkit.createLabel( composite, TABULATION );
         toolkit.createLabel( composite, "Port:" );
         ldapPortText = createPortText( toolkit, composite );
         createDefaultValueLabel( toolkit, composite, "10389" );
 
+        // Enable LDAPS Server Checkbox
         enableLdapsCheckbox = toolkit.createButton( composite, "Enable LDAPS Server", SWT.CHECK );
         enableLdapsCheckbox.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, gridLayout.numColumns, 1 ) );
+        
+        // LDAPS Server Port Text
         toolkit.createLabel( composite, TABULATION );
         toolkit.createLabel( composite, "Port:" );
         ldapsPortText = createPortText( toolkit, composite );
         createDefaultValueLabel( toolkit, composite, "10636" );
 
+        // LDAP Configuration Link
         openLdapConfigurationLink = toolkit.createHyperlink( composite,
             "Advanced LDAP/LDAPS configuration...", SWT.NONE );
         openLdapConfigurationLink.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false,
@@ -294,6 +302,7 @@ public class OverviewPage extends ServerConfigurationEditorPage
      */
     private void createKerberosChangePasswordServersSection( FormToolkit toolkit, Composite parent )
     {
+        // Creation of the section
         Section section = toolkit.createSection( parent, Section.TITLE_BAR );
         section.setText( "Kerberos Server" );
         section.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
@@ -304,23 +313,30 @@ public class OverviewPage extends ServerConfigurationEditorPage
         composite.setLayout( gridLayout );
         section.setClient( composite );
 
+        // Enable Kerberos Server Checkbox
         enableKerberosCheckbox = toolkit.createButton( composite, "Enable Kerberos Server", SWT.CHECK );
         enableKerberosCheckbox
             .setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, gridLayout.numColumns, 1 ) );
+        
+        // Kerberos Server Port Text
         toolkit.createLabel( composite, TABULATION );
         toolkit.createLabel( composite, "Port:" );
         kerberosPortText = createPortText( toolkit, composite );
         createDefaultValueLabel( toolkit, composite, "60088" );
 
+        // Enable Change Password Server Checkbox
         enableChangePasswordCheckbox = toolkit.createButton( composite, "Enable Kerberos Change Password Server",
             SWT.CHECK );
         enableChangePasswordCheckbox.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false,
             gridLayout.numColumns, 1 ) );
+        
+        // Change Password Server Port Text
         toolkit.createLabel( composite, TABULATION );
         toolkit.createLabel( composite, "Port:" );
         changePasswordPortText = createPortText( toolkit, composite );
         createDefaultValueLabel( toolkit, composite, "60464" );
 
+        // Kerberos Configuration Link
         openKerberosConfigurationLink = toolkit.createHyperlink( composite,
             "Advanced Kerberos configuration...", SWT.NONE );
         openKerberosConfigurationLink.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false,
@@ -337,6 +353,7 @@ public class OverviewPage extends ServerConfigurationEditorPage
      */
     private void createPartitionsSection( FormToolkit toolkit, Composite parent )
     {
+        // Creation of the section
         Section section = toolkit.createSection( parent, Section.TITLE_BAR );
         section.setText( "Partitions" );
         section.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
@@ -347,9 +364,11 @@ public class OverviewPage extends ServerConfigurationEditorPage
         composite.setLayout( gridLayout );
         section.setClient( composite );
 
+        // Partitions Label
         partitionsLabel = toolkit.createLabel( composite, "" );
         partitionsLabel.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
-
+        
+        // Partitions Table Viewer
         Table partitionsTable = toolkit.createTable( composite, SWT.NULL );
         GridData gd = new GridData( SWT.FILL, SWT.NONE, true, false );
         gd.heightHint = 45;
@@ -358,6 +377,7 @@ public class OverviewPage extends ServerConfigurationEditorPage
         partitionsTableViewer.setContentProvider( new ArrayContentProvider() );
         partitionsTableViewer.setLabelProvider( PartitionsPage.PARTITIONS_LABEL_PROVIDER );
 
+        // Partitions Configuration Link
         openPartitionsConfigurationLink = toolkit.createHyperlink( composite,
             "Advanced Partitions configuration...", SWT.NONE );
         openPartitionsConfigurationLink.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false,
@@ -374,6 +394,7 @@ public class OverviewPage extends ServerConfigurationEditorPage
      */
     private void createOptionsSection( FormToolkit toolkit, Composite parent )
     {
+        // Creation of the section
         Section section = toolkit.createSection( parent, Section.TITLE_BAR );
         section.setText( "Options" );
         section.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
@@ -384,14 +405,15 @@ public class OverviewPage extends ServerConfigurationEditorPage
         composite.setLayout( gridLayout );
         section.setClient( composite );
 
-        // Allow Anonymous Access
+        // Allow Anonymous Access Checkbox
         allowAnonymousAccessCheckbox = toolkit.createButton( composite, "Allow Anonymous Access", SWT.CHECK );
         allowAnonymousAccessCheckbox.setLayoutData( new GridData( SWT.NONE, SWT.NONE, true, false ) );
 
-        // Enable Access Control
+        // Enable Access Control Checkbox
         enableAccessControlCheckbox = toolkit.createButton( composite, "Enable Access Control", SWT.CHECK );
         enableAccessControlCheckbox.setLayoutData( new GridData( SWT.NONE, SWT.NONE, true, false ) );
 
+        // Options Configuration Link
         openOptionsConfigurationLink = toolkit.createHyperlink( composite,
             "Advanced Options configuration...", SWT.NONE );
         openOptionsConfigurationLink.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false,

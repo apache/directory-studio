@@ -306,30 +306,41 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
         twl.numColumns = 2;
         parent.setLayout( twl );
 
+        // Left Composite
         Composite leftComposite = toolkit.createComposite( parent );
         leftComposite.setLayout( new GridLayout() );
         TableWrapData leftCompositeTableWrapData = new TableWrapData( TableWrapData.FILL, TableWrapData.TOP );
         leftCompositeTableWrapData.grabHorizontal = true;
         leftComposite.setLayoutData( leftCompositeTableWrapData );
 
+        // Right Composite
         Composite rightComposite = toolkit.createComposite( parent );
         rightComposite.setLayout( new GridLayout() );
         TableWrapData rightCompositeTableWrapData = new TableWrapData( TableWrapData.FILL, TableWrapData.TOP );
         rightCompositeTableWrapData.grabHorizontal = true;
         rightComposite.setLayoutData( rightCompositeTableWrapData );
 
+        // Creating the sections
         createLdapServerSection( toolkit, leftComposite );
         createLimitsSection( toolkit, leftComposite );
         createAdvancedSection( toolkit, leftComposite );
         createSupportedAuthenticationMechanismsSection( toolkit, rightComposite );
         createSaslSettingsSection( toolkit, rightComposite );
 
+        // Refreshing the UI
         refreshUI();
     }
 
 
+    /**
+     * Creates the LDAP/LDAPS section.
+     *
+     * @param toolkit the toolkit to use
+     * @param parent the parent composite
+     */
     private void createLdapServerSection( FormToolkit toolkit, Composite parent )
     {
+        // Creation of the section
         Section section = toolkit.createSection( parent, Section.TITLE_BAR );
         section.setText( "LDAP/LDAPS Servers" );
         section.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
@@ -340,15 +351,21 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
         composite.setLayout( gridLayout );
         section.setClient( composite );
 
+        // Enable LDAP Server Checkbox
         enableLdapCheckbox = toolkit.createButton( composite, "Enable LDAP Server", SWT.CHECK );
         enableLdapCheckbox.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, gridLayout.numColumns, 1 ) );
+        
+        // LDAP Server Port Text
         toolkit.createLabel( composite, TABULATION );
         toolkit.createLabel( composite, "Port:" );
         ldapPortText = createPortText( toolkit, composite );
         createDefaultValueLabel( toolkit, composite, "10389" );
 
+        // Enable LDAPS Server Checkbox
         enableLdapsCheckbox = toolkit.createButton( composite, "Enable LDAPS Server", SWT.CHECK );
         enableLdapsCheckbox.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, gridLayout.numColumns, 1 ) );
+        
+        // LDAPS Server Port Text
         toolkit.createLabel( composite, TABULATION );
         toolkit.createLabel( composite, "Port:" );
         ldapsPortText = createPortText( toolkit, composite );
@@ -376,12 +393,12 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
         composite.setLayout( glayout );
         section.setClient( composite );
 
-        // Max. Time Limit
+        // Max. Time Limit Text
         toolkit.createLabel( composite, "Max Time Limit (ms):" );
         maxTimeLimitText = createIntegerText( toolkit, composite );
         maxTimeLimitText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
 
-        // Max. Size Limit
+        // Max. Size Limit Text
         toolkit.createLabel( composite, "Max Size Limit (entries):" );
         maxSizeLimitText = createIntegerText( toolkit, composite );
         maxSizeLimitText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
@@ -408,7 +425,7 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
         composite.setLayout( glayout );
         section.setClient( composite );
 
-        // Enable TLS
+        // Enable TLS Checkbox
         enableTlsCheckbox = toolkit.createButton( composite, "Enable TLS", SWT.CHECK );
         enableTlsCheckbox.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 3, 1 ) );
 
@@ -506,23 +523,23 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
         composite.setLayout( new GridLayout( 4, true ) );
         section.setClient( composite );
 
-        // Simple
+        // Simple Checkbox
         authMechSimpleCheckbox = toolkit.createButton( composite, "Simple", SWT.CHECK );
         authMechSimpleCheckbox.setLayoutData( new GridData( SWT.FILL, SWT.CENTER, true, false ) );
 
-        // GSSAPI
+        // GSSAPI Checkbox
         authMechGssapiCheckbox = toolkit.createButton( composite, "GSSAPI", SWT.CHECK );
         authMechGssapiCheckbox.setLayoutData( new GridData( SWT.FILL, SWT.CENTER, true, false ) );
 
-        // CRAM-MD5
+        // CRAM-MD5 Checkbox
         authMechCramMd5Checkbox = toolkit.createButton( composite, "CRAM-MD5", SWT.CHECK );
         authMechCramMd5Checkbox.setLayoutData( new GridData( SWT.FILL, SWT.CENTER, true, false ) );
 
-        // DIGEST-MD5
+        // DIGEST-MD5 Checkbox
         authMechDigestMd5Checkbox = toolkit.createButton( composite, "DIGEST-MD5", SWT.CHECK );
         authMechDigestMd5Checkbox.setLayoutData( new GridData( SWT.FILL, SWT.CENTER, true, false ) );
 
-        // NTLM
+        // NTLM Checkbox and Text
         authMechNtlmCheckbox = toolkit.createButton( composite, "NTLM", SWT.CHECK );
         authMechNtlmCheckbox.setLayoutData( new GridData( SWT.FILL, SWT.CENTER, true, false ) );
         Composite authMechNtlmComposite = toolkit.createComposite( composite );
@@ -532,7 +549,7 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
         authMechNtlmText.setLayoutData( new GridData( SWT.FILL, SWT.CENTER, true, false ) );
         authMechNtlmComposite.setLayoutData( new GridData( SWT.FILL, SWT.CENTER, false, false, 3, 1 ) );
 
-        // GSS-SPNEGO
+        // GSS-SPNEGO Checkbox and Text
         authMechGssSpnegoCheckbox = toolkit.createButton( composite, "GSS-SPNEGO", SWT.CHECK );
         authMechGssSpnegoCheckbox.setLayoutData( new GridData( SWT.FILL, SWT.CENTER, true, false ) );
         Composite authMechGssSpnegoComposite = toolkit.createComposite( composite );
@@ -564,14 +581,14 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
         composite.setLayout( glayout );
         section.setClient( composite );
 
-        // SASL Host
+        // SASL Host Text
         toolkit.createLabel( composite, "SASL Host:" );
         saslHostText = toolkit.createText( composite, "" );
         setGridDataWithDefaultWidth( saslHostText, new GridData( SWT.FILL, SWT.NONE, true, false ) );
         Label defaultSaslHostLabel = createDefaultValueLabel( toolkit, composite, "ldap.example.com" );
         defaultSaslHostLabel.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
 
-        // SASL Principal
+        // SASL Principal Text
         toolkit.createLabel( composite, "SASL Principal:" );
         saslPrincipalText = toolkit.createText( composite, "" ); //$NON-NLS-1$
         setGridDataWithDefaultWidth( saslPrincipalText, new GridData( SWT.FILL, SWT.NONE, true, false ) );
@@ -579,7 +596,7 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
             "ldap/ldap.example.com@EXAMPLE.COM" );
         defaultSaslPrincipalLabel.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
 
-        // Search Base Dn
+        // Search Base Dn Text
         toolkit.createLabel( composite, "Search Base Dn:" );
         saslSearchBaseDnText = toolkit.createText( composite, "" ); //$NON-NLS-1$
         setGridDataWithDefaultWidth( saslSearchBaseDnText, new GridData( SWT.FILL, SWT.NONE, true, false ) );
