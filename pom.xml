@@ -522,6 +522,11 @@
       </dependency>
       <dependency>
         <groupId>org.apache.directory.studio</groupId>
+        <artifactId>rcp.fullscreen</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.directory.studio</groupId>
         <artifactId>rcp.help</artifactId>
         <version>${project.version}</version>
       </dependency>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.startup">
+      <startup
+            class="org.apache.directory.studio.rcp.fullscreen.Startup"></startup>
+   </extension>
+   <extension
+         point="org.eclipse.ui.commands">
+      <command
+            defaultHandler="org.apache.directory.studio.rcp.fullscreen.ToggleFullScreenHandler"
+            id="org.apache.directory.studio.rcp.fullscreen.ToggleFullScreen"
+            name="Toggle Full Screen">
+      </command>
+      <command
+            defaultHandler="org.apache.directory.studio.rcp.fullscreen.ToggleFullScreenEscapeHandler"
+            id="org.apache.directory.studio.rcp.fullscreen.ToggleFullScreenEscape"
+            name="ToggleFullScreenEscape">
+      </command>
+   </extension>
+   <extension
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            allPopups="false"
+            locationURI="menu:window?after=newEditor">
+                           <command
+                                 commandId="org.apache.directory.studio.rcp.fullscreen.ToggleFullScreen"
+                                 label="Toggle Full Screen"/>
+      </menuContribution>
+   </extension>
+   <extension
+         point="org.eclipse.ui.bindings">
+      <key
+            commandId="org.apache.directory.studio.rcp.fullscreen.ToggleFullScreenEscape"
+            contextId="org.eclipse.ui.contexts.window"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="Esc">
+      </key>
+   </extension>
+
+</plugin>

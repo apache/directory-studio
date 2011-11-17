@@ -53,6 +53,7 @@
     <module>ldifeditor</module>
     <module>ldifparser</module>
     <module>rcp</module>
+    <module>rcp.fullscreen</module>
     <module>schemaeditor</module>
     <module>valueeditors</module>
   </modules>
