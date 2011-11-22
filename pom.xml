@@ -285,11 +285,6 @@
       </dependency>
       <dependency>
         <groupId>org.apache.directory.studio</groupId>
-        <artifactId>org.apache.directory.server.core</artifactId>
-        <version>${org.apache.directory.server.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.apache.directory.studio</groupId>
         <artifactId>org.apache.directory.server.core.api</artifactId>
         <version>${org.apache.directory.server.version}</version>
       </dependency>
@@ -1505,11 +1500,6 @@
       </dependency>
 
       <!-- ApacheDS -->
-      <dependency>
-        <groupId>org.apache.directory.server</groupId>
-        <artifactId>apacheds-core</artifactId>
-        <version>${org.apache.directory.server.version}</version>
-      </dependency>
       <dependency>
         <groupId>org.apache.directory.server</groupId>
         <artifactId>apacheds-core-api</artifactId>

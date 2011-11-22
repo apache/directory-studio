@@ -131,10 +131,6 @@
         </exclusion>
         <exclusion>
           <groupId>org.apache.directory.server</groupId>
-          <artifactId>apacheds-core</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>org.apache.directory.server</groupId>
           <artifactId>apacheds-core-api</artifactId>
         </exclusion>
         <exclusion>
@@ -195,11 +191,6 @@
     <dependency>
       <groupId>org.apache.directory.studio</groupId>
       <artifactId>org.apache.commons.lang</artifactId>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.directory.studio</groupId>
-      <artifactId>org.apache.directory.server.core</artifactId>
       <scope>provided</scope>
     </dependency>
     <dependency>

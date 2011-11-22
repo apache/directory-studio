@@ -144,10 +144,6 @@
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.apache.directory.studio</groupId>
-                  <artifactId>org.apache.directory.server.core</artifactId>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.apache.directory.studio</groupId>
                   <artifactId>org.apache.directory.server.core.api</artifactId>
                 </artifactItem>
                 <artifactItem>
