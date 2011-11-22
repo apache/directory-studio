@@ -315,6 +315,16 @@
       </dependency>
       <dependency>
         <groupId>org.apache.directory.studio</groupId>
+        <artifactId>org.apache.felix.ipojo</artifactId>
+        <version>${org.apache.felix.ipojo.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.directory.studio</groupId>
+        <artifactId>org.apache.felix.ipojo.annotations</artifactId>
+        <version>${org.apache.felix.ipojo.annotations.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.directory.studio</groupId>
         <artifactId>org.apache.httpcomponents.httpclient</artifactId>
         <version>${org.apache.httpcomponents.version}</version>
       </dependency>
@@ -1248,7 +1258,7 @@
     <dependency>
       <groupId>org.eclipse.team</groupId>
       <artifactId>ui</artifactId>
-      <version>3.6.100.I20110525-0800-studio</version>
+      <version>3.6.100.I20110525-0800-2-studio</version>
     </dependency>
     <dependency>
       <groupId>org.eclipse</groupId>
