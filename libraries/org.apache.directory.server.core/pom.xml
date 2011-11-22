@@ -86,27 +86,14 @@
           <manifestLocation>META-INF</manifestLocation>
           <instructions>
             <Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
-            <Require-Bundle>net.sf.ehcache.core;bundle-version="${net.sf.ehcache.version}",
- org.apache.commons.collections;bundle-version="${org.apache.commons.collections.version}",
- org.apache.commons.lang;bundle-version="${org.apache.commons.lang.version}",
- org.apache.directory.server.core.api;bundle-version="${org.apache.directory.server.validversion}",
- org.apache.directory.server.i18n;bundle-version="${org.apache.directory.server.validversion}",
- org.apache.directory.shared.i18n;bundle-version="${org.apache.directory.shared.validversion}",
- org.apache.directory.shared.ldap.client.api;bundle-version="${org.apache.directory.shared.validversion}",
- org.apache.directory.shared.ldap.codec.core;bundle-version="${org.apache.directory.shared.validversion}",
- org.apache.directory.shared.ldap.extras.aci;bundle-version="${org.apache.directory.shared.validversion}",
- org.apache.directory.shared.ldap.extras.trigger;bundle-version="${org.apache.directory.shared.validversion}",
- org.apache.directory.shared.ldap.extras.util;bundle-version="${org.apache.directory.shared.validversion}",
- org.apache.directory.shared.ldap.model;bundle-version="${org.apache.directory.shared.validversion}",
- org.apache.directory.shared.ldap.schema;bundle-version="${org.apache.directory.shared.validversion}",
- org.apache.directory.shared.util;bundle-version="${org.apache.directory.shared.validversion}",
- org.bouncycastle.bcprov.jdk15;bundle-version="${org.bouncycastle.bcprov.jdk15.version}",
- org.slf4j.api;bundle-version="${org.slf4j.version}"</Require-Bundle>
             <Embed-Dependency>*;scope=compile|runtime</Embed-Dependency>
             <Embed-Directory>lib</Embed-Directory>
             <Embed-StripGroup>true</Embed-StripGroup>
-            <_exportcontents>!lib,*</_exportcontents>
-            <Import-Package>!</Import-Package>
+            <Bundle-Localization>plugin</Bundle-Localization>
+            <Eclipse-LazyStart>true</Eclipse-LazyStart>
+            <Export-Package>
+              org.apache.directory.server.core.*;version=${project.version};-noimport:=true
+            </Export-Package>
           </instructions>
         </configuration>
         <executions>

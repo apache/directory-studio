@@ -76,9 +76,14 @@
     <org.apache.directory.shared.validversion>1.0.0.M9-SNAPSHOT</org.apache.directory.shared.validversion>
     <org.apache.directory.server.version>2.0.0-M4-SNAPSHOT</org.apache.directory.server.version>
     <org.apache.directory.server.validversion>2.0.0.M4-SNAPSHOT</org.apache.directory.server.validversion>
+    <org.apache.felix.ipojo.version>1.8.0</org.apache.felix.ipojo.version>
+    <org.apache.felix.ipojo.annotations.version>1.8.0</org.apache.felix.ipojo.annotations.version>
+    <org.apache.felix.ipojo.metadata.version>1.4.0</org.apache.felix.ipojo.metadata.version>
     <org.apache.mina.core.version>2.0.4</org.apache.mina.core.version>
     <org.bouncycastle.bcprov.jdk15.version>140</org.bouncycastle.bcprov.jdk15.version>
     <org.dom4j.version>1.6.1</org.dom4j.version>
+    <org.objectweb.asm.version>3.0</org.objectweb.asm.version>
+    <org.osgi.compendium.version>4.0.0</org.osgi.compendium.version>
     <org.slf4j.version>1.6.1</org.slf4j.version>
     <org.xpp3.version>1.1.3.4.O</org.xpp3.version>
     <org.xpp3.validversion>1.1.340</org.xpp3.validversion>
@@ -1616,6 +1621,31 @@
         <groupId>org.apache.httpcomponents</groupId>
         <artifactId>httpcore</artifactId>
         <version>${org.apache.httpcomponents.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.felix</groupId>
+        <artifactId>org.apache.felix.ipojo</artifactId>
+        <version>${org.apache.felix.ipojo.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.felix</groupId>
+        <artifactId>org.apache.felix.ipojo.annotations</artifactId>
+        <version>${org.apache.felix.ipojo.annotations.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.felix</groupId>
+        <artifactId>org.apache.felix.ipojo.metadata</artifactId>
+        <version>${org.apache.felix.ipojo.metadata.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>asm</groupId>
+        <artifactId>asm-all</artifactId>
+        <version>${org.objectweb.asm.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.osgi</groupId>
+        <artifactId>org.osgi.compendium</artifactId>
+        <version>${org.osgi.compendium.version}</version>
       </dependency>
       <dependency>
         <groupId>xpp3</groupId>

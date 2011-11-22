@@ -26,10 +26,10 @@
     <version>2.0.0-SNAPSHOT</version>
   </parent>
 
-  <artifactId>org.apache.directory.server.config</artifactId>
-  <version>${org.apache.directory.server.version}</version>
+  <artifactId>org.apache.felix.ipojo.annotations</artifactId>
+  <version>${org.apache.felix.ipojo.annotations.version}</version>
   
-  <name>ApacheDS Server Config (for Apache Directory Studio)</name>
+  <name>Apache Felix iPOJO Annotations (for Apache Directory Studio)</name>
   <packaging>jar</packaging>
 
   <description />
@@ -92,7 +92,13 @@
             <Bundle-Localization>plugin</Bundle-Localization>
             <Eclipse-LazyStart>true</Eclipse-LazyStart>
             <Export-Package>
-              org.apache.directory.server.config.*;version=${project.version};-noimport:=true
+              org.apache.felix.ipojo.annotations.*;version=${project.version};-noimport:=true,
+              org.apache.felix.ipojo.handler.temporal.*;version=${project.version};-noimport:=true,
+              org.apache.felix.ipojo.handlers.jmx.*;version=${project.version};-noimport:=true,
+              org.apache.felix.ipojo.extender.*;version=${project.version};-noimport:=true,
+              org.apache.felix.ipojo.whiteboard.*;version=${project.version};-noimport:=true,
+              org.apache.felix.ipojo.handlers.event.*;version=${project.version};-noimport:=true,
+              org.apache.felix.ipojo.transaction.*;version=${project.version};-noimport:=true
             </Export-Package>
           </instructions>
         </configuration>
@@ -118,91 +124,8 @@
   
   <dependencies>
     <dependency>
-      <groupId>org.apache.directory.server</groupId>
-      <artifactId>apacheds-server-config</artifactId>
-      <exclusions>
-        <exclusion>
-          <groupId>org.apache.directory.server</groupId>
-          <artifactId>apacheds-core-api</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>org.apache.directory.server</groupId>
-          <artifactId>apacheds-i18n</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>org.apache.directory.server</groupId>
-          <artifactId>apacheds-ldif-partition</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>org.apache.directory.server</groupId>
-          <artifactId>apacheds-xdbm-partition</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>org.apache.directory.shared</groupId>
-          <artifactId>shared-ldap-model</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>org.apache.directory.shared</groupId>
-          <artifactId>shared-ldap-schema-data</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>org.apache.directory.shared</groupId>
-          <artifactId>shared-util</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>commons-io</groupId>
-          <artifactId>commons-io</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>org.slf4j</groupId>
-          <artifactId>slf4j-api</artifactId>
-        </exclusion>
-      </exclusions>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.directory.shared</groupId>
-      <artifactId>shared-ldap-model</artifactId>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.directory.shared</groupId>
-      <artifactId>shared-ldap-schema-data</artifactId>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.directory.shared</groupId>
-      <artifactId>shared-util</artifactId>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.directory.studio</groupId>
-      <artifactId>org.apache.directory.server.core.api</artifactId>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.directory.studio</groupId>
-      <artifactId>org.apache.directory.server.i18n</artifactId>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.directory.studio</groupId>
-      <artifactId>org.apache.directory.server.ldif.partition</artifactId>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.directory.studio</groupId>
-      <artifactId>org.apache.directory.server.xdbm.partition</artifactId>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>commons-io</groupId>
-      <artifactId>commons-io</artifactId>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.directory.studio</groupId>
-      <artifactId>org.slf4j.api</artifactId>
-      <scope>provided</scope>
+      <groupId>org.apache.felix</groupId>
+      <artifactId>org.apache.felix.ipojo.annotations</artifactId>
     </dependency>
   </dependencies>
   

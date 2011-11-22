@@ -86,12 +86,14 @@
           <manifestLocation>META-INF</manifestLocation>
           <instructions>
             <Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
-            <Require-Bundle>org.slf4j.api;bundle-version="${org.slf4j.version}"</Require-Bundle>
             <Embed-Dependency>*;scope=compile|runtime</Embed-Dependency>
             <Embed-Directory>lib</Embed-Directory>
             <Embed-StripGroup>true</Embed-StripGroup>
-            <_exportcontents>!lib,*</_exportcontents>
-            <Import-Package>!</Import-Package>
+            <Bundle-Localization>plugin</Bundle-Localization>
+            <Eclipse-LazyStart>true</Eclipse-LazyStart>
+            <Export-Package>
+              org.apache.directory.server.constants.*;version=${project.version};-noimport:=true
+            </Export-Package>
           </instructions>
         </configuration>
         <executions>
