@@ -186,6 +186,11 @@
       <scope>provided</scope>
     </dependency>
     <dependency>
+      <groupId>org.apache.directory.studio</groupId>
+      <artifactId>org.apache.felix.ipojo.annotations</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
       <groupId>org.apache.directory.shared</groupId>
       <artifactId>shared-asn1-api</artifactId>
       <scope>provided</scope>
