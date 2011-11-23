@@ -52,10 +52,6 @@
                 <!-- Apache Directory Studio library plugins dependencies -->
                 <artifactItem>
                   <groupId>org.apache.directory.shared</groupId>
-                  <artifactId>shared-ldap-client-api</artifactId>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.apache.directory.shared</groupId>
                   <artifactId>shared-asn1-api</artifactId>
                 </artifactItem>
                 <artifactItem>
@@ -69,6 +65,14 @@
                 <artifactItem>
                   <groupId>org.apache.directory.shared</groupId>
                   <artifactId>shared-i18n</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.apache.directory.shared</groupId>
+                  <artifactId>shared-ipojo-manager</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.apache.directory.shared</groupId>
+                  <artifactId>shared-ldap-client-api</artifactId>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.apache.directory.shared</groupId>
@@ -96,11 +100,11 @@
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.apache.directory.shared</groupId>
-                  <artifactId>shared-ldap-schema-data</artifactId>
+                  <artifactId>shared-ldap-schema-converter</artifactId>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.apache.directory.shared</groupId>
-                  <artifactId>shared-ldap-schema-converter</artifactId>
+                  <artifactId>shared-ldap-schema-data</artifactId>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.apache.directory.shared</groupId>
@@ -165,6 +169,14 @@
                 <artifactItem>
                   <groupId>org.apache.directory.studio</groupId>
                   <artifactId>org.apache.directory.server.xdbm.partition</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.apache.directory.studio</groupId>
+                  <artifactId>org.apache.felix.ipojo</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.apache.directory.studio</groupId>
+                  <artifactId>org.apache.felix.ipojo.annotations</artifactId>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.apache.directory.studio</groupId>
