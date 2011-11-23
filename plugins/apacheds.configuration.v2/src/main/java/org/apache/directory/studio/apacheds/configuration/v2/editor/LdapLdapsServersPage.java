@@ -354,7 +354,7 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
         // Enable LDAP Server Checkbox
         enableLdapCheckbox = toolkit.createButton( composite, "Enable LDAP Server", SWT.CHECK );
         enableLdapCheckbox.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, gridLayout.numColumns, 1 ) );
-        
+
         // LDAP Server Port Text
         toolkit.createLabel( composite, TABULATION );
         toolkit.createLabel( composite, "Port:" );
@@ -364,7 +364,7 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
         // Enable LDAPS Server Checkbox
         enableLdapsCheckbox = toolkit.createButton( composite, "Enable LDAPS Server", SWT.CHECK );
         enableLdapsCheckbox.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, gridLayout.numColumns, 1 ) );
-        
+
         // LDAPS Server Port Text
         toolkit.createLabel( composite, TABULATION );
         toolkit.createLabel( composite, "Port:" );
@@ -1333,11 +1333,30 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
             LdapSecurityConstants hashingMethod = ( LdapSecurityConstants ) selection.getFirstElement();
             if ( hashingMethod != null )
             {
+                // Creating the hashing method interceptor
                 InterceptorBean hashingMethodInterceptor = createHashingMethodInterceptor( hashingMethod );
 
-                DirectoryServiceBean directoryServiceBean = getDirectoryServiceBean();
+                // Getting the order of the authentication interceptor
+                int authenticationInterceptorOrder = getAuthenticationInterceptorOrder();
 
-                directoryServiceBean.getInterceptors().add( hashingMethodInterceptor );
+                // Assigning the order of the hashing method interceptor
+                // It's order is: authenticationInterceptorOrder + 1
+                hashingMethodInterceptor.setInterceptorOrder( authenticationInterceptorOrder + 1 );
+
+                // Getting the interceptors list
+                List<InterceptorBean> interceptors = getDirectoryServiceBean().getInterceptors();
+
+                // Updating the order of the interceptors after the authentication interceptor
+                for ( InterceptorBean interceptor : interceptors )
+                {
+                    if ( interceptor.getInterceptorOrder() > authenticationInterceptorOrder )
+                    {
+                        interceptor.setInterceptorOrder( interceptor.getInterceptorOrder() + 1 );
+                    }
+                }
+
+                // Adding the hashing interceptor to the list                
+                interceptors.add( hashingMethodInterceptor );
             }
         }
     }
@@ -1348,11 +1367,53 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
      */
     private void deleteHashingMethodInterceptor()
     {
+        // Getting the hashing method interceptor
         InterceptorBean hashingMethodInterceptor = getHashingMethodInterceptor();
-        DirectoryServiceBean directoryServiceBean = getDirectoryServiceBean();
 
-        directoryServiceBean.getInterceptors().remove( hashingMethodInterceptor );
-        // TODO Do something better for the removal (edit other interceptors orderid)
+        if ( hashingMethodInterceptor != null )
+        {
+            // Getting the order of the hashing method interceptor
+            int hashingMethodInterceptorOrder = hashingMethodInterceptor.getInterceptorOrder();
+
+            // Getting the interceptors list
+            List<InterceptorBean> interceptors = getDirectoryServiceBean().getInterceptors();
+
+            // Updating the order of the interceptors after the hashing method interceptor
+            for ( InterceptorBean interceptor : interceptors )
+            {
+                if ( interceptor.getInterceptorOrder() > hashingMethodInterceptorOrder )
+                {
+                    interceptor.setInterceptorOrder( interceptor.getInterceptorOrder() - 1 );
+                }
+            }
+
+            // Removing the hashing interceptor to the list                
+            interceptors.remove( hashingMethodInterceptor );
+        }
     }
 
+
+    /**
+     * Gets the authentication interceptor order.
+     *
+     * @return the authentication interceptor order
+     */
+    private int getAuthenticationInterceptorOrder()
+    {
+        // Getting the list of interceptors
+        List<InterceptorBean> interceptors = getDirectoryServiceBean().getInterceptors();
+        for ( InterceptorBean interceptor : interceptors )
+        {
+            // Looking for the authentication interceptor
+            if ( "org.apache.directory.server.core.authn.AuthenticationInterceptor".equalsIgnoreCase( interceptor
+                .getInterceptorClassName() ) )
+            {
+                // We found the authentication interceptor
+                return interceptor.getInterceptorOrder();
+            }
+        }
+
+        // No authentication interceptor was found
+        return 0;
+    }
 }
