@@ -268,7 +268,7 @@ public class OverviewPage extends ServerConfigurationEditorPage
         // Enable LDAP Server Checkbox
         enableLdapCheckbox = toolkit.createButton( composite, "Enable LDAP Server", SWT.CHECK );
         enableLdapCheckbox.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, gridLayout.numColumns, 1 ) );
-        
+
         // LDAP Server Port Text
         toolkit.createLabel( composite, TABULATION );
         toolkit.createLabel( composite, "Port:" );
@@ -278,7 +278,7 @@ public class OverviewPage extends ServerConfigurationEditorPage
         // Enable LDAPS Server Checkbox
         enableLdapsCheckbox = toolkit.createButton( composite, "Enable LDAPS Server", SWT.CHECK );
         enableLdapsCheckbox.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, gridLayout.numColumns, 1 ) );
-        
+
         // LDAPS Server Port Text
         toolkit.createLabel( composite, TABULATION );
         toolkit.createLabel( composite, "Port:" );
@@ -317,7 +317,7 @@ public class OverviewPage extends ServerConfigurationEditorPage
         enableKerberosCheckbox = toolkit.createButton( composite, "Enable Kerberos Server", SWT.CHECK );
         enableKerberosCheckbox
             .setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, gridLayout.numColumns, 1 ) );
-        
+
         // Kerberos Server Port Text
         toolkit.createLabel( composite, TABULATION );
         toolkit.createLabel( composite, "Port:" );
@@ -329,7 +329,7 @@ public class OverviewPage extends ServerConfigurationEditorPage
             SWT.CHECK );
         enableChangePasswordCheckbox.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false,
             gridLayout.numColumns, 1 ) );
-        
+
         // Change Password Server Port Text
         toolkit.createLabel( composite, TABULATION );
         toolkit.createLabel( composite, "Port:" );
@@ -367,7 +367,7 @@ public class OverviewPage extends ServerConfigurationEditorPage
         // Partitions Label
         partitionsLabel = toolkit.createLabel( composite, "" );
         partitionsLabel.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
-        
+
         // Partitions Table Viewer
         Table partitionsTable = toolkit.createTable( composite, SWT.NULL );
         GridData gd = new GridData( SWT.FILL, SWT.NONE, true, false );
@@ -523,7 +523,7 @@ public class OverviewPage extends ServerConfigurationEditorPage
     {
         removeListeners();
 
-        DirectoryServiceBean directoryServiceBean = getConfigBean().getDirectoryServiceBean();
+        DirectoryServiceBean directoryServiceBean = getDirectoryServiceBean();
 
         // LDAP Server
         TransportBean ldapServerTransportBean = LdapLdapsServersPage.getLdapServerTransportBean( directoryServiceBean );
@@ -539,13 +539,14 @@ public class OverviewPage extends ServerConfigurationEditorPage
         setText( ldapsPortText, ldapsServerTransportBean.getSystemPort() + "" );
 
         // Kerberos Server
-        KdcServerBean kdcServerBean = directoryServiceBean.getKdcServerBean();
+        KdcServerBean kdcServerBean = KerberosServerPage.getKdcServerBean( directoryServiceBean );
         setSelection( enableKerberosCheckbox, kdcServerBean.isEnabled() );
         setEnabled( kerberosPortText, enableKerberosCheckbox.getSelection() );
         setText( kerberosPortText, "" + kdcServerBean.getTransports()[0].getSystemPort() );
 
         // Change Password Server
-        ChangePasswordServerBean changePasswordServerBean = directoryServiceBean.getChangePasswordServerBean();
+        ChangePasswordServerBean changePasswordServerBean = KerberosServerPage
+            .getChangePasswordServerBean( directoryServiceBean );
         setSelection( enableChangePasswordCheckbox, changePasswordServerBean.isEnabled() );
         setEnabled( changePasswordPortText, enableChangePasswordCheckbox.getSelection() );
         setText( changePasswordPortText, "" + changePasswordServerBean.getTransports()[0].getSystemPort() );
