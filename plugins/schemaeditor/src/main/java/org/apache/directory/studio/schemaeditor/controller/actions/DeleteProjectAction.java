@@ -22,6 +22,7 @@ package org.apache.directory.studio.schemaeditor.controller.actions;
 
 import java.util.Iterator;
 
+import org.apache.directory.studio.connection.core.ConnectionCoreConstants;
 import org.apache.directory.studio.schemaeditor.Activator;
 import org.apache.directory.studio.schemaeditor.PluginConstants;
 import org.apache.directory.studio.schemaeditor.controller.ProjectsHandler;
@@ -30,17 +31,14 @@ import org.apache.directory.studio.schemaeditor.model.Project.ProjectState;
 import org.apache.directory.studio.schemaeditor.view.wrappers.ProjectWrapper;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
-import org.eclipse.osgi.util.NLS;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.IWorkbenchWindowActionDelegate;
-import org.eclipse.ui.PlatformUI;
 
 
 /**
@@ -104,23 +102,43 @@ public class DeleteProjectAction extends Action implements IWorkbenchWindowActio
 
         if ( !selection.isEmpty() )
         {
-            MessageBox messageBox = new MessageBox( PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
-                SWT.YES | SWT.NO | SWT.ICON_QUESTION );
+            StringBuilder title = new StringBuilder();
+            StringBuilder message = new StringBuilder();
+
             int count = selection.size();
-            if ( count == 1 )
+
+            if ( count <= 5 )
             {
-                ProjectWrapper wrapper = ( ProjectWrapper ) selection.getFirstElement();
-                messageBox
-                    .setMessage( NLS
-                        .bind(
-                            Messages.getString( "DeleteProjectAction.SureToDeleteProject" ), new String[] { wrapper.getProject().getName() } ) ); //$NON-NLS-1$
+                if ( count == 1 )
+                {
+                    // Only 1 project to delete
+                    title.append( Messages.getString( "DeleteProjectAction.DeleteProjectTitle" ) ); //$NON-NLS-1$
+                    message.append( Messages.getString( "DeleteProjectAction.SureDeleteFollowingProject" ) ); //$NON-NLS-1$
+                }
+                else
+                {
+                    // Between 2 to 5 projects to delete
+                    title.append( Messages.getString( "DeleteProjectAction.DeleteProjectsTitle" ) ); //$NON-NLS-1$
+                    message.append( Messages.getString( "DeleteProjectAction.SureDeleteFollowingProjects" ) ); //$NON-NLS-1$
+                }
+
+                // Appending the projects names
+                for ( Iterator<?> iterator = selection.iterator(); iterator.hasNext(); )
+                {
+                    message.append( ConnectionCoreConstants.LINE_SEPARATOR );
+                    message.append( "  - " ); //$NON-NLS-1$
+                    message.append( ( ( ProjectWrapper ) iterator.next() ).getProject().getName() );
+                }
             }
             else
             {
-                messageBox.setMessage( NLS.bind(
-                    Messages.getString( "DeleteProjectAction.SureToDeleteProjects" ), new Object[] { count } ) ); //$NON-NLS-1$
+                // More than 5 projects to delete
+                title.append( Messages.getString( "DeleteProjectAction.DeleteProjectsTitle" ) ); //$NON-NLS-1$
+                message.append( Messages.getString( "DeleteProjectAction.SureDeleteSelectedProjects" ) ); //$NON-NLS-1$
             }
-            if ( messageBox.open() == SWT.YES )
+
+            // Showing the confirmation window
+            if ( MessageDialog.openConfirm( viewer.getControl().getShell(), title.toString(), message.toString() ) )
             {
                 for ( Iterator<?> iterator = selection.iterator(); iterator.hasNext(); )
                 {
