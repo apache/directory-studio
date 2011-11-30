@@ -782,25 +782,25 @@
   </matchingrules>
   <syntaxes>
     <syntax oid="1.3.6.1.4.1.4203.666.11.2.4" obsolete="false" humanreadable="true">
-      <description>a syntax for CSN SID values</description>
+      <description>CSN SID</description>
     </syntax>
     <syntax oid="1.3.6.1.4.1.18060.0.4.1.0.0" obsolete="false" humanreadable="true">
-      <description>a syntax for java byte values</description>
+      <description>Java Byte</description>
     </syntax>
     <syntax oid="1.3.6.1.1.16.1" obsolete="false" humanreadable="false">
-      <description>a syntax for UUID values</description>
+      <description>UUID</description>
     </syntax>
     <syntax oid="1.3.6.1.4.1.18060.0.4.1.0.2" obsolete="false" humanreadable="true">
-      <description>a syntax for java short values</description>
+      <description>Java Short</description>
     </syntax>
     <syntax oid="1.3.6.1.4.1.4203.666.11.2.1" obsolete="false" humanreadable="true">
-      <description>a syntax for CSN values</description>
+      <description>CSN</description>
     </syntax>
     <syntax oid="1.3.6.1.4.1.18060.0.4.1.0.4" obsolete="false" humanreadable="true">
-      <description>a syntax for java int values</description>
+      <description>Java Int</description>
     </syntax>
     <syntax oid="1.3.6.1.4.1.18060.0.4.1.0.3" obsolete="false" humanreadable="true">
-      <description>a syntax for java long values</description>
+      <description>Java Long</description>
     </syntax>
   </syntaxes>
 </schema>
