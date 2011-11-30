@@ -42,10 +42,31 @@ public class ATESyntaxComboLabelProvider extends LabelProvider
         {
             LdapSyntax syntax = ( LdapSyntax ) obj;
 
+            // Getting description (and name for backward compatibility)
+            String description = syntax.getDescription();
             String name = syntax.getName();
-            if ( name != null )
+            
+            
+            if ( ( description != null ) || ( name != null ) )
             {
-                return name + "  -  (" + syntax.getOid() + ")"; //$NON-NLS-1$ //$NON-NLS-2$
+                StringBuilder sb = new StringBuilder();
+
+                if ( description != null )
+                {
+                    // Using description
+                    sb.append( description );
+                }
+                else
+                {
+                    // Using name (for backward compatibility)
+                    sb.append( name );
+                }
+
+                sb.append( "  -  (" ); //$NON-NLS-1$
+                sb.append( syntax.getOid() );
+                sb.append( ")" ); //$NON-NLS-1$ 
+
+                return sb.toString();
             }
             else
             {
