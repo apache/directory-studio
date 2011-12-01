@@ -131,19 +131,18 @@ public class ProblemsViewController
                 }
                 else if ( objectSelection instanceof SchemaWarningWrapper )
                 {
-                    // TODO
-                    //                    SchemaObject object = ( ( SchemaWarningWrapper ) objectSelection ).getSchemaWarning().getSource();
-                    //
-                    //                    if ( object instanceof AttributeType )
-                    //                    {
-                    //                        input = new AttributeTypeEditorInput( ( AttributeType ) object );
-                    //                        editorId = AttributeTypeEditor.ID;
-                    //                    }
-                    //                    else if ( object instanceof ObjectClass )
-                    //                    {
-                    //                        input = new ObjectClassEditorInput( ( ObjectClass ) object );
-                    //                        editorId = ObjectClassEditor.ID;
-                    //                    }
+                    SchemaObject object = ( ( SchemaWarningWrapper ) objectSelection ).getSchemaWarning().getSource();
+
+                    if ( object instanceof AttributeType )
+                    {
+                        input = new AttributeTypeEditorInput( ( AttributeType ) object );
+                        editorId = AttributeTypeEditor.ID;
+                    }
+                    else if ( object instanceof ObjectClass )
+                    {
+                        input = new ObjectClassEditorInput( ( ObjectClass ) object );
+                        editorId = ObjectClassEditor.ID;
+                    }
                 }
                 else if ( ( objectSelection instanceof Folder ) )
                 {

@@ -62,17 +62,20 @@ public class SchemaChecker
     /** The schema manager */
     private SchemaManager schemaManager;
 
-    /** The errors List */
-    private List<Throwable> errorsList;
+    /** The errors map */
+    private MultiMap errorsMap = new MultiValueMap();;
 
-    /** The errors MultiMap */
-    private MultiMap errorsMap;
+    /** The warnings list */
+    private List<SchemaWarning> warningsList = new ArrayList<SchemaWarning>();
+
+    /** The warnings map */
+    private MultiMap warningsMap = new MultiValueMap();;
 
     /** The 'listening to modifications' flag*/
     private boolean listeningToModifications = false;
 
     /** The listeners List */
-    private List<SchemaCheckerListener> listeners;
+    private List<SchemaCheckerListener> listeners = new ArrayList<SchemaCheckerListener>();
 
     /** The SchemaHandlerListener */
     private SchemaHandlerListener schemaHandlerListener = new SchemaHandlerAdapter()
@@ -155,11 +158,6 @@ public class SchemaChecker
      */
     private SchemaChecker()
     {
-        listeners = new ArrayList<SchemaCheckerListener>();
-
-        schemaManager = new DefaultSchemaManager( new SchemaEditorSchemaLoader() );
-        errorsMap = new MultiValueMap();
-
         Activator.getDefault().getProjectsHandler().addListener( new ProjectsHandlerAdapter()
         {
             public void openProjectChanged( Project oldProject, Project newProject )
@@ -263,6 +261,7 @@ public class SchemaChecker
         {
             protected IStatus run( IProgressMonitor monitor )
             {
+                // Checks the whole schema via the schema manager
                 try
                 {
                     schemaManager = new DefaultSchemaManager( new SchemaEditorSchemaLoader() );
@@ -274,9 +273,12 @@ public class SchemaChecker
                     e.printStackTrace();
                 }
 
-                updateErrorsList();
+                // Updates errors and warnings
+                updateErrorsAndWarnings();
 
+                // Notify listeners
                 notifyListeners();
+
                 monitor.done();
 
                 return Status.OK_STATUS;
@@ -286,11 +288,28 @@ public class SchemaChecker
     }
 
 
-    private void updateErrorsList()
+    /**
+     * Updates the errors and warnings. 
+     */
+    private void updateErrorsAndWarnings()
     {
+        // Errors
         errorsMap.clear();
-        errorsList = schemaManager.getErrors();
-        for ( Throwable error : errorsList )
+        indexErrors();
+
+        // Warnings
+        createWarnings();
+        warningsMap.clear();
+        indexWarnings();
+    }
+
+
+    /**
+     * Indexes the errors.
+     */
+    private void indexErrors()
+    {
+        for ( Throwable error : schemaManager.getErrors() )
         {
             if ( error instanceof LdapSchemaException )
             {
@@ -325,6 +344,60 @@ public class SchemaChecker
 
 
     /**
+     * Creates the warnings.
+     */
+    private void createWarnings()
+    {
+        // Clearing previous warnings
+        warningsList.clear();
+
+        // Getting the schema handler to check for schema objects without names (aliases)
+        SchemaHandler schemaHandler = Activator.getDefault().getSchemaHandler();
+
+        if ( schemaHandler != null )
+        {
+            // Checking attribute types
+            for ( AttributeType attributeType : schemaHandler.getAttributeTypes() )
+            {
+                checkSchemaObjectNames( attributeType );
+            }
+
+            // Checking object classes
+            for ( ObjectClass objectClass : schemaHandler.getObjectClasses() )
+            {
+                checkSchemaObjectNames( objectClass );
+            }
+        }
+    }
+
+
+    /**
+     * Checks the names of the given schema object.
+     *
+     * @param schemaObject the schema object to check
+     */
+    private void checkSchemaObjectNames( SchemaObject schemaObject )
+    {
+        if ( ( schemaObject.getNames() == null ) || ( schemaObject.getNames().size() == 0 ) )
+        {
+            warningsList.add( new NoAliasWarning( schemaObject ) );
+        }
+    }
+
+
+    /**
+     * Indexes the warnings.
+     */
+    private void indexWarnings()
+    {
+        for ( SchemaWarning warning : warningsList )
+        {
+            warningsMap.put( warning.getSource(), warning );
+        }
+    }
+
+
+    /**
      * Gets the errors.
      *
      * @return
@@ -332,7 +405,14 @@ public class SchemaChecker
      */
     public List<Throwable> getErrors()
     {
-        return errorsList;
+        if ( schemaManager != null )
+        {
+            return schemaManager.getErrors();
+        }
+        else
+        {
+            return new ArrayList<Throwable>();
+        }
     }
 
 
@@ -342,10 +422,9 @@ public class SchemaChecker
      * @return
      *      the warnings
      */
-    public List<Object> getWarnings()
+    public List<SchemaWarning> getWarnings()
     {
-        // TODO
-        return new ArrayList<Object>();
+        return warningsList;
     }
 
 
@@ -435,8 +514,7 @@ public class SchemaChecker
      */
     public List<Object> getWarnings( SchemaObject so )
     {
-        return new ArrayList<Object>();
-        //   return ( List<?> ) warningsMap.get( so );
+        return ( List<Object> ) warningsMap.get( so );
     }
 
 

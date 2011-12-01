@@ -29,6 +29,8 @@ import org.apache.directory.shared.ldap.model.schema.SchemaObject;
 import org.apache.directory.studio.schemaeditor.Activator;
 import org.apache.directory.studio.schemaeditor.PluginConstants;
 import org.apache.directory.studio.schemaeditor.controller.SchemaHandler;
+import org.apache.directory.studio.schemaeditor.model.schemachecker.NoAliasWarning;
+import org.apache.directory.studio.schemaeditor.model.schemachecker.SchemaWarning;
 import org.apache.directory.studio.schemaeditor.view.wrappers.Folder;
 import org.apache.directory.studio.schemaeditor.view.wrappers.SchemaErrorWrapper;
 import org.apache.directory.studio.schemaeditor.view.wrappers.SchemaWarningWrapper;
@@ -95,22 +97,20 @@ public class ProblemsViewLabelProvider extends LabelProvider implements ITableLa
 
             if ( columnIndex == 0 )
             {
-                return ""; // TODO getMessage( warningWrapper.getSchemaWarning() );
+                return getMessage( warningWrapper.getSchemaWarning() );
             }
             else if ( columnIndex == 1 )
             {
-                return "";
-                // TODO
-                //                String name = warningWrapper.getSchemaWarning().getSource().getName();
-                //
-                //                if ( ( name != null ) && ( !name.equals( "" ) ) ) //$NON-NLS-1$
-                //                {
-                //                    return name;
-                //                }
-                //                else
-                //                {
-                //                    return warningWrapper.getSchemaWarning().getSource().getOid();
-                //                }
+                String name = warningWrapper.getSchemaWarning().getSource().getName();
+
+                if ( ( name != null ) && ( !name.equals( "" ) ) ) //$NON-NLS-1$
+                {
+                    return name;
+                }
+                else
+                {
+                    return warningWrapper.getSchemaWarning().getSource().getOid();
+                }
             }
         }
         else if ( element instanceof Folder )
@@ -137,7 +137,7 @@ public class ProblemsViewLabelProvider extends LabelProvider implements ITableLa
         {
             switch ( exception.getCode() )
             {
-                // Codes for all Schema Objects
+            // Codes for all Schema Objects
                 case NAME_ALREADY_REGISTERED:
                     return getMessageNameAlreadyRegistered( exception );
                 case OID_ALREADY_REGISTERED:
@@ -204,24 +204,31 @@ public class ProblemsViewLabelProvider extends LabelProvider implements ITableLa
         }
 
         return ""; //$NON-NLS-1$
+    }
 
-        //        else if ( element instanceof NoAliasWarning )
-        //        {
-        //            NoAliasWarning noAliasWarning = ( NoAliasWarning ) element;
-        //            SchemaObject source = noAliasWarning.getSourceObject();
-        //            if ( source instanceof AttributeType )
-        //            {
-        //                return NLS
-        //                        .bind(
-        //                            Messages.getString( "ProblemsViewLabelProvider.NoAliasWarningAttributeType" ), new String[] { source.getOid() } ); //$NON-NLS-1$
-        //            }
-        //            else if ( source instanceof ObjectClass )
-        //            {
-        //                return NLS
-        //                        .bind(
-        //                            Messages.getString( "ProblemsViewLabelProvider.NoAliasWarningObjectClass" ), new String[] { source.getOid() } ); //$NON-NLS-1$
-        //            }
-        //        }
+
+    private String getMessage( SchemaWarning warning )
+    {
+
+        if ( warning instanceof NoAliasWarning )
+        {
+            NoAliasWarning noAliasWarning = ( NoAliasWarning ) warning;
+            SchemaObject source = noAliasWarning.getSource();
+            if ( source instanceof AttributeType )
+            {
+                return NLS
+                    .bind(
+                        Messages.getString( "ProblemsViewLabelProvider.NoAliasWarningAttributeType" ), new String[] { source.getOid() } ); //$NON-NLS-1$
+            }
+            else if ( source instanceof ObjectClass )
+            {
+                return NLS
+                    .bind(
+                        Messages.getString( "ProblemsViewLabelProvider.NoAliasWarningObjectClass" ), new String[] { source.getOid() } ); //$NON-NLS-1$
+            }
+        }
+
+        return ""; //$NON-NLS-1$
     }
 
 

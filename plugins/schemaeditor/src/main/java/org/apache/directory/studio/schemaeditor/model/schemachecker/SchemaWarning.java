@@ -24,11 +24,11 @@ import org.apache.directory.shared.ldap.model.schema.SchemaObject;
 
 
 /**
- * Common interface for the all the schema errors.
+ * This interface defines a schema warning.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public interface SchemaCheckerElement
+public interface SchemaWarning
 {
     /**
      * Gets the source object.
