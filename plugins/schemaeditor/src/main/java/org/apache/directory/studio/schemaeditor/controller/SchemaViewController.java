@@ -49,6 +49,7 @@ import org.apache.directory.studio.schemaeditor.controller.actions.SwitchSchemaP
 import org.apache.directory.studio.schemaeditor.controller.actions.SwitchSchemaPresentationToHierarchicalAction;
 import org.apache.directory.studio.schemaeditor.model.Project;
 import org.apache.directory.studio.schemaeditor.model.Schema;
+import org.apache.directory.studio.schemaeditor.model.schemachecker.SchemaCheckerListener;
 import org.apache.directory.studio.schemaeditor.view.ViewUtils;
 import org.apache.directory.studio.schemaeditor.view.editors.attributetype.AttributeTypeEditor;
 import org.apache.directory.studio.schemaeditor.view.editors.attributetype.AttributeTypeEditorInput;
@@ -71,6 +72,7 @@ import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
+import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.widgets.Display;
@@ -105,6 +107,9 @@ public class SchemaViewController
     /** The Context Menu */
     private MenuManager contextMenu;
 
+    /** The selection */
+    private ISelection selection;
+
     /** The SchemaHandlerListener */
     private SchemaHandlerListener schemaHandlerListener = new SchemaHandlerAdapter()
     {
@@ -116,12 +121,11 @@ public class SchemaViewController
         {
             SchemaViewContentProvider contentProvider = ( SchemaViewContentProvider ) viewer.getContentProvider();
             contentProvider.attributeTypeAdded( at );
-            view.refresh();
 
             TreeNode wrapper = contentProvider.getWrapper( at );
             if ( wrapper != null )
             {
-                viewer.setSelection( new StructuredSelection( wrapper ) );
+                selection = new StructuredSelection( wrapper );
             }
         }
 
@@ -132,7 +136,6 @@ public class SchemaViewController
         public void attributeTypeModified( AttributeType at )
         {
             ( ( SchemaViewContentProvider ) viewer.getContentProvider() ).attributeTypeModified( at );
-            view.refresh();
         }
 
 
@@ -142,7 +145,6 @@ public class SchemaViewController
         public void attributeTypeRemoved( AttributeType at )
         {
             ( ( SchemaViewContentProvider ) viewer.getContentProvider() ).attributeTypeRemoved( at );
-            view.refresh();
         }
 
 
@@ -153,12 +155,11 @@ public class SchemaViewController
         {
             SchemaViewContentProvider contentProvider = ( SchemaViewContentProvider ) viewer.getContentProvider();
             contentProvider.objectClassAdded( oc );
-            view.refresh();
 
             TreeNode wrapper = contentProvider.getWrapper( oc );
             if ( wrapper != null )
             {
-                viewer.setSelection( new StructuredSelection( wrapper ) );
+                selection = new StructuredSelection( wrapper );
             }
         }
 
@@ -169,7 +170,6 @@ public class SchemaViewController
         public void objectClassModified( ObjectClass oc )
         {
             ( ( SchemaViewContentProvider ) viewer.getContentProvider() ).objectClassModified( oc );
-            view.refresh();
         }
 
 
@@ -179,7 +179,6 @@ public class SchemaViewController
         public void objectClassRemoved( ObjectClass oc )
         {
             ( ( SchemaViewContentProvider ) viewer.getContentProvider() ).objectClassRemoved( oc );
-            view.refresh();
         }
 
 
@@ -191,20 +190,11 @@ public class SchemaViewController
             SchemaViewContentProvider contentProvider = ( SchemaViewContentProvider ) viewer.getContentProvider();
             contentProvider.schemaAdded( schema );
 
-            final TreeNode wrapper = contentProvider.getWrapper( schema );
-
-            Display.getDefault().asyncExec( new Runnable()
+            TreeNode wrapper = contentProvider.getWrapper( schema );
+            if ( wrapper != null )
             {
-                public void run()
-                {
-                    view.refresh();
-
-                    if ( wrapper != null )
-                    {
-                        viewer.setSelection( new StructuredSelection( wrapper ) );
-                    }
-                }
-            } );
+                selection = new StructuredSelection( wrapper );
+            }
         }
 
 
@@ -214,7 +204,29 @@ public class SchemaViewController
         public void schemaRemoved( Schema schema )
         {
             ( ( SchemaViewContentProvider ) viewer.getContentProvider() ).schemaRemoved( schema );
-            view.refresh();
+        }
+    };
+
+    /** The SchemaCheckerListener */
+    private SchemaCheckerListener schemaCheckerListener = new SchemaCheckerListener()
+    {
+        public void schemaCheckerUpdated()
+        {
+            Display.getDefault().asyncExec( new Runnable()
+            {
+                public void run()
+                {
+                    if ( selection != null )
+                    {
+                        view.refresh( selection );
+                        selection = null;
+                    }
+                    else
+                    {
+                        view.refresh();
+                    }
+                }
+            } );
         }
     };
 
@@ -261,6 +273,7 @@ public class SchemaViewController
         initMenu();
         initContextMenu();
         initProjectsHandlerListener();
+        initSchemaCheckerListener();
         initDoubleClickListener();
         initAuthorizedPrefs();
         initPreferencesListener();
@@ -463,6 +476,15 @@ public class SchemaViewController
         {
             schemaHandler.removeListener( schemaHandlerListener );
         }
+    }
+
+
+    /**
+     * Intializes the schema checker listener.
+     */
+    private void initSchemaCheckerListener()
+    {
+        Activator.getDefault().getSchemaChecker().addListener( schemaCheckerListener );
     }
 
 
