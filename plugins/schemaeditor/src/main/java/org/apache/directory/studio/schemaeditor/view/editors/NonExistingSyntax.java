@@ -27,34 +27,34 @@ package org.apache.directory.studio.schemaeditor.view.editors;
  */
 public class NonExistingSyntax
 {
-    /** The None syntax name */
+    /** The None syntax description */
     public static final String NONE = "(None)"; //$NON-NLS-1$
 
-    /** The name */
-    private String name;
+    /** The description */
+    private String description;
 
 
     /**
      * Creates a new instance of NonExistingSyntax.
      *
-     * @param name
-     *      the name the NonExistingSyntax
+     * @param description
+     *      the description the NonExistingSyntax
      */
-    public NonExistingSyntax( String name )
+    public NonExistingSyntax( String description )
     {
-        this.name = name;
+        this.description = description;
     }
 
 
     /**
-     * Gets the name of the NonExistingSyntax.
+     * Gets the description of the NonExistingSyntax.
      *
      * @return
-     *      the name of the NonExistingSyntax
+     *      the description of the NonExistingSyntax
      */
-    public String getName()
+    public String getDescription()
     {
-        return name;
+        return description;
     }
 
 
@@ -66,13 +66,13 @@ public class NonExistingSyntax
      */
     public String getDisplayName()
     {
-        if ( name.equals( NONE ) )
+        if ( description.equals( NONE ) )
         {
             return NONE;
         }
         else
         {
-            return name + "   " + "(This syntax doesnt exist)";
+            return description + "   " + "(This syntax doesnt exist)";
         }
     }
 
@@ -84,7 +84,7 @@ public class NonExistingSyntax
     {
         if ( obj instanceof NonExistingSyntax )
         {
-            return name.equalsIgnoreCase( ( ( NonExistingSyntax ) obj ).getName() );
+            return description.equalsIgnoreCase( ( ( NonExistingSyntax ) obj ).getDescription() );
         }
 
         return false;

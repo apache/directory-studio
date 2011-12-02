@@ -491,13 +491,13 @@ public class AttributeTypeEditorOverviewPage extends FormPage
             {
                 NonExistingSyntax nes = ( NonExistingSyntax ) selectedItem;
 
-                if ( NonExistingMatchingRule.NONE.equals( nes.getName() ) )
+                if ( NonExistingMatchingRule.NONE.equals( nes.getDescription() ) )
                 {
                     modifiedAttributeType.setSyntaxOid( null );
                 }
                 else
                 {
-                    modifiedAttributeType.setSyntaxOid( ( ( NonExistingSyntax ) selectedItem ).getName() );
+                    modifiedAttributeType.setSyntaxOid( ( ( NonExistingSyntax ) selectedItem ).getDescription() );
                 }
             }
             setEditorDirty();
