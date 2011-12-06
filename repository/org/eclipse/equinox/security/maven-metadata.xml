@@ -3,14 +3,15 @@
   <groupId>org.eclipse.equinox</groupId>
   <artifactId>security</artifactId>
   <versioning>
-    <release>1.1.0.v20110502</release>
+    <release>1.1.1.R37x_v20110822-1018</release>
     <versions>
       <version>1.0.200.v20100503</version>
       <version>1.0.0.v20080512-1800</version>
       <version>1.0.1.R34x_v20080721</version>
       <version>1.0.100.v20090520-1800</version>
       <version>1.1.0.v20110502</version>
+      <version>1.1.1.R37x_v20110822-1018</version>
     </versions>
-    <lastUpdated>20110718113117</lastUpdated>
+    <lastUpdated>20111206110529</lastUpdated>
   </versioning>
 </metadata>

@@ -3,11 +3,12 @@
   <groupId>org.eclipse.swt.win32.win32</groupId>
   <artifactId>x86_64</artifactId>
   <versioning>
-    <release>3.7.0.v3735b</release>
+    <release>3.7.1.v3738a</release>
     <versions>
       <version>3.6.1.v3655c</version>
       <version>3.7.0.v3735b</version>
+      <version>3.7.1.v3738a</version>
     </versions>
-    <lastUpdated>20110719093311</lastUpdated>
+    <lastUpdated>20111206122114</lastUpdated>
   </versioning>
 </metadata>
