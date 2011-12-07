@@ -34,9 +34,8 @@ import org.apache.directory.studio.schemaeditor.model.Schema;
 import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.dialogs.IPageChangedListener;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.dialogs.PageChangedEvent;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.PartInitException;
@@ -292,9 +291,7 @@ public class AttributeTypeEditor extends FormEditor
      */
     private void notifyError( String message )
     {
-        MessageBox messageBox = new MessageBox( PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), SWT.OK
-            | SWT.ICON_ERROR );
-        messageBox.setMessage( message );
-        messageBox.open();
+        MessageDialog.openError( PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
+            Messages.getString( "AttributeTypeEditor.Error" ), message ); //$NON-NLS-1$ 
     }
 }
