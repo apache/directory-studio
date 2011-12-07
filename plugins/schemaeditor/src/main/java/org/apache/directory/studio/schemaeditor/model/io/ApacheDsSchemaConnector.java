@@ -40,6 +40,7 @@ import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
 import org.apache.directory.studio.connection.core.Connection.ReferralHandlingMethod;
 import org.apache.directory.studio.connection.core.io.ConnectionWrapper;
+import org.apache.directory.studio.schemaeditor.model.Project;
 import org.apache.directory.studio.schemaeditor.model.Schema;
 
 
@@ -79,23 +80,13 @@ public class ApacheDsSchemaConnector extends AbstractSchemaConnector implements 
     /**
      * {@inheritDoc}
      */
-    public void exportSchema( Connection connection, StudioProgressMonitor monitor )
+    public void importSchema( Project project, StudioProgressMonitor monitor )
+        throws SchemaConnectorException
     {
-        // TODO Auto-generated method stub
-
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    public List<Schema> importSchema( Connection connection, StudioProgressMonitor monitor )
-    {
+        monitor.beginTask( Messages.getString( "ApacheDsSchemaConnector.FetchingSchema" ), 1 ); //$NON-NLS-1$
         List<Schema> schemas = new ArrayList<Schema>();
-
-        ConnectionWrapper wrapper = connection.getConnectionWrapper();
-
-        monitor.beginTask( Messages.getString( "GenericSchemaConnector.FetchingSchema" ), 1 ); //$NON-NLS-1$
+        project.setInitialSchema( schemas );
+        ConnectionWrapper wrapper = project.getConnection().getConnectionWrapper();
 
         // Looking for all the defined schemas
         SearchControls constraintSearch = new SearchControls();
@@ -122,21 +113,20 @@ public class ApacheDsSchemaConnector extends AbstractSchemaConnector implements 
                     {
                         while ( ne.hasMore() )
                         {
-                            String value = ( String ) ne.next();
-                            schemas.add( getSchema( wrapper, value, monitor ) );
+                            Schema schema = getSchema( wrapper, ( String ) ne.next(), monitor );
+                            schema.setProject( project );
+                            schemas.add( schema );
                         }
                     }
                 }
             }
-            catch ( NamingException e )
+            catch ( Exception e )
             {
-                monitor.reportError( e );
+                throw new SchemaConnectorException( e );
             }
         }
 
         monitor.worked( 1 );
-
-        return schemas;
     }
 
 
@@ -905,5 +895,15 @@ public class ApacheDsSchemaConnector extends AbstractSchemaConnector implements 
         {
             return Boolean.parseBoolean( ( String ) at.get() );
         }
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public void exportSchema( Project project, StudioProgressMonitor monitor )
+        throws SchemaConnectorException
+    {
+        // TODO Auto-generated method stub
     }
 }

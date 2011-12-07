@@ -96,7 +96,6 @@ public class NewProjectWizard extends Wizard implements INewWizard
 
             RunnableContextRunner.execute( new StudioConnectionRunnableWithProgress()
             {
-
                 public void run( StudioProgressMonitor monitor )
                 {
                     // Getting the correct SchemaConnector for this connection
@@ -145,7 +144,7 @@ public class NewProjectWizard extends Wizard implements INewWizard
 
                 public String getName()
                 {
-                    return null;
+                    return Messages.getString( "NewProjectWizard.FetchingSchema" ); //$NON-NLS-1$;
                 }
 
 
@@ -157,7 +156,7 @@ public class NewProjectWizard extends Wizard implements INewWizard
 
                 public String getErrorMessage()
                 {
-                    return null;
+                    return Messages.getString( "NewProjectWizard.ErrorWhileFetchingSchema" ); //$NON-NLS-1$;
                 }
 
 

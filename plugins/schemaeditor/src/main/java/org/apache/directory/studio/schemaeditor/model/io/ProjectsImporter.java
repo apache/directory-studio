@@ -242,7 +242,7 @@ public class ProjectsImporter
                         throw new ProjectsImportException( Messages.getString( "ProjectsImporter.NotConvertableSchema" ) ); //$NON-NLS-1$
                     }
 
-                    project.setSchemaBackup( Arrays.asList( schemas ) );
+                    project.setInitialSchema( Arrays.asList( schemas ) );
                 }
             }
         }
