@@ -309,7 +309,7 @@ public class Value implements IValue
         while ( atavIterator.hasNext() )
         {
             Ava ava = atavIterator.next();
-            if ( getAttribute().getDescription().equals( ava.getUpType() )
+            if ( getAttribute().getDescription().equals( ava.getNormType() )
                 && getStringValue().equals( ava.getNormValue().getString() ) )
             {
                 return true;
