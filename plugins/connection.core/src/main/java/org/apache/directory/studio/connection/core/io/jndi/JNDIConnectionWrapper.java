@@ -240,7 +240,6 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
             context = null;
         }
         isConnected = false;
-        System.gc();
     }
 
 
@@ -1270,7 +1269,6 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
                             }
                             isConnected = false;
                             context = null;
-                            System.gc();
                         }
                         isConnected = false;
                     }

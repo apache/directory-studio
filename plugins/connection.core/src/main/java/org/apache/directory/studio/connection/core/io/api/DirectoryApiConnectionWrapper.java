@@ -288,7 +288,6 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
             ldapConnection = null;
         }
         isConnected = false;
-        System.gc();
     }
 
 
@@ -1123,7 +1122,6 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
                             }
                             isConnected = false;
                             ldapConnection = null;
-                            System.gc();
                         }
                         isConnected = false;
                     }
