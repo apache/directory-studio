@@ -458,7 +458,7 @@ public class SearchRunnable implements StudioConnectionBulkRunnableWithProgress
         String searchBase = parameter.getSearchBase().getName();
         SearchControls controls = new SearchControls();
         SearchScope scope = parameter.getScope();
-        
+
         switch ( scope )
         {
             case OBJECT:
@@ -473,7 +473,7 @@ public class SearchRunnable implements StudioConnectionBulkRunnableWithProgress
             default:
                 controls.setSearchScope( SearchControls.ONELEVEL_SCOPE );
         }
-        
+
         controls.setReturningAttributes( parameter.getReturningAttributes() );
         controls.setCountLimit( parameter.getCountLimit() );
         int timeLimit = parameter.getTimeLimit() * 1000;
@@ -614,9 +614,9 @@ public class SearchRunnable implements StudioConnectionBulkRunnableWithProgress
         // build tree to parent
         LinkedList<Dn> parentDnList = new LinkedList<Dn>();
         Dn parentDn = dn;
-        while ( parentDn != null && browserConnection.getEntryFromCache(parentDn) == null )
+        while ( parentDn != null && browserConnection.getEntryFromCache( parentDn ) == null )
         {
-            parentDnList.addFirst(parentDn);
+            parentDnList.addFirst( parentDn );
             parentDn = parentDn.getParent();
         }
 
@@ -628,10 +628,10 @@ public class SearchRunnable implements StudioConnectionBulkRunnableWithProgress
                 // only the root DSE has a null parent
                 entry = browserConnection.getRootDSE();
             }
-            else if ( !parentDn.isEmpty() && browserConnection.getEntryFromCache(parentDn) != null )
+            else if ( !parentDn.isEmpty() && browserConnection.getEntryFromCache( parentDn ) != null )
             {
                 // a normal entry has a parent but the parent isn't the rootDSE
-                IEntry parentEntry = browserConnection.getEntryFromCache(parentDn);
+                IEntry parentEntry = browserConnection.getEntryFromCache( parentDn );
                 entry = new Entry( parentEntry, aDn.getRdn() );
                 entry.setDirectoryEntry( true );
                 parentEntry.addChild( entry );
@@ -645,7 +645,7 @@ public class SearchRunnable implements StudioConnectionBulkRunnableWithProgress
                 // we have a base Dn, check if the entry really exists in LDAP
                 // this is to avoid that a node "dc=com" is created for "dc=example,dc=com" context entry
                 SearchParameter searchParameter = new SearchParameter();
-                searchParameter.setSearchBase(aDn);
+                searchParameter.setSearchBase( aDn );
                 searchParameter.setFilter( null );
                 searchParameter.setReturningAttributes( ISearch.NO_ATTRIBUTES );
                 searchParameter.setScope( SearchScope.OBJECT );
@@ -661,7 +661,7 @@ public class SearchRunnable implements StudioConnectionBulkRunnableWithProgress
                     if ( enumeration != null && enumeration.hasMore() )
                     {
                         // create base Dn entry
-                        entry = new BaseDNEntry(aDn, browserConnection );
+                        entry = new BaseDNEntry( aDn, browserConnection );
                         browserConnection.getRootDSE().addChild( entry );
                         browserConnection.cacheEntry( entry );
                         enumeration.close();
@@ -697,64 +697,68 @@ public class SearchRunnable implements StudioConnectionBulkRunnableWithProgress
         while ( attributeEnumeration.hasMore() )
         {
             Attribute attribute = attributeEnumeration.next();
-            String attributeDescription = attribute.getID();
-            NamingEnumeration<?> valueEnumeration = attribute.getAll();
-            if ( SchemaConstants.OBJECT_CLASS_AT.equalsIgnoreCase( attributeDescription ) )
-            {
-                if ( entry.getAttribute( attributeDescription ) != null )
-                {
-                    entry.deleteAttribute( entry.getAttribute( attributeDescription ) );
-                }
-                entry.addAttribute( new org.apache.directory.studio.ldapbrowser.core.model.impl.Attribute( entry,
-                    attributeDescription ) );
-            }
-            while ( valueEnumeration.hasMore() )
-            {
-                Object o = valueEnumeration.next();
-                if ( o instanceof String )
-                {
-                    String value = ( String ) o;
 
-                    if ( searchParameter.isInitHasChildrenFlag() )
+            if ( attribute != null )
+            {
+                String attributeDescription = attribute.getID();
+                NamingEnumeration<?> valueEnumeration = attribute.getAll();
+                if ( SchemaConstants.OBJECT_CLASS_AT.equalsIgnoreCase( attributeDescription ) )
+                {
+                    if ( entry.getAttribute( attributeDescription ) != null )
                     {
-                        // hasChildren flag
-                        if ( SchemaConstants.HAS_SUBORDINATES_AT.equalsIgnoreCase( attributeDescription ) )
-                        {
-                            if ( "FALSE".equalsIgnoreCase( value ) ) { //$NON-NLS-1$
-                                entry.setHasChildrenHint( false );
-                            }
-                        }
-                        if ( SchemaConstants.NUM_SUBORDINATES_AT.equalsIgnoreCase( attributeDescription ) )
-                        {
-                            if ( "0".equalsIgnoreCase( value ) ) { //$NON-NLS-1$
-                                entry.setHasChildrenHint( false );
-                            }
-                        }
-                        if ( SchemaConstants.SUBORDINATE_COUNT_AT.equalsIgnoreCase( attributeDescription ) )
-                        {
-                            if ( "0".equalsIgnoreCase( value ) ) { //$NON-NLS-1$
-                                entry.setHasChildrenHint( false );
-                            }
-                        }
+                        entry.deleteAttribute( entry.getAttribute( attributeDescription ) );
                     }
-
-                    if ( SchemaConstants.OBJECT_CLASS_AT.equalsIgnoreCase( attributeDescription ) )
+                    entry.addAttribute( new org.apache.directory.studio.ldapbrowser.core.model.impl.Attribute( entry,
+                        attributeDescription ) );
+                }
+                while ( valueEnumeration.hasMore() )
+                {
+                    Object o = valueEnumeration.next();
+                    if ( o instanceof String )
                     {
-                        if ( SchemaConstants.ALIAS_OC.equalsIgnoreCase( value ) )
+                        String value = ( String ) o;
+
+                        if ( searchParameter.isInitHasChildrenFlag() )
                         {
-                            entry.setAlias( true );
-                            entry.setHasChildrenHint( false );
+                            // hasChildren flag
+                            if ( SchemaConstants.HAS_SUBORDINATES_AT.equalsIgnoreCase( attributeDescription ) )
+                            {
+                                if ( "FALSE".equalsIgnoreCase( value ) ) { //$NON-NLS-1$
+                                    entry.setHasChildrenHint( false );
+                                }
+                            }
+                            if ( SchemaConstants.NUM_SUBORDINATES_AT.equalsIgnoreCase( attributeDescription ) )
+                            {
+                                if ( "0".equalsIgnoreCase( value ) ) { //$NON-NLS-1$
+                                    entry.setHasChildrenHint( false );
+                                }
+                            }
+                            if ( SchemaConstants.SUBORDINATE_COUNT_AT.equalsIgnoreCase( attributeDescription ) )
+                            {
+                                if ( "0".equalsIgnoreCase( value ) ) { //$NON-NLS-1$
+                                    entry.setHasChildrenHint( false );
+                                }
+                            }
                         }
 
-                        if ( SchemaConstants.REFERRAL_OC.equalsIgnoreCase( value ) )
+                        if ( SchemaConstants.OBJECT_CLASS_AT.equalsIgnoreCase( attributeDescription ) )
                         {
-                            entry.setReferral( true );
-                            entry.setHasChildrenHint( false );
-                        }
+                            if ( SchemaConstants.ALIAS_OC.equalsIgnoreCase( value ) )
+                            {
+                                entry.setAlias( true );
+                                entry.setHasChildrenHint( false );
+                            }
 
-                        IAttribute ocAttribute = entry.getAttribute( attributeDescription );
-                        Value ocValue = new Value( ocAttribute, value );
-                        ocAttribute.addValue( ocValue );
+                            if ( SchemaConstants.REFERRAL_OC.equalsIgnoreCase( value ) )
+                            {
+                                entry.setReferral( true );
+                                entry.setHasChildrenHint( false );
+                            }
+
+                            IAttribute ocAttribute = entry.getAttribute( attributeDescription );
+                            Value ocValue = new Value( ocAttribute, value );
+                            ocAttribute.addValue( ocValue );
+                        }
                     }
                 }
             }
