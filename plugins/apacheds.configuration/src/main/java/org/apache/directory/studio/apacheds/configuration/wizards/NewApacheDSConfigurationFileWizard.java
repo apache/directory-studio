@@ -34,10 +34,9 @@ import org.apache.directory.studio.apacheds.configuration.model.v154.ServerXmlIO
 import org.apache.directory.studio.apacheds.configuration.model.v155.ServerXmlIOV155;
 import org.apache.directory.studio.apacheds.configuration.model.v156.ServerXmlIOV156;
 import org.apache.directory.studio.apacheds.configuration.model.v157.ServerXmlIOV157;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPage;
@@ -139,12 +138,9 @@ public class NewApacheDSConfigurationFileWizard extends Wizard implements INewWi
         }
         catch ( ServerXmlIOException e )
         {
-            MessageBox messageBox = new MessageBox( PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
-                SWT.OK | SWT.ICON_ERROR );
-            messageBox.setText( Messages.getString( "NewApacheDSConfigurationFileWizard.Error" ) ); //$NON-NLS-1$
-            messageBox
-                .setMessage( Messages.getString( "NewApacheDSConfigurationFileWizard.ErrorReadingFile" ) + e.getMessage() ); //$NON-NLS-1$
-            messageBox.open();
+            MessageDialog.openError( PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
+                Messages.getString( "NewApacheDSConfigurationFileWizard.Error" ), //$NON-NLS-1$
+                Messages.getString( "NewApacheDSConfigurationFileWizard.ErrorReadingFile" ) + e.getMessage() ); //$NON-NLS-1$
             return false;
         }
         return true;
