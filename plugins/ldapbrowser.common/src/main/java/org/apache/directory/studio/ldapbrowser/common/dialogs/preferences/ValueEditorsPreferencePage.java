@@ -48,8 +48,10 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
+import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
+import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
@@ -316,6 +318,15 @@ public class ValueEditorsPreferencePage extends PreferencePage implements IWorkb
                 editAttribute();
             }
         } );
+        
+        attributeViewer.addSelectionChangedListener( new ISelectionChangedListener()
+        {
+            public void selectionChanged( SelectionChangedEvent event )
+            {
+                attributeEditButton.setEnabled( !attributeViewer.getSelection().isEmpty() );
+                attributeRemoveButton.setEnabled( !attributeViewer.getSelection().isEmpty() );
+            }
+        } );
 
         attributeAddButton = BaseWidgetUtils.createButton( buttonComposite, Messages
             .getString( "ValueEditorsPreferencePage.Add" ), 1 ); //$NON-NLS-1$
@@ -328,6 +339,7 @@ public class ValueEditorsPreferencePage extends PreferencePage implements IWorkb
         } );
         attributeEditButton = BaseWidgetUtils.createButton( buttonComposite, Messages
             .getString( "ValueEditorsPreferencePage.Edit" ), 1 ); //$NON-NLS-1$
+        attributeEditButton.setEnabled( false );
         attributeEditButton.addSelectionListener( new SelectionAdapter()
         {
             public void widgetSelected( SelectionEvent e )
@@ -337,6 +349,7 @@ public class ValueEditorsPreferencePage extends PreferencePage implements IWorkb
         } );
         attributeRemoveButton = BaseWidgetUtils.createButton( buttonComposite, Messages
             .getString( "ValueEditorsPreferencePage.Remove" ), 1 ); //$NON-NLS-1$
+        attributeRemoveButton.setEnabled( false );
         attributeRemoveButton.addSelectionListener( new SelectionAdapter()
         {
             public void widgetSelected( SelectionEvent e )
@@ -392,6 +405,15 @@ public class ValueEditorsPreferencePage extends PreferencePage implements IWorkb
             }
         } );
 
+        syntaxViewer.addSelectionChangedListener( new ISelectionChangedListener()
+        {
+            public void selectionChanged( SelectionChangedEvent event )
+            {
+                syntaxEditButton.setEnabled( !syntaxViewer.getSelection().isEmpty() );
+                syntaxRemoveButton.setEnabled( !syntaxViewer.getSelection().isEmpty() );
+            }
+        } );
+
         syntaxAddButton = BaseWidgetUtils.createButton( buttonComposite, Messages
             .getString( "ValueEditorsPreferencePage.Add" ), 1 ); //$NON-NLS-1$
         syntaxAddButton.addSelectionListener( new SelectionAdapter()
@@ -403,6 +425,7 @@ public class ValueEditorsPreferencePage extends PreferencePage implements IWorkb
         } );
         syntaxEditButton = BaseWidgetUtils.createButton( buttonComposite, Messages
             .getString( "ValueEditorsPreferencePage.Edit" ), 1 ); //$NON-NLS-1$
+        syntaxEditButton.setEnabled( false );
         syntaxEditButton.addSelectionListener( new SelectionAdapter()
         {
             public void widgetSelected( SelectionEvent e )
@@ -412,6 +435,7 @@ public class ValueEditorsPreferencePage extends PreferencePage implements IWorkb
         } );
         syntaxRemoveButton = BaseWidgetUtils.createButton( buttonComposite, Messages
             .getString( "ValueEditorsPreferencePage.Remove" ), 1 ); //$NON-NLS-1$
+        syntaxRemoveButton.setEnabled( false );
         syntaxRemoveButton.addSelectionListener( new SelectionAdapter()
         {
             public void widgetSelected( SelectionEvent e )
