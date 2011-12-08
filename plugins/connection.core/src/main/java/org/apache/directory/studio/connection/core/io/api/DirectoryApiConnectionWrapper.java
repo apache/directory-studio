@@ -178,8 +178,6 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
         ldapConnectionConfig = new LdapConnectionConfig();
         ldapConnectionConfig.setLdapHost( connection.getHost() );
         ldapConnectionConfig.setLdapPort( connection.getPort() );
-        ldapConnectionConfig.setName( connection.getBindPrincipal() );
-        ldapConnectionConfig.setCredentials( connection.getBindPassword() );
         if ( ( connection.getEncryptionMethod() == EncryptionMethod.LDAPS )
             || ( connection.getEncryptionMethod() == EncryptionMethod.START_TLS ) )
         {
@@ -320,111 +318,125 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
                     {
                         BindResponse bindResponse = null;
 
-                        // Setup credentials
-                        IAuthHandler authHandler = ConnectionCorePlugin.getDefault().getAuthHandler();
-                        if ( authHandler == null )
-                        {
-                            Exception exception = new Exception( Messages.model__no_auth_handler );
-                            monitor.setCanceled( true );
-                            monitor.reportError( Messages.model__no_auth_handler, exception );
-                            throw exception;
-                        }
-                        ICredentials credentials = authHandler.getCredentials( connection.getConnectionParameter() );
-                        if ( credentials == null )
-                        {
-                            Exception exception = new Exception();
-                            monitor.setCanceled( true );
-                            monitor.reportError( Messages.model__no_credentials, exception );
-                            throw exception;
-                        }
-                        if ( credentials.getBindPrincipal() == null || credentials.getBindPassword() == null )
-                        {
-                            Exception exception = new Exception( Messages.model__no_credentials );
-                            monitor.reportError( Messages.model__no_credentials, exception );
-                            throw exception;
-                        }
-                        bindPrincipal = credentials.getBindPrincipal();
-                        bindPassword = credentials.getBindPassword();
-
-                        // Simple Authentication
-                        if ( connection.getConnectionParameter().getAuthMethod() == ConnectionParameter.AuthenticationMethod.SIMPLE )
+                        // No Authentication
+                        if ( connection.getConnectionParameter().getAuthMethod() == ConnectionParameter.AuthenticationMethod.NONE )
                         {
                             BindRequest bindRequest = new BindRequestImpl();
-                            bindRequest.setName( new Dn( bindPrincipal ) );
-                            bindRequest.setCredentials( bindPassword );
                             bindResponse = ldapConnection.bind( bindRequest );
                         }
-                        // CRAM-MD5 Authentication
-                        else if ( connection.getConnectionParameter().getAuthMethod() == ConnectionParameter.AuthenticationMethod.SASL_CRAM_MD5 )
+                        else
                         {
-                            CramMd5Request cramMd5Request = new CramMd5Request();
-                            cramMd5Request.setUsername( bindPrincipal );
-                            cramMd5Request.setCredentials( bindPassword );
-                            cramMd5Request.setQualityOfProtection( connection.getConnectionParameter().getSaslQop() );
-                            cramMd5Request.setSecurityStrength( connection.getConnectionParameter()
-                                .getSaslSecurityStrength() );
-                            cramMd5Request.setMutualAuthentication( connection.getConnectionParameter()
-                                .isSaslMutualAuthentication() );
-
-                            bindResponse = ldapConnection.bind( cramMd5Request );
-                        }
-                        // DIGEST-MD5 Authentication
-                        else if ( connection.getConnectionParameter().getAuthMethod() == ConnectionParameter.AuthenticationMethod.SASL_DIGEST_MD5 )
-                        {
-                            DigestMd5Request digestMd5Request = new DigestMd5Request();
-                            digestMd5Request.setUsername( bindPrincipal );
-                            digestMd5Request.setCredentials( bindPassword );
-                            digestMd5Request.setRealmName( connection.getConnectionParameter().getSaslRealm() );
-                            digestMd5Request.setQualityOfProtection( connection.getConnectionParameter().getSaslQop() );
-                            digestMd5Request.setSecurityStrength( connection.getConnectionParameter()
-                                .getSaslSecurityStrength() );
-                            digestMd5Request.setMutualAuthentication( connection.getConnectionParameter()
-                                .isSaslMutualAuthentication() );
-
-                            bindResponse = ldapConnection.bind( digestMd5Request );
-                        }
-                        // GSSAPI Authentication
-                        else if ( connection.getConnectionParameter().getAuthMethod() == ConnectionParameter.AuthenticationMethod.SASL_GSSAPI )
-                        {
-                            GssApiRequest gssApiRequest = new GssApiRequest();
-
-                            Preferences preferences = ConnectionCorePlugin.getDefault().getPluginPreferences();
-                            boolean useKrb5SystemProperties = preferences
-                                .getBoolean( ConnectionCoreConstants.PREFERENCE_USE_KRB5_SYSTEM_PROPERTIES );
-                            String krb5LoginModule = preferences
-                                .getString( ConnectionCoreConstants.PREFERENCE_KRB5_LOGIN_MODULE );
-
-                            if ( !useKrb5SystemProperties )
+                            // Setup credentials
+                            IAuthHandler authHandler = ConnectionCorePlugin.getDefault().getAuthHandler();
+                            if ( authHandler == null )
                             {
-                                gssApiRequest.setUsername( bindPrincipal );
-                                gssApiRequest.setCredentials( bindPassword );
-                                gssApiRequest.setQualityOfProtection( connection
-                                    .getConnectionParameter().getSaslQop() );
-                                gssApiRequest.setSecurityStrength( connection
-                                    .getConnectionParameter()
-                                    .getSaslSecurityStrength() );
-                                gssApiRequest.setMutualAuthentication( connection
-                                    .getConnectionParameter()
-                                    .isSaslMutualAuthentication() );
-                                gssApiRequest
-                                    .setLoginModuleConfiguration( new InnerConfiguration(
-                                        krb5LoginModule ) );
-
-                                switch ( connection.getConnectionParameter().getKrb5Configuration() )
-                                {
-                                    case FILE:
-                                        gssApiRequest.setKrb5ConfFilePath( connection.getConnectionParameter()
-                                            .getKrb5ConfigurationFile() );
-                                        break;
-                                    case MANUAL:
-                                        gssApiRequest.setRealmName( connection.getConnectionParameter().getKrb5Realm() );
-                                        gssApiRequest.setKdcHost( connection.getConnectionParameter().getKrb5KdcHost() );
-                                        gssApiRequest.setKdcPort( connection.getConnectionParameter().getKrb5KdcPort() );
-                                        break;
-                                }
+                                Exception exception = new Exception( Messages.model__no_auth_handler );
+                                monitor.setCanceled( true );
+                                monitor.reportError( Messages.model__no_auth_handler, exception );
+                                throw exception;
                             }
+                            ICredentials credentials = authHandler.getCredentials( connection.getConnectionParameter() );
+                            if ( credentials == null )
+                            {
+                                Exception exception = new Exception();
+                                monitor.setCanceled( true );
+                                monitor.reportError( Messages.model__no_credentials, exception );
+                                throw exception;
+                            }
+                            if ( credentials.getBindPrincipal() == null || credentials.getBindPassword() == null )
+                            {
+                                Exception exception = new Exception( Messages.model__no_credentials );
+                                monitor.reportError( Messages.model__no_credentials, exception );
+                                throw exception;
+                            }
+                            bindPrincipal = credentials.getBindPrincipal();
+                            bindPassword = credentials.getBindPassword();
 
-                            bindResponse = ldapConnection.bind( gssApiRequest );
+                            // Simple Authentication
+                            if ( connection.getConnectionParameter().getAuthMethod() == ConnectionParameter.AuthenticationMethod.SIMPLE )
+                            {
+                                BindRequest bindRequest = new BindRequestImpl();
+                                bindRequest.setName( new Dn( bindPrincipal ) );
+                                bindRequest.setCredentials( bindPassword );
+                                bindResponse = ldapConnection.bind( bindRequest );
+                            }
+                            // CRAM-MD5 Authentication
+                            else if ( connection.getConnectionParameter().getAuthMethod() == ConnectionParameter.AuthenticationMethod.SASL_CRAM_MD5 )
+                            {
+                                CramMd5Request cramMd5Request = new CramMd5Request();
+                                cramMd5Request.setUsername( bindPrincipal );
+                                cramMd5Request.setCredentials( bindPassword );
+                                cramMd5Request
+                                    .setQualityOfProtection( connection.getConnectionParameter().getSaslQop() );
+                                cramMd5Request.setSecurityStrength( connection.getConnectionParameter()
+                                    .getSaslSecurityStrength() );
+                                cramMd5Request.setMutualAuthentication( connection.getConnectionParameter()
+                                    .isSaslMutualAuthentication() );
+
+                                bindResponse = ldapConnection.bind( cramMd5Request );
+                            }
+                            // DIGEST-MD5 Authentication
+                            else if ( connection.getConnectionParameter().getAuthMethod() == ConnectionParameter.AuthenticationMethod.SASL_DIGEST_MD5 )
+                            {
+                                DigestMd5Request digestMd5Request = new DigestMd5Request();
+                                digestMd5Request.setUsername( bindPrincipal );
+                                digestMd5Request.setCredentials( bindPassword );
+                                digestMd5Request.setRealmName( connection.getConnectionParameter().getSaslRealm() );
+                                digestMd5Request.setQualityOfProtection( connection.getConnectionParameter()
+                                    .getSaslQop() );
+                                digestMd5Request.setSecurityStrength( connection.getConnectionParameter()
+                                    .getSaslSecurityStrength() );
+                                digestMd5Request.setMutualAuthentication( connection.getConnectionParameter()
+                                    .isSaslMutualAuthentication() );
+
+                                bindResponse = ldapConnection.bind( digestMd5Request );
+                            }
+                            // GSSAPI Authentication
+                            else if ( connection.getConnectionParameter().getAuthMethod() == ConnectionParameter.AuthenticationMethod.SASL_GSSAPI )
+                            {
+                                GssApiRequest gssApiRequest = new GssApiRequest();
+
+                                Preferences preferences = ConnectionCorePlugin.getDefault().getPluginPreferences();
+                                boolean useKrb5SystemProperties = preferences
+                                    .getBoolean( ConnectionCoreConstants.PREFERENCE_USE_KRB5_SYSTEM_PROPERTIES );
+                                String krb5LoginModule = preferences
+                                    .getString( ConnectionCoreConstants.PREFERENCE_KRB5_LOGIN_MODULE );
+
+                                if ( !useKrb5SystemProperties )
+                                {
+                                    gssApiRequest.setUsername( bindPrincipal );
+                                    gssApiRequest.setCredentials( bindPassword );
+                                    gssApiRequest.setQualityOfProtection( connection
+                                        .getConnectionParameter().getSaslQop() );
+                                    gssApiRequest.setSecurityStrength( connection
+                                        .getConnectionParameter()
+                                        .getSaslSecurityStrength() );
+                                    gssApiRequest.setMutualAuthentication( connection
+                                        .getConnectionParameter()
+                                        .isSaslMutualAuthentication() );
+                                    gssApiRequest
+                                        .setLoginModuleConfiguration( new InnerConfiguration(
+                                            krb5LoginModule ) );
+
+                                    switch ( connection.getConnectionParameter().getKrb5Configuration() )
+                                    {
+                                        case FILE:
+                                            gssApiRequest.setKrb5ConfFilePath( connection.getConnectionParameter()
+                                                .getKrb5ConfigurationFile() );
+                                            break;
+                                        case MANUAL:
+                                            gssApiRequest.setRealmName( connection.getConnectionParameter()
+                                                .getKrb5Realm() );
+                                            gssApiRequest.setKdcHost( connection.getConnectionParameter()
+                                                .getKrb5KdcHost() );
+                                            gssApiRequest.setKdcPort( connection.getConnectionParameter()
+                                                .getKrb5KdcPort() );
+                                            break;
+                                    }
+                                }
+
+                                bindResponse = ldapConnection.bind( gssApiRequest );
+                            }
                         }
 
                         checkResponse( bindResponse );

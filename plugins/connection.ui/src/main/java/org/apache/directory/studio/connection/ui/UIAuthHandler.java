@@ -44,7 +44,6 @@ public class UIAuthHandler implements IAuthHandler
      */
     public ICredentials getCredentials( final ConnectionParameter connectionParameter )
     {
-
         if ( connectionParameter.getBindPrincipal() == null || "".equals( connectionParameter.getBindPrincipal() ) ) //$NON-NLS-1$
         {
             return new Credentials( "", "", connectionParameter ); //$NON-NLS-1$ //$NON-NLS-2$
@@ -87,7 +86,5 @@ public class UIAuthHandler implements IAuthHandler
                 return new Credentials( connectionParameter.getBindPrincipal(), pw[0], connectionParameter );
             }
         }
-
     }
-
 }

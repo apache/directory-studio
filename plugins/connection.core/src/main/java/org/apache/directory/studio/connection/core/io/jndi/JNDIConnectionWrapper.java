@@ -974,30 +974,39 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
                 authMethod = AUTHMETHOD_GSSAPI;
             }
 
-            // setup credentials
-            IAuthHandler authHandler = ConnectionCorePlugin.getDefault().getAuthHandler();
-            if ( authHandler == null )
+            // No Authentication
+            if ( authMethod == AUTHMETHOD_NONE )
             {
-                NamingException namingException = new NamingException( Messages.model__no_auth_handler );
-                monitor.reportError( Messages.model__no_auth_handler, namingException );
-                throw namingException;
+                bindPrincipal = "";
+                bindCredentials = "";
             }
-            ICredentials credentials = authHandler.getCredentials( connection.getConnectionParameter() );
-            if ( credentials == null )
+            else
             {
-                CancelException cancelException = new CancelException();
-                monitor.setCanceled( true );
-                monitor.reportError( Messages.model__no_credentials, cancelException );
-                throw cancelException;
+                // setup credentials
+                IAuthHandler authHandler = ConnectionCorePlugin.getDefault().getAuthHandler();
+                if ( authHandler == null )
+                {
+                    NamingException namingException = new NamingException( Messages.model__no_auth_handler );
+                    monitor.reportError( Messages.model__no_auth_handler, namingException );
+                    throw namingException;
+                }
+                ICredentials credentials = authHandler.getCredentials( connection.getConnectionParameter() );
+                if ( credentials == null )
+                {
+                    CancelException cancelException = new CancelException();
+                    monitor.setCanceled( true );
+                    monitor.reportError( Messages.model__no_credentials, cancelException );
+                    throw cancelException;
+                }
+                if ( credentials.getBindPrincipal() == null || credentials.getBindPassword() == null )
+                {
+                    NamingException namingException = new NamingException( Messages.model__no_credentials );
+                    monitor.reportError( Messages.model__no_credentials, namingException );
+                    throw namingException;
+                }
+                bindPrincipal = credentials.getBindPrincipal();
+                bindCredentials = credentials.getBindPassword();
             }
-            if ( credentials.getBindPrincipal() == null || credentials.getBindPassword() == null )
-            {
-                NamingException namingException = new NamingException( Messages.model__no_credentials );
-                monitor.reportError( Messages.model__no_credentials, namingException );
-                throw namingException;
-            }
-            bindPrincipal = credentials.getBindPrincipal();
-            bindCredentials = credentials.getBindPassword();
 
             InnerRunnable runnable = new InnerRunnable()
             {
