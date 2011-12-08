@@ -655,6 +655,11 @@ public class AuthenticationParameterPage extends AbstractConnectionParameterPage
         {
             public void widgetSelected( SelectionEvent event )
             {
+                if ( !saveBindPasswordButton.getSelection() )
+                {
+                    // Reseting the previously saved password (if any)
+                    bindPasswordText.setText( "" );
+                }
                 connectionPageModified();
             }
         } );
