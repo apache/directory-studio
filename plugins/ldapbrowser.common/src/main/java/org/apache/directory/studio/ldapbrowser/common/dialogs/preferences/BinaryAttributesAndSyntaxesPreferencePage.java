@@ -269,7 +269,7 @@ public class BinaryAttributesAndSyntaxesPreferencePage extends PreferencePage im
                 editAttribute();
             }
         } );
-        
+
         attributeViewer.addSelectionChangedListener( new ISelectionChangedListener()
         {
             public void selectionChanged( SelectionChangedEvent event )
@@ -398,7 +398,21 @@ public class BinaryAttributesAndSyntaxesPreferencePage extends PreferencePage im
         AttributeDialog dialog = new AttributeDialog( getShell(), null, attributeNamesAndOids );
         if ( dialog.open() == AttributeValueEditorDialog.OK )
         {
-            attributeList.add( dialog.getAttribute() );
+            BinaryAttribute attribute = dialog.getAttribute();
+
+            // Ensuring we use OID for consistency in the table viewer
+            if ( attributeNames2AtdMap.containsKey( attribute.getAttributeNumericOidOrName() ) )
+            {
+                attribute = new BinaryAttribute( attributeNames2AtdMap.get( attribute.getAttributeNumericOidOrName() )
+                    .getOid() );
+            }
+            else if ( attributeOid2AtdMap.containsKey( attribute.getAttributeNumericOidOrName() ) )
+            {
+                attribute = new BinaryAttribute( attributeOid2AtdMap.get( attribute.getAttributeNumericOidOrName() )
+                    .getOid() );
+            }
+
+            attributeList.add( attribute );
             attributeViewer.refresh();
         }
     }
@@ -515,8 +529,7 @@ public class BinaryAttributesAndSyntaxesPreferencePage extends PreferencePage im
                     {
                         if ( attributeNames2AtdMap.containsKey( attribute.getAttributeNumericOidOrName() ) )
                         {
-                            AttributeType atd = ( AttributeType ) attributeNames2AtdMap
-                                .get( attribute.getAttributeNumericOidOrName() );
+                            AttributeType atd = attributeNames2AtdMap.get( attribute.getAttributeNumericOidOrName() );
                             String s = atd.getOid();
                             for ( String attributeName : atd.getNames() )
                             {
@@ -529,8 +542,7 @@ public class BinaryAttributesAndSyntaxesPreferencePage extends PreferencePage im
                         }
                         else if ( attributeOid2AtdMap.containsKey( attribute.getAttributeNumericOidOrName() ) )
                         {
-                            AttributeType atd = ( AttributeType ) attributeOid2AtdMap
-                                .get( attribute.getAttributeNumericOidOrName() );
+                            AttributeType atd = attributeOid2AtdMap.get( attribute.getAttributeNumericOidOrName() );
                             return SchemaUtils.toString( atd );
                         }
                         else if ( Utils.getOidDescription( attribute.getAttributeNumericOidOrName() ) != null )
