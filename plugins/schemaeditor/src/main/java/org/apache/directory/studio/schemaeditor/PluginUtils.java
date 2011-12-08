@@ -405,7 +405,7 @@ public class PluginUtils
 
         if ( dialogMessage != null )
         {
-            ViewUtils.displayErrorMessageBox( ( ( dialogTitle == null ) ? "" : dialogTitle ), dialogMessage ); //$NON-NLS-1$
+            ViewUtils.displayErrorMessageDialog( ( ( dialogTitle == null ) ? "" : dialogTitle ), dialogMessage ); //$NON-NLS-1$
         }
     }
 
@@ -487,7 +487,7 @@ public class PluginUtils
                 catch ( CoreException e )
                 {
                     PluginUtils.logError( Messages.getString( "PluginUtils.ConnectorsLoadingError" ), e );
-                    ViewUtils.displayErrorMessageBox( Messages.getString( "PluginUtils.Error" ), Messages
+                    ViewUtils.displayErrorMessageDialog( Messages.getString( "PluginUtils.Error" ), Messages
                         .getString( "PluginUtils.ConnectorsLoadingError" ) );
                 }
             }

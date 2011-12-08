@@ -160,7 +160,7 @@ public class ProblemsViewController
                     catch ( PartInitException e )
                     {
                         PluginUtils.logError( Messages.getString( "ProblemsViewController.ErrorOpeningEditor" ), e ); //$NON-NLS-1$
-                        ViewUtils.displayErrorMessageBox( Messages.getString( "ProblemsViewController.Error" ), //$NON-NLS-1$
+                        ViewUtils.displayErrorMessageDialog( Messages.getString( "ProblemsViewController.Error" ), //$NON-NLS-1$
                             Messages.getString( "ProblemsViewController.ErrorOpeningEditor" ) ); //$NON-NLS-1$
                     }
                 }

@@ -133,7 +133,7 @@ public class ExportSchemasForADSWizard extends Wizard implements IExportWizard
                                             .bind(
                                                 Messages.getString( "ExportSchemasForADSWizard.ErrorSavingSchema" ), new String[] { schema.getSchemaName() } ), e ); //$NON-NLS-1$
                                 ViewUtils
-                                    .displayErrorMessageBox(
+                                    .displayErrorMessageDialog(
                                         Messages.getString( "ExportSchemasForADSWizard.Error" ), NLS.bind( Messages.getString( "ExportSchemasForADSWizard.ErrorSavingSchema" ), new String[] { schema.getSchemaName() } ) ); //$NON-NLS-1$ //$NON-NLS-2$
                             }
                             monitor.worked( 1 );
@@ -184,7 +184,7 @@ public class ExportSchemasForADSWizard extends Wizard implements IExportWizard
                                             .bind(
                                                 Messages.getString( "ExportSchemasForADSWizard.ErrorSavingSchema" ), new String[] { schema.getSchemaName() } ), e ); //$NON-NLS-1$
                                 ViewUtils
-                                    .displayErrorMessageBox(
+                                    .displayErrorMessageDialog(
                                         Messages.getString( "ExportSchemasForADSWizard.Error" ), NLS.bind( Messages.getString( "ExportSchemasForADSWizard.ErrorSavingSchema" ), new String[] { schema.getSchemaName() } ) ); //$NON-NLS-1$ //$NON-NLS-2$
                             }
                         }
@@ -200,7 +200,7 @@ public class ExportSchemasForADSWizard extends Wizard implements IExportWizard
                             PluginUtils.logError(
                                 Messages.getString( "ExportSchemasForADSWizard.ErrorSavingSchemas" ), e ); //$NON-NLS-1$
                             ViewUtils
-                                .displayErrorMessageBox(
+                                .displayErrorMessageDialog(
                                     Messages.getString( "ExportSchemasForADSWizard.Error" ), Messages.getString( "ExportSchemasForADSWizard.ErrorSavingSchemas" ) ); //$NON-NLS-1$ //$NON-NLS-2$
                         }
                         monitor.worked( 1 );

@@ -92,7 +92,7 @@ public class OpenElementAction extends Action implements IWorkbenchWindowActionD
                 {
                     PluginUtils.logError( Messages.getString( "OpenElementAction.ErrorOpeningEditor" ), e ); //$NON-NLS-1$
                     ViewUtils
-                        .displayErrorMessageBox(
+                        .displayErrorMessageDialog(
                             Messages.getString( "OpenElementAction.Error" ), Messages.getString( "OpenElementAction.ErrorOpeningEditor" ) ); //$NON-NLS-1$ //$NON-NLS-2$
                 }
             }
@@ -108,7 +108,7 @@ public class OpenElementAction extends Action implements IWorkbenchWindowActionD
                 {
                     PluginUtils.logError( Messages.getString( "OpenElementAction.ErrorOpeningEditor" ), e ); //$NON-NLS-1$
                     ViewUtils
-                        .displayErrorMessageBox(
+                        .displayErrorMessageDialog(
                             Messages.getString( "OpenElementAction.Error" ), Messages.getString( "OpenElementAction.ErrorOpeningEditor" ) ); //$NON-NLS-1$ //$NON-NLS-2$
                 }
             }
@@ -123,7 +123,7 @@ public class OpenElementAction extends Action implements IWorkbenchWindowActionD
                 {
                     PluginUtils.logError( Messages.getString( "OpenElementAction.ErrorOpeningEditor" ), e ); //$NON-NLS-1$
                     ViewUtils
-                        .displayErrorMessageBox(
+                        .displayErrorMessageDialog(
                             Messages.getString( "OpenElementAction.Error" ), Messages.getString( "OpenElementAction.ErrorOpeningEditor" ) ); //$NON-NLS-1$ //$NON-NLS-2$
                 }
             }

@@ -104,7 +104,7 @@ public class ImportProjectsWizard extends Wizard implements IImportWizard
                                         .bind(
                                             Messages.getString( "ImportProjectsWizard.ErrorImportingProject" ), new String[] { projectFile.getName() } ), e ); //$NON-NLS-1$
                             ViewUtils
-                                .displayErrorMessageBox(
+                                .displayErrorMessageDialog(
                                     Messages.getString( "ImportProjectsWizard.ImportError" ), //$NON-NLS-1$
                                     NLS
                                         .bind(
@@ -118,7 +118,7 @@ public class ImportProjectsWizard extends Wizard implements IImportWizard
                                         .bind(
                                             Messages.getString( "ImportProjectsWizard.ErrorImportingProject" ), new String[] { projectFile.getName() } ), e ); //$NON-NLS-1$
                             ViewUtils
-                                .displayErrorMessageBox(
+                                .displayErrorMessageDialog(
                                     Messages.getString( "ImportProjectsWizard.ImportError" ), //$NON-NLS-1$
                                     NLS
                                         .bind(

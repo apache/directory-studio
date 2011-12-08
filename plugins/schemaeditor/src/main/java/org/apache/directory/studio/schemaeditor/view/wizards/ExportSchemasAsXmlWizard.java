@@ -107,7 +107,7 @@ public class ExportSchemasAsXmlWizard extends Wizard implements IExportWizard
                                             .bind(
                                                 Messages.getString( "ExportSchemasAsXmlWizard.ErrorWhenSavingSchema" ), new String[] { schema.getSchemaName() } ), e ); //$NON-NLS-1$
                                 ViewUtils
-                                    .displayErrorMessageBox(
+                                    .displayErrorMessageDialog(
                                         Messages.getString( "ExportSchemasAsXmlWizard.Error" ), NLS.bind( Messages.getString( "ExportSchemasAsXmlWizard.ErrorWhenSavingSchema" ), new String[] { schema.getSchemaName() } ) ); //$NON-NLS-1$ //$NON-NLS-2$
                             }
                             monitor.worked( 1 );
@@ -146,7 +146,7 @@ public class ExportSchemasAsXmlWizard extends Wizard implements IExportWizard
                             PluginUtils.logError( Messages
                                 .getString( "ExportSchemasAsXmlWizard.ErrorWhenSavingSchemas" ), e ); //$NON-NLS-1$
                             ViewUtils
-                                .displayErrorMessageBox(
+                                .displayErrorMessageDialog(
                                     Messages.getString( "ExportSchemasAsXmlWizard.Error" ), Messages.getString( "ExportSchemasAsXmlWizard.ErrorWhenSavingSchemas" ) ); //$NON-NLS-1$ //$NON-NLS-2$
                         }
                         monitor.worked( 1 );

@@ -537,7 +537,7 @@ public class SchemaViewController
                     catch ( PartInitException e )
                     {
                         PluginUtils.logError( Messages.getString( "SchemaViewController.ErrorOpeningEditor" ), e ); //$NON-NLS-1$
-                        ViewUtils.displayErrorMessageBox( Messages.getString( "SchemaViewController.error" ), Messages //$NON-NLS-1$
+                        ViewUtils.displayErrorMessageDialog( Messages.getString( "SchemaViewController.error" ), Messages //$NON-NLS-1$
                             .getString( "SchemaViewController.ErrorOpeningEditor" ) ); //$NON-NLS-1$
                     }
                 }

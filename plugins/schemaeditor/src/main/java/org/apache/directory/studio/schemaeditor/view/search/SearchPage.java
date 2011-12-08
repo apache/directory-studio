@@ -355,7 +355,7 @@ public class SearchPage extends DialogPage implements ISearchPage
         catch ( PartInitException e )
         {
             PluginUtils.logError( Messages.getString( "SearchPage.ErrorOpeningView" ), e ); //$NON-NLS-1$
-            ViewUtils.displayErrorMessageBox(
+            ViewUtils.displayErrorMessageDialog(
                 Messages.getString( "SearchPage.Error" ), Messages.getString( "SearchPage.ErrorOpeningView" ) ); //$NON-NLS-1$ //$NON-NLS-2$
         }
 

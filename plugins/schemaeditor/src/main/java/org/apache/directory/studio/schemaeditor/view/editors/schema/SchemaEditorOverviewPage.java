@@ -153,7 +153,7 @@ public class SchemaEditorOverviewPage extends FormPage
                 catch ( PartInitException exception )
                 {
                     PluginUtils.logError( Messages.getString( "SchemaEditorOverviewPage.ErrorOpenEditor" ), exception ); //$NON-NLS-1$
-                    ViewUtils.displayErrorMessageBox( Messages.getString( "SchemaEditorOverviewPage.Error" ), Messages //$NON-NLS-1$
+                    ViewUtils.displayErrorMessageDialog( Messages.getString( "SchemaEditorOverviewPage.Error" ), Messages //$NON-NLS-1$
                         .getString( "SchemaEditorOverviewPage.ErrorOpenEditor" ) ); //$NON-NLS-1$
                 }
             }
@@ -182,7 +182,7 @@ public class SchemaEditorOverviewPage extends FormPage
                 catch ( PartInitException exception )
                 {
                     PluginUtils.logError( Messages.getString( "SchemaEditorOverviewPage.ErrorOpenEditor" ), exception ); //$NON-NLS-1$
-                    ViewUtils.displayErrorMessageBox( Messages.getString( "SchemaEditorOverviewPage.Error" ), Messages //$NON-NLS-1$
+                    ViewUtils.displayErrorMessageDialog( Messages.getString( "SchemaEditorOverviewPage.Error" ), Messages //$NON-NLS-1$
                         .getString( "SchemaEditorOverviewPage.ErrorOpenEditor" ) ); //$NON-NLS-1$
                 }
             }

@@ -574,7 +574,7 @@ public class SearchView extends ViewPart
                     {
                         PluginUtils.logError( Messages.getString( "SearchView.ErrorOpeningEditor" ), exception ); //$NON-NLS-1$
                         ViewUtils
-                            .displayErrorMessageBox(
+                            .displayErrorMessageDialog(
                                 Messages.getString( "SearchView.Error" ), Messages.getString( "SearchView.ErrorOpeningEditor" ) ); //$NON-NLS-1$ //$NON-NLS-2$
                     }
                 }

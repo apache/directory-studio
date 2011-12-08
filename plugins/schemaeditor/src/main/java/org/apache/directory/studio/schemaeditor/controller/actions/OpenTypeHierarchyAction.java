@@ -167,7 +167,7 @@ public class OpenTypeHierarchyAction extends Action implements IWorkbenchWindowA
             {
                 PluginUtils.logError( Messages.getString( "OpenTypeHierarchyAction.ErrorOpeningView" ), e ); //$NON-NLS-1$
                 ViewUtils
-                    .displayErrorMessageBox(
+                    .displayErrorMessageDialog(
                         Messages.getString( "OpenTypeHierarchyAction.Error" ), Messages.getString( "OpenTypeHierarchyAction.ErrorOpeningView" ) ); //$NON-NLS-1$ //$NON-NLS-2$
             }
         }

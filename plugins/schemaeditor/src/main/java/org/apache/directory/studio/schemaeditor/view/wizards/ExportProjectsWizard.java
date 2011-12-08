@@ -109,7 +109,7 @@ public class ExportProjectsWizard extends Wizard implements IExportWizard
                                         .bind(
                                             Messages.getString( "ExportProjectsWizard.ErrorWhenSavingProject" ), new String[] { project.getName() } ), e ); //$NON-NLS-1$
                             ViewUtils
-                                .displayErrorMessageBox(
+                                .displayErrorMessageDialog(
                                     Messages.getString( "ExportProjectsWizard.Error" ), NLS.bind( Messages.getString( "ExportProjectsWizard.ErrorWhenSavingProject" ), new String[] { project.getName() } ) ); //$NON-NLS-1$ //$NON-NLS-2$
                         }
                         catch ( FileNotFoundException e )
@@ -120,7 +120,7 @@ public class ExportProjectsWizard extends Wizard implements IExportWizard
                                         .bind(
                                             Messages.getString( "ExportProjectsWizard.ErrorWhenSavingProject" ), new String[] { project.getName() } ), e ); //$NON-NLS-1$
                             ViewUtils
-                                .displayErrorMessageBox(
+                                .displayErrorMessageDialog(
                                     Messages.getString( "ExportProjectsWizard.Error" ), NLS.bind( Messages.getString( "ExportProjectsWizard.ErrorWhenSavingProject" ), new String[] { project.getName() } ) ); //$NON-NLS-1$ //$NON-NLS-2$
                         }
                         catch ( IOException e )
@@ -131,7 +131,7 @@ public class ExportProjectsWizard extends Wizard implements IExportWizard
                                         .bind(
                                             Messages.getString( "ExportProjectsWizard.ErrorWhenSavingProject" ), new String[] { project.getName() } ), e ); //$NON-NLS-1$
                             ViewUtils
-                                .displayErrorMessageBox(
+                                .displayErrorMessageDialog(
                                     Messages.getString( "ExportProjectsWizard.Error" ), NLS.bind( Messages.getString( "ExportProjectsWizard.ErrorWhenSavingProject" ), new String[] { project.getName() } ) ); //$NON-NLS-1$ //$NON-NLS-2$
                         }
                         monitor.worked( 1 );
