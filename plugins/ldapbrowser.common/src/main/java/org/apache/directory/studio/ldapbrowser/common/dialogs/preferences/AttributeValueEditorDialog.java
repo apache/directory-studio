@@ -31,6 +31,7 @@ import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -45,7 +46,6 @@ import org.eclipse.swt.widgets.Shell;
  */
 public class AttributeValueEditorDialog extends Dialog
 {
-
     /** The initial attribute to value editor relation. */
     private AttributeValueEditorRelation relation;
 
@@ -66,6 +66,9 @@ public class AttributeValueEditorDialog extends Dialog
 
     /** The value editor combo. */
     private Combo valueEditorCombo;
+
+    /** The OK button of the dialog */
+    private Button okButton;
 
 
     /**
@@ -100,6 +103,18 @@ public class AttributeValueEditorDialog extends Dialog
     {
         super.configureShell( newShell );
         newShell.setText( Messages.getString( "AttributeValueEditorDialog.AttributeValueEditor" ) ); //$NON-NLS-1$
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    protected void createButtonsForButtonBar( Composite parent )
+    {
+        okButton = createButton( parent, IDialogConstants.OK_ID, IDialogConstants.OK_LABEL, true );
+        createButton( parent, IDialogConstants.CANCEL_ID, IDialogConstants.CANCEL_LABEL, false );
+
+        validate();
     }
 
 
@@ -158,7 +173,7 @@ public class AttributeValueEditorDialog extends Dialog
 
     private void validate()
     {
-        super.getButton( IDialogConstants.OK_ID ).setEnabled(
+        okButton.setEnabled(
             !"".equals( valueEditorCombo.getText() ) && !"".equals( typeOrOidCombo.getText() ) ); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
