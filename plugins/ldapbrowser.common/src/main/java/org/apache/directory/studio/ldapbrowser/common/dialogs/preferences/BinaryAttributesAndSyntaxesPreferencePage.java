@@ -43,8 +43,10 @@ import org.eclipse.jface.preference.PreferencePage;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
+import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
+import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
@@ -267,6 +269,15 @@ public class BinaryAttributesAndSyntaxesPreferencePage extends PreferencePage im
                 editAttribute();
             }
         } );
+        
+        attributeViewer.addSelectionChangedListener( new ISelectionChangedListener()
+        {
+            public void selectionChanged( SelectionChangedEvent event )
+            {
+                attributeEditButton.setEnabled( !attributeViewer.getSelection().isEmpty() );
+                attributeRemoveButton.setEnabled( !attributeViewer.getSelection().isEmpty() );
+            }
+        } );
 
         attributeAddButton = BaseWidgetUtils.createButton( buttonComposite, Messages
             .getString( "BinaryAttributesAndSyntaxesPreferencePage.Add" ), 1 ); //$NON-NLS-1$
@@ -279,6 +290,7 @@ public class BinaryAttributesAndSyntaxesPreferencePage extends PreferencePage im
         } );
         attributeEditButton = BaseWidgetUtils.createButton( buttonComposite, Messages
             .getString( "BinaryAttributesAndSyntaxesPreferencePage.Edit" ), 1 ); //$NON-NLS-1$
+        attributeEditButton.setEnabled( false );
         attributeEditButton.addSelectionListener( new SelectionAdapter()
         {
             public void widgetSelected( SelectionEvent e )
@@ -288,6 +300,7 @@ public class BinaryAttributesAndSyntaxesPreferencePage extends PreferencePage im
         } );
         attributeRemoveButton = BaseWidgetUtils.createButton( buttonComposite, Messages
             .getString( "BinaryAttributesAndSyntaxesPreferencePage.Remove" ), 1 ); //$NON-NLS-1$
+        attributeRemoveButton.setEnabled( false );
         attributeRemoveButton.addSelectionListener( new SelectionAdapter()
         {
             public void widgetSelected( SelectionEvent e )
@@ -339,6 +352,15 @@ public class BinaryAttributesAndSyntaxesPreferencePage extends PreferencePage im
             }
         } );
 
+        syntaxViewer.addSelectionChangedListener( new ISelectionChangedListener()
+        {
+            public void selectionChanged( SelectionChangedEvent event )
+            {
+                syntaxEditButton.setEnabled( !syntaxViewer.getSelection().isEmpty() );
+                syntaxRemoveButton.setEnabled( !syntaxViewer.getSelection().isEmpty() );
+            }
+        } );
+
         syntaxAddButton = BaseWidgetUtils.createButton( buttonComposite, Messages
             .getString( "BinaryAttributesAndSyntaxesPreferencePage.Add" ), 1 ); //$NON-NLS-1$
         syntaxAddButton.addSelectionListener( new SelectionAdapter()
@@ -350,6 +372,7 @@ public class BinaryAttributesAndSyntaxesPreferencePage extends PreferencePage im
         } );
         syntaxEditButton = BaseWidgetUtils.createButton( buttonComposite, Messages
             .getString( "BinaryAttributesAndSyntaxesPreferencePage.Edit" ), 1 ); //$NON-NLS-1$
+        syntaxEditButton.setEnabled( false );
         syntaxEditButton.addSelectionListener( new SelectionAdapter()
         {
             public void widgetSelected( SelectionEvent e )
@@ -359,6 +382,7 @@ public class BinaryAttributesAndSyntaxesPreferencePage extends PreferencePage im
         } );
         syntaxRemoveButton = BaseWidgetUtils.createButton( buttonComposite, Messages
             .getString( "BinaryAttributesAndSyntaxesPreferencePage.Remove" ), 1 ); //$NON-NLS-1$
+        syntaxRemoveButton.setEnabled( false );
         syntaxRemoveButton.addSelectionListener( new SelectionAdapter()
         {
             public void widgetSelected( SelectionEvent e )
