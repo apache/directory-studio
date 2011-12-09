@@ -349,7 +349,7 @@ public class ServerConfigurationEditorUtils
             modificationsLdif.append( ldifEntry.toString() );
         }
 
-        // Getting the browser connection associated with the 
+        // Getting the browser connection associated with the connection
         IBrowserConnection browserConnection = BrowserCorePlugin.getDefault().getConnectionManager()
             .getBrowserConnection( input.getConnection() );
 
