@@ -94,6 +94,8 @@ public class TextFormatsPreferencePage extends PreferencePage implements IWorkbe
 
     private Button ldifSpaceAfterColonButton;
 
+    private Button includeVersionLineButton;
+
     private LineSeparatorInput ldifLineSeparator;
 
     private OptionsInput tableAttributeDelimiterWidget;
@@ -429,6 +431,11 @@ public class TextFormatsPreferencePage extends PreferencePage implements IWorkbe
         ldifSpaceAfterColonButton.setSelection( coreStore
             .getBoolean( BrowserCoreConstants.PREFERENCE_LDIF_SPACE_AFTER_COLON ) );
 
+        includeVersionLineButton = BaseWidgetUtils.createCheckbox( ldifInnerComposite, Messages
+            .getString( "TextFormatsPreferencePage.IncludeVersionLine" ), 1 ); //$NON-NLS-1$
+        includeVersionLineButton.setSelection( coreStore
+            .getBoolean( BrowserCoreConstants.PREFERENCE_LDIF_INCLUDE_VERSION_LINE ) );
+
         ldifTab.setControl( ldifComposite );
     }
 
@@ -441,6 +448,8 @@ public class TextFormatsPreferencePage extends PreferencePage implements IWorkbe
         coreStore.setValue( BrowserCoreConstants.PREFERENCE_LDIF_LINE_WIDTH, ldifLineLengthText.getText() );
         coreStore.setValue( BrowserCoreConstants.PREFERENCE_LDIF_LINE_SEPARATOR, ldifLineSeparator.getRawValue() );
         coreStore.setValue( BrowserCoreConstants.PREFERENCE_LDIF_SPACE_AFTER_COLON, ldifSpaceAfterColonButton
+            .getSelection() );
+        coreStore.setValue( BrowserCoreConstants.PREFERENCE_LDIF_INCLUDE_VERSION_LINE, includeVersionLineButton
             .getSelection() );
         BrowserCorePlugin.getDefault().savePluginPreferences();
 
@@ -486,6 +495,8 @@ public class TextFormatsPreferencePage extends PreferencePage implements IWorkbe
             .setRawValue( coreStore.getDefaultString( BrowserCoreConstants.PREFERENCE_LDIF_LINE_SEPARATOR ) );
         ldifSpaceAfterColonButton.setSelection( coreStore
             .getDefaultBoolean( BrowserCoreConstants.PREFERENCE_LDIF_SPACE_AFTER_COLON ) );
+        includeVersionLineButton.setSelection( coreStore
+            .getDefaultBoolean( BrowserCoreConstants.PREFERENCE_LDIF_INCLUDE_VERSION_LINE ) );
 
         csvAttributeDelimiterWidget.setRawValue( coreStore
             .getDefaultString( BrowserCoreConstants.PREFERENCE_FORMAT_CSV_ATTRIBUTEDELIMITER ) );

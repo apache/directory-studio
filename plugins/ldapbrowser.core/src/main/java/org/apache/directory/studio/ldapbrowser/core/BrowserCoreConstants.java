@@ -84,6 +84,8 @@ public final class BrowserCoreConstants
     public static final String PREFERENCE_LDIF_LINE_SEPARATOR = "ldifLineSeparator"; //$NON-NLS-1$
 
     public static final String PREFERENCE_LDIF_SPACE_AFTER_COLON = "ldifSpaceAfterColon"; //$NON-NLS-1$
+    
+    public static final String PREFERENCE_LDIF_INCLUDE_VERSION_LINE = "ldifIncludeVersionLine"; //$NON-NLS-1$
 
     public static final int BINARYENCODING_IGNORE = 0;
 

@@ -44,7 +44,9 @@ import org.apache.directory.studio.connection.core.StudioControl;
 import org.apache.directory.studio.connection.core.StudioPagedResultsControl;
 import org.apache.directory.studio.connection.core.io.StudioNamingEnumeration;
 import org.apache.directory.studio.connection.core.jobs.StudioConnectionRunnableWithProgress;
+import org.apache.directory.studio.ldapbrowser.core.BrowserCoreConstants;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
+import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.SearchParameter;
 import org.apache.directory.studio.ldapbrowser.core.model.impl.DummyEntry;
@@ -174,12 +176,16 @@ public class ExportLdifRunnable implements StudioConnectionRunnableWithProgress
             LdifFormatParameters ldifFormatParameters = Utils.getLdifFormatParameters();
 
             // add version spec
-            LdifVersionLine ldifVersionLine = LdifVersionLine.create();
-            String ldifVersionLineString = ldifVersionLine.toFormattedString( ldifFormatParameters );
-            bufferedWriter.write( ldifVersionLineString );
-            LdifSepLine ldifSepLine = LdifSepLine.create();
-            String ldifSepLineString = ldifSepLine.toFormattedString( ldifFormatParameters );
-            bufferedWriter.write( ldifSepLineString );
+            if ( BrowserCorePlugin.getDefault().getPluginPreferences()
+                .getBoolean( BrowserCoreConstants.PREFERENCE_LDIF_INCLUDE_VERSION_LINE ) )
+            {
+                LdifVersionLine ldifVersionLine = LdifVersionLine.create();
+                String ldifVersionLineString = ldifVersionLine.toFormattedString( ldifFormatParameters );
+                bufferedWriter.write( ldifVersionLineString );
+                LdifSepLine ldifSepLine = LdifSepLine.create();
+                String ldifSepLineString = ldifSepLine.toFormattedString( ldifFormatParameters );
+                bufferedWriter.write( ldifSepLineString );
+            }
 
             // add the records
             while ( !monitor.isCanceled() && !monitor.errorsReported() && enumeration.hasNext() )

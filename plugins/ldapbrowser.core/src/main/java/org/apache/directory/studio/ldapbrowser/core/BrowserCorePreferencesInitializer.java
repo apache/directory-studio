@@ -63,6 +63,7 @@ public class BrowserCorePreferencesInitializer extends AbstractPreferenceInitial
         store.setDefault( BrowserCoreConstants.PREFERENCE_LDIF_LINE_WIDTH, 76 );
         store.setDefault( BrowserCoreConstants.PREFERENCE_LDIF_LINE_SEPARATOR, BrowserCoreConstants.LINE_SEPARATOR );
         store.setDefault( BrowserCoreConstants.PREFERENCE_LDIF_SPACE_AFTER_COLON, true );
+        store.setDefault( BrowserCoreConstants.PREFERENCE_LDIF_INCLUDE_VERSION_LINE, true );
 
         // default binary attributes
         BinaryAttribute[] defaultBinaryAttributes = new BinaryAttribute[]
