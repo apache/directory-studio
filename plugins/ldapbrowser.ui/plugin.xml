@@ -441,6 +441,13 @@
              label="%Action_NewLdifFileAction_label"
              menubarPath="%Action_NewLdifFileAction_menubarpath"
              style="push"/>
+       <action
+             class="org.apache.directory.studio.ldapbrowser.ui.actions.GotoDnNavigateMenuAction"
+             icon="resources/icons/locate_dn_in_dit.gif"
+             id="%Action_GotoDnAction_id"
+             label="%Action_GotoDnAction_label"
+             menubarPath="%Action_GotoDnAction_menubarpath"
+             style="push"/>
     </actionSet>
  </extension>
  <extension
