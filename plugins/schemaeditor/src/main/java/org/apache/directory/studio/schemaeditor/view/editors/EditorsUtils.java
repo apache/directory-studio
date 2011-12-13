@@ -36,8 +36,10 @@ import java.util.List;
 import java.util.Set;
 
 import org.eclipse.jface.viewers.ArrayContentProvider;
+import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.window.Window;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IWorkbench;
@@ -91,11 +93,34 @@ public class EditorsUtils
         ListDialog dialog = new ListDialog( PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell() );
         dialog.setTitle( "Save All Modified Resources" );
         dialog.setAddCancelButton( true );
-        dialog.setLabelProvider( new LabelProvider() );
+        dialog.setLabelProvider( createDialogLabelProvider() );
         dialog.setMessage( "All modified resources must be saved before this operation." );
         dialog.setContentProvider( new ArrayContentProvider() );
         dialog.setInput( dirtyEditors );
         return dialog.open() == Window.OK;
+    }
+
+
+    /**
+     * Create the dialog label provider.
+     *
+     * @return the dialog label provider
+     */
+    private static ILabelProvider createDialogLabelProvider()
+    {
+        return new LabelProvider()
+        {
+            public Image getImage( Object element )
+            {
+                return ( ( IEditorPart ) element ).getTitleImage();
+            }
+
+
+            public String getText( Object element )
+            {
+                return ( ( IEditorPart ) element ).getTitle();
+            }
+        };
     }
 
 
