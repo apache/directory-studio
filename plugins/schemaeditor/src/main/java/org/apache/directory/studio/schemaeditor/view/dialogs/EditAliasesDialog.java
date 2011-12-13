@@ -145,8 +145,8 @@ public class EditAliasesDialog extends Dialog
         aliasesTable = new Table( composite, SWT.BORDER | SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.FULL_SELECTION
             | SWT.HIDE_SELECTION );
         GridData gridData = new GridData( SWT.FILL, SWT.FILL, true, true, 1, 3 );
-        gridData.heightHint = 125;
-        gridData.minimumHeight = 125;
+        gridData.heightHint = 90;
+        gridData.minimumHeight = 90;
         gridData.widthHint = 200;
         gridData.minimumWidth = 200;
         aliasesTable.setLayoutData( gridData );
