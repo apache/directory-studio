@@ -38,6 +38,8 @@ import org.apache.directory.studio.schemaeditor.view.wrappers.SchemaWrapper;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.viewers.ISelectionChangedListener;
+import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.ui.IWorkbenchWindow;
@@ -66,8 +68,19 @@ public class OpenElementAction extends Action implements IWorkbenchWindowActionD
         setToolTipText( Messages.getString( "OpenElementAction.OpenToolTip" ) ); //$NON-NLS-1$
         setId( PluginConstants.CMD_OPEN_ELEMENT );
         setActionDefinitionId( PluginConstants.CMD_OPEN_ELEMENT );
-        setEnabled( true );
+        setEnabled( false );
         this.viewer = viewer;
+        this.viewer.addSelectionChangedListener( new ISelectionChangedListener()
+        {
+            public void selectionChanged( SelectionChangedEvent event )
+            {
+                StructuredSelection selection = ( StructuredSelection ) event.getSelection();
+                setEnabled( ( selection.size() == 1 )
+                    && ( ( selection.getFirstElement() instanceof SchemaWrapper )
+                        || ( selection.getFirstElement() instanceof AttributeTypeWrapper )
+                        || ( selection.getFirstElement() instanceof ObjectClassWrapper ) ) );
+            }
+        } );
     }
 
 
