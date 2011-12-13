@@ -25,8 +25,6 @@ import org.apache.directory.shared.ldap.model.schema.AttributeType;
 import org.apache.directory.studio.schemaeditor.Activator;
 import org.apache.directory.studio.schemaeditor.PluginConstants;
 import org.apache.directory.studio.schemaeditor.PluginUtils;
-import org.apache.directory.studio.schemaeditor.controller.AttributeTypeAdapter;
-import org.apache.directory.studio.schemaeditor.controller.AttributeTypeListener;
 import org.apache.directory.studio.schemaeditor.controller.SchemaHandler;
 import org.apache.directory.studio.schemaeditor.controller.SchemaHandlerAdapter;
 import org.apache.directory.studio.schemaeditor.controller.SchemaHandlerListener;
@@ -63,9 +61,9 @@ public class AttributeTypeEditor extends FormEditor
     private boolean dirty = false;
 
     // The pages
-    private AttributeTypeEditorOverviewPage overview;
-    private AttributeTypeEditorSourceCodePage sourceCode;
-    private AttributeTypeEditorUsedByPage usedBy;
+    private AttributeTypeEditorOverviewPage overviewPage;
+    private AttributeTypeEditorSourceCodePage sourceCodePage;
+    private AttributeTypeEditorUsedByPage usedByPage;
 
     /** The original attribute type */
     private AttributeType originalAttributeType;
@@ -85,41 +83,74 @@ public class AttributeTypeEditor extends FormEditor
 
             if ( selectedPage instanceof AttributeTypeEditorOverviewPage )
             {
-                if ( !sourceCode.canLeaveThePage() )
+                if ( !sourceCodePage.canLeaveThePage() )
                 {
                     notifyError( Messages.getString( "AttributeTypeEditor.CodeErrors" ) ); //$NON-NLS-1$
                     return;
                 }
 
-                overview.refreshUI();
+                overviewPage.refreshUI();
             }
             else if ( selectedPage instanceof AttributeTypeEditorSourceCodePage )
             {
-                if ( sourceCode.canLeaveThePage() )
+                if ( sourceCodePage.canLeaveThePage() )
                 {
-                    sourceCode.refreshUI();
+                    sourceCodePage.refreshUI();
                 }
             }
-        }
-    };
-
-    /** The attribute type listener */
-    private AttributeTypeListener attributeTypeListener = new AttributeTypeAdapter()
-    {
-        public void attributeTypeRemoved()
-        {
-            getEditorSite().getPage().closeEditor( instance, false );
         }
     };
 
     /** The SchemaHandler listener */
     private SchemaHandlerListener schemaHandlerListener = new SchemaHandlerAdapter()
     {
+        public void attributeTypeModified( AttributeType at )
+        {
+            if ( at.equals( originalAttributeType ) )
+            {
+                // Updating the modified attribute type
+                modifiedAttributeType = PluginUtils.getClone( originalAttributeType );
+
+                // Refreshing the editor pages
+                overviewPage.refreshUI();
+                sourceCodePage.refreshUI();
+                usedByPage.refreshUI();
+
+                // Refreshing the part name (in case of a change in the name)
+                setPartName( getEditorInput().getName() );
+            }
+        }
+
+
+        public void attributeTypeRemoved( AttributeType at )
+        {
+            if ( at.equals( originalAttributeType ) )
+            {
+                getEditorSite().getPage().closeEditor( instance, false );
+            }
+        }
+
+
         public void schemaRemoved( Schema schema )
         {
             if ( schema.equals( originalSchema ) )
             {
                 getEditorSite().getPage().closeEditor( instance, false );
+            }
+        }
+
+
+        public void schemaRenamed( Schema schema )
+        {
+            if ( schema.equals( originalSchema ) )
+            {
+                // Updating the modified attribute type
+                modifiedAttributeType = PluginUtils.getClone( originalAttributeType );
+
+                // Refreshing the editor pages
+                overviewPage.refreshUI();
+                sourceCodePage.refreshUI();
+                usedByPage.refreshUI();
             }
         }
     };
@@ -143,7 +174,6 @@ public class AttributeTypeEditor extends FormEditor
 
         SchemaHandler schemaHandler = Activator.getDefault().getSchemaHandler();
         originalSchema = schemaHandler.getSchema( originalAttributeType.getSchemaName() );
-        schemaHandler.addListener( originalAttributeType, attributeTypeListener );
         schemaHandler.addListener( schemaHandlerListener );
 
         addPageChangedListener( pageChangedListener );
@@ -156,7 +186,6 @@ public class AttributeTypeEditor extends FormEditor
     public void dispose()
     {
         SchemaHandler schemaHandler = Activator.getDefault().getSchemaHandler();
-        schemaHandler.removeListener( originalAttributeType, attributeTypeListener );
         schemaHandler.removeListener( schemaHandlerListener );
 
         super.dispose();
@@ -170,12 +199,12 @@ public class AttributeTypeEditor extends FormEditor
     {
         try
         {
-            overview = new AttributeTypeEditorOverviewPage( this );
-            addPage( overview );
-            sourceCode = new AttributeTypeEditorSourceCodePage( this );
-            addPage( sourceCode );
-            usedBy = new AttributeTypeEditorUsedByPage( this );
-            addPage( usedBy );
+            overviewPage = new AttributeTypeEditorOverviewPage( this );
+            addPage( overviewPage );
+            sourceCodePage = new AttributeTypeEditorSourceCodePage( this );
+            addPage( sourceCodePage );
+            usedByPage = new AttributeTypeEditorUsedByPage( this );
+            addPage( usedByPage );
         }
         catch ( PartInitException e )
         {
@@ -190,7 +219,7 @@ public class AttributeTypeEditor extends FormEditor
     public void doSave( IProgressMonitor monitor )
     {
         // Verifying if there is an error on the source code page
-        if ( !sourceCode.canLeaveThePage() )
+        if ( !sourceCodePage.canLeaveThePage() )
         {
             notifyError( Messages.getString( "AttributeTypeEditor.AttributeErrors" ) ); //$NON-NLS-1$
             monitor.setCanceled( true );

@@ -24,14 +24,16 @@ import org.apache.directory.shared.ldap.model.schema.AttributeType;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.studio.schemaeditor.Activator;
 import org.apache.directory.studio.schemaeditor.PluginConstants;
+import org.apache.directory.studio.schemaeditor.PluginUtils;
 import org.apache.directory.studio.schemaeditor.model.Schema;
+import org.apache.directory.studio.schemaeditor.view.dialogs.EditAliasesDialog;
 import org.apache.directory.studio.schemaeditor.view.dialogs.RenameSchemaDialog;
+import org.apache.directory.studio.schemaeditor.view.editors.EditorsUtils;
 import org.apache.directory.studio.schemaeditor.view.wrappers.AttributeTypeWrapper;
 import org.apache.directory.studio.schemaeditor.view.wrappers.ObjectClassWrapper;
 import org.apache.directory.studio.schemaeditor.view.wrappers.SchemaWrapper;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
-import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
@@ -91,30 +93,48 @@ public class RenameSchemaElementAction extends Action implements IWorkbenchWindo
         {
             Object selectedElement = selection.getFirstElement();
 
-            // SCHEMA
-            if ( selectedElement instanceof SchemaWrapper )
+            // Saving all dirty editors before processing the renaming
+            if ( EditorsUtils.saveAllDirtyEditors() )
             {
-                Schema schema = ( ( SchemaWrapper ) selectedElement ).getSchema();
-
-                RenameSchemaDialog dialog = new RenameSchemaDialog( schema.getSchemaName() );
-                if ( dialog.open() == Dialog.OK )
+                // SCHEMA
+                if ( selectedElement instanceof SchemaWrapper )
                 {
-                    // TODO
+                    Schema schema = ( ( SchemaWrapper ) selectedElement ).getSchema();
+
+                    RenameSchemaDialog dialog = new RenameSchemaDialog( schema.getSchemaName() );
+                    if ( dialog.open() == RenameSchemaDialog.OK )
+                    {
+                        Activator.getDefault().getSchemaHandler().renameSchema( schema, dialog.getNewName() );
+                    }
                 }
-            }
-            // ATTRIBUTE TYPE
-            else if ( selectedElement instanceof AttributeTypeWrapper )
-            {
-                AttributeType attributeType = ( ( AttributeTypeWrapper ) selectedElement ).getAttributeType();
+                // ATTRIBUTE TYPE
+                else if ( selectedElement instanceof AttributeTypeWrapper )
+                {
+                    AttributeType attributeType = ( ( AttributeTypeWrapper ) selectedElement ).getAttributeType();
 
-                // TODO
-            }
-            // OBJECT CLASS
-            else if ( selectedElement instanceof ObjectClassWrapper )
-            {
-                ObjectClass objectClass = ( ( ObjectClassWrapper ) selectedElement ).getObjectClass();
+                    EditAliasesDialog dialog = new EditAliasesDialog( attributeType.getNames() );
+                    if ( dialog.open() == EditAliasesDialog.OK )
+                    {
+                        AttributeType modifiedAttributeType = PluginUtils.getClone( attributeType );
+                        modifiedAttributeType.setNames( dialog.getAliases() );
+                        Activator.getDefault().getSchemaHandler()
+                            .modifyAttributeType( attributeType, modifiedAttributeType );
+                    }
+                }
+                // OBJECT CLASS
+                else if ( selectedElement instanceof ObjectClassWrapper )
+                {
+                    ObjectClass objectClass = ( ( ObjectClassWrapper ) selectedElement ).getObjectClass();
 
-                // TODO
+                    EditAliasesDialog dialog = new EditAliasesDialog( objectClass.getNames() );
+                    if ( dialog.open() == EditAliasesDialog.OK )
+                    {
+                        ObjectClass modifiedObjectClass = PluginUtils.getClone( objectClass );
+                        modifiedObjectClass.setNames( dialog.getAliases() );
+                        Activator.getDefault().getSchemaHandler()
+                            .modifyObjectClass( objectClass, modifiedObjectClass );
+                    }
+                }
             }
         }
     }

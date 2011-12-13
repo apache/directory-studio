@@ -27,7 +27,6 @@ import org.apache.directory.shared.ldap.model.schema.AttributeType;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.studio.schemaeditor.Activator;
 import org.apache.directory.studio.schemaeditor.PluginConstants;
-import org.apache.directory.studio.schemaeditor.controller.SchemaHandler;
 import org.apache.directory.studio.schemaeditor.controller.SchemaHandlerAdapter;
 import org.apache.directory.studio.schemaeditor.controller.SchemaHandlerListener;
 import org.apache.directory.studio.schemaeditor.model.Schema;
@@ -64,14 +63,14 @@ public class AttributeTypeEditorUsedByPage extends FormPage
     /** The page ID */
     public static final String ID = AttributeTypeEditor.ID + "usedByPage"; //$NON-NLS-1$
 
+    /** The flag to indicate if the page has been initialized */
+    private boolean initialized = false;
+
     /** The modified attribute type */
     private AttributeType modifiedAttributeType;
 
     /** The original attribute type */
     private AttributeType originalAttributeType;
-
-    /** The Schema Handler */
-    private SchemaHandler schemaHandler;
 
     /** The Schema listener */
     private SchemaHandlerListener schemaHandlerListener = new SchemaHandlerAdapter()
@@ -213,8 +212,7 @@ public class AttributeTypeEditorUsedByPage extends FormPage
     public AttributeTypeEditorUsedByPage( FormEditor editor )
     {
         super( editor, ID, Messages.getString( "AttributeTypeEditorUsedByPage.UsedBy" ) ); //$NON-NLS-1$
-        schemaHandler = Activator.getDefault().getSchemaHandler();
-        schemaHandler.addListener( schemaHandlerListener );
+        Activator.getDefault().getSchemaHandler().addListener( schemaHandlerListener );
     }
 
 
@@ -248,6 +246,8 @@ public class AttributeTypeEditorUsedByPage extends FormPage
         // Help Context for Dynamic Help
         PlatformUI.getWorkbench().getHelpSystem().setHelp( form,
             PluginConstants.PLUGIN_ID + "." + "attribute_type_editor" ); //$NON-NLS-1$ //$NON-NLS-2$
+
+        initialized = true;
     }
 
 
@@ -366,6 +366,16 @@ public class AttributeTypeEditorUsedByPage extends FormPage
 
 
     /**
+     * Removes listeners to UI fields
+     */
+    private void removeListeners()
+    {
+        mandatoryAttributeTable.removeMouseListener( mandatoryAttributeTableListener );
+        optionalAttibuteTable.removeMouseListener( optionalAttibuteTableListener );
+    }
+
+
+    /**
      * Refreshes the Table Viewers
      */
     public void refreshTableViewers()
@@ -386,9 +396,24 @@ public class AttributeTypeEditorUsedByPage extends FormPage
      */
     public void dispose()
     {
-        schemaHandler.removeListener( schemaHandlerListener );
+        removeListeners();
+
+        Activator.getDefault().getSchemaHandler().removeListener( schemaHandlerListener );
 
         super.dispose();
     }
 
+
+    /**
+     * Refreshes the UI.
+     */
+    public void refreshUI()
+    {
+        if ( initialized )
+        {
+            removeListeners();
+            fillInUiFields();
+            addListeners();
+        }
+    }
 }

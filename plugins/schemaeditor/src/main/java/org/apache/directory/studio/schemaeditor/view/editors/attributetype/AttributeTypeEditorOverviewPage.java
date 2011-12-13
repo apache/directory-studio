@@ -50,7 +50,6 @@ import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
-import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
@@ -90,10 +89,10 @@ public class AttributeTypeEditorOverviewPage extends FormPage
     /** The page ID*/
     public static final String ID = AttributeTypeEditor.ID + ".overviewPage"; //$NON-NLS-1$
 
-    /** The original object class */
+    /** The original attribute type */
     private AttributeType originalAttributeType;
 
-    /** The modified object class */
+    /** The modified attribute type */
     private AttributeType modifiedAttributeType;
 
     /** The original schema */
@@ -105,27 +104,18 @@ public class AttributeTypeEditorOverviewPage extends FormPage
     /** The SchemaHandler Listener */
     private SchemaHandlerListener schemaHandlerListener = new SchemaHandlerListener()
     {
-        /**
-         * {@inheritDoc}
-         */
         public void attributeTypeAdded( AttributeType at )
         {
             refreshUI();
         }
 
 
-        /**
-         * {@inheritDoc}
-         */
         public void attributeTypeModified( AttributeType at )
         {
             refreshUI();
         }
 
 
-        /**
-         * {@inheritDoc}
-         */
         public void attributeTypeRemoved( AttributeType at )
         {
             if ( !at.equals( originalAttributeType ) )
@@ -135,72 +125,48 @@ public class AttributeTypeEditorOverviewPage extends FormPage
         }
 
 
-        /**
-         * {@inheritDoc}
-         */
         public void matchingRuleAdded( MatchingRule mr )
         {
             refreshUI();
         }
 
 
-        /**
-         * {@inheritDoc}
-         */
         public void matchingRuleModified( MatchingRule mr )
         {
             refreshUI();
         }
 
 
-        /**
-         * {@inheritDoc}
-         */
         public void matchingRuleRemoved( MatchingRule mr )
         {
             refreshUI();
         }
 
 
-        /**
-         * {@inheritDoc}
-         */
         public void objectClassAdded( ObjectClass oc )
         {
             refreshUI();
         }
 
 
-        /**
-         * {@inheritDoc}
-         */
         public void objectClassModified( ObjectClass oc )
         {
             refreshUI();
         }
 
 
-        /**
-         * {@inheritDoc}
-         */
         public void objectClassRemoved( ObjectClass oc )
         {
             refreshUI();
         }
 
 
-        /**
-         * {@inheritDoc}
-         */
         public void schemaAdded( Schema schema )
         {
             refreshUI();
         }
 
 
-        /**
-         * {@inheritDoc}
-         */
         public void schemaRemoved( Schema schema )
         {
             if ( !schema.equals( originalSchema ) )
@@ -210,27 +176,24 @@ public class AttributeTypeEditorOverviewPage extends FormPage
         }
 
 
-        /**
-         * {@inheritDoc}
-         */
+        public void schemaRenamed( Schema schema )
+        {
+            refreshUI();
+        }
+
+
         public void syntaxAdded( LdapSyntax syntax )
         {
             refreshUI();
         }
 
 
-        /**
-         * {@inheritDoc}
-         */
         public void syntaxModified( LdapSyntax syntax )
         {
             refreshUI();
         }
 
 
-        /**
-         * {@inheritDoc}
-         */
         public void syntaxRemoved( LdapSyntax syntax )
         {
             refreshUI();
@@ -292,7 +255,7 @@ public class AttributeTypeEditorOverviewPage extends FormPage
         public void widgetSelected( SelectionEvent e )
         {
             EditAliasesDialog editDialog = new EditAliasesDialog( modifiedAttributeType.getNames() );
-            if ( editDialog.open() != Window.OK )
+            if ( editDialog.open() != EditAliasesDialog.OK )
             {
                 return;
             }
@@ -690,11 +653,6 @@ public class AttributeTypeEditorOverviewPage extends FormPage
      */
     protected void createFormContent( IManagedForm managedForm )
     {
-        // Getting the original and modified attribute types
-        modifiedAttributeType = ( ( AttributeTypeEditor ) getEditor() ).getModifiedAttributeType();
-        originalAttributeType = ( ( AttributeTypeEditor ) getEditor() ).getOriginalAttributeType();
-        originalSchema = schemaHandler.getSchema( originalAttributeType.getSchemaName() );
-
         // Creating the base UI
         ScrolledForm form = managedForm.getForm();
         FormToolkit toolkit = managedForm.getToolkit();
@@ -913,6 +871,11 @@ public class AttributeTypeEditorOverviewPage extends FormPage
      */
     private void fillInUiFields()
     {
+        // Getting the original and modified attribute types
+        modifiedAttributeType = ( ( AttributeTypeEditor ) getEditor() ).getModifiedAttributeType();
+        originalAttributeType = ( ( AttributeTypeEditor ) getEditor() ).getOriginalAttributeType();
+        originalSchema = schemaHandler.getSchema( originalAttributeType.getSchemaName() );
+
         // ALIASES Label
         if ( ( modifiedAttributeType.getNames() != null ) && ( modifiedAttributeType.getNames().size() != 0 ) )
         {
@@ -1244,6 +1207,19 @@ public class AttributeTypeEditorOverviewPage extends FormPage
 
 
     /**
+     * {@inheritDoc}
+     */
+    public void dispose()
+    {
+        removeListeners();
+
+        schemaHandler.removeListener( schemaHandlerListener );
+
+        super.dispose();
+    }
+
+
+    /**
      * Refreshes the UI.
      */
     public void refreshUI()
@@ -1251,15 +1227,5 @@ public class AttributeTypeEditorOverviewPage extends FormPage
         removeListeners();
         fillInUiFields();
         addListeners();
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    public void dispose()
-    {
-        schemaHandler.removeListener( schemaHandlerListener );
-        super.dispose();
     }
 }

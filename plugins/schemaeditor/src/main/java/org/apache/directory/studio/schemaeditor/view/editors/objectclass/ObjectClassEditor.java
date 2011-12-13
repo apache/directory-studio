@@ -25,8 +25,6 @@ import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.studio.schemaeditor.Activator;
 import org.apache.directory.studio.schemaeditor.PluginConstants;
 import org.apache.directory.studio.schemaeditor.PluginUtils;
-import org.apache.directory.studio.schemaeditor.controller.ObjectClassAdapter;
-import org.apache.directory.studio.schemaeditor.controller.ObjectClassListener;
 import org.apache.directory.studio.schemaeditor.controller.SchemaHandler;
 import org.apache.directory.studio.schemaeditor.controller.SchemaHandlerAdapter;
 import org.apache.directory.studio.schemaeditor.controller.SchemaHandlerListener;
@@ -57,11 +55,9 @@ public class ObjectClassEditor extends FormEditor
     /** The editor */
     private ObjectClassEditor instance;
 
-    /** The Overview page */
-    private ObjectClassEditorOverviewPage overview;
-
-    /** The Source Code page */
-    private ObjectClassEditorSourceCodePage sourceCode;
+    // The pages
+    private ObjectClassEditorOverviewPage overviewPage;
+    private ObjectClassEditorSourceCodePage sourceCodePage;
 
     /** The dirty state flag */
     private boolean dirty = false;
@@ -84,41 +80,72 @@ public class ObjectClassEditor extends FormEditor
 
             if ( selectedPage instanceof ObjectClassEditorOverviewPage )
             {
-                if ( !sourceCode.canLeaveThePage() )
+                if ( !sourceCodePage.canLeaveThePage() )
                 {
                     notifyError( Messages.getString( "ObjectClassEditor.CodeError" ) ); //$NON-NLS-1$
                     return;
                 }
 
-                overview.refreshUI();
+                overviewPage.refreshUI();
             }
             else if ( selectedPage instanceof ObjectClassEditorSourceCodePage )
             {
-                if ( sourceCode.canLeaveThePage() )
+                if ( sourceCodePage.canLeaveThePage() )
                 {
-                    sourceCode.refreshUI();
+                    sourceCodePage.refreshUI();
                 }
             }
-        }
-    };
-
-    /** The object class listener */
-    private ObjectClassListener objectClassListener = new ObjectClassAdapter()
-    {
-        public void objectClassRemoved()
-        {
-            getEditorSite().getPage().closeEditor( instance, false );
         }
     };
 
     /** The SchemaHandler listener */
     private SchemaHandlerListener schemaHandlerListener = new SchemaHandlerAdapter()
     {
+        public void objectClassModified( ObjectClass oc )
+        {
+            if ( oc.equals( originalObjectClass ) )
+            {
+                // Updating the modified object class
+                modifiedObjectClass = PluginUtils.getClone( originalObjectClass );
+
+                // Refreshing the editor pages
+                overviewPage.refreshUI();
+                sourceCodePage.refreshUI();
+
+                // Refreshing the part name (in case of a change in the name)
+                setPartName( getEditorInput().getName() );
+            }
+        }
+
+
+        public void objectClassRemoved( ObjectClass oc )
+        {
+            if ( oc.equals( originalObjectClass ) )
+            {
+                getEditorSite().getPage().closeEditor( instance, false );
+            }
+        }
+
+
         public void schemaRemoved( Schema schema )
         {
             if ( schema.equals( originalSchema ) )
             {
                 getEditorSite().getPage().closeEditor( instance, false );
+            }
+        }
+
+
+        public void schemaRenamed( Schema schema )
+        {
+            if ( schema.equals( originalSchema ) )
+            {
+                // Updating the modified object class
+                modifiedObjectClass = PluginUtils.getClone( originalObjectClass );
+
+                // Refreshing the editor pages
+                overviewPage.refreshUI();
+                sourceCodePage.refreshUI();
             }
         }
     };
@@ -142,7 +169,6 @@ public class ObjectClassEditor extends FormEditor
 
         SchemaHandler schemaHandler = Activator.getDefault().getSchemaHandler();
         originalSchema = schemaHandler.getSchema( originalObjectClass.getSchemaName() );
-        schemaHandler.addListener( originalObjectClass, objectClassListener );
         schemaHandler.addListener( schemaHandlerListener );
 
         addPageChangedListener( pageChangedListener );
@@ -155,7 +181,6 @@ public class ObjectClassEditor extends FormEditor
     public void dispose()
     {
         SchemaHandler schemaHandler = Activator.getDefault().getSchemaHandler();
-        schemaHandler.removeListener( originalObjectClass, objectClassListener );
         schemaHandler.removeListener( schemaHandlerListener );
 
         super.dispose();
@@ -169,10 +194,10 @@ public class ObjectClassEditor extends FormEditor
     {
         try
         {
-            overview = new ObjectClassEditorOverviewPage( this ); //$NON-NLS-1$ //$NON-NLS-2$
-            addPage( overview );
-            sourceCode = new ObjectClassEditorSourceCodePage( this ); //$NON-NLS-1$ //$NON-NLS-2$
-            addPage( sourceCode );
+            overviewPage = new ObjectClassEditorOverviewPage( this ); //$NON-NLS-1$ //$NON-NLS-2$
+            addPage( overviewPage );
+            sourceCodePage = new ObjectClassEditorSourceCodePage( this ); //$NON-NLS-1$ //$NON-NLS-2$
+            addPage( sourceCodePage );
         }
         catch ( PartInitException e )
         {
@@ -187,7 +212,7 @@ public class ObjectClassEditor extends FormEditor
     public void doSave( IProgressMonitor monitor )
     {
         // Verifying if there is an error on the source code page
-        if ( !sourceCode.canLeaveThePage() )
+        if ( !sourceCodePage.canLeaveThePage() )
         {
             notifyError( Messages.getString( "ObjectClassEditor.CodeErrorObject" ) ); //$NON-NLS-1$
             monitor.setCanceled( true );

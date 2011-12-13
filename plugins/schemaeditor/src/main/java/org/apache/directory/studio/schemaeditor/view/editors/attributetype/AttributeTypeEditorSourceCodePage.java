@@ -55,6 +55,9 @@ public class AttributeTypeEditorSourceCodePage extends FormPage
     /** The page ID */
     public static final String ID = AttributeTypeEditor.ID + "sourceCodePage"; //$NON-NLS-1$
 
+    /** The flag to indicate if the page has been initialized */
+    private boolean initialized = false;
+
     /** The modified attribute type */
     private AttributeType modifiedAttributeType;
 
@@ -122,8 +125,6 @@ public class AttributeTypeEditorSourceCodePage extends FormPage
         form.getBody().setLayout( layout );
         toolkit.paintBordersFor( form.getBody() );
 
-        modifiedAttributeType = ( ( AttributeTypeEditor ) getEditor() ).getModifiedAttributeType();
-
         // SOURCE CODE Field
         schemaSourceViewer = new SchemaSourceViewer( form.getBody(), null, null, false, SWT.BORDER | SWT.H_SCROLL
             | SWT.V_SCROLL );
@@ -140,12 +141,33 @@ public class AttributeTypeEditorSourceCodePage extends FormPage
 
         // Initialization from the "input" attribute type
         fillInUiFields();
-
-        schemaSourceViewer.getTextWidget().addModifyListener( schemaSourceViewerListener );
+        
+        // Listeners initialization
+        addListeners();
 
         // Help Context for Dynamic Help
         PlatformUI.getWorkbench().getHelpSystem().setHelp( form,
             PluginConstants.PLUGIN_ID + "." + "attribute_type_editor" ); //$NON-NLS-1$ //$NON-NLS-2$
+
+        initialized = true;
+    }
+
+
+    /**
+     * Adds listeners to UI fields
+     */
+    private void addListeners()
+    {
+        schemaSourceViewer.getTextWidget().addModifyListener( schemaSourceViewerListener );
+    }
+
+
+    /**
+     * Adds listeners to UI fields
+     */
+    private void removeListeners()
+    {
+        schemaSourceViewer.getTextWidget().removeModifyListener( schemaSourceViewerListener );
     }
 
 
@@ -154,6 +176,9 @@ public class AttributeTypeEditorSourceCodePage extends FormPage
      */
     private void fillInUiFields()
     {
+        // Getting the modified attribute type
+        modifiedAttributeType = ( ( AttributeTypeEditor ) getEditor() ).getModifiedAttributeType();
+
         // SOURCE CODE Field
         schemaSourceViewer.getDocument().set( OpenLdapSchemaFileExporter.toSourceCode( modifiedAttributeType ) );
     }
@@ -199,6 +224,22 @@ public class AttributeTypeEditorSourceCodePage extends FormPage
      */
     public void refreshUI()
     {
-        fillInUiFields();
+        if ( initialized )
+        {
+            removeListeners();
+            fillInUiFields();
+            addListeners();
+        }
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public void dispose()
+    {
+        removeListeners();
+
+        super.dispose();
     }
 }

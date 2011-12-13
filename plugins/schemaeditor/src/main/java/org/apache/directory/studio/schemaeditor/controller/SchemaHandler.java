@@ -76,9 +76,6 @@ public class SchemaHandler
     // The Listeners Lists
     //
     private List<SchemaHandlerListener> schemaHandlerListeners;
-    private MultiValueMap schemaListeners;
-    private MultiValueMap attributeTypeListeners;
-    private MultiValueMap objectClassListeners;
 
 
     /**
@@ -102,9 +99,6 @@ public class SchemaHandler
 
         // Listeners
         schemaHandlerListeners = new ArrayList<SchemaHandlerListener>();
-        schemaListeners = new MultiValueMap();
-        attributeTypeListeners = new MultiValueMap();
-        objectClassListeners = new MultiValueMap();
     }
 
 
@@ -381,99 +375,6 @@ public class SchemaHandler
 
 
     /**
-     * Adds a SchemaListener to the given schema.
-     *
-     * @param schema
-     *      the schema
-     * @param listener
-     *      the listener
-     */
-    public void addListener( Schema schema, SchemaListener listener )
-    {
-        if ( !schemaListeners.containsValue( schema, listener ) )
-        {
-            schemaListeners.put( schema, listener );
-        }
-    }
-
-
-    /**
-     * Removes a SchemaListener to the given schema.
-     *
-     * @param schema
-     *      the schema
-     * @param listener
-     *      the listener
-     */
-    public void removeListener( Schema schema, SchemaListener listener )
-    {
-        schemaListeners.remove( schema, listener );
-    }
-
-
-    /**
-     * Adds an AttributeTypeListener to the given attribute type.
-     *
-     * @param at
-     *      the attribute type
-     * @param listener
-     *      the listener
-     */
-    public void addListener( AttributeType at, AttributeTypeListener listener )
-    {
-        if ( !attributeTypeListeners.containsValue( at, listener ) )
-        {
-            attributeTypeListeners.put( at, listener );
-        }
-    }
-
-
-    /**
-     * Removes an AttributeTypeListener to the given attribute type.
-     *
-     * @param at
-     *      the attribute type
-     * @param listener
-     *      the listener
-     */
-    public void removeListener( AttributeType at, AttributeTypeListener listener )
-    {
-        attributeTypeListeners.remove( at, listener );
-    }
-
-
-    /**
-     * Adds an ObjectClassListener to the given object class.
-     *
-     * @param oc
-     *      the object class
-     * @param listener
-     *      the listener
-     */
-    public void addListener( ObjectClass oc, ObjectClassListener listener )
-    {
-        if ( !objectClassListeners.containsValue( oc, listener ) )
-        {
-            objectClassListeners.put( oc, listener );
-        }
-    }
-
-
-    /**
-     * Removes an ObjectClassListener to the given object class.
-     *
-     * @param oc
-     *      the object class
-     * @param listener
-     *      the listener
-     */
-    public void removeListener( ObjectClass oc, ObjectClassListener listener )
-    {
-        objectClassListeners.remove( oc, listener );
-    }
-
-
-    /**
      * Adds a schema
      *
      * @param schema
@@ -688,6 +589,46 @@ public class SchemaHandler
 
 
     /**
+     * Renames the given schema. 
+     *
+     * @param schema the schema
+     * @param newName the new name
+     */
+    public void renameSchema( Schema schema, String newName )
+    {
+        schemasMap.remove( Strings.toLowerCase( schema.getSchemaName() ) );
+        schema.setSchemaName( newName );
+        schemasMap.put( Strings.toLowerCase( schema.getSchemaName() ), schema );
+
+        // Removing its attribute types
+        for ( AttributeType at : schema.getAttributeTypes() )
+        {
+            at.setSchemaName( newName );
+        }
+
+        // Removing its matching rules
+        for ( MatchingRule mr : schema.getMatchingRules() )
+        {
+            mr.setSchemaName( newName );
+        }
+
+        // Removing its object classes
+        for ( ObjectClass oc : schema.getObjectClasses() )
+        {
+            oc.setSchemaName( newName );
+        }
+
+        // Removing its syntaxes
+        for ( LdapSyntax syntax : schema.getSyntaxes() )
+        {
+            syntax.setSchemaName( newName );
+        }
+
+        notifySchemaRenamed( schema );
+    }
+
+
+    /**
      * Adds the given attribute type.
      *
      * @param at
@@ -696,11 +637,6 @@ public class SchemaHandler
     public void addAttributeType( AttributeType at )
     {
         Schema schema = getSchema( at.getSchemaName() );
-
-        if ( schema == null )
-        {
-            // TODO Throw an exception
-        }
 
         schema.addAttributeType( at );
         addSchemaObject( at );
@@ -758,11 +694,6 @@ public class SchemaHandler
     {
         Schema schema = getSchema( at.getSchemaName() );
 
-        if ( schema == null )
-        {
-            // TODO Throw an exception
-        }
-
         schema.removeAttributeType( at );
         removeSchemaObject( at );
 
@@ -780,11 +711,6 @@ public class SchemaHandler
     public void addObjectClass( ObjectClass oc )
     {
         Schema schema = getSchema( oc.getSchemaName() );
-
-        if ( schema == null )
-        {
-            // TODO Throw an exception
-        }
 
         schema.addObjectClass( oc );
         addSchemaObject( oc );
@@ -836,11 +762,6 @@ public class SchemaHandler
     {
         Schema schema = getSchema( oc.getSchemaName() );
 
-        if ( schema == null )
-        {
-            // TODO Throw an exception
-        }
-
         schema.removeObjectClass( oc );
         removeSchemaObject( oc );
 
@@ -867,13 +788,28 @@ public class SchemaHandler
      * Notifies the given listeners that a schema has been removed.
      *
      * @param schema
-     *      the added schema
+     *      the removed schema
      */
     private void notifySchemaRemoved( Schema schema )
     {
         for ( SchemaHandlerListener listener : schemaHandlerListeners.toArray( new SchemaHandlerListener[0] ) )
         {
             listener.schemaRemoved( schema );
+        }
+    }
+
+
+    /**
+     * Notifies the given listeners that a schema has been renamed.
+     *
+     * @param schema
+     *      the renamed schema
+     */
+    private void notifySchemaRenamed( Schema schema )
+    {
+        for ( SchemaHandlerListener listener : schemaHandlerListeners.toArray( new SchemaHandlerListener[0] ) )
+        {
+            listener.schemaRenamed( schema );
         }
     }
 
@@ -891,16 +827,6 @@ public class SchemaHandler
         {
             listener.attributeTypeAdded( at );
         }
-
-        // Schema Listeners
-        List<?> listeners = ( List<?> ) schemaListeners.get( getSchema( at.getSchemaName() ) );
-        if ( listeners != null )
-        {
-            for ( Object object : listeners.toArray() )
-            {
-                ( ( SchemaListener ) object ).attributeTypeAdded( at );
-            }
-        }
     }
 
 
@@ -916,16 +842,6 @@ public class SchemaHandler
         for ( SchemaHandlerListener listener : schemaHandlerListeners.toArray( new SchemaHandlerListener[0] ) )
         {
             listener.attributeTypeModified( at );
-        }
-
-        // Schema Listeners
-        List<?> listeners = ( List<?> ) schemaListeners.get( getSchema( at.getSchemaName() ) );
-        if ( listeners != null )
-        {
-            for ( Object object : listeners.toArray() )
-            {
-                ( ( SchemaListener ) object ).attributeTypeModified( at );
-            }
         }
     }
 
@@ -943,26 +859,6 @@ public class SchemaHandler
         {
             listener.attributeTypeRemoved( at );
         }
-
-        // Schema Listeners
-        List<?> listeners = ( List<?> ) schemaListeners.get( getSchema( at.getSchemaName() ) );
-        if ( listeners != null )
-        {
-            for ( Object object : listeners.toArray() )
-            {
-                ( ( SchemaListener ) object ).attributeTypeRemoved( at );
-            }
-        }
-
-        // Attribute Type Listeners
-        List<?> atListeners = ( List<?> ) attributeTypeListeners.get( at );
-        if ( atListeners != null )
-        {
-            for ( Object object : atListeners.toArray() )
-            {
-                ( ( AttributeTypeListener ) object ).attributeTypeRemoved();
-            }
-        }
     }
 
 
@@ -978,16 +874,6 @@ public class SchemaHandler
         for ( SchemaHandlerListener listener : schemaHandlerListeners.toArray( new SchemaHandlerListener[0] ) )
         {
             listener.objectClassAdded( oc );
-        }
-
-        // Schema Listeners
-        List<?> listeners = ( List<?> ) schemaListeners.get( getSchema( oc.getSchemaName() ) );
-        if ( listeners != null )
-        {
-            for ( Object object : listeners.toArray() )
-            {
-                ( ( SchemaListener ) object ).objectClassAdded( oc );
-            }
         }
     }
 
@@ -1005,16 +891,6 @@ public class SchemaHandler
         {
             listener.objectClassModified( oc );
         }
-
-        // Schema Listeners
-        List<?> listeners = ( List<?> ) schemaListeners.get( getSchema( oc.getSchemaName() ) );
-        if ( listeners != null )
-        {
-            for ( Object object : listeners.toArray() )
-            {
-                ( ( SchemaListener ) object ).objectClassModified( oc );
-            }
-        }
     }
 
 
@@ -1030,182 +906,6 @@ public class SchemaHandler
         for ( SchemaHandlerListener listener : schemaHandlerListeners.toArray( new SchemaHandlerListener[0] ) )
         {
             listener.objectClassRemoved( oc );
-        }
-
-        // Schema Listeners
-        List<?> listeners = ( List<?> ) schemaListeners.get( getSchema( oc.getSchemaName() ) );
-        if ( listeners != null )
-        {
-            for ( Object object : listeners.toArray() )
-            {
-                ( ( SchemaListener ) object ).objectClassModified( oc );
-            }
-        }
-
-        // Object Class Listeners
-        List<?> ocListeners = ( List<?> ) objectClassListeners.get( oc );
-        if ( ocListeners != null )
-        {
-            for ( Object object : ocListeners.toArray() )
-            {
-                ( ( ObjectClassListener ) object ).objectClassRemoved();
-            }
-        }
-    }
-
-
-    /**
-     * Notifies the SchemaHandler listeners that a matching rule has been added.
-     *
-     * @param mr
-     *      the added matching rule
-     */
-    private void notifyMatchingRuleAdded( MatchingRule mr )
-    {
-        // SchemaHandler Listeners
-        for ( SchemaHandlerListener listener : schemaHandlerListeners.toArray( new SchemaHandlerListener[0] ) )
-        {
-            listener.matchingRuleAdded( mr );
-        }
-
-        // Schema Listeners
-        List<?> listeners = ( List<?> ) schemaListeners.get( getSchema( mr.getSchemaName() ) );
-        if ( listeners != null )
-        {
-            for ( Object object : listeners.toArray() )
-            {
-                ( ( SchemaListener ) object ).matchingRuleAdded( mr );
-            }
-        }
-    }
-
-
-    /**
-     * Notifies the SchemaHandler listeners that a matching rule has been modified.
-     *
-     * @param mr
-     *      the modified matching rule
-     */
-    private void notifyMatchingRuleModified( MatchingRule mr )
-    {
-        // SchemaHandler Listeners
-        for ( SchemaHandlerListener listener : schemaHandlerListeners.toArray( new SchemaHandlerListener[0] ) )
-        {
-            listener.matchingRuleModified( mr );
-        }
-
-        // Schema Listeners
-        List<?> listeners = ( List<?> ) schemaListeners.get( getSchema( mr.getSchemaName() ) );
-        if ( listeners != null )
-        {
-            for ( Object object : listeners.toArray() )
-            {
-                ( ( SchemaListener ) object ).matchingRuleModified( mr );
-            }
-        }
-    }
-
-
-    /**
-     * Notifies the SchemaHandler listeners that a matching rule has been removed.
-     *
-     * @param mr
-     *      the removed matching rule
-     */
-    private void notifyMatchingRuleRemoved( MatchingRule mr )
-    {
-        // SchemaHandler Listeners
-        for ( SchemaHandlerListener listener : schemaHandlerListeners.toArray( new SchemaHandlerListener[0] ) )
-        {
-            listener.matchingRuleRemoved( mr );
-        }
-
-        // Schema Listeners
-        List<?> listeners = ( List<?> ) schemaListeners.get( getSchema( mr.getSchemaName() ) );
-        if ( listeners != null )
-        {
-            for ( Object object : listeners.toArray() )
-            {
-                ( ( SchemaListener ) object ).matchingRuleRemoved( mr );
-            }
-        }
-    }
-
-
-    /**
-     * Notifies the SchemaHandler listeners that a syntax has been added.
-     *
-     * @param syntax
-     *      the added syntax
-     */
-    private void notifySyntaxRuleAdded( LdapSyntax syntax )
-    {
-        // SchemaHandler Listeners
-        for ( SchemaHandlerListener listener : schemaHandlerListeners.toArray( new SchemaHandlerListener[0] ) )
-        {
-            listener.syntaxAdded( syntax );
-        }
-
-        // Schema Listeners
-        List<?> listeners = ( List<?> ) schemaListeners.get( getSchema( syntax.getSchemaName() ) );
-        if ( listeners != null )
-        {
-            for ( Object object : listeners.toArray() )
-            {
-                ( ( SchemaListener ) object ).syntaxAdded( syntax );
-            }
-        }
-    }
-
-
-    /**
-     * Notifies the SchemaHandler listeners that a syntax has been modified.
-     *
-     * @param syntax
-     *      the modified syntax
-     */
-    private void notifySyntaxRuleModified( LdapSyntax syntax )
-    {
-        // SchemaHandler Listeners
-        for ( SchemaHandlerListener listener : schemaHandlerListeners.toArray( new SchemaHandlerListener[0] ) )
-        {
-            listener.syntaxModified( syntax );
-        }
-
-        // Schema Listeners
-        List<?> listeners = ( List<?> ) schemaListeners.get( getSchema( syntax.getSchemaName() ) );
-        if ( listeners != null )
-        {
-            for ( Object object : listeners.toArray() )
-            {
-                ( ( SchemaListener ) object ).syntaxModified( syntax );
-            }
-        }
-    }
-
-
-    /**
-     * Notifies the SchemaHandler listeners that a syntax has been removed.
-     *
-     * @param syntax
-     *      the removed syntax
-     */
-    private void notifySyntaxRemoved( LdapSyntax syntax )
-    {
-        // SchemaHandler Listeners
-        for ( SchemaHandlerListener listener : schemaHandlerListeners.toArray( new SchemaHandlerListener[0] ) )
-        {
-            listener.syntaxRemoved( syntax );
-        }
-
-        // Schema Listeners
-        List<?> listeners = ( List<?> ) schemaListeners.get( getSchema( syntax.getSchemaName() ) );
-        if ( listeners != null )
-        {
-            for ( Object object : listeners.toArray() )
-            {
-                ( ( SchemaListener ) object ).syntaxRemoved( syntax );
-            }
         }
     }
 

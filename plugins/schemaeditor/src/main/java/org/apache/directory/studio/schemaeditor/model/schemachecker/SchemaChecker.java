@@ -150,6 +150,12 @@ public class SchemaChecker
                 recheckWholeSchema();
             }
         }
+
+
+        public void schemaRenamed( Schema schema )
+        {
+            // Nothing to do, this is a simple renaming
+        }
     };
 
 

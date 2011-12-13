@@ -51,7 +51,6 @@ import org.apache.directory.studio.schemaeditor.view.editors.schema.SchemaEditor
 import org.apache.log4j.Logger;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
-import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
@@ -110,81 +109,54 @@ public class ObjectClassEditorOverviewPage extends FormPage
     /** The SchemaHandler Listener */
     private SchemaHandlerListener schemaHandlerListener = new SchemaHandlerListener()
     {
-        /**
-         * {@inheritDoc}
-         */
         public void attributeTypeAdded( AttributeType at )
         {
             refreshUI();
         }
 
 
-        /**
-         * {@inheritDoc}
-         */
         public void attributeTypeModified( AttributeType at )
         {
             refreshUI();
         }
 
 
-        /**
-         * {@inheritDoc}
-         */
         public void attributeTypeRemoved( AttributeType at )
         {
             refreshUI();
         }
 
 
-        /**
-         * {@inheritDoc}
-         */
         public void matchingRuleAdded( MatchingRule mr )
         {
             refreshUI();
         }
 
 
-        /**
-         * {@inheritDoc}
-         */
         public void matchingRuleModified( MatchingRule mr )
         {
             refreshUI();
         }
 
 
-        /**
-         * {@inheritDoc}
-         */
         public void matchingRuleRemoved( MatchingRule mr )
         {
             refreshUI();
         }
 
 
-        /**
-         * {@inheritDoc}
-         */
         public void objectClassAdded( ObjectClass oc )
         {
             refreshUI();
         }
 
 
-        /**
-         * {@inheritDoc}
-         */
         public void objectClassModified( ObjectClass oc )
         {
             refreshUI();
         }
 
 
-        /**
-         * {@inheritDoc}
-         */
         public void objectClassRemoved( ObjectClass oc )
         {
             if ( !oc.equals( originalObjectClass ) )
@@ -194,18 +166,12 @@ public class ObjectClassEditorOverviewPage extends FormPage
         }
 
 
-        /**
-         * {@inheritDoc}
-         */
         public void schemaAdded( Schema schema )
         {
             refreshUI();
         }
 
 
-        /**
-         * {@inheritDoc}
-         */
         public void schemaRemoved( Schema schema )
         {
             if ( !schema.equals( originalSchema ) )
@@ -215,27 +181,24 @@ public class ObjectClassEditorOverviewPage extends FormPage
         }
 
 
-        /**
-         * {@inheritDoc}
-         */
+        public void schemaRenamed( Schema schema )
+        {
+            refreshUI();
+        }
+
+
         public void syntaxAdded( LdapSyntax syntax )
         {
             refreshUI();
         }
 
 
-        /**
-         * {@inheritDoc}
-         */
         public void syntaxModified( LdapSyntax syntax )
         {
             refreshUI();
         }
 
 
-        /**
-         * {@inheritDoc}
-         */
         public void syntaxRemoved( LdapSyntax syntax )
         {
             refreshUI();
@@ -294,7 +257,7 @@ public class ObjectClassEditorOverviewPage extends FormPage
         public void widgetSelected( SelectionEvent e )
         {
             EditAliasesDialog editDialog = new EditAliasesDialog( modifiedObjectClass.getNames() );
-            if ( editDialog.open() != Window.OK )
+            if ( editDialog.open() != EditAliasesDialog.OK )
             {
                 return;
             }
@@ -485,7 +448,7 @@ public class ObjectClassEditorOverviewPage extends FormPage
             }
             dialog.setHiddenAttributeTypes( hiddenATs.toArray( new AttributeType[0] ) );
 
-            if ( dialog.open() != Window.OK )
+            if ( dialog.open() != AttributeTypeSelectionDialog.OK )
             {
                 return;
             }
@@ -622,7 +585,7 @@ public class ObjectClassEditorOverviewPage extends FormPage
             }
             dialog.setHiddenAttributeTypes( hiddenATs.toArray( new AttributeType[0] ) );
 
-            if ( dialog.open() != Window.OK )
+            if ( dialog.open() != AttributeTypeSelectionDialog.OK )
             {
                 return;
             }
@@ -756,7 +719,7 @@ public class ObjectClassEditorOverviewPage extends FormPage
             hiddenOCs.add( originalObjectClass );
             dialog.setHiddenObjectClasses( hiddenOCs.toArray( new ObjectClass[0] ) );
 
-            if ( dialog.open() != Window.OK )
+            if ( dialog.open() != ObjectClassSelectionDialog.OK )
             {
                 return;
             }
@@ -864,11 +827,6 @@ public class ObjectClassEditorOverviewPage extends FormPage
      */
     protected void createFormContent( IManagedForm managedForm )
     {
-        // Getting the original and modified object classes
-        modifiedObjectClass = ( ( ObjectClassEditor ) getEditor() ).getModifiedObjectClass();
-        originalObjectClass = ( ( ObjectClassEditor ) getEditor() ).getOriginalObjectClass();
-        originalSchema = schemaHandler.getSchema( originalObjectClass.getSchemaName() );
-
         // Creating the base UI
         ScrolledForm form = managedForm.getForm();
         FormToolkit toolkit = managedForm.getToolkit();
@@ -1106,6 +1064,11 @@ public class ObjectClassEditorOverviewPage extends FormPage
      */
     private void fillInUiFields()
     {
+        // Getting the original and modified object classes
+        modifiedObjectClass = ( ( ObjectClassEditor ) getEditor() ).getModifiedObjectClass();
+        originalObjectClass = ( ( ObjectClassEditor ) getEditor() ).getOriginalObjectClass();
+        originalSchema = schemaHandler.getSchema( originalObjectClass.getSchemaName() );
+
         // ALIASES Label
         if ( ( modifiedObjectClass.getNames() != null ) && ( modifiedObjectClass.getNames().size() != 0 ) )
         {
@@ -1278,6 +1241,19 @@ public class ObjectClassEditorOverviewPage extends FormPage
 
 
     /**
+     * {@inheritDoc}
+     */
+    public void dispose()
+    {
+        removeListeners();
+        
+        schemaHandler.removeListener( schemaHandlerListener );
+
+        super.dispose();
+    }
+
+
+    /**
      * Refreshes the UI.
      */
     public void refreshUI()
@@ -1285,16 +1261,5 @@ public class ObjectClassEditorOverviewPage extends FormPage
         removeListeners();
         fillInUiFields();
         addListeners();
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    public void dispose()
-    {
-        schemaHandler.removeListener( schemaHandlerListener );
-
-        super.dispose();
     }
 }

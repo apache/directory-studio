@@ -206,6 +206,17 @@ public class SchemaViewController
         {
             ( ( SchemaViewContentProvider ) viewer.getContentProvider() ).schemaRemoved( schema );
         }
+
+
+        /**
+         * {@inheritDoc}
+         */
+        public void schemaRenamed( Schema schema )
+        {
+
+            view.refresh();
+        }
+
     };
 
     /** The SchemaCheckerListener */

@@ -470,7 +470,7 @@ public class EditAliasesDialog extends Dialog
         return aliases.toArray( new String[0] );
     }
 
-
+    
     /**
      * Gets the Dirty flag of the dialog
      *

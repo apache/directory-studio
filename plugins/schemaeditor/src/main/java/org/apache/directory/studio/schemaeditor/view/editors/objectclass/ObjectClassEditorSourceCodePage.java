@@ -55,8 +55,8 @@ public class ObjectClassEditorSourceCodePage extends FormPage
     /** The page ID */
     public static final String ID = ObjectClassEditor.ID + "sourceCodePage"; //$NON-NLS-1$
 
-    /** The page title*/
-    public static final String TITLE = "Source Code"; //$NON-NLS-1$
+    /** The flag to indicate if the page has been initialized */
+    private boolean initialized = false;
 
     /** The modified object class */
     private ObjectClass modifiedObjectClass;
@@ -108,7 +108,7 @@ public class ObjectClassEditorSourceCodePage extends FormPage
      */
     public ObjectClassEditorSourceCodePage( FormEditor editor )
     {
-        super( editor, ID, TITLE );
+        super( editor, ID, Messages.getString( "ObjectClassEditorSourceCodePage.SourceCode" ) ); //$NON-NLS-1$
     }
 
 
@@ -124,8 +124,6 @@ public class ObjectClassEditorSourceCodePage extends FormPage
         layout.marginHeight = 0;
         form.getBody().setLayout( layout );
         toolkit.paintBordersFor( form.getBody() );
-
-        modifiedObjectClass = ( ( ObjectClassEditor ) getEditor() ).getModifiedObjectClass();
 
         // SOURCE CODE Field
         schemaSourceViewer = new SchemaSourceViewer( form.getBody(), null, null, false, SWT.BORDER | SWT.H_SCROLL
@@ -143,12 +141,33 @@ public class ObjectClassEditorSourceCodePage extends FormPage
 
         // Initialization from the "input" object class
         fillInUiFields();
-
-        schemaSourceViewer.getTextWidget().addModifyListener( schemaSourceViewerListener );
+        
+        // Listeners initialization
+        addListeners();
 
         // Help Context for Dynamic Help
         PlatformUI.getWorkbench().getHelpSystem().setHelp( form,
             PluginConstants.PLUGIN_ID + "." + "object_class_editor" ); //$NON-NLS-1$ //$NON-NLS-2$
+
+        initialized = true;
+    }
+
+
+    /**
+     * Adds listeners to UI fields
+     */
+    private void addListeners()
+    {
+        schemaSourceViewer.getTextWidget().addModifyListener( schemaSourceViewerListener );
+    }
+
+
+    /**
+     * Adds listeners to UI fields
+     */
+    private void removeListeners()
+    {
+        schemaSourceViewer.getTextWidget().removeModifyListener( schemaSourceViewerListener );
     }
 
 
@@ -157,6 +176,9 @@ public class ObjectClassEditorSourceCodePage extends FormPage
      */
     private void fillInUiFields()
     {
+        // Getting the modified object class
+        modifiedObjectClass = ( ( ObjectClassEditor ) getEditor() ).getModifiedObjectClass();
+
         // SOURCE CODE Field
         schemaSourceViewer.getDocument().set( OpenLdapSchemaFileExporter.toSourceCode( modifiedObjectClass ) );
     }
@@ -195,6 +217,22 @@ public class ObjectClassEditorSourceCodePage extends FormPage
      */
     public void refreshUI()
     {
-        fillInUiFields();
+        if ( initialized )
+        {
+            removeListeners();
+            fillInUiFields();
+            addListeners();
+        }
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public void dispose()
+    {
+        removeListeners();
+
+        super.dispose();
     }
 }
