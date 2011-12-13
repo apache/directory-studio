@@ -45,6 +45,7 @@ import org.apache.directory.studio.schemaeditor.controller.actions.OpenElementAc
 import org.apache.directory.studio.schemaeditor.controller.actions.OpenSchemaViewPreferenceAction;
 import org.apache.directory.studio.schemaeditor.controller.actions.OpenSchemaViewSortingDialogAction;
 import org.apache.directory.studio.schemaeditor.controller.actions.OpenTypeHierarchyAction;
+import org.apache.directory.studio.schemaeditor.controller.actions.RenameSchemaElementAction;
 import org.apache.directory.studio.schemaeditor.controller.actions.SwitchSchemaPresentationToFlatAction;
 import org.apache.directory.studio.schemaeditor.controller.actions.SwitchSchemaPresentationToHierarchicalAction;
 import org.apache.directory.studio.schemaeditor.model.Project;
@@ -240,6 +241,7 @@ public class SchemaViewController
     private OpenElementAction openElement;
     private OpenTypeHierarchyAction openTypeHierarchy;
     private DeleteSchemaElementAction deleteSchemaElement;
+    private RenameSchemaElementAction renameSchemaElement;
     private ImportCoreSchemasAction importCoreSchemas;
     private ImportSchemasFromOpenLdapAction importSchemasFromOpenLdap;
     private ImportSchemasFromXmlAction importSchemasFromXml;
@@ -293,6 +295,7 @@ public class SchemaViewController
         openElement = new OpenElementAction( viewer );
         openTypeHierarchy = new OpenTypeHierarchyAction( viewer );
         deleteSchemaElement = new DeleteSchemaElementAction( viewer );
+        renameSchemaElement = new RenameSchemaElementAction( viewer );
         importCoreSchemas = new ImportCoreSchemasAction();
         importSchemasFromOpenLdap = new ImportSchemasFromOpenLdapAction();
         importSchemasFromXml = new ImportSchemasFromXmlAction();
@@ -370,6 +373,8 @@ public class SchemaViewController
                 manager.add( openTypeHierarchy );
                 manager.add( new Separator() );
                 manager.add( deleteSchemaElement );
+                manager.add( new Separator() );
+                manager.add( renameSchemaElement );
                 manager.add( new Separator() );
                 manager.add( importManager );
                 importManager.add( importCoreSchemas );
@@ -537,8 +542,9 @@ public class SchemaViewController
                     catch ( PartInitException e )
                     {
                         PluginUtils.logError( Messages.getString( "SchemaViewController.ErrorOpeningEditor" ), e ); //$NON-NLS-1$
-                        ViewUtils.displayErrorMessageDialog( Messages.getString( "SchemaViewController.error" ), Messages //$NON-NLS-1$
-                            .getString( "SchemaViewController.ErrorOpeningEditor" ) ); //$NON-NLS-1$
+                        ViewUtils.displayErrorMessageDialog(
+                            Messages.getString( "SchemaViewController.error" ), Messages //$NON-NLS-1$
+                                .getString( "SchemaViewController.ErrorOpeningEditor" ) ); //$NON-NLS-1$
                     }
                 }
             }
@@ -660,6 +666,7 @@ public class SchemaViewController
                         commandService.getCommand( openElement.getActionDefinitionId() ).setHandler( null );
                         commandService.getCommand( openTypeHierarchy.getActionDefinitionId() ).setHandler( null );
                         commandService.getCommand( deleteSchemaElement.getActionDefinitionId() ).setHandler( null );
+                        commandService.getCommand( renameSchemaElement.getActionDefinitionId() ).setHandler( null );
                     }
 
                     IContextService contextService = ( IContextService ) PlatformUI.getWorkbench().getAdapter(
@@ -697,6 +704,8 @@ public class SchemaViewController
                             new ActionHandler( openTypeHierarchy ) );
                         commandService.getCommand( deleteSchemaElement.getActionDefinitionId() ).setHandler(
                             new ActionHandler( deleteSchemaElement ) );
+                        commandService.getCommand( renameSchemaElement.getActionDefinitionId() ).setHandler(
+                            new ActionHandler( renameSchemaElement ) );
                     }
                 }
             }

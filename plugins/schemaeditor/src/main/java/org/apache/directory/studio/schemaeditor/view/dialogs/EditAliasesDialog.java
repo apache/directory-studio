@@ -44,7 +44,6 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
@@ -66,9 +65,9 @@ import org.eclipse.ui.PlatformUI;
 public class EditAliasesDialog extends Dialog
 {
     /** The aliases List */
-    private List<String> initialLowerCasedAliases;
-    private List<String> aliases;
-    private List<String> lowerCasedAliases;
+    private List<String> initialLowerCasedAliases = new ArrayList<String>();
+    private List<String> aliases =new ArrayList<String>();
+    private List<String> lowerCasedAliases = new ArrayList<String>();
 
     /** The dirty flag */
     private boolean dirty = false;
@@ -85,9 +84,6 @@ public class EditAliasesDialog extends Dialog
             }
         }
     };
-
-    /** The {@link Display} */
-    private Display display;
 
     // UI Fields
     private Table aliasesTable;
@@ -109,9 +105,6 @@ public class EditAliasesDialog extends Dialog
     public EditAliasesDialog( List<String> aliases )
     {
         super( PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell() );
-        initialLowerCasedAliases = new ArrayList<String>();
-        this.aliases = new ArrayList<String>();
-        lowerCasedAliases = new ArrayList<String>();
         if ( aliases != null )
         {
             for ( String alias : aliases )
@@ -121,8 +114,6 @@ public class EditAliasesDialog extends Dialog
                 lowerCasedAliases.add( Strings.toLowerCase( alias ) );
             }
         }
-
-        display = Activator.getDefault().getWorkbench().getDisplay();
     }
 
 
@@ -386,7 +377,7 @@ public class EditAliasesDialog extends Dialog
         newEditor.selectAll();
         newEditor.setFocus();
         tableEditor.setEditor( newEditor, item, 0 );
-        display.addFilter( SWT.Traverse, returnKeyListener );
+        Activator.getDefault().getWorkbench().getDisplay().addFilter( SWT.Traverse, returnKeyListener );
     }
 
 
@@ -429,7 +420,7 @@ public class EditAliasesDialog extends Dialog
             saveTableEditorText();
             text.dispose();
         }
-        display.removeFilter( SWT.Traverse, returnKeyListener );
+        Activator.getDefault().getWorkbench().getDisplay().removeFilter( SWT.Traverse, returnKeyListener );
     }
 
 

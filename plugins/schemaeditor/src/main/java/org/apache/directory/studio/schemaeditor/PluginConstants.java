@@ -216,6 +216,8 @@ public final class PluginConstants
         "Cmd_NewSchema_id" );
     public static final String CMD_RENAME_PROJECT = Activator.getDefault().getPluginProperties().getString(
         "Cmd_RenameProject_id" );
+    public static final String CMD_RENAME_SCHEMA_ELEMENT = Activator.getDefault().getPluginProperties().getString(
+        "Cmd_RenameSchemaElement_id" );
 
     // Preferences - DifferencesWidget
     /** The preferences ID for DifferencesWidget Grouping */

@@ -29,15 +29,15 @@ import org.eclipse.swt.widgets.Shell;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class RenameProjectDialog extends AbstractRenameDialog
+public class RenameSchemaDialog extends AbstractRenameDialog
 {
     /**
-     * Creates a new instance of RenameProjectDialog.
+     * Creates a new instance of RenameSchemaDialog.
      *
      * @param originalName
      *      the original name of the project
      */
-    public RenameProjectDialog( String originalName )
+    public RenameSchemaDialog( String originalName )
     {
         super( originalName );
 
@@ -50,7 +50,7 @@ public class RenameProjectDialog extends AbstractRenameDialog
     protected void configureShell( Shell newShell )
     {
         super.configureShell( newShell );
-        newShell.setText( Messages.getString( "RenameProjectDialog.Rename" ) ); //$NON-NLS-1$
+        newShell.setText( Messages.getString( "RenameSchemaDialog.Rename" ) ); //$NON-NLS-1$
     }
 
 
@@ -59,7 +59,7 @@ public class RenameProjectDialog extends AbstractRenameDialog
      */
     protected String getErrorMessage()
     {
-        return Messages.getString( "RenameProjectDialog.NameExists" ); //$NON-NLS-1$
+        return Messages.getString( "RenameSchemaDialog.NameExists" ); //$NON-NLS-1$
     }
 
 
@@ -68,6 +68,6 @@ public class RenameProjectDialog extends AbstractRenameDialog
      */
     protected boolean isNewNameAlreadyTaken()
     {
-        return Activator.getDefault().getProjectsHandler().isProjectNameAlreadyTaken( getNewName() );
+        return Activator.getDefault().getSchemaHandler().isSchemaNameAlreadyTaken( getNewName() );
     }
 }

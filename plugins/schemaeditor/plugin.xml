@@ -370,6 +370,12 @@
           id="%Cmd_DeleteSchemaElement_id"
           name="%Cmd_DeleteSchemaElement_name">
     </command>
+    <command
+          categoryId="%Cmd_Category_id"
+          description="%Cmd_RenameSchemaElement_description"
+          id="%Cmd_RenameSchemaElement_id"
+          name="%Cmd_RenameSchemaElement_name">
+    </command>
  </extension>
  <extension
        point="org.eclipse.ui.bindings">
@@ -426,6 +432,12 @@
           contextId="%Ctx_SchemaView_id"
           schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
           sequence="DEL">
+    </key>
+    <key
+          commandId="%Cmd_RenameSchemaElement_id"
+          contextId="%Ctx_SchemaView_id"
+          schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+          sequence="F2">
     </key>
  </extension>
  <extension
