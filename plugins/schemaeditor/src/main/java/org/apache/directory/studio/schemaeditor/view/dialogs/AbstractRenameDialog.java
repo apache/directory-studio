@@ -69,7 +69,7 @@ public abstract class AbstractRenameDialog extends Dialog
     {
         super( PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell() );
         this.originalName = originalName;
-
+        this.newName = originalName;
     }
 
 
