@@ -518,6 +518,7 @@ public class SchemaChecker
      * @return
      *      the associated warnings
      */
+    @SuppressWarnings("unchecked")
     public List<Object> getWarnings( SchemaObject so )
     {
         return ( List<Object> ) warningsMap.get( so );

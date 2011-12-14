@@ -159,13 +159,12 @@ public class NewAttributeTypeMatchingRulesWizardPage extends WizardPage
     /**
      * Initializes the UI fields.
      */
-    @SuppressWarnings("unchecked")
     private void initFields()
     {
         if ( schemaHandler != null )
         {
             // Getting the matching rules
-            List<Object> matchingRules = new ArrayList( schemaHandler.getMatchingRules() );
+            List<Object> matchingRules = new ArrayList<Object>( schemaHandler.getMatchingRules() );
             // Adding the (None) matching rule
             String none = Messages.getString( "NewAttributeTypeMatchingRulesWizardPage.None" ); //$NON-NLS-1$
             matchingRules.add( none );

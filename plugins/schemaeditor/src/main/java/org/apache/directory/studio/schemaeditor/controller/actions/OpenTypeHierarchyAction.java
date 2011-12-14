@@ -30,7 +30,6 @@ import org.apache.directory.studio.schemaeditor.view.views.HierarchyView;
 import org.apache.directory.studio.schemaeditor.view.views.SchemaView;
 import org.apache.directory.studio.schemaeditor.view.wrappers.AttributeTypeWrapper;
 import org.apache.directory.studio.schemaeditor.view.wrappers.ObjectClassWrapper;
-import org.apache.directory.studio.schemaeditor.view.wrappers.SchemaWrapper;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
@@ -74,7 +73,7 @@ public class OpenTypeHierarchyAction extends Action implements IWorkbenchWindowA
                 StructuredSelection selection = ( StructuredSelection ) event.getSelection();
                 setEnabled( ( selection.size() == 1 )
                     && ( ( selection.getFirstElement() instanceof AttributeTypeWrapper )
-                        || ( selection.getFirstElement() instanceof ObjectClassWrapper ) ) );
+                    || ( selection.getFirstElement() instanceof ObjectClassWrapper ) ) );
             }
         } );
     }

@@ -245,13 +245,12 @@ public class NewAttributeTypeContentWizardPage extends AbstractWizardPage
     /**
      * Initializes the UI fields.
      */
-    @SuppressWarnings("unchecked")
     private void initFields()
     {
         if ( schemaHandler != null )
         {
             // Getting the syntaxes
-            List<Object> syntaxes = new ArrayList( schemaHandler.getSyntaxes() );
+            List<Object> syntaxes = new ArrayList<Object>( schemaHandler.getSyntaxes() );
             // Adding the (None) Syntax
             String none = Messages.getString( "NewAttributeTypeContentWizardPage.None" ); //$NON-NLS-1$
             syntaxes.add( none );

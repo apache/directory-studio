@@ -108,6 +108,7 @@ public class AttributeTypeEditorInput implements IEditorInput
     /**
      * {@inheritDoc}
      */
+    @SuppressWarnings("rawtypes")
     public Object getAdapter( Class adapter )
     {
         return null;
