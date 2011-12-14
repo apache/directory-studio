@@ -381,7 +381,7 @@ public abstract class AbstractAliasesDialog extends Dialog
     private void saveTableEditorText()
     {
         Text text = ( Text ) tableEditor.getEditor();
-        if ( text != null )
+        if ( ( text != null ) && ( !text.isDisposed() ) )
         {
             TableItem item = tableEditor.getItem();
             String oldText = item.getText();
@@ -408,7 +408,7 @@ public abstract class AbstractAliasesDialog extends Dialog
     private void closeTableEditor()
     {
         Text text = ( Text ) tableEditor.getEditor();
-        if ( text != null )
+        if ( ( text != null ) && ( !text.isDisposed() ) )
         {
             saveTableEditorText();
             text.dispose();
