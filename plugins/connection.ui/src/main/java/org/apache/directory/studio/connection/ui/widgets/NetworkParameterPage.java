@@ -97,6 +97,9 @@ public class NetworkParameterPage extends AbstractConnectionParameterPage
     /** The button to check the connection parameters */
     private Button checkConnectionButton;
 
+    /** The checkbox to make the connection read-only */
+    private Button readOnlyConnectionCheckbox;
+
 
     /**
      * Creates a new instance of NetworkParameterPage.
@@ -191,6 +194,17 @@ public class NetworkParameterPage extends AbstractConnectionParameterPage
 
 
     /**
+     * Gets read only flag.
+     * 
+     * @return the read only flag
+     */
+    private boolean isReadOnly()
+    {
+        return readOnlyConnectionCheckbox.getSelection();
+    }
+
+
+    /**
      * {@inheritDoc}
      */
     protected void createComposite( Composite parent )
@@ -247,6 +261,9 @@ public class NetworkParameterPage extends AbstractConnectionParameterPage
         checkConnectionButton.setLayoutData( gd );
         checkConnectionButton.setText( Messages.getString( "NetworkParameterPage.CheckNetworkParameter" ) ); //$NON-NLS-1$
 
+        readOnlyConnectionCheckbox = BaseWidgetUtils.createCheckbox( composite,
+            Messages.getString( "NetworkParameterPage.ReadOnly" ), 1 ); //$NON-NLS-1$
+
         nameText.setFocus();
     }
 
@@ -299,6 +316,7 @@ public class NetworkParameterPage extends AbstractConnectionParameterPage
         encryptionMethodCombo.select( encryptionMethodIndex );
         int networkProviderIndex = parameter.getNetworkProvider() == NetworkProvider.JNDI ? 0 : 1;
         networkProviderCombo.select( networkProviderIndex );
+        readOnlyConnectionCheckbox.setSelection( parameter.isReadOnly() );
     }
 
 
@@ -372,6 +390,14 @@ public class NetworkParameterPage extends AbstractConnectionParameterPage
                 }
             }
         } );
+
+        readOnlyConnectionCheckbox.addSelectionListener( new SelectionAdapter()
+        {
+            public void widgetSelected( SelectionEvent event )
+            {
+                connectionPageModified();
+            }
+        } );
     }
 
 
@@ -385,6 +411,7 @@ public class NetworkParameterPage extends AbstractConnectionParameterPage
         parameter.setPort( getPort() );
         parameter.setEncryptionMethod( getEncyrptionMethod() );
         parameter.setNetworkProvider( getNetworkProvider() );
+        parameter.setReadOnly( isReadOnly() );
     }
 
 
@@ -421,10 +448,12 @@ public class NetworkParameterPage extends AbstractConnectionParameterPage
      */
     public boolean isReconnectionRequired()
     {
-        return connectionParameter == null || !StringUtils.equals( connectionParameter.getHost(), getHostName() )
-            || connectionParameter.getPort() != getPort()
-            || connectionParameter.getEncryptionMethod() != getEncyrptionMethod()
-            || connectionParameter.getNetworkProvider() != getNetworkProvider();
+        return ( connectionParameter == null )
+            || ( !StringUtils.equals( connectionParameter.getHost(), getHostName() ) )
+            || ( connectionParameter.getPort() != getPort() )
+            || ( connectionParameter.getEncryptionMethod() != getEncyrptionMethod() )
+            || ( connectionParameter.getNetworkProvider() != getNetworkProvider() )
+            || ( connectionParameter.isReadOnly() != isReadOnly() );
     }
 
 

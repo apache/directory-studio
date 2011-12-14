@@ -433,7 +433,8 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
     {
         if ( connection.isReadOnly() )
         {
-            monitor.reportError( NLS.bind( Messages.error__connection_is_readonly, connection.getName() ) );
+            monitor
+                .reportError( new Exception( NLS.bind( Messages.error__connection_is_readonly, connection.getName() ) ) );
             return;
         }
 
@@ -539,7 +540,8 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
     {
         if ( connection.isReadOnly() )
         {
-            monitor.reportError( NLS.bind( Messages.error__connection_is_readonly, connection.getName() ) );
+            monitor
+                .reportError( new Exception( NLS.bind( Messages.error__connection_is_readonly, connection.getName() ) ) );
             return;
         }
 
@@ -645,7 +647,8 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
     {
         if ( connection.isReadOnly() )
         {
-            monitor.reportError( NLS.bind( Messages.error__connection_is_readonly, connection.getName() ) );
+            monitor
+                .reportError( new Exception( NLS.bind( Messages.error__connection_is_readonly, connection.getName() ) ) );
             return;
         }
 
@@ -747,7 +750,8 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
     {
         if ( connection.isReadOnly() )
         {
-            monitor.reportError( NLS.bind( Messages.error__connection_is_readonly, connection.getName() ) );
+            monitor
+                .reportError( new Exception( NLS.bind( Messages.error__connection_is_readonly, connection.getName() ) ) );
             return;
         }
 
