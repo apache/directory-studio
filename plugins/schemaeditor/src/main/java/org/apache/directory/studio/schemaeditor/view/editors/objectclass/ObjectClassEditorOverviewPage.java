@@ -40,7 +40,7 @@ import org.apache.directory.studio.schemaeditor.model.alias.AliasWithError;
 import org.apache.directory.studio.schemaeditor.model.alias.AliasesStringParser;
 import org.apache.directory.studio.schemaeditor.view.ViewUtils;
 import org.apache.directory.studio.schemaeditor.view.dialogs.AttributeTypeSelectionDialog;
-import org.apache.directory.studio.schemaeditor.view.dialogs.EditAliasesDialog;
+import org.apache.directory.studio.schemaeditor.view.dialogs.EditObjectClassAliasesDialog;
 import org.apache.directory.studio.schemaeditor.view.dialogs.ObjectClassSelectionDialog;
 import org.apache.directory.studio.schemaeditor.view.editors.NonExistingAttributeType;
 import org.apache.directory.studio.schemaeditor.view.editors.NonExistingObjectClass;
@@ -256,14 +256,10 @@ public class ObjectClassEditorOverviewPage extends FormPage
     {
         public void widgetSelected( SelectionEvent e )
         {
-            EditAliasesDialog editDialog = new EditAliasesDialog( modifiedObjectClass.getNames() );
-            if ( editDialog.open() != EditAliasesDialog.OK )
+            EditObjectClassAliasesDialog dialog = new EditObjectClassAliasesDialog( modifiedObjectClass.getNames() );
+            if ( dialog.open() == EditObjectClassAliasesDialog.OK )
             {
-                return;
-            }
-            if ( editDialog.isDirty() )
-            {
-                modifiedObjectClass.setNames( editDialog.getAliases() );
+                modifiedObjectClass.setNames( dialog.getAliases() );
                 if ( ( modifiedObjectClass.getNames() != null ) && ( modifiedObjectClass.getNames().size() != 0 ) )
                 {
                     aliasesText.setText( ViewUtils.concateAliases( modifiedObjectClass.getNames() ) );
@@ -1246,7 +1242,7 @@ public class ObjectClassEditorOverviewPage extends FormPage
     public void dispose()
     {
         removeListeners();
-        
+
         schemaHandler.removeListener( schemaHandlerListener );
 
         super.dispose();

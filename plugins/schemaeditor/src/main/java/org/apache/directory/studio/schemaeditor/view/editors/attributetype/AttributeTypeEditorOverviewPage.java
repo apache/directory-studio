@@ -39,7 +39,7 @@ import org.apache.directory.studio.schemaeditor.model.alias.Alias;
 import org.apache.directory.studio.schemaeditor.model.alias.AliasWithError;
 import org.apache.directory.studio.schemaeditor.model.alias.AliasesStringParser;
 import org.apache.directory.studio.schemaeditor.view.ViewUtils;
-import org.apache.directory.studio.schemaeditor.view.dialogs.EditAliasesDialog;
+import org.apache.directory.studio.schemaeditor.view.dialogs.EditAttributeTypeAliasesDialog;
 import org.apache.directory.studio.schemaeditor.view.editors.NonExistingAttributeType;
 import org.apache.directory.studio.schemaeditor.view.editors.NonExistingMatchingRule;
 import org.apache.directory.studio.schemaeditor.view.editors.NonExistingSyntax;
@@ -254,16 +254,12 @@ public class AttributeTypeEditorOverviewPage extends FormPage
     {
         public void widgetSelected( SelectionEvent e )
         {
-            EditAliasesDialog editDialog = new EditAliasesDialog( modifiedAttributeType.getNames() );
-            if ( editDialog.open() != EditAliasesDialog.OK )
+            EditAttributeTypeAliasesDialog dialog = new EditAttributeTypeAliasesDialog(
+                modifiedAttributeType.getNames() );
+            if ( dialog.open() == EditAttributeTypeAliasesDialog.OK )
             {
-                return;
-            }
-            if ( editDialog.isDirty() )
-            {
-                modifiedAttributeType.setNames( editDialog.getAliases() );
-                if ( ( modifiedAttributeType.getNames() != null )
-                    && ( modifiedAttributeType.getNames().size() != 0 ) )
+                modifiedAttributeType.setNames( dialog.getAliases() );
+                if ( ( modifiedAttributeType.getNames() != null ) && ( modifiedAttributeType.getNames().size() != 0 ) )
                 {
                     aliasesText.setText( ViewUtils.concateAliases( modifiedAttributeType.getNames() ) );
                 }

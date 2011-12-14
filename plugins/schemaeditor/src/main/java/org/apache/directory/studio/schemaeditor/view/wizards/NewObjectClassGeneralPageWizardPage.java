@@ -35,8 +35,7 @@ import org.apache.directory.studio.schemaeditor.model.alias.Alias;
 import org.apache.directory.studio.schemaeditor.model.alias.AliasWithPartError;
 import org.apache.directory.studio.schemaeditor.model.alias.AliasWithStartError;
 import org.apache.directory.studio.schemaeditor.model.alias.AliasesStringParser;
-import org.apache.directory.studio.schemaeditor.view.dialogs.EditAliasesDialog;
-import org.eclipse.jface.dialogs.Dialog;
+import org.apache.directory.studio.schemaeditor.view.dialogs.EditObjectClassAliasesDialog;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
@@ -219,9 +218,9 @@ public class NewObjectClassGeneralPageWizardPage extends AbstractWizardPage
              */
             public void widgetSelected( SelectionEvent arg0 )
             {
-                EditAliasesDialog dialog = new EditAliasesDialog( getAliasesValue() );
+                EditObjectClassAliasesDialog dialog = new EditObjectClassAliasesDialog( getAliasesValue() );
 
-                if ( ( dialog.open() == Dialog.OK ) && ( dialog.isDirty() ) )
+                if ( dialog.open() == EditObjectClassAliasesDialog.OK )
                 {
                     String[] newAliases = dialog.getAliases();
 

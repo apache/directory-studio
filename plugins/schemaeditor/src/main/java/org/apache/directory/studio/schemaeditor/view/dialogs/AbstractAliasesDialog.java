@@ -58,19 +58,16 @@ import org.eclipse.ui.PlatformUI;
 
 
 /**
- * This class implements the Manage Aliases Dialog.
+ * This class implements dialog to manage aliases.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class EditAliasesDialog extends Dialog
+public abstract class AbstractAliasesDialog extends Dialog
 {
     /** The aliases List */
     private List<String> initialLowerCasedAliases = new ArrayList<String>();
-    private List<String> aliases =new ArrayList<String>();
+    private List<String> aliases = new ArrayList<String>();
     private List<String> lowerCasedAliases = new ArrayList<String>();
-
-    /** The dirty flag */
-    private boolean dirty = false;
 
     /** The listener used to override the listerner on the RETURN key */
     private Listener returnKeyListener = new Listener()
@@ -97,12 +94,11 @@ public class EditAliasesDialog extends Dialog
 
 
     /**
-     * Creates a new instance of EditAliasesDialog.
+     * Creates a new instance of AbstractAliasesDialog.
      *
-     * @param aliases
-     *      an array containing the aliases
+     * @param aliases an array of aliases
      */
-    public EditAliasesDialog( List<String> aliases )
+    public AbstractAliasesDialog( List<String> aliases )
     {
         super( PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell() );
         if ( aliases != null )
@@ -129,7 +125,7 @@ public class EditAliasesDialog extends Dialog
 
         // Aliases Label
         Label aliasesLabel = new Label( composite, SWT.NONE );
-        aliasesLabel.setText( Messages.getString( "EditAliasesDialog.Aliases" ) ); //$NON-NLS-1$
+        aliasesLabel.setText( Messages.getString( "AbstractAliasesDialog.Aliases" ) ); //$NON-NLS-1$
         aliasesLabel.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, true, 2, 1 ) );
 
         // Aliases Table
@@ -150,18 +146,18 @@ public class EditAliasesDialog extends Dialog
 
         // Add Button
         addButton = new Button( composite, SWT.PUSH );
-        addButton.setText( Messages.getString( "EditAliasesDialog.Add" ) ); //$NON-NLS-1$
+        addButton.setText( Messages.getString( "AbstractAliasesDialog.Add" ) ); //$NON-NLS-1$
         addButton.setLayoutData( new GridData( SWT.FILL, SWT.NONE, false, false ) );
 
         // Edit Button
         editButton = new Button( composite, SWT.PUSH );
-        editButton.setText( Messages.getString( "EditAliasesDialog.Edit" ) ); //$NON-NLS-1$
+        editButton.setText( Messages.getString( "AbstractAliasesDialog.Edit" ) ); //$NON-NLS-1$
         editButton.setLayoutData( new GridData( SWT.FILL, SWT.NONE, false, false ) );
         editButton.setEnabled( false );
 
         // Remove Button
         removeButton = new Button( composite, SWT.PUSH );
-        removeButton.setText( Messages.getString( "EditAliasesDialog.Remove" ) ); //$NON-NLS-1$
+        removeButton.setText( Messages.getString( "AbstractAliasesDialog.Remove" ) ); //$NON-NLS-1$
         removeButton.setLayoutData( new GridData( SWT.FILL, SWT.NONE, false, false ) );
         removeButton.setEnabled( false );
 
@@ -180,7 +176,7 @@ public class EditAliasesDialog extends Dialog
         // Error Label
         errorLabel = new Label( errorComposite, SWT.NONE );
         errorLabel.setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, true ) );
-        errorLabel.setText( Messages.getString( "EditAliasesDialog.ElementWithSameAliasExists" ) ); //$NON-NLS-1$
+        errorLabel.setText( getAliasAlreadyExistsErrorMessage() );
 
         // Filling the Table with the given aliases
         fillAliasesTable();
@@ -248,7 +244,7 @@ public class EditAliasesDialog extends Dialog
         Menu menu = new Menu( getShell(), SWT.POP_UP );
         aliasesTable.setMenu( menu );
         MenuItem removeMenuItem = new MenuItem( menu, SWT.PUSH );
-        removeMenuItem.setText( Messages.getString( "EditAliasesDialog.Remove" ) ); //$NON-NLS-1$
+        removeMenuItem.setText( Messages.getString( "AbstractAliasesDialog.Remove" ) ); //$NON-NLS-1$
         removeMenuItem.setImage( PlatformUI.getWorkbench().getSharedImages().getImage( ISharedImages.IMG_TOOL_DELETE ) );
         removeMenuItem.addListener( SWT.Selection, new Listener()
         {
@@ -322,7 +318,6 @@ public class EditAliasesDialog extends Dialog
             aliases.remove( item.getText() );
             lowerCasedAliases.remove( Strings.toLowerCase( item.getText() ) );
         }
-        dirty = true;
     }
 
 
@@ -334,7 +329,6 @@ public class EditAliasesDialog extends Dialog
         TableItem item = new TableItem( aliasesTable, SWT.NONE );
         item.setText( "" ); //$NON-NLS-1$
         openTableEditor( item );
-        dirty = true;
     }
 
 
@@ -402,7 +396,6 @@ public class EditAliasesDialog extends Dialog
                     lowerCasedAliases.add( Strings.toLowerCase( newText ) );
                 }
                 item.setText( newText );
-                dirty = true;
             }
         }
         checkAliases();
@@ -433,17 +426,19 @@ public class EditAliasesDialog extends Dialog
 
         for ( String alias : aliases )
         {
-            if ( ( Activator.getDefault().getSchemaHandler().isAliasOrOidAlreadyTaken( alias ) )
+            if ( ( isAliasAlreadyTaken( alias ) )
                 && ( !initialLowerCasedAliases.contains( Strings.toLowerCase( alias ) ) ) )
             {
                 errorComposite.setVisible( true );
-                errorLabel.setText( Messages.getString( "EditAliasesDialog.ElementWithSameAliasExists" ) ); //$NON-NLS-1$
+                errorLabel.setText( getAliasAlreadyExistsErrorMessage() );
+                return;
             }
             else if ( !PluginUtils.verifyName( alias ) )
             {
                 errorComposite.setVisible( true );
-                errorLabel.setText( NLS.bind( Messages.getString( "EditAliasesDialog.TheAliasBegin" ), new String[] //$NON-NLS-1$
+                errorLabel.setText( NLS.bind( Messages.getString( "AbstractAliasesDialog.InvalidAlias" ), new String[] //$NON-NLS-1$
                     { alias } ) );
+                return;
             }
         }
     }
@@ -455,7 +450,7 @@ public class EditAliasesDialog extends Dialog
     protected void configureShell( Shell newShell )
     {
         super.configureShell( newShell );
-        newShell.setText( Messages.getString( "EditAliasesDialog.EditAlias" ) ); //$NON-NLS-1$
+        newShell.setText( Messages.getString( "AbstractAliasesDialog.EditAlias" ) ); //$NON-NLS-1$
     }
 
 
@@ -470,15 +465,20 @@ public class EditAliasesDialog extends Dialog
         return aliases.toArray( new String[0] );
     }
 
-    
+
     /**
-     * Gets the Dirty flag of the dialog
+     * Gets the error message in the case where an identical alias already exists.
      *
-     * @return
-     *      the dirty flag of the dialog
+     * @return the error message
      */
-    public boolean isDirty()
-    {
-        return dirty;
-    }
+    protected abstract String getAliasAlreadyExistsErrorMessage();
+
+
+    /**
+     * Checks if the given alias is already taken.
+     *
+     * @return <code>true</code> if the given alias is already taken,
+     *         <code>false</code> if not.
+     */
+    protected abstract boolean isAliasAlreadyTaken( String alias );
 }

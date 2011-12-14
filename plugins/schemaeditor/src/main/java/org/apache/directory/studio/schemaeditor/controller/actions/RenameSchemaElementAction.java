@@ -26,7 +26,8 @@ import org.apache.directory.studio.schemaeditor.Activator;
 import org.apache.directory.studio.schemaeditor.PluginConstants;
 import org.apache.directory.studio.schemaeditor.PluginUtils;
 import org.apache.directory.studio.schemaeditor.model.Schema;
-import org.apache.directory.studio.schemaeditor.view.dialogs.EditAliasesDialog;
+import org.apache.directory.studio.schemaeditor.view.dialogs.RenameAttributeTypeDialog;
+import org.apache.directory.studio.schemaeditor.view.dialogs.RenameObjectClassDialog;
 import org.apache.directory.studio.schemaeditor.view.dialogs.RenameSchemaDialog;
 import org.apache.directory.studio.schemaeditor.view.editors.EditorsUtils;
 import org.apache.directory.studio.schemaeditor.view.wrappers.AttributeTypeWrapper;
@@ -112,8 +113,8 @@ public class RenameSchemaElementAction extends Action implements IWorkbenchWindo
                 {
                     AttributeType attributeType = ( ( AttributeTypeWrapper ) selectedElement ).getAttributeType();
 
-                    EditAliasesDialog dialog = new EditAliasesDialog( attributeType.getNames() );
-                    if ( dialog.open() == EditAliasesDialog.OK )
+                    RenameAttributeTypeDialog dialog = new RenameAttributeTypeDialog( attributeType.getNames() );
+                    if ( dialog.open() == RenameAttributeTypeDialog.OK )
                     {
                         AttributeType modifiedAttributeType = PluginUtils.getClone( attributeType );
                         modifiedAttributeType.setNames( dialog.getAliases() );
@@ -126,8 +127,8 @@ public class RenameSchemaElementAction extends Action implements IWorkbenchWindo
                 {
                     ObjectClass objectClass = ( ( ObjectClassWrapper ) selectedElement ).getObjectClass();
 
-                    EditAliasesDialog dialog = new EditAliasesDialog( objectClass.getNames() );
-                    if ( dialog.open() == EditAliasesDialog.OK )
+                    RenameObjectClassDialog dialog = new RenameObjectClassDialog( objectClass.getNames() );
+                    if ( dialog.open() == RenameObjectClassDialog.OK )
                     {
                         ObjectClass modifiedObjectClass = PluginUtils.getClone( objectClass );
                         modifiedObjectClass.setNames( dialog.getAliases() );
