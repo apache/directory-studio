@@ -64,10 +64,10 @@ public class ConnectionParameter
      */
     public enum NetworkProvider
     {
-        /** No encryption. */
+        /** JNDI */
         JNDI,
 
-        /** SSL encryption. */
+        /** Apache Directory LDAP API */
         APACHE_DIRECTORY_LDAP_API
     }
 
