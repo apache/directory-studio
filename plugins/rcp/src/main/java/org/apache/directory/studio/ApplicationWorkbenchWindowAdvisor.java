@@ -21,6 +21,7 @@
 package org.apache.directory.studio;
 
 
+import org.apache.directory.studio.preferences.ShutdownPreferencesPage;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProduct;
 import org.eclipse.core.runtime.Platform;
@@ -68,7 +69,6 @@ import org.eclipse.ui.application.WorkbenchWindowAdvisor;
  */
 public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor
 {
-
     private IEditorPart lastActiveEditor = null;
     private IPerspectiveDescriptor lastPerspective = null;
     private IWorkbenchPage lastActivePage;
@@ -373,4 +373,9 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor
         recomputeTitle();
     }
 
+
+    public boolean preWindowShellClose()
+    {
+        return ShutdownPreferencesPage.promptOnExit();
+    }
 }

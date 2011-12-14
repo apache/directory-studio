@@ -103,5 +103,19 @@
          </presentation>
       </config>
    </extension>
+   
+   <extension
+         point="org.eclipse.core.runtime.preferences">
+      <initializer class="org.apache.directory.studio.preferences.RcpPreferencesInitializer"/>
+   </extension>
+   
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            category="%Pref_StudioPage_id"
+            class="org.apache.directory.studio.preferences.ShutdownPreferencesPage"
+            id="%PrefPage_ShutdownPreferencesPage_id"
+            name="%PrefPage_ShutdownPreferencesPage_name"/>
+   </extension>
 
 </plugin>

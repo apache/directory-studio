@@ -199,6 +199,11 @@
       <scope>provided</scope>
     </dependency>
     <dependency>
+      <groupId>org.eclipse.equinox</groupId>
+      <artifactId>preferences</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
       <groupId>org.eclipse</groupId>
       <artifactId>jface</artifactId>
       <scope>provided</scope>
