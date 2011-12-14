@@ -911,34 +911,56 @@ public class SchemaHandler
 
 
     /**
-     * Verifies if the given alias or oid is already taken by a schema object
+     * Verifies if the given oid is already taken by a schema object.
      *
-     * @param id
-     *      the alias or oid
-     * @return
-     *      true if the the alias or oid is already taken
+     * @param oid the oid
+     * @return <code>true</code> if the the oid is already taken
      */
-    public boolean isAliasOrOidAlreadyTaken( String id )
+    public boolean isOidAlreadyTaken( String oid )
     {
-        String lowerCasedId = Strings.toLowerCase( id );
-        if ( attributeTypesMap.containsKey( lowerCasedId ) )
+        String lowerCasedOid = Strings.toLowerCase( oid );
+        if ( attributeTypesMap.containsKey( lowerCasedOid ) )
         {
             return true;
         }
-        else if ( objectClassesMap.containsKey( lowerCasedId ) )
+        else if ( objectClassesMap.containsKey( lowerCasedOid ) )
         {
             return true;
         }
-        else if ( matchingRulesMap.containsKey( lowerCasedId ) )
+        else if ( matchingRulesMap.containsKey( lowerCasedOid ) )
         {
             return true;
         }
-        else if ( syntaxesMap.containsKey( lowerCasedId ) )
+        else if ( syntaxesMap.containsKey( lowerCasedOid ) )
         {
             return true;
         }
 
         return false;
+    }
+
+
+    /**
+     * Verifies if the given alias is already taken by an attribute type.
+     *
+     * @param alias the alias
+     * @return <code>true</code> if the the alias is already taken
+     */
+    public boolean isAliasAlreadyTakenForAttributeType( String alias )
+    {
+        return attributeTypesMap.containsKey( Strings.toLowerCase( alias ) );
+    }
+
+
+    /**
+     * Verifies if the given alias is already taken by an object class.
+     *
+     * @param alias the alias
+     * @return <code>true</code> if the the alias is already taken
+     */
+    public boolean isAliasAlreadyTakenForObjectClass( String alias )
+    {
+        return objectClassesMap.containsKey( Strings.toLowerCase( alias ) );
     }
 
 

@@ -285,7 +285,7 @@ public class AttributeTypeEditorOverviewPage extends FormPage
             if ( Oid.isOid( oid ) )
             {
                 if ( ( originalAttributeType.getOid().equals( oid ) )
-                    || !( schemaHandler.isAliasOrOidAlreadyTaken( oid ) ) )
+                    || !( schemaHandler.isOidAlreadyTaken( oid ) ) )
                 {
                     modifiedAttributeType.setOid( oid );
                     setEditorDirty();

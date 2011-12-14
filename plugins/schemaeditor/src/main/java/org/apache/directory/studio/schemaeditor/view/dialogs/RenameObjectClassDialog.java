@@ -30,7 +30,7 @@ import org.eclipse.swt.widgets.Shell;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class RenameObjectClassDialog extends EditAttributeTypeAliasesDialog
+public class RenameObjectClassDialog extends EditObjectClassAliasesDialog
 {
     /**
      * Creates a new instance of RenameObjectClassDialog.

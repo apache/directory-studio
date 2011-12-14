@@ -22,6 +22,7 @@ package org.apache.directory.studio.schemaeditor.view.dialogs;
 
 import java.util.List;
 
+import org.apache.directory.studio.schemaeditor.Activator;
 import org.eclipse.swt.widgets.Shell;
 
 
@@ -67,7 +68,6 @@ public class EditObjectClassAliasesDialog extends AbstractAliasesDialog
      */
     protected boolean isAliasAlreadyTaken( String alias )
     {
-        // TODO Auto-generated method stub
-        return false;
+        return Activator.getDefault().getSchemaHandler().isAliasAlreadyTakenForObjectClass( alias );
     }
 }

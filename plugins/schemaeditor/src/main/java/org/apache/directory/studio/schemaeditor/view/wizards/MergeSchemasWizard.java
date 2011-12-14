@@ -261,13 +261,13 @@ public class MergeSchemasWizard extends Wizard implements IImportWizard
         }
 
         // check if OID or alias name already exist in target project
-        boolean oidOrAliasAlreadyTaken = targetProject.getSchemaHandler().isAliasOrOidAlreadyTaken(
+        boolean oidOrAliasAlreadyTaken = targetProject.getSchemaHandler().isOidAlreadyTaken(
             sourceAttributeType.getOid() );
         if ( !oidOrAliasAlreadyTaken )
         {
             for ( String name : sourceAttributeType.getNames() )
             {
-                oidOrAliasAlreadyTaken = targetProject.getSchemaHandler().isAliasOrOidAlreadyTaken( name );
+                oidOrAliasAlreadyTaken = targetProject.getSchemaHandler().isAliasAlreadyTakenForAttributeType( name );
                 if ( oidOrAliasAlreadyTaken )
                 {
                     break;
@@ -385,13 +385,13 @@ public class MergeSchemasWizard extends Wizard implements IImportWizard
         }
 
         // check if OID or alias name already exist in target project
-        boolean oidOrAliasAlreadyTaken = targetProject.getSchemaHandler().isAliasOrOidAlreadyTaken(
+        boolean oidOrAliasAlreadyTaken = targetProject.getSchemaHandler().isOidAlreadyTaken(
             sourceObjectClass.getOid() );
         if ( !oidOrAliasAlreadyTaken )
         {
             for ( String name : sourceObjectClass.getNames() )
             {
-                oidOrAliasAlreadyTaken = targetProject.getSchemaHandler().isAliasOrOidAlreadyTaken( name );
+                oidOrAliasAlreadyTaken = targetProject.getSchemaHandler().isAliasAlreadyTakenForObjectClass( name );
                 if ( oidOrAliasAlreadyTaken )
                 {
                     break;
@@ -442,7 +442,8 @@ public class MergeSchemasWizard extends Wizard implements IImportWizard
                         {
                             if ( superClassName != null )
                             {
-                                ObjectClass superSourceObjectClass = Activator.getDefault().getSchemaHandler().getObjectClass( superClassName );
+                                ObjectClass superSourceObjectClass = Activator.getDefault().getSchemaHandler()
+                                    .getObjectClass( superClassName );
                                 ObjectClass superTargetObjectClass = targetProject.getSchemaHandler()
                                     .getObjectClass( superClassName );
                                 if ( superSourceObjectClass != null )
@@ -482,7 +483,8 @@ public class MergeSchemasWizard extends Wizard implements IImportWizard
                     {
                         if ( attributeName != null )
                         {
-                            AttributeType attributeType = Activator.getDefault().getSchemaHandler().getAttributeType( attributeName );
+                            AttributeType attributeType = Activator.getDefault().getSchemaHandler()
+                                .getAttributeType( attributeName );
                             if ( attributeType != null )
                             {
                                 mergeAttributeType( attributeType, targetProject, targetSchema, processedObjects,

@@ -335,7 +335,7 @@ public class NewAttributeTypeGeneralWizardPage extends AbstractWizardPage
             return;
         }
         if ( ( !oidCombo.getText().equals( "" ) ) && ( Oid.isOid( oidCombo.getText() ) ) //$NON-NLS-1$
-            && ( schemaHandler.isAliasOrOidAlreadyTaken( oidCombo.getText() ) ) )
+            && ( schemaHandler.isOidAlreadyTaken( oidCombo.getText() ) ) )
         {
             displayErrorMessage( Messages.getString( "NewAttributeTypeGeneralWizardPage.ErrorObjectOIDExists" ) ); //$NON-NLS-1$
             return;

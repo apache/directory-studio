@@ -286,7 +286,7 @@ public class ObjectClassEditorOverviewPage extends FormPage
             if ( Oid.isOid( oid ) )
             {
                 if ( ( originalObjectClass.getOid().equals( oid ) )
-                    || !( schemaHandler.isAliasOrOidAlreadyTaken( oid ) ) )
+                    || !( schemaHandler.isOidAlreadyTaken( oid ) ) )
                 {
                     modifiedObjectClass.setOid( oid );
                     setEditorDirty();
