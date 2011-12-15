@@ -91,12 +91,13 @@ public class EditorsUtils
     private static boolean askSaveAllDirtyEditors( IEditorPart[] dirtyEditors )
     {
         ListDialog dialog = new ListDialog( PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell() );
-        dialog.setTitle( "Save All Modified Resources" );
+        dialog.setTitle( Messages.getString( "EditorsUtils.SaveDialogTitle" ) ); //$NON-NLS-1$
         dialog.setAddCancelButton( true );
         dialog.setLabelProvider( createDialogLabelProvider() );
-        dialog.setMessage( "All modified resources must be saved before this operation." );
+        dialog.setMessage( Messages.getString( "EditorsUtils.SaveDialogMessage" ) ); //$NON-NLS-1$
         dialog.setContentProvider( new ArrayContentProvider() );
         dialog.setInput( dirtyEditors );
+        dialog.setHelpAvailable( false );
         return dialog.open() == Window.OK;
     }
 
