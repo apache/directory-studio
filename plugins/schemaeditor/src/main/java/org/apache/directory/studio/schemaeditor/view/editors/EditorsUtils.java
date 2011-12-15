@@ -118,7 +118,21 @@ public class EditorsUtils
 
             public String getText( Object element )
             {
-                return ( ( IEditorPart ) element ).getTitle();
+                IEditorPart editorPart = ( IEditorPart ) element;
+
+                StringBuilder sb = new StringBuilder();
+                sb.append( editorPart.getTitle() );
+
+                String tooltip = editorPart.getTitleToolTip();
+
+                if ( ( tooltip != null ) && ( !"".equals( tooltip ) ) )
+                {
+                    sb.append( " [" );
+                    sb.append( tooltip );
+                    sb.append( "]" );
+                }
+
+                return sb.toString();
             }
         };
     }
