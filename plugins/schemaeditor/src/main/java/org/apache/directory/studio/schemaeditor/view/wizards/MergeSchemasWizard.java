@@ -35,7 +35,9 @@ import org.apache.directory.studio.schemaeditor.model.Project;
 import org.apache.directory.studio.schemaeditor.model.Schema;
 import org.apache.directory.studio.schemaeditor.view.dialogs.MessageDialogWithTextarea;
 import org.apache.directory.studio.schemaeditor.view.wizards.MergeSchemasSelectionWizardPage.AttributeTypeFolder;
+import org.apache.directory.studio.schemaeditor.view.wizards.MergeSchemasSelectionWizardPage.AttributeTypeWrapper;
 import org.apache.directory.studio.schemaeditor.view.wizards.MergeSchemasSelectionWizardPage.ObjectClassFolder;
+import org.apache.directory.studio.schemaeditor.view.wizards.MergeSchemasSelectionWizardPage.ObjectClassWrapper;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.osgi.util.NLS;
@@ -156,22 +158,18 @@ public class MergeSchemasWizard extends Wizard implements IImportWizard
                         replaceUnknownSyntax, mergeDependencies, pullUpAttributes );
                 }
             }
-            if ( sourceObject instanceof AttributeType )
+            if ( sourceObject instanceof AttributeTypeWrapper )
             {
-                AttributeType at = ( AttributeType ) sourceObject;
-                Schema targetSchema = getTargetSchema(
-                    Activator.getDefault().getSchemaHandler().getSchema( at.getSchemaName() ).getProject(),
-                    targetProject, targetSchemas );
-                mergeAttributeType( at, targetProject, targetSchema, processedObjects, errorMessages,
+                AttributeTypeWrapper atw = ( AttributeTypeWrapper ) sourceObject;
+                Schema targetSchema = getTargetSchema( atw.folder.schema.getProject(), targetProject, targetSchemas );
+                mergeAttributeType( atw.attributeType, targetProject, targetSchema, processedObjects, errorMessages,
                     replaceUnknownSyntax, mergeDependencies, pullUpAttributes );
             }
-            if ( sourceObject instanceof ObjectClass )
+            if ( sourceObject instanceof ObjectClassWrapper )
             {
-                ObjectClass oc = ( ObjectClass ) sourceObject;
-                Schema targetSchema = getTargetSchema(
-                    Activator.getDefault().getSchemaHandler().getSchema( oc.getSchemaName() ).getProject(),
-                    targetProject, targetSchemas );
-                mergeObjectClass( oc, targetProject, targetSchema, processedObjects, errorMessages,
+                ObjectClassWrapper ocw = ( ObjectClassWrapper ) sourceObject;
+                Schema targetSchema = getTargetSchema( ocw.folder.schema.getProject(), targetProject, targetSchemas );
+                mergeObjectClass( ocw.objectClass, targetProject, targetSchema, processedObjects, errorMessages,
                     replaceUnknownSyntax, mergeDependencies, pullUpAttributes );
             }
         }

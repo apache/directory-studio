@@ -144,14 +144,22 @@ public class MergeSchemasSelectionWizardPage extends AbstractWizardPage
                 if ( parentElement instanceof AttributeTypeFolder )
                 {
                     AttributeTypeFolder folder = ( AttributeTypeFolder ) parentElement;
-                    List<AttributeType> attributeTypes = folder.schema.getAttributeTypes();
-                    return attributeTypes.toArray();
+                    List<AttributeTypeWrapper> attributeTypeWrappers = new ArrayList<AttributeTypeWrapper>();
+                    for ( AttributeType attributeType : folder.schema.getAttributeTypes() )
+                    {
+                        attributeTypeWrappers.add( new AttributeTypeWrapper( attributeType, folder ) );
+                    }
+                    return attributeTypeWrappers.toArray();
                 }
                 if ( parentElement instanceof ObjectClassFolder )
                 {
                     ObjectClassFolder folder = ( ObjectClassFolder ) parentElement;
-                    List<ObjectClass> objectClasses = folder.schema.getObjectClasses();
-                    return objectClasses.toArray();
+                    List<ObjectClassWrapper> objectClassWrappers = new ArrayList<ObjectClassWrapper>();
+                    for ( ObjectClass objectClass : folder.schema.getObjectClasses() )
+                    {
+                        objectClassWrappers.add( new ObjectClassWrapper( objectClass, folder ) );
+                    }
+                    return objectClassWrappers.toArray();
                 }
 
                 return new Object[0];
@@ -177,26 +185,26 @@ public class MergeSchemasSelectionWizardPage extends AbstractWizardPage
                 {
                     return Messages.getString( "MergeSchemasSelectionWizardPage.AttributeTypes" ); //$NON-NLS-1$
                 }
-                else if ( element instanceof AttributeType )
+                else if ( element instanceof AttributeTypeWrapper )
                 {
-                    AttributeType at = ( ( AttributeType ) element );
+                    AttributeType at = ( ( AttributeTypeWrapper ) element ).attributeType;
                     List<String> names = at.getNames();
                     if ( ( names != null ) && ( names.size() > 0 ) )
                     {
-                        return names.get(0);
+                        return names.get( 0 );
                     }
                     else
                     {
                         return at.getOid();
                     }
                 }
-                else if ( element instanceof ObjectClass )
+                else if ( element instanceof ObjectClassWrapper )
                 {
-                    ObjectClass oc = ( ( ObjectClass ) element );
+                    ObjectClass oc = ( ( ObjectClassWrapper ) element ).objectClass;
                     List<String> names = oc.getNames();
                     if ( ( names != null ) && ( names.size() > 0 ) )
                     {
-                        return names.get(0);
+                        return names.get( 0 );
                     }
                     else
                     {
@@ -234,11 +242,11 @@ public class MergeSchemasSelectionWizardPage extends AbstractWizardPage
                 {
                     return Activator.getDefault().getImage( PluginConstants.IMG_FOLDER_AT );
                 }
-                else if ( element instanceof AttributeType )
+                else if ( element instanceof AttributeTypeWrapper )
                 {
                     return Activator.getDefault().getImage( PluginConstants.IMG_ATTRIBUTE_TYPE );
                 }
-                else if ( element instanceof ObjectClass )
+                else if ( element instanceof ObjectClassWrapper )
                 {
                     return Activator.getDefault().getImage( PluginConstants.IMG_OBJECT_CLASS );
                 }
@@ -353,6 +361,32 @@ public class MergeSchemasSelectionWizardPage extends AbstractWizardPage
         public AttributeTypeFolder( Schema schema )
         {
             this.schema = schema;
+        }
+    }
+
+    class ObjectClassWrapper
+    {
+        ObjectClass objectClass;
+        ObjectClassFolder folder;
+
+
+        public ObjectClassWrapper( ObjectClass objectClass, ObjectClassFolder folder )
+        {
+            this.objectClass = objectClass;
+            this.folder = folder;
+        }
+    }
+
+    class AttributeTypeWrapper
+    {
+        AttributeType attributeType;
+        AttributeTypeFolder folder;
+
+
+        public AttributeTypeWrapper( AttributeType attributeType, AttributeTypeFolder folder )
+        {
+            this.attributeType = attributeType;
+            this.folder = folder;
         }
     }
 }
