@@ -1186,23 +1186,23 @@ public class ObjectClassEditorOverviewPage extends AbstractObjectClassEditorPage
      */
     protected void addListeners()
     {
-        aliasesText.addModifyListener( aliasesTextModifyListener );
-        aliasesButton.addSelectionListener( aliasesButtonListener );
-        oidText.addModifyListener( oidTextModifyListener );
-        oidText.addVerifyListener( oidTextVerifyListener );
-        descriptionText.addModifyListener( descriptionTextListener );
-        addButtonSuperiorsTable.addSelectionListener( addButtonSuperiorsTableListener );
-        removeButtonSuperiorsTable.addSelectionListener( removeButtonSuperiorsTableListener );
-        classTypeCombo.addModifyListener( classTypeListener );
-        obsoleteCheckbox.addSelectionListener( obsoleteListener );
-        addButtonMandatoryTable.addSelectionListener( addButtonMandatoryTableListener );
-        removeButtonMandatoryTable.addSelectionListener( removeButtonMandatoryTableListener );
-        addButtonOptionalTable.addSelectionListener( addButtonOptionalTableListener );
-        removeButtonOptionalTable.addSelectionListener( removeButtonOptionalTableListener );
-        schemaLink.addHyperlinkListener( schemaLinkListener );
-        superiorsTable.addMouseListener( superiorsTableListener );
-        mandatoryAttributesTable.addMouseListener( mandatoryAttributesTableListener );
-        optionalAttributesTable.addMouseListener( optionalAttributesTableListener );
+        addModifyListener( aliasesText, aliasesTextModifyListener );
+        addSelectionListener( aliasesButton, aliasesButtonListener );
+        addModifyListener( oidText, oidTextModifyListener );
+        addVerifyListener( oidText, oidTextVerifyListener );
+        addModifyListener( descriptionText, descriptionTextListener );
+        addSelectionListener( addButtonSuperiorsTable, addButtonSuperiorsTableListener );
+        addSelectionListener( removeButtonSuperiorsTable, removeButtonSuperiorsTableListener );
+        addModifyListener( classTypeCombo, classTypeListener );
+        addSelectionListener( obsoleteCheckbox, obsoleteListener );
+        addSelectionListener( addButtonMandatoryTable, addButtonMandatoryTableListener );
+        addSelectionListener( addButtonMandatoryTable, removeButtonMandatoryTableListener );
+        addSelectionListener( addButtonOptionalTable, addButtonOptionalTableListener );
+        addSelectionListener( removeButtonOptionalTable, removeButtonOptionalTableListener );
+        addHyperlinkListener( schemaLink, schemaLinkListener );
+        addMouseListener( superiorsTable, superiorsTableListener );
+        addMouseListener( mandatoryAttributesTable, mandatoryAttributesTableListener );
+        addMouseListener( optionalAttributesTable, optionalAttributesTableListener );
 
         Display.getCurrent().addFilter( SWT.MouseWheel, mouseWheelFilter );
     }
@@ -1213,23 +1213,23 @@ public class ObjectClassEditorOverviewPage extends AbstractObjectClassEditorPage
      */
     protected void removeListeners()
     {
-        aliasesText.removeModifyListener( aliasesTextModifyListener );
-        aliasesButton.removeSelectionListener( aliasesButtonListener );
-        oidText.removeModifyListener( oidTextModifyListener );
-        oidText.removeVerifyListener( oidTextVerifyListener );
-        schemaLink.removeHyperlinkListener( schemaLinkListener );
-        descriptionText.removeModifyListener( descriptionTextListener );
-        superiorsTable.removeMouseListener( superiorsTableListener );
-        addButtonSuperiorsTable.removeSelectionListener( addButtonSuperiorsTableListener );
-        removeButtonSuperiorsTable.removeSelectionListener( removeButtonSuperiorsTableListener );
-        classTypeCombo.removeModifyListener( classTypeListener );
-        obsoleteCheckbox.removeSelectionListener( obsoleteListener );
-        mandatoryAttributesTable.removeMouseListener( mandatoryAttributesTableListener );
-        addButtonMandatoryTable.removeSelectionListener( addButtonMandatoryTableListener );
-        removeButtonMandatoryTable.removeSelectionListener( removeButtonMandatoryTableListener );
-        optionalAttributesTable.removeMouseListener( optionalAttributesTableListener );
-        addButtonOptionalTable.removeSelectionListener( addButtonOptionalTableListener );
-        removeButtonOptionalTable.removeSelectionListener( removeButtonOptionalTableListener );
+        removeModifyListener( aliasesText, aliasesTextModifyListener );
+        removeSelectionListener( aliasesButton, aliasesButtonListener );
+        removeModifyListener( oidText, oidTextModifyListener );
+        removeVerifyListener( oidText, oidTextVerifyListener );
+        removeHyperlinkListener( schemaLink, schemaLinkListener );
+        removeModifyListener( descriptionText, descriptionTextListener );
+        removeMouseListener( superiorsTable, superiorsTableListener );
+        removeSelectionListener( addButtonSuperiorsTable, addButtonSuperiorsTableListener );
+        removeSelectionListener( removeButtonSuperiorsTable, removeButtonSuperiorsTableListener );
+        removeModifyListener( classTypeCombo, classTypeListener );
+        removeSelectionListener( obsoleteCheckbox, obsoleteListener );
+        removeMouseListener( mandatoryAttributesTable, mandatoryAttributesTableListener );
+        removeSelectionListener( addButtonMandatoryTable, addButtonMandatoryTableListener );
+        removeSelectionListener( removeButtonMandatoryTable, removeButtonMandatoryTableListener );
+        removeMouseListener( optionalAttributesTable, optionalAttributesTableListener );
+        removeSelectionListener( addButtonOptionalTable, addButtonOptionalTableListener );
+        removeSelectionListener( removeButtonOptionalTable, removeButtonOptionalTableListener );
 
         Display.getCurrent().removeFilter( SWT.MouseWheel, mouseWheelFilter );
     }

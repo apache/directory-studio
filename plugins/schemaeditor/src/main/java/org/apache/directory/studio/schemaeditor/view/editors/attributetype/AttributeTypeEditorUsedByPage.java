@@ -351,8 +351,8 @@ public class AttributeTypeEditorUsedByPage extends AbstractAttributeTypeEditorPa
      */
     protected void addListeners()
     {
-        mandatoryAttributeTable.addMouseListener( mandatoryAttributeTableListener );
-        optionalAttibuteTable.addMouseListener( optionalAttibuteTableListener );
+        addMouseListener( mandatoryAttributeTable, mandatoryAttributeTableListener );
+        addMouseListener( optionalAttibuteTable, optionalAttibuteTableListener );
     }
 
 
@@ -361,8 +361,8 @@ public class AttributeTypeEditorUsedByPage extends AbstractAttributeTypeEditorPa
      */
     protected void removeListeners()
     {
-        mandatoryAttributeTable.removeMouseListener( mandatoryAttributeTableListener );
-        optionalAttibuteTable.removeMouseListener( optionalAttibuteTableListener );
+        removeMouseListener( mandatoryAttributeTable, mandatoryAttributeTableListener );
+        removeMouseListener( optionalAttibuteTable, optionalAttibuteTableListener );
     }
 
 

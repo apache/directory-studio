@@ -150,7 +150,10 @@ public class ObjectClassEditorSourceCodePage extends AbstractObjectClassEditorPa
      */
     protected void addListeners()
     {
-        schemaSourceViewer.getTextWidget().addModifyListener( schemaSourceViewerListener );
+        if ( schemaSourceViewer != null )
+        {
+            schemaSourceViewer.getTextWidget().addModifyListener( schemaSourceViewerListener );
+        }
     }
 
 
@@ -159,7 +162,10 @@ public class ObjectClassEditorSourceCodePage extends AbstractObjectClassEditorPa
      */
     protected void removeListeners()
     {
-        schemaSourceViewer.getTextWidget().removeModifyListener( schemaSourceViewerListener );
+        if ( schemaSourceViewer != null )
+        {
+            schemaSourceViewer.getTextWidget().removeModifyListener( schemaSourceViewerListener );
+        }
     }
 
 

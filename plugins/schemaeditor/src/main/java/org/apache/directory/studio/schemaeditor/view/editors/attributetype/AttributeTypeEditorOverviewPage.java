@@ -1144,25 +1144,25 @@ public class AttributeTypeEditorOverviewPage extends AbstractAttributeTypeEditor
      */
     protected void addListeners()
     {
-        aliasesText.addModifyListener( aliasesTextModifyListener );
-        aliasesButton.addSelectionListener( aliasesButtonListener );
-        oidText.addModifyListener( oidTextModifyListener );
-        oidText.addVerifyListener( oidTextVerifyListener );
-        schemaLink.addHyperlinkListener( schemaLinkListener );
-        descriptionText.addModifyListener( descriptionTextListener );
-        supLabel.addHyperlinkListener( supLabelListener );
-        supComboViewer.addSelectionChangedListener( supComboViewerListener );
-        usageCombo.addModifyListener( usageComboListener );
-        syntaxComboViewer.addSelectionChangedListener( syntaxComboViewerListener );
-        syntaxLengthText.addModifyListener( syntaxLengthTextModifyListener );
-        syntaxLengthText.addVerifyListener( syntaxLengthTextVerifyListener );
-        obsoleteCheckbox.addSelectionListener( obsoleteCheckboxListener );
-        singleValueCheckbox.addSelectionListener( singleValueCheckboxListener );
-        collectiveCheckbox.addSelectionListener( collectiveCheckboxListener );
-        noUserModificationCheckbox.addSelectionListener( noUserModificationCheckboxListener );
-        equalityComboViewer.addSelectionChangedListener( equalityComboViewerListener );
-        orderingComboViewer.addSelectionChangedListener( orderingComboViewerListener );
-        substringComboViewer.addSelectionChangedListener( substringComboViewerListener );
+        addModifyListener( aliasesText, aliasesTextModifyListener );
+        addSelectionListener( aliasesButton, aliasesButtonListener );
+        addModifyListener( oidText, oidTextModifyListener );
+        addVerifyListener( oidText, oidTextVerifyListener );
+        addHyperlinkListener( schemaLink, schemaLinkListener );
+        addModifyListener( descriptionText, descriptionTextListener );
+        addHyperlinkListener( supLabel, supLabelListener );
+        addSelectionChangedListener( supComboViewer, supComboViewerListener );
+        addModifyListener( usageCombo, usageComboListener );
+        addSelectionChangedListener( syntaxComboViewer, syntaxComboViewerListener );
+        addModifyListener( syntaxLengthText, syntaxLengthTextModifyListener );
+        addVerifyListener( syntaxLengthText, syntaxLengthTextVerifyListener );
+        addSelectionListener( obsoleteCheckbox, obsoleteCheckboxListener );
+        addSelectionListener( singleValueCheckbox, singleValueCheckboxListener );
+        addSelectionListener( collectiveCheckbox, collectiveCheckboxListener );
+        addSelectionListener( noUserModificationCheckbox, noUserModificationCheckboxListener );
+        addSelectionChangedListener( equalityComboViewer, equalityComboViewerListener );
+        addSelectionChangedListener( orderingComboViewer, orderingComboViewerListener );
+        addSelectionChangedListener( substringComboViewer, substringComboViewerListener );
 
         Display.getCurrent().addFilter( SWT.MouseWheel, mouseWheelFilter );
     }
@@ -1173,25 +1173,25 @@ public class AttributeTypeEditorOverviewPage extends AbstractAttributeTypeEditor
      */
     protected void removeListeners()
     {
-        aliasesText.removeModifyListener( aliasesTextModifyListener );
-        aliasesButton.removeSelectionListener( aliasesButtonListener );
-        oidText.removeModifyListener( oidTextModifyListener );
-        oidText.removeVerifyListener( oidTextVerifyListener );
-        schemaLink.removeHyperlinkListener( schemaLinkListener );
-        descriptionText.removeModifyListener( descriptionTextListener );
-        supLabel.removeHyperlinkListener( supLabelListener );
-        supComboViewer.removeSelectionChangedListener( supComboViewerListener );
-        usageCombo.removeModifyListener( usageComboListener );
-        syntaxComboViewer.removeSelectionChangedListener( syntaxComboViewerListener );
-        syntaxLengthText.removeModifyListener( syntaxLengthTextModifyListener );
-        syntaxLengthText.removeVerifyListener( syntaxLengthTextVerifyListener );
-        obsoleteCheckbox.removeSelectionListener( obsoleteCheckboxListener );
-        singleValueCheckbox.removeSelectionListener( singleValueCheckboxListener );
-        collectiveCheckbox.removeSelectionListener( collectiveCheckboxListener );
-        noUserModificationCheckbox.removeSelectionListener( noUserModificationCheckboxListener );
-        equalityComboViewer.removeSelectionChangedListener( equalityComboViewerListener );
-        orderingComboViewer.removeSelectionChangedListener( orderingComboViewerListener );
-        substringComboViewer.removeSelectionChangedListener( substringComboViewerListener );
+        removeModifyListener( aliasesText, aliasesTextModifyListener );
+        removeSelectionListener( aliasesButton, aliasesButtonListener );
+        removeModifyListener( oidText, oidTextModifyListener );
+        removeVerifyListener( oidText, oidTextVerifyListener );
+        removeHyperlinkListener( schemaLink, schemaLinkListener );
+        removeModifyListener( descriptionText, descriptionTextListener );
+        removeHyperlinkListener( supLabel, supLabelListener );
+        removeSelectionChangedListener( supComboViewer, supComboViewerListener );
+        removeModifyListener( usageCombo, usageComboListener );
+        removeSelectionChangedListener( syntaxComboViewer, syntaxComboViewerListener );
+        removeModifyListener( syntaxLengthText, syntaxLengthTextModifyListener );
+        removeVerifyListener( syntaxLengthText, syntaxLengthTextVerifyListener );
+        removeSelectionListener( obsoleteCheckbox, obsoleteCheckboxListener );
+        removeSelectionListener( singleValueCheckbox, singleValueCheckboxListener );
+        removeSelectionListener( collectiveCheckbox, collectiveCheckboxListener );
+        removeSelectionListener( noUserModificationCheckbox, noUserModificationCheckboxListener );
+        removeSelectionChangedListener( equalityComboViewer, equalityComboViewerListener );
+        removeSelectionChangedListener( orderingComboViewer, orderingComboViewerListener );
+        removeSelectionChangedListener( substringComboViewer, substringComboViewerListener );
 
         Display.getCurrent().removeFilter( SWT.MouseWheel, mouseWheelFilter );
     }
