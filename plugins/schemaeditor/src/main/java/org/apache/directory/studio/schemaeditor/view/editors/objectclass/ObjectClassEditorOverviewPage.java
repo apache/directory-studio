@@ -76,8 +76,6 @@ import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.forms.IManagedForm;
-import org.eclipse.ui.forms.editor.FormEditor;
-import org.eclipse.ui.forms.editor.FormPage;
 import org.eclipse.ui.forms.events.HyperlinkAdapter;
 import org.eclipse.ui.forms.events.HyperlinkEvent;
 import org.eclipse.ui.forms.widgets.FormToolkit;
@@ -89,16 +87,10 @@ import org.eclipse.ui.forms.widgets.Section;
 /**
  * This class is the Overview Page of the Object Class Editor
  */
-public class ObjectClassEditorOverviewPage extends FormPage
+public class ObjectClassEditorOverviewPage extends AbstractObjectClassEditorPage
 {
     /** The page ID */
     public static final String ID = ObjectClassEditor.ID + "overviewPage"; //$NON-NLS-1$
-
-    /** The original object class */
-    private ObjectClass originalObjectClass;
-
-    /** The modified object class */
-    private ObjectClass modifiedObjectClass;
 
     /** The original schema */
     private Schema originalSchema;
@@ -159,7 +151,7 @@ public class ObjectClassEditorOverviewPage extends FormPage
 
         public void objectClassRemoved( ObjectClass oc )
         {
-            if ( !oc.equals( originalObjectClass ) )
+            if ( !oc.equals( getOriginalObjectClass() ) )
             {
                 refreshUI();
             }
@@ -234,6 +226,7 @@ public class ObjectClassEditorOverviewPage extends FormPage
     {
         public void modifyText( ModifyEvent e )
         {
+            ObjectClass modifiedObjectClass = getModifiedObjectClass();
             AliasesStringParser parser = new AliasesStringParser();
             parser.parse( aliasesText.getText() );
             List<Alias> parsedAliases = parser.getAliases();
@@ -256,6 +249,8 @@ public class ObjectClassEditorOverviewPage extends FormPage
     {
         public void widgetSelected( SelectionEvent e )
         {
+            ObjectClass modifiedObjectClass = getModifiedObjectClass();
+
             EditObjectClassAliasesDialog dialog = new EditObjectClassAliasesDialog( modifiedObjectClass.getNames() );
             if ( dialog.open() == EditObjectClassAliasesDialog.OK )
             {
@@ -281,11 +276,12 @@ public class ObjectClassEditorOverviewPage extends FormPage
             oidText.setForeground( ViewUtils.COLOR_BLACK );
             oidText.setToolTipText( "" ); //$NON-NLS-1$
 
+            ObjectClass modifiedObjectClass = getModifiedObjectClass();
             String oid = oidText.getText();
 
             if ( Oid.isOid( oid ) )
             {
-                if ( ( originalObjectClass.getOid().equals( oid ) )
+                if ( ( getOriginalObjectClass().getOid().equals( oid ) )
                     || !( schemaHandler.isOidAlreadyTaken( oid ) ) )
                 {
                     modifiedObjectClass.setOid( oid );
@@ -324,7 +320,7 @@ public class ObjectClassEditorOverviewPage extends FormPage
         {
             IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
 
-            SchemaEditorInput input = new SchemaEditorInput( schemaHandler.getSchema( modifiedObjectClass
+            SchemaEditorInput input = new SchemaEditorInput( schemaHandler.getSchema( getModifiedObjectClass()
                 .getSchemaName() ) );
             String editorId = SchemaEditor.ID;
             try
@@ -344,7 +340,7 @@ public class ObjectClassEditorOverviewPage extends FormPage
         public void modifyText( ModifyEvent e )
         {
             int caretPosition = descriptionText.getCaretPosition();
-            modifiedObjectClass.setDescription( descriptionText.getText() );
+            getModifiedObjectClass().setDescription( descriptionText.getText() );
             descriptionText.setSelection( caretPosition );
             setEditorDirty();
         }
@@ -355,6 +351,8 @@ public class ObjectClassEditorOverviewPage extends FormPage
     {
         public void modifyText( ModifyEvent e )
         {
+            ObjectClass modifiedObjectClass = getModifiedObjectClass();
+
             if ( classTypeCombo.getSelectionIndex() == 0 )
             {
                 modifiedObjectClass.setType( ObjectClassTypeEnum.ABSTRACT );
@@ -376,7 +374,7 @@ public class ObjectClassEditorOverviewPage extends FormPage
     {
         public void widgetSelected( SelectionEvent e )
         {
-            modifiedObjectClass.setObsolete( obsoleteCheckbox.getSelection() );
+            getModifiedObjectClass().setObsolete( obsoleteCheckbox.getSelection() );
             setEditorDirty();
         }
     };
@@ -428,6 +426,8 @@ public class ObjectClassEditorOverviewPage extends FormPage
     {
         public void widgetSelected( SelectionEvent e )
         {
+            ObjectClass modifiedObjectClass = getModifiedObjectClass();
+
             AttributeTypeSelectionDialog dialog = new AttributeTypeSelectionDialog();
             List<AttributeType> hiddenATs = new ArrayList<AttributeType>();
             List<String> mustsHidden = modifiedObjectClass.getMustAttributeTypeOids();
@@ -490,6 +490,8 @@ public class ObjectClassEditorOverviewPage extends FormPage
             {
                 return;
             }
+
+            ObjectClass modifiedObjectClass = getModifiedObjectClass();
 
             Object selectedElement = selection.getFirstElement();
             if ( selectedElement != null )
@@ -565,6 +567,7 @@ public class ObjectClassEditorOverviewPage extends FormPage
     {
         public void widgetSelected( SelectionEvent e )
         {
+            ObjectClass modifiedObjectClass = getModifiedObjectClass();
             AttributeTypeSelectionDialog dialog = new AttributeTypeSelectionDialog();
             List<AttributeType> hiddenATs = new ArrayList<AttributeType>();
             List<String> maysHidden = modifiedObjectClass.getMayAttributeTypeOids();
@@ -627,6 +630,8 @@ public class ObjectClassEditorOverviewPage extends FormPage
             {
                 return;
             }
+
+            ObjectClass modifiedObjectClass = getModifiedObjectClass();
 
             Object selectedElement = selection.getFirstElement();
             if ( selectedElement != null )
@@ -702,6 +707,7 @@ public class ObjectClassEditorOverviewPage extends FormPage
     {
         public void widgetSelected( SelectionEvent e )
         {
+            ObjectClass modifiedObjectClass = getModifiedObjectClass();
             ObjectClassSelectionDialog dialog = new ObjectClassSelectionDialog();
             List<ObjectClass> hiddenOCs = new ArrayList<ObjectClass>();
             for ( String sup : modifiedObjectClass.getSuperiorOids() )
@@ -712,7 +718,7 @@ public class ObjectClassEditorOverviewPage extends FormPage
                     hiddenOCs.add( oc );
                 }
             }
-            hiddenOCs.add( originalObjectClass );
+            hiddenOCs.add( getOriginalObjectClass() );
             dialog.setHiddenObjectClasses( hiddenOCs.toArray( new ObjectClass[0] ) );
 
             if ( dialog.open() != ObjectClassSelectionDialog.OK )
@@ -758,6 +764,8 @@ public class ObjectClassEditorOverviewPage extends FormPage
             {
                 return;
             }
+
+            ObjectClass modifiedObjectClass = getModifiedObjectClass();
 
             Object selectedElement = selection.getFirstElement();
             if ( selectedElement != null )
@@ -806,11 +814,11 @@ public class ObjectClassEditorOverviewPage extends FormPage
 
 
     /**
-     * Default constructor
-     * @param editor
-     *      the associated editor
+     * Default constructor.
+     * 
+     * @param editor the associated editor
      */
-    public ObjectClassEditorOverviewPage( FormEditor editor )
+    public ObjectClassEditorOverviewPage( ObjectClassEditor editor )
     {
         super( editor, ID, Messages.getString( "ObjectClassEditorOverviewPage.Overview" ) ); //$NON-NLS-1$
         schemaHandler = Activator.getDefault().getSchemaHandler();
@@ -823,6 +831,8 @@ public class ObjectClassEditorOverviewPage extends FormPage
      */
     protected void createFormContent( IManagedForm managedForm )
     {
+        super.createFormContent( managedForm );
+
         // Creating the base UI
         ScrolledForm form = managedForm.getForm();
         FormToolkit toolkit = managedForm.getToolkit();
@@ -840,9 +850,6 @@ public class ObjectClassEditorOverviewPage extends FormPage
 
         // Optionnal Attributes Section
         createOptionalAttributesSection( bottomComposite, toolkit );
-
-        // Enabling or disabling the fields
-        //        setFieldsEditableState();
 
         // Filling the UI with values from the object class
         fillInUiFields();
@@ -1056,14 +1063,13 @@ public class ObjectClassEditorOverviewPage extends FormPage
 
 
     /**
-     * Initializes the UI fields from the input.
+     * {@inheritDoc}
      */
-    private void fillInUiFields()
+    protected void fillInUiFields()
     {
         // Getting the original and modified object classes
-        modifiedObjectClass = ( ( ObjectClassEditor ) getEditor() ).getModifiedObjectClass();
-        originalObjectClass = ( ( ObjectClassEditor ) getEditor() ).getOriginalObjectClass();
-        originalSchema = schemaHandler.getSchema( originalObjectClass.getSchemaName() );
+        ObjectClass modifiedObjectClass = getModifiedObjectClass();
+        originalSchema = schemaHandler.getSchema( getOriginalObjectClass().getSchemaName() );
 
         // ALIASES Label
         if ( ( modifiedObjectClass.getNames() != null ) && ( modifiedObjectClass.getNames().size() != 0 ) )
@@ -1111,9 +1117,9 @@ public class ObjectClassEditorOverviewPage extends FormPage
      */
     private void fillInSuperiorsTable()
     {
-        if ( modifiedObjectClass.getSuperiorOids() != null )
+        if ( getModifiedObjectClass().getSuperiorOids() != null )
         {
-            superiorsTableViewer.setInput( modifiedObjectClass.getSuperiorOids() );
+            superiorsTableViewer.setInput( getModifiedObjectClass().getSuperiorOids() );
         }
     }
 
@@ -1134,17 +1140,19 @@ public class ObjectClassEditorOverviewPage extends FormPage
      */
     private void fillInClassType()
     {
-        if ( modifiedObjectClass.getType() == ObjectClassTypeEnum.ABSTRACT )
+        ObjectClassTypeEnum type = getModifiedObjectClass().getType();
+
+        switch ( type )
         {
-            classTypeCombo.select( 0 );
-        }
-        else if ( modifiedObjectClass.getType() == ObjectClassTypeEnum.AUXILIARY )
-        {
-            classTypeCombo.select( 1 );
-        }
-        else if ( modifiedObjectClass.getType() == ObjectClassTypeEnum.STRUCTURAL )
-        {
-            classTypeCombo.select( 2 );
+            case ABSTRACT:
+                classTypeCombo.select( 0 );
+                return;
+            case AUXILIARY:
+                classTypeCombo.select( 1 );
+                return;
+            case STRUCTURAL:
+                classTypeCombo.select( 2 );
+                return;
         }
     }
 
@@ -1154,9 +1162,9 @@ public class ObjectClassEditorOverviewPage extends FormPage
      */
     private void fillInMandatoryAttributesTable()
     {
-        if ( modifiedObjectClass.getMustAttributeTypeOids() != null )
+        if ( getModifiedObjectClass().getMustAttributeTypeOids() != null )
         {
-            mandatoryAttributesTableViewer.setInput( modifiedObjectClass.getMustAttributeTypeOids() );
+            mandatoryAttributesTableViewer.setInput( getModifiedObjectClass().getMustAttributeTypeOids() );
         }
     }
 
@@ -1166,17 +1174,17 @@ public class ObjectClassEditorOverviewPage extends FormPage
      */
     private void fillInOptionalAttributesTable()
     {
-        if ( modifiedObjectClass.getMayAttributeTypeOids() != null )
+        if ( getModifiedObjectClass().getMayAttributeTypeOids() != null )
         {
-            optionalAttributesTableViewer.setInput( modifiedObjectClass.getMayAttributeTypeOids() );
+            optionalAttributesTableViewer.setInput( getModifiedObjectClass().getMayAttributeTypeOids() );
         }
     }
 
 
     /**
-     * Adds listeners to UI fields
+     * {@inheritDoc}
      */
-    private void addListeners()
+    protected void addListeners()
     {
         aliasesText.addModifyListener( aliasesTextModifyListener );
         aliasesButton.addSelectionListener( aliasesButtonListener );
@@ -1201,9 +1209,9 @@ public class ObjectClassEditorOverviewPage extends FormPage
 
 
     /**
-     * Removes listeners from UI fields
+     * {@inheritDoc}
      */
-    private void removeListeners()
+    protected void removeListeners()
     {
         aliasesText.removeModifyListener( aliasesTextModifyListener );
         aliasesButton.removeSelectionListener( aliasesButtonListener );
@@ -1228,34 +1236,12 @@ public class ObjectClassEditorOverviewPage extends FormPage
 
 
     /**
-     * Sets the editor as dirty
-     */
-    private void setEditorDirty()
-    {
-        ( ( ObjectClassEditor ) getEditor() ).setDirty( true );
-    }
-
-
-    /**
      * {@inheritDoc}
      */
     public void dispose()
     {
-        removeListeners();
-
         schemaHandler.removeListener( schemaHandlerListener );
 
         super.dispose();
-    }
-
-
-    /**
-     * Refreshes the UI.
-     */
-    public void refreshUI()
-    {
-        removeListeners();
-        fillInUiFields();
-        addListeners();
     }
 }

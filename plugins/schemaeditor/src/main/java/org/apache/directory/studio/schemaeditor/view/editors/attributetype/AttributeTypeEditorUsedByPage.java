@@ -48,8 +48,6 @@ import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.forms.IManagedForm;
-import org.eclipse.ui.forms.editor.FormEditor;
-import org.eclipse.ui.forms.editor.FormPage;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.ScrolledForm;
 import org.eclipse.ui.forms.widgets.Section;
@@ -58,19 +56,10 @@ import org.eclipse.ui.forms.widgets.Section;
 /**
  * This class is the Used By Page of the Attribute Type Editor
  */
-public class AttributeTypeEditorUsedByPage extends FormPage
+public class AttributeTypeEditorUsedByPage extends AbstractAttributeTypeEditorPage
 {
     /** The page ID */
     public static final String ID = AttributeTypeEditor.ID + "usedByPage"; //$NON-NLS-1$
-
-    /** The flag to indicate if the page has been initialized */
-    private boolean initialized = false;
-
-    /** The modified attribute type */
-    private AttributeType modifiedAttributeType;
-
-    /** The original attribute type */
-    private AttributeType originalAttributeType;
 
     /** The Schema listener */
     private SchemaHandlerListener schemaHandlerListener = new SchemaHandlerAdapter()
@@ -209,7 +198,7 @@ public class AttributeTypeEditorUsedByPage extends FormPage
      * @param editor
      *      the associated editor
      */
-    public AttributeTypeEditorUsedByPage( FormEditor editor )
+    public AttributeTypeEditorUsedByPage( AttributeTypeEditor editor )
     {
         super( editor, ID, Messages.getString( "AttributeTypeEditorUsedByPage.UsedBy" ) ); //$NON-NLS-1$
         Activator.getDefault().getSchemaHandler().addListener( schemaHandlerListener );
@@ -221,10 +210,6 @@ public class AttributeTypeEditorUsedByPage extends FormPage
      */
     protected void createFormContent( IManagedForm managedForm )
     {
-        // Getting the modified and original attribute types
-        modifiedAttributeType = ( ( AttributeTypeEditor ) getEditor() ).getModifiedAttributeType();
-        originalAttributeType = ( ( AttributeTypeEditor ) getEditor() ).getOriginalAttributeType();
-
         // Creating the base UI
         ScrolledForm form = managedForm.getForm();
         FormToolkit toolkit = managedForm.getToolkit();
@@ -261,6 +246,8 @@ public class AttributeTypeEditorUsedByPage extends FormPage
      */
     private void createAsMandatoryAttributeSection( Composite parent, FormToolkit toolkit )
     {
+        AttributeType modifiedAttributeType = getModifiedAttributeType();
+
         // As Mandatory Attribute Section
         Section mandatoryAttributeSection = toolkit.createSection( parent, Section.DESCRIPTION | Section.EXPANDED
             | Section.TITLE_BAR );
@@ -308,6 +295,8 @@ public class AttributeTypeEditorUsedByPage extends FormPage
      */
     private void createAsOptionalAttributeSection( Composite parent, FormToolkit toolkit )
     {
+        AttributeType modifiedAttributeType = getModifiedAttributeType();
+
         // Matching Rules Section
         Section optionalAttributeSection = toolkit.createSection( parent, Section.DESCRIPTION | Section.EXPANDED
             | Section.TITLE_BAR );
@@ -346,19 +335,21 @@ public class AttributeTypeEditorUsedByPage extends FormPage
 
 
     /**
-     * Fills in the User Interface.
+     * {@inheritDoc}
      */
-    private void fillInUiFields()
+    protected void fillInUiFields()
     {
-        mandatoryAttributeTableViewer.setInput( originalAttributeType );
-        optionalAttibuteTableViewer.setInput( originalAttributeType );
+        AttributeType modifiedAttributeType = getModifiedAttributeType();
+
+        mandatoryAttributeTableViewer.setInput( modifiedAttributeType );
+        optionalAttibuteTableViewer.setInput( modifiedAttributeType );
     }
 
 
     /**
-     * Adds listeners to UI fields
+     * {@inheritDoc}
      */
-    private void addListeners()
+    protected void addListeners()
     {
         mandatoryAttributeTable.addMouseListener( mandatoryAttributeTableListener );
         optionalAttibuteTable.addMouseListener( optionalAttibuteTableListener );
@@ -366,9 +357,9 @@ public class AttributeTypeEditorUsedByPage extends FormPage
 
 
     /**
-     * Removes listeners to UI fields
+     * {@inheritDoc}
      */
-    private void removeListeners()
+    protected void removeListeners()
     {
         mandatoryAttributeTable.removeMouseListener( mandatoryAttributeTableListener );
         optionalAttibuteTable.removeMouseListener( optionalAttibuteTableListener );
@@ -396,24 +387,8 @@ public class AttributeTypeEditorUsedByPage extends FormPage
      */
     public void dispose()
     {
-        removeListeners();
-
         Activator.getDefault().getSchemaHandler().removeListener( schemaHandlerListener );
 
         super.dispose();
-    }
-
-
-    /**
-     * Refreshes the UI.
-     */
-    public void refreshUI()
-    {
-        if ( initialized )
-        {
-            removeListeners();
-            fillInUiFields();
-            addListeners();
-        }
     }
 }

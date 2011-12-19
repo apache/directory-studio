@@ -41,8 +41,6 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.forms.IManagedForm;
-import org.eclipse.ui.forms.editor.FormEditor;
-import org.eclipse.ui.forms.editor.FormPage;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.ScrolledForm;
 
@@ -50,16 +48,10 @@ import org.eclipse.ui.forms.widgets.ScrolledForm;
 /**
  * This class is the Source Code Page of the Attribute Type Editor
  */
-public class AttributeTypeEditorSourceCodePage extends FormPage
+public class AttributeTypeEditorSourceCodePage extends AbstractAttributeTypeEditorPage
 {
     /** The page ID */
     public static final String ID = AttributeTypeEditor.ID + "sourceCodePage"; //$NON-NLS-1$
-
-    /** The flag to indicate if the page has been initialized */
-    private boolean initialized = false;
-
-    /** The modified attribute type */
-    private AttributeType modifiedAttributeType;
 
     /** The Schema Source Viewer */
     private SchemaSourceViewer schemaSourceViewer;
@@ -106,7 +98,7 @@ public class AttributeTypeEditorSourceCodePage extends FormPage
      * @param editor
      *            the associated editor
      */
-    public AttributeTypeEditorSourceCodePage( FormEditor editor )
+    public AttributeTypeEditorSourceCodePage( AttributeTypeEditor editor )
     {
         super( editor, ID, Messages.getString( "AttributeTypeEditorSourceCodePage.SourceCode" ) ); //$NON-NLS-1$
     }
@@ -117,6 +109,8 @@ public class AttributeTypeEditorSourceCodePage extends FormPage
      */
     protected void createFormContent( IManagedForm managedForm )
     {
+        super.createFormContent( managedForm );
+
         ScrolledForm form = managedForm.getForm();
         FormToolkit toolkit = managedForm.getToolkit();
         GridLayout layout = new GridLayout();
@@ -141,7 +135,7 @@ public class AttributeTypeEditorSourceCodePage extends FormPage
 
         // Initialization from the "input" attribute type
         fillInUiFields();
-        
+
         // Listeners initialization
         addListeners();
 
@@ -154,33 +148,29 @@ public class AttributeTypeEditorSourceCodePage extends FormPage
 
 
     /**
-     * Adds listeners to UI fields
+     * {@inheritDoc}
      */
-    private void addListeners()
+    protected void addListeners()
     {
         schemaSourceViewer.getTextWidget().addModifyListener( schemaSourceViewerListener );
     }
 
 
     /**
-     * Adds listeners to UI fields
+     * {@inheritDoc}
      */
-    private void removeListeners()
+    protected void removeListeners()
     {
         schemaSourceViewer.getTextWidget().removeModifyListener( schemaSourceViewerListener );
     }
 
 
     /**
-     * Fills in the User Interface.
+     * {@inheritDoc}
      */
-    private void fillInUiFields()
+    protected void fillInUiFields()
     {
-        // Getting the modified attribute type
-        modifiedAttributeType = ( ( AttributeTypeEditor ) getEditor() ).getModifiedAttributeType();
-
-        // SOURCE CODE Field
-        schemaSourceViewer.getDocument().set( OpenLdapSchemaFileExporter.toSourceCode( modifiedAttributeType ) );
+        schemaSourceViewer.getDocument().set( OpenLdapSchemaFileExporter.toSourceCode( getModifiedAttributeType() ) );
     }
 
 
@@ -202,6 +192,8 @@ public class AttributeTypeEditorSourceCodePage extends FormPage
      */
     private void updateAttributeType( AttributeType atl )
     {
+        AttributeType modifiedAttributeType = getModifiedAttributeType();
+
         modifiedAttributeType.setCollective( atl.isCollective() );
         modifiedAttributeType.setDescription( atl.getDescription() );
         modifiedAttributeType.setEqualityOid( atl.getEqualityOid() );
@@ -216,30 +208,5 @@ public class AttributeTypeEditorSourceCodePage extends FormPage
         modifiedAttributeType.setSyntaxOid( atl.getSyntaxOid() );
         modifiedAttributeType.setUsage( atl.getUsage() );
         modifiedAttributeType.setUserModifiable( atl.isUserModifiable() );
-    }
-
-
-    /**
-     * Refreshes the UI.
-     */
-    public void refreshUI()
-    {
-        if ( initialized )
-        {
-            removeListeners();
-            fillInUiFields();
-            addListeners();
-        }
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    public void dispose()
-    {
-        removeListeners();
-
-        super.dispose();
     }
 }

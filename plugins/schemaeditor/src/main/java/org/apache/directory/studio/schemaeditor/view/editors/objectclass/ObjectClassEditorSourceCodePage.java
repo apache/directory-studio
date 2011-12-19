@@ -41,8 +41,6 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.forms.IManagedForm;
-import org.eclipse.ui.forms.editor.FormEditor;
-import org.eclipse.ui.forms.editor.FormPage;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.ScrolledForm;
 
@@ -50,16 +48,10 @@ import org.eclipse.ui.forms.widgets.ScrolledForm;
 /**
  * This class is the Source Code Page of the Object Class Editor
  */
-public class ObjectClassEditorSourceCodePage extends FormPage
+public class ObjectClassEditorSourceCodePage extends AbstractObjectClassEditorPage
 {
     /** The page ID */
     public static final String ID = ObjectClassEditor.ID + "sourceCodePage"; //$NON-NLS-1$
-
-    /** The flag to indicate if the page has been initialized */
-    private boolean initialized = false;
-
-    /** The modified object class */
-    private ObjectClass modifiedObjectClass;
 
     /** The Schema Source Viewer */
     private SchemaSourceViewer schemaSourceViewer;
@@ -102,11 +94,11 @@ public class ObjectClassEditorSourceCodePage extends FormPage
 
 
     /**
-     * Default constructor
-     * @param editor
-     *      the associated editor
+     * Default constructor.
+     * 
+     * @param editor the associated editor
      */
-    public ObjectClassEditorSourceCodePage( FormEditor editor )
+    public ObjectClassEditorSourceCodePage( ObjectClassEditor editor )
     {
         super( editor, ID, Messages.getString( "ObjectClassEditorSourceCodePage.SourceCode" ) ); //$NON-NLS-1$
     }
@@ -117,6 +109,8 @@ public class ObjectClassEditorSourceCodePage extends FormPage
      */
     protected void createFormContent( IManagedForm managedForm )
     {
+        super.createFormContent( managedForm );
+
         ScrolledForm form = managedForm.getForm();
         FormToolkit toolkit = managedForm.getToolkit();
         GridLayout layout = new GridLayout();
@@ -141,46 +135,40 @@ public class ObjectClassEditorSourceCodePage extends FormPage
 
         // Initialization from the "input" object class
         fillInUiFields();
-        
+
         // Listeners initialization
         addListeners();
 
         // Help Context for Dynamic Help
         PlatformUI.getWorkbench().getHelpSystem().setHelp( form,
             PluginConstants.PLUGIN_ID + "." + "object_class_editor" ); //$NON-NLS-1$ //$NON-NLS-2$
-
-        initialized = true;
     }
 
 
     /**
-     * Adds listeners to UI fields
+     * {@inheritDoc}
      */
-    private void addListeners()
+    protected void addListeners()
     {
         schemaSourceViewer.getTextWidget().addModifyListener( schemaSourceViewerListener );
     }
 
 
     /**
-     * Adds listeners to UI fields
+     * {@inheritDoc}
      */
-    private void removeListeners()
+    protected void removeListeners()
     {
         schemaSourceViewer.getTextWidget().removeModifyListener( schemaSourceViewerListener );
     }
 
 
     /**
-     * Fills in the User Interface.
+     * {@inheritDoc}
      */
-    private void fillInUiFields()
+    protected void fillInUiFields()
     {
-        // Getting the modified object class
-        modifiedObjectClass = ( ( ObjectClassEditor ) getEditor() ).getModifiedObjectClass();
-
-        // SOURCE CODE Field
-        schemaSourceViewer.getDocument().set( OpenLdapSchemaFileExporter.toSourceCode( modifiedObjectClass ) );
+        schemaSourceViewer.getDocument().set( OpenLdapSchemaFileExporter.toSourceCode( getModifiedObjectClass() ) );
     }
 
 
@@ -201,6 +189,8 @@ public class ObjectClassEditorSourceCodePage extends FormPage
      */
     private void updateObjectClass( ObjectClass ocl )
     {
+        ObjectClass modifiedObjectClass = getModifiedObjectClass();
+
         modifiedObjectClass.setDescription( ocl.getDescription() );
         modifiedObjectClass.setMayAttributeTypeOids( ocl.getMayAttributeTypeOids() );
         modifiedObjectClass.setMustAttributeTypeOids( ocl.getMustAttributeTypeOids() );
@@ -209,30 +199,5 @@ public class ObjectClassEditorSourceCodePage extends FormPage
         modifiedObjectClass.setOid( ocl.getOid() );
         modifiedObjectClass.setSuperiorOids( ocl.getSuperiorOids() );
         modifiedObjectClass.setType( ocl.getType() );
-    }
-
-
-    /**
-     * Refreshes the UI.
-     */
-    public void refreshUI()
-    {
-        if ( initialized )
-        {
-            removeListeners();
-            fillInUiFields();
-            addListeners();
-        }
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    public void dispose()
-    {
-        removeListeners();
-
-        super.dispose();
     }
 }

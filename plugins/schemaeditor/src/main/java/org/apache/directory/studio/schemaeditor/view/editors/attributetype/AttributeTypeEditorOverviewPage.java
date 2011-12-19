@@ -71,8 +71,6 @@ import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.forms.IManagedForm;
-import org.eclipse.ui.forms.editor.FormEditor;
-import org.eclipse.ui.forms.editor.FormPage;
 import org.eclipse.ui.forms.events.HyperlinkAdapter;
 import org.eclipse.ui.forms.events.HyperlinkEvent;
 import org.eclipse.ui.forms.widgets.FormToolkit;
@@ -84,16 +82,10 @@ import org.eclipse.ui.forms.widgets.Section;
 /**
  * This class is the Overview Page of the Attribute Type Editor
  */
-public class AttributeTypeEditorOverviewPage extends FormPage
+public class AttributeTypeEditorOverviewPage extends AbstractAttributeTypeEditorPage
 {
     /** The page ID*/
     public static final String ID = AttributeTypeEditor.ID + ".overviewPage"; //$NON-NLS-1$
-
-    /** The original attribute type */
-    private AttributeType originalAttributeType;
-
-    /** The modified attribute type */
-    private AttributeType modifiedAttributeType;
 
     /** The original schema */
     private Schema originalSchema;
@@ -118,7 +110,7 @@ public class AttributeTypeEditorOverviewPage extends FormPage
 
         public void attributeTypeRemoved( AttributeType at )
         {
-            if ( !at.equals( originalAttributeType ) )
+            if ( !at.equals( getOriginalAttributeType() ) )
             {
                 refreshUI();
             }
@@ -232,6 +224,7 @@ public class AttributeTypeEditorOverviewPage extends FormPage
     {
         public void modifyText( ModifyEvent e )
         {
+            AttributeType modifiedAttributeType = getModifiedAttributeType();
             AliasesStringParser parser = new AliasesStringParser();
             parser.parse( aliasesText.getText() );
             List<Alias> parsedAliases = parser.getAliases();
@@ -254,6 +247,7 @@ public class AttributeTypeEditorOverviewPage extends FormPage
     {
         public void widgetSelected( SelectionEvent e )
         {
+            AttributeType modifiedAttributeType = getModifiedAttributeType();
             EditAttributeTypeAliasesDialog dialog = new EditAttributeTypeAliasesDialog(
                 modifiedAttributeType.getNames() );
             if ( dialog.open() == EditAttributeTypeAliasesDialog.OK )
@@ -284,10 +278,10 @@ public class AttributeTypeEditorOverviewPage extends FormPage
 
             if ( Oid.isOid( oid ) )
             {
-                if ( ( originalAttributeType.getOid().equals( oid ) )
+                if ( ( getOriginalAttributeType().getOid().equals( oid ) )
                     || !( schemaHandler.isOidAlreadyTaken( oid ) ) )
                 {
-                    modifiedAttributeType.setOid( oid );
+                    getModifiedAttributeType().setOid( oid );
                     setEditorDirty();
                 }
                 else
@@ -324,7 +318,7 @@ public class AttributeTypeEditorOverviewPage extends FormPage
             IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
 
             SchemaEditorInput input = new SchemaEditorInput( schemaHandler
-                .getSchema( modifiedAttributeType.getSchemaName() ) );
+                .getSchema( getModifiedAttributeType().getSchemaName() ) );
             String editorId = SchemaEditor.ID;
             try
             {
@@ -343,7 +337,7 @@ public class AttributeTypeEditorOverviewPage extends FormPage
         public void modifyText( ModifyEvent e )
         {
             int caretPosition = descriptionText.getCaretPosition();
-            modifiedAttributeType.setDescription( descriptionText.getText() );
+            getModifiedAttributeType().setDescription( descriptionText.getText() );
             descriptionText.setSelection( caretPosition );
             setEditorDirty();
         }
@@ -378,6 +372,7 @@ public class AttributeTypeEditorOverviewPage extends FormPage
     {
         public void selectionChanged( SelectionChangedEvent event )
         {
+            AttributeType modifiedAttributeType = getModifiedAttributeType();
             Object selectedItem = ( ( StructuredSelection ) supComboViewer.getSelection() ).getFirstElement();
 
             if ( selectedItem instanceof AttributeType )
@@ -415,6 +410,7 @@ public class AttributeTypeEditorOverviewPage extends FormPage
     {
         public void modifyText( ModifyEvent e )
         {
+            AttributeType modifiedAttributeType = getModifiedAttributeType();
             if ( usageCombo.getSelectionIndex() == 0 )
             {
                 modifiedAttributeType.setUsage( UsageEnum.DIRECTORY_OPERATION );
@@ -440,6 +436,7 @@ public class AttributeTypeEditorOverviewPage extends FormPage
     {
         public void selectionChanged( SelectionChangedEvent event )
         {
+            AttributeType modifiedAttributeType = getModifiedAttributeType();
             Object selectedItem = ( ( StructuredSelection ) syntaxComboViewer.getSelection() ).getFirstElement();
 
             if ( selectedItem instanceof LdapSyntax )
@@ -468,6 +465,7 @@ public class AttributeTypeEditorOverviewPage extends FormPage
     {
         public void modifyText( ModifyEvent e )
         {
+            AttributeType modifiedAttributeType = getModifiedAttributeType();
             if ( syntaxLengthText.getText().length() <= 0 )
             {
                 modifiedAttributeType.setSyntaxLength( -1 );
@@ -497,7 +495,7 @@ public class AttributeTypeEditorOverviewPage extends FormPage
     {
         public void widgetSelected( SelectionEvent e )
         {
-            modifiedAttributeType.setObsolete( obsoleteCheckbox.getSelection() );
+            getModifiedAttributeType().setObsolete( obsoleteCheckbox.getSelection() );
             setEditorDirty();
         }
     };
@@ -507,7 +505,7 @@ public class AttributeTypeEditorOverviewPage extends FormPage
     {
         public void widgetSelected( SelectionEvent e )
         {
-            modifiedAttributeType.setSingleValued( singleValueCheckbox.getSelection() );
+            getModifiedAttributeType().setSingleValued( singleValueCheckbox.getSelection() );
             setEditorDirty();
         }
     };
@@ -517,7 +515,7 @@ public class AttributeTypeEditorOverviewPage extends FormPage
     {
         public void widgetSelected( SelectionEvent e )
         {
-            modifiedAttributeType.setCollective( collectiveCheckbox.getSelection() );
+            getModifiedAttributeType().setCollective( collectiveCheckbox.getSelection() );
             setEditorDirty();
         }
     };
@@ -527,7 +525,7 @@ public class AttributeTypeEditorOverviewPage extends FormPage
     {
         public void widgetSelected( SelectionEvent e )
         {
-            modifiedAttributeType.setUserModifiable( !noUserModificationCheckbox.getSelection() );
+            getModifiedAttributeType().setUserModifiable( !noUserModificationCheckbox.getSelection() );
             setEditorDirty();
         }
     };
@@ -537,6 +535,7 @@ public class AttributeTypeEditorOverviewPage extends FormPage
     {
         public void selectionChanged( SelectionChangedEvent event )
         {
+            AttributeType modifiedAttributeType = getModifiedAttributeType();
             Object selectedItem = ( ( StructuredSelection ) equalityComboViewer.getSelection() ).getFirstElement();
 
             if ( selectedItem instanceof MatchingRule )
@@ -565,6 +564,7 @@ public class AttributeTypeEditorOverviewPage extends FormPage
     {
         public void selectionChanged( SelectionChangedEvent event )
         {
+            AttributeType modifiedAttributeType = getModifiedAttributeType();
             Object selectedItem = ( ( StructuredSelection ) orderingComboViewer.getSelection() ).getFirstElement();
 
             if ( selectedItem instanceof MatchingRule )
@@ -593,6 +593,7 @@ public class AttributeTypeEditorOverviewPage extends FormPage
     {
         public void selectionChanged( SelectionChangedEvent event )
         {
+            AttributeType modifiedAttributeType = getModifiedAttributeType();
             Object selectedItem = ( ( StructuredSelection ) substringComboViewer.getSelection() ).getFirstElement();
 
             if ( selectedItem instanceof MatchingRule )
@@ -636,7 +637,7 @@ public class AttributeTypeEditorOverviewPage extends FormPage
      * @param editor
      *      the associated editor
      */
-    public AttributeTypeEditorOverviewPage( FormEditor editor )
+    public AttributeTypeEditorOverviewPage( AttributeTypeEditor editor )
     {
         super( editor, ID, Messages.getString( "AttributeTypeEditorOverviewPage.Overview" ) ); //$NON-NLS-1$
         schemaHandler = Activator.getDefault().getSchemaHandler();
@@ -649,6 +650,8 @@ public class AttributeTypeEditorOverviewPage extends FormPage
      */
     protected void createFormContent( IManagedForm managedForm )
     {
+        super.createFormContent( managedForm );
+
         // Creating the base UI
         ScrolledForm form = managedForm.getForm();
         FormToolkit toolkit = managedForm.getToolkit();
@@ -863,14 +866,14 @@ public class AttributeTypeEditorOverviewPage extends FormPage
 
 
     /**
-     * Fills in the User Interface fields.
+     * {@inheritDoc}
      */
-    private void fillInUiFields()
+    protected void fillInUiFields()
     {
-        // Getting the original and modified attribute types
-        modifiedAttributeType = ( ( AttributeTypeEditor ) getEditor() ).getModifiedAttributeType();
-        originalAttributeType = ( ( AttributeTypeEditor ) getEditor() ).getOriginalAttributeType();
-        originalSchema = schemaHandler.getSchema( originalAttributeType.getSchemaName() );
+        // Getting the modified attribute type
+        AttributeType modifiedAttributeType = getModifiedAttributeType();
+
+        originalSchema = schemaHandler.getSchema( getOriginalAttributeType().getSchemaName() );
 
         // ALIASES Label
         if ( ( modifiedAttributeType.getNames() != null ) && ( modifiedAttributeType.getNames().size() != 0 ) )
@@ -940,9 +943,9 @@ public class AttributeTypeEditorOverviewPage extends FormPage
      */
     private void fillSupCombo()
     {
-        supComboViewer.setInput( new ATESuperiorComboInput( originalAttributeType ) );
+        supComboViewer.setInput( new ATESuperiorComboInput( getOriginalAttributeType() ) );
 
-        String supAtName = modifiedAttributeType.getSuperiorOid();
+        String supAtName = getModifiedAttributeType().getSuperiorOid();
         if ( supAtName == null )
         {
             supComboViewer.setSelection( new StructuredSelection( new NonExistingAttributeType(
@@ -975,21 +978,22 @@ public class AttributeTypeEditorOverviewPage extends FormPage
      */
     private void fillInUsageCombo()
     {
-        if ( modifiedAttributeType.getUsage() == UsageEnum.DIRECTORY_OPERATION )
+        UsageEnum usage = getModifiedAttributeType().getUsage();
+
+        switch ( usage )
         {
-            usageCombo.select( 0 );
-        }
-        else if ( modifiedAttributeType.getUsage() == UsageEnum.DISTRIBUTED_OPERATION )
-        {
-            usageCombo.select( 1 );
-        }
-        else if ( modifiedAttributeType.getUsage() == UsageEnum.DSA_OPERATION )
-        {
-            usageCombo.select( 2 );
-        }
-        else if ( modifiedAttributeType.getUsage() == UsageEnum.USER_APPLICATIONS )
-        {
-            usageCombo.select( 3 );
+            case DIRECTORY_OPERATION:
+                usageCombo.select( 0 );
+                return;
+            case DISTRIBUTED_OPERATION:
+                usageCombo.select( 1 );
+                return;
+            case DSA_OPERATION:
+                usageCombo.select( 2 );
+                return;
+            case USER_APPLICATIONS:
+                usageCombo.select( 3 );
+                return;
         }
     }
 
@@ -1001,7 +1005,7 @@ public class AttributeTypeEditorOverviewPage extends FormPage
     {
         syntaxComboViewer.setInput( new ATESyntaxComboInput() );
 
-        String syntaxOID = modifiedAttributeType.getSyntaxOid();
+        String syntaxOID = getModifiedAttributeType().getSyntaxOid();
         if ( syntaxOID == null )
         {
             syntaxComboViewer.setSelection( new StructuredSelection( new NonExistingSyntax( NonExistingSyntax.NONE ) ),
@@ -1036,7 +1040,7 @@ public class AttributeTypeEditorOverviewPage extends FormPage
     {
         equalityComboViewer.setInput( new ATEMatchingRulesComboInput() );
 
-        String equalityName = modifiedAttributeType.getEqualityOid();
+        String equalityName = getModifiedAttributeType().getEqualityOid();
         if ( equalityName == null )
         {
             equalityComboViewer.setSelection( new StructuredSelection( new NonExistingMatchingRule(
@@ -1071,7 +1075,7 @@ public class AttributeTypeEditorOverviewPage extends FormPage
     {
         orderingComboViewer.setInput( new ATEMatchingRulesComboInput() );
 
-        String orderingName = modifiedAttributeType.getOrderingOid();
+        String orderingName = getModifiedAttributeType().getOrderingOid();
         if ( orderingName == null )
         {
             orderingComboViewer.setSelection( new StructuredSelection( new NonExistingMatchingRule(
@@ -1107,7 +1111,7 @@ public class AttributeTypeEditorOverviewPage extends FormPage
     {
         substringComboViewer.setInput( new ATEMatchingRulesComboInput() );
 
-        String substringName = modifiedAttributeType.getSubstringOid();
+        String substringName = getModifiedAttributeType().getSubstringOid();
         if ( substringName == null )
         {
             substringComboViewer.setSelection( new StructuredSelection( new NonExistingMatchingRule(
@@ -1136,9 +1140,9 @@ public class AttributeTypeEditorOverviewPage extends FormPage
 
 
     /**
-     * Adds listeners to UI fields
+     * {@inheritDoc}
      */
-    private void addListeners()
+    protected void addListeners()
     {
         aliasesText.addModifyListener( aliasesTextModifyListener );
         aliasesButton.addSelectionListener( aliasesButtonListener );
@@ -1165,9 +1169,9 @@ public class AttributeTypeEditorOverviewPage extends FormPage
 
 
     /**
-     * Removes listeners from UI fields
+     * {@inheritDoc}
      */
-    private void removeListeners()
+    protected void removeListeners()
     {
         aliasesText.removeModifyListener( aliasesTextModifyListener );
         aliasesButton.removeSelectionListener( aliasesButtonListener );
@@ -1194,34 +1198,12 @@ public class AttributeTypeEditorOverviewPage extends FormPage
 
 
     /**
-     * Sets the dirty state of the editor to dirty
-     */
-    private void setEditorDirty()
-    {
-        ( ( AttributeTypeEditor ) getEditor() ).setDirty( true );
-    }
-
-
-    /**
      * {@inheritDoc}
      */
     public void dispose()
     {
-        removeListeners();
-
         schemaHandler.removeListener( schemaHandlerListener );
 
         super.dispose();
-    }
-
-
-    /**
-     * Refreshes the UI.
-     */
-    public void refreshUI()
-    {
-        removeListeners();
-        fillInUiFields();
-        addListeners();
     }
 }
