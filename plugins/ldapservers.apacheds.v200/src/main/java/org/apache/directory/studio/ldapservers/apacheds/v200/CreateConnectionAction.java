@@ -23,6 +23,7 @@ package org.apache.directory.studio.ldapservers.apacheds.v200;
 
 import org.apache.directory.server.config.beans.ConfigBean;
 import org.apache.directory.studio.connection.core.Connection;
+import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
 import org.apache.directory.studio.connection.core.ConnectionParameter;
 import org.apache.directory.studio.connection.core.ConnectionParameter.AuthenticationMethod;
 import org.apache.directory.studio.connection.core.ConnectionParameter.EncryptionMethod;
@@ -103,7 +104,8 @@ public class CreateConnectionAction implements IObjectActionDelegate
                 }
 
                 // Checking is LDAP and/or LDAPS is/are enabled
-                if ( ( ApacheDS200LdapServerAdapter.isEnableLdap( configuration ) ) || ( ApacheDS200LdapServerAdapter.isEnableLdaps( configuration ) ) )
+                if ( ( ApacheDS200LdapServerAdapter.isEnableLdap( configuration ) )
+                    || ( ApacheDS200LdapServerAdapter.isEnableLdaps( configuration ) ) )
                 {
                     // Creating the connection using the helper class
                     createConnection( server, configuration );
@@ -178,12 +180,11 @@ public class CreateConnectionAction implements IObjectActionDelegate
         connectionParameter.setName( server.getName() );
 
         // Network Provider
-        connectionParameter.setNetworkProvider( NetworkProvider.JNDI );
+        connectionParameter.setNetworkProvider( ConnectionCorePlugin.getDefault().getDefaultNetworkProvider() );
 
         // Creating the connection
         CreateConnectionActionHelper.createLdapBrowserConnection( server, new Connection( connectionParameter ) );
     }
-
 
 
     /**

@@ -83,4 +83,13 @@ public final class ConnectionCoreConstants
     /** The constant used to identify the KRB5 login module class name */
     public static final String PREFERENCE_KRB5_LOGIN_MODULE = "krb5LoginModule"; //$NON-NLS-1$
 
+    /** The constant used to identify the default network provider setting */
+    public static final String PREFERENCE_DEFAULT_NETWORK_PROVIDER = "defaultNetworkProvider"; //$NON-NLS-1$
+
+    /** The constant used to identify the default network provider setting */
+    public static final int PREFERENCE_NETWORK_PROVIDER_JNDI = 0;
+
+    /** The constant used to identify the default network provider setting */
+    public static final int PREFERENCE_NETWORK_PROVIDER_APACHE_DIRECTORY_LDAP_API = 1;
+
 }

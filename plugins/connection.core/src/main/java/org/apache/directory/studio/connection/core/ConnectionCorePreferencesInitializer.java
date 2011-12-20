@@ -46,6 +46,8 @@ public class ConnectionCorePreferencesInitializer extends AbstractPreferenceInit
         String defaultKrb5LoginModule = ConnectionCorePlugin.getDefault().getDefaultKrb5LoginModule();
         preferences.setDefault( ConnectionCoreConstants.PREFERENCE_KRB5_LOGIN_MODULE, defaultKrb5LoginModule );
         preferences.setDefault( ConnectionCoreConstants.PREFERENCE_USE_KRB5_SYSTEM_PROPERTIES, false );
+        preferences.setDefault( ConnectionCoreConstants.PREFERENCE_DEFAULT_NETWORK_PROVIDER,
+            ConnectionCoreConstants.PREFERENCE_NETWORK_PROVIDER_APACHE_DIRECTORY_LDAP_API );
 
         // Modification Logs
         preferences.setDefault( ConnectionCoreConstants.PREFERENCE_MODIFICATIONLOGS_ENABLE, true );

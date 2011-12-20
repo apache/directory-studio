@@ -23,6 +23,7 @@ package org.apache.directory.studio.ldapservers.apacheds.v153;
 
 import org.apache.directory.studio.apacheds.configuration.model.v153.ServerConfigurationV153;
 import org.apache.directory.studio.connection.core.Connection;
+import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
 import org.apache.directory.studio.connection.core.ConnectionParameter;
 import org.apache.directory.studio.connection.core.ConnectionParameter.AuthenticationMethod;
 import org.apache.directory.studio.connection.core.ConnectionParameter.EncryptionMethod;
@@ -176,9 +177,9 @@ public class CreateConnectionAction implements IObjectActionDelegate
 
         // Name
         connectionParameter.setName( server.getName() );
-        
+
         // Network Provider
-        connectionParameter.setNetworkProvider( NetworkProvider.JNDI );
+        connectionParameter.setNetworkProvider( ConnectionCorePlugin.getDefault().getDefaultNetworkProvider() );
 
         // Creating the connection
         CreateConnectionActionHelper.createLdapBrowserConnection( server, new Connection( connectionParameter ) );

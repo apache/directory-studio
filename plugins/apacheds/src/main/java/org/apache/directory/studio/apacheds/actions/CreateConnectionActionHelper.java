@@ -134,7 +134,7 @@ public class CreateConnectionActionHelper
         connectionParameter.setName( serverName );
         
         // Network Provider
-        connectionParameter.setNetworkProvider( NetworkProvider.JNDI );
+        connectionParameter.setNetworkProvider( ConnectionCorePlugin.getDefault().getDefaultNetworkProvider() );
         
         // Creating the connection
         Connection connection = new Connection( connectionParameter );
