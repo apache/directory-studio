@@ -167,8 +167,6 @@ public class LdifEditorContentAssistPreferencePage extends PreferencePage implem
             LdifEditorConstants.PREFERENCE_LDIFEDITOR_CONTENTASSIST_SMARTINSERTATTRIBUTEINMODSPEC,
             this.smartInsertAttributeInModspecButton.getSelection() );
 
-        BrowserCorePlugin.getDefault().savePluginPreferences();
-
         return true;
     }
 

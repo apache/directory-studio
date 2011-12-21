@@ -234,8 +234,6 @@ public class LdifEditorPreferencePage extends PreferencePage implements IWorkben
         getPreferenceStore().setValue( LdifEditorConstants.PREFERENCE_LDIFEDITOR_OPTIONS_CONTINUEONERROR,
             continueOnErrorButton.getSelection() );
 
-        BrowserCorePlugin.getDefault().savePluginPreferences();
-
         return true;
     }
 
