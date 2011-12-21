@@ -25,6 +25,7 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.security.cert.Certificate;
+import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
 
@@ -271,7 +272,7 @@ public class CertificateDialog extends Dialog
     }
 
 
-    private static X509Certificate generateCertificate( byte[] data ) throws Exception
+    private static X509Certificate generateCertificate( byte[] data ) throws CertificateException
     {
         CertificateFactory cf = CertificateFactory.getInstance( "X.509" ); //$NON-NLS-1$
         Certificate certificate = cf.generateCertificate( new ByteArrayInputStream( data ) );
