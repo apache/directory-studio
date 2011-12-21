@@ -406,7 +406,8 @@ public class ImportLdifRunnable implements StudioConnectionBulkRunnableWithProgr
     {
         if ( !record.isValid() )
         {
-            throw new NamingException( BrowserCoreMessages.model__invalid_record );
+            throw new NamingException( BrowserCoreMessages.bind( BrowserCoreMessages.model__invalid_record,
+                record.getInvalidString() ) );
         }
 
         String dn = record.getDnLine().getValueAsString();
