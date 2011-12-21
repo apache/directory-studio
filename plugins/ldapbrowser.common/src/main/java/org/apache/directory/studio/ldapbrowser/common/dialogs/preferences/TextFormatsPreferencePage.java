@@ -451,7 +451,6 @@ public class TextFormatsPreferencePage extends PreferencePage implements IWorkbe
             .getSelection() );
         coreStore.setValue( BrowserCoreConstants.PREFERENCE_LDIF_INCLUDE_VERSION_LINE, includeVersionLineButton
             .getSelection() );
-        BrowserCorePlugin.getDefault().savePluginPreferences();
 
         coreStore.setValue( BrowserCoreConstants.PREFERENCE_FORMAT_CSV_ATTRIBUTEDELIMITER, csvAttributeDelimiterWidget
             .getRawValue() );
@@ -478,6 +477,8 @@ public class TextFormatsPreferencePage extends PreferencePage implements IWorkbe
             .getRawValue() );
         coreStore.setValue( BrowserCoreConstants.PREFERENCE_FORMAT_XLS_BINARYENCODING, xlsBinaryEncodingWidget
             .getRawValue() );
+
+        BrowserCorePlugin.getDefault().savePluginPreferences();
 
         validate();
 
