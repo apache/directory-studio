@@ -20,15 +20,21 @@
 package org.apache.directory.studio.connection.ui.widgets;
 
 
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
+import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
 import java.util.Iterator;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.connection.core.StudioKeyStoreManager;
 import org.apache.directory.studio.connection.ui.ConnectionUIConstants;
 import org.apache.directory.studio.connection.ui.ConnectionUIPlugin;
 import org.apache.directory.studio.connection.ui.dialogs.CertificateInfoDialog;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
@@ -36,8 +42,10 @@ import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.Viewer;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -46,6 +54,7 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.FileDialog;
 
 
 /**
@@ -56,7 +65,6 @@ import org.eclipse.swt.widgets.Composite;
  */
 public class CertificateListComposite extends Composite
 {
-
     private StudioKeyStoreManager keyStoreManager;
     private Composite container;
     private TableViewer tableViewer;
@@ -129,7 +137,6 @@ public class CertificateListComposite extends Composite
         viewButton.setEnabled( false );
         viewButton.addSelectionListener( new SelectionAdapter()
         {
-            @Override
             public void widgetSelected( SelectionEvent e )
             {
                 IStructuredSelection selection = ( IStructuredSelection ) tableViewer.getSelection();
@@ -141,22 +148,53 @@ public class CertificateListComposite extends Composite
 
         addButton = BaseWidgetUtils.createButton( buttonContainer, Messages
             .getString( "CertificateListComposite.AddButton" ), 1 ); //$NON-NLS-1$
-        addButton.setEnabled( false );
-        // TODO: implement add action
+        addButton.addSelectionListener( new SelectionAdapter()
+        {
+            public void widgetSelected( SelectionEvent e )
+            {
+                // Asking the user for the certificate file
+                FileDialog dialog = new FileDialog( getShell(), SWT.OPEN );
+                dialog.setText( Messages.getString( "CertificateListComposite.LoadCertificate" ) ); //$NON-NLS-1$
+                String returnedFileName = dialog.open();
+
+                if ( returnedFileName != null )
+                {
+                    try
+                    {
+                        // Reading the certificate
+                        X509Certificate certificate = generateCertificate( FileUtils.readFileToByteArray( new File(
+                            returnedFileName ) ) );
+
+                        // Adding the certificate
+                        keyStoreManager.addCertificate( certificate );
+
+                        // Refreshing the table viewer
+                        tableViewer.refresh();
+                        tableViewer.setSelection( new StructuredSelection( certificate ) );
+                    }
+                    catch ( Exception ex )
+                    {
+                        MessageDialog.openError( addButton.getShell(),
+                            Messages.getString( "CertificateListComposite.ErrorDialogTitle" ), //$NON-NLS-1$
+                            NLS.bind( Messages.getString( "CertificateListComposite.ErrorDialogMessage" ),
+                                ex.getMessage() ) );
+                    }
+                }
+            };
+        } );
 
         removeButton = BaseWidgetUtils.createButton( buttonContainer, Messages
             .getString( "CertificateListComposite.RemoveButton" ), 1 ); //$NON-NLS-1$
         removeButton.setEnabled( false );
         removeButton.addSelectionListener( new SelectionAdapter()
         {
-            @Override
             public void widgetSelected( SelectionEvent e )
             {
                 IStructuredSelection selection = ( IStructuredSelection ) tableViewer.getSelection();
-                Iterator<X509Certificate> iterator = selection.iterator();
+                Iterator<?> iterator = selection.iterator();
                 while ( iterator.hasNext() )
                 {
-                    X509Certificate certificate = iterator.next();
+                    X509Certificate certificate = ( X509Certificate ) iterator.next();
                     try
                     {
                         keyStoreManager.removeCertificate( certificate );
@@ -169,6 +207,19 @@ public class CertificateListComposite extends Composite
                 tableViewer.refresh();
             }
         } );
+    }
+
+
+    private static X509Certificate generateCertificate( byte[] data ) throws CertificateException
+    {
+        CertificateFactory cf = CertificateFactory.getInstance( "X.509" ); //$NON-NLS-1$
+        Certificate certificate = cf.generateCertificate( new ByteArrayInputStream( data ) );
+        if ( certificate instanceof X509Certificate )
+        {
+            return ( X509Certificate ) certificate;
+        }
+
+        return null;
     }
 
 
@@ -203,6 +254,7 @@ public class CertificateListComposite extends Composite
                     throw new RuntimeException( e );
                 }
             }
+
             return null;
         }
 
@@ -226,7 +278,6 @@ public class CertificateListComposite extends Composite
 
     class KeyStoreLabelProvider extends LabelProvider
     {
-        @Override
         public String getText( Object element )
         {
             if ( element instanceof X509Certificate )
@@ -243,11 +294,11 @@ public class CertificateListComposite extends Composite
                     return Messages.getString( "CertificateListComposite.UntitledCertificate" ); //$NON-NLS-1$
                 }
             }
+
             return super.getText( element );
         }
 
 
-        @Override
         public Image getImage( Object element )
         {
             if ( element instanceof X509Certificate )
@@ -255,7 +306,6 @@ public class CertificateListComposite extends Composite
                 return ConnectionUIPlugin.getDefault().getImage( ConnectionUIConstants.IMG_CERTIFICATE );
             }
 
-            // TODO Auto-generated method stub
             return super.getImage( element );
         }
     }
