@@ -148,7 +148,7 @@ public class RenameEntryRunnable implements StudioConnectionBulkRunnableWithProg
         Dn oldDn = oldEntry.getDn();
         Dn parentDn = oldDn.getParent();
         Dn newDn = null;
-        
+
         try
         {
             newDn = parentDn.add( newRdn );
@@ -213,42 +213,45 @@ public class RenameEntryRunnable implements StudioConnectionBulkRunnableWithProg
 
             // remove old entry and add new entry to parent
             IEntry parent = oldEntry.getParententry();
-            boolean hasMoreChildren = parent.hasMoreChildren();
-            parent.deleteChild( oldEntry );
-
-            List<StudioControl> controls = new ArrayList<StudioControl>();
-            if ( oldEntry.isReferral() )
+            if ( parent != null )
             {
-                controls.add( StudioControl.MANAGEDSAIT_CONTROL );
-            }
+                boolean hasMoreChildren = parent.hasMoreChildren();
+                parent.deleteChild( oldEntry );
 
-            // Here we try to read the renamed entry to be able to send the right event notification.
-            // In some cases this don't work:
-            // - if there was a referral and the entry was created on another (master) server and not yet sync'ed to the current server
-            // So we use a dummy monitor to no bother the user with an error message.
-            dummyMonitor.reset();
-            newEntry = ReadEntryRunnable.getEntry( browserConnection, newDn, controls, dummyMonitor );
-            dummyMonitor.done();
-            if ( newEntry != null )
-            {
-                parent.addChild( newEntry );
-            }
-            parent.setHasMoreChildren( hasMoreChildren );
-
-            // reset searches, if the renamed entry is a result of a search
-            List<ISearch> searches = browserConnection.getSearchManager().getSearches();
-            for ( ISearch search : searches )
-            {
-                if ( search.getSearchResults() != null )
+                List<StudioControl> controls = new ArrayList<StudioControl>();
+                if ( oldEntry.isReferral() )
                 {
-                    ISearchResult[] searchResults = search.getSearchResults();
-                    for ( ISearchResult result : searchResults )
+                    controls.add( StudioControl.MANAGEDSAIT_CONTROL );
+                }
+
+                // Here we try to read the renamed entry to be able to send the right event notification.
+                // In some cases this don't work:
+                // - if there was a referral and the entry was created on another (master) server and not yet sync'ed to the current server
+                // So we use a dummy monitor to no bother the user with an error message.
+                dummyMonitor.reset();
+                newEntry = ReadEntryRunnable.getEntry( browserConnection, newDn, controls, dummyMonitor );
+                dummyMonitor.done();
+                if ( newEntry != null )
+                {
+                    parent.addChild( newEntry );
+                }
+                parent.setHasMoreChildren( hasMoreChildren );
+
+                // reset searches, if the renamed entry is a result of a search
+                List<ISearch> searches = browserConnection.getSearchManager().getSearches();
+                for ( ISearch search : searches )
+                {
+                    if ( search.getSearchResults() != null )
                     {
-                        if ( oldEntry.equals( result.getEntry() ) )
+                        ISearchResult[] searchResults = search.getSearchResults();
+                        for ( ISearchResult result : searchResults )
                         {
-                            search.setSearchResults( null );
-                            searchesToUpdateSet.add( search );
-                            break;
+                            if ( oldEntry.equals( result.getEntry() ) )
+                            {
+                                search.setSearchResults( null );
+                                searchesToUpdateSet.add( search );
+                                break;
+                            }
                         }
                     }
                 }
