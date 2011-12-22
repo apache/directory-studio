@@ -34,6 +34,7 @@ import org.apache.directory.studio.connection.core.StudioKeyStoreManager;
 import org.apache.directory.studio.connection.ui.ConnectionUIConstants;
 import org.apache.directory.studio.connection.ui.ConnectionUIPlugin;
 import org.apache.directory.studio.connection.ui.dialogs.CertificateInfoDialog;
+import org.apache.directory.studio.connection.ui.wizards.ExportCertificateWizard;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
@@ -45,6 +46,7 @@ import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.Viewer;
+import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -71,6 +73,7 @@ public class CertificateListComposite extends Composite
     private Button viewButton;
     private Button addButton;
     private Button removeButton;
+    private Button exportButton;
 
 
     /**
@@ -111,8 +114,9 @@ public class CertificateListComposite extends Composite
         {
             public void selectionChanged( SelectionChangedEvent event )
             {
-                viewButton.setEnabled( !event.getSelection().isEmpty() );
+                viewButton.setEnabled( ( ( IStructuredSelection ) event.getSelection() ).size() == 1 );
                 removeButton.setEnabled( !event.getSelection().isEmpty() );
+                exportButton.setEnabled( ( ( IStructuredSelection ) event.getSelection() ).size() == 1 );
             }
         } );
         tableViewer.addDoubleClickListener( new IDoubleClickListener()
@@ -205,6 +209,21 @@ public class CertificateListComposite extends Composite
                     }
                 }
                 tableViewer.refresh();
+            }
+        } );
+
+        exportButton = BaseWidgetUtils.createButton( buttonContainer, Messages
+            .getString( "CertificateListComposite.ExportButton" ), 1 ); //$NON-NLS-1$
+        exportButton.setEnabled( false );
+        exportButton.addSelectionListener( new SelectionAdapter()
+        {
+            public void widgetSelected( SelectionEvent e )
+            {
+                X509Certificate certificate = ( X509Certificate ) ( ( IStructuredSelection ) tableViewer.getSelection() )
+                    .getFirstElement();
+
+                WizardDialog dialog = new WizardDialog( getShell(), new ExportCertificateWizard( certificate ) );
+                dialog.open();
             }
         } );
     }
