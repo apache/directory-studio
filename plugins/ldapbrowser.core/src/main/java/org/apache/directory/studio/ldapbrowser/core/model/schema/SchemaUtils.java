@@ -367,13 +367,17 @@ public class SchemaUtils
     {
         Schema schema = entry.getBrowserConnection().getSchema();
         Collection<AttributeType> atds = new HashSet<AttributeType>();
-        for ( ObjectClass ocd : entry.getObjectClassDescriptions() )
+        Collection<ObjectClass> ocds = entry.getObjectClassDescriptions();
+        if ( ocds != null )
         {
-            Collection<String> musts = getMustAttributeTypeDescriptionNamesTransitive( ocd, schema );
-            for ( String must : musts )
+            for ( ObjectClass ocd : entry.getObjectClassDescriptions() )
             {
-                AttributeType atd = schema.getAttributeTypeDescription( must );
-                atds.add( atd );
+                Collection<String> musts = getMustAttributeTypeDescriptionNamesTransitive( ocd, schema );
+                for ( String must : musts )
+                {
+                    AttributeType atd = schema.getAttributeTypeDescription( must );
+                    atds.add( atd );
+                }
             }
         }
         return atds;
@@ -391,13 +395,17 @@ public class SchemaUtils
     {
         Schema schema = entry.getBrowserConnection().getSchema();
         Collection<AttributeType> atds = new HashSet<AttributeType>();
-        for ( ObjectClass ocd : entry.getObjectClassDescriptions() )
+        Collection<ObjectClass> ocds = entry.getObjectClassDescriptions();
+        if ( ocds != null )
         {
-            Collection<String> mays = getMayAttributeTypeDescriptionNamesTransitive( ocd, schema );
-            for ( String may : mays )
+            for ( ObjectClass ocd : entry.getObjectClassDescriptions() )
             {
-                AttributeType atd = schema.getAttributeTypeDescription( may );
-                atds.add( atd );
+                Collection<String> mays = getMayAttributeTypeDescriptionNamesTransitive( ocd, schema );
+                for ( String may : mays )
+                {
+                    AttributeType atd = schema.getAttributeTypeDescription( may );
+                    atds.add( atd );
+                }
             }
         }
         return atds;
