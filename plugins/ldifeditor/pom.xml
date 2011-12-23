@@ -130,10 +130,8 @@
  org.eclipse.ui,
  org.eclipse.ui.editors,
  org.eclipse.ui.ide,
- org.eclipse.ui.forms,
  org.eclipse.ui.views,
- org.eclipse.ui.workbench.texteditor,
- org.eclipse.search</Require-Bundle>
+ org.eclipse.ui.workbench.texteditor</Require-Bundle>
             <Export-Package>org.apache.directory.studio.ldifeditor.*</Export-Package>
             <Import-Package>!</Import-Package>
             <Private-Package>!</Private-Package>
