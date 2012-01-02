@@ -38,6 +38,7 @@
                 <include>site.xml</include>
             </includes>
             <outputDirectory>/</outputDirectory>
+            <filtered>true</filtered>
         </fileSet>
         
         <!-- Legal files & release notes -->
