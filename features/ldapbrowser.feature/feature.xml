@@ -234,6 +234,13 @@ of your accepting any such warranty or additional liability.
    </requires>
 
    <plugin
+         id="org.antlr.antlr"
+         download-size="0"
+         install-size="0"
+         version="${org.antlr.version}"
+         unpack="false"/>
+
+   <plugin
          id="org.apache.commons.codec"
          download-size="0"
          install-size="0"
@@ -259,6 +266,13 @@ of your accepting any such warranty or additional liability.
          download-size="0"
          install-size="0"
          version="${org.apache.commons.lang.version}"
+         unpack="false"/>
+
+   <plugin
+         id="org.apache.commons.logging"
+         download-size="0"
+         install-size="0"
+         version="${org.apache.commons.logging.version}"
          unpack="false"/>
 
    <plugin
@@ -435,6 +449,20 @@ of your accepting any such warranty or additional liability.
          install-size="0"
          version="${pom.version}"
          unpack="false"/>
+
+   <plugin
+         id="org.apache.httpcomponents.httpclient"
+         download-size="0"
+         install-size="0"
+         version="${org.apache.httpcomponents.version}"
+         unpack="false"/>
+
+   <plugin
+         id="org.apache.httpcomponents.httpcore"
+         download-size="0"
+         install-size="0"
+         version="${org.apache.httpcomponents.version}"
+         unpack="false"/>
          
    <plugin
          id="org.apache.mina.core"
@@ -462,6 +490,13 @@ of your accepting any such warranty or additional liability.
          download-size="0"
          install-size="0"
          version="${org.slf4j.version}"
+         unpack="false"/>
+         
+   <plugin
+         id="org.xpp3.xpp3"
+         download-size="0"
+         install-size="0"
+         version="${org.xpp3.validversion}"
          unpack="false"/>
 
 </feature>
