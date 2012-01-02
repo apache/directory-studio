@@ -454,7 +454,7 @@ of your accepting any such warranty or additional liability.
          id="org.dom4j.dom4j"
          download-size="0"
          install-size="0"
-         version="${org.dom4j.dom4j.version}"
+         version="${org.dom4j.version}"
          unpack="false"/>
          
    <plugin
