@@ -42,7 +42,7 @@
             <outputDirectory>/</outputDirectory>
         </fileSet>
         
-        <!-- Legal files & release notes -->
+        <!-- Legal files -->
         <fileSet>
             <directory>../../docs</directory>
             <outputDirectory>/</outputDirectory>
