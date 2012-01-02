@@ -24,7 +24,7 @@
    <feature
        url="features/org.apache.directory.studio.rcp.feature_${pom.version}.jar"
        id="org.apache.directory.studio.rcp.feature" version="${pom.version}"
-       os="linux,macosx,win32" ws="carbon,gtk,win32" arch="ppc,x86,x86_64">
+       os="linux,macosx,win32" ws="carbon,gtk,win32" arch="x86,x86_64">
       <category name="Apache Directory Studio RCP"/>
    </feature>
    <feature
