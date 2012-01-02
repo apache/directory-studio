@@ -47,7 +47,7 @@
               <goal>copy-eclipse-artifact</goal>
             </goals>
             <configuration>
-              <destinationDirectory>${plugins-dir}</destinationDirectory>
+              <outputDirectory>${plugins-dir}</outputDirectory>
               <artifactItems>
                 <!-- Apache Directory Studio library plugins dependencies -->
                 <artifactItem>

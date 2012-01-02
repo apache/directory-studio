@@ -84,7 +84,7 @@
                 <goal>copy-eclipse-artifact</goal>
               </goals>
               <configuration>
-                <destinationDirectory>${features-packed-dir}</destinationDirectory>
+                <outputDirectory>${features-packed-dir}</outputDirectory>
                 <artifactItems>
                   <artifactItem>
                     <groupId>org.apache.directory.studio</groupId>
