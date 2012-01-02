@@ -316,6 +316,13 @@ of your accepting any such warranty or additional liability.
          unpack="false"/>
 
    <plugin
+         id="org.apache.directory.shared.ldap.extras.aci"
+         download-size="0"
+         install-size="0"
+         version="${org.apache.directory.shared.validversion}"
+         unpack="false"/>
+
+   <plugin
          id="org.apache.directory.shared.ldap.model"
          download-size="0"
          install-size="0"
@@ -331,6 +338,13 @@ of your accepting any such warranty or additional liability.
 
    <plugin
          id="org.apache.directory.shared.ldap.schema"
+         download-size="0"
+         install-size="0"
+         version="${org.apache.directory.shared.validversion}"
+         unpack="false"/>
+
+   <plugin
+         id="org.apache.directory.shared.ldap.schema.converter"
          download-size="0"
          install-size="0"
          version="${org.apache.directory.shared.validversion}"
@@ -359,6 +373,13 @@ of your accepting any such warranty or additional liability.
 
    <plugin
          id="org.apache.directory.studio.connection.core"
+         download-size="0"
+         install-size="0"
+         version="${pom.version}"
+         unpack="false"/>
+
+   <plugin
+         id="org.apache.directory.studio.ldifparser"
          download-size="0"
          install-size="0"
          version="${pom.version}"
