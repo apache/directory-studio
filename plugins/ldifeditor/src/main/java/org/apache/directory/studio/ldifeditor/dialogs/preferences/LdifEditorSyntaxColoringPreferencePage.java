@@ -235,7 +235,7 @@ public class LdifEditorSyntaxColoringPreferencePage extends PreferencePage imple
         syntaxItems[0] = new SyntaxItem(
             Messages.getString( "LdifEditorSyntaxColoringPreferencePage.Comments" ), LdifEditorConstants.PREFERENCE_LDIFEDITOR_SYNTAX_COMMENT ); //$NON-NLS-1$
         syntaxItems[1] = new SyntaxItem(
-            Messages.getString( "LdifEditorSyntaxColoringPreferencePage.Dn" ), LdifEditorConstants.PREFERENCE_LDIFEDITOR_SYNTAX_DN ); //$NON-NLS-1$
+            Messages.getString( "LdifEditorSyntaxColoringPreferencePage.DN" ), LdifEditorConstants.PREFERENCE_LDIFEDITOR_SYNTAX_DN ); //$NON-NLS-1$
         syntaxItems[2] = new SyntaxItem( Messages
             .getString( "LdifEditorSyntaxColoringPreferencePage.AttributeDescriptions" ), //$NON-NLS-1$
             LdifEditorConstants.PREFERENCE_LDIFEDITOR_SYNTAX_ATTRIBUTE );

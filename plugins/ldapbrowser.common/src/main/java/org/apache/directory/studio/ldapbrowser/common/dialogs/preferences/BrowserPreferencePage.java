@@ -52,9 +52,9 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
 public class BrowserPreferencePage extends PreferencePage implements IWorkbenchPreferencePage
 {
 
-    private static final String DN = Messages.getString( "BrowserPreferencePage.Dn" ); //$NON-NLS-1$
+    private static final String DN = Messages.getString( "BrowserPreferencePage.DN" ); //$NON-NLS-1$
 
-    private static final String RDN = Messages.getString( "BrowserPreferencePage.Rdn" ); //$NON-NLS-1$
+    private static final String RDN = Messages.getString( "BrowserPreferencePage.RDN" ); //$NON-NLS-1$
 
     private static final String RDN_VALUE = Messages.getString( "BrowserPreferencePage.RDNValue" ); //$NON-NLS-1$
 
