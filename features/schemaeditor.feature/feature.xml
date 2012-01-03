@@ -358,14 +358,14 @@ http://www.apache.org/licenses/
          unpack="false"/>
 
    <plugin
-         id="org.apache.directory.studio.ldifparser"
+         id="org.apache.directory.studio.connection.ui"
          download-size="0"
          install-size="0"
          version="${pom.version}"
          unpack="false"/>
 
    <plugin
-         id="org.apache.directory.studio.connection.ui"
+         id="org.apache.directory.studio.ldifparser"
          download-size="0"
          install-size="0"
          version="${pom.version}"
