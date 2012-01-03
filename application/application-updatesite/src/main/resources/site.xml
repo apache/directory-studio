@@ -44,6 +44,10 @@
        id="org.apache.directory.studio.ldifeditor.feature" version="${pom.version}">
       <category name="Apache Directory Studio LDIF Editor"/>
    </feature>
+   <feature url="features/org.apache.directory.studio.ldapservers.feature_${pom.version}.jar"
+       id="org.apache.directory.studio.ldapservers.feature" version="${pom.version}">
+      <category name="Apache Directory Studio LDAP Servers"/>
+   </feature>
    <category-def name="Apache Directory Studio RCP" label="Apache Directory Studio RCP">
       <description>
          The Apache Directory Studio RCP category contains all features related to the RCP Application.
@@ -67,6 +71,11 @@
    <category-def name="Apache Directory Studio LDIF Editor" label="Apache Directory Studio LDIF Editor">
       <description>
          The Apache Directory Studio LDIF Editor category contains all features related to the LDIF Editor.
+      </description>
+   </category-def>
+   <category-def name="Apache Directory Studio LDAP Servers" label="Apache Directory Studio LDAP Servers">
+      <description>
+         The Apache Directory Studio LDAP Servers category contains all features related to the LDAP Servers.
       </description>
    </category-def>
 </site>
