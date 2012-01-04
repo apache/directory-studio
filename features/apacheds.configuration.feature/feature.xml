@@ -8,7 +8,7 @@
       image="studio.png">
 
    <description>
-      The Apache Directory Studio Apache DS Feature contains all plugins related to Apache DS.
+      The Apache Directory Studio ApacheDS Configuration Feature contains all plugins related to ApacheDS Configuration.
    </description>
 
    <copyright>
