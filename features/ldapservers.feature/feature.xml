@@ -210,10 +210,24 @@ http://www.apache.org/licenses/
    </requires>
 
    <plugin
+         id="net.sf.ehcache.core"
+         download-size="0"
+         install-size="0"
+         version="${net.sf.ehcache.version}"
+         unpack="false"/>
+
+   <plugin
          id="org.antlr.antlr"
          download-size="0"
          install-size="0"
          version="${org.antlr.version}"
+         unpack="false"/>
+
+   <plugin
+         id="org.apache.commons.codec"
+         download-size="0"
+         install-size="0"
+         version="${org.apache.commons.codec.version}"
          unpack="false"/>
 
    <plugin
@@ -252,10 +266,59 @@ http://www.apache.org/licenses/
          unpack="false"/>
 
    <plugin
-         id="org.apache.logging.log4j"
+         id="org.apache.directory.server.config"
          download-size="0"
          install-size="0"
-         version="${org.apache.logging.log4j.version}"
+         version="${org.apache.directory.server.validversion}"
+         unpack="false"/>
+
+   <plugin
+         id="org.apache.directory.server.core"
+         download-size="0"
+         install-size="0"
+         version="${org.apache.directory.server.validversion}"
+         unpack="false"/>
+
+   <plugin
+         id="org.apache.directory.server.core.api"
+         download-size="0"
+         install-size="0"
+         version="${org.apache.directory.server.validversion}"
+         unpack="false"/>
+
+   <plugin
+         id="org.apache.directory.server.core.avl"
+         download-size="0"
+         install-size="0"
+         version="${org.apache.directory.server.validversion}"
+         unpack="false"/>
+
+   <plugin
+         id="org.apache.directory.server.core.constants"
+         download-size="0"
+         install-size="0"
+         version="${org.apache.directory.server.validversion}"
+         unpack="false"/>
+
+   <plugin
+         id="org.apache.directory.server.i18n"
+         download-size="0"
+         install-size="0"
+         version="${org.apache.directory.server.validversion}"
+         unpack="false"/>
+
+   <plugin
+         id="org.apache.directory.server.ldif.partition"
+         download-size="0"
+         install-size="0"
+         version="${org.apache.directory.server.validversion}"
+         unpack="false"/>
+
+   <plugin
+         id="org.apache.directory.server.xdbm.partition"
+         download-size="0"
+         install-size="0"
+         version="${org.apache.directory.server.validversion}"
          unpack="false"/>
 
    <plugin
@@ -267,6 +330,13 @@ http://www.apache.org/licenses/
 
    <plugin
          id="org.apache.directory.shared.asn1.ber"
+         download-size="0"
+         install-size="0"
+         version="${org.apache.directory.shared.validversion}"
+         unpack="false"/>
+
+   <plugin
+         id="org.apache.directory.shared.dsmlv2.parser"
          download-size="0"
          install-size="0"
          version="${org.apache.directory.shared.validversion}"
@@ -295,6 +365,20 @@ http://www.apache.org/licenses/
 
    <plugin
          id="org.apache.directory.shared.ldap.extras.aci"
+         download-size="0"
+         install-size="0"
+         version="${org.apache.directory.shared.validversion}"
+         unpack="false"/>
+
+   <plugin
+         id="org.apache.directory.shared.ldap.extras.trigger"
+         download-size="0"
+         install-size="0"
+         version="${org.apache.directory.shared.validversion}"
+         unpack="false"/>
+
+   <plugin
+         id="org.apache.directory.shared.ldap.extras.util"
          download-size="0"
          install-size="0"
          version="${org.apache.directory.shared.validversion}"
@@ -334,20 +418,6 @@ http://www.apache.org/licenses/
          install-size="0"
          version="${org.apache.directory.shared.validversion}"
          unpack="false"/>
-         
-   <plugin
-         id="org.apache.directory.studio.common.core"
-         download-size="0"
-         install-size="0"
-         version="${pom.version}"
-         unpack="false"/>
-
-   <plugin
-         id="org.apache.directory.studio.common.ui"
-         download-size="0"
-         install-size="0"
-         version="${pom.version}"
-         unpack="false"/>
 
    <plugin
          id="org.apache.directory.studio.apacheds.configuration"
@@ -364,7 +434,42 @@ http://www.apache.org/licenses/
          unpack="false"/>
 
    <plugin
+         id="org.apache.directory.studio.apacheds.configuration.v2"
+         download-size="0"
+         install-size="0"
+         version="${pom.version}"
+         unpack="false"/>
+         
+   <plugin
+         id="org.apache.directory.studio.common.core"
+         download-size="0"
+         install-size="0"
+         version="${pom.version}"
+         unpack="false"/>
+
+   <plugin
+         id="org.apache.directory.studio.common.ui"
+         download-size="0"
+         install-size="0"
+         version="${pom.version}"
+         unpack="false"/>
+
+   <plugin
          id="org.apache.directory.studio.connection.core"
+         download-size="0"
+         install-size="0"
+         version="${pom.version}"
+         unpack="false"/>
+
+   <plugin
+         id="org.apache.directory.studio.connection.ui"
+         download-size="0"
+         install-size="0"
+         version="${pom.version}"
+         unpack="false"/>
+
+   <plugin
+         id="org.apache.directory.studio.ldapbrowser.core"
          download-size="0"
          install-size="0"
          version="${pom.version}"
@@ -412,12 +517,12 @@ http://www.apache.org/licenses/
          version="${pom.version}"
          unpack="false"/>
 
-   <!--<plugin
+   <plugin
          id="org.apache.directory.studio.ldapservers.apacheds.v200"
          download-size="0"
          install-size="0"
          version="${pom.version}"
-         unpack="false"/>-->
+         unpack="false"/>
 
    <plugin
          id="org.apache.directory.studio.ldifparser"
@@ -438,6 +543,13 @@ http://www.apache.org/licenses/
          download-size="0"
          install-size="0"
          version="${org.apache.httpcomponents.version}"
+         unpack="false"/>
+
+   <plugin
+         id="org.apache.logging.log4j"
+         download-size="0"
+         install-size="0"
+         version="${org.apache.logging.log4j.version}"
          unpack="false"/>
          
    <plugin
@@ -466,6 +578,13 @@ http://www.apache.org/licenses/
          download-size="0"
          install-size="0"
          version="${org.slf4j.version}"
+         unpack="false"/>
+         
+   <plugin
+         id="org.xpp3.xpp3"
+         download-size="0"
+         install-size="0"
+         version="${org.xpp3.validversion}"
          unpack="false"/>
 
 </feature>
