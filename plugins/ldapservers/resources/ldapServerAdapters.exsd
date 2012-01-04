@@ -107,11 +107,18 @@
          <attribute name="configurationPage" type="string">
             <annotation>
                <documentation>
-                  
+                  The configuration page class
                </documentation>
                <appInfo>
                   <meta.attribute kind="java" basedOn=":org.apache.directory.studio.ldapservers.model.LdapServerAdapterConfigurationPage"/>
                </appInfo>
+            </annotation>
+         </attribute>
+         <attribute name="openConfigurationActionEnabled" type="boolean" use="default" value="true">
+            <annotation>
+               <documentation>
+                  The flag to enable the open configuration action
+               </documentation>
             </annotation>
          </attribute>
       </complexType>

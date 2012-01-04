@@ -99,7 +99,6 @@ public class ServersView extends ViewPart
     private RenameAction rename;
     private StartAction start;
     private StopAction stop;
-    //    private CreateConnectionAction createConnection;
     private PropertiesAction properties;
 
     // Listeners
@@ -264,9 +263,6 @@ public class ServersView extends ViewPart
         stop = new StopAction( this );
         stop.setEnabled( false );
 
-        //        createConnection = new CreateConnectionAction( this );
-        //        createConnection.setEnabled( false );
-
         properties = new PropertiesAction( this );
         properties.setEnabled( false );
     }
@@ -307,9 +303,6 @@ public class ServersView extends ViewPart
                 manager.add( start );
                 manager.add( stop );
                 manager.add( new Separator() );
-                //                MenuManager ldapBrowserManager = new MenuManager( Messages.getString( "ServersView.ldapBrowser" ) ); //$NON-NLS-1$
-                //                ldapBrowserManager.add( createConnection );
-                //                manager.add( ldapBrowserManager );
                 manager.add( new Separator( IWorkbenchActionConstants.MB_ADDITIONS ) );
                 manager.add( new Separator() );
                 manager.add( new Separator() );
@@ -484,20 +477,18 @@ public class ServersView extends ViewPart
                     break;
             }
 
-            //            openConfiguration.setEnabled( true );
+            openConfiguration.setEnabled( server.getLdapServerAdapterExtension().isOpenConfigurationActionEnabled() );
             delete.setEnabled( true );
             rename.setEnabled( true );
-            //            createConnection.setEnabled( true );
             properties.setEnabled( true );
         }
         else
         {
-            //            openConfiguration.setEnabled( false );
+            openConfiguration.setEnabled( false );
             delete.setEnabled( false );
             rename.setEnabled( false );
             start.setEnabled( false );
             stop.setEnabled( false );
-            //            createConnection.setEnabled( false );
             properties.setEnabled( false );
         }
     }
