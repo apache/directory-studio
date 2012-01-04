@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
       id="org.apache.directory.studio.apacheds.feature"
-      label="Apache Directory Studio Apache DS"
+      label="Apache Directory Studio ApacheDS"
       version="${pom.version}"
       provider-name="Apache Software Foundation"
       plugin="org.apache.directory.studio.apacheds"
       image="studio.png">
 
    <description>
-      The Apache Directory Studio Apache DS Feature contains all plugins related to Apache DS.
+      The Apache Directory Studio ApacheDS Feature contains all plugins related to ApacheDS.
    </description>
 
    <copyright>
