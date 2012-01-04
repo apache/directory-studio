@@ -262,13 +262,6 @@ http://www.apache.org/licenses/
          unpack="false"/>
 
    <plugin
-         id="org.apache.logging.log4j"
-         download-size="0"
-         install-size="0"
-         version="${org.apache.logging.log4j.version}"
-         unpack="false"/>
-
-   <plugin
          id="org.apache.directory.shared.asn1.api"
          download-size="0"
          install-size="0"
@@ -433,6 +426,13 @@ http://www.apache.org/licenses/
          download-size="0"
          install-size="0"
          version="${org.apache.httpcomponents.version}"
+         unpack="false"/>
+
+   <plugin
+         id="org.apache.logging.log4j"
+         download-size="0"
+         install-size="0"
+         version="${org.apache.logging.log4j.version}"
          unpack="false"/>
          
    <plugin
