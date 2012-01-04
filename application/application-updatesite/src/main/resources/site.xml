@@ -40,6 +40,10 @@
        id="org.apache.directory.studio.apacheds.configuration.feature" version="${pom.version}">
       <category name="Apache Directory Studio ApacheDS Configuration"/>
    </feature>
+   <feature url="features/org.apache.directory.studio.apacheds.configuration.v2.feature_${pom.version}.jar"
+       id="org.apache.directory.studio.apacheds.configuration.v2.feature" version="${pom.version}">
+      <category name="Apache Directory Studio ApacheDS 2.0 Configuration"/>
+   </feature>
    <feature url="features/org.apache.directory.studio.ldifeditor.feature_${pom.version}.jar"
        id="org.apache.directory.studio.ldifeditor.feature" version="${pom.version}">
       <category name="Apache Directory Studio LDIF Editor"/>
@@ -66,6 +70,11 @@
    <category-def name="Apache Directory Studio ApacheDS Configuration" label="Apache Directory Studio ApacheDS Configuration">
       <description>
          The Apache Directory Studio ApacheDS configuration category contains all features related to ApacheDS Configuration.
+      </description>
+   </category-def>
+   <category-def name="Apache Directory Studio ApacheDS 2.0 Configuration" label="Apache Directory Studio ApacheDS 2.0 Configuration">
+      <description>
+         The Apache Directory Studio ApacheDS 2.0 configuration category contains all features related to ApacheDS 2.0 Configuration.
       </description>
    </category-def>
    <category-def name="Apache Directory Studio LDIF Editor" label="Apache Directory Studio LDIF Editor">

@@ -56,6 +56,10 @@
                   </artifactItem>
                   <artifactItem>
                     <groupId>org.apache.directory.studio</groupId>
+                    <artifactId>apacheds.configuration.v2.feature</artifactId>
+                  </artifactItem>
+                  <artifactItem>
+                    <groupId>org.apache.directory.studio</groupId>
                     <artifactId>ldapbrowser.feature</artifactId>
                   </artifactItem>
                   <artifactItem>
@@ -89,6 +93,10 @@
                   <artifactItem>
                     <groupId>org.apache.directory.studio</groupId>
                     <artifactId>apacheds.configuration.feature</artifactId>
+                  </artifactItem>
+                  <artifactItem>
+                    <groupId>org.apache.directory.studio</groupId>
+                    <artifactId>apacheds.configuration.v2.feature</artifactId>
                   </artifactItem>
                   <artifactItem>
                     <groupId>org.apache.directory.studio</groupId>

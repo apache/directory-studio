@@ -392,12 +392,17 @@
       </dependency>
       <dependency>
         <groupId>org.apache.directory.studio</groupId>
+        <artifactId>apacheds.configuration.feature</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.directory.studio</groupId>
         <artifactId>apacheds.configuration.v2</artifactId>
         <version>${project.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.directory.studio</groupId>
-        <artifactId>apacheds.configuration.feature</artifactId>
+        <artifactId>apacheds.configuration.v2.feature</artifactId>
         <version>${project.version}</version>
       </dependency>
       <dependency>
