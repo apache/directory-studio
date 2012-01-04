@@ -215,7 +215,7 @@ http://www.apache.org/licenses/
          id="net.sf.ehcache.core"
          download-size="0"
          install-size="0"
-         version="${org.antlr.version}"
+         version="${net.sf.ehcache.version}"
          unpack="false"/>
 
    <plugin
@@ -373,6 +373,13 @@ http://www.apache.org/licenses/
          unpack="false"/>
 
    <plugin
+         id="org.apache.directory.shared.ldap.extras.trigger"
+         download-size="0"
+         install-size="0"
+         version="${org.apache.directory.shared.validversion}"
+         unpack="false"/>
+
+   <plugin
          id="org.apache.directory.shared.ldap.extras.util"
          download-size="0"
          install-size="0"
@@ -474,7 +481,7 @@ http://www.apache.org/licenses/
          id="org.apache.logging.log4j"
          download-size="0"
          install-size="0"
-         version="${pom.version}"
+         version="${org.apache.logging.log4j.version}"
          unpack="false"/>
          
    <plugin
