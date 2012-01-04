@@ -21,6 +21,7 @@
 package org.apache.directory.studio.ldapservers.model;
 
 
+import org.apache.directory.studio.ldapservers.actions.CreateConnectionActionHelper;
 import org.eclipse.ui.IActionFilter;
 
 
@@ -45,6 +46,7 @@ public class LdapServerActionFilterAdapter implements IActionFilter
     private static final Object EXTENSION_VERSION = "extensionVersion";
     private static final Object EXTENSION_VENDOR = "extensionVendor";
     private static final Object HAS_CONFIGURATION_PAGE = "hasConfigurationPage";
+    private static final Object IS_LDAP_PERSPECTIVE_AVAILABLE = "isLdapPerspectiveAvailable";
 
     /** The class instance */
     private static LdapServerActionFilterAdapter INSTANCE = new LdapServerActionFilterAdapter();
@@ -149,6 +151,14 @@ public class LdapServerActionFilterAdapter implements IActionFilter
                     .equals( configurationPageClassName ) ) );
 
                 return value.equalsIgnoreCase( hasConfigurationPage ? "true" : "false" );
+            }
+            // IS LDAP PERSPECTIVE AVAILABLE
+            else if ( IS_LDAP_PERSPECTIVE_AVAILABLE.equals( name ) )
+            {
+                boolean isLdapPerspectiveAvailable = CreateConnectionActionHelper.isLdapBrowserPluginsAvailable();
+                boolean booleanValue = Boolean.parseBoolean( value );
+
+                return isLdapPerspectiveAvailable == booleanValue;
             }
         }
 
