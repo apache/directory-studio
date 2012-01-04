@@ -43,10 +43,16 @@
                icon="resources/icons/connection_new.gif">
          </action>
          <visibility>
+            <and>
+               <objectState
+                     name="isLdapPerspectiveAvailable"
+                     value="true">
+               </objectState>
                <objectState
                      name="extensionId"
                      value="%LdapServerAdapter_id">
                </objectState>
+            </and>
          </visibility>
       </objectContribution>
    </extension>
