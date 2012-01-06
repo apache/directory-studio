@@ -46,6 +46,6 @@ public abstract class StudioRunnableWithProgressAdapter implements StudioRunnabl
      */
     public String getErrorMessage()
     {
-        return "";
+        return ""; //$NON-NLS-1$
     }
 }

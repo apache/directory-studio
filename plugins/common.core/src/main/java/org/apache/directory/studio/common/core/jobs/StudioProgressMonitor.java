@@ -47,7 +47,7 @@ public class StudioProgressMonitor extends ProgressMonitorWrapper
 {
     /** The job reports progress and checks for cancellation. */
     protected static Job reportProgressAndCheckCancellationJob = new Job(
-        Messages.getString( "StudioProgressMonitor.CheckCancellation" ) )
+        Messages.getString( "StudioProgressMonitor.CheckCancellation" ) ) //$NON-NLS-1$
     {
         protected IStatus run( IProgressMonitor monitor )
         {
@@ -337,18 +337,18 @@ public class StudioProgressMonitor extends ProgressMonitorWrapper
                 // append explicit status message
                 if ( !StringUtils.isEmpty( statusMessage ) )
                 {
-                    message += "\n - " + statusMessage;
+                    message += "\n - " + statusMessage; //$NON-NLS-1$
                 }
                 // append exception message if different to status message
                 if ( exception != null && exceptionMessage != null && !exceptionMessage.equals( statusMessage ) )
                 {
                     // strip control characters
-                    int indexOfAny = StringUtils.indexOfAny( exceptionMessage, "\n\r\t" );
+                    int indexOfAny = StringUtils.indexOfAny( exceptionMessage, "\n\r\t" ); //$NON-NLS-1$
                     if ( indexOfAny > -1 )
                     {
                         exceptionMessage = exceptionMessage.substring( 0, indexOfAny - 1 );
                     }
-                    message += "\n - " + exceptionMessage;
+                    message += "\n - " + exceptionMessage; //$NON-NLS-1$
                 }
             }
 

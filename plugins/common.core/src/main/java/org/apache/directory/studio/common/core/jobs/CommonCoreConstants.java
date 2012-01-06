@@ -39,8 +39,8 @@ public final class CommonCoreConstants
     }
 
     /** The plug-in ID */
-    public static final String PLUGIN_ID = "org.apache.directory.studio.common.core";
+    public static final String PLUGIN_ID = "org.apache.directory.studio.common.core"; //$NON-NLS-1$
     
     /** The Job family ID */
-    public static final String JOB_FAMILY_ID = "org.apache.directory.studio.common.core.jobs.family";
+    public static final String JOB_FAMILY_ID = "org.apache.directory.studio.common.core.jobs.family"; //$NON-NLS-1$
 }
