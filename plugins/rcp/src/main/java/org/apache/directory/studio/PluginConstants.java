@@ -59,6 +59,6 @@ public final class PluginConstants
         "Action_Update_id" ); //$NON-NLS-1$
 
     /** The Update ActionID */
-    public static final String PREFERENCE_EXIT_PROMPT_ON_CLOSE_LAST_WINDOW = "exitPromptOnCloseLastWindow";
+    public static final String PREFERENCE_EXIT_PROMPT_ON_CLOSE_LAST_WINDOW = "exitPromptOnCloseLastWindow"; //$NON-NLS-1$
 
 }

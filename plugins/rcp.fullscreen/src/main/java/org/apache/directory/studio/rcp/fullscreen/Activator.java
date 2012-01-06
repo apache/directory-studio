@@ -76,7 +76,7 @@ public class Activator extends AbstractUIPlugin implements IWindowListener
     {
         NSWindow nswindow = shell.view.window();
         nswindow.setToolbar( null );
-        SO.Reflect.executeLong( nswindow, "setCollectionBehavior",
+        SO.Reflect.executeLong( nswindow, "setCollectionBehavior", //$NON-NLS-1$
             new Class[]
                 { SO.NSUInteger }, ( int ) ( 1 << 7 ) );
     }

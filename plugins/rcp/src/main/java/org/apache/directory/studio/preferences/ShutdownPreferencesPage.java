@@ -54,7 +54,7 @@ public class ShutdownPreferencesPage extends PreferencePage implements IWorkbenc
      */
     public ShutdownPreferencesPage()
     {
-        super( Messages.getString( "ShutdownPreferencesPage.PageTitle" ) );
+        super( Messages.getString( "ShutdownPreferencesPage.PageTitle" ) ); //$NON-NLS-1$
         super.setPreferenceStore( Activator.getDefault().getPreferenceStore() );
     }
 

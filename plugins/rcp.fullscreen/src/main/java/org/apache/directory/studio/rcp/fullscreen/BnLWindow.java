@@ -33,7 +33,7 @@ public class BnLWindow
      */
     public static void toggleFullScreen( NSWindow window )
     {
-        long toggleFullScreen = SO.selector( "toggleFullScreen:" );
+        long toggleFullScreen = SO.selector( "toggleFullScreen:" ); //$NON-NLS-1$
         long target = SO.getID( window );
         SO.objc_msgSend( target, toggleFullScreen, 0 );
     }
@@ -48,7 +48,7 @@ public class BnLWindow
      */
     public static boolean isFullScreen( NSWindow window )
     {
-        long styleMask = Reflect.executeLong( window, "styleMask" );
+        long styleMask = Reflect.executeLong( window, "styleMask" ); //$NON-NLS-1$
         return ( ( ( styleMask >> 14 ) & 1 ) == 1 );
     }
 

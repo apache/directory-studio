@@ -169,7 +169,7 @@ public class SO
      * compiled into the SWT library.
      */
     public static final Class NSUInteger = Reflect.getField( OS.class,
-        "class_NSObject" ).getClass() == Long.class ? Long.TYPE : Integer.TYPE;
+        "class_NSObject" ).getClass() == Long.class ? Long.TYPE : Integer.TYPE; //$NON-NLS-1$
 
     /**
      * Private cache of selectors-to-ids.
@@ -186,13 +186,13 @@ public class SO
      */
     public static long getID( id id )
     {
-        return ( ( Number ) Reflect.getField( id, "id" ) ).longValue();
+        return ( ( Number ) Reflect.getField( id, "id" ) ).longValue(); //$NON-NLS-1$
     }
 
 
     public static void objc_msgSend( long target, long sel, long arg )
     {
-        Reflect.executeLong( OS.class, "objc_msgSend", new Class[]
+        Reflect.executeLong( OS.class, "objc_msgSend", new Class[] //$NON-NLS-1$
             { NSUInteger,
                 NSUInteger, NSUInteger }, target, sel, arg );
     }
@@ -205,7 +205,7 @@ public class SO
             Number selector = selectors.get( sel );
             if ( selector == null )
             {
-                selector = ( Number ) ( OS.class.getMethod( "sel_registerName",
+                selector = ( Number ) ( OS.class.getMethod( "sel_registerName", //$NON-NLS-1$
                     String.class ).invoke( null, sel ) );
                 selectors.put( sel, selector );
             }
