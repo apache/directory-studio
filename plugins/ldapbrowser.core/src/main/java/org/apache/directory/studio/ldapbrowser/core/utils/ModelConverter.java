@@ -131,8 +131,8 @@ public class ModelConverter
             else if ( !( parts[i] instanceof LdifDnLine ) && !( parts[i] instanceof LdifSepLine ) )
             {
                 String name = parts[i].toRawString();
-                name = name.replaceAll( "\n", "" );
-                name = name.replaceAll( "\r", "" );
+                name = name.replaceAll( "\n", "" ); //$NON-NLS-1$ //$NON-NLS-2$
+                name = name.replaceAll( "\r", "" ); //$NON-NLS-1$ //$NON-NLS-2$
                 IAttribute attribute = new Attribute( entry, name );
                 attribute.addValue( new Value( attribute, parts[i] ) );
                 entry.addAttribute( attribute );

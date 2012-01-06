@@ -101,7 +101,7 @@ public class ExecuteLdifRunnable implements StudioConnectionBulkRunnableWithProg
     public Object[] getLockedObjects()
     {
         List<Object> l = new ArrayList<Object>();
-        l.add( browserConnection.getUrl() + "_" + DigestUtils.shaHex( ldif ) );
+        l.add( browserConnection.getUrl() + "_" + DigestUtils.shaHex( ldif ) ); //$NON-NLS-1$
         return l.toArray();
     }
 

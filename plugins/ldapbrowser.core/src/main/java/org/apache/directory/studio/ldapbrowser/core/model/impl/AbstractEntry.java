@@ -212,7 +212,7 @@ public abstract class AbstractEntry implements IEntry, ICompareableEntry
         {
             if ( objectClassAttribute == null )
             {
-                throw new IllegalArgumentException( BrowserCoreMessages.model__attribute_does_not_exist + ": "
+                throw new IllegalArgumentException( BrowserCoreMessages.model__attribute_does_not_exist + ": " //$NON-NLS-1$
                     + attributeToDelete );
             }
 
@@ -234,7 +234,7 @@ public abstract class AbstractEntry implements IEntry, ICompareableEntry
             }
             else
             {
-                throw new IllegalArgumentException( BrowserCoreMessages.model__attribute_does_not_exist + ": "
+                throw new IllegalArgumentException( BrowserCoreMessages.model__attribute_does_not_exist + ": " //$NON-NLS-1$
                     + attributeToDelete );
             }
         }

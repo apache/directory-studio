@@ -160,49 +160,49 @@ public interface IBrowserConnection extends Serializable, IAdaptable, Connection
     }
 
     /** The key for the connection parameter "Get Base DNs from Root DSE". */
-    public static String CONNECTION_PARAMETER_FETCH_BASE_DNS = "ldapbrowser.fetchBaseDns";
+    public static String CONNECTION_PARAMETER_FETCH_BASE_DNS = "ldapbrowser.fetchBaseDns"; //$NON-NLS-1$
 
     /** The key for the connection parameter "Base Dn". */
-    public static String CONNECTION_PARAMETER_BASE_DN = "ldapbrowser.baseDn";
+    public static String CONNECTION_PARAMETER_BASE_DN = "ldapbrowser.baseDn"; //$NON-NLS-1$
 
     /** The key for the connection parameter "Count Limit". */
-    public static String CONNECTION_PARAMETER_COUNT_LIMIT = "ldapbrowser.countLimit";
+    public static String CONNECTION_PARAMETER_COUNT_LIMIT = "ldapbrowser.countLimit"; //$NON-NLS-1$
 
     /** The key for the connection parameter "Time Limit". */
-    public static String CONNECTION_PARAMETER_TIME_LIMIT = "ldapbrowser.timeLimit";
+    public static String CONNECTION_PARAMETER_TIME_LIMIT = "ldapbrowser.timeLimit"; //$NON-NLS-1$
 
     /** The key for the connection parameter "Alias Dereferencing". */
-    public static String CONNECTION_PARAMETER_ALIASES_DEREFERENCING_METHOD = "ldapbrowser.aliasesDereferencingMethod";
+    public static String CONNECTION_PARAMETER_ALIASES_DEREFERENCING_METHOD = "ldapbrowser.aliasesDereferencingMethod"; //$NON-NLS-1$
 
     /** The key for the connection parameter "Referrals Handling". */
-    public static String CONNECTION_PARAMETER_REFERRALS_HANDLING_METHOD = "ldapbrowser.referralsHandlingMethod";
+    public static String CONNECTION_PARAMETER_REFERRALS_HANDLING_METHOD = "ldapbrowser.referralsHandlingMethod"; //$NON-NLS-1$
 
     /** The key for the connection parameter "Fetch Operational Attributes. */
-    public static String CONNECTION_PARAMETER_FETCH_OPERATIONAL_ATTRIBUTES = "ldapbrowser.fetchOperationalAttributes";
+    public static String CONNECTION_PARAMETER_FETCH_OPERATIONAL_ATTRIBUTES = "ldapbrowser.fetchOperationalAttributes"; //$NON-NLS-1$
 
     /** The key for the connection parameter "Fetch Sub-entries". */
-    public static String CONNECTION_PARAMETER_FETCH_SUBENTRIES = "ldapbrowser.fetchSubentries";
+    public static String CONNECTION_PARAMETER_FETCH_SUBENTRIES = "ldapbrowser.fetchSubentries"; //$NON-NLS-1$
 
     /** The key for the connection parameter "Paged Search". */
-    public static String CONNECTION_PARAMETER_PAGED_SEARCH = "ldapbrowser.pagedSearch";
+    public static String CONNECTION_PARAMETER_PAGED_SEARCH = "ldapbrowser.pagedSearch"; //$NON-NLS-1$
 
     /** The key for the connection parameter "Paged Search Size". */
-    public static String CONNECTION_PARAMETER_PAGED_SEARCH_SIZE = "ldapbrowser.pagedSearchSize";
+    public static String CONNECTION_PARAMETER_PAGED_SEARCH_SIZE = "ldapbrowser.pagedSearchSize"; //$NON-NLS-1$
 
     /** The key for the connection parameter "Paged Search Scroll Mode". */
-    public static String CONNECTION_PARAMETER_PAGED_SEARCH_SCROLL_MODE = "ldapbrowser.pagedSearchScrollMode";
+    public static String CONNECTION_PARAMETER_PAGED_SEARCH_SCROLL_MODE = "ldapbrowser.pagedSearchScrollMode"; //$NON-NLS-1$
 
     /** The key for the connection parameter "Modify Mode for attributes with equality matching rule". */
-    public static String CONNECTION_PARAMETER_MODIFY_MODE = "ldapbrowser.modifyMode";
+    public static String CONNECTION_PARAMETER_MODIFY_MODE = "ldapbrowser.modifyMode"; //$NON-NLS-1$
 
     /** The key for the connection parameter "Modify Mode for attributes without equality matching rule". */
-    public static String CONNECTION_PARAMETER_MODIFY_MODE_NO_EMR = "ldapbrowser.modifyModeNoEMR";
+    public static String CONNECTION_PARAMETER_MODIFY_MODE_NO_EMR = "ldapbrowser.modifyModeNoEMR"; //$NON-NLS-1$
 
     /** The key for the connection parameter "Modify add delete order". */
-    public static String CONNECTION_PARAMETER_MODIFY_ORDER = "ldapbrowser.modifyOrder";
+    public static String CONNECTION_PARAMETER_MODIFY_ORDER = "ldapbrowser.modifyOrder"; //$NON-NLS-1$
 
     /** The key for the connection parameter "Use ManageDsaIT Control" */
-    public static String CONNECTION_PARAMETER_MANAGE_DSA_IT = "ldapbrowser.manageDsaIT";
+    public static String CONNECTION_PARAMETER_MANAGE_DSA_IT = "ldapbrowser.manageDsaIT"; //$NON-NLS-1$
 
 
     /**

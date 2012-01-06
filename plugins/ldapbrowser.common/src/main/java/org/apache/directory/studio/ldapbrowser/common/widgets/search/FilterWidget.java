@@ -185,7 +185,7 @@ public class FilterWidget extends BrowserWidget
      */
     public String getFilter()
     {
-        if ( "".equals( filterCombo.getText() ) )
+        if ( "".equals( filterCombo.getText() ) ) //$NON-NLS-1$
         {
             return ""; //$NON-NLS-1$
         }

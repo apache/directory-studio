@@ -43,14 +43,14 @@ public class LdapFilterUtils
     {
         if ( value.isString() )
         {
-            return "(" + value.getAttribute().getDescription() + "=" + getEncodedValue( value.getStringValue() ) + ")";
+            return "(" + value.getAttribute().getDescription() + "=" + getEncodedValue( value.getStringValue() ) + ")"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         }
         else
         {
             StringBuffer filter = new StringBuffer();
-            filter.append( "(" );
+            filter.append( "(" ); //$NON-NLS-1$
             filter.append( value.getAttribute().getDescription() );
-            filter.append( "=" );
+            filter.append( "=" ); //$NON-NLS-1$
 
             byte[] bytes = value.getBinaryValue();
             for ( int i = 0; i < bytes.length; i++ )
@@ -61,15 +61,15 @@ public class LdapFilterUtils
                     b = 256 + b;
                 }
                 String s = Integer.toHexString( b );
-                filter.append( "\\" );
+                filter.append( "\\" ); //$NON-NLS-1$
                 if ( s.length() == 1 )
                 {
-                    filter.append( "0" );
+                    filter.append( "0" ); //$NON-NLS-1$
                 }
                 filter.append( s );
             }
 
-            filter.append( ")" );
+            filter.append( ")" ); //$NON-NLS-1$
             return filter.toString();
         }
     }
@@ -99,11 +99,11 @@ public class LdapFilterUtils
      */
     public static String getEncodedValue( String value )
     {
-        value = value.replaceAll( "\\\\", "\\\\5c" );
-        value = value.replaceAll( "" + '\u0000', "\\\\00" );
-        value = value.replaceAll( "\\*", "\\\\2a" );
-        value = value.replaceAll( "\\(", "\\\\28" );
-        value = value.replaceAll( "\\)", "\\\\29" );
+        value = value.replaceAll( "\\\\", "\\\\5c" ); //$NON-NLS-1$ //$NON-NLS-2$
+        value = value.replaceAll( "" + '\u0000', "\\\\00" ); //$NON-NLS-1$ //$NON-NLS-2$
+        value = value.replaceAll( "\\*", "\\\\2a" ); //$NON-NLS-1$ //$NON-NLS-2$
+        value = value.replaceAll( "\\(", "\\\\28" ); //$NON-NLS-1$ //$NON-NLS-2$
+        value = value.replaceAll( "\\)", "\\\\29" ); //$NON-NLS-1$ //$NON-NLS-2$
         return value;
     }
 

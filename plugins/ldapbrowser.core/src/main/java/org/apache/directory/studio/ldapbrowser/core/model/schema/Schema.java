@@ -67,16 +67,16 @@ import org.apache.directory.studio.ldifparser.parser.LdifParser;
 public class Schema
 {
 
-    public static final String SCHEMA_FILTER = "(objectClass=subschema)";
+    public static final String SCHEMA_FILTER = "(objectClass=subschema)"; //$NON-NLS-1$
 
-    public static final String RAW_SCHEMA_DEFINITION_LDIF_VALUE = "RAW_SCHEMA_DEFINITION_LDIF_VALUE";
+    public static final String RAW_SCHEMA_DEFINITION_LDIF_VALUE = "RAW_SCHEMA_DEFINITION_LDIF_VALUE"; //$NON-NLS-1$
 
-    public static final String DN_SYNTAX_OID = "1.3.6.1.4.1.1466.115.121.1.12";
+    public static final String DN_SYNTAX_OID = "1.3.6.1.4.1.1466.115.121.1.12"; //$NON-NLS-1$
 
     public static final LdapSyntax DUMMY_LDAP_SYNTAX;
     static
     {
-        DUMMY_LDAP_SYNTAX = new LdapSyntax( "", "" );
+        DUMMY_LDAP_SYNTAX = new LdapSyntax( "", "" ); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
     public static final HashMap<String, List<String>> DUMMY_EXTENSIONS;
@@ -84,8 +84,8 @@ public class Schema
     {
         DUMMY_EXTENSIONS = new HashMap<String, List<String>>();
         List<String> dummyValues = new ArrayList<String>();
-        dummyValues.add( "DUMMY" );
-        DUMMY_EXTENSIONS.put( "X-DUMMY", dummyValues );
+        dummyValues.add( "DUMMY" ); //$NON-NLS-1$
+        DUMMY_EXTENSIONS.put( "X-DUMMY", dummyValues ); //$NON-NLS-1$
     }
 
     public static final Schema DEFAULT_SCHEMA;
@@ -95,7 +95,7 @@ public class Schema
 
         try
         {
-            URL url = Schema.class.getClassLoader().getResource( "default_schema.ldif" );
+            URL url = Schema.class.getClassLoader().getResource( "default_schema.ldif" ); //$NON-NLS-1$
             InputStream is = url.openStream();
             Reader reader = new InputStreamReader( is );
 
@@ -180,7 +180,7 @@ public class Schema
         catch ( Exception e )
         {
             // TODO: exception handling
-            System.out.println( "Schema#loadFromLdif: " + e.toString() );
+            System.out.println( "Schema#loadFromLdif: " + e.toString() ); //$NON-NLS-1$
         }
     }
 
@@ -199,7 +199,7 @@ public class Schema
         catch ( Exception e )
         {
             // TODO: exception handling
-            System.out.println( "Schema#loadFromRecord: " + e.toString() );
+            System.out.println( "Schema#loadFromRecord: " + e.toString() ); //$NON-NLS-1$
         }
     }
 
@@ -218,7 +218,7 @@ public class Schema
         catch ( Exception e )
         {
             // TODO: exception handling
-            System.out.println( "Schema#saveToLdif: " + e.toString() );
+            System.out.println( "Schema#saveToLdif: " + e.toString() ); //$NON-NLS-1$
         }
     }
 
@@ -304,7 +304,7 @@ public class Schema
             catch ( Exception e )
             {
                 // TODO: exception handling
-                System.out.println( "Error reading schema: " + attributeName + " = " + value );
+                System.out.println( "Error reading schema: " + attributeName + " = " + value ); //$NON-NLS-1$ //$NON-NLS-2$
                 System.out.println( e.getMessage() );
             }
         }

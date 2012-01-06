@@ -220,7 +220,7 @@ public class ExportDsmlRunnable implements StudioConnectionRunnableWithProgress
             if ( dsmlExportString != null )
             {
                 FileOutputStream fos = new FileOutputStream( exportDsmlFilename );
-                OutputStreamWriter osw = new OutputStreamWriter( fos, "UTF-8" );
+                OutputStreamWriter osw = new OutputStreamWriter( fos, "UTF-8" ); //$NON-NLS-1$
                 BufferedWriter bufferedWriter = new BufferedWriter( osw );
                 bufferedWriter.write( dsmlExportString );
                 bufferedWriter.close();

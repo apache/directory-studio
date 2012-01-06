@@ -128,9 +128,9 @@ public class BrowserConnectionManager implements ConnectionUpdateListener, Brows
             // 1st search it in current workspace with the old ldapstudio plugin ID
             // 2nd search it in old .ldapstudio workspace with the old ldapstudio plugin ID
             String[] oldFilenames = new String[2];
-            oldFilenames[0] = filename.replace( "org.apache.directory.studio.ldapbrowser.core",
-                "org.apache.directory.ldapstudio.browser.core" );
-            oldFilenames[1] = oldFilenames[0].replace( ".ApacheDirectoryStudio", ".ldapstudio" );
+            oldFilenames[0] = filename.replace( "org.apache.directory.studio.ldapbrowser.core", //$NON-NLS-1$
+                "org.apache.directory.ldapstudio.browser.core" ); //$NON-NLS-1$
+            oldFilenames[1] = oldFilenames[0].replace( ".ApacheDirectoryStudio", ".ldapstudio" ); //$NON-NLS-1$ //$NON-NLS-2$
             for ( int i = 0; i < oldFilenames.length; i++ )
             {
                 File oldFile = new File( oldFilenames[i] );
@@ -138,10 +138,10 @@ public class BrowserConnectionManager implements ConnectionUpdateListener, Brows
                 {
                     try
                     {
-                        String oldContent = FileUtils.readFileToString( oldFile, "UTF-8" );
-                        String newContent = oldContent.replace( "org.apache.directory.ldapstudio.browser.core",
-                            "org.apache.directory.studio.ldapbrowser.core" );
-                        FileUtils.writeStringToFile( file, newContent, "UTF-8" );
+                        String oldContent = FileUtils.readFileToString( oldFile, "UTF-8" ); //$NON-NLS-1$
+                        String newContent = oldContent.replace( "org.apache.directory.ldapstudio.browser.core", //$NON-NLS-1$
+                            "org.apache.directory.studio.ldapbrowser.core" ); //$NON-NLS-1$
+                        FileUtils.writeStringToFile( file, newContent, "UTF-8" ); //$NON-NLS-1$
                         break;
                     }
                     catch ( IOException e )
@@ -345,7 +345,7 @@ public class BrowserConnectionManager implements ConnectionUpdateListener, Brows
         // To avoid a corrupt file, save object to a temp file first 
         try
         {
-            BrowserConnectionIO.save( new FileOutputStream( getBrowserConnectionStoreFileName() + "-temp" ),
+            BrowserConnectionIO.save( new FileOutputStream( getBrowserConnectionStoreFileName() + "-temp" ), //$NON-NLS-1$
                 connectionMap );
         }
         catch ( IOException e )
@@ -356,7 +356,7 @@ public class BrowserConnectionManager implements ConnectionUpdateListener, Brows
 
         // move temp file to good file
         File file = new File( getBrowserConnectionStoreFileName() );
-        File tempFile = new File( getBrowserConnectionStoreFileName() + "-temp" );
+        File tempFile = new File( getBrowserConnectionStoreFileName() + "-temp" ); //$NON-NLS-1$
         if ( file.exists() )
         {
             file.delete();
@@ -364,8 +364,8 @@ public class BrowserConnectionManager implements ConnectionUpdateListener, Brows
 
         try
         {
-            String content = FileUtils.readFileToString( tempFile, "UTF-8" );
-            FileUtils.writeStringToFile( file, content, "UTF-8" );
+            String content = FileUtils.readFileToString( tempFile, "UTF-8" ); //$NON-NLS-1$
+            FileUtils.writeStringToFile( file, content, "UTF-8" ); //$NON-NLS-1$
         }
         catch ( IOException e )
         {
@@ -457,8 +457,8 @@ public class BrowserConnectionManager implements ConnectionUpdateListener, Brows
             File file = new File( fileName );
             if ( file.exists() )
             {
-                String oldContent = FileUtils.readFileToString( file, "UTF-8" );
-                if ( !oldContent.contains( "java.beans.XMLDecoder" ) )
+                String oldContent = FileUtils.readFileToString( file, "UTF-8" ); //$NON-NLS-1$
+                if ( !oldContent.contains( "java.beans.XMLDecoder" ) ) //$NON-NLS-1$
                 {
                     // new file format
                     try
@@ -472,7 +472,7 @@ public class BrowserConnectionManager implements ConnectionUpdateListener, Brows
                         try
                         {
                             BrowserConnectionIO.load( new FileInputStream( getBrowserConnectionStoreFileName()
-                                + "-temp" ), connectionMap );
+                                + "-temp" ), connectionMap ); //$NON-NLS-1$
                         }
                         catch ( FileNotFoundException e1 )
                         {
@@ -568,7 +568,7 @@ public class BrowserConnectionManager implements ConnectionUpdateListener, Brows
         catch ( Exception e )
         {
             // if loading failed, try with temp file
-            String tempFilename = filename + "-temp";
+            String tempFilename = filename + "-temp"; //$NON-NLS-1$
             try
             {
                 XMLDecoder decoder = new XMLDecoder( new BufferedInputStream( ( new FileInputStream( tempFilename ) ) ) );
@@ -614,7 +614,7 @@ public class BrowserConnectionManager implements ConnectionUpdateListener, Brows
                     {
                         if ( oldInstance == field.get( null ) )
                         {
-                            return new Expression( oldInstance, field, "get", new Object[]
+                            return new Expression( oldInstance, field, "get", new Object[] //$NON-NLS-1$
                                 { null } );
                         }
                     }

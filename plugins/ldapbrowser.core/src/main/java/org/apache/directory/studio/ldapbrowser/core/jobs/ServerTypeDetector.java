@@ -149,7 +149,7 @@ public class ServerTypeDetector
         {
             // IBM SecureWay Directory
             String[] iswVersions =
-                { "3.2", "3.2.1", "3.2.2" }; //$NON-NLS-1$
+                { "3.2", "3.2.1", "3.2.2" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
             for ( String version : iswVersions )
             {
                 if ( vendorVersion.indexOf( version ) > -1 )
@@ -160,7 +160,7 @@ public class ServerTypeDetector
 
             // IBM Directory Server
             String[] idsVersions =
-                { "4.1", "5.1" }; //$NON-NLS-1$
+                { "4.1", "5.1" }; //$NON-NLS-1$ //$NON-NLS-2$
             for ( String version : idsVersions )
             {
                 if ( vendorVersion.indexOf( version ) > -1 )
@@ -171,7 +171,7 @@ public class ServerTypeDetector
 
             // IBM Tivoli Directory Server
             String[] tdsVersions =
-                { "5.2", "6.0", "6.1", "6.2" }; //$NON-NLS-1$
+                { "5.2", "6.0", "6.1", "6.2" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
             for ( String version : tdsVersions )
             {
                 if ( vendorVersion.indexOf( version ) > -1 )

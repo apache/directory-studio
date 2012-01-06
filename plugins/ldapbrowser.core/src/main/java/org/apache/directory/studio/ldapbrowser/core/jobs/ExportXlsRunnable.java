@@ -115,7 +115,7 @@ public class ExportXlsRunnable implements StudioConnectionRunnableWithProgress
     public Object[] getLockedObjects()
     {
         return new Object[]
-            { browserConnection.getUrl() + "_" + DigestUtils.shaHex( exportXlsFilename ) };
+            { browserConnection.getUrl() + "_" + DigestUtils.shaHex( exportXlsFilename ) }; //$NON-NLS-1$
     }
 
 
@@ -292,7 +292,7 @@ public class ExportXlsRunnable implements StudioConnectionRunnableWithProgress
         int binaryEncoding, boolean exportDn )
     {
         // group multi-valued attributes
-        Map<String, String> attributeMap = ExportCsvRunnable.getAttributeMap( null, record, valueDelimiter, "UTF-16",
+        Map<String, String> attributeMap = ExportCsvRunnable.getAttributeMap( null, record, valueDelimiter, "UTF-16", //$NON-NLS-1$
             binaryEncoding );
 
         // output attributes

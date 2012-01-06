@@ -212,9 +212,9 @@ public class LdapFilterItemComponent extends LdapFilterComponent
      */
     public String toString()
     {
-        return ( startToken != null ? startToken.getValue() : "" )
-            + ( filtertypeToken != null ? filtertypeToken.getValue() : "" )
-            + ( valueToken != null ? valueToken.getValue() : "" );
+        return ( startToken != null ? startToken.getValue() : "" ) //$NON-NLS-1$
+            + ( filtertypeToken != null ? filtertypeToken.getValue() : "" ) //$NON-NLS-1$
+            + ( valueToken != null ? valueToken.getValue() : "" ); //$NON-NLS-1$
     }
 
 

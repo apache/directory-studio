@@ -122,7 +122,7 @@ public class ExportLdifRunnable implements StudioConnectionRunnableWithProgress
     public Object[] getLockedObjects()
     {
         List<Object> l = new ArrayList<Object>();
-        l.add( browserConnection.getUrl() + "_" + DigestUtils.shaHex( exportLdifFilename ) );
+        l.add( browserConnection.getUrl() + "_" + DigestUtils.shaHex( exportLdifFilename ) ); //$NON-NLS-1$
         return l.toArray();
     }
 

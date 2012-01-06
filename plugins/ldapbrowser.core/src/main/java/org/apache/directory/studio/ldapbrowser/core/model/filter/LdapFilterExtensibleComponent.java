@@ -406,14 +406,14 @@ public class LdapFilterExtensibleComponent extends LdapFilterComponent
      */
     public String toString()
     {
-        return ( attributeToken != null ? startToken.getValue() : "" )
-            + ( dnAttrColonToken != null ? dnAttrColonToken.getValue() : "" )
-            + ( dnAttrToken != null ? dnAttrToken.getValue() : "" )
-            + ( matchingRuleColonToken != null ? matchingRuleColonToken.getValue() : "" )
-            + ( matchingRuleToken != null ? matchingRuleToken.getValue() : "" )
-            + ( equalsColonToken != null ? equalsColonToken.getValue() : "" )
-            + ( equalsToken != null ? equalsToken.getValue() : "" )
-            + ( valueToken != null ? valueToken.getValue() : "" );
+        return ( attributeToken != null ? startToken.getValue() : "" ) //$NON-NLS-1$
+            + ( dnAttrColonToken != null ? dnAttrColonToken.getValue() : "" ) //$NON-NLS-1$
+            + ( dnAttrToken != null ? dnAttrToken.getValue() : "" ) //$NON-NLS-1$
+            + ( matchingRuleColonToken != null ? matchingRuleColonToken.getValue() : "" ) //$NON-NLS-1$
+            + ( matchingRuleToken != null ? matchingRuleToken.getValue() : "" ) //$NON-NLS-1$
+            + ( equalsColonToken != null ? equalsColonToken.getValue() : "" ) //$NON-NLS-1$
+            + ( equalsToken != null ? equalsToken.getValue() : "" ) //$NON-NLS-1$
+            + ( valueToken != null ? valueToken.getValue() : "" ); //$NON-NLS-1$
     }
 
 

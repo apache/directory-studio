@@ -169,7 +169,7 @@ public class ImportDsmlRunnable implements StudioConnectionBulkRunnableWithProgr
     public Object[] getLockedObjects()
     {
         List<Object> l = new ArrayList<Object>();
-        l.add( browserConnection.getUrl() + "_" + DigestUtils.shaHex( dsmlFile.toString() ) );
+        l.add( browserConnection.getUrl() + "_" + DigestUtils.shaHex( dsmlFile.toString() ) ); //$NON-NLS-1$
         return l.toArray();
     }
 
@@ -197,7 +197,7 @@ public class ImportDsmlRunnable implements StudioConnectionBulkRunnableWithProgr
             // Parsing the file
             Dsmlv2Grammar grammar = new Dsmlv2Grammar();
             Dsmlv2Parser parser = new Dsmlv2Parser( grammar );
-            parser.setInput( new FileInputStream( dsmlFile ), "UTF-8" );
+            parser.setInput( new FileInputStream( dsmlFile ), "UTF-8" ); //$NON-NLS-1$
             parser.parseAllRequests();
 
             // Getting the batch request
@@ -237,7 +237,7 @@ public class ImportDsmlRunnable implements StudioConnectionBulkRunnableWithProgr
             if ( responseFile != null )
             {
                 FileOutputStream fos = new FileOutputStream( responseFile );
-                OutputStreamWriter osw = new OutputStreamWriter( fos, "UTF-8" );
+                OutputStreamWriter osw = new OutputStreamWriter( fos, "UTF-8" ); //$NON-NLS-1$
                 BufferedWriter bufferedWriter = new BufferedWriter( osw );
                 bufferedWriter.write( batchResponseDsml.toDsml() );
                 bufferedWriter.close();
@@ -250,7 +250,7 @@ public class ImportDsmlRunnable implements StudioConnectionBulkRunnableWithProgr
             {
                 monitor.reportError( BrowserCoreMessages.bind(
                     "{0} errors occurred, see the response file for details", new String[]
-                        { "" + errorsCount } ) );
+                        { "" + errorsCount } ) ); //$NON-NLS-1$
             }
         }
         catch ( Exception e )
@@ -677,7 +677,7 @@ public class ImportDsmlRunnable implements StudioConnectionBulkRunnableWithProgr
         //  these signify that all user attributes are to be returned."]
         if ( returningAttributes.size() == 0 )
         {
-            returningAttributes.add( "*" );
+            returningAttributes.add( "*" ); //$NON-NLS-1$
         }
 
         controls.setReturningAttributes( returningAttributes.toArray( new String[0] ) );

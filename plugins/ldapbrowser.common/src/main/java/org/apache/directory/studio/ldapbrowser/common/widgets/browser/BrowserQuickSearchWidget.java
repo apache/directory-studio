@@ -198,7 +198,7 @@ public class BrowserQuickSearchWidget
         {
             public void modifyText( ModifyEvent e )
             {
-                quickSearchRunButton.setEnabled( !"".equals( quickSearchAttributeCombo.getText() ) );
+                quickSearchRunButton.setEnabled( !"".equals( quickSearchAttributeCombo.getText() ) ); //$NON-NLS-1$
             }
         } );
         quickSearchAttributeCombo.addSelectionListener( new SelectionAdapter()
@@ -213,7 +213,7 @@ public class BrowserQuickSearchWidget
         quickSearchAttributeCombo.setLayoutData( gd );
 
         String[] operators = new String[]
-            { "=", "!=", "<=", ">=", "~=" };
+            { "=", "!=", "<=", ">=", "~=" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
         quickSearchOperatorCombo = BaseWidgetUtils.createReadonlyCombo( innerComposite, operators, 0, 1 );
         GridData data = new GridData();
         quickSearchOperatorCombo.setLayoutData( data );
@@ -296,27 +296,27 @@ public class BrowserQuickSearchWidget
         quickSearch.getSearchParameter().setScope( quickSearchScopeButton.getSelection() ? SearchScope.SUBTREE : SearchScope.ONELEVEL );
 
         StringBuffer filter = new StringBuffer();
-        filter.append( "(" );
-        if ( "!=".equals( quickSearchOperatorCombo.getText() ) )
+        filter.append( "(" ); //$NON-NLS-1$
+        if ( "!=".equals( quickSearchOperatorCombo.getText() ) ) //$NON-NLS-1$
         {
-            filter.append( "!(" );
+            filter.append( "!(" ); //$NON-NLS-1$
         }
         filter.append( quickSearchAttributeCombo.getText() );
-        filter.append( "!=".equals( quickSearchOperatorCombo.getText() ) ? "=" : quickSearchOperatorCombo.getText() );
+        filter.append( Messages.getString("BrowserQuickSearchWidget.9").equals( quickSearchOperatorCombo.getText() ) ? "=" : quickSearchOperatorCombo.getText() ); //$NON-NLS-1$ //$NON-NLS-2$
 
         // only escape '\', '(', ')', and '\u0000'
         // don't escape '*' to allow substring search
         String value = quickSearchValueCombo.getText();
-        value = value.replaceAll( "\\\\", "\\\\5c" );
-        value = value.replaceAll( "\u0000", "\\\\00" );
-        value = value.replaceAll( "\\(", "\\\\28" );
-        value = value.replaceAll( "\\)", "\\\\29" );
+        value = value.replaceAll( "\\\\", "\\\\5c" ); //$NON-NLS-1$ //$NON-NLS-2$
+        value = value.replaceAll( "\u0000", "\\\\00" ); //$NON-NLS-1$ //$NON-NLS-2$
+        value = value.replaceAll( "\\(", "\\\\28" ); //$NON-NLS-1$ //$NON-NLS-2$
+        value = value.replaceAll( "\\)", "\\\\29" ); //$NON-NLS-1$ //$NON-NLS-2$
         filter.append( value );
-        if ( "!=".equals( quickSearchOperatorCombo.getText() ) )
+        if ( "!=".equals( quickSearchOperatorCombo.getText() ) ) //$NON-NLS-1$
         {
-            filter.append( ")" );
+            filter.append( ")" ); //$NON-NLS-1$
         }
-        filter.append( ")" );
+        filter.append( ")" ); //$NON-NLS-1$
         quickSearch.getSearchParameter().setFilter( filter.toString() );
 
         // set new quick search
@@ -410,7 +410,7 @@ public class BrowserQuickSearchWidget
             quickSearchOperatorCombo.setEnabled( enabled );
             quickSearchValueCombo.setEnabled( enabled );
             quickSearchScopeButton.setEnabled( enabled );
-            quickSearchRunButton.setEnabled( enabled && !"".equals( quickSearchAttributeCombo.getText() ) );
+            quickSearchRunButton.setEnabled( enabled && !"".equals( quickSearchAttributeCombo.getText() ) ); //$NON-NLS-1$
 
             if ( !enabled )
             {

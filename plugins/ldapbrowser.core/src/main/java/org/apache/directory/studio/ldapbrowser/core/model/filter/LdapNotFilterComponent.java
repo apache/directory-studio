@@ -102,7 +102,7 @@ public class LdapNotFilterComponent extends LdapFilterComponent
      */
     public String toString()
     {
-        return ( startToken != null ? "!" : "" ) + ( !filterList.isEmpty() ? filterList.get( 0 ).toString() : "" );
+        return ( startToken != null ? "!" : "" ) + ( !filterList.isEmpty() ? filterList.get( 0 ).toString() : "" ); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
     }
 
 }

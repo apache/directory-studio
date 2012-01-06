@@ -242,7 +242,7 @@ public class EventRegistry extends ConnectionEventRegistry
 
             public String toString()
             {
-                return "EventRunnableFactory [entryUpdateEvent=" + entryUpdateEvent + "]";
+                return "EventRunnableFactory [entryUpdateEvent=" + entryUpdateEvent + "]"; //$NON-NLS-1$ //$NON-NLS-2$
             }
         };
         entryUpdateEventManager.fire( factory );
