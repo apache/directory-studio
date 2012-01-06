@@ -38,7 +38,7 @@ import org.eclipse.ui.forms.widgets.ScrolledForm;
 public class InterceptorsPage extends FormPage
 {
     /** The Page ID*/
-    public static final String ID = ServerConfigurationEditor.ID + ".V153.InterceptorsPage";
+    public static final String ID = ServerConfigurationEditor.ID + ".V153.InterceptorsPage"; //$NON-NLS-1$
 
     /** The Page Title */
     private static final String TITLE = "Interceptors";
@@ -65,7 +65,7 @@ public class InterceptorsPage extends FormPage
     protected void createFormContent( IManagedForm managedForm )
     {
         PlatformUI.getWorkbench().getHelpSystem().setHelp( getPartControl(),
-            ApacheDSConfigurationPluginConstants.PLUGIN_ID + "." + "configuration_editor_153" );
+            ApacheDSConfigurationPluginConstants.PLUGIN_ID + "." + "configuration_editor_153" ); //$NON-NLS-1$ //$NON-NLS-2$
 
         final ScrolledForm form = managedForm.getForm();
         form.setText( "Interceptors" );
