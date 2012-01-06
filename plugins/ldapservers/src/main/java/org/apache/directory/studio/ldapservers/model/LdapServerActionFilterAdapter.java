@@ -33,20 +33,20 @@ import org.eclipse.ui.IActionFilter;
 public class LdapServerActionFilterAdapter implements IActionFilter
 {
     // Identifier and value strings
-    private static final String ID = "id";
-    private static final String NAME = "name";
-    private static final Object STATUS = "status";
-    private static final Object STATUS_STARTED = "started";
-    private static final Object STATUS_STARTING = "starting";
-    private static final Object STATUS_STOPPED = "stopped";
-    private static final Object STATUS_STOPPING = "stopping";
-    private static final Object STATUS_UNKNOWN = "unknown";
-    private static final Object EXTENSION_ID = "extensionId";
-    private static final Object EXTENSION_NAME = "extensionName";
-    private static final Object EXTENSION_VERSION = "extensionVersion";
-    private static final Object EXTENSION_VENDOR = "extensionVendor";
-    private static final Object HAS_CONFIGURATION_PAGE = "hasConfigurationPage";
-    private static final Object IS_LDAP_PERSPECTIVE_AVAILABLE = "isLdapPerspectiveAvailable";
+    private static final String ID = "id"; //$NON-NLS-1$
+    private static final String NAME = "name"; //$NON-NLS-1$
+    private static final Object STATUS = "status"; //$NON-NLS-1$
+    private static final Object STATUS_STARTED = "started"; //$NON-NLS-1$
+    private static final Object STATUS_STARTING = "starting"; //$NON-NLS-1$
+    private static final Object STATUS_STOPPED = "stopped"; //$NON-NLS-1$
+    private static final Object STATUS_STOPPING = "stopping"; //$NON-NLS-1$
+    private static final Object STATUS_UNKNOWN = "unknown"; //$NON-NLS-1$
+    private static final Object EXTENSION_ID = "extensionId"; //$NON-NLS-1$
+    private static final Object EXTENSION_NAME = "extensionName"; //$NON-NLS-1$
+    private static final Object EXTENSION_VERSION = "extensionVersion"; //$NON-NLS-1$
+    private static final Object EXTENSION_VENDOR = "extensionVendor"; //$NON-NLS-1$
+    private static final Object HAS_CONFIGURATION_PAGE = "hasConfigurationPage"; //$NON-NLS-1$
+    private static final Object IS_LDAP_PERSPECTIVE_AVAILABLE = "isLdapPerspectiveAvailable"; //$NON-NLS-1$
 
     /** The class instance */
     private static LdapServerActionFilterAdapter INSTANCE = new LdapServerActionFilterAdapter();
@@ -147,10 +147,10 @@ public class LdapServerActionFilterAdapter implements IActionFilter
                 String configurationPageClassName = server.getLdapServerAdapterExtension()
                     .getConfigurationPageClassName();
 
-                boolean hasConfigurationPage = ( ( configurationPageClassName != null ) && ( !""
+                boolean hasConfigurationPage = ( ( configurationPageClassName != null ) && ( !"" //$NON-NLS-1$
                     .equals( configurationPageClassName ) ) );
 
-                return value.equalsIgnoreCase( hasConfigurationPage ? "true" : "false" );
+                return value.equalsIgnoreCase( hasConfigurationPage ? "true" : "false" ); //$NON-NLS-1$ //$NON-NLS-2$
             }
             // IS LDAP PERSPECTIVE AVAILABLE
             else if ( IS_LDAP_PERSPECTIVE_AVAILABLE.equals( name ) )

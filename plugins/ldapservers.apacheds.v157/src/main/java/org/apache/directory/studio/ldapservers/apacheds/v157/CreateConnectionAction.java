@@ -27,7 +27,6 @@ import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
 import org.apache.directory.studio.connection.core.ConnectionParameter;
 import org.apache.directory.studio.connection.core.ConnectionParameter.AuthenticationMethod;
 import org.apache.directory.studio.connection.core.ConnectionParameter.EncryptionMethod;
-import org.apache.directory.studio.connection.core.ConnectionParameter.NetworkProvider;
 import org.apache.directory.studio.ldapservers.actions.CreateConnectionActionHelper;
 import org.apache.directory.studio.ldapservers.model.LdapServer;
 import org.apache.directory.studio.ldapservers.views.ServersView;
@@ -47,7 +46,7 @@ import org.eclipse.ui.IWorkbenchPart;
  */
 public class CreateConnectionAction implements IObjectActionDelegate
 {
-    private static final String EXTENSION_ID = "org.apache.directory.server.1.5.7";
+    private static final String EXTENSION_ID = "org.apache.directory.server.1.5.7"; //$NON-NLS-1$
 
     /** The {@link ServersView} */
     private ServersView view;
@@ -68,11 +67,10 @@ public class CreateConnectionAction implements IObjectActionDelegate
                 LdapServer server = ( LdapServer ) selection.getFirstElement();
 
                 // Checking that the server is really an ApacheDS 1.5.7 server
-                // TODO
                 if ( !EXTENSION_ID.equalsIgnoreCase( server.getLdapServerAdapterExtension().getId() ) )
                 {
                     String message = Messages.getString( "CreateConnectionAction.UnableReadServerConfiguration" ) //$NON-NLS-1$
-                        + "\n\n" // TODO
+                        + "\n\n" //$NON-NLS-1$
                         + Messages.getString( "CreateConnectionAction.NotA157Server" ); //$NON-NLS-1$
 
                     reportErrorReadingServerConfiguration( view, message );
@@ -88,7 +86,7 @@ public class CreateConnectionAction implements IObjectActionDelegate
                 catch ( Exception e )
                 {
                     String message = Messages.getString( "CreateConnectionAction.UnableReadServerConfiguration" ) //$NON-NLS-1$
-                        + "\n\n" // TODO
+                        + "\n\n" //$NON-NLS-1$
                         + Messages.getString( "CreateConnectionAction.FollowingErrorOccurred" ) + e.getMessage(); //$NON-NLS-1$
 
                     reportErrorReadingServerConfiguration( view, message );
@@ -118,7 +116,6 @@ public class CreateConnectionAction implements IObjectActionDelegate
                         new String[]
                             { IDialogConstants.OK_LABEL }, MessageDialog.OK );
                     dialog.open();
-                    // TODO use common methods in Common UI plugin
                 }
             }
         }
@@ -139,7 +136,6 @@ public class CreateConnectionAction implements IObjectActionDelegate
             null, message, MessageDialog.ERROR, new String[]
                 { IDialogConstants.OK_LABEL }, MessageDialog.OK );
         dialog.open();
-        // TODO use common methods in Common UI plugin
     }
 
 

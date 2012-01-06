@@ -74,15 +74,15 @@ import org.osgi.framework.Bundle;
 public class ApacheDS200LdapServerAdapter implements LdapServerAdapter
 {
     // Various strings constants used in paths
-    private static final String CONFIG_LDIF = "config.ldif";
-    private static final String LOG4J_PROPERTIES = "log4j.properties";
-    private static final String RESOURCES = "resources";
-    private static final String LIBS = "libs";
-    private static final String CONF = "conf";
+    private static final String CONFIG_LDIF = "config.ldif"; //$NON-NLS-1$
+    private static final String LOG4J_PROPERTIES = "log4j.properties"; //$NON-NLS-1$
+    private static final String RESOURCES = "resources"; //$NON-NLS-1$
+    private static final String LIBS = "libs"; //$NON-NLS-1$
+    private static final String CONF = "conf"; //$NON-NLS-1$
 
     /** The array of libraries names */
     private static final String[] libraries = new String[]
-        { "apacheds-service-2.0.0-M3.jar" };
+        { "apacheds-service-2.0.0-M3.jar" }; //$NON-NLS-1$
 
 
     /**
@@ -103,11 +103,11 @@ public class ApacheDS200LdapServerAdapter implements LdapServerAdapter
         File serverFolder = LdapServersManager.getServerFolder( server ).toFile();
         File confFolder = new File( serverFolder, CONF );
         confFolder.mkdir();
-        File ldifFolder = new File( serverFolder, "ldif" );
+        File ldifFolder = new File( serverFolder, "ldif" ); //$NON-NLS-1$
         ldifFolder.mkdir();
-        File logFolder = new File( serverFolder, "log" );
+        File logFolder = new File( serverFolder, "log" ); //$NON-NLS-1$
         logFolder.mkdir();
-        File partitionFolder = new File( serverFolder, "partitions" );
+        File partitionFolder = new File( serverFolder, "partitions" ); //$NON-NLS-1$
         partitionFolder.mkdir();
 
         // Copying configuration files
@@ -119,7 +119,7 @@ public class ApacheDS200LdapServerAdapter implements LdapServerAdapter
             LOG4J_PROPERTIES ) );
 
         // Creating an empty log file
-        new File( logFolder, "apacheds.log" ).createNewFile();
+        new File( logFolder, "apacheds.log" ).createNewFile(); //$NON-NLS-1$
     }
 
 
@@ -432,7 +432,7 @@ public class ApacheDS200LdapServerAdapter implements LdapServerAdapter
      */
     private static TransportBean getLdapServerTransportBean( ConfigBean configuration )
     {
-        return getLdapServerTransportBean( configuration, "ldap" );
+        return getLdapServerTransportBean( configuration, "ldap" ); //$NON-NLS-1$
     }
 
 
@@ -444,7 +444,7 @@ public class ApacheDS200LdapServerAdapter implements LdapServerAdapter
      */
     private static TransportBean getLdapsServerTransportBean( ConfigBean configuration )
     {
-        return getLdapServerTransportBean( configuration, "ldaps" );
+        return getLdapServerTransportBean( configuration, "ldaps" ); //$NON-NLS-1$
     }
 
 
@@ -645,8 +645,8 @@ public class ApacheDS200LdapServerAdapter implements LdapServerAdapter
                 {
                     for ( TransportBean kdcServerTransportBean : kdcServerTransportBeans )
                     {
-                        if ( ( "tcp".equals( kdcServerTransportBean.getTransportId() ) )
-                            || ( "udp".equals( kdcServerTransportBean.getTransportId() ) ) )
+                        if ( ( "tcp".equals( kdcServerTransportBean.getTransportId() ) ) //$NON-NLS-1$
+                            || ( "udp".equals( kdcServerTransportBean.getTransportId() ) ) ) //$NON-NLS-1$
                         {
                             return kdcServerTransportBean.getSystemPort();
                         }
@@ -682,8 +682,8 @@ public class ApacheDS200LdapServerAdapter implements LdapServerAdapter
                 {
                     for ( TransportBean dnsServerTransportBean : dnsServerTransportBeans )
                     {
-                        if ( ( "tcp".equals( dnsServerTransportBean.getTransportId() ) )
-                            || ( "udp".equals( dnsServerTransportBean.getTransportId() ) ) )
+                        if ( ( "tcp".equals( dnsServerTransportBean.getTransportId() ) ) //$NON-NLS-1$
+                            || ( "udp".equals( dnsServerTransportBean.getTransportId() ) ) ) //$NON-NLS-1$
                         {
                             return dnsServerTransportBean.getSystemPort();
                         }
@@ -719,8 +719,8 @@ public class ApacheDS200LdapServerAdapter implements LdapServerAdapter
                 {
                     for ( TransportBean ntpServerTransportBean : ntpServerTransportBeans )
                     {
-                        if ( ( "tcp".equals( ntpServerTransportBean.getTransportId() ) )
-                            || ( "udp".equals( ntpServerTransportBean.getTransportId() ) ) )
+                        if ( ( "tcp".equals( ntpServerTransportBean.getTransportId() ) ) //$NON-NLS-1$
+                            || ( "udp".equals( ntpServerTransportBean.getTransportId() ) ) ) //$NON-NLS-1$
                         {
                             return ntpServerTransportBean.getSystemPort();
                         }
@@ -756,8 +756,8 @@ public class ApacheDS200LdapServerAdapter implements LdapServerAdapter
                 {
                     for ( TransportBean changePasswordServerTransportBean : changePasswordServerTransportBeans )
                     {
-                        if ( ( "tcp".equals( changePasswordServerTransportBean.getTransportId() ) )
-                            || ( "udp".equals( changePasswordServerTransportBean.getTransportId() ) ) )
+                        if ( ( "tcp".equals( changePasswordServerTransportBean.getTransportId() ) ) //$NON-NLS-1$
+                            || ( "udp".equals( changePasswordServerTransportBean.getTransportId() ) ) ) //$NON-NLS-1$
                         {
                             return changePasswordServerTransportBean.getSystemPort();
                         }
