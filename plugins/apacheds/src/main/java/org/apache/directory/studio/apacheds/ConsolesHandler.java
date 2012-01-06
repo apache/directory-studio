@@ -91,7 +91,7 @@ public class ConsolesHandler
         {
             Server server = ServersHandler.getDefault().getServerById( serverId );
 
-            LogMessageConsole logMessageConsole = new LogMessageConsole( "ApacheDS - " + server.getName() );
+            LogMessageConsole logMessageConsole = new LogMessageConsole( "ApacheDS - " + server.getName() ); //$NON-NLS-1$
 
             consolesMap.put( serverId, logMessageConsole );
 
