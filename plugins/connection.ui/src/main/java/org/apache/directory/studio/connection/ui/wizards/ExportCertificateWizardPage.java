@@ -68,7 +68,7 @@ public class ExportCertificateWizardPage extends WizardPage
      */
     public ExportCertificateWizardPage()
     {
-        super( "ExportCertificateWizardPage" );
+        super( "ExportCertificateWizardPage" ); //$NON-NLS-1$
         setTitle( Messages.getString( "ExportCertificateWizardPage.ExportCertificate" ) ); //$NON-NLS-1$
         setDescription( Messages.getString( "ExportCertificateWizardPage.PleaseSelectFileAndFormat" ) ); //$NON-NLS-1$ 
         setImageDescriptor( ConnectionUIPlugin.getDefault().getImageDescriptor(
@@ -93,7 +93,7 @@ public class ExportCertificateWizardPage extends WizardPage
         fileComposite.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
 
         // Creating the file's text widget
-        fileText = BaseWidgetUtils.createText( fileComposite, "", 1 );
+        fileText = BaseWidgetUtils.createText( fileComposite, "", 1 ); //$NON-NLS-1$
         fileText.setLayoutData( new GridData( SWT.FILL, SWT.CENTER, true, false ) );
         fileText.addModifyListener( new ModifyListener()
         {

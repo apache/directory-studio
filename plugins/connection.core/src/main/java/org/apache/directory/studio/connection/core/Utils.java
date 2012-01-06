@@ -51,7 +51,7 @@ public class Utils
     {
         try
         {
-            oidDescriptions = ResourceBundle.getBundle( "org.apache.directory.studio.connection.core.OIDDescriptions" );
+            oidDescriptions = ResourceBundle.getBundle( "org.apache.directory.studio.connection.core.OIDDescriptions" ); //$NON-NLS-1$
         }
         catch ( Exception e )
         {
@@ -66,7 +66,7 @@ public class Utils
         try
         {
             resultCodeDescriptions = ResourceBundle
-                .getBundle( "org.apache.directory.studio.connection.core.ResultCodeDescriptions" );
+                .getBundle( "org.apache.directory.studio.connection.core.ResultCodeDescriptions" ); //$NON-NLS-1$
         }
         catch ( Exception e )
         {
@@ -112,7 +112,7 @@ public class Utils
         {
             try
             {
-                return resultCodeDescriptions.getString( "" + code );
+                return resultCodeDescriptions.getString( "" + code ); //$NON-NLS-1$
             }
             catch ( MissingResourceException ignored )
             {
@@ -255,7 +255,7 @@ public class Utils
      */
     public static String getSimpleNormalizedUrl( LdapUrl url )
     {
-        return url.getScheme() + ( url.getHost() != null ? Strings.toLowerCase( url.getHost() ) : "" ) + ":" + url.getPort();
+        return url.getScheme() + ( url.getHost() != null ? Strings.toLowerCase( url.getHost() ) : "" ) + ":" + url.getPort(); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
 

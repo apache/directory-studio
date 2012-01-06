@@ -32,32 +32,32 @@ import org.eclipse.ui.IActionFilter;
 public class ConnectionActionFilterAdapter implements IActionFilter
 {
     // Identifier and value strings
-    private static final String ID = "id";
-    private static final String NAME = "name";
-    private static final String HOST = "host";
-    private static final String PORT = "port";
-    private static final String ENCRYPTION_METHOD = "encryptionMethod";
-    private static final String NETWORK_PROVIDER = "networkProvider";
-    private static final String AUTH_METHOD = "authMethod";
-    private static final String BIND_PRINCIPAL = "bindPrincipal";
-    private static final String BIND_PASSWORD = "bindPassword";
-    private static final String SASL_REALM = "saslRealm";
-    private static final String SASL_QOP = "saslQop";
-    private static final String SASL_SECURITY_STRENGTH = "saslSecurityStrength";
-    private static final String SASL_MUTUAL_AUTHENTICATION = "saslMutualAuthentication";
-    private static final String KRB5_CREDENTIAL_CONFIGURATION = "krb5CredentialConfiguration";
-    private static final String KRB5_CONFIGURATION = "krb5Configuration";
-    private static final String KRB5_CONFIGURATION_FILE = "krb5ConfigurationFile";
-    private static final String KRB5_REALM = "krb5Realm";
-    private static final String KRB5_KDC_HOST = "krb5KdcHost";
-    private static final String KRB5_KDC_PORT = "krb5KdcPort";
-    private static final String VENDOR_NAME = "vendorName";
-    private static final String VENDOR_VERSION = "vendorVersion";
-    private static final String SERVER_TYPE = "serverType";
-    private static final String SUPPORTED_LDAP_VERSIONS = "supportedLdapVersions";
-    private static final String SUPPORTED_CONTROLS = "supportedControls";
-    private static final String SUPPORTED_EXTENSIONS = "supportedExtensions";
-    private static final String SUPPORTED_FEATURES = "supportedFeatures";
+    private static final String ID = "id"; //$NON-NLS-1$
+    private static final String NAME = "name"; //$NON-NLS-1$
+    private static final String HOST = "host"; //$NON-NLS-1$
+    private static final String PORT = "port"; //$NON-NLS-1$
+    private static final String ENCRYPTION_METHOD = "encryptionMethod"; //$NON-NLS-1$
+    private static final String NETWORK_PROVIDER = "networkProvider"; //$NON-NLS-1$
+    private static final String AUTH_METHOD = "authMethod"; //$NON-NLS-1$
+    private static final String BIND_PRINCIPAL = "bindPrincipal"; //$NON-NLS-1$
+    private static final String BIND_PASSWORD = "bindPassword"; //$NON-NLS-1$
+    private static final String SASL_REALM = "saslRealm"; //$NON-NLS-1$
+    private static final String SASL_QOP = "saslQop"; //$NON-NLS-1$
+    private static final String SASL_SECURITY_STRENGTH = "saslSecurityStrength"; //$NON-NLS-1$
+    private static final String SASL_MUTUAL_AUTHENTICATION = "saslMutualAuthentication"; //$NON-NLS-1$
+    private static final String KRB5_CREDENTIAL_CONFIGURATION = "krb5CredentialConfiguration"; //$NON-NLS-1$
+    private static final String KRB5_CONFIGURATION = "krb5Configuration"; //$NON-NLS-1$
+    private static final String KRB5_CONFIGURATION_FILE = "krb5ConfigurationFile"; //$NON-NLS-1$
+    private static final String KRB5_REALM = "krb5Realm"; //$NON-NLS-1$
+    private static final String KRB5_KDC_HOST = "krb5KdcHost"; //$NON-NLS-1$
+    private static final String KRB5_KDC_PORT = "krb5KdcPort"; //$NON-NLS-1$
+    private static final String VENDOR_NAME = "vendorName"; //$NON-NLS-1$
+    private static final String VENDOR_VERSION = "vendorVersion"; //$NON-NLS-1$
+    private static final String SERVER_TYPE = "serverType"; //$NON-NLS-1$
+    private static final String SUPPORTED_LDAP_VERSIONS = "supportedLdapVersions"; //$NON-NLS-1$
+    private static final String SUPPORTED_CONTROLS = "supportedControls"; //$NON-NLS-1$
+    private static final String SUPPORTED_EXTENSIONS = "supportedExtensions"; //$NON-NLS-1$
+    private static final String SUPPORTED_FEATURES = "supportedFeatures"; //$NON-NLS-1$
 
     /** The class instance */
     private static ConnectionActionFilterAdapter INSTANCE = new ConnectionActionFilterAdapter();
@@ -111,7 +111,7 @@ public class ConnectionActionFilterAdapter implements IActionFilter
             // PORT
             else if ( PORT.equals( name ) )
             {
-                return value.equals( "" + connection.getPort() );
+                return value.equals( "" + connection.getPort() ); //$NON-NLS-1$
             }
             // ENCRYPTION METHOD
             else if ( ENCRYPTION_METHOD.equals( name ) )
@@ -156,7 +156,7 @@ public class ConnectionActionFilterAdapter implements IActionFilter
             // SASL MUTUAL AUTHENTICATION
             else if ( SASL_MUTUAL_AUTHENTICATION.equals( name ) )
             {
-                return value.equals( connection.isSaslMutualAuthentication() ? "true" : "false" );
+                return value.equals( connection.isSaslMutualAuthentication() ? "true" : "false" ); //$NON-NLS-1$ //$NON-NLS-2$
             }
             // KRB5 CREDENTIAL CONFIGURATION
             else if ( KRB5_CREDENTIAL_CONFIGURATION.equals( name ) )
@@ -186,12 +186,12 @@ public class ConnectionActionFilterAdapter implements IActionFilter
             // KRB5 KDC PORT
             else if ( KRB5_KDC_PORT.equals( name ) )
             {
-                return value.equals( "" + connection.getKrb5KdcPort() );
+                return value.equals( "" + connection.getKrb5KdcPort() ); //$NON-NLS-1$
             }
             // VENDOR NAME
             else if ( VENDOR_NAME.equals( name ) )
             {
-                return value.equals( "" + connection.getDetectedConnectionProperties().getVendorName() );
+                return value.equals( "" + connection.getDetectedConnectionProperties().getVendorName() ); //$NON-NLS-1$
             }
             // VENDOR VERSION
             else if ( VENDOR_VERSION.equals( name ) )
@@ -204,7 +204,7 @@ public class ConnectionActionFilterAdapter implements IActionFilter
             // SERVER TYPE
             else if ( SERVER_TYPE.equals( name ) )
             {
-                return value.equals( "" + connection.getDetectedConnectionProperties().getServerType().toString() );
+                return value.equals( "" + connection.getDetectedConnectionProperties().getServerType().toString() ); //$NON-NLS-1$
             }
             // SUPPORTED LDAP VERSIONS
             else if ( SUPPORTED_LDAP_VERSIONS.equals( name ) )

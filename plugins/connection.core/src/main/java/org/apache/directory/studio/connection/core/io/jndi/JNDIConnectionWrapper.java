@@ -981,8 +981,8 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
             // No Authentication
             if ( authMethod == AUTHMETHOD_NONE )
             {
-                bindPrincipal = "";
-                bindCredentials = "";
+                bindPrincipal = ""; //$NON-NLS-1$
+                bindCredentials = ""; //$NON-NLS-1$
             }
             else
             {
@@ -1047,7 +1047,7 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
                             // Request mutual authentication
                             if ( connection.getConnectionParameter().isSaslMutualAuthentication() )
                             {
-                                context.addToEnvironment( Sasl.SERVER_AUTH, "true" );
+                                context.addToEnvironment( Sasl.SERVER_AUTH, "true" ); //$NON-NLS-1$
                             }
                             else
                             {
@@ -1136,28 +1136,28 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
                 {
                     case DEFAULT:
                         // nothing 
-                        System.clearProperty( "java.security.krb5.conf" );
+                        System.clearProperty( "java.security.krb5.conf" ); //$NON-NLS-1$
                         break;
                     case FILE:
                         // use specified krb5.conf
-                        System.setProperty( "java.security.krb5.conf", connection.getConnectionParameter()
+                        System.setProperty( "java.security.krb5.conf", connection.getConnectionParameter() //$NON-NLS-1$
                             .getKrb5ConfigurationFile() );
                         break;
                     case MANUAL:
                         // write manual config parameters to connection specific krb5.conf file
-                        String fileName = Utils.getFilenameString( connection.getId() ) + ".krb5.conf";
+                        String fileName = Utils.getFilenameString( connection.getId() ) + ".krb5.conf"; //$NON-NLS-1$
                         configFile = ConnectionCorePlugin.getDefault().getStateLocation().append( fileName ).toFile();
                         String realm = connection.getConnectionParameter().getKrb5Realm();
                         String host = connection.getConnectionParameter().getKrb5KdcHost();
                         int port = connection.getConnectionParameter().getKrb5KdcPort();
                         StringBuilder sb = new StringBuilder();
-                        sb.append( "[libdefaults]" ).append( ConnectionCoreConstants.LINE_SEPARATOR );
-                        sb.append( "default_realm = " ).append( realm ).append( ConnectionCoreConstants.LINE_SEPARATOR );
-                        sb.append( "[realms]" ).append( ConnectionCoreConstants.LINE_SEPARATOR );
-                        sb.append( realm ).append( " = {" ).append( ConnectionCoreConstants.LINE_SEPARATOR );
-                        sb.append( "kdc = " ).append( host ).append( ":" ).append( port ).append(
+                        sb.append( "[libdefaults]" ).append( ConnectionCoreConstants.LINE_SEPARATOR ); //$NON-NLS-1$
+                        sb.append( "default_realm = " ).append( realm ).append( ConnectionCoreConstants.LINE_SEPARATOR ); //$NON-NLS-1$
+                        sb.append( "[realms]" ).append( ConnectionCoreConstants.LINE_SEPARATOR ); //$NON-NLS-1$
+                        sb.append( realm ).append( " = {" ).append( ConnectionCoreConstants.LINE_SEPARATOR ); //$NON-NLS-1$
+                        sb.append( "kdc = " ).append( host ).append( ":" ).append( port ).append( //$NON-NLS-1$ //$NON-NLS-2$
                             ConnectionCoreConstants.LINE_SEPARATOR );
-                        sb.append( "}" ).append( ConnectionCoreConstants.LINE_SEPARATOR );
+                        sb.append( "}" ).append( ConnectionCoreConstants.LINE_SEPARATOR ); //$NON-NLS-1$
                         try
                         {
                             FileUtils.writeStringToFile( configFile, sb.toString() );
@@ -1168,7 +1168,7 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
                             ne.setRootCause( ioe );
                             throw ne;
                         }
-                        System.setProperty( "java.security.krb5.conf", configFile.getAbsolutePath() );
+                        System.setProperty( "java.security.krb5.conf", configFile.getAbsolutePath() ); //$NON-NLS-1$
                 }
 
                 // Use our custom configuration so we don't need to mess with external configuration
@@ -1336,15 +1336,15 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
                 HashMap<String, Object> options = new HashMap<String, Object>();
 
                 // TODO: this only works for Sun JVM
-                options.put( "refreshKrb5Config", "true" );
+                options.put( "refreshKrb5Config", "true" ); //$NON-NLS-1$ //$NON-NLS-2$
                 switch ( connection.getConnectionParameter().getKrb5CredentialConfiguration() )
                 {
                     case USE_NATIVE:
-                        options.put( "useTicketCache", "true" );
-                        options.put( "doNotPrompt", "true" );
+                        options.put( "useTicketCache", "true" ); //$NON-NLS-1$ //$NON-NLS-2$
+                        options.put( "doNotPrompt", "true" ); //$NON-NLS-1$ //$NON-NLS-2$
                         break;
                     case OBTAIN_TGT:
-                        options.put( "doNotPrompt", "false" );
+                        options.put( "doNotPrompt", "false" ); //$NON-NLS-1$ //$NON-NLS-2$
                         break;
                 }
 

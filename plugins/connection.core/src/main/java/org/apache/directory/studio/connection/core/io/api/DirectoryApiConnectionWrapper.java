@@ -1192,15 +1192,15 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
                 HashMap<String, Object> options = new HashMap<String, Object>();
 
                 // TODO: this only works for Sun JVM
-                options.put( "refreshKrb5Config", "true" );
+                options.put( "refreshKrb5Config", "true" ); //$NON-NLS-1$ //$NON-NLS-2$
                 switch ( connection.getConnectionParameter().getKrb5CredentialConfiguration() )
                 {
                     case USE_NATIVE:
-                        options.put( "useTicketCache", "true" );
-                        options.put( "doNotPrompt", "true" );
+                        options.put( "useTicketCache", "true" ); //$NON-NLS-1$ //$NON-NLS-2$
+                        options.put( "doNotPrompt", "true" ); //$NON-NLS-1$ //$NON-NLS-2$
                         break;
                     case OBTAIN_TGT:
-                        options.put( "doNotPrompt", "false" );
+                        options.put( "doNotPrompt", "false" ); //$NON-NLS-1$ //$NON-NLS-2$
                         break;
                 }
 
@@ -1256,8 +1256,8 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
                         message = Utils.getResultCodeDescription( code );
                     }
 
-                    throw new Exception( NLS.bind( "[LDAP: error code {0} - {1}]", new String[]
-                        { code + "", message } ) );
+                    throw new Exception( NLS.bind( "[LDAP: error code {0} - {1}]", new String[] //$NON-NLS-1$
+                        { code + "", message } ) ); //$NON-NLS-1$
                 }
             }
         }

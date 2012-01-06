@@ -104,7 +104,7 @@ public class CertificateTrustDialog extends Dialog
     protected void createButtonsForButtonBar( Composite parent )
     {
         createButton( parent, IDialogConstants.DETAILS_ID, Messages
-            .getString( "CertificateTrustDialog.ViewCertificate" ), false );
+            .getString( "CertificateTrustDialog.ViewCertificate" ), false ); //$NON-NLS-1$
         createButton( parent, IDialogConstants.OK_ID, IDialogConstants.OK_LABEL, false );
     }
 

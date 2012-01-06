@@ -264,7 +264,7 @@ public class AuthenticationParameterPage extends AbstractConnectionParameterPage
 
     private int getKdcPort()
     {
-        return !"".equals( krb5ConfigManualPortText.getText() ) ? Integer.parseInt( krb5ConfigManualPortText.getText() )
+        return !"".equals( krb5ConfigManualPortText.getText() ) ? Integer.parseInt( krb5ConfigManualPortText.getText() ) //$NON-NLS-1$
             : 0;
     }
 
@@ -618,7 +618,7 @@ public class AuthenticationParameterPage extends AbstractConnectionParameterPage
             : "" ); //$NON-NLS-1$
         krb5ConfigManualRealmText.setText( parameter.getKrb5Realm() != null ? parameter.getKrb5Realm() : "" ); //$NON-NLS-1$
         krb5ConfigManualHostText.setText( parameter.getKrb5KdcHost() != null ? parameter.getKrb5KdcHost() : "" ); //$NON-NLS-1$
-        krb5ConfigManualPortText.setText( parameter.getKrb5KdcPort() != 0 ? "" + parameter.getKrb5KdcPort() : "" ); //$NON-NLS-1$
+        krb5ConfigManualPortText.setText( parameter.getKrb5KdcPort() != 0 ? "" + parameter.getKrb5KdcPort() : "" ); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
 
@@ -658,7 +658,7 @@ public class AuthenticationParameterPage extends AbstractConnectionParameterPage
                 if ( !saveBindPasswordButton.getSelection() )
                 {
                     // Reseting the previously saved password (if any)
-                    bindPasswordText.setText( "" );
+                    bindPasswordText.setText( "" ); //$NON-NLS-1$
                 }
                 connectionPageModified();
             }
@@ -989,7 +989,7 @@ public class AuthenticationParameterPage extends AbstractConnectionParameterPage
                         ldapUrl.getExtensions().add(
                             new Extension( false, X_KRB5_CONFIG_MANUAL_KDC_HOST, parameter.getKrb5KdcHost() ) );
                         ldapUrl.getExtensions().add(
-                            new Extension( false, X_KRB5_CONFIG_MANUAL_KDC_PORT, "" + parameter.getKrb5KdcPort() ) );
+                            new Extension( false, X_KRB5_CONFIG_MANUAL_KDC_PORT, "" + parameter.getKrb5KdcPort() ) ); //$NON-NLS-1$
                         break;
                 }
         }

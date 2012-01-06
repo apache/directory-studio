@@ -180,7 +180,7 @@ public class CertificateListComposite extends Composite
                     {
                         MessageDialog.openError( addButton.getShell(),
                             Messages.getString( "CertificateListComposite.ErrorDialogTitle" ), //$NON-NLS-1$
-                            NLS.bind( Messages.getString( "CertificateListComposite.ErrorDialogMessage" ),
+                            NLS.bind( Messages.getString( "CertificateListComposite.ErrorDialogMessage" ), //$NON-NLS-1$
                                 ex.getMessage() ) );
                     }
                 }
@@ -304,7 +304,7 @@ public class CertificateListComposite extends Composite
                 X509Certificate certificate = ( X509Certificate ) element;
 
                 String certificateName = certificate.getSubjectX500Principal().getName();
-                if ( ( certificateName != null ) && ( !"".equals( certificateName ) ) )
+                if ( ( certificateName != null ) && ( !"".equals( certificateName ) ) ) //$NON-NLS-1$
                 {
                     return certificateName;
                 }

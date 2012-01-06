@@ -260,7 +260,7 @@ public class ConnectionIO
         Attribute saslQopAttribute = element.attribute( SASL_QOP_TAG );
         if ( saslQopAttribute != null )
         {
-            if ( "AUTH_INT_PRIV".equals( saslQopAttribute.getValue() ) )
+            if ( "AUTH_INT_PRIV".equals( saslQopAttribute.getValue() ) ) //$NON-NLS-1$
             {
                 // Used for legacy setting (before we used SaslQop enum from Shared)
                 connection.setSaslQop( SaslQoP.AUTH_CONF );

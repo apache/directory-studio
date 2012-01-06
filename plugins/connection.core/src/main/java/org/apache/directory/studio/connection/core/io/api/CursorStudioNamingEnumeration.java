@@ -254,7 +254,7 @@ public class CursorStudioNamingEnumeration extends AbstractStudioNamingEnumerati
      */
     public boolean hasMoreElements()
     {
-        throw new UnsupportedOperationException( "Call hasMore() instead of hasMoreElements() !" );
+        throw new UnsupportedOperationException( "Call hasMore() instead of hasMoreElements() !" ); //$NON-NLS-1$
     }
 
 
@@ -317,7 +317,7 @@ public class CursorStudioNamingEnumeration extends AbstractStudioNamingEnumerati
      */
     public StudioSearchResult nextElement()
     {
-        throw new UnsupportedOperationException( "Call next() instead of nextElement() !" );
+        throw new UnsupportedOperationException( "Call next() instead of nextElement() !" ); //$NON-NLS-1$
     }
 
 

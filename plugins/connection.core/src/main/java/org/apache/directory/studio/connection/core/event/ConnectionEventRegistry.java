@@ -94,7 +94,7 @@ public class ConnectionEventRegistry
 
                 if ( fireTimeStamps.size() > 5 )
                 {
-                    String message = "Warning: More then " + fireTimeStamps.size() + " events were fired per second!";
+                    String message = "Warning: More then " + fireTimeStamps.size() + " events were fired per second!"; //$NON-NLS-1$ //$NON-NLS-2$
                     ConnectionCorePlugin.getDefault().getLog().log(
                         new Status( IStatus.WARNING, ConnectionCoreConstants.PLUGIN_ID, message,
                             new Exception( message ) ) );

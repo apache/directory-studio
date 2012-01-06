@@ -121,7 +121,7 @@ public class ConnectionsPreferencePage extends PreferencePage implements IWorkbe
         useKrb5SystemPropertiesButton.setSelection( useKrb5SystemProperties );
 
         krb5LoginModuleLabel = BaseWidgetUtils.createLabel( krb5SettingsGroup, Messages
-            .getString( "ConnectionsPreferencePage.Krb5LoginModule" ), 1 );
+            .getString( "ConnectionsPreferencePage.Krb5LoginModule" ), 1 ); //$NON-NLS-1$
         String krb5LoginModule = preferences.getString( ConnectionCoreConstants.PREFERENCE_KRB5_LOGIN_MODULE );
         String defaultKrb5LoginModule = preferences
             .getDefaultString( ConnectionCoreConstants.PREFERENCE_KRB5_LOGIN_MODULE );

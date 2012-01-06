@@ -107,7 +107,7 @@ public class ExportCertificateWizard extends Wizard
         {
             MessageDialog.openError( getShell(),
                 Messages.getString( "ExportCertificateWizard.ErrorDialogTitle" ), //$NON-NLS-1$
-                NLS.bind( Messages.getString( "ExportCertificateWizard.ErrorDialogMessage" ),
+                NLS.bind( Messages.getString( "ExportCertificateWizard.ErrorDialogMessage" ), //$NON-NLS-1$
                     e.getMessage() ) );
             return false;
         }
