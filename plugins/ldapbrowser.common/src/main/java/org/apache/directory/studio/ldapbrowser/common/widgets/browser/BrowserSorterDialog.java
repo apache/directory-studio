@@ -58,7 +58,7 @@ public class BrowserSorterDialog extends Dialog
     public static final String SORT_BY_NONE = Messages.getString( "BrowserSorterDialog.NoSorting" ); //$NON-NLS-1$
 
     /** The Constant SORT_BY_RDN. */
-    public static final String SORT_BY_RDN = Messages.getString( "BrowserSorterDialog.Rdn" ); //$NON-NLS-1$
+    public static final String SORT_BY_RDN = Messages.getString( "BrowserSorterDialog.RDN" ); //$NON-NLS-1$
 
     /** The Constant SORT_BY_RDN_VALUE. */
     public static final String SORT_BY_RDN_VALUE = Messages.getString( "BrowserSorterDialog.RDNValue" ); //$NON-NLS-1$

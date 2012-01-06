@@ -756,7 +756,7 @@ public class LdifEditor extends TextEditor implements ILdifEditor, ConnectionUpd
             if ( externalFile.exists() )
             {
                 MessageDialog overwriteDialog = new MessageDialog( shell,
-                    Messages.getString( "LdifEditor.Overwrite" ), null, Messages.getString( "OverwriteQuestion" ), //$NON-NLS-1$ //$NON-NLS-2$
+                    Messages.getString( "LdifEditor.Overwrite" ), null, Messages.getString( "LdifEditor.OverwriteQuestion" ), //$NON-NLS-1$ //$NON-NLS-2$
                     MessageDialog.WARNING, new String[]
                         { IDialogConstants.YES_LABEL, IDialogConstants.NO_LABEL }, 1 ); // 'No' is the default
                 if ( overwriteDialog.open() != Window.OK )

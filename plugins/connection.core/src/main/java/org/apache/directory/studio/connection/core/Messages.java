@@ -56,7 +56,6 @@ public class Messages extends NLS
     public static String error__unable_to_create_connection_listener;
     public static String error__unable_to_create_jndi_logger;
     public static String error__unable_to_get_plugin_properties;
-    public static String error__loop_detected;
     public static String error__connection_is_readonly;
     public static String error__untrusted_certificate;
 
