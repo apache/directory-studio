@@ -128,12 +128,12 @@ public class InterceptorDetailsPage implements IDetailsPage
 
         // Name
         toolkit.createLabel( client, "Name:" );
-        nameText = toolkit.createText( client, "" );
+        nameText = toolkit.createText( client, "" ); //$NON-NLS-1$
         nameText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
 
         // Class
         toolkit.createLabel( client, "Class:" );
-        classText = toolkit.createText( client, "" );
+        classText = toolkit.createText( client, "" ); //$NON-NLS-1$
         classText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
     }
 
@@ -233,11 +233,11 @@ public class InterceptorDetailsPage implements IDetailsPage
 
         // Name
         String name = input.getName();
-        nameText.setText( ( name == null ) ? "" : name );
+        nameText.setText( ( name == null ) ? "" : name ); //$NON-NLS-1$
 
         // Class
         String classType = input.getClassType();
-        classText.setText( ( classType == null ) ? "" : classType );
+        classText.setText( ( classType == null ) ? "" : classType ); //$NON-NLS-1$
 
         addListeners();
     }

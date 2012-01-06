@@ -162,7 +162,7 @@ public class PartitionDetailsPage implements IDetailsPage
     {
         public void widgetSelected( SelectionEvent e )
         {
-            AttributeValueDialog dialog = new AttributeValueDialog( new AttributeValueObject( "", "" ) );
+            AttributeValueDialog dialog = new AttributeValueDialog( new AttributeValueObject( "", "" ) ); //$NON-NLS-1$ //$NON-NLS-2$
             if ( Dialog.OK == dialog.open() && dialog.isDirty() )
             {
                 AttributeValueObject newAttributeValueObject = dialog.getAttributeValueObject();
@@ -256,7 +256,7 @@ public class PartitionDetailsPage implements IDetailsPage
     {
         public void widgetSelected( SelectionEvent e )
         {
-            IndexedAttributeDialog dialog = new IndexedAttributeDialog( new IndexedAttribute( "", 0 ) );
+            IndexedAttributeDialog dialog = new IndexedAttributeDialog( new IndexedAttribute( "", 0 ) ); //$NON-NLS-1$
             if ( Dialog.OK == dialog.open() )
             {
                 indexedAttributes.add( dialog.getIndexedAttribute() );
@@ -351,12 +351,12 @@ public class PartitionDetailsPage implements IDetailsPage
 
         // Name
         toolkit.createLabel( client, "Name:" );
-        nameText = toolkit.createText( client, "" );
+        nameText = toolkit.createText( client, "" ); //$NON-NLS-1$
         nameText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
 
         // Cache Size
         toolkit.createLabel( client, "Cache Size:" );
-        cacheSizeText = toolkit.createText( client, "" );
+        cacheSizeText = toolkit.createText( client, "" ); //$NON-NLS-1$
         cacheSizeText.addVerifyListener( new VerifyListener()
         {
             public void verifyText( VerifyEvent e )
@@ -371,7 +371,7 @@ public class PartitionDetailsPage implements IDetailsPage
 
         // Suffix
         toolkit.createLabel( client, "Suffix:" );
-        suffixText = toolkit.createText( client, "" );
+        suffixText = toolkit.createText( client, "" ); //$NON-NLS-1$
         suffixText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
 
         // Enable Optimizer
@@ -687,14 +687,14 @@ public class PartitionDetailsPage implements IDetailsPage
 
         // ID
         String id = input.getId();
-        nameText.setText( ( id == null ) ? "" : id );
+        nameText.setText( ( id == null ) ? "" : id ); //$NON-NLS-1$
 
         // Cache Size
-        cacheSizeText.setText( "" + input.getCacheSize() );
+        cacheSizeText.setText( "" + input.getCacheSize() ); //$NON-NLS-1$
 
         // Suffix
         String suffix = input.getSuffix();
-        suffixText.setText( ( suffix == null ) ? "" : suffix );
+        suffixText.setText( ( suffix == null ) ? "" : suffix ); //$NON-NLS-1$
 
         // Enable Optimizer
         enableOptimizerCheckbox.setSelection( input.isEnableOptimizer() );

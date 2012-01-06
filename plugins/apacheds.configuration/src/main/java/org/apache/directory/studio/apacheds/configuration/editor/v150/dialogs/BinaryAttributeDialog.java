@@ -102,7 +102,7 @@ public class BinaryAttributeDialog extends Dialog
      */
     private void initFromInput()
     {
-        attributeText.setText( ( initialValue == null ) ? "" : initialValue );
+        attributeText.setText( ( initialValue == null ) ? "" : initialValue ); //$NON-NLS-1$
     }
 
 

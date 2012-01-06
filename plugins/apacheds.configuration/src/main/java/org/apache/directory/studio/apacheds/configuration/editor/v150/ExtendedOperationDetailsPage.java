@@ -127,7 +127,7 @@ public class ExtendedOperationDetailsPage implements IDetailsPage
 
         // Class
         toolkit.createLabel( client, "Class:" );
-        classTypeText = toolkit.createText( client, "" );
+        classTypeText = toolkit.createText( client, "" ); //$NON-NLS-1$
         classTypeText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
 
         addListeners();

@@ -38,7 +38,7 @@ import org.eclipse.ui.forms.widgets.ScrolledForm;
 public class ExtendedOperationsPage extends FormPage
 {
     /** The Page ID*/
-    public static final String ID = ServerConfigurationEditor.ID + ".V151.ExtendedOperationsPage";
+    public static final String ID = ServerConfigurationEditor.ID + ".V151.ExtendedOperationsPage"; //$NON-NLS-1$
 
     /** The Page Title */
     private static final String TITLE = "Extended Operations";
@@ -65,7 +65,7 @@ public class ExtendedOperationsPage extends FormPage
     protected void createFormContent( IManagedForm managedForm )
     {
         PlatformUI.getWorkbench().getHelpSystem().setHelp( getPartControl(),
-            ApacheDSConfigurationPluginConstants.PLUGIN_ID + "." + "configuration_editor_151" );
+            ApacheDSConfigurationPluginConstants.PLUGIN_ID + "." + "configuration_editor_151" ); //$NON-NLS-1$ //$NON-NLS-2$
 
         final ScrolledForm form = managedForm.getForm();
         form.setText( "Extended Operations" );
