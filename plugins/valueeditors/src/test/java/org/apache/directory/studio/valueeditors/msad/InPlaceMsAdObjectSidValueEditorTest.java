@@ -42,7 +42,7 @@ public class InPlaceMsAdObjectSidValueEditorTest
                 ( byte ) 0x04, ( byte ) 0x00, ( byte ) 0x00, ( byte ) 0x00 //
             };
         String displayValue = editor.convertToString( bytes );
-        assertEquals( "S-1-5-4", displayValue );
+        assertEquals( "S-1-5-4", displayValue ); //$NON-NLS-1$
     }
 
 
@@ -60,7 +60,7 @@ public class InPlaceMsAdObjectSidValueEditorTest
                 ( byte ) 0x25, ( byte ) 0x02, ( byte ) 0x00, ( byte ) 0x00 //
             };
         String displayValue = editor.convertToString( bytes );
-        assertEquals( "S-1-5-32-549", displayValue );
+        assertEquals( "S-1-5-32-549", displayValue ); //$NON-NLS-1$
     }
 
 
@@ -82,7 +82,7 @@ public class InPlaceMsAdObjectSidValueEditorTest
                 ( byte ) 0xf4, ( byte ) 0x01, ( byte ) 0x00, ( byte ) 0x00 //
             };
         String displayValue = editor.convertToString( bytes );
-        assertEquals( "S-1-5-21-666267311-2692216076-1860112551-500", displayValue );
+        assertEquals( "S-1-5-21-666267311-2692216076-1860112551-500", displayValue ); //$NON-NLS-1$
     }
 
 
@@ -95,7 +95,7 @@ public class InPlaceMsAdObjectSidValueEditorTest
         byte[] bytes = new byte[]
             { ( byte ) 0x00 };
         String displayValue = editor.convertToString( bytes );
-        assertEquals( "Invalid SID", displayValue );
+        assertEquals( "Invalid SID", displayValue ); 
 
         // test missing sub aurhority byte
         byte[] bytes2 = new byte[]
@@ -112,7 +112,7 @@ public class InPlaceMsAdObjectSidValueEditorTest
                 ( byte ) 0xf4, ( byte ) 0x01, ( byte ) 0x00, /*( byte ) 0x00*///
             };
         String displayValue2 = editor.convertToString( bytes2 );
-        assertEquals( "Invalid SID", displayValue2 );
+        assertEquals( "Invalid SID", displayValue2 ); 
 
         // test additional sub authority byte
         byte[] bytes3 = new byte[]
@@ -129,7 +129,7 @@ public class InPlaceMsAdObjectSidValueEditorTest
                 ( byte ) 0xf4, ( byte ) 0x01, ( byte ) 0x00, ( byte ) 0x00, ( byte ) 0x00 //
             };
         String displayValue3 = editor.convertToString( bytes3 );
-        assertEquals( "Invalid SID", displayValue3 );
+        assertEquals( "Invalid SID", displayValue3 ); 
     }
 
 
@@ -139,6 +139,6 @@ public class InPlaceMsAdObjectSidValueEditorTest
         InPlaceMsAdObjectSidValueEditor editor = new InPlaceMsAdObjectSidValueEditor();
         byte[] bytes = null;
         String displayValue = editor.convertToString( bytes );
-        assertEquals( "Invalid SID", displayValue );
+        assertEquals( "Invalid SID", displayValue ); 
     }
 }
