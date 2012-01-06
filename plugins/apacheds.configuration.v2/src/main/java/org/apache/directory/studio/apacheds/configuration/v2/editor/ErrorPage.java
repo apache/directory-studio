@@ -54,8 +54,8 @@ public class ErrorPage extends FormPage
     /** The Page Title */
     private static final String TITLE = "Error opening the editor";
 
-    private static final String DETAILS_CLOSED = NLS.bind( "{0} >>", "Details" );
-    private static final String DETAILS_OPEN = NLS.bind( "<< {0}", "Details" );
+    private static final String DETAILS_CLOSED = NLS.bind( "{0} >>", "Details" ); //$NON-NLS-1$
+    private static final String DETAILS_OPEN = NLS.bind( "<< {0}", "Details" ); //$NON-NLS-1$
 
     /** The exception */
     private Exception exception;
@@ -105,7 +105,7 @@ public class ErrorPage extends FormPage
 
         // Error Label
         Label errorLabel = toolkit.createLabel( parent,
-            NLS.bind( "Could not open the editor: {0}", exception.getMessage() ) );
+            NLS.bind( "Could not open the editor: {0}", exception.getMessage() ) ); //$NON-NLS-1$
         errorLabel.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
 
         // Details Button

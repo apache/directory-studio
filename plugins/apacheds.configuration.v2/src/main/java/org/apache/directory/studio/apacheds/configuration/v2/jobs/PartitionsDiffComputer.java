@@ -80,7 +80,7 @@ public class PartitionsDiffComputer
         // Using the original partition suffix as base 
         // '*' for all user attributes, '+' for all operational attributes
         return computeModifications( originalPartition.getSuffixDn(), new String[]
-            { "*", "+" } );
+            { "*", "+" } ); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
 
@@ -109,34 +109,34 @@ public class PartitionsDiffComputer
         // Checking the original partition
         if ( originalPartition == null )
         {
-            throw new PartitionsDiffException( "The original partition must not be 'null'." );
+            throw new PartitionsDiffException( "The original partition must not be 'null'." ); //$NON-NLS-1$
         }
         else
         {
             if ( !originalPartition.isInitialized() )
             {
-                throw new PartitionsDiffException( "The original partition must be intialized." );
+                throw new PartitionsDiffException( "The original partition must be intialized." ); //$NON-NLS-1$
             }
             else if ( originalPartition.getSuffixDn() == null )
             {
-                throw new PartitionsDiffException( "The original suffix is null." );
+                throw new PartitionsDiffException( "The original suffix is null." ); //$NON-NLS-1$
             }
         }
 
         // Checking the destination partition
         if ( destinationPartition == null )
         {
-            throw new PartitionsDiffException( "The destination partition must not be 'null'." );
+            throw new PartitionsDiffException( "The destination partition must not be 'null'." ); //$NON-NLS-1$
         }
         else
         {
             if ( !destinationPartition.isInitialized() )
             {
-                throw new PartitionsDiffException( "The destination partition must be intialized." );
+                throw new PartitionsDiffException( "The destination partition must be intialized." ); //$NON-NLS-1$
             }
             else if ( destinationPartition.getSuffixDn() == null )
             {
-                throw new PartitionsDiffException( "The destination suffix is null." );
+                throw new PartitionsDiffException( "The destination suffix is null." ); //$NON-NLS-1$
             }
         }
     }
@@ -165,7 +165,7 @@ public class PartitionsDiffComputer
                 .lookup( new LookupOperationContext( null, baseDn, attributeIds ) );
             if ( originalBaseEntry == null )
             {
-                throw new PartitionsDiffException( "Unable to find the base entry in the original partition." );
+                throw new PartitionsDiffException( "Unable to find the base entry in the original partition." ); //$NON-NLS-1$
             }
 
             // Creating the list containing all the original entries to be processed
@@ -220,7 +220,7 @@ public class PartitionsDiffComputer
                 setReturningAttributes( originalPartition.getSchemaManager(), attributeIds, soc );
                 soc.setDn( originalEntry.getDn() );
                 soc.setScope( SearchScope.ONELEVEL );
-                soc.setFilter( FilterParser.parse( originalPartition.getSchemaManager(), "(objectClass=*)" ) );
+                soc.setFilter( FilterParser.parse( originalPartition.getSchemaManager(), "(objectClass=*)" ) ); //$NON-NLS-1$
                 soc.setAliasDerefMode( AliasDerefMode.DEREF_ALWAYS );
 
                 // Looking for the children of the current entry
@@ -242,7 +242,7 @@ public class PartitionsDiffComputer
                 .lookup( new LookupOperationContext( null, baseDn, attributeIds ) );
             if ( destinationBaseEntry == null )
             {
-                throw new PartitionsDiffException( "Unable to find the base entry in the destination partition." );
+                throw new PartitionsDiffException( "Unable to find the base entry in the destination partition." ); //$NON-NLS-1$
             }
 
             // Creating the list containing all the destination entries to be processed
@@ -285,7 +285,7 @@ public class PartitionsDiffComputer
                 setReturningAttributes( destinationPartition.getSchemaManager(), attributeIds, soc );
                 soc.setDn( destinationEntry.getDn() );
                 soc.setScope( SearchScope.ONELEVEL );
-                soc.setFilter( FilterParser.parse( destinationPartition.getSchemaManager(), "(objectClass=*)" ) );
+                soc.setFilter( FilterParser.parse( destinationPartition.getSchemaManager(), "(objectClass=*)" ) ); //$NON-NLS-1$
                 soc.setAliasDerefMode( AliasDerefMode.DEREF_ALWAYS );
 
                 // Looking for the children of the current entry

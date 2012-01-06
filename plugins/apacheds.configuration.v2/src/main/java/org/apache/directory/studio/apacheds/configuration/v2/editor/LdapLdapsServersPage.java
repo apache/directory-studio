@@ -63,25 +63,25 @@ import org.eclipse.ui.forms.widgets.TableWrapLayout;
  */
 public class LdapLdapsServersPage extends ServerConfigurationEditorPage
 {
-    private static final String DEFAULT_ADDRESS = "0.0.0.0";
+    private static final String DEFAULT_ADDRESS = "0.0.0.0"; //$NON-NLS-1$
     private static final int DEFAULT_PORT_LDAPS = 10636;
     private static final int DEFAULT_PORT_LDAP = 10389;
-    private static final String TRANSPORT_ID_LDAP = "ldap";
-    private static final String TRANSPORT_ID_LDAPS = "ldaps";
-    private static final String SASL_MECHANISMS_SIMPLE = "SIMPLE";
-    private static final String START_TLS_HANDLER_ID = "starttlshandler";
-    private static final String START_TLS_HANDLER_CLASS = "org.apache.directory.server.ldap.handlers.extended.StartTlsHandler";
-    private static final String FQCN_HASHING_INTERCEPTOR_SSHA512 = "org.apache.directory.server.core.hash.Ssha512PasswordHashingInterceptor";
-    private static final String FQCN_HASHING_INTERCEPTOR_SHA512 = "org.apache.directory.server.core.hash.Sha512PasswordHashingInterceptor";
-    private static final String FQCN_HASHING_INTERCEPTOR_SSHA384 = "org.apache.directory.server.core.hash.Ssha384PasswordHashingInterceptor";
-    private static final String FQCN_HASHING_INTERCEPTOR_SHA384 = "org.apache.directory.server.core.hash.Sha384PasswordHashingInterceptor";
-    private static final String FQCN_HASHING_INTERCEPTOR_SSHA256 = "org.apache.directory.server.core.hash.Ssha256PasswordHashingInterceptor";
-    private static final String FQCN_HASHING_INTERCEPTOR_SHA256 = "org.apache.directory.server.core.hash.Sha256PasswordHashingInterceptor";
-    private static final String FQCN_HASHING_INTERCEPTOR_CRYPT = "org.apache.directory.server.core.hash.CryptPasswordHashingInterceptor";
-    private static final String FQCN_HASHING_INTERCEPTOR_SMD5 = "org.apache.directory.server.core.hash.Smd5PasswordHashingInterceptor";
-    private static final String FQCN_HASHING_INTERCEPTOR_MD5 = "org.apache.directory.server.core.hash.Md5PasswordHashingInterceptor";
-    private static final String FQCN_HASHING_INTERCEPTOR_SSHA = "org.apache.directory.server.core.hash.SshaPasswordHashingInterceptor";
-    private static final String FQCN_HASHING_INTERCEPTOR_SHA = "org.apache.directory.server.core.hash.ShaPasswordHashingInterceptor";
+    private static final String TRANSPORT_ID_LDAP = "ldap"; //$NON-NLS-1$
+    private static final String TRANSPORT_ID_LDAPS = "ldaps"; //$NON-NLS-1$
+    private static final String SASL_MECHANISMS_SIMPLE = "SIMPLE"; //$NON-NLS-1$
+    private static final String START_TLS_HANDLER_ID = "starttlshandler"; //$NON-NLS-1$
+    private static final String START_TLS_HANDLER_CLASS = "org.apache.directory.server.ldap.handlers.extended.StartTlsHandler"; //$NON-NLS-1$
+    private static final String FQCN_HASHING_INTERCEPTOR_SSHA512 = "org.apache.directory.server.core.hash.Ssha512PasswordHashingInterceptor"; //$NON-NLS-1$
+    private static final String FQCN_HASHING_INTERCEPTOR_SHA512 = "org.apache.directory.server.core.hash.Sha512PasswordHashingInterceptor"; //$NON-NLS-1$
+    private static final String FQCN_HASHING_INTERCEPTOR_SSHA384 = "org.apache.directory.server.core.hash.Ssha384PasswordHashingInterceptor"; //$NON-NLS-1$
+    private static final String FQCN_HASHING_INTERCEPTOR_SHA384 = "org.apache.directory.server.core.hash.Sha384PasswordHashingInterceptor"; //$NON-NLS-1$
+    private static final String FQCN_HASHING_INTERCEPTOR_SSHA256 = "org.apache.directory.server.core.hash.Ssha256PasswordHashingInterceptor"; //$NON-NLS-1$
+    private static final String FQCN_HASHING_INTERCEPTOR_SHA256 = "org.apache.directory.server.core.hash.Sha256PasswordHashingInterceptor"; //$NON-NLS-1$
+    private static final String FQCN_HASHING_INTERCEPTOR_CRYPT = "org.apache.directory.server.core.hash.CryptPasswordHashingInterceptor"; //$NON-NLS-1$
+    private static final String FQCN_HASHING_INTERCEPTOR_SMD5 = "org.apache.directory.server.core.hash.Smd5PasswordHashingInterceptor"; //$NON-NLS-1$
+    private static final String FQCN_HASHING_INTERCEPTOR_MD5 = "org.apache.directory.server.core.hash.Md5PasswordHashingInterceptor"; //$NON-NLS-1$
+    private static final String FQCN_HASHING_INTERCEPTOR_SSHA = "org.apache.directory.server.core.hash.SshaPasswordHashingInterceptor"; //$NON-NLS-1$
+    private static final String FQCN_HASHING_INTERCEPTOR_SHA = "org.apache.directory.server.core.hash.ShaPasswordHashingInterceptor"; //$NON-NLS-1$
 
     /** The Page ID*/
     public static final String ID = LdapLdapsServersPage.class.getName(); //$NON-NLS-1$
@@ -359,7 +359,7 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
         toolkit.createLabel( composite, TABULATION );
         toolkit.createLabel( composite, "Port:" );
         ldapPortText = createPortText( toolkit, composite );
-        createDefaultValueLabel( toolkit, composite, "10389" );
+        createDefaultValueLabel( toolkit, composite, "10389" ); //$NON-NLS-1$
 
         // Enable LDAPS Server Checkbox
         enableLdapsCheckbox = toolkit.createButton( composite, "Enable LDAPS Server", SWT.CHECK );
@@ -369,7 +369,7 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
         toolkit.createLabel( composite, TABULATION );
         toolkit.createLabel( composite, "Port:" );
         ldapsPortText = createPortText( toolkit, composite );
-        createDefaultValueLabel( toolkit, composite, "10636" );
+        createDefaultValueLabel( toolkit, composite, "10636" ); //$NON-NLS-1$
     }
 
 
@@ -436,7 +436,7 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
         enableServerSidePasswordHashingCheckbox.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 3, 1 ) );
 
         // Server-side Password Hashing Combo
-        toolkit.createLabel( composite, "   " );
+        toolkit.createLabel( composite, "   " ); //$NON-NLS-1$
         toolkit.createLabel( composite, "Hashing Method:" );
         Combo hashingMethodCombo = new Combo( composite, SWT.READ_ONLY | SWT.SINGLE );
         hashingMethodCombo.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
@@ -454,27 +454,27 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
                     switch ( hashingMethod )
                     {
                         case HASH_METHOD_SHA:
-                            return "SHA";
+                            return "SHA"; //$NON-NLS-1$
                         case HASH_METHOD_SSHA:
-                            return "SSHA";
+                            return "SSHA"; //$NON-NLS-1$
                         case HASH_METHOD_MD5:
-                            return "MD5";
+                            return "MD5"; //$NON-NLS-1$
                         case HASH_METHOD_SMD5:
-                            return "SMD5";
+                            return "SMD5"; //$NON-NLS-1$
                         case HASH_METHOD_CRYPT:
-                            return "CRYPT";
+                            return "CRYPT"; //$NON-NLS-1$
                         case HASH_METHOD_SHA256:
-                            return "SHA-256";
+                            return "SHA-256"; //$NON-NLS-1$
                         case HASH_METHOD_SSHA256:
-                            return "SSHA-256";
+                            return "SSHA-256"; //$NON-NLS-1$
                         case HASH_METHOD_SHA384:
-                            return "SHA-384";
+                            return "SHA-384"; //$NON-NLS-1$
                         case HASH_METHOD_SSHA384:
-                            return "SSHA-384";
+                            return "SSHA-384"; //$NON-NLS-1$
                         case HASH_METHOD_SHA512:
-                            return "SHA-512";
+                            return "SHA-512"; //$NON-NLS-1$
                         case HASH_METHOD_SSHA512:
-                            return "SSHA-512";
+                            return "SSHA-512"; //$NON-NLS-1$
                     }
                 }
 
@@ -497,8 +497,8 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
         };
         hashingMethodComboViewer.setInput( hashingMethods );
         setSelection( hashingMethodComboViewer, LdapSecurityConstants.HASH_METHOD_SSHA );
-        toolkit.createLabel( composite, "   " );
-        Label defaultLabel = createDefaultValueLabel( toolkit, composite, "SSHA" );
+        toolkit.createLabel( composite, "   " ); //$NON-NLS-1$
+        Label defaultLabel = createDefaultValueLabel( toolkit, composite, "SSHA" ); //$NON-NLS-1$
         defaultLabel.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
     }
 
@@ -524,28 +524,28 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
         section.setClient( composite );
 
         // Simple Checkbox
-        authMechSimpleCheckbox = toolkit.createButton( composite, "Simple", SWT.CHECK );
+        authMechSimpleCheckbox = toolkit.createButton( composite, "Simple", SWT.CHECK ); //$NON-NLS-1$
         authMechSimpleCheckbox.setLayoutData( new GridData( SWT.FILL, SWT.CENTER, true, false ) );
 
         // GSSAPI Checkbox
-        authMechGssapiCheckbox = toolkit.createButton( composite, "GSSAPI", SWT.CHECK );
+        authMechGssapiCheckbox = toolkit.createButton( composite, "GSSAPI", SWT.CHECK ); //$NON-NLS-1$
         authMechGssapiCheckbox.setLayoutData( new GridData( SWT.FILL, SWT.CENTER, true, false ) );
 
         // CRAM-MD5 Checkbox
-        authMechCramMd5Checkbox = toolkit.createButton( composite, "CRAM-MD5", SWT.CHECK );
+        authMechCramMd5Checkbox = toolkit.createButton( composite, "CRAM-MD5", SWT.CHECK ); //$NON-NLS-1$
         authMechCramMd5Checkbox.setLayoutData( new GridData( SWT.FILL, SWT.CENTER, true, false ) );
 
         // DIGEST-MD5 Checkbox
-        authMechDigestMd5Checkbox = toolkit.createButton( composite, "DIGEST-MD5", SWT.CHECK );
+        authMechDigestMd5Checkbox = toolkit.createButton( composite, "DIGEST-MD5", SWT.CHECK ); //$NON-NLS-1$
         authMechDigestMd5Checkbox.setLayoutData( new GridData( SWT.FILL, SWT.CENTER, true, false ) );
 
         // NTLM Checkbox and Text
-        authMechNtlmCheckbox = toolkit.createButton( composite, "NTLM", SWT.CHECK );
+        authMechNtlmCheckbox = toolkit.createButton( composite, "NTLM", SWT.CHECK ); //$NON-NLS-1$
         authMechNtlmCheckbox.setLayoutData( new GridData( SWT.FILL, SWT.CENTER, true, false ) );
         Composite authMechNtlmComposite = toolkit.createComposite( composite );
         authMechNtlmComposite.setLayout( new GridLayout( 2, false ) );
         toolkit.createLabel( authMechNtlmComposite, "Provider:" );
-        authMechNtlmText = toolkit.createText( authMechNtlmComposite, "" );
+        authMechNtlmText = toolkit.createText( authMechNtlmComposite, "" ); //$NON-NLS-1$
         authMechNtlmText.setLayoutData( new GridData( SWT.FILL, SWT.CENTER, true, false ) );
         authMechNtlmComposite.setLayoutData( new GridData( SWT.FILL, SWT.CENTER, false, false, 3, 1 ) );
 
@@ -555,7 +555,7 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
         Composite authMechGssSpnegoComposite = toolkit.createComposite( composite );
         authMechGssSpnegoComposite.setLayout( new GridLayout( 2, false ) );
         toolkit.createLabel( authMechGssSpnegoComposite, "Provider:" );
-        authMechGssSpnegoText = toolkit.createText( authMechGssSpnegoComposite, "" );
+        authMechGssSpnegoText = toolkit.createText( authMechGssSpnegoComposite, "" ); //$NON-NLS-1$
         authMechGssSpnegoText.setLayoutData( new GridData( SWT.FILL, SWT.CENTER, true, false ) );
         authMechGssSpnegoComposite.setLayoutData( new GridData( SWT.FILL, SWT.CENTER, true, false, 3, 1 ) );
     }
@@ -583,9 +583,9 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
 
         // SASL Host Text
         toolkit.createLabel( composite, "SASL Host:" );
-        saslHostText = toolkit.createText( composite, "" );
+        saslHostText = toolkit.createText( composite, "" ); //$NON-NLS-1$
         setGridDataWithDefaultWidth( saslHostText, new GridData( SWT.FILL, SWT.NONE, true, false ) );
-        Label defaultSaslHostLabel = createDefaultValueLabel( toolkit, composite, "ldap.example.com" );
+        Label defaultSaslHostLabel = createDefaultValueLabel( toolkit, composite, "ldap.example.com" ); //$NON-NLS-1$
         defaultSaslHostLabel.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
 
         // SASL Principal Text
@@ -593,14 +593,14 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
         saslPrincipalText = toolkit.createText( composite, "" ); //$NON-NLS-1$
         setGridDataWithDefaultWidth( saslPrincipalText, new GridData( SWT.FILL, SWT.NONE, true, false ) );
         Label defaultSaslPrincipalLabel = createDefaultValueLabel( toolkit, composite,
-            "ldap/ldap.example.com@EXAMPLE.COM" );
+            "ldap/ldap.example.com@EXAMPLE.COM" ); //$NON-NLS-1$
         defaultSaslPrincipalLabel.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
 
         // Search Base Dn Text
         toolkit.createLabel( composite, "Search Base Dn:" );
         saslSearchBaseDnText = toolkit.createText( composite, "" ); //$NON-NLS-1$
         setGridDataWithDefaultWidth( saslSearchBaseDnText, new GridData( SWT.FILL, SWT.NONE, true, false ) );
-        Label defaultSaslSearchBaseDnLabel = createDefaultValueLabel( toolkit, composite, "ou=users,dc=example,dc=com" );
+        Label defaultSaslSearchBaseDnLabel = createDefaultValueLabel( toolkit, composite, "ou=users,dc=example,dc=com" ); //$NON-NLS-1$
         defaultSaslSearchBaseDnLabel.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
     }
 
@@ -790,13 +790,13 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
         TransportBean ldapServerTransportBean = getLdapServerTransportBean();
         setSelection( enableLdapCheckbox, ldapServerTransportBean.isEnabled() );
         setEnabled( ldapPortText, enableLdapCheckbox.getSelection() );
-        setText( ldapPortText, ldapServerTransportBean.getSystemPort() + "" );
+        setText( ldapPortText, ldapServerTransportBean.getSystemPort() + "" ); //$NON-NLS-1$
 
         // LDAPS Server
         TransportBean ldapsServerTransportBean = getLdapsServerTransportBean();
         setSelection( enableLdapsCheckbox, ldapsServerTransportBean.isEnabled() );
         setEnabled( enableLdapsCheckbox, enableLdapsCheckbox.getSelection() );
-        setText( ldapsPortText, ldapsServerTransportBean.getSystemPort() + "" );
+        setText( ldapsPortText, ldapsServerTransportBean.getSystemPort() + "" ); //$NON-NLS-1$
 
         // SASL Properties
         LdapServerBean ldapServerBean = getLdapServerBean();
@@ -840,8 +840,8 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
         }
 
         // Limits
-        setText( maxTimeLimitText, "" + ldapServerBean.getLdapServerMaxTimeLimit() );
-        setText( maxSizeLimitText, "" + ldapServerBean.getLdapServerMaxSizeLimit() );
+        setText( maxTimeLimitText, "" + ldapServerBean.getLdapServerMaxTimeLimit() ); //$NON-NLS-1$
+        setText( maxSizeLimitText, "" + ldapServerBean.getLdapServerMaxSizeLimit() ); //$NON-NLS-1$
 
         // Enable TLS Checkbox
         setSelection( enableTlsCheckbox, getTlsExtendedOpHandlerBean().isEnabled() );
@@ -1208,7 +1208,7 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
     {
         if ( fqcn != null )
         {
-            String id = fqcn.replace( "org.apache.directory.server.core.hash.", "" );
+            String id = fqcn.replace( "org.apache.directory.server.core.hash.", "" ); //$NON-NLS-1$ //$NON-NLS-2$
 
             if ( id.length() > 0 )
             {
@@ -1405,7 +1405,7 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
         for ( InterceptorBean interceptor : interceptors )
         {
             // Looking for the authentication interceptor
-            if ( "org.apache.directory.server.core.authn.AuthenticationInterceptor".equalsIgnoreCase( interceptor
+            if ( "org.apache.directory.server.core.authn.AuthenticationInterceptor".equalsIgnoreCase( interceptor //$NON-NLS-1$
                 .getInterceptorClassName() ) )
             {
                 // We found the authentication interceptor

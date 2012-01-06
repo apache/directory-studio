@@ -59,8 +59,8 @@ public class ApacheDS2ConfigurationContentDescriber implements ITextContentDescr
         // Initializing DNs
         try
         {
-            configEntryDn = new Dn( "ou=config" );
-            directoryServiceDn = new Dn( "ads-directoryServiceId=default,ou=config" );
+            configEntryDn = new Dn( "ou=config" ); //$NON-NLS-1$
+            directoryServiceDn = new Dn( "ads-directoryServiceId=default,ou=config" ); //$NON-NLS-1$
         }
         catch ( LdapInvalidDnException e )
         {

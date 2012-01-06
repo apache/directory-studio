@@ -216,11 +216,11 @@ public class EditorImportConfigurationAction extends Action
         {
             /** The validated status */
             private Status validated = new Status( IStatus.OK, ApacheDS2ConfigurationPluginConstants.PLUGIN_ID,
-                IStatus.OK, "", null );
+                IStatus.OK, "", null ); //$NON-NLS-1$
 
             /** The not validated status */
             private Status notValidated = new Status( IStatus.ERROR, ApacheDS2ConfigurationPluginConstants.PLUGIN_ID,
-                IStatus.ERROR, "", null );
+                IStatus.ERROR, "", null ); //$NON-NLS-1$
 
 
             public IStatus validate( Object[] selection )

@@ -59,8 +59,8 @@ public class EntryBasedConfigurationPartition extends AbstractLdifPartition
      */
     protected void doInit() throws InvalidNameException, Exception
     {
-        setId( "config" );
-        setSuffixDn( new Dn( "ou=config" ) );
+        setId( "config" ); //$NON-NLS-1$
+        setSuffixDn( new Dn( "ou=config" ) ); //$NON-NLS-1$
         
         super.doInit();
     }

@@ -116,7 +116,7 @@ public class ServerConfigurationEditorUtils
             }
             else
             {
-                dialog.setOriginalName( "config.ldif" );
+                dialog.setOriginalName( "config.ldif" ); //$NON-NLS-1$
             }
 
             // Open the dialog

@@ -207,7 +207,7 @@ public class PartitionsMasterDetailsBlock extends MasterDetailsBlock
         newPartitionBean.setPartitionId( newId );
         try
         {
-            newPartitionBean.setPartitionSuffix( new Dn( "dc=" + newId + ",dc=com" ) );
+            newPartitionBean.setPartitionSuffix( new Dn( "dc=" + newId + ",dc=com" ) ); //$NON-NLS-1$ //$NON-NLS-2$
         }
         catch ( LdapInvalidDnException e1 )
         {
@@ -219,20 +219,20 @@ public class PartitionsMasterDetailsBlock extends MasterDetailsBlock
         newPartitionBean.setJdbmPartitionOptimizerEnabled( true );
         newPartitionBean.setPartitionSyncOnWrite( true );
         List<IndexBean> indexes = new ArrayList<IndexBean>();
-        indexes.add( createJdbmIndex( "apacheAlias", 100 ) );
-        indexes.add( createJdbmIndex( "apacheOneAlias", 100 ) );
-        indexes.add( createJdbmIndex( "apacheOneLevel", 100 ) );
-        indexes.add( createJdbmIndex( "apachePresence", 100 ) );
-        indexes.add( createJdbmIndex( "apacheRdn", 100 ) );
-        indexes.add( createJdbmIndex( "apacheSubAlias", 100 ) );
-        indexes.add( createJdbmIndex( "apacheSubLevel", 100 ) );
-        indexes.add( createJdbmIndex( "dc", 100 ) );
-        indexes.add( createJdbmIndex( "entryCSN", 100 ) );
-        indexes.add( createJdbmIndex( "entryUUID", 100 ) );
-        indexes.add( createJdbmIndex( "krbPrincipalName", 100 ) );
-        indexes.add( createJdbmIndex( "objectClass", 100 ) );
-        indexes.add( createJdbmIndex( "ou", 100 ) );
-        indexes.add( createJdbmIndex( "uid", 100 ) );
+        indexes.add( createJdbmIndex( "apacheAlias", 100 ) ); //$NON-NLS-1$
+        indexes.add( createJdbmIndex( "apacheOneAlias", 100 ) ); //$NON-NLS-1$
+        indexes.add( createJdbmIndex( "apacheOneLevel", 100 ) ); //$NON-NLS-1$
+        indexes.add( createJdbmIndex( "apachePresence", 100 ) ); //$NON-NLS-1$
+        indexes.add( createJdbmIndex( "apacheRdn", 100 ) ); //$NON-NLS-1$
+        indexes.add( createJdbmIndex( "apacheSubAlias", 100 ) ); //$NON-NLS-1$
+        indexes.add( createJdbmIndex( "apacheSubLevel", 100 ) ); //$NON-NLS-1$
+        indexes.add( createJdbmIndex( "dc", 100 ) ); //$NON-NLS-1$
+        indexes.add( createJdbmIndex( "entryCSN", 100 ) ); //$NON-NLS-1$
+        indexes.add( createJdbmIndex( "entryUUID", 100 ) ); //$NON-NLS-1$
+        indexes.add( createJdbmIndex( "krbPrincipalName", 100 ) ); //$NON-NLS-1$
+        indexes.add( createJdbmIndex( "objectClass", 100 ) ); //$NON-NLS-1$
+        indexes.add( createJdbmIndex( "ou", 100 ) ); //$NON-NLS-1$
+        indexes.add( createJdbmIndex( "uid", 100 ) ); //$NON-NLS-1$
         newPartitionBean.setIndexes( indexes );
 
         page.getConfigBean().getDirectoryServiceBean().addPartitions( newPartitionBean );

@@ -99,7 +99,7 @@ public class ApacheDS2ConfigurationPlugin extends AbstractUIPlugin
             schemaManager = new DefaultSchemaManager( loader );
 
             // Loading only the 'adsconfig' schema with its dependencies
-            schemaManager.loadWithDeps( "adsconfig" );
+            schemaManager.loadWithDeps( "adsconfig" ); //$NON-NLS-1$
 
             // Checking if no error occurred when loading the schemas
             if ( schemaManager.getErrors().size() != 0 )

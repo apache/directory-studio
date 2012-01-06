@@ -52,7 +52,7 @@ public class PartitionsPage extends ServerConfigurationEditorPage
             {
                 PartitionBean partition = ( PartitionBean ) element;
 
-                return NLS.bind( "{0} ({1})", partition.getPartitionId(), partition.getPartitionSuffix() );
+                return NLS.bind( "{0} ({1})", partition.getPartitionId(), partition.getPartitionSuffix() ); //$NON-NLS-1$
             }
 
             return super.getText( element );
@@ -122,6 +122,6 @@ public class PartitionsPage extends ServerConfigurationEditorPage
      */
     public static boolean isSystemPartition( PartitionBean partition )
     {
-        return "system".equalsIgnoreCase( partition.getPartitionId() );
+        return "system".equalsIgnoreCase( partition.getPartitionId() ); //$NON-NLS-1$
     }
 }

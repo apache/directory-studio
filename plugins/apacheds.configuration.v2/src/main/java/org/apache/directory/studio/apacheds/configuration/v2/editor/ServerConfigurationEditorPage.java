@@ -61,7 +61,7 @@ import org.eclipse.ui.forms.widgets.ScrolledForm;
 public abstract class ServerConfigurationEditorPage extends FormPage
 {
     protected static final Color GRAY_COLOR = new Color( null, 120, 120, 120 );
-    protected static final String TABULATION = "      ";
+    protected static final String TABULATION = "      "; //$NON-NLS-1$
 
     // Dirty listeners
     private ModifyListener dirtyModifyListener = new ModifyListener()
