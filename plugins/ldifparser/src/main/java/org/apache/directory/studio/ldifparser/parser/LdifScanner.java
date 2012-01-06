@@ -504,7 +504,7 @@ public class LdifScanner
     private String getWordTillColon( String word )
     {
 
-        String wordWithColon = word + ":";
+        String wordWithColon = word + ":"; //$NON-NLS-1$
         String line = getWord( wordWithColon );
         if ( line != null )
         {
@@ -567,7 +567,7 @@ public class LdifScanner
         if ( line != null || sep != null )
         {
             if ( line == null )
-                line = "";
+                line = ""; //$NON-NLS-1$
 
             if ( sep != null )
                 line += sep.getValue();
@@ -609,7 +609,7 @@ public class LdifScanner
         }
         catch ( EOFException e )
         {
-            return new LdifToken( LdifToken.EOF, "", pos + 1 );
+            return new LdifToken( LdifToken.EOF, "", pos + 1 ); //$NON-NLS-1$
         }
 
     }
@@ -669,7 +669,7 @@ public class LdifScanner
     {
         this.flushBuffer();
 
-        String line = getFullLine( "#" );
+        String line = getFullLine( "#" ); //$NON-NLS-1$
         if ( line != null )
         {
             return new LdifToken( LdifToken.COMMENT, line, pos - line.length() + 1 );
@@ -683,7 +683,7 @@ public class LdifScanner
     {
         this.flushBuffer();
 
-        String line = getWordTillColon( "version" );
+        String line = getWordTillColon( "version" ); //$NON-NLS-1$
         if ( line != null )
         {
             return new LdifToken( LdifToken.VERSION_SPEC, line, pos - line.length() + 1 );
@@ -697,7 +697,7 @@ public class LdifScanner
     {
         this.flushBuffer();
 
-        String line = getWordTillColon( "dn" );
+        String line = getWordTillColon( "dn" ); //$NON-NLS-1$
         if ( line != null )
         {
             return new LdifToken( LdifToken.DN_SPEC, line, pos - line.length() + 1 );
@@ -711,7 +711,7 @@ public class LdifScanner
     {
         this.flushBuffer();
 
-        String line = getWordTillColon( "control" );
+        String line = getWordTillColon( "control" ); //$NON-NLS-1$
         if ( line != null )
         {
             return new LdifToken( LdifToken.CONTROL_SPEC, line, pos - line.length() + 1 );
@@ -725,7 +725,7 @@ public class LdifScanner
     {
         this.flushBuffer();
 
-        String line = getWordTillColon( "changetype" );
+        String line = getWordTillColon( "changetype" ); //$NON-NLS-1$
         if ( line != null )
         {
             return new LdifToken( LdifToken.CHANGETYPE_SPEC, line, pos - line.length() + 1 );
@@ -739,27 +739,27 @@ public class LdifScanner
     {
         this.flushBuffer();
 
-        String line = getWord( "add" );
+        String line = getWord( "add" ); //$NON-NLS-1$
         if ( line != null )
         {
             return new LdifToken( LdifToken.CHANGETYPE_ADD, line, pos - line.length() + 1 );
         }
-        line = getWord( "modify" );
+        line = getWord( "modify" ); //$NON-NLS-1$
         if ( line != null )
         {
             return new LdifToken( LdifToken.CHANGETYPE_MODIFY, line, pos - line.length() + 1 );
         }
-        line = getWord( "delete" );
+        line = getWord( "delete" ); //$NON-NLS-1$
         if ( line != null )
         {
             return new LdifToken( LdifToken.CHANGETYPE_DELETE, line, pos - line.length() + 1 );
         }
-        line = getWord( "moddn" );
+        line = getWord( "moddn" ); //$NON-NLS-1$
         if ( line != null )
         {
             return new LdifToken( LdifToken.CHANGETYPE_MODDN, line, pos - line.length() + 1 );
         }
-        line = getWord( "modrdn" );
+        line = getWord( "modrdn" ); //$NON-NLS-1$
         if ( line != null )
         {
             return new LdifToken( LdifToken.CHANGETYPE_MODDN, line, pos - line.length() + 1 );
@@ -775,20 +775,20 @@ public class LdifScanner
 
         StringBuffer sb = new StringBuffer();
 
-        String s = getWord( " " );
+        String s = getWord( " " ); //$NON-NLS-1$
         while ( s != null )
         {
             sb.append( s );
-            s = getWord( " " );
+            s = getWord( " " ); //$NON-NLS-1$
         }
 
-        String t = getWord( "true" );
+        String t = getWord( "true" ); //$NON-NLS-1$
         if ( t != null )
         {
             sb.append( t );
             return new LdifToken( LdifToken.CONTROL_CRITICALITY_TRUE, sb.toString(), pos - sb.length() + 1 );
         }
-        String f = getWord( "false" );
+        String f = getWord( "false" ); //$NON-NLS-1$
         if ( f != null )
         {
             sb.append( f );
@@ -950,17 +950,17 @@ public class LdifScanner
     {
         this.flushBuffer();
 
-        String line = getWord( "add" );
+        String line = getWord( "add" ); //$NON-NLS-1$
         if ( line != null )
         {
             return new LdifToken( LdifToken.MODTYPE_ADD_SPEC, line, pos - line.length() + 1 );
         }
-        line = getWord( "replace" );
+        line = getWord( "replace" ); //$NON-NLS-1$
         if ( line != null )
         {
             return new LdifToken( LdifToken.MODTYPE_REPLACE_SPEC, line, pos - line.length() + 1 );
         }
-        line = getWord( "delete" );
+        line = getWord( "delete" ); //$NON-NLS-1$
         if ( line != null )
         {
             return new LdifToken( LdifToken.MODTYPE_DELETE_SPEC, line, pos - line.length() + 1 );
@@ -974,7 +974,7 @@ public class LdifScanner
     {
         this.flushBuffer();
 
-        String line = getWord( "-" );
+        String line = getWord( "-" ); //$NON-NLS-1$
         if ( line != null )
         {
             return new LdifToken( LdifToken.MODTYPE_SEP, line, pos - line.length() + 1 );
@@ -1058,7 +1058,7 @@ public class LdifScanner
     {
         this.flushBuffer();
 
-        String line = getWordTillColon( "newrdn" );
+        String line = getWordTillColon( "newrdn" ); //$NON-NLS-1$
         if ( line != null )
         {
             return new LdifToken( LdifToken.MODDN_NEWRDN_SPEC, line, pos - line.length() + 1 );
@@ -1072,7 +1072,7 @@ public class LdifScanner
     {
         this.flushBuffer();
 
-        String line = getWordTillColon( "deleteoldrdn" );
+        String line = getWordTillColon( "deleteoldrdn" ); //$NON-NLS-1$
         if ( line != null )
         {
             return new LdifToken( LdifToken.MODDN_DELOLDRDN_SPEC, line, pos - line.length() + 1 );
@@ -1086,7 +1086,7 @@ public class LdifScanner
     {
         this.flushBuffer();
 
-        String line = getWordTillColon( "newsuperior" );
+        String line = getWordTillColon( "newsuperior" ); //$NON-NLS-1$
         if ( line != null )
         {
             return new LdifToken( LdifToken.MODDN_NEWSUPERIOR_SPEC, line, pos - line.length() + 1 );

@@ -47,7 +47,7 @@ public class LdifUtils
     {
         try
         {
-            return s.getBytes( "UTF-8" );
+            return s.getBytes( "UTF-8" ); //$NON-NLS-1$
         }
         catch ( UnsupportedEncodingException e )
         {
@@ -67,7 +67,7 @@ public class LdifUtils
     {
         try
         {
-            return URLEncoder.encode( s, "UTF-8" );
+            return URLEncoder.encode( s, "UTF-8" ); //$NON-NLS-1$
         }
         catch ( UnsupportedEncodingException e )
         {
@@ -130,7 +130,7 @@ public class LdifUtils
     {
         try
         {
-            return new String( b, "UTF-8" );
+            return new String( b, "UTF-8" ); //$NON-NLS-1$
         }
         catch ( UnsupportedEncodingException e )
         {
@@ -181,11 +181,11 @@ public class LdifUtils
             return false;
         }
 
-        if ( value.startsWith( " " ) || value.startsWith( ":" ) || value.startsWith( "<" ) )
+        if ( value.startsWith( " " ) || value.startsWith( ":" ) || value.startsWith( "<" ) ) //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         {
             return true;
         }
-        if ( value.endsWith( " " ) )
+        if ( value.endsWith( " " ) ) //$NON-NLS-1$
         {
             return true;
         }

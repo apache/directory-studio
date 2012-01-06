@@ -139,8 +139,8 @@ public class LdifToken implements Comparable
 
     public String toString()
     {
-        return "(type=" + this.type + ") " + "(offset=" + this.offset + ") " + "(length=" + this.getLength() + ") '"
-            + this.value + "'";
+        return "(type=" + this.type + ") " + "(offset=" + this.offset + ") " + "(length=" + this.getLength() + ") '" //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
+            + this.value + "'"; //$NON-NLS-1$
     }
 
 

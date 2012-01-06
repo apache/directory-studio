@@ -91,21 +91,21 @@ public class LdifValueLineBase extends LdifNonEmptyLineBase
         // Fix for DIRSTUDIO-285: We must take care that we only check
         // the first colon in the line. If there is another :: or :< 
         // in the value we must not use that as separator.
-        int firstColonIndex = unfolded.indexOf( ":" );
-        int firstDoubleColonIndex = unfolded.indexOf( "::" );
-        int firstColonLessIndex = unfolded.indexOf( ":<" );
+        int firstColonIndex = unfolded.indexOf( ":" ); //$NON-NLS-1$
+        int firstDoubleColonIndex = unfolded.indexOf( "::" ); //$NON-NLS-1$
+        int firstColonLessIndex = unfolded.indexOf( ":<" ); //$NON-NLS-1$
 
         if ( firstDoubleColonIndex > -1 && firstDoubleColonIndex == firstColonIndex )
         {
-            unfolded = unfolded.replaceFirst( "::[ ]*", formatParameters.isSpaceAfterColon() ? ":: " : "::" );
+            unfolded = unfolded.replaceFirst( "::[ ]*", formatParameters.isSpaceAfterColon() ? ":: " : "::" ); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         }
         else if ( firstColonLessIndex > -1 && firstColonLessIndex == firstColonIndex )
         {
-            unfolded = unfolded.replaceFirst( ":<[ ]*", formatParameters.isSpaceAfterColon() ? ":< " : ":<" );
+            unfolded = unfolded.replaceFirst( ":<[ ]*", formatParameters.isSpaceAfterColon() ? ":< " : ":<" ); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         }
         else if ( firstColonIndex > -1 )
         {
-            unfolded = unfolded.replaceFirst( ":[ ]*", formatParameters.isSpaceAfterColon() ? ": " : ":" );
+            unfolded = unfolded.replaceFirst( ":[ ]*", formatParameters.isSpaceAfterColon() ? ": " : ":" ); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         }
 
         if ( rawNewLine != null )
@@ -162,7 +162,7 @@ public class LdifValueLineBase extends LdifNonEmptyLineBase
         }
         else
         {
-            return "";
+            return ""; //$NON-NLS-1$
         }
     }
 
@@ -237,19 +237,19 @@ public class LdifValueLineBase extends LdifNonEmptyLineBase
 
     public boolean isValueTypeURL()
     {
-        return this.getUnfoldedValueType().startsWith( ":<" );
+        return this.getUnfoldedValueType().startsWith( ":<" ); //$NON-NLS-1$
     }
 
 
     public boolean isValueTypeBase64()
     {
-        return this.getUnfoldedValueType().startsWith( "::" );
+        return this.getUnfoldedValueType().startsWith( "::" ); //$NON-NLS-1$
     }
 
 
     public boolean isValueTypeSafe()
     {
-        return this.getUnfoldedValueType().startsWith( ":" ) && !this.isValueTypeBase64() && !this.isValueTypeURL();
+        return this.getUnfoldedValueType().startsWith( ":" ) && !this.isValueTypeBase64() && !this.isValueTypeURL(); //$NON-NLS-1$
     }
 
 }

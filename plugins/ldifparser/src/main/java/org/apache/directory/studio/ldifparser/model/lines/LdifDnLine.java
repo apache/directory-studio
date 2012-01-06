@@ -104,12 +104,12 @@ public class LdifDnLine extends LdifValueLineBase
     {
         if ( LdifUtils.mustEncode( dn ) )
         {
-            return new LdifDnLine( 0, "dn", "::", LdifUtils.base64encode( LdifUtils.utf8encode( dn ) ),
+            return new LdifDnLine( 0, "dn", "::", LdifUtils.base64encode( LdifUtils.utf8encode( dn ) ), //$NON-NLS-1$ //$NON-NLS-2$
                 LdifParserConstants.LINE_SEPARATOR );
         }
         else
         {
-            return new LdifDnLine( 0, "dn", ":", dn, LdifParserConstants.LINE_SEPARATOR );
+            return new LdifDnLine( 0, "dn", ":", dn, LdifParserConstants.LINE_SEPARATOR ); //$NON-NLS-1$ //$NON-NLS-2$
         }
     }
 

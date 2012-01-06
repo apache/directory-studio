@@ -73,9 +73,9 @@ public final class LdifInvalidPart implements LdifPart
     public final String toString()
     {
         String text = toRawString();
-        text = text.replaceAll( "\n", "\\\\n" );
-        text = text.replaceAll( "\r", "\\\\r" );
-        return getClass().getName() + " (" + getOffset() + "," + getLength() + "): '" + text + "'";
+        text = text.replaceAll( "\n", "\\\\n" ); //$NON-NLS-1$ //$NON-NLS-2$
+        text = text.replaceAll( "\r", "\\\\r" ); //$NON-NLS-1$ //$NON-NLS-2$
+        return getClass().getName() + " (" + getOffset() + "," + getLength() + "): '" + text + "'"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
     }
 
 

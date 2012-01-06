@@ -637,7 +637,7 @@ public class LdifParser
                         modSpec.addAttrVal( line );
 
                         // clean line
-                        if ( "".equals( line.getRawNewLine() ) )
+                        if ( "".equals( line.getRawNewLine() ) ) //$NON-NLS-1$
                         {
                             this.cleanupLine( record );
                         }
@@ -702,7 +702,7 @@ public class LdifParser
                 }
 
                 // clean line
-                if ( "".equals( line.getRawNewLine() ) )
+                if ( "".equals( line.getRawNewLine() ) ) //$NON-NLS-1$
                 {
                     this.cleanupLine( record );
                 }

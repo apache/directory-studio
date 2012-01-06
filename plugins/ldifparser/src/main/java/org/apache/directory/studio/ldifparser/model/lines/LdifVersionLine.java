@@ -96,7 +96,7 @@ public class LdifVersionLine extends LdifValueLineBase
 
     public static LdifVersionLine create()
     {
-        return new LdifVersionLine( 0, "version", ":", "1", LdifParserConstants.LINE_SEPARATOR );
+        return new LdifVersionLine( 0, "version", ":", "1", LdifParserConstants.LINE_SEPARATOR ); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
     }
 
 }
