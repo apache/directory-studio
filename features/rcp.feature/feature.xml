@@ -200,7 +200,7 @@ http://www.apache.org/licenses/
    </license>
 
    <url>
-      <update label="Apache Directory Studio" url="http://directory.apache.org/studio/update/1.x"/>
+      <update label="Apache Directory Studio" url="http://directory.apache.org/studio/update/2.x"/>
    </url>
 
    <plugin
