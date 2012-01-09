@@ -1833,6 +1833,13 @@
     <pluginManagement>
       <plugins>
         <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-release-plugin</artifactId>
+          <configuration>
+            <tagNameFormat>@{project.version}</tagNameFormat>
+          </configuration>
+        </plugin>
+        <plugin>
           <groupId>org.apache.directory.studio</groupId>
           <artifactId>studio-maven-plugin</artifactId>
           <version>1.0.5</version>
