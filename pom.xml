@@ -96,12 +96,12 @@
       </properties>
     </profile>
     <!-- Release profile -->
-    <profile>
+    <!--<profile>
       <id>release</id>
        <build>
-         <plugins>
+         <plugins>-->
           <!-- Configuration for signature of the jars using the keystore -->
-          <plugin>
+          <!--<plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-jar-plugin</artifactId>
             <executions>
@@ -120,7 +120,7 @@
           </plugin>
         </plugins>
       </build>
-    </profile>
+    </profile>-->
     <!-- 
       Building repository module is enabled by default. Add 
       -P-libraries
