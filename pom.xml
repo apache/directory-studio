@@ -1929,6 +1929,7 @@
               <exclude>repository/**/*</exclude>
               <exclude>tests/**/*</exclude>
               <exclude>tools/**/*</exclude>
+              <exclude>**/*.bmp</exclude>
             </excludes>
           </configuration>
          </plugin>

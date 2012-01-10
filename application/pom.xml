@@ -257,6 +257,7 @@
               <!-- OTHER_EXCLUDES -->
               <exclude>docs/**/*</exclude>
               <exclude>application-updatesite/src/main/resources/*</exclude>
+              <exclude>**/*.bmp</exclude>
             </excludes>
           </configuration>
          </plugin>
