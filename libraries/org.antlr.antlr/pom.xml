@@ -23,11 +23,11 @@
   <parent>
     <groupId>org.apache.directory.studio</groupId>
     <artifactId>parent-libraries</artifactId>
-    <version>2.0.0.v20120110</version>
+    <version>2.0.1.v20120110-SNAPSHOT</version>
   </parent>
 
   <artifactId>org.antlr.antlr</artifactId>
-  <version>2.7.7</version>
+  <version>2.7.8-SNAPSHOT</version>
   
   <name>AntLR Parser Generator (for Apache Directory Studio)</name>
   <packaging>jar</packaging>

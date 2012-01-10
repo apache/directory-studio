@@ -23,7 +23,7 @@
   <parent>
     <groupId>org.apache.directory.studio</groupId>
     <artifactId>parent-plugins</artifactId>
-    <version>2.0.0.v20120110</version>
+    <version>2.0.1.v20120110-SNAPSHOT</version>
   </parent>
   
   <artifactId>ldapbrowser.ui</artifactId>

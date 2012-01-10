@@ -23,11 +23,11 @@
   <parent>
     <groupId>org.apache.directory.studio</groupId>
     <artifactId>parent-libraries</artifactId>
-    <version>2.0.0.v20120110</version>
+    <version>2.0.1.v20120110-SNAPSHOT</version>
   </parent>
 
   <artifactId>org.apache.httpcomponents.httpclient</artifactId>
-  <version>4.0</version>
+  <version>4.1-SNAPSHOT</version>
   
   <name>Apache HttpComponents Client (for Apache Directory Studio)</name>
   <packaging>jar</packaging>
