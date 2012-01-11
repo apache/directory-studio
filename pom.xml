@@ -29,7 +29,7 @@
 
   <groupId>org.apache.directory.studio</groupId>
   <artifactId>parent</artifactId>
-  <version>2.0.0.v20120111</version>
+  <version>2.0.1.v20120111-SNAPSHOT</version>
   <name>Apache Directory Studio</name>
   <description>Apache Directory Studio is a complete directory tooling platform intended to be used with any LDAP server however it is particularly designed for use with the Apache Directory Server.</description>
   <packaging>pom</packaging>
@@ -42,9 +42,9 @@
   </issueManagement>
 
   <scm>
-    <connection>scm:svn:http://svn.apache.org/repos/asf/directory/studio/tags/2.0.0.v20120111</connection>
-    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/directory/studio/tags/2.0.0.v20120111</developerConnection>
-    <url>https://svn.apache.org/viewvc/directory/studio/tags/2.0.0.v20120111</url>
+    <connection>scm:svn:http://svn.apache.org/repos/asf/directory/studio/trunk/</connection>
+    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/directory/studio/trunk/</developerConnection>
+    <url>https://svn.apache.org/viewvc/directory/studio/trunk/</url>
   </scm>
 
   <distributionManagement>
@@ -242,127 +242,127 @@
       <dependency>
         <groupId>org.apache.directory.studio</groupId>
         <artifactId>net.sf.ehcache.core</artifactId>
-        <version>2.2.0</version>
+        <version>2.2.1-SNAPSHOT</version>
       </dependency>
       <dependency>
         <groupId>org.apache.directory.studio</groupId>
         <artifactId>org.antlr.antlr</artifactId>
-        <version>2.7.7</version>
+        <version>2.7.8-SNAPSHOT</version>
       </dependency>
       <dependency>
         <groupId>org.apache.directory.studio</groupId>
         <artifactId>org.apache.commons.codec</artifactId>
-        <version>1.3</version>
+        <version>1.4-SNAPSHOT</version>
       </dependency>
       <dependency>
         <groupId>org.apache.directory.studio</groupId>
         <artifactId>org.apache.commons.collections</artifactId>
-        <version>3.2.1</version>
+        <version>3.2.2-SNAPSHOT</version>
       </dependency>
       <dependency>
         <groupId>org.apache.directory.studio</groupId>
         <artifactId>org.apache.commons.io</artifactId>
-        <version>2.0.1</version>
+        <version>2.0.2-SNAPSHOT</version>
       </dependency>
       <dependency>
         <groupId>org.apache.directory.studio</groupId>
         <artifactId>org.apache.commons.lang</artifactId>
-        <version>2.6</version>
+        <version>2.7-SNAPSHOT</version>
       </dependency>
       <dependency>
         <groupId>org.apache.directory.studio</groupId>
         <artifactId>org.apache.commons.logging</artifactId>
-        <version>1.1.1</version>
+        <version>1.1.2-SNAPSHOT</version>
       </dependency>
       <dependency>
         <groupId>org.apache.directory.studio</groupId>
         <artifactId>org.apache.commons.pool</artifactId>
-        <version>1.5.6</version>
+        <version>1.5.7-SNAPSHOT</version>
       </dependency>
       <dependency>
         <groupId>org.apache.directory.studio</groupId>
         <artifactId>org.apache.directory.server.config</artifactId>
-        <version>2.0.0-M4</version>
+        <version>2.0.0-M5-SNAPSHOT</version>
       </dependency>
       <dependency>
         <groupId>org.apache.directory.studio</groupId>
         <artifactId>org.apache.directory.server.core</artifactId>
-        <version>2.0.0-M4</version>
+        <version>2.0.0-M5-SNAPSHOT</version>
       </dependency>
       <dependency>
         <groupId>org.apache.directory.studio</groupId>
         <artifactId>org.apache.directory.server.core.api</artifactId>
-        <version>2.0.0-M4</version>
+        <version>2.0.0-M5-SNAPSHOT</version>
       </dependency>
       <dependency>
         <groupId>org.apache.directory.studio</groupId>
         <artifactId>org.apache.directory.server.core.avl</artifactId>
-        <version>2.0.0-M4</version>
+        <version>2.0.0-M5-SNAPSHOT</version>
       </dependency>
       <dependency>
         <groupId>org.apache.directory.studio</groupId>
         <artifactId>org.apache.directory.server.core.constants</artifactId>
-        <version>2.0.0-M4</version>
+        <version>2.0.0-M5-SNAPSHOT</version>
       </dependency>
       <dependency>
         <groupId>org.apache.directory.studio</groupId>
         <artifactId>org.apache.directory.server.i18n</artifactId>
-        <version>2.0.0-M4</version>
+        <version>2.0.0-M5-SNAPSHOT</version>
       </dependency>
       <dependency>
         <groupId>org.apache.directory.studio</groupId>
         <artifactId>org.apache.directory.server.ldif.partition</artifactId>
-        <version>2.0.0-M4</version>
+        <version>2.0.0-M5-SNAPSHOT</version>
       </dependency>
       <dependency>
         <groupId>org.apache.directory.studio</groupId>
         <artifactId>org.apache.directory.server.xdbm.partition</artifactId>
-        <version>2.0.0-M4</version>
+        <version>2.0.0-M5-SNAPSHOT</version>
       </dependency>
       <dependency>
         <groupId>org.apache.directory.studio</groupId>
         <artifactId>org.apache.httpcomponents.httpclient</artifactId>
-        <version>4.0</version>
+        <version>4.1-SNAPSHOT</version>
       </dependency>
       <dependency>
         <groupId>org.apache.directory.studio</groupId>
         <artifactId>org.apache.httpcomponents.httpcore</artifactId>
-        <version>4.0</version>
+        <version>4.1-SNAPSHOT</version>
       </dependency>
       <dependency>
         <groupId>org.apache.directory.studio</groupId>
         <artifactId>org.apache.logging.log4j</artifactId>
-        <version>1.2.14</version>
+        <version>1.2.15-SNAPSHOT</version>
       </dependency>
       <dependency>
         <groupId>org.apache.directory.studio</groupId>
         <artifactId>org.apache.mina.core</artifactId>
-        <version>2.0.4</version>
+        <version>2.0.5-SNAPSHOT</version>
       </dependency>
       <dependency>
         <groupId>org.apache.directory.studio</groupId>
         <artifactId>org.bouncycastle.bcprov.jdk15</artifactId>
-        <version>140</version>
+        <version>141-SNAPSHOT</version>
       </dependency>
       <dependency>
         <groupId>org.apache.directory.studio</groupId>
         <artifactId>org.dom4j.dom4j</artifactId>
-        <version>1.6.1</version>
+        <version>1.6.2-SNAPSHOT</version>
       </dependency>
       <dependency>
         <groupId>org.apache.directory.studio</groupId>
         <artifactId>org.slf4j.api</artifactId>
-        <version>1.6.1</version>
+        <version>1.6.2-SNAPSHOT</version>
       </dependency>
       <dependency>
         <groupId>org.apache.directory.studio</groupId>
         <artifactId>org.slf4j.log4j12</artifactId>
-        <version>1.6.1</version>
+        <version>1.6.2-SNAPSHOT</version>
       </dependency>
       <dependency>
         <groupId>org.apache.directory.studio</groupId>
         <artifactId>org.xpp3.xpp3</artifactId>
-        <version>1.1.340</version>
+        <version>1.1.341-SNAPSHOT</version>
       </dependency>
       
       <!-- Apache Directory Studio Plugins -->
