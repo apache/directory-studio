@@ -32,7 +32,6 @@
 
   <modules>
     <module>aciitemeditor</module>
-    <module>apacheds</module>
     <module>apacheds-launcher</module>
     <module>apacheds.configuration</module>
     <module>apacheds.configuration.v2</module>
