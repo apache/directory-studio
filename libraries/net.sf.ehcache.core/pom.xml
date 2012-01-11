@@ -23,11 +23,11 @@
   <parent>
     <groupId>org.apache.directory.studio</groupId>
     <artifactId>parent-libraries</artifactId>
-    <version>2.0.0-SNAPSHOT</version>
+    <version>2.0.0.v20120111</version>
   </parent>
 
   <artifactId>net.sf.ehcache.core</artifactId>
-  <version>${net.sf.ehcache.version}</version>
+  <version>2.2.0</version>
   
   <name>Ehcache Core (for Apache Directory Studio)</name>
   <packaging>jar</packaging>
