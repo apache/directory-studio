@@ -126,9 +126,6 @@
       -P-libraries
       to the commandline to exclude it from the build.
     -->
-    <!-- NOTE:
-      This profile has been disabled for the release, and needs to be 
-      enabled again after the release is over.
     <profile>
       <id>repository</id>
      <activation>
@@ -139,7 +136,7 @@
       <modules>
         <module>repository</module>
       </modules>
-    </profile>-->
+    </profile>
     <!-- 
       Building libraries module is enabled by default. Add 
       -P-libraries
@@ -220,9 +217,6 @@
       -P-application
       to the commandline to exclude it from the build.
     -->
-    <!-- NOTE:
-      This profile has been disabled for the release, and needs to be 
-      enabled again after the release is over.
     <profile>
       <id>application</id>
       <activation>
@@ -233,7 +227,7 @@
       <modules>
         <module>application</module>
       </modules>
-    </profile>-->
+    </profile>
   </profiles>
 
   <dependencyManagement>
