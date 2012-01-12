@@ -23,11 +23,11 @@
   <parent>
     <groupId>org.apache.directory.studio</groupId>
     <artifactId>parent-libraries</artifactId>
-    <version>2.0.1.v20120111-SNAPSHOT</version>
+    <version>2.0.0-SNAPSHOT</version>
   </parent>
 
   <artifactId>org.apache.logging.log4j</artifactId>
-  <version>1.2.15-SNAPSHOT</version>
+  <version>${org.apache.logging.log4j.version}</version>
   
   <name>Log4j (for Apache Directory Studio)</name>
   <packaging>jar</packaging>
