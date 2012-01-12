@@ -92,6 +92,7 @@
                 <artifactItem>
                   <groupId>org.apache.directory.studio</groupId>
                   <artifactId>ApacheDirectoryStudio-updatesite</artifactId>
+                  <classifier>default</classifier>
                   <type>zip</type>
                   <version>${project.version}</version>
                   <outputDirectory>${release-dir}</outputDirectory>
