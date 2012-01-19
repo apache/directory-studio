@@ -35,7 +35,7 @@ import org.eclipse.ui.PlatformUI;
 
 
 /**
- * This class implements the create connection action for an ApacheDS 1.5.7 server.
+ * This class implements the action which opens the configuration.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
