@@ -36,9 +36,16 @@
     <category rdf:resource="http://projects.apache.org/category/network-client" />
     <release>
       <Version>
-        <name>Stable release</name>
+        <name>Latest stable 1.x release</name>
         <created>2010-04-05</created>
-        <revision>1.5.3</revision>
+        <revision>1.5.3 (1.5.3.v20100330)</revision>
+      </Version>
+    </release>
+    <release>
+      <Version>
+        <name>Latest 2.x milestone release</name>
+        <created>2012-01-18</created>
+        <revision>2.0 M1 (2.0.0.v20120111)</revision>
       </Version>
     </release>
     <repository>
