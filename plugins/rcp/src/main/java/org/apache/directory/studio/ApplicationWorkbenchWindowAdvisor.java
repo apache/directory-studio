@@ -21,7 +21,6 @@
 package org.apache.directory.studio;
 
 
-import org.apache.directory.studio.preferences.ShutdownPreferencesPage;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProduct;
 import org.eclipse.core.runtime.Platform;
@@ -371,11 +370,5 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor
         }
 
         recomputeTitle();
-    }
-
-
-    public boolean preWindowShellClose()
-    {
-        return ShutdownPreferencesPage.promptOnExit();
     }
 }
