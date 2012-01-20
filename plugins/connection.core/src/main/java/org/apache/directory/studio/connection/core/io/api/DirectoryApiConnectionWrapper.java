@@ -356,7 +356,7 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
                             if ( connection.getConnectionParameter().getAuthMethod() == ConnectionParameter.AuthenticationMethod.SIMPLE )
                             {
                                 BindRequest bindRequest = new BindRequestImpl();
-                                bindRequest.setName( new Dn( bindPrincipal ) );
+                                bindRequest.setName( bindPrincipal );
                                 bindRequest.setCredentials( bindPassword );
                                 bindResponse = ldapConnection.bind( bindRequest );
                             }
