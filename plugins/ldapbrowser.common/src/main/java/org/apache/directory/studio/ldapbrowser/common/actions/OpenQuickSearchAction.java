@@ -24,6 +24,7 @@ package org.apache.directory.studio.ldapbrowser.common.actions;
 import org.apache.directory.studio.connection.core.Utils;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonConstants;
+import org.apache.directory.studio.ldapbrowser.common.widgets.browser.BrowserWidget;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IQuickSearch;
 import org.apache.directory.studio.ldapbrowser.core.model.impl.QuickSearch;
@@ -40,12 +41,16 @@ import org.eclipse.ui.dialogs.PreferencesUtil;
  */
 public class OpenQuickSearchAction extends BrowserAction
 {
+    /** The browser widget */
+    private BrowserWidget widget;
+
 
     /**
      * Creates a new instance of OpenQuickSearchAction.
      */
-    public OpenQuickSearchAction()
+    public OpenQuickSearchAction( BrowserWidget widget )
     {
+        this.widget = widget;
     }
 
 
@@ -57,11 +62,11 @@ public class OpenQuickSearchAction extends BrowserAction
         IBrowserConnection browserConnection = getBrowserConnection();
         if ( browserConnection != null )
         {
-            IQuickSearch quickSearch = browserConnection.getSearchManager().getQuickSearch();
+            IQuickSearch quickSearch = widget.getQuickSearch();
             if ( quickSearch == null )
             {
                 quickSearch = new QuickSearch( browserConnection.getRootDSE(), browserConnection );
-                browserConnection.getSearchManager().setQuickSearch( quickSearch );
+                widget.setQuickSearch( quickSearch );
             }
 
             String pageId = BrowserCommonConstants.PROP_SEARCH;

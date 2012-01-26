@@ -30,7 +30,6 @@ import java.util.Map;
 
 import org.apache.directory.studio.connection.core.jobs.OpenConnectionsRunnable;
 import org.apache.directory.studio.connection.core.jobs.StudioConnectionRunnableWithProgress;
-import org.apache.directory.studio.ldapbrowser.core.SearchManager;
 import org.apache.directory.studio.ldapbrowser.core.jobs.InitializeChildrenRunnable;
 import org.apache.directory.studio.ldapbrowser.core.jobs.SearchRunnable;
 import org.apache.directory.studio.ldapbrowser.core.jobs.StudioBrowserJob;
@@ -61,6 +60,8 @@ import org.eclipse.jface.viewers.Viewer;
  */
 public class BrowserContentProvider implements ITreeContentProvider
 {
+    /** The browser widget */
+    private BrowserWidget widget;
 
     /** The viewer. */
     private TreeViewer viewer;
@@ -88,7 +89,8 @@ public class BrowserContentProvider implements ITreeContentProvider
             IStructuredSelection selection = ( IStructuredSelection ) event.getSelection();
             if ( selection.size() == 1 && selection.getFirstElement() instanceof StudioConnectionRunnableWithProgress )
             {
-                StudioConnectionRunnableWithProgress runnable = ( StudioConnectionRunnableWithProgress ) selection.getFirstElement();
+                StudioConnectionRunnableWithProgress runnable = ( StudioConnectionRunnableWithProgress ) selection
+                    .getFirstElement();
                 new StudioBrowserJob( runnable ).execute();
             }
         }
@@ -102,9 +104,10 @@ public class BrowserContentProvider implements ITreeContentProvider
      * @param preferences the preferences
      * @param sorter the sorter
      */
-    public BrowserContentProvider( TreeViewer viewer, BrowserPreferences preferences, BrowserSorter sorter )
+    public BrowserContentProvider( BrowserWidget widget, BrowserPreferences preferences, BrowserSorter sorter )
     {
-        this.viewer = viewer;
+        this.widget = widget;
+        this.viewer = widget.getViewer();
         this.preferences = preferences;
         this.sorter = sorter;
         this.entryToEntryPagesMap = new HashMap<IEntry, BrowserEntryPage[]>();
@@ -381,11 +384,10 @@ public class BrowserContentProvider implements ITreeContentProvider
 
                 List<Object> objects = new ArrayList<Object>();
 
-                SearchManager sm = parentEntry.getBrowserConnection().getSearchManager();
-                if ( sm != null && sm.getQuickSearch() != null
-                    && parentEntry.getDn().equals( sm.getQuickSearch().getSearchBase() ) )
+                if ( widget.getQuickSearch() != null
+                    && parentEntry.getDn().equals( widget.getQuickSearch().getSearchBase() ) )
                 {
-                    objects.add( sm.getQuickSearch() );
+                    objects.add( widget.getQuickSearch() );
                 }
 
                 if ( parentEntry.getTopPageChildrenRunnable() != null )

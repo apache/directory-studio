@@ -293,7 +293,8 @@ public class BrowserQuickSearchWidget
         IBrowserConnection conn = entry.getBrowserConnection();
 
         QuickSearch quickSearch = new QuickSearch( entry, conn );
-        quickSearch.getSearchParameter().setScope( quickSearchScopeButton.getSelection() ? SearchScope.SUBTREE : SearchScope.ONELEVEL );
+        quickSearch.getSearchParameter().setScope(
+            quickSearchScopeButton.getSelection() ? SearchScope.SUBTREE : SearchScope.ONELEVEL );
 
         StringBuffer filter = new StringBuffer();
         filter.append( "(" ); //$NON-NLS-1$
@@ -302,7 +303,8 @@ public class BrowserQuickSearchWidget
             filter.append( "!(" ); //$NON-NLS-1$
         }
         filter.append( quickSearchAttributeCombo.getText() );
-        filter.append( Messages.getString("BrowserQuickSearchWidget.9").equals( quickSearchOperatorCombo.getText() ) ? "=" : quickSearchOperatorCombo.getText() ); //$NON-NLS-1$ //$NON-NLS-2$
+        filter
+            .append( Messages.getString( "BrowserQuickSearchWidget.9" ).equals( quickSearchOperatorCombo.getText() ) ? "=" : quickSearchOperatorCombo.getText() ); //$NON-NLS-1$ //$NON-NLS-2$
 
         // only escape '\', '(', ')', and '\u0000'
         // don't escape '*' to allow substring search
@@ -320,7 +322,7 @@ public class BrowserQuickSearchWidget
         quickSearch.getSearchParameter().setFilter( filter.toString() );
 
         // set new quick search
-        conn.getSearchManager().setQuickSearch( quickSearch );
+        browserWidget.setQuickSearch( quickSearch );
 
         // execute quick search
         new StudioBrowserJob( new SearchRunnable( new ISearch[]

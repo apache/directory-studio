@@ -154,7 +154,7 @@ public class BrowserConnection implements IBrowserConnection, Serializable
         entryToAttributeInfoMap.clear();
         entryToChildrenInfoMap.clear();
         entryToChildrenFilterMap.clear();
-        searchManager.setQuickSearch( null );
+//        searchManager.setQuickSearch( null ); TODO
 
         rootDSE = new RootDSE( this );
         cacheEntry( rootDSE );

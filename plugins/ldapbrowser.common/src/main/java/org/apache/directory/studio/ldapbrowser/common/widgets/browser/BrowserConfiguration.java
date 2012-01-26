@@ -136,15 +136,15 @@ public class BrowserConfiguration
     /**
      * Gets the content provider.
      * 
-     * @param viewer the browser widget's tree viewer 
+     * @param widget the browser widget
      * 
      * @return the content provider
      */
-    public BrowserContentProvider getContentProvider( TreeViewer viewer )
+    public BrowserContentProvider getContentProvider( BrowserWidget widget )
     {
         if ( contentProvider == null )
         {
-            contentProvider = new BrowserContentProvider( viewer, getPreferences(), getSorter() );
+            contentProvider = new BrowserContentProvider( widget, getPreferences(), getSorter() );
         }
 
         return contentProvider;
