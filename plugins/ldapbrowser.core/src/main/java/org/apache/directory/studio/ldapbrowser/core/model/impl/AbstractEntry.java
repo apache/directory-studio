@@ -223,7 +223,8 @@ public abstract class AbstractEntry implements IEntry, ICompareableEntry
             String oidString = attributeToDelete.getAttributeDescription().toOidString(
                 getBrowserConnection().getSchema() );
             AttributeInfo ai = getBrowserConnectionImpl().getAttributeInfo( this );
-            if ( ai != null && ai.attributeMap != null && ai.attributeMap.containsKey( Strings.toLowerCase( oidString ) ) )
+            if ( ai != null && ai.attributeMap != null
+                && ai.attributeMap.containsKey( Strings.toLowerCase( oidString ) ) )
             {
                 attributeToDelete = ( IAttribute ) ai.attributeMap.get( Strings.toLowerCase( oidString ) );
                 ai.attributeMap.remove( Strings.toLowerCase( oidString ) );
@@ -556,7 +557,8 @@ public abstract class AbstractEntry implements IEntry, ICompareableEntry
     {
         AttributeDescription ad = new AttributeDescription( attributeDescription );
         String oidString = ad.toOidString( getBrowserConnection().getSchema() );
-        if ( oidString.equals( SchemaConstants.OBJECT_CLASS_AT_OID ) )
+        if ( oidString.equals( SchemaConstants.OBJECT_CLASS_AT_OID )
+            || ( SchemaConstants.OBJECT_CLASS_AT.equalsIgnoreCase( attributeDescription ) ) )
         {
             return objectClassAttribute;
         }
