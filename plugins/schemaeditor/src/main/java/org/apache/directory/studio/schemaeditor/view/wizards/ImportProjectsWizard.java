@@ -94,7 +94,32 @@ public class ImportProjectsWizard extends Wizard implements IImportWizard
                         {
                             Project project = ProjectsImporter.getProject( new FileInputStream( projectFile ),
                                 projectFile.getAbsolutePath() );
-                            projectsHandler.addProject( project );
+
+                            if ( projectsHandler.isProjectNameAlreadyTaken( project.getName() ) )
+                            {
+                                PluginUtils
+                                    .logError(
+                                        NLS
+                                            .bind(
+                                                Messages.getString( "ImportProjectsWizard.ErrorImportingProject" ), //$NON-NLS-1$
+                                                new String[]
+                                                    { project.getName() } ), null );
+                                ViewUtils
+                                    .displayErrorMessageDialog(
+                                        Messages.getString( "ImportProjectsWizard.ImportError" ), //$NON-NLS-1$
+                                        NLS
+                                            .bind(
+                                                Messages.getString( "ImportProjectsWizard.ErrorImportingProject" ) //$NON-NLS-1$
+                                                    + "\n" //$NON-NLS-1$
+                                                    + Messages
+                                                        .getString( "ImportProjectsWizard.ErrorProjectNameExists" ), //$NON-NLS-1$
+                                                new String[]
+                                                    { project.getName() } ) );
+                            }
+                            else
+                            {
+                                projectsHandler.addProject( project );
+                            }
                         }
                         catch ( ProjectsImportException e )
                         {
