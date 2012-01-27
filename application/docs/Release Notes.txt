@@ -1,5 +1,17 @@
 Release Notes
 
+Apache Directory Studio 2.0.0-M2
+
+Bug
+  * [DIRSTUDIO-630] - Importing a Schema project twice shouldn't be possible
+  * [DIRSTUDIO-733] - Error while reading RootDSE on Sun One directory server
+  * [DIRSTUDIO-739] - Using 'Quick Search' in the DN editor while editing some object cancels editing and jumps to 'Quick Search' in the main window
+  * [DIRSTUDIO-759] - Exit confirmation dialog is showed twice when quitting the application by closing the window on Linux and Windows
+  * [DIRSTUDIO-760] - Unable to bind on an Active Directory server using 'domain\userid'
+  * [DIRSTUDIO-763] - Typo in some English error messages ('occured' instead of 'occurred')
+
+--------------------------------------------------------------------------------
+
 Apache Directory Studio 2.0.0-M1
 
 Bug
