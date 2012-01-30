@@ -87,6 +87,7 @@
           <instructions>
             <Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
             <Require-Bundle>net.sf.ehcache.core;bundle-version="${net.sf.ehcache.version}",
+ org.antlr.antlr;bundle-version="${org.antlr.version}",
  org.apache.commons.collections;bundle-version="${org.apache.commons.collections.version}",
  org.apache.commons.lang;bundle-version="${org.apache.commons.lang.version}",
  org.apache.commons.io;bundle-version="${org.apache.commons.io.version}",
@@ -96,10 +97,12 @@
  org.apache.directory.shared.ldap.client.api;bundle-version="${org.apache.directory.shared.validversion}",
  org.apache.directory.shared.asn1.api;bundle-version="${org.apache.directory.shared.validversion}",
  org.apache.directory.shared.ldap.codec.core;bundle-version="${org.apache.directory.shared.validversion}",
+ org.apache.directory.shared.ldap.extras.aci;bundle-version="${org.apache.directory.shared.validversion}",
  org.apache.directory.shared.ldap.extras.util;bundle-version="${org.apache.directory.shared.validversion}",
  org.apache.directory.shared.ldap.model;bundle-version="${org.apache.directory.shared.validversion}",
  org.apache.directory.shared.ldap.schema;bundle-version="${org.apache.directory.shared.validversion}",
  org.apache.directory.shared.util;bundle-version="${org.apache.directory.shared.validversion}",
+ org.apache.mina.core;bundle-version="${org.apache.mina.core.version}",
  org.slf4j.api;bundle-version="${org.slf4j.version}"</Require-Bundle>
             <Embed-Dependency>*;scope=compile|runtime</Embed-Dependency>
             <Embed-Directory>lib</Embed-Directory>
@@ -133,6 +136,10 @@
       <groupId>org.apache.directory.server</groupId>
       <artifactId>apacheds-core-api</artifactId>
       <exclusions>
+        <exclusion>
+          <groupId>antlr</groupId>
+          <artifactId>antlr</artifactId>
+        </exclusion>
         <exclusion>
           <groupId>org.apache.directory.server</groupId>
           <artifactId>apacheds-core-constants</artifactId>
@@ -187,7 +194,15 @@
         </exclusion>
         <exclusion>
           <groupId>org.apache.directory.shared</groupId>
+          <artifactId>shared-ldap-extras-aci</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.apache.directory.shared</groupId>
           <artifactId>shared-ldap-extras-util</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.apache.mina</groupId>
+          <artifactId>mina-core</artifactId>
         </exclusion>
         <exclusion>
           <groupId>net.sf.ehcache</groupId>

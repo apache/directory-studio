@@ -156,7 +156,67 @@
         </exclusion>
         <exclusion>
           <groupId>org.apache.directory.server</groupId>
+          <artifactId>apacheds-core-shared</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.apache.directory.server</groupId>
           <artifactId>apacheds-i18n</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.apache.directory.server</groupId>
+          <artifactId>apacheds-interceptors-admin</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.apache.directory.server</groupId>
+          <artifactId>apacheds-interceptors-authn</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.apache.directory.server</groupId>
+          <artifactId>apacheds-interceptors-authz</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.apache.directory.server</groupId>
+          <artifactId>apacheds-interceptors-changelog</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.apache.directory.server</groupId>
+          <artifactId>apacheds-interceptors-collective</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.apache.directory.server</groupId>
+          <artifactId>apacheds-interceptors-event</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.apache.directory.server</groupId>
+          <artifactId>apacheds-interceptors-exception</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.apache.directory.server</groupId>
+          <artifactId>apacheds-interceptors-journal</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.apache.directory.server</groupId>
+          <artifactId>apacheds-interceptors-normalization</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.apache.directory.server</groupId>
+          <artifactId>apacheds-interceptors-operational</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.apache.directory.server</groupId>
+          <artifactId>apacheds-interceptors-referral</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.apache.directory.server</groupId>
+          <artifactId>apacheds-interceptors-schema</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.apache.directory.server</groupId>
+          <artifactId>apacheds-interceptors-subtree</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.apache.directory.server</groupId>
+          <artifactId>apacheds-interceptors-trigger</artifactId>
         </exclusion>
         <exclusion>
           <groupId>org.apache.directory.shared</groupId>
@@ -232,11 +292,6 @@
     <dependency>
       <groupId>org.apache.directory.shared</groupId>
       <artifactId>shared-i18n</artifactId>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.directory.shared</groupId>
-      <artifactId>shared-ldap-codec-core</artifactId>
       <scope>provided</scope>
     </dependency>
     <dependency>
