@@ -89,6 +89,14 @@ public class BrowserConnectionIO
     private static final String BOOKMARK_PARAMETER_TAG = "bookmarkParameter"; //$NON-NLS-1$
     private static final String DN_TAG = "dn"; //$NON-NLS-1$
 
+    // Scope values
+    private static final String SCOPE_OBJECT = "OBJECT";
+    private static final String SCOPE_ONELEVEL = "ONELEVEL";
+    private static final String SCOPE_SUBTREE = "SUBTREE";
+    private static final String SCOPE_OBJECT_2 = "base";
+    private static final String SCOPE_ONELEVEL_2 = "one";
+    private static final String SCOPE_SUBTREE_2 = "sub";
+
 
     /**
      * Loads the browser connections using the input stream.
@@ -238,7 +246,7 @@ public class BrowserConnectionIO
         {
             try
             {
-                searchParameter.setScope( SearchScope.valueOf( scopeAttribute.getValue() ) );
+                searchParameter.setScope( convertSearchScope( scopeAttribute.getValue() ) );
             }
             catch ( IllegalArgumentException e )
             {
@@ -474,7 +482,7 @@ public class BrowserConnectionIO
         }
 
         // Scope
-        searchParameterElement.addAttribute( SCOPE_TAG, searchParameter.getScope().toString() );
+        searchParameterElement.addAttribute( SCOPE_TAG, convertSearchScope( searchParameter.getScope() ) );
 
         // Time limit
         searchParameterElement.addAttribute( TIME_LIMIT_TAG, "" + searchParameter.getTimeLimit() ); //$NON-NLS-1$
@@ -499,7 +507,7 @@ public class BrowserConnectionIO
             oos.writeObject( studioControl );
             oos.close();
             byte[] bytes = baos.toByteArray();
-            String controlsValue = new String( Base64.encode(bytes) );
+            String controlsValue = new String( Base64.encode( bytes ) );
 
             Element controlElement = controlsElement.addElement( CONTROL_TAG );
             controlElement.addAttribute( VALUE_TAG, controlsValue );
@@ -517,4 +525,58 @@ public class BrowserConnectionIO
         bookmarkParameterElement.addAttribute( DN_TAG, dn );
     }
 
+
+    /**
+     * Converts the given search scope to a string.
+     *
+     * @param scope the search scope
+     * @return the converted string for the search scope
+     * @see  https://issues.apache.org/jira/browse/DIRSTUDIO-771
+     */
+    private static String convertSearchScope( SearchScope scope )
+    {
+        if ( scope != null )
+        {
+            switch ( scope )
+            {
+                case OBJECT:
+                    return SCOPE_OBJECT;
+                case ONELEVEL:
+                    return SCOPE_ONELEVEL;
+                case SUBTREE:
+                    return SCOPE_SUBTREE;
+            }
+        }
+
+        return SCOPE_SUBTREE;
+    }
+
+
+    /**
+     * Converts the given string to a search scope.
+     * 
+     * @param scope the scope string
+     * @return the corresponding search scope
+     * @throws IllegalArgumentException if the string could not be converted
+     * @see  https://issues.apache.org/jira/browse/DIRSTUDIO-771
+     */
+    private static SearchScope convertSearchScope( String scope ) throws IllegalArgumentException
+    {
+        if ( ( SCOPE_OBJECT.equalsIgnoreCase( scope ) || SCOPE_OBJECT_2.equalsIgnoreCase( scope ) ) )
+        {
+            return SearchScope.OBJECT;
+        }
+        else if ( ( SCOPE_ONELEVEL.equalsIgnoreCase( scope ) || SCOPE_ONELEVEL_2.equalsIgnoreCase( scope ) ) )
+        {
+            return SearchScope.ONELEVEL;
+        }
+        else if ( ( SCOPE_SUBTREE.equalsIgnoreCase( scope ) || SCOPE_SUBTREE_2.equalsIgnoreCase( scope ) ) )
+        {
+            return SearchScope.SUBTREE;
+        }
+        else
+        {
+            throw new IllegalArgumentException();
+        }
+    }
 }
