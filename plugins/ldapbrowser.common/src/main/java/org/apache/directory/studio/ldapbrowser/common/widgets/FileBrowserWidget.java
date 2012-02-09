@@ -31,6 +31,7 @@ import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
@@ -90,9 +91,12 @@ public class FileBrowserWidget extends BrowserWidget
      */
     public void createWidget( final Composite parent )
     {
-
         // Combo
-        fileCombo = BaseWidgetUtils.createCombo( parent, new String[0], -1, 1 );
+        fileCombo = new Combo( parent, SWT.DROP_DOWN | SWT.BORDER );
+        GridData gd = new GridData( GridData.FILL_HORIZONTAL );
+        gd.widthHint = 250;
+        fileCombo.setLayoutData( gd );
+        fileCombo.setVisibleItemCount( 20 );
         fileCombo.addModifyListener( new ModifyListener()
         {
             public void modifyText( ModifyEvent e )
