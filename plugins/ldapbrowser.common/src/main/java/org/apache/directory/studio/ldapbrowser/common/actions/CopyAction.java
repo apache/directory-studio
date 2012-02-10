@@ -248,7 +248,18 @@ public class CopyAction extends BrowserAction
         try
         {
             clipboard = new Clipboard( Display.getCurrent() );
-            clipboard.setContents( data, dataTypes );
+
+            try
+            {
+                clipboard.setContents( data, dataTypes );
+            }
+            catch ( IllegalArgumentException e )
+            {
+                // Nothing to do.
+                // Preventing an error to be shown in the case of the RootDSE being copied
+                // See DIRSTUDIO-773 (IllegalArgumentException thrown when copying the RootDSE)
+                // https://issues.apache.org/jira/browse/DIRSTUDIO-773
+            }
         }
         finally
         {
