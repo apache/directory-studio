@@ -50,7 +50,7 @@ public class BrowserCategory
     public static final String TITLE_SEARCHES = Messages.getString( "BrowserCategory.Searches" ); //$NON-NLS-1$
 
     /** The title for the bookmarks categoy */
-    public static final String TITLE_BOOKMARKS = Messages.getString( "BrowserCategory.Bookmarsk" ); //$NON-NLS-1$
+    public static final String TITLE_BOOKMARKS = Messages.getString( "BrowserCategory.Bookmarks" ); //$NON-NLS-1$
 
     /** The category's connection */
     private IBrowserConnection parent;
