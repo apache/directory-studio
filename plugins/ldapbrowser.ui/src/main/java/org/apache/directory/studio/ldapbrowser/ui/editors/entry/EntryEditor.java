@@ -31,7 +31,6 @@ import org.apache.directory.studio.ldapbrowser.core.model.IBookmark;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearchResult;
 import org.apache.directory.studio.ldapbrowser.ui.BrowserUIConstants;
-import org.apache.directory.studio.ldapbrowser.ui.views.browser.BrowserView;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.jface.viewers.ISelection;
@@ -50,9 +49,6 @@ import org.eclipse.ui.IShowEditorInput;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.EditorPart;
-import org.eclipse.ui.part.IShowInSource;
-import org.eclipse.ui.part.IShowInTargetList;
-import org.eclipse.ui.part.ShowInContext;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 
 
@@ -185,30 +181,6 @@ public abstract class EntryEditor extends EditorPart implements IEntryEditor, IN
                 outlinePage = new EntryEditorOutlinePage( this );
             }
             return outlinePage;
-        }
-
-        if ( IShowInTargetList.class.equals( required ) )
-        {
-            return new IShowInTargetList()
-            {
-                public String[] getShowInTargetIds()
-                {
-                    return new String[]
-                        { BrowserView.getId() };
-                }
-            };
-        }
-
-        if ( IShowInSource.class.equals( required ) )
-        {
-            return new IShowInSource()
-            {
-                public ShowInContext getShowInContext()
-                {
-                    return new ShowInContext( getMainWidget().getViewer().getInput(), getMainWidget().getViewer()
-                        .getSelection() );
-                }
-            };
         }
 
         return super.getAdapter( required );
