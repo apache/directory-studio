@@ -440,6 +440,8 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
                         }
 
                         checkResponse( bindResponse );
+
+                        ldapConnection.loadSchema();
                     }
                     catch ( Exception e )
                     {
