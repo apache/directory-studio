@@ -6,16 +6,16 @@
  *  to you under the Apache License, Version 2.0 (the
  *  "License"); you may not use this file except in compliance
  *  with the License.  You may obtain a copy of the License at
- *  
+ * 
  *    http://www.apache.org/licenses/LICENSE-2.0
- *  
+ * 
  *  Unless required by applicable law or agreed to in writing,
  *  software distributed under the License is distributed on an
  *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  *  KIND, either express or implied.  See the License for the
  *  specific language governing permissions and limitations
- *  under the License. 
- *  
+ *  under the License.
+ * 
  */
 package org.apache.directory.studio.schemaeditor.model.io;
 
@@ -30,6 +30,7 @@ import javax.naming.directory.Attribute;
 import javax.naming.directory.SearchControls;
 import javax.naming.directory.SearchResult;
 
+import org.apache.directory.shared.ldap.model.constants.SchemaConstants;
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
 import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
 import org.apache.directory.shared.ldap.model.schema.MatchingRule;
@@ -75,10 +76,22 @@ public class GenericSchemaConnector extends AbstractSchemaConnector implements S
         SearchControls constraintSearch = new SearchControls();
         constraintSearch.setSearchScope( SearchControls.OBJECT_SCOPE );
         constraintSearch.setReturningAttributes( new String[]
-            { "attributeTypes", "objectClasses", "ldapSyntaxes", "matchingRules" } );
+            {
+            SchemaConstants.ATTRIBUTE_TYPES_AT,
+            SchemaConstants.COMPARATORS_AT,
+            SchemaConstants.DIT_CONTENT_RULES_AT,
+            SchemaConstants.DIT_STRUCTURE_RULES_AT,
+            SchemaConstants.LDAP_SYNTAXES_AT,
+            SchemaConstants.MATCHING_RULES_AT,
+            SchemaConstants.MATCHING_RULE_USE_AT,
+            SchemaConstants.NAME_FORMS_AT,
+            SchemaConstants.NORMALIZERS_AT,
+            SchemaConstants.OBJECT_CLASSES_AT,
+            SchemaConstants.SYNTAX_CHECKERS_AT
+            } );
         String schemaDn = getSubschemaSubentry( wrapper, monitor );
         NamingEnumeration<SearchResult> answer = wrapper.search( schemaDn, "(objectclass=subschema)", constraintSearch,
-            DEREF_ALIAS_METHOD, HANDLE_REFERALS_METHOD, null, ( StudioProgressMonitor ) monitor, null );
+            DEREF_ALIAS_METHOD, HANDLE_REFERALS_METHOD, null, monitor, null );
         if ( answer != null )
         {
             try
@@ -91,7 +104,7 @@ public class GenericSchemaConnector extends AbstractSchemaConnector implements S
                     schema.setProject( project );
                     schemas.add( schema );
 
-                    getSchema( schema, wrapper, ( SearchResult ) answer.next(), monitor );
+                    getSchema( schema, wrapper, answer.next(), monitor );
                 }
 
             }
@@ -134,7 +147,7 @@ public class GenericSchemaConnector extends AbstractSchemaConnector implements S
             {
                 if ( answer.hasMore() )
                 {
-                    SearchResult searchResult = ( SearchResult ) answer.next();
+                    SearchResult searchResult = answer.next();
 
                     Attribute subschemaSubentryAttribute = searchResult.getAttributes().get( "subschemaSubentry" );
                     if ( subschemaSubentryAttribute == null )

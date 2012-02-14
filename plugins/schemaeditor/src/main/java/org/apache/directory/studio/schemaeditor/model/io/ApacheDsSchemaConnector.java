@@ -6,16 +6,16 @@
  *  to you under the Apache License, Version 2.0 (the
  *  "License"); you may not use this file except in compliance
  *  with the License.  You may obtain a copy of the License at
- *  
+ * 
  *    http://www.apache.org/licenses/LICENSE-2.0
- *  
+ * 
  *  Unless required by applicable law or agreed to in writing,
  *  software distributed under the License is distributed on an
  *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  *  KIND, either express or implied.  See the License for the
  *  specific language governing permissions and limitations
- *  under the License. 
- *  
+ *  under the License.
+ * 
  */
 package org.apache.directory.studio.schemaeditor.model.io;
 
@@ -94,14 +94,14 @@ public class ApacheDsSchemaConnector extends AbstractSchemaConnector implements 
 
         NamingEnumeration<SearchResult> answer = wrapper
             .search( "ou=schema", "(objectclass=metaSchema)", constraintSearch, DEREF_ALIAS_METHOD,
-                HANDLE_REFERALS_METHOD, null, ( StudioProgressMonitor ) monitor, null );
+                HANDLE_REFERALS_METHOD, null, monitor, null );
         if ( answer != null )
         {
             try
             {
                 while ( answer.hasMore() )
                 {
-                    SearchResult searchResult = ( SearchResult ) answer.next();
+                    SearchResult searchResult = answer.next();
 
                     // Getting the 'cn' Attribute
                     Attribute cnAttribute = searchResult.getAttributes().get( "cn" );
@@ -151,7 +151,7 @@ public class ApacheDsSchemaConnector extends AbstractSchemaConnector implements 
             {
                 if ( answer.hasMore() )
                 {
-                    SearchResult searchResult = ( SearchResult ) answer.next();
+                    SearchResult searchResult = answer.next();
 
                     Attribute vendorNameAttribute = searchResult.getAttributes().get( "vendorName" );
                     if ( vendorNameAttribute == null )
@@ -190,7 +190,7 @@ public class ApacheDsSchemaConnector extends AbstractSchemaConnector implements 
     private static Schema getSchema( ConnectionWrapper wrapper, String name, StudioProgressMonitor monitor )
         throws NamingException
     {
-        monitor.subTask( name ); //$NON-NLS-1$
+        monitor.subTask( name ); 
 
         // Creating the schema
         Schema schema = new Schema( name );
@@ -207,7 +207,7 @@ public class ApacheDsSchemaConnector extends AbstractSchemaConnector implements 
             {
                 while ( answer.hasMore() )
                 {
-                    SearchResult searchResult = ( SearchResult ) answer.next();
+                    SearchResult searchResult = answer.next();
                     switch ( getNodeType( searchResult ) )
                     {
                         case ATTRIBUTE_TYPE:
@@ -293,9 +293,9 @@ public class ApacheDsSchemaConnector extends AbstractSchemaConnector implements 
      * @param sr
      *      the SearchResult
      * @return
-     *      the AttributeTypeImpl associated with the SearchResult, or null if no 
+     *      the AttributeTypeImpl associated with the SearchResult, or null if no
      * AttributeTypeImpl could be created
-     * @throws NamingException 
+     * @throws NamingException
      */
     private static AttributeType createAttributeType( SearchResult sr ) throws NamingException
     {
@@ -323,9 +323,9 @@ public class ApacheDsSchemaConnector extends AbstractSchemaConnector implements 
      * @param sr
      *      the SearchResult
      * @return
-     *      the ObjectClassImpl associated with the SearchResult, or null if no 
+     *      the ObjectClassImpl associated with the SearchResult, or null if no
      * ObjectClassImpl could be created
-     * @throws NamingException 
+     * @throws NamingException
      */
     private static ObjectClass createObjectClass( SearchResult sr ) throws NamingException
     {
@@ -347,9 +347,9 @@ public class ApacheDsSchemaConnector extends AbstractSchemaConnector implements 
      * @param sr
      *      the SearchResult
      * @return
-     *      the MatchingRule associated with the SearchResult, or null if no 
+     *      the MatchingRule associated with the SearchResult, or null if no
      * ObjectClass could be created
-     * @throws NamingException 
+     * @throws NamingException
      */
     private static MatchingRule createMatchingRule( SearchResult sr ) throws NamingException
     {
@@ -368,9 +368,9 @@ public class ApacheDsSchemaConnector extends AbstractSchemaConnector implements 
      * @param sr
      *      the SearchResult
      * @return
-     *      the MatchingRule associated with the SearchResult, or null if no 
+     *      the MatchingRule associated with the SearchResult, or null if no
      * ObjectClass could be created
-     * @throws NamingException 
+     * @throws NamingException
      */
     private static LdapSyntax createSyntax( SearchResult sr ) throws NamingException
     {
@@ -885,7 +885,7 @@ public class ApacheDsSchemaConnector extends AbstractSchemaConnector implements 
      */
     private static boolean isHumanReadable( SearchResult sr ) throws NamingException
     {
-        Attribute at = sr.getAttributes().get( "x-humanReadable" );
+        Attribute at = sr.getAttributes().get( "x-not-human-readable" );
 
         if ( at == null )
         {
@@ -893,7 +893,7 @@ public class ApacheDsSchemaConnector extends AbstractSchemaConnector implements 
         }
         else
         {
-            return Boolean.parseBoolean( ( String ) at.get() );
+            return !Boolean.parseBoolean( ( String ) at.get() );
         }
     }
 
