@@ -151,7 +151,7 @@ public class EntryEditorWidgetConfiguration
     {
         if ( labelProvider == null )
         {
-            labelProvider = new EntryEditorWidgetLabelProvider( getValueEditorManager( viewer ) );
+            labelProvider = new EntryEditorWidgetLabelProvider( viewer, getValueEditorManager( viewer ) );
         }
 
         return labelProvider;

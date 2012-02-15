@@ -32,6 +32,7 @@ import org.eclipse.jface.viewers.IColorProvider;
 import org.eclipse.jface.viewers.IFontProvider;
 import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
+import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
@@ -56,6 +57,8 @@ import org.eclipse.swt.widgets.Display;
 public class EntryEditorWidgetLabelProvider extends LabelProvider implements ITableLabelProvider, IFontProvider,
     IColorProvider
 {
+    /** The viewer */
+    private TreeViewer viewer;
 
     /** The value editor manager. */
     private ValueEditorManager valueEditorManager;
@@ -64,10 +67,12 @@ public class EntryEditorWidgetLabelProvider extends LabelProvider implements ITa
     /**
      * Creates a new instance of EntryEditorWidgetLabelProvider.
      * 
+     * @param viewer the viewer
      * @param valueEditorManager the value editor manager
      */
-    public EntryEditorWidgetLabelProvider( ValueEditorManager valueEditorManager )
+    public EntryEditorWidgetLabelProvider( TreeViewer viewer, ValueEditorManager valueEditorManager )
     {
+        this.viewer = viewer;
         this.valueEditorManager = valueEditorManager;
     }
 
@@ -109,7 +114,7 @@ public class EntryEditorWidgetLabelProvider extends LabelProvider implements ITa
             {
                 return NLS
                     .bind(
-                        Messages.getString( "EntryEditorWidgetLabelProvider.AttributeLabel" ), attribute.getDescription(), attribute.getValueSize() ); //$NON-NLS-1$
+                        Messages.getString( "EntryEditorWidgetLabelProvider.AttributeLabel" ), attribute.getDescription(), getNumberOfValues( attribute ) ); //$NON-NLS-1$
             }
             else
             {
@@ -120,6 +125,32 @@ public class EntryEditorWidgetLabelProvider extends LabelProvider implements ITa
         {
             return ""; //$NON-NLS-1$
         }
+    }
+
+
+    /**
+     * Gets the number of values attribute.
+     *
+     * @param element
+     * @return
+     */
+    private int getNumberOfValues( IAttribute attribute )
+    {
+        EntryEditorWidgetContentProvider contentProvider = ( EntryEditorWidgetContentProvider ) viewer
+            .getContentProvider();
+        EntryEditorWidgetFilter filter = ( EntryEditorWidgetFilter ) viewer.getFilters()[0];
+
+        int count = 0;
+
+        for ( Object child : contentProvider.getChildren( attribute ) )
+        {
+            if ( filter.select( viewer, attribute, child ) )
+            {
+                count++;
+            }
+        }
+
+        return count;
     }
 
 
