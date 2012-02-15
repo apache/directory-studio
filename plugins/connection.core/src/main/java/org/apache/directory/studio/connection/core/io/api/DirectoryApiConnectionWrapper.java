@@ -837,7 +837,7 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
                     request.setDeleteOldRdn( deleteOldRdn );
                     Dn newName = new Dn( newDn );
                     request.setNewRdn( newName.getRdn() );
-                    request.setNewSuperior( newName.getParent() );
+//                    request.setNewSuperior( newName.getParent() );
                     request.addAllControls( convertControls( controls ) );
 
                     // Performing the rename operation
