@@ -84,6 +84,7 @@
                 <copy file="src/main/resources/header_studio.bmp" todir="${tmp-dir}"/>
                 <copy file="src/main/resources/studio-installer.ico" todir="${tmp-dir}"/>
                 <copy file="src/main/resources/welcome_studio.bmp" todir="${tmp-dir}"/>
+                <copy file="src/main/resources/Apache Directory Studio.ini" todir="${tmp-dir}"/>
               </target>
             </configuration>
             <goals>
