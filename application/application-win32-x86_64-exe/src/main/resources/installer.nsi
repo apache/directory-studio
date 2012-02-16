@@ -205,9 +205,9 @@
 # Functions
 #
     # Internationalized strings
-    LangString message ${LANG_ENGLISH} "${Application} is already installed.$\n$\nClick 'OK' to remove the previous version$\nor 'Cancel' to cancel this installation."
-    LangString message ${LANG_FRENCH} "${Application} est déjà installé.$\n$\nCliquez sur 'OK' pour supprimer la version précédente$\nou sur 'Annuler' pour annuler cette installation."
-    LangString message ${LANG_GERMAN} "${Application} ist bereits installiert.$\n$\nKlicke 'OK' um die frühere Version zu entfernen$\noder 'Abbruch' um die Installation abzubrechen."
+    LangString alreadyInstalledMessage ${LANG_ENGLISH} "${Application} is already installed.$\n$\nClick 'OK' to remove the previous version$\nor 'Cancel' to cancel this installation."
+    LangString alreadyInstalledMessage ${LANG_FRENCH} "${Application} est déjà installé.$\n$\nCliquez sur 'OK' pour supprimer la version précédente$\nou sur 'Annuler' pour annuler cette installation."
+    LangString alreadyInstalledMessage ${LANG_GERMAN} "${Application} ist bereits installiert.$\n$\nKlicke 'OK' um die frühere Version zu entfernen$\noder 'Abbruch' um die Installation abzubrechen."
 
     LangString javaPageTitle ${LANG_ENGLISH} "Java Home Directory"
     LangString javaPageTitle ${LANG_FRENCH} "Répertoire Java Home"
