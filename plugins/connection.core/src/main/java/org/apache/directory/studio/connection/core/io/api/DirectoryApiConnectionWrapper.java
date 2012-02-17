@@ -770,8 +770,9 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
      *      an array of modification items
      * @return
      *      an array of converted modifications
+     * @throws LdapInvalidAttributeValueException 
      */
-    private Modification[] convertModificationItems( ModificationItem[] modificationItems )
+    private Modification[] convertModificationItems( ModificationItem[] modificationItems ) throws LdapInvalidAttributeValueException
     {
         if ( modificationItems != null )
         {
@@ -781,15 +782,7 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
             {
                 Modification modification = new DefaultModification();
 
-                try
-                {
-                    modification.setAttribute( AttributeUtils.toApiAttribute( modificationItem.getAttribute() ) );
-                }
-                catch ( LdapInvalidAttributeValueException liave )
-                {
-                    // TODO : handle the exception
-                }
-
+                modification.setAttribute( AttributeUtils.toApiAttribute( modificationItem.getAttribute() ) );
                 modification.setOperation( convertModificationOperation( modificationItem.getModificationOp() ) );
                 modifications.add( modification );
             }
