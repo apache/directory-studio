@@ -49,6 +49,7 @@ import org.apache.directory.ldap.client.api.LdapNetworkConnection;
 import org.apache.directory.ldap.client.api.exception.InvalidConnectionException;
 import org.apache.directory.shared.ldap.codec.api.BinaryAttributeDetector;
 import org.apache.directory.shared.ldap.codec.api.ConfigurableBinaryAttributeDetector;
+import org.apache.directory.shared.ldap.codec.api.DefaultConfigurableBinaryAttributeDetector;
 import org.apache.directory.shared.ldap.codec.protocol.mina.LdapProtocolCodecActivator;
 import org.apache.directory.shared.ldap.model.cursor.SearchCursor;
 import org.apache.directory.shared.ldap.model.entry.AttributeUtils;
@@ -120,6 +121,9 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
     /** The LDAP Connection */
     private LdapNetworkConnection ldapConnection;
 
+    /** The binary attribute detector */
+    private DefaultConfigurableBinaryAttributeDetector binaryAttributeDetector;
+
     /** Indicates if the wrapper is connected */
     private boolean isConnected = false;
 
@@ -180,6 +184,8 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
         ldapConnectionConfig = new LdapConnectionConfig();
         ldapConnectionConfig.setLdapHost( connection.getHost() );
         ldapConnectionConfig.setLdapPort( connection.getPort() );
+        binaryAttributeDetector = new DefaultConfigurableBinaryAttributeDetector();
+        ldapConnectionConfig.setBinaryAttributeDetector( binaryAttributeDetector );
         if ( ( connection.getEncryptionMethod() == EncryptionMethod.LDAPS )
             || ( connection.getEncryptionMethod() == EncryptionMethod.START_TLS ) )
         {
@@ -239,7 +245,6 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
                         if ( ldapConnection != null )
                         {
                             ldapConnection.close();
-
                         }
                     }
                     catch ( Exception exception )
@@ -249,6 +254,7 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
                     finally
                     {
                         ldapConnection = null;
+                        binaryAttributeDetector = null;
                     }
                 }
             }
@@ -286,6 +292,7 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
                 // ignore
             }
             ldapConnection = null;
+            binaryAttributeDetector = null;
         }
         isConnected = false;
     }
@@ -487,21 +494,15 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
      */
     public void setBinaryAttributes( Collection<String> binaryAttributes )
     {
-        if ( ldapConnection != null )
+        if ( binaryAttributeDetector != null )
         {
-            BinaryAttributeDetector bad = ldapConnection.getConfig().getBinaryAttributeDetector();
-            if ( bad instanceof ConfigurableBinaryAttributeDetector )
+            // Clear the initial list
+            binaryAttributeDetector.setBinaryAttributes( new String[0] );
+
+            // Add each binary attribute
+            for ( String binaryAttribute : binaryAttributes )
             {
-                ConfigurableBinaryAttributeDetector configBad = ( ConfigurableBinaryAttributeDetector ) bad;
-
-                // Clear the initial list
-                configBad.setBinaryAttributes( new String[0] );
-
-                // Add each binary attribute
-                for ( String binaryAttribute : binaryAttributes )
-                {
-                    configBad.addBinaryAttribute( binaryAttribute );
-                }
+                binaryAttributeDetector.addBinaryAttribute( binaryAttribute );
             }
         }
     }
