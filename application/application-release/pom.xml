@@ -123,12 +123,12 @@
                 <unzip dest="${project.build.directory}">
                     <fileset dir="${project.build.directory}" includes="ApacheDirectoryStudio-*.zip"/>
                 </unzip>
-                <copy file="${project.build.directory}/ApacheDirectoryStudio-macosx-x86-dmg-${version}/ApacheDirectoryStudio-macosx-x86-${version}.dmg" todir="${release-dir}" />
-                <copy file="${project.build.directory}/ApacheDirectoryStudio-macosx-x86_64-dmg-${version}/ApacheDirectoryStudio-macosx-x86_64-${version}.dmg" todir="${release-dir}" />
-                <copy file="${project.build.directory}/ApacheDirectoryStudio-win32-x86-exe-${version}/ApacheDirectoryStudio-win32-x86-${version}.exe" todir="${release-dir}" />
-                <copy file="${project.build.directory}/ApacheDirectoryStudio-win32-x86_64-exe-${version}/ApacheDirectoryStudio-win32-x86_64-${version}.exe" todir="${release-dir}" />
+                <copy file="${project.build.directory}/ApacheDirectoryStudio-macosx-x86-dmg-${project.version}/ApacheDirectoryStudio-macosx-x86-${project.version}.dmg" todir="${release-dir}" />
+                <copy file="${project.build.directory}/ApacheDirectoryStudio-macosx-x86_64-dmg-${project.version}/ApacheDirectoryStudio-macosx-x86_64-${project.version}.dmg" todir="${release-dir}" />
+                <copy file="${project.build.directory}/ApacheDirectoryStudio-win32-x86-exe-${project.version}/ApacheDirectoryStudio-win32-x86-${project.version}.exe" todir="${release-dir}" />
+                <copy file="${project.build.directory}/ApacheDirectoryStudio-win32-x86_64-exe-${project.version}/ApacheDirectoryStudio-win32-x86_64-${project.version}.exe" todir="${release-dir}" />
                 <copy todir="${release-dir}/updatesite">
-                  <fileset dir="${project.build.directory}/ApacheDirectoryStudio-updatesite-${version}"/>
+                  <fileset dir="${project.build.directory}/ApacheDirectoryStudio-updatesite-${project.version}"/>
                 </copy>
                 <copy file="src/main/resources/sign.sh" todir="${release-dir}">
                   <filterset>
