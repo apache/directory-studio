@@ -314,6 +314,7 @@
     # Returns (on stack): 0 - JRE not found. -1 - JRE found but too old. Otherwise - Path to JAVA EXE
     # Stack value will be overwritten!
     Function DetectJRE
+      SetRegView 64
       Exch $0	; Get version requested
             ; Now the previous value of $0 is on the stack, and the asked for version of JDK is in $0
       Push $1	; $1 = Java version string (ie 1.5.0)
@@ -368,6 +369,7 @@
     ;  Return
        Goto DetectJREEnd
     DetectJREEnd:
+        SetRegView 32
         ; Top of stack is return value, then r4,r3,r2,r1
         Exch	; => r4,rv,r3,r2,r1,r0
         Pop $4	; => rv,r3,r2,r1r,r0
