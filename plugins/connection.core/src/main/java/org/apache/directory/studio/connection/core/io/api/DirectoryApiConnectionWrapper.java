@@ -47,6 +47,8 @@ import org.apache.directory.ldap.client.api.GssApiRequest;
 import org.apache.directory.ldap.client.api.LdapConnectionConfig;
 import org.apache.directory.ldap.client.api.LdapNetworkConnection;
 import org.apache.directory.ldap.client.api.exception.InvalidConnectionException;
+import org.apache.directory.shared.ldap.codec.api.BinaryAttributeDetector;
+import org.apache.directory.shared.ldap.codec.api.ConfigurableBinaryAttributeDetector;
 import org.apache.directory.shared.ldap.codec.protocol.mina.LdapProtocolCodecActivator;
 import org.apache.directory.shared.ldap.model.cursor.SearchCursor;
 import org.apache.directory.shared.ldap.model.entry.AttributeUtils;
@@ -440,8 +442,6 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
                         }
 
                         checkResponse( bindResponse );
-
-                        ldapConnection.loadSchema();
                     }
                     catch ( Exception e )
                     {
@@ -487,6 +487,23 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
      */
     public void setBinaryAttributes( Collection<String> binaryAttributes )
     {
+        if ( ldapConnection != null )
+        {
+            BinaryAttributeDetector bad = ldapConnection.getConfig().getBinaryAttributeDetector();
+            if ( bad instanceof ConfigurableBinaryAttributeDetector )
+            {
+                ConfigurableBinaryAttributeDetector configBad = ( ConfigurableBinaryAttributeDetector ) bad;
+
+                // Clear the initial list
+                configBad.setBinaryAttributes( new String[0] );
+
+                // Add each binary attribute
+                for ( String binaryAttribute : binaryAttributes )
+                {
+                    configBad.addBinaryAttribute( binaryAttribute );
+                }
+            }
+        }
     }
 
 
