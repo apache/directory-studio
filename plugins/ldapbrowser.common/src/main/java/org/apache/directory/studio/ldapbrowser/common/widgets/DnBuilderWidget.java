@@ -41,6 +41,7 @@ import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
@@ -103,6 +104,45 @@ public class DnBuilderWidget extends BrowserWidget implements ModifyListener
 
     /** The preview text. */
     private Text previewText;
+
+    // Listeners
+    private SelectionListener rdnAddButtonSelectionListener = new SelectionAdapter()
+    {
+        public void widgetSelected( SelectionEvent e )
+        {
+            int index = rdnLineList.size();
+            for ( int i = 0; i < rdnLineList.size(); i++ )
+            {
+                RdnLine rdnLine = rdnLineList.get( i );
+                if ( rdnLine.rdnAddButton == e.widget )
+                {
+                    index = i + 1;
+                }
+            }
+            addRdnLine( rdnComposite, index );
+
+            validate();
+        }
+    };
+
+    private SelectionListener rdnDeleteButtonSelectionListener = new SelectionAdapter()
+    {
+        public void widgetSelected( SelectionEvent e )
+        {
+            int index = 0;
+            for ( int i = 0; i < rdnLineList.size(); i++ )
+            {
+                RdnLine rdnLine = rdnLineList.get( i );
+                if ( rdnLine.rdnDeleteButton == e.widget )
+                {
+                    index = i;
+                }
+            }
+            deleteRdnLine( rdnComposite, index );
+
+            validate();
+        }
+    };
 
 
     /**
@@ -174,8 +214,14 @@ public class DnBuilderWidget extends BrowserWidget implements ModifyListener
                 {
                     Ava ava = atavIterator.next();
                     addRdnLine( rdnComposite, i );
+
+                    removeRdnLineListeners( i );
+
                     rdnLineList.get( i ).rdnTypeCombo.setText( ava.getUpType() );
                     rdnLineList.get( i ).rdnValueText.setText( ava.getNormValue().getString() );
+
+                    addRdnLineListeners( i );
+
                     if ( i == 0 )
                     {
                         if ( "".equals( rdnLineList.get( i ).rdnTypeCombo ) ) //$NON-NLS-1$
@@ -304,7 +350,7 @@ public class DnBuilderWidget extends BrowserWidget implements ModifyListener
     public void validate()
     {
         Exception rdnE = null;
-        
+
         if ( showRDN )
         {
             try
@@ -312,10 +358,10 @@ public class DnBuilderWidget extends BrowserWidget implements ModifyListener
                 // calculate Rdn
                 String[] rdnTypes = new String[rdnLineList.size()];
                 String[] rdnValues = new String[rdnLineList.size()];
-                
+
                 for ( int i = 0; i < rdnLineList.size(); i++ )
                 {
-                    RdnLine rdnLine = ( RdnLine ) rdnLineList.get( i );
+                    RdnLine rdnLine = rdnLineList.get( i );
                     rdnTypes[i] = rdnLine.rdnTypeCombo.getText();
                     rdnValues[i] = rdnLine.rdnValueText.getText();
 
@@ -328,7 +374,7 @@ public class DnBuilderWidget extends BrowserWidget implements ModifyListener
                         rdnLine.rdnDeleteButton.setEnabled( false );
                     }
                 }
-                
+
                 rdn = DnUtils.composeRdn( rdnTypes, rdnValues );
             }
             catch ( Exception e )
@@ -339,7 +385,7 @@ public class DnBuilderWidget extends BrowserWidget implements ModifyListener
         }
 
         Exception parentE = null;
-        
+
         if ( showParent )
         {
             try
@@ -355,12 +401,12 @@ public class DnBuilderWidget extends BrowserWidget implements ModifyListener
         }
 
         String s = ""; //$NON-NLS-1$
-        
+
         if ( rdnE != null )
         {
             s += rdnE.getMessage() != null ? rdnE.getMessage() : Messages.getString( "DnBuilderWidget.ErrorInRDN" ); //$NON-NLS-1$
         }
-        
+
         if ( parentE != null )
         {
             s += ", " + parentE.getMessage() != null ? parentE.getMessage() : Messages.getString( "DnBuilderWidget.ErrorInParentDN" ); //$NON-NLS-1$ //$NON-NLS-2$
@@ -407,7 +453,7 @@ public class DnBuilderWidget extends BrowserWidget implements ModifyListener
                 {
                     dn = Dn.EMPTY_DN;
                 }
-                
+
                 previewText.setText( dn.getName() );
             }
         }
@@ -497,67 +543,30 @@ public class DnBuilderWidget extends BrowserWidget implements ModifyListener
 
         rdnLine.rdnAddButton = new Button( rdnComposite, SWT.PUSH );
         rdnLine.rdnAddButton.setText( "  +   " ); //$NON-NLS-1$
-        rdnLine.rdnAddButton.addSelectionListener( new SelectionAdapter()
-        {
-            public void widgetSelected( SelectionEvent e )
-            {
-                int index = rdnLineList.size();
-                for ( int i = 0; i < rdnLineList.size(); i++ )
-                {
-                    RdnLine rdnLine = ( RdnLine ) rdnLineList.get( i );
-                    if ( rdnLine.rdnAddButton == e.widget )
-                    {
-                        index = i + 1;
-                    }
-                }
-                addRdnLine( rdnComposite, index );
-
-                validate();
-            }
-        } );
 
         rdnLine.rdnDeleteButton = new Button( rdnComposite, SWT.PUSH );
         rdnLine.rdnDeleteButton.setText( "  \u2212  " ); //$NON-NLS-1$
-        rdnLine.rdnDeleteButton.addSelectionListener( new SelectionAdapter()
-        {
-            public void widgetSelected( SelectionEvent e )
-            {
-                int index = 0;
-                for ( int i = 0; i < rdnLineList.size(); i++ )
-                {
-                    RdnLine rdnLine = ( RdnLine ) rdnLineList.get( i );
-                    if ( rdnLine.rdnDeleteButton == e.widget )
-                    {
-                        index = i;
-                    }
-                }
-                deleteRdnLine( rdnComposite, index );
-
-                validate();
-            }
-        } );
 
         if ( attributeNames != null )
         {
             rdnLine.rdnTypeCombo.setItems( attributeNames );
         }
 
-        rdnLine.rdnTypeCombo.addModifyListener( this );
-        rdnLine.rdnValueText.addModifyListener( this );
+        addRdnLineListeners( rdnLine );
 
         return rdnLine;
     }
 
 
     /**
-     * Delete thd Rdn line on the given index.
+     * Delete the Rdn line on the given index.
      * 
      * @param rdnComposite the Rdn composite
      * @param index the index
      */
     private void deleteRdnLine( Composite rdnComposite, int index )
     {
-        RdnLine rdnLine = ( RdnLine ) rdnLineList.remove( index );
+        RdnLine rdnLine = rdnLineList.remove( index );
         if ( rdnLine != null )
         {
             rdnLine.rdnTypeCombo.dispose();
@@ -570,6 +579,68 @@ public class DnBuilderWidget extends BrowserWidget implements ModifyListener
             {
                 shell.layout( true, true );
             }
+        }
+    }
+
+
+    /**
+     * Adds listeners for the Rdn line at the given index.
+     *
+     * @param index the index
+     */
+    private void addRdnLineListeners( int index )
+    {
+        if ( rdnLineList != null )
+        {
+            addRdnLineListeners( rdnLineList.get( index ) );
+        }
+    }
+
+
+    /**
+     * Adds listeners for the Rdn line.
+     *
+     * @param rdnLine the Rdn line
+     */
+    private void addRdnLineListeners( RdnLine rdnLine )
+    {
+        if ( rdnLine != null )
+        {
+            rdnLine.rdnAddButton.addSelectionListener( rdnAddButtonSelectionListener );
+            rdnLine.rdnDeleteButton.addSelectionListener( rdnDeleteButtonSelectionListener );
+            rdnLine.rdnTypeCombo.addModifyListener( this );
+            rdnLine.rdnValueText.addModifyListener( this );
+        }
+    }
+
+
+    /**
+     * Removes listeners for the Rdn line at the given index.
+     *
+     * @param index the index
+     */
+    private void removeRdnLineListeners( int index )
+    {
+        if ( rdnLineList != null )
+        {
+            removeRdnLineListeners( rdnLineList.get( index ) );
+        }
+    }
+
+
+    /**
+     * Removes listeners for the Rdn line.
+     *
+     * @param rdnLine the Rdn line
+     */
+    private void removeRdnLineListeners( RdnLine rdnLine )
+    {
+        if ( rdnLine != null )
+        {
+            rdnLine.rdnAddButton.removeSelectionListener( rdnAddButtonSelectionListener );
+            rdnLine.rdnDeleteButton.removeSelectionListener( rdnDeleteButtonSelectionListener );
+            rdnLine.rdnTypeCombo.removeModifyListener( this );
+            rdnLine.rdnValueText.removeModifyListener( this );
         }
     }
 
