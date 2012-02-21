@@ -53,7 +53,6 @@ import org.eclipse.swt.widgets.Composite;
  */
 public class FilterWidget extends BrowserWidget
 {
-
     /** The filter combo. */
     private Combo filterCombo;
 
@@ -201,7 +200,14 @@ public class FilterWidget extends BrowserWidget
      */
     public void setFilter( String filter )
     {
-        filterCombo.setText( filter );
+        if ( filterCombo == null )
+        {
+            initalFilter = filter;
+        }
+        else
+        {
+            filterCombo.setText( filter );
+        }
     }
 
 
