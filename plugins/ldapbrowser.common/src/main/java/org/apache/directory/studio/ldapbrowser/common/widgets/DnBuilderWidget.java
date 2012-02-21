@@ -217,7 +217,7 @@ public class DnBuilderWidget extends BrowserWidget implements ModifyListener
 
                     removeRdnLineListeners( i );
 
-                    rdnLineList.get( i ).rdnTypeCombo.setText( ava.getUpType() );
+                    rdnLineList.get( i ).rdnTypeCombo.setText( ava.getType() );
                     rdnLineList.get( i ).rdnValueText.setText( ava.getNormValue().getString() );
 
                     addRdnLineListeners( i );
