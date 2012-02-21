@@ -221,9 +221,13 @@ public class FilterWidget extends BrowserWidget
         if ( this.browserConnection != browserConnection )
         {
             this.browserConnection = browserConnection;
-            contentAssistProcessor.setSchema( browserConnection == null ? null : browserConnection.getSchema() );
-            filterCPA.setAutoActivationCharacters( contentAssistProcessor
-                .getCompletionProposalAutoActivationCharacters() );
+
+            if ( filterCombo != null )
+            {
+                contentAssistProcessor.setSchema( browserConnection == null ? null : browserConnection.getSchema() );
+                filterCPA.setAutoActivationCharacters( contentAssistProcessor
+                    .getCompletionProposalAutoActivationCharacters() );
+            }
         }
     }
 
