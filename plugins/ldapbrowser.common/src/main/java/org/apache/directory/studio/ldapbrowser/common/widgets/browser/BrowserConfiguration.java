@@ -76,12 +76,6 @@ public class BrowserConfiguration
     {
         if ( !disposed )
         {
-            if ( sorter != null )
-            {
-                sorter.dispose();
-                sorter = null;
-            }
-
             if ( preferences != null )
             {
                 preferences.dispose();

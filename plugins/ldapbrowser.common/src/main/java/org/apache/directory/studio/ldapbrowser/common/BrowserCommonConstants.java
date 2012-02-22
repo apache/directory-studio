@@ -81,6 +81,8 @@ public final class BrowserCommonConstants
     public static final String PREFERENCE_BROWSER_SORT_BY = "browserSortBy"; //$NON-NLS-1$
     public static final String PREFERENCE_BROWSER_SORT_ORDER = "browserSortOrder"; //$NON-NLS-1$
     public static final String PREFERENCE_BROWSER_SORT_LIMIT = "browserSortLimit"; //$NON-NLS-1$
+    public static final String PREFERENCE_BROWSER_SORT_SEARCHES_ORDER = "browserSortSearchesOrder"; //$NON-NLS-1$
+    public static final String PREFERENCE_BROWSER_SORT_BOOKMARKS_ORDER = "browserSortBookmarksOrder"; //$NON-NLS-1$
     public static final String PREFERENCE_BROWSER_LEAF_ENTRIES_FIRST = "browserLeafEntriesFirst"; //$NON-NLS-1$
     public static final String PREFERENCE_BROWSER_CONTAINER_ENTRIES_FIRST = "browserContainerEntriesFirst"; //$NON-NLS-1$
     public static final String PREFERENCE_BROWSER_META_ENTRIES_LAST = "browserMetaEntriesLast"; //$NON-NLS-1$

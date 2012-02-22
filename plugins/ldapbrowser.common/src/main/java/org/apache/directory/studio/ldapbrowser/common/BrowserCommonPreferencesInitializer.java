@@ -123,6 +123,10 @@ public class BrowserCommonPreferencesInitializer extends AbstractPreferenceIniti
         store.setDefault( BrowserCommonConstants.PREFERENCE_BROWSER_SORT_BY, BrowserCoreConstants.SORT_BY_RDN_VALUE );
         store.setDefault( BrowserCommonConstants.PREFERENCE_BROWSER_SORT_ORDER,
             BrowserCoreConstants.SORT_ORDER_ASCENDING );
+        store.setDefault( BrowserCommonConstants.PREFERENCE_BROWSER_SORT_SEARCHES_ORDER,
+            BrowserCoreConstants.SORT_ORDER_ASCENDING );
+        store.setDefault( BrowserCommonConstants.PREFERENCE_BROWSER_SORT_BOOKMARKS_ORDER,
+            BrowserCoreConstants.SORT_ORDER_ASCENDING );
         store.setDefault( BrowserCommonConstants.PREFERENCE_BROWSER_SORT_LIMIT, 10000 );
         store.setDefault( BrowserCommonConstants.PREFERENCE_BROWSER_LEAF_ENTRIES_FIRST, true );
         store.setDefault( BrowserCommonConstants.PREFERENCE_BROWSER_CONTAINER_ENTRIES_FIRST, false );

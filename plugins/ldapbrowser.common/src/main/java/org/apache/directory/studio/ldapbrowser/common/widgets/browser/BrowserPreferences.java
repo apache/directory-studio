@@ -76,12 +76,12 @@ public class BrowserPreferences implements IPropertyChangeListener, Preferences.
 
 
     /**
-     * Gets the sort by, one of BrowserCoreConstants.SORT_BY_NONE, 
+     * Gets the sort entries by, one of BrowserCoreConstants.SORT_BY_NONE, 
      * BrowserCoreConstants.SORT_BY_RDN or BrowserCoreConstants.SORT_BY_RDN_VALUE.
      * 
-     * @return the sort by
+     * @return the sort entries by
      */
-    public int getSortBy()
+    public int getSortEntriesBy()
     {
         return BrowserCommonActivator.getDefault().getPreferenceStore().getInt(
             BrowserCommonConstants.PREFERENCE_BROWSER_SORT_BY );
@@ -89,15 +89,41 @@ public class BrowserPreferences implements IPropertyChangeListener, Preferences.
 
 
     /**
-     * Gets the sort order, one of one of BrowserCoreConstants.SORT_ORDER_NONE, 
+     * Gets the sort entries order, one of one of BrowserCoreConstants.SORT_ORDER_NONE, 
+     * BrowserCoreConstants.SORT_ORDER_ASCENDING or BrowserCoreConstants.SORT_ORDER_DESCENDING.
+     * 
+     * @return the sort entries order
+     */
+    public int getSortEntriesOrder()
+    {
+        return BrowserCommonActivator.getDefault().getPreferenceStore().getInt(
+            BrowserCommonConstants.PREFERENCE_BROWSER_SORT_ORDER );
+    }
+
+
+    /**
+     * Gets the searches sort order, one of one of BrowserCoreConstants.SORT_ORDER_NONE, 
+     * BrowserCoreConstants.SORT_ORDER_ASCENDING or BrowserCoreConstants.SORT_ORDER_DESCENDING.
+     * 
+     * @return the searches sort order
+     */
+    public int getSortSearchesOrder()
+    {
+        return BrowserCommonActivator.getDefault().getPreferenceStore().getInt(
+            BrowserCommonConstants.PREFERENCE_BROWSER_SORT_SEARCHES_ORDER );
+    }
+
+
+    /**
+     * Gets the bookmarks sort order, one of one of BrowserCoreConstants.SORT_ORDER_NONE, 
      * BrowserCoreConstants.SORT_ORDER_ASCENDING or BrowserCoreConstants.SORT_ORDER_DESCENDING.
      * 
      * @return the sort order
      */
-    public int getSortOrder()
+    public int getSortBookmarksOrder()
     {
         return BrowserCommonActivator.getDefault().getPreferenceStore().getInt(
-            BrowserCommonConstants.PREFERENCE_BROWSER_SORT_ORDER );
+            BrowserCommonConstants.PREFERENCE_BROWSER_SORT_BOOKMARKS_ORDER );
     }
 
 
