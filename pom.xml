@@ -206,17 +206,23 @@
       -Pintegration-tests
       to the commandline to launch them.
     -->
+    <!-- NOTE:
+      This profile has been disabled for the release, and needs to be 
+      enabled again after the release is over.
     <profile>
       <id>integration-tests</id>
       <modules>
         <module>tests</module>
       </modules>
-    </profile>
+    </profile>-->
     <!-- 
       Building application module is enabled by default. Add 
       -P-application
       to the commandline to exclude it from the build.
     -->
+    <!-- NOTE:
+      This profile has been disabled for the release, and needs to be 
+      enabled again after the release is over.
     <profile>
       <id>application</id>
       <activation>
@@ -227,7 +233,7 @@
       <modules>
         <module>application</module>
       </modules>
-    </profile>
+    </profile>-->
   </profiles>
 
   <dependencyManagement>
