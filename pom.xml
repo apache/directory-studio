@@ -1931,6 +1931,8 @@
               <!-- OTHER_EXCLUDES -->
               <exclude>application/docs/**/*</exclude>
               <exclude>application/application-updatesite/src/main/resources/*</exclude>
+              <exclude>application/application-win32-x86-exe/src/main/resources/Apache Directory Studio.ini</exclude>
+              <exclude>application/application-win32-x86_64-exe/src/main/resources/Apache Directory Studio.ini</exclude>
               <exclude>helps/ldapbrowser.help/src/main/resources/sevenseas.ldif</exclude>
               <exclude>helps/**/src/main/resources/html/rfc/*.txt</exclude>
               <exclude>helps/**/src/main/resources/html/rfcs/*.txt</exclude>
