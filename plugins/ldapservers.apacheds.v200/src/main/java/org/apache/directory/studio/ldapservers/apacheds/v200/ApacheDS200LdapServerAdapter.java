@@ -82,7 +82,7 @@ public class ApacheDS200LdapServerAdapter implements LdapServerAdapter
 
     /** The array of libraries names */
     private static final String[] libraries = new String[]
-        { "apacheds-service-2.0.0-M3.jar" }; //$NON-NLS-1$
+        { "apacheds-service-2.0.0-M6.jar" }; //$NON-NLS-1$
 
 
     /**
@@ -251,7 +251,7 @@ public class ApacheDS200LdapServerAdapter implements LdapServerAdapter
                 "org.apache.directory.shared.ldap.codec.controls.search.subentries.SubentriesFactory" ); //$NON-NLS-1$
         vmArguments.append( " " ); //$NON-NLS-1$
         vmArguments
-            .append( "-Dextra.controls=org.apache.directory.shared.ldap.extras.controls.ppolicy.PasswordPolicyFactory," + //$NON-NLS-1$
+            .append( "-Dextra.controls=org.apache.directory.shared.ldap.extras.controls.ppolicy_impl.PasswordPolicyFactory," + //$NON-NLS-1$
                 "org.apache.directory.shared.ldap.extras.controls.syncrepl_impl.SyncDoneValueFactory," + //$NON-NLS-1$
                 "org.apache.directory.shared.ldap.extras.controls.syncrepl_impl.SyncInfoValueFactory," + //$NON-NLS-1$
                 "org.apache.directory.shared.ldap.extras.controls.syncrepl_impl.SyncRequestValueFactory," + //$NON-NLS-1$
