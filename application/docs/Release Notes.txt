@@ -1,5 +1,32 @@
 Release Notes
 
+Apache Directory Studio 2.0.0-M3
+
+Bug
+  * [DIRSTUDIO-764] - Image Editor does not work correctly
+  * [DIRSTUDIO-765] - Can not export DSML
+  * [DIRSTUDIO-767] - All attribute names are lowercase when using Apache Directory LDAP Client API
+  * [DIRSTUDIO-768] - Error while searching using a filter on a binary attribute
+  * [DIRSTUDIO-769] - Alt-S shortkey does not work in Search Dialog
+  * [DIRSTUDIO-770] - Typos in french translation
+  * [DIRSTUDIO-771] - Searches are not saved when closing Studio 2.0 M1/M2
+  * [DIRSTUDIO-772] - Entry UUID Editor can't display eDirectory GUID
+  * [DIRSTUDIO-773] - IllegalArgumentException thrown when copying the RootDSE
+  * [DIRSTUDIO-776] - Misleading title for action "Open 'Search Result'/'Bookmark'/'Entry' in DIT" in LDAP Browser view context menu
+  * [DIRSTUDIO-777] - Renaming entry fails when using Apache Directory LDAP API
+  * [DIRSTUDIO-778] - NullPointerException when refreshing a TableEntryEditor
+  * [DIRSTUDIO-779] - Label for folded attributes in TableEntryEditor is not updated when quick filter is used
+  * [DIRSTUDIO-783] - The 'Rename Entry' dialog doesn't resize automatically when adding or removing RDN parts
+
+Improvement
+  * [DIRSTUDIO-713] - Improve the 'Show in' sub-menu of the TableEntryEditor
+  * [DIRSTUDIO-780] - Allow Apache Directory Studio to be pinned to Windows 7's taskbar
+  * [DIRSTUDIO-782] - Improve Windows installer with JRE detection and creation of 'Apache Directory Studio.ini' file
+  * [DIRSTUDIO-784] - Add the ability to sort searches in the LDAP Browser view
+  * [DIRSTUDIO-785] - Add the ability to sort bookmarks in the LDAP Browser view
+
+--------------------------------------------------------------------------------
+
 Apache Directory Studio 2.0.0-M2
 
 Bug
