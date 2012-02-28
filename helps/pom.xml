@@ -122,7 +122,7 @@
                       <outputproperty name="encoding" value="iso8859_1" />
                       <outputproperty name="indent" value="es" />
                     </xslt>
-                    <fop format="application/pdf" basedir="target/pdf" fofile="target/pdf/${project.artifactId}.fo" outfile="target/pdf/${name}.pdf" />
+                    <fop format="application/pdf" basedir="target/pdf" fofile="target/pdf/${project.artifactId}.fo" outfile="target/pdf/${project.name}.pdf" />
 
                     <!-- Create HTML -->
                     <xslt in="target/docbook/documents/0_index.xml" out="target/html/index.html" style="target/docbook/docbook-xsl/html/chunk.xsl">
@@ -157,8 +157,8 @@
                     <copy todir="../target/userguides">
                       <fileset dir="target/pdf" />
                     </copy>
-                    <mkdir dir="../target/userguides/${name}" />
-                    <copy todir="../target/userguides/${name}">
+                    <mkdir dir="../target/userguides/${project.name}" />
+                    <copy todir="../target/userguides/${project.name}">
                       <fileset dir="target/html" />
                     </copy>
                   </target>
