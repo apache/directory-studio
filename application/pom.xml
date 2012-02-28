@@ -192,6 +192,20 @@
         <module>application-win32-x86_64-exe</module>
       </modules>
     </profile>
+    <!-- Nightly Builds -->
+    <profile>
+      <id>nightly-builds</id>
+      <modules>
+        <module>application-linux-x86</module>
+        <module>application-linux-x86_64</module>
+        <module>application-macosx-x86</module>
+        <module>application-macosx-x86_64</module>
+        <module>application-win32-x86</module>
+        <module>application-win32-x86_64</module>
+        <module>application-updatesite</module>
+        <module>application-nightly-builds</module>
+      </modules>
+    </profile>
   </profiles>
   
   <build>
