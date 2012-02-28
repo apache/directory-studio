@@ -200,12 +200,6 @@
 			<artifactId>maven-eclipse-plugin</artifactId>
 			<configuration>
 			  <skip>false</skip>
-			</configuration>
-		  </plugin>
-		  <plugin>
-			<groupId>org.apache.maven.plugins</groupId>
-			<artifactId>maven-eclipse-plugin</artifactId>
-			<configuration>
 			  <buildcommands>
 				<buildcommand>org.eclipse.pde.ManifestBuilder</buildcommand>
 				<buildcommand>org.eclipse.pde.SchemaBuilder</buildcommand>
