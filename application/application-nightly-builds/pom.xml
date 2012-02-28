@@ -26,12 +26,12 @@
     <version>2.0.0-SNAPSHOT</version>
   </parent>
   
-  <artifactId>ApacheDirectoryStudio-nightly-build</artifactId>
+  <artifactId>ApacheDirectoryStudio-nightly-builds</artifactId>
   <name>Apache Directory Studio Application Nightly Builds</name>
   <packaging>pom</packaging>
   
   <properties>
-    <nightly-build-dir>${project.build.directory}/ApacheDirectoryStudio-nightly-build-${project.version}</nightly-build-dir>
+    <nightly-builds-dir>${project.build.directory}/ApacheDirectoryStudio-nightly-builds-${project.version}</nightly-builds-dir>
   </properties>
   
   <build>
@@ -52,42 +52,42 @@
                   <artifactId>ApacheDirectoryStudio-linux-x86</artifactId>
                   <type>tar.gz</type>
                   <version>${project.version}</version>
-                  <outputDirectory>${nightly-build-dir}</outputDirectory>
+                  <outputDirectory>${nightly-builds-dir}</outputDirectory>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.apache.directory.studio</groupId>
                   <artifactId>ApacheDirectoryStudio-linux-x86_64</artifactId>
                   <type>tar.gz</type>
                   <version>${project.version}</version>
-                  <outputDirectory>${nightly-build-dir}</outputDirectory>
+                  <outputDirectory>${nightly-builds-dir}</outputDirectory>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.apache.directory.studio</groupId>
                   <artifactId>ApacheDirectoryStudio-macosx-x86</artifactId>
                   <type>zip</type>
                   <version>${project.version}</version>
-                  <outputDirectory>${nightly-build}</outputDirectory>
+                  <outputDirectory>${nightly-builds-dir}</outputDirectory>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.apache.directory.studio</groupId>
                   <artifactId>ApacheDirectoryStudio-macosx-x86_64</artifactId>
                   <type>zip</type>
                   <version>${project.version}</version>
-                  <outputDirectory>${nightly-build}</outputDirectory>
+                  <outputDirectory>${nightly-builds-dir}</outputDirectory>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.apache.directory.studio</groupId>
                   <artifactId>ApacheDirectoryStudio-win32-x86</artifactId>
                   <type>zip</type>
                   <version>${project.version}</version>
-                  <outputDirectory>${nightly-build}</outputDirectory>
+                  <outputDirectory>${nightly-builds-dir}</outputDirectory>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.apache.directory.studio</groupId>
                   <artifactId>ApacheDirectoryStudio-win32-x86_64</artifactId>
                   <type>zip</type>
                   <version>${project.version}</version>
-                  <outputDirectory>${nightly-build}</outputDirectory>
+                  <outputDirectory>${nightly-builds-dir}</outputDirectory>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.apache.directory.studio</groupId>
@@ -95,7 +95,7 @@
                   <classifier>default</classifier>
                   <type>zip</type>
                   <version>${project.version}</version>
-                  <outputDirectory>${nightly-build}</outputDirectory>
+                  <outputDirectory>${nightly-builds-dir}</outputDirectory>
                 </artifactItem>
               </artifactItems>
             </configuration>
