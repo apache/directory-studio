@@ -6,16 +6,16 @@
  *  to you under the Apache License, Version 2.0 (the
  *  "License"); you may not use this file except in compliance
  *  with the License.  You may obtain a copy of the License at
- *  
+ * 
  *    http://www.apache.org/licenses/LICENSE-2.0
- *  
+ * 
  *  Unless required by applicable law or agreed to in writing,
  *  software distributed under the License is distributed on an
  *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  *  KIND, either express or implied.  See the License for the
  *  specific language governing permissions and limitations
- *  under the License. 
- *  
+ *  under the License.
+ * 
  */
 
 package org.apache.directory.studio.ldapbrowser.core.jobs;
@@ -146,11 +146,11 @@ public class ExportXlsRunnable implements StudioConnectionRunnableWithProgress
 
         // header
         HSSFRow headerRow = sheet.createRow( 0 );
-        LinkedHashMap<String, Short> attributeNameMap = new LinkedHashMap<String, Short>();
+        LinkedHashMap<String, Integer> attributeNameMap = new LinkedHashMap<String, Integer>();
         if ( this.exportDn )
         {
-            short cellNum = ( short ) 0;
-            attributeNameMap.put( "dn", new Short( cellNum ) ); //$NON-NLS-1$
+            int cellNum = 0;
+            attributeNameMap.put( "dn", cellNum ); //$NON-NLS-1$
             headerRow.createCell( cellNum ).setCellValue( "dn" ); //$NON-NLS-1$
         }
 
@@ -232,7 +232,7 @@ public class ExportXlsRunnable implements StudioConnectionRunnableWithProgress
      */
     private static void exportToXls( IBrowserConnection browserConnection, SearchParameter searchParameter,
         HSSFSheet sheet, HSSFRow headerRow, int count, StudioProgressMonitor monitor,
-        LinkedHashMap<String, Short> attributeNameMap, String valueDelimiter, int binaryEncoding, boolean exportDn )
+        LinkedHashMap<String, Integer> attributeNameMap, String valueDelimiter, int binaryEncoding, boolean exportDn )
         throws IOException
     {
         try
@@ -288,7 +288,7 @@ public class ExportXlsRunnable implements StudioConnectionRunnableWithProgress
      * @param exportDn the export dn
      */
     private static void recordToHSSFRow( IBrowserConnection browserConnection, LdifContentRecord record,
-        HSSFSheet sheet, HSSFRow headerRow, Map<String, Short> headerRowAttributeNameMap, String valueDelimiter,
+        HSSFSheet sheet, HSSFRow headerRow, Map<String, Integer> headerRowAttributeNameMap, String valueDelimiter,
         int binaryEncoding, boolean exportDn )
     {
         // group multi-valued attributes
@@ -299,34 +299,31 @@ public class ExportXlsRunnable implements StudioConnectionRunnableWithProgress
         HSSFRow row = sheet.createRow( sheet.getLastRowNum() + 1 );
         if ( exportDn )
         {
-            HSSFCell cell = row.createCell( ( short ) 0 );
-            cell.setEncoding( HSSFCell.ENCODING_UTF_16 );
+            HSSFCell cell = row.createCell( 0 );
             cell.setCellValue( record.getDnLine().getValueAsString() );
         }
         for ( String attributeName : attributeMap.keySet() )
         {
-            String value = ( String ) attributeMap.get( attributeName );
+            String value = attributeMap.get( attributeName );
 
             if ( !headerRowAttributeNameMap.containsKey( attributeName ) )
             {
-                short cellNum = ( short ) headerRowAttributeNameMap.size();
-                headerRowAttributeNameMap.put( attributeName, new Short( cellNum ) );
+                int cellNum = headerRowAttributeNameMap.size();
+                headerRowAttributeNameMap.put( attributeName, new Integer( cellNum ) );
                 HSSFCell cell = headerRow.createCell( cellNum );
-                cell.setEncoding( HSSFCell.ENCODING_UTF_16 );
                 cell.setCellValue( attributeName );
             }
 
             if ( headerRowAttributeNameMap.containsKey( attributeName ) )
             {
-                short cellNum = ( ( Short ) headerRowAttributeNameMap.get( attributeName ) ).shortValue();
+                int cellNum = headerRowAttributeNameMap.get( attributeName ).shortValue();
                 HSSFCell cell = row.createCell( cellNum );
-                cell.setEncoding( HSSFCell.ENCODING_UTF_16 );
                 cell.setCellValue( value );
             }
         }
 
         // for (int i = 0; i < attributes.length; i++) {
-        //			
+        //
         // String attributeName = attributes[i];
         // if (attributeMap.containsKey(attributeName)) {
         // String value = (String)attributeMap.get(attributeName);
