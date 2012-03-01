@@ -86,12 +86,10 @@
           <manifestLocation>META-INF</manifestLocation>
           <instructions>
             <Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
-            <Require-Bundle>org.slf4j.api;bundle-version="${org.slf4j.version}"</Require-Bundle>
             <Embed-Dependency>*;scope=compile|runtime</Embed-Dependency>
             <Embed-Directory>lib</Embed-Directory>
-            <Embed-StripGroup>true</Embed-StripGroup>
             <_exportcontents>!lib,*</_exportcontents>
-            <Import-Package>!</Import-Package>
+            <Import-Package>!org.hibernate*,*</Import-Package>
           </instructions>
         </configuration>
         <executions>

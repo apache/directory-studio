@@ -140,6 +140,7 @@
             <Export-Package>org.apache.directory.studio.schemaeditor.model.*, org.apache.directory.studio.schemaeditor.model.io.*</Export-Package>
             <Import-Package>!</Import-Package>
             <Private-Package>!</Private-Package>
+            <_failok>true</_failok>
           </instructions>
         </configuration>
         <executions>

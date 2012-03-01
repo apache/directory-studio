@@ -88,9 +88,12 @@
             <Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
             <Embed-Dependency>*;scope=compile|runtime</Embed-Dependency>
             <Embed-Directory>lib</Embed-Directory>
-            <Embed-StripGroup>true</Embed-StripGroup>
             <_exportcontents>!lib,*</_exportcontents>
-            <Import-Package>!</Import-Package>
+            <Import-Package>
+              !org.apache.avalon.framework.logger,
+              !org.apache.log,
+              *
+            </Import-Package>
           </instructions>
         </configuration>
         <executions>

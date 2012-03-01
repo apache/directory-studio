@@ -87,13 +87,9 @@
           <instructions>
             <Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
             <Eclipse-RegisterBuddy>org.slf4j.api</Eclipse-RegisterBuddy>
-            <Require-Bundle>org.apache.logging.log4j;bundle-version="${org.apache.logging.log4j.version}",
- org.slf4j.api;bundle-version="${org.slf4j.version}"</Require-Bundle>
             <Embed-Dependency>*;scope=compile|runtime</Embed-Dependency>
             <Embed-Directory>lib</Embed-Directory>
-            <Embed-StripGroup>true</Embed-StripGroup>
             <_exportcontents>!lib,*</_exportcontents>
-            <Import-Package>!</Import-Package>
           </instructions>
         </configuration>
         <executions>

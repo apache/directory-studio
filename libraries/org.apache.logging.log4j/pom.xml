@@ -89,9 +89,15 @@
             <Eclipse-BuddyPolicy>registered</Eclipse-BuddyPolicy>
             <Embed-Dependency>*;scope=compile|runtime</Embed-Dependency>
             <Embed-Directory>lib</Embed-Directory>
-            <Embed-StripGroup>true</Embed-StripGroup>
             <_exportcontents>!lib,*</_exportcontents>
-            <Import-Package>!</Import-Package>
+            <Import-Package>
+              !com.ibm.uvm.tools,
+              !com.sun.jdmk.comm,
+              !javax.jmdns,
+              !javax.jms,
+              !javax.mail*,
+              *
+            </Import-Package>
           </instructions>
         </configuration>
         <executions>

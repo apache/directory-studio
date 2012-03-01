@@ -23,7 +23,7 @@
   <parent>
     <groupId>org.apache.directory.project</groupId>
     <artifactId>project</artifactId>
-    <version>26</version>
+    <version>27-SNAPSHOT</version>
     <relativePath />
   </parent>
 
@@ -62,16 +62,8 @@
     <studio.dist.url>${project.distributionManagement.repository.url}</studio.dist.url>
     <distMgmtSiteUrl>scpexe://people.apache.org/www/directory.apache.org/studio/gen-docs/${project.version}</distMgmtSiteUrl>
     
-    <!-- Set versions for depending projects -->
-    <checkstyle.version>4.1</checkstyle.version>
-    <findbugs.annotations.version>1.0.0</findbugs.annotations.version>
-    <junit.version>4.10</junit.version>
+    <!-- Set versions for dependencies -->
     <net.sf.ehcache.version>2.4.4</net.sf.ehcache.version>
-    <maven.artifact.version>3.0.4</maven.artifact.version>
-    <maven.dependency.plugin.version>2.4</maven.dependency.plugin.version>
-    <maven.model.version>3.0.4</maven.model.version>
-    <maven.plugin.api.version>3.0.4</maven.plugin.api.version>
-    <maven.project.version>3.0-alpha-2</maven.project.version>
     <org.antlr.version>2.7.7</org.antlr.version>
     <org.apache.commons.codec.version>1.6</org.apache.commons.codec.version>
     <org.apache.commons.collections.version>3.2.1</org.apache.commons.collections.version>
@@ -93,8 +85,20 @@
     <org.xpp3.validversion>1.1.4.c</org.xpp3.validversion>
     <org.xpp3.version>1.1.4c</org.xpp3.version>
     <org.apache.poi.version>3.7</org.apache.poi.version>
-    <skin.version>1.0.2</skin.version>
     <xerces.xercesimpl.version>2.10.0</xerces.xercesimpl.version>
+    
+    <!-- Set versions for maven plugins -->
+    <checkstyle.version>4.1</checkstyle.version>
+    <findbugs.annotations.version>1.0.0</findbugs.annotations.version>
+    <junit.version>4.10</junit.version>
+    <maven.artifact.version>3.0.4</maven.artifact.version>
+    <maven.dependency.plugin.version>2.4</maven.dependency.plugin.version>
+    <maven.model.version>3.0.4</maven.model.version>
+    <maven.plugin.api.version>3.0.4</maven.plugin.api.version>
+    <maven.project.version>3.0-alpha-2</maven.project.version>
+    
+    <!-- Set versions for skins -->
+    <skin.version>1.0.2</skin.version>
   </properties>
 
   <profiles>
