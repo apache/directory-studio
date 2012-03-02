@@ -88,14 +88,9 @@
             <Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
             <Embed-Dependency>*;scope=compile|runtime</Embed-Dependency>
             <Embed-Directory>lib</Embed-Directory>
+            <Embed-StripGroup>true</Embed-StripGroup>
             <_exportcontents>!lib,*</_exportcontents>
-            <Import-Package>
-              !com.sun.msv.datatype*,
-              !org.jaxen*,
-              !org.gjt.xpp,
-              !org.relaxng.datatype,
-              *
-            </Import-Package>
+            <Import-Package>!</Import-Package>
           </instructions>
         </configuration>
         <executions>

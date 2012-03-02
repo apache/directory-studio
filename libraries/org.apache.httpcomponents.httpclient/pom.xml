@@ -86,9 +86,14 @@
           <manifestLocation>META-INF</manifestLocation>
           <instructions>
             <Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
+            <Require-Bundle>org.apache.commons.codec;bundle-version="${org.apache.commons.codec.version}",
+ org.apache.commons.logging;bundle-version="${org.apache.commons.logging.version}",
+ org.apache.httpcomponents.httpcore;bundle-version="${org.apache.httpcomponents.version}"</Require-Bundle>
             <Embed-Dependency>*;scope=compile|runtime</Embed-Dependency>
             <Embed-Directory>lib</Embed-Directory>
+            <Embed-StripGroup>true</Embed-StripGroup>
             <_exportcontents>!lib,*</_exportcontents>
+            <Import-Package>!</Import-Package>
           </instructions>
         </configuration>
         <executions>

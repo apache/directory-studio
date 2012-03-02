@@ -123,7 +123,6 @@
             <Export-Package>!*</Export-Package>
             <Import-Package>!</Import-Package>
             <Private-Package>!</Private-Package>
-            <_failok>true</_failok>
           </instructions>
         </configuration>
         <executions>
