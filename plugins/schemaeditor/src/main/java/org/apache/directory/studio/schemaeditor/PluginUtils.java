@@ -34,6 +34,7 @@ import java.util.List;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.MutableAttributeType;
 import org.apache.directory.shared.ldap.model.schema.MutableObjectClass;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.studio.connection.core.Connection;
@@ -88,9 +89,9 @@ public class PluginUtils
      * @return
      *      a clone of the given attribute type
      */
-    public static AttributeType getClone( AttributeType at )
+    public static MutableAttributeType getClone( AttributeType at )
     {
-        AttributeType clone = new AttributeType( at.getOid() );
+        MutableAttributeType clone = new MutableAttributeType( at.getOid() );
         clone.setNames( at.getNames() );
         clone.setSchemaName( at.getSchemaName() );
         clone.setDescription( at.getDescription() );

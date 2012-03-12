@@ -28,6 +28,7 @@ import org.apache.commons.collections.map.MultiValueMap;
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
 import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
 import org.apache.directory.shared.ldap.model.schema.MatchingRule;
+import org.apache.directory.shared.ldap.model.schema.MutableAttributeType;
 import org.apache.directory.shared.ldap.model.schema.MutableObjectClass;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.shared.ldap.model.schema.SchemaObject;
@@ -656,7 +657,7 @@ public class SchemaHandler
      * @param at2
      *      the destination attribute type
      */
-    public void modifyAttributeType( AttributeType at1, AttributeType at2 )
+    public void modifyAttributeType( MutableAttributeType at1, MutableAttributeType at2 )
     {
         // Removing the references (in case of the names or oid have changed)
         removeSchemaObject( at1 );

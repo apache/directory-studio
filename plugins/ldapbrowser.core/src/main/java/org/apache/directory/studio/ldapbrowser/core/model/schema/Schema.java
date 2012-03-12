@@ -41,6 +41,7 @@ import org.apache.directory.shared.ldap.model.schema.AttributeType;
 import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
 import org.apache.directory.shared.ldap.model.schema.MatchingRule;
 import org.apache.directory.shared.ldap.model.schema.MatchingRuleUse;
+import org.apache.directory.shared.ldap.model.schema.MutableAttributeType;
 import org.apache.directory.shared.ldap.model.schema.MutableObjectClass;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.shared.ldap.model.schema.UsageEnum;
@@ -608,7 +609,7 @@ public class Schema
             // DUMMY
             List<String> attributeTypes = new ArrayList<String>();
             attributeTypes.add( attributeType );
-            AttributeType atd = new AttributeType( attributeType );
+            MutableAttributeType atd = new MutableAttributeType( attributeType );
             atd.setNames( attributeTypes );
             atd.setUserModifiable( true );
             atd.setUsage( UsageEnum.USER_APPLICATIONS );

@@ -34,6 +34,7 @@ import org.apache.directory.shared.ldap.model.constants.SchemaConstants;
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
 import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
 import org.apache.directory.shared.ldap.model.schema.MatchingRule;
+import org.apache.directory.shared.ldap.model.schema.MutableAttributeType;
 import org.apache.directory.shared.ldap.model.schema.MutableObjectClass;
 import org.apache.directory.shared.ldap.model.schema.ObjectClassTypeEnum;
 import org.apache.directory.shared.ldap.model.schema.UsageEnum;
@@ -301,7 +302,7 @@ public class ApacheDsSchemaConnector extends AbstractSchemaConnector implements 
      */
     private static AttributeType createAttributeType( SearchResult sr ) throws NamingException
     {
-        AttributeType at = new AttributeType( getOid( sr ) );
+        MutableAttributeType at = new MutableAttributeType( getOid( sr ) );
         at.setNames( getNames( sr ) );
         at.setDescription( getDescription( sr ) );
         at.setObsolete( isObsolete( sr ) );

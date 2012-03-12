@@ -29,6 +29,7 @@ import java.util.Set;
 
 import org.apache.directory.shared.ldap.model.schema.AbstractSchemaObject;
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.MutableAttributeType;
 import org.apache.directory.shared.ldap.model.schema.MutableObjectClass;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.studio.schemaeditor.Activator;
@@ -296,7 +297,7 @@ public class MergeSchemasWizard extends Wizard implements IImportWizard
                 }
 
                 // clone attribute type
-                AttributeType clonedAttributeType = new AttributeType( sourceAttributeType.getOid() );
+                MutableAttributeType clonedAttributeType = new MutableAttributeType( sourceAttributeType.getOid() );
                 clonedAttributeType.setNames( sourceAttributeType.getNames() );
                 clonedAttributeType.setDescription( sourceAttributeType.getDescription() );
                 clonedAttributeType.setSuperiorOid( sourceAttributeType.getSuperiorOid() );

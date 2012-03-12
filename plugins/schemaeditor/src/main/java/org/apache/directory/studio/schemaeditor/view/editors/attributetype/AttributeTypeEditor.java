@@ -6,22 +6,23 @@
  *  to you under the Apache License, Version 2.0 (the
  *  "License"); you may not use this file except in compliance
  *  with the License.  You may obtain a copy of the License at
- *  
+ * 
  *    http://www.apache.org/licenses/LICENSE-2.0
- *  
+ * 
  *  Unless required by applicable law or agreed to in writing,
  *  software distributed under the License is distributed on an
  *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  *  KIND, either express or implied.  See the License for the
  *  specific language governing permissions and limitations
- *  under the License. 
- *  
+ *  under the License.
+ * 
  */
 
 package org.apache.directory.studio.schemaeditor.view.editors.attributetype;
 
 
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.MutableAttributeType;
 import org.apache.directory.studio.schemaeditor.Activator;
 import org.apache.directory.studio.schemaeditor.PluginConstants;
 import org.apache.directory.studio.schemaeditor.PluginUtils;
@@ -66,10 +67,10 @@ public class AttributeTypeEditor extends FormEditor
     private AttributeTypeEditorUsedByPage usedByPage;
 
     /** The original attribute type */
-    private AttributeType originalAttributeType;
+    private MutableAttributeType originalAttributeType;
 
     /** The attribute type used to save modifications */
-    private AttributeType modifiedAttributeType;
+    private MutableAttributeType modifiedAttributeType;
 
     /** The originalSchema */
     private Schema originalSchema;
@@ -169,7 +170,7 @@ public class AttributeTypeEditor extends FormEditor
         setInput( input );
         setPartName( input.getName() );
 
-        originalAttributeType = ( ( AttributeTypeEditorInput ) getEditorInput() ).getAttributeType();
+        originalAttributeType = (MutableAttributeType)( ( AttributeTypeEditorInput ) getEditorInput() ).getAttributeType();
         modifiedAttributeType = PluginUtils.getClone( originalAttributeType );
 
         SchemaHandler schemaHandler = Activator.getDefault().getSchemaHandler();
@@ -294,7 +295,7 @@ public class AttributeTypeEditor extends FormEditor
      * @return
      *      the modified attribute type
      */
-    public AttributeType getModifiedAttributeType()
+    public MutableAttributeType getModifiedAttributeType()
     {
         return modifiedAttributeType;
     }
@@ -306,7 +307,7 @@ public class AttributeTypeEditor extends FormEditor
      * @param modifiedAttributeType
      *      the modified attribute type to set.
      */
-    public void setModifiedAttributeType( AttributeType modifiedAttributeType )
+    public void setModifiedAttributeType( MutableAttributeType modifiedAttributeType )
     {
         this.modifiedAttributeType = modifiedAttributeType;
     }
@@ -314,13 +315,13 @@ public class AttributeTypeEditor extends FormEditor
 
     /**
      * Opens an error dialog displaying the given message.
-     *  
+     * 
      * @param message
      *      the message to display
      */
     private void notifyError( String message )
     {
         MessageDialog.openError( PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
-            Messages.getString( "AttributeTypeEditor.Error" ), message ); //$NON-NLS-1$ 
+            Messages.getString( "AttributeTypeEditor.Error" ), message ); //$NON-NLS-1$
     }
 }

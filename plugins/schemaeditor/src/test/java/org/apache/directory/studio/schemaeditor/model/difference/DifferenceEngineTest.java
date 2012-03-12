@@ -26,6 +26,7 @@ import java.util.List;
 import junit.framework.TestCase;
 
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.MutableAttributeType;
 import org.apache.directory.shared.ldap.model.schema.MutableObjectClass;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.shared.ldap.model.schema.ObjectClassTypeEnum;
@@ -101,7 +102,7 @@ public class DifferenceEngineTest extends TestCase
     public void testAddEqualityDifference() throws Exception
     {
         AttributeType o1 = new AttributeType( "1.2.3.4" );
-        AttributeType o2 = new AttributeType( "1.2.3.4" );
+        MutableAttributeType o2 = new MutableAttributeType( "1.2.3.4" );
         o2.setEqualityOid( "Equality" );
 
         List<PropertyDifference> differences = DifferenceEngine.getDifferences( o1, o2 );
@@ -182,7 +183,7 @@ public class DifferenceEngineTest extends TestCase
     public void testAddOrderingDifference() throws Exception
     {
         AttributeType o1 = new AttributeType( "1.2.3.4" );
-        AttributeType o2 = new AttributeType( "1.2.3.4" );
+        MutableAttributeType o2 = new MutableAttributeType( "1.2.3.4" );
         o2.setOrderingOid( "Ordering" );
 
         List<PropertyDifference> differences = DifferenceEngine.getDifferences( o1, o2 );
@@ -208,7 +209,7 @@ public class DifferenceEngineTest extends TestCase
     public void testAddSubstringDifference() throws Exception
     {
         AttributeType o1 = new AttributeType( "1.2.3.4" );
-        AttributeType o2 = new AttributeType( "1.2.3.4" );
+        MutableAttributeType o2 = new MutableAttributeType( "1.2.3.4" );
         o2.setSubstringOid( "Substring" );
 
         List<PropertyDifference> differences = DifferenceEngine.getDifferences( o1, o2 );
@@ -234,7 +235,7 @@ public class DifferenceEngineTest extends TestCase
     public void testAddSuperiorATDifference() throws Exception
     {
         AttributeType o1 = new AttributeType( "1.2.3.4" );
-        AttributeType o2 = new AttributeType( "1.2.3.4" );
+        MutableAttributeType o2 = new MutableAttributeType( "1.2.3.4" );
         o2.setSuperiorOid( "superiorAT" );
 
         List<PropertyDifference> differences = DifferenceEngine.getDifferences( o1, o2 );
@@ -287,7 +288,7 @@ public class DifferenceEngineTest extends TestCase
     public void testAddSyntaxDifference() throws Exception
     {
         AttributeType o1 = new AttributeType( "1.2.3.4" );
-        AttributeType o2 = new AttributeType( "1.2.3.4" );
+        MutableAttributeType o2 = new MutableAttributeType( "1.2.3.4" );
         o2.setSyntaxOid( "1.2.3.4.5" );
 
         List<PropertyDifference> differences = DifferenceEngine.getDifferences( o1, o2 );
@@ -313,7 +314,7 @@ public class DifferenceEngineTest extends TestCase
     public void testAddSyntaxLengthDifference() throws Exception
     {
         AttributeType o1 = new AttributeType( "1.2.3.4" );
-        AttributeType o2 = new AttributeType( "1.2.3.4" );
+        MutableAttributeType o2 = new MutableAttributeType( "1.2.3.4" );
         o2.setSyntaxLength( 1234 );
 
         List<PropertyDifference> differences = DifferenceEngine.getDifferences( o1, o2 );
@@ -368,9 +369,9 @@ public class DifferenceEngineTest extends TestCase
      */
     public void testModifyCollectiveDifference() throws Exception
     {
-        AttributeType o1 = new AttributeType( "1.2.3.4" );
+        MutableAttributeType o1 = new MutableAttributeType( "1.2.3.4" );
         o1.setCollective( true );
-        AttributeType o2 = new AttributeType( "1.2.3.4" );
+        MutableAttributeType o2 = new MutableAttributeType( "1.2.3.4" );
         o2.setCollective( false );
 
         List<PropertyDifference> differences = DifferenceEngine.getDifferences( o1, o2 );
@@ -426,9 +427,9 @@ public class DifferenceEngineTest extends TestCase
      */
     public void testModifyEqualityDifference() throws Exception
     {
-        AttributeType o1 = new AttributeType( "1.2.3.4" );
+        MutableAttributeType o1 = new MutableAttributeType( "1.2.3.4" );
         o1.setEqualityOid( "equalityName" );
-        AttributeType o2 = new AttributeType( "1.2.3.4" );
+        MutableAttributeType o2 = new MutableAttributeType( "1.2.3.4" );
         o2.setEqualityOid( "newEqualityName" );
 
         List<PropertyDifference> differences = DifferenceEngine.getDifferences( o1, o2 );
@@ -455,9 +456,9 @@ public class DifferenceEngineTest extends TestCase
      */
     public void testModifyNoUserModificationDifference() throws Exception
     {
-        AttributeType o1 = new AttributeType( "1.2.3.4" );
+        MutableAttributeType o1 = new MutableAttributeType( "1.2.3.4" );
         o1.setUserModifiable( true );
-        AttributeType o2 = new AttributeType( "1.2.3.4" );
+        MutableAttributeType o2 = new MutableAttributeType( "1.2.3.4" );
         o2.setUserModifiable( false );
 
         List<PropertyDifference> differences = DifferenceEngine.getDifferences( o1, o2 );
@@ -513,9 +514,9 @@ public class DifferenceEngineTest extends TestCase
      */
     public void testModifyOrderingDifference() throws Exception
     {
-        AttributeType o1 = new AttributeType( "1.2.3.4" );
+        MutableAttributeType o1 = new MutableAttributeType( "1.2.3.4" );
         o1.setOrderingOid( "orderingName" );
-        AttributeType o2 = new AttributeType( "1.2.3.4" );
+        MutableAttributeType o2 = new MutableAttributeType( "1.2.3.4" );
         o2.setOrderingOid( "newOrderingName" );
 
         List<PropertyDifference> differences = DifferenceEngine.getDifferences( o1, o2 );
@@ -542,9 +543,9 @@ public class DifferenceEngineTest extends TestCase
      */
     public void testModifySingleValueDifference() throws Exception
     {
-        AttributeType o1 = new AttributeType( "1.2.3.4" );
+        MutableAttributeType o1 = new MutableAttributeType( "1.2.3.4" );
         o1.setSingleValued( true );
-        AttributeType o2 = new AttributeType( "1.2.3.4" );
+        MutableAttributeType o2 = new MutableAttributeType( "1.2.3.4" );
         o2.setSingleValued( false );
 
         List<PropertyDifference> differences = DifferenceEngine.getDifferences( o1, o2 );
@@ -571,9 +572,9 @@ public class DifferenceEngineTest extends TestCase
      */
     public void testModifySubstringDifference() throws Exception
     {
-        AttributeType o1 = new AttributeType( "1.2.3.4" );
+        MutableAttributeType o1 = new MutableAttributeType( "1.2.3.4" );
         o1.setSubstringOid( "substrName" );
-        AttributeType o2 = new AttributeType( "1.2.3.4" );
+        MutableAttributeType o2 = new MutableAttributeType( "1.2.3.4" );
         o2.setSubstringOid( "newSubstrName" );
 
         List<PropertyDifference> differences = DifferenceEngine.getDifferences( o1, o2 );
@@ -600,9 +601,9 @@ public class DifferenceEngineTest extends TestCase
      */
     public void testModifySuperiorATDifference() throws Exception
     {
-        AttributeType o1 = new AttributeType( "1.2.3.4" );
+        MutableAttributeType o1 = new MutableAttributeType( "1.2.3.4" );
         o1.setSuperiorOid( "superiorName" );
-        AttributeType o2 = new AttributeType( "1.2.3.4" );
+        MutableAttributeType o2 = new MutableAttributeType( "1.2.3.4" );
         o2.setSuperiorOid( "newSuperiorName" );
 
         List<PropertyDifference> differences = DifferenceEngine.getDifferences( o1, o2 );
@@ -629,9 +630,9 @@ public class DifferenceEngineTest extends TestCase
      */
     public void testModifySyntaxDifference() throws Exception
     {
-        AttributeType o1 = new AttributeType( "1.2.3.4" );
+        MutableAttributeType o1 = new MutableAttributeType( "1.2.3.4" );
         o1.setSyntaxOid( "1.2.3.4.5" );
-        AttributeType o2 = new AttributeType( "1.2.3.4" );
+        MutableAttributeType o2 = new MutableAttributeType( "1.2.3.4" );
         o2.setSyntaxOid( "1.2.3.4.6" );
 
         List<PropertyDifference> differences = DifferenceEngine.getDifferences( o1, o2 );
@@ -657,9 +658,9 @@ public class DifferenceEngineTest extends TestCase
      */
     public void testModifySyntaxLengthDifference() throws Exception
     {
-        AttributeType o1 = new AttributeType( "1.2.3.4" );
+        MutableAttributeType o1 = new MutableAttributeType( "1.2.3.4" );
         o1.setSyntaxLength( 1234 );
-        AttributeType o2 = new AttributeType( "1.2.3.4" );
+        MutableAttributeType o2 = new MutableAttributeType( "1.2.3.4" );
         o2.setSyntaxLength( 12345 );
 
         List<PropertyDifference> differences = DifferenceEngine.getDifferences( o1, o2 );
@@ -686,9 +687,9 @@ public class DifferenceEngineTest extends TestCase
      */
     public void testModifyUsageDifference() throws Exception
     {
-        AttributeType o1 = new AttributeType( "1.2.3.4" );
+        MutableAttributeType o1 = new MutableAttributeType( "1.2.3.4" );
         o1.setUsage( UsageEnum.DISTRIBUTED_OPERATION );
-        AttributeType o2 = new AttributeType( "1.2.3.4" );
+        MutableAttributeType o2 = new MutableAttributeType( "1.2.3.4" );
         o2.setUsage( UsageEnum.DIRECTORY_OPERATION );
 
         List<PropertyDifference> differences = DifferenceEngine.getDifferences( o1, o2 );
@@ -772,7 +773,7 @@ public class DifferenceEngineTest extends TestCase
      */
     public void testRemoveEqualityDifference() throws Exception
     {
-        AttributeType o1 = new AttributeType( "1.2.3.4" );
+        MutableAttributeType o1 = new MutableAttributeType( "1.2.3.4" );
         o1.setEqualityOid( "equalityName" );
         AttributeType o2 = new AttributeType( "1.2.3.4" );
 
@@ -861,7 +862,7 @@ public class DifferenceEngineTest extends TestCase
      */
     public void testRemoveOrderingDifference() throws Exception
     {
-        AttributeType o1 = new AttributeType( "1.2.3.4" );
+        MutableAttributeType o1 = new MutableAttributeType( "1.2.3.4" );
         o1.setOrderingOid( "orderingName" );
         AttributeType o2 = new AttributeType( "1.2.3.4" );
 
@@ -888,7 +889,7 @@ public class DifferenceEngineTest extends TestCase
      */
     public void testRemoveSubstringDifference() throws Exception
     {
-        AttributeType o1 = new AttributeType( "1.2.3.4" );
+        MutableAttributeType o1 = new MutableAttributeType( "1.2.3.4" );
         o1.setSubstringOid( "substrName" );
         AttributeType o2 = new AttributeType( "1.2.3.4" );
 
@@ -916,7 +917,7 @@ public class DifferenceEngineTest extends TestCase
      */
     public void testRemoveSuperiorATDifference() throws Exception
     {
-        AttributeType o1 = new AttributeType( "1.2.3.4" );
+        MutableAttributeType o1 = new MutableAttributeType( "1.2.3.4" );
         o1.setSuperiorOid( "superiorName" );
         AttributeType o2 = new AttributeType( "1.2.3.4" );
 
@@ -975,7 +976,7 @@ public class DifferenceEngineTest extends TestCase
      */
     public void testRemoveSyntaxDifference() throws Exception
     {
-        AttributeType o1 = new AttributeType( "1.2.3.4" );
+        MutableAttributeType o1 = new MutableAttributeType( "1.2.3.4" );
         o1.setSyntaxOid( "1.2.3.4.5" );
         AttributeType o2 = new AttributeType( "1.2.3.4" );
 
@@ -1002,7 +1003,7 @@ public class DifferenceEngineTest extends TestCase
      */
     public void testRemoveSyntaxLengthDifference() throws Exception
     {
-        AttributeType o1 = new AttributeType( "1.2.3.4" );
+        MutableAttributeType o1 = new MutableAttributeType( "1.2.3.4" );
         o1.setSyntaxLength( 1234 );
         AttributeType o2 = new AttributeType( "1.2.3.4" );
 

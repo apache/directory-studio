@@ -20,7 +20,7 @@
 package org.apache.directory.studio.schemaeditor.controller.actions;
 
 
-import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.MutableAttributeType;
 import org.apache.directory.shared.ldap.model.schema.MutableObjectClass;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.studio.schemaeditor.Activator;
@@ -112,12 +112,12 @@ public class RenameSchemaElementAction extends Action implements IWorkbenchWindo
                 // ATTRIBUTE TYPE
                 else if ( selectedElement instanceof AttributeTypeWrapper )
                 {
-                    AttributeType attributeType = ( ( AttributeTypeWrapper ) selectedElement ).getAttributeType();
+                    MutableAttributeType attributeType = (MutableAttributeType)( ( AttributeTypeWrapper ) selectedElement ).getAttributeType();
 
                     RenameAttributeTypeDialog dialog = new RenameAttributeTypeDialog( attributeType.getNames() );
                     if ( dialog.open() == RenameAttributeTypeDialog.OK )
                     {
-                        AttributeType modifiedAttributeType = PluginUtils.getClone( attributeType );
+                        MutableAttributeType modifiedAttributeType = PluginUtils.getClone( attributeType );
                         modifiedAttributeType.setNames( dialog.getAliases() );
                         Activator.getDefault().getSchemaHandler()
                             .modifyAttributeType( attributeType, modifiedAttributeType );

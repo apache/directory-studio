@@ -34,6 +34,7 @@ import org.apache.directory.shared.ldap.model.constants.SchemaConstants;
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
 import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
 import org.apache.directory.shared.ldap.model.schema.MatchingRule;
+import org.apache.directory.shared.ldap.model.schema.MutableAttributeType;
 import org.apache.directory.shared.ldap.model.schema.MutableObjectClass;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.shared.ldap.model.schema.parsers.AttributeTypeDescriptionSchemaParser;
@@ -207,7 +208,7 @@ public class GenericSchemaConnector extends AbstractSchemaConnector implements S
 
                         AttributeType atd = parser.parseAttributeTypeDescription( value );
 
-                        AttributeType impl = new AttributeType( atd.getOid() );
+                        MutableAttributeType impl = new MutableAttributeType( atd.getOid() );
                         impl.setNames( atd.getNames().toArray( new String[0] ) );
                         impl.setDescription( atd.getDescription() );
                         impl.setSuperiorOid( atd.getSuperiorOid() );

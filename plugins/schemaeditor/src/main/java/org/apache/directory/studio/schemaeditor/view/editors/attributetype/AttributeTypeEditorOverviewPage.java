@@ -6,16 +6,16 @@
  *  to you under the Apache License, Version 2.0 (the
  *  "License"); you may not use this file except in compliance
  *  with the License.  You may obtain a copy of the License at
- *  
+ * 
  *    http://www.apache.org/licenses/LICENSE-2.0
- *  
+ * 
  *  Unless required by applicable law or agreed to in writing,
  *  software distributed under the License is distributed on an
  *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  *  KIND, either express or implied.  See the License for the
  *  specific language governing permissions and limitations
- *  under the License. 
- *  
+ *  under the License.
+ * 
  */
 
 package org.apache.directory.studio.schemaeditor.view.editors.attributetype;
@@ -28,6 +28,7 @@ import org.apache.directory.shared.asn1.util.Oid;
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
 import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
 import org.apache.directory.shared.ldap.model.schema.MatchingRule;
+import org.apache.directory.shared.ldap.model.schema.MutableAttributeType;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.shared.ldap.model.schema.UsageEnum;
 import org.apache.directory.studio.schemaeditor.Activator;
@@ -372,7 +373,7 @@ public class AttributeTypeEditorOverviewPage extends AbstractAttributeTypeEditor
     {
         public void selectionChanged( SelectionChangedEvent event )
         {
-            AttributeType modifiedAttributeType = getModifiedAttributeType();
+            MutableAttributeType modifiedAttributeType = getModifiedAttributeType();
             Object selectedItem = ( ( StructuredSelection ) supComboViewer.getSelection() ).getFirstElement();
 
             if ( selectedItem instanceof AttributeType )
@@ -410,7 +411,7 @@ public class AttributeTypeEditorOverviewPage extends AbstractAttributeTypeEditor
     {
         public void modifyText( ModifyEvent e )
         {
-            AttributeType modifiedAttributeType = getModifiedAttributeType();
+            MutableAttributeType modifiedAttributeType = getModifiedAttributeType();
             if ( usageCombo.getSelectionIndex() == 0 )
             {
                 modifiedAttributeType.setUsage( UsageEnum.DIRECTORY_OPERATION );
@@ -436,7 +437,7 @@ public class AttributeTypeEditorOverviewPage extends AbstractAttributeTypeEditor
     {
         public void selectionChanged( SelectionChangedEvent event )
         {
-            AttributeType modifiedAttributeType = getModifiedAttributeType();
+            MutableAttributeType modifiedAttributeType = getModifiedAttributeType();
             Object selectedItem = ( ( StructuredSelection ) syntaxComboViewer.getSelection() ).getFirstElement();
 
             if ( selectedItem instanceof LdapSyntax )
@@ -465,7 +466,7 @@ public class AttributeTypeEditorOverviewPage extends AbstractAttributeTypeEditor
     {
         public void modifyText( ModifyEvent e )
         {
-            AttributeType modifiedAttributeType = getModifiedAttributeType();
+            MutableAttributeType modifiedAttributeType = getModifiedAttributeType();
             if ( syntaxLengthText.getText().length() <= 0 )
             {
                 modifiedAttributeType.setSyntaxLength( -1 );
@@ -535,7 +536,7 @@ public class AttributeTypeEditorOverviewPage extends AbstractAttributeTypeEditor
     {
         public void selectionChanged( SelectionChangedEvent event )
         {
-            AttributeType modifiedAttributeType = getModifiedAttributeType();
+            MutableAttributeType modifiedAttributeType = getModifiedAttributeType();
             Object selectedItem = ( ( StructuredSelection ) equalityComboViewer.getSelection() ).getFirstElement();
 
             if ( selectedItem instanceof MatchingRule )
@@ -564,7 +565,7 @@ public class AttributeTypeEditorOverviewPage extends AbstractAttributeTypeEditor
     {
         public void selectionChanged( SelectionChangedEvent event )
         {
-            AttributeType modifiedAttributeType = getModifiedAttributeType();
+            MutableAttributeType modifiedAttributeType = getModifiedAttributeType();
             Object selectedItem = ( ( StructuredSelection ) orderingComboViewer.getSelection() ).getFirstElement();
 
             if ( selectedItem instanceof MatchingRule )
@@ -593,7 +594,7 @@ public class AttributeTypeEditorOverviewPage extends AbstractAttributeTypeEditor
     {
         public void selectionChanged( SelectionChangedEvent event )
         {
-            AttributeType modifiedAttributeType = getModifiedAttributeType();
+            MutableAttributeType modifiedAttributeType = getModifiedAttributeType();
             Object selectedItem = ( ( StructuredSelection ) substringComboViewer.getSelection() ).getFirstElement();
 
             if ( selectedItem instanceof MatchingRule )

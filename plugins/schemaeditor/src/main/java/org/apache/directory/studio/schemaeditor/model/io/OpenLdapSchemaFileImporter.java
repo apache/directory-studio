@@ -30,6 +30,7 @@ import java.util.Scanner;
 import java.util.regex.MatchResult;
 
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.MutableAttributeType;
 import org.apache.directory.shared.ldap.model.schema.MutableObjectClass;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.shared.ldap.model.schema.parsers.OpenLdapSchemaParser;
@@ -145,7 +146,7 @@ public class OpenLdapSchemaFileImporter
      */
     private static final AttributeType convertAttributeType( AttributeType at )
     {
-        AttributeType newAT = new AttributeType( at.getOid() );
+        MutableAttributeType newAT = new MutableAttributeType( at.getOid() );
         newAT.setNames( at.getNames() );
         newAT.setDescription( at.getDescription() );
         newAT.setSuperiorOid( at.getSuperiorOid() );
