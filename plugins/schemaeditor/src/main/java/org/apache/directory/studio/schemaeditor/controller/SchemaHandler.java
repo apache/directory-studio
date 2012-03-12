@@ -6,16 +6,16 @@
  *  to you under the Apache License, Version 2.0 (the
  *  "License"); you may not use this file except in compliance
  *  with the License.  You may obtain a copy of the License at
- *  
+ * 
  *    http://www.apache.org/licenses/LICENSE-2.0
- *  
+ * 
  *  Unless required by applicable law or agreed to in writing,
  *  software distributed under the License is distributed on an
  *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  *  KIND, either express or implied.  See the License for the
  *  specific language governing permissions and limitations
- *  under the License. 
- *  
+ *  under the License.
+ * 
  */
 package org.apache.directory.studio.schemaeditor.controller;
 
@@ -28,6 +28,7 @@ import org.apache.commons.collections.map.MultiValueMap;
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
 import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
 import org.apache.directory.shared.ldap.model.schema.MatchingRule;
+import org.apache.directory.shared.ldap.model.schema.MutableObjectClass;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.shared.ldap.model.schema.SchemaObject;
 import org.apache.directory.shared.util.Strings;
@@ -37,7 +38,7 @@ import org.apache.directory.studio.schemaeditor.model.Schema;
 /**
  * This class represents the SchemaHandler.
  * <p>
- * It used to handle the whole Schema (including schemas, attribute types, 
+ * It used to handle the whole Schema (including schemas, attribute types,
  * object classes, matching rules and syntaxes).
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
@@ -244,13 +245,13 @@ public class SchemaHandler
      * @return
      *      the corresponding object class, or null if no one is found
      */
-    public ObjectClass getObjectClass( String id )
+    public MutableObjectClass getObjectClass( String id )
     {
         List<?> list = getObjectClassList( Strings.toLowerCase( id ) );
 
         if ( ( list != null ) && ( list.size() >= 1 ) )
         {
-            return ( ObjectClass ) list.get( 0 );
+            return ( MutableObjectClass ) list.get( 0 );
         }
         else
         {
@@ -482,7 +483,7 @@ public class SchemaHandler
 
 
     /**
-     * Removes the given schema. 
+     * Removes the given schema.
      *
      * @param schema
      *      the schema
@@ -589,7 +590,7 @@ public class SchemaHandler
 
 
     /**
-     * Renames the given schema. 
+     * Renames the given schema.
      *
      * @param schema the schema
      * @param newName the new name
@@ -647,7 +648,7 @@ public class SchemaHandler
 
 
     /**
-     * Update the source attribute type with the values of the 
+     * Update the source attribute type with the values of the
      * destination attribute type.
      *
      * @param at1
@@ -708,7 +709,7 @@ public class SchemaHandler
      * @param oc
      *      the object class
      */
-    public void addObjectClass( ObjectClass oc )
+    public void addObjectClass( MutableObjectClass oc )
     {
         Schema schema = getSchema( oc.getSchemaName() );
 
@@ -721,15 +722,15 @@ public class SchemaHandler
 
 
     /**
-     * Update the source object class with the values of the 
+     * Update the source object class with the values of the
      * destination object class.
      *
      * @param oc1
      *      the source object class
      * @param oc2
-     *      the destination object class  
+     *      the destination object class
      */
-    public void modifyObjectClass( ObjectClass oc1, ObjectClass oc2 )
+    public void modifyObjectClass( MutableObjectClass oc1, ObjectClass oc2 )
     {
         // Removing the references (in case of the names or oid have changed)
         removeSchemaObject( oc1 );

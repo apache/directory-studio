@@ -6,16 +6,16 @@
  *  to you under the Apache License, Version 2.0 (the
  *  "License"); you may not use this file except in compliance
  *  with the License.  You may obtain a copy of the License at
- *  
+ * 
  *    http://www.apache.org/licenses/LICENSE-2.0
- *  
+ * 
  *  Unless required by applicable law or agreed to in writing,
  *  software distributed under the License is distributed on an
  *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  *  KIND, either express or implied.  See the License for the
  *  specific language governing permissions and limitations
- *  under the License. 
- *  
+ *  under the License.
+ * 
  */
 package org.apache.directory.studio.schemaeditor;
 
@@ -34,6 +34,7 @@ import java.util.List;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.MutableObjectClass;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
@@ -65,7 +66,7 @@ import org.eclipse.core.runtime.Status;
 public class PluginUtils
 {
     /**
-     * Verifies that the given name is syntaxely correct according to the RFC 2252 
+     * Verifies that the given name is syntaxely correct according to the RFC 2252
      * (Lightweight Directory Access Protocol (v3): Attribute Syntax Definitions).
      *
      * @param name
@@ -117,9 +118,9 @@ public class PluginUtils
      * @return
      *      a clone of the given object class
      */
-    public static ObjectClass getClone( ObjectClass oc )
+    public static MutableObjectClass getClone( ObjectClass oc )
     {
-        ObjectClass clone = new ObjectClass( oc.getOid() );
+        MutableObjectClass clone = new MutableObjectClass( oc.getOid() );
         clone.setNames( oc.getNames() );
         clone.setSchemaName( oc.getSchemaName() );
         clone.setDescription( oc.getDescription() );
@@ -186,7 +187,7 @@ public class PluginUtils
 
             if ( !loadFailed )
             {
-                // If everything went fine, we add the projects 
+                // If everything went fine, we add the projects
                 for ( Project project : projects )
                 {
                     projectsHandler.addProject( project );
@@ -221,7 +222,7 @@ public class PluginUtils
                         return;
                     }
 
-                    // We add the projects 
+                    // We add the projects
                     for ( Project project : projects )
                     {
                         projectsHandler.addProject( project );

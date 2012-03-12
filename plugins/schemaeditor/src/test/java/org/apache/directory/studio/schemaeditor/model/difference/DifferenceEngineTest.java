@@ -6,16 +6,16 @@
  *  to you under the Apache License, Version 2.0 (the
  *  "License"); you may not use this file except in compliance
  *  with the License.  You may obtain a copy of the License at
- *  
+ * 
  *    http://www.apache.org/licenses/LICENSE-2.0
- *  
+ * 
  *  Unless required by applicable law or agreed to in writing,
  *  software distributed under the License is distributed on an
  *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  *  KIND, either express or implied.  See the License for the
  *  specific language governing permissions and limitations
- *  under the License. 
- *  
+ *  under the License.
+ * 
  */
 package org.apache.directory.studio.schemaeditor.model.difference;
 
@@ -26,6 +26,7 @@ import java.util.List;
 import junit.framework.TestCase;
 
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.MutableObjectClass;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.shared.ldap.model.schema.ObjectClassTypeEnum;
 import org.apache.directory.shared.ldap.model.schema.UsageEnum;
@@ -126,7 +127,7 @@ public class DifferenceEngineTest extends TestCase
     public void testAddMandatoryATDifference() throws Exception
     {
         ObjectClass o1 = new ObjectClass( "1.2.3.4" );
-        ObjectClass o2 = new ObjectClass( "1.2.3.4" );
+        MutableObjectClass o2 = new MutableObjectClass( "1.2.3.4" );
         o2.setMustAttributeTypeOids( Arrays.asList( new String[]
             { "must" } ) );
 
@@ -154,7 +155,7 @@ public class DifferenceEngineTest extends TestCase
     public void testAddOptionalATDifference() throws Exception
     {
         ObjectClass o1 = new ObjectClass( "1.2.3.4" );
-        ObjectClass o2 = new ObjectClass( "1.2.3.4" );
+        MutableObjectClass o2 = new MutableObjectClass( "1.2.3.4" );
         o2.setMayAttributeTypeOids( Arrays.asList( new String[]
             { "may" } ) );
 
@@ -259,7 +260,7 @@ public class DifferenceEngineTest extends TestCase
     public void testAddSuperiorOCDifference() throws Exception
     {
         ObjectClass o1 = new ObjectClass( "1.2.3.4" );
-        ObjectClass o2 = new ObjectClass( "1.2.3.4" );
+        MutableObjectClass o2 = new MutableObjectClass( "1.2.3.4" );
         o2.setSuperiorOids( Arrays.asList( new String[]
             { "superiorOC" } ) );
 
@@ -338,9 +339,9 @@ public class DifferenceEngineTest extends TestCase
      */
     public void testModifyClassTypeDifference() throws Exception
     {
-        ObjectClass o1 = new ObjectClass( "1.2.3.4" );
+        MutableObjectClass o1 = new MutableObjectClass( "1.2.3.4" );
         o1.setType( ObjectClassTypeEnum.STRUCTURAL );
-        ObjectClass o2 = new ObjectClass( "1.2.3.4" );
+        MutableObjectClass o2 = new MutableObjectClass( "1.2.3.4" );
         o2.setType( ObjectClassTypeEnum.ABSTRACT );
 
         List<PropertyDifference> differences = DifferenceEngine.getDifferences( o1, o2 );
@@ -798,10 +799,10 @@ public class DifferenceEngineTest extends TestCase
      */
     public void testRemoveMandatoryATDifference() throws Exception
     {
-        ObjectClass o1 = new ObjectClass( "1.2.3.4" );
+        MutableObjectClass o1 = new MutableObjectClass( "1.2.3.4" );
         o1.setMustAttributeTypeOids( Arrays.asList( new String[]
             { "must1", "must2" } ) );
-        ObjectClass o2 = new ObjectClass( "1.2.3.4" );
+        MutableObjectClass o2 = new MutableObjectClass( "1.2.3.4" );
         o2.setMustAttributeTypeOids( Arrays.asList( new String[]
             { "must2" } ) );
 
@@ -829,10 +830,10 @@ public class DifferenceEngineTest extends TestCase
      */
     public void testRemoveOptionalATDifference() throws Exception
     {
-        ObjectClass o1 = new ObjectClass( "1.2.3.4" );
+        MutableObjectClass o1 = new MutableObjectClass( "1.2.3.4" );
         o1.setMayAttributeTypeOids( Arrays.asList( new String[]
             { "may1", "may2" } ) );
-        ObjectClass o2 = new ObjectClass( "1.2.3.4" );
+        MutableObjectClass o2 = new MutableObjectClass( "1.2.3.4" );
         o2.setMayAttributeTypeOids( Arrays.asList( new String[]
             { "may2" } ) );
 
@@ -943,10 +944,10 @@ public class DifferenceEngineTest extends TestCase
      */
     public void testRemoveSuperiorOCDifference() throws Exception
     {
-        ObjectClass o1 = new ObjectClass( "1.2.3.4" );
+        MutableObjectClass o1 = new MutableObjectClass( "1.2.3.4" );
         o1.setSuperiorOids( Arrays.asList( new String[]
             { "sup1", "sup2" } ) );
-        ObjectClass o2 = new ObjectClass( "1.2.3.4" );
+        MutableObjectClass o2 = new MutableObjectClass( "1.2.3.4" );
         o2.setSuperiorOids( Arrays.asList( new String[]
             { "sup2" } ) );
 

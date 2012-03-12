@@ -6,16 +6,16 @@
  *  to you under the Apache License, Version 2.0 (the
  *  "License"); you may not use this file except in compliance
  *  with the License.  You may obtain a copy of the License at
- *  
+ * 
  *    http://www.apache.org/licenses/LICENSE-2.0
- *  
+ * 
  *  Unless required by applicable law or agreed to in writing,
  *  software distributed under the License is distributed on an
  *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  *  KIND, either express or implied.  See the License for the
  *  specific language governing permissions and limitations
- *  under the License. 
- *  
+ *  under the License.
+ * 
  */
 package org.apache.directory.studio.schemaeditor.view.wizards;
 
@@ -29,6 +29,7 @@ import java.util.Set;
 
 import org.apache.directory.shared.ldap.model.schema.AbstractSchemaObject;
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.MutableObjectClass;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.studio.schemaeditor.Activator;
 import org.apache.directory.studio.schemaeditor.model.Project;
@@ -104,13 +105,13 @@ public class MergeSchemasWizard extends Wizard implements IImportWizard
     private void mergeObjects( Object[] sourceObjects, List<String> errorMessages, boolean replaceUnknownSyntax,
         boolean mergeDependencies, boolean pullUpAttributes )
     {
-        /* 
+        /*
          * List of already processed schema objects. Used to avoid that schema objects are process multiple time.
          */
         Set<Object> processedObjects = new HashSet<Object>();
 
         /*
-         * List of created target schemas. 
+         * List of created target schemas.
          */
         Map<String, Schema> targetSchemas = new HashMap<String, Schema>();
 
@@ -151,7 +152,7 @@ public class MergeSchemasWizard extends Wizard implements IImportWizard
             {
                 ObjectClassFolder ocf = ( ObjectClassFolder ) sourceObject;
                 Schema targetSchema = getTargetSchema( ocf.schema.getProject(), targetProject, targetSchemas );
-                List<ObjectClass> sourceObjectClasses = ocf.schema.getObjectClasses();
+                List<MutableObjectClass> sourceObjectClasses = ocf.schema.getObjectClasses();
                 for ( ObjectClass sourceObjectClass : sourceObjectClasses )
                 {
                     mergeObjectClass( sourceObjectClass, targetProject, targetSchema, processedObjects, errorMessages,
@@ -208,7 +209,7 @@ public class MergeSchemasWizard extends Wizard implements IImportWizard
 
 
     /**
-     * Merges all attribute types and object classes and form the given sourceSchema to the targetSchema. 
+     * Merges all attribute types and object classes and form the given sourceSchema to the targetSchema.
      */
     private void mergeSchema( Schema sourceSchema, Project targetProject, Schema targetSchema,
         Set<Object> processedObjects, List<String> errorMessages, boolean replaceUnknownSyntax,
@@ -221,7 +222,7 @@ public class MergeSchemasWizard extends Wizard implements IImportWizard
                 replaceUnknownSyntax, mergeDependencies, pullUpAttributes );
         }
 
-        List<ObjectClass> sourceObjectClasses = sourceSchema.getObjectClasses();
+        List<MutableObjectClass> sourceObjectClasses = sourceSchema.getObjectClasses();
         for ( ObjectClass sourceObjectClass : sourceObjectClasses )
         {
             mergeObjectClass( sourceObjectClass, targetProject, targetSchema, processedObjects, errorMessages,
@@ -231,7 +232,7 @@ public class MergeSchemasWizard extends Wizard implements IImportWizard
 
 
     /**
-     * Merges the given attribute type to the targetSchema. 
+     * Merges the given attribute type to the targetSchema.
      */
     private void mergeAttributeType( AttributeType sourceAttributeType, Project targetProject, Schema targetSchema,
         Set<Object> processedObjects, List<String> errorMessages, boolean replaceUnknownSyntax,
@@ -355,7 +356,7 @@ public class MergeSchemasWizard extends Wizard implements IImportWizard
 
 
     /**
-     * Merges the given object class to the targetSchema. 
+     * Merges the given object class to the targetSchema.
      */
     private void mergeObjectClass( ObjectClass sourceObjectClass, Project targetProject, Schema targetSchema,
         Set<Object> processedObjects, List<String> errorMessages, boolean replaceUnknownSyntax,
@@ -419,7 +420,7 @@ public class MergeSchemasWizard extends Wizard implements IImportWizard
                 }
 
                 // create object class
-                ObjectClass clonedObjectClass = new ObjectClass( sourceObjectClass.getOid() );
+                MutableObjectClass clonedObjectClass = new MutableObjectClass( sourceObjectClass.getOid() );
                 clonedObjectClass.setOid( sourceObjectClass.getOid() );
                 clonedObjectClass.setNames( sourceObjectClass.getNames() );
                 clonedObjectClass.setDescription( sourceObjectClass.getDescription() );
@@ -498,7 +499,7 @@ public class MergeSchemasWizard extends Wizard implements IImportWizard
     }
 
 
-    private void pullUpAttributes( ObjectClass targetObjectClass, ObjectClass sourceSuperObjectClass,
+    private void pullUpAttributes( MutableObjectClass targetObjectClass, ObjectClass sourceSuperObjectClass,
         ObjectClass targetSuperObjectClass )
     {
         // must

@@ -6,16 +6,16 @@
  *  to you under the Apache License, Version 2.0 (the
  *  "License"); you may not use this file except in compliance
  *  with the License.  You may obtain a copy of the License at
- *  
+ * 
  *    http://www.apache.org/licenses/LICENSE-2.0
- *  
+ * 
  *  Unless required by applicable law or agreed to in writing,
  *  software distributed under the License is distributed on an
  *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  *  KIND, either express or implied.  See the License for the
  *  specific language governing permissions and limitations
- *  under the License. 
- *  
+ *  under the License.
+ * 
  */
 package org.apache.directory.studio.schemaeditor.model.io;
 
@@ -29,7 +29,7 @@ import java.util.List;
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
 import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
 import org.apache.directory.shared.ldap.model.schema.MatchingRule;
-import org.apache.directory.shared.ldap.model.schema.ObjectClass;
+import org.apache.directory.shared.ldap.model.schema.MutableObjectClass;
 import org.apache.directory.shared.ldap.model.schema.ObjectClassTypeEnum;
 import org.apache.directory.shared.ldap.model.schema.UsageEnum;
 import org.apache.directory.studio.schemaeditor.model.Schema;
@@ -279,7 +279,7 @@ public class XMLSchemaFileImporter
      *      the element
      * @param schema
      *      the schema
-     * @throws XMLSchemaFileImportException 
+     * @throws XMLSchemaFileImportException
      */
     private static void readAttributeTypes( Element element, Schema schema ) throws XMLSchemaFileImportException
     {
@@ -448,7 +448,7 @@ public class XMLSchemaFileImporter
      *      the element
      * @param schema
      *      the schema
-     * @throws XMLSchemaFileImportException 
+     * @throws XMLSchemaFileImportException
      */
     private static void readObjectClasses( Element element, Schema schema ) throws XMLSchemaFileImportException
     {
@@ -470,17 +470,17 @@ public class XMLSchemaFileImporter
      *      the element
      * @param schema
      *      the schema
-     * @throws XMLSchemaFileImportException 
+     * @throws XMLSchemaFileImportException
      */
     private static void readObjectClass( Element element, Schema schema ) throws XMLSchemaFileImportException
     {
-        ObjectClass oc = null;
+        MutableObjectClass oc = null;
 
         // OID
         Attribute oidAttribute = element.attribute( OID_TAG );
         if ( ( oidAttribute != null ) && ( !oidAttribute.getValue().equals( "" ) ) ) //$NON-NLS-1$
         {
-            oc = new ObjectClass( oidAttribute.getValue() );
+            oc = new MutableObjectClass( oidAttribute.getValue() );
         }
         else
         {
@@ -595,7 +595,7 @@ public class XMLSchemaFileImporter
      *      the element
      * @param schema
      *      the schema
-     * @throws XMLSchemaFileImportException 
+     * @throws XMLSchemaFileImportException
      */
     private static void readMatchingRules( Element element, Schema schema ) throws XMLSchemaFileImportException
     {

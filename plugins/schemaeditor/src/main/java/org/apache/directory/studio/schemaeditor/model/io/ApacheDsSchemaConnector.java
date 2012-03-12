@@ -34,7 +34,7 @@ import org.apache.directory.shared.ldap.model.constants.SchemaConstants;
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
 import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
 import org.apache.directory.shared.ldap.model.schema.MatchingRule;
-import org.apache.directory.shared.ldap.model.schema.ObjectClass;
+import org.apache.directory.shared.ldap.model.schema.MutableObjectClass;
 import org.apache.directory.shared.ldap.model.schema.ObjectClassTypeEnum;
 import org.apache.directory.shared.ldap.model.schema.UsageEnum;
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
@@ -218,7 +218,7 @@ public class ApacheDsSchemaConnector extends AbstractSchemaConnector implements 
                             schema.addAttributeType( at );
                             break;
                         case OBJECT_CLASS:
-                            ObjectClass oc = createObjectClass( searchResult );
+                            MutableObjectClass oc = createObjectClass( searchResult );
                             oc.setSchemaName( name );
                             schema.addObjectClass( oc );
                             break;
@@ -329,9 +329,9 @@ public class ApacheDsSchemaConnector extends AbstractSchemaConnector implements 
      * ObjectClassImpl could be created
      * @throws NamingException
      */
-    private static ObjectClass createObjectClass( SearchResult sr ) throws NamingException
+    private static MutableObjectClass createObjectClass( SearchResult sr ) throws NamingException
     {
-        ObjectClass oc = new ObjectClass( getOid( sr ) );
+        MutableObjectClass oc = new MutableObjectClass( getOid( sr ) );
         oc.setNames( getNames( sr ) );
         oc.setDescription( getDescription( sr ) );
         oc.setObsolete( isObsolete( sr ) );

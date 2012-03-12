@@ -6,16 +6,16 @@
  *  to you under the Apache License, Version 2.0 (the
  *  "License"); you may not use this file except in compliance
  *  with the License.  You may obtain a copy of the License at
- *  
+ * 
  *    http://www.apache.org/licenses/LICENSE-2.0
- *  
+ * 
  *  Unless required by applicable law or agreed to in writing,
  *  software distributed under the License is distributed on an
  *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  *  KIND, either express or implied.  See the License for the
  *  specific language governing permissions and limitations
- *  under the License. 
- *  
+ *  under the License.
+ * 
  */
 package org.apache.directory.studio.schemaeditor.view.wizards;
 
@@ -38,6 +38,7 @@ import org.apache.directory.shared.converter.schema.AttributeTypeHolder;
 import org.apache.directory.shared.converter.schema.ObjectClassHolder;
 import org.apache.directory.shared.ldap.model.exception.LdapException;
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.MutableObjectClass;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.shared.util.Strings;
 import org.apache.directory.studio.schemaeditor.Activator;
@@ -114,7 +115,7 @@ public class ExportSchemasForADSWizard extends Wizard implements IExportWizard
                             sb
                                 .append( NLS
                                     .bind(
-                                        Messages.getString( "ExportSchemasForADSWizard.GeneratedByApacheComment" ), new String[] { format.format( date ) } ) ); //$NON-NLS-1$ 
+                                        Messages.getString( "ExportSchemasForADSWizard.GeneratedByApacheComment" ), new String[] { format.format( date ) } ) ); //$NON-NLS-1$
 
                             try
                             {
@@ -231,14 +232,14 @@ public class ExportSchemasForADSWizard extends Wizard implements IExportWizard
      *      the StringBuffer
      * @throws NamingException
      *      if an error occurs during the conversion
-     * @throws LdapException 
+     * @throws LdapException
      */
     private void toLdif( Schema schema, StringBuffer sb ) throws NamingException, LdapException
     {
         sb
             .append( NLS
                 .bind(
-                    Messages.getString( "ExportSchemasForADSWizard.SchemaComment" ), new String[] { schema.getSchemaName().toUpperCase() } ) ); //$NON-NLS-1$ 
+                    Messages.getString( "ExportSchemasForADSWizard.SchemaComment" ), new String[] { schema.getSchemaName().toUpperCase() } ) ); //$NON-NLS-1$
 
         sb.append( "dn: cn=" + schema.getSchemaName() + ", ou=schema\n" ); //$NON-NLS-1$ //$NON-NLS-2$
         sb.append( "objectclass: metaSchema\n" ); //$NON-NLS-1$
@@ -341,7 +342,7 @@ public class ExportSchemasForADSWizard extends Wizard implements IExportWizard
         sb.append( "\n" ); //$NON-NLS-1$
 
         // Generating LDIF for Object Classes
-        List<ObjectClass> sortedObjectClasses = getSortedObjectClasses( schema.getObjectClasses() );
+        List<MutableObjectClass> sortedObjectClasses = getSortedObjectClasses( schema.getObjectClasses() );
         for ( ObjectClass oc : sortedObjectClasses )
         {
             ObjectClassHolder holder = new ObjectClassHolder( oc.getOid() );
@@ -398,10 +399,10 @@ public class ExportSchemasForADSWizard extends Wizard implements IExportWizard
      * @param objectClasses the unsorted object classes
      * @return the sorted object classes
      */
-    private List<ObjectClass> getSortedObjectClasses( List<ObjectClass> objectClasses )
+    private List<MutableObjectClass> getSortedObjectClasses( List<MutableObjectClass> objectClasses )
     {
         // clone the unsorted list
-        List<ObjectClass> unsortedObjectClasses = new ArrayList<ObjectClass>( objectClasses );
+        List<MutableObjectClass> unsortedObjectClasses = new ArrayList<MutableObjectClass>( objectClasses );
 
         // list of all existing names
         Set<String> objectClassNames = new HashSet<String>();
@@ -414,16 +415,16 @@ public class ExportSchemasForADSWizard extends Wizard implements IExportWizard
         }
 
         // sort object classes
-        List<ObjectClass> sortedObjectClasses = new ArrayList<ObjectClass>();
+        List<MutableObjectClass> sortedObjectClasses = new ArrayList<MutableObjectClass>();
         Set<String> movedObjectClasses = new HashSet<String>();
         boolean moved = true;
         while ( !unsortedObjectClasses.isEmpty() && moved )
         {
             moved = false;
-            Iterator<ObjectClass> unsortedIterator = unsortedObjectClasses.iterator();
+            Iterator<MutableObjectClass> unsortedIterator = unsortedObjectClasses.iterator();
             while ( unsortedIterator.hasNext() )
             {
-                ObjectClass oc = unsortedIterator.next();
+                MutableObjectClass oc = unsortedIterator.next();
                 for ( String superName : oc.getSuperiorOids() )
                 {
                     if ( !objectClassNames.contains( Strings.toLowerCase( superName ) )
@@ -443,7 +444,7 @@ public class ExportSchemasForADSWizard extends Wizard implements IExportWizard
         }
 
         // add the rest
-        for ( ObjectClass oc : unsortedObjectClasses )
+        for ( MutableObjectClass oc : unsortedObjectClasses )
         {
             sortedObjectClasses.add( oc );
         }

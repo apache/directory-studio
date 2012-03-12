@@ -6,21 +6,22 @@
  *  to you under the Apache License, Version 2.0 (the
  *  "License"); you may not use this file except in compliance
  *  with the License.  You may obtain a copy of the License at
- *  
+ * 
  *    http://www.apache.org/licenses/LICENSE-2.0
- *  
+ * 
  *  Unless required by applicable law or agreed to in writing,
  *  software distributed under the License is distributed on an
  *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  *  KIND, either express or implied.  See the License for the
  *  specific language governing permissions and limitations
- *  under the License. 
- *  
+ *  under the License.
+ * 
  */
 
 package org.apache.directory.studio.schemaeditor.view.editors.objectclass;
 
 
+import org.apache.directory.shared.ldap.model.schema.MutableObjectClass;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.studio.schemaeditor.Activator;
 import org.apache.directory.studio.schemaeditor.PluginConstants;
@@ -63,10 +64,10 @@ public class ObjectClassEditor extends FormEditor
     private boolean dirty = false;
 
     /** The original object class */
-    private ObjectClass originalObjectClass;
+    private MutableObjectClass originalObjectClass;
 
     /** The object class used to save modifications */
-    private ObjectClass modifiedObjectClass;
+    private MutableObjectClass modifiedObjectClass;
 
     /** The originalSchema */
     private Schema originalSchema;
@@ -194,9 +195,9 @@ public class ObjectClassEditor extends FormEditor
     {
         try
         {
-            overviewPage = new ObjectClassEditorOverviewPage( this ); //$NON-NLS-1$ //$NON-NLS-2$
+            overviewPage = new ObjectClassEditorOverviewPage( this );
             addPage( overviewPage );
-            sourceCodePage = new ObjectClassEditorSourceCodePage( this ); //$NON-NLS-1$ //$NON-NLS-2$
+            sourceCodePage = new ObjectClassEditorSourceCodePage( this );
             addPage( sourceCodePage );
         }
         catch ( PartInitException e )
@@ -286,7 +287,7 @@ public class ObjectClassEditor extends FormEditor
      * @return
      *      the modified object class
      */
-    public ObjectClass getModifiedObjectClass()
+    public MutableObjectClass getModifiedObjectClass()
     {
         return modifiedObjectClass;
     }
@@ -298,7 +299,7 @@ public class ObjectClassEditor extends FormEditor
      * @param modifiedObjectClass
      *      the modified object class to set.
      */
-    public void setModifiedObjectClass( ObjectClass modifiedObjectClass )
+    public void setModifiedObjectClass( MutableObjectClass modifiedObjectClass )
     {
         this.modifiedObjectClass = modifiedObjectClass;
     }
@@ -306,13 +307,13 @@ public class ObjectClassEditor extends FormEditor
 
     /**
      * Opens an error dialog displaying the given message.
-     *  
+     * 
      * @param message
      *      the message to display
      */
     private void notifyError( String message )
     {
         MessageDialog.openError( PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
-            Messages.getString( "ObjectClassEditor.Error" ), message ); //$NON-NLS-1$ 
+            Messages.getString( "ObjectClassEditor.Error" ), message ); //$NON-NLS-1$
     }
 }

@@ -6,16 +6,16 @@
  *  to you under the Apache License, Version 2.0 (the
  *  "License"); you may not use this file except in compliance
  *  with the License.  You may obtain a copy of the License at
- *  
+ * 
  *    http://www.apache.org/licenses/LICENSE-2.0
- *  
+ * 
  *  Unless required by applicable law or agreed to in writing,
  *  software distributed under the License is distributed on an
  *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  *  KIND, either express or implied.  See the License for the
  *  specific language governing permissions and limitations
- *  under the License. 
- *  
+ *  under the License.
+ * 
  */
 package org.apache.directory.studio.schemaeditor.model.io;
 
@@ -28,6 +28,7 @@ import java.util.List;
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
 import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
 import org.apache.directory.shared.ldap.model.schema.MatchingRule;
+import org.apache.directory.shared.ldap.model.schema.MutableObjectClass;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.shared.ldap.model.schema.ObjectClassTypeEnum;
 import org.apache.directory.shared.ldap.model.schema.UsageEnum;
@@ -91,7 +92,7 @@ public class XMLSchemaFileExporter
      *      the schema to convert
      * @return
      *      the corresponding source code representation
-     * @throws IOException 
+     * @throws IOException
      */
     public static String toXml( Schema schema ) throws IOException
     {
@@ -124,7 +125,7 @@ public class XMLSchemaFileExporter
      *      the array of schemas to convert
      * @return
      *      the corresponding source code representation
-     * @throws IOException 
+     * @throws IOException
      */
     public static String toXml( Schema[] schemas ) throws IOException
     {
@@ -185,7 +186,7 @@ public class XMLSchemaFileExporter
         Element element = branch.addElement( SCHEMA_TAG );
         if ( schema != null )
         {
-            // Name 
+            // Name
             String name = schema.getSchemaName();
             if ( ( name != null ) && ( !name.equals( "" ) ) ) //$NON-NLS-1$
             {
@@ -204,7 +205,7 @@ public class XMLSchemaFileExporter
             }
 
             // Object Classes
-            List<ObjectClass> ocs = schema.getObjectClasses();
+            List<MutableObjectClass> ocs = schema.getObjectClasses();
             if ( ( ocs != null ) && ( ocs.size() >= 1 ) )
             {
                 Element objectClassesNode = element.addElement( OBJECT_CLASSES_TAG );
