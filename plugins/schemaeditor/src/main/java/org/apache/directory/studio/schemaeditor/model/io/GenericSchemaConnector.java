@@ -35,6 +35,7 @@ import org.apache.directory.shared.ldap.model.schema.AttributeType;
 import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
 import org.apache.directory.shared.ldap.model.schema.MatchingRule;
 import org.apache.directory.shared.ldap.model.schema.MutableAttributeType;
+import org.apache.directory.shared.ldap.model.schema.MutableMatchingRule;
 import org.apache.directory.shared.ldap.model.schema.MutableObjectClass;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.shared.ldap.model.schema.parsers.AttributeTypeDescriptionSchemaParser;
@@ -348,7 +349,7 @@ public class GenericSchemaConnector extends AbstractSchemaConnector implements S
                         parser.setQuirksMode( true );
                         MatchingRule mrd = parser.parseMatchingRuleDescription( value );
 
-                        MatchingRule impl = new MatchingRule( mrd.getOid() );
+                        MutableMatchingRule impl = new MutableMatchingRule( mrd.getOid() );
                         impl.setDescription( mrd.getDescription() );
                         impl.setNames( mrd.getNames().toArray( new String[0] ) );
                         impl.setObsolete( mrd.isObsolete() );

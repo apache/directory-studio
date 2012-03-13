@@ -35,6 +35,7 @@ import org.apache.directory.shared.ldap.model.schema.AttributeType;
 import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
 import org.apache.directory.shared.ldap.model.schema.MatchingRule;
 import org.apache.directory.shared.ldap.model.schema.MutableAttributeType;
+import org.apache.directory.shared.ldap.model.schema.MutableMatchingRule;
 import org.apache.directory.shared.ldap.model.schema.MutableObjectClass;
 import org.apache.directory.shared.ldap.model.schema.ObjectClassTypeEnum;
 import org.apache.directory.shared.ldap.model.schema.UsageEnum;
@@ -356,7 +357,7 @@ public class ApacheDsSchemaConnector extends AbstractSchemaConnector implements 
      */
     private static MatchingRule createMatchingRule( SearchResult sr ) throws NamingException
     {
-        MatchingRule mr = new MatchingRule( getOid( sr ) );
+        MutableMatchingRule mr = new MutableMatchingRule( getOid( sr ) );
         mr.setNames( getNames( sr ) );
         mr.setDescription( getDescription( sr ) );
         mr.setObsolete( isObsolete( sr ) );
