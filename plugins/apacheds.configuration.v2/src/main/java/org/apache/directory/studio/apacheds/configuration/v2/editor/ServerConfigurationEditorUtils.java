@@ -162,8 +162,8 @@ public class ServerConfigurationEditorUtils
                 if ( externalFile.exists() )
                 {
                     String question = NLS.bind(
-                        "The file \"{0}\" already exists. Do you want to replace the existing file?", path ); //$NON-NLS-1$
-                    MessageDialog overwriteDialog = new MessageDialog( shell, "Question", null, question, //$NON-NLS-1$
+                        "The file \"{0}\" already exists. Do you want to replace the existing file?", path );
+                    MessageDialog overwriteDialog = new MessageDialog( shell, "Question", null, question,
                         MessageDialog.QUESTION, new String[]
                             { IDialogConstants.YES_LABEL, IDialogConstants.NO_LABEL, IDialogConstants.CANCEL_LABEL }, 0 );
                     int overwrite = openDialogInUIThread( overwriteDialog );
