@@ -78,10 +78,30 @@ public class DeleteSchemaElementAction extends Action implements IWorkbenchWindo
             public void selectionChanged( SelectionChangedEvent event )
             {
                 StructuredSelection selection = ( StructuredSelection ) event.getSelection();
-                setEnabled( ( selection.size() == 1 )
-                    && ( ( selection.getFirstElement() instanceof SchemaWrapper )
-                        || ( selection.getFirstElement() instanceof AttributeTypeWrapper )
-                        || ( selection.getFirstElement() instanceof ObjectClassWrapper ) ) );
+
+                if ( selection.size() > 0 )
+                {
+                    boolean enabled = true;
+
+                    for ( Iterator<?> iterator = selection.iterator(); iterator.hasNext(); )
+                    {
+                        Object selectedItem = iterator.next();
+
+                        if ( !( selectedItem instanceof SchemaWrapper )
+                            && !( selectedItem instanceof AttributeTypeWrapper )
+                            && !( selectedItem instanceof ObjectClassWrapper ) )
+                        {
+                            enabled = false;
+                            break;
+                        }
+                    }
+
+                    setEnabled( enabled );
+                }
+                else
+                {
+                    setEnabled( false );
+                }
             }
         } );
     }
@@ -119,7 +139,6 @@ public class DeleteSchemaElementAction extends Action implements IWorkbenchWindo
                 {
                     message.append( Messages.getString( "DeleteSchemaElementAction.SureDeleteItem" ) ); //$NON-NLS-1$
                 }
-
             }
             else
             {
