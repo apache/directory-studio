@@ -25,11 +25,12 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import org.apache.directory.studio.common.ui.HistoryUtils;
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
+import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonConstants;
 import org.apache.directory.studio.ldapbrowser.common.widgets.BrowserWidget;
 import org.apache.directory.studio.ldapbrowser.common.widgets.DialogContentAssistant;
-import org.apache.directory.studio.ldapbrowser.common.widgets.HistoryUtils;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.SchemaUtils;
 import org.apache.directory.studio.ldapbrowser.core.utils.Utils;
@@ -113,7 +114,8 @@ public class ReturningAttributesWidget extends BrowserWidget
         raca.install( returningAttributesCombo );
 
         // History
-        String[] history = HistoryUtils.load( BrowserCommonConstants.DIALOGSETTING_KEY_RETURNING_ATTRIBUTES_HISTORY );
+        String[] history = HistoryUtils.load( BrowserCommonActivator.getDefault().getDialogSettings(),
+            BrowserCommonConstants.DIALOGSETTING_KEY_RETURNING_ATTRIBUTES_HISTORY );
         for ( int i = 0; i < history.length; i++ )
         {
             history[i] = Utils.arrayToString( stringToArray( history[i] ) );
@@ -204,8 +206,9 @@ public class ReturningAttributesWidget extends BrowserWidget
      */
     public void saveDialogSettings()
     {
-        HistoryUtils.save( BrowserCommonConstants.DIALOGSETTING_KEY_RETURNING_ATTRIBUTES_HISTORY, Utils
-            .arrayToString( getReturningAttributes() ) );
+        HistoryUtils.save( BrowserCommonActivator.getDefault().getDialogSettings(),
+            BrowserCommonConstants.DIALOGSETTING_KEY_RETURNING_ATTRIBUTES_HISTORY,
+            Utils.arrayToString( getReturningAttributes() ) );
     }
 
 

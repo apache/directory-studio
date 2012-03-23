@@ -26,12 +26,12 @@ import java.util.Collection;
 
 import org.apache.directory.shared.ldap.model.message.SearchScope;
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.studio.common.ui.HistoryUtils;
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.connection.ui.widgets.ExtendedContentAssistCommandAdapter;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonConstants;
 import org.apache.directory.studio.ldapbrowser.common.actions.BrowserSelectionUtils;
-import org.apache.directory.studio.ldapbrowser.common.widgets.HistoryUtils;
 import org.apache.directory.studio.ldapbrowser.common.widgets.ListContentProposalProvider;
 import org.apache.directory.studio.ldapbrowser.core.jobs.SearchRunnable;
 import org.apache.directory.studio.ldapbrowser.core.jobs.StudioBrowserJob;
@@ -41,6 +41,7 @@ import org.apache.directory.studio.ldapbrowser.core.model.IQuickSearch;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
 import org.apache.directory.studio.ldapbrowser.core.model.impl.QuickSearch;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.SchemaUtils;
+import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.jface.fieldassist.ComboContentAdapter;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
@@ -134,7 +135,8 @@ public class BrowserQuickSearchWidget
     {
         this.browserWidget = browserWidget;
 
-        if ( HistoryUtils.load( ATTRIBUTE_HISTORY_DIALOGSETTING_KEY ).length == 0 )
+        if ( HistoryUtils.load( BrowserCommonActivator.getDefault().getDialogSettings(),
+            ATTRIBUTE_HISTORY_DIALOGSETTING_KEY ).length == 0 )
         {
             BrowserCommonActivator.getDefault().getDialogSettings().put( ATTRIBUTE_HISTORY_DIALOGSETTING_KEY,
                 new String[]
@@ -183,13 +185,15 @@ public class BrowserQuickSearchWidget
     {
         this.browserWidget.getViewer().addPostSelectionChangedListener( selectionListener );
 
+        IDialogSettings dialogSettings = BrowserCommonActivator.getDefault().getDialogSettings();
+
         // Reseting the layout of the composite to be displayed correctly
         GridData compositeGridData = new GridData( SWT.FILL, SWT.NONE, true, false );
         composite.setLayoutData( compositeGridData );
 
         innerComposite = BaseWidgetUtils.createColumnContainer( composite, 5, 1 );
 
-        String[] attributes = HistoryUtils.load( ATTRIBUTE_HISTORY_DIALOGSETTING_KEY );
+        String[] attributes = HistoryUtils.load( dialogSettings, ATTRIBUTE_HISTORY_DIALOGSETTING_KEY );
         quickSearchAttributeCombo = BaseWidgetUtils.createCombo( innerComposite, attributes, -1, 1 );
         quickSearchAttributePP = new ListContentProposalProvider( attributes );
         new ExtendedContentAssistCommandAdapter( quickSearchAttributeCombo, new ComboContentAdapter(),
@@ -218,7 +222,7 @@ public class BrowserQuickSearchWidget
         GridData data = new GridData();
         quickSearchOperatorCombo.setLayoutData( data );
 
-        String[] values = HistoryUtils.load( VALUE_HISTORY_DIALOGSETTING_KEY );
+        String[] values = HistoryUtils.load( dialogSettings, VALUE_HISTORY_DIALOGSETTING_KEY );
         quickSearchValueCombo = BaseWidgetUtils.createCombo( innerComposite, values, -1, 1 );
         quickSearchValuePP = new ListContentProposalProvider( values );
         new ExtendedContentAssistCommandAdapter( quickSearchValueCombo, new ComboContentAdapter(), quickSearchValuePP,
@@ -280,12 +284,14 @@ public class BrowserQuickSearchWidget
             return;
         }
 
-        HistoryUtils.save( ATTRIBUTE_HISTORY_DIALOGSETTING_KEY, quickSearchAttributeCombo.getText() );
-        String[] attributes = HistoryUtils.load( ATTRIBUTE_HISTORY_DIALOGSETTING_KEY );
+        IDialogSettings dialogSettings = BrowserCommonActivator.getDefault().getDialogSettings();
+
+        HistoryUtils.save( dialogSettings, ATTRIBUTE_HISTORY_DIALOGSETTING_KEY, quickSearchAttributeCombo.getText() );
+        String[] attributes = HistoryUtils.load( dialogSettings, ATTRIBUTE_HISTORY_DIALOGSETTING_KEY );
         quickSearchAttributeCombo.setItems( attributes );
         quickSearchAttributeCombo.select( 0 );
-        HistoryUtils.save( VALUE_HISTORY_DIALOGSETTING_KEY, quickSearchValueCombo.getText() );
-        String[] values = HistoryUtils.load( VALUE_HISTORY_DIALOGSETTING_KEY );
+        HistoryUtils.save( dialogSettings, VALUE_HISTORY_DIALOGSETTING_KEY, quickSearchValueCombo.getText() );
+        String[] values = HistoryUtils.load( dialogSettings, VALUE_HISTORY_DIALOGSETTING_KEY );
         quickSearchValueCombo.setItems( values );
         quickSearchValueCombo.select( 0 );
         quickSearchValuePP.setProposals( Arrays.asList( values ) );

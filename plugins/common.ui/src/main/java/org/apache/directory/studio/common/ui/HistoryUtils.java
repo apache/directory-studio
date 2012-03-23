@@ -18,14 +18,14 @@
  *  
  */
 
-package org.apache.directory.studio.connection.ui.widgets;
+package org.apache.directory.studio.common.ui;
 
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.apache.directory.studio.connection.ui.ConnectionUIPlugin;
+import org.eclipse.jface.dialogs.IDialogSettings;
 
 
 /**
@@ -35,53 +35,63 @@ import org.apache.directory.studio.connection.ui.ConnectionUIPlugin;
  */
 public class HistoryUtils
 {
-
     /**
      * Saves the the given value under the given key in the dialog settings.
      *
+     * @param dialogSettings the dialog settings
      * @param key the key
      * @param value the value
      */
-    public static void save( String key, String value )
+    public static void save( IDialogSettings dialogSettings, String key, String value )
     {
-        // get current history
-        String[] history = load( key );
-        List<String> list = new ArrayList<String>( Arrays.asList( history ) );
-
-        // add new value or move to first position
-        if ( list.contains( value ) )
+        if ( dialogSettings != null )
         {
-            list.remove( value );
+
+            // get current history
+            String[] history = load( dialogSettings, key );
+            List<String> list = new ArrayList<String>( Arrays.asList( history ) );
+
+            // add new value or move to first position
+            if ( list.contains( value ) )
+            {
+                list.remove( value );
+            }
+            list.add( 0, value );
+
+            // check history size
+            while ( list.size() > 20 )
+            {
+                list.remove( list.size() - 1 );
+            }
+
+            // save
+            history = list.toArray( new String[list.size()] );
+            dialogSettings.put( key, history );
         }
-        list.add( 0, value );
-
-        // check history size
-        while ( list.size() > 20 )
-        {
-            list.remove( list.size() - 1 );
-        }
-
-        // save
-        history = list.toArray( new String[list.size()] );
-        ConnectionUIPlugin.getDefault().getDialogSettings().put( key, history );
-
     }
 
 
     /**
      * Loads the value of the given key from the dialog settings
      *
+     * @param dialogSettings the dialog settings
      * @param key the key
      * @return the value
      */
-    public static String[] load( String key )
+    public static String[] load( IDialogSettings dialogSettings, String key )
     {
-        String[] history = ConnectionUIPlugin.getDefault().getDialogSettings().getArray( key );
-        if ( history == null )
+        if ( dialogSettings != null )
         {
-            history = new String[0];
-        }
-        return history;
-    }
+            String[] history = dialogSettings.getArray( key );
 
+            if ( history == null )
+            {
+                history = new String[0];
+            }
+
+            return history;
+        }
+
+        return new String[0];
+    }
 }

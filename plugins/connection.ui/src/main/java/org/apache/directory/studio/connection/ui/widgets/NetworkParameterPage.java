@@ -27,6 +27,7 @@ import java.util.Date;
 import org.apache.commons.lang.StringUtils;
 import org.apache.directory.shared.ldap.model.url.LdapUrl;
 import org.apache.directory.shared.ldap.model.url.LdapUrl.Extension;
+import org.apache.directory.studio.common.ui.HistoryUtils;
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.ConnectionCoreConstants;
@@ -37,8 +38,10 @@ import org.apache.directory.studio.connection.core.ConnectionParameter.NetworkPr
 import org.apache.directory.studio.connection.core.jobs.CheckNetworkParameterRunnable;
 import org.apache.directory.studio.connection.ui.AbstractConnectionParameterPage;
 import org.apache.directory.studio.connection.ui.ConnectionUIConstants;
+import org.apache.directory.studio.connection.ui.ConnectionUIPlugin;
 import org.apache.directory.studio.connection.ui.RunnableContextRunner;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
@@ -220,13 +223,15 @@ public class NetworkParameterPage extends AbstractConnectionParameterPage
         Group group = BaseWidgetUtils.createGroup( composite, Messages
             .getString( "NetworkParameterPage.NetworkParameter" ), 1 ); //$NON-NLS-1$
 
+        IDialogSettings dialogSettings = ConnectionUIPlugin.getDefault().getDialogSettings();
+
         Composite groupComposite = BaseWidgetUtils.createColumnContainer( group, 3, 1 );
         BaseWidgetUtils.createLabel( groupComposite, Messages.getString( "NetworkParameterPage.HostName" ), 1 ); //$NON-NLS-1$
-        String[] hostHistory = HistoryUtils.load( ConnectionUIConstants.DIALOGSETTING_KEY_HOST_HISTORY );
+        String[] hostHistory = HistoryUtils.load( dialogSettings, ConnectionUIConstants.DIALOGSETTING_KEY_HOST_HISTORY );
         hostCombo = BaseWidgetUtils.createCombo( groupComposite, hostHistory, -1, 2 );
 
         BaseWidgetUtils.createLabel( groupComposite, Messages.getString( "NetworkParameterPage.Port" ), 1 ); //$NON-NLS-1$
-        String[] portHistory = HistoryUtils.load( ConnectionUIConstants.DIALOGSETTING_KEY_PORT_HISTORY );
+        String[] portHistory = HistoryUtils.load( dialogSettings, ConnectionUIConstants.DIALOGSETTING_KEY_PORT_HISTORY );
         portCombo = BaseWidgetUtils.createCombo( groupComposite, portHistory, -1, 2 );
         portCombo.setTextLimit( 5 );
         portCombo.setText( "389" ); //$NON-NLS-1$
@@ -422,8 +427,9 @@ public class NetworkParameterPage extends AbstractConnectionParameterPage
      */
     public void saveDialogSettings()
     {
-        HistoryUtils.save( ConnectionUIConstants.DIALOGSETTING_KEY_HOST_HISTORY, hostCombo.getText() );
-        HistoryUtils.save( ConnectionUIConstants.DIALOGSETTING_KEY_PORT_HISTORY, portCombo.getText() );
+        IDialogSettings dialogSettings = ConnectionUIPlugin.getDefault().getDialogSettings();
+        HistoryUtils.save( dialogSettings, ConnectionUIConstants.DIALOGSETTING_KEY_HOST_HISTORY, hostCombo.getText() );
+        HistoryUtils.save( dialogSettings, ConnectionUIConstants.DIALOGSETTING_KEY_PORT_HISTORY, portCombo.getText() );
     }
 
 
