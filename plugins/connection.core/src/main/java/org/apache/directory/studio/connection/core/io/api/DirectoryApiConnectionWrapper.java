@@ -47,8 +47,6 @@ import org.apache.directory.ldap.client.api.GssApiRequest;
 import org.apache.directory.ldap.client.api.LdapConnectionConfig;
 import org.apache.directory.ldap.client.api.LdapNetworkConnection;
 import org.apache.directory.ldap.client.api.exception.InvalidConnectionException;
-import org.apache.directory.shared.ldap.codec.api.BinaryAttributeDetector;
-import org.apache.directory.shared.ldap.codec.api.ConfigurableBinaryAttributeDetector;
 import org.apache.directory.shared.ldap.codec.api.DefaultConfigurableBinaryAttributeDetector;
 import org.apache.directory.shared.ldap.codec.protocol.mina.LdapProtocolCodecActivator;
 import org.apache.directory.shared.ldap.model.cursor.SearchCursor;
@@ -772,7 +770,8 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
      *      an array of converted modifications
      * @throws LdapInvalidAttributeValueException 
      */
-    private Modification[] convertModificationItems( ModificationItem[] modificationItems ) throws LdapInvalidAttributeValueException
+    private Modification[] convertModificationItems( ModificationItem[] modificationItems )
+        throws LdapInvalidAttributeValueException
     {
         if ( modificationItems != null )
         {
@@ -848,6 +847,7 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
                     request.setDeleteOldRdn( deleteOldRdn );
                     Dn newName = new Dn( newDn );
                     request.setNewRdn( newName.getRdn() );
+                    request.setNewSuperior( newName.getParent() );
                     request.addAllControls( convertControls( controls ) );
 
                     // Performing the rename operation
