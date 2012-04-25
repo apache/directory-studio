@@ -468,6 +468,7 @@ public class BaseWidgetUtils
         Button button = new Button( parent, SWT.PUSH );
         GridData gd = new GridData();
         gd.widthHint = Dialog.convertHorizontalDLUsToPixels( fontMetrics, IDialogConstants.BUTTON_WIDTH );
+        gd.horizontalSpan = span;
         button.setLayoutData( gd );
         button.setText( text );
         return button;
