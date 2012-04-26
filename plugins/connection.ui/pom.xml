@@ -66,9 +66,6 @@
             <projectnature>org.eclipse.pde.PluginNature</projectnature>
             <projectnature>org.eclipse.jdt.core.javanature</projectnature>
           </additionalProjectnatures>
-          <additionalProjects>
-            <project>org.apache.directory.studio.connection.core</project>
-          </additionalProjects>
           <classpathContainers>
             <classpathContainer>org.eclipse.jdt.launching.JRE_CONTAINER</classpathContainer>
             <classpathContainer>org.eclipse.pde.core.requiredPlugins</classpathContainer>
