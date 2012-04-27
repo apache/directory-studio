@@ -1251,11 +1251,14 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
             LdapResult ldapResult = response.getLdapResult();
             if ( ldapResult != null )
             {
-                // NOT_ALLOWED_ON_NON_LEAF error (thrown when deleting a entry with children
+                // NOT_ALLOWED_ON_NON_LEAF error (thrown when deleting an entry with children)
                 if ( ResultCodeEnum.NOT_ALLOWED_ON_NON_LEAF.equals( ldapResult.getResultCode() ) )
                 {
                     throw new ContextNotEmptyException( ldapResult.getDiagnosticMessage() );
                 }
+                // ENTRY_ALREADY_EXISTS error
+                // (We need this conversion in the case where this error is thrown during an LDIF
+                // import with the "Update existing entries" flag turned on)
                 else if ( ResultCodeEnum.ENTRY_ALREADY_EXISTS.equals( ldapResult.getResultCode() ) )
                 {
                     throw new NameAlreadyBoundException( ldapResult.getDiagnosticMessage() );
