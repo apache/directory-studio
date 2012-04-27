@@ -27,6 +27,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import javax.naming.ContextNotEmptyException;
+import javax.naming.NameAlreadyBoundException;
 import javax.naming.NamingException;
 import javax.naming.directory.Attributes;
 import javax.naming.directory.DirContext;
@@ -1254,6 +1255,10 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
                 if ( ResultCodeEnum.NOT_ALLOWED_ON_NON_LEAF.equals( ldapResult.getResultCode() ) )
                 {
                     throw new ContextNotEmptyException( ldapResult.getDiagnosticMessage() );
+                }
+                else if ( ResultCodeEnum.ENTRY_ALREADY_EXISTS.equals( ldapResult.getResultCode() ) )
+                {
+                    throw new NameAlreadyBoundException( ldapResult.getDiagnosticMessage() );
                 }
                 // Different from SUCCESS, we throw a generic exception
                 else if ( !ResultCodeEnum.SUCCESS.equals( ldapResult.getResultCode() ) )
