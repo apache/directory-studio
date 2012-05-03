@@ -132,7 +132,7 @@ public class ServersTableViewer extends TreeViewer
                 LdapServer server = event.getServer();
                 switch ( kind )
                 {
-                    // The server status has changed
+                // The server status has changed
                     case STATUS_CHANGED:
                         // First, we refresh the server
                         refreshServer( server );
@@ -236,16 +236,9 @@ public class ServersTableViewer extends TreeViewer
         {
             public void run()
             {
-                try
-                {
-                    refresh( server );
-                    ISelection sel = ServersTableViewer.this.getSelection();
-                    ServersTableViewer.this.setSelection( sel );
-                }
-                catch ( Exception e )
-                {
-                    // ignore
-                }
+                refresh( server );
+                ISelection sel = ServersTableViewer.this.getSelection();
+                ServersTableViewer.this.setSelection( sel );
             }
         } );
     }
@@ -286,23 +279,16 @@ public class ServersTableViewer extends TreeViewer
                 // Checking if we need to stop the animation
                 if ( !stopAnimation )
                 {
-                    try
-                    {
-                        // Changing the animation state on the label provider
-                        labelProvider.animate();
+                    // Changing the animation state on the label provider
+                    labelProvider.animate();
 
-                        // Looping on the currently starting servers
-                        for ( LdapServer server : serversNeedingAnimation.toArray( new LdapServer[0] ) )
-                        {
-                            if ( server != null && getTree() != null && !getTree().isDisposed() )
-                            {
-                                updateAnimation( server );
-                            }
-                        }
-                    }
-                    catch ( Exception e )
+                    // Looping on the currently starting servers
+                    for ( LdapServer server : serversNeedingAnimation.toArray( new LdapServer[0] ) )
                     {
-                        // Trace.trace( Trace.FINEST, "Error in Servers view animation", e ); TODO
+                        if ( server != null && getTree() != null && !getTree().isDisposed() )
+                        {
+                            updateAnimation( server );
+                        }
                     }
 
                     // Re-launching the animation
@@ -339,16 +325,9 @@ public class ServersTableViewer extends TreeViewer
      */
     private void updateAnimation( LdapServer server )
     {
-        try
-        {
-            Widget widget = doFindItem( server );
-            TreeItem item = ( TreeItem ) widget;
-            item.setText( 1, labelProvider.getColumnText( server, 1 ) );
-            item.setImage( 1, labelProvider.getColumnImage( server, 1 ) );
-        }
-        catch ( Exception e )
-        {
-            // Trace.trace( Trace.WARNING, "Error in optimized animation", e ); TODO
-        }
+        Widget widget = doFindItem( server );
+        TreeItem item = ( TreeItem ) widget;
+        item.setText( 1, labelProvider.getColumnText( server, 1 ) );
+        item.setImage( 1, labelProvider.getColumnImage( server, 1 ) );
     }
 }
