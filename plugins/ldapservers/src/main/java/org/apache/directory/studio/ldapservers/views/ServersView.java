@@ -44,9 +44,6 @@ import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
@@ -140,14 +137,12 @@ public class ServersView extends ViewPart
         TreeColumn serverColumn = new TreeColumn( tree, SWT.SINGLE );
         serverColumn.setText( Messages.getString( "ServersView.server" ) ); //$NON-NLS-1$
         serverColumn.setWidth( columnWidths[0] );
-        serverColumn.addSelectionListener( getHeaderListener( 0 ) );
         tree.setSortColumn( serverColumn );
         tree.setSortDirection( SWT.UP );
 
         TreeColumn stateColumn = new TreeColumn( tree, SWT.SINGLE );
         stateColumn.setText( Messages.getString( "ServersView.state" ) ); //$NON-NLS-1$
         stateColumn.setWidth( columnWidths[1] );
-        stateColumn.addSelectionListener( getHeaderListener( 1 ) );
 
         // Creating the viewer
         tableViewer = new ServersTableViewer( tree );
@@ -162,33 +157,6 @@ public class ServersView extends ViewPart
         //        PlatformUI.getWorkbench().getHelpSystem()
         //            .setHelp( parent, ApacheDsPluginConstants.PLUGIN_ID + "." + "gettingstarted_views_servers" ); //$NON-NLS-1$ //$NON-NLS-2$
     }
-
-
-    /**
-     * Gets a header listener for the given column.
-     * 
-     * @param col
-     *      the column
-     * @return
-     *      a header listener for the given column
-     */
-    private SelectionListener getHeaderListener( final int col )
-    {
-        return new SelectionAdapter()
-        {
-            /**
-             * Handles the case of user selecting the header area.
-             */
-            public void widgetSelected( SelectionEvent e )
-            {
-                if ( tableViewer == null )
-                    return;
-                TreeColumn column = ( TreeColumn ) e.widget;
-                tableViewer.resortTable( column, col );
-            }
-        };
-    }
-
 
     /**
      * {@inheritDoc}
