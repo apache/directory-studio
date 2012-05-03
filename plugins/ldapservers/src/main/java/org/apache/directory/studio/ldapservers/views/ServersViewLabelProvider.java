@@ -77,7 +77,7 @@ public class ServersViewLabelProvider extends LabelProvider implements ITableLab
 
         }
 
-        return null;
+        return super.getText( element );
     }
 
 
@@ -155,7 +155,7 @@ public class ServersViewLabelProvider extends LabelProvider implements ITableLab
             }
         }
 
-        return null;
+        return super.getImage( element );
     }
 
 

@@ -21,6 +21,7 @@ package org.apache.directory.studio.ldapservers.views;
 
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 import org.apache.directory.studio.ldapservers.LdapServersManager;
@@ -32,10 +33,14 @@ import org.apache.directory.studio.ldapservers.model.LdapServerListener;
 import org.apache.directory.studio.ldapservers.model.LdapServerStatus;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.TreeViewer;
+import org.eclipse.jface.viewers.ViewerComparator;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Tree;
+import org.eclipse.swt.widgets.TreeColumn;
 import org.eclipse.swt.widgets.TreeItem;
 import org.eclipse.swt.widgets.Widget;
+import org.eclipse.ui.PlatformUI;
 
 
 /**
@@ -50,6 +55,9 @@ public class ServersTableViewer extends TreeViewer
 
     /** The label provider */
     private ServersViewLabelProvider labelProvider;
+
+    /** The comparator */
+    private ServersComparator comparator;
 
     /** The server handler listener */
     private LdapServersManagerListener serversHandlerListener;
@@ -77,6 +85,9 @@ public class ServersTableViewer extends TreeViewer
         labelProvider = new ServersViewLabelProvider();
         setLabelProvider( labelProvider );
         setContentProvider( new ServersViewContentProvider() );
+
+        comparator = new ServersComparator();
+        setComparator( new ViewerComparator( comparator ) );
 
         setInput( ROOT );
 
@@ -329,5 +340,80 @@ public class ServersTableViewer extends TreeViewer
         TreeItem item = ( TreeItem ) widget;
         item.setText( 1, labelProvider.getColumnText( server, 1 ) );
         item.setImage( 1, labelProvider.getColumnImage( server, 1 ) );
+    }
+
+
+    /**
+     * Sorts the table.
+     *
+     * @param treeColumn the tree column
+     * @param column the column number
+     */
+    public void sort( final TreeColumn treeColumn, int column )
+    {
+        if ( column == comparator.column )
+        {
+            comparator.reverseOrder();
+        }
+        else
+        {
+            comparator.column = column;
+        }
+
+        PlatformUI.getWorkbench().getDisplay().asyncExec( new Runnable()
+        {
+            public void run()
+            {
+                refresh();
+
+                Tree tree = getTree();
+                tree.setSortColumn( treeColumn );
+                if ( comparator.order == ServersComparator.ASCENDING )
+                {
+                    tree.setSortDirection( SWT.UP );
+                }
+                else
+                {
+                    tree.setSortDirection( SWT.DOWN );
+                }
+            }
+        } );
+    }
+
+    /**
+     * This class implements a comparator for servers.
+     *
+     * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+     */
+    private class ServersComparator implements Comparator<Object>
+    {
+        public static final int ASCENDING = 1;
+
+        /** The comparison order */
+        int order = ASCENDING;
+
+        /** The column used to compare objects */
+        int column = 0;
+
+
+        /**
+         * Reverses the order.
+         */
+        public void reverseOrder()
+        {
+            order = order * -1;
+        }
+
+
+        /**
+         * {@inheritDoc}
+         */
+        public int compare( Object o1, Object o2 )
+        {
+            String s1 = labelProvider.getColumnText( o1, column );
+            String s2 = labelProvider.getColumnText( o2, column );
+
+            return s1.compareToIgnoreCase( s2 ) * order;
+        }
     }
 }
