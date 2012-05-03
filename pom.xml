@@ -2258,6 +2258,8 @@
               <exclude>plugins/ldapbrowser.core/src/main/resources/default_schema.ldif</exclude>
               <exclude>plugins/rcp/resources/icons/linux/studio.xpm</exclude>
               <exclude>plugins/schemaeditor/resources/schemas/openldap/*.xml</exclude>
+              <exclude>plugins/rcp.fullscreen/**/*.java</exclude>
+              <exclude>plugins/rcp.fullscreen/plugin.xml</exclude>
               <exclude>repository/**/*</exclude>
               <exclude>tests/**/*</exclude>
               <exclude>tools/**/*</exclude>
