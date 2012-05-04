@@ -149,14 +149,14 @@ public class ServersView extends ViewPart
         TreeColumn serverColumn = new TreeColumn( tree, SWT.SINGLE );
         serverColumn.setText( Messages.getString( "ServersView.server" ) ); //$NON-NLS-1$
         serverColumn.setWidth( columnWidths[0] );
-        serverColumn.addSelectionListener( getHeaderListener( 0 ) );
+        serverColumn.addSelectionListener( getColumnSelectionListener( 0 ) );
         tree.setSortColumn( serverColumn );
         tree.setSortDirection( SWT.UP );
 
         TreeColumn stateColumn = new TreeColumn( tree, SWT.SINGLE );
         stateColumn.setText( Messages.getString( "ServersView.state" ) ); //$NON-NLS-1$
         stateColumn.setWidth( columnWidths[1] );
-        stateColumn.addSelectionListener( getHeaderListener( 1 ) );
+        stateColumn.addSelectionListener( getColumnSelectionListener( 1 ) );
 
         // Creating the viewer
         tableViewer = new ServersTableViewer( tree );
@@ -172,27 +172,14 @@ public class ServersView extends ViewPart
     }
 
 
-    /**
-     * Gets a header listener for the given column.
-     * 
-     * @param col
-     *      the column
-     * @return
-     *      a header listener for the given column
-     */
-    private SelectionListener getHeaderListener( final int col )
+    private SelectionListener getColumnSelectionListener( final int column )
     {
         return new SelectionAdapter()
         {
-            /**
-             * Handles the case of user selecting the header area.
-             */
             public void widgetSelected( SelectionEvent e )
             {
-                if ( tableViewer == null )
-                    return;
-                TreeColumn column = ( TreeColumn ) e.widget;
-                tableViewer.resortTable( column, col );
+                TreeColumn treeColumn = ( TreeColumn ) e.widget;
+                tableViewer.sort( treeColumn, column );
             }
         };
     }
