@@ -62,6 +62,7 @@
     <distMgmtSiteUrl>scpexe://people.apache.org/www/directory.apache.org/studio/gen-docs/${project.version}</distMgmtSiteUrl>
     
     <!-- Set versions for dependencies -->
+    <com.bandlem.eclipse.fullscreen.version>1.0.4.201108061054</com.bandlem.eclipse.fullscreen.version>
     <net.sf.ehcache.version>2.4.4</net.sf.ehcache.version>
     <org.antlr.version>2.7.7</org.antlr.version>
     <org.apache.commons.codec.version>1.6</org.apache.commons.codec.version>
@@ -254,6 +255,19 @@
   <dependencyManagement>
     <dependencies>
       <!-- Apache Directory Studio Libraries -->
+      <dependency>
+        <groupId>com.bandlem.eclipse.fullscreen</groupId>
+        <artifactId>feature</artifactId>
+        <type>zip</type>
+        <version>${com.bandlem.eclipse.fullscreen.version}</version>
+      </dependency>
+      
+      <dependency>
+        <groupId>com.bandlem.eclipse.fullscreen</groupId>
+        <artifactId>ui</artifactId>
+        <version>${com.bandlem.eclipse.fullscreen.version}</version>
+      </dependency>
+      
       <dependency>
         <groupId>org.apache.directory.studio</groupId>
         <artifactId>net.sf.ehcache.core</artifactId>
