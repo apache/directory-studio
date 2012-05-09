@@ -155,10 +155,6 @@
                   <groupId>org.eclipse.swt.cocoa</groupId>
                   <artifactId>macosx</artifactId>
                 </artifactItem>
-                <artifactItem>
-                  <groupId>org.apache.directory.studio</groupId>
-                  <artifactId>rcp.fullscreen</artifactId>
-                </artifactItem>
               </artifactItems>
             </configuration>
           </execution>
