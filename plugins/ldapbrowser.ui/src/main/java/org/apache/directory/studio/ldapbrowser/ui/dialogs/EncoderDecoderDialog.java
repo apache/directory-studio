@@ -121,16 +121,14 @@ public class EncoderDecoderDialog extends Dialog
                     inModify = true;
                     try
                     {
-                        String iso = iso88591Text.getText();
-                        byte[] isoHex = iso.getBytes( "ISO-8859-1" ); //$NON-NLS-1$
-                        byte[] utf8 = LdifUtils.utf8encode( iso );
-                        String utf8String = new String( utf8, "ISO-8859-1" ); //$NON-NLS-1$
-                        String base64 = LdifUtils.base64encode( utf8 );
+                        String isoString = iso88591Text.getText();
+                        byte[] isoBytes = isoString.getBytes( "ISO-8859-1" ); //$NON-NLS-1$
+                        String utf8String = new String( isoBytes, "UTF-8" ); //$NON-NLS-1$
 
-                        iso88591HexText.setText( LdifUtils.hexEncode( isoHex ) );
+                        iso88591HexText.setText( LdifUtils.hexEncode( isoBytes ) );
                         utf8Text.setText( utf8String );
-                        utf8HexText.setText( LdifUtils.hexEncode( utf8 ) );
-                        base64Text.setText( base64 );
+                        utf8HexText.setText( LdifUtils.hexEncode( utf8String.getBytes( "UTF-8" ) ) ); //$NON-NLS-1$
+                        base64Text.setText( LdifUtils.base64encode( isoBytes ) );
                         errorText.setText( "" ); //$NON-NLS-1$
                     }
                     catch ( Exception ex )
@@ -156,15 +154,13 @@ public class EncoderDecoderDialog extends Dialog
                     try
                     {
                         String utf8String = utf8Text.getText();
-                        byte[] utf8 = utf8String.getBytes( "ISO-8859-1" ); //$NON-NLS-1$
-                        String iso = LdifUtils.utf8decode( utf8 );
-                        byte[] isoHex = iso.getBytes( "ISO-8859-1" ); //$NON-NLS-1$
-                        String base64 = LdifUtils.base64encode( utf8 );
+                        byte[] utf8Bytes = utf8String.getBytes( "UTF-8" ); //$NON-NLS-1$
+                        String isoString = new String( utf8Bytes, "ISO-8859-1" ); //$NON-NLS-1$
 
-                        iso88591Text.setText( iso );
-                        iso88591HexText.setText( LdifUtils.hexEncode( isoHex ) );
-                        utf8HexText.setText( LdifUtils.hexEncode( utf8 ) );
-                        base64Text.setText( base64 );
+                        iso88591Text.setText( isoString );
+                        iso88591HexText.setText( LdifUtils.hexEncode( isoString.getBytes( "ISO-8859-1" ) ) ); //$NON-NLS-1$
+                        utf8HexText.setText( LdifUtils.hexEncode( utf8Bytes ) );
+                        base64Text.setText( LdifUtils.base64encode( utf8Bytes ) );
                         errorText.setText( "" ); //$NON-NLS-1$
                     }
                     catch ( Exception ex )
@@ -189,16 +185,14 @@ public class EncoderDecoderDialog extends Dialog
                     inModify = true;
                     try
                     {
-                        String base64 = base64Text.getText();
-                        byte[] utf8 = LdifUtils.base64decodeToByteArray( base64 );
-                        String utf8String = new String( utf8, "ISO-8859-1" ); //$NON-NLS-1$
-                        String iso = LdifUtils.utf8decode( utf8 );
-                        byte[] isoHex = iso.getBytes( "ISO-8859-1" ); //$NON-NLS-1$
+                        byte[] base64Bytes = LdifUtils.base64decodeToByteArray( base64Text.getText() );
+                        String isoString = new String( base64Bytes, "ISO-8859-1" ); //$NON-NLS-1$
+                        String utf8String = LdifUtils.utf8decode( base64Bytes );
 
-                        iso88591Text.setText( iso );
-                        iso88591HexText.setText( LdifUtils.hexEncode( isoHex ) );
+                        iso88591Text.setText( isoString );
+                        iso88591HexText.setText( LdifUtils.hexEncode( isoString.getBytes( "ISO-8859-1" ) ) ); //$NON-NLS-1$
                         utf8Text.setText( utf8String );
-                        utf8HexText.setText( LdifUtils.hexEncode( utf8 ) );
+                        utf8HexText.setText( LdifUtils.hexEncode( utf8String.getBytes( "UTF-8" ) ) ); //$NON-NLS-1$
                         errorText.setText( "" ); //$NON-NLS-1$
                     }
                     catch ( Exception ex )

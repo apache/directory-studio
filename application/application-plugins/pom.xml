@@ -47,9 +47,13 @@
               <goal>copy-eclipse-artifact</goal>
             </goals>
             <configuration>
-              <destinationDirectory>${plugins-dir}</destinationDirectory>
+              <outputDirectory>${plugins-dir}</outputDirectory>
               <artifactItems>
                 <!-- Apache Directory Studio library plugins dependencies -->
+                <artifactItem>
+                  <groupId>org.apache.directory.shared</groupId>
+                  <artifactId>shared-ldap-client-api</artifactId>
+                </artifactItem>
                 <artifactItem>
                   <groupId>org.apache.directory.shared</groupId>
                   <artifactId>shared-asn1-api</artifactId>
@@ -65,14 +69,6 @@
                 <artifactItem>
                   <groupId>org.apache.directory.shared</groupId>
                   <artifactId>shared-i18n</artifactId>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.apache.directory.shared</groupId>
-                  <artifactId>shared-ipojo-manager</artifactId>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.apache.directory.shared</groupId>
-                  <artifactId>shared-ldap-client-api</artifactId>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.apache.directory.shared</groupId>
@@ -100,11 +96,11 @@
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.apache.directory.shared</groupId>
-                  <artifactId>shared-ldap-schema-converter</artifactId>
+                  <artifactId>shared-ldap-schema-data</artifactId>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.apache.directory.shared</groupId>
-                  <artifactId>shared-ldap-schema-data</artifactId>
+                  <artifactId>shared-ldap-schema-converter</artifactId>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.apache.directory.shared</groupId>
@@ -148,6 +144,10 @@
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.apache.directory.studio</groupId>
+                  <artifactId>org.apache.directory.server.core</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.apache.directory.studio</groupId>
                   <artifactId>org.apache.directory.server.core.api</artifactId>
                 </artifactItem>
                 <artifactItem>
@@ -169,14 +169,6 @@
                 <artifactItem>
                   <groupId>org.apache.directory.studio</groupId>
                   <artifactId>org.apache.directory.server.xdbm.partition</artifactId>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.apache.directory.studio</groupId>
-                  <artifactId>org.apache.felix.ipojo</artifactId>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.apache.directory.studio</groupId>
-                  <artifactId>org.apache.felix.ipojo.annotations</artifactId>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.apache.directory.studio</groupId>
@@ -222,10 +214,6 @@
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.apache.directory.studio</groupId>
-                  <artifactId>apacheds</artifactId>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.apache.directory.studio</groupId>
                   <artifactId>apacheds.configuration</artifactId>
                 </artifactItem>
                 <artifactItem>
@@ -235,10 +223,6 @@
                 <artifactItem>
                   <groupId>org.apache.directory.studio</groupId>
                   <artifactId>apacheds.configuration.help</artifactId>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.apache.directory.studio</groupId>
-                  <artifactId>apacheds.help</artifactId>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.apache.directory.studio</groupId>
@@ -275,6 +259,22 @@
                 <artifactItem>
                   <groupId>org.apache.directory.studio</groupId>
                   <artifactId>ldapservers</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.apache.directory.studio</groupId>
+                  <artifactId>ldapservers.apacheds.v153</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.apache.directory.studio</groupId>
+                  <artifactId>ldapservers.apacheds.v154</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.apache.directory.studio</groupId>
+                  <artifactId>ldapservers.apacheds.v155</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.apache.directory.studio</groupId>
+                  <artifactId>ldapservers.apacheds.v156</artifactId>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.apache.directory.studio</groupId>

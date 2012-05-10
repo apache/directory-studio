@@ -52,26 +52,25 @@ import org.eclipse.swt.widgets.Shell;
  */
 public class SelectBrowserConnectionDialog extends Dialog
 {
-
-    /** The title. */
+    /** The title */
     private String title;
 
-    /** The initial browser connection. */
+    /** The initial browser connection */
     private IBrowserConnection initialBrowserConnection;
 
-    /** The selected browser connection. */
+    /** The selected browser connection */
     private IBrowserConnection selectedBrowserConnection;
 
-    /** The connection configuration. */
+    /** The connection configuration */
     private ConnectionConfiguration connectionConfiguration;
 
-    /** The connection universal listener. */
+    /** The connection universal listener */
     private ConnectionUniversalListener connectionUniversalListener;
 
-    /** The connection action group. */
+    /** The connection action group */
     private ConnectionActionGroup connectionActionGroup;
 
-    /** The connection main widget. */
+    /** The connection main widget */
     private ConnectionWidget connectionMainWidget;
 
 
@@ -197,7 +196,6 @@ public class SelectBrowserConnectionDialog extends Dialog
                         IBrowserConnection browserConnection = BrowserCorePlugin.getDefault().getConnectionManager()
                             .getBrowserConnection( connection );
                         initialBrowserConnection = browserConnection;
-
                     }
                 }
             }
@@ -237,7 +235,6 @@ public class SelectBrowserConnectionDialog extends Dialog
         connectionMainWidget.setFocus();
 
         return composite;
-
     }
 
 
@@ -250,5 +247,4 @@ public class SelectBrowserConnectionDialog extends Dialog
     {
         return selectedBrowserConnection;
     }
-
 }

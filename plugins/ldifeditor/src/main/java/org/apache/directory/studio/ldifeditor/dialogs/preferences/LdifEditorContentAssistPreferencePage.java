@@ -22,7 +22,6 @@ package org.apache.directory.studio.ldifeditor.dialogs.preferences;
 
 
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
-import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
 import org.apache.directory.studio.ldifeditor.LdifEditorActivator;
 import org.apache.directory.studio.ldifeditor.LdifEditorConstants;
 import org.eclipse.jface.preference.PreferencePage;
@@ -166,8 +165,6 @@ public class LdifEditorContentAssistPreferencePage extends PreferencePage implem
         getPreferenceStore().setValue(
             LdifEditorConstants.PREFERENCE_LDIFEDITOR_CONTENTASSIST_SMARTINSERTATTRIBUTEINMODSPEC,
             this.smartInsertAttributeInModspecButton.getSelection() );
-
-        BrowserCorePlugin.getDefault().savePluginPreferences();
 
         return true;
     }

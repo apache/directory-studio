@@ -102,7 +102,7 @@ public class LdifControlLine extends LdifValueLineBase
 
     public boolean isCritical()
     {
-        return this.getUnfoldedCriticality().endsWith( "true" );
+        return this.getUnfoldedCriticality().endsWith( "true" ); //$NON-NLS-1$
     }
 
 
@@ -142,8 +142,8 @@ public class LdifControlLine extends LdifValueLineBase
         return this.getUnfoldedControlSpec().length() > 0
             && this.getUnfoldedControlType().length() > 0
             && this.getUnfoldedOid().length() > 0
-            && ( this.rawCriticality == null || this.getUnfoldedCriticality().endsWith( "true" ) || this
-                .getUnfoldedCriticality().endsWith( "false" ) )
+            && ( this.rawCriticality == null || this.getUnfoldedCriticality().endsWith( "true" ) || this //$NON-NLS-1$
+                .getUnfoldedCriticality().endsWith( "false" ) ) //$NON-NLS-1$
             && ( ( this.rawControlValueType == null && this.rawControlValue == null ) || ( this.rawControlValueType != null && this.rawControlValue != null ) )
             && this.getUnfoldedNewLine().length() > 0;
     }
@@ -159,8 +159,8 @@ public class LdifControlLine extends LdifValueLineBase
         {
             return "Missing OID";
         }
-        else if ( ( this.rawCriticality != null && !this.getUnfoldedCriticality().endsWith( "true" ) && !this
-            .getUnfoldedCriticality().endsWith( "false" ) ) )
+        else if ( ( this.rawCriticality != null && !this.getUnfoldedCriticality().endsWith( "true" ) && !this //$NON-NLS-1$
+            .getUnfoldedCriticality().endsWith( "false" ) ) ) //$NON-NLS-1$
         {
             return "Invalid criticality, must be 'true' or 'false'";
         }
@@ -212,13 +212,13 @@ public class LdifControlLine extends LdifValueLineBase
 
     public boolean isControlValueTypeBase64()
     {
-        return this.getUnfoldedControlValueType().startsWith( "::" );
+        return this.getUnfoldedControlValueType().startsWith( "::" ); //$NON-NLS-1$
     }
 
 
     public boolean isControlValueTypeSafe()
     {
-        return this.getUnfoldedControlValueType().startsWith( ":" ) && !this.isControlValueTypeBase64();
+        return this.getUnfoldedControlValueType().startsWith( ":" ) && !this.isControlValueTypeBase64(); //$NON-NLS-1$
     }
 
 
@@ -230,8 +230,8 @@ public class LdifControlLine extends LdifValueLineBase
         }
         else
         {
-            LdifControlLine controlLine = new LdifControlLine( 0, "control", ":", oid, criticality,
-                controlValue != null ? ":" : null, controlValue != null ? controlValue : null,
+            LdifControlLine controlLine = new LdifControlLine( 0, "control", ":", oid, criticality, //$NON-NLS-1$ //$NON-NLS-2$
+                controlValue != null ? ":" : null, controlValue != null ? controlValue : null, //$NON-NLS-1$
                 LdifParserConstants.LINE_SEPARATOR );
             return controlLine;
         }
@@ -240,8 +240,8 @@ public class LdifControlLine extends LdifValueLineBase
 
     public static LdifControlLine create( String oid, String criticality, byte[] controlValue )
     {
-        LdifControlLine controlLine = new LdifControlLine( 0, "control", ":", oid, criticality, controlValue != null
-            && controlValue.length > 0 ? "::" : null, controlValue != null && controlValue.length > 0 ? LdifUtils
+        LdifControlLine controlLine = new LdifControlLine( 0, "control", ":", oid, criticality, controlValue != null //$NON-NLS-1$ //$NON-NLS-2$
+            && controlValue.length > 0 ? "::" : null, controlValue != null && controlValue.length > 0 ? LdifUtils //$NON-NLS-1$
             .base64encode( controlValue ) : null, LdifParserConstants.LINE_SEPARATOR );
         return controlLine;
     }
@@ -249,13 +249,13 @@ public class LdifControlLine extends LdifValueLineBase
 
     public static LdifControlLine create( String oid, boolean isCritical, String controlValue )
     {
-        return create( oid, isCritical ? " true" : " false", controlValue );
+        return create( oid, isCritical ? " true" : " false", controlValue ); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
 
     public static LdifControlLine create( String oid, boolean isCritical, byte[] controlValue )
     {
-        return create( oid, isCritical ? " true" : " false", controlValue );
+        return create( oid, isCritical ? " true" : " false", controlValue ); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
 }

@@ -229,7 +229,7 @@ public class NewEntryDnWizardPage extends WizardPage implements WidgetModifyList
                 while ( atavIterator.hasNext() )
                 {
                     Ava atav = atavIterator.next();
-                    IAttribute attribute = newEntry.getAttribute( atav.getUpType() );
+                    IAttribute attribute = newEntry.getAttribute( atav.getType() );
                     if ( attribute != null )
                     {
                         IValue[] values = attribute.getValues();
@@ -288,10 +288,10 @@ public class NewEntryDnWizardPage extends WizardPage implements WidgetModifyList
                 while ( atavIterator.hasNext() )
                 {
                     Ava atav = atavIterator.next();
-                    IAttribute rdnAttribute = newEntry.getAttribute( atav.getUpType() );
+                    IAttribute rdnAttribute = newEntry.getAttribute( atav.getType() );
                     if ( rdnAttribute == null )
                     {
-                        rdnAttribute = new Attribute( newEntry, atav.getUpType() );
+                        rdnAttribute = new Attribute( newEntry, atav.getType() );
                         newEntry.addAttribute( rdnAttribute );
                     }
                     Object rdnValue = atav.getNormValue().getString();

@@ -58,4 +58,7 @@ public final class PluginConstants
     public static final String ACTION_UPDATE_ID = Activator.getDefault().getPluginProperties().getString(
         "Action_Update_id" ); //$NON-NLS-1$
 
+    /** The Update ActionID */
+    public static final String PREFERENCE_EXIT_PROMPT_ON_CLOSE_LAST_WINDOW = "exitPromptOnCloseLastWindow"; //$NON-NLS-1$
+
 }

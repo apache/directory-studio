@@ -43,7 +43,7 @@ public class InPlaceUuidValueEditorTest
                 ( byte ) 0x80, ( byte ) 0xb4, //
                 ( byte ) 0x00, ( byte ) 0xc0, ( byte ) 0x4f, ( byte ) 0xd4, ( byte ) 0x30, ( byte ) 0xc8 };
         String displayValue = editor.convertToString( bytes );
-        assertEquals( Strings.toLowerCase( "6ba7b810-9dad-11d1-80b4-00c04fd430c8" ), displayValue );
+        assertEquals( Strings.toLowerCase( "6ba7b810-9dad-11d1-80b4-00c04fd430c8" ), displayValue ); //$NON-NLS-1$
     }
 
 
@@ -60,7 +60,7 @@ public class InPlaceUuidValueEditorTest
                 ( byte ) 0x88, ( byte ) 0x99, //
                 ( byte ) 0xAA, ( byte ) 0xBB, ( byte ) 0xCC, ( byte ) 0xDD, ( byte ) 0xEE, ( byte ) 0xFF };
         String displayValue = editor.convertToString( bytes );
-        assertEquals( Strings.toLowerCase( "00112233-4455-6677-8899-AABBCCDDEEFF" ), displayValue );
+        assertEquals( Strings.toLowerCase( "00112233-4455-6677-8899-AABBCCDDEEFF" ), displayValue ); //$NON-NLS-1$
     }
 
 
@@ -73,7 +73,7 @@ public class InPlaceUuidValueEditorTest
         byte[] bytes = new byte[]
             { ( byte ) 0x00, ( byte ) 0x11, ( byte ) 0x22, ( byte ) 0x33 };
         String displayValue = editor.convertToString( bytes );
-        assertEquals( "Invalid UUID", displayValue );
+        assertEquals( "Invalid UUID", displayValue ); 
 
         // test too long
         byte[] bytes2 = new byte[]
@@ -82,7 +82,7 @@ public class InPlaceUuidValueEditorTest
                 ( byte ) 0x00, ( byte ) 0x00, ( byte ) 0x00, ( byte ) 0x00, ( byte ) 0x00, ( byte ) 0x00,
                 ( byte ) 0x00, };
         String displayValue2 = editor.convertToString( bytes2 );
-        assertEquals( "Invalid UUID", displayValue2 );
+        assertEquals( "Invalid UUID", displayValue2 ); 
     }
 
 
@@ -92,7 +92,7 @@ public class InPlaceUuidValueEditorTest
         InPlaceUuidValueEditor editor = new InPlaceUuidValueEditor();
         byte[] bytes = null;
         String displayValue = editor.convertToString( bytes );
-        assertEquals( "Invalid UUID", displayValue );
+        assertEquals( "Invalid UUID", displayValue ); 
     }
 
 }

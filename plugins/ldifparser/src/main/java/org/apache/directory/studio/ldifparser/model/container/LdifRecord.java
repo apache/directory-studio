@@ -47,7 +47,7 @@ public abstract class LdifRecord extends LdifContainer
     public void addComment( LdifCommentLine comment )
     {
         if ( comment == null )
-            throw new IllegalArgumentException( "null argument" );
+            throw new IllegalArgumentException( "null argument" ); //$NON-NLS-1$
         this.parts.add( comment );
     }
 
@@ -55,7 +55,7 @@ public abstract class LdifRecord extends LdifContainer
     public void finish( LdifSepLine sep )
     {
         if ( sep == null )
-            throw new IllegalArgumentException( "null argument" );
+            throw new IllegalArgumentException( "null argument" ); //$NON-NLS-1$
         this.parts.add( sep );
     }
 
@@ -63,7 +63,7 @@ public abstract class LdifRecord extends LdifContainer
     public void finish( LdifEOFPart eof )
     {
         if ( eof == null )
-            throw new IllegalArgumentException( "null argument" );
+            throw new IllegalArgumentException( "null argument" ); //$NON-NLS-1$
         this.parts.add( eof );
     }
 

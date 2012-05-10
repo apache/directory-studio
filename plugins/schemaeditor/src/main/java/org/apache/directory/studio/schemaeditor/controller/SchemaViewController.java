@@ -6,16 +6,16 @@
  *  to you under the Apache License, Version 2.0 (the
  *  "License"); you may not use this file except in compliance
  *  with the License.  You may obtain a copy of the License at
- *  
+ * 
  *    http://www.apache.org/licenses/LICENSE-2.0
- *  
+ * 
  *  Unless required by applicable law or agreed to in writing,
  *  software distributed under the License is distributed on an
  *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  *  KIND, either express or implied.  See the License for the
  *  specific language governing permissions and limitations
- *  under the License. 
- *  
+ *  under the License.
+ * 
  */
 package org.apache.directory.studio.schemaeditor.controller;
 
@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.MutableObjectClass;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.studio.schemaeditor.Activator;
 import org.apache.directory.studio.schemaeditor.PluginConstants;
@@ -45,10 +46,12 @@ import org.apache.directory.studio.schemaeditor.controller.actions.OpenElementAc
 import org.apache.directory.studio.schemaeditor.controller.actions.OpenSchemaViewPreferenceAction;
 import org.apache.directory.studio.schemaeditor.controller.actions.OpenSchemaViewSortingDialogAction;
 import org.apache.directory.studio.schemaeditor.controller.actions.OpenTypeHierarchyAction;
+import org.apache.directory.studio.schemaeditor.controller.actions.RenameSchemaElementAction;
 import org.apache.directory.studio.schemaeditor.controller.actions.SwitchSchemaPresentationToFlatAction;
 import org.apache.directory.studio.schemaeditor.controller.actions.SwitchSchemaPresentationToHierarchicalAction;
 import org.apache.directory.studio.schemaeditor.model.Project;
 import org.apache.directory.studio.schemaeditor.model.Schema;
+import org.apache.directory.studio.schemaeditor.model.schemachecker.SchemaCheckerListener;
 import org.apache.directory.studio.schemaeditor.view.ViewUtils;
 import org.apache.directory.studio.schemaeditor.view.editors.attributetype.AttributeTypeEditor;
 import org.apache.directory.studio.schemaeditor.view.editors.attributetype.AttributeTypeEditorInput;
@@ -71,6 +74,7 @@ import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
+import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.widgets.Display;
@@ -105,6 +109,9 @@ public class SchemaViewController
     /** The Context Menu */
     private MenuManager contextMenu;
 
+    /** The selection */
+    private ISelection selection;
+
     /** The SchemaHandlerListener */
     private SchemaHandlerListener schemaHandlerListener = new SchemaHandlerAdapter()
     {
@@ -116,12 +123,11 @@ public class SchemaViewController
         {
             SchemaViewContentProvider contentProvider = ( SchemaViewContentProvider ) viewer.getContentProvider();
             contentProvider.attributeTypeAdded( at );
-            view.refresh();
 
             TreeNode wrapper = contentProvider.getWrapper( at );
             if ( wrapper != null )
             {
-                viewer.setSelection( new StructuredSelection( wrapper ) );
+                selection = new StructuredSelection( wrapper );
             }
         }
 
@@ -132,7 +138,6 @@ public class SchemaViewController
         public void attributeTypeModified( AttributeType at )
         {
             ( ( SchemaViewContentProvider ) viewer.getContentProvider() ).attributeTypeModified( at );
-            view.refresh();
         }
 
 
@@ -142,23 +147,21 @@ public class SchemaViewController
         public void attributeTypeRemoved( AttributeType at )
         {
             ( ( SchemaViewContentProvider ) viewer.getContentProvider() ).attributeTypeRemoved( at );
-            view.refresh();
         }
 
 
         /**
          * {@inheritDoc}
          */
-        public void objectClassAdded( ObjectClass oc )
+        public void objectClassAdded( MutableObjectClass oc )
         {
             SchemaViewContentProvider contentProvider = ( SchemaViewContentProvider ) viewer.getContentProvider();
             contentProvider.objectClassAdded( oc );
-            view.refresh();
 
             TreeNode wrapper = contentProvider.getWrapper( oc );
             if ( wrapper != null )
             {
-                viewer.setSelection( new StructuredSelection( wrapper ) );
+                selection = new StructuredSelection( wrapper );
             }
         }
 
@@ -166,10 +169,9 @@ public class SchemaViewController
         /**
          * {@inheritDoc}
          */
-        public void objectClassModified( ObjectClass oc )
+        public void objectClassModified( MutableObjectClass oc )
         {
             ( ( SchemaViewContentProvider ) viewer.getContentProvider() ).objectClassModified( oc );
-            view.refresh();
         }
 
 
@@ -179,7 +181,6 @@ public class SchemaViewController
         public void objectClassRemoved( ObjectClass oc )
         {
             ( ( SchemaViewContentProvider ) viewer.getContentProvider() ).objectClassRemoved( oc );
-            view.refresh();
         }
 
 
@@ -191,20 +192,11 @@ public class SchemaViewController
             SchemaViewContentProvider contentProvider = ( SchemaViewContentProvider ) viewer.getContentProvider();
             contentProvider.schemaAdded( schema );
 
-            final TreeNode wrapper = contentProvider.getWrapper( schema );
-
-            Display.getDefault().asyncExec( new Runnable()
+            TreeNode wrapper = contentProvider.getWrapper( schema );
+            if ( wrapper != null )
             {
-                public void run()
-                {
-                    view.refresh();
-
-                    if ( wrapper != null )
-                    {
-                        viewer.setSelection( new StructuredSelection( wrapper ) );
-                    }
-                }
-            } );
+                selection = new StructuredSelection( wrapper );
+            }
         }
 
 
@@ -214,7 +206,40 @@ public class SchemaViewController
         public void schemaRemoved( Schema schema )
         {
             ( ( SchemaViewContentProvider ) viewer.getContentProvider() ).schemaRemoved( schema );
+        }
+
+
+        /**
+         * {@inheritDoc}
+         */
+        public void schemaRenamed( Schema schema )
+        {
+
             view.refresh();
+        }
+
+    };
+
+    /** The SchemaCheckerListener */
+    private SchemaCheckerListener schemaCheckerListener = new SchemaCheckerListener()
+    {
+        public void schemaCheckerUpdated()
+        {
+            Display.getDefault().asyncExec( new Runnable()
+            {
+                public void run()
+                {
+                    if ( selection != null )
+                    {
+                        view.refresh( selection );
+                        selection = null;
+                    }
+                    else
+                    {
+                        view.refresh();
+                    }
+                }
+            } );
         }
     };
 
@@ -228,6 +253,7 @@ public class SchemaViewController
     private OpenElementAction openElement;
     private OpenTypeHierarchyAction openTypeHierarchy;
     private DeleteSchemaElementAction deleteSchemaElement;
+    private RenameSchemaElementAction renameSchemaElement;
     private ImportCoreSchemasAction importCoreSchemas;
     private ImportSchemasFromOpenLdapAction importSchemasFromOpenLdap;
     private ImportSchemasFromXmlAction importSchemasFromXml;
@@ -261,6 +287,7 @@ public class SchemaViewController
         initMenu();
         initContextMenu();
         initProjectsHandlerListener();
+        initSchemaCheckerListener();
         initDoubleClickListener();
         initAuthorizedPrefs();
         initPreferencesListener();
@@ -280,6 +307,7 @@ public class SchemaViewController
         openElement = new OpenElementAction( viewer );
         openTypeHierarchy = new OpenTypeHierarchyAction( viewer );
         deleteSchemaElement = new DeleteSchemaElementAction( viewer );
+        renameSchemaElement = new RenameSchemaElementAction( viewer );
         importCoreSchemas = new ImportCoreSchemasAction();
         importSchemasFromOpenLdap = new ImportSchemasFromOpenLdapAction();
         importSchemasFromXml = new ImportSchemasFromXmlAction();
@@ -357,6 +385,8 @@ public class SchemaViewController
                 manager.add( openTypeHierarchy );
                 manager.add( new Separator() );
                 manager.add( deleteSchemaElement );
+                manager.add( new Separator() );
+                manager.add( renameSchemaElement );
                 manager.add( new Separator() );
                 manager.add( importManager );
                 importManager.add( importCoreSchemas );
@@ -467,6 +497,15 @@ public class SchemaViewController
 
 
     /**
+     * Intializes the schema checker listener.
+     */
+    private void initSchemaCheckerListener()
+    {
+        Activator.getDefault().getSchemaChecker().addListener( schemaCheckerListener );
+    }
+
+
+    /**
      * Initializes the DoubleClickListener.
      */
     private void initDoubleClickListener()
@@ -515,8 +554,9 @@ public class SchemaViewController
                     catch ( PartInitException e )
                     {
                         PluginUtils.logError( Messages.getString( "SchemaViewController.ErrorOpeningEditor" ), e ); //$NON-NLS-1$
-                        ViewUtils.displayErrorMessageBox( Messages.getString( "SchemaViewController.error" ), Messages //$NON-NLS-1$
-                            .getString( "SchemaViewController.ErrorOpeningEditor" ) ); //$NON-NLS-1$
+                        ViewUtils.displayErrorMessageDialog(
+                            Messages.getString( "SchemaViewController.error" ), Messages //$NON-NLS-1$
+                                .getString( "SchemaViewController.ErrorOpeningEditor" ) ); //$NON-NLS-1$
                     }
                 }
             }
@@ -638,6 +678,7 @@ public class SchemaViewController
                         commandService.getCommand( openElement.getActionDefinitionId() ).setHandler( null );
                         commandService.getCommand( openTypeHierarchy.getActionDefinitionId() ).setHandler( null );
                         commandService.getCommand( deleteSchemaElement.getActionDefinitionId() ).setHandler( null );
+                        commandService.getCommand( renameSchemaElement.getActionDefinitionId() ).setHandler( null );
                     }
 
                     IContextService contextService = ( IContextService ) PlatformUI.getWorkbench().getAdapter(
@@ -675,6 +716,8 @@ public class SchemaViewController
                             new ActionHandler( openTypeHierarchy ) );
                         commandService.getCommand( deleteSchemaElement.getActionDefinitionId() ).setHandler(
                             new ActionHandler( deleteSchemaElement ) );
+                        commandService.getCommand( renameSchemaElement.getActionDefinitionId() ).setHandler(
+                            new ActionHandler( renameSchemaElement ) );
                     }
                 }
             }

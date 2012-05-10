@@ -31,9 +31,9 @@
   <packaging>pom</packaging>
   
   <properties>
-    <dmg-dir>${project.build.directory}/ApacheDirectoryStudio-macosx-x86-${version}</dmg-dir>
-    <tmp-dmg>${project.build.directory}/ApacheDirectoryStudio-macosx-x86-${version}-tmp.dmg</tmp-dmg>
-    <final-dmg>${project.build.directory}/ApacheDirectoryStudio-macosx-x86-${version}.dmg</final-dmg>
+    <dmg-dir>${project.build.directory}/ApacheDirectoryStudio-macosx-x86-${project.version}</dmg-dir>
+    <tmp-dmg>${project.build.directory}/ApacheDirectoryStudio-macosx-x86-${project.version}-tmp.dmg</tmp-dmg>
+    <final-dmg>${project.build.directory}/ApacheDirectoryStudio-macosx-x86-${project.version}.dmg</final-dmg>
   </properties>
   
   <build>

@@ -3,7 +3,7 @@
   <groupId>org.eclipse.ltk.core</groupId>
   <artifactId>refactoring</artifactId>
   <versioning>
-    <release>3.5.200.v20110505-0800</release>
+    <release>3.5.201.r371_v20110824-0800</release>
     <versions>
       <version>3.5.100.v20100526-0800</version>
       <version>3.3.1.r332_20080128</version>
@@ -11,7 +11,8 @@
       <version>3.4.2.r342_v20081028-0800</version>
       <version>3.5.0.v20090513-2000</version>
       <version>3.5.200.v20110505-0800</version>
+      <version>3.5.201.r371_v20110824-0800</version>
     </versions>
-    <lastUpdated>20110718113457</lastUpdated>
+    <lastUpdated>20111206110604</lastUpdated>
   </versioning>
 </metadata>

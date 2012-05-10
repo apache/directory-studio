@@ -31,6 +31,7 @@ import java.util.Set;
 
 import org.apache.directory.shared.ldap.model.constants.SaslQoP;
 import org.apache.directory.shared.ldap.model.constants.SaslSecurityStrength;
+import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
 import org.apache.directory.studio.connection.core.ConnectionFolder;
 import org.apache.directory.studio.connection.core.ConnectionParameter;
 import org.apache.directory.studio.connection.core.ConnectionParameter.AuthenticationMethod;
@@ -77,6 +78,7 @@ public class ConnectionIO
     private static final String KRB5_REALM_TAG = "krb5Realm"; //$NON-NLS-1$
     private static final String KRB5_KDC_HOST_TAG = "krb5KdcHost"; //$NON-NLS-1$
     private static final String KRB5_KDC_PORT_TAG = "krb5KdcPort"; //$NON-NLS-1$
+    private static final String READ_ONLY_TAG = "readOnly"; //$NON-NLS-1$
 
     private static final String EXTENDED_PROPERTIES_TAG = "extendedProperties"; //$NON-NLS-1$
     private static final String EXTENDED_PROPERTY_TAG = "extendedProperty"; //$NON-NLS-1$
@@ -214,7 +216,7 @@ public class ConnectionIO
         }
         else
         {
-            connection.setNetworkProvider( NetworkProvider.JNDI );
+            connection.setNetworkProvider( ConnectionCorePlugin.getDefault().getDefaultNetworkProvider() );
         }
 
         // Auth Method
@@ -258,14 +260,23 @@ public class ConnectionIO
         Attribute saslQopAttribute = element.attribute( SASL_QOP_TAG );
         if ( saslQopAttribute != null )
         {
-            if ( "AUTH_INT_PRIV".equals( saslQopAttribute.getValue() ) )
+            if ( "AUTH_INT_PRIV".equals( saslQopAttribute.getValue() ) ) //$NON-NLS-1$
             {
                 // Used for legacy setting (before we used SaslQop enum from Shared)
                 connection.setSaslQop( SaslQoP.AUTH_CONF );
             }
             else
             {
-                connection.setSaslQop( SaslQoP.valueOf( saslQopAttribute.getValue() ) );
+                try
+                {
+                    connection.setSaslQop( SaslQoP.valueOf( saslQopAttribute.getValue() ) );
+                }
+                catch ( IllegalArgumentException e )
+                {
+                    throw new ConnectionIOException( "Unable to parse 'SASL Quality of Protection' of connection '" //$NON-NLS-1$
+                        + connection.getName() + "' as int value. SASL Quality of Protection value :" //$NON-NLS-1$
+                        + saslQopAttribute.getValue() );
+                }
             }
         }
 
@@ -273,7 +284,16 @@ public class ConnectionIO
         Attribute saslSecStrengthAttribute = element.attribute( SASL_SEC_STRENGTH_TAG );
         if ( saslSecStrengthAttribute != null )
         {
-            connection.setSaslSecurityStrength( SaslSecurityStrength.valueOf( saslSecStrengthAttribute.getValue() ) );
+            try
+            {
+                connection.setSaslSecurityStrength( SaslSecurityStrength.valueOf( saslSecStrengthAttribute.getValue() ) );
+            }
+            catch ( IllegalArgumentException e )
+            {
+                throw new ConnectionIOException( "Unable to parse 'SASL Security Strength' of connection '" //$NON-NLS-1$
+                    + connection.getName() + "' as int value. SASL Security Strength value :" //$NON-NLS-1$
+                    + saslSecStrengthAttribute.getValue() );
+            }
         }
 
         // SASL Mutual Authentication
@@ -287,15 +307,33 @@ public class ConnectionIO
         Attribute krb5CredentialsConf = element.attribute( KRB5_CREDENTIALS_CONF_TAG );
         if ( krb5CredentialsConf != null )
         {
-            connection.setKrb5CredentialConfiguration( Krb5CredentialConfiguration.valueOf( krb5CredentialsConf
-                .getValue() ) );
+            try
+            {
+                connection.setKrb5CredentialConfiguration( Krb5CredentialConfiguration.valueOf( krb5CredentialsConf
+                    .getValue() ) );
+            }
+            catch ( IllegalArgumentException e )
+            {
+                throw new ConnectionIOException( "Unable to parse 'KRB5 Credentials Conf' of connection '" //$NON-NLS-1$
+                    + connection.getName() + "' as int value. KRB5 Credentials Conf value :" //$NON-NLS-1$
+                    + krb5CredentialsConf.getValue() );
+            }
         }
 
         // KRB5 Configuration
         Attribute krb5Config = element.attribute( KRB5_CONFIG_TAG );
         if ( krb5Config != null )
         {
-            connection.setKrb5Configuration( Krb5Configuration.valueOf( krb5Config.getValue() ) );
+            try
+            {
+                connection.setKrb5Configuration( Krb5Configuration.valueOf( krb5Config.getValue() ) );
+            }
+            catch ( IllegalArgumentException e )
+            {
+                throw new ConnectionIOException( "Unable to parse 'KRB5 Configuration' of connection '" //$NON-NLS-1$
+                    + connection.getName() + "' as int value. KRB5 Configuration value :" //$NON-NLS-1$
+                    + krb5Config.getValue() );
+            }
         }
 
         // KRB5 Configuration File
@@ -323,7 +361,22 @@ public class ConnectionIO
         Attribute krb5KdcPort = element.attribute( KRB5_KDC_PORT_TAG );
         if ( krb5KdcPort != null )
         {
-            connection.setKrb5KdcPort( Integer.valueOf( krb5KdcPort.getValue() ) );
+            try
+            {
+                connection.setKrb5KdcPort( Integer.valueOf( krb5KdcPort.getValue() ) );
+            }
+            catch ( NumberFormatException e )
+            {
+                throw new ConnectionIOException( "Unable to parse 'KRB5 KDC Port' of connection '" + connection.getName() //$NON-NLS-1$
+                    + "' as int value. KRB5 KDC Port value :" + krb5KdcPort.getValue() ); //$NON-NLS-1$
+            }
+        }
+
+        // Read Only
+        Attribute readOnly = element.attribute( READ_ONLY_TAG );
+        if ( readOnly != null )
+        {
+            connection.setReadOnly( Boolean.parseBoolean( readOnly.getValue() ) );
         }
 
         // Extended Properties
@@ -452,6 +505,9 @@ public class ConnectionIO
 
         // KRB5 KDC Port
         connectionElement.addAttribute( KRB5_KDC_PORT_TAG, "" + connection.getKrb5KdcPort() ); //$NON-NLS-1$
+
+        // Read Only
+        connectionElement.addAttribute( READ_ONLY_TAG, "" + connection.isReadOnly() ); //$NON-NLS-1$
 
         // Extended Properties
         Element extendedPropertiesElement = connectionElement.addElement( EXTENDED_PROPERTIES_TAG );

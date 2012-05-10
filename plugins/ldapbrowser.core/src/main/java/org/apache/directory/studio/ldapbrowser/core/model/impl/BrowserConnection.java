@@ -100,7 +100,7 @@ public class BrowserConnection implements IBrowserConnection, Serializable
             connection.getConnectionParameter().setExtendedIntProperty( CONNECTION_PARAMETER_REFERRALS_HANDLING_METHOD,
                 ReferralHandlingMethod.FOLLOW_MANUALLY.getOrdinal() );
             connection.getConnectionParameter().setExtendedBoolProperty( CONNECTION_PARAMETER_FETCH_BASE_DNS, true );
-            connection.getConnectionParameter().setExtendedProperty( CONNECTION_PARAMETER_BASE_DN, "" );
+            connection.getConnectionParameter().setExtendedProperty( CONNECTION_PARAMETER_BASE_DN, "" ); //$NON-NLS-1$
             connection.getConnectionParameter().setExtendedBoolProperty( CONNECTION_PARAMETER_FETCH_SUBENTRIES, false );
             connection.getConnectionParameter().setExtendedBoolProperty( CONNECTION_PARAMETER_PAGED_SEARCH, false );
             connection.getConnectionParameter().setExtendedIntProperty( CONNECTION_PARAMETER_PAGED_SEARCH_SIZE, 100 );
@@ -154,7 +154,7 @@ public class BrowserConnection implements IBrowserConnection, Serializable
         entryToAttributeInfoMap.clear();
         entryToChildrenInfoMap.clear();
         entryToChildrenFilterMap.clear();
-        searchManager.setQuickSearch( null );
+//        searchManager.setQuickSearch( null ); TODO
 
         rootDSE = new RootDSE( this );
         cacheEntry( rootDSE );
@@ -527,7 +527,7 @@ public class BrowserConnection implements IBrowserConnection, Serializable
      */
     public String toString()
     {
-        return getConnection() != null ? getConnection().getName() : "null";
+        return getConnection() != null ? getConnection().getName() : "null"; //$NON-NLS-1$
     }
 
 

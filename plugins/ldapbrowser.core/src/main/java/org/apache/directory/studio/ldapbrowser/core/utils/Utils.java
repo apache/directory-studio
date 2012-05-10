@@ -129,7 +129,7 @@ public class Utils
     {
         String oid = schema != null ? schema.getAttributeTypeDescription( ava.getNormType() ).getOid() : ava
             .getNormType();
-        return Strings.toLowerCase( Strings.trim( oid ) ) + "=" + Strings.toLowerCase( Strings.trim( ava.getUpValue().getString() ) ); //$NON-NLS-1$
+        return Strings.toLowerCase( Strings.trim( oid ) ) + "=" + Strings.toLowerCase( Strings.trim( ava.getValue().getString() ) ); //$NON-NLS-1$
     }
 
 
@@ -137,14 +137,14 @@ public class Utils
     {
         if ( array == null || array.length == 0 )
         {
-            return "";
+            return ""; //$NON-NLS-1$
         }
         else
         {
             StringBuffer sb = new StringBuffer( array[0] );
             for ( int i = 1; i < array.length; i++ )
             {
-                sb.append( ", " );
+                sb.append( ", " ); //$NON-NLS-1$
                 sb.append( array[i] );
             }
             return sb.toString();
@@ -173,11 +173,11 @@ public class Utils
     {
 
         if ( value == null )
-            return "";
+            return ""; //$NON-NLS-1$
 
         if ( value.length() > length )
         {
-            value = value.substring( 0, length ) + "...";
+            value = value.substring( 0, length ) + "..."; //$NON-NLS-1$
         }
 
         return value;
@@ -225,13 +225,13 @@ public class Utils
 
     public static String getNonNullString( Object o )
     {
-        return o == null ? "-" : o.toString();
+        return o == null ? "-" : o.toString(); //$NON-NLS-1$
     }
 
 
     public static String formatBytes( long bytes )
     {
-        String size = "";
+        String size = ""; //$NON-NLS-1$
         if ( bytes > 1024 * 1024 )
             size += ( bytes / 1024 / 1024 ) + " MB (" + bytes + " Bytes)";
         else if ( bytes > 1024 )
@@ -405,8 +405,8 @@ public class Utils
                 || ( !hasEMR && modifyModeNoEMR == ModifyMode.REPLACE );
             boolean isAddDelForced = ( hasEMR && modifyMode == ModifyMode.ADD_DELETE )
                 || ( !hasEMR && modifyModeNoEMR == ModifyMode.ADD_DELETE );
-            boolean isOrderedValue = atd.getExtensions().containsKey( "X-ORDERED" )
-                && atd.getExtensions().get( "X-ORDERED" ).contains( "VALUES" );
+            boolean isOrderedValue = atd.getExtensions().containsKey( "X-ORDERED" ) //$NON-NLS-1$
+                && atd.getExtensions().get( "X-ORDERED" ).contains( "VALUES" ); //$NON-NLS-1$ //$NON-NLS-2$
 
             // get old an new values for comparison
             IAttribute oldAttribute = oldEntry.getAttribute( attributeDescription );

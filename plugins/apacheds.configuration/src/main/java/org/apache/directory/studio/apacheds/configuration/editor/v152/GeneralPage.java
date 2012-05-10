@@ -56,7 +56,7 @@ import org.eclipse.ui.forms.widgets.TableWrapLayout;
 public class GeneralPage extends FormPage
 {
     /** The Page ID*/
-    public static final String ID = ServerConfigurationEditor.ID + ".V152.GeneralPage";
+    public static final String ID = ServerConfigurationEditor.ID + ".V152.GeneralPage"; //$NON-NLS-1$
 
     /** The Page Title */
     private static final String TITLE = "General";
@@ -101,7 +101,7 @@ public class GeneralPage extends FormPage
     protected void createFormContent( IManagedForm managedForm )
     {
         PlatformUI.getWorkbench().getHelpSystem().setHelp( getPartControl(),
-            ApacheDSConfigurationPluginConstants.PLUGIN_ID + "." + "configuration_editor_152" );
+            ApacheDSConfigurationPluginConstants.PLUGIN_ID + "." + "configuration_editor_152" ); //$NON-NLS-1$ //$NON-NLS-2$
 
         ScrolledForm form = managedForm.getForm();
         form.setText( "General" );
@@ -162,7 +162,7 @@ public class GeneralPage extends FormPage
         Composite ldapProtocolComposite = createProtocolComposite( toolkit, client );
         enableLdapCheckbox = toolkit.createButton( ldapProtocolComposite, "Enable LDAP", SWT.CHECK );
         enableLdapCheckbox.setLayoutData( new GridData( SWT.NONE, SWT.NONE, true, false, 3, 1 ) );
-        toolkit.createLabel( ldapProtocolComposite, "    " );
+        toolkit.createLabel( ldapProtocolComposite, "    " ); //$NON-NLS-1$
         toolkit.createLabel( ldapProtocolComposite, "Port:" );
         ldapPortText = createPortText( toolkit, ldapProtocolComposite );
 
@@ -170,7 +170,7 @@ public class GeneralPage extends FormPage
         Composite ldapsProtocolComposite = createProtocolComposite( toolkit, client );
         enableLdapsCheckbox = toolkit.createButton( ldapsProtocolComposite, "Enable LDAPS", SWT.CHECK );
         enableLdapsCheckbox.setLayoutData( new GridData( SWT.NONE, SWT.NONE, true, false, 3, 1 ) );
-        toolkit.createLabel( ldapsProtocolComposite, "    " );
+        toolkit.createLabel( ldapsProtocolComposite, "    " ); //$NON-NLS-1$
         toolkit.createLabel( ldapsProtocolComposite, "Port:" );
         ldapsPortText = createPortText( toolkit, ldapsProtocolComposite );
 
@@ -178,7 +178,7 @@ public class GeneralPage extends FormPage
         Composite kerberosProtocolComposite = createProtocolComposite( toolkit, client );
         enableKerberosCheckbox = toolkit.createButton( kerberosProtocolComposite, "Enable Kerberos", SWT.CHECK );
         enableKerberosCheckbox.setLayoutData( new GridData( SWT.NONE, SWT.NONE, true, false, 3, 1 ) );
-        toolkit.createLabel( kerberosProtocolComposite, "    " );
+        toolkit.createLabel( kerberosProtocolComposite, "    " ); //$NON-NLS-1$
         toolkit.createLabel( kerberosProtocolComposite, "Port:" );
         kerberosPortText = createPortText( toolkit, kerberosProtocolComposite );
 
@@ -186,7 +186,7 @@ public class GeneralPage extends FormPage
         Composite ntpProtocolComposite = createProtocolComposite( toolkit, client );
         enableNtpCheckbox = toolkit.createButton( ntpProtocolComposite, "Enable NTP", SWT.CHECK );
         enableNtpCheckbox.setLayoutData( new GridData( SWT.NONE, SWT.NONE, true, false, 3, 1 ) );
-        toolkit.createLabel( ntpProtocolComposite, "    " );
+        toolkit.createLabel( ntpProtocolComposite, "    " ); //$NON-NLS-1$
         toolkit.createLabel( ntpProtocolComposite, "Port:" );
         ntpPortText = createPortText( toolkit, ntpProtocolComposite );
 
@@ -194,7 +194,7 @@ public class GeneralPage extends FormPage
         Composite dnsProtocolComposite = createProtocolComposite( toolkit, client );
         enableDnsCheckbox = toolkit.createButton( dnsProtocolComposite, "Enable DNS", SWT.CHECK );
         enableDnsCheckbox.setLayoutData( new GridData( SWT.NONE, SWT.NONE, true, false, 3, 1 ) );
-        toolkit.createLabel( dnsProtocolComposite, "    " );
+        toolkit.createLabel( dnsProtocolComposite, "    " ); //$NON-NLS-1$
         toolkit.createLabel( dnsProtocolComposite, "Port:" );
         dnsPortText = createPortText( toolkit, dnsProtocolComposite );
 
@@ -203,7 +203,7 @@ public class GeneralPage extends FormPage
         enableChangePasswordCheckbox = toolkit.createButton( changePasswordProtocolComposite, "Enable Change Password",
             SWT.CHECK );
         enableChangePasswordCheckbox.setLayoutData( new GridData( SWT.NONE, SWT.NONE, true, false, 3, 1 ) );
-        toolkit.createLabel( changePasswordProtocolComposite, "    " );
+        toolkit.createLabel( changePasswordProtocolComposite, "    " ); //$NON-NLS-1$
         toolkit.createLabel( changePasswordProtocolComposite, "Port:" );
         changePasswordPortText = createPortText( toolkit, changePasswordProtocolComposite );
     }
@@ -244,7 +244,7 @@ public class GeneralPage extends FormPage
      */
     private Text createPortText( FormToolkit toolkit, Composite parent )
     {
-        Text portText = toolkit.createText( parent, "" );
+        Text portText = toolkit.createText( parent, "" ); //$NON-NLS-1$
         GridData gd = new GridData( SWT.NONE, SWT.NONE, false, false );
         gd.widthHint = 42;
         portText.setLayoutData( gd );
@@ -286,7 +286,7 @@ public class GeneralPage extends FormPage
 
         // Max. Time Limit
         toolkit.createLabel( client, "Max. Time Limit:" );
-        maxTimeLimitText = toolkit.createText( client, "" );
+        maxTimeLimitText = toolkit.createText( client, "" ); //$NON-NLS-1$
         maxTimeLimitText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
         maxTimeLimitText.addVerifyListener( new VerifyListener()
         {
@@ -301,7 +301,7 @@ public class GeneralPage extends FormPage
 
         // Max. Size Limit
         toolkit.createLabel( client, "Max. Size Limit:" );
-        maxSizeLimitText = toolkit.createText( client, "" );
+        maxSizeLimitText = toolkit.createText( client, "" ); //$NON-NLS-1$
         maxSizeLimitText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
         maxSizeLimitText.addVerifyListener( new VerifyListener()
         {
@@ -316,7 +316,7 @@ public class GeneralPage extends FormPage
 
         // Synchronization Period
         toolkit.createLabel( client, "Synchronization Period:" );
-        synchPeriodText = toolkit.createText( client, "" );
+        synchPeriodText = toolkit.createText( client, "" ); //$NON-NLS-1$
         synchPeriodText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
         synchPeriodText.addVerifyListener( new VerifyListener()
         {
@@ -331,7 +331,7 @@ public class GeneralPage extends FormPage
 
         // Max. Threads
         toolkit.createLabel( client, "Max. Threads:" );
-        maxThreadsText = toolkit.createText( client, "" );
+        maxThreadsText = toolkit.createText( client, "" ); //$NON-NLS-1$
         maxThreadsText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
         maxThreadsText.addVerifyListener( new VerifyListener()
         {
@@ -390,44 +390,44 @@ public class GeneralPage extends FormPage
         // LDAP Protocol
         enableLdapCheckbox.setSelection( configuration.isEnableLdap() );
         ldapPortText.setEnabled( enableLdapCheckbox.getSelection() );
-        ldapPortText.setText( "" + configuration.getLdapPort() );
+        ldapPortText.setText( "" + configuration.getLdapPort() ); //$NON-NLS-1$
 
         // LDAPS Protocol
         enableLdapsCheckbox.setSelection( configuration.isEnableLdaps() );
         ldapsPortText.setEnabled( enableLdapsCheckbox.getSelection() );
-        ldapsPortText.setText( "" + configuration.getLdapsPort() );
+        ldapsPortText.setText( "" + configuration.getLdapsPort() ); //$NON-NLS-1$
 
         // Kerberos Protocol
         enableKerberosCheckbox.setSelection( configuration.isEnableKerberos() );
         kerberosPortText.setEnabled( enableKerberosCheckbox.getSelection() );
-        kerberosPortText.setText( "" + configuration.getKerberosPort() );
+        kerberosPortText.setText( "" + configuration.getKerberosPort() ); //$NON-NLS-1$
 
         // NTP Protocol
         enableNtpCheckbox.setSelection( configuration.isEnableNtp() );
         ntpPortText.setEnabled( enableNtpCheckbox.getSelection() );
-        ntpPortText.setText( "" + configuration.getNtpPort() );
+        ntpPortText.setText( "" + configuration.getNtpPort() ); //$NON-NLS-1$
 
         // DNS Protocol
         enableDnsCheckbox.setSelection( configuration.isEnableDns() );
         dnsPortText.setEnabled( enableDnsCheckbox.getSelection() );
-        dnsPortText.setText( "" + configuration.getDnsPort() );
+        dnsPortText.setText( "" + configuration.getDnsPort() ); //$NON-NLS-1$
 
         // Change Password Protocol
         enableChangePasswordCheckbox.setSelection( configuration.isEnableChangePassword() );
         changePasswordPortText.setEnabled( enableChangePasswordCheckbox.getSelection() );
-        changePasswordPortText.setText( "" + configuration.getChangePasswordPort() );
+        changePasswordPortText.setText( "" + configuration.getChangePasswordPort() ); //$NON-NLS-1$
 
         // Max Time Limit
-        maxTimeLimitText.setText( "" + configuration.getMaxTimeLimit() );
+        maxTimeLimitText.setText( "" + configuration.getMaxTimeLimit() ); //$NON-NLS-1$
 
         // Max Size Limit
-        maxSizeLimitText.setText( "" + configuration.getMaxSizeLimit() );
+        maxSizeLimitText.setText( "" + configuration.getMaxSizeLimit() ); //$NON-NLS-1$
 
         // Synchronization Period
-        synchPeriodText.setText( "" + configuration.getSynchronizationPeriod() );
+        synchPeriodText.setText( "" + configuration.getSynchronizationPeriod() ); //$NON-NLS-1$
 
         // Max Threads
-        maxThreadsText.setText( "" + configuration.getMaxThreads() );
+        maxThreadsText.setText( "" + configuration.getMaxThreads() ); //$NON-NLS-1$
 
         // Allow Anonymous Access
         allowAnonymousAccessCheckbox.setSelection( configuration.isAllowAnonymousAccess() );

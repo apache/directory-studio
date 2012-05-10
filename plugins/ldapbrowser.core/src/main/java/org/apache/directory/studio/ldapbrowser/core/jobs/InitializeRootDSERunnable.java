@@ -190,7 +190,7 @@ public class InitializeRootDSERunnable implements StudioConnectionBulkRunnableWi
 
         // 1st: add base DNs, either the specified or from the namingContexts attribute
         if ( !browserConnection.isFetchBaseDNs() && browserConnection.getBaseDN() != null
-            && !"".equals( browserConnection.getBaseDN().toString() ) )
+            && !"".equals( browserConnection.getBaseDN().toString() ) ) //$NON-NLS-1$
         {
             // only add the specified base Dn
             Dn dn = browserConnection.getBaseDN();
@@ -302,29 +302,29 @@ public class InitializeRootDSERunnable implements StudioConnectionBulkRunnableWi
         // Set detected connection properties
         DetectedConnectionProperties detectedConnectionProperties = browserConnection.getConnection()
             .getDetectedConnectionProperties();
-        IAttribute vendorNameAttribute = browserConnection.getRootDSE().getAttribute( "vendorName" );
+        IAttribute vendorNameAttribute = browserConnection.getRootDSE().getAttribute( "vendorName" ); //$NON-NLS-1$
         if ( ( vendorNameAttribute != null ) && ( vendorNameAttribute.getValueSize() > 0 ) )
         {
             detectedConnectionProperties.setVendorName( vendorNameAttribute.getStringValue() );
         }
-        IAttribute vendorVersionAttribute = browserConnection.getRootDSE().getAttribute( "vendorVersion" );
+        IAttribute vendorVersionAttribute = browserConnection.getRootDSE().getAttribute( "vendorVersion" ); //$NON-NLS-1$
         if ( ( vendorVersionAttribute != null ) && ( vendorVersionAttribute.getValueSize() > 0 ) )
         {
             detectedConnectionProperties.setVendorVersion( vendorVersionAttribute.getStringValue() );
         }
-        IAttribute supportedControlAttribute = browserConnection.getRootDSE().getAttribute( "supportedControl" );
+        IAttribute supportedControlAttribute = browserConnection.getRootDSE().getAttribute( "supportedControl" ); //$NON-NLS-1$
         if ( ( supportedControlAttribute != null ) && ( supportedControlAttribute.getValueSize() > 0 ) )
         {
             detectedConnectionProperties.setSupportedControls( Arrays.asList( supportedControlAttribute
                 .getStringValues() ) );
         }
-        IAttribute supportedExtensionAttribute = browserConnection.getRootDSE().getAttribute( "supportedExtension" );
+        IAttribute supportedExtensionAttribute = browserConnection.getRootDSE().getAttribute( "supportedExtension" ); //$NON-NLS-1$
         if ( ( supportedExtensionAttribute != null ) && ( supportedExtensionAttribute.getValueSize() > 0 ) )
         {
             detectedConnectionProperties.setSupportedExtensions( Arrays.asList( supportedExtensionAttribute
                 .getStringValues() ) );
         }
-        IAttribute supportedFeaturesAttribute = browserConnection.getRootDSE().getAttribute( "supportedFeatures" );
+        IAttribute supportedFeaturesAttribute = browserConnection.getRootDSE().getAttribute( "supportedFeatures" ); //$NON-NLS-1$
         if ( ( supportedFeaturesAttribute != null ) && ( supportedFeaturesAttribute.getValueSize() > 0 ) )
         {
             detectedConnectionProperties.setSupportedFeatures( Arrays.asList( supportedFeaturesAttribute
@@ -376,7 +376,7 @@ public class InitializeRootDSERunnable implements StudioConnectionBulkRunnableWi
             String[] values = attribute.getStringValues();
             for ( String dn : values )
             {
-                if ( dn != null && !"".equals( dn ) )
+                if ( dn != null && !"".equals( dn ) ) //$NON-NLS-1$
                 {
                     try
                     {

@@ -6,16 +6,16 @@
  *  to you under the Apache License, Version 2.0 (the
  *  "License"); you may not use this file except in compliance
  *  with the License.  You may obtain a copy of the License at
- *  
+ * 
  *    http://www.apache.org/licenses/LICENSE-2.0
- *  
+ * 
  *  Unless required by applicable law or agreed to in writing,
  *  software distributed under the License is distributed on an
  *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  *  KIND, either express or implied.  See the License for the
  *  specific language governing permissions and limitations
- *  under the License. 
- *  
+ *  under the License.
+ * 
  */
 
 package org.apache.directory.studio.schemaeditor.view.views;
@@ -27,6 +27,7 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.MutableObjectClass;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.shared.ldap.model.schema.SchemaObject;
 import org.apache.directory.studio.schemaeditor.Activator;
@@ -150,7 +151,7 @@ public class SearchView extends ViewPart
         Label separatorLabel2 = new Label( parent, SWT.SEPARATOR | SWT.HORIZONTAL );
         separatorLabel2.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
 
-        // Create the table 
+        // Create the table
         createTableViewer();
 
         setSearchResultsLabel( null, 0 );
@@ -201,7 +202,7 @@ public class SearchView extends ViewPart
                 {
                     resultsTable.setFocus();
                 }
-                else if ( ( e.keyCode == Action.findKeyCode( "RETURN" ) ) || ( e.keyCode == SWT.KEYPAD_CR ) ) //$NON-NLS-1$ 
+                else if ( ( e.keyCode == Action.findKeyCode( "RETURN" ) ) || ( e.keyCode == SWT.KEYPAD_CR ) ) //$NON-NLS-1$
                 {
                     search();
                 }
@@ -558,7 +559,7 @@ public class SearchView extends ViewPart
                 }
                 else if ( item instanceof ObjectClass )
                 {
-                    input = new ObjectClassEditorInput( ( ObjectClass ) item );
+                    input = new ObjectClassEditorInput( ( MutableObjectClass ) item );
                     editorId = ObjectClassEditor.ID;
                 }
 
@@ -574,7 +575,7 @@ public class SearchView extends ViewPart
                     {
                         PluginUtils.logError( Messages.getString( "SearchView.ErrorOpeningEditor" ), exception ); //$NON-NLS-1$
                         ViewUtils
-                            .displayErrorMessageBox(
+                            .displayErrorMessageDialog(
                                 Messages.getString( "SearchView.Error" ), Messages.getString( "SearchView.ErrorOpeningEditor" ) ); //$NON-NLS-1$ //$NON-NLS-2$
                     }
                 }

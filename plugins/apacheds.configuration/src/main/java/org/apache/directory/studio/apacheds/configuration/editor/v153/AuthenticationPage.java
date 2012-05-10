@@ -71,7 +71,7 @@ import org.eclipse.ui.forms.widgets.TableWrapLayout;
 public class AuthenticationPage extends FormPage
 {
     /** The Page ID */
-    public static final String ID = ServerConfigurationEditor.ID + ".V153.AuthenticationPage";
+    public static final String ID = ServerConfigurationEditor.ID + ".V153.AuthenticationPage"; //$NON-NLS-1$
 
     /** The Page Title */
     private static final String TITLE = "Authentication";
@@ -114,7 +114,7 @@ public class AuthenticationPage extends FormPage
     protected void createFormContent( IManagedForm managedForm )
     {
         PlatformUI.getWorkbench().getHelpSystem().setHelp( getPartControl(),
-            ApacheDSConfigurationPluginConstants.PLUGIN_ID + "." + "configuration_editor_153" );
+            ApacheDSConfigurationPluginConstants.PLUGIN_ID + "." + "configuration_editor_153" ); //$NON-NLS-1$ //$NON-NLS-2$
 
         ScrolledForm form = managedForm.getForm();
         form.setText( "Authentication" );
@@ -207,17 +207,17 @@ public class AuthenticationPage extends FormPage
 
         // SASL Host
         toolkit.createLabel( client, "SASL Host:" );
-        saslHostText = toolkit.createText( client, "" );
+        saslHostText = toolkit.createText( client, "" ); //$NON-NLS-1$
         saslHostText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
 
         // SASL Principal
         toolkit.createLabel( client, "SASL Principal:" );
-        saslPrincipalText = toolkit.createText( client, "" );
+        saslPrincipalText = toolkit.createText( client, "" ); //$NON-NLS-1$
         saslPrincipalText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
 
         // Search Base Dn
         toolkit.createLabel( client, "Search Base Dn:" );
-        searchBaseDnText = toolkit.createText( client, "" );
+        searchBaseDnText = toolkit.createText( client, "" ); //$NON-NLS-1$
         searchBaseDnText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
     }
 
@@ -461,11 +461,11 @@ public class AuthenticationPage extends FormPage
         {
             public void widgetSelected( SelectionEvent e )
             {
-                SaslRealmDialog dialog = new SaslRealmDialog( "" );
+                SaslRealmDialog dialog = new SaslRealmDialog( "" ); //$NON-NLS-1$
                 if ( Dialog.OK == dialog.open() && dialog.isDirty() )
                 {
                     String newSaslRealm = dialog.getSaslRealm();
-                    if ( newSaslRealm != null && !"".equals( newSaslRealm ) && !saslRealms.contains( newSaslRealm ) )
+                    if ( newSaslRealm != null && !"".equals( newSaslRealm ) && !saslRealms.contains( newSaslRealm ) ) //$NON-NLS-1$
                     {
                         saslRealms.add( newSaslRealm );
 
@@ -545,7 +545,7 @@ public class AuthenticationPage extends FormPage
                 saslRealms.remove( oldSaslRealm );
 
                 String newSaslRealm = dialog.getSaslRealm();
-                if ( newSaslRealm != null && !"".equals( newSaslRealm ) && !saslRealms.contains( newSaslRealm ) )
+                if ( newSaslRealm != null && !"".equals( newSaslRealm ) && !saslRealms.contains( newSaslRealm ) ) //$NON-NLS-1$
                 {
                     saslRealms.add( newSaslRealm );
                 }

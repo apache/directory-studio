@@ -6,16 +6,16 @@
  *  to you under the Apache License, Version 2.0 (the
  *  "License"); you may not use this file except in compliance
  *  with the License.  You may obtain a copy of the License at
- *  
+ * 
  *    http://www.apache.org/licenses/LICENSE-2.0
- *  
+ * 
  *  Unless required by applicable law or agreed to in writing,
  *  software distributed under the License is distributed on an
  *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  *  KIND, either express or implied.  See the License for the
  *  specific language governing permissions and limitations
- *  under the License. 
- *  
+ *  under the License.
+ * 
  */
 package org.apache.directory.studio.schemaeditor.model;
 
@@ -26,6 +26,7 @@ import java.util.List;
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
 import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
 import org.apache.directory.shared.ldap.model.schema.MatchingRule;
+import org.apache.directory.shared.ldap.model.schema.MutableObjectClass;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.shared.ldap.model.schema.registries.DefaultSchema;
 
@@ -44,7 +45,7 @@ public class Schema extends DefaultSchema
     private List<AttributeType> attributeTypes = new ArrayList<AttributeType>();
 
     /** The ObjectClass List */
-    private List<ObjectClass> objectClasses = new ArrayList<ObjectClass>();
+    private List<MutableObjectClass> objectClasses = new ArrayList<MutableObjectClass>();
 
     /** The MatchingRule List */
     private List<MatchingRule> matchingRules = new ArrayList<MatchingRule>();
@@ -95,7 +96,7 @@ public class Schema extends DefaultSchema
      * @param oc
      *      the ObjectClass
      */
-    public boolean addObjectClass( ObjectClass oc )
+    public boolean addObjectClass( MutableObjectClass oc )
     {
         return objectClasses.add( oc );
     }
@@ -119,7 +120,7 @@ public class Schema extends DefaultSchema
      * @param id
      *      the name or the oid of the AttributeType
      * @return
-     *      the AttributeType identified by the given id, or null if the 
+     *      the AttributeType identified by the given id, or null if the
      * AttributeType has not been found
      */
     public AttributeType getAttributeType( String id )
@@ -165,7 +166,7 @@ public class Schema extends DefaultSchema
      * @param id
      *      the name or the oid of the MatchingRule
      * @return
-     *      the MatchingRule identified by the given id, or null if the 
+     *      the MatchingRule identified by the given id, or null if the
      * MatchingRule has not been found
      */
     public MatchingRule getMatchingRule( String id )
@@ -223,7 +224,7 @@ public class Schema extends DefaultSchema
      * @param id
      *      the name or the oid of the ObjectClass
      * @return
-     *      the ObjectClass identified by the given id, or null if the 
+     *      the ObjectClass identified by the given id, or null if the
      * ObjectClass has not been found
      */
     public ObjectClass getObjectClass( String id )
@@ -257,7 +258,7 @@ public class Schema extends DefaultSchema
      * @return
      *      all the ObjectClass objects contained in the Schema
      */
-    public List<ObjectClass> getObjectClasses()
+    public List<MutableObjectClass> getObjectClasses()
     {
         return objectClasses;
     }
@@ -269,7 +270,7 @@ public class Schema extends DefaultSchema
      * @param id
      *      the name or the oid of the Syntax
      * @return
-     *      the Syntax identified by the given id, or null if the 
+     *      the Syntax identified by the given id, or null if the
      * Syntax has not been found
      */
     public LdapSyntax getSyntax( String id )

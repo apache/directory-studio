@@ -38,10 +38,10 @@ public class StudioPagedResultsControl extends StudioControl
     private static final long serialVersionUID = -6219375680879062812L;
 
     /** The OID of Simple Paged Search Control (1.2.840.113556.1.4.319) */
-    public static final String OID = "1.2.840.113556.1.4.319";
+    public static final String OID = "1.2.840.113556.1.4.319"; //$NON-NLS-1$
 
     /** The name of Simple Paged Search Control. */
-    public static final String NAME = "Simple Paged Results";
+    public static final String NAME = "Simple Paged Results"; //$NON-NLS-1$
 
     /** The page size. */
     private int size;

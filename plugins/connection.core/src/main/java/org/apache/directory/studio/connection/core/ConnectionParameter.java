@@ -64,10 +64,10 @@ public class ConnectionParameter
      */
     public enum NetworkProvider
     {
-        /** No encryption. */
+        /** JNDI */
         JNDI,
 
-        /** SSL encryption. */
+        /** Apache Directory LDAP API */
         APACHE_DIRECTORY_LDAP_API
     }
 
@@ -741,7 +741,7 @@ public class ConnectionParameter
         String s = extendedProperties.get( key );
         if ( s != null )
         {
-            String[] array = s.split( ";" );
+            String[] array = s.split( ";" ); //$NON-NLS-1$
             if ( ( array != null ) && ( array.length > 0 ) )
             {
                 return new ArrayList<String>( Arrays.asList( array ) );

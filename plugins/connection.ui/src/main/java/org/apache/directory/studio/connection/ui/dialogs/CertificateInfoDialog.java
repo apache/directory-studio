@@ -33,7 +33,7 @@ import org.eclipse.swt.widgets.Shell;
 
 
 /**
- * Dialog to show dialog information.
+ * Dialog to show certificate information.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */

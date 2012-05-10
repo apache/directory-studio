@@ -21,7 +21,6 @@ package org.apache.directory.studio.schemaeditor.view.editors.attributetype;
 
 
 import java.util.Comparator;
-import java.util.List;
 
 import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
 import org.apache.directory.studio.schemaeditor.view.editors.NonExistingSyntax;
@@ -39,46 +38,34 @@ public class ATESyntaxComboComparator implements Comparator<Object>
      */
     public int compare( Object o1, Object o2 )
     {
+        String syntax1Description = null;
+        String syntax2Description = null;
+
         if ( o1 instanceof LdapSyntax && o2 instanceof LdapSyntax )
         {
-            List<String> syntax1Names = ( ( LdapSyntax ) o1 ).getNames();
-            List<String> syntax2Names = ( ( LdapSyntax ) o2 ).getNames();
+            syntax1Description = ( ( LdapSyntax ) o1 ).getDescription();
+            syntax2Description = ( ( LdapSyntax ) o2 ).getDescription();
 
-            if ( ( syntax1Names != null ) && ( syntax2Names != null ) && ( syntax1Names.size() > 0 )
-                && ( syntax2Names.size() > 0 ) )
-            {
-                return syntax1Names.get( 0 ).compareToIgnoreCase( syntax2Names.get( 0 ) );
-            }
         }
         else if ( o1 instanceof LdapSyntax && o2 instanceof NonExistingSyntax )
         {
-            List<String> syntax1Names = ( ( LdapSyntax ) o1 ).getNames();
-            String syntax2Name = ( ( NonExistingSyntax ) o2 ).getName();
-
-            if ( ( syntax1Names != null ) && ( syntax2Name != null ) && ( syntax1Names.size() > 0 ) )
-            {
-                return syntax1Names.get( 0 ).compareToIgnoreCase( syntax2Name );
-            }
+            syntax1Description = ( ( LdapSyntax ) o1 ).getDescription();
+            syntax2Description = ( ( NonExistingSyntax ) o2 ).getDescription();
         }
         else if ( o1 instanceof NonExistingSyntax && o2 instanceof LdapSyntax )
         {
-            String syntax1Name = ( ( NonExistingSyntax ) o1 ).getName();
-            List<String> syntax2Names = ( ( LdapSyntax ) o2 ).getNames();
-
-            if ( ( syntax1Name != null ) && ( syntax2Names != null ) && ( syntax2Names.size() > 0 ) )
-            {
-                return syntax1Name.compareToIgnoreCase( syntax2Names.get( 0 ) );
-            }
+            syntax1Description = ( ( NonExistingSyntax ) o1 ).getDescription();
+            syntax2Description = ( ( LdapSyntax ) o2 ).getDescription();
         }
         else if ( o1 instanceof NonExistingSyntax && o2 instanceof NonExistingSyntax )
         {
-            String syntax1Name = ( ( NonExistingSyntax ) o1 ).getName();
-            String syntax2Name = ( ( NonExistingSyntax ) o2 ).getName();
+            syntax1Description = ( ( NonExistingSyntax ) o1 ).getDescription();
+            syntax2Description = ( ( NonExistingSyntax ) o2 ).getDescription();
+        }
 
-            if ( ( syntax1Name != null ) && ( syntax2Name != null ) )
-            {
-                return syntax1Name.compareToIgnoreCase( syntax2Name );
-            }
+        if ( ( syntax1Description != null ) && ( syntax2Description != null ) )
+        {
+            return syntax1Description.compareToIgnoreCase( syntax2Description );
         }
 
         return 0;

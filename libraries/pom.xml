@@ -40,6 +40,7 @@
     <module>org.apache.commons.logging</module>
     <module>org.apache.commons.pool</module>
     <module>org.apache.directory.server.config</module>
+    <module>org.apache.directory.server.core</module>
     <module>org.apache.directory.server.core.api</module>
     <module>org.apache.directory.server.core.avl</module>
     <module>org.apache.directory.server.core.constants</module>
@@ -56,7 +57,7 @@
     <module>org.slf4j.log4j12</module>
     <module>org.xpp3.xpp3</module>
   </modules>
-
+  
   <build>
     <plugins>
        <!-- Skip deployment of 3rd party plugins. This causes problems when 

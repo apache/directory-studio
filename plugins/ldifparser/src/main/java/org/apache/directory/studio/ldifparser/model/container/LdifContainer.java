@@ -48,7 +48,7 @@ public abstract class LdifContainer implements Serializable
     {
         this.parts = new ArrayList( 1 );
         if ( part == null )
-            throw new IllegalArgumentException( "null argument" );
+            throw new IllegalArgumentException( "null argument" ); //$NON-NLS-1$
         this.parts.add( part );
     }
 
@@ -69,7 +69,7 @@ public abstract class LdifContainer implements Serializable
     public final void addInvalid( LdifInvalidPart invalid )
     {
         if ( invalid == null )
-            throw new IllegalArgumentException( "null argument" );
+            throw new IllegalArgumentException( "null argument" ); //$NON-NLS-1$
         this.parts.add( invalid );
     }
 
@@ -92,13 +92,13 @@ public abstract class LdifContainer implements Serializable
         StringBuffer sb = new StringBuffer();
 
         sb.append( getClass().getName() );
-        sb.append( ":" );
+        sb.append( ":" ); //$NON-NLS-1$
         sb.append( LdifParserConstants.LINE_SEPARATOR );
 
         LdifPart[] parts = this.getParts();
         for ( int i = 0; i < parts.length; i++ )
         {
-            sb.append( "    " );
+            sb.append( "    " ); //$NON-NLS-1$
             sb.append( parts[i].toString() );
             sb.append( LdifParserConstants.LINE_SEPARATOR );
         }

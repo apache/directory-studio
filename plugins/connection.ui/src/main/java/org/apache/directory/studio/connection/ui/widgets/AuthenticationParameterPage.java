@@ -26,6 +26,7 @@ import org.apache.directory.shared.ldap.model.constants.SaslQoP;
 import org.apache.directory.shared.ldap.model.constants.SaslSecurityStrength;
 import org.apache.directory.shared.ldap.model.url.LdapUrl;
 import org.apache.directory.shared.ldap.model.url.LdapUrl.Extension;
+import org.apache.directory.studio.common.ui.HistoryUtils;
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.ConnectionCoreConstants;
@@ -37,9 +38,11 @@ import org.apache.directory.studio.connection.core.ConnectionParameter.Krb5Crede
 import org.apache.directory.studio.connection.core.jobs.CheckBindRunnable;
 import org.apache.directory.studio.connection.ui.AbstractConnectionParameterPage;
 import org.apache.directory.studio.connection.ui.ConnectionUIConstants;
+import org.apache.directory.studio.connection.ui.ConnectionUIPlugin;
 import org.apache.directory.studio.connection.ui.RunnableContextRunner;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Preferences;
+import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.swt.SWT;
@@ -264,7 +267,7 @@ public class AuthenticationParameterPage extends AbstractConnectionParameterPage
 
     private int getKdcPort()
     {
-        return !"".equals( krb5ConfigManualPortText.getText() ) ? Integer.parseInt( krb5ConfigManualPortText.getText() )
+        return !"".equals( krb5ConfigManualPortText.getText() ) ? Integer.parseInt( krb5ConfigManualPortText.getText() ) //$NON-NLS-1$
             : 0;
     }
 
@@ -326,7 +329,8 @@ public class AuthenticationParameterPage extends AbstractConnectionParameterPage
         Composite composite = BaseWidgetUtils.createColumnContainer( group2, 3, 1 );
 
         BaseWidgetUtils.createLabel( composite, Messages.getString( "AuthenticationParameterPage.BindDNOrUser" ), 1 ); //$NON-NLS-1$
-        String[] dnHistory = HistoryUtils.load( ConnectionUIConstants.DIALOGSETTING_KEY_PRINCIPAL_HISTORY );
+        String[] dnHistory = HistoryUtils.load( ConnectionUIPlugin.getDefault().getDialogSettings(),
+            ConnectionUIConstants.DIALOGSETTING_KEY_PRINCIPAL_HISTORY );
         bindPrincipalCombo = BaseWidgetUtils.createCombo( composite, dnHistory, -1, 2 );
 
         BaseWidgetUtils.createLabel( composite, Messages.getString( "AuthenticationParameterPage.BindPassword" ), 1 ); //$NON-NLS-1$
@@ -390,7 +394,8 @@ public class AuthenticationParameterPage extends AbstractConnectionParameterPage
     private void createSaslControls()
     {
         BaseWidgetUtils.createLabel( saslComposite, Messages.getString( "AuthenticationParameterPage.SaslRealm" ), 1 ); //$NON-NLS-1$
-        String[] saslHistory = HistoryUtils.load( ConnectionUIConstants.DIALOGSETTING_KEY_REALM_HISTORY );
+        String[] saslHistory = HistoryUtils.load( ConnectionUIPlugin.getDefault().getDialogSettings(),
+            ConnectionUIConstants.DIALOGSETTING_KEY_REALM_HISTORY );
         saslRealmText = BaseWidgetUtils.createCombo( saslComposite, saslHistory, -1, 1 );
 
         BaseWidgetUtils.createLabel( saslComposite, Messages.getString( "AuthenticationParameterPage.SaslQop" ), 1 ); //$NON-NLS-1$
@@ -618,7 +623,7 @@ public class AuthenticationParameterPage extends AbstractConnectionParameterPage
             : "" ); //$NON-NLS-1$
         krb5ConfigManualRealmText.setText( parameter.getKrb5Realm() != null ? parameter.getKrb5Realm() : "" ); //$NON-NLS-1$
         krb5ConfigManualHostText.setText( parameter.getKrb5KdcHost() != null ? parameter.getKrb5KdcHost() : "" ); //$NON-NLS-1$
-        krb5ConfigManualPortText.setText( parameter.getKrb5KdcPort() != 0 ? "" + parameter.getKrb5KdcPort() : "" ); //$NON-NLS-1$
+        krb5ConfigManualPortText.setText( parameter.getKrb5KdcPort() != 0 ? "" + parameter.getKrb5KdcPort() : "" ); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
 
@@ -655,6 +660,11 @@ public class AuthenticationParameterPage extends AbstractConnectionParameterPage
         {
             public void widgetSelected( SelectionEvent event )
             {
+                if ( !saveBindPasswordButton.getSelection() )
+                {
+                    // Reseting the previously saved password (if any)
+                    bindPasswordText.setText( "" ); //$NON-NLS-1$
+                }
                 connectionPageModified();
             }
         } );
@@ -820,10 +830,14 @@ public class AuthenticationParameterPage extends AbstractConnectionParameterPage
      */
     public void saveDialogSettings()
     {
-        HistoryUtils.save( ConnectionUIConstants.DIALOGSETTING_KEY_PRINCIPAL_HISTORY, bindPrincipalCombo.getText() );
+        IDialogSettings dialogSettings = ConnectionUIPlugin.getDefault().getDialogSettings();
+
+        HistoryUtils.save( dialogSettings, ConnectionUIConstants.DIALOGSETTING_KEY_PRINCIPAL_HISTORY,
+            bindPrincipalCombo.getText() );
         if ( getAuthenticationMethod().equals( AuthenticationMethod.SASL_DIGEST_MD5 ) )
         {
-            HistoryUtils.save( ConnectionUIConstants.DIALOGSETTING_KEY_REALM_HISTORY, saslRealmText.getText() );
+            HistoryUtils.save( dialogSettings, ConnectionUIConstants.DIALOGSETTING_KEY_REALM_HISTORY,
+                saslRealmText.getText() );
         }
     }
 
@@ -984,7 +998,7 @@ public class AuthenticationParameterPage extends AbstractConnectionParameterPage
                         ldapUrl.getExtensions().add(
                             new Extension( false, X_KRB5_CONFIG_MANUAL_KDC_HOST, parameter.getKrb5KdcHost() ) );
                         ldapUrl.getExtensions().add(
-                            new Extension( false, X_KRB5_CONFIG_MANUAL_KDC_PORT, "" + parameter.getKrb5KdcPort() ) );
+                            new Extension( false, X_KRB5_CONFIG_MANUAL_KDC_PORT, "" + parameter.getKrb5KdcPort() ) ); //$NON-NLS-1$
                         break;
                 }
         }

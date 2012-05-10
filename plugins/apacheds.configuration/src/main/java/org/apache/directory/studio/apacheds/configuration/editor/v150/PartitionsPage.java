@@ -38,7 +38,7 @@ import org.eclipse.ui.forms.widgets.ScrolledForm;
 public class PartitionsPage extends FormPage
 {
     /** The Page ID*/
-    public static final String ID = ServerConfigurationEditor.ID + ".V150.PartitionsPage";
+    public static final String ID = ServerConfigurationEditor.ID + ".V150.PartitionsPage"; //$NON-NLS-1$
 
     /** The Page Title */
     private static final String TITLE = "Partitions";
@@ -65,7 +65,7 @@ public class PartitionsPage extends FormPage
     protected void createFormContent( IManagedForm managedForm )
     {
         PlatformUI.getWorkbench().getHelpSystem().setHelp( getPartControl(),
-            ApacheDSConfigurationPluginConstants.PLUGIN_ID + "." + "configuration_editor_150" );
+            ApacheDSConfigurationPluginConstants.PLUGIN_ID + "." + "configuration_editor_150" ); //$NON-NLS-1$ //$NON-NLS-2$
 
         ScrolledForm form = managedForm.getForm();
         form.setText( "Partitions" );

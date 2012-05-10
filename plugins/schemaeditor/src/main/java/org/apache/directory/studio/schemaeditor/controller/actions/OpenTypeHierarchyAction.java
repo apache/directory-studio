@@ -64,33 +64,16 @@ public class OpenTypeHierarchyAction extends Action implements IWorkbenchWindowA
         setToolTipText( Messages.getString( "OpenTypeHierarchyAction.OpenTypeToolTip" ) ); //$NON-NLS-1$
         setId( PluginConstants.CMD_OPEN_TYPE_HIERARCHY );
         setActionDefinitionId( PluginConstants.CMD_OPEN_TYPE_HIERARCHY );
-        setEnabled( true );
+        setEnabled( false );
         this.viewer = viewer;
         this.viewer.addSelectionChangedListener( new ISelectionChangedListener()
         {
             public void selectionChanged( SelectionChangedEvent event )
             {
                 StructuredSelection selection = ( StructuredSelection ) event.getSelection();
-                if ( selection.size() == 1 )
-                {
-                    Object obj = selection.getFirstElement();
-                    if ( obj instanceof AttributeTypeWrapper )
-                    {
-                        setEnabled( true );
-                    }
-                    else if ( obj instanceof ObjectClassWrapper )
-                    {
-                        setEnabled( true );
-                    }
-                    else
-                    {
-                        setEnabled( false );
-                    }
-                }
-                else
-                {
-                    setEnabled( false );
-                }
+                setEnabled( ( selection.size() == 1 )
+                    && ( ( selection.getFirstElement() instanceof AttributeTypeWrapper )
+                    || ( selection.getFirstElement() instanceof ObjectClassWrapper ) ) );
             }
         } );
     }
@@ -167,7 +150,7 @@ public class OpenTypeHierarchyAction extends Action implements IWorkbenchWindowA
             {
                 PluginUtils.logError( Messages.getString( "OpenTypeHierarchyAction.ErrorOpeningView" ), e ); //$NON-NLS-1$
                 ViewUtils
-                    .displayErrorMessageBox(
+                    .displayErrorMessageDialog(
                         Messages.getString( "OpenTypeHierarchyAction.Error" ), Messages.getString( "OpenTypeHierarchyAction.ErrorOpeningView" ) ); //$NON-NLS-1$ //$NON-NLS-2$
             }
         }

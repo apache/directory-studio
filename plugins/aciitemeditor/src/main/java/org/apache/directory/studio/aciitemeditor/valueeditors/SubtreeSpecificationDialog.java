@@ -439,7 +439,7 @@ class SubtreeSpecificationDialog extends Dialog
             .getString( "SubtreeValueEditor.SubtreeValueEditor.label.filter" ), 2 ); //$NON-NLS-1$
 
         // filter widget
-        String filter = "";
+        String filter = ""; //$NON-NLS-1$
         if ( subtreeSpecification.getRefinement() != null )
         {
             filter = subtreeSpecification.getRefinement().toString();

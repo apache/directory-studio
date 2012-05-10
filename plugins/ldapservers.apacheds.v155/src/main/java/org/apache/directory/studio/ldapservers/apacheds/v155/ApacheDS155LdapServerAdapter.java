@@ -57,32 +57,32 @@ import org.osgi.framework.Bundle;
 public class ApacheDS155LdapServerAdapter implements LdapServerAdapter
 {
     // Various strings constants used in paths
-    private static final String SERVER_XML = "server.xml";
-    private static final String LOG4J_PROPERTIES = "log4j.properties";
-    private static final String RESOURCES = "resources";
-    private static final String LIBS = "libs";
-    private static final String CONF = "conf";
+    private static final String SERVER_XML = "server.xml"; //$NON-NLS-1$
+    private static final String LOG4J_PROPERTIES = "log4j.properties"; //$NON-NLS-1$
+    private static final String RESOURCES = "resources"; //$NON-NLS-1$
+    private static final String LIBS = "libs"; //$NON-NLS-1$
+    private static final String CONF = "conf"; //$NON-NLS-1$
 
     /** The array of libraries names */
     private static final String[] libraries = new String[]
-        { "antlr-2.7.7.jar", "apacheds-bootstrap-extract-1.5.5.jar", "apacheds-bootstrap-partition-1.5.5.jar",
-            "apacheds-core-1.5.5.jar", "apacheds-core-avl-1.5.5.jar", "apacheds-core-constants-1.5.5.jar",
-            "apacheds-core-entry-1.5.5.jar", "apacheds-core-jndi-1.5.5.jar", "apacheds-core-shared-1.5.5.jar",
-            "apacheds-interceptor-kerberos-1.5.5.jar", "apacheds-jdbm-1.5.5.jar", "apacheds-jdbm-store-1.5.5.jar",
-            "apacheds-kerberos-shared-1.5.5.jar", "apacheds-launcher-1.5.0.jar",
-            "apacheds-protocol-changepw-1.5.5.jar", "apacheds-protocol-dns-1.5.5.jar",
-            "apacheds-protocol-kerberos-1.5.5.jar", "apacheds-protocol-ldap-1.5.5.jar",
-            "apacheds-protocol-ntp-1.5.5.jar", "apacheds-protocol-shared-1.5.5.jar",
-            "apacheds-schema-bootstrap-1.5.5.jar", "apacheds-schema-extras-1.5.5.jar",
-            "apacheds-schema-registries-1.5.5.jar", "apacheds-server-jndi-1.5.5.jar", "apacheds-server-xml-1.5.5.jar",
-            "apacheds-utils-1.5.5.jar", "apacheds-xbean-spring-1.5.5.jar", "apacheds-xdbm-base-1.5.5.jar",
-            "apacheds-xdbm-search-1.5.5.jar", "apacheds-xdbm-tools-1.5.5.jar", "bcprov-jdk15-140.jar",
-            "commons-cli-1.2.jar", "commons-collections-3.2.1.jar", "commons-daemon-1.0.1.jar", "commons-io-1.4.jar",
-            "commons-lang-2.4.jar", "daemon-bootstrappers-1.1.6.jar", "jcl-over-slf4j-1.5.6.jar", "log4j-1.2.14.jar",
-            "mina-core-2.0.0-M6.jar", "shared-asn1-0.9.15.jar", "shared-asn1-codec-0.9.15.jar",
-            "shared-cursor-0.9.15.jar", "shared-ldap-0.9.15.jar", "shared-ldap-constants-0.9.15.jar",
-            "slf4j-api-1.5.6.jar", "slf4j-log4j12-1.5.6.jar", "spring-beans-2.5.6.SEC01.jar",
-            "spring-context-2.5.6.SEC01.jar", "spring-core-2.5.6.SEC01.jar", "xbean-spring-3.5.jar" };
+        { "antlr-2.7.7.jar", "apacheds-bootstrap-extract-1.5.5.jar", "apacheds-bootstrap-partition-1.5.5.jar", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+            "apacheds-core-1.5.5.jar", "apacheds-core-avl-1.5.5.jar", "apacheds-core-constants-1.5.5.jar", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+            "apacheds-core-entry-1.5.5.jar", "apacheds-core-jndi-1.5.5.jar", "apacheds-core-shared-1.5.5.jar", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+            "apacheds-interceptor-kerberos-1.5.5.jar", "apacheds-jdbm-1.5.5.jar", "apacheds-jdbm-store-1.5.5.jar", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+            "apacheds-kerberos-shared-1.5.5.jar", "apacheds-launcher-1.5.0.jar", //$NON-NLS-1$ //$NON-NLS-2$
+            "apacheds-protocol-changepw-1.5.5.jar", "apacheds-protocol-dns-1.5.5.jar", //$NON-NLS-1$ //$NON-NLS-2$
+            "apacheds-protocol-kerberos-1.5.5.jar", "apacheds-protocol-ldap-1.5.5.jar", //$NON-NLS-1$ //$NON-NLS-2$
+            "apacheds-protocol-ntp-1.5.5.jar", "apacheds-protocol-shared-1.5.5.jar", //$NON-NLS-1$ //$NON-NLS-2$
+            "apacheds-schema-bootstrap-1.5.5.jar", "apacheds-schema-extras-1.5.5.jar", //$NON-NLS-1$ //$NON-NLS-2$
+            "apacheds-schema-registries-1.5.5.jar", "apacheds-server-jndi-1.5.5.jar", "apacheds-server-xml-1.5.5.jar", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+            "apacheds-utils-1.5.5.jar", "apacheds-xbean-spring-1.5.5.jar", "apacheds-xdbm-base-1.5.5.jar", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+            "apacheds-xdbm-search-1.5.5.jar", "apacheds-xdbm-tools-1.5.5.jar", "bcprov-jdk15-140.jar", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+            "commons-cli-1.2.jar", "commons-collections-3.2.1.jar", "commons-daemon-1.0.1.jar", "commons-io-1.4.jar", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+            "commons-lang-2.4.jar", "daemon-bootstrappers-1.1.6.jar", "jcl-over-slf4j-1.5.6.jar", "log4j-1.2.14.jar", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+            "mina-core-2.0.0-M6.jar", "shared-asn1-0.9.15.jar", "shared-asn1-codec-0.9.15.jar", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+            "shared-cursor-0.9.15.jar", "shared-ldap-0.9.15.jar", "shared-ldap-constants-0.9.15.jar", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+            "slf4j-api-1.5.6.jar", "slf4j-log4j12-1.5.6.jar", "spring-beans-2.5.6.SEC01.jar", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+            "spring-context-2.5.6.SEC01.jar", "spring-core-2.5.6.SEC01.jar", "xbean-spring-3.5.jar" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
 
     /**
@@ -103,11 +103,11 @@ public class ApacheDS155LdapServerAdapter implements LdapServerAdapter
         File serverFolder = LdapServersManager.getServerFolder( server ).toFile();
         File confFolder = new File( serverFolder, CONF );
         confFolder.mkdir();
-        File ldifFolder = new File( serverFolder, "ldif" );
+        File ldifFolder = new File( serverFolder, "ldif" ); //$NON-NLS-1$
         ldifFolder.mkdir();
-        File logFolder = new File( serverFolder, "log" );
+        File logFolder = new File( serverFolder, "log" ); //$NON-NLS-1$
         logFolder.mkdir();
-        File partitionFolder = new File( serverFolder, "partitions" );
+        File partitionFolder = new File( serverFolder, "partitions" ); //$NON-NLS-1$
         partitionFolder.mkdir();
 
         // Copying configuration files
@@ -119,7 +119,7 @@ public class ApacheDS155LdapServerAdapter implements LdapServerAdapter
             LOG4J_PROPERTIES ) );
 
         // Creating an empty log file
-        new File( logFolder, "apacheds.log" ).createNewFile();
+        new File( logFolder, "apacheds.log" ).createNewFile(); //$NON-NLS-1$
     }
 
 

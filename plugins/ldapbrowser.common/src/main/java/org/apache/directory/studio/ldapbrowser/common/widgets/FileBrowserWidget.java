@@ -23,6 +23,7 @@ package org.apache.directory.studio.ldapbrowser.common.widgets;
 
 import java.io.File;
 
+import org.apache.directory.studio.common.ui.HistoryUtils;
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonConstants;
@@ -31,6 +32,7 @@ import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
@@ -39,13 +41,12 @@ import org.eclipse.swt.widgets.FileDialog;
 
 /**
  * The FileBrowserWidget provides a combo with a history of recently
- * used files an a browse button to open the file browser.
+ * used files and a browse button to open the file browser.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public class FileBrowserWidget extends BrowserWidget
 {
-
     /** The Constant TYPE_OPEN is used to create a Open file dialog. */
     public static final int TYPE_OPEN = SWT.OPEN;
 
@@ -53,19 +54,19 @@ public class FileBrowserWidget extends BrowserWidget
     public static final int TYPE_SAVE = SWT.SAVE;
 
     /** The combo with the history of recently used files */
-    private Combo fileCombo;
+    protected Combo fileCombo;
 
     /** The button to launch the file browser */
-    private Button browseButton;
+    protected Button browseButton;
 
     /** The title */
-    private String title;
+    protected String title;
 
-    /** File extensions used within the lauched file browser */
-    private String[] extensions;
+    /** File extensions used within the launched file browser */
+    protected String[] extensions;
 
     /** The type */
-    private int type;
+    protected int type;
 
 
     /**
@@ -88,11 +89,14 @@ public class FileBrowserWidget extends BrowserWidget
      * 
      * @param parent the parent
      */
-    public void createWidget( final Composite parent )
+    public void createWidget( Composite parent )
     {
-
         // Combo
-        fileCombo = BaseWidgetUtils.createCombo( parent, new String[0], -1, 1 );
+        fileCombo = new Combo( parent, SWT.DROP_DOWN | SWT.BORDER );
+        GridData gd = new GridData( GridData.FILL_HORIZONTAL );
+        gd.widthHint = 50;
+        fileCombo.setLayoutData( gd );
+        fileCombo.setVisibleItemCount( 20 );
         fileCombo.addModifyListener( new ModifyListener()
         {
             public void modifyText( ModifyEvent e )
@@ -107,7 +111,7 @@ public class FileBrowserWidget extends BrowserWidget
         {
             public void widgetSelected( SelectionEvent event )
             {
-                FileDialog fileDialog = new FileDialog( parent.getShell(), type );
+                FileDialog fileDialog = new FileDialog( browseButton.getShell(), type );
                 fileDialog.setText( title );
 
                 fileDialog.setFilterExtensions( extensions );
@@ -140,7 +144,8 @@ public class FileBrowserWidget extends BrowserWidget
         } );
 
         // file history
-        String[] history = HistoryUtils.load( BrowserCommonConstants.DIALOGSETTING_KEY_FILE_HISTORY );
+        String[] history = HistoryUtils.load( BrowserCommonActivator.getDefault().getDialogSettings(),
+            BrowserCommonConstants.DIALOGSETTING_KEY_FILE_HISTORY );
         fileCombo.setItems( history );
     }
 
@@ -172,7 +177,8 @@ public class FileBrowserWidget extends BrowserWidget
      */
     public void saveDialogSettings()
     {
-        HistoryUtils.save( BrowserCommonConstants.DIALOGSETTING_KEY_FILE_HISTORY, fileCombo.getText() );
+        HistoryUtils.save( BrowserCommonActivator.getDefault().getDialogSettings(),
+            BrowserCommonConstants.DIALOGSETTING_KEY_FILE_HISTORY, fileCombo.getText() );
     }
 
 

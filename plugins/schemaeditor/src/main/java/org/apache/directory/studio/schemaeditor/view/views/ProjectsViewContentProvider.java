@@ -93,7 +93,6 @@ public class ProjectsViewContentProvider implements IStructuredContentProvider, 
     /**
      * {@inheritDoc}
      */
-    @SuppressWarnings("unchecked")
     public Object[] getChildren( Object parentElement )
     {
         List<TreeNode> children = new ArrayList<TreeNode>();

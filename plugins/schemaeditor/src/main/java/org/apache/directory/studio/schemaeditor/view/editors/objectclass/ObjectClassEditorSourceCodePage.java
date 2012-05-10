@@ -6,16 +6,16 @@
  *  to you under the Apache License, Version 2.0 (the
  *  "License"); you may not use this file except in compliance
  *  with the License.  You may obtain a copy of the License at
- *  
+ * 
  *    http://www.apache.org/licenses/LICENSE-2.0
- *  
+ * 
  *  Unless required by applicable law or agreed to in writing,
  *  software distributed under the License is distributed on an
  *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  *  KIND, either express or implied.  See the License for the
  *  specific language governing permissions and limitations
- *  under the License. 
- *  
+ *  under the License.
+ * 
  */
 
 package org.apache.directory.studio.schemaeditor.view.editors.objectclass;
@@ -25,6 +25,7 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.util.List;
 
+import org.apache.directory.shared.ldap.model.schema.MutableObjectClass;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.shared.ldap.model.schema.parsers.OpenLdapSchemaParser;
 import org.apache.directory.studio.schemaeditor.PluginConstants;
@@ -41,8 +42,6 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.forms.IManagedForm;
-import org.eclipse.ui.forms.editor.FormEditor;
-import org.eclipse.ui.forms.editor.FormPage;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.ScrolledForm;
 
@@ -50,16 +49,10 @@ import org.eclipse.ui.forms.widgets.ScrolledForm;
 /**
  * This class is the Source Code Page of the Object Class Editor
  */
-public class ObjectClassEditorSourceCodePage extends FormPage
+public class ObjectClassEditorSourceCodePage extends AbstractObjectClassEditorPage
 {
     /** The page ID */
     public static final String ID = ObjectClassEditor.ID + "sourceCodePage"; //$NON-NLS-1$
-
-    /** The page title*/
-    public static final String TITLE = "Source Code"; //$NON-NLS-1$
-
-    /** The modified object class */
-    private ObjectClass modifiedObjectClass;
 
     /** The Schema Source Viewer */
     private SchemaSourceViewer schemaSourceViewer;
@@ -75,7 +68,7 @@ public class ObjectClassEditorSourceCodePage extends FormPage
             canLeaveThePage = true;
             try
             {
-                ( ( ObjectClassEditor ) getEditor() ).setDirty( true );
+                getEditor().setDirty( true );
                 OpenLdapSchemaParser parser = new OpenLdapSchemaParser();
                 parser.parse( schemaSourceViewer.getTextWidget().getText() );
 
@@ -102,13 +95,13 @@ public class ObjectClassEditorSourceCodePage extends FormPage
 
 
     /**
-     * Default constructor
-     * @param editor
-     *      the associated editor
+     * Default constructor.
+     * 
+     * @param editor the associated editor
      */
-    public ObjectClassEditorSourceCodePage( FormEditor editor )
+    public ObjectClassEditorSourceCodePage( ObjectClassEditor editor )
     {
-        super( editor, ID, TITLE );
+        super( editor, ID, Messages.getString( "ObjectClassEditorSourceCodePage.SourceCode" ) ); //$NON-NLS-1$
     }
 
 
@@ -117,6 +110,8 @@ public class ObjectClassEditorSourceCodePage extends FormPage
      */
     protected void createFormContent( IManagedForm managedForm )
     {
+        super.createFormContent( managedForm );
+
         ScrolledForm form = managedForm.getForm();
         FormToolkit toolkit = managedForm.getToolkit();
         GridLayout layout = new GridLayout();
@@ -124,8 +119,6 @@ public class ObjectClassEditorSourceCodePage extends FormPage
         layout.marginHeight = 0;
         form.getBody().setLayout( layout );
         toolkit.paintBordersFor( form.getBody() );
-
-        modifiedObjectClass = ( ( ObjectClassEditor ) getEditor() ).getModifiedObjectClass();
 
         // SOURCE CODE Field
         schemaSourceViewer = new SchemaSourceViewer( form.getBody(), null, null, false, SWT.BORDER | SWT.H_SCROLL
@@ -144,7 +137,8 @@ public class ObjectClassEditorSourceCodePage extends FormPage
         // Initialization from the "input" object class
         fillInUiFields();
 
-        schemaSourceViewer.getTextWidget().addModifyListener( schemaSourceViewerListener );
+        // Listeners initialization
+        addListeners();
 
         // Help Context for Dynamic Help
         PlatformUI.getWorkbench().getHelpSystem().setHelp( form,
@@ -153,12 +147,35 @@ public class ObjectClassEditorSourceCodePage extends FormPage
 
 
     /**
-     * Fills in the User Interface.
+     * {@inheritDoc}
      */
-    private void fillInUiFields()
+    protected void addListeners()
     {
-        // SOURCE CODE Field
-        schemaSourceViewer.getDocument().set( OpenLdapSchemaFileExporter.toSourceCode( modifiedObjectClass ) );
+        if ( schemaSourceViewer != null )
+        {
+            schemaSourceViewer.getTextWidget().addModifyListener( schemaSourceViewerListener );
+        }
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    protected void removeListeners()
+    {
+        if ( schemaSourceViewer != null )
+        {
+            schemaSourceViewer.getTextWidget().removeModifyListener( schemaSourceViewerListener );
+        }
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    protected void fillInUiFields()
+    {
+        schemaSourceViewer.getDocument().set( OpenLdapSchemaFileExporter.toSourceCode( getModifiedObjectClass() ) );
     }
 
 
@@ -179,6 +196,8 @@ public class ObjectClassEditorSourceCodePage extends FormPage
      */
     private void updateObjectClass( ObjectClass ocl )
     {
+        MutableObjectClass modifiedObjectClass = getModifiedObjectClass();
+
         modifiedObjectClass.setDescription( ocl.getDescription() );
         modifiedObjectClass.setMayAttributeTypeOids( ocl.getMayAttributeTypeOids() );
         modifiedObjectClass.setMustAttributeTypeOids( ocl.getMustAttributeTypeOids() );
@@ -187,14 +206,5 @@ public class ObjectClassEditorSourceCodePage extends FormPage
         modifiedObjectClass.setOid( ocl.getOid() );
         modifiedObjectClass.setSuperiorOids( ocl.getSuperiorOids() );
         modifiedObjectClass.setType( ocl.getType() );
-    }
-
-
-    /**
-     * Refreshes the UI.
-     */
-    public void refreshUI()
-    {
-        fillInUiFields();
     }
 }

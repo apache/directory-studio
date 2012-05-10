@@ -42,7 +42,7 @@ public class LdapFilterParserErrorTolerantTest extends TestCase
 
     public void testLpar()
     {
-        parser.parse( "(" );
+        parser.parse( "(" ); //$NON-NLS-1$
 
         LdapFilter model = parser.getModel();
 
@@ -50,21 +50,21 @@ public class LdapFilterParserErrorTolerantTest extends TestCase
         assertEquals( 0, model.getStartToken().getOffset() );
         assertEquals( 1, model.getStartToken().getLength() );
         assertEquals( LdapFilterToken.LPAR, model.getStartToken().getType() );
-        assertEquals( "(", model.getStartToken().getValue() );
+        assertEquals( "(", model.getStartToken().getValue() ); //$NON-NLS-1$
 
         assertNull( model.getFilterComponent() );
 
         assertNull( model.getStopToken() );
 
-        assertEquals( "(", model.toString() );
-        assertEquals( "(", model.toUserProvidedString() );
+        assertEquals( "(", model.toString() ); //$NON-NLS-1$
+        assertEquals( "(", model.toUserProvidedString() ); //$NON-NLS-1$
         assertFalse( parser.getModel().isValid() );
     }
 
 
     public void testLparAttr()
     {
-        parser.parse( "(objectClass" );
+        parser.parse( "(objectClass" ); //$NON-NLS-1$
 
         LdapFilter model = parser.getModel();
 
@@ -72,7 +72,7 @@ public class LdapFilterParserErrorTolerantTest extends TestCase
         assertEquals( 0, model.getStartToken().getOffset() );
         assertEquals( 1, model.getStartToken().getLength() );
         assertEquals( LdapFilterToken.LPAR, model.getStartToken().getType() );
-        assertEquals( "(", model.getStartToken().getValue() );
+        assertEquals( "(", model.getStartToken().getValue() ); //$NON-NLS-1$
 
         LdapFilterComponent filterComponent = model.getFilterComponent();
         assertNotNull( filterComponent );
@@ -82,21 +82,21 @@ public class LdapFilterParserErrorTolerantTest extends TestCase
         assertEquals( 1, filterItemComponent.getAttributeToken().getOffset() );
         assertEquals( 11, filterItemComponent.getAttributeToken().getLength() );
         assertEquals( LdapFilterToken.ATTRIBUTE, filterItemComponent.getAttributeToken().getType() );
-        assertEquals( "objectClass", filterItemComponent.getAttributeToken().getValue() );
+        assertEquals( "objectClass", filterItemComponent.getAttributeToken().getValue() ); //$NON-NLS-1$
         assertNull( filterItemComponent.getFilterToken() );
         assertNull( filterItemComponent.getValueToken() );
 
         assertNull( model.getStopToken() );
 
-        assertEquals( "(objectClass", model.toString() );
-        assertEquals( "(objectClass", model.toUserProvidedString() );
+        assertEquals( "(objectClass", model.toString() ); //$NON-NLS-1$
+        assertEquals( "(objectClass", model.toUserProvidedString() ); //$NON-NLS-1$
         assertFalse( parser.getModel().isValid() );
     }
 
 
     public void testLparAttrEquals()
     {
-        parser.parse( "(objectClass=" );
+        parser.parse( "(objectClass=" ); //$NON-NLS-1$
 
         LdapFilter model = parser.getModel();
 
@@ -104,7 +104,7 @@ public class LdapFilterParserErrorTolerantTest extends TestCase
         assertEquals( 0, model.getStartToken().getOffset() );
         assertEquals( 1, model.getStartToken().getLength() );
         assertEquals( LdapFilterToken.LPAR, model.getStartToken().getType() );
-        assertEquals( "(", model.getStartToken().getValue() );
+        assertEquals( "(", model.getStartToken().getValue() ); //$NON-NLS-1$
 
         LdapFilterComponent filterComponent = model.getFilterComponent();
         assertNotNull( filterComponent );
@@ -114,27 +114,27 @@ public class LdapFilterParserErrorTolerantTest extends TestCase
         assertEquals( 1, filterItemComponent.getAttributeToken().getOffset() );
         assertEquals( 11, filterItemComponent.getAttributeToken().getLength() );
         assertEquals( LdapFilterToken.ATTRIBUTE, filterItemComponent.getAttributeToken().getType() );
-        assertEquals( "objectClass", filterItemComponent.getAttributeToken().getValue() );
+        assertEquals( "objectClass", filterItemComponent.getAttributeToken().getValue() ); //$NON-NLS-1$
 
         assertNotNull( filterItemComponent.getFilterToken() );
         assertEquals( 12, filterItemComponent.getFilterToken().getOffset() );
         assertEquals( 1, filterItemComponent.getFilterToken().getLength() );
         assertEquals( LdapFilterToken.EQUAL, filterItemComponent.getFilterToken().getType() );
-        assertEquals( "=", filterItemComponent.getFilterToken().getValue() );
+        assertEquals( "=", filterItemComponent.getFilterToken().getValue() ); //$NON-NLS-1$
 
         assertNull( filterItemComponent.getValueToken() );
 
         assertNull( model.getStopToken() );
 
-        assertEquals( "(objectClass=", model.toString() );
-        assertEquals( "(objectClass=", model.toUserProvidedString() );
+        assertEquals( "(objectClass=", model.toString() ); //$NON-NLS-1$
+        assertEquals( "(objectClass=", model.toUserProvidedString() ); //$NON-NLS-1$
         assertFalse( parser.getModel().isValid() );
     }
 
 
     public void testLparAttrEqualsRpar()
     {
-        parser.parse( "(objectClass=)" );
+        parser.parse( "(objectClass=)" ); //$NON-NLS-1$
 
         LdapFilter model = parser.getModel();
 
@@ -142,7 +142,7 @@ public class LdapFilterParserErrorTolerantTest extends TestCase
         assertEquals( 0, model.getStartToken().getOffset() );
         assertEquals( 1, model.getStartToken().getLength() );
         assertEquals( LdapFilterToken.LPAR, model.getStartToken().getType() );
-        assertEquals( "(", model.getStartToken().getValue() );
+        assertEquals( "(", model.getStartToken().getValue() ); //$NON-NLS-1$
 
         LdapFilterComponent filterComponent = model.getFilterComponent();
         assertNotNull( filterComponent );
@@ -152,20 +152,20 @@ public class LdapFilterParserErrorTolerantTest extends TestCase
         assertEquals( 1, filterItemComponent.getAttributeToken().getOffset() );
         assertEquals( 11, filterItemComponent.getAttributeToken().getLength() );
         assertEquals( LdapFilterToken.ATTRIBUTE, filterItemComponent.getAttributeToken().getType() );
-        assertEquals( "objectClass", filterItemComponent.getAttributeToken().getValue() );
+        assertEquals( "objectClass", filterItemComponent.getAttributeToken().getValue() ); //$NON-NLS-1$
 
         assertNotNull( filterItemComponent.getFilterToken() );
         assertEquals( 12, filterItemComponent.getFilterToken().getOffset() );
         assertEquals( 1, filterItemComponent.getFilterToken().getLength() );
         assertEquals( LdapFilterToken.EQUAL, filterItemComponent.getFilterToken().getType() );
-        assertEquals( "=", filterItemComponent.getFilterToken().getValue() );
+        assertEquals( "=", filterItemComponent.getFilterToken().getValue() ); //$NON-NLS-1$
 
         assertNotNull( filterItemComponent.getValueToken() );
 
         assertNotNull( model.getStopToken() );
 
-        assertEquals( "(objectClass=)", model.toString() );
-        assertEquals( "(objectClass=)", model.toUserProvidedString() );
+        assertEquals( "(objectClass=)", model.toString() ); //$NON-NLS-1$
+        assertEquals( "(objectClass=)", model.toUserProvidedString() ); //$NON-NLS-1$
         assertTrue( parser.getModel().isValid() );
     }
 

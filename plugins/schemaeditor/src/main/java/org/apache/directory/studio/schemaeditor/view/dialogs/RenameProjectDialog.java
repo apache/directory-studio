@@ -21,23 +21,7 @@ package org.apache.directory.studio.schemaeditor.view.dialogs;
 
 
 import org.apache.directory.studio.schemaeditor.Activator;
-import org.apache.directory.studio.schemaeditor.controller.ProjectsHandler;
-import org.eclipse.jface.dialogs.Dialog;
-import org.eclipse.jface.dialogs.IDialogConstants;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.ModifyEvent;
-import org.eclipse.swt.events.ModifyListener;
-import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.widgets.Text;
-import org.eclipse.ui.ISharedImages;
-import org.eclipse.ui.PlatformUI;
 
 
 /**
@@ -45,25 +29,8 @@ import org.eclipse.ui.PlatformUI;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class RenameProjectDialog extends Dialog
+public class RenameProjectDialog extends AbstractRenameDialog
 {
-    /** The original name*/
-    private String originalName;
-
-    /** The new name */
-    private String newName;
-
-    /** The ProjectsHandler */
-    private ProjectsHandler projectsHandler;
-
-    // UI Fields
-    private Text newNameText;
-    private Composite errorComposite;
-    private Image errorImage;
-    private Label errorLabel;
-    private Button okButton;
-
-
     /**
      * Creates a new instance of RenameProjectDialog.
      *
@@ -72,9 +39,7 @@ public class RenameProjectDialog extends Dialog
      */
     public RenameProjectDialog( String originalName )
     {
-        super( PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell() );
-        this.originalName = originalName;
-        projectsHandler = Activator.getDefault().getProjectsHandler();
+        super( originalName );
 
     }
 
@@ -92,82 +57,17 @@ public class RenameProjectDialog extends Dialog
     /**
      * {@inheritDoc}
      */
-    protected Control createDialogArea( Composite parent )
+    protected String getErrorMessage()
     {
-        Composite composite = new Composite( parent, SWT.NONE );
-        composite.setLayout( new GridLayout( 2, false ) );
-        composite.setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, true ) );
-
-        // New Name
-        Label newNameLabel = new Label( composite, SWT.NONE );
-        newNameLabel.setText( Messages.getString( "RenameProjectDialog.NewName" ) ); //$NON-NLS-1$
-        newNameText = new Text( composite, SWT.BORDER );
-        newNameText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
-        newNameText.setText( originalName );
-        newNameText.addModifyListener( new ModifyListener()
-        {
-            public void modifyText( ModifyEvent e )
-            {
-                newName = newNameText.getText();
-
-                if ( !newName.equals( originalName ) )
-                {
-                    if ( projectsHandler.isProjectNameAlreadyTaken( newName ) )
-                    {
-                        okButton.setEnabled( false );
-                        errorComposite.setVisible( true );
-                        return;
-                    }
-                }
-
-                // Default
-                okButton.setEnabled( true );
-                errorComposite.setVisible( false );
-            }
-        } );
-
-        // Error Composite
-        errorComposite = new Composite( composite, SWT.NONE );
-        errorComposite.setLayout( new GridLayout( 2, false ) );
-        errorComposite.setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, true, 2, 1 ) );
-        errorComposite.setVisible( false );
-
-        // Error Image
-        errorImage = PlatformUI.getWorkbench().getSharedImages().getImage( ISharedImages.IMG_OBJS_ERROR_TSK );
-        Label label = new Label( errorComposite, SWT.NONE );
-        label.setImage( errorImage );
-        label.setSize( 16, 16 );
-
-        // Error Label
-        errorLabel = new Label( errorComposite, SWT.NONE );
-        errorLabel.setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, true ) );
-        errorLabel.setText( Messages.getString( "RenameProjectDialog.NameExists" ) ); //$NON-NLS-1$
-
-        newNameText.setFocus();
-        newNameText.selectAll();
-
-        return composite;
+        return Messages.getString( "RenameProjectDialog.NameExists" ); //$NON-NLS-1$
     }
 
 
     /**
      * {@inheritDoc}
      */
-    protected void createButtonsForButtonBar( Composite parent )
+    protected boolean isNewNameAlreadyTaken()
     {
-        createButton( parent, IDialogConstants.CANCEL_ID, IDialogConstants.CANCEL_LABEL, false );
-        okButton = createButton( parent, IDialogConstants.OK_ID, IDialogConstants.OK_LABEL, true );
-    }
-
-
-    /**
-     * Returns the new name.
-     *
-     * @return
-     *      the new name
-     */
-    public String getNewName()
-    {
-        return newName;
+        return Activator.getDefault().getProjectsHandler().isProjectNameAlreadyTaken( getNewName() );
     }
 }

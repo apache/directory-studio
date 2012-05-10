@@ -137,7 +137,7 @@
               <goal>copy-eclipse-artifact</goal>
             </goals>
             <configuration>
-              <destinationDirectory>${plugins-dir}</destinationDirectory>
+              <outputDirectory>${plugins-dir}</outputDirectory>
               <artifactItems>
                 <artifactItem>
                   <groupId>org.eclipse.core.filesystem.win32</groupId>

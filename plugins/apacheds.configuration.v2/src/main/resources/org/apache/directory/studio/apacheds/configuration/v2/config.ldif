@@ -78,6 +78,10 @@ ads-interceptororder: 2
 ads-interceptorclassname: org.apache.directory.server.core.authn.AuthenticationInterceptor
 ads-interceptorid: authenticationInterceptor
 ads-enabled: TRUE
+ads-passwordPolicies: default
+ads-authenticators: anonymousauthenticator
+ads-authenticators: simpleauthenticator
+ads-authenticators: strongauthenticator
 
 dn: ou=authenticators,ads-interceptorId=authenticationInterceptor,ou=interceptors,ads-directoryServiceId=default,ou=config
 ou: authenticators
@@ -89,27 +93,62 @@ ads-authenticatorid: anonymousauthenticator
 objectclass: top
 objectclass: ads-base
 objectClass: ads-authenticator
-objectClass: ads-anonymousAuthenticator
+objectClass: ads-authenticatorImpl
+ads-authenticatorClass: org.apache.directory.server.core.authn.AnonymousAuthenticator
 
 dn: ads-authenticatorid=simpleauthenticator,ou=authenticators,ads-interceptorId=authenticationInterceptor,ou=interceptors,ads-directoryServiceId=default,ou=config
 ads-authenticatorid: simpleauthenticator
 objectclass: top
 objectclass: ads-base
 objectClass: ads-authenticator
-objectClass: ads-simpleAuthenticator
+objectClass: ads-authenticatorImpl
+ads-authenticatorClass: org.apache.directory.server.core.authn.SimpleAuthenticator
 
 dn: ads-authenticatorid=strongauthenticator,ou=authenticators,ads-interceptorId=authenticationInterceptor,ou=interceptors,ads-directoryServiceId=default,ou=config
 ads-authenticatorid: strongauthenticator
 objectclass: top
 objectclass: ads-base
 objectClass: ads-authenticator
-objectClass: ads-strongAuthenticator
+objectClass: ads-authenticatorImpl
+ads-authenticatorClass: org.apache.directory.server.core.authn.StrongAuthenticator
+
+dn: ou=passwordPolicies,ads-interceptorId=authenticationInterceptor,ou=interceptors,ads-directoryServiceId=default,ou=config
+objectClass: organizationalUnit
+objectClass: top
+ou: passwordPolicies
+
+dn: ads-pwdId=default,ou=passwordPolicies,ads-interceptorId=authenticationInterceptor,ou=interceptors,ads-directoryServiceId=default,ou=config
+objectClass: top
+objectClass: ads-base
+objectClass: ads-passwordPolicy
+ads-pwdId: default
+ads-pwdSafeModify: FALSE
+ads-pwdMaxAge: 0
+ads-pwdFailureCountInterval: 30
+ads-pwdAttribute: userPassword
+ads-pwdMaxFailure: 5
+ads-pwdLockout: TRUE
+ads-pwdMustChange: FALSE
+ads-pwdLockoutDuration: 0
+ads-pwdMinLength: 5
+ads-pwdInHistory: 5
+ads-pwdExpireWarning: 600
+ads-pwdMinAge: 0
+ads-pwdAllowUserChange: TRUE
+ads-pwdGraceAuthNLimit: 5
+ads-pwdCheckQuality: 2
+ads-pwdMaxLength: 0 
+ads-pwdGraceExpire: 0
+ads-pwdMinDelay: 0
+ads-pwdMaxDelay: 0
+ads-pwdMaxIdle: 0
+ads-enabled: TRUE
 
 dn: ads-interceptorId=collectiveAttributeInterceptor,ou=interceptors,ads-directoryServiceId=default,ou=config
 objectclass: top
 objectclass: ads-base
 objectclass: ads-interceptor
-ads-interceptororder: 12
+ads-interceptororder: 11
 ads-interceptorclassname: org.apache.directory.server.core.collective.CollectiveAttributeInterceptor
 ads-interceptorid: collectiveAttributeInterceptor
 ads-enabled: TRUE
@@ -146,7 +185,7 @@ objectclass: top
 objectclass: ads-base
 objectclass: ads-interceptor
 ads-enabled: FALSE
-ads-interceptororder: 8
+ads-interceptororder: 7
 ads-interceptorclassname: org.apache.directory.server.core.kerberos.KeyDerivationInterceptor
 ads-interceptorid: keyDerivationInterceptor
 
@@ -163,7 +202,7 @@ dn: ads-interceptorId=operationalAttributeInterceptor,ou=interceptors,ads-direct
 objectclass: top
 objectclass: ads-base
 objectclass: ads-interceptor
-ads-interceptororder: 7
+ads-interceptororder: 10
 ads-interceptorclassname: org.apache.directory.server.core.operational.OperationalAttributeInterceptor
 ads-interceptorid: operationalAttributeInterceptor
 ads-enabled: TRUE
@@ -173,7 +212,7 @@ objectclass: top
 objectclass: ads-base
 objectclass: ads-interceptor
 ads-enabled: TRUE
-ads-interceptororder: 9
+ads-interceptororder: 8
 ads-interceptorclassname: org.apache.directory.server.core.hash.SshaPasswordHashingInterceptor
 ads-interceptorid: passwordHashingInterceptor
 
@@ -190,7 +229,7 @@ dn: ads-interceptorId=schemaInterceptor,ou=interceptors,ads-directoryServiceId=d
 objectclass: top
 objectclass: ads-base
 objectclass: ads-interceptor
-ads-interceptororder: 10
+ads-interceptororder: 9
 ads-interceptorclassname: org.apache.directory.server.core.schema.SchemaInterceptor
 ads-interceptorid: schemaInterceptor
 ads-enabled: TRUE
@@ -199,7 +238,7 @@ dn: ads-interceptorId=subentryInterceptor,ou=interceptors,ads-directoryServiceId
 objectclass: top
 objectclass: ads-base
 objectclass: ads-interceptor
-ads-interceptororder: 11
+ads-interceptororder: 12
 ads-interceptorclassname: org.apache.directory.server.core.subtree.SubentryInterceptor
 ads-interceptorid: subentryInterceptor
 ads-enabled: TRUE
@@ -213,28 +252,6 @@ ads-interceptorclassname: org.apache.directory.server.core.trigger.TriggerInterc
 ads-interceptorid: triggerInterceptor
 ads-enabled: TRUE
 
-dn: ads-pwdId=pwdPolicy,ads-directoryServiceId=default,ou=config
-objectClass: top
-objectClass: ads-base
-objectClass: ads-passwordPolicy
-ads-pwdId: pwdPolicy
-ads-pwdSafeModify: FALSE
-ads-pwdMaxAge: 0
-ads-pwdFailureCountInterval: 30
-ads-pwdAttribute: userPassword
-ads-pwdMaxFailure: 5
-ads-pwdLockout: TRUE
-ads-pwdMustChange: FALSE
-ads-pwdLockoutDuration: 0
-ads-pwdMinLength: 5
-ads-pwdInHistory: 5
-ads-pwdExpireWarning: 600
-ads-pwdMinAge: 0
-ads-pwdAllowUserChange: TRUE
-ads-pwdGraceAuthNLimit: 5
-ads-pwdCheckQuality: 2
-ads-enabled: TRUE
-
 dn: ou=partitions,ads-directoryServiceId=default,ou=config
 ou: partitions
 objectclass: organizationalUnit
@@ -245,14 +262,16 @@ objectclass: top
 objectClass: ads-base
 objectclass: ads-partition
 objectclass: ads-jdbmPartition
-ads-indexes: 1.3.6.1.4.1.18060.0.4.1.2.1
-ads-indexes: 1.3.6.1.4.1.18060.0.4.1.2.2
-ads-indexes: 1.3.6.1.4.1.18060.0.4.1.2.3
-ads-indexes: 1.3.6.1.4.1.18060.0.4.1.2.4
-ads-indexes: 1.3.6.1.4.1.18060.0.4.1.2.5
-ads-indexes: 1.3.6.1.4.1.18060.0.4.1.2.6
-ads-indexes: 1.3.6.1.4.1.18060.0.4.1.2.7
+ads-indexes: apacheRdn
+ads-indexes: apacheSubLevel
+ads-indexes: apachePresence
+ads-indexes: apacheOneLevel
+ads-indexes: apacheOneAlias
+ads-indexes: apacheSubAlias
+ads-indexes: apacheAlias
 ads-indexes: objectClass
+ads-indexes: entryUUID
+ads-indexes: entryCSN
 ads-indexes: ou
 ads-indexes: uid
 ads-partitionSuffix: ou=system
@@ -272,8 +291,8 @@ ou: indexes
 objectclass: organizationalUnit
 objectclass: top
 
-dn: ads-indexAttributeId=1.3.6.1.4.1.18060.0.4.1.2.1,ou=indexes,ads-partitionId=system,ou=partitions,ads-directoryServiceId=default,ou=config
-ads-indexattributeid: 1.3.6.1.4.1.18060.0.4.1.2.1
+dn: ads-indexAttributeId=apacheRdn,ou=indexes,ads-partitionId=system,ou=partitions,ads-directoryServiceId=default,ou=config
+ads-indexattributeid: apacheRdn
 ads-indexcachesize: 100
 objectclass: ads-index
 objectclass: ads-jdbmIndex
@@ -281,8 +300,8 @@ objectclass: ads-base
 objectclass: top
 ads-enabled: TRUE
 
-dn: ads-indexAttributeId=1.3.6.1.4.1.18060.0.4.1.2.2,ou=indexes,ads-partitionId=system,ou=partitions,ads-directoryServiceId=default,ou=config
-ads-indexattributeid: 1.3.6.1.4.1.18060.0.4.1.2.2
+dn: ads-indexAttributeId=apacheSubLevel,ou=indexes,ads-partitionId=system,ou=partitions,ads-directoryServiceId=default,ou=config
+ads-indexattributeid: apacheSubLevel
 ads-indexcachesize: 100
 objectclass: ads-index
 objectclass: ads-jdbmIndex
@@ -290,8 +309,8 @@ objectclass: ads-base
 objectclass: top
 ads-enabled: TRUE
 
-dn: ads-indexAttributeId=1.3.6.1.4.1.18060.0.4.1.2.3,ou=indexes,ads-partitionId=system,ou=partitions,ads-directoryServiceId=default,ou=config
-ads-indexattributeid: 1.3.6.1.4.1.18060.0.4.1.2.3
+dn: ads-indexAttributeId=apachePresence,ou=indexes,ads-partitionId=system,ou=partitions,ads-directoryServiceId=default,ou=config
+ads-indexattributeid: apachePresence
 ads-indexcachesize: 100
 objectclass: ads-index
 objectclass: ads-jdbmIndex
@@ -299,8 +318,8 @@ objectclass: ads-base
 objectclass: top
 ads-enabled: TRUE
 
-dn: ads-indexAttributeId=1.3.6.1.4.1.18060.0.4.1.2.4,ou=indexes,ads-partitionId=system,ou=partitions,ads-directoryServiceId=default,ou=config
-ads-indexattributeid: 1.3.6.1.4.1.18060.0.4.1.2.4
+dn: ads-indexAttributeId=apacheOneLevel,ou=indexes,ads-partitionId=system,ou=partitions,ads-directoryServiceId=default,ou=config
+ads-indexattributeid: apacheOneLevel
 ads-indexcachesize: 100
 objectclass: ads-index
 objectclass: ads-jdbmIndex
@@ -308,8 +327,8 @@ objectclass: ads-base
 objectclass: top
 ads-enabled: TRUE
 
-dn: ads-indexAttributeId=1.3.6.1.4.1.18060.0.4.1.2.5,ou=indexes,ads-partitionId=system,ou=partitions,ads-directoryServiceId=default,ou=config
-ads-indexattributeid: 1.3.6.1.4.1.18060.0.4.1.2.5
+dn: ads-indexAttributeId=apacheOneAlias,ou=indexes,ads-partitionId=system,ou=partitions,ads-directoryServiceId=default,ou=config
+ads-indexattributeid: apacheOneAlias
 ads-indexcachesize: 100
 objectclass: ads-index
 objectclass: ads-jdbmIndex
@@ -317,8 +336,8 @@ objectclass: ads-base
 objectclass: top
 ads-enabled: TRUE
 
-dn: ads-indexAttributeId=1.3.6.1.4.1.18060.0.4.1.2.6,ou=indexes,ads-partitionId=system,ou=partitions,ads-directoryServiceId=default,ou=config
-ads-indexattributeid: 1.3.6.1.4.1.18060.0.4.1.2.6
+dn: ads-indexAttributeId=apacheSubAlias,ou=indexes,ads-partitionId=system,ou=partitions,ads-directoryServiceId=default,ou=config
+ads-indexattributeid: apacheSubAlias
 ads-indexcachesize: 100
 objectclass: ads-index
 objectclass: ads-jdbmIndex
@@ -326,8 +345,8 @@ objectclass: ads-base
 objectclass: top
 ads-enabled: TRUE
 
-dn: ads-indexAttributeId=1.3.6.1.4.1.18060.0.4.1.2.7,ou=indexes,ads-partitionId=system,ou=partitions,ads-directoryServiceId=default,ou=config
-ads-indexattributeid: 1.3.6.1.4.1.18060.0.4.1.2.7
+dn: ads-indexAttributeId=apacheAlias,ou=indexes,ads-partitionId=system,ou=partitions,ads-directoryServiceId=default,ou=config
+ads-indexattributeid: apacheAlias
 ads-indexcachesize: 100
 objectclass: ads-index
 objectclass: ads-jdbmIndex
@@ -337,6 +356,24 @@ ads-enabled: TRUE
 
 dn: ads-indexAttributeId=objectClass,ou=indexes,ads-partitionId=system,ou=partitions,ads-directoryServiceId=default,ou=config
 ads-indexattributeid: objectClass
+ads-indexcachesize: 100
+objectclass: ads-index
+objectclass: ads-jdbmIndex
+objectclass: ads-base
+objectclass: top
+ads-enabled: TRUE
+
+dn: ads-indexAttributeId=entryUUID,ou=indexes,ads-partitionId=system,ou=partitions,ads-directoryServiceId=default,ou=config
+ads-indexattributeid: entryUUID
+ads-indexcachesize: 100
+objectclass: ads-index
+objectclass: ads-jdbmIndex
+objectclass: ads-base
+objectclass: top
+ads-enabled: TRUE
+
+dn: ads-indexAttributeId=entryCSN,ou=indexes,ads-partitionId=system,ou=partitions,ads-directoryServiceId=default,ou=config
+ads-indexattributeid: entryCSN
 ads-indexcachesize: 100
 objectclass: ads-index
 objectclass: ads-jdbmIndex
@@ -367,13 +404,15 @@ objectclass: top
 objectClass: ads-base
 objectclass: ads-partition
 objectclass: ads-jdbmPartition
-ads-indexes: 1.3.6.1.4.1.18060.0.4.1.2.1
-ads-indexes: 1.3.6.1.4.1.18060.0.4.1.2.2
-ads-indexes: 1.3.6.1.4.1.18060.0.4.1.2.3
-ads-indexes: 1.3.6.1.4.1.18060.0.4.1.2.4
-ads-indexes: 1.3.6.1.4.1.18060.0.4.1.2.5
-ads-indexes: 1.3.6.1.4.1.18060.0.4.1.2.6
-ads-indexes: 1.3.6.1.4.1.18060.0.4.1.2.7
+ads-indexes: apacheRdn
+ads-indexes: apacheSubLevel
+ads-indexes: apachePresence
+ads-indexes: apacheOneLevel
+ads-indexes: apacheOneAlias
+ads-indexes: apacheSubAlias
+ads-indexes: apacheAlias
+ads-indexes: entryUUID
+ads-indexes: entryCSN
 ads-indexes: dc
 ads-indexes: krb5PrincipalName
 ads-indexes: objectClass
@@ -391,8 +430,8 @@ ou: indexes
 objectclass: organizationalUnit
 objectclass: top
 
-dn: ads-indexAttributeId=1.3.6.1.4.1.18060.0.4.1.2.1,ou=indexes,ads-partitionId=example,ou=partitions,ads-directoryServiceId=default,ou=config
-ads-indexattributeid: 1.3.6.1.4.1.18060.0.4.1.2.1
+dn: ads-indexAttributeId=apacheRdn,ou=indexes,ads-partitionId=example,ou=partitions,ads-directoryServiceId=default,ou=config
+ads-indexattributeid: apacheRdn
 ads-indexcachesize: 100
 objectclass: ads-index
 objectclass: ads-jdbmIndex
@@ -400,8 +439,8 @@ objectclass: ads-base
 objectclass: top
 ads-enabled: TRUE
 
-dn: ads-indexAttributeId=1.3.6.1.4.1.18060.0.4.1.2.2,ou=indexes,ads-partitionId=example,ou=partitions,ads-directoryServiceId=default,ou=config
-ads-indexattributeid: 1.3.6.1.4.1.18060.0.4.1.2.2
+dn: ads-indexAttributeId=apacheSubLevel,ou=indexes,ads-partitionId=example,ou=partitions,ads-directoryServiceId=default,ou=config
+ads-indexattributeid: apacheSubLevel
 ads-indexcachesize: 100
 objectclass: ads-index
 objectclass: ads-jdbmIndex
@@ -409,8 +448,8 @@ objectclass: ads-base
 objectclass: top
 ads-enabled: TRUE
 
-dn: ads-indexAttributeId=1.3.6.1.4.1.18060.0.4.1.2.3,ou=indexes,ads-partitionId=example,ou=partitions,ads-directoryServiceId=default,ou=config
-ads-indexattributeid: 1.3.6.1.4.1.18060.0.4.1.2.3
+dn: ads-indexAttributeId=apachePresence,ou=indexes,ads-partitionId=example,ou=partitions,ads-directoryServiceId=default,ou=config
+ads-indexattributeid: apachePresence
 ads-indexcachesize: 100
 objectclass: ads-index
 objectclass: ads-jdbmIndex
@@ -418,8 +457,8 @@ objectclass: ads-base
 objectclass: top
 ads-enabled: TRUE
 
-dn: ads-indexAttributeId=1.3.6.1.4.1.18060.0.4.1.2.4,ou=indexes,ads-partitionId=example,ou=partitions,ads-directoryServiceId=default,ou=config
-ads-indexattributeid: 1.3.6.1.4.1.18060.0.4.1.2.4
+dn: ads-indexAttributeId=apacheOneLevel,ou=indexes,ads-partitionId=example,ou=partitions,ads-directoryServiceId=default,ou=config
+ads-indexattributeid: apacheOneLevel
 ads-indexcachesize: 100
 objectclass: ads-index
 objectclass: ads-jdbmIndex
@@ -427,8 +466,8 @@ objectclass: ads-base
 objectclass: top
 ads-enabled: TRUE
 
-dn: ads-indexAttributeId=1.3.6.1.4.1.18060.0.4.1.2.5,ou=indexes,ads-partitionId=example,ou=partitions,ads-directoryServiceId=default,ou=config
-ads-indexattributeid: 1.3.6.1.4.1.18060.0.4.1.2.5
+dn: ads-indexAttributeId=apacheOneAlias,ou=indexes,ads-partitionId=example,ou=partitions,ads-directoryServiceId=default,ou=config
+ads-indexattributeid: apacheOneAlias
 ads-indexcachesize: 100
 objectclass: ads-index
 objectclass: ads-jdbmIndex
@@ -436,8 +475,8 @@ objectclass: ads-base
 objectclass: top
 ads-enabled: TRUE
 
-dn: ads-indexAttributeId=1.3.6.1.4.1.18060.0.4.1.2.6,ou=indexes,ads-partitionId=example,ou=partitions,ads-directoryServiceId=default,ou=config
-ads-indexattributeid: 1.3.6.1.4.1.18060.0.4.1.2.6
+dn: ads-indexAttributeId=apacheSubAlias,ou=indexes,ads-partitionId=example,ou=partitions,ads-directoryServiceId=default,ou=config
+ads-indexattributeid: apacheSubAlias
 ads-indexcachesize: 100
 objectclass: ads-index
 objectclass: ads-jdbmIndex
@@ -445,8 +484,8 @@ objectclass: ads-base
 objectclass: top
 ads-enabled: TRUE
 
-dn: ads-indexAttributeId=1.3.6.1.4.1.18060.0.4.1.2.7,ou=indexes,ads-partitionId=example,ou=partitions,ads-directoryServiceId=default,ou=config
-ads-indexattributeid: 1.3.6.1.4.1.18060.0.4.1.2.7
+dn: ads-indexAttributeId=apacheAlias,ou=indexes,ads-partitionId=example,ou=partitions,ads-directoryServiceId=default,ou=config
+ads-indexattributeid: apacheAlias
 ads-indexcachesize: 100
 objectclass: ads-index
 objectclass: ads-jdbmIndex
@@ -474,6 +513,24 @@ ads-enabled: TRUE
 
 dn: ads-indexAttributeId=objectClass,ou=indexes,ads-partitionId=example,ou=partitions,ads-directoryServiceId=default,ou=config
 ads-indexattributeid: objectClass
+ads-indexcachesize: 100
+objectclass: ads-index
+objectclass: ads-jdbmIndex
+objectclass: ads-base
+objectclass: top
+ads-enabled: TRUE
+
+dn: ads-indexAttributeId=entryUUID,ou=indexes,ads-partitionId=example,ou=partitions,ads-directoryServiceId=default,ou=config
+ads-indexattributeid: entryUUID
+ads-indexcachesize: 100
+objectclass: ads-index
+objectclass: ads-jdbmIndex
+objectclass: ads-base
+objectclass: top
+ads-enabled: TRUE
+
+dn: ads-indexAttributeId=entryCSN,ou=indexes,ads-partitionId=example,ou=partitions,ads-directoryServiceId=default,ou=config
+ads-indexattributeid: entryCSN
 ads-indexcachesize: 100
 objectclass: ads-index
 objectclass: ads-jdbmIndex
@@ -528,7 +585,6 @@ objectclass: top
 
 dn: ads-transportId=tcp,ou=transports,ads-serverId=changePasswordServer,ou=servers,ads-directoryServiceId=default,ou=config
 ads-systemport: 60464
-ads-transportbacklog: 50
 ads-transportnbthreads: 2
 ads-transportid: tcp
 objectclass: ads-transport
@@ -539,7 +595,6 @@ ads-enabled: TRUE
 
 dn: ads-transportId=udp,ou=transports,ads-serverId=changePasswordServer,ou=servers,ads-directoryServiceId=default,ou=config
 ads-systemport: 60464
-ads-transportbacklog: 50
 ads-transportnbthreads: 2
 ads-transportid: udp
 objectclass: ads-transport
@@ -663,7 +718,6 @@ objectclass: top
 
 dn: ads-transportid=tcp,ou=transports,ads-serverId=kerberosServer,ou=servers,ads-directoryServiceId=default,ou=config
 ads-systemport: 60088
-ads-transportbacklog: 50
 ads-transportnbthreads: 4
 ads-transportaddress: 0.0.0.0
 ads-transportid: tcp
@@ -675,7 +729,6 @@ ads-enabled: TRUE
 
 dn: ads-transportid=udp,ou=transports,ads-serverId=kerberosServer,ou=servers,ads-directoryServiceId=default,ou=config
 ads-systemport: 60088
-ads-transportbacklog: 50
 ads-transportnbthreads: 4
 ads-transportaddress: 0.0.0.0
 ads-transportid: udp
@@ -701,7 +754,6 @@ ads-saslRealms: example.com
 ads-saslRealms: apache.org
 ads-searchBaseDN: ou=users,ou=system
 ads-enabled: TRUE
-ads-enableReplProvider: FALSE
 ads-transports: ldap
 ads-transports: ldaps
 ads-saslmechhandlers: CRAM-MD5
@@ -714,6 +766,11 @@ ads-extendedophandlers: gracefulShutdownHandler
 ads-extendedophandlers: starttlshandler
 ads-extendedophandlers: storedprochandler
 
+dn: ou=replConsumers,ads-serverId=ldapServer,ou=servers,ads-directoryServiceId=default,ou=config
+objectClass: organizationalUnit
+objectClass: top
+ou: replConsumers
+
 dn: ou=transports,ads-serverId=ldapServer,ou=servers,ads-directoryServiceId=default,ou=config
 ou: transports
 objectclass: organizationalUnit
@@ -721,8 +778,6 @@ objectclass: top
 
 dn: ads-transportid=ldap,ou=transports,ads-serverId=ldapServer,ou=servers,ads-directoryServiceId=default,ou=config
 ads-systemport: 10389
-ads-transportenablessl: FALSE
-ads-transportbacklog: 50
 ads-transportnbthreads: 8
 ads-transportaddress: 0.0.0.0
 ads-transportid: ldap

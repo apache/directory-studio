@@ -17,20 +17,11 @@
  *  under the License. 
  *  
  */
-/*******************************************************************************
- * Copyright (c) 2003, 2007 IBM Corporation and others.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
- * 
- * Contributors:
- *     IBM Corporation - Initial API and implementation
- *******************************************************************************/
 package org.apache.directory.studio.ldapservers.views;
 
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 import org.apache.directory.studio.ldapservers.LdapServersManager;
@@ -42,6 +33,7 @@ import org.apache.directory.studio.ldapservers.model.LdapServerListener;
 import org.apache.directory.studio.ldapservers.model.LdapServerStatus;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.TreeViewer;
+import org.eclipse.jface.viewers.ViewerComparator;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Tree;
@@ -63,6 +55,9 @@ public class ServersTableViewer extends TreeViewer
 
     /** The label provider */
     private ServersViewLabelProvider labelProvider;
+
+    /** The comparator */
+    private ServersComparator comparator;
 
     /** The server handler listener */
     private LdapServersManagerListener serversHandlerListener;
@@ -91,7 +86,8 @@ public class ServersTableViewer extends TreeViewer
         setLabelProvider( labelProvider );
         setContentProvider( new ServersViewContentProvider() );
 
-        setComparator( new ServersViewerComparator( labelProvider ) );
+        comparator = new ServersComparator();
+        setComparator( new ViewerComparator( comparator ) );
 
         setInput( ROOT );
 
@@ -147,7 +143,7 @@ public class ServersTableViewer extends TreeViewer
                 LdapServer server = event.getServer();
                 switch ( kind )
                 {
-                    // The server status has changed
+                // The server status has changed
                     case STATUS_CHANGED:
                         // First, we refresh the server
                         refreshServer( server );
@@ -251,16 +247,9 @@ public class ServersTableViewer extends TreeViewer
         {
             public void run()
             {
-                try
-                {
-                    refresh( server );
-                    ISelection sel = ServersTableViewer.this.getSelection();
-                    ServersTableViewer.this.setSelection( sel );
-                }
-                catch ( Exception e )
-                {
-                    // ignore
-                }
+                refresh( server );
+                ISelection sel = ServersTableViewer.this.getSelection();
+                ServersTableViewer.this.setSelection( sel );
             }
         } );
     }
@@ -301,23 +290,16 @@ public class ServersTableViewer extends TreeViewer
                 // Checking if we need to stop the animation
                 if ( !stopAnimation )
                 {
-                    try
-                    {
-                        // Changing the animation state on the label provider
-                        labelProvider.animate();
+                    // Changing the animation state on the label provider
+                    labelProvider.animate();
 
-                        // Looping on the currently starting servers
-                        for ( LdapServer server : serversNeedingAnimation.toArray( new LdapServer[0] ) )
-                        {
-                            if ( server != null && getTree() != null && !getTree().isDisposed() )
-                            {
-                                updateAnimation( server );
-                            }
-                        }
-                    }
-                    catch ( Exception e )
+                    // Looping on the currently starting servers
+                    for ( LdapServer server : serversNeedingAnimation.toArray( new LdapServer[0] ) )
                     {
-                        // Trace.trace( Trace.FINEST, "Error in Servers view animation", e ); TODO
+                        if ( server != null && getTree() != null && !getTree().isDisposed() )
+                        {
+                            updateAnimation( server );
+                        }
                     }
 
                     // Re-launching the animation
@@ -354,59 +336,84 @@ public class ServersTableViewer extends TreeViewer
      */
     private void updateAnimation( LdapServer server )
     {
-        try
-        {
-            Widget widget = doFindItem( server );
-            TreeItem item = ( TreeItem ) widget;
-            item.setText( 1, labelProvider.getColumnText( server, 1 ) );
-            item.setImage( 1, labelProvider.getColumnImage( server, 1 ) );
-        }
-        catch ( Exception e )
-        {
-            // Trace.trace( Trace.WARNING, "Error in optimized animation", e ); TODO
-        }
+        Widget widget = doFindItem( server );
+        TreeItem item = ( TreeItem ) widget;
+        item.setText( 1, labelProvider.getColumnText( server, 1 ) );
+        item.setImage( 1, labelProvider.getColumnImage( server, 1 ) );
     }
 
 
     /**
-     * Resorts the table based on field.
-     * 
-     * @param column 
-     *      the column being updated
-     * @param col
-     *      the column
+     * Sorts the table.
+     *
+     * @param treeColumn the tree column
+     * @param column the column number
      */
-    protected void resortTable( final TreeColumn column, int col )
+    public void sort( final TreeColumn treeColumn, int column )
     {
-        ServersViewerComparator sorter = ( ServersViewerComparator ) getComparator();
-
-        if ( col == sorter.getTopPriority() )
-            sorter.reverseTopPriority();
+        if ( column == comparator.column )
+        {
+            comparator.reverseOrder();
+        }
         else
-            sorter.setTopPriority( col );
+        {
+            comparator.column = column;
+        }
 
         PlatformUI.getWorkbench().getDisplay().asyncExec( new Runnable()
         {
             public void run()
             {
                 refresh();
-                updateDirectionIndicator( column );
+
+                Tree tree = getTree();
+                tree.setSortColumn( treeColumn );
+                if ( comparator.order == ServersComparator.ASCENDING )
+                {
+                    tree.setSortDirection( SWT.UP );
+                }
+                else
+                {
+                    tree.setSortDirection( SWT.DOWN );
+                }
             }
         } );
     }
 
-
     /**
-     * Updates the direction indicator as column is now the primary column.
-     * 
-     * @param column
+     * This class implements a comparator for servers.
+     *
+     * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
      */
-    protected void updateDirectionIndicator( TreeColumn column )
+    private class ServersComparator implements Comparator<Object>
     {
-        getTree().setSortColumn( column );
-        if ( ( ( ServersViewerComparator ) getComparator() ).getTopPriorityDirection() == ServersViewerComparator.ASCENDING )
-            getTree().setSortDirection( SWT.UP );
-        else
-            getTree().setSortDirection( SWT.DOWN );
+        public static final int ASCENDING = 1;
+
+        /** The comparison order */
+        int order = ASCENDING;
+
+        /** The column used to compare objects */
+        int column = 0;
+
+
+        /**
+         * Reverses the order.
+         */
+        public void reverseOrder()
+        {
+            order = order * -1;
+        }
+
+
+        /**
+         * {@inheritDoc}
+         */
+        public int compare( Object o1, Object o2 )
+        {
+            String s1 = labelProvider.getColumnText( o1, column );
+            String s2 = labelProvider.getColumnText( o2, column );
+
+            return s1.compareToIgnoreCase( s2 ) * order;
+        }
     }
 }

@@ -21,6 +21,7 @@
 package org.apache.directory.studio.ldifeditor.editor;
 
 
+import org.apache.directory.studio.ldapbrowser.common.dialogs.SelectBrowserConnectionDialog;
 import org.apache.directory.studio.ldapbrowser.core.jobs.ExecuteLdifRunnable;
 import org.apache.directory.studio.ldapbrowser.core.jobs.StudioBrowserJob;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
@@ -37,6 +38,7 @@ import org.eclipse.jface.preference.IPreferenceStore;
  */
 public class ExecuteLdifAction extends Action
 {
+    /** The LDIF Editor */
     private LdifEditor editor;
 
 
@@ -61,6 +63,31 @@ public class ExecuteLdifAction extends Action
     public void run()
     {
         IBrowserConnection connection = editor.getConnection();
+
+        // Checking if we already have a connection
+        if ( connection == null )
+        {
+            // Requesting the user to select a connection
+            SelectBrowserConnectionDialog dialog = new SelectBrowserConnectionDialog( editor.getSite().getShell(),
+                Messages.getString( "ExecuteLdifAction.SelectConnection" ), null ); //$NON-NLS-1$
+            if ( dialog.open() == SelectBrowserConnectionDialog.OK )
+            {
+                connection = dialog.getSelectedBrowserConnection();
+                
+                if ( connection != null )
+                {
+                    editor.setConnection( connection, true );
+                }
+            }
+
+            // Checking a second time if we  have a connection
+            if ( connection == null )
+            {
+                return;
+            }
+        }
+        
+
         String ldif = editor.getLdifModel().toRawString();
 
         IPreferenceStore preferenceStore = LdifEditorActivator.getDefault().getPreferenceStore();
@@ -81,6 +108,6 @@ public class ExecuteLdifAction extends Action
      */
     public boolean isEnabled()
     {
-        return editor != null && editor.getConnection() != null;
+        return editor != null;
     }
 }

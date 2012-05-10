@@ -75,12 +75,17 @@ public class InitializeAttributesRunnable implements StudioConnectionBulkRunnabl
      */
     public Connection[] getConnections()
     {
-        Connection[] connections = new Connection[entries.length];
-        for ( int i = 0; i < connections.length; i++ )
+        List<Connection> connections = new ArrayList<Connection>();
+
+        for ( IEntry entry : entries )
         {
-            connections[i] = entries[i].getBrowserConnection().getConnection();
+            if ( entry != null )
+            {
+                connections.add( entry.getBrowserConnection().getConnection() );
+            }
         }
-        return connections;
+
+        return connections.toArray( new Connection[0] );
     }
 
 
@@ -124,12 +129,18 @@ public class InitializeAttributesRunnable implements StudioConnectionBulkRunnabl
 
         for ( int pi = 0; pi < entries.length && !monitor.isCanceled(); pi++ )
         {
-            monitor.setTaskName( BrowserCoreMessages.bind( BrowserCoreMessages.jobs__init_entries_task, new String[]
-                { this.entries[pi].getDn().getName() } ) );
-            monitor.worked( 1 );
-            if ( entries[pi].getBrowserConnection() != null )
+            IEntry entry = entries[pi];
+
+            if ( entry != null )
             {
-                initializeAttributes( entries[pi], monitor );
+                monitor.setTaskName( BrowserCoreMessages.bind( BrowserCoreMessages.jobs__init_entries_task,
+                    new String[]
+                        { entry.getDn().getName() } ) );
+                monitor.worked( 1 );
+                if ( entry.getBrowserConnection() != null )
+                {
+                    initializeAttributes( entry, monitor );
+                }
             }
         }
     }
@@ -142,7 +153,7 @@ public class InitializeAttributesRunnable implements StudioConnectionBulkRunnabl
     {
         for ( IEntry entry : entries )
         {
-            if ( entry.getBrowserConnection() != null && entry.isAttributesInitialized() )
+            if ( ( entry != null ) && ( entry.getBrowserConnection() != null ) && ( entry.isAttributesInitialized() ) )
             {
                 // lookup the entry from cache and fire event with real entry
                 if ( entry.getBrowserConnection().getEntryFromCache( entry.getDn() ) != null )

@@ -3,7 +3,7 @@
   <groupId>org.eclipse.jdt</groupId>
   <artifactId>core</artifactId>
   <versioning>
-    <release>3.7.0.v_B61</release>
+    <release>3.7.1.v_B76_R37x</release>
     <versions>
       <version>3.6.1.v_A68_R36x</version>
       <version>3.3.3.v_793_R33x</version>
@@ -12,7 +12,8 @@
       <version>3.5.0.v_963</version>
       <version>3.5.2.v_981_R35x</version>
       <version>3.7.0.v_B61</version>
+      <version>3.7.1.v_B76_R37x</version>
     </versions>
-    <lastUpdated>20110718113314</lastUpdated>
+    <lastUpdated>20111206110544</lastUpdated>
   </versioning>
 </metadata>

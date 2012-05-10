@@ -288,8 +288,8 @@ public class EntryEditorExtension
     @Override
     public String toString()
     {
-        return "EntryEditorExtension [className=" + className + ", description=" + description + ", editorId="
-            + editorId + ", icon=" + icon + ", id=" + id + ", member=" + member + ", name=" + name + ", priority="
-            + priority + ", multiWindow=" + multiWindow + "]";
+        return "EntryEditorExtension [className=" + className + ", description=" + description + ", editorId=" //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+            + editorId + ", icon=" + icon + ", id=" + id + ", member=" + member + ", name=" + name + ", priority=" //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+            + priority + ", multiWindow=" + multiWindow + "]"; //$NON-NLS-1$ //$NON-NLS-2$
     }
 }

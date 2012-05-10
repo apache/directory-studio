@@ -1,5 +1,110 @@
 Release Notes
 
+Apache Directory Studio 2.0.0-M3
+
+Bug
+  * [DIRSTUDIO-764] - Image Editor does not work correctly
+  * [DIRSTUDIO-765] - Can not export DSML
+  * [DIRSTUDIO-767] - All attribute names are lowercase when using Apache Directory LDAP Client API
+  * [DIRSTUDIO-768] - Error while searching using a filter on a binary attribute
+  * [DIRSTUDIO-769] - Alt-S shortkey does not work in Search Dialog
+  * [DIRSTUDIO-770] - Typos in french translation
+  * [DIRSTUDIO-771] - Searches are not saved when closing Studio 2.0 M1/M2
+  * [DIRSTUDIO-772] - Entry UUID Editor can't display eDirectory GUID
+  * [DIRSTUDIO-773] - IllegalArgumentException thrown when copying the RootDSE
+  * [DIRSTUDIO-776] - Misleading title for action "Open 'Search Result'/'Bookmark'/'Entry' in DIT" in LDAP Browser view context menu
+  * [DIRSTUDIO-777] - Renaming entry fails when using Apache Directory LDAP API
+  * [DIRSTUDIO-778] - NullPointerException when refreshing a TableEntryEditor
+  * [DIRSTUDIO-779] - Label for folded attributes in TableEntryEditor is not updated when quick filter is used
+  * [DIRSTUDIO-783] - The 'Rename Entry' dialog doesn't resize automatically when adding or removing RDN parts
+
+Improvement
+  * [DIRSTUDIO-713] - Improve the 'Show in' sub-menu of the TableEntryEditor
+  * [DIRSTUDIO-780] - Allow Apache Directory Studio to be pinned to Windows 7's taskbar
+  * [DIRSTUDIO-782] - Improve Windows installer with JRE detection and creation of 'Apache Directory Studio.ini' file
+  * [DIRSTUDIO-784] - Add the ability to sort searches in the LDAP Browser view
+  * [DIRSTUDIO-785] - Add the ability to sort bookmarks in the LDAP Browser view
+
+--------------------------------------------------------------------------------
+
+Apache Directory Studio 2.0.0-M2
+
+Bug
+  * [DIRSTUDIO-630] - Importing a Schema project twice shouldn't be possible
+  * [DIRSTUDIO-733] - Error while reading RootDSE on Sun One directory server
+  * [DIRSTUDIO-739] - Using 'Quick Search' in the DN editor while editing some object cancels editing and jumps to 'Quick Search' in the main window
+  * [DIRSTUDIO-759] - Exit confirmation dialog is showed twice when quitting the application by closing the window on Linux and Windows
+  * [DIRSTUDIO-760] - Unable to bind on an Active Directory server using 'domain\userid'
+  * [DIRSTUDIO-763] - Typo in some English error messages ('occured' instead of 'occurred')
+
+--------------------------------------------------------------------------------
+
+Apache Directory Studio 2.0.0-M1
+
+Bug
+  * [DIRSTUDIO-301] - Intermittant ClassCastException from dom4j.DocumentFactory.getInstance()
+  * [DIRSTUDIO-428] - Same Name for attribute type and objectclass
+  * [DIRSTUDIO-454] - Colliding attributeType and objectClass names not supported
+  * [DIRSTUDIO-564] - Update ApacheDS core schema files to the latest version
+  * [DIRSTUDIO-651] - Typo in french translation
+  * [DIRSTUDIO-653] - The 'Choose' text for buttons on the AT and OC selection dialog has not been extracted for localization
+  * [DIRSTUDIO-658] - Exiting Directory Studio consumes CPU for couple of minutes
+  * [DIRSTUDIO-659] - Studio prompts for password even when "No Authentication" is selected
+  * [DIRSTUDIO-663] - can't import openldap schema having an attribute and an objectclass with the same alias
+  * [DIRSTUDIO-673] - Typo in the "check authentication" error message in the french translation
+  * [DIRSTUDIO-696] - ApacheDS Configuration plugin fails to open configuration file version 1.5.5 and 1.5.4 when NTP is enabled
+  * [DIRSTUDIO-698] - KeyDerivation interceptor missing in the ApacheDS Configuration Editor
+  * [DIRSTUDIO-699] - Interceptors order is not read/saved correctly in the ApacheDS Configuration Editor
+  * [DIRSTUDIO-703] - DSML Export fails to export when the size limit is hit
+  * [DIRSTUDIO-704] - NullPointerException creating new online schema editor project
+  * [DIRSTUDIO-708] - NPE when renaming a referral in 'Automatic' or 'Manual' Referral Handling mode
+  * [DIRSTUDIO-710] - SearchResultEntryDsml not setting attribute name correctly
+  * [DIRSTUDIO-716] - Error while opening connection : NPE
+  * [DIRSTUDIO-724] - Too many events: Outline and Modifications Logs views are refreshed multiple times
+  * [DIRSTUDIO-726] - Added a binary attributes in preference is not stored correctly
+  * [DIRSTUDIO-727] - It is possible to add empty Binary Attributes and Binary Syntax Definitions in the preferences
+  * [DIRSTUDIO-728] - Wrong attribute name in entry editor
+  * [DIRSTUDIO-731] - Editing RDN attribute should open rename dialog
+  * [DIRSTUDIO-734] - Schema error: Alias NAME is already used by another item: object class with OID
+  * [DIRSTUDIO-740] - Potential bug when using String.toLowerCase() method with a Turkish locale
+  * [DIRSTUDIO-742] - Directory Studio will not start if its installation directory is not writeable
+  * [DIRSTUDIO-748] - Entry attribute name not displayed correctly in Table Entry Editor.
+  * [DIRSTUDIO-749] - Syntaxes shouldn't have/use 'names' (or 'aliases') but 'description' instead
+  * [DIRSTUDIO-754] - Some values in the 'Text Formats' preference page are not saved between launches
+
+Improvement
+  * [DIRSTUDIO-413] - Add possibility to make connections read-only
+  * [DIRSTUDIO-432] - Better error message for invalid LDIF records on import
+  * [DIRSTUDIO-445] - Allow the user to rename a schema in the editor
+  * [DIRSTUDIO-446] - Allow the user to rename any item using the F2 shortcut
+  * [DIRSTUDIO-447] - Add the ability to use wildcards (?, *) in the ATs or OCs selection dialog to ease the search
+  * [DIRSTUDIO-649] - The 'Installed JREs' preference page should mention Apache DS plugin and not Java projects
+  * [DIRSTUDIO-655] - Switch usage of SWT MessageBox to JFace MessageDialog for info, warning and error dialogs
+  * [DIRSTUDIO-685] - Move duplicated 'ViewFormWidget' class to the 'common.ui' plugin
+  * [DIRSTUDIO-717] - Add application for Windows 64 Bit
+  * [DIRSTUDIO-722] - LDIF parser should allow attribute names with underscore ("_")
+  * [DIRSTUDIO-746] - Add support for the Full Screen feature of OS X Lion
+  * [DIRSTUDIO-752] - Improve fault tolerance when reading an online schema from a connection
+
+New Feature
+  * [DIRSTUDIO-112] - Export schema
+  * [DIRSTUDIO-320] - Studio exits without showing a confirmation dialog
+  * [DIRSTUDIO-692] - User should be able to supress the version line in exported LDIF files
+  * [DIRSTUDIO-694] - Add ability to export certificates in the 'Certificate Validation' preference page
+  * [DIRSTUDIO-712] - Add a 'Go to DN...' action to the Navigate menu in Eclipse
+  * [DIRSTUDIO-755] - Implement the 'Add...' button in the 'Certificate Validation' preference page
+
+Task
+  * [DIRSTUDIO-683] - Add a generic way to run Eclipse Jobs and Studio runnables in the 'common.core' plugin and extend this in other plugins
+  * [DIRSTUDIO-684] - Convert remaining Eclipse Jobs in LDAP Browser to Studio runnable API
+  * [DIRSTUDIO-688] - Remove the 'jars' plugins and create one specific plugin per external library dependency
+  * [DIRSTUDIO-697] - Add support for ApacheDS 1.5.7 'server.xml' configuration file
+  * [DIRSTUDIO-718] - Update Eclipse dependencies to version 3.6.1
+  * [DIRSTUDIO-737] - Update Eclipse dependencies to version 3.7.0
+  * [DIRSTUDIO-751] - Update Eclipse dependencies to version 3.7.1
+
+--------------------------------------------------------------------------------
+
 Apache Directory Studio 1.5.3
 
 Bug

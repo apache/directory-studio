@@ -33,7 +33,7 @@
   <properties>
     <tmp-dir>${project.build.directory}/ApacheDirectoryStudio-win32-x86-exe-tmp</tmp-dir>
     <files-dir>${tmp-dir}/files</files-dir>
-    <installer-file-name>ApacheDirectoryStudio-win32-x86-${version}.exe</installer-file-name>
+    <installer-file-name>ApacheDirectoryStudio-win32-x86-${project.version}.exe</installer-file-name>
     <installers.makensis>makensis</installers.makensis>
   </properties>
   
@@ -84,6 +84,7 @@
                 <copy file="src/main/resources/header_studio.bmp" todir="${tmp-dir}"/>
                 <copy file="src/main/resources/studio-installer.ico" todir="${tmp-dir}"/>
                 <copy file="src/main/resources/welcome_studio.bmp" todir="${tmp-dir}"/>
+                <copy file="src/main/resources/Apache Directory Studio.ini" todir="${tmp-dir}"/>
               </target>
             </configuration>
             <goals>
@@ -134,6 +135,47 @@
         </executions>
       </plugin>
     </plugins>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.apache.rat</groupId>
+          <artifactId>apache-rat-plugin</artifactId>
+          <configuration>
+            <excludeSubProjects>false</excludeSubProjects>
+            <excludes>
+              <!-- MAVEN_DEFAULT_EXCLUDES -->
+              <exclude>**/target/**/*</exclude>
+              <exclude>**/cobertura.ser</exclude>
+              <!-- ECLIPSE_DEFAULT_EXCLUDES -->
+              <exclude>**/.classpath</exclude>
+              <exclude>**/.project</exclude>
+              <exclude>**/.settings/**/*</exclude>
+              <!-- IDEA_DEFAULT_EXCLUDES -->
+              <exclude>**/*.iml</exclude>
+              <exclude>**/*.ipr</exclude>
+              <exclude>**/*.iws</exclude>
+              <!-- MANIFEST_MF_EXCLUDES -->
+              <exclude>**/MANIFEST.MF</exclude>
+              <!-- Missing license header in dependency reduced pom, see http://jira.codehaus.org/browse/MSHADE-48 -->
+              <exclude>**/dependency-reduced-pom.xml</exclude>
+              <!-- GITIGNORE_EXCLUDES -->
+              <exclude>**/.gitignore</exclude>
+              <!-- ABOUT_EXCLUDES -->
+              <exclude>**/about.ini</exclude>
+              <exclude>**/about_files/*</exclude>
+              <!-- LOG_FILES_EXCLUDES -->
+              <exclude>**/*.log</exclude>
+              <exclude>**/*.vm</exclude>
+              <!-- NSIS_EXCLUDES -->
+              <exclude>**/src/main/resources/AdvUninstLog.nsh</exclude>
+              <!-- OTHER_EXCLUDES -->
+              <exclude>src/main/resources/Apache Directory Studio.ini</exclude>
+              <exclude>**/*.bmp</exclude>
+            </excludes>
+          </configuration>
+         </plugin>
+      </plugins>
+    </pluginManagement>
   </build>
   
 </project>

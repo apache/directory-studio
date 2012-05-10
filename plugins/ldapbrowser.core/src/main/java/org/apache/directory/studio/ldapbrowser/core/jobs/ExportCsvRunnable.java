@@ -114,7 +114,7 @@ public class ExportCsvRunnable implements StudioConnectionRunnableWithProgress
     public Object[] getLockedObjects()
     {
         return new Object[]
-            { browserConnection.getUrl() + "_" + DigestUtils.shaHex( exportCsvFilename ) };
+            { browserConnection.getUrl() + "_" + DigestUtils.shaHex( exportCsvFilename ) }; //$NON-NLS-1$
     }
 
 

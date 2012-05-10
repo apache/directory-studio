@@ -69,6 +69,9 @@ public class RenameEntryDialog extends Dialog implements WidgetModifyListener
     /** The new rdn. */
     private Rdn rdn;
 
+    /** The initialization flag */
+    private boolean initialized = false;
+
 
     /**
      * Creates a new instance of RenameEntryDialog.
@@ -151,6 +154,9 @@ public class RenameEntryDialog extends Dialog implements WidgetModifyListener
         dnBuilderWidget.setInput( entry.getBrowserConnection(), allAttributeNames, entry.getRdn(), null );
 
         applyDialogFont( composite );
+
+        initialized = true;
+
         return composite;
     }
 
@@ -163,6 +169,12 @@ public class RenameEntryDialog extends Dialog implements WidgetModifyListener
         if ( okButton != null )
         {
             okButton.setEnabled( dnBuilderWidget.getRdn() != null );
+        }
+
+        // Forcing the redraw of the whole dialog
+        if ( initialized && ( getShell() != null ) && ( !getShell().isDisposed() ) )
+        {
+            getShell().pack();
         }
     }
 

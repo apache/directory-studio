@@ -442,13 +442,13 @@ public class CopyEntriesRunnable implements StudioConnectionBulkRunnableWithProg
         for ( Iterator<Ava> it = oldRdn.iterator(); it.hasNext(); )
         {
             Ava atav = it.next();
-            Attribute attribute = attributes.get( atav.getUpType() );
+            Attribute attribute = attributes.get( atav.getType() );
             if ( attribute != null )
             {
                 attribute.remove( atav.getNormValue().getString() );
                 if ( attribute.size() == 0 )
                 {
-                    attributes.remove( atav.getUpType() );
+                    attributes.remove( atav.getType() );
                 }
             }
         }
@@ -457,10 +457,10 @@ public class CopyEntriesRunnable implements StudioConnectionBulkRunnableWithProg
         for ( Iterator<Ava> it = newRdn.iterator(); it.hasNext(); )
         {
             Ava atav = it.next();
-            Attribute attribute = attributes.get( atav.getUpType() );
+            Attribute attribute = attributes.get( atav.getType() );
             if ( attribute == null )
             {
-                attribute = new BasicAttribute( atav.getUpType() );
+                attribute = new BasicAttribute( atav.getType() );
                 attributes.put( attribute );
             }
             if ( !attribute.contains( atav.getNormValue().getString() ) )

@@ -145,7 +145,7 @@ public class ACIItemSourceEditorComposite extends Composite
         ACIItemParser parser = Activator.getDefault().getACIItemParser();
         ACIItem aciItem = parser.parse( input );
 
-        String aci = "";
+        String aci = ""; //$NON-NLS-1$
         if ( aciItem != null )
         {
             aci = aciItem.toString();

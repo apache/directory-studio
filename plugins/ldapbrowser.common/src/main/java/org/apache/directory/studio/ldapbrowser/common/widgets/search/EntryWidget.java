@@ -23,6 +23,7 @@ package org.apache.directory.studio.ldapbrowser.common.widgets.search;
 
 import org.apache.directory.shared.ldap.model.exception.LdapInvalidDnException;
 import org.apache.directory.shared.ldap.model.name.Dn;
+import org.apache.directory.studio.common.ui.HistoryUtils;
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.connection.core.DnUtils;
 import org.apache.directory.studio.connection.ui.RunnableContextRunner;
@@ -30,7 +31,6 @@ import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonConstants;
 import org.apache.directory.studio.ldapbrowser.common.dialogs.SelectEntryDialog;
 import org.apache.directory.studio.ldapbrowser.common.widgets.BrowserWidget;
-import org.apache.directory.studio.ldapbrowser.common.widgets.HistoryUtils;
 import org.apache.directory.studio.ldapbrowser.core.jobs.ReadEntryRunnable;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
@@ -138,7 +138,8 @@ public class EntryWidget extends BrowserWidget
         dnCombo.setLayoutData( gd );
 
         // Dn history
-        String[] history = HistoryUtils.load( BrowserCommonConstants.DIALOGSETTING_KEY_DN_HISTORY );
+        String[] history = HistoryUtils.load( BrowserCommonActivator.getDefault().getDialogSettings(),
+            BrowserCommonConstants.DIALOGSETTING_KEY_DN_HISTORY );
         dnCombo.setItems( history );
         dnCombo.addModifyListener( new ModifyListener()
         {
@@ -170,7 +171,7 @@ public class EntryWidget extends BrowserWidget
                 if ( !Dn.isNullOrEmpty( dn ) )
                 {
                     dn = dn.getParent();
-                    
+
                     dnChanged();
                     internalSetEnabled();
                     notifyListeners();
@@ -201,13 +202,13 @@ public class EntryWidget extends BrowserWidget
 
                     // calculate initial Dn
                     Dn initialDn = dn;
-                    
+
                     if ( useLocalName && suffix != null && suffix.size() > 0 )
                     {
                         if ( initialDn != null && initialDn.size() > 0 )
                         {
                             try
-                            {         
+                            {
                                 initialDn = initialDn.add( suffix );
                             }
                             catch ( LdapInvalidDnException lide )
@@ -221,10 +222,10 @@ public class EntryWidget extends BrowserWidget
                     IEntry entry = rootEntry;
                     if ( initialDn != null && initialDn.size() > 0 )
                     {
-                        entry = browserConnection.getEntryFromCache(initialDn);
+                        entry = browserConnection.getEntryFromCache( initialDn );
                         if ( entry == null )
                         {
-                            ReadEntryRunnable runnable = new ReadEntryRunnable( browserConnection, initialDn);
+                            ReadEntryRunnable runnable = new ReadEntryRunnable( browserConnection, initialDn );
                             RunnableContextRunner.execute( runnable, null, true );
                             entry = runnable.getReadEntry();
                         }
@@ -302,7 +303,8 @@ public class EntryWidget extends BrowserWidget
      */
     public void saveDialogSettings()
     {
-        HistoryUtils.save( BrowserCommonConstants.DIALOGSETTING_KEY_DN_HISTORY, this.dnCombo.getText() );
+        HistoryUtils.save( BrowserCommonActivator.getDefault().getDialogSettings(),
+            BrowserCommonConstants.DIALOGSETTING_KEY_DN_HISTORY, this.dnCombo.getText() );
     }
 
 

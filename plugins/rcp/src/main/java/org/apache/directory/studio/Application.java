@@ -26,8 +26,6 @@ import org.eclipse.equinox.app.IApplicationContext;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PlatformUI;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 
 /**
@@ -40,16 +38,12 @@ public class Application implements IApplication
     /** The plugin ID */
     public static final String PLUGIN_ID = "org.apache.directory.studio.rcp"; //$NON-NLS-1$
 
-    /** The logger*/
-    private static Logger logger = LoggerFactory.getLogger( Application.class );
-
 
     /**
      * {@inheritDoc}
      */
     public Object start( IApplicationContext context ) throws Exception
     {
-        logger.info( "Entering Apache Directory Studio." ); //$NON-NLS-1$
         Display display = PlatformUI.createDisplay();
 
         try
@@ -67,7 +61,6 @@ public class Application implements IApplication
         finally
         {
             display.dispose();
-            logger.info( "Exiting Apache Directory Studio." ); //$NON-NLS-1$
         }
     }
 

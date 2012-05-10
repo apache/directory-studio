@@ -50,7 +50,7 @@ public class LdifChangeAddRecord extends LdifChangeRecord
     public void addAttrVal( LdifAttrValLine attrVal )
     {
         if ( attrVal == null )
-            throw new IllegalArgumentException( "null argument" );
+            throw new IllegalArgumentException( "null argument" ); //$NON-NLS-1$
         this.parts.add( attrVal );
     }
 

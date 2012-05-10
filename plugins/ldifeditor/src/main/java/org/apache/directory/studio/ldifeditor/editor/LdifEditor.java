@@ -593,18 +593,24 @@ public class LdifEditor extends TextEditor implements ILdifEditor, ConnectionUpd
      */
     protected void setConnection( IBrowserConnection browserConnection )
     {
-        this.browserConnection = browserConnection;
-        getEditorSite().getActionBars().getStatusLineManager().setMessage(
-            Messages.getString( "LdifEditor.UsedConnection" ) //$NON-NLS-1$
-                + ( browserConnection == null || browserConnection.getConnection() == null ? "-" : browserConnection //$NON-NLS-1$
-                    .getConnection().getName() ) );
-        // getStatusField("ldapconnection").setText();
+        setConnection( browserConnection, false );
+    }
 
-        IAction action = getAction( LdifEditorConstants.ACTION_ID_EXECUTE_LDIF );
-        if ( action != null )
+
+    /**
+     * Sets the Connection
+     *
+     * @param browserConnection the browser connection to set
+     * @param updateBrowserConnectionWidget the flag indicating if the browser connection widget
+     *        should be updated
+     */
+    protected void setConnection( IBrowserConnection browserConnection, boolean updateBrowserConnectionWidget )
+    {
+        this.browserConnection = browserConnection;
+
+        if ( updateBrowserConnectionWidget && ( browserConnectionWidget != null ) )
         {
-            action.setEnabled( browserConnection == null );
-            action.setEnabled( browserConnection != null );
+            browserConnectionWidget.setBrowserConnection( browserConnection );
         }
     }
 
@@ -755,8 +761,9 @@ public class LdifEditor extends TextEditor implements ILdifEditor, ConnectionUpd
             final File externalFile = new File( path );
             if ( externalFile.exists() )
             {
-                MessageDialog overwriteDialog = new MessageDialog( shell,
-                    Messages.getString( "LdifEditor.Overwrite" ), null, Messages.getString( "OverwriteQuestion" ), //$NON-NLS-1$ //$NON-NLS-2$
+                MessageDialog overwriteDialog = new MessageDialog(
+                    shell,
+                    Messages.getString( "LdifEditor.Overwrite" ), null, Messages.getString( "LdifEditor.OverwriteQuestion" ), //$NON-NLS-1$ //$NON-NLS-2$
                     MessageDialog.WARNING, new String[]
                         { IDialogConstants.YES_LABEL, IDialogConstants.NO_LABEL }, 1 ); // 'No' is the default
                 if ( overwriteDialog.open() != Window.OK )

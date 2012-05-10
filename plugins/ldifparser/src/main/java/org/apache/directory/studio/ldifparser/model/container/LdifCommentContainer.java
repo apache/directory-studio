@@ -44,7 +44,7 @@ public class LdifCommentContainer extends LdifContainer
     public void addComment( LdifCommentLine comment )
     {
         if ( comment == null )
-            throw new IllegalArgumentException( "null argument" );
+            throw new IllegalArgumentException( "null argument" ); //$NON-NLS-1$
         this.parts.add( comment );
     }
 

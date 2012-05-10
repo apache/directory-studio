@@ -53,9 +53,9 @@ public class PasswordTest extends TestCase
      */
     public void testPasswordSHAEncrypted()
     {
-        Password password = new Password( "{SHA}5en6G6MezRroT3XKqkdPOmY/BfQ=" );
+        Password password = new Password( "{SHA}5en6G6MezRroT3XKqkdPOmY/BfQ=" ); //$NON-NLS-1$
 
-        assertTrue( password.verify( "secret" ) );
+        assertTrue( password.verify( "secret" ) ); //$NON-NLS-1$
     }
 
 
@@ -64,9 +64,9 @@ public class PasswordTest extends TestCase
      */
     public void testPasswordSHAEncryptedLowercase()
     {
-        Password password = new Password( "{sha}5en6G6MezRroT3XKqkdPOmY/BfQ=" );
+        Password password = new Password( "{sha}5en6G6MezRroT3XKqkdPOmY/BfQ=" ); //$NON-NLS-1$
 
-        assertTrue( password.verify( "secret" ) );
+        assertTrue( password.verify( "secret" ) ); //$NON-NLS-1$
     }
 
 
@@ -75,9 +75,9 @@ public class PasswordTest extends TestCase
      */
     public void testPasswordSSHAEncrypted()
     {
-        Password password = new Password( "{SSHA}mjVVxasFkk59wMW4L1Ldt+YCblfhULHs03WW7g==" );
+        Password password = new Password( "{SSHA}mjVVxasFkk59wMW4L1Ldt+YCblfhULHs03WW7g==" ); //$NON-NLS-1$
 
-        assertTrue( password.verify( "secret" ) );
+        assertTrue( password.verify( "secret" ) ); //$NON-NLS-1$
     }
 
 
@@ -86,9 +86,9 @@ public class PasswordTest extends TestCase
      */
     public void testPasswordSSHAEncryptedLowercase()
     {
-        Password password = new Password( "{ssha}mjVVxasFkk59wMW4L1Ldt+YCblfhULHs03WW7g==" );
+        Password password = new Password( "{ssha}mjVVxasFkk59wMW4L1Ldt+YCblfhULHs03WW7g==" ); //$NON-NLS-1$
 
-        assertTrue( password.verify( "secret" ) );
+        assertTrue( password.verify( "secret" ) ); //$NON-NLS-1$
     }
 
 
@@ -97,9 +97,9 @@ public class PasswordTest extends TestCase
      */
     public void testPasswordMD5Encrypted()
     {
-        Password password = new Password( "{MD5}Xr4ilOzQ4PCOq3aQ0qbuaQ==" );
+        Password password = new Password( "{MD5}Xr4ilOzQ4PCOq3aQ0qbuaQ==" ); //$NON-NLS-1$
 
-        assertTrue( password.verify( "secret" ) );
+        assertTrue( password.verify( "secret" ) ); //$NON-NLS-1$
     }
 
 
@@ -108,9 +108,9 @@ public class PasswordTest extends TestCase
      */
     public void testPasswordMD5EncryptedLowercase()
     {
-        Password password = new Password( "{md5}Xr4ilOzQ4PCOq3aQ0qbuaQ==" );
+        Password password = new Password( "{md5}Xr4ilOzQ4PCOq3aQ0qbuaQ==" ); //$NON-NLS-1$
 
-        assertTrue( password.verify( "secret" ) );
+        assertTrue( password.verify( "secret" ) ); //$NON-NLS-1$
     }
 
 
@@ -119,9 +119,9 @@ public class PasswordTest extends TestCase
      */
     public void testPasswordSMD5Encrypted()
     {
-        Password password = new Password( "{SMD5}tQ9wo/VBuKsqBtylMMCcORbnYOJFMyDJ" );
+        Password password = new Password( "{SMD5}tQ9wo/VBuKsqBtylMMCcORbnYOJFMyDJ" ); //$NON-NLS-1$
 
-        assertTrue( password.verify( "secret" ) );
+        assertTrue( password.verify( "secret" ) ); //$NON-NLS-1$
     }
 
 
@@ -130,9 +130,9 @@ public class PasswordTest extends TestCase
      */
     public void testPasswordSMD5EncryptedLowercase()
     {
-        Password password = new Password( "{smd5}tQ9wo/VBuKsqBtylMMCcORbnYOJFMyDJ" );
+        Password password = new Password( "{smd5}tQ9wo/VBuKsqBtylMMCcORbnYOJFMyDJ" ); //$NON-NLS-1$
 
-        assertTrue( password.verify( "secret" ) );
+        assertTrue( password.verify( "secret" ) ); //$NON-NLS-1$
     }
 
 
@@ -141,9 +141,9 @@ public class PasswordTest extends TestCase
      */
     public void testPasswordCRYPTEncrypted()
     {
-        Password password = new Password( "{CRYPT}qFkH8Z1woBlXw" );
+        Password password = new Password( "{CRYPT}qFkH8Z1woBlXw" ); //$NON-NLS-1$
 
-        assertTrue( password.verify( "secret" ) );
+        assertTrue( password.verify( "secret" ) ); //$NON-NLS-1$
     }
 
 
@@ -152,9 +152,9 @@ public class PasswordTest extends TestCase
      */
     public void testPasswordCRYPTEncryptedLowercase()
     {
-        Password password = new Password( "{crypt}qFkH8Z1woBlXw" );
+        Password password = new Password( "{crypt}qFkH8Z1woBlXw" ); //$NON-NLS-1$
 
-        assertTrue( password.verify( "secret" ) );
+        assertTrue( password.verify( "secret" ) ); //$NON-NLS-1$
     }
 
 
@@ -163,8 +163,8 @@ public class PasswordTest extends TestCase
      */
     public void testPasswordBadAlgorithm()
     {
-        Password password = new Password( "{CRYPTE}qFkH8Z1woBlXw" );
+        Password password = new Password( "{CRYPTE}qFkH8Z1woBlXw" ); //$NON-NLS-1$
 
-        assertFalse( password.verify( "secret" ) );
+        assertFalse( password.verify( "secret" ) ); //$NON-NLS-1$
     }
 }

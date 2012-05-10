@@ -129,6 +129,14 @@ public abstract class SchemaHandlerAdapter implements SchemaHandlerListener
     /**
      * {@inheritDoc}
      */
+    public void schemaRenamed( Schema schema )
+    {
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
     public void syntaxAdded( LdapSyntax syntax )
     {
     }

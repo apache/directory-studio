@@ -79,6 +79,6 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer
         // Server Logs
         store.setDefault( ApacheDsPluginConstants.PREFS_SERVER_LOGS_LEVEL,
             ApacheDsPluginConstants.PREFS_SERVER_LOGS_LEVEL_WARN );
-        store.setDefault( ApacheDsPluginConstants.PREFS_SERVER_LOGS_PATTERN, "[%d{HH:mm:ss}] %p [%c] - %m%n" );
+        store.setDefault( ApacheDsPluginConstants.PREFS_SERVER_LOGS_PATTERN, "[%d{HH:mm:ss}] %p [%c] - %m%n" ); //$NON-NLS-1$
     }
 }

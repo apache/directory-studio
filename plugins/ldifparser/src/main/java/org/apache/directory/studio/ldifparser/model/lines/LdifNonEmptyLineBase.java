@@ -79,7 +79,7 @@ public abstract class LdifNonEmptyLineBase extends LdifLineBase
     public boolean isFolded()
     {
         String rawString = toRawString();
-        return rawString.indexOf( "\n " ) > -1 || rawString.indexOf( "\r " ) > -1;
+        return rawString.indexOf( "\n " ) > -1 || rawString.indexOf( "\r " ) > -1; //$NON-NLS-1$ //$NON-NLS-2$
     }
 
 }

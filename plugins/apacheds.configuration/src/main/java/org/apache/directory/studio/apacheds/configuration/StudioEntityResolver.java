@@ -53,7 +53,7 @@ public class StudioEntityResolver implements EntityResolver
         }
         else
         {
-            is = new InputSource( new StringReader( "" ) );
+            is = new InputSource( new StringReader( "" ) ); //$NON-NLS-1$
         }
 
         is.setSystemId( systemId );

@@ -32,7 +32,6 @@
 
   <modules>
     <module>aciitemeditor</module>
-    <module>apacheds</module>
     <module>apacheds-launcher</module>
     <module>apacheds.configuration</module>
     <module>apacheds.configuration.v2</module>
@@ -53,7 +52,6 @@
     <module>ldifeditor</module>
     <module>ldifparser</module>
     <module>rcp</module>
-    <module>rcp.fullscreen</module>
     <module>schemaeditor</module>
     <module>valueeditors</module>
   </modules>
@@ -97,6 +95,8 @@
               <exclude>ldapbrowser.core/src/main/resources/default_schema.ldif</exclude>
               <exclude>rcp/resources/icons/linux/studio.xpm</exclude>
               <exclude>schemaeditor/resources/schemas/openldap/*.xml</exclude>
+              <exclude>**/*.launch</exclude>
+              <exclude>**/maven-eclipse.xml</exclude>
             </excludes>
           </configuration>
          </plugin>

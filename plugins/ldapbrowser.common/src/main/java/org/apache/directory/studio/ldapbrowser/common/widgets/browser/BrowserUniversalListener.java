@@ -34,7 +34,9 @@ import org.apache.directory.studio.ldapbrowser.core.events.EntryUpdateListener;
 import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
 import org.apache.directory.studio.ldapbrowser.core.events.SearchUpdateEvent;
 import org.apache.directory.studio.ldapbrowser.core.events.SearchUpdateListener;
+import org.apache.directory.studio.ldapbrowser.core.events.SearchUpdateEvent.EventDetail;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
+import org.apache.directory.studio.ldapbrowser.core.model.IQuickSearch;
 import org.apache.directory.studio.ldapbrowser.core.model.IRootDSE;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
 import org.eclipse.jface.viewers.DoubleClickEvent;
@@ -54,6 +56,8 @@ import org.eclipse.jface.viewers.TreeViewer;
  */
 public class BrowserUniversalListener implements ConnectionUpdateListener, EntryUpdateListener, SearchUpdateListener
 {
+    /** The browser widget */
+    protected BrowserWidget widget;
 
     /** The tree viewer */
     protected TreeViewer viewer;
@@ -121,9 +125,10 @@ public class BrowserUniversalListener implements ConnectionUpdateListener, Entry
      *
      * @param viewer the tree viewer
      */
-    public BrowserUniversalListener( TreeViewer viewer )
+    public BrowserUniversalListener( BrowserWidget widget )
     {
-        this.viewer = viewer;
+        this.widget = widget;
+        this.viewer = widget.getViewer();
 
         viewer.addTreeListener( treeViewerListener );
         viewer.addDoubleClickListener( doubleClickListener );
@@ -269,13 +274,21 @@ public class BrowserUniversalListener implements ConnectionUpdateListener, Entry
     public void searchUpdated( SearchUpdateEvent searchUpdateEvent )
     {
         ISearch search = searchUpdateEvent.getSearch();
+        
+        if ( ( search instanceof IQuickSearch ) && ( searchUpdateEvent.getDetail() == EventDetail.SEARCH_REMOVED ) )
+        {
+            if ( widget.getQuickSearch() == search )
+            {
+                widget.setQuickSearch( null );
+            }
+        }
+        
         viewer.refresh();
 
-        if ( search.getBrowserConnection().getSearchManager().getQuickSearch() == search )
+        if ( ( search instanceof IQuickSearch ) && ( searchUpdateEvent.getDetail() != EventDetail.SEARCH_REMOVED ) )
         {
             viewer.setSelection( new StructuredSelection( search ), true );
             viewer.expandToLevel( search, 1 );
         }
     }
-
 }

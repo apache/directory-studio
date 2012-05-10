@@ -6,16 +6,16 @@
  *  to you under the Apache License, Version 2.0 (the
  *  "License"); you may not use this file except in compliance
  *  with the License.  You may obtain a copy of the License at
- *  
+ * 
  *    http://www.apache.org/licenses/LICENSE-2.0
- *  
+ * 
  *  Unless required by applicable law or agreed to in writing,
  *  software distributed under the License is distributed on an
  *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  *  KIND, either express or implied.  See the License for the
  *  specific language governing permissions and limitations
- *  under the License. 
- *  
+ *  under the License.
+ * 
  */
 package org.apache.directory.studio.schemaeditor.model;
 
@@ -30,6 +30,7 @@ import org.apache.commons.collections.map.MultiValueMap;
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
 import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
 import org.apache.directory.shared.ldap.model.schema.MatchingRule;
+import org.apache.directory.shared.ldap.model.schema.MutableObjectClass;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.shared.ldap.model.schema.SchemaObject;
 import org.apache.directory.studio.schemaeditor.controller.SchemaHandler;
@@ -63,7 +64,7 @@ public class DependenciesComputer
      *
      * @param schemasList
      *      the schemasList
-     * @throws DependencyComputerException 
+     * @throws DependencyComputerException
      */
     public DependenciesComputer( List<Schema> schemas ) throws DependencyComputerException
     {
@@ -97,7 +98,7 @@ public class DependenciesComputer
                     }
                 }
 
-                List<ObjectClass> objectClasses = schema.getObjectClasses();
+                List<MutableObjectClass> objectClasses = schema.getObjectClasses();
                 if ( objectClasses != null )
                 {
                     for ( ObjectClass objectClass : objectClasses )
@@ -120,7 +121,7 @@ public class DependenciesComputer
      *      the schema
      * @param attributeType
      *      the attribute type
-     * @throws DependencyComputerException 
+     * @throws DependencyComputerException
      */
     private void computeDependencies( Schema schema, AttributeType attributeType )
         throws DependencyComputerException
@@ -234,7 +235,7 @@ public class DependenciesComputer
      *      the schema
      * @param objectClass
      *      the object class
-     * @throws DependencyComputerException 
+     * @throws DependencyComputerException
      */
     private void computeDependencies( Schema schema, ObjectClass objectClass ) throws DependencyComputerException
     {
@@ -295,7 +296,7 @@ public class DependenciesComputer
                 {
                     throw new DependencyComputerException( NLS.bind( Messages
                         .getString( "DependenciesComputer.Mandatory" ), new String[] //$NON-NLS-1$
-                        { mandatoryAttributeTypeName } ) ); //$NON-NLS-1$
+                        { mandatoryAttributeTypeName } ) );
                 }
                 else
                 {
@@ -317,7 +318,7 @@ public class DependenciesComputer
      *      the schema
      * @param object
      *      the SchemaObject
-     * @throws DependencyComputerException 
+     * @throws DependencyComputerException
      */
     private void computeSchemaDependency( Schema schema, SchemaObject object ) throws DependencyComputerException
     {
@@ -328,7 +329,7 @@ public class DependenciesComputer
             if ( schemaFromSuperiorAT == null )
             {
                 throw new DependencyComputerException( NLS.bind(
-                    Messages.getString( "DependenciesComputer.Schema" ), new String[] { schemaName } ) ); //$NON-NLS-1$ //$NON-NLS-2$
+                    Messages.getString( "DependenciesComputer.Schema" ), new String[] { schemaName } ) ); //$NON-NLS-1$
             }
             else
             {

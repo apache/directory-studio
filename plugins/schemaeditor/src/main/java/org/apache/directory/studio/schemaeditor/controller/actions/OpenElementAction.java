@@ -38,6 +38,8 @@ import org.apache.directory.studio.schemaeditor.view.wrappers.SchemaWrapper;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.viewers.ISelectionChangedListener;
+import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.ui.IWorkbenchWindow;
@@ -66,8 +68,39 @@ public class OpenElementAction extends Action implements IWorkbenchWindowActionD
         setToolTipText( Messages.getString( "OpenElementAction.OpenToolTip" ) ); //$NON-NLS-1$
         setId( PluginConstants.CMD_OPEN_ELEMENT );
         setActionDefinitionId( PluginConstants.CMD_OPEN_ELEMENT );
-        setEnabled( true );
+        setEnabled( false );
         this.viewer = viewer;
+        this.viewer.addSelectionChangedListener( new ISelectionChangedListener()
+        {
+            public void selectionChanged( SelectionChangedEvent event )
+            {
+                StructuredSelection selection = ( StructuredSelection ) event.getSelection();
+                
+                if ( selection.size() > 0 )
+                {
+                    boolean enabled = true;
+
+                    for ( Iterator<?> iterator = selection.iterator(); iterator.hasNext(); )
+                    {
+                        Object selectedItem = iterator.next();
+
+                        if ( !( selectedItem instanceof SchemaWrapper )
+                            && !( selectedItem instanceof AttributeTypeWrapper )
+                            && !( selectedItem instanceof ObjectClassWrapper ) )
+                        {
+                            enabled = false;
+                            break;
+                        }
+                    }
+
+                    setEnabled( enabled );
+                }
+                else
+                {
+                    setEnabled( false );
+                }
+            }
+        } );
     }
 
 
@@ -92,7 +125,7 @@ public class OpenElementAction extends Action implements IWorkbenchWindowActionD
                 {
                     PluginUtils.logError( Messages.getString( "OpenElementAction.ErrorOpeningEditor" ), e ); //$NON-NLS-1$
                     ViewUtils
-                        .displayErrorMessageBox(
+                        .displayErrorMessageDialog(
                             Messages.getString( "OpenElementAction.Error" ), Messages.getString( "OpenElementAction.ErrorOpeningEditor" ) ); //$NON-NLS-1$ //$NON-NLS-2$
                 }
             }
@@ -108,7 +141,7 @@ public class OpenElementAction extends Action implements IWorkbenchWindowActionD
                 {
                     PluginUtils.logError( Messages.getString( "OpenElementAction.ErrorOpeningEditor" ), e ); //$NON-NLS-1$
                     ViewUtils
-                        .displayErrorMessageBox(
+                        .displayErrorMessageDialog(
                             Messages.getString( "OpenElementAction.Error" ), Messages.getString( "OpenElementAction.ErrorOpeningEditor" ) ); //$NON-NLS-1$ //$NON-NLS-2$
                 }
             }
@@ -123,7 +156,7 @@ public class OpenElementAction extends Action implements IWorkbenchWindowActionD
                 {
                     PluginUtils.logError( Messages.getString( "OpenElementAction.ErrorOpeningEditor" ), e ); //$NON-NLS-1$
                     ViewUtils
-                        .displayErrorMessageBox(
+                        .displayErrorMessageDialog(
                             Messages.getString( "OpenElementAction.Error" ), Messages.getString( "OpenElementAction.ErrorOpeningEditor" ) ); //$NON-NLS-1$ //$NON-NLS-2$
                 }
             }

@@ -27,7 +27,8 @@ import org.apache.directory.shared.ldap.model.schema.MatchingRule;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.studio.schemaeditor.Activator;
 import org.apache.directory.studio.schemaeditor.PluginConstants;
-import org.apache.directory.studio.schemaeditor.controller.SchemaListener;
+import org.apache.directory.studio.schemaeditor.controller.SchemaHandlerAdapter;
+import org.apache.directory.studio.schemaeditor.controller.SchemaHandlerListener;
 import org.apache.directory.studio.schemaeditor.model.Schema;
 import org.apache.directory.studio.schemaeditor.model.io.OpenLdapSchemaFileExporter;
 import org.apache.directory.studio.schemaeditor.view.widget.SchemaSourceViewer;
@@ -56,6 +57,9 @@ public class SchemaEditorSourceCodePage extends FormPage
     /** The page ID */
     public static final String ID = SchemaEditor.ID + "sourceCode"; //$NON-NLS-1$
 
+    /** The flag to indicate if the page has been initialized */
+    private boolean initialized = false;
+
     /** The associated schema */
     private Schema schema;
 
@@ -63,14 +67,14 @@ public class SchemaEditorSourceCodePage extends FormPage
     private SchemaSourceViewer schemaSourceViewer;
 
     // Listerner
-    private SchemaListener schemaListener = new SchemaListener()
+    private SchemaHandlerListener schemaHandlerListener = new SchemaHandlerAdapter()
     {
         /**
          * {@inheritDoc}
          */
         public void attributeTypeAdded( AttributeType at )
         {
-            fillInUiFields();
+            refreshUI();
         }
 
 
@@ -79,7 +83,7 @@ public class SchemaEditorSourceCodePage extends FormPage
          */
         public void attributeTypeModified( AttributeType at )
         {
-            fillInUiFields();
+            refreshUI();
         }
 
 
@@ -88,7 +92,7 @@ public class SchemaEditorSourceCodePage extends FormPage
          */
         public void attributeTypeRemoved( AttributeType at )
         {
-            fillInUiFields();
+            refreshUI();
         }
 
 
@@ -97,7 +101,7 @@ public class SchemaEditorSourceCodePage extends FormPage
          */
         public void matchingRuleAdded( MatchingRule mr )
         {
-            fillInUiFields();
+            refreshUI();
         }
 
 
@@ -106,7 +110,7 @@ public class SchemaEditorSourceCodePage extends FormPage
          */
         public void matchingRuleModified( MatchingRule mr )
         {
-            fillInUiFields();
+            refreshUI();
         }
 
 
@@ -115,7 +119,7 @@ public class SchemaEditorSourceCodePage extends FormPage
          */
         public void matchingRuleRemoved( MatchingRule mr )
         {
-            fillInUiFields();
+            refreshUI();
         }
 
 
@@ -124,7 +128,7 @@ public class SchemaEditorSourceCodePage extends FormPage
          */
         public void objectClassAdded( ObjectClass oc )
         {
-            fillInUiFields();
+            refreshUI();
         }
 
 
@@ -133,7 +137,7 @@ public class SchemaEditorSourceCodePage extends FormPage
          */
         public void objectClassModified( ObjectClass oc )
         {
-            fillInUiFields();
+            refreshUI();
         }
 
 
@@ -142,7 +146,7 @@ public class SchemaEditorSourceCodePage extends FormPage
          */
         public void objectClassRemoved( ObjectClass oc )
         {
-            fillInUiFields();
+            refreshUI();
         }
 
 
@@ -151,7 +155,7 @@ public class SchemaEditorSourceCodePage extends FormPage
          */
         public void syntaxAdded( LdapSyntax syntax )
         {
-            fillInUiFields();
+            refreshUI();
         }
 
 
@@ -160,7 +164,7 @@ public class SchemaEditorSourceCodePage extends FormPage
          */
         public void syntaxModified( LdapSyntax syntax )
         {
-            fillInUiFields();
+            refreshUI();
         }
 
 
@@ -169,7 +173,7 @@ public class SchemaEditorSourceCodePage extends FormPage
          */
         public void syntaxRemoved( LdapSyntax syntax )
         {
-            fillInUiFields();
+            refreshUI();
         }
     };
 
@@ -183,6 +187,7 @@ public class SchemaEditorSourceCodePage extends FormPage
     public SchemaEditorSourceCodePage( FormEditor editor )
     {
         super( editor, ID, Messages.getString( "SchemaEditorSourceCodePage.SourceCode" ) ); //$NON-NLS-1$
+        Activator.getDefault().getSchemaHandler().addListener( schemaHandlerListener );
     }
 
 
@@ -217,10 +222,10 @@ public class SchemaEditorSourceCodePage extends FormPage
         // Initializes the UI from the schema
         fillInUiFields();
 
-        addListeners();
-
         // Help Context for Dynamic Help
         PlatformUI.getWorkbench().getHelpSystem().setHelp( form, PluginConstants.PLUGIN_ID + "." + "schema_editor" ); //$NON-NLS-1$ //$NON-NLS-2$
+  
+        initialized = true;
     }
 
 
@@ -234,30 +239,24 @@ public class SchemaEditorSourceCodePage extends FormPage
 
 
     /**
-     * Adds the listeners.
-     */
-    private void addListeners()
-    {
-        Activator.getDefault().getSchemaHandler().addListener( schema, schemaListener );
-    }
-
-
-    /**
-     * Removes the listeners.
-     */
-    private void removeListeners()
-    {
-        Activator.getDefault().getSchemaHandler().removeListener( schema, schemaListener );
-    }
-
-
-    /**
      * {@inheritDoc}
      */
     public void dispose()
     {
-        removeListeners();
+        Activator.getDefault().getSchemaHandler().removeListener( schemaHandlerListener );
 
         super.dispose();
+    }
+
+
+    /**
+     * Refreshes the UI.
+     */
+    public void refreshUI()
+    {
+        if ( initialized )
+        {
+            fillInUiFields();
+        }
     }
 }

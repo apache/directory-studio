@@ -1,13 +1,23 @@
-/*******************************************************************************
- * Copyright (c) 2000, 2003 IBM Corporation and others.
- * All rights reserved. This program and the accompanying materials 
- * are made available under the terms of the Common Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/cpl-v10.html
- * 
- * Contributors:
- *     IBM Corporation - initial API and implementation
- *******************************************************************************/
+/*
+ *  Licensed to the Apache Software Foundation (ASF) under one
+ *  or more contributor license agreements.  See the NOTICE file
+ *  distributed with this work for additional information
+ *  regarding copyright ownership.  The ASF licenses this file
+ *  to you under the Apache License, Version 2.0 (the
+ *  "License"); you may not use this file except in compliance
+ *  with the License.  You may obtain a copy of the License at
+ *  
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing,
+ *  software distributed under the License is distributed on an
+ *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ *  KIND, either express or implied.  See the License for the
+ *  specific language governing permissions and limitations
+ *  under the License. 
+ *  
+ */
+
 package org.apache.directory.studio.common.ui.filesystem;
 
 
@@ -21,57 +31,35 @@ import org.eclipse.ui.editors.text.ILocationProvider;
 
 
 /**
- * This EditorInput is used to open files that are located in the local file system.
- * 
- * Inspired from org.eclipse.ui.internal.editors.text.NonExistingFileEditorInput.java
+ * This class defines an editor input based on the local file system path of a file.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public class PathEditorInput implements IPathEditorInput, ILocationProvider
 {
-    /** The absolute path in local file system */
+    /** The path */
     private IPath path;
 
 
     /**
      * Creates a new instance of PathEditorInput.
      *
-     * @param path the absolute path
+     * @param path the path
      */
     public PathEditorInput( IPath path )
     {
-        if ( path == null )
-        {
-            throw new IllegalArgumentException();
-        }
-
         this.path = path;
     }
 
 
     /**
-     * Returns hash code of the path.
+     * {@inheritDoc}
      */
-    public int hashCode()
+    public boolean exists()
     {
-        return path.hashCode();
-    }
-
-
-    /** 
-     * This implemention just compares the names
-     */
-    public boolean equals( Object o )
-    {
-        if ( this == o )
+        if ( path != null )
         {
-            return true;
-        }
-
-        if ( o instanceof PathEditorInput )
-        {
-            PathEditorInput input = ( PathEditorInput ) o;
-            return path.equals( input.path );
+            return path.toFile().exists();
         }
 
         return false;
@@ -80,53 +68,6 @@ public class PathEditorInput implements IPathEditorInput, ILocationProvider
 
     /**
      * {@inheritDoc}
-     * */
-    public boolean exists()
-    {
-        return path.toFile().exists();
-    }
-
-
-    /**
-     * {@inheritDoc}
-     * */
-    public ImageDescriptor getImageDescriptor()
-    {
-        return PlatformUI.getWorkbench().getEditorRegistry().getImageDescriptor( path.toString() );
-    }
-
-
-    /**
-     * Returns the file name only.
-     */
-    public String getName()
-    {
-        return path.toFile().getName();
-        //return path.toString();
-    }
-
-
-    /**
-     * Returns the complete path. 
-     */
-    public String getToolTipText()
-    {
-        return path.makeRelative().toOSString();
-    }
-
-
-    /**
-     * Returns the path. 
-     */
-    public IPath getPath()
-    {
-        return path;
-    }
-
-
-    /**
-     * An EditorInput must return a good ILocationProvider, otherwise
-     * the editor is not editable.
      */
     public Object getAdapter( Class adapter )
     {
@@ -141,7 +82,58 @@ public class PathEditorInput implements IPathEditorInput, ILocationProvider
 
     /**
      * {@inheritDoc}
-     * */
+     */
+    public ImageDescriptor getImageDescriptor()
+    {
+        return PlatformUI.getWorkbench().getEditorRegistry().getImageDescriptor( path.toString() );
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public String getName()
+    {
+        if ( path != null )
+        {
+            return path.toFile().getName();
+        }
+
+        return "";
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public IPath getPath()
+    {
+        if ( path != null )
+        {
+            return path;
+        }
+
+        return null;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public IPath getPath( Object element )
+    {
+        if ( element instanceof PathEditorInput )
+        {
+            return ( ( PathEditorInput ) element ).getPath();
+        }
+
+        return null;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
     public IPersistableElement getPersistable()
     {
         return null;
@@ -149,16 +141,54 @@ public class PathEditorInput implements IPathEditorInput, ILocationProvider
 
 
     /**
-     * Returns the path.
+     * {@inheritDoc}
      */
-    public IPath getPath( Object element )
+    public String getToolTipText()
     {
-        if ( element instanceof PathEditorInput )
+        if ( path != null )
         {
-            PathEditorInput input = ( PathEditorInput ) element;
-            return input.getPath();
+            return path.makeRelative().toOSString();
         }
 
-        return null;
+        return "";
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public int hashCode()
+    {
+        if ( path != null )
+        {
+            return path.hashCode();
+        }
+
+        return super.hashCode();
+    }
+
+
+    /** 
+     * {@inheritDoc}
+     */
+    public boolean equals( Object o )
+    {
+        if ( path != null )
+        {
+            // Shortcut
+            if ( this == o )
+            {
+                return true;
+            }
+
+            if ( o instanceof PathEditorInput )
+            {
+                PathEditorInput input = ( PathEditorInput ) o;
+
+                return path.equals( input.path );
+            }
+        }
+
+        return super.equals( o );
     }
 }

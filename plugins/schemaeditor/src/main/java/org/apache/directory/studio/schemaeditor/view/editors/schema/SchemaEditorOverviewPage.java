@@ -6,29 +6,31 @@
  *  to you under the Apache License, Version 2.0 (the
  *  "License"); you may not use this file except in compliance
  *  with the License.  You may obtain a copy of the License at
- *  
+ * 
  *    http://www.apache.org/licenses/LICENSE-2.0
- *  
+ * 
  *  Unless required by applicable law or agreed to in writing,
  *  software distributed under the License is distributed on an
  *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  *  KIND, either express or implied.  See the License for the
  *  specific language governing permissions and limitations
- *  under the License. 
- *  
+ *  under the License.
+ * 
  */
 
 package org.apache.directory.studio.schemaeditor.view.editors.schema;
 
 
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
+import org.apache.directory.shared.ldap.model.schema.MatchingRule;
+import org.apache.directory.shared.ldap.model.schema.MutableObjectClass;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.studio.schemaeditor.Activator;
 import org.apache.directory.studio.schemaeditor.PluginConstants;
 import org.apache.directory.studio.schemaeditor.PluginUtils;
-import org.apache.directory.studio.schemaeditor.controller.SchemaAdapter;
-import org.apache.directory.studio.schemaeditor.controller.SchemaHandler;
-import org.apache.directory.studio.schemaeditor.controller.SchemaListener;
+import org.apache.directory.studio.schemaeditor.controller.SchemaHandlerAdapter;
+import org.apache.directory.studio.schemaeditor.controller.SchemaHandlerListener;
 import org.apache.directory.studio.schemaeditor.model.Schema;
 import org.apache.directory.studio.schemaeditor.view.ViewUtils;
 import org.apache.directory.studio.schemaeditor.view.editors.attributetype.AttributeTypeEditor;
@@ -64,70 +66,108 @@ public class SchemaEditorOverviewPage extends FormPage
     /** The page ID */
     public static final String ID = SchemaEditor.ID + "overviewPage"; //$NON-NLS-1$
 
-    /** The SchemaHandler */
-    private SchemaHandler schemaHandler;
-
     /** The associated schema */
-    private Schema schema;
+    private Schema originalSchema;
 
-    private SchemaListener schemaListener = new SchemaAdapter()
+    private SchemaHandlerListener schemaHandlerListener = new SchemaHandlerAdapter()
     {
-        /**
-         * {@inheritDoc}
-         */
         public void attributeTypeAdded( AttributeType at )
         {
-            fillInUiFields();
+            refreshUI();
         }
 
 
-        /**
-         * {@inheritDoc}
-         */
         public void attributeTypeModified( AttributeType at )
         {
-            fillInUiFields();
+            refreshUI();
         }
 
 
-        /**
-         * {@inheritDoc}
-         */
         public void attributeTypeRemoved( AttributeType at )
         {
-            fillInUiFields();
+            refreshUI();
         }
 
 
-        /**
-         * {@inheritDoc}
-         */
+        public void matchingRuleAdded( MatchingRule mr )
+        {
+            refreshUI();
+        }
+
+
+        public void matchingRuleModified( MatchingRule mr )
+        {
+            refreshUI();
+        }
+
+
+        public void matchingRuleRemoved( MatchingRule mr )
+        {
+            refreshUI();
+        }
+
+
         public void objectClassAdded( ObjectClass oc )
         {
-            fillInUiFields();
+            refreshUI();
         }
 
 
-        /**
-         * {@inheritDoc}
-         */
         public void objectClassModified( ObjectClass oc )
         {
-            fillInUiFields();
+            refreshUI();
         }
 
 
-        /**
-         * {@inheritDoc}
-         */
         public void objectClassRemoved( ObjectClass oc )
         {
-            fillInUiFields();
+            refreshUI();
+        }
+
+
+        public void schemaAdded( Schema schema )
+        {
+            refreshUI();
+        }
+
+
+        public void schemaRemoved( Schema schema )
+        {
+            if ( !schema.equals( originalSchema ) )
+            {
+                refreshUI();
+            }
+        }
+
+
+        public void schemaRenamed( Schema schema )
+        {
+            refreshUI();
+        }
+
+
+        public void syntaxAdded( LdapSyntax syntax )
+        {
+            refreshUI();
+        }
+
+
+        public void syntaxModified( LdapSyntax syntax )
+        {
+            refreshUI();
+        }
+
+
+        public void syntaxRemoved( LdapSyntax syntax )
+        {
+            refreshUI();
         }
     };
 
     // UI Fields
+    private Section attributeTypesSection;
     private TableViewer attributeTypesTableViewer;
+    private Section objectClassesSection;
     private TableViewer objectClassesTableViewer;
 
     // Listeners
@@ -153,8 +193,9 @@ public class SchemaEditorOverviewPage extends FormPage
                 catch ( PartInitException exception )
                 {
                     PluginUtils.logError( Messages.getString( "SchemaEditorOverviewPage.ErrorOpenEditor" ), exception ); //$NON-NLS-1$
-                    ViewUtils.displayErrorMessageBox( Messages.getString( "SchemaEditorOverviewPage.Error" ), Messages //$NON-NLS-1$
-                        .getString( "SchemaEditorOverviewPage.ErrorOpenEditor" ) ); //$NON-NLS-1$
+                    ViewUtils.displayErrorMessageDialog(
+                        Messages.getString( "SchemaEditorOverviewPage.Error" ), Messages //$NON-NLS-1$
+                            .getString( "SchemaEditorOverviewPage.ErrorOpenEditor" ) ); //$NON-NLS-1$
                 }
             }
         }
@@ -172,7 +213,7 @@ public class SchemaEditorOverviewPage extends FormPage
 
             if ( !selection.isEmpty() )
             {
-                ObjectClass oc = ( ObjectClass ) selection.getFirstElement();
+                MutableObjectClass oc = ( MutableObjectClass ) selection.getFirstElement();
 
                 try
                 {
@@ -182,12 +223,14 @@ public class SchemaEditorOverviewPage extends FormPage
                 catch ( PartInitException exception )
                 {
                     PluginUtils.logError( Messages.getString( "SchemaEditorOverviewPage.ErrorOpenEditor" ), exception ); //$NON-NLS-1$
-                    ViewUtils.displayErrorMessageBox( Messages.getString( "SchemaEditorOverviewPage.Error" ), Messages //$NON-NLS-1$
-                        .getString( "SchemaEditorOverviewPage.ErrorOpenEditor" ) ); //$NON-NLS-1$
+                    ViewUtils.displayErrorMessageDialog(
+                        Messages.getString( "SchemaEditorOverviewPage.Error" ), Messages //$NON-NLS-1$
+                            .getString( "SchemaEditorOverviewPage.ErrorOpenEditor" ) ); //$NON-NLS-1$
                 }
             }
         }
     };
+
 
 
     /**
@@ -199,7 +242,7 @@ public class SchemaEditorOverviewPage extends FormPage
     public SchemaEditorOverviewPage( FormEditor editor )
     {
         super( editor, ID, Messages.getString( "SchemaEditorOverviewPage.Overview" ) ); //$NON-NLS-1$
-        schemaHandler = Activator.getDefault().getSchemaHandler();
+        Activator.getDefault().getSchemaHandler().addListener( schemaHandlerListener );
     }
 
 
@@ -209,7 +252,7 @@ public class SchemaEditorOverviewPage extends FormPage
     protected void createFormContent( IManagedForm managedForm )
     {
         // Getting the associated schema
-        schema = ( ( SchemaEditor ) getEditor() ).getSchema();
+        originalSchema = ( ( SchemaEditor ) getEditor() ).getSchema();
 
         // Creating the base UI
         ScrolledForm form = managedForm.getForm();
@@ -243,11 +286,9 @@ public class SchemaEditorOverviewPage extends FormPage
     private void createAttributeTypesSection( Composite parent, FormToolkit toolkit )
     {
         // Attribute Types Section
-        Section attributeTypesSection = toolkit.createSection( parent, Section.DESCRIPTION | Section.EXPANDED
+        attributeTypesSection = toolkit.createSection( parent, Section.DESCRIPTION | Section.EXPANDED
             | Section.TITLE_BAR );
-        attributeTypesSection.setDescription( NLS.bind(
-            Messages.getString( "SchemaEditorOverviewPage.SchemaAttribute" ), new String[] //$NON-NLS-1$
-            { schema.getSchemaName() } ) );
+        attributeTypesSection.setDescription( "" ); //$NON-NLS-1$
         attributeTypesSection.setText( Messages.getString( "SchemaEditorOverviewPage.AttributeTypes" ) ); //$NON-NLS-1$
 
         // Creating the layout of the section
@@ -276,11 +317,9 @@ public class SchemaEditorOverviewPage extends FormPage
     private void createObjectClassesSection( Composite parent, FormToolkit toolkit )
     {
         // Attribute Types Section
-        Section objectClassesSection = toolkit.createSection( parent, Section.DESCRIPTION | Section.EXPANDED
+        objectClassesSection = toolkit.createSection( parent, Section.DESCRIPTION | Section.EXPANDED
             | Section.TITLE_BAR );
-        objectClassesSection.setDescription( NLS.bind( Messages
-            .getString( "SchemaEditorOverviewPage.SchemaObjectClasses" ), new String[] //$NON-NLS-1$
-            { schema.getSchemaName() } ) );
+        objectClassesSection.setDescription( "" );//$NON-NLS-1$
         objectClassesSection.setText( Messages.getString( "SchemaEditorOverviewPage.ObjectClasses" ) ); //$NON-NLS-1$
 
         // Creating the layout of the section
@@ -303,8 +342,14 @@ public class SchemaEditorOverviewPage extends FormPage
      */
     private void fillInUiFields()
     {
-        attributeTypesTableViewer.setInput( schema.getAttributeTypes() );
-        objectClassesTableViewer.setInput( schema.getObjectClasses() );
+        attributeTypesSection.setDescription( NLS.bind(
+            Messages.getString( "SchemaEditorOverviewPage.SchemaAttribute" ), new String[] //$NON-NLS-1$
+            { originalSchema.getSchemaName() } ) );
+        objectClassesSection.setDescription( NLS.bind( Messages
+            .getString( "SchemaEditorOverviewPage.SchemaObjectClasses" ), new String[] //$NON-NLS-1$
+            { originalSchema.getSchemaName() } ) );
+        attributeTypesTableViewer.setInput( originalSchema.getAttributeTypes() );
+        objectClassesTableViewer.setInput( originalSchema.getObjectClasses() );
     }
 
 
@@ -313,7 +358,6 @@ public class SchemaEditorOverviewPage extends FormPage
      */
     private void addListeners()
     {
-        schemaHandler.addListener( schema, schemaListener );
         attributeTypesTableViewer.addDoubleClickListener( attributeTypesTableViewerListener );
         objectClassesTableViewer.addDoubleClickListener( objectClassesTableViewerListener );
     }
@@ -324,7 +368,6 @@ public class SchemaEditorOverviewPage extends FormPage
      */
     private void removeListeners()
     {
-        schemaHandler.removeListener( schema, schemaListener );
         attributeTypesTableViewer.removeDoubleClickListener( attributeTypesTableViewerListener );
         objectClassesTableViewer.removeDoubleClickListener( objectClassesTableViewerListener );
     }
@@ -337,6 +380,19 @@ public class SchemaEditorOverviewPage extends FormPage
     {
         removeListeners();
 
+        Activator.getDefault().getSchemaHandler().removeListener( schemaHandlerListener );
+
         super.dispose();
+    }
+
+
+    /**
+     * Refreshes the UI.
+     */
+    public void refreshUI()
+    {
+        removeListeners();
+        fillInUiFields();
+        addListeners();
     }
 }

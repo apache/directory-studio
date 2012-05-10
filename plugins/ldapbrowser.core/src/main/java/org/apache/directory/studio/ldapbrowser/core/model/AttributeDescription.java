@@ -244,7 +244,7 @@ public class AttributeDescription implements Serializable
         }
 
         // special case @: attributes by object class (RFC4529)
-        if ( other.description.length() > 1 && other.description.startsWith( "@" ) )
+        if ( other.description.length() > 1 && other.description.startsWith( "@" ) ) //$NON-NLS-1$
         {
             String objectClass = other.description.substring( 1 );
             ObjectClass ocd = schema.getObjectClassDescription( objectClass );
@@ -301,7 +301,7 @@ public class AttributeDescription implements Serializable
             for ( Iterator<String> otherIt = otherLangList.iterator(); otherIt.hasNext(); )
             {
                 String otherLang = otherIt.next();
-                if ( otherLang.endsWith( "-" ) )
+                if ( otherLang.endsWith( "-" ) ) //$NON-NLS-1$
                 {
                     if ( Strings.toLowerCase( myLang ).startsWith( Strings.toLowerCase( otherLang ) ) )
                     {

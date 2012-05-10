@@ -26,6 +26,7 @@ import java.math.BigInteger;
 import org.apache.directory.shared.ldap.model.name.Rdn;
 import org.apache.directory.studio.connection.core.jobs.StudioConnectionRunnableWithProgress;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreConstants;
+import org.apache.directory.studio.ldapbrowser.core.model.IBookmark;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearchResult;
@@ -43,7 +44,6 @@ import org.eclipse.jface.viewers.ViewerSorter;
  */
 public class BrowserSorter extends ViewerSorter
 {
-
     /** The browser preferences, used to get the sort settings */
     private BrowserPreferences preferences;
 
@@ -71,23 +71,14 @@ public class BrowserSorter extends ViewerSorter
 
 
     /**
-     * Disposes this sorter.
-     */
-    public void dispose()
-    {
-    }
-
-
-    /**
      * {@inheritDoc}
      * 
-     * For performance reasons this implemention first checks if sorting is enabled 
+     * For performance reasons this implementation first checks if sorting is enabled 
      * and if the number of elements is less than the sort limit.
      */
     public void sort( final Viewer viewer, final Object[] elements )
     {
-        if ( elements != null && ( preferences.getSortLimit() <= 0 || elements.length < preferences.getSortLimit() )
-            && ( preferences.getSortBy() != BrowserCoreConstants.SORT_BY_NONE || preferences.isLeafEntriesFirst() ) )
+        if ( elements != null && ( preferences.getSortLimit() <= 0 || elements.length < preferences.getSortLimit() ) )
         {
             BrowserSorter.super.sort( viewer, elements );
         }
@@ -143,83 +134,101 @@ public class BrowserSorter extends ViewerSorter
      */
     public int compare( Viewer viewer, Object o1, Object o2 )
     {
+        // o1 is StudioConnectionRunnableWithProgress
         if ( o1 instanceof StudioConnectionRunnableWithProgress )
         {
             StudioConnectionRunnableWithProgress runnable = ( StudioConnectionRunnableWithProgress ) o1;
+
             for ( Object lockedObject : runnable.getLockedObjects() )
             {
                 if ( lockedObject instanceof ISearch )
                 {
                     ISearch search = ( ISearch ) lockedObject;
+
                     if ( o1 == search.getTopSearchRunnable() )
                     {
-                        return lessThan();
+                        return lessThanEntries();
                     }
                     else if ( o1 == search.getNextSearchRunnable() )
                     {
-                        return greaterThan();
+                        return greaterThanEntries();
                     }
                 }
                 else if ( lockedObject instanceof IEntry )
                 {
                     IEntry entry = ( IEntry ) lockedObject;
+
                     if ( o1 == entry.getTopPageChildrenRunnable() )
                     {
-                        return lessThan();
+                        return lessThanEntries();
                     }
                     else if ( o1 == entry.getNextPageChildrenRunnable() )
                     {
-                        return greaterThan();
+                        return greaterThanEntries();
                     }
                 }
             }
-            return lessThan();
+
+            return lessThanEntries();
         }
+
+        // o2 is StudioConnectionRunnableWithProgress
         if ( o2 instanceof StudioConnectionRunnableWithProgress )
         {
             StudioConnectionRunnableWithProgress runnable = ( StudioConnectionRunnableWithProgress ) o2;
+
             for ( Object lockedObject : runnable.getLockedObjects() )
             {
                 if ( lockedObject instanceof ISearch )
                 {
                     ISearch search = ( ISearch ) lockedObject;
+
                     if ( o2 == search.getTopSearchRunnable() )
                     {
-                        return greaterThan();
+                        return greaterThanEntries();
                     }
                     else if ( o2 == search.getNextSearchRunnable() )
                     {
-                        return lessThan();
+                        return lessThanEntries();
                     }
                 }
                 else if ( lockedObject instanceof IEntry )
                 {
                     IEntry entry = ( IEntry ) lockedObject;
+
                     if ( o2 == entry.getTopPageChildrenRunnable() )
                     {
-                        return greaterThan();
+                        return greaterThanEntries();
                     }
                     else if ( o2 == entry.getNextPageChildrenRunnable() )
                     {
-                        return lessThan();
+                        return lessThanEntries();
                     }
                 }
             }
-            return greaterThan();
+
+            return greaterThanEntries();
         }
 
+        // o1 and o2 are null
         if ( o1 == null && o2 == null )
         {
             return equal();
         }
+
+        // o1 is null, o2 isn't
         else if ( o1 == null && o2 != null )
         {
-            return lessThan();
+            return lessThanEntries();
         }
+
+        // o1 isn't null, o1 is
         else if ( o1 != null && o2 == null )
         {
-            return greaterThan();
+            return greaterThanEntries();
         }
+
+        // o1 and o2 are entries
         else if ( o1 instanceof IEntry || o2 instanceof IEntry )
         {
             if ( !( o1 instanceof IEntry ) && !( o2 instanceof IEntry ) )
@@ -228,11 +237,11 @@ public class BrowserSorter extends ViewerSorter
             }
             else if ( !( o1 instanceof IEntry ) && ( o2 instanceof IEntry ) )
             {
-                return lessThan();
+                return lessThanEntries();
             }
             else if ( ( o1 instanceof IEntry ) && !( o2 instanceof IEntry ) )
             {
-                return greaterThan();
+                return greaterThanEntries();
             }
             else
             {
@@ -241,19 +250,20 @@ public class BrowserSorter extends ViewerSorter
 
                 int cat1 = category( entry1 );
                 int cat2 = category( entry2 );
+
                 if ( cat1 != cat2 )
                 {
                     return cat1 - cat2;
                 }
-                else if ( preferences.getSortBy() == BrowserCoreConstants.SORT_BY_NONE )
+                else if ( preferences.getSortEntriesBy() == BrowserCoreConstants.SORT_BY_NONE )
                 {
                     return equal();
                 }
-                else if ( preferences.getSortBy() == BrowserCoreConstants.SORT_BY_RDN )
+                else if ( preferences.getSortEntriesBy() == BrowserCoreConstants.SORT_BY_RDN )
                 {
                     return compareRdns( entry1, entry2 );
                 }
-                else if ( preferences.getSortBy() == BrowserCoreConstants.SORT_BY_RDN_VALUE )
+                else if ( preferences.getSortEntriesBy() == BrowserCoreConstants.SORT_BY_RDN_VALUE )
                 {
                     return compareRdnValues( entry1, entry2 );
                 }
@@ -263,6 +273,8 @@ public class BrowserSorter extends ViewerSorter
                 }
             }
         }
+
+        // o1 and o2 are search results
         else if ( o1 instanceof ISearchResult || o2 instanceof ISearchResult )
         {
             if ( !( o1 instanceof ISearchResult ) && !( o2 instanceof ISearchResult ) )
@@ -271,11 +283,11 @@ public class BrowserSorter extends ViewerSorter
             }
             else if ( !( o1 instanceof ISearchResult ) && ( o2 instanceof ISearchResult ) )
             {
-                return lessThan();
+                return lessThanEntries();
             }
             else if ( ( o1 instanceof ISearchResult ) && !( o2 instanceof ISearchResult ) )
             {
-                return greaterThan();
+                return greaterThanEntries();
             }
             else
             {
@@ -284,25 +296,88 @@ public class BrowserSorter extends ViewerSorter
 
                 int cat1 = category( sr1 );
                 int cat2 = category( sr2 );
+
                 if ( cat1 != cat2 )
                 {
                     return cat1 - cat2;
                 }
-                else if ( preferences.getSortBy() == BrowserCoreConstants.SORT_BY_NONE )
+                else if ( preferences.getSortEntriesBy() == BrowserCoreConstants.SORT_BY_NONE )
                 {
                     return equal();
                 }
-                else if ( preferences.getSortBy() == BrowserCoreConstants.SORT_BY_RDN )
+                else if ( preferences.getSortEntriesBy() == BrowserCoreConstants.SORT_BY_RDN )
                 {
                     return compareRdns( sr1.getEntry(), sr2.getEntry() );
                 }
-                else if ( preferences.getSortBy() == BrowserCoreConstants.SORT_BY_RDN_VALUE )
+                else if ( preferences.getSortEntriesBy() == BrowserCoreConstants.SORT_BY_RDN_VALUE )
                 {
                     return compareRdnValues( sr1.getEntry(), sr2.getEntry() );
                 }
                 else
                 {
                     return equal();
+                }
+            }
+        }
+
+        // o1 and o2 are searches
+        else if ( o1 instanceof ISearch || o2 instanceof ISearch )
+        {
+            if ( !( o1 instanceof ISearch ) && !( o2 instanceof ISearch ) )
+            {
+                return equal();
+            }
+            else if ( !( o1 instanceof ISearch ) && ( o2 instanceof ISearch ) )
+            {
+                return lessThanSearches();
+            }
+            else if ( ( o1 instanceof ISearch ) && !( o2 instanceof ISearch ) )
+            {
+                return greaterThanSearches();
+            }
+            else
+            {
+                ISearch s1 = ( ISearch ) o1;
+                ISearch s2 = ( ISearch ) o2;
+
+                if ( preferences.getSortSearchesOrder() == BrowserCoreConstants.SORT_ORDER_NONE )
+                {
+                    return equal();
+                }
+                else
+                {
+                    return compareSearches( s1.getName(), s2.getName() );
+                }
+            }
+        }
+
+        // o1 and o2 are bookmarks
+        else if ( o1 instanceof IBookmark || o2 instanceof IBookmark )
+        {
+            if ( !( o1 instanceof IBookmark ) && !( o2 instanceof IBookmark ) )
+            {
+                return equal();
+            }
+            else if ( !( o1 instanceof IBookmark ) && ( o2 instanceof IBookmark ) )
+            {
+                return lessThanBookmarks();
+            }
+            else if ( ( o1 instanceof IBookmark ) && !( o2 instanceof IBookmark ) )
+            {
+                return greaterThanBookmarks();
+            }
+            else
+            {
+                IBookmark b1 = ( IBookmark ) o1;
+                IBookmark b2 = ( IBookmark ) o2;
+
+                if ( preferences.getSortBookmarksOrder() == BrowserCoreConstants.SORT_ORDER_NONE )
+                {
+                    return equal();
+                }
+                else
+                {
+                    return compareBookmarks( b1.getName(), b2.getName() );
                 }
             }
         }
@@ -331,15 +406,15 @@ public class BrowserSorter extends ViewerSorter
         }
         else if ( rdn1 == null && rdn2 != null )
         {
-            return greaterThan();
+            return greaterThanEntries();
         }
         else if ( rdn1 != null && rdn2 == null )
         {
-            return lessThan();
+            return lessThanEntries();
         }
         else
         {
-            return compare( rdn1.getName(), rdn2.getName() );
+            return compareEntries( rdn1.getName(), rdn2.getName() );
         }
     }
 
@@ -360,11 +435,11 @@ public class BrowserSorter extends ViewerSorter
         }
         else if ( ( entry1 != null ) && ( entry2 == null ) )
         {
-            return greaterThan();
+            return greaterThanEntries();
         }
         else if ( ( entry1 == null ) && ( entry2 != null ) )
         {
-            return lessThan();
+            return lessThanEntries();
         }
         else
         {
@@ -379,12 +454,12 @@ public class BrowserSorter extends ViewerSorter
             else if ( ( rdn1 == null || rdn1.getName() == null || "".equals( rdn1.getName() ) ) //$NON-NLS-1$
                 && !( rdn2 == null || rdn2.getName() == null || "".equals( rdn2.getName() ) ) ) //$NON-NLS-1$
             {
-                return greaterThan();
+                return greaterThanEntries();
             }
             else if ( !( rdn1 == null || rdn1.getName() == null || "".equals( rdn1.getName() ) ) //$NON-NLS-1$
                 && ( rdn2 == null || rdn2.getName() == null || "".equals( rdn2.getName() ) ) ) //$NON-NLS-1$
             {
-                return lessThan();
+                return lessThanEntries();
             }
 
             String rdn1Value = ( String ) rdn1.getName();
@@ -392,12 +467,12 @@ public class BrowserSorter extends ViewerSorter
             if ( rdn1Value.matches( "\\d*" ) && !rdn2Value.matches( "\\d*" ) ) //$NON-NLS-1$ //$NON-NLS-2$
             {
                 // return lessThan();
-                return compare( rdn1Value, rdn2Value );
+                return compareEntries( rdn1Value, rdn2Value );
             }
             else if ( !rdn1Value.matches( "\\d*" ) && rdn2Value.matches( "\\d*" ) ) //$NON-NLS-1$ //$NON-NLS-2$
             {
                 // return greaterThan();
-                return compare( rdn1Value, rdn2Value );
+                return compareEntries( rdn1Value, rdn2Value );
             }
             else if ( rdn2Value.matches( "\\d*" ) && rdn2Value.matches( "\\d*" ) ) //$NON-NLS-1$ //$NON-NLS-2$
             {
@@ -409,20 +484,42 @@ public class BrowserSorter extends ViewerSorter
             }
             else
             {
-                return compare( rdn1Value, rdn2Value );
+                return compareEntries( rdn1Value, rdn2Value );
             }
         }
     }
 
 
     /**
-     * Returns +1 or -1, depending on the sort order.
+     * Returns +1 or -1, depending on the sort entries order.
      *
-     * @return +1 or -1, depending on the sort order
+     * @return +1 or -1, depending on the sort entries order
      */
-    private int lessThan()
+    private int lessThanEntries()
     {
-        return preferences.getSortOrder() == BrowserCoreConstants.SORT_ORDER_ASCENDING ? -1 : 1;
+        return preferences.getSortEntriesOrder() == BrowserCoreConstants.SORT_ORDER_ASCENDING ? -1 : 1;
+    }
+
+
+    /**
+     * Returns +1 or -1, depending on the sort searches order.
+     *
+     * @return +1 or -1, depending on the sort searches order
+     */
+    private int lessThanSearches()
+    {
+        return preferences.getSortSearchesOrder() == BrowserCoreConstants.SORT_ORDER_ASCENDING ? -1 : 1;
+    }
+
+
+    /**
+     * Returns +1 or -1, depending on the sort entries order.
+     *
+     * @return +1 or -1, depending on the sort entries order
+     */
+    private int lessThanBookmarks()
+    {
+        return preferences.getSortBookmarksOrder() == BrowserCoreConstants.SORT_ORDER_ASCENDING ? -1 : 1;
     }
 
 
@@ -438,29 +535,83 @@ public class BrowserSorter extends ViewerSorter
 
 
     /**
-     * Returns +1 or -1, depending on the sort order.
+     * Returns +1 or -1, depending on the sort entries order.
      *
-     * @return +1 or -1, depending on the sort order
+     * @return +1 or -1, depending on the sort entries order
      */
-    private int greaterThan()
+    private int greaterThanEntries()
     {
-        return preferences.getSortOrder() == BrowserCoreConstants.SORT_ORDER_ASCENDING ? 1 : -1;
+        return preferences.getSortEntriesOrder() == BrowserCoreConstants.SORT_ORDER_ASCENDING ? 1 : -1;
+    }
+
+
+    /**
+     * Returns +1 or -1, depending on the sort searches order.
+     *
+     * @return +1 or -1, depending on the sort searches order
+     */
+    private int greaterThanSearches()
+    {
+        return preferences.getSortSearchesOrder() == BrowserCoreConstants.SORT_ORDER_ASCENDING ? 1 : -1;
+    }
+
+
+    /**
+     * Returns +1 or -1, depending on the sort bookmarks order.
+     *
+     * @return +1 or -1, depending on the sort bookmarks order
+     */
+    private int greaterThanBookmarks()
+    {
+        return preferences.getSortBookmarksOrder() == BrowserCoreConstants.SORT_ORDER_ASCENDING ? 1 : -1;
     }
 
 
     /**
      * Compares the two strings using the Strings's compareToIgnoreCase method, 
-     * pays attention for the sort order.
+     * pays attention for the sort entries order.
      *
      * @param s1 the first string to compare
      * @param s2 the second string to compare
      * @return a negative integer, zero, or a positive integer
      * @see java.lang.String#compareToIgnoreCase(String)
      */
-    private int compare( String s1, String s2 )
+    private int compareEntries( String s1, String s2 )
     {
-        return preferences.getSortOrder() == BrowserCoreConstants.SORT_ORDER_ASCENDING ? s1.compareToIgnoreCase( s2 )
-            : s2.compareToIgnoreCase( s1 );
+        return preferences.getSortEntriesOrder() == BrowserCoreConstants.SORT_ORDER_ASCENDING ? s1
+            .compareToIgnoreCase( s2 ) : s2.compareToIgnoreCase( s1 );
+    }
+
+
+    /**
+     * Compares the two strings using the Strings's compareToIgnoreCase method, 
+     * pays attention for the sort searches order.
+     *
+     * @param s1 the first string to compare
+     * @param s2 the second string to compare
+     * @return a negative integer, zero, or a positive integer
+     * @see java.lang.String#compareToIgnoreCase(String)
+     */
+    private int compareSearches( String s1, String s2 )
+    {
+        return preferences.getSortSearchesOrder() == BrowserCoreConstants.SORT_ORDER_ASCENDING ? s1
+            .compareToIgnoreCase( s2 ) : s2.compareToIgnoreCase( s1 );
+    }
+
+
+    /**
+     * Compares the two strings using the Strings's compareToIgnoreCase method, 
+     * pays attention for the sort bookmarks order.
+     *
+     * @param s1 the first string to compare
+     * @param s2 the second string to compare
+     * @return a negative integer, zero, or a positive integer
+     * @see java.lang.String#compareToIgnoreCase(String)
+     */
+    private int compareBookmarks( String s1, String s2 )
+    {
+        return preferences.getSortBookmarksOrder() == BrowserCoreConstants.SORT_ORDER_ASCENDING ? s1
+            .compareToIgnoreCase( s2 ) : s2.compareToIgnoreCase( s1 );
     }
 
 
@@ -476,8 +627,7 @@ public class BrowserSorter extends ViewerSorter
      */
     private int compare( BigInteger bi1, BigInteger bi2 )
     {
-        return preferences.getSortOrder() == BrowserCoreConstants.SORT_ORDER_ASCENDING ? bi1.compareTo( bi2 ) : bi2
-            .compareTo( bi1 );
+        return preferences.getSortEntriesOrder() == BrowserCoreConstants.SORT_ORDER_ASCENDING ? bi1.compareTo( bi2 )
+            : bi2.compareTo( bi1 );
     }
-
 }

@@ -74,7 +74,7 @@ public class InPlaceMsAdObjectSidValueEditor extends HexValueEditor
 
         if ( bytes == null || bytes.length < 8 )
         {
-            return "Invalid SID";
+            return "Invalid SID"; 
         }
 
         char[] hex = Hex.encodeHex( bytes );
@@ -94,7 +94,7 @@ public class InPlaceMsAdObjectSidValueEditor extends HexValueEditor
         // check length
         if ( bytes.length != ( 8 + count * 4 ) )
         {
-            return "Invalid SID";
+            return "Invalid SID"; 
         }
 
         // get authority, big-endian

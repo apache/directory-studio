@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.PropertyResourceBundle;
 
+import org.apache.directory.studio.connection.core.ConnectionParameter.NetworkProvider;
 import org.apache.directory.studio.connection.core.event.CoreEventRunner;
 import org.apache.directory.studio.connection.core.event.EventRunner;
 import org.apache.directory.studio.connection.core.io.jndi.LdifModificationLogger;
@@ -582,4 +583,37 @@ public class ConnectionCorePlugin extends Plugin
         return defaultKrb5LoginModule;
     }
 
+
+    /**
+     * Gets the default network provider from the preferences store.
+     *
+     * @return the default network provider
+     */
+    public NetworkProvider getDefaultNetworkProvider()
+    {
+        return getNetworkProvider( getPluginPreferences().getInt(
+            ConnectionCoreConstants.PREFERENCE_DEFAULT_NETWORK_PROVIDER ) );
+    }
+
+
+    /**
+     * Gets the network provider associated with the value.
+     *
+     * @param networkProviderValue the network provider value
+     *
+     * @return the network provider
+     */
+    public NetworkProvider getNetworkProvider( int networkProviderValue )
+    {
+        if ( networkProviderValue == ConnectionCoreConstants.PREFERENCE_NETWORK_PROVIDER_APACHE_DIRECTORY_LDAP_API )
+        {
+            return NetworkProvider.APACHE_DIRECTORY_LDAP_API;
+        }
+        else if ( networkProviderValue == ConnectionCoreConstants.PREFERENCE_NETWORK_PROVIDER_JNDI )
+        {
+            return NetworkProvider.JNDI;
+        }
+
+        return NetworkProvider.APACHE_DIRECTORY_LDAP_API;
+    }
 }

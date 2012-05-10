@@ -60,7 +60,7 @@ public class Entry extends AbstractEntry
     {
         assert parent != null;
         assert rdn != null;
-        assert !"".equals( rdn.toString() );
+        assert !"".equals( rdn.toString() ); //$NON-NLS-1$
 
         this.parent = parent;
         this.rdn = rdn;

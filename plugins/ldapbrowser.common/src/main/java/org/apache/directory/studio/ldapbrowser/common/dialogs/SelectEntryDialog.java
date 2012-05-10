@@ -181,7 +181,7 @@ public class SelectEntryDialog extends Dialog
         browserActionGroup.activateGlobalActionHandlers();
 
         // create the listener
-        browserUniversalListener = new BrowserUniversalListener( browserWidget.getViewer() );
+        browserUniversalListener = new BrowserUniversalListener( browserWidget );
 
         browserWidget.getViewer().addSelectionChangedListener( new ISelectionChangedListener()
         {

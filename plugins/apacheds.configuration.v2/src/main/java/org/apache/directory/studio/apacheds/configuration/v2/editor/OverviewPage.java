@@ -268,22 +268,22 @@ public class OverviewPage extends ServerConfigurationEditorPage
         // Enable LDAP Server Checkbox
         enableLdapCheckbox = toolkit.createButton( composite, "Enable LDAP Server", SWT.CHECK );
         enableLdapCheckbox.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, gridLayout.numColumns, 1 ) );
-        
+
         // LDAP Server Port Text
         toolkit.createLabel( composite, TABULATION );
         toolkit.createLabel( composite, "Port:" );
         ldapPortText = createPortText( toolkit, composite );
-        createDefaultValueLabel( toolkit, composite, "10389" );
+        createDefaultValueLabel( toolkit, composite, "10389" ); //$NON-NLS-1$
 
         // Enable LDAPS Server Checkbox
         enableLdapsCheckbox = toolkit.createButton( composite, "Enable LDAPS Server", SWT.CHECK );
         enableLdapsCheckbox.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, gridLayout.numColumns, 1 ) );
-        
+
         // LDAPS Server Port Text
         toolkit.createLabel( composite, TABULATION );
         toolkit.createLabel( composite, "Port:" );
         ldapsPortText = createPortText( toolkit, composite );
-        createDefaultValueLabel( toolkit, composite, "10636" );
+        createDefaultValueLabel( toolkit, composite, "10636" ); //$NON-NLS-1$
 
         // LDAP Configuration Link
         openLdapConfigurationLink = toolkit.createHyperlink( composite,
@@ -317,24 +317,24 @@ public class OverviewPage extends ServerConfigurationEditorPage
         enableKerberosCheckbox = toolkit.createButton( composite, "Enable Kerberos Server", SWT.CHECK );
         enableKerberosCheckbox
             .setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, gridLayout.numColumns, 1 ) );
-        
+
         // Kerberos Server Port Text
         toolkit.createLabel( composite, TABULATION );
         toolkit.createLabel( composite, "Port:" );
         kerberosPortText = createPortText( toolkit, composite );
-        createDefaultValueLabel( toolkit, composite, "60088" );
+        createDefaultValueLabel( toolkit, composite, "60088" ); //$NON-NLS-1$
 
         // Enable Change Password Server Checkbox
         enableChangePasswordCheckbox = toolkit.createButton( composite, "Enable Kerberos Change Password Server",
             SWT.CHECK );
         enableChangePasswordCheckbox.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false,
             gridLayout.numColumns, 1 ) );
-        
+
         // Change Password Server Port Text
         toolkit.createLabel( composite, TABULATION );
         toolkit.createLabel( composite, "Port:" );
         changePasswordPortText = createPortText( toolkit, composite );
-        createDefaultValueLabel( toolkit, composite, "60464" );
+        createDefaultValueLabel( toolkit, composite, "60464" ); //$NON-NLS-1$
 
         // Kerberos Configuration Link
         openKerberosConfigurationLink = toolkit.createHyperlink( composite,
@@ -365,9 +365,9 @@ public class OverviewPage extends ServerConfigurationEditorPage
         section.setClient( composite );
 
         // Partitions Label
-        partitionsLabel = toolkit.createLabel( composite, "" );
+        partitionsLabel = toolkit.createLabel( composite, "" ); //$NON-NLS-1$
         partitionsLabel.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
-        
+
         // Partitions Table Viewer
         Table partitionsTable = toolkit.createTable( composite, SWT.NULL );
         GridData gd = new GridData( SWT.FILL, SWT.NONE, true, false );
@@ -523,32 +523,33 @@ public class OverviewPage extends ServerConfigurationEditorPage
     {
         removeListeners();
 
-        DirectoryServiceBean directoryServiceBean = getConfigBean().getDirectoryServiceBean();
+        DirectoryServiceBean directoryServiceBean = getDirectoryServiceBean();
 
         // LDAP Server
         TransportBean ldapServerTransportBean = LdapLdapsServersPage.getLdapServerTransportBean( directoryServiceBean );
         setSelection( enableLdapCheckbox, ldapServerTransportBean.isEnabled() );
         setEnabled( ldapPortText, enableLdapCheckbox.getSelection() );
-        setText( ldapPortText, ldapServerTransportBean.getSystemPort() + "" );
+        setText( ldapPortText, ldapServerTransportBean.getSystemPort() + "" ); //$NON-NLS-1$
 
         // LDAPS Server
         TransportBean ldapsServerTransportBean = LdapLdapsServersPage
             .getLdapsServerTransportBean( directoryServiceBean );
         setSelection( enableLdapsCheckbox, ldapsServerTransportBean.isEnabled() );
         setEnabled( ldapsPortText, enableLdapsCheckbox.getSelection() );
-        setText( ldapsPortText, ldapsServerTransportBean.getSystemPort() + "" );
+        setText( ldapsPortText, ldapsServerTransportBean.getSystemPort() + "" ); //$NON-NLS-1$
 
         // Kerberos Server
-        KdcServerBean kdcServerBean = directoryServiceBean.getKdcServerBean();
+        KdcServerBean kdcServerBean = KerberosServerPage.getKdcServerBean( directoryServiceBean );
         setSelection( enableKerberosCheckbox, kdcServerBean.isEnabled() );
         setEnabled( kerberosPortText, enableKerberosCheckbox.getSelection() );
-        setText( kerberosPortText, "" + kdcServerBean.getTransports()[0].getSystemPort() );
+        setText( kerberosPortText, "" + kdcServerBean.getTransports()[0].getSystemPort() ); //$NON-NLS-1$
 
         // Change Password Server
-        ChangePasswordServerBean changePasswordServerBean = directoryServiceBean.getChangePasswordServerBean();
+        ChangePasswordServerBean changePasswordServerBean = KerberosServerPage
+            .getChangePasswordServerBean( directoryServiceBean );
         setSelection( enableChangePasswordCheckbox, changePasswordServerBean.isEnabled() );
         setEnabled( changePasswordPortText, enableChangePasswordCheckbox.getSelection() );
-        setText( changePasswordPortText, "" + changePasswordServerBean.getTransports()[0].getSystemPort() );
+        setText( changePasswordPortText, "" + changePasswordServerBean.getTransports()[0].getSystemPort() ); //$NON-NLS-1$
 
         // Partitions
         List<PartitionBean> partitions = directoryServiceBean.getPartitions();

@@ -385,273 +385,138 @@
    </matchingrules>
    <syntaxes>
       <syntax oid="1.3.6.1.4.1.1466.115.121.1.4" obsolete="false" humanreadable="true">
-         <aliases>
-            <alias>Audio</alias>
-         </aliases>
          <description>Audio</description>
       </syntax>
       <syntax oid="1.3.6.1.4.1.1466.115.121.1.5" obsolete="false" humanreadable="true">
-         <aliases>
-            <alias>Binary</alias>
-         </aliases>
          <description>Binary</description>
       </syntax>
       <syntax oid="1.3.6.1.4.1.1466.115.121.1.6" obsolete="false" humanreadable="true">
-         <aliases>
-            <alias>Bit String</alias>
-         </aliases>
          <description>Bit String</description>
       </syntax>
       <syntax oid="1.3.6.1.4.1.1466.115.121.1.7" obsolete="false" humanreadable="true">
-         <aliases>
-            <alias>Boolean</alias>
-         </aliases>
          <description>Boolean</description>
       </syntax>
       <syntax oid="1.3.6.1.4.1.1466.115.121.1.8" obsolete="false" humanreadable="true">
-         <aliases>
-            <alias>Certificate</alias>
-         </aliases>
          <description>Certificate</description>
       </syntax>
       <syntax oid="1.3.6.1.4.1.1466.115.121.1.9" obsolete="false" humanreadable="true">
-         <aliases>
-            <alias>Certificate List</alias>
-         </aliases>
          <description>Certificate List</description>
       </syntax>
       <syntax oid="1.3.6.1.4.1.1466.115.121.1.10" obsolete="false" humanreadable="true">
-         <aliases>
-            <alias>Certificate Pair</alias>
-         </aliases>
          <description>Certificate Pair</description>
       </syntax>
       <syntax oid="1.3.6.1.4.1.4203.666.11.10.2.1" obsolete="false" humanreadable="true">
-         <aliases>
-            <alias>X.509 AttributeCertificate</alias>
-         </aliases>
          <description>X.509 AttributeCertificate</description>
       </syntax>
       <syntax oid="1.3.6.1.4.1.1466.115.121.1.12" obsolete="false" humanreadable="true">
-         <aliases>
-            <alias>Distinguished Name</alias>
-         </aliases>
          <description>Distinguished Name</description>
       </syntax>
       <syntax oid="1.2.36.79672281.1.5.0" obsolete="false" humanreadable="true">
-         <aliases>
-            <alias>RDN</alias>
-         </aliases>
          <description>RDN</description>
       </syntax>
       <syntax oid="1.3.6.1.4.1.1466.115.121.1.14" obsolete="false" humanreadable="true">
-         <aliases>
-            <alias>Delivery Method</alias>
-         </aliases>
          <description>Delivery Method</description>
       </syntax>
       <syntax oid="1.3.6.1.4.1.1466.115.121.1.15" obsolete="false" humanreadable="true">
-         <aliases>
-            <alias>Directory String</alias>
-         </aliases>
          <description>Directory String</description>
       </syntax>
       <syntax oid="1.3.6.1.4.1.1466.115.121.1.22" obsolete="false" humanreadable="true">
-         <aliases>
-            <alias>Facsimile Telephone Number</alias>
-         </aliases>
          <description>Facsimile Telephone Number</description>
       </syntax>
       <syntax oid="1.3.6.1.4.1.1466.115.121.1.24" obsolete="false" humanreadable="true">
-         <aliases>
-            <alias>Generalized Time</alias>
-         </aliases>
          <description>Generalized Time</description>
       </syntax>
       <syntax oid="1.3.6.1.4.1.1466.115.121.1.26" obsolete="false" humanreadable="true">
-         <aliases>
-            <alias>IA5 String</alias>
-         </aliases>
          <description>IA5 String</description>
       </syntax>
       <syntax oid="1.3.6.1.4.1.1466.115.121.1.27" obsolete="false" humanreadable="true">
-         <aliases>
-            <alias>Integer</alias>
-         </aliases>
          <description>Integer</description>
       </syntax>
       <syntax oid="1.3.6.1.4.1.1466.115.121.1.28" obsolete="false" humanreadable="true">
-         <aliases>
-            <alias>JPEG</alias>
-         </aliases>
          <description>JPEG</description>
       </syntax>
       <syntax oid="1.3.6.1.4.1.1466.115.121.1.34" obsolete="false" humanreadable="true">
-         <aliases>
-            <alias>Name And Optional UID</alias>
-         </aliases>
          <description>Name And Optional UID</description>
       </syntax>
       <syntax oid="1.3.6.1.4.1.1466.115.121.1.36" obsolete="false" humanreadable="true">
-         <aliases>
-            <alias>Numeric String</alias>
-         </aliases>
          <description>Numeric String</description>
       </syntax>
       <syntax oid="1.3.6.1.4.1.1466.115.121.1.38" obsolete="false" humanreadable="true">
-         <aliases>
-            <alias>OID</alias>
-         </aliases>
          <description>OID</description>
       </syntax>
       <syntax oid="1.3.6.1.4.1.1466.115.121.1.39" obsolete="false" humanreadable="true">
-         <aliases>
-            <alias>Other Mailbox</alias>
-         </aliases>
          <description>Other Mailbox</description>
       </syntax>
       <syntax oid="1.3.6.1.4.1.1466.115.121.1.40" obsolete="false" humanreadable="true">
-         <aliases>
-            <alias>Octet String</alias>
-         </aliases>
          <description>Octet String</description>
       </syntax>
       <syntax oid="1.3.6.1.4.1.1466.115.121.1.41" obsolete="false" humanreadable="true">
-         <aliases>
-            <alias>Postal Address</alias>
-         </aliases>
          <description>Postal Address</description>
       </syntax>
       <syntax oid="1.3.6.1.4.1.1466.115.121.1.44" obsolete="false" humanreadable="true">
-         <aliases>
-            <alias>Printable String</alias>
-         </aliases>
          <description>Printable String</description>
       </syntax>
       <syntax oid="1.3.6.1.4.1.1466.115.121.1.11" obsolete="false" humanreadable="true">
-         <aliases>
-            <alias>Country String</alias>
-         </aliases>
          <description>Country String</description>
       </syntax>
       <syntax oid="1.3.6.1.4.1.1466.115.121.1.45" obsolete="false" humanreadable="true">
-         <aliases>
-            <alias>SubtreeSpecification</alias>
-         </aliases>
          <description>SubtreeSpecification</description>
       </syntax>
       <syntax oid="1.3.6.1.4.1.1466.115.121.1.49" obsolete="false" humanreadable="true">
-         <aliases>
-            <alias>Supported Algorithm</alias>
-         </aliases>
          <description>Supported Algorithm</description>
       </syntax>
       <syntax oid="1.3.6.1.4.1.1466.115.121.1.50" obsolete="false" humanreadable="true">
-         <aliases>
-            <alias>Telephone Number</alias>
-         </aliases>
          <description>Telephone Number</description>
       </syntax>
       <syntax oid="1.3.6.1.4.1.1466.115.121.1.52" obsolete="false" humanreadable="true">
-         <aliases>
-            <alias>Telex Number</alias>
-         </aliases>
          <description>Telex Number</description>
       </syntax>
       <syntax oid="1.3.6.1.1.1.0.0" obsolete="false" humanreadable="true">
-         <aliases>
-            <alias>RFC2307 NIS Netgroup Triple</alias>
-         </aliases>
          <description>RFC2307 NIS Netgroup Triple</description>
       </syntax>
       <syntax oid="1.3.6.1.1.1.0.1" obsolete="false" humanreadable="true">
-         <aliases>
-            <alias>RFC2307 Boot Parameter</alias>
-         </aliases>
          <description>RFC2307 Boot Parameter</description>
       </syntax>
       <syntax oid="1.3.6.1.1.16.1" obsolete="false" humanreadable="true">
-         <aliases>
-            <alias>UUID</alias>
-         </aliases>
          <description>UUID</description>
       </syntax>
       <syntax oid="1.3.6.1.4.1.1466.115.121.1.30" obsolete="false" humanreadable="false">
-         <aliases>
-            <alias>Matching Rule Description</alias>
-         </aliases>
          <description>Matching Rule Description</description>
       </syntax>
       <syntax oid="1.3.6.1.4.1.1466.115.121.1.3" obsolete="false" humanreadable="false">
-         <aliases>
-            <alias>Attribute Type Description</alias>
-         </aliases>
          <description>Attribute Type Description</description>
       </syntax>
       <syntax oid="1.3.6.1.4.1.1466.115.121.1.37" obsolete="false" humanreadable="false">
-         <aliases>
-            <alias>Object Class Description</alias>
-         </aliases>
          <description>Object Class Description</description>
       </syntax>
       <syntax oid="1.3.6.1.4.1.1466.115.121.1.31" obsolete="false" humanreadable="false">
-         <aliases>
-            <alias>Matching Rule Use Description</alias>
-         </aliases>
          <description>Matching Rule Use Description</description>
       </syntax>
       <syntax oid="1.3.6.1.4.1.1466.115.121.1.54" obsolete="false" humanreadable="false">
-         <aliases>
-            <alias>LDAP Syntax Description</alias>
-         </aliases>
          <description>LDAP Syntax Description</description>
       </syntax>
       <syntax oid="1.3.6.1.4.1.1466.115.121.1.25" obsolete="false" humanreadable="false">
-         <aliases>
-            <alias>Guide</alias>
-         </aliases>
          <description>Guide</description>
       </syntax>
       <syntax oid="1.3.6.1.4.1.1466.115.121.1.51" obsolete="false" humanreadable="false">
-         <aliases>
-            <alias>Teletex Terminal Identifier</alias>
-         </aliases>
          <description>Teletex Terminal Identifier</description>
       </syntax>
       <syntax oid="1.3.6.1.4.1.1466.115.121.1.43" obsolete="false" humanreadable="false">
-         <aliases>
-            <alias>Presentation Address</alias>
-         </aliases>
          <description>Presentation Address</description>
       </syntax>
       <syntax oid="1.3.6.1.4.1.1466.115.121.1.21" obsolete="false" humanreadable="false">
-         <aliases>
-            <alias>Enhanced Guide</alias>
-         </aliases>
          <description>Enhanced Guide</description>
       </syntax>
       <syntax oid="1.3.6.1.4.1.1466.115.121.1.42" obsolete="false" humanreadable="false">
-         <aliases>
-            <alias>Protocol Information</alias>
-         </aliases>
          <description>Protocol Information</description>
       </syntax>
       <syntax oid="1.3.6.1.4.1.1466.115.121.1.23" obsolete="false" humanreadable="false">
-         <aliases>
-            <alias>Fax</alias>
-         </aliases>
          <description>Fax</description>
       </syntax>
       <syntax oid="1.3.6.1.4.1.1466.115.121.1.19" obsolete="false" humanreadable="false">
-         <aliases>
-            <alias>DSA Quality Syntax</alias>
-         </aliases>
          <description>DSA Quality Syntax</description>
       </syntax>
       <syntax oid="1.3.6.1.4.1.1466.115.121.1.13" obsolete="false" humanreadable="false">
-         <aliases>
-            <alias>Data Quality Syntax</alias>
-         </aliases>
          <description>Data Quality Syntax</description>
       </syntax>
    </syntaxes>

@@ -118,7 +118,7 @@ public class ExportOdfRunnable implements StudioConnectionRunnableWithProgress
     public Object[] getLockedObjects()
     {
         return new Object[]
-            { browserConnection.getUrl() + "_" + DigestUtils.shaHex( exportOdfFilename ) };
+            { browserConnection.getUrl() + "_" + DigestUtils.shaHex( exportOdfFilename ) }; //$NON-NLS-1$
     }
 
 
@@ -152,16 +152,16 @@ public class ExportOdfRunnable implements StudioConnectionRunnableWithProgress
 
             // Remove the default table added in construction
             Element spreadsheetElement = ( Element ) contentDoc.getElementsByTagNameNS( OdfNamespace.OFFICE.getUri(),
-                "spreadsheet" ).item( 0 );
+                "spreadsheet" ).item( 0 ); //$NON-NLS-1$
             OdfTable table = ( OdfTable ) ( spreadsheetElement.getElementsByTagNameNS( OdfNamespace.TABLE.getUri(),
-                "table" ).item( 0 ) );
+                "table" ).item( 0 ) ); //$NON-NLS-1$
             table.getParentNode().removeChild( table );
 
             // create the table
             table = new OdfTable( contentDoc );
             table.setName( "Export" ); //$NON-NLS-1$
             Element officeSpreadsheet = ( Element ) contentDoc.getElementsByTagNameNS( OdfNamespace.OFFICE.getUri(),
-                "spreadsheet" ).item( 0 );
+                "spreadsheet" ).item( 0 ); //$NON-NLS-1$
             officeSpreadsheet.appendChild( table );
 
             // header
@@ -277,7 +277,7 @@ public class ExportOdfRunnable implements StudioConnectionRunnableWithProgress
         String valueDelimiter, int binaryEncoding, boolean exportDn )
     {
         // group multi-valued attributes
-        Map<String, String> attributeMap = ExportCsvRunnable.getAttributeMap( null, record, valueDelimiter, "UTF-16",
+        Map<String, String> attributeMap = ExportCsvRunnable.getAttributeMap( null, record, valueDelimiter, "UTF-16", //$NON-NLS-1$
             binaryEncoding );
 
         // output attributes
@@ -311,7 +311,7 @@ public class ExportOdfRunnable implements StudioConnectionRunnableWithProgress
             String value = attributeMap.get( attributeName );
             if ( value == null )
             {
-                value = "";
+                value = ""; //$NON-NLS-1$
             }
             OdfTableCell cell = new OdfTableCell( contentDoc );
             cell.setValueType( OdfValueType.STRING );

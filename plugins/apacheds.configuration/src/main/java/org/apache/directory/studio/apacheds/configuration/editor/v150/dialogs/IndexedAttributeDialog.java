@@ -120,8 +120,8 @@ public class IndexedAttributeDialog extends Dialog
     private void initFromInput()
     {
         String attributeId = indexedAttribute.getAttributeId();
-        attributeIdText.setText( ( attributeId == null ) ? "" : attributeId );
-        cacheSizeText.setText( "" + indexedAttribute.getCacheSize() );
+        attributeIdText.setText( ( attributeId == null ) ? "" : attributeId ); //$NON-NLS-1$
+        cacheSizeText.setText( "" + indexedAttribute.getCacheSize() ); //$NON-NLS-1$
     }
 
 

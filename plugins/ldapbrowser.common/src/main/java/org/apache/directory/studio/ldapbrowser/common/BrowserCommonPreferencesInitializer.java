@@ -123,6 +123,10 @@ public class BrowserCommonPreferencesInitializer extends AbstractPreferenceIniti
         store.setDefault( BrowserCommonConstants.PREFERENCE_BROWSER_SORT_BY, BrowserCoreConstants.SORT_BY_RDN_VALUE );
         store.setDefault( BrowserCommonConstants.PREFERENCE_BROWSER_SORT_ORDER,
             BrowserCoreConstants.SORT_ORDER_ASCENDING );
+        store.setDefault( BrowserCommonConstants.PREFERENCE_BROWSER_SORT_SEARCHES_ORDER,
+            BrowserCoreConstants.SORT_ORDER_ASCENDING );
+        store.setDefault( BrowserCommonConstants.PREFERENCE_BROWSER_SORT_BOOKMARKS_ORDER,
+            BrowserCoreConstants.SORT_ORDER_ASCENDING );
         store.setDefault( BrowserCommonConstants.PREFERENCE_BROWSER_SORT_LIMIT, 10000 );
         store.setDefault( BrowserCommonConstants.PREFERENCE_BROWSER_LEAF_ENTRIES_FIRST, true );
         store.setDefault( BrowserCommonConstants.PREFERENCE_BROWSER_CONTAINER_ENTRIES_FIRST, false );
@@ -190,17 +194,17 @@ public class BrowserCommonPreferencesInitializer extends AbstractPreferenceIniti
 
                 // Active Directory
                 new ObjectClassIconPair( new String[]
-                    { "1.2.840.113556.1.5.9" }, BrowserCommonConstants.IMG_ENTRY_PERSON ), // User
+                    { "1.2.840.113556.1.5.9" }, BrowserCommonConstants.IMG_ENTRY_PERSON ), // User //$NON-NLS-1$
                 new ObjectClassIconPair( new String[]
-                    { "1.2.840.113556.1.5.8" }, BrowserCommonConstants.IMG_ENTRY_GROUP ), // Group
+                    { "1.2.840.113556.1.5.8" }, BrowserCommonConstants.IMG_ENTRY_GROUP ), // Group //$NON-NLS-1$
                 new ObjectClassIconPair( new String[]
-                    { "1.2.840.113556.1.3.23" }, BrowserCommonConstants.IMG_ENTRY_ORG ), // Container 
+                    { "1.2.840.113556.1.3.23" }, BrowserCommonConstants.IMG_ENTRY_ORG ), // Container  //$NON-NLS-1$
                 new ObjectClassIconPair( new String[]
-                    { "1.2.840.113556.1.5.66", "1.2.840.113556.1.5.67" }, BrowserCommonConstants.IMG_ENTRY_DC ), // Domain, DomainDNS
+                    { "1.2.840.113556.1.5.66", "1.2.840.113556.1.5.67" }, BrowserCommonConstants.IMG_ENTRY_DC ), // Domain, DomainDNS //$NON-NLS-1$ //$NON-NLS-2$
                 new ObjectClassIconPair( new String[]
-                    { "1.2.840.113556.1.3.13" }, BrowserCommonConstants.IMG_OCD ), // ClassSchema
+                    { "1.2.840.113556.1.3.13" }, BrowserCommonConstants.IMG_OCD ), // ClassSchema //$NON-NLS-1$
                 new ObjectClassIconPair( new String[]
-                    { "1.2.840.113556.1.3.14" }, BrowserCommonConstants.IMG_ATD ), // AttributeSchema
+                    { "1.2.840.113556.1.3.14" }, BrowserCommonConstants.IMG_ATD ), // AttributeSchema //$NON-NLS-1$
             };
         BrowserCorePlugin.getDefault().getCorePreferences().setDefaultObjectClassIcons( objectClassIcons );
 

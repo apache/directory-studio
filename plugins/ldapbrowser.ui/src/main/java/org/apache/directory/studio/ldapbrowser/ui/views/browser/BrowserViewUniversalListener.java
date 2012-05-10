@@ -49,11 +49,13 @@ import org.apache.directory.studio.ldapbrowser.core.events.EntryMovedEvent;
 import org.apache.directory.studio.ldapbrowser.core.events.EntryRenamedEvent;
 import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
 import org.apache.directory.studio.ldapbrowser.core.events.SearchUpdateEvent;
+import org.apache.directory.studio.ldapbrowser.core.events.SearchUpdateEvent.EventDetail;
 import org.apache.directory.studio.ldapbrowser.core.events.SearchUpdateListener;
 import org.apache.directory.studio.ldapbrowser.core.model.IBookmark;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IContinuation;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
+import org.apache.directory.studio.ldapbrowser.core.model.IQuickSearch;
 import org.apache.directory.studio.ldapbrowser.core.model.IRootDSE;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearchResult;
@@ -273,7 +275,7 @@ public class BrowserViewUniversalListener extends BrowserUniversalListener imple
      */
     public BrowserViewUniversalListener( BrowserView view )
     {
-        super( view.getMainWidget().getViewer() );
+        super( view.getMainWidget() );
         this.view = view;
 
         // create maps
@@ -525,7 +527,15 @@ public class BrowserViewUniversalListener extends BrowserUniversalListener imple
     public void searchUpdated( SearchUpdateEvent searchUpdateEvent )
     {
         ISearch search = searchUpdateEvent.getSearch();
-        viewer.setSelection( StructuredSelection.EMPTY );
+
+        if ( ( search instanceof IQuickSearch ) && ( searchUpdateEvent.getDetail() == EventDetail.SEARCH_REMOVED ) )
+        {
+            if ( widget.getQuickSearch() == search )
+            {
+                widget.setQuickSearch( null );
+            }
+        }
+
         viewer.refresh();
 
         if ( search instanceof IContinuation )
@@ -536,9 +546,12 @@ public class BrowserViewUniversalListener extends BrowserUniversalListener imple
         {
             viewer.setSelection( new StructuredSelection( search ), true );
         }
-        else if ( search.getBrowserConnection().getSearchManager().getQuickSearch() == search )
+        else if ( ( search instanceof IQuickSearch ) && ( searchUpdateEvent.getDetail() != EventDetail.SEARCH_REMOVED ) )
         {
-            viewer.setSelection( new StructuredSelection( search ), true );
+            if ( widget.getQuickSearch() == search )
+            {
+                viewer.setSelection( new StructuredSelection( search ), true );
+            }
         }
         else
         {

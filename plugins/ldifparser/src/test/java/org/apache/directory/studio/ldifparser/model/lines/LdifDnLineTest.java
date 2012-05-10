@@ -31,48 +31,48 @@ public class LdifDnLineTest extends TestCase
 
     public void testToFormattedStringSimple()
     {
-        LdifDnLine dnLine = LdifDnLine.create( "cn=abc,ou=department,o=org,dc=example,dc=com" );
-        LdifFormatParameters formatParameters = new LdifFormatParameters( true, 78, "\n" );
+        LdifDnLine dnLine = LdifDnLine.create( "cn=abc,ou=department,o=org,dc=example,dc=com" ); //$NON-NLS-1$
+        LdifFormatParameters formatParameters = new LdifFormatParameters( true, 78, "\n" ); //$NON-NLS-1$
         String formattedString = dnLine.toFormattedString( formatParameters );
-        assertEquals( formattedString, "dn: cn=abc,ou=department,o=org,dc=example,dc=com\n" );
+        assertEquals( formattedString, "dn: cn=abc,ou=department,o=org,dc=example,dc=com\n" ); //$NON-NLS-1$
     }
 
 
     public void testToFormattedStringNewline()
     {
-        LdifDnLine dnLine = LdifDnLine.create( "cn=abc,ou=department,o=org,dc=example,dc=com" );
-        LdifFormatParameters formatParameters = new LdifFormatParameters( true, 78, "\r\n" );
+        LdifDnLine dnLine = LdifDnLine.create( "cn=abc,ou=department,o=org,dc=example,dc=com" ); //$NON-NLS-1$
+        LdifFormatParameters formatParameters = new LdifFormatParameters( true, 78, "\r\n" ); //$NON-NLS-1$
         String formattedString = dnLine.toFormattedString( formatParameters );
-        assertEquals( formattedString, "dn: cn=abc,ou=department,o=org,dc=example,dc=com\r\n" );
+        assertEquals( formattedString, "dn: cn=abc,ou=department,o=org,dc=example,dc=com\r\n" ); //$NON-NLS-1$
     }
 
 
     public void testToFormattedStringLineWrap()
     {
         LdifDnLine dnLine = LdifDnLine
-            .create( "cn=abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxy,ou=department,o=org,dc=example,dc=com" );
-        LdifFormatParameters formatParameters = new LdifFormatParameters( true, 78, "\n" );
+            .create( "cn=abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxy,ou=department,o=org,dc=example,dc=com" ); //$NON-NLS-1$
+        LdifFormatParameters formatParameters = new LdifFormatParameters( true, 78, "\n" ); //$NON-NLS-1$
         String formattedString = dnLine.toFormattedString( formatParameters );
-        assertEquals( formattedString, "dn: cn=abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxy,ou=department,o=org"
-            + "\n ,dc=example,dc=com\n" );
+        assertEquals( formattedString, "dn: cn=abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxy,ou=department,o=org" //$NON-NLS-1$
+            + "\n ,dc=example,dc=com\n" ); //$NON-NLS-1$
     }
 
 
     public void testToFormattedStringNoSpaceAfterColon()
     {
-        LdifDnLine dnLine = LdifDnLine.create( "cn=abc,ou=department,o=org,dc=example,dc=com" );
-        LdifFormatParameters formatParameters = new LdifFormatParameters( false, 78, "\n" );
+        LdifDnLine dnLine = LdifDnLine.create( "cn=abc,ou=department,o=org,dc=example,dc=com" ); //$NON-NLS-1$
+        LdifFormatParameters formatParameters = new LdifFormatParameters( false, 78, "\n" ); //$NON-NLS-1$
         String formattedString = dnLine.toFormattedString( formatParameters );
-        assertEquals( formattedString, "dn:cn=abc,ou=department,o=org,dc=example,dc=com\n" );
+        assertEquals( formattedString, "dn:cn=abc,ou=department,o=org,dc=example,dc=com\n" ); //$NON-NLS-1$
     }
 
 
     public void testToFormattedStringBase64()
     {
-        LdifDnLine dnLine = LdifDnLine.create( "cn=\u00e4\u00f6\u00fc,ou=department,o=org,dc=example,dc=com" );
-        LdifFormatParameters formatParameters = new LdifFormatParameters( true, 78, "\n" );
+        LdifDnLine dnLine = LdifDnLine.create( "cn=\u00e4\u00f6\u00fc,ou=department,o=org,dc=example,dc=com" ); //$NON-NLS-1$
+        LdifFormatParameters formatParameters = new LdifFormatParameters( true, 78, "\n" ); //$NON-NLS-1$
         String formattedString = dnLine.toFormattedString( formatParameters );
-        assertEquals( formattedString, "dn:: Y249w6TDtsO8LG91PWRlcGFydG1lbnQsbz1vcmcsZGM9ZXhhbXBsZSxkYz1jb20=\n" );
+        assertEquals( formattedString, "dn:: Y249w6TDtsO8LG91PWRlcGFydG1lbnQsbz1vcmcsZGM9ZXhhbXBsZSxkYz1jb20=\n" ); //$NON-NLS-1$
     }
 
 
@@ -82,10 +82,10 @@ public class LdifDnLineTest extends TestCase
      */
     public void testIsValid()
     {
-        LdifDnLine dnLine = LdifDnLine.create( "cn=\\#\\\\\\+\\, \\\"\u00f6\u00e9\\\",ou=users,ou=system" );
+        LdifDnLine dnLine = LdifDnLine.create( "cn=\\#\\\\\\+\\, \\\"\u00f6\u00e9\\\",ou=users,ou=system" ); //$NON-NLS-1$
         assertTrue( dnLine.isValid() );
-        assertEquals( "Y249XCNcXFwrXCwgXCLDtsOpXCIsb3U9dXNlcnMsb3U9c3lzdGVt", dnLine.getUnfoldedDn() );
-        assertEquals( "cn=\\#\\\\\\+\\, \\\"\u00f6\u00e9\\\",ou=users,ou=system", dnLine.getValueAsString() );
+        assertEquals( "Y249XCNcXFwrXCwgXCLDtsOpXCIsb3U9dXNlcnMsb3U9c3lzdGVt", dnLine.getUnfoldedDn() ); //$NON-NLS-1$
+        assertEquals( "cn=\\#\\\\\\+\\, \\\"\u00f6\u00e9\\\",ou=users,ou=system", dnLine.getValueAsString() ); //$NON-NLS-1$
     }
 
 }

@@ -66,9 +66,6 @@
             <projectnature>org.eclipse.pde.PluginNature</projectnature>
             <projectnature>org.eclipse.jdt.core.javanature</projectnature>
           </additionalProjectnatures>
-          <additionalProjects>
-            <project>org.apache.directory.studio.connection.core</project>
-          </additionalProjects>
           <classpathContainers>
             <classpathContainer>org.eclipse.jdt.launching.JRE_CONTAINER</classpathContainer>
             <classpathContainer>org.eclipse.pde.core.requiredPlugins</classpathContainer>
@@ -113,6 +110,7 @@
             <Eclipse-LazyStart>true</Eclipse-LazyStart>
             <Bundle-Activator>org.apache.directory.studio.connection.ui.ConnectionUIPlugin</Bundle-Activator>
             <Require-Bundle>org.apache.commons.codec;bundle-version="${org.apache.commons.codec.version}",
+ org.apache.commons.io;bundle-version="${org.apache.commons.io.version}",
  org.apache.commons.lang;bundle-version="${org.apache.commons.lang.version}",
  org.apache.directory.shared.ldap.model;bundle-version="${org.apache.directory.shared.validversion}",
  org.apache.directory.studio.common.core,
@@ -158,12 +156,17 @@
     </dependency>
     <dependency>
       <groupId>org.apache.directory.studio</groupId>
-      <artifactId>org.apache.commons.lang</artifactId>
+      <artifactId>org.apache.commons.codec</artifactId>
       <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.directory.studio</groupId>
-      <artifactId>org.apache.commons.codec</artifactId>
+      <artifactId>org.apache.commons.io</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.directory.studio</groupId>
+      <artifactId>org.apache.commons.lang</artifactId>
       <scope>provided</scope>
     </dependency>
     <dependency>

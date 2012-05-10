@@ -137,7 +137,7 @@
               <goal>copy-eclipse-artifact</goal>
             </goals>
             <configuration>
-              <destinationDirectory>${plugins-dir}</destinationDirectory>
+              <outputDirectory>${plugins-dir}</outputDirectory>
               <artifactItems>
                 <artifactItem>
                   <groupId>org.eclipse.core.filesystem</groupId>
@@ -154,10 +154,6 @@
                 <artifactItem>
                   <groupId>org.eclipse.swt.cocoa</groupId>
                   <artifactId>macosx</artifactId>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.apache.directory.studio</groupId>
-                  <artifactId>rcp.fullscreen</artifactId>
                 </artifactItem>
               </artifactItems>
             </configuration>

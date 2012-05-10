@@ -192,6 +192,20 @@
         <module>application-win32-x86_64-exe</module>
       </modules>
     </profile>
+    <!-- Nightly Builds -->
+    <profile>
+      <id>nightly-builds</id>
+      <modules>
+        <module>application-linux-x86</module>
+        <module>application-linux-x86_64</module>
+        <module>application-macosx-x86</module>
+        <module>application-macosx-x86_64</module>
+        <module>application-win32-x86</module>
+        <module>application-win32-x86_64</module>
+        <module>application-updatesite</module>
+        <module>application-nightly-builds</module>
+      </modules>
+    </profile>
   </profiles>
   
   <build>
@@ -257,6 +271,9 @@
               <!-- OTHER_EXCLUDES -->
               <exclude>docs/**/*</exclude>
               <exclude>application-updatesite/src/main/resources/*</exclude>
+              <exclude>application-win32-x86-exe/src/main/resources/Apache Directory Studio.ini</exclude>
+              <exclude>application-win32-x86_64-exe/src/main/resources/Apache Directory Studio.ini</exclude>
+              <exclude>**/*.bmp</exclude>
             </excludes>
           </configuration>
          </plugin>

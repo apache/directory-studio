@@ -44,7 +44,7 @@ public class LdifSepContainer extends LdifContainer
     public void addSep( LdifSepLine sep )
     {
         if ( sep == null )
-            throw new IllegalArgumentException( "null argument" );
+            throw new IllegalArgumentException( "null argument" ); //$NON-NLS-1$
         this.parts.add( sep );
     }
 

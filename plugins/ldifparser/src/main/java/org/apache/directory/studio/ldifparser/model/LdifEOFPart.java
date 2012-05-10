@@ -57,22 +57,22 @@ public final class LdifEOFPart implements LdifPart
 
     public final String toRawString()
     {
-        return "";
+        return ""; //$NON-NLS-1$
     }
 
 
     public final String toFormattedString( LdifFormatParameters formatParameters )
     {
-        return "";
+        return ""; //$NON-NLS-1$
     }
 
 
     public final String toString()
     {
         String text = toRawString();
-        text = text.replaceAll( "\n", "\\\\n" );
-        text = text.replaceAll( "\r", "\\\\r" );
-        return getClass().getName() + " (" + getOffset() + "," + getLength() + "): '" + text + "'";
+        text = text.replaceAll( "\n", "\\\\n" ); //$NON-NLS-1$ //$NON-NLS-2$
+        text = text.replaceAll( "\r", "\\\\r" ); //$NON-NLS-1$ //$NON-NLS-2$
+        return getClass().getName() + " (" + getOffset() + "," + getLength() + "): '" + text + "'"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
     }
 
 
@@ -84,7 +84,7 @@ public final class LdifEOFPart implements LdifPart
 
     public final String getInvalidString()
     {
-        return "";
+        return ""; //$NON-NLS-1$
     }
 
 

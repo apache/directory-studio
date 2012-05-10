@@ -135,6 +135,15 @@ public interface SchemaHandlerListener
 
 
     /**
+     * Sent when a schema is renamed.
+     *
+     * @param schema
+     *      the removed syntax
+     */
+    public void schemaRenamed( Schema schema );
+
+
+    /**
      * Sent when a syntax is added.
      *
      * @param syntax

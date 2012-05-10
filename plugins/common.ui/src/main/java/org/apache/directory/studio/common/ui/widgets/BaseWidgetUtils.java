@@ -468,6 +468,7 @@ public class BaseWidgetUtils
         Button button = new Button( parent, SWT.PUSH );
         GridData gd = new GridData();
         gd.widthHint = Dialog.convertHorizontalDLUsToPixels( fontMetrics, IDialogConstants.BUTTON_WIDTH );
+        gd.horizontalSpan = span;
         button.setLayoutData( gd );
         button.setText( text );
         return button;
@@ -475,18 +476,20 @@ public class BaseWidgetUtils
 
 
     /**
-     * Adds some space to indent radio buttons.
+     * Adds some space to .
      *
      * @param parent the parent
      * @param span the horizontal span
+     * @return the create label representing the radio buttons indent
      */
-    public static void createRadioIndent( Composite parent, int span )
+    public static Label createRadioIndent( Composite parent, int span )
     {
         Label l = new Label( parent, SWT.NONE );
         GridData gd = new GridData();
         gd.horizontalSpan = span;
         gd.horizontalIndent = 22;
         l.setLayoutData( gd );
+        return l;
     }
 
 
@@ -495,31 +498,33 @@ public class BaseWidgetUtils
      *
      * @param parent the parent
      * @param span the horizontal span
+     * @return the create label representing the spacer
      */
-    public static void createSpacer( Composite parent, int span )
+    public static Label createSpacer( Composite parent, int span )
     {
         Label l = new Label( parent, SWT.NONE );
-        // GridData gd = new GridData(GridData.FILL_HORIZONTAL);
         GridData gd = new GridData();
         gd.horizontalSpan = span;
         gd.heightHint = 1;
         l.setLayoutData( gd );
+        return l;
     }
 
 
     /**
-     * Creates a separator line.
+     * Creates a separator.
      *
      * @param parent the parent
      * @param span the horizontal span
+     * @return the create label representing the separator
      */
-    public static void createSeparator( Composite parent, int span )
+    public static Label createSeparator( Composite parent, int span )
     {
         Label l = new Label( parent, SWT.SEPARATOR | SWT.HORIZONTAL );
         GridData gd = new GridData( GridData.FILL_HORIZONTAL );
         gd.horizontalSpan = span;
-        // gd.heightHint = 1;
         l.setLayoutData( gd );
+        return l;
     }
 
 

@@ -6,16 +6,16 @@
  *  to you under the Apache License, Version 2.0 (the
  *  "License"); you may not use this file except in compliance
  *  with the License.  You may obtain a copy of the License at
- *  
+ * 
  *    http://www.apache.org/licenses/LICENSE-2.0
- *  
+ * 
  *  Unless required by applicable law or agreed to in writing,
  *  software distributed under the License is distributed on an
  *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  *  KIND, either express or implied.  See the License for the
  *  specific language governing permissions and limitations
- *  under the License. 
- *  
+ *  under the License.
+ * 
  */
 
 package org.apache.directory.studio.schemaeditor.view.editors.objectclass;
@@ -28,6 +28,7 @@ import org.apache.directory.shared.asn1.util.Oid;
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
 import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
 import org.apache.directory.shared.ldap.model.schema.MatchingRule;
+import org.apache.directory.shared.ldap.model.schema.MutableObjectClass;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.shared.ldap.model.schema.ObjectClassTypeEnum;
 import org.apache.directory.studio.schemaeditor.Activator;
@@ -40,7 +41,7 @@ import org.apache.directory.studio.schemaeditor.model.alias.AliasWithError;
 import org.apache.directory.studio.schemaeditor.model.alias.AliasesStringParser;
 import org.apache.directory.studio.schemaeditor.view.ViewUtils;
 import org.apache.directory.studio.schemaeditor.view.dialogs.AttributeTypeSelectionDialog;
-import org.apache.directory.studio.schemaeditor.view.dialogs.EditAliasesDialog;
+import org.apache.directory.studio.schemaeditor.view.dialogs.EditObjectClassAliasesDialog;
 import org.apache.directory.studio.schemaeditor.view.dialogs.ObjectClassSelectionDialog;
 import org.apache.directory.studio.schemaeditor.view.editors.NonExistingAttributeType;
 import org.apache.directory.studio.schemaeditor.view.editors.NonExistingObjectClass;
@@ -51,7 +52,6 @@ import org.apache.directory.studio.schemaeditor.view.editors.schema.SchemaEditor
 import org.apache.log4j.Logger;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
-import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
@@ -77,8 +77,6 @@ import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.forms.IManagedForm;
-import org.eclipse.ui.forms.editor.FormEditor;
-import org.eclipse.ui.forms.editor.FormPage;
 import org.eclipse.ui.forms.events.HyperlinkAdapter;
 import org.eclipse.ui.forms.events.HyperlinkEvent;
 import org.eclipse.ui.forms.widgets.FormToolkit;
@@ -90,16 +88,10 @@ import org.eclipse.ui.forms.widgets.Section;
 /**
  * This class is the Overview Page of the Object Class Editor
  */
-public class ObjectClassEditorOverviewPage extends FormPage
+public class ObjectClassEditorOverviewPage extends AbstractObjectClassEditorPage
 {
     /** The page ID */
     public static final String ID = ObjectClassEditor.ID + "overviewPage"; //$NON-NLS-1$
-
-    /** The original object class */
-    private ObjectClass originalObjectClass;
-
-    /** The modified object class */
-    private ObjectClass modifiedObjectClass;
 
     /** The original schema */
     private Schema originalSchema;
@@ -110,102 +102,69 @@ public class ObjectClassEditorOverviewPage extends FormPage
     /** The SchemaHandler Listener */
     private SchemaHandlerListener schemaHandlerListener = new SchemaHandlerListener()
     {
-        /**
-         * {@inheritDoc}
-         */
         public void attributeTypeAdded( AttributeType at )
         {
             refreshUI();
         }
 
 
-        /**
-         * {@inheritDoc}
-         */
         public void attributeTypeModified( AttributeType at )
         {
             refreshUI();
         }
 
 
-        /**
-         * {@inheritDoc}
-         */
         public void attributeTypeRemoved( AttributeType at )
         {
             refreshUI();
         }
 
 
-        /**
-         * {@inheritDoc}
-         */
         public void matchingRuleAdded( MatchingRule mr )
         {
             refreshUI();
         }
 
 
-        /**
-         * {@inheritDoc}
-         */
         public void matchingRuleModified( MatchingRule mr )
         {
             refreshUI();
         }
 
 
-        /**
-         * {@inheritDoc}
-         */
         public void matchingRuleRemoved( MatchingRule mr )
         {
             refreshUI();
         }
 
 
-        /**
-         * {@inheritDoc}
-         */
         public void objectClassAdded( ObjectClass oc )
         {
             refreshUI();
         }
 
 
-        /**
-         * {@inheritDoc}
-         */
         public void objectClassModified( ObjectClass oc )
         {
             refreshUI();
         }
 
 
-        /**
-         * {@inheritDoc}
-         */
         public void objectClassRemoved( ObjectClass oc )
         {
-            if ( !oc.equals( originalObjectClass ) )
+            if ( !oc.equals( getOriginalObjectClass() ) )
             {
                 refreshUI();
             }
         }
 
 
-        /**
-         * {@inheritDoc}
-         */
         public void schemaAdded( Schema schema )
         {
             refreshUI();
         }
 
 
-        /**
-         * {@inheritDoc}
-         */
         public void schemaRemoved( Schema schema )
         {
             if ( !schema.equals( originalSchema ) )
@@ -215,27 +174,24 @@ public class ObjectClassEditorOverviewPage extends FormPage
         }
 
 
-        /**
-         * {@inheritDoc}
-         */
+        public void schemaRenamed( Schema schema )
+        {
+            refreshUI();
+        }
+
+
         public void syntaxAdded( LdapSyntax syntax )
         {
             refreshUI();
         }
 
 
-        /**
-         * {@inheritDoc}
-         */
         public void syntaxModified( LdapSyntax syntax )
         {
             refreshUI();
         }
 
 
-        /**
-         * {@inheritDoc}
-         */
         public void syntaxRemoved( LdapSyntax syntax )
         {
             refreshUI();
@@ -271,6 +227,7 @@ public class ObjectClassEditorOverviewPage extends FormPage
     {
         public void modifyText( ModifyEvent e )
         {
+            ObjectClass modifiedObjectClass = getModifiedObjectClass();
             AliasesStringParser parser = new AliasesStringParser();
             parser.parse( aliasesText.getText() );
             List<Alias> parsedAliases = parser.getAliases();
@@ -293,14 +250,12 @@ public class ObjectClassEditorOverviewPage extends FormPage
     {
         public void widgetSelected( SelectionEvent e )
         {
-            EditAliasesDialog editDialog = new EditAliasesDialog( modifiedObjectClass.getNames() );
-            if ( editDialog.open() != Window.OK )
+            ObjectClass modifiedObjectClass = getModifiedObjectClass();
+
+            EditObjectClassAliasesDialog dialog = new EditObjectClassAliasesDialog( modifiedObjectClass.getNames() );
+            if ( dialog.open() == EditObjectClassAliasesDialog.OK )
             {
-                return;
-            }
-            if ( editDialog.isDirty() )
-            {
-                modifiedObjectClass.setNames( editDialog.getAliases() );
+                modifiedObjectClass.setNames( dialog.getAliases() );
                 if ( ( modifiedObjectClass.getNames() != null ) && ( modifiedObjectClass.getNames().size() != 0 ) )
                 {
                     aliasesText.setText( ViewUtils.concateAliases( modifiedObjectClass.getNames() ) );
@@ -322,12 +277,13 @@ public class ObjectClassEditorOverviewPage extends FormPage
             oidText.setForeground( ViewUtils.COLOR_BLACK );
             oidText.setToolTipText( "" ); //$NON-NLS-1$
 
+            ObjectClass modifiedObjectClass = getModifiedObjectClass();
             String oid = oidText.getText();
 
             if ( Oid.isOid( oid ) )
             {
-                if ( ( originalObjectClass.getOid().equals( oid ) )
-                    || !( schemaHandler.isAliasOrOidAlreadyTaken( oid ) ) )
+                if ( ( getOriginalObjectClass().getOid().equals( oid ) )
+                    || !( schemaHandler.isOidAlreadyTaken( oid ) ) )
                 {
                     modifiedObjectClass.setOid( oid );
                     setEditorDirty();
@@ -365,7 +321,7 @@ public class ObjectClassEditorOverviewPage extends FormPage
         {
             IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
 
-            SchemaEditorInput input = new SchemaEditorInput( schemaHandler.getSchema( modifiedObjectClass
+            SchemaEditorInput input = new SchemaEditorInput( schemaHandler.getSchema( getModifiedObjectClass()
                 .getSchemaName() ) );
             String editorId = SchemaEditor.ID;
             try
@@ -385,7 +341,7 @@ public class ObjectClassEditorOverviewPage extends FormPage
         public void modifyText( ModifyEvent e )
         {
             int caretPosition = descriptionText.getCaretPosition();
-            modifiedObjectClass.setDescription( descriptionText.getText() );
+            getModifiedObjectClass().setDescription( descriptionText.getText() );
             descriptionText.setSelection( caretPosition );
             setEditorDirty();
         }
@@ -396,6 +352,8 @@ public class ObjectClassEditorOverviewPage extends FormPage
     {
         public void modifyText( ModifyEvent e )
         {
+            MutableObjectClass modifiedObjectClass = getModifiedObjectClass();
+
             if ( classTypeCombo.getSelectionIndex() == 0 )
             {
                 modifiedObjectClass.setType( ObjectClassTypeEnum.ABSTRACT );
@@ -417,7 +375,7 @@ public class ObjectClassEditorOverviewPage extends FormPage
     {
         public void widgetSelected( SelectionEvent e )
         {
-            modifiedObjectClass.setObsolete( obsoleteCheckbox.getSelection() );
+            getModifiedObjectClass().setObsolete( obsoleteCheckbox.getSelection() );
             setEditorDirty();
         }
     };
@@ -469,6 +427,8 @@ public class ObjectClassEditorOverviewPage extends FormPage
     {
         public void widgetSelected( SelectionEvent e )
         {
+            MutableObjectClass modifiedObjectClass = getModifiedObjectClass();
+
             AttributeTypeSelectionDialog dialog = new AttributeTypeSelectionDialog();
             List<AttributeType> hiddenATs = new ArrayList<AttributeType>();
             List<String> mustsHidden = modifiedObjectClass.getMustAttributeTypeOids();
@@ -485,7 +445,7 @@ public class ObjectClassEditorOverviewPage extends FormPage
             }
             dialog.setHiddenAttributeTypes( hiddenATs.toArray( new AttributeType[0] ) );
 
-            if ( dialog.open() != Window.OK )
+            if ( dialog.open() != AttributeTypeSelectionDialog.OK )
             {
                 return;
             }
@@ -531,6 +491,8 @@ public class ObjectClassEditorOverviewPage extends FormPage
             {
                 return;
             }
+
+            MutableObjectClass modifiedObjectClass = getModifiedObjectClass();
 
             Object selectedElement = selection.getFirstElement();
             if ( selectedElement != null )
@@ -606,6 +568,7 @@ public class ObjectClassEditorOverviewPage extends FormPage
     {
         public void widgetSelected( SelectionEvent e )
         {
+            MutableObjectClass modifiedObjectClass = getModifiedObjectClass();
             AttributeTypeSelectionDialog dialog = new AttributeTypeSelectionDialog();
             List<AttributeType> hiddenATs = new ArrayList<AttributeType>();
             List<String> maysHidden = modifiedObjectClass.getMayAttributeTypeOids();
@@ -622,7 +585,7 @@ public class ObjectClassEditorOverviewPage extends FormPage
             }
             dialog.setHiddenAttributeTypes( hiddenATs.toArray( new AttributeType[0] ) );
 
-            if ( dialog.open() != Window.OK )
+            if ( dialog.open() != AttributeTypeSelectionDialog.OK )
             {
                 return;
             }
@@ -668,6 +631,8 @@ public class ObjectClassEditorOverviewPage extends FormPage
             {
                 return;
             }
+
+            MutableObjectClass modifiedObjectClass = getModifiedObjectClass();
 
             Object selectedElement = selection.getFirstElement();
             if ( selectedElement != null )
@@ -720,7 +685,7 @@ public class ObjectClassEditorOverviewPage extends FormPage
                     IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
                     try
                     {
-                        page.openEditor( new ObjectClassEditorInput( ( ObjectClass ) selectedElement ),
+                        page.openEditor( new ObjectClassEditorInput( ( MutableObjectClass ) selectedElement ),
                             ObjectClassEditor.ID );
                     }
                     catch ( PartInitException exception )
@@ -743,6 +708,7 @@ public class ObjectClassEditorOverviewPage extends FormPage
     {
         public void widgetSelected( SelectionEvent e )
         {
+            MutableObjectClass modifiedObjectClass = getModifiedObjectClass();
             ObjectClassSelectionDialog dialog = new ObjectClassSelectionDialog();
             List<ObjectClass> hiddenOCs = new ArrayList<ObjectClass>();
             for ( String sup : modifiedObjectClass.getSuperiorOids() )
@@ -753,10 +719,10 @@ public class ObjectClassEditorOverviewPage extends FormPage
                     hiddenOCs.add( oc );
                 }
             }
-            hiddenOCs.add( originalObjectClass );
+            hiddenOCs.add( getOriginalObjectClass() );
             dialog.setHiddenObjectClasses( hiddenOCs.toArray( new ObjectClass[0] ) );
 
-            if ( dialog.open() != Window.OK )
+            if ( dialog.open() != ObjectClassSelectionDialog.OK )
             {
                 return;
             }
@@ -799,6 +765,8 @@ public class ObjectClassEditorOverviewPage extends FormPage
             {
                 return;
             }
+
+            MutableObjectClass modifiedObjectClass = getModifiedObjectClass();
 
             Object selectedElement = selection.getFirstElement();
             if ( selectedElement != null )
@@ -847,11 +815,11 @@ public class ObjectClassEditorOverviewPage extends FormPage
 
 
     /**
-     * Default constructor
-     * @param editor
-     *      the associated editor
+     * Default constructor.
+     * 
+     * @param editor the associated editor
      */
-    public ObjectClassEditorOverviewPage( FormEditor editor )
+    public ObjectClassEditorOverviewPage( ObjectClassEditor editor )
     {
         super( editor, ID, Messages.getString( "ObjectClassEditorOverviewPage.Overview" ) ); //$NON-NLS-1$
         schemaHandler = Activator.getDefault().getSchemaHandler();
@@ -864,10 +832,7 @@ public class ObjectClassEditorOverviewPage extends FormPage
      */
     protected void createFormContent( IManagedForm managedForm )
     {
-        // Getting the original and modified object classes
-        modifiedObjectClass = ( ( ObjectClassEditor ) getEditor() ).getModifiedObjectClass();
-        originalObjectClass = ( ( ObjectClassEditor ) getEditor() ).getOriginalObjectClass();
-        originalSchema = schemaHandler.getSchema( originalObjectClass.getSchemaName() );
+        super.createFormContent( managedForm );
 
         // Creating the base UI
         ScrolledForm form = managedForm.getForm();
@@ -886,9 +851,6 @@ public class ObjectClassEditorOverviewPage extends FormPage
 
         // Optionnal Attributes Section
         createOptionalAttributesSection( bottomComposite, toolkit );
-
-        // Enabling or disabling the fields
-        //        setFieldsEditableState();
 
         // Filling the UI with values from the object class
         fillInUiFields();
@@ -1102,10 +1064,14 @@ public class ObjectClassEditorOverviewPage extends FormPage
 
 
     /**
-     * Initializes the UI fields from the input.
+     * {@inheritDoc}
      */
-    private void fillInUiFields()
+    protected void fillInUiFields()
     {
+        // Getting the original and modified object classes
+        ObjectClass modifiedObjectClass = getModifiedObjectClass();
+        originalSchema = schemaHandler.getSchema( getOriginalObjectClass().getSchemaName() );
+
         // ALIASES Label
         if ( ( modifiedObjectClass.getNames() != null ) && ( modifiedObjectClass.getNames().size() != 0 ) )
         {
@@ -1152,9 +1118,9 @@ public class ObjectClassEditorOverviewPage extends FormPage
      */
     private void fillInSuperiorsTable()
     {
-        if ( modifiedObjectClass.getSuperiorOids() != null )
+        if ( getModifiedObjectClass().getSuperiorOids() != null )
         {
-            superiorsTableViewer.setInput( modifiedObjectClass.getSuperiorOids() );
+            superiorsTableViewer.setInput( getModifiedObjectClass().getSuperiorOids() );
         }
     }
 
@@ -1175,17 +1141,19 @@ public class ObjectClassEditorOverviewPage extends FormPage
      */
     private void fillInClassType()
     {
-        if ( modifiedObjectClass.getType() == ObjectClassTypeEnum.ABSTRACT )
+        ObjectClassTypeEnum type = getModifiedObjectClass().getType();
+
+        switch ( type )
         {
-            classTypeCombo.select( 0 );
-        }
-        else if ( modifiedObjectClass.getType() == ObjectClassTypeEnum.AUXILIARY )
-        {
-            classTypeCombo.select( 1 );
-        }
-        else if ( modifiedObjectClass.getType() == ObjectClassTypeEnum.STRUCTURAL )
-        {
-            classTypeCombo.select( 2 );
+            case ABSTRACT:
+                classTypeCombo.select( 0 );
+                return;
+            case AUXILIARY:
+                classTypeCombo.select( 1 );
+                return;
+            case STRUCTURAL:
+                classTypeCombo.select( 2 );
+                return;
         }
     }
 
@@ -1195,9 +1163,9 @@ public class ObjectClassEditorOverviewPage extends FormPage
      */
     private void fillInMandatoryAttributesTable()
     {
-        if ( modifiedObjectClass.getMustAttributeTypeOids() != null )
+        if ( getModifiedObjectClass().getMustAttributeTypeOids() != null )
         {
-            mandatoryAttributesTableViewer.setInput( modifiedObjectClass.getMustAttributeTypeOids() );
+            mandatoryAttributesTableViewer.setInput( getModifiedObjectClass().getMustAttributeTypeOids() );
         }
     }
 
@@ -1207,84 +1175,64 @@ public class ObjectClassEditorOverviewPage extends FormPage
      */
     private void fillInOptionalAttributesTable()
     {
-        if ( modifiedObjectClass.getMayAttributeTypeOids() != null )
+        if ( getModifiedObjectClass().getMayAttributeTypeOids() != null )
         {
-            optionalAttributesTableViewer.setInput( modifiedObjectClass.getMayAttributeTypeOids() );
+            optionalAttributesTableViewer.setInput( getModifiedObjectClass().getMayAttributeTypeOids() );
         }
     }
 
 
     /**
-     * Adds listeners to UI fields
+     * {@inheritDoc}
      */
-    private void addListeners()
+    protected void addListeners()
     {
-        aliasesText.addModifyListener( aliasesTextModifyListener );
-        aliasesButton.addSelectionListener( aliasesButtonListener );
-        oidText.addModifyListener( oidTextModifyListener );
-        oidText.addVerifyListener( oidTextVerifyListener );
-        descriptionText.addModifyListener( descriptionTextListener );
-        addButtonSuperiorsTable.addSelectionListener( addButtonSuperiorsTableListener );
-        removeButtonSuperiorsTable.addSelectionListener( removeButtonSuperiorsTableListener );
-        classTypeCombo.addModifyListener( classTypeListener );
-        obsoleteCheckbox.addSelectionListener( obsoleteListener );
-        addButtonMandatoryTable.addSelectionListener( addButtonMandatoryTableListener );
-        removeButtonMandatoryTable.addSelectionListener( removeButtonMandatoryTableListener );
-        addButtonOptionalTable.addSelectionListener( addButtonOptionalTableListener );
-        removeButtonOptionalTable.addSelectionListener( removeButtonOptionalTableListener );
-        schemaLink.addHyperlinkListener( schemaLinkListener );
-        superiorsTable.addMouseListener( superiorsTableListener );
-        mandatoryAttributesTable.addMouseListener( mandatoryAttributesTableListener );
-        optionalAttributesTable.addMouseListener( optionalAttributesTableListener );
+        addModifyListener( aliasesText, aliasesTextModifyListener );
+        addSelectionListener( aliasesButton, aliasesButtonListener );
+        addModifyListener( oidText, oidTextModifyListener );
+        addVerifyListener( oidText, oidTextVerifyListener );
+        addModifyListener( descriptionText, descriptionTextListener );
+        addSelectionListener( addButtonSuperiorsTable, addButtonSuperiorsTableListener );
+        addSelectionListener( removeButtonSuperiorsTable, removeButtonSuperiorsTableListener );
+        addModifyListener( classTypeCombo, classTypeListener );
+        addSelectionListener( obsoleteCheckbox, obsoleteListener );
+        addSelectionListener( addButtonMandatoryTable, addButtonMandatoryTableListener );
+        addSelectionListener( addButtonMandatoryTable, removeButtonMandatoryTableListener );
+        addSelectionListener( addButtonOptionalTable, addButtonOptionalTableListener );
+        addSelectionListener( removeButtonOptionalTable, removeButtonOptionalTableListener );
+        addHyperlinkListener( schemaLink, schemaLinkListener );
+        addMouseListener( superiorsTable, superiorsTableListener );
+        addMouseListener( mandatoryAttributesTable, mandatoryAttributesTableListener );
+        addMouseListener( optionalAttributesTable, optionalAttributesTableListener );
 
         Display.getCurrent().addFilter( SWT.MouseWheel, mouseWheelFilter );
     }
 
 
     /**
-     * Removes listeners from UI fields
+     * {@inheritDoc}
      */
-    private void removeListeners()
+    protected void removeListeners()
     {
-        aliasesText.removeModifyListener( aliasesTextModifyListener );
-        aliasesButton.removeSelectionListener( aliasesButtonListener );
-        oidText.removeModifyListener( oidTextModifyListener );
-        oidText.removeVerifyListener( oidTextVerifyListener );
-        schemaLink.removeHyperlinkListener( schemaLinkListener );
-        descriptionText.removeModifyListener( descriptionTextListener );
-        superiorsTable.removeMouseListener( superiorsTableListener );
-        addButtonSuperiorsTable.removeSelectionListener( addButtonSuperiorsTableListener );
-        removeButtonSuperiorsTable.removeSelectionListener( removeButtonSuperiorsTableListener );
-        classTypeCombo.removeModifyListener( classTypeListener );
-        obsoleteCheckbox.removeSelectionListener( obsoleteListener );
-        mandatoryAttributesTable.removeMouseListener( mandatoryAttributesTableListener );
-        addButtonMandatoryTable.removeSelectionListener( addButtonMandatoryTableListener );
-        removeButtonMandatoryTable.removeSelectionListener( removeButtonMandatoryTableListener );
-        optionalAttributesTable.removeMouseListener( optionalAttributesTableListener );
-        addButtonOptionalTable.removeSelectionListener( addButtonOptionalTableListener );
-        removeButtonOptionalTable.removeSelectionListener( removeButtonOptionalTableListener );
+        removeModifyListener( aliasesText, aliasesTextModifyListener );
+        removeSelectionListener( aliasesButton, aliasesButtonListener );
+        removeModifyListener( oidText, oidTextModifyListener );
+        removeVerifyListener( oidText, oidTextVerifyListener );
+        removeHyperlinkListener( schemaLink, schemaLinkListener );
+        removeModifyListener( descriptionText, descriptionTextListener );
+        removeMouseListener( superiorsTable, superiorsTableListener );
+        removeSelectionListener( addButtonSuperiorsTable, addButtonSuperiorsTableListener );
+        removeSelectionListener( removeButtonSuperiorsTable, removeButtonSuperiorsTableListener );
+        removeModifyListener( classTypeCombo, classTypeListener );
+        removeSelectionListener( obsoleteCheckbox, obsoleteListener );
+        removeMouseListener( mandatoryAttributesTable, mandatoryAttributesTableListener );
+        removeSelectionListener( addButtonMandatoryTable, addButtonMandatoryTableListener );
+        removeSelectionListener( removeButtonMandatoryTable, removeButtonMandatoryTableListener );
+        removeMouseListener( optionalAttributesTable, optionalAttributesTableListener );
+        removeSelectionListener( addButtonOptionalTable, addButtonOptionalTableListener );
+        removeSelectionListener( removeButtonOptionalTable, removeButtonOptionalTableListener );
 
         Display.getCurrent().removeFilter( SWT.MouseWheel, mouseWheelFilter );
-    }
-
-
-    /**
-     * Sets the editor as dirty
-     */
-    private void setEditorDirty()
-    {
-        ( ( ObjectClassEditor ) getEditor() ).setDirty( true );
-    }
-
-
-    /**
-     * Refreshes the UI.
-     */
-    public void refreshUI()
-    {
-        removeListeners();
-        fillInUiFields();
-        addListeners();
     }
 
 

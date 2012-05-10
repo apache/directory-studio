@@ -24,9 +24,6 @@ package org.apache.directory.studio;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 
 /**
  * This class is used to get Strings to display in the User Interface
@@ -35,9 +32,6 @@ import org.slf4j.LoggerFactory;
  */
 public class Messages
 {
-    // The logger
-    private static Logger logger = LoggerFactory.getLogger( Messages.class );
-
     private static final String BUNDLE_NAME = "org.apache.directory.studio.messages"; //$NON-NLS-1$
 
     private static final ResourceBundle RESOURCE_BUNDLE = ResourceBundle.getBundle( BUNDLE_NAME );
@@ -64,7 +58,6 @@ public class Messages
         }
         catch ( MissingResourceException e )
         {
-            logger.warn( "Associated ressource not found for key {}", key ); //$NON-NLS-1$
             return '!' + key + '!';
         }
     }

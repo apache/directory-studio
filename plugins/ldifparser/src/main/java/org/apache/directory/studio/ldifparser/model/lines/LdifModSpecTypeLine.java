@@ -74,19 +74,19 @@ public class LdifModSpecTypeLine extends LdifValueLineBase
 
     public boolean isAdd()
     {
-        return this.getUnfoldedModType().equals( "add" );
+        return this.getUnfoldedModType().equals( "add" ); //$NON-NLS-1$
     }
 
 
     public boolean isReplace()
     {
-        return this.getUnfoldedModType().equals( "replace" );
+        return this.getUnfoldedModType().equals( "replace" ); //$NON-NLS-1$
     }
 
 
     public boolean isDelete()
     {
-        return this.getUnfoldedModType().equals( "delete" );
+        return this.getUnfoldedModType().equals( "delete" ); //$NON-NLS-1$
     }
 
 
@@ -119,19 +119,19 @@ public class LdifModSpecTypeLine extends LdifValueLineBase
 
     public static LdifModSpecTypeLine createAdd( String attributeName )
     {
-        return new LdifModSpecTypeLine( 0, "add", ":", attributeName, LdifParserConstants.LINE_SEPARATOR );
+        return new LdifModSpecTypeLine( 0, "add", ":", attributeName, LdifParserConstants.LINE_SEPARATOR ); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
 
     public static LdifModSpecTypeLine createReplace( String attributeName )
     {
-        return new LdifModSpecTypeLine( 0, "replace", ":", attributeName, LdifParserConstants.LINE_SEPARATOR );
+        return new LdifModSpecTypeLine( 0, "replace", ":", attributeName, LdifParserConstants.LINE_SEPARATOR ); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
 
     public static LdifModSpecTypeLine createDelete( String attributeName )
     {
-        return new LdifModSpecTypeLine( 0, "delete", ":", attributeName, LdifParserConstants.LINE_SEPARATOR );
+        return new LdifModSpecTypeLine( 0, "delete", ":", attributeName, LdifParserConstants.LINE_SEPARATOR ); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
 }

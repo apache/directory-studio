@@ -116,7 +116,7 @@ public class ServerConfigurationEditorUtils
             }
             else
             {
-                dialog.setOriginalName( "config.ldif" );
+                dialog.setOriginalName( "config.ldif" ); //$NON-NLS-1$
             }
 
             // Open the dialog
@@ -162,8 +162,8 @@ public class ServerConfigurationEditorUtils
                 if ( externalFile.exists() )
                 {
                     String question = NLS.bind(
-                        "The file \"{0}\" already exists. Do you want to replace the existing file?", path ); //$NON-NLS-1$
-                    MessageDialog overwriteDialog = new MessageDialog( shell, "Question", null, question, //$NON-NLS-1$
+                        "The file \"{0}\" already exists. Do you want to replace the existing file?", path );
+                    MessageDialog overwriteDialog = new MessageDialog( shell, "Question", null, question,
                         MessageDialog.QUESTION, new String[]
                             { IDialogConstants.YES_LABEL, IDialogConstants.NO_LABEL, IDialogConstants.CANCEL_LABEL }, 0 );
                     int overwrite = openDialogInUIThread( overwriteDialog );
@@ -349,7 +349,7 @@ public class ServerConfigurationEditorUtils
             modificationsLdif.append( ldifEntry.toString() );
         }
 
-        // Getting the browser connection associated with the 
+        // Getting the browser connection associated with the connection
         IBrowserConnection browserConnection = BrowserCorePlugin.getDefault().getConnectionManager()
             .getBrowserConnection( input.getConnection() );
 

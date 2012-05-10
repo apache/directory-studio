@@ -102,7 +102,7 @@ public class NtlmProviderDialog extends Dialog
      */
     private void initFromInput()
     {
-        ntlmProviderText.setText( ( initialValue == null ) ? "" : initialValue );
+        ntlmProviderText.setText( ( initialValue == null ) ? "" : initialValue ); //$NON-NLS-1$
     }
 
 

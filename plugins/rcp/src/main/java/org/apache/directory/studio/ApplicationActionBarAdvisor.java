@@ -21,6 +21,7 @@
 package org.apache.directory.studio;
 
 
+import org.apache.directory.studio.actions.AddExtensionAction;
 import org.apache.directory.studio.actions.ManageConfigurationAction;
 import org.apache.directory.studio.actions.OpenFileAction;
 import org.apache.directory.studio.actions.ReportABugAction;
@@ -99,6 +100,7 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor
     private IWorkbenchAction nextAction;
     private IWorkbenchAction previousAction;
     private IWorkbenchAction introAction;
+    private AddExtensionAction addExtensionAction;
 
 
     /**
@@ -222,6 +224,9 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor
             ImageKeys.SEARCH_UPDATES ) );
         register( updateAction );
 
+        addExtensionAction = new AddExtensionAction( window );
+        register( addExtensionAction );
+        
         manageConfigurationAction = new ManageConfigurationAction( window );
         manageConfigurationAction.setImageDescriptor( AbstractUIPlugin.imageDescriptorFromPlugin(
             Application.PLUGIN_ID, ImageKeys.MANAGE_CONFIGURATION ) );
@@ -389,6 +394,7 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor
         helpMenu.add( new Separator() );
         MenuManager softwareUpdates = new MenuManager( Messages
             .getString( "ApplicationActionBarAdvisor.Software_Updates" ), "softwareUpdates" ); //$NON-NLS-1$ //$NON-NLS-2$
+        softwareUpdates.add( addExtensionAction );
         softwareUpdates.add( updateAction );
         softwareUpdates.add( manageConfigurationAction );
         helpMenu.add( softwareUpdates );

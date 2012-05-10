@@ -86,14 +86,29 @@
           <manifestLocation>META-INF</manifestLocation>
           <instructions>
             <Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
+            <Require-Bundle>net.sf.ehcache.core;bundle-version="${net.sf.ehcache.version}",
+ org.antlr.antlr;bundle-version="${org.antlr.version}",
+ org.apache.commons.collections;bundle-version="${org.apache.commons.collections.version}",
+ org.apache.commons.lang;bundle-version="${org.apache.commons.lang.version}",
+ org.apache.commons.io;bundle-version="${org.apache.commons.io.version}",
+ org.apache.directory.server.core.constants;bundle-version="${org.apache.directory.server.validversion}",
+ org.apache.directory.server.i18n;bundle-version="${org.apache.directory.server.validversion}",
+ org.apache.directory.shared.i18n;bundle-version="${org.apache.directory.shared.validversion}",
+ org.apache.directory.shared.ldap.client.api;bundle-version="${org.apache.directory.shared.validversion}",
+ org.apache.directory.shared.asn1.api;bundle-version="${org.apache.directory.shared.validversion}",
+ org.apache.directory.shared.ldap.codec.core;bundle-version="${org.apache.directory.shared.validversion}",
+ org.apache.directory.shared.ldap.extras.aci;bundle-version="${org.apache.directory.shared.validversion}",
+ org.apache.directory.shared.ldap.extras.util;bundle-version="${org.apache.directory.shared.validversion}",
+ org.apache.directory.shared.ldap.model;bundle-version="${org.apache.directory.shared.validversion}",
+ org.apache.directory.shared.ldap.schema;bundle-version="${org.apache.directory.shared.validversion}",
+ org.apache.directory.shared.util;bundle-version="${org.apache.directory.shared.validversion}",
+ org.apache.mina.core;bundle-version="${org.apache.mina.core.version}",
+ org.slf4j.api;bundle-version="${org.slf4j.version}"</Require-Bundle>
             <Embed-Dependency>*;scope=compile|runtime</Embed-Dependency>
             <Embed-Directory>lib</Embed-Directory>
             <Embed-StripGroup>true</Embed-StripGroup>
-            <Bundle-Localization>plugin</Bundle-Localization>
-            <Eclipse-LazyStart>true</Eclipse-LazyStart>
-            <Export-Package>
-              org.apache.directory.server.core.api.*;version=${project.version};-noimport:=true
-            </Export-Package>
+            <_exportcontents>!lib,*</_exportcontents>
+            <Import-Package>!</Import-Package>
           </instructions>
         </configuration>
         <executions>
@@ -122,8 +137,8 @@
       <artifactId>apacheds-core-api</artifactId>
       <exclusions>
         <exclusion>
-          <groupId>commons-lang</groupId>
-          <artifactId>commons-lang</artifactId>
+          <groupId>antlr</groupId>
+          <artifactId>antlr</artifactId>
         </exclusion>
         <exclusion>
           <groupId>org.apache.directory.server</groupId>
@@ -132,6 +147,22 @@
         <exclusion>
           <groupId>org.apache.directory.server</groupId>
           <artifactId>apacheds-i18n</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>commons-collections</groupId>
+          <artifactId>commons-collections</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>commons-io</groupId>
+          <artifactId>commons-io</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>commons-lang</groupId>
+          <artifactId>commons-lang</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.apache.directory.shared</groupId>
+          <artifactId>shared-ldap-client-api</artifactId>
         </exclusion>
         <exclusion>
           <groupId>org.apache.directory.shared</groupId>
@@ -143,15 +174,11 @@
         </exclusion>
         <exclusion>
           <groupId>org.apache.directory.shared</groupId>
-          <artifactId>shared-ldap-client-api</artifactId>
+          <artifactId>shared-ldap-codec-standalone</artifactId>
         </exclusion>
         <exclusion>
           <groupId>org.apache.directory.shared</groupId>
           <artifactId>shared-ldap-codec-core</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>org.apache.directory.shared</groupId>
-          <artifactId>shared-ldap-extras-util</artifactId>
         </exclusion>
         <exclusion>
           <groupId>org.apache.directory.shared</groupId>
@@ -164,6 +191,14 @@
         <exclusion>
           <groupId>org.apache.directory.shared</groupId>
           <artifactId>shared-util</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.apache.directory.shared</groupId>
+          <artifactId>shared-ldap-extras-aci</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.apache.directory.shared</groupId>
+          <artifactId>shared-ldap-extras-util</artifactId>
         </exclusion>
         <exclusion>
           <groupId>org.apache.mina</groupId>
@@ -186,6 +221,16 @@
     </dependency>
     <dependency>
       <groupId>org.apache.directory.studio</groupId>
+      <artifactId>org.apache.commons.collections</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.directory.studio</groupId>
+      <artifactId>org.apache.commons.io</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.directory.studio</groupId>
       <artifactId>org.apache.commons.lang</artifactId>
       <scope>provided</scope>
     </dependency>
@@ -200,23 +245,8 @@
       <scope>provided</scope>
     </dependency>
     <dependency>
-      <groupId>org.apache.directory.studio</groupId>
-      <artifactId>org.apache.mina.core</artifactId>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.directory.studio</groupId>
-      <artifactId>org.slf4j.api</artifactId>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
       <groupId>org.apache.directory.shared</groupId>
       <artifactId>shared-asn1-api</artifactId>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.directory.shared</groupId>
-      <artifactId>shared-i18n</artifactId>
       <scope>provided</scope>
     </dependency>
     <dependency>
@@ -226,12 +256,17 @@
     </dependency>
     <dependency>
       <groupId>org.apache.directory.shared</groupId>
-      <artifactId>shared-ldap-codec-core</artifactId>
+      <artifactId>shared-i18n</artifactId>
       <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.directory.shared</groupId>
-      <artifactId>shared-ldap-extras-util</artifactId>
+      <artifactId>shared-ldap-codec-standalone</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.directory.shared</groupId>
+      <artifactId>shared-ldap-codec-core</artifactId>
       <scope>provided</scope>
     </dependency>
     <dependency>
@@ -247,6 +282,16 @@
     <dependency>
       <groupId>org.apache.directory.shared</groupId>
       <artifactId>shared-util</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.directory.shared</groupId>
+      <artifactId>shared-ldap-extras-util</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.directory.studio</groupId>
+      <artifactId>org.slf4j.api</artifactId>
       <scope>provided</scope>
     </dependency>
   </dependencies>

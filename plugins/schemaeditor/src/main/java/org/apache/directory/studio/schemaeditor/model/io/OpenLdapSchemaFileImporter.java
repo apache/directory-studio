@@ -6,16 +6,16 @@
  *  to you under the Apache License, Version 2.0 (the
  *  "License"); you may not use this file except in compliance
  *  with the License.  You may obtain a copy of the License at
- *  
+ * 
  *    http://www.apache.org/licenses/LICENSE-2.0
- *  
+ * 
  *  Unless required by applicable law or agreed to in writing,
  *  software distributed under the License is distributed on an
  *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  *  KIND, either express or implied.  See the License for the
  *  specific language governing permissions and limitations
- *  under the License. 
- *  
+ *  under the License.
+ * 
  */
 package org.apache.directory.studio.schemaeditor.model.io;
 
@@ -30,6 +30,8 @@ import java.util.Scanner;
 import java.util.regex.MatchResult;
 
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.MutableAttributeType;
+import org.apache.directory.shared.ldap.model.schema.MutableObjectClass;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.shared.ldap.model.schema.parsers.OpenLdapSchemaParser;
 import org.apache.directory.studio.schemaeditor.model.Schema;
@@ -103,7 +105,7 @@ public class OpenLdapSchemaFileImporter
         List<?> ocs = parser.getObjectClassTypes();
         for ( int i = 0; i < ocs.size(); i++ )
         {
-            ObjectClass oc = convertObjectClass( ( ObjectClass ) ocs.get( i ) );
+            MutableObjectClass oc = convertObjectClass( ( ObjectClass ) ocs.get( i ) );
             oc.setSchemaName( schemaName );
             schema.addObjectClass( oc );
         }
@@ -144,7 +146,7 @@ public class OpenLdapSchemaFileImporter
      */
     private static final AttributeType convertAttributeType( AttributeType at )
     {
-        AttributeType newAT = new AttributeType( at.getOid() );
+        MutableAttributeType newAT = new MutableAttributeType( at.getOid() );
         newAT.setNames( at.getNames() );
         newAT.setDescription( at.getDescription() );
         newAT.setSuperiorOid( at.getSuperiorOid() );
@@ -171,9 +173,9 @@ public class OpenLdapSchemaFileImporter
      * @return
      *      the corresponding ObjectClassImpl
      */
-    private static final ObjectClass convertObjectClass( ObjectClass oc )
+    private static final MutableObjectClass convertObjectClass( ObjectClass oc )
     {
-        ObjectClass newOC = new ObjectClass( oc.getOid() );
+        MutableObjectClass newOC = new MutableObjectClass( oc.getOid() );
         newOC.setNames( oc.getNames() );
         newOC.setDescription( oc.getDescription() );
         newOC.setSuperiorOids( oc.getSuperiorOids() );

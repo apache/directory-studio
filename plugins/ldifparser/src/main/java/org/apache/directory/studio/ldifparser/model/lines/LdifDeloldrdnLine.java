@@ -68,7 +68,7 @@ public class LdifDeloldrdnLine extends LdifValueLineBase
 
     public boolean isDeleteOldRdn()
     {
-        return "1".equals( this.getUnfoldedDeleteOldrdn() );
+        return "1".equals( this.getUnfoldedDeleteOldrdn() ); //$NON-NLS-1$
     }
 
 
@@ -83,7 +83,7 @@ public class LdifDeloldrdnLine extends LdifValueLineBase
         if ( !super.isValid() )
             return false;
 
-        return ( "0".equals( getUnfoldedDeleteOldrdn() ) || "1".equals( getUnfoldedDeleteOldrdn() ) );
+        return ( "0".equals( getUnfoldedDeleteOldrdn() ) || "1".equals( getUnfoldedDeleteOldrdn() ) ); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
 
@@ -93,7 +93,7 @@ public class LdifDeloldrdnLine extends LdifValueLineBase
         {
             return "Missing delete old Rdn spec 'deleteoldrdn'";
         }
-        else if ( !"0".equals( getUnfoldedDeleteOldrdn() ) && !"1".equals( getUnfoldedDeleteOldrdn() ) )
+        else if ( !"0".equals( getUnfoldedDeleteOldrdn() ) && !"1".equals( getUnfoldedDeleteOldrdn() ) ) //$NON-NLS-1$ //$NON-NLS-2$
         {
             return "Invalid value of delete old Rdn, must be '0' or '1'";
         }
@@ -106,13 +106,13 @@ public class LdifDeloldrdnLine extends LdifValueLineBase
 
     public static LdifDeloldrdnLine create0()
     {
-        return new LdifDeloldrdnLine( 0, "deleteoldrdn", ":", "0", LdifParserConstants.LINE_SEPARATOR );
+        return new LdifDeloldrdnLine( 0, "deleteoldrdn", ":", "0", LdifParserConstants.LINE_SEPARATOR ); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
     }
 
 
     public static LdifDeloldrdnLine create1()
     {
-        return new LdifDeloldrdnLine( 0, "deleteoldrdn", ":", "1", LdifParserConstants.LINE_SEPARATOR );
+        return new LdifDeloldrdnLine( 0, "deleteoldrdn", ":", "1", LdifParserConstants.LINE_SEPARATOR ); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
     }
 
 }

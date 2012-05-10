@@ -27,6 +27,7 @@ import java.util.Date;
 import org.apache.commons.lang.StringUtils;
 import org.apache.directory.shared.ldap.model.url.LdapUrl;
 import org.apache.directory.shared.ldap.model.url.LdapUrl.Extension;
+import org.apache.directory.studio.common.ui.HistoryUtils;
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.ConnectionCoreConstants;
@@ -37,8 +38,10 @@ import org.apache.directory.studio.connection.core.ConnectionParameter.NetworkPr
 import org.apache.directory.studio.connection.core.jobs.CheckNetworkParameterRunnable;
 import org.apache.directory.studio.connection.ui.AbstractConnectionParameterPage;
 import org.apache.directory.studio.connection.ui.ConnectionUIConstants;
+import org.apache.directory.studio.connection.ui.ConnectionUIPlugin;
 import org.apache.directory.studio.connection.ui.RunnableContextRunner;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
@@ -96,6 +99,9 @@ public class NetworkParameterPage extends AbstractConnectionParameterPage
 
     /** The button to check the connection parameters */
     private Button checkConnectionButton;
+
+    /** The checkbox to make the connection read-only */
+    private Button readOnlyConnectionCheckbox;
 
 
     /**
@@ -168,9 +174,9 @@ public class NetworkParameterPage extends AbstractConnectionParameterPage
         switch ( networkProviderCombo.getSelectionIndex() )
         {
             case 1:
-                return ConnectionParameter.NetworkProvider.APACHE_DIRECTORY_LDAP_API;
-            default:
                 return ConnectionParameter.NetworkProvider.JNDI;
+            default:
+                return ConnectionParameter.NetworkProvider.APACHE_DIRECTORY_LDAP_API;
         }
     }
 
@@ -191,6 +197,17 @@ public class NetworkParameterPage extends AbstractConnectionParameterPage
 
 
     /**
+     * Gets read only flag.
+     * 
+     * @return the read only flag
+     */
+    private boolean isReadOnly()
+    {
+        return readOnlyConnectionCheckbox.getSelection();
+    }
+
+
+    /**
      * {@inheritDoc}
      */
     protected void createComposite( Composite parent )
@@ -206,13 +223,15 @@ public class NetworkParameterPage extends AbstractConnectionParameterPage
         Group group = BaseWidgetUtils.createGroup( composite, Messages
             .getString( "NetworkParameterPage.NetworkParameter" ), 1 ); //$NON-NLS-1$
 
+        IDialogSettings dialogSettings = ConnectionUIPlugin.getDefault().getDialogSettings();
+
         Composite groupComposite = BaseWidgetUtils.createColumnContainer( group, 3, 1 );
         BaseWidgetUtils.createLabel( groupComposite, Messages.getString( "NetworkParameterPage.HostName" ), 1 ); //$NON-NLS-1$
-        String[] hostHistory = HistoryUtils.load( ConnectionUIConstants.DIALOGSETTING_KEY_HOST_HISTORY );
+        String[] hostHistory = HistoryUtils.load( dialogSettings, ConnectionUIConstants.DIALOGSETTING_KEY_HOST_HISTORY );
         hostCombo = BaseWidgetUtils.createCombo( groupComposite, hostHistory, -1, 2 );
 
         BaseWidgetUtils.createLabel( groupComposite, Messages.getString( "NetworkParameterPage.Port" ), 1 ); //$NON-NLS-1$
-        String[] portHistory = HistoryUtils.load( ConnectionUIConstants.DIALOGSETTING_KEY_PORT_HISTORY );
+        String[] portHistory = HistoryUtils.load( dialogSettings, ConnectionUIConstants.DIALOGSETTING_KEY_PORT_HISTORY );
         portCombo = BaseWidgetUtils.createCombo( groupComposite, portHistory, -1, 2 );
         portCombo.setTextLimit( 5 );
         portCombo.setText( "389" ); //$NON-NLS-1$
@@ -221,9 +240,8 @@ public class NetworkParameterPage extends AbstractConnectionParameterPage
             { Messages.getString( "NetworkParameterPage.NoEncryption" ), //$NON-NLS-1$
                 Messages.getString( "NetworkParameterPage.UseSSLEncryption" ), //$NON-NLS-1$
                 Messages.getString( "NetworkParameterPage.UseStartTLS" ) }; //$NON-NLS-1$
-        int index = 0;
         BaseWidgetUtils.createLabel( groupComposite, Messages.getString( "NetworkParameterPage.EncryptionMethod" ), 1 ); //$NON-NLS-1$
-        encryptionMethodCombo = BaseWidgetUtils.createReadonlyCombo( groupComposite, encMethods, index, 2 );
+        encryptionMethodCombo = BaseWidgetUtils.createReadonlyCombo( groupComposite, encMethods, 0, 2 );
 
         boolean validateCertificates = ConnectionCorePlugin.getDefault().getPluginPreferences().getBoolean(
             ConnectionCoreConstants.PREFERENCE_VALIDATE_CERTIFICATES );
@@ -235,9 +253,12 @@ public class NetworkParameterPage extends AbstractConnectionParameterPage
         }
 
         String[] networkProviders = new String[]
-            { "JNDI (Java Naming and Directory Interface)", "Apache Directory LDAP Client API" }; //$NON-NLS-1$
-        BaseWidgetUtils.createLabel( groupComposite, "Provider:", 1 ); //$NON-NLS-1$
-        networkProviderCombo = BaseWidgetUtils.createReadonlyCombo( groupComposite, networkProviders, index, 2 );
+            { "Apache Directory LDAP Client API", "JNDI (Java Naming and Directory Interface)" };
+        BaseWidgetUtils.createLabel( groupComposite, "Provider:", 1 );
+        networkProviderCombo = BaseWidgetUtils.createReadonlyCombo( groupComposite, networkProviders, 0, 2 );
+        networkProviderCombo
+            .select( ConnectionCorePlugin.getDefault().getDefaultNetworkProvider() == NetworkProvider.APACHE_DIRECTORY_LDAP_API ? 0
+                : 1 );
 
         BaseWidgetUtils.createSpacer( groupComposite, 2 );
         checkConnectionButton = new Button( groupComposite, SWT.PUSH );
@@ -246,6 +267,9 @@ public class NetworkParameterPage extends AbstractConnectionParameterPage
         gd.verticalAlignment = SWT.BOTTOM;
         checkConnectionButton.setLayoutData( gd );
         checkConnectionButton.setText( Messages.getString( "NetworkParameterPage.CheckNetworkParameter" ) ); //$NON-NLS-1$
+
+        readOnlyConnectionCheckbox = BaseWidgetUtils.createCheckbox( composite,
+            Messages.getString( "NetworkParameterPage.ReadOnly" ), 1 ); //$NON-NLS-1$
 
         nameText.setFocus();
     }
@@ -297,8 +321,9 @@ public class NetworkParameterPage extends AbstractConnectionParameterPage
         int encryptionMethodIndex = parameter.getEncryptionMethod() == EncryptionMethod.LDAPS ? 1
             : parameter.getEncryptionMethod() == EncryptionMethod.START_TLS ? 2 : 0;
         encryptionMethodCombo.select( encryptionMethodIndex );
-        int networkProviderIndex = parameter.getNetworkProvider() == NetworkProvider.JNDI ? 0 : 1;
-        networkProviderCombo.select( networkProviderIndex );
+        networkProviderCombo.select( parameter.getNetworkProvider() == NetworkProvider.APACHE_DIRECTORY_LDAP_API ? 0
+            : 1 );
+        readOnlyConnectionCheckbox.setSelection( parameter.isReadOnly() );
     }
 
 
@@ -372,6 +397,14 @@ public class NetworkParameterPage extends AbstractConnectionParameterPage
                 }
             }
         } );
+
+        readOnlyConnectionCheckbox.addSelectionListener( new SelectionAdapter()
+        {
+            public void widgetSelected( SelectionEvent event )
+            {
+                connectionPageModified();
+            }
+        } );
     }
 
 
@@ -385,6 +418,7 @@ public class NetworkParameterPage extends AbstractConnectionParameterPage
         parameter.setPort( getPort() );
         parameter.setEncryptionMethod( getEncyrptionMethod() );
         parameter.setNetworkProvider( getNetworkProvider() );
+        parameter.setReadOnly( isReadOnly() );
     }
 
 
@@ -393,8 +427,9 @@ public class NetworkParameterPage extends AbstractConnectionParameterPage
      */
     public void saveDialogSettings()
     {
-        HistoryUtils.save( ConnectionUIConstants.DIALOGSETTING_KEY_HOST_HISTORY, hostCombo.getText() );
-        HistoryUtils.save( ConnectionUIConstants.DIALOGSETTING_KEY_PORT_HISTORY, portCombo.getText() );
+        IDialogSettings dialogSettings = ConnectionUIPlugin.getDefault().getDialogSettings();
+        HistoryUtils.save( dialogSettings, ConnectionUIConstants.DIALOGSETTING_KEY_HOST_HISTORY, hostCombo.getText() );
+        HistoryUtils.save( dialogSettings, ConnectionUIConstants.DIALOGSETTING_KEY_PORT_HISTORY, portCombo.getText() );
     }
 
 
@@ -421,10 +456,12 @@ public class NetworkParameterPage extends AbstractConnectionParameterPage
      */
     public boolean isReconnectionRequired()
     {
-        return connectionParameter == null || !StringUtils.equals( connectionParameter.getHost(), getHostName() )
-            || connectionParameter.getPort() != getPort()
-            || connectionParameter.getEncryptionMethod() != getEncyrptionMethod()
-            || connectionParameter.getNetworkProvider() != getNetworkProvider();
+        return ( connectionParameter == null )
+            || ( !StringUtils.equals( connectionParameter.getHost(), getHostName() ) )
+            || ( connectionParameter.getPort() != getPort() )
+            || ( connectionParameter.getEncryptionMethod() != getEncyrptionMethod() )
+            || ( connectionParameter.getNetworkProvider() != getNetworkProvider() )
+            || ( connectionParameter.isReadOnly() != isReadOnly() );
     }
 
 
@@ -501,14 +538,19 @@ public class NetworkParameterPage extends AbstractConnectionParameterPage
 
         // encryption method, none if unknown or absent 
         String networkProvider = ldapUrl.getExtensionValue( X_NETWORK_PROVIDER );
-        if ( StringUtils.isNotEmpty( encryption ) && X_NETWORK_PROVIDER_JNDI.equalsIgnoreCase( networkProvider ) )
-        {
-            parameter.setNetworkProvider( ConnectionParameter.NetworkProvider.JNDI );
-        }
-        else if ( StringUtils.isNotEmpty( encryption )
+        if ( StringUtils.isNotEmpty( networkProvider )
             && X_NETWORK_PROVIDER_APACHE_DIRECTORY_LDAP_API.equalsIgnoreCase( networkProvider ) )
         {
             parameter.setNetworkProvider( ConnectionParameter.NetworkProvider.APACHE_DIRECTORY_LDAP_API );
+        }
+        else if ( StringUtils.isNotEmpty( networkProvider )
+            && X_NETWORK_PROVIDER_JNDI.equalsIgnoreCase( networkProvider ) )
+        {
+            parameter.setNetworkProvider( ConnectionParameter.NetworkProvider.JNDI );
+        }
+        else
+        {
+            parameter.setNetworkProvider( ConnectionCorePlugin.getDefault().getDefaultNetworkProvider() );
         }
     }
 }

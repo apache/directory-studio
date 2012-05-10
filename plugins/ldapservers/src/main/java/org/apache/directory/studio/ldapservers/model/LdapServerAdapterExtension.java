@@ -64,6 +64,9 @@ public class LdapServerAdapterExtension
 
     /** The configuration page class name */
     private String configurationPageClassName;
+    
+    /** The flag to enable the open configuration action */
+    private boolean openConfigurationActionEnabled;
 
 
     /**
@@ -87,26 +90,6 @@ public class LdapServerAdapterExtension
     public String getConfigurationPageClassName()
     {
         return configurationPageClassName;
-    }
-
-
-    /**
-     * Gets a new configuration page instance.
-     *
-     * @return
-     *      a new configuration page instance
-     */
-    public LdapServerAdapterConfigurationPage getNewConfigurationPageInstance()
-    {
-        try
-        {
-            return ( LdapServerAdapterConfigurationPage ) extensionPointConfiguration
-                .createExecutableExtension( LdapServerAdapterExtensionsManager.CONFIGURATION_PAGE_ATTR );
-        }
-        catch ( CoreException e )
-        {
-            return null;
-        }
     }
 
 
@@ -183,6 +166,26 @@ public class LdapServerAdapterExtension
 
 
     /**
+     * Gets a new configuration page instance.
+     *
+     * @return
+     *      a new configuration page instance
+     */
+    public LdapServerAdapterConfigurationPage getNewConfigurationPageInstance()
+    {
+        try
+        {
+            return ( LdapServerAdapterConfigurationPage ) extensionPointConfiguration
+                .createExecutableExtension( LdapServerAdapterExtensionsManager.CONFIGURATION_PAGE_ATTR );
+        }
+        catch ( CoreException e )
+        {
+            return null;
+        }
+    }
+
+
+    /**
      * Gets the vendor.
      *
      * @return
@@ -203,6 +206,17 @@ public class LdapServerAdapterExtension
     public String getVersion()
     {
         return version;
+    }
+
+
+    /**
+     * Returns the flag to enable the open configuration action.
+     * 
+     * @return the flag to enable the open configuration action
+     */
+    public boolean isOpenConfigurationActionEnabled()
+    {
+        return openConfigurationActionEnabled;
     }
 
 
@@ -299,6 +313,17 @@ public class LdapServerAdapterExtension
     public void setName( String name )
     {
         this.name = name;
+    }
+
+
+    /**
+     * Sets the flag to enable the open configuration action.
+     * 
+     * @param openConfigurationActionEnabled the flag to enable the open configuration action
+     */
+    public void setOpenConfigurationActionEnabled( boolean openConfigurationActionEnabled )
+    {
+        this.openConfigurationActionEnabled = openConfigurationActionEnabled;
     }
 
 

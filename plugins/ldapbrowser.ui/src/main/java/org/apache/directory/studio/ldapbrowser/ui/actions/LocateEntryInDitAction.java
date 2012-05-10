@@ -51,17 +51,17 @@ public class LocateEntryInDitAction extends LocateInDitAction
         if ( getSelectedSearchResults().length == 1
             && getSelectedBookmarks().length + getSelectedEntries().length + getSelectedBrowserViewCategories().length == 0 )
         {
-            return Messages.getString( "LocateEntryInDitAction.OpenSearchResult" ); //$NON-NLS-1$
+            return Messages.getString( "LocateEntryInDitAction.ShowSearchResult" ); //$NON-NLS-1$
         }
         else if ( getSelectedBookmarks().length == 1
             && getSelectedSearchResults().length + getSelectedEntries().length
                 + getSelectedBrowserViewCategories().length == 0 )
         {
-            return Messages.getString( "LocateEntryInDitAction.OpenBookmark" ); //$NON-NLS-1$
+            return Messages.getString( "LocateEntryInDitAction.ShowBookmark" ); //$NON-NLS-1$
         }
         else
         {
-            return Messages.getString( "LocateEntryInDitAction.OpenEntry" ); //$NON-NLS-1$
+            return Messages.getString( "LocateEntryInDitAction.ShowInDit" ); //$NON-NLS-1$
         }
     }
 

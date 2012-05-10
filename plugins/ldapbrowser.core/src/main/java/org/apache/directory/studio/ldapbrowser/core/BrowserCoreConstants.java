@@ -43,7 +43,7 @@ public final class BrowserCoreConstants
     }
 
     /** The plug-in ID */
-    public static final String PLUGIN_ID = BrowserCorePlugin.getDefault().getPluginProperties().getString( "Plugin_id" );
+    public static final String PLUGIN_ID = BrowserCorePlugin.getDefault().getPluginProperties().getString( "Plugin_id" ); //$NON-NLS-1$
 
     public static final String PREFERENCE_BINARY_SYNTAXES = "binarySyntaxes"; //$NON-NLS-1$
 
@@ -84,6 +84,8 @@ public final class BrowserCoreConstants
     public static final String PREFERENCE_LDIF_LINE_SEPARATOR = "ldifLineSeparator"; //$NON-NLS-1$
 
     public static final String PREFERENCE_LDIF_SPACE_AFTER_COLON = "ldifSpaceAfterColon"; //$NON-NLS-1$
+    
+    public static final String PREFERENCE_LDIF_INCLUDE_VERSION_LINE = "ldifIncludeVersionLine"; //$NON-NLS-1$
 
     public static final int BINARYENCODING_IGNORE = 0;
 
@@ -108,5 +110,5 @@ public final class BrowserCoreConstants
     public static final int SORT_ORDER_DESCENDING = 2;
 
     public static final String LDAP_SEARCH_PAGE_ID = BrowserCorePlugin.getDefault().getPluginProperties().getString(
-        "SearchPage_LdapSearch_id" );
+        "SearchPage_LdapSearch_id" ); //$NON-NLS-1$
 }

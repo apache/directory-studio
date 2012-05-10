@@ -61,13 +61,13 @@ public class LdifModSpecSepLine extends LdifNonEmptyLineBase
 
     public boolean isValid()
     {
-        return super.isValid() && this.getUnfoldedMinus().equals( "-" );
+        return super.isValid() && this.getUnfoldedMinus().equals( "-" ); //$NON-NLS-1$
     }
 
 
     public String getInvalidString()
     {
-        if ( !this.getUnfoldedMinus().equals( "-" ) )
+        if ( !this.getUnfoldedMinus().equals( "-" ) ) //$NON-NLS-1$
         {
             return "Missing '-'";
         }
@@ -80,7 +80,7 @@ public class LdifModSpecSepLine extends LdifNonEmptyLineBase
 
     public static LdifModSpecSepLine create()
     {
-        return new LdifModSpecSepLine( 0, "-", LdifParserConstants.LINE_SEPARATOR );
+        return new LdifModSpecSepLine( 0, "-", LdifParserConstants.LINE_SEPARATOR ); //$NON-NLS-1$
     }
 
 }

@@ -74,25 +74,25 @@ public class LdifChangeTypeLine extends LdifValueLineBase
 
     public boolean isAdd()
     {
-        return this.getUnfoldedChangeType().equals( "add" );
+        return this.getUnfoldedChangeType().equals( "add" ); //$NON-NLS-1$
     }
 
 
     public boolean isDelete()
     {
-        return this.getUnfoldedChangeType().equals( "delete" );
+        return this.getUnfoldedChangeType().equals( "delete" ); //$NON-NLS-1$
     }
 
 
     public boolean isModify()
     {
-        return this.getUnfoldedChangeType().equals( "modify" );
+        return this.getUnfoldedChangeType().equals( "modify" ); //$NON-NLS-1$
     }
 
 
     public boolean isModDn()
     {
-        return this.getUnfoldedChangeType().equals( "moddn" ) || this.getUnfoldedChangeType().equals( "modrdn" );
+        return this.getUnfoldedChangeType().equals( "moddn" ) || this.getUnfoldedChangeType().equals( "modrdn" ); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
 
@@ -121,31 +121,31 @@ public class LdifChangeTypeLine extends LdifValueLineBase
 
     public static LdifChangeTypeLine createDelete()
     {
-        return new LdifChangeTypeLine( 0, "changetype", ":", "delete", LdifParserConstants.LINE_SEPARATOR );
+        return new LdifChangeTypeLine( 0, "changetype", ":", "delete", LdifParserConstants.LINE_SEPARATOR ); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
     }
 
 
     public static LdifChangeTypeLine createAdd()
     {
-        return new LdifChangeTypeLine( 0, "changetype", ":", "add", LdifParserConstants.LINE_SEPARATOR );
+        return new LdifChangeTypeLine( 0, "changetype", ":", "add", LdifParserConstants.LINE_SEPARATOR ); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
     }
 
 
     public static LdifChangeTypeLine createModify()
     {
-        return new LdifChangeTypeLine( 0, "changetype", ":", "modify", LdifParserConstants.LINE_SEPARATOR );
+        return new LdifChangeTypeLine( 0, "changetype", ":", "modify", LdifParserConstants.LINE_SEPARATOR ); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
     }
 
 
     public static LdifChangeTypeLine createModDn()
     {
-        return new LdifChangeTypeLine( 0, "changetype", ":", "moddn", LdifParserConstants.LINE_SEPARATOR );
+        return new LdifChangeTypeLine( 0, "changetype", ":", "moddn", LdifParserConstants.LINE_SEPARATOR ); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
     }
 
 
     public static LdifChangeTypeLine createModRdn()
     {
-        return new LdifChangeTypeLine( 0, "changetype", ":", "modrdn", LdifParserConstants.LINE_SEPARATOR );
+        return new LdifChangeTypeLine( 0, "changetype", ":", "modrdn", LdifParserConstants.LINE_SEPARATOR ); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
     }
 
 }

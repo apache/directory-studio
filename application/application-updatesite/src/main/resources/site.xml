@@ -18,13 +18,13 @@
   under the License.
 -->
 <site>
-   <description url="http://directory.apache.org/studio/update/1.x">
+   <description url="http://directory.apache.org/studio/update/2.x">
       The Apache Directory Studio update site.
    </description>
    <feature
        url="features/org.apache.directory.studio.rcp.feature_${pom.version}.jar"
        id="org.apache.directory.studio.rcp.feature" version="${pom.version}"
-       os="linux,macosx,win32" ws="carbon,gtk,win32" arch="ppc,x86,x86_64">
+       os="linux,macosx,win32" ws="carbon,gtk,win32" arch="x86,x86_64">
       <category name="Apache Directory Studio RCP"/>
    </feature>
    <feature
@@ -38,15 +38,19 @@
    </feature>
    <feature url="features/org.apache.directory.studio.apacheds.configuration.feature_${pom.version}.jar"
        id="org.apache.directory.studio.apacheds.configuration.feature" version="${pom.version}">
-      <category name="Apache Directory Studio Apache DS"/>
+      <category name="Apache Directory Studio ApacheDS Configuration"/>
    </feature>
-   <feature url="features/org.apache.directory.studio.apacheds.feature_${pom.version}.jar"
-       id="org.apache.directory.studio.apacheds.feature" version="${pom.version}">
-      <category name="Apache Directory Studio Apache DS"/>
+   <feature url="features/org.apache.directory.studio.apacheds.configuration.v2.feature_${pom.version}.jar"
+       id="org.apache.directory.studio.apacheds.configuration.v2.feature" version="${pom.version}">
+      <category name="Apache Directory Studio ApacheDS 2.0 Configuration"/>
    </feature>
    <feature url="features/org.apache.directory.studio.ldifeditor.feature_${pom.version}.jar"
        id="org.apache.directory.studio.ldifeditor.feature" version="${pom.version}">
       <category name="Apache Directory Studio LDIF Editor"/>
+   </feature>
+   <feature url="features/org.apache.directory.studio.ldapservers.feature_${pom.version}.jar"
+       id="org.apache.directory.studio.ldapservers.feature" version="${pom.version}">
+      <category name="Apache Directory Studio LDAP Servers"/>
    </feature>
    <category-def name="Apache Directory Studio RCP" label="Apache Directory Studio RCP">
       <description>
@@ -63,14 +67,24 @@
          The Apache Directory Studio Schema category contains all features related to the Schema Editor.
       </description>
    </category-def>
-   <category-def name="Apache Directory Studio Apache DS" label="Apache Directory Studio Apache DS">
+   <category-def name="Apache Directory Studio ApacheDS Configuration" label="Apache Directory Studio ApacheDS Configuration">
       <description>
-         The Apache Directory Studio Apache DS category contains all features related to Apache DS.
+         The Apache Directory Studio ApacheDS configuration category contains all features related to ApacheDS Configuration.
+      </description>
+   </category-def>
+   <category-def name="Apache Directory Studio ApacheDS 2.0 Configuration" label="Apache Directory Studio ApacheDS 2.0 Configuration">
+      <description>
+         The Apache Directory Studio ApacheDS 2.0 configuration category contains all features related to ApacheDS 2.0 Configuration.
       </description>
    </category-def>
    <category-def name="Apache Directory Studio LDIF Editor" label="Apache Directory Studio LDIF Editor">
       <description>
          The Apache Directory Studio LDIF Editor category contains all features related to the LDIF Editor.
+      </description>
+   </category-def>
+   <category-def name="Apache Directory Studio LDAP Servers" label="Apache Directory Studio LDAP Servers">
+      <description>
+         The Apache Directory Studio LDAP Servers category contains all features related to the LDAP Servers.
       </description>
    </category-def>
 </site>

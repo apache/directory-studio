@@ -19,6 +19,7 @@
  */
 package org.apache.directory.studio.ldapbrowser.common;
 
+
 /**
  * 
  * Final reference -> class shouldn't be extended
@@ -37,15 +38,13 @@ public final class BrowserCommonConstants
     }
 
     /** The plug-in ID */
-    public static final String PLUGIN_ID = BrowserCommonActivator.getDefault().getPluginProperties().getString(
-        "Plugin_id" ); //$NON-NLS-1$
+    public static final String PLUGIN_ID = BrowserCommonActivator.getDefault().getPluginProperties()
+        .getString( "Plugin_id" ); //$NON-NLS-1$
 
-    public static final int HISTORYSIZE = 20;
-
-    public static final String CONTEXT_WINDOWS = BrowserCommonActivator.getDefault().getPluginProperties().getString(
-        "Ctx_LdapBrowserWindows_id" ); //$NON-NLS-1$
-    public static final String CONTEXT_DIALOGS = BrowserCommonActivator.getDefault().getPluginProperties().getString(
-        "Ctx_LdapBrowserDialogs_id" ); //$NON-NLS-1$
+    public static final String CONTEXT_WINDOWS = BrowserCommonActivator.getDefault().getPluginProperties()
+        .getString( "Ctx_LdapBrowserWindows_id" ); //$NON-NLS-1$
+    public static final String CONTEXT_DIALOGS = BrowserCommonActivator.getDefault().getPluginProperties()
+        .getString( "Ctx_LdapBrowserDialogs_id" ); //$NON-NLS-1$
 
     public static final String ACTION_ID_EDIT_VALUE = BrowserCommonActivator.getDefault().getPluginProperties()
         .getString( "Cmd_EditValue_id" ); //$NON-NLS-1$
@@ -81,6 +80,8 @@ public final class BrowserCommonConstants
     public static final String PREFERENCE_BROWSER_SORT_BY = "browserSortBy"; //$NON-NLS-1$
     public static final String PREFERENCE_BROWSER_SORT_ORDER = "browserSortOrder"; //$NON-NLS-1$
     public static final String PREFERENCE_BROWSER_SORT_LIMIT = "browserSortLimit"; //$NON-NLS-1$
+    public static final String PREFERENCE_BROWSER_SORT_SEARCHES_ORDER = "browserSortSearchesOrder"; //$NON-NLS-1$
+    public static final String PREFERENCE_BROWSER_SORT_BOOKMARKS_ORDER = "browserSortBookmarksOrder"; //$NON-NLS-1$
     public static final String PREFERENCE_BROWSER_LEAF_ENTRIES_FIRST = "browserLeafEntriesFirst"; //$NON-NLS-1$
     public static final String PREFERENCE_BROWSER_CONTAINER_ENTRIES_FIRST = "browserContainerEntriesFirst"; //$NON-NLS-1$
     public static final String PREFERENCE_BROWSER_META_ENTRIES_LAST = "browserMetaEntriesLast"; //$NON-NLS-1$
@@ -186,33 +187,33 @@ public final class BrowserCommonConstants
     public static final String IMG_DIT_STRUCTURE_RULE = "resources/icons/dit_structure_rule.png"; //$NON-NLS-1$
     public static final String IMG_NAME_FORM = "resources/icons/name_form.png"; //$NON-NLS-1$
 
-    public static final String CMD_ADD_ATTRIBUTE = BrowserCommonActivator.getDefault().getPluginProperties().getString(
-        "Cmd_AddAttribute_id" ); //$NON-NLS-1$
-    public static final String CMD_ADD_VALUE = BrowserCommonActivator.getDefault().getPluginProperties().getString(
-        "Cmd_AddValue_id" ); //$NON-NLS-1$
+    public static final String CMD_ADD_ATTRIBUTE = BrowserCommonActivator.getDefault().getPluginProperties()
+        .getString( "Cmd_AddAttribute_id" ); //$NON-NLS-1$
+    public static final String CMD_ADD_VALUE = BrowserCommonActivator.getDefault().getPluginProperties()
+        .getString( "Cmd_AddValue_id" ); //$NON-NLS-1$
     public static final String CMD_OPEN_SEARCH_RESULT = BrowserCommonActivator.getDefault().getPluginProperties()
         .getString( "Cmd_OpenSearchResult_id" ); //$NON-NLS-1$
-    public static final String CMD_COPY = BrowserCommonActivator.getDefault().getPluginProperties().getString(
-        "Cmd_Copy_id" ); //$NON-NLS-1$
-    public static final String CMD_PASTE = BrowserCommonActivator.getDefault().getPluginProperties().getString(
-        "Cmd_Paste_id" ); //$NON-NLS-1$
-    public static final String CMD_DELETE = BrowserCommonActivator.getDefault().getPluginProperties().getString(
-        "Cmd_Delete_id" ); //$NON-NLS-1$
-    public static final String CMD_PROPERTIES = BrowserCommonActivator.getDefault().getPluginProperties().getString(
-        "Cmd_Properties_id" ); //$NON-NLS-1$
-    public static final String CMD_FIND = BrowserCommonActivator.getDefault().getPluginProperties().getString(
-        "Cmd_Find_id" ); //$NON-NLS-1$
+    public static final String CMD_COPY = BrowserCommonActivator.getDefault().getPluginProperties()
+        .getString( "Cmd_Copy_id" ); //$NON-NLS-1$
+    public static final String CMD_PASTE = BrowserCommonActivator.getDefault().getPluginProperties()
+        .getString( "Cmd_Paste_id" ); //$NON-NLS-1$
+    public static final String CMD_DELETE = BrowserCommonActivator.getDefault().getPluginProperties()
+        .getString( "Cmd_Delete_id" ); //$NON-NLS-1$
+    public static final String CMD_PROPERTIES = BrowserCommonActivator.getDefault().getPluginProperties()
+        .getString( "Cmd_Properties_id" ); //$NON-NLS-1$
+    public static final String CMD_FIND = BrowserCommonActivator.getDefault().getPluginProperties()
+        .getString( "Cmd_Find_id" ); //$NON-NLS-1$
 
-    public static final String PROP_VALUE = BrowserCommonActivator.getDefault().getPluginProperties().getString(
-        "PropPage_Value_id" ); //$NON-NLS-1$
-    public static final String PROP_ATTRIBUTE = BrowserCommonActivator.getDefault().getPluginProperties().getString(
-        "PropPage_Attribute_id" ); //$NON-NLS-1$
-    public static final String PROP_SEARCH = BrowserCommonActivator.getDefault().getPluginProperties().getString(
-        "PropPage_Search_id" ); //$NON-NLS-1$
-    public static final String PROP_BOOKMARK = BrowserCommonActivator.getDefault().getPluginProperties().getString(
-        "PropPage_Bookmark_id" ); //$NON-NLS-1$
-    public static final String PROP_ENTRY = BrowserCommonActivator.getDefault().getPluginProperties().getString(
-        "PropPage_Entry_id" ); //$NON-NLS-1$
+    public static final String PROP_VALUE = BrowserCommonActivator.getDefault().getPluginProperties()
+        .getString( "PropPage_Value_id" ); //$NON-NLS-1$
+    public static final String PROP_ATTRIBUTE = BrowserCommonActivator.getDefault().getPluginProperties()
+        .getString( "PropPage_Attribute_id" ); //$NON-NLS-1$
+    public static final String PROP_SEARCH = BrowserCommonActivator.getDefault().getPluginProperties()
+        .getString( "PropPage_Search_id" ); //$NON-NLS-1$
+    public static final String PROP_BOOKMARK = BrowserCommonActivator.getDefault().getPluginProperties()
+        .getString( "PropPage_Bookmark_id" ); //$NON-NLS-1$
+    public static final String PROP_ENTRY = BrowserCommonActivator.getDefault().getPluginProperties()
+        .getString( "PropPage_Entry_id" ); //$NON-NLS-1$
 
     public static final String DND_ENTRY_TRANSFER = BrowserCommonActivator.getDefault().getPluginProperties()
         .getString( "DnD_EntryTransfer" ); //$NON-NLS-1$

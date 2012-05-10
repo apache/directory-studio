@@ -26,7 +26,7 @@ import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 
 
 /**
- * An BulkModificationEvent indicates that a bulk modification has occured.
+ * A BulkModificationEvent indicates that a bulk modification has occurred.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */

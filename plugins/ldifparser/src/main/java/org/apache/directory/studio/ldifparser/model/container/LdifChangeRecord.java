@@ -50,7 +50,7 @@ public class LdifChangeRecord extends LdifRecord
     public void addControl( LdifControlLine controlLine )
     {
         if ( controlLine == null )
-            throw new IllegalArgumentException( "null argument" );
+            throw new IllegalArgumentException( "null argument" ); //$NON-NLS-1$
         this.parts.add( controlLine );
     }
 
@@ -58,7 +58,7 @@ public class LdifChangeRecord extends LdifRecord
     public void setChangeType( LdifChangeTypeLine changeTypeLine )
     {
         if ( changeTypeLine == null )
-            throw new IllegalArgumentException( "null argument" );
+            throw new IllegalArgumentException( "null argument" ); //$NON-NLS-1$
         if ( getChangeTypeLine() != null )
             throw new IllegalArgumentException( "changetype is already set" );
         this.parts.add( changeTypeLine );

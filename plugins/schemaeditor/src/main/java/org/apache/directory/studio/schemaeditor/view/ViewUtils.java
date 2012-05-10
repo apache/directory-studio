@@ -22,9 +22,9 @@ package org.apache.directory.studio.schemaeditor.view;
 
 import java.util.List;
 
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
-import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.ui.PlatformUI;
 
 
@@ -85,94 +85,73 @@ public class ViewUtils
 
 
     /**
-     * Displays an Error Message Box with the given title and message.
+     * Displays an error message dialog with the given title and message.
      *
-     * @param title
-     *      the title of the window
-     * @param message
-     *      the message to display
-     * @return
-     *      the ID of the button that was selected to dismiss 
-     *      the message box (e.g. SWT.OK, SWT.CANCEL, etc...)
+     * @param title the title of the window
+     * @param message the message to display
+     * @return <code>true</code> if the user presses the OK or Yes button,
+     *         <code>false</code> otherwise
      */
-    public static int displayErrorMessageBox( String title, String message )
+    public static boolean displayErrorMessageDialog( String title, String message )
     {
-        return displayMessageBox( SWT.OK | SWT.ICON_ERROR, title, message );
+        return displayMessageDialog( MessageDialog.ERROR, title, message );
     }
 
 
     /**
-     * Displays a Information Message Box with the given title and message.
+     * Displays a warning message dialog with the given title and message.
      *
-     * @param title
-     *      the title of the window
-     * @param message
-     *      the message to display
-     * @return
-     *      the ID of the button that was selected to dismiss 
-     *      the message box (e.g. SWT.OK, SWT.CANCEL, etc...)
+     * @param title the title of the window
+     * @param message the message to display
+     * @return <code>true</code> if the user presses the OK or Yes button,
+     *         <code>false</code> otherwise
      */
-    public static int displayWarningMessageBox( String title, String message )
+    public static boolean displayWarningMessageDialog( String title, String message )
     {
-        return displayMessageBox( SWT.OK | SWT.ICON_WARNING, title, message );
+        return displayMessageDialog( MessageDialog.WARNING, title, message );
     }
 
 
     /**
-     * Displays a Information Message Box with the given title and message.
+     * Displays a information message dialog with the given title and message.
      *
-     * @param title
-     *      the title of the window
-     * @param message
-     *      the message to display
-     * @return
-     *      the ID of the button that was selected to dismiss 
-     *      the message box (e.g. SWT.OK, SWT.CANCEL, etc...)
+     * @param title the title of the window
+     * @param message the message to display
+     * @return <code>true</code> if the user presses the OK or Yes button,
+     *         <code>false</code> otherwise
      */
-    public static int displayInformationMessageBox( String title, String message )
+    public static boolean displayInformationMessageDialog( String title, String message )
     {
-        return displayMessageBox( SWT.OK | SWT.ICON_INFORMATION, title, message );
+        return displayMessageDialog( MessageDialog.INFORMATION, title, message );
     }
 
 
     /**
-     * Displays a Information Question Box with the given title and message.
-     *
-     * @param buttonStyle
-     *      the style of the buttons of the dialog (e.g. SWT.OK, SWT.CANCEL, etc...)
-     * @param title
-     *      the title of the window
-     * @param message
-     *      the message to display
-     * @return
-     *      the ID of the button that was selected to dismiss 
-     *      the message box (e.g. SWT.OK, SWT.CANCEL, etc...)
+     * Displays a Information Question message dialog with the given title and message.
+     * 
+     * @param title the title of the window
+     * @param message the message to display
+     * @return <code>true</code> if the user presses the OK or Yes button,
+     *         <code>false</code> otherwise
      */
-    public static int displayQuestionMessageBox( int buttonStyle, String title, String message )
+    public static boolean displayQuestionMessageDialog( String title, String message )
     {
-        return displayMessageBox( SWT.ICON_QUESTION | buttonStyle, title, message );
+        return displayMessageDialog( MessageDialog.QUESTION, title, message );
     }
 
 
     /**
-     * Displays a Message Box with the given style, title and message.
+     * Displays a message dialog with the given style, title and message.
      *
-     * @param style
-     *      the style of dialog
-     * @param title
-     *      the title of the window
-     * @param message
-     *      the message to display
-     * @return
-     *      the ID of the button that was selected to dismiss 
-     *      the message box (e.g. SWT.OK, SWT.CANCEL, etc...)
+     * @param kind the kind of dialog
+     * @param title the title of the window
+     * @param message the message to display
+     * @return <code>true</code> if the user presses the OK or Yes button,
+     *         <code>false</code> otherwise
      */
-    private static int displayMessageBox( int style, String title, String message )
+    private static boolean displayMessageDialog( int kind, String title, String message )
     {
-        MessageBox messageBox = new MessageBox( PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), style );
-        messageBox.setText( title );
-        messageBox.setMessage( message );
-        return messageBox.open();
+        return MessageDialog.open( kind, PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), title,
+            message, SWT.NONE );
     }
-
 }

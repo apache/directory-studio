@@ -286,7 +286,7 @@ public class KerberosServerPage extends ServerConfigurationEditorPage
         toolkit.createLabel( composite, TABULATION );
         toolkit.createLabel( composite, "Port:" );
         kerberosPortText = createPortText( toolkit, composite );
-        createDefaultValueLabel( toolkit, composite, "60088" );
+        createDefaultValueLabel( toolkit, composite, "60088" ); //$NON-NLS-1$
 
         // Enable Change Password Server Checkbox
         enableChangePasswordCheckbox = toolkit.createButton( composite, "Enable Kerberos Change Password Server",
@@ -298,7 +298,7 @@ public class KerberosServerPage extends ServerConfigurationEditorPage
         toolkit.createLabel( composite, TABULATION );
         toolkit.createLabel( composite, "Port:" );
         changePasswordPortText = createPortText( toolkit, composite );
-        createDefaultValueLabel( toolkit, composite, "60464" );
+        createDefaultValueLabel( toolkit, composite, "60464" ); //$NON-NLS-1$
     }
 
 
@@ -322,9 +322,9 @@ public class KerberosServerPage extends ServerConfigurationEditorPage
 
         // KDC Principal Text
         toolkit.createLabel( composite, "KDC Principal:" );
-        kdcPrincipalText = toolkit.createText( composite, "" );
+        kdcPrincipalText = toolkit.createText( composite, "" ); //$NON-NLS-1$
         setGridDataWithDefaultWidth( kdcPrincipalText, new GridData( SWT.FILL, SWT.NONE, true, false ) );
-        Label defaultSaslHostLabel = createDefaultValueLabel( toolkit, composite, "krbtgt/EXAMPLE.COM@EXAMPLE.COM" );
+        Label defaultSaslHostLabel = createDefaultValueLabel( toolkit, composite, "krbtgt/EXAMPLE.COM@EXAMPLE.COM" ); //$NON-NLS-1$
         defaultSaslHostLabel.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
 
         // SASL Principal Text
@@ -332,21 +332,21 @@ public class KerberosServerPage extends ServerConfigurationEditorPage
         primaryKdcRealmText = toolkit.createText( composite, "" ); //$NON-NLS-1$
         setGridDataWithDefaultWidth( primaryKdcRealmText, new GridData( SWT.FILL, SWT.NONE, true, false ) );
         Label defaultSaslPrincipalLabel = createDefaultValueLabel( toolkit, composite,
-            "EXAMPLE.COM" );
+            "EXAMPLE.COM" ); //$NON-NLS-1$
         defaultSaslPrincipalLabel.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
 
         // Search Base Dn Text
         toolkit.createLabel( composite, "Search Base Dn:" );
         kdcSearchBaseDnText = toolkit.createText( composite, "" ); //$NON-NLS-1$
         setGridDataWithDefaultWidth( kdcSearchBaseDnText, new GridData( SWT.FILL, SWT.NONE, true, false ) );
-        Label defaultSaslSearchBaseDnLabel = createDefaultValueLabel( toolkit, composite, "ou=users,dc=example,dc=com" );
+        Label defaultSaslSearchBaseDnLabel = createDefaultValueLabel( toolkit, composite, "ou=users,dc=example,dc=com" ); //$NON-NLS-1$
         defaultSaslSearchBaseDnLabel.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
 
         // Encryption Types Text
         toolkit.createLabel( composite, "Encryption Types:" );
         encryptionTypesText = toolkit.createText( composite, "" ); //$NON-NLS-1$
         setGridDataWithDefaultWidth( encryptionTypesText, new GridData( SWT.FILL, SWT.NONE, true, false ) );
-        Label defaultEncryptionTypesLabel = createDefaultValueLabel( toolkit, composite, "[des-cbc-md5]" );
+        Label defaultEncryptionTypesLabel = createDefaultValueLabel( toolkit, composite, "[des-cbc-md5]" ); //$NON-NLS-1$
         defaultEncryptionTypesLabel.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
     }
 
@@ -430,13 +430,13 @@ public class KerberosServerPage extends ServerConfigurationEditorPage
         KdcServerBean kdcServerBean = getKdcServerBean();
         setSelection( enableKerberosCheckbox, kdcServerBean.isEnabled() );
         setEnabled( kerberosPortText, enableKerberosCheckbox.getSelection() );
-        setText( kerberosPortText, "" + getKdcServerTransportBean().getSystemPort() );
+        setText( kerberosPortText, "" + getKdcServerTransportBean().getSystemPort() ); //$NON-NLS-1$
 
         // Change Password Checkbox
         ChangePasswordServerBean changePasswordServerBean = getChangePasswordServerBean();
         setSelection( enableChangePasswordCheckbox, changePasswordServerBean.isEnabled() );
         setEnabled( changePasswordPortText, enableChangePasswordCheckbox.getSelection() );
-        setText( changePasswordPortText, "" + getChangePasswordServerTransportBean().getSystemPort() );
+        setText( changePasswordPortText, "" + getChangePasswordServerTransportBean().getSystemPort() ); //$NON-NLS-1$
 
         // Kerberos Settings
         setText( kdcPrincipalText, kdcServerBean.getKrbKdcPrincipal().toString() );
@@ -451,9 +451,9 @@ public class KerberosServerPage extends ServerConfigurationEditorPage
         setSelection( requirePreAuthByEncryptedTimestampCheckbox, kdcServerBean.isKrbPaEncTimestampRequired() );
         setSelection( allowPostdatedTicketsCheckbox, kdcServerBean.isKrbPostdatedAllowed() );
         setSelection( allowRenewableTicketsCheckbox, kdcServerBean.isKrbRenewableAllowed() );
-        setText( maximumRenewableLifetimeText, kdcServerBean.getKrbMaximumRenewableLifetime() + "" );
-        setText( maximumTicketLifetimeText, kdcServerBean.getKrbMaximumTicketLifetime() + "" );
-        setText( allowableClockSkewText, kdcServerBean.getKrbAllowableClockSkew() + "" );
+        setText( maximumRenewableLifetimeText, kdcServerBean.getKrbMaximumRenewableLifetime() + "" ); //$NON-NLS-1$
+        setText( maximumTicketLifetimeText, kdcServerBean.getKrbMaximumTicketLifetime() + "" ); //$NON-NLS-1$
+        setText( allowableClockSkewText, kdcServerBean.getKrbAllowableClockSkew() + "" ); //$NON-NLS-1$
 
         addListeners();
     }
@@ -697,8 +697,8 @@ public class KerberosServerPage extends ServerConfigurationEditorPage
         {
             for ( TransportBean kdcServerTransportBean : kdcServerTransportBeans )
             {
-                if ( ( "tcp".equals( kdcServerTransportBean.getTransportId() ) )
-                    || ( "udp".equals( kdcServerTransportBean.getTransportId() ) ) )
+                if ( ( "tcp".equals( kdcServerTransportBean.getTransportId() ) ) //$NON-NLS-1$
+                    || ( "udp".equals( kdcServerTransportBean.getTransportId() ) ) ) //$NON-NLS-1$
                 {
                     transportBean = kdcServerTransportBean;
                     break;
@@ -710,7 +710,7 @@ public class KerberosServerPage extends ServerConfigurationEditorPage
         if ( transportBean == null )
         {
             transportBean = new TransportBean();
-            transportBean.setTransportId( "tcp" ); // TODO can either 'tcp' or 'udp'
+            transportBean.setTransportId( "tcp" ); // TODO can either 'tcp' or 'udp' //$NON-NLS-1$
             kdcServerBean.addTransports( transportBean );
         }
 
@@ -736,7 +736,7 @@ public class KerberosServerPage extends ServerConfigurationEditorPage
         {
             for ( TransportBean changePasswordServerTransportBean : changePasswordServerTransportBeans )
             {
-                if ( "tcp".equals( changePasswordServerTransportBean.getTransportId() ) ) // TODO can either 'tcp' or 'udp'
+                if ( "tcp".equals( changePasswordServerTransportBean.getTransportId() ) ) // TODO can either 'tcp' or 'udp' //$NON-NLS-1$
                 {
                     transportBean = changePasswordServerTransportBean;
                     break;
@@ -748,7 +748,7 @@ public class KerberosServerPage extends ServerConfigurationEditorPage
         if ( transportBean == null )
         {
             transportBean = new TransportBean();
-            transportBean.setTransportId( "tcp" ); // TODO can either 'tcp' or 'udp'
+            transportBean.setTransportId( "tcp" ); // TODO can either 'tcp' or 'udp' //$NON-NLS-1$
             changePasswordServerBean.addTransports( transportBean );
         }
 

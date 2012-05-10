@@ -23,6 +23,7 @@ package org.apache.directory.studio.ldapservers.apacheds.v200;
 
 import org.apache.directory.server.config.beans.ConfigBean;
 import org.apache.directory.studio.connection.core.Connection;
+import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
 import org.apache.directory.studio.connection.core.ConnectionParameter;
 import org.apache.directory.studio.connection.core.ConnectionParameter.AuthenticationMethod;
 import org.apache.directory.studio.connection.core.ConnectionParameter.EncryptionMethod;
@@ -46,7 +47,7 @@ import org.eclipse.ui.IWorkbenchPart;
  */
 public class CreateConnectionAction implements IObjectActionDelegate
 {
-    private static final String EXTENSION_ID = "org.apache.directory.server.2.0.0";
+    private static final String EXTENSION_ID = "org.apache.directory.server.2.0.0"; //$NON-NLS-1$
 
     /** The {@link ServersView} */
     private ServersView view;
@@ -67,11 +68,10 @@ public class CreateConnectionAction implements IObjectActionDelegate
                 LdapServer server = ( LdapServer ) selection.getFirstElement();
 
                 // Checking that the server is really an ApacheDS 2.0.0 server
-                // TODO
                 if ( !EXTENSION_ID.equalsIgnoreCase( server.getLdapServerAdapterExtension().getId() ) )
                 {
                     String message = Messages.getString( "CreateConnectionAction.UnableReadServerConfiguration" ) //$NON-NLS-1$
-                        + "\n\n" // TODO
+                        + "\n\n" //$NON-NLS-1$
                         + Messages.getString( "CreateConnectionAction.NotA200Server" ); //$NON-NLS-1$
 
                     reportErrorReadingServerConfiguration( view, message );
@@ -87,7 +87,7 @@ public class CreateConnectionAction implements IObjectActionDelegate
                 catch ( Exception e )
                 {
                     String message = Messages.getString( "CreateConnectionAction.UnableReadServerConfiguration" ) //$NON-NLS-1$
-                        + "\n\n" // TODO
+                        + "\n\n" //$NON-NLS-1$
                         + Messages.getString( "CreateConnectionAction.FollowingErrorOccurred" ) + e.getMessage(); //$NON-NLS-1$
 
                     reportErrorReadingServerConfiguration( view, message );
@@ -103,7 +103,8 @@ public class CreateConnectionAction implements IObjectActionDelegate
                 }
 
                 // Checking is LDAP and/or LDAPS is/are enabled
-                if ( ( ApacheDS200LdapServerAdapter.isEnableLdap( configuration ) ) || ( ApacheDS200LdapServerAdapter.isEnableLdaps( configuration ) ) )
+                if ( ( ApacheDS200LdapServerAdapter.isEnableLdap( configuration ) )
+                    || ( ApacheDS200LdapServerAdapter.isEnableLdaps( configuration ) ) )
                 {
                     // Creating the connection using the helper class
                     createConnection( server, configuration );
@@ -117,7 +118,6 @@ public class CreateConnectionAction implements IObjectActionDelegate
                         new String[]
                             { IDialogConstants.OK_LABEL }, MessageDialog.OK );
                     dialog.open();
-                    // TODO use common methods in Common UI plugin
                 }
             }
         }
@@ -138,7 +138,6 @@ public class CreateConnectionAction implements IObjectActionDelegate
             null, message, MessageDialog.ERROR, new String[]
                 { IDialogConstants.OK_LABEL }, MessageDialog.OK );
         dialog.open();
-        // TODO use common methods in Common UI plugin
     }
 
 
@@ -178,12 +177,11 @@ public class CreateConnectionAction implements IObjectActionDelegate
         connectionParameter.setName( server.getName() );
 
         // Network Provider
-        connectionParameter.setNetworkProvider( NetworkProvider.JNDI );
+        connectionParameter.setNetworkProvider( ConnectionCorePlugin.getDefault().getDefaultNetworkProvider() );
 
         // Creating the connection
         CreateConnectionActionHelper.createLdapBrowserConnection( server, new Connection( connectionParameter ) );
     }
-
 
 
     /**

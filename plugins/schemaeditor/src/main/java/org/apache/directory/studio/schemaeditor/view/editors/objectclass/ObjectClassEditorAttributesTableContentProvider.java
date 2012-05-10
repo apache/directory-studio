@@ -56,6 +56,7 @@ public class ObjectClassEditorAttributesTableContentProvider implements IStructu
     /**
      * {@inheritDoc}
      */
+    @SuppressWarnings("unchecked")
     public Object[] getElements( Object inputElement )
     {
         if ( inputElement instanceof List<?> )

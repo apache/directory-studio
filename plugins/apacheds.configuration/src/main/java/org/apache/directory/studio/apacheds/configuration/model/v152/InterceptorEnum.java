@@ -20,9 +20,6 @@
 package org.apache.directory.studio.apacheds.configuration.model.v152;
 
 
-import org.apache.directory.studio.apacheds.configuration.model.v153.Messages;
-
-
 /**
  * This enum contains all the interceptors.
  *
@@ -59,8 +56,8 @@ public enum InterceptorEnum
         Messages.getString( "InterceptorEnum.OperationalAttribute" ), Messages.getString( "InterceptorEnum.OperationalAttributeDescription" )), //$NON-NLS-1$ //$NON-NLS-2$
 
     /** The KeyDerivation Interceptor */
-    KEY_DERIVATION(Messages.getString( "InterceptorEnum.KeyDerivation" ), Messages
-            .getString( "InterceptorEnum.KeyDerivationDescription" )),
+    KEY_DERIVATION(Messages.getString( "InterceptorEnum.KeyDerivation" ), Messages //$NON-NLS-1$
+        .getString( "InterceptorEnum.KeyDerivationDescription" )), //$NON-NLS-1$
 
     /** The Schema Interceptor */
     SCHEMA(Messages.getString( "InterceptorEnum.Schema" ), Messages.getString( "InterceptorEnum.SchemaDescription" )), //$NON-NLS-1$ //$NON-NLS-2$

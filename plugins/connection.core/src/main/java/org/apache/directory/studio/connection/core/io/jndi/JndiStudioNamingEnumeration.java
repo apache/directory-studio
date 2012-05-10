@@ -180,7 +180,7 @@ public class JndiStudioNamingEnumeration extends AbstractStudioNamingEnumeration
      */
     public boolean hasMoreElements()
     {
-        throw new UnsupportedOperationException( "Call hasMore() instead of hasMoreElements() !" );
+        throw new UnsupportedOperationException( "Call hasMore() instead of hasMoreElements() !" ); //$NON-NLS-1$
     }
 
 
@@ -228,7 +228,7 @@ public class JndiStudioNamingEnumeration extends AbstractStudioNamingEnumeration
      */
     public StudioSearchResult nextElement()
     {
-        throw new UnsupportedOperationException( "Call next() instead of nextElement() !" );
+        throw new UnsupportedOperationException( "Call next() instead of nextElement() !" ); //$NON-NLS-1$
     }
 
 
@@ -298,13 +298,13 @@ public class JndiStudioNamingEnumeration extends AbstractStudioNamingEnumeration
 
                     public SearchResult nextElement()
                 {
-                    throw new UnsupportedOperationException( "Call next() instead of nextElement() !" );
+                    throw new UnsupportedOperationException( "Call next() instead of nextElement() !" ); //$NON-NLS-1$
                 }
 
 
                     public boolean hasMoreElements()
                 {
-                    throw new UnsupportedOperationException( "Call hasMore() instead of hasMoreElements() !" );
+                    throw new UnsupportedOperationException( "Call hasMore() instead of hasMoreElements() !" ); //$NON-NLS-1$
                 }
 
 

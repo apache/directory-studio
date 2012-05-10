@@ -50,7 +50,7 @@ public class LdifChangeModDnRecord extends LdifChangeRecord
     public void setNewrdn( LdifNewrdnLine newrdn )
     {
         if ( newrdn == null )
-            throw new IllegalArgumentException( "null argument" );
+            throw new IllegalArgumentException( "null argument" ); //$NON-NLS-1$
         this.parts.add( newrdn );
     }
 
@@ -58,7 +58,7 @@ public class LdifChangeModDnRecord extends LdifChangeRecord
     public void setDeloldrdn( LdifDeloldrdnLine deloldrdn )
     {
         if ( deloldrdn == null )
-            throw new IllegalArgumentException( "null argument" );
+            throw new IllegalArgumentException( "null argument" ); //$NON-NLS-1$
         this.parts.add( deloldrdn );
     }
 
@@ -66,7 +66,7 @@ public class LdifChangeModDnRecord extends LdifChangeRecord
     public void setNewsuperior( LdifNewsuperiorLine newsuperior )
     {
         if ( newsuperior == null )
-            throw new IllegalArgumentException( "null argument" );
+            throw new IllegalArgumentException( "null argument" ); //$NON-NLS-1$
         this.parts.add( newsuperior );
     }
 

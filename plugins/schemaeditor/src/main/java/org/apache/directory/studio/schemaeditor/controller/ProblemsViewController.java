@@ -6,21 +6,22 @@
  *  to you under the Apache License, Version 2.0 (the
  *  "License"); you may not use this file except in compliance
  *  with the License.  You may obtain a copy of the License at
- *  
+ * 
  *    http://www.apache.org/licenses/LICENSE-2.0
- *  
+ * 
  *  Unless required by applicable law or agreed to in writing,
  *  software distributed under the License is distributed on an
  *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  *  KIND, either express or implied.  See the License for the
  *  specific language governing permissions and limitations
- *  under the License. 
- *  
+ *  under the License.
+ * 
  */
 package org.apache.directory.studio.schemaeditor.controller;
 
 
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.MutableObjectClass;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.shared.ldap.model.schema.SchemaObject;
 import org.apache.directory.studio.schemaeditor.Activator;
@@ -131,19 +132,18 @@ public class ProblemsViewController
                 }
                 else if ( objectSelection instanceof SchemaWarningWrapper )
                 {
-                    // TODO
-                    //                    SchemaObject object = ( ( SchemaWarningWrapper ) objectSelection ).getSchemaWarning().getSource();
-                    //
-                    //                    if ( object instanceof AttributeType )
-                    //                    {
-                    //                        input = new AttributeTypeEditorInput( ( AttributeType ) object );
-                    //                        editorId = AttributeTypeEditor.ID;
-                    //                    }
-                    //                    else if ( object instanceof ObjectClass )
-                    //                    {
-                    //                        input = new ObjectClassEditorInput( ( ObjectClass ) object );
-                    //                        editorId = ObjectClassEditor.ID;
-                    //                    }
+                    SchemaObject object = ( ( SchemaWarningWrapper ) objectSelection ).getSchemaWarning().getSource();
+
+                    if ( object instanceof AttributeType )
+                    {
+                        input = new AttributeTypeEditorInput( ( AttributeType ) object );
+                        editorId = AttributeTypeEditor.ID;
+                    }
+                    else if ( object instanceof ObjectClass )
+                    {
+                        input = new ObjectClassEditorInput( ( MutableObjectClass ) object );
+                        editorId = ObjectClassEditor.ID;
+                    }
                 }
                 else if ( ( objectSelection instanceof Folder ) )
                 {
@@ -161,7 +161,7 @@ public class ProblemsViewController
                     catch ( PartInitException e )
                     {
                         PluginUtils.logError( Messages.getString( "ProblemsViewController.ErrorOpeningEditor" ), e ); //$NON-NLS-1$
-                        ViewUtils.displayErrorMessageBox( Messages.getString( "ProblemsViewController.Error" ), //$NON-NLS-1$
+                        ViewUtils.displayErrorMessageDialog( Messages.getString( "ProblemsViewController.Error" ), //$NON-NLS-1$
                             Messages.getString( "ProblemsViewController.ErrorOpeningEditor" ) ); //$NON-NLS-1$
                     }
                 }

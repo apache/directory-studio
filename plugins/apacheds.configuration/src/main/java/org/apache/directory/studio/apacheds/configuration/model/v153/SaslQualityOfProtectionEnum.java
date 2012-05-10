@@ -31,10 +31,10 @@ public enum SaslQualityOfProtectionEnum
     AUTH(Messages.getString( "SaslQualityOfProtectionEnum.AuthenticationOnly" )), //$NON-NLS-1$
 
     /** The auth-int QoP */
-    AUTH_INT(Messages.getString( "SaslQualityOfProtectionEnum.AuthenticationIntegrityProtection" )), //$NON-NLS-1$
+    AUTH_INT(Messages.getString( "SaslQualityOfProtectionEnum.AuthenticationWithIntegrityProtection" )), //$NON-NLS-1$
 
     /** The auth-conf QoP */
-    AUTH_CONF(Messages.getString( "SaslQualityOfProtectionEnum.AuthenticationIntegrityAndPrivacy" )); //$NON-NLS-1$
+    AUTH_CONF(Messages.getString( "SaslQualityOfProtectionEnum.AuthenticationWithIntegrityAndPrivacyProtection" )); //$NON-NLS-1$
 
     /** The name */
     private String name;

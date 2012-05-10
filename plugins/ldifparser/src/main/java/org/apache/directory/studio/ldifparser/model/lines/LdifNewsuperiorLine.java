@@ -100,12 +100,12 @@ public class LdifNewsuperiorLine extends LdifValueLineBase
     {
         if ( LdifUtils.mustEncode( newsuperior ) )
         {
-            return new LdifNewsuperiorLine( 0, "newsuperior", "::", LdifUtils.base64encode( LdifUtils
+            return new LdifNewsuperiorLine( 0, "newsuperior", "::", LdifUtils.base64encode( LdifUtils //$NON-NLS-1$ //$NON-NLS-2$
                 .utf8encode( newsuperior ) ), LdifParserConstants.LINE_SEPARATOR );
         }
         else
         {
-            return new LdifNewsuperiorLine( 0, "newsuperior", ":", newsuperior, LdifParserConstants.LINE_SEPARATOR );
+            return new LdifNewsuperiorLine( 0, "newsuperior", ":", newsuperior, LdifParserConstants.LINE_SEPARATOR ); //$NON-NLS-1$ //$NON-NLS-2$
         }
 
     }

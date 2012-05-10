@@ -112,7 +112,7 @@ public class EntryPropertyPage extends PropertyPage implements IWorkbenchPropert
 
         Composite mainGroup = BaseWidgetUtils.createColumnContainer( BaseWidgetUtils.createColumnContainer( composite,
             1, 1 ), 2, 1 );
-        BaseWidgetUtils.createLabel( mainGroup, Messages.getString( "EntryPropertyPage.Dn" ), 1 ); //$NON-NLS-1$
+        BaseWidgetUtils.createLabel( mainGroup, Messages.getString( "EntryPropertyPage.DN" ), 1 ); //$NON-NLS-1$
         dnText = BaseWidgetUtils.createWrappedLabeledText( mainGroup, "", 1 ); //$NON-NLS-1$
         GridData dnTextGridData = new GridData( SWT.FILL, SWT.NONE, true, false );
         dnTextGridData.widthHint = 300;

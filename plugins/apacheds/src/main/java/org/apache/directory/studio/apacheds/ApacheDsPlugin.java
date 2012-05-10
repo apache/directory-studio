@@ -160,14 +160,14 @@ public class ApacheDsPlugin extends AbstractUIPlugin
             try
             {
                 properties = new PropertyResourceBundle( FileLocator.openStream( this.getBundle(), new Path(
-                    "plugin.properties" ), false ) );
+                    "plugin.properties" ), false ) ); //$NON-NLS-1$
             }
             catch ( IOException e )
             {
                 // We can't use the PLUGIN_ID constant since loading the plugin.properties file has failed,
                 // So we're using a default plugin id.
                 getLog().log(
-                    new Status( Status.ERROR, "org.apache.directory.studio.apacheds", Status.OK,
+                    new Status( Status.ERROR, "org.apache.directory.studio.apacheds", Status.OK, //$NON-NLS-1$
                         "Unable to get the plugin properties.", e ) );
             }
         }

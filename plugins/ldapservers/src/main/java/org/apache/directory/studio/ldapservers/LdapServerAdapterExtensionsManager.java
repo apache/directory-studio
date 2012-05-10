@@ -52,6 +52,7 @@ public class LdapServerAdapterExtensionsManager
     public static final String DESCRIPTION_ATTR = "description"; //$NON-NLS-1$
     public static final String ICON_ATTR = "icon"; //$NON-NLS-1$
     public static final String CONFIGURATION_PAGE_ATTR = "configurationPage"; //$NON-NLS-1$
+    public static final String OPEN_CONFIGURATION_ACTION_ENABLED_ATTR = "openConfigurationActionEnabled"; //$NON-NLS-1$
 
     /** The default instance */
     private static LdapServerAdapterExtensionsManager instance;
@@ -122,6 +123,16 @@ public class LdapServerAdapterExtensionsManager
                 ldapServerAdapterExtension.setIcon( icon );
             }
             ldapServerAdapterExtension.setConfigurationPageClassName( member.getAttribute( CONFIGURATION_PAGE_ATTR ) );
+            String openConfigurationActionEnabled = member.getAttribute( OPEN_CONFIGURATION_ACTION_ENABLED_ATTR );
+            if ( openConfigurationActionEnabled != null )
+            {
+                ldapServerAdapterExtension.setOpenConfigurationActionEnabled( Boolean.parseBoolean( openConfigurationActionEnabled ) );
+            }
+            else
+            {
+                // Enabled by default
+                ldapServerAdapterExtension.setOpenConfigurationActionEnabled( true );
+            }
 
             ldapServerAdapterExtensionsList.add( ldapServerAdapterExtension );
             ldapServerAdapterExtensionsByIdMap.put( ldapServerAdapterExtension.getId(), ldapServerAdapterExtension );

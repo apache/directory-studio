@@ -35,8 +35,7 @@ import org.apache.directory.studio.schemaeditor.model.alias.Alias;
 import org.apache.directory.studio.schemaeditor.model.alias.AliasWithPartError;
 import org.apache.directory.studio.schemaeditor.model.alias.AliasWithStartError;
 import org.apache.directory.studio.schemaeditor.model.alias.AliasesStringParser;
-import org.apache.directory.studio.schemaeditor.view.dialogs.EditAliasesDialog;
-import org.eclipse.jface.dialogs.Dialog;
+import org.apache.directory.studio.schemaeditor.view.dialogs.EditAttributeTypeAliasesDialog;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
@@ -218,9 +217,9 @@ public class NewAttributeTypeGeneralWizardPage extends AbstractWizardPage
              */
             public void widgetSelected( SelectionEvent arg0 )
             {
-                EditAliasesDialog dialog = new EditAliasesDialog( getAliasesValue() );
+                EditAttributeTypeAliasesDialog dialog = new EditAttributeTypeAliasesDialog( getAliasesValue() );
 
-                if ( ( dialog.open() == Dialog.OK ) && ( dialog.isDirty() ) )
+                if ( dialog.open() == EditAttributeTypeAliasesDialog.OK )
                 {
                     String[] newAliases = dialog.getAliases();
 
@@ -336,7 +335,7 @@ public class NewAttributeTypeGeneralWizardPage extends AbstractWizardPage
             return;
         }
         if ( ( !oidCombo.getText().equals( "" ) ) && ( Oid.isOid( oidCombo.getText() ) ) //$NON-NLS-1$
-            && ( schemaHandler.isAliasOrOidAlreadyTaken( oidCombo.getText() ) ) )
+            && ( schemaHandler.isOidAlreadyTaken( oidCombo.getText() ) ) )
         {
             displayErrorMessage( Messages.getString( "NewAttributeTypeGeneralWizardPage.ErrorObjectOIDExists" ) ); //$NON-NLS-1$
             return;

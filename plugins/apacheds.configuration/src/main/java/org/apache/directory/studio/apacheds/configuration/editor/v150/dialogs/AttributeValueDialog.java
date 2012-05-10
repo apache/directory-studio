@@ -107,10 +107,10 @@ public class AttributeValueDialog extends Dialog
     private void initFromInput()
     {
         String attribute = attributeValueObject.getAttribute();
-        attributeText.setText( ( attribute == null ) ? "" : attribute );
+        attributeText.setText( ( attribute == null ) ? "" : attribute ); //$NON-NLS-1$
 
         Object value = attributeValueObject.getValue();
-        valueText.setText( ( value == null ) ? "" : value.toString() );
+        valueText.setText( ( value == null ) ? "" : value.toString() ); //$NON-NLS-1$
     }
 
 

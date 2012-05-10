@@ -36,8 +36,8 @@ public enum ExtendedOperationEnum
         Messages.getString( "ExtendedOperationEnum.Shutdown" ), Messages.getString( "ExtendedOperationEnum.ShutdownDescription" )), //$NON-NLS-1$ //$NON-NLS-2$
 
     /** The Launch Diagnostic UI Extended Operation */
-    LAUNCH_DIAGNOSTIC_UI(Messages.getString( "ExtendedOperationEnum.DiagnosticUI" ), //$NON-NLS-1$
-        Messages.getString( "ExtendedOperationEnum.DiagnosticUIDescription" )); //$NON-NLS-1$
+    LAUNCH_DIAGNOSTIC_UI(Messages.getString( "ExtendedOperationEnum.LaunchDiagnosticUI" ), //$NON-NLS-1$
+        Messages.getString( "ExtendedOperationEnum.LaunchDiagnosticUIDescription" )); //$NON-NLS-1$
 
     /** The name */
     private String name;

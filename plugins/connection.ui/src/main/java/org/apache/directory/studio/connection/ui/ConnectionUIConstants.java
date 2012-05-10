@@ -93,6 +93,9 @@ public final class ConnectionUIConstants
     /** The collapse all image */
     public static final String IMG_COLLAPSEALL = "resources/icons/collapseall.gif"; //$NON-NLS-1$
 
+    /** The export certificate wizard image */
+    public static final String IMG_CERTIFICATE_EXPORT_WIZARD = "resources/icons/certificate_export_wizard.gif"; //$NON-NLS-1$
+
     public static final String TYPENAME = ConnectionUIPlugin.getDefault().getPluginProperties()
         .getString( "ConnectionTransfert_Typename" ); //$NON-NLS-1$
 

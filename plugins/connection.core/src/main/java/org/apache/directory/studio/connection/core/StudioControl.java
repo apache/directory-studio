@@ -46,20 +46,20 @@ public class StudioControl implements Serializable
     /**
      * The subentries control as defined in RFC 3672.
      */
-    public static final StudioControl SUBENTRIES_CONTROL = new StudioControl( "Subentries", "1.3.6.1.4.1.4203.1.10.1",
+    public static final StudioControl SUBENTRIES_CONTROL = new StudioControl( "Subentries", "1.3.6.1.4.1.4203.1.10.1", //$NON-NLS-1$ //$NON-NLS-2$
         false, new byte[]
             { 0x01, 0x01, ( byte ) 0xFF } );
 
     /**
      * The Manage DSA IT control as defined in RFC 3296.
      */
-    public static final StudioControl MANAGEDSAIT_CONTROL = new StudioControl( "Manage DSA IT",
-        "2.16.840.1.113730.3.4.2", false, null );
+    public static final StudioControl MANAGEDSAIT_CONTROL = new StudioControl( "Manage DSA IT", //$NON-NLS-1$
+        "2.16.840.1.113730.3.4.2", false, null ); //$NON-NLS-1$
 
     /**
      * The Tree Delete control as defined in draft-armijo-ldap-treedelete-02.
      */
-    public static final StudioControl TREEDELETE_CONTROL = new StudioControl( "Tree Delete", "1.2.840.113556.1.4.805",
+    public static final StudioControl TREEDELETE_CONTROL = new StudioControl( "Tree Delete", "1.2.840.113556.1.4.805", //$NON-NLS-1$ //$NON-NLS-2$
         false, null );
 
     /** The symbolic name. */
@@ -94,7 +94,7 @@ public class StudioControl implements Serializable
     public StudioControl( String name, String oid, boolean critical, byte[] controlValue )
     {
         super();
-        this.name = name == null ? "" : name;
+        this.name = name == null ? "" : name; //$NON-NLS-1$
         this.oid = oid;
         this.critical = critical;
         this.controlValue = controlValue;
@@ -152,7 +152,7 @@ public class StudioControl implements Serializable
     {
         if ( oid == null )
         {
-            return "";
+            return ""; //$NON-NLS-1$
         }
 
         LdifControlLine line = LdifControlLine.create( getOid(), isCritical(), getControlValue() );

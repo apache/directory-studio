@@ -84,7 +84,7 @@ public class LdapAndFilterComponent extends LdapFilterComponent
      */
     public String toString()
     {
-        String s = startToken != null ? "&" : "";
+        String s = startToken != null ? "&" : ""; //$NON-NLS-1$ //$NON-NLS-2$
         for ( LdapFilter filter : filterList )
         {
             if ( filter != null )

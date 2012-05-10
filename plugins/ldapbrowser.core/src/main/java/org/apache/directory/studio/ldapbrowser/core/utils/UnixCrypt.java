@@ -487,7 +487,7 @@ public class UnixCrypt extends Object
         long keyword = 0L;
         /* invalid parameters! */
         if ( key == null || setting == null )
-            return "*"; // will NOT match under ANY circumstances!
+            return "*"; // will NOT match under ANY circumstances! //$NON-NLS-1$
 
         int keylen = key.length();
 
@@ -524,11 +524,11 @@ public class UnixCrypt extends Object
     {
         if ( arg.length != 2 )
         {
-            System.err.println( "Usage - java org.mortbay.util.UnixCrypt <key> <salt>" );
+            System.err.println( "Usage - java org.mortbay.util.UnixCrypt <key> <salt>" ); //$NON-NLS-1$
             System.exit( 1 );
         }
 
-        System.err.println( "Crypt=" + crypt( arg[0], arg[1] ) );
+        System.err.println( "Crypt=" + crypt( arg[0], arg[1] ) ); //$NON-NLS-1$
     }
 
 }

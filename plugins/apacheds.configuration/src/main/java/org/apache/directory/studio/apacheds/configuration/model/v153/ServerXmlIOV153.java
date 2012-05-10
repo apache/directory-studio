@@ -310,7 +310,7 @@ public class ServerXmlIOV153 extends AbstractServerXmlIO implements ServerXmlIO
             {
                 // If the 'denormalizeOpAttrsEnabled' attribute does not exists,
                 // we throw an exception
-                throw new ServerXmlIOException( Messages.getString( "ServerXmlIOV153.ErrorDenormalizedOpAttrsEnabled" ) ); //$NON-NLS-1$
+                throw new ServerXmlIOException( Messages.getString( "ServerXmlIOV153.ErrorDenormalizeOpAttrsEnabled" ) ); //$NON-NLS-1$
             }
             else
             {
@@ -1403,7 +1403,7 @@ public class ServerXmlIOV153 extends AbstractServerXmlIO implements ServerXmlIO
             {
                 // If the 'synchPeriodMillis' attribute does not exists,
                 // we throw an exception
-                throw new ServerXmlIOException( Messages.getString( "ServerXmlIOV153.ErrorSynchPeriodMillis" ) ); //$NON-NLS-1$
+                throw new ServerXmlIOException( Messages.getString( "ServerXmlIOV153.ErrorSyncPeriodMillis" ) ); //$NON-NLS-1$
             }
             else
             {

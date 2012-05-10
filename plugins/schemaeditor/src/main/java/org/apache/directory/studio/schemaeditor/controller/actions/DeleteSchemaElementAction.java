@@ -39,17 +39,15 @@ import org.apache.directory.studio.schemaeditor.view.wrappers.ObjectClassWrapper
 import org.apache.directory.studio.schemaeditor.view.wrappers.SchemaWrapper;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.osgi.util.NLS;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.IWorkbenchWindowActionDelegate;
-import org.eclipse.ui.PlatformUI;
 
 
 /**
@@ -80,24 +78,21 @@ public class DeleteSchemaElementAction extends Action implements IWorkbenchWindo
             public void selectionChanged( SelectionChangedEvent event )
             {
                 StructuredSelection selection = ( StructuredSelection ) event.getSelection();
+
                 if ( selection.size() > 0 )
                 {
-                    boolean enabled = false;
+                    boolean enabled = true;
 
                     for ( Iterator<?> iterator = selection.iterator(); iterator.hasNext(); )
                     {
                         Object selectedItem = iterator.next();
-                        if ( selectedItem instanceof SchemaWrapper )
+
+                        if ( !( selectedItem instanceof SchemaWrapper )
+                            && !( selectedItem instanceof AttributeTypeWrapper )
+                            && !( selectedItem instanceof ObjectClassWrapper ) )
                         {
-                            enabled = true;
-                        }
-                        else if ( selectedItem instanceof AttributeTypeWrapper )
-                        {
-                            enabled = true;
-                        }
-                        else if ( selectedItem instanceof ObjectClassWrapper )
-                        {
-                            enabled = true;
+                            enabled = false;
+                            break;
                         }
                     }
 
@@ -121,38 +116,40 @@ public class DeleteSchemaElementAction extends Action implements IWorkbenchWindo
 
         if ( !selection.isEmpty() )
         {
-            MessageBox messageBox = new MessageBox( PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
-                SWT.YES | SWT.NO | SWT.ICON_QUESTION );
+            StringBuilder message = new StringBuilder();
+
             int count = selection.size();
+
             if ( count == 1 )
             {
                 Object firstElement = selection.getFirstElement();
                 if ( firstElement instanceof AttributeTypeWrapper )
                 {
-                    messageBox.setMessage( Messages.getString( "DeleteSchemaElementAction.SureToDeleteAttributeType" ) ); //$NON-NLS-1$
+                    message.append( Messages.getString( "DeleteSchemaElementAction.SureDeleteAttributeType" ) ); //$NON-NLS-1$
                 }
                 else if ( firstElement instanceof ObjectClassWrapper )
                 {
-                    messageBox.setMessage( Messages.getString( "DeleteSchemaElementAction.SureToDeleteObjectClass" ) ); //$NON-NLS-1$
+                    message.append( Messages.getString( "DeleteSchemaElementAction.SureDeleteObjectClass" ) ); //$NON-NLS-1$
                 }
                 else if ( firstElement instanceof SchemaWrapper )
                 {
-                    messageBox.setMessage( Messages.getString( "DeleteSchemaElementAction.SureToDeleteSchema" ) ); //$NON-NLS-1$
+                    message.append( Messages.getString( "DeleteSchemaElementAction.SureDeleteSchema" ) ); //$NON-NLS-1$
                 }
                 else
                 {
-                    messageBox.setMessage( Messages.getString( "DeleteSchemaElementAction.SureToDeleteItem" ) ); //$NON-NLS-1$
+                    message.append( Messages.getString( "DeleteSchemaElementAction.SureDeleteItem" ) ); //$NON-NLS-1$
                 }
-
             }
             else
             {
-                messageBox.setMessage( NLS.bind(
-                    Messages.getString( "DeleteSchemaElementAction.SureToDeleteItems" ), new Object[] { count } ) ); //$NON-NLS-1$
+                message.append( NLS.bind(
+                    Messages.getString( "DeleteSchemaElementAction.SureDeleteItems" ), new Object[] { count } ) ); //$NON-NLS-1$
             }
-            if ( messageBox.open() == SWT.YES )
-            {
 
+            // Showing the confirmation window
+            if ( MessageDialog.openConfirm( viewer.getControl().getShell(),
+                Messages.getString( "DeleteSchemaElementAction.DeleteTitle" ), message.toString() ) ) //$NON-NLS-1$
+            {
                 Map<String, Schema> schemasMap = new HashMap<String, Schema>();
                 List<SchemaObject> schemaObjectsList = new ArrayList<SchemaObject>();
 

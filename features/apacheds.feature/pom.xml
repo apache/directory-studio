@@ -27,7 +27,7 @@
   </parent>
   
   <artifactId>apacheds.feature</artifactId>
-  <name>Apache Directory Studio Apache DS Feature</name>
+  <name>Apache Directory Studio ApacheDS Feature</name>
   <packaging>jar</packaging>
 
   <description />

@@ -172,7 +172,7 @@ public class LoadConfigurationRunnable implements StudioRunnableWithProgress
         // need to get the server configuration and return
         if ( input instanceof NewServerConfigurationInput )
         {
-            InputStream is = ApacheDS2ConfigurationPlugin.class.getResourceAsStream( "config.ldif" );
+            InputStream is = ApacheDS2ConfigurationPlugin.class.getResourceAsStream( "config.ldif" ); //$NON-NLS-1$
             return readConfiguration( is );
         }
         // If the input is a ConnectionServerConfigurationInput, then we 
@@ -289,8 +289,8 @@ public class LoadConfigurationRunnable implements StudioRunnableWithProgress
 
             // Creating the search parameter
             SearchParameter configSearchParameter = new SearchParameter();
-            configSearchParameter.setSearchBase( new Dn( "ou=config" ) );
-            configSearchParameter.setFilter( "(objectClass=*)" );
+            configSearchParameter.setSearchBase( new Dn( "ou=config" ) ); //$NON-NLS-1$
+            configSearchParameter.setFilter( "(objectClass=*)" ); //$NON-NLS-1$
             configSearchParameter.setScope( SearchScope.OBJECT );
             configSearchParameter.setReturningAttributes( SchemaConstants.ALL_USER_ATTRIBUTES_ARRAY );
 
@@ -337,7 +337,7 @@ public class LoadConfigurationRunnable implements StudioRunnableWithProgress
 
                 SearchParameter searchParameter = new SearchParameter();
                 searchParameter.setSearchBase( entry.getDn() );
-                searchParameter.setFilter( "(objectClass=*)" );
+                searchParameter.setFilter( "(objectClass=*)" ); //$NON-NLS-1$
                 searchParameter.setScope( SearchScope.ONELEVEL );
                 searchParameter.setReturningAttributes( SchemaConstants.ALL_USER_ATTRIBUTES_ARRAY );
 

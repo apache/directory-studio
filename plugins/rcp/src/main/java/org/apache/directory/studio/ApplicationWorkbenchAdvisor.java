@@ -21,6 +21,7 @@
 package org.apache.directory.studio;
 
 
+import org.apache.directory.studio.preferences.ShutdownPreferencesPage;
 import org.eclipse.core.net.proxy.IProxyService;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.dialogs.Dialog;
@@ -120,7 +121,7 @@ public class ApplicationWorkbenchAdvisor extends WorkbenchAdvisor
      */
     public boolean preShutdown()
     {
-        return true;
+        return ShutdownPreferencesPage.promptOnExit();
     }
 
 

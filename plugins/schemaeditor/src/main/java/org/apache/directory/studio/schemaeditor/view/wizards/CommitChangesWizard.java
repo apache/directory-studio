@@ -20,16 +20,10 @@
 package org.apache.directory.studio.schemaeditor.view.wizards;
 
 
-import java.lang.reflect.InvocationTargetException;
-import java.util.List;
-
 import org.apache.directory.studio.schemaeditor.Activator;
 import org.apache.directory.studio.schemaeditor.model.DependenciesComputer;
 import org.apache.directory.studio.schemaeditor.model.DependenciesComputer.DependencyComputerException;
 import org.apache.directory.studio.schemaeditor.model.Project;
-import org.apache.directory.studio.schemaeditor.model.Schema;
-import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.ui.IExportWizard;
@@ -77,26 +71,26 @@ public class CommitChangesWizard extends Wizard implements IExportWizard
      */
     public boolean performFinish()
     {
-        final List<Schema> orderedSchemas = dependenciesComputer.getDependencyOrderedSchemasList();
-
-        try
-        {
-            getContainer().run( false, false, new IRunnableWithProgress()
-            {
-                public void run( IProgressMonitor monitor )
-                {
-                    //TODO implement
-                }
-            } );
-        }
-        catch ( InvocationTargetException e )
-        {
-            // Nothing to do (it will never occur)
-        }
-        catch ( InterruptedException e )
-        {
-            // Nothing to do.
-        }
+        //        final List<Schema> orderedSchemas = dependenciesComputer.getDependencyOrderedSchemasList();
+        //
+        //        try
+        //        {
+        //            getContainer().run( false, false, new IRunnableWithProgress()
+        //            {
+        //                public void run( IProgressMonitor monitor )
+        //                {
+        //                    //TODO implement
+        //                }
+        //            } );
+        //        }
+        //        catch ( InvocationTargetException e )
+        //        {
+        //            // Nothing to do (it will never occur)
+        //        }
+        //        catch ( InterruptedException e )
+        //        {
+        //            // Nothing to do.
+        //        }
 
         return true;
     }

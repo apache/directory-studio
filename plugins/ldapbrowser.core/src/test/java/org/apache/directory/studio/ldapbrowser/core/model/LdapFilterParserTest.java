@@ -41,9 +41,9 @@ public class LdapFilterParserTest extends TestCase
      */
     public void testEqualsFilter()
     {
-        parser.parse( "(cn=test)" );
-        assertEquals( "(cn=test)", parser.getModel().toString() );
-        assertEquals( "(cn=test)", parser.getModel().toUserProvidedString() );
+        parser.parse( "(cn=test)" ); //$NON-NLS-1$
+        assertEquals( "(cn=test)", parser.getModel().toString() ); //$NON-NLS-1$
+        assertEquals( "(cn=test)", parser.getModel().toUserProvidedString() ); //$NON-NLS-1$
         assertTrue( parser.getModel().isValid() );
     }
 
@@ -53,9 +53,9 @@ public class LdapFilterParserTest extends TestCase
      */
     public void testGreaterEqualsFilter()
     {
-        parser.parse( "(cn>=test)" );
-        assertEquals( "(cn>=test)", parser.getModel().toString() );
-        assertEquals( "(cn>=test)", parser.getModel().toUserProvidedString() );
+        parser.parse( "(cn>=test)" ); //$NON-NLS-1$
+        assertEquals( "(cn>=test)", parser.getModel().toString() ); //$NON-NLS-1$
+        assertEquals( "(cn>=test)", parser.getModel().toUserProvidedString() ); //$NON-NLS-1$
         assertTrue( parser.getModel().isValid() );
     }
 
@@ -65,9 +65,9 @@ public class LdapFilterParserTest extends TestCase
      */
     public void testLessEqualsFilter()
     {
-        parser.parse( "(cn<=test)" );
-        assertEquals( "(cn<=test)", parser.getModel().toString() );
-        assertEquals( "(cn<=test)", parser.getModel().toUserProvidedString() );
+        parser.parse( "(cn<=test)" ); //$NON-NLS-1$
+        assertEquals( "(cn<=test)", parser.getModel().toString() ); //$NON-NLS-1$
+        assertEquals( "(cn<=test)", parser.getModel().toUserProvidedString() ); //$NON-NLS-1$
         assertTrue( parser.getModel().isValid() );
     }
 
@@ -77,9 +77,9 @@ public class LdapFilterParserTest extends TestCase
      */
     public void testAproxFilter()
     {
-        parser.parse( "(cn~=test)" );
-        assertEquals( "(cn~=test)", parser.getModel().toString() );
-        assertEquals( "(cn~=test)", parser.getModel().toUserProvidedString() );
+        parser.parse( "(cn~=test)" ); //$NON-NLS-1$
+        assertEquals( "(cn~=test)", parser.getModel().toString() ); //$NON-NLS-1$
+        assertEquals( "(cn~=test)", parser.getModel().toUserProvidedString() ); //$NON-NLS-1$
         assertTrue( parser.getModel().isValid() );
     }
 
@@ -89,9 +89,9 @@ public class LdapFilterParserTest extends TestCase
      */
     public void testSubstringFilter()
     {
-        parser.parse( "(cn=te*st)" );
-        assertEquals( "(cn=te*st)", parser.getModel().toString() );
-        assertEquals( "(cn=te*st)", parser.getModel().toUserProvidedString() );
+        parser.parse( "(cn=te*st)" ); //$NON-NLS-1$
+        assertEquals( "(cn=te*st)", parser.getModel().toString() ); //$NON-NLS-1$
+        assertEquals( "(cn=te*st)", parser.getModel().toUserProvidedString() ); //$NON-NLS-1$
         assertTrue( parser.getModel().isValid() );
     }
 
@@ -101,9 +101,9 @@ public class LdapFilterParserTest extends TestCase
      */
     public void testPresentFilter()
     {
-        parser.parse( "(cn=*)" );
-        assertEquals( "(cn=*)", parser.getModel().toString() );
-        assertEquals( "(cn=*)", parser.getModel().toUserProvidedString() );
+        parser.parse( "(cn=*)" ); //$NON-NLS-1$
+        assertEquals( "(cn=*)", parser.getModel().toString() ); //$NON-NLS-1$
+        assertEquals( "(cn=*)", parser.getModel().toUserProvidedString() ); //$NON-NLS-1$
         assertTrue( parser.getModel().isValid() );
     }
 
@@ -113,9 +113,9 @@ public class LdapFilterParserTest extends TestCase
      */
     public void testRFC4515_1()
     {
-        parser.parse( "(cn=Babs Jensen)" );
-        assertEquals( "(cn=Babs Jensen)", parser.getModel().toString() );
-        assertEquals( "(cn=Babs Jensen)", parser.getModel().toUserProvidedString() );
+        parser.parse( "(cn=Babs Jensen)" ); //$NON-NLS-1$
+        assertEquals( "(cn=Babs Jensen)", parser.getModel().toString() ); //$NON-NLS-1$
+        assertEquals( "(cn=Babs Jensen)", parser.getModel().toUserProvidedString() ); //$NON-NLS-1$
         assertTrue( parser.getModel().isValid() );
     }
 
@@ -125,9 +125,9 @@ public class LdapFilterParserTest extends TestCase
      */
     public void testRFC4515_2()
     {
-        parser.parse( "(!(cn=Tim Howes))" );
-        assertEquals( "(!(cn=Tim Howes))", parser.getModel().toString() );
-        assertEquals( "(!(cn=Tim Howes))", parser.getModel().toUserProvidedString() );
+        parser.parse( "(!(cn=Tim Howes))" ); //$NON-NLS-1$
+        assertEquals( "(!(cn=Tim Howes))", parser.getModel().toString() ); //$NON-NLS-1$
+        assertEquals( "(!(cn=Tim Howes))", parser.getModel().toUserProvidedString() ); //$NON-NLS-1$
         assertTrue( parser.getModel().isValid() );
     }
 
@@ -137,9 +137,9 @@ public class LdapFilterParserTest extends TestCase
      */
     public void testRFC4515_3()
     {
-        parser.parse( "(&(objectClass=Person)(|(sn=Jensen)(cn=Babs J*)))" );
-        assertEquals( "(&(objectClass=Person)(|(sn=Jensen)(cn=Babs J*)))", parser.getModel().toString() );
-        assertEquals( "(&(objectClass=Person)(|(sn=Jensen)(cn=Babs J*)))", parser.getModel().toUserProvidedString() );
+        parser.parse( "(&(objectClass=Person)(|(sn=Jensen)(cn=Babs J*)))" ); //$NON-NLS-1$
+        assertEquals( "(&(objectClass=Person)(|(sn=Jensen)(cn=Babs J*)))", parser.getModel().toString() ); //$NON-NLS-1$
+        assertEquals( "(&(objectClass=Person)(|(sn=Jensen)(cn=Babs J*)))", parser.getModel().toUserProvidedString() ); //$NON-NLS-1$
         assertTrue( parser.getModel().isValid() );
     }
 
@@ -149,9 +149,9 @@ public class LdapFilterParserTest extends TestCase
      */
     public void testRFC4515_4()
     {
-        parser.parse( "(o=univ*of*mich*)" );
-        assertEquals( "(o=univ*of*mich*)", parser.getModel().toString() );
-        assertEquals( "(o=univ*of*mich*)", parser.getModel().toUserProvidedString() );
+        parser.parse( "(o=univ*of*mich*)" ); //$NON-NLS-1$
+        assertEquals( "(o=univ*of*mich*)", parser.getModel().toString() ); //$NON-NLS-1$
+        assertEquals( "(o=univ*of*mich*)", parser.getModel().toUserProvidedString() ); //$NON-NLS-1$
         assertTrue( parser.getModel().isValid() );
     }
 
@@ -161,9 +161,9 @@ public class LdapFilterParserTest extends TestCase
      */
     public void testRFC4515_5()
     {
-        parser.parse( "(seeAlso=)" );
-        assertEquals( "(seeAlso=)", parser.getModel().toString() );
-        assertEquals( "(seeAlso=)", parser.getModel().toUserProvidedString() );
+        parser.parse( "(seeAlso=)" ); //$NON-NLS-1$
+        assertEquals( "(seeAlso=)", parser.getModel().toString() ); //$NON-NLS-1$
+        assertEquals( "(seeAlso=)", parser.getModel().toUserProvidedString() ); //$NON-NLS-1$
         assertTrue( parser.getModel().isValid() );
     }
 
@@ -177,9 +177,9 @@ public class LdapFilterParserTest extends TestCase
      */
     public void testEscapeRFC4515_1()
     {
-        parser.parse( "(o=Parens R Us \\28for all your parenthetical needs\\29)" );
-        assertEquals( "(o=Parens R Us \\28for all your parenthetical needs\\29)", parser.getModel().toString() );
-        assertEquals( "(o=Parens R Us \\28for all your parenthetical needs\\29)", parser.getModel()
+        parser.parse( "(o=Parens R Us \\28for all your parenthetical needs\\29)" ); //$NON-NLS-1$
+        assertEquals( "(o=Parens R Us \\28for all your parenthetical needs\\29)", parser.getModel().toString() ); //$NON-NLS-1$
+        assertEquals( "(o=Parens R Us \\28for all your parenthetical needs\\29)", parser.getModel() //$NON-NLS-1$
             .toUserProvidedString() );
         assertTrue( parser.getModel().isValid() );
     }
@@ -195,9 +195,9 @@ public class LdapFilterParserTest extends TestCase
      */
     public void testEscapeRFC4515_2()
     {
-        parser.parse( "(cn=*\\2A*)" );
-        assertEquals( "(cn=*\\2A*)", parser.getModel().toString() );
-        assertEquals( "(cn=*\\2A*)", parser.getModel().toUserProvidedString() );
+        parser.parse( "(cn=*\\2A*)" ); //$NON-NLS-1$
+        assertEquals( "(cn=*\\2A*)", parser.getModel().toString() ); //$NON-NLS-1$
+        assertEquals( "(cn=*\\2A*)", parser.getModel().toUserProvidedString() ); //$NON-NLS-1$
         assertTrue( parser.getModel().isValid() );
     }
 
@@ -210,9 +210,9 @@ public class LdapFilterParserTest extends TestCase
      */
     public void testEscapeRFC4515_3()
     {
-        parser.parse( "(filename=C:\\5cMyFile)" );
-        assertEquals( "(filename=C:\\5cMyFile)", parser.getModel().toString() );
-        assertEquals( "(filename=C:\\5cMyFile)", parser.getModel().toUserProvidedString() );
+        parser.parse( "(filename=C:\\5cMyFile)" ); //$NON-NLS-1$
+        assertEquals( "(filename=C:\\5cMyFile)", parser.getModel().toString() ); //$NON-NLS-1$
+        assertEquals( "(filename=C:\\5cMyFile)", parser.getModel().toUserProvidedString() ); //$NON-NLS-1$
         assertTrue( parser.getModel().isValid() );
     }
 
@@ -227,9 +227,9 @@ public class LdapFilterParserTest extends TestCase
      */
     public void testEscapeRFC4515_4()
     {
-        parser.parse( "(bin=\\00\\00\\00\\04)" );
-        assertEquals( "(bin=\\00\\00\\00\\04)", parser.getModel().toString() );
-        assertEquals( "(bin=\\00\\00\\00\\04)", parser.getModel().toUserProvidedString() );
+        parser.parse( "(bin=\\00\\00\\00\\04)" ); //$NON-NLS-1$
+        assertEquals( "(bin=\\00\\00\\00\\04)", parser.getModel().toString() ); //$NON-NLS-1$
+        assertEquals( "(bin=\\00\\00\\00\\04)", parser.getModel().toUserProvidedString() ); //$NON-NLS-1$
         assertTrue( parser.getModel().isValid() );
     }
 
@@ -247,9 +247,9 @@ public class LdapFilterParserTest extends TestCase
      */
     public void testEscapeRFC4515_5()
     {
-        parser.parse( "(sn=Lu\\c4\\8di\\c4\\87)" );
-        assertEquals( "(sn=Lu\\c4\\8di\\c4\\87)", parser.getModel().toString() );
-        assertEquals( "(sn=Lu\\c4\\8di\\c4\\87)", parser.getModel().toUserProvidedString() );
+        parser.parse( "(sn=Lu\\c4\\8di\\c4\\87)" ); //$NON-NLS-1$
+        assertEquals( "(sn=Lu\\c4\\8di\\c4\\87)", parser.getModel().toString() ); //$NON-NLS-1$
+        assertEquals( "(sn=Lu\\c4\\8di\\c4\\87)", parser.getModel().toUserProvidedString() ); //$NON-NLS-1$
         assertTrue( parser.getModel().isValid() );
     }
 
@@ -263,9 +263,9 @@ public class LdapFilterParserTest extends TestCase
      */
     public void testEscapeRFC4515_6()
     {
-        parser.parse( "(1.3.6.1.4.1.1466.0=\\04\\02\\48\\69)" );
-        assertEquals( "(1.3.6.1.4.1.1466.0=\\04\\02\\48\\69)", parser.getModel().toString() );
-        assertEquals( "(1.3.6.1.4.1.1466.0=\\04\\02\\48\\69)", parser.getModel().toUserProvidedString() );
+        parser.parse( "(1.3.6.1.4.1.1466.0=\\04\\02\\48\\69)" ); //$NON-NLS-1$
+        assertEquals( "(1.3.6.1.4.1.1466.0=\\04\\02\\48\\69)", parser.getModel().toString() ); //$NON-NLS-1$
+        assertEquals( "(1.3.6.1.4.1.1466.0=\\04\\02\\48\\69)", parser.getModel().toUserProvidedString() ); //$NON-NLS-1$
         assertTrue( parser.getModel().isValid() );
     }
 
@@ -278,9 +278,9 @@ public class LdapFilterParserTest extends TestCase
      */
     public void testExtensibleFilterRFC4515_1()
     {
-        parser.parse( "(cn:caseExactMatch:=Fred Flintstone)" );
-        assertEquals( "(cn:caseExactMatch:=Fred Flintstone)", parser.getModel().toString() );
-        assertEquals( "(cn:caseExactMatch:=Fred Flintstone)", parser.getModel().toUserProvidedString() );
+        parser.parse( "(cn:caseExactMatch:=Fred Flintstone)" ); //$NON-NLS-1$
+        assertEquals( "(cn:caseExactMatch:=Fred Flintstone)", parser.getModel().toString() ); //$NON-NLS-1$
+        assertEquals( "(cn:caseExactMatch:=Fred Flintstone)", parser.getModel().toUserProvidedString() ); //$NON-NLS-1$
         assertTrue( parser.getModel().isValid() );
     }
 
@@ -294,9 +294,9 @@ public class LdapFilterParserTest extends TestCase
      */
     public void testExtensibleFilterRFC4515_2()
     {
-        parser.parse( "(cn:=Betty Rubble)" );
-        assertEquals( "(cn:=Betty Rubble)", parser.getModel().toString() );
-        assertEquals( "(cn:=Betty Rubble)", parser.getModel().toUserProvidedString() );
+        parser.parse( "(cn:=Betty Rubble)" ); //$NON-NLS-1$
+        assertEquals( "(cn:=Betty Rubble)", parser.getModel().toString() ); //$NON-NLS-1$
+        assertEquals( "(cn:=Betty Rubble)", parser.getModel().toUserProvidedString() ); //$NON-NLS-1$
         assertTrue( parser.getModel().isValid() );
     }
 
@@ -313,9 +313,9 @@ public class LdapFilterParserTest extends TestCase
      */
     public void testExtensibleFilterRFC4515_3()
     {
-        parser.parse( "(sn:dn:2.4.6.8.10:=Barney Rubble)" );
-        assertEquals( "(sn:dn:2.4.6.8.10:=Barney Rubble)", parser.getModel().toString() );
-        assertEquals( "(sn:dn:2.4.6.8.10:=Barney Rubble)", parser.getModel().toUserProvidedString() );
+        parser.parse( "(sn:dn:2.4.6.8.10:=Barney Rubble)" ); //$NON-NLS-1$
+        assertEquals( "(sn:dn:2.4.6.8.10:=Barney Rubble)", parser.getModel().toString() ); //$NON-NLS-1$
+        assertEquals( "(sn:dn:2.4.6.8.10:=Barney Rubble)", parser.getModel().toUserProvidedString() ); //$NON-NLS-1$
         assertTrue( parser.getModel().isValid() );
     }
 
@@ -330,9 +330,9 @@ public class LdapFilterParserTest extends TestCase
      */
     public void testExtensibleFilterRFC4515_4()
     {
-        parser.parse( "(o:dn:=Ace Industry)" );
-        assertEquals( "(o:dn:=Ace Industry)", parser.getModel().toString() );
-        assertEquals( "(o:dn:=Ace Industry)", parser.getModel().toUserProvidedString() );
+        parser.parse( "(o:dn:=Ace Industry)" ); //$NON-NLS-1$
+        assertEquals( "(o:dn:=Ace Industry)", parser.getModel().toString() ); //$NON-NLS-1$
+        assertEquals( "(o:dn:=Ace Industry)", parser.getModel().toUserProvidedString() ); //$NON-NLS-1$
         assertTrue( parser.getModel().isValid() );
     }
 
@@ -347,9 +347,9 @@ public class LdapFilterParserTest extends TestCase
      */
     public void testExtensibleFilterRFC4515_5()
     {
-        parser.parse( "(:1.2.3:=Wilma Flintstone)" );
-        assertEquals( "(:1.2.3:=Wilma Flintstone)", parser.getModel().toString() );
-        assertEquals( "(:1.2.3:=Wilma Flintstone)", parser.getModel().toUserProvidedString() );
+        parser.parse( "(:1.2.3:=Wilma Flintstone)" ); //$NON-NLS-1$
+        assertEquals( "(:1.2.3:=Wilma Flintstone)", parser.getModel().toString() ); //$NON-NLS-1$
+        assertEquals( "(:1.2.3:=Wilma Flintstone)", parser.getModel().toUserProvidedString() ); //$NON-NLS-1$
         assertTrue( parser.getModel().isValid() );
     }
 
@@ -365,9 +365,9 @@ public class LdapFilterParserTest extends TestCase
      */
     public void testExtensibleFilterRFC4515_6()
     {
-        parser.parse( "(:Dn:2.4.6.8.10:=Dino)" );
-        assertEquals( "(:Dn:2.4.6.8.10:=Dino)", parser.getModel().toString() );
-        assertEquals( "(:Dn:2.4.6.8.10:=Dino)", parser.getModel().toUserProvidedString() );
+        parser.parse( "(:Dn:2.4.6.8.10:=Dino)" ); //$NON-NLS-1$
+        assertEquals( "(:Dn:2.4.6.8.10:=Dino)", parser.getModel().toString() ); //$NON-NLS-1$
+        assertEquals( "(:Dn:2.4.6.8.10:=Dino)", parser.getModel().toUserProvidedString() ); //$NON-NLS-1$
         assertTrue( parser.getModel().isValid() );
     }
 
@@ -377,9 +377,9 @@ public class LdapFilterParserTest extends TestCase
      */
     public void testDIRSTUDIO210()
     {
-        parser.parse( "(objectClass>=z*) " );
-        assertEquals( "(objectClass>=)", parser.getModel().toString() );
-        assertEquals( "(objectClass>=z*) ", parser.getModel().toUserProvidedString() );
+        parser.parse( "(objectClass>=z*) " ); //$NON-NLS-1$
+        assertEquals( "(objectClass>=)", parser.getModel().toString() ); //$NON-NLS-1$
+        assertEquals( "(objectClass>=z*) ", parser.getModel().toUserProvidedString() ); //$NON-NLS-1$
         assertFalse( parser.getModel().isValid() );
     }
 
@@ -389,9 +389,9 @@ public class LdapFilterParserTest extends TestCase
      */
     public void testDIRSTUDIO279()
     {
-        parser.parse( " (&\n    (objectClass=person)\n    (cn=a*)\n) " );
-        assertEquals( "(&(objectClass=person)(cn=a*))", parser.getModel().toString() );
-        assertEquals( " (&\n    (objectClass=person)\n    (cn=a*)\n) ", parser.getModel().toUserProvidedString() );
+        parser.parse( " (&\n    (objectClass=person)\n    (cn=a*)\n) " ); //$NON-NLS-1$
+        assertEquals( "(&(objectClass=person)(cn=a*))", parser.getModel().toString() ); //$NON-NLS-1$
+        assertEquals( " (&\n    (objectClass=person)\n    (cn=a*)\n) ", parser.getModel().toUserProvidedString() ); //$NON-NLS-1$
         assertFalse( parser.getModel().isValid() );
     }
 }

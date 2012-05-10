@@ -6,16 +6,16 @@
  *  to you under the Apache License, Version 2.0 (the
  *  "License"); you may not use this file except in compliance
  *  with the License.  You may obtain a copy of the License at
- *  
+ * 
  *    http://www.apache.org/licenses/LICENSE-2.0
- *  
+ * 
  *  Unless required by applicable law or agreed to in writing,
  *  software distributed under the License is distributed on an
  *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  *  KIND, either express or implied.  See the License for the
  *  specific language governing permissions and limitations
- *  under the License. 
- *  
+ *  under the License.
+ * 
  */
 
 package org.apache.directory.studio.ldapbrowser.core.model.schema;
@@ -41,6 +41,8 @@ import org.apache.directory.shared.ldap.model.schema.AttributeType;
 import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
 import org.apache.directory.shared.ldap.model.schema.MatchingRule;
 import org.apache.directory.shared.ldap.model.schema.MatchingRuleUse;
+import org.apache.directory.shared.ldap.model.schema.MutableAttributeType;
+import org.apache.directory.shared.ldap.model.schema.MutableObjectClass;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.shared.ldap.model.schema.UsageEnum;
 import org.apache.directory.shared.ldap.model.schema.parsers.AttributeTypeDescriptionSchemaParser;
@@ -67,16 +69,16 @@ import org.apache.directory.studio.ldifparser.parser.LdifParser;
 public class Schema
 {
 
-    public static final String SCHEMA_FILTER = "(objectClass=subschema)";
+    public static final String SCHEMA_FILTER = "(objectClass=subschema)"; //$NON-NLS-1$
 
-    public static final String RAW_SCHEMA_DEFINITION_LDIF_VALUE = "RAW_SCHEMA_DEFINITION_LDIF_VALUE";
+    public static final String RAW_SCHEMA_DEFINITION_LDIF_VALUE = "RAW_SCHEMA_DEFINITION_LDIF_VALUE"; //$NON-NLS-1$
 
-    public static final String DN_SYNTAX_OID = "1.3.6.1.4.1.1466.115.121.1.12";
+    public static final String DN_SYNTAX_OID = "1.3.6.1.4.1.1466.115.121.1.12"; //$NON-NLS-1$
 
     public static final LdapSyntax DUMMY_LDAP_SYNTAX;
     static
     {
-        DUMMY_LDAP_SYNTAX = new LdapSyntax( "", "" );
+        DUMMY_LDAP_SYNTAX = new LdapSyntax( "", "" ); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
     public static final HashMap<String, List<String>> DUMMY_EXTENSIONS;
@@ -84,8 +86,8 @@ public class Schema
     {
         DUMMY_EXTENSIONS = new HashMap<String, List<String>>();
         List<String> dummyValues = new ArrayList<String>();
-        dummyValues.add( "DUMMY" );
-        DUMMY_EXTENSIONS.put( "X-DUMMY", dummyValues );
+        dummyValues.add( "DUMMY" ); //$NON-NLS-1$
+        DUMMY_EXTENSIONS.put( "X-DUMMY", dummyValues ); //$NON-NLS-1$
     }
 
     public static final Schema DEFAULT_SCHEMA;
@@ -95,7 +97,7 @@ public class Schema
 
         try
         {
-            URL url = Schema.class.getClassLoader().getResource( "default_schema.ldif" );
+            URL url = Schema.class.getClassLoader().getResource( "default_schema.ldif" ); //$NON-NLS-1$
             InputStream is = url.openStream();
             Reader reader = new InputStreamReader( is );
 
@@ -127,7 +129,7 @@ public class Schema
 
     private String modifyTimestamp;
 
-    private Map<String, ObjectClass> ocdMapByNameOrNumericOid;
+    private Map<String, MutableObjectClass> ocdMapByNameOrNumericOid;
 
     private Map<String, AttributeType> atdMapByNameOrNumericOid;
 
@@ -147,7 +149,7 @@ public class Schema
         this.dn = null;
         this.createTimestamp = null;
         this.modifyTimestamp = null;
-        this.ocdMapByNameOrNumericOid = new HashMap<String, ObjectClass>();
+        this.ocdMapByNameOrNumericOid = new HashMap<String, MutableObjectClass>();
         this.atdMapByNameOrNumericOid = new HashMap<String, AttributeType>();
         this.lsdMapByNumericOid = new HashMap<String, LdapSyntax>();
         this.mrdMapByNameOrNumericOid = new HashMap<String, MatchingRule>();
@@ -180,7 +182,7 @@ public class Schema
         catch ( Exception e )
         {
             // TODO: exception handling
-            System.out.println( "Schema#loadFromLdif: " + e.toString() );
+            System.out.println( "Schema#loadFromLdif: " + e.toString() ); //$NON-NLS-1$
         }
     }
 
@@ -199,7 +201,7 @@ public class Schema
         catch ( Exception e )
         {
             // TODO: exception handling
-            System.out.println( "Schema#loadFromRecord: " + e.toString() );
+            System.out.println( "Schema#loadFromRecord: " + e.toString() ); //$NON-NLS-1$
         }
     }
 
@@ -218,7 +220,7 @@ public class Schema
         catch ( Exception e )
         {
             // TODO: exception handling
-            System.out.println( "Schema#saveToLdif: " + e.toString() );
+            System.out.println( "Schema#saveToLdif: " + e.toString() ); //$NON-NLS-1$
         }
     }
 
@@ -259,7 +261,7 @@ public class Schema
             {
                 if ( attributeName.equalsIgnoreCase( SchemaConstants.OBJECT_CLASSES_AT ) )
                 {
-                    ObjectClass ocd = ocdPparser.parseObjectClassDescription( value );
+                    MutableObjectClass ocd = ocdPparser.parseObjectClassDescription( value );
                     ocd.addExtension( RAW_SCHEMA_DEFINITION_LDIF_VALUE, ldifValues );
                     addObjectClass( ocd );
                 }
@@ -304,7 +306,7 @@ public class Schema
             catch ( Exception e )
             {
                 // TODO: exception handling
-                System.out.println( "Error reading schema: " + attributeName + " = " + value );
+                System.out.println( "Error reading schema: " + attributeName + " = " + value ); //$NON-NLS-1$ //$NON-NLS-2$
                 System.out.println( e.getMessage() );
             }
         }
@@ -328,7 +330,7 @@ public class Schema
         }
 
         // set extensibleObject may attributes
-        ObjectClass extensibleObjectOcd = this
+        MutableObjectClass extensibleObjectOcd = this
             .getObjectClassDescription( SchemaConstants.EXTENSIBLE_OBJECT_OC );
         Collection<AttributeType> userAtds = SchemaUtils.getUserAttributeDescriptions( this );
         Collection<String> atdNames = SchemaUtils.getNames( userAtds );
@@ -447,7 +449,7 @@ public class Schema
      * 
      * @param ocd the object class description
      */
-    private void addObjectClass( ObjectClass ocd )
+    private void addObjectClass( MutableObjectClass ocd )
     {
         if ( ocd.getOid() != null )
         {
@@ -503,7 +505,7 @@ public class Schema
      * 
      * @return the object class description, or the default or a dummy
      */
-    public ObjectClass getObjectClassDescription( String nameOrOid )
+    public MutableObjectClass getObjectClassDescription( String nameOrOid )
     {
         if ( ocdMapByNameOrNumericOid.containsKey( Strings.toLowerCase( nameOrOid ) ) )
         {
@@ -518,7 +520,7 @@ public class Schema
             // DUMMY
             List<String> names = new ArrayList<String>();
             names.add( nameOrOid );
-            ObjectClass ocd = new ObjectClass( nameOrOid );
+            MutableObjectClass ocd = new MutableObjectClass( nameOrOid );
             ocd.setNames( names );
             ocd.setExtensions( DUMMY_EXTENSIONS );
             return ocd;
@@ -607,7 +609,7 @@ public class Schema
             // DUMMY
             List<String> attributeTypes = new ArrayList<String>();
             attributeTypes.add( attributeType );
-            AttributeType atd = new AttributeType( attributeType );
+            MutableAttributeType atd = new MutableAttributeType( attributeType );
             atd.setNames( attributeTypes );
             atd.setUserModifiable( true );
             atd.setUsage( UsageEnum.USER_APPLICATIONS );

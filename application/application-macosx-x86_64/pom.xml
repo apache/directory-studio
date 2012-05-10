@@ -137,7 +137,7 @@
               <goal>copy-eclipse-artifact</goal>
             </goals>
             <configuration>
-              <destinationDirectory>${plugins-dir}</destinationDirectory>
+              <outputDirectory>${plugins-dir}</outputDirectory>
               <artifactItems>
                 <artifactItem>
                   <groupId>org.eclipse.core.filesystem</groupId>
@@ -156,30 +156,48 @@
                   <artifactId>x86_64</artifactId>
                 </artifactItem>
                 <artifactItem>
-                  <groupId>org.apache.directory.studio</groupId>
-                  <artifactId>rcp.fullscreen</artifactId>
+                  <groupId>com.bandlem.eclipse.fullscreen</groupId>
+                  <artifactId>ui</artifactId>
                 </artifactItem>
               </artifactItems>
             </configuration>
           </execution>
           <!-- Unpack specific plugins for Mac OS X -->
           <execution>
-          <id>unpack-plugins-macosx</id>
-          <phase>generate-resources</phase>
-          <goals>
-            <goal>unpack-with-artifactid-prefix</goal>
-          </goals>
-          <configuration>
-            <outputDirectory>${plugins-dir}</outputDirectory>
-            <artifactItems>
-              <artifactItem>
+            <id>unpack-plugins-macosx</id>
+            <phase>generate-resources</phase>
+            <goals>
+              <goal>unpack-with-artifactid-prefix</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>${plugins-dir}</outputDirectory>
+              <artifactItems>
+                <artifactItem>
                   <groupId>org.eclipse.equinox.launcher.cocoa.macosx</groupId>
                   <artifactId>x86_64</artifactId>
   				  <type>zip</type>
-              </artifactItem>
-            </artifactItems>
-          </configuration>
-        </execution>
+                </artifactItem>
+              </artifactItems>
+            </configuration>
+          </execution>
+          <!-- Unpack specific features for Mac OS X -->
+          <execution>
+            <id>unpack-features-macosx</id>
+            <phase>generate-resources</phase>
+            <goals>
+              <goal>unpack-with-artifactid-prefix</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>${features-dir}</outputDirectory>
+              <artifactItems>
+                <artifactItem>
+                  <groupId>com.bandlem.eclipse.fullscreen</groupId>
+                  <artifactId>feature</artifactId>
+  				  <type>zip</type>
+                </artifactItem>
+              </artifactItems>
+            </configuration>
+          </execution>
         </executions>
       </plugin>
   

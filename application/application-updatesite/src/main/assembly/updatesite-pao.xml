@@ -40,9 +40,10 @@
                 <include>site--xml.html</include>
             </includes>
             <outputDirectory>/</outputDirectory>
+            <filtered>true</filtered>
         </fileSet>
         
-        <!-- Legal files & release notes -->
+        <!-- Legal files -->
         <fileSet>
             <directory>../../docs</directory>
             <outputDirectory>/</outputDirectory>

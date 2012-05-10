@@ -71,7 +71,7 @@ import org.eclipse.ui.forms.widgets.TableWrapLayout;
 public class GeneralPage extends FormPage
 {
     /** The Page ID*/
-    public static final String ID = ServerConfigurationEditor.ID + ".BasicPage";
+    public static final String ID = ServerConfigurationEditor.ID + ".BasicPage"; //$NON-NLS-1$
 
     /** The Page Title */
     private static final String TITLE = "General";
@@ -119,7 +119,7 @@ public class GeneralPage extends FormPage
     protected void createFormContent( IManagedForm managedForm )
     {
         PlatformUI.getWorkbench().getHelpSystem().setHelp( getPartControl(),
-            ApacheDSConfigurationPluginConstants.PLUGIN_ID + "." + "configuration_editor_150" );
+            ApacheDSConfigurationPluginConstants.PLUGIN_ID + "." + "configuration_editor_150" ); //$NON-NLS-1$ //$NON-NLS-2$
 
         ScrolledForm form = managedForm.getForm();
         form.setText( "General" );
@@ -166,7 +166,7 @@ public class GeneralPage extends FormPage
 
         // Port
         toolkit.createLabel( client, "Port:" );
-        portText = toolkit.createText( client, "" );
+        portText = toolkit.createText( client, "" ); //$NON-NLS-1$
         portText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
         portText.addVerifyListener( new VerifyListener()
         {
@@ -190,17 +190,17 @@ public class GeneralPage extends FormPage
 
         // Principal
         toolkit.createLabel( client, "Principal:" );
-        principalText = toolkit.createText( client, "" );
+        principalText = toolkit.createText( client, "" ); //$NON-NLS-1$
         principalText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
 
         // Password
         toolkit.createLabel( client, "Password:" );
-        passwordText = toolkit.createText( client, "" );
+        passwordText = toolkit.createText( client, "" ); //$NON-NLS-1$
         passwordText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
         passwordText.setEchoChar( '\u2022' );
 
         // Show Password
-        toolkit.createLabel( client, "" );
+        toolkit.createLabel( client, "" ); //$NON-NLS-1$
         showPasswordCheckbox = toolkit.createButton( client, "Show password", SWT.CHECK );
         showPasswordCheckbox.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
         showPasswordCheckbox.setSelection( false );
@@ -251,7 +251,7 @@ public class GeneralPage extends FormPage
 
         // Max. Time Limit
         toolkit.createLabel( client, "Max. Time Limit:" );
-        maxTimeLimitText = toolkit.createText( client, "" );
+        maxTimeLimitText = toolkit.createText( client, "" ); //$NON-NLS-1$
         maxTimeLimitText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
         maxTimeLimitText.addVerifyListener( new VerifyListener()
         {
@@ -266,7 +266,7 @@ public class GeneralPage extends FormPage
 
         // Max. Size Limit
         toolkit.createLabel( client, "Max. Size Limit:" );
-        maxSizeLimitText = toolkit.createText( client, "" );
+        maxSizeLimitText = toolkit.createText( client, "" ); //$NON-NLS-1$
         maxSizeLimitText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
         maxSizeLimitText.addVerifyListener( new VerifyListener()
         {
@@ -281,7 +281,7 @@ public class GeneralPage extends FormPage
 
         // Synchronization Period
         toolkit.createLabel( client, "Synchronization Period:" );
-        synchPeriodText = toolkit.createText( client, "" );
+        synchPeriodText = toolkit.createText( client, "" ); //$NON-NLS-1$
         synchPeriodText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
         synchPeriodText.addVerifyListener( new VerifyListener()
         {
@@ -296,7 +296,7 @@ public class GeneralPage extends FormPage
 
         // Max. Threads
         toolkit.createLabel( client, "Max. Threads:" );
-        maxThreadsText = toolkit.createText( client, "" );
+        maxThreadsText = toolkit.createText( client, "" ); //$NON-NLS-1$
         maxThreadsText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
         maxThreadsText.addVerifyListener( new VerifyListener()
         {
@@ -420,7 +420,7 @@ public class GeneralPage extends FormPage
         binaryAttributesTableViewer.setInput( binaryAttributes );
 
         // Port
-        portText.setText( "" + configuration.getPort() );
+        portText.setText( "" + configuration.getPort() ); //$NON-NLS-1$
 
         // Principal
         String principal = configuration.getPrincipal();
@@ -440,16 +440,16 @@ public class GeneralPage extends FormPage
         allowAnonymousAccessCheckbox.setSelection( configuration.isAllowAnonymousAccess() );
 
         // Max Time Limit
-        maxTimeLimitText.setText( "" + configuration.getMaxTimeLimit() );
+        maxTimeLimitText.setText( "" + configuration.getMaxTimeLimit() ); //$NON-NLS-1$
 
         // Max Size Limit
-        maxSizeLimitText.setText( "" + configuration.getMaxSizeLimit() );
+        maxSizeLimitText.setText( "" + configuration.getMaxSizeLimit() ); //$NON-NLS-1$
 
         // Synchronization Period
-        synchPeriodText.setText( "" + configuration.getSynchronizationPeriod() );
+        synchPeriodText.setText( "" + configuration.getSynchronizationPeriod() ); //$NON-NLS-1$
 
         // Max Threads
-        maxThreadsText.setText( "" + configuration.getMaxThreads() );
+        maxThreadsText.setText( "" + configuration.getMaxThreads() ); //$NON-NLS-1$
 
         // Enable Access Control
         enableAccesControlCheckbox.setSelection( configuration.isEnableAccessControl() );
@@ -515,11 +515,11 @@ public class GeneralPage extends FormPage
         {
             public void widgetSelected( SelectionEvent e )
             {
-                BinaryAttributeDialog dialog = new BinaryAttributeDialog( "" );
+                BinaryAttributeDialog dialog = new BinaryAttributeDialog( "" ); //$NON-NLS-1$
                 if ( Dialog.OK == dialog.open() && dialog.isDirty() )
                 {
                     String newAttribute = dialog.getAttribute();
-                    if ( newAttribute != null && !"".equals( newAttribute )
+                    if ( newAttribute != null && !"".equals( newAttribute ) //$NON-NLS-1$
                         && !binaryAttributes.contains( newAttribute ) )
                     {
                         binaryAttributes.add( newAttribute );
@@ -596,7 +596,7 @@ public class GeneralPage extends FormPage
                 binaryAttributes.remove( oldAttribute );
 
                 String newAttribute = dialog.getAttribute();
-                if ( newAttribute != null && !"".equals( newAttribute ) && !binaryAttributes.contains( newAttribute ) )
+                if ( newAttribute != null && !"".equals( newAttribute ) && !binaryAttributes.contains( newAttribute ) ) //$NON-NLS-1$
                 {
                     binaryAttributes.add( newAttribute );
                 }

@@ -68,7 +68,6 @@ import org.eclipse.ui.application.WorkbenchWindowAdvisor;
  */
 public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor
 {
-
     private IEditorPart lastActiveEditor = null;
     private IPerspectiveDescriptor lastPerspective = null;
     private IWorkbenchPage lastActivePage;
@@ -372,5 +371,4 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor
 
         recomputeTitle();
     }
-
 }

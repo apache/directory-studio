@@ -83,14 +83,14 @@ public class LdifAttrValLine extends LdifValueLineBase implements Serializable
         }
         else
         {
-            return new LdifAttrValLine( 0, name, ":", value, LdifParserConstants.LINE_SEPARATOR );
+            return new LdifAttrValLine( 0, name, ":", value, LdifParserConstants.LINE_SEPARATOR ); //$NON-NLS-1$
         }
     }
 
 
     public static LdifAttrValLine create( String name, byte[] value )
     {
-        return new LdifAttrValLine( 0, name, "::", LdifUtils.base64encode( value ), LdifParserConstants.LINE_SEPARATOR );
+        return new LdifAttrValLine( 0, name, "::", LdifUtils.base64encode( value ), LdifParserConstants.LINE_SEPARATOR ); //$NON-NLS-1$
     }
 
 }

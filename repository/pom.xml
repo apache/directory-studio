@@ -734,6 +734,17 @@
       <groupId>org.openoffice</groupId>
       <artifactId>odfdom</artifactId>
     </dependency>
+    
+    <!-- Apache Directory Studio external dependencies -->
+    <dependency>
+      <groupId>com.bandlem.eclipse.fullscreen</groupId>
+      <artifactId>feature</artifactId>
+      <type>zip</type>
+    </dependency>
+    <dependency>
+      <groupId>com.bandlem.eclipse.fullscreen</groupId>
+      <artifactId>ui</artifactId>
+    </dependency>
 
   </dependencies>
 

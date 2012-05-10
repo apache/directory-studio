@@ -58,7 +58,6 @@ import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.FileDialog;
-import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorSite;
@@ -468,12 +467,11 @@ public class ServerConfigurationEditor extends FormEditor
         }
         catch ( Exception e )
         {
-            MessageBox messageBox = new MessageBox( PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
-                SWT.OK | SWT.ICON_ERROR );
-            messageBox.setText( Messages.getString( "ServerConfigurationEditor.Error" ) ); //$NON-NLS-1$
-            messageBox
-                .setMessage( Messages.getString( "ServerConfigurationEditor.AnErrorOccurredWhenWritingTheFileToDisk" ) + "\n" + e.getMessage() ); //$NON-NLS-1$ //$NON-NLS-2$
-            messageBox.open();
+            MessageDialog.openError(
+                PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
+                Messages.getString( "ServerConfigurationEditor.Error" ), //$NON-NLS-1$
+                Messages.getString( "ServerConfigurationEditor.AnErrorOccurredWhenWritingTheFileToDisk" ) + "\n" //$NON-NLS-1$ //$NON-NLS-2$
+                    + e.getMessage() );
             setDirty( true );
             monitor.done();
             return;
@@ -608,13 +606,11 @@ public class ServerConfigurationEditor extends FormEditor
                     }
                     catch ( Exception e )
                     {
-                        MessageBox messageBox = new MessageBox( PlatformUI.getWorkbench().getActiveWorkbenchWindow()
-                            .getShell(), SWT.OK | SWT.ICON_ERROR );
-                        messageBox.setText( Messages.getString( "ServerConfigurationEditor.Error" ) ); //$NON-NLS-1$
-                        messageBox.setMessage( Messages
-                            .getString( "ServerConfigurationEditor.AnErrorOccurredWhenWritingTheFileToDisk" ) + "\n" //$NON-NLS-1$ //$NON-NLS-2$
-                            + e.getMessage() );
-                        messageBox.open();
+                        MessageDialog.openError(
+                            PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
+                            Messages.getString( "ServerConfigurationEditor.Error" ), //$NON-NLS-1$ 
+                            Messages.getString( "ServerConfigurationEditor.AnErrorOccurredWhenWritingTheFileToDisk" ) //$NON-NLS-1$ 
+                                + "\n" + e.getMessage() ); //$NON-NLS-1$ 
                         setDirty( true );
                         monitor.done();
                         return;
@@ -624,12 +620,12 @@ public class ServerConfigurationEditor extends FormEditor
         }
         catch ( Exception e )
         {
-            MessageBox messageBox = new MessageBox( PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
-                SWT.OK | SWT.ICON_ERROR );
-            messageBox.setText( Messages.getString( "ServerConfigurationEditor.Error" ) ); //$NON-NLS-1$
-            messageBox
-                .setMessage( Messages.getString( "ServerConfigurationEditor.AnErrorOccurredWhenWritingTheFileToDisk" ) + "\n" + e.getMessage() ); //$NON-NLS-1$ //$NON-NLS-2$
-            messageBox.open();
+            MessageDialog
+                .openError(
+                    PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
+                    Messages.getString( "ServerConfigurationEditor.Error" ), //$NON-NLS-1$ 
+                    Messages.getString( "ServerConfigurationEditor.AnErrorOccurredWhenWritingTheFileToDisk" ) + "\n" //$NON-NLS-1$ //$NON-NLS-2$ 
+                        + e.getMessage() );
             return;
         }
     }

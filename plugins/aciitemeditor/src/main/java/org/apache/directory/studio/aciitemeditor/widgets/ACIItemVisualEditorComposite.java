@@ -240,7 +240,7 @@ public class ACIItemVisualEditorComposite extends ScrolledComposite implements W
             aciItem = null;
         }
 
-        String aci = "";
+        String aci = ""; //$NON-NLS-1$
         if ( aciItem != null )
         {
             aci = aciItem.toString();

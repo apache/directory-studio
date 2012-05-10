@@ -64,30 +64,38 @@ import org.dom4j.io.XMLWriter;
 public class BrowserConnectionIO
 {
     // XML tags
-    private static final String BROWSER_CONNECTIONS_TAG = "browserConnections";
+    private static final String BROWSER_CONNECTIONS_TAG = "browserConnections"; //$NON-NLS-1$
 
-    private static final String BROWSER_CONNECTION_TAG = "browserConnection";
-    private static final String ID_TAG = "id";
+    private static final String BROWSER_CONNECTION_TAG = "browserConnection"; //$NON-NLS-1$
+    private static final String ID_TAG = "id"; //$NON-NLS-1$
 
-    private static final String SEARCHES_TAG = "searches";
-    private static final String SEARCH_PARAMETER_TAG = "searchParameter";
-    private static final String NAME_TAG = "name";
-    private static final String SEARCH_BASE_TAG = "searchBase";
-    private static final String FILTER_TAG = "filer";
-    private static final String RETURNING_ATTRIBUTES_TAG = "returningAttributes";
-    private static final String RETURNING_ATTRIBUTE_TAG = "returningAttribute";
-    private static final String VALUE_TAG = "value";
-    private static final String SCOPE_TAG = "scope";
-    private static final String TIME_LIMIT_TAG = "timeLimit";
-    private static final String COUNT_LIMIT_TAG = "countLimit";
-    private static final String ALIASES_DEREFERENCING_METHOD_TAG = "aliasesDereferencingMethod";
-    private static final String REFERRALS_HANDLING_METHOD_TAG = "referralsHandlingMethod";
-    private static final String CONTROLS_TAG = "controls";
-    private static final String CONTROL_TAG = "control";
+    private static final String SEARCHES_TAG = "searches"; //$NON-NLS-1$
+    private static final String SEARCH_PARAMETER_TAG = "searchParameter"; //$NON-NLS-1$
+    private static final String NAME_TAG = "name"; //$NON-NLS-1$
+    private static final String SEARCH_BASE_TAG = "searchBase"; //$NON-NLS-1$
+    private static final String FILTER_TAG = "filer"; //$NON-NLS-1$
+    private static final String RETURNING_ATTRIBUTES_TAG = "returningAttributes"; //$NON-NLS-1$
+    private static final String RETURNING_ATTRIBUTE_TAG = "returningAttribute"; //$NON-NLS-1$
+    private static final String VALUE_TAG = "value"; //$NON-NLS-1$
+    private static final String SCOPE_TAG = "scope"; //$NON-NLS-1$
+    private static final String TIME_LIMIT_TAG = "timeLimit"; //$NON-NLS-1$
+    private static final String COUNT_LIMIT_TAG = "countLimit"; //$NON-NLS-1$
+    private static final String ALIASES_DEREFERENCING_METHOD_TAG = "aliasesDereferencingMethod"; //$NON-NLS-1$
+    private static final String REFERRALS_HANDLING_METHOD_TAG = "referralsHandlingMethod"; //$NON-NLS-1$
+    private static final String CONTROLS_TAG = "controls"; //$NON-NLS-1$
+    private static final String CONTROL_TAG = "control"; //$NON-NLS-1$
 
-    private static final String BOOKMARKS_TAG = "bookmarks";
-    private static final String BOOKMARK_PARAMETER_TAG = "bookmarkParameter";
-    private static final String DN_TAG = "dn";
+    private static final String BOOKMARKS_TAG = "bookmarks"; //$NON-NLS-1$
+    private static final String BOOKMARK_PARAMETER_TAG = "bookmarkParameter"; //$NON-NLS-1$
+    private static final String DN_TAG = "dn"; //$NON-NLS-1$
+
+    // Scope values
+    private static final String SCOPE_OBJECT = "OBJECT";
+    private static final String SCOPE_ONELEVEL = "ONELEVEL";
+    private static final String SCOPE_SUBTREE = "SUBTREE";
+    private static final String SCOPE_OBJECT_2 = "base";
+    private static final String SCOPE_ONELEVEL_2 = "one";
+    private static final String SCOPE_SUBTREE_2 = "sub";
 
 
     /**
@@ -238,7 +246,7 @@ public class BrowserConnectionIO
         {
             try
             {
-                searchParameter.setScope( SearchScope.valueOf( scopeAttribute.getValue() ) );
+                searchParameter.setScope( convertSearchScope( scopeAttribute.getValue() ) );
             }
             catch ( IllegalArgumentException e )
             {
@@ -408,7 +416,7 @@ public class BrowserConnectionIO
 
         // Writing the file to disk
         OutputFormat outformat = OutputFormat.createPrettyPrint();
-        outformat.setEncoding( "UTF-8" );
+        outformat.setEncoding( "UTF-8" ); //$NON-NLS-1$
         XMLWriter writer = new XMLWriter( stream, outformat );
         writer.write( document );
         writer.flush();
@@ -459,7 +467,7 @@ public class BrowserConnectionIO
         searchParameterElement.addAttribute( NAME_TAG, searchParameter.getName() );
 
         // Search base
-        String searchBase = searchParameter.getSearchBase() != null ? searchParameter.getSearchBase().getName() : "";
+        String searchBase = searchParameter.getSearchBase() != null ? searchParameter.getSearchBase().getName() : ""; //$NON-NLS-1$
         searchParameterElement.addAttribute( SEARCH_BASE_TAG, searchBase );
 
         // Filter
@@ -474,13 +482,13 @@ public class BrowserConnectionIO
         }
 
         // Scope
-        searchParameterElement.addAttribute( SCOPE_TAG, searchParameter.getScope().toString() );
+        searchParameterElement.addAttribute( SCOPE_TAG, convertSearchScope( searchParameter.getScope() ) );
 
         // Time limit
-        searchParameterElement.addAttribute( TIME_LIMIT_TAG, "" + searchParameter.getTimeLimit() );
+        searchParameterElement.addAttribute( TIME_LIMIT_TAG, "" + searchParameter.getTimeLimit() ); //$NON-NLS-1$
 
         // Count limit
-        searchParameterElement.addAttribute( COUNT_LIMIT_TAG, "" + searchParameter.getCountLimit() );
+        searchParameterElement.addAttribute( COUNT_LIMIT_TAG, "" + searchParameter.getCountLimit() ); //$NON-NLS-1$
 
         // Alias dereferencing method
         searchParameterElement.addAttribute( ALIASES_DEREFERENCING_METHOD_TAG, searchParameter
@@ -499,7 +507,7 @@ public class BrowserConnectionIO
             oos.writeObject( studioControl );
             oos.close();
             byte[] bytes = baos.toByteArray();
-            String controlsValue = new String( Base64.encode(bytes) );
+            String controlsValue = new String( Base64.encode( bytes ) );
 
             Element controlElement = controlsElement.addElement( CONTROL_TAG );
             controlElement.addAttribute( VALUE_TAG, controlsValue );
@@ -513,8 +521,62 @@ public class BrowserConnectionIO
         bookmarkParameterElement.addAttribute( NAME_TAG, bookmarkParameter.getName() );
 
         // Dn
-        String dn = bookmarkParameter.getDn() != null ? bookmarkParameter.getDn().getName() : "";
+        String dn = bookmarkParameter.getDn() != null ? bookmarkParameter.getDn().getName() : ""; //$NON-NLS-1$
         bookmarkParameterElement.addAttribute( DN_TAG, dn );
     }
 
+
+    /**
+     * Converts the given search scope to a string.
+     *
+     * @param scope the search scope
+     * @return the converted string for the search scope
+     * @see  https://issues.apache.org/jira/browse/DIRSTUDIO-771
+     */
+    private static String convertSearchScope( SearchScope scope )
+    {
+        if ( scope != null )
+        {
+            switch ( scope )
+            {
+                case OBJECT:
+                    return SCOPE_OBJECT;
+                case ONELEVEL:
+                    return SCOPE_ONELEVEL;
+                case SUBTREE:
+                    return SCOPE_SUBTREE;
+            }
+        }
+
+        return SCOPE_SUBTREE;
+    }
+
+
+    /**
+     * Converts the given string to a search scope.
+     * 
+     * @param scope the scope string
+     * @return the corresponding search scope
+     * @throws IllegalArgumentException if the string could not be converted
+     * @see  https://issues.apache.org/jira/browse/DIRSTUDIO-771
+     */
+    private static SearchScope convertSearchScope( String scope ) throws IllegalArgumentException
+    {
+        if ( ( SCOPE_OBJECT.equalsIgnoreCase( scope ) || SCOPE_OBJECT_2.equalsIgnoreCase( scope ) ) )
+        {
+            return SearchScope.OBJECT;
+        }
+        else if ( ( SCOPE_ONELEVEL.equalsIgnoreCase( scope ) || SCOPE_ONELEVEL_2.equalsIgnoreCase( scope ) ) )
+        {
+            return SearchScope.ONELEVEL;
+        }
+        else if ( ( SCOPE_SUBTREE.equalsIgnoreCase( scope ) || SCOPE_SUBTREE_2.equalsIgnoreCase( scope ) ) )
+        {
+            return SearchScope.SUBTREE;
+        }
+        else
+        {
+            throw new IllegalArgumentException();
+        }
+    }
 }

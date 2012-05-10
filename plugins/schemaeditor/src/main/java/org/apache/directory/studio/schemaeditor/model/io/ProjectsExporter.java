@@ -136,7 +136,7 @@ public class ProjectsExporter
 
                 // Schema Backup
                 Element schemaBackupElement = element.addElement( SCHEMA_BACKUP_TAG );
-                List<Schema> backupSchemas = project.getSchemaBackup();
+                List<Schema> backupSchemas = project.getInitialSchema();
                 if ( backupSchemas != null )
                 {
                     XMLSchemaFileExporter.addSchemas( backupSchemas.toArray( new Schema[0] ), schemaBackupElement );

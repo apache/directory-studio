@@ -20,16 +20,20 @@
 package org.apache.directory.studio.ldapservers.actions;
 
 
+import java.util.PropertyResourceBundle;
+
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
 import org.apache.directory.studio.ldapservers.LdapServersPlugin;
 import org.apache.directory.studio.ldapservers.model.LdapServer;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.ui.IPerspectiveDescriptor;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
+import org.osgi.framework.Bundle;
 
 
 /**
@@ -66,7 +70,6 @@ public class CreateConnectionActionHelper
                 new String[]
                     { IDialogConstants.OK_LABEL }, MessageDialog.OK );
             dialog.open();
-            // TODO use common methods in Common UI plugin
         }
         else
         {
@@ -80,7 +83,6 @@ public class CreateConnectionActionHelper
                     Messages.getString( "CreateConnectionActionHelper.ConnectionCalledCreatedSwitch" ), new String[] { connection.getName() } ), //$NON-NLS-1$
                 MessageDialog.INFORMATION, new String[]
                     { IDialogConstants.YES_LABEL, IDialogConstants.NO_LABEL }, MessageDialog.OK );
-            // TODO use common methods in Common UI plugin
             if ( dialog.open() == MessageDialog.OK )
             {
                 // Switching to the LDAP perspective
@@ -109,5 +111,104 @@ public class CreateConnectionActionHelper
         }
 
         return null;
+    }
+    
+
+    /**
+     * Indicates if the LDAP Browser plugins are available or not.
+     *
+     * @return
+     *  <code>true</code> if the LDAP Browser plugins are available, 
+     *  <code>false</code> if not.
+     */
+    public static boolean isLdapBrowserPluginsAvailable()
+    {
+        PropertyResourceBundle properties = LdapServersPlugin.getDefault().getPluginProperties();
+
+        // Connection Core Plugin
+        Bundle connectionCoreBundle = Platform.getBundle( properties.getString( "Plugin_ConnectionCore_id" ) ); //$NON-NLS-1$
+        if ( connectionCoreBundle != null )
+        {
+            // Checking the state of the plugin
+            if ( connectionCoreBundle.getState() == Bundle.UNINSTALLED )
+            {
+                return false;
+            }
+
+            // Connection UI Plugin
+            Bundle connectionUiBundle = Platform.getBundle( properties.getString( "Plugin_ConnectionUi_id" ) ); //$NON-NLS-1$
+            if ( connectionUiBundle != null )
+            {
+                // Checking the state of the plugin
+                if ( connectionUiBundle.getState() == Bundle.UNINSTALLED )
+                {
+                    return false;
+                }
+
+                // LDAP Browser Common Plugin
+                Bundle ldapBrowserCommonBundle = Platform.getBundle( properties
+                    .getString( "Plugin_LdapBrowserCommon_id" ) ); //$NON-NLS-1$
+                if ( ldapBrowserCommonBundle != null )
+                {
+                    // Checking the state of the plugin
+                    if ( ldapBrowserCommonBundle.getState() == Bundle.UNINSTALLED )
+                    {
+                        return false;
+                    }
+
+                    // LDAP Browser Core Plugin
+                    Bundle ldapBrowserCoreBundle = Platform.getBundle( properties
+                        .getString( "Plugin_LdapBrowserCore_id" ) ); //$NON-NLS-1$
+                    if ( ldapBrowserCoreBundle != null )
+                    {
+                        // Checking the state of the plugin
+                        if ( ldapBrowserCoreBundle.getState() == Bundle.UNINSTALLED )
+                        {
+                            return false;
+                        }
+
+                        // LDAP Browser UI Plugin
+                        Bundle ldapBrowserUiBundle = Platform.getBundle( properties
+                            .getString( "Plugin_LdapBrowserUi_id" ) ); //$NON-NLS-1$
+                        if ( ldapBrowserUiBundle != null )
+                        {
+                            // Checking the state of the plugin
+                            if ( ldapBrowserUiBundle.getState() == Bundle.UNINSTALLED )
+                            {
+                                return false;
+                            }
+
+                            // LDIF Editor Plugin
+                            Bundle ldifEditorBundle = Platform
+                                .getBundle( properties.getString( "Plugin_LdifEditor_id" ) ); //$NON-NLS-1$
+                            if ( ldifEditorBundle != null )
+                            {
+                                // Checking the state of the plugin
+                                if ( ldifEditorBundle.getState() == Bundle.UNINSTALLED )
+                                {
+                                    return false;
+                                }
+
+                                // LDIF Parser Plugin
+                                Bundle ldifParserBundle = Platform.getBundle( properties
+                                    .getString( "Plugin_LdifParser_id" ) ); //$NON-NLS-1$
+                                if ( ldifParserBundle != null )
+                                {
+                                    // Checking the state of the plugin
+                                    if ( ldifParserBundle.getState() == Bundle.UNINSTALLED )
+                                    {
+                                        return false;
+                                    }
+
+                                    return true;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        return false;
     }
 }

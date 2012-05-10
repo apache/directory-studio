@@ -102,7 +102,7 @@ public class SaslRealmDialog extends Dialog
      */
     private void initFromInput()
     {
-        saslRealmText.setText( ( initialValue == null ) ? "" : initialValue );
+        saslRealmText.setText( ( initialValue == null ) ? "" : initialValue ); //$NON-NLS-1$
     }
 
 

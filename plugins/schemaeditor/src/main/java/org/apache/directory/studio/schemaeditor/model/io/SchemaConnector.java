@@ -20,11 +20,9 @@
 package org.apache.directory.studio.schemaeditor.model.io;
 
 
-import java.util.List;
-
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.Connection;
-import org.apache.directory.studio.schemaeditor.model.Schema;
+import org.apache.directory.studio.schemaeditor.model.Project;
 
 
 /**
@@ -50,29 +48,31 @@ public interface SchemaConnector
 
 
     /**
-     * Imports the Schema of the LDAP Server using the given connection and
+     * Imports the Schema of the LDAP Server using the given project and
      * progress monitor.
      *
-     * @param connection
-     *      the connection
+     * @param project
+     *      the project
      * @param monitor
      *      the progress monitor
-     * @return
-     *      the list of schemas of the LDAP Server
+     * @throws SchemaConnectorException
      */
-    public List<Schema> importSchema( Connection connection, StudioProgressMonitor monitor );
+    public void importSchema( Project project, StudioProgressMonitor monitor )
+        throws SchemaConnectorException;
 
 
     /**
      * Exports the Schema to the LDAP Server using the given connection and
      * progress monitor.
      *
-     * @param connection
-     *      the connection
+     * @param project
+     *      the project
      * @param monitor
      *      the progress monitor
+     * @throws SchemaConnectorException
      */
-    public void exportSchema( Connection connection, StudioProgressMonitor monitor );
+    public void exportSchema( Project project, StudioProgressMonitor monitor )
+        throws SchemaConnectorException;
 
 
     /**

@@ -128,7 +128,7 @@ public class EntryEditorWidgetFilter extends ViewerFilter
             }
         }
 
-        // fitler value
+        // filter value
         if ( quickFilterValue != null && !"".equals( quickFilterValue ) ) //$NON-NLS-1$
         {
             if ( value.isString()

@@ -53,9 +53,7 @@ import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.ui.IWorkbenchActionConstants;
-import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.actions.ActionFactory;
-import org.eclipse.ui.actions.ContributionItemFactory;
 
 
 /**
@@ -80,6 +78,9 @@ public class EntryEditorActionGroup extends EntryEditorWidgetActionGroup
 
     /** The expand all action. */
     private ExpandAllAction expandAllAction;
+    
+    /** The 'Show In' menu manager */
+    private EntryEditorShowInMenuManager showInMenuManager;
 
     /** The Constant editAttributeDescriptionAction. */
     private static final String editAttributeDescriptionAction = "editAttributeDescriptionAction"; //$NON-NLS-1$
@@ -183,6 +184,7 @@ public class EntryEditorActionGroup extends EntryEditorWidgetActionGroup
         openEntryEditorPreferencePage = new OpenEntryEditorPreferencePageAction();
         collapseAllAction = new CollapseAllAction( viewer );
         expandAllAction = new ExpandAllAction( viewer );
+        showInMenuManager = new EntryEditorShowInMenuManager( entryEditor );
 
         entryEditorActionMap.put( editAttributeDescriptionAction, new EntryEditorActionProxy( viewer,
             new EditAttributeDescriptionAction( viewer ) ) );
@@ -239,7 +241,6 @@ public class EntryEditorActionGroup extends EntryEditorWidgetActionGroup
 
         entryEditorActionMap.put( propertyDialogAction, new EntryEditorActionProxy( viewer,
             new EntryEditorPropertiesAction( entryEditor ) ) );
-
     }
 
 
@@ -336,11 +337,7 @@ public class EntryEditorActionGroup extends EntryEditorWidgetActionGroup
         schemaMenuManager.add( entryEditorActionMap.get( showOrderingMrdAction ) );
         schemaMenuManager.add( entryEditorActionMap.get( showLsdAction ) );
         menuManager.add( schemaMenuManager );
-        MenuManager showInSubMenu = new MenuManager( Messages.getString( "EntryEditorActionGroup.ShowIn" ) ); //$NON-NLS-1$
-        showInSubMenu.add( ContributionItemFactory.VIEWS_SHOW_IN.create( PlatformUI.getWorkbench()
-            .getActiveWorkbenchWindow() ) );
-        menuManager.add( showInSubMenu );
-
+        showInMenuManager.createMenuManager( menuManager );
         menuManager.add( new Separator() );
 
         // copy, paste, delete

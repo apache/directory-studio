@@ -25,6 +25,7 @@ import org.apache.directory.studio.schemaeditor.PluginConstants;
 import org.apache.directory.studio.schemaeditor.controller.SchemaViewController;
 import org.apache.directory.studio.schemaeditor.view.wrappers.SchemaViewRoot;
 import org.eclipse.jface.viewers.DecoratingLabelProvider;
+import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
@@ -115,5 +116,15 @@ public class SchemaView extends ViewPart
     public void refresh()
     {
         treeViewer.refresh();
+    }
+
+
+    /**
+     * Refreshes the viewer and selects the given selection
+     */
+    public void refresh( ISelection selection )
+    {
+        treeViewer.refresh();
+        treeViewer.setSelection( selection );
     }
 }

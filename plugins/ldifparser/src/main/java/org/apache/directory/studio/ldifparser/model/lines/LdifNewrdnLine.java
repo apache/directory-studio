@@ -99,12 +99,12 @@ public class LdifNewrdnLine extends LdifValueLineBase
     {
         if ( LdifUtils.mustEncode( newrdn ) )
         {
-            return new LdifNewrdnLine( 0, "newrdn", "::", LdifUtils.base64encode( LdifUtils.utf8encode( newrdn ) ),
+            return new LdifNewrdnLine( 0, "newrdn", "::", LdifUtils.base64encode( LdifUtils.utf8encode( newrdn ) ), //$NON-NLS-1$ //$NON-NLS-2$
                 LdifParserConstants.LINE_SEPARATOR );
         }
         else
         {
-            return new LdifNewrdnLine( 0, "newrdn", ":", newrdn, LdifParserConstants.LINE_SEPARATOR );
+            return new LdifNewrdnLine( 0, "newrdn", ":", newrdn, LdifParserConstants.LINE_SEPARATOR ); //$NON-NLS-1$ //$NON-NLS-2$
         }
 
     }

@@ -26,6 +26,7 @@ import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.schemaeditor.controller.SchemaHandler;
 import org.apache.directory.studio.schemaeditor.model.io.SchemaConnector;
+import org.apache.directory.studio.schemaeditor.model.io.SchemaConnectorException;
 
 
 /**
@@ -66,8 +67,8 @@ public class Project
     /** The SchemaHandler */
     private SchemaHandler schemaHandler;
 
-    /** The backup of the Online Schema */
-    private List<Schema> schemaBackup;
+    /** The initial schema of the Online Schema */
+    private List<Schema> initialSchema;
 
     /** The flag for Online Schema Fetch */
     private boolean hasOnlineSchemaBeenFetched = false;
@@ -246,24 +247,27 @@ public class Project
     {
         if ( ( !hasOnlineSchemaBeenFetched ) && ( connection != null ) && ( schemaConnector != null ) )
         {
-            schemaBackup = schemaConnector.importSchema( connection, monitor );
-            for ( Schema schema : schemaBackup )
+            try
             {
-                schema.setProject( this );
+                schemaConnector.importSchema( this, monitor );
+            }
+            catch ( SchemaConnectorException e )
+            {
+                monitor.reportError( e );
             }
 
-            if ( schemaBackup != null )
+            // Adding each schema to the schema handler
+            if ( initialSchema != null )
             {
-                monitor.beginTask( Messages.getString( "Project.AddingSchemaToProject" ), schemaBackup.size() ); //$NON-NLS-1$
-                for ( Schema schema : schemaBackup )
+                monitor.beginTask( Messages.getString( "Project.AddingSchemaToProject" ), initialSchema.size() ); //$NON-NLS-1$
+                for ( Schema schema : initialSchema )
                 {
                     getSchemaHandler().addSchema( schema );
                 }
             }
 
-            // TODO Add error Handling
-            monitor.done();
             hasOnlineSchemaBeenFetched = true;
+            monitor.done();
         }
     }
 
@@ -281,26 +285,24 @@ public class Project
 
 
     /**
-     * Gets the Schema Backup.
+     * Gets the initial schema.
      *
-     * @return
-     *      the Schema Backup
+     * @return the initial schema
      */
-    public List<Schema> getSchemaBackup()
+    public List<Schema> getInitialSchema()
     {
-        return schemaBackup;
+        return initialSchema;
     }
 
 
     /**
-     * Sets the Schema Backup
+     * Sets the initial schema.
      *
-     * @param schemaBackup
-     *      the Schema Backup
+     * @param initialSchema the initial schema
      */
-    public void setSchemaBackup( List<Schema> schemaBackup )
+    public void setInitialSchema( List<Schema> initialSchema )
     {
-        this.schemaBackup = schemaBackup;
+        this.initialSchema = initialSchema;
     }
 
 

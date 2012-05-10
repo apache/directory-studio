@@ -196,6 +196,11 @@
     </dependency>
     <dependency>
       <groupId>org.apache.directory.studio</groupId>
+      <artifactId>org.apache.mina.core</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.directory.studio</groupId>
       <artifactId>org.dom4j.dom4j</artifactId>
       <scope>provided</scope>
     </dependency>

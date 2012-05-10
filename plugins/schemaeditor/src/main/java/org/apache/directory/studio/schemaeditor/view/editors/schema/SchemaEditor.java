@@ -51,10 +51,10 @@ public class SchemaEditor extends FormEditor
     private SchemaEditor instance;
 
     /** The Overview Page */
-    private SchemaEditorOverviewPage overview;
+    private SchemaEditorOverviewPage overviewPage;
 
     /** The Source Code page */
-    private SchemaEditorSourceCodePage sourceCode;
+    private SchemaEditorSourceCodePage sourceCodePage;
 
     /** The associated schema */
     private Schema schema;
@@ -68,6 +68,18 @@ public class SchemaEditor extends FormEditor
             {
                 getEditorSite().getPage().closeEditor( instance, false );
             }
+        }
+
+
+        public void schemaRenamed( Schema schema )
+        {
+            // Refreshing the editor pages
+            overviewPage.refreshUI();
+            sourceCodePage.refreshUI();
+
+            // Refreshing the part name (in case of a change in the name)
+            setPartName( getEditorInput().getName() );
+
         }
     };
 
@@ -98,10 +110,10 @@ public class SchemaEditor extends FormEditor
     {
         try
         {
-            overview = new SchemaEditorOverviewPage( this );
-            addPage( overview );
-            sourceCode = new SchemaEditorSourceCodePage( this );
-            addPage( sourceCode );
+            overviewPage = new SchemaEditorOverviewPage( this );
+            addPage( overviewPage );
+            sourceCodePage = new SchemaEditorSourceCodePage( this );
+            addPage( sourceCodePage );
         }
         catch ( PartInitException e )
         {
