@@ -73,24 +73,12 @@
           class="org.apache.directory.studio.valueeditors.oid.InPlaceOidValueEditor"
           icon="resources/icons/oideditor.gif"
           name="%ValueEditor_InPlaceOidValueEditor_name">
-       <syntax
-             syntaxOID="1.3.6.1.4.1.1466.115.121.1.38">
-       </syntax>
-       <syntax
-             syntaxOID="1.3.6.1.4.1.18060.0.4.0.0.2">
-       </syntax>
-       <attribute
-             attributeType="supportedControl">
-       </attribute>
-       <attribute
-             attributeType="supportedExtension">
-       </attribute>
-       <attribute
-             attributeType="supportedFeatures">
-       </attribute>
-       <attribute
-             attributeType="supportedCapabilities">
-       </attribute>
+       <syntax syntaxOID="1.3.6.1.4.1.1466.115.121.1.38"/>
+       <syntax syntaxOID="1.3.6.1.4.1.18060.0.4.0.0.2"/>
+       <attribute attributeType="supportedControl"/>
+       <attribute attributeType="supportedExtension"/>
+       <attribute attributeType="supportedFeatures"/>
+       <attribute attributeType="supportedCapabilities"/>
     </valueEditor>
     <valueEditor
           class="org.apache.directory.studio.valueeditors.uuid.InPlaceUuidValueEditor"
