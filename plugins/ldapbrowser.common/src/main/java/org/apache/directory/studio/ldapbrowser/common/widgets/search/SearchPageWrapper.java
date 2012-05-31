@@ -419,7 +419,7 @@ public class SearchPageWrapper extends BrowserWidget
             || isActive( RETURN_OPERATIONALATTRIBUTES_VISIBLE ) )
         {
             BaseWidgetUtils.createSpacer( composite, 1 );
-            Composite buttonComposite = BaseWidgetUtils.createColumnContainer( composite, 3, 1 );
+            Composite buttonComposite = BaseWidgetUtils.createColumnContainer( composite, 3, 2 );
             if ( isActive( RETURN_DN_VISIBLE ) )
             {
                 returnDnButton = BaseWidgetUtils.createCheckbox( buttonComposite, Messages
