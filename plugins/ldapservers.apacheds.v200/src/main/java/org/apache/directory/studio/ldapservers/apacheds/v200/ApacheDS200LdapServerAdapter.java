@@ -82,7 +82,7 @@ public class ApacheDS200LdapServerAdapter implements LdapServerAdapter
 
     /** The array of libraries names */
     private static final String[] libraries = new String[]
-        { "apacheds-service-2.0.0-M6.jar" }; //$NON-NLS-1$
+        { "apacheds-service-2.0.0-M8-SNAPSHOT.jar" }; //$NON-NLS-1$
 
 
     /**
@@ -94,9 +94,8 @@ public class ApacheDS200LdapServerAdapter implements LdapServerAdapter
         Bundle bundle = ApacheDS200Plugin.getDefault().getBundle();
 
         // Verifying and copying ApacheDS 2.0.0 libraries
-        monitor.subTask( "verifying and copying ApacheDS 2.0.0 libraries" );
         LdapServersUtils.verifyAndCopyLibraries( bundle, new Path( RESOURCES ).append( LIBS ),
-            getServerLibrariesFolder(), libraries );
+            getServerLibrariesFolder(), libraries, monitor, "verifying and copying ApacheDS 2.0.0 libraries" );
 
         // Creating server folder structure
         monitor.subTask( "creating server folder structure" );
@@ -164,6 +163,13 @@ public class ApacheDS200LdapServerAdapter implements LdapServerAdapter
      */
     public void start( LdapServer server, StudioProgressMonitor monitor ) throws Exception
     {
+        // Getting the bundle associated with the plugin
+        Bundle bundle = ApacheDS200Plugin.getDefault().getBundle();
+
+        // Verifying and copying ApacheDS 2.0.0 libraries
+        LdapServersUtils.verifyAndCopyLibraries( bundle, new Path( RESOURCES ).append( LIBS ),
+            getServerLibrariesFolder(), libraries, monitor, "verifying and copying ApacheDS 2.0.0 libraries" );
+        
         // Starting the console printer thread
         LdapServersUtils.startConsolePrinterThread( server );
 

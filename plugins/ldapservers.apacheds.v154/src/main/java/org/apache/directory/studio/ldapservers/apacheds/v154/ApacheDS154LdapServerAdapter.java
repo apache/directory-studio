@@ -95,9 +95,8 @@ public class ApacheDS154LdapServerAdapter implements LdapServerAdapter
         Bundle bundle = ApacheDS154Plugin.getDefault().getBundle();
 
         // Verifying and copying ApacheDS 1.5.4 libraries
-        monitor.subTask( "verifying and copying ApacheDS 1.5.4 libraries" );
         LdapServersUtils.verifyAndCopyLibraries( bundle, new Path( RESOURCES ).append( LIBS ),
-            getServerLibrariesFolder(), libraries );
+            getServerLibrariesFolder(), libraries, monitor, "verifying and copying ApacheDS 1.5.4 libraries" );
 
         // Creating server folder structure
         monitor.subTask( "creating server folder structure" );
@@ -165,6 +164,13 @@ public class ApacheDS154LdapServerAdapter implements LdapServerAdapter
      */
     public void start( LdapServer server, StudioProgressMonitor monitor ) throws Exception
     {
+        // Getting the bundle associated with the plugin
+        Bundle bundle = ApacheDS154Plugin.getDefault().getBundle();
+
+        // Verifying and copying ApacheDS 1.5.4 libraries
+        LdapServersUtils.verifyAndCopyLibraries( bundle, new Path( RESOURCES ).append( LIBS ),
+            getServerLibrariesFolder(), libraries, monitor, "verifying and copying ApacheDS 1.5.4 libraries" );
+
         // Starting the console printer thread
         LdapServersUtils.startConsolePrinterThread( server );
 

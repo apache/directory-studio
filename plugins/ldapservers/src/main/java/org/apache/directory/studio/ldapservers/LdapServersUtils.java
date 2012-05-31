@@ -30,6 +30,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.common.ui.CommonUIUtils;
 import org.apache.directory.studio.ldapservers.model.LdapServer;
 import org.apache.directory.studio.ldapservers.model.LdapServerStatus;
@@ -378,7 +379,7 @@ public class LdapServersUtils
      * @param libraries
      *      the names of the libraries
      */
-    public static void verifyAndCopyLibraries( Bundle bundle, IPath sourceLibrariesPath,
+    private static void verifyAndCopyLibraries( Bundle bundle, IPath sourceLibrariesPath,
         IPath destinationLibrariesPath, String[] libraries )
     {
         // Destination libraries folder
@@ -405,6 +406,32 @@ public class LdapServersUtils
                 }
             }
         }
+    }
+
+
+    /**
+     * Verifies that the libraries folder exists and contains the jar files 
+     * needed to launch the server.
+     *
+     * @param bundle
+     *      the bundle
+     * @param sourceLibrariesPath
+     *      the path to the source libraries
+     * @param destinationLibrariesPath
+     *      the path to the destination libraries
+     * @param libraries
+     *      the names of the libraries
+     * @param monitor the monitor
+     * @param monitorTaskName the name of the task for the monitor
+     */
+    public static void verifyAndCopyLibraries( Bundle bundle, IPath sourceLibrariesPath,
+        IPath destinationLibrariesPath, String[] libraries, StudioProgressMonitor monitor, String monitorTaskName )
+    {
+        // Creating the sub-task on the monitor
+        monitor.subTask( monitorTaskName );
+
+        // Verifying and copying the libraries
+        verifyAndCopyLibraries( bundle, sourceLibrariesPath, destinationLibrariesPath, libraries );
     }
 
 
