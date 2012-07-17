@@ -229,7 +229,7 @@ public class PartitionsMasterDetailsBlock extends MasterDetailsBlock
         indexes.add( createJdbmIndex( "dc", 100 ) ); //$NON-NLS-1$
         indexes.add( createJdbmIndex( "entryCSN", 100 ) ); //$NON-NLS-1$
         indexes.add( createJdbmIndex( "entryUUID", 100 ) ); //$NON-NLS-1$
-        indexes.add( createJdbmIndex( "krbPrincipalName", 100 ) ); //$NON-NLS-1$
+        indexes.add( createJdbmIndex( "krb5PrincipalName", 100 ) ); //$NON-NLS-1$
         indexes.add( createJdbmIndex( "objectClass", 100 ) ); //$NON-NLS-1$
         indexes.add( createJdbmIndex( "ou", 100 ) ); //$NON-NLS-1$
         indexes.add( createJdbmIndex( "uid", 100 ) ); //$NON-NLS-1$
