@@ -47,7 +47,7 @@ public class NoAliasWarning implements SchemaWarning
 
 
     /**
-     * {@inheritDoc
+     * {@inheritDoc}
      */
     public SchemaObject getSource()
     {
