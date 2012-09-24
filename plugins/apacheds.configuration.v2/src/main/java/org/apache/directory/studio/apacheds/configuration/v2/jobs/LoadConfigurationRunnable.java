@@ -245,7 +245,7 @@ public class LoadConfigurationRunnable implements StudioRunnableWithProgress
      *      the associated configuration bean
      * @throws LdapException
      */
-    private static ConfigBean readConfiguration( AbstractBTreePartition<Long> partition ) throws LdapException
+    private static ConfigBean readConfiguration( AbstractBTreePartition partition ) throws LdapException
     {
         if ( partition != null )
         {
