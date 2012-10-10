@@ -71,10 +71,10 @@
     <org.apache.commons.lang.version>2.6</org.apache.commons.lang.version>
     <org.apache.commons.logging.version>1.1.1</org.apache.commons.logging.version>
     <org.apache.commons.pool.version>1.6</org.apache.commons.pool.version>
-    <org.apache.directory.shared.validversion>1.0.0.M13-SNAPSHOT</org.apache.directory.shared.validversion>
-    <org.apache.directory.shared.version>1.0.0-M13-SNAPSHOT</org.apache.directory.shared.version>
-    <org.apache.directory.server.validversion>2.0.0.M8-SNAPSHOT</org.apache.directory.server.validversion>
-    <org.apache.directory.server.version>2.0.0-M8-SNAPSHOT</org.apache.directory.server.version>
+    <org.apache.directory.shared.validversion>1.0.0.M14-SNAPSHOT</org.apache.directory.shared.validversion>
+    <org.apache.directory.shared.version>1.0.0-M14-SNAPSHOT</org.apache.directory.shared.version>
+    <org.apache.directory.server.validversion>2.0.0.M9-SNAPSHOT</org.apache.directory.server.validversion>
+    <org.apache.directory.server.version>2.0.0-M9-SNAPSHOT</org.apache.directory.server.version>
     <org.apache.httpcomponents.version>4.1.2</org.apache.httpcomponents.version>
     <org.apache.logging.log4j.version>1.2.16</org.apache.logging.log4j.version>
     <org.apache.mina.core.version>2.0.4</org.apache.mina.core.version>
