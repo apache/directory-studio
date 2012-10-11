@@ -209,7 +209,7 @@ public class ProtectedItemWrapper
             for ( Iterator<AttributeType> it = at.iterator(); it.hasNext(); )
             {
                 AttributeType attributeType = it.next();
-                values.add( attributeType.toString() );
+                values.add( attributeType.getName() );
             }
         }
         else if ( item.getClass() == AllAttributeValuesItem.class )
