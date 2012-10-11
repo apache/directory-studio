@@ -112,7 +112,7 @@ public class UserPermissionDialog extends Dialog
     {
         try
         {
-            int precedence = precedenceCheckbox.getSelection() ? precedenceSpinner.getSelection() : -1;
+            Integer precedence = precedenceCheckbox.getSelection() ? precedenceSpinner.getSelection() : null;
             Collection<ProtectedItem> protectedItems = protectedItemsComposite.getProtectedItems();
             Collection<GrantAndDenial> grantsAndDenials = grantsAndDenialsComposite.getGrantsAndDenials();
             returnUserPermission = new UserPermission( precedence, grantsAndDenials, protectedItems );

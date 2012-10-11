@@ -377,7 +377,6 @@ public class ACIItemProtectedItemsComposite extends Composite
         {
             for ( ProtectedItemWrapper protectedItemWrapper : protectedItemWrappers )
             {
-
                 if ( protectedItemWrapper.getClazz() == item.getClass() )
                 {
                     protectedItemWrapper.setProtectedItem( item );
