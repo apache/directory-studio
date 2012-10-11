@@ -125,7 +125,7 @@ public class ACIItemItemPermissionsComposite extends Composite
             else
             {
                 StringBuffer buffer = new StringBuffer();
-                if ( itemPermission.getPrecedence() > -1 )
+                if ( ( itemPermission.getPrecedence() != null ) && ( itemPermission.getPrecedence() > -1 ) )
                 {
                     buffer.append( '(' );
                     buffer.append( itemPermission.getPrecedence() );

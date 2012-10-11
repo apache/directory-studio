@@ -179,7 +179,7 @@ public class ItemPermissionDialog extends Dialog
         // set initial values
         if ( initialItemPermission != null )
         {
-            if ( initialItemPermission.getPrecedence() > -1 )
+            if ( ( initialItemPermission.getPrecedence() != null ) && ( initialItemPermission.getPrecedence() > -1 ) )
             {
                 precedenceCheckbox.setSelection( true );
                 precedenceSpinner.setEnabled( true );

@@ -175,7 +175,7 @@ public class UserPermissionDialog extends Dialog
         // set initial values
         if ( initialUserPermission != null )
         {
-            if ( initialUserPermission.getPrecedence() > -1 )
+            if ( ( initialUserPermission.getPrecedence() != null ) && ( initialUserPermission.getPrecedence() > -1 ) )
             {
                 precedenceCheckbox.setSelection( true );
                 precedenceSpinner.setEnabled( true );
