@@ -21,6 +21,8 @@
 package org.apache.directory.studio.valueeditors.integer;
 
 
+import java.math.BigDecimal;
+
 import org.apache.directory.studio.valueeditors.AbstractDialogStringValueEditor;
 import org.eclipse.swt.widgets.Shell;
 
@@ -32,7 +34,6 @@ import org.eclipse.swt.widgets.Shell;
  */
 public class IntegerValueEditor extends AbstractDialogStringValueEditor
 {
-
     /**
      * {@inheritDoc}
      * 
@@ -41,27 +42,34 @@ public class IntegerValueEditor extends AbstractDialogStringValueEditor
     public boolean openDialog( Shell shell )
     {
         Object value = getValue();
+
         if ( value != null && value instanceof String )
         {
-            String stringValue = ( String ) value;
-            int intValue;
+            BigDecimal integer = null;
             boolean isNewOrMalformedValue = false;
+
             try
             {
-                intValue = Integer.valueOf( stringValue );
+                integer = new BigDecimal( ( String ) value );
             }
             catch ( NumberFormatException e )
             {
-                intValue = 0;
+                integer = new BigDecimal( 0 );
                 isNewOrMalformedValue = true;
             }
-            IntegerDialog dialog = new IntegerDialog( shell, intValue );
+
+            IntegerDialog dialog = new IntegerDialog( shell, integer );
             if ( dialog.open() == IntegerDialog.OK && ( dialog.isDirty() || isNewOrMalformedValue ) )
             {
-                setValue( Integer.toString( dialog.getInteger() ) );
-                return true;
+                BigDecimal newValue = dialog.getInteger();
+                if ( newValue != null )
+                {
+                    setValue( newValue.toString() );
+                    return true;
+                }
             }
         }
+
         return false;
     }
 }
