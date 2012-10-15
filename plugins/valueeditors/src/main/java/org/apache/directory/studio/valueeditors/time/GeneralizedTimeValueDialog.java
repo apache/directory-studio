@@ -352,7 +352,9 @@ public class GeneralizedTimeValueDialog extends Dialog
 
         // Combo viewer
         timezoneComboViewer = new ComboViewer( parent );
-        timezoneComboViewer.getCombo().setLayoutData( new GridData( SWT.FILL, SWT.CENTER, true, false ) );
+        GridData  timezoneGridData = new GridData( SWT.FILL, SWT.CENTER, true, false );
+        timezoneGridData.widthHint = 50;
+        timezoneComboViewer.getCombo().setLayoutData( timezoneGridData );
 
         // Adding ContentProvider, LabelProvider
         timezoneComboViewer.setContentProvider( new ArrayContentProvider() );
