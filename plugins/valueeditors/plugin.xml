@@ -40,6 +40,17 @@
        <syntax syntaxOID="1.3.6.1.4.1.1466.115.121.1.24"/>
     </valueEditor>
     <valueEditor
+          class="org.apache.directory.studio.valueeditors.adtime.ActiveDirectoryTimeValueEditor"
+          icon="resources/icons/generalizedtimeeditor.gif"
+          name="%ValueEditor_ActiveDirectoryTimeValueEditor_name">
+       <attribute attributeType="pwdLastSet"/>
+       <attribute attributeType="accountExpires"/>
+       <attribute attributeType="lastLogoff"/>
+       <attribute attributeType="lastLogon"/>
+       <attribute attributeType="lastLogonTimeStamp"/>
+       <attribute attributeType="badPasswordTime"/>
+    </valueEditor>
+    <valueEditor
           class="org.apache.directory.studio.valueeditors.objectclass.ObjectClassValueEditor"
           icon="resources/icons/objectclasseditor.png"
           name="%ValueEditor_ObjectClassValueEditor_name">
