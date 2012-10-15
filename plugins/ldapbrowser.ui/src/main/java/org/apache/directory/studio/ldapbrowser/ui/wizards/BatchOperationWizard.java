@@ -26,7 +26,9 @@ import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.ui.RunnableContextRunner;
 import org.apache.directory.studio.ldapbrowser.common.actions.BrowserSelectionUtils;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreConstants;
+import org.apache.directory.studio.ldapbrowser.core.jobs.ExecuteLdifRunnable;
 import org.apache.directory.studio.ldapbrowser.core.jobs.SearchRunnable;
+import org.apache.directory.studio.ldapbrowser.core.jobs.StudioBrowserJob;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.IBookmark;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
@@ -131,7 +133,7 @@ public class BatchOperationWizard extends Wizard implements INewWizard
             modifyPage = new BatchOperationModifyWizardPage( BatchOperationModifyWizardPage.class.getName(), this );
             addPage( modifyPage );
 
-            finishPage = new BatchOperationFinishWizardPage( BatchOperationFinishWizardPage.class.getName(), this );
+            finishPage = new BatchOperationFinishWizardPage( BatchOperationFinishWizardPage.class.getName() );
             addPage( finishPage );
         }
         else
@@ -271,11 +273,10 @@ public class BatchOperationWizard extends Wizard implements INewWizard
 
     public boolean performFinish()
     {
-
         if ( this.applyOnPage != null )
         {
-
             this.applyOnPage.saveDialogSettings();
+            this.finishPage.saveDialogSettings();
 
             // get LDIF
             String ldifFragment = ""; //$NON-NLS-1$
@@ -350,18 +351,22 @@ public class BatchOperationWizard extends Wizard implements INewWizard
                                 document.set( ldif.toString() );
                             }
                         }
-
                     }
                     catch ( PartInitException e )
                     {
                         return false;
                     }
-                    return true;
 
+                    return true;
                 }
                 else if ( finishPage.getExecutionMethod() == BatchOperationFinishWizardPage.EXECUTION_METHOD_ONLINE )
                 {
-                    // TODO
+                    ExecuteLdifRunnable runnable = new ExecuteLdifRunnable( getConnection(), ldif.toString(), true,
+                        finishPage.getContinueOnError() );
+                    StudioBrowserJob job = new StudioBrowserJob( runnable );
+                    job.execute();
+
+                    return true;
                 }
             }
 
@@ -382,5 +387,4 @@ public class BatchOperationWizard extends Wizard implements INewWizard
     {
         return this.connection;
     }
-
 }

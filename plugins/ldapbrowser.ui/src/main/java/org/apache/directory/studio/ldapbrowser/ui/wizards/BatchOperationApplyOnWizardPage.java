@@ -323,7 +323,9 @@ public class BatchOperationApplyOnWizardPage extends WizardPage
 
     }
 
-
+    /**
+     * Saves the dialog settings.
+     */
     public void saveDialogSettings()
     {
         this.spw.saveToSearch( initSearch );
