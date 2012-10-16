@@ -259,10 +259,6 @@ public class PasswordDialog extends Dialog
         composite.setLayoutData( gd );
 
         tabFolder = new TabFolder( composite, SWT.TOP );
-//        GridLayout mainLayout = new GridLayout();
-//        mainLayout.marginWidth = 0;
-//        mainLayout.marginHeight = 0;
-//        tabFolder.setLayout( mainLayout );
         tabFolder.setLayoutData( new GridData( GridData.FILL_BOTH ) );
         tabFolder.addSelectionListener( new SelectionAdapter()
         {
