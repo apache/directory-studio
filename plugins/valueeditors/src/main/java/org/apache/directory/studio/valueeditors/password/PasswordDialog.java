@@ -259,10 +259,10 @@ public class PasswordDialog extends Dialog
         composite.setLayoutData( gd );
 
         tabFolder = new TabFolder( composite, SWT.TOP );
-        GridLayout mainLayout = new GridLayout();
-        mainLayout.marginWidth = 0;
-        mainLayout.marginHeight = 0;
-        tabFolder.setLayout( mainLayout );
+//        GridLayout mainLayout = new GridLayout();
+//        mainLayout.marginWidth = 0;
+//        mainLayout.marginHeight = 0;
+//        tabFolder.setLayout( mainLayout );
         tabFolder.setLayoutData( new GridData( GridData.FILL_BOTH ) );
         tabFolder.addSelectionListener( new SelectionAdapter()
         {
@@ -282,6 +282,7 @@ public class PasswordDialog extends Dialog
             currentLayout.verticalSpacing = convertVerticalDLUsToPixels( IDialogConstants.VERTICAL_SPACING );
             currentLayout.horizontalSpacing = convertHorizontalDLUsToPixels( IDialogConstants.HORIZONTAL_SPACING );
             currentPasswordContainer.setLayout( currentLayout );
+            currentPasswordContainer.setLayoutData( new GridData(SWT.FILL, SWT.FILL, true, true) );
 
             BaseWidgetUtils.createLabel( currentPasswordContainer, Messages
                 .getString( "PasswordDialog.CurrentPassword" ) + ":", 1 ); //$NON-NLS-1$//$NON-NLS-2$
