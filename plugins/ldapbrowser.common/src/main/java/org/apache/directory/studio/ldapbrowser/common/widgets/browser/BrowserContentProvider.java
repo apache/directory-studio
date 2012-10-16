@@ -406,8 +406,19 @@ public class BrowserContentProvider implements ITreeContentProvider
             }
             else
             {
-                BrowserEntryPage[] entryPages = getEntryPages( parentEntry );;
-                return entryPages;
+                BrowserEntryPage[] entryPages = getEntryPages( parentEntry );
+
+                List<Object> objects = new ArrayList<Object>();
+
+                if ( widget.getQuickSearch() != null
+                    && parentEntry.getDn().equals( widget.getQuickSearch().getSearchBase() ) )
+                {
+                    objects.add( widget.getQuickSearch() );
+                }
+                
+                objects.addAll( Arrays.asList( entryPages ) );
+                
+                return objects.toArray();
             }
         }
         else if ( parent instanceof BrowserSearchResultPage )
