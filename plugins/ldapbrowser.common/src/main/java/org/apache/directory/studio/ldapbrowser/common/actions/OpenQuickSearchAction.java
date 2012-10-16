@@ -25,8 +25,12 @@ import org.apache.directory.studio.connection.core.Utils;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonConstants;
 import org.apache.directory.studio.ldapbrowser.common.widgets.browser.BrowserWidget;
+import org.apache.directory.studio.ldapbrowser.core.jobs.SearchRunnable;
+import org.apache.directory.studio.ldapbrowser.core.jobs.StudioBrowserJob;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
+import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.IQuickSearch;
+import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
 import org.apache.directory.studio.ldapbrowser.core.model.impl.QuickSearch;
 import org.eclipse.jface.preference.PreferenceDialog;
 import org.eclipse.jface.resource.ImageDescriptor;
@@ -60,25 +64,49 @@ public class OpenQuickSearchAction extends BrowserAction
     public void run()
     {
         IBrowserConnection browserConnection = getBrowserConnection();
+
         if ( browserConnection != null )
         {
+            // Getting the current quick search
             IQuickSearch quickSearch = widget.getQuickSearch();
-            if ( quickSearch == null )
+
+            // Creating a new quick search with the currently selected entry
+            // if there's no current quick search or quick search isn't selected
+            if ( ( quickSearch == null ) || !isQuickSearchSelected() )
             {
-                quickSearch = new QuickSearch( browserConnection.getRootDSE(), browserConnection );
+                // Setting a default search base on Root DSE
+                IEntry searchBase = browserConnection.getRootDSE();
+
+                // Getting the selected entry
+                IEntry selectedEntry = getSelectedEntry();
+
+                if ( selectedEntry != null )
+                {
+                    // Setting the selected entry as search base
+                    searchBase = selectedEntry;
+                }
+
+                // Creating a new quick search
+                quickSearch = new QuickSearch( searchBase, browserConnection );
                 widget.setQuickSearch( quickSearch );
             }
 
-            String pageId = BrowserCommonConstants.PROP_SEARCH;
-            PreferenceDialog dialog = PreferencesUtil.createPropertyDialogOn( getShell(), quickSearch, pageId, null,
-                null );
-            String title = quickSearch.getName();
-            if ( dialog != null )
+            // Creating and opening the dialog
+            PreferenceDialog dialog = PreferencesUtil.createPropertyDialogOn( getShell(), quickSearch,
+                BrowserCommonConstants.PROP_SEARCH, null, null );
+            dialog.getShell().setText(
+                NLS.bind( Messages.getString( "PropertiesAction.PropertiesForX" ), //$NON-NLS-1$
+                    Utils.shorten( quickSearch.getName(), 30 ) ) );
+            if ( dialog.open() == PreferenceDialog.OK )
             {
-                title = Utils.shorten( title, 30 );
+                // Performing the quick search if it has not been performed before
+                // (ie. the quick search was not modified at in the dialog)
+                if ( quickSearch.getSearchResults() == null )
+                {
+                    new StudioBrowserJob( new SearchRunnable( new ISearch[]
+                        { quickSearch } ) ).execute();
+                }
             }
-            dialog.getShell().setText( NLS.bind( Messages.getString( "PropertiesAction.PropertiesForX" ), title ) ); //$NON-NLS-1$
-            dialog.open();
         }
     }
 
@@ -119,24 +147,63 @@ public class OpenQuickSearchAction extends BrowserAction
     }
 
 
+    /**
+     * Gets the browser connection.
+     *
+     * @return the browser connection
+     */
     private IBrowserConnection getBrowserConnection()
     {
         if ( getInput() instanceof IBrowserConnection )
         {
             return ( IBrowserConnection ) getInput();
         }
-        if ( getSelectedSearchResults().length > 0 )
+        else if ( getSelectedSearchResults().length > 0 )
         {
             return getSelectedSearchResults()[0].getEntry().getBrowserConnection();
         }
-        if ( getSelectedEntries().length > 0 )
+        else if ( getSelectedEntries().length > 0 )
         {
             return getSelectedEntries()[0].getBrowserConnection();
         }
-        if ( getSelectedSearches().length > 0 )
+        else if ( getSelectedSearches().length > 0 )
         {
             return getSelectedSearches()[0].getBrowserConnection();
         }
+
         return null;
+    }
+
+
+    /**
+     * Gets the selected entry.
+     *
+     * @return the selected entry
+     */
+    private IEntry getSelectedEntry()
+    {
+        if ( getSelectedEntries().length == 1 )
+        {
+            return getSelectedEntries()[0];
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Indicates if quick search is currently selected object.
+     *
+     * @return <code>true</code> if quick search is the currently selected object,
+     *         <code>false</code> if not.
+     */
+    private boolean isQuickSearchSelected()
+    {
+        if ( getSelectedSearches().length == 1 )
+        {
+            return getSelectedSearches()[0].equals( widget.getQuickSearch() );
+        }
+
+        return false;
     }
 }
