@@ -21,10 +21,17 @@
 package org.apache.directory.studio.ldapbrowser.ui.wizards;
 
 
+import java.io.BufferedWriter;
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileWriter;
+
 import org.apache.directory.shared.ldap.model.name.Dn;
+import org.apache.directory.studio.common.ui.CommonUIUtils;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.ui.RunnableContextRunner;
 import org.apache.directory.studio.ldapbrowser.common.actions.BrowserSelectionUtils;
+import org.apache.directory.studio.ldapbrowser.common.actions.CopyAction;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreConstants;
 import org.apache.directory.studio.ldapbrowser.core.jobs.ExecuteLdifRunnable;
 import org.apache.directory.studio.ldapbrowser.core.jobs.SearchRunnable;
@@ -39,44 +46,55 @@ import org.apache.directory.studio.ldapbrowser.core.model.IValue;
 import org.apache.directory.studio.ldapbrowser.ui.BrowserUIConstants;
 import org.apache.directory.studio.ldifeditor.editor.LdifEditor;
 import org.apache.directory.studio.ldifeditor.editor.NonExistingLdifEditorInput;
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.jface.dialogs.Dialog;
+import org.eclipse.jface.dialogs.IDialogConstants;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.jface.wizard.WizardPage;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.dnd.TextTransfer;
+import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.FileDialog;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
-import org.eclipse.ui.IWorkbenchPage;
-import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.dialogs.SaveAsDialog;
 import org.eclipse.ui.texteditor.IDocumentProvider;
 
 
 public class BatchOperationWizard extends Wizard implements INewWizard
 {
-
+    /** The connection */
     private IBrowserConnection connection;
 
+    // Wizard pages
     private BatchOperationApplyOnWizardPage applyOnPage;
-
     private BatchOperationTypeWizardPage typePage;
-
     private BatchOperationLdifWizardPage ldifPage;
-
     private BatchOperationModifyWizardPage modifyPage;
-
     private BatchOperationFinishWizardPage finishPage;
 
 
+    /**
+     * Creates a new instance of BatchOperationWizard.
+     */
     public BatchOperationWizard()
     {
         super.setWindowTitle( Messages.getString( "BatchOperationWizard.BatchOperation" ) ); //$NON-NLS-1$
@@ -84,18 +102,29 @@ public class BatchOperationWizard extends Wizard implements INewWizard
     }
 
 
+    /**
+     * Gets the id.
+     *
+     * @return the id
+     */
     public static String getId()
     {
         return BrowserUIConstants.WIZARD_BATCH_OPERATION;
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void init( IWorkbench workbench, IStructuredSelection selection )
     {
         // PlatformUI.getWorkbench().getActiveWorkbenchWindow().getSelectionService().getSelection()
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void addPages()
     {
 
@@ -164,19 +193,29 @@ public class BatchOperationWizard extends Wizard implements INewWizard
             BrowserUIConstants.PLUGIN_ID + "." + "tools_batchoperation_wizard" ); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
+    /**
+     * This private class implements a dummy wizard page that is displayed when no connection is selected.
+     *
+     * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+     */
     class DummyWizardPage extends WizardPage
     {
-
+        /**
+         * Creates a new instance of DummyWizardPage.
+         */
         protected DummyWizardPage()
         {
             super( "" ); //$NON-NLS-1$
             super.setTitle( Messages.getString( "BatchOperationWizard.NoConnectionSelected" ) ); //$NON-NLS-1$
-            super.setDescription( Messages.getString( "BatchOperationWizard.SelectOPenCollection" ) ); //$NON-NLS-1$
+            super.setDescription( Messages.getString( "BatchOperationWizard.SelectOpenConnection" ) ); //$NON-NLS-1$
             // super.setImageDescriptor(BrowserUIPlugin.getDefault().getImageDescriptor(BrowserUIConstants.IMG_ENTRY_WIZARD));
             super.setPageComplete( true );
         }
 
 
+        /**
+         * {@inheritDoc}
+         */
         public void createControl( Composite parent )
         {
             Composite composite = new Composite( parent, SWT.NONE );
@@ -189,9 +228,11 @@ public class BatchOperationWizard extends Wizard implements INewWizard
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public IWizardPage getNextPage( IWizardPage page )
     {
-
         if ( this.applyOnPage != null )
         {
 
@@ -230,9 +271,11 @@ public class BatchOperationWizard extends Wizard implements INewWizard
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean canFinish()
     {
-
         if ( this.applyOnPage != null )
         {
             if ( !this.applyOnPage.isPageComplete() )
@@ -265,12 +308,18 @@ public class BatchOperationWizard extends Wizard implements INewWizard
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean performCancel()
     {
         return true;
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean performFinish()
     {
         if ( this.applyOnPage != null )
@@ -331,19 +380,16 @@ public class BatchOperationWizard extends Wizard implements INewWizard
                     ldif.append( BrowserCoreConstants.LINE_SEPARATOR );
                 }
 
-                if ( finishPage.getExecutionMethod() == BatchOperationFinishWizardPage.EXECUTION_METHOD_LDIF )
+                if ( finishPage.getExecutionMethod() == BatchOperationFinishWizardPage.EXECUTION_METHOD_LDIF_EDITOR )
                 {
-
-                    IEditorInput input = new NonExistingLdifEditorInput();
-                    String editorId = LdifEditor.getId();
-
+                    // Opening an LDIF Editor with the LDIF content
                     try
                     {
-                        IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
-                        IWorkbenchPage page = window.getActivePage();
-                        IEditorPart editor = page.openEditor( input, editorId );
+                        IEditorInput input = new NonExistingLdifEditorInput();
+                        IEditorPart editor = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
+                            .openEditor( input, LdifEditor.getId() );
                         IDocumentProvider documentProvider = ( ( LdifEditor ) editor ).getDocumentProvider();
-                        if ( documentProvider != null && input != null )
+                        if ( documentProvider != null )
                         {
                             IDocument document = documentProvider.getDocument( input );
                             if ( document != null )
@@ -359,8 +405,121 @@ public class BatchOperationWizard extends Wizard implements INewWizard
 
                     return true;
                 }
-                else if ( finishPage.getExecutionMethod() == BatchOperationFinishWizardPage.EXECUTION_METHOD_ONLINE )
+                else if ( finishPage.getExecutionMethod() == BatchOperationFinishWizardPage.EXECUTION_METHOD_LDIF_FILE ) // TODO
                 {
+                    // Saving the LDIF to a file
+
+                    // Getting the shell
+                    Shell shell = Display.getDefault().getActiveShell();
+
+                    // detect IDE or RCP:
+                    // check if perspective org.eclipse.ui.resourcePerspective is available
+                    boolean isIDE = CommonUIUtils.isIDEEnvironment();
+
+                    if ( isIDE )
+                    {
+                        // Asking the user for the location where to 'save as' the file
+                        SaveAsDialog dialog = new SaveAsDialog( shell );
+
+                        if ( dialog.open() != Dialog.OK )
+                        {
+                            return false;
+                        }
+
+                        // Getting if the resulting file
+                        IFile file = ResourcesPlugin.getWorkspace().getRoot().getFile( dialog.getResult() );
+
+                        try
+                        {
+                            // Creating the file if it does not exist
+                            if ( !file.exists() )
+                            {
+                                file.create( new ByteArrayInputStream( "".getBytes() ), true, null ); //$NON-NLS-1$
+                            }
+
+                            // Saving the LDIF to the file in the workspace
+                            file.setContents( new ByteArrayInputStream( ldif.toString().getBytes() ), true, true,
+                                new NullProgressMonitor() );
+                        }
+                        catch ( Exception e )
+                        {
+                            return false;
+                        }
+                    }
+                    else
+                    {
+                        boolean canOverwrite = false;
+                        String path = null;
+
+                        while ( !canOverwrite )
+                        {
+                            // Open FileDialog
+                            FileDialog dialog = new FileDialog( shell, SWT.SAVE );
+                            path = dialog.open();
+                            if ( path == null )
+                            {
+                                return false;
+                            }
+
+                            // Check whether file exists and if so, confirm overwrite
+                            final File externalFile = new File( path );
+                            if ( externalFile.exists() )
+                            {
+                                String question = NLS.bind( Messages
+                                    .getString( "BatchOperationWizard.TheFileAlreadyExistsReplace" ), path ); //$NON-NLS-1$
+                                MessageDialog overwriteDialog = new MessageDialog( shell, Messages
+                                    .getString( "BatchOperationWizard.Question" ), null, question, //$NON-NLS-1$
+                                    MessageDialog.QUESTION, new String[]
+                                        {
+                                            IDialogConstants.YES_LABEL,
+                                            IDialogConstants.NO_LABEL,
+                                            IDialogConstants.CANCEL_LABEL }, 0 );
+                                int overwrite = overwriteDialog.open();
+                                switch ( overwrite )
+                                {
+                                    case 0: // Yes
+                                        canOverwrite = true;
+                                        break;
+                                    case 1: // No
+                                        break;
+                                    case 2: // Cancel
+                                    default:
+                                        return false;
+                                }
+                            }
+                            else
+                            {
+                                canOverwrite = true;
+                            }
+                        }
+
+                        // Saving the LDIF to the file on disk
+                        try
+                        {
+                            BufferedWriter outFile = new BufferedWriter( new FileWriter( path ) );
+                            outFile.write( ldif.toString() );
+                            outFile.close();
+                        }
+                        catch ( Exception e )
+                        {
+                            return false;
+                        }
+                    }
+
+                    return true;
+                }
+                else if ( finishPage.getExecutionMethod() == BatchOperationFinishWizardPage.EXECUTION_METHOD_LDIF_CLIPBOARD )
+                {
+                    // Copying the LDIF to the clipboard
+                    CopyAction.copyToClipboard( new Object[]
+                        { ldif.toString() }, new Transfer[]
+                        { TextTransfer.getInstance() } );
+
+                    return true;
+                }
+                else if ( finishPage.getExecutionMethod() == BatchOperationFinishWizardPage.EXECUTION_METHOD_ON_CONNECTION )
+                {
+                    // Executing the LDIF on the connection
                     ExecuteLdifRunnable runnable = new ExecuteLdifRunnable( getConnection(), ldif.toString(), true,
                         finishPage.getContinueOnError() );
                     StudioBrowserJob job = new StudioBrowserJob( runnable );
@@ -377,12 +536,22 @@ public class BatchOperationWizard extends Wizard implements INewWizard
     }
 
 
+    /**
+     * Gets the type of the page.
+     *
+     * @return the type of the page
+     */
     public BatchOperationTypeWizardPage getTypePage()
     {
         return typePage;
     }
 
 
+    /**
+     * Gets the connection.
+     *
+     * @return the connection
+     */
     public IBrowserConnection getConnection()
     {
         return this.connection;

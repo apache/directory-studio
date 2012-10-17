@@ -130,11 +130,13 @@
  org.apache.directory.studio.ldifparser,
  org.eclipse.core.expressions,
  org.eclipse.core.filesystem,
+ org.eclipse.core.resources,
  org.eclipse.core.runtime,
  org.eclipse.jface.text,
  org.eclipse.ui,
  org.eclipse.ui.editors,
  org.eclipse.ui.forms,
+ org.eclipse.ui.ide,
  org.eclipse.ui.views,
  org.eclipse.ui.workbench.texteditor,
  org.eclipse.search</Require-Bundle>
@@ -238,6 +240,11 @@
     <dependency>
       <groupId>org.eclipse</groupId>
       <artifactId>osgi</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.core</groupId>
+      <artifactId>resources</artifactId>
       <scope>provided</scope>
     </dependency>
     <dependency>
