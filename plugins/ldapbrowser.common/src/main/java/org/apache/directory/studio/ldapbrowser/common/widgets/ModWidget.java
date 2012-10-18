@@ -121,7 +121,6 @@ public class ModWidget extends BrowserWidget implements ModifyListener
 
         modComposite = BaseWidgetUtils.createColumnContainer( sc, 3, 1 );
         modComposite.setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, true ) );
-        //        modComposite.setBackground( shell.getDisplay().getSystemColor( SWT.COLOR_RED ) );
 
         sc.setContent( modComposite );
 
