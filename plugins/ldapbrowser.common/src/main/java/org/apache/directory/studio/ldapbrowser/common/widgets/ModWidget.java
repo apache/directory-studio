@@ -31,10 +31,13 @@ import org.apache.directory.studio.ldapbrowser.core.model.schema.Schema;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.SchemaUtils;
 import org.eclipse.jface.fieldassist.ComboContentAdapter;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
@@ -111,7 +114,17 @@ public class ModWidget extends BrowserWidget implements ModifyListener
     {
         shell = parent.getShell();
 
-        modComposite = BaseWidgetUtils.createColumnContainer( parent, 3, 1 );
+        ScrolledComposite sc = new ScrolledComposite( parent, SWT.H_SCROLL | SWT.V_SCROLL );
+        sc.setLayout( new GridLayout() );
+        sc.setExpandHorizontal( true );
+        sc.setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, true ) );
+
+        modComposite = BaseWidgetUtils.createColumnContainer( sc, 3, 1 );
+        modComposite.setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, true ) );
+        //        modComposite.setBackground( shell.getDisplay().getSystemColor( SWT.COLOR_RED ) );
+
+        sc.setContent( modComposite );
+
         addModSpec( modComposite, 0 );
 
         return modComposite;
@@ -223,6 +236,7 @@ public class ModWidget extends BrowserWidget implements ModifyListener
         }
 
         shell.layout( true, true );
+        modComposite.setSize( modComposite.computeSize( SWT.DEFAULT, SWT.DEFAULT ) );
     }
 
 
@@ -238,9 +252,11 @@ public class ModWidget extends BrowserWidget implements ModifyListener
         final ModSpec modSpec = new ModSpec();
 
         modSpec.modGroup = BaseWidgetUtils.createGroup( modComposite, "", 1 ); //$NON-NLS-1$
+        modSpec.modGroup.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
         Composite modSpecComposite = BaseWidgetUtils.createColumnContainer( modSpec.modGroup, 2, 1 );
-        modSpec.modType = BaseWidgetUtils.createCombo( modSpecComposite, new String[]
+        modSpec.modType = BaseWidgetUtils.createReadonlyCombo( modSpecComposite, new String[]
             { "add", "replace", "delete" }, 0, 1 ); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        modSpec.modType.setLayoutData( new GridData() );
         modSpec.modType.addModifyListener( this );
         String[] attributeDescriptions = SchemaUtils.getNamesAsArray( schema.getAttributeTypeDescriptions() );
         Arrays.sort( attributeDescriptions );
