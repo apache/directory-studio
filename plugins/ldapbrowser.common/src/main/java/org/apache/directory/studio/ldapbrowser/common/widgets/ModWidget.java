@@ -42,7 +42,6 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
-import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
 
@@ -54,18 +53,17 @@ import org.eclipse.swt.widgets.Text;
  */
 public class ModWidget extends BrowserWidget implements ModifyListener
 {
-
-    /** The schema with the possible attribute types */
-    private Schema schema;
-
-    /** The shell */
-    private Shell shell;
+    /** The scrolled composite */
+    private ScrolledComposite scrolledComposite;
 
     /** The composite that contains the ModSpecs */
-    private Composite modComposite;
+    private Composite composite;
 
     /** The list of ModSpecs */
-    private ArrayList<ModSpec> modSpecList;
+    private ArrayList<ModSpec> modSpecList = new ArrayList<ModSpec>();
+
+    /** The list content proposal provider */
+    private ListContentProposalProvider listContentProposalProvider;
 
     /** The resulting LDIF */
     private String ldif;
@@ -78,9 +76,9 @@ public class ModWidget extends BrowserWidget implements ModifyListener
      */
     public ModWidget( Schema schema )
     {
-        this.schema = schema;
-        this.modSpecList = new ArrayList<ModSpec>();
-        this.ldif = null;
+        String[] attributeDescriptions = SchemaUtils.getNamesAsArray( schema.getAttributeTypeDescriptions() );
+        Arrays.sort( attributeDescriptions );
+        listContentProposalProvider = new ListContentProposalProvider( attributeDescriptions );
     }
 
 
@@ -112,21 +110,22 @@ public class ModWidget extends BrowserWidget implements ModifyListener
      */
     public Composite createContents( Composite parent )
     {
-        shell = parent.getShell();
+        // Creating the scrolled composite containing all UI
+        scrolledComposite = new ScrolledComposite( parent, SWT.H_SCROLL | SWT.V_SCROLL );
+        scrolledComposite.setLayout( new GridLayout() );
+        scrolledComposite.setExpandHorizontal( true );
+        scrolledComposite.setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, true ) );
 
-        ScrolledComposite sc = new ScrolledComposite( parent, SWT.H_SCROLL | SWT.V_SCROLL );
-        sc.setLayout( new GridLayout() );
-        sc.setExpandHorizontal( true );
-        sc.setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, true ) );
+        // Creating the composite
+        composite = BaseWidgetUtils.createColumnContainer( scrolledComposite, 3, 1 );
+        composite.setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, true ) );
+        scrolledComposite.setContent( composite );
 
-        modComposite = BaseWidgetUtils.createColumnContainer( sc, 3, 1 );
-        modComposite.setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, true ) );
+        addInitialModSpec();
 
-        sc.setContent( modComposite );
+        validate( false );
 
-        addModSpec( modComposite, 0 );
-
-        return modComposite;
+        return scrolledComposite;
     }
 
 
@@ -135,14 +134,14 @@ public class ModWidget extends BrowserWidget implements ModifyListener
      */
     public void modifyText( ModifyEvent e )
     {
-        validate();
+        validate( true );
     }
 
 
     /**
      * Validates the input elements.
      */
-    public void validate()
+    public void validate( boolean notifyListeners )
     {
         for ( int i = 0; i < modSpecList.size(); i++ )
         {
@@ -169,104 +168,87 @@ public class ModWidget extends BrowserWidget implements ModifyListener
             }
         }
 
-        notifyListeners();
+        if ( notifyListeners )
+        {
+            notifyListeners();
+        }
+    }
+
+
+    /**
+     * Adds an initial modification spec.
+     *
+     */
+    private void addInitialModSpec()
+    {
+        addModSpec( 0 );
     }
 
 
     /**
      * Adds a modification spec at the given index.
      * 
-     * @param modComposite the composite
      * @param index the index
      */
-    private void addModSpec( Composite modComposite, int index )
+    private void addModSpec( int index )
     {
-
+        // Getting the array of modification specs
         ModSpec[] modSpecs = ( ModSpec[] ) modSpecList.toArray( new ModSpec[modSpecList.size()] );
+
+        // Adding a new modification spec
+        ModSpec newModSpec = createModSpec( true );
+        modSpecList.add( newModSpec );
 
         if ( modSpecs.length > 0 )
         {
-            for ( int i = 0; i < modSpecs.length; i++ )
+            for ( int i = index; i < modSpecs.length; i++ )
             {
-                ModSpec oldModSpec = modSpecs[i];
+                ModSpec modSpec = modSpecs[i];
 
-                // remember values
-                String oldType = oldModSpec.modType.getText();
-                String oldAttribute = oldModSpec.modAttributeCombo.getText();
-                String[] oldValues = new String[oldModSpec.valueLineList.size()];
-                for ( int k = 0; k < oldValues.length; k++ )
-                {
-                    oldValues[k] = ( ( ValueLine ) oldModSpec.valueLineList.get( k ) ).valueText.getText();
-                }
+                // That's a trick to relocate the modification spec
+                // beneath the newly created one
+                modSpec.modGroup.setParent( scrolledComposite );
+                modSpec.modAddButton.setParent( scrolledComposite );
+                modSpec.modDeleteButton.setParent( scrolledComposite );
+                modSpec.modGroup.setParent( composite );
+                modSpec.modAddButton.setParent( composite );
+                modSpec.modDeleteButton.setParent( composite );
 
-                // delete old
-                oldModSpec.modGroup.dispose();
-                oldModSpec.modAddButton.dispose();
-                oldModSpec.modDeleteButton.dispose();
-                modSpecList.remove( oldModSpec );
-
-                // add new
-                ModSpec newModSpec = createModSpec( modComposite );
-                modSpecList.add( newModSpec );
-
-                // restore values
-                newModSpec.modType.setText( oldType );
-                newModSpec.modAttributeCombo.setText( oldAttribute );
-                deleteValueLine( newModSpec, 0 );
-                for ( int k = 0; k < oldValues.length; k++ )
-                {
-                    addValueLine( newModSpec, k );
-                    ValueLine newValueLine = ( ValueLine ) newModSpec.valueLineList.get( k );
-                    newValueLine.valueText.setText( oldValues[k] );
-                }
-
-                // check
-                if ( index == i + 1 )
-                {
-                    ModSpec modSpec = createModSpec( modComposite );
-                    modSpecList.add( modSpec );
-                }
+                // Same trick to update the id in the list
+                modSpecList.remove( modSpec );
+                modSpecList.add( modSpec );
             }
         }
-        else
-        {
-            ModSpec modSpec = createModSpec( modComposite );
-            modSpecList.add( modSpec );
-        }
 
-        shell.layout( true, true );
-        modComposite.setSize( modComposite.computeSize( SWT.DEFAULT, SWT.DEFAULT ) );
+        composite.setSize( composite.computeSize( SWT.DEFAULT, SWT.DEFAULT ) );
     }
 
 
     /**
      * Creates and returns a modification spec.
-     * 
-     * @param modComposite the composite
-     * 
+     *
+     * @param addFirstValueLine if a first value line should added
      * @return the created modification spec
      */
-    private ModSpec createModSpec( final Composite modComposite )
+    private ModSpec createModSpec( boolean addFirstValueLine )
     {
-        final ModSpec modSpec = new ModSpec();
+        ModSpec modSpec = new ModSpec();
 
-        modSpec.modGroup = BaseWidgetUtils.createGroup( modComposite, "", 1 ); //$NON-NLS-1$
+        modSpec.modGroup = BaseWidgetUtils.createGroup( composite, "", 1 ); //$NON-NLS-1$
         modSpec.modGroup.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
         Composite modSpecComposite = BaseWidgetUtils.createColumnContainer( modSpec.modGroup, 2, 1 );
         modSpec.modType = BaseWidgetUtils.createReadonlyCombo( modSpecComposite, new String[]
             { "add", "replace", "delete" }, 0, 1 ); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         modSpec.modType.setLayoutData( new GridData() );
         modSpec.modType.addModifyListener( this );
-        String[] attributeDescriptions = SchemaUtils.getNamesAsArray( schema.getAttributeTypeDescriptions() );
-        Arrays.sort( attributeDescriptions );
 
         // attribute combo with field decoration and content proposal
         modSpec.modAttributeCombo = BaseWidgetUtils.createCombo( modSpecComposite, new String[0], -1, 1 );
         new ExtendedContentAssistCommandAdapter( modSpec.modAttributeCombo, new ComboContentAdapter(),
-            new ListContentProposalProvider( attributeDescriptions ), null, null, true );
+            listContentProposalProvider, null, null, true );
 
         // add button with listener
-        modSpec.modAddButton = new Button( modComposite, SWT.PUSH );
+        modSpec.modAddButton = new Button( composite, SWT.PUSH );
         modSpec.modAddButton.setText( "  +   " ); //$NON-NLS-1$
         modSpec.modAddButton.addSelectionListener( new SelectionAdapter()
         {
@@ -282,14 +264,14 @@ public class ModWidget extends BrowserWidget implements ModifyListener
                     }
                 }
 
-                addModSpec( modComposite, index );
+                addModSpec( index );
 
-                validate();
+                validate( true );
             }
         } );
 
         // delete button with listener
-        modSpec.modDeleteButton = new Button( modComposite, SWT.PUSH );
+        modSpec.modDeleteButton = new Button( composite, SWT.PUSH );
         modSpec.modDeleteButton.setText( "  \u2212  " ); //$NON-NLS-1$
         modSpec.modDeleteButton.addSelectionListener( new SelectionAdapter()
         {
@@ -305,13 +287,16 @@ public class ModWidget extends BrowserWidget implements ModifyListener
                     }
                 }
 
-                deleteModSpec( modComposite, index );
+                deleteModSpec( index );
 
-                validate();
+                validate( true );
             }
         } );
 
-        addValueLine( modSpec, 0 );
+        if ( addFirstValueLine )
+        {
+            addValueLine( modSpec, 0, false );
+        }
 
         return modSpec;
     }
@@ -320,10 +305,9 @@ public class ModWidget extends BrowserWidget implements ModifyListener
     /**
      * Delets a modification spec.
      *
-     * @param modComposite the composite
      * @param index the index
      */
-    private void deleteModSpec( Composite modComposite, int index )
+    private void deleteModSpec( int index )
     {
         ModSpec modSpec = modSpecList.remove( index );
         if ( modSpec != null )
@@ -332,10 +316,7 @@ public class ModWidget extends BrowserWidget implements ModifyListener
             modSpec.modAddButton.dispose();
             modSpec.modDeleteButton.dispose();
 
-            if ( !modComposite.isDisposed() )
-            {
-                shell.layout( true, true );
-            }
+            composite.setSize( composite.computeSize( SWT.DEFAULT, SWT.DEFAULT ) );
         }
     }
 
@@ -345,47 +326,37 @@ public class ModWidget extends BrowserWidget implements ModifyListener
      * 
      * @param modSpec the modification spec
      * @param index the index
+     * @param boolean the flag to update the size
      */
-    private void addValueLine( ModSpec modSpec, int index )
+    private void addValueLine( ModSpec modSpec, int index, boolean updateSize )
     {
-
         ValueLine[] valueLines = modSpec.valueLineList.toArray( new ValueLine[modSpec.valueLineList.size()] );
+
+        ValueLine newValueLine = createValueLine( modSpec );
+        modSpec.valueLineList.add( newValueLine );
 
         if ( valueLines.length > 0 )
         {
-            for ( int i = 0; i < valueLines.length; i++ )
+            for ( int i = index; i < valueLines.length; i++ )
             {
-                ValueLine oldValueLine = valueLines[i];
+                ValueLine valueLine = valueLines[i];
 
-                // remember values
-                String oldValue = oldValueLine.valueText.getText();
+                // That's a trick to relocate the value line
+                // beneath the newly created one
+                Composite parentComposite = valueLine.valueComposite.getParent();
+                valueLine.valueComposite.setParent( scrolledComposite );
+                valueLine.valueComposite.setParent( parentComposite );
 
-                // delete old
-                oldValueLine.valueComposite.dispose();
-                modSpec.valueLineList.remove( oldValueLine );
-
-                // add new
-                ValueLine newValueLine = createValueLine( modSpec );
-                modSpec.valueLineList.add( newValueLine );
-
-                // restore value
-                newValueLine.valueText.setText( oldValue );
-
-                // check
-                if ( index == i + 1 )
-                {
-                    ValueLine valueLine = createValueLine( modSpec );
-                    modSpec.valueLineList.add( valueLine );
-                }
+                // Same trick to update the id in the list
+                modSpec.valueLineList.remove( valueLine );
+                modSpec.valueLineList.add( valueLine );
             }
         }
-        else
-        {
-            ValueLine valueLine = createValueLine( modSpec );
-            modSpec.valueLineList.add( valueLine );
-        }
 
-        shell.layout( true, true );
+        if ( updateSize )
+        {
+            composite.setSize( composite.computeSize( SWT.DEFAULT, SWT.DEFAULT ) );
+        }
     }
 
 
@@ -422,9 +393,9 @@ public class ModWidget extends BrowserWidget implements ModifyListener
                     }
                 }
 
-                addValueLine( modSpec, index );
+                addValueLine( modSpec, index, true );
 
-                validate();
+                validate( true );
             }
         } );
 
@@ -447,7 +418,7 @@ public class ModWidget extends BrowserWidget implements ModifyListener
 
                 deleteValueLine( modSpec, index );
 
-                validate();
+                validate( true );
             }
         } );
 
@@ -468,10 +439,7 @@ public class ModWidget extends BrowserWidget implements ModifyListener
         {
             valueLine.valueComposite.dispose();
 
-            if ( !modComposite.isDisposed() )
-            {
-                shell.layout( true, true );
-            }
+            composite.setSize( composite.computeSize( SWT.DEFAULT, SWT.DEFAULT ) );
         }
     }
 
@@ -483,7 +451,6 @@ public class ModWidget extends BrowserWidget implements ModifyListener
      */
     public String getLdifFragment()
     {
-
         StringBuffer sb = new StringBuffer();
         sb.append( "changetype: modify" ).append( BrowserCoreConstants.LINE_SEPARATOR ); //$NON-NLS-1$
 
@@ -538,7 +505,6 @@ public class ModWidget extends BrowserWidget implements ModifyListener
      */
     private class ModSpec
     {
-
         /** The mod group. */
         private Group modGroup;
 
@@ -571,7 +537,6 @@ public class ModWidget extends BrowserWidget implements ModifyListener
      */
     private class ValueLine
     {
-
         /** The value composite. */
         private Composite valueComposite;
 
@@ -584,5 +549,4 @@ public class ModWidget extends BrowserWidget implements ModifyListener
         /** The value delete button. */
         private Button valueDeleteButton;
     }
-
 }
