@@ -68,7 +68,7 @@
          	     <!-- TODO: Should be removed before a release -->
                  <objectState
          	        name="vendorVersion"
-         	        value="${pom.version}">
+         	        value="${project.version}">
          	     </objectState>
          	   </or>
          	</and>
