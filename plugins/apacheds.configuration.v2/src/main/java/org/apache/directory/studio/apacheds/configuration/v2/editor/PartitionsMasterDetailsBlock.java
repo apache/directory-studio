@@ -282,7 +282,7 @@ public class PartitionsMasterDetailsBlock extends MasterDetailsBlock
      * Creates the context entry for the partition.
      * 
      * @param dn the dn
-     * @return the LDIF representation of the 
+     * @return the LDIF representation of the context entry
      */
     public static String getContextEntryLdif( Dn dn )
     {
