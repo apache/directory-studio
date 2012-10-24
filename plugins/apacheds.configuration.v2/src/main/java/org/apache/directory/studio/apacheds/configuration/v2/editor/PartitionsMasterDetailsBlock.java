@@ -27,9 +27,13 @@ import org.apache.directory.server.config.beans.IndexBean;
 import org.apache.directory.server.config.beans.JdbmIndexBean;
 import org.apache.directory.server.config.beans.JdbmPartitionBean;
 import org.apache.directory.server.config.beans.PartitionBean;
+import org.apache.directory.shared.ldap.model.constants.SchemaConstants;
+import org.apache.directory.shared.ldap.model.entry.DefaultEntry;
 import org.apache.directory.shared.ldap.model.entry.Entry;
 import org.apache.directory.shared.ldap.model.exception.LdapInvalidDnException;
+import org.apache.directory.shared.ldap.model.ldif.LdifEntry;
 import org.apache.directory.shared.ldap.model.name.Dn;
+import org.apache.directory.shared.ldap.model.name.Rdn;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
@@ -218,6 +222,7 @@ public class PartitionsMasterDetailsBlock extends MasterDetailsBlock
         newPartitionBean.setPartitionCacheSize( 100 );
         newPartitionBean.setJdbmPartitionOptimizerEnabled( true );
         newPartitionBean.setPartitionSyncOnWrite( true );
+        newPartitionBean.setContextEntry( getContextEntryLdif( newPartitionBean.getPartitionSuffix() ) );
         List<IndexBean> indexes = new ArrayList<IndexBean>();
         indexes.add( createJdbmIndex( "apacheAlias", 100 ) ); //$NON-NLS-1$
         indexes.add( createJdbmIndex( "apacheOneAlias", 100 ) ); //$NON-NLS-1$
@@ -270,6 +275,42 @@ public class PartitionsMasterDetailsBlock extends MasterDetailsBlock
         }
 
         return name;
+    }
+
+
+    /**
+     * Creates the context entry for the partition.
+     * 
+     * @param dn the dn
+     * @return the LDIF representation of the 
+     */
+    public static String getContextEntryLdif( Dn dn )
+    {
+        try
+        {
+            Entry entry = new DefaultEntry( dn );
+            entry.add( SchemaConstants.OBJECT_CLASS_AT, SchemaConstants.DOMAIN_OC );
+            entry.add( SchemaConstants.OBJECT_CLASS_AT, SchemaConstants.TOP_OC );
+
+            // Getting the RDN from the DN
+            Rdn rdn = dn.getRdn();
+
+            if ( !SchemaConstants.DC_AT.equalsIgnoreCase( rdn.getType() ) )
+            {
+                entry.add( SchemaConstants.OBJECT_CLASS_AT, SchemaConstants.EXTENSIBLE_OBJECT_OC );
+                entry.add( SchemaConstants.DC_AT, rdn.getValue() );
+            }
+
+            entry.add( rdn.getType(), rdn.getValue() );
+
+            LdifEntry ldifEntry = new LdifEntry( entry );
+
+            return ldifEntry.toString();
+        }
+        catch ( Exception e )
+        {
+            return null;
+        }
     }
 
 

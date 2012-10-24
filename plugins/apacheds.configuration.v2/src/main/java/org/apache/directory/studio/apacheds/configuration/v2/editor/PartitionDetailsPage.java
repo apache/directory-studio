@@ -114,7 +114,7 @@ public class PartitionDetailsPage implements IDetailsPage
     private Text suffixText;
     private Button enableOptimizerCheckbox;
     private Button synchOnWriteCheckbox;
-    private Table contextEntryTable;
+    private Button autoGenerateContextEntryCheckbox;
     private TableViewer contextEntryTableViewer;
     private Button contextEntryAddButton;
     private Button contextEntryEditButton;
@@ -135,6 +135,14 @@ public class PartitionDetailsPage implements IDetailsPage
         }
     };
 
+    private ModifyListener suffixTextModifyListener = new ModifyListener()
+    {
+        public void modifyText( ModifyEvent e )
+        {
+            autoGenerateContextEntry();
+        }
+    };
+
     /** The Checkbox Selection Listener */
     private SelectionListener checkboxSelectionListener = new SelectionAdapter()
     {
@@ -145,13 +153,21 @@ public class PartitionDetailsPage implements IDetailsPage
         }
     };
 
+    private SelectionListener autoGenerateContextEntryCheckboxSelectionListener = new SelectionAdapter()
+    {
+        public void widgetSelected( SelectionEvent e )
+        {
+            autoGenerateContextEntry();
+            updateContextEntryEnableState();
+        }
+    };
+
     /** The Selection Changed Listener for the Context Entry Table Viewer */
     private ISelectionChangedListener contextEntryTableViewerListener = new ISelectionChangedListener()
     {
         public void selectionChanged( SelectionChangedEvent event )
         {
-            contextEntryEditButton.setEnabled( !event.getSelection().isEmpty() );
-            contextEntryDeleteButton.setEnabled( !event.getSelection().isEmpty() );
+            updateContextEntryEnableState();
         }
     };
 
@@ -397,7 +413,13 @@ public class PartitionDetailsPage implements IDetailsPage
         client.setLayout( new GridLayout( 2, false ) );
         section.setClient( client );
 
-        contextEntryTable = toolkit.createTable( client, SWT.NONE );
+        // Auto Generate Context Entry Checkbox
+        autoGenerateContextEntryCheckbox = toolkit.createButton( client, "Auto-generate context entry from suffix DN",
+            SWT.CHECK );
+        autoGenerateContextEntryCheckbox.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 3, 1 ) );
+
+        // Context Entry Table Viewer
+        Table contextEntryTable = toolkit.createTable( client, SWT.NONE );
         GridData gd = new GridData( SWT.FILL, SWT.NONE, true, false, 1, 3 );
         gd.heightHint = 62;
         gd.widthHint = 50;
@@ -494,16 +516,33 @@ public class PartitionDetailsPage implements IDetailsPage
         GridData buttonsGD = new GridData( SWT.FILL, SWT.BEGINNING, false, false );
         buttonsGD.widthHint = IDialogConstants.BUTTON_WIDTH;
 
+        // Context Entry Add Button
         contextEntryAddButton = toolkit.createButton( client, "Add...", SWT.PUSH );
         contextEntryAddButton.setLayoutData( buttonsGD );
 
+        // Context Entry Edit Button
         contextEntryEditButton = toolkit.createButton( client, "Edit...", SWT.PUSH );
         contextEntryEditButton.setEnabled( false );
         contextEntryEditButton.setLayoutData( buttonsGD );
 
+        // Context Entry Delete Button
         contextEntryDeleteButton = toolkit.createButton( client, "Delete", SWT.PUSH );
         contextEntryDeleteButton.setEnabled( false );
         contextEntryDeleteButton.setLayoutData( buttonsGD );
+    }
+
+
+    /**
+     * Updates the context entry widgets enable state.
+     */
+    private void updateContextEntryEnableState()
+    {
+        contextEntryTableViewer.getTable().setEnabled( !autoGenerateContextEntryCheckbox.getSelection() );
+        contextEntryAddButton.setEnabled( !autoGenerateContextEntryCheckbox.getSelection() );
+        contextEntryEditButton.setEnabled( ( !autoGenerateContextEntryCheckbox.getSelection() )
+            && ( !contextEntryTableViewer.getSelection().isEmpty() ) );
+        contextEntryDeleteButton.setEnabled( ( !autoGenerateContextEntryCheckbox.getSelection() )
+            && ( !contextEntryTableViewer.getSelection().isEmpty() ) );
     }
 
 
@@ -600,9 +639,11 @@ public class PartitionDetailsPage implements IDetailsPage
         idText.addModifyListener( textModifyListener );
         cacheSizeText.addModifyListener( textModifyListener );
         suffixText.addModifyListener( textModifyListener );
+        suffixText.addModifyListener( suffixTextModifyListener );
         enableOptimizerCheckbox.addSelectionListener( checkboxSelectionListener );
         synchOnWriteCheckbox.addSelectionListener( checkboxSelectionListener );
 
+        autoGenerateContextEntryCheckbox.addSelectionListener( autoGenerateContextEntryCheckboxSelectionListener );
         contextEntryTableViewer.addDoubleClickListener( contextEntryTableViewerDoubleClickListener );
         contextEntryTableViewer.addSelectionChangedListener( contextEntryTableViewerListener );
         contextEntryAddButton.addSelectionListener( contextEntryAddButtonListener );
@@ -625,9 +666,11 @@ public class PartitionDetailsPage implements IDetailsPage
         idText.removeModifyListener( textModifyListener );
         cacheSizeText.removeModifyListener( textModifyListener );
         suffixText.removeModifyListener( textModifyListener );
+        suffixText.removeModifyListener( suffixTextModifyListener );
         enableOptimizerCheckbox.removeSelectionListener( checkboxSelectionListener );
         synchOnWriteCheckbox.removeSelectionListener( checkboxSelectionListener );
 
+        autoGenerateContextEntryCheckbox.removeSelectionListener( autoGenerateContextEntryCheckboxSelectionListener );
         contextEntryTableViewer.removeDoubleClickListener( contextEntryTableViewerDoubleClickListener );
         contextEntryTableViewer.removeSelectionChangedListener( contextEntryTableViewerListener );
         contextEntryAddButton.removeSelectionListener( contextEntryAddButtonListener );
@@ -758,7 +801,22 @@ public class PartitionDetailsPage implements IDetailsPage
         // Synchronization on write
         synchOnWriteCheckbox.setSelection( input.isPartitionSyncOnWrite() );
 
+        // Auto Generate Context Entry
+        autoGenerateContextEntryCheckbox.setSelection( true );
+
         // Context Entry
+        refreshContextEntry();
+
+        // Indexed Attributes
+        indexesList = input.getIndexes();
+        indexesTableViewer.setInput( indexesList );
+
+        addListeners();
+    }
+
+
+    private void refreshContextEntry()
+    {
         String contextEntryString = input.getContextEntry();
 
         if ( ( contextEntryString != null ) && ( !"".equals( contextEntryString ) ) )
@@ -785,13 +843,34 @@ public class PartitionDetailsPage implements IDetailsPage
         contextEntryTableViewer.setInput( contextEntry );
         resizeContextEntryTableColumnsToFit();
 
-        // Indexed Attributes
-        indexesList = input.getIndexes();
-        indexesTableViewer.setInput( indexesList );
-
-        addListeners();
+        boolean enabled = !autoGenerateContextEntryCheckbox.getSelection();
+        contextEntryTableViewer.getTable().setEnabled( enabled );
+        contextEntryAddButton.setEnabled( enabled );
+        contextEntryEditButton.setEnabled( enabled );
+        contextEntryDeleteButton.setEnabled( enabled );
     }
 
+
+
+    /**
+     * Auto generates the context entry.
+     */
+    private void autoGenerateContextEntry()
+    {
+        if ( autoGenerateContextEntryCheckbox.getSelection() )
+        {
+            try
+            {
+                Dn suffixDn = new Dn( suffixText.getText() );
+                input.setContextEntry( PartitionsMasterDetailsBlock.getContextEntryLdif( suffixDn ) );
+                refreshContextEntry();
+            }
+            catch ( LdapInvalidDnException e1 )
+            {
+                // Silent
+            }
+        }
+    }
 
     /**
      * Resizes the columns to fit the size of the cells.
@@ -799,11 +878,12 @@ public class PartitionDetailsPage implements IDetailsPage
     private void resizeContextEntryTableColumnsToFit()
     {
         // Resizing the first column
-        contextEntryTable.getColumn( 0 ).pack();
+        contextEntryTableViewer.getTable().getColumn( 0 ).pack();
         // Adding a little space to the first column
-        contextEntryTable.getColumn( 0 ).setWidth( contextEntryTable.getColumn( 0 ).getWidth() + 5 );
+        contextEntryTableViewer.getTable().getColumn( 0 )
+            .setWidth( contextEntryTableViewer.getTable().getColumn( 0 ).getWidth() + 5 );
         // Resizing the second column
-        contextEntryTable.getColumn( 1 ).pack();
+        contextEntryTableViewer.getTable().getColumn( 1 ).pack();
     }
 
 
