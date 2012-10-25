@@ -3,14 +3,15 @@
   <groupId>org.eclipse.equinox.http</groupId>
   <artifactId>servlet</artifactId>
   <versioning>
-    <release>1.1.200.v20110502</release>
+    <release>1.1.300.v20120522-1841</release>
     <versions>
       <version>1.1.0.v20100503</version>
       <version>1.0.1-R33x_v20070816</version>
       <version>1.0.100.v20080427-0830</version>
       <version>1.0.200.v20090520-1800</version>
       <version>1.1.200.v20110502</version>
+      <version>1.1.300.v20120522-1841</version>
     </versions>
-    <lastUpdated>20110718112436</lastUpdated>
+    <lastUpdated>20121025122907</lastUpdated>
   </versioning>
 </metadata>

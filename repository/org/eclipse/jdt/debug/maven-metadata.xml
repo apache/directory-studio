@@ -3,7 +3,7 @@
   <groupId>org.eclipse.jdt</groupId>
   <artifactId>debug</artifactId>
   <versioning>
-    <release>3.7.1.v20110802_r371</release>
+    <release>3.7.101.v20120725-115645</release>
     <versions>
       <version>3.6.1.v20100715_r361</version>
       <version>3.3.1.v20070719_r331</version>
@@ -12,7 +12,8 @@
       <version>3.5.0.v20090526</version>
       <version>3.7.0.v20110509</version>
       <version>3.7.1.v20110802_r371</version>
+      <version>3.7.101.v20120725-115645</version>
     </versions>
-    <lastUpdated>20111206110550</lastUpdated>
+    <lastUpdated>20121025132810</lastUpdated>
   </versioning>
 </metadata>

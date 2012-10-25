@@ -3,7 +3,7 @@
   <groupId>org.eclipse.core</groupId>
   <artifactId>jobs</artifactId>
   <versioning>
-    <release>3.5.100.v20110404</release>
+    <release>3.5.200.v20120521-2346</release>
     <versions>
       <version>3.5.1.R36x_v20100824</version>
       <version>3.3.1-R33x_v20070709</version>
@@ -11,7 +11,8 @@
       <version>3.4.1.R34x_v20081128</version>
       <version>3.4.100.v20090429-1800</version>
       <version>3.5.100.v20110404</version>
+      <version>3.5.200.v20120521-2346</version>
     </versions>
-    <lastUpdated>20110718112124</lastUpdated>
+    <lastUpdated>20121025122825</lastUpdated>
   </versioning>
 </metadata>

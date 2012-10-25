@@ -3,7 +3,7 @@
   <groupId>org.eclipse</groupId>
   <artifactId>search</artifactId>
   <versioning>
-    <release>3.7.0.v20110505-0800-studio</release>
+    <release>3.8.0.v20120523-1540</release>
     <versions>
       <version>3.6.0.v20100520-0800-studio</version>
       <version>3.6.0.v20100520-0800</version>
@@ -17,7 +17,8 @@
       <version>3.5.1.r351_v20090708-0800-studio</version>
       <version>3.7.0.v20110505-0800</version>
       <version>3.7.0.v20110505-0800-studio</version>
+      <version>3.8.0.v20120523-1540</version>
     </versions>
-    <lastUpdated>20110719160212</lastUpdated>
+    <lastUpdated>20121025123125</lastUpdated>
   </versioning>
 </metadata>

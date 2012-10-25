@@ -3,7 +3,7 @@
   <groupId>com.ibm</groupId>
   <artifactId>icu</artifactId>
   <versioning>
-    <release>4.4.2.v20110208</release>
+    <release>4.4.2.v20110823</release>
     <versions>
       <version>4.2.1.v20100412</version>
       <version>3.6.1-v20070906</version>
@@ -11,7 +11,8 @@
       <version>4.0.1.v20090415</version>
       <version>4.0.1.v20090822</version>
       <version>4.4.2.v20110208</version>
+      <version>4.4.2.v20110823</version>
     </versions>
-    <lastUpdated>20110718111756</lastUpdated>
+    <lastUpdated>20121025122746</lastUpdated>
   </versioning>
 </metadata>

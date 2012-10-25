@@ -3,11 +3,12 @@
   <groupId>org.eclipse.equinox.p2.director</groupId>
   <artifactId>app</artifactId>
   <versioning>
-    <release>1.0.300.v20110505</release>
+    <release>1.0.300.v20120428-0517</release>
     <versions>
       <version>1.0.201.R36x_v20100823</version>
       <version>1.0.300.v20110505</version>
+      <version>1.0.300.v20120428-0517</version>
     </versions>
-    <lastUpdated>20110718112603</lastUpdated>
+    <lastUpdated>20121025122925</lastUpdated>
   </versioning>
 </metadata>

@@ -3,14 +3,15 @@
   <groupId>org.eclipse.ui.workbench</groupId>
   <artifactId>compatibility</artifactId>
   <versioning>
-    <release>3.2.100.I20110413-1600</release>
+    <release>3.2.101.v20120523-1956</release>
     <versions>
       <version>3.2.100.I20100511-0800</version>
       <version>3.2.0.I20070319-0010</version>
       <version>3.2.0.I20080509-2000</version>
       <version>3.2.0.I20090429-1800</version>
       <version>3.2.100.I20110413-1600</version>
+      <version>3.2.101.v20120523-1956</version>
     </versions>
-    <lastUpdated>20110718113948</lastUpdated>
+    <lastUpdated>20121025132812</lastUpdated>
   </versioning>
 </metadata>

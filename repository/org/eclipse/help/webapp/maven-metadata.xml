@@ -3,7 +3,7 @@
   <groupId>org.eclipse.help</groupId>
   <artifactId>webapp</artifactId>
   <versioning>
-    <release>3.6.0.v20110518</release>
+    <release>3.6.101.v20120717-130216</release>
     <versions>
       <version>3.5.2.r36_r20100816</version>
       <version>3.3.1-v20070823_33x</version>
@@ -13,7 +13,8 @@
       <version>3.4.0.v20090429_1800</version>
       <version>3.4.1.v20091009_35x</version>
       <version>3.6.0.v20110518</version>
+      <version>3.6.101.v20120717-130216</version>
     </versions>
-    <lastUpdated>20110718113226</lastUpdated>
+    <lastUpdated>20121025123038</lastUpdated>
   </versioning>
 </metadata>

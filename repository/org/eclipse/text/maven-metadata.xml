@@ -3,7 +3,7 @@
   <groupId>org.eclipse</groupId>
   <artifactId>text</artifactId>
   <versioning>
-    <release>3.5.101.r371_v20110810-0800</release>
+    <release>3.5.200.v20120523-1310</release>
     <versions>
       <version>3.5.0.v20100601-1300</version>
       <version>3.3.0-v20070606-0010</version>
@@ -11,7 +11,8 @@
       <version>3.5.0.v20090513-2000</version>
       <version>3.5.100.v20110505-0800</version>
       <version>3.5.101.r371_v20110810-0800</version>
+      <version>3.5.200.v20120523-1310</version>
     </versions>
-    <lastUpdated>20111206110629</lastUpdated>
+    <lastUpdated>20121025123139</lastUpdated>
   </versioning>
 </metadata>

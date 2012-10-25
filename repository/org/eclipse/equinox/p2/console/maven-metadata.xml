@@ -3,11 +3,12 @@
   <groupId>org.eclipse.equinox.p2</groupId>
   <artifactId>console</artifactId>
   <versioning>
-    <release>1.0.300.v20110502-1955</release>
+    <release>1.0.300.v20120429-0125</release>
     <versions>
       <version>1.0.200.v20100601</version>
       <version>1.0.300.v20110502-1955</version>
+      <version>1.0.300.v20120429-0125</version>
     </versions>
-    <lastUpdated>20110718112538</lastUpdated>
+    <lastUpdated>20121025122920</lastUpdated>
   </versioning>
 </metadata>

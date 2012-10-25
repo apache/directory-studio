@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata>
+  <groupId>org.eclipse.jdt.launching.ui</groupId>
+  <artifactId>macosx</artifactId>
+  <versioning>
+    <release>1.0.100.v20120523-1953</release>
+    <versions>
+      <version>1.0.100.v20120523-1953</version>
+    </versions>
+    <lastUpdated>20121025123053</lastUpdated>
+  </versioning>
+</metadata>

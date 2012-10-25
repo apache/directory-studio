@@ -3,12 +3,13 @@
   <groupId>org.eclipse.equinox.p2</groupId>
   <artifactId>jarprocessor</artifactId>
   <versioning>
-    <release>1.0.200.v20110502-1955</release>
+    <release>1.0.200.v20110808-1657</release>
     <versions>
       <version>1.0.200.v20100503a</version>
       <version>1.0.100.v20090520-1905</version>
       <version>1.0.200.v20110502-1955</version>
+      <version>1.0.200.v20110808-1657</version>
     </versions>
-    <lastUpdated>20110718112749</lastUpdated>
+    <lastUpdated>20121025132149</lastUpdated>
   </versioning>
 </metadata>

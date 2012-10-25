@@ -3,7 +3,7 @@
   <groupId>org.eclipse.team</groupId>
   <artifactId>core</artifactId>
   <versioning>
-    <release>3.6.0.I20110525-0800</release>
+    <release>3.6.100.v20120524-0627</release>
     <versions>
       <version>3.5.100.R36x_v20100825-0800</version>
       <version>3.3.1.r33x_20080128</version>
@@ -12,7 +12,8 @@
       <version>3.5.0.I20090527-0620</version>
       <version>3.5.1.r35x_20100113-0800</version>
       <version>3.6.0.I20110525-0800</version>
+      <version>3.6.100.v20120524-0627</version>
     </versions>
-    <lastUpdated>20110718113645</lastUpdated>
+    <lastUpdated>20121025123134</lastUpdated>
   </versioning>
 </metadata>

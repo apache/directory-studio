@@ -3,7 +3,7 @@
   <groupId>org.eclipse.update</groupId>
   <artifactId>core</artifactId>
   <versioning>
-    <release>3.2.500.v20110330</release>
+    <release>3.2.600.v20120530-120908</release>
     <versions>
       <version>3.2.402.R36x_v20100629</version>
       <version>3.2.101-R33x_v20070911</version>
@@ -11,7 +11,8 @@
       <version>3.2.202.R34x_v20081128</version>
       <version>3.2.300.v20090525</version>
       <version>3.2.500.v20110330</version>
+      <version>3.2.600.v20120530-120908</version>
     </versions>
-    <lastUpdated>20110718114041</lastUpdated>
+    <lastUpdated>20121025123224</lastUpdated>
   </versioning>
 </metadata>

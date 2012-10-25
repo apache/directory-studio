@@ -3,7 +3,7 @@
   <groupId>org.eclipse.ui</groupId>
   <artifactId>console</artifactId>
   <versioning>
-    <release>3.5.100.v20110511</release>
+    <release>3.5.100.v20120521-2012</release>
     <versions>
       <version>3.5.0.v20100526</version>
       <version>3.2.2.v20071031_r332</version>
@@ -11,7 +11,8 @@
       <version>3.3.1.v20090128_r342</version>
       <version>3.4.0.v20090513</version>
       <version>3.5.100.v20110511</version>
+      <version>3.5.100.v20120521-2012</version>
     </versions>
-    <lastUpdated>20110718113731</lastUpdated>
+    <lastUpdated>20121025123142</lastUpdated>
   </versioning>
 </metadata>
