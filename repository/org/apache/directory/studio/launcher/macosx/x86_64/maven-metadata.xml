@@ -3,12 +3,13 @@
   <groupId>org.apache.directory.studio.launcher.macosx</groupId>
   <artifactId>x86_64</artifactId>
   <versioning>
-    <release>2.0.v20110718</release>
+    <release>2.0.v20121026</release>
     <versions>
       <version>2.0.zip</version>
       <version>2.0</version>
       <version>2.0.v20110718</version>
+      <version>2.0.v20121026</version>
     </versions>
-    <lastUpdated>20110718134439</lastUpdated>
+    <lastUpdated>20121026101132</lastUpdated>
   </versioning>
 </metadata>
