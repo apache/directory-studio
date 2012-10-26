@@ -785,7 +785,7 @@
       <dependency>
         <groupId>org.eclipse</groupId>
         <artifactId>compare</artifactId>
-        <version>3.5.300.v20120522-1148</version>
+        <version>3.5.300.v20120522-1148-studio</version>
       </dependency>
 
       <dependency>
@@ -966,7 +966,7 @@
       <dependency>
         <groupId>org.eclipse.debug</groupId>
         <artifactId>ui</artifactId>
-        <version>3.8.1.v20120718-192144</version>
+        <version>3.8.1.v20120718-192144-studio</version>
       </dependency>
 
       <dependency>
@@ -1315,7 +1315,7 @@
       <dependency>
         <groupId>org.eclipse.jdt.debug</groupId>
         <artifactId>ui</artifactId>
-        <version>3.6.100.v20120530-1425</version>
+        <version>3.6.100.v20120530-1425-studio</version>
       </dependency>
 
       <dependency>
