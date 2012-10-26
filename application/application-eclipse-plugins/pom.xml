@@ -64,15 +64,7 @@
 			    </artifactItem>
 			    <artifactItem>
 			      <groupId>org.apache.commons</groupId>
-			      <artifactId>el</artifactId>
-			    </artifactItem>
-			    <artifactItem>
-			      <groupId>org.apache.commons</groupId>
 			      <artifactId>logging</artifactId>
-			    </artifactItem>
-			    <artifactItem>
-			      <groupId>org.apache</groupId>
-			      <artifactId>jasper</artifactId>
 			    </artifactItem>
 			    <artifactItem>
 			      <groupId>org.apache</groupId>
@@ -236,14 +228,6 @@
 			    </artifactItem>
 			    <artifactItem>
 			      <groupId>org.eclipse.equinox.p2</groupId>
-			      <artifactId>discovery</artifactId>
-			    </artifactItem>
-			    <artifactItem>
-			      <groupId>org.eclipse.equinox.p2.discovery</groupId>
-			      <artifactId>compatibility</artifactId>
-			    </artifactItem>
-			    <artifactItem>
-			      <groupId>org.eclipse.equinox.p2</groupId>
 			      <artifactId>engine</artifactId>
 			    </artifactItem>
 			    <artifactItem>
@@ -261,10 +245,6 @@
 			    <artifactItem>
 			      <groupId>org.eclipse.equinox.p2</groupId>
 			      <artifactId>metadata</artifactId>
-			    </artifactItem>
-			    <artifactItem>
-			      <groupId>org.eclipse.equinox.p2.metadata</groupId>
-			      <artifactId>generator</artifactId>
 			    </artifactItem>
 			    <artifactItem>
 			      <groupId>org.eclipse.equinox.p2.metadata</groupId>
@@ -305,10 +285,6 @@
 			    <artifactItem>
 			      <groupId>org.eclipse.equinox.p2</groupId>
 			      <artifactId>ui</artifactId>
-			    </artifactItem>
-			    <artifactItem>
-			      <groupId>org.eclipse.equinox.p2.ui</groupId>
-			      <artifactId>discovery</artifactId>
 			    </artifactItem>
 			    <artifactItem>
 			      <groupId>org.eclipse.equinox.p2.ui</groupId>
@@ -514,14 +490,6 @@
 			      <groupId>org.eclipse.update</groupId>
 			      <artifactId>ui</artifactId>
 			    </artifactItem>
-                <artifactItem>
-                  <groupId>org.mortbay.jetty</groupId>
-                  <artifactId>server</artifactId>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.mortbay.jetty</groupId>
-                  <artifactId>util</artifactId>
-                </artifactItem>
               </artifactItems>
             </configuration>
           </execution>

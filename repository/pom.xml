@@ -111,15 +111,7 @@
     </dependency>
     <dependency>
       <groupId>org.apache.commons</groupId>
-      <artifactId>el</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.commons</groupId>
       <artifactId>logging</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.apache</groupId>
-      <artifactId>jasper</artifactId>
     </dependency>
     <dependency>
       <groupId>org.apache</groupId>
@@ -358,14 +350,6 @@
     </dependency>
     <dependency>
       <groupId>org.eclipse.equinox.p2</groupId>
-      <artifactId>discovery</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.eclipse.equinox.p2.discovery</groupId>
-      <artifactId>compatibility</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.eclipse.equinox.p2</groupId>
       <artifactId>engine</artifactId>
     </dependency>
     <dependency>
@@ -383,10 +367,6 @@
     <dependency>
       <groupId>org.eclipse.equinox.p2</groupId>
       <artifactId>metadata</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.eclipse.equinox.p2.metadata</groupId>
-      <artifactId>generator</artifactId>
     </dependency>
     <dependency>
       <groupId>org.eclipse.equinox.p2.metadata</groupId>
@@ -427,10 +407,6 @@
     <dependency>
       <groupId>org.eclipse.equinox.p2</groupId>
       <artifactId>ui</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.eclipse.equinox.p2.ui</groupId>
-      <artifactId>discovery</artifactId>
     </dependency>
     <dependency>
       <groupId>org.eclipse.equinox.p2.ui</groupId>
@@ -681,14 +657,6 @@
     <dependency>
       <groupId>org.eclipse.update</groupId>
       <artifactId>ui</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.mortbay.jetty</groupId>
-      <artifactId>server</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.mortbay.jetty</groupId>
-      <artifactId>util</artifactId>
     </dependency>
     
     <!-- Eclipse language packs -->
