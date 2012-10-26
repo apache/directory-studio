@@ -851,13 +851,13 @@
       <dependency>
         <groupId>org.eclipse.core.filesystem.linux</groupId>
         <artifactId>x86</artifactId>
-        <version>1.4.0.v20110423-0524</version>
+        <version>1.4.0.v20120522-1137</version>
       </dependency>
 
       <dependency>
         <groupId>org.eclipse.core.filesystem.linux</groupId>
         <artifactId>x86_64</artifactId>
-        <version>1.2.0.v20110423-0524</version>
+        <version>1.2.0.v20120522-1137</version>
       </dependency>
 
       <dependency>
@@ -869,13 +869,13 @@
       <dependency>
         <groupId>org.eclipse.core.filesystem.win32</groupId>
         <artifactId>x86</artifactId>
-        <version>1.1.300.v20110423-0524</version>
+        <version>1.1.300.v20120522-1137</version>
       </dependency>
 
       <dependency>
         <groupId>org.eclipse.core.filesystem.win32</groupId>
         <artifactId>x86_64</artifactId>
-        <version>1.1.300.v20110423-0524</version>
+        <version>1.1.300.v20120522-1137</version>
       </dependency>
 
       <dependency>
@@ -893,25 +893,25 @@
       <dependency>
         <groupId>org.eclipse.core.net.linux</groupId>
         <artifactId>x86</artifactId>
-        <version>1.1.200.I20110419-0800</version>
+        <version>1.1.200.v20120522-1148</version>
       </dependency>
 
       <dependency>
         <groupId>org.eclipse.core.net.linux</groupId>
         <artifactId>x86_64</artifactId>
-        <version>1.1.0.I20110331-0827</version>
+        <version>1.1.0.v20120522-1148</version>
       </dependency>
 
       <dependency>
         <groupId>org.eclipse.core.net.win32</groupId>
         <artifactId>x86</artifactId>
-        <version>1.0.100.I20110331-0827</version>
+        <version>1.0.100.v20120522-1148</version>
       </dependency>
 
       <dependency>
         <groupId>org.eclipse.core.net.win32</groupId>
         <artifactId>x86_64</artifactId>
-        <version>1.0.100.I20110331-0827</version>
+        <version>1.0.100.v20120522-1148</version>
       </dependency>
 
       <dependency>
@@ -923,7 +923,7 @@
       <dependency>
         <groupId>org.eclipse.core.resources.win32</groupId>
         <artifactId>x86</artifactId>
-        <version>3.5.100.v20110423-0524</version>
+        <version>3.5.100.v20120522-1137</version>
       </dependency>
 
       <dependency>
@@ -1044,43 +1044,43 @@
       <dependency>
         <groupId>org.eclipse.equinox.launcher.cocoa</groupId>
         <artifactId>macosx</artifactId>
-        <version>1.1.100.v20110502</version>
-      <type>zip</type>
+        <version>1.1.200.v20120522-1813</version>
+        <type>zip</type>
       </dependency>
 
       <dependency>
         <groupId>org.eclipse.equinox.launcher.cocoa.macosx</groupId>
         <artifactId>x86_64</artifactId>
         <version>1.1.200.v20120522-1813</version>
-      <type>zip</type>
+        <type>zip</type>
       </dependency>
 
       <dependency>
         <groupId>org.eclipse.equinox.launcher.gtk.linux</groupId>
         <artifactId>x86</artifactId>
-        <version>1.1.100.v20110505</version>
-      <type>zip</type>
+        <version>1.1.200.v20120522-1813</version>
+        <type>zip</type>
       </dependency>
 
       <dependency>
         <groupId>org.eclipse.equinox.launcher.gtk.linux</groupId>
         <artifactId>x86_64</artifactId>
-        <version>1.1.100.v20110505</version>
-      <type>zip</type>
+        <version>1.1.200.v20120522-1813</version>
+        <type>zip</type>
       </dependency>
 
       <dependency>
         <groupId>org.eclipse.equinox.launcher.win32.win32</groupId>
         <artifactId>x86</artifactId>
-        <version>1.1.100.v20110502</version>
-      <type>zip</type>
+        <version>1.1.200.v20120522-1813</version>
+        <type>zip</type>
       </dependency>
 
       <dependency>
         <groupId>org.eclipse.equinox.launcher.win32.win32</groupId>
         <artifactId>x86_64</artifactId>
-        <version>1.1.100.v20110502</version>
-      <type>zip</type>
+        <version>1.1.200.v20120522-1813</version>
+        <type>zip</type>
       </dependency>
 
       <dependency>
@@ -1405,7 +1405,7 @@
       <dependency>
         <groupId>org.eclipse.swt.cocoa</groupId>
         <artifactId>macosx</artifactId>
-        <version>3.7.1.v3738a</version>
+        <version>3.8.1.v3834e</version>
       </dependency>
 
       <dependency>
@@ -1417,25 +1417,25 @@
       <dependency>
         <groupId>org.eclipse.swt.gtk.linux</groupId>
         <artifactId>x86</artifactId>
-        <version>3.7.1.v3738a</version>
+        <version>3.8.1.v3834e</version>
       </dependency>
 
       <dependency>
         <groupId>org.eclipse.swt.gtk.linux</groupId>
         <artifactId>x86_64</artifactId>
-        <version>3.7.1.v3738a</version>
+        <version>3.8.1.v3834e</version>
       </dependency>
 
       <dependency>
         <groupId>org.eclipse.swt.win32.win32</groupId>
         <artifactId>x86</artifactId>
-        <version>3.7.1.v3738a</version>
+        <version>3.8.1.v3834e</version>
       </dependency>
 
       <dependency>
         <groupId>org.eclipse.swt.win32.win32</groupId>
         <artifactId>x86_64</artifactId>
-        <version>3.7.1.v3738a</version>
+        <version>3.8.1.v3834e</version>
       </dependency>
 
       <dependency>
@@ -1537,7 +1537,7 @@
       <dependency>
         <groupId>org.eclipse.ui</groupId>
         <artifactId>win32</artifactId>
-        <version>3.2.200.I20100509-0800</version>
+        <version>3.2.300.v20120523-1956</version>
       </dependency>
 
       <dependency>

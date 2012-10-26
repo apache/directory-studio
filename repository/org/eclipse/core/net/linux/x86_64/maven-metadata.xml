@@ -3,11 +3,12 @@
   <groupId>org.eclipse.core.net.linux</groupId>
   <artifactId>x86_64</artifactId>
   <versioning>
-    <release>1.1.0.I20110331-0827</release>
+    <release>1.1.0.v20120522-1148</release>
     <versions>
       <version>1.1.0.I20100505-1245</version>
       <version>1.1.0.I20110331-0827</version>
+      <version>1.1.0.v20120522-1148</version>
     </versions>
-    <lastUpdated>20110718163835</lastUpdated>
+    <lastUpdated>20121026141520</lastUpdated>
   </versioning>
 </metadata>

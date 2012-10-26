@@ -3,7 +3,7 @@
   <groupId>org.eclipse.equinox.launcher.gtk.linux</groupId>
   <artifactId>x86_64</artifactId>
   <versioning>
-    <release>1.1.100.v20110505</release>
+    <release>1.1.200.v20120522-1813</release>
     <versions>
       <version>1.1.1.R36x_v20100810</version>
       <version>1.0.3.R33x_v20080118</version>
@@ -12,7 +12,8 @@
       <version>1.0.200.v20090519.zip</version>
       <version>1.0.200.v20090519</version>
       <version>1.1.100.v20110505</version>
+      <version>1.1.200.v20120522-1813</version>
     </versions>
-    <lastUpdated>20110718163852</lastUpdated>
+    <lastUpdated>20121026141534</lastUpdated>
   </versioning>
 </metadata>
