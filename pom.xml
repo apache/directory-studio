@@ -1333,7 +1333,7 @@
       <dependency>
         <groupId>org.eclipse.jdt</groupId>
         <artifactId>ui</artifactId>
-        <version>3.8.1.v20120814-144251</version>
+        <version>3.8.1.v20120814-144251-studio</version>
       </dependency>
 
       <dependency>
@@ -1393,7 +1393,7 @@
       <dependency>
         <groupId>org.eclipse</groupId>
         <artifactId>search</artifactId>
-        <version>3.8.0.v20120523-1540</version>
+        <version>3.8.0.v20120523-1540-studio</version>
       </dependency>
 
       <dependency>
@@ -1447,7 +1447,7 @@
       <dependency>
         <groupId>org.eclipse.team</groupId>
         <artifactId>ui</artifactId>
-        <version>3.6.200.v20120522-1148</version>
+        <version>3.6.200.v20120522-1148-studio</version>
       </dependency>
 
       <dependency>

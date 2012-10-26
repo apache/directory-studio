@@ -3,7 +3,7 @@
   <groupId>org.eclipse.jdt</groupId>
   <artifactId>ui</artifactId>
   <versioning>
-    <release>3.8.1.v20120814-144251</release>
+    <release>3.8.1.v20120814-144251-studio</release>
     <versions>
       <version>3.6.1.r361_v20100825-0800-studio</version>
       <version>3.6.1.r361_v20100825-0800</version>
@@ -18,7 +18,8 @@
       <version>3.7.0.v20110531-1200</version>
       <version>3.7.0.v20110531-1200-studio</version>
       <version>3.8.1.v20120814-144251</version>
+      <version>3.8.1.v20120814-144251-studio</version>
     </versions>
-    <lastUpdated>20121025123058</lastUpdated>
+    <lastUpdated>20121026162947</lastUpdated>
   </versioning>
 </metadata>
