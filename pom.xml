@@ -1477,7 +1477,7 @@
       <dependency>
         <groupId>org.eclipse.ui</groupId>
         <artifactId>editors</artifactId>
-        <version>3.8.0.v20120523-1540</version>
+        <version>3.8.0.v20120523-1540-studio</version>
       </dependency>
 
       <dependency>
@@ -1489,13 +1489,13 @@
       <dependency>
         <groupId>org.eclipse.ui</groupId>
         <artifactId>ide</artifactId>
-        <version>3.8.1.v20120829-085332</version>
+        <version>3.8.1.v20120829-085332-studio</version>
       </dependency>
 
       <dependency>
         <groupId>org.eclipse.ui.ide</groupId>
         <artifactId>application</artifactId>
-        <version>1.0.400.v20120523-1956</version>
+        <version>1.0.400.v20120523-1956-studio</version>
       </dependency>
 
       <dependency>
