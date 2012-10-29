@@ -1513,7 +1513,7 @@
       <dependency>
         <groupId>org.eclipse.ui.navigator</groupId>
         <artifactId>resources</artifactId>
-        <version>3.4.400.v20120523-1956</version>
+        <version>3.4.400.v20120523-1956-studio</version>
       </dependency>
 
       <dependency>
@@ -1525,7 +1525,7 @@
       <dependency>
         <groupId>org.eclipse.ui</groupId>
         <artifactId>views</artifactId>
-        <version>3.6.100.v20120521-2332</version>
+        <version>3.6.100.v20120521-2332-studio</version>
       </dependency>
 
       <dependency>

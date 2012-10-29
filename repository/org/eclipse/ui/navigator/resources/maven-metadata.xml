@@ -3,7 +3,7 @@
   <groupId>org.eclipse.ui.navigator</groupId>
   <artifactId>resources</artifactId>
   <versioning>
-    <release>3.4.400.v20120523-1956</release>
+    <release>3.4.400.v20120523-1956-studio</release>
     <versions>
       <version>3.4.201.M20100707-0800-studio</version>
       <version>3.4.201.M20100707-0800</version>
@@ -18,7 +18,8 @@
       <version>3.4.300.I20110421-1800</version>
       <version>3.4.300.I20110421-1800-studio</version>
       <version>3.4.400.v20120523-1956</version>
+      <version>3.4.400.v20120523-1956-studio</version>
     </versions>
-    <lastUpdated>20121025123201</lastUpdated>
+    <lastUpdated>20121029135456</lastUpdated>
   </versioning>
 </metadata>
