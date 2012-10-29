@@ -4,6 +4,6 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.eclipse.languagepack</groupId>
   <artifactId>BabelLanguagePack-eclipse-de</artifactId>
-  <version>3.6.0.v20101211043401</version>
+  <version>3.7.0.v20120721081147</version>
   <packaging>zip</packaging>
 </project>

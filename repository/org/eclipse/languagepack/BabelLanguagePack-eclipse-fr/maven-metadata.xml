@@ -3,12 +3,13 @@
   <groupId>org.eclipse.languagepack</groupId>
   <artifactId>BabelLanguagePack-eclipse-fr</artifactId>
   <versioning>
-    <release>3.6.0.v20101211043401</release>
+    <release>3.7.0.v20120721081147</release>
     <versions>
       <version>3.6.0.v20101211043401</version>
       <version>3.4.0.v20090208043401</version>
       <version>3.5.0.v20090620043401</version>
+      <version>3.7.0.v20120721081147</version>
     </versions>
-    <lastUpdated>20110106190109</lastUpdated>
+    <lastUpdated>20121029175405</lastUpdated>
   </versioning>
 </metadata>
