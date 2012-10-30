@@ -754,6 +754,12 @@
 
       <dependency>
         <groupId>javax</groupId>
+        <artifactId>el</artifactId>
+        <version>2.2.0.v201108011116</version>
+      </dependency>
+
+      <dependency>
+        <groupId>javax</groupId>
         <artifactId>servlet</artifactId>
         <version>3.0.0.v201112011016</version>
       </dependency>
@@ -771,6 +777,12 @@
       </dependency>
 
       <dependency>
+        <groupId>org.apache.jasper</groupId>
+        <artifactId>glassfish</artifactId>
+        <version>2.2.2.v201205150955</version>
+      </dependency>
+
+      <dependency>
         <groupId>org.apache</groupId>
         <artifactId>lucene</artifactId>
         <version>2.9.1.v201101211721</version>
@@ -779,6 +791,12 @@
       <dependency>
         <groupId>org.apache.lucene</groupId>
         <artifactId>analysis</artifactId>
+        <version>2.9.1.v201101211721</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.apache.lucene</groupId>
+        <artifactId>core</artifactId>
         <version>2.9.1.v201101211721</version>
       </dependency>
 
@@ -1334,6 +1352,48 @@
         <groupId>org.eclipse.jdt</groupId>
         <artifactId>ui</artifactId>
         <version>3.8.1.v20120814-144251-studio</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.eclipse.jetty</groupId>
+        <artifactId>continuation</artifactId>
+        <version>8.1.3.v20120522</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.eclipse.jetty</groupId>
+        <artifactId>http</artifactId>
+        <version>8.1.3.v20120522</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.eclipse.jetty</groupId>
+        <artifactId>io</artifactId>
+        <version>8.1.3.v20120522</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.eclipse.jetty</groupId>
+        <artifactId>security</artifactId>
+        <version>8.1.3.v20120522</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.eclipse.jetty</groupId>
+        <artifactId>server</artifactId>
+        <version>8.1.3.v20120522</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.eclipse.jetty</groupId>
+        <artifactId>servlet</artifactId>
+        <version>8.1.3.v20120522</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.eclipse.jetty</groupId>
+        <artifactId>util</artifactId>
+        <version>8.1.3.v20120522</version>
       </dependency>
 
       <dependency>

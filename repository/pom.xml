@@ -103,6 +103,10 @@
     </dependency>
     <dependency>
       <groupId>javax</groupId>
+      <artifactId>el</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>javax</groupId>
       <artifactId>servlet</artifactId>
     </dependency>
     <dependency>
@@ -114,12 +118,20 @@
       <artifactId>logging</artifactId>
     </dependency>
     <dependency>
+      <groupId>org.apache.jasper</groupId>
+      <artifactId>glassfish</artifactId>
+    </dependency>
+    <dependency>
       <groupId>org.apache</groupId>
       <artifactId>lucene</artifactId>
     </dependency>
     <dependency>
       <groupId>org.apache.lucene</groupId>
       <artifactId>analysis</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.lucene</groupId>
+      <artifactId>core</artifactId>
     </dependency>
     <dependency>
       <groupId>org.eclipse</groupId>
@@ -492,6 +504,34 @@
     <dependency>
       <groupId>org.eclipse.jdt</groupId>
       <artifactId>ui</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.jetty</groupId>
+      <artifactId>continuation</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.jetty</groupId>
+      <artifactId>http</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.jetty</groupId>
+      <artifactId>io</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.jetty</groupId>
+      <artifactId>security</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.jetty</groupId>
+      <artifactId>server</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.jetty</groupId>
+      <artifactId>servlet</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.jetty</groupId>
+      <artifactId>util</artifactId>
     </dependency>
     <dependency>
       <groupId>org.eclipse</groupId>

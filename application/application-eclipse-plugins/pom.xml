@@ -56,6 +56,10 @@
 			    </artifactItem>
 			    <artifactItem>
 			      <groupId>javax</groupId>
+			      <artifactId>el</artifactId>
+			    </artifactItem>
+			    <artifactItem>
+			      <groupId>javax</groupId>
 			      <artifactId>servlet</artifactId>
 			    </artifactItem>
 			    <artifactItem>
@@ -67,12 +71,20 @@
 			      <artifactId>logging</artifactId>
 			    </artifactItem>
 			    <artifactItem>
+			      <groupId>org.apache.jasper</groupId>
+			      <artifactId>glassfish</artifactId>
+			    </artifactItem>
+			    <artifactItem>
 			      <groupId>org.apache</groupId>
 			      <artifactId>lucene</artifactId>
 			    </artifactItem>
 			    <artifactItem>
 			      <groupId>org.apache.lucene</groupId>
 			      <artifactId>analysis</artifactId>
+			    </artifactItem>
+			    <artifactItem>
+			      <groupId>org.apache.lucene</groupId>
+			      <artifactId>core</artifactId>
 			    </artifactItem>
 			    <artifactItem>
 			      <groupId>org.eclipse</groupId>
@@ -361,6 +373,34 @@
 			    <artifactItem>
 			      <groupId>org.eclipse.jdt</groupId>
 			      <artifactId>ui</artifactId>
+			    </artifactItem>
+			    <artifactItem>
+			      <groupId>org.eclipse.jetty</groupId>
+			      <artifactId>continuation</artifactId>
+			    </artifactItem>
+			    <artifactItem>
+			      <groupId>org.eclipse.jetty</groupId>
+			      <artifactId>http</artifactId>
+			    </artifactItem>
+			    <artifactItem>
+			      <groupId>org.eclipse.jetty</groupId>
+			      <artifactId>io</artifactId>
+			    </artifactItem>
+			    <artifactItem>
+			      <groupId>org.eclipse.jetty</groupId>
+			      <artifactId>security</artifactId>
+			    </artifactItem>
+			    <artifactItem>
+			      <groupId>org.eclipse.jetty</groupId>
+			      <artifactId>server</artifactId>
+			    </artifactItem>
+			    <artifactItem>
+			      <groupId>org.eclipse.jetty</groupId>
+			      <artifactId>servlet</artifactId>
+			    </artifactItem>
+			    <artifactItem>
+			      <groupId>org.eclipse.jetty</groupId>
+			      <artifactId>util</artifactId>
 			    </artifactItem>
 			    <artifactItem>
 			      <groupId>org.eclipse</groupId>
