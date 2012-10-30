@@ -27,7 +27,8 @@ import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
 import org.apache.directory.studio.connection.core.ConnectionParameter;
 import org.apache.directory.studio.connection.core.ConnectionParameter.AuthenticationMethod;
 import org.apache.directory.studio.connection.core.ConnectionParameter.EncryptionMethod;
-import org.apache.directory.studio.connection.core.ConnectionParameter.NetworkProvider;
+import org.apache.directory.studio.connection.core.ConnectionServerType;
+import org.apache.directory.studio.connection.core.DetectedConnectionProperties;
 import org.apache.directory.studio.ldapservers.actions.CreateConnectionActionHelper;
 import org.apache.directory.studio.ldapservers.model.LdapServer;
 import org.apache.directory.studio.ldapservers.views.ServersView;
@@ -178,6 +179,14 @@ public class CreateConnectionAction implements IObjectActionDelegate
 
         // Network Provider
         connectionParameter.setNetworkProvider( ConnectionCorePlugin.getDefault().getDefaultNetworkProvider() );
+
+        // Extended Properties
+        connectionParameter.setExtendedProperty( DetectedConnectionProperties.CONNECTION_PARAMETER_SERVER_TYPE,
+            ConnectionServerType.APACHEDS.toString() );
+        connectionParameter.setExtendedProperty( DetectedConnectionProperties.CONNECTION_PARAMETER_VENDOR_NAME,
+            "Apache Software Foundation" ); //$NON-NLS-1$
+        connectionParameter.setExtendedProperty( DetectedConnectionProperties.CONNECTION_PARAMETER_VENDOR_VERSION,
+            "2.0.0" ); //$NON-NLS-1$
 
         // Creating the connection
         CreateConnectionActionHelper.createLdapBrowserConnection( server, new Connection( connectionParameter ) );

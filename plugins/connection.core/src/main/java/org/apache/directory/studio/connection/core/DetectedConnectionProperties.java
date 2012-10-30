@@ -33,31 +33,31 @@ import java.util.List;
 public class DetectedConnectionProperties
 {
     /** The key for the connection parameter "Vendor name" */
-    private static final String CONNECTION_PARAMETER_VENDOR_NAME = "detectedProperties.vendorName"; //$NON-NLS-1$
+    public static final String CONNECTION_PARAMETER_VENDOR_NAME = "detectedProperties.vendorName"; //$NON-NLS-1$
 
     /** The key for the connection parameter "Vendor version" */
-    private static final String CONNECTION_PARAMETER_VENDOR_VERSION = "detectedProperties.vendorVersion"; //$NON-NLS-1$
+    public static final String CONNECTION_PARAMETER_VENDOR_VERSION = "detectedProperties.vendorVersion"; //$NON-NLS-1$
 
     /** The key for the connection parameter "Server type" */
-    private static final String CONNECTION_PARAMETER_SERVER_TYPE = "detectedProperties.serverType"; //$NON-NLS-1$
+    public static final String CONNECTION_PARAMETER_SERVER_TYPE = "detectedProperties.serverType"; //$NON-NLS-1$
 
     /** The key for the connection parameter "Supported LDAP versions" */
-    private static final String CONNECTION_PARAMETER_SUPPORTED_LDAP_VERSIONS = "detectedProperties.supportedLdapVersions"; //$NON-NLS-1$
+    public static final String CONNECTION_PARAMETER_SUPPORTED_LDAP_VERSIONS = "detectedProperties.supportedLdapVersions"; //$NON-NLS-1$
 
     /** The key for the connection parameter "Supported SASL mechanisms" */
-    private static final String CONNECTION_PARAMETER_SUPPORTED_SASL_MECHANISMS = "detectedProperties.supportedSaslMechanisms"; //$NON-NLS-1$
+    public static final String CONNECTION_PARAMETER_SUPPORTED_SASL_MECHANISMS = "detectedProperties.supportedSaslMechanisms"; //$NON-NLS-1$
 
     /** The key for the connection parameter "Supported controls" */
-    private static final String CONNECTION_PARAMETER_SUPPORTED_CONTROLS = "detectedProperties.supportedControls"; //$NON-NLS-1$
+    public static final String CONNECTION_PARAMETER_SUPPORTED_CONTROLS = "detectedProperties.supportedControls"; //$NON-NLS-1$
 
     /** The key for the connection parameter "Supported extensions" */
-    private static final String CONNECTION_PARAMETER_SUPPORTED_EXTENSIONS = "detectedProperties.supportedExtensions"; //$NON-NLS-1$
+    public static final String CONNECTION_PARAMETER_SUPPORTED_EXTENSIONS = "detectedProperties.supportedExtensions"; //$NON-NLS-1$
 
     /** The key for the connection parameter "Supported features" */
-    private static final String CONNECTION_PARAMETER_SUPPORTED_FEATURES = "detectedProperties.supportedFeatures"; //$NON-NLS-1$
+    public static final String CONNECTION_PARAMETER_SUPPORTED_FEATURES = "detectedProperties.supportedFeatures"; //$NON-NLS-1$
 
     /** The connection */
-    private Connection connection;
+    public Connection connection;
 
 
     /**
