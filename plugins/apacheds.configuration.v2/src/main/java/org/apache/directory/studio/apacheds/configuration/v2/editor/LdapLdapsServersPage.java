@@ -20,6 +20,7 @@
 package org.apache.directory.studio.apacheds.configuration.v2.editor;
 
 
+import java.io.File;
 import java.util.List;
 
 import org.apache.directory.server.config.beans.DirectoryServiceBean;
@@ -43,11 +44,13 @@ import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.forms.widgets.FormToolkit;
@@ -110,6 +113,10 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
     private Button enableTlsCheckbox;
     private Button enableServerSidePasswordHashingCheckbox;
     private ComboViewer hashingMethodComboViewer;
+    private Text keystoreFileText;
+    private Button keystoreFileBrowseButton;
+    private Text keystorePasswordText;
+    private Button showPasswordCheckbox;
 
     // UI Controls Listeners
     private SelectionAdapter enableLdapCheckboxListener = new SelectionAdapter()
@@ -283,6 +290,81 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
             addHashingMethodInterceptor();
         }
     };
+    private ModifyListener keystoreFileTextListener = new ModifyListener()
+    {
+        public void modifyText( ModifyEvent e )
+        {
+            String keystoreFile = keystoreFileText.getText();
+
+            if ( !"".equals( keystoreFile ) )
+            {
+                getLdapServerBean().setLdapServerKeystoreFile( keystoreFile );
+            }
+            else
+            {
+                getLdapServerBean().setLdapServerKeystoreFile( null );
+            }
+        }
+    };
+    private SelectionListener keystoreFileBrowseButtonSelectionListener = new SelectionAdapter()
+    {
+        public void widgetSelected( SelectionEvent event )
+        {
+            FileDialog fileDialog = new FileDialog( keystoreFileBrowseButton.getShell(), SWT.OPEN );
+
+            File file = new File( keystoreFileText.getText() );
+            if ( file.isFile() )
+            {
+                fileDialog.setFilterPath( file.getParent() );
+                fileDialog.setFileName( file.getName() );
+            }
+            else if ( file.isDirectory() )
+            {
+                fileDialog.setFilterPath( file.getPath() );
+            }
+            else
+            {
+                fileDialog.setFilterPath( null );
+            }
+
+            String returnedFileName = fileDialog.open();
+            if ( returnedFileName != null )
+            {
+                keystoreFileText.setText( returnedFileName );
+                setEditorDirty();
+            }
+        }
+    };
+    private ModifyListener keystorePasswordTextListener = new ModifyListener()
+    {
+        public void modifyText( ModifyEvent e )
+        {
+            String keystorePassword = keystorePasswordText.getText();
+
+            if ( !"".equals( keystorePassword ) )
+            {
+                getLdapServerBean().setLdapServerCertificatePassword( keystorePassword );
+            }
+            else
+            {
+                getLdapServerBean().setLdapServerCertificatePassword( null );
+            }
+        }
+    };
+    private SelectionListener showPasswordCheckboxSelectionListener = new SelectionAdapter()
+    {
+        public void widgetSelected( SelectionEvent e )
+        {
+            if ( showPasswordCheckbox.getSelection() )
+            {
+                keystorePasswordText.setEchoChar( '\0' );
+            }
+            else
+            {
+                keystorePasswordText.setEchoChar( '\u2022' );
+            }
+        }
+    };
 
 
     /**
@@ -323,6 +405,7 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
         // Creating the sections
         createLdapServerSection( toolkit, leftComposite );
         createLimitsSection( toolkit, leftComposite );
+        createSslStartTlsKeystoreSection( toolkit, leftComposite );
         createAdvancedSection( toolkit, leftComposite );
         createSupportedAuthenticationMechanismsSection( toolkit, rightComposite );
         createSaslSettingsSection( toolkit, rightComposite );
@@ -431,7 +514,7 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
 
         // Enable Server-side Password Hashing Checkbox
         enableServerSidePasswordHashingCheckbox = toolkit.createButton( composite,
-            "Enable server-side password\nhashing",
+            "Enable server-side password hashing",
             SWT.CHECK );
         enableServerSidePasswordHashingCheckbox.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 3, 1 ) );
 
@@ -520,7 +603,7 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
         Composite composite = toolkit.createComposite( section );
         composite.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
         toolkit.paintBordersFor( composite );
-        composite.setLayout( new GridLayout( 4, true ) );
+        composite.setLayout( new GridLayout( 2, true ) );
         section.setClient( composite );
 
         // Simple Checkbox
@@ -542,22 +625,66 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
         // NTLM Checkbox and Text
         authMechNtlmCheckbox = toolkit.createButton( composite, "NTLM", SWT.CHECK ); //$NON-NLS-1$
         authMechNtlmCheckbox.setLayoutData( new GridData( SWT.FILL, SWT.CENTER, true, false ) );
+        toolkit.createLabel( composite, "" ); //$NON-NLS-1$
         Composite authMechNtlmComposite = toolkit.createComposite( composite );
-        authMechNtlmComposite.setLayout( new GridLayout( 2, false ) );
+        authMechNtlmComposite.setLayout( new GridLayout( 3, false ) );
+        toolkit.createLabel( authMechNtlmComposite, "   " ); //$NON-NLS-1$
         toolkit.createLabel( authMechNtlmComposite, "Provider:" );
         authMechNtlmText = toolkit.createText( authMechNtlmComposite, "" ); //$NON-NLS-1$
         authMechNtlmText.setLayoutData( new GridData( SWT.FILL, SWT.CENTER, true, false ) );
-        authMechNtlmComposite.setLayoutData( new GridData( SWT.FILL, SWT.CENTER, false, false, 3, 1 ) );
+        authMechNtlmComposite.setLayoutData( new GridData( SWT.FILL, SWT.CENTER, false, false, 2, 1 ) );
 
         // GSS-SPNEGO Checkbox and Text
         authMechGssSpnegoCheckbox = toolkit.createButton( composite, "GSS-SPNEGO", SWT.CHECK );
         authMechGssSpnegoCheckbox.setLayoutData( new GridData( SWT.FILL, SWT.CENTER, true, false ) );
+        toolkit.createLabel( composite, "" ); //$NON-NLS-1$
         Composite authMechGssSpnegoComposite = toolkit.createComposite( composite );
-        authMechGssSpnegoComposite.setLayout( new GridLayout( 2, false ) );
+        authMechGssSpnegoComposite.setLayout( new GridLayout( 3, false ) );
+        toolkit.createLabel( authMechGssSpnegoComposite, "   " ); //$NON-NLS-1$
         toolkit.createLabel( authMechGssSpnegoComposite, "Provider:" );
         authMechGssSpnegoText = toolkit.createText( authMechGssSpnegoComposite, "" ); //$NON-NLS-1$
         authMechGssSpnegoText.setLayoutData( new GridData( SWT.FILL, SWT.CENTER, true, false ) );
-        authMechGssSpnegoComposite.setLayoutData( new GridData( SWT.FILL, SWT.CENTER, true, false, 3, 1 ) );
+        authMechGssSpnegoComposite.setLayoutData( new GridData( SWT.FILL, SWT.CENTER, true, false, 2, 1 ) );
+    }
+
+
+    /**
+     * Creates the SSL/Start TLS Keystore Section
+     *
+     * @param toolkit
+     *      the toolkit to use
+     * @param parent
+     *      the parent composite
+     */
+    private void createSslStartTlsKeystoreSection( FormToolkit toolkit, Composite parent )
+    {
+        // Creation of the section
+        Section section = toolkit.createSection( parent, Section.TITLE_BAR );
+        section.setText( "SSL/Start TLS Keystore" );
+        section.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
+        Composite composite = toolkit.createComposite( section );
+        toolkit.paintBordersFor( composite );
+        GridLayout glayout = new GridLayout( 3, false );
+        composite.setLayout( glayout );
+        section.setClient( composite );
+
+        // Keystore File Text
+        toolkit.createLabel( composite, "Keystore:" );
+        keystoreFileText = toolkit.createText( composite, "" ); //$NON-NLS-1$
+        setGridDataWithDefaultWidth( keystoreFileText, new GridData( SWT.FILL, SWT.CENTER, true, false ) );
+        keystoreFileBrowseButton = toolkit.createButton( composite, "Browse...", SWT.PUSH );
+
+        // Password Text
+        toolkit.createLabel( composite, "Password:" );
+        keystorePasswordText = toolkit.createText( composite, "" ); //$NON-NLS-1$
+        keystorePasswordText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
+        keystorePasswordText.setEchoChar( '\u2022' );
+
+        // Show Password Checkbox
+        toolkit.createLabel( composite, "" ); //$NON-NLS-1$
+        showPasswordCheckbox = toolkit.createButton( composite, "Show password", SWT.CHECK );
+        showPasswordCheckbox.setLayoutData( new GridData( SWT.FILL, SWT.CENTER, true, false ) );
+        showPasswordCheckbox.setSelection( false );
     }
 
 
@@ -659,6 +786,20 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
         addDirtyListener( authMechGssSpnegoText );
         addModifyListener( authMechGssSpnegoText, authMechGssSpnegoTextListener );
 
+        // Keystore File Text
+        addDirtyListener( keystoreFileText );
+        addModifyListener( keystoreFileText, keystoreFileTextListener );
+
+        // Keystore File Browse Button
+        addSelectionListener( keystoreFileBrowseButton, keystoreFileBrowseButtonSelectionListener );
+
+        // Password Text
+        addDirtyListener( keystorePasswordText );
+        addModifyListener( keystorePasswordText, keystorePasswordTextListener );
+
+        // Show Password Checkbox
+        addSelectionListener( showPasswordCheckbox, showPasswordCheckboxSelectionListener );
+
         // SASL Host Text
         addDirtyListener( saslHostText );
         addModifyListener( saslHostText, saslHostTextListener );
@@ -748,6 +889,20 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
         removeDirtyListener( authMechGssSpnegoText );
         removeModifyListener( authMechGssSpnegoText, authMechGssSpnegoTextListener );
 
+        // Keystore File Text
+        removeDirtyListener( keystoreFileText );
+        removeModifyListener( keystoreFileText, keystoreFileTextListener );
+
+        // Keystore File Browse Button
+        removeSelectionListener( keystoreFileBrowseButton, keystoreFileBrowseButtonSelectionListener );
+
+        // Password Text
+        removeDirtyListener( keystorePasswordText );
+        removeModifyListener( keystorePasswordText, keystorePasswordTextListener );
+
+        // Show Password Checkbox
+        removeSelectionListener( showPasswordCheckbox, showPasswordCheckboxSelectionListener );
+
         // SASL Host Text
         removeDirtyListener( saslHostText );
         removeModifyListener( saslHostText, saslHostTextListener );
@@ -803,6 +958,10 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
         setText( saslHostText, ldapServerBean.getLdapServerSaslHost() );
         setText( saslPrincipalText, ldapServerBean.getLdapServerSaslPrincipal() );
         setText( saslSearchBaseDnText, ldapServerBean.getSearchBaseDn().toString() );
+
+        // Keystore Properties
+        setText( keystoreFileText, ldapServerBean.getLdapServerKeystoreFile() );
+        setText( keystorePasswordText, ldapServerBean.getLdapServerCertificatePassword() );
 
         // Supported Auth Mechanisms
         List<SaslMechHandlerBean> saslMechHandlers = ldapServerBean.getSaslMechHandlers();

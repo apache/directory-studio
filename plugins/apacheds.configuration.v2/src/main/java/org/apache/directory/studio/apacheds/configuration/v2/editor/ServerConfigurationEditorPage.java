@@ -516,6 +516,11 @@ public abstract class ServerConfigurationEditorPage extends FormPage
     {
         if ( ( text != null ) && ( !text.isDisposed() ) )
         {
+            if ( string == null )
+            {
+                string = "";
+            }
+            
             text.setText( string );
         }
     }
