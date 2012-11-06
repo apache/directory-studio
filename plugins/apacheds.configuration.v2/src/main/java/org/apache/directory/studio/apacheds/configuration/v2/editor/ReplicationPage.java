@@ -20,11 +20,7 @@
 package org.apache.directory.studio.apacheds.configuration.v2.editor;
 
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Label;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 
 
@@ -35,8 +31,8 @@ import org.eclipse.ui.forms.widgets.FormToolkit;
  */
 public class ReplicationPage extends ServerConfigurationEditorPage
 {
-    /** The Page ID*/
-    public static final String ID = ReplicationPage.class.getName(); //$NON-NLS-1$
+    /** The Page ID */
+    public static final String ID = ReplicationPage.class.getName();
 
     /** The Page Title */
     private static final String TITLE = "Replication";
@@ -59,12 +55,8 @@ public class ReplicationPage extends ServerConfigurationEditorPage
      */
     protected void createFormContent( Composite parent, FormToolkit toolkit )
     {
-        Composite composite = toolkit.createComposite( parent );
-        composite.setLayout( new GridLayout() );
-        composite.setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, true ) );
-
-        Label label = toolkit.createLabel( composite, "Coming soon..." );
-        label.setLayoutData( new GridData( SWT.CENTER, SWT.CENTER, true, true ) );
+        ReplicationMasterDetailsBlock masterDetailsBlock = new ReplicationMasterDetailsBlock( this );
+        masterDetailsBlock.createContent( getManagedForm() );
     }
 
 
