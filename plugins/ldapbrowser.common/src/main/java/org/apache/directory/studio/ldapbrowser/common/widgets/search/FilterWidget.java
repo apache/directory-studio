@@ -108,7 +108,7 @@ public class FilterWidget extends BrowserWidget
         Composite composite = BaseWidgetUtils.createColumnContainer( parent, 1, 1 );
         GridData gd = new GridData( GridData.FILL_HORIZONTAL );
         gd.horizontalSpan = 1;
-        gd.widthHint = 200;
+        gd.widthHint = 30;
         composite.setLayoutData( gd );
 
         // filter combo with field decoration and content proposal

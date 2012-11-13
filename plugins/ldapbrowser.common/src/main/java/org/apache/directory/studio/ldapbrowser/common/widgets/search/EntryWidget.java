@@ -59,7 +59,6 @@ import org.eclipse.swt.widgets.Composite;
  */
 public class EntryWidget extends BrowserWidget
 {
-
     /** The Dn combo. */
     private Combo dnCombo;
 
@@ -134,7 +133,7 @@ public class EntryWidget extends BrowserWidget
         dnCombo = BaseWidgetUtils.createCombo( textAndUpComposite, new String[0], -1, 1 );
         GridData gd = new GridData( GridData.FILL_HORIZONTAL );
         gd.horizontalSpan = 1;
-        gd.widthHint = 200;
+        gd.widthHint = 30;
         dnCombo.setLayoutData( gd );
 
         // Dn history
