@@ -121,6 +121,7 @@
  org.apache.directory.studio.common.ui,
  org.apache.directory.studio.connection.core,
  org.apache.directory.studio.connection.ui,
+ org.apache.directory.studio.ldapbrowser.common,
  org.apache.directory.studio.ldapbrowser.core,
  org.eclipse.core.contenttype,
  org.eclipse.core.runtime,
@@ -251,6 +252,11 @@
     <dependency>
       <groupId>org.apache.directory.studio</groupId>
       <artifactId>connection.ui</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.directory.studio</groupId>
+      <artifactId>ldapbrowser.common</artifactId>
       <scope>provided</scope>
     </dependency>
     <dependency>

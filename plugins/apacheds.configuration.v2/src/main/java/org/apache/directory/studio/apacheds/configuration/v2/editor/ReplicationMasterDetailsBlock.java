@@ -286,4 +286,14 @@ public class ReplicationMasterDetailsBlock extends MasterDetailsBlock
     {
         detailsPage.commit( true );
     }
+    
+    /**
+     * Gets the replication page.
+     *
+     * @return the replication
+     */
+    public ReplicationPage getPage()
+    {
+        return this.page;
+    }
 }

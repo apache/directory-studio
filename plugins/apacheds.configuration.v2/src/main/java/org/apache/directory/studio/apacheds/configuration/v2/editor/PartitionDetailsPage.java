@@ -603,11 +603,11 @@ public class PartitionDetailsPage implements IDetailsPage
         } );
 
         // Add button
-        indexesAddButton = toolkit.createButton( indexedAttributesClient, "Add", SWT.PUSH );
+        indexesAddButton = toolkit.createButton( indexedAttributesClient, "Add...", SWT.PUSH );
         indexesAddButton.setLayoutData( createNewButtonGridData() );
 
         // Edit button
-        indexesEditButton = toolkit.createButton( indexedAttributesClient, "Edit", SWT.PUSH );
+        indexesEditButton = toolkit.createButton( indexedAttributesClient, "Edit...", SWT.PUSH );
         indexesEditButton.setEnabled( false );
         indexesEditButton.setLayoutData( createNewButtonGridData() );
 

@@ -21,10 +21,26 @@ package org.apache.directory.studio.apacheds.configuration.v2.editor;
 
 
 import org.apache.directory.server.config.beans.ReplConsumerBean;
+import org.apache.directory.shared.ldap.model.exception.LdapInvalidDnException;
+import org.apache.directory.shared.ldap.model.message.AliasDerefMode;
+import org.apache.directory.shared.ldap.model.message.SearchScope;
+import org.apache.directory.shared.ldap.model.name.Dn;
+import org.apache.directory.studio.ldapbrowser.common.widgets.WidgetModifyEvent;
+import org.apache.directory.studio.ldapbrowser.common.widgets.WidgetModifyListener;
+import org.apache.directory.studio.ldapbrowser.common.widgets.search.EntryWidget;
+import org.apache.directory.studio.ldapbrowser.common.widgets.search.FilterWidget;
+import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.events.VerifyEvent;
 import org.eclipse.swt.events.VerifyListener;
 import org.eclipse.swt.layout.GridData;
@@ -32,6 +48,7 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.forms.IDetailsPage;
 import org.eclipse.ui.forms.IFormPart;
@@ -58,14 +75,85 @@ public class ReplicationDetailsPage implements IDetailsPage
     /** The input consumer */
     private ReplConsumerBean input;
 
+    /** The browser connection */
+    private IBrowserConnection browserConnection;
+
+    // UI Widgets
+    private Button enabledCheckbox;
+    private Text idText;
+    private Text descriptionText;
+    private Text remoteHostText;
+    private Text remotePortText;
+    private Text bindDnText;
+    private Text bindPasswordText;
+    private Button showPasswordCheckbox;
+    private Text sizeLimitText;
+    private Text timeLimitText;
+    private EntryWidget entryWidget;
+    private FilterWidget filterWidget;
+    private Button subtreeScopeButton;
+    private Button oneLevelScopeButton;
+    private Button objectScopeButton;
+    private TableViewer attributesTableViewer;
+    private Button addAttributeButton;
+    private Button editAttributeButton;
+    private Button deleteAttributeButton;
+    private Button findingBaseDnAliasesDereferencingButton;
+    private Button searchAliasesDereferencingButton;
+
     // Listeners
-    VerifyListener integerVerifyListener = new VerifyListener()
+    /** The Text Modify Listener */
+    private ModifyListener textModifyListener = new ModifyListener()
+    {
+        public void modifyText( ModifyEvent e )
+        {
+            commit( true );
+            masterDetailsBlock.setEditorDirty();
+        }
+    };
+
+    /** The button Selection Listener */
+    private SelectionListener buttonSelectionListener = new SelectionAdapter()
+    {
+        public void widgetSelected( SelectionEvent e )
+        {
+            commit( true );
+            masterDetailsBlock.setEditorDirty();
+        }
+    };
+
+    /** The widget Modify Listener */
+    private WidgetModifyListener widgetModifyListener = new WidgetModifyListener()
+    {
+        public void widgetModified( WidgetModifyEvent event )
+        {
+            commit( true );
+            masterDetailsBlock.setEditorDirty();
+        }
+    };
+
+    private VerifyListener integerVerifyListener = new VerifyListener()
     {
         public void verifyText( VerifyEvent e )
         {
             if ( !e.text.matches( "[0-9]*" ) ) //$NON-NLS-1$
             {
                 e.doit = false;
+            }
+        }
+    };
+
+    private SelectionListener showPasswordCheckboxSelectionListener = new SelectionAdapter()
+    {
+        public void widgetSelected( SelectionEvent e )
+        {
+            if ( showPasswordCheckbox.getSelection() )
+            {
+                bindPasswordText.setEchoChar( '\0' );
+            }
+            else
+            {
+                bindPasswordText.setEchoChar( '\u2022' );
             }
         }
     };
@@ -80,6 +168,10 @@ public class ReplicationDetailsPage implements IDetailsPage
     public ReplicationDetailsPage( ReplicationMasterDetailsBlock pmdb )
     {
         masterDetailsBlock = pmdb;
+
+        // Getting the browser connection associated with the connection in the configuration
+        browserConnection = BrowserCorePlugin.getDefault().getConnectionManager()
+            .getBrowserConnection( masterDetailsBlock.getPage().getConnection() );
     }
 
 
@@ -126,17 +218,17 @@ public class ReplicationDetailsPage implements IDetailsPage
         section.setClient( client );
 
         // Enabled Checkbox
-        Button enabledCheckbox = toolkit.createButton( client, "Enabled", SWT.CHECK );
+        enabledCheckbox = toolkit.createButton( client, "Enabled", SWT.CHECK );
         enabledCheckbox.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
 
         // ID Text
         toolkit.createLabel( client, "ID:" );
-        Text idText = toolkit.createText( client, "" );
+        idText = toolkit.createText( client, "" );
         idText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
 
         // Description Text
         toolkit.createLabel( client, "Description:" );
-        Text descriptionText = toolkit.createText( client, "" );
+        descriptionText = toolkit.createText( client, "" );
         descriptionText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
     }
 
@@ -166,41 +258,41 @@ public class ReplicationDetailsPage implements IDetailsPage
 
         // Remote Host Text
         toolkit.createLabel( composite, "Remote Host:" );
-        Text remoteHostText = toolkit.createText( composite, "" );
+        remoteHostText = toolkit.createText( composite, "" );
         remoteHostText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
 
         // Remote Port Text
         toolkit.createLabel( composite, "Remote Port:" );
-        Text remotePortText = toolkit.createText( composite, "" );
+        remotePortText = toolkit.createText( composite, "" );
         remotePortText.addVerifyListener( integerVerifyListener );
         remotePortText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
 
         // Bind DN Text
         toolkit.createLabel( composite, "Bind DN:" );
-        Text bindDnText = toolkit.createText( composite, "" );
+        bindDnText = toolkit.createText( composite, "" );
         bindDnText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
 
         // Bind Password Text
         toolkit.createLabel( composite, "Bind Password:" );
-        Text bindPasswordText = toolkit.createText( composite, "" );
+        bindPasswordText = toolkit.createText( composite, "" );
         bindPasswordText.setEchoChar( '\u2022' );
         bindPasswordText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
 
         // Show Password Checkbox
         toolkit.createLabel( composite, "" ); //$NON-NLS-1$
-        Button showPasswordCheckbox = toolkit.createButton( composite, "Show password", SWT.CHECK );
+        showPasswordCheckbox = toolkit.createButton( composite, "Show password", SWT.CHECK );
         showPasswordCheckbox.setLayoutData( new GridData( SWT.FILL, SWT.CENTER, true, false ) );
         showPasswordCheckbox.setSelection( false );
 
         // Size Limit Text
         toolkit.createLabel( composite, "Size Limit:" );
-        Text sizeLimitText = toolkit.createText( composite, "" );
+        sizeLimitText = toolkit.createText( composite, "" );
         sizeLimitText.addVerifyListener( integerVerifyListener );
         sizeLimitText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
 
         // Time Limit Text
         toolkit.createLabel( composite, "Time Limit:" );
-        Text timeLimitText = toolkit.createText( composite, "" );
+        timeLimitText = toolkit.createText( composite, "" );
         timeLimitText.addVerifyListener( integerVerifyListener );
         timeLimitText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
     }
@@ -223,49 +315,75 @@ public class ReplicationDetailsPage implements IDetailsPage
         TableWrapData td = new TableWrapData( TableWrapData.FILL, TableWrapData.TOP );
         td.grabHorizontal = true;
         section.setLayoutData( td );
-        Composite client = toolkit.createComposite( section );
-        toolkit.paintBordersFor( client );
-        GridLayout glayout = new GridLayout( 2, false );
-        client.setLayout( glayout );
-        section.setClient( client );
+        Composite composite = toolkit.createComposite( section );
+        toolkit.paintBordersFor( composite );
+        GridLayout glayout = new GridLayout( 3, false );
+        composite.setLayout( glayout );
+        section.setClient( composite );
 
         // Base DN Text
-        toolkit.createLabel( client, "Base DN:" );
-        Text baseDnText = toolkit.createText( client, "" );
-        baseDnText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
+        toolkit.createLabel( composite, "Base DN:" );
+        entryWidget = new EntryWidget( browserConnection, Dn.EMPTY_DN );
+        entryWidget.createWidget( composite );
 
         // Filter Text
-        toolkit.createLabel( client, "Filter:" );
-        Text filterText = toolkit.createText( client, "" );
-        filterText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
+        toolkit.createLabel( composite, "Filter:" );
+        filterWidget = new FilterWidget();
+        filterWidget.setBrowserConnection( browserConnection );
+        filterWidget.createWidget( composite );
 
         // Scope
-        Label scopeLabel = toolkit.createLabel( client, "Scope:" );
+        Label scopeLabel = toolkit.createLabel( composite, "Scope:" );
         scopeLabel.setLayoutData( new GridData( SWT.BEGINNING, SWT.TOP, false, false, 1, 3 ) );
 
         // Subtree Scope Button
-        Button subtreeScopeButton = toolkit.createButton( client, "Subtree", SWT.RADIO );
+        subtreeScopeButton = toolkit.createButton( composite, "Subtree", SWT.RADIO );
+        subtreeScopeButton.setLayoutData( new GridData( SWT.LEFT, SWT.CENTER, false, false, 2, 1 ) );
 
         // One Level Scope Button
-        Button oneLevelScopeButton = toolkit.createButton( client, "One Level", SWT.RADIO );
+        oneLevelScopeButton = toolkit.createButton( composite, "One Level", SWT.RADIO );
+        oneLevelScopeButton.setLayoutData( new GridData( SWT.LEFT, SWT.CENTER, false, false, 2, 1 ) );
 
         // Object Scope Button
-        Button objectScopeButton = toolkit.createButton( client, "Object", SWT.RADIO );
+        objectScopeButton = toolkit.createButton( composite, "Object", SWT.RADIO );
+        objectScopeButton.setLayoutData( new GridData( SWT.LEFT, SWT.CENTER, false, false, 2, 1 ) );
 
-        // Attributes Text
-        toolkit.createLabel( client, "Attributes:" );
-        Text attributesText = toolkit.createText( client, "" );
-        attributesText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
+        // Attributes Label
+        Label attributesLabel = toolkit.createLabel( composite, "Attributes:" );
+        attributesLabel.setLayoutData( new GridData( SWT.FILL, SWT.CENTER, true, false, 3, 1 ) );
+
+        // Attributes Table Viewer
+        Composite attributesTableComposite = toolkit.createComposite( composite );
+        GridLayout gl = new GridLayout( 2, false );
+        gl.marginWidth = gl.marginHeight = 0;
+        attributesTableComposite.setLayout( gl );
+        attributesTableComposite.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 3, 1 ) );
+        Table attributesTable = toolkit.createTable( attributesTableComposite, SWT.BORDER );
+        attributesTable.setLayoutData( new GridData( SWT.FILL, SWT.CENTER, true, false, 1, 3 ) );
+        attributesTableViewer = new TableViewer( attributesTable );
+
+        addAttributeButton = toolkit.createButton( attributesTableComposite, "Add...", SWT.PUSH );
+        addAttributeButton.setLayoutData( createNewButtonGridData() );
+
+        editAttributeButton = toolkit.createButton( attributesTableComposite, "Edit...", SWT.PUSH );
+        editAttributeButton.setLayoutData( createNewButtonGridData() );
+
+        deleteAttributeButton = toolkit.createButton( attributesTableComposite, "Delete", SWT.PUSH );
+        deleteAttributeButton.setLayoutData( createNewButtonGridData() );
 
         // Aliases Dereferencing Text
-        Label aliasesDereferencingLable = toolkit.createLabel( client, "Aliases\nDereferencing:" );
+        Label aliasesDereferencingLable = toolkit.createLabel( composite, "Aliases\nDereferencing:" );
         aliasesDereferencingLable.setLayoutData( new GridData( SWT.BEGINNING, SWT.TOP, false, false, 1, 2 ) );
 
         // Finding Base DN Aliases Dereferencing Button
-        Button findingBaseDnAliasesDereferencingButton = toolkit.createButton( client, "Finding Base DN", SWT.CHECK );
+        findingBaseDnAliasesDereferencingButton = toolkit.createButton( composite, "Finding Base DN", SWT.CHECK );
+        findingBaseDnAliasesDereferencingButton
+            .setLayoutData( new GridData( SWT.LEFT, SWT.CENTER, false, false, 2, 1 ) );
 
         // Search Aliases Dereferencing Button
-        Button searchAliasesDereferencingButton = toolkit.createButton( client, "Search", SWT.CHECK );
+        searchAliasesDereferencingButton = toolkit.createButton( composite, "Search", SWT.CHECK );
+        searchAliasesDereferencingButton.setLayoutData( new GridData( SWT.LEFT, SWT.CENTER, false, false, 2, 1 ) );
+
     }
 
 
@@ -287,6 +405,27 @@ public class ReplicationDetailsPage implements IDetailsPage
      */
     private void addListeners()
     {
+        enabledCheckbox.addSelectionListener( buttonSelectionListener );
+        idText.addModifyListener( textModifyListener );
+        descriptionText.addModifyListener( textModifyListener );
+        remoteHostText.addModifyListener( textModifyListener );
+        remotePortText.addModifyListener( textModifyListener );
+        bindDnText.addModifyListener( textModifyListener );
+        bindPasswordText.addModifyListener( textModifyListener );
+        showPasswordCheckbox.addSelectionListener( showPasswordCheckboxSelectionListener );
+        sizeLimitText.addModifyListener( textModifyListener );
+        timeLimitText.addModifyListener( textModifyListener );
+        entryWidget.addWidgetModifyListener( widgetModifyListener );
+        filterWidget.addWidgetModifyListener( widgetModifyListener );
+        subtreeScopeButton.addSelectionListener( buttonSelectionListener );
+        oneLevelScopeButton.addSelectionListener( buttonSelectionListener );
+        objectScopeButton.addSelectionListener( buttonSelectionListener );
+        //attributesTableViewer;
+        //addAttributeButton;
+        //editAttributeButton;
+        //deleteAttributeButton;
+        findingBaseDnAliasesDereferencingButton.addSelectionListener( buttonSelectionListener );
+        searchAliasesDereferencingButton.addSelectionListener( buttonSelectionListener );
     }
 
 
@@ -295,6 +434,27 @@ public class ReplicationDetailsPage implements IDetailsPage
      */
     private void removeListeners()
     {
+        enabledCheckbox.removeSelectionListener( buttonSelectionListener );
+        idText.removeModifyListener( textModifyListener );
+        descriptionText.removeModifyListener( textModifyListener );
+        remoteHostText.removeModifyListener( textModifyListener );
+        remotePortText.removeModifyListener( textModifyListener );
+        bindDnText.removeModifyListener( textModifyListener );
+        bindPasswordText.removeModifyListener( textModifyListener );
+        showPasswordCheckbox.removeSelectionListener( showPasswordCheckboxSelectionListener );
+        sizeLimitText.removeModifyListener( textModifyListener );
+        timeLimitText.removeModifyListener( textModifyListener );
+        entryWidget.removeWidgetModifyListener( widgetModifyListener );
+        filterWidget.removeWidgetModifyListener( widgetModifyListener );
+        subtreeScopeButton.removeSelectionListener( buttonSelectionListener );
+        oneLevelScopeButton.removeSelectionListener( buttonSelectionListener );
+        objectScopeButton.removeSelectionListener( buttonSelectionListener );
+        //attributesTableViewer;
+        //addAttributeButton;
+        //editAttributeButton;
+        //deleteAttributeButton;
+        findingBaseDnAliasesDereferencingButton.removeSelectionListener( buttonSelectionListener );
+        searchAliasesDereferencingButton.removeSelectionListener( buttonSelectionListener );
     }
 
 
@@ -321,6 +481,159 @@ public class ReplicationDetailsPage implements IDetailsPage
      */
     public void commit( boolean onSave )
     {
+        if ( input != null )
+        {
+            // Enabled
+            input.setEnabled( enabledCheckbox.getSelection() );
+
+            // ID
+            input.setReplConsumerId( checkEmptyString( idText.getText() ) );
+
+            // Description
+            input.setDescription( checkEmptyString( descriptionText.getText() ) );
+
+            // Remote Host
+            input.setReplProvHostName( checkEmptyString( remoteHostText.getText() ) );
+
+            // Remote Port
+            try
+            {
+                input.setReplProvPort( Integer.parseInt( remotePortText.getText() ) );
+            }
+            catch ( NumberFormatException e )
+            {
+                input.setReplProvPort( 0 );
+            }
+
+            // Bind DN
+            input.setReplUserDn( checkEmptyString( bindDnText.getText() ) );
+
+            // Bind Password
+            String password = checkEmptyString( bindPasswordText.getText() );
+
+            if ( password != null )
+            {
+                input.setReplUserPassword( password.getBytes() );
+            }
+            else
+            {
+                input.setReplUserPassword( null );
+            }
+
+            // Size Limit
+            try
+            {
+                input.setReplSearchSizeLimit( Integer.parseInt( sizeLimitText.getText() ) );
+            }
+            catch ( NumberFormatException e )
+            {
+                input.setReplSearchSizeLimit( 0 );
+            }
+
+            // Time Limit
+            try
+            {
+                input.setReplSearchTimeout( Integer.parseInt( timeLimitText.getText() ) );
+            }
+            catch ( NumberFormatException e )
+            {
+                input.setReplSearchTimeout( 0 );
+            }
+
+            // Search Base DN
+            input.setSearchBaseDn( checkEmptyString( entryWidget.getDn().toString() ) );;
+
+            // Search Filter
+            input.setReplSearchFilter( checkEmptyString( filterWidget.getFilter() ) );
+
+            // Search Scope
+            SearchScope scope = getSearchScope();
+
+            if ( scope != null )
+            {
+                input.setReplSearchScope( scope.getLdapUrlValue() );
+            }
+            else
+            {
+                input.setReplSearchScope( null );
+            }
+
+            // Aliases Dereferencing
+            input.setReplAliasDerefMode( getAliasDerefMode().getJndiValue() );
+        }
+    }
+
+
+    /**
+     * Gets the search scope.
+     *
+     * @return the search scope
+     */
+    private SearchScope getSearchScope()
+    {
+        if ( subtreeScopeButton.getSelection() )
+        {
+            return SearchScope.SUBTREE;
+        }
+        else if ( oneLevelScopeButton.getSelection() )
+        {
+            return SearchScope.ONELEVEL;
+        }
+        else if ( objectScopeButton.getSelection() )
+        {
+            return SearchScope.OBJECT;
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Gets the aliases dereferencing mode.
+     *
+     * @return the aliases dereferencing mode
+     */
+    private AliasDerefMode getAliasDerefMode()
+    {
+        if ( findingBaseDnAliasesDereferencingButton.getSelection() && searchAliasesDereferencingButton.getSelection() )
+        {
+            return AliasDerefMode.DEREF_ALWAYS;
+        }
+        else if ( !findingBaseDnAliasesDereferencingButton.getSelection()
+            && searchAliasesDereferencingButton.getSelection() )
+        {
+            return AliasDerefMode.DEREF_IN_SEARCHING;
+        }
+        else if ( findingBaseDnAliasesDereferencingButton.getSelection()
+            && !searchAliasesDereferencingButton.getSelection() )
+        {
+            return AliasDerefMode.DEREF_FINDING_BASE_OBJ;
+        }
+        else if ( !findingBaseDnAliasesDereferencingButton.getSelection()
+            && !searchAliasesDereferencingButton.getSelection() )
+        {
+            return AliasDerefMode.NEVER_DEREF_ALIASES;
+        }
+
+        return AliasDerefMode.NEVER_DEREF_ALIASES;
+    }
+
+
+    /**
+     * Checks if the string is <code>null</code>
+     * and returns an empty string in that case.
+     *
+     * @param s the string
+     * @return a non-<code>null</code> string
+     */
+    private String checkEmptyString( String s )
+    {
+        if ( "".equals( s ) )
+        {
+            return null;
+        }
+
+        return s;
     }
 
 
@@ -366,7 +679,138 @@ public class ReplicationDetailsPage implements IDetailsPage
     {
         removeListeners();
 
+        if ( input != null )
+        {
+            // Enabled
+            enabledCheckbox.setSelection( input.isEnabled() );
+
+            // ID
+            idText.setText( checkNull( input.getReplConsumerId() ) );
+
+            // Description
+            descriptionText.setText( checkNull( input.getDescription() ) );
+
+            // Remote Host
+            remoteHostText.setText( checkNull( input.getReplProvHostName() ) );
+
+            // Remote Port
+            remotePortText.setText( checkNull( String.valueOf( input.getReplProvPort() ) ) );
+
+            // Bind DN
+            bindDnText.setText( checkNull( input.getReplUserDn() ) );
+
+            // Bind Password
+            bindPasswordText.setText( checkNull( String.valueOf( input.getReplUserPassword() ) ) );
+
+            // Size Limit
+            sizeLimitText.setText( checkNull( String.valueOf( input.getReplSearchSizeLimit() ) ) );
+
+            // Time Limit
+            timeLimitText.setText( checkNull( String.valueOf( input.getReplSearchTimeout() ) ) );
+
+            // Search Base DN
+            try
+            {
+                entryWidget.setInput( browserConnection, new Dn( input.getSearchBaseDn() ) );
+            }
+            catch ( LdapInvalidDnException e )
+            {
+                entryWidget.setInput( browserConnection, Dn.EMPTY_DN );
+            }
+
+            // Search Filter
+            filterWidget.setFilter( checkNull( input.getReplSearchFilter() ) );
+
+            // Search Scope
+            SearchScope scope = null;
+            try
+            {
+                scope = SearchScope.getSearchScope( SearchScope.getSearchScope( input.getReplSearchScope() ) );
+            }
+            catch ( IllegalArgumentException e )
+            {
+                scope = null;
+            }
+
+            if ( scope != null )
+            {
+                switch ( scope )
+                {
+                    case SUBTREE:
+                        subtreeScopeButton.setSelection( true );
+                        break;
+                    case ONELEVEL:
+                        oneLevelScopeButton.setSelection( true );
+                        break;
+                    case OBJECT:
+                        objectScopeButton.setSelection( true );
+                        break;
+                }
+            }
+            else
+            {
+                subtreeScopeButton.setSelection( true );
+            }
+
+            // Aliases Dereferencing
+            AliasDerefMode aliasDerefMode = null;
+            try
+            {
+                aliasDerefMode = AliasDerefMode.getDerefMode( input.getReplAliasDerefMode() );
+            }
+            catch ( IllegalArgumentException e )
+            {
+                aliasDerefMode = null;
+            }
+
+            if ( aliasDerefMode != null )
+            {
+                switch ( aliasDerefMode )
+                {
+                    case DEREF_ALWAYS:
+                        findingBaseDnAliasesDereferencingButton.setSelection( true );
+                        searchAliasesDereferencingButton.setSelection( true );
+                        break;
+                    case DEREF_FINDING_BASE_OBJ:
+                        findingBaseDnAliasesDereferencingButton.setSelection( true );
+                        searchAliasesDereferencingButton.setSelection( false );
+                        break;
+                    case DEREF_IN_SEARCHING:
+                        findingBaseDnAliasesDereferencingButton.setSelection( false );
+                        searchAliasesDereferencingButton.setSelection( true );
+                        break;
+                    case NEVER_DEREF_ALIASES:
+                        findingBaseDnAliasesDereferencingButton.setSelection( false );
+                        searchAliasesDereferencingButton.setSelection( false );
+                        break;
+                }
+            }
+            else
+            {
+                findingBaseDnAliasesDereferencingButton.setSelection( true );
+                searchAliasesDereferencingButton.setSelection( true );
+            }
+        }
+
         addListeners();
+    }
+
+
+    /**
+     * Checks if the string is <code>null</code>
+     * and returns an empty string in that case.
+     *
+     * @param s the string
+     * @return a non-<code>null</code> string
+     */
+    private String checkNull( String s )
+    {
+        if ( s == null )
+        {
+            return "";
+        }
+
+        return s;
     }
 
 
@@ -375,6 +819,7 @@ public class ReplicationDetailsPage implements IDetailsPage
      */
     public void setFocus()
     {
+        idText.setFocus();
     }
 
 

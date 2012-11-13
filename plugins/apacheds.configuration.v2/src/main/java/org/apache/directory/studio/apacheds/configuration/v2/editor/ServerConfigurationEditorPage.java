@@ -24,6 +24,7 @@ import org.apache.directory.server.config.beans.ConfigBean;
 import org.apache.directory.server.config.beans.DirectoryServiceBean;
 import org.apache.directory.studio.apacheds.configuration.v2.actions.EditorExportConfigurationAction;
 import org.apache.directory.studio.apacheds.configuration.v2.actions.EditorImportConfigurationAction;
+import org.apache.directory.studio.connection.core.Connection;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
@@ -47,6 +48,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.forms.IManagedForm;
 import org.eclipse.ui.forms.editor.FormPage;
 import org.eclipse.ui.forms.widgets.FormToolkit;
@@ -157,6 +159,24 @@ public abstract class ServerConfigurationEditorPage extends FormPage
         }
 
         return directoryServiceBean;
+    }
+
+
+    /**
+     * Gets the connection associated with the editor.
+     *
+     * @return the connection
+     */
+    public Connection getConnection()
+    {
+        IEditorInput editorInput = getEditorInput();
+
+        if ( editorInput instanceof ConnectionServerConfigurationInput )
+        {
+            return ( ( ConnectionServerConfigurationInput ) editorInput ).getConnection();
+        }
+
+        return null;
     }
 
 
@@ -520,7 +540,7 @@ public abstract class ServerConfigurationEditorPage extends FormPage
             {
                 string = "";
             }
-            
+
             text.setText( string );
         }
     }
