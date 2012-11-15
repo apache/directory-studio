@@ -43,7 +43,6 @@ import org.apache.directory.studio.apacheds.configuration.v2.ApacheDS2Configurat
 import org.apache.directory.studio.apacheds.configuration.v2.ApacheDS2ConfigurationPluginConstants;
 import org.apache.directory.studio.apacheds.configuration.v2.dialogs.AttributeValueDialog;
 import org.apache.directory.studio.apacheds.configuration.v2.dialogs.IndexDialog;
-import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ArrayContentProvider;
@@ -163,7 +162,7 @@ public class PartitionDetailsPage implements IDetailsPage
     };
 
     /** The Selection Changed Listener for the Context Entry Table Viewer */
-    private ISelectionChangedListener contextEntryTableViewerListener = new ISelectionChangedListener()
+    private ISelectionChangedListener contextEntryTableViewerSelectionListener = new ISelectionChangedListener()
     {
         public void selectionChanged( SelectionChangedEvent event )
         {
@@ -186,7 +185,7 @@ public class PartitionDetailsPage implements IDetailsPage
         public void widgetSelected( SelectionEvent e )
         {
             AttributeValueDialog dialog = new AttributeValueDialog( new AttributeValueObject( "", "" ) );
-            if ( Dialog.OK == dialog.open() && dialog.isDirty() )
+            if ( AttributeValueDialog.OK == dialog.open() && dialog.isDirty() )
             {
                 AttributeValueObject newAttributeValueObject = dialog.getAttributeValueObject();
                 Attribute attribute = contextEntry.get( newAttributeValueObject.getAttribute() );
@@ -645,7 +644,7 @@ public class PartitionDetailsPage implements IDetailsPage
 
         autoGenerateContextEntryCheckbox.addSelectionListener( autoGenerateContextEntryCheckboxSelectionListener );
         contextEntryTableViewer.addDoubleClickListener( contextEntryTableViewerDoubleClickListener );
-        contextEntryTableViewer.addSelectionChangedListener( contextEntryTableViewerListener );
+        contextEntryTableViewer.addSelectionChangedListener( contextEntryTableViewerSelectionListener );
         contextEntryAddButton.addSelectionListener( contextEntryAddButtonListener );
         contextEntryEditButton.addSelectionListener( contextEntryEditButtonListener );
         contextEntryDeleteButton.addSelectionListener( contextEntryDeleteButtonListener );
@@ -672,7 +671,7 @@ public class PartitionDetailsPage implements IDetailsPage
 
         autoGenerateContextEntryCheckbox.removeSelectionListener( autoGenerateContextEntryCheckboxSelectionListener );
         contextEntryTableViewer.removeDoubleClickListener( contextEntryTableViewerDoubleClickListener );
-        contextEntryTableViewer.removeSelectionChangedListener( contextEntryTableViewerListener );
+        contextEntryTableViewer.removeSelectionChangedListener( contextEntryTableViewerSelectionListener );
         contextEntryAddButton.removeSelectionListener( contextEntryAddButtonListener );
         contextEntryEditButton.removeSelectionListener( contextEntryEditButtonListener );
         contextEntryDeleteButton.removeSelectionListener( contextEntryDeleteButtonListener );
@@ -916,7 +915,7 @@ public class PartitionDetailsPage implements IDetailsPage
             JdbmIndexBean<String, Entry> index = ( JdbmIndexBean<String, Entry> ) selection.getFirstElement();
 
             IndexDialog dialog = new IndexDialog( index );
-            if ( Dialog.OK == dialog.open() && dialog.isDirty() )
+            if ( IndexDialog.OK == dialog.open() && dialog.isDirty() )
             {
                 indexesTableViewer.refresh();
                 masterDetailsBlock.setEditorDirty();
@@ -935,7 +934,7 @@ public class PartitionDetailsPage implements IDetailsPage
         newIndex.setIndexCacheSize( 100 );
 
         IndexDialog dialog = new IndexDialog( newIndex );
-        if ( Dialog.OK == dialog.open() )
+        if ( IndexDialog.OK == dialog.open() )
         {
             indexesList.add( dialog.getIndex() );
             indexesTableViewer.refresh();
@@ -981,7 +980,7 @@ public class PartitionDetailsPage implements IDetailsPage
             String oldValue = attributeValueObject.getValue();
 
             AttributeValueDialog dialog = new AttributeValueDialog( attributeValueObject );
-            if ( Dialog.OK == dialog.open() && dialog.isDirty() )
+            if ( AttributeValueDialog.OK == dialog.open() && dialog.isDirty() )
             {
                 Attribute attribute = contextEntry.get( oldId );
                 if ( attribute != null )
