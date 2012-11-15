@@ -20,20 +20,34 @@
 package org.apache.directory.studio.apacheds.configuration.v2.editor;
 
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+
 import org.apache.directory.server.config.beans.ReplConsumerBean;
 import org.apache.directory.shared.ldap.model.exception.LdapInvalidDnException;
 import org.apache.directory.shared.ldap.model.message.AliasDerefMode;
 import org.apache.directory.shared.ldap.model.message.SearchScope;
 import org.apache.directory.shared.ldap.model.name.Dn;
+import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.studio.apacheds.configuration.v2.dialogs.AttributeDialog;
 import org.apache.directory.studio.ldapbrowser.common.widgets.WidgetModifyEvent;
 import org.apache.directory.studio.ldapbrowser.common.widgets.WidgetModifyListener;
 import org.apache.directory.studio.ldapbrowser.common.widgets.search.EntryWidget;
 import org.apache.directory.studio.ldapbrowser.common.widgets.search.FilterWidget;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
+import org.apache.directory.studio.ldapbrowser.core.model.schema.Schema;
 import org.eclipse.jface.dialogs.IDialogConstants;
+import org.eclipse.jface.viewers.ArrayContentProvider;
+import org.eclipse.jface.viewers.DoubleClickEvent;
+import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.SelectionChangedEvent;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
@@ -77,6 +91,12 @@ public class ReplicationDetailsPage implements IDetailsPage
 
     /** The browser connection */
     private IBrowserConnection browserConnection;
+
+    /** The array of attributes names and OIDs */
+    private String[] attributeNamesAndOids;
+
+    /** The list of attributes */
+    private List<String> attributesList;
 
     // UI Widgets
     private Button enabledCheckbox;
@@ -155,6 +175,47 @@ public class ReplicationDetailsPage implements IDetailsPage
             {
                 bindPasswordText.setEchoChar( '\u2022' );
             }
+        }
+    };
+
+    private ISelectionChangedListener attributesTableViewerSelectionListener = new ISelectionChangedListener()
+    {
+        public void selectionChanged( SelectionChangedEvent event )
+        {
+            updateAttributesButtonsEnableState();
+        }
+    };
+
+    /** The Double Click Listener for the Indexed Attributes Table Viewer */
+    private IDoubleClickListener attributesTableViewerDoubleClickListener = new IDoubleClickListener()
+    {
+        public void doubleClick( DoubleClickEvent event )
+        {
+            editSelectedAttribute();
+        }
+    };
+
+    private SelectionListener addAttributeButtonSelectionListener = new SelectionAdapter()
+    {
+        public void widgetSelected( SelectionEvent e )
+        {
+            addNewAttribute();
+        }
+    };
+
+    private SelectionListener editAttributeButtonSelectionListener = new SelectionAdapter()
+    {
+        public void widgetSelected( SelectionEvent e )
+        {
+            editSelectedAttribute();
+        }
+    };
+
+    private SelectionListener deleteAttributeButtonSelectionListener = new SelectionAdapter()
+    {
+        public void widgetSelected( SelectionEvent e )
+        {
+            deleteSelectedAttribute();
         }
     };
 
@@ -357,18 +418,21 @@ public class ReplicationDetailsPage implements IDetailsPage
         GridLayout gl = new GridLayout( 2, false );
         gl.marginWidth = gl.marginHeight = 0;
         attributesTableComposite.setLayout( gl );
-        attributesTableComposite.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 3, 1 ) );
+        attributesTableComposite.setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, true, 3, 1 ) );
         Table attributesTable = toolkit.createTable( attributesTableComposite, SWT.BORDER );
-        attributesTable.setLayoutData( new GridData( SWT.FILL, SWT.CENTER, true, false, 1, 3 ) );
+        attributesTable.setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, true, 1, 3 ) );
         attributesTableViewer = new TableViewer( attributesTable );
+        attributesTableViewer.setContentProvider( new ArrayContentProvider() );
 
         addAttributeButton = toolkit.createButton( attributesTableComposite, "Add...", SWT.PUSH );
         addAttributeButton.setLayoutData( createNewButtonGridData() );
 
         editAttributeButton = toolkit.createButton( attributesTableComposite, "Edit...", SWT.PUSH );
+        editAttributeButton.setEnabled( false );
         editAttributeButton.setLayoutData( createNewButtonGridData() );
 
         deleteAttributeButton = toolkit.createButton( attributesTableComposite, "Delete", SWT.PUSH );
+        deleteAttributeButton.setEnabled( false );
         deleteAttributeButton.setLayoutData( createNewButtonGridData() );
 
         // Aliases Dereferencing Text
@@ -383,7 +447,172 @@ public class ReplicationDetailsPage implements IDetailsPage
         // Search Aliases Dereferencing Button
         searchAliasesDereferencingButton = toolkit.createButton( composite, "Search", SWT.CHECK );
         searchAliasesDereferencingButton.setLayoutData( new GridData( SWT.LEFT, SWT.CENTER, false, false, 2, 1 ) );
+    }
 
+
+    /**
+     * Updates the attributes buttons enable state.
+     */
+    private void updateAttributesButtonsEnableState()
+    {
+        ISelection selection = attributesTableViewer.getSelection();
+
+        editAttributeButton.setEnabled( !selection.isEmpty() );
+        deleteAttributeButton.setEnabled( !selection.isEmpty() );
+    }
+
+
+    /**
+     * Adds a new attribute and opens the attribute dialog.
+     */
+    private void addNewAttribute()
+    {
+        AttributeDialog dialog = new AttributeDialog( addAttributeButton.getShell(), null, getAttributeNamesAndOids() );
+
+        if ( AttributeDialog.OK == dialog.open() )
+        {
+            String newAttribute = dialog.getAttribute();
+
+            if ( !attributesList.contains( newAttribute ) )
+            {
+                attributesList.add( newAttribute );
+            }
+
+            attributesTableViewer.refresh();
+            attributesTableViewer.setSelection( new StructuredSelection( newAttribute ) );
+            masterDetailsBlock.setEditorDirty();
+        }
+    }
+
+
+    /**
+     * Opens an attribute dialog with the selected attribute in the attributes table viewer.
+     */
+    private void editSelectedAttribute()
+    {
+        StructuredSelection selection = ( StructuredSelection ) attributesTableViewer.getSelection();
+
+        if ( !selection.isEmpty() )
+        {
+            String attribute = ( String ) selection.getFirstElement();
+
+            AttributeDialog dialog = new AttributeDialog( addAttributeButton.getShell(), attribute,
+                getAttributeNamesAndOids() );
+
+            if ( AttributeDialog.OK == dialog.open() )
+            {
+                attributesList.remove( attribute );
+
+                String newAttribute = dialog.getAttribute();
+
+                if ( !attributesList.contains( newAttribute ) )
+                {
+                    attributesList.add( newAttribute );
+                }
+
+                attributesTableViewer.refresh();
+                attributesTableViewer.setSelection( new StructuredSelection( newAttribute ) );
+                masterDetailsBlock.setEditorDirty();
+            }
+        }
+    }
+
+
+    /**
+     * Deletes the selected index in the indexes table viewer.
+     */
+    private void deleteSelectedAttribute()
+    {
+        StructuredSelection selection = ( StructuredSelection ) attributesTableViewer.getSelection();
+
+        if ( !selection.isEmpty() )
+        {
+            String attribute = ( String ) selection.getFirstElement();
+
+            attributesList.remove( attribute );
+            attributesTableViewer.refresh();
+            masterDetailsBlock.setEditorDirty();
+        }
+    }
+
+
+    /**
+     * Gets the array containing the attribute names and OIDs.
+     *
+     * @return the array containing the attribute names and OIDs
+     */
+    private String[] getAttributeNamesAndOids()
+    {
+        // Checking if the array has already be generated
+        if ( ( attributeNamesAndOids == null ) || ( attributeNamesAndOids.length == 0 ) )
+        {
+            List<String> attributeNamesList = new ArrayList<String>();
+            List<String> oidsList = new ArrayList<String>();
+
+            if ( browserConnection == null )
+            {
+                // Getting all connections in the case where no connection is found
+                IBrowserConnection[] connections = BrowserCorePlugin.getDefault().getConnectionManager()
+                    .getBrowserConnections();
+                for ( IBrowserConnection connection : connections )
+                {
+                    addAttributeNamesAndOids( connection.getSchema(), attributeNamesList, oidsList );
+                }
+            }
+            else
+            {
+                // Only adding attribute names and OIDs from the associated connection
+                addAttributeNamesAndOids( browserConnection.getSchema(), attributeNamesList, oidsList );
+            }
+
+            // Also adding attribute names and OIDs from the default schema
+            addAttributeNamesAndOids( Schema.DEFAULT_SCHEMA, attributeNamesList, oidsList );
+
+            // Sorting the set
+            Collections.sort( attributeNamesList );
+            Collections.sort( oidsList );
+
+            attributeNamesAndOids = new String[attributeNamesList.size() + oidsList.size()];
+            System.arraycopy( attributeNamesList.toArray(), 0, attributeNamesAndOids, 0, attributeNamesList
+                .size() );
+            System.arraycopy( oidsList.toArray(), 0, attributeNamesAndOids, attributeNamesList
+                .size(), oidsList.size() );
+        }
+
+        return attributeNamesAndOids;
+    }
+
+
+    /**
+     * Adds the attribute names and OIDs to the given set.
+     *
+     * @param schema the schema
+     * @param attributeNamesList the attribute names list
+     * @param oidsList the OIDs name list
+     */
+    private void addAttributeNamesAndOids( Schema schema, List<String> attributeNamesList, List<String> oidsList )
+    {
+        if ( schema != null )
+        {
+            Collection<AttributeType> atds = schema.getAttributeTypeDescriptions();
+            for ( AttributeType atd : atds )
+            {
+                // OID
+                if ( !oidsList.contains( atd.getOid() ) )
+                {
+                    oidsList.add( atd.getOid() );
+                }
+
+                // Names
+                for ( String name : atd.getNames() )
+                {
+                    if ( !attributeNamesList.contains( name ) )
+                    {
+                        attributeNamesList.add( name );
+                    }
+                }
+            }
+        }
     }
 
 
@@ -420,10 +649,11 @@ public class ReplicationDetailsPage implements IDetailsPage
         subtreeScopeButton.addSelectionListener( buttonSelectionListener );
         oneLevelScopeButton.addSelectionListener( buttonSelectionListener );
         objectScopeButton.addSelectionListener( buttonSelectionListener );
-        //attributesTableViewer;
-        //addAttributeButton;
-        //editAttributeButton;
-        //deleteAttributeButton;
+        attributesTableViewer.addDoubleClickListener( attributesTableViewerDoubleClickListener );
+        attributesTableViewer.addSelectionChangedListener( attributesTableViewerSelectionListener );
+        addAttributeButton.addSelectionListener( addAttributeButtonSelectionListener );
+        editAttributeButton.addSelectionListener( editAttributeButtonSelectionListener );
+        deleteAttributeButton.addSelectionListener( deleteAttributeButtonSelectionListener );
         findingBaseDnAliasesDereferencingButton.addSelectionListener( buttonSelectionListener );
         searchAliasesDereferencingButton.addSelectionListener( buttonSelectionListener );
     }
@@ -449,10 +679,11 @@ public class ReplicationDetailsPage implements IDetailsPage
         subtreeScopeButton.removeSelectionListener( buttonSelectionListener );
         oneLevelScopeButton.removeSelectionListener( buttonSelectionListener );
         objectScopeButton.removeSelectionListener( buttonSelectionListener );
-        //attributesTableViewer;
-        //addAttributeButton;
-        //editAttributeButton;
-        //deleteAttributeButton;
+        attributesTableViewer.removeDoubleClickListener( attributesTableViewerDoubleClickListener );
+        attributesTableViewer.removeSelectionChangedListener( attributesTableViewerSelectionListener );
+        addAttributeButton.removeSelectionListener( addAttributeButtonSelectionListener );
+        editAttributeButton.removeSelectionListener( editAttributeButtonSelectionListener );
+        deleteAttributeButton.removeSelectionListener( deleteAttributeButtonSelectionListener );
         findingBaseDnAliasesDereferencingButton.removeSelectionListener( buttonSelectionListener );
         searchAliasesDereferencingButton.removeSelectionListener( buttonSelectionListener );
     }
@@ -700,7 +931,7 @@ public class ReplicationDetailsPage implements IDetailsPage
             bindDnText.setText( checkNull( input.getReplUserDn() ) );
 
             // Bind Password
-            bindPasswordText.setText( checkNull( String.valueOf( input.getReplUserPassword() ) ) );
+            bindPasswordText.setText( checkNull( String.valueOf( new String( input.getReplUserPassword() ) ) ) );
 
             // Size Limit
             sizeLimitText.setText( checkNull( String.valueOf( input.getReplSearchSizeLimit() ) ) );
@@ -790,6 +1021,10 @@ public class ReplicationDetailsPage implements IDetailsPage
                 findingBaseDnAliasesDereferencingButton.setSelection( true );
                 searchAliasesDereferencingButton.setSelection( true );
             }
+
+            // Attributes
+            attributesList = input.getReplAttributes();
+            attributesTableViewer.setInput( attributesList );
         }
 
         addListeners();
