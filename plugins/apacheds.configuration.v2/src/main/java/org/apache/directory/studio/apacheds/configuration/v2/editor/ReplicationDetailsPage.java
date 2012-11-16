@@ -969,11 +969,17 @@ public class ReplicationDetailsPage implements IDetailsPage
                 {
                     case SUBTREE:
                         subtreeScopeButton.setSelection( true );
+                        oneLevelScopeButton.setSelection( false );
+                        objectScopeButton.setSelection( false );
                         break;
                     case ONELEVEL:
+                        subtreeScopeButton.setSelection( false );
                         oneLevelScopeButton.setSelection( true );
+                        objectScopeButton.setSelection( false );
                         break;
                     case OBJECT:
+                        subtreeScopeButton.setSelection( false );
+                        oneLevelScopeButton.setSelection( false );
                         objectScopeButton.setSelection( true );
                         break;
                 }
