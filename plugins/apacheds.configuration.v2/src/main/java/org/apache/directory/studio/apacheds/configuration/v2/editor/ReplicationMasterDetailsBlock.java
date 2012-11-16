@@ -21,9 +21,13 @@ package org.apache.directory.studio.apacheds.configuration.v2.editor;
 
 
 import org.apache.directory.server.config.beans.ReplConsumerBean;
+import org.apache.directory.shared.ldap.model.constants.SchemaConstants;
+import org.apache.directory.shared.ldap.model.message.AliasDerefMode;
+import org.apache.directory.shared.ldap.model.message.SearchScope;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
+import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
@@ -116,7 +120,20 @@ public class ReplicationMasterDetailsBlock extends MasterDetailsBlock
             }
         } );
         viewer.setContentProvider( new ArrayContentProvider() );
-        //      viewer.setLabelProvider( PartitionsPage.PARTITIONS_LABEL_PROVIDER );
+        viewer.setLabelProvider( new LabelProvider()
+        {
+            public String getText( Object element )
+            {
+                if ( element instanceof ReplConsumerBean )
+                {
+                    ReplConsumerBean consumer = ( ReplConsumerBean ) element;
+
+                    return consumer.getReplConsumerId();
+                }
+
+                return super.getText( element );
+            }
+        } );
 
         // Creating the button(s)
         addButton = toolkit.createButton( client, "Add", SWT.PUSH );
@@ -184,7 +201,7 @@ public class ReplicationMasterDetailsBlock extends MasterDetailsBlock
     {
         String newId = getNewId();
 
-        ReplConsumerBean consumerBean = new ReplConsumerBean();
+        ReplConsumerBean consumerBean = getNewReplConsumerBean();
 
         consumerBean.setReplConsumerId( newId );
 
@@ -192,6 +209,32 @@ public class ReplicationMasterDetailsBlock extends MasterDetailsBlock
         viewer.refresh();
         viewer.setSelection( new StructuredSelection( consumerBean ) );
         setEditorDirty();
+    }
+
+
+    /**
+     * Gets a new ReplConsumerBean.
+     *
+     * @return a new ReplConsumerBean
+     */
+    private ReplConsumerBean getNewReplConsumerBean()
+    {
+        ReplConsumerBean consumerBean = new ReplConsumerBean();
+
+        consumerBean.setEnabled( true );
+        consumerBean.setReplAliasDerefMode( AliasDerefMode.NEVER_DEREF_ALIASES.getJndiValue() );
+        consumerBean.setReplProvHostName( "localhost" );
+        consumerBean.setReplProvPort( 10389 );
+        consumerBean.setReplSearchFilter( "(objectClass=*)" );
+        consumerBean.setReplSearchScope( SearchScope.SUBTREE.getLdapUrlValue() );
+        consumerBean.setReplUserDn( "uid=admin,ou=system" );
+        consumerBean.setReplUserPassword( "secret".getBytes() );
+        consumerBean.setReplRefreshInterval( 60 * 1000 );
+        consumerBean.setReplRefreshNPersist( true );
+        consumerBean.addReplAttributes( SchemaConstants.ALL_USER_ATTRIBUTES );
+        consumerBean.setSearchBaseDn( "dc=example,dc=com" );
+
+        return consumerBean;
     }
 
 
@@ -286,7 +329,8 @@ public class ReplicationMasterDetailsBlock extends MasterDetailsBlock
     {
         detailsPage.commit( true );
     }
-    
+
+
     /**
      * Gets the replication page.
      *
