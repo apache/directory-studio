@@ -232,6 +232,7 @@ public class ReplicationMasterDetailsBlock extends MasterDetailsBlock
         consumerBean.setReplRefreshInterval( 60 * 1000 );
         consumerBean.setReplRefreshNPersist( true );
         consumerBean.addReplAttributes( SchemaConstants.ALL_USER_ATTRIBUTES );
+        consumerBean.addReplAttributes( SchemaConstants.ALL_OPERATIONAL_ATTRIBUTES );
         consumerBean.setSearchBaseDn( "dc=example,dc=com" );
 
         return consumerBean;
