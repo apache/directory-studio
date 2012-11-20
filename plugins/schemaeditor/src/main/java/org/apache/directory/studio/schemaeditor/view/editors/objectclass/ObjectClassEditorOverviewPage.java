@@ -1191,19 +1191,19 @@ public class ObjectClassEditorOverviewPage extends AbstractObjectClassEditorPage
         addSelectionListener( aliasesButton, aliasesButtonListener );
         addModifyListener( oidText, oidTextModifyListener );
         addVerifyListener( oidText, oidTextVerifyListener );
+        addHyperlinkListener( schemaLink, schemaLinkListener );
         addModifyListener( descriptionText, descriptionTextListener );
+        addMouseListener( superiorsTable, superiorsTableListener );
         addSelectionListener( addButtonSuperiorsTable, addButtonSuperiorsTableListener );
         addSelectionListener( removeButtonSuperiorsTable, removeButtonSuperiorsTableListener );
         addModifyListener( classTypeCombo, classTypeListener );
         addSelectionListener( obsoleteCheckbox, obsoleteListener );
+        addMouseListener( mandatoryAttributesTable, mandatoryAttributesTableListener );
         addSelectionListener( addButtonMandatoryTable, addButtonMandatoryTableListener );
-        addSelectionListener( addButtonMandatoryTable, removeButtonMandatoryTableListener );
+        addSelectionListener( removeButtonMandatoryTable, removeButtonMandatoryTableListener );
+        addMouseListener( optionalAttributesTable, optionalAttributesTableListener );
         addSelectionListener( addButtonOptionalTable, addButtonOptionalTableListener );
         addSelectionListener( removeButtonOptionalTable, removeButtonOptionalTableListener );
-        addHyperlinkListener( schemaLink, schemaLinkListener );
-        addMouseListener( superiorsTable, superiorsTableListener );
-        addMouseListener( mandatoryAttributesTable, mandatoryAttributesTableListener );
-        addMouseListener( optionalAttributesTable, optionalAttributesTableListener );
 
         Display.getCurrent().addFilter( SWT.MouseWheel, mouseWheelFilter );
     }
