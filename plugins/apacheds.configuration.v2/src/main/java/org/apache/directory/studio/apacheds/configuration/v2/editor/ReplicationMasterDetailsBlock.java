@@ -84,9 +84,23 @@ public class ReplicationMasterDetailsBlock extends MasterDetailsBlock
     /**
      * {@inheritDoc}
      */
+    public void createContent( IManagedForm managedForm )
+    {
+        super.createContent( managedForm );
+
+        this.sashForm.setWeights( new int[]
+            { 30, 70 } );
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
     protected void createMasterPart( final IManagedForm managedForm, Composite parent )
     {
         FormToolkit toolkit = managedForm.getToolkit();
+
+        sashForm.setOrientation( SWT.HORIZONTAL );
 
         // Creating the Section
         Section section = toolkit.createSection( parent, Section.TITLE_BAR );
