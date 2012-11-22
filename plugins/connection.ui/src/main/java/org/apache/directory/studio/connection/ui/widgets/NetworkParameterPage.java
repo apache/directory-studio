@@ -43,6 +43,7 @@ import org.apache.directory.studio.connection.ui.RunnableContextRunner;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.preference.PreferenceDialog;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
@@ -57,7 +58,9 @@ import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Group;
+import org.eclipse.swt.widgets.Link;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.ui.dialogs.PreferencesUtil;
 
 
 /**
@@ -250,6 +253,29 @@ public class NetworkParameterPage extends AbstractConnectionParameterPage
             BaseWidgetUtils.createSpacer( groupComposite, 1 );
             BaseWidgetUtils.createLabel( groupComposite, Messages
                 .getString( "NetworkParameterPage.WarningCertificateValidation" ), 2 ); //$NON-NLS-1$
+        }
+        else
+        {
+            BaseWidgetUtils.createSpacer( groupComposite, 1 );
+
+            Link link = BaseWidgetUtils.createLink( groupComposite,
+                Messages.getString( "NetworkParameterPage.CertificateValidationLink" ), 2 ); //$NON-NLS-1$
+            GridData linkGridData = new GridData( GridData.FILL_HORIZONTAL );
+            linkGridData.horizontalSpan = 2;
+            linkGridData.widthHint = 100;
+            link.setLayoutData( linkGridData );
+            link.addSelectionListener( new SelectionAdapter()
+            {
+                public void widgetSelected( SelectionEvent e )
+                {
+                    String certificateValidationPreferencePageId = "org.apache.directory.studio.connection.preferences.CertificateValidationPreferencePage"; //$NON-NLS-1$
+
+                    PreferenceDialog dialog = PreferencesUtil.createPreferenceDialogOn( Display.getDefault()
+                        .getActiveShell(), certificateValidationPreferencePageId, new String[]
+                        { certificateValidationPreferencePageId }, null );
+                    dialog.open();
+                }
+            } );
         }
 
         String[] networkProviders = new String[]
