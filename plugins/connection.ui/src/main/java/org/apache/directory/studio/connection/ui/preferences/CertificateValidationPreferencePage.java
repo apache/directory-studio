@@ -108,10 +108,6 @@ public class CertificateValidationPreferencePage extends PreferencePage implemen
 
         // certificate list widget
         tabFolder = new TabFolder( composite, SWT.TOP );
-        GridLayout mainLayout = new GridLayout();
-        mainLayout.marginWidth = 0;
-        mainLayout.marginHeight = 0;
-        tabFolder.setLayout( mainLayout );
         tabFolder.setLayoutData( new GridData( GridData.FILL, GridData.FILL, true, true ) );
 
         permanentCLComposite = new CertificateListComposite( tabFolder, SWT.NONE );
