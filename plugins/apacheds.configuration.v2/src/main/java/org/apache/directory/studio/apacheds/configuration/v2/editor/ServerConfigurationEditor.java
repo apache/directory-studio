@@ -65,7 +65,7 @@ public class ServerConfigurationEditor extends FormEditor implements IPageChange
     private LdapLdapsServersPage ldapLdapsServersPage;
     private KerberosServerPage kerberosServerPage;
     private PartitionsPage partitionsPage;
-//    private ReplicationPage replicationPage; // TODO Reactivate me!
+    private ReplicationPage replicationPage;
 
 
     /**
@@ -315,7 +315,7 @@ public class ServerConfigurationEditor extends FormEditor implements IPageChange
         ldapLdapsServersPage.refreshUI();
         kerberosServerPage.refreshUI();
         partitionsPage.refreshUI();
-//        replicationPage.refreshUI(); // TODO Reactivate me!
+        replicationPage.refreshUI();
     }
 
 
@@ -370,8 +370,8 @@ public class ServerConfigurationEditor extends FormEditor implements IPageChange
             addPage( kerberosServerPage );
             partitionsPage = new PartitionsPage( this );
             addPage( partitionsPage );
-            //            replicationPage = new ReplicationPage( this ); // TODO Reactivate me!
-            //            addPage( replicationPage ); // TODO Reactivate me!
+            replicationPage = new ReplicationPage( this );
+            addPage( replicationPage );
         }
         catch ( PartInitException e )
         {
