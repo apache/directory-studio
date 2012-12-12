@@ -22,16 +22,13 @@ package org.apache.directory.studio.apacheds.configuration.v2.jobs;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import org.apache.directory.server.core.api.entry.ClonedServerEntry;
 import org.apache.directory.server.core.api.filtering.EntryFilteringCursor;
 import org.apache.directory.server.core.api.interceptor.context.LookupOperationContext;
 import org.apache.directory.server.core.api.interceptor.context.SearchOperationContext;
 import org.apache.directory.server.core.api.partition.Partition;
-import org.apache.directory.shared.ldap.model.constants.SchemaConstants;
 import org.apache.directory.shared.ldap.model.entry.Attribute;
 import org.apache.directory.shared.ldap.model.entry.DefaultAttribute;
 import org.apache.directory.shared.ldap.model.entry.DefaultModification;
@@ -39,7 +36,6 @@ import org.apache.directory.shared.ldap.model.entry.Entry;
 import org.apache.directory.shared.ldap.model.entry.Modification;
 import org.apache.directory.shared.ldap.model.entry.ModificationOperation;
 import org.apache.directory.shared.ldap.model.entry.Value;
-import org.apache.directory.shared.ldap.model.exception.LdapException;
 import org.apache.directory.shared.ldap.model.exception.LdapInvalidAttributeValueException;
 import org.apache.directory.shared.ldap.model.filter.FilterParser;
 import org.apache.directory.shared.ldap.model.ldif.ChangeType;
@@ -48,9 +44,6 @@ import org.apache.directory.shared.ldap.model.message.AliasDerefMode;
 import org.apache.directory.shared.ldap.model.message.SearchScope;
 import org.apache.directory.shared.ldap.model.name.Dn;
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
-import org.apache.directory.shared.ldap.model.schema.AttributeTypeOptions;
-import org.apache.directory.shared.ldap.model.schema.SchemaManager;
-import org.apache.directory.shared.ldap.model.schema.SchemaUtils;
 import org.apache.directory.shared.ldap.model.schema.UsageEnum;
 
 
@@ -216,11 +209,9 @@ public class PartitionsDiffComputer
                 }
 
                 // Creating a search operation context to get the children of the current entry
-                SearchOperationContext soc = new SearchOperationContext( null );
-                setReturningAttributes( originalPartition.getSchemaManager(), attributeIds, soc );
-                soc.setDn( originalEntry.getDn() );
-                soc.setScope( SearchScope.ONELEVEL );
-                soc.setFilter( FilterParser.parse( originalPartition.getSchemaManager(), "(objectClass=*)" ) ); //$NON-NLS-1$
+                SearchOperationContext soc = new SearchOperationContext( null, originalEntry.getDn(),
+                    SearchScope.ONELEVEL,
+                    FilterParser.parse( originalPartition.getSchemaManager(), "(objectClass=*)" ), attributeIds );
                 soc.setAliasDerefMode( AliasDerefMode.DEREF_ALWAYS );
 
                 // Looking for the children of the current entry
@@ -231,7 +222,7 @@ public class PartitionsDiffComputer
                     originalEntries.add( ( ( ClonedServerEntry ) cursor.get() ).getClonedEntry() );
                 }
             }
-            
+
             // Reversing the list to allow deletion of leafs first (otherwise we would be deleting
             // higher nodes with children first).
             // Order for modified entries does not matter.
@@ -281,11 +272,9 @@ public class PartitionsDiffComputer
                 }
 
                 // Creating a search operation context to get the children of the current entry
-                SearchOperationContext soc = new SearchOperationContext( null );
-                setReturningAttributes( destinationPartition.getSchemaManager(), attributeIds, soc );
-                soc.setDn( destinationEntry.getDn() );
-                soc.setScope( SearchScope.ONELEVEL );
-                soc.setFilter( FilterParser.parse( destinationPartition.getSchemaManager(), "(objectClass=*)" ) ); //$NON-NLS-1$
+                SearchOperationContext soc = new SearchOperationContext( null, originalEntry.getDn(),
+                    SearchScope.ONELEVEL,
+                    FilterParser.parse( originalPartition.getSchemaManager(), "(objectClass=*)" ), attributeIds );
                 soc.setAliasDerefMode( AliasDerefMode.DEREF_ALWAYS );
 
                 // Looking for the children of the current entry
@@ -303,65 +292,6 @@ public class PartitionsDiffComputer
         }
 
         return modifications;
-    }
-
-
-    /**
-     * Sets the returning attributes to the search operation context.
-     *
-     * @param schemaManager
-     *      the schema manager
-     * @param attributeIds
-     *      the attribute IDs
-     * @param soc
-     *      the search operation context
-     * @throws org.apache.directory.shared.ldap.model.exception.LdapException
-     */
-    private void setReturningAttributes( SchemaManager schemaManager, String[] attributeIds,
-        SearchOperationContext soc ) throws LdapException
-    {
-        if ( attributeIds != null && attributeIds.length != 0 )
-        {
-            Set<AttributeTypeOptions> returningAttributes = new HashSet<AttributeTypeOptions>();
-
-            for ( String returnAttribute : attributeIds )
-            {
-                if ( returnAttribute.equals( SchemaConstants.NO_ATTRIBUTE ) )
-                {
-                    soc.setNoAttributes( true );
-                    continue;
-                }
-
-                if ( returnAttribute.equals( SchemaConstants.ALL_OPERATIONAL_ATTRIBUTES ) )
-                {
-                    soc.setAllOperationalAttributes( true );
-                    continue;
-                }
-
-                if ( returnAttribute.equals( SchemaConstants.ALL_USER_ATTRIBUTES ) )
-                {
-                    soc.setAllUserAttributes( true );
-                    continue;
-                }
-
-                String id = SchemaUtils.stripOptions( returnAttribute );
-                Set<String> options = SchemaUtils.getOptions( returnAttribute );
-
-                AttributeType attributeType = schemaManager.lookupAttributeTypeRegistry( id );
-                AttributeTypeOptions attrOptions = new AttributeTypeOptions( attributeType, options );
-
-                returningAttributes.add( attrOptions );
-            }
-
-            // reset the noAttrubte flag if it is already set cause that will be ignored if any other AT is requested
-            if ( soc.isNoAttributes()
-                && ( soc.isAllUserAttributes() || soc.isAllOperationalAttributes() || ( !returningAttributes.isEmpty() ) ) )
-            {
-                soc.setNoAttributes( false );
-            }
-
-            soc.setReturningAttributes( returningAttributes );
-        }
     }
 
 
