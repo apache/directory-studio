@@ -46,8 +46,12 @@ import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.ui.views.contentoutline.ContentOutlinePage;
 
 
@@ -71,6 +75,12 @@ public class EntryEditorOutlinePage extends ContentOutlinePage
         }
     };
 
+    private Composite noOutlineComposite;
+
+    private Composite composite;
+
+    private Composite fakeComposite;
+
 
     /**
      * Creates a new instance of EntryEditorOutlinePage.
@@ -85,11 +95,30 @@ public class EntryEditorOutlinePage extends ContentOutlinePage
     }
 
 
+    public Control getControl()
+    {
+        return composite;
+    }
+
+
     /**
      * {@inheritDoc}
      */
     public void createControl( Composite parent )
     {
+        // Creating the composite and fake composite
+        this.composite = new Composite( parent, SWT.NONE );
+        composite.setLayout( new FillLayout() );
+        this.fakeComposite = new Composite( parent, SWT.NONE );
+
+        // Creating the No Outline composite
+        noOutlineComposite = new Composite( composite, SWT.NONE );
+        noOutlineComposite.setLayout( new FillLayout() );
+
+        Label label = new Label( noOutlineComposite, SWT.WRAP );
+        label.setText( Messages.getString( "EntryEditorOutlinePage.NoOutline" ) ); //$NON-NLS-1$
+
+        // Creating the Outline tree viewer
         super.createControl( parent );
 
         final TreeViewer treeViewer = getTreeViewer();
@@ -186,6 +215,19 @@ public class EntryEditorOutlinePage extends ContentOutlinePage
      */
     public void refresh()
     {
+        if ( hasAnOutline() )
+        {
+            getTreeViewer().getControl().setParent( composite );
+            noOutlineComposite.setParent( fakeComposite );
+        }
+        else
+        {
+            getTreeViewer().getControl().setParent( fakeComposite );
+            noOutlineComposite.setParent( composite );
+        }
+
+        composite.layout();
+
         final TreeViewer treeViewer = getTreeViewer();
 
         if ( treeViewer != null && treeViewer.getTree() != null && !treeViewer.getTree().isDisposed() )
@@ -456,7 +498,19 @@ public class EntryEditorOutlinePage extends ContentOutlinePage
                 return false;
             return true;
         }
-
     }
 
+
+    /**
+     * Indicates if the entry has an outline.
+     *
+     * @return <code>true</code> if the entry editor has an outline,
+     *         <code>false</code> if not.
+     */
+    public boolean hasAnOutline()
+    {
+        Object o = entryEditor.getMainWidget().getViewer().getInput();
+
+        return ( o != null && o instanceof IEntry );
+    }
 }

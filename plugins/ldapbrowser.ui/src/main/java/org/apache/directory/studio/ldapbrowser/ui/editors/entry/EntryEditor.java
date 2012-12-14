@@ -180,6 +180,7 @@ public abstract class EntryEditor extends EditorPart implements IEntryEditor, IN
             {
                 outlinePage = new EntryEditorOutlinePage( this );
             }
+            
             return outlinePage;
         }
 
