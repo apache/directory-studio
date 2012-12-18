@@ -92,7 +92,7 @@
  org.apache.directory.server.core.api;bundle-version="${org.apache.directory.server.validversion}",
  org.apache.directory.server.i18n;bundle-version="${org.apache.directory.server.validversion}",
  org.apache.directory.server.xdbm.partition;bundle-version="${org.apache.directory.server.validversion}",
- org.apache.directory.shared.i18n;bundle-version="${org.apache.directory.shared.validversion}",
+ org.apache.directory.api.i18n;bundle-version="${org.apache.directory.shared.validversion}",
  org.apache.directory.shared.ldap.model;bundle-version="${org.apache.directory.shared.validversion}",
  org.apache.directory.shared.ldap.schema;bundle-version="${org.apache.directory.shared.validversion}",
  org.apache.directory.shared.util;bundle-version="${org.apache.directory.shared.validversion}",
