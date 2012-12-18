@@ -331,7 +331,7 @@ http://www.apache.org/licenses/
          unpack="false"/>
 
    <plugin
-         id="org.apache.directory.shared.asn1.ber"
+         id="org.apache.directory.api.asn1.ber"
          download-size="0"
          install-size="0"
          version="${org.apache.directory.shared.validversion}"
@@ -345,7 +345,7 @@ http://www.apache.org/licenses/
          unpack="false"/>
 
    <plugin
-         id="org.apache.directory.shared.i18n"
+         id="org.apache.directory.api.i18n"
          download-size="0"
          install-size="0"
          version="${org.apache.directory.shared.validversion}"

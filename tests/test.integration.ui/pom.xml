@@ -273,7 +273,7 @@
  org.apache.directory.studio.ldapbrowser.core,
  org.apache.directory.studio.ldapbrowser.ui,
  org.apache.directory.studio.apacheds,
- org.apache.directory.shared.i18n,
+ org.apache.directory.api.i18n,
  org.apache.directory.shared.ldap.schema,
  org.apache.directory.shared.ldap.client.api,
  org.apache.mina.core,
