@@ -22,7 +22,7 @@ package org.apache.directory.studio.connection.core.io;
 
 import java.util.ArrayList;
 
-import org.apache.directory.shared.ldap.model.message.Referral;
+import org.apache.directory.api.ldap.model.message.Referral;
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.ConnectionCorePlugin;

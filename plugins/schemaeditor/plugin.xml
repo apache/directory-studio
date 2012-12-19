@@ -244,10 +244,10 @@
                       name="org.apache.directory.studio.schemaeditor.view.wrappers.ObjectClassWrapper">
                 </objectClass>
                 <objectClass
-                      name="org.apache.directory.shared.ldap.model.schema.AttributeType">
+                      name="org.apache.directory.api.ldap.model.schema.AttributeType">
                 </objectClass>
                 <objectClass
-                      name="org.apache.directory.shared.ldap.model.schema.ObjectClass">
+                      name="org.apache.directory.api.ldap.model.schema.ObjectClass">
                 </objectClass>
              </or>
           </enablement>

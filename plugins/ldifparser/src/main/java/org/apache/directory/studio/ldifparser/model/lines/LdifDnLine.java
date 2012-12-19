@@ -21,7 +21,7 @@
 package org.apache.directory.studio.ldifparser.model.lines;
 
 
-import org.apache.directory.shared.ldap.model.name.Dn;
+import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.studio.ldifparser.LdifParserConstants;
 import org.apache.directory.studio.ldifparser.LdifUtils;
 

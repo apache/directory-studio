@@ -20,7 +20,7 @@
 package org.apache.directory.studio.schemaeditor.view.editors.attributetype;
 
 
-import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
+import org.apache.directory.api.ldap.model.schema.LdapSyntax;
 import org.apache.directory.studio.schemaeditor.view.editors.NonExistingSyntax;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.osgi.util.NLS;

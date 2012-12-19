@@ -29,7 +29,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.directory.shared.ldap.model.name.Dn;
+import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonConstants;
 import org.apache.directory.studio.ldapbrowser.core.BrowserConnectionManager;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
@@ -130,7 +130,7 @@ public class EntryTransfer extends ByteArrayTransfer
      * This implementation just converts the platform specific representation
      * to the connection id and entry Dn and invokes
      * {@link BrowserConnectionManager#getBrowserConnectionById(String)} to get the
-     * {@link IBrowserConnection} object and {@link IBrowserConnection#getEntryFromCache(org.apache.directory.shared.ldap.model.name.Dn)}
+     * {@link IBrowserConnection} object and {@link IBrowserConnection#getEntryFromCache(org.apache.directory.api.ldap.model.name.Dn)}
      * to get the {@link IEntry} object.
      */
     public Object nativeToJava( TransferData transferData )

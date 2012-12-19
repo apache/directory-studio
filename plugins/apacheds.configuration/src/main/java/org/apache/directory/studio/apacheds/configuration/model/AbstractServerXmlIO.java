@@ -26,10 +26,10 @@ import java.io.Reader;
 import java.io.StringReader;
 import java.util.Iterator;
 
-import org.apache.directory.shared.ldap.model.entry.DefaultEntry;
-import org.apache.directory.shared.ldap.model.entry.Entry;
-import org.apache.directory.shared.ldap.model.entry.Attribute;
-import org.apache.directory.shared.ldap.model.ldif.LdifReader;
+import org.apache.directory.api.ldap.model.entry.Attribute;
+import org.apache.directory.api.ldap.model.entry.DefaultEntry;
+import org.apache.directory.api.ldap.model.entry.Entry;
+import org.apache.directory.api.ldap.model.ldif.LdifReader;
 import org.apache.directory.api.util.Strings;
 import org.apache.directory.studio.apacheds.configuration.StudioEntityResolver;
 import org.dom4j.Document;

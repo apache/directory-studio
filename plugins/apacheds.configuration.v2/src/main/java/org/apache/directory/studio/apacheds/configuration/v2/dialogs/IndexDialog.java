@@ -20,8 +20,8 @@
 package org.apache.directory.studio.apacheds.configuration.v2.dialogs;
 
 
+import org.apache.directory.api.ldap.model.entry.Entry;
 import org.apache.directory.server.config.beans.JdbmIndexBean;
-import org.apache.directory.shared.ldap.model.entry.Entry;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;

@@ -26,7 +26,7 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
-import org.apache.directory.shared.ldap.model.name.Rdn;
+import org.apache.directory.api.ldap.model.name.Rdn;
 import org.apache.directory.studio.ldapbrowser.common.dialogs.RenameEntryDialog;
 import org.apache.directory.studio.ldapbrowser.common.dialogs.SimulateRenameDialogImpl;
 import org.apache.directory.studio.ldapbrowser.core.jobs.RenameEntryRunnable;

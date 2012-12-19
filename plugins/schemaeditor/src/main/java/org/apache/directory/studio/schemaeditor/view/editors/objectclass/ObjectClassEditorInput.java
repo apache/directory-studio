@@ -23,7 +23,7 @@ package org.apache.directory.studio.schemaeditor.view.editors.objectclass;
 
 import java.util.List;
 
-import org.apache.directory.shared.ldap.model.schema.MutableObjectClass;
+import org.apache.directory.api.ldap.model.schema.MutableObjectClass;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.ui.IEditorInput;

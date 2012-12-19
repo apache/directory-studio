@@ -24,7 +24,7 @@ package org.apache.directory.studio.ldapbrowser.common;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import org.apache.directory.shared.ldap.model.constants.SchemaConstants;
+import org.apache.directory.api.ldap.model.constants.SchemaConstants;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreConstants;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.AttributeValueEditorRelation;

@@ -22,10 +22,10 @@ package org.apache.directory.studio.connection.ui.widgets;
 
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.directory.shared.ldap.model.constants.SaslQoP;
-import org.apache.directory.shared.ldap.model.constants.SaslSecurityStrength;
-import org.apache.directory.shared.ldap.model.url.LdapUrl;
-import org.apache.directory.shared.ldap.model.url.LdapUrl.Extension;
+import org.apache.directory.api.ldap.model.constants.SaslQoP;
+import org.apache.directory.api.ldap.model.constants.SaslSecurityStrength;
+import org.apache.directory.api.ldap.model.url.LdapUrl;
+import org.apache.directory.api.ldap.model.url.LdapUrl.Extension;
 import org.apache.directory.studio.common.ui.HistoryUtils;
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.connection.core.Connection;
