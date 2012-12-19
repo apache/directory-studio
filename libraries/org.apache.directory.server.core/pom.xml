@@ -91,15 +91,15 @@
  org.apache.commons.lang;bundle-version="${org.apache.commons.lang.version}",
  org.apache.directory.server.core.api;bundle-version="${org.apache.directory.server.validversion}",
  org.apache.directory.server.i18n;bundle-version="${org.apache.directory.server.validversion}",
- org.apache.directory.api.i18n;bundle-version="${org.apache.directory.shared.validversion}",
- org.apache.directory.shared.ldap.client.api;bundle-version="${org.apache.directory.shared.validversion}",
- org.apache.directory.shared.ldap.codec.core;bundle-version="${org.apache.directory.shared.validversion}",
- org.apache.directory.shared.ldap.extras.aci;bundle-version="${org.apache.directory.shared.validversion}",
- org.apache.directory.shared.ldap.extras.trigger;bundle-version="${org.apache.directory.shared.validversion}",
- org.apache.directory.shared.ldap.extras.util;bundle-version="${org.apache.directory.shared.validversion}",
- org.apache.directory.shared.ldap.model;bundle-version="${org.apache.directory.shared.validversion}",
- org.apache.directory.shared.ldap.schema;bundle-version="${org.apache.directory.shared.validversion}",
- org.apache.directory.shared.util;bundle-version="${org.apache.directory.shared.validversion}",
+ org.apache.directory.api.i18n;bundle-version="${org.apache.directory.api.validversion}",
+ org.apache.directory.shared.ldap.client.api;bundle-version="${org.apache.directory.api.validversion}",
+ org.apache.directory.shared.ldap.codec.core;bundle-version="${org.apache.directory.api.validversion}",
+ org.apache.directory.shared.ldap.extras.aci;bundle-version="${org.apache.directory.api.validversion}",
+ org.apache.directory.shared.ldap.extras.trigger;bundle-version="${org.apache.directory.api.validversion}",
+ org.apache.directory.shared.ldap.extras.util;bundle-version="${org.apache.directory.api.validversion}",
+ org.apache.directory.shared.ldap.model;bundle-version="${org.apache.directory.api.validversion}",
+ org.apache.directory.shared.ldap.schema;bundle-version="${org.apache.directory.api.validversion}",
+ org.apache.directory.shared.util;bundle-version="${org.apache.directory.api.validversion}",
  org.bouncycastle.bcprov.jdk15;bundle-version="${org.bouncycastle.bcprov.jdk15.version}",
  org.slf4j.api;bundle-version="${org.slf4j.version}"</Require-Bundle>
             <Embed-Dependency>*;scope=compile|runtime</Embed-Dependency>
@@ -219,43 +219,43 @@
           <artifactId>apacheds-interceptors-trigger</artifactId>
         </exclusion>
         <exclusion>
-          <groupId>org.apache.directory.shared</groupId>
+          <groupId>org.apache.directory.api</groupId>
           <artifactId>shared-ldap-client-api</artifactId>
         </exclusion>
         <exclusion>
-          <groupId>org.apache.directory.shared</groupId>
-          <artifactId>shared-i18n</artifactId>
+          <groupId>org.apache.directory.api</groupId>
+          <artifactId>api-i18n</artifactId>
         </exclusion>
         <exclusion>
-          <groupId>org.apache.directory.shared</groupId>
+          <groupId>org.apache.directory.api</groupId>
           <artifactId>shared-ldap-codec</artifactId>
         </exclusion>
         <exclusion>
-          <groupId>org.apache.directory.shared</groupId>
+          <groupId>org.apache.directory.api</groupId>
           <artifactId>shared-ldap-codec-standalone</artifactId>
         </exclusion>
         <exclusion>
-          <groupId>org.apache.directory.shared</groupId>
+          <groupId>org.apache.directory.api</groupId>
           <artifactId>shared-ldap-extras-aci</artifactId>
         </exclusion>
         <exclusion>
-          <groupId>org.apache.directory.shared</groupId>
+          <groupId>org.apache.directory.api</groupId>
           <artifactId>shared-ldap-extras-trigger</artifactId>
         </exclusion>
         <exclusion>
-          <groupId>org.apache.directory.shared</groupId>
+          <groupId>org.apache.directory.api</groupId>
           <artifactId>shared-ldap-extras-util</artifactId>
         </exclusion>
         <exclusion>
-          <groupId>org.apache.directory.shared</groupId>
+          <groupId>org.apache.directory.api</groupId>
           <artifactId>shared-ldap-model</artifactId>
         </exclusion>
         <exclusion>
-          <groupId>org.apache.directory.shared</groupId>
+          <groupId>org.apache.directory.api</groupId>
           <artifactId>shared-ldap-schema-data</artifactId>
         </exclusion>
         <exclusion>
-          <groupId>org.apache.directory.shared</groupId>
+          <groupId>org.apache.directory.api</groupId>
           <artifactId>shared-util</artifactId>
         </exclusion>
         <exclusion>
@@ -285,47 +285,47 @@
       <scope>provided</scope>
     </dependency>
     <dependency>
-      <groupId>org.apache.directory.shared</groupId>
+      <groupId>org.apache.directory.api</groupId>
       <artifactId>shared-ldap-client-api</artifactId>
       <scope>provided</scope>
     </dependency>
     <dependency>
-      <groupId>org.apache.directory.shared</groupId>
-      <artifactId>shared-i18n</artifactId>
+      <groupId>org.apache.directory.api</groupId>
+      <artifactId>api-i18n</artifactId>
       <scope>provided</scope>
     </dependency>
     <dependency>
-      <groupId>org.apache.directory.shared</groupId>
+      <groupId>org.apache.directory.api</groupId>
       <artifactId>shared-ldap-codec-core</artifactId>
       <scope>provided</scope>
     </dependency>
     <dependency>
-      <groupId>org.apache.directory.shared</groupId>
+      <groupId>org.apache.directory.api</groupId>
       <artifactId>shared-ldap-extras-aci</artifactId>
       <scope>provided</scope>
     </dependency>
     <dependency>
-      <groupId>org.apache.directory.shared</groupId>
+      <groupId>org.apache.directory.api</groupId>
       <artifactId>shared-ldap-extras-trigger</artifactId>
       <scope>provided</scope>
     </dependency>
     <dependency>
-      <groupId>org.apache.directory.shared</groupId>
+      <groupId>org.apache.directory.api</groupId>
       <artifactId>shared-ldap-extras-util</artifactId>
       <scope>provided</scope>
     </dependency>
     <dependency>
-      <groupId>org.apache.directory.shared</groupId>
+      <groupId>org.apache.directory.api</groupId>
       <artifactId>shared-ldap-model</artifactId>
       <scope>provided</scope>
     </dependency>
     <dependency>
-      <groupId>org.apache.directory.shared</groupId>
+      <groupId>org.apache.directory.api</groupId>
       <artifactId>shared-ldap-schema-data</artifactId>
       <scope>provided</scope>
     </dependency>
     <dependency>
-      <groupId>org.apache.directory.shared</groupId>
+      <groupId>org.apache.directory.api</groupId>
       <artifactId>shared-util</artifactId>
       <scope>provided</scope>
     </dependency>

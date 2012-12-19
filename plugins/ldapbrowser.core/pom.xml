@@ -110,11 +110,11 @@
  org.apache.commons.collections;bundle-version="${org.apache.commons.collections.version}",
  org.apache.commons.io;bundle-version="${org.apache.commons.io.version}",
  org.apache.commons.lang;bundle-version="${org.apache.commons.lang.version}",
- org.apache.directory.api.asn1.api;bundle-version="${org.apache.directory.shared.validversion}",
- org.apache.directory.shared.ldap.model;bundle-version="${org.apache.directory.shared.validversion}",
- org.apache.directory.shared.ldap.codec.core;bundle-version="${org.apache.directory.shared.validversion}",
- org.apache.directory.shared.dsmlv2.parser;bundle-version="${org.apache.directory.shared.validversion}",
- org.apache.directory.shared.util;bundle-version="${org.apache.directory.shared.validversion}",
+ org.apache.directory.api.asn1.api;bundle-version="${org.apache.directory.api.validversion}",
+ org.apache.directory.shared.ldap.model;bundle-version="${org.apache.directory.api.validversion}",
+ org.apache.directory.shared.ldap.codec.core;bundle-version="${org.apache.directory.api.validversion}",
+ org.apache.directory.shared.dsmlv2.parser;bundle-version="${org.apache.directory.api.validversion}",
+ org.apache.directory.shared.util;bundle-version="${org.apache.directory.api.validversion}",
  org.apache.directory.studio.common.core,
  org.apache.directory.studio.connection.core,
  org.apache.directory.studio.ldifparser,
@@ -208,27 +208,27 @@
     
     <!-- Apache Directory Studio library plugins dependencies -->
     <dependency>
-      <groupId>org.apache.directory.shared</groupId>
+      <groupId>org.apache.directory.api</groupId>
       <artifactId>shared-dsml-parser</artifactId>
       <scope>provided</scope>
     </dependency>
     <dependency>
-      <groupId>org.apache.directory.shared</groupId>
-      <artifactId>shared-asn1-api</artifactId>
+      <groupId>org.apache.directory.api</groupId>
+      <artifactId>api-asn1-api</artifactId>
       <scope>provided</scope>
     </dependency>
     <dependency>
-      <groupId>org.apache.directory.shared</groupId>
+      <groupId>org.apache.directory.api</groupId>
       <artifactId>shared-ldap-codec-core</artifactId>
       <scope>provided</scope>
     </dependency>
     <dependency>
-      <groupId>org.apache.directory.shared</groupId>
+      <groupId>org.apache.directory.api</groupId>
       <artifactId>shared-ldap-model</artifactId>
       <scope>provided</scope>
     </dependency>
     <dependency>
-      <groupId>org.apache.directory.shared</groupId>
+      <groupId>org.apache.directory.api</groupId>
       <artifactId>shared-util</artifactId>
       <scope>provided</scope>
     </dependency>

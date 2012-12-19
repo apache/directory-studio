@@ -115,8 +115,8 @@
  org.apache.directory.server.config;bundle-version="${org.apache.directory.server.validversion}",
  org.apache.directory.server.ldif.partition;bundle-version="${org.apache.directory.server.validversion}",
  org.apache.directory.server.xdbm.partition;bundle-version="${org.apache.directory.server.validversion}",
- org.apache.directory.shared.ldap.model;bundle-version="${org.apache.directory.shared.validversion}",
- org.apache.directory.shared.ldap.schema;bundle-version="${org.apache.directory.shared.validversion}",
+ org.apache.directory.shared.ldap.model;bundle-version="${org.apache.directory.api.validversion}",
+ org.apache.directory.shared.ldap.schema;bundle-version="${org.apache.directory.api.validversion}",
  org.apache.directory.studio.common.core,
  org.apache.directory.studio.common.ui,
  org.apache.directory.studio.connection.core,
@@ -198,12 +198,12 @@
   <dependencies>
   	<!-- Apache Directory Studio library plugins dependencies -->
     <dependency>
-      <groupId>org.apache.directory.shared</groupId>
+      <groupId>org.apache.directory.api</groupId>
       <artifactId>shared-ldap-model</artifactId>
       <scope>provided</scope>
     </dependency>
     <dependency>
-      <groupId>org.apache.directory.shared</groupId>
+      <groupId>org.apache.directory.api</groupId>
       <artifactId>shared-ldap-schema-data</artifactId>
       <scope>provided</scope>
     </dependency>

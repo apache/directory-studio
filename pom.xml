@@ -71,8 +71,8 @@
     <org.apache.commons.lang.version>2.6</org.apache.commons.lang.version>
     <org.apache.commons.logging.version>1.1.1</org.apache.commons.logging.version>
     <org.apache.commons.pool.version>1.6</org.apache.commons.pool.version>
-    <org.apache.directory.shared.validversion>1.0.0.M14-SNAPSHOT</org.apache.directory.shared.validversion>
-    <org.apache.directory.shared.version>1.0.0-M14-SNAPSHOT</org.apache.directory.shared.version>
+    <org.apache.directory.api.validversion>1.0.0.M14-SNAPSHOT</org.apache.directory.api.validversion>
+    <org.apache.directory.api.version>1.0.0-M14-SNAPSHOT</org.apache.directory.api.version>
     <org.apache.directory.server.validversion>2.0.0.M9-SNAPSHOT</org.apache.directory.server.validversion>
     <org.apache.directory.server.version>2.0.0-M9-SNAPSHOT</org.apache.directory.server.version>
     <org.apache.httpcomponents.version>4.1.2</org.apache.httpcomponents.version>
@@ -1700,93 +1700,93 @@
 
       <!-- Apache Directory Shared -->
       <dependency>
-        <groupId>org.apache.directory.shared</groupId>
-        <artifactId>shared-asn1-api</artifactId>
-        <version>${org.apache.directory.shared.version}</version>
+        <groupId>org.apache.directory.api</groupId>
+        <artifactId>api-asn1-api</artifactId>
+        <version>${org.apache.directory.api.version}</version>
       </dependency>
 
       <dependency>
-        <groupId>org.apache.directory.shared</groupId>
-        <artifactId>shared-asn1-ber</artifactId>
-        <version>${org.apache.directory.shared.version}</version>
+        <groupId>org.apache.directory.api</groupId>
+        <artifactId>api-asn1-ber</artifactId>
+        <version>${org.apache.directory.api.version}</version>
       </dependency>
 
       <dependency>
-        <groupId>org.apache.directory.shared</groupId>
+        <groupId>org.apache.directory.api</groupId>
         <artifactId>shared-ldap-client-api</artifactId>
-        <version>${org.apache.directory.shared.version}</version>
+        <version>${org.apache.directory.api.version}</version>
       </dependency>
 
       <dependency>
-        <groupId>org.apache.directory.shared</groupId>
+        <groupId>org.apache.directory.api</groupId>
         <artifactId>shared-dsml-parser</artifactId>
-        <version>${org.apache.directory.shared.version}</version>
+        <version>${org.apache.directory.api.version}</version>
       </dependency>
 
       <dependency>
-        <groupId>org.apache.directory.shared</groupId>
-        <artifactId>shared-i18n</artifactId>
-        <version>${org.apache.directory.shared.version}</version>
+        <groupId>org.apache.directory.api</groupId>
+        <artifactId>api-i18n</artifactId>
+        <version>${org.apache.directory.api.version}</version>
       </dependency>
 
       <dependency>
-        <groupId>org.apache.directory.shared</groupId>
+        <groupId>org.apache.directory.api</groupId>
         <artifactId>shared-ldap-codec-core</artifactId>
-        <version>${org.apache.directory.shared.version}</version>
+        <version>${org.apache.directory.api.version}</version>
       </dependency>
 
       <dependency>
-        <groupId>org.apache.directory.shared</groupId>
+        <groupId>org.apache.directory.api</groupId>
         <artifactId>shared-ldap-codec-standalone</artifactId>
-        <version>${org.apache.directory.shared.version}</version>
+        <version>${org.apache.directory.api.version}</version>
       </dependency>
 
       <dependency>
-        <groupId>org.apache.directory.shared</groupId>
+        <groupId>org.apache.directory.api</groupId>
         <artifactId>shared-ldap-extras-aci</artifactId>
-        <version>${org.apache.directory.shared.version}</version>
+        <version>${org.apache.directory.api.version}</version>
       </dependency>
 
       <dependency>
-        <groupId>org.apache.directory.shared</groupId>
+        <groupId>org.apache.directory.api</groupId>
         <artifactId>shared-ldap-extras-trigger</artifactId>
-        <version>${org.apache.directory.shared.version}</version>
+        <version>${org.apache.directory.api.version}</version>
       </dependency>
 
       <dependency>
-        <groupId>org.apache.directory.shared</groupId>
+        <groupId>org.apache.directory.api</groupId>
         <artifactId>shared-ldap-extras-util</artifactId>
-        <version>${org.apache.directory.shared.version}</version>
+        <version>${org.apache.directory.api.version}</version>
       </dependency>
 
       <dependency>
-        <groupId>org.apache.directory.shared</groupId>
+        <groupId>org.apache.directory.api</groupId>
         <artifactId>shared-ldap-model</artifactId>
-        <version>${org.apache.directory.shared.version}</version>
+        <version>${org.apache.directory.api.version}</version>
       </dependency>
 
       <dependency>
-        <groupId>org.apache.directory.shared</groupId>
+        <groupId>org.apache.directory.api</groupId>
         <artifactId>shared-ldap-schema-data</artifactId>
-        <version>${org.apache.directory.shared.version}</version>
+        <version>${org.apache.directory.api.version}</version>
       </dependency>
 
       <dependency>
-        <groupId>org.apache.directory.shared</groupId>
+        <groupId>org.apache.directory.api</groupId>
         <artifactId>shared-ldap-net-mina</artifactId>
-        <version>${org.apache.directory.shared.version}</version>
+        <version>${org.apache.directory.api.version}</version>
       </dependency>
 
       <dependency>
-        <groupId>org.apache.directory.shared</groupId>
+        <groupId>org.apache.directory.api</groupId>
         <artifactId>shared-ldap-schema-converter</artifactId>
-        <version>${org.apache.directory.shared.version}</version>
+        <version>${org.apache.directory.api.version}</version>
       </dependency>
 
       <dependency>
-        <groupId>org.apache.directory.shared</groupId>
+        <groupId>org.apache.directory.api</groupId>
         <artifactId>shared-util</artifactId>
-        <version>${org.apache.directory.shared.version}</version>
+        <version>${org.apache.directory.api.version}</version>
       </dependency>
 
       <!-- ApacheDS -->

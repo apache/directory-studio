@@ -322,7 +322,7 @@ http://www.apache.org/licenses/
          unpack="false"/>
 
    <plugin
-         id="org.apache.directory.shared.asn1.api"
+         id="org.apache.directory.api.asn1.api"
          download-size="0"
          install-size="0"
          version="${org.apache.directory.shared.validversion}"
