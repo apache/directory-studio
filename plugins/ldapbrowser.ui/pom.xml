@@ -118,8 +118,8 @@
             <Bundle-Activator>org.apache.directory.studio.ldapbrowser.ui.BrowserUIPlugin</Bundle-Activator>
             <Require-Bundle>org.apache.commons.io;bundle-version="${org.apache.commons.io.version}",
  org.apache.commons.lang;bundle-version="${org.apache.commons.lang.version}",
- org.apache.directory.shared.ldap.model;bundle-version="${org.apache.directory.api.validversion}",
- org.apache.directory.shared.util;bundle-version="${org.apache.directory.api.validversion}",
+ org.apache.directory.api.ldap.model;bundle-version="${org.apache.directory.api.validversion}",
+ org.apache.directory.api.util;bundle-version="${org.apache.directory.api.validversion}",
  org.apache.directory.studio.common.core,
  org.apache.directory.studio.common.ui,
  org.apache.directory.studio.connection.core,
@@ -175,7 +175,7 @@
     </dependency>
     <dependency>
       <groupId>org.apache.directory.api</groupId>
-      <artifactId>shared-util</artifactId>
+      <artifactId>api-util</artifactId>
       <scope>provided</scope>
     </dependency>
     <dependency>

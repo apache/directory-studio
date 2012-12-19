@@ -109,11 +109,11 @@
  org.apache.commons.io;bundle-version="${org.apache.commons.io.version}",
  org.apache.commons.lang;bundle-version="${org.apache.commons.lang.version}",
  org.apache.directory.api.asn1.api;bundle-version="${org.apache.directory.api.validversion}",
- org.apache.directory.shared.ldap.client.api;bundle-version="${org.apache.directory.api.validversion}",
- org.apache.directory.shared.ldap.codec.core;bundle-version="${org.apache.directory.api.validversion}",
- org.apache.directory.shared.ldap.model;bundle-version="${org.apache.directory.api.validversion}",
- org.apache.directory.shared.ldap.net.mina;bundle-version="${org.apache.directory.api.validversion}",
- org.apache.directory.shared.util;bundle-version="${org.apache.directory.api.validversion}",
+ org.apache.directory.api.ldap.client.api;bundle-version="${org.apache.directory.api.validversion}",
+ org.apache.directory.api.ldap.codec.core;bundle-version="${org.apache.directory.api.validversion}",
+ org.apache.directory.api.ldap.model;bundle-version="${org.apache.directory.api.validversion}",
+ org.apache.directory.api.ldap.net.mina;bundle-version="${org.apache.directory.api.validversion}",
+ org.apache.directory.api.util;bundle-version="${org.apache.directory.api.validversion}",
  org.apache.directory.studio.common.core,
  org.apache.directory.studio.ldifparser,
  org.apache.httpcomponents.httpclient;bundle-version="${org.apache.httpcomponents.version}",
@@ -176,7 +176,7 @@
     </dependency>
     <dependency>
       <groupId>org.apache.directory.api</groupId>
-      <artifactId>shared-util</artifactId>
+      <artifactId>api-util</artifactId>
       <scope>provided</scope>
     </dependency>
     <dependency>

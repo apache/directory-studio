@@ -22,7 +22,7 @@ package org.apache.directory.studio.valueeditors.uuid;
 
 
 import org.apache.commons.codec.binary.Hex;
-import org.apache.directory.shared.util.Strings;
+import org.apache.directory.api.util.Strings;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
 import org.apache.directory.studio.valueeditors.HexValueEditor;
 

@@ -261,7 +261,7 @@ http://www.apache.org/licenses/
          unpack="false"/>
 
    <plugin
-         id="org.apache.directory.shared.util"
+         id="org.apache.directory.api.util"
          download-size="0"
          install-size="0"
          version="${org.apache.directory.shared.validversion}"

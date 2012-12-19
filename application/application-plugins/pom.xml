@@ -104,7 +104,7 @@
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.apache.directory.api</groupId>
-                  <artifactId>shared-util</artifactId>
+                  <artifactId>api-util</artifactId>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.apache.directory.studio</groupId>

@@ -92,14 +92,14 @@
  org.apache.directory.server.core.api;bundle-version="${org.apache.directory.server.validversion}",
  org.apache.directory.server.i18n;bundle-version="${org.apache.directory.server.validversion}",
  org.apache.directory.api.i18n;bundle-version="${org.apache.directory.api.validversion}",
- org.apache.directory.shared.ldap.client.api;bundle-version="${org.apache.directory.api.validversion}",
- org.apache.directory.shared.ldap.codec.core;bundle-version="${org.apache.directory.api.validversion}",
- org.apache.directory.shared.ldap.extras.aci;bundle-version="${org.apache.directory.api.validversion}",
- org.apache.directory.shared.ldap.extras.trigger;bundle-version="${org.apache.directory.api.validversion}",
- org.apache.directory.shared.ldap.extras.util;bundle-version="${org.apache.directory.api.validversion}",
- org.apache.directory.shared.ldap.model;bundle-version="${org.apache.directory.api.validversion}",
- org.apache.directory.shared.ldap.schema;bundle-version="${org.apache.directory.api.validversion}",
- org.apache.directory.shared.util;bundle-version="${org.apache.directory.api.validversion}",
+ org.apache.directory.api.ldap.client.api;bundle-version="${org.apache.directory.api.validversion}",
+ org.apache.directory.api.ldap.codec.core;bundle-version="${org.apache.directory.api.validversion}",
+ org.apache.directory.api.ldap.extras.aci;bundle-version="${org.apache.directory.api.validversion}",
+ org.apache.directory.api.ldap.extras.trigger;bundle-version="${org.apache.directory.api.validversion}",
+ org.apache.directory.api.ldap.extras.util;bundle-version="${org.apache.directory.api.validversion}",
+ org.apache.directory.api.ldap.model;bundle-version="${org.apache.directory.api.validversion}",
+ org.apache.directory.api.ldap.schema;bundle-version="${org.apache.directory.api.validversion}",
+ org.apache.directory.api.util;bundle-version="${org.apache.directory.api.validversion}",
  org.bouncycastle.bcprov.jdk15;bundle-version="${org.bouncycastle.bcprov.jdk15.version}",
  org.slf4j.api;bundle-version="${org.slf4j.version}"</Require-Bundle>
             <Embed-Dependency>*;scope=compile|runtime</Embed-Dependency>
@@ -256,7 +256,7 @@
         </exclusion>
         <exclusion>
           <groupId>org.apache.directory.api</groupId>
-          <artifactId>shared-util</artifactId>
+          <artifactId>api-util</artifactId>
         </exclusion>
         <exclusion>
           <groupId>org.slf4j</groupId>
@@ -326,7 +326,7 @@
     </dependency>
     <dependency>
       <groupId>org.apache.directory.api</groupId>
-      <artifactId>shared-util</artifactId>
+      <artifactId>api-util</artifactId>
       <scope>provided</scope>
     </dependency>
     <dependency>
