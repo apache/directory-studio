@@ -133,7 +133,7 @@
         </exclusion>
         <exclusion>
           <groupId>org.apache.directory.api</groupId>
-          <artifactId>shared-ldap-model</artifactId>
+          <artifactId>api-ldap-model</artifactId>
         </exclusion>
         <exclusion>
           <groupId>org.apache.directory.api</groupId>
@@ -152,7 +152,7 @@
     </dependency>
     <dependency>
       <groupId>org.apache.directory.api</groupId>
-      <artifactId>shared-ldap-model</artifactId>
+      <artifactId>api-ldap-model</artifactId>
       <scope>provided</scope>
     </dependency>
     <dependency>

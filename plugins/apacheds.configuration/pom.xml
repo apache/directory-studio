@@ -189,7 +189,7 @@
   	<!-- Apache Directory Studio library plugins dependencies -->
     <dependency>
       <groupId>org.apache.directory.api</groupId>
-      <artifactId>shared-ldap-model</artifactId>
+      <artifactId>api-ldap-model</artifactId>
       <scope>provided</scope>
     </dependency>
     <dependency>

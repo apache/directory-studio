@@ -209,7 +209,7 @@
     <!-- Apache Directory Studio library plugins dependencies -->
     <dependency>
       <groupId>org.apache.directory.api</groupId>
-      <artifactId>shared-dsml-parser</artifactId>
+      <artifactId>api-dsml-parser</artifactId>
       <scope>provided</scope>
     </dependency>
     <dependency>
@@ -219,12 +219,12 @@
     </dependency>
     <dependency>
       <groupId>org.apache.directory.api</groupId>
-      <artifactId>shared-ldap-codec-core</artifactId>
+      <artifactId>api-ldap-codec-core</artifactId>
       <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.directory.api</groupId>
-      <artifactId>shared-ldap-model</artifactId>
+      <artifactId>api-ldap-model</artifactId>
       <scope>provided</scope>
     </dependency>
     <dependency>

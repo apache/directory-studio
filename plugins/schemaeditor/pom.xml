@@ -201,12 +201,12 @@
     </dependency>
     <dependency>
       <groupId>org.apache.directory.api</groupId>
-      <artifactId>shared-ldap-schema-data</artifactId>
+      <artifactId>api-ldap-schema-data</artifactId>
       <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.directory.api</groupId>
-      <artifactId>shared-ldap-schema-converter</artifactId>
+      <artifactId>api-ldap-schema-converter</artifactId>
       <scope>provided</scope>
     </dependency>
     <dependency>

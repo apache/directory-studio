@@ -162,7 +162,7 @@
         </exclusion>
         <exclusion>
           <groupId>org.apache.directory.api</groupId>
-          <artifactId>shared-ldap-client-api</artifactId>
+          <artifactId>api-ldap-client-api</artifactId>
         </exclusion>
         <exclusion>
           <groupId>org.apache.directory.api</groupId>
@@ -174,19 +174,19 @@
         </exclusion>
         <exclusion>
           <groupId>org.apache.directory.api</groupId>
-          <artifactId>shared-ldap-codec-standalone</artifactId>
+          <artifactId>api-ldap-codec-standalone</artifactId>
         </exclusion>
         <exclusion>
           <groupId>org.apache.directory.api</groupId>
-          <artifactId>shared-ldap-codec-core</artifactId>
+          <artifactId>api-ldap-codec-core</artifactId>
         </exclusion>
         <exclusion>
           <groupId>org.apache.directory.api</groupId>
-          <artifactId>shared-ldap-model</artifactId>
+          <artifactId>api-ldap-model</artifactId>
         </exclusion>
         <exclusion>
           <groupId>org.apache.directory.api</groupId>
-          <artifactId>shared-ldap-schema-data</artifactId>
+          <artifactId>api-ldap-schema-data</artifactId>
         </exclusion>
         <exclusion>
           <groupId>org.apache.directory.api</groupId>
@@ -194,11 +194,11 @@
         </exclusion>
         <exclusion>
           <groupId>org.apache.directory.api</groupId>
-          <artifactId>shared-ldap-extras-aci</artifactId>
+          <artifactId>api-ldap-extras-aci</artifactId>
         </exclusion>
         <exclusion>
           <groupId>org.apache.directory.api</groupId>
-          <artifactId>shared-ldap-extras-util</artifactId>
+          <artifactId>api-ldap-extras-util</artifactId>
         </exclusion>
         <exclusion>
           <groupId>org.apache.mina</groupId>
@@ -251,7 +251,7 @@
     </dependency>
     <dependency>
       <groupId>org.apache.directory.api</groupId>
-      <artifactId>shared-ldap-client-api</artifactId>
+      <artifactId>api-ldap-client-api</artifactId>
       <scope>provided</scope>
     </dependency>
     <dependency>
@@ -261,22 +261,22 @@
     </dependency>
     <dependency>
       <groupId>org.apache.directory.api</groupId>
-      <artifactId>shared-ldap-codec-standalone</artifactId>
+      <artifactId>api-ldap-codec-standalone</artifactId>
       <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.directory.api</groupId>
-      <artifactId>shared-ldap-codec-core</artifactId>
+      <artifactId>api-ldap-codec-core</artifactId>
       <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.directory.api</groupId>
-      <artifactId>shared-ldap-model</artifactId>
+      <artifactId>api-ldap-model</artifactId>
       <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.directory.api</groupId>
-      <artifactId>shared-ldap-schema-data</artifactId>
+      <artifactId>api-ldap-schema-data</artifactId>
       <scope>provided</scope>
     </dependency>
     <dependency>
@@ -286,7 +286,7 @@
     </dependency>
     <dependency>
       <groupId>org.apache.directory.api</groupId>
-      <artifactId>shared-ldap-extras-util</artifactId>
+      <artifactId>api-ldap-extras-util</artifactId>
       <scope>provided</scope>
     </dependency>
     <dependency>
