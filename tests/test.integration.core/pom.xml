@@ -299,12 +299,12 @@
       <version>1.5.5</version>
     </dependency> 
     <dependency>
-      <groupId>org.apache.directory.shared</groupId>
+      <groupId>org.apache.directory.api</groupId>
       <artifactId>shared-ldap</artifactId>
       <version>0.9.15</version>
     </dependency> 
     <dependency>
-      <groupId>org.apache.directory.shared</groupId>
+      <groupId>org.apache.directory.api</groupId>
       <artifactId>shared-asn1</artifactId>
       <version>0.9.15</version>
     </dependency> 

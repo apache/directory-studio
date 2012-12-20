@@ -20,7 +20,7 @@
 package org.apache.directory.studio.aciitemeditor.model;
 
 
-import org.apache.directory.shared.ldap.aci.UserClass;
+import org.apache.directory.api.ldap.aci.UserClass;
 import org.apache.directory.studio.aciitemeditor.valueeditors.SubtreeValueEditor;
 import org.apache.directory.studio.valueeditors.dn.DnValueEditor;
 

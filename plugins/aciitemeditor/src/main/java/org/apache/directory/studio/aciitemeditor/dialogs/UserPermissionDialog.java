@@ -22,9 +22,9 @@ package org.apache.directory.studio.aciitemeditor.dialogs;
 
 import java.util.Collection;
 
-import org.apache.directory.shared.ldap.aci.GrantAndDenial;
-import org.apache.directory.shared.ldap.aci.ProtectedItem;
-import org.apache.directory.shared.ldap.aci.UserPermission;
+import org.apache.directory.api.ldap.aci.GrantAndDenial;
+import org.apache.directory.api.ldap.aci.ProtectedItem;
+import org.apache.directory.api.ldap.aci.UserPermission;
 import org.apache.directory.studio.aciitemeditor.ACIItemValueWithContext;
 import org.apache.directory.studio.aciitemeditor.Activator;
 import org.apache.directory.studio.aciitemeditor.widgets.ACIItemGrantsAndDenialsComposite;

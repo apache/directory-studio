@@ -21,7 +21,7 @@
 package org.apache.directory.studio.valueeditors.objectclass;
 
 
-import org.apache.directory.shared.ldap.model.schema.ObjectClass;
+import org.apache.directory.api.ldap.model.schema.ObjectClass;
 import org.apache.directory.studio.ldapbrowser.common.dialogs.TextDialog;
 import org.apache.directory.studio.ldapbrowser.core.model.AttributeHierarchy;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;

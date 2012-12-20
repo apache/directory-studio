@@ -24,8 +24,8 @@ package org.apache.directory.studio.ldapbrowser.ui.editors.schemabrowser;
 import java.util.Collection;
 import java.util.List;
 
-import org.apache.directory.shared.ldap.model.schema.AttributeType;
-import org.apache.directory.shared.ldap.model.schema.ObjectClass;
+import org.apache.directory.api.ldap.model.schema.AttributeType;
+import org.apache.directory.api.ldap.model.schema.ObjectClass;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.SchemaUtils;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;

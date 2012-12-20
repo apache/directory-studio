@@ -116,7 +116,7 @@
             <Bundle-Activator>org.apache.directory.studio.ldapservers.apacheds.v200.ApacheDS200Plugin</Bundle-Activator>
             <Require-Bundle>org.apache.directory.server.config;bundle-version="${org.apache.directory.server.validversion}",
  org.apache.directory.server.xdbm.partition;bundle-version="${org.apache.directory.server.validversion}",
- org.apache.directory.shared.ldap.model;bundle-version="${org.apache.directory.shared.validversion}",
+ org.apache.directory.api.ldap.model;bundle-version="${org.apache.directory.api.validversion}",
  org.apache.directory.studio.apacheds.configuration.v2,
  org.apache.directory.studio.common.core,
  org.apache.directory.studio.common.ui,
@@ -185,8 +185,8 @@
   <dependencies>
   	<!-- Apache Directory Shared dependencies -->
     <dependency>
-      <groupId>org.apache.directory.shared</groupId>
-      <artifactId>shared-ldap-model</artifactId>
+      <groupId>org.apache.directory.api</groupId>
+      <artifactId>api-ldap-model</artifactId>
       <scope>provided</scope>
     </dependency>
     

@@ -273,7 +273,7 @@
  org.apache.directory.studio.ldapbrowser.core,
  org.apache.directory.studio.ldapbrowser.ui,
  org.apache.directory.studio.apacheds,
- org.apache.directory.shared.i18n,
+ org.apache.directory.api.i18n,
  org.apache.directory.shared.ldap.schema,
  org.apache.directory.shared.ldap.client.api,
  org.apache.mina.core,
@@ -337,7 +337,7 @@
       <scope>provided</scope>
     </dependency>
     <dependency>
-      <groupId>org.apache.directory.shared</groupId>
+      <groupId>org.apache.directory.api</groupId>
       <artifactId>shared-ldap</artifactId>
       <scope>provided</scope>
     </dependency>
@@ -349,15 +349,15 @@
       <!-- These excluded dependencies are included as eclipse bundles -->
       <exclusions>
         <exclusion>
-          <groupId>org.apache.directory.shared</groupId>
-          <artifactId>shared-i18n</artifactId>
+          <groupId>org.apache.directory.api</groupId>
+          <artifactId>api-i18n</artifactId>
         </exclusion>
         <exclusion>
-          <groupId>org.apache.directory.shared</groupId>
+          <groupId>org.apache.directory.api</groupId>
           <artifactId>shared-ldap-schema-data</artifactId>
         </exclusion>
         <exclusion>
-          <groupId>org.apache.directory.shared</groupId>
+          <groupId>org.apache.directory.api</groupId>
           <artifactId>shared-ldap-client-api</artifactId>
         </exclusion>
         <exclusion>

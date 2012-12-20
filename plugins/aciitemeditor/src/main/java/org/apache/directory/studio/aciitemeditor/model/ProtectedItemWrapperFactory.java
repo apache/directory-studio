@@ -20,18 +20,18 @@
 package org.apache.directory.studio.aciitemeditor.model;
 
 
-import org.apache.directory.shared.ldap.aci.protectedItem.AllAttributeValuesItem;
-import org.apache.directory.shared.ldap.aci.protectedItem.AllUserAttributeTypesAndValuesItem;
-import org.apache.directory.shared.ldap.aci.protectedItem.AllUserAttributeTypesItem;
-import org.apache.directory.shared.ldap.aci.protectedItem.AttributeTypeItem;
-import org.apache.directory.shared.ldap.aci.protectedItem.AttributeValueItem;
-import org.apache.directory.shared.ldap.aci.protectedItem.ClassesItem;
-import org.apache.directory.shared.ldap.aci.protectedItem.EntryItem;
-import org.apache.directory.shared.ldap.aci.protectedItem.MaxImmSubItem;
-import org.apache.directory.shared.ldap.aci.protectedItem.MaxValueCountItem;
-import org.apache.directory.shared.ldap.aci.protectedItem.RangeOfValuesItem;
-import org.apache.directory.shared.ldap.aci.protectedItem.RestrictedByItem;
-import org.apache.directory.shared.ldap.aci.protectedItem.SelfValueItem;
+import org.apache.directory.api.ldap.aci.protectedItem.AllAttributeValuesItem;
+import org.apache.directory.api.ldap.aci.protectedItem.AllUserAttributeTypesAndValuesItem;
+import org.apache.directory.api.ldap.aci.protectedItem.AllUserAttributeTypesItem;
+import org.apache.directory.api.ldap.aci.protectedItem.AttributeTypeItem;
+import org.apache.directory.api.ldap.aci.protectedItem.AttributeValueItem;
+import org.apache.directory.api.ldap.aci.protectedItem.ClassesItem;
+import org.apache.directory.api.ldap.aci.protectedItem.EntryItem;
+import org.apache.directory.api.ldap.aci.protectedItem.MaxImmSubItem;
+import org.apache.directory.api.ldap.aci.protectedItem.MaxValueCountItem;
+import org.apache.directory.api.ldap.aci.protectedItem.RangeOfValuesItem;
+import org.apache.directory.api.ldap.aci.protectedItem.RestrictedByItem;
+import org.apache.directory.api.ldap.aci.protectedItem.SelfValueItem;
 import org.apache.directory.studio.aciitemeditor.valueeditors.AttributeTypeAndValueValueEditor;
 import org.apache.directory.studio.aciitemeditor.valueeditors.AttributeTypeValueEditor;
 import org.apache.directory.studio.aciitemeditor.valueeditors.FilterValueEditor;

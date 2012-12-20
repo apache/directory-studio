@@ -24,10 +24,10 @@ package org.apache.directory.studio.ldapbrowser.core.model;
 import java.io.Serializable;
 import java.util.Collection;
 
-import org.apache.directory.shared.ldap.model.name.Dn;
-import org.apache.directory.shared.ldap.model.name.Rdn;
-import org.apache.directory.shared.ldap.model.schema.ObjectClass;
-import org.apache.directory.shared.ldap.model.url.LdapUrl;
+import org.apache.directory.api.ldap.model.name.Dn;
+import org.apache.directory.api.ldap.model.name.Rdn;
+import org.apache.directory.api.ldap.model.schema.ObjectClass;
+import org.apache.directory.api.ldap.model.url.LdapUrl;
 import org.apache.directory.studio.connection.core.ConnectionPropertyPageProvider;
 import org.apache.directory.studio.connection.core.jobs.StudioConnectionBulkRunnableWithProgress;
 import org.apache.directory.studio.ldapbrowser.core.propertypageproviders.EntryPropertyPageProvider;

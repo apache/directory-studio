@@ -113,8 +113,8 @@
             <Bundle-Localization>plugin</Bundle-Localization>
             <Eclipse-LazyStart>true</Eclipse-LazyStart>
             <Bundle-Activator>org.apache.directory.studio.ldifeditor.LdifEditorActivator</Bundle-Activator>
-            <Require-Bundle>org.apache.directory.shared.ldap.model;bundle-version="${org.apache.directory.shared.validversion}",
- org.apache.directory.shared.util;bundle-version="${org.apache.directory.shared.validversion}",
+            <Require-Bundle>org.apache.directory.api.ldap.model;bundle-version="${org.apache.directory.api.validversion}",
+ org.apache.directory.api.util;bundle-version="${org.apache.directory.api.validversion}",
  org.apache.directory.studio.common.core,
  org.apache.directory.studio.common.ui,
  org.apache.directory.studio.connection.core,
@@ -161,13 +161,13 @@
   <dependencies>
     <!-- Apache Directory Studio library plugins dependencies -->
     <dependency>
-      <groupId>org.apache.directory.shared</groupId>
-      <artifactId>shared-ldap-model</artifactId>
+      <groupId>org.apache.directory.api</groupId>
+      <artifactId>api-ldap-model</artifactId>
       <scope>provided</scope>
     </dependency>
     <dependency>
-      <groupId>org.apache.directory.shared</groupId>
-      <artifactId>shared-util</artifactId>
+      <groupId>org.apache.directory.api</groupId>
+      <artifactId>api-util</artifactId>
       <scope>provided</scope>
     </dependency>
 

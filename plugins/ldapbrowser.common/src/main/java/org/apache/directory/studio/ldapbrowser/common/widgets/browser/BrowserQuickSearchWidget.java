@@ -24,8 +24,8 @@ package org.apache.directory.studio.ldapbrowser.common.widgets.browser;
 import java.util.Arrays;
 import java.util.Collection;
 
-import org.apache.directory.shared.ldap.model.message.SearchScope;
-import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.api.ldap.model.message.SearchScope;
+import org.apache.directory.api.ldap.model.schema.AttributeType;
 import org.apache.directory.studio.common.ui.HistoryUtils;
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.connection.ui.widgets.ExtendedContentAssistCommandAdapter;

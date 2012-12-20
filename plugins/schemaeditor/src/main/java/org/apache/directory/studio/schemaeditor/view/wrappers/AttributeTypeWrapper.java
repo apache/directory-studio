@@ -20,7 +20,7 @@
 package org.apache.directory.studio.schemaeditor.view.wrappers;
 
 
-import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.api.ldap.model.schema.AttributeType;
 import org.eclipse.osgi.util.NLS;
 
 

@@ -42,43 +42,43 @@ import javax.security.auth.login.AppConfigurationEntry.LoginModuleControlFlag;
 import javax.security.auth.login.Configuration;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.directory.api.ldap.codec.api.DefaultConfigurableBinaryAttributeDetector;
+import org.apache.directory.api.ldap.codec.protocol.mina.LdapProtocolCodecActivator;
+import org.apache.directory.api.ldap.model.cursor.SearchCursor;
+import org.apache.directory.api.ldap.model.entry.AttributeUtils;
+import org.apache.directory.api.ldap.model.entry.DefaultModification;
+import org.apache.directory.api.ldap.model.entry.Modification;
+import org.apache.directory.api.ldap.model.entry.ModificationOperation;
+import org.apache.directory.api.ldap.model.exception.LdapInvalidAttributeValueException;
+import org.apache.directory.api.ldap.model.message.AddRequest;
+import org.apache.directory.api.ldap.model.message.AddRequestImpl;
+import org.apache.directory.api.ldap.model.message.AddResponse;
+import org.apache.directory.api.ldap.model.message.AliasDerefMode;
+import org.apache.directory.api.ldap.model.message.BindRequest;
+import org.apache.directory.api.ldap.model.message.BindRequestImpl;
+import org.apache.directory.api.ldap.model.message.BindResponse;
+import org.apache.directory.api.ldap.model.message.DeleteRequest;
+import org.apache.directory.api.ldap.model.message.DeleteRequestImpl;
+import org.apache.directory.api.ldap.model.message.DeleteResponse;
+import org.apache.directory.api.ldap.model.message.LdapResult;
+import org.apache.directory.api.ldap.model.message.ModifyDnRequest;
+import org.apache.directory.api.ldap.model.message.ModifyDnRequestImpl;
+import org.apache.directory.api.ldap.model.message.ModifyDnResponse;
+import org.apache.directory.api.ldap.model.message.ModifyRequest;
+import org.apache.directory.api.ldap.model.message.ModifyRequestImpl;
+import org.apache.directory.api.ldap.model.message.ModifyResponse;
+import org.apache.directory.api.ldap.model.message.ResultCodeEnum;
+import org.apache.directory.api.ldap.model.message.ResultResponse;
+import org.apache.directory.api.ldap.model.message.SearchRequest;
+import org.apache.directory.api.ldap.model.message.SearchRequestImpl;
+import org.apache.directory.api.ldap.model.message.SearchScope;
+import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.ldap.client.api.CramMd5Request;
 import org.apache.directory.ldap.client.api.DigestMd5Request;
 import org.apache.directory.ldap.client.api.GssApiRequest;
 import org.apache.directory.ldap.client.api.LdapConnectionConfig;
 import org.apache.directory.ldap.client.api.LdapNetworkConnection;
 import org.apache.directory.ldap.client.api.exception.InvalidConnectionException;
-import org.apache.directory.shared.ldap.codec.api.DefaultConfigurableBinaryAttributeDetector;
-import org.apache.directory.shared.ldap.codec.protocol.mina.LdapProtocolCodecActivator;
-import org.apache.directory.shared.ldap.model.cursor.SearchCursor;
-import org.apache.directory.shared.ldap.model.entry.AttributeUtils;
-import org.apache.directory.shared.ldap.model.entry.DefaultModification;
-import org.apache.directory.shared.ldap.model.entry.Modification;
-import org.apache.directory.shared.ldap.model.entry.ModificationOperation;
-import org.apache.directory.shared.ldap.model.exception.LdapInvalidAttributeValueException;
-import org.apache.directory.shared.ldap.model.message.AddRequest;
-import org.apache.directory.shared.ldap.model.message.AddRequestImpl;
-import org.apache.directory.shared.ldap.model.message.AddResponse;
-import org.apache.directory.shared.ldap.model.message.AliasDerefMode;
-import org.apache.directory.shared.ldap.model.message.BindRequest;
-import org.apache.directory.shared.ldap.model.message.BindRequestImpl;
-import org.apache.directory.shared.ldap.model.message.BindResponse;
-import org.apache.directory.shared.ldap.model.message.DeleteRequest;
-import org.apache.directory.shared.ldap.model.message.DeleteRequestImpl;
-import org.apache.directory.shared.ldap.model.message.DeleteResponse;
-import org.apache.directory.shared.ldap.model.message.LdapResult;
-import org.apache.directory.shared.ldap.model.message.ModifyDnRequest;
-import org.apache.directory.shared.ldap.model.message.ModifyDnRequestImpl;
-import org.apache.directory.shared.ldap.model.message.ModifyDnResponse;
-import org.apache.directory.shared.ldap.model.message.ModifyRequest;
-import org.apache.directory.shared.ldap.model.message.ModifyRequestImpl;
-import org.apache.directory.shared.ldap.model.message.ModifyResponse;
-import org.apache.directory.shared.ldap.model.message.ResultCodeEnum;
-import org.apache.directory.shared.ldap.model.message.ResultResponse;
-import org.apache.directory.shared.ldap.model.message.SearchRequest;
-import org.apache.directory.shared.ldap.model.message.SearchRequestImpl;
-import org.apache.directory.shared.ldap.model.message.SearchScope;
-import org.apache.directory.shared.ldap.model.name.Dn;
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
@@ -638,13 +638,13 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
      * @return
      *      an array of converted controls
      */
-    private org.apache.directory.shared.ldap.model.message.Control[] convertControls( Control[] controls )
+    private org.apache.directory.api.ldap.model.message.Control[] convertControls( Control[] controls )
         throws Exception
     {
         if ( controls != null )
         {
-            org.apache.directory.shared.ldap.model.message.Control[] returningControls =
-                new org.apache.directory.shared.ldap.model.message.Control[controls.length];
+            org.apache.directory.api.ldap.model.message.Control[] returningControls =
+                new org.apache.directory.api.ldap.model.message.Control[controls.length];
 
             for ( int i = 0; i < controls.length; i++ )
             {
@@ -655,7 +655,7 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
         }
         else
         {
-            return new org.apache.directory.shared.ldap.model.message.Control[0];
+            return new org.apache.directory.api.ldap.model.message.Control[0];
         }
     }
 

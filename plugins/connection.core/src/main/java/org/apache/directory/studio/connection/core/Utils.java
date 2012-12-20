@@ -27,10 +27,10 @@ import java.util.ResourceBundle;
 
 import javax.naming.directory.SearchControls;
 
-import org.apache.directory.shared.ldap.model.exception.LdapInvalidDnException;
-import org.apache.directory.shared.ldap.model.name.Dn;
-import org.apache.directory.shared.ldap.model.url.LdapUrl;
-import org.apache.directory.shared.util.Strings;
+import org.apache.directory.api.ldap.model.exception.LdapInvalidDnException;
+import org.apache.directory.api.ldap.model.name.Dn;
+import org.apache.directory.api.ldap.model.url.LdapUrl;
+import org.apache.directory.api.util.Strings;
 import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
 import org.apache.directory.studio.connection.core.ConnectionParameter.EncryptionMethod;
 

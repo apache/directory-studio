@@ -25,9 +25,9 @@ import java.util.Collections;
 import java.util.List;
 
 import org.apache.commons.collections.map.MultiValueMap;
-import org.apache.directory.shared.ldap.model.schema.AttributeType;
-import org.apache.directory.shared.ldap.model.schema.MutableObjectClass;
-import org.apache.directory.shared.ldap.model.schema.ObjectClass;
+import org.apache.directory.api.ldap.model.schema.AttributeType;
+import org.apache.directory.api.ldap.model.schema.MutableObjectClass;
+import org.apache.directory.api.ldap.model.schema.ObjectClass;
 import org.apache.directory.studio.schemaeditor.Activator;
 import org.apache.directory.studio.schemaeditor.PluginConstants;
 import org.apache.directory.studio.schemaeditor.controller.SchemaHandler;

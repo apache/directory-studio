@@ -25,9 +25,9 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
-import org.apache.directory.shared.ldap.aci.GrantAndDenial;
-import org.apache.directory.shared.ldap.aci.ItemPermission;
-import org.apache.directory.shared.ldap.aci.UserClass;
+import org.apache.directory.api.ldap.aci.GrantAndDenial;
+import org.apache.directory.api.ldap.aci.ItemPermission;
+import org.apache.directory.api.ldap.aci.UserClass;
 import org.apache.directory.studio.aciitemeditor.ACIItemValueWithContext;
 import org.apache.directory.studio.aciitemeditor.Activator;
 import org.apache.directory.studio.aciitemeditor.dialogs.ItemPermissionDialog;

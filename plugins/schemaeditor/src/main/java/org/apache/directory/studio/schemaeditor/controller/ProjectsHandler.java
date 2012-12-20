@@ -26,7 +26,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.collections.map.MultiValueMap;
-import org.apache.directory.shared.util.Strings;
+import org.apache.directory.api.util.Strings;
 import org.apache.directory.studio.schemaeditor.model.Project;
 import org.apache.directory.studio.schemaeditor.model.Project.ProjectState;
 

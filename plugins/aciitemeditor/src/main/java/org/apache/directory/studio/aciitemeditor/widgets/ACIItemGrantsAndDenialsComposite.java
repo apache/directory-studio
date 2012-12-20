@@ -26,7 +26,7 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.apache.directory.shared.ldap.aci.GrantAndDenial;
+import org.apache.directory.api.ldap.aci.GrantAndDenial;
 import org.apache.directory.studio.aciitemeditor.Activator;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.CellEditor;

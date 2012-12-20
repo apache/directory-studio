@@ -21,7 +21,7 @@
 package org.apache.directory.studio.ldapbrowser.ui.editors.schemabrowser;
 
 
-import org.apache.directory.shared.ldap.model.schema.AbstractSchemaObject;
+import org.apache.directory.api.ldap.model.schema.AbstractSchemaObject;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.Schema;
 import org.eclipse.jface.action.Separator;

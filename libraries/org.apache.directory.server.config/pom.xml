@@ -91,9 +91,9 @@
  org.apache.directory.server.i18n;bundle-version="${org.apache.directory.server.validversion}",
  org.apache.directory.server.ldif.partition;bundle-version="${org.apache.directory.server.validversion}",
  org.apache.directory.server.xdbm.partition;bundle-version="${org.apache.directory.server.validversion}",
- org.apache.directory.shared.ldap.model;bundle-version="${org.apache.directory.shared.validversion}",
- org.apache.directory.shared.ldap.schema;bundle-version="${org.apache.directory.shared.validversion}",
- org.apache.directory.shared.util;bundle-version="${org.apache.directory.shared.validversion}",
+ org.apache.directory.api.ldap.model;bundle-version="${org.apache.directory.api.validversion}",
+ org.apache.directory.api.ldap.schema;bundle-version="${org.apache.directory.api.validversion}",
+ org.apache.directory.api.util;bundle-version="${org.apache.directory.api.validversion}",
  org.slf4j.api;bundle-version="${org.slf4j.version}"</Require-Bundle>
             <Embed-Dependency>*;scope=compile|runtime</Embed-Dependency>
             <Embed-Directory>lib</Embed-Directory>
@@ -144,16 +144,16 @@
           <artifactId>apacheds-xdbm-partition</artifactId>
         </exclusion>
         <exclusion>
-          <groupId>org.apache.directory.shared</groupId>
-          <artifactId>shared-ldap-model</artifactId>
+          <groupId>org.apache.directory.api</groupId>
+          <artifactId>api-ldap-model</artifactId>
         </exclusion>
         <exclusion>
-          <groupId>org.apache.directory.shared</groupId>
-          <artifactId>shared-ldap-schema-data</artifactId>
+          <groupId>org.apache.directory.api</groupId>
+          <artifactId>api-ldap-schema-data</artifactId>
         </exclusion>
         <exclusion>
-          <groupId>org.apache.directory.shared</groupId>
-          <artifactId>shared-util</artifactId>
+          <groupId>org.apache.directory.api</groupId>
+          <artifactId>api-util</artifactId>
         </exclusion>
         <exclusion>
           <groupId>commons-io</groupId>
@@ -166,18 +166,18 @@
       </exclusions>
     </dependency>
     <dependency>
-      <groupId>org.apache.directory.shared</groupId>
-      <artifactId>shared-ldap-model</artifactId>
+      <groupId>org.apache.directory.api</groupId>
+      <artifactId>api-ldap-model</artifactId>
       <scope>provided</scope>
     </dependency>
     <dependency>
-      <groupId>org.apache.directory.shared</groupId>
-      <artifactId>shared-ldap-schema-data</artifactId>
+      <groupId>org.apache.directory.api</groupId>
+      <artifactId>api-ldap-schema-data</artifactId>
       <scope>provided</scope>
     </dependency>
     <dependency>
-      <groupId>org.apache.directory.shared</groupId>
-      <artifactId>shared-util</artifactId>
+      <groupId>org.apache.directory.api</groupId>
+      <artifactId>api-util</artifactId>
       <scope>provided</scope>
     </dependency>
     <dependency>

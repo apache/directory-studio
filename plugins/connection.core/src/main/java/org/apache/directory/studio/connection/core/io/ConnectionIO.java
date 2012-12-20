@@ -29,8 +29,8 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import org.apache.directory.shared.ldap.model.constants.SaslQoP;
-import org.apache.directory.shared.ldap.model.constants.SaslSecurityStrength;
+import org.apache.directory.api.ldap.model.constants.SaslQoP;
+import org.apache.directory.api.ldap.model.constants.SaslSecurityStrength;
 import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
 import org.apache.directory.studio.connection.core.ConnectionFolder;
 import org.apache.directory.studio.connection.core.ConnectionParameter;

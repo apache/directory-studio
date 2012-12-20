@@ -21,7 +21,7 @@
 package org.apache.directory.studio.ldifeditor.dialogs;
 
 
-import org.apache.directory.shared.ldap.model.exception.LdapInvalidDnException;
+import org.apache.directory.api.ldap.model.exception.LdapInvalidDnException;
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonConstants;
 import org.apache.directory.studio.ldapbrowser.common.widgets.entryeditor.EntryEditorWidget;

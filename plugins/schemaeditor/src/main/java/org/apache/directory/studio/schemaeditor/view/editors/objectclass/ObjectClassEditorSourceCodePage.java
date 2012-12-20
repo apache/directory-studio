@@ -25,9 +25,9 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.util.List;
 
-import org.apache.directory.shared.ldap.model.schema.MutableObjectClass;
-import org.apache.directory.shared.ldap.model.schema.ObjectClass;
-import org.apache.directory.shared.ldap.model.schema.parsers.OpenLdapSchemaParser;
+import org.apache.directory.api.ldap.model.schema.MutableObjectClass;
+import org.apache.directory.api.ldap.model.schema.ObjectClass;
+import org.apache.directory.api.ldap.model.schema.parsers.OpenLdapSchemaParser;
 import org.apache.directory.studio.schemaeditor.PluginConstants;
 import org.apache.directory.studio.schemaeditor.model.io.OpenLdapSchemaFileExporter;
 import org.apache.directory.studio.schemaeditor.view.widget.SchemaSourceViewer;

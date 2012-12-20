@@ -35,12 +35,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.directory.shared.ldap.model.name.Ava;
-import org.apache.directory.shared.ldap.model.name.Dn;
-import org.apache.directory.shared.ldap.model.name.Rdn;
-import org.apache.directory.shared.ldap.model.schema.AttributeType;
-import org.apache.directory.shared.ldap.model.url.LdapUrl;
-import org.apache.directory.shared.util.Strings;
+import org.apache.directory.api.ldap.model.name.Ava;
+import org.apache.directory.api.ldap.model.name.Dn;
+import org.apache.directory.api.ldap.model.name.Rdn;
+import org.apache.directory.api.ldap.model.schema.AttributeType;
+import org.apache.directory.api.ldap.model.url.LdapUrl;
+import org.apache.directory.api.util.Strings;
 import org.apache.directory.studio.connection.core.ConnectionParameter.EncryptionMethod;
 import org.apache.directory.studio.connection.core.StudioControl;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreConstants;

@@ -21,9 +21,9 @@
 package org.apache.directory.studio.connection.core;
 
 
-import org.apache.directory.shared.ldap.model.constants.SaslQoP;
-import org.apache.directory.shared.ldap.model.constants.SaslSecurityStrength;
-import org.apache.directory.shared.ldap.model.url.LdapUrl;
+import org.apache.directory.api.ldap.model.constants.SaslQoP;
+import org.apache.directory.api.ldap.model.constants.SaslSecurityStrength;
+import org.apache.directory.api.ldap.model.url.LdapUrl;
 import org.apache.directory.studio.connection.core.ConnectionParameter.AuthenticationMethod;
 import org.apache.directory.studio.connection.core.ConnectionParameter.EncryptionMethod;
 import org.apache.directory.studio.connection.core.ConnectionParameter.Krb5Configuration;

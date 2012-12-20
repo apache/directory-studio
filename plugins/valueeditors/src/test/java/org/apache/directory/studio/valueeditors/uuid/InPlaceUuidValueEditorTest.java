@@ -23,7 +23,7 @@ package org.apache.directory.studio.valueeditors.uuid;
 
 import static junit.framework.Assert.assertEquals;
 
-import org.apache.directory.shared.util.Strings;
+import org.apache.directory.api.util.Strings;
 import org.junit.Test;
 
 

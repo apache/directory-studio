@@ -23,8 +23,8 @@ package org.apache.directory.studio.apacheds.configuration.model.v153;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.directory.shared.ldap.model.entry.DefaultEntry;
-import org.apache.directory.shared.ldap.model.entry.Entry;
+import org.apache.directory.api.ldap.model.entry.DefaultEntry;
+import org.apache.directory.api.ldap.model.entry.Entry;
 
 
 /**

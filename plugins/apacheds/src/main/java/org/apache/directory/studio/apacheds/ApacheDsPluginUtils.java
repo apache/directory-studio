@@ -417,7 +417,7 @@ public class ApacheDsPluginUtils
         sb.append( "log4j.logger.org.apache.directory.shared.ldap.name=WARN" ).append( "\n" ); //$NON-NLS-1$ //$NON-NLS-2$
         sb.append( "log4j.logger.org.springframework=WARN" ).append( "\n" ); //$NON-NLS-1$ //$NON-NLS-2$
         sb.append( "log4j.logger.org.apache.directory.shared.codec=WARN" ).append( "\n" ); //$NON-NLS-1$ //$NON-NLS-2$
-        sb.append( "log4j.logger.org.apache.directory.shared.asn1=WARN" ).append( "\n" ); //$NON-NLS-1$ //$NON-NLS-2$
+        sb.append( "log4j.logger.org.apache.directory.api.asn1=WARN" ).append( "\n" ); //$NON-NLS-1$ //$NON-NLS-2$
 
         // Writing the content to the file
         os.write( sb.toString().getBytes() );

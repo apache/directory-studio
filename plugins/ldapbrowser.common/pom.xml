@@ -117,8 +117,8 @@
  org.apache.directory.studio.ldifparser,
  org.apache.commons.io;bundle-version="${org.apache.commons.io.version}",
  org.apache.commons.lang;bundle-version="${org.apache.commons.lang.version}",
- org.apache.directory.shared.ldap.model;bundle-version="${org.apache.directory.shared.validversion}",
- org.apache.directory.shared.util;bundle-version="${org.apache.directory.shared.validversion}",
+ org.apache.directory.api.ldap.model;bundle-version="${org.apache.directory.api.validversion}",
+ org.apache.directory.api.util;bundle-version="${org.apache.directory.api.validversion}",
  org.eclipse.core.runtime,
  org.eclipse.core.expressions,
  org.eclipse.jface.text,
@@ -166,14 +166,14 @@
     </dependency>
     
     <dependency>
-      <groupId>org.apache.directory.shared</groupId>
-      <artifactId>shared-ldap-model</artifactId>
+      <groupId>org.apache.directory.api</groupId>
+      <artifactId>api-ldap-model</artifactId>
       <scope>provided</scope>
     </dependency>
     
     <dependency>
-      <groupId>org.apache.directory.shared</groupId>
-      <artifactId>shared-util</artifactId>
+      <groupId>org.apache.directory.api</groupId>
+      <artifactId>api-util</artifactId>
       <scope>provided</scope>
     </dependency>
     

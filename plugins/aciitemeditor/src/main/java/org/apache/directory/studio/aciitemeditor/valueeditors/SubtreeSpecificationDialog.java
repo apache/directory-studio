@@ -26,11 +26,11 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.directory.shared.ldap.model.exception.LdapInvalidDnException;
-import org.apache.directory.shared.ldap.model.name.Dn;
-import org.apache.directory.shared.ldap.model.subtree.BaseSubtreeSpecification;
-import org.apache.directory.shared.ldap.model.subtree.SubtreeSpecification;
-import org.apache.directory.shared.ldap.model.subtree.SubtreeSpecificationParser;
+import org.apache.directory.api.ldap.model.exception.LdapInvalidDnException;
+import org.apache.directory.api.ldap.model.name.Dn;
+import org.apache.directory.api.ldap.model.subtree.BaseSubtreeSpecification;
+import org.apache.directory.api.ldap.model.subtree.SubtreeSpecification;
+import org.apache.directory.api.ldap.model.subtree.SubtreeSpecificationParser;
 import org.apache.directory.studio.aciitemeditor.Activator;
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.ldapbrowser.common.dialogs.TextDialog;

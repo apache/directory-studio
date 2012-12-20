@@ -23,7 +23,7 @@ package org.apache.directory.studio.ldapbrowser.common.wizards;
 
 import java.util.Collection;
 
-import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.api.ldap.model.schema.AttributeType;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonConstants;
 import org.apache.directory.studio.ldapbrowser.common.widgets.entryeditor.EntryEditorWidget;
