@@ -26,8 +26,8 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
-import org.apache.directory.shared.ldap.aci.ProtectedItem;
-import org.apache.directory.shared.ldap.aci.UserClass;
+import org.apache.directory.api.ldap.aci.ProtectedItem;
+import org.apache.directory.api.ldap.aci.UserClass;
 import org.apache.directory.studio.aciitemeditor.ACIItemValueWithContext;
 import org.apache.directory.studio.aciitemeditor.Activator;
 import org.apache.directory.studio.aciitemeditor.dialogs.MultiValuedDialog;

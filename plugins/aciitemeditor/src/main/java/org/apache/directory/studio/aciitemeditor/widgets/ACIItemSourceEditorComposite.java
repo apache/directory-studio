@@ -22,8 +22,8 @@ package org.apache.directory.studio.aciitemeditor.widgets;
 
 import java.text.ParseException;
 
-import org.apache.directory.shared.ldap.aci.ACIItem;
-import org.apache.directory.shared.ldap.aci.ACIItemParser;
+import org.apache.directory.api.ldap.aci.ACIItem;
+import org.apache.directory.api.ldap.aci.ACIItemParser;
 import org.apache.directory.studio.aciitemeditor.ACIItemValueWithContext;
 import org.apache.directory.studio.aciitemeditor.Activator;
 import org.apache.directory.studio.aciitemeditor.sourceeditor.ACISourceViewerConfiguration;

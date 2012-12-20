@@ -23,7 +23,7 @@ package org.apache.directory.studio.aciitemeditor;
 import java.io.IOException;
 import java.util.PropertyResourceBundle;
 
-import org.apache.directory.shared.ldap.aci.ACIItemParser;
+import org.apache.directory.api.ldap.aci.ACIItemParser;
 import org.apache.directory.studio.aciitemeditor.sourceeditor.ACICodeScanner;
 import org.apache.directory.studio.aciitemeditor.sourceeditor.ACITextAttributeProvider;
 import org.eclipse.core.runtime.FileLocator;
