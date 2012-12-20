@@ -34,8 +34,8 @@ import java.util.Set;
 
 import javax.naming.NamingException;
 
-import org.apache.directory.shared.converter.schema.AttributeTypeHolder;
-import org.apache.directory.shared.converter.schema.ObjectClassHolder;
+import org.apache.directory.api.converter.schema.AttributeTypeHolder;
+import org.apache.directory.api.converter.schema.ObjectClassHolder;
 import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.schema.AttributeType;
 import org.apache.directory.api.ldap.model.schema.MutableObjectClass;
