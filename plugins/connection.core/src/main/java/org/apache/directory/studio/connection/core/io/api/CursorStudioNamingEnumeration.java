@@ -34,6 +34,9 @@ import javax.naming.ldap.BasicControl;
 import javax.naming.ldap.Control;
 import javax.naming.ldap.PagedResultsResponseControl;
 
+import org.apache.directory.api.ldap.codec.api.CodecControl;
+import org.apache.directory.api.ldap.codec.api.LdapApiService;
+import org.apache.directory.api.ldap.codec.api.LdapApiServiceFactory;
 import org.apache.directory.api.ldap.model.cursor.SearchCursor;
 import org.apache.directory.api.ldap.model.entry.AttributeUtils;
 import org.apache.directory.api.ldap.model.message.Referral;
@@ -42,9 +45,6 @@ import org.apache.directory.api.ldap.model.message.SearchResultDone;
 import org.apache.directory.api.ldap.model.message.SearchResultEntry;
 import org.apache.directory.api.ldap.model.message.SearchResultReference;
 import org.apache.directory.api.ldap.model.url.LdapUrl;
-import org.apache.directory.shared.ldap.codec.api.CodecControl;
-import org.apache.directory.shared.ldap.codec.api.LdapApiService;
-import org.apache.directory.shared.ldap.codec.api.LdapApiServiceFactory;
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
@@ -376,7 +376,7 @@ public class CursorStudioNamingEnumeration extends AbstractStudioNamingEnumerati
 
                 if ( control instanceof CodecControl )
                 {
-                    wrapped = (org.apache.directory.shared.ldap.codec.api.CodecControl<?> ) control;
+                    wrapped = (org.apache.directory.api.ldap.codec.api.CodecControl<?> ) control;
                 }
                 else
                 {

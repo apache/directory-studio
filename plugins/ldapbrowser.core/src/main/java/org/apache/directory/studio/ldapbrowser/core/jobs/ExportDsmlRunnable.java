@@ -34,6 +34,8 @@ import javax.naming.NamingException;
 import javax.naming.directory.SearchResult;
 
 import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.directory.api.ldap.codec.api.LdapApiService;
+import org.apache.directory.api.ldap.codec.api.LdapApiServiceFactory;
 import org.apache.directory.api.ldap.model.entry.Attribute;
 import org.apache.directory.api.ldap.model.entry.AttributeUtils;
 import org.apache.directory.api.ldap.model.entry.Entry;
@@ -56,8 +58,6 @@ import org.apache.directory.shared.dsmlv2.reponse.SearchResultEntryDsml;
 import org.apache.directory.shared.dsmlv2.reponse.SearchResultReferenceDsml;
 import org.apache.directory.shared.dsmlv2.request.AddRequestDsml;
 import org.apache.directory.shared.dsmlv2.request.BatchRequestDsml;
-import org.apache.directory.shared.ldap.codec.api.LdapApiService;
-import org.apache.directory.shared.ldap.codec.api.LdapApiServiceFactory;
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.io.StudioNamingEnumeration;

@@ -37,6 +37,8 @@ import javax.naming.ldap.Control;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.directory.api.asn1.EncoderException;
+import org.apache.directory.api.ldap.codec.api.LdapApiService;
+import org.apache.directory.api.ldap.codec.api.LdapApiServiceFactory;
 import org.apache.directory.api.ldap.model.entry.AttributeUtils;
 import org.apache.directory.api.ldap.model.entry.Entry;
 import org.apache.directory.api.ldap.model.entry.Modification;
@@ -69,8 +71,6 @@ import org.apache.directory.shared.dsmlv2.reponse.ModDNResponseDsml;
 import org.apache.directory.shared.dsmlv2.reponse.ModifyResponseDsml;
 import org.apache.directory.shared.dsmlv2.request.BatchRequestDsml;
 import org.apache.directory.shared.dsmlv2.request.Dsmlv2Grammar;
-import org.apache.directory.shared.ldap.codec.api.LdapApiService;
-import org.apache.directory.shared.ldap.codec.api.LdapApiServiceFactory;
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;

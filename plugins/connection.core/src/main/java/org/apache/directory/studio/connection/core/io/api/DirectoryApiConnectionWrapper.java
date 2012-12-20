@@ -42,6 +42,7 @@ import javax.security.auth.login.AppConfigurationEntry.LoginModuleControlFlag;
 import javax.security.auth.login.Configuration;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.directory.api.ldap.codec.api.DefaultConfigurableBinaryAttributeDetector;
 import org.apache.directory.api.ldap.model.cursor.SearchCursor;
 import org.apache.directory.api.ldap.model.entry.AttributeUtils;
 import org.apache.directory.api.ldap.model.entry.DefaultModification;
@@ -77,7 +78,6 @@ import org.apache.directory.ldap.client.api.GssApiRequest;
 import org.apache.directory.ldap.client.api.LdapConnectionConfig;
 import org.apache.directory.ldap.client.api.LdapNetworkConnection;
 import org.apache.directory.ldap.client.api.exception.InvalidConnectionException;
-import org.apache.directory.shared.ldap.codec.api.DefaultConfigurableBinaryAttributeDetector;
 import org.apache.directory.shared.ldap.codec.protocol.mina.LdapProtocolCodecActivator;
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.Connection;
