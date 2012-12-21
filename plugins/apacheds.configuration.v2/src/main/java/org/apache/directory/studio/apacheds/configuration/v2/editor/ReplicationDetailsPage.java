@@ -789,7 +789,16 @@ public class ReplicationDetailsPage implements IDetailsPage
             }
 
             // Search Base DN
-            input.setSearchBaseDn( checkEmptyString( entryWidget.getDn().toString() ) );;
+            Dn baseDn = entryWidget.getDn();
+
+            if ( baseDn != null )
+            {
+                input.setSearchBaseDn( checkEmptyString( baseDn.toString() ) );
+            }
+            else
+            {
+                input.setSearchBaseDn( null );
+            }
 
             // Search Filter
             input.setReplSearchFilter( checkEmptyString( filterWidget.getFilter() ) );
