@@ -272,7 +272,7 @@ public class PartitionsDiffComputer
                 }
 
                 // Creating a search operation context to get the children of the current entry
-                SearchOperationContext soc = new SearchOperationContext( null, originalEntry.getDn(),
+                SearchOperationContext soc = new SearchOperationContext( null, destinationEntry.getDn(),
                     SearchScope.ONELEVEL,
                     FilterParser.parse( originalPartition.getSchemaManager(), "(objectClass=*)" ), attributeIds );
                 soc.setAliasDerefMode( AliasDerefMode.DEREF_ALWAYS );
@@ -288,6 +288,7 @@ public class PartitionsDiffComputer
         }
         catch ( Exception e )
         {
+            // e.printStackTrace();
             throw new PartitionsDiffException( e );
         }
 
