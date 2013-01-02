@@ -112,7 +112,7 @@ public class PartitionsMasterDetailsBlock extends MasterDetailsBlock
         toolkit.paintBordersFor( client );
         section.setClient( client );
 
-        // Creatig the Table and Table Viewer
+        // Creating the Table and Table Viewer
         Table table = toolkit.createTable( client, SWT.NULL );
         GridData gd = new GridData( SWT.FILL, SWT.FILL, true, true, 1, 2 );
         gd.heightHint = 20;
@@ -130,6 +130,7 @@ public class PartitionsMasterDetailsBlock extends MasterDetailsBlock
         } );
         viewer.setContentProvider( new ArrayContentProvider() );
         viewer.setLabelProvider( PartitionsPage.PARTITIONS_LABEL_PROVIDER );
+        viewer.setComparator( PartitionsPage.PARTITIONS_COMPARATOR );
 
         // Creating the button(s)
         addButton = toolkit.createButton( client, "Add", SWT.PUSH );

@@ -24,6 +24,8 @@ import org.apache.directory.server.config.beans.PartitionBean;
 import org.apache.directory.studio.apacheds.configuration.v2.ApacheDS2ConfigurationPlugin;
 import org.apache.directory.studio.apacheds.configuration.v2.ApacheDS2ConfigurationPluginConstants;
 import org.eclipse.jface.viewers.LabelProvider;
+import org.eclipse.jface.viewers.Viewer;
+import org.eclipse.jface.viewers.ViewerComparator;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
@@ -78,6 +80,29 @@ public class PartitionsPage extends ServerConfigurationEditorPage
             }
 
             return super.getImage( element );
+        }
+    };
+
+    /** The comparator for partition table viewers */
+    public static ViewerComparator PARTITIONS_COMPARATOR = new ViewerComparator()
+    {
+        public int compare( Viewer viewer, Object e1, Object e2 )
+        {
+            if ( ( e1 instanceof PartitionBean ) && ( e2 instanceof PartitionBean ) )
+            {
+                PartitionBean partition1 = ( PartitionBean ) e1;
+                PartitionBean partition2 = ( PartitionBean ) e2;
+
+                String partition1Id = partition1.getPartitionId();
+                String partition2Id = partition2.getPartitionId();
+
+                if ( ( partition1Id != null ) && ( partition2Id != null ) )
+                {
+                    return partition1Id.compareTo( partition2Id );
+                }
+            }
+
+            return super.compare( viewer, e1, e2 );
         }
     };
 

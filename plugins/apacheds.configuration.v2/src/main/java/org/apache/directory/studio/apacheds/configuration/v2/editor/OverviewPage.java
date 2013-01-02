@@ -376,6 +376,7 @@ public class OverviewPage extends ServerConfigurationEditorPage
         partitionsTableViewer = new TableViewer( partitionsTable );
         partitionsTableViewer.setContentProvider( new ArrayContentProvider() );
         partitionsTableViewer.setLabelProvider( PartitionsPage.PARTITIONS_LABEL_PROVIDER );
+        partitionsTableViewer.setComparator( PartitionsPage.PARTITIONS_COMPARATOR );
 
         // Partitions Configuration Link
         openPartitionsConfigurationLink = toolkit.createHyperlink( composite,
