@@ -35,6 +35,7 @@ import org.apache.directory.studio.apacheds.configuration.v2.jobs.PartitionsDiff
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.common.ui.CommonUIUtils;
 import org.apache.directory.studio.common.ui.filesystem.PathEditorInput;
+import org.apache.directory.studio.connection.core.event.ConnectionEventRegistry;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
 import org.apache.directory.studio.ldapbrowser.core.jobs.ExecuteLdifRunnable;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
@@ -335,40 +336,52 @@ public class ServerConfigurationEditorUtils
             newconfigurationPartition.addEntry( new DefaultEntry( schemaManager, ldifEntry.getEntry() ) );
         }
 
-        // Comparing both partitions to get the list of modifications to be applied
-        PartitionsDiffComputer partitionsDiffComputer = new PartitionsDiffComputer();
-        partitionsDiffComputer.setOriginalPartition( originalPartition );
-        partitionsDiffComputer.setDestinationPartition( newconfigurationPartition );
-        List<LdifEntry> modificationsList = partitionsDiffComputer.computeModifications( new String[]
-            { SchemaConstants.ALL_USER_ATTRIBUTES } );
+        // Suspends event firing in current thread.
+        ConnectionEventRegistry.suspendEventFiringInCurrentThread();
 
-        // Building the resulting LDIF
-        StringBuilder modificationsLdif = new StringBuilder();
-        for ( LdifEntry ldifEntry : modificationsList )
+        try
         {
-            modificationsLdif.append( ldifEntry.toString() );
+
+            // Comparing both partitions to get the list of modifications to be applied
+            PartitionsDiffComputer partitionsDiffComputer = new PartitionsDiffComputer();
+            partitionsDiffComputer.setOriginalPartition( originalPartition );
+            partitionsDiffComputer.setDestinationPartition( newconfigurationPartition );
+            List<LdifEntry> modificationsList = partitionsDiffComputer.computeModifications( new String[]
+                { SchemaConstants.ALL_USER_ATTRIBUTES } );
+
+            // Building the resulting LDIF
+            StringBuilder modificationsLdif = new StringBuilder();
+            for ( LdifEntry ldifEntry : modificationsList )
+            {
+                modificationsLdif.append( ldifEntry.toString() );
+            }
+
+            // Getting the browser connection associated with the connection
+            IBrowserConnection browserConnection = BrowserCorePlugin.getDefault().getConnectionManager()
+                .getBrowserConnection( input.getConnection() );
+
+            // Creating a StudioProgressMonitor to run the LDIF with
+            StudioProgressMonitor studioProgressMonitor = new StudioProgressMonitor( new NullProgressMonitor() );
+
+            // Updating the configuration with the resulting LDIF
+            ExecuteLdifRunnable.executeLdif( browserConnection, modificationsLdif.toString(), true, true,
+                studioProgressMonitor );
+
+            // Checking if there were errors during the execution of the LDIF
+            if ( studioProgressMonitor.errorsReported() )
+            {
+                throw new Exception( "Changes could not be saved to the connection." );
+            }
+            else
+            {
+                // Swapping the new configuration partition
+                input.setOriginalPartition( newconfigurationPartition );
+            }
         }
-
-        // Getting the browser connection associated with the connection
-        IBrowserConnection browserConnection = BrowserCorePlugin.getDefault().getConnectionManager()
-            .getBrowserConnection( input.getConnection() );
-
-        // Creating a StudioProgressMonitor to run the LDIF with
-        StudioProgressMonitor studioProgressMonitor = new StudioProgressMonitor( new NullProgressMonitor() );
-
-        // Updating the configuration with the resulting LDIF
-        ExecuteLdifRunnable.executeLdif( browserConnection, modificationsLdif.toString(), true, true,
-            studioProgressMonitor );
-
-        // Checking if there were errors during the execution of the LDIF
-        if ( studioProgressMonitor.errorsReported() )
+        finally
         {
-            throw new Exception( "Changes could not be saved to the connection." );
-        }
-        else
-        {
-            // Swapping the new configuration partition
-            input.setOriginalPartition( newconfigurationPartition );
+            // Resumes event firing in current thread.
+            ConnectionEventRegistry.resumeEventFiringInCurrentThread();
         }
     }
 
