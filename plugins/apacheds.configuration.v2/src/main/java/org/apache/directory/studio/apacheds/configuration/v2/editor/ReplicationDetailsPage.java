@@ -116,7 +116,6 @@ public class ReplicationDetailsPage implements IDetailsPage
     private Button oneLevelScopeButton;
     private Button objectScopeButton;
     private Button allAttributesCheckbox;
-    private Button allOperationalAttributesCheckbox;
     private TableViewer attributesTableViewer;
     private Button addAttributeButton;
     private Button editAttributeButton;
@@ -420,11 +419,6 @@ public class ReplicationDetailsPage implements IDetailsPage
         allAttributesCheckbox = toolkit.createButton( composite, "All Attributes", SWT.CHECK );
         allAttributesCheckbox.setLayoutData( new GridData( SWT.FILL, SWT.CENTER, true, false, 2, 1 ) );
 
-        // All Operational Attributes Checkbox
-        toolkit.createLabel( composite, "" ); //$NON-NLS-1$
-        allOperationalAttributesCheckbox = toolkit.createButton( composite, "All Operational Attributes", SWT.CHECK );
-        allOperationalAttributesCheckbox.setLayoutData( new GridData( SWT.FILL, SWT.CENTER, true, false, 2, 1 ) );
-
         // Attributes Table Viewer
         toolkit.createLabel( composite, "" ); //$NON-NLS-1$
         Composite attributesTableComposite = toolkit.createComposite( composite );
@@ -664,7 +658,6 @@ public class ReplicationDetailsPage implements IDetailsPage
         oneLevelScopeButton.addSelectionListener( buttonSelectionListener );
         objectScopeButton.addSelectionListener( buttonSelectionListener );
         allAttributesCheckbox.addSelectionListener( buttonSelectionListener );
-        allOperationalAttributesCheckbox.addSelectionListener( buttonSelectionListener );
         attributesTableViewer.addDoubleClickListener( attributesTableViewerDoubleClickListener );
         attributesTableViewer.addSelectionChangedListener( attributesTableViewerSelectionListener );
         addAttributeButton.addSelectionListener( addAttributeButtonSelectionListener );
@@ -696,7 +689,6 @@ public class ReplicationDetailsPage implements IDetailsPage
         oneLevelScopeButton.removeSelectionListener( buttonSelectionListener );
         objectScopeButton.removeSelectionListener( buttonSelectionListener );
         allAttributesCheckbox.removeSelectionListener( buttonSelectionListener );
-        allOperationalAttributesCheckbox.removeSelectionListener( buttonSelectionListener );
         attributesTableViewer.removeDoubleClickListener( attributesTableViewerDoubleClickListener );
         attributesTableViewer.removeSelectionChangedListener( attributesTableViewerSelectionListener );
         addAttributeButton.removeSelectionListener( addAttributeButtonSelectionListener );
@@ -827,12 +819,6 @@ public class ReplicationDetailsPage implements IDetailsPage
             if ( allAttributesCheckbox.getSelection() )
             {
                 replAttributes.add( SchemaConstants.ALL_USER_ATTRIBUTES );
-            }
-
-            // All Operational Attributes
-            if ( allOperationalAttributesCheckbox.getSelection() )
-            {
-                replAttributes.add( SchemaConstants.ALL_OPERATIONAL_ATTRIBUTES );
             }
 
             input.setReplAttributes( replAttributes );
@@ -1095,17 +1081,6 @@ public class ReplicationDetailsPage implements IDetailsPage
             else
             {
                 allAttributesCheckbox.setSelection( false );
-            }
-
-            // All Operational Attributes Checkbox
-            if ( attributesList.contains( SchemaConstants.ALL_OPERATIONAL_ATTRIBUTES ) )
-            {
-                attributesList.remove( SchemaConstants.ALL_OPERATIONAL_ATTRIBUTES );
-                allOperationalAttributesCheckbox.setSelection( true );
-            }
-            else
-            {
-                allOperationalAttributesCheckbox.setSelection( false );
             }
 
             attributesTableViewer.refresh();
