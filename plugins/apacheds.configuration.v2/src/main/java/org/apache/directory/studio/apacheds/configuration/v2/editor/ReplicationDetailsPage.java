@@ -426,11 +426,12 @@ public class ReplicationDetailsPage implements IDetailsPage
         allOperationalAttributesCheckbox.setLayoutData( new GridData( SWT.FILL, SWT.CENTER, true, false, 2, 1 ) );
 
         // Attributes Table Viewer
+        toolkit.createLabel( composite, "" ); //$NON-NLS-1$
         Composite attributesTableComposite = toolkit.createComposite( composite );
         GridLayout gl = new GridLayout( 2, false );
         gl.marginWidth = gl.marginHeight = 0;
         attributesTableComposite.setLayout( gl );
-        attributesTableComposite.setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, true, 3, 1 ) );
+        attributesTableComposite.setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, true, 2, 1 ) );
         Table attributesTable = toolkit.createTable( attributesTableComposite, SWT.BORDER );
         attributesTable.setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, true, 1, 3 ) );
         attributesTableViewer = new TableViewer( attributesTable );
@@ -975,7 +976,16 @@ public class ReplicationDetailsPage implements IDetailsPage
             bindDnText.setText( checkNull( input.getReplUserDn() ) );
 
             // Bind Password
-            bindPasswordText.setText( checkNull( String.valueOf( new String( input.getReplUserPassword() ) ) ) );
+            byte[] bindPassword = input.getReplUserPassword();
+
+            if ( ( bindPassword != null ) && ( bindPassword.length > 0 ) )
+            {
+                bindPasswordText.setText( checkNull( new String( input.getReplUserPassword() ) ) );
+            }
+            else
+            {
+                bindPasswordText.setText( "" );
+            }
 
             // Size Limit
             sizeLimitText.setText( checkNull( String.valueOf( input.getReplSearchSizeLimit() ) ) );
