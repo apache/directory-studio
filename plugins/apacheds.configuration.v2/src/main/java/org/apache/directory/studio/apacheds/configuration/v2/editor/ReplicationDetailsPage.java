@@ -111,6 +111,7 @@ public class ReplicationDetailsPage implements IDetailsPage
     private Text bindDnText;
     private Text bindPasswordText;
     private Button showPasswordCheckbox;
+    private Button useStartTlsCheckbox;
     private Text sizeLimitText;
     private Text timeLimitText;
     private EntryWidget entryWidget;
@@ -382,6 +383,12 @@ public class ReplicationDetailsPage implements IDetailsPage
         timeLimitText = toolkit.createText( composite, "" );
         timeLimitText.addVerifyListener( integerVerifyListener );
         timeLimitText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
+
+        // Use Start TLS
+        toolkit.createLabel( composite, "" ); //$NON-NLS-1$
+        useStartTlsCheckbox = toolkit.createButton( composite, "Use Start TLS", SWT.CHECK );
+        useStartTlsCheckbox.setLayoutData( new GridData( SWT.FILL, SWT.CENTER, true, false ) );
+        useStartTlsCheckbox.setSelection( false );
     }
 
 
@@ -679,6 +686,7 @@ public class ReplicationDetailsPage implements IDetailsPage
         showPasswordCheckbox.addSelectionListener( showPasswordCheckboxSelectionListener );
         sizeLimitText.addModifyListener( textModifyListener );
         timeLimitText.addModifyListener( textModifyListener );
+        useStartTlsCheckbox.addSelectionListener( buttonSelectionListener );
         entryWidget.addWidgetModifyListener( widgetModifyListener );
         filterWidget.addWidgetModifyListener( widgetModifyListener );
         subtreeScopeButton.addSelectionListener( buttonSelectionListener );
@@ -713,6 +721,7 @@ public class ReplicationDetailsPage implements IDetailsPage
         showPasswordCheckbox.removeSelectionListener( showPasswordCheckboxSelectionListener );
         sizeLimitText.removeModifyListener( textModifyListener );
         timeLimitText.removeModifyListener( textModifyListener );
+        useStartTlsCheckbox.removeSelectionListener( buttonSelectionListener );
         entryWidget.removeWidgetModifyListener( widgetModifyListener );
         filterWidget.removeWidgetModifyListener( widgetModifyListener );
         subtreeScopeButton.removeSelectionListener( buttonSelectionListener );
@@ -823,6 +832,9 @@ public class ReplicationDetailsPage implements IDetailsPage
             {
                 input.setReplSearchTimeout( 0 );
             }
+
+            // Use Start TLS
+            input.setReplUseTls( useStartTlsCheckbox.getSelection() );
 
             // Search Base DN
             Dn baseDn = entryWidget.getDn();
@@ -1030,6 +1042,9 @@ public class ReplicationDetailsPage implements IDetailsPage
 
             // Time Limit
             timeLimitText.setText( checkNull( String.valueOf( input.getReplSearchTimeout() ) ) );
+
+            // Use Start TLS
+            useStartTlsCheckbox.setSelection( input.isReplUseTls() );
 
             // Search Base DN
             try
