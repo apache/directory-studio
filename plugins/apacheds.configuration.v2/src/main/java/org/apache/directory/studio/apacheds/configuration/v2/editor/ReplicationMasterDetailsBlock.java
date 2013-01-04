@@ -24,6 +24,8 @@ import org.apache.directory.api.ldap.model.constants.SchemaConstants;
 import org.apache.directory.api.ldap.model.message.AliasDerefMode;
 import org.apache.directory.api.ldap.model.message.SearchScope;
 import org.apache.directory.server.config.beans.ReplConsumerBean;
+import org.apache.directory.studio.apacheds.configuration.v2.ApacheDS2ConfigurationPlugin;
+import org.apache.directory.studio.apacheds.configuration.v2.ApacheDS2ConfigurationPluginConstants;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
@@ -37,6 +39,7 @@ import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -148,6 +151,18 @@ public class ReplicationMasterDetailsBlock extends MasterDetailsBlock
                 }
 
                 return super.getText( element );
+            }
+
+
+            public Image getImage( Object element )
+            {
+                if ( element instanceof ReplConsumerBean )
+                {
+                    return ApacheDS2ConfigurationPlugin.getDefault().getImage(
+                        ApacheDS2ConfigurationPluginConstants.IMG_REPLICATION_CONSUMER );
+                }
+
+                return super.getImage( element );
             }
         } );
         viewer.setComparator( new ViewerComparator()

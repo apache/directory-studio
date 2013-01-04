@@ -44,5 +44,6 @@ public interface ApacheDS2ConfigurationPluginConstants
     public static final String IMG_NEW_SERVER_CONFIGURATION_FILE_WIZARD = "resources/icons/new_server_configuration_file_wizard.gif"; //$NON-NLS-1$
     public static final String IMG_PARTITION = "resources/icons/partition.gif"; //$NON-NLS-1$
     public static final String IMG_PARTITION_SYSTEM = "resources/icons/partition_system.gif"; //$NON-NLS-1$
+    public static final String IMG_REPLICATION_CONSUMER = "resources/icons/replication_consumer.gif"; //$NON-NLS-1$
     public static final String IMG_VERTICAL_ORIENTATION = "resources/icons/vertical_orientation.gif"; //$NON-NLS-1$
 }
