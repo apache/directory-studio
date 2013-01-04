@@ -1150,6 +1150,12 @@ public class ReplicationDetailsPage implements IDetailsPage
                 allAttributesCheckbox.setSelection( false );
             }
 
+            // All Operational Attributes
+            if ( attributesList.contains( SchemaConstants.ALL_OPERATIONAL_ATTRIBUTES ) )
+            {
+                attributesList.remove( SchemaConstants.ALL_OPERATIONAL_ATTRIBUTES );
+            }
+
             attributesTableViewer.refresh();
         }
 
