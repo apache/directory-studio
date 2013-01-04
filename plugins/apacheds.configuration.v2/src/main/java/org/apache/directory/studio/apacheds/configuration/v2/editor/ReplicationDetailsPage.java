@@ -103,6 +103,9 @@ public class ReplicationDetailsPage implements IDetailsPage
     private Button enabledCheckbox;
     private Text idText;
     private Text descriptionText;
+    private Button refreshAndPersistModeButton;
+    private Button refreshOnlyModeButton;
+    private Text refreshIntervalText;
     private Text remoteHostText;
     private Text remotePortText;
     private Text bindDnText;
@@ -315,9 +318,30 @@ public class ReplicationDetailsPage implements IDetailsPage
         section.setLayoutData( td );
         Composite composite = toolkit.createComposite( section );
         toolkit.paintBordersFor( composite );
-        GridLayout glayout = new GridLayout( 2, false );
-        composite.setLayout( glayout );
+        composite.setLayout( new GridLayout( 2, false ) );
         section.setClient( composite );
+
+        // Replication Mode
+        toolkit.createLabel( composite, "Replication Mode:" );
+
+        // Refresh And Persist Mode Button
+        refreshAndPersistModeButton = toolkit.createButton( composite, "Refresh And Persist", SWT.RADIO );
+        refreshAndPersistModeButton.setLayoutData( new GridData( SWT.LEFT, SWT.CENTER, false, false ) );
+
+        // Refresh Only Mode Button
+        toolkit.createLabel( composite, "" );
+        refreshOnlyModeButton = toolkit.createButton( composite, "Refresh Only", SWT.RADIO );
+        refreshOnlyModeButton.setLayoutData( new GridData( SWT.LEFT, SWT.CENTER, false, false ) );
+
+        // Refresh Interval
+        toolkit.createLabel( composite, "" );
+        Composite refreshIntervalComposite = toolkit.createComposite( composite );
+        refreshIntervalComposite.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
+        refreshIntervalComposite.setLayout( new GridLayout( 3, false ) );
+        toolkit.createLabel( refreshIntervalComposite, "  " );
+        toolkit.createLabel( refreshIntervalComposite, "Refresh Interval (ms):" );
+        refreshIntervalText = toolkit.createText( refreshIntervalComposite, "" );
+        refreshIntervalText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
 
         // Remote Host Text
         toolkit.createLabel( composite, "Remote Host:" );
@@ -645,6 +669,9 @@ public class ReplicationDetailsPage implements IDetailsPage
         enabledCheckbox.addSelectionListener( buttonSelectionListener );
         idText.addModifyListener( textModifyListener );
         descriptionText.addModifyListener( textModifyListener );
+        refreshAndPersistModeButton.addSelectionListener( buttonSelectionListener );
+        refreshOnlyModeButton.addSelectionListener( buttonSelectionListener );
+        refreshIntervalText.addModifyListener( textModifyListener );
         remoteHostText.addModifyListener( textModifyListener );
         remotePortText.addModifyListener( textModifyListener );
         bindDnText.addModifyListener( textModifyListener );
@@ -676,6 +703,9 @@ public class ReplicationDetailsPage implements IDetailsPage
         enabledCheckbox.removeSelectionListener( buttonSelectionListener );
         idText.removeModifyListener( textModifyListener );
         descriptionText.removeModifyListener( textModifyListener );
+        refreshAndPersistModeButton.removeSelectionListener( buttonSelectionListener );
+        refreshOnlyModeButton.removeSelectionListener( buttonSelectionListener );
+        refreshIntervalText.removeModifyListener( textModifyListener );
         remoteHostText.removeModifyListener( textModifyListener );
         remotePortText.removeModifyListener( textModifyListener );
         bindDnText.removeModifyListener( textModifyListener );
@@ -732,6 +762,19 @@ public class ReplicationDetailsPage implements IDetailsPage
 
             // Description
             input.setDescription( checkEmptyString( descriptionText.getText() ) );
+
+            // Refresh Mode
+            input.setReplRefreshNPersist( refreshAndPersistModeButton.getSelection() );
+
+            // Refresh Interval
+            try
+            {
+                input.setReplRefreshInterval( Long.parseLong( refreshIntervalText.getText() ) );
+            }
+            catch ( NumberFormatException e )
+            {
+                input.setReplRefreshInterval( 60000 );
+            }
 
             // Remote Host
             input.setReplProvHostName( checkEmptyString( remoteHostText.getText() ) );
@@ -951,6 +994,15 @@ public class ReplicationDetailsPage implements IDetailsPage
 
             // Description
             descriptionText.setText( checkNull( input.getDescription() ) );
+
+            // Refresh And Persist
+            refreshAndPersistModeButton.setSelection( input.isReplRefreshNPersist() );
+
+            // Refresh Only
+            refreshOnlyModeButton.setSelection( !input.isReplRefreshNPersist() );
+
+            // Refresh Interval
+            refreshIntervalText.setText( checkNull( String.valueOf( input.getReplRefreshInterval() ) ) );
 
             // Remote Host
             remoteHostText.setText( checkNull( input.getReplProvHostName() ) );
