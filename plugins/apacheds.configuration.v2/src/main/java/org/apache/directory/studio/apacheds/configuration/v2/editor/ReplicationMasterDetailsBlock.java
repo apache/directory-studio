@@ -31,6 +31,8 @@ import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
+import org.eclipse.jface.viewers.Viewer;
+import org.eclipse.jface.viewers.ViewerComparator;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -146,6 +148,27 @@ public class ReplicationMasterDetailsBlock extends MasterDetailsBlock
                 }
 
                 return super.getText( element );
+            }
+        } );
+        viewer.setComparator( new ViewerComparator()
+        {
+            public int compare( Viewer viewer, Object e1, Object e2 )
+            {
+                if ( ( e1 instanceof ReplConsumerBean ) && ( e2 instanceof ReplConsumerBean ) )
+                {
+                    ReplConsumerBean o1 = ( ReplConsumerBean ) e1;
+                    ReplConsumerBean o2 = ( ReplConsumerBean ) e2;
+
+                    String id1 = o1.getReplConsumerId();
+                    String id2 = o2.getReplConsumerId();
+
+                    if ( ( id1 != null ) && ( id2 != null ) )
+                    {
+                        return id1.compareTo( id2 );
+                    }
+                }
+
+                return super.compare( viewer, e1, e2 );
             }
         } );
 
