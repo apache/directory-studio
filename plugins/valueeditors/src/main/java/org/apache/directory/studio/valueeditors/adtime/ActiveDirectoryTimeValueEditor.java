@@ -61,6 +61,13 @@ public class ActiveDirectoryTimeValueEditor extends AbstractDialogStringValueEdi
 
         if ( !showRawValues() )
         {
+            // Special case for the "0" value where we don't want to display date 
+            // that makes no sense ("0" being the default value, it happened a lot).
+            if ( "0".equals( displayValue ) )
+            {
+                return displayValue;
+            }
+
             DateFormat targetFormat = DateFormat.getDateTimeInstance( DateFormat.MEDIUM, DateFormat.LONG );
 
             try
