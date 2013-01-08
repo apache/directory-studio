@@ -134,8 +134,9 @@ public class HierarchyViewController
                 catch ( PartInitException e )
                 {
                     PluginUtils.logError( Messages.getString( "HierarchyViewController.ErrorOpeningEditor" ), e ); //$NON-NLS-1$
-                    ViewUtils.displayErrorMessageDialog( Messages.getString( "HierarchyViewController.Error" ), Messages //$NON-NLS-1$
-                        .getString( "HierarchyViewController.ErrorOpeningEditor" ) ); //$NON-NLS-1$
+                    ViewUtils.displayErrorMessageDialog(
+                        Messages.getString( "HierarchyViewController.Error" ), Messages //$NON-NLS-1$
+                            .getString( "HierarchyViewController.ErrorOpeningEditor" ) ); //$NON-NLS-1$
                 }
             }
         }

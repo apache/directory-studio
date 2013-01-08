@@ -226,7 +226,7 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor
 
         addExtensionAction = new AddExtensionAction( window );
         register( addExtensionAction );
-        
+
         manageConfigurationAction = new ManageConfigurationAction( window );
         manageConfigurationAction.setImageDescriptor( AbstractUIPlugin.imageDescriptorFromPlugin(
             Application.PLUGIN_ID, ImageKeys.MANAGE_CONFIGURATION ) );

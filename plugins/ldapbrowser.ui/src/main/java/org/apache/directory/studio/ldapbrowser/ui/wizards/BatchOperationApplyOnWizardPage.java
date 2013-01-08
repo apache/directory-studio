@@ -323,6 +323,7 @@ public class BatchOperationApplyOnWizardPage extends WizardPage
 
     }
 
+
     /**
      * Saves the dialog settings.
      */

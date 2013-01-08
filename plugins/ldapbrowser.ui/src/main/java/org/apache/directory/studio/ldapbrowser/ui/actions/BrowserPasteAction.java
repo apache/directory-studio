@@ -185,8 +185,9 @@ public class BrowserPasteAction extends PasteAction
             scope = scopeDialog.getScope();
         }
 
-        new StudioBrowserJob( new CopyEntriesRunnable( parent, entriesToPaste, scope, new EntryExistsCopyStrategyDialogImpl(
-            Display.getDefault().getActiveShell() ) ) ).execute();
+        new StudioBrowserJob( new CopyEntriesRunnable( parent, entriesToPaste, scope,
+            new EntryExistsCopyStrategyDialogImpl(
+                Display.getDefault().getActiveShell() ) ) ).execute();
     }
 
 

@@ -38,8 +38,8 @@ public final class LdifEditorConstants
     }
 
     /** The plug-in ID */
-    public static final String PLUGIN_ID = LdifEditorActivator.getDefault().getPluginProperties().getString(
-        "Plugin_id" ); //$NON-NLS-1$
+    public static final String PLUGIN_ID = LdifEditorActivator.getDefault().getPluginProperties()
+        .getString( "Plugin_id" ); //$NON-NLS-1$
 
     public static final String ACTION_ID_EDIT_RECORD = LdifEditorActivator.getDefault().getPluginProperties()
         .getString( "Cmd_EditRecord_id" ); //$NON-NLS-1$
@@ -59,8 +59,8 @@ public final class LdifEditorConstants
     public static final String NEW_WIZARD_NEW_LDIF_FILE = LdifEditorActivator.getDefault().getPluginProperties()
         .getString( "NewWizard_NewLdifFileWizard_id" ); //$NON-NLS-1$
 
-    public static final String EDITOR_LDIF_EDITOR = LdifEditorActivator.getDefault().getPluginProperties().getString(
-        "Editor_LdifEditor_id" ); //$NON-NLS-1$
+    public static final String EDITOR_LDIF_EDITOR = LdifEditorActivator.getDefault().getPluginProperties()
+        .getString( "Editor_LdifEditor_id" ); //$NON-NLS-1$
 
     public static final String PREFERENCE_LDIFEDITOR_FORMATTER_AUTOWRAP = "ldifEditorFormatterAutoWrap"; //$NON-NLS-1$
 
@@ -169,11 +169,11 @@ public final class LdifEditorConstants
 
     public static final String IMG_EXECUTE = "resources/icons/execute.gif"; //$NON-NLS-1$
 
-    public static final String LDIF_PARTITIONING = LdifEditorActivator.getDefault().getPluginProperties().getString(
-        "Ldif_Partitioning_id" ); //$NON-NLS-1$
+    public static final String LDIF_PARTITIONING = LdifEditorActivator.getDefault().getPluginProperties()
+        .getString( "Ldif_Partitioning_id" ); //$NON-NLS-1$
 
-    public static final String CONTENTASSIST_ACTION = LdifEditorActivator.getDefault().getPluginProperties().getString(
-        "Action_ContentAssist_id" ); //$NON-NLS-1$
+    public static final String CONTENTASSIST_ACTION = LdifEditorActivator.getDefault().getPluginProperties()
+        .getString( "Action_ContentAssist_id" ); //$NON-NLS-1$
 
     public static final String PREFERENCEPAGEID_TEXTFORMATS = LdifEditorActivator.getDefault().getPluginProperties()
         .getString( "PrefPage_TextFormatsPreferencePage_id" ); //$NON-NLS-1$

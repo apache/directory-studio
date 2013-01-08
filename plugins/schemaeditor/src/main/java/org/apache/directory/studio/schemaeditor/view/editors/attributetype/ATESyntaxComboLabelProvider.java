@@ -45,8 +45,7 @@ public class ATESyntaxComboLabelProvider extends LabelProvider
             // Getting description (and name for backward compatibility)
             String description = syntax.getDescription();
             String name = syntax.getName();
-            
-            
+
             if ( ( description != null ) || ( name != null ) )
             {
                 StringBuilder sb = new StringBuilder();

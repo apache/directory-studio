@@ -331,8 +331,7 @@ public class KerberosServerPage extends ServerConfigurationEditorPage
         toolkit.createLabel( composite, "Primary KDC Realm:" );
         primaryKdcRealmText = toolkit.createText( composite, "" ); //$NON-NLS-1$
         setGridDataWithDefaultWidth( primaryKdcRealmText, new GridData( SWT.FILL, SWT.NONE, true, false ) );
-        Label defaultSaslPrincipalLabel = createDefaultValueLabel( toolkit, composite,
-            "EXAMPLE.COM" ); //$NON-NLS-1$
+        Label defaultSaslPrincipalLabel = createDefaultValueLabel( toolkit, composite, "EXAMPLE.COM" ); //$NON-NLS-1$
         defaultSaslPrincipalLabel.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
 
         // Search Base Dn Text

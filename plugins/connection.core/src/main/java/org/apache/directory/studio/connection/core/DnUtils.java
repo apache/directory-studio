@@ -42,7 +42,7 @@ public class DnUtils
      * 
      * @return the prefix
      */
-    public static Dn getPrefixName( Dn dn, Dn suffix ) 
+    public static Dn getPrefixName( Dn dn, Dn suffix )
     {
         if ( suffix.size() < 1 )
         {
@@ -53,7 +53,7 @@ public class DnUtils
             try
             {
                 Dn prefix = dn.getDescendantOf( suffix );
-                
+
                 return prefix;
             }
             catch ( LdapInvalidDnException lide )
@@ -86,13 +86,13 @@ public class DnUtils
 
             sb.append( rdnTypes[i] );
             sb.append( '=' );
-            sb.append( Rdn.escapeValue(rdnValues[i]) );
+            sb.append( Rdn.escapeValue( rdnValues[i] ) );
         }
 
         String s = sb.toString();
         try
         {
-            if ( Dn.isValid(s) )
+            if ( Dn.isValid( s ) )
             {
                 Rdn rdn = new Rdn( sb.toString() );
                 return rdn;

@@ -125,7 +125,7 @@ public abstract class AbstractLdapServerAdapterConfigurationPage implements Ldap
     public void setErrorMessage( String errorMessage )
     {
         this.errorMessage = errorMessage;
-        setPageComplete(  errorMessage == null );
+        setPageComplete( errorMessage == null );
     }
 
 

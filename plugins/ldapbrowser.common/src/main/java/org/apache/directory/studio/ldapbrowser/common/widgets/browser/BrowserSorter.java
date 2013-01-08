@@ -228,7 +228,7 @@ public class BrowserSorter extends ViewerSorter
         {
             return greaterThanEntries();
         }
-        
+
         // special case for quick search
         else if ( o1 instanceof IQuickSearch || o2 instanceof IQuickSearch )
         {
@@ -245,7 +245,7 @@ public class BrowserSorter extends ViewerSorter
                 return equal();
             }
         }
-        
+
         // o1 and o2 are entries
         else if ( o1 instanceof IEntry || o2 instanceof IEntry )
         {

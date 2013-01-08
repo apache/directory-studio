@@ -170,7 +170,8 @@ public class AttributeTypeEditor extends FormEditor
         setInput( input );
         setPartName( input.getName() );
 
-        originalAttributeType = (MutableAttributeType)( ( AttributeTypeEditorInput ) getEditorInput() ).getAttributeType();
+        originalAttributeType = ( MutableAttributeType ) ( ( AttributeTypeEditorInput ) getEditorInput() )
+            .getAttributeType();
         modifiedAttributeType = PluginUtils.getClone( originalAttributeType );
 
         SchemaHandler schemaHandler = Activator.getDefault().getSchemaHandler();

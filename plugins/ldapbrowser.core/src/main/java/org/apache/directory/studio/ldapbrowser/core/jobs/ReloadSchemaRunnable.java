@@ -272,7 +272,7 @@ public class ReloadSchemaRunnable implements StudioConnectionBulkRunnableWithPro
                     if ( attribute.getID().equalsIgnoreCase( SchemaConstants.SUBSCHEMA_SUBENTRY_AT ) )
                     {
                         String value = ( String ) attribute.get();
-                        if ( Dn.isValid(value) )
+                        if ( Dn.isValid( value ) )
                         {
                             Dn dn = new Dn( value );
                             return dn;

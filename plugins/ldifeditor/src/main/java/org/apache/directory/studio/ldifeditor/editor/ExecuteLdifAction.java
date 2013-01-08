@@ -73,7 +73,7 @@ public class ExecuteLdifAction extends Action
             if ( dialog.open() == SelectBrowserConnectionDialog.OK )
             {
                 connection = dialog.getSelectedBrowserConnection();
-                
+
                 if ( connection != null )
                 {
                     editor.setConnection( connection, true );
@@ -86,7 +86,6 @@ public class ExecuteLdifAction extends Action
                 return;
             }
         }
-        
 
         String ldif = editor.getLdifModel().toRawString();
 

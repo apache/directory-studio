@@ -19,9 +19,8 @@
  */
 package org.apache.directory.studio.schemaeditor.view.wrappers;
 
+
 import org.apache.directory.studio.schemaeditor.model.schemachecker.SchemaWarning;
-
-
 
 
 /**

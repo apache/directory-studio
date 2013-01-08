@@ -61,6 +61,7 @@ public class AttributeValueDialog extends Dialog
         this.attributeValueObject = attributeValueObject;
     }
 
+
     /**
      * {@inheritDoc}
      */
@@ -69,6 +70,7 @@ public class AttributeValueDialog extends Dialog
         super.configureShell( newShell );
         newShell.setText( "Attribute Value Dialog" );
     }
+
 
     /**
      * {@inheritDoc}
@@ -133,6 +135,7 @@ public class AttributeValueDialog extends Dialog
             }
         } );
     }
+
 
     /**
      * {@inheritDoc}

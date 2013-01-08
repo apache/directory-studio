@@ -75,7 +75,7 @@ public class OpenElementAction extends Action implements IWorkbenchWindowActionD
             public void selectionChanged( SelectionChangedEvent event )
             {
                 StructuredSelection selection = ( StructuredSelection ) event.getSelection();
-                
+
                 if ( selection.size() > 0 )
                 {
                     boolean enabled = true;

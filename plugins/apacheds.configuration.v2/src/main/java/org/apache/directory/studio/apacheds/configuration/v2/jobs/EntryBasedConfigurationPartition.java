@@ -61,7 +61,7 @@ public class EntryBasedConfigurationPartition extends AbstractLdifPartition
     {
         setId( "config" ); //$NON-NLS-1$
         setSuffixDn( new Dn( "ou=config" ) ); //$NON-NLS-1$
-        
+
         super.doInit();
     }
 

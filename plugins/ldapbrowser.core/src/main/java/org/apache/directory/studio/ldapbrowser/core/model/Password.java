@@ -178,7 +178,7 @@ public class Password
         if ( !( hashMethod == null || HASH_METHOD_NO.equalsIgnoreCase( hashMethod )
             || HASH_METHOD_SHA.equalsIgnoreCase( hashMethod ) || HASH_METHOD_SSHA.equalsIgnoreCase( hashMethod )
             || HASH_METHOD_MD5.equalsIgnoreCase( hashMethod ) || HASH_METHOD_SMD5.equalsIgnoreCase( hashMethod ) || HASH_METHOD_CRYPT
-            .equalsIgnoreCase( hashMethod ) ) )
+                .equalsIgnoreCase( hashMethod ) ) )
         {
             throw new IllegalArgumentException( BrowserCoreMessages.model__unsupported_hash );
         }

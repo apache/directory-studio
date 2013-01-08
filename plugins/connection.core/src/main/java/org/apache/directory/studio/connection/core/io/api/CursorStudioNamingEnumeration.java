@@ -74,7 +74,7 @@ public class CursorStudioNamingEnumeration extends AbstractStudioNamingEnumerati
 
     // @TODO: By Alex: temporary fix until things are in order (needs to be fixed)
     private LdapApiService codec = LdapApiServiceFactory.getSingleton();
-    
+
 
     /**
      * Creates a new instance of ReferralNamingEnumeration.
@@ -157,7 +157,7 @@ public class CursorStudioNamingEnumeration extends AbstractStudioNamingEnumerati
                     if ( referralsHandlingMethod != ReferralHandlingMethod.IGNORE )
                     {
                         // Storing the referral for later use
-                        referralsList.add( ( (SearchResultReference) currentResponse ).getReferral() );
+                        referralsList.add( ( ( SearchResultReference ) currentResponse ).getReferral() );
                     }
                 }
             }
@@ -269,7 +269,7 @@ public class CursorStudioNamingEnumeration extends AbstractStudioNamingEnumerati
             {
                 resultEntryCounter++;
                 SearchResult sr = new SearchResult( currentSearchResultEntry.getObjectName().toString(), null,
-                        AttributeUtils.toAttributes(currentSearchResultEntry.getEntry()) );
+                    AttributeUtils.toAttributes( currentSearchResultEntry.getEntry() ) );
                 sr.setNameInNamespace( currentSearchResultEntry.getObjectName().toString() );
 
                 // Converting the SearchResult to a StudioSearchResult
@@ -376,7 +376,7 @@ public class CursorStudioNamingEnumeration extends AbstractStudioNamingEnumerati
 
                 if ( control instanceof CodecControl )
                 {
-                    wrapped = (org.apache.directory.api.ldap.codec.api.CodecControl<?> ) control;
+                    wrapped = ( org.apache.directory.api.ldap.codec.api.CodecControl<?> ) control;
                 }
                 else
                 {

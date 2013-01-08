@@ -55,7 +55,6 @@ public class LinkWithEditorHierarchyViewAction extends Action
     private IPartListener2 editorListener = new IPartListener2()
     {
 
-
         /**
          * {@inheritDoc}
          */

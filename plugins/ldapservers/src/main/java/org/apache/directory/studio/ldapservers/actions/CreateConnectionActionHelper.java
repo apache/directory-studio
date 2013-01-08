@@ -112,7 +112,7 @@ public class CreateConnectionActionHelper
 
         return null;
     }
-    
+
 
     /**
      * Indicates if the LDAP Browser plugins are available or not.

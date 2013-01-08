@@ -153,7 +153,7 @@ public abstract class AbstractOpenValueEditorAction extends AbstractLdifAction
             try
             {
                 // some value editors need the real Dn (e.g. the password editor)
-                DummyEntry dummyEntry = new DummyEntry( Dn.isValid(dn) ? new Dn( dn ) : new Dn(),
+                DummyEntry dummyEntry = new DummyEntry( Dn.isValid( dn ) ? new Dn( dn ) : new Dn(),
                     connection );
                 Attribute dummyAttribute = new Attribute( dummyEntry, description );
                 Value dummyValue = new Value( dummyAttribute, value );

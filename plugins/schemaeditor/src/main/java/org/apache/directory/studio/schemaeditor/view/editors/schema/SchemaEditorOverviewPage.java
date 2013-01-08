@@ -232,7 +232,6 @@ public class SchemaEditorOverviewPage extends FormPage
     };
 
 
-
     /**
      * Creates a new instance of SchemaFormEditorOverviewPage.
      *

@@ -197,8 +197,8 @@ public class NewServerWizardSelectionPage extends WizardPage
                 // Assigning an automatic name to the LDAP Server based on the selected LDAP Server Adapter Extension
                 serverNameText.setText( getServerName( ( StructuredSelection ) ldapServerAdaptersTreeViewer
                     .getSelection() ) );
-                
-//                getContainer().updateButtons();
+
+                //                getContainer().updateButtons();
 
                 validate();
             }

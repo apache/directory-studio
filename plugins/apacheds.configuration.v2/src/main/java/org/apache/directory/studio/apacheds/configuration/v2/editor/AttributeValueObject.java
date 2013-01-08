@@ -96,6 +96,7 @@ public class AttributeValueObject
         this.value = value;
     }
 
+
     /**
      * {@inheritDoc}
      */

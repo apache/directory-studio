@@ -448,7 +448,7 @@ public class BrowserParameterPage extends AbstractConnectionParameterPage
         errorMessage = null;
         if ( !isAutoFetchBaseDns() )
         {
-            if ( !Dn.isValid(getBaseDN()) )
+            if ( !Dn.isValid( getBaseDN() ) )
             {
                 message = Messages.getString( "BrowserParameterPage.EnterValidBaseDN" ); //$NON-NLS-1$
             }

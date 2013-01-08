@@ -64,7 +64,7 @@ public class LdapServerAdapterExtension
 
     /** The configuration page class name */
     private String configurationPageClassName;
-    
+
     /** The flag to enable the open configuration action */
     private boolean openConfigurationActionEnabled;
 

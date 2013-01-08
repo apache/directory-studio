@@ -80,18 +80,18 @@ public class GenericSchemaConnector extends AbstractSchemaConnector implements S
         constraintSearch.setSearchScope( SearchControls.OBJECT_SCOPE );
         constraintSearch.setReturningAttributes( new String[]
             {
-            SchemaConstants.ATTRIBUTE_TYPES_AT,
-            SchemaConstants.COMPARATORS_AT,
-            SchemaConstants.DIT_CONTENT_RULES_AT,
-            SchemaConstants.DIT_STRUCTURE_RULES_AT,
-            SchemaConstants.LDAP_SYNTAXES_AT,
-            SchemaConstants.MATCHING_RULES_AT,
-            SchemaConstants.MATCHING_RULE_USE_AT,
-            SchemaConstants.NAME_FORMS_AT,
-            SchemaConstants.NORMALIZERS_AT,
-            SchemaConstants.OBJECT_CLASSES_AT,
-            SchemaConstants.SYNTAX_CHECKERS_AT
-            } );
+                SchemaConstants.ATTRIBUTE_TYPES_AT,
+                SchemaConstants.COMPARATORS_AT,
+                SchemaConstants.DIT_CONTENT_RULES_AT,
+                SchemaConstants.DIT_STRUCTURE_RULES_AT,
+                SchemaConstants.LDAP_SYNTAXES_AT,
+                SchemaConstants.MATCHING_RULES_AT,
+                SchemaConstants.MATCHING_RULE_USE_AT,
+                SchemaConstants.NAME_FORMS_AT,
+                SchemaConstants.NORMALIZERS_AT,
+                SchemaConstants.OBJECT_CLASSES_AT,
+                SchemaConstants.SYNTAX_CHECKERS_AT
+        } );
         String schemaDn = getSubschemaSubentry( wrapper, monitor );
         NamingEnumeration<SearchResult> answer = wrapper.search( schemaDn, "(objectclass=subschema)", constraintSearch,
             DEREF_ALIAS_METHOD, HANDLE_REFERALS_METHOD, null, monitor, null );

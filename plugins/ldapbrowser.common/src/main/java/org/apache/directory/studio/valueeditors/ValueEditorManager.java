@@ -248,15 +248,17 @@ public class ValueEditorManager
             .getAttributeValueEditorMap();
         if ( atd.getOid() != null && attributeValueEditorMap.containsKey( Strings.toLowerCase( atd.getOid() ) ) )
         {
-            return ( IValueEditor ) class2ValueEditors.get( attributeValueEditorMap.get( Strings.toLowerCase( atd.getOid()
-                 ) ) );
+            return ( IValueEditor ) class2ValueEditors.get( attributeValueEditorMap.get( Strings.toLowerCase( atd
+                .getOid()
+                ) ) );
         }
         List<String> names = atd.getNames();
         for ( String name : names )
         {
             if ( attributeValueEditorMap.containsKey( Strings.toLowerCase( name ) ) )
             {
-                return ( IValueEditor ) class2ValueEditors.get( attributeValueEditorMap.get( Strings.toLowerCase( name ) ) );
+                return ( IValueEditor ) class2ValueEditors
+                    .get( attributeValueEditorMap.get( Strings.toLowerCase( name ) ) );
             }
         }
 
@@ -266,7 +268,8 @@ public class ValueEditorManager
             .getSyntaxValueEditorMap();
         if ( syntaxNumericOid != null && syntaxValueEditorMap.containsKey( Strings.toLowerCase( syntaxNumericOid ) ) )
         {
-            return ( IValueEditor ) class2ValueEditors.get( syntaxValueEditorMap.get( Strings.toLowerCase( syntaxNumericOid ) ) );
+            return ( IValueEditor ) class2ValueEditors.get( syntaxValueEditorMap.get( Strings
+                .toLowerCase( syntaxNumericOid ) ) );
         }
 
         // return default

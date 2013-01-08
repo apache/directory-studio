@@ -224,7 +224,7 @@ public class SchemaEditorSourceCodePage extends FormPage
 
         // Help Context for Dynamic Help
         PlatformUI.getWorkbench().getHelpSystem().setHelp( form, PluginConstants.PLUGIN_ID + "." + "schema_editor" ); //$NON-NLS-1$ //$NON-NLS-2$
-  
+
         initialized = true;
     }
 

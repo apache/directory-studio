@@ -38,8 +38,8 @@ public final class ApacheDSConfigurationPluginConstants
     }
 
     /** The plug-in ID */
-    public static final String PLUGIN_ID = ApacheDSConfigurationPlugin.getDefault().getPluginProperties().getString(
-        "Plugin_id" ); //$NON-NLS-1$
+    public static final String PLUGIN_ID = ApacheDSConfigurationPlugin.getDefault().getPluginProperties()
+        .getString( "Plugin_id" ); //$NON-NLS-1$
 
     // ------
     // IMAGES

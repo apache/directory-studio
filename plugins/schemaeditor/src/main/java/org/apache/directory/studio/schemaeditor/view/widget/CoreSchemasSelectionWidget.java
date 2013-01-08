@@ -61,7 +61,7 @@ public class CoreSchemasSelectionWidget
 
     /** The array containing the 'core' from ApacheDS */
     private static final String[] coreSchemasFromApacheDS = new String[]
-        { "adsconfig","apache", "apachedns", "apachemeta", "autofs", "collective", "corba", "core", "cosine", "dhcp", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$ //$NON-NLS-9$ //$NON-NLS-10$
+        { "adsconfig", "apache", "apachedns", "apachemeta", "autofs", "collective", "corba", "core", "cosine", "dhcp", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$ //$NON-NLS-9$ //$NON-NLS-10$
             "inetorgperson", "java", "krb5kdc", "mozilla", "nis", "pwdpolicy", "samba", "system" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$
 
     /** The array containing the 'core' from OpenLDAP */

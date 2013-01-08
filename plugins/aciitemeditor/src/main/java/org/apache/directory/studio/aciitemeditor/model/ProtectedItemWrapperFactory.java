@@ -59,7 +59,7 @@ public class ProtectedItemWrapperFactory
     {
         ProtectedItemWrapper[] protectedItemWrappers = new ProtectedItemWrapper[]
             {
-            // entry
+                // entry
                 new ProtectedItemWrapper( EntryItem.class, false, "", //$NON-NLS-1$
                     "", //$NON-NLS-1$
                     null ),
@@ -120,7 +120,7 @@ public class ProtectedItemWrapperFactory
                     new TextValueEditor() // TODO: RefinementValueEditor 
                 ),
 
-            };
+        };
 
         return protectedItemWrappers;
     }

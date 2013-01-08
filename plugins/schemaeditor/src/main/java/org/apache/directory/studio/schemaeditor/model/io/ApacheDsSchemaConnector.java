@@ -399,7 +399,7 @@ public class ApacheDsSchemaConnector extends AbstractSchemaConnector implements 
      */
     private static String getOid( SearchResult sr ) throws NamingException
     {
-        Attribute at = sr.getAttributes().get(  MetaSchemaConstants.M_OID_AT );
+        Attribute at = sr.getAttributes().get( MetaSchemaConstants.M_OID_AT );
         if ( at == null )
         {
             return null;
@@ -425,7 +425,7 @@ public class ApacheDsSchemaConnector extends AbstractSchemaConnector implements 
     {
         List<String> names = new ArrayList<String>();
 
-        Attribute at = sr.getAttributes().get(  MetaSchemaConstants.M_NAME_AT );
+        Attribute at = sr.getAttributes().get( MetaSchemaConstants.M_NAME_AT );
         if ( at != null )
         {
             NamingEnumeration<?> ne = at.getAll();
@@ -451,7 +451,7 @@ public class ApacheDsSchemaConnector extends AbstractSchemaConnector implements 
      */
     private static String getDescription( SearchResult sr ) throws NamingException
     {
-        Attribute at = sr.getAttributes().get(  MetaSchemaConstants.M_DESCRIPTION_AT );
+        Attribute at = sr.getAttributes().get( MetaSchemaConstants.M_DESCRIPTION_AT );
 
         if ( at == null )
         {
@@ -476,7 +476,7 @@ public class ApacheDsSchemaConnector extends AbstractSchemaConnector implements 
      */
     private static String getSuperior( SearchResult sr ) throws NamingException
     {
-        Attribute at = sr.getAttributes().get(  MetaSchemaConstants.M_SUP_ATTRIBUTE_TYPE_AT );
+        Attribute at = sr.getAttributes().get( MetaSchemaConstants.M_SUP_ATTRIBUTE_TYPE_AT );
 
         if ( at == null )
         {
@@ -501,7 +501,7 @@ public class ApacheDsSchemaConnector extends AbstractSchemaConnector implements 
      */
     private static UsageEnum getUsage( SearchResult sr ) throws NamingException
     {
-        Attribute at = sr.getAttributes().get(  MetaSchemaConstants.M_USAGE_AT );
+        Attribute at = sr.getAttributes().get( MetaSchemaConstants.M_USAGE_AT );
 
         if ( at == null )
         {
@@ -537,7 +537,7 @@ public class ApacheDsSchemaConnector extends AbstractSchemaConnector implements 
      */
     private static String getSyntax( SearchResult sr ) throws NamingException
     {
-        Attribute at = sr.getAttributes().get(  MetaSchemaConstants.M_SYNTAX_AT );
+        Attribute at = sr.getAttributes().get( MetaSchemaConstants.M_SYNTAX_AT );
 
         if ( at == null )
         {
@@ -562,7 +562,7 @@ public class ApacheDsSchemaConnector extends AbstractSchemaConnector implements 
      */
     private static int getSyntaxLength( SearchResult sr ) throws NamingException
     {
-        Attribute at = sr.getAttributes().get(  MetaSchemaConstants.M_LENGTH_AT );
+        Attribute at = sr.getAttributes().get( MetaSchemaConstants.M_LENGTH_AT );
 
         if ( at == null )
         {
@@ -594,7 +594,7 @@ public class ApacheDsSchemaConnector extends AbstractSchemaConnector implements 
      */
     private static boolean isObsolete( SearchResult sr ) throws NamingException
     {
-        Attribute at = sr.getAttributes().get(  MetaSchemaConstants.M_OBSOLETE_AT );
+        Attribute at = sr.getAttributes().get( MetaSchemaConstants.M_OBSOLETE_AT );
 
         if ( at == null )
         {
@@ -619,7 +619,7 @@ public class ApacheDsSchemaConnector extends AbstractSchemaConnector implements 
      */
     private static boolean isCollective( SearchResult sr ) throws NamingException
     {
-        Attribute at = sr.getAttributes().get(  MetaSchemaConstants.M_COLLECTIVE_AT );
+        Attribute at = sr.getAttributes().get( MetaSchemaConstants.M_COLLECTIVE_AT );
 
         if ( at == null )
         {
@@ -644,7 +644,7 @@ public class ApacheDsSchemaConnector extends AbstractSchemaConnector implements 
      */
     private static boolean isSingleValued( SearchResult sr ) throws NamingException
     {
-        Attribute at = sr.getAttributes().get(  MetaSchemaConstants.M_SINGLE_VALUE_AT );
+        Attribute at = sr.getAttributes().get( MetaSchemaConstants.M_SINGLE_VALUE_AT );
 
         if ( at == null )
         {
@@ -669,7 +669,7 @@ public class ApacheDsSchemaConnector extends AbstractSchemaConnector implements 
      */
     private static boolean isUserModifiable( SearchResult sr ) throws NamingException
     {
-        Attribute at = sr.getAttributes().get(  MetaSchemaConstants.M_NO_USER_MODIFICATION_AT );
+        Attribute at = sr.getAttributes().get( MetaSchemaConstants.M_NO_USER_MODIFICATION_AT );
 
         if ( at == null )
         {
@@ -694,7 +694,7 @@ public class ApacheDsSchemaConnector extends AbstractSchemaConnector implements 
      */
     private static String getEquality( SearchResult sr ) throws NamingException
     {
-        Attribute at = sr.getAttributes().get(  MetaSchemaConstants.M_EQUALITY_AT );
+        Attribute at = sr.getAttributes().get( MetaSchemaConstants.M_EQUALITY_AT );
 
         if ( at == null )
         {

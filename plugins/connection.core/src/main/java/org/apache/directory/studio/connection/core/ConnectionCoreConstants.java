@@ -19,6 +19,7 @@
  */
 package org.apache.directory.studio.connection.core;
 
+
 import java.util.TimeZone;
 
 
@@ -40,8 +41,8 @@ public final class ConnectionCoreConstants
     }
 
     /** The plug-in ID */
-    public static final String PLUGIN_ID = ConnectionCorePlugin.getDefault().getPluginProperties().getString(
-        "Plugin_id" ); //$NON-NLS-1$
+    public static final String PLUGIN_ID = ConnectionCorePlugin.getDefault().getPluginProperties()
+        .getString( "Plugin_id" ); //$NON-NLS-1$
 
     /** The line separator. */
     public static final String LINE_SEPARATOR = System.getProperty( "line.separator" ); //$NON-NLS-1$

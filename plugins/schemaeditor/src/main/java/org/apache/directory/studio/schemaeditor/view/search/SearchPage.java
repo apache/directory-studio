@@ -79,7 +79,15 @@ public class SearchPage extends DialogPage implements ISearchPage
      */
     public enum SearchInEnum
     {
-        ALIASES, OID, DESCRIPTION, SUPERIOR, SYNTAX, MATCHING_RULES, SUPERIORS, MANDATORY_ATTRIBUTES, OPTIONAL_ATTRIBUTES
+        ALIASES,
+        OID,
+        DESCRIPTION,
+        SUPERIOR,
+        SYNTAX,
+        MATCHING_RULES,
+        SUPERIORS,
+        MANDATORY_ATTRIBUTES,
+        OPTIONAL_ATTRIBUTES
     }
 
 

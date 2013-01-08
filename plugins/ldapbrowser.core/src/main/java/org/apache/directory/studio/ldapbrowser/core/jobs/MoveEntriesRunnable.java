@@ -162,9 +162,9 @@ public class MoveEntriesRunnable implements StudioConnectionBulkRunnableWithProg
 
             IEntry oldEntry = oldEntries[i];
             Dn oldDn = oldEntry.getDn();
-            
+
             Dn newDn = null;
-            
+
             try
             {
                 newDn = parentDn.add( oldDn.getRdn() );
@@ -195,7 +195,8 @@ public class MoveEntriesRunnable implements StudioConnectionBulkRunnableWithProg
                         // do simulated rename operation
                         dummyMonitor.reset();
 
-                        numAdd = CopyEntriesRunnable.copyEntry( oldEntry, newParent, null, SearchControls.SUBTREE_SCOPE,
+                        numAdd = CopyEntriesRunnable.copyEntry( oldEntry, newParent, null,
+                            SearchControls.SUBTREE_SCOPE,
                             numAdd, null, dummyMonitor, monitor );
 
                         if ( !dummyMonitor.errorsReported() )

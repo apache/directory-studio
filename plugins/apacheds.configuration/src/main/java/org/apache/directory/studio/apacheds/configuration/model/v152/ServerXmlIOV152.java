@@ -1113,7 +1113,8 @@ public class ServerXmlIOV152 extends AbstractServerXmlIO implements ServerXmlIO
                     {
                         // If the 'allowAnonymousAccess' attribute does not exists,
                         // we throw an exception
-                        throw new ServerXmlIOException( Messages.getString( "ServerXmlIOV152.ErrorAllowAnonymousAccess" ) ); //$NON-NLS-1$
+                        throw new ServerXmlIOException(
+                            Messages.getString( "ServerXmlIOV152.ErrorAllowAnonymousAccess" ) ); //$NON-NLS-1$
                     }
                     else
                     {

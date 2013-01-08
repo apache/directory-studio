@@ -95,14 +95,13 @@ public class ExportDsmlRunnable implements StudioConnectionRunnableWithProgress
 
     /** The type of the export */
     private ExportDsmlJobType type = ExportDsmlJobType.RESPONSE;
-    
+
     /** 
      * The LDAP Codec - for now need by the DSML Parser 
      * @TODO - this should be removed - no reason why the DSML parser needs it
      * @TODO - hate to make it static like this but methods are static
      */
     private static LdapApiService codec = LdapApiServiceFactory.getSingleton();
-    
 
     /**
      * This enum contains the two possible export types.
@@ -296,7 +295,7 @@ public class ExportDsmlRunnable implements StudioConnectionRunnableWithProgress
                     count++;
                     monitor.reportProgress( BrowserCoreMessages.bind( BrowserCoreMessages.jobs__export_progress,
                         new String[]
-                        { Integer.toString( count ) } ) );
+                            { Integer.toString( count ) } ) );
                 }
             }
         }
@@ -347,11 +346,12 @@ public class ExportDsmlRunnable implements StudioConnectionRunnableWithProgress
      *      the associated search result entry DSML
      * @throws org.apache.directory.api.ldap.model.exception.LdapException
      */
-    private static DsmlDecorator<? extends Response> convertSearchResultToDsml( SearchResult searchResult, SearchParameter searchParameter )
+    private static DsmlDecorator<? extends Response> convertSearchResultToDsml( SearchResult searchResult,
+        SearchParameter searchParameter )
         throws LdapException, LdapURLEncodingException
     {
-        Entry entry = AttributeUtils.toEntry(searchResult.getAttributes(),
-                new Dn(searchResult.getNameInNamespace()));
+        Entry entry = AttributeUtils.toEntry( searchResult.getAttributes(),
+            new Dn( searchResult.getNameInNamespace() ) );
 
         if ( isReferral( entry ) )
         {
@@ -456,7 +456,7 @@ public class ExportDsmlRunnable implements StudioConnectionRunnableWithProgress
                     count++;
                     monitor.reportProgress( BrowserCoreMessages.bind( BrowserCoreMessages.jobs__export_progress,
                         new String[]
-                    { Integer.toString( count ) } ) );
+                            { Integer.toString( count ) } ) );
                 }
             }
         }

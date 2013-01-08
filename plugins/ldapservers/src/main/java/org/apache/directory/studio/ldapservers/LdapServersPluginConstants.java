@@ -21,8 +21,6 @@
 package org.apache.directory.studio.ldapservers;
 
 
-
-
 /**
  * Constants used in the LDAP Servers plugin.
  * Final reference -> class shouldn't be extended

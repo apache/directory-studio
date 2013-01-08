@@ -195,7 +195,7 @@ public class CopyAction extends StudioAction
         {
             ConnectionParameter parameter = connection.getConnectionParameter();
             LdapUrl ldapUrl = new LdapUrl();
-            ldapUrl.setDn( Dn.EMPTY_DN);
+            ldapUrl.setDn( Dn.EMPTY_DN );
             for ( ConnectionParameterPage connectionParameterPage : connectionParameterPages )
             {
                 connectionParameterPage.mergeParametersToLdapURL( parameter, ldapUrl );

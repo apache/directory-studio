@@ -246,7 +246,7 @@ public interface IBrowserConnection extends Serializable, IAdaptable, Connection
      * 
      * @param baseDn the new base Dn
      */
-    public abstract void setBaseDN( Dn baseDn);
+    public abstract void setBaseDN( Dn baseDn );
 
 
     /**

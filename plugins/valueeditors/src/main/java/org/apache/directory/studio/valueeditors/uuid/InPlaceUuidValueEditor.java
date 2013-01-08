@@ -51,8 +51,8 @@ public class InPlaceUuidValueEditor extends HexValueEditor
             if ( rawValue instanceof byte[] )
             {
                 byte[] bytes = ( byte[] ) rawValue;
-                String string = Strings.utf8ToString(bytes);
-                if ( string.matches( UUID_REGEX ) || Strings.isEmpty(string) )
+                String string = Strings.utf8ToString( bytes );
+                if ( string.matches( UUID_REGEX ) || Strings.isEmpty( string ) )
                 {
                     return string;
                 }

@@ -100,7 +100,7 @@ public class ImportDsmlRunnable implements StudioConnectionBulkRunnableWithProgr
 
     /** The Save file to use */
     private File responseFile;
-    
+
     /** 
      * LDAP Codec used by DSML parser
      * @TODO by Alex - this should be removed completely
@@ -280,16 +280,17 @@ public class ImportDsmlRunnable implements StudioConnectionBulkRunnableWithProgr
      * @throws org.apache.directory.api.ldap.model.exception.LdapURLEncodingException
      * @throws LdapException
      */
-    private void processRequest( DsmlDecorator<? extends Request> request, BatchResponseDsml batchResponseDsml, StudioProgressMonitor monitor )
+    private void processRequest( DsmlDecorator<? extends Request> request, BatchResponseDsml batchResponseDsml,
+        StudioProgressMonitor monitor )
         throws NamingException, LdapURLEncodingException, LdapException
     {
-        switch( request.getDecorated().getType() )
+        switch ( request.getDecorated().getType() )
         {
             case BIND_REQUEST:
                 processBindRequest( ( BindRequest ) request, batchResponseDsml, monitor );
                 break;
             case ADD_REQUEST:
-                processAddRequest( (AddRequest) request, batchResponseDsml, monitor );
+                processAddRequest( ( AddRequest ) request, batchResponseDsml, monitor );
                 break;
             case COMPARE_REQUEST:
                 processCompareRequest( ( CompareRequest ) request, batchResponseDsml, monitor );
@@ -310,9 +311,9 @@ public class ImportDsmlRunnable implements StudioConnectionBulkRunnableWithProgr
                 processSearchRequest( ( SearchRequest ) request, batchResponseDsml, monitor );
                 break;
             default:
-                throw new IllegalArgumentException( 
-                    "Should not be encountering a request type of: " 
-                    + request.getDecorated().getType() );
+                throw new IllegalArgumentException(
+                    "Should not be encountering a request type of: "
+                        + request.getDecorated().getType() );
         }
     }
 
@@ -359,7 +360,7 @@ public class ImportDsmlRunnable implements StudioConnectionBulkRunnableWithProgr
         browserConnection
             .getConnection()
             .getConnectionWrapper()
-            .createEntry( entry.getDn().getName(), AttributeUtils.toAttributes(entry), getControls( request ),
+            .createEntry( entry.getDn().getName(), AttributeUtils.toAttributes( entry ), getControls( request ),
                 monitor, null );
 
         // Creating the response

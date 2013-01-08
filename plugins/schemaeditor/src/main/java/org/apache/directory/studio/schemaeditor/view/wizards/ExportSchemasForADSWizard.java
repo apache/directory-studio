@@ -355,7 +355,7 @@ public class ExportSchemasForADSWizard extends Wizard implements IExportWizard
             }
             holder.setMay( mayList );
             List<String> mustList = new ArrayList<String>();
-            for ( String must : oc.getMustAttributeTypeOids())
+            for ( String must : oc.getMustAttributeTypeOids() )
             {
                 mustList.add( must );
             }
@@ -477,7 +477,8 @@ public class ExportSchemasForADSWizard extends Wizard implements IExportWizard
                 AttributeType sup = schemaHandler.getAttributeType( supName );
                 if ( sup != null )
                 {
-                    if ( !Strings.toLowerCase( schema.getSchemaName() ).equals( Strings.toLowerCase( sup.getSchemaName() ) ) )
+                    if ( !Strings.toLowerCase( schema.getSchemaName() ).equals(
+                        Strings.toLowerCase( sup.getSchemaName() ) ) )
                     {
                         schemaNames.add( sup.getSchemaName() );
                     }
@@ -497,7 +498,8 @@ public class ExportSchemasForADSWizard extends Wizard implements IExportWizard
                     ObjectClass sup = schemaHandler.getObjectClass( supName );
                     if ( sup != null )
                     {
-                        if ( !Strings.toLowerCase( schema.getSchemaName() ).equals( Strings.toLowerCase( sup.getSchemaName() ) ) )
+                        if ( !Strings.toLowerCase( schema.getSchemaName() ).equals(
+                            Strings.toLowerCase( sup.getSchemaName() ) ) )
                         {
                             schemaNames.add( sup.getSchemaName() );
                         }
@@ -514,7 +516,8 @@ public class ExportSchemasForADSWizard extends Wizard implements IExportWizard
                     AttributeType may = schemaHandler.getAttributeType( mayName );
                     if ( may != null )
                     {
-                        if ( !Strings.toLowerCase( schema.getSchemaName() ).equals( Strings.toLowerCase( may.getSchemaName() ) ) )
+                        if ( !Strings.toLowerCase( schema.getSchemaName() ).equals(
+                            Strings.toLowerCase( may.getSchemaName() ) ) )
                         {
                             schemaNames.add( may.getSchemaName() );
                         }
@@ -532,7 +535,8 @@ public class ExportSchemasForADSWizard extends Wizard implements IExportWizard
                     AttributeType must = schemaHandler.getAttributeType( mustName );
                     if ( must != null )
                     {
-                        if ( !Strings.toLowerCase( schema.getSchemaName() ).equals( Strings.toLowerCase( must.getSchemaName() ) ) )
+                        if ( !Strings.toLowerCase( schema.getSchemaName() ).equals(
+                            Strings.toLowerCase( must.getSchemaName() ) ) )
                         {
                             schemaNames.add( must.getSchemaName() );
                         }

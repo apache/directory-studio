@@ -69,6 +69,7 @@ public interface ISearch extends Serializable, IAdaptable, SearchPropertyPagePro
     /** Filter for fetching aliases and referrals (|(objectClass=alias)(objectClass=referral)) */
     public static final String FILTER_ALIAS_OR_REFERRAL = "(|(objectClass=alias)(objectClass=referral))"; //$NON-NLS-1$
 
+
     /**
      * Gets the LDAP URL of this search.
      * 

@@ -80,8 +80,9 @@ public class DetectedConnectionProperties
     {
         try
         {
-            String serverType = connection.getConnectionParameter().getExtendedProperty( CONNECTION_PARAMETER_SERVER_TYPE );
-            
+            String serverType = connection.getConnectionParameter().getExtendedProperty(
+                CONNECTION_PARAMETER_SERVER_TYPE );
+
             if ( serverType != null )
             {
                 return ConnectionServerType.valueOf( serverType );

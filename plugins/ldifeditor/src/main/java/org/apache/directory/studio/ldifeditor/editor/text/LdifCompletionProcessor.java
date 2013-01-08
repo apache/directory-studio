@@ -229,7 +229,8 @@ public class LdifCompletionProcessor extends TemplateCompletionProcessor
                     for ( String attributeName : attributeNames )
                     {
                         if ( rawAttributeDescription.length() == 0
-                            || Strings.toLowerCase( attributeName ).startsWith( Strings.toLowerCase( rawAttributeDescription ) ) )
+                            || Strings.toLowerCase( attributeName ).startsWith(
+                                Strings.toLowerCase( rawAttributeDescription ) ) )
                         {
 
                             String proposal = attributeName;

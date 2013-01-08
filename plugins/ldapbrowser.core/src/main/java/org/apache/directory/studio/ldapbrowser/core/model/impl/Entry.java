@@ -85,7 +85,7 @@ public class Entry extends AbstractEntry
         try
         {
             Dn dn = parent.getDn().add( rdn );
-            
+
             return dn;
         }
         catch ( LdapInvalidDnException lide )

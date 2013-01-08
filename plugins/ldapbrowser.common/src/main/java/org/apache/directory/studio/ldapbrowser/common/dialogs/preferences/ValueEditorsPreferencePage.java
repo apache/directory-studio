@@ -318,7 +318,7 @@ public class ValueEditorsPreferencePage extends PreferencePage implements IWorkb
                 editAttribute();
             }
         } );
-        
+
         attributeViewer.addSelectionChangedListener( new ISelectionChangedListener()
         {
             public void selectionChanged( SelectionChangedEvent event )

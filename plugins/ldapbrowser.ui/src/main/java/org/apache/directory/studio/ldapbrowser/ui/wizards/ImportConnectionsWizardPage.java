@@ -63,7 +63,7 @@ public class ImportConnectionsWizardPage extends WizardPage
         BaseWidgetUtils.createLabel( composite, Messages.getString( "ImportConnectionsWizardPage.FromFile" ), 1 ); //$NON-NLS-1$
         fileBrowserWidget = new FileBrowserWidget(
             Messages.getString( "ImportConnectionsWizardPage.ChooseFile" ), new String[] //$NON-NLS-1$
-                { "lbc" }, FileBrowserWidget.TYPE_OPEN ); //$NON-NLS-1$
+            { "lbc" }, FileBrowserWidget.TYPE_OPEN ); //$NON-NLS-1$
         fileBrowserWidget.createWidget( composite );
         fileBrowserWidget.addWidgetModifyListener( new WidgetModifyListener()
         {

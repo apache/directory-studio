@@ -20,7 +20,6 @@
 package org.apache.directory.studio.ldapservers.model;
 
 
-
 /**
  * This interface defines a listener on an LDAP Server instance.
  *

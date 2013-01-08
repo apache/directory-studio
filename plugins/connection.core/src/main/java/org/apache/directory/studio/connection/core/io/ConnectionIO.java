@@ -286,7 +286,8 @@ public class ConnectionIO
         {
             try
             {
-                connection.setSaslSecurityStrength( SaslSecurityStrength.valueOf( saslSecStrengthAttribute.getValue() ) );
+                connection
+                    .setSaslSecurityStrength( SaslSecurityStrength.valueOf( saslSecStrengthAttribute.getValue() ) );
             }
             catch ( IllegalArgumentException e )
             {
@@ -367,8 +368,9 @@ public class ConnectionIO
             }
             catch ( NumberFormatException e )
             {
-                throw new ConnectionIOException( "Unable to parse 'KRB5 KDC Port' of connection '" + connection.getName() //$NON-NLS-1$
-                    + "' as int value. KRB5 KDC Port value :" + krb5KdcPort.getValue() ); //$NON-NLS-1$
+                throw new ConnectionIOException(
+                    "Unable to parse 'KRB5 KDC Port' of connection '" + connection.getName() //$NON-NLS-1$
+                        + "' as int value. KRB5 KDC Port value :" + krb5KdcPort.getValue() ); //$NON-NLS-1$
             }
         }
 

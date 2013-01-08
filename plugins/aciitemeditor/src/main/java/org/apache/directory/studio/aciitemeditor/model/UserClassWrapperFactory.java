@@ -43,7 +43,7 @@ public class UserClassWrapperFactory
     {
         UserClassWrapper[] userClassWrappers = new UserClassWrapper[]
             {
-            // allUsers
+                // allUsers
                 new UserClassWrapper( UserClass.AllUsers.class, "", //$NON-NLS-1$
                     "", //$NON-NLS-1$
                     null ),

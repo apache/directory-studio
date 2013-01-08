@@ -162,7 +162,7 @@ public class ConnectionsPreferencePage extends PreferencePage implements IWorkbe
                 .getDefaultInt( ConnectionCoreConstants.PREFERENCE_DEFAULT_NETWORK_PROVIDER ) );
         networkProviderCombo.select( defaultdDefaultNetworkProvider == NetworkProvider.APACHE_DIRECTORY_LDAP_API ? 0
             : 1 );
-        
+
         ldapContextFactoryText.setText( ConnectionCorePlugin.getDefault().getPluginPreferences().getDefaultString(
             ConnectionCoreConstants.PREFERENCE_LDAP_CONTEXT_FACTORY ) );
         krb5LoginModuleText.setText( ConnectionCorePlugin.getDefault().getPluginPreferences().getDefaultString(
@@ -189,7 +189,7 @@ public class ConnectionsPreferencePage extends PreferencePage implements IWorkbe
         ConnectionCorePlugin.getDefault().getPluginPreferences()
             .setValue( ConnectionCoreConstants.PREFERENCE_USE_KRB5_SYSTEM_PROPERTIES,
                 useKrb5SystemPropertiesButton.getSelection() );
-        
+
         ConnectionCorePlugin.getDefault().savePluginPreferences();
 
         return true;

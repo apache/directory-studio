@@ -81,7 +81,7 @@ public class LocateDnInDitAction extends LocateInDitAction
             try
             {
                 IValue value = getSelectedAttributeHierarchies()[0].getAttribute().getValues()[0];
-                if ( value.isString() && Dn.isValid(value.getStringValue()) )
+                if ( value.isString() && Dn.isValid( value.getStringValue() ) )
                 {
                     return new ConnectionAndDn( value.getAttribute().getEntry().getBrowserConnection(), new Dn(
                         value.getStringValue() ) );
@@ -98,7 +98,7 @@ public class LocateDnInDitAction extends LocateInDitAction
             try
             {
                 IValue value = getSelectedValues()[0];
-                if ( value.isString() && Dn.isValid(value.getStringValue()) )
+                if ( value.isString() && Dn.isValid( value.getStringValue() ) )
                 {
                     return new ConnectionAndDn( value.getAttribute().getEntry().getBrowserConnection(), new Dn(
                         value.getStringValue() ) );

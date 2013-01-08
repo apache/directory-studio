@@ -93,8 +93,8 @@ public class ConnectionManager implements ConnectionUpdateListener
         }
 
         IExtensionPoint extensionPoint = Platform.getExtensionRegistry().getExtensionPoint(
-            ConnectionCorePlugin.getDefault().getPluginProperties().getString(
-                "ExtensionPoint_ConnectionInitializer_id" ) ); //$NON-NLS-1$
+            ConnectionCorePlugin.getDefault().getPluginProperties()
+                .getString( "ExtensionPoint_ConnectionInitializer_id" ) ); //$NON-NLS-1$
 
         IConfigurationElement[] configurationElements = extensionPoint.getConfigurationElements();
         for ( IConfigurationElement configurationElement : configurationElements )

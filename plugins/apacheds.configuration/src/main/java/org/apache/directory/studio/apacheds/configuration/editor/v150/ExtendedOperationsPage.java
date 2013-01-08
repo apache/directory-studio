@@ -58,6 +58,7 @@ public class ExtendedOperationsPage extends FormPage
         super( editor, ID, TITLE );
     }
 
+
     /**
      * {@inheritDoc}
      */

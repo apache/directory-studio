@@ -415,9 +415,9 @@ public class BrowserContentProvider implements ITreeContentProvider
                 {
                     objects.add( widget.getQuickSearch() );
                 }
-                
+
                 objects.addAll( Arrays.asList( entryPages ) );
-                
+
                 return objects.toArray();
             }
         }

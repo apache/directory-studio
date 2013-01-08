@@ -99,15 +99,16 @@ public class ConnectionUIReferralHandler extends ConnectionUpdateAdapter impleme
             PlatformUI.getWorkbench().getDisplay().syncExec( new Runnable()
             {
                 public void run()
-            {
-                SelectReferralConnectionDialog dialog = new SelectReferralConnectionDialog( PlatformUI.getWorkbench()
-                    .getDisplay().getActiveShell(), referralUrls );
-                if ( dialog.open() == SelectReferralConnectionDialog.OK )
                 {
-                    Connection connection = dialog.getReferralConnection();
-                    referralConnections[0] = connection;
+                    SelectReferralConnectionDialog dialog = new SelectReferralConnectionDialog( PlatformUI
+                        .getWorkbench()
+                        .getDisplay().getActiveShell(), referralUrls );
+                    if ( dialog.open() == SelectReferralConnectionDialog.OK )
+                    {
+                        Connection connection = dialog.getReferralConnection();
+                        referralConnections[0] = connection;
+                    }
                 }
-            }
             } );
 
             // put to cache

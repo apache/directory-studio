@@ -169,7 +169,7 @@ public class ApacheDS155LdapServerAdapter implements LdapServerAdapter
         // Verifying and copying ApacheDS 1.5.5 libraries
         LdapServersUtils.verifyAndCopyLibraries( bundle, new Path( RESOURCES ).append( LIBS ),
             getServerLibrariesFolder(), libraries, monitor, "verifying and copying ApacheDS 1.5.5 libraries" );
-        
+
         // Starting the console printer thread
         LdapServersUtils.startConsolePrinterThread( server );
 

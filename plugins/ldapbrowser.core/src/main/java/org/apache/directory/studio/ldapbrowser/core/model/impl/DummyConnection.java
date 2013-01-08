@@ -151,7 +151,7 @@ public class DummyConnection implements IBrowserConnection
     /** 
      * {@inheritDoc}
      */
-    public void setBaseDN( Dn baseDn)
+    public void setBaseDN( Dn baseDn )
     {
     }
 

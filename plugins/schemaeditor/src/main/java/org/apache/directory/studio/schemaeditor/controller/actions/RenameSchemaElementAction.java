@@ -112,7 +112,8 @@ public class RenameSchemaElementAction extends Action implements IWorkbenchWindo
                 // ATTRIBUTE TYPE
                 else if ( selectedElement instanceof AttributeTypeWrapper )
                 {
-                    MutableAttributeType attributeType = (MutableAttributeType)( ( AttributeTypeWrapper ) selectedElement ).getAttributeType();
+                    MutableAttributeType attributeType = ( MutableAttributeType ) ( ( AttributeTypeWrapper ) selectedElement )
+                        .getAttributeType();
 
                     RenameAttributeTypeDialog dialog = new RenameAttributeTypeDialog( attributeType.getNames() );
                     if ( dialog.open() == RenameAttributeTypeDialog.OK )

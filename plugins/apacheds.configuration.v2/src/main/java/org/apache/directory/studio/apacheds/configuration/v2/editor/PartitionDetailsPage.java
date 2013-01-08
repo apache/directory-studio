@@ -850,7 +850,6 @@ public class PartitionDetailsPage implements IDetailsPage
     }
 
 
-
     /**
      * Auto generates the context entry.
      */
@@ -870,6 +869,7 @@ public class PartitionDetailsPage implements IDetailsPage
             }
         }
     }
+
 
     /**
      * Resizes the columns to fit the size of the cells.

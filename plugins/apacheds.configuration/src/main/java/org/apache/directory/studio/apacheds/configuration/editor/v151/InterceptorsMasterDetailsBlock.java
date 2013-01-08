@@ -326,6 +326,7 @@ public class InterceptorsMasterDetailsBlock extends MasterDetailsBlock
         }
     }
 
+
     /**
      * {@inheritDoc}
      */
@@ -362,6 +363,7 @@ public class InterceptorsMasterDetailsBlock extends MasterDetailsBlock
         form.getToolBarManager().add( horizontalAction );
         form.getToolBarManager().add( verticalAction );
     }
+
 
     /**
      * {@inheritDoc}

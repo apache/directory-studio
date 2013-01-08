@@ -83,8 +83,8 @@ public class NewObjectClassWizard extends Wizard implements INewWizard
         newOC.setSuperiorOids( contentPage.getSuperiorsNameValue() );
         newOC.setType( contentPage.getClassTypeValue() );
         newOC.setObsolete( contentPage.getObsoleteValue() );
-        newOC.setMustAttributeTypeOids(  mandatoryAttributesPage.getMandatoryAttributeTypesNames() );
-        newOC.setMayAttributeTypeOids(  optionalAttributesPage.getOptionalAttributeTypesNames() );
+        newOC.setMustAttributeTypeOids( mandatoryAttributesPage.getMandatoryAttributeTypesNames() );
+        newOC.setMayAttributeTypeOids( optionalAttributesPage.getOptionalAttributeTypesNames() );
 
         // Adding the new object class
         Activator.getDefault().getSchemaHandler().addObjectClass( newOC );

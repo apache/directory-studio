@@ -78,7 +78,7 @@ public class EntryEditorActionGroup extends EntryEditorWidgetActionGroup
 
     /** The expand all action. */
     private ExpandAllAction expandAllAction;
-    
+
     /** The 'Show In' menu manager */
     private EntryEditorShowInMenuManager showInMenuManager;
 

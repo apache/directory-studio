@@ -169,7 +169,7 @@ public class ApacheDS200LdapServerAdapter implements LdapServerAdapter
         // Verifying and copying ApacheDS 2.0.0 libraries
         LdapServersUtils.verifyAndCopyLibraries( bundle, new Path( RESOURCES ).append( LIBS ),
             getServerLibrariesFolder(), libraries, monitor, "verifying and copying ApacheDS 2.0.0 libraries" );
-        
+
         // Starting the console printer thread
         LdapServersUtils.startConsolePrinterThread( server );
 

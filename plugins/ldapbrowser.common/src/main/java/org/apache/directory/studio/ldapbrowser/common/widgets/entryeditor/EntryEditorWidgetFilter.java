@@ -177,8 +177,8 @@ public class EntryEditorWidgetFilter extends ViewerFilter
         {
             String oldValue = this.quickFilterAttribute;
             this.quickFilterAttribute = quickFilterAttribute;
-            BrowserCommonActivator.getDefault().getPreferenceStore().firePropertyChangeEvent(
-                "QuickFilterAttributeChanged", oldValue, quickFilterAttribute ); //$NON-NLS-1$
+            BrowserCommonActivator.getDefault().getPreferenceStore()
+                .firePropertyChangeEvent( "QuickFilterAttributeChanged", oldValue, quickFilterAttribute ); //$NON-NLS-1$
         }
     }
 
@@ -205,8 +205,8 @@ public class EntryEditorWidgetFilter extends ViewerFilter
         {
             String oldValue = this.quickFilterValue;
             this.quickFilterValue = quickFilterValue;
-            BrowserCommonActivator.getDefault().getPreferenceStore().firePropertyChangeEvent(
-                "QuickFilterValueChanged", oldValue, quickFilterAttribute ); //$NON-NLS-1$
+            BrowserCommonActivator.getDefault().getPreferenceStore()
+                .firePropertyChangeEvent( "QuickFilterValueChanged", oldValue, quickFilterAttribute ); //$NON-NLS-1$
         }
     }
 

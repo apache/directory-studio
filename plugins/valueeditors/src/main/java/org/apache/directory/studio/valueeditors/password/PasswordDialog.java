@@ -278,7 +278,7 @@ public class PasswordDialog extends Dialog
             currentLayout.verticalSpacing = convertVerticalDLUsToPixels( IDialogConstants.VERTICAL_SPACING );
             currentLayout.horizontalSpacing = convertHorizontalDLUsToPixels( IDialogConstants.HORIZONTAL_SPACING );
             currentPasswordContainer.setLayout( currentLayout );
-            currentPasswordContainer.setLayoutData( new GridData(SWT.FILL, SWT.FILL, true, true) );
+            currentPasswordContainer.setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, true ) );
 
             BaseWidgetUtils.createLabel( currentPasswordContainer, Messages
                 .getString( "PasswordDialog.CurrentPassword" ) + ":", 1 ); //$NON-NLS-1$//$NON-NLS-2$

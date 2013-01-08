@@ -126,7 +126,8 @@ public class LdapServerAdapterExtensionsManager
             String openConfigurationActionEnabled = member.getAttribute( OPEN_CONFIGURATION_ACTION_ENABLED_ATTR );
             if ( openConfigurationActionEnabled != null )
             {
-                ldapServerAdapterExtension.setOpenConfigurationActionEnabled( Boolean.parseBoolean( openConfigurationActionEnabled ) );
+                ldapServerAdapterExtension.setOpenConfigurationActionEnabled( Boolean
+                    .parseBoolean( openConfigurationActionEnabled ) );
             }
             else
             {

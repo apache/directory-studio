@@ -96,6 +96,7 @@ public class PartitionsMasterDetailsBlock extends MasterDetailsBlock
         partitions = serverConfiguration.getPartitions();
     }
 
+
     /**
      * {@inheritDoc}
      */
@@ -275,6 +276,8 @@ public class PartitionsMasterDetailsBlock extends MasterDetailsBlock
 
         return name;
     }
+
+
     /**
      * {@inheritDoc}
      */
@@ -311,6 +314,7 @@ public class PartitionsMasterDetailsBlock extends MasterDetailsBlock
         form.getToolBarManager().add( horizontalAction );
         form.getToolBarManager().add( verticalAction );
     }
+
 
     /**
      * {@inheritDoc}
