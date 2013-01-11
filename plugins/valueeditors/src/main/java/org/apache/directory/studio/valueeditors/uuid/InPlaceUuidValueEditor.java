@@ -71,7 +71,7 @@ public class InPlaceUuidValueEditor extends HexValueEditor
     {
         if ( bytes == null || bytes.length != 16 )
         {
-            return "Invalid UUID";
+            return Messages.getString( "InPlaceUuidValueEditor.InvalidUuid" );
         }
 
         char[] hex = Hex.encodeHex( bytes );

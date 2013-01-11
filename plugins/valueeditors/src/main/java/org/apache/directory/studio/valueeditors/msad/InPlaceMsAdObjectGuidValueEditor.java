@@ -69,7 +69,7 @@ public class InPlaceMsAdObjectGuidValueEditor extends HexValueEditor
     {
         if ( bytes == null || bytes.length != 16 )
         {
-            return "Invalid GUID";
+            return Messages.getString( "InPlaceMsAdObjectGuidValueEditor.InvalidGuid" );
         }
 
         char[] hex = Hex.encodeHex( bytes );
