@@ -74,7 +74,7 @@ public class InPlaceMsAdObjectSidValueEditor extends HexValueEditor
 
         if ( bytes == null || bytes.length < 8 )
         {
-            return Messages.getString( "InPlaceMsAdObjectSidValueEditor.InvalidSid" );
+            return Messages.getString( "InPlaceMsAdObjectSidValueEditor.InvalidSid" ); //$NON-NLS-1$
         }
 
         char[] hex = Hex.encodeHex( bytes );
@@ -94,7 +94,7 @@ public class InPlaceMsAdObjectSidValueEditor extends HexValueEditor
         // check length
         if ( bytes.length != ( 8 + count * 4 ) )
         {
-            return Messages.getString( "InPlaceMsAdObjectSidValueEditor.InvalidSid" );
+            return Messages.getString( "InPlaceMsAdObjectSidValueEditor.InvalidSid" ); //$NON-NLS-1$
         }
 
         // get authority, big-endian
