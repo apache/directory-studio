@@ -354,7 +354,7 @@ public class ActiveDirectoryTimeValueDialog extends Dialog
     private void updateRawFields()
     {
         // Raw value
-        rawValueText.setText( "" + value );
+        rawValueText.setText( "" + value ); //$NON-NLS-1$
     }
 
 

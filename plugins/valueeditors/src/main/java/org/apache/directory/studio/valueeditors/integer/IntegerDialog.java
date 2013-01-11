@@ -122,7 +122,7 @@ public class IntegerDialog extends Dialog
 
         // - Button
         Button minusButton = new Button( composite, SWT.PUSH );
-        minusButton.setText( "-" );
+        minusButton.setText( "-" ); //$NON-NLS-1$
         minusButton.addSelectionListener( new SelectionAdapter()
         {
             public void widgetSelected( SelectionEvent e )
@@ -186,7 +186,7 @@ public class IntegerDialog extends Dialog
 
         // + Button
         Button plusButton = new Button( composite, SWT.PUSH );
-        plusButton.setText( "+" );
+        plusButton.setText( "+" ); //$NON-NLS-1$
         plusButton.addSelectionListener( new SelectionAdapter()
         {
             public void widgetSelected( SelectionEvent e )

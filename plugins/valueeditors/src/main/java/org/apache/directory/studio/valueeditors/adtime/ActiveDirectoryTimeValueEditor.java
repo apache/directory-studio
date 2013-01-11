@@ -63,7 +63,7 @@ public class ActiveDirectoryTimeValueEditor extends AbstractDialogStringValueEdi
         {
             // Special case for the "0" value where we don't want to display date 
             // that makes no sense ("0" being the default value, it happened a lot).
-            if ( "0".equals( displayValue ) )
+            if ( "0".equals( displayValue ) ) //$NON-NLS-1$
             {
                 return displayValue;
             }
@@ -134,7 +134,7 @@ public class ActiveDirectoryTimeValueEditor extends AbstractDialogStringValueEdi
             ActiveDirectoryTimeValueDialog dialog = new ActiveDirectoryTimeValueDialog( shell, adTimeValue );
             if ( dialog.open() == ActiveDirectoryTimeValueDialog.OK )
             {
-                setValue( "" + dialog.getValue() );
+                setValue( "" + dialog.getValue() ); //$NON-NLS-1$
                 return true;
             }
         }
