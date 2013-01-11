@@ -102,7 +102,7 @@ public class CommonUIUtils
      */
     public static void openWarningDialog( String message )
     {
-        openInformationDialog( "Information", message );
+        openWarningDialog( "Information", message );
     }
 
 
