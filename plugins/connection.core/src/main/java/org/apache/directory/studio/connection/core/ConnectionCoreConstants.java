@@ -51,7 +51,7 @@ public final class ConnectionCoreConstants
     public static final String DATEFORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSS"; //$NON-NLS-1$
 
     /** Defines an UTC/GMT time zone */
-    public static final TimeZone UTC_TIME_ZONE = TimeZone.getTimeZone( "UTC" );
+    public static final TimeZone UTC_TIME_ZONE = TimeZone.getTimeZone( "UTC" ); //$NON-NLS-1$
 
     /** The constant used to identify if certificates for secure connections should be validated */
     public static final String PREFERENCE_VALIDATE_CERTIFICATES = "validateCertificates"; //$NON-NLS-1$

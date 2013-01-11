@@ -1382,7 +1382,7 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
                 }
                 else
                 {
-                    throw new UnsupportedCallbackException( callBack, "Callback not supported" );
+                    throw new UnsupportedCallbackException( callBack, "Callback not supported" ); //$NON-NLS-1$
                 }
             }
         }

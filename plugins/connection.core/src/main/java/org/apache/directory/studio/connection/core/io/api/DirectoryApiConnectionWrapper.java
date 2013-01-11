@@ -227,7 +227,7 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
                     boolean connected = ldapConnection.connect();
                     if ( !connected )
                     {
-                        throw new Exception( "Unable to connect" );
+                        throw new Exception( Messages.DirectoryApiConnectionWrapper_UnableToConnect );
                     }
 
                     // Start TLS
@@ -465,7 +465,7 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
         }
         else
         {
-            throw new Exception( "No Connection" );
+            throw new Exception( Messages.DirectoryApiConnectionWrapper_NoConnection );
         }
     }
 
@@ -1099,7 +1099,7 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
         }
         if ( ldapConnection == null )
         {
-            throw new NamingException( "No Connection" );
+            throw new NamingException( Messages.DirectoryApiConnectionWrapper_NoConnection );
         }
 
         // loop for reconnection
