@@ -95,7 +95,7 @@ public class InPlaceUuidValueEditorTest
         byte[] bytes = new byte[]
             { ( byte ) 0x00, ( byte ) 0x11, ( byte ) 0x22, ( byte ) 0x33 };
         String displayValue = editor.convertToString( bytes );
-        assertEquals( "Invalid UUID", displayValue );
+        assertEquals( Messages.getString( "InPlaceUuidValueEditor.InvalidUuid" ), displayValue ); //$NON-NLS-1$
 
         // test too long
         byte[] bytes2 = new byte[]
@@ -104,7 +104,7 @@ public class InPlaceUuidValueEditorTest
                 ( byte ) 0x00, ( byte ) 0x00, ( byte ) 0x00, ( byte ) 0x00, ( byte ) 0x00, ( byte ) 0x00,
                 ( byte ) 0x00, };
         String displayValue2 = editor.convertToString( bytes2 );
-        assertEquals( "Invalid UUID", displayValue2 );
+        assertEquals( Messages.getString( "InPlaceUuidValueEditor.InvalidUuid" ), displayValue2 ); //$NON-NLS-1$
     }
 
 
@@ -114,7 +114,7 @@ public class InPlaceUuidValueEditorTest
         InPlaceUuidValueEditor editor = new InPlaceUuidValueEditor();
         byte[] bytes = null;
         String displayValue = editor.convertToString( bytes );
-        assertEquals( "Invalid UUID", displayValue );
+        assertEquals( Messages.getString( "InPlaceUuidValueEditor.InvalidUuid" ), displayValue ); //$NON-NLS-1$
     }
 
 }

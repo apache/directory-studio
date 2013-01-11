@@ -134,7 +134,7 @@ public class InPlaceMsAdObjectSidValueEditorTest
         byte[] bytes = new byte[]
             { ( byte ) 0x00 };
         String displayValue = editor.convertToString( bytes );
-        assertEquals( "Invalid SID", displayValue );
+        assertEquals( Messages.getString( "InPlaceMsAdObjectSidValueEditor.InvalidSid" ), displayValue ); //$NON-NLS-1$
 
         // test missing sub aurhority byte
         byte[] bytes2 = new byte[]
@@ -170,7 +170,7 @@ public class InPlaceMsAdObjectSidValueEditorTest
                 ( byte ) 0x00, /*( byte ) 0x00*///
             };
         String displayValue2 = editor.convertToString( bytes2 );
-        assertEquals( "Invalid SID", displayValue2 );
+        assertEquals( Messages.getString( "InPlaceMsAdObjectSidValueEditor.InvalidSid" ), displayValue2 ); //$NON-NLS-1$
 
         // test additional sub authority byte
         byte[] bytes3 = new byte[]
@@ -208,7 +208,7 @@ public class InPlaceMsAdObjectSidValueEditorTest
                 ( byte ) 0x00 //
         };
         String displayValue3 = editor.convertToString( bytes3 );
-        assertEquals( "Invalid SID", displayValue3 );
+        assertEquals( Messages.getString( "InPlaceMsAdObjectSidValueEditor.InvalidSid" ), displayValue3 ); //$NON-NLS-1$
     }
 
 
@@ -218,6 +218,6 @@ public class InPlaceMsAdObjectSidValueEditorTest
         InPlaceMsAdObjectSidValueEditor editor = new InPlaceMsAdObjectSidValueEditor();
         byte[] bytes = null;
         String displayValue = editor.convertToString( bytes );
-        assertEquals( "Invalid SID", displayValue );
+        assertEquals( Messages.getString( "InPlaceMsAdObjectSidValueEditor.InvalidSid" ), displayValue ); //$NON-NLS-1$
     }
 }
