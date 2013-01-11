@@ -96,10 +96,10 @@ public class ApacheDS154LdapServerAdapter implements LdapServerAdapter
 
         // Verifying and copying ApacheDS 1.5.4 libraries
         LdapServersUtils.verifyAndCopyLibraries( bundle, new Path( RESOURCES ).append( LIBS ),
-            getServerLibrariesFolder(), libraries, monitor, "verifying and copying ApacheDS 1.5.4 libraries" );
+            getServerLibrariesFolder(), libraries, monitor, Messages.getString("ApacheDS154LdapServerAdapter.VerifyingAndCopyingLibraries") ); //$NON-NLS-1$
 
         // Creating server folder structure
-        monitor.subTask( "creating server folder structure" );
+        monitor.subTask( Messages.getString("ApacheDS154LdapServerAdapter.CreatingServerFolderStructure") ); //$NON-NLS-1$
         File serverFolder = LdapServersManager.getServerFolder( server ).toFile();
         File confFolder = new File( serverFolder, CONF );
         confFolder.mkdir();
@@ -111,7 +111,7 @@ public class ApacheDS154LdapServerAdapter implements LdapServerAdapter
         partitionFolder.mkdir();
 
         // Copying configuration files
-        monitor.subTask( "copying configuration files" );
+        monitor.subTask( Messages.getString("ApacheDS154LdapServerAdapter.CopyingConfigurationFiles") ); //$NON-NLS-1$
         IPath resourceConfFolderPath = new Path( RESOURCES ).append( CONF );
         LdapServersUtils.copyResource( bundle, resourceConfFolderPath.append( SERVER_XML ), new File( confFolder,
             SERVER_XML ) );
@@ -169,7 +169,7 @@ public class ApacheDS154LdapServerAdapter implements LdapServerAdapter
 
         // Verifying and copying ApacheDS 1.5.4 libraries
         LdapServersUtils.verifyAndCopyLibraries( bundle, new Path( RESOURCES ).append( LIBS ),
-            getServerLibrariesFolder(), libraries, monitor, "verifying and copying ApacheDS 1.5.4 libraries" );
+            getServerLibrariesFolder(), libraries, monitor, Messages.getString("ApacheDS154LdapServerAdapter.VerifyingAndCopyingLibraries") ); //$NON-NLS-1$
 
         // Starting the console printer thread
         LdapServersUtils.startConsolePrinterThread( server );
