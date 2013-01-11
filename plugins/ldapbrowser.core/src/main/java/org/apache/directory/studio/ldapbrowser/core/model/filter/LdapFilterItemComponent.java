@@ -280,15 +280,15 @@ public class LdapFilterItemComponent extends LdapFilterComponent
     {
         if ( startToken == null )
         {
-            return "Missing attribute name";
+            return Messages.LdapFilterItemComponent_MissingAttributeName;
         }
         else if ( filtertypeToken == null )
         {
-            return "Missing filter type, select one of '=', '>=', '<=','~='";
+            return Messages.LdapFilterItemComponent_MissingFilterType;
         }
         else if ( valueToken == null )
         {
-            return "Missing value";
+            return Messages.LdapFilterItemComponent_MissingValue;
         }
         else
         {

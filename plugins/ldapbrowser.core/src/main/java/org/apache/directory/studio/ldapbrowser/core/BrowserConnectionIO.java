@@ -90,12 +90,12 @@ public class BrowserConnectionIO
     private static final String DN_TAG = "dn"; //$NON-NLS-1$
 
     // Scope values
-    private static final String SCOPE_OBJECT = "OBJECT";
-    private static final String SCOPE_ONELEVEL = "ONELEVEL";
-    private static final String SCOPE_SUBTREE = "SUBTREE";
-    private static final String SCOPE_OBJECT_2 = "base";
-    private static final String SCOPE_ONELEVEL_2 = "one";
-    private static final String SCOPE_SUBTREE_2 = "sub";
+    private static final String SCOPE_OBJECT = "OBJECT"; //$NON-NLS-1$
+    private static final String SCOPE_ONELEVEL = "ONELEVEL"; //$NON-NLS-1$
+    private static final String SCOPE_SUBTREE = "SUBTREE"; //$NON-NLS-1$
+    private static final String SCOPE_OBJECT_2 = "base"; //$NON-NLS-1$
+    private static final String SCOPE_ONELEVEL_2 = "one"; //$NON-NLS-1$
+    private static final String SCOPE_SUBTREE_2 = "sub"; //$NON-NLS-1$
 
 
     /**

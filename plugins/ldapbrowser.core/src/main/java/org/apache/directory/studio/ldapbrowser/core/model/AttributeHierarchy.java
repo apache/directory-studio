@@ -61,7 +61,7 @@ public class AttributeHierarchy implements Iterable<IAttribute>
         if ( entry == null || attributeDescription == null || attributes == null || attributes.length < 1
             || attributes[0] == null )
         {
-            throw new IllegalArgumentException( "Empty AttributeHierachie" );
+            throw new IllegalArgumentException( "Empty AttributeHierachie" ); //$NON-NLS-1$
         }
         this.entry = entry;
         this.attributeDescription = attributeDescription;

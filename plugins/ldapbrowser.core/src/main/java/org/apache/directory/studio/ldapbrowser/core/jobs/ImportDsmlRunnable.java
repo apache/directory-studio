@@ -249,7 +249,7 @@ public class ImportDsmlRunnable implements StudioConnectionBulkRunnableWithProgr
             if ( errorsCount > 0 )
             {
                 monitor.reportError( BrowserCoreMessages.bind(
-                    "{0} errors occurred, see the response file for details", new String[]
+                    BrowserCoreMessages.dsml__n_errors_see_responsefile, new String[]
                         { "" + errorsCount } ) ); //$NON-NLS-1$
             }
         }
@@ -312,7 +312,7 @@ public class ImportDsmlRunnable implements StudioConnectionBulkRunnableWithProgr
                 break;
             default:
                 throw new IllegalArgumentException(
-                    "Should not be encountering a request type of: "
+                    BrowserCoreMessages.dsml__should_not_be_encountering_request
                         + request.getDecorated().getType() );
         }
     }
@@ -338,7 +338,7 @@ public class ImportDsmlRunnable implements StudioConnectionBulkRunnableWithProgr
             BindResponseDsml authResponseDsml = new BindResponseDsml( codec );
             LdapResult ldapResult = authResponseDsml.getLdapResult();
             ldapResult.setResultCode( ResultCodeEnum.UNWILLING_TO_PERFORM );
-            ldapResult.setDiagnosticMessage( "This kind of request is not yet supported." );
+            ldapResult.setDiagnosticMessage( BrowserCoreMessages.dsml__kind_request_not_supported );
             batchResponseDsml.addResponse( authResponseDsml );
         }
     }
@@ -409,7 +409,7 @@ public class ImportDsmlRunnable implements StudioConnectionBulkRunnableWithProgr
             CompareResponseDsml compareResponseDsml = new CompareResponseDsml( codec );
             LdapResult ldapResult = compareResponseDsml.getLdapResult();
             ldapResult.setResultCode( ResultCodeEnum.UNWILLING_TO_PERFORM );
-            ldapResult.setDiagnosticMessage( "This kind of request is not yet supported." );
+            ldapResult.setDiagnosticMessage( BrowserCoreMessages.dsml__kind_request_not_supported );
             batchResponseDsml.addResponse( compareResponseDsml );
         }
     }
@@ -477,7 +477,7 @@ public class ImportDsmlRunnable implements StudioConnectionBulkRunnableWithProgr
             ExtendedResponseDsml extendedResponseDsml = new ExtendedResponseDsml( codec );
             LdapResult ldapResult = extendedResponseDsml.getLdapResult();
             ldapResult.setResultCode( ResultCodeEnum.UNWILLING_TO_PERFORM );
-            ldapResult.setDiagnosticMessage( "This kind of request is not yet supported." );
+            ldapResult.setDiagnosticMessage( BrowserCoreMessages.dsml__kind_request_not_supported );
             batchResponseDsml.addResponse( extendedResponseDsml );
         }
     }

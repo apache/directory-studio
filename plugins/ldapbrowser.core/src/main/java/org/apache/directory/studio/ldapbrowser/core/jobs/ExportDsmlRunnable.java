@@ -75,14 +75,14 @@ import org.apache.directory.studio.ldapbrowser.core.utils.JNDIUtils;
  */
 public class ExportDsmlRunnable implements StudioConnectionRunnableWithProgress
 {
-    private static final String OBJECTCLASS_OBJECTCLASS_OID = "objectClass";
-    private static final String OBJECTCLASS_OBJECTCLASS_NAME = "2.5.4.0";
+    private static final String OBJECTCLASS_OBJECTCLASS_OID = "objectClass"; //$NON-NLS-1$
+    private static final String OBJECTCLASS_OBJECTCLASS_NAME = "2.5.4.0"; //$NON-NLS-1$
 
-    private static final String REFERRAL_OBJECTCLASS_OID = "2.16.840.1.113730.3.2.6";
-    private static final String REFERRAL_OBJECTCLASS_NAME = "referral";
+    private static final String REFERRAL_OBJECTCLASS_OID = "2.16.840.1.113730.3.2.6"; //$NON-NLS-1$
+    private static final String REFERRAL_OBJECTCLASS_NAME = "referral"; //$NON-NLS-1$
 
-    private static final String REF_ATTRIBUTETYPE_OID = "2.16.840.1.113730.3.1.34";
-    private static final String REF_ATTRIBUTETYPE_NAME = "ref";
+    private static final String REF_ATTRIBUTETYPE_OID = "2.16.840.1.113730.3.1.34"; //$NON-NLS-1$
+    private static final String REF_ATTRIBUTETYPE_NAME = "ref"; //$NON-NLS-1$
 
     /** The name of the DSML file to export to */
     private String exportDsmlFilename;
@@ -167,7 +167,7 @@ public class ExportDsmlRunnable implements StudioConnectionRunnableWithProgress
     public Object[] getLockedObjects()
     {
         List<String> l = new ArrayList<String>();
-        l.add( browserConnection.getUrl() + "_" + DigestUtils.shaHex( exportDsmlFilename ) );
+        l.add( browserConnection.getUrl() + "_" + DigestUtils.shaHex( exportDsmlFilename ) ); //$NON-NLS-1$
         return l.toArray();
     }
 

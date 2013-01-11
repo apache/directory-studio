@@ -66,15 +66,15 @@ public class LdapAndFilterComponent extends LdapFilterComponent
     {
         if ( startToken == null )
         {
-            return "Missing AND character '&'";
+            return Messages.LdapAndFilterComponent_MissingAndCharacter;
         }
         else if ( filterList == null || filterList.isEmpty() )
         {
-            return "Missing filters";
+            return Messages.LdapAndFilterComponent_MissingFilters;
         }
         else
         {
-            return "Invalid AND filter";
+            return Messages.LdapAndFilterComponent_InvalidAndFilter;
         }
     }
 

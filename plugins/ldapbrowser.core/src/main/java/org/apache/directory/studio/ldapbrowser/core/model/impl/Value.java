@@ -149,7 +149,7 @@ public class Value implements IValue
         }
         else
         {
-            return "UNKNOWN";
+            return Messages.Value_Unknown;
         }
     }
 
@@ -177,7 +177,7 @@ public class Value implements IValue
         }
         else
         {
-            return LdifUtils.utf8encode( "UNKNOWN" );
+            return LdifUtils.utf8encode( Messages.Value_Unknown );
         }
     }
 

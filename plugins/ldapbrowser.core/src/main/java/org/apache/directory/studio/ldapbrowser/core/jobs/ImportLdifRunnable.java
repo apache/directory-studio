@@ -589,7 +589,7 @@ public class ImportLdifRunnable implements StudioConnectionBulkRunnableWithProgr
             errorComment = errorComment.replaceAll( "\n", " " ); //$NON-NLS-1$ //$NON-NLS-2$
             LdifCommentLine errorCommentLine = LdifCommentLine.create( errorComment );
 
-            logWriter.write( LdifCommentLine.create( "#!RESULT ERROR" )
+            logWriter.write( LdifCommentLine.create( "#!RESULT ERROR" ) //$NON-NLS-1$
                 .toFormattedString( LdifFormatParameters.DEFAULT ) ); //$NON-NL LdifFormatParameters.DEFAULTS-1$
             logWriter
                 .write( LdifCommentLine

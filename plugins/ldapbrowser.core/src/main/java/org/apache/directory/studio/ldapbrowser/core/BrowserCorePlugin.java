@@ -173,7 +173,7 @@ public class BrowserCorePlugin extends Plugin
                 // So we're using a default plugin id.
                 getLog().log(
                     new Status( Status.ERROR, "org.apache.directory.studio.ldapbrowser.core", Status.OK, //$NON-NLS-1$
-                        "Unable to get the plugin properties.", e ) );
+                        BrowserCoreMessages.activator_unable_get_plugin_properties, e ) );
             }
         }
 

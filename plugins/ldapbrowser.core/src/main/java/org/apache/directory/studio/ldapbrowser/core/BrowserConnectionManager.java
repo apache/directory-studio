@@ -600,7 +600,7 @@ public class BrowserConnectionManager implements ConnectionUpdateListener, Brows
             Class<?> type = oldInstance.getClass();
             if ( !Modifier.isPublic( type.getModifiers() ) )
             {
-                throw new IllegalArgumentException( "Could not instantiate instance of non-public class: "
+                throw new IllegalArgumentException( "Could not instantiate instance of non-public class: " //$NON-NLS-1$
                     + oldInstance );
             }
 
@@ -620,11 +620,11 @@ public class BrowserConnectionManager implements ConnectionUpdateListener, Brows
                     }
                     catch ( IllegalAccessException exception )
                     {
-                        throw new IllegalArgumentException( "Could not get value of the field: " + field, exception );
+                        throw new IllegalArgumentException( "Could not get value of the field: " + field, exception ); //$NON-NLS-1$
                     }
                 }
             }
-            throw new IllegalArgumentException( "Could not instantiate value: " + oldInstance );
+            throw new IllegalArgumentException( "Could not instantiate value: " + oldInstance ); //$NON-NLS-1$
         }
     }
 

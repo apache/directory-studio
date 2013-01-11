@@ -56,7 +56,7 @@ public abstract class LdapFilterComponent
     {
         if ( parent == null )
         {
-            throw new IllegalArgumentException( "parent is null" );
+            throw new IllegalArgumentException( Messages.LdapFilterComponent_ParentIsNull );
         }
 
         this.parent = parent;

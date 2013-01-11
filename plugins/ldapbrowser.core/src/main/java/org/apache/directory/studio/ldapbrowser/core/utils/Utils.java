@@ -234,13 +234,14 @@ public class Utils
     {
         String size = ""; //$NON-NLS-1$
         if ( bytes > 1024 * 1024 )
-            size += ( bytes / 1024 / 1024 ) + " MB (" + bytes + " Bytes)";
+            size += ( bytes / 1024 / 1024 )
+                + " " + Messages.Utils_MegaBytes + " (" + bytes + " " + Messages.Utils_Bytes + ")"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-6$
         else if ( bytes > 1024 )
-            size += ( bytes / 1024 ) + " KB (" + bytes + " Bytes)";
+            size += ( bytes / 1024 ) + " " + Messages.Utils_KiloBytes + " (" + bytes + " " + Messages.Utils_Bytes + ")"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-6$
         else if ( bytes > 1 )
-            size += bytes + " Bytes";
+            size += bytes + " " + Messages.Utils_Bytes; //$NON-NLS-1$
         else
-            size += bytes + " Byte";
+            size += bytes + " " + Messages.Utils_Byte; //$NON-NLS-1$
         return size;
     }
 

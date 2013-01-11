@@ -66,15 +66,15 @@ public class LdapOrFilterComponent extends LdapFilterComponent
     {
         if ( startToken == null )
         {
-            return "Missing OR character '|'";
+            return Messages.LdapOrFilterComponent_MissingOrCharacter;
         }
         else if ( filterList == null || filterList.isEmpty() )
         {
-            return "Missing filters";
+            return Messages.LdapOrFilterComponent_MissingFilters;
         }
         else
         {
-            return "Invalid OR filter";
+            return Messages.LdapOrFilterComponent_InvalidOrFilter;
         }
     }
 

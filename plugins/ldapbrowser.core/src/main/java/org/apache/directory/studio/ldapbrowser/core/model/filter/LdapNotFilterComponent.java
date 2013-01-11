@@ -84,15 +84,15 @@ public class LdapNotFilterComponent extends LdapFilterComponent
     {
         if ( startToken == null )
         {
-            return "Missing NOT character '!'";
+            return Messages.LdapNotFilterComponent_MissingNotCharacter;
         }
         else if ( filterList == null || filterList.isEmpty() )
         {
-            return "Missing filter expression";
+            return Messages.LdapNotFilterComponent_MissingFilterExpression;
         }
         else
         {
-            return "Invalid NOT filter";
+            return Messages.LdapNotFilterComponent_InvalidNotFilter;
         }
     }
 
