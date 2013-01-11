@@ -88,10 +88,10 @@ public class ConnectionsPreferencePage extends PreferencePage implements IWorkbe
         BaseWidgetUtils.createSpacer( composite, 1 );
 
         Group defaultNetworkProviderGroup = BaseWidgetUtils.createGroup(
-            BaseWidgetUtils.createColumnContainer( composite, 1, 1 ), "Default Network Provider", 1 );
+            BaseWidgetUtils.createColumnContainer( composite, 1, 1 ), Messages.getString("ConnectionsPreferencePage.DefaultNetworkProvider"), 1 ); //$NON-NLS-1$
         NetworkProvider defaultNetworkProvider = ConnectionCorePlugin.getDefault().getDefaultNetworkProvider();
         String[] networkProviders = new String[]
-            { "Apache Directory LDAP Client API", "JNDI (Java Naming and Directory Interface)" };
+            { "Apache Directory LDAP Client API", "JNDI (Java Naming and Directory Interface)" }; //$NON-NLS-1$ //$NON-NLS-2$
         networkProviderCombo = BaseWidgetUtils.createReadonlyCombo( defaultNetworkProviderGroup,
             networkProviders, 0, 2 );
         networkProviderCombo.select( defaultNetworkProvider == NetworkProvider.APACHE_DIRECTORY_LDAP_API ? 0

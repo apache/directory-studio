@@ -279,8 +279,8 @@ public class NetworkParameterPage extends AbstractConnectionParameterPage
         }
 
         String[] networkProviders = new String[]
-            { "Apache Directory LDAP Client API", "JNDI (Java Naming and Directory Interface)" };
-        BaseWidgetUtils.createLabel( groupComposite, "Provider:", 1 );
+            { "Apache Directory LDAP Client API", "JNDI (Java Naming and Directory Interface)" }; //$NON-NLS-1$ //$NON-NLS-2$
+        BaseWidgetUtils.createLabel( groupComposite, Messages.getString("NetworkParameterPage.Provider"), 1 ); //$NON-NLS-1$
         networkProviderCombo = BaseWidgetUtils.createReadonlyCombo( groupComposite, networkProviders, 0, 2 );
         networkProviderCombo
             .select( ConnectionCorePlugin.getDefault().getDefaultNetworkProvider() == NetworkProvider.APACHE_DIRECTORY_LDAP_API ? 0

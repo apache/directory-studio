@@ -148,9 +148,9 @@ public class ExportCertificateWizardPage extends WizardPage
                     switch ( format )
                     {
                         case DER:
-                            return "X509 Certificat DER";
+                            return Messages.getString("ExportCertificateWizardPage.X509CertificateDER"); //$NON-NLS-1$
                         case PEM:
-                            return "X509 Certificat PEM";
+                            return Messages.getString("ExportCertificateWizardPage.X509CertificatePEM"); //$NON-NLS-1$
                     }
                 }
 
