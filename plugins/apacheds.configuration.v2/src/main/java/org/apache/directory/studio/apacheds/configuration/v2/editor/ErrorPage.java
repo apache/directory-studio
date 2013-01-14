@@ -52,10 +52,10 @@ public class ErrorPage extends FormPage
     public static final String ID = ErrorPage.class.getName();
 
     /** The Page Title */
-    private static final String TITLE = "Error opening the editor";
+    private static final String TITLE = Messages.getString("ErrorPage.ErrorOpeningEditor"); //$NON-NLS-1$
 
-    private static final String DETAILS_CLOSED = NLS.bind( "{0} >>", "Details" ); //$NON-NLS-1$
-    private static final String DETAILS_OPEN = NLS.bind( "<< {0}", "Details" ); //$NON-NLS-1$
+    private static final String DETAILS_CLOSED = NLS.bind( "{0} >>", Messages.getString("ErrorPage.Details") ); //$NON-NLS-1$ //$NON-NLS-2$
+    private static final String DETAILS_OPEN = NLS.bind( "<< {0}", Messages.getString("ErrorPage.Details") ); //$NON-NLS-1$ //$NON-NLS-2$
 
     /** The exception */
     private Exception exception;
@@ -90,7 +90,7 @@ public class ErrorPage extends FormPage
     protected void createFormContent( IManagedForm managedForm )
     {
         ScrolledForm form = managedForm.getForm();
-        form.setText( "Error opening the editor" );
+        form.setText( Messages.getString("ErrorPage.ErrorOpeningEditor") ); //$NON-NLS-1$
         form.setImage( Display.getCurrent().getSystemImage( SWT.ICON_ERROR ) );
 
         parent = form.getBody();
@@ -104,7 +104,7 @@ public class ErrorPage extends FormPage
         toolkit.decorateFormHeading( form.getForm() );
 
         // Error Label
-        Label errorLabel = toolkit.createLabel( parent, "" );
+        Label errorLabel = toolkit.createLabel( parent, "" ); //$NON-NLS-1$
         errorLabel.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
 
         // Details Button
@@ -122,7 +122,7 @@ public class ErrorPage extends FormPage
         // Initializing with the exception
         if ( exception == null )
         {
-            errorLabel.setText( "Could not open the editor." );
+            errorLabel.setText( Messages.getString("ErrorPage.CouldNotOpenEditor") ); //$NON-NLS-1$
             detailsButton.setVisible( false );
         }
         else

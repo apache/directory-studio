@@ -54,7 +54,7 @@ public class KerberosServerPage extends ServerConfigurationEditorPage
     public static final String ID = KerberosServerPage.class.getName(); //$NON-NLS-1$
 
     /** The Page Title */
-    private static final String TITLE = "Kerberos Server";
+    private static final String TITLE = Messages.getString("KerberosServerPage.KerberosServer"); //$NON-NLS-1$
 
     // UI Controls
     private Button enableKerberosCheckbox;
@@ -268,7 +268,7 @@ public class KerberosServerPage extends ServerConfigurationEditorPage
     {
         // Creation of the section
         Section section = toolkit.createSection( parent, Section.TITLE_BAR );
-        section.setText( "Kerberos Server" );
+        section.setText( Messages.getString("KerberosServerPage.KerberosServer") ); //$NON-NLS-1$
         section.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
         Composite composite = toolkit.createComposite( section );
         toolkit.paintBordersFor( composite );
@@ -278,25 +278,25 @@ public class KerberosServerPage extends ServerConfigurationEditorPage
         section.setClient( composite );
 
         // Enable Kerberos Server Checkbox
-        enableKerberosCheckbox = toolkit.createButton( composite, "Enable Kerberos Server", SWT.CHECK );
+        enableKerberosCheckbox = toolkit.createButton( composite, Messages.getString("KerberosServerPage.EnableKerberosServer"), SWT.CHECK ); //$NON-NLS-1$
         enableKerberosCheckbox
             .setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, gridLayout.numColumns, 1 ) );
 
         // Kerberos Server Port Text
         toolkit.createLabel( composite, TABULATION );
-        toolkit.createLabel( composite, "Port:" );
+        toolkit.createLabel( composite, Messages.getString("KerberosServerPage.Port") ); //$NON-NLS-1$
         kerberosPortText = createPortText( toolkit, composite );
         createDefaultValueLabel( toolkit, composite, "60088" ); //$NON-NLS-1$
 
         // Enable Change Password Server Checkbox
-        enableChangePasswordCheckbox = toolkit.createButton( composite, "Enable Kerberos Change Password Server",
+        enableChangePasswordCheckbox = toolkit.createButton( composite, Messages.getString("KerberosServerPage.EnableKerberosChangePassword"), //$NON-NLS-1$
             SWT.CHECK );
         enableChangePasswordCheckbox.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false,
             gridLayout.numColumns, 1 ) );
 
         // Change Password Server Port Text
         toolkit.createLabel( composite, TABULATION );
-        toolkit.createLabel( composite, "Port:" );
+        toolkit.createLabel( composite, Messages.getString("KerberosServerPage.Port") ); //$NON-NLS-1$
         changePasswordPortText = createPortText( toolkit, composite );
         createDefaultValueLabel( toolkit, composite, "60464" ); //$NON-NLS-1$
     }
@@ -312,7 +312,7 @@ public class KerberosServerPage extends ServerConfigurationEditorPage
     {
         // Creation of the section
         Section section = toolkit.createSection( parent, Section.TITLE_BAR );
-        section.setText( "Kerberos Settings" );
+        section.setText( Messages.getString("KerberosServerPage.KerberosSettings") ); //$NON-NLS-1$
         section.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
         Composite composite = toolkit.createComposite( section );
         toolkit.paintBordersFor( composite );
@@ -321,28 +321,28 @@ public class KerberosServerPage extends ServerConfigurationEditorPage
         section.setClient( composite );
 
         // KDC Principal Text
-        toolkit.createLabel( composite, "KDC Principal:" );
+        toolkit.createLabel( composite, Messages.getString("KerberosServerPage.KdcPrincipal") ); //$NON-NLS-1$
         kdcPrincipalText = toolkit.createText( composite, "" ); //$NON-NLS-1$
         setGridDataWithDefaultWidth( kdcPrincipalText, new GridData( SWT.FILL, SWT.NONE, true, false ) );
         Label defaultSaslHostLabel = createDefaultValueLabel( toolkit, composite, "krbtgt/EXAMPLE.COM@EXAMPLE.COM" ); //$NON-NLS-1$
         defaultSaslHostLabel.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
 
         // SASL Principal Text
-        toolkit.createLabel( composite, "Primary KDC Realm:" );
+        toolkit.createLabel( composite, Messages.getString("KerberosServerPage.PrimaryKdcRealm") ); //$NON-NLS-1$
         primaryKdcRealmText = toolkit.createText( composite, "" ); //$NON-NLS-1$
         setGridDataWithDefaultWidth( primaryKdcRealmText, new GridData( SWT.FILL, SWT.NONE, true, false ) );
         Label defaultSaslPrincipalLabel = createDefaultValueLabel( toolkit, composite, "EXAMPLE.COM" ); //$NON-NLS-1$
         defaultSaslPrincipalLabel.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
 
         // Search Base Dn Text
-        toolkit.createLabel( composite, "Search Base Dn:" );
+        toolkit.createLabel( composite, Messages.getString("KerberosServerPage.SearchBaseDn") ); //$NON-NLS-1$
         kdcSearchBaseDnText = toolkit.createText( composite, "" ); //$NON-NLS-1$
         setGridDataWithDefaultWidth( kdcSearchBaseDnText, new GridData( SWT.FILL, SWT.NONE, true, false ) );
         Label defaultSaslSearchBaseDnLabel = createDefaultValueLabel( toolkit, composite, "ou=users,dc=example,dc=com" ); //$NON-NLS-1$
         defaultSaslSearchBaseDnLabel.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
 
         // Encryption Types Text
-        toolkit.createLabel( composite, "Encryption Types:" );
+        toolkit.createLabel( composite, Messages.getString("KerberosServerPage.EncryptionTypes") ); //$NON-NLS-1$
         encryptionTypesText = toolkit.createText( composite, "" ); //$NON-NLS-1$
         setGridDataWithDefaultWidth( encryptionTypesText, new GridData( SWT.FILL, SWT.NONE, true, false ) );
         Label defaultEncryptionTypesLabel = createDefaultValueLabel( toolkit, composite, "[des-cbc-md5]" ); //$NON-NLS-1$
@@ -360,7 +360,7 @@ public class KerberosServerPage extends ServerConfigurationEditorPage
     {
         // Creation of the section
         Section section = toolkit.createSection( parent, Section.TITLE_BAR );
-        section.setText( "Ticket Settings" );
+        section.setText( Messages.getString("KerberosServerPage.TicketSettings") ); //$NON-NLS-1$
         section.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
         Composite composite = toolkit.createComposite( section );
         toolkit.paintBordersFor( composite );
@@ -369,49 +369,49 @@ public class KerberosServerPage extends ServerConfigurationEditorPage
         section.setClient( composite );
 
         // Verify Body Checksum Checkbox
-        verifyBodyChecksumCheckbox = toolkit.createButton( composite, "Verify Body Checksum", SWT.CHECK );
+        verifyBodyChecksumCheckbox = toolkit.createButton( composite, Messages.getString("KerberosServerPage.VerifyBodyChecksum"), SWT.CHECK ); //$NON-NLS-1$
         verifyBodyChecksumCheckbox
             .setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, layout.numColumns, 1 ) );
 
         // Allow Empty Addresse Checkbox
-        allowEmptyAddressesCheckbox = toolkit.createButton( composite, "Allow Empty Addresses", SWT.CHECK );
+        allowEmptyAddressesCheckbox = toolkit.createButton( composite, Messages.getString("KerberosServerPage.AllowEmptyAddresses"), SWT.CHECK ); //$NON-NLS-1$
         allowEmptyAddressesCheckbox
             .setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, layout.numColumns, 1 ) );
 
         // Allow Forwardable Addresses Checkbox
-        allowForwardableAddressesCheckbox = toolkit.createButton( composite, "Allow Forwardable Addresses",
+        allowForwardableAddressesCheckbox = toolkit.createButton( composite, Messages.getString("KerberosServerPage.AllowForwadableAddresses"), //$NON-NLS-1$
             SWT.CHECK );
         allowForwardableAddressesCheckbox.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false,
             layout.numColumns, 1 ) );
 
         // Require Pre-Authentication By Encrypted Timestamp Checkbox
         requirePreAuthByEncryptedTimestampCheckbox = toolkit.createButton( composite,
-            "Require Pre-Authentication\nBy Encrypted TimeStamp", SWT.CHECK );
+            Messages.getString("KerberosServerPage.RequirePreAuthentication"), SWT.CHECK ); //$NON-NLS-1$
         requirePreAuthByEncryptedTimestampCheckbox
             .setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, layout.numColumns, 1 ) );
 
         // Allow Postdated Tickets Checkbox
-        allowPostdatedTicketsCheckbox = toolkit.createButton( composite, "Allow Postdated Tickets", SWT.CHECK );
+        allowPostdatedTicketsCheckbox = toolkit.createButton( composite, Messages.getString("KerberosServerPage.AllowPostdatedTickets"), SWT.CHECK ); //$NON-NLS-1$
         allowPostdatedTicketsCheckbox.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, layout.numColumns,
             1 ) );
 
         // Allow Renewable Tickets Checkbox
-        allowRenewableTicketsCheckbox = toolkit.createButton( composite, "Allow Renewable Tickets", SWT.CHECK );
+        allowRenewableTicketsCheckbox = toolkit.createButton( composite, Messages.getString("KerberosServerPage.AllowRenewableTickets"), SWT.CHECK ); //$NON-NLS-1$
         allowRenewableTicketsCheckbox.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, layout.numColumns,
             1 ) );
 
         // Max Renewable Lifetime Text
-        toolkit.createLabel( composite, "Max. Renewable Lifetime (ms):" );
+        toolkit.createLabel( composite, Messages.getString("KerberosServerPage.MaxRenewableLifetime") ); //$NON-NLS-1$
         maximumRenewableLifetimeText = createIntegerText( toolkit, composite );
         setGridDataWithDefaultWidth( maximumRenewableLifetimeText, new GridData( SWT.FILL, SWT.NONE, true, false ) );
 
         // Max Ticket Lifetime Text
-        toolkit.createLabel( composite, "Max. Ticket Lifetime (ms):" );
+        toolkit.createLabel( composite, Messages.getString("KerberosServerPage.MaxTicketLifetime") ); //$NON-NLS-1$
         maximumTicketLifetimeText = createIntegerText( toolkit, composite );
         setGridDataWithDefaultWidth( maximumTicketLifetimeText, new GridData( SWT.FILL, SWT.NONE, true, false ) );
 
         // Allowable Clock Skew Text
-        toolkit.createLabel( composite, "Allowable Clock Skew (ms):" );
+        toolkit.createLabel( composite, Messages.getString("KerberosServerPage.AllowableClockSkew") ); //$NON-NLS-1$
         allowableClockSkewText = createIntegerText( toolkit, composite );
         setGridDataWithDefaultWidth( allowableClockSkewText, new GridData( SWT.FILL, SWT.NONE, true, false ) );
 

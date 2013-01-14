@@ -70,7 +70,7 @@ public class EditorExportConfigurationAction extends Action
      */
     public String getText()
     {
-        return "Export Configuration";
+        return Messages.getString("EditorExportConfigurationAction.ExportConfiguration"); //$NON-NLS-1$
     }
 
 
@@ -86,8 +86,8 @@ public class EditorExportConfigurationAction extends Action
         }
         catch ( Exception e )
         {
-            MessageDialog.openError( editor.getSite().getShell(), "Error Exporting Configuration File",
-                NLS.bind( "An error occurred when exporting the selected file:\n{0}", e.getMessage() ) );
+            MessageDialog.openError( editor.getSite().getShell(), Messages.getString("EditorExportConfigurationAction.ErrorExportingConfigurationFile"), //$NON-NLS-1$
+                NLS.bind( Messages.getString("EditorExportConfigurationAction.AnErrorOccurredWhenExportingTheSelectedFile"), e.getMessage() ) ); //$NON-NLS-1$
         }
     }
 }

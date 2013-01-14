@@ -55,7 +55,7 @@ import org.eclipse.ui.model.WorkbenchLabelProvider;
  */
 public class EditorImportConfigurationAction extends Action
 {
-    private static final String DIALOG_TITLE = "Select Configuration File";
+    private static final String DIALOG_TITLE = Messages.getString("EditorImportConfigurationAction.SelectConfigurationFile"); //$NON-NLS-1$
 
     /** The associated editor */
     private ServerConfigurationEditor editor;
@@ -88,7 +88,7 @@ public class EditorImportConfigurationAction extends Action
      */
     public String getText()
     {
-        return "Import Configuration";
+        return Messages.getString("EditorImportConfigurationAction.ImportConfiguration"); //$NON-NLS-1$
     }
 
 
@@ -106,8 +106,8 @@ public class EditorImportConfigurationAction extends Action
                 if ( !MessageDialog
                     .openConfirm(
                         editor.getSite().getShell(),
-                        "Unsaved Modifications",
-                        "The configuration has unsaved modifications. All recent changes will be lost. Are you sure you want to continue?" ) )
+                        Messages.getString("EditorImportConfigurationAction.UnsavedModifications"), //$NON-NLS-1$
+                        Messages.getString("EditorImportConfigurationAction.ConfigurationHasUnsavedModificationsSureToContinue") ) ) //$NON-NLS-1$
                 {
                     return;
                 }
@@ -142,7 +142,7 @@ public class EditorImportConfigurationAction extends Action
                 // Opening a dialog for file selection
                 FileDialog dialog = new FileDialog( editor.getSite().getShell(), SWT.OPEN | SWT.SINGLE );
                 dialog.setText( DIALOG_TITLE );
-                dialog.setFilterPath( System.getProperty( "user.home" ) );
+                dialog.setFilterPath( System.getProperty( "user.home" ) ); //$NON-NLS-1$
                 String filePath = dialog.open();
                 if ( filePath == null )
                 {
@@ -172,8 +172,8 @@ public class EditorImportConfigurationAction extends Action
             if ( !MessageDialog
                 .openConfirm(
                     editor.getSite().getShell(),
-                    "Overwrite Existing Configuration",
-                    "Are you sure you want to overwrite the existing configuration with the contents of the selected file?" ) )
+                    Messages.getString("EditorImportConfigurationAction.OverwriteExistingConfiguration"), //$NON-NLS-1$
+                    Messages.getString("EditorImportConfigurationAction.AreYouSureYouWantToOverwriteTheExistingConfiguration") ) ) //$NON-NLS-1$
             {
                 return;
             }
@@ -189,9 +189,9 @@ public class EditorImportConfigurationAction extends Action
             MessageDialog
                 .openError(
                     editor.getSite().getShell(),
-                    "Error Importing Configuration File",
+                    Messages.getString("EditorImportConfigurationAction.ErrorImportingConfigurationFile"), //$NON-NLS-1$
                     NLS.bind(
-                        "An error occurred when importing the selected file:\n{0}\n\nIt does not seem to be a correct LDIF configuration file.",
+                        Messages.getString("EditorImportConfigurationAction.AnErrorOccurredWhenImportingTheSelectedFile"), //$NON-NLS-1$
                         e.getMessage() ) );
         }
     }
@@ -208,7 +208,7 @@ public class EditorImportConfigurationAction extends Action
         ElementTreeSelectionDialog dialog = new ElementTreeSelectionDialog( editor.getSite().getShell(),
             new WorkbenchLabelProvider(), new WorkbenchContentProvider() );
         dialog.setInput( ResourcesPlugin.getWorkspace().getRoot() );
-        dialog.setMessage( "Select the configuration file to import:" );
+        dialog.setMessage( Messages.getString("EditorImportConfigurationAction.SelectConfigurationFileToImport") ); //$NON-NLS-1$
         dialog.setTitle( DIALOG_TITLE );
         dialog.setAllowMultiple( false );
         dialog.setStatusLineAboveButtons( false );

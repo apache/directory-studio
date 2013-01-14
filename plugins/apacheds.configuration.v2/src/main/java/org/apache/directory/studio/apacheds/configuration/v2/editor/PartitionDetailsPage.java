@@ -184,7 +184,7 @@ public class PartitionDetailsPage implements IDetailsPage
     {
         public void widgetSelected( SelectionEvent e )
         {
-            AttributeValueDialog dialog = new AttributeValueDialog( new AttributeValueObject( "", "" ) );
+            AttributeValueDialog dialog = new AttributeValueDialog( new AttributeValueObject( "", "" ) ); //$NON-NLS-1$ //$NON-NLS-2$
             if ( AttributeValueDialog.OK == dialog.open() && dialog.isDirty() )
             {
                 AttributeValueObject newAttributeValueObject = dialog.getAttributeValueObject();
@@ -346,8 +346,8 @@ public class PartitionDetailsPage implements IDetailsPage
     {
         Section section = toolkit.createSection( parent, Section.DESCRIPTION | Section.TITLE_BAR );
         section.marginWidth = 10;
-        section.setText( "Partition Details" );
-        section.setDescription( "Set the properties of the partition." );
+        section.setText( Messages.getString("PartitionDetailsPage.PartitionsDetails") ); //$NON-NLS-1$
+        section.setDescription( Messages.getString("PartitionDetailsPage.SetPropertiesOfPartition") ); //$NON-NLS-1$
         TableWrapData td = new TableWrapData( TableWrapData.FILL, TableWrapData.TOP );
         td.grabHorizontal = true;
         section.setLayoutData( td );
@@ -358,12 +358,12 @@ public class PartitionDetailsPage implements IDetailsPage
         section.setClient( client );
 
         // ID
-        toolkit.createLabel( client, "ID:" );
+        toolkit.createLabel( client, Messages.getString("PartitionDetailsPage.Id") ); //$NON-NLS-1$
         idText = toolkit.createText( client, "" ); //$NON-NLS-1$
         idText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
 
         // Cache Size
-        toolkit.createLabel( client, "Cache Size:" );
+        toolkit.createLabel( client, Messages.getString("PartitionDetailsPage.CacheSize") ); //$NON-NLS-1$
         cacheSizeText = toolkit.createText( client, "" ); //$NON-NLS-1$
         cacheSizeText.addVerifyListener( new VerifyListener()
         {
@@ -383,11 +383,11 @@ public class PartitionDetailsPage implements IDetailsPage
         suffixText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
 
         // Enable Optimizer
-        enableOptimizerCheckbox = toolkit.createButton( client, "Enable Optimizer", SWT.CHECK );
+        enableOptimizerCheckbox = toolkit.createButton( client, Messages.getString("PartitionDetailsPage.EnableOptimzer"), SWT.CHECK ); //$NON-NLS-1$
         enableOptimizerCheckbox.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 3, 1 ) );
 
         // Synchronisation On Write
-        synchOnWriteCheckbox = toolkit.createButton( client, "Synchronization On Write", SWT.CHECK );
+        synchOnWriteCheckbox = toolkit.createButton( client, Messages.getString("PartitionDetailsPage.SynchronizationOnWrite"), SWT.CHECK ); //$NON-NLS-1$
         synchOnWriteCheckbox.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 3, 1 ) );
     }
 
@@ -413,7 +413,7 @@ public class PartitionDetailsPage implements IDetailsPage
         section.setClient( client );
 
         // Auto Generate Context Entry Checkbox
-        autoGenerateContextEntryCheckbox = toolkit.createButton( client, "Auto-generate context entry from suffix DN",
+        autoGenerateContextEntryCheckbox = toolkit.createButton( client, Messages.getString("PartitionDetailsPage.AutoGenerateContextEntryFromSuffixDn"), //$NON-NLS-1$
             SWT.CHECK );
         autoGenerateContextEntryCheckbox.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 3, 1 ) );
 
@@ -424,10 +424,10 @@ public class PartitionDetailsPage implements IDetailsPage
         gd.widthHint = 50;
         contextEntryTable.setLayoutData( gd );
         TableColumn idColumn = new TableColumn( contextEntryTable, SWT.LEFT, 0 );
-        idColumn.setText( "Attribute" );
+        idColumn.setText( Messages.getString("PartitionDetailsPage.Attribute") ); //$NON-NLS-1$
         idColumn.setWidth( 100 );
         TableColumn valueColumn = new TableColumn( contextEntryTable, SWT.LEFT, 1 );
-        valueColumn.setText( "Value" );
+        valueColumn.setText( Messages.getString("PartitionDetailsPage.Value") ); //$NON-NLS-1$
         valueColumn.setWidth( 100 );
         contextEntryTable.setHeaderVisible( true );
         contextEntryTableViewer = new TableViewer( contextEntryTable );
@@ -516,16 +516,16 @@ public class PartitionDetailsPage implements IDetailsPage
         buttonsGD.widthHint = IDialogConstants.BUTTON_WIDTH;
 
         // Context Entry Add Button
-        contextEntryAddButton = toolkit.createButton( client, "Add...", SWT.PUSH );
+        contextEntryAddButton = toolkit.createButton( client, Messages.getString("PartitionDetailsPage.Add"), SWT.PUSH ); //$NON-NLS-1$
         contextEntryAddButton.setLayoutData( buttonsGD );
 
         // Context Entry Edit Button
-        contextEntryEditButton = toolkit.createButton( client, "Edit...", SWT.PUSH );
+        contextEntryEditButton = toolkit.createButton( client, Messages.getString("PartitionDetailsPage.Edit"), SWT.PUSH ); //$NON-NLS-1$
         contextEntryEditButton.setEnabled( false );
         contextEntryEditButton.setLayoutData( buttonsGD );
 
         // Context Entry Delete Button
-        contextEntryDeleteButton = toolkit.createButton( client, "Delete", SWT.PUSH );
+        contextEntryDeleteButton = toolkit.createButton( client, Messages.getString("PartitionDetailsPage.Delete"), SWT.PUSH ); //$NON-NLS-1$
         contextEntryDeleteButton.setEnabled( false );
         contextEntryDeleteButton.setLayoutData( buttonsGD );
     }
@@ -558,8 +558,8 @@ public class PartitionDetailsPage implements IDetailsPage
         // Section
         Section indexedAttributesSection = toolkit.createSection( parent, Section.DESCRIPTION | Section.TITLE_BAR );
         indexedAttributesSection.marginWidth = 10;
-        indexedAttributesSection.setText( "Indexed Attributes" );
-        indexedAttributesSection.setDescription( "Set the indexed attributes of the partition." );
+        indexedAttributesSection.setText( Messages.getString("PartitionDetailsPage.IndexedAttributes") ); //$NON-NLS-1$
+        indexedAttributesSection.setDescription( Messages.getString("PartitionDetailsPage.SetIndexedAttributesOfPartition") ); //$NON-NLS-1$
         indexedAttributesSection.setLayoutData( new TableWrapData( TableWrapData.FILL ) );
         Composite indexedAttributesClient = toolkit.createComposite( indexedAttributesSection );
         toolkit.paintBordersFor( indexedAttributesClient );
@@ -581,7 +581,7 @@ public class PartitionDetailsPage implements IDetailsPage
                 {
                     JdbmIndexBean<String, Entry> jdbmIndexBean = ( JdbmIndexBean<String, Entry> ) element;
 
-                    return NLS.bind( "{0} [{1}]", jdbmIndexBean.getIndexAttributeId(),
+                    return NLS.bind( Messages.getString("PartitionDetailsPage.IndexAttributeIdAndCacheSize"), jdbmIndexBean.getIndexAttributeId(), //$NON-NLS-1$
                         jdbmIndexBean.getIndexCacheSize() );
                 }
 
@@ -602,16 +602,16 @@ public class PartitionDetailsPage implements IDetailsPage
         } );
 
         // Add button
-        indexesAddButton = toolkit.createButton( indexedAttributesClient, "Add...", SWT.PUSH );
+        indexesAddButton = toolkit.createButton( indexedAttributesClient, Messages.getString("PartitionDetailsPage.Add"), SWT.PUSH ); //$NON-NLS-1$
         indexesAddButton.setLayoutData( createNewButtonGridData() );
 
         // Edit button
-        indexesEditButton = toolkit.createButton( indexedAttributesClient, "Edit...", SWT.PUSH );
+        indexesEditButton = toolkit.createButton( indexedAttributesClient, Messages.getString("PartitionDetailsPage.Edit"), SWT.PUSH ); //$NON-NLS-1$
         indexesEditButton.setEnabled( false );
         indexesEditButton.setLayoutData( createNewButtonGridData() );
 
         // Delete button
-        indexesDeleteButton = toolkit.createButton( indexedAttributesClient, "Delete", SWT.PUSH );
+        indexesDeleteButton = toolkit.createButton( indexedAttributesClient, Messages.getString("PartitionDetailsPage.Delete"), SWT.PUSH ); //$NON-NLS-1$
         indexesDeleteButton.setEnabled( false );
         indexesDeleteButton.setLayoutData( createNewButtonGridData() );
     }
@@ -818,12 +818,12 @@ public class PartitionDetailsPage implements IDetailsPage
     {
         String contextEntryString = input.getContextEntry();
 
-        if ( ( contextEntryString != null ) && ( !"".equals( contextEntryString ) ) )
+        if ( ( contextEntryString != null ) && ( !"".equals( contextEntryString ) ) ) //$NON-NLS-1$
         {
             try
             {
                 // Replace '\n' to real LF
-                contextEntryString = contextEntryString.replaceAll( "\\\\n", "\n" );
+                contextEntryString = contextEntryString.replaceAll( "\\\\n", "\n" ); //$NON-NLS-1$ //$NON-NLS-2$
 
                 LdifReader reader = new LdifReader( new StringReader( contextEntryString ) );
                 contextEntry = reader.next().getEntry();
@@ -954,8 +954,8 @@ public class PartitionDetailsPage implements IDetailsPage
         {
             JdbmIndexBean<String, Entry> selectedIndex = ( JdbmIndexBean<String, Entry> ) selection.getFirstElement();
 
-            if ( MessageDialog.openConfirm( mform.getForm().getShell(), "Confirm Delete",
-                NLS.bind( "Are you sure you want to delete index ''{0}''?", selectedIndex.getIndexAttributeId() ) ) )
+            if ( MessageDialog.openConfirm( mform.getForm().getShell(), Messages.getString("PartitionDetailsPage.ConfirmDelete"), //$NON-NLS-1$
+                NLS.bind( Messages.getString("PartitionDetailsPage.AreYouSureDeleteIndex"), selectedIndex.getIndexAttributeId() ) ) ) //$NON-NLS-1$
             {
                 indexesList.remove( selectedIndex );
                 indexesTableViewer.refresh();

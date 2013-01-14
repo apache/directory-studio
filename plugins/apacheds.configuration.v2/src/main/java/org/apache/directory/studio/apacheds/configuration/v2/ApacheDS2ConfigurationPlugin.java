@@ -104,7 +104,7 @@ public class ApacheDS2ConfigurationPlugin extends AbstractUIPlugin
             // Checking if no error occurred when loading the schemas
             if ( schemaManager.getErrors().size() != 0 )
             {
-                throw new Exception( "Could not load the schema correctly." );
+                throw new Exception( Messages.getString("ApacheDS2ConfigurationPlugin.CouldNotLoadSchemaCorrectly") ); //$NON-NLS-1$
             }
         }
 

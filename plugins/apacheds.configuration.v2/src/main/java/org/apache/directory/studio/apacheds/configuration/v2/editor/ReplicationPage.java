@@ -35,7 +35,7 @@ public class ReplicationPage extends ServerConfigurationEditorPage
     public static final String ID = ReplicationPage.class.getName();
 
     /** The Page Title */
-    private static final String TITLE = "Replication";
+    private static final String TITLE = Messages.getString("ReplicationPage.Replication"); //$NON-NLS-1$
 
 
     /**

@@ -37,7 +37,7 @@ public class NewServerConfigurationInput implements IEditorInput
      */
     public String getToolTipText()
     {
-        return "New ApacheDS 2.0 configuration file";
+        return Messages.getString("NewServerConfigurationInput.NewApacheDS20ConfigurationFile"); //$NON-NLS-1$
     }
 
 
@@ -46,7 +46,7 @@ public class NewServerConfigurationInput implements IEditorInput
      */
     public String getName()
     {
-        return "New ApacheDS 2.0 configuration file";
+        return Messages.getString("NewServerConfigurationInput.NewApacheDS20ConfigurationFile"); //$NON-NLS-1$
     }
 
 

@@ -90,7 +90,7 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
     public static final String ID = LdapLdapsServersPage.class.getName(); //$NON-NLS-1$
 
     /** The Page Title */
-    private static final String TITLE = "LDAP/LDAPS Servers";
+    private static final String TITLE = Messages.getString("LdapLdapsServersPage.LdapLdapsServers"); //$NON-NLS-1$
 
     // UI Controls
     private Button enableLdapCheckbox;
@@ -296,7 +296,7 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
         {
             String keystoreFile = keystoreFileText.getText();
 
-            if ( !"".equals( keystoreFile ) )
+            if ( !"".equals( keystoreFile ) ) //$NON-NLS-1$
             {
                 getLdapServerBean().setLdapServerKeystoreFile( keystoreFile );
             }
@@ -341,7 +341,7 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
         {
             String keystorePassword = keystorePasswordText.getText();
 
-            if ( !"".equals( keystorePassword ) )
+            if ( !"".equals( keystorePassword ) ) //$NON-NLS-1$
             {
                 getLdapServerBean().setLdapServerCertificatePassword( keystorePassword );
             }
@@ -425,7 +425,7 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
     {
         // Creation of the section
         Section section = toolkit.createSection( parent, Section.TITLE_BAR );
-        section.setText( "LDAP/LDAPS Servers" );
+        section.setText( Messages.getString("LdapLdapsServersPage.LdapLdapsServers") ); //$NON-NLS-1$
         section.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
         Composite composite = toolkit.createComposite( section );
         toolkit.paintBordersFor( composite );
@@ -435,22 +435,22 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
         section.setClient( composite );
 
         // Enable LDAP Server Checkbox
-        enableLdapCheckbox = toolkit.createButton( composite, "Enable LDAP Server", SWT.CHECK );
+        enableLdapCheckbox = toolkit.createButton( composite, Messages.getString("LdapLdapsServersPage.EnableLdapServer"), SWT.CHECK ); //$NON-NLS-1$
         enableLdapCheckbox.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, gridLayout.numColumns, 1 ) );
 
         // LDAP Server Port Text
         toolkit.createLabel( composite, TABULATION );
-        toolkit.createLabel( composite, "Port:" );
+        toolkit.createLabel( composite, Messages.getString("LdapLdapsServersPage.Port") ); //$NON-NLS-1$
         ldapPortText = createPortText( toolkit, composite );
         createDefaultValueLabel( toolkit, composite, "10389" ); //$NON-NLS-1$
 
         // Enable LDAPS Server Checkbox
-        enableLdapsCheckbox = toolkit.createButton( composite, "Enable LDAPS Server", SWT.CHECK );
+        enableLdapsCheckbox = toolkit.createButton( composite, Messages.getString("LdapLdapsServersPage.EnableLdapsServer"), SWT.CHECK ); //$NON-NLS-1$
         enableLdapsCheckbox.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, gridLayout.numColumns, 1 ) );
 
         // LDAPS Server Port Text
         toolkit.createLabel( composite, TABULATION );
-        toolkit.createLabel( composite, "Port:" );
+        toolkit.createLabel( composite, Messages.getString("LdapLdapsServersPage.Port") ); //$NON-NLS-1$
         ldapsPortText = createPortText( toolkit, composite );
         createDefaultValueLabel( toolkit, composite, "10636" ); //$NON-NLS-1$
     }
@@ -468,7 +468,7 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
     {
         // Creation of the section
         Section section = toolkit.createSection( parent, Section.TITLE_BAR );
-        section.setText( "Limits" );
+        section.setText( Messages.getString("LdapLdapsServersPage.Limits") ); //$NON-NLS-1$
         section.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
         Composite composite = toolkit.createComposite( section );
         toolkit.paintBordersFor( composite );
@@ -477,12 +477,12 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
         section.setClient( composite );
 
         // Max. Time Limit Text
-        toolkit.createLabel( composite, "Max Time Limit (ms):" );
+        toolkit.createLabel( composite, Messages.getString("LdapLdapsServersPage.MaxTimeLimit") ); //$NON-NLS-1$
         maxTimeLimitText = createIntegerText( toolkit, composite );
         maxTimeLimitText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
 
         // Max. Size Limit Text
-        toolkit.createLabel( composite, "Max Size Limit (entries):" );
+        toolkit.createLabel( composite, Messages.getString("LdapLdapsServersPage.MaxSizeLimit") ); //$NON-NLS-1$
         maxSizeLimitText = createIntegerText( toolkit, composite );
         maxSizeLimitText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
     }
@@ -500,7 +500,7 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
     {
         // Creation of the section
         Section section = toolkit.createSection( parent, Section.TITLE_BAR | Section.TWISTIE | Section.COMPACT );
-        section.setText( "Advanced" );
+        section.setText( Messages.getString("LdapLdapsServersPage.Advanced") ); //$NON-NLS-1$
         section.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
         Composite composite = toolkit.createComposite( section );
         toolkit.paintBordersFor( composite );
@@ -509,18 +509,18 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
         section.setClient( composite );
 
         // Enable TLS Checkbox
-        enableTlsCheckbox = toolkit.createButton( composite, "Enable TLS", SWT.CHECK );
+        enableTlsCheckbox = toolkit.createButton( composite, Messages.getString("LdapLdapsServersPage.EnableTls"), SWT.CHECK ); //$NON-NLS-1$
         enableTlsCheckbox.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 3, 1 ) );
 
         // Enable Server-side Password Hashing Checkbox
         enableServerSidePasswordHashingCheckbox = toolkit.createButton( composite,
-            "Enable server-side password hashing",
+            Messages.getString("LdapLdapsServersPage.EnableServerSidePasswordHashing"), //$NON-NLS-1$
             SWT.CHECK );
         enableServerSidePasswordHashingCheckbox.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 3, 1 ) );
 
         // Server-side Password Hashing Combo
         toolkit.createLabel( composite, "   " ); //$NON-NLS-1$
-        toolkit.createLabel( composite, "Hashing Method:" );
+        toolkit.createLabel( composite, Messages.getString("LdapLdapsServersPage.HashingMethod") ); //$NON-NLS-1$
         Combo hashingMethodCombo = new Combo( composite, SWT.READ_ONLY | SWT.SINGLE );
         hashingMethodCombo.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
         toolkit.adapt( hashingMethodCombo );
@@ -598,7 +598,7 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
     {
         // Creation of the section
         Section section = toolkit.createSection( parent, Section.TITLE_BAR );
-        section.setText( "Supported Authentication Mechanisms" );
+        section.setText( Messages.getString("LdapLdapsServersPage.SupportedAuthenticationMechanisms") ); //$NON-NLS-1$
         section.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
         Composite composite = toolkit.createComposite( section );
         composite.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
@@ -629,19 +629,19 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
         Composite authMechNtlmComposite = toolkit.createComposite( composite );
         authMechNtlmComposite.setLayout( new GridLayout( 3, false ) );
         toolkit.createLabel( authMechNtlmComposite, "   " ); //$NON-NLS-1$
-        toolkit.createLabel( authMechNtlmComposite, "Provider:" );
+        toolkit.createLabel( authMechNtlmComposite, Messages.getString("LdapLdapsServersPage.Provider") ); //$NON-NLS-1$
         authMechNtlmText = toolkit.createText( authMechNtlmComposite, "" ); //$NON-NLS-1$
         authMechNtlmText.setLayoutData( new GridData( SWT.FILL, SWT.CENTER, true, false ) );
         authMechNtlmComposite.setLayoutData( new GridData( SWT.FILL, SWT.CENTER, false, false, 2, 1 ) );
 
         // GSS-SPNEGO Checkbox and Text
-        authMechGssSpnegoCheckbox = toolkit.createButton( composite, "GSS-SPNEGO", SWT.CHECK );
+        authMechGssSpnegoCheckbox = toolkit.createButton( composite, "GSS-SPNEGO", SWT.CHECK ); //$NON-NLS-1$
         authMechGssSpnegoCheckbox.setLayoutData( new GridData( SWT.FILL, SWT.CENTER, true, false ) );
         toolkit.createLabel( composite, "" ); //$NON-NLS-1$
         Composite authMechGssSpnegoComposite = toolkit.createComposite( composite );
         authMechGssSpnegoComposite.setLayout( new GridLayout( 3, false ) );
         toolkit.createLabel( authMechGssSpnegoComposite, "   " ); //$NON-NLS-1$
-        toolkit.createLabel( authMechGssSpnegoComposite, "Provider:" );
+        toolkit.createLabel( authMechGssSpnegoComposite, Messages.getString("LdapLdapsServersPage.Provider") ); //$NON-NLS-1$
         authMechGssSpnegoText = toolkit.createText( authMechGssSpnegoComposite, "" ); //$NON-NLS-1$
         authMechGssSpnegoText.setLayoutData( new GridData( SWT.FILL, SWT.CENTER, true, false ) );
         authMechGssSpnegoComposite.setLayoutData( new GridData( SWT.FILL, SWT.CENTER, true, false, 2, 1 ) );
@@ -660,7 +660,7 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
     {
         // Creation of the section
         Section section = toolkit.createSection( parent, Section.TITLE_BAR );
-        section.setText( "SSL/Start TLS Keystore" );
+        section.setText( Messages.getString("LdapLdapsServersPage.SslStartTlsKeystore") ); //$NON-NLS-1$
         section.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
         Composite composite = toolkit.createComposite( section );
         toolkit.paintBordersFor( composite );
@@ -669,20 +669,20 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
         section.setClient( composite );
 
         // Keystore File Text
-        toolkit.createLabel( composite, "Keystore:" );
+        toolkit.createLabel( composite, Messages.getString("LdapLdapsServersPage.Keystore") ); //$NON-NLS-1$
         keystoreFileText = toolkit.createText( composite, "" ); //$NON-NLS-1$
         setGridDataWithDefaultWidth( keystoreFileText, new GridData( SWT.FILL, SWT.CENTER, true, false ) );
-        keystoreFileBrowseButton = toolkit.createButton( composite, "Browse...", SWT.PUSH );
+        keystoreFileBrowseButton = toolkit.createButton( composite, Messages.getString("LdapLdapsServersPage.Browse"), SWT.PUSH ); //$NON-NLS-1$
 
         // Password Text
-        toolkit.createLabel( composite, "Password:" );
+        toolkit.createLabel( composite, Messages.getString("LdapLdapsServersPage.Password") ); //$NON-NLS-1$
         keystorePasswordText = toolkit.createText( composite, "" ); //$NON-NLS-1$
         keystorePasswordText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
         keystorePasswordText.setEchoChar( '\u2022' );
 
         // Show Password Checkbox
         toolkit.createLabel( composite, "" ); //$NON-NLS-1$
-        showPasswordCheckbox = toolkit.createButton( composite, "Show password", SWT.CHECK );
+        showPasswordCheckbox = toolkit.createButton( composite, Messages.getString("LdapLdapsServersPage.ShowPassword"), SWT.CHECK ); //$NON-NLS-1$
         showPasswordCheckbox.setLayoutData( new GridData( SWT.FILL, SWT.CENTER, true, false ) );
         showPasswordCheckbox.setSelection( false );
     }
@@ -700,7 +700,7 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
     {
         // Creation of the section
         Section section = toolkit.createSection( parent, Section.TITLE_BAR );
-        section.setText( "SASL Settings" );
+        section.setText( Messages.getString("LdapLdapsServersPage.SaslSettings") ); //$NON-NLS-1$
         section.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
         Composite composite = toolkit.createComposite( section );
         toolkit.paintBordersFor( composite );
@@ -709,14 +709,14 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
         section.setClient( composite );
 
         // SASL Host Text
-        toolkit.createLabel( composite, "SASL Host:" );
+        toolkit.createLabel( composite, Messages.getString("LdapLdapsServersPage.SaslHost") ); //$NON-NLS-1$
         saslHostText = toolkit.createText( composite, "" ); //$NON-NLS-1$
         setGridDataWithDefaultWidth( saslHostText, new GridData( SWT.FILL, SWT.NONE, true, false ) );
         Label defaultSaslHostLabel = createDefaultValueLabel( toolkit, composite, "ldap.example.com" ); //$NON-NLS-1$
         defaultSaslHostLabel.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
 
         // SASL Principal Text
-        toolkit.createLabel( composite, "SASL Principal:" );
+        toolkit.createLabel( composite, Messages.getString("LdapLdapsServersPage.SaslPrincipal") ); //$NON-NLS-1$
         saslPrincipalText = toolkit.createText( composite, "" ); //$NON-NLS-1$
         setGridDataWithDefaultWidth( saslPrincipalText, new GridData( SWT.FILL, SWT.NONE, true, false ) );
         Label defaultSaslPrincipalLabel = createDefaultValueLabel( toolkit, composite,
@@ -724,7 +724,7 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
         defaultSaslPrincipalLabel.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
 
         // Search Base Dn Text
-        toolkit.createLabel( composite, "Search Base Dn:" );
+        toolkit.createLabel( composite, Messages.getString("LdapLdapsServersPage.SearchBaseDn") ); //$NON-NLS-1$
         saslSearchBaseDnText = toolkit.createText( composite, "" ); //$NON-NLS-1$
         setGridDataWithDefaultWidth( saslSearchBaseDnText, new GridData( SWT.FILL, SWT.NONE, true, false ) );
         Label defaultSaslSearchBaseDnLabel = createDefaultValueLabel( toolkit, composite, "ou=users,dc=example,dc=com" ); //$NON-NLS-1$

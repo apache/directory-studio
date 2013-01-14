@@ -93,7 +93,7 @@ public class LoadConfigurationRunnable implements StudioRunnableWithProgress
      */
     public String getErrorMessage()
     {
-        return "Unable to load the configuration.";
+        return Messages.getString( "LoadConfigurationRunnable.UnableToLoadConfiguration" ); //$NON-NLS-1$
     }
 
 
@@ -111,7 +111,7 @@ public class LoadConfigurationRunnable implements StudioRunnableWithProgress
      */
     public String getName()
     {
-        return "Load Configuration";
+        return Messages.getString( "LoadConfigurationRunnable.LoadConfiguration" ); //$NON-NLS-1$
     }
 
 
@@ -318,7 +318,8 @@ public class LoadConfigurationRunnable implements StudioRunnableWithProgress
             // Verifying we found the 'ou=config' base entry
             if ( configEntry == null )
             {
-                throw new LdapNoSuchObjectException( "Unable to find the 'ou=config' base entry." );
+                throw new LdapNoSuchObjectException(
+                    Messages.getString( "LoadConfigurationRunnable.UnableToFindConfigBaseEntry" ) ); //$NON-NLS-1$
             }
 
             // Creating a list to hold the entries that need to be checked

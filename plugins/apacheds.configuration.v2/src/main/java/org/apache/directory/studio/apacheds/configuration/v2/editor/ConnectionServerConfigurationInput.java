@@ -95,7 +95,7 @@ public class ConnectionServerConfigurationInput implements IEditorInput
      */
     public String getToolTipText()
     {
-        return NLS.bind( "{0} - Configuration", connection.getName() );
+        return NLS.bind( Messages.getString("ConnectionServerConfigurationInput.ConnectionConfiguration"), connection.getName() ); //$NON-NLS-1$
     }
 
 
@@ -104,7 +104,7 @@ public class ConnectionServerConfigurationInput implements IEditorInput
      */
     public String getName()
     {
-        return NLS.bind( "{0} - Configuration", connection.getName() );
+        return NLS.bind( Messages.getString("ConnectionServerConfigurationInput.ConnectionConfiguration"), connection.getName() ); //$NON-NLS-1$
     }
 
 

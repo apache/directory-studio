@@ -181,7 +181,7 @@ public class ServerConfigurationEditor extends FormEditor implements IPageChange
                 {
                     try
                     {
-                        monitor.beginTask( "Saving Server Configuration", IProgressMonitor.UNKNOWN );
+                        monitor.beginTask( Messages.getString("ServerConfigurationEditor.SavingServerConfiguration"), IProgressMonitor.UNKNOWN ); //$NON-NLS-1$
                         doSaveAs( monitor );
                         monitor.done();
                     }

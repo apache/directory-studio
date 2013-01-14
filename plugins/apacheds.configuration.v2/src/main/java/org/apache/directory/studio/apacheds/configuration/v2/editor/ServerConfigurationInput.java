@@ -48,7 +48,7 @@ public class ServerConfigurationInput implements IEditorInput
      */
     public String getName()
     {
-        return "ServerConfigurationInput";
+        return "ServerConfigurationInput"; //$NON-NLS-1$
     }
 
 

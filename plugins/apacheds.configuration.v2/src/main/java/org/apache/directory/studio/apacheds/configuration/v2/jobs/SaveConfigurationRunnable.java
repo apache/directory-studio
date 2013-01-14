@@ -63,7 +63,7 @@ public class SaveConfigurationRunnable implements StudioRunnableWithProgress
      */
     public String getErrorMessage()
     {
-        return "Unable to save the configuration.";
+        return Messages.getString( "SaveConfigurationRunnable.UnableToSaveConfiguration" ); //$NON-NLS-1$
     }
 
 
@@ -81,7 +81,7 @@ public class SaveConfigurationRunnable implements StudioRunnableWithProgress
      */
     public String getName()
     {
-        return "Save Configuration";
+        return Messages.getString( "SaveConfigurationRunnable.SaveConfiguration" ); //$NON-NLS-1$
     }
 
 
@@ -94,7 +94,8 @@ public class SaveConfigurationRunnable implements StudioRunnableWithProgress
         {
             if ( editor.isDirty() )
             {
-                monitor.beginTask( "Saving the server configuration", IProgressMonitor.UNKNOWN );
+                monitor.beginTask( Messages.getString( "SaveConfigurationRunnable.SavingServerConfiguration" ), //$NON-NLS-1$
+                    IProgressMonitor.UNKNOWN );
 
                 IEditorInput input = editor.getEditorInput();
                 String inputClassName = input.getClass().getName();

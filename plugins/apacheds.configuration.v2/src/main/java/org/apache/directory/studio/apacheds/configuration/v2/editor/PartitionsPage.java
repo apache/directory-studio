@@ -43,7 +43,7 @@ public class PartitionsPage extends ServerConfigurationEditorPage
     public static final String ID = PartitionsPage.class.getName(); //$NON-NLS-1$
 
     /** The Page Title */
-    private static final String TITLE = "Partitions";
+    private static final String TITLE = Messages.getString("PartitionsPage.Partitions"); //$NON-NLS-1$
 
     /** The label provider for partition table viewers */
     public static LabelProvider PARTITIONS_LABEL_PROVIDER = new LabelProvider()
