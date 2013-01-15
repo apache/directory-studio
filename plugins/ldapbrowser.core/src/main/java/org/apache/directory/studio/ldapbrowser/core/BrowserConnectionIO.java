@@ -54,6 +54,7 @@ import org.dom4j.Element;
 import org.dom4j.io.OutputFormat;
 import org.dom4j.io.SAXReader;
 import org.dom4j.io.XMLWriter;
+import org.eclipse.osgi.util.NLS;
 
 
 /**
@@ -126,7 +127,7 @@ public class BrowserConnectionIO
         Element rootElement = document.getRootElement();
         if ( !rootElement.getName().equals( BROWSER_CONNECTIONS_TAG ) )
         {
-            throw new ConnectionIOException( "The file does not seem to be a valid BrowserConnections file." );
+            throw new ConnectionIOException( BrowserCoreMessages.BrowserConnectionIO_TheFileDoesNotSeemToBeValid );
         }
 
         for ( Iterator<?> i = rootElement.elementIterator( BROWSER_CONNECTION_TAG ); i.hasNext(); )
@@ -209,8 +210,9 @@ public class BrowserConnectionIO
             }
             catch ( LdapInvalidDnException e )
             {
-                throw new ConnectionIOException( "Unable to parse 'Search Base' of search '"
-                    + searchParameter.getName() + "' :" + searchBaseAttribute.getValue() );
+                throw new ConnectionIOException( NLS.bind( BrowserCoreMessages.BrowserConnectionIO_UnableToParseSearchBase,
+                    new String[]
+                        { searchParameter.getName(), searchBaseAttribute.getValue() } ) );
             }
         }
 
@@ -250,8 +252,9 @@ public class BrowserConnectionIO
             }
             catch ( IllegalArgumentException e )
             {
-                throw new ConnectionIOException( "Unable to parse 'Scope' of search '" + searchParameter.getName()
-                    + "' as int value. Scope value :" + scopeAttribute.getValue() );
+                throw new ConnectionIOException( NLS.bind(
+                    BrowserCoreMessages.BrowserConnectionIO_UnableToParseScope, new String[]
+                        { searchParameter.getName(), scopeAttribute.getValue() } ) );
             }
         }
 
@@ -265,8 +268,10 @@ public class BrowserConnectionIO
             }
             catch ( NumberFormatException e )
             {
-                throw new ConnectionIOException( "Unable to parse 'Time limit' of search '" + searchParameter.getName()
-                    + "' as int value. Time limit value :" + timeLimitAttribute.getValue() );
+                throw new ConnectionIOException( NLS.bind(
+                    BrowserCoreMessages.BrowserConnectionIO_UnableToParseTimeLimit,
+                    new String[]
+                        { searchParameter.getName(), timeLimitAttribute.getValue() } ) );
             }
         }
 
@@ -280,9 +285,10 @@ public class BrowserConnectionIO
             }
             catch ( NumberFormatException e )
             {
-                throw new ConnectionIOException( "Unable to parse 'Count limit' of search '"
-                    + searchParameter.getName() + "' as int value. Count limit value :"
-                    + countLimitAttribute.getValue() );
+                throw new ConnectionIOException( NLS.bind(
+                    BrowserCoreMessages.BrowserConnectionIO_UnableToParseCountLimit,
+                    new String[]
+                        { searchParameter.getName(), countLimitAttribute.getValue() } ) );
             }
         }
 
@@ -298,9 +304,11 @@ public class BrowserConnectionIO
             }
             catch ( IllegalArgumentException e )
             {
-                throw new ConnectionIOException( "Unable to parse 'Aliases Dereferencing Method' of search '"
-                    + searchParameter.getName() + "' as int value. Aliases Dereferencing Method value :"
-                    + aliasesDereferencingMethodAttribute.getValue() );
+                throw new ConnectionIOException(
+                    NLS.bind(
+                        BrowserCoreMessages.BrowserConnectionIO_UnableToParseAliasesDereferencingMethod,
+                        new String[]
+                            { searchParameter.getName(), aliasesDereferencingMethodAttribute.getValue() } ) );
             }
         }
 
@@ -315,9 +323,11 @@ public class BrowserConnectionIO
             }
             catch ( IllegalArgumentException e )
             {
-                throw new ConnectionIOException( "Unable to parse 'Referrals Handling Method' of search '"
-                    + searchParameter.getName() + "' as int value. Referrals Handling Method value :"
-                    + referralsHandlingMethodAttribute.getValue() );
+                throw new ConnectionIOException(
+                    NLS.bind(
+                        BrowserCoreMessages.BrowserConnectionIO_UnableToParseReferralsHandlingMethod,
+                        new String[]
+                            { searchParameter.getName(), referralsHandlingMethodAttribute.getValue() } ) );
             }
         }
 
@@ -345,8 +355,9 @@ public class BrowserConnectionIO
                     }
                     catch ( Exception e )
                     {
-                        throw new ConnectionIOException( "Unable to parse 'Control' of search '"
-                            + searchParameter.getName() + "'. Control value :" + valueAttribute.getValue() );
+                        throw new ConnectionIOException( NLS.bind(
+                            BrowserCoreMessages.BrowserConnectionIO_UnableToParseControl, new String[]
+                                { searchParameter.getName(), valueAttribute.getValue() } ) );
                     }
                 }
             }
@@ -378,8 +389,9 @@ public class BrowserConnectionIO
             }
             catch ( LdapInvalidDnException e )
             {
-                throw new ConnectionIOException( "Unable to parse 'Dn' of bookmark '" + bookmarkParameter.getName()
-                    + "' :" + dnAttribute.getValue() );
+                throw new ConnectionIOException( NLS.bind( BrowserCoreMessages.BrowserConnectionIO_UnableToParseDn,
+                    new String[]
+                        { bookmarkParameter.getName(), dnAttribute.getValue() } ) );
             }
         }
 

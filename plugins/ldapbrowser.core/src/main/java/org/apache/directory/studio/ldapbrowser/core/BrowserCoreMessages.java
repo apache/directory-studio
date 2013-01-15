@@ -431,4 +431,22 @@ public class BrowserCoreMessages extends NLS
 
     public static String model__quick_search_name;
 
+    public static String BrowserConnectionIO_TheFileDoesNotSeemToBeValid;
+    
+    public static String BrowserConnectionIO_UnableToParseAliasesDereferencingMethod;
+    
+    public static String BrowserConnectionIO_UnableToParseControl;
+    
+    public static String BrowserConnectionIO_UnableToParseCountLimit;
+    
+    public static String BrowserConnectionIO_UnableToParseDn;
+    
+    public static String BrowserConnectionIO_UnableToParseReferralsHandlingMethod;
+    
+    public static String BrowserConnectionIO_UnableToParseScope;
+    
+    public static String BrowserConnectionIO_UnableToParseSearchBase;
+    
+    public static String BrowserConnectionIO_UnableToParseTimeLimit;
+
 }
