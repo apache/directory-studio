@@ -361,7 +361,8 @@ public class LdapServersUtils
         }
         else
         {
-            throw new Exception( "The associated launch configuration could not be found or is already terminated." );
+            throw new Exception(
+                Messages.getString( "LdapServersUtils.AssociatedLaunchConfigurationCouldNotBeFoundOrTerminated" ) ); //$NON-NLS-1$
         }
     }
 
@@ -401,8 +402,10 @@ public class LdapServersUtils
                 }
                 catch ( IOException e )
                 {
-                    CommonUIUtils.openErrorDialog( "An error occurred when copying the library '" + library
-                        + "' to the location '" + destinationLibraryFile.getAbsolutePath() + "'.\n\n" + e.getMessage() );
+                    CommonUIUtils.openErrorDialog( NLS.bind(
+                        Messages.getString( "LdapServersUtils.ErrorCopyingLibrary" ), //$NON-NLS-1$
+                        new String[]
+                            { library, destinationLibraryFile.getAbsolutePath(), e.getMessage() } ) );
                 }
             }
         }

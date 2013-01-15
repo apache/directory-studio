@@ -132,7 +132,7 @@ public class StartAction extends Action implements IWorkbenchWindowActionDelegat
                                 }
                             }
 
-                            message += "\n\n" + Messages.getString( "StartAction.Continue" ); //$NON-NLS-1$
+                            message += "\n\n" + Messages.getString( "StartAction.Continue" ); //$NON-NLS-1$ //$NON-NLS-2$
 
                             MessageDialog dialog = new MessageDialog( view.getSite().getShell(), title, null, message,
                                 MessageDialog.WARNING, new String[]
@@ -150,17 +150,21 @@ public class StartAction extends Action implements IWorkbenchWindowActionDelegat
                     catch ( Exception e )
                     {
                         // Showing an error in case no LDAP Server Adapter can be found
-                        MessageDialog.openError( view.getSite().getShell(), "Error Starting Server",
-                            NLS.bind( "The server ''{0}'' cannot be started." + "\n" + "Cause: {1}", server.getName(),
-                                e.getMessage() ) );
+                        MessageDialog
+                            .openError( view.getSite().getShell(),
+                                Messages.getString( "StartAction.ErrorStartingServer" ), //$NON-NLS-1$
+                                NLS.bind(
+                                    Messages.getString( "StartAction.ServerCanNotBeStarted" ) + "\n" + Messages.getString( "StartAction.Cause" ), server.getName(), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                                    e.getMessage() ) );
                     }
                 }
                 else
                 {
                     // Showing an error in case no LDAP Server Adapter can be found
-                    MessageDialog.openError( view.getSite().getShell(), "No LDAP Server Adapter",
-                        NLS.bind( "The server ''{0}'' cannot be started." + "\n"
-                            + "No LDAP Server Adapter could be found for this server.", server.getName() ) );
+                    MessageDialog.openError( view.getSite().getShell(),
+                        Messages.getString( "StartAction.NoLdapServerAdapter" ), //$NON-NLS-1$
+                        NLS.bind( Messages.getString( "StartAction.ServerCanNotBeStarted" ) + "\n" //$NON-NLS-1$ //$NON-NLS-2$
+                            + Messages.getString( "StartAction.NoLdapServerAdapterCouldBeFound" ), server.getName() ) ); //$NON-NLS-1$
                 }
             }
         }

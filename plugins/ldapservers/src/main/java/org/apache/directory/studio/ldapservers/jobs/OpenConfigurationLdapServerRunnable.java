@@ -57,8 +57,10 @@ public class OpenConfigurationLdapServerRunnable implements StudioRunnableWithPr
      */
     public String getErrorMessage()
     {
-        return NLS.bind( "Unable to open configuration for server ''{0}''", new String[]
-            { server.getName() } );
+        return NLS
+            .bind(
+                Messages.getString( "OpenConfigurationLdapServerRunnable.UnableToOpenConfigurationForServer" ), new String[] //$NON-NLS-1$
+                    { server.getName() } );
     }
 
 

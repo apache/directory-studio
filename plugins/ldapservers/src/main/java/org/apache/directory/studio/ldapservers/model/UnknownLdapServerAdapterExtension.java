@@ -102,9 +102,10 @@ public class UnknownLdapServerAdapterExtension extends LdapServerAdapterExtensio
                     public void run()
                     {
                         CommonUIUtils.openWarningDialog(
-                            "Server Adapter Not Available",
+                            Messages.getString( "UnknownLdapServerAdapterExtension.ServerAdapterNotAvailable" ),
                             NLS.bind(
-                                "This server was created with a server adapter which is no longer available. You need install it (again) using the update site of the vendor. \n\nServer adapter information: ID=''{0}'', Name=''{1}'', Vendor=''{2}'', Version=''{3}''",
+                                Messages
+                                    .getString( "UnknownLdapServerAdapterExtension.ServerCreatedWithServerAdapterNoLongerAvailable" ),
                                 new String[]
                                     { getId(), getName(), getVendor(), getVersion() } ) );
                     }
