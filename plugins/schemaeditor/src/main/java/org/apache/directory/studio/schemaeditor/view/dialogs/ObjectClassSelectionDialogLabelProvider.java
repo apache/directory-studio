@@ -66,7 +66,7 @@ public class ObjectClassSelectionDialogLabelProvider extends LabelProvider
             List<String> names = oc.getNames();
             if ( ( names != null ) && ( names.size() > 0 ) )
             {
-                return ViewUtils.concateAliases( names ) + "  -  (" + oc.getOid() + ")"; //$NON-NLS-2$
+                return ViewUtils.concateAliases( names ) + "  -  (" + oc.getOid() + ")";  //$NON-NLS-1$//$NON-NLS-2$
             }
             else
             {

@@ -48,25 +48,25 @@ import org.apache.directory.api.util.Strings;
  */
 public class SchemaEditorSchemaLoaderUtils
 {
-    private static final String M_COLLECTIVE = "m-collective";
-    private static final String M_DESCRIPTION = "m-description";
-    private static final String M_EQUALITY = "m-equality";
-    private static final String M_LENGTH = "m-length";
-    private static final String M_MAY = "m-may";
-    private static final String M_MUST = "m-must";
-    private static final String M_NAME = "m-name";
-    private static final String M_NO_USER_MODIFICATION = "m-noUserModification";
-    private static final String M_OBSOLETE = "m-obsolete";
-    private static final String M_OID = "m-oid";
-    private static final String M_ORDERING = "m-ordering";
-    private static final String M_SINGLE_VALUE = "m-singleValue";
-    private static final String M_SUBSTR = "m-substr";
-    private static final String M_SUP_ATTRIBUTE_TYPE = "m-supAttributeType";
-    private static final String M_SUP_OBJECT_CLASS = "m-supObjectClass";
-    private static final String M_SYNTAX = "m-syntax";
-    private static final String M_TYPE_OBJECT_CLASS = "m-typeObjectClass";
-    private static final String M_USAGE = "m-usage";
-    private static final String TRUE = "TRUE";
+    private static final String M_COLLECTIVE = "m-collective"; //$NON-NLS-1$
+    private static final String M_DESCRIPTION = "m-description"; //$NON-NLS-1$
+    private static final String M_EQUALITY = "m-equality"; //$NON-NLS-1$
+    private static final String M_LENGTH = "m-length"; //$NON-NLS-1$
+    private static final String M_MAY = "m-may"; //$NON-NLS-1$
+    private static final String M_MUST = "m-must"; //$NON-NLS-1$
+    private static final String M_NAME = "m-name"; //$NON-NLS-1$
+    private static final String M_NO_USER_MODIFICATION = "m-noUserModification"; //$NON-NLS-1$
+    private static final String M_OBSOLETE = "m-obsolete"; //$NON-NLS-1$
+    private static final String M_OID = "m-oid"; //$NON-NLS-1$
+    private static final String M_ORDERING = "m-ordering"; //$NON-NLS-1$
+    private static final String M_SINGLE_VALUE = "m-singleValue"; //$NON-NLS-1$
+    private static final String M_SUBSTR = "m-substr"; //$NON-NLS-1$
+    private static final String M_SUP_ATTRIBUTE_TYPE = "m-supAttributeType"; //$NON-NLS-1$
+    private static final String M_SUP_OBJECT_CLASS = "m-supObjectClass"; //$NON-NLS-1$
+    private static final String M_SYNTAX = "m-syntax"; //$NON-NLS-1$
+    private static final String M_TYPE_OBJECT_CLASS = "m-typeObjectClass"; //$NON-NLS-1$
+    private static final String M_USAGE = "m-usage"; //$NON-NLS-1$
+    private static final String TRUE = "TRUE"; //$NON-NLS-1$
 
 
     /**
@@ -469,7 +469,7 @@ public class SchemaEditorSchemaLoaderUtils
             long syntaxLength = attributeType.getSyntaxLength();
             if ( syntaxLength != -1 )
             {
-                attribute = new DefaultAttribute( M_LENGTH, "" + syntaxLength );
+                attribute = new DefaultAttribute( M_LENGTH, "" + syntaxLength ); //$NON-NLS-1$
                 entry.add( attribute );
             }
         }

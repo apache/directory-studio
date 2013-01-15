@@ -57,16 +57,16 @@ public class ApacheDsSchemaConnector extends AbstractSchemaConnector implements 
 {
 
     /** The Schema Dn */
-    public static final String SCHEMA_DN = "ou=schema";
+    public static final String SCHEMA_DN = "ou=schema"; //$NON-NLS-1$
 
     /** The name of the metaAttributeType object class */
-    private static final String META_ATTRIBUTE_TYPE = "metaAttributeType";
+    private static final String META_ATTRIBUTE_TYPE = "metaAttributeType"; //$NON-NLS-1$
     /** The name of the metaObjectClass object class */
-    private static final String META_OBJECT_CLASS = "metaObjectClass";
+    private static final String META_OBJECT_CLASS = "metaObjectClass"; //$NON-NLS-1$
     /** The name of the metaMatchingRule object class */
-    private static final String META_MATCHING_RULE = "metaMatchingRule";
+    private static final String META_MATCHING_RULE = "metaMatchingRule"; //$NON-NLS-1$
     /** The name of the metaSyntax object class */
-    private static final String META_SYNTAX = "metaSyntax";
+    private static final String META_SYNTAX = "metaSyntax"; //$NON-NLS-1$
 
     private static final AliasDereferencingMethod DEREF_ALIAS_METHOD = AliasDereferencingMethod.ALWAYS;
     private static final ReferralHandlingMethod HANDLE_REFERALS_METHOD = ReferralHandlingMethod.FOLLOW;
@@ -97,7 +97,7 @@ public class ApacheDsSchemaConnector extends AbstractSchemaConnector implements 
         constraintSearch.setSearchScope( SearchControls.ONELEVEL_SCOPE );
 
         NamingEnumeration<SearchResult> answer = wrapper
-            .search( "ou=schema", "(objectclass=metaSchema)", constraintSearch, DEREF_ALIAS_METHOD,
+            .search( "ou=schema", "(objectclass=metaSchema)", constraintSearch, DEREF_ALIAS_METHOD, //$NON-NLS-1$ //$NON-NLS-2$
                 HANDLE_REFERALS_METHOD, null, monitor, null );
         if ( answer != null )
         {
@@ -146,7 +146,7 @@ public class ApacheDsSchemaConnector extends AbstractSchemaConnector implements 
         constraintSearch.setReturningAttributes( new String[]
             { SchemaConstants.ALL_OPERATIONAL_ATTRIBUTES } );
 
-        NamingEnumeration<SearchResult> answer = wrapper.search( "", "(objectclass=*)", constraintSearch,
+        NamingEnumeration<SearchResult> answer = wrapper.search( "", "(objectclass=*)", constraintSearch, //$NON-NLS-1$ //$NON-NLS-2$
             DEREF_ALIAS_METHOD, HANDLE_REFERALS_METHOD, null, monitor, null );
 
         if ( answer != null )
@@ -178,7 +178,7 @@ public class ApacheDsSchemaConnector extends AbstractSchemaConnector implements 
                         return false;
                     }
 
-                    return ( ( vendorName != null ) && vendorName.equalsIgnoreCase( "Apache Software Foundation" ) );
+                    return ( ( vendorName != null ) && vendorName.equalsIgnoreCase( "Apache Software Foundation" ) ); //$NON-NLS-1$
                 }
             }
             catch ( NamingException e )
@@ -203,7 +203,7 @@ public class ApacheDsSchemaConnector extends AbstractSchemaConnector implements 
         SearchControls constraintSearch = new SearchControls();
         constraintSearch.setSearchScope( SearchControls.SUBTREE_SCOPE );
 
-        NamingEnumeration<SearchResult> answer = wrapper.search( "cn=" + name + ", ou=schema", "(objectclass=*)",
+        NamingEnumeration<SearchResult> answer = wrapper.search( "cn=" + name + ", ou=schema", "(objectclass=*)", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
             constraintSearch, DEREF_ALIAS_METHOD, HANDLE_REFERALS_METHOD, null, monitor, null );
         if ( answer != null )
         {

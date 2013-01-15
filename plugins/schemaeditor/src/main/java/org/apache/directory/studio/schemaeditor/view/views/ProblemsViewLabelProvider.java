@@ -336,43 +336,43 @@ public class ProblemsViewLabelProvider extends LabelProvider implements ITableLa
 
     private String getMessageATMustHaveSameUsageThanSuperior( LdapSchemaException exception )
     {
-        return Messages.getString( "ProblemsViewLabelProvider.ATMustHaveSameUsageThanSuperior" );
+        return Messages.getString( "ProblemsViewLabelProvider.ATMustHaveSameUsageThanSuperior" ); //$NON-NLS-1$
     }
 
 
     private String getMessageATUserApplicationsUsageMustBeUserModifiable( LdapSchemaException exception )
     {
-        return Messages.getString( "ProblemsViewLabelProvider.ATUserApplicationsUsageMustBeUserModifiable" );
+        return Messages.getString( "ProblemsViewLabelProvider.ATUserApplicationsUsageMustBeUserModifiable" ); //$NON-NLS-1$
     }
 
 
     private String getMessageATCollectiveMustHaveUserApplicationsUsage( LdapSchemaException exception )
     {
-        return Messages.getString( "ProblemsViewLabelProvider.ATCollectiveMustHaveUserApplicationsUsage" );
+        return Messages.getString( "ProblemsViewLabelProvider.ATCollectiveMustHaveUserApplicationsUsage" ); //$NON-NLS-1$
     }
 
 
     private String getMessageATCollectiveCannotBeSingleValued( LdapSchemaException exception )
     {
-        return Messages.getString( "ProblemsViewLabelProvider.ATCollectiveCannotBeSingleValued" );
+        return Messages.getString( "ProblemsViewLabelProvider.ATCollectiveCannotBeSingleValued" ); //$NON-NLS-1$
     }
 
 
     private String getMessageOCAbstractMustInheritFromAbstractOC( LdapSchemaException exception )
     {
-        return Messages.getString( "ProblemsViewLabelProvider.OCAbstractMustInheritFromAbstractOC" );
+        return Messages.getString( "ProblemsViewLabelProvider.OCAbstractMustInheritFromAbstractOC" ); //$NON-NLS-1$
     }
 
 
     private String getMessageOCAuxiliaryCannotInheritFromStructuralOC( LdapSchemaException exception )
     {
-        return Messages.getString( "ProblemsViewLabelProvider.OCAuxiliaryCannotInheritFromStructuralOC" );
+        return Messages.getString( "ProblemsViewLabelProvider.OCAuxiliaryCannotInheritFromStructuralOC" ); //$NON-NLS-1$
     }
 
 
     private String getMessageOCStructuralCannotInheritFromAuxiliaryOC( LdapSchemaException exception )
     {
-        return Messages.getString( "ProblemsViewLabelProvider.OCStructuralCannotInheritFromAuxiliaryOC" );
+        return Messages.getString( "ProblemsViewLabelProvider.OCStructuralCannotInheritFromAuxiliaryOC" ); //$NON-NLS-1$
     }
 
 
@@ -385,7 +385,7 @@ public class ProblemsViewLabelProvider extends LabelProvider implements ITableLa
 
     private String getMessageOCCycleClassHierarchy( LdapSchemaException exception )
     {
-        return Messages.getString( "ProblemsViewLabelProvider.OCCycleClassHierarchy" );
+        return Messages.getString( "ProblemsViewLabelProvider.OCCycleClassHierarchy" ); //$NON-NLS-1$
     }
 
 
@@ -462,7 +462,7 @@ public class ProblemsViewLabelProvider extends LabelProvider implements ITableLa
             if ( schemaObject != null )
             {
                 String name = schemaObject.getName();
-                if ( ( name != null ) && ( !name.equals( "" ) ) ) // $NON-NLS-1$
+                if ( ( name != null ) && ( !name.equals( "" ) ) ) // $NON-NLS-1$ //$NON-NLS-1$
                 {
                     return name;
                 }
@@ -477,7 +477,7 @@ public class ProblemsViewLabelProvider extends LabelProvider implements ITableLa
             }
         }
 
-        return ""; // $NON-NLS-1$
+        return ""; // $NON-NLS-1$ //$NON-NLS-1$
     }
 
 

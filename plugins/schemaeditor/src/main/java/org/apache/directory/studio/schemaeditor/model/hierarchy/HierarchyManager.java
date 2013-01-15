@@ -147,7 +147,7 @@ public class HierarchyManager
         // Then, it is a child of the "top (2.5.6.0)" object class
         // (Unless it is the "top (2.5.6.0)" object class itself)
         {
-            ObjectClass topOC = schemaHandler.getObjectClass( "2.5.6.0" );
+            ObjectClass topOC = schemaHandler.getObjectClass( "2.5.6.0" ); //$NON-NLS-1$
             if ( oc.equals( topOC ) )
             // The given object class is the "top (2.5.6.0)" object class
             {
@@ -165,8 +165,8 @@ public class HierarchyManager
                 else
                 // The "top (2.5.6.0)" object class does not exist
                 {
-                    parentsMap.put( oc, "2.5.6.0" );
-                    childrenMap.put( "2.5.6.0", oc );
+                    parentsMap.put( oc, "2.5.6.0" ); //$NON-NLS-1$
+                    childrenMap.put( "2.5.6.0", oc ); //$NON-NLS-1$
                     childrenMap.put( root, oc );
                 }
             }
@@ -265,7 +265,7 @@ public class HierarchyManager
                 for ( Object value : children )
                 {
                     childrenMap.put( object, value );
-                    if ( oid.equals( "2.5.6.0" ) )
+                    if ( oid.equals( "2.5.6.0" ) ) //$NON-NLS-1$
                     {
                         childrenMap.remove( root, value );
                     }
@@ -477,14 +477,14 @@ public class HierarchyManager
         }
         else
         {
-            if ( oc.getOid().equals( "2.5.6.0" ) )
+            if ( oc.getOid().equals( "2.5.6.0" ) ) //$NON-NLS-1$
             // The given object class is the "top (2.5.6.0)" object class
             {
                 childrenMap.remove( root, oc );
             }
             else
             {
-                ObjectClass topOC = schemaHandler.getObjectClass( "2.5.6.0" );
+                ObjectClass topOC = schemaHandler.getObjectClass( "2.5.6.0" ); //$NON-NLS-1$
                 if ( topOC != null )
                 // The "top (2.5.6.0)" object class exists
                 {
@@ -493,7 +493,7 @@ public class HierarchyManager
                 else
                 // The "top (2.5.6.0)" object class does not exist
                 {
-                    childrenMap.remove( "2.5.6.0", oc );
+                    childrenMap.remove( "2.5.6.0", oc ); //$NON-NLS-1$
                 }
             }
         }
@@ -522,8 +522,8 @@ public class HierarchyManager
                 }
                 else
                 {
-                    parentsMap.put( child, "2.5.6.0" );
-                    childrenMap.put( "2.5.6.0", child );
+                    parentsMap.put( child, "2.5.6.0" ); //$NON-NLS-1$
+                    childrenMap.put( "2.5.6.0", child ); //$NON-NLS-1$
                 }
             }
         }

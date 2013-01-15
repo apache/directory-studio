@@ -210,16 +210,16 @@ public class PluginUtils
                     }
                     catch ( ProjectsImportException e )
                     {
-                        reportError( Messages.getString( "PluginUtils.ErrorLoadingProject" ), e, Messages
-                            .getString( "PluginUtils.ProjectsLoadingError" ), Messages
-                            .getString( "PluginUtils.ErrorLoadingProject" ) );
+                        reportError( Messages.getString( "PluginUtils.ErrorLoadingProject" ), e, Messages //$NON-NLS-1$
+                            .getString( "PluginUtils.ProjectsLoadingError" ), Messages //$NON-NLS-1$
+                            .getString( "PluginUtils.ErrorLoadingProject" ) ); //$NON-NLS-1$
                         return;
                     }
                     catch ( FileNotFoundException e )
                     {
-                        reportError( Messages.getString( "PluginUtils.ErrorLoadingProject" ), e, Messages
-                            .getString( "PluginUtils.ProjectsLoadingError" ), Messages
-                            .getString( "PluginUtils.ErrorLoadingProject" ) );
+                        reportError( Messages.getString( "PluginUtils.ErrorLoadingProject" ), e, Messages //$NON-NLS-1$
+                            .getString( "PluginUtils.ProjectsLoadingError" ), Messages //$NON-NLS-1$
+                            .getString( "PluginUtils.ErrorLoadingProject" ) ); //$NON-NLS-1$
                         return;
                     }
 
@@ -231,9 +231,9 @@ public class PluginUtils
                 }
                 else
                 {
-                    reportError( Messages.getString( "PluginUtils.ErrorLoadingProject" ), null, Messages
-                        .getString( "PluginUtils.ProjectsLoadingError" ), Messages
-                        .getString( "PluginUtils.ErrorLoadingProject" ) );
+                    reportError( Messages.getString( "PluginUtils.ErrorLoadingProject" ), null, Messages //$NON-NLS-1$
+                        .getString( "PluginUtils.ProjectsLoadingError" ), Messages //$NON-NLS-1$
+                        .getString( "PluginUtils.ErrorLoadingProject" ) ); //$NON-NLS-1$
                 }
 
             }
@@ -277,9 +277,9 @@ public class PluginUtils
             catch ( IOException e2 )
             {
                 // If another error occur, we display an error
-                reportError( Messages.getString( "PluginUtils.ErrorSavingProject" ), e2, Messages
-                    .getString( "PluginUtils.ProjectsSavingError" ), Messages
-                    .getString( "PluginUtils.ErrorSavingProject" ) );
+                reportError( Messages.getString( "PluginUtils.ErrorSavingProject" ), e2, Messages //$NON-NLS-1$
+                    .getString( "PluginUtils.ProjectsSavingError" ), Messages //$NON-NLS-1$
+                    .getString( "PluginUtils.ErrorSavingProject" ) ); //$NON-NLS-1$
             }
         }
     }
@@ -348,13 +348,13 @@ public class PluginUtils
         try
         {
             URL url = Activator.getDefault().getBundle().getResource(
-                "resources/schemas/" + getFolderName( serverType ) + "/" + schemaName + ".xml" );
+                "resources/schemas/" + getFolderName( serverType ) + "/" + schemaName + ".xml" ); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
             if ( url == null )
             {
                 reportError(
-                    Messages.getString( "PluginUtils.SchemaLoadingError" ) + schemaName + ".", null, //$NON-NLS-2$
-                    Messages.getString( "PluginUtils.ProjectsLoadingError" ), Messages.getString( "PluginUtils.SchemaLoadingError" ) + schemaName + "." ); //$NON-NLS-3$
+                    Messages.getString( "PluginUtils.SchemaLoadingError" ) + schemaName + ".", null,  //$NON-NLS-1$//$NON-NLS-2$
+                    Messages.getString( "PluginUtils.ProjectsLoadingError" ), Messages.getString( "PluginUtils.SchemaLoadingError" ) + schemaName + "." );  //$NON-NLS-1$ //$NON-NLS-2$//$NON-NLS-3$
             }
             else
             {
@@ -364,20 +364,20 @@ public class PluginUtils
         catch ( XMLSchemaFileImportException e )
         {
             reportError(
-                Messages.getString( "PluginUtils.SchemaLoadingError" ) + schemaName + ".", e, Messages.getString( "PluginUtils.ProjectsLoadingError" ),//$NON-NLS-2$
-                Messages.getString( "PluginUtils.SchemaLoadingError" ) + schemaName + "." ); //$NON-NLS-2$
+                Messages.getString( "PluginUtils.SchemaLoadingError" ) + schemaName + ".", e, Messages.getString( "PluginUtils.ProjectsLoadingError" ), //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
+                Messages.getString( "PluginUtils.SchemaLoadingError" ) + schemaName + "." );  //$NON-NLS-1$//$NON-NLS-2$
         }
         catch ( FileNotFoundException e )
         {
             reportError(
-                Messages.getString( "PluginUtils.SchemaLoadingError" ) + schemaName + ".", e, Messages.getString( "PluginUtils.ProjectsLoadingError" ), //$NON-NLS-2$
-                Messages.getString( "PluginUtils.SchemaLoadingError" ) + schemaName + "." ); //$NON-NLS-2$
+                Messages.getString( "PluginUtils.SchemaLoadingError" ) + schemaName + ".", e, Messages.getString( "PluginUtils.ProjectsLoadingError" ),  //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
+                Messages.getString( "PluginUtils.SchemaLoadingError" ) + schemaName + "." );  //$NON-NLS-1$//$NON-NLS-2$
         }
         catch ( IOException e )
         {
             reportError(
-                Messages.getString( "PluginUtils.SchemaLoadingError" ) + schemaName + ".", e, Messages.getString( "PluginUtils.ProjectsLoadingError" ), //$NON-NLS-2$
-                Messages.getString( "PluginUtils.SchemaLoadingError" ) + schemaName + "." ); //$NON-NLS-2$
+                Messages.getString( "PluginUtils.SchemaLoadingError" ) + schemaName + ".", e, Messages.getString( "PluginUtils.ProjectsLoadingError" ),  //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
+                Messages.getString( "PluginUtils.SchemaLoadingError" ) + schemaName + "." );  //$NON-NLS-1$//$NON-NLS-2$
         }
 
         return schema;
@@ -469,7 +469,7 @@ public class PluginUtils
         List<SchemaConnector> schemaConnectors = new ArrayList<SchemaConnector>();
 
         IExtensionPoint extensionPoint = Platform.getExtensionRegistry().getExtensionPoint(
-            Activator.getDefault().getPluginProperties().getString( "ExtensionPoint_SchemaConnectors_id" ) );
+            Activator.getDefault().getPluginProperties().getString( "ExtensionPoint_SchemaConnectors_id" ) ); //$NON-NLS-1$
         IConfigurationElement[] members = extensionPoint.getConfigurationElements();
 
         if ( members != null )
@@ -488,9 +488,9 @@ public class PluginUtils
                 }
                 catch ( CoreException e )
                 {
-                    PluginUtils.logError( Messages.getString( "PluginUtils.ConnectorsLoadingError" ), e );
-                    ViewUtils.displayErrorMessageDialog( Messages.getString( "PluginUtils.Error" ), Messages
-                        .getString( "PluginUtils.ConnectorsLoadingError" ) );
+                    PluginUtils.logError( Messages.getString( "PluginUtils.ConnectorsLoadingError" ), e ); //$NON-NLS-1$
+                    ViewUtils.displayErrorMessageDialog( Messages.getString( "PluginUtils.Error" ), Messages //$NON-NLS-1$
+                        .getString( "PluginUtils.ConnectorsLoadingError" ) ); //$NON-NLS-1$
                 }
             }
         }

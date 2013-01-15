@@ -325,10 +325,10 @@ public class MergeSchemasWizard extends Wizard implements IImportWizard
                                     getIdString( sourceAttributeType ),
                                     clonedAttributeType.getSyntaxOid(),
                                     "1.3.6.1.4.1.1466.115.121.1.15 (Directory String)" } ) ); //$NON-NLS-1$
-                        clonedAttributeType.setSyntaxOid( "1.3.6.1.4.1.1466.115.121.1.15" );
-                        clonedAttributeType.setEqualityOid( "caseIgnoreMatch" );
+                        clonedAttributeType.setSyntaxOid( "1.3.6.1.4.1.1466.115.121.1.15" ); //$NON-NLS-1$
+                        clonedAttributeType.setEqualityOid( "caseIgnoreMatch" ); //$NON-NLS-1$
                         clonedAttributeType.setOrderingOid( null );
-                        clonedAttributeType.setSubstringOid( "caseIgnoreSubstringsMatch" );
+                        clonedAttributeType.setSubstringOid( "caseIgnoreSubstringsMatch" ); //$NON-NLS-1$
                     }
                 }
                 // TODO: if unknown (single) matching rule: set appropriate matching rule according to syntax

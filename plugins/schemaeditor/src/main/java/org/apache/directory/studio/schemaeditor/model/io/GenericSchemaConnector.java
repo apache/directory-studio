@@ -93,7 +93,7 @@ public class GenericSchemaConnector extends AbstractSchemaConnector implements S
                 SchemaConstants.SYNTAX_CHECKERS_AT
         } );
         String schemaDn = getSubschemaSubentry( wrapper, monitor );
-        NamingEnumeration<SearchResult> answer = wrapper.search( schemaDn, "(objectclass=subschema)", constraintSearch,
+        NamingEnumeration<SearchResult> answer = wrapper.search( schemaDn, "(objectclass=subschema)", constraintSearch, //$NON-NLS-1$
             DEREF_ALIAS_METHOD, HANDLE_REFERALS_METHOD, null, monitor, null );
         if ( answer != null )
         {
@@ -139,7 +139,7 @@ public class GenericSchemaConnector extends AbstractSchemaConnector implements S
         SearchControls constraintSearch = new SearchControls();
         constraintSearch.setSearchScope( SearchControls.OBJECT_SCOPE );
         constraintSearch.setReturningAttributes( new String[]
-            { "subschemaSubentry" } );
+            { "subschemaSubentry" } ); //$NON-NLS-1$
 
         NamingEnumeration<SearchResult> answer = wrapper.search( "", "(objectclass=*)", constraintSearch, //$NON-NLS-1$ //$NON-NLS-2$
             DEREF_ALIAS_METHOD, HANDLE_REFERALS_METHOD, null, monitor, null );
@@ -152,7 +152,7 @@ public class GenericSchemaConnector extends AbstractSchemaConnector implements S
                 {
                     SearchResult searchResult = answer.next();
 
-                    Attribute subschemaSubentryAttribute = searchResult.getAttributes().get( "subschemaSubentry" );
+                    Attribute subschemaSubentryAttribute = searchResult.getAttributes().get( "subschemaSubentry" ); //$NON-NLS-1$
                     if ( subschemaSubentryAttribute == null )
                     {
                         return null;
@@ -192,7 +192,7 @@ public class GenericSchemaConnector extends AbstractSchemaConnector implements S
         // The counter for parser exceptions
         int parseErrorCount = 0;
 
-        Attribute attributeTypesAttribute = searchResult.getAttributes().get( "attributeTypes" );
+        Attribute attributeTypesAttribute = searchResult.getAttributes().get( "attributeTypes" ); //$NON-NLS-1$
         if ( attributeTypesAttribute != null )
         {
             NamingEnumeration<?> ne = attributeTypesAttribute.getAll();
@@ -228,7 +228,7 @@ public class GenericSchemaConnector extends AbstractSchemaConnector implements S
                         // Active Directory hack
                         if ( impl.getSyntaxOid() != null && "OctetString".equalsIgnoreCase( impl.getSyntaxOid() ) ) //$NON-NLS-1$
                         {
-                            impl.setSyntaxOid( "1.3.6.1.4.1.1466.115.121.1.40" );
+                            impl.setSyntaxOid( "1.3.6.1.4.1.1466.115.121.1.40" ); //$NON-NLS-1$
                         }
 
                         schema.addAttributeType( impl );
@@ -243,7 +243,7 @@ public class GenericSchemaConnector extends AbstractSchemaConnector implements S
             }
         }
 
-        Attribute objectClassesAttribute = searchResult.getAttributes().get( "objectClasses" );
+        Attribute objectClassesAttribute = searchResult.getAttributes().get( "objectClasses" ); //$NON-NLS-1$
         if ( objectClassesAttribute != null )
         {
             NamingEnumeration<?> ne = objectClassesAttribute.getAll();
@@ -281,7 +281,7 @@ public class GenericSchemaConnector extends AbstractSchemaConnector implements S
             }
         }
 
-        Attribute ldapSyntaxesAttribute = searchResult.getAttributes().get( "ldapSyntaxes" );
+        Attribute ldapSyntaxesAttribute = searchResult.getAttributes().get( "ldapSyntaxes" ); //$NON-NLS-1$
         if ( ldapSyntaxesAttribute != null )
         {
             NamingEnumeration<?> ne = ldapSyntaxesAttribute.getAll();
@@ -333,7 +333,7 @@ public class GenericSchemaConnector extends AbstractSchemaConnector implements S
             }
         }
 
-        Attribute matchingRulesAttribute = searchResult.getAttributes().get( "matchingRules" );
+        Attribute matchingRulesAttribute = searchResult.getAttributes().get( "matchingRules" ); //$NON-NLS-1$
         if ( matchingRulesAttribute != null )
         {
             NamingEnumeration<?> ne = matchingRulesAttribute.getAll();

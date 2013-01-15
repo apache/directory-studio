@@ -884,14 +884,14 @@ public class SchemaViewContentProvider implements IStructuredContentProvider, IT
         // Removing unattached nodes for "top"
         List<Object> ocChildren = new ArrayList<Object>();
         List<Object> ocChildren2 = null;
-        if ( "2.5.6.0".equals( oc.getOid() ) )
+        if ( "2.5.6.0".equals( oc.getOid() ) ) //$NON-NLS-1$
         {
-            ocChildren2 = hierarchyManager.getChildren( "2.5.6.0" );
+            ocChildren2 = hierarchyManager.getChildren( "2.5.6.0" ); //$NON-NLS-1$
             if ( ocChildren2 != null )
             {
                 ocChildren.addAll( ocChildren2 );
             }
-            ocChildren2 = hierarchyManager.getChildren( "top" );
+            ocChildren2 = hierarchyManager.getChildren( "top" ); //$NON-NLS-1$
             if ( ocChildren2 != null )
             {
                 ocChildren.addAll( ocChildren2 );
