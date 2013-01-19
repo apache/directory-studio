@@ -797,7 +797,8 @@ public class AttributeTypeEditorOverviewPage extends AbstractAttributeTypeEditor
         collectiveCheckbox.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
 
         // NO-USER-MODIFICATION Checkbox
-        noUserModificationCheckbox = toolkit.createButton( propertiesComposite, "No-User-Modification", SWT.CHECK ); //$NON-NLS-1$
+        noUserModificationCheckbox = toolkit.createButton( propertiesComposite,
+            Messages.getString( "AttributeTypeEditorOverviewPage.NoUserModification" ), SWT.CHECK ); //$NON-NLS-1$
         noUserModificationCheckbox.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
     }
 
