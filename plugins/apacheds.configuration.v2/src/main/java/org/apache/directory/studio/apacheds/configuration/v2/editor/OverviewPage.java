@@ -62,7 +62,7 @@ public class OverviewPage extends ServerConfigurationEditorPage
     public static final String ID = OverviewPage.class.getName(); //$NON-NLS-1$
 
     /** The Page Title */
-    private static final String TITLE = Messages.getString("OverviewPage.Overview"); //$NON-NLS-1$
+    private static final String TITLE = Messages.getString( "OverviewPage.Overview" ); //$NON-NLS-1$
 
     // UI Controls
     private Button enableLdapCheckbox;
@@ -128,8 +128,7 @@ public class OverviewPage extends ServerConfigurationEditorPage
     {
         public void widgetSelected( SelectionEvent e )
         {
-            KdcServerBean kdcServerBean = getConfigBean().getDirectoryServiceBean().getKdcServerBean();
-            kdcServerBean.setEnabled( enableKerberosCheckbox.getSelection() );
+            KerberosServerPage.enableKerberosServer( getDirectoryServiceBean(), enableKerberosCheckbox.getSelection() );
             setEnabled( kerberosPortText, enableKerberosCheckbox.getSelection() );
         }
     };
@@ -256,7 +255,7 @@ public class OverviewPage extends ServerConfigurationEditorPage
     {
         // Creation of the section
         Section section = toolkit.createSection( parent, Section.TITLE_BAR );
-        section.setText( Messages.getString("OverviewPage.LdapLdapsServers") ); //$NON-NLS-1$
+        section.setText( Messages.getString( "OverviewPage.LdapLdapsServers" ) ); //$NON-NLS-1$
         section.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
         Composite composite = toolkit.createComposite( section );
         toolkit.paintBordersFor( composite );
@@ -266,28 +265,30 @@ public class OverviewPage extends ServerConfigurationEditorPage
         section.setClient( composite );
 
         // Enable LDAP Server Checkbox
-        enableLdapCheckbox = toolkit.createButton( composite, Messages.getString("OverviewPage.EnableLdapServer"), SWT.CHECK ); //$NON-NLS-1$
+        enableLdapCheckbox = toolkit.createButton( composite,
+            Messages.getString( "OverviewPage.EnableLdapServer" ), SWT.CHECK ); //$NON-NLS-1$
         enableLdapCheckbox.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, gridLayout.numColumns, 1 ) );
 
         // LDAP Server Port Text
         toolkit.createLabel( composite, TABULATION );
-        toolkit.createLabel( composite, Messages.getString("OverviewPage.Port") ); //$NON-NLS-1$
+        toolkit.createLabel( composite, Messages.getString( "OverviewPage.Port" ) ); //$NON-NLS-1$
         ldapPortText = createPortText( toolkit, composite );
         createDefaultValueLabel( toolkit, composite, "10389" ); //$NON-NLS-1$
 
         // Enable LDAPS Server Checkbox
-        enableLdapsCheckbox = toolkit.createButton( composite, Messages.getString("OverviewPage.EnableLdapsServer"), SWT.CHECK ); //$NON-NLS-1$
+        enableLdapsCheckbox = toolkit.createButton( composite,
+            Messages.getString( "OverviewPage.EnableLdapsServer" ), SWT.CHECK ); //$NON-NLS-1$
         enableLdapsCheckbox.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, gridLayout.numColumns, 1 ) );
 
         // LDAPS Server Port Text
         toolkit.createLabel( composite, TABULATION );
-        toolkit.createLabel( composite, Messages.getString("OverviewPage.Port") ); //$NON-NLS-1$
+        toolkit.createLabel( composite, Messages.getString( "OverviewPage.Port" ) ); //$NON-NLS-1$
         ldapsPortText = createPortText( toolkit, composite );
         createDefaultValueLabel( toolkit, composite, "10636" ); //$NON-NLS-1$
 
         // LDAP Configuration Link
         openLdapConfigurationLink = toolkit.createHyperlink( composite,
-            Messages.getString("OverviewPage.AdvancedLdapLdapsConfiguration"), SWT.NONE ); //$NON-NLS-1$
+            Messages.getString( "OverviewPage.AdvancedLdapLdapsConfiguration" ), SWT.NONE ); //$NON-NLS-1$
         openLdapConfigurationLink.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false,
             gridLayout.numColumns, 1 ) );
         openLdapConfigurationLink.addHyperlinkListener( openLdapConfigurationLinkListener );
@@ -304,7 +305,7 @@ public class OverviewPage extends ServerConfigurationEditorPage
     {
         // Creation of the section
         Section section = toolkit.createSection( parent, Section.TITLE_BAR );
-        section.setText( Messages.getString("OverviewPage.KerberosServer") ); //$NON-NLS-1$
+        section.setText( Messages.getString( "OverviewPage.KerberosServer" ) ); //$NON-NLS-1$
         section.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
         Composite composite = toolkit.createComposite( section );
         toolkit.paintBordersFor( composite );
@@ -314,31 +315,33 @@ public class OverviewPage extends ServerConfigurationEditorPage
         section.setClient( composite );
 
         // Enable Kerberos Server Checkbox
-        enableKerberosCheckbox = toolkit.createButton( composite, Messages.getString("OverviewPage.EnableKerberosServer"), SWT.CHECK ); //$NON-NLS-1$
+        enableKerberosCheckbox = toolkit.createButton( composite,
+            Messages.getString( "OverviewPage.EnableKerberosServer" ), SWT.CHECK ); //$NON-NLS-1$
         enableKerberosCheckbox
             .setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, gridLayout.numColumns, 1 ) );
 
         // Kerberos Server Port Text
         toolkit.createLabel( composite, TABULATION );
-        toolkit.createLabel( composite, Messages.getString("OverviewPage.Port") ); //$NON-NLS-1$
+        toolkit.createLabel( composite, Messages.getString( "OverviewPage.Port" ) ); //$NON-NLS-1$
         kerberosPortText = createPortText( toolkit, composite );
         createDefaultValueLabel( toolkit, composite, "60088" ); //$NON-NLS-1$
 
         // Enable Change Password Server Checkbox
-        enableChangePasswordCheckbox = toolkit.createButton( composite, Messages.getString("OverviewPage.EnableKerberosChangePasswordServer"), //$NON-NLS-1$
+        enableChangePasswordCheckbox = toolkit.createButton( composite,
+            Messages.getString( "OverviewPage.EnableKerberosChangePasswordServer" ), //$NON-NLS-1$
             SWT.CHECK );
         enableChangePasswordCheckbox.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false,
             gridLayout.numColumns, 1 ) );
 
         // Change Password Server Port Text
         toolkit.createLabel( composite, TABULATION );
-        toolkit.createLabel( composite, Messages.getString("OverviewPage.Port") ); //$NON-NLS-1$
+        toolkit.createLabel( composite, Messages.getString( "OverviewPage.Port" ) ); //$NON-NLS-1$
         changePasswordPortText = createPortText( toolkit, composite );
         createDefaultValueLabel( toolkit, composite, "60464" ); //$NON-NLS-1$
 
         // Kerberos Configuration Link
         openKerberosConfigurationLink = toolkit.createHyperlink( composite,
-            Messages.getString("OverviewPage.AdvancedKerberosConfiguration"), SWT.NONE ); //$NON-NLS-1$
+            Messages.getString( "OverviewPage.AdvancedKerberosConfiguration" ), SWT.NONE ); //$NON-NLS-1$
         openKerberosConfigurationLink.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false,
             gridLayout.numColumns, 1 ) );
         openKerberosConfigurationLink.addHyperlinkListener( openKerberosConfigurationLinkListener );
@@ -355,7 +358,7 @@ public class OverviewPage extends ServerConfigurationEditorPage
     {
         // Creation of the section
         Section section = toolkit.createSection( parent, Section.TITLE_BAR );
-        section.setText( Messages.getString("OverviewPage.Partitions") ); //$NON-NLS-1$
+        section.setText( Messages.getString( "OverviewPage.Partitions" ) ); //$NON-NLS-1$
         section.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
         Composite composite = toolkit.createComposite( section );
         toolkit.paintBordersFor( composite );
@@ -380,7 +383,7 @@ public class OverviewPage extends ServerConfigurationEditorPage
 
         // Partitions Configuration Link
         openPartitionsConfigurationLink = toolkit.createHyperlink( composite,
-            Messages.getString("OverviewPage.AdvancedPartitionsConfiguration"), SWT.NONE ); //$NON-NLS-1$
+            Messages.getString( "OverviewPage.AdvancedPartitionsConfiguration" ), SWT.NONE ); //$NON-NLS-1$
         openPartitionsConfigurationLink.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false,
             gridLayout.numColumns, 1 ) );
         openPartitionsConfigurationLink.addHyperlinkListener( openPartitionsConfigurationLinkListener );
@@ -397,7 +400,7 @@ public class OverviewPage extends ServerConfigurationEditorPage
     {
         // Creation of the section
         Section section = toolkit.createSection( parent, Section.TITLE_BAR );
-        section.setText( Messages.getString("OverviewPage.Options") ); //$NON-NLS-1$
+        section.setText( Messages.getString( "OverviewPage.Options" ) ); //$NON-NLS-1$
         section.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
         Composite composite = toolkit.createComposite( section );
         toolkit.paintBordersFor( composite );
@@ -407,16 +410,18 @@ public class OverviewPage extends ServerConfigurationEditorPage
         section.setClient( composite );
 
         // Allow Anonymous Access Checkbox
-        allowAnonymousAccessCheckbox = toolkit.createButton( composite, Messages.getString("OverviewPage.AllowAnonymousAccess"), SWT.CHECK ); //$NON-NLS-1$
+        allowAnonymousAccessCheckbox = toolkit.createButton( composite,
+            Messages.getString( "OverviewPage.AllowAnonymousAccess" ), SWT.CHECK ); //$NON-NLS-1$
         allowAnonymousAccessCheckbox.setLayoutData( new GridData( SWT.NONE, SWT.NONE, true, false ) );
 
         // Enable Access Control Checkbox
-        enableAccessControlCheckbox = toolkit.createButton( composite, Messages.getString("OverviewPage.EnableAccessControl"), SWT.CHECK ); //$NON-NLS-1$
+        enableAccessControlCheckbox = toolkit.createButton( composite,
+            Messages.getString( "OverviewPage.EnableAccessControl" ), SWT.CHECK ); //$NON-NLS-1$
         enableAccessControlCheckbox.setLayoutData( new GridData( SWT.NONE, SWT.NONE, true, false ) );
 
         // Options Configuration Link
         openOptionsConfigurationLink = toolkit.createHyperlink( composite,
-            Messages.getString("OverviewPage.AdvancedOptionsConfiguration"), SWT.NONE ); //$NON-NLS-1$
+            Messages.getString( "OverviewPage.AdvancedOptionsConfiguration" ), SWT.NONE ); //$NON-NLS-1$
         openOptionsConfigurationLink.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false,
             gridLayout.numColumns, 1 ) );
         openOptionsConfigurationLink.addHyperlinkListener( openOptionsConfigurationLinkListener );
@@ -556,11 +561,12 @@ public class OverviewPage extends ServerConfigurationEditorPage
         List<PartitionBean> partitions = directoryServiceBean.getPartitions();
         if ( partitions.size() == 1 )
         {
-            partitionsLabel.setText( Messages.getString("OverviewPage.ThereIsOnePartitionDefined") ); //$NON-NLS-1$
+            partitionsLabel.setText( Messages.getString( "OverviewPage.ThereIsOnePartitionDefined" ) ); //$NON-NLS-1$
         }
         else
         {
-            partitionsLabel.setText( NLS.bind( Messages.getString("OverviewPage.ThereAreXPartitionsDefined"), partitions.size() ) ); //$NON-NLS-1$
+            partitionsLabel.setText( NLS.bind(
+                Messages.getString( "OverviewPage.ThereAreXPartitionsDefined" ), partitions.size() ) ); //$NON-NLS-1$
         }
         partitionsTableViewer.setInput( partitions.toArray() );
 
