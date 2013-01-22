@@ -105,6 +105,13 @@
                   <version>${project.version}</version>
                   <outputDirectory>${project.build.directory}</outputDirectory>
                 </artifactItem>
+                <artifactItem>
+                  <groupId>org.apache.directory.studio</groupId>
+                  <artifactId>ApacheDirectoryStudio-sources</artifactId>
+                  <type>zip</type>
+                  <version>${project.version}</version>
+                  <outputDirectory>${release-dir}</outputDirectory>
+                </artifactItem>
               </artifactItems>
             </configuration>
           </execution>

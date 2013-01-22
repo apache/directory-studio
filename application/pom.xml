@@ -172,6 +172,7 @@
         <module>application-win32-x86-exe</module>
         <module>application-win32-x86_64</module>
         <module>application-win32-x86_64-exe</module>
+        <module>application-sources</module>
         <module>application-release</module>
       </modules>
     </profile>
