@@ -23,11 +23,11 @@
   <parent>
     <groupId>org.apache.directory.studio</groupId>
     <artifactId>parent-libraries</artifactId>
-    <version>2.0.0.v20130125</version>
+    <version>2.0.1.v20130125-SNAPSHOT</version>
   </parent>
 
   <artifactId>org.apache.directory.server.ldif.partition</artifactId>
-  <version>2.0.0-M10</version>
+  <version>2.0.0-M11-SNAPSHOT</version>
   
   <name>ApacheDS LDIF Partition (for Apache Directory Studio)</name>
   <packaging>jar</packaging>
