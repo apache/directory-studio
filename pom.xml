@@ -71,10 +71,10 @@
     <org.apache.commons.lang.version>2.6</org.apache.commons.lang.version>
     <org.apache.commons.logging.version>1.1.1</org.apache.commons.logging.version>
     <org.apache.commons.pool.version>1.6</org.apache.commons.pool.version>
-    <org.apache.directory.api.validversion>1.0.0.M16-SNAPSHOT</org.apache.directory.api.validversion>
-    <org.apache.directory.api.version>1.0.0-M16-SNAPSHOT</org.apache.directory.api.version>
-    <org.apache.directory.server.validversion>2.0.0.M11-SNAPSHOT</org.apache.directory.server.validversion>
-    <org.apache.directory.server.version>2.0.0-M11-SNAPSHOT</org.apache.directory.server.version>
+    <org.apache.directory.api.validversion>1.0.0.M15</org.apache.directory.api.validversion>
+    <org.apache.directory.api.version>1.0.0-M15</org.apache.directory.api.version>
+    <org.apache.directory.server.validversion>2.0.0.M10</org.apache.directory.server.validversion>
+    <org.apache.directory.server.version>2.0.0-M10</org.apache.directory.server.version>
     <org.apache.httpcomponents.version>4.1.2</org.apache.httpcomponents.version>
     <org.apache.logging.log4j.version>1.2.17</org.apache.logging.log4j.version>
     <org.apache.mina.core.version>2.0.7</org.apache.mina.core.version>
@@ -142,6 +142,9 @@
       -P-libraries
       to the commandline to exclude it from the build.
     -->
+    <!-- NOTE:
+      This profile has been disabled for the release, and needs to be 
+      enabled again after the release is over.
     <profile>
       <id>repository</id>
       <activation>
@@ -152,7 +155,7 @@
       <modules>
         <module>repository</module>
       </modules>
-    </profile>
+    </profile>-->
 
     <!-- 
       Building libraries module is enabled by default. Add 
@@ -227,18 +230,24 @@
       -Pintegration-tests
       to the commandline to launch them.
     -->
+    <!-- NOTE:
+      This profile has been disabled for the release, and needs to be 
+      enabled again after the release is over.
     <profile>
       <id>integration-tests</id>
       <modules>
         <module>tests</module>
       </modules>
-    </profile>
+    </profile>-->
 
     <!-- 
       Building application module is enabled by default. Add 
       -P-application
       to the commandline to exclude it from the build.
     -->
+    <!-- NOTE:
+      This profile has been disabled for the release, and needs to be 
+      enabled again after the release is over.
     <profile>
       <id>application</id>
       <activation>
@@ -249,7 +258,7 @@
       <modules>
         <module>application</module>
       </modules>
-    </profile>
+    </profile>-->
   </profiles>
 
   <dependencyManagement>
