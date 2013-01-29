@@ -66,10 +66,10 @@
          	     </objectState>
          	     <!-- Special case to handle ApacheDS servers launched via Eclipse -->
          	     <!-- TODO: Should be removed before a release -->
-                 <!--<objectState
+                 <objectState
          	        name="vendorVersion"
          	        value="${project.version}">
-         	     </objectState>-->
+         	     </objectState>
          	   </or>
          	</and>
          </visibility>
