@@ -342,6 +342,13 @@ public class SearchRunnable implements StudioConnectionBulkRunnableWithProgress
                             if ( entry == null )
                             {
                                 entry = createAndCacheEntry( resultBrowserConnection, dn, monitor );
+
+                                // If the entry is still null, we return
+                                // See https://issues.apache.org/jira/browse/DIRSTUDIO-865
+                                if ( entry == null )
+                                {
+                                    return;
+                                }
                             }
 
                             // initialize special flags
