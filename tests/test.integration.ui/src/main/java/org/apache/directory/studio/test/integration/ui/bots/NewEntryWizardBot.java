@@ -19,7 +19,7 @@
  */
 package org.apache.directory.studio.test.integration.ui.bots;
 
-import org.apache.directory.shared.ldap.model.name.Dn;
+import org.apache.directory.api.ldap.model.name.Dn;
 
 
 
