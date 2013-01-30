@@ -281,49 +281,49 @@ http://www.apache.org/licenses/
          unpack="false"/>
 
    <plugin
-         id="org.apache.directory.shared.ldap.client.api"
+         id="org.apache.directory.api.ldap.client.api"
          download-size="0"
          install-size="0"
          version="${org.apache.directory.api.validversion}"
          unpack="false"/>
 
    <plugin
-         id="org.apache.directory.shared.ldap.codec.core"
+         id="org.apache.directory.api.ldap.codec.core"
          download-size="0"
          install-size="0"
          version="${org.apache.directory.api.validversion}"
          unpack="false"/>
 
    <plugin
-         id="org.apache.directory.shared.ldap.extras.aci"
+         id="org.apache.directory.api.ldap.extras.aci"
          download-size="0"
          install-size="0"
          version="${org.apache.directory.api.validversion}"
          unpack="false"/>
 
    <plugin
-         id="org.apache.directory.shared.ldap.model"
+         id="org.apache.directory.api.ldap.model"
          download-size="0"
          install-size="0"
          version="${org.apache.directory.api.validversion}"
          unpack="false"/>
 
    <plugin
-         id="org.apache.directory.shared.ldap.net.mina"
+         id="org.apache.directory.api.ldap.net.mina"
          download-size="0"
          install-size="0"
          version="${org.apache.directory.api.validversion}"
          unpack="false"/>
 
    <plugin
-         id="org.apache.directory.shared.ldap.schema"
+         id="org.apache.directory.api.ldap.schema"
          download-size="0"
          install-size="0"
          version="${org.apache.directory.api.validversion}"
          unpack="false"/>
 
    <plugin
-         id="org.apache.directory.shared.ldap.schema.converter"
+         id="org.apache.directory.api.ldap.schema.converter"
          download-size="0"
          install-size="0"
          version="${org.apache.directory.api.validversion}"

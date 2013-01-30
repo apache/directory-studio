@@ -327,91 +327,91 @@ http://www.apache.org/licenses/
          id="org.apache.directory.api.asn1.api"
          download-size="0"
          install-size="0"
-         version="${org.apache.directory.shared.validversion}"
+         version="${org.apache.directory.api.validversion}"
          unpack="false"/>
 
    <plugin
          id="org.apache.directory.api.asn1.ber"
          download-size="0"
          install-size="0"
-         version="${org.apache.directory.shared.validversion}"
+         version="${org.apache.directory.api.validversion}"
          unpack="false"/>
 
    <plugin
-         id="org.apache.directory.shared.dsmlv2.parser"
+         id="org.apache.directory.api.dsmlv2.parser"
          download-size="0"
          install-size="0"
-         version="${org.apache.directory.shared.validversion}"
+         version="${org.apache.directory.api.validversion}"
          unpack="false"/>
 
    <plugin
          id="org.apache.directory.api.i18n"
          download-size="0"
          install-size="0"
-         version="${org.apache.directory.shared.validversion}"
+         version="${org.apache.directory.api.validversion}"
          unpack="false"/>
 
    <plugin
-         id="org.apache.directory.shared.ldap.client.api"
+         id="org.apache.directory.api.ldap.client.api"
          download-size="0"
          install-size="0"
-         version="${org.apache.directory.shared.validversion}"
+         version="${org.apache.directory.api.validversion}"
          unpack="false"/>
 
    <plugin
-         id="org.apache.directory.shared.ldap.codec.core"
+         id="org.apache.directory.api.ldap.codec.core"
          download-size="0"
          install-size="0"
-         version="${org.apache.directory.shared.validversion}"
+         version="${org.apache.directory.api.validversion}"
          unpack="false"/>
 
    <plugin
-         id="org.apache.directory.shared.ldap.extras.aci"
+         id="org.apache.directory.api.ldap.extras.aci"
          download-size="0"
          install-size="0"
-         version="${org.apache.directory.shared.validversion}"
+         version="${org.apache.directory.api.validversion}"
          unpack="false"/>
 
    <plugin
-         id="org.apache.directory.shared.ldap.extras.trigger"
+         id="org.apache.directory.api.ldap.extras.trigger"
          download-size="0"
          install-size="0"
-         version="${org.apache.directory.shared.validversion}"
+         version="${org.apache.directory.api.validversion}"
          unpack="false"/>
 
    <plugin
-         id="org.apache.directory.shared.ldap.extras.util"
+         id="org.apache.directory.api.ldap.extras.util"
          download-size="0"
          install-size="0"
-         version="${org.apache.directory.shared.validversion}"
+         version="${org.apache.directory.api.validversion}"
          unpack="false"/>
 
    <plugin
-         id="org.apache.directory.shared.ldap.model"
+         id="org.apache.directory.api.ldap.model"
          download-size="0"
          install-size="0"
-         version="${org.apache.directory.shared.validversion}"
+         version="${org.apache.directory.api.validversion}"
          unpack="false"/>
 
    <plugin
-         id="org.apache.directory.shared.ldap.net.mina"
+         id="org.apache.directory.api.ldap.net.mina"
          download-size="0"
          install-size="0"
-         version="${org.apache.directory.shared.validversion}"
+         version="${org.apache.directory.api.validversion}"
          unpack="false"/>
 
    <plugin
-         id="org.apache.directory.shared.ldap.schema"
+         id="org.apache.directory.api.ldap.schema"
          download-size="0"
          install-size="0"
-         version="${org.apache.directory.shared.validversion}"
+         version="${org.apache.directory.api.validversion}"
          unpack="false"/>
 
    <plugin
          id="org.apache.directory.api.util"
          download-size="0"
          install-size="0"
-         version="${org.apache.directory.shared.validversion}"
+         version="${org.apache.directory.api.validversion}"
          unpack="false"/>
 
    <plugin
