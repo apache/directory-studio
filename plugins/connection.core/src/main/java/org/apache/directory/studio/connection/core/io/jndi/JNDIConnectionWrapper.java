@@ -1485,7 +1485,7 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
      * <li>Dn as String</li>
      * <li>javax.naming.CompositeName</li>
      * <li>javax.naming.ldap.LdapName (since Java5)</li>
-     * <li>org.apache.directory.shared.ldap.name.LdapDN</li>
+     * <li>org.apache.directory.api.ldap.name.LdapDN</li>
      * </ul>
      * <p>
      * There are some drawbacks when using this classes:

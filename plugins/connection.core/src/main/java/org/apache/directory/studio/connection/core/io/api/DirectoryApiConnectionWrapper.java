@@ -145,7 +145,7 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
     {
         this.connection = connection;
 
-        // Nasty hack to get the 'org.apache.directory.shared.ldap.protocol.codec'
+        // Nasty hack to get the 'org.apache.directory.api.ldap.protocol.codec'
         // bundle started.
         // Instantiating one of this bundle class will trigger the start of the bundle
         // thanks to the lazy activation policy
