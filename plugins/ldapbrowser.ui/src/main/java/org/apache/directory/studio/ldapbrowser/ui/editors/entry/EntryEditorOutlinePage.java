@@ -215,20 +215,38 @@ public class EntryEditorOutlinePage extends ContentOutlinePage
      */
     public void refresh()
     {
+        TreeViewer treeViewer = getTreeViewer();
+
         if ( hasAnOutline() )
         {
-            getTreeViewer().getControl().setParent( composite );
+            if ( treeViewer != null )
+            {
+                Control treeViewerControl = treeViewer.getControl();
+
+                if ( ( treeViewerControl != null ) && ( !treeViewerControl.isDisposed() ) )
+                {
+                    treeViewerControl.setParent( composite );
+                }
+            }
+
             noOutlineComposite.setParent( fakeComposite );
         }
         else
         {
-            getTreeViewer().getControl().setParent( fakeComposite );
+            if ( treeViewer != null )
+            {
+                Control treeViewerControl = treeViewer.getControl();
+
+                if ( ( treeViewerControl != null ) && ( !treeViewerControl.isDisposed() ) )
+                {
+                    treeViewerControl.setParent( fakeComposite );
+                }
+            }
+
             noOutlineComposite.setParent( composite );
         }
 
         composite.layout();
-
-        final TreeViewer treeViewer = getTreeViewer();
 
         if ( treeViewer != null && treeViewer.getTree() != null && !treeViewer.getTree().isDisposed() )
         {
@@ -511,6 +529,6 @@ public class EntryEditorOutlinePage extends ContentOutlinePage
     {
         Object o = entryEditor.getMainWidget().getViewer().getInput();
 
-        return ( o != null && o instanceof IEntry );
+        return ( ( o != null ) && ( o instanceof IEntry ) );
     }
 }
