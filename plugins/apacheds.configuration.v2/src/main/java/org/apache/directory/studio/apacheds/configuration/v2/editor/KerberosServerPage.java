@@ -29,6 +29,8 @@ import org.apache.directory.server.config.beans.DirectoryServiceBean;
 import org.apache.directory.server.config.beans.InterceptorBean;
 import org.apache.directory.server.config.beans.KdcServerBean;
 import org.apache.directory.server.config.beans.TransportBean;
+import org.eclipse.jface.viewers.ArrayContentProvider;
+import org.eclipse.jface.viewers.CheckboxTableViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
@@ -39,6 +41,7 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.Section;
@@ -338,6 +341,11 @@ public class KerberosServerPage extends ServerConfigurationEditorPage
         setGridDataWithDefaultWidth( encryptionTypesText, new GridData( SWT.FILL, SWT.NONE, true, false ) );
         Label defaultEncryptionTypesLabel = createDefaultValueLabel( toolkit, composite, "[des-cbc-md5]" ); //$NON-NLS-1$
         defaultEncryptionTypesLabel.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
+
+        CheckboxTableViewer ctv = new CheckboxTableViewer( new Table( composite, SWT.BORDER | SWT.CHECK ) );
+        ctv.setContentProvider( new ArrayContentProvider() );
+//        ctv.setInput( new EncryptionType[]
+//            { EncryptionType.AES128_CTS_HMAC_SHA1_96,  EncryptionType.DES3_CBC_MD5 } );
     }
 
 

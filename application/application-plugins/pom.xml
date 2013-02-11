@@ -139,36 +139,36 @@
                   <artifactId>org.apache.commons.pool</artifactId>
                 </artifactItem>
                 <artifactItem>
-                  <groupId>org.apache.directory.studio</groupId>
-                  <artifactId>org.apache.directory.server.config</artifactId>
+                  <groupId>org.apache.directory.server</groupId>
+                  <artifactId>apacheds-server-config</artifactId>
                 </artifactItem>
                 <artifactItem>
-                  <groupId>org.apache.directory.studio</groupId>
-                  <artifactId>org.apache.directory.server.core</artifactId>
+                  <groupId>org.apache.directory.server</groupId>
+                  <artifactId>apacheds-core</artifactId>
                 </artifactItem>
                 <artifactItem>
-                  <groupId>org.apache.directory.studio</groupId>
-                  <artifactId>org.apache.directory.server.core.api</artifactId>
+                  <groupId>org.apache.directory.server</groupId>
+                  <artifactId>apacheds-core-api</artifactId>
                 </artifactItem>
                 <artifactItem>
-                  <groupId>org.apache.directory.studio</groupId>
-                  <artifactId>org.apache.directory.server.core.avl</artifactId>
+                  <groupId>org.apache.directory.server</groupId>
+                  <artifactId>apacheds-core-avl</artifactId>
                 </artifactItem>
                 <artifactItem>
-                  <groupId>org.apache.directory.studio</groupId>
-                  <artifactId>org.apache.directory.server.core.constants</artifactId>
+                  <groupId>org.apache.directory.server</groupId>
+                  <artifactId>apacheds-core-constants</artifactId>
                 </artifactItem>
                 <artifactItem>
-                  <groupId>org.apache.directory.studio</groupId>
-                  <artifactId>org.apache.directory.server.i18n</artifactId>
+                  <groupId>org.apache.directory.server</groupId>
+                  <artifactId>apacheds-i18n</artifactId>
                 </artifactItem>
                 <artifactItem>
-                  <groupId>org.apache.directory.studio</groupId>
-                  <artifactId>org.apache.directory.server.ldif.partition</artifactId>
+                  <groupId>org.apache.directory.server</groupId>
+                  <artifactId>apacheds-ldif-partition</artifactId>
                 </artifactItem>
                 <artifactItem>
-                  <groupId>org.apache.directory.studio</groupId>
-                  <artifactId>org.apache.directory.server.xdbm.partition</artifactId>
+                  <groupId>org.apache.directory.server</groupId>
+                  <artifactId>apacheds-xdbm-partition</artifactId>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.apache.directory.studio</groupId>

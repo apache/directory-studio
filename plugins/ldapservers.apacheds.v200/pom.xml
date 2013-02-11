@@ -192,13 +192,13 @@
     
     <!-- Apache Directory Studio library plugins dependencies -->
     <dependency>
-      <groupId>org.apache.directory.studio</groupId>
-      <artifactId>org.apache.directory.server.config</artifactId>
+      <groupId>org.apache.directory.server</groupId>
+      <artifactId>apacheds-server-config</artifactId>
       <scope>provided</scope>
     </dependency>
     <dependency>
-      <groupId>org.apache.directory.studio</groupId>
-      <artifactId>org.apache.directory.server.xdbm.partition</artifactId>
+      <groupId>org.apache.directory.server</groupId>
+      <artifactId>apacheds-xdbm-partition</artifactId>
       <scope>provided</scope>
     </dependency>
     <dependency>
