@@ -64,7 +64,6 @@ public class KerberosServerPage extends ServerConfigurationEditorPage
     private Text kerberosPortText;
     private Button enableChangePasswordCheckbox;
     private Text changePasswordPortText;
-    private Text kdcPrincipalText;
     private Text primaryKdcRealmText;
     private Text kdcSearchBaseDnText;
     private Text encryptionTypesText;
@@ -109,13 +108,6 @@ public class KerberosServerPage extends ServerConfigurationEditorPage
         {
             getChangePasswordServerTransportBean().setSystemPort(
                 Integer.parseInt( changePasswordPortText.getText() ) );
-        }
-    };
-    private ModifyListener kdcPrincipalTextListener = new ModifyListener()
-    {
-        public void modifyText( ModifyEvent e )
-        {
-            getKdcServerBean().setKrbKdcPrincipal( kdcPrincipalText.getText() );
         }
     };
     private ModifyListener primaryKdcRealmTextListener = new ModifyListener()
@@ -326,13 +318,6 @@ public class KerberosServerPage extends ServerConfigurationEditorPage
         composite.setLayout( glayout );
         section.setClient( composite );
 
-        // KDC Principal Text
-        toolkit.createLabel( composite, Messages.getString( "KerberosServerPage.KdcPrincipal" ) ); //$NON-NLS-1$
-        kdcPrincipalText = toolkit.createText( composite, "" ); //$NON-NLS-1$
-        setGridDataWithDefaultWidth( kdcPrincipalText, new GridData( SWT.FILL, SWT.NONE, true, false ) );
-        Label defaultSaslHostLabel = createDefaultValueLabel( toolkit, composite, "krbtgt/EXAMPLE.COM@EXAMPLE.COM" ); //$NON-NLS-1$
-        defaultSaslHostLabel.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
-
         // SASL Principal Text
         toolkit.createLabel( composite, Messages.getString( "KerberosServerPage.PrimaryKdcRealm" ) ); //$NON-NLS-1$
         primaryKdcRealmText = toolkit.createText( composite, "" ); //$NON-NLS-1$
@@ -449,7 +434,6 @@ public class KerberosServerPage extends ServerConfigurationEditorPage
         setText( changePasswordPortText, "" + getChangePasswordServerTransportBean().getSystemPort() ); //$NON-NLS-1$
 
         // Kerberos Settings
-        setText( kdcPrincipalText, kdcServerBean.getKrbKdcPrincipal().toString() );
         setText( primaryKdcRealmText, kdcServerBean.getKrbPrimaryRealm() );
         setText( kdcSearchBaseDnText, kdcServerBean.getSearchBaseDn().toString() );
         setText( encryptionTypesText, kdcServerBean.getKrbEncryptionTypes().toString() );
@@ -489,10 +473,6 @@ public class KerberosServerPage extends ServerConfigurationEditorPage
         // Change Password Server Port Text
         addDirtyListener( changePasswordPortText );
         addModifyListener( changePasswordPortText, changePasswordPortTextListener );
-
-        // KDC Principal Text
-        addDirtyListener( kdcPrincipalText );
-        addModifyListener( kdcPrincipalText, kdcPrincipalTextListener );
 
         // Primary KDC Text
         addDirtyListener( primaryKdcRealmText );
@@ -565,10 +545,6 @@ public class KerberosServerPage extends ServerConfigurationEditorPage
         // Change Password Server Port Text
         removeDirtyListener( changePasswordPortText );
         removeModifyListener( changePasswordPortText, changePasswordPortTextListener );
-
-        // KDC Principal Text
-        removeDirtyListener( kdcPrincipalText );
-        removeModifyListener( kdcPrincipalText, kdcPrincipalTextListener );
 
         // Primary KDC Text
         removeDirtyListener( primaryKdcRealmText );
