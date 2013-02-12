@@ -77,7 +77,7 @@
     <org.apache.directory.server.version>2.0.0-M11-SNAPSHOT</org.apache.directory.server.version>
     <org.apache.httpcomponents.version>4.1.2</org.apache.httpcomponents.version>
     <org.apache.logging.log4j.version>1.2.17</org.apache.logging.log4j.version>
-    <org.apache.mina.core.version>2.0.7</org.apache.mina.core.version>
+    <org.apache.mina.version>2.0.7</org.apache.mina.version>
     <org.apache.xmlgraphics.fop.version>1.0</org.apache.xmlgraphics.fop.version>
     <org.bouncycastle.bcprov.jdk15.version>140</org.bouncycastle.bcprov.jdk15.version>
     <org.dom4j.version>1.6.1</org.dom4j.version>
@@ -332,12 +332,6 @@
         <groupId>org.apache.directory.studio</groupId>
         <artifactId>org.apache.logging.log4j</artifactId>
         <version>${org.apache.logging.log4j.version}</version>
-      </dependency>
-
-      <dependency>
-        <groupId>org.apache.directory.studio</groupId>
-        <artifactId>org.apache.mina.core</artifactId>
-        <version>${org.apache.mina.core.version}</version>
       </dependency>
 
       <dependency>
@@ -1806,7 +1800,7 @@
       <dependency>
         <groupId>org.apache.mina</groupId>
         <artifactId>mina-core</artifactId>
-        <version>${org.apache.mina.core.version}</version>
+        <version>${org.apache.mina.version}</version>
       </dependency>
 
       <dependency>

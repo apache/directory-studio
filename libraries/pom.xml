@@ -42,7 +42,6 @@
     <module>org.apache.httpcomponents.httpclient</module>
     <module>org.apache.httpcomponents.httpcore</module>
     <module>org.apache.logging.log4j</module>
-    <module>org.apache.mina.core</module>
     <module>org.bouncycastle.bcprov.jdk15</module>
     <module>org.dom4j.dom4j</module>
     <module>org.slf4j.api</module>

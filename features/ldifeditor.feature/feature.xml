@@ -439,7 +439,7 @@ http://www.apache.org/licenses/
          id="org.apache.mina.core"
          download-size="0"
          install-size="0"
-         version="${org.apache.mina.core.version}"
+         version="${org.apache.mina.version}"
          unpack="false"/>
          
    <plugin
