@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?pde version="3.8"?>
+
+<target name="Apache Directory Studio Platform" sequenceNumber="34">
+<locations>
+<location path="${eclipse_home}" type="Profile"/>
+<location path="${project_loc:repository}/target/libraries-plugins" type="Profile"/>
+</locations>
+<launcherArgs>
+<vmArgs>-Xms40m -Xmx512m -Xdock:icon=../Resources/Eclipse.icns -XstartOnFirstThread -Dorg.eclipse.swt.internal.carbon.smallFonts</vmArgs>
+</launcherArgs>
+</target>

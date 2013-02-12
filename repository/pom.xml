@@ -30,6 +30,10 @@
   <name>Apache Directory Studio Repository</name>
   <packaging>pom</packaging>
   
+  <properties>
+    <libraries-plugins-dir>target/libraries-plugins</libraries-plugins-dir>
+  </properties>
+  
   <build>
     <plugins>
       <plugin>
@@ -44,6 +48,119 @@
           <downloadSources>false</downloadSources>
           <downloadJavadocs>false</downloadJavadocs>
         </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.directory.studio</groupId>
+        <artifactId>studio-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>copy-plugins</id>
+            <phase>process-resources</phase>
+            <goals>
+              <goal>copy-eclipse-artifact</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>${libraries-plugins-dir}</outputDirectory>
+              <artifactItems>
+                <!-- Apache Directory LDAP API dependencies -->
+                <artifactItem>
+                  <groupId>org.apache.directory.api</groupId>
+                  <artifactId>api-ldap-client-api</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.apache.directory.api</groupId>
+                  <artifactId>api-asn1-api</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.apache.directory.api</groupId>
+                  <artifactId>api-asn1-ber</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.apache.directory.api</groupId>
+                  <artifactId>api-dsml-parser</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.apache.directory.api</groupId>
+                  <artifactId>api-i18n</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.apache.directory.api</groupId>
+                  <artifactId>api-ldap-codec-core</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.apache.directory.api</groupId>
+                  <artifactId>api-ldap-extras-aci</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.apache.directory.api</groupId>
+                  <artifactId>api-ldap-extras-trigger</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.apache.directory.api</groupId>
+                  <artifactId>api-ldap-extras-util</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.apache.directory.api</groupId>
+                  <artifactId>api-ldap-model</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.apache.directory.api</groupId>
+                  <artifactId>api-ldap-net-mina</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.apache.directory.api</groupId>
+                  <artifactId>api-ldap-schema-data</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.apache.directory.api</groupId>
+                  <artifactId>api-ldap-schema-converter</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.apache.directory.api</groupId>
+                  <artifactId>api-util</artifactId>
+                </artifactItem>
+
+                <!-- ApacheDS dependencies -->
+                <artifactItem>
+                  <groupId>org.apache.directory.server</groupId>
+                  <artifactId>apacheds-server-config</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.apache.directory.server</groupId>
+                  <artifactId>apacheds-core</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.apache.directory.server</groupId>
+                  <artifactId>apacheds-core-api</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.apache.directory.server</groupId>
+                  <artifactId>apacheds-core-avl</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.apache.directory.server</groupId>
+                  <artifactId>apacheds-core-constants</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.apache.directory.server</groupId>
+                  <artifactId>apacheds-i18n</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.apache.directory.server</groupId>
+                  <artifactId>apacheds-ldif-partition</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.apache.directory.server</groupId>
+                  <artifactId>apacheds-xdbm-partition</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.apache.mina</groupId>
+                  <artifactId>mina-core</artifactId>
+                </artifactItem>
+              </artifactItems>
+            </configuration>
+          </execution>
+        </executions>
       </plugin>
     </plugins>
     
