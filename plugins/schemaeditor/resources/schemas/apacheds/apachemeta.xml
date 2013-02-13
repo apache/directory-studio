@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <!--
   Licensed to the Apache Software Foundation (ASF) under one
   or more contributor license agreements.  See the NOTICE file
@@ -17,88 +16,17 @@
   specific language governing permissions and limitations
   under the License.
 -->
+<?xml version="1.0" encoding="UTF-8"?>
 <schema name="apachemeta">
   <attributetypes>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.0.2.1" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.0.2.8" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
       <aliases>
-        <alias>m-oid</alias>
+        <alias>m-typeObjectClass</alias>
       </aliases>
-      <description>The Object Identifier</description>
+      <description>The objectclass type</description>
       <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.18060.0.4.0.0.2</syntax>
-      <equality>objectIdentifierMatch</equality>
-    </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.0.2.10" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-      <aliases>
-        <alias>m-supAttributeType</alias>
-      </aliases>
-      <description>The list of superior</description>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.38</syntax>
-      <equality>nameOrNumericIdMatch</equality>
-    </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.0.2.11" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-      <aliases>
-        <alias>m-equality</alias>
-      </aliases>
-      <description>Equality matching rule</description>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.38</syntax>
-      <equality>nameOrNumericIdMatch</equality>
-    </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.0.2.12" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-      <aliases>
-        <alias>m-ordering</alias>
-      </aliases>
-      <description>Ordering matching rule</description>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.38</syntax>
-      <equality>nameOrNumericIdMatch</equality>
-    </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.0.2.13" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-      <aliases>
-        <alias>m-substr</alias>
-      </aliases>
-      <description>Substring matching rule</description>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.38</syntax>
-      <equality>nameOrNumericIdMatch</equality>
-    </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.0.2.14" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-      <aliases>
-        <alias>m-syntax</alias>
-      </aliases>
-      <description>The syntax OID for attributeTypes and matchingRules</description>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.18060.0.4.0.0.2</syntax>
-      <equality>nameOrNumericIdMatch</equality>
-    </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.0.2.15" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-      <aliases>
-        <alias>m-singleValue</alias>
-      </aliases>
-      <description>The attribute is single valued</description>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.7</syntax>
-      <equality>booleanMatch</equality>
-    </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.0.2.16" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-      <aliases>
-        <alias>m-collective</alias>
-      </aliases>
-      <description>The attribute is collective</description>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.7</syntax>
-      <equality>booleanMatch</equality>
-    </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.0.2.17" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-      <aliases>
-        <alias>m-noUserModification</alias>
-      </aliases>
-      <description>The attribute is protected</description>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.7</syntax>
-      <equality>booleanMatch</equality>
+      <syntax>1.3.6.1.4.1.18060.0.4.0.0.1</syntax>
+      <equality>objectClassTypeMatch</equality>
     </attributetype>
     <attributetype oid="1.3.6.1.4.1.18060.0.4.0.2.18" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
       <aliases>
@@ -109,6 +37,15 @@
       <syntax>1.3.6.1.4.1.1466.115.121.1.26</syntax>
       <equality>caseIgnoreMatch</equality>
     </attributetype>
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.0.2.12" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>m-ordering</alias>
+      </aliases>
+      <description>Ordering matching rule</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.38</syntax>
+      <equality>nameOrNumericIdMatch</equality>
+    </attributetype>
     <attributetype oid="1.3.6.1.4.1.18060.0.4.0.2.2" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
       <aliases>
         <alias>m-name</alias>
@@ -117,15 +54,6 @@
       <usage>USER_APPLICATIONS</usage>
       <syntax>1.3.6.1.4.1.18060.0.4.0.0.6</syntax>
       <equality>caseIgnoreMatch</equality>
-    </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.0.2.20" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
-      <aliases>
-        <alias>m-ruleId</alias>
-      </aliases>
-      <description>The rule ID</description>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.18060.0.4.0.0.4</syntax>
-      <equality>ruleIdMatch</equality>
     </attributetype>
     <attributetype oid="1.3.6.1.4.1.18060.0.4.0.2.21" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
       <aliases>
@@ -136,14 +64,23 @@
       <syntax>1.3.6.1.4.1.1466.115.121.1.38</syntax>
       <equality>caseIgnoreMatch</equality>
     </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.0.2.22" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.0.2.4" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
       <aliases>
-        <alias>m-supDITStructureRule</alias>
+        <alias>m-obsolete</alias>
       </aliases>
-      <description>The list of superiors</description>
+      <description>The type is obsolete</description>
       <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.36</syntax>
-      <equality>supDITStructureRuleMatch</equality>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.7</syntax>
+      <equality>booleanMatch</equality>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.0.2.14" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>m-syntax</alias>
+      </aliases>
+      <description>The syntax OID for attributeTypes and matchingRules</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.18060.0.4.0.0.2</syntax>
+      <equality>nameOrNumericIdMatch</equality>
     </attributetype>
     <attributetype oid="1.3.6.1.4.1.18060.0.4.0.2.24" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
       <aliases>
@@ -154,108 +91,11 @@
       <syntax>1.3.6.1.4.1.1466.115.121.1.38</syntax>
       <equality>numericOidMatch</equality>
     </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.0.2.26" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.0.2.16" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
       <aliases>
-        <alias>m-aux</alias>
+        <alias>m-collective</alias>
       </aliases>
-      <description>List of auxiliary ObjectClasses</description>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.38</syntax>
-      <equality>numericOidMatch</equality>
-    </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.0.2.27" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
-      <aliases>
-        <alias>m-not</alias>
-      </aliases>
-      <description>List of precluded attribute types</description>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.38</syntax>
-      <equality>numericOidMatch</equality>
-    </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.0.2.29" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
-      <aliases>
-        <alias>m-applies</alias>
-      </aliases>
-      <description>List of attribute types the matching rule applies to</description>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.38</syntax>
-      <equality>numericOidMatch</equality>
-    </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.0.2.3" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-      <aliases>
-        <alias>m-description</alias>
-      </aliases>
-      <description>meta descriptive information</description>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.15</syntax>
-      <equality>caseIgnoreMatch</equality>
-    </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.0.2.31" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-      <aliases>
-        <alias>m-matchingRuleSyntax</alias>
-      </aliases>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.18060.0.4.0.0.2</syntax>
-      <equality>numericOidMatch</equality>
-    </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.0.2.32" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-      <aliases>
-        <alias>m-fqcn</alias>
-      </aliases>
-      <description>The fully qualified class name of a code based schema entity</description>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.26</syntax>
-      <equality>caseExactMatch</equality>
-    </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.0.2.33" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-      <aliases>
-        <alias>m-bytecode</alias>
-      </aliases>
-      <description>The Java bytecode for a code based schema entity</description>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.5</syntax>
-    </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.0.2.34" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-      <aliases>
-        <alias>x-humanReadable</alias>
-      </aliases>
-      <description>whether or not a syntax is human readable</description>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.7</syntax>
-      <equality>booleanMatch</equality>
-    </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.0.2.37" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-      <aliases>
-        <alias>m-disabled</alias>
-      </aliases>
-      <description>Used as a marker for schemas to enable or disable them.</description>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.7</syntax>
-      <equality>booleanMatch</equality>
-    </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.0.2.38" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
-      <aliases>
-        <alias>m-dependencies</alias>
-      </aliases>
-      <description>The dependencies of a schema: other schema names.</description>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.15</syntax>
-      <equality>caseIgnoreMatch</equality>
-    </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.0.2.39" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-      <aliases>
-        <alias>m-length</alias>
-      </aliases>
-      <description>The maximum length for an attribute value.</description>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.18060.0.4.0.0.4</syntax>
-      <equality>caseIgnoreMatch</equality>
-    </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.0.2.4" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-      <aliases>
-        <alias>m-obsolete</alias>
-      </aliases>
-      <description>The type is obsolete</description>
+      <description>The attribute is collective</description>
       <usage>USER_APPLICATIONS</usage>
       <syntax>1.3.6.1.4.1.1466.115.121.1.7</syntax>
       <equality>booleanMatch</equality>
@@ -269,6 +109,33 @@
       <syntax>1.3.6.1.4.1.1466.115.121.1.38</syntax>
       <equality>nameOrNumericIdMatch</equality>
     </attributetype>
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.0.2.3" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>m-description</alias>
+      </aliases>
+      <description>meta descriptive information</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.15</syntax>
+      <equality>caseIgnoreMatch</equality>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.0.2.27" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
+      <aliases>
+        <alias>m-not</alias>
+      </aliases>
+      <description>List of precluded attribute types</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.38</syntax>
+      <equality>numericOidMatch</equality>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.0.2.37" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>m-disabled</alias>
+      </aliases>
+      <description>Used as a marker for schemas to enable or disable them.</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.7</syntax>
+      <equality>booleanMatch</equality>
+    </attributetype>
     <attributetype oid="1.3.6.1.4.1.18060.0.4.0.2.6" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
       <aliases>
         <alias>m-must</alias>
@@ -277,6 +144,158 @@
       <usage>USER_APPLICATIONS</usage>
       <syntax>1.3.6.1.4.1.1466.115.121.1.38</syntax>
       <equality>nameOrNumericIdMatch</equality>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.0.2.34" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>x-not-human-readable</alias>
+      </aliases>
+      <description>whether or not a syntax is human readable</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.7</syntax>
+      <equality>booleanMatch</equality>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.0.2.10" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>m-supAttributeType</alias>
+      </aliases>
+      <description>The list of superior</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.38</syntax>
+      <equality>nameOrNumericIdMatch</equality>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.0.2.39" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>m-length</alias>
+      </aliases>
+      <description>The maximum length for an attribute value.</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.18060.0.4.0.0.4</syntax>
+      <equality>caseIgnoreMatch</equality>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.0.2.35" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>x-schema</alias>
+      </aliases>
+      <description>Stores the name of the schema</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.15</syntax>
+      <equality>caseIgnoreMatch</equality>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.0.2.31" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>m-matchingRuleSyntax</alias>
+      </aliases>
+      <description>The MatchingRule Syntax</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.18060.0.4.0.0.2</syntax>
+      <equality>numericOidMatch</equality>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.0.2.13" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>m-substr</alias>
+      </aliases>
+      <description>Substring matching rule</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.38</syntax>
+      <equality>nameOrNumericIdMatch</equality>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.0.2.38" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
+      <aliases>
+        <alias>m-dependencies</alias>
+      </aliases>
+      <description>The dependencies of a schema: other schema names.</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.15</syntax>
+      <equality>caseIgnoreMatch</equality>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.0.2.26" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
+      <aliases>
+        <alias>m-aux</alias>
+      </aliases>
+      <description>List of auxiliary ObjectClasses</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.38</syntax>
+      <equality>numericOidMatch</equality>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.0.2.1" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>m-oid</alias>
+      </aliases>
+      <description>The Object Identifier</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.18060.0.4.0.0.2</syntax>
+      <equality>objectIdentifierMatch</equality>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.0.2.36" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>x-read-only</alias>
+      </aliases>
+      <description>Tells if the schema element is read-only or not.</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.7</syntax>
+      <equality>booleanMatch</equality>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.0.2.11" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>m-equality</alias>
+      </aliases>
+      <description>Equality matching rule</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.38</syntax>
+      <equality>nameOrNumericIdMatch</equality>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.0.2.15" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>m-singleValue</alias>
+      </aliases>
+      <description>The attribute is single valued</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.7</syntax>
+      <equality>booleanMatch</equality>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.0.2.17" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>m-noUserModification</alias>
+      </aliases>
+      <description>The attribute is protected</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.7</syntax>
+      <equality>booleanMatch</equality>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.0.2.33" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>m-bytecode</alias>
+      </aliases>
+      <description>The Java bytecode for a code based schema entity</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.5</syntax>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.0.2.32" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>m-fqcn</alias>
+      </aliases>
+      <description>The fully qualified class name of a code based schema entity</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.26</syntax>
+      <equality>caseExactMatch</equality>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.0.2.22" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
+      <aliases>
+        <alias>m-supDITStructureRule</alias>
+      </aliases>
+      <description>The list of superiors</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.36</syntax>
+      <equality>supDITStructureRuleMatch</equality>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.0.2.29" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
+      <aliases>
+        <alias>m-applies</alias>
+      </aliases>
+      <description>List of attribute types the matching rule applies to</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.38</syntax>
+      <equality>numericOidMatch</equality>
     </attributetype>
     <attributetype oid="1.3.6.1.4.1.18060.0.4.0.2.7" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
       <aliases>
@@ -287,66 +306,17 @@
       <syntax>1.3.6.1.4.1.1466.115.121.1.38</syntax>
       <equality>nameOrNumericIdMatch</equality>
     </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.0.2.8" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.0.2.20" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
       <aliases>
-        <alias>m-typeObjectClass</alias>
+        <alias>m-ruleId</alias>
       </aliases>
-      <description>The objectclass type</description>
+      <description>The rule ID</description>
       <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.18060.0.4.0.0.1</syntax>
-      <equality>objectClassTypeMatch</equality>
+      <syntax>1.3.6.1.4.1.18060.0.4.0.0.4</syntax>
+      <equality>ruleIdMatch</equality>
     </attributetype>
   </attributetypes>
   <objectclasses>
-    <objectclass oid="1.3.6.1.4.1.18060.0.4.0.3.1" obsolete="false">
-      <aliases>
-        <alias>metaTop</alias>
-      </aliases>
-      <description>Top level objectclass of all meta objects</description>
-      <superiors>
-        <superior>top</superior>
-      </superiors>
-      <type>ABSTRACT</type>
-      <mandatory>
-        <attributetype>m-oid</attributetype>
-      </mandatory>
-      <optional>
-        <attributetype>m-description</attributetype>
-      </optional>
-    </objectclass>
-    <objectclass oid="1.3.6.1.4.1.18060.0.4.0.3.10" obsolete="false">
-      <aliases>
-        <alias>metaSyntaxChecker</alias>
-      </aliases>
-      <description>meta definition of the SyntaxChecker object</description>
-      <superiors>
-        <superior>metaTop</superior>
-      </superiors>
-      <type>STRUCTURAL</type>
-      <mandatory>
-        <attributetype>m-fqcn</attributetype>
-      </mandatory>
-      <optional>
-        <attributetype>m-bytecode</attributetype>
-      </optional>
-    </objectclass>
-    <objectclass oid="1.3.6.1.4.1.18060.0.4.0.3.11" obsolete="false">
-      <aliases>
-        <alias>metaSchema</alias>
-      </aliases>
-      <description>A schema object under which meta schema definitions are found</description>
-      <superiors>
-        <superior>top</superior>
-      </superiors>
-      <type>STRUCTURAL</type>
-      <mandatory>
-        <attributetype>cn</attributetype>
-      </mandatory>
-      <optional>
-        <attributetype>m-disabled</attributetype>
-        <attributetype>m-dependencies</attributetype>
-      </optional>
-    </objectclass>
     <objectclass oid="1.3.6.1.4.1.18060.0.4.0.3.12" obsolete="false">
       <aliases>
         <alias>metaNormalizer</alias>
@@ -361,6 +331,25 @@
       </mandatory>
       <optional>
         <attributetype>m-bytecode</attributetype>
+      </optional>
+    </objectclass>
+    <objectclass oid="1.3.6.1.4.1.18060.0.4.0.3.6" obsolete="false">
+      <aliases>
+        <alias>metaDITStructureRule</alias>
+      </aliases>
+      <description>meta definition of the DITStructureRule object</description>
+      <superiors>
+        <superior>top</superior>
+      </superiors>
+      <type>STRUCTURAL</type>
+      <mandatory>
+        <attributetype>m-ruleId</attributetype>
+        <attributetype>m-form</attributetype>
+      </mandatory>
+      <optional>
+        <attributetype>m-name</attributetype>
+        <attributetype>m-obsolete</attributetype>
+        <attributetype>m-supDITStructureRule</attributetype>
       </optional>
     </objectclass>
     <objectclass oid="1.3.6.1.4.1.18060.0.4.0.3.13" obsolete="false">
@@ -400,6 +389,122 @@
         <attributetype>m-may</attributetype>
       </optional>
     </objectclass>
+    <objectclass oid="1.3.6.1.4.1.18060.0.4.0.3.8" obsolete="false">
+      <aliases>
+        <alias>metaMatchingRuleUse</alias>
+      </aliases>
+      <description>meta definition of the MatchingRuleUse object</description>
+      <superiors>
+        <superior>metaTop</superior>
+      </superiors>
+      <type>STRUCTURAL</type>
+      <mandatory>
+        <attributetype>m-applies</attributetype>
+      </mandatory>
+      <optional>
+        <attributetype>m-name</attributetype>
+        <attributetype>m-obsolete</attributetype>
+      </optional>
+    </objectclass>
+    <objectclass oid="1.3.6.1.4.1.18060.0.4.0.3.11" obsolete="false">
+      <aliases>
+        <alias>metaSchema</alias>
+      </aliases>
+      <description>A schema object under which meta schema definitions are found</description>
+      <superiors>
+        <superior>top</superior>
+      </superiors>
+      <type>STRUCTURAL</type>
+      <mandatory>
+        <attributetype>cn</attributetype>
+      </mandatory>
+      <optional>
+        <attributetype>m-disabled</attributetype>
+        <attributetype>m-dependencies</attributetype>
+      </optional>
+    </objectclass>
+    <objectclass oid="1.3.6.1.4.1.18060.0.4.0.3.1" obsolete="false">
+      <aliases>
+        <alias>metaTop</alias>
+      </aliases>
+      <description>Top level objectclass of all meta objects</description>
+      <superiors>
+        <superior>top</superior>
+      </superiors>
+      <type>ABSTRACT</type>
+      <mandatory>
+        <attributetype>m-oid</attributetype>
+      </mandatory>
+      <optional>
+        <attributetype>m-description</attributetype>
+        <attributetype>x-schema</attributetype>
+      </optional>
+    </objectclass>
+    <objectclass oid="1.3.6.1.4.1.18060.0.4.0.3.5" obsolete="false">
+      <aliases>
+        <alias>metaMatchingRule</alias>
+      </aliases>
+      <description>meta definition of the MatchingRule object</description>
+      <superiors>
+        <superior>metaTop</superior>
+      </superiors>
+      <type>STRUCTURAL</type>
+      <mandatory>
+        <attributetype>m-syntax</attributetype>
+      </mandatory>
+      <optional>
+        <attributetype>m-name</attributetype>
+        <attributetype>m-obsolete</attributetype>
+      </optional>
+    </objectclass>
+    <objectclass oid="1.3.6.1.4.1.18060.0.4.0.3.10" obsolete="false">
+      <aliases>
+        <alias>metaSyntaxChecker</alias>
+      </aliases>
+      <description>meta definition of the SyntaxChecker object</description>
+      <superiors>
+        <superior>metaTop</superior>
+      </superiors>
+      <type>STRUCTURAL</type>
+      <mandatory>
+        <attributetype>m-fqcn</attributetype>
+      </mandatory>
+      <optional>
+        <attributetype>m-bytecode</attributetype>
+      </optional>
+    </objectclass>
+    <objectclass oid="1.3.6.1.4.1.18060.0.4.0.3.4" obsolete="false">
+      <aliases>
+        <alias>metaSyntax</alias>
+      </aliases>
+      <description>meta definition of the Syntax object</description>
+      <superiors>
+        <superior>metaTop</superior>
+      </superiors>
+      <type>STRUCTURAL</type>
+      <optional>
+        <attributetype>x-not-human-readable</attributetype>
+        <attributetype>m-obsolete</attributetype>
+      </optional>
+    </objectclass>
+    <objectclass oid="1.3.6.1.4.1.18060.0.4.0.3.9" obsolete="false">
+      <aliases>
+        <alias>metaDITContentRule</alias>
+      </aliases>
+      <description>meta definition of the DITContentRule object</description>
+      <superiors>
+        <superior>metaTop</superior>
+      </superiors>
+      <type>STRUCTURAL</type>
+      <optional>
+        <attributetype>m-name</attributetype>
+        <attributetype>m-obsolete</attributetype>
+        <attributetype>m-aux</attributetype>
+        <attributetype>m-must</attributetype>
+        <attributetype>m-may</attributetype>
+        <attributetype>m-not</attributetype>
+      </optional>
+    </objectclass>
     <objectclass oid="1.3.6.1.4.1.18060.0.4.0.3.3" obsolete="false">
       <aliases>
         <alias>metaAttributeType</alias>
@@ -424,56 +529,6 @@
         <attributetype>m-length</attributetype>
       </optional>
     </objectclass>
-    <objectclass oid="1.3.6.1.4.1.18060.0.4.0.3.4" obsolete="false">
-      <aliases>
-        <alias>metaSyntax</alias>
-      </aliases>
-      <description>meta definition of the Syntax object</description>
-      <superiors>
-        <superior>metaTop</superior>
-      </superiors>
-      <type>STRUCTURAL</type>
-      <optional>
-        <attributetype>x-humanReadable</attributetype>
-        <attributetype>m-obsolete</attributetype>
-      </optional>
-    </objectclass>
-    <objectclass oid="1.3.6.1.4.1.18060.0.4.0.3.5" obsolete="false">
-      <aliases>
-        <alias>metaMatchingRule</alias>
-      </aliases>
-      <description>meta definition of the MatchingRule object</description>
-      <superiors>
-        <superior>metaTop</superior>
-      </superiors>
-      <type>STRUCTURAL</type>
-      <mandatory>
-        <attributetype>m-syntax</attributetype>
-      </mandatory>
-      <optional>
-        <attributetype>m-name</attributetype>
-        <attributetype>m-obsolete</attributetype>
-      </optional>
-    </objectclass>
-    <objectclass oid="1.3.6.1.4.1.18060.0.4.0.3.6" obsolete="false">
-      <aliases>
-        <alias>metaDITStructureRule</alias>
-      </aliases>
-      <description>meta definition of the DITStructureRule object</description>
-      <superiors>
-        <superior>top</superior>
-      </superiors>
-      <type>STRUCTURAL</type>
-      <mandatory>
-        <attributetype>m-ruleId</attributetype>
-        <attributetype>m-form</attributetype>
-      </mandatory>
-      <optional>
-        <attributetype>m-name</attributetype>
-        <attributetype>m-obsolete</attributetype>
-        <attributetype>m-supDITStructureRule</attributetype>
-      </optional>
-    </objectclass>
     <objectclass oid="1.3.6.1.4.1.18060.0.4.0.3.7" obsolete="false">
       <aliases>
         <alias>metaNameForm</alias>
@@ -493,56 +548,14 @@
         <attributetype>m-may</attributetype>
       </optional>
     </objectclass>
-    <objectclass oid="1.3.6.1.4.1.18060.0.4.0.3.8" obsolete="false">
-      <aliases>
-        <alias>metaMatchingRuleUse</alias>
-      </aliases>
-      <description>meta definition of the MatchingRuleUse object</description>
-      <superiors>
-        <superior>metaTop</superior>
-      </superiors>
-      <type>STRUCTURAL</type>
-      <mandatory>
-        <attributetype>m-applies</attributetype>
-      </mandatory>
-      <optional>
-        <attributetype>m-name</attributetype>
-        <attributetype>m-obsolete</attributetype>
-      </optional>
-    </objectclass>
-    <objectclass oid="1.3.6.1.4.1.18060.0.4.0.3.9" obsolete="false">
-      <aliases>
-        <alias>metaDITContentRule</alias>
-      </aliases>
-      <description>meta definition of the DITContentRule object</description>
-      <superiors>
-        <superior>metaTop</superior>
-      </superiors>
-      <type>STRUCTURAL</type>
-      <optional>
-        <attributetype>m-name</attributetype>
-        <attributetype>m-obsolete</attributetype>
-        <attributetype>m-aux</attributetype>
-        <attributetype>m-must</attributetype>
-        <attributetype>m-may</attributetype>
-        <attributetype>m-not</attributetype>
-      </optional>
-    </objectclass>
   </objectclasses>
   <matchingrules>
-    <matchingrule oid="1.3.6.1.4.1.18060.0.4.0.1.0" obsolete="false">
+    <matchingrule oid="1.3.6.1.4.1.18060.0.4.0.1.3" obsolete="false">
       <aliases>
-        <alias>nameOrNumericIdMatch</alias>
+        <alias>supDITStructureRuleMatch</alias>
       </aliases>
-      <description>A name or numeric id matchingRule</description>
-      <syntaxoid>1.3.6.1.4.1.18060.0.4.0.0.0</syntaxoid>
-    </matchingrule>
-    <matchingrule oid="1.3.6.1.4.1.18060.0.4.0.1.1" obsolete="false">
-      <aliases>
-        <alias>objectClassTypeMatch</alias>
-      </aliases>
-      <description>objectClassTypeMatch: for mathing AUXILIARY, STRUCTURAL, ABSTRACT</description>
-      <syntaxoid>1.3.6.1.4.1.18060.0.4.0.0.1</syntaxoid>
+      <description>A matching rule matching dit structure rule attributes</description>
+      <syntaxoid>1.3.6.1.4.1.1466.115.121.1.17</syntaxoid>
     </matchingrule>
     <matchingrule oid="1.3.6.1.4.1.18060.0.4.0.1.2" obsolete="false">
       <aliases>
@@ -551,12 +564,12 @@
       <description>a matching rule for numeric oids</description>
       <syntaxoid>1.3.6.1.4.1.1466.115.121.1.38</syntaxoid>
     </matchingrule>
-    <matchingrule oid="1.3.6.1.4.1.18060.0.4.0.1.3" obsolete="false">
+    <matchingrule oid="1.3.6.1.4.1.18060.0.4.0.1.1" obsolete="false">
       <aliases>
-        <alias>supDITStructureRuleMatch</alias>
+        <alias>objectClassTypeMatch</alias>
       </aliases>
-      <description>A matching rule matching dit structure rule attributes</description>
-      <syntaxoid>1.3.6.1.4.1.1466.115.121.1.17</syntaxoid>
+      <description>objectClassTypeMatch: for mathing AUXILIARY, STRUCTURAL, ABSTRACT</description>
+      <syntaxoid>1.3.6.1.4.1.18060.0.4.0.0.1</syntaxoid>
     </matchingrule>
     <matchingrule oid="1.3.6.1.4.1.18060.0.4.0.1.4" obsolete="false">
       <aliases>
@@ -565,22 +578,29 @@
       <description>Rule identifier of this DIT structure rule</description>
       <syntaxoid>1.3.6.1.4.1.1466.115.121.1.26</syntaxoid>
     </matchingrule>
+    <matchingrule oid="1.3.6.1.4.1.18060.0.4.0.1.0" obsolete="false">
+      <aliases>
+        <alias>nameOrNumericIdMatch</alias>
+      </aliases>
+      <description>A name or numeric id matchingRule</description>
+      <syntaxoid>1.3.6.1.4.1.18060.0.4.0.0.0</syntaxoid>
+    </matchingrule>
   </matchingrules>
   <syntaxes>
     <syntax oid="1.3.6.1.4.1.18060.0.4.0.0.0" obsolete="false" humanreadable="true">
       <description>Numeric IDs Or Names</description>
+    </syntax>
+    <syntax oid="1.3.6.1.4.1.18060.0.4.0.0.6" obsolete="false" humanreadable="true">
+      <description>Object Name</description>
+    </syntax>
+    <syntax oid="1.3.6.1.4.1.18060.0.4.0.0.4" obsolete="false" humanreadable="true">
+      <description>Numeric String</description>
     </syntax>
     <syntax oid="1.3.6.1.4.1.18060.0.4.0.0.1" obsolete="false" humanreadable="true">
       <description>Object Class Type</description>
     </syntax>
     <syntax oid="1.3.6.1.4.1.18060.0.4.0.0.2" obsolete="false" humanreadable="true">
       <description>Numeric OID</description>
-    </syntax>
-    <syntax oid="1.3.6.1.4.1.18060.0.4.0.0.4" obsolete="false" humanreadable="true">
-      <description>Numeric String</description>
-    </syntax>
-    <syntax oid="1.3.6.1.4.1.18060.0.4.0.0.6" obsolete="false" humanreadable="true">
-      <description>Object Name</description>
     </syntax>
   </syntaxes>
 </schema>

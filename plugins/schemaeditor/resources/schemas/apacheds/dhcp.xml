@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <!--
   Licensed to the Apache Software Foundation (ASF) under one
   or more contributor license agreements.  See the NOTICE file
@@ -17,31 +16,14 @@
   specific language governing permissions and limitations
   under the License.
 -->
+<?xml version="1.0" encoding="UTF-8"?>
 <schema name="dhcp">
   <attributetypes>
-    <attributetype oid="2.16.840.1.113719.1.203.4.1" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+    <attributetype oid="2.16.840.1.113719.1.203.4.2" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
       <aliases>
-        <alias>dhcpPrimaryDN</alias>
+        <alias>dhcpSecondaryDN</alias>
       </aliases>
-      <description>The DN of the dhcpServer which is the primary server for the configuration.</description>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.12</syntax>
-      <equality>distinguishedNameMatch</equality>
-    </attributetype>
-    <attributetype oid="2.16.840.1.113719.1.203.4.10" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
-      <aliases>
-        <alias>dhcpHostDN</alias>
-      </aliases>
-      <description>the distinguished name(s) of the dhcpHost objects.</description>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.12</syntax>
-      <equality>distinguishedNameMatch</equality>
-    </attributetype>
-    <attributetype oid="2.16.840.1.113719.1.203.4.11" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
-      <aliases>
-        <alias>dhcpPoolDN</alias>
-      </aliases>
-      <description>The distinguished name(s) of pools.</description>
+      <description>The DN of dhcpServer(s) which provide backup service for the configuration.</description>
       <usage>USER_APPLICATIONS</usage>
       <syntax>1.3.6.1.4.1.1466.115.121.1.12</syntax>
       <equality>distinguishedNameMatch</equality>
@@ -55,20 +37,73 @@
       <syntax>1.3.6.1.4.1.1466.115.121.1.12</syntax>
       <equality>distinguishedNameMatch</equality>
     </attributetype>
+    <attributetype oid="2.16.840.1.113719.1.203.4.31" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>dhcpReservedForClient</alias>
+      </aliases>
+      <description>The distinguished name of a "dhcpClient" that an address is reserved for. This may not be the same as the "dhcpAssignedToClient" attribute if the address is being reassigned but the current lease has not yet expired.</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.12</syntax>
+      <equality>distinguishedNameMatch</equality>
+    </attributetype>
+    <attributetype oid="2.16.840.1.113719.1.203.4.36" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>dhcpDelayedServiceParameter</alias>
+      </aliases>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
+      <equality>integerMatch</equality>
+    </attributetype>
+    <attributetype oid="2.16.840.1.113719.1.203.4.25" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>dhcpLastTransactionTime</alias>
+      </aliases>
+      <description>This is the last time a valid DHCP packet was received from the client.</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.24</syntax>
+      <equality>integerMatch</equality>
+    </attributetype>
+    <attributetype oid="2.16.840.1.113719.1.203.4.18" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
+      <aliases>
+        <alias>dhcpSharedNetworkDN</alias>
+      </aliases>
+      <description>The distinguished name(s) of sharedNetworks.</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.12</syntax>
+      <equality>distinguishedNameMatch</equality>
+    </attributetype>
+    <attributetype oid="2.16.840.1.113719.1.203.4.30" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>dhcpAssignedHostName</alias>
+      </aliases>
+      <description>This is the actual hostname that was assigned to a client. It may not be the name that was requested by the client. The fully qualified domain name can be determined by appending the value of "dhcpDomainName" (with a dot separator) to this name.</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.26</syntax>
+      <equality>caseIgnoreIA5Match</equality>
+    </attributetype>
+    <attributetype oid="2.16.840.1.113719.1.203.4.32" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>dhcpAssignedToClient</alias>
+      </aliases>
+      <description>This is the distinguished name of a "dhcpClient" that an address is currently assigned to. This attribute is only present in the class when the address is leased.</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.12</syntax>
+      <equality>distinguishedNameMatch</equality>
+    </attributetype>
+    <attributetype oid="2.16.840.1.113719.1.203.4.7" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
+      <aliases>
+        <alias>dhcpOption</alias>
+      </aliases>
+      <description>Encoded option values to be sent to clients. Each value represents a single option and contains (OptionTag, Length, OptionValue) encoded in the format used by DHCP.</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.40</syntax>
+      <equality>caseIgnoreIA5Match</equality>
+    </attributetype>
     <attributetype oid="2.16.840.1.113719.1.203.4.13" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
       <aliases>
         <alias>dhcpSubnetDN</alias>
       </aliases>
       <description>The distinguished name(s) of the subnets.</description>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.12</syntax>
-      <equality>distinguishedNameMatch</equality>
-    </attributetype>
-    <attributetype oid="2.16.840.1.113719.1.203.4.14" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-      <aliases>
-        <alias>dhcpLeaseDN</alias>
-      </aliases>
-      <description>The distinguished name of a client address.</description>
       <usage>USER_APPLICATIONS</usage>
       <syntax>1.3.6.1.4.1.1466.115.121.1.12</syntax>
       <equality>distinguishedNameMatch</equality>
@@ -82,11 +117,65 @@
       <syntax>1.3.6.1.4.1.1466.115.121.1.12</syntax>
       <equality>distinguishedNameMatch</equality>
     </attributetype>
+    <attributetype oid="2.16.840.1.113719.1.203.4.38" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>dhcpFailOverEndpointState</alias>
+      </aliases>
+      <description>Server (Failover Endpoint) state, as defined in DHCP Failover Protocol [FAILOVR]</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.26</syntax>
+      <equality>integerMatch</equality>
+    </attributetype>
+    <attributetype oid="2.16.840.1.113719.1.203.4.23" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>dhcpExpirationTime</alias>
+      </aliases>
+      <description>This is the time the current lease for an address expires.</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.24</syntax>
+      <equality>integerMatch</equality>
+    </attributetype>
+    <attributetype oid="2.16.840.1.113719.1.203.4.20" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>dhcpVersion</alias>
+      </aliases>
+      <description>The version attribute of this object.</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.26</syntax>
+      <equality>caseIgnoreIA5Match</equality>
+    </attributetype>
+    <attributetype oid="2.16.840.1.113719.1.203.4.8" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>dhcpClassData</alias>
+      </aliases>
+      <description>Encoded text string or list of bytes expressed in hexadecimal, separated by colons. Clients match subclasses based on matching the class data with the results of match or spawn with statements in the class name declarations.</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.26</syntax>
+      <equality>caseIgnoreIA5Match</equality>
+    </attributetype>
+    <attributetype oid="2.16.840.1.113719.1.203.4.37" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>dhcpMaxClientLeadTime</alias>
+      </aliases>
+      <description>Maximum Client Lead Time configuration in seconds, as defined in DHCP Failover Protocol [FAILOVR]</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
+      <equality>integerMatch</equality>
+    </attributetype>
     <attributetype oid="2.16.840.1.113719.1.203.4.16" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
       <aliases>
         <alias>dhcpClassesDN</alias>
       </aliases>
       <description>The distinguished name(s) of a class(es) in a subclass.</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.12</syntax>
+      <equality>distinguishedNameMatch</equality>
+    </attributetype>
+    <attributetype oid="2.16.840.1.113719.1.203.4.1" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>dhcpPrimaryDN</alias>
+      </aliases>
+      <description>The DN of the dhcpServer which is the primary server for the configuration.</description>
       <usage>USER_APPLICATIONS</usage>
       <syntax>1.3.6.1.4.1.1466.115.121.1.12</syntax>
       <equality>distinguishedNameMatch</equality>
@@ -100,87 +189,6 @@
       <syntax>1.3.6.1.4.1.1466.115.121.1.12</syntax>
       <equality>distinguishedNameMatch</equality>
     </attributetype>
-    <attributetype oid="2.16.840.1.113719.1.203.4.18" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
-      <aliases>
-        <alias>dhcpSharedNetworkDN</alias>
-      </aliases>
-      <description>The distinguished name(s) of sharedNetworks.</description>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.12</syntax>
-      <equality>distinguishedNameMatch</equality>
-    </attributetype>
-    <attributetype oid="2.16.840.1.113719.1.203.4.19" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
-      <aliases>
-        <alias>dhcpServiceDN</alias>
-      </aliases>
-      <description>The DN of dhcpService object(s)which contain the configuration information. Each dhcpServer object has this attribute identifying the DHCP configuration(s) that the server is associated with.</description>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.12</syntax>
-      <equality>distinguishedNameMatch</equality>
-    </attributetype>
-    <attributetype oid="2.16.840.1.113719.1.203.4.2" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
-      <aliases>
-        <alias>dhcpSecondaryDN</alias>
-      </aliases>
-      <description>The DN of dhcpServer(s) which provide backup service for the configuration.</description>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.12</syntax>
-      <equality>distinguishedNameMatch</equality>
-    </attributetype>
-    <attributetype oid="2.16.840.1.113719.1.203.4.20" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-      <aliases>
-        <alias>dhcpVersion</alias>
-      </aliases>
-      <description>The version attribute of this object.</description>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.26</syntax>
-      <equality>caseIgnoreIA5Match</equality>
-    </attributetype>
-    <attributetype oid="2.16.840.1.113719.1.203.4.21" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-      <aliases>
-        <alias>dhcpImplementation</alias>
-      </aliases>
-      <description>Description of the DHCP Server implementation e.g. DHCP Servers vendor.</description>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.26</syntax>
-      <equality>caseIgnoreIA5Match</equality>
-    </attributetype>
-    <attributetype oid="2.16.840.1.113719.1.203.4.22" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-      <aliases>
-        <alias>dhcpAddressState</alias>
-      </aliases>
-      <description>This stores information about the current binding-status of an address. For dynamic addresses managed by DHCP, the values should be restricted to the following: "FREE", "ACTIVE", "EXPIRED", "RELEASED", "RESET", "ABANDONED", "BACKUP". For other addresses, it SHOULD be one of the following: "UNKNOWN", "RESERVED" (an address that is managed by DHCP that is reserved for a specific client), "RESERVED-ACTIVE" (same as reserved, but address is currently in use), "ASSIGNED" (assigned manually or by some other mechanism), "UNASSIGNED", "NOTASSIGNABLE".</description>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.26</syntax>
-      <equality>caseIgnoreIA5Match</equality>
-    </attributetype>
-    <attributetype oid="2.16.840.1.113719.1.203.4.23" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-      <aliases>
-        <alias>dhcpExpirationTime</alias>
-      </aliases>
-      <description>This is the time the current lease for an address expires.</description>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.24</syntax>
-      <equality>integerMatch</equality>
-    </attributetype>
-    <attributetype oid="2.16.840.1.113719.1.203.4.24" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-      <aliases>
-        <alias>dhcpStartTimeOfState</alias>
-      </aliases>
-      <description>This is the time of the last state change for a leased address.</description>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.24</syntax>
-      <equality>integerMatch</equality>
-    </attributetype>
-    <attributetype oid="2.16.840.1.113719.1.203.4.25" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-      <aliases>
-        <alias>dhcpLastTransactionTime</alias>
-      </aliases>
-      <description>This is the last time a valid DHCP packet was received from the client.</description>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.24</syntax>
-      <equality>integerMatch</equality>
-    </attributetype>
     <attributetype oid="2.16.840.1.113719.1.203.4.26" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
       <aliases>
         <alias>dhcpBootpFlag</alias>
@@ -190,77 +198,14 @@
       <syntax>1.3.6.1.4.1.1466.115.121.1.7</syntax>
       <equality>integerMatch</equality>
     </attributetype>
-    <attributetype oid="2.16.840.1.113719.1.203.4.27" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+    <attributetype oid="2.16.840.1.113719.1.203.4.9" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
       <aliases>
-        <alias>dhcpDomainName</alias>
+        <alias>dhcpOptionsDN</alias>
       </aliases>
-      <description>This is the name of the domain sent to the client by the server. It is essentially the same as the value for DHCP option 15 sent to the client, and represents only the domain - not the full FQDN. To obtain the full FQDN assigned to the client you must prepend the "dhcpAssignedHostName" to this value with a ".".</description>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.26</syntax>
-      <equality>caseIgnoreIA5Match</equality>
-    </attributetype>
-    <attributetype oid="2.16.840.1.113719.1.203.4.28" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-      <aliases>
-        <alias>dhcpDnsStatus</alias>
-      </aliases>
-      <description>This indicates the status of updating DNS resource records on behalf of the client by the DHCP server for this address. The value is a 16-bit bitmask.</description>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
-      <equality>integerMatch</equality>
-    </attributetype>
-    <attributetype oid="2.16.840.1.113719.1.203.4.29" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-      <aliases>
-        <alias>dhcpRequestedHostName</alias>
-      </aliases>
-      <description>This is the hostname that was requested by the client.</description>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.26</syntax>
-      <equality>caseIgnoreIA5Match</equality>
-    </attributetype>
-    <attributetype oid="2.16.840.1.113719.1.203.4.3" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
-      <aliases>
-        <alias>dhcpStatements</alias>
-      </aliases>
-      <description>Flexible storage for specific data depending on what object this exists in. Like conditional statements, server parameters, etc. This allows the standard to evolve without needing to adjust the schema.</description>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.26</syntax>
-      <equality>caseIgnoreIA5Match</equality>
-    </attributetype>
-    <attributetype oid="2.16.840.1.113719.1.203.4.30" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-      <aliases>
-        <alias>dhcpAssignedHostName</alias>
-      </aliases>
-      <description>This is the actual hostname that was assigned to a client. It may not be the name that was requested by the client. The fully qualified domain name can be determined by appending the value of "dhcpDomainName" (with a dot separator) to this name.</description>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.26</syntax>
-      <equality>caseIgnoreIA5Match</equality>
-    </attributetype>
-    <attributetype oid="2.16.840.1.113719.1.203.4.31" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-      <aliases>
-        <alias>dhcpReservedForClient</alias>
-      </aliases>
-      <description>The distinguished name of a "dhcpClient" that an address is reserved for. This may not be the same as the "dhcpAssignedToClient" attribute if the address is being reassigned but the current lease has not yet expired.</description>
+      <description>The distinguished name(s) of the dhcpOption objects containing the configuration options provided by the server.</description>
       <usage>USER_APPLICATIONS</usage>
       <syntax>1.3.6.1.4.1.1466.115.121.1.12</syntax>
       <equality>distinguishedNameMatch</equality>
-    </attributetype>
-    <attributetype oid="2.16.840.1.113719.1.203.4.32" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-      <aliases>
-        <alias>dhcpAssignedToClient</alias>
-      </aliases>
-      <description>This is the distinguished name of a "dhcpClient" that an address is currently assigned to. This attribute is only present in the class when the address is leased.</description>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.12</syntax>
-      <equality>distinguishedNameMatch</equality>
-    </attributetype>
-    <attributetype oid="2.16.840.1.113719.1.203.4.33" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-      <aliases>
-        <alias>dhcpRelayAgentInfo</alias>
-      </aliases>
-      <description>If the client request was received via a relay agent, this contains information about the relay agent that was available from the DHCP request. This is a hex-encoded option value.</description>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.40</syntax>
-      <equality>caseIgnoreIA5Match</equality>
     </attributetype>
     <attributetype oid="2.16.840.1.113719.1.203.4.34" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
       <aliases>
@@ -280,32 +225,6 @@
       <syntax>1.3.6.1.4.1.1466.115.121.1.40</syntax>
       <equality>caseIgnoreIA5Match</equality>
     </attributetype>
-    <attributetype oid="2.16.840.1.113719.1.203.4.36" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-      <aliases>
-        <alias>dhcpDelayedServiceParameter</alias>
-      </aliases>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
-      <equality>integerMatch</equality>
-    </attributetype>
-    <attributetype oid="2.16.840.1.113719.1.203.4.37" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-      <aliases>
-        <alias>dhcpMaxClientLeadTime</alias>
-      </aliases>
-      <description>Maximum Client Lead Time configuration in seconds, as defined in DHCP Failover Protocol [FAILOVR]</description>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
-      <equality>integerMatch</equality>
-    </attributetype>
-    <attributetype oid="2.16.840.1.113719.1.203.4.38" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-      <aliases>
-        <alias>dhcpFailOverEndpointState</alias>
-      </aliases>
-      <description>Server (Failover Endpoint) state, as defined in DHCP Failover Protocol [FAILOVR]</description>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.26</syntax>
-      <equality>integerMatch</equality>
-    </attributetype>
     <attributetype oid="2.16.840.1.113719.1.203.4.39" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
       <aliases>
         <alias>dhcpErrorLog</alias>
@@ -315,20 +234,83 @@
       <syntax>1.3.6.1.4.1.1466.115.121.1.26</syntax>
       <equality>caseIgnoreIA5Match</equality>
     </attributetype>
-    <attributetype oid="2.16.840.1.113719.1.203.4.4" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
+    <attributetype oid="2.16.840.1.113719.1.203.4.22" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
       <aliases>
-        <alias>dhcpRange</alias>
+        <alias>dhcpAddressState</alias>
       </aliases>
-      <description>The starting &amp; ending IP Addresses in the range (inclusive), separated by a hyphen; if the range only contains one address, then just the address can be specified with no hyphen. Each range is defined as a separate value.</description>
+      <description>This stores information about the current binding-status of an address. For dynamic addresses managed by DHCP, the values should be restricted to the following: "FREE", "ACTIVE", "EXPIRED", "RELEASED", "RESET", "ABANDONED", "BACKUP". For other addresses, it SHOULD be one of the following: "UNKNOWN", "RESERVED" (an address that is managed by DHCP that is reserved for a specific client), "RESERVED-ACTIVE" (same as reserved, but address is currently in use), "ASSIGNED" (assigned manually or by some other mechanism), "UNASSIGNED", "NOTASSIGNABLE".</description>
       <usage>USER_APPLICATIONS</usage>
       <syntax>1.3.6.1.4.1.1466.115.121.1.26</syntax>
       <equality>caseIgnoreIA5Match</equality>
+    </attributetype>
+    <attributetype oid="2.16.840.1.113719.1.203.4.11" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
+      <aliases>
+        <alias>dhcpPoolDN</alias>
+      </aliases>
+      <description>The distinguished name(s) of pools.</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.12</syntax>
+      <equality>distinguishedNameMatch</equality>
+    </attributetype>
+    <attributetype oid="2.16.840.1.113719.1.203.4.28" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>dhcpDnsStatus</alias>
+      </aliases>
+      <description>This indicates the status of updating DNS resource records on behalf of the client by the DHCP server for this address. The value is a 16-bit bitmask.</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
+      <equality>integerMatch</equality>
+    </attributetype>
+    <attributetype oid="2.16.840.1.113719.1.203.4.19" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
+      <aliases>
+        <alias>dhcpServiceDN</alias>
+      </aliases>
+      <description>The DN of dhcpService object(s)which contain the configuration information. Each dhcpServer object has this attribute identifying the DHCP configuration(s) that the server is associated with.</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.12</syntax>
+      <equality>distinguishedNameMatch</equality>
+    </attributetype>
+    <attributetype oid="2.16.840.1.113719.1.203.4.29" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>dhcpRequestedHostName</alias>
+      </aliases>
+      <description>This is the hostname that was requested by the client.</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.26</syntax>
+      <equality>caseIgnoreIA5Match</equality>
+    </attributetype>
+    <attributetype oid="2.16.840.1.113719.1.203.4.24" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>dhcpStartTimeOfState</alias>
+      </aliases>
+      <description>This is the time of the last state change for a leased address.</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.24</syntax>
+      <equality>integerMatch</equality>
     </attributetype>
     <attributetype oid="2.16.840.1.113719.1.203.4.5" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
       <aliases>
         <alias>dhcpPermitList</alias>
       </aliases>
       <description>This attribute contains the permit lists associated with a pool. Each permit list is defined as a separate value.</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.26</syntax>
+      <equality>caseIgnoreIA5Match</equality>
+    </attributetype>
+    <attributetype oid="2.16.840.1.113719.1.203.4.10" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
+      <aliases>
+        <alias>dhcpHostDN</alias>
+      </aliases>
+      <description>the distinguished name(s) of the dhcpHost objects.</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.12</syntax>
+      <equality>distinguishedNameMatch</equality>
+    </attributetype>
+    <attributetype oid="2.16.840.1.113719.1.203.4.4" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
+      <aliases>
+        <alias>dhcpRange</alias>
+      </aliases>
+      <description>The starting &amp; ending IP Addresses in the range (inclusive), separated by a hyphen; if the range only contains one address, then just the address can be specified with no hyphen. Each range is defined as a separate value.</description>
       <usage>USER_APPLICATIONS</usage>
       <syntax>1.3.6.1.4.1.1466.115.121.1.26</syntax>
       <equality>caseIgnoreIA5Match</equality>
@@ -342,85 +324,72 @@
       <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
       <equality>integerMatch</equality>
     </attributetype>
-    <attributetype oid="2.16.840.1.113719.1.203.4.7" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
+    <attributetype oid="2.16.840.1.113719.1.203.4.33" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
       <aliases>
-        <alias>dhcpOption</alias>
+        <alias>dhcpRelayAgentInfo</alias>
       </aliases>
-      <description>Encoded option values to be sent to clients. Each value represents a single option and contains (OptionTag, Length, OptionValue) encoded in the format used by DHCP.</description>
+      <description>If the client request was received via a relay agent, this contains information about the relay agent that was available from the DHCP request. This is a hex-encoded option value.</description>
       <usage>USER_APPLICATIONS</usage>
       <syntax>1.3.6.1.4.1.1466.115.121.1.40</syntax>
       <equality>caseIgnoreIA5Match</equality>
     </attributetype>
-    <attributetype oid="2.16.840.1.113719.1.203.4.8" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+    <attributetype oid="2.16.840.1.113719.1.203.4.3" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
       <aliases>
-        <alias>dhcpClassData</alias>
+        <alias>dhcpStatements</alias>
       </aliases>
-      <description>Encoded text string or list of bytes expressed in hexadecimal, separated by colons. Clients match subclasses based on matching the class data with the results of match or spawn with statements in the class name declarations.</description>
+      <description>Flexible storage for specific data depending on what object this exists in. Like conditional statements, server parameters, etc. This allows the standard to evolve without needing to adjust the schema.</description>
       <usage>USER_APPLICATIONS</usage>
       <syntax>1.3.6.1.4.1.1466.115.121.1.26</syntax>
       <equality>caseIgnoreIA5Match</equality>
     </attributetype>
-    <attributetype oid="2.16.840.1.113719.1.203.4.9" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
+    <attributetype oid="2.16.840.1.113719.1.203.4.21" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
       <aliases>
-        <alias>dhcpOptionsDN</alias>
+        <alias>dhcpImplementation</alias>
       </aliases>
-      <description>The distinguished name(s) of the dhcpOption objects containing the configuration options provided by the server.</description>
+      <description>Description of the DHCP Server implementation e.g. DHCP Servers vendor.</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.26</syntax>
+      <equality>caseIgnoreIA5Match</equality>
+    </attributetype>
+    <attributetype oid="2.16.840.1.113719.1.203.4.14" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>dhcpLeaseDN</alias>
+      </aliases>
+      <description>The distinguished name of a client address.</description>
       <usage>USER_APPLICATIONS</usage>
       <syntax>1.3.6.1.4.1.1466.115.121.1.12</syntax>
       <equality>distinguishedNameMatch</equality>
     </attributetype>
+    <attributetype oid="2.16.840.1.113719.1.203.4.27" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>dhcpDomainName</alias>
+      </aliases>
+      <description>This is the name of the domain sent to the client by the server. It is essentially the same as the value for DHCP option 15 sent to the client, and represents only the domain - not the full FQDN. To obtain the full FQDN assigned to the client you must prepend the "dhcpAssignedHostName" to this value with a ".".</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.26</syntax>
+      <equality>caseIgnoreIA5Match</equality>
+    </attributetype>
   </attributetypes>
   <objectclasses>
-    <objectclass oid="2.16.840.1.113719.1.203.6.1" obsolete="false">
+    <objectclass oid="2.16.840.1.113719.1.203.6.4" obsolete="false">
       <aliases>
-        <alias>dhcpService</alias>
+        <alias>dhcpPool</alias>
       </aliases>
-      <description>Service object that represents the actual DHCP Service configuration. This is a container object.</description>
+      <description>This stores configuration information about a pool.</description>
       <superiors>
         <superior>top</superior>
       </superiors>
       <type>STRUCTURAL</type>
       <mandatory>
         <attributetype>cn</attributetype>
-        <attributetype>dhcpPrimaryDN</attributetype>
+        <attributetype>dhcpRange</attributetype>
       </mandatory>
       <optional>
-        <attributetype>dhcpSecondaryDN</attributetype>
-        <attributetype>dhcpSharedNetworkDN</attributetype>
-        <attributetype>dhcpSubnetDN</attributetype>
-        <attributetype>dhcpGroupDN</attributetype>
-        <attributetype>dhcpHostDN</attributetype>
         <attributetype>dhcpClassesDN</attributetype>
+        <attributetype>dhcpPermitList</attributetype>
+        <attributetype>dhcpLeasesDN</attributetype>
         <attributetype>dhcpOptionsDN</attributetype>
         <attributetype>dhcpStatements</attributetype>
-      </optional>
-    </objectclass>
-    <objectclass oid="2.16.840.1.113719.1.203.6.10" obsolete="false">
-      <aliases>
-        <alias>dhcpLeases</alias>
-      </aliases>
-      <description>This class represents an IP Address, which may or may not have been leased.</description>
-      <superiors>
-        <superior>top</superior>
-      </superiors>
-      <type>STRUCTURAL</type>
-      <mandatory>
-        <attributetype>cn</attributetype>
-        <attributetype>dhcpAddressState</attributetype>
-      </mandatory>
-      <optional>
-        <attributetype>dhcpExpirationTime</attributetype>
-        <attributetype>dhcpStartTimeOfState</attributetype>
-        <attributetype>dhcpLastTransactionTime</attributetype>
-        <attributetype>dhcpBootpFlag</attributetype>
-        <attributetype>dhcpDomainName</attributetype>
-        <attributetype>dhcpDnsStatus</attributetype>
-        <attributetype>dhcpRequestedHostName</attributetype>
-        <attributetype>dhcpAssignedHostName</attributetype>
-        <attributetype>dhcpReservedForClient</attributetype>
-        <attributetype>dhcpAssignedToClient</attributetype>
-        <attributetype>dhcpRelayAgentInfo</attributetype>
-        <attributetype>dhcpHWAddress</attributetype>
       </optional>
     </objectclass>
     <objectclass oid="2.16.840.1.113719.1.203.6.11" obsolete="false">
@@ -452,6 +421,59 @@
         <attributetype>dhcpErrorLog</attributetype>
       </optional>
     </objectclass>
+    <objectclass oid="2.16.840.1.113719.1.203.6.9" obsolete="false">
+      <aliases>
+        <alias>dhcpOptions</alias>
+      </aliases>
+      <description>Represents information about a collection of options defined.</description>
+      <superiors>
+        <superior>top</superior>
+      </superiors>
+      <type>AUXILIARY</type>
+      <mandatory>
+        <attributetype>cn</attributetype>
+      </mandatory>
+      <optional>
+        <attributetype>dhcpOption</attributetype>
+      </optional>
+    </objectclass>
+    <objectclass oid="2.16.840.1.113719.1.203.6.2" obsolete="false">
+      <aliases>
+        <alias>dhcpSharedNetwork</alias>
+      </aliases>
+      <description>This stores configuration information for a shared network.</description>
+      <superiors>
+        <superior>top</superior>
+      </superiors>
+      <type>STRUCTURAL</type>
+      <mandatory>
+        <attributetype>cn</attributetype>
+      </mandatory>
+      <optional>
+        <attributetype>dhcpSubnetDN</attributetype>
+        <attributetype>dhcpPoolDN</attributetype>
+        <attributetype>dhcpOptionsDN</attributetype>
+        <attributetype>dhcpStatements</attributetype>
+      </optional>
+    </objectclass>
+    <objectclass oid="2.16.840.1.113719.1.203.6.8" obsolete="false">
+      <aliases>
+        <alias>dhcpSubClass</alias>
+      </aliases>
+      <description>Represents information about a collection of related classes.</description>
+      <superiors>
+        <superior>top</superior>
+      </superiors>
+      <type>STRUCTURAL</type>
+      <mandatory>
+        <attributetype>cn</attributetype>
+      </mandatory>
+      <optional>
+        <attributetype>dhcpClassData</attributetype>
+        <attributetype>dhcpOptionsDN</attributetype>
+        <attributetype>dhcpStatements</attributetype>
+      </optional>
+    </objectclass>
     <objectclass oid="2.16.840.1.113719.1.203.6.12" obsolete="false">
       <aliases>
         <alias>dhcpServer</alias>
@@ -475,11 +497,39 @@
         <attributetype>dhcpStatements</attributetype>
       </optional>
     </objectclass>
-    <objectclass oid="2.16.840.1.113719.1.203.6.2" obsolete="false">
+    <objectclass oid="2.16.840.1.113719.1.203.6.10" obsolete="false">
       <aliases>
-        <alias>dhcpSharedNetwork</alias>
+        <alias>dhcpLeases</alias>
       </aliases>
-      <description>This stores configuration information for a shared network.</description>
+      <description>This class represents an IP Address, which may or may not have been leased.</description>
+      <superiors>
+        <superior>top</superior>
+      </superiors>
+      <type>STRUCTURAL</type>
+      <mandatory>
+        <attributetype>cn</attributetype>
+        <attributetype>dhcpAddressState</attributetype>
+      </mandatory>
+      <optional>
+        <attributetype>dhcpExpirationTime</attributetype>
+        <attributetype>dhcpStartTimeOfState</attributetype>
+        <attributetype>dhcpLastTransactionTime</attributetype>
+        <attributetype>dhcpBootpFlag</attributetype>
+        <attributetype>dhcpDomainName</attributetype>
+        <attributetype>dhcpDnsStatus</attributetype>
+        <attributetype>dhcpRequestedHostName</attributetype>
+        <attributetype>dhcpAssignedHostName</attributetype>
+        <attributetype>dhcpReservedForClient</attributetype>
+        <attributetype>dhcpAssignedToClient</attributetype>
+        <attributetype>dhcpRelayAgentInfo</attributetype>
+        <attributetype>dhcpHWAddress</attributetype>
+      </optional>
+    </objectclass>
+    <objectclass oid="2.16.840.1.113719.1.203.6.5" obsolete="false">
+      <aliases>
+        <alias>dhcpGroup</alias>
+      </aliases>
+      <description>Group object that lists host DNs and parameters. This is a container object.</description>
       <superiors>
         <superior>top</superior>
       </superiors>
@@ -488,8 +538,49 @@
         <attributetype>cn</attributetype>
       </mandatory>
       <optional>
+        <attributetype>dhcpHostDN</attributetype>
+        <attributetype>dhcpOptionsDN</attributetype>
+        <attributetype>dhcpStatements</attributetype>
+      </optional>
+    </objectclass>
+    <objectclass oid="2.16.840.1.113719.1.203.6.1" obsolete="false">
+      <aliases>
+        <alias>dhcpService</alias>
+      </aliases>
+      <description>Service object that represents the actual DHCP Service configuration. This is a container object.</description>
+      <superiors>
+        <superior>top</superior>
+      </superiors>
+      <type>STRUCTURAL</type>
+      <mandatory>
+        <attributetype>cn</attributetype>
+        <attributetype>dhcpPrimaryDN</attributetype>
+      </mandatory>
+      <optional>
+        <attributetype>dhcpSecondaryDN</attributetype>
+        <attributetype>dhcpSharedNetworkDN</attributetype>
         <attributetype>dhcpSubnetDN</attributetype>
-        <attributetype>dhcpPoolDN</attributetype>
+        <attributetype>dhcpGroupDN</attributetype>
+        <attributetype>dhcpHostDN</attributetype>
+        <attributetype>dhcpClassesDN</attributetype>
+        <attributetype>dhcpOptionsDN</attributetype>
+        <attributetype>dhcpStatements</attributetype>
+      </optional>
+    </objectclass>
+    <objectclass oid="2.16.840.1.113719.1.203.6.7" obsolete="false">
+      <aliases>
+        <alias>dhcpClass</alias>
+      </aliases>
+      <description>Represents information about a collection of related clients.</description>
+      <superiors>
+        <superior>top</superior>
+      </superiors>
+      <type>STRUCTURAL</type>
+      <mandatory>
+        <attributetype>cn</attributetype>
+      </mandatory>
+      <optional>
+        <attributetype>dhcpSubclassesDN</attributetype>
         <attributetype>dhcpOptionsDN</attributetype>
         <attributetype>dhcpStatements</attributetype>
       </optional>
@@ -518,45 +609,6 @@
         <attributetype>dhcpStatements</attributetype>
       </optional>
     </objectclass>
-    <objectclass oid="2.16.840.1.113719.1.203.6.4" obsolete="false">
-      <aliases>
-        <alias>dhcpPool</alias>
-      </aliases>
-      <description>This stores configuration information about a pool.</description>
-      <superiors>
-        <superior>top</superior>
-      </superiors>
-      <type>STRUCTURAL</type>
-      <mandatory>
-        <attributetype>cn</attributetype>
-        <attributetype>dhcpRange</attributetype>
-      </mandatory>
-      <optional>
-        <attributetype>dhcpClassesDN</attributetype>
-        <attributetype>dhcpPermitList</attributetype>
-        <attributetype>dhcpLeasesDN</attributetype>
-        <attributetype>dhcpOptionsDN</attributetype>
-        <attributetype>dhcpStatements</attributetype>
-      </optional>
-    </objectclass>
-    <objectclass oid="2.16.840.1.113719.1.203.6.5" obsolete="false">
-      <aliases>
-        <alias>dhcpGroup</alias>
-      </aliases>
-      <description>Group object that lists host DNs and parameters. This is a container object.</description>
-      <superiors>
-        <superior>top</superior>
-      </superiors>
-      <type>STRUCTURAL</type>
-      <mandatory>
-        <attributetype>cn</attributetype>
-      </mandatory>
-      <optional>
-        <attributetype>dhcpHostDN</attributetype>
-        <attributetype>dhcpOptionsDN</attributetype>
-        <attributetype>dhcpStatements</attributetype>
-      </optional>
-    </objectclass>
     <objectclass oid="2.16.840.1.113719.1.203.6.6" obsolete="false">
       <aliases>
         <alias>dhcpHost</alias>
@@ -574,58 +626,6 @@
         <attributetype>dhcpHWAddress</attributetype>
         <attributetype>dhcpOptionsDN</attributetype>
         <attributetype>dhcpStatements</attributetype>
-      </optional>
-    </objectclass>
-    <objectclass oid="2.16.840.1.113719.1.203.6.7" obsolete="false">
-      <aliases>
-        <alias>dhcpClass</alias>
-      </aliases>
-      <description>Represents information about a collection of related clients.</description>
-      <superiors>
-        <superior>top</superior>
-      </superiors>
-      <type>STRUCTURAL</type>
-      <mandatory>
-        <attributetype>cn</attributetype>
-      </mandatory>
-      <optional>
-        <attributetype>dhcpSubclassesDN</attributetype>
-        <attributetype>dhcpOptionsDN</attributetype>
-        <attributetype>dhcpStatements</attributetype>
-      </optional>
-    </objectclass>
-    <objectclass oid="2.16.840.1.113719.1.203.6.8" obsolete="false">
-      <aliases>
-        <alias>dhcpSubClass</alias>
-      </aliases>
-      <description>Represents information about a collection of related classes.</description>
-      <superiors>
-        <superior>top</superior>
-      </superiors>
-      <type>STRUCTURAL</type>
-      <mandatory>
-        <attributetype>cn</attributetype>
-      </mandatory>
-      <optional>
-        <attributetype>dhcpClassData</attributetype>
-        <attributetype>dhcpOptionsDN</attributetype>
-        <attributetype>dhcpStatements</attributetype>
-      </optional>
-    </objectclass>
-    <objectclass oid="2.16.840.1.113719.1.203.6.9" obsolete="false">
-      <aliases>
-        <alias>dhcpOptions</alias>
-      </aliases>
-      <description>Represents information about a collection of options defined.</description>
-      <superiors>
-        <superior>top</superior>
-      </superiors>
-      <type>AUXILIARY</type>
-      <mandatory>
-        <attributetype>cn</attributetype>
-      </mandatory>
-      <optional>
-        <attributetype>dhcpOption</attributetype>
       </optional>
     </objectclass>
   </objectclasses>

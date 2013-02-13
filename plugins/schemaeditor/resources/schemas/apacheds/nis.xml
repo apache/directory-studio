@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <!--
   Licensed to the Apache Software Foundation (ASF) under one
   or more contributor license agreements.  See the NOTICE file
@@ -17,68 +16,9 @@
   specific language governing permissions and limitations
   under the License.
 -->
+<?xml version="1.0" encoding="UTF-8"?>
 <schema name="nis">
   <attributetypes>
-    <attributetype oid="1.3.6.1.1.1.1.0" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-      <aliases>
-        <alias>uidNumber</alias>
-      </aliases>
-      <description>An integer uniquely identifying a user in an administrative domain</description>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
-      <equality>integerMatch</equality>
-    </attributetype>
-    <attributetype oid="1.3.6.1.1.1.1.1" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-      <aliases>
-        <alias>gidNumber</alias>
-      </aliases>
-      <description>An integer uniquely identifying a group in an administrative domain</description>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
-      <equality>integerMatch</equality>
-    </attributetype>
-    <attributetype oid="1.3.6.1.1.1.1.10" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-      <aliases>
-        <alias>shadowExpire</alias>
-      </aliases>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
-      <equality>integerMatch</equality>
-    </attributetype>
-    <attributetype oid="1.3.6.1.1.1.1.11" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-      <aliases>
-        <alias>shadowFlag</alias>
-      </aliases>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
-      <equality>integerMatch</equality>
-    </attributetype>
-    <attributetype oid="1.3.6.1.1.1.1.12" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
-      <aliases>
-        <alias>memberUid</alias>
-      </aliases>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.26</syntax>
-      <equality>caseExactIA5Match</equality>
-      <substring>caseExactIA5SubstringsMatch</substring>
-    </attributetype>
-    <attributetype oid="1.3.6.1.1.1.1.13" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
-      <aliases>
-        <alias>memberNisNetgroup</alias>
-      </aliases>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.26</syntax>
-      <equality>caseExactIA5Match</equality>
-      <substring>caseExactIA5SubstringsMatch</substring>
-    </attributetype>
-    <attributetype oid="1.3.6.1.1.1.1.14" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
-      <aliases>
-        <alias>nisNetgroupTriple</alias>
-      </aliases>
-      <description>Netgroup triple</description>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.1.1.0.0</syntax>
-    </attributetype>
     <attributetype oid="1.3.6.1.1.1.1.15" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
       <aliases>
         <alias>ipServicePort</alias>
@@ -87,23 +27,30 @@
       <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
       <equality>integerMatch</equality>
     </attributetype>
-    <attributetype oid="1.3.6.1.1.1.1.16" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
+    <attributetype oid="1.3.6.1.1.1.1.9" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
       <aliases>
-        <alias>ipServiceProtocol</alias>
-      </aliases>
-      <superior>name</superior>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.15</syntax>
-      <equality>caseIgnoreMatch</equality>
-      <substring>caseIgnoreSubstringsMatch</substring>
-    </attributetype>
-    <attributetype oid="1.3.6.1.1.1.1.17" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-      <aliases>
-        <alias>ipProtocolNumber</alias>
+        <alias>shadowInactive</alias>
       </aliases>
       <usage>USER_APPLICATIONS</usage>
       <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
       <equality>integerMatch</equality>
+    </attributetype>
+    <attributetype oid="1.3.6.1.1.1.1.5" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>shadowLastChange</alias>
+      </aliases>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
+      <equality>integerMatch</equality>
+    </attributetype>
+    <attributetype oid="1.3.6.1.1.1.1.4" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>loginShell</alias>
+      </aliases>
+      <description>The path to the login shell</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.26</syntax>
+      <equality>caseExactIA5Match</equality>
     </attributetype>
     <attributetype oid="1.3.6.1.1.1.1.18" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
       <aliases>
@@ -112,79 +59,6 @@
       <usage>USER_APPLICATIONS</usage>
       <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
       <equality>integerMatch</equality>
-    </attributetype>
-    <attributetype oid="1.3.6.1.1.1.1.19" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
-      <aliases>
-        <alias>ipHostNumber</alias>
-      </aliases>
-      <description>IP address</description>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.26</syntax>
-      <equality>caseIgnoreIA5Match</equality>
-    </attributetype>
-    <attributetype oid="1.3.6.1.1.1.1.2" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-      <aliases>
-        <alias>gecos</alias>
-      </aliases>
-      <description>The GECOS field; the common name</description>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.26</syntax>
-      <equality>caseIgnoreIA5Match</equality>
-      <substring>caseIgnoreIA5SubstringsMatch</substring>
-    </attributetype>
-    <attributetype oid="1.3.6.1.1.1.1.20" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-      <aliases>
-        <alias>ipNetworkNumber</alias>
-      </aliases>
-      <description>IP network</description>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.26</syntax>
-      <equality>caseIgnoreIA5Match</equality>
-    </attributetype>
-    <attributetype oid="1.3.6.1.1.1.1.21" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-      <aliases>
-        <alias>ipNetmaskNumber</alias>
-      </aliases>
-      <description>IP netmask</description>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.26</syntax>
-      <equality>caseIgnoreIA5Match</equality>
-    </attributetype>
-    <attributetype oid="1.3.6.1.1.1.1.22" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
-      <aliases>
-        <alias>macAddress</alias>
-      </aliases>
-      <description>MAC address</description>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.26</syntax>
-      <equality>caseIgnoreIA5Match</equality>
-    </attributetype>
-    <attributetype oid="1.3.6.1.1.1.1.23" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
-      <aliases>
-        <alias>bootParameter</alias>
-      </aliases>
-      <description>rpc.bootparamd parameter</description>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.1.1.0.1</syntax>
-    </attributetype>
-    <attributetype oid="1.3.6.1.1.1.1.24" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
-      <aliases>
-        <alias>bootFile</alias>
-      </aliases>
-      <description>Boot image name</description>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.26</syntax>
-      <equality>caseExactIA5Match</equality>
-    </attributetype>
-    <attributetype oid="1.3.6.1.1.1.1.26" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
-      <aliases>
-        <alias>nisMapName</alias>
-      </aliases>
-      <superior>name</superior>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.15</syntax>
-      <equality>caseIgnoreMatch</equality>
-      <substring>caseIgnoreSubstringsMatch</substring>
     </attributetype>
     <attributetype oid="1.3.6.1.1.1.1.27" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
       <aliases>
@@ -204,22 +78,76 @@
       <syntax>1.3.6.1.4.1.1466.115.121.1.26</syntax>
       <equality>caseExactIA5Match</equality>
     </attributetype>
-    <attributetype oid="1.3.6.1.1.1.1.4" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+    <attributetype oid="1.3.6.1.1.1.1.7" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
       <aliases>
-        <alias>loginShell</alias>
-      </aliases>
-      <description>The path to the login shell</description>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.26</syntax>
-      <equality>caseExactIA5Match</equality>
-    </attributetype>
-    <attributetype oid="1.3.6.1.1.1.1.5" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-      <aliases>
-        <alias>shadowLastChange</alias>
+        <alias>shadowMax</alias>
       </aliases>
       <usage>USER_APPLICATIONS</usage>
       <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
       <equality>integerMatch</equality>
+    </attributetype>
+    <attributetype oid="1.3.6.1.1.1.1.24" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
+      <aliases>
+        <alias>bootFile</alias>
+      </aliases>
+      <description>Boot image name</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.26</syntax>
+      <equality>caseExactIA5Match</equality>
+    </attributetype>
+    <attributetype oid="1.3.6.1.1.1.1.16" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
+      <aliases>
+        <alias>ipServiceProtocol</alias>
+      </aliases>
+      <superior>name</superior>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.15</syntax>
+      <equality>caseIgnoreMatch</equality>
+      <substring>caseIgnoreSubstringsMatch</substring>
+    </attributetype>
+    <attributetype oid="1.3.6.1.1.1.1.21" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>ipNetmaskNumber</alias>
+      </aliases>
+      <description>IP netmask</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.26</syntax>
+      <equality>caseIgnoreIA5Match</equality>
+    </attributetype>
+    <attributetype oid="1.3.6.1.1.1.1.14" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
+      <aliases>
+        <alias>nisNetgroupTriple</alias>
+      </aliases>
+      <description>Netgroup triple</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.1.1.0.0</syntax>
+    </attributetype>
+    <attributetype oid="1.3.6.1.1.1.1.23" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
+      <aliases>
+        <alias>bootParameter</alias>
+      </aliases>
+      <description>rpc.bootparamd parameter</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.1.1.0.1</syntax>
+    </attributetype>
+    <attributetype oid="1.3.6.1.1.1.1.12" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
+      <aliases>
+        <alias>memberUid</alias>
+      </aliases>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.26</syntax>
+      <equality>caseExactIA5Match</equality>
+      <substring>caseExactIA5SubstringsMatch</substring>
+    </attributetype>
+    <attributetype oid="1.3.6.1.1.1.1.26" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
+      <aliases>
+        <alias>nisMapName</alias>
+      </aliases>
+      <superior>name</superior>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.15</syntax>
+      <equality>caseIgnoreMatch</equality>
+      <substring>caseIgnoreSubstringsMatch</substring>
     </attributetype>
     <attributetype oid="1.3.6.1.1.1.1.6" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
       <aliases>
@@ -229,9 +157,18 @@
       <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
       <equality>integerMatch</equality>
     </attributetype>
-    <attributetype oid="1.3.6.1.1.1.1.7" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+    <attributetype oid="1.3.6.1.1.1.1.13" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
       <aliases>
-        <alias>shadowMax</alias>
+        <alias>memberNisNetgroup</alias>
+      </aliases>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.26</syntax>
+      <equality>caseExactIA5Match</equality>
+      <substring>caseExactIA5SubstringsMatch</substring>
+    </attributetype>
+    <attributetype oid="1.3.6.1.1.1.1.17" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>ipProtocolNumber</alias>
       </aliases>
       <usage>USER_APPLICATIONS</usage>
       <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
@@ -245,16 +182,116 @@
       <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
       <equality>integerMatch</equality>
     </attributetype>
-    <attributetype oid="1.3.6.1.1.1.1.9" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+    <attributetype oid="1.3.6.1.1.1.1.20" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
       <aliases>
-        <alias>shadowInactive</alias>
+        <alias>ipNetworkNumber</alias>
+      </aliases>
+      <description>IP network</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.26</syntax>
+      <equality>caseIgnoreIA5Match</equality>
+    </attributetype>
+    <attributetype oid="1.3.6.1.1.1.1.0" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>uidNumber</alias>
+      </aliases>
+      <description>An integer uniquely identifying a user in an administrative domain</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
+      <equality>integerMatch</equality>
+    </attributetype>
+    <attributetype oid="1.3.6.1.1.1.1.19" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
+      <aliases>
+        <alias>ipHostNumber</alias>
+      </aliases>
+      <description>IP address</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.26</syntax>
+      <equality>caseIgnoreIA5Match</equality>
+    </attributetype>
+    <attributetype oid="1.3.6.1.1.1.1.10" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>shadowExpire</alias>
       </aliases>
       <usage>USER_APPLICATIONS</usage>
       <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
       <equality>integerMatch</equality>
     </attributetype>
+    <attributetype oid="1.3.6.1.1.1.1.2" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>gecos</alias>
+      </aliases>
+      <description>The GECOS field; the common name</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.26</syntax>
+      <equality>caseIgnoreIA5Match</equality>
+      <substring>caseIgnoreIA5SubstringsMatch</substring>
+    </attributetype>
+    <attributetype oid="1.3.6.1.1.1.1.1" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>gidNumber</alias>
+      </aliases>
+      <description>An integer uniquely identifying a group in an administrative domain</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
+      <equality>integerMatch</equality>
+    </attributetype>
+    <attributetype oid="1.3.6.1.1.1.1.11" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>shadowFlag</alias>
+      </aliases>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
+      <equality>integerMatch</equality>
+    </attributetype>
+    <attributetype oid="1.3.6.1.1.1.1.22" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
+      <aliases>
+        <alias>macAddress</alias>
+      </aliases>
+      <description>MAC address</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.26</syntax>
+      <equality>caseIgnoreIA5Match</equality>
+    </attributetype>
   </attributetypes>
   <objectclasses>
+    <objectclass oid="1.3.6.1.1.1.2.2" obsolete="false">
+      <aliases>
+        <alias>posixGroup</alias>
+      </aliases>
+      <description>Abstraction of a group of accounts</description>
+      <superiors>
+        <superior>top</superior>
+      </superiors>
+      <type>STRUCTURAL</type>
+      <mandatory>
+        <attributetype>cn</attributetype>
+        <attributetype>gidNumber</attributetype>
+      </mandatory>
+      <optional>
+        <attributetype>userPassword</attributetype>
+        <attributetype>memberUid</attributetype>
+        <attributetype>description</attributetype>
+      </optional>
+    </objectclass>
+    <objectclass oid="1.3.6.1.1.1.2.10" obsolete="false">
+      <aliases>
+        <alias>nisObject</alias>
+      </aliases>
+      <description>An entry in a NIS map</description>
+      <superiors>
+        <superior>top</superior>
+      </superiors>
+      <type>STRUCTURAL</type>
+      <mandatory>
+        <attributetype>cn</attributetype>
+        <attributetype>nisMapEntry</attributetype>
+        <attributetype>nisMapName</attributetype>
+      </mandatory>
+      <optional>
+        <attributetype>description</attributetype>
+      </optional>
+    </objectclass>
     <objectclass oid="1.3.6.1.1.1.2.0" obsolete="false">
       <aliases>
         <alias>posixAccount</alias>
@@ -275,6 +312,72 @@
         <attributetype>userPassword</attributetype>
         <attributetype>loginShell</attributetype>
         <attributetype>gecos</attributetype>
+        <attributetype>description</attributetype>
+      </optional>
+    </objectclass>
+    <objectclass oid="1.3.6.1.1.1.2.9" obsolete="false">
+      <aliases>
+        <alias>nisMap</alias>
+      </aliases>
+      <description>A generic abstraction of a NIS map</description>
+      <superiors>
+        <superior>top</superior>
+      </superiors>
+      <type>STRUCTURAL</type>
+      <mandatory>
+        <attributetype>nisMapName</attributetype>
+      </mandatory>
+      <optional>
+        <attributetype>description</attributetype>
+      </optional>
+    </objectclass>
+    <objectclass oid="1.3.6.1.1.1.2.7" obsolete="false">
+      <aliases>
+        <alias>ipNetwork</alias>
+      </aliases>
+      <description>Abstraction of an IP network</description>
+      <superiors>
+        <superior>top</superior>
+      </superiors>
+      <type>STRUCTURAL</type>
+      <mandatory>
+        <attributetype>cn</attributetype>
+        <attributetype>ipNetworkNumber</attributetype>
+      </mandatory>
+      <optional>
+        <attributetype>ipNetmaskNumber</attributetype>
+        <attributetype>l</attributetype>
+        <attributetype>description</attributetype>
+        <attributetype>manager</attributetype>
+      </optional>
+    </objectclass>
+    <objectclass oid="1.3.6.1.1.1.2.11" obsolete="false">
+      <aliases>
+        <alias>ieee802Device</alias>
+      </aliases>
+      <description>A device with a MAC address</description>
+      <superiors>
+        <superior>top</superior>
+      </superiors>
+      <type>AUXILIARY</type>
+      <optional>
+        <attributetype>macAddress</attributetype>
+      </optional>
+    </objectclass>
+    <objectclass oid="1.3.6.1.1.1.2.5" obsolete="false">
+      <aliases>
+        <alias>oncRpc</alias>
+      </aliases>
+      <description>Abstraction of an ONC/RPC binding</description>
+      <superiors>
+        <superior>top</superior>
+      </superiors>
+      <type>STRUCTURAL</type>
+      <mandatory>
+        <attributetype>cn</attributetype>
+        <attributetype>oncRpcNumber</attributetype>
+      </mandatory>
+      <optional>
         <attributetype>description</attributetype>
       </optional>
     </objectclass>
@@ -299,70 +402,6 @@
         <attributetype>shadowInactive</attributetype>
         <attributetype>shadowExpire</attributetype>
         <attributetype>shadowFlag</attributetype>
-        <attributetype>description</attributetype>
-      </optional>
-    </objectclass>
-    <objectclass oid="1.3.6.1.1.1.2.10" obsolete="false">
-      <aliases>
-        <alias>nisObject</alias>
-      </aliases>
-      <description>An entry in a NIS map</description>
-      <superiors>
-        <superior>top</superior>
-      </superiors>
-      <type>STRUCTURAL</type>
-      <mandatory>
-        <attributetype>cn</attributetype>
-        <attributetype>nisMapEntry</attributetype>
-        <attributetype>nisMapName</attributetype>
-      </mandatory>
-      <optional>
-        <attributetype>description</attributetype>
-      </optional>
-    </objectclass>
-    <objectclass oid="1.3.6.1.1.1.2.11" obsolete="false">
-      <aliases>
-        <alias>ieee802Device</alias>
-      </aliases>
-      <description>A device with a MAC address</description>
-      <superiors>
-        <superior>top</superior>
-      </superiors>
-      <type>AUXILIARY</type>
-      <optional>
-        <attributetype>macAddress</attributetype>
-      </optional>
-    </objectclass>
-    <objectclass oid="1.3.6.1.1.1.2.12" obsolete="false">
-      <aliases>
-        <alias>bootableDevice</alias>
-      </aliases>
-      <description>A device with boot parameters</description>
-      <superiors>
-        <superior>top</superior>
-      </superiors>
-      <type>AUXILIARY</type>
-      <optional>
-        <attributetype>bootFile</attributetype>
-        <attributetype>bootParameter</attributetype>
-      </optional>
-    </objectclass>
-    <objectclass oid="1.3.6.1.1.1.2.2" obsolete="false">
-      <aliases>
-        <alias>posixGroup</alias>
-      </aliases>
-      <description>Abstraction of a group of accounts</description>
-      <superiors>
-        <superior>top</superior>
-      </superiors>
-      <type>STRUCTURAL</type>
-      <mandatory>
-        <attributetype>cn</attributetype>
-        <attributetype>gidNumber</attributetype>
-      </mandatory>
-      <optional>
-        <attributetype>userPassword</attributetype>
-        <attributetype>memberUid</attributetype>
         <attributetype>description</attributetype>
       </optional>
     </objectclass>
@@ -401,60 +440,18 @@
         <attributetype>description</attributetype>
       </optional>
     </objectclass>
-    <objectclass oid="1.3.6.1.1.1.2.5" obsolete="false">
+    <objectclass oid="1.3.6.1.1.1.2.12" obsolete="false">
       <aliases>
-        <alias>oncRpc</alias>
+        <alias>bootableDevice</alias>
       </aliases>
-      <description>Abstraction of an ONC/RPC binding</description>
-      <superiors>
-        <superior>top</superior>
-      </superiors>
-      <type>STRUCTURAL</type>
-      <mandatory>
-        <attributetype>cn</attributetype>
-        <attributetype>oncRpcNumber</attributetype>
-      </mandatory>
-      <optional>
-        <attributetype>description</attributetype>
-      </optional>
-    </objectclass>
-    <objectclass oid="1.3.6.1.1.1.2.6" obsolete="false">
-      <aliases>
-        <alias>ipHost</alias>
-      </aliases>
-      <description>Abstraction of a host, an IP device</description>
+      <description>A device with boot parameters</description>
       <superiors>
         <superior>top</superior>
       </superiors>
       <type>AUXILIARY</type>
-      <mandatory>
-        <attributetype>cn</attributetype>
-        <attributetype>ipHostNumber</attributetype>
-      </mandatory>
       <optional>
-        <attributetype>l</attributetype>
-        <attributetype>description</attributetype>
-        <attributetype>manager</attributetype>
-      </optional>
-    </objectclass>
-    <objectclass oid="1.3.6.1.1.1.2.7" obsolete="false">
-      <aliases>
-        <alias>ipNetwork</alias>
-      </aliases>
-      <description>Abstraction of an IP network</description>
-      <superiors>
-        <superior>top</superior>
-      </superiors>
-      <type>STRUCTURAL</type>
-      <mandatory>
-        <attributetype>cn</attributetype>
-        <attributetype>ipNetworkNumber</attributetype>
-      </mandatory>
-      <optional>
-        <attributetype>ipNetmaskNumber</attributetype>
-        <attributetype>l</attributetype>
-        <attributetype>description</attributetype>
-        <attributetype>manager</attributetype>
+        <attributetype>bootFile</attributetype>
+        <attributetype>bootParameter</attributetype>
       </optional>
     </objectclass>
     <objectclass oid="1.3.6.1.1.1.2.8" obsolete="false">
@@ -475,20 +472,23 @@
         <attributetype>description</attributetype>
       </optional>
     </objectclass>
-    <objectclass oid="1.3.6.1.1.1.2.9" obsolete="false">
+    <objectclass oid="1.3.6.1.1.1.2.6" obsolete="false">
       <aliases>
-        <alias>nisMap</alias>
+        <alias>ipHost</alias>
       </aliases>
-      <description>A generic abstraction of a NIS map</description>
+      <description>Abstraction of a host, an IP device</description>
       <superiors>
         <superior>top</superior>
       </superiors>
-      <type>STRUCTURAL</type>
+      <type>AUXILIARY</type>
       <mandatory>
-        <attributetype>nisMapName</attributetype>
+        <attributetype>cn</attributetype>
+        <attributetype>ipHostNumber</attributetype>
       </mandatory>
       <optional>
+        <attributetype>l</attributetype>
         <attributetype>description</attributetype>
+        <attributetype>manager</attributetype>
       </optional>
     </objectclass>
   </objectclasses>

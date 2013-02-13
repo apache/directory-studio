@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <!--
   Licensed to the Apache Software Foundation (ASF) under one
   or more contributor license agreements.  See the NOTICE file
@@ -17,47 +16,26 @@
   specific language governing permissions and limitations
   under the License.
 -->
+<?xml version="1.0" encoding="UTF-8"?>
 <schema name="pwdpolicy">
   <attributetypes>
-    <attributetype oid="1.3.6.1.4.1.42.2.27.8.1.1" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
+    <attributetype oid="1.3.6.1.4.1.42.2.27.8.1.28" obsolete="false" singlevalue="true" collective="false" nousermodification="true">
       <aliases>
-        <alias>pwdAttribute</alias>
+        <alias>pwdEndTime</alias>
       </aliases>
+      <description>The time the password becomes disabled</description>
       <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.38</syntax>
-      <equality>objectIdentifierMatch</equality>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.24</syntax>
+      <equality>generalizedTimeMatch</equality>
+      <ordering>generalizedTimeOrderingMatch</ordering>
     </attributetype>
-    <attributetype oid="1.3.6.1.4.1.42.2.27.8.1.10" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+    <attributetype oid="1.3.6.1.4.1.42.2.27.8.1.5" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
       <aliases>
-        <alias>pwdLockoutDuration</alias>
+        <alias>pwdCheckQuality</alias>
       </aliases>
       <usage>USER_APPLICATIONS</usage>
       <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
       <equality>integerMatch</equality>
-    </attributetype>
-    <attributetype oid="1.3.6.1.4.1.42.2.27.8.1.11" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-      <aliases>
-        <alias>pwdMaxFailure</alias>
-      </aliases>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
-      <equality>integerMatch</equality>
-    </attributetype>
-    <attributetype oid="1.3.6.1.4.1.42.2.27.8.1.12" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-      <aliases>
-        <alias>pwdFailureCountInterval</alias>
-      </aliases>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
-      <equality>integerMatch</equality>
-    </attributetype>
-    <attributetype oid="1.3.6.1.4.1.42.2.27.8.1.13" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-      <aliases>
-        <alias>pwdMustChange</alias>
-      </aliases>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.7</syntax>
-      <equality>booleanMatch</equality>
     </attributetype>
     <attributetype oid="1.3.6.1.4.1.42.2.27.8.1.14" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
       <aliases>
@@ -66,34 +44,6 @@
       <usage>USER_APPLICATIONS</usage>
       <syntax>1.3.6.1.4.1.1466.115.121.1.7</syntax>
       <equality>booleanMatch</equality>
-    </attributetype>
-    <attributetype oid="1.3.6.1.4.1.42.2.27.8.1.15" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-      <aliases>
-        <alias>pwdSafeModify</alias>
-      </aliases>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.7</syntax>
-      <equality>booleanMatch</equality>
-    </attributetype>
-    <attributetype oid="1.3.6.1.4.1.42.2.27.8.1.16" obsolete="false" singlevalue="true" collective="false" nousermodification="true">
-      <aliases>
-        <alias>pwdChangedTime</alias>
-      </aliases>
-      <description>The time the password was last changed</description>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.24</syntax>
-      <equality>generalizedTimeMatch</equality>
-      <ordering>generalizedTimeOrderingMatch</ordering>
-    </attributetype>
-    <attributetype oid="1.3.6.1.4.1.42.2.27.8.1.17" obsolete="false" singlevalue="true" collective="false" nousermodification="true">
-      <aliases>
-        <alias>pwdAccountLockedTime</alias>
-      </aliases>
-      <description>The time an user account was locked</description>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.24</syntax>
-      <equality>generalizedTimeMatch</equality>
-      <ordering>generalizedTimeOrderingMatch</ordering>
     </attributetype>
     <attributetype oid="1.3.6.1.4.1.42.2.27.8.1.19" obsolete="false" singlevalue="false" collective="false" nousermodification="true">
       <aliases>
@@ -105,41 +55,6 @@
       <equality>generalizedTimeMatch</equality>
       <ordering>generalizedTimeOrderingMatch</ordering>
     </attributetype>
-    <attributetype oid="1.3.6.1.4.1.42.2.27.8.1.2" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-      <aliases>
-        <alias>pwdMinAge</alias>
-      </aliases>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
-      <equality>integerMatch</equality>
-    </attributetype>
-    <attributetype oid="1.3.6.1.4.1.42.2.27.8.1.20" obsolete="false" singlevalue="false" collective="false" nousermodification="true">
-      <aliases>
-        <alias>pwdHistory</alias>
-      </aliases>
-      <description>The history of user s passwords</description>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.40</syntax>
-      <equality>octetStringMatch</equality>
-    </attributetype>
-    <attributetype oid="1.3.6.1.4.1.42.2.27.8.1.21" obsolete="false" singlevalue="false" collective="false" nousermodification="true">
-      <aliases>
-        <alias>pwdGraceUseTime</alias>
-      </aliases>
-      <description>The timestamps of the grace authentication after the password has expired</description>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.24</syntax>
-      <equality>generalizedTimeMatch</equality>
-    </attributetype>
-    <attributetype oid="1.3.6.1.4.1.42.2.27.8.1.22" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-      <aliases>
-        <alias>pwdReset</alias>
-      </aliases>
-      <description>The indication that the password has been reset</description>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.7</syntax>
-      <equality>booleanMatch</equality>
-    </attributetype>
     <attributetype oid="1.3.6.1.4.1.42.2.27.8.1.23" obsolete="false" singlevalue="true" collective="false" nousermodification="true">
       <aliases>
         <alias>pwdPolicySubentry</alias>
@@ -149,29 +64,14 @@
       <syntax>1.3.6.1.4.1.1466.115.121.1.12</syntax>
       <equality>distinguishedNameMatch</equality>
     </attributetype>
-    <attributetype oid="1.3.6.1.4.1.42.2.27.8.1.24" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+    <attributetype oid="1.3.6.1.4.1.42.2.27.8.1.20" obsolete="false" singlevalue="false" collective="false" nousermodification="true">
       <aliases>
-        <alias>pwdMinDelay</alias>
+        <alias>pwdHistory</alias>
       </aliases>
+      <description>The history of user s passwords</description>
       <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
-      <equality>integerMatch</equality>
-    </attributetype>
-    <attributetype oid="1.3.6.1.4.1.42.2.27.8.1.25" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-      <aliases>
-        <alias>pwdMaxDelay</alias>
-      </aliases>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
-      <equality>integerMatch</equality>
-    </attributetype>
-    <attributetype oid="1.3.6.1.4.1.42.2.27.8.1.26" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-      <aliases>
-        <alias>pwdMaxIdle</alias>
-      </aliases>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
-      <equality>integerMatch</equality>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.40</syntax>
+      <equality>octetStringMatch</equality>
     </attributetype>
     <attributetype oid="1.3.6.1.4.1.42.2.27.8.1.27" obsolete="false" singlevalue="true" collective="false" nousermodification="true">
       <aliases>
@@ -183,61 +83,27 @@
       <equality>generalizedTimeMatch</equality>
       <ordering>generalizedTimeOrderingMatch</ordering>
     </attributetype>
-    <attributetype oid="1.3.6.1.4.1.42.2.27.8.1.28" obsolete="false" singlevalue="true" collective="false" nousermodification="true">
+    <attributetype oid="1.3.6.1.4.1.42.2.27.8.1.24" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
       <aliases>
-        <alias>pwdEndTime</alias>
+        <alias>pwdMinDelay</alias>
       </aliases>
-      <description>The time the password becomes disabled</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
+      <equality>integerMatch</equality>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.42.2.27.8.1.16" obsolete="false" singlevalue="true" collective="false" nousermodification="true">
+      <aliases>
+        <alias>pwdChangedTime</alias>
+      </aliases>
+      <description>The time the password was last changed</description>
       <usage>USER_APPLICATIONS</usage>
       <syntax>1.3.6.1.4.1.1466.115.121.1.24</syntax>
       <equality>generalizedTimeMatch</equality>
       <ordering>generalizedTimeOrderingMatch</ordering>
     </attributetype>
-    <attributetype oid="1.3.6.1.4.1.42.2.27.8.1.29" obsolete="false" singlevalue="true" collective="false" nousermodification="true">
+    <attributetype oid="1.3.6.1.4.1.42.2.27.8.1.12" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
       <aliases>
-        <alias>pwdLastSuccess</alias>
-      </aliases>
-      <description>The timestamp of the last successful authentication</description>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.24</syntax>
-      <equality>generalizedTimeMatch</equality>
-      <ordering>generalizedTimeOrderingMatch</ordering>
-    </attributetype>
-    <attributetype oid="1.3.6.1.4.1.42.2.27.8.1.3" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-      <aliases>
-        <alias>pwdMaxAge</alias>
-      </aliases>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
-      <equality>integerMatch</equality>
-    </attributetype>
-    <attributetype oid="1.3.6.1.4.1.42.2.27.8.1.30" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-      <aliases>
-        <alias>pwdGraceExpire</alias>
-      </aliases>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
-      <equality>integerMatch</equality>
-    </attributetype>
-    <attributetype oid="1.3.6.1.4.1.42.2.27.8.1.31" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-      <aliases>
-        <alias>pwdMaxLength</alias>
-      </aliases>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
-      <equality>integerMatch</equality>
-    </attributetype>
-    <attributetype oid="1.3.6.1.4.1.42.2.27.8.1.4" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-      <aliases>
-        <alias>pwdInHistory</alias>
-      </aliases>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
-      <equality>integerMatch</equality>
-    </attributetype>
-    <attributetype oid="1.3.6.1.4.1.42.2.27.8.1.5" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-      <aliases>
-        <alias>pwdCheckQuality</alias>
+        <alias>pwdFailureCountInterval</alias>
       </aliases>
       <usage>USER_APPLICATIONS</usage>
       <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
@@ -251,9 +117,142 @@
       <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
       <equality>integerMatch</equality>
     </attributetype>
+    <attributetype oid="1.3.6.1.4.1.42.2.27.8.1.17" obsolete="false" singlevalue="true" collective="false" nousermodification="true">
+      <aliases>
+        <alias>pwdAccountLockedTime</alias>
+      </aliases>
+      <description>The time an user account was locked</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.24</syntax>
+      <equality>generalizedTimeMatch</equality>
+      <ordering>generalizedTimeOrderingMatch</ordering>
+    </attributetype>
     <attributetype oid="1.3.6.1.4.1.42.2.27.8.1.7" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
       <aliases>
         <alias>pwdExpireWarning</alias>
+      </aliases>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
+      <equality>integerMatch</equality>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.42.2.27.8.1.13" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>pwdMustChange</alias>
+      </aliases>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.7</syntax>
+      <equality>booleanMatch</equality>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.42.2.27.8.1.4" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>pwdInHistory</alias>
+      </aliases>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
+      <equality>integerMatch</equality>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.42.2.27.8.1.30" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>pwdGraceExpire</alias>
+      </aliases>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
+      <equality>integerMatch</equality>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.42.2.27.8.1.11" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>pwdMaxFailure</alias>
+      </aliases>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
+      <equality>integerMatch</equality>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.42.2.27.8.1.1" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
+      <aliases>
+        <alias>pwdAttribute</alias>
+      </aliases>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.38</syntax>
+      <equality>objectIdentifierMatch</equality>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.42.2.27.8.1.29" obsolete="false" singlevalue="true" collective="false" nousermodification="true">
+      <aliases>
+        <alias>pwdLastSuccess</alias>
+      </aliases>
+      <description>The timestamp of the last successful authentication</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.24</syntax>
+      <equality>generalizedTimeMatch</equality>
+      <ordering>generalizedTimeOrderingMatch</ordering>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.42.2.27.8.1.22" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>pwdReset</alias>
+      </aliases>
+      <description>The indication that the password has been reset</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.7</syntax>
+      <equality>booleanMatch</equality>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.42.2.27.8.1.25" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>pwdMaxDelay</alias>
+      </aliases>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
+      <equality>integerMatch</equality>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.42.2.27.8.1.3" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>pwdMaxAge</alias>
+      </aliases>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
+      <equality>integerMatch</equality>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.42.2.27.8.1.15" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>pwdSafeModify</alias>
+      </aliases>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.7</syntax>
+      <equality>booleanMatch</equality>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.42.2.27.8.1.2" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>pwdMinAge</alias>
+      </aliases>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
+      <equality>integerMatch</equality>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.42.2.27.8.1.9" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>pwdLockout</alias>
+      </aliases>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.7</syntax>
+      <equality>booleanMatch</equality>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.42.2.27.8.1.31" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>pwdMaxLength</alias>
+      </aliases>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
+      <equality>integerMatch</equality>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.42.2.27.8.1.10" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>pwdLockoutDuration</alias>
+      </aliases>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
+      <equality>integerMatch</equality>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.42.2.27.8.1.26" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>pwdMaxIdle</alias>
       </aliases>
       <usage>USER_APPLICATIONS</usage>
       <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
@@ -267,13 +266,14 @@
       <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
       <equality>integerMatch</equality>
     </attributetype>
-    <attributetype oid="1.3.6.1.4.1.42.2.27.8.1.9" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+    <attributetype oid="1.3.6.1.4.1.42.2.27.8.1.21" obsolete="false" singlevalue="false" collective="false" nousermodification="true">
       <aliases>
-        <alias>pwdLockout</alias>
+        <alias>pwdGraceUseTime</alias>
       </aliases>
+      <description>The timestamps of the grace authentication after the password has expired</description>
       <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.7</syntax>
-      <equality>booleanMatch</equality>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.24</syntax>
+      <equality>generalizedTimeMatch</equality>
     </attributetype>
   </attributetypes>
   <objectclasses>

@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <!--
   Licensed to the Apache Software Foundation (ASF) under one
   or more contributor license agreements.  See the NOTICE file
@@ -17,8 +16,36 @@
   specific language governing permissions and limitations
   under the License.
 -->
+<?xml version="1.0" encoding="UTF-8"?>
 <schema name="system">
   <attributetypes>
+    <attributetype oid="1.3.6.1.4.1.1466.101.119.3" obsolete="false" singlevalue="true" collective="false" nousermodification="true">
+      <aliases>
+        <alias>entryTtl</alias>
+      </aliases>
+      <description>RFC2589: entry time-to-live</description>
+      <usage>DSA_OPERATION</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
+    </attributetype>
+    <attributetype oid="2.5.18.3" obsolete="false" singlevalue="true" collective="false" nousermodification="true">
+      <aliases>
+        <alias>creatorsName</alias>
+      </aliases>
+      <description>RFC2252: name of creator</description>
+      <usage>DIRECTORY_OPERATION</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.12</syntax>
+      <equality>distinguishedNameMatch</equality>
+    </attributetype>
+    <attributetype oid="2.5.4.1" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>aliasedObjectName</alias>
+        <alias>aliasedEntryName</alias>
+      </aliases>
+      <description>RFC2256: name of aliased object</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.12</syntax>
+      <equality>distinguishedNameMatch</equality>
+    </attributetype>
     <attributetype oid="1.3.6.1.1.4" obsolete="false" singlevalue="true" collective="false" nousermodification="true">
       <aliases>
         <alias>vendorName</alias>
@@ -28,38 +55,14 @@
       <syntax>1.3.6.1.4.1.1466.115.121.1.15</syntax>
       <equality>caseExactMatch</equality>
     </attributetype>
-    <attributetype oid="1.3.6.1.1.5" obsolete="false" singlevalue="true" collective="false" nousermodification="true">
+    <attributetype oid="2.5.21.8" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
       <aliases>
-        <alias>vendorVersion</alias>
+        <alias>matchingRuleUse</alias>
       </aliases>
-      <description>RFC3045: version of implementation</description>
-      <usage>DSA_OPERATION</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.15</syntax>
-      <equality>caseExactMatch</equality>
-    </attributetype>
-    <attributetype oid="1.3.6.1.4.1.1466.101.119.3" obsolete="false" singlevalue="true" collective="false" nousermodification="true">
-      <aliases>
-        <alias>entryTtl</alias>
-      </aliases>
-      <description>RFC2589: entry time-to-live</description>
-      <usage>DSA_OPERATION</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
-    </attributetype>
-    <attributetype oid="1.3.6.1.4.1.1466.101.119.4" obsolete="false" singlevalue="false" collective="false" nousermodification="true">
-      <aliases>
-        <alias>dynamicSubtrees</alias>
-      </aliases>
-      <description>RFC2589: dynamic subtrees</description>
-      <usage>DSA_OPERATION</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.12</syntax>
-    </attributetype>
-    <attributetype oid="1.3.6.1.4.1.1466.101.120.13" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
-      <aliases>
-        <alias>supportedControl</alias>
-      </aliases>
-      <description>RFC2252: supported controls</description>
-      <usage>DSA_OPERATION</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.38</syntax>
+      <description>RFC2252: matching rule uses</description>
+      <usage>DIRECTORY_OPERATION</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.31</syntax>
+      <equality>objectIdentifierFirstComponentMatch</equality>
     </attributetype>
     <attributetype oid="1.3.6.1.4.1.1466.101.120.14" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
       <aliases>
@@ -69,72 +72,14 @@
       <usage>DSA_OPERATION</usage>
       <syntax>1.3.6.1.4.1.1466.115.121.1.15</syntax>
     </attributetype>
-    <attributetype oid="1.3.6.1.4.1.1466.101.120.15" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
+    <attributetype oid="2.5.4.0" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
       <aliases>
-        <alias>supportedLDAPVersion</alias>
+        <alias>objectClass</alias>
       </aliases>
-      <description>RFC2252: supported LDAP versions</description>
-      <usage>DSA_OPERATION</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
-    </attributetype>
-    <attributetype oid="1.3.6.1.4.1.1466.101.120.16" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
-      <aliases>
-        <alias>ldapSyntaxes</alias>
-      </aliases>
-      <description>RFC2252: LDAP syntaxes</description>
-      <usage>DIRECTORY_OPERATION</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.54</syntax>
-      <equality>objectIdentifierFirstComponentMatch</equality>
-    </attributetype>
-    <attributetype oid="1.3.6.1.4.1.1466.101.120.5" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
-      <aliases>
-        <alias>namingContexts</alias>
-      </aliases>
-      <description>RFC2252: naming contexts</description>
-      <usage>DSA_OPERATION</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.12</syntax>
-    </attributetype>
-    <attributetype oid="1.3.6.1.4.1.1466.101.120.6" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
-      <aliases>
-        <alias>altServer</alias>
-      </aliases>
-      <description>RFC2252: alternative servers</description>
-      <usage>DSA_OPERATION</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.26</syntax>
-    </attributetype>
-    <attributetype oid="1.3.6.1.4.1.1466.101.120.7" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
-      <aliases>
-        <alias>supportedExtension</alias>
-      </aliases>
-      <description>RFC2252: supported extended operations</description>
-      <usage>DSA_OPERATION</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.38</syntax>
-    </attributetype>
-    <attributetype oid="1.3.6.1.4.1.250.1.57" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
-      <aliases>
-        <alias>labeledURI</alias>
-      </aliases>
-      <description>RFC2079: Uniform Resource Identifier with optional label</description>
+      <description>RFC2256: object classes of the entity</description>
       <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.15</syntax>
-      <equality>caseExactMatch</equality>
-    </attributetype>
-    <attributetype oid="1.3.6.1.4.1.4203.1.3.5" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
-      <aliases>
-        <alias>supportedFeatures</alias>
-      </aliases>
-      <usage>DSA_OPERATION</usage>
       <syntax>1.3.6.1.4.1.1466.115.121.1.38</syntax>
       <equality>objectIdentifierMatch</equality>
-    </attributetype>
-    <attributetype oid="2.16.840.1.113730.3.1.34" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
-      <aliases>
-        <alias>ref</alias>
-      </aliases>
-      <description>namedref: subordinate referral URL</description>
-      <usage>DISTRIBUTED_OPERATION</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.15</syntax>
-      <equality>caseExactMatch</equality>
     </attributetype>
     <attributetype oid="2.5.18.1" obsolete="false" singlevalue="true" collective="false" nousermodification="true">
       <aliases>
@@ -146,6 +91,92 @@
       <equality>generalizedTimeMatch</equality>
       <ordering>generalizedTimeOrderingMatch</ordering>
     </attributetype>
+    <attributetype oid="1.3.6.1.4.1.1466.101.120.13" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
+      <aliases>
+        <alias>supportedControl</alias>
+      </aliases>
+      <description>RFC2252: supported controls</description>
+      <usage>DSA_OPERATION</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.38</syntax>
+    </attributetype>
+    <attributetype oid="2.16.840.1.113730.3.1.34" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
+      <aliases>
+        <alias>ref</alias>
+      </aliases>
+      <description>namedref: subordinate referral URL</description>
+      <usage>DISTRIBUTED_OPERATION</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.15</syntax>
+      <equality>caseExactMatch</equality>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.1466.101.119.4" obsolete="false" singlevalue="false" collective="false" nousermodification="true">
+      <aliases>
+        <alias>dynamicSubtrees</alias>
+      </aliases>
+      <description>RFC2589: dynamic subtrees</description>
+      <usage>DSA_OPERATION</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.12</syntax>
+    </attributetype>
+    <attributetype oid="2.5.18.12" obsolete="false" singlevalue="false" collective="false" nousermodification="true">
+      <aliases>
+        <alias>collectiveAttributeSubentries</alias>
+      </aliases>
+      <usage>DIRECTORY_OPERATION</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.12</syntax>
+      <equality>distinguishedNameMatch</equality>
+    </attributetype>
+    <attributetype oid="2.5.4.41" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
+      <aliases>
+        <alias>name</alias>
+      </aliases>
+      <description>RFC2256: common supertype of name attributes</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.15</syntax>
+      <equality>caseIgnoreMatch</equality>
+      <substring>caseIgnoreSubstringsMatch</substring>
+    </attributetype>
+    <attributetype oid="2.5.18.7" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
+      <aliases>
+        <alias>collectiveExclusions</alias>
+      </aliases>
+      <usage>DIRECTORY_OPERATION</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.38</syntax>
+      <equality>objectIdentifierMatch</equality>
+    </attributetype>
+    <attributetype oid="2.5.21.4" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
+      <aliases>
+        <alias>matchingRules</alias>
+      </aliases>
+      <description>RFC2252: matching rules</description>
+      <usage>DIRECTORY_OPERATION</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.30</syntax>
+      <equality>objectIdentifierFirstComponentMatch</equality>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.250.1.57" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
+      <aliases>
+        <alias>labeledURI</alias>
+      </aliases>
+      <description>RFC2079: Uniform Resource Identifier with optional label</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.15</syntax>
+      <equality>caseExactMatch</equality>
+    </attributetype>
+    <attributetype oid="2.5.18.9" obsolete="false" singlevalue="true" collective="false" nousermodification="true">
+      <aliases>
+        <alias>hasSubordinates</alias>
+      </aliases>
+      <description>X.501: entry has children</description>
+      <usage>DIRECTORY_OPERATION</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.7</syntax>
+      <equality>booleanMatch</equality>
+    </attributetype>
+    <attributetype oid="2.5.21.7" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
+      <aliases>
+        <alias>nameForms</alias>
+      </aliases>
+      <usage>DIRECTORY_OPERATION</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.35</syntax>
+      <equality>objectIdentifierFirstComponentMatch</equality>
+    </attributetype>
     <attributetype oid="2.5.18.10" obsolete="false" singlevalue="true" collective="false" nousermodification="true">
       <aliases>
         <alias>subschemaSubentry</alias>
@@ -155,13 +186,64 @@
       <syntax>1.3.6.1.4.1.1466.115.121.1.12</syntax>
       <equality>distinguishedNameMatch</equality>
     </attributetype>
-    <attributetype oid="2.5.18.12" obsolete="false" singlevalue="false" collective="false" nousermodification="true">
+    <attributetype oid="2.5.21.1" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
       <aliases>
-        <alias>collectiveAttributeSubentries</alias>
+        <alias>dITStructureRules</alias>
       </aliases>
+      <description>RFC2252: DIT structure rules</description>
       <usage>DIRECTORY_OPERATION</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.17</syntax>
+      <equality>integerFirstComponentMatch</equality>
+    </attributetype>
+    <attributetype oid="1.3.6.1.1.5" obsolete="false" singlevalue="true" collective="false" nousermodification="true">
+      <aliases>
+        <alias>vendorVersion</alias>
+      </aliases>
+      <description>RFC3045: version of implementation</description>
+      <usage>DSA_OPERATION</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.15</syntax>
+      <equality>caseExactMatch</equality>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.1466.101.120.7" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
+      <aliases>
+        <alias>supportedExtension</alias>
+      </aliases>
+      <description>RFC2252: supported extended operations</description>
+      <usage>DSA_OPERATION</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.38</syntax>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.1466.101.120.5" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
+      <aliases>
+        <alias>namingContexts</alias>
+      </aliases>
+      <description>RFC2252: naming contexts</description>
+      <usage>DSA_OPERATION</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.12</syntax>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.1466.101.120.15" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
+      <aliases>
+        <alias>supportedLDAPVersion</alias>
+      </aliases>
+      <description>RFC2252: supported LDAP versions</description>
+      <usage>DSA_OPERATION</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
+    </attributetype>
+    <attributetype oid="2.5.4.49" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
+      <aliases>
+        <alias>distinguishedName</alias>
+      </aliases>
+      <description>RFC2256: common supertype of DN attributes</description>
+      <usage>USER_APPLICATIONS</usage>
       <syntax>1.3.6.1.4.1.1466.115.121.1.12</syntax>
       <equality>distinguishedNameMatch</equality>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.1466.101.120.6" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
+      <aliases>
+        <alias>altServer</alias>
+      </aliases>
+      <description>RFC2252: alternative servers</description>
+      <usage>DSA_OPERATION</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.26</syntax>
     </attributetype>
     <attributetype oid="2.5.18.2" obsolete="false" singlevalue="true" collective="false" nousermodification="true">
       <aliases>
@@ -173,24 +255,6 @@
       <equality>generalizedTimeMatch</equality>
       <ordering>generalizedTimeOrderingMatch</ordering>
     </attributetype>
-    <attributetype oid="2.5.18.3" obsolete="false" singlevalue="true" collective="false" nousermodification="true">
-      <aliases>
-        <alias>creatorsName</alias>
-      </aliases>
-      <description>RFC2252: name of creator</description>
-      <usage>DIRECTORY_OPERATION</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.12</syntax>
-      <equality>distinguishedNameMatch</equality>
-    </attributetype>
-    <attributetype oid="2.5.18.4" obsolete="false" singlevalue="true" collective="false" nousermodification="true">
-      <aliases>
-        <alias>modifiersName</alias>
-      </aliases>
-      <description>RFC2252: name of last modifier</description>
-      <usage>DIRECTORY_OPERATION</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.12</syntax>
-      <equality>distinguishedNameMatch</equality>
-    </attributetype>
     <attributetype oid="2.5.18.5" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
       <aliases>
         <alias>administrativeRole</alias>
@@ -198,120 +262,6 @@
       <usage>DIRECTORY_OPERATION</usage>
       <syntax>1.3.6.1.4.1.1466.115.121.1.38</syntax>
       <equality>objectIdentifierMatch</equality>
-    </attributetype>
-    <attributetype oid="2.5.18.6" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-      <aliases>
-        <alias>subtreeSpecification</alias>
-      </aliases>
-      <usage>DIRECTORY_OPERATION</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.45</syntax>
-    </attributetype>
-    <attributetype oid="2.5.18.7" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
-      <aliases>
-        <alias>collectiveExclusions</alias>
-      </aliases>
-      <usage>DIRECTORY_OPERATION</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.38</syntax>
-      <equality>objectIdentifierMatch</equality>
-    </attributetype>
-    <attributetype oid="2.5.18.9" obsolete="false" singlevalue="true" collective="false" nousermodification="true">
-      <aliases>
-        <alias>hasSubordinates</alias>
-      </aliases>
-      <description>X.501: entry has children</description>
-      <usage>DIRECTORY_OPERATION</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.7</syntax>
-      <equality>booleanMatch</equality>
-    </attributetype>
-    <attributetype oid="2.5.21.1" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
-      <aliases>
-        <alias>dITStructureRules</alias>
-      </aliases>
-      <description>RFC2252: DIT structure rules</description>
-      <usage>DIRECTORY_OPERATION</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.17</syntax>
-      <equality>integerFirstComponentMatch</equality>
-    </attributetype>
-    <attributetype oid="2.5.21.2" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
-      <aliases>
-        <alias>dITContentRules</alias>
-      </aliases>
-      <description>RFC2252: DIT content rules</description>
-      <usage>DIRECTORY_OPERATION</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.16</syntax>
-      <equality>objectIdentifierFirstComponentMatch</equality>
-    </attributetype>
-    <attributetype oid="2.5.21.4" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
-      <aliases>
-        <alias>matchingRules</alias>
-      </aliases>
-      <description>RFC2252: matching rules</description>
-      <usage>DIRECTORY_OPERATION</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.30</syntax>
-      <equality>objectIdentifierFirstComponentMatch</equality>
-    </attributetype>
-    <attributetype oid="2.5.21.5" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
-      <aliases>
-        <alias>attributeTypes</alias>
-      </aliases>
-      <description>RFC2252: attribute types</description>
-      <usage>DIRECTORY_OPERATION</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.3</syntax>
-      <equality>objectIdentifierFirstComponentMatch</equality>
-    </attributetype>
-    <attributetype oid="2.5.21.6" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
-      <aliases>
-        <alias>objectClasses</alias>
-      </aliases>
-      <description>RFC2252: object classes</description>
-      <usage>DIRECTORY_OPERATION</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.37</syntax>
-      <equality>objectIdentifierFirstComponentMatch</equality>
-    </attributetype>
-    <attributetype oid="2.5.21.7" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
-      <aliases>
-        <alias>nameForms</alias>
-      </aliases>
-      <usage>DIRECTORY_OPERATION</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.35</syntax>
-      <equality>objectIdentifierFirstComponentMatch</equality>
-    </attributetype>
-    <attributetype oid="2.5.21.8" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
-      <aliases>
-        <alias>matchingRuleUse</alias>
-      </aliases>
-      <description>RFC2252: matching rule uses</description>
-      <usage>DIRECTORY_OPERATION</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.31</syntax>
-      <equality>objectIdentifierFirstComponentMatch</equality>
-    </attributetype>
-    <attributetype oid="2.5.21.9" obsolete="false" singlevalue="true" collective="false" nousermodification="true">
-      <aliases>
-        <alias>structuralObjectClass</alias>
-      </aliases>
-      <description>X.500(93): structural object class of entry</description>
-      <usage>DIRECTORY_OPERATION</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.38</syntax>
-      <equality>objectIdentifierMatch</equality>
-    </attributetype>
-    <attributetype oid="2.5.4.0" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
-      <aliases>
-        <alias>objectClass</alias>
-      </aliases>
-      <description>RFC2256: object classes of the entity</description>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.38</syntax>
-      <equality>objectIdentifierMatch</equality>
-    </attributetype>
-    <attributetype oid="2.5.4.1" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-      <aliases>
-        <alias>aliasedObjectName</alias>
-        <alias>aliasedEntryName</alias>
-      </aliases>
-      <description>RFC2256: name of aliased object</description>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.12</syntax>
-      <equality>distinguishedNameMatch</equality>
     </attributetype>
     <attributetype oid="2.5.4.3" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
       <aliases>
@@ -325,6 +275,48 @@
       <equality>caseIgnoreMatch</equality>
       <substring>caseIgnoreSubstringsMatch</substring>
     </attributetype>
+    <attributetype oid="1.3.6.1.4.1.4203.1.3.5" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
+      <aliases>
+        <alias>supportedFeatures</alias>
+      </aliases>
+      <usage>DSA_OPERATION</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.38</syntax>
+      <equality>objectIdentifierMatch</equality>
+    </attributetype>
+    <attributetype oid="2.5.21.6" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
+      <aliases>
+        <alias>objectClasses</alias>
+      </aliases>
+      <description>RFC2252: object classes</description>
+      <usage>DIRECTORY_OPERATION</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.37</syntax>
+      <equality>objectIdentifierFirstComponentMatch</equality>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.1466.101.120.16" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
+      <aliases>
+        <alias>ldapSyntaxes</alias>
+      </aliases>
+      <description>RFC2252: LDAP syntaxes</description>
+      <usage>DIRECTORY_OPERATION</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.54</syntax>
+      <equality>objectIdentifierFirstComponentMatch</equality>
+    </attributetype>
+    <attributetype oid="2.5.18.6" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>subtreeSpecification</alias>
+      </aliases>
+      <usage>DIRECTORY_OPERATION</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.45</syntax>
+    </attributetype>
+    <attributetype oid="2.5.21.9" obsolete="false" singlevalue="true" collective="false" nousermodification="true">
+      <aliases>
+        <alias>structuralObjectClass</alias>
+      </aliases>
+      <description>X.500(93): structural object class of entry</description>
+      <usage>DIRECTORY_OPERATION</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.38</syntax>
+      <equality>objectIdentifierMatch</equality>
+    </attributetype>
     <attributetype oid="2.5.4.35" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
       <aliases>
         <alias>userPassword</alias>
@@ -334,36 +326,73 @@
       <syntax>1.3.6.1.4.1.1466.115.121.1.40</syntax>
       <equality>octetStringMatch</equality>
     </attributetype>
-    <attributetype oid="2.5.4.41" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
+    <attributetype oid="2.5.21.5" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
       <aliases>
-        <alias>name</alias>
+        <alias>attributeTypes</alias>
       </aliases>
-      <description>RFC2256: common supertype of name attributes</description>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.15</syntax>
-      <equality>caseIgnoreMatch</equality>
-      <substring>caseIgnoreSubstringsMatch</substring>
+      <description>RFC2252: attribute types</description>
+      <usage>DIRECTORY_OPERATION</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.3</syntax>
+      <equality>objectIdentifierFirstComponentMatch</equality>
     </attributetype>
-    <attributetype oid="2.5.4.49" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
+    <attributetype oid="2.5.18.4" obsolete="false" singlevalue="true" collective="false" nousermodification="true">
       <aliases>
-        <alias>distinguishedName</alias>
+        <alias>modifiersName</alias>
       </aliases>
-      <description>RFC2256: common supertype of DN attributes</description>
-      <usage>USER_APPLICATIONS</usage>
+      <description>RFC2252: name of last modifier</description>
+      <usage>DIRECTORY_OPERATION</usage>
       <syntax>1.3.6.1.4.1.1466.115.121.1.12</syntax>
       <equality>distinguishedNameMatch</equality>
     </attributetype>
+    <attributetype oid="2.5.21.2" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
+      <aliases>
+        <alias>dITContentRules</alias>
+      </aliases>
+      <description>RFC2252: DIT content rules</description>
+      <usage>DIRECTORY_OPERATION</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.16</syntax>
+      <equality>objectIdentifierFirstComponentMatch</equality>
+    </attributetype>
   </attributetypes>
   <objectclasses>
-    <objectclass oid="1.3.6.1.4.1.1466.101.119.2" obsolete="false">
+    <objectclass oid="2.16.840.1.113730.3.2.6" obsolete="false">
       <aliases>
-        <alias>dynamicObject</alias>
+        <alias>referral</alias>
       </aliases>
-      <description>RFC2589: Dynamic Object</description>
+      <description>namedref: named subordinate referral</description>
       <superiors>
         <superior>top</superior>
       </superiors>
+      <type>STRUCTURAL</type>
+      <mandatory>
+        <attributetype>ref</attributetype>
+      </mandatory>
+    </objectclass>
+    <objectclass oid="2.5.6.0" obsolete="false">
+      <aliases>
+        <alias>top</alias>
+      </aliases>
+      <description>top of the superclass chain</description>
+      <type>ABSTRACT</type>
+      <mandatory>
+        <attributetype>objectClass</attributetype>
+      </mandatory>
+    </objectclass>
+    <objectclass oid="2.5.20.1" obsolete="false">
+      <aliases>
+        <alias>subschema</alias>
+      </aliases>
+      <description>RFC2252: controlling subschema (sub)entry</description>
       <type>AUXILIARY</type>
+      <optional>
+        <attributetype>dITStructureRules</attributetype>
+        <attributetype>nameForms</attributetype>
+        <attributetype>dITContentRules</attributetype>
+        <attributetype>objectClasses</attributetype>
+        <attributetype>attributeTypes</attributetype>
+        <attributetype>matchingRules</attributetype>
+        <attributetype>matchingRuleUse</attributetype>
+      </optional>
     </objectclass>
     <objectclass oid="1.3.6.1.4.1.1466.101.120.111" obsolete="false">
       <aliases>
@@ -389,17 +418,27 @@
         <attributetype>cn</attributetype>
       </optional>
     </objectclass>
-    <objectclass oid="2.16.840.1.113730.3.2.6" obsolete="false">
+    <objectclass oid="1.3.6.1.4.1.1466.101.119.2" obsolete="false">
       <aliases>
-        <alias>referral</alias>
+        <alias>dynamicObject</alias>
       </aliases>
-      <description>namedref: named subordinate referral</description>
+      <description>RFC2589: Dynamic Object</description>
+      <superiors>
+        <superior>top</superior>
+      </superiors>
+      <type>AUXILIARY</type>
+    </objectclass>
+    <objectclass oid="2.5.6.1" obsolete="false">
+      <aliases>
+        <alias>alias</alias>
+      </aliases>
+      <description>RFC2256: an alias</description>
       <superiors>
         <superior>top</superior>
       </superiors>
       <type>STRUCTURAL</type>
       <mandatory>
-        <attributetype>ref</attributetype>
+        <attributetype>aliasedObjectName</attributetype>
       </mandatory>
     </objectclass>
     <objectclass oid="2.5.17.0" obsolete="false">
@@ -421,58 +460,19 @@
       </aliases>
       <type>AUXILIARY</type>
     </objectclass>
-    <objectclass oid="2.5.20.1" obsolete="false">
-      <aliases>
-        <alias>subschema</alias>
-      </aliases>
-      <description>RFC2252: controlling subschema (sub)entry</description>
-      <type>AUXILIARY</type>
-      <optional>
-        <attributetype>dITStructureRules</attributetype>
-        <attributetype>nameForms</attributetype>
-        <attributetype>dITContentRules</attributetype>
-        <attributetype>objectClasses</attributetype>
-        <attributetype>attributeTypes</attributetype>
-        <attributetype>matchingRules</attributetype>
-        <attributetype>matchingRuleUse</attributetype>
-      </optional>
-    </objectclass>
-    <objectclass oid="2.5.6.0" obsolete="false">
-      <aliases>
-        <alias>top</alias>
-      </aliases>
-      <description>top of the superclass chain</description>
-      <type>ABSTRACT</type>
-      <mandatory>
-        <attributetype>objectClass</attributetype>
-      </mandatory>
-    </objectclass>
-    <objectclass oid="2.5.6.1" obsolete="false">
-      <aliases>
-        <alias>alias</alias>
-      </aliases>
-      <description>RFC2256: an alias</description>
-      <superiors>
-        <superior>top</superior>
-      </superiors>
-      <type>STRUCTURAL</type>
-      <mandatory>
-        <attributetype>aliasedObjectName</attributetype>
-      </mandatory>
-    </objectclass>
   </objectclasses>
   <matchingrules>
-    <matchingrule oid="1.3.6.1.4.1.1466.109.114.1" obsolete="false">
+    <matchingrule oid="2.5.13.18" obsolete="false">
       <aliases>
-        <alias>caseExactIA5Match</alias>
+        <alias>octetStringOrderingMatch</alias>
       </aliases>
-      <syntaxoid>1.3.6.1.4.1.1466.115.121.1.26</syntaxoid>
+      <syntaxoid>1.3.6.1.4.1.1466.115.121.1.40</syntaxoid>
     </matchingrule>
-    <matchingrule oid="1.3.6.1.4.1.1466.109.114.2" obsolete="false">
+    <matchingrule oid="2.5.13.3" obsolete="false">
       <aliases>
-        <alias>caseIgnoreIA5Match</alias>
+        <alias>caseIgnoreOrderingMatch</alias>
       </aliases>
-      <syntaxoid>1.3.6.1.4.1.1466.115.121.1.26</syntaxoid>
+      <syntaxoid>1.3.6.1.4.1.1466.115.121.1.15</syntaxoid>
     </matchingrule>
     <matchingrule oid="1.3.6.1.4.1.1466.109.114.3" obsolete="false">
       <aliases>
@@ -480,17 +480,11 @@
       </aliases>
       <syntaxoid>1.3.6.1.4.1.1466.115.121.1.58</syntaxoid>
     </matchingrule>
-    <matchingrule oid="2.5.13.0" obsolete="false">
+    <matchingrule oid="2.5.13.15" obsolete="false">
       <aliases>
-        <alias>objectIdentifierMatch</alias>
+        <alias>integerOrderingMatch</alias>
       </aliases>
-      <syntaxoid>1.3.6.1.4.1.1466.115.121.1.38</syntaxoid>
-    </matchingrule>
-    <matchingrule oid="2.5.13.1" obsolete="false">
-      <aliases>
-        <alias>distinguishedNameMatch</alias>
-      </aliases>
-      <syntaxoid>1.3.6.1.4.1.1466.115.121.1.12</syntaxoid>
+      <syntaxoid>1.3.6.1.4.1.1466.115.121.1.27</syntaxoid>
     </matchingrule>
     <matchingrule oid="2.5.13.10" obsolete="false">
       <aliases>
@@ -498,35 +492,23 @@
       </aliases>
       <syntaxoid>1.3.6.1.4.1.1466.115.121.1.58</syntaxoid>
     </matchingrule>
-    <matchingrule oid="2.5.13.11" obsolete="false">
+    <matchingrule oid="2.5.13.31" obsolete="false">
       <aliases>
-        <alias>caseIgnoreListMatch</alias>
+        <alias>directoryStringFirstComponentMatch</alias>
       </aliases>
-      <syntaxoid>1.3.6.1.4.1.1466.115.121.1.41</syntaxoid>
+      <syntaxoid>1.3.6.1.4.1.1466.115.121.1.15</syntaxoid>
     </matchingrule>
-    <matchingrule oid="2.5.13.12" obsolete="false">
+    <matchingrule oid="2.5.13.4" obsolete="false">
       <aliases>
-        <alias>caseIgnoreListSubstringsMatch</alias>
+        <alias>caseIgnoreSubstringsMatch</alias>
       </aliases>
       <syntaxoid>1.3.6.1.4.1.1466.115.121.1.58</syntaxoid>
     </matchingrule>
-    <matchingrule oid="2.5.13.13" obsolete="false">
+    <matchingrule oid="2.5.13.27" obsolete="false">
       <aliases>
-        <alias>booleanMatch</alias>
+        <alias>generalizedTimeMatch</alias>
       </aliases>
-      <syntaxoid>1.3.6.1.4.1.1466.115.121.1.7</syntaxoid>
-    </matchingrule>
-    <matchingrule oid="2.5.13.14" obsolete="false">
-      <aliases>
-        <alias>integerMatch</alias>
-      </aliases>
-      <syntaxoid>1.3.6.1.4.1.1466.115.121.1.27</syntaxoid>
-    </matchingrule>
-    <matchingrule oid="2.5.13.15" obsolete="false">
-      <aliases>
-        <alias>integerOrderingMatch</alias>
-      </aliases>
-      <syntaxoid>1.3.6.1.4.1.1466.115.121.1.27</syntaxoid>
+      <syntaxoid>1.3.6.1.4.1.1466.115.121.1.24</syntaxoid>
     </matchingrule>
     <matchingrule oid="2.5.13.16" obsolete="false">
       <aliases>
@@ -534,17 +516,59 @@
       </aliases>
       <syntaxoid>1.3.6.1.4.1.1466.115.121.1.6</syntaxoid>
     </matchingrule>
-    <matchingrule oid="2.5.13.17" obsolete="false">
+    <matchingrule oid="2.5.13.20" obsolete="false">
       <aliases>
-        <alias>octetStringMatch</alias>
+        <alias>telephoneNumberMatch</alias>
       </aliases>
-      <syntaxoid>1.3.6.1.4.1.1466.115.121.1.40</syntaxoid>
+      <syntaxoid>1.3.6.1.4.1.1466.115.121.1.50</syntaxoid>
     </matchingrule>
-    <matchingrule oid="2.5.13.18" obsolete="false">
+    <matchingrule oid="2.5.13.1" obsolete="false">
       <aliases>
-        <alias>octetStringOrderingMatch</alias>
+        <alias>distinguishedNameMatch</alias>
       </aliases>
-      <syntaxoid>1.3.6.1.4.1.1466.115.121.1.40</syntaxoid>
+      <syntaxoid>1.3.6.1.4.1.1466.115.121.1.12</syntaxoid>
+    </matchingrule>
+    <matchingrule oid="2.5.13.12" obsolete="false">
+      <aliases>
+        <alias>caseIgnoreListSubstringsMatch</alias>
+      </aliases>
+      <syntaxoid>1.3.6.1.4.1.1466.115.121.1.58</syntaxoid>
+    </matchingrule>
+    <matchingrule oid="2.5.13.21" obsolete="false">
+      <aliases>
+        <alias>telephoneNumberSubstringsMatch</alias>
+      </aliases>
+      <syntaxoid>1.3.6.1.4.1.1466.115.121.1.58</syntaxoid>
+    </matchingrule>
+    <matchingrule oid="2.5.13.14" obsolete="false">
+      <aliases>
+        <alias>integerMatch</alias>
+      </aliases>
+      <syntaxoid>1.3.6.1.4.1.1466.115.121.1.27</syntaxoid>
+    </matchingrule>
+    <matchingrule oid="2.5.13.0" obsolete="false">
+      <aliases>
+        <alias>objectIdentifierMatch</alias>
+      </aliases>
+      <syntaxoid>1.3.6.1.4.1.1466.115.121.1.38</syntaxoid>
+    </matchingrule>
+    <matchingrule oid="2.5.13.8" obsolete="false">
+      <aliases>
+        <alias>numericStringMatch</alias>
+      </aliases>
+      <syntaxoid>1.3.6.1.4.1.1466.115.121.1.36</syntaxoid>
+    </matchingrule>
+    <matchingrule oid="2.5.13.6" obsolete="false">
+      <aliases>
+        <alias>caseExactOrderingMatch</alias>
+      </aliases>
+      <syntaxoid>1.3.6.1.4.1.1466.115.121.1.15</syntaxoid>
+    </matchingrule>
+    <matchingrule oid="2.5.13.28" obsolete="false">
+      <aliases>
+        <alias>generalizedTimeOrderingMatch</alias>
+      </aliases>
+      <syntaxoid>1.3.6.1.4.1.1466.115.121.1.24</syntaxoid>
     </matchingrule>
     <matchingrule oid="2.5.13.19" obsolete="false">
       <aliases>
@@ -558,47 +582,11 @@
       </aliases>
       <syntaxoid>1.3.6.1.4.1.1466.115.121.1.15</syntaxoid>
     </matchingrule>
-    <matchingrule oid="2.5.13.20" obsolete="false">
+    <matchingrule oid="2.5.13.17" obsolete="false">
       <aliases>
-        <alias>telephoneNumberMatch</alias>
+        <alias>octetStringMatch</alias>
       </aliases>
-      <syntaxoid>1.3.6.1.4.1.1466.115.121.1.50</syntaxoid>
-    </matchingrule>
-    <matchingrule oid="2.5.13.21" obsolete="false">
-      <aliases>
-        <alias>telephoneNumberSubstringsMatch</alias>
-      </aliases>
-      <syntaxoid>1.3.6.1.4.1.1466.115.121.1.58</syntaxoid>
-    </matchingrule>
-    <matchingrule oid="2.5.13.22" obsolete="false">
-      <aliases>
-        <alias>presentationAddressMatch</alias>
-      </aliases>
-      <syntaxoid>1.3.6.1.4.1.1466.115.121.1.43</syntaxoid>
-    </matchingrule>
-    <matchingrule oid="2.5.13.23" obsolete="false">
-      <aliases>
-        <alias>uniqueMemberMatch</alias>
-      </aliases>
-      <syntaxoid>1.3.6.1.4.1.1466.115.121.1.34</syntaxoid>
-    </matchingrule>
-    <matchingrule oid="2.5.13.24" obsolete="false">
-      <aliases>
-        <alias>protocolInformationMatch</alias>
-      </aliases>
-      <syntaxoid>1.3.6.1.4.1.1466.115.121.1.42</syntaxoid>
-    </matchingrule>
-    <matchingrule oid="2.5.13.27" obsolete="false">
-      <aliases>
-        <alias>generalizedTimeMatch</alias>
-      </aliases>
-      <syntaxoid>1.3.6.1.4.1.1466.115.121.1.24</syntaxoid>
-    </matchingrule>
-    <matchingrule oid="2.5.13.28" obsolete="false">
-      <aliases>
-        <alias>generalizedTimeOrderingMatch</alias>
-      </aliases>
-      <syntaxoid>1.3.6.1.4.1.1466.115.121.1.24</syntaxoid>
+      <syntaxoid>1.3.6.1.4.1.1466.115.121.1.40</syntaxoid>
     </matchingrule>
     <matchingrule oid="2.5.13.29" obsolete="false">
       <aliases>
@@ -606,9 +594,63 @@
       </aliases>
       <syntaxoid>1.3.6.1.4.1.1466.115.121.1.27</syntaxoid>
     </matchingrule>
-    <matchingrule oid="2.5.13.3" obsolete="false">
+    <matchingrule oid="1.3.6.1.4.1.1466.109.114.2" obsolete="false">
       <aliases>
-        <alias>caseIgnoreOrderingMatch</alias>
+        <alias>caseIgnoreIA5Match</alias>
+      </aliases>
+      <syntaxoid>1.3.6.1.4.1.1466.115.121.1.26</syntaxoid>
+    </matchingrule>
+    <matchingrule oid="2.5.13.13" obsolete="false">
+      <aliases>
+        <alias>booleanMatch</alias>
+      </aliases>
+      <syntaxoid>1.3.6.1.4.1.1466.115.121.1.7</syntaxoid>
+    </matchingrule>
+    <matchingrule oid="2.5.13.7" obsolete="false">
+      <aliases>
+        <alias>caseExactSubstringsMatch</alias>
+      </aliases>
+      <syntaxoid>1.3.6.1.4.1.1466.115.121.1.58</syntaxoid>
+    </matchingrule>
+    <matchingrule oid="1.3.6.1.4.1.1466.109.114.1" obsolete="false">
+      <aliases>
+        <alias>caseExactIA5Match</alias>
+      </aliases>
+      <syntaxoid>1.3.6.1.4.1.1466.115.121.1.26</syntaxoid>
+    </matchingrule>
+    <matchingrule oid="2.5.13.24" obsolete="false">
+      <aliases>
+        <alias>protocolInformationMatch</alias>
+      </aliases>
+      <syntaxoid>1.3.6.1.4.1.1466.115.121.1.42</syntaxoid>
+    </matchingrule>
+    <matchingrule oid="2.5.13.23" obsolete="false">
+      <aliases>
+        <alias>uniqueMemberMatch</alias>
+      </aliases>
+      <syntaxoid>1.3.6.1.4.1.1466.115.121.1.34</syntaxoid>
+    </matchingrule>
+    <matchingrule oid="2.5.13.22" obsolete="false">
+      <aliases>
+        <alias>presentationAddressMatch</alias>
+      </aliases>
+      <syntaxoid>1.3.6.1.4.1.1466.115.121.1.43</syntaxoid>
+    </matchingrule>
+    <matchingrule oid="2.5.13.32" obsolete="false">
+      <aliases>
+        <alias>wordMatch</alias>
+      </aliases>
+      <syntaxoid>1.3.6.1.4.1.1466.115.121.1.15</syntaxoid>
+    </matchingrule>
+    <matchingrule oid="2.5.13.11" obsolete="false">
+      <aliases>
+        <alias>caseIgnoreListMatch</alias>
+      </aliases>
+      <syntaxoid>1.3.6.1.4.1.1466.115.121.1.41</syntaxoid>
+    </matchingrule>
+    <matchingrule oid="2.5.13.5" obsolete="false">
+      <aliases>
+        <alias>caseExactMatch</alias>
       </aliases>
       <syntaxoid>1.3.6.1.4.1.1466.115.121.1.15</syntaxoid>
     </matchingrule>
@@ -618,17 +660,11 @@
       </aliases>
       <syntaxoid>1.3.6.1.4.1.1466.115.121.1.38</syntaxoid>
     </matchingrule>
-    <matchingrule oid="2.5.13.31" obsolete="false">
+    <matchingrule oid="2.5.13.9" obsolete="false">
       <aliases>
-        <alias>directoryStringFirstComponentMatch</alias>
+        <alias>numericStringOrderingMatch</alias>
       </aliases>
-      <syntaxoid>1.3.6.1.4.1.1466.115.121.1.15</syntaxoid>
-    </matchingrule>
-    <matchingrule oid="2.5.13.32" obsolete="false">
-      <aliases>
-        <alias>wordMatch</alias>
-      </aliases>
-      <syntaxoid>1.3.6.1.4.1.1466.115.121.1.15</syntaxoid>
+      <syntaxoid>1.3.6.1.4.1.1466.115.121.1.36</syntaxoid>
     </matchingrule>
     <matchingrule oid="2.5.13.33" obsolete="false">
       <aliases>
@@ -636,136 +672,52 @@
       </aliases>
       <syntaxoid>1.3.6.1.4.1.1466.115.121.1.15</syntaxoid>
     </matchingrule>
-    <matchingrule oid="2.5.13.4" obsolete="false">
-      <aliases>
-        <alias>caseIgnoreSubstringsMatch</alias>
-      </aliases>
-      <syntaxoid>1.3.6.1.4.1.1466.115.121.1.58</syntaxoid>
-    </matchingrule>
-    <matchingrule oid="2.5.13.5" obsolete="false">
-      <aliases>
-        <alias>caseExactMatch</alias>
-      </aliases>
-      <syntaxoid>1.3.6.1.4.1.1466.115.121.1.15</syntaxoid>
-    </matchingrule>
-    <matchingrule oid="2.5.13.6" obsolete="false">
-      <aliases>
-        <alias>caseExactOrderingMatch</alias>
-      </aliases>
-      <syntaxoid>1.3.6.1.4.1.1466.115.121.1.15</syntaxoid>
-    </matchingrule>
-    <matchingrule oid="2.5.13.7" obsolete="false">
-      <aliases>
-        <alias>caseExactSubstringsMatch</alias>
-      </aliases>
-      <syntaxoid>1.3.6.1.4.1.1466.115.121.1.58</syntaxoid>
-    </matchingrule>
-    <matchingrule oid="2.5.13.8" obsolete="false">
-      <aliases>
-        <alias>numericStringMatch</alias>
-      </aliases>
-      <syntaxoid>1.3.6.1.4.1.1466.115.121.1.36</syntaxoid>
-    </matchingrule>
-    <matchingrule oid="2.5.13.9" obsolete="false">
-      <aliases>
-        <alias>numericStringOrderingMatch</alias>
-      </aliases>
-      <syntaxoid>1.3.6.1.4.1.1466.115.121.1.36</syntaxoid>
-    </matchingrule>
   </matchingrules>
   <syntaxes>
-    <syntax oid="1.3.6.1.4.1.1466.115.121.1.1" obsolete="false" humanreadable="true">
-      <description>ACI Item</description>
-    </syntax>
-    <syntax oid="1.3.6.1.4.1.1466.115.121.1.10" obsolete="false" humanreadable="false">
-      <description>Certificate Pair</description>
-    </syntax>
-    <syntax oid="1.3.6.1.4.1.1466.115.121.1.11" obsolete="false" humanreadable="true">
-      <description>Country String</description>
-    </syntax>
-    <syntax oid="1.3.6.1.4.1.1466.115.121.1.12" obsolete="false" humanreadable="true">
-      <description>DN</description>
-    </syntax>
-    <syntax oid="1.3.6.1.4.1.1466.115.121.1.13" obsolete="false" humanreadable="true">
-      <description>Data Quality Syntax</description>
+    <syntax oid="1.3.6.1.4.1.1466.115.121.1.44" obsolete="false" humanreadable="true">
+      <description>Printable String</description>
     </syntax>
     <syntax oid="1.3.6.1.4.1.1466.115.121.1.14" obsolete="false" humanreadable="true">
       <description>Delivery Method</description>
     </syntax>
-    <syntax oid="1.3.6.1.4.1.1466.115.121.1.15" obsolete="false" humanreadable="true">
-      <description>Directory String</description>
+    <syntax oid="1.3.6.1.4.1.1466.115.121.1.6" obsolete="false" humanreadable="true">
+      <description>Bit String</description>
     </syntax>
-    <syntax oid="1.3.6.1.4.1.1466.115.121.1.16" obsolete="false" humanreadable="true">
-      <description>DIT Content Rule Description</description>
-    </syntax>
-    <syntax oid="1.3.6.1.4.1.1466.115.121.1.17" obsolete="false" humanreadable="true">
-      <description>DIT Structure Rule Description</description>
-    </syntax>
-    <syntax oid="1.3.6.1.4.1.1466.115.121.1.18" obsolete="false" humanreadable="true">
-      <description>DL Submit Permission</description>
-    </syntax>
-    <syntax oid="1.3.6.1.4.1.1466.115.121.1.19" obsolete="false" humanreadable="true">
-      <description>DSA Quality Syntax</description>
-    </syntax>
-    <syntax oid="1.3.6.1.4.1.1466.115.121.1.2" obsolete="false" humanreadable="true">
-      <description>Access Point</description>
-    </syntax>
-    <syntax oid="1.3.6.1.4.1.1466.115.121.1.20" obsolete="false" humanreadable="true">
-      <description>DSE Type</description>
-    </syntax>
-    <syntax oid="1.3.6.1.4.1.1466.115.121.1.21" obsolete="false" humanreadable="true">
-      <description>Enhanced Guide</description>
-    </syntax>
-    <syntax oid="1.3.6.1.4.1.1466.115.121.1.22" obsolete="false" humanreadable="true">
-      <description>Facsimile Telephone Number</description>
-    </syntax>
-    <syntax oid="1.3.6.1.4.1.1466.115.121.1.23" obsolete="false" humanreadable="false">
-      <description>Fax</description>
+    <syntax oid="1.3.6.1.4.1.1466.115.121.1.57" obsolete="false" humanreadable="true">
+      <description>LDAP BootstrapSchema Description</description>
     </syntax>
     <syntax oid="1.3.6.1.4.1.1466.115.121.1.24" obsolete="false" humanreadable="true">
       <description>Generalized Time</description>
     </syntax>
-    <syntax oid="1.3.6.1.4.1.1466.115.121.1.25" obsolete="false" humanreadable="true">
-      <description>Guide</description>
-    </syntax>
-    <syntax oid="1.3.6.1.4.1.1466.115.121.1.26" obsolete="false" humanreadable="true">
-      <description>IA5 String</description>
-    </syntax>
-    <syntax oid="1.3.6.1.4.1.1466.115.121.1.27" obsolete="false" humanreadable="true">
-      <description>INTEGER</description>
-    </syntax>
-    <syntax oid="1.3.6.1.4.1.1466.115.121.1.28" obsolete="false" humanreadable="false">
-      <description>JPEG</description>
-    </syntax>
-    <syntax oid="1.3.6.1.4.1.1466.115.121.1.29" obsolete="false" humanreadable="true">
-      <description>Master And Shadow Access Points</description>
-    </syntax>
-    <syntax oid="1.3.6.1.4.1.1466.115.121.1.3" obsolete="false" humanreadable="true">
-      <description>Attribute Type Description</description>
-    </syntax>
-    <syntax oid="1.3.6.1.4.1.1466.115.121.1.30" obsolete="false" humanreadable="true">
-      <description>Matching Rule Description</description>
-    </syntax>
-    <syntax oid="1.3.6.1.4.1.1466.115.121.1.31" obsolete="false" humanreadable="true">
-      <description>Matching Rule Use Description</description>
-    </syntax>
-    <syntax oid="1.3.6.1.4.1.1466.115.121.1.32" obsolete="false" humanreadable="true">
-      <description>Mail Preference</description>
+    <syntax oid="1.3.6.1.4.1.1466.115.121.1.46" obsolete="false" humanreadable="true">
+      <description>Supplier Information</description>
     </syntax>
     <syntax oid="1.3.6.1.4.1.1466.115.121.1.33" obsolete="false" humanreadable="true">
       <description>MHS OR Address</description>
     </syntax>
-    <syntax oid="1.3.6.1.4.1.1466.115.121.1.34" obsolete="false" humanreadable="true">
-      <description>Name And Optional UID</description>
+    <syntax oid="1.3.6.1.4.1.1466.115.121.1.8" obsolete="false" humanreadable="false">
+      <description>Certificate</description>
+    </syntax>
+    <syntax oid="1.3.6.1.4.1.1466.115.121.1.40" obsolete="false" humanreadable="false">
+      <description>Octet String</description>
+    </syntax>
+    <syntax oid="1.3.6.1.4.1.1466.115.121.1.11" obsolete="false" humanreadable="true">
+      <description>Country String</description>
+    </syntax>
+    <syntax oid="1.3.6.1.4.1.1466.115.121.1.13" obsolete="false" humanreadable="true">
+      <description>Data Quality Syntax</description>
+    </syntax>
+    <syntax oid="1.3.6.1.4.1.1466.115.121.1.7" obsolete="false" humanreadable="true">
+      <description>Boolean</description>
+    </syntax>
+    <syntax oid="1.3.6.1.4.1.1466.115.121.1.2" obsolete="false" humanreadable="true">
+      <description>Access Point</description>
+    </syntax>
+    <syntax oid="1.3.6.1.4.1.1466.115.121.1.53" obsolete="false" humanreadable="true">
+      <description>UTC Time</description>
     </syntax>
     <syntax oid="1.3.6.1.4.1.1466.115.121.1.35" obsolete="false" humanreadable="true">
       <description>Name Form Description</description>
-    </syntax>
-    <syntax oid="1.3.6.1.4.1.1466.115.121.1.36" obsolete="false" humanreadable="true">
-      <description>Numeric String</description>
-    </syntax>
-    <syntax oid="1.3.6.1.4.1.1466.115.121.1.37" obsolete="false" humanreadable="true">
-      <description>Object Class Description</description>
     </syntax>
     <syntax oid="1.3.6.1.4.1.1466.115.121.1.38" obsolete="false" humanreadable="true">
       <description>OID</description>
@@ -773,83 +725,131 @@
     <syntax oid="1.3.6.1.4.1.1466.115.121.1.39" obsolete="false" humanreadable="true">
       <description>Other Mailbox</description>
     </syntax>
-    <syntax oid="1.3.6.1.4.1.1466.115.121.1.4" obsolete="false" humanreadable="false">
-      <description>Audio</description>
+    <syntax oid="1.3.6.1.4.1.1466.115.121.1.34" obsolete="false" humanreadable="true">
+      <description>Name And Optional UID</description>
     </syntax>
-    <syntax oid="1.3.6.1.4.1.1466.115.121.1.40" obsolete="false" humanreadable="false">
-      <description>Octet String</description>
+    <syntax oid="1.3.6.1.4.1.1466.115.121.1.17" obsolete="false" humanreadable="true">
+      <description>DIT Structure Rule Description</description>
     </syntax>
-    <syntax oid="1.3.6.1.4.1.1466.115.121.1.41" obsolete="false" humanreadable="true">
-      <description>Postal Address</description>
+    <syntax oid="1.3.6.1.4.1.1466.115.121.1.28" obsolete="false" humanreadable="false">
+      <description>JPEG</description>
     </syntax>
-    <syntax oid="1.3.6.1.4.1.1466.115.121.1.42" obsolete="false" humanreadable="true">
-      <description>Protocol Information</description>
-    </syntax>
-    <syntax oid="1.3.6.1.4.1.1466.115.121.1.43" obsolete="false" humanreadable="true">
-      <description>Presentation Address</description>
-    </syntax>
-    <syntax oid="1.3.6.1.4.1.1466.115.121.1.44" obsolete="false" humanreadable="true">
-      <description>Printable String</description>
-    </syntax>
-    <syntax oid="1.3.6.1.4.1.1466.115.121.1.45" obsolete="false" humanreadable="true">
-      <description>Subtree Specification</description>
-    </syntax>
-    <syntax oid="1.3.6.1.4.1.1466.115.121.1.46" obsolete="false" humanreadable="true">
-      <description>Supplier Information</description>
-    </syntax>
-    <syntax oid="1.3.6.1.4.1.1466.115.121.1.47" obsolete="false" humanreadable="true">
-      <description>Supplier Or Consumer</description>
-    </syntax>
-    <syntax oid="1.3.6.1.4.1.1466.115.121.1.48" obsolete="false" humanreadable="true">
-      <description>Supplier And Consumer</description>
-    </syntax>
-    <syntax oid="1.3.6.1.4.1.1466.115.121.1.49" obsolete="false" humanreadable="false">
-      <description>Supported Algorithm</description>
-    </syntax>
-    <syntax oid="1.3.6.1.4.1.1466.115.121.1.5" obsolete="false" humanreadable="false">
-      <description>Binary</description>
-    </syntax>
-    <syntax oid="1.3.6.1.4.1.1466.115.121.1.50" obsolete="false" humanreadable="true">
-      <description>Telephone Number</description>
+    <syntax oid="1.3.6.1.4.1.1466.115.121.1.18" obsolete="false" humanreadable="true">
+      <description>DL Submit Permission</description>
     </syntax>
     <syntax oid="1.3.6.1.4.1.1466.115.121.1.51" obsolete="false" humanreadable="true">
       <description>Teletex Terminal Identifier</description>
     </syntax>
-    <syntax oid="1.3.6.1.4.1.1466.115.121.1.52" obsolete="false" humanreadable="true">
-      <description>Telex Number</description>
+    <syntax oid="1.3.6.1.4.1.1466.115.121.1.31" obsolete="false" humanreadable="true">
+      <description>Matching Rule Use Description</description>
     </syntax>
-    <syntax oid="1.3.6.1.4.1.1466.115.121.1.53" obsolete="false" humanreadable="true">
-      <description>UTC Time</description>
+    <syntax oid="1.3.6.1.4.1.1466.115.121.1.23" obsolete="false" humanreadable="false">
+      <description>Fax</description>
     </syntax>
-    <syntax oid="1.3.6.1.4.1.1466.115.121.1.54" obsolete="false" humanreadable="true">
-      <description>LDAP Syntax Description</description>
-    </syntax>
-    <syntax oid="1.3.6.1.4.1.1466.115.121.1.55" obsolete="false" humanreadable="true">
-      <description>Modify Rights</description>
+    <syntax oid="1.3.6.1.4.1.1466.115.121.1.25" obsolete="false" humanreadable="true">
+      <description>Guide</description>
     </syntax>
     <syntax oid="1.3.6.1.4.1.1466.115.121.1.56" obsolete="false" humanreadable="true">
       <description>LDAP BootstrapSchema Definition</description>
     </syntax>
-    <syntax oid="1.3.6.1.4.1.1466.115.121.1.57" obsolete="false" humanreadable="true">
-      <description>LDAP BootstrapSchema Description</description>
+    <syntax oid="1.3.6.1.4.1.1466.115.121.1.36" obsolete="false" humanreadable="true">
+      <description>Numeric String</description>
     </syntax>
-    <syntax oid="1.3.6.1.4.1.1466.115.121.1.58" obsolete="false" humanreadable="true">
+    <syntax oid="1.3.6.1.4.1.1466.115.121.1.52" obsolete="false" humanreadable="false">
+      <description>Telex Number</description>
+    </syntax>
+    <syntax oid="1.3.6.1.4.1.1466.115.121.1.19" obsolete="false" humanreadable="true">
+      <description>DSA Quality Syntax</description>
+    </syntax>
+    <syntax oid="1.3.6.1.4.1.1466.115.121.1.45" obsolete="false" humanreadable="true">
+      <description>Subtree Specification</description>
+    </syntax>
+    <syntax oid="1.3.6.1.4.1.1466.115.121.1.30" obsolete="false" humanreadable="true">
+      <description>Matching Rule Description</description>
+    </syntax>
+    <syntax oid="1.3.6.1.4.1.1466.115.121.1.29" obsolete="false" humanreadable="true">
+      <description>Master And Shadow Access Points</description>
+    </syntax>
+    <syntax oid="1.3.6.1.4.1.1466.115.121.1.21" obsolete="false" humanreadable="true">
+      <description>Enhanced Guide</description>
+    </syntax>
+    <syntax oid="1.3.6.1.4.1.1466.115.121.1.47" obsolete="false" humanreadable="true">
+      <description>Supplier Or Consumer</description>
+    </syntax>
+    <syntax oid="1.3.6.1.4.1.1466.115.121.1.3" obsolete="false" humanreadable="true">
+      <description>Attribute Type Description</description>
+    </syntax>
+    <syntax oid="1.3.6.1.4.1.1466.115.121.1.5" obsolete="false" humanreadable="false">
+      <description>Binary</description>
+    </syntax>
+    <syntax oid="1.3.6.1.4.1.1466.115.121.1.48" obsolete="false" humanreadable="true">
+      <description>Supplier And Consumer</description>
+    </syntax>
+    <syntax oid="1.3.6.1.4.1.1466.115.121.1.16" obsolete="false" humanreadable="true">
+      <description>DIT Content Rule Description</description>
+    </syntax>
+    <syntax oid="1.3.6.1.4.1.1466.115.121.1.43" obsolete="false" humanreadable="true">
+      <description>Presentation Address</description>
+    </syntax>
+    <syntax oid="1.3.6.1.4.1.1466.115.121.1.20" obsolete="false" humanreadable="true">
+      <description>DSE Type</description>
+    </syntax>
+    <syntax oid="1.3.6.1.4.1.1466.115.121.1.42" obsolete="false" humanreadable="true">
+      <description>Protocol Information</description>
+    </syntax>
+    <syntax oid="1.3.6.1.4.1.1466.115.121.1.49" obsolete="false" humanreadable="false">
+      <description>Supported Algorithm</description>
+    </syntax>
+    <syntax oid="1.3.6.1.4.1.1466.115.121.1.55" obsolete="false" humanreadable="true">
+      <description>Modify Rights</description>
+    </syntax>
+    <syntax oid="1.3.6.1.4.1.1466.115.121.1.4" obsolete="false" humanreadable="false">
+      <description>Audio</description>
+    </syntax>
+    <syntax oid="1.3.6.1.4.1.1466.115.121.1.37" obsolete="false" humanreadable="true">
+      <description>Object Class Description</description>
+    </syntax>
+    <syntax oid="1.3.6.1.4.1.1466.115.121.1.32" obsolete="false" humanreadable="true">
+      <description>Mail Preference</description>
+    </syntax>
+    <syntax oid="1.3.6.1.4.1.1466.115.121.1.54" obsolete="false" humanreadable="true">
+      <description>LDAP Syntax Description</description>
+    </syntax>
+    <syntax oid="1.3.6.1.4.1.1466.115.121.1.58" obsolete="false" humanreadable="false">
       <description>Substring Assertion</description>
+    </syntax>
+    <syntax oid="1.3.6.1.4.1.1466.115.121.1.9" obsolete="false" humanreadable="false">
+      <description>Certificate List</description>
+    </syntax>
+    <syntax oid="1.3.6.1.4.1.1466.115.121.1.10" obsolete="false" humanreadable="false">
+      <description>Certificate Pair</description>
+    </syntax>
+    <syntax oid="1.3.6.1.4.1.1466.115.121.1.41" obsolete="false" humanreadable="true">
+      <description>Postal Address</description>
+    </syntax>
+    <syntax oid="1.3.6.1.4.1.1466.115.121.1.22" obsolete="false" humanreadable="true">
+      <description>Facsimile Telephone Number</description>
+    </syntax>
+    <syntax oid="1.3.6.1.4.1.1466.115.121.1.1" obsolete="false" humanreadable="true">
+      <description>ACI Item</description>
+    </syntax>
+    <syntax oid="1.3.6.1.4.1.1466.115.121.1.12" obsolete="false" humanreadable="true">
+      <description>DN</description>
+    </syntax>
+    <syntax oid="1.3.6.1.4.1.1466.115.121.1.27" obsolete="false" humanreadable="true">
+      <description>INTEGER</description>
     </syntax>
     <syntax oid="1.3.6.1.4.1.1466.115.121.1.59" obsolete="false" humanreadable="true">
       <description>Trigger Specification</description>
     </syntax>
-    <syntax oid="1.3.6.1.4.1.1466.115.121.1.6" obsolete="false" humanreadable="true">
-      <description>Bit String</description>
+    <syntax oid="1.3.6.1.4.1.1466.115.121.1.15" obsolete="false" humanreadable="true">
+      <description>Directory String</description>
     </syntax>
-    <syntax oid="1.3.6.1.4.1.1466.115.121.1.7" obsolete="false" humanreadable="true">
-      <description>Boolean</description>
+    <syntax oid="1.3.6.1.4.1.1466.115.121.1.26" obsolete="false" humanreadable="true">
+      <description>IA5 String</description>
     </syntax>
-    <syntax oid="1.3.6.1.4.1.1466.115.121.1.8" obsolete="false" humanreadable="false">
-      <description>Certificate</description>
-    </syntax>
-    <syntax oid="1.3.6.1.4.1.1466.115.121.1.9" obsolete="false" humanreadable="false">
-      <description>Certificate List</description>
+    <syntax oid="1.3.6.1.4.1.1466.115.121.1.50" obsolete="false" humanreadable="true">
+      <description>Telephone Number</description>
     </syntax>
   </syntaxes>
 </schema>

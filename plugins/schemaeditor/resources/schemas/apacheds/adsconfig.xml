@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <!--
   Licensed to the Apache Software Foundation (ASF) under one
   or more contributor license agreements.  See the NOTICE file
@@ -17,295 +16,60 @@
   specific language governing permissions and limitations
   under the License.
 -->
+<?xml version="1.0" encoding="UTF-8"?>
 <schema name="adsconfig">
   <attributetypes>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.0" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.403" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
       <aliases>
-        <alias>ads-compositeElement</alias>
+        <alias>ads-krbForwardableAllowed</alias>
       </aliases>
-      <description>A base AttributeType for attributeType referencing composite configuration elements</description>
-      <superior>name</superior>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.44</syntax>
-      <equality>caseExactMatch</equality>
-      <ordering>caseExactOrderingMatch</ordering>
-      <substring>caseExactSubstringsMatch</substring>
-    </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.100" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-      <aliases>
-        <alias>ads-directoryServiceId</alias>
-      </aliases>
-      <description>The DirectoryService ID</description>
-      <superior>name</superior>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.44</syntax>
-      <equality>caseExactMatch</equality>
-      <ordering>caseExactOrderingMatch</ordering>
-      <substring>caseExactSubstringsMatch</substring>
-    </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.101" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-      <aliases>
-        <alias>ads-dsAccessControlEnabled</alias>
-      </aliases>
-      <description>Tells if access control is activated or not</description>
+      <description>Whether forwardable addresses are allowed</description>
       <usage>USER_APPLICATIONS</usage>
       <syntax>1.3.6.1.4.1.1466.115.121.1.7</syntax>
       <equality>booleanMatch</equality>
     </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.102" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.816" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
       <aliases>
-        <alias>ads-dsAllowAnonymousAccess</alias>
+        <alias>ads-httpConfFile</alias>
       </aliases>
-      <description>Tells if anonymous access are allowed or not</description>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.7</syntax>
-      <equality>booleanMatch</equality>
-    </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.103" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-      <aliases>
-        <alias>ads-dsDenormalizeOpAttrsEnabled</alias>
-      </aliases>
-      <description>Tells if the operational attributes are denormalized or not</description>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.7</syntax>
-      <equality>booleanMatch</equality>
-    </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.104" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-      <aliases>
-        <alias>ads-dsPasswordHidden</alias>
-      </aliases>
-      <description>Tells if the password is stored encrypted even for PLAIN authentication</description>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.7</syntax>
-      <equality>booleanMatch</equality>
-    </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.105" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-      <aliases>
-        <alias>ads-changeLog</alias>
-      </aliases>
-      <description>The ChangeLog system</description>
-      <superior>ads-compositeElement</superior>
+      <description>Jetty web server config file path</description>
       <usage>USER_APPLICATIONS</usage>
       <syntax>1.3.6.1.4.1.1466.115.121.1.44</syntax>
-      <equality>caseExactMatch</equality>
-      <ordering>caseExactOrderingMatch</ordering>
-      <substring>caseExactSubstringsMatch</substring>
+      <equality>caseIgnoreMatch</equality>
+      <ordering>caseIgnoreOrderingMatch</ordering>
+      <substring>caseIgnoreSubstringsMatch</substring>
     </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.108" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.829" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
       <aliases>
-        <alias>ads-partitions</alias>
+        <alias>ads-replSearchSizeLimit</alias>
       </aliases>
-      <description>The set of partitions</description>
-      <superior>ads-compositeElement</superior>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.44</syntax>
-      <equality>caseExactMatch</equality>
-      <ordering>caseExactOrderingMatch</ordering>
-      <substring>caseExactSubstringsMatch</substring>
-    </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.110" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-      <aliases>
-        <alias>ads-dsMaxPDUSize</alias>
-      </aliases>
-      <description>Gives the maximum size of a PDU</description>
+      <description>size limit imposed during replication refreshOnly phase</description>
       <usage>USER_APPLICATIONS</usage>
       <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
       <equality>integerMatch</equality>
       <ordering>integerOrderingMatch</ordering>
     </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.111" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.308" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
       <aliases>
-        <alias>ads-dsSyncPeriodMillis</alias>
+        <alias>ads-keystoreFile</alias>
       </aliases>
-      <description>Define the duration between two flushes on disk</description>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
-      <equality>integerMatch</equality>
-      <ordering>integerOrderingMatch</ordering>
-    </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.112" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-      <aliases>
-        <alias>ads-dsReplicaId</alias>
-      </aliases>
-      <description>The server identifier, used for replication</description>
+      <description>The keystore file to use to store certificates</description>
       <usage>USER_APPLICATIONS</usage>
       <syntax>1.3.6.1.4.1.1466.115.121.1.44</syntax>
       <equality>caseExactMatch</equality>
       <ordering>caseExactOrderingMatch</ordering>
       <substring>caseExactSubstringsMatch</substring>
     </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.113" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.808" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
       <aliases>
-        <alias>ads-dsTestEntries</alias>
+        <alias>ads-saslMechName</alias>
       </aliases>
-      <description>The set of entries to inject at startup (may be obsolete)</description>
+      <description>SASL mechanism name</description>
       <usage>USER_APPLICATIONS</usage>
       <syntax>1.3.6.1.4.1.1466.115.121.1.44</syntax>
       <equality>caseExactMatch</equality>
       <ordering>caseExactOrderingMatch</ordering>
       <substring>caseExactSubstringsMatch</substring>
-    </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.115" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
-      <aliases>
-        <alias>ads-servers</alias>
-      </aliases>
-      <description>The references to the servers</description>
-      <superior>ads-compositeElement</superior>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.44</syntax>
-      <equality>caseExactMatch</equality>
-      <ordering>caseExactOrderingMatch</ordering>
-      <substring>caseExactSubstringsMatch</substring>
-    </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.116" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
-      <aliases>
-        <alias>ads-interceptors</alias>
-      </aliases>
-      <description>The references to the interceptors</description>
-      <superior>ads-compositeElement</superior>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.44</syntax>
-      <equality>caseExactMatch</equality>
-      <ordering>caseExactOrderingMatch</ordering>
-      <substring>caseExactSubstringsMatch</substring>
-    </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.117" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-      <aliases>
-        <alias>ads-journal</alias>
-      </aliases>
-      <description>The reference to the Journal</description>
-      <superior>ads-compositeElement</superior>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.44</syntax>
-      <equality>caseExactMatch</equality>
-      <ordering>caseExactOrderingMatch</ordering>
-      <substring>caseExactSubstringsMatch</substring>
-    </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.120" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-      <aliases>
-        <alias>ads-changeLogId</alias>
-      </aliases>
-      <description>The ChangeLog identifier</description>
-      <superior>name</superior>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.44</syntax>
-      <equality>caseExactMatch</equality>
-      <ordering>caseExactOrderingMatch</ordering>
-      <substring>caseExactSubstringsMatch</substring>
-    </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.121" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-      <aliases>
-        <alias>ads-changeLogExposed</alias>
-      </aliases>
-      <description>Tells if the changeLog system is visible by the clients</description>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.7</syntax>
-      <equality>booleanMatch</equality>
-    </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.130" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-      <aliases>
-        <alias>ads-interceptorId</alias>
-      </aliases>
-      <description>The Interceptor identifier</description>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.44</syntax>
-      <equality>caseExactMatch</equality>
-      <ordering>caseExactOrderingMatch</ordering>
-      <substring>caseExactSubstringsMatch</substring>
-    </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.131" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-      <aliases>
-        <alias>ads-interceptorOrder</alias>
-      </aliases>
-      <description>The Interceptor order number</description>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
-      <equality>integerMatch</equality>
-      <ordering>integerOrderingMatch</ordering>
-    </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.141" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-      <aliases>
-        <alias>ads-journalRotation</alias>
-      </aliases>
-      <description>The size before a journal rotation occurs.</description>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
-      <equality>integerMatch</equality>
-      <ordering>integerOrderingMatch</ordering>
-    </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.142" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-      <aliases>
-        <alias>ads-journalWorkingDir</alias>
-      </aliases>
-      <description>The place on disk where the journal is stored.</description>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.44</syntax>
-      <equality>caseExactMatch</equality>
-      <ordering>caseExactOrderingMatch</ordering>
-      <substring>caseExactSubstringsMatch</substring>
-    </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.143" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-      <aliases>
-        <alias>ads-journalFileName</alias>
-      </aliases>
-      <description>The journal file name.</description>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.44</syntax>
-      <equality>caseExactMatch</equality>
-      <ordering>caseExactOrderingMatch</ordering>
-      <substring>caseExactSubstringsMatch</substring>
-    </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.144" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-      <aliases>
-        <alias>ads-journalId</alias>
-      </aliases>
-      <description>The Journal ID</description>
-      <superior>name</superior>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.44</syntax>
-      <equality>caseExactMatch</equality>
-      <ordering>caseExactOrderingMatch</ordering>
-      <substring>caseExactSubstringsMatch</substring>
-    </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.150" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-      <aliases>
-        <alias>ads-partitionId</alias>
-      </aliases>
-      <description>The Partition identifier</description>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.44</syntax>
-      <equality>caseExactMatch</equality>
-      <ordering>caseExactOrderingMatch</ordering>
-      <substring>caseExactSubstringsMatch</substring>
-    </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.151" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-      <aliases>
-        <alias>ads-partitionSuffix</alias>
-      </aliases>
-      <description>The partition suffix</description>
-      <superior>distinguishedName</superior>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.12</syntax>
-      <equality>distinguishedNameMatch</equality>
-      <ordering>distinguishedNameMatch</ordering>
-    </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.152" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
-      <aliases>
-        <alias>ads-indexes</alias>
-      </aliases>
-      <description>A reference to the indexed attributes</description>
-      <superior>ads-compositeElement</superior>
-      <usage>USER_APPLICATIONS</usage>
-    </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.153" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-      <aliases>
-        <alias>ads-partitionCacheSize</alias>
-      </aliases>
-      <description>The number of entries in the cache for this partition</description>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
-      <equality>integerMatch</equality>
-      <ordering>integerOrderingMatch</ordering>
     </attributetype>
     <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.154" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
       <aliases>
@@ -318,151 +82,22 @@
       <ordering>caseExactOrderingMatch</ordering>
       <substring>caseExactSubstringsMatch</substring>
     </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.160" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.130" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
       <aliases>
-        <alias>ads-indexAttributeId</alias>
+        <alias>ads-interceptorId</alias>
       </aliases>
-      <description>The attributeType name or OID</description>
-      <superior>name</superior>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.38</syntax>
-      <equality>objectIdentifierMatch</equality>
-    </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.161" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-      <aliases>
-        <alias>ads-indexFileName</alias>
-      </aliases>
-      <description>The index file name</description>
+      <description>The Interceptor identifier</description>
       <usage>USER_APPLICATIONS</usage>
       <syntax>1.3.6.1.4.1.1466.115.121.1.44</syntax>
       <equality>caseExactMatch</equality>
       <ordering>caseExactOrderingMatch</ordering>
       <substring>caseExactSubstringsMatch</substring>
     </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.162" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.410" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
       <aliases>
-        <alias>ads-indexWorkingDir</alias>
+        <alias>ads-krbMaximumTicketLifetime</alias>
       </aliases>
-      <description>The place on disk where the index file is stored</description>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.44</syntax>
-      <equality>caseExactMatch</equality>
-      <ordering>caseExactOrderingMatch</ordering>
-      <substring>caseExactSubstringsMatch</substring>
-    </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.163" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-      <aliases>
-        <alias>ads-indexNumDupLimit</alias>
-      </aliases>
-      <description>The number of duplicated element we allow before switching to a secondary tree</description>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
-      <equality>integerMatch</equality>
-      <ordering>integerOrderingMatch</ordering>
-    </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.164" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-      <aliases>
-        <alias>ads-indexCacheSize</alias>
-      </aliases>
-      <description>The number of key we store in the cache for this index</description>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
-      <equality>integerMatch</equality>
-      <ordering>integerOrderingMatch</ordering>
-    </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.200" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-      <aliases>
-        <alias>ads-transportId</alias>
-      </aliases>
-      <description>The transport ID</description>
-      <superior>name</superior>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.44</syntax>
-      <equality>caseExactMatch</equality>
-      <ordering>caseExactOrderingMatch</ordering>
-      <substring>caseExactSubstringsMatch</substring>
-    </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.250" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-      <aliases>
-        <alias>ads-serverId</alias>
-      </aliases>
-      <description>The server ID</description>
-      <superior>name</superior>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.44</syntax>
-      <equality>caseExactMatch</equality>
-      <ordering>caseExactOrderingMatch</ordering>
-      <substring>caseExactSubstringsMatch</substring>
-    </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.251" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
-      <aliases>
-        <alias>ads-transports</alias>
-      </aliases>
-      <description>The reference to the associated transports</description>
-      <superior>ads-compositeElement</superior>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.44</syntax>
-      <equality>caseExactMatch</equality>
-      <ordering>caseExactOrderingMatch</ordering>
-      <substring>caseExactSubstringsMatch</substring>
-    </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.252" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-      <aliases>
-        <alias>ads-Id</alias>
-      </aliases>
-      <description>a generic ID which can be used in any configuration entry DN</description>
-      <superior>name</superior>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.44</syntax>
-      <equality>caseExactMatch</equality>
-      <ordering>caseExactOrderingMatch</ordering>
-      <substring>caseExactSubstringsMatch</substring>
-    </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.253" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-      <aliases>
-        <alias>ads-extendedOpId</alias>
-      </aliases>
-      <description>an ID used for ExtendeOpertion names</description>
-      <superior>name</superior>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.44</syntax>
-      <equality>caseExactMatch</equality>
-      <ordering>caseExactOrderingMatch</ordering>
-      <substring>caseExactSubstringsMatch</substring>
-    </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.300" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-      <aliases>
-        <alias>ads-confidentialityRequired</alias>
-      </aliases>
-      <description>Tells the server to accept requests using startTLS or LDAPS</description>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.7</syntax>
-      <equality>booleanMatch</equality>
-    </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.301" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-      <aliases>
-        <alias>ads-allowAnonymousAccess</alias>
-      </aliases>
-      <description>Tells the server to accept Anynymous requests or not</description>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.7</syntax>
-      <equality>booleanMatch</equality>
-    </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.302" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-      <aliases>
-        <alias>ads-maxSizeLimit</alias>
-      </aliases>
-      <description>The maximum number of entries to return</description>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
-      <equality>integerMatch</equality>
-      <ordering>integerOrderingMatch</ordering>
-    </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.303" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-      <aliases>
-        <alias>ads-maxTimeLimit</alias>
-      </aliases>
-      <description>The maximum time before an operation is aborted (in seconds)</description>
+      <description>The maximum ticket lifetime</description>
       <usage>USER_APPLICATIONS</usage>
       <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
       <equality>integerMatch</equality>
@@ -479,61 +114,31 @@
       <ordering>caseExactOrderingMatch</ordering>
       <substring>caseExactSubstringsMatch</substring>
     </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.305" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.110" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
       <aliases>
-        <alias>ads-saslPrincipal</alias>
+        <alias>ads-maxPDUSize</alias>
       </aliases>
-      <description>The service principal, used by GSSAPI</description>
+      <description>Gives the maximum size of a PDU</description>
       <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.26</syntax>
-      <equality>caseExactMatch</equality>
-      <ordering>caseExactOrderingMatch</ordering>
-      <substring>caseExactSubstringsMatch</substring>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
+      <equality>integerMatch</equality>
+      <ordering>integerOrderingMatch</ordering>
     </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.306" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.915" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
       <aliases>
-        <alias>ads-saslRealms</alias>
+        <alias>ads-pwdAllowUserChange</alias>
       </aliases>
-      <description>The realms serviced by this SASL host</description>
       <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.44</syntax>
-      <equality>caseExactMatch</equality>
-      <ordering>caseExactOrderingMatch</ordering>
-      <substring>caseExactSubstringsMatch</substring>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.7</syntax>
+      <equality>booleanMatch</equality>
     </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.307" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.914" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
       <aliases>
-        <alias>ads-replConsumers</alias>
+        <alias>ads-pwdMustChange</alias>
       </aliases>
-      <description>The replication consumers of this server instance</description>
-      <superior>ads-compositeElement</superior>
       <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.44</syntax>
-      <equality>caseExactMatch</equality>
-      <ordering>caseExactOrderingMatch</ordering>
-      <substring>caseExactSubstringsMatch</substring>
-    </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.308" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-      <aliases>
-        <alias>ads-keystoreFile</alias>
-      </aliases>
-      <description>The keystore file to use to store certificates</description>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.44</syntax>
-      <equality>caseExactMatch</equality>
-      <ordering>caseExactOrderingMatch</ordering>
-      <substring>caseExactSubstringsMatch</substring>
-    </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.309" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-      <aliases>
-        <alias>ads-certificatePassword</alias>
-      </aliases>
-      <description>The certificate passord</description>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.44</syntax>
-      <equality>caseExactMatch</equality>
-      <ordering>caseExactOrderingMatch</ordering>
-      <substring>caseExactSubstringsMatch</substring>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.7</syntax>
+      <equality>booleanMatch</equality>
     </attributetype>
     <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.310" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
       <aliases>
@@ -546,113 +151,21 @@
       <ordering>caseExactOrderingMatch</ordering>
       <substring>caseExactSubstringsMatch</substring>
     </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.311" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.309" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
       <aliases>
-        <alias>ads-saslMechHandlers</alias>
+        <alias>ads-certificatePassword</alias>
       </aliases>
-      <description>The reference to the SASL mechanism Handlers</description>
-      <superior>ads-compositeElement</superior>
+      <description>The certificate passord</description>
+      <superior>userPassword</superior>
       <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.44</syntax>
-      <equality>caseExactMatch</equality>
-      <ordering>caseExactOrderingMatch</ordering>
-      <substring>caseExactSubstringsMatch</substring>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.40</syntax>
+      <equality>octetStringMatch</equality>
     </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.312" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.101" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
       <aliases>
-        <alias>ads-extendedOpHandlers</alias>
+        <alias>ads-dsAccessControlEnabled</alias>
       </aliases>
-      <description>The reference to the extended operation Handlers</description>
-      <superior>ads-compositeElement</superior>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.44</syntax>
-      <equality>caseExactMatch</equality>
-      <ordering>caseExactOrderingMatch</ordering>
-      <substring>caseExactSubstringsMatch</substring>
-    </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.313" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
-      <aliases>
-        <alias>ads-passwordPolicies</alias>
-      </aliases>
-      <description>The PasswordPolicy configuration</description>
-      <superior>ads-compositeElement</superior>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.44</syntax>
-      <equality>caseExactMatch</equality>
-      <ordering>caseExactOrderingMatch</ordering>
-      <substring>caseExactSubstringsMatch</substring>
-    </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.400" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-      <aliases>
-        <alias>ads-krbAllowableClockSkew</alias>
-      </aliases>
-      <description>The allowable clock skew</description>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
-      <equality>integerMatch</equality>
-      <ordering>integerOrderingMatch</ordering>
-    </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.401" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
-      <aliases>
-        <alias>ads-krbEncryptionTypes</alias>
-      </aliases>
-      <description>The encryption types</description>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.44</syntax>
-      <equality>caseExactMatch</equality>
-      <ordering>caseExactOrderingMatch</ordering>
-      <substring>caseExactSubstringsMatch</substring>
-    </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.402" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-      <aliases>
-        <alias>ads-krbEmptyAddressesAllowed</alias>
-      </aliases>
-      <description>Whether empty addresses are allowed</description>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.7</syntax>
-      <equality>booleanMatch</equality>
-    </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.403" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-      <aliases>
-        <alias>ads-krbForwardableAllowed</alias>
-      </aliases>
-      <description>Whether forwardable addresses are allowed</description>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.7</syntax>
-      <equality>booleanMatch</equality>
-    </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.404" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-      <aliases>
-        <alias>ads-krbPaEncTimestampRequired</alias>
-      </aliases>
-      <description>Whether pre-authentication by encrypted timestamp is required</description>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.7</syntax>
-      <equality>booleanMatch</equality>
-    </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.405" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-      <aliases>
-        <alias>ads-krbPostdatedAllowed</alias>
-      </aliases>
-      <description>Whether postdated tickets are allowed</description>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.7</syntax>
-      <equality>booleanMatch</equality>
-    </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.406" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-      <aliases>
-        <alias>ads-krbProxiableAllowed</alias>
-      </aliases>
-      <description>Whether proxiable addresses are allowed</description>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.7</syntax>
-      <equality>booleanMatch</equality>
-    </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.407" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-      <aliases>
-        <alias>ads-krbRenewableAllowed</alias>
-      </aliases>
-      <description>Whether renewable tickets are allowed</description>
+      <description>Tells if access control is activated or not</description>
       <usage>USER_APPLICATIONS</usage>
       <syntax>1.3.6.1.4.1.1466.115.121.1.7</syntax>
       <equality>booleanMatch</equality>
@@ -668,181 +181,45 @@
       <ordering>caseExactOrderingMatch</ordering>
       <substring>caseExactSubstringsMatch</substring>
     </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.409" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.921" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
       <aliases>
-        <alias>ads-krbMaximumRenewableLifetime</alias>
+        <alias>ads-pwdId</alias>
       </aliases>
-      <description>The maximum renewable lifetime</description>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
-      <equality>integerMatch</equality>
-      <ordering>integerOrderingMatch</ordering>
-    </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.410" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-      <aliases>
-        <alias>ads-krbMaximumTicketLifetime</alias>
-      </aliases>
-      <description>The maximum ticket lifetime</description>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
-      <equality>integerMatch</equality>
-      <ordering>integerOrderingMatch</ordering>
-    </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.411" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-      <aliases>
-        <alias>ads-krbPrimaryRealm</alias>
-      </aliases>
-      <description>The primary realm</description>
+      <description>an ID used to identify the passwordPolicy configuration</description>
+      <superior>name</superior>
       <usage>USER_APPLICATIONS</usage>
       <syntax>1.3.6.1.4.1.1466.115.121.1.44</syntax>
       <equality>caseExactMatch</equality>
       <ordering>caseExactOrderingMatch</ordering>
       <substring>caseExactSubstringsMatch</substring>
     </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.412" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.828" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
       <aliases>
-        <alias>ads-krbBodyChecksumVerified</alias>
+        <alias>ads-replAttributes</alias>
       </aliases>
-      <description>Whether to verify the body checksum</description>
+      <description>the attributes to be replicated</description>
       <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.7</syntax>
-      <equality>booleanMatch</equality>
-    </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.61" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-      <aliases>
-        <alias>ads-transportAddress</alias>
-      </aliases>
-      <description>The Address to listen on.</description>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.26</syntax>
-      <equality>caseIgnoreOrderingMatch</equality>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.15</syntax>
+      <equality>caseIgnoreIA5Match</equality>
       <ordering>caseExactOrderingMatch</ordering>
       <substring>caseIgnoreIA5SubstringsMatch</substring>
     </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.62" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.153" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
       <aliases>
-        <alias>ads-transportBacklog</alias>
+        <alias>ads-partitionCacheSize</alias>
       </aliases>
-      <description>The number of messages waiting to be processed.</description>
+      <description>The number of entries in the cache for this partition</description>
       <usage>USER_APPLICATIONS</usage>
       <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
       <equality>integerMatch</equality>
       <ordering>integerOrderingMatch</ordering>
     </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.63" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.144" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
       <aliases>
-        <alias>ads-transportEnableSSL</alias>
+        <alias>ads-journalId</alias>
       </aliases>
-      <description>Tells if this transport support SSL.</description>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.7</syntax>
-      <equality>booleanMatch</equality>
-    </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.64" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-      <aliases>
-        <alias>ads-transportNbThreads</alias>
-      </aliases>
-      <description>The number of threads to use for the Acceptor</description>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
-      <equality>integerMatch</equality>
-      <ordering>integerOrderingMatch</ordering>
-    </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.800" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-      <aliases>
-        <alias>ads-chgPwdPolicyCategoryCount</alias>
-      </aliases>
-      <description>The policy category count</description>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
-      <equality>integerMatch</equality>
-      <ordering>integerOrderingMatch</ordering>
-    </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.801" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-      <aliases>
-        <alias>ads-chgPwdPolicyPasswordLength</alias>
-      </aliases>
-      <description>The policy minimum password length</description>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
-      <equality>integerMatch</equality>
-      <ordering>integerOrderingMatch</ordering>
-    </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.802" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-      <aliases>
-        <alias>ads-chgPwdPolicyTokenSize</alias>
-      </aliases>
-      <description>The policy token size</description>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
-      <equality>integerMatch</equality>
-      <ordering>integerOrderingMatch</ordering>
-    </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.803" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-      <aliases>
-        <alias>ads-chgPwdServicePrincipal</alias>
-      </aliases>
-      <description>The Change Password service principal</description>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.26</syntax>
-      <equality>caseExactMatch</equality>
-      <ordering>caseExactOrderingMatch</ordering>
-      <substring>caseExactSubstringsMatch</substring>
-    </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.804" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-      <aliases>
-        <alias>ads-interceptorClassName</alias>
-      </aliases>
-      <description>Fully qualified class name of the interceptor</description>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.44</syntax>
-      <equality>caseExactMatch</equality>
-      <ordering>caseExactOrderingMatch</ordering>
-      <substring>caseExactSubstringsMatch</substring>
-    </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.805" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-      <aliases>
-        <alias>ads-enabled</alias>
-      </aliases>
-      <description>specifies whether a config element is enabled or not, default is true</description>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.7</syntax>
-      <equality>booleanMatch</equality>
-    </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.806" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-      <aliases>
-        <alias>ads-partitionSyncOnWrite</alias>
-      </aliases>
-      <description>directs a partition to synchronize the underlying storage upon a write operation</description>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.7</syntax>
-      <equality>booleanMatch</equality>
-    </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.807" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-      <aliases>
-        <alias>ads-jdbmPartitionOptimizerEnabled</alias>
-      </aliases>
-      <description>Enables JDBM partition optimizer</description>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.7</syntax>
-      <equality>booleanMatch</equality>
-    </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.808" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-      <aliases>
-        <alias>ads-saslMechName</alias>
-      </aliases>
-      <description>SASL mechanism name</description>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.44</syntax>
-      <equality>caseExactMatch</equality>
-      <ordering>caseExactOrderingMatch</ordering>
-      <substring>caseExactSubstringsMatch</substring>
-    </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.809" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-      <aliases>
-        <alias>ads-ntlmMechProvider</alias>
-      </aliases>
-      <description>Fully qualified class name of SASL NTLM provider</description>
+      <description>The Journal ID</description>
+      <superior>name</superior>
       <usage>USER_APPLICATIONS</usage>
       <syntax>1.3.6.1.4.1.1466.115.121.1.44</syntax>
       <equality>caseExactMatch</equality>
@@ -860,26 +237,174 @@
       <ordering>caseExactOrderingMatch</ordering>
       <substring>caseExactSubstringsMatch</substring>
     </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.811" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.912" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
       <aliases>
-        <alias>ads-extendedOpHandlerClass</alias>
+        <alias>ads-pwdMaxFailure</alias>
       </aliases>
-      <description>Fully qualified class name of the extended operation handler</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
+      <equality>integerMatch</equality>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.822" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>ads-replRefreshNPersist</alias>
+      </aliases>
+      <description>flag indicating refreshAndPersist mode of replication</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.7</syntax>
+      <equality>booleanMatch</equality>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.113" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
+      <aliases>
+        <alias>ads-dsTestEntries</alias>
+      </aliases>
+      <description>The set of entries to inject at startup (may be obsolete)</description>
       <usage>USER_APPLICATIONS</usage>
       <syntax>1.3.6.1.4.1.1466.115.121.1.44</syntax>
       <equality>caseExactMatch</equality>
       <ordering>caseExactOrderingMatch</ordering>
       <substring>caseExactSubstringsMatch</substring>
     </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.812" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.401" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
       <aliases>
-        <alias>ads-systemPort</alias>
+        <alias>ads-krbEncryptionTypes</alias>
       </aliases>
-      <description>Port number on system</description>
+      <description>The encryption types</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.44</syntax>
+      <equality>caseExactMatch</equality>
+      <ordering>caseExactOrderingMatch</ordering>
+      <substring>caseExactSubstringsMatch</substring>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.919" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>ads-pwdMaxIdle</alias>
+      </aliases>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
+      <equality>integerMatch</equality>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.253" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>ads-extendedOpId</alias>
+      </aliases>
+      <description>an ID used for ExtendeOpertion names</description>
+      <superior>name</superior>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.44</syntax>
+      <equality>caseExactMatch</equality>
+      <ordering>caseExactOrderingMatch</ordering>
+      <substring>caseExactSubstringsMatch</substring>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.104" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>ads-dsPasswordHidden</alias>
+      </aliases>
+      <description>Tells if the password is stored encrypted even for PLAIN authentication</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.7</syntax>
+      <equality>booleanMatch</equality>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.252" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>ads-Id</alias>
+      </aliases>
+      <description>a generic ID which can be used in any configuration entry DN</description>
+      <superior>name</superior>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.44</syntax>
+      <equality>caseExactMatch</equality>
+      <ordering>caseExactOrderingMatch</ordering>
+      <substring>caseExactSubstringsMatch</substring>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.917" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>ads-pwdMinDelay</alias>
+      </aliases>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
+      <equality>integerMatch</equality>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.200" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>ads-transportId</alias>
+      </aliases>
+      <description>The transport ID</description>
+      <superior>name</superior>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.44</syntax>
+      <equality>caseExactMatch</equality>
+      <ordering>caseExactOrderingMatch</ordering>
+      <substring>caseExactSubstringsMatch</substring>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.916" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>ads-pwdSafeModify</alias>
+      </aliases>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.7</syntax>
+      <equality>booleanMatch</equality>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.837" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>ads-replConsumerId</alias>
+      </aliases>
+      <description>The replication consumer ID</description>
+      <superior>name</superior>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.44</syntax>
+      <equality>caseExactMatch</equality>
+      <ordering>caseExactOrderingMatch</ordering>
+      <substring>caseExactSubstringsMatch</substring>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.405" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>ads-krbPostdatedAllowed</alias>
+      </aliases>
+      <description>Whether postdated tickets are allowed</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.7</syntax>
+      <equality>booleanMatch</equality>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.800" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>ads-chgPwdPolicyCategoryCount</alias>
+      </aliases>
+      <description>The policy category count</description>
       <usage>USER_APPLICATIONS</usage>
       <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
       <equality>integerMatch</equality>
       <ordering>integerOrderingMatch</ordering>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.142" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>ads-journalWorkingDir</alias>
+      </aliases>
+      <description>The place on disk where the journal is stored.</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.44</syntax>
+      <equality>caseExactMatch</equality>
+      <ordering>caseExactOrderingMatch</ordering>
+      <substring>caseExactSubstringsMatch</substring>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.161" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>ads-indexFileName</alias>
+      </aliases>
+      <description>The index file name</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.44</syntax>
+      <equality>caseExactMatch</equality>
+      <ordering>caseExactOrderingMatch</ordering>
+      <substring>caseExactSubstringsMatch</substring>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.903" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>ads-pwdInHistory</alias>
+      </aliases>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
+      <equality>integerMatch</equality>
     </attributetype>
     <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.813" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
       <aliases>
@@ -892,6 +417,65 @@
       <ordering>caseIgnoreOrderingMatch</ordering>
       <substring>caseIgnoreSubstringsMatch</substring>
     </attributetype>
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.906" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>ads-pwdMaxLength</alias>
+      </aliases>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
+      <equality>integerMatch</equality>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.411" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>ads-krbPrimaryRealm</alias>
+      </aliases>
+      <description>The primary realm</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.44</syntax>
+      <equality>caseExactMatch</equality>
+      <ordering>caseExactOrderingMatch</ordering>
+      <substring>caseExactSubstringsMatch</substring>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.409" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>ads-krbMaximumRenewableLifetime</alias>
+      </aliases>
+      <description>The maximum renewable lifetime</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
+      <equality>integerMatch</equality>
+      <ordering>integerOrderingMatch</ordering>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.804" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>ads-interceptorClassName</alias>
+      </aliases>
+      <description>Fully qualified class name of the interceptor</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.44</syntax>
+      <equality>caseExactMatch</equality>
+      <ordering>caseExactOrderingMatch</ordering>
+      <substring>caseExactSubstringsMatch</substring>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.412" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>ads-krbBodyChecksumVerified</alias>
+      </aliases>
+      <description>Whether to verify the body checksum</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.7</syntax>
+      <equality>booleanMatch</equality>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.802" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>ads-chgPwdPolicyTokenSize</alias>
+      </aliases>
+      <description>The policy token size</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
+      <equality>integerMatch</equality>
+      <ordering>integerOrderingMatch</ordering>
+    </attributetype>
     <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.814" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
       <aliases>
         <alias>ads-httpAppCtxPath</alias>
@@ -903,36 +487,68 @@
       <ordering>caseIgnoreOrderingMatch</ordering>
       <substring>caseIgnoreSubstringsMatch</substring>
     </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.815" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.902" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
       <aliases>
-        <alias>ads-enableReplProvider</alias>
+        <alias>ads-pwdMaxAge</alias>
       </aliases>
-      <description>flag to prepare the server as a replication provider</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
+      <equality>integerMatch</equality>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.402" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>ads-krbEmptyAddressesAllowed</alias>
+      </aliases>
+      <description>Whether empty addresses are allowed</description>
       <usage>USER_APPLICATIONS</usage>
       <syntax>1.3.6.1.4.1.1466.115.121.1.7</syntax>
       <equality>booleanMatch</equality>
     </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.816" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.303" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
       <aliases>
-        <alias>ads-httpConfFile</alias>
+        <alias>ads-maxTimeLimit</alias>
       </aliases>
-      <description>Jetty web server config file path</description>
+      <description>The maximum time before an operation is aborted (in seconds)</description>
       <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.44</syntax>
-      <equality>caseIgnoreMatch</equality>
-      <ordering>caseIgnoreOrderingMatch</ordering>
-      <substring>caseIgnoreSubstringsMatch</substring>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
+      <equality>integerMatch</equality>
+      <ordering>integerOrderingMatch</ordering>
     </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.817" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.838" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
       <aliases>
-        <alias>ads-replSearchFilter</alias>
+        <alias>ads-replEnabled</alias>
       </aliases>
-      <description>Search filter used in replication</description>
+      <description>A flag set when the replication is enabled</description>
       <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.26</syntax>
-      <equality>caseIgnoreIA5Match</equality>
-      <ordering>caseIgnoreOrderingMatch</ordering>
-      <substring>caseIgnoreSubstringsMatch</substring>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.7</syntax>
+      <equality>booleanMatch</equality>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.801" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>ads-chgPwdPolicyPasswordLength</alias>
+      </aliases>
+      <description>The policy minimum password length</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
+      <equality>integerMatch</equality>
+      <ordering>integerOrderingMatch</ordering>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.918" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>ads-pwdMaxDelay</alias>
+      </aliases>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
+      <equality>integerMatch</equality>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.805" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>ads-enabled</alias>
+      </aliases>
+      <description>specifies whether a config element is enabled or not, default is true</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.7</syntax>
+      <equality>booleanMatch</equality>
     </attributetype>
     <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.818" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
       <aliases>
@@ -944,57 +560,15 @@
       <equality>csnMatch</equality>
       <ordering>csnOrderingMatch</ordering>
     </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.819" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.920" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
       <aliases>
-        <alias>ads-replAliasDerefMode</alias>
+        <alias>ads-replLogMaxIdle</alias>
       </aliases>
-      <description>the alias dereference mode of replication search</description>
+      <description>the duration(in seconds) of consumer inactivity after which the associated log will be deleted. Defaults to 172800 seconds (i.e. 2 days)</description>
       <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.18060.0.4.1.0.11</syntax>
-      <equality>integerMatch</equality>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
+      <equality>bigIntegerMatch</equality>
       <ordering>integerOrderingMatch</ordering>
-    </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.820" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-      <aliases>
-        <alias>ads-searchBaseDN</alias>
-      </aliases>
-      <description>base DN of the DIT to be searched or replicated</description>
-      <superior>distinguishedName</superior>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.12</syntax>
-      <equality>distinguishedNameMatch</equality>
-      <ordering>distinguishedNameMatch</ordering>
-    </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.821" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-      <aliases>
-        <alias>ads-replSearchScope</alias>
-      </aliases>
-      <description>the search scope of the replication</description>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.18060.0.4.1.0.10</syntax>
-      <equality>caseExactMatch</equality>
-      <ordering>caseExactOrderingMatch</ordering>
-    </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.822" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-      <aliases>
-        <alias>ads-replRefreshNPersist</alias>
-      </aliases>
-      <description>flag indicating refreshAndPersist mode of replication</description>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.7</syntax>
-      <equality>booleanMatch</equality>
-    </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.823" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-      <aliases>
-        <alias>ads-replProvHostName</alias>
-      </aliases>
-      <description>replication provider host name</description>
-      <superior>ads-transportAddress</superior>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.26</syntax>
-      <equality>caseIgnoreIA5Match</equality>
-      <ordering>caseIgnoreOrderingMatch</ordering>
-      <substring>caseIgnoreSubstringsMatch</substring>
     </attributetype>
     <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.824" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
       <aliases>
@@ -1007,24 +581,33 @@
       <equality>integerMatch</equality>
       <ordering>integerOrderingMatch</ordering>
     </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.825" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.164" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
       <aliases>
-        <alias>ads-replUserDn</alias>
+        <alias>ads-indexCacheSize</alias>
       </aliases>
-      <description>user DN used for authenticating with replication provider</description>
+      <description>The number of key we store in the cache for this index</description>
       <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.12</syntax>
-      <equality>distinguishedNameMatch</equality>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
+      <equality>integerMatch</equality>
+      <ordering>integerOrderingMatch</ordering>
     </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.826" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.131" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
       <aliases>
-        <alias>ads-replUserPassword</alias>
+        <alias>ads-interceptorOrder</alias>
       </aliases>
-      <description>replication user password</description>
-      <superior>userPassword</superior>
+      <description>The Interceptor order number</description>
       <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.40</syntax>
-      <equality>octetStringMatch</equality>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
+      <equality>integerMatch</equality>
+      <ordering>integerOrderingMatch</ordering>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.900" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
+      <aliases>
+        <alias>ads-pwdAttribute</alias>
+      </aliases>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.38</syntax>
+      <equality>objectIdentifierMatch</equality>
     </attributetype>
     <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.827" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
       <aliases>
@@ -1036,22 +619,73 @@
       <equality>integerMatch</equality>
       <ordering>integerOrderingMatch</ordering>
     </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.828" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.160" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
       <aliases>
-        <alias>ads-replAttributes</alias>
+        <alias>ads-indexAttributeId</alias>
       </aliases>
-      <description>the attributes to be replicated</description>
+      <description>The attributeType name or OID</description>
+      <superior>name</superior>
       <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.15</syntax>
-      <equality>caseIgnoreIA5Match</equality>
-      <ordering>caseExactOrderingMatch</ordering>
-      <substring>caseIgnoreIA5SubstringsMatch</substring>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.38</syntax>
+      <equality>objectIdentifierMatch</equality>
     </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.829" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.932" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
       <aliases>
-        <alias>ads-replSearchSizeLimit</alias>
+        <alias>ads-delegatePort</alias>
       </aliases>
-      <description>size limit imposed during replication refreshOnly phase</description>
+      <description>Port number on system</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
+      <equality>integerMatch</equality>
+      <ordering>integerOrderingMatch</ordering>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.162" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>ads-indexWorkingDir</alias>
+      </aliases>
+      <description>The place on disk where the index file is stored</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.44</syntax>
+      <equality>caseExactMatch</equality>
+      <ordering>caseExactOrderingMatch</ordering>
+      <substring>caseExactSubstringsMatch</substring>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.151" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>ads-partitionSuffix</alias>
+      </aliases>
+      <description>The partition suffix</description>
+      <superior>distinguishedName</superior>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.12</syntax>
+      <equality>distinguishedNameMatch</equality>
+      <ordering>distinguishedNameMatch</ordering>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.809" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>ads-ntlmMechProvider</alias>
+      </aliases>
+      <description>Fully qualified class name of SASL NTLM provider</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.44</syntax>
+      <equality>caseExactMatch</equality>
+      <ordering>caseExactOrderingMatch</ordering>
+      <substring>caseExactSubstringsMatch</substring>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.825" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>ads-replUserDn</alias>
+      </aliases>
+      <description>user DN used for authenticating with replication provider</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.12</syntax>
+      <equality>distinguishedNameMatch</equality>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.302" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>ads-maxSizeLimit</alias>
+      </aliases>
+      <description>The maximum number of entries to return</description>
       <usage>USER_APPLICATIONS</usage>
       <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
       <equality>integerMatch</equality>
@@ -1067,16 +701,48 @@
       <equality>integerMatch</equality>
       <ordering>integerOrderingMatch</ordering>
     </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.831" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.901" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
       <aliases>
-        <alias>ads-replCookie</alias>
+        <alias>ads-pwdMinAge</alias>
       </aliases>
-      <description>cookie sent from the replication provider</description>
       <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.40</syntax>
-      <equality>octetStringMatch</equality>
-      <ordering>octetStringOrderingMatch</ordering>
-      <substring>octetStringSubstringsMatch</substring>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
+      <equality>integerMatch</equality>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.834" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>ads-replStrictCertValidation</alias>
+      </aliases>
+      <description>flag to indicate strict certificate validation</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.7</syntax>
+      <equality>booleanMatch</equality>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.111" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>ads-dsSyncPeriodMillis</alias>
+      </aliases>
+      <description>Define the duration between two flushes on disk</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
+      <equality>integerMatch</equality>
+      <ordering>integerOrderingMatch</ordering>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.910" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>ads-pwdLockout</alias>
+      </aliases>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.7</syntax>
+      <equality>booleanMatch</equality>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.909" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>ads-pwdGraceExpire</alias>
+      </aliases>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
+      <equality>integerMatch</equality>
     </attributetype>
     <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.832" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
       <aliases>
@@ -1089,227 +755,45 @@
       <ordering>caseExactOrderingMatch</ordering>
       <substring>caseExactSubstringsMatch</substring>
     </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.833" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.62" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
       <aliases>
-        <alias>ads-replUseTls</alias>
+        <alias>ads-transportBacklog</alias>
       </aliases>
-      <description>flag to indicate the use of TLS</description>
+      <description>The number of messages waiting to be processed.</description>
       <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.7</syntax>
-      <equality>booleanMatch</equality>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
+      <equality>integerMatch</equality>
+      <ordering>integerOrderingMatch</ordering>
     </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.834" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.163" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
       <aliases>
-        <alias>ads-replStrictCertValidation</alias>
+        <alias>ads-indexNumDupLimit</alias>
       </aliases>
-      <description>flag to indicate strict certificate validation</description>
+      <description>The number of duplicated element we allow before switching to a secondary tree</description>
       <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.7</syntax>
-      <equality>booleanMatch</equality>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
+      <equality>integerMatch</equality>
+      <ordering>integerOrderingMatch</ordering>
     </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.835" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.61" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
       <aliases>
-        <alias>ads-replPeerCertificate</alias>
+        <alias>ads-transportAddress</alias>
       </aliases>
-      <description>X.509 certificate of the replica peer</description>
-      <superior>userCertificate</superior>
+      <description>The Address to listen on.</description>
       <usage>USER_APPLICATIONS</usage>
-    </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.837" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-      <aliases>
-        <alias>ads-replConsumerId</alias>
-      </aliases>
-      <description>The replication consumer ID</description>
-      <superior>name</superior>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.44</syntax>
-      <equality>caseExactMatch</equality>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.26</syntax>
+      <equality>caseIgnoreOrderingMatch</equality>
       <ordering>caseExactOrderingMatch</ordering>
-      <substring>caseExactSubstringsMatch</substring>
+      <substring>caseIgnoreIA5SubstringsMatch</substring>
     </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.840" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.404" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
       <aliases>
-        <alias>ads-httpWebApps</alias>
+        <alias>ads-krbPaEncTimestampRequired</alias>
       </aliases>
-      <description>The references to the web applications</description>
-      <superior>ads-compositeElement</superior>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.44</syntax>
-      <equality>caseExactMatch</equality>
-      <ordering>caseExactOrderingMatch</ordering>
-      <substring>caseExactSubstringsMatch</substring>
-    </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.900" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
-      <aliases>
-        <alias>ads-pwdAttribute</alias>
-      </aliases>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.38</syntax>
-      <equality>objectIdentifierMatch</equality>
-    </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.901" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-      <aliases>
-        <alias>ads-pwdMinAge</alias>
-      </aliases>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
-      <equality>integerMatch</equality>
-    </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.902" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-      <aliases>
-        <alias>ads-pwdMaxAge</alias>
-      </aliases>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
-      <equality>integerMatch</equality>
-    </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.903" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-      <aliases>
-        <alias>ads-pwdInHistory</alias>
-      </aliases>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
-      <equality>integerMatch</equality>
-    </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.904" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-      <aliases>
-        <alias>ads-pwdCheckQuality</alias>
-      </aliases>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
-      <equality>integerMatch</equality>
-    </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.905" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-      <aliases>
-        <alias>ads-pwdMinLength</alias>
-      </aliases>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
-      <equality>integerMatch</equality>
-    </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.906" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-      <aliases>
-        <alias>ads-pwdMaxLength</alias>
-      </aliases>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
-      <equality>integerMatch</equality>
-    </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.907" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-      <aliases>
-        <alias>ads-pwdExpireWarning</alias>
-      </aliases>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
-      <equality>integerMatch</equality>
-    </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.908" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-      <aliases>
-        <alias>ads-pwdGraceAuthNLimit</alias>
-      </aliases>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
-      <equality>integerMatch</equality>
-    </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.909" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-      <aliases>
-        <alias>ads-pwdGraceExpire</alias>
-      </aliases>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
-      <equality>integerMatch</equality>
-    </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.910" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-      <aliases>
-        <alias>ads-pwdLockout</alias>
-      </aliases>
+      <description>Whether pre-authentication by encrypted timestamp is required</description>
       <usage>USER_APPLICATIONS</usage>
       <syntax>1.3.6.1.4.1.1466.115.121.1.7</syntax>
       <equality>booleanMatch</equality>
-    </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.911" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-      <aliases>
-        <alias>ads-pwdLockoutDuration</alias>
-      </aliases>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
-      <equality>integerMatch</equality>
-    </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.912" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-      <aliases>
-        <alias>ads-pwdMaxFailure</alias>
-      </aliases>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
-      <equality>integerMatch</equality>
-    </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.913" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-      <aliases>
-        <alias>ads-pwdFailureCountInterval</alias>
-      </aliases>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
-      <equality>integerMatch</equality>
-    </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.914" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-      <aliases>
-        <alias>ads-pwdMustChange</alias>
-      </aliases>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.7</syntax>
-      <equality>booleanMatch</equality>
-    </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.915" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-      <aliases>
-        <alias>ads-pwdAllowUserChange</alias>
-      </aliases>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.7</syntax>
-      <equality>booleanMatch</equality>
-    </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.916" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-      <aliases>
-        <alias>ads-pwdSafeModify</alias>
-      </aliases>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.7</syntax>
-      <equality>booleanMatch</equality>
-    </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.917" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-      <aliases>
-        <alias>ads-pwdMinDelay</alias>
-      </aliases>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
-      <equality>integerMatch</equality>
-    </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.918" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-      <aliases>
-        <alias>ads-pwdMaxDelay</alias>
-      </aliases>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
-      <equality>integerMatch</equality>
-    </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.919" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-      <aliases>
-        <alias>ads-pwdMaxIdle</alias>
-      </aliases>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
-      <equality>integerMatch</equality>
-    </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.921" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-      <aliases>
-        <alias>ads-pwdId</alias>
-      </aliases>
-      <description>an ID used to identify the passwordPolicy configuration</description>
-      <superior>name</superior>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.44</syntax>
-      <equality>caseExactMatch</equality>
-      <ordering>caseExactOrderingMatch</ordering>
-      <substring>caseExactSubstringsMatch</substring>
     </attributetype>
     <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.930" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
       <aliases>
@@ -1322,6 +806,177 @@
       <ordering>caseExactOrderingMatch</ordering>
       <substring>caseExactSubstringsMatch</substring>
     </attributetype>
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.819" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>ads-replAliasDerefMode</alias>
+      </aliases>
+      <description>the alias dereference mode of replication search</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.18060.0.4.1.0.11</syntax>
+      <equality>caseExactMatch</equality>
+      <ordering>caseExactOrderingMatch</ordering>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.817" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>ads-replSearchFilter</alias>
+      </aliases>
+      <description>Search filter used in replication</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.26</syntax>
+      <equality>caseIgnoreIA5Match</equality>
+      <ordering>caseIgnoreOrderingMatch</ordering>
+      <substring>caseIgnoreSubstringsMatch</substring>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.803" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>ads-chgPwdServicePrincipal</alias>
+      </aliases>
+      <description>The Change Password service principal</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.26</syntax>
+      <equality>caseExactMatch</equality>
+      <ordering>caseExactOrderingMatch</ordering>
+      <substring>caseExactSubstringsMatch</substring>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.821" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>ads-replSearchScope</alias>
+      </aliases>
+      <description>the search scope of the replication</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.18060.0.4.1.0.10</syntax>
+      <equality>caseExactMatch</equality>
+      <ordering>caseExactOrderingMatch</ordering>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.908" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>ads-pwdGraceAuthNLimit</alias>
+      </aliases>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
+      <equality>integerMatch</equality>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.922" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>ads-replLogPurgeThresholdCount</alias>
+      </aliases>
+      <description>the minimum number of entries to be present for beginning purging entries older than the last sent CSN. Default is 10000</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
+      <equality>integerMatch</equality>
+      <ordering>integerOrderingMatch</ordering>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.64" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>ads-transportNbThreads</alias>
+      </aliases>
+      <description>The number of threads to use for the Acceptor</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
+      <equality>integerMatch</equality>
+      <ordering>integerOrderingMatch</ordering>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.120" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>ads-changeLogId</alias>
+      </aliases>
+      <description>The ChangeLog identifier</description>
+      <superior>name</superior>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.44</syntax>
+      <equality>caseExactMatch</equality>
+      <ordering>caseExactOrderingMatch</ordering>
+      <substring>caseExactSubstringsMatch</substring>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.301" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>ads-allowAnonymousAccess</alias>
+      </aliases>
+      <description>Tells the server to accept Anynymous requests or not</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.7</syntax>
+      <equality>booleanMatch</equality>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.150" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>ads-partitionId</alias>
+      </aliases>
+      <description>The Partition identifier</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.44</syntax>
+      <equality>caseExactMatch</equality>
+      <ordering>caseExactOrderingMatch</ordering>
+      <substring>caseExactSubstringsMatch</substring>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.913" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>ads-pwdFailureCountInterval</alias>
+      </aliases>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
+      <equality>integerMatch</equality>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.812" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>ads-systemPort</alias>
+      </aliases>
+      <description>Port number on system</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
+      <equality>integerMatch</equality>
+      <ordering>integerOrderingMatch</ordering>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.811" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>ads-extendedOpHandlerClass</alias>
+      </aliases>
+      <description>Fully qualified class name of the extended operation handler</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.44</syntax>
+      <equality>caseExactMatch</equality>
+      <ordering>caseExactOrderingMatch</ordering>
+      <substring>caseExactSubstringsMatch</substring>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.823" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>ads-replProvHostName</alias>
+      </aliases>
+      <description>replication provider host name</description>
+      <superior>ads-transportAddress</superior>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.26</syntax>
+      <equality>caseIgnoreIA5Match</equality>
+      <ordering>caseIgnoreOrderingMatch</ordering>
+      <substring>caseIgnoreSubstringsMatch</substring>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.300" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>ads-confidentialityRequired</alias>
+      </aliases>
+      <description>Tells the server to accept requests using startTLS or LDAPS</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.7</syntax>
+      <equality>booleanMatch</equality>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.400" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>ads-krbAllowableClockSkew</alias>
+      </aliases>
+      <description>The allowable clock skew</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
+      <equality>integerMatch</equality>
+      <ordering>integerOrderingMatch</ordering>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.806" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>ads-partitionSyncOnWrite</alias>
+      </aliases>
+      <description>directs a partition to synchronize the underlying storage upon a write operation</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.7</syntax>
+      <equality>booleanMatch</equality>
+    </attributetype>
     <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.931" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
       <aliases>
         <alias>ads-delegateHost</alias>
@@ -1333,23 +988,120 @@
       <ordering>caseExactOrderingMatch</ordering>
       <substring>caseExactSubstringsMatch</substring>
     </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.932" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.406" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
       <aliases>
-        <alias>ads-delegatePort</alias>
+        <alias>ads-krbProxiableAllowed</alias>
       </aliases>
-      <description>Port number on system</description>
+      <description>Whether proxiable addresses are allowed</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.7</syntax>
+      <equality>booleanMatch</equality>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.833" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>ads-replUseTls</alias>
+      </aliases>
+      <description>flag to indicate the use of TLS</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.7</syntax>
+      <equality>booleanMatch</equality>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.102" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>ads-dsAllowAnonymousAccess</alias>
+      </aliases>
+      <description>Tells if anonymous access are allowed or not</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.7</syntax>
+      <equality>booleanMatch</equality>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.904" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>ads-pwdCheckQuality</alias>
+      </aliases>
       <usage>USER_APPLICATIONS</usage>
       <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
       <equality>integerMatch</equality>
-      <ordering>integerOrderingMatch</ordering>
     </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.933" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.63" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
       <aliases>
-        <alias>ads-authenticators</alias>
+        <alias>ads-transportEnableSSL</alias>
       </aliases>
-      <description>A reference to the authenticators</description>
-      <superior>ads-compositeElement</superior>
+      <description>Tells if this transport support SSL.</description>
       <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.7</syntax>
+      <equality>booleanMatch</equality>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.831" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>ads-replCookie</alias>
+      </aliases>
+      <description>cookie sent from the replication provider</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.40</syntax>
+      <equality>octetStringMatch</equality>
+      <ordering>octetStringOrderingMatch</ordering>
+      <substring>octetStringSubstringsMatch</substring>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.103" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>ads-dsDenormalizeOpAttrsEnabled</alias>
+      </aliases>
+      <description>Tells if the operational attributes are denormalized or not</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.7</syntax>
+      <equality>booleanMatch</equality>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.807" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>ads-jdbmPartitionOptimizerEnabled</alias>
+      </aliases>
+      <description>Enables JDBM partition optimizer</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.7</syntax>
+      <equality>booleanMatch</equality>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.112" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>ads-dsReplicaId</alias>
+      </aliases>
+      <description>The server identifier, used for replication</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.44</syntax>
+      <equality>caseExactMatch</equality>
+      <ordering>caseExactOrderingMatch</ordering>
+      <substring>caseExactSubstringsMatch</substring>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.306" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
+      <aliases>
+        <alias>ads-saslRealms</alias>
+      </aliases>
+      <description>The realms serviced by this SASL host</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.44</syntax>
+      <equality>caseExactMatch</equality>
+      <ordering>caseExactOrderingMatch</ordering>
+      <substring>caseExactSubstringsMatch</substring>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.907" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>ads-pwdExpireWarning</alias>
+      </aliases>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
+      <equality>integerMatch</equality>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.250" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>ads-serverId</alias>
+      </aliases>
+      <description>The server ID</description>
+      <superior>name</superior>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.44</syntax>
+      <equality>caseExactMatch</equality>
+      <ordering>caseExactOrderingMatch</ordering>
+      <substring>caseExactSubstringsMatch</substring>
     </attributetype>
     <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.934" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
       <aliases>
@@ -1362,62 +1114,131 @@
       <ordering>caseExactOrderingMatch</ordering>
       <substring>caseExactSubstringsMatch</substring>
     </attributetype>
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.905" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>ads-pwdMinLength</alias>
+      </aliases>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
+      <equality>integerMatch</equality>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.826" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>ads-replUserPassword</alias>
+      </aliases>
+      <description>replication user password</description>
+      <superior>userPassword</superior>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.40</syntax>
+      <equality>octetStringMatch</equality>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.141" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>ads-journalRotation</alias>
+      </aliases>
+      <description>The size before a journal rotation occurs.</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
+      <equality>integerMatch</equality>
+      <ordering>integerOrderingMatch</ordering>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.305" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>ads-saslPrincipal</alias>
+      </aliases>
+      <description>The service principal, used by GSSAPI</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.26</syntax>
+      <equality>caseExactMatch</equality>
+      <ordering>caseExactOrderingMatch</ordering>
+      <substring>caseExactSubstringsMatch</substring>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.911" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>ads-pwdLockoutDuration</alias>
+      </aliases>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
+      <equality>integerMatch</equality>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.121" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>ads-changeLogExposed</alias>
+      </aliases>
+      <description>Tells if the changeLog system is visible by the clients</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.7</syntax>
+      <equality>booleanMatch</equality>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.100" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>ads-directoryServiceId</alias>
+      </aliases>
+      <description>The DirectoryService ID</description>
+      <superior>name</superior>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.44</syntax>
+      <equality>caseExactMatch</equality>
+      <ordering>caseExactOrderingMatch</ordering>
+      <substring>caseExactSubstringsMatch</substring>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.143" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>ads-journalFileName</alias>
+      </aliases>
+      <description>The journal file name.</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.44</syntax>
+      <equality>caseExactMatch</equality>
+      <ordering>caseExactOrderingMatch</ordering>
+      <substring>caseExactSubstringsMatch</substring>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.820" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>ads-searchBaseDN</alias>
+      </aliases>
+      <description>base DN of the DIT to be searched or replicated</description>
+      <superior>distinguishedName</superior>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.12</syntax>
+      <equality>distinguishedNameMatch</equality>
+      <ordering>distinguishedNameMatch</ordering>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.407" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>ads-krbRenewableAllowed</alias>
+      </aliases>
+      <description>Whether renewable tickets are allowed</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.7</syntax>
+      <equality>booleanMatch</equality>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.165" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>ads-indexHasReverse</alias>
+      </aliases>
+      <description>A flag telling if the index has a reverse table</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.7</syntax>
+      <equality>booleanMatch</equality>
+    </attributetype>
   </attributetypes>
   <objectclasses>
-    <objectclass oid="1.3.6.1.4.1.18060.0.4.1.3.0" obsolete="false">
+    <objectclass oid="1.3.6.1.4.1.18060.0.4.1.3.140" obsolete="false">
       <aliases>
-        <alias>ads-base</alias>
+        <alias>ads-journal</alias>
       </aliases>
-      <description>The base bean</description>
-      <type>ABSTRACT</type>
-      <optional>
-        <attributetype>ads-enabled</attributetype>
-        <attributetype>description</attributetype>
-      </optional>
-    </objectclass>
-    <objectclass oid="1.3.6.1.4.1.18060.0.4.1.3.100" obsolete="false">
-      <aliases>
-        <alias>ads-directoryService</alias>
-      </aliases>
-      <description>The DirectoryService ObjectClass</description>
+      <description>The Journal</description>
       <superiors>
         <superior>ads-base</superior>
       </superiors>
       <type>STRUCTURAL</type>
       <mandatory>
-        <attributetype>ads-directoryServiceId</attributetype>
-        <attributetype>ads-dsReplicaId</attributetype>
-        <attributetype>ads-interceptors</attributetype>
-        <attributetype>ads-partitions</attributetype>
+        <attributetype>ads-journalWorkingDir</attributetype>
+        <attributetype>ads-journalRotation</attributetype>
+        <attributetype>ads-journalId</attributetype>
+        <attributetype>ads-journalFileName</attributetype>
       </mandatory>
-      <optional>
-        <attributetype>ads-servers</attributetype>
-        <attributetype>ads-dsAccessControlEnabled</attributetype>
-        <attributetype>ads-dsAllowAnonymousAccess</attributetype>
-        <attributetype>ads-changeLog</attributetype>
-        <attributetype>ads-dsDenormalizeOpAttrsEnabled</attributetype>
-        <attributetype>ads-journal</attributetype>
-        <attributetype>ads-dsMaxPDUSize</attributetype>
-        <attributetype>ads-dsPasswordHidden</attributetype>
-        <attributetype>ads-dsSyncPeriodMillis</attributetype>
-        <attributetype>ads-dsTestEntries</attributetype>
-      </optional>
-    </objectclass>
-    <objectclass oid="1.3.6.1.4.1.18060.0.4.1.3.120" obsolete="false">
-      <aliases>
-        <alias>ads-changeLog</alias>
-      </aliases>
-      <description>The ChangeLog</description>
-      <superiors>
-        <superior>ads-base</superior>
-      </superiors>
-      <type>STRUCTURAL</type>
-      <mandatory>
-        <attributetype>ads-changeLogId</attributetype>
-      </mandatory>
-      <optional>
-        <attributetype>ads-changeLogExposed</attributetype>
-      </optional>
     </objectclass>
     <objectclass oid="1.3.6.1.4.1.18060.0.4.1.3.130" obsolete="false">
       <aliases>
@@ -1434,299 +1255,6 @@
         <attributetype>ads-interceptorClassName</attributetype>
       </mandatory>
     </objectclass>
-    <objectclass oid="1.3.6.1.4.1.18060.0.4.1.3.131" obsolete="false">
-      <aliases>
-        <alias>ads-authenticationInterceptor</alias>
-      </aliases>
-      <description>The AuthenticationInterceptor ObjectClass</description>
-      <superiors>
-        <superior>ads-interceptor</superior>
-      </superiors>
-      <type>STRUCTURAL</type>
-      <optional>
-        <attributetype>ads-authenticators</attributetype>
-        <attributetype>ads-passwordPolicies</attributetype>
-      </optional>
-    </objectclass>
-    <objectclass oid="1.3.6.1.4.1.18060.0.4.1.3.140" obsolete="false">
-      <aliases>
-        <alias>ads-journal</alias>
-      </aliases>
-      <description>The Journal</description>
-      <superiors>
-        <superior>ads-base</superior>
-      </superiors>
-      <type>STRUCTURAL</type>
-      <mandatory>
-        <attributetype>ads-journalId</attributetype>
-        <attributetype>ads-journalFileName</attributetype>
-      </mandatory>
-      <optional>
-        <attributetype>ads-journalWorkingDir</attributetype>
-        <attributetype>ads-journalRotation</attributetype>
-      </optional>
-    </objectclass>
-    <objectclass oid="1.3.6.1.4.1.18060.0.4.1.3.150" obsolete="false">
-      <aliases>
-        <alias>ads-partition</alias>
-      </aliases>
-      <description>A generic partition</description>
-      <superiors>
-        <superior>ads-base</superior>
-      </superiors>
-      <type>ABSTRACT</type>
-      <mandatory>
-        <attributetype>ads-partitionId</attributetype>
-        <attributetype>ads-partitionSuffix</attributetype>
-      </mandatory>
-      <optional>
-        <attributetype>ads-contextEntry</attributetype>
-        <attributetype>ads-partitionSyncOnWrite</attributetype>
-        <attributetype>ads-indexes</attributetype>
-      </optional>
-    </objectclass>
-    <objectclass oid="1.3.6.1.4.1.18060.0.4.1.3.151" obsolete="false">
-      <aliases>
-        <alias>ads-jdbmPartition</alias>
-      </aliases>
-      <description>A JDBM partition</description>
-      <superiors>
-        <superior>ads-partition</superior>
-      </superiors>
-      <type>STRUCTURAL</type>
-      <optional>
-        <attributetype>ads-partitionCacheSize</attributetype>
-        <attributetype>ads-jdbmPartitionOptimizerEnabled</attributetype>
-      </optional>
-    </objectclass>
-    <objectclass oid="1.3.6.1.4.1.18060.0.4.1.3.160" obsolete="false">
-      <aliases>
-        <alias>ads-index</alias>
-      </aliases>
-      <description>A generic indexed attribute</description>
-      <superiors>
-        <superior>ads-base</superior>
-      </superiors>
-      <type>ABSTRACT</type>
-      <mandatory>
-        <attributetype>ads-indexAttributeId</attributetype>
-      </mandatory>
-    </objectclass>
-    <objectclass oid="1.3.6.1.4.1.18060.0.4.1.3.161" obsolete="false">
-      <aliases>
-        <alias>ads-jdbmIndex</alias>
-      </aliases>
-      <description>A JDBM indexed attribute</description>
-      <superiors>
-        <superior>ads-index</superior>
-      </superiors>
-      <type>STRUCTURAL</type>
-      <optional>
-        <attributetype>ads-indexFileName</attributetype>
-        <attributetype>ads-indexWorkingDir</attributetype>
-        <attributetype>ads-indexNumDupLimit</attributetype>
-        <attributetype>ads-indexCacheSize</attributetype>
-      </optional>
-    </objectclass>
-    <objectclass oid="1.3.6.1.4.1.18060.0.4.1.3.18" obsolete="false">
-      <aliases>
-        <alias>ads-transport</alias>
-      </aliases>
-      <description>A transport (TCP or UDP)</description>
-      <superiors>
-        <superior>ads-base</superior>
-      </superiors>
-      <type>ABSTRACT</type>
-      <mandatory>
-        <attributetype>ads-transportId</attributetype>
-        <attributetype>ads-systemPort</attributetype>
-      </mandatory>
-      <optional>
-        <attributetype>ads-transportAddress</attributetype>
-        <attributetype>ads-transportBacklog</attributetype>
-        <attributetype>ads-transportEnableSSL</attributetype>
-        <attributetype>ads-transportNbThreads</attributetype>
-      </optional>
-    </objectclass>
-    <objectclass oid="1.3.6.1.4.1.18060.0.4.1.3.19" obsolete="false">
-      <aliases>
-        <alias>ads-tcpTransport</alias>
-      </aliases>
-      <description>A TCP transport</description>
-      <superiors>
-        <superior>ads-transport</superior>
-      </superiors>
-      <type>STRUCTURAL</type>
-    </objectclass>
-    <objectclass oid="1.3.6.1.4.1.18060.0.4.1.3.20" obsolete="false">
-      <aliases>
-        <alias>ads-udpTransport</alias>
-      </aliases>
-      <description>an UDP transport</description>
-      <superiors>
-        <superior>ads-transport</superior>
-      </superiors>
-      <type>STRUCTURAL</type>
-    </objectclass>
-    <objectclass oid="1.3.6.1.4.1.18060.0.4.1.3.250" obsolete="false">
-      <aliases>
-        <alias>ads-server</alias>
-      </aliases>
-      <description>The server ObjectClass</description>
-      <superiors>
-        <superior>ads-base</superior>
-      </superiors>
-      <type>ABSTRACT</type>
-      <mandatory>
-        <attributetype>ads-serverId</attributetype>
-      </mandatory>
-      <optional>
-        <attributetype>ads-transports</attributetype>
-      </optional>
-    </objectclass>
-    <objectclass oid="1.3.6.1.4.1.18060.0.4.1.3.260" obsolete="false">
-      <aliases>
-        <alias>ads-dsBasedServer</alias>
-      </aliases>
-      <description>The DirectoryService based server ObjectClass</description>
-      <superiors>
-        <superior>ads-server</superior>
-      </superiors>
-      <type>ABSTRACT</type>
-      <optional>
-        <attributetype>ads-searchBaseDN</attributetype>
-      </optional>
-    </objectclass>
-    <objectclass oid="1.3.6.1.4.1.18060.0.4.1.3.300" obsolete="false">
-      <aliases>
-        <alias>ads-ldapServer</alias>
-      </aliases>
-      <description>The LdapServer ObjectClass</description>
-      <superiors>
-        <superior>ads-dsBasedServer</superior>
-      </superiors>
-      <type>STRUCTURAL</type>
-      <optional>
-        <attributetype>ads-confidentialityRequired</attributetype>
-        <attributetype>ads-maxSizeLimit</attributetype>
-        <attributetype>ads-maxTimeLimit</attributetype>
-        <attributetype>ads-saslHost</attributetype>
-        <attributetype>ads-saslPrincipal</attributetype>
-        <attributetype>ads-saslRealms</attributetype>
-        <attributetype>ads-keystoreFile</attributetype>
-        <attributetype>ads-certificatePassword</attributetype>
-        <attributetype>ads-replReqHandler</attributetype>
-        <attributetype>ads-saslMechHandlers</attributetype>
-        <attributetype>ads-extendedOpHandlers</attributetype>
-        <attributetype>ads-replConsumers</attributetype>
-      </optional>
-    </objectclass>
-    <objectclass oid="1.3.6.1.4.1.18060.0.4.1.3.400" obsolete="false">
-      <aliases>
-        <alias>ads-kdcServer</alias>
-      </aliases>
-      <description>The KerberosServer ObjectClass</description>
-      <superiors>
-        <superior>ads-dsBasedServer</superior>
-      </superiors>
-      <type>STRUCTURAL</type>
-      <optional>
-        <attributetype>ads-krbAllowableClockSkew</attributetype>
-        <attributetype>ads-krbEncryptionTypes</attributetype>
-        <attributetype>ads-krbEmptyAddressesAllowed</attributetype>
-        <attributetype>ads-krbForwardableAllowed</attributetype>
-        <attributetype>ads-krbPaEncTimestampRequired</attributetype>
-        <attributetype>ads-krbPostdatedAllowed</attributetype>
-        <attributetype>ads-krbProxiableAllowed</attributetype>
-        <attributetype>ads-krbRenewableAllowed</attributetype>
-        <attributetype>ads-krbKdcPrincipal</attributetype>
-        <attributetype>ads-krbMaximumRenewableLifetime</attributetype>
-        <attributetype>ads-krbMaximumTicketLifetime</attributetype>
-        <attributetype>ads-krbPrimaryRealm</attributetype>
-        <attributetype>ads-krbBodyChecksumVerified</attributetype>
-      </optional>
-    </objectclass>
-    <objectclass oid="1.3.6.1.4.1.18060.0.4.1.3.500" obsolete="false">
-      <aliases>
-        <alias>ads-dnsServer</alias>
-      </aliases>
-      <description>The DnsServer ObjectClass</description>
-      <superiors>
-        <superior>ads-dsBasedServer</superior>
-      </superiors>
-      <type>STRUCTURAL</type>
-    </objectclass>
-    <objectclass oid="1.3.6.1.4.1.18060.0.4.1.3.600" obsolete="false">
-      <aliases>
-        <alias>ads-dhcpServer</alias>
-      </aliases>
-      <description>The DhcpServer ObjectClass</description>
-      <superiors>
-        <superior>ads-dsBasedServer</superior>
-      </superiors>
-      <type>STRUCTURAL</type>
-    </objectclass>
-    <objectclass oid="1.3.6.1.4.1.18060.0.4.1.3.700" obsolete="false">
-      <aliases>
-        <alias>ads-ntpServer</alias>
-      </aliases>
-      <description>The NtpServer ObjectClass</description>
-      <superiors>
-        <superior>ads-server</superior>
-      </superiors>
-      <type>STRUCTURAL</type>
-    </objectclass>
-    <objectclass oid="1.3.6.1.4.1.18060.0.4.1.3.800" obsolete="false">
-      <aliases>
-        <alias>ads-changePasswordServer</alias>
-      </aliases>
-      <description>The ChangePassword ObjectClass</description>
-      <superiors>
-        <superior>ads-dsBasedServer</superior>
-      </superiors>
-      <type>STRUCTURAL</type>
-      <optional>
-        <attributetype>ads-krbAllowableClockSkew</attributetype>
-        <attributetype>ads-krbEmptyAddressesAllowed</attributetype>
-        <attributetype>ads-krbEncryptionTypes</attributetype>
-        <attributetype>ads-krbPrimaryRealm</attributetype>
-        <attributetype>ads-chgPwdPolicyCategoryCount</attributetype>
-        <attributetype>ads-chgPwdPolicyPasswordLength</attributetype>
-        <attributetype>ads-chgPwdPolicyTokenSize</attributetype>
-        <attributetype>ads-chgPwdServicePrincipal</attributetype>
-      </optional>
-    </objectclass>
-    <objectclass oid="1.3.6.1.4.1.18060.0.4.1.3.801" obsolete="false">
-      <aliases>
-        <alias>ads-saslMechHandler</alias>
-      </aliases>
-      <description>SASL mechanism handler</description>
-      <superiors>
-        <superior>ads-base</superior>
-      </superiors>
-      <type>STRUCTURAL</type>
-      <mandatory>
-        <attributetype>ads-saslMechName</attributetype>
-        <attributetype>ads-saslMechClassName</attributetype>
-      </mandatory>
-      <optional>
-        <attributetype>ads-ntlmMechProvider</attributetype>
-      </optional>
-    </objectclass>
-    <objectclass oid="1.3.6.1.4.1.18060.0.4.1.3.802" obsolete="false">
-      <aliases>
-        <alias>ads-extendedOpHandler</alias>
-      </aliases>
-      <description>Extended operation handler</description>
-      <superiors>
-        <superior>ads-base</superior>
-      </superiors>
-      <type>STRUCTURAL</type>
-      <mandatory>
-        <attributetype>ads-extendedOpHandlerClass</attributetype>
-        <attributetype>ads-extendedOpId</attributetype>
-      </mandatory>
-    </objectclass>
     <objectclass oid="1.3.6.1.4.1.18060.0.4.1.3.803" obsolete="false">
       <aliases>
         <alias>ads-httpWebApp</alias>
@@ -1739,79 +1267,8 @@
       <mandatory>
         <attributetype>ads-httpWarFile</attributetype>
         <attributetype>ads-id</attributetype>
-      </mandatory>
-      <optional>
         <attributetype>ads-httpAppCtxPath</attributetype>
-      </optional>
-    </objectclass>
-    <objectclass oid="1.3.6.1.4.1.18060.0.4.1.3.804" obsolete="false">
-      <aliases>
-        <alias>ads-httpServer</alias>
-      </aliases>
-      <description>integrated jetty http server</description>
-      <superiors>
-        <superior>ads-server</superior>
-      </superiors>
-      <type>STRUCTURAL</type>
-      <optional>
-        <attributetype>ads-httpConfFile</attributetype>
-        <attributetype>ads-httpwebApps</attributetype>
-      </optional>
-    </objectclass>
-    <objectclass oid="1.3.6.1.4.1.18060.0.4.1.3.805" obsolete="false">
-      <aliases>
-        <alias>ads-replEventLog</alias>
-      </aliases>
-      <description>class to hold a replication consumer event log details</description>
-      <superiors>
-        <superior>ads-base</superior>
-      </superiors>
-      <type>STRUCTURAL</type>
-      <mandatory>
-        <attributetype>ads-dsReplicaId</attributetype>
-        <attributetype>ads-replAliasDerefMode</attributetype>
-        <attributetype>ads-searchBaseDN</attributetype>
-        <attributetype>ads-replSearchScope</attributetype>
-        <attributetype>ads-replSearchFilter</attributetype>
-        <attributetype>ads-replRefreshNPersist</attributetype>
       </mandatory>
-      <optional>
-        <attributetype>ads-replLastSentCsn</attributetype>
-        <attributetype>ads-replCookie</attributetype>
-      </optional>
-    </objectclass>
-    <objectclass oid="1.3.6.1.4.1.18060.0.4.1.3.806" obsolete="false">
-      <aliases>
-        <alias>ads-replConsumer</alias>
-      </aliases>
-      <description>replication consumer configuration</description>
-      <superiors>
-        <superior>ads-base</superior>
-      </superiors>
-      <type>STRUCTURAL</type>
-      <mandatory>
-        <attributetype>ads-replConsumerId</attributetype>
-        <attributetype>ads-searchBaseDN</attributetype>
-        <attributetype>ads-replProvHostName</attributetype>
-        <attributetype>ads-replProvPort</attributetype>
-        <attributetype>ads-replAliasDerefMode</attributetype>
-        <attributetype>ads-replAttributes</attributetype>
-        <attributetype>ads-replRefreshInterval</attributetype>
-        <attributetype>ads-replRefreshNPersist</attributetype>
-        <attributetype>ads-replSearchScope</attributetype>
-        <attributetype>ads-replSearchFilter</attributetype>
-        <attributetype>ads-replSearchSizeLimit</attributetype>
-        <attributetype>ads-replSearchTimeOut</attributetype>
-        <attributetype>ads-replUserDn</attributetype>
-        <attributetype>ads-replUserPassword</attributetype>
-      </mandatory>
-      <optional>
-        <attributetype>ads-replUseTls</attributetype>
-        <attributetype>ads-replStrictCertValidation</attributetype>
-        <attributetype>ads-replPeerCertificate</attributetype>
-        <attributetype>ads-replConsumerImpl</attributetype>
-        <attributetype>ads-replCookie</attributetype>
-      </optional>
     </objectclass>
     <objectclass oid="1.3.6.1.4.1.18060.0.4.1.3.900" obsolete="false">
       <aliases>
@@ -1848,31 +1305,299 @@
         <attributetype>ads-pwdMaxIdle</attributetype>
       </optional>
     </objectclass>
-    <objectclass oid="1.3.6.1.4.1.18060.0.4.1.3.901" obsolete="false">
+    <objectclass oid="1.3.6.1.4.1.18060.0.4.1.3.804" obsolete="false">
       <aliases>
-        <alias>ads-authenticator</alias>
+        <alias>ads-httpServer</alias>
       </aliases>
-      <description>A generic authenticator</description>
+      <description>integrated jetty http server</description>
+      <superiors>
+        <superior>ads-server</superior>
+      </superiors>
+      <type>STRUCTURAL</type>
+      <optional>
+        <attributetype>ads-httpConfFile</attributetype>
+      </optional>
+    </objectclass>
+    <objectclass oid="1.3.6.1.4.1.18060.0.4.1.3.600" obsolete="false">
+      <aliases>
+        <alias>ads-dhcpServer</alias>
+      </aliases>
+      <description>The DhcpServer ObjectClass</description>
+      <superiors>
+        <superior>ads-dsBasedServer</superior>
+      </superiors>
+      <type>STRUCTURAL</type>
+    </objectclass>
+    <objectclass oid="1.3.6.1.4.1.18060.0.4.1.3.800" obsolete="false">
+      <aliases>
+        <alias>ads-changePasswordServer</alias>
+      </aliases>
+      <description>The ChangePassword ObjectClass</description>
+      <type>STRUCTURAL</type>
+    </objectclass>
+    <objectclass oid="1.3.6.1.4.1.18060.0.4.1.3.300" obsolete="false">
+      <aliases>
+        <alias>ads-ldapServer</alias>
+      </aliases>
+      <description>The LdapServer ObjectClass</description>
+      <superiors>
+        <superior>ads-dsBasedServer</superior>
+      </superiors>
+      <type>STRUCTURAL</type>
+      <mandatory>
+        <attributetype>ads-confidentialityRequired</attributetype>
+        <attributetype>ads-maxSizeLimit</attributetype>
+        <attributetype>ads-maxTimeLimit</attributetype>
+        <attributetype>ads-maxPDUSize</attributetype>
+        <attributetype>ads-saslHost</attributetype>
+        <attributetype>ads-saslPrincipal</attributetype>
+        <attributetype>ads-saslRealms</attributetype>
+        <attributetype>ads-replEnabled</attributetype>
+      </mandatory>
+      <optional>
+        <attributetype>ads-keystoreFile</attributetype>
+        <attributetype>ads-certificatePassword</attributetype>
+        <attributetype>ads-replReqHandler</attributetype>
+      </optional>
+    </objectclass>
+    <objectclass oid="1.3.6.1.4.1.18060.0.4.1.3.0" obsolete="false">
+      <aliases>
+        <alias>ads-base</alias>
+      </aliases>
+      <description>The base bean</description>
+      <type>ABSTRACT</type>
+      <optional>
+        <attributetype>ads-enabled</attributetype>
+        <attributetype>description</attributetype>
+      </optional>
+    </objectclass>
+    <objectclass oid="1.3.6.1.4.1.18060.0.4.1.3.150" obsolete="false">
+      <aliases>
+        <alias>ads-partition</alias>
+      </aliases>
+      <description>A generic partition</description>
       <superiors>
         <superior>ads-base</superior>
       </superiors>
       <type>ABSTRACT</type>
       <mandatory>
-        <attributetype>ads-authenticatorId</attributetype>
+        <attributetype>ads-partitionId</attributetype>
+        <attributetype>ads-partitionSuffix</attributetype>
       </mandatory>
+      <optional>
+        <attributetype>ads-contextEntry</attributetype>
+        <attributetype>ads-partitionSyncOnWrite</attributetype>
+      </optional>
     </objectclass>
-    <objectclass oid="1.3.6.1.4.1.18060.0.4.1.3.902" obsolete="false">
+    <objectclass oid="1.3.6.1.4.1.18060.0.4.1.3.161" obsolete="false">
       <aliases>
-        <alias>ads-authenticatorImpl</alias>
+        <alias>ads-jdbmIndex</alias>
       </aliases>
-      <description>an authenticator implementation</description>
+      <description>A JDBM indexed attribute</description>
       <superiors>
-        <superior>ads-authenticator</superior>
+        <superior>ads-index</superior>
+      </superiors>
+      <type>STRUCTURAL</type>
+      <optional>
+        <attributetype>ads-indexFileName</attributetype>
+        <attributetype>ads-indexWorkingDir</attributetype>
+        <attributetype>ads-indexNumDupLimit</attributetype>
+        <attributetype>ads-indexCacheSize</attributetype>
+      </optional>
+    </objectclass>
+    <objectclass oid="1.3.6.1.4.1.18060.0.4.1.3.19" obsolete="false">
+      <aliases>
+        <alias>ads-tcpTransport</alias>
+      </aliases>
+      <description>A TCP transport</description>
+      <superiors>
+        <superior>ads-transport</superior>
+      </superiors>
+      <type>STRUCTURAL</type>
+    </objectclass>
+    <objectclass oid="1.3.6.1.4.1.18060.0.4.1.3.700" obsolete="false">
+      <aliases>
+        <alias>ads-ntpServer</alias>
+      </aliases>
+      <description>The NtpServer ObjectClass</description>
+      <superiors>
+        <superior>ads-server</superior>
+      </superiors>
+      <type>STRUCTURAL</type>
+    </objectclass>
+    <objectclass oid="1.3.6.1.4.1.18060.0.4.1.3.18" obsolete="false">
+      <aliases>
+        <alias>ads-transport</alias>
+      </aliases>
+      <description>A transport (TCP or UDP)</description>
+      <superiors>
+        <superior>ads-base</superior>
+      </superiors>
+      <type>ABSTRACT</type>
+      <mandatory>
+        <attributetype>ads-transportId</attributetype>
+        <attributetype>ads-systemPort</attributetype>
+        <attributetype>ads-transportAddress</attributetype>
+      </mandatory>
+      <optional>
+        <attributetype>ads-transportBacklog</attributetype>
+        <attributetype>ads-transportEnableSSL</attributetype>
+        <attributetype>ads-transportNbThreads</attributetype>
+      </optional>
+    </objectclass>
+    <objectclass oid="1.3.6.1.4.1.18060.0.4.1.3.131" obsolete="false">
+      <aliases>
+        <alias>ads-authenticationInterceptor</alias>
+      </aliases>
+      <description>The AuthenticationInterceptor ObjectClass</description>
+      <superiors>
+        <superior>ads-interceptor</superior>
+      </superiors>
+      <type>STRUCTURAL</type>
+    </objectclass>
+    <objectclass oid="1.3.6.1.4.1.18060.0.4.1.3.500" obsolete="false">
+      <aliases>
+        <alias>ads-dnsServer</alias>
+      </aliases>
+      <description>The DnsServer ObjectClass</description>
+      <superiors>
+        <superior>ads-dsBasedServer</superior>
+      </superiors>
+      <type>STRUCTURAL</type>
+    </objectclass>
+    <objectclass oid="1.3.6.1.4.1.18060.0.4.1.3.400" obsolete="false">
+      <aliases>
+        <alias>ads-kdcServer</alias>
+      </aliases>
+      <description>The KerberosServer ObjectClass</description>
+      <superiors>
+        <superior>ads-dsBasedServer</superior>
       </superiors>
       <type>STRUCTURAL</type>
       <mandatory>
-        <attributetype>ads-authenticatorClass</attributetype>
+        <attributetype>ads-krbAllowableClockSkew</attributetype>
+        <attributetype>ads-krbEncryptionTypes</attributetype>
+        <attributetype>ads-krbEmptyAddressesAllowed</attributetype>
+        <attributetype>ads-krbForwardableAllowed</attributetype>
+        <attributetype>ads-krbPaEncTimestampRequired</attributetype>
+        <attributetype>ads-krbPostdatedAllowed</attributetype>
+        <attributetype>ads-krbProxiableAllowed</attributetype>
+        <attributetype>ads-krbRenewableAllowed</attributetype>
+        <attributetype>ads-krbMaximumRenewableLifetime</attributetype>
+        <attributetype>ads-krbMaximumTicketLifetime</attributetype>
+        <attributetype>ads-krbPrimaryRealm</attributetype>
+        <attributetype>ads-krbBodyChecksumVerified</attributetype>
       </mandatory>
+    </objectclass>
+    <objectclass oid="1.3.6.1.4.1.18060.0.4.1.3.250" obsolete="false">
+      <aliases>
+        <alias>ads-server</alias>
+      </aliases>
+      <description>The server ObjectClass</description>
+      <superiors>
+        <superior>ads-base</superior>
+      </superiors>
+      <type>ABSTRACT</type>
+      <mandatory>
+        <attributetype>ads-serverId</attributetype>
+      </mandatory>
+    </objectclass>
+    <objectclass oid="1.3.6.1.4.1.18060.0.4.1.3.260" obsolete="false">
+      <aliases>
+        <alias>ads-dsBasedServer</alias>
+      </aliases>
+      <description>The DirectoryService based server ObjectClass</description>
+      <superiors>
+        <superior>ads-server</superior>
+      </superiors>
+      <type>ABSTRACT</type>
+      <optional>
+        <attributetype>ads-searchBaseDN</attributetype>
+      </optional>
+    </objectclass>
+    <objectclass oid="1.3.6.1.4.1.18060.0.4.1.3.20" obsolete="false">
+      <aliases>
+        <alias>ads-udpTransport</alias>
+      </aliases>
+      <description>an UDP transport</description>
+      <superiors>
+        <superior>ads-transport</superior>
+      </superiors>
+      <type>STRUCTURAL</type>
+    </objectclass>
+    <objectclass oid="1.3.6.1.4.1.18060.0.4.1.3.120" obsolete="false">
+      <aliases>
+        <alias>ads-changeLog</alias>
+      </aliases>
+      <description>The ChangeLog</description>
+      <superiors>
+        <superior>ads-base</superior>
+      </superiors>
+      <type>STRUCTURAL</type>
+      <mandatory>
+        <attributetype>ads-changeLogExposed</attributetype>
+        <attributetype>ads-changeLogId</attributetype>
+      </mandatory>
+    </objectclass>
+    <objectclass oid="1.3.6.1.4.1.18060.0.4.1.3.160" obsolete="false">
+      <aliases>
+        <alias>ads-index</alias>
+      </aliases>
+      <description>A generic indexed attribute</description>
+      <superiors>
+        <superior>ads-base</superior>
+      </superiors>
+      <type>ABSTRACT</type>
+      <mandatory>
+        <attributetype>ads-indexAttributeId</attributetype>
+        <attributetype>ads-indexHasReverse</attributetype>
+      </mandatory>
+    </objectclass>
+    <objectclass oid="1.3.6.1.4.1.18060.0.4.1.3.805" obsolete="false">
+      <aliases>
+        <alias>ads-replEventLog</alias>
+      </aliases>
+      <description>class to hold a replication consumer event log details</description>
+      <superiors>
+        <superior>ads-base</superior>
+      </superiors>
+      <type>STRUCTURAL</type>
+      <mandatory>
+        <attributetype>ads-dsReplicaId</attributetype>
+        <attributetype>ads-replAliasDerefMode</attributetype>
+        <attributetype>ads-searchBaseDN</attributetype>
+        <attributetype>ads-replSearchScope</attributetype>
+        <attributetype>ads-replSearchFilter</attributetype>
+        <attributetype>ads-replRefreshNPersist</attributetype>
+        <attributetype>ads-replLogMaxIdle</attributetype>
+        <attributetype>ads-replLogPurgeThresholdCount</attributetype>
+      </mandatory>
+      <optional>
+        <attributetype>ads-replLastSentCsn</attributetype>
+        <attributetype>ads-replCookie</attributetype>
+      </optional>
+    </objectclass>
+    <objectclass oid="1.3.6.1.4.1.18060.0.4.1.3.100" obsolete="false">
+      <aliases>
+        <alias>ads-directoryService</alias>
+      </aliases>
+      <description>The DirectoryService ObjectClass</description>
+      <superiors>
+        <superior>ads-base</superior>
+      </superiors>
+      <type>STRUCTURAL</type>
+      <mandatory>
+        <attributetype>ads-directoryServiceId</attributetype>
+        <attributetype>ads-dsReplicaId</attributetype>
+        <attributetype>ads-dsAccessControlEnabled</attributetype>
+        <attributetype>ads-dsAllowAnonymousAccess</attributetype>
+        <attributetype>ads-dsDenormalizeOpAttrsEnabled</attributetype>
+        <attributetype>ads-dsPasswordHidden</attributetype>
+        <attributetype>ads-dsSyncPeriodMillis</attributetype>
+      </mandatory>
+      <optional>
+        <attributetype>ads-dsTestEntries</attributetype>
+      </optional>
     </objectclass>
     <objectclass oid="1.3.6.1.4.1.18060.0.4.1.3.904" obsolete="false">
       <aliases>
@@ -1886,6 +1611,109 @@
       <mandatory>
         <attributetype>ads-delegateHost</attributetype>
         <attributetype>ads-delegatePort</attributetype>
+      </mandatory>
+    </objectclass>
+    <objectclass oid="1.3.6.1.4.1.18060.0.4.1.3.901" obsolete="false">
+      <aliases>
+        <alias>ads-authenticator</alias>
+      </aliases>
+      <description>A generic authenticator</description>
+      <superiors>
+        <superior>ads-base</superior>
+      </superiors>
+      <type>ABSTRACT</type>
+      <mandatory>
+        <attributetype>ads-authenticatorId</attributetype>
+      </mandatory>
+    </objectclass>
+    <objectclass oid="1.3.6.1.4.1.18060.0.4.1.3.802" obsolete="false">
+      <aliases>
+        <alias>ads-extendedOpHandler</alias>
+      </aliases>
+      <description>Extended operation handler</description>
+      <superiors>
+        <superior>ads-base</superior>
+      </superiors>
+      <type>STRUCTURAL</type>
+      <mandatory>
+        <attributetype>ads-extendedOpHandlerClass</attributetype>
+        <attributetype>ads-extendedOpId</attributetype>
+      </mandatory>
+    </objectclass>
+    <objectclass oid="1.3.6.1.4.1.18060.0.4.1.3.806" obsolete="false">
+      <aliases>
+        <alias>ads-replConsumer</alias>
+      </aliases>
+      <description>replication consumer configuration</description>
+      <superiors>
+        <superior>ads-base</superior>
+      </superiors>
+      <type>STRUCTURAL</type>
+      <mandatory>
+        <attributetype>ads-replConsumerId</attributetype>
+        <attributetype>ads-searchBaseDN</attributetype>
+        <attributetype>ads-replProvHostName</attributetype>
+        <attributetype>ads-replProvPort</attributetype>
+        <attributetype>ads-replAliasDerefMode</attributetype>
+        <attributetype>ads-replAttributes</attributetype>
+        <attributetype>ads-replRefreshInterval</attributetype>
+        <attributetype>ads-replRefreshNPersist</attributetype>
+        <attributetype>ads-replSearchScope</attributetype>
+        <attributetype>ads-replSearchFilter</attributetype>
+        <attributetype>ads-replSearchSizeLimit</attributetype>
+        <attributetype>ads-replSearchTimeOut</attributetype>
+        <attributetype>ads-replUserDn</attributetype>
+        <attributetype>ads-replUserPassword</attributetype>
+      </mandatory>
+      <optional>
+        <attributetype>ads-replUseTls</attributetype>
+        <attributetype>ads-replStrictCertValidation</attributetype>
+        <attributetype>ads-replConsumerImpl</attributetype>
+        <attributetype>ads-replCookie</attributetype>
+      </optional>
+    </objectclass>
+    <objectclass oid="1.3.6.1.4.1.18060.0.4.1.3.151" obsolete="false">
+      <aliases>
+        <alias>ads-jdbmPartition</alias>
+      </aliases>
+      <description>A JDBM partition</description>
+      <superiors>
+        <superior>ads-partition</superior>
+      </superiors>
+      <type>STRUCTURAL</type>
+      <optional>
+        <attributetype>ads-partitionCacheSize</attributetype>
+        <attributetype>ads-jdbmPartitionOptimizerEnabled</attributetype>
+      </optional>
+    </objectclass>
+    <objectclass oid="1.3.6.1.4.1.18060.0.4.1.3.801" obsolete="false">
+      <aliases>
+        <alias>ads-saslMechHandler</alias>
+      </aliases>
+      <description>SASL mechanism handler</description>
+      <superiors>
+        <superior>ads-base</superior>
+      </superiors>
+      <type>STRUCTURAL</type>
+      <mandatory>
+        <attributetype>ads-saslMechName</attributetype>
+        <attributetype>ads-saslMechClassName</attributetype>
+      </mandatory>
+      <optional>
+        <attributetype>ads-ntlmMechProvider</attributetype>
+      </optional>
+    </objectclass>
+    <objectclass oid="1.3.6.1.4.1.18060.0.4.1.3.902" obsolete="false">
+      <aliases>
+        <alias>ads-authenticatorImpl</alias>
+      </aliases>
+      <description>an authenticator implementation</description>
+      <superiors>
+        <superior>ads-authenticator</superior>
+      </superiors>
+      <type>STRUCTURAL</type>
+      <mandatory>
+        <attributetype>ads-authenticatorClass</attributetype>
       </mandatory>
     </objectclass>
   </objectclasses>

@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <!--
   Licensed to the Apache Software Foundation (ASF) under one
   or more contributor license agreements.  See the NOTICE file
@@ -17,6 +16,7 @@
   specific language governing permissions and limitations
   under the License.
 -->
+<?xml version="1.0" encoding="UTF-8"?>
 <schema name="java">
   <attributetypes>
     <attributetype oid="1.3.6.1.4.1.42.2.27.4.1.10" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
@@ -27,6 +27,23 @@
       <usage>USER_APPLICATIONS</usage>
       <syntax>1.3.6.1.4.1.1466.115.121.1.15</syntax>
       <equality>caseExactMatch</equality>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.42.2.27.4.1.13" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
+      <aliases>
+        <alias>javaClassNames</alias>
+      </aliases>
+      <description>Fully qualified Java class or interface name</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.15</syntax>
+      <equality>caseExactMatch</equality>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.42.2.27.4.1.8" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>javaSerializedData</alias>
+      </aliases>
+      <description>Serialized form of a Java object</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.40</syntax>
     </attributetype>
     <attributetype oid="1.3.6.1.4.1.42.2.27.4.1.11" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
       <aliases>
@@ -46,24 +63,6 @@
       <syntax>1.3.6.1.4.1.1466.115.121.1.26</syntax>
       <equality>caseExactIA5Match</equality>
     </attributetype>
-    <attributetype oid="1.3.6.1.4.1.42.2.27.4.1.13" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
-      <aliases>
-        <alias>javaClassNames</alias>
-      </aliases>
-      <description>Fully qualified Java class or interface name</description>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.15</syntax>
-      <equality>caseExactMatch</equality>
-    </attributetype>
-    <attributetype oid="1.3.6.1.4.1.42.2.27.4.1.6" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-      <aliases>
-        <alias>javaClassName</alias>
-      </aliases>
-      <description>Fully qualified name of distinguished Java class or interface</description>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.15</syntax>
-      <equality>caseExactMatch</equality>
-    </attributetype>
     <attributetype oid="1.3.6.1.4.1.42.2.27.4.1.7" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
       <aliases>
         <alias>javaCodebase</alias>
@@ -73,13 +72,14 @@
       <syntax>1.3.6.1.4.1.1466.115.121.1.26</syntax>
       <equality>caseExactIA5Match</equality>
     </attributetype>
-    <attributetype oid="1.3.6.1.4.1.42.2.27.4.1.8" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+    <attributetype oid="1.3.6.1.4.1.42.2.27.4.1.6" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
       <aliases>
-        <alias>javaSerializedData</alias>
+        <alias>javaClassName</alias>
       </aliases>
-      <description>Serialized form of a Java object</description>
+      <description>Fully qualified name of distinguished Java class or interface</description>
       <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.40</syntax>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.15</syntax>
+      <equality>caseExactMatch</equality>
     </attributetype>
   </attributetypes>
   <objectclasses>
@@ -94,6 +94,32 @@
       <type>STRUCTURAL</type>
       <mandatory>
         <attributetype>cn</attributetype>
+      </mandatory>
+    </objectclass>
+    <objectclass oid="1.3.6.1.4.1.42.2.27.4.2.5" obsolete="false">
+      <aliases>
+        <alias>javaSerializedObject</alias>
+      </aliases>
+      <description>Java serialized object</description>
+      <superiors>
+        <superior>javaObject</superior>
+      </superiors>
+      <type>AUXILIARY</type>
+      <mandatory>
+        <attributetype>javaSerializedData</attributetype>
+      </mandatory>
+    </objectclass>
+    <objectclass oid="1.3.6.1.4.1.42.2.27.4.2.8" obsolete="false">
+      <aliases>
+        <alias>javaMarshalledObject</alias>
+      </aliases>
+      <description>Java marshalled object</description>
+      <superiors>
+        <superior>javaObject</superior>
+      </superiors>
+      <type>AUXILIARY</type>
+      <mandatory>
+        <attributetype>javaSerializedData</attributetype>
       </mandatory>
     </objectclass>
     <objectclass oid="1.3.6.1.4.1.42.2.27.4.2.4" obsolete="false">
@@ -115,19 +141,6 @@
         <attributetype>description</attributetype>
       </optional>
     </objectclass>
-    <objectclass oid="1.3.6.1.4.1.42.2.27.4.2.5" obsolete="false">
-      <aliases>
-        <alias>javaSerializedObject</alias>
-      </aliases>
-      <description>Java serialized object</description>
-      <superiors>
-        <superior>javaObject</superior>
-      </superiors>
-      <type>AUXILIARY</type>
-      <mandatory>
-        <attributetype>javaSerializedData</attributetype>
-      </mandatory>
-    </objectclass>
     <objectclass oid="1.3.6.1.4.1.42.2.27.4.2.7" obsolete="false">
       <aliases>
         <alias>javaNamingReference</alias>
@@ -141,19 +154,6 @@
         <attributetype>javaReferenceAddress</attributetype>
         <attributetype>javaFactory</attributetype>
       </optional>
-    </objectclass>
-    <objectclass oid="1.3.6.1.4.1.42.2.27.4.2.8" obsolete="false">
-      <aliases>
-        <alias>javaMarshalledObject</alias>
-      </aliases>
-      <description>Java marshalled object</description>
-      <superiors>
-        <superior>javaObject</superior>
-      </superiors>
-      <type>AUXILIARY</type>
-      <mandatory>
-        <attributetype>javaSerializedData</attributetype>
-      </mandatory>
     </objectclass>
   </objectclasses>
 </schema>
