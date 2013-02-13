@@ -130,7 +130,7 @@ public class Utils
         String oid = schema != null ? schema.getAttributeTypeDescription( ava.getNormType() ).getOid() : ava
             .getNormType();
         return Strings.toLowerCase( Strings.trim( oid ) )
-            + "=" + Strings.toLowerCase( Strings.trim( ava.getValue().getString() ) ); //$NON-NLS-1$
+            + "=" + Strings.trim( ava.getValue().getString() ).toLowerCase(); //$NON-NLS-1$
     }
 
 
