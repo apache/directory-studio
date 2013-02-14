@@ -20,6 +20,7 @@
 package org.apache.directory.studio.apacheds.configuration.v2.editor;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.directory.api.ldap.model.exception.LdapInvalidDnException;
@@ -29,6 +30,13 @@ import org.apache.directory.server.config.beans.DirectoryServiceBean;
 import org.apache.directory.server.config.beans.InterceptorBean;
 import org.apache.directory.server.config.beans.KdcServerBean;
 import org.apache.directory.server.config.beans.TransportBean;
+import org.apache.directory.shared.kerberos.codec.types.EncryptionType;
+import org.apache.directory.studio.common.ui.CommonUIUtils;
+import org.eclipse.jface.viewers.ArrayContentProvider;
+import org.eclipse.jface.viewers.CheckStateChangedEvent;
+import org.eclipse.jface.viewers.CheckboxTableViewer;
+import org.eclipse.jface.viewers.ICheckStateListener;
+import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
@@ -39,6 +47,7 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.Section;
@@ -59,6 +68,16 @@ public class KerberosServerPage extends ServerConfigurationEditorPage
     /** The Page Title */
     private static final String TITLE = Messages.getString( "KerberosServerPage.KerberosServer" ); //$NON-NLS-1$
 
+    /** The encryption types supported by ApacheDS */
+    private static final EncryptionType[] SUPPORTED_ENCRYPTION_TYPES = new EncryptionType[]
+        {
+            EncryptionType.DES_CBC_MD5,
+            EncryptionType.DES3_CBC_SHA1_KD,
+            EncryptionType.AES128_CTS_HMAC_SHA1_96,
+            EncryptionType.AES256_CTS_HMAC_SHA1_96,
+            EncryptionType.RC4_HMAC
+    };
+
     // UI Controls
     private Button enableKerberosCheckbox;
     private Text kerberosPortText;
@@ -66,7 +85,7 @@ public class KerberosServerPage extends ServerConfigurationEditorPage
     private Text changePasswordPortText;
     private Text primaryKdcRealmText;
     private Text kdcSearchBaseDnText;
-    private Text encryptionTypesText;
+    private CheckboxTableViewer encryptionTypesTableViewer;
     private Button verifyBodyChecksumCheckbox;
     private Button allowEmptyAddressesCheckbox;
     private Button allowForwardableAddressesCheckbox;
@@ -134,12 +153,42 @@ public class KerberosServerPage extends ServerConfigurationEditorPage
             }
         }
     };
-    private ModifyListener encryptionTypesTextListener = new ModifyListener()
+    private ICheckStateListener encryptionTypesTableViewerListener = new ICheckStateListener()
     {
-        public void modifyText( ModifyEvent e )
+        public void checkStateChanged( CheckStateChangedEvent event )
         {
+            // Checking if the last encryption type is being unchecked
+            if ( ( getKdcServerBean().getKrbEncryptionTypes().size() == 1 ) && ( event.getChecked() == false ) )
+            {
+                // Displaying an error to the user
+                CommonUIUtils.openErrorDialog( Messages.getString( "KerberosServerPage.AtLeastOneEncryptionTypeMustBeSelected" ) ); //$NON-NLS-1$
+
+                // Reverting the current checked state
+                encryptionTypesTableViewer.setChecked( event.getElement(), !event.getChecked() );
+
+                // Exiting
+                return;
+            }
+
+            // Setting the editor as dirty
+            setEditorDirty();
+
+            // Clearing previous encryption types
             getKdcServerBean().getKrbEncryptionTypes().clear();
-            getKdcServerBean().addKrbEncryptionTypes( encryptionTypesText.getText() );
+
+            // Getting all selected encryption types
+            Object[] selectedEncryptionTypeObjects = encryptionTypesTableViewer.getCheckedElements();
+
+            // Adding each encryption type
+            for ( Object encryptionTypeObject : selectedEncryptionTypeObjects )
+            {
+                if ( encryptionTypeObject instanceof EncryptionType )
+                {
+                    EncryptionType encryptionType = ( EncryptionType ) encryptionTypeObject;
+
+                    getKdcServerBean().addKrbEncryptionTypes( encryptionType.getName() );
+                }
+            }
         }
     };
     private SelectionAdapter verifyBodyChecksumCheckboxListener = new SelectionAdapter()
@@ -332,12 +381,30 @@ public class KerberosServerPage extends ServerConfigurationEditorPage
         Label defaultSaslSearchBaseDnLabel = createDefaultValueLabel( toolkit, composite, "ou=users,dc=example,dc=com" ); //$NON-NLS-1$
         defaultSaslSearchBaseDnLabel.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
 
-        // Encryption Types Text
-        toolkit.createLabel( composite, Messages.getString( "KerberosServerPage.EncryptionTypes" ) ); //$NON-NLS-1$
-        encryptionTypesText = toolkit.createText( composite, "" ); //$NON-NLS-1$
-        setGridDataWithDefaultWidth( encryptionTypesText, new GridData( SWT.FILL, SWT.NONE, true, false ) );
-        Label defaultEncryptionTypesLabel = createDefaultValueLabel( toolkit, composite, "[des-cbc-md5]" ); //$NON-NLS-1$
-        defaultEncryptionTypesLabel.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
+        // Encryption Types Table Viewer
+        Label encryptionTypesLabel = toolkit.createLabel( composite,
+            Messages.getString( "KerberosServerPage.EncryptionTypes" ) ); //$NON-NLS-1$
+        encryptionTypesLabel.setLayoutData( new GridData( SWT.BEGINNING, SWT.TOP, false, false ) );
+        encryptionTypesTableViewer = new CheckboxTableViewer( new Table( composite, SWT.BORDER | SWT.CHECK ) );
+        encryptionTypesTableViewer.setContentProvider( new ArrayContentProvider() );
+        encryptionTypesTableViewer.setLabelProvider( new LabelProvider()
+        {
+            public String getText( Object element )
+            {
+                if ( element instanceof EncryptionType )
+                {
+                    EncryptionType encryptionType = ( EncryptionType ) element;
+
+                    return encryptionType.getName().toUpperCase();
+                }
+
+                return super.getText( element );
+            }
+        } );
+        encryptionTypesTableViewer.setInput( SUPPORTED_ENCRYPTION_TYPES );
+        GridData encryptionTypesTableViewerGridData = new GridData( SWT.FILL, SWT.NONE, true, false );
+        encryptionTypesTableViewerGridData.heightHint = 60;
+        encryptionTypesTableViewer.getControl().setLayoutData( encryptionTypesTableViewerGridData );
     }
 
 
@@ -410,7 +477,6 @@ public class KerberosServerPage extends ServerConfigurationEditorPage
         toolkit.createLabel( composite, Messages.getString( "KerberosServerPage.AllowableClockSkew" ) ); //$NON-NLS-1$
         allowableClockSkewText = createIntegerText( toolkit, composite );
         setGridDataWithDefaultWidth( allowableClockSkewText, new GridData( SWT.FILL, SWT.NONE, true, false ) );
-
     }
 
 
@@ -436,7 +502,20 @@ public class KerberosServerPage extends ServerConfigurationEditorPage
         // Kerberos Settings
         setText( primaryKdcRealmText, kdcServerBean.getKrbPrimaryRealm() );
         setText( kdcSearchBaseDnText, kdcServerBean.getSearchBaseDn().toString() );
-        setText( encryptionTypesText, kdcServerBean.getKrbEncryptionTypes().toString() );
+
+        // Encryption Types
+        List<String> encryptionTypesNames = kdcServerBean.getKrbEncryptionTypes();
+        List<EncryptionType> encryptionTypes = new ArrayList<EncryptionType>();
+        for ( String encryptionTypesName : encryptionTypesNames )
+        {
+            EncryptionType encryptionType = EncryptionType.getByName( encryptionTypesName );
+
+            if ( !EncryptionType.UNKNOWN.equals( encryptionType ) )
+            {
+                encryptionTypes.add( encryptionType );
+            }
+        }
+        encryptionTypesTableViewer.setCheckedElements( encryptionTypes.toArray() );
 
         // Ticket Settings
         setSelection( verifyBodyChecksumCheckbox, kdcServerBean.isKrbBodyChecksumVerified() );
@@ -482,9 +561,8 @@ public class KerberosServerPage extends ServerConfigurationEditorPage
         addDirtyListener( kdcSearchBaseDnText );
         addModifyListener( kdcSearchBaseDnText, kdcSearchBaseDnTextListener );
 
-        // Encryption Types Text
-        addDirtyListener( encryptionTypesText );
-        addModifyListener( encryptionTypesText, encryptionTypesTextListener );
+        // Encryption Types Table Viewer
+        encryptionTypesTableViewer.addCheckStateListener( encryptionTypesTableViewerListener );
 
         // Verify Body Checksum Checkbox
         addDirtyListener( verifyBodyChecksumCheckbox );
@@ -554,9 +632,8 @@ public class KerberosServerPage extends ServerConfigurationEditorPage
         removeDirtyListener( kdcSearchBaseDnText );
         removeModifyListener( kdcSearchBaseDnText, kdcSearchBaseDnTextListener );
 
-        // Encryption Types Text
-        removeDirtyListener( encryptionTypesText );
-        removeModifyListener( encryptionTypesText, encryptionTypesTextListener );
+        // Encryption Types Table Viewer
+        encryptionTypesTableViewer.removeCheckStateListener( encryptionTypesTableViewerListener );
 
         // Verify Body Checksum Checkbox
         removeDirtyListener( verifyBodyChecksumCheckbox );

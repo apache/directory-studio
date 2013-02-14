@@ -1768,6 +1768,12 @@
 
       <dependency>
         <groupId>org.apache.directory.server</groupId>
+        <artifactId>apacheds-kerberos-codec</artifactId>
+        <version>${org.apache.directory.server.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.apache.directory.server</groupId>
         <artifactId>apacheds-ldif-partition</artifactId>
         <version>${org.apache.directory.server.version}</version>
       </dependency>

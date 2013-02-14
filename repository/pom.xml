@@ -65,10 +65,6 @@
                 <!-- Apache Directory LDAP API dependencies -->
                 <artifactItem>
                   <groupId>org.apache.directory.api</groupId>
-                  <artifactId>api-ldap-client-api</artifactId>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.apache.directory.api</groupId>
                   <artifactId>api-asn1-api</artifactId>
                 </artifactItem>
                 <artifactItem>
@@ -82,6 +78,10 @@
                 <artifactItem>
                   <groupId>org.apache.directory.api</groupId>
                   <artifactId>api-i18n</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.apache.directory.api</groupId>
+                  <artifactId>api-ldap-client-api</artifactId>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.apache.directory.api</groupId>
@@ -109,11 +109,11 @@
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.apache.directory.api</groupId>
-                  <artifactId>api-ldap-schema-data</artifactId>
+                  <artifactId>api-ldap-schema-converter</artifactId>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.apache.directory.api</groupId>
-                  <artifactId>api-ldap-schema-converter</artifactId>
+                  <artifactId>api-ldap-schema-data</artifactId>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.apache.directory.api</groupId>
@@ -121,10 +121,6 @@
                 </artifactItem>
 
                 <!-- ApacheDS dependencies -->
-                <artifactItem>
-                  <groupId>org.apache.directory.server</groupId>
-                  <artifactId>apacheds-server-config</artifactId>
-                </artifactItem>
                 <artifactItem>
                   <groupId>org.apache.directory.server</groupId>
                   <artifactId>apacheds-core</artifactId>
@@ -143,11 +139,19 @@
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.apache.directory.server</groupId>
+                  <artifactId>apacheds-kerberos-codec</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.apache.directory.server</groupId>
                   <artifactId>apacheds-i18n</artifactId>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.apache.directory.server</groupId>
                   <artifactId>apacheds-ldif-partition</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.apache.directory.server</groupId>
+                  <artifactId>apacheds-server-config</artifactId>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.apache.directory.server</groupId>

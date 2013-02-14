@@ -140,10 +140,6 @@
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.apache.directory.server</groupId>
-                  <artifactId>apacheds-server-config</artifactId>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.apache.directory.server</groupId>
                   <artifactId>apacheds-core</artifactId>
                 </artifactItem>
                 <artifactItem>
@@ -164,7 +160,15 @@
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.apache.directory.server</groupId>
+                  <artifactId>apacheds-kerberos-codec</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.apache.directory.server</groupId>
                   <artifactId>apacheds-ldif-partition</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.apache.directory.server</groupId>
+                  <artifactId>apacheds-server-config</artifactId>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.apache.directory.server</groupId>

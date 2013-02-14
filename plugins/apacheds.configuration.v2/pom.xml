@@ -113,6 +113,7 @@
             <Require-Bundle>org.apache.commons.io;bundle-version="${org.apache.commons.io.version}",
  org.apache.directory.server.core.api;bundle-version="${org.apache.directory.server.validversion}",
  org.apache.directory.server.config;bundle-version="${org.apache.directory.server.validversion}",
+ org.apache.directory.server.kerberos.codec;bundle-version="${org.apache.directory.server.validversion}",
  org.apache.directory.server.ldif.partition;bundle-version="${org.apache.directory.server.validversion}",
  org.apache.directory.server.xdbm.partition;bundle-version="${org.apache.directory.server.validversion}",
  org.apache.directory.api.ldap.model;bundle-version="${org.apache.directory.api.validversion}",
@@ -219,12 +220,17 @@
     </dependency>
     <dependency>
       <groupId>org.apache.directory.server</groupId>
-      <artifactId>apacheds-server-config</artifactId>
+      <artifactId>apacheds-kerberos-codec</artifactId>
       <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.directory.server</groupId>
       <artifactId>apacheds-ldif-partition</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.directory.server</groupId>
+      <artifactId>apacheds-server-config</artifactId>
       <scope>provided</scope>
     </dependency>
     <dependency>
