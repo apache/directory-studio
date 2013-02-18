@@ -31,6 +31,7 @@ import org.apache.directory.api.ldap.model.schema.UsageEnum;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.SchemaUtils;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -52,6 +53,11 @@ import org.eclipse.ui.forms.widgets.Section;
  */
 public class AttributeTypeDescriptionDetailsPage extends SchemaDetailsPage
 {
+    /** The black color */
+    private static final Color BLACK_COLOR = new Color( null, 0, 0, 0 );
+
+    /** The gray color */
+    private static final Color GRAY_COLOR = new Color( null, 150, 150, 150 );
 
     /** The main section, contains oid, names, desc and usage */
     private Section mainSection;
@@ -71,17 +77,17 @@ public class AttributeTypeDescriptionDetailsPage extends SchemaDetailsPage
     /** The flag section, contains sv, obsolete, collective and read-only */
     private Section flagSection;
 
-    /** The single-valued field */
-    private Label singleValuedText;
+    /** The single-valued label */
+    private Label singleValuedLabel;
 
-    /** The obsolete field */
-    private Label isObsoleteText;
+    /** The obsolete label */
+    private Label isObsoleteLabel;
 
-    /** The collective field */
-    private Label collectiveText;
+    /** The collective label */
+    private Label collectiveLabel;
 
-    /** The no-user-modification field */
-    private Label noUserModificationText;
+    /** The no-user-modification label */
+    private Label noUserModificationLabel;
 
     /** The syntax section, contains syntax description, lenth and a link to the syntax */
     private Section syntaxSection;
@@ -169,25 +175,21 @@ public class AttributeTypeDescriptionDetailsPage extends SchemaDetailsPage
         flagClient.setLayout( flagLayout );
         flagSection.setClient( flagClient );
 
-        singleValuedText = toolkit.createLabel( flagClient, Messages
+        singleValuedLabel = toolkit.createLabel( flagClient, Messages
             .getString( "AttributeTypeDescriptionDetailsPage.SingleValued" ), SWT.CHECK ); //$NON-NLS-1$
-        singleValuedText.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
-        singleValuedText.setEnabled( false );
+        singleValuedLabel.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
 
-        noUserModificationText = toolkit.createLabel( flagClient, Messages
+        noUserModificationLabel = toolkit.createLabel( flagClient, Messages
             .getString( "AttributeTypeDescriptionDetailsPage.ReadOnly" ), SWT.CHECK ); //$NON-NLS-1$
-        noUserModificationText.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
-        noUserModificationText.setEnabled( false );
+        noUserModificationLabel.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
 
-        collectiveText = toolkit.createLabel( flagClient, Messages
+        collectiveLabel = toolkit.createLabel( flagClient, Messages
             .getString( "AttributeTypeDescriptionDetailsPage.Collective" ), SWT.CHECK ); //$NON-NLS-1$
-        collectiveText.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
-        collectiveText.setEnabled( false );
+        collectiveLabel.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
 
-        isObsoleteText = toolkit.createLabel( flagClient, Messages
+        isObsoleteLabel = toolkit.createLabel( flagClient, Messages
             .getString( "AttributeTypeDescriptionDetailsPage.Obsolete" ), SWT.CHECK ); //$NON-NLS-1$
-        isObsoleteText.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
-        isObsoleteText.setEnabled( false );
+        isObsoleteLabel.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
 
         // create syntax section
         syntaxSection = toolkit.createSection( detailForm.getBody(), SWT.NONE );
@@ -354,10 +356,42 @@ public class AttributeTypeDescriptionDetailsPage extends SchemaDetailsPage
         createMainContent( atd );
 
         // set flags
-        singleValuedText.setEnabled( atd != null && atd.isSingleValued() );
-        isObsoleteText.setEnabled( atd != null && atd.isObsolete() );
-        collectiveText.setEnabled( atd != null && atd.isCollective() );
-        noUserModificationText.setEnabled( atd != null && !atd.isUserModifiable() );
+        if ( ( atd != null ) && ( atd.isSingleValued() ) )
+        {
+            singleValuedLabel.setForeground( BLACK_COLOR );
+        }
+        else
+        {
+            singleValuedLabel.setForeground( GRAY_COLOR );
+        }
+
+        if ( atd != null && atd.isObsolete() )
+        {
+            isObsoleteLabel.setForeground( BLACK_COLOR );
+        }
+        else
+        {
+            isObsoleteLabel.setForeground( GRAY_COLOR );
+        }
+
+        if ( atd != null && atd.isCollective() )
+        {
+            collectiveLabel.setForeground( BLACK_COLOR );
+        }
+        else
+        {
+            collectiveLabel.setForeground( GRAY_COLOR );
+        }
+
+        if ( atd != null && !atd.isUserModifiable() )
+        {
+            noUserModificationLabel.setForeground( BLACK_COLOR );
+        }
+        else
+        {
+            noUserModificationLabel.setForeground( GRAY_COLOR );
+        }
+
         flagSection.layout();
 
         // set syntax content
