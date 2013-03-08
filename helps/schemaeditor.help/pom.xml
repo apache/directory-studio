@@ -28,7 +28,7 @@
   </parent>
 
   <artifactId>schemaeditor.help</artifactId>
-  <version>2.0.0.v20130308</version>
+  <version>2.0.1.v20130308-SNAPSHOT</version>
   <name>Apache Directory Studio Schema Editor Help</name>
   <packaging>jar</packaging>
 
@@ -53,10 +53,4 @@
       </plugin>
     </plugins>
   </build>
-
-  <scm>
-    <connection>scm:svn:http://svn.apache.org/repos/asf/directory/studio/tags/2.0.0.v20130308/parent-help/schemaeditor.help</connection>
-    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/directory/studio/tags/2.0.0.v20130308/parent-help/schemaeditor.help</developerConnection>
-    <url>https://svn.apache.org/viewvc/directory/studio/tags/2.0.0.v20130308/parent-help/schemaeditor.help</url>
-  </scm>
 </project>
