@@ -28,7 +28,6 @@
   </parent>
 
   <artifactId>apacheds.help</artifactId>
-  <version>2.0.1.v20130308-SNAPSHOT</version>
   <name>Apache Directory Studio Apache DS Help</name>
   <packaging>jar</packaging>
 
