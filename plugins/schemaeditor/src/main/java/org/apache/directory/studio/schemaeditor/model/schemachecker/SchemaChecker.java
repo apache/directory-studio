@@ -63,13 +63,16 @@ public class SchemaChecker
     private SchemaManager schemaManager;
 
     /** The errors map */
-    private MultiMap errorsMap = new MultiValueMap();;
+    private MultiMap errorsMap = new MultiValueMap();
 
     /** The warnings list */
     private List<SchemaWarning> warningsList = new ArrayList<SchemaWarning>();
 
     /** The warnings map */
-    private MultiMap warningsMap = new MultiValueMap();;
+    private MultiMap warningsMap = new MultiValueMap();
+
+    /** The lock object used to synchronize accesses to the errors and warnings maps*/
+    private static Object lock = new Object();
 
     /** The 'listening to modifications' flag*/
     private boolean listeningToModifications = false;
@@ -261,7 +264,7 @@ public class SchemaChecker
     /**
      * Checks the whole schema.
      */
-    private synchronized void recheckWholeSchema()
+    private void recheckWholeSchema()
     {
         Job job = new Job( "Checking Schema" )
         {
@@ -297,16 +300,19 @@ public class SchemaChecker
     /**
      * Updates the errors and warnings. 
      */
-    private void updateErrorsAndWarnings()
+    private synchronized void updateErrorsAndWarnings()
     {
-        // Errors
-        errorsMap.clear();
-        indexErrors();
+        synchronized ( lock )
+        {
+            // Errors
+            errorsMap.clear();
+            indexErrors();
 
-        // Warnings
-        createWarnings();
-        warningsMap.clear();
-        indexWarnings();
+            // Warnings
+            createWarnings();
+            warningsMap.clear();
+            indexWarnings();
+        }
     }
 
 
@@ -430,7 +436,10 @@ public class SchemaChecker
      */
     public List<SchemaWarning> getWarnings()
     {
-        return warningsList;
+        synchronized ( lock )
+        {
+            return warningsList;
+        }
     }
 
 
@@ -483,7 +492,10 @@ public class SchemaChecker
      */
     public List<?> getErrors( SchemaObject so )
     {
-        return ( List<?> ) errorsMap.get( so );
+        synchronized ( lock )
+        {
+            return ( List<?> ) errorsMap.get( so );
+        }
     }
 
 

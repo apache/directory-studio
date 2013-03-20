@@ -115,11 +115,17 @@ public class SchemaEditorSchemaLoader extends AbstractSchemaLoader
         {
             for ( Schema schema : schemas )
             {
-                List<MatchingRule> matchingRules = project.getSchemaHandler().getSchema( schema.getSchemaName() )
-                    .getMatchingRules();
-                for ( MatchingRule matchingRule : matchingRules )
+                org.apache.directory.studio.schemaeditor.model.Schema schemaHandlerSchema = project.getSchemaHandler()
+                    .getSchema( schema.getSchemaName() );
+
+                if ( schemaHandlerSchema != null )
                 {
-                    matchingRuleList.add( SchemaEditorSchemaLoaderUtils.toEntry( matchingRule ) );
+                    List<MatchingRule> matchingRules = schemaHandlerSchema.getMatchingRules();
+
+                    for ( MatchingRule matchingRule : matchingRules )
+                    {
+                        matchingRuleList.add( SchemaEditorSchemaLoaderUtils.toEntry( matchingRule ) );
+                    }
                 }
             }
         }
@@ -139,11 +145,17 @@ public class SchemaEditorSchemaLoader extends AbstractSchemaLoader
         {
             for ( Schema schema : schemas )
             {
-                List<LdapSyntax> syntaxes = project.getSchemaHandler().getSchema( schema.getSchemaName() )
-                    .getSyntaxes();
-                for ( LdapSyntax syntax : syntaxes )
+                org.apache.directory.studio.schemaeditor.model.Schema schemaHandlerSchema = project.getSchemaHandler()
+                    .getSchema( schema.getSchemaName() );
+
+                if ( schemaHandlerSchema != null )
                 {
-                    syntaxList.add( SchemaEditorSchemaLoaderUtils.toEntry( syntax ) );
+                    List<LdapSyntax> syntaxes = schemaHandlerSchema.getSyntaxes();
+
+                    for ( LdapSyntax syntax : syntaxes )
+                    {
+                        syntaxList.add( SchemaEditorSchemaLoaderUtils.toEntry( syntax ) );
+                    }
                 }
             }
         }
@@ -163,11 +175,17 @@ public class SchemaEditorSchemaLoader extends AbstractSchemaLoader
         {
             for ( Schema schema : schemas )
             {
-                List<AttributeType> attributeTypes = project.getSchemaHandler().getSchema( schema.getSchemaName() )
-                    .getAttributeTypes();
-                for ( AttributeType attributeType : attributeTypes )
+                org.apache.directory.studio.schemaeditor.model.Schema schemaHandlerSchema = project.getSchemaHandler()
+                    .getSchema( schema.getSchemaName() );
+
+                if ( schemaHandlerSchema != null )
                 {
-                    attributeTypeList.add( SchemaEditorSchemaLoaderUtils.toEntry( attributeType ) );
+                    List<AttributeType> attributeTypes = schemaHandlerSchema.getAttributeTypes();
+
+                    for ( AttributeType attributeType : attributeTypes )
+                    {
+                        attributeTypeList.add( SchemaEditorSchemaLoaderUtils.toEntry( attributeType ) );
+                    }
                 }
             }
         }
@@ -223,11 +241,17 @@ public class SchemaEditorSchemaLoader extends AbstractSchemaLoader
         {
             for ( Schema schema : schemas )
             {
-                List<MutableObjectClass> objectClasses = project.getSchemaHandler().getSchema( schema.getSchemaName() )
-                    .getObjectClasses();
-                for ( ObjectClass objectClass : objectClasses )
+                org.apache.directory.studio.schemaeditor.model.Schema schemaHandlerSchema = project.getSchemaHandler()
+                    .getSchema( schema.getSchemaName() );
+
+                if ( schemaHandlerSchema != null )
                 {
-                    objectClassList.add( SchemaEditorSchemaLoaderUtils.toEntry( objectClass ) );
+                    List<MutableObjectClass> objectClasses = schemaHandlerSchema.getObjectClasses();
+
+                    for ( ObjectClass objectClass : objectClasses )
+                    {
+                        objectClassList.add( SchemaEditorSchemaLoaderUtils.toEntry( objectClass ) );
+                    }
                 }
             }
         }
