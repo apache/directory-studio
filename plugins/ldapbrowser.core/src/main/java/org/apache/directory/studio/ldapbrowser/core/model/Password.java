@@ -55,6 +55,24 @@ public class Password
     /** The constant used for the salted SHA hash, value <code>SSHA</code> */
     public static final String HASH_METHOD_SSHA = "SSHA"; //$NON-NLS-1$
 
+    /** The constant used for the SHA-256 hash, value <code>SHA-256</code> */
+    public static final String HASH_METHOD_SHA_256 = "SHA-256"; //$NON-NLS-1$
+
+    /** The constant used for the salted SHA-256 hash, value <code>SSHA-256</code> */
+    public static final String HASH_METHOD_SSHA_256 = "SSHA-256"; //$NON-NLS-1$
+
+    /** The constant used for the SHA-384 hash, value <code>SHA-384</code> */
+    public static final String HASH_METHOD_SHA_384 = "SHA-384"; //$NON-NLS-1$
+
+    /** The constant used for the salted SHA-384 hash, value <code>SSHA-384</code> */
+    public static final String HASH_METHOD_SSHA_384 = "SSHA-384"; //$NON-NLS-1$
+
+    /** The constant used for the SHA-512 hash, value <code>SHA-512</code> */
+    public static final String HASH_METHOD_SHA_512 = "SHA-512"; //$NON-NLS-1$
+
+    /** The constant used for the salted SHA-512 hash, value <code>SSHA-512</code> */
+    public static final String HASH_METHOD_SSHA_512 = "SSHA-512"; //$NON-NLS-1$
+
     /** The constant used for the MD5 hash, value <code>MD5</code> */
     public static final String HASH_METHOD_MD5 = "MD5"; //$NON-NLS-1$
 
@@ -115,22 +133,43 @@ public class Password
                 hashMethod = password.substring( password.indexOf( '{' ) + 1, password.indexOf( '}' ) );
                 String rest = password.substring( hashMethod.length() + 2 );
 
-                if ( HASH_METHOD_SHA.equalsIgnoreCase( hashMethod ) || HASH_METHOD_MD5.equalsIgnoreCase( hashMethod ) )
+                if ( HASH_METHOD_SHA.equalsIgnoreCase( hashMethod )
+                    || HASH_METHOD_SHA_256.equalsIgnoreCase( hashMethod )
+                    || HASH_METHOD_SHA_384.equalsIgnoreCase( hashMethod )
+                    || HASH_METHOD_SHA_512.equalsIgnoreCase( hashMethod )
+                    || HASH_METHOD_MD5.equalsIgnoreCase( hashMethod ) )
                 {
                     hashedPassword = LdifUtils.base64decodeToByteArray( rest );
                     salt = null;
                 }
-                else if ( HASH_METHOD_SSHA.equalsIgnoreCase( hashMethod ) )
+                else if ( HASH_METHOD_SSHA.equalsIgnoreCase( hashMethod )
+                    || HASH_METHOD_SSHA_256.equalsIgnoreCase( hashMethod )
+                    || HASH_METHOD_SSHA_384.equalsIgnoreCase( hashMethod )
+                    || HASH_METHOD_SSHA_512.equalsIgnoreCase( hashMethod )
+                    || HASH_METHOD_SMD5.equalsIgnoreCase( hashMethod ) )
                 {
+                    if ( HASH_METHOD_SSHA.equalsIgnoreCase( hashMethod ) )
+                    {
+                        hashedPassword = new byte[20];
+                    }
+                    else if ( HASH_METHOD_SSHA_256.equalsIgnoreCase( hashMethod ) )
+                    {
+                        hashedPassword = new byte[32];
+                    }
+                    else if ( HASH_METHOD_SSHA_384.equalsIgnoreCase( hashMethod ) )
+                    {
+                        hashedPassword = new byte[48];
+                    }
+                    else if ( HASH_METHOD_SSHA_512.equalsIgnoreCase( hashMethod ) )
+                    {
+                        hashedPassword = new byte[64];
+                    }
+                    else if ( HASH_METHOD_SMD5.equalsIgnoreCase( hashMethod ) )
+                    {
+                        hashedPassword = new byte[16];
+                    }
+
                     byte[] hashedPasswordWithSalt = LdifUtils.base64decodeToByteArray( rest );
-                    hashedPassword = new byte[20];
-                    salt = new byte[hashedPasswordWithSalt.length - hashedPassword.length];
-                    split( hashedPasswordWithSalt, hashedPassword, salt );
-                }
-                else if ( HASH_METHOD_SMD5.equalsIgnoreCase( hashMethod ) )
-                {
-                    byte[] hashedPasswordWithSalt = LdifUtils.base64decodeToByteArray( rest );
-                    hashedPassword = new byte[16];
                     salt = new byte[hashedPasswordWithSalt.length - hashedPassword.length];
                     split( hashedPasswordWithSalt, hashedPassword, salt );
                 }
@@ -177,6 +216,9 @@ public class Password
     {
         if ( !( hashMethod == null || HASH_METHOD_NO.equalsIgnoreCase( hashMethod )
             || HASH_METHOD_SHA.equalsIgnoreCase( hashMethod ) || HASH_METHOD_SSHA.equalsIgnoreCase( hashMethod )
+            || HASH_METHOD_SHA_256.equalsIgnoreCase( hashMethod ) || HASH_METHOD_SSHA_256.equalsIgnoreCase( hashMethod )
+            || HASH_METHOD_SHA_384.equalsIgnoreCase( hashMethod ) || HASH_METHOD_SSHA_384.equalsIgnoreCase( hashMethod )
+            || HASH_METHOD_SHA_512.equalsIgnoreCase( hashMethod ) || HASH_METHOD_SSHA_512.equalsIgnoreCase( hashMethod )
             || HASH_METHOD_MD5.equalsIgnoreCase( hashMethod ) || HASH_METHOD_SMD5.equalsIgnoreCase( hashMethod ) || HASH_METHOD_CRYPT
                 .equalsIgnoreCase( hashMethod ) ) )
         {
@@ -195,7 +237,11 @@ public class Password
         this.hashMethod = hashMethod;
 
         // set salt
-        if ( HASH_METHOD_SSHA.equalsIgnoreCase( hashMethod ) || HASH_METHOD_SMD5.equalsIgnoreCase( hashMethod ) )
+        if ( HASH_METHOD_SSHA.equalsIgnoreCase( hashMethod )
+            || HASH_METHOD_SSHA_256.equalsIgnoreCase( hashMethod )
+            || HASH_METHOD_SSHA_384.equalsIgnoreCase( hashMethod )
+            || HASH_METHOD_SSHA_512.equalsIgnoreCase( hashMethod )
+            || HASH_METHOD_SMD5.equalsIgnoreCase( hashMethod ) )
         {
             this.salt = new byte[8];
             new SecureRandom().nextBytes( this.salt );
@@ -215,11 +261,28 @@ public class Password
         }
 
         // digest
-        if ( HASH_METHOD_SHA.equalsIgnoreCase( hashMethod ) || HASH_METHOD_SSHA.equalsIgnoreCase( hashMethod ) )
+        if ( HASH_METHOD_SHA.equalsIgnoreCase( hashMethod )
+            || HASH_METHOD_SSHA.equalsIgnoreCase( hashMethod ) )
         {
             this.hashedPassword = digest( HASH_METHOD_SHA, passwordAsPlaintext, this.salt );
         }
-        else if ( HASH_METHOD_MD5.equalsIgnoreCase( hashMethod ) || HASH_METHOD_SMD5.equalsIgnoreCase( hashMethod ) )
+        else if ( HASH_METHOD_SHA_256.equalsIgnoreCase( hashMethod )
+            || HASH_METHOD_SSHA_256.equalsIgnoreCase( hashMethod ) )
+        {
+            this.hashedPassword = digest( HASH_METHOD_SHA_256, passwordAsPlaintext, this.salt );
+        }
+        else if ( HASH_METHOD_SHA_384.equalsIgnoreCase( hashMethod )
+            || HASH_METHOD_SSHA_384.equalsIgnoreCase( hashMethod ) )
+        {
+            this.hashedPassword = digest( HASH_METHOD_SHA_384, passwordAsPlaintext, this.salt );
+        }
+        else if ( HASH_METHOD_SHA_512.equalsIgnoreCase( hashMethod )
+            || HASH_METHOD_SSHA_512.equalsIgnoreCase( hashMethod ) )
+        {
+            this.hashedPassword = digest( HASH_METHOD_SHA_512, passwordAsPlaintext, this.salt );
+        }
+        else if ( HASH_METHOD_MD5.equalsIgnoreCase( hashMethod )
+            || HASH_METHOD_SMD5.equalsIgnoreCase( hashMethod ) )
         {
             this.hashedPassword = digest( HASH_METHOD_MD5, passwordAsPlaintext, this.salt );
         }
@@ -253,12 +316,32 @@ public class Password
         {
             verified = testPasswordAsPlaintext.equals( LdifUtils.utf8decode( hashedPassword ) );
         }
-        else if ( HASH_METHOD_SHA.equalsIgnoreCase( hashMethod ) || HASH_METHOD_SSHA.equalsIgnoreCase( hashMethod ) )
+        else if ( HASH_METHOD_SHA.equalsIgnoreCase( hashMethod )
+            || HASH_METHOD_SSHA.equalsIgnoreCase( hashMethod ) )
         {
             byte[] hash = digest( HASH_METHOD_SHA, testPasswordAsPlaintext, salt );
             verified = equals( hash, hashedPassword );
         }
-        else if ( HASH_METHOD_MD5.equalsIgnoreCase( hashMethod ) || HASH_METHOD_SMD5.equalsIgnoreCase( hashMethod ) )
+        else if ( HASH_METHOD_SHA_256.equalsIgnoreCase( hashMethod )
+            || HASH_METHOD_SSHA_256.equalsIgnoreCase( hashMethod ) )
+        {
+            byte[] hash = digest( HASH_METHOD_SHA_256, testPasswordAsPlaintext, salt );
+            verified = equals( hash, hashedPassword );
+        }
+        else if ( HASH_METHOD_SHA_384.equalsIgnoreCase( hashMethod )
+            || HASH_METHOD_SSHA_384.equalsIgnoreCase( hashMethod ) )
+        {
+            byte[] hash = digest( HASH_METHOD_SHA_384, testPasswordAsPlaintext, salt );
+            verified = equals( hash, hashedPassword );
+        }
+        else if ( HASH_METHOD_SHA_512.equalsIgnoreCase( hashMethod )
+            || HASH_METHOD_SSHA_512.equalsIgnoreCase( hashMethod ) )
+        {
+            byte[] hash = digest( HASH_METHOD_SHA_512, testPasswordAsPlaintext, salt );
+            verified = equals( hash, hashedPassword );
+        }
+        else if ( HASH_METHOD_MD5.equalsIgnoreCase( hashMethod )
+            || HASH_METHOD_SMD5.equalsIgnoreCase( hashMethod ) )
         {
             byte[] hash = digest( HASH_METHOD_MD5, testPasswordAsPlaintext, salt );
             verified = equals( hash, hashedPassword );

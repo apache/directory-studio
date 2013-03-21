@@ -67,8 +67,19 @@ public class PasswordDialog extends Dialog
 
     /** The supported hash methods */
     private static final String[] HASH_METHODS =
-        { Password.HASH_METHOD_SHA, Password.HASH_METHOD_SSHA, Password.HASH_METHOD_MD5, Password.HASH_METHOD_SMD5,
-            Password.HASH_METHOD_CRYPT, Password.HASH_METHOD_NO };
+        {
+            Password.HASH_METHOD_SHA,
+            Password.HASH_METHOD_SHA_256,
+            Password.HASH_METHOD_SHA_384,
+            Password.HASH_METHOD_SHA_512,
+            Password.HASH_METHOD_SSHA,
+            Password.HASH_METHOD_SSHA_256,
+            Password.HASH_METHOD_SSHA_384,
+            Password.HASH_METHOD_SSHA_512,
+            Password.HASH_METHOD_MD5,
+            Password.HASH_METHOD_SMD5,
+            Password.HASH_METHOD_CRYPT,
+            Password.HASH_METHOD_NO };
 
     private static final int CURRENT_TAB = 0;
 
