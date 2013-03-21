@@ -412,11 +412,16 @@ public class InitializeRootDSERunnable implements StudioConnectionBulkRunnableWi
             ISearch.NO_ATTRIBUTES, SearchScope.ONELEVEL, 0, 0, Connection.AliasDereferencingMethod.NEVER,
             Connection.ReferralHandlingMethod.IGNORE, false, null );
         SearchRunnable.searchAndUpdateModel( browserConnection, search, monitor );
+
         ISearchResult[] results = search.getSearchResults();
-        for ( ISearchResult searchResult : results )
+
+        if ( results != null )
         {
-            IEntry entry = searchResult.getEntry();
-            rootDseEntries.put( entry.getDn(), entry );
+            for ( ISearchResult searchResult : results )
+            {
+                IEntry entry = searchResult.getEntry();
+                rootDseEntries.put( entry.getDn(), entry );
+            }
         }
     }
 }
