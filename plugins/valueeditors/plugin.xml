@@ -124,6 +124,12 @@
        <attribute attributeType="cACertificate"/>
        <attribute attributeType="ndsCrossCertificatePair"/>
     </valueEditor>
+    <valueEditor
+          class="org.apache.directory.studio.valueeditors.bool.InPlaceBooleanValueEditor"
+          icon="resources/icons/booleaneditor.gif"
+          name="%ValueEditor_InPlaceBooleanValueEditor_name">
+       <syntax syntaxOID="1.3.6.1.4.1.1466.115.121.1.7"/>
+    </valueEditor>
    </extension>
 
 </plugin>
