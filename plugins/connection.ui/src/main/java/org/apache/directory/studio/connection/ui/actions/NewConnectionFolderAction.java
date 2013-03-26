@@ -26,7 +26,6 @@ import org.apache.directory.studio.connection.core.ConnectionFolder;
 import org.apache.directory.studio.connection.ui.ConnectionUIConstants;
 import org.apache.directory.studio.connection.ui.ConnectionUIPlugin;
 import org.apache.directory.studio.connection.ui.dialogs.ConnectionFolderDialog;
-import org.apache.directory.studio.connection.ui.dialogs.CredentialsDialog;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.PlatformUI;
 
