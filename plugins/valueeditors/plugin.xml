@@ -49,6 +49,7 @@
        <attribute attributeType="lastLogon"/>
        <attribute attributeType="lastLogonTimeStamp"/>
        <attribute attributeType="badPasswordTime"/>
+       <attribute attributeType="lockoutTime"/>
     </valueEditor>
     <valueEditor
           class="org.apache.directory.studio.valueeditors.objectclass.ObjectClassValueEditor"
