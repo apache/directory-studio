@@ -140,10 +140,6 @@
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.apache.directory.server</groupId>
-                  <artifactId>apacheds-core</artifactId>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.apache.directory.server</groupId>
                   <artifactId>apacheds-core-api</artifactId>
                 </artifactItem>
                 <artifactItem>
