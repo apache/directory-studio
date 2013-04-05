@@ -273,13 +273,6 @@ http://www.apache.org/licenses/
          unpack="false"/>
 
    <plugin
-         id="org.apache.directory.server.core"
-         download-size="0"
-         install-size="0"
-         version="${org.apache.directory.server.validversion}"
-         unpack="false"/>
-
-   <plugin
          id="org.apache.directory.server.core.api"
          download-size="0"
          install-size="0"
