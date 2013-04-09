@@ -73,11 +73,11 @@ import org.apache.directory.api.ldap.model.message.SearchRequest;
 import org.apache.directory.api.ldap.model.message.SearchRequestImpl;
 import org.apache.directory.api.ldap.model.message.SearchScope;
 import org.apache.directory.api.ldap.model.name.Dn;
-import org.apache.directory.ldap.client.api.CramMd5Request;
-import org.apache.directory.ldap.client.api.DigestMd5Request;
-import org.apache.directory.ldap.client.api.GssApiRequest;
 import org.apache.directory.ldap.client.api.LdapConnectionConfig;
 import org.apache.directory.ldap.client.api.LdapNetworkConnection;
+import org.apache.directory.ldap.client.api.SaslCramMd5Request;
+import org.apache.directory.ldap.client.api.SaslDigestMd5Request;
+import org.apache.directory.ldap.client.api.SaslGssApiRequest;
 import org.apache.directory.ldap.client.api.exception.InvalidConnectionException;
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.Connection;
@@ -371,7 +371,7 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
                             // CRAM-MD5 Authentication
                             else if ( connection.getConnectionParameter().getAuthMethod() == ConnectionParameter.AuthenticationMethod.SASL_CRAM_MD5 )
                             {
-                                CramMd5Request cramMd5Request = new CramMd5Request();
+                                SaslCramMd5Request cramMd5Request = new SaslCramMd5Request();
                                 cramMd5Request.setUsername( bindPrincipal );
                                 cramMd5Request.setCredentials( bindPassword );
                                 cramMd5Request
@@ -386,7 +386,7 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
                             // DIGEST-MD5 Authentication
                             else if ( connection.getConnectionParameter().getAuthMethod() == ConnectionParameter.AuthenticationMethod.SASL_DIGEST_MD5 )
                             {
-                                DigestMd5Request digestMd5Request = new DigestMd5Request();
+                                SaslDigestMd5Request digestMd5Request = new SaslDigestMd5Request();
                                 digestMd5Request.setUsername( bindPrincipal );
                                 digestMd5Request.setCredentials( bindPassword );
                                 digestMd5Request.setRealmName( connection.getConnectionParameter().getSaslRealm() );
@@ -402,7 +402,7 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
                             // GSSAPI Authentication
                             else if ( connection.getConnectionParameter().getAuthMethod() == ConnectionParameter.AuthenticationMethod.SASL_GSSAPI )
                             {
-                                GssApiRequest gssApiRequest = new GssApiRequest();
+                                SaslGssApiRequest gssApiRequest = new SaslGssApiRequest();
 
                                 Preferences preferences = ConnectionCorePlugin.getDefault().getPluginPreferences();
                                 boolean useKrb5SystemProperties = preferences
