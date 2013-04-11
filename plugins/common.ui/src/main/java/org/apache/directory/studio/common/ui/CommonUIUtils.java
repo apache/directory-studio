@@ -44,7 +44,7 @@ public class CommonUIUtils
      */
     public static void openErrorDialog( String message )
     {
-        openErrorDialog( Messages.getString("CommonUIUtils.Error"), message ); //$NON-NLS-1$
+        openErrorDialog( Messages.getString( "CommonUIUtils.Error" ), message ); //$NON-NLS-1$
     }
 
 
@@ -73,7 +73,7 @@ public class CommonUIUtils
      */
     public static void openInformationDialog( String message )
     {
-        openInformationDialog( Messages.getString("CommonUIUtils.Information"), message ); //$NON-NLS-1$
+        openInformationDialog( Messages.getString( "CommonUIUtils.Information" ), message ); //$NON-NLS-1$
     }
 
 
@@ -102,7 +102,7 @@ public class CommonUIUtils
      */
     public static void openWarningDialog( String message )
     {
-        openWarningDialog( Messages.getString("CommonUIUtils.Warning"), message ); //$NON-NLS-1$
+        openWarningDialog( Messages.getString( "CommonUIUtils.Warning" ), message ); //$NON-NLS-1$
     }
 
 
