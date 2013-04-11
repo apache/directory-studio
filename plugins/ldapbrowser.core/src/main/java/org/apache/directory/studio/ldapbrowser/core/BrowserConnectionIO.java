@@ -210,7 +210,8 @@ public class BrowserConnectionIO
             }
             catch ( LdapInvalidDnException e )
             {
-                throw new ConnectionIOException( NLS.bind( BrowserCoreMessages.BrowserConnectionIO_UnableToParseSearchBase,
+                throw new ConnectionIOException( NLS.bind(
+                    BrowserCoreMessages.BrowserConnectionIO_UnableToParseSearchBase,
                     new String[]
                         { searchParameter.getName(), searchBaseAttribute.getValue() } ) );
             }
