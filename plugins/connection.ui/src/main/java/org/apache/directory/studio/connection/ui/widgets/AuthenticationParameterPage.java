@@ -35,10 +35,12 @@ import org.apache.directory.studio.connection.core.ConnectionParameter;
 import org.apache.directory.studio.connection.core.ConnectionParameter.AuthenticationMethod;
 import org.apache.directory.studio.connection.core.ConnectionParameter.Krb5Configuration;
 import org.apache.directory.studio.connection.core.ConnectionParameter.Krb5CredentialConfiguration;
+import org.apache.directory.studio.connection.core.PasswordsKeyStoreManager;
 import org.apache.directory.studio.connection.core.jobs.CheckBindRunnable;
 import org.apache.directory.studio.connection.ui.AbstractConnectionParameterPage;
 import org.apache.directory.studio.connection.ui.ConnectionUIConstants;
 import org.apache.directory.studio.connection.ui.ConnectionUIPlugin;
+import org.apache.directory.studio.connection.ui.PasswordsKeyStoreManagerUtils;
 import org.apache.directory.studio.connection.ui.RunnableContextRunner;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Preferences;
@@ -271,10 +273,6 @@ public class AuthenticationParameterPage extends AbstractConnectionParameterPage
             : 0;
     }
 
-
-    //    {
-    //        krb5
-    //    }
 
     /**
      * Returns true if the bind password should be saved on disk.
@@ -600,8 +598,29 @@ public class AuthenticationParameterPage extends AbstractConnectionParameterPage
                     : parameter.getAuthMethod() == AuthenticationMethod.SASL_GSSAPI ? 4 : 0;
         authenticationMethodCombo.select( index );
         bindPrincipalCombo.setText( parameter.getBindPrincipal() );
-        bindPasswordText.setText( parameter.getBindPassword() != null ? parameter.getBindPassword() : "" ); //$NON-NLS-1$
-        saveBindPasswordButton.setSelection( parameter.getBindPassword() != null );
+
+        String bindPassword = null;
+
+        // Checking of the connection passwords keystore is enabled
+        if ( PasswordsKeyStoreManagerUtils.isPasswordsKeystoreEnabled() )
+        {
+            // Getting the password keystore manager
+            PasswordsKeyStoreManager passwordsKeyStoreManager = ConnectionCorePlugin.getDefault()
+                .getPasswordsKeyStoreManager();
+
+            // Checking if the keystore is loaded 
+            if ( passwordsKeyStoreManager.isLoaded() )
+            {
+                bindPassword = passwordsKeyStoreManager.getConnectionPassword( parameter.getId() );
+            }
+        }
+        else
+        {
+            bindPassword = parameter.getBindPassword();
+        }
+
+        bindPasswordText.setText( bindPassword != null ? bindPassword : "" ); //$NON-NLS-1$
+        saveBindPasswordButton.setSelection( bindPassword != null );
 
         saslRealmText.setText( parameter.getSaslRealm() != null ? parameter.getSaslRealm() : "" ); //$NON-NLS-1$
         int qopIndex = parameter.getSaslQop() == SaslQoP.AUTH_INT ? 1
@@ -809,7 +828,24 @@ public class AuthenticationParameterPage extends AbstractConnectionParameterPage
     {
         parameter.setAuthMethod( getAuthenticationMethod() );
         parameter.setBindPrincipal( getBindPrincipal() );
-        parameter.setBindPassword( getBindPassword() );
+
+        // Checking of the connection passwords keystore is enabled
+        if ( PasswordsKeyStoreManagerUtils.isPasswordsKeystoreEnabled() )
+        {
+            // Getting the password keystore manager
+            PasswordsKeyStoreManager passwordsKeyStoreManager = ConnectionCorePlugin.getDefault()
+                .getPasswordsKeyStoreManager();
+
+            // Checking if the keystore is loaded 
+            if ( passwordsKeyStoreManager.isLoaded() )
+            {
+                passwordsKeyStoreManager.storeConnectionPassword( parameter.getId(), getBindPassword() );
+            }
+        }
+        else
+        {
+            parameter.setBindPassword( getBindPassword() );
+        }
 
         parameter.setSaslRealm( getSaslRealm() );
         parameter.setSaslQop( getSaslQop() );

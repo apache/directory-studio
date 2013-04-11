@@ -21,10 +21,12 @@
 package org.apache.directory.studio.connection.ui;
 
 
+import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
 import org.apache.directory.studio.connection.core.ConnectionParameter;
 import org.apache.directory.studio.connection.core.Credentials;
 import org.apache.directory.studio.connection.core.IAuthHandler;
 import org.apache.directory.studio.connection.core.ICredentials;
+import org.apache.directory.studio.connection.core.PasswordsKeyStoreManager;
 import org.apache.directory.studio.connection.ui.dialogs.PasswordDialog;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.ui.PlatformUI;
@@ -44,47 +46,101 @@ public class UIAuthHandler implements IAuthHandler
      */
     public ICredentials getCredentials( final ConnectionParameter connectionParameter )
     {
+        // Checking if the bind principal is null or empty (no authentication)
         if ( connectionParameter.getBindPrincipal() == null || "".equals( connectionParameter.getBindPrincipal() ) ) //$NON-NLS-1$
         {
             return new Credentials( "", "", connectionParameter ); //$NON-NLS-1$ //$NON-NLS-2$
         }
-        else if ( connectionParameter.getBindPassword() != null && !"".equals( connectionParameter.getBindPassword() ) ) //$NON-NLS-1$
-        {
-            return new Credentials( connectionParameter.getBindPrincipal(), connectionParameter.getBindPassword(),
-                connectionParameter );
-        }
         else
         {
-            final String[] pw = new String[1];
-            PlatformUI.getWorkbench().getDisplay().syncExec( new Runnable()
+            // Checking of the connection passwords keystore is enabled
+            if ( PasswordsKeyStoreManagerUtils.isPasswordsKeystoreEnabled() )
             {
-                public void run()
+                // Getting the passwords keystore manager
+                PasswordsKeyStoreManager passwordsKeyStoreManager = ConnectionCorePlugin.getDefault()
+                    .getPasswordsKeyStoreManager();
+
+                // Checking if the keystore is not loaded 
+                if ( !passwordsKeyStoreManager.isLoaded() )
                 {
-                    PasswordDialog dialog = new PasswordDialog(
-                        PlatformUI.getWorkbench().getDisplay().getActiveShell(),
-                        NLS.bind(
-                            Messages.getString( "UIAuthHandler.EnterPasswordFor" ), new String[] { connectionParameter.getName() } ), //$NON-NLS-1$
-                        NLS.bind(
-                            Messages.getString( "UIAuthHandler.PleaseEnterPasswordOfUser" ), connectionParameter.getBindPrincipal() ), "" ); //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
-                    if ( dialog.open() == PasswordDialog.OK )
+                    // Asking the user to load the keystore
+                    if ( !PasswordsKeyStoreManagerUtils.askUserToLoadKeystore() )
                     {
-                        pw[0] = dialog.getPassword();
-                    }
-                    else
-                    {
-                        pw[0] = null;
+                        // The user failed to load the keystore and cancelled
+                        return null;
                     }
                 }
-            } );
 
-            if ( pw[0] == null )
-            {
-                return null;
+                // Getting the password
+                String password = passwordsKeyStoreManager.getConnectionPassword( connectionParameter.getId() );
+
+                // Checking if the bind password is available (the user chose to store the password)
+                if ( password != null
+                    && !"".equals( password ) ) //$NON-NLS-1$
+                {
+                    return new Credentials( connectionParameter.getBindPrincipal(),
+                        password, connectionParameter );
+                }
+                // The user chose NOT to store the password, we need to ask him
+                else
+                {
+                    return askConnectionPassword( connectionParameter );
+                }
             }
+            // Connection passwords keystore is NOT enabled
             else
             {
-                return new Credentials( connectionParameter.getBindPrincipal(), pw[0], connectionParameter );
+                // Checking if the bind password is available (the user chose to store the password)
+                if ( connectionParameter.getBindPassword() != null
+                    && !"".equals( connectionParameter.getBindPassword() ) ) //$NON-NLS-1$
+                {
+                    return new Credentials( connectionParameter.getBindPrincipal(),
+                        connectionParameter.getBindPassword(), connectionParameter );
+                }
+                // The user chose NOT to store the password, we need to ask him
+                else
+                {
+                    return askConnectionPassword( connectionParameter );
+                }
             }
         }
+    }
+
+
+    /**
+     * Asks the user for the connection password.
+     *
+     * @param connectionParameter the connection parameter
+     * @return the corresponding credentials
+     */
+    private Credentials askConnectionPassword( final ConnectionParameter connectionParameter )
+    {
+        final String[] password = new String[1];
+
+        PlatformUI.getWorkbench().getDisplay().syncExec( new Runnable()
+        {
+            public void run()
+            {
+                PasswordDialog dialog = new PasswordDialog(
+                    PlatformUI.getWorkbench().getDisplay().getActiveShell(),
+                    NLS.bind(
+                        Messages.getString( "UIAuthHandler.EnterPasswordFor" ), new String[] { connectionParameter.getName() } ), //$NON-NLS-1$
+                    NLS.bind(
+                        Messages.getString( "UIAuthHandler.PleaseEnterPasswordOfUser" ), connectionParameter.getBindPrincipal() ), "" ); //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
+
+                if ( dialog.open() == PasswordDialog.OK )
+                {
+                    password[0] = dialog.getPassword();
+                }
+            }
+        } );
+
+        if ( password[0] != null )
+        {
+            return new Credentials( connectionParameter.getBindPrincipal(), password[0],
+                connectionParameter );
+        }
+
+        return null;
     }
 }

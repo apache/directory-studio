@@ -23,7 +23,9 @@ package org.apache.directory.studio.connection.ui.properties;
 
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.connection.core.Connection;
+import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
 import org.apache.directory.studio.connection.core.ConnectionParameter;
+import org.apache.directory.studio.connection.core.PasswordsKeyStoreManager;
 import org.apache.directory.studio.connection.core.Utils;
 import org.apache.directory.studio.connection.core.jobs.CloseConnectionsRunnable;
 import org.apache.directory.studio.connection.core.jobs.StudioConnectionJob;
@@ -31,6 +33,7 @@ import org.apache.directory.studio.connection.ui.ConnectionParameterPage;
 import org.apache.directory.studio.connection.ui.ConnectionParameterPageManager;
 import org.apache.directory.studio.connection.ui.ConnectionParameterPageModifyListener;
 import org.apache.directory.studio.connection.ui.ConnectionUIConstants;
+import org.apache.directory.studio.connection.ui.PasswordsKeyStoreManagerUtils;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridLayout;
@@ -50,7 +53,6 @@ import org.eclipse.ui.dialogs.PropertyPage;
  */
 public class ConnectionPropertyPage extends PropertyPage implements ConnectionParameterPageModifyListener
 {
-
     /** The tab folder. */
     private TabFolder tabFolder;
 
@@ -188,6 +190,27 @@ public class ConnectionPropertyPage extends PropertyPage implements ConnectionPa
         PlatformUI.getWorkbench().getHelpSystem().setHelp( parent,
             ConnectionUIConstants.PLUGIN_ID + "." + "tools_connection_properties" ); //$NON-NLS-1$ //$NON-NLS-2$
 
+        // Checking of the connection passwords keystore is enabled
+        if ( PasswordsKeyStoreManagerUtils.isPasswordsKeystoreEnabled() )
+        {
+            // Getting the passwords keystore manager
+            PasswordsKeyStoreManager passwordsKeyStoreManager = ConnectionCorePlugin.getDefault()
+                .getPasswordsKeyStoreManager();
+
+            // Checking if the keystore is not loaded 
+            if ( !passwordsKeyStoreManager.isLoaded() )
+            {
+                // Asking the user to load the keystore
+                if ( !PasswordsKeyStoreManagerUtils.askUserToLoadKeystore() )
+                {
+                    // The user failed to load the keystore and cancelled
+                    Label label = BaseWidgetUtils.createLabel( parent,
+                        "Access to the passwords keystore is required to view the properties of a connection.", 1 );
+                    return label;
+                }
+            }
+        }
+
         Connection connection = getConnection( getElement() );
         if ( connection != null )
         {
@@ -228,6 +251,16 @@ public class ConnectionPropertyPage extends PropertyPage implements ConnectionPa
      */
     public boolean performOk()
     {
+        // Checking of the connection passwords keystore is enabled
+        if ( PasswordsKeyStoreManagerUtils.isPasswordsKeystoreEnabled() )
+        {
+            // Checking if the keystore is not loaded 
+            if ( !ConnectionCorePlugin.getDefault().getPasswordsKeyStoreManager().isLoaded() )
+            {
+                return true;
+            }
+        }
+
         // get current connection parameters
         Connection connection = ( Connection ) getConnection( getElement() );
 
@@ -258,5 +291,4 @@ public class ConnectionPropertyPage extends PropertyPage implements ConnectionPa
 
         return true;
     }
-
 }

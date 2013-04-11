@@ -25,6 +25,8 @@ import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
@@ -32,19 +34,21 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
 
 /**
- * The PasswordDialog is used to ask the user for password (credentials).
+ * The SetupPasswordDialog is used to ask the user for a setup password 
+ * with a second text widget for verification purposes.
  * <p>
- * It has a useful checkbox that can show/hide the typed password.
+ * It has a useful checkbox that can show/hide the typed passwords.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class PasswordDialog extends Dialog
+public class SetupPasswordDialog extends Dialog
 {
     /** The title of the dialog */
     private String title;
@@ -56,8 +60,11 @@ public class PasswordDialog extends Dialog
     private String value = "";//$NON-NLS-1$
 
     // UI Widgets
+    private Button okButton;
     private Text passwordText;
     private Button showPasswordCheckbox;
+    private Text verifyPasswordText;
+    private Button showVerifyPasswordCheckbox;
 
 
     /**
@@ -68,7 +75,7 @@ public class PasswordDialog extends Dialog
      * @param message the dialog message
      * @param initialValue the initial value
      */
-    public PasswordDialog( Shell parentShell, String title, String message, String initialValue )
+    public SetupPasswordDialog( Shell parentShell, String title, String message, String initialValue )
     {
         super( parentShell );
         this.title = title;
@@ -96,6 +103,18 @@ public class PasswordDialog extends Dialog
         {
             shell.setText( title );
         }
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    protected void createButtonsForButtonBar( Composite parent )
+    {
+        okButton = createButton( parent, IDialogConstants.OK_ID, IDialogConstants.OK_LABEL, true );
+        createButton( parent, IDialogConstants.CANCEL_ID, IDialogConstants.CANCEL_LABEL, false );
+
+        validate();
     }
 
 
@@ -142,12 +161,25 @@ public class PasswordDialog extends Dialog
             messageLabel.setLayoutData( messageLabelGridData );
         }
 
+        // Password Group
+        Group passwordGroup = BaseWidgetUtils.createGroup( composite, "Password", 1 );
+        passwordGroup.setLayout( new GridLayout( 2, false ) );
+
         // Password Text
-        passwordText = BaseWidgetUtils.createText( composite, value, 1 );
+        BaseWidgetUtils.createLabel( passwordGroup, "Password:", 1 );
+        passwordText = BaseWidgetUtils.createText( passwordGroup, value, 1 );
         passwordText.setEchoChar( '\u2022' );
+        passwordText.addModifyListener( new ModifyListener()
+        {
+            public void modifyText( ModifyEvent e )
+            {
+                validate();
+            }
+        } );
 
         // Show Password Checkbox
-        showPasswordCheckbox = BaseWidgetUtils.createCheckbox( composite, "Show password", 1 );
+        BaseWidgetUtils.createLabel( passwordGroup, "", 1 );
+        showPasswordCheckbox = BaseWidgetUtils.createCheckbox( passwordGroup, "Show password", 1 );
         showPasswordCheckbox.addSelectionListener( new SelectionAdapter()
         {
             public void widgetSelected( SelectionEvent e )
@@ -159,6 +191,36 @@ public class PasswordDialog extends Dialog
                 else
                 {
                     passwordText.setEchoChar( '\u2022' );
+                }
+            }
+        } );
+
+        // Verify Text
+        BaseWidgetUtils.createLabel( passwordGroup, "Verify password:", 1 );
+        verifyPasswordText = BaseWidgetUtils.createText( passwordGroup, value, 1 );
+        verifyPasswordText.setEchoChar( '\u2022' );
+        verifyPasswordText.addModifyListener( new ModifyListener()
+        {
+            public void modifyText( ModifyEvent e )
+            {
+                validate();
+            }
+        } );
+
+        // Show Verify Password Checkbox
+        BaseWidgetUtils.createLabel( passwordGroup, "", 1 );
+        showVerifyPasswordCheckbox = BaseWidgetUtils.createCheckbox( passwordGroup, "Show password", 1 );
+        showVerifyPasswordCheckbox.addSelectionListener( new SelectionAdapter()
+        {
+            public void widgetSelected( SelectionEvent e )
+            {
+                if ( showVerifyPasswordCheckbox.getSelection() )
+                {
+                    verifyPasswordText.setEchoChar( '\0' );
+                }
+                else
+                {
+                    verifyPasswordText.setEchoChar( '\u2022' );
                 }
             }
         } );
@@ -179,5 +241,17 @@ public class PasswordDialog extends Dialog
     public String getPassword()
     {
         return value;
+    }
+
+
+    /**
+     * Validates the input.
+     */
+    private void validate()
+    {
+        String password = passwordText.getText();
+        String verifyPassword = verifyPasswordText.getText();
+
+        okButton.setEnabled( ( !"".equals( password ) ) && ( password.equals( verifyPassword ) ) ); //$NON-NLS-1$ //$NON-NLS-2$
     }
 }

@@ -359,7 +359,7 @@ public class ConnectionManager implements ConnectionUpdateListener
     /**
      * Saves the Connections
      */
-    private synchronized void saveConnections()
+    public synchronized void saveConnections()
     {
         Set<ConnectionParameter> connectionParameters = new HashSet<ConnectionParameter>();
         for ( Connection connection : connectionList )

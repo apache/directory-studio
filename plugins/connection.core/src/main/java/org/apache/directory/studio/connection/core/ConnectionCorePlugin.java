@@ -64,6 +64,9 @@ public class ConnectionCorePlugin extends Plugin
     /** The connection folder manager */
     private ConnectionFolderManager connectionFolderManager;
 
+    /** The passwords keystore manager */
+    private PasswordsKeyStoreManager passwordsKeyStoreManager;
+
     /** The permanent trust store */
     private StudioKeyStoreManager permanentTrustStoreManager;
 
@@ -121,6 +124,11 @@ public class ConnectionCorePlugin extends Plugin
         if ( connectionFolderManager == null )
         {
             connectionFolderManager = new ConnectionFolderManager();
+        }
+
+        if ( passwordsKeyStoreManager == null )
+        {
+            passwordsKeyStoreManager = new PasswordsKeyStoreManager();
         }
 
         if ( permanentTrustStoreManager == null )
@@ -218,6 +226,17 @@ public class ConnectionCorePlugin extends Plugin
     public EventRunner getEventRunner()
     {
         return eventRunner;
+    }
+
+
+    /**
+     * Gets the password keystore manager.
+     *
+     * @return the password keystore manager
+     */
+    public PasswordsKeyStoreManager getPasswordsKeyStoreManager()
+    {
+        return passwordsKeyStoreManager;
     }
 
 

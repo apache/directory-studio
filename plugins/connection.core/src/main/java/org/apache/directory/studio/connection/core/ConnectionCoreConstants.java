@@ -92,10 +92,18 @@ public final class ConnectionCoreConstants
     /** The constant used to identify the default network provider setting */
     public static final String PREFERENCE_DEFAULT_NETWORK_PROVIDER = "defaultNetworkProvider"; //$NON-NLS-1$
 
-    /** The constant used to identify the default network provider setting */
+    /** The constant used to identify the 'JNDI' value for the default network provider setting */
     public static final int PREFERENCE_NETWORK_PROVIDER_JNDI = 0;
 
-    /** The constant used to identify the default network provider setting */
+    /** The constant used to identify the 'Apache Directory LDAP API' value for the default provider setting */
     public static final int PREFERENCE_NETWORK_PROVIDER_APACHE_DIRECTORY_LDAP_API = 1;
 
+    /** The constant used to identify if connections passwords should be stored in a keystore */
+    public static final String PREFERENCE_CONNECTIONS_PASSWORDS_KEYSTORE = "connectionsPasswordsKeystore"; //$NON-NLS-1$
+
+    /** The constant used to identify the 'off' value for the connections passwords keystore setting */
+    public static final int PREFERENCE_CONNECTIONS_PASSWORDS_KEYSTORE_OFF = 0;
+
+    /** The constant used to identify the 'on' value for the connections passwords keystore setting */
+    public static final int PREFERENCE_CONNECTIONS_PASSWORDS_KEYSTORE_ON = 1;
 }

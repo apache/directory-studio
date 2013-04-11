@@ -59,6 +59,9 @@ public class ConnectionCorePreferencesInitializer extends AbstractPreferenceInit
         preferences.setDefault( ConnectionCoreConstants.PREFERENCE_SEARCHRESULTENTRYLOGS_ENABLE, false );
         preferences.setDefault( ConnectionCoreConstants.PREFERENCE_SEARCHLOGS_FILE_COUNT, 10 );
         preferences.setDefault( ConnectionCoreConstants.PREFERENCE_SEARCHLOGS_FILE_SIZE, 100 );
-    }
 
+        // Connections Passwords Keystore
+        preferences.setDefault( ConnectionCoreConstants.PREFERENCE_CONNECTIONS_PASSWORDS_KEYSTORE,
+            ConnectionCoreConstants.PREFERENCE_CONNECTIONS_PASSWORDS_KEYSTORE_OFF );
+    }
 }

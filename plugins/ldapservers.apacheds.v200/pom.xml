@@ -121,6 +121,7 @@
  org.apache.directory.studio.common.core,
  org.apache.directory.studio.common.ui,
  org.apache.directory.studio.connection.core,
+ org.apache.directory.studio.connection.ui,
  org.apache.directory.studio.ldapservers,
  org.apache.mina.core;bundle-version="${org.apache.mina.version}",
  org.eclipse.core.runtime,
@@ -228,6 +229,11 @@
     <dependency>
       <groupId>org.apache.directory.studio</groupId>
       <artifactId>connection.core</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.directory.studio</groupId>
+      <artifactId>connection.ui</artifactId>
       <scope>provided</scope>
     </dependency>
     <dependency>

@@ -27,6 +27,8 @@ import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
 import org.apache.directory.studio.connection.core.ConnectionParameter;
 import org.apache.directory.studio.connection.core.ConnectionParameter.AuthenticationMethod;
 import org.apache.directory.studio.connection.core.ConnectionParameter.EncryptionMethod;
+import org.apache.directory.studio.connection.core.PasswordsKeyStoreManager;
+import org.apache.directory.studio.connection.ui.PasswordsKeyStoreManagerUtils;
 import org.apache.directory.studio.ldapservers.actions.CreateConnectionActionHelper;
 import org.apache.directory.studio.ldapservers.model.LdapServer;
 import org.apache.directory.studio.ldapservers.views.ServersView;
@@ -163,7 +165,31 @@ public class CreateConnectionAction implements IObjectActionDelegate
         }
 
         // Bind password
-        connectionParameter.setBindPassword( "secret" ); //$NON-NLS-1$
+        // Checking of the connection passwords keystore is enabled
+        if ( PasswordsKeyStoreManagerUtils.isPasswordsKeystoreEnabled() )
+        {
+            // Getting the password keystore manager
+            PasswordsKeyStoreManager passwordsKeyStoreManager = ConnectionCorePlugin.getDefault()
+                .getPasswordsKeyStoreManager();
+
+            // Checking if the keystore is loaded 
+            if ( passwordsKeyStoreManager.isLoaded() )
+            {
+                passwordsKeyStoreManager.storeConnectionPassword( connectionParameter.getId(), "secret" ); //$NON-NLS-1$
+            }
+            else
+            {
+                // Asking the user to load the keystore
+                if ( PasswordsKeyStoreManagerUtils.askUserToLoadKeystore() )
+                {
+                    passwordsKeyStoreManager.storeConnectionPassword( connectionParameter.getId(), "secret" ); //$NON-NLS-1$
+                }
+            }
+        }
+        else
+        {
+            connectionParameter.setBindPassword( "secret" ); //$NON-NLS-1$
+        }
 
         // Bind principal
         connectionParameter.setBindPrincipal( "uid=admin,ou=system" ); //$NON-NLS-1$

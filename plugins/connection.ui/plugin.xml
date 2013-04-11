@@ -42,6 +42,7 @@
             name="%NewWizards_NewConnectionWizard_name"
             project="false"/>
    </extension>
+   
    <extension
          point="org.apache.directory.studio.connectionparameterpages">
       <connectionParameterPage
@@ -57,6 +58,7 @@
             id="%ConnectionParameterPage_AuthenticationParameterPage_id"
             name="%ConnectionParameterPage_AuthenticationParameterPage_name"/>
    </extension>
+   
    <extension
          point="org.eclipse.ui.preferencePages">
       <page
@@ -70,6 +72,12 @@
             class="org.apache.directory.studio.connection.ui.preferences.CertificateValidationPreferencePage"
             id="%PrefPage_CertificateValidationPreferencePage_id"
             name="%PrefPage_CertificateValidationPreferencePage_name">
+      </page>
+      <page
+            category="%PrefPage_ConnectionsPreferencePage_id"
+            class="org.apache.directory.studio.connection.ui.preferences.PasswordsKeystorePreferencePage"
+            id="%PrefPage_PasswordsKeystorePreferencePage_id"
+            name="%PrefPage_PasswordsKeystorePreferencePage_name">
       </page>
    </extension>  
 </plugin>
