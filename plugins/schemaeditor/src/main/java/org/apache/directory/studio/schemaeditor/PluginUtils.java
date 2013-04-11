@@ -353,8 +353,8 @@ public class PluginUtils
             if ( url == null )
             {
                 reportError(
-                    Messages.getString( "PluginUtils.SchemaLoadingError" ) + schemaName + ".", null,  //$NON-NLS-1$//$NON-NLS-2$
-                    Messages.getString( "PluginUtils.ProjectsLoadingError" ), Messages.getString( "PluginUtils.SchemaLoadingError" ) + schemaName + "." );  //$NON-NLS-1$ //$NON-NLS-2$//$NON-NLS-3$
+                    Messages.getString( "PluginUtils.SchemaLoadingError" ) + schemaName + ".", null, //$NON-NLS-1$//$NON-NLS-2$
+                    Messages.getString( "PluginUtils.ProjectsLoadingError" ), Messages.getString( "PluginUtils.SchemaLoadingError" ) + schemaName + "." ); //$NON-NLS-1$ //$NON-NLS-2$//$NON-NLS-3$
             }
             else
             {
@@ -365,19 +365,19 @@ public class PluginUtils
         {
             reportError(
                 Messages.getString( "PluginUtils.SchemaLoadingError" ) + schemaName + ".", e, Messages.getString( "PluginUtils.ProjectsLoadingError" ), //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
-                Messages.getString( "PluginUtils.SchemaLoadingError" ) + schemaName + "." );  //$NON-NLS-1$//$NON-NLS-2$
+                Messages.getString( "PluginUtils.SchemaLoadingError" ) + schemaName + "." ); //$NON-NLS-1$//$NON-NLS-2$
         }
         catch ( FileNotFoundException e )
         {
             reportError(
-                Messages.getString( "PluginUtils.SchemaLoadingError" ) + schemaName + ".", e, Messages.getString( "PluginUtils.ProjectsLoadingError" ),  //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
-                Messages.getString( "PluginUtils.SchemaLoadingError" ) + schemaName + "." );  //$NON-NLS-1$//$NON-NLS-2$
+                Messages.getString( "PluginUtils.SchemaLoadingError" ) + schemaName + ".", e, Messages.getString( "PluginUtils.ProjectsLoadingError" ), //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
+                Messages.getString( "PluginUtils.SchemaLoadingError" ) + schemaName + "." ); //$NON-NLS-1$//$NON-NLS-2$
         }
         catch ( IOException e )
         {
             reportError(
-                Messages.getString( "PluginUtils.SchemaLoadingError" ) + schemaName + ".", e, Messages.getString( "PluginUtils.ProjectsLoadingError" ),  //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
-                Messages.getString( "PluginUtils.SchemaLoadingError" ) + schemaName + "." );  //$NON-NLS-1$//$NON-NLS-2$
+                Messages.getString( "PluginUtils.SchemaLoadingError" ) + schemaName + ".", e, Messages.getString( "PluginUtils.ProjectsLoadingError" ), //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
+                Messages.getString( "PluginUtils.SchemaLoadingError" ) + schemaName + "." ); //$NON-NLS-1$//$NON-NLS-2$
         }
 
         return schema;
