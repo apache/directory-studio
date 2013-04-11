@@ -44,7 +44,7 @@ public class LoadingPage extends FormPage
     public static final String ID = LoadingPage.class.getName(); //$NON-NLS-1$
 
     /** The Page Title */
-    private static final String TITLE = Messages.getString("LoadingPage.LoadingConfiguration"); //$NON-NLS-1$
+    private static final String TITLE = Messages.getString( "LoadingPage.LoadingConfiguration" ); //$NON-NLS-1$
 
 
     /**
@@ -65,7 +65,7 @@ public class LoadingPage extends FormPage
     protected void createFormContent( IManagedForm managedForm )
     {
         ScrolledForm form = managedForm.getForm();
-        form.setText( Messages.getString("LoadingPage.LoadingConfigurationEllipsis") ); //$NON-NLS-1$
+        form.setText( Messages.getString( "LoadingPage.LoadingConfigurationEllipsis" ) ); //$NON-NLS-1$
 
         Composite parent = form.getBody();
         parent.setLayout( new GridLayout() );
@@ -80,7 +80,8 @@ public class LoadingPage extends FormPage
         ProgressBar progressBar = new ProgressBar( composite, SWT.INDETERMINATE );
         progressBar.setLayoutData( new GridData( SWT.CENTER, SWT.NONE, false, false ) );
 
-        Label label = toolkit.createLabel( composite, Messages.getString("LoadingPage.LoadingTheConfigurationPleaseWait") ); //$NON-NLS-1$
+        Label label = toolkit.createLabel( composite,
+            Messages.getString( "LoadingPage.LoadingTheConfigurationPleaseWait" ) ); //$NON-NLS-1$
         label.setLayoutData( new GridData( SWT.CENTER, SWT.NONE, false, false ) );
     }
 }

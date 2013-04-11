@@ -298,7 +298,8 @@ public abstract class ServerConfigurationEditorPage extends FormPage
      */
     protected Label createDefaultValueLabel( FormToolkit toolkit, Composite parent, String text )
     {
-        Label label = toolkit.createLabel( parent, NLS.bind( Messages.getString("ServerConfigurationEditorPage.DefaultWithValue"), text ), SWT.WRAP ); //$NON-NLS-1$
+        Label label = toolkit.createLabel( parent,
+            NLS.bind( Messages.getString( "ServerConfigurationEditorPage.DefaultWithValue" ), text ), SWT.WRAP ); //$NON-NLS-1$
         label.setForeground( GRAY_COLOR );
 
         return label;

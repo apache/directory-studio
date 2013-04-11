@@ -64,7 +64,7 @@ import org.eclipse.ui.forms.widgets.Section;
  */
 public class PartitionsMasterDetailsBlock extends MasterDetailsBlock
 {
-    private static final String NEW_ID = Messages.getString("PartitionsMasterDetailsBlock.PartitionNewId"); //$NON-NLS-1$
+    private static final String NEW_ID = Messages.getString( "PartitionsMasterDetailsBlock.PartitionNewId" ); //$NON-NLS-1$
 
     /** The associated page */
     private PartitionsPage page;
@@ -99,7 +99,7 @@ public class PartitionsMasterDetailsBlock extends MasterDetailsBlock
 
         // Creating the Section
         Section section = toolkit.createSection( parent, Section.TITLE_BAR );
-        section.setText( Messages.getString("PartitionsMasterDetailsBlock.AllPartitions") ); //$NON-NLS-1$
+        section.setText( Messages.getString( "PartitionsMasterDetailsBlock.AllPartitions" ) ); //$NON-NLS-1$
         section.marginWidth = 10;
         section.marginHeight = 5;
         Composite client = toolkit.createComposite( section, SWT.WRAP );
@@ -133,10 +133,11 @@ public class PartitionsMasterDetailsBlock extends MasterDetailsBlock
         viewer.setComparator( PartitionsPage.PARTITIONS_COMPARATOR );
 
         // Creating the button(s)
-        addButton = toolkit.createButton( client, Messages.getString("PartitionsMasterDetailsBlock.Add"), SWT.PUSH ); //$NON-NLS-1$
+        addButton = toolkit.createButton( client, Messages.getString( "PartitionsMasterDetailsBlock.Add" ), SWT.PUSH ); //$NON-NLS-1$
         addButton.setLayoutData( new GridData( SWT.FILL, SWT.BEGINNING, false, false ) );
 
-        deleteButton = toolkit.createButton( client, Messages.getString("PartitionsMasterDetailsBlock.Delete"), SWT.PUSH ); //$NON-NLS-1$
+        deleteButton = toolkit.createButton( client,
+            Messages.getString( "PartitionsMasterDetailsBlock.Delete" ), SWT.PUSH ); //$NON-NLS-1$
         deleteButton.setEnabled( false );
         deleteButton.setLayoutData( new GridData( SWT.FILL, SWT.BEGINNING, false, false ) );
 
@@ -326,11 +327,13 @@ public class PartitionsMasterDetailsBlock extends MasterDetailsBlock
             JdbmPartitionBean partition = ( JdbmPartitionBean ) selection.getFirstElement();
             if ( !PartitionsPage.isSystemPartition( partition ) )
             {
-                if ( MessageDialog.openConfirm(
-                    page.getManagedForm().getForm().getShell(),
-                    Messages.getString("PartitionsMasterDetailsBlock.ConfirmDelete"), //$NON-NLS-1$
-                    NLS.bind( Messages.getString("PartitionsMasterDetailsBlock.AreYouSureDeletePartition"), partition.getPartitionId(), //$NON-NLS-1$
-                        partition.getPartitionSuffix() ) ) )
+                if ( MessageDialog
+                    .openConfirm(
+                        page.getManagedForm().getForm().getShell(),
+                        Messages.getString( "PartitionsMasterDetailsBlock.ConfirmDelete" ), //$NON-NLS-1$
+                        NLS.bind(
+                            Messages.getString( "PartitionsMasterDetailsBlock.AreYouSureDeletePartition" ), partition.getPartitionId(), //$NON-NLS-1$
+                            partition.getPartitionSuffix() ) ) )
                 {
                     page.getConfigBean().getDirectoryServiceBean().getPartitions().remove( partition );
                     setEditorDirty();

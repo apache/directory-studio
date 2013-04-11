@@ -40,7 +40,7 @@ public class PasswordPolicyPage extends FormPage
     public static final String ID = PasswordPolicyPage.class.getName(); //$NON-NLS-1$
 
     /** The Page Title */
-    private static final String TITLE = Messages.getString("PasswordPolicyPage.PasswordPolicy"); //$NON-NLS-1$
+    private static final String TITLE = Messages.getString( "PasswordPolicyPage.PasswordPolicy" ); //$NON-NLS-1$
 
 
     /**
@@ -61,7 +61,7 @@ public class PasswordPolicyPage extends FormPage
     protected void createFormContent( IManagedForm managedForm )
     {
         ScrolledForm form = managedForm.getForm();
-        form.setText( Messages.getString("PasswordPolicyPage.PasswordPolicy") ); //$NON-NLS-1$
+        form.setText( Messages.getString( "PasswordPolicyPage.PasswordPolicy" ) ); //$NON-NLS-1$
 
         Composite parent = form.getBody();
         parent.setLayout( new GridLayout() );

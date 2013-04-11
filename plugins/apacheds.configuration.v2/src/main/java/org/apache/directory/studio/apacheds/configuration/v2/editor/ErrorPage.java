@@ -52,10 +52,10 @@ public class ErrorPage extends FormPage
     public static final String ID = ErrorPage.class.getName();
 
     /** The Page Title */
-    private static final String TITLE = Messages.getString("ErrorPage.ErrorOpeningEditor"); //$NON-NLS-1$
+    private static final String TITLE = Messages.getString( "ErrorPage.ErrorOpeningEditor" ); //$NON-NLS-1$
 
-    private static final String DETAILS_CLOSED = NLS.bind( "{0} >>", Messages.getString("ErrorPage.Details") ); //$NON-NLS-1$ //$NON-NLS-2$
-    private static final String DETAILS_OPEN = NLS.bind( "<< {0}", Messages.getString("ErrorPage.Details") ); //$NON-NLS-1$ //$NON-NLS-2$
+    private static final String DETAILS_CLOSED = NLS.bind( "{0} >>", Messages.getString( "ErrorPage.Details" ) ); //$NON-NLS-1$ //$NON-NLS-2$
+    private static final String DETAILS_OPEN = NLS.bind( "<< {0}", Messages.getString( "ErrorPage.Details" ) ); //$NON-NLS-1$ //$NON-NLS-2$
 
     /** The exception */
     private Exception exception;
@@ -90,7 +90,7 @@ public class ErrorPage extends FormPage
     protected void createFormContent( IManagedForm managedForm )
     {
         ScrolledForm form = managedForm.getForm();
-        form.setText( Messages.getString("ErrorPage.ErrorOpeningEditor") ); //$NON-NLS-1$
+        form.setText( Messages.getString( "ErrorPage.ErrorOpeningEditor" ) ); //$NON-NLS-1$
         form.setImage( Display.getCurrent().getSystemImage( SWT.ICON_ERROR ) );
 
         parent = form.getBody();
@@ -122,7 +122,7 @@ public class ErrorPage extends FormPage
         // Initializing with the exception
         if ( exception == null )
         {
-            errorLabel.setText( Messages.getString("ErrorPage.CouldNotOpenEditor") ); //$NON-NLS-1$
+            errorLabel.setText( Messages.getString( "ErrorPage.CouldNotOpenEditor" ) ); //$NON-NLS-1$
             detailsButton.setVisible( false );
         }
         else

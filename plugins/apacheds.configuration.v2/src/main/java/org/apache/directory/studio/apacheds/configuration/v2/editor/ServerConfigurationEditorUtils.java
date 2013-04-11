@@ -163,8 +163,9 @@ public class ServerConfigurationEditorUtils
                 if ( externalFile.exists() )
                 {
                     String question = NLS.bind(
-                        Messages.getString("ServerConfigurationEditorUtils.TheFileAlreadyExistsWantToReplace"), path ); //$NON-NLS-1$
-                    MessageDialog overwriteDialog = new MessageDialog( shell, Messages.getString("ServerConfigurationEditorUtils.Question"), null, question, //$NON-NLS-1$
+                        Messages.getString( "ServerConfigurationEditorUtils.TheFileAlreadyExistsWantToReplace" ), path ); //$NON-NLS-1$
+                    MessageDialog overwriteDialog = new MessageDialog( shell,
+                        Messages.getString( "ServerConfigurationEditorUtils.Question" ), null, question, //$NON-NLS-1$
                         MessageDialog.QUESTION, new String[]
                             { IDialogConstants.YES_LABEL, IDialogConstants.NO_LABEL, IDialogConstants.CANCEL_LABEL }, 0 );
                     int overwrite = openDialogInUIThread( overwriteDialog );
@@ -370,7 +371,8 @@ public class ServerConfigurationEditorUtils
             // Checking if there were errors during the execution of the LDIF
             if ( studioProgressMonitor.errorsReported() )
             {
-                throw new Exception( Messages.getString("ServerConfigurationEditorUtils.ChangesCouldNotBeSavedToConnection") ); //$NON-NLS-1$
+                throw new Exception(
+                    Messages.getString( "ServerConfigurationEditorUtils.ChangesCouldNotBeSavedToConnection" ) ); //$NON-NLS-1$
             }
             else
             {

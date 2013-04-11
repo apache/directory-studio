@@ -161,7 +161,8 @@ public class KerberosServerPage extends ServerConfigurationEditorPage
             if ( ( getKdcServerBean().getKrbEncryptionTypes().size() == 1 ) && ( event.getChecked() == false ) )
             {
                 // Displaying an error to the user
-                CommonUIUtils.openErrorDialog( Messages.getString( "KerberosServerPage.AtLeastOneEncryptionTypeMustBeSelected" ) ); //$NON-NLS-1$
+                CommonUIUtils.openErrorDialog( Messages
+                    .getString( "KerberosServerPage.AtLeastOneEncryptionTypeMustBeSelected" ) ); //$NON-NLS-1$
 
                 // Reverting the current checked state
                 encryptionTypesTableViewer.setChecked( event.getElement(), !event.getChecked() );

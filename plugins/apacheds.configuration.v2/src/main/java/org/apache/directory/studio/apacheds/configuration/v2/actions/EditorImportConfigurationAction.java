@@ -55,7 +55,8 @@ import org.eclipse.ui.model.WorkbenchLabelProvider;
  */
 public class EditorImportConfigurationAction extends Action
 {
-    private static final String DIALOG_TITLE = Messages.getString("EditorImportConfigurationAction.SelectConfigurationFile"); //$NON-NLS-1$
+    private static final String DIALOG_TITLE = Messages
+        .getString( "EditorImportConfigurationAction.SelectConfigurationFile" ); //$NON-NLS-1$
 
     /** The associated editor */
     private ServerConfigurationEditor editor;
@@ -88,7 +89,7 @@ public class EditorImportConfigurationAction extends Action
      */
     public String getText()
     {
-        return Messages.getString("EditorImportConfigurationAction.ImportConfiguration"); //$NON-NLS-1$
+        return Messages.getString( "EditorImportConfigurationAction.ImportConfiguration" ); //$NON-NLS-1$
     }
 
 
@@ -106,8 +107,9 @@ public class EditorImportConfigurationAction extends Action
                 if ( !MessageDialog
                     .openConfirm(
                         editor.getSite().getShell(),
-                        Messages.getString("EditorImportConfigurationAction.UnsavedModifications"), //$NON-NLS-1$
-                        Messages.getString("EditorImportConfigurationAction.ConfigurationHasUnsavedModificationsSureToContinue") ) ) //$NON-NLS-1$
+                        Messages.getString( "EditorImportConfigurationAction.UnsavedModifications" ), //$NON-NLS-1$
+                        Messages
+                            .getString( "EditorImportConfigurationAction.ConfigurationHasUnsavedModificationsSureToContinue" ) ) ) //$NON-NLS-1$
                 {
                     return;
                 }
@@ -172,8 +174,9 @@ public class EditorImportConfigurationAction extends Action
             if ( !MessageDialog
                 .openConfirm(
                     editor.getSite().getShell(),
-                    Messages.getString("EditorImportConfigurationAction.OverwriteExistingConfiguration"), //$NON-NLS-1$
-                    Messages.getString("EditorImportConfigurationAction.AreYouSureYouWantToOverwriteTheExistingConfiguration") ) ) //$NON-NLS-1$
+                    Messages.getString( "EditorImportConfigurationAction.OverwriteExistingConfiguration" ), //$NON-NLS-1$
+                    Messages
+                        .getString( "EditorImportConfigurationAction.AreYouSureYouWantToOverwriteTheExistingConfiguration" ) ) ) //$NON-NLS-1$
             {
                 return;
             }
@@ -189,9 +192,10 @@ public class EditorImportConfigurationAction extends Action
             MessageDialog
                 .openError(
                     editor.getSite().getShell(),
-                    Messages.getString("EditorImportConfigurationAction.ErrorImportingConfigurationFile"), //$NON-NLS-1$
+                    Messages.getString( "EditorImportConfigurationAction.ErrorImportingConfigurationFile" ), //$NON-NLS-1$
                     NLS.bind(
-                        Messages.getString("EditorImportConfigurationAction.AnErrorOccurredWhenImportingTheSelectedFile"), //$NON-NLS-1$
+                        Messages
+                            .getString( "EditorImportConfigurationAction.AnErrorOccurredWhenImportingTheSelectedFile" ), //$NON-NLS-1$
                         e.getMessage() ) );
         }
     }
@@ -208,7 +212,7 @@ public class EditorImportConfigurationAction extends Action
         ElementTreeSelectionDialog dialog = new ElementTreeSelectionDialog( editor.getSite().getShell(),
             new WorkbenchLabelProvider(), new WorkbenchContentProvider() );
         dialog.setInput( ResourcesPlugin.getWorkspace().getRoot() );
-        dialog.setMessage( Messages.getString("EditorImportConfigurationAction.SelectConfigurationFileToImport") ); //$NON-NLS-1$
+        dialog.setMessage( Messages.getString( "EditorImportConfigurationAction.SelectConfigurationFileToImport" ) ); //$NON-NLS-1$
         dialog.setTitle( DIALOG_TITLE );
         dialog.setAllowMultiple( false );
         dialog.setStatusLineAboveButtons( false );
