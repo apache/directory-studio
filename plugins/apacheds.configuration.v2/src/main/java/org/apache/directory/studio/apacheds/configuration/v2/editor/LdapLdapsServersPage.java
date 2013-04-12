@@ -1312,11 +1312,8 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
      */
     private InterceptorBean getHashingPasswordInterceptor()
     {
-        // Getting the list of interceptors
-        List<InterceptorBean> interceptors = getDirectoryServiceBean().getInterceptors();
-
         // Looking for the password hashing interceptor
-        for ( InterceptorBean interceptor : interceptors )
+        for ( InterceptorBean interceptor : getDirectoryServiceBean().getInterceptors() )
         {
             if ( HASHING_PASSWORD_INTERCEPTOR_ID.equalsIgnoreCase( interceptor.getInterceptorId() ) )
             {
@@ -1391,26 +1388,22 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
 
 
     /**
-     * Gets the authentication interceptor order.
+     * Gets the key derivation interceptor order.
      *
-     * @return the authentication interceptor order
+     * @return the key derivation interceptor order
      */
-    private int getAuthenticationInterceptorOrder()
+    private int getKeyDerivationInterceptorOrder()
     {
-        // Getting the list of interceptors
-        List<InterceptorBean> interceptors = getDirectoryServiceBean().getInterceptors();
-        for ( InterceptorBean interceptor : interceptors )
+        // Looking for the key derivation interceptor
+        for ( InterceptorBean interceptor : getDirectoryServiceBean().getInterceptors() )
         {
-            // Looking for the authentication interceptor
-            if ( "org.apache.directory.server.core.authn.AuthenticationInterceptor".equalsIgnoreCase( interceptor //$NON-NLS-1$
-                .getInterceptorClassName() ) )
+            if ( "keyDerivationInterceptor".equalsIgnoreCase( interceptor.getInterceptorId() ) ) //$NON-NLS-1$
             {
-                // We found the authentication interceptor
                 return interceptor.getInterceptorOrder();
             }
         }
 
-        // No authentication interceptor was found
+        // No key derivation interceptor was found
         return 0;
     }
 
@@ -1450,17 +1443,17 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
         // Interceptor FQCN
         hashingPasswordInterceptor.setInterceptorClassName( getFqcnForHashingMethod( getSelectedHashingMethod() ) );
 
-        // Getting the order of the authentication interceptor
-        int authenticationInterceptorOrder = getAuthenticationInterceptorOrder();
+        // Getting the order of the key derivation interceptor
+        int keyDerivationInterceptorOrder = getKeyDerivationInterceptorOrder();
 
         // Assigning the order of the hashing password interceptor
-        // It's order is: authenticationInterceptorOrder + 1
-        hashingPasswordInterceptor.setInterceptorOrder( authenticationInterceptorOrder + 1 );
+        // It's order is: keyDerivationInterceptorOrder + 1
+        hashingPasswordInterceptor.setInterceptorOrder( keyDerivationInterceptorOrder + 1 );
 
-        // Updating the order of the interceptors after the authentication interceptor
+        // Updating the order of the interceptors after the key derivation interceptor
         for ( InterceptorBean interceptor : getDirectoryServiceBean().getInterceptors() )
         {
-            if ( interceptor.getInterceptorOrder() > authenticationInterceptorOrder )
+            if ( interceptor.getInterceptorOrder() > keyDerivationInterceptorOrder )
             {
                 interceptor.setInterceptorOrder( interceptor.getInterceptorOrder() + 1 );
             }
