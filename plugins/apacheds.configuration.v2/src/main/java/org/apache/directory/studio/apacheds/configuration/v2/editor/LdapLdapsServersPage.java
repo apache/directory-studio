@@ -74,17 +74,18 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
     private static final String SASL_MECHANISMS_SIMPLE = "SIMPLE"; //$NON-NLS-1$
     private static final String START_TLS_HANDLER_ID = "starttlshandler"; //$NON-NLS-1$
     private static final String START_TLS_HANDLER_CLASS = "org.apache.directory.server.ldap.handlers.extended.StartTlsHandler"; //$NON-NLS-1$
-    private static final String FQCN_HASHING_INTERCEPTOR_SSHA512 = "org.apache.directory.server.core.hash.Ssha512PasswordHashingInterceptor"; //$NON-NLS-1$
-    private static final String FQCN_HASHING_INTERCEPTOR_SHA512 = "org.apache.directory.server.core.hash.Sha512PasswordHashingInterceptor"; //$NON-NLS-1$
-    private static final String FQCN_HASHING_INTERCEPTOR_SSHA384 = "org.apache.directory.server.core.hash.Ssha384PasswordHashingInterceptor"; //$NON-NLS-1$
-    private static final String FQCN_HASHING_INTERCEPTOR_SHA384 = "org.apache.directory.server.core.hash.Sha384PasswordHashingInterceptor"; //$NON-NLS-1$
-    private static final String FQCN_HASHING_INTERCEPTOR_SSHA256 = "org.apache.directory.server.core.hash.Ssha256PasswordHashingInterceptor"; //$NON-NLS-1$
-    private static final String FQCN_HASHING_INTERCEPTOR_SHA256 = "org.apache.directory.server.core.hash.Sha256PasswordHashingInterceptor"; //$NON-NLS-1$
-    private static final String FQCN_HASHING_INTERCEPTOR_CRYPT = "org.apache.directory.server.core.hash.CryptPasswordHashingInterceptor"; //$NON-NLS-1$
-    private static final String FQCN_HASHING_INTERCEPTOR_SMD5 = "org.apache.directory.server.core.hash.Smd5PasswordHashingInterceptor"; //$NON-NLS-1$
-    private static final String FQCN_HASHING_INTERCEPTOR_MD5 = "org.apache.directory.server.core.hash.Md5PasswordHashingInterceptor"; //$NON-NLS-1$
-    private static final String FQCN_HASHING_INTERCEPTOR_SSHA = "org.apache.directory.server.core.hash.SshaPasswordHashingInterceptor"; //$NON-NLS-1$
-    private static final String FQCN_HASHING_INTERCEPTOR_SHA = "org.apache.directory.server.core.hash.ShaPasswordHashingInterceptor"; //$NON-NLS-1$
+    private static final String HASHING_PASSWORD_INTERCEPTOR_ID = "passwordHashingInterceptor"; //$NON-NLS-1$
+    private static final String HASHING_PASSWORD_INTERCEPTOR_FQCN_SSHA512 = "org.apache.directory.server.core.hash.Ssha512PasswordHashingInterceptor"; //$NON-NLS-1$
+    private static final String HASHING_PASSWORD_INTERCEPTOR_FQCN_SHA512 = "org.apache.directory.server.core.hash.Sha512PasswordHashingInterceptor"; //$NON-NLS-1$
+    private static final String HASHING_PASSWORD_INTERCEPTOR_FQCN_SSHA384 = "org.apache.directory.server.core.hash.Ssha384PasswordHashingInterceptor"; //$NON-NLS-1$
+    private static final String HASHING_PASSWORD_INTERCEPTOR_FQCN_SHA384 = "org.apache.directory.server.core.hash.Sha384PasswordHashingInterceptor"; //$NON-NLS-1$
+    private static final String HASHING_PASSWORD_INTERCEPTOR_FQCN_SSHA256 = "org.apache.directory.server.core.hash.Ssha256PasswordHashingInterceptor"; //$NON-NLS-1$
+    private static final String HASHING_PASSWORD_INTERCEPTOR_FQCN_SHA256 = "org.apache.directory.server.core.hash.Sha256PasswordHashingInterceptor"; //$NON-NLS-1$
+    private static final String HASHING_PASSWORD_INTERCEPTOR_FQCN_CRYPT = "org.apache.directory.server.core.hash.CryptPasswordHashingInterceptor"; //$NON-NLS-1$
+    private static final String HASHING_PASSWORD_INTERCEPTOR_FQCN_SMD5 = "org.apache.directory.server.core.hash.Smd5PasswordHashingInterceptor"; //$NON-NLS-1$
+    private static final String HASHING_PASSWORD_INTERCEPTOR_FQCN_MD5 = "org.apache.directory.server.core.hash.Md5PasswordHashingInterceptor"; //$NON-NLS-1$
+    private static final String HASHING_PASSWORD_INTERCEPTOR_FQCN_SSHA = "org.apache.directory.server.core.hash.SshaPasswordHashingInterceptor"; //$NON-NLS-1$
+    private static final String HASHING_PASSWORD_INTERCEPTOR_FQCN_SHA = "org.apache.directory.server.core.hash.ShaPasswordHashingInterceptor"; //$NON-NLS-1$
 
     /** The Page ID*/
     public static final String ID = LdapLdapsServersPage.class.getName(); //$NON-NLS-1$
@@ -270,24 +271,23 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
     {
         public void widgetSelected( SelectionEvent e )
         {
-            setEnabled( hashingMethodComboViewer.getCombo(), enableServerSidePasswordHashingCheckbox.getSelection() );
             if ( enableServerSidePasswordHashingCheckbox.getSelection() )
             {
-                deleteHashingMethodInterceptor();
-                addHashingMethodInterceptor();
+                enableHashingPasswordInterceptor();
             }
             else
             {
-                deleteHashingMethodInterceptor();
+                disableHashingPasswordInterceptor();
             }
+
+            setEnabled( hashingMethodComboViewer.getCombo(), enableServerSidePasswordHashingCheckbox.getSelection() );
         }
     };
     private ISelectionChangedListener hashingMethodComboViewerListener = new ISelectionChangedListener()
     {
         public void selectionChanged( SelectionChangedEvent event )
         {
-            deleteHashingMethodInterceptor();
-            addHashingMethodInterceptor();
+            updateHashingMethod();
         }
     };
     private ModifyListener keystoreFileTextListener = new ModifyListener()
@@ -829,7 +829,7 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
         addDirtyListener( enableTlsCheckbox );
         addSelectionListener( enableTlsCheckbox, enableTlsCheckboxListener );
 
-        // Hashing Method Checkbox
+        // Hashing Password Checkbox
         addDirtyListener( enableServerSidePasswordHashingCheckbox );
         addSelectionListener( enableServerSidePasswordHashingCheckbox, enableServerSidePasswordHashingCheckboxListener );
 
@@ -928,7 +928,7 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
         removeDirtyListener( maxSizeLimitText );
         removeModifyListener( maxSizeLimitText, maxSizeLimitTextListener );
 
-        // Hashing Method Checkbox
+        // Hashing Password Checkbox
         removeDirtyListener( enableServerSidePasswordHashingCheckbox );
         removeSelectionListener( enableServerSidePasswordHashingCheckbox,
             enableServerSidePasswordHashingCheckboxListener );
@@ -981,7 +981,7 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
             {
                 setSelection( authMechGssapiCheckbox, saslMechHandler.isEnabled() );
             }
-            if ( SupportedSaslMechanisms.CRAM_MD5.equalsIgnoreCase( saslMechHandler.getSaslMechName() ) )
+            else if ( SupportedSaslMechanisms.CRAM_MD5.equalsIgnoreCase( saslMechHandler.getSaslMechName() ) )
             {
                 setSelection( authMechCramMd5Checkbox, saslMechHandler.isEnabled() );
             }
@@ -1010,8 +1010,8 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
         // Enable TLS Checkbox
         setSelection( enableTlsCheckbox, getTlsExtendedOpHandlerBean().isEnabled() );
 
-        // Hashing Method widgets
-        InterceptorBean hashingMethodInterceptor = getHashingMethodInterceptor();
+        // Hashing Password widgets
+        InterceptorBean hashingMethodInterceptor = getHashingPasswordInterceptor();
         if ( hashingMethodInterceptor == null )
         {
             // No hashing method interceptor
@@ -1306,112 +1306,19 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
 
 
     /**
-     * Creates the hashing method interceptor.
+     * Gets the hashing password interceptor if it can be found.
      *
-     * @param hashingMethod the hashing method
-     * @return the corresponding hashing method interceptor
+     * @return the hashing password interceptor, or <code>null</code>
      */
-    private InterceptorBean createHashingMethodInterceptor( LdapSecurityConstants hashingMethod )
+    private InterceptorBean getHashingPasswordInterceptor()
     {
-        InterceptorBean hashingMethodInterceptor = new InterceptorBean();
-
-        switch ( hashingMethod )
-        {
-            case HASH_METHOD_SHA:
-                hashingMethodInterceptor.setInterceptorClassName( FQCN_HASHING_INTERCEPTOR_SHA );
-                break;
-            case HASH_METHOD_SSHA:
-            default:
-                hashingMethodInterceptor.setInterceptorClassName( FQCN_HASHING_INTERCEPTOR_SSHA );
-                break;
-            case HASH_METHOD_MD5:
-                hashingMethodInterceptor.setInterceptorClassName( FQCN_HASHING_INTERCEPTOR_MD5 );
-                break;
-            case HASH_METHOD_SMD5:
-                hashingMethodInterceptor.setInterceptorClassName( FQCN_HASHING_INTERCEPTOR_SMD5 );
-                break;
-            case HASH_METHOD_CRYPT:
-                hashingMethodInterceptor.setInterceptorClassName( FQCN_HASHING_INTERCEPTOR_CRYPT );
-                break;
-            case HASH_METHOD_SHA256:
-                hashingMethodInterceptor.setInterceptorClassName( FQCN_HASHING_INTERCEPTOR_SHA256 );
-                break;
-            case HASH_METHOD_SSHA256:
-                hashingMethodInterceptor.setInterceptorClassName( FQCN_HASHING_INTERCEPTOR_SSHA256 );
-                break;
-            case HASH_METHOD_SHA384:
-                hashingMethodInterceptor.setInterceptorClassName( FQCN_HASHING_INTERCEPTOR_SHA384 );
-                break;
-            case HASH_METHOD_SSHA384:
-                hashingMethodInterceptor.setInterceptorClassName( FQCN_HASHING_INTERCEPTOR_SSHA384 );
-                break;
-            case HASH_METHOD_SHA512:
-                hashingMethodInterceptor.setInterceptorClassName( FQCN_HASHING_INTERCEPTOR_SHA512 );
-                break;
-            case HASH_METHOD_SSHA512:
-                hashingMethodInterceptor.setInterceptorClassName( FQCN_HASHING_INTERCEPTOR_SSHA512 );
-                break;
-        }
-
-        hashingMethodInterceptor.setInterceptorId( getHashingMethodInterceptorId( hashingMethodInterceptor
-            .getInterceptorClassName() ) );
-        hashingMethodInterceptor.setEnabled( true );
-
-        return hashingMethodInterceptor;
-    }
-
-
-    /**
-     * Gets the hashing method interceptor id from the given 
-     * fully qualified class name (FQCN).
-     *
-     * @param fqcn the fqcn
-     * @return the hashing method interceptor id
-     */
-    private String getHashingMethodInterceptorId( String fqcn )
-    {
-        if ( fqcn != null )
-        {
-            String id = fqcn.replace( "org.apache.directory.server.core.hash.", "" ); //$NON-NLS-1$ //$NON-NLS-2$
-
-            if ( id.length() > 0 )
-            {
-                char firstChar = id.charAt( 0 );
-                char lowerCasedFirstChar = Character.toLowerCase( firstChar );
-
-                return lowerCasedFirstChar + id.substring( 1 );
-            }
-
-            return id;
-        }
-
-        return null;
-    }
-
-
-    /**
-     * Gets the hashing method interceptor if it can be found.
-     *
-     * @return the hashing method interceptor, or <code>null</code>
-     */
-    private InterceptorBean getHashingMethodInterceptor()
-    {
+        // Getting the list of interceptors
         List<InterceptorBean> interceptors = getDirectoryServiceBean().getInterceptors();
+
+        // Looking for the password hashing interceptor
         for ( InterceptorBean interceptor : interceptors )
         {
-            String interceptorId = interceptor.getInterceptorId();
-
-            if ( interceptorId.equalsIgnoreCase( getHashingMethodInterceptorId( FQCN_HASHING_INTERCEPTOR_SHA ) )
-                || interceptorId.equalsIgnoreCase( getHashingMethodInterceptorId( FQCN_HASHING_INTERCEPTOR_SSHA ) )
-                || interceptorId.equalsIgnoreCase( getHashingMethodInterceptorId( FQCN_HASHING_INTERCEPTOR_MD5 ) )
-                || interceptorId.equalsIgnoreCase( getHashingMethodInterceptorId( FQCN_HASHING_INTERCEPTOR_SMD5 ) )
-                || interceptorId.equalsIgnoreCase( getHashingMethodInterceptorId( FQCN_HASHING_INTERCEPTOR_CRYPT ) )
-                || interceptorId.equalsIgnoreCase( getHashingMethodInterceptorId( FQCN_HASHING_INTERCEPTOR_SHA256 ) )
-                || interceptorId.equalsIgnoreCase( getHashingMethodInterceptorId( FQCN_HASHING_INTERCEPTOR_SSHA256 ) )
-                || interceptorId.equalsIgnoreCase( getHashingMethodInterceptorId( FQCN_HASHING_INTERCEPTOR_SHA384 ) )
-                || interceptorId.equalsIgnoreCase( getHashingMethodInterceptorId( FQCN_HASHING_INTERCEPTOR_SSHA384 ) )
-                || interceptorId.equalsIgnoreCase( getHashingMethodInterceptorId( FQCN_HASHING_INTERCEPTOR_SHA512 ) )
-                || interceptorId.equalsIgnoreCase( getHashingMethodInterceptorId( FQCN_HASHING_INTERCEPTOR_SSHA512 ) ) )
+            if ( HASHING_PASSWORD_INTERCEPTOR_ID.equalsIgnoreCase( interceptor.getInterceptorId() ) )
             {
                 return interceptor;
             }
@@ -1431,129 +1338,55 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
     {
         if ( interceptor != null )
         {
-            String interceptorId = interceptor.getInterceptorId();
+            String interceptorClassName = interceptor.getInterceptorClassName();
 
-            if ( interceptorId.equalsIgnoreCase( getHashingMethodInterceptorId( FQCN_HASHING_INTERCEPTOR_SHA ) ) )
+            if ( interceptorClassName.equalsIgnoreCase( HASHING_PASSWORD_INTERCEPTOR_FQCN_SHA ) )
             {
                 return LdapSecurityConstants.HASH_METHOD_SHA;
             }
-            else if ( interceptorId.equalsIgnoreCase( getHashingMethodInterceptorId( FQCN_HASHING_INTERCEPTOR_SSHA ) ) )
+            else if ( interceptorClassName.equalsIgnoreCase( HASHING_PASSWORD_INTERCEPTOR_FQCN_SSHA ) )
             {
                 return LdapSecurityConstants.HASH_METHOD_SSHA;
             }
-            else if ( interceptorId.equalsIgnoreCase( getHashingMethodInterceptorId( FQCN_HASHING_INTERCEPTOR_MD5 ) ) )
+            else if ( interceptorClassName.equalsIgnoreCase( HASHING_PASSWORD_INTERCEPTOR_FQCN_MD5 ) )
             {
                 return LdapSecurityConstants.HASH_METHOD_MD5;
             }
-            else if ( interceptorId.equalsIgnoreCase( getHashingMethodInterceptorId( FQCN_HASHING_INTERCEPTOR_SMD5 ) ) )
+            else if ( interceptorClassName.equalsIgnoreCase( HASHING_PASSWORD_INTERCEPTOR_FQCN_SMD5 ) )
             {
                 return LdapSecurityConstants.HASH_METHOD_SMD5;
             }
-            else if ( interceptorId.equalsIgnoreCase( getHashingMethodInterceptorId( FQCN_HASHING_INTERCEPTOR_CRYPT ) ) )
+            else if ( interceptorClassName.equalsIgnoreCase( HASHING_PASSWORD_INTERCEPTOR_FQCN_CRYPT ) )
             {
                 return LdapSecurityConstants.HASH_METHOD_SMD5;
             }
-            else if ( interceptorId.equalsIgnoreCase( getHashingMethodInterceptorId( FQCN_HASHING_INTERCEPTOR_SHA256 ) ) )
+            else if ( interceptorClassName.equalsIgnoreCase( HASHING_PASSWORD_INTERCEPTOR_FQCN_SHA256 ) )
             {
                 return LdapSecurityConstants.HASH_METHOD_SHA256;
             }
-            else if ( interceptorId
-                .equalsIgnoreCase( getHashingMethodInterceptorId( FQCN_HASHING_INTERCEPTOR_SSHA256 ) ) )
+            else if ( interceptorClassName.equalsIgnoreCase( HASHING_PASSWORD_INTERCEPTOR_FQCN_SSHA256 ) )
             {
                 return LdapSecurityConstants.HASH_METHOD_SSHA256;
             }
-            else if ( interceptorId.equalsIgnoreCase( getHashingMethodInterceptorId( FQCN_HASHING_INTERCEPTOR_SHA384 ) ) )
+            else if ( interceptorClassName.equalsIgnoreCase( HASHING_PASSWORD_INTERCEPTOR_FQCN_SHA384 ) )
             {
                 return LdapSecurityConstants.HASH_METHOD_SHA384;
             }
-            else if ( interceptorId
-                .equalsIgnoreCase( getHashingMethodInterceptorId( FQCN_HASHING_INTERCEPTOR_SSHA384 ) ) )
+            else if ( interceptorClassName.equalsIgnoreCase( HASHING_PASSWORD_INTERCEPTOR_FQCN_SSHA384 ) )
             {
                 return LdapSecurityConstants.HASH_METHOD_SSHA384;
             }
-            else if ( interceptorId.equalsIgnoreCase( getHashingMethodInterceptorId( FQCN_HASHING_INTERCEPTOR_SHA512 ) ) )
+            else if ( interceptorClassName.equalsIgnoreCase( HASHING_PASSWORD_INTERCEPTOR_FQCN_SHA512 ) )
             {
                 return LdapSecurityConstants.HASH_METHOD_SHA512;
             }
-            else if ( interceptorId
-                .equalsIgnoreCase( getHashingMethodInterceptorId( FQCN_HASHING_INTERCEPTOR_SSHA512 ) ) )
+            else if ( interceptorClassName.equalsIgnoreCase( HASHING_PASSWORD_INTERCEPTOR_FQCN_SSHA512 ) )
             {
                 return LdapSecurityConstants.HASH_METHOD_SSHA512;
             }
         }
 
         return null;
-    }
-
-
-    /**
-     * Adds a new hashing method interceptor, based on the current selection.
-     */
-    private void addHashingMethodInterceptor()
-    {
-        StructuredSelection selection = ( StructuredSelection ) hashingMethodComboViewer.getSelection();
-        if ( !selection.isEmpty() )
-        {
-            LdapSecurityConstants hashingMethod = ( LdapSecurityConstants ) selection.getFirstElement();
-            if ( hashingMethod != null )
-            {
-                // Creating the hashing method interceptor
-                InterceptorBean hashingMethodInterceptor = createHashingMethodInterceptor( hashingMethod );
-
-                // Getting the order of the authentication interceptor
-                int authenticationInterceptorOrder = getAuthenticationInterceptorOrder();
-
-                // Assigning the order of the hashing method interceptor
-                // It's order is: authenticationInterceptorOrder + 1
-                hashingMethodInterceptor.setInterceptorOrder( authenticationInterceptorOrder + 1 );
-
-                // Getting the interceptors list
-                List<InterceptorBean> interceptors = getDirectoryServiceBean().getInterceptors();
-
-                // Updating the order of the interceptors after the authentication interceptor
-                for ( InterceptorBean interceptor : interceptors )
-                {
-                    if ( interceptor.getInterceptorOrder() > authenticationInterceptorOrder )
-                    {
-                        interceptor.setInterceptorOrder( interceptor.getInterceptorOrder() + 1 );
-                    }
-                }
-
-                // Adding the hashing interceptor to the list                
-                interceptors.add( hashingMethodInterceptor );
-            }
-        }
-    }
-
-
-    /**
-     * Deletes the hashing method interceptor.
-     */
-    private void deleteHashingMethodInterceptor()
-    {
-        // Getting the hashing method interceptor
-        InterceptorBean hashingMethodInterceptor = getHashingMethodInterceptor();
-
-        if ( hashingMethodInterceptor != null )
-        {
-            // Getting the order of the hashing method interceptor
-            int hashingMethodInterceptorOrder = hashingMethodInterceptor.getInterceptorOrder();
-
-            // Getting the interceptors list
-            List<InterceptorBean> interceptors = getDirectoryServiceBean().getInterceptors();
-
-            // Updating the order of the interceptors after the hashing method interceptor
-            for ( InterceptorBean interceptor : interceptors )
-            {
-                if ( interceptor.getInterceptorOrder() > hashingMethodInterceptorOrder )
-                {
-                    interceptor.setInterceptorOrder( interceptor.getInterceptorOrder() - 1 );
-                }
-            }
-
-            // Removing the hashing interceptor to the list                
-            interceptors.remove( hashingMethodInterceptor );
-        }
     }
 
 
@@ -1579,5 +1412,150 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
 
         // No authentication interceptor was found
         return 0;
+    }
+
+
+    /**
+     * Enables the hashing password interceptor.
+     */
+    private void enableHashingPasswordInterceptor()
+    {
+        // Getting the hashing password interceptor
+        InterceptorBean hashingPasswordInterceptor = getHashingPasswordInterceptor();
+
+        // If we didn't found one, we need to create it
+        if ( hashingPasswordInterceptor == null )
+        {
+            // Creating a new hashing password interceptor
+            hashingPasswordInterceptor = createHashingPasswordInterceptor();
+        }
+
+        // Enabling the interceptor
+        hashingPasswordInterceptor.setEnabled( true );
+    }
+
+
+    /**
+     * Creates a new hashing password interceptor.
+     *
+     * @return a new hashing password interceptor
+     */
+    private InterceptorBean createHashingPasswordInterceptor()
+    {
+        InterceptorBean hashingPasswordInterceptor = new InterceptorBean();
+
+        // Interceptor ID
+        hashingPasswordInterceptor.setInterceptorId( HASHING_PASSWORD_INTERCEPTOR_ID );
+
+        // Interceptor FQCN
+        hashingPasswordInterceptor.setInterceptorClassName( getFqcnForHashingMethod( getSelectedHashingMethod() ) );
+
+        // Getting the order of the authentication interceptor
+        int authenticationInterceptorOrder = getAuthenticationInterceptorOrder();
+
+        // Assigning the order of the hashing password interceptor
+        // It's order is: authenticationInterceptorOrder + 1
+        hashingPasswordInterceptor.setInterceptorOrder( authenticationInterceptorOrder + 1 );
+
+        // Updating the order of the interceptors after the authentication interceptor
+        for ( InterceptorBean interceptor : getDirectoryServiceBean().getInterceptors() )
+        {
+            if ( interceptor.getInterceptorOrder() > authenticationInterceptorOrder )
+            {
+                interceptor.setInterceptorOrder( interceptor.getInterceptorOrder() + 1 );
+            }
+        }
+
+        // Adding the hashing password interceptor            
+        getDirectoryServiceBean().addInterceptors( hashingPasswordInterceptor );
+
+        return hashingPasswordInterceptor;
+    }
+
+
+    /**
+     * Disables the hashing password interceptor.
+     */
+    private void disableHashingPasswordInterceptor()
+    {
+        // Getting the hashing password interceptor
+        InterceptorBean hashingPasswordInterceptor = getHashingPasswordInterceptor();
+
+        if ( hashingPasswordInterceptor != null )
+        {
+            // Disabling the interceptor
+            hashingPasswordInterceptor.setEnabled( false );
+        }
+    }
+
+
+    /**
+     * Updates the hashing method.
+     */
+    private void updateHashingMethod()
+    {
+        // Getting the hashing password interceptor
+        InterceptorBean hashingPasswordInterceptor = getHashingPasswordInterceptor();
+
+        if ( hashingPasswordInterceptor != null )
+        {
+            // Updating the hashing method
+            hashingPasswordInterceptor.setInterceptorClassName( getFqcnForHashingMethod( getSelectedHashingMethod() ) );
+        }
+    }
+
+
+    /**
+     * Gets the FQCN for the given hashing method.
+     *
+     * @param hashingMethod the hashing method
+     * @return the corresponding FQCN
+     */
+    private String getFqcnForHashingMethod( LdapSecurityConstants hashingMethod )
+    {
+        switch ( hashingMethod )
+        {
+            case HASH_METHOD_MD5:
+                return HASHING_PASSWORD_INTERCEPTOR_FQCN_MD5;
+            case HASH_METHOD_SMD5:
+                return HASHING_PASSWORD_INTERCEPTOR_FQCN_SMD5;
+            case HASH_METHOD_CRYPT:
+                return HASHING_PASSWORD_INTERCEPTOR_FQCN_CRYPT;
+            case HASH_METHOD_SHA256:
+                return HASHING_PASSWORD_INTERCEPTOR_FQCN_SHA256;
+            case HASH_METHOD_SSHA256:
+                return HASHING_PASSWORD_INTERCEPTOR_FQCN_SSHA256;
+            case HASH_METHOD_SHA384:
+                return HASHING_PASSWORD_INTERCEPTOR_FQCN_SHA384;
+            case HASH_METHOD_SSHA384:
+                return HASHING_PASSWORD_INTERCEPTOR_FQCN_SSHA384;
+            case HASH_METHOD_SHA512:
+                return HASHING_PASSWORD_INTERCEPTOR_FQCN_SHA512;
+            case HASH_METHOD_SSHA512:
+                return HASHING_PASSWORD_INTERCEPTOR_FQCN_SSHA512;
+            case HASH_METHOD_SHA:
+                return HASHING_PASSWORD_INTERCEPTOR_FQCN_SHA;
+            case HASH_METHOD_SSHA:
+            default:
+                return HASHING_PASSWORD_INTERCEPTOR_FQCN_SSHA;
+        }
+    }
+
+
+    /**
+     * Gets the selected hashing method.
+     *
+     * @return the selected hashing method
+     */
+    private LdapSecurityConstants getSelectedHashingMethod()
+    {
+        StructuredSelection selection = ( StructuredSelection ) hashingMethodComboViewer.getSelection();
+
+        if ( !selection.isEmpty() )
+        {
+            return ( LdapSecurityConstants ) selection.getFirstElement();
+        }
+
+        return null;
     }
 }
