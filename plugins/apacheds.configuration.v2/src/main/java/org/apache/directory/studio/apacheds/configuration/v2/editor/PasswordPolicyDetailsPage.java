@@ -20,19 +20,20 @@
 package org.apache.directory.studio.apacheds.configuration.v2.editor;
 
 
-import org.apache.directory.server.config.beans.AuthenticationInterceptorBean;
-import org.apache.directory.server.config.beans.DirectoryServiceBean;
-import org.apache.directory.server.config.beans.InterceptorBean;
 import org.apache.directory.server.config.beans.PasswordPolicyBean;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ComboViewer;
-import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.ui.forms.IDetailsPage;
+import org.eclipse.ui.forms.IFormPart;
+import org.eclipse.ui.forms.IManagedForm;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.Section;
 import org.eclipse.ui.forms.widgets.TableWrapData;
@@ -40,21 +41,20 @@ import org.eclipse.ui.forms.widgets.TableWrapLayout;
 
 
 /**
- * This class represents the General Page of the Server Configuration Editor.
+ * This class represents the Details Page of the Server Configuration Editor for the Password Policy type
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class PasswordPolicyPage extends ServerConfigurationEditorPage
+public class PasswordPolicyDetailsPage implements IDetailsPage
 {
-    private static final String AUTHENTICATION_INTERCEPTOR_ID = "authenticationInterceptor";
+    /** The associated Master Details Block */
+    private PasswordPoliciesMasterDetailsBlock masterDetailsBlock;
 
-    private static final String PASSWORD_POLICY_ID_DEFAULT = "default";
+    /** The Managed Form */
+    private IManagedForm mform;
 
-    /** The Page ID*/
-    public static final String ID = PasswordPolicyPage.class.getName(); //$NON-NLS-1$
-
-    /** The Page Title */
-    private static final String TITLE = Messages.getString( "PasswordPolicyPage.PasswordPolicy" ); //$NON-NLS-1$
+    /** The input password policy */
+    private PasswordPolicyBean input;
 
     // UI Widgets
     private ComboViewer checkQualityComboViewer;
@@ -81,51 +81,44 @@ public class PasswordPolicyPage extends ServerConfigurationEditorPage
     private Text inHistoryText;
 
 
+    // Listeners
+
     /**
-     * Creates a new instance of GeneralPage.
+     * Creates a new instance of PartitionDetailsPage.
      *
-     * @param editor
-     *      the associated editor
+     * @param pmdb
+     *      the associated Master Details Block
      */
-    public PasswordPolicyPage( ServerConfigurationEditor editor )
+    public PasswordPolicyDetailsPage( PasswordPoliciesMasterDetailsBlock pmdb )
     {
-        super( editor, ID, TITLE );
+        masterDetailsBlock = pmdb;
     }
 
 
     /**
      * {@inheritDoc}
      */
-    protected void createFormContent( Composite parent, FormToolkit toolkit )
+    public void createContents( Composite parent )
     {
-        TableWrapLayout twl = new TableWrapLayout();
-        twl.numColumns = 2;
-        parent.setLayout( twl );
+        FormToolkit toolkit = mform.getToolkit();
+        TableWrapLayout layout = new TableWrapLayout();
+        layout.topMargin = 5;
+        layout.leftMargin = 5;
+        layout.rightMargin = 2;
+        layout.bottomMargin = 2;
+        parent.setLayout( layout );
 
-        // Left Composite
-        Composite leftComposite = toolkit.createComposite( parent );
-        leftComposite.setLayout( new GridLayout() );
-        TableWrapData leftCompositeTableWrapData = new TableWrapData( TableWrapData.FILL, TableWrapData.TOP );
-        leftCompositeTableWrapData.grabHorizontal = true;
-        leftComposite.setLayoutData( leftCompositeTableWrapData );
+        // Composite
+        Composite composite = toolkit.createComposite( parent );
+        composite.setLayout( new GridLayout() );
+        TableWrapData compositeTableWrapData = new TableWrapData( TableWrapData.FILL, TableWrapData.TOP );
+        compositeTableWrapData.grabHorizontal = true;
+        composite.setLayoutData( compositeTableWrapData );
 
-        // Right Composite
-        Composite rightComposite = toolkit.createComposite( parent );
-        rightComposite.setLayout( new GridLayout() );
-        TableWrapData rightCompositeTableWrapData = new TableWrapData( TableWrapData.FILL, TableWrapData.TOP );
-        rightCompositeTableWrapData.grabHorizontal = true;
-        rightComposite.setLayoutData( rightCompositeTableWrapData );
-
-        // Creating the sections
-        createQualitySection( toolkit, leftComposite );
-        createExpirationSection( toolkit, leftComposite );
-        createOptionsSection( toolkit, rightComposite );
-        createLockoutSection( toolkit, rightComposite );
-
-        //        // Attribute (pwdAttribute)
-        //        Text attributeText = toolkit.createText( composite, "" );
-        //        attributeText.setLayoutData( new GridData( SWT.BEGINNING, SWT.CENTER, false, false, 2, 1 ) );
-
+        createQualitySection( toolkit, composite );
+        createExpirationSection( toolkit, composite );
+        createOptionsSection( toolkit, composite );
+        createLockoutSection( toolkit, composite );
     }
 
 
@@ -307,184 +300,114 @@ public class PasswordPolicyPage extends ServerConfigurationEditorPage
 
 
     /**
+     * Adds listeners to UI fields.
+     */
+    private void addListeners()
+    {
+    }
+
+
+    /**
+     * Removes listeners to UI fields.
+     */
+    private void removeListeners()
+    {
+    }
+
+
+    /**
      * {@inheritDoc}
      */
-    protected void refreshUI()
+    public void selectionChanged( IFormPart part, ISelection selection )
     {
-        PasswordPolicyBean passwordPolicy = getPasswordPolicy();
-
-        // Check Quality
-        checkQualityComboViewer.setSelection( new StructuredSelection( CheckQuality.valueOf( passwordPolicy
-            .getPwdCheckQuality() ) ) );
-
-        // Miminum Length
-        int minimumLength = passwordPolicy.getPwdMinLength();
-        minimumLengthCheckbox.setSelection( minimumLength != 0 );
-        minimumLengthText.setText( "" + minimumLength );
-
-        // Maximum Length
-        int maximumLength = passwordPolicy.getPwdMaxLength();
-        maximumLengthCheckbox.setSelection( maximumLength != 0 );
-        maximumLengthText.setText( "" + maximumLength );
-
-        // Minimum Age
-        minimumAgeText.setText( "" + passwordPolicy.getPwdMinAge() );
-
-        // Maximum Age
-        maximumAgeText.setText( "" + passwordPolicy.getPwdMaxAge() );
-
-        // Expire Warning
-        expireWarningCheckbox.setSelection( passwordPolicy.getPwdExpireWarning() == 0 );
-        expireWarningText.setText( "" + passwordPolicy.getPwdExpireWarning() );
-
-        // Grace Authentication Limit
-        int graceAuthenticationLimit = passwordPolicy.getPwdGraceAuthNLimit();
-        graceAuthenticationLimitCheckbox.setSelection( graceAuthenticationLimit != 0 );
-        graceAuthenticationLimitText.setText( "" + graceAuthenticationLimit );
-
-        // Grace Expire
-        int graceExpire = passwordPolicy.getPwdGraceExpire();
-        graceExpireCheckbox.setSelection( graceExpire != 0 );
-        graceExpireText.setText( "" + graceExpire );
-
-        // Must Change
-        mustChangeCheckbox.setSelection( passwordPolicy.isPwdMustChange() );
-
-        // Allow User Change
-        allowUserChangeCheckbox.setSelection( passwordPolicy.isPwdAllowUserChange() );
-
-        // Safe Modify
-        safeModifyCheckbox.setSelection( passwordPolicy.isPwdSafeModify() );
-
-        // Lockout
-        lockoutCheckbox.setSelection( passwordPolicy.isPwdLockout() );
-
-        // Lockout Duration
-        lockoutDurationText.setText( "" + passwordPolicy.getPwdLockoutDuration() );
-
-        // Max Failure
-        maxFailureText.setText( "" + passwordPolicy.getPwdMaxFailure() );
-
-        // Failure Count Interval
-        failureCountIntervalText.setText( "" + passwordPolicy.getPwdFailureCountInterval() );
-
-        // In History
-        inHistoryCheckbox.setSelection( passwordPolicy.getPwdInHistory() != 0 );
-        inHistoryText.setText( "" + passwordPolicy.getPwdInHistory() );
-    }
-
-
-    /**
-     * Gets the Password Policy bean.
-     *
-     * @return the Password Policy bean
-     */
-    private PasswordPolicyBean getPasswordPolicy()
-    {
-        return getPasswordPolicyBean( getDirectoryServiceBean() );
-    }
-
-
-    /**
-     * Gets the Password Policy bean.
-     *
-     * @param directoryServiceBean the directory service bean
-     * @return the Password Policy bean
-     */
-    public static PasswordPolicyBean getPasswordPolicyBean( DirectoryServiceBean directoryServiceBean )
-    {
-        // Finding the password policy
-        PasswordPolicyBean passwordPolicyBean = findPasswordPolicyBean( directoryServiceBean );
-
-        if ( passwordPolicyBean == null )
+        IStructuredSelection ssel = ( IStructuredSelection ) selection;
+        if ( ssel.size() == 1 )
         {
-            addPasswordPolicyBean( directoryServiceBean );
+            input = ( PasswordPolicyBean ) ssel.getFirstElement();
         }
-
-        return passwordPolicyBean;
-    }
-
-
-    /**
-     * Gets the Password Policy bean.
-     *
-     * @param directoryServiceBean the directory service bean
-     * @return the Password Policy bean
-     */
-    private static PasswordPolicyBean findPasswordPolicyBean( DirectoryServiceBean directoryServiceBean )
-    {
-        return getPasswordPolicyBean( getAuthenticationInterceptorBean( directoryServiceBean ) );
-    }
-
-
-    /**
-     * Gets the authentication interceptor.
-     *
-     * @param directoryServiceBean the directory service bean
-     * @return the authentication interceptor
-     */
-    private static AuthenticationInterceptorBean getAuthenticationInterceptorBean(
-        DirectoryServiceBean directoryServiceBean )
-    {
-        // Looking for the authentication interceptor
-        for ( InterceptorBean interceptor : directoryServiceBean.getInterceptors() )
+        else
         {
-            if ( AUTHENTICATION_INTERCEPTOR_ID.equalsIgnoreCase( interceptor.getInterceptorId() )
-                && ( interceptor instanceof AuthenticationInterceptorBean ) )
-            {
-                return ( AuthenticationInterceptorBean ) interceptor;
-            }
+            input = null;
         }
-
-        return null;
+        refresh();
     }
 
 
     /**
-     * Gets the Password Policy bean.
-     *
-     * @param authenticationInterceptor the authentication interceptor
-     * @return the Password Policy bean
+     * {@inheritDoc}
      */
-    private static PasswordPolicyBean getPasswordPolicyBean( AuthenticationInterceptorBean authenticationInterceptor )
+    public void commit( boolean onSave )
     {
-        // Looking for the default password policy
-        if ( authenticationInterceptor != null )
+        if ( input != null )
         {
-            for ( PasswordPolicyBean passwordPolicy : authenticationInterceptor.getPasswordPolicies() )
-            {
-                if ( PASSWORD_POLICY_ID_DEFAULT.equalsIgnoreCase( passwordPolicy.getPwdId() ) )
-                {
-                    return passwordPolicy;
-                }
-            }
+            // TODO
         }
-
-        return null;
     }
 
 
     /**
-     * Adds the password policy to the directory service.
-     *
-     * @param directoryServiceBean the directory service bean
+     * {@inheritDoc}
      */
-    private static void addPasswordPolicyBean( DirectoryServiceBean directoryServiceBean )
+    public void dispose()
     {
-        AuthenticationInterceptorBean authenticationInterceptor = getAuthenticationInterceptorBean( directoryServiceBean );
+    }
 
-        if ( authenticationInterceptor != null )
-        {
-            // Creating the password policy
-            PasswordPolicyBean passwordPolicy = new PasswordPolicyBean();
 
-            // Configuring the password policy
-            passwordPolicy.setPwdId( PASSWORD_POLICY_ID_DEFAULT );
-            // TODO add other parameters
+    /**
+     * {@inheritDoc}
+     */
+    public void initialize( IManagedForm form )
+    {
+        this.mform = form;
+    }
 
-            // Adding the password policy to the authentication interceptor
-            authenticationInterceptor.addPasswordPolicies( passwordPolicy );
-        }
+
+    /**
+     * {@inheritDoc}
+     */
+    public boolean isDirty()
+    {
+        return false;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public boolean isStale()
+    {
+        return false;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public void refresh()
+    {
+        removeListeners();
+
+        // TODO
+
+        addListeners();
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public void setFocus()
+    {
+        //        idText.setFocus();
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public boolean setFormInput( Object input )
+    {
+        return false;
     }
 
     /**
