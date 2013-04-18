@@ -65,6 +65,7 @@ public class ServerConfigurationEditor extends FormEditor implements IPageChange
     private LdapLdapsServersPage ldapLdapsServersPage;
     private KerberosServerPage kerberosServerPage;
     private PartitionsPage partitionsPage;
+    private PasswordPolicyPage passwordPolicyPage;
     private ReplicationPage replicationPage;
 
 
@@ -316,6 +317,7 @@ public class ServerConfigurationEditor extends FormEditor implements IPageChange
         ldapLdapsServersPage.refreshUI();
         kerberosServerPage.refreshUI();
         partitionsPage.refreshUI();
+        passwordPolicyPage.refreshUI();
         replicationPage.refreshUI();
     }
 
@@ -371,6 +373,8 @@ public class ServerConfigurationEditor extends FormEditor implements IPageChange
             addPage( kerberosServerPage );
             partitionsPage = new PartitionsPage( this );
             addPage( partitionsPage );
+            passwordPolicyPage = new PasswordPolicyPage( this );
+            addPage( passwordPolicyPage );
             replicationPage = new ReplicationPage( this );
             addPage( replicationPage );
         }
