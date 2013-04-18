@@ -582,6 +582,7 @@ public class PartitionDetailsPage implements IDetailsPage
         indexesTableViewer.setContentProvider( new ArrayContentProvider() );
         indexesTableViewer.setLabelProvider( new LabelProvider()
         {
+            @SuppressWarnings("unchecked")
             public String getText( Object element )
             {
                 if ( element instanceof JdbmIndexBean )
@@ -918,6 +919,7 @@ public class PartitionDetailsPage implements IDetailsPage
     /**
      * Opens an indexed dialog with the selected index in the indexes table viewer.
      */
+    @SuppressWarnings("unchecked")
     private void editSelectedIndex()
     {
         StructuredSelection selection = ( StructuredSelection ) indexesTableViewer.getSelection();
@@ -958,6 +960,7 @@ public class PartitionDetailsPage implements IDetailsPage
     /**
      * Deletes the selected index in the indexes table viewer
      */
+    @SuppressWarnings("unchecked")
     private void deleteSelectedIndex()
     {
         StructuredSelection selection = ( StructuredSelection ) indexesTableViewer.getSelection();

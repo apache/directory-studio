@@ -424,11 +424,12 @@ public class ServerConfigurationEditor extends FormEditor implements IPageChange
      * @param pageClass
      *      the class of the page
      */
+    @SuppressWarnings("rawtypes")
     public void showPage( Class<?> pageClass )
     {
         if ( pageClass != null )
         {
-            Enumeration<Object> enumeration = pages.elements();
+            Enumeration enumeration = pages.elements();
             while ( enumeration.hasMoreElements() )
             {
                 Object page = enumeration.nextElement();
