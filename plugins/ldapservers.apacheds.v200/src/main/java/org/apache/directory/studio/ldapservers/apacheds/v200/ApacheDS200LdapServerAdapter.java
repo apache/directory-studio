@@ -203,9 +203,7 @@ public class ApacheDS200LdapServerAdapter implements LdapServerAdapter
         // Creating a new editable launch configuration
         ILaunchConfigurationType type = DebugPlugin.getDefault().getLaunchManager()
             .getLaunchConfigurationType( IJavaLaunchConfigurationConstants.ID_JAVA_APPLICATION );
-        ILaunchConfigurationWorkingCopy workingCopy = type.newInstance( null,
-            NLS.bind( Messages.getString( "ApacheDS200LdapServerAdapter.Starting" ), new String[] //$NON-NLS-1$
-                { server.getName() } ) );
+        ILaunchConfigurationWorkingCopy workingCopy = type.newInstance( null, server.getId() );
 
         // Setting the JRE container path attribute
         workingCopy.setAttribute( IJavaLaunchConfigurationConstants.ATTR_JRE_CONTAINER_PATH, vmInstall
