@@ -791,12 +791,12 @@ public class PartitionDetailsPage implements IDetailsPage
         removeListeners();
 
         // Checking if the selected partition is the system partition
-        boolean isPartition = PartitionsPage.isSystemPartition( input );
+        boolean isSystemPartition = PartitionsPage.isSystemPartition( input );
 
         // ID
         String id = input.getPartitionId();
         idText.setText( ( id == null ) ? "" : id ); //$NON-NLS-1$
-        idText.setEnabled( !isPartition );
+        idText.setEnabled( !isSystemPartition );
 
         // Cache Size
         cacheSizeText.setText( "" + input.getPartitionCacheSize() ); //$NON-NLS-1$
@@ -804,7 +804,7 @@ public class PartitionDetailsPage implements IDetailsPage
         // Suffix
         Dn suffix = input.getPartitionSuffix();
         suffixText.setText( ( suffix == null ) ? "" : suffix.toString() ); //$NON-NLS-1$
-        suffixText.setEnabled( !isPartition );
+        suffixText.setEnabled( !isSystemPartition );
 
         // Enable Optimizer
         enableOptimizerCheckbox.setSelection( input.isJdbmPartitionOptimizerEnabled() );
