@@ -416,4 +416,40 @@ public class ServerConfigurationEditorUtils
     {
         saveConfiguration( new File( path ), configWriter );
     }
+
+
+    /**
+     * Checks if the string is <code>null</code>
+     * and returns an empty string in that case.
+     *
+     * @param s the string
+     * @return a non-<code>null</code> string
+     */
+    public static String checkNull( String s )
+    {
+        if ( s == null )
+        {
+            return "";
+        }
+
+        return s;
+    }
+
+
+    /**
+     * Checks if the string is <code>null</code>
+     * and returns an empty string in that case.
+     *
+     * @param s the string
+     * @return a non-<code>null</code> string
+     */
+    public static String checkEmptyString( String s )
+    {
+        if ( "".equals( s ) )
+        {
+            return null;
+        }
+
+        return s;
+    }
 }

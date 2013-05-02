@@ -767,10 +767,10 @@ public class ReplicationDetailsPage implements IDetailsPage
             input.setEnabled( enabledCheckbox.getSelection() );
 
             // ID
-            input.setReplConsumerId( checkEmptyString( idText.getText() ) );
+            input.setReplConsumerId( ServerConfigurationEditorUtils.checkEmptyString( idText.getText() ) );
 
             // Description
-            input.setDescription( checkEmptyString( descriptionText.getText() ) );
+            input.setDescription( ServerConfigurationEditorUtils.checkEmptyString( descriptionText.getText() ) );
 
             // Refresh Mode
             input.setReplRefreshNPersist( refreshAndPersistModeButton.getSelection() );
@@ -786,7 +786,7 @@ public class ReplicationDetailsPage implements IDetailsPage
             }
 
             // Remote Host
-            input.setReplProvHostName( checkEmptyString( remoteHostText.getText() ) );
+            input.setReplProvHostName( ServerConfigurationEditorUtils.checkEmptyString( remoteHostText.getText() ) );
 
             // Remote Port
             try
@@ -799,10 +799,10 @@ public class ReplicationDetailsPage implements IDetailsPage
             }
 
             // Bind DN
-            input.setReplUserDn( checkEmptyString( bindDnText.getText() ) );
+            input.setReplUserDn( ServerConfigurationEditorUtils.checkEmptyString( bindDnText.getText() ) );
 
             // Bind Password
-            String password = checkEmptyString( bindPasswordText.getText() );
+            String password = ServerConfigurationEditorUtils.checkEmptyString( bindPasswordText.getText() );
 
             if ( password != null )
             {
@@ -841,7 +841,7 @@ public class ReplicationDetailsPage implements IDetailsPage
 
             if ( baseDn != null )
             {
-                input.setSearchBaseDn( checkEmptyString( baseDn.toString() ) );
+                input.setSearchBaseDn( ServerConfigurationEditorUtils.checkEmptyString( baseDn.toString() ) );
             }
             else
             {
@@ -849,7 +849,7 @@ public class ReplicationDetailsPage implements IDetailsPage
             }
 
             // Search Filter
-            input.setReplSearchFilter( checkEmptyString( filterWidget.getFilter() ) );
+            input.setReplSearchFilter( ServerConfigurationEditorUtils.checkEmptyString( filterWidget.getFilter() ) );
 
             // Search Scope
             SearchScope scope = getSearchScope();
@@ -937,24 +937,6 @@ public class ReplicationDetailsPage implements IDetailsPage
 
 
     /**
-     * Checks if the string is <code>null</code>
-     * and returns an empty string in that case.
-     *
-     * @param s the string
-     * @return a non-<code>null</code> string
-     */
-    private String checkEmptyString( String s )
-    {
-        if ( "".equals( s ) )
-        {
-            return null;
-        }
-
-        return s;
-    }
-
-
-    /**
      * {@inheritDoc}
      */
     public void dispose()
@@ -1002,10 +984,10 @@ public class ReplicationDetailsPage implements IDetailsPage
             enabledCheckbox.setSelection( input.isEnabled() );
 
             // ID
-            idText.setText( checkNull( input.getReplConsumerId() ) );
+            idText.setText( ServerConfigurationEditorUtils.checkNull( input.getReplConsumerId() ) );
 
             // Description
-            descriptionText.setText( checkNull( input.getDescription() ) );
+            descriptionText.setText( ServerConfigurationEditorUtils.checkNull( input.getDescription() ) );
 
             // Refresh And Persist
             refreshAndPersistModeButton.setSelection( input.isReplRefreshNPersist() );
@@ -1014,23 +996,26 @@ public class ReplicationDetailsPage implements IDetailsPage
             refreshOnlyModeButton.setSelection( !input.isReplRefreshNPersist() );
 
             // Refresh Interval
-            refreshIntervalText.setText( checkNull( String.valueOf( input.getReplRefreshInterval() ) ) );
+            refreshIntervalText.setText( ServerConfigurationEditorUtils.checkNull( String.valueOf( input
+                .getReplRefreshInterval() ) ) );
 
             // Remote Host
-            remoteHostText.setText( checkNull( input.getReplProvHostName() ) );
+            remoteHostText.setText( ServerConfigurationEditorUtils.checkNull( input.getReplProvHostName() ) );
 
             // Remote Port
-            remotePortText.setText( checkNull( String.valueOf( input.getReplProvPort() ) ) );
+            remotePortText
+                .setText( ServerConfigurationEditorUtils.checkNull( String.valueOf( input.getReplProvPort() ) ) );
 
             // Bind DN
-            bindDnText.setText( checkNull( input.getReplUserDn() ) );
+            bindDnText.setText( ServerConfigurationEditorUtils.checkNull( input.getReplUserDn() ) );
 
             // Bind Password
             byte[] bindPassword = input.getReplUserPassword();
 
             if ( ( bindPassword != null ) && ( bindPassword.length > 0 ) )
             {
-                bindPasswordText.setText( checkNull( new String( input.getReplUserPassword() ) ) );
+                bindPasswordText.setText( ServerConfigurationEditorUtils.checkNull( new String( input
+                    .getReplUserPassword() ) ) );
             }
             else
             {
@@ -1038,10 +1023,12 @@ public class ReplicationDetailsPage implements IDetailsPage
             }
 
             // Size Limit
-            sizeLimitText.setText( checkNull( String.valueOf( input.getReplSearchSizeLimit() ) ) );
+            sizeLimitText.setText( ServerConfigurationEditorUtils.checkNull( String.valueOf( input
+                .getReplSearchSizeLimit() ) ) );
 
             // Time Limit
-            timeLimitText.setText( checkNull( String.valueOf( input.getReplSearchTimeout() ) ) );
+            timeLimitText.setText( ServerConfigurationEditorUtils.checkNull( String.valueOf( input
+                .getReplSearchTimeout() ) ) );
 
             // Use Start TLS
             useStartTlsCheckbox.setSelection( input.isReplUseTls() );
@@ -1057,7 +1044,7 @@ public class ReplicationDetailsPage implements IDetailsPage
             }
 
             // Search Filter
-            filterWidget.setFilter( checkNull( input.getReplSearchFilter() ) );
+            filterWidget.setFilter( ServerConfigurationEditorUtils.checkNull( input.getReplSearchFilter() ) );
 
             // Search Scope
             SearchScope scope = null;
@@ -1160,24 +1147,6 @@ public class ReplicationDetailsPage implements IDetailsPage
         }
 
         addListeners();
-    }
-
-
-    /**
-     * Checks if the string is <code>null</code>
-     * and returns an empty string in that case.
-     *
-     * @param s the string
-     * @return a non-<code>null</code> string
-     */
-    private String checkNull( String s )
-    {
-        if ( s == null )
-        {
-            return "";
-        }
-
-        return s;
     }
 
 

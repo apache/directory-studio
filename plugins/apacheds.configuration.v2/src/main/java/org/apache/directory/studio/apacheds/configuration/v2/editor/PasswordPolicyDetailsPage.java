@@ -24,8 +24,18 @@ import org.apache.directory.server.config.beans.PasswordPolicyBean;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.SelectionChangedEvent;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.events.VerifyEvent;
+import org.eclipse.swt.events.VerifyListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -54,9 +64,12 @@ public class PasswordPolicyDetailsPage implements IDetailsPage
     private IManagedForm mform;
 
     /** The input password policy */
-    private PasswordPolicyBean input;
+    private PasswordPolicyBean passwordPolicy;
 
     // UI Widgets
+    private Button enabledCheckbox;
+    private Text idText;
+    private Text descriptionText;
     private ComboViewer checkQualityComboViewer;
     private Button minimumLengthCheckbox;
     private Text minimumLengthText;
@@ -80,8 +93,48 @@ public class PasswordPolicyDetailsPage implements IDetailsPage
     private Button inHistoryCheckbox;
     private Text inHistoryText;
 
-
     // Listeners
+    /** The Text Modify Listener */
+    private ModifyListener textModifyListener = new ModifyListener()
+    {
+        public void modifyText( ModifyEvent e )
+        {
+            commit( true );
+            masterDetailsBlock.setEditorDirty();
+        }
+    };
+
+    /** The button Selection Listener */
+    private SelectionListener buttonSelectionListener = new SelectionAdapter()
+    {
+        public void widgetSelected( SelectionEvent e )
+        {
+            commit( true );
+            masterDetailsBlock.setEditorDirty();
+        }
+    };
+
+    /** The viewer Selection Changed Listener */
+    private ISelectionChangedListener viewerSelectionChangedListener = new ISelectionChangedListener()
+    {
+        public void selectionChanged( SelectionChangedEvent event )
+        {
+            commit( true );
+            masterDetailsBlock.setEditorDirty();
+        }
+    };
+
+    private VerifyListener integerVerifyListener = new VerifyListener()
+    {
+        public void verifyText( VerifyEvent e )
+        {
+            if ( !e.text.matches( "[0-9]*" ) ) //$NON-NLS-1$
+            {
+                e.doit = false;
+            }
+        }
+    };
+
 
     /**
      * Creates a new instance of PartitionDetailsPage.
@@ -108,17 +161,51 @@ public class PasswordPolicyDetailsPage implements IDetailsPage
         layout.bottomMargin = 2;
         parent.setLayout( layout );
 
-        // Composite
-        Composite composite = toolkit.createComposite( parent );
-        composite.setLayout( new GridLayout() );
-        TableWrapData compositeTableWrapData = new TableWrapData( TableWrapData.FILL, TableWrapData.TOP );
-        compositeTableWrapData.grabHorizontal = true;
-        composite.setLayoutData( compositeTableWrapData );
+        createDetailsSection( toolkit, parent );
+        createQualitySection( toolkit, parent );
+        createExpirationSection( toolkit, parent );
+        createOptionsSection( toolkit, parent );
+        createLockoutSection( toolkit, parent );
+    }
 
-        createQualitySection( toolkit, composite );
-        createExpirationSection( toolkit, composite );
-        createOptionsSection( toolkit, composite );
-        createLockoutSection( toolkit, composite );
+
+    /**
+     * Creates the Details Section
+     *
+     * @param parent
+     *      the parent composite
+     * @param toolkit
+     *      the toolkit to use
+     */
+    private void createDetailsSection( FormToolkit toolkit, Composite parent )
+    {
+        // Creation of the section
+        Section section = toolkit.createSection( parent, Section.DESCRIPTION | Section.TITLE_BAR );
+        section.marginWidth = 10;
+        section.setText( "Replication Consumer Details" );
+        section.setDescription( "Set the properties of the replication consumer." );
+        TableWrapData td = new TableWrapData( TableWrapData.FILL, TableWrapData.TOP );
+        td.grabHorizontal = true;
+        section.setLayoutData( td );
+        Composite client = toolkit.createComposite( section );
+        toolkit.paintBordersFor( client );
+        GridLayout glayout = new GridLayout( 2, false );
+        client.setLayout( glayout );
+        section.setClient( client );
+
+        // Enabled Checkbox
+        enabledCheckbox = toolkit.createButton( client, "Enabled", SWT.CHECK );
+        enabledCheckbox.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
+
+        // ID Text
+        toolkit.createLabel( client, "ID:" );
+        idText = toolkit.createText( client, "" );
+        idText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
+
+        // Description Text
+        toolkit.createLabel( client, "Description:" );
+        descriptionText = toolkit.createText( client, "" );
+        descriptionText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
     }
 
 
@@ -132,8 +219,11 @@ public class PasswordPolicyDetailsPage implements IDetailsPage
     {
         // Creation of the section
         Section section = toolkit.createSection( parent, Section.TITLE_BAR );
+        section.marginWidth = 10;
         section.setText( "Quality" );
-        section.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
+        TableWrapData td = new TableWrapData( TableWrapData.FILL, TableWrapData.TOP );
+        td.grabHorizontal = true;
+        section.setLayoutData( td );
         Composite composite = toolkit.createComposite( section );
         toolkit.paintBordersFor( composite );
         GridLayout gridLayout = new GridLayout( 3, false );
@@ -176,8 +266,11 @@ public class PasswordPolicyDetailsPage implements IDetailsPage
     {
         // Creation of the section
         Section section = toolkit.createSection( parent, Section.TITLE_BAR );
+        section.marginWidth = 10;
         section.setText( "Expiration" );
-        section.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
+        TableWrapData td = new TableWrapData( TableWrapData.FILL, TableWrapData.TOP );
+        td.grabHorizontal = true;
+        section.setLayoutData( td );
         Composite composite = toolkit.createComposite( section );
         toolkit.paintBordersFor( composite );
         GridLayout gridLayout = new GridLayout( 3, false );
@@ -229,8 +322,11 @@ public class PasswordPolicyDetailsPage implements IDetailsPage
     {
         // Creation of the section
         Section section = toolkit.createSection( parent, Section.TITLE_BAR );
+        section.marginWidth = 10;
         section.setText( "Options" );
-        section.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
+        TableWrapData td = new TableWrapData( TableWrapData.FILL, TableWrapData.TOP );
+        td.grabHorizontal = true;
+        section.setLayoutData( td );
         Composite composite = toolkit.createComposite( section );
         toolkit.paintBordersFor( composite );
         GridLayout gridLayout = new GridLayout( 2, false );
@@ -262,8 +358,11 @@ public class PasswordPolicyDetailsPage implements IDetailsPage
     {
         // Creation of the section
         Section section = toolkit.createSection( parent, Section.TITLE_BAR );
+        section.marginWidth = 10;
         section.setText( "Lockout" );
-        section.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
+        TableWrapData td = new TableWrapData( TableWrapData.FILL, TableWrapData.TOP );
+        td.grabHorizontal = true;
+        section.setLayoutData( td );
         Composite composite = toolkit.createComposite( section );
         toolkit.paintBordersFor( composite );
         GridLayout gridLayout = new GridLayout( 3, false );
@@ -304,6 +403,43 @@ public class PasswordPolicyDetailsPage implements IDetailsPage
      */
     private void addListeners()
     {
+        enabledCheckbox.addSelectionListener( buttonSelectionListener );
+        idText.addModifyListener( textModifyListener );
+        descriptionText.addModifyListener( textModifyListener );
+        checkQualityComboViewer.addSelectionChangedListener( viewerSelectionChangedListener );
+        minimumLengthCheckbox.addSelectionListener( buttonSelectionListener );
+        minimumLengthText.addModifyListener( textModifyListener );
+        minimumLengthText.addVerifyListener( integerVerifyListener );
+        maximumLengthCheckbox.addSelectionListener( buttonSelectionListener );
+        maximumLengthText.addModifyListener( textModifyListener );
+        maximumLengthText.addVerifyListener( integerVerifyListener );
+        minimumAgeText.addModifyListener( textModifyListener );
+        minimumAgeText.addVerifyListener( integerVerifyListener );
+        maximumAgeText.addModifyListener( textModifyListener );
+        maximumAgeText.addVerifyListener( integerVerifyListener );
+        expireWarningCheckbox.addSelectionListener( buttonSelectionListener );
+        expireWarningText.addModifyListener( textModifyListener );
+        expireWarningText.addVerifyListener( integerVerifyListener );
+        graceAuthenticationLimitCheckbox.addSelectionListener( buttonSelectionListener );
+        graceAuthenticationLimitText.addModifyListener( textModifyListener );
+        graceAuthenticationLimitText.addVerifyListener( integerVerifyListener );
+        graceExpireCheckbox.addSelectionListener( buttonSelectionListener );
+        graceExpireText.addModifyListener( textModifyListener );
+        graceExpireText.addVerifyListener( integerVerifyListener );
+        mustChangeCheckbox.addSelectionListener( buttonSelectionListener );
+        allowUserChangeCheckbox.addSelectionListener( buttonSelectionListener );
+        safeModifyCheckbox.addSelectionListener( buttonSelectionListener );
+        lockoutCheckbox.addSelectionListener( buttonSelectionListener );
+        lockoutDurationText.addModifyListener( textModifyListener );
+        lockoutDurationText.addVerifyListener( integerVerifyListener );
+        maxFailureText.addModifyListener( textModifyListener );
+        maxFailureText.addVerifyListener( integerVerifyListener );
+        failureCountIntervalText.addModifyListener( textModifyListener );
+        failureCountIntervalText.addVerifyListener( integerVerifyListener );
+        inHistoryText.addVerifyListener( integerVerifyListener );
+        inHistoryCheckbox.addSelectionListener( buttonSelectionListener );
+        inHistoryText.addModifyListener( textModifyListener );
+        inHistoryText.addVerifyListener( integerVerifyListener );
     }
 
 
@@ -312,6 +448,43 @@ public class PasswordPolicyDetailsPage implements IDetailsPage
      */
     private void removeListeners()
     {
+        enabledCheckbox.removeSelectionListener( buttonSelectionListener );
+        idText.removeModifyListener( textModifyListener );
+        descriptionText.removeModifyListener( textModifyListener );
+        checkQualityComboViewer.removeSelectionChangedListener( viewerSelectionChangedListener );
+        minimumLengthCheckbox.removeSelectionListener( buttonSelectionListener );
+        minimumLengthText.removeModifyListener( textModifyListener );
+        minimumLengthText.removeVerifyListener( integerVerifyListener );
+        maximumLengthCheckbox.removeSelectionListener( buttonSelectionListener );
+        maximumLengthText.removeModifyListener( textModifyListener );
+        maximumLengthText.removeVerifyListener( integerVerifyListener );
+        minimumAgeText.removeModifyListener( textModifyListener );
+        minimumAgeText.removeVerifyListener( integerVerifyListener );
+        maximumAgeText.removeModifyListener( textModifyListener );
+        maximumAgeText.removeVerifyListener( integerVerifyListener );
+        expireWarningCheckbox.removeSelectionListener( buttonSelectionListener );
+        expireWarningText.removeModifyListener( textModifyListener );
+        expireWarningText.removeVerifyListener( integerVerifyListener );
+        graceAuthenticationLimitCheckbox.removeSelectionListener( buttonSelectionListener );
+        graceAuthenticationLimitText.removeModifyListener( textModifyListener );
+        graceAuthenticationLimitText.removeVerifyListener( integerVerifyListener );
+        graceExpireCheckbox.removeSelectionListener( buttonSelectionListener );
+        graceExpireText.removeModifyListener( textModifyListener );
+        graceExpireText.removeVerifyListener( integerVerifyListener );
+        mustChangeCheckbox.removeSelectionListener( buttonSelectionListener );
+        allowUserChangeCheckbox.removeSelectionListener( buttonSelectionListener );
+        safeModifyCheckbox.removeSelectionListener( buttonSelectionListener );
+        lockoutCheckbox.removeSelectionListener( buttonSelectionListener );
+        lockoutDurationText.removeModifyListener( textModifyListener );
+        lockoutDurationText.removeVerifyListener( integerVerifyListener );
+        maxFailureText.removeModifyListener( textModifyListener );
+        maxFailureText.removeVerifyListener( integerVerifyListener );
+        failureCountIntervalText.removeModifyListener( textModifyListener );
+        failureCountIntervalText.removeVerifyListener( integerVerifyListener );
+        inHistoryText.removeVerifyListener( integerVerifyListener );
+        inHistoryCheckbox.removeSelectionListener( buttonSelectionListener );
+        inHistoryText.removeModifyListener( textModifyListener );
+        inHistoryText.removeVerifyListener( integerVerifyListener );
     }
 
 
@@ -323,11 +496,11 @@ public class PasswordPolicyDetailsPage implements IDetailsPage
         IStructuredSelection ssel = ( IStructuredSelection ) selection;
         if ( ssel.size() == 1 )
         {
-            input = ( PasswordPolicyBean ) ssel.getFirstElement();
+            passwordPolicy = ( PasswordPolicyBean ) ssel.getFirstElement();
         }
         else
         {
-            input = null;
+            passwordPolicy = null;
         }
         refresh();
     }
@@ -338,10 +511,205 @@ public class PasswordPolicyDetailsPage implements IDetailsPage
      */
     public void commit( boolean onSave )
     {
-        if ( input != null )
+        if ( passwordPolicy != null )
         {
-            // TODO
+            // Enabled
+            passwordPolicy.setEnabled( enabledCheckbox.getSelection() );
+
+            // ID
+            passwordPolicy.setPwdId( ServerConfigurationEditorUtils.checkEmptyString( idText.getText() ) );
+
+            // Description
+            passwordPolicy
+                .setDescription( ServerConfigurationEditorUtils.checkEmptyString( descriptionText.getText() ) );
+
+            // Check Quality
+            passwordPolicy.setPwdCheckQuality( getPwdCheckQuality() );
+
+            // Miminum Length
+            if ( minimumLengthCheckbox.getSelection() )
+            {
+                try
+                {
+                    passwordPolicy.setPwdMinLength( Integer.parseInt( minimumLengthText.getText() ) );
+                }
+                catch ( NumberFormatException e )
+                {
+                    passwordPolicy.setPwdMinLength( 0 );
+                }
+            }
+            else
+            {
+                passwordPolicy.setPwdMinLength( 0 );
+            }
+
+            // Maximum Length
+            if ( maximumLengthCheckbox.getSelection() )
+            {
+                try
+                {
+                    passwordPolicy.setPwdMaxLength( Integer.parseInt( maximumLengthText.getText() ) );
+                }
+                catch ( NumberFormatException e )
+                {
+                    passwordPolicy.setPwdMaxLength( 0 );
+                }
+            }
+            else
+            {
+                passwordPolicy.setPwdMaxLength( 0 );
+            }
+
+            // Minimum Age
+            try
+            {
+                passwordPolicy.setPwdMinAge( Integer.parseInt( minimumAgeText.getText() ) );
+            }
+            catch ( NumberFormatException e )
+            {
+                passwordPolicy.setPwdMinAge( 0 );
+            }
+
+            // Maximum Age
+            try
+            {
+                passwordPolicy.setPwdMaxAge( Integer.parseInt( maximumAgeText.getText() ) );
+            }
+            catch ( NumberFormatException e )
+            {
+                passwordPolicy.setPwdMaxAge( 0 );
+            }
+
+            // Expire Warning
+            if ( expireWarningCheckbox.getSelection() )
+            {
+                try
+                {
+                    passwordPolicy.setPwdExpireWarning( Integer.parseInt( expireWarningText.getText() ) );
+                }
+                catch ( NumberFormatException e )
+                {
+                    passwordPolicy.setPwdExpireWarning( 0 );
+                }
+            }
+            else
+            {
+                passwordPolicy.setPwdExpireWarning( 0 );
+            }
+
+            // Grace Authentication Limit
+            if ( graceAuthenticationLimitCheckbox.getSelection() )
+            {
+                try
+                {
+                    passwordPolicy.setPwdGraceAuthNLimit( Integer.parseInt( graceAuthenticationLimitText.getText() ) );
+                }
+                catch ( NumberFormatException e )
+                {
+                    passwordPolicy.setPwdGraceAuthNLimit( 0 );
+                }
+            }
+            else
+            {
+                passwordPolicy.setPwdGraceAuthNLimit( 0 );
+            }
+
+            // Grace Expire
+            if ( graceExpireCheckbox.getSelection() )
+            {
+                try
+                {
+                    passwordPolicy.setPwdGraceExpire( Integer.parseInt( graceExpireText.getText() ) );
+                }
+                catch ( NumberFormatException e )
+                {
+                    passwordPolicy.setPwdGraceExpire( 0 );
+                }
+            }
+            else
+            {
+                passwordPolicy.setPwdGraceExpire( 0 );
+            }
+
+            // Must Change
+            passwordPolicy.setPwdMustChange( mustChangeCheckbox.getSelection() );
+
+            // Allow User Change
+            passwordPolicy.setPwdAllowUserChange( allowUserChangeCheckbox.getSelection() );
+
+            // Safe Modify
+            passwordPolicy.setPwdSafeModify( safeModifyCheckbox.getSelection() );
+
+            // Lockout
+            passwordPolicy.setPwdLockout( lockoutCheckbox.getSelection() );
+
+            // Lockout Duration
+            try
+            {
+                passwordPolicy.setPwdLockoutDuration( Integer.parseInt( lockoutDurationText.getText() ) );
+            }
+            catch ( NumberFormatException e )
+            {
+                passwordPolicy.setPwdLockoutDuration( 0 );
+            }
+
+            // Max Failure
+            try
+            {
+                passwordPolicy.setPwdMaxFailure( Integer.parseInt( maxFailureText.getText() ) );
+            }
+            catch ( NumberFormatException e )
+            {
+                passwordPolicy.setPwdMaxFailure( 0 );
+            }
+
+            // Failure Count Interval
+            try
+            {
+                passwordPolicy.setPwdFailureCountInterval( Integer.parseInt( failureCountIntervalText.getText() ) );
+            }
+            catch ( NumberFormatException e )
+            {
+                passwordPolicy.setPwdFailureCountInterval( 0 );
+            }
+
+            // In History
+            if ( inHistoryCheckbox.getSelection() )
+            {
+                try
+                {
+                    passwordPolicy.setPwdInHistory( Integer.parseInt( inHistoryText.getText() ) );
+                }
+                catch ( NumberFormatException e )
+                {
+                    passwordPolicy.setPwdInHistory( 0 );
+                }
+            }
+            else
+            {
+                passwordPolicy.setPwdInHistory( 0 );
+            }
         }
+    }
+
+
+    /**
+     * Gets the password policy check quality.
+     *
+     * @return the password policy check quality
+     */
+    private int getPwdCheckQuality()
+    {
+        IStructuredSelection selection = ( StructuredSelection ) checkQualityComboViewer.getSelection();
+
+        if ( !selection.isEmpty() )
+        {
+            CheckQuality checkQuality = ( CheckQuality ) selection.getFirstElement();
+
+            return checkQuality.getValue();
+        }
+
+        return CheckQuality.DISABLED.getValue();
     }
 
 
@@ -387,7 +755,82 @@ public class PasswordPolicyDetailsPage implements IDetailsPage
     {
         removeListeners();
 
-        // TODO
+        if ( passwordPolicy != null )
+        {
+            // Checking if this is the default password policy
+            boolean isDefaultPasswordPolicy = PasswordPoliciesPage.isDefaultPasswordPolicy( passwordPolicy );
+            
+            // Enabled
+            enabledCheckbox.setSelection( passwordPolicy.isEnabled() );
+
+            // ID
+            idText.setText( ServerConfigurationEditorUtils.checkNull( passwordPolicy.getPwdId() ) );
+            idText.setEnabled( !isDefaultPasswordPolicy );
+
+            // Description
+            descriptionText.setText( ServerConfigurationEditorUtils.checkNull( passwordPolicy.getDescription() ) );
+            descriptionText.setEnabled( !isDefaultPasswordPolicy );
+
+            // Check Quality
+            checkQualityComboViewer.setSelection( new StructuredSelection( CheckQuality.valueOf( passwordPolicy
+                .getPwdCheckQuality() ) ) );
+
+            // Miminum Length
+            int minimumLength = passwordPolicy.getPwdMinLength();
+            minimumLengthCheckbox.setSelection( minimumLength != 0 );
+            minimumLengthText.setText( "" + minimumLength );
+
+            // Maximum Length
+            int maximumLength = passwordPolicy.getPwdMaxLength();
+            maximumLengthCheckbox.setSelection( maximumLength != 0 );
+            maximumLengthText.setText( "" + maximumLength );
+
+            // Minimum Age
+            minimumAgeText.setText( "" + passwordPolicy.getPwdMinAge() );
+
+            // Maximum Age
+            maximumAgeText.setText( "" + passwordPolicy.getPwdMaxAge() );
+
+            // Expire Warning
+            int expireWarning = passwordPolicy.getPwdExpireWarning();
+            expireWarningCheckbox.setSelection( expireWarning != 0 );
+            expireWarningText.setText( "" + expireWarning );
+
+            // Grace Authentication Limit
+            int graceAuthenticationLimit = passwordPolicy.getPwdGraceAuthNLimit();
+            graceAuthenticationLimitCheckbox.setSelection( graceAuthenticationLimit != 0 );
+            graceAuthenticationLimitText.setText( "" + graceAuthenticationLimit );
+
+            // Grace Expire
+            int graceExpire = passwordPolicy.getPwdGraceExpire();
+            graceExpireCheckbox.setSelection( graceExpire != 0 );
+            graceExpireText.setText( "" + graceExpire );
+
+            // Must Change
+            mustChangeCheckbox.setSelection( passwordPolicy.isPwdMustChange() );
+
+            // Allow User Change
+            allowUserChangeCheckbox.setSelection( passwordPolicy.isPwdAllowUserChange() );
+
+            // Safe Modify
+            safeModifyCheckbox.setSelection( passwordPolicy.isPwdSafeModify() );
+
+            // Lockout
+            lockoutCheckbox.setSelection( passwordPolicy.isPwdLockout() );
+
+            // Lockout Duration
+            lockoutDurationText.setText( "" + passwordPolicy.getPwdLockoutDuration() );
+
+            // Max Failure
+            maxFailureText.setText( "" + passwordPolicy.getPwdMaxFailure() );
+
+            // Failure Count Interval
+            failureCountIntervalText.setText( "" + passwordPolicy.getPwdFailureCountInterval() );
+
+            // In History
+            inHistoryCheckbox.setSelection( passwordPolicy.getPwdInHistory() != 0 );
+            inHistoryText.setText( "" + passwordPolicy.getPwdInHistory() );
+        }
 
         addListeners();
     }

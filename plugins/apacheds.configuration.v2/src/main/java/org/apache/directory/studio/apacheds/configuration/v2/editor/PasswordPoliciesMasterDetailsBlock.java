@@ -21,7 +21,6 @@ package org.apache.directory.studio.apacheds.configuration.v2.editor;
 
 
 import org.apache.directory.server.config.beans.AuthenticationInterceptorBean;
-import org.apache.directory.server.config.beans.DirectoryServiceBean;
 import org.apache.directory.server.config.beans.InterceptorBean;
 import org.apache.directory.server.config.beans.PasswordPolicyBean;
 import org.apache.directory.studio.apacheds.configuration.v2.ApacheDS2ConfigurationPlugin;
@@ -90,6 +89,16 @@ public class PasswordPoliciesMasterDetailsBlock extends MasterDetailsBlock
         this.page = page;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    public void createContent( IManagedForm managedForm )
+    {
+        super.createContent( managedForm );
+
+        this.sashForm.setWeights( new int[]
+            { 40, 60 } );
+    }
 
     /**
      * {@inheritDoc}
@@ -137,8 +146,15 @@ public class PasswordPoliciesMasterDetailsBlock extends MasterDetailsBlock
                 if ( element instanceof PasswordPolicyBean )
                 {
                     PasswordPolicyBean passwordPolicy = ( PasswordPolicyBean ) element;
-
-                    return NLS.bind( "{0}", passwordPolicy.getPwdId() ); //$NON-NLS-1$
+                    
+                    if ( passwordPolicy.isEnabled() )
+                    {
+                        return NLS.bind( "{0} (enabled)", passwordPolicy.getPwdId() );
+                    }
+                    else
+                    {
+                        return NLS.bind( "{0} (disabled)", passwordPolicy.getPwdId() );
+                    }
                 }
 
                 return super.getText( element );
