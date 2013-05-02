@@ -134,7 +134,7 @@ public class PartitionsPage extends ServerConfigurationEditorPage
      */
     protected void refreshUI()
     {
-        // TODO
+        // Nothing to do.
     }
 
 
