@@ -339,12 +339,12 @@ public class PasswordPolicyDetailsPage implements IDetailsPage
         section.setClient( composite );
 
         // Minimum Age (pwdMinAge)
-        toolkit.createLabel( composite, "Mimimum Age:" );
+        toolkit.createLabel( composite, "Mimimum Age (seconds):" );
         minimumAgeText = toolkit.createText( composite, "" );
         minimumAgeText.setLayoutData( new GridData( SWT.FILL, SWT.CENTER, true, false ) );
 
         // Maximum Age (pwdMaxAge)
-        toolkit.createLabel( composite, "Maximum Age:" );
+        toolkit.createLabel( composite, "Maximum Age (seconds):" );
         maximumAgeText = toolkit.createText( composite, "" );
         maximumAgeText.setLayoutData( new GridData( SWT.FILL, SWT.CENTER, true, false ) );
 
@@ -438,22 +438,22 @@ public class PasswordPolicyDetailsPage implements IDetailsPage
         lockoutCheckbox.setLayoutData( new GridData( SWT.BEGINNING, SWT.CENTER, false, false, 2, 1 ) );
 
         // Lockout Duration (pwdLockoutDuration)
-        toolkit.createLabel( composite, "Lockout Duration:" );
+        toolkit.createLabel( composite, "Lockout Duration (seconds):" );
         lockoutDurationText = toolkit.createText( composite, "" );
         lockoutDurationText.setLayoutData( new GridData( SWT.FILL, SWT.CENTER, true, false ) );
 
         // Max Failure (pwdMaxFailure)
-        toolkit.createLabel( composite, "Max Failure:" );
+        toolkit.createLabel( composite, "Maximum Consecutive Failures (count):" );
         maxFailureText = toolkit.createText( composite, "" );
         maxFailureText.setLayoutData( new GridData( SWT.FILL, SWT.CENTER, true, false ) );
 
         // Failure Count Interval (pwdFailureCountInterval)
-        toolkit.createLabel( composite, "Failure Count Interval:" );
+        toolkit.createLabel( composite, "Failure Count Interval (seconds):" );
         failureCountIntervalText = toolkit.createText( composite, "" );
         failureCountIntervalText.setLayoutData( new GridData( SWT.FILL, SWT.CENTER, true, false ) );
 
         // Max Idle (pwdMaxIdle)
-        maxIdleCheckbox = toolkit.createButton( composite, "Enable Max Idle", SWT.CHECK );
+        maxIdleCheckbox = toolkit.createButton( composite, "Enable Maximum Idle", SWT.CHECK );
         maxIdleCheckbox.setLayoutData( new GridData( SWT.BEGINNING, SWT.CENTER, false, false, 3, 1 ) );
         Composite maxIdleCheckboxRadioIndentComposite = createRadioIndentComposite( toolkit, composite,
             "Interval (seconds):" );
