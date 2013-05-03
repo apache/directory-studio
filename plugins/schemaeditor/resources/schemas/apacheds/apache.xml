@@ -19,15 +19,6 @@
 -->
 <schema name="apache">
   <attributetypes>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.38" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-      <aliases>
-        <alias>privateKeyFormat</alias>
-      </aliases>
-      <description>The format of the private key used for TLS</description>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.26</syntax>
-      <equality>caseExactIA5Match</equality>
-    </attributetype>
     <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.35" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
       <aliases>
         <alias>schemaModifyTimestamp</alias>
@@ -39,44 +30,26 @@
       <equality>generalizedTimeMatch</equality>
       <ordering>generalizedTimeOrderingMatch</ordering>
     </attributetype>
-    <attributetype oid="1.3.6.1.1.20" obsolete="false" singlevalue="true" collective="false" nousermodification="true">
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.15" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
       <aliases>
-        <alias>entryDN</alias>
+        <alias>apacheServicePid</alias>
       </aliases>
-      <description>DN of the entry</description>
-      <usage>DIRECTORY_OPERATION</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.12</syntax>
-    </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.44" obsolete="false" singlevalue="false" collective="false" nousermodification="true">
-      <aliases>
-        <alias>revisions</alias>
-      </aliases>
-      <description>Revision numbers used in change log</description>
-      <usage>DSA_OPERATION</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
-      <equality>integerMatch</equality>
-      <ordering>integerOrderingMatch</ordering>
-    </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.6" obsolete="false" singlevalue="false" collective="false" nousermodification="true">
-      <aliases>
-        <alias>apacheSubAlias</alias>
-      </aliases>
-      <description>Index attribute used to track sub level aliases</description>
-      <usage>DSA_OPERATION</usage>
-      <syntax>1.3.6.1.1.16.1</syntax>
-      <equality>uuidMatch</equality>
-    </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.5.1" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-      <aliases>
-        <alias>storedProcLangId</alias>
-      </aliases>
+      <description>A string up to 256 characters in length</description>
       <usage>USER_APPLICATIONS</usage>
       <syntax>1.3.6.1.4.1.1466.115.121.1.26</syntax>
-      <equality>caseExactIA5Match</equality>
+      <equality>caseIgnoreIA5Match</equality>
     </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.17" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.49" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
       <aliases>
-        <alias>apacheCatalogEntryName</alias>
+        <alias>changeLogContext</alias>
+      </aliases>
+      <description>tells about the changelog context suffix</description>
+      <usage>DSA_OPERATION</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.12</syntax>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.18" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>apacheCatalogEntryBaseDn</alias>
       </aliases>
       <description>A string up to 256 characters in length</description>
       <usage>USER_APPLICATIONS</usage>
@@ -92,6 +65,15 @@
       <syntax>1.3.6.1.4.1.1466.115.121.1.12</syntax>
       <equality>distinguishedNameMatch</equality>
     </attributetype>
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.38" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>privateKeyFormat</alias>
+      </aliases>
+      <description>The format of the private key used for TLS</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.26</syntax>
+      <equality>caseExactIA5Match</equality>
+    </attributetype>
     <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.3" obsolete="false" singlevalue="false" collective="false" nousermodification="true">
       <aliases>
         <alias>apachePresence</alias>
@@ -102,129 +84,33 @@
       <equality>caseIgnoreMatch</equality>
       <substring>caseIgnoreSubstringsMatch</substring>
     </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.32" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.16" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
       <aliases>
-        <alias>comparators</alias>
+        <alias>apacheServiceFactoryPid</alias>
       </aliases>
-      <description>A multivalued comparator description attribute</description>
-      <usage>DIRECTORY_OPERATION</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.15</syntax>
-      <equality>caseIgnoreMatch</equality>
-    </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.20" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-      <aliases>
-        <alias>unixFilePath</alias>
-      </aliases>
-      <description>A UNIX file path where case does make a difference</description>
+      <description>A string up to 256 characters in length</description>
       <usage>USER_APPLICATIONS</usage>
       <syntax>1.3.6.1.4.1.1466.115.121.1.26</syntax>
-      <equality>caseExactIA5Match</equality>
+      <equality>caseIgnoreIA5Match</equality>
     </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.40" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.43" obsolete="false" singlevalue="false" collective="false" nousermodification="true">
       <aliases>
-        <alias>privateKey</alias>
+        <alias>apacheSubLevel</alias>
       </aliases>
-      <description>The private key material used for TLS</description>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.5</syntax>
-    </attributetype>
-    <attributetype oid="2.5.24.4" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
-      <aliases>
-        <alias>prescriptiveACI</alias>
-      </aliases>
-      <description>Access control information that applies to a set of entries</description>
-      <usage>DIRECTORY_OPERATION</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.1</syntax>
-      <equality>directoryStringFirstComponentMatch</equality>
-    </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.34" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
-      <aliases>
-        <alias>syntaxCheckers</alias>
-      </aliases>
-      <description>A multivalued syntaxCheckers description attribute</description>
-      <usage>DIRECTORY_OPERATION</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.15</syntax>
-      <equality>caseIgnoreMatch</equality>
-    </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.31" obsolete="false" singlevalue="true" collective="false" nousermodification="true">
-      <aliases>
-        <alias>entryDeleted</alias>
-      </aliases>
-      <description>Whether or not an entry has been deleted.</description>
-      <usage>DIRECTORY_OPERATION</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.7</syntax>
-      <equality>booleanMatch</equality>
-    </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.8" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-      <aliases>
-        <alias>prefNodeName</alias>
-      </aliases>
-      <description>Attribute to describe the name of a Java Preferences API node</description>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.15</syntax>
-      <equality>caseExactMatch</equality>
-    </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.41" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-      <aliases>
-        <alias>publicKeyFormat</alias>
-      </aliases>
-      <description>The format of the public key used for TLS</description>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.26</syntax>
-      <equality>caseExactIA5Match</equality>
-    </attributetype>
-    <attributetype oid="1.3.6.1.4.1.4203.666.1.7" obsolete="false" singlevalue="true" collective="false" nousermodification="true">
-      <aliases>
-        <alias>entryCSN</alias>
-      </aliases>
-      <description>change sequence number of the entry</description>
-      <usage>DIRECTORY_OPERATION</usage>
-      <syntax>1.3.6.1.4.1.4203.666.11.2.1</syntax>
-      <equality>csnMatch</equality>
-      <ordering>csnOrderingMatch</ordering>
-    </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.5.4" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-      <aliases>
-        <alias>javaByteCode</alias>
-      </aliases>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.5</syntax>
-    </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.5" obsolete="false" singlevalue="false" collective="false" nousermodification="true">
-      <aliases>
-        <alias>apacheOneAlias</alias>
-      </aliases>
-      <description>Index attribute used to track single level aliases</description>
+      <description>Index attribute used to track sub level searches</description>
       <usage>DSA_OPERATION</usage>
-      <syntax>1.3.6.1.1.16.1</syntax>
-      <equality>uuidMatch</equality>
-    </attributetype>
-    <attributetype oid="2.5.24.5" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
-      <aliases>
-        <alias>entryACI</alias>
-      </aliases>
-      <description>Access control information that applies to a single entry</description>
-      <usage>DIRECTORY_OPERATION</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.1</syntax>
-      <equality>directoryStringFirstComponentMatch</equality>
-    </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.50" obsolete="false" singlevalue="false" collective="false" nousermodification="true">
-      <aliases>
-        <alias>apacheRdn</alias>
-      </aliases>
-      <description>Index attribute RDN with values both user provided and normalized based on schema</description>
-      <usage>DSA_OPERATION</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.12</syntax>
-      <equality>exactDnAsStringMatch</equality>
-    </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.9" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-      <aliases>
-        <alias>apacheSamType</alias>
-      </aliases>
-      <description>Single-use Authentication Mechanism type/vendor code</description>
-      <usage>USER_APPLICATIONS</usage>
       <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
       <equality>integerMatch</equality>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.36" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
+      <aliases>
+        <alias>schemaModifiersName</alias>
+      </aliases>
+      <description>the DN of the modifier of the schema</description>
+      <superior>modifiersName</superior>
+      <usage>DIRECTORY_OPERATION</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.12</syntax>
+      <equality>distinguishedNameMatch</equality>
     </attributetype>
     <attributetype oid="1.3.6.1.4.1.18060.0.4.1.5.6" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
       <aliases>
@@ -233,17 +119,6 @@
       <usage>USER_APPLICATIONS</usage>
       <syntax>1.3.6.1.4.1.1466.115.121.1.26</syntax>
       <equality>caseExactIA5Match</equality>
-    </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.47" obsolete="false" singlevalue="true" collective="false" nousermodification="true">
-      <aliases>
-        <alias>rev</alias>
-        <alias>eventId</alias>
-      </aliases>
-      <description>the unique sequential id for the event (a.k.a revision number)</description>
-      <usage>DSA_OPERATION</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
-      <equality>integerMatch</equality>
-      <ordering>integerOrderingMatch</ordering>
     </attributetype>
     <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.46" obsolete="false" singlevalue="true" collective="false" nousermodification="true">
       <aliases>
@@ -254,114 +129,59 @@
       <syntax>1.3.6.1.4.1.1466.115.121.1.44</syntax>
       <equality>caseIgnoreMatch</equality>
     </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.10" obsolete="false" singlevalue="true" collective="false" nousermodification="true">
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.45" obsolete="false" singlevalue="true" collective="false" nousermodification="true">
       <aliases>
-        <alias>autonomousAreaSubentry</alias>
+        <alias>changeTime</alias>
       </aliases>
-      <description>Used to track a subentry associated with an autonomousArea</description>
-      <usage>DIRECTORY_OPERATION</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.12</syntax>
-      <equality>distinguishedNameMatch</equality>
-    </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.19" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-      <aliases>
-        <alias>windowsFilePath</alias>
-      </aliases>
-      <description>A windows file path where case does not make a difference</description>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.26</syntax>
-      <equality>caseIgnoreIA5Match</equality>
-    </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.4" obsolete="false" singlevalue="false" collective="false" nousermodification="true">
-      <aliases>
-        <alias>apacheOneLevel</alias>
-      </aliases>
-      <description>Index attribute used to track one level searches</description>
+      <description>represents the time when the change event occurred</description>
       <usage>DSA_OPERATION</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
-      <equality>integerMatch</equality>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.24</syntax>
+      <equality>generalizedTimeMatch</equality>
+      <ordering>generalizedTimeOrderingMatch</ordering>
     </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.27" obsolete="false" singlevalue="false" collective="false" nousermodification="true">
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.32" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
       <aliases>
-        <alias>triggerExecutionSubentries</alias>
+        <alias>comparators</alias>
       </aliases>
-      <description>Used to track subentries associated with a trigger area which an entry falls under</description>
+      <description>A multivalued comparator description attribute</description>
       <usage>DIRECTORY_OPERATION</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.12</syntax>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.15</syntax>
+      <equality>caseIgnoreMatch</equality>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.37" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
+      <aliases>
+        <alias>subschemaSubentryName</alias>
+      </aliases>
+      <description>the DN of the schema subentry the modification info corresponds to</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.15</syntax>
       <equality>distinguishedNameMatch</equality>
     </attributetype>
-    <attributetype oid="2.5.24.6" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.34" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
       <aliases>
-        <alias>subentryACI</alias>
+        <alias>syntaxCheckers</alias>
       </aliases>
-      <description>Access control information that applies to a single subentry</description>
+      <description>A multivalued syntaxCheckers description attribute</description>
       <usage>DIRECTORY_OPERATION</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.1</syntax>
-      <equality>directoryStringFirstComponentMatch</equality>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.15</syntax>
+      <equality>caseIgnoreMatch</equality>
     </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.22" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.50" obsolete="false" singlevalue="false" collective="false" nousermodification="true">
       <aliases>
-        <alias>javaClassByteCode</alias>
+        <alias>apacheRdn</alias>
       </aliases>
-      <description>The actual byte code for a (Java) class</description>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.5</syntax>
-    </attributetype>
-    <attributetype oid="1.3.6.1.1.16.4" obsolete="false" singlevalue="true" collective="false" nousermodification="true">
-      <aliases>
-        <alias>entryUUID</alias>
-      </aliases>
-      <description>UUID of the entry</description>
-      <usage>DIRECTORY_OPERATION</usage>
-      <syntax>1.3.6.1.1.16.1</syntax>
-      <equality>uuidMatch</equality>
-      <ordering>uuidOrderingMatch</ordering>
-    </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.23" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
-      <aliases>
-        <alias>classLoaderDefaultSearchContext</alias>
-      </aliases>
-      <description>The default search context for the Ldap Class Loader</description>
-      <superior>distinguishedName</superior>
-      <usage>USER_APPLICATIONS</usage>
+      <description>Index attribute RDN with values both user provided and normalized based on schema</description>
+      <usage>DSA_OPERATION</usage>
       <syntax>1.3.6.1.4.1.1466.115.121.1.12</syntax>
-      <equality>distinguishedNameMatch</equality>
+      <equality>exactDnAsStringMatch</equality>
     </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.21" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.40" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
       <aliases>
-        <alias>fullyQualifiedJavaClassName</alias>
+        <alias>privateKey</alias>
       </aliases>
-      <description>The fully qualified name for a (Java) class</description>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.26</syntax>
-      <equality>caseExactIA5Match</equality>
-    </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.26" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
-      <aliases>
-        <alias>entryTriggerSpecification</alias>
-      </aliases>
-      <description>Trigger specification that applies to a single entry</description>
-      <usage>DIRECTORY_OPERATION</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.59</syntax>
-      <equality>directoryStringFirstComponentMatch</equality>
-    </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.42" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-      <aliases>
-        <alias>publicKey</alias>
-      </aliases>
-      <description>The public key material used for TLS</description>
+      <description>The private key material used for TLS</description>
       <usage>USER_APPLICATIONS</usage>
       <syntax>1.3.6.1.4.1.1466.115.121.1.5</syntax>
-    </attributetype>
-    <attributetype oid="1.3.6.1.4.1.4203.666.1.25" obsolete="false" singlevalue="false" collective="false" nousermodification="true">
-      <aliases>
-        <alias>contextCSN</alias>
-      </aliases>
-      <description>the largest committed CSN of a context</description>
-      <usage>DIRECTORY_OPERATION</usage>
-      <syntax>1.3.6.1.4.1.4203.666.11.2.1</syntax>
-      <equality>csnMatch</equality>
-      <ordering>csnOrderingMatch</ordering>
     </attributetype>
     <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.25" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
       <aliases>
@@ -372,23 +192,40 @@
       <syntax>1.3.6.1.4.1.1466.115.121.1.59</syntax>
       <equality>directoryStringFirstComponentMatch</equality>
     </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.18" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.6" obsolete="false" singlevalue="false" collective="false" nousermodification="true">
       <aliases>
-        <alias>apacheCatalogEntryBaseDn</alias>
+        <alias>apacheSubAlias</alias>
+      </aliases>
+      <description>Index attribute used to track sub level aliases</description>
+      <usage>DSA_OPERATION</usage>
+      <syntax>1.3.6.1.1.16.1</syntax>
+      <equality>uuidMatch</equality>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.17" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>apacheCatalogEntryName</alias>
       </aliases>
       <description>A string up to 256 characters in length</description>
       <usage>USER_APPLICATIONS</usage>
       <syntax>1.3.6.1.4.1.1466.115.121.1.26</syntax>
       <equality>caseIgnoreIA5Match</equality>
     </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.15" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.33" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
       <aliases>
-        <alias>apacheServicePid</alias>
+        <alias>normalizers</alias>
       </aliases>
-      <description>A string up to 256 characters in length</description>
+      <description>A multivalued normalizer description attribute</description>
+      <usage>DIRECTORY_OPERATION</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.15</syntax>
+      <equality>caseIgnoreMatch</equality>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.5.1" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>storedProcLangId</alias>
+      </aliases>
       <usage>USER_APPLICATIONS</usage>
       <syntax>1.3.6.1.4.1.1466.115.121.1.26</syntax>
-      <equality>caseIgnoreIA5Match</equality>
+      <equality>caseExactIA5Match</equality>
     </attributetype>
     <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.51" obsolete="false" singlevalue="true" collective="false" nousermodification="true">
       <aliases>
@@ -400,6 +237,61 @@
       <equality>caseExactMatch</equality>
       <ordering>caseExactOrderingMatch</ordering>
     </attributetype>
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.19" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>windowsFilePath</alias>
+      </aliases>
+      <description>A windows file path where case does not make a difference</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.26</syntax>
+      <equality>caseIgnoreIA5Match</equality>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.21" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>fullyQualifiedJavaClassName</alias>
+      </aliases>
+      <description>The fully qualified name for a (Java) class</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.26</syntax>
+      <equality>caseExactIA5Match</equality>
+    </attributetype>
+    <attributetype oid="2.5.24.6" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
+      <aliases>
+        <alias>subentryACI</alias>
+      </aliases>
+      <description>Access control information that applies to a single subentry</description>
+      <usage>DIRECTORY_OPERATION</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.1</syntax>
+      <equality>directoryStringFirstComponentMatch</equality>
+    </attributetype>
+    <attributetype oid="2.5.24.4" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
+      <aliases>
+        <alias>prescriptiveACI</alias>
+      </aliases>
+      <description>Access control information that applies to a set of entries</description>
+      <usage>DIRECTORY_OPERATION</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.1</syntax>
+      <equality>directoryStringFirstComponentMatch</equality>
+    </attributetype>
+    <attributetype oid="2.5.24.5" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
+      <aliases>
+        <alias>entryACI</alias>
+      </aliases>
+      <description>Access control information that applies to a single entry</description>
+      <usage>DIRECTORY_OPERATION</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.1</syntax>
+      <equality>directoryStringFirstComponentMatch</equality>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.4203.666.1.7" obsolete="false" singlevalue="true" collective="false" nousermodification="true">
+      <aliases>
+        <alias>entryCSN</alias>
+      </aliases>
+      <description>change sequence number of the entry</description>
+      <usage>DIRECTORY_OPERATION</usage>
+      <syntax>1.3.6.1.4.1.4203.666.11.2.1</syntax>
+      <equality>csnMatch</equality>
+      <ordering>csnOrderingMatch</ordering>
+    </attributetype>
     <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.39" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
       <aliases>
         <alias>keyAlgorithm</alias>
@@ -409,14 +301,112 @@
       <syntax>1.3.6.1.4.1.1466.115.121.1.26</syntax>
       <equality>caseExactIA5Match</equality>
     </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.43" obsolete="false" singlevalue="false" collective="false" nousermodification="true">
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.22" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
       <aliases>
-        <alias>apacheSubLevel</alias>
+        <alias>javaClassByteCode</alias>
       </aliases>
-      <description>Index attribute used to track sub level searches</description>
+      <description>The actual byte code for a (Java) class</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.5</syntax>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.27" obsolete="false" singlevalue="false" collective="false" nousermodification="true">
+      <aliases>
+        <alias>triggerExecutionSubentries</alias>
+      </aliases>
+      <description>Used to track subentries associated with a trigger area which an entry falls under</description>
+      <usage>DIRECTORY_OPERATION</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.12</syntax>
+      <equality>distinguishedNameMatch</equality>
+    </attributetype>
+    <attributetype oid="1.3.6.1.1.16.4" obsolete="false" singlevalue="true" collective="false" nousermodification="true">
+      <aliases>
+        <alias>entryUUID</alias>
+      </aliases>
+      <description>UUID of the entry</description>
+      <usage>DIRECTORY_OPERATION</usage>
+      <syntax>1.3.6.1.1.16.1</syntax>
+      <equality>uuidMatch</equality>
+      <ordering>uuidOrderingMatch</ordering>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.26" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
+      <aliases>
+        <alias>entryTriggerSpecification</alias>
+      </aliases>
+      <description>Trigger specification that applies to a single entry</description>
+      <usage>DIRECTORY_OPERATION</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.59</syntax>
+      <equality>directoryStringFirstComponentMatch</equality>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.23" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
+      <aliases>
+        <alias>classLoaderDefaultSearchContext</alias>
+      </aliases>
+      <description>The default search context for the Ldap Class Loader</description>
+      <superior>distinguishedName</superior>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.12</syntax>
+      <equality>distinguishedNameMatch</equality>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.42" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>publicKey</alias>
+      </aliases>
+      <description>The public key material used for TLS</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.5</syntax>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.8" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>prefNodeName</alias>
+      </aliases>
+      <description>Attribute to describe the name of a Java Preferences API node</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.15</syntax>
+      <equality>caseExactMatch</equality>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.20" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>unixFilePath</alias>
+      </aliases>
+      <description>A UNIX file path where case does make a difference</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.26</syntax>
+      <equality>caseExactIA5Match</equality>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.7" obsolete="false" singlevalue="true" collective="false" nousermodification="true">
+      <aliases>
+        <alias>apacheAlias</alias>
+      </aliases>
+      <description>asdf</description>
       <usage>DSA_OPERATION</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.12</syntax>
+      <equality>distinguishedNameMatch</equality>
+    </attributetype>
+    <attributetype oid="1.3.6.1.1.20" obsolete="false" singlevalue="true" collective="false" nousermodification="true">
+      <aliases>
+        <alias>entryDN</alias>
+      </aliases>
+      <description>DN of the entry</description>
+      <usage>DIRECTORY_OPERATION</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.12</syntax>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.9" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>apacheSamType</alias>
+      </aliases>
+      <description>Single-use Authentication Mechanism type/vendor code</description>
+      <usage>USER_APPLICATIONS</usage>
       <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
       <equality>integerMatch</equality>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.10" obsolete="false" singlevalue="true" collective="false" nousermodification="true">
+      <aliases>
+        <alias>autonomousAreaSubentry</alias>
+      </aliases>
+      <description>Used to track a subentry associated with an autonomousArea</description>
+      <usage>DIRECTORY_OPERATION</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.12</syntax>
+      <equality>distinguishedNameMatch</equality>
     </attributetype>
     <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.48" obsolete="false" singlevalue="true" collective="false" nousermodification="true">
       <aliases>
@@ -426,6 +416,25 @@
       <usage>DSA_OPERATION</usage>
       <syntax>1.3.6.1.4.1.1466.115.121.1.12</syntax>
       <equality>exactDnAsStringMatch</equality>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.4203.666.1.25" obsolete="false" singlevalue="false" collective="false" nousermodification="true">
+      <aliases>
+        <alias>contextCSN</alias>
+      </aliases>
+      <description>the largest committed CSN of a context</description>
+      <usage>DIRECTORY_OPERATION</usage>
+      <syntax>1.3.6.1.4.1.4203.666.11.2.1</syntax>
+      <equality>csnMatch</equality>
+      <ordering>csnOrderingMatch</ordering>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.41" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>publicKeyFormat</alias>
+      </aliases>
+      <description>The format of the public key used for TLS</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.26</syntax>
+      <equality>caseExactIA5Match</equality>
     </attributetype>
     <attributetype oid="1.3.6.1.4.1.18060.0.4.1.5.7" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
       <aliases>
@@ -443,85 +452,63 @@
       <syntax>1.3.6.1.4.1.1466.115.121.1.26</syntax>
       <equality>caseExactIA5Match</equality>
     </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.36" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.44" obsolete="false" singlevalue="false" collective="false" nousermodification="true">
       <aliases>
-        <alias>schemaModifiersName</alias>
+        <alias>revisions</alias>
       </aliases>
-      <description>the DN of the modifier of the schema</description>
-      <superior>modifiersName</superior>
+      <description>Revision numbers used in change log</description>
+      <usage>DSA_OPERATION</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
+      <equality>integerMatch</equality>
+      <ordering>integerOrderingMatch</ordering>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.4" obsolete="false" singlevalue="false" collective="false" nousermodification="true">
+      <aliases>
+        <alias>apacheOneLevel</alias>
+      </aliases>
+      <description>Index attribute used to track one level searches</description>
+      <usage>DSA_OPERATION</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
+      <equality>integerMatch</equality>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.47" obsolete="false" singlevalue="true" collective="false" nousermodification="true">
+      <aliases>
+        <alias>rev</alias>
+        <alias>eventId</alias>
+      </aliases>
+      <description>the unique sequential id for the event (a.k.a revision number)</description>
+      <usage>DSA_OPERATION</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
+      <equality>integerMatch</equality>
+      <ordering>integerOrderingMatch</ordering>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.31" obsolete="false" singlevalue="true" collective="false" nousermodification="true">
+      <aliases>
+        <alias>entryDeleted</alias>
+      </aliases>
+      <description>Whether or not an entry has been deleted.</description>
       <usage>DIRECTORY_OPERATION</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.12</syntax>
-      <equality>distinguishedNameMatch</equality>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.7</syntax>
+      <equality>booleanMatch</equality>
     </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.45" obsolete="false" singlevalue="true" collective="false" nousermodification="true">
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.5" obsolete="false" singlevalue="false" collective="false" nousermodification="true">
       <aliases>
-        <alias>changeTime</alias>
+        <alias>apacheOneAlias</alias>
       </aliases>
-      <description>represents the time when the change event occurred</description>
+      <description>Index attribute used to track single level aliases</description>
       <usage>DSA_OPERATION</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.24</syntax>
-      <equality>generalizedTimeMatch</equality>
-      <ordering>generalizedTimeOrderingMatch</ordering>
+      <syntax>1.3.6.1.1.16.1</syntax>
+      <equality>uuidMatch</equality>
     </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.33" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.5.4" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
       <aliases>
-        <alias>normalizers</alias>
+        <alias>javaByteCode</alias>
       </aliases>
-      <description>A multivalued normalizer description attribute</description>
-      <usage>DIRECTORY_OPERATION</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.15</syntax>
-      <equality>caseIgnoreMatch</equality>
-    </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.16" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-      <aliases>
-        <alias>apacheServiceFactoryPid</alias>
-      </aliases>
-      <description>A string up to 256 characters in length</description>
       <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.26</syntax>
-      <equality>caseIgnoreIA5Match</equality>
-    </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.7" obsolete="false" singlevalue="true" collective="false" nousermodification="true">
-      <aliases>
-        <alias>apacheAlias</alias>
-      </aliases>
-      <description>asdf</description>
-      <usage>DSA_OPERATION</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.12</syntax>
-      <equality>distinguishedNameMatch</equality>
-    </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.49" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-      <aliases>
-        <alias>changeLogContext</alias>
-      </aliases>
-      <description>tells about the changelog context suffix</description>
-      <usage>DSA_OPERATION</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.12</syntax>
-    </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.37" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
-      <aliases>
-        <alias>subschemaSubentryName</alias>
-      </aliases>
-      <description>the DN of the schema subentry the modification info corresponds to</description>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.15</syntax>
-      <equality>distinguishedNameMatch</equality>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.5</syntax>
     </attributetype>
   </attributetypes>
   <objectclasses>
-    <objectclass oid="1.3.6.1.4.1.18060.0.4.1.3.4" obsolete="false">
-      <aliases>
-        <alias>apacheFactoryConfiguration</alias>
-      </aliases>
-      <superiors>
-        <superior>top</superior>
-      </superiors>
-      <type>STRUCTURAL</type>
-      <mandatory>
-        <attributetype>cn</attributetype>
-        <attributetype>apacheServicePid</attributetype>
-      </mandatory>
-    </objectclass>
     <objectclass oid="1.3.6.1.4.1.18060.0.4.1.3.8" obsolete="false">
       <aliases>
         <alias>javaClass</alias>
@@ -535,16 +522,20 @@
         <attributetype>javaClassByteCode</attributetype>
       </mandatory>
     </objectclass>
-    <objectclass oid="1.3.6.1.4.1.18060.0.4.1.5.5" obsolete="false">
+    <objectclass oid="1.3.6.1.4.1.18060.0.4.1.3.11" obsolete="false">
       <aliases>
-        <alias>javaStoredProcUnit</alias>
+        <alias>tlsKeyInfo</alias>
       </aliases>
       <superiors>
-        <superior>storedProcUnit</superior>
+        <superior>top</superior>
       </superiors>
-      <type>STRUCTURAL</type>
+      <type>AUXILIARY</type>
       <mandatory>
-        <attributetype>javaByteCode</attributetype>
+        <attributetype>privateKeyFormat</attributetype>
+        <attributetype>keyAlgorithm</attributetype>
+        <attributetype>privateKey</attributetype>
+        <attributetype>publicKeyFormat</attributetype>
+        <attributetype>publicKey</attributetype>
       </mandatory>
     </objectclass>
     <objectclass oid="1.3.6.1.4.1.18060.0.4.1.3.6" obsolete="false">
@@ -559,30 +550,14 @@
         <attributetype>windowsFilePath</attributetype>
       </mandatory>
     </objectclass>
-    <objectclass oid="1.3.6.1.4.1.18060.0.4.1.3.13" obsolete="false">
+    <objectclass oid="1.3.6.1.4.1.18060.0.4.1.2.28" obsolete="false">
       <aliases>
-        <alias>tag</alias>
+        <alias>triggerExecutionSubentry</alias>
       </aliases>
-      <description>represents a Tag in change log</description>
-      <type>STRUCTURAL</type>
+      <description>Used to track a subentry associated with trigger areas</description>
+      <type>AUXILIARY</type>
       <mandatory>
-        <attributetype>rev</attributetype>
-      </mandatory>
-      <optional>
-        <attributetype>description</attributetype>
-      </optional>
-    </objectclass>
-    <objectclass oid="1.3.6.1.4.1.18060.0.4.1.5.3" obsolete="false">
-      <aliases>
-        <alias>storedProcUnit</alias>
-      </aliases>
-      <superiors>
-        <superior>top</superior>
-      </superiors>
-      <type>ABSTRACT</type>
-      <mandatory>
-        <attributetype>storedProcLangId</attributetype>
-        <attributetype>storedProcUnitName</attributetype>
+        <attributetype>prescriptiveTriggerSpecification</attributetype>
       </mandatory>
     </objectclass>
     <objectclass oid="1.3.6.1.4.1.18060.0.4.1.3.12" obsolete="false">
@@ -596,18 +571,6 @@
         <attributetype>changeType</attributetype>
         <attributetype>rev</attributetype>
         <attributetype>committer</attributetype>
-      </mandatory>
-    </objectclass>
-    <objectclass oid="1.3.6.1.4.1.18060.0.4.1.3.7" obsolete="false">
-      <aliases>
-        <alias>unixFile</alias>
-      </aliases>
-      <superiors>
-        <superior>top</superior>
-      </superiors>
-      <type>STRUCTURAL</type>
-      <mandatory>
-        <attributetype>unixFilePath</attributetype>
       </mandatory>
     </objectclass>
     <objectclass oid="1.3.6.1.4.1.18060.0.4.1.3.9" obsolete="false">
@@ -625,50 +588,6 @@
         <attributetype>syntaxCheckers</attributetype>
       </optional>
     </objectclass>
-    <objectclass oid="2.5.17.1" obsolete="false">
-      <aliases>
-        <alias>accessControlSubentry</alias>
-      </aliases>
-      <type>AUXILIARY</type>
-      <mandatory>
-        <attributetype>prescriptiveACI</attributetype>
-      </mandatory>
-    </objectclass>
-    <objectclass oid="1.3.6.1.4.1.18060.0.4.1.2.28" obsolete="false">
-      <aliases>
-        <alias>triggerExecutionSubentry</alias>
-      </aliases>
-      <description>Used to track a subentry associated with trigger areas</description>
-      <type>AUXILIARY</type>
-      <mandatory>
-        <attributetype>prescriptiveTriggerSpecification</attributetype>
-      </mandatory>
-    </objectclass>
-    <objectclass oid="1.3.6.1.4.1.18060.0.4.1.3.1" obsolete="false">
-      <aliases>
-        <alias>prefNode</alias>
-      </aliases>
-      <superiors>
-        <superior>top</superior>
-      </superiors>
-      <type>STRUCTURAL</type>
-      <mandatory>
-        <attributetype>prefNodeName</attributetype>
-      </mandatory>
-    </objectclass>
-    <objectclass oid="1.3.6.1.4.1.18060.0.4.1.5.8" obsolete="false">
-      <aliases>
-        <alias>javaxScriptStoredProcUnit</alias>
-      </aliases>
-      <superiors>
-        <superior>storedProcUnit</superior>
-      </superiors>
-      <type>STRUCTURAL</type>
-      <mandatory>
-        <attributetype>javaxScriptLangId</attributetype>
-        <attributetype>javaxScriptCode</attributetype>
-      </mandatory>
-    </objectclass>
     <objectclass oid="1.3.6.1.4.1.18060.0.4.1.3.5" obsolete="false">
       <aliases>
         <alias>apacheCatalogEntry</alias>
@@ -683,6 +602,40 @@
       </mandatory>
       <optional>
         <attributetype>apacheCatalogEntryName</attributetype>
+      </optional>
+    </objectclass>
+    <objectclass oid="2.5.17.1" obsolete="false">
+      <aliases>
+        <alias>accessControlSubentry</alias>
+      </aliases>
+      <type>AUXILIARY</type>
+      <mandatory>
+        <attributetype>prescriptiveACI</attributetype>
+      </mandatory>
+    </objectclass>
+    <objectclass oid="1.3.6.1.4.1.18060.0.4.1.3.7" obsolete="false">
+      <aliases>
+        <alias>unixFile</alias>
+      </aliases>
+      <superiors>
+        <superior>top</superior>
+      </superiors>
+      <type>STRUCTURAL</type>
+      <mandatory>
+        <attributetype>unixFilePath</attributetype>
+      </mandatory>
+    </objectclass>
+    <objectclass oid="1.3.6.1.4.1.18060.0.4.1.3.13" obsolete="false">
+      <aliases>
+        <alias>tag</alias>
+      </aliases>
+      <description>represents a Tag in change log</description>
+      <type>STRUCTURAL</type>
+      <mandatory>
+        <attributetype>rev</attributetype>
+      </mandatory>
+      <optional>
+        <attributetype>description</attributetype>
       </optional>
     </objectclass>
     <objectclass oid="1.3.6.1.4.1.18060.0.4.1.3.10" obsolete="false">
@@ -701,6 +654,43 @@
         <attributetype>schemaModifiersName</attributetype>
       </mandatory>
     </objectclass>
+    <objectclass oid="1.3.6.1.4.1.18060.0.4.1.5.8" obsolete="false">
+      <aliases>
+        <alias>javaxScriptStoredProcUnit</alias>
+      </aliases>
+      <superiors>
+        <superior>storedProcUnit</superior>
+      </superiors>
+      <type>STRUCTURAL</type>
+      <mandatory>
+        <attributetype>javaxScriptLangId</attributetype>
+        <attributetype>javaxScriptCode</attributetype>
+      </mandatory>
+    </objectclass>
+    <objectclass oid="1.3.6.1.4.1.18060.0.4.1.5.5" obsolete="false">
+      <aliases>
+        <alias>javaStoredProcUnit</alias>
+      </aliases>
+      <superiors>
+        <superior>storedProcUnit</superior>
+      </superiors>
+      <type>STRUCTURAL</type>
+      <mandatory>
+        <attributetype>javaByteCode</attributetype>
+      </mandatory>
+    </objectclass>
+    <objectclass oid="1.3.6.1.4.1.18060.0.4.1.3.1" obsolete="false">
+      <aliases>
+        <alias>prefNode</alias>
+      </aliases>
+      <superiors>
+        <superior>top</superior>
+      </superiors>
+      <type>STRUCTURAL</type>
+      <mandatory>
+        <attributetype>prefNodeName</attributetype>
+      </mandatory>
+    </objectclass>
     <objectclass oid="1.3.6.1.4.1.18060.0.4.1.3.3" obsolete="false">
       <aliases>
         <alias>apacheServiceConfiguration</alias>
@@ -717,47 +707,51 @@
         <attributetype>apacheServiceFactoryPid</attributetype>
       </optional>
     </objectclass>
-    <objectclass oid="1.3.6.1.4.1.18060.0.4.1.3.11" obsolete="false">
+    <objectclass oid="1.3.6.1.4.1.18060.0.4.1.5.3" obsolete="false">
       <aliases>
-        <alias>tlsKeyInfo</alias>
+        <alias>storedProcUnit</alias>
       </aliases>
       <superiors>
         <superior>top</superior>
       </superiors>
-      <type>AUXILIARY</type>
+      <type>ABSTRACT</type>
       <mandatory>
-        <attributetype>privateKeyFormat</attributetype>
-        <attributetype>keyAlgorithm</attributetype>
-        <attributetype>privateKey</attributetype>
-        <attributetype>publicKeyFormat</attributetype>
-        <attributetype>publicKey</attributetype>
+        <attributetype>storedProcLangId</attributetype>
+        <attributetype>storedProcUnitName</attributetype>
+      </mandatory>
+    </objectclass>
+    <objectclass oid="1.3.6.1.4.1.18060.0.4.1.3.4" obsolete="false">
+      <aliases>
+        <alias>apacheFactoryConfiguration</alias>
+      </aliases>
+      <superiors>
+        <superior>top</superior>
+      </superiors>
+      <type>STRUCTURAL</type>
+      <mandatory>
+        <attributetype>cn</attributetype>
+        <attributetype>apacheServicePid</attributetype>
       </mandatory>
     </objectclass>
   </objectclasses>
   <matchingrules>
-    <matchingrule oid="1.3.6.1.1.16.2" obsolete="false">
-      <aliases>
-        <alias>uuidMatch</alias>
-      </aliases>
-      <syntaxoid>1.3.6.1.1.16.1</syntaxoid>
-    </matchingrule>
-    <matchingrule oid="1.3.6.1.4.1.18060.0.4.1.1.3" obsolete="false">
-      <aliases>
-        <alias>jdbmStringMatch</alias>
-      </aliases>
-      <syntaxoid>1.3.6.1.4.1.1466.115.121.1.15</syntaxoid>
-    </matchingrule>
-    <matchingrule oid="1.3.6.1.4.1.18060.0.4.1.1.2" obsolete="false">
-      <aliases>
-        <alias>bigIntegerMatch</alias>
-      </aliases>
-      <syntaxoid>1.3.6.1.4.1.1466.115.121.1.27</syntaxoid>
-    </matchingrule>
     <matchingrule oid="1.3.6.1.4.1.18060.0.4.1.1.1" obsolete="false">
       <aliases>
         <alias>exactDnAsStringMatch</alias>
       </aliases>
       <syntaxoid>1.3.6.1.4.1.1466.115.121.1.12</syntaxoid>
+    </matchingrule>
+    <matchingrule oid="1.3.6.1.4.1.4203.666.11.2.3" obsolete="false">
+      <aliases>
+        <alias>csnOrderingMatch</alias>
+      </aliases>
+      <syntaxoid>1.3.6.1.4.1.4203.666.11.2.1</syntaxoid>
+    </matchingrule>
+    <matchingrule oid="1.3.6.1.1.16.2" obsolete="false">
+      <aliases>
+        <alias>uuidMatch</alias>
+      </aliases>
+      <syntaxoid>1.3.6.1.1.16.1</syntaxoid>
     </matchingrule>
     <matchingrule oid="1.3.6.1.4.1.4203.666.11.2.2" obsolete="false">
       <aliases>
@@ -771,31 +765,28 @@
       </aliases>
       <syntaxoid>1.3.6.1.4.1.4203.666.11.2.4</syntaxoid>
     </matchingrule>
+    <matchingrule oid="1.3.6.1.4.1.18060.0.4.1.1.3" obsolete="false">
+      <aliases>
+        <alias>jdbmStringMatch</alias>
+      </aliases>
+      <syntaxoid>1.3.6.1.4.1.1466.115.121.1.15</syntaxoid>
+    </matchingrule>
+    <matchingrule oid="1.3.6.1.4.1.18060.0.4.1.1.2" obsolete="false">
+      <aliases>
+        <alias>bigIntegerMatch</alias>
+      </aliases>
+      <syntaxoid>1.3.6.1.4.1.1466.115.121.1.27</syntaxoid>
+    </matchingrule>
     <matchingrule oid="1.3.6.1.1.16.3" obsolete="false">
       <aliases>
         <alias>uuidOrderingMatch</alias>
       </aliases>
       <syntaxoid>1.3.6.1.1.16.1</syntaxoid>
     </matchingrule>
-    <matchingrule oid="1.3.6.1.4.1.4203.666.11.2.3" obsolete="false">
-      <aliases>
-        <alias>csnOrderingMatch</alias>
-      </aliases>
-      <syntaxoid>1.3.6.1.4.1.4203.666.11.2.1</syntaxoid>
-    </matchingrule>
   </matchingrules>
   <syntaxes>
-    <syntax oid="1.3.6.1.4.1.4203.666.11.2.4" obsolete="false" humanreadable="true">
-      <description>CSN SID</description>
-    </syntax>
-    <syntax oid="1.3.6.1.4.1.4203.666.11.2.1" obsolete="false" humanreadable="true">
-      <description>CSN</description>
-    </syntax>
-    <syntax oid="1.3.6.1.4.1.18060.0.4.1.0.2" obsolete="false" humanreadable="true">
-      <description>Java Short</description>
-    </syntax>
-    <syntax oid="1.3.6.1.4.1.18060.0.4.1.0.3" obsolete="false" humanreadable="true">
-      <description>Java Long</description>
+    <syntax oid="1.3.6.1.4.1.18060.0.4.1.0.0" obsolete="false" humanreadable="true">
+      <description>Java Byte</description>
     </syntax>
     <syntax oid="1.3.6.1.1.16.1" obsolete="false" humanreadable="true">
       <description>UUID</description>
@@ -803,8 +794,17 @@
     <syntax oid="1.3.6.1.4.1.18060.0.4.1.0.4" obsolete="false" humanreadable="true">
       <description>Java Int</description>
     </syntax>
-    <syntax oid="1.3.6.1.4.1.18060.0.4.1.0.0" obsolete="false" humanreadable="true">
-      <description>Java Byte</description>
+    <syntax oid="1.3.6.1.4.1.18060.0.4.1.0.2" obsolete="false" humanreadable="true">
+      <description>Java Short</description>
+    </syntax>
+    <syntax oid="1.3.6.1.4.1.18060.0.4.1.0.3" obsolete="false" humanreadable="true">
+      <description>Java Long</description>
+    </syntax>
+    <syntax oid="1.3.6.1.4.1.4203.666.11.2.4" obsolete="false" humanreadable="true">
+      <description>CSN SID</description>
+    </syntax>
+    <syntax oid="1.3.6.1.4.1.4203.666.11.2.1" obsolete="false" humanreadable="true">
+      <description>CSN</description>
     </syntax>
   </syntaxes>
 </schema>

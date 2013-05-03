@@ -19,79 +19,6 @@
 -->
 <schema name="apachedns">
   <attributetypes>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.2.2.13" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-      <aliases>
-        <alias>apacheDnsMxPreference</alias>
-      </aliases>
-      <description>An integer denoting the mail exchange preference</description>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
-      <equality>integerMatch</equality>
-    </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.2.2.12" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-      <aliases>
-        <alias>apacheDnsSoaMinimum</alias>
-      </aliases>
-      <description>The unsigned 32 bit minimum TTL field that should be exported with any RR from this zone.</description>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
-      <equality>integerMatch</equality>
-    </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.2.2.8" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-      <aliases>
-        <alias>apacheDnsSoaSerial</alias>
-      </aliases>
-      <description>The unsigned 32 bit version number of the original copy of the zone</description>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
-      <equality>integerMatch</equality>
-    </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.2.2.11" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-      <aliases>
-        <alias>apacheDnsSoaExpire</alias>
-      </aliases>
-      <description>A 32 bit time value that specifies the upper limit on the time interval that can elapse before the zone is no longer authoritative</description>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
-      <equality>integerMatch</equality>
-    </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.2.2.10" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-      <aliases>
-        <alias>apacheDnsSoaRetry</alias>
-      </aliases>
-      <description>A 32 bit time interval that should elapse before a failed refresh should be retired</description>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
-      <equality>integerMatch</equality>
-    </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.2.2.9" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-      <aliases>
-        <alias>apacheDnsSoaRefresh</alias>
-      </aliases>
-      <description>A 32 bit time interval before the zone should be refreshed</description>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
-      <equality>integerMatch</equality>
-    </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.2.2.6" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-      <aliases>
-        <alias>apacheDnsSoaMName</alias>
-      </aliases>
-      <description>The domain name of the name server that was the primary source of data for this zone</description>
-      <superior>apacheDnsDomainName</superior>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.26</syntax>
-      <equality>caseIgnoreIA5Match</equality>
-    </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.2.2.3" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-      <aliases>
-        <alias>apacheDnsDomainName</alias>
-      </aliases>
-      <description>A domain name represented as a sequence of labels</description>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.26</syntax>
-      <equality>caseIgnoreIA5Match</equality>
-    </attributetype>
     <attributetype oid="1.3.6.1.4.1.18060.0.4.2.2.4" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
       <aliases>
         <alias>apacheDnsCharacterString</alias>
@@ -101,29 +28,11 @@
       <syntax>1.3.6.1.4.1.1466.115.121.1.26</syntax>
       <equality>caseIgnoreIA5Match</equality>
     </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.2.2.16" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.2.2.3" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
       <aliases>
-        <alias>apacheDnsServicePort</alias>
+        <alias>apacheDnsDomainName</alias>
       </aliases>
-      <description>The unsigned 16 bit port on this target host of this service</description>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
-      <equality>integerMatch</equality>
-    </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.2.2.15" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-      <aliases>
-        <alias>apacheDnsServiceWeight</alias>
-      </aliases>
-      <description>The unsigned 16 bit weight specifying a relative weight for entries with the same priority</description>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
-      <equality>integerMatch</equality>
-    </attributetype>
-    <attributetype oid="1.3.6.1.4.1.18060.0.4.2.2.5" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
-      <aliases>
-        <alias>apacheDnsIpAddress</alias>
-      </aliases>
-      <description>A 4 octet IP address</description>
+      <description>A domain name represented as a sequence of labels</description>
       <usage>USER_APPLICATIONS</usage>
       <syntax>1.3.6.1.4.1.1466.115.121.1.26</syntax>
       <equality>caseIgnoreIA5Match</equality>
@@ -138,6 +47,34 @@
       <syntax>1.3.6.1.4.1.1466.115.121.1.26</syntax>
       <equality>caseIgnoreIA5Match</equality>
     </attributetype>
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.2.2.15" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>apacheDnsServiceWeight</alias>
+      </aliases>
+      <description>The unsigned 16 bit weight specifying a relative weight for entries with the same priority</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
+      <equality>integerMatch</equality>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.2.2.6" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>apacheDnsSoaMName</alias>
+      </aliases>
+      <description>The domain name of the name server that was the primary source of data for this zone</description>
+      <superior>apacheDnsDomainName</superior>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.26</syntax>
+      <equality>caseIgnoreIA5Match</equality>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.2.2.11" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>apacheDnsSoaExpire</alias>
+      </aliases>
+      <description>A 32 bit time value that specifies the upper limit on the time interval that can elapse before the zone is no longer authoritative</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
+      <equality>integerMatch</equality>
+    </attributetype>
     <attributetype oid="1.3.6.1.4.1.18060.0.4.2.2.14" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
       <aliases>
         <alias>apacheDnsServicePriority</alias>
@@ -147,11 +84,47 @@
       <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
       <equality>integerMatch</equality>
     </attributetype>
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.2.2.9" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>apacheDnsSoaRefresh</alias>
+      </aliases>
+      <description>A 32 bit time interval before the zone should be refreshed</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
+      <equality>integerMatch</equality>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.2.2.5" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>apacheDnsIpAddress</alias>
+      </aliases>
+      <description>A 4 octet IP address</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.26</syntax>
+      <equality>caseIgnoreIA5Match</equality>
+    </attributetype>
     <attributetype oid="1.3.6.1.4.1.18060.0.4.2.2.2" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
       <aliases>
         <alias>apacheDnsTtl</alias>
       </aliases>
       <description>An integer denoting time to live</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
+      <equality>integerMatch</equality>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.2.2.8" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>apacheDnsSoaSerial</alias>
+      </aliases>
+      <description>The unsigned 32 bit version number of the original copy of the zone</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
+      <equality>integerMatch</equality>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.2.2.12" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>apacheDnsSoaMinimum</alias>
+      </aliases>
+      <description>The unsigned 32 bit minimum TTL field that should be exported with any RR from this zone.</description>
       <usage>USER_APPLICATIONS</usage>
       <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
       <equality>integerMatch</equality>
@@ -165,8 +138,123 @@
       <syntax>1.3.6.1.4.1.1466.115.121.1.26</syntax>
       <equality>caseIgnoreIA5Match</equality>
     </attributetype>
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.2.2.13" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>apacheDnsMxPreference</alias>
+      </aliases>
+      <description>An integer denoting the mail exchange preference</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
+      <equality>integerMatch</equality>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.2.2.16" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>apacheDnsServicePort</alias>
+      </aliases>
+      <description>The unsigned 16 bit port on this target host of this service</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
+      <equality>integerMatch</equality>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.2.2.10" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>apacheDnsSoaRetry</alias>
+      </aliases>
+      <description>A 32 bit time interval that should elapse before a failed refresh should be retired</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
+      <equality>integerMatch</equality>
+    </attributetype>
   </attributetypes>
   <objectclasses>
+    <objectclass oid="1.3.6.1.4.1.18060.0.4.2.3.7" obsolete="false">
+      <aliases>
+        <alias>apacheDnsMailExchangeRecord</alias>
+      </aliases>
+      <description>A mail exchange MX record</description>
+      <superiors>
+        <superior>apacheDnsAbstractRecord</superior>
+      </superiors>
+      <type>STRUCTURAL</type>
+      <mandatory>
+        <attributetype>apacheDnsMxPreference</attributetype>
+        <attributetype>apacheDnsDomainName</attributetype>
+      </mandatory>
+    </objectclass>
+    <objectclass oid="1.3.6.1.4.1.18060.0.4.2.3.2" obsolete="false">
+      <aliases>
+        <alias>apacheDnsAddressRecord</alias>
+      </aliases>
+      <description>An address A record</description>
+      <superiors>
+        <superior>apacheDnsAbstractRecord</superior>
+      </superiors>
+      <type>STRUCTURAL</type>
+      <mandatory>
+        <attributetype>apacheDnsIpAddress</attributetype>
+      </mandatory>
+    </objectclass>
+    <objectclass oid="1.3.6.1.4.1.18060.0.4.2.3.10" obsolete="false">
+      <aliases>
+        <alias>apacheDnsReferralNameServer</alias>
+      </aliases>
+      <description>A non-authoritative referral or delegation name server</description>
+      <superiors>
+        <superior>apacheDnsAbstractRecord</superior>
+      </superiors>
+      <type>STRUCTURAL</type>
+      <mandatory>
+        <attributetype>apacheDnsDomainName</attributetype>
+      </mandatory>
+    </objectclass>
+    <objectclass oid="1.3.6.1.4.1.18060.0.4.2.3.3" obsolete="false">
+      <aliases>
+        <alias>apacheDnsPointerRecord</alias>
+      </aliases>
+      <description>A pointer PTR record</description>
+      <superiors>
+        <superior>apacheDnsAbstractRecord</superior>
+      </superiors>
+      <type>STRUCTURAL</type>
+      <mandatory>
+        <attributetype>apacheDnsDomainName</attributetype>
+      </mandatory>
+    </objectclass>
+    <objectclass oid="1.3.6.1.4.1.18060.0.4.2.3.5" obsolete="false">
+      <aliases>
+        <alias>apacheDnsStartOfAuthorityRecord</alias>
+      </aliases>
+      <description>A start of authority SOA record</description>
+      <superiors>
+        <superior>apacheDnsAbstractRecord</superior>
+      </superiors>
+      <type>STRUCTURAL</type>
+      <mandatory>
+        <attributetype>apacheDnsSoaMName</attributetype>
+        <attributetype>apacheDnsSoaRName</attributetype>
+        <attributetype>apacheDnsSoaMinimum</attributetype>
+      </mandatory>
+      <optional>
+        <attributetype>apacheDnsClass</attributetype>
+        <attributetype>apacheDnsSoaSerial</attributetype>
+        <attributetype>apacheDnsSoaRefresh</attributetype>
+        <attributetype>apacheDnsSoaRetry</attributetype>
+        <attributetype>apacheDnsSoaExpire</attributetype>
+      </optional>
+    </objectclass>
+    <objectclass oid="1.3.6.1.4.1.18060.0.4.2.3.8" obsolete="false">
+      <aliases>
+        <alias>apacheDnsTextRecord</alias>
+      </aliases>
+      <description>A text TXT record</description>
+      <superiors>
+        <superior>apacheDnsAbstractRecord</superior>
+      </superiors>
+      <type>STRUCTURAL</type>
+      <mandatory>
+        <attributetype>apacheDnsCharacterString</attributetype>
+      </mandatory>
+    </objectclass>
     <objectclass oid="1.3.6.1.4.1.18060.0.4.2.3.11" obsolete="false">
       <aliases>
         <alias>apacheDnsReferralAddress</alias>
@@ -197,49 +285,6 @@
         <attributetype>apacheDnsDomainName</attributetype>
       </mandatory>
     </objectclass>
-    <objectclass oid="1.3.6.1.4.1.18060.0.4.2.3.1" obsolete="false">
-      <aliases>
-        <alias>apacheDnsAbstractRecord</alias>
-      </aliases>
-      <description>An abstract DNS record objectClass used to build other specific structural objectclasses for different record types</description>
-      <superiors>
-        <superior>top</superior>
-      </superiors>
-      <type>ABSTRACT</type>
-      <mandatory>
-        <attributetype>cn</attributetype>
-      </mandatory>
-      <optional>
-        <attributetype>apacheDnsTtl</attributetype>
-        <attributetype>description</attributetype>
-      </optional>
-    </objectclass>
-    <objectclass oid="1.3.6.1.4.1.18060.0.4.2.3.2" obsolete="false">
-      <aliases>
-        <alias>apacheDnsAddressRecord</alias>
-      </aliases>
-      <description>An address A record</description>
-      <superiors>
-        <superior>apacheDnsAbstractRecord</superior>
-      </superiors>
-      <type>STRUCTURAL</type>
-      <mandatory>
-        <attributetype>apacheDnsIpAddress</attributetype>
-      </mandatory>
-    </objectclass>
-    <objectclass oid="1.3.6.1.4.1.18060.0.4.2.3.3" obsolete="false">
-      <aliases>
-        <alias>apacheDnsPointerRecord</alias>
-      </aliases>
-      <description>A pointer PTR record</description>
-      <superiors>
-        <superior>apacheDnsAbstractRecord</superior>
-      </superiors>
-      <type>STRUCTURAL</type>
-      <mandatory>
-        <attributetype>apacheDnsDomainName</attributetype>
-      </mandatory>
-    </objectclass>
     <objectclass oid="1.3.6.1.4.1.18060.0.4.2.3.6" obsolete="false">
       <aliases>
         <alias>apacheDnsCanonicalNameRecord</alias>
@@ -250,55 +295,6 @@
       </superiors>
       <type>STRUCTURAL</type>
       <mandatory>
-        <attributetype>apacheDnsDomainName</attributetype>
-      </mandatory>
-    </objectclass>
-    <objectclass oid="1.3.6.1.4.1.18060.0.4.2.3.8" obsolete="false">
-      <aliases>
-        <alias>apacheDnsTextRecord</alias>
-      </aliases>
-      <description>A text TXT record</description>
-      <superiors>
-        <superior>apacheDnsAbstractRecord</superior>
-      </superiors>
-      <type>STRUCTURAL</type>
-      <mandatory>
-        <attributetype>apacheDnsCharacterString</attributetype>
-      </mandatory>
-    </objectclass>
-    <objectclass oid="1.3.6.1.4.1.18060.0.4.2.3.5" obsolete="false">
-      <aliases>
-        <alias>apacheDnsStartOfAuthorityRecord</alias>
-      </aliases>
-      <description>A start of authority SOA record</description>
-      <superiors>
-        <superior>apacheDnsAbstractRecord</superior>
-      </superiors>
-      <type>STRUCTURAL</type>
-      <mandatory>
-        <attributetype>apacheDnsSoaMName</attributetype>
-        <attributetype>apacheDnsSoaRName</attributetype>
-        <attributetype>apacheDnsSoaMinimum</attributetype>
-      </mandatory>
-      <optional>
-        <attributetype>apacheDnsClass</attributetype>
-        <attributetype>apacheDnsSoaSerial</attributetype>
-        <attributetype>apacheDnsSoaRefresh</attributetype>
-        <attributetype>apacheDnsSoaRetry</attributetype>
-        <attributetype>apacheDnsSoaExpire</attributetype>
-      </optional>
-    </objectclass>
-    <objectclass oid="1.3.6.1.4.1.18060.0.4.2.3.7" obsolete="false">
-      <aliases>
-        <alias>apacheDnsMailExchangeRecord</alias>
-      </aliases>
-      <description>A mail exchange MX record</description>
-      <superiors>
-        <superior>apacheDnsAbstractRecord</superior>
-      </superiors>
-      <type>STRUCTURAL</type>
-      <mandatory>
-        <attributetype>apacheDnsMxPreference</attributetype>
         <attributetype>apacheDnsDomainName</attributetype>
       </mandatory>
     </objectclass>
@@ -315,18 +311,22 @@
         <attributetype>apacheDnsDomainName</attributetype>
       </mandatory>
     </objectclass>
-    <objectclass oid="1.3.6.1.4.1.18060.0.4.2.3.10" obsolete="false">
+    <objectclass oid="1.3.6.1.4.1.18060.0.4.2.3.1" obsolete="false">
       <aliases>
-        <alias>apacheDnsReferralNameServer</alias>
+        <alias>apacheDnsAbstractRecord</alias>
       </aliases>
-      <description>A non-authoritative referral or delegation name server</description>
+      <description>An abstract DNS record objectClass used to build other specific structural objectclasses for different record types</description>
       <superiors>
-        <superior>apacheDnsAbstractRecord</superior>
+        <superior>top</superior>
       </superiors>
-      <type>STRUCTURAL</type>
+      <type>ABSTRACT</type>
       <mandatory>
-        <attributetype>apacheDnsDomainName</attributetype>
+        <attributetype>cn</attributetype>
       </mandatory>
+      <optional>
+        <attributetype>apacheDnsTtl</attributetype>
+        <attributetype>description</attributetype>
+      </optional>
     </objectclass>
   </objectclasses>
 </schema>

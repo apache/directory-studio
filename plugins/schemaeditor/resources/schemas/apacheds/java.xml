@@ -19,14 +19,23 @@
 -->
 <schema name="java">
   <attributetypes>
-    <attributetype oid="1.3.6.1.4.1.42.2.27.4.1.10" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+    <attributetype oid="1.3.6.1.4.1.42.2.27.4.1.11" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
       <aliases>
-        <alias>javaFactory</alias>
+        <alias>javaReferenceAddress</alias>
       </aliases>
-      <description>Fully qualified Java class name of a JNDI object factory</description>
+      <description>Addresses associated with a JNDI Reference</description>
       <usage>USER_APPLICATIONS</usage>
       <syntax>1.3.6.1.4.1.1466.115.121.1.15</syntax>
       <equality>caseExactMatch</equality>
+    </attributetype>
+    <attributetype oid="1.3.6.1.4.1.42.2.27.4.1.7" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
+      <aliases>
+        <alias>javaCodebase</alias>
+      </aliases>
+      <description>URL(s) specifying the location of class definition</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.26</syntax>
+      <equality>caseExactIA5Match</equality>
     </attributetype>
     <attributetype oid="1.3.6.1.4.1.42.2.27.4.1.13" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
       <aliases>
@@ -37,19 +46,11 @@
       <syntax>1.3.6.1.4.1.1466.115.121.1.15</syntax>
       <equality>caseExactMatch</equality>
     </attributetype>
-    <attributetype oid="1.3.6.1.4.1.42.2.27.4.1.8" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+    <attributetype oid="1.3.6.1.4.1.42.2.27.4.1.6" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
       <aliases>
-        <alias>javaSerializedData</alias>
+        <alias>javaClassName</alias>
       </aliases>
-      <description>Serialized form of a Java object</description>
-      <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.40</syntax>
-    </attributetype>
-    <attributetype oid="1.3.6.1.4.1.42.2.27.4.1.11" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
-      <aliases>
-        <alias>javaReferenceAddress</alias>
-      </aliases>
-      <description>Addresses associated with a JNDI Reference</description>
+      <description>Fully qualified name of distinguished Java class or interface</description>
       <usage>USER_APPLICATIONS</usage>
       <syntax>1.3.6.1.4.1.1466.115.121.1.15</syntax>
       <equality>caseExactMatch</equality>
@@ -63,51 +64,38 @@
       <syntax>1.3.6.1.4.1.1466.115.121.1.26</syntax>
       <equality>caseExactIA5Match</equality>
     </attributetype>
-    <attributetype oid="1.3.6.1.4.1.42.2.27.4.1.7" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
+    <attributetype oid="1.3.6.1.4.1.42.2.27.4.1.8" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
       <aliases>
-        <alias>javaCodebase</alias>
+        <alias>javaSerializedData</alias>
       </aliases>
-      <description>URL(s) specifying the location of class definition</description>
+      <description>Serialized form of a Java object</description>
       <usage>USER_APPLICATIONS</usage>
-      <syntax>1.3.6.1.4.1.1466.115.121.1.26</syntax>
-      <equality>caseExactIA5Match</equality>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.40</syntax>
     </attributetype>
-    <attributetype oid="1.3.6.1.4.1.42.2.27.4.1.6" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+    <attributetype oid="1.3.6.1.4.1.42.2.27.4.1.10" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
       <aliases>
-        <alias>javaClassName</alias>
+        <alias>javaFactory</alias>
       </aliases>
-      <description>Fully qualified name of distinguished Java class or interface</description>
+      <description>Fully qualified Java class name of a JNDI object factory</description>
       <usage>USER_APPLICATIONS</usage>
       <syntax>1.3.6.1.4.1.1466.115.121.1.15</syntax>
       <equality>caseExactMatch</equality>
     </attributetype>
   </attributetypes>
   <objectclasses>
-    <objectclass oid="1.3.6.1.4.1.42.2.27.4.2.1" obsolete="false">
+    <objectclass oid="1.3.6.1.4.1.42.2.27.4.2.7" obsolete="false">
       <aliases>
-        <alias>javaContainer</alias>
+        <alias>javaNamingReference</alias>
       </aliases>
-      <description>Container for a Java object</description>
-      <superiors>
-        <superior>top</superior>
-      </superiors>
-      <type>STRUCTURAL</type>
-      <mandatory>
-        <attributetype>cn</attributetype>
-      </mandatory>
-    </objectclass>
-    <objectclass oid="1.3.6.1.4.1.42.2.27.4.2.5" obsolete="false">
-      <aliases>
-        <alias>javaSerializedObject</alias>
-      </aliases>
-      <description>Java serialized object</description>
+      <description>JNDI reference</description>
       <superiors>
         <superior>javaObject</superior>
       </superiors>
       <type>AUXILIARY</type>
-      <mandatory>
-        <attributetype>javaSerializedData</attributetype>
-      </mandatory>
+      <optional>
+        <attributetype>javaReferenceAddress</attributetype>
+        <attributetype>javaFactory</attributetype>
+      </optional>
     </objectclass>
     <objectclass oid="1.3.6.1.4.1.42.2.27.4.2.8" obsolete="false">
       <aliases>
@@ -120,6 +108,19 @@
       <type>AUXILIARY</type>
       <mandatory>
         <attributetype>javaSerializedData</attributetype>
+      </mandatory>
+    </objectclass>
+    <objectclass oid="1.3.6.1.4.1.42.2.27.4.2.1" obsolete="false">
+      <aliases>
+        <alias>javaContainer</alias>
+      </aliases>
+      <description>Container for a Java object</description>
+      <superiors>
+        <superior>top</superior>
+      </superiors>
+      <type>STRUCTURAL</type>
+      <mandatory>
+        <attributetype>cn</attributetype>
       </mandatory>
     </objectclass>
     <objectclass oid="1.3.6.1.4.1.42.2.27.4.2.4" obsolete="false">
@@ -141,19 +142,18 @@
         <attributetype>description</attributetype>
       </optional>
     </objectclass>
-    <objectclass oid="1.3.6.1.4.1.42.2.27.4.2.7" obsolete="false">
+    <objectclass oid="1.3.6.1.4.1.42.2.27.4.2.5" obsolete="false">
       <aliases>
-        <alias>javaNamingReference</alias>
+        <alias>javaSerializedObject</alias>
       </aliases>
-      <description>JNDI reference</description>
+      <description>Java serialized object</description>
       <superiors>
         <superior>javaObject</superior>
       </superiors>
       <type>AUXILIARY</type>
-      <optional>
-        <attributetype>javaReferenceAddress</attributetype>
-        <attributetype>javaFactory</attributetype>
-      </optional>
+      <mandatory>
+        <attributetype>javaSerializedData</attributetype>
+      </mandatory>
     </objectclass>
   </objectclasses>
 </schema>

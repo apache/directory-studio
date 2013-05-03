@@ -39,20 +39,6 @@
     </attributetype>
   </attributetypes>
   <objectclasses>
-    <objectclass oid="1.3.6.1.4.1.42.2.27.4.2.9" obsolete="false">
-      <aliases>
-        <alias>corbaObject</alias>
-      </aliases>
-      <description>CORBA object representation</description>
-      <superiors>
-        <superior>top</superior>
-      </superiors>
-      <type>ABSTRACT</type>
-      <optional>
-        <attributetype>corbaRepositoryId</attributetype>
-        <attributetype>description</attributetype>
-      </optional>
-    </objectclass>
     <objectclass oid="1.3.6.1.4.1.42.2.27.4.2.11" obsolete="false">
       <aliases>
         <alias>corbaObjectReference</alias>
@@ -78,6 +64,20 @@
       <mandatory>
         <attributetype>cn</attributetype>
       </mandatory>
+    </objectclass>
+    <objectclass oid="1.3.6.1.4.1.42.2.27.4.2.9" obsolete="false">
+      <aliases>
+        <alias>corbaObject</alias>
+      </aliases>
+      <description>CORBA object representation</description>
+      <superiors>
+        <superior>top</superior>
+      </superiors>
+      <type>ABSTRACT</type>
+      <optional>
+        <attributetype>corbaRepositoryId</attributetype>
+        <attributetype>description</attributetype>
+      </optional>
     </objectclass>
   </objectclasses>
 </schema>
