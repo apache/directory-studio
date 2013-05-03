@@ -137,6 +137,55 @@ public class PasswordPolicyDetailsPage implements IDetailsPage
         }
     };
 
+    private ISelectionChangedListener checkQualityComboViewerSelectionChangedListener = new ISelectionChangedListener()
+    {
+        public void selectionChanged( SelectionChangedEvent event )
+        {
+            StructuredSelection selection = ( StructuredSelection ) checkQualityComboViewer.getSelection();
+
+            if ( !selection.isEmpty() )
+            {
+                CheckQuality checkQuality = ( CheckQuality ) selection.getFirstElement();
+
+                if ( checkQuality == CheckQuality.DISABLED )
+                {
+                    minimumLengthCheckbox.setEnabled( false );
+                    minimumLengthText.setEnabled( false );
+                    maximumLengthCheckbox.setEnabled( false );
+                    maximumLengthText.setEnabled( false );
+                }
+                else
+                {
+                    int minimumLength = 0;
+                    int maximumLength = 0;
+
+                    try
+                    {
+                        minimumLength = Integer.parseInt( minimumLengthText.getText() );
+                    }
+                    catch ( NumberFormatException e )
+                    {
+                        // Nothing to do.
+                    }
+
+                    try
+                    {
+                        maximumLength = Integer.parseInt( maximumLengthText.getText() );
+                    }
+                    catch ( NumberFormatException e )
+                    {
+                        // Nothing to do.
+                    }
+
+                    minimumLengthCheckbox.setEnabled( true );
+                    minimumLengthText.setEnabled( minimumLength != 0 );
+                    maximumLengthCheckbox.setEnabled( true );
+                    maximumLengthText.setEnabled( maximumLength != 0 );
+                }
+            }
+        }
+    };
+
     private SelectionListener minimumLengthCheckboxSelectionListener = new SelectionAdapter()
     {
         public void widgetSelected( SelectionEvent e )
@@ -501,6 +550,7 @@ public class PasswordPolicyDetailsPage implements IDetailsPage
         idText.addModifyListener( textModifyListener );
         descriptionText.addModifyListener( textModifyListener );
         checkQualityComboViewer.addSelectionChangedListener( viewerSelectionChangedListener );
+        checkQualityComboViewer.addSelectionChangedListener( checkQualityComboViewerSelectionChangedListener );
         minimumLengthCheckbox.addSelectionListener( buttonSelectionListener );
         minimumLengthCheckbox.addSelectionListener( minimumLengthCheckboxSelectionListener );
         minimumLengthText.addModifyListener( textModifyListener );
@@ -555,6 +605,7 @@ public class PasswordPolicyDetailsPage implements IDetailsPage
         idText.removeModifyListener( textModifyListener );
         descriptionText.removeModifyListener( textModifyListener );
         checkQualityComboViewer.removeSelectionChangedListener( viewerSelectionChangedListener );
+        checkQualityComboViewer.removeSelectionChangedListener( checkQualityComboViewerSelectionChangedListener );
         minimumLengthCheckbox.removeSelectionListener( buttonSelectionListener );
         minimumLengthCheckbox.removeSelectionListener( minimumLengthCheckboxSelectionListener );
         minimumLengthText.removeModifyListener( textModifyListener );
@@ -908,13 +959,26 @@ public class PasswordPolicyDetailsPage implements IDetailsPage
             int minimumLength = passwordPolicy.getPwdMinLength();
             minimumLengthCheckbox.setSelection( minimumLength != 0 );
             minimumLengthText.setText( "" + minimumLength );
-            minimumLengthText.setEnabled( minimumLength != 0 );
 
             // Maximum Length
             int maximumLength = passwordPolicy.getPwdMaxLength();
             maximumLengthCheckbox.setSelection( maximumLength != 0 );
             maximumLengthText.setText( "" + maximumLength );
-            maximumLengthText.setEnabled( maximumLength != 0 );
+
+            if ( getPwdCheckQuality() == 0 )
+            {
+                minimumLengthCheckbox.setEnabled( false );
+                minimumLengthText.setEnabled( false );
+                maximumLengthCheckbox.setEnabled( false );
+                maximumLengthText.setEnabled( false );
+            }
+            else
+            {
+                minimumLengthCheckbox.setEnabled( true );
+                minimumLengthText.setEnabled( minimumLength != 0 );
+                maximumLengthCheckbox.setEnabled( true );
+                maximumLengthText.setEnabled( maximumLength != 0 );
+            }
 
             // Minimum Age
             minimumAgeText.setText( "" + passwordPolicy.getPwdMinAge() );
