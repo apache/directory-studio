@@ -92,6 +92,8 @@ public class PasswordPolicyDetailsPage implements IDetailsPage
     private Text failureCountIntervalText;
     private Button inHistoryCheckbox;
     private Text inHistoryText;
+    private Button maxIdleCheckbox;
+    private Text maxIdleText;
 
     // Listeners
     /** The Text Modify Listener */
@@ -132,6 +134,62 @@ public class PasswordPolicyDetailsPage implements IDetailsPage
             {
                 e.doit = false;
             }
+        }
+    };
+
+    private SelectionListener minimumLengthCheckboxSelectionListener = new SelectionAdapter()
+    {
+        public void widgetSelected( SelectionEvent e )
+        {
+            minimumLengthText.setEnabled( minimumLengthCheckbox.getSelection() );
+        }
+    };
+
+    private SelectionListener maximumLengthCheckboxSelectionListener = new SelectionAdapter()
+    {
+        public void widgetSelected( SelectionEvent e )
+        {
+            maximumLengthText.setEnabled( maximumLengthCheckbox.getSelection() );
+        }
+    };
+
+    private SelectionListener expireWarningCheckboxSelectionListener = new SelectionAdapter()
+    {
+        public void widgetSelected( SelectionEvent e )
+        {
+            expireWarningText.setEnabled( expireWarningCheckbox.getSelection() );
+        }
+    };
+
+    private SelectionListener graceAuthenticationLimitCheckboxSelectionListener = new SelectionAdapter()
+    {
+        public void widgetSelected( SelectionEvent e )
+        {
+            graceAuthenticationLimitText.setEnabled( graceAuthenticationLimitCheckbox.getSelection() );
+        }
+    };
+
+    private SelectionListener graceExpireCheckboxSelectionListener = new SelectionAdapter()
+    {
+        public void widgetSelected( SelectionEvent e )
+        {
+            graceExpireText.setEnabled( graceExpireCheckbox.getSelection() );
+        }
+    };
+
+    private SelectionListener maxIdleCheckboxSelectionListener = new SelectionAdapter()
+    {
+        public void widgetSelected( SelectionEvent e )
+        {
+            maxIdleText.setEnabled( maxIdleCheckbox.getSelection() );
+        }
+    };
+
+    private SelectionListener inHistoryCheckboxSelectionListener = new SelectionAdapter()
+    {
+        public void widgetSelected( SelectionEvent e )
+        {
+            inHistoryText.setEnabled( inHistoryCheckbox.getSelection() );
         }
     };
 
@@ -226,7 +284,7 @@ public class PasswordPolicyDetailsPage implements IDetailsPage
         section.setLayoutData( td );
         Composite composite = toolkit.createComposite( section );
         toolkit.paintBordersFor( composite );
-        GridLayout gridLayout = new GridLayout( 3, false );
+        GridLayout gridLayout = new GridLayout( 2, false );
         gridLayout.marginHeight = gridLayout.marginWidth = 0;
         composite.setLayout( gridLayout );
         section.setClient( composite );
@@ -238,21 +296,23 @@ public class PasswordPolicyDetailsPage implements IDetailsPage
         checkQualityComboViewer.setInput( new CheckQuality[]
             { CheckQuality.DISABLED, CheckQuality.RELAXED, CheckQuality.STRICT } );
         checkQualityComboViewer.getControl().setLayoutData(
-            new GridData( SWT.BEGINNING, SWT.CENTER, false, false, 2, 1 ) );
+            new GridData( SWT.FILL, SWT.CENTER, true, false ) );
 
         // Minimum Length (pwdMinLength)
         minimumLengthCheckbox = toolkit.createButton( composite, "Enable Mimimum Length", SWT.CHECK );
-        minimumLengthCheckbox.setLayoutData( new GridData( SWT.BEGINNING, SWT.CENTER, false, false, 3, 1 ) );
-
-        toolkit.createLabel( composite, "   " );
-        minimumLengthText = toolkit.createText( composite, "" );
+        minimumLengthCheckbox.setLayoutData( new GridData( SWT.BEGINNING, SWT.CENTER, false, false, 2, 1 ) );
+        Composite mimimumLengthRadioIndentComposite = createRadioIndentComposite( toolkit, composite,
+            "Number of characters:" );
+        minimumLengthText = toolkit.createText( mimimumLengthRadioIndentComposite, "" );
+        minimumLengthText.setLayoutData( new GridData( SWT.FILL, SWT.CENTER, true, false ) );
 
         // Maximum Length (pwdMaxLength)
         maximumLengthCheckbox = toolkit.createButton( composite, "Enable Maximum Length", SWT.CHECK );
-        maximumLengthCheckbox.setLayoutData( new GridData( SWT.BEGINNING, SWT.CENTER, false, false, 3, 1 ) );
-
-        toolkit.createLabel( composite, "   " );
-        maximumLengthText = toolkit.createText( composite, "" );
+        maximumLengthCheckbox.setLayoutData( new GridData( SWT.BEGINNING, SWT.CENTER, false, false, 2, 1 ) );
+        Composite maximumLengthRadioIndentComposite = createRadioIndentComposite( toolkit, composite,
+            "Number of characters:" );
+        maximumLengthText = toolkit.createText( maximumLengthRadioIndentComposite, "" );
+        maximumLengthText.setLayoutData( new GridData( SWT.FILL, SWT.CENTER, true, false ) );
     }
 
 
@@ -273,7 +333,7 @@ public class PasswordPolicyDetailsPage implements IDetailsPage
         section.setLayoutData( td );
         Composite composite = toolkit.createComposite( section );
         toolkit.paintBordersFor( composite );
-        GridLayout gridLayout = new GridLayout( 3, false );
+        GridLayout gridLayout = new GridLayout( 2, false );
         gridLayout.marginHeight = gridLayout.marginWidth = 0;
         composite.setLayout( gridLayout );
         section.setClient( composite );
@@ -281,34 +341,37 @@ public class PasswordPolicyDetailsPage implements IDetailsPage
         // Minimum Age (pwdMinAge)
         toolkit.createLabel( composite, "Mimimum Age:" );
         minimumAgeText = toolkit.createText( composite, "" );
-        minimumAgeText.setLayoutData( new GridData( SWT.BEGINNING, SWT.CENTER, false, false, 2, 1 ) );
+        minimumAgeText.setLayoutData( new GridData( SWT.FILL, SWT.CENTER, true, false ) );
 
         // Maximum Age (pwdMaxAge)
         toolkit.createLabel( composite, "Maximum Age:" );
         maximumAgeText = toolkit.createText( composite, "" );
-        maximumAgeText.setLayoutData( new GridData( SWT.BEGINNING, SWT.CENTER, false, false, 2, 1 ) );
+        maximumAgeText.setLayoutData( new GridData( SWT.FILL, SWT.CENTER, true, false ) );
 
         // Expire Warning (pwdExpireWarning)
         expireWarningCheckbox = toolkit.createButton( composite, "Enable Expire Warning", SWT.CHECK );
         expireWarningCheckbox.setLayoutData( new GridData( SWT.BEGINNING, SWT.CENTER, false, false, 3, 1 ) );
-
-        toolkit.createLabel( composite, "   " );
-        expireWarningText = toolkit.createText( composite, "" );
+        Composite expireWarningRadioIndentComposite = createRadioIndentComposite( toolkit, composite,
+            "Number of seconds:" );
+        expireWarningText = toolkit.createText( expireWarningRadioIndentComposite, "" );
+        expireWarningText.setLayoutData( new GridData( SWT.FILL, SWT.CENTER, true, false ) );
 
         // Grace Authentication Limit (pwdGraceAuthNLimit)
         graceAuthenticationLimitCheckbox = toolkit.createButton( composite, "Enable Grace Authentication Limit",
             SWT.CHECK );
         graceAuthenticationLimitCheckbox.setLayoutData( new GridData( SWT.BEGINNING, SWT.CENTER, false, false, 3, 1 ) );
-
-        toolkit.createLabel( composite, "   " );
-        graceAuthenticationLimitText = toolkit.createText( composite, "" );
+        Composite graceAuthenticationLimitRadioIndentComposite = createRadioIndentComposite( toolkit, composite,
+            "Number of times:" );
+        graceAuthenticationLimitText = toolkit.createText( graceAuthenticationLimitRadioIndentComposite, "" );
+        graceAuthenticationLimitText.setLayoutData( new GridData( SWT.FILL, SWT.CENTER, true, false ) );
 
         // Grace Expire (pwdGraceExpire)
         graceExpireCheckbox = toolkit.createButton( composite, "Enable Grace Expire", SWT.CHECK );
         graceExpireCheckbox.setLayoutData( new GridData( SWT.BEGINNING, SWT.CENTER, false, false, 3, 1 ) );
-
-        toolkit.createLabel( composite, "   " );
-        graceExpireText = toolkit.createText( composite, "" );
+        Composite graceExpireRadioIndentComposite = createRadioIndentComposite( toolkit, composite,
+            "Interval (seconds):" );
+        graceExpireText = toolkit.createText( graceExpireRadioIndentComposite, "" );
+        graceExpireText.setLayoutData( new GridData( SWT.FILL, SWT.CENTER, true, false ) );
     }
 
 
@@ -365,36 +428,67 @@ public class PasswordPolicyDetailsPage implements IDetailsPage
         section.setLayoutData( td );
         Composite composite = toolkit.createComposite( section );
         toolkit.paintBordersFor( composite );
-        GridLayout gridLayout = new GridLayout( 3, false );
+        GridLayout gridLayout = new GridLayout( 2, false );
         gridLayout.marginHeight = gridLayout.marginWidth = 0;
         composite.setLayout( gridLayout );
         section.setClient( composite );
 
         // Lockout (pwdLockout)
         lockoutCheckbox = toolkit.createButton( composite, "Enable Lockout", SWT.CHECK );
-        lockoutCheckbox.setLayoutData( new GridData( SWT.BEGINNING, SWT.CENTER, false, false, 3, 1 ) );
+        lockoutCheckbox.setLayoutData( new GridData( SWT.BEGINNING, SWT.CENTER, false, false, 2, 1 ) );
 
         // Lockout Duration (pwdLockoutDuration)
         toolkit.createLabel( composite, "Lockout Duration:" );
         lockoutDurationText = toolkit.createText( composite, "" );
-        lockoutDurationText.setLayoutData( new GridData( SWT.BEGINNING, SWT.CENTER, false, false, 2, 1 ) );
+        lockoutDurationText.setLayoutData( new GridData( SWT.FILL, SWT.CENTER, true, false ) );
 
         // Max Failure (pwdMaxFailure)
         toolkit.createLabel( composite, "Max Failure:" );
         maxFailureText = toolkit.createText( composite, "" );
-        maxFailureText.setLayoutData( new GridData( SWT.BEGINNING, SWT.CENTER, false, false, 2, 1 ) );
+        maxFailureText.setLayoutData( new GridData( SWT.FILL, SWT.CENTER, true, false ) );
 
         // Failure Count Interval (pwdFailureCountInterval)
         toolkit.createLabel( composite, "Failure Count Interval:" );
         failureCountIntervalText = toolkit.createText( composite, "" );
-        failureCountIntervalText.setLayoutData( new GridData( SWT.BEGINNING, SWT.CENTER, false, false, 2, 1 ) );
+        failureCountIntervalText.setLayoutData( new GridData( SWT.FILL, SWT.CENTER, true, false ) );
+
+        // Max Idle (pwdMaxIdle)
+        maxIdleCheckbox = toolkit.createButton( composite, "Enable Max Idle", SWT.CHECK );
+        maxIdleCheckbox.setLayoutData( new GridData( SWT.BEGINNING, SWT.CENTER, false, false, 3, 1 ) );
+        Composite maxIdleCheckboxRadioIndentComposite = createRadioIndentComposite( toolkit, composite,
+            "Interval (seconds):" );
+        maxIdleText = toolkit.createText( maxIdleCheckboxRadioIndentComposite, "" );
+        maxIdleText.setLayoutData( new GridData( SWT.FILL, SWT.CENTER, true, false ) );
 
         // In History (pwdInHistory)
         inHistoryCheckbox = toolkit.createButton( composite, "Enable In History", SWT.CHECK );
-        inHistoryCheckbox.setLayoutData( new GridData( SWT.BEGINNING, SWT.CENTER, false, false, 3, 1 ) );
+        inHistoryCheckbox.setLayoutData( new GridData( SWT.BEGINNING, SWT.CENTER, false, false, 2, 1 ) );
+        Composite inHistoryRadioIndentComposite = createRadioIndentComposite( toolkit, composite,
+            "Used passwords stored in history:" );
+        inHistoryText = toolkit.createText( inHistoryRadioIndentComposite, "" );
+        inHistoryText.setLayoutData( new GridData( SWT.FILL, SWT.CENTER, true, false ) );
+    }
+
+
+    /**
+     * Creates a radio indented composite.
+     *
+     * @param toolkit the toolkit
+     * @param parent the parent composite
+     * @return a radio indented composite
+     */
+    private Composite createRadioIndentComposite( FormToolkit toolkit, Composite parent, String text )
+    {
+        Composite composite = toolkit.createComposite( parent );
+        GridLayout gridLayout = new GridLayout( 3, false );
+        gridLayout.marginHeight = gridLayout.marginWidth = 0;
+        composite.setLayout( gridLayout );
+        composite.setLayoutData( new GridData( SWT.FILL, SWT.CENTER, true, false, 2, 1 ) );
 
         toolkit.createLabel( composite, "   " );
-        inHistoryText = toolkit.createText( composite, "" );
+        toolkit.createLabel( composite, text );
+
+        return composite;
     }
 
 
@@ -408,9 +502,11 @@ public class PasswordPolicyDetailsPage implements IDetailsPage
         descriptionText.addModifyListener( textModifyListener );
         checkQualityComboViewer.addSelectionChangedListener( viewerSelectionChangedListener );
         minimumLengthCheckbox.addSelectionListener( buttonSelectionListener );
+        minimumLengthCheckbox.addSelectionListener( minimumLengthCheckboxSelectionListener );
         minimumLengthText.addModifyListener( textModifyListener );
         minimumLengthText.addVerifyListener( integerVerifyListener );
         maximumLengthCheckbox.addSelectionListener( buttonSelectionListener );
+        maximumLengthCheckbox.addSelectionListener( maximumLengthCheckboxSelectionListener );
         maximumLengthText.addModifyListener( textModifyListener );
         maximumLengthText.addVerifyListener( integerVerifyListener );
         minimumAgeText.addModifyListener( textModifyListener );
@@ -418,12 +514,15 @@ public class PasswordPolicyDetailsPage implements IDetailsPage
         maximumAgeText.addModifyListener( textModifyListener );
         maximumAgeText.addVerifyListener( integerVerifyListener );
         expireWarningCheckbox.addSelectionListener( buttonSelectionListener );
+        expireWarningCheckbox.addSelectionListener( expireWarningCheckboxSelectionListener );
         expireWarningText.addModifyListener( textModifyListener );
         expireWarningText.addVerifyListener( integerVerifyListener );
         graceAuthenticationLimitCheckbox.addSelectionListener( buttonSelectionListener );
+        graceAuthenticationLimitCheckbox.addSelectionListener( graceAuthenticationLimitCheckboxSelectionListener );
         graceAuthenticationLimitText.addModifyListener( textModifyListener );
         graceAuthenticationLimitText.addVerifyListener( integerVerifyListener );
         graceExpireCheckbox.addSelectionListener( buttonSelectionListener );
+        graceExpireCheckbox.addSelectionListener( graceExpireCheckboxSelectionListener );
         graceExpireText.addModifyListener( textModifyListener );
         graceExpireText.addVerifyListener( integerVerifyListener );
         mustChangeCheckbox.addSelectionListener( buttonSelectionListener );
@@ -436,8 +535,12 @@ public class PasswordPolicyDetailsPage implements IDetailsPage
         maxFailureText.addVerifyListener( integerVerifyListener );
         failureCountIntervalText.addModifyListener( textModifyListener );
         failureCountIntervalText.addVerifyListener( integerVerifyListener );
-        inHistoryText.addVerifyListener( integerVerifyListener );
+        maxIdleCheckbox.addSelectionListener( buttonSelectionListener );
+        maxIdleCheckbox.addSelectionListener( maxIdleCheckboxSelectionListener );
+        maxIdleText.addModifyListener( textModifyListener );
+        maxIdleText.addVerifyListener( integerVerifyListener );
         inHistoryCheckbox.addSelectionListener( buttonSelectionListener );
+        inHistoryCheckbox.addSelectionListener( inHistoryCheckboxSelectionListener );
         inHistoryText.addModifyListener( textModifyListener );
         inHistoryText.addVerifyListener( integerVerifyListener );
     }
@@ -453,9 +556,11 @@ public class PasswordPolicyDetailsPage implements IDetailsPage
         descriptionText.removeModifyListener( textModifyListener );
         checkQualityComboViewer.removeSelectionChangedListener( viewerSelectionChangedListener );
         minimumLengthCheckbox.removeSelectionListener( buttonSelectionListener );
+        minimumLengthCheckbox.removeSelectionListener( minimumLengthCheckboxSelectionListener );
         minimumLengthText.removeModifyListener( textModifyListener );
         minimumLengthText.removeVerifyListener( integerVerifyListener );
         maximumLengthCheckbox.removeSelectionListener( buttonSelectionListener );
+        maximumLengthCheckbox.removeSelectionListener( maximumLengthCheckboxSelectionListener );
         maximumLengthText.removeModifyListener( textModifyListener );
         maximumLengthText.removeVerifyListener( integerVerifyListener );
         minimumAgeText.removeModifyListener( textModifyListener );
@@ -463,12 +568,15 @@ public class PasswordPolicyDetailsPage implements IDetailsPage
         maximumAgeText.removeModifyListener( textModifyListener );
         maximumAgeText.removeVerifyListener( integerVerifyListener );
         expireWarningCheckbox.removeSelectionListener( buttonSelectionListener );
+        expireWarningCheckbox.removeSelectionListener( expireWarningCheckboxSelectionListener );
         expireWarningText.removeModifyListener( textModifyListener );
         expireWarningText.removeVerifyListener( integerVerifyListener );
         graceAuthenticationLimitCheckbox.removeSelectionListener( buttonSelectionListener );
+        graceAuthenticationLimitCheckbox.removeSelectionListener( graceAuthenticationLimitCheckboxSelectionListener );
         graceAuthenticationLimitText.removeModifyListener( textModifyListener );
         graceAuthenticationLimitText.removeVerifyListener( integerVerifyListener );
         graceExpireCheckbox.removeSelectionListener( buttonSelectionListener );
+        graceExpireCheckbox.removeSelectionListener( graceExpireCheckboxSelectionListener );
         graceExpireText.removeModifyListener( textModifyListener );
         graceExpireText.removeVerifyListener( integerVerifyListener );
         mustChangeCheckbox.removeSelectionListener( buttonSelectionListener );
@@ -481,8 +589,12 @@ public class PasswordPolicyDetailsPage implements IDetailsPage
         maxFailureText.removeVerifyListener( integerVerifyListener );
         failureCountIntervalText.removeModifyListener( textModifyListener );
         failureCountIntervalText.removeVerifyListener( integerVerifyListener );
-        inHistoryText.removeVerifyListener( integerVerifyListener );
+        maxIdleCheckbox.removeSelectionListener( buttonSelectionListener );
+        maxIdleCheckbox.removeSelectionListener( maxIdleCheckboxSelectionListener );
+        maxIdleText.removeModifyListener( textModifyListener );
+        maxIdleText.removeVerifyListener( integerVerifyListener );
         inHistoryCheckbox.removeSelectionListener( buttonSelectionListener );
+        inHistoryCheckbox.removeSelectionListener( inHistoryCheckboxSelectionListener );
         inHistoryText.removeModifyListener( textModifyListener );
         inHistoryText.removeVerifyListener( integerVerifyListener );
     }
@@ -673,6 +785,23 @@ public class PasswordPolicyDetailsPage implements IDetailsPage
                 passwordPolicy.setPwdFailureCountInterval( 0 );
             }
 
+            // Max Idle
+            if ( maxIdleCheckbox.getSelection() )
+            {
+                try
+                {
+                    passwordPolicy.setPwdMaxIdle( Integer.parseInt( maxIdleText.getText() ) );
+                }
+                catch ( NumberFormatException e )
+                {
+                    passwordPolicy.setPwdMaxIdle( 0 );
+                }
+            }
+            else
+            {
+                passwordPolicy.setPwdMaxIdle( 0 );
+            }
+
             // In History
             if ( inHistoryCheckbox.getSelection() )
             {
@@ -759,7 +888,7 @@ public class PasswordPolicyDetailsPage implements IDetailsPage
         {
             // Checking if this is the default password policy
             boolean isDefaultPasswordPolicy = PasswordPoliciesPage.isDefaultPasswordPolicy( passwordPolicy );
-            
+
             // Enabled
             enabledCheckbox.setSelection( passwordPolicy.isEnabled() );
 
@@ -779,11 +908,13 @@ public class PasswordPolicyDetailsPage implements IDetailsPage
             int minimumLength = passwordPolicy.getPwdMinLength();
             minimumLengthCheckbox.setSelection( minimumLength != 0 );
             minimumLengthText.setText( "" + minimumLength );
+            minimumLengthText.setEnabled( minimumLength != 0 );
 
             // Maximum Length
             int maximumLength = passwordPolicy.getPwdMaxLength();
             maximumLengthCheckbox.setSelection( maximumLength != 0 );
             maximumLengthText.setText( "" + maximumLength );
+            maximumLengthText.setEnabled( maximumLength != 0 );
 
             // Minimum Age
             minimumAgeText.setText( "" + passwordPolicy.getPwdMinAge() );
@@ -795,16 +926,19 @@ public class PasswordPolicyDetailsPage implements IDetailsPage
             int expireWarning = passwordPolicy.getPwdExpireWarning();
             expireWarningCheckbox.setSelection( expireWarning != 0 );
             expireWarningText.setText( "" + expireWarning );
+            expireWarningText.setEnabled( expireWarning != 0 );
 
             // Grace Authentication Limit
             int graceAuthenticationLimit = passwordPolicy.getPwdGraceAuthNLimit();
             graceAuthenticationLimitCheckbox.setSelection( graceAuthenticationLimit != 0 );
             graceAuthenticationLimitText.setText( "" + graceAuthenticationLimit );
+            graceAuthenticationLimitText.setEnabled( graceAuthenticationLimit != 0 );
 
             // Grace Expire
             int graceExpire = passwordPolicy.getPwdGraceExpire();
             graceExpireCheckbox.setSelection( graceExpire != 0 );
             graceExpireText.setText( "" + graceExpire );
+            graceExpireText.setEnabled( graceExpire != 0 );
 
             // Must Change
             mustChangeCheckbox.setSelection( passwordPolicy.isPwdMustChange() );
@@ -827,9 +961,17 @@ public class PasswordPolicyDetailsPage implements IDetailsPage
             // Failure Count Interval
             failureCountIntervalText.setText( "" + passwordPolicy.getPwdFailureCountInterval() );
 
+            // Max Idle
+            int maxIdle = passwordPolicy.getPwdMaxIdle();
+            maxIdleCheckbox.setSelection( maxIdle != 0 );
+            maxIdleText.setText( "" + maxIdle );
+            maxIdleText.setEnabled( maxIdle != 0 );
+
             // In History
-            inHistoryCheckbox.setSelection( passwordPolicy.getPwdInHistory() != 0 );
-            inHistoryText.setText( "" + passwordPolicy.getPwdInHistory() );
+            int inHistory = passwordPolicy.getPwdInHistory();
+            inHistoryCheckbox.setSelection( inHistory != 0 );
+            inHistoryText.setText( "" + inHistory );
+            inHistoryText.setEnabled( inHistory != 0 );
         }
 
         addListeners();
