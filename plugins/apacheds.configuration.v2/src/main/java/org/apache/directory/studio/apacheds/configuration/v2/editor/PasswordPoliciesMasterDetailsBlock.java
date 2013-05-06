@@ -89,6 +89,7 @@ public class PasswordPoliciesMasterDetailsBlock extends MasterDetailsBlock
         this.page = page;
     }
 
+
     /**
      * {@inheritDoc}
      */
@@ -99,6 +100,7 @@ public class PasswordPoliciesMasterDetailsBlock extends MasterDetailsBlock
         this.sashForm.setWeights( new int[]
             { 40, 60 } );
     }
+
 
     /**
      * {@inheritDoc}
@@ -146,7 +148,7 @@ public class PasswordPoliciesMasterDetailsBlock extends MasterDetailsBlock
                 if ( element instanceof PasswordPolicyBean )
                 {
                     PasswordPolicyBean passwordPolicy = ( PasswordPolicyBean ) element;
-                    
+
                     if ( passwordPolicy.isEnabled() )
                     {
                         return NLS.bind( "{0} (enabled)", passwordPolicy.getPwdId() );
@@ -313,13 +315,36 @@ public class PasswordPoliciesMasterDetailsBlock extends MasterDetailsBlock
      */
     private void addNewPasswordPolicy()
     {
+        // Getting a new ID for the password policy
         String newId = getNewId();
 
+        // Creating and configuring the new password policy
         PasswordPolicyBean newPasswordPolicy = new PasswordPolicyBean();
         newPasswordPolicy.setPwdId( newId );
-        // TODO initialize default values
+        newPasswordPolicy.setPwdMaxAge( 0 );
+        newPasswordPolicy.setPwdFailureCountInterval( 30 );
+        newPasswordPolicy.setPwdAttribute( "userPassword" );
+        newPasswordPolicy.setPwdMaxFailure( 5 );
+        newPasswordPolicy.setPwdLockout( true );
+        newPasswordPolicy.setPwdMustChange( false );
+        newPasswordPolicy.setPwdLockoutDuration( 0 );
+        newPasswordPolicy.setPwdMinLength( 5 );
+        newPasswordPolicy.setPwdInHistory( 5 );
+        newPasswordPolicy.setPwdExpireWarning( 600 );
+        newPasswordPolicy.setPwdMinAge( 0 );
+        newPasswordPolicy.setPwdAllowUserChange( true );
+        newPasswordPolicy.setPwdGraceAuthNLimit( 5 );
+        newPasswordPolicy.setPwdCheckQuality( 1 );
+        newPasswordPolicy.setPwdMaxLength( 0 );
+        newPasswordPolicy.setPwdGraceExpire( 0 );
+        newPasswordPolicy.setPwdMinDelay( 0 );
+        newPasswordPolicy.setPwdMaxDelay( 0 );
+        newPasswordPolicy.setPwdMaxIdle( 0 );
 
+        // Adding the new password policy to the authentication interceptor
         getAuthenticationInterceptor().addPasswordPolicies( newPasswordPolicy );
+        
+        // Updating the UI and editor
         viewer.refresh();
         viewer.setSelection( new StructuredSelection( newPasswordPolicy ) );
         setEditorDirty();
@@ -398,8 +423,7 @@ public class PasswordPoliciesMasterDetailsBlock extends MasterDetailsBlock
      */
     protected void createToolBarActions( IManagedForm managedForm )
     {
-        // TODO Auto-generated method stub
-
+        // No toolbar needed.
     }
 
 

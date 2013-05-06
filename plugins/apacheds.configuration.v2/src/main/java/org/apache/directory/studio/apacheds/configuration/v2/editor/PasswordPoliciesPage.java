@@ -171,8 +171,25 @@ public class PasswordPoliciesPage extends ServerConfigurationEditorPage
 
             // Configuring the password policy
             passwordPolicy.setPwdId( PASSWORD_POLICY_ID_DEFAULT );
-
-            // TODO add other parameters
+            passwordPolicy.setPwdMaxAge( 0 );
+            passwordPolicy.setPwdFailureCountInterval( 30 );
+            passwordPolicy.setPwdAttribute( "userPassword" );
+            passwordPolicy.setPwdMaxFailure( 5 );
+            passwordPolicy.setPwdLockout( true );
+            passwordPolicy.setPwdMustChange( false );
+            passwordPolicy.setPwdLockoutDuration( 0 );
+            passwordPolicy.setPwdMinLength( 5 );
+            passwordPolicy.setPwdInHistory( 5 );
+            passwordPolicy.setPwdExpireWarning( 600 );
+            passwordPolicy.setPwdMinAge( 0 );
+            passwordPolicy.setPwdAllowUserChange( true );
+            passwordPolicy.setPwdGraceAuthNLimit( 5 );
+            passwordPolicy.setPwdCheckQuality( 1 );
+            passwordPolicy.setPwdMaxLength( 0 );
+            passwordPolicy.setPwdGraceExpire( 0 );
+            passwordPolicy.setPwdMinDelay( 0 );
+            passwordPolicy.setPwdMaxDelay( 0 );
+            passwordPolicy.setPwdMaxIdle( 0 );
 
             // Adding the password policy to the authentication interceptor
             authenticationInterceptor.addPasswordPolicies( passwordPolicy );
