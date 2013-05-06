@@ -126,6 +126,7 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
     private Button addCipherSuiteButton;
     private Button editCipherSuiteButton;
     private Button deleteCipherSuiteButton;
+    private Text replicationPingerSleepText;
 
     // UI Controls Listeners
     private SelectionAdapter enableLdapCheckboxListener = new SelectionAdapter()
@@ -434,6 +435,13 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
             }
         }
     };
+    private ModifyListener replicationPingerSleepTextListener = new ModifyListener()
+    {
+        public void modifyText( ModifyEvent e )
+        {
+            getLdapServerBean().setReplPingerSleep( Integer.parseInt( replicationPingerSleepText.getText() ) );
+        }
+    };
 
 
     /**
@@ -455,6 +463,7 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
     {
         TableWrapLayout twl = new TableWrapLayout();
         twl.numColumns = 2;
+        twl.makeColumnsEqualWidth = true;
         parent.setLayout( twl );
 
         // Left Composite
@@ -656,25 +665,30 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
         section.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
         Composite composite = toolkit.createComposite( section );
         toolkit.paintBordersFor( composite );
-        GridLayout glayout = new GridLayout( 3, false );
+        GridLayout glayout = new GridLayout( 2, false );
         composite.setLayout( glayout );
         section.setClient( composite );
 
         // Enable TLS Checkbox
         enableTlsCheckbox = toolkit.createButton( composite,
             Messages.getString( "LdapLdapsServersPage.EnableTls" ), SWT.CHECK ); //$NON-NLS-1$
-        enableTlsCheckbox.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 3, 1 ) );
+        enableTlsCheckbox.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
 
         // Enable Server-side Password Hashing Checkbox
         enableServerSidePasswordHashingCheckbox = toolkit.createButton( composite,
             Messages.getString( "LdapLdapsServersPage.EnableServerSidePasswordHashing" ), //$NON-NLS-1$
             SWT.CHECK );
-        enableServerSidePasswordHashingCheckbox.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 3, 1 ) );
+        enableServerSidePasswordHashingCheckbox.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
+
+        // Server-side Password Hashing Composite 
+        Composite hashingMethodComposite = toolkit.createComposite( composite );
+        hashingMethodComposite.setLayout( new GridLayout( 3, false ) );
+        hashingMethodComposite.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
 
         // Server-side Password Hashing Combo
-        toolkit.createLabel( composite, "   " ); //$NON-NLS-1$
-        toolkit.createLabel( composite, Messages.getString( "LdapLdapsServersPage.HashingMethod" ) ); //$NON-NLS-1$
-        Combo hashingMethodCombo = new Combo( composite, SWT.READ_ONLY | SWT.SINGLE );
+        toolkit.createLabel( hashingMethodComposite, "   " ); //$NON-NLS-1$
+        toolkit.createLabel( hashingMethodComposite, Messages.getString( "LdapLdapsServersPage.HashingMethod" ) ); //$NON-NLS-1$
+        Combo hashingMethodCombo = new Combo( hashingMethodComposite, SWT.READ_ONLY | SWT.SINGLE );
         hashingMethodCombo.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
         toolkit.adapt( hashingMethodCombo );
         hashingMethodComboViewer = new ComboViewer( hashingMethodCombo );
@@ -733,9 +747,14 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
         };
         hashingMethodComboViewer.setInput( hashingMethods );
         setSelection( hashingMethodComboViewer, LdapSecurityConstants.HASH_METHOD_SSHA );
-        toolkit.createLabel( composite, "   " ); //$NON-NLS-1$
-        Label defaultLabel = createDefaultValueLabel( toolkit, composite, "SSHA" ); //$NON-NLS-1$
+        toolkit.createLabel( hashingMethodComposite, "   " ); //$NON-NLS-1$
+        Label defaultLabel = createDefaultValueLabel( toolkit, hashingMethodComposite, "SSHA" ); //$NON-NLS-1$
         defaultLabel.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
+
+        // Replication Pinger Sleep
+        toolkit.createLabel( composite, "Replication Pinger Sleep (seconds):" );
+        replicationPingerSleepText = createIntegerText( toolkit, composite );
+        replicationPingerSleepText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
     }
 
 
@@ -953,6 +972,10 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
 
         // Delete SSL/Start TLS Cipher Suite
         addSelectionListener( deleteCipherSuiteButton, deleteCipherSuiteButtonListener );
+
+        // Replication Pinger Sleep
+        addDirtyListener( replicationPingerSleepText );
+        addModifyListener( replicationPingerSleepText, replicationPingerSleepTextListener );
     }
 
 
@@ -1066,6 +1089,10 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
 
         // Delete SSL/Start TLS Cipher Suite
         removeSelectionListener( deleteCipherSuiteButton, deleteCipherSuiteButtonListener );
+
+        // Replication Pinger Sleep
+        removeDirtyListener( replicationPingerSleepText );
+        removeModifyListener( replicationPingerSleepText, replicationPingerSleepTextListener );
     }
 
 
@@ -1171,6 +1198,9 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
         // SSL/Start TLS Cipher Suites
         cipherSuitesTableViewer.setInput( ldapServerBean.getEnabledCipherSuites() );
         cipherSuitesTableViewer.refresh();
+
+        // Replication Pinger Sleep
+        setText( replicationPingerSleepText, "" + ldapServerBean.getReplPingerSleep() ); //$NON-NLS-1$
 
         addListeners();
     }
@@ -1715,7 +1745,7 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
 
         if ( selectedCipherSuite != null )
         {
-            InputDialog dialog = new InputDialog( editCipherSuiteButton.getShell(), 
+            InputDialog dialog = new InputDialog( editCipherSuiteButton.getShell(),
                 Messages.getString( "LdapLdapsServersPage.Edit" ), //$NON-NLS-1$
                 Messages.getString( "LdapLdapsServersPage.CipherSuite" ), //$NON-NLS-1$
                 selectedCipherSuite, null );
