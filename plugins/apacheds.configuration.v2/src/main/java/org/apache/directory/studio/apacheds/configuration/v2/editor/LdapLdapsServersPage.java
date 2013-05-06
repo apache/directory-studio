@@ -33,12 +33,16 @@ import org.apache.directory.server.config.beans.InterceptorBean;
 import org.apache.directory.server.config.beans.LdapServerBean;
 import org.apache.directory.server.config.beans.SaslMechHandlerBean;
 import org.apache.directory.server.config.beans.TransportBean;
+import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ComboViewer;
+import org.eclipse.jface.viewers.DoubleClickEvent;
+import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
@@ -118,6 +122,10 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
     private Button keystoreFileBrowseButton;
     private Text keystorePasswordText;
     private Button showPasswordCheckbox;
+    private TableViewer cipherSuitesTableViewer;
+    private Button addCipherSuiteButton;
+    private Button editCipherSuiteButton;
+    private Button deleteCipherSuiteButton;
 
     // UI Controls Listeners
     private SelectionAdapter enableLdapCheckboxListener = new SelectionAdapter()
@@ -365,6 +373,67 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
             }
         }
     };
+    private ISelectionChangedListener cipherSuitesTableViewerSelectionChangedListener = new ISelectionChangedListener()
+    {
+        public void selectionChanged( SelectionChangedEvent event )
+        {
+            StructuredSelection selection = ( StructuredSelection ) cipherSuitesTableViewer.getSelection();
+
+            editCipherSuiteButton.setEnabled( !selection.isEmpty() );
+            deleteCipherSuiteButton.setEnabled( !selection.isEmpty() );
+        }
+    };
+    private IDoubleClickListener cipherSuitesTableViewerDoubleClickListener = new IDoubleClickListener()
+    {
+        public void doubleClick( DoubleClickEvent event )
+        {
+            editCipherSuiteAction();
+        }
+    };
+    private SelectionListener addCipherSuiteButtonListener = new SelectionAdapter()
+    {
+        public void widgetSelected( SelectionEvent e )
+        {
+            InputDialog dialog = new InputDialog( editCipherSuiteButton.getShell(),
+                Messages.getString( "LdapLdapsServersPage.Add" ), //$NON-NLS-1$
+                Messages.getString( "LdapLdapsServersPage.CipherSuite" ), //$NON-NLS-1$
+                null, null );
+
+            if ( dialog.open() == InputDialog.OK )
+            {
+                String newCipherSuite = dialog.getValue();
+
+                getLdapServerBean().addEnabledCipherSuites( newCipherSuite );
+
+                cipherSuitesTableViewer.refresh();
+                cipherSuitesTableViewer.setSelection( new StructuredSelection( newCipherSuite ) );
+
+                setEditorDirty();
+            }
+        }
+    };
+    private SelectionListener editCipherSuiteButtonListener = new SelectionAdapter()
+    {
+        public void widgetSelected( SelectionEvent e )
+        {
+            editCipherSuiteAction();
+        }
+    };
+    private SelectionListener deleteCipherSuiteButtonListener = new SelectionAdapter()
+    {
+        public void widgetSelected( SelectionEvent e )
+        {
+            String selectedCipherSuite = getSelectedSslStartTlsCipherSuite();
+
+            if ( selectedCipherSuite != null )
+            {
+                getLdapServerBean().getEnabledCipherSuites().remove( selectedCipherSuite );
+                cipherSuitesTableViewer.refresh();
+
+                setEditorDirty();
+            }
+        }
+    };
 
 
     /**
@@ -406,6 +475,7 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
         createLdapServerSection( toolkit, leftComposite );
         createLimitsSection( toolkit, leftComposite );
         createSslStartTlsKeystoreSection( toolkit, leftComposite );
+        createSslStartTlsCipherSuitesSection( toolkit, leftComposite );
         createAdvancedSection( toolkit, leftComposite );
         createSupportedAuthenticationMechanismsSection( toolkit, rightComposite );
         createSaslSettingsSection( toolkit, rightComposite );
@@ -461,10 +531,8 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
     /**
      * Creates the Limits Section
      *
-     * @param toolkit
-     *      the toolkit to use
-     * @param parent
-     *      the parent composite
+     * @param toolkit the toolkit to use
+     * @param parent the parent composite
      */
     private void createLimitsSection( FormToolkit toolkit, Composite parent )
     {
@@ -491,12 +559,94 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
 
 
     /**
+     * Creates the SSL/Start TLS Keystore Section
+     *
+     * @param toolkit the toolkit to use
+     * @param parent the parent composite
+     */
+    private void createSslStartTlsKeystoreSection( FormToolkit toolkit, Composite parent )
+    {
+        // Creation of the section
+        Section section = toolkit.createSection( parent, Section.TITLE_BAR );
+        section.setText( Messages.getString( "LdapLdapsServersPage.SslStartTlsKeystore" ) ); //$NON-NLS-1$
+        section.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
+        Composite composite = toolkit.createComposite( section );
+        toolkit.paintBordersFor( composite );
+        GridLayout glayout = new GridLayout( 3, false );
+        composite.setLayout( glayout );
+        section.setClient( composite );
+
+        // Keystore File Text
+        toolkit.createLabel( composite, Messages.getString( "LdapLdapsServersPage.Keystore" ) ); //$NON-NLS-1$
+        keystoreFileText = toolkit.createText( composite, "" ); //$NON-NLS-1$
+        setGridDataWithDefaultWidth( keystoreFileText, new GridData( SWT.FILL, SWT.CENTER, true, false ) );
+        keystoreFileBrowseButton = toolkit.createButton( composite,
+            Messages.getString( "LdapLdapsServersPage.Browse" ), SWT.PUSH ); //$NON-NLS-1$
+
+        // Password Text
+        toolkit.createLabel( composite, Messages.getString( "LdapLdapsServersPage.Password" ) ); //$NON-NLS-1$
+        keystorePasswordText = toolkit.createText( composite, "" ); //$NON-NLS-1$
+        keystorePasswordText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
+        keystorePasswordText.setEchoChar( '\u2022' );
+
+        // Show Password Checkbox
+        toolkit.createLabel( composite, "" ); //$NON-NLS-1$
+        showPasswordCheckbox = toolkit.createButton( composite,
+            Messages.getString( "LdapLdapsServersPage.ShowPassword" ), SWT.CHECK ); //$NON-NLS-1$
+        showPasswordCheckbox.setLayoutData( new GridData( SWT.FILL, SWT.CENTER, true, false ) );
+        showPasswordCheckbox.setSelection( false );
+    }
+
+
+    /**
+     * Creates the SSL/Start TLS Cipher Suites Section
+     *
+     * @param toolkit the toolkit to use
+     * @param parent the parent composite
+     */
+    private void createSslStartTlsCipherSuitesSection( FormToolkit toolkit, Composite parent )
+    {
+        // Creation of the section
+        Section section = toolkit.createSection( parent, Section.TITLE_BAR | Section.TWISTIE | Section.COMPACT );
+        section.setText( Messages.getString( "LdapLdapsServersPage.SslStartTlsCipherSuites" ) ); //$NON-NLS-1$
+        section.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
+        Composite composite = toolkit.createComposite( section );
+        toolkit.paintBordersFor( composite );
+        GridLayout glayout = new GridLayout( 2, false );
+        composite.setLayout( glayout );
+        section.setClient( composite );
+
+        // Cipher Suites Table Viewer
+        cipherSuitesTableViewer = new TableViewer( composite );
+        cipherSuitesTableViewer.setContentProvider( new ArrayContentProvider() );
+        GridData cipherSuitesTableViewerGridData = new GridData( SWT.FILL, SWT.CENTER, true, false, 1, 3 );
+        cipherSuitesTableViewerGridData.heightHint = 60;
+        cipherSuitesTableViewer.getControl().setLayoutData( cipherSuitesTableViewerGridData );
+
+        // Add Cipher Suite Button
+        addCipherSuiteButton = toolkit.createButton( composite,
+            Messages.getString( "LdapLdapsServersPage.Add" ), SWT.PUSH ); //$NON-NLS-1$
+        addCipherSuiteButton.setLayoutData( new GridData( SWT.FILL, SWT.BEGINNING, false, false ) );
+
+        // Edit Cipher Suite Button
+        editCipherSuiteButton = toolkit.createButton( composite,
+            Messages.getString( "LdapLdapsServersPage.Edit" ), SWT.PUSH ); //$NON-NLS-1$
+        editCipherSuiteButton.setLayoutData( new GridData( SWT.FILL, SWT.BEGINNING, false, false ) );
+        editCipherSuiteButton.setEnabled( false );
+
+        // Delete Cipher Suite Button
+        deleteCipherSuiteButton = toolkit.createButton( composite,
+            Messages.getString( "LdapLdapsServersPage.Delete" ), SWT.PUSH ); //$NON-NLS-1$
+        deleteCipherSuiteButton.setLayoutData( new GridData( SWT.FILL, SWT.BEGINNING, false, false ) );
+        deleteCipherSuiteButton.setEnabled( false );
+    }
+
+
+    /**
      * Creates the Advanced Section
      *
-     * @param toolkit
-     *      the toolkit to use
-     * @param parent
-     *      the parent composite
+     * @param toolkit the toolkit to use
+     * @param parent the parent composite
      */
     private void createAdvancedSection( FormToolkit toolkit, Composite parent )
     {
@@ -592,10 +742,8 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
     /**
      * Creates the Supported Authentication Mechanisms Section
      *
-     * @param toolkit
-     *      the toolkit to use
-     * @param parent
-     *      the parent composite
+     * @param toolkit the toolkit to use
+     * @param parent the parent composite
      */
     private void createSupportedAuthenticationMechanismsSection( FormToolkit toolkit, Composite parent )
     {
@@ -652,54 +800,10 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
 
 
     /**
-     * Creates the SSL/Start TLS Keystore Section
-     *
-     * @param toolkit
-     *      the toolkit to use
-     * @param parent
-     *      the parent composite
-     */
-    private void createSslStartTlsKeystoreSection( FormToolkit toolkit, Composite parent )
-    {
-        // Creation of the section
-        Section section = toolkit.createSection( parent, Section.TITLE_BAR );
-        section.setText( Messages.getString( "LdapLdapsServersPage.SslStartTlsKeystore" ) ); //$NON-NLS-1$
-        section.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
-        Composite composite = toolkit.createComposite( section );
-        toolkit.paintBordersFor( composite );
-        GridLayout glayout = new GridLayout( 3, false );
-        composite.setLayout( glayout );
-        section.setClient( composite );
-
-        // Keystore File Text
-        toolkit.createLabel( composite, Messages.getString( "LdapLdapsServersPage.Keystore" ) ); //$NON-NLS-1$
-        keystoreFileText = toolkit.createText( composite, "" ); //$NON-NLS-1$
-        setGridDataWithDefaultWidth( keystoreFileText, new GridData( SWT.FILL, SWT.CENTER, true, false ) );
-        keystoreFileBrowseButton = toolkit.createButton( composite,
-            Messages.getString( "LdapLdapsServersPage.Browse" ), SWT.PUSH ); //$NON-NLS-1$
-
-        // Password Text
-        toolkit.createLabel( composite, Messages.getString( "LdapLdapsServersPage.Password" ) ); //$NON-NLS-1$
-        keystorePasswordText = toolkit.createText( composite, "" ); //$NON-NLS-1$
-        keystorePasswordText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
-        keystorePasswordText.setEchoChar( '\u2022' );
-
-        // Show Password Checkbox
-        toolkit.createLabel( composite, "" ); //$NON-NLS-1$
-        showPasswordCheckbox = toolkit.createButton( composite,
-            Messages.getString( "LdapLdapsServersPage.ShowPassword" ), SWT.CHECK ); //$NON-NLS-1$
-        showPasswordCheckbox.setLayoutData( new GridData( SWT.FILL, SWT.CENTER, true, false ) );
-        showPasswordCheckbox.setSelection( false );
-    }
-
-
-    /**
      * Creates the SASL Settings Section
      *
-     * @param toolkit
-     *      the toolkit to use
-     * @param parent
-     *      the parent composite
+     * @param toolkit the toolkit to use
+     * @param parent the parent composite
      */
     private void createSaslSettingsSection( FormToolkit toolkit, Composite parent )
     {
@@ -836,6 +940,19 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
         // Hashing Method Combo Viewer
         addDirtyListener( hashingMethodComboViewer );
         addSelectionChangedListener( hashingMethodComboViewer, hashingMethodComboViewerListener );
+
+        // SSL/Start TLS Cipher Suites
+        addSelectionChangedListener( cipherSuitesTableViewer, cipherSuitesTableViewerSelectionChangedListener );
+        addDoubleClickListener( cipherSuitesTableViewer, cipherSuitesTableViewerDoubleClickListener );
+
+        // Add SSL/Start TLS Cipher Suite
+        addSelectionListener( addCipherSuiteButton, addCipherSuiteButtonListener );
+
+        // Edit SSL/Start TLS Cipher Suite
+        addSelectionListener( editCipherSuiteButton, editCipherSuiteButtonListener );
+
+        // Delete SSL/Start TLS Cipher Suite
+        addSelectionListener( deleteCipherSuiteButton, deleteCipherSuiteButtonListener );
     }
 
 
@@ -936,6 +1053,19 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
         // Hashing Method Combo Viewer
         removeDirtyListener( hashingMethodComboViewer );
         removeSelectionChangedListener( hashingMethodComboViewer, hashingMethodComboViewerListener );
+
+        // SSL/Start TLS Cipher Suites
+        removeSelectionChangedListener( cipherSuitesTableViewer, cipherSuitesTableViewerSelectionChangedListener );
+        removeDoubleClickListener( cipherSuitesTableViewer, cipherSuitesTableViewerDoubleClickListener );
+
+        // Add SSL/Start TLS Cipher Suite
+        removeSelectionListener( addCipherSuiteButton, addCipherSuiteButtonListener );
+
+        // Edit SSL/Start TLS Cipher Suite
+        removeSelectionListener( editCipherSuiteButton, editCipherSuiteButtonListener );
+
+        // Delete SSL/Start TLS Cipher Suite
+        removeSelectionListener( deleteCipherSuiteButton, deleteCipherSuiteButtonListener );
     }
 
 
@@ -1037,6 +1167,10 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
                 setSelection( hashingMethodComboViewer, LdapSecurityConstants.HASH_METHOD_SSHA );
             }
         }
+
+        // SSL/Start TLS Cipher Suites
+        cipherSuitesTableViewer.setInput( ldapServerBean.getEnabledCipherSuites() );
+        cipherSuitesTableViewer.refresh();
 
         addListeners();
     }
@@ -1550,5 +1684,54 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
         }
 
         return null;
+    }
+
+
+    /**
+     * Gets the selected hashing method.
+     *
+     * @return the selected hashing method
+     */
+    private String getSelectedSslStartTlsCipherSuite()
+    {
+        StructuredSelection selection = ( StructuredSelection ) cipherSuitesTableViewer.getSelection();
+
+        if ( !selection.isEmpty() )
+        {
+            return ( String ) selection.getFirstElement();
+        }
+
+        return null;
+    }
+
+
+    /**
+     * This method is called when the edit cipher suite button is clicked,
+     * or when the table viewer is double clicked.
+     */
+    private void editCipherSuiteAction()
+    {
+        String selectedCipherSuite = getSelectedSslStartTlsCipherSuite();
+
+        if ( selectedCipherSuite != null )
+        {
+            InputDialog dialog = new InputDialog( editCipherSuiteButton.getShell(), 
+                Messages.getString( "LdapLdapsServersPage.Edit" ), //$NON-NLS-1$
+                Messages.getString( "LdapLdapsServersPage.CipherSuite" ), //$NON-NLS-1$
+                selectedCipherSuite, null );
+
+            if ( dialog.open() == InputDialog.OK )
+            {
+                String newCipherSuite = dialog.getValue();
+
+                getLdapServerBean().getEnabledCipherSuites().remove( selectedCipherSuite );
+                getLdapServerBean().addEnabledCipherSuites( newCipherSuite );
+
+                cipherSuitesTableViewer.refresh();
+                cipherSuitesTableViewer.setSelection( new StructuredSelection( newCipherSuite ) );
+
+                setEditorDirty();
+            }
+        }
     }
 }

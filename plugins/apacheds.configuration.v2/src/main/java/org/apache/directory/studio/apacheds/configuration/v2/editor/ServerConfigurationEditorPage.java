@@ -27,9 +27,11 @@ import org.apache.directory.studio.apacheds.configuration.v2.actions.EditorImpor
 import org.apache.directory.studio.connection.core.Connection;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.Separator;
+import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.jface.viewers.StructuredViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
@@ -342,6 +344,24 @@ public abstract class ServerConfigurationEditorPage extends FormPage
 
 
     /**
+     * Adds a double click listener to the given StructuredViewer.
+     *
+     * @param viewer
+     *      the viewer control
+     * @param listener
+     *      the listener
+     */
+    protected void addDoubleClickListener( StructuredViewer viewer, IDoubleClickListener listener )
+    {
+        if ( ( viewer != null ) && ( viewer.getControl() != null ) && ( !viewer.getControl().isDisposed() )
+            && ( listener != null ) )
+        {
+            viewer.addDoubleClickListener( listener );
+        }
+    }
+
+
+    /**
      * Adds a selection listener to the given Button.
      *
      * @param button
@@ -389,6 +409,24 @@ public abstract class ServerConfigurationEditorPage extends FormPage
             && ( listener != null ) )
         {
             viewer.removeSelectionChangedListener( listener );
+        }
+    }
+
+
+    /**
+     * Removes a selection changed listener to the given Viewer.
+     *
+     * @param viewer
+     *      the viewer control
+     * @param listener
+     *      the listener
+     */
+    protected void removeDoubleClickListener( StructuredViewer viewer, IDoubleClickListener listener )
+    {
+        if ( ( viewer != null ) && ( viewer.getControl() != null ) && ( !viewer.getControl().isDisposed() )
+            && ( listener != null ) )
+        {
+            viewer.removeDoubleClickListener( listener );
         }
     }
 
