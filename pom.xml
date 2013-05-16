@@ -81,7 +81,7 @@
     <org.apache.xmlgraphics.fop.version>1.0</org.apache.xmlgraphics.fop.version>
     <org.bouncycastle.bcprov.jdk15.version>140</org.bouncycastle.bcprov.jdk15.version>
     <org.dom4j.version>1.6.1</org.dom4j.version>
-    <org.slf4j.version>1.7.1</org.slf4j.version>
+    <org.slf4j.version>1.7.2</org.slf4j.version>
     <org.xpp3.validversion>1.1.4.c</org.xpp3.validversion>
     <org.xpp3.version>1.1.4c</org.xpp3.version>
     <org.apache.poi.version>3.7</org.apache.poi.version>
