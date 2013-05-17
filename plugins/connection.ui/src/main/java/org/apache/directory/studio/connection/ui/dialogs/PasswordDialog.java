@@ -147,7 +147,7 @@ public class PasswordDialog extends Dialog
         passwordText.setEchoChar( '\u2022' );
 
         // Show Password Checkbox
-        showPasswordCheckbox = BaseWidgetUtils.createCheckbox( composite, "Show password", 1 );
+        showPasswordCheckbox = BaseWidgetUtils.createCheckbox( composite, Messages.getString("PasswordDialog.ShowPassword"), 1 ); //$NON-NLS-1$
         showPasswordCheckbox.addSelectionListener( new SelectionAdapter()
         {
             public void widgetSelected( SelectionEvent e )
