@@ -66,7 +66,7 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
 public class PasswordsKeystorePreferencePage extends PreferencePage implements IWorkbenchPreferencePage
 {
     /** The filename for the temporary keystore */
-    private static final String TEMPORARY_KEYSTORE_FILENAME = "passwords-prefs-temp.jks";
+    private static final String TEMPORARY_KEYSTORE_FILENAME = "passwords-prefs-temp.jks"; //$NON-NLS-1$
 
     /** The passwords keystore manager */
     private PasswordsKeyStoreManager passwordsKeyStoreManager;
@@ -107,7 +107,8 @@ public class PasswordsKeystorePreferencePage extends PreferencePage implements I
             }
             catch ( KeyStoreException kse )
             {
-                CommonUIUtils.openErrorDialog( "An error occurred when enabled/disabling the keystore.\n\n"
+                CommonUIUtils.openErrorDialog( Messages
+                    .getString( "PasswordsKeystorePreferencePage.AnErrorOccurredWhenEnablingDisablingTheKeystore" ) //$NON-NLS-1$
                     + kse.getMessage() );
 
                 enableKeystoreCheckbox.setSelection( !selected );
@@ -130,8 +131,9 @@ public class PasswordsKeystorePreferencePage extends PreferencePage implements I
      */
     public PasswordsKeystorePreferencePage()
     {
-        super( "Passwords KeyStore" );
-        super.setDescription( "General settings for Passwords Keystore:" );
+        super( Messages.getString( "PasswordsKeystorePreferencePage.PasswordsKeystore" ) ); //$NON-NLS-1$
+        super.setDescription( Messages
+            .getString( "PasswordsKeystorePreferencePage.GeneralSettingsForPasswordsKeystore" ) ); //$NON-NLS-1$
         super.noDefaultAndApplyButton();
 
         passwordsKeyStoreManager = new PasswordsKeyStoreManager( TEMPORARY_KEYSTORE_FILENAME );
@@ -188,7 +190,8 @@ public class PasswordsKeystorePreferencePage extends PreferencePage implements I
         ( ( GridLayout ) parent.getLayout() ).numColumns++;
 
         // Change Master Password Button
-        changeMasterPasswordButton = BaseWidgetUtils.createButton( parent, "Change Master Password...", 1 );
+        changeMasterPasswordButton = BaseWidgetUtils.createButton( parent,
+            Messages.getString( "PasswordsKeystorePreferencePage.ChangeMasterPasswordEllipsis" ), 1 ); //$NON-NLS-1$
         changeMasterPasswordButton.setLayoutData( new GridData( SWT.BEGINNING, SWT.CENTER, false, false ) );
         changeMasterPasswordButton.addSelectionListener( changeMasterPasswordButtonListener );
 
@@ -206,7 +209,8 @@ public class PasswordsKeystorePreferencePage extends PreferencePage implements I
         // Enable Keystore Checkbox
         enableKeystoreCheckbox = new Button( composite, SWT.CHECK | SWT.WRAP );
         enableKeystoreCheckbox
-            .setText( "Store connections passwords in a password-protected keystore." );
+            .setText( Messages
+                .getString( "PasswordsKeystorePreferencePage.StoreConnectionsPasswordsInPasswordProtectedKeystore" ) ); //$NON-NLS-1$
         enableKeystoreCheckbox.setLayoutData( new GridData( SWT.BEGINNING, SWT.CENTER, false, false, 2, 1 ) );
 
         // Warning Label
@@ -214,7 +218,7 @@ public class PasswordsKeystorePreferencePage extends PreferencePage implements I
         BaseWidgetUtils
             .createWrappedLabel(
                 composite,
-                "Warning: The passwords keystore requires the definition of a master password which will forbid any access to the connections passwords stored in the keystore if it gets forgotten.\n\nIf you need to change the master password, use the 'Change Master Password...' button at the bottom of this preference page.",
+                Messages.getString( "PasswordsKeystorePreferencePage.WarningPasswordsKeystoreRequiresMasterPassword" ), //$NON-NLS-1$
                 1 );
 
         initUI();
@@ -446,8 +450,8 @@ public class PasswordsKeystorePreferencePage extends PreferencePage implements I
         // Asking the user for a password
         SetupPasswordDialog setupPasswordDialog = new SetupPasswordDialog(
             enableKeystoreCheckbox.getShell(),
-            "Setup Master Password",
-            "Please enter a master password to secure the passwords keystore.\n\nIf you forget this master password you will not be able to access information stored in the passwords keystore. The master password cannot be retrieved.",
+            Messages.getString( "PasswordsKeystorePreferencePage.SetupMasterPassword" ), //$NON-NLS-1$
+            Messages.getString( "PasswordsKeystorePreferencePage.PleaseEnterMasterPasswordToSecurePasswordsKeystore" ), //$NON-NLS-1$
             null );
 
         if ( setupPasswordDialog.open() == SetupPasswordDialog.OK )
@@ -490,9 +494,9 @@ public class PasswordsKeystorePreferencePage extends PreferencePage implements I
         // Asking the user if he wants to keep its connections passwords
         MessageDialog keepConnectionsPasswordsDialog = new MessageDialog(
             enableKeystoreCheckbox.getShell(),
-            "Keep Connections Passwords?",
+            Messages.getString( "PasswordsKeystorePreferencePage.KeepConnectionsPasswords" ), //$NON-NLS-1$
             null,
-            "Do you want to keep your connections passwords?\n\nAll connections passwords contained in the passwords keystore will be copied and stored as plain text on disk.\nRequires the master password of the passwords keystore.",
+            Messages.getString( "PasswordsKeystorePreferencePage.DoYouWantToKeepYourConnectionsPasswords" ), //$NON-NLS-1$
             MessageDialog.QUESTION, new String[]
                 { IDialogConstants.YES_LABEL, IDialogConstants.NO_LABEL,
                     IDialogConstants.CANCEL_LABEL }, 0 );
@@ -513,8 +517,9 @@ public class PasswordsKeystorePreferencePage extends PreferencePage implements I
             while ( true )
             {
                 // We ask the user for the keystore password
-                PasswordDialog passwordDialog = new PasswordDialog( enableKeystoreCheckbox.getShell(),
-                    "Verify Master Password", "Please enter your master password:",
+                PasswordDialog passwordDialog = new PasswordDialog(
+                    enableKeystoreCheckbox.getShell(),
+                    Messages.getString( "PasswordsKeystorePreferencePage.VerifyMasterPassword" ), Messages.getString( "PasswordsKeystorePreferencePage.PleaseEnterYourMasterPassword" ), //$NON-NLS-1$ //$NON-NLS-2$
                     null );
 
                 if ( passwordDialog.open() == PasswordDialog.CANCEL )
@@ -545,18 +550,19 @@ public class PasswordsKeystorePreferencePage extends PreferencePage implements I
 
                 if ( checkPasswordException != null )
                 {
-                    message = "The master password verification failed.\n\nThe following exception was raised:\n"
+                    message = Messages
+                        .getString( "PasswordsKeystorePreferencePage.MasterPasswordVerificationFailedWithException" ) //$NON-NLS-1$
                         + checkPasswordException.getMessage();
                 }
                 else
                 {
-                    message = "The master password verification failed.";
+                    message = Messages.getString( "PasswordsKeystorePreferencePage.MasterPasswordVerificationFailed" ); //$NON-NLS-1$
                 }
 
                 // We ask the user if he wants to retry to unlock the passwords keystore
                 MessageDialog errorDialog = new MessageDialog(
                     enableKeystoreCheckbox.getShell(),
-                    "Verify Master Password Failed", null, message, MessageDialog.ERROR, new String[]
+                    Messages.getString( "PasswordsKeystorePreferencePage.VerifyMasterPasswordFailed" ), null, message, MessageDialog.ERROR, new String[] //$NON-NLS-1$
                         { IDialogConstants.RETRY_LABEL,
                             IDialogConstants.CANCEL_LABEL }, 0 );
 
@@ -611,7 +617,7 @@ public class PasswordsKeystorePreferencePage extends PreferencePage implements I
         {
             // We ask the user to reset his master password
             ResetPasswordDialog resetPasswordDialog = new ResetPasswordDialog( changeMasterPasswordButton.getShell(),
-                "", null, null );
+                "", null, null ); //$NON-NLS-1$
 
             if ( resetPasswordDialog.open() != ResetPasswordDialog.OK )
             {
@@ -639,18 +645,19 @@ public class PasswordsKeystorePreferencePage extends PreferencePage implements I
 
             if ( checkPasswordException != null )
             {
-                message = "The master password verification failed.\n\nThe following exception was raised:\n"
+                message = Messages
+                    .getString( "PasswordsKeystorePreferencePage.MasterPasswordVerificationFailedWithException" ) //$NON-NLS-1$
                     + checkPasswordException.getMessage();
             }
             else
             {
-                message = "The master password verification failed.";
+                message = Messages.getString( "PasswordsKeystorePreferencePage.MasterPasswordVerificationFailed" ); //$NON-NLS-1$
             }
 
             // We ask the user if he wants to retry to unlock the passwords keystore
             MessageDialog errorDialog = new MessageDialog(
                 enableKeystoreCheckbox.getShell(),
-                "Verify Master Password Failed", null, message, MessageDialog.ERROR, new String[]
+                Messages.getString( "PasswordsKeystorePreferencePage.VerifyMasterPasswordFailed" ), null, message, MessageDialog.ERROR, new String[] //$NON-NLS-1$
                     { IDialogConstants.RETRY_LABEL,
                         IDialogConstants.CANCEL_LABEL }, 0 );
 
