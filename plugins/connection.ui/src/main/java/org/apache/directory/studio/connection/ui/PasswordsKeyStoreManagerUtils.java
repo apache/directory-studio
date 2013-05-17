@@ -72,8 +72,9 @@ public class PasswordsKeyStoreManagerUtils
                     Shell shell = PlatformUI.getWorkbench().getDisplay().getActiveShell();
 
                     // We ask the user for the keystore password
-                    PasswordDialog passwordDialog = new PasswordDialog( shell, "Verify Master Password",
-                        "Please enter your master password:", null );
+                    PasswordDialog passwordDialog = new PasswordDialog( shell, Messages
+                        .getString( "PasswordsKeyStoreManagerUtils.VerifyMasterPassword" ), //$NON-NLS-1$
+                        Messages.getString( "PasswordsKeyStoreManagerUtils.PleaseEnterMasterPassword" ), null ); //$NON-NLS-1$
 
                     if ( passwordDialog.open() == PasswordDialog.CANCEL )
                     {
@@ -106,17 +107,19 @@ public class PasswordsKeyStoreManagerUtils
 
                     if ( checkPasswordException != null )
                     {
-                        message = "The master password verification failed.\n\nThe following exception was raised:\n"
+                        message = Messages
+                            .getString( "PasswordsKeyStoreManagerUtils.MasterPasswordVerificationFailedWithException" ) //$NON-NLS-1$
                             + checkPasswordException.getMessage();
                     }
                     else
                     {
-                        message = "The master password verification failed.";
+                        message = Messages.getString( "PasswordsKeyStoreManagerUtils.MasterPasswordVerificationFailed" ); //$NON-NLS-1$
                     }
 
                     // We ask the user if he wants to retry to unlock the passwords keystore
-                    MessageDialog errorDialog = new MessageDialog( shell,
-                        "Verify Master Password Failed", null, message, MessageDialog.ERROR, new String[]
+                    MessageDialog errorDialog = new MessageDialog(
+                        shell,
+                        Messages.getString( "PasswordsKeyStoreManagerUtils.VerifyMasterPasswordFailed" ), null, message, MessageDialog.ERROR, new String[] //$NON-NLS-1$
                             { IDialogConstants.RETRY_LABEL,
                                 IDialogConstants.CANCEL_LABEL }, 0 );
 
