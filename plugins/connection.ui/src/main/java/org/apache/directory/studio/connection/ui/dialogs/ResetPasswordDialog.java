@@ -170,12 +170,14 @@ public class ResetPasswordDialog extends Dialog
         }
 
         // Current Password Group
-        Group currentPasswordGroup = BaseWidgetUtils.createGroup( composite, "Current password", 1 );
+        Group currentPasswordGroup = BaseWidgetUtils.createGroup( composite,
+            Messages.getString( "ResetPasswordDialog.CurrentPassword" ), 1 ); //$NON-NLS-1$
         currentPasswordGroup.setLayout( new GridLayout( 2, false ) );
 
         // Current Password Text
-        BaseWidgetUtils.createLabel( currentPasswordGroup, "Current password:", 1 );
-        currentPasswordText = BaseWidgetUtils.createText( currentPasswordGroup, "", 1 );
+        BaseWidgetUtils.createLabel( currentPasswordGroup,
+            Messages.getString( "ResetPasswordDialog.CurrentPasswordColon" ), 1 ); //$NON-NLS-1$
+        currentPasswordText = BaseWidgetUtils.createText( currentPasswordGroup, "", 1 ); //$NON-NLS-1$
         currentPasswordText.setEchoChar( '\u2022' );
         currentPasswordText.addModifyListener( new ModifyListener()
         {
@@ -186,8 +188,9 @@ public class ResetPasswordDialog extends Dialog
         } );
 
         // Show Current Password Checkbox
-        BaseWidgetUtils.createLabel( currentPasswordGroup, "", 1 );
-        showCurrentPasswordCheckbox = BaseWidgetUtils.createCheckbox( currentPasswordGroup, "Show password", 1 );
+        BaseWidgetUtils.createLabel( currentPasswordGroup, "", 1 ); //$NON-NLS-1$
+        showCurrentPasswordCheckbox = BaseWidgetUtils.createCheckbox( currentPasswordGroup,
+            Messages.getString( "ResetPasswordDialog.ShowPassword" ), 1 ); //$NON-NLS-1$
         showCurrentPasswordCheckbox.addSelectionListener( new SelectionAdapter()
         {
             public void widgetSelected( SelectionEvent e )
@@ -204,12 +207,13 @@ public class ResetPasswordDialog extends Dialog
         } );
 
         // New Password Group
-        Group newPasswordGroup = BaseWidgetUtils.createGroup( composite, "New password", 1 );
+        Group newPasswordGroup = BaseWidgetUtils.createGroup( composite,
+            Messages.getString( "ResetPasswordDialog.NewPassword" ), 1 ); //$NON-NLS-1$
         newPasswordGroup.setLayout( new GridLayout( 2, false ) );
 
         // New Password Text
-        BaseWidgetUtils.createLabel( newPasswordGroup, "New password:", 1 );
-        newPasswordText = BaseWidgetUtils.createText( newPasswordGroup, "", 1 );
+        BaseWidgetUtils.createLabel( newPasswordGroup, Messages.getString( "ResetPasswordDialog.NewPasswordColon" ), 1 ); //$NON-NLS-1$
+        newPasswordText = BaseWidgetUtils.createText( newPasswordGroup, "", 1 ); //$NON-NLS-1$
         newPasswordText.setEchoChar( '\u2022' );
         newPasswordText.addModifyListener( new ModifyListener()
         {
@@ -220,8 +224,9 @@ public class ResetPasswordDialog extends Dialog
         } );
 
         // Show New Password Checkbox
-        BaseWidgetUtils.createLabel( newPasswordGroup, "", 1 );
-        showNewPasswordCheckbox = BaseWidgetUtils.createCheckbox( newPasswordGroup, "Show password", 1 );
+        BaseWidgetUtils.createLabel( newPasswordGroup, "", 1 ); //$NON-NLS-1$
+        showNewPasswordCheckbox = BaseWidgetUtils.createCheckbox( newPasswordGroup,
+            Messages.getString( "ResetPasswordDialog.ShowPassword" ), 1 ); //$NON-NLS-1$
         showNewPasswordCheckbox.addSelectionListener( new SelectionAdapter()
         {
             public void widgetSelected( SelectionEvent e )
@@ -238,8 +243,9 @@ public class ResetPasswordDialog extends Dialog
         } );
 
         // Verify Text
-        BaseWidgetUtils.createLabel( newPasswordGroup, "Verify new password:", 1 );
-        verifyNewPasswordText = BaseWidgetUtils.createText( newPasswordGroup, "", 1 );
+        BaseWidgetUtils.createLabel( newPasswordGroup,
+            Messages.getString( "ResetPasswordDialog.VerifyNewPasswordColon" ), 1 ); //$NON-NLS-1$
+        verifyNewPasswordText = BaseWidgetUtils.createText( newPasswordGroup, "", 1 ); //$NON-NLS-1$
         verifyNewPasswordText.setEchoChar( '\u2022' );
         verifyNewPasswordText.addModifyListener( new ModifyListener()
         {
@@ -250,8 +256,9 @@ public class ResetPasswordDialog extends Dialog
         } );
 
         // Show Verify New Password Checkbox
-        BaseWidgetUtils.createLabel( newPasswordGroup, "", 1 );
-        showVerifyNewPasswordCheckbox = BaseWidgetUtils.createCheckbox( newPasswordGroup, "Show password", 1 );
+        BaseWidgetUtils.createLabel( newPasswordGroup, "", 1 ); //$NON-NLS-1$
+        showVerifyNewPasswordCheckbox = BaseWidgetUtils.createCheckbox( newPasswordGroup,
+            Messages.getString( "ResetPasswordDialog.ShowPassword" ), 1 ); //$NON-NLS-1$
         showVerifyNewPasswordCheckbox.addSelectionListener( new SelectionAdapter()
         {
             public void widgetSelected( SelectionEvent e )
