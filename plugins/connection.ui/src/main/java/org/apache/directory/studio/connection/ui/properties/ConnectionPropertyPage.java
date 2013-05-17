@@ -204,8 +204,11 @@ public class ConnectionPropertyPage extends PropertyPage implements ConnectionPa
                 if ( !PasswordsKeyStoreManagerUtils.askUserToLoadKeystore() )
                 {
                     // The user failed to load the keystore and cancelled
-                    Label label = BaseWidgetUtils.createLabel( parent,
-                        "Access to the passwords keystore is required to view the properties of a connection.", 1 );
+                    Label label = BaseWidgetUtils
+                        .createLabel(
+                            parent,
+                            Messages
+                                .getString( "ConnectionPropertyPage.AccessToPasswordsKeystoreRequiredToViewProperties" ), 1 ); //$NON-NLS-1$
                     return label;
                 }
             }
