@@ -21,7 +21,6 @@
 package org.apache.directory.studio.connection.ui;
 
 
-import org.apache.directory.studio.common.core.jobs.StudioBulkRunnableWithProgress;
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
