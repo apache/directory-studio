@@ -162,11 +162,12 @@ public class SetupPasswordDialog extends Dialog
         }
 
         // Password Group
-        Group passwordGroup = BaseWidgetUtils.createGroup( composite, "Password", 1 );
+        Group passwordGroup = BaseWidgetUtils.createGroup( composite,
+            Messages.getString( "SetupPasswordDialog.Password" ), 1 ); //$NON-NLS-1$
         passwordGroup.setLayout( new GridLayout( 2, false ) );
 
         // Password Text
-        BaseWidgetUtils.createLabel( passwordGroup, "Password:", 1 );
+        BaseWidgetUtils.createLabel( passwordGroup, Messages.getString( "SetupPasswordDialog.PasswordColon" ), 1 ); //$NON-NLS-1$
         passwordText = BaseWidgetUtils.createText( passwordGroup, value, 1 );
         passwordText.setEchoChar( '\u2022' );
         passwordText.addModifyListener( new ModifyListener()
@@ -178,8 +179,9 @@ public class SetupPasswordDialog extends Dialog
         } );
 
         // Show Password Checkbox
-        BaseWidgetUtils.createLabel( passwordGroup, "", 1 );
-        showPasswordCheckbox = BaseWidgetUtils.createCheckbox( passwordGroup, "Show password", 1 );
+        BaseWidgetUtils.createLabel( passwordGroup, "", 1 ); //$NON-NLS-1$
+        showPasswordCheckbox = BaseWidgetUtils.createCheckbox( passwordGroup,
+            Messages.getString( "SetupPasswordDialog.ShowPassword" ), 1 ); //$NON-NLS-1$
         showPasswordCheckbox.addSelectionListener( new SelectionAdapter()
         {
             public void widgetSelected( SelectionEvent e )
@@ -196,7 +198,7 @@ public class SetupPasswordDialog extends Dialog
         } );
 
         // Verify Text
-        BaseWidgetUtils.createLabel( passwordGroup, "Verify password:", 1 );
+        BaseWidgetUtils.createLabel( passwordGroup, Messages.getString( "SetupPasswordDialog.VerifyPasswordColon" ), 1 ); //$NON-NLS-1$
         verifyPasswordText = BaseWidgetUtils.createText( passwordGroup, value, 1 );
         verifyPasswordText.setEchoChar( '\u2022' );
         verifyPasswordText.addModifyListener( new ModifyListener()
@@ -208,8 +210,9 @@ public class SetupPasswordDialog extends Dialog
         } );
 
         // Show Verify Password Checkbox
-        BaseWidgetUtils.createLabel( passwordGroup, "", 1 );
-        showVerifyPasswordCheckbox = BaseWidgetUtils.createCheckbox( passwordGroup, "Show password", 1 );
+        BaseWidgetUtils.createLabel( passwordGroup, "", 1 ); //$NON-NLS-1$
+        showVerifyPasswordCheckbox = BaseWidgetUtils.createCheckbox( passwordGroup,
+            Messages.getString( "SetupPasswordDialog.ShowPassword" ), 1 ); //$NON-NLS-1$
         showVerifyPasswordCheckbox.addSelectionListener( new SelectionAdapter()
         {
             public void widgetSelected( SelectionEvent e )
