@@ -81,7 +81,7 @@
     <org.apache.xmlgraphics.fop.version>1.0</org.apache.xmlgraphics.fop.version>
     <org.bouncycastle.bcprov.jdk15.version>140</org.bouncycastle.bcprov.jdk15.version>
     <org.dom4j.version>1.6.1</org.dom4j.version>
-    <org.slf4j.version>2.0.0-SNAPSHOT</org.slf4j.version>
+    <org.slf4j.version>1.7.2</org.slf4j.version>
     <org.xpp3.validversion>1.1.4.c</org.xpp3.validversion>
     <org.xpp3.version>1.1.4c</org.xpp3.version>
     <org.apache.poi.version>3.7</org.apache.poi.version>
@@ -142,9 +142,6 @@
       -P-libraries
       to the commandline to exclude it from the build.
     -->
-    <!-- NOTE:
-      This profile has been disabled for the release, and needs to be 
-      enabled again after the release is over.
     <profile>
       <id>repository</id>
       <activation>
@@ -155,7 +152,7 @@
       <modules>
         <module>repository</module>
       </modules>
-    </profile>-->
+    </profile>
 
     <!-- 
       Building libraries module is enabled by default. Add 
@@ -230,24 +227,18 @@
       -Pintegration-tests
       to the commandline to launch them.
     -->
-    <!-- NOTE:
-      This profile has been disabled for the release, and needs to be 
-      enabled again after the release is over.
     <profile>
       <id>integration-tests</id>
       <modules>
         <module>tests</module>
       </modules>
-    </profile>-->
+    </profile>
 
     <!-- 
       Building application module is enabled by default. Add 
       -P-application
       to the commandline to exclude it from the build.
     -->
-    <!-- NOTE:
-      This profile has been disabled for the release, and needs to be 
-      enabled again after the release is over.
     <profile>
       <id>application</id>
       <activation>
@@ -258,7 +249,7 @@
       <modules>
         <module>application</module>
       </modules>
-    </profile>-->
+    </profile>
   </profiles>
 
   <dependencyManagement>
