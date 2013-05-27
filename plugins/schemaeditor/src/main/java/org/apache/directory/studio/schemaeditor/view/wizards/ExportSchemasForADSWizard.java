@@ -266,12 +266,16 @@ public class ExportSchemasForADSWizard extends Wizard implements IExportWizard
             holder.setCollective( at.isCollective() );
             holder.setDescription( at.getDescription() );
             holder.setEquality( at.getEqualityOid() );
+            
             List<String> names = new ArrayList<String>();
+            
             for ( String name : at.getNames() )
             {
                 names.add( name );
             }
+            
             holder.setNames( names );
+            
             holder.setNoUserModification( !at.isUserModifiable() );
             holder.setObsolete( at.isObsolete() );
             holder.setOrdering( at.getOrderingOid() );
@@ -279,7 +283,12 @@ public class ExportSchemasForADSWizard extends Wizard implements IExportWizard
             holder.setSubstr( at.getSubstringOid() );
             holder.setSuperior( at.getSuperiorOid() );
             holder.setSyntax( at.getSyntaxOid() );
-            holder.setOidLen( new Long( at.getSyntaxLength() ).intValue() );
+
+            if ( at.getSyntaxLength() > 0 )
+            {
+                holder.setOidLen( at.getSyntaxLength() );
+            }
+
             holder.setUsage( at.getUsage() );
 
             sb.append( holder.toLdif( schema.getSchemaName() ) + "\n" ); //$NON-NLS-1$
