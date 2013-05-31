@@ -36,7 +36,9 @@ import javax.naming.NamingException;
 
 import org.apache.directory.api.converter.schema.AttributeTypeHolder;
 import org.apache.directory.api.converter.schema.ObjectClassHolder;
+import org.apache.directory.api.ldap.model.constants.SchemaConstants;
 import org.apache.directory.api.ldap.model.exception.LdapException;
+import org.apache.directory.api.ldap.model.name.Rdn;
 import org.apache.directory.api.ldap.model.schema.AttributeType;
 import org.apache.directory.api.ldap.model.schema.MutableObjectClass;
 import org.apache.directory.api.ldap.model.schema.ObjectClass;
@@ -241,7 +243,7 @@ public class ExportSchemasForADSWizard extends Wizard implements IExportWizard
                 .bind(
                     Messages.getString( "ExportSchemasForADSWizard.SchemaComment" ), new String[] { schema.getSchemaName().toUpperCase() } ) ); //$NON-NLS-1$
 
-        sb.append( "dn: cn=" + schema.getSchemaName() + ", ou=schema\n" ); //$NON-NLS-1$ //$NON-NLS-2$
+        sb.append( "dn: cn=" + Rdn.escapeValue( schema.getSchemaName() ) + ", ou=schema\n" ); //$NON-NLS-1$ //$NON-NLS-2$
         sb.append( "objectclass: metaSchema\n" ); //$NON-NLS-1$
         sb.append( "objectclass: top\n" ); //$NON-NLS-1$
         sb.append( "cn: " + schema.getSchemaName() + "\n" ); //$NON-NLS-1$ //$NON-NLS-2$
@@ -253,7 +255,7 @@ public class ExportSchemasForADSWizard extends Wizard implements IExportWizard
         sb.append( "\n" ); //$NON-NLS-1$
 
         // Generation the Attribute Types Node
-        sb.append( "dn: ou=attributeTypes, cn=" + schema.getSchemaName() + ", ou=schema\n" ); //$NON-NLS-1$ //$NON-NLS-2$
+        sb.append( "dn: " + SchemaConstants.ATTRIBUTE_TYPES_PATH + ", cn=" + Rdn.escapeValue( schema.getSchemaName() ) + ", ou=schema\n" ); //$NON-NLS-1$ //$NON-NLS-2$
         sb.append( "objectclass: organizationalUnit\n" ); //$NON-NLS-1$
         sb.append( "objectclass: top\n" ); //$NON-NLS-1$
         sb.append( "ou: attributetypes\n" ); //$NON-NLS-1$
@@ -266,16 +268,16 @@ public class ExportSchemasForADSWizard extends Wizard implements IExportWizard
             holder.setCollective( at.isCollective() );
             holder.setDescription( at.getDescription() );
             holder.setEquality( at.getEqualityOid() );
-            
+
             List<String> names = new ArrayList<String>();
-            
+
             for ( String name : at.getNames() )
             {
                 names.add( name );
             }
-            
+
             holder.setNames( names );
-            
+
             holder.setNoUserModification( !at.isUserModifiable() );
             holder.setObsolete( at.isObsolete() );
             holder.setOrdering( at.getOrderingOid() );
@@ -295,56 +297,56 @@ public class ExportSchemasForADSWizard extends Wizard implements IExportWizard
         }
 
         // Generation the Comparators Node
-        sb.append( "dn: ou=comparators, cn=" + schema.getSchemaName() + ", ou=schema\n" ); //$NON-NLS-1$ //$NON-NLS-2$
+        sb.append( "dn: " + SchemaConstants.COMPARATORS_PATH + ", cn=" + Rdn.escapeValue( schema.getSchemaName() ) + ", ou=schema\n" ); //$NON-NLS-1$ //$NON-NLS-2$
         sb.append( "objectclass: organizationalUnit\n" ); //$NON-NLS-1$
         sb.append( "objectclass: top\n" ); //$NON-NLS-1$
         sb.append( "ou: comparators\n" ); //$NON-NLS-1$
         sb.append( "\n" ); //$NON-NLS-1$
 
         // Generation the DIT Content Rules Node
-        sb.append( "dn: ou=ditContentRules, cn=" + schema.getSchemaName() + ", ou=schema\n" ); //$NON-NLS-1$ //$NON-NLS-2$
+        sb.append( "dn: " + SchemaConstants.DIT_CONTENT_RULES_PATH + ", cn=" + Rdn.escapeValue( schema.getSchemaName() ) + ", ou=schema\n" ); //$NON-NLS-1$ //$NON-NLS-2$
         sb.append( "objectclass: organizationalUnit\n" ); //$NON-NLS-1$
         sb.append( "objectclass: top\n" ); //$NON-NLS-1$
         sb.append( "ou: ditcontentrules\n" ); //$NON-NLS-1$
         sb.append( "\n" ); //$NON-NLS-1$
 
         // Generation the DIT Structure RulesNode
-        sb.append( "dn: ou=ditStructureRules, cn=" + schema.getSchemaName() + ", ou=schema\n" ); //$NON-NLS-1$ //$NON-NLS-2$
+        sb.append( "dn: " + SchemaConstants.DIT_STRUCTURE_RULES_PATH + ", cn=" + Rdn.escapeValue( schema.getSchemaName() ) + ", ou=schema\n" ); //$NON-NLS-1$ //$NON-NLS-2$
         sb.append( "objectclass: organizationalUnit\n" ); //$NON-NLS-1$
         sb.append( "objectclass: top\n" ); //$NON-NLS-1$
         sb.append( "ou: ditstructurerules\n" ); //$NON-NLS-1$
         sb.append( "\n" ); //$NON-NLS-1$
 
         // Generation the Matching Rules Node
-        sb.append( "dn: ou=matchingRules, cn=" + schema.getSchemaName() + ", ou=schema\n" ); //$NON-NLS-1$ //$NON-NLS-2$
+        sb.append( "dn: " + SchemaConstants.MATCHING_RULES_PATH + ", cn=" + Rdn.escapeValue( schema.getSchemaName() ) + ", ou=schema\n" ); //$NON-NLS-1$ //$NON-NLS-2$
         sb.append( "objectclass: organizationalUnit\n" ); //$NON-NLS-1$
         sb.append( "objectclass: top\n" ); //$NON-NLS-1$
         sb.append( "ou: matchingrules\n" ); //$NON-NLS-1$
         sb.append( "\n" ); //$NON-NLS-1$
 
         // Generation the Matching Rule Use Node
-        sb.append( "dn: ou=matchingRuleUse, cn=" + schema.getSchemaName() + ", ou=schema\n" ); //$NON-NLS-1$ //$NON-NLS-2$
+        sb.append( "dn: " + SchemaConstants.MATCHING_RULE_USE_PATH + ", cn=" + Rdn.escapeValue( schema.getSchemaName() ) + ", ou=schema\n" ); //$NON-NLS-1$ //$NON-NLS-2$
         sb.append( "objectclass: organizationalUnit\n" ); //$NON-NLS-1$
         sb.append( "objectclass: top\n" ); //$NON-NLS-1$
         sb.append( "ou: matchingruleuse\n" ); //$NON-NLS-1$
         sb.append( "\n" ); //$NON-NLS-1$
 
         // Generation the Name Forms Node
-        sb.append( "dn: ou=nameForms, cn=" + schema.getSchemaName() + ", ou=schema\n" ); //$NON-NLS-1$ //$NON-NLS-2$
+        sb.append( "dn: " + SchemaConstants.NAME_FORMS_PATH + ", cn=" + Rdn.escapeValue( schema.getSchemaName() ) + ", ou=schema\n" ); //$NON-NLS-1$ //$NON-NLS-2$
         sb.append( "objectclass: organizationalUnit\n" ); //$NON-NLS-1$
         sb.append( "objectclass: top\n" ); //$NON-NLS-1$
         sb.append( "ou: nameforms\n" ); //$NON-NLS-1$
         sb.append( "\n" ); //$NON-NLS-1$
 
         // Generation the Normalizers Node
-        sb.append( "dn: ou=normalizers, cn=" + schema.getSchemaName() + ", ou=schema\n" ); //$NON-NLS-1$ //$NON-NLS-2$
+        sb.append( "dn: " + SchemaConstants.NORMALIZERS_PATH + ", cn=" + Rdn.escapeValue( schema.getSchemaName() ) + ", ou=schema\n" ); //$NON-NLS-1$ //$NON-NLS-2$
         sb.append( "objectclass: organizationalUnit\n" ); //$NON-NLS-1$
         sb.append( "objectclass: top\n" ); //$NON-NLS-1$
         sb.append( "ou: normalizers\n" ); //$NON-NLS-1$
         sb.append( "\n" ); //$NON-NLS-1$
 
         // Generation the Object Classes Node
-        sb.append( "dn: ou=objectClasses, cn=" + schema.getSchemaName() + ", ou=schema\n" ); //$NON-NLS-1$ //$NON-NLS-2$
+        sb.append( "dn: " + SchemaConstants.OBJECT_CLASSES_PATH + ", cn=" + Rdn.escapeValue( schema.getSchemaName() ) + ", ou=schema\n" ); //$NON-NLS-1$ //$NON-NLS-2$
         sb.append( "objectclass: organizationalUnit\n" ); //$NON-NLS-1$
         sb.append( "objectclass: top\n" ); //$NON-NLS-1$
         sb.append( "ou: objectClasses\n" ); //$NON-NLS-1$
@@ -387,14 +389,14 @@ public class ExportSchemasForADSWizard extends Wizard implements IExportWizard
         }
 
         // Generation the Syntax Checkers Node
-        sb.append( "dn: ou=syntaxCheckers, cn=" + schema.getSchemaName() + ", ou=schema\n" ); //$NON-NLS-1$ //$NON-NLS-2$
+        sb.append( "dn: " + SchemaConstants.SYNTAX_CHECKERS_PATH + ", cn=" + Rdn.escapeValue( schema.getSchemaName() ) + ", ou=schema\n" ); //$NON-NLS-1$ //$NON-NLS-2$
         sb.append( "objectclass: organizationalUnit\n" ); //$NON-NLS-1$
         sb.append( "objectclass: top\n" ); //$NON-NLS-1$
         sb.append( "ou: syntaxcheckers\n" ); //$NON-NLS-1$
         sb.append( "\n" ); //$NON-NLS-1$
 
         // Generation the Syntaxes Node
-        sb.append( "dn: ou=syntaxes, cn=" + schema.getSchemaName() + ", ou=schema\n" ); //$NON-NLS-1$ //$NON-NLS-2$
+        sb.append( "dn: " + SchemaConstants.SYNTAXES_PATH + ", cn=" + Rdn.escapeValue( schema.getSchemaName() ) + ", ou=schema\n" ); //$NON-NLS-1$ //$NON-NLS-2$
         sb.append( "objectclass: organizationalUnit\n" ); //$NON-NLS-1$
         sb.append( "objectclass: top\n" ); //$NON-NLS-1$
         sb.append( "ou: syntaxes\n" ); //$NON-NLS-1$
