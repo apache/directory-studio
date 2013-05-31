@@ -24,6 +24,7 @@ package org.apache.directory.studio.ldapbrowser.ui.wizards;
 import java.io.File;
 
 import org.apache.directory.studio.connection.core.Connection;
+import org.apache.directory.studio.ldapbrowser.common.widgets.browser.BrowserCategory;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
 import org.apache.directory.studio.ldapbrowser.core.jobs.ImportDsmlRunnable;
 import org.apache.directory.studio.ldapbrowser.core.jobs.StudioBrowserJob;
@@ -158,6 +159,10 @@ public class ImportDsmlWizard extends Wizard implements IImportWizard
         {
             importConnection = BrowserCorePlugin.getDefault().getConnectionManager()
                 .getBrowserConnection( ( Connection ) o );
+        }
+        else if ( o instanceof BrowserCategory )
+        {
+            importConnection = ( ( BrowserCategory ) o ).getParent();
         }
         else
         {

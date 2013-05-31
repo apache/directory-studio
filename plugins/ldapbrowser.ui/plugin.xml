@@ -177,6 +177,7 @@
        </description>
        <selection class="org.apache.directory.studio.connection.core.Connection"/>
        <selection class="org.apache.directory.studio.ldapbrowser.core.model.IEntry"/>
+       <selection class="org.apache.directory.studio.ldapbrowser.common.widgets.browser.BrowserCategory"/>
     </wizard>
     <wizard
           category="%ImportWizards_Category_id"
@@ -189,6 +190,7 @@
        </description>
        <selection class="org.apache.directory.studio.connection.core.Connection"/>
        <selection class="org.apache.directory.studio.ldapbrowser.core.model.IEntry"/>
+       <selection class="org.apache.directory.studio.ldapbrowser.common.widgets.browser.BrowserCategory"/>
     </wizard>
  </extension>
  <extension
@@ -207,6 +209,7 @@
        </description>
        <selection class="org.apache.directory.studio.connection.core.Connection"/>
        <selection class="org.apache.directory.studio.ldapbrowser.core.model.IEntry"/>
+       <selection class="org.apache.directory.studio.ldapbrowser.common.widgets.browser.BrowserCategory"/>
     </wizard>
     <wizard
           category="%ExportWizards_Category_id"
@@ -219,6 +222,7 @@
        </description>
        <selection class="org.apache.directory.studio.connection.core.Connection"/>
        <selection class="org.apache.directory.studio.ldapbrowser.core.model.IEntry"/>
+       <selection class="org.apache.directory.studio.ldapbrowser.common.widgets.browser.BrowserCategory"/>
     </wizard>
     <wizard
           category="%ExportWizards_Category_id"
@@ -231,6 +235,7 @@
        </description>
        <selection class="org.apache.directory.studio.connection.core.Connection"/>
        <selection class="org.apache.directory.studio.ldapbrowser.core.model.IEntry"/>
+       <selection class="org.apache.directory.studio.ldapbrowser.common.widgets.browser.BrowserCategory"/>
     </wizard>
     <wizard
           category="%ExportWizards_Category_id"
@@ -243,6 +248,7 @@
        </description>
        <selection class="org.apache.directory.studio.connection.core.Connection"/>
        <selection class="org.apache.directory.studio.ldapbrowser.core.model.IEntry"/>
+       <selection class="org.apache.directory.studio.ldapbrowser.common.widgets.browser.BrowserCategory"/>
     </wizard>
     <wizard
           category="%ExportWizards_Category_id"
@@ -255,6 +261,7 @@
        </description>
        <selection class="org.apache.directory.studio.connection.core.Connection"/>
        <selection class="org.apache.directory.studio.ldapbrowser.core.model.IEntry"/>
+       <selection class="org.apache.directory.studio.ldapbrowser.common.widgets.browser.BrowserCategory"/>
     </wizard>
  </extension>
 
