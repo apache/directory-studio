@@ -175,6 +175,8 @@ public class ImportLdifMainWizardPage extends WizardPage
 
         if ( wizard.getImportConnection() == null )
         {
+            setErrorMessage( Messages
+                .getString( "ImportLdifMainWizardPage.ErrorNoConnectionSelected" ) ); //$NON-NLS-1$
             ok = false;
         }
 
