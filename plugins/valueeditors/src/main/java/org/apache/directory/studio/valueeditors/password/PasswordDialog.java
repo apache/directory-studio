@@ -21,13 +21,13 @@
 package org.apache.directory.studio.valueeditors.password;
 
 
-import java.util.Arrays;
-
+import org.apache.directory.api.ldap.model.constants.LdapSecurityConstants;
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.ConnectionParameter.AuthenticationMethod;
 import org.apache.directory.studio.connection.core.jobs.CheckBindRunnable;
 import org.apache.directory.studio.connection.ui.RunnableContextRunner;
+import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.Password;
 import org.apache.directory.studio.ldapbrowser.core.utils.Utils;
@@ -37,6 +37,12 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.viewers.ArrayContentProvider;
+import org.eclipse.jface.viewers.ComboViewer;
+import org.eclipse.jface.viewers.ISelectionChangedListener;
+import org.eclipse.jface.viewers.LabelProvider;
+import org.eclipse.jface.viewers.SelectionChangedEvent;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
@@ -45,7 +51,6 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
@@ -64,21 +69,24 @@ import org.eclipse.swt.widgets.Text;
  */
 public class PasswordDialog extends Dialog
 {
+    /** The constant for no hash method */
+    private static final String NO_HASH_METHOD = "NO-HASH-METHOD";
+
     /** The supported hash methods */
-    private static final String[] HASH_METHODS =
+    private static final Object[] HASH_METHODS =
         {
-            Password.HASH_METHOD_SHA,
-            Password.HASH_METHOD_SHA_256,
-            Password.HASH_METHOD_SHA_384,
-            Password.HASH_METHOD_SHA_512,
-            Password.HASH_METHOD_SSHA,
-            Password.HASH_METHOD_SSHA_256,
-            Password.HASH_METHOD_SSHA_384,
-            Password.HASH_METHOD_SSHA_512,
-            Password.HASH_METHOD_MD5,
-            Password.HASH_METHOD_SMD5,
-            Password.HASH_METHOD_CRYPT,
-            Password.HASH_METHOD_NO };
+            LdapSecurityConstants.HASH_METHOD_SHA,
+            LdapSecurityConstants.HASH_METHOD_SHA256,
+            LdapSecurityConstants.HASH_METHOD_SHA384,
+            LdapSecurityConstants.HASH_METHOD_SHA512,
+            LdapSecurityConstants.HASH_METHOD_SSHA,
+            LdapSecurityConstants.HASH_METHOD_SSHA256,
+            LdapSecurityConstants.HASH_METHOD_SSHA384,
+            LdapSecurityConstants.HASH_METHOD_SSHA512,
+            LdapSecurityConstants.HASH_METHOD_MD5,
+            LdapSecurityConstants.HASH_METHOD_SMD5,
+            LdapSecurityConstants.HASH_METHOD_CRYPT,
+            NO_HASH_METHOD };
 
     /** Constant for the Current Password tab */
     private static final int CURRENT_TAB = 0;
@@ -126,7 +134,7 @@ public class PasswordDialog extends Dialog
     private TabItem newPasswordTab;
     private Composite newPasswordComposite;
     private Text newPasswordText;
-    private Combo newPasswordHashMethodCombo;
+    private ComboViewer newPasswordHashMethodComboViewer;
     private Text newPasswordPreviewText;
     private Text newPasswordPreviewValueHexText;
     private Text newPasswordPreviewSaltHexText;
@@ -187,9 +195,19 @@ public class PasswordDialog extends Dialog
         }
 
         // save selected hash method to dialog settings, selected tab will be
-        // saved int close()
-        ValueEditorsActivator.getDefault().getDialogSettings().put( SELECTED_HASH_METHOD_DIALOGSETTINGS_KEY,
-            newPasswordHashMethodCombo.getText() );
+        // saved on close()
+        LdapSecurityConstants selectedHashMethod = getSelectedNewPasswordHashMethod();
+
+        if ( selectedHashMethod == null )
+        {
+            ValueEditorsActivator.getDefault().getDialogSettings().put( SELECTED_HASH_METHOD_DIALOGSETTINGS_KEY,
+                NO_HASH_METHOD );
+        }
+        else
+        {
+            ValueEditorsActivator.getDefault().getDialogSettings().put( SELECTED_HASH_METHOD_DIALOGSETTINGS_KEY,
+                selectedHashMethod.getName() );
+        }
 
         super.okPressed();
     }
@@ -230,13 +248,21 @@ public class PasswordDialog extends Dialog
         catch ( Exception e )
         {
         }
+
         try
         {
-            String hashMethod = ValueEditorsActivator.getDefault().getDialogSettings().get(
+            String hashMethodName = ValueEditorsActivator.getDefault().getDialogSettings().get(
                 SELECTED_HASH_METHOD_DIALOGSETTINGS_KEY );
-            if ( Arrays.asList( HASH_METHODS ).contains( hashMethod ) )
+
+            LdapSecurityConstants hashMethod = LdapSecurityConstants.getAlgorithm( hashMethodName );
+
+            if ( ( hashMethod == null ) || NO_HASH_METHOD.equals( hashMethodName ) )
             {
-                newPasswordHashMethodCombo.setText( hashMethod );
+                newPasswordHashMethodComboViewer.setSelection( new StructuredSelection( NO_HASH_METHOD ) );
+            }
+            else
+            {
+                newPasswordHashMethodComboViewer.setSelection( new StructuredSelection( hashMethod ) );
             }
         }
         catch ( Exception e )
@@ -338,7 +364,7 @@ public class PasswordDialog extends Dialog
 
         // Show current password details button
         showCurrentPasswordDetailsButton = BaseWidgetUtils.createCheckbox( currentPasswordDetailsComposite, Messages
-            .getString( "PasswordDialog.ShowCurrentPasswordDetails" ), 1 ); //$NON-NLS-1$
+            .getString( "PasswordDialog.ShowCurrentPasswordDetails" ), 2 ); //$NON-NLS-1$
 
         // Verify password text
         BaseWidgetUtils
@@ -400,7 +426,24 @@ public class PasswordDialog extends Dialog
 
         // New password hashing method combo
         BaseWidgetUtils.createLabel( newPasswordComposite, Messages.getString( "PasswordDialog.SelectHashMethod" ), 1 ); //$NON-NLS-1$
-        newPasswordHashMethodCombo = BaseWidgetUtils.createReadonlyCombo( newPasswordComposite, HASH_METHODS, 0, 1 );
+        newPasswordHashMethodComboViewer = new ComboViewer( newPasswordComposite );
+        newPasswordHashMethodComboViewer.setContentProvider( new ArrayContentProvider() );
+        newPasswordHashMethodComboViewer.setLabelProvider( new LabelProvider()
+        {
+            public String getText( Object element )
+            {
+                String hashMethod = getHashMethodName( element );
+
+                if ( !"".equals( hashMethod ) )
+                {
+                    return hashMethod;
+                }
+
+                return super.getText( element );
+            }
+        } );
+        newPasswordHashMethodComboViewer.setInput( HASH_METHODS );
+        newPasswordHashMethodComboViewer.getControl().setLayoutData( new GridData( SWT.FILL, SWT.CENTER, true, false ) );
 
         // New password preview text
         BaseWidgetUtils.createLabel( newPasswordComposite, Messages.getString( "PasswordDialog.PasswordPreview" ), 1 ); //$NON-NLS-1$
@@ -428,7 +471,7 @@ public class PasswordDialog extends Dialog
 
         // Show new password details button
         showNewPasswordDetailsButton = BaseWidgetUtils.createCheckbox( newPasswordPreviewDetailsComposite, Messages
-            .getString( "PasswordDialog.ShowNewPasswordDetails" ), 1 ); //$NON-NLS-1$
+            .getString( "PasswordDialog.ShowNewPasswordDetails" ), 2 ); //$NON-NLS-1$
 
         // New password tab
         newPasswordTab = new TabItem( tabFolder, SWT.NONE );
@@ -451,7 +494,7 @@ public class PasswordDialog extends Dialog
                     updateCurrentPasswordGroup();
                 }
             } );
-            
+
             testPasswordText.addModifyListener( new ModifyListener()
             {
                 public void modifyText( ModifyEvent e )
@@ -459,7 +502,7 @@ public class PasswordDialog extends Dialog
                     updateCurrentPasswordGroup();
                 }
             } );
-            
+
             showTestPasswordDetailsButton.addSelectionListener( new SelectionAdapter()
             {
                 public void widgetSelected( SelectionEvent arg0 )
@@ -493,9 +536,9 @@ public class PasswordDialog extends Dialog
             }
         } );
 
-        newPasswordHashMethodCombo.addSelectionListener( new SelectionAdapter()
+        newPasswordHashMethodComboViewer.addSelectionChangedListener( new ISelectionChangedListener()
         {
-            public void widgetSelected( SelectionEvent event )
+            public void selectionChanged( SelectionChangedEvent event )
             {
                 updateNewPasswordGroup();
             }
@@ -527,7 +570,7 @@ public class PasswordDialog extends Dialog
         // set current password to the UI widgets
         if ( currentPassword != null )
         {
-            currentPasswordHashMethodText.setText( Utils.getNonNullString( currentPassword.getHashMethod() ) );
+            currentPasswordHashMethodText.setText( getCurrentPasswordHashMethodName() );
             currentPasswordValueHexText.setText( Utils
                 .getNonNullString( currentPassword.getHashedPasswordAsHexString() ) );
             currentPasswordSaltHexText.setText( Utils.getNonNullString( currentPassword.getSaltAsHexString() ) );
@@ -641,7 +684,7 @@ public class PasswordDialog extends Dialog
     private void updateNewPasswordGroup()
     {
         // set new password to the UI widgets
-        newPassword = new Password( newPasswordHashMethodCombo.getText(), newPasswordText.getText() );
+        newPassword = new Password( getSelectedNewPasswordHashMethod(), newPasswordText.getText() );
         if ( !"".equals( newPasswordText.getText() ) || newPassword.getHashMethod() == null ) //$NON-NLS-1$
         {
             newPasswordPreviewValueHexText
@@ -700,6 +743,72 @@ public class PasswordDialog extends Dialog
                 updateNewPasswordGroup();
                 newPasswordText.setFocus();
             }
+        }
+    }
+
+
+    /**
+     * Gets the selected new password hash method.
+     *
+     * @return the selected new password hash method
+     */
+    private LdapSecurityConstants getSelectedNewPasswordHashMethod()
+    {
+        StructuredSelection selection = ( StructuredSelection ) newPasswordHashMethodComboViewer.getSelection();
+
+        if ( !selection.isEmpty() )
+        {
+            Object selectedObject = selection.getFirstElement();
+
+            if ( selectedObject instanceof LdapSecurityConstants )
+            {
+                return ( LdapSecurityConstants ) selectedObject;
+            }
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Gets the name of the hash method.
+     *
+     * @param o the hash method object
+     * @return the name of the hash method
+     */
+    private String getHashMethodName( Object o )
+    {
+        if ( o instanceof LdapSecurityConstants )
+        {
+            LdapSecurityConstants hashMethod = ( LdapSecurityConstants ) o;
+
+            return hashMethod.getName();
+        }
+        else if ( ( o instanceof String ) && NO_HASH_METHOD.equals( o ) )
+        {
+            return BrowserCoreMessages.model__no_hash;
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Gets the current password hash method name.
+     *
+     * @return the current password hash method name
+     */
+    private String getCurrentPasswordHashMethodName()
+    {
+        LdapSecurityConstants hashMethod = currentPassword.getHashMethod();
+
+        if ( hashMethod != null )
+        {
+            return Utils.getNonNullString( getHashMethodName( hashMethod ) );
+        }
+        else
+        {
+            return Utils.getNonNullString( getHashMethodName( NO_HASH_METHOD ) );
         }
     }
 

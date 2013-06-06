@@ -21,11 +21,13 @@
 package org.apache.directory.studio.valueeditors.password;
 
 
+import org.apache.directory.api.ldap.model.constants.LdapSecurityConstants;
 import org.apache.directory.studio.ldapbrowser.common.dialogs.TextDialog;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
 import org.apache.directory.studio.valueeditors.AbstractDialogBinaryValueEditor;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.widgets.Shell;
 
 
@@ -99,7 +101,8 @@ public class PasswordValueEditor extends AbstractDialogBinaryValueEditor
                 else if ( password.indexOf( '{' ) == 0 && password.indexOf( '}' ) > 0 )
                 {
                     String hashMethod = password.substring( password.indexOf( '{' ) + 1, password.indexOf( '}' ) );
-                    text = hashMethod + Messages.getString( "PasswordValueEditor.HashedPassword" ); //$NON-NLS-1$
+                    text = NLS.bind(
+                        Messages.getString( "PasswordValueEditor.HashedPassword" ), getHashMethodName( hashMethod ) ); //$NON-NLS-1$
                 }
                 else
                 {
@@ -108,6 +111,25 @@ public class PasswordValueEditor extends AbstractDialogBinaryValueEditor
                 return text;
             }
         }
+    }
+
+
+    /**
+     * Gets the name of the hash method.
+     *
+     * @param s the hash method string
+     * @return the name of the associated hash method or the given string
+     */
+    private String getHashMethodName( String s )
+    {
+        LdapSecurityConstants hashMethod = LdapSecurityConstants.getAlgorithm( s );
+
+        if ( hashMethod != null )
+        {
+            return hashMethod.getName();
+        }
+
+        return s;
     }
 
 
