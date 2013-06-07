@@ -821,7 +821,7 @@ public class SchemaViewContentProvider implements IStructuredContentProvider, IT
      * @param oc
      *      the added object class
      */
-    public void objectClassAdded( MutableObjectClass oc )
+    public void objectClassAdded( ObjectClass oc )
     {
         int presentation = store.getInt( PluginConstants.PREFS_SCHEMA_VIEW_SCHEMA_PRESENTATION );
         if ( presentation == PluginConstants.PREFS_SCHEMA_VIEW_SCHEMA_PRESENTATION_FLAT )
@@ -842,7 +842,7 @@ public class SchemaViewContentProvider implements IStructuredContentProvider, IT
      * @param oc
      *      the added object class
      */
-    public void objectClassAddedFlatPresentation( MutableObjectClass oc )
+    public void objectClassAddedFlatPresentation( ObjectClass oc )
     {
         SchemaWrapper schemaWrapper = ( SchemaWrapper ) getWrapper( Activator.getDefault().getSchemaHandler()
             .getSchema( oc.getSchemaName() ) );
@@ -879,7 +879,7 @@ public class SchemaViewContentProvider implements IStructuredContentProvider, IT
      * @param oc
      *      the added object class
      */
-    public void objectClassAddedHierarchicalPresentation( MutableObjectClass oc )
+    public void objectClassAddedHierarchicalPresentation( ObjectClass oc )
     {
         // Removing unattached nodes for "top"
         List<Object> ocChildren = new ArrayList<Object>();
@@ -1014,7 +1014,7 @@ public class SchemaViewContentProvider implements IStructuredContentProvider, IT
      * @param oc
      *      the modified object class
      */
-    public void objectClassModified( MutableObjectClass oc )
+    public void objectClassModified( ObjectClass oc )
     {
         int presentation = store.getInt( PluginConstants.PREFS_SCHEMA_VIEW_SCHEMA_PRESENTATION );
         if ( presentation == PluginConstants.PREFS_SCHEMA_VIEW_SCHEMA_PRESENTATION_FLAT )
@@ -1048,7 +1048,7 @@ public class SchemaViewContentProvider implements IStructuredContentProvider, IT
      * @param oc
      *      the modified object class
      */
-    public void objectClassModifiedHierarchicalPresentation( MutableObjectClass oc )
+    public void objectClassModifiedHierarchicalPresentation( ObjectClass oc )
     {
         // Propagating the modification to the hierarchy manager
         hierarchyManager.objectClassModified( oc );

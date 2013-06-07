@@ -165,7 +165,7 @@ public class ObjectClassEditor extends FormEditor
         setInput( input );
         setPartName( input.getName() );
 
-        originalObjectClass = ( ( ObjectClassEditorInput ) getEditorInput() ).getObjectClass();
+        originalObjectClass = ( MutableObjectClass ) ( ( ObjectClassEditorInput ) getEditorInput() ).getObjectClass();
         modifiedObjectClass = PluginUtils.getClone( originalObjectClass );
 
         SchemaHandler schemaHandler = Activator.getDefault().getSchemaHandler();
