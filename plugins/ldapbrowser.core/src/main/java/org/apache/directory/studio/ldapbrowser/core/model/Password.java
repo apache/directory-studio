@@ -65,8 +65,10 @@ public class Password
     /** The salt */
     private byte[] salt;
 
+    /** The 'unsupported hash' flag */
     private boolean isUnsupportedHashMethod = false;
 
+    /** The 'invalid hash' flag */
     private boolean isInvalidHashValue = false;
 
     /** The trash, used for unknown hash methods. */
@@ -259,6 +261,11 @@ public class Password
         }
 
         boolean verified = false;
+
+        if ( isInvalidHashValue || isUnsupportedHashMethod )
+        {
+            return false;
+        }
 
         if ( hashMethod == null )
         {
