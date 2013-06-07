@@ -672,7 +672,6 @@ public class SchemaViewContentProvider implements IStructuredContentProvider, IT
                     {
                         atw = new AttributeTypeWrapper( at, root );
                     }
-
                 }
                 else
                 {
@@ -1083,7 +1082,7 @@ public class SchemaViewContentProvider implements IStructuredContentProvider, IT
                             if ( child instanceof Folder )
                             {
                                 Folder folder = ( Folder ) child;
-                                if ( folder.getType().equals( FolderType.ATTRIBUTE_TYPE ) )
+                                if ( folder.getType().equals( FolderType.OBJECT_CLASS ) )
                                 {
                                     ocw = new ObjectClassWrapper( oc, folder );
                                     break;
@@ -1095,7 +1094,6 @@ public class SchemaViewContentProvider implements IStructuredContentProvider, IT
                     {
                         ocw = new ObjectClassWrapper( oc, root );
                     }
-
                 }
                 else
                 {
