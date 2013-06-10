@@ -189,6 +189,7 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
             || ( connection.getEncryptionMethod() == EncryptionMethod.START_TLS ) )
         {
             ldapConnectionConfig.setUseSsl( connection.getEncryptionMethod() == EncryptionMethod.LDAPS );
+            ldapConnectionConfig.setUseTls( connection.getEncryptionMethod() == EncryptionMethod.START_TLS );
 
             try
             {
@@ -228,12 +229,6 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
                     if ( !connected )
                     {
                         throw new Exception( Messages.DirectoryApiConnectionWrapper_UnableToConnect );
-                    }
-
-                    // Start TLS
-                    if ( connection.getConnectionParameter().getEncryptionMethod() == ConnectionParameter.EncryptionMethod.START_TLS )
-                    {
-                        ldapConnection.startTls();
                     }
                 }
                 catch ( Exception e )
