@@ -76,6 +76,8 @@ public class TypeSorter implements Comparator<PropertyDifference>
                     return 1;
                 case REMOVED:
                     return 25;
+                default:
+                    break;
             }
         }
         else if ( diff instanceof ClassTypeDifference )
@@ -84,6 +86,8 @@ public class TypeSorter implements Comparator<PropertyDifference>
             {
                 case MODIFIED:
                     return 17;
+                default:
+                    break;
             }
         }
         else if ( diff instanceof CollectiveDifference )
@@ -92,6 +96,8 @@ public class TypeSorter implements Comparator<PropertyDifference>
             {
                 case MODIFIED:
                     return 20;
+                default:
+                    break;
             }
         }
         else if ( diff instanceof DescriptionDifference )
@@ -104,6 +110,8 @@ public class TypeSorter implements Comparator<PropertyDifference>
                     return 12;
                 case REMOVED:
                     return 26;
+                default:
+                    break;
             }
         }
         else if ( diff instanceof EqualityDifference )
@@ -116,6 +124,8 @@ public class TypeSorter implements Comparator<PropertyDifference>
                     return 22;
                 case REMOVED:
                     return 31;
+                default:
+                    break;
             }
         }
         else if ( diff instanceof MandatoryATDifference )
@@ -126,6 +136,8 @@ public class TypeSorter implements Comparator<PropertyDifference>
                     return 10;
                 case REMOVED:
                     return 34;
+                default:
+                    break;
             }
         }
         else if ( diff instanceof NoUserModificationDifference )
@@ -134,6 +146,8 @@ public class TypeSorter implements Comparator<PropertyDifference>
             {
                 case MODIFIED:
                     return 21;
+                default:
+                    break;
             }
         }
         else if ( diff instanceof ObsoleteDifference )
@@ -142,6 +156,8 @@ public class TypeSorter implements Comparator<PropertyDifference>
             {
                 case MODIFIED:
                     return 18;
+                default:
+                    break;
             }
         }
         else if ( diff instanceof OptionalATDifference )
@@ -152,6 +168,8 @@ public class TypeSorter implements Comparator<PropertyDifference>
                     return 11;
                 case REMOVED:
                     return 35;
+                default:
+                    break;
             }
         }
         else if ( diff instanceof OrderingDifference )
@@ -164,6 +182,8 @@ public class TypeSorter implements Comparator<PropertyDifference>
                     return 23;
                 case REMOVED:
                     return 32;
+                default:
+                    break;
             }
         }
         else if ( diff instanceof SingleValueDifference )
@@ -172,6 +192,8 @@ public class TypeSorter implements Comparator<PropertyDifference>
             {
                 case MODIFIED:
                     return 19;
+                default:
+                    break;
             }
         }
         else if ( diff instanceof SubstringDifference )
@@ -184,6 +206,8 @@ public class TypeSorter implements Comparator<PropertyDifference>
                     return 24;
                 case REMOVED:
                     return 33;
+                default:
+                    break;
             }
         }
         else if ( diff instanceof SuperiorATDifference )
@@ -196,6 +220,8 @@ public class TypeSorter implements Comparator<PropertyDifference>
                     return 13;
                 case REMOVED:
                     return 27;
+                default:
+                    break;
             }
         }
         else if ( diff instanceof SuperiorOCDifference )
@@ -206,6 +232,8 @@ public class TypeSorter implements Comparator<PropertyDifference>
                     return 4;
                 case REMOVED:
                     return 28;
+                default:
+                    break;
             }
         }
         else if ( diff instanceof SyntaxDifference )
@@ -218,6 +246,8 @@ public class TypeSorter implements Comparator<PropertyDifference>
                     return 15;
                 case REMOVED:
                     return 29;
+                default:
+                    break;
             }
         }
         else if ( diff instanceof SyntaxLengthDifference )
@@ -230,6 +260,8 @@ public class TypeSorter implements Comparator<PropertyDifference>
                     return 16;
                 case REMOVED:
                     return 30;
+                default:
+                    break;
             }
         }
         else if ( diff instanceof UsageDifference )
@@ -238,6 +270,8 @@ public class TypeSorter implements Comparator<PropertyDifference>
             {
                 case MODIFIED:
                     return 14;
+                default:
+                    break;
             }
         }
 

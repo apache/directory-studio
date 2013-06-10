@@ -419,6 +419,8 @@ public class DifferencesWidgetSchemaLabelProvider extends LabelProvider
                     return Activator.getDefault().getImage( PluginConstants.IMG_FOLDER_OC );
                 case NONE:
                     return Activator.getDefault().getImage( PluginConstants.IMG_FOLDER );
+                default:
+                    break;
             }
         }
 

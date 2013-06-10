@@ -75,6 +75,8 @@ public class Folder
             case OBJECT_CLASS:
                 name = Messages.getString( "Folder.ObjectClasses" ); //$NON-NLS-1$
                 break;
+            default:
+                break;
         }
     }
 
