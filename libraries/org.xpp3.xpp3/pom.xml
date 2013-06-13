@@ -91,7 +91,9 @@
             <Embed-StripGroup>true</Embed-StripGroup>
             <Export-Package>
               org.xmlpull.*,
-              javax.xml.namespace</Export-Package>
+              javax.xml.namespace
+            </Export-Package>
+            <Import-Package>!*</Import-Package>
           </instructions>
         </configuration>
         <executions>

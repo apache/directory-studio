@@ -91,15 +91,7 @@
             <Embed-Directory>lib</Embed-Directory>
             <Embed-StripGroup>true</Embed-StripGroup>
             <Export-Package>org.apache.log4j.*</Export-Package>
-            <Import-Package>
-              !com.ibm.uvm.tools,
-              !com.sun.jdmk.comm,
-              !javax.jmdns,
-              !javax.jms,
-              !javax.mail.internet,
-              !javax.mail,
-              *
-            </Import-Package>
+            <Import-Package>!*</Import-Package>
           </instructions>
         </configuration>
         <executions>

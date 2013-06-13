@@ -90,12 +90,7 @@
             <Embed-Directory>lib</Embed-Directory>
             <Embed-StripGroup>true</Embed-StripGroup>
             <Export-Package>org.apache.commons.logging.*</Export-Package>
-            <Import-Package>
-              !javax.servlet,
-              !org.apache.avalon.framework.logger,
-              !org.apache.log,
-              !org.apache.log4j
-            </Import-Package>
+            <Import-Package>!*</Import-Package>
           </instructions>
         </configuration>
         <executions>

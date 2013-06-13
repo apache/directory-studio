@@ -103,11 +103,7 @@
               org.apache.http.impl.conn.*,
               org.apache.http.impl.cookie.*,
             </Export-Package>
-            <Import-Package>
-              !org.apache.commons.codec.*,
-              !org.apache.commons.logging.*,
-              *
-            </Import-Package>
+            <Import-Package>!*</Import-Package>
           </instructions>
         </configuration>
         <executions>
