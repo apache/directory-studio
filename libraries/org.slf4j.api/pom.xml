@@ -90,8 +90,8 @@
             <Embed-Dependency>*;scope=compile|runtime</Embed-Dependency>
             <Embed-Directory>lib</Embed-Directory>
             <Embed-StripGroup>true</Embed-StripGroup>
-            <_exportcontents>!lib,*</_exportcontents>
-            <Import-Package>!</Import-Package>
+            <Export-Package>org.slf4j.*</Export-Package>
+            <Import-Package>!org.slf4j.impl</Import-Package>
           </instructions>
         </configuration>
         <executions>

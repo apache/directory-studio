@@ -97,8 +97,7 @@
             <Require-Bundle>org.apache.commons.codec;bundle-version="${org.apache.commons.codec.version}",
  org.apache.directory.api.ldap.model;bundle-version="${org.apache.directory.api.validversion}"</Require-Bundle>
             <Export-Package>org.apache.directory.studio.ldifparser.*</Export-Package>
-            <Import-Package>!</Import-Package>
-            <Private-Package>!</Private-Package>
+            <Import-Package>!*</Import-Package>
           </instructions>
         </configuration>
         <executions>

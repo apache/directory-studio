@@ -90,8 +90,13 @@
             <Embed-Dependency>*;scope=compile|runtime</Embed-Dependency>
             <Embed-Directory>lib</Embed-Directory>
             <Embed-StripGroup>true</Embed-StripGroup>
-            <_exportcontents>!lib,*</_exportcontents>
-            <Import-Package>!</Import-Package>
+            <Export-Package>net.sf.ehcache.*</Export-Package>
+            <Import-Package>
+              !org.hibernate.*,
+              !javax.*,
+              !org.slf4j,
+              !org.xml.sax*
+            </Import-Package>
           </instructions>
         </configuration>
         <executions>

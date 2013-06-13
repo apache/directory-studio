@@ -129,8 +129,7 @@
  org.eclipse.core.net
             </Require-Bundle>
             <Export-Package>!*</Export-Package>
-            <Import-Package>!</Import-Package>
-            <Private-Package>!</Private-Package>
+            <Import-Package>!*</Import-Package>
           </instructions>
         </configuration>
         <executions>

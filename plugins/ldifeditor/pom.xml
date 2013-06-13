@@ -133,8 +133,7 @@
  org.eclipse.ui.views,
  org.eclipse.ui.workbench.texteditor</Require-Bundle>
             <Export-Package>org.apache.directory.studio.ldifeditor.*</Export-Package>
-            <Import-Package>!</Import-Package>
-            <Private-Package>!</Private-Package>
+            <Import-Package>!*</Import-Package>
           </instructions>
         </configuration>
         <executions>

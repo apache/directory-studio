@@ -122,8 +122,7 @@
  org.eclipse.ui.ide,
  org.dom4j.dom4j;bundle-version="${org.dom4j.version}"</Require-Bundle>
             <Export-Package>org.apache.directory.studio.apacheds.configuration.*</Export-Package>
-            <Import-Package>!</Import-Package>
-            <Private-Package>!</Private-Package>
+            <Import-Package>!*</Import-Package>
           </instructions>
         </configuration>
         <executions>

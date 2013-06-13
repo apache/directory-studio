@@ -92,8 +92,12 @@
             <Embed-Dependency>*;scope=compile|runtime</Embed-Dependency>
             <Embed-Directory>lib</Embed-Directory>
             <Embed-StripGroup>true</Embed-StripGroup>
-            <_exportcontents>!lib,*</_exportcontents>
-            <Import-Package>!</Import-Package>
+            <Export-Package>org.slf4j.impl.*</Export-Package>
+            <Import-Package>
+              !org.apache.log4j,
+              !org.slf4j.*,
+              *
+            </Import-Package>
           </instructions>
         </configuration>
         <executions>

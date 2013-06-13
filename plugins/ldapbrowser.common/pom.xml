@@ -126,8 +126,7 @@
  org.eclipse.ui.editors,
  org.eclipse.ui.workbench.texteditor</Require-Bundle>
             <Export-Package>org.apache.directory.studio.ldapbrowser.common.*, org.apache.directory.studio.valueeditors.*</Export-Package>
-            <Import-Package>!</Import-Package>
-            <Private-Package>!</Private-Package>
+            <Import-Package>!*</Import-Package>
           </instructions>
         </configuration>
         <executions>

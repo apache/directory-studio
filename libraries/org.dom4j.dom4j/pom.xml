@@ -89,8 +89,15 @@
             <Embed-Dependency>*;scope=compile|runtime</Embed-Dependency>
             <Embed-Directory>lib</Embed-Directory>
             <Embed-StripGroup>true</Embed-StripGroup>
-            <_exportcontents>!lib,*</_exportcontents>
-            <Import-Package>!</Import-Package>
+            <Export-Package>org.dom4j.*</Export-Package>
+            <Import-Package>
+              !com.sun.msv.datatype.*,
+              !org.relaxng.datatype,
+              !org.gjt.xpp,
+              !org.jaxen.*,
+              !org.xmlpull.v1,
+              *
+            </Import-Package>
           </instructions>
         </configuration>
         <executions>

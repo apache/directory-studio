@@ -138,8 +138,7 @@
             <Embed-StripGroup>true</Embed-StripGroup>
             <Embed-Transitive>true</Embed-Transitive>
             <Export-Package>org.apache.directory.studio.schemaeditor.model.*, org.apache.directory.studio.schemaeditor.model.io.*</Export-Package>
-            <Import-Package>!</Import-Package>
-            <Private-Package>!</Private-Package>
+            <Import-Package>!*</Import-Package>
           </instructions>
         </configuration>
         <executions>

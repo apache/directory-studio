@@ -135,8 +135,7 @@
  org.apache.directory.studio.valueeditors.objectclass.*,
  org.apache.directory.studio.valueeditors.password.*,
  org.apache.directory.studio.valueeditors.time.*</Export-Package>
-            <Import-Package>!</Import-Package>
-            <Private-Package>!</Private-Package>
+            <Import-Package>!*</Import-Package>
           </instructions>
         </configuration>
         <executions>

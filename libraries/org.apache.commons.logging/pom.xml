@@ -89,8 +89,13 @@
             <Embed-Dependency>*;scope=compile|runtime</Embed-Dependency>
             <Embed-Directory>lib</Embed-Directory>
             <Embed-StripGroup>true</Embed-StripGroup>
-            <_exportcontents>!lib,*</_exportcontents>
-            <Import-Package>!</Import-Package>
+            <Export-Package>org.apache.commons.logging.*</Export-Package>
+            <Import-Package>
+              !javax.servlet,
+              !org.apache.avalon.framework.logger,
+              !org.apache.log,
+              !org.apache.log4j
+            </Import-Package>
           </instructions>
         </configuration>
         <executions>

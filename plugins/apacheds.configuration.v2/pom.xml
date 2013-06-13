@@ -133,8 +133,7 @@
  org.eclipse.ui.ide,
  org.slf4j.api;bundle-version="${org.slf4j.version}"</Require-Bundle>
             <Export-Package>org.apache.directory.studio.apacheds.configuration.v2*</Export-Package>
-            <Import-Package>!</Import-Package>
-            <Private-Package>!</Private-Package>
+            <Import-Package>!*</Import-Package>
           </instructions>
         </configuration>
         <executions>

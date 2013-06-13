@@ -92,8 +92,22 @@
             <Embed-Dependency>*;scope=compile|runtime</Embed-Dependency>
             <Embed-Directory>lib</Embed-Directory>
             <Embed-StripGroup>true</Embed-StripGroup>
-            <_exportcontents>!lib,*</_exportcontents>
-            <Import-Package>!</Import-Package>
+            <Export-Package>
+              org.apache.http.annotation.*,
+              org.apache.http.auth.*,
+              org.apache.http.client.*,
+              org.apache.http.conn.*,
+              org.apache.http.cookie.*,
+              org.apache.http.impl.auth.*,
+              org.apache.http.impl.client.*,
+              org.apache.http.impl.conn.*,
+              org.apache.http.impl.cookie.*,
+            </Export-Package>
+            <Import-Package>
+              !org.apache.commons.codec.*,
+              !org.apache.commons.logging.*,
+              *
+            </Import-Package>
           </instructions>
         </configuration>
         <executions>

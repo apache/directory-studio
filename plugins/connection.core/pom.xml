@@ -122,8 +122,7 @@
  org.eclipse.core.runtime,
  org.eclipse.ui</Require-Bundle>
             <Export-Package>org.apache.directory.studio.connection.core.*</Export-Package>
-            <Import-Package>!</Import-Package>
-            <Private-Package>!</Private-Package>
+            <Import-Package>!*</Import-Package>
           </instructions>
         </configuration>
         <executions>
