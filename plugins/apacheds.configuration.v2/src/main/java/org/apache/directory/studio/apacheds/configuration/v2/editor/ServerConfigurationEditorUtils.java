@@ -151,8 +151,7 @@ public class ServerConfigurationEditorUtils
             while ( !canOverwrite )
             {
                 // Open FileDialog
-                final FileDialog dialog = new FileDialog( shell, SWT.SAVE );
-                path = openFileDialogInUIThread( dialog );
+                path = openFileDialogInUIThread( shell );
                 if ( path == null )
                 {
                     return null;
@@ -245,12 +244,12 @@ public class ServerConfigurationEditorUtils
     /**
      * Opens a {@link FileDialog} in the UI thread.
      *
-     * @param dialog
-     *      the file dialog
+     * @param shell
+     *      the shell
      * @return
      *      the result of the dialog
      */
-    private static String openFileDialogInUIThread( final FileDialog dialog )
+    private static String openFileDialogInUIThread( final Shell shell )
     {
         // Defining our own encapsulating class for the result
         class DialogResult
@@ -278,6 +277,7 @@ public class ServerConfigurationEditorUtils
         {
             public void run()
             {
+                FileDialog dialog = new FileDialog( shell, SWT.SAVE );
                 result.setResult( dialog.open() );
             }
         } );
