@@ -439,6 +439,8 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
                                             gssApiRequest.setKdcPort( connection.getConnectionParameter()
                                                 .getKrb5KdcPort() );
                                             break;
+                                        default:
+                                            break;
                                     }
                                 }
 
