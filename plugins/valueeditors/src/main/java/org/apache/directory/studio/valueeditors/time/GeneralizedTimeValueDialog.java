@@ -300,7 +300,7 @@ public class GeneralizedTimeValueDialog extends Dialog
         createDateDialogArea( dualComposite );
         createTimeZoneDialogArea( dualComposite );
         createRawValueDialogArea( dualComposite );
-        
+
         // Getting the dialog settings
         discardFractionCheckbox.setSelection( ValueEditorsActivator.getDefault().getDialogSettings()
             .getBoolean( ValueEditorsConstants.DIALOGSETTING_KEY_DATE_EDITOR_DISCARD_FRACTION ) );
@@ -549,7 +549,8 @@ public class GeneralizedTimeValueDialog extends Dialog
         rawValueValidatorImage = new Label( rawValueComposite, SWT.NONE );
 
         // Discard fraction checkbox
-        discardFractionCheckbox = BaseWidgetUtils.createCheckbox( parent, "Discard fraction (milliseconds)", 2 );
+        discardFractionCheckbox = BaseWidgetUtils.createCheckbox( parent,
+            Messages.getString( "GeneralizedTimeValueDialog.DiscardFraction" ), 2 );
 
         validateRawValue( true );
     }
