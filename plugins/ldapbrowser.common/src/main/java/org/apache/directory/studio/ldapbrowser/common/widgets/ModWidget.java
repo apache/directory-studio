@@ -51,7 +51,7 @@ import org.eclipse.swt.widgets.Text;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class ModWidget extends BrowserWidget implements ModifyListener
+public class ModWidget extends BrowserWidget
 {
     /** The scrolled composite */
     private ScrolledComposite scrolledComposite;
@@ -67,6 +67,15 @@ public class ModWidget extends BrowserWidget implements ModifyListener
 
     /** The resulting LDIF */
     private String ldif;
+
+    // Listeners
+    private ModifyListener modifyListener = new ModifyListener()
+    {
+        public void modifyText( ModifyEvent e )
+        {
+            validate( true );
+        }
+    };
 
 
     /**
@@ -126,15 +135,6 @@ public class ModWidget extends BrowserWidget implements ModifyListener
         validate( false );
 
         return scrolledComposite;
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    public void modifyText( ModifyEvent e )
-    {
-        validate( true );
     }
 
 
@@ -240,12 +240,13 @@ public class ModWidget extends BrowserWidget implements ModifyListener
         modSpec.modType = BaseWidgetUtils.createReadonlyCombo( modSpecComposite, new String[]
             { "add", "replace", "delete" }, 0, 1 ); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         modSpec.modType.setLayoutData( new GridData() );
-        modSpec.modType.addModifyListener( this );
+        modSpec.modType.addModifyListener( modifyListener );
 
         // attribute combo with field decoration and content proposal
         modSpec.modAttributeCombo = BaseWidgetUtils.createCombo( modSpecComposite, new String[0], -1, 1 );
         new ExtendedContentAssistCommandAdapter( modSpec.modAttributeCombo, new ComboContentAdapter(),
             listContentProposalProvider, null, null, true );
+        modSpec.modAttributeCombo.addModifyListener( modifyListener );
 
         // add button with listener
         modSpec.modAddButton = new Button( composite, SWT.PUSH );
@@ -374,7 +375,7 @@ public class ModWidget extends BrowserWidget implements ModifyListener
         // text field
         valueLine.valueComposite = BaseWidgetUtils.createColumnContainer( modSpec.modGroup, 3, 1 );
         valueLine.valueText = BaseWidgetUtils.createText( valueLine.valueComposite, "", 1 ); //$NON-NLS-1$
-        valueLine.valueText.addModifyListener( this );
+        valueLine.valueText.addModifyListener( modifyListener );
 
         // add button with listener
         valueLine.valueAddButton = new Button( valueLine.valueComposite, SWT.PUSH );
