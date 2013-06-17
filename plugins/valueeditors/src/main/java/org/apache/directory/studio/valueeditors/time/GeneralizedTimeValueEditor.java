@@ -27,7 +27,6 @@ import java.util.Calendar;
 import java.util.Date;
 
 import org.apache.directory.api.util.GeneralizedTime;
-import org.apache.directory.studio.ldapbrowser.common.dialogs.TextDialog;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
 import org.apache.directory.studio.valueeditors.AbstractDialogStringValueEditor;
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -115,9 +114,21 @@ public class GeneralizedTimeValueEditor extends AbstractDialogStringValueEditor
 
             // Creating and opening the dialog
             GeneralizedTimeValueDialog dialog = new GeneralizedTimeValueDialog( shell, generalizedTime );
-            if ( dialog.open() == TextDialog.OK )
+            if ( dialog.open() == GeneralizedTimeValueDialog.OK )
             {
-                setValue( dialog.getGeneralizedTime().toGeneralizedTime() );
+                GeneralizedTime newGeneralizedTime = dialog.getGeneralizedTime();
+
+                // Checking if we need to save the generalized time 
+                // with or without fraction
+                if ( newGeneralizedTime.getFraction() == 0 )
+                {
+                    setValue( newGeneralizedTime.toGeneralizedTimeWithoutFraction() );
+                }
+                else
+                {
+                    setValue( newGeneralizedTime.toGeneralizedTime() );
+                }
+
                 return true;
             }
         }

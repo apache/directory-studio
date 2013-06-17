@@ -74,4 +74,6 @@ public final class ValueEditorsConstants
     /** The relative path to the text field ok icon */
     public static final String IMG_TEXTFIELD_OK = "resources/icons/textfield_ok.png"; //$NON-NLS-1$
 
+    /** The dialogs settings for the Date Editor "Discard fraction" checkbox */
+    public static final String DIALOGSETTING_KEY_DATE_EDITOR_DISCARD_FRACTION = "dateEditorDiscardFraction"; //$NON-NLS-1$
 }
