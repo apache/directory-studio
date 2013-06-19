@@ -80,7 +80,6 @@ public class OverviewPage extends ServerConfigurationEditorPage
     private Hyperlink openPartitionsConfigurationLink;
     private Button allowAnonymousAccessCheckbox;
     private Button enableAccessControlCheckbox;
-    private Hyperlink openOptionsConfigurationLink;
 
     // UI Control Listeners
     private SelectionAdapter enableLdapCheckboxListener = new SelectionAdapter()
@@ -188,13 +187,6 @@ public class OverviewPage extends ServerConfigurationEditorPage
         {
             DirectoryServiceBean directoryServiceBean = getConfigBean().getDirectoryServiceBean();
             directoryServiceBean.setDsAccessControlEnabled( enableAccessControlCheckbox.getSelection() );
-        }
-    };
-    private HyperlinkAdapter openOptionsConfigurationLinkListener = new HyperlinkAdapter()
-    {
-        public void linkActivated( HyperlinkEvent e )
-        {
-            getServerConfigurationEditor().showPage( null );
         }
     };
 
@@ -418,13 +410,6 @@ public class OverviewPage extends ServerConfigurationEditorPage
         enableAccessControlCheckbox = toolkit.createButton( composite,
             Messages.getString( "OverviewPage.EnableAccessControl" ), SWT.CHECK ); //$NON-NLS-1$
         enableAccessControlCheckbox.setLayoutData( new GridData( SWT.NONE, SWT.NONE, true, false ) );
-
-        // Options Configuration Link
-        openOptionsConfigurationLink = toolkit.createHyperlink( composite,
-            Messages.getString( "OverviewPage.AdvancedOptionsConfiguration" ), SWT.NONE ); //$NON-NLS-1$
-        openOptionsConfigurationLink.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false,
-            gridLayout.numColumns, 1 ) );
-        openOptionsConfigurationLink.addHyperlinkListener( openOptionsConfigurationLinkListener );
     }
 
 
