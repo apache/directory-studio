@@ -30,7 +30,6 @@ import org.eclipse.jface.dialogs.ErrorDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -47,7 +46,6 @@ import org.eclipse.swt.widgets.TabItem;
  */
 public class ACIItemTabFolderComposite extends Composite
 {
-
     /** The index of the visual tab */
     public static final int VISUAL_TAB_INDEX = 0;
 
@@ -85,16 +83,13 @@ public class ACIItemTabFolderComposite extends Composite
     public ACIItemTabFolderComposite( Composite parent, int style )
     {
         super( parent, style );
-        setLayoutData( new GridData( GridData.FILL_BOTH ) );
-        GridLayout layout = new GridLayout( 1, false );
-        layout.marginWidth = 0;
-        layout.marginHeight = 0;
+        GridLayout layout = new GridLayout();
+        layout.marginWidth = layout.marginHeight = 0;
         setLayout( layout );
+        setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, true ) );
 
         createTabFolder();
-
         createVisualTab();
-
         createSourceTab();
 
         initListeners();
@@ -124,11 +119,15 @@ public class ACIItemTabFolderComposite extends Composite
     private void createSourceTab()
     {
         // create inner container
-        sourceContainer = new Composite( tabFolder, SWT.BORDER );
-        sourceContainer.setLayout( new FillLayout() );
+        sourceContainer = new Composite( tabFolder, SWT.NONE );
+        GridLayout layout = new GridLayout();
+        layout.marginWidth = layout.marginHeight = 0;
+        sourceContainer.setLayout( layout );
+        sourceContainer.setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, true ) );
 
         // create source editor
         sourceComposite = new ACIItemSourceEditorComposite( sourceContainer, SWT.NONE );
+        sourceComposite.setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, true ) );
 
         // create tab
         sourceTab = new TabItem( tabFolder, SWT.NONE, SOURCE_TAB_INDEX );
@@ -145,10 +144,12 @@ public class ACIItemTabFolderComposite extends Composite
     {
         // create inner container
         visualContainer = new Composite( tabFolder, SWT.NONE );
-        visualContainer.setLayout( new FillLayout() );
+        visualContainer.setLayout( new GridLayout() );
+        visualContainer.setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, true ) );
 
         // create the visual ACIItem composite
         visualComposite = new ACIItemVisualEditorComposite( visualContainer, SWT.NONE );
+        visualComposite.setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, true ) );
 
         // create tab
         visualTab = new TabItem( tabFolder, SWT.NONE, VISUAL_TAB_INDEX );
@@ -164,11 +165,7 @@ public class ACIItemTabFolderComposite extends Composite
     private void createTabFolder()
     {
         tabFolder = new TabFolder( this, SWT.TOP );
-        GridLayout mainLayout = new GridLayout();
-        mainLayout.marginWidth = 0;
-        mainLayout.marginHeight = 0;
-        tabFolder.setLayout( mainLayout );
-        tabFolder.setLayoutData( new GridData( GridData.FILL_BOTH ) );
+        tabFolder.setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, true ) );
     }
 
 
@@ -291,5 +288,4 @@ public class ACIItemTabFolderComposite extends Composite
         sourceComposite.format();
         //visualComposite.format();
     }
-
 }

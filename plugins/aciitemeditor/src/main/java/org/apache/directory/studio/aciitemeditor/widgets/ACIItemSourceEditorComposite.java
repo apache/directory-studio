@@ -36,7 +36,8 @@ import org.eclipse.jface.text.source.SourceViewer;
 import org.eclipse.jface.text.source.SourceViewerConfiguration;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Font;
-import org.eclipse.swt.layout.FillLayout;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 
 
@@ -47,7 +48,6 @@ import org.eclipse.swt.widgets.Composite;
  */
 public class ACIItemSourceEditorComposite extends Composite
 {
-
     /** The source editor */
     private SourceViewer sourceEditor;
 
@@ -64,7 +64,7 @@ public class ACIItemSourceEditorComposite extends Composite
     public ACIItemSourceEditorComposite( Composite parent, int style )
     {
         super( parent, style );
-        setLayout( new FillLayout() );
+        setLayout( new GridLayout() );
 
         createSourceEditor();
     }
@@ -78,6 +78,7 @@ public class ACIItemSourceEditorComposite extends Composite
     {
         // create source editor
         sourceEditor = new SourceViewer( this, null, null, false, SWT.BORDER | SWT.V_SCROLL | SWT.H_SCROLL );
+        sourceEditor.getControl().setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, true ) );
 
         // setup basic configuration
         configuration = new ACISourceViewerConfiguration();

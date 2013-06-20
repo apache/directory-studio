@@ -52,7 +52,6 @@ import org.eclipse.swt.widgets.Composite;
  */
 public class ACIItemVisualEditorComposite extends ScrolledComposite implements WidgetModifyListener
 {
-
     /** The inner composite for all the content */
     private Composite composite = null;
 
@@ -97,16 +96,9 @@ public class ACIItemVisualEditorComposite extends ScrolledComposite implements W
      */
     private void createComposite()
     {
-        GridLayout gridLayout = new GridLayout();
-        gridLayout.numColumns = 1;
-        GridData gridData = new GridData();
-        gridData.horizontalAlignment = GridData.FILL;
-        gridData.grabExcessHorizontalSpace = true;
-        gridData.verticalAlignment = GridData.CENTER;
-
         composite = new Composite( this, SWT.NONE );
-        composite.setLayout( gridLayout );
-        composite.setLayoutData( gridData );
+        composite.setLayout( new GridLayout() );
+        composite.setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, true ) );
 
         generalComposite = new ACIItemGeneralComposite( composite, SWT.NONE );
         generalComposite.addWidgetModifyListener( this );
