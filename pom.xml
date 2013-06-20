@@ -65,11 +65,11 @@
     <com.bandlem.eclipse.fullscreen.version>1.0.4.201108061054</com.bandlem.eclipse.fullscreen.version>
     <net.sf.ehcache.version>2.4.4</net.sf.ehcache.version>
     <org.antlr.version>2.7.7</org.antlr.version>
-    <org.apache.commons.codec.version>1.6</org.apache.commons.codec.version>
+    <org.apache.commons.codec.version>1.8</org.apache.commons.codec.version>
     <org.apache.commons.collections.version>3.2.1</org.apache.commons.collections.version>
     <org.apache.commons.io.version>2.4</org.apache.commons.io.version>
     <org.apache.commons.lang.version>2.6</org.apache.commons.lang.version>
-    <org.apache.commons.logging.version>1.1.1</org.apache.commons.logging.version>
+    <org.apache.commons.logging.version>1.1.3</org.apache.commons.logging.version>
     <org.apache.commons.pool.version>1.6</org.apache.commons.pool.version>
     <org.apache.directory.api.validversion>1.0.0.M18-SNAPSHOT</org.apache.directory.api.validversion>
     <org.apache.directory.api.version>1.0.0-M18-SNAPSHOT</org.apache.directory.api.version>
@@ -78,21 +78,21 @@
     <org.apache.httpcomponents.version>4.1.2</org.apache.httpcomponents.version>
     <org.apache.logging.log4j.version>1.2.17</org.apache.logging.log4j.version>
     <org.apache.mina.version>2.0.7</org.apache.mina.version>
-    <org.apache.xmlgraphics.fop.version>1.0</org.apache.xmlgraphics.fop.version>
+    <org.apache.xmlgraphics.fop.version>1.1</org.apache.xmlgraphics.fop.version>
     <org.bouncycastle.bcprov.jdk15.version>140</org.bouncycastle.bcprov.jdk15.version>
     <org.dom4j.version>1.6.1</org.dom4j.version>
     <org.slf4j.version>1.7.5</org.slf4j.version>
     <org.xpp3.validversion>1.1.4.c</org.xpp3.validversion>
     <org.xpp3.version>1.1.4c</org.xpp3.version>
-    <org.apache.poi.version>3.7</org.apache.poi.version>
-    <xerces.xercesimpl.version>2.10.0</xerces.xercesimpl.version>
+    <org.apache.poi.version>3.9</org.apache.poi.version>
+    <xerces.xercesimpl.version>2.11.0</xerces.xercesimpl.version>
     
     <!-- Set versions for maven plugins -->
     <checkstyle.version>4.1</checkstyle.version>
     <findbugs.annotations.version>1.0.0</findbugs.annotations.version>
-    <junit.version>4.10</junit.version>
+    <junit.version>4.11</junit.version>
     <maven.artifact.version>3.0.4</maven.artifact.version>
-    <maven.dependency.plugin.version>2.4</maven.dependency.plugin.version>
+    <maven.dependency.plugin.version>2.8</maven.dependency.plugin.version>
     <maven.model.version>3.0.4</maven.model.version>
     <maven.plugin.api.version>3.0.4</maven.plugin.api.version>
     <maven.project.version>3.0-alpha-2</maven.project.version>
@@ -1626,7 +1626,7 @@
       <dependency>
         <groupId>org.hamcrest</groupId>
         <artifactId>hamcrest-all</artifactId>
-        <version>1.1</version>
+        <version>1.3</version>
       </dependency>
     
     <!-- Documentation generation dependencies -->
