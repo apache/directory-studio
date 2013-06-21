@@ -127,6 +127,7 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
     private Button editCipherSuiteButton;
     private Button deleteCipherSuiteButton;
     private Text replicationPingerSleepText;
+    private Text diskSynchronizationDelayText;
 
     // UI Controls Listeners
     private SelectionAdapter enableLdapCheckboxListener = new SelectionAdapter()
@@ -442,6 +443,13 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
             getLdapServerBean().setReplPingerSleep( Integer.parseInt( replicationPingerSleepText.getText() ) );
         }
     };
+    private ModifyListener diskSynchronizationDelayTextListener = new ModifyListener()
+    {
+        public void modifyText( ModifyEvent e )
+        {
+            getDirectoryServiceBean().setDsSyncPeriodMillis( Long.parseLong( diskSynchronizationDelayText.getText() ) );
+        }
+    };
 
 
     /**
@@ -752,9 +760,14 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
         defaultLabel.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
 
         // Replication Pinger Sleep
-        toolkit.createLabel( composite, "Replication Pinger Sleep (seconds):" );
+        toolkit.createLabel( composite, "Replication Pinger Sleep (sec):" );
         replicationPingerSleepText = createIntegerText( toolkit, composite );
         replicationPingerSleepText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
+
+        // Disk Synchronization Delay
+        toolkit.createLabel( composite, "Disk Synchronization Delay (ms):" );
+        diskSynchronizationDelayText = createIntegerText( toolkit, composite );
+        diskSynchronizationDelayText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
     }
 
 
@@ -976,6 +989,10 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
         // Replication Pinger Sleep
         addDirtyListener( replicationPingerSleepText );
         addModifyListener( replicationPingerSleepText, replicationPingerSleepTextListener );
+
+        // Disk Synchronization Delay
+        addDirtyListener( diskSynchronizationDelayText );
+        addModifyListener( diskSynchronizationDelayText, diskSynchronizationDelayTextListener );
     }
 
 
@@ -1093,6 +1110,10 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
         // Replication Pinger Sleep
         removeDirtyListener( replicationPingerSleepText );
         removeModifyListener( replicationPingerSleepText, replicationPingerSleepTextListener );
+
+        // Disk Synchronization Delay
+        removeDirtyListener( diskSynchronizationDelayText );
+        removeModifyListener( diskSynchronizationDelayText, diskSynchronizationDelayTextListener );
     }
 
 
@@ -1201,6 +1222,9 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
 
         // Replication Pinger Sleep
         setText( replicationPingerSleepText, "" + ldapServerBean.getReplPingerSleep() ); //$NON-NLS-1$
+
+        // Disk Synchronization Delay
+        setText( diskSynchronizationDelayText, "" + getDirectoryServiceBean().getDsSyncPeriodMillis() ); //$NON-NLS-1$
 
         addListeners();
     }
