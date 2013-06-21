@@ -190,6 +190,8 @@ public class PasswordPoliciesPage extends ServerConfigurationEditorPage
             passwordPolicy.setPwdMinDelay( 0 );
             passwordPolicy.setPwdMaxDelay( 0 );
             passwordPolicy.setPwdMaxIdle( 0 );
+            passwordPolicy
+                .setPwdValidator( "org.apache.directory.server.core.api.authn.ppolicy.DefaultPasswordValidator" );
 
             // Adding the password policy to the authentication interceptor
             authenticationInterceptor.addPasswordPolicies( passwordPolicy );

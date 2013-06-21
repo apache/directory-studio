@@ -71,6 +71,7 @@ public class PasswordPolicyDetailsPage implements IDetailsPage
     private Text idText;
     private Text descriptionText;
     private ComboViewer checkQualityComboViewer;
+    private Text validatorText;
     private Button minimumLengthCheckbox;
     private Text minimumLengthText;
     private Button maximumLengthCheckbox;
@@ -289,8 +290,8 @@ public class PasswordPolicyDetailsPage implements IDetailsPage
         // Creation of the section
         Section section = toolkit.createSection( parent, Section.DESCRIPTION | Section.TITLE_BAR );
         section.marginWidth = 10;
-        section.setText( "Replication Consumer Details" );
-        section.setDescription( "Set the properties of the replication consumer." );
+        section.setText( "Password Policy Details" );
+        section.setDescription( "Set the properties of the password policy." );
         TableWrapData td = new TableWrapData( TableWrapData.FILL, TableWrapData.TOP );
         td.grabHorizontal = true;
         section.setLayoutData( td );
@@ -346,6 +347,11 @@ public class PasswordPolicyDetailsPage implements IDetailsPage
             { CheckQuality.DISABLED, CheckQuality.RELAXED, CheckQuality.STRICT } );
         checkQualityComboViewer.getControl().setLayoutData(
             new GridData( SWT.FILL, SWT.CENTER, true, false ) );
+
+        // Validator
+        toolkit.createLabel( composite, "Validator:" );
+        validatorText = toolkit.createText( composite, "" );
+        validatorText.setLayoutData( new GridData( SWT.FILL, SWT.CENTER, true, false ) );
 
         // Minimum Length (pwdMinLength)
         minimumLengthCheckbox = toolkit.createButton( composite, "Enable Mimimum Length", SWT.CHECK );
@@ -551,6 +557,7 @@ public class PasswordPolicyDetailsPage implements IDetailsPage
         descriptionText.addModifyListener( textModifyListener );
         checkQualityComboViewer.addSelectionChangedListener( viewerSelectionChangedListener );
         checkQualityComboViewer.addSelectionChangedListener( checkQualityComboViewerSelectionChangedListener );
+        validatorText.addModifyListener( textModifyListener );
         minimumLengthCheckbox.addSelectionListener( buttonSelectionListener );
         minimumLengthCheckbox.addSelectionListener( minimumLengthCheckboxSelectionListener );
         minimumLengthText.addModifyListener( textModifyListener );
@@ -606,6 +613,7 @@ public class PasswordPolicyDetailsPage implements IDetailsPage
         descriptionText.removeModifyListener( textModifyListener );
         checkQualityComboViewer.removeSelectionChangedListener( viewerSelectionChangedListener );
         checkQualityComboViewer.removeSelectionChangedListener( checkQualityComboViewerSelectionChangedListener );
+        validatorText.removeModifyListener( textModifyListener );
         minimumLengthCheckbox.removeSelectionListener( buttonSelectionListener );
         minimumLengthCheckbox.removeSelectionListener( minimumLengthCheckboxSelectionListener );
         minimumLengthText.removeModifyListener( textModifyListener );
@@ -688,6 +696,10 @@ public class PasswordPolicyDetailsPage implements IDetailsPage
 
             // Check Quality
             passwordPolicy.setPwdCheckQuality( getPwdCheckQuality() );
+
+            // Validator
+            passwordPolicy
+                .setPwdValidator( ServerConfigurationEditorUtils.checkEmptyString( validatorText.getText() ) );
 
             // Miminum Length
             if ( minimumLengthCheckbox.getSelection() )
@@ -954,6 +966,9 @@ public class PasswordPolicyDetailsPage implements IDetailsPage
             // Check Quality
             checkQualityComboViewer.setSelection( new StructuredSelection( CheckQuality.valueOf( passwordPolicy
                 .getPwdCheckQuality() ) ) );
+
+            // Validator
+            validatorText.setText( ServerConfigurationEditorUtils.checkNull( passwordPolicy.getPwdValidator() ) );
 
             // Miminum Length
             int minimumLength = passwordPolicy.getPwdMinLength();
