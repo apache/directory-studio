@@ -109,6 +109,17 @@
           <skip>true</skip>
         </configuration>
       </plugin>
+      <!--
+        Skip deployment of 3rd party plugins. This causes problems when 
+        deploying snapshots because the 3rd party plugins don't have a 
+        snapshot version.
+      -->
+      <plugin>
+        <artifactId>maven-deploy-plugin</artifactId>
+        <configuration>
+          <skip>true</skip>
+        </configuration>
+      </plugin>
     </plugins>
   </build>
   
