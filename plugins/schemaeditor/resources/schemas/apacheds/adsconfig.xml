@@ -1288,6 +1288,17 @@
       <syntax>1.3.6.1.4.1.1466.115.121.1.12</syntax>
       <equality>distinguishedNameMatch</equality>
     </attributetype>
+    <attributetype oid="1.3.6.1.4.1.18060.0.4.1.2.925" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+      <aliases>
+        <alias>ads-pwdValidator</alias>
+      </aliases>
+      <description>FQCN of password validator</description>
+      <usage>USER_APPLICATIONS</usage>
+      <syntax>1.3.6.1.4.1.1466.115.121.1.44</syntax>
+      <equality>caseExactMatch</equality>
+      <ordering>caseExactOrderingMatch</ordering>
+      <substring>caseExactSubstringsMatch</substring>
+    </attributetype>
   </attributetypes>
   <objectclasses>
     <objectclass oid="1.3.6.1.4.1.18060.0.4.1.3.700" obsolete="false">
@@ -1584,6 +1595,7 @@
         <attributetype>ads-pwdMinDelay</attributetype>
         <attributetype>ads-pwdMaxDelay</attributetype>
         <attributetype>ads-pwdMaxIdle</attributetype>
+        <attributetype>ads-pwdValidator</attributetype>
       </optional>
     </objectclass>
     <objectclass oid="1.3.6.1.4.1.18060.0.4.1.3.600" obsolete="false">
