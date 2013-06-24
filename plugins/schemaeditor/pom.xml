@@ -116,7 +116,6 @@
             <Require-Bundle>org.apache.commons.collections;bundle-version="${org.apache.commons.collections.version}",
  org.apache.commons.io;bundle-version="${org.apache.commons.io.version}",
  org.apache.directory.api.asn1.api;bundle-version="${org.apache.directory.api.validversion}",
- org.apache.directory.api.ldap.schema;bundle-version="${org.apache.directory.api.validversion}",
  org.apache.directory.api.ldap.model;bundle-version="${org.apache.directory.api.validversion}",
  org.apache.directory.api.ldap.schema;bundle-version="${org.apache.directory.api.validversion}",
  org.apache.directory.api.ldap.schema.converter;bundle-version="${org.apache.directory.api.validversion}",
