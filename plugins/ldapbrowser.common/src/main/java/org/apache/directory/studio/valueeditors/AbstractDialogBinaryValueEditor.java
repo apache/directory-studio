@@ -93,7 +93,7 @@ public abstract class AbstractDialogBinaryValueEditor extends AbstractDialogValu
         {
             byte[] data = value.getBinaryValue();
             StringBuffer sb = new StringBuffer();
-            for ( int i = 0; data != null && i < data.length && i < 128; i++ )
+            for ( int i = 0; data != null && i < data.length && i < 512; i++ )
             {
                 if ( data[i] > 32 && data[i] < 127 )
                     sb.append( ( char ) data[i] );

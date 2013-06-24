@@ -23,8 +23,10 @@ package org.apache.directory.studio.ldapbrowser.common.dialogs;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.directory.studio.common.ui.CommonUIUtils;
 import org.apache.directory.studio.connection.ui.ConnectionUIPlugin;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonConstants;
@@ -53,6 +55,9 @@ public class HexDialog extends Dialog
 
     /** The default title. */
     private static final String DIALOG_TITLE = Messages.getString( "HexDialog.HexEditor" ); //$NON-NLS-1$
+
+    /** The button ID for the edit as text button. */
+    private static final int EDIT_AS_TEXT_BUTTON_ID = 9997;
 
     /** The button ID for the load button. */
     private static final int LOAD_BUTTON_ID = 9998;
@@ -93,11 +98,29 @@ public class HexDialog extends Dialog
         {
             returnData = currentData;
         }
+        else if ( buttonId == EDIT_AS_TEXT_BUTTON_ID )
+        {
+            // Checking if the data is "text-editable"
+            if ( isEditable( currentData ) )
+            {
+                TextDialog dialog = new TextDialog( getShell(), new String( currentData ) );
+
+                if ( dialog.open() == TextDialog.OK )
+                {
+                    String text = dialog.getText();
+                    currentData = text.getBytes();
+                    hexText.setText( toFormattedHex( currentData ) );
+                }
+            }
+            else
+            {
+                CommonUIUtils.openErrorDialog( Messages.getString( "HexDialog.NonTextEditable" ) ); //$NON-NLS-1$
+            }
+        }
         else if ( buttonId == SAVE_BUTTON_ID )
         {
             FileDialog fileDialog = new FileDialog( getShell(), SWT.SAVE );
             fileDialog.setText( Messages.getString( "HexDialog.SaveData" ) ); //$NON-NLS-1$
-            // fileDialog.setFilterExtensions(new String[]{"*.jpg"});
             String returnedFileName = fileDialog.open();
             if ( returnedFileName != null )
             {
@@ -145,6 +168,27 @@ public class HexDialog extends Dialog
 
 
     /**
+     * Small helper.
+     */
+    private boolean isEditable( byte[] b )
+    {
+        if ( b == null )
+        {
+            return false;
+        }
+
+        try
+        {
+            return !( new String( b, "UTF-8" ).contains( "\uFFFD" ) );
+        }
+        catch ( UnsupportedEncodingException e )
+        {
+            return false;
+        }
+    }
+
+
+    /**
      * @see org.eclipse.jface.window.Window#configureShell(org.eclipse.swt.widgets.Shell)
      */
     protected void configureShell( Shell shell )
@@ -160,6 +204,7 @@ public class HexDialog extends Dialog
      */
     protected void createButtonsForButtonBar( Composite parent )
     {
+        createButton( parent, EDIT_AS_TEXT_BUTTON_ID, Messages.getString( "HexDialog.EditAsText" ), false ); //$NON-NLS-1$
         createButton( parent, LOAD_BUTTON_ID, Messages.getString( "HexDialog.LoadDataButton" ), false ); //$NON-NLS-1$
         createButton( parent, SAVE_BUTTON_ID, Messages.getString( "HexDialog.SaveDataButton" ), false ); //$NON-NLS-1$
         createButton( parent, IDialogConstants.OK_ID, IDialogConstants.OK_LABEL, false );
@@ -289,5 +334,4 @@ public class HexDialog extends Dialog
     {
         return returnData;
     }
-
 }
