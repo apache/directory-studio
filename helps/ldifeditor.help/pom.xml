@@ -390,6 +390,8 @@
           <!-- LOG_FILES_EXCLUDES -->
           <exclude>**/*.log</exclude>
           <exclude>**/*.vm</exclude>
+          <!-- OTHER_EXCLUDES -->
+          <exclude>src/main/resources/html/rfc/*.txt</exclude>
         </excludes>
         </configuration>
        </plugin>

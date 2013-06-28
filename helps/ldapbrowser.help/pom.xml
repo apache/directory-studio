@@ -393,7 +393,6 @@
           <!-- OTHER_EXCLUDES -->
           <exclude>src/main/resources/sevenseas.ldif</exclude>
           <exclude>src/main/resources/html/rfc/*.txt</exclude>
-          <exclude>src/main/resources/html/rfcs/*.txt</exclude>
         </excludes>
         </configuration>
        </plugin>
