@@ -172,7 +172,8 @@ public class EntryEditorUtils
             // Saving the modifications
             EntryEditorInput eei = editor.getEntryEditorInput();
             IStatus status = eei.saveSharedWorkingCopy( true, editor );
-            if ( !status.isOK() )
+
+            if ( ( status == null ) || !status.isOK() )
             {
                 // If save failed, let's keep the modifications in the editor and return false
                 return false;
