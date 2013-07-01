@@ -82,7 +82,7 @@ public class ApacheDS200LdapServerAdapter implements LdapServerAdapter
 
     /** The array of libraries names */
     private static final String[] libraries = new String[]
-        { "apacheds-service-2.0.0-M14.jar" }; //$NON-NLS-1$
+        { "apacheds-service-2.0.0-M15-SNAPSHOT.jar" }; //$NON-NLS-1$
 
 
     /**
