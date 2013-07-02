@@ -156,6 +156,16 @@ public class PartitionsMasterDetailsBlock extends MasterDetailsBlock
 
 
     /**
+     * Refreshes the UI.
+     */
+    public void refreshUI()
+    {
+        initFromInput();
+        viewer.refresh();
+    }
+
+
+    /**
      * Add listeners to UI fields.
      */
     private void addListeners()

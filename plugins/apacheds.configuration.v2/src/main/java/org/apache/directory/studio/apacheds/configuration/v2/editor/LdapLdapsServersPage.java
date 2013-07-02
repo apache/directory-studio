@@ -1122,111 +1122,116 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
      */
     protected void refreshUI()
     {
-        removeListeners();
-
-        // LDAP Server
-        TransportBean ldapServerTransportBean = getLdapServerTransportBean();
-        setSelection( enableLdapCheckbox, ldapServerTransportBean.isEnabled() );
-        setEnabled( ldapPortText, enableLdapCheckbox.getSelection() );
-        setText( ldapPortText, ldapServerTransportBean.getSystemPort() + "" ); //$NON-NLS-1$
-
-        // LDAPS Server
-        TransportBean ldapsServerTransportBean = getLdapsServerTransportBean();
-        setSelection( enableLdapsCheckbox, ldapsServerTransportBean.isEnabled() );
-        setEnabled( enableLdapsCheckbox, enableLdapsCheckbox.getSelection() );
-        setText( ldapsPortText, ldapsServerTransportBean.getSystemPort() + "" ); //$NON-NLS-1$
-
-        // SASL Properties
-        LdapServerBean ldapServerBean = getLdapServerBean();
-        setText( saslHostText, ldapServerBean.getLdapServerSaslHost() );
-        setText( saslPrincipalText, ldapServerBean.getLdapServerSaslPrincipal() );
-        setText( saslSearchBaseDnText, ldapServerBean.getSearchBaseDn().toString() );
-
-        // Keystore Properties
-        setText( keystoreFileText, ldapServerBean.getLdapServerKeystoreFile() );
-        setText( keystorePasswordText, ldapServerBean.getLdapServerCertificatePassword() );
-
-        // Supported Auth Mechanisms
-        List<SaslMechHandlerBean> saslMechHandlers = ldapServerBean.getSaslMechHandlers();
-        uncheckAllSupportedAuthenticationMechanisms();
-        for ( SaslMechHandlerBean saslMechHandler : saslMechHandlers )
+        if ( isInitialized() )
         {
-            if ( SASL_MECHANISMS_SIMPLE.equalsIgnoreCase( saslMechHandler.getSaslMechName() ) )
-            {
-                setSelection( authMechSimpleCheckbox, saslMechHandler.isEnabled() );
-            }
-            else if ( SupportedSaslMechanisms.GSSAPI.equalsIgnoreCase( saslMechHandler.getSaslMechName() ) )
-            {
-                setSelection( authMechGssapiCheckbox, saslMechHandler.isEnabled() );
-            }
-            else if ( SupportedSaslMechanisms.CRAM_MD5.equalsIgnoreCase( saslMechHandler.getSaslMechName() ) )
-            {
-                setSelection( authMechCramMd5Checkbox, saslMechHandler.isEnabled() );
-            }
-            else if ( SupportedSaslMechanisms.DIGEST_MD5.equalsIgnoreCase( saslMechHandler.getSaslMechName() ) )
-            {
-                setSelection( authMechDigestMd5Checkbox, saslMechHandler.isEnabled() );
-            }
-            else if ( SupportedSaslMechanisms.GSS_SPNEGO.equalsIgnoreCase( saslMechHandler.getSaslMechName() ) )
-            {
-                setSelection( authMechGssSpnegoCheckbox, saslMechHandler.isEnabled() );
-                setEnabled( authMechGssSpnegoText, saslMechHandler.isEnabled() );
-                setText( authMechGssSpnegoText, saslMechHandler.getNtlmMechProvider() );
-            }
-            else if ( SupportedSaslMechanisms.NTLM.equalsIgnoreCase( saslMechHandler.getSaslMechName() ) )
-            {
-                setSelection( authMechNtlmCheckbox, saslMechHandler.isEnabled() );
-                setEnabled( authMechNtlmText, saslMechHandler.isEnabled() );
-                setText( authMechNtlmText, saslMechHandler.getNtlmMechProvider() );
-            }
-        }
+            removeListeners();
 
-        // Limits
-        setText( maxTimeLimitText, "" + ldapServerBean.getLdapServerMaxTimeLimit() ); //$NON-NLS-1$
-        setText( maxSizeLimitText, "" + ldapServerBean.getLdapServerMaxSizeLimit() ); //$NON-NLS-1$
+            // LDAP Server
+            TransportBean ldapServerTransportBean = getLdapServerTransportBean();
+            setSelection( enableLdapCheckbox, ldapServerTransportBean.isEnabled() );
+            setEnabled( ldapPortText, enableLdapCheckbox.getSelection() );
+            setText( ldapPortText, ldapServerTransportBean.getSystemPort() + "" ); //$NON-NLS-1$
 
-        // Enable TLS Checkbox
-        setSelection( enableTlsCheckbox, getTlsExtendedOpHandlerBean().isEnabled() );
+            // LDAPS Server
+            TransportBean ldapsServerTransportBean = getLdapsServerTransportBean();
+            setSelection( enableLdapsCheckbox, ldapsServerTransportBean.isEnabled() );
+            setEnabled( enableLdapsCheckbox, enableLdapsCheckbox.getSelection() );
+            setText( ldapsPortText, ldapsServerTransportBean.getSystemPort() + "" ); //$NON-NLS-1$
 
-        // Hashing Password widgets
-        InterceptorBean hashingMethodInterceptor = getHashingPasswordInterceptor();
-        if ( hashingMethodInterceptor == null )
-        {
-            // No hashing method interceptor
-            setSelection( enableServerSidePasswordHashingCheckbox, false );
-            setEnabled( hashingMethodComboViewer.getCombo(), enableServerSidePasswordHashingCheckbox.getSelection() );
-            setSelection( hashingMethodComboViewer, LdapSecurityConstants.HASH_METHOD_SSHA );
-        }
-        else
-        {
-            LdapSecurityConstants hashingMethod = getHashingMethodFromInterceptor( hashingMethodInterceptor );
-            if ( hashingMethod != null )
+            // SASL Properties
+            LdapServerBean ldapServerBean = getLdapServerBean();
+            setText( saslHostText, ldapServerBean.getLdapServerSaslHost() );
+            setText( saslPrincipalText, ldapServerBean.getLdapServerSaslPrincipal() );
+            setText( saslSearchBaseDnText, ldapServerBean.getSearchBaseDn().toString() );
+
+            // Keystore Properties
+            setText( keystoreFileText, ldapServerBean.getLdapServerKeystoreFile() );
+            setText( keystorePasswordText, ldapServerBean.getLdapServerCertificatePassword() );
+
+            // Supported Auth Mechanisms
+            List<SaslMechHandlerBean> saslMechHandlers = ldapServerBean.getSaslMechHandlers();
+            uncheckAllSupportedAuthenticationMechanisms();
+            for ( SaslMechHandlerBean saslMechHandler : saslMechHandlers )
             {
-                // Setting selection for the hashing method
-                setSelection( enableServerSidePasswordHashingCheckbox, hashingMethodInterceptor.isEnabled() );
-                setEnabled( hashingMethodComboViewer.getCombo(), enableServerSidePasswordHashingCheckbox.getSelection() );
-                setSelection( hashingMethodComboViewer, hashingMethod );
+                if ( SASL_MECHANISMS_SIMPLE.equalsIgnoreCase( saslMechHandler.getSaslMechName() ) )
+                {
+                    setSelection( authMechSimpleCheckbox, saslMechHandler.isEnabled() );
+                }
+                else if ( SupportedSaslMechanisms.GSSAPI.equalsIgnoreCase( saslMechHandler.getSaslMechName() ) )
+                {
+                    setSelection( authMechGssapiCheckbox, saslMechHandler.isEnabled() );
+                }
+                else if ( SupportedSaslMechanisms.CRAM_MD5.equalsIgnoreCase( saslMechHandler.getSaslMechName() ) )
+                {
+                    setSelection( authMechCramMd5Checkbox, saslMechHandler.isEnabled() );
+                }
+                else if ( SupportedSaslMechanisms.DIGEST_MD5.equalsIgnoreCase( saslMechHandler.getSaslMechName() ) )
+                {
+                    setSelection( authMechDigestMd5Checkbox, saslMechHandler.isEnabled() );
+                }
+                else if ( SupportedSaslMechanisms.GSS_SPNEGO.equalsIgnoreCase( saslMechHandler.getSaslMechName() ) )
+                {
+                    setSelection( authMechGssSpnegoCheckbox, saslMechHandler.isEnabled() );
+                    setEnabled( authMechGssSpnegoText, saslMechHandler.isEnabled() );
+                    setText( authMechGssSpnegoText, saslMechHandler.getNtlmMechProvider() );
+                }
+                else if ( SupportedSaslMechanisms.NTLM.equalsIgnoreCase( saslMechHandler.getSaslMechName() ) )
+                {
+                    setSelection( authMechNtlmCheckbox, saslMechHandler.isEnabled() );
+                    setEnabled( authMechNtlmText, saslMechHandler.isEnabled() );
+                    setText( authMechNtlmText, saslMechHandler.getNtlmMechProvider() );
+                }
             }
-            else
+
+            // Limits
+            setText( maxTimeLimitText, "" + ldapServerBean.getLdapServerMaxTimeLimit() ); //$NON-NLS-1$
+            setText( maxSizeLimitText, "" + ldapServerBean.getLdapServerMaxSizeLimit() ); //$NON-NLS-1$
+
+            // Enable TLS Checkbox
+            setSelection( enableTlsCheckbox, getTlsExtendedOpHandlerBean().isEnabled() );
+
+            // Hashing Password widgets
+            InterceptorBean hashingMethodInterceptor = getHashingPasswordInterceptor();
+            if ( hashingMethodInterceptor == null )
             {
-                // Couldn't determine which hashing method is used
+                // No hashing method interceptor
                 setSelection( enableServerSidePasswordHashingCheckbox, false );
                 setEnabled( hashingMethodComboViewer.getCombo(), enableServerSidePasswordHashingCheckbox.getSelection() );
                 setSelection( hashingMethodComboViewer, LdapSecurityConstants.HASH_METHOD_SSHA );
             }
+            else
+            {
+                LdapSecurityConstants hashingMethod = getHashingMethodFromInterceptor( hashingMethodInterceptor );
+                if ( hashingMethod != null )
+                {
+                    // Setting selection for the hashing method
+                    setSelection( enableServerSidePasswordHashingCheckbox, hashingMethodInterceptor.isEnabled() );
+                    setEnabled( hashingMethodComboViewer.getCombo(),
+                        enableServerSidePasswordHashingCheckbox.getSelection() );
+                    setSelection( hashingMethodComboViewer, hashingMethod );
+                }
+                else
+                {
+                    // Couldn't determine which hashing method is used
+                    setSelection( enableServerSidePasswordHashingCheckbox, false );
+                    setEnabled( hashingMethodComboViewer.getCombo(),
+                        enableServerSidePasswordHashingCheckbox.getSelection() );
+                    setSelection( hashingMethodComboViewer, LdapSecurityConstants.HASH_METHOD_SSHA );
+                }
+            }
+
+            // SSL/Start TLS Cipher Suites
+            cipherSuitesTableViewer.setInput( ldapServerBean.getEnabledCipherSuites() );
+            cipherSuitesTableViewer.refresh();
+
+            // Replication Pinger Sleep
+            setText( replicationPingerSleepText, "" + ldapServerBean.getReplPingerSleep() ); //$NON-NLS-1$
+
+            // Disk Synchronization Delay
+            setText( diskSynchronizationDelayText, "" + getDirectoryServiceBean().getDsSyncPeriodMillis() ); //$NON-NLS-1$
+
+            addListeners();
         }
-
-        // SSL/Start TLS Cipher Suites
-        cipherSuitesTableViewer.setInput( ldapServerBean.getEnabledCipherSuites() );
-        cipherSuitesTableViewer.refresh();
-
-        // Replication Pinger Sleep
-        setText( replicationPingerSleepText, "" + ldapServerBean.getReplPingerSleep() ); //$NON-NLS-1$
-
-        // Disk Synchronization Delay
-        setText( diskSynchronizationDelayText, "" + getDirectoryServiceBean().getDsSyncPeriodMillis() ); //$NON-NLS-1$
-
-        addListeners();
     }
 
 

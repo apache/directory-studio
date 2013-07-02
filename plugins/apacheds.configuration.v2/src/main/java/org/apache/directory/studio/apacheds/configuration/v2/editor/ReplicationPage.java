@@ -37,6 +37,9 @@ public class ReplicationPage extends ServerConfigurationEditorPage
     /** The Page Title */
     private static final String TITLE = Messages.getString( "ReplicationPage.Replication" ); //$NON-NLS-1$
 
+    /** The Master Details Block */
+    private ReplicationMasterDetailsBlock masterDetailsBlock;
+
 
     /**
      * Creates a new instance of ReplicationPage.
@@ -55,7 +58,7 @@ public class ReplicationPage extends ServerConfigurationEditorPage
      */
     protected void createFormContent( Composite parent, FormToolkit toolkit )
     {
-        ReplicationMasterDetailsBlock masterDetailsBlock = new ReplicationMasterDetailsBlock( this );
+        masterDetailsBlock = new ReplicationMasterDetailsBlock( this );
         masterDetailsBlock.createContent( getManagedForm() );
     }
 
@@ -65,6 +68,9 @@ public class ReplicationPage extends ServerConfigurationEditorPage
      */
     protected void refreshUI()
     {
-        // TODO Auto-generated method stub
+        if ( isInitialized() )
+        {
+            masterDetailsBlock.refreshUI();
+        }
     }
 }

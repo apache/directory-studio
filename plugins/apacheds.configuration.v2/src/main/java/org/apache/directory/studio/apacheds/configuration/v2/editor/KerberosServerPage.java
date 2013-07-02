@@ -486,50 +486,53 @@ public class KerberosServerPage extends ServerConfigurationEditorPage
      */
     protected void refreshUI()
     {
-        removeListeners();
-
-        // Kerberos Server
-        KdcServerBean kdcServerBean = getKdcServerBean();
-        setSelection( enableKerberosCheckbox, kdcServerBean.isEnabled() );
-        setEnabled( kerberosPortText, enableKerberosCheckbox.getSelection() );
-        setText( kerberosPortText, "" + getKdcServerTransportBean().getSystemPort() ); //$NON-NLS-1$
-
-        // Change Password Checkbox
-        ChangePasswordServerBean changePasswordServerBean = getChangePasswordServerBean();
-        setSelection( enableChangePasswordCheckbox, changePasswordServerBean.isEnabled() );
-        setEnabled( changePasswordPortText, enableChangePasswordCheckbox.getSelection() );
-        setText( changePasswordPortText, "" + getChangePasswordServerTransportBean().getSystemPort() ); //$NON-NLS-1$
-
-        // Kerberos Settings
-        setText( primaryKdcRealmText, kdcServerBean.getKrbPrimaryRealm() );
-        setText( kdcSearchBaseDnText, kdcServerBean.getSearchBaseDn().toString() );
-
-        // Encryption Types
-        List<String> encryptionTypesNames = kdcServerBean.getKrbEncryptionTypes();
-        List<EncryptionType> encryptionTypes = new ArrayList<EncryptionType>();
-        for ( String encryptionTypesName : encryptionTypesNames )
+        if ( isInitialized() )
         {
-            EncryptionType encryptionType = EncryptionType.getByName( encryptionTypesName );
+            removeListeners();
 
-            if ( !EncryptionType.UNKNOWN.equals( encryptionType ) )
+            // Kerberos Server
+            KdcServerBean kdcServerBean = getKdcServerBean();
+            setSelection( enableKerberosCheckbox, kdcServerBean.isEnabled() );
+            setEnabled( kerberosPortText, enableKerberosCheckbox.getSelection() );
+            setText( kerberosPortText, "" + getKdcServerTransportBean().getSystemPort() ); //$NON-NLS-1$
+
+            // Change Password Checkbox
+            ChangePasswordServerBean changePasswordServerBean = getChangePasswordServerBean();
+            setSelection( enableChangePasswordCheckbox, changePasswordServerBean.isEnabled() );
+            setEnabled( changePasswordPortText, enableChangePasswordCheckbox.getSelection() );
+            setText( changePasswordPortText, "" + getChangePasswordServerTransportBean().getSystemPort() ); //$NON-NLS-1$
+
+            // Kerberos Settings
+            setText( primaryKdcRealmText, kdcServerBean.getKrbPrimaryRealm() );
+            setText( kdcSearchBaseDnText, kdcServerBean.getSearchBaseDn().toString() );
+
+            // Encryption Types
+            List<String> encryptionTypesNames = kdcServerBean.getKrbEncryptionTypes();
+            List<EncryptionType> encryptionTypes = new ArrayList<EncryptionType>();
+            for ( String encryptionTypesName : encryptionTypesNames )
             {
-                encryptionTypes.add( encryptionType );
+                EncryptionType encryptionType = EncryptionType.getByName( encryptionTypesName );
+
+                if ( !EncryptionType.UNKNOWN.equals( encryptionType ) )
+                {
+                    encryptionTypes.add( encryptionType );
+                }
             }
+            encryptionTypesTableViewer.setCheckedElements( encryptionTypes.toArray() );
+
+            // Ticket Settings
+            setSelection( verifyBodyChecksumCheckbox, kdcServerBean.isKrbBodyChecksumVerified() );
+            setSelection( allowEmptyAddressesCheckbox, kdcServerBean.isKrbEmptyAddressesAllowed() );
+            setSelection( allowForwardableAddressesCheckbox, kdcServerBean.isKrbForwardableAllowed() );
+            setSelection( requirePreAuthByEncryptedTimestampCheckbox, kdcServerBean.isKrbPaEncTimestampRequired() );
+            setSelection( allowPostdatedTicketsCheckbox, kdcServerBean.isKrbPostdatedAllowed() );
+            setSelection( allowRenewableTicketsCheckbox, kdcServerBean.isKrbRenewableAllowed() );
+            setText( maximumRenewableLifetimeText, kdcServerBean.getKrbMaximumRenewableLifetime() + "" ); //$NON-NLS-1$
+            setText( maximumTicketLifetimeText, kdcServerBean.getKrbMaximumTicketLifetime() + "" ); //$NON-NLS-1$
+            setText( allowableClockSkewText, kdcServerBean.getKrbAllowableClockSkew() + "" ); //$NON-NLS-1$
+
+            addListeners();
         }
-        encryptionTypesTableViewer.setCheckedElements( encryptionTypes.toArray() );
-
-        // Ticket Settings
-        setSelection( verifyBodyChecksumCheckbox, kdcServerBean.isKrbBodyChecksumVerified() );
-        setSelection( allowEmptyAddressesCheckbox, kdcServerBean.isKrbEmptyAddressesAllowed() );
-        setSelection( allowForwardableAddressesCheckbox, kdcServerBean.isKrbForwardableAllowed() );
-        setSelection( requirePreAuthByEncryptedTimestampCheckbox, kdcServerBean.isKrbPaEncTimestampRequired() );
-        setSelection( allowPostdatedTicketsCheckbox, kdcServerBean.isKrbPostdatedAllowed() );
-        setSelection( allowRenewableTicketsCheckbox, kdcServerBean.isKrbRenewableAllowed() );
-        setText( maximumRenewableLifetimeText, kdcServerBean.getKrbMaximumRenewableLifetime() + "" ); //$NON-NLS-1$
-        setText( maximumTicketLifetimeText, kdcServerBean.getKrbMaximumTicketLifetime() + "" ); //$NON-NLS-1$
-        setText( allowableClockSkewText, kdcServerBean.getKrbAllowableClockSkew() + "" ); //$NON-NLS-1$
-
-        addListeners();
     }
 
 

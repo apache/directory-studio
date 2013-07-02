@@ -69,9 +69,6 @@ public class PasswordPoliciesMasterDetailsBlock extends MasterDetailsBlock
     /** The Details Page */
     private PasswordPolicyDetailsPage detailsPage;
 
-    /** The authentication interceptor */
-    private AuthenticationInterceptorBean authenticationInterceptor;
-
     // UI Fields
     private TableViewer viewer;
     private Button addButton;
@@ -240,26 +237,33 @@ public class PasswordPoliciesMasterDetailsBlock extends MasterDetailsBlock
 
 
     /**
+     * Refreshes the UI.
+     */
+    public void refreshUI()
+    {
+        initFromInput();
+        viewer.refresh();
+    }
+
+
+    /**
      * Gets the authentication interceptor.
      *
      * @return the authentication interceptor
      */
     private AuthenticationInterceptorBean getAuthenticationInterceptor()
     {
-        if ( authenticationInterceptor == null )
+        // Looking for the authentication interceptor
+        for ( InterceptorBean interceptor : page.getConfigBean().getDirectoryServiceBean().getInterceptors() )
         {
-            // Looking for the authentication interceptor
-            for ( InterceptorBean interceptor : page.getConfigBean().getDirectoryServiceBean().getInterceptors() )
+            if ( AUTHENTICATION_INTERCEPTOR_ID.equalsIgnoreCase( interceptor.getInterceptorId() )
+                && ( interceptor instanceof AuthenticationInterceptorBean ) )
             {
-                if ( AUTHENTICATION_INTERCEPTOR_ID.equalsIgnoreCase( interceptor.getInterceptorId() )
-                    && ( interceptor instanceof AuthenticationInterceptorBean ) )
-                {
-                    authenticationInterceptor = ( AuthenticationInterceptorBean ) interceptor;
-                }
+                return ( AuthenticationInterceptorBean ) interceptor;
             }
         }
 
-        return authenticationInterceptor;
+        return null;
     }
 
 
@@ -343,7 +347,7 @@ public class PasswordPoliciesMasterDetailsBlock extends MasterDetailsBlock
 
         // Adding the new password policy to the authentication interceptor
         getAuthenticationInterceptor().addPasswordPolicies( newPasswordPolicy );
-        
+
         // Updating the UI and editor
         viewer.refresh();
         viewer.setSelection( new StructuredSelection( newPasswordPolicy ) );

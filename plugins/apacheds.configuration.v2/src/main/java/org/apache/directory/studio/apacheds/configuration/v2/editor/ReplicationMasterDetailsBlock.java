@@ -201,6 +201,15 @@ public class ReplicationMasterDetailsBlock extends MasterDetailsBlock
 
 
     /**
+     * Refreshes the UI.
+     */
+    public void refreshUI()
+    {
+        initFromInput();
+        viewer.refresh();
+    }
+
+    /**
      * Initializes the page with the Editor input.
      */
     private void initFromInput()

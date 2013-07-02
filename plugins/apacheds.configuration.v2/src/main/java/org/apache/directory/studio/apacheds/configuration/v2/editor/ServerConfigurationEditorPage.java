@@ -66,6 +66,9 @@ public abstract class ServerConfigurationEditorPage extends FormPage
 {
     protected static final Color GRAY_COLOR = new Color( null, 120, 120, 120 );
     protected static final String TABULATION = "      "; //$NON-NLS-1$
+    
+    /** A flag to indicate if the page is initialized */
+    protected boolean isInitialized = false;
 
     // Dirty listeners
     private ModifyListener dirtyModifyListener = new ModifyListener()
@@ -206,6 +209,8 @@ public abstract class ServerConfigurationEditorPage extends FormPage
         toolbarManager.update( true );
 
         createFormContent( parent, toolkit );
+        
+        isInitialized = true;
     }
 
 
@@ -224,6 +229,17 @@ public abstract class ServerConfigurationEditorPage extends FormPage
      * Refreshes the UI.
      */
     protected abstract void refreshUI();
+    
+    /**
+     * Indicates if the page is initialized.
+     *
+     * @return <code>true</code> if the page is initialized,
+     *         <code>false</code> if not.
+     */
+    public boolean isInitialized()
+    {
+        return isInitialized;
+    }
 
 
     /**

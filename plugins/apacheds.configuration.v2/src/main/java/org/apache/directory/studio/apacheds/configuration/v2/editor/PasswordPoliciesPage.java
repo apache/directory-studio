@@ -44,6 +44,9 @@ public class PasswordPoliciesPage extends ServerConfigurationEditorPage
     /** The Page Title */
     private static final String TITLE = Messages.getString( "PasswordPoliciesPage.PasswordPolicies" ); //$NON-NLS-1$
 
+    /** The Master Details Block */
+    private PasswordPoliciesMasterDetailsBlock masterDetailsBlock;
+
 
     /**
      * Creates a new instance of GeneralPage.
@@ -62,7 +65,7 @@ public class PasswordPoliciesPage extends ServerConfigurationEditorPage
      */
     protected void createFormContent( Composite parent, FormToolkit toolkit )
     {
-        PasswordPoliciesMasterDetailsBlock masterDetailsBlock = new PasswordPoliciesMasterDetailsBlock( this );
+        masterDetailsBlock = new PasswordPoliciesMasterDetailsBlock( this );
         masterDetailsBlock.createContent( getManagedForm() );
     }
 
@@ -72,7 +75,10 @@ public class PasswordPoliciesPage extends ServerConfigurationEditorPage
      */
     protected void refreshUI()
     {
-        // Nothing to do.
+        if ( isInitialized() )
+        {
+            masterDetailsBlock.refreshUI();
+        }
     }
 
 

@@ -44,6 +44,9 @@ public class PartitionsPage extends ServerConfigurationEditorPage
 
     /** The Page Title */
     private static final String TITLE = Messages.getString( "PartitionsPage.Partitions" ); //$NON-NLS-1$
+    
+    /** The Master Details Block */
+    private PartitionsMasterDetailsBlock masterDetailsBlock;
 
     /** The label provider for partition table viewers */
     public static LabelProvider PARTITIONS_LABEL_PROVIDER = new LabelProvider()
@@ -124,7 +127,7 @@ public class PartitionsPage extends ServerConfigurationEditorPage
      */
     protected void createFormContent( Composite parent, FormToolkit toolkit )
     {
-        PartitionsMasterDetailsBlock masterDetailsBlock = new PartitionsMasterDetailsBlock( this );
+        masterDetailsBlock = new PartitionsMasterDetailsBlock( this );
         masterDetailsBlock.createContent( getManagedForm() );
     }
 
@@ -134,7 +137,10 @@ public class PartitionsPage extends ServerConfigurationEditorPage
      */
     protected void refreshUI()
     {
-        // Nothing to do.
+        if ( isInitialized() )
+        {
+            masterDetailsBlock.refreshUI();
+        }
     }
 
 

@@ -512,53 +512,57 @@ public class OverviewPage extends ServerConfigurationEditorPage
      */
     protected void refreshUI()
     {
-        removeListeners();
-
-        DirectoryServiceBean directoryServiceBean = getDirectoryServiceBean();
-
-        // LDAP Server
-        TransportBean ldapServerTransportBean = LdapLdapsServersPage.getLdapServerTransportBean( directoryServiceBean );
-        setSelection( enableLdapCheckbox, ldapServerTransportBean.isEnabled() );
-        setEnabled( ldapPortText, enableLdapCheckbox.getSelection() );
-        setText( ldapPortText, ldapServerTransportBean.getSystemPort() + "" ); //$NON-NLS-1$
-
-        // LDAPS Server
-        TransportBean ldapsServerTransportBean = LdapLdapsServersPage
-            .getLdapsServerTransportBean( directoryServiceBean );
-        setSelection( enableLdapsCheckbox, ldapsServerTransportBean.isEnabled() );
-        setEnabled( ldapsPortText, enableLdapsCheckbox.getSelection() );
-        setText( ldapsPortText, ldapsServerTransportBean.getSystemPort() + "" ); //$NON-NLS-1$
-
-        // Kerberos Server
-        KdcServerBean kdcServerBean = KerberosServerPage.getKdcServerBean( directoryServiceBean );
-        setSelection( enableKerberosCheckbox, kdcServerBean.isEnabled() );
-        setEnabled( kerberosPortText, enableKerberosCheckbox.getSelection() );
-        setText( kerberosPortText, "" + kdcServerBean.getTransports()[0].getSystemPort() ); //$NON-NLS-1$
-
-        // Change Password Server
-        ChangePasswordServerBean changePasswordServerBean = KerberosServerPage
-            .getChangePasswordServerBean( directoryServiceBean );
-        setSelection( enableChangePasswordCheckbox, changePasswordServerBean.isEnabled() );
-        setEnabled( changePasswordPortText, enableChangePasswordCheckbox.getSelection() );
-        setText( changePasswordPortText, "" + changePasswordServerBean.getTransports()[0].getSystemPort() ); //$NON-NLS-1$
-
-        // Partitions
-        List<PartitionBean> partitions = directoryServiceBean.getPartitions();
-        if ( partitions.size() == 1 )
+        if ( isInitialized() )
         {
-            partitionsLabel.setText( Messages.getString( "OverviewPage.ThereIsOnePartitionDefined" ) ); //$NON-NLS-1$
-        }
-        else
-        {
-            partitionsLabel.setText( NLS.bind(
-                Messages.getString( "OverviewPage.ThereAreXPartitionsDefined" ), partitions.size() ) ); //$NON-NLS-1$
-        }
-        partitionsTableViewer.setInput( partitions.toArray() );
+            removeListeners();
 
-        // Options
-        allowAnonymousAccessCheckbox.setSelection( directoryServiceBean.isDsAllowAnonymousAccess() );
-        enableAccessControlCheckbox.setSelection( directoryServiceBean.isDsAccessControlEnabled() );
+            DirectoryServiceBean directoryServiceBean = getDirectoryServiceBean();
 
-        addListeners();
+            // LDAP Server
+            TransportBean ldapServerTransportBean = LdapLdapsServersPage
+                .getLdapServerTransportBean( directoryServiceBean );
+            setSelection( enableLdapCheckbox, ldapServerTransportBean.isEnabled() );
+            setEnabled( ldapPortText, enableLdapCheckbox.getSelection() );
+            setText( ldapPortText, ldapServerTransportBean.getSystemPort() + "" ); //$NON-NLS-1$
+
+            // LDAPS Server
+            TransportBean ldapsServerTransportBean = LdapLdapsServersPage
+                .getLdapsServerTransportBean( directoryServiceBean );
+            setSelection( enableLdapsCheckbox, ldapsServerTransportBean.isEnabled() );
+            setEnabled( ldapsPortText, enableLdapsCheckbox.getSelection() );
+            setText( ldapsPortText, ldapsServerTransportBean.getSystemPort() + "" ); //$NON-NLS-1$
+
+            // Kerberos Server
+            KdcServerBean kdcServerBean = KerberosServerPage.getKdcServerBean( directoryServiceBean );
+            setSelection( enableKerberosCheckbox, kdcServerBean.isEnabled() );
+            setEnabled( kerberosPortText, enableKerberosCheckbox.getSelection() );
+            setText( kerberosPortText, "" + kdcServerBean.getTransports()[0].getSystemPort() ); //$NON-NLS-1$
+
+            // Change Password Server
+            ChangePasswordServerBean changePasswordServerBean = KerberosServerPage
+                .getChangePasswordServerBean( directoryServiceBean );
+            setSelection( enableChangePasswordCheckbox, changePasswordServerBean.isEnabled() );
+            setEnabled( changePasswordPortText, enableChangePasswordCheckbox.getSelection() );
+            setText( changePasswordPortText, "" + changePasswordServerBean.getTransports()[0].getSystemPort() ); //$NON-NLS-1$
+
+            // Partitions
+            List<PartitionBean> partitions = directoryServiceBean.getPartitions();
+            if ( partitions.size() == 1 )
+            {
+                partitionsLabel.setText( Messages.getString( "OverviewPage.ThereIsOnePartitionDefined" ) ); //$NON-NLS-1$
+            }
+            else
+            {
+                partitionsLabel.setText( NLS.bind(
+                    Messages.getString( "OverviewPage.ThereAreXPartitionsDefined" ), partitions.size() ) ); //$NON-NLS-1$
+            }
+            partitionsTableViewer.setInput( partitions.toArray() );
+
+            // Options
+            allowAnonymousAccessCheckbox.setSelection( directoryServiceBean.isDsAllowAnonymousAccess() );
+            enableAccessControlCheckbox.setSelection( directoryServiceBean.isDsAccessControlEnabled() );
+
+            addListeners();
+        }
     }
 }
