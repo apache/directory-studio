@@ -685,7 +685,7 @@ public class PasswordDialog extends Dialog
     {
         // set new password to the UI widgets
         newPassword = new Password( getSelectedNewPasswordHashMethod(), newPasswordText.getText() );
-        if ( !"".equals( newPasswordText.getText() ) || newPassword.getHashMethod() == null ) //$NON-NLS-1$
+        if ( !"".equals( newPasswordText.getText() ) ) //$NON-NLS-1$
         {
             newPasswordPreviewValueHexText
                 .setText( Utils.getNonNullString( newPassword.getHashedPasswordAsHexString() ) );
