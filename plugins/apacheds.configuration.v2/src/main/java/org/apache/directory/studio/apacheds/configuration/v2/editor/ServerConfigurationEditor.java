@@ -213,7 +213,7 @@ public class ServerConfigurationEditor extends FormEditor implements IPageChange
     {
         // Saving the configuration as a new file and getting the associated new editor input
         IEditorInput newInput = ServerConfigurationEditorUtils.saveAs( monitor, getSite().getShell(),
-            getEditorInput(), getConfigWriter() );
+            getEditorInput(), getConfigWriter(), true );
 
         // Checking if the 'save as' is successful 
         boolean success = newInput != null;

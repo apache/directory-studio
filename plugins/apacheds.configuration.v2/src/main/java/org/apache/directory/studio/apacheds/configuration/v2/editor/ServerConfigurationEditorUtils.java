@@ -76,12 +76,14 @@ public class ServerConfigurationEditorUtils
      *      the editor input
      * @param configWriter
      *      the configuration writer
+     * @param newInput
+     *      a flag to indicate if a new input is required
      * @return
      *      the new input for the editor
      * @throws Exception
      */
     public static IEditorInput saveAs( IProgressMonitor monitor, Shell shell, IEditorInput input,
-        ConfigWriter configWriter )
+        ConfigWriter configWriter, boolean newInput )
         throws Exception
     {
         // detect IDE or RCP:
@@ -189,10 +191,16 @@ public class ServerConfigurationEditorUtils
             // Saving the file to disk
             saveConfiguration( path, configWriter );
 
-            // Creating the new input for the editor
-            PathEditorInput newInput = new PathEditorInput( new Path( path ) );
-
-            return newInput;
+            // Checking if a new input is required
+            if ( newInput )
+            {
+                // Creating the new input for the editor
+                return new PathEditorInput( new Path( path ) );
+            }
+            else
+            {
+                return null;
+            }
         }
     }
 
