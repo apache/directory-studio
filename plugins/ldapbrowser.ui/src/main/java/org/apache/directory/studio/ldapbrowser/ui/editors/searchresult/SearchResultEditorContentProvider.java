@@ -103,8 +103,9 @@ public class SearchResultEditorContentProvider implements ILazyContentProvider
         // filter and sort, use Job if too much elements
         if ( configuration.getFilter().isFiltered() || configuration.getSorter().isSorted() )
         {
-            if ( elements.length > 1000 && mainWidget.getViewer() != null
-                && !mainWidget.getViewer().getTable().isDisposed() )
+            if ( elements.length > BrowserUIPlugin.getDefault().getPreferenceStore()
+                .getInt( BrowserUIConstants.PREFERENCE_SEARCHRESULTEDITOR_SORT_FILTER_LIMIT )
+                && mainWidget.getViewer() != null && !mainWidget.getViewer().getTable().isDisposed() )
             {
                 // deactivate fitering and sorting for large data set
                 // FilterAndSortRunnable runnable = new FilterAndSortRunnable( configuration, mainWidget, elements );

@@ -48,6 +48,7 @@ public final class BrowserUIConstants
     public static final String PREFERENCE_BROWSER_LINK_WITH_EDITOR = "browserLinkWithEditor"; //$NON-NLS-1$
     public static final String PREFERENCE_SEARCHRESULTEDITOR_SHOW_DN = "searchResultEditorShowDn"; //$NON-NLS-1$
     public static final String PREFERENCE_SEARCHRESULTEDITOR_SHOW_LINKS = "searchResultEditorShowLinks"; //$NON-NLS-1$
+    public static final String PREFERENCE_SEARCHRESULTEDITOR_SORT_FILTER_LIMIT = "searchResultEditorSortFilterLimit"; //$NON-NLS-1$
     public static final String PREFERENCEPAGEID_MAIN = BrowserUIPlugin.getDefault().getPluginProperties()
         .getString( "PrefPage_MainPreferencePage_id" ); //$NON-NLS-1$
     public static final String PREFERENCEPAGEID_ATTRIBUTES = BrowserUIPlugin.getDefault().getPluginProperties()
