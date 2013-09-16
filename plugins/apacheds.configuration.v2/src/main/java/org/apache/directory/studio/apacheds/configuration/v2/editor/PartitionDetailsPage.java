@@ -39,13 +39,18 @@ import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.server.config.beans.IndexBean;
 import org.apache.directory.server.config.beans.JdbmIndexBean;
 import org.apache.directory.server.config.beans.JdbmPartitionBean;
+import org.apache.directory.server.config.beans.MavibotIndexBean;
+import org.apache.directory.server.config.beans.MavibotPartitionBean;
+import org.apache.directory.server.config.beans.PartitionBean;
 import org.apache.directory.studio.apacheds.configuration.v2.ApacheDS2ConfigurationPlugin;
 import org.apache.directory.studio.apacheds.configuration.v2.ApacheDS2ConfigurationPluginConstants;
 import org.apache.directory.studio.apacheds.configuration.v2.dialogs.AttributeValueDialog;
-import org.apache.directory.studio.apacheds.configuration.v2.dialogs.IndexDialog;
+import org.apache.directory.studio.apacheds.configuration.v2.dialogs.JdbmIndexDialog;
+import org.apache.directory.studio.apacheds.configuration.v2.dialogs.MavibotIndexDialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ArrayContentProvider;
+import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.ILabelProviderListener;
@@ -66,12 +71,11 @@ import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
-import org.eclipse.swt.events.VerifyEvent;
-import org.eclipse.swt.events.VerifyListener;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
@@ -81,8 +85,6 @@ import org.eclipse.ui.forms.IFormPart;
 import org.eclipse.ui.forms.IManagedForm;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.Section;
-import org.eclipse.ui.forms.widgets.TableWrapData;
-import org.eclipse.ui.forms.widgets.TableWrapLayout;
 
 
 /**
@@ -92,14 +94,17 @@ import org.eclipse.ui.forms.widgets.TableWrapLayout;
  */
 public class PartitionDetailsPage implements IDetailsPage
 {
+    /** The class instance */
+    private PartitionDetailsPage instance;
+
     /** The associated Master Details Block */
     private PartitionsMasterDetailsBlock masterDetailsBlock;
 
-    /** The Managed Form */
-    private IManagedForm mform;
+    /** The partition wrapper */
+    private PartitionWrapper partitionWrapper;
 
-    /** The input Partition */
-    private JdbmPartitionBean input;
+    /** The partition specific details block */
+    private PartitionSpecificDetailsBlock partitionSpecificDetailsBlock;
 
     /** The Context Entry */
     private Entry contextEntry;
@@ -108,10 +113,14 @@ public class PartitionDetailsPage implements IDetailsPage
     private List<IndexBean> indexesList;
 
     // UI fields
+    private Composite parentComposite;
+    private FormToolkit toolkit;
+    private Composite partitionSpecificDetailsComposite;
+    private Section specificSettingsSection;
+    private Composite specificSettingsSectionComposite;
+    private ComboViewer partitionTypeComboViewer;
     private Text idText;
-    private Text cacheSizeText;
     private Text suffixText;
-    private Button enableOptimizerCheckbox;
     private Button synchOnWriteCheckbox;
     private Button autoGenerateContextEntryCheckbox;
     private TableViewer contextEntryTableViewer;
@@ -198,7 +207,7 @@ public class PartitionDetailsPage implements IDetailsPage
                     }
                     catch ( LdapInvalidAttributeValueException liave )
                     {
-                        // TODO : handle the exception
+                        // Will never occur
                     }
                 }
                 else
@@ -219,6 +228,43 @@ public class PartitionDetailsPage implements IDetailsPage
                 masterDetailsBlock.setEditorDirty();
                 //                dirty = true; TODO
                 commit( true );
+            }
+        }
+    };
+
+    private ISelectionChangedListener partitionTypeComboViewerSelectionChangedListener = new ISelectionChangedListener()
+    {
+        public void selectionChanged( SelectionChangedEvent event )
+        {
+            PartitionType type = ( PartitionType ) ( ( StructuredSelection ) partitionTypeComboViewer.getSelection() )
+                .getFirstElement();
+
+            if ( ( partitionWrapper != null ) && ( partitionWrapper.getPartition() != null ) )
+            {
+                PartitionBean partition = partitionWrapper.getPartition();
+
+                // Only change the type if it's a different one
+                if ( type != PartitionType.fromPartition( partition ) )
+                {
+                    switch ( type )
+                    {
+                        case JDBM:
+                            JdbmPartitionBean newJdbmPartition = new JdbmPartitionBean();
+                            copyPartitionProperties( partition, newJdbmPartition );
+                            partitionWrapper.setPartition( newJdbmPartition );
+                            break;
+                        case MAVIBOT:
+                            MavibotPartitionBean newMavibotPartition = new MavibotPartitionBean();
+                            copyPartitionProperties( partition, newMavibotPartition );
+                            partitionWrapper.setPartition( newMavibotPartition );
+                            break;
+                        default:
+                            break;
+                    }
+
+                    refresh();
+                    setEditorDirty();
+                }
             }
         }
     };
@@ -311,6 +357,7 @@ public class PartitionDetailsPage implements IDetailsPage
      */
     public PartitionDetailsPage( PartitionsMasterDetailsBlock pmdb )
     {
+        instance = this;
         masterDetailsBlock = pmdb;
     }
 
@@ -320,77 +367,60 @@ public class PartitionDetailsPage implements IDetailsPage
      */
     public void createContents( Composite parent )
     {
-        FormToolkit toolkit = mform.getToolkit();
-        TableWrapLayout layout = new TableWrapLayout();
-        layout.topMargin = 5;
-        layout.leftMargin = 5;
-        layout.rightMargin = 2;
-        layout.bottomMargin = 2;
-        parent.setLayout( layout );
+        this.parentComposite = parent;
+        parent.setLayout( new GridLayout() );
 
-        createDetailsSection( parent, toolkit );
+        createGeneralDetailsSection( parent, toolkit );
         createContextEntrySection( parent, toolkit );
+        createPartitionSpecificSettingsSection( parent, toolkit );
         createIndexesSection( parent, toolkit );
     }
 
 
     /**
-     * Creates the Details Section
+     * Creates the General Details Section
      *
      * @param parent
      *      the parent composite
      * @param toolkit
      *      the toolkit to use
      */
-    private void createDetailsSection( Composite parent, FormToolkit toolkit )
+    private void createGeneralDetailsSection( Composite parent, FormToolkit toolkit )
     {
         Section section = toolkit.createSection( parent, Section.DESCRIPTION | Section.TITLE_BAR );
         section.marginWidth = 10;
-        section.setText( Messages.getString( "PartitionDetailsPage.PartitionsDetails" ) ); //$NON-NLS-1$
+        section.setText( Messages.getString( "PartitionDetailsPage.PartitionsGeneralDetails" ) ); //$NON-NLS-1$
         section.setDescription( Messages.getString( "PartitionDetailsPage.SetPropertiesOfPartition" ) ); //$NON-NLS-1$
-        TableWrapData td = new TableWrapData( TableWrapData.FILL, TableWrapData.TOP );
-        td.grabHorizontal = true;
-        section.setLayoutData( td );
+        section.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
         Composite client = toolkit.createComposite( section );
         toolkit.paintBordersFor( client );
-        GridLayout glayout = new GridLayout( 3, false );
+        GridLayout glayout = new GridLayout( 2, false );
         client.setLayout( glayout );
         section.setClient( client );
+
+        // Type
+        toolkit.createLabel( client, "Partition Type:" );
+        Combo partitionTypeCombo = new Combo( client, SWT.READ_ONLY | SWT.SINGLE );
+        partitionTypeCombo.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
+        partitionTypeComboViewer = new ComboViewer( partitionTypeCombo );
+        partitionTypeComboViewer.setContentProvider( new ArrayContentProvider() );
+        partitionTypeComboViewer.setInput( new Object[]
+            { PartitionType.JDBM, PartitionType.MAVIBOT } );
 
         // ID
         toolkit.createLabel( client, Messages.getString( "PartitionDetailsPage.Id" ) ); //$NON-NLS-1$
         idText = toolkit.createText( client, "" ); //$NON-NLS-1$
-        idText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
-
-        // Cache Size
-        toolkit.createLabel( client, Messages.getString( "PartitionDetailsPage.CacheSize" ) ); //$NON-NLS-1$
-        cacheSizeText = toolkit.createText( client, "" ); //$NON-NLS-1$
-        cacheSizeText.addVerifyListener( new VerifyListener()
-        {
-            public void verifyText( VerifyEvent e )
-            {
-                if ( !e.text.matches( "[0-9]*" ) ) //$NON-NLS-1$
-                {
-                    e.doit = false;
-                }
-            }
-        } );
-        cacheSizeText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
+        idText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
 
         // Suffix
         toolkit.createLabel( client, "Suffix:" ); //$NON-NLS-1$
         suffixText = toolkit.createText( client, "" ); //$NON-NLS-1$
-        suffixText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
-
-        // Enable Optimizer
-        enableOptimizerCheckbox = toolkit.createButton( client,
-            Messages.getString( "PartitionDetailsPage.EnableOptimzer" ), SWT.CHECK ); //$NON-NLS-1$
-        enableOptimizerCheckbox.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 3, 1 ) );
+        suffixText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
 
         // Synchronisation On Write
         synchOnWriteCheckbox = toolkit.createButton( client,
             Messages.getString( "PartitionDetailsPage.SynchronizationOnWrite" ), SWT.CHECK ); //$NON-NLS-1$
-        synchOnWriteCheckbox.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 3, 1 ) );
+        synchOnWriteCheckbox.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
     }
 
 
@@ -408,7 +438,7 @@ public class PartitionDetailsPage implements IDetailsPage
         section.marginWidth = 10;
         section.setText( "Context Entry" ); //$NON-NLS-1$
         section.setDescription( "Set the attribute/value pairs for the Context Entry of the partition." ); //$NON-NLS-1$
-        section.setLayoutData( new TableWrapData( TableWrapData.FILL ) );
+        section.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
         Composite client = toolkit.createComposite( section );
         toolkit.paintBordersFor( client );
         client.setLayout( new GridLayout( 2, false ) );
@@ -552,6 +582,72 @@ public class PartitionDetailsPage implements IDetailsPage
 
 
     /**
+     * Creates the Partition Specific Settings Section
+     *
+     * @param parent
+     *      the parent composite
+     * @param toolkit
+     *      the toolkit to use
+     */
+    private void createPartitionSpecificSettingsSection( Composite parent, FormToolkit toolkit )
+    {
+        // Creating the Section
+        specificSettingsSection = toolkit.createSection( parent, Section.TWISTIE | Section.EXPANDED
+            | Section.TITLE_BAR );
+        specificSettingsSection.marginWidth = 10;
+        specificSettingsSection.setText( "Partition Specific Settings" );
+        specificSettingsSection.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
+
+        // Creating the Composite
+        specificSettingsSectionComposite = toolkit.createComposite( specificSettingsSection );
+        toolkit.paintBordersFor( specificSettingsSectionComposite );
+        GridLayout gd = new GridLayout();
+        gd.marginHeight = gd.marginWidth = 0;
+        gd.verticalSpacing = gd.horizontalSpacing = 0;
+        specificSettingsSectionComposite.setLayout( gd );
+        specificSettingsSection.setClient( specificSettingsSectionComposite );
+    }
+
+
+    /**
+     * Disposes the inner specific settings composite.
+     */
+    private void disposeSpecificSettingsComposite()
+    {
+        if ( ( partitionSpecificDetailsComposite != null ) && !( partitionSpecificDetailsComposite.isDisposed() ) )
+        {
+            partitionSpecificDetailsComposite.dispose();
+        }
+
+        partitionSpecificDetailsComposite = null;
+    }
+
+
+    /**
+     * Updates the partition specific settings section.
+     */
+    private void updatePartitionSpecificSettingsSection()
+    {
+        // Disposing existing specific settings composite
+        disposeSpecificSettingsComposite();
+
+        // Create the specific settings block content
+        if ( partitionSpecificDetailsBlock != null )
+        {
+            partitionSpecificDetailsComposite = partitionSpecificDetailsBlock.createBlockContent(
+                specificSettingsSectionComposite,
+                toolkit );
+            partitionSpecificDetailsBlock.refresh();
+        }
+
+        parentComposite.layout( true, true );
+
+        // Making the section visible or not
+        specificSettingsSection.setVisible( partitionSpecificDetailsBlock != null );
+    }
+
+
+    /**
      * Creates the Indexes Section
      *
      * @param parent
@@ -567,7 +663,7 @@ public class PartitionDetailsPage implements IDetailsPage
         indexedAttributesSection.setText( Messages.getString( "PartitionDetailsPage.IndexedAttributes" ) ); //$NON-NLS-1$
         indexedAttributesSection.setDescription( Messages
             .getString( "PartitionDetailsPage.SetIndexedAttributesOfPartition" ) ); //$NON-NLS-1$
-        indexedAttributesSection.setLayoutData( new TableWrapData( TableWrapData.FILL ) );
+        indexedAttributesSection.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
         Composite indexedAttributesClient = toolkit.createComposite( indexedAttributesSection );
         toolkit.paintBordersFor( indexedAttributesClient );
         indexedAttributesClient.setLayout( new GridLayout( 2, false ) );
@@ -582,16 +678,20 @@ public class PartitionDetailsPage implements IDetailsPage
         indexesTableViewer.setContentProvider( new ArrayContentProvider() );
         indexesTableViewer.setLabelProvider( new LabelProvider()
         {
-            @SuppressWarnings("unchecked")
             public String getText( Object element )
             {
                 if ( element instanceof JdbmIndexBean )
                 {
-                    JdbmIndexBean<String, Entry> jdbmIndexBean = ( JdbmIndexBean<String, Entry> ) element;
+                    JdbmIndexBean jdbmIndexBean = ( JdbmIndexBean ) element;
 
-                    return NLS.bind(
-                        Messages.getString( "PartitionDetailsPage.IndexAttributeIdAndCacheSize" ), jdbmIndexBean.getIndexAttributeId(), //$NON-NLS-1$
+                    return NLS.bind( "{0} [{1}]", jdbmIndexBean.getIndexAttributeId(), //$NON-NLS-1$
                         jdbmIndexBean.getIndexCacheSize() );
+                }
+                else if ( element instanceof MavibotIndexBean )
+                {
+                    MavibotIndexBean mavibotIndexBean = ( MavibotIndexBean ) element;
+
+                    return mavibotIndexBean.getIndexAttributeId();
                 }
 
                 return super.getText( element );
@@ -600,7 +700,7 @@ public class PartitionDetailsPage implements IDetailsPage
 
             public Image getImage( Object element )
             {
-                if ( element instanceof JdbmIndexBean )
+                if ( element instanceof IndexBean )
                 {
                     return ApacheDS2ConfigurationPlugin.getDefault().getImage(
                         ApacheDS2ConfigurationPluginConstants.IMG_INDEX );
@@ -647,11 +747,11 @@ public class PartitionDetailsPage implements IDetailsPage
      */
     private void addListeners()
     {
+        partitionTypeComboViewer.addSelectionChangedListener( partitionTypeComboViewerSelectionChangedListener );
+
         idText.addModifyListener( textModifyListener );
-        cacheSizeText.addModifyListener( textModifyListener );
         suffixText.addModifyListener( textModifyListener );
         suffixText.addModifyListener( suffixTextModifyListener );
-        enableOptimizerCheckbox.addSelectionListener( checkboxSelectionListener );
         synchOnWriteCheckbox.addSelectionListener( checkboxSelectionListener );
 
         autoGenerateContextEntryCheckbox.addSelectionListener( autoGenerateContextEntryCheckboxSelectionListener );
@@ -674,11 +774,11 @@ public class PartitionDetailsPage implements IDetailsPage
      */
     private void removeListeners()
     {
+        partitionTypeComboViewer.removeSelectionChangedListener( partitionTypeComboViewerSelectionChangedListener );
+
         idText.removeModifyListener( textModifyListener );
-        cacheSizeText.removeModifyListener( textModifyListener );
         suffixText.removeModifyListener( textModifyListener );
         suffixText.removeModifyListener( suffixTextModifyListener );
-        enableOptimizerCheckbox.removeSelectionListener( checkboxSelectionListener );
         synchOnWriteCheckbox.removeSelectionListener( checkboxSelectionListener );
 
         autoGenerateContextEntryCheckbox.removeSelectionListener( autoGenerateContextEntryCheckboxSelectionListener );
@@ -704,11 +804,11 @@ public class PartitionDetailsPage implements IDetailsPage
         IStructuredSelection ssel = ( IStructuredSelection ) selection;
         if ( ssel.size() == 1 )
         {
-            input = ( JdbmPartitionBean ) ssel.getFirstElement();
+            partitionWrapper = ( PartitionWrapper ) ssel.getFirstElement();
         }
         else
         {
-            input = null;
+            partitionWrapper = null;
         }
         refresh();
     }
@@ -719,30 +819,44 @@ public class PartitionDetailsPage implements IDetailsPage
      */
     public void commit( boolean onSave )
     {
-        if ( input != null )
+        if ( ( partitionWrapper != null ) && ( partitionWrapper.getPartition() != null ) )
         {
-            input.setPartitionId( idText.getText() );
-            input.setPartitionCacheSize( Integer.parseInt( cacheSizeText.getText() ) );
+            PartitionBean partition = partitionWrapper.getPartition();
+
+            // ID
+            partition.setPartitionId( idText.getText() );
+
+            // Suffix
             try
             {
-                input.setPartitionSuffix( new Dn( suffixText.getText() ) );
+                partition.setPartitionSuffix( new Dn( suffixText.getText() ) );
             }
             catch ( LdapInvalidDnException e )
             {
                 // Stay silent
             }
-            input.setJdbmPartitionOptimizerEnabled( enableOptimizerCheckbox.getSelection() );
-            input.setPartitionSyncOnWrite( synchOnWriteCheckbox.getSelection() );
 
+            // Context Entry
             if ( contextEntry.size() > 0 )
             {
                 LdifEntry ldifEntry = new LdifEntry( contextEntry );
-                ldifEntry.setDn( input.getPartitionSuffix() );
-                input.setContextEntry( ldifEntry.toString() );
+                ldifEntry.setDn( partition.getPartitionSuffix() );
+                partition.setContextEntry( ldifEntry.toString() );
             }
             else
             {
-                input.setContextEntry( null );
+                partition.setContextEntry( null );
+            }
+
+            // Synchronization on write
+            partition.setPartitionSyncOnWrite( synchOnWriteCheckbox.getSelection() );
+
+            //
+            // Specific Settings
+            //
+            if ( partitionSpecificDetailsBlock != null )
+            {
+                partitionSpecificDetailsBlock.commit( onSave );
             }
         }
     }
@@ -761,7 +875,7 @@ public class PartitionDetailsPage implements IDetailsPage
      */
     public void initialize( IManagedForm form )
     {
-        this.mform = form;
+        toolkit = form.getToolkit();
     }
 
 
@@ -790,37 +904,67 @@ public class PartitionDetailsPage implements IDetailsPage
     {
         removeListeners();
 
-        // Checking if the selected partition is the system partition
-        boolean isSystemPartition = PartitionsPage.isSystemPartition( input );
+        if ( ( partitionWrapper != null ) && ( partitionWrapper.getPartition() != null ) )
+        {
+            PartitionBean partition = partitionWrapper.getPartition();
 
-        // ID
-        String id = input.getPartitionId();
-        idText.setText( ( id == null ) ? "" : id ); //$NON-NLS-1$
-        idText.setEnabled( !isSystemPartition );
+            // Checking if the selected partition is the system partition
+            boolean isSystemPartition = PartitionsPage.isSystemPartition( partition );
 
-        // Cache Size
-        cacheSizeText.setText( "" + input.getPartitionCacheSize() ); //$NON-NLS-1$
+            // Type
+            PartitionType partitionType = PartitionType.fromPartition( partition );
+            partitionTypeComboViewer.setSelection( new StructuredSelection( partitionType ) );
+            partitionTypeComboViewer.getCombo().setEnabled( !isSystemPartition );
 
-        // Suffix
-        Dn suffix = input.getPartitionSuffix();
-        suffixText.setText( ( suffix == null ) ? "" : suffix.toString() ); //$NON-NLS-1$
-        suffixText.setEnabled( !isSystemPartition );
+            // ID
+            String id = partition.getPartitionId();
+            idText.setText( ( id == null ) ? "" : id ); //$NON-NLS-1$
+            idText.setEnabled( !isSystemPartition );
 
-        // Enable Optimizer
-        enableOptimizerCheckbox.setSelection( input.isJdbmPartitionOptimizerEnabled() );
+            // Suffix
+            Dn suffix = partition.getPartitionSuffix();
+            suffixText.setText( ( suffix == null ) ? "" : suffix.toString() ); //$NON-NLS-1$
+            suffixText.setEnabled( !isSystemPartition );
 
-        // Synchronization on write
-        synchOnWriteCheckbox.setSelection( input.isPartitionSyncOnWrite() );
+            // Auto Generate Context Entry
+            autoGenerateContextEntryCheckbox.setSelection( true ); // TODO review this
 
-        // Auto Generate Context Entry
-        autoGenerateContextEntryCheckbox.setSelection( true );
+            // Context Entry
+            refreshContextEntry();
 
-        // Context Entry
-        refreshContextEntry();
+            // Indexed Attributes
+            indexesList = partition.getIndexes();
+            indexesTableViewer.setInput( indexesList );
 
-        // Indexed Attributes
-        indexesList = input.getIndexes();
-        indexesTableViewer.setInput( indexesList );
+            // Synchronization on write
+            synchOnWriteCheckbox.setSelection( partition.isPartitionSyncOnWrite() );
+
+            //
+            // Specific Settings
+            //
+
+            // JdbmPartitionBean Type
+            if ( partition instanceof JdbmPartitionBean )
+            {
+                partitionTypeComboViewer.setSelection( new StructuredSelection( PartitionType.JDBM ) );
+                partitionSpecificDetailsBlock = new JdbmPartitionSpecificDetailsBlock( instance,
+                    ( JdbmPartitionBean ) partition );
+            }
+            // MavibotPartitionBean Type
+            else if ( partition instanceof MavibotPartitionBean )
+            {
+                partitionTypeComboViewer.setSelection( new StructuredSelection( PartitionType.MAVIBOT ) );
+                partitionSpecificDetailsBlock = new MavibotPartitionSpecificDetailsBlock( instance,
+                    ( MavibotPartitionBean ) partition );
+            }
+            else
+            {
+                partitionTypeComboViewer.setSelection( null );
+                partitionSpecificDetailsBlock = null;
+            }
+
+            updatePartitionSpecificSettingsSection();
+        }
 
         addListeners();
     }
@@ -828,37 +972,44 @@ public class PartitionDetailsPage implements IDetailsPage
 
     private void refreshContextEntry()
     {
-        String contextEntryString = input.getContextEntry();
-
-        if ( ( contextEntryString != null ) && ( !"".equals( contextEntryString ) ) ) //$NON-NLS-1$
+        if ( ( partitionWrapper != null ) && ( partitionWrapper.getPartition() != null ) )
         {
-            try
-            {
-                // Replace '\n' to real LF
-                contextEntryString = contextEntryString.replaceAll( "\\\\n", "\n" ); //$NON-NLS-1$ //$NON-NLS-2$
+            PartitionBean partition = partitionWrapper.getPartition();
 
-                LdifReader reader = new LdifReader( new StringReader( contextEntryString ) );
-                contextEntry = reader.next().getEntry();
-                reader.close();
+            String contextEntryString = partition.getContextEntry();
+
+            if ( ( contextEntryString != null ) && ( !"".equals( contextEntryString ) ) ) //$NON-NLS-1$
+            {
+                try
+                {
+                    // Replace '\n' to real LF
+                    contextEntryString = contextEntryString.replaceAll( "\\\\n", "\n" ); //$NON-NLS-1$ //$NON-NLS-2$
+
+                    LdifReader reader = new LdifReader( new StringReader( contextEntryString ) );
+                    contextEntry = reader.next().getEntry();
+                    reader.close();
+                }
+                catch ( Exception e )
+                {
+                    contextEntry = new DefaultEntry();
+                }
             }
-            catch ( Exception e )
+            else
             {
                 contextEntry = new DefaultEntry();
             }
-        }
-        else
-        {
-            contextEntry = new DefaultEntry();
-        }
 
-        contextEntryTableViewer.setInput( contextEntry );
-        resizeContextEntryTableColumnsToFit();
+            contextEntryTableViewer.setInput( contextEntry );
+            resizeContextEntryTableColumnsToFit();
 
-        boolean enabled = !autoGenerateContextEntryCheckbox.getSelection();
-        contextEntryTableViewer.getTable().setEnabled( enabled );
-        contextEntryAddButton.setEnabled( enabled );
-        contextEntryEditButton.setEnabled( enabled );
-        contextEntryDeleteButton.setEnabled( enabled );
+            // TODO Verify this
+
+            boolean enabled = !autoGenerateContextEntryCheckbox.getSelection();
+            contextEntryTableViewer.getTable().setEnabled( enabled );
+            contextEntryAddButton.setEnabled( enabled );
+            contextEntryEditButton.setEnabled( enabled );
+            contextEntryDeleteButton.setEnabled( enabled );
+        }
     }
 
 
@@ -867,17 +1018,22 @@ public class PartitionDetailsPage implements IDetailsPage
      */
     private void autoGenerateContextEntry()
     {
-        if ( autoGenerateContextEntryCheckbox.getSelection() )
+        if ( ( partitionWrapper != null ) && ( partitionWrapper.getPartition() != null ) )
         {
-            try
+            PartitionBean partition = partitionWrapper.getPartition();
+
+            if ( autoGenerateContextEntryCheckbox.getSelection() )
             {
-                Dn suffixDn = new Dn( suffixText.getText() );
-                input.setContextEntry( PartitionsMasterDetailsBlock.getContextEntryLdif( suffixDn ) );
-                refreshContextEntry();
-            }
-            catch ( LdapInvalidDnException e1 )
-            {
-                // Silent
+                try
+                {
+                    Dn suffixDn = new Dn( suffixText.getText() );
+                    partition.setContextEntry( PartitionsMasterDetailsBlock.getContextEntryLdif( suffixDn ) );
+                    refreshContextEntry();
+                }
+                catch ( LdapInvalidDnException e1 )
+                {
+                    // Silent
+                }
             }
         }
     }
@@ -919,19 +1075,53 @@ public class PartitionDetailsPage implements IDetailsPage
     /**
      * Opens an indexed dialog with the selected index in the indexes table viewer.
      */
-    @SuppressWarnings("unchecked")
     private void editSelectedIndex()
     {
         StructuredSelection selection = ( StructuredSelection ) indexesTableViewer.getSelection();
         if ( !selection.isEmpty() )
         {
-            JdbmIndexBean<String, Entry> index = ( JdbmIndexBean<String, Entry> ) selection.getFirstElement();
+            PartitionType partitionType = ( PartitionType ) ( ( StructuredSelection ) partitionTypeComboViewer
+                .getSelection() ).getFirstElement();
 
-            IndexDialog dialog = new IndexDialog( index );
-            if ( IndexDialog.OK == dialog.open() && dialog.isDirty() )
+            if ( partitionType != null )
             {
-                indexesTableViewer.refresh();
-                masterDetailsBlock.setEditorDirty();
+                IndexBean editedIndex = null;
+
+                // JDBM partition
+                if ( partitionType == PartitionType.JDBM )
+                {
+                    // Getting the selected JDBM index
+                    JdbmIndexBean index = ( JdbmIndexBean ) selection.getFirstElement();
+
+                    // Creating a JDBM dialog
+                    JdbmIndexDialog dialog = new JdbmIndexDialog( index );
+
+                    if ( JdbmIndexDialog.OK == dialog.open() && dialog.isDirty() )
+                    {
+                        editedIndex = index;
+                    }
+                }
+                // Mavibot Partition
+                else if ( partitionType == PartitionType.MAVIBOT )
+                {
+                    // Getting the selected Mavibot index
+                    MavibotIndexBean index = ( MavibotIndexBean ) selection.getFirstElement();
+
+                    // Creating a Mavibot dialog
+                    MavibotIndexDialog dialog = new MavibotIndexDialog( index );
+
+                    if ( MavibotIndexDialog.OK == dialog.open() && dialog.isDirty() )
+                    {
+                        editedIndex = index;
+                    }
+                }
+
+                // Checking the new index
+                if ( editedIndex != null )
+                {
+                    indexesTableViewer.refresh();
+                    masterDetailsBlock.setEditorDirty();
+                }
             }
         }
     }
@@ -942,17 +1132,57 @@ public class PartitionDetailsPage implements IDetailsPage
      */
     private void addNewIndex()
     {
-        JdbmIndexBean<String, Entry> newIndex = new JdbmIndexBean<String, Entry>();
-        newIndex.setIndexAttributeId( "" ); //$NON-NLS-1$
-        newIndex.setIndexCacheSize( 100 );
+        PartitionType partitionType = ( PartitionType ) ( ( StructuredSelection ) partitionTypeComboViewer
+            .getSelection() ).getFirstElement();
 
-        IndexDialog dialog = new IndexDialog( newIndex );
-        if ( IndexDialog.OK == dialog.open() )
+        if ( partitionType != null )
         {
-            indexesList.add( dialog.getIndex() );
-            indexesTableViewer.refresh();
-            indexesTableViewer.setSelection( new StructuredSelection( dialog.getIndex() ) );
-            masterDetailsBlock.setEditorDirty();
+            IndexBean newIndex = null;
+
+            // JDBM partition
+            if ( partitionType == PartitionType.JDBM )
+            {
+                JdbmIndexBean newJdbmIndex = new JdbmIndexBean();
+                newJdbmIndex.setIndexAttributeId( "" ); //$NON-NLS-1$
+                newJdbmIndex.setIndexCacheSize( 100 );
+
+                JdbmIndexDialog dialog = new JdbmIndexDialog( newJdbmIndex );
+                if ( JdbmIndexDialog.OK == dialog.open() )
+                {
+                    newIndex = dialog.getIndex();
+                }
+                else
+                {
+                    // Cancel
+                    return;
+                }
+            }
+            // Mavibot Partition
+            else if ( partitionType == PartitionType.MAVIBOT )
+            {
+                MavibotIndexBean newMavibotIndex = new MavibotIndexBean();
+                newMavibotIndex.setIndexAttributeId( "" ); //$NON-NLS-1$
+
+                MavibotIndexDialog dialog = new MavibotIndexDialog( newMavibotIndex );
+                if ( MavibotIndexDialog.OK == dialog.open() )
+                {
+                    newIndex = dialog.getIndex();
+                }
+                else
+                {
+                    // Cancel
+                    return;
+                }
+            }
+
+            // Checking the new index
+            if ( newIndex != null )
+            {
+                indexesList.add( newIndex );
+                indexesTableViewer.refresh();
+                indexesTableViewer.setSelection( new StructuredSelection( newIndex ) );
+                masterDetailsBlock.setEditorDirty();
+            }
         }
     }
 
@@ -960,16 +1190,16 @@ public class PartitionDetailsPage implements IDetailsPage
     /**
      * Deletes the selected index in the indexes table viewer
      */
-    @SuppressWarnings("unchecked")
     private void deleteSelectedIndex()
     {
         StructuredSelection selection = ( StructuredSelection ) indexesTableViewer.getSelection();
+
         if ( !selection.isEmpty() )
         {
-            JdbmIndexBean<String, Entry> selectedIndex = ( JdbmIndexBean<String, Entry> ) selection.getFirstElement();
+            IndexBean selectedIndex = ( IndexBean ) selection.getFirstElement();
 
             if ( MessageDialog
-                .openConfirm( mform.getForm().getShell(),
+                .openConfirm( indexesDeleteButton.getShell(),
                     Messages.getString( "PartitionDetailsPage.ConfirmDelete" ), //$NON-NLS-1$
                     NLS.bind(
                         Messages.getString( "PartitionDetailsPage.AreYouSureDeleteIndex" ), selectedIndex.getIndexAttributeId() ) ) ) //$NON-NLS-1$
@@ -1016,7 +1246,7 @@ public class PartitionDetailsPage implements IDetailsPage
                     }
                     catch ( LdapInvalidAttributeValueException liave )
                     {
-                        // TODO : handle the exception
+                        // Will never occur
                     }
                 }
                 else
@@ -1038,6 +1268,68 @@ public class PartitionDetailsPage implements IDetailsPage
                 //                dirty = true; TODO
                 commit( true );
             }
+        }
+    }
+
+
+    /**
+     * Sets the associated editor dirty.
+     */
+    public void setEditorDirty()
+    {
+        masterDetailsBlock.setEditorDirty();
+    }
+
+
+    /**
+     * Copies partition properties from one instance to the other.
+     *
+     * @param original the original partition
+     * @param destination the destination partition
+     */
+    private void copyPartitionProperties( PartitionBean original, PartitionBean destination )
+    {
+        if ( ( original != null ) && ( destination != null ) )
+        {
+            // Simple properties
+            destination.setContextEntry( original.getContextEntry() );
+            destination.setDescription( original.getDescription() );
+            destination.setDn( original.getDn() );
+            destination.setEnabled( original.isEnabled() );
+            destination.setPartitionId( original.getPartitionId() );
+            destination.setPartitionSuffix( original.getPartitionSuffix() );
+            destination.setPartitionSyncOnWrite( original.isPartitionSyncOnWrite() );
+
+            // Indexes
+            List<IndexBean> originalIndexes = original.getIndexes();
+            List<IndexBean> destinationIndexes = new ArrayList<IndexBean>();
+
+            if ( originalIndexes != null )
+            {
+                for ( IndexBean originalIndexBean : originalIndexes )
+                {
+                    if ( destination instanceof JdbmPartitionBean )
+                    {
+                        JdbmIndexBean destinationIndexBean = new JdbmIndexBean();
+
+                        destinationIndexBean.setIndexAttributeId( originalIndexBean.getIndexAttributeId() );
+                        destinationIndexBean.setIndexHasReverse( originalIndexBean.getIndexHasReverse() );
+
+                        destinationIndexes.add( destinationIndexBean );
+                    }
+                    else if ( destination instanceof MavibotPartitionBean )
+                    {
+                        MavibotIndexBean destinationIndexBean = new MavibotIndexBean();
+
+                        destinationIndexBean.setIndexAttributeId( originalIndexBean.getIndexAttributeId() );
+                        destinationIndexBean.setIndexHasReverse( originalIndexBean.getIndexHasReverse() );
+
+                        destinationIndexes.add( destinationIndexBean );
+                    }
+                }
+            }
+
+            destination.setIndexes( destinationIndexes );
         }
     }
 }

@@ -30,10 +30,12 @@ import org.apache.directory.api.ldap.model.exception.LdapInvalidDnException;
 import org.apache.directory.api.ldap.model.ldif.LdifEntry;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.api.ldap.model.name.Rdn;
+import org.apache.directory.server.config.beans.DirectoryServiceBean;
 import org.apache.directory.server.config.beans.IndexBean;
 import org.apache.directory.server.config.beans.JdbmIndexBean;
 import org.apache.directory.server.config.beans.JdbmPartitionBean;
 import org.apache.directory.server.config.beans.PartitionBean;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
@@ -71,6 +73,9 @@ public class PartitionsMasterDetailsBlock extends MasterDetailsBlock
 
     /** The Details Page */
     private PartitionDetailsPage detailsPage;
+
+    /** The partition wrappers */
+    private List<PartitionWrapper> partitionWrappers = new ArrayList<PartitionWrapper>();
 
     // UI Fields
     private TableViewer viewer;
@@ -151,7 +156,14 @@ public class PartitionsMasterDetailsBlock extends MasterDetailsBlock
      */
     private void initFromInput()
     {
-        viewer.setInput( page.getConfigBean().getDirectoryServiceBean().getPartitions() );
+        partitionWrappers.clear();
+
+        for ( PartitionBean partition : page.getConfigBean().getDirectoryServiceBean().getPartitions() )
+        {
+            partitionWrappers.add( new PartitionWrapper( partition ) );
+        }
+
+        viewer.setInput( partitionWrappers );
     }
 
 
@@ -185,8 +197,8 @@ public class PartitionsMasterDetailsBlock extends MasterDetailsBlock
                 // Delete button is not enabled in the case of the system partition
                 if ( !selection.isEmpty() )
                 {
-                    JdbmPartitionBean partition = ( JdbmPartitionBean ) selection.getFirstElement();
-                    if ( PartitionsPage.isSystemPartition( partition ) )
+                    PartitionWrapper partitionWrapper = ( PartitionWrapper ) selection.getFirstElement();
+                    if ( PartitionsPage.isSystemPartition( partitionWrapper.getPartition() ) )
                     {
                         deleteButton.setEnabled( false );
                     }
@@ -252,9 +264,10 @@ public class PartitionsMasterDetailsBlock extends MasterDetailsBlock
         indexes.add( createJdbmIndex( "uid", 100 ) ); //$NON-NLS-1$
         newPartitionBean.setIndexes( indexes );
 
-        page.getConfigBean().getDirectoryServiceBean().addPartitions( newPartitionBean );
+        PartitionWrapper newPartitionWrapper = new PartitionWrapper( newPartitionBean );
+        partitionWrappers.add( newPartitionWrapper );
         viewer.refresh();
-        viewer.setSelection( new StructuredSelection( newPartitionBean ) );
+        viewer.setSelection( new StructuredSelection( newPartitionWrapper ) );
         setEditorDirty();
     }
 
@@ -332,9 +345,13 @@ public class PartitionsMasterDetailsBlock extends MasterDetailsBlock
     private void deleteSelectedPartition()
     {
         StructuredSelection selection = ( StructuredSelection ) viewer.getSelection();
+
         if ( !selection.isEmpty() )
         {
-            JdbmPartitionBean partition = ( JdbmPartitionBean ) selection.getFirstElement();
+            PartitionWrapper partitionWrapper = ( PartitionWrapper ) selection.getFirstElement();
+
+            PartitionBean partition = partitionWrapper.getPartition();
+
             if ( !PartitionsPage.isSystemPartition( partition ) )
             {
                 if ( MessageDialog
@@ -345,7 +362,7 @@ public class PartitionsMasterDetailsBlock extends MasterDetailsBlock
                             Messages.getString( "PartitionsMasterDetailsBlock.AreYouSureDeletePartition" ), partition.getPartitionId(), //$NON-NLS-1$
                             partition.getPartitionSuffix() ) ) )
                 {
-                    page.getConfigBean().getDirectoryServiceBean().getPartitions().remove( partition );
+                    partitionWrappers.remove( partitionWrapper );
                     setEditorDirty();
                 }
             }
@@ -359,9 +376,9 @@ public class PartitionsMasterDetailsBlock extends MasterDetailsBlock
      * @param indexAttributeId the attribute id
      * @param indexCacheSize the cache size
      */
-    private JdbmIndexBean<String, Entry> createJdbmIndex( String indexAttributeId, int indexCacheSize )
+    private JdbmIndexBean createJdbmIndex( String indexAttributeId, int indexCacheSize )
     {
-        JdbmIndexBean<String, Entry> index = new JdbmIndexBean<String, Entry>();
+        JdbmIndexBean index = new JdbmIndexBean();
 
         index.setIndexAttributeId( indexAttributeId );
         index.setIndexCacheSize( indexCacheSize );
@@ -371,12 +388,23 @@ public class PartitionsMasterDetailsBlock extends MasterDetailsBlock
 
 
     /**
+     * Sets the Editor as dirty.
+     */
+    public void setEditorDirty()
+    {
+        ( ( ServerConfigurationEditor ) page.getEditor() ).setDirty( true );
+        detailsPage.commit( false );
+        viewer.refresh();
+    }
+
+
+    /**
      * {@inheritDoc}
      */
     protected void registerPages( DetailsPart detailsPart )
     {
         detailsPage = new PartitionDetailsPage( this );
-        detailsPart.registerPage( JdbmPartitionBean.class, detailsPage );
+        detailsPart.registerPage( PartitionWrapper.class, detailsPage );
     }
 
 
@@ -391,20 +419,37 @@ public class PartitionsMasterDetailsBlock extends MasterDetailsBlock
 
 
     /**
-     * Sets the Editor as dirty.
+     * Gets the associated editor page.
+     * 
+     * @return the associated editor page
      */
-    public void setEditorDirty()
+    public PartitionsPage getPage()
     {
-        ( ( ServerConfigurationEditor ) page.getEditor() ).setDirty( true );
-        viewer.refresh();
+        return page;
     }
 
+    
 
     /**
      * Saves the necessary elements to the input model.
      */
-    public void save()
+    public void doSave( IProgressMonitor monitor )
     {
+        // Committing information on the details page
         detailsPage.commit( true );
+
+        // Getting the directory service bean
+        DirectoryServiceBean directoryServiceBean = page.getConfigBean().getDirectoryServiceBean();
+
+        // Creating a new list of partitions
+        List<PartitionBean> newPartitions = new ArrayList<PartitionBean>();
+        
+        // Saving the partitions
+        for ( PartitionWrapper partitionWrapper : partitionWrappers )
+        {
+            newPartitions.add( partitionWrapper.getPartition() );
+        }
+        
+        directoryServiceBean.setPartitions( newPartitions );
     }
 }

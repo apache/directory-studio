@@ -23,6 +23,7 @@ package org.apache.directory.studio.apacheds.configuration.v2.editor;
 import org.apache.directory.server.config.beans.PartitionBean;
 import org.apache.directory.studio.apacheds.configuration.v2.ApacheDS2ConfigurationPlugin;
 import org.apache.directory.studio.apacheds.configuration.v2.ApacheDS2ConfigurationPluginConstants;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerComparator;
@@ -44,7 +45,7 @@ public class PartitionsPage extends ServerConfigurationEditorPage
 
     /** The Page Title */
     private static final String TITLE = Messages.getString( "PartitionsPage.Partitions" ); //$NON-NLS-1$
-    
+
     /** The Master Details Block */
     private PartitionsMasterDetailsBlock masterDetailsBlock;
 
@@ -57,10 +58,31 @@ public class PartitionsPage extends ServerConfigurationEditorPage
             {
                 PartitionBean partition = ( PartitionBean ) element;
 
-                return NLS.bind( "{0} ({1})", partition.getPartitionId(), partition.getPartitionSuffix() ); //$NON-NLS-1$
+                return NLS
+                    .bind(
+                        "{0} ({1}) [{2}]", new Object[] { partition.getPartitionId(), partition.getPartitionSuffix(), getPartitionType( partition ) } ); //$NON-NLS-1$
+            }
+            else if ( element instanceof PartitionWrapper )
+            {
+                return getText( ( ( PartitionWrapper ) element ).getPartition() );
             }
 
             return super.getText( element );
+        }
+
+
+        private String getPartitionType( PartitionBean partition )
+        {
+            PartitionType type = PartitionType.fromPartition( partition );
+
+            if ( type != null )
+            {
+                return type.toString();
+            }
+            else
+            {
+                return "Unknown";
+            }
         }
 
 
@@ -80,6 +102,10 @@ public class PartitionsPage extends ServerConfigurationEditorPage
                     return ApacheDS2ConfigurationPlugin.getDefault().getImage(
                         ApacheDS2ConfigurationPluginConstants.IMG_PARTITION );
                 }
+            }
+            else if ( element instanceof PartitionWrapper )
+            {
+                return getImage( ( ( PartitionWrapper ) element ).getPartition() );
             }
 
             return super.getImage( element );
@@ -103,6 +129,11 @@ public class PartitionsPage extends ServerConfigurationEditorPage
                 {
                     return partition1Id.compareTo( partition2Id );
                 }
+            }
+            if ( ( e1 instanceof PartitionWrapper ) && ( e2 instanceof PartitionWrapper ) )
+            {
+                return compare( viewer, ( ( PartitionWrapper ) e1 ).getPartition(),
+                    ( ( PartitionWrapper ) e2 ).getPartition() );
             }
 
             return super.compare( viewer, e1, e2 );
@@ -153,6 +184,23 @@ public class PartitionsPage extends ServerConfigurationEditorPage
      */
     public static boolean isSystemPartition( PartitionBean partition )
     {
-        return "system".equalsIgnoreCase( partition.getPartitionId() ); //$NON-NLS-1$
+        if ( partition != null )
+        {
+            return "system".equalsIgnoreCase( partition.getPartitionId() ); //$NON-NLS-1$
+        }
+
+        return false;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public void doSave( IProgressMonitor monitor )
+    {
+        if ( masterDetailsBlock != null )
+        {
+            masterDetailsBlock.doSave( monitor );
+        }
     }
 }

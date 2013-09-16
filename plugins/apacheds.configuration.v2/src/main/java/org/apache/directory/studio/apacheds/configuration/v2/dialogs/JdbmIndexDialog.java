@@ -20,7 +20,6 @@
 package org.apache.directory.studio.apacheds.configuration.v2.dialogs;
 
 
-import org.apache.directory.api.ldap.model.entry.Entry;
 import org.apache.directory.server.config.beans.JdbmIndexBean;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.swt.SWT;
@@ -39,14 +38,14 @@ import org.eclipse.ui.PlatformUI;
 
 
 /**
- * This class implements the Dialog for an Index.
+ * This class implements the Dialog for a JDBM index.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class IndexDialog extends Dialog
+public class JdbmIndexDialog extends Dialog
 {
     /** The Indexed Attribute */
-    private JdbmIndexBean<String, Entry> index;
+    private JdbmIndexBean index;
 
     /** The dirty flag */
     private boolean dirty = false;
@@ -57,9 +56,9 @@ public class IndexDialog extends Dialog
 
 
     /**
-     * Creates a new instance of IndexDialog.
+     * Creates a new instance of JdbmIndexDialog.
      */
-    public IndexDialog( JdbmIndexBean<String, Entry> index )
+    public JdbmIndexDialog( JdbmIndexBean index )
     {
         super( PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell() );
         this.index = index;
@@ -72,7 +71,7 @@ public class IndexDialog extends Dialog
     protected void configureShell( Shell newShell )
     {
         super.configureShell( newShell );
-        newShell.setText( Messages.getString( "IndexDialog.IndexedAttributeDialog" ) ); //$NON-NLS-1$
+        newShell.setText( Messages.getString( "JdbmIndexDialog.IndexedAttributeDialog" ) ); //$NON-NLS-1$
     }
 
 
@@ -87,13 +86,13 @@ public class IndexDialog extends Dialog
         composite.setLayoutData( new GridData( GridData.FILL, GridData.FILL, true, true ) );
 
         Label attributeIdLabel = new Label( composite, SWT.NONE );
-        attributeIdLabel.setText( Messages.getString( "IndexDialog.AttributeID" ) ); //$NON-NLS-1$
+        attributeIdLabel.setText( Messages.getString( "JdbmIndexDialog.AttributeID" ) ); //$NON-NLS-1$
 
         attributeIdText = new Text( composite, SWT.BORDER );
         attributeIdText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
 
         Label cacheSizeLabel = new Label( composite, SWT.NONE );
-        cacheSizeLabel.setText( Messages.getString( "IndexDialog.CacheSize" ) ); //$NON-NLS-1$
+        cacheSizeLabel.setText( Messages.getString( "JdbmIndexDialog.CacheSize" ) ); //$NON-NLS-1$
 
         cacheSizeText = new Text( composite, SWT.BORDER );
         cacheSizeText.addVerifyListener( new VerifyListener()
@@ -174,7 +173,7 @@ public class IndexDialog extends Dialog
      * @return
      *      the Indexed Attribute
      */
-    public JdbmIndexBean<String, Entry> getIndex()
+    public JdbmIndexBean getIndex()
     {
         return index;
     }

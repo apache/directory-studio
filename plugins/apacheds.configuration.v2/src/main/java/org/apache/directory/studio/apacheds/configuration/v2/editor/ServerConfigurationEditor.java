@@ -163,6 +163,10 @@ public class ServerConfigurationEditor extends FormEditor implements IPageChange
      */
     public void doSave( IProgressMonitor monitor )
     {
+        // Saving pages
+        doSavePages( monitor );
+
+        // Saving the configuration using a job
         StudioJob<StudioRunnableWithProgress> job = new StudioJob<StudioRunnableWithProgress>(
             new SaveConfigurationRunnable( this ) );
         job.schedule();
@@ -211,6 +215,9 @@ public class ServerConfigurationEditor extends FormEditor implements IPageChange
      */
     public boolean doSaveAs( IProgressMonitor monitor ) throws Exception
     {
+        // Saving pages
+        doSavePages( monitor );
+
         // Saving the configuration as a new file and getting the associated new editor input
         IEditorInput newInput = ServerConfigurationEditorUtils.saveAs( monitor, getSite().getShell(),
             getEditorInput(), getConfigWriter(), true );
@@ -236,6 +243,20 @@ public class ServerConfigurationEditor extends FormEditor implements IPageChange
         }
 
         return success;
+    }
+
+
+    /**
+     * Saves the pages.
+     *
+     * @param monitor the monitor
+     */
+    private void doSavePages( IProgressMonitor monitor )
+    {
+        if ( partitionsPage != null )
+        {
+            partitionsPage.doSave( monitor );
+        }
     }
 
 
