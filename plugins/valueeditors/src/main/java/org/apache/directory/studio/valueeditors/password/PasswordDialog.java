@@ -85,6 +85,7 @@ public class PasswordDialog extends Dialog
             LdapSecurityConstants.HASH_METHOD_SSHA512,
             LdapSecurityConstants.HASH_METHOD_MD5,
             LdapSecurityConstants.HASH_METHOD_SMD5,
+            LdapSecurityConstants.HASH_METHOD_PKCS5S2,
             LdapSecurityConstants.HASH_METHOD_CRYPT,
             NO_HASH_METHOD };
 

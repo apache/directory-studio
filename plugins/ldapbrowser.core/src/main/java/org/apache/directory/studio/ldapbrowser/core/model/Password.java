@@ -21,11 +21,17 @@
 package org.apache.directory.studio.ldapbrowser.core.model;
 
 
+import java.security.Key;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+import java.security.spec.KeySpec;
+
+import javax.crypto.SecretKeyFactory;
+import javax.crypto.spec.PBEKeySpec;
 
 import org.apache.directory.api.ldap.model.constants.LdapSecurityConstants;
+import org.apache.directory.api.util.Strings;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.ldapbrowser.core.utils.UnixCrypt;
 import org.apache.directory.studio.ldifparser.LdifUtils;
@@ -49,6 +55,7 @@ import org.apache.directory.studio.ldifparser.LdifUtils;
  *   <li>SSHA-512</li>
  *   <li>MD5</li>
  *   <li>SMD5</li>
+ *   <li>PKCS5S2</li>
  *   <li>CRYPT</li>
  * </ul>
  *
@@ -121,7 +128,8 @@ public class Password
                     || ( LdapSecurityConstants.HASH_METHOD_SSHA256 == hashMethod )
                     || ( LdapSecurityConstants.HASH_METHOD_SSHA384 == hashMethod )
                     || ( LdapSecurityConstants.HASH_METHOD_SSHA512 == hashMethod )
-                    || ( LdapSecurityConstants.HASH_METHOD_SMD5 == hashMethod ) )
+                    || ( LdapSecurityConstants.HASH_METHOD_SMD5 == hashMethod )
+                    || ( LdapSecurityConstants.HASH_METHOD_PKCS5S2 == hashMethod ) )
                 {
                     switch ( hashMethod )
                     {
@@ -139,6 +147,9 @@ public class Password
                             break;
                         case HASH_METHOD_SMD5:
                             hashedPassword = new byte[16];
+                            break;
+                        case HASH_METHOD_PKCS5S2:
+                            hashedPassword = new byte[20];
                             break;
                         default:
                             break;
@@ -202,7 +213,8 @@ public class Password
             || ( LdapSecurityConstants.HASH_METHOD_SSHA256 == hashMethod )
             || ( LdapSecurityConstants.HASH_METHOD_SSHA384 == hashMethod )
             || ( LdapSecurityConstants.HASH_METHOD_SSHA512 == hashMethod )
-            || ( LdapSecurityConstants.HASH_METHOD_SMD5 == hashMethod ) )
+            || ( LdapSecurityConstants.HASH_METHOD_SMD5 == hashMethod )
+            || ( LdapSecurityConstants.HASH_METHOD_PKCS5S2 == hashMethod ) )
         {
             this.salt = new byte[8];
             new SecureRandom().nextBytes( this.salt );
@@ -242,6 +254,10 @@ public class Password
         else if ( LdapSecurityConstants.HASH_METHOD_CRYPT == hashMethod )
         {
             this.hashedPassword = crypt( passwordAsPlaintext, this.salt );
+        }
+        else if ( LdapSecurityConstants.HASH_METHOD_PKCS5S2 == hashMethod )
+        {
+            this.hashedPassword = generatePbkdf2Hash( passwordAsPlaintext.getBytes(), hashMethod, salt );
         }
     }
 
@@ -289,6 +305,12 @@ public class Password
         {
             byte[] crypted = crypt( testPasswordAsPlaintext, salt );
             verified = equals( crypted, hashedPassword );
+        }
+        else if ( LdapSecurityConstants.HASH_METHOD_PKCS5S2 == hashMethod )
+        {
+            byte[] hash = generatePbkdf2Hash( testPasswordAsPlaintext.getBytes(),
+                LdapSecurityConstants.HASH_METHOD_PKCS5S2, salt );
+            verified = equals( hash, hashedPassword );
         }
 
         return verified;
@@ -500,5 +522,30 @@ public class Password
         String saltWithCrypted = UnixCrypt.crypt( password, LdifUtils.utf8decode( salt ) );
         String crypted = saltWithCrypted.substring( 2 );
         return LdifUtils.utf8encode( crypted );
+    }
+
+
+    /**
+     * generates a hash based on the <a href="http://en.wikipedia.org/wiki/PBKDF2">PKCS5S2 spec</a>
+     * 
+     * @param algorithm the algorithm to use
+     * @param password the credentials
+     * @param salt the optional salt
+     * @return the digested credentials
+     */
+    private static byte[] generatePbkdf2Hash( byte[] credentials, LdapSecurityConstants algorithm, byte[] salt )
+    {
+        try
+        {
+            SecretKeyFactory sk = SecretKeyFactory.getInstance( algorithm.getAlgorithm() );
+            char[] password = Strings.utf8ToString( credentials ).toCharArray();
+            KeySpec keySpec = new PBEKeySpec( password, salt, 1000, 160 );
+            Key key = sk.generateSecret( keySpec );
+            return key.getEncoded();
+        }
+        catch ( Exception e )
+        {
+            throw new RuntimeException( e );
+        }
     }
 }
