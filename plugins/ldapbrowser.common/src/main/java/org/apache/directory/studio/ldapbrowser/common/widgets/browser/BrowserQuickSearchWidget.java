@@ -242,13 +242,18 @@ public class BrowserQuickSearchWidget
         quickSearchScopeButton.setToolTipText( Messages.getString( "BrowserQuickSearchWidget.ScopeOneLevelToolTip" ) ); //$NON-NLS-1$
         quickSearchScopeButton.setImage( BrowserCommonActivator.getDefault().getImage(
             BrowserCommonConstants.IMG_SUBTREE ) );
+        quickSearchScopeButton.setSelection( BrowserCommonActivator.getDefault().getPreferenceStore()
+            .getBoolean( BrowserCommonConstants.PREFERENCE_BROWSER_QUICK_SEARCH_SUBTREE_SCOPE ) );
         quickSearchScopeButton.addSelectionListener( new SelectionAdapter()
         {
             public void widgetSelected( SelectionEvent e )
             {
                 String one = Messages.getString( "BrowserQuickSearchWidget.ScopeOneLevelToolTip" ); //$NON-NLS-1$
                 String sub = Messages.getString( "BrowserQuickSearchWidget.ScopeSubtreeToolTip" ); //$NON-NLS-1$
-                quickSearchScopeButton.setToolTipText( quickSearchScopeButton.getSelection() ? sub : one );
+                boolean selected = quickSearchScopeButton.getSelection();
+                quickSearchScopeButton.setToolTipText( selected ? sub : one );
+                BrowserCommonActivator.getDefault().getPreferenceStore()
+                    .setValue( BrowserCommonConstants.PREFERENCE_BROWSER_QUICK_SEARCH_SUBTREE_SCOPE, selected );
             }
         } );
 
