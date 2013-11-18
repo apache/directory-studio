@@ -1,0 +1,12 @@
+Howto add new plugin dependencies to internal maven repository
+* create directory "newplugins"
+* copy plugins jar from existing Eclipse (Juno 3.8) installation to "newplugins" directory (example: org.eclipse.core.databinding.beans_1.2.200.v20120523-1955.jar)
+* run the "deploy_new_plugins.sh" script
+* delete the "newplugins" directory
+* add the new dependency (including version) to the parent pom.xml "dependencyManagement" section
+* add the new dependency (excluding version) to the repository/pom.xml 
+* now you can add the new dependency (excluding version) to the plugin's pom.xml
+* run "mvn install" from the project root to see if all works
+
+The script splits the original filename (e.g. org.eclipse.core.databinding.beans_1.2.200.v20120523-1955.jar) and extracts groupId, artifactId, version, and packaging.
+
