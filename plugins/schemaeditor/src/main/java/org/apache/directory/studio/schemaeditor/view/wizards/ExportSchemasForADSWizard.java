@@ -28,7 +28,6 @@ import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -40,8 +39,8 @@ import org.apache.directory.api.ldap.model.constants.SchemaConstants;
 import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.name.Rdn;
 import org.apache.directory.api.ldap.model.schema.AttributeType;
-import org.apache.directory.api.ldap.model.schema.MutableObjectClass;
 import org.apache.directory.api.ldap.model.schema.ObjectClass;
+import org.apache.directory.api.ldap.model.schema.SchemaObjectSorter;
 import org.apache.directory.api.util.Strings;
 import org.apache.directory.studio.schemaeditor.Activator;
 import org.apache.directory.studio.schemaeditor.PluginUtils;
@@ -353,7 +352,7 @@ public class ExportSchemasForADSWizard extends Wizard implements IExportWizard
         sb.append( "\n" ); //$NON-NLS-1$
 
         // Generating LDIF for Object Classes
-        List<MutableObjectClass> sortedObjectClasses = getSortedObjectClasses( schema.getObjectClasses() );
+        Iterable<ObjectClass> sortedObjectClasses = SchemaObjectSorter.sortObjectClasses( schema.getObjectClasses() );
         for ( ObjectClass oc : sortedObjectClasses )
         {
             ObjectClassHolder holder = new ObjectClassHolder( oc.getOid() );
@@ -401,66 +400,6 @@ public class ExportSchemasForADSWizard extends Wizard implements IExportWizard
         sb.append( "objectclass: top\n" ); //$NON-NLS-1$
         sb.append( "ou: syntaxes\n" ); //$NON-NLS-1$
         sb.append( "\n" ); //$NON-NLS-1$
-    }
-
-
-    /**
-     * Sorts the object classes by hierarchy.
-     *
-     * @param objectClasses the unsorted object classes
-     * @return the sorted object classes
-     */
-    private List<MutableObjectClass> getSortedObjectClasses( List<MutableObjectClass> objectClasses )
-    {
-        // clone the unsorted list
-        List<MutableObjectClass> unsortedObjectClasses = new ArrayList<MutableObjectClass>( objectClasses );
-
-        // list of all existing names
-        Set<String> objectClassNames = new HashSet<String>();
-        for ( ObjectClass oc : unsortedObjectClasses )
-        {
-            for ( String name : oc.getNames() )
-            {
-                objectClassNames.add( Strings.toLowerCase( name ) );
-            }
-        }
-
-        // sort object classes
-        List<MutableObjectClass> sortedObjectClasses = new ArrayList<MutableObjectClass>();
-        Set<String> movedObjectClasses = new HashSet<String>();
-        boolean moved = true;
-        while ( !unsortedObjectClasses.isEmpty() && moved )
-        {
-            moved = false;
-            Iterator<MutableObjectClass> unsortedIterator = unsortedObjectClasses.iterator();
-            while ( unsortedIterator.hasNext() )
-            {
-                MutableObjectClass oc = unsortedIterator.next();
-                for ( String superName : oc.getSuperiorOids() )
-                {
-                    if ( !objectClassNames.contains( Strings.toLowerCase( superName ) )
-                        || movedObjectClasses.contains( Strings.toLowerCase( superName ) ) )
-                    {
-                        unsortedIterator.remove();
-                        sortedObjectClasses.add( oc );
-                        for ( String name : oc.getNames() )
-                        {
-                            movedObjectClasses.add( Strings.toLowerCase( name ) );
-                        }
-                        moved = true;
-                        break;
-                    }
-                }
-            }
-        }
-
-        // add the rest
-        for ( MutableObjectClass oc : unsortedObjectClasses )
-        {
-            sortedObjectClasses.add( oc );
-        }
-
-        return sortedObjectClasses;
     }
 
 

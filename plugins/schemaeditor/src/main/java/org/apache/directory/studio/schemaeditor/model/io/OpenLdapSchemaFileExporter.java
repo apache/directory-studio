@@ -23,6 +23,7 @@ package org.apache.directory.studio.schemaeditor.model.io;
 import org.apache.directory.api.ldap.model.schema.AttributeType;
 import org.apache.directory.api.ldap.model.schema.ObjectClass;
 import org.apache.directory.api.ldap.model.schema.SchemaObjectRenderer;
+import org.apache.directory.api.ldap.model.schema.SchemaObjectSorter;
 import org.apache.directory.studio.schemaeditor.model.Schema;
 
 
@@ -46,13 +47,13 @@ public class OpenLdapSchemaFileExporter
     {
         StringBuffer sb = new StringBuffer();
 
-        for ( AttributeType at : schema.getAttributeTypes() )
+        for ( AttributeType at : SchemaObjectSorter.hierarchicalOrdered( schema.getAttributeTypes() ) )
         {
             sb.append( toSourceCode( at ) );
             sb.append( "\n" ); //$NON-NLS-1$
         }
 
-        for ( ObjectClass oc : schema.getObjectClasses() )
+        for ( ObjectClass oc : SchemaObjectSorter.sortObjectClasses( schema.getObjectClasses() ) )
         {
             sb.append( toSourceCode( oc ) );
             sb.append( "\n" ); //$NON-NLS-1$

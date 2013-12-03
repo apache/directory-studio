@@ -1254,7 +1254,7 @@ public class SchemaViewContentProvider implements IStructuredContentProvider, IT
             attributeTypeAddedHierarchicalPresentation( at );
         }
 
-        for ( MutableObjectClass oc : schema.getObjectClasses() )
+        for ( ObjectClass oc : schema.getObjectClasses() )
         {
             objectClassAddedHierarchicalPresentation( oc );
         }
@@ -1348,7 +1348,7 @@ public class SchemaViewContentProvider implements IStructuredContentProvider, IT
             Folder ocFolder = new Folder( FolderType.OBJECT_CLASS, schemaWrapper );
             schemaWrapper.addChild( ocFolder );
 
-            for ( MutableObjectClass objectClass : schema.getObjectClasses() )
+            for ( ObjectClass objectClass : schema.getObjectClasses() )
             {
                 ObjectClassWrapper ocw = new ObjectClassWrapper( objectClass, ocFolder );
                 ocw.getParent().addChild( ocw );
@@ -1364,7 +1364,7 @@ public class SchemaViewContentProvider implements IStructuredContentProvider, IT
                 elementsToWrappersMap.put( attributeType, atw );
             }
 
-            for ( MutableObjectClass objectClass : schema.getObjectClasses() )
+            for ( ObjectClass objectClass : schema.getObjectClasses() )
             {
                 ObjectClassWrapper ocw = new ObjectClassWrapper( objectClass, schemaWrapper );
                 ocw.getParent().addChild( ocw );

@@ -28,7 +28,6 @@ import java.util.List;
 import org.apache.directory.api.ldap.model.schema.AttributeType;
 import org.apache.directory.api.ldap.model.schema.LdapSyntax;
 import org.apache.directory.api.ldap.model.schema.MatchingRule;
-import org.apache.directory.api.ldap.model.schema.MutableObjectClass;
 import org.apache.directory.api.ldap.model.schema.ObjectClass;
 import org.apache.directory.api.ldap.model.schema.ObjectClassTypeEnum;
 import org.apache.directory.api.ldap.model.schema.UsageEnum;
@@ -205,7 +204,7 @@ public class XMLSchemaFileExporter
             }
 
             // Object Classes
-            List<MutableObjectClass> ocs = schema.getObjectClasses();
+            List<ObjectClass> ocs = schema.getObjectClasses();
             if ( ( ocs != null ) && ( ocs.size() >= 1 ) )
             {
                 Element objectClassesNode = element.addElement( OBJECT_CLASSES_TAG );

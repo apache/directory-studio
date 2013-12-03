@@ -29,7 +29,6 @@ import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.schema.AttributeType;
 import org.apache.directory.api.ldap.model.schema.LdapSyntax;
 import org.apache.directory.api.ldap.model.schema.MatchingRule;
-import org.apache.directory.api.ldap.model.schema.MutableObjectClass;
 import org.apache.directory.api.ldap.model.schema.ObjectClass;
 import org.apache.directory.api.ldap.model.schema.registries.AbstractSchemaLoader;
 import org.apache.directory.api.ldap.model.schema.registries.Schema;
@@ -246,7 +245,7 @@ public class SchemaEditorSchemaLoader extends AbstractSchemaLoader
 
                 if ( schemaHandlerSchema != null )
                 {
-                    List<MutableObjectClass> objectClasses = schemaHandlerSchema.getObjectClasses();
+                    List<ObjectClass> objectClasses = schemaHandlerSchema.getObjectClasses();
 
                     for ( ObjectClass objectClass : objectClasses )
                     {

@@ -30,7 +30,6 @@ import org.apache.commons.collections.map.MultiValueMap;
 import org.apache.directory.api.ldap.model.schema.AttributeType;
 import org.apache.directory.api.ldap.model.schema.LdapSyntax;
 import org.apache.directory.api.ldap.model.schema.MatchingRule;
-import org.apache.directory.api.ldap.model.schema.MutableObjectClass;
 import org.apache.directory.api.ldap.model.schema.ObjectClass;
 import org.apache.directory.api.ldap.model.schema.SchemaObject;
 import org.apache.directory.studio.schemaeditor.controller.SchemaHandler;
@@ -98,7 +97,7 @@ public class DependenciesComputer
                     }
                 }
 
-                List<MutableObjectClass> objectClasses = schema.getObjectClasses();
+                List<ObjectClass> objectClasses = schema.getObjectClasses();
                 if ( objectClasses != null )
                 {
                     for ( ObjectClass objectClass : objectClasses )

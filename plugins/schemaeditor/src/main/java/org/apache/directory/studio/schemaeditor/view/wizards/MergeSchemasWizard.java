@@ -153,7 +153,7 @@ public class MergeSchemasWizard extends Wizard implements IImportWizard
             {
                 ObjectClassFolder ocf = ( ObjectClassFolder ) sourceObject;
                 Schema targetSchema = getTargetSchema( ocf.schema.getProject(), targetProject, targetSchemas );
-                List<MutableObjectClass> sourceObjectClasses = ocf.schema.getObjectClasses();
+                List<ObjectClass> sourceObjectClasses = ocf.schema.getObjectClasses();
                 for ( ObjectClass sourceObjectClass : sourceObjectClasses )
                 {
                     mergeObjectClass( sourceObjectClass, targetProject, targetSchema, processedObjects, errorMessages,
@@ -223,7 +223,7 @@ public class MergeSchemasWizard extends Wizard implements IImportWizard
                 replaceUnknownSyntax, mergeDependencies, pullUpAttributes );
         }
 
-        List<MutableObjectClass> sourceObjectClasses = sourceSchema.getObjectClasses();
+        List<ObjectClass> sourceObjectClasses = sourceSchema.getObjectClasses();
         for ( ObjectClass sourceObjectClass : sourceObjectClasses )
         {
             mergeObjectClass( sourceObjectClass, targetProject, targetSchema, processedObjects, errorMessages,

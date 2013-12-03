@@ -45,7 +45,7 @@ public class Schema extends DefaultSchema
     private List<AttributeType> attributeTypes = new ArrayList<AttributeType>();
 
     /** The ObjectClass List */
-    private List<MutableObjectClass> objectClasses = new ArrayList<MutableObjectClass>();
+    private List<ObjectClass> objectClasses = new ArrayList<ObjectClass>();
 
     /** The MatchingRule List */
     private List<MatchingRule> matchingRules = new ArrayList<MatchingRule>();
@@ -258,7 +258,7 @@ public class Schema extends DefaultSchema
      * @return
      *      all the ObjectClass objects contained in the Schema
      */
-    public List<MutableObjectClass> getObjectClasses()
+    public List<ObjectClass> getObjectClasses()
     {
         return objectClasses;
     }
