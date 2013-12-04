@@ -131,7 +131,8 @@
  org.eclipse.ui.editors,
  org.eclipse.ui.forms,
  org.eclipse.ui.ide,
- org.slf4j.api;bundle-version="${org.slf4j.version}"</Require-Bundle>
+ org.slf4j.api;bundle-version="${org.slf4j.version}",
+ net.sf.ehcache.core;bundle-version="${net.sf.ehcache.version}"</Require-Bundle>
             <Export-Package>org.apache.directory.studio.apacheds.configuration.v2*</Export-Package>
             <Import-Package>!*</Import-Package>
           </instructions>
