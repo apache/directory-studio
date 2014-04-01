@@ -299,7 +299,7 @@ public class ImportDsmlRunnable implements StudioConnectionBulkRunnableWithProgr
                 processDelRequest( ( DeleteRequest ) request, batchResponseDsml, monitor );
                 break;
             case EXTENDED_REQUEST:
-                processExtendedRequest( ( ExtendedRequest<?> ) request, batchResponseDsml, monitor );
+                processExtendedRequest( ( ExtendedRequest ) request, batchResponseDsml, monitor );
                 break;
             case MODIFY_REQUEST:
                 processModifyRequest( ( ModifyRequest ) request, batchResponseDsml, monitor );
@@ -465,7 +465,7 @@ public class ImportDsmlRunnable implements StudioConnectionBulkRunnableWithProgr
      * @param batchResponseDsml
      *      the DSML batch response (can be <code>null</code>)
      */
-    private void processExtendedRequest( ExtendedRequest<?> request, BatchResponseDsml batchResponseDsml,
+    private void processExtendedRequest( ExtendedRequest request, BatchResponseDsml batchResponseDsml,
         StudioProgressMonitor monitor )
     {
         // We can not support extended requests at the moment,
