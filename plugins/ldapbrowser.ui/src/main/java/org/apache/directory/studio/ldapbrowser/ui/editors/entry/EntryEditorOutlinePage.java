@@ -28,6 +28,7 @@ import java.util.List;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonConstants;
 import org.apache.directory.studio.ldapbrowser.common.widgets.browser.BrowserLabelProvider;
+import org.apache.directory.studio.ldapbrowser.common.widgets.entryeditor.EntryEditorWidget;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
@@ -131,8 +132,7 @@ public class EntryEditorOutlinePage extends ContentOutlinePage
             {
                 if ( !event.getSelection().isEmpty() && event.getSelection() instanceof IStructuredSelection )
                 {
-                    Object o = entryEditor.getMainWidget().getViewer().getInput();
-                    if ( o != null && o instanceof IEntry )
+                    if ( getEntryEditorWidgetTreeViewerInput() != null )
                     {
                         List<Object> selectionList = new ArrayList<Object>();
 
@@ -164,7 +164,11 @@ public class EntryEditorOutlinePage extends ContentOutlinePage
                         }
 
                         IStructuredSelection selection = new StructuredSelection( selectionList );
-                        entryEditor.getMainWidget().getViewer().setSelection( selection );
+                        TreeViewer entryEditorWidgetTreeViewer = getEntryEditorWidgetTreeViewer();
+                        if ( entryEditorWidgetTreeViewer != null )
+                        {
+                            entryEditorWidgetTreeViewer.setSelection( selection );
+                        }
                     }
                 }
             }
@@ -204,7 +208,11 @@ public class EntryEditorOutlinePage extends ContentOutlinePage
         final TreeViewer treeViewer = getTreeViewer();
         if ( treeViewer != null && treeViewer.getTree() != null && !treeViewer.getTree().isDisposed() )
         {
-            treeViewer.setFilters( entryEditor.getMainWidget().getViewer().getFilters() );
+            TreeViewer entryEditorWidgetTreeViewer = getEntryEditorWidgetTreeViewer();
+            if ( entryEditorWidgetTreeViewer != null )
+            {
+                treeViewer.setFilters( entryEditorWidgetTreeViewer.getFilters() );
+            }
             treeViewer.refresh( element );
         }
     }
@@ -217,9 +225,9 @@ public class EntryEditorOutlinePage extends ContentOutlinePage
     {
         TreeViewer treeViewer = getTreeViewer();
 
-        if ( hasAnOutline() )
+        if ( treeViewer != null && composite != null )
         {
-            if ( treeViewer != null )
+            if ( hasAnOutline() )
             {
                 Control treeViewerControl = treeViewer.getControl();
 
@@ -227,13 +235,10 @@ public class EntryEditorOutlinePage extends ContentOutlinePage
                 {
                     treeViewerControl.setParent( composite );
                 }
-            }
 
-            noOutlineComposite.setParent( fakeComposite );
-        }
-        else
-        {
-            if ( treeViewer != null )
+                noOutlineComposite.setParent( fakeComposite );
+            }
+            else
             {
                 Control treeViewerControl = treeViewer.getControl();
 
@@ -241,38 +246,38 @@ public class EntryEditorOutlinePage extends ContentOutlinePage
                 {
                     treeViewerControl.setParent( fakeComposite );
                 }
+
+                noOutlineComposite.setParent( composite );
             }
 
-            noOutlineComposite.setParent( composite );
-        }
+            composite.layout();
 
-        composite.layout();
-
-        if ( treeViewer != null && treeViewer.getTree() != null && !treeViewer.getTree().isDisposed() )
-        {
-            treeViewer.setFilters( entryEditor.getMainWidget().getViewer().getFilters() );
-            if ( !treeViewer.getTree().isEnabled() )
+            if ( treeViewer.getTree() != null && !treeViewer.getTree().isDisposed() )
             {
-                treeViewer.getTree().setEnabled( true );
-            }
+                TreeViewer entryEditorWidgetTreeViewer = getEntryEditorWidgetTreeViewer();
+                if ( entryEditorWidgetTreeViewer != null )
+                {
+                    treeViewer.setFilters( entryEditorWidgetTreeViewer.getFilters() );
+                }
+                if ( !treeViewer.getTree().isEnabled() )
+                {
+                    treeViewer.getTree().setEnabled( true );
+                }
 
-            if ( entryEditor != null )
-            {
-                Object o = entryEditor.getMainWidget().getViewer().getInput();
-
-                if ( o == null )
+                IEntry entry = getEntryEditorWidgetTreeViewerInput();
+                if ( entry == null )
                 {
                     treeViewer.setInput( null );
                     treeViewer.getTree().setEnabled( false );
                 }
-                else if ( o instanceof IEntry )
+                else
                 {
-                    treeViewer.setInput( o );
+                    treeViewer.setInput( entry );
                     treeViewer.expandToLevel( 2 );
                 }
-            }
 
-            treeViewer.refresh();
+                treeViewer.refresh();
+            }
         }
     }
 
@@ -525,10 +530,44 @@ public class EntryEditorOutlinePage extends ContentOutlinePage
      * @return <code>true</code> if the entry editor has an outline,
      *         <code>false</code> if not.
      */
-    public boolean hasAnOutline()
+    private boolean hasAnOutline()
     {
-        Object o = entryEditor.getMainWidget().getViewer().getInput();
+        return getEntryEditorWidgetTreeViewerInput() != null;
+    }
 
-        return ( ( o != null ) && ( o instanceof IEntry ) );
+
+    /**
+     * Gets the entryEditor.getMainWidget().getViewer() or null.
+     */
+    private TreeViewer getEntryEditorWidgetTreeViewer()
+    {
+        if ( entryEditor != null )
+        {
+            EntryEditorWidget mainWidget = entryEditor.getMainWidget();
+            if ( mainWidget != null )
+            {
+                TreeViewer viewer = mainWidget.getViewer();
+                return viewer;
+            }
+        }
+        return null;
+    }
+
+
+    /**
+     * Gets the entryEditor.getMainWidget().getViewer().getInput() if input is an IEntry or null.
+     */
+    private IEntry getEntryEditorWidgetTreeViewerInput()
+    {
+        TreeViewer viewer = getEntryEditorWidgetTreeViewer();
+        if ( viewer != null )
+        {
+            Object o = viewer.getInput();
+            if ( ( o != null ) && ( o instanceof IEntry ) )
+            {
+                return ( IEntry ) o;
+            }
+        }
+        return null;
     }
 }
