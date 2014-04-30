@@ -42,7 +42,7 @@ public class ExportExcelToWizardPage extends ExportBaseToPage
 
     /** The extensions used by Excel files */
     private static final String[] EXTENSIONS = new String[]
-        { "*.xls", "*.*" }; //$NON-NLS-1$ //$NON-NLS-2$
+        { "*.xls", "*" }; //$NON-NLS-1$ //$NON-NLS-2$
 
 
     /**

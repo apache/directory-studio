@@ -44,7 +44,7 @@ public class ExportDsmlToWizardPage extends ExportBaseToPage
 
     /** The extensions used by DSML files*/
     private static final String[] EXTENSIONS = new String[]
-        { "*.xml", "*.*" }; //$NON-NLS-1$ //$NON-NLS-2$
+        { "*.xml", "*" }; //$NON-NLS-1$ //$NON-NLS-2$
 
 
     /**

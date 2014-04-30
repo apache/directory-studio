@@ -56,7 +56,11 @@ public class ImportLdifMainWizardPage extends WizardPage
 
     /** The valid extension. */
     private static final String[] EXTENSIONS = new String[]
-        { "*.ldif", "*.*" }; //$NON-NLS-1$ //$NON-NLS-2$
+        { "*.ldif", "*" }; //$NON-NLS-1$ //$NON-NLS-2$
+
+    /** The valid log extension. */
+    private static final String[] LOG_EXTENSIONS = new String[]
+        { "*.ldif.log", "*" }; //$NON-NLS-1$ //$NON-NLS-2$
 
     /** The wizard. */
     private ImportLdifWizard wizard;
@@ -283,7 +287,7 @@ public class ImportLdifMainWizardPage extends WizardPage
 
         BaseWidgetUtils.createRadioIndent( loggingContainer, 1 );
         logFileBrowserWidget = new FileBrowserWidget(
-            Messages.getString( "ImportLdifMainWizardPage.SelectLogFile" ), null, FileBrowserWidget.TYPE_SAVE ); //$NON-NLS-1$
+            Messages.getString( "ImportLdifMainWizardPage.SelectLogFile" ), LOG_EXTENSIONS, FileBrowserWidget.TYPE_SAVE ); //$NON-NLS-1$
         logFileBrowserWidget.createWidget( loggingContainer );
         logFileBrowserWidget.addWidgetModifyListener( new WidgetModifyListener()
         {

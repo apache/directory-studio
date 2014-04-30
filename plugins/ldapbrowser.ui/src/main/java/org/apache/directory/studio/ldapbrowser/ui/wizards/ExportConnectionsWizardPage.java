@@ -136,7 +136,7 @@ public class ExportConnectionsWizardPage extends WizardPage
         BaseWidgetUtils.createLabel( composite, Messages.getString( "ExportConnectionsWizardPage.ToFile" ), 1 ); //$NON-NLS-1$
         fileBrowserWidget = new FileBrowserWidget(
             Messages.getString( "ExportConnectionsWizardPage.ChooseFile" ), new String[] //$NON-NLS-1$
-            { "lbc" }, FileBrowserWidget.TYPE_SAVE ); //$NON-NLS-1$
+            { "*.lbc", "*" }, FileBrowserWidget.TYPE_SAVE ); //$NON-NLS-1$
         fileBrowserWidget.createWidget( composite );
         fileBrowserWidget.addWidgetModifyListener( new WidgetModifyListener()
         {

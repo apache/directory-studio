@@ -48,9 +48,9 @@ public class ImportDsmlMainWizardPage extends WizardPage
     /** The wizard the page is attached to */
     private ImportDsmlWizard wizard;
 
-    /** The extensions used by DSML files*/
+    /** The extensions used by DSML files */
     private static final String[] EXTENSIONS = new String[]
-        { "*.xml", "*.*" }; //$NON-NLS-1$ //$NON-NLS-2$
+        { "*.xml", "*" }; //$NON-NLS-1$ //$NON-NLS-2$
 
     /** The dsml file browser widget. */
     private FileBrowserWidget dsmlFileBrowserWidget;
@@ -190,8 +190,8 @@ public class ImportDsmlMainWizardPage extends WizardPage
         } );
 
         BaseWidgetUtils.createRadioIndent( responseContainer, 1 );
-        responseFileBrowserWidget = new FileBrowserWidget( Messages
-            .getString( "ImportDsmlMainWizardPage.SelectSaveFile" ), null, FileBrowserWidget.TYPE_SAVE ); //$NON-NLS-1$
+        responseFileBrowserWidget = new FileBrowserWidget(
+            Messages.getString( "ImportDsmlMainWizardPage.SelectSaveFile" ), EXTENSIONS, FileBrowserWidget.TYPE_SAVE ); //$NON-NLS-1$
         responseFileBrowserWidget.createWidget( responseContainer );
         responseFileBrowserWidget.addWidgetModifyListener( new WidgetModifyListener()
         {

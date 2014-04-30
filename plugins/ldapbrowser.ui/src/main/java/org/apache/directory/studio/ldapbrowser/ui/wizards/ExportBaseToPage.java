@@ -127,8 +127,8 @@ public abstract class ExportBaseToPage extends WizardPage
         BaseWidgetUtils.createLabel( composite, NLS.bind(
             Messages.getString( "ExportBaseToPage.FileTypeColon" ), getFileType() ), 1 ); //$NON-NLS-1$
         fileBrowserWidget = new FileBrowserWidget( NLS.bind(
-            Messages.getString( "ExportBaseToPage.SelectFileType" ), new String[] { getFileType() } ), getExtensions(), //$NON-NLS-1$
-            FileBrowserWidget.TYPE_SAVE );
+            Messages.getString( "ExportBaseToPage.SelectFileType" ), new String[] { getFileType() } ), //$NON-NLS-1$
+            getExtensions(), FileBrowserWidget.TYPE_SAVE );
         fileBrowserWidget.createWidget( composite );
         fileBrowserWidget.addWidgetModifyListener( new WidgetModifyListener()
         {
