@@ -23,6 +23,7 @@ package org.apache.directory.studio.connection.core;
 import javax.naming.InvalidNameException;
 
 import org.apache.directory.api.ldap.model.exception.LdapInvalidDnException;
+import org.apache.directory.api.ldap.model.name.Ava;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.api.ldap.model.name.Rdn;
 
@@ -76,33 +77,20 @@ public class DnUtils
      */
     public static Rdn composeRdn( String[] rdnTypes, String[] rdnValues ) throws InvalidNameException
     {
-        StringBuffer sb = new StringBuffer();
-        for ( int i = 0; i < rdnTypes.length; i++ )
-        {
-            if ( i > 0 )
-            {
-                sb.append( '+' );
-            }
-
-            sb.append( rdnTypes[i] );
-            sb.append( '=' );
-            sb.append( Rdn.escapeValue( rdnValues[i] ) );
-        }
-
-        String s = sb.toString();
         try
         {
-            if ( Dn.isValid( s ) )
+            Ava[] avas = new Ava[rdnTypes.length];
+            for ( int i = 0; i < rdnTypes.length; i++ )
             {
-                Rdn rdn = new Rdn( sb.toString() );
-                return rdn;
+                avas[i] = new Ava( rdnTypes[i], rdnValues[i] );
             }
+            Rdn rdn = new Rdn( avas );
+            return rdn;
         }
-        catch ( Exception e )
+        catch ( LdapInvalidDnException e1 )
         {
+            throw new InvalidNameException( Messages.error__invalid_rdn );
         }
-
-        throw new InvalidNameException( Messages.error__invalid_rdn );
     }
 
 }
