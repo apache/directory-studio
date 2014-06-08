@@ -353,7 +353,7 @@ public class ServersTableViewer extends TreeViewer
     {
         if ( column == comparator.column )
         {
-            comparator.reverseOrder();
+            comparator.reverseOrdering();
         }
         else
         {
@@ -399,7 +399,7 @@ public class ServersTableViewer extends TreeViewer
         /**
          * Reverses the order.
          */
-        public void reverseOrder()
+        public void reverseOrdering()
         {
             order = order * -1;
         }
