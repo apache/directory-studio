@@ -50,6 +50,8 @@ import org.apache.directory.api.ldap.model.entry.DefaultModification;
 import org.apache.directory.api.ldap.model.entry.Modification;
 import org.apache.directory.api.ldap.model.entry.ModificationOperation;
 import org.apache.directory.api.ldap.model.exception.LdapInvalidAttributeValueException;
+import org.apache.directory.api.ldap.model.filter.ExprNode;
+import org.apache.directory.api.ldap.model.filter.FilterParser;
 import org.apache.directory.api.ldap.model.message.AddRequest;
 import org.apache.directory.api.ldap.model.message.AddRequestImpl;
 import org.apache.directory.api.ldap.model.message.AddResponse;
@@ -527,7 +529,8 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
                     // Preparing the search request
                     SearchRequest request = new SearchRequestImpl();
                     request.setBase( new Dn( searchBase ) );
-                    request.setFilter( filter );
+                    ExprNode node = FilterParser.parse( filter, true );
+                    request.setFilter( node );
                     request.setScope( convertSearchScope( searchControls ) );
                     if ( searchControls.getReturningAttributes() != null )
                     {
