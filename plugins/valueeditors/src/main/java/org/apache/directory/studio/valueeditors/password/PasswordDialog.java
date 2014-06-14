@@ -135,6 +135,7 @@ public class PasswordDialog extends Dialog
     private TabItem newPasswordTab;
     private Composite newPasswordComposite;
     private Text newPasswordText;
+    private Text confirmNewPasswordText;
     private ComboViewer newPasswordHashMethodComboViewer;
     private Text newPasswordPreviewText;
     private Text newPasswordPreviewValueHexText;
@@ -425,6 +426,11 @@ public class PasswordDialog extends Dialog
         BaseWidgetUtils.createLabel( newPasswordComposite, Messages.getString( "PasswordDialog.EnterNewPassword" ), 1 ); //$NON-NLS-1$
         newPasswordText = BaseWidgetUtils.createText( newPasswordComposite, "", 1 ); //$NON-NLS-1$
 
+        // Confirm new password text
+        BaseWidgetUtils
+            .createLabel( newPasswordComposite, Messages.getString( "PasswordDialog.ConfirmNewPassword" ), 1 ); //$NON-NLS-1$
+        confirmNewPasswordText = BaseWidgetUtils.createText( newPasswordComposite, "", 1 ); //$NON-NLS-1$
+
         // New password hashing method combo
         BaseWidgetUtils.createLabel( newPasswordComposite, Messages.getString( "PasswordDialog.SelectHashMethod" ), 1 ); //$NON-NLS-1$
         newPasswordHashMethodComboViewer = new ComboViewer( newPasswordComposite );
@@ -530,6 +536,14 @@ public class PasswordDialog extends Dialog
         }
 
         newPasswordText.addModifyListener( new ModifyListener()
+        {
+            public void modifyText( ModifyEvent e )
+            {
+                updateNewPasswordGroup();
+            }
+        } );
+
+        confirmNewPasswordText.addModifyListener( new ModifyListener()
         {
             public void modifyText( ModifyEvent e )
             {
@@ -686,7 +700,8 @@ public class PasswordDialog extends Dialog
     {
         // set new password to the UI widgets
         newPassword = new Password( getSelectedNewPasswordHashMethod(), newPasswordText.getText() );
-        if ( !"".equals( newPasswordText.getText() ) ) //$NON-NLS-1$
+        if ( !"".equals( newPasswordText.getText() ) //$NON-NLS-1$
+            && newPasswordText.getText().equals( confirmNewPasswordText.getText() ) )
         {
             newPasswordPreviewValueHexText
                 .setText( Utils.getNonNullString( newPassword.getHashedPasswordAsHexString() ) );
@@ -710,6 +725,7 @@ public class PasswordDialog extends Dialog
         if ( showNewPasswordDetailsButton.getSelection() )
         {
             newPasswordText.setEchoChar( '\0' );
+            confirmNewPasswordText.setEchoChar( '\0' );
             newPasswordPreviewText.setEchoChar( '\0' );
             newPasswordPreviewValueHexText.setEchoChar( '\0' );
             newPasswordPreviewSaltHexText.setEchoChar( '\0' );
@@ -717,6 +733,7 @@ public class PasswordDialog extends Dialog
         else
         {
             newPasswordText.setEchoChar( '\u2022' );
+            confirmNewPasswordText.setEchoChar( '\u2022' );
             newPasswordPreviewText.setEchoChar( newPasswordPreviewText.getText()
                 .equals( Utils.getNonNullString( null ) ) ? '\0' : '\u2022' );
             newPasswordPreviewValueHexText.setEchoChar( newPasswordPreviewValueHexText.getText().equals(
