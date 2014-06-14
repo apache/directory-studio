@@ -139,14 +139,6 @@
           </execution>
         </executions>
       </plugin>
-      <!-- No tests to run -->
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-surefire-plugin</artifactId>
-        <configuration>
-          <skip>true</skip>
-        </configuration>
-      </plugin>
     </plugins>
   </build>
 
@@ -283,6 +275,13 @@
       <groupId>org.eclipse.swt.gtk.linux</groupId>
       <artifactId>x86</artifactId>
       <scope>provided</scope>
+    </dependency>
+    
+    <!-- JUnit for test only -->
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <scope>test</scope>
     </dependency>
   </dependencies>
 
