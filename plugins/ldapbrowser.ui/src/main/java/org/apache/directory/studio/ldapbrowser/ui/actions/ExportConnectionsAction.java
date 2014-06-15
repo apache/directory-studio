@@ -40,7 +40,7 @@ import org.eclipse.ui.PlatformUI;
 public class ExportConnectionsAction extends BrowserAction
 {
     /**
-     * Creates a new instance of NewConnectionFolderAction.
+     * Creates a new instance of ExportConnectionsAction.
      */
     public ExportConnectionsAction()
     {
