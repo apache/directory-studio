@@ -27,6 +27,7 @@ import org.apache.directory.studio.ldapbrowser.ui.actions.ExportConnectionsActio
 import org.apache.directory.studio.ldapbrowser.ui.actions.ImportConnectionsAction;
 import org.apache.directory.studio.ldapbrowser.ui.actions.ImportExportAction;
 import org.apache.directory.studio.ldapbrowser.ui.actions.OpenSchemaBrowserAction;
+import org.apache.directory.studio.ldapbrowser.ui.actions.ReloadSchemaAction;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.MenuManager;
@@ -79,6 +80,9 @@ public class ConnectionViewActionGroup extends ConnectionActionGroup
     /** The Constant openSchemaBrowserAction. */
     private static final String openSchemaBrowserAction = "openSchemaBrowserAction"; //$NON-NLS-1$
 
+    /** The Constant reloadSchemaAction. */
+    private static final String reloadSchemaAction = "reloadSchemaAction"; //$NON-NLS-1$
+
 
     /**
      * Creates a new instance of ConnectionViewActionGroup and creates
@@ -114,6 +118,8 @@ public class ConnectionViewActionGroup extends ConnectionActionGroup
 
         connectionActionMap.put( openSchemaBrowserAction, new ConnectionViewActionProxy( viewer, this,
             new OpenSchemaBrowserAction() ) );
+        connectionActionMap.put( reloadSchemaAction, new ConnectionViewActionProxy( viewer, this,
+            new ReloadSchemaAction() ) );
     }
 
 
@@ -155,6 +161,7 @@ public class ConnectionViewActionGroup extends ConnectionActionGroup
         menuManager.add( new Separator() );
 
         menuManager.add( ( IAction ) connectionActionMap.get( openSchemaBrowserAction ) );
+        menuManager.add( ( IAction ) connectionActionMap.get( reloadSchemaAction ) );
         menuManager.add( new Separator() );
 
         // copy/paste/...
