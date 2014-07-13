@@ -80,6 +80,14 @@
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.apache.directory.api</groupId>
+                  <artifactId>api-ldap-extras-codec-api</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.apache.directory.api</groupId>
+                  <artifactId>api-ldap-extras-codec</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.apache.directory.api</groupId>
                   <artifactId>api-ldap-extras-trigger</artifactId>
                 </artifactItem>
                 <artifactItem>
