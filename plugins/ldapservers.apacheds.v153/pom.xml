@@ -165,7 +165,7 @@
               <goal>copy</goal>
             </goals>
             <configuration>
-              <outputDirectory>resources/libs</outputDirectory>
+              <outputDirectory>target/classes/resources/libs</outputDirectory>
               <artifactItems>
                 <artifactItem>
                   <groupId>antlr</groupId>

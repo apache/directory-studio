@@ -167,7 +167,7 @@
               <goal>copy</goal>
             </goals>
             <configuration>
-              <outputDirectory>resources/libs</outputDirectory>
+              <outputDirectory>target/classes/resources/libs</outputDirectory>
               <artifactItems>
                 <artifactItem>
                   <groupId>org.apache.directory.server</groupId>
