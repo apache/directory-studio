@@ -27,9 +27,9 @@
     <relativePath>../</relativePath>
   </parent>
 
-  <artifactId>common.core</artifactId>
+  <artifactId>org.apache.directory.studio.common.core</artifactId>
   <name>Apache Directory Studio Common Core</name>
-  <packaging>jar</packaging>
+  <packaging>eclipse-plugin</packaging>
 
   <description />
 
