@@ -37,9 +37,9 @@
 <!--     <module>apacheds.configuration</module> -->
 <!--     <module>apacheds.configuration.v2</module> -->
     <module>common.core</module>
-<!--     <module>common.ui</module> -->
-<!--     <module>connection.core</module> -->
-<!--     <module>connection.ui</module> -->
+    <module>common.ui</module>
+    <module>connection.core</module>
+    <module>connection.ui</module>
 <!--     <module>ldapbrowser.core</module> -->
 <!--     <module>ldapbrowser.common</module> -->
 <!--     <module>ldapbrowser.ui</module> -->
@@ -51,7 +51,7 @@
 <!--     <module>ldapservers.apacheds.v157</module> -->
 <!--     <module>ldapservers.apacheds.v200</module> -->
 <!--     <module>ldifeditor</module> -->
-<!--     <module>ldifparser</module> -->
+    <module>ldifparser</module>
 <!--     <module>rcp</module> -->
 <!--     <module>schemaeditor</module> -->
 <!--     <module>valueeditors</module> -->

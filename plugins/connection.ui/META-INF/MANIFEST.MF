@@ -1,0 +1,35 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Apache Directory Studio Connection UI
+Bundle-Vendor: The Apache Software Foundation
+Bundle-Version: 2.0.0.qualifier
+Bundle-SymbolicName: org.apache.directory.studio.connection.ui;singleton:=true
+Bundle-License: http://www.apache.org/licenses/LICENSE-2.0.txt
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-Localization: plugin
+Bundle-Activator: org.apache.directory.studio.connection.ui.ConnectionUIPlugin
+Eclipse-LazyStart: true
+Export-Package: org.apache.directory.studio.connection.ui,
+ org.apache.directory.studio.connection.ui.actions,
+ org.apache.directory.studio.connection.ui.dialogs,
+ org.apache.directory.studio.connection.ui.dnd,
+ org.apache.directory.studio.connection.ui.preferences,
+ org.apache.directory.studio.connection.ui.properties,
+ org.apache.directory.studio.connection.ui.widgets,
+ org.apache.directory.studio.connection.ui.wizards,
+ org.apache.directory.studio.utils
+Require-Bundle: org.eclipse.core.runtime,
+ org.eclipse.ui,
+ org.eclipse.ui.forms,
+ org.eclipse.ui.workbench.texteditor,
+ org.apache.directory.studio.common.core,
+ org.apache.directory.studio.common.ui,
+ org.apache.directory.studio.connection.core,
+ org.apache.directory.api.ldap.model;bundle-version="1.0.0.M24
+Import-Package: org.apache.commons.lang,
+ org.apache.commons.lang.time,
+ org.apache.commons.io,
+ org.apache.commons.codec.binary,
+ org.apache.commons.codec.digest,
+ org.bouncycastle.asn1,
+ org.bouncycastle.x509.extension

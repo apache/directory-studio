@@ -1,0 +1,33 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Apache Directory Studio Connection Core
+Bundle-Vendor: The Apache Software Foundation
+Bundle-Version: 2.0.0.qualifier
+Bundle-SymbolicName: org.apache.directory.studio.connection.core;singleton:=true
+Bundle-License: http://www.apache.org/licenses/LICENSE-2.0.txt
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-Localization: plugin
+Bundle-Activator: org.apache.directory.studio.connection.core.ConnectionCorePlugin
+Eclipse-LazyStart: true
+Export-Package: org.apache.directory.studio.connection.core,
+ org.apache.directory.studio.connection.core.event,
+ org.apache.directory.studio.connection.core.io,
+ org.apache.directory.studio.connection.core.io.api,
+ org.apache.directory.studio.connection.core.io.jndi,
+ org.apache.directory.studio.connection.core.jobs
+Require-Bundle: org.eclipse.core.runtime,
+ org.eclipse.ui,
+ org.apache.directory.studio.common.core,
+ org.apache.directory.studio.ldifparser,
+ org.apache.directory.api.asn1.api;bundle-version="1.0.0.M24",
+ org.apache.directory.api.ldap.client.api;bundle-version="1.0.0.M24",
+ org.apache.directory.api.ldap.codec.core;bundle-version="1.0.0.M24",
+ org.apache.directory.api.ldap.model;bundle-version="1.0.0.M24",
+ org.apache.directory.api.ldap.net.mina;bundle-version="1.0.0.M24",
+ org.apache.directory.api.util;bundle-version="1.0.0.M24"
+Import-Package: org.apache.commons.lang,
+ org.apache.commons.io,
+ org.apache.commons.codec.digest,
+ org.apache.http.conn.ssl,
+ org.dom4j,
+ org.dom4j.io

@@ -3,17 +3,41 @@
 <locations>
 
 <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
+
+<unit id="antlr" version="${org.antlr.version}"/>
+<unit id="bouncycastle.bcprov-jdk15" version="${org.bouncycastle.bcprov.jdk15.version}"/>
+<unit id="dom4j" version="${org.dom4j.version}"/>
+
+<unit id="org.apache.commons.collections" version="${org.apache.commons.collections.version}"/>
+<unit id="org.apache.commons.io" version="${org.apache.commons.io.version}"/>
+<unit id="org.apache.commons.lang" version="${org.apache.commons.lang.version}"/>
+<unit id="org.apache.commons.pool" version="${org.apache.commons.pool.version}"/>
+
+<unit id="org.apache.directory.api.asn1.api" version="${org.apache.directory.api.validversion}"/>
+<unit id="org.apache.directory.api.asn1.ber" version="${org.apache.directory.api.validversion}"/>
+<unit id="org.apache.directory.api.i18n" version="${org.apache.directory.api.validversion}"/>
+<unit id="org.apache.directory.api.ldap.client.api" version="${org.apache.directory.api.validversion}"/>
+<unit id="org.apache.directory.api.ldap.codec.core" version="${org.apache.directory.api.validversion}"/>
+<unit id="org.apache.directory.api.ldap.extras.aci" version="${org.apache.directory.api.validversion}"/>
+<unit id="org.apache.directory.api.ldap.extras.codec" version="${org.apache.directory.api.validversion}"/>
+<unit id="org.apache.directory.api.ldap.extras.codec.api" version="${org.apache.directory.api.validversion}"/>
+<unit id="org.apache.directory.api.ldap.model" version="${org.apache.directory.api.validversion}"/>
+<unit id="org.apache.directory.api.ldap.net.mina" version="${org.apache.directory.api.validversion}"/>
+<unit id="org.apache.directory.api.ldap.schema" version="${org.apache.directory.api.validversion}"/>
+<unit id="org.apache.directory.api.util" version="${org.apache.directory.api.validversion}"/>
+
+<unit id="org.apache.mina.core" version="${org.apache.mina.version}"/>
+
+<repository location="file://${basedir}/target/repository"/>
+</location>
+
+<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
 <unit id="org.eclipse.rcp.feature.group" version="4.4.0.v20140606-1445"/>
 <unit id="org.eclipse.platform.source.feature.group" version="4.4.0.v20140606-1558"/>
 <unit id="org.eclipse.rcp.source.feature.group" version="4.4.0.v20140606-1445"/>
 <unit id="org.eclipse.equinox.executable" version="3.6.100.v20140603-1326"/>
 <unit id="org.eclipse.platform.feature.group" version="4.4.0.v20140606-1558"/>
 <repository location="http://download.eclipse.org/eclipse/updates/4.4"/>
-</location>
-
-<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
-<unit id="org.apache.commons.lang" version="2.6.0"/>
-<repository location="file://${basedir}/target/repository"/>
 </location>
 
 </locations>
