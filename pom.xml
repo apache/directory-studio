@@ -67,25 +67,34 @@
 <!--     <com.bandlem.eclipse.fullscreen.version>1.0.4.201108061054</com.bandlem.eclipse.fullscreen.version> -->
 <!--     <net.sf.ehcache.version>2.4.4</net.sf.ehcache.version> -->
     <org.antlr.version>2.7.7</org.antlr.version>
+    <org.antlr.bundleversion>2.7.7</org.antlr.bundleversion>
     <org.apache.commons.codec.version>1.8</org.apache.commons.codec.version>
+    <org.apache.commons.codec.bundleversion>1.8.0</org.apache.commons.codec.bundleversion>
     <org.apache.commons.collections.version>3.2.1</org.apache.commons.collections.version>
+    <org.apache.commons.collections.bundleversion>3.2.1</org.apache.commons.collections.bundleversion>
     <org.apache.commons.io.version>2.4</org.apache.commons.io.version>
+    <org.apache.commons.io.bundleversion>2.4.0</org.apache.commons.io.bundleversion>
     <org.apache.commons.lang.version>2.6</org.apache.commons.lang.version>
+    <org.apache.commons.lang.bundleversion>2.6.0</org.apache.commons.lang.bundleversion>
 <!--     <org.apache.commons.logging.version>1.1.3</org.apache.commons.logging.version> -->
     <org.apache.commons.pool.version>1.6</org.apache.commons.pool.version>
-    <org.apache.directory.api.validversion>1.0.0.M24</org.apache.directory.api.validversion>
+    <org.apache.commons.pool.bundleversion>1.6.0</org.apache.commons.pool.bundleversion>
     <org.apache.directory.api.version>1.0.0-M24</org.apache.directory.api.version>
+    <org.apache.directory.api.bundleversion>1.0.0.M24</org.apache.directory.api.bundleversion>
 <!--     <org.apache.directory.server.validversion>2.0.0.M17</org.apache.directory.server.validversion> -->
 <!--     <org.apache.directory.server.version>2.0.0-M17</org.apache.directory.server.version> -->
 <!--     <org.apache.httpcomponents.version>4.1.2</org.apache.httpcomponents.version> -->
 <!--     <org.apache.logging.log4j.version>1.2.17</org.apache.logging.log4j.version> -->
     <org.apache.mina.version>2.0.7</org.apache.mina.version>
+    <org.apache.mina.bundleversion>2.0.7</org.apache.mina.bundleversion>
 <!--     <org.apache.xmlgraphics.fop.version>1.0</org.apache.xmlgraphics.fop.version> -->
     <org.bouncycastle.bcprov.jdk15.version>140</org.bouncycastle.bcprov.jdk15.version>
+    <org.bouncycastle.bcprov.jdk15.bundleversion>140.0.0</org.bouncycastle.bcprov.jdk15.bundleversion>
     <org.dom4j.version>1.6.1</org.dom4j.version>
+    <org.dom4j.bundleversion>1.6.1</org.dom4j.bundleversion>
 <!--     <org.slf4j.version>1.7.7</org.slf4j.version> -->
-<!--     <org.xpp3.validversion>1.1.4.c</org.xpp3.validversion> -->
-<!--     <org.xpp3.version>1.1.4c</org.xpp3.version> -->
+    <org.xpp3.version>1.1.4c</org.xpp3.version>
+    <org.xpp3.bundleversion>1.1.0.4c</org.xpp3.bundleversion>
 <!--     <org.apache.poi.version>3.9</org.apache.poi.version> -->
 <!--     <xerces.xercesimpl.version>2.11.0</xerces.xercesimpl.version> -->
 
