@@ -25,7 +25,7 @@ Require-Bundle: org.eclipse.core.runtime,
  org.apache.directory.studio.common.core,
  org.apache.directory.studio.common.ui,
  org.apache.directory.studio.connection.core,
- org.apache.directory.api.ldap.model;bundle-version="1.0.0.M24
+ org.apache.directory.api.ldap.model;bundle-version="1.0.0.M24"
 Import-Package: org.apache.commons.lang,
  org.apache.commons.lang.time,
  org.apache.commons.io,
