@@ -1,0 +1,33 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Apache Directory Studio Schema Editor
+Bundle-Vendor: The Apache Software Foundation
+Bundle-Version: 2.0.0.qualifier
+Bundle-SymbolicName: org.apache.directory.studio.schemaeditor;singleton:=true
+Bundle-License: http://www.apache.org/licenses/LICENSE-2.0.txt
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Eclipse-LazyStart: true
+Export-Package: org.apache.directory.studio.schemaeditor
+Import-Package: org.apache.commons.collections;version="3.2.1",
+ org.apache.commons.collections.map;version="3.2.1",
+ org.apache.commons.io;version="2.4",
+ org.apache.log4j;bundle-version="1.2.17",
+ org.dom4j,
+ org.dom4j.io
+Require-Bundle: org.eclipse.core.runtime,
+ org.apache.directory.api.asn1.api;bundle-version="1.0.0.M24",
+ org.apache.directory.api.ldap.model;bundle-version="1.0.0.M24",
+ org.apache.directory.api.ldap.schema;bundle-version="1.0.0.M24",
+ org.apache.directory.api.ldap.schema.converter;bundle-version="1.0.0.M24",
+ org.apache.directory.api.util;bundle-version="1.0.0.M24",
+ org.apache.directory.studio.common.core,
+ org.apache.directory.studio.common.ui,
+ org.apache.directory.studio.connection.core,
+ org.apache.directory.studio.connection.ui,
+ org.apache.directory.studio.ldapbrowser.core,
+ org.apache.directory.studio.ldapbrowser.common,
+ org.eclipse.core.expressions,
+ org.eclipse.search,
+ org.eclipse.jface.text,
+ org.eclipse.ui,
+ org.eclipse.ui.forms
