@@ -1,0 +1,24 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Apache Directory Studio Value Editors
+Bundle-Vendor: The Apache Software Foundation
+Bundle-Version: 2.0.0.qualifier
+Bundle-SymbolicName: org.apache.directory.studio.valueeditors;singleton:=true
+Bundle-License: http://www.apache.org/licenses/LICENSE-2.0.txt
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Eclipse-LazyStart: true
+Export-Package: org.apache.directory.studio.valueeditors
+Import-Package: org.apache.commons.lang,
+ org.apache.commons.codec;bundle-version="1.8",
+ org.apache.commons.codec.binary;bundle-version="1.8",
+ org.apache.commons.io;bundle-version="2.4"
+Require-Bundle: org.eclipse.core.runtime,
+ org.apache.directory.api.ldap.model;bundle-version="1.0.0.M24",
+ org.apache.directory.api.util;bundle-version="1.0.0.M24",
+ org.apache.directory.studio.common.ui,
+ org.apache.directory.studio.connection.core,
+ org.apache.directory.studio.connection.ui,
+ org.apache.directory.studio.ldapbrowser.core,
+ org.apache.directory.studio.ldapbrowser.common,
+ org.eclipse.core.runtime,
+ org.eclipse.ui
