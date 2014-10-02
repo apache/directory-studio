@@ -32,10 +32,10 @@
   <packaging>pom</packaging>
 
   <modules>
-<!--     <module>aciitemeditor</module> -->
+<!--    <module>aciitemeditor</module> -->
 <!--     <module>apacheds-launcher</module> -->
 <!--     <module>apacheds.configuration</module> -->
-<!--     <module>apacheds.configuration.v2</module> -->
+<!--    <module>apacheds.configuration.v2</module> -->
     <module>common.core</module>
     <module>common.ui</module>
     <module>connection.core</module>
@@ -49,12 +49,12 @@
 <!--     <module>ldapservers.apacheds.v155</module> -->
 <!--     <module>ldapservers.apacheds.v156</module> -->
 <!--     <module>ldapservers.apacheds.v157</module> -->
-<!--     <module>ldapservers.apacheds.v200</module> -->
+<!--    <module>ldapservers.apacheds.v200</module> -->
     <module>ldifeditor</module>
     <module>ldifparser</module>
 <!--     <module>rcp</module> -->
 <!--     <module>schemaeditor</module> -->
-<!--     <module>valueeditors</module> -->
+     <module>valueeditors</module>
   </modules>
 
 <!--   <build> -->
