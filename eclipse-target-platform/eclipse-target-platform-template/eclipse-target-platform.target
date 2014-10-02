@@ -27,6 +27,7 @@
 <unit id="org.apache.directory.api.ldap.model" version="${org.apache.directory.api.bundleversion}"/>
 <unit id="org.apache.directory.api.ldap.net.mina" version="${org.apache.directory.api.bundleversion}"/>
 <unit id="org.apache.directory.api.ldap.schema" version="${org.apache.directory.api.bundleversion}"/>
+<unit id="org.apache.directory.api.ldap.schema.converter" version="${org.apache.directory.api.bundleversion}"/>
 <unit id="org.apache.directory.api.util" version="${org.apache.directory.api.bundleversion}"/>
 
 <unit id="org.apache.mina.core" version="${org.apache.mina.bundleversion}"/>

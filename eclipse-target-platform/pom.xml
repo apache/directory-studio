@@ -67,6 +67,7 @@
                 <artifact><id>org.apache.directory.api:api-ldap-model:${org.apache.directory.api.version}</id></artifact>
                 <artifact><id>org.apache.directory.api:api-ldap-net-mina:${org.apache.directory.api.version}</id></artifact>
                 <artifact><id>org.apache.directory.api:api-ldap-schema-data:${org.apache.directory.api.version}</id></artifact>
+                <artifact><id>org.apache.directory.api:api-ldap-schema-converter:${org.apache.directory.api.version}</id></artifact>
                 <artifact><id>org.apache.directory.api:api-util:${org.apache.directory.api.version}</id></artifact>
                 <artifact><id>org.apache.mina:mina-core:${org.apache.mina.version}</id></artifact>
               </artifacts>
