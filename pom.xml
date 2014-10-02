@@ -84,7 +84,8 @@
 <!--     <org.apache.directory.server.validversion>2.0.0.M17</org.apache.directory.server.validversion> -->
 <!--     <org.apache.directory.server.version>2.0.0-M17</org.apache.directory.server.version> -->
 <!--     <org.apache.httpcomponents.version>4.1.2</org.apache.httpcomponents.version> -->
-<!--     <org.apache.logging.log4j.version>1.2.17</org.apache.logging.log4j.version> -->
+    <log4j.log4j.version>1.2.17</log4j.log4j.version>
+    <log4j.log4j.bundleversion>1.2.17</log4j.log4j.bundleversion>
     <org.apache.mina.version>2.0.7</org.apache.mina.version>
     <org.apache.mina.bundleversion>2.0.7</org.apache.mina.bundleversion>
 <!--     <org.apache.xmlgraphics.fop.version>1.0</org.apache.xmlgraphics.fop.version> -->
