@@ -7,7 +7,9 @@ Bundle-SymbolicName: org.apache.directory.studio.valueeditors;singleton:=true
 Bundle-License: http://www.apache.org/licenses/LICENSE-2.0.txt
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Eclipse-LazyStart: true
-Export-Package: org.apache.directory.studio.valueeditors
+Export-Package: org.apache.directory.studio.valueeditors,
+ org.apache.directory.studio.valueeditors.dn,
+ org.apache.directory.studio.valueeditors.integer
 Import-Package: org.apache.commons.lang,
  org.apache.commons.codec;bundle-version="1.8",
  org.apache.commons.codec.binary;bundle-version="1.8",

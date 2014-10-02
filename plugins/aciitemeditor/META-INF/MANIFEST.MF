@@ -1,0 +1,26 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Apache Directory Studio ACI Item Editor
+Bundle-Vendor: The Apache Software Foundation
+Bundle-Version: 2.0.0.qualifier
+Bundle-SymbolicName: org.apache.directory.studio.aciitemeditor;singleton:=true
+Bundle-License: http://www.apache.org/licenses/LICENSE-2.0.txt
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Eclipse-LazyStart: true
+Export-Package: org.apache.directory.studio.aciitemeditor
+Require-Bundle: org.eclipse.core.runtime,
+ org.apache.directory.api.ldap.extras.aci;bundle-version="1.0.0.M24",
+ org.apache.directory.api.ldap.model;bundle-version="1.0.0.M24",
+ org.apache.directory.studio.common.ui,
+ org.apache.directory.studio.connection.core,
+ org.apache.directory.studio.connection.ui,
+ org.apache.directory.studio.ldapbrowser.common,
+ org.apache.directory.studio.ldapbrowser.core,
+ org.apache.directory.studio.valueeditors,
+ org.eclipse.core.expressions,
+ org.eclipse.core.resources,
+ org.eclipse.core.runtime,
+ org.eclipse.jface.text,
+ org.eclipse.ui,
+ org.eclipse.ui.editors,
+ org.eclipse.ui.workbench.texteditor

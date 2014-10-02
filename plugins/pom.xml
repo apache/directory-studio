@@ -32,7 +32,7 @@
   <packaging>pom</packaging>
 
   <modules>
-<!--    <module>aciitemeditor</module> -->
+    <module>aciitemeditor</module>
 <!--     <module>apacheds-launcher</module> -->
 <!--     <module>apacheds.configuration</module> -->
 <!--    <module>apacheds.configuration.v2</module> -->

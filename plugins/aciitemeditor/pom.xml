@@ -24,232 +24,233 @@
     <groupId>org.apache.directory.studio</groupId>
     <artifactId>parent-plugins</artifactId>
     <version>2.0.0-SNAPSHOT</version>
+    <relativePath>../</relativePath>
   </parent>
   
-  <artifactId>aciitemeditor</artifactId>
+  <artifactId>org.apache.directory.studio.aciitemeditor</artifactId>
   <name>Apache Directory Studio ACI Item Editor</name>
-  <packaging>jar</packaging>
+  <packaging>eclipse-plugin</packaging>
 
   <description />
   
-  <build>
-    <resources>
-      <resource>
-        <directory>.</directory>
-        <includes>
-          <include>plugin*.properties</include>
-          <include>plugin.xml</include>
-        </includes>
-      </resource>
-      <resource>
-        <directory>resources</directory>
-        <targetPath>resources</targetPath>
-      </resource>
-      <resource>
-        <directory>src/main/java</directory>
-        <includes>
-          <include>**/*.properties</include>
-        </includes>
-      </resource>
-    </resources>
-
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-eclipse-plugin</artifactId>
-        <configuration>
-          <skip>false</skip>
-          <pde>true</pde>
-          <projectnatures>
-            <projectnature>org.eclipse.jem.workbench.JavaEMFNature</projectnature>
-            <projectnature>org.eclipse.pde.PluginNature</projectnature>
-            <projectnature>org.eclipse.jdt.core.javanature</projectnature>
-            <projectnature>org.eclipse.jem.beaninfo.BeanInfoNature</projectnature>
-          </projectnatures>
-          <classpathContainers>
-            <classpathContainer>org.eclipse.jdt.launching.JRE_CONTAINER</classpathContainer>
-            <classpathContainer>org.eclipse.pde.core.requiredPlugins</classpathContainer>
-          </classpathContainers>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.directory.studio</groupId>
-        <artifactId>studio-maven-plugin</artifactId>
-        <configuration>
-          <skip>false</skip>
-          <createManifest>true</createManifest>
-        </configuration>
-        <executions>
-          <execution>
-            <goals>
-              <goal>prepare-jar-package</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-jar-plugin</artifactId>
-        <configuration>
-          <archive>
-            <manifestFile>META-INF/MANIFEST.MF</manifestFile>
-            <addMavenDescriptor>false</addMavenDescriptor>
-          </archive>
-        </configuration>
-      </plugin>
+<!--  <build> -->
+<!--    <resources> -->
+<!--      <resource> -->
+<!--        <directory>.</directory> -->
+<!--        <includes> -->
+<!--          <include>plugin*.properties</include> -->
+<!--          <include>plugin.xml</include> -->
+<!--        </includes> -->
+<!--      </resource> -->
+<!--      <resource> -->
+<!--        <directory>resources</directory> -->
+<!--        <targetPath>resources</targetPath> -->
+<!--      </resource> -->
+<!--      <resource> -->
+<!--        <directory>src/main/java</directory> -->
+<!--        <includes> -->
+<!--          <include>**/*.properties</include> -->
+<!--        </includes> -->
+<!--      </resource> -->
+<!--    </resources> -->
+<!-- -->
+<!--    <plugins> -->
+<!--      <plugin> -->
+<!--        <groupId>org.apache.maven.plugins</groupId> -->
+<!--        <artifactId>maven-eclipse-plugin</artifactId> -->
+<!--        <configuration> -->
+<!--          <skip>false</skip> -->
+<!--          <pde>true</pde> -->
+<!--          <projectnatures> -->
+<!--            <projectnature>org.eclipse.jem.workbench.JavaEMFNature</projectnature> -->
+<!--            <projectnature>org.eclipse.pde.PluginNature</projectnature> -->
+<!--            <projectnature>org.eclipse.jdt.core.javanature</projectnature> -->
+<!--            <projectnature>org.eclipse.jem.beaninfo.BeanInfoNature</projectnature> -->
+<!--          </projectnatures> -->
+<!--          <classpathContainers> -->
+<!--            <classpathContainer>org.eclipse.jdt.launching.JRE_CONTAINER</classpathContainer> -->
+<!--            <classpathContainer>org.eclipse.pde.core.requiredPlugins</classpathContainer> -->
+<!--          </classpathContainers> -->
+<!--        </configuration> -->
+<!--      </plugin> -->
+<!--      <plugin> -->
+<!--        <groupId>org.apache.directory.studio</groupId> -->
+<!--        <artifactId>studio-maven-plugin</artifactId> -->
+<!--        <configuration> -->
+<!--          <skip>false</skip> -->
+<!--          <createManifest>true</createManifest> -->
+<!--        </configuration> -->
+<!--        <executions> -->
+<!--          <execution> -->
+<!--            <goals> -->
+<!--              <goal>prepare-jar-package</goal> -->
+<!--            </goals> -->
+<!--          </execution> -->
+<!--        </executions> -->
+<!--      </plugin> -->
+<!--      <plugin> -->
+<!--        <groupId>org.apache.maven.plugins</groupId> -->
+<!--        <artifactId>maven-jar-plugin</artifactId> -->
+<!--        <configuration> -->
+<!--          <archive> -->
+<!--            <manifestFile>META-INF/MANIFEST.MF</manifestFile> -->
+<!--            <addMavenDescriptor>false</addMavenDescriptor> -->
+<!--          </archive> -->
+<!--        </configuration> -->
+<!--      </plugin> -->
       <!-- MANIFEST.MF Generation -->
-      <plugin>
-        <groupId>org.apache.felix</groupId>
-        <artifactId>maven-bundle-plugin</artifactId>
-        <extensions>true</extensions>
-        <configuration>
-          <manifestLocation>META-INF</manifestLocation>
-          <instructions>            
-            <Bundle-SymbolicName>${project.groupId}.${project.artifactId};singleton:=true</Bundle-SymbolicName>
-            <Bundle-Localization>plugin</Bundle-Localization>
-            <Eclipse-LazyStart>true</Eclipse-LazyStart>
-            <Bundle-Activator>org.apache.directory.studio.aciitemeditor.Activator</Bundle-Activator>
-            <Require-Bundle>org.apache.directory.api.ldap.extras.aci;bundle-version="${org.apache.directory.api.validversion}",
- org.apache.directory.api.ldap.model;bundle-version="${org.apache.directory.api.validversion}",
- org.apache.directory.studio.common.ui,
- org.apache.directory.studio.connection.core,
- org.apache.directory.studio.connection.ui,
- org.apache.directory.studio.ldapbrowser.common,
- org.apache.directory.studio.ldapbrowser.core,
- org.apache.directory.studio.valueeditors,
- org.eclipse.core.expressions,
- org.eclipse.core.resources,
- org.eclipse.core.runtime,
- org.eclipse.jface.text,
- org.eclipse.ui,
- org.eclipse.ui.editors,
- org.eclipse.ui.workbench.texteditor</Require-Bundle>
-            <Export-Package>!*</Export-Package>
-            <Import-Package>!*</Import-Package>
-          </instructions>
-        </configuration>
-        <executions>
-          <execution>
-            <id>generate-manifest</id>
-            <phase>process-classes</phase>
-            <goals>
-              <goal>manifest</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
+<!--      <plugin> -->
+<!--        <groupId>org.apache.felix</groupId> -->
+<!--        <artifactId>maven-bundle-plugin</artifactId> -->
+<!--        <extensions>true</extensions> -->
+<!--        <configuration> -->
+<!--          <manifestLocation>META-INF</manifestLocation> -->
+<!--          <instructions>             -->
+<!--            <Bundle-SymbolicName>${project.groupId}.${project.artifactId};singleton:=true</Bundle-SymbolicName> -->
+<!--            <Bundle-Localization>plugin</Bundle-Localization> -->
+<!--            <Eclipse-LazyStart>true</Eclipse-LazyStart> -->
+<!--            <Bundle-Activator>org.apache.directory.studio.aciitemeditor.Activator</Bundle-Activator> -->
+<!--            <Require-Bundle>org.apache.directory.api.ldap.extras.aci;bundle-version="${org.apache.directory.api.validversion}", -->
+<!-- org.apache.directory.api.ldap.model;bundle-version="${org.apache.directory.api.validversion}", -->
+<!-- org.apache.directory.studio.common.ui, -->
+<!-- org.apache.directory.studio.connection.core, -->
+<!-- org.apache.directory.studio.connection.ui, -->
+<!-- org.apache.directory.studio.ldapbrowser.common, -->
+<!-- org.apache.directory.studio.ldapbrowser.core, -->
+<!-- org.apache.directory.studio.valueeditors, -->
+<!-- org.eclipse.core.expressions, -->
+<!-- org.eclipse.core.resources, -->
+<!-- org.eclipse.core.runtime, -->
+<!-- org.eclipse.jface.text, -->
+<!-- org.eclipse.ui, -->
+<!-- org.eclipse.ui.editors, -->
+<!-- org.eclipse.ui.workbench.texteditor</Require-Bundle> -->
+<!--            <Export-Package>!*</Export-Package> -->
+<!--            <Import-Package>!*</Import-Package> -->
+<!--          </instructions> -->
+<!--        </configuration> -->
+<!--        <executions> -->
+<!--          <execution> -->
+<!--            <id>generate-manifest</id> -->
+<!--            <phase>process-classes</phase> -->
+<!--            <goals> -->
+<!--              <goal>manifest</goal> -->
+<!--            </goals> -->
+<!--          </execution> -->
+<!--        </executions> -->
+<!--      </plugin> -->
       <!-- No tests to run -->
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-surefire-plugin</artifactId>
-        <configuration>
-          <skip>true</skip>
-        </configuration>
-      </plugin>
-    </plugins>
-  </build>
-
-  <dependencies>
+<!--      <plugin> -->
+<!--        <groupId>org.apache.maven.plugins</groupId> -->
+<!--        <artifactId>maven-surefire-plugin</artifactId> -->
+<!--        <configuration> -->
+<!--          <skip>true</skip> -->
+<!--        </configuration> -->
+<!--      </plugin> -->
+<!--    </plugins> -->
+<!--  </build> -->
+<!-- -->
+<!--  <dependencies> -->
     <!-- Apache Directory Studio library plugins dependencies -->
-    <dependency>
-      <groupId>org.apache.directory.api</groupId>
-      <artifactId>api-ldap-model</artifactId>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.directory.api</groupId>
-      <artifactId>api-ldap-extras-aci</artifactId>
-      <scope>provided</scope>
-    </dependency>
-
+<!--    <dependency> -->
+<!--      <groupId>org.apache.directory.api</groupId> -->
+<!--      <artifactId>api-ldap-model</artifactId> -->
+<!--      <scope>provided</scope> -->
+<!--    </dependency> -->
+<!--    <dependency> -->
+<!--      <groupId>org.apache.directory.api</groupId> -->
+<!--      <artifactId>api-ldap-extras-aci</artifactId> -->
+<!--      <scope>provided</scope> -->
+<!--    </dependency> -->
+<!-- -->
   	<!-- Apache Directory Studio plugins dependencies -->
-    <dependency>
-      <groupId>org.apache.directory.studio</groupId>
-      <artifactId>common.ui</artifactId>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.directory.studio</groupId>
-      <artifactId>connection.core</artifactId>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.directory.studio</groupId>
-      <artifactId>connection.ui</artifactId>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.directory.studio</groupId>
-      <artifactId>ldapbrowser.core</artifactId>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.directory.studio</groupId>
-      <artifactId>ldapbrowser.common</artifactId>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.directory.studio</groupId>
-      <artifactId>valueeditors</artifactId>
-      <scope>provided</scope>
-    </dependency>
-    
+<!--    <dependency> -->
+<!--      <groupId>org.apache.directory.studio</groupId> -->
+<!--      <artifactId>common.ui</artifactId> -->
+<!--      <scope>provided</scope> -->
+<!--    </dependency> -->
+<!--    <dependency> -->
+<!--      <groupId>org.apache.directory.studio</groupId> -->
+<!--      <artifactId>connection.core</artifactId> -->
+<!--      <scope>provided</scope> -->
+<!--    </dependency> -->
+<!--    <dependency> -->
+<!--      <groupId>org.apache.directory.studio</groupId> -->
+<!--      <artifactId>connection.ui</artifactId> -->
+<!--      <scope>provided</scope> -->
+<!--    </dependency> -->
+<!--    <dependency> -->
+<!--      <groupId>org.apache.directory.studio</groupId> -->
+<!--      <artifactId>ldapbrowser.core</artifactId> -->
+<!--      <scope>provided</scope> -->
+<!--    </dependency> -->
+<!--    <dependency> -->
+<!--      <groupId>org.apache.directory.studio</groupId> -->
+<!--      <artifactId>ldapbrowser.common</artifactId> -->
+<!--      <scope>provided</scope> -->
+<!--    </dependency> -->
+<!--    <dependency> -->
+<!--      <groupId>org.apache.directory.studio</groupId> -->
+<!--      <artifactId>valueeditors</artifactId> -->
+<!--      <scope>provided</scope> -->
+<!--    </dependency> -->
+<!--     -->
 	<!-- Eclipse plugins dependencies -->
-    <dependency>
-      <groupId>org.eclipse.core</groupId>
-      <artifactId>commands</artifactId>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.eclipse</groupId>
-      <artifactId>jface</artifactId>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.eclipse.jface</groupId>
-      <artifactId>text</artifactId>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.eclipse.swt.gtk.linux</groupId>
-      <artifactId>x86</artifactId>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.eclipse</groupId>
-      <artifactId>osgi</artifactId>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.eclipse.equinox</groupId>
-      <artifactId>common</artifactId>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.eclipse.core</groupId>
-      <artifactId>runtime</artifactId>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.eclipse</groupId>
-      <artifactId>text</artifactId>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.eclipse.ui</groupId>
-      <artifactId>editors</artifactId>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.eclipse.ui</groupId>
-      <artifactId>workbench</artifactId>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.eclipse.ui.workbench</groupId>
-      <artifactId>texteditor</artifactId>
-      <scope>provided</scope>
-    </dependency>
-  </dependencies>
-
+<!--    <dependency> -->
+<!--      <groupId>org.eclipse.core</groupId> -->
+<!--      <artifactId>commands</artifactId> -->
+<!--      <scope>provided</scope> -->
+<!--    </dependency> -->
+<!--    <dependency> -->
+<!--      <groupId>org.eclipse</groupId> -->
+<!--      <artifactId>jface</artifactId> -->
+<!--      <scope>provided</scope> -->
+<!--    </dependency> -->
+<!--    <dependency> -->
+<!--      <groupId>org.eclipse.jface</groupId> -->
+<!--      <artifactId>text</artifactId> -->
+<!--      <scope>provided</scope> -->
+<!--    </dependency> -->
+<!--    <dependency> -->
+<!--      <groupId>org.eclipse.swt.gtk.linux</groupId> -->
+<!--      <artifactId>x86</artifactId> -->
+<!--      <scope>provided</scope> -->
+<!--    </dependency> -->
+<!--    <dependency> -->
+<!--      <groupId>org.eclipse</groupId> -->
+<!--      <artifactId>osgi</artifactId> -->
+<!--      <scope>provided</scope> -->
+<!--    </dependency> -->
+<!--    <dependency> -->
+<!--      <groupId>org.eclipse.equinox</groupId> -->
+<!--      <artifactId>common</artifactId> -->
+<!--      <scope>provided</scope> -->
+<!--    </dependency> -->
+<!--    <dependency> -->
+<!--      <groupId>org.eclipse.core</groupId> -->
+<!--      <artifactId>runtime</artifactId> -->
+<!--      <scope>provided</scope> -->
+<!--    </dependency> -->
+<!--    <dependency> -->
+<!--      <groupId>org.eclipse</groupId> -->
+<!--      <artifactId>text</artifactId> -->
+<!--      <scope>provided</scope> -->
+<!--    </dependency> -->
+<!--    <dependency> -->
+<!--      <groupId>org.eclipse.ui</groupId> -->
+<!--      <artifactId>editors</artifactId> -->
+<!--      <scope>provided</scope> -->
+<!--    </dependency> -->
+<!--    <dependency> -->
+<!--      <groupId>org.eclipse.ui</groupId> -->
+<!--      <artifactId>workbench</artifactId> -->
+<!--      <scope>provided</scope> -->
+<!--    </dependency> -->
+<!--    <dependency> -->
+<!--      <groupId>org.eclipse.ui.workbench</groupId> -->
+<!--      <artifactId>texteditor</artifactId> -->
+<!--      <scope>provided</scope> -->
+<!--    </dependency> -->
+<!--  </dependencies> -->
+<!-- -->
 </project>
