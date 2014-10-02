@@ -54,6 +54,7 @@
                 <artifact><id>commons-lang:commons-lang:${org.apache.commons.lang.version}</id></artifact>
                 <artifact><id>commons-pool:commons-pool:${org.apache.commons.pool.version}</id></artifact>
                 <artifact><id>dom4j:dom4j:${org.dom4j.version}</id></artifact>
+                <artifact><id>log4j:log4j:${log4j.log4j.version}</id></artifact>
                 <artifact><id>org.apache.directory.api:api-asn1-api:${org.apache.directory.api.version}</id></artifact>
                 <artifact><id>org.apache.directory.api:api-asn1-ber:${org.apache.directory.api.version}</id></artifact>
                 <artifact><id>org.apache.directory.api:api-dsml-parser:${org.apache.directory.api.version}</id></artifact>

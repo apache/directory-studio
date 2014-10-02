@@ -7,6 +7,7 @@
 <unit id="antlr" version="${org.antlr.bundleversion}"/>
 <unit id="bouncycastle.bcprov-jdk15" version="${org.bouncycastle.bcprov.jdk15.bundleversion}"/>
 <unit id="dom4j" version="${org.dom4j.bundleversion}"/>
+<unit id="log4j" version="${log4j.log4j.bundleversion}"/>
 <unit id="xpp3" version="${org.xpp3.bundleversion}"/>
 
 <unit id="org.apache.commons.collections" version="${org.apache.commons.collections.bundleversion}"/>
