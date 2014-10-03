@@ -9,7 +9,7 @@
       <unit id="bouncycastle.bcprov-jdk15" version="${org.bouncycastle.bcprov.jdk15.bundleversion}"/>
       <unit id="dom4j" version="${org.dom4j.bundleversion}"/>
       <unit id="log4j" version="${log4j.log4j.bundleversion}"/>
-      <unit id="slf4-apij" version="${org.slf4j.bundleversion}"/>
+      <unit id="slf4-api" version="${org.slf4j.bundleversion}"/>
       <unit id="slf4-log4j12" version="${org.slf4j.bundleversion}"/>
       <unit id="xpp3" version="${org.xpp3.bundleversion}"/>
 
