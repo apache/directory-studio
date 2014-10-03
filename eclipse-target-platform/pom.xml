@@ -55,6 +55,8 @@
                 <artifact><id>commons-pool:commons-pool:${org.apache.commons.pool.version}</id></artifact>
                 <artifact><id>dom4j:dom4j:${org.dom4j.version}</id></artifact>
                 <artifact><id>log4j:log4j:${log4j.log4j.version}</id></artifact>
+
+                <!-- LDAP API artifacts -->
                 <artifact><id>org.apache.directory.api:api-asn1-api:${org.apache.directory.api.version}</id></artifact>
                 <artifact><id>org.apache.directory.api:api-asn1-ber:${org.apache.directory.api.version}</id></artifact>
                 <artifact><id>org.apache.directory.api:api-dsml-parser:${org.apache.directory.api.version}</id></artifact>
@@ -69,6 +71,14 @@
                 <artifact><id>org.apache.directory.api:api-ldap-schema-data:${org.apache.directory.api.version}</id></artifact>
                 <artifact><id>org.apache.directory.api:api-ldap-schema-converter:${org.apache.directory.api.version}</id></artifact>
                 <artifact><id>org.apache.directory.api:api-util:${org.apache.directory.api.version}</id></artifact>
+
+                <!-- LDAP Server artifacts -->
+                <artifact><id>org.apache.directory.server:apacheds-core-api:${org.apache.directory.server.version}</id></artifact>
+                <artifact><id>org.apache.directory.server:apacheds-server-config:${org.apache.directory.server.version}</id></artifact>
+                <artifact><id>org.apache.directory.server:apacheds-kerberos-codec:${org.apache.directory.server.version}</id></artifact>
+                <artifact><id>org.apache.directory.server:apacheds-ldif-partition:${org.apache.directory.server.version}</id></artifact>
+                <artifact><id>org.apache.directory.server:apacheds-xdbm-partition:${org.apache.directory.server.version}</id></artifact>
+
                 <artifact><id>org.apache.mina:mina-core:${org.apache.mina.version}</id></artifact>
               </artifacts>
             </configuration>
