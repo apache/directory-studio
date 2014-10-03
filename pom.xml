@@ -82,7 +82,7 @@
     <org.apache.directory.api.version>1.0.0-M24</org.apache.directory.api.version>
     <org.apache.directory.api.bundleversion>1.0.0.M24</org.apache.directory.api.bundleversion>
 <!--     <org.apache.directory.server.validversion>2.0.0.M17</org.apache.directory.server.validversion> -->
-    <org.apache.directory.server.version>2.0.0.M17</org.apache.directory.server.version>
+    <org.apache.directory.server.version>2.0.0-M17</org.apache.directory.server.version>
     <org.apache.directory.server.bundleversion>2.0.0.M17</org.apache.directory.server.bundleversion>
 <!--     <org.apache.httpcomponents.version>4.1.2</org.apache.httpcomponents.version> -->
     <log4j.log4j.version>1.2.17</log4j.log4j.version>
@@ -94,7 +94,8 @@
     <org.bouncycastle.bcprov.jdk15.bundleversion>140.0.0</org.bouncycastle.bcprov.jdk15.bundleversion>
     <org.dom4j.version>1.6.1</org.dom4j.version>
     <org.dom4j.bundleversion>1.6.1</org.dom4j.bundleversion>
-<!--     <org.slf4j.version>1.7.7</org.slf4j.version> -->
+    <org.slf4j.version>1.7.7</org.slf4j.version>
+    <org.slf4j.bundleversion>1.7.7</org.slf4j.bundleversion>
     <org.xpp3.version>1.1.4c</org.xpp3.version>
     <org.xpp3.bundleversion>1.1.0.4c</org.xpp3.bundleversion>
 <!--     <org.apache.poi.version>3.9</org.apache.poi.version> -->

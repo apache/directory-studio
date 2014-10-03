@@ -55,6 +55,8 @@
                 <artifact><id>commons-pool:commons-pool:${org.apache.commons.pool.version}</id></artifact>
                 <artifact><id>dom4j:dom4j:${org.dom4j.version}</id></artifact>
                 <artifact><id>log4j:log4j:${log4j.log4j.version}</id></artifact>
+                <artifact><id>org.slf4j:slf4j-api:${org.slf4j.version}</id></artifact>
+                <artifact><id>org.slf4j:slf4j-log4j12:${org.slf4j.version}</id></artifact>
 
                 <!-- LDAP API artifacts -->
                 <artifact><id>org.apache.directory.api:api-asn1-api:${org.apache.directory.api.version}</id></artifact>
