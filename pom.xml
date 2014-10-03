@@ -82,8 +82,8 @@
     <org.apache.directory.api.version>1.0.0-M24</org.apache.directory.api.version>
     <org.apache.directory.api.bundleversion>1.0.0.M24</org.apache.directory.api.bundleversion>
 <!--     <org.apache.directory.server.validversion>2.0.0.M17</org.apache.directory.server.validversion> -->
-    <org.apache.directory.server.version>2.0.0-M17</org.apache.directory.server.version>
-    <org.apache.directory.server.bundleversion>2.0.0-M17</org.apache.directory.server.bundleversion>
+    <org.apache.directory.server.version>2.0.0.M17</org.apache.directory.server.version>
+    <org.apache.directory.server.bundleversion>2.0.0.M17</org.apache.directory.server.bundleversion>
 <!--     <org.apache.httpcomponents.version>4.1.2</org.apache.httpcomponents.version> -->
     <log4j.log4j.version>1.2.17</log4j.log4j.version>
     <log4j.log4j.bundleversion>1.2.17</log4j.log4j.bundleversion>
