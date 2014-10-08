@@ -75,10 +75,44 @@
                 <artifact><id>org.apache.directory.api:api-util:${org.apache.directory.api.version}</id></artifact>
 
                 <!-- LDAP Server artifacts -->
+                <artifact><id>org.apache.directory.server:apacheds-core:${org.apache.directory.server.version}</id></artifact>
                 <artifact><id>org.apache.directory.server:apacheds-core-api:${org.apache.directory.server.version}</id></artifact>
-                <artifact><id>org.apache.directory.server:apacheds-server-config:${org.apache.directory.server.version}</id></artifact>
+                <artifact><id>org.apache.directory.server:apacheds-core-avl:${org.apache.directory.server.version}</id></artifact>
+                <artifact><id>org.apache.directory.server:apacheds-core-constants:${org.apache.directory.server.version}</id></artifact>
+                <artifact><id>org.apache.directory.server:apacheds-core-jndi:${org.apache.directory.server.version}</id></artifact>
+                <artifact><id>org.apache.directory.server:apacheds-core-shared:${org.apache.directory.server.version}</id></artifact>
+                <artifact><id>org.apache.directory.server:apacheds-i18n:${org.apache.directory.server.version}</id></artifact>
+                <artifact><id>org.apache.directory.server:apacheds-interceptor-kerberos:${org.apache.directory.server.version}</id></artifact>
+                <artifact><id>org.apache.directory.server:apacheds-interceptors-admin:${org.apache.directory.server.version}</id></artifact>
+                <artifact><id>org.apache.directory.server:apacheds-interceptors-authn:${org.apache.directory.server.version}</id></artifact>
+                <artifact><id>org.apache.directory.server:apacheds-interceptors-authz:${org.apache.directory.server.version}</id></artifact>
+                <artifact><id>org.apache.directory.server:apacheds-interceptors-changelog:${org.apache.directory.server.version}</id></artifact>
+                <artifact><id>org.apache.directory.server:apacheds-interceptors-collective:${org.apache.directory.server.version}</id></artifact>
+                <artifact><id>org.apache.directory.server:apacheds-interceptors-event:${org.apache.directory.server.version}</id></artifact>
+                <artifact><id>org.apache.directory.server:apacheds-interceptors-exception:${org.apache.directory.server.version}</id></artifact>
+                <artifact><id>org.apache.directory.server:apacheds-interceptors-hash:${org.apache.directory.server.version}</id></artifact>
+                <artifact><id>org.apache.directory.server:apacheds-interceptors-journal:${org.apache.directory.server.version}</id></artifact>
+                <artifact><id>org.apache.directory.server:apacheds-interceptors-logger:${org.apache.directory.server.version}</id></artifact>
+                <artifact><id>org.apache.directory.server:apacheds-interceptors-normalization:${org.apache.directory.server.version}</id></artifact>
+                <artifact><id>org.apache.directory.server:apacheds-interceptors-number:${org.apache.directory.server.version}</id></artifact>
+                <artifact><id>org.apache.directory.server:apacheds-interceptors-operational:${org.apache.directory.server.version}</id></artifact>
+                <artifact><id>org.apache.directory.server:apacheds-interceptors-referral:${org.apache.directory.server.version}</id></artifact>
+                <artifact><id>org.apache.directory.server:apacheds-interceptors-schema:${org.apache.directory.server.version}</id></artifact>
+                <artifact><id>org.apache.directory.server:apacheds-interceptors-subtree:${org.apache.directory.server.version}</id></artifact>
+                <artifact><id>org.apache.directory.server:apacheds-interceptors-trigger:${org.apache.directory.server.version}</id></artifact>
+                <artifact><id>org.apache.directory.server:apacheds-jdbm-partition:${org.apache.directory.server.version}</id></artifact>
                 <artifact><id>org.apache.directory.server:apacheds-kerberos-codec:${org.apache.directory.server.version}</id></artifact>
                 <artifact><id>org.apache.directory.server:apacheds-ldif-partition:${org.apache.directory.server.version}</id></artifact>
+                <artifact><id>org.apache.directory.server:apacheds-protocol-dhcp:${org.apache.directory.server.version}</id></artifact>
+                <artifact><id>org.apache.directory.server:apacheds-protocol-dns:${org.apache.directory.server.version}</id></artifact>
+                <artifact><id>org.apache.directory.server:apacheds-protocol-kerberos:${org.apache.directory.server.version}</id></artifact>
+                <artifact><id>org.apache.directory.server:apacheds-protocol-ldap:${org.apache.directory.server.version}</id></artifact>
+                <artifact><id>org.apache.directory.server:apacheds-protocol-ntp:${org.apache.directory.server.version}</id></artifact>
+                <artifact><id>org.apache.directory.server:apacheds-protocol-shared:${org.apache.directory.server.version}</id></artifact>
+                <artifact><id>org.apache.directory.server:apacheds-server-config:${org.apache.directory.server.version}</id></artifact>
+                <artifact><id>org.apache.directory.server:apacheds-server-jndi:${org.apache.directory.server.version}</id></artifact>
+                <artifact><id>org.apache.directory.server:apacheds-service:${org.apache.directory.server.version}</id></artifact>
+                <artifact><id>org.apache.directory.server:apacheds-service-builder:${org.apache.directory.server.version}</id></artifact>
                 <artifact><id>org.apache.directory.server:apacheds-xdbm-partition:${org.apache.directory.server.version}</id></artifact>
 
                 <artifact><id>org.apache.mina:mina-core:${org.apache.mina.version}</id></artifact>
