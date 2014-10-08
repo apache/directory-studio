@@ -61,7 +61,7 @@
     <studio.dist.url>${project.distributionManagement.repository.url}</studio.dist.url>
     <distMgmtSiteUrl>scpexe://people.apache.org/www/directory.apache.org/studio/gen-docs/${project.version}</distMgmtSiteUrl>
 
-    <tycho.version>0.20.0</tycho.version>
+    <tycho.version>0.21.0</tycho.version>
 
     <!-- Set versions for dependencies -->
 <!--     <com.bandlem.eclipse.fullscreen.version>1.0.4.201108061054</com.bandlem.eclipse.fullscreen.version> -->
@@ -113,17 +113,43 @@
 
     <!-- Set versions for skins -->
     <skin.version>1.0.2</skin.version>
+
+    <!-- The repositories -->
+    <juno-repo.url>http://download.eclipse.org/releases/juno</juno-repo.url>
+    <kepler-repo.url>http://download.eclipse.org/releases/kepler</kepler-repo.url>
+    <luna-repo.url>http://download.eclipse.org/releases/luna</luna-repo.url>
   </properties>
 
   <modules>
     <module>plugins</module>
   </modules>
 
+  <repositories>
+    <repository>
+      <id>juno</id>
+      <url>${juno-repo.url}</url>
+      <layout>p2</layout>
+    </repository>
+
+    <repository>
+      <id>kepler</id>
+      <url>${kepler-repo.url}</url>
+      <layout>p2</layout>
+    </repository>
+
+    <repository>
+      <id>luna</id>
+      <url>${luna-repo.url}</url>
+      <layout>p2</layout>
+    </repository>
+  </repositories>
+
   <build>
     <plugins>
       <plugin>
         <groupId>org.eclipse.tycho</groupId>
         <artifactId>tycho-maven-plugin</artifactId>
+        <version>${tycho.version}</version>
         <extensions>true</extensions>
       </plugin>
 
@@ -138,27 +164,32 @@
                 <version>${project.version}</version>
              </artifact>
           </target>
+
           <environments>
             <environment>
               <os>linux</os>
               <ws>gtk</ws>
               <arch>x86</arch>
             </environment>
+
             <environment>
               <os>linux</os>
               <ws>gtk</ws>
               <arch>x86_64</arch>
             </environment>
+
             <environment>
               <os>win32</os>
               <ws>win32</ws>
               <arch>x86</arch>
             </environment>
+
             <environment>
               <os>win32</os>
               <ws>win32</ws>
               <arch>x86_64</arch>
             </environment>
+
             <environment>
               <os>macosx</os>
               <ws>cocoa</ws>
@@ -176,6 +207,7 @@
           <artifactId>tycho-maven-plugin</artifactId>
           <version>${tycho.version}</version>
         </plugin>
+
         <plugin>
           <groupId>org.eclipse.tycho</groupId>
           <artifactId>target-platform-configuration</artifactId>
