@@ -8,7 +8,6 @@ Bundle-License: http://www.apache.org/licenses/LICENSE-2.0.txt
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Eclipse-LazyStart: true
 Export-Package: org.apache.directory.studio.ldapservers.apacheds.v153
-Import-Package: org.apache.directory.studio.apacheds.configuration.editor
 Require-Bundle: org.eclipse.core.runtime,
  org.apache.mina.core;bundle-version="2.0.7",
  org.apache.commons.lang;bundle-version="2.6.0",
