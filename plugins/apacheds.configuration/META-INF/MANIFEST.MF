@@ -10,7 +10,11 @@ Eclipse-LazyStart: true
 Export-Package: org.apache.directory.studio.apacheds.configuration,
  org.apache.directory.studio.apacheds.configuration.editor,
  org.apache.directory.studio.apacheds.configuration.model,
- org.apache.directory.studio.apacheds.configuration.model.v153
+ org.apache.directory.studio.apacheds.configuration.model.v153,
+ org.apache.directory.studio.apacheds.configuration.model.v154,
+ org.apache.directory.studio.apacheds.configuration.model.v155,
+ org.apache.directory.studio.apacheds.configuration.model.v156,
+ org.apache.directory.studio.apacheds.configuration.model.v157
 Import-Package: org.apache.commons.lang,
  org.dom4j,
  org.dom4j.io
