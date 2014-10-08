@@ -7,7 +7,10 @@ Bundle-SymbolicName: org.apache.directory.studio.apacheds.configuration;singleto
 Bundle-License: http://www.apache.org/licenses/LICENSE-2.0.txt
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Eclipse-LazyStart: true
-Export-Package: org.apache.directory.studio.apacheds.configuration
+Export-Package: org.apache.directory.studio.apacheds.configuration,
+ org.apache.directory.studio.apacheds.configuration.editor,
+ org.apache.directory.studio.apacheds.configuration.model,
+ org.apache.directory.studio.apacheds.configuration.model.v153
 Import-Package: org.apache.commons.lang,
  org.dom4j,
  org.dom4j.io

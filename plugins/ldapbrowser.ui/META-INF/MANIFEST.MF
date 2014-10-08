@@ -22,8 +22,8 @@ Export-Package: org.apache.directory.studio.entryeditors,
  org.apache.directory.studio.ldapbrowser.ui.perspective,
  org.apache.directory.studio.ldapbrowser.ui.search,
  org.apache.directory.studio.ldapbrowser.ui.views.browser,
- org.apache.directory.studio.ldapbrowser.ui.views.connection,o
- rg.apache.directory.studio.ldapbrowser.ui.views.modificationlogs,
+ org.apache.directory.studio.ldapbrowser.ui.views.connection,
+ org.apache.directory.studio.ldapbrowser.ui.views.modificationlogs,
  org.apache.directory.studio.ldapbrowser.ui.views.searchlogs,
  org.apache.directory.studio.ldapbrowser.ui.wizards
 Require-Bundle: org.eclipse.core.expressions,
