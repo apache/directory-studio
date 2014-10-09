@@ -61,7 +61,7 @@
     <studio.dist.url>${project.distributionManagement.repository.url}</studio.dist.url>
     <distMgmtSiteUrl>scpexe://people.apache.org/www/directory.apache.org/studio/gen-docs/${project.version}</distMgmtSiteUrl>
 
-    <tycho.version>0.21.0</tycho.version>
+    <tycho.version>0.20.0</tycho.version>
 
     <!-- Set versions for dependencies -->
 <!--     <com.bandlem.eclipse.fullscreen.version>1.0.4.201108061054</com.bandlem.eclipse.fullscreen.version> -->
