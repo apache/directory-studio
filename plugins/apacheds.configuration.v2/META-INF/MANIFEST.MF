@@ -6,8 +6,15 @@ Bundle-Version: 2.0.0.qualifier
 Bundle-SymbolicName: org.apache.directory.studio.apacheds.configuration.v2;singleton:=true
 Bundle-License: http://www.apache.org/licenses/LICENSE-2.0.txt
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-Localization: plugin
+Bundle-Activator: org.apache.directory.studio.apacheds.configuration.v2.ApacheDS2ConfigurationPlugin
 Eclipse-LazyStart: true
-Export-Package: org.apache.directory.studio.apacheds.configuration.v2.*
+Export-Package: org.apache.directory.studio.apacheds.configuration.v2,
+ org.apache.directory.studio.apacheds.configuration.v2.actions,
+ org.apache.directory.studio.apacheds.configuration.v2.dialogs,
+ org.apache.directory.studio.apacheds.configuration.v2.editor,
+ org.apache.directory.studio.apacheds.configuration.v2.jobs,
+ org.apache.directory.studio.apacheds.configuration.v2.wizards
 Import-Package:  org.apache.directory.server.core.api,
  org.apache.directory.server.config,
  org.apache.directory.server.config.beans,
