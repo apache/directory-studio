@@ -6,14 +6,16 @@ Bundle-Version: 2.0.0.qualifier
 Bundle-SymbolicName: org.apache.directory.studio.valueeditors;singleton:=true
 Bundle-License: http://www.apache.org/licenses/LICENSE-2.0.txt
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-Localization: plugin
+Bundle-Activator: org.apache.directory.studio.valueeditors.ValueEditorsActivator
 Eclipse-LazyStart: true
 Export-Package: org.apache.directory.studio.valueeditors,
  org.apache.directory.studio.valueeditors.dn,
  org.apache.directory.studio.valueeditors.integer
 Import-Package: org.apache.commons.lang,
- org.apache.commons.codec;bundle-version="1.8",
- org.apache.commons.codec.binary;bundle-version="1.8",
- org.apache.commons.io;bundle-version="2.4"
+ org.apache.commons.codec,
+ org.apache.commons.codec.binary,
+ org.apache.commons.io
 Require-Bundle: org.eclipse.core.runtime,
  org.apache.directory.api.ldap.model;bundle-version="1.0.0.M24",
  org.apache.directory.api.util;bundle-version="1.0.0.M24",

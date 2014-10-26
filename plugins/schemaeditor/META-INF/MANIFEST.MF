@@ -6,12 +6,14 @@ Bundle-Version: 2.0.0.qualifier
 Bundle-SymbolicName: org.apache.directory.studio.schemaeditor;singleton:=true
 Bundle-License: http://www.apache.org/licenses/LICENSE-2.0.txt
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-Localization: plugin
+Bundle-Activator: org.apache.directory.studio.schemaeditor.Activator
 Eclipse-LazyStart: true
 Export-Package: org.apache.directory.studio.schemaeditor
-Import-Package: org.apache.commons.collections;version="3.2.1",
- org.apache.commons.collections.map;version="3.2.1",
- org.apache.commons.io;version="2.4",
- org.apache.log4j;bundle-version="1.2.17",
+Import-Package: org.apache.commons.collections,
+ org.apache.commons.collections.map,
+ org.apache.commons.io,
+ org.apache.log4j,
  org.dom4j,
  org.dom4j.io
 Require-Bundle: org.eclipse.core.runtime,
