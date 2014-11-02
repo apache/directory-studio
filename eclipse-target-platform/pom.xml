@@ -57,6 +57,7 @@
                 <artifact><id>log4j:log4j:${log4j.log4j.version}</id></artifact>
                 <artifact><id>org.slf4j:slf4j-api:${org.slf4j.version}</id></artifact>
                 <artifact><id>org.slf4j:slf4j-log4j12:${org.slf4j.version}</id></artifact>
+                <artifact><id>net.sf.ehcache:ehcache-core:${net.sf.ehcache.version}</id></artifact>
 
                 <!-- LDAP API artifacts -->
                 <artifact><id>org.apache.directory.api:api-asn1-api:${org.apache.directory.api.version}</id></artifact>
@@ -117,6 +118,7 @@
 
                 <artifact><id>org.apache.mina:mina-core:${org.apache.mina.version}</id></artifact>
               </artifacts>
+              <compressSite>false</compressSite>
             </configuration>
           </execution>
         </executions>

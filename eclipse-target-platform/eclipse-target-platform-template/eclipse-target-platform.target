@@ -12,6 +12,7 @@
       <unit id="slf4j.api" version="${org.slf4j.bundleversion}"/>
       <unit id="slf4j.log4j12" version="${org.slf4j.bundleversion}"/>
       <unit id="xpp3" version="${org.xpp3.bundleversion}"/>
+      <unit id="net.sf.ehcache.core" version="${net.sf.ehcache.bundleversion}"/>
 
       <!-- Commons jars -->
       <unit id="org.apache.commons.collections" version="${org.apache.commons.collections.bundleversion}"/>
@@ -55,7 +56,7 @@
       <unit id="org.apache.directory.server.interceptors.journal" version="${org.apache.directory.server.bundleversion}" />
       <unit id="org.apache.directory.server.interceptors.logger" version="${org.apache.directory.server.bundleversion}" />
       <unit id="org.apache.directory.server.interceptors.normalization" version="${org.apache.directory.server.bundleversion}" />
-      <unit id="org.apache.directory.server.interceptors.number" version="${org.apache.directory.server.bundleversion}" />
+      <!-- <unit id="org.apache.directory.server.interceptors.number" version="${org.apache.directory.server.bundleversion}" /> -->
       <unit id="org.apache.directory.server.interceptors.operational" version="${org.apache.directory.server.bundleversion}" />
       <unit id="org.apache.directory.server.interceptors.referral" version="${org.apache.directory.server.bundleversion}" />
       <unit id="org.apache.directory.server.interceptors.schema" version="${org.apache.directory.server.bundleversion}" />
@@ -72,7 +73,7 @@
       <unit id="org.apache.directory.server.protocol.shared" version="${org.apache.directory.server.bundleversion}" />
       <unit id="org.apache.directory.server.config" version="${org.apache.directory.server.bundleversion}" />
       <unit id="org.apache.directory.server.jndi" version="${org.apache.directory.server.bundleversion}" />
-      <unit id="org.apache.directory.server.service" version="${org.apache.directory.server.bundleversion}" />
+      <unit id="org.apache.directory.server.apacheds-service" version="${org.apache.directory.server.bundleversion}" />
       <unit id="org.apache.directory.server.service.builder" version="${org.apache.directory.server.bundleversion}" />
       <unit id="org.apache.directory.server.xdbm.partition" version="${org.apache.directory.server.bundleversion}" />
 
@@ -88,6 +89,7 @@
       <unit id="org.eclipse.rcp.source.feature.group" version="4.4.0.v20140606-1445"/>
       <unit id="org.eclipse.equinox.executable" version="3.6.100.v20140603-1326"/>
       <unit id="org.eclipse.platform.feature.group" version="4.4.0.v20140606-1558"/>
+      <unit id="org.eclipse.jdt.feature.group" version="3.10.0.v20140925-0400"/>
       <repository location="http://download.eclipse.org/eclipse/updates/4.4"/>
     </location>
 

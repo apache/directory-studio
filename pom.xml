@@ -65,7 +65,8 @@
 
     <!-- Set versions for dependencies -->
 <!--     <com.bandlem.eclipse.fullscreen.version>1.0.4.201108061054</com.bandlem.eclipse.fullscreen.version> -->
-<!--     <net.sf.ehcache.version>2.4.4</net.sf.ehcache.version> -->
+    <net.sf.ehcache.version>2.4.4</net.sf.ehcache.version>
+    <net.sf.ehcache.bundleversion>2.4.4</net.sf.ehcache.bundleversion>
     <org.antlr.version>2.7.7</org.antlr.version>
     <org.antlr.bundleversion>2.7.7</org.antlr.bundleversion>
     <org.apache.commons.codec.version>1.8</org.apache.commons.codec.version>
@@ -123,26 +124,6 @@
   <modules>
     <module>plugins</module>
   </modules>
-
-  <repositories>
-    <repository>
-      <id>juno</id>
-      <url>${juno-repo.url}</url>
-      <layout>p2</layout>
-    </repository>
-
-    <repository>
-      <id>kepler</id>
-      <url>${kepler-repo.url}</url>
-      <layout>p2</layout>
-    </repository>
-
-    <repository>
-      <id>luna</id>
-      <url>${luna-repo.url}</url>
-      <layout>p2</layout>
-    </repository>
-  </repositories>
 
   <build>
     <plugins>
