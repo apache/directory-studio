@@ -33,7 +33,7 @@
 
   <description />
   
-<!--  <build> -->
+  <build>
 <!--    <resources> -->
 <!--      <resource> -->
 <!--        <directory>.</directory> -->
@@ -54,7 +54,7 @@
 <!--      </resource> -->
 <!--    </resources> -->
 <!-- -->
-<!--    <plugins> -->
+    <plugins>
 <!--      <plugin> -->
 <!--        <groupId>org.apache.maven.plugins</groupId> -->
 <!--        <artifactId>maven-eclipse-plugin</artifactId> -->
@@ -157,31 +157,44 @@
 <!--        </configuration> -->
 <!--      </plugin> -->
       <!-- Copying ApacheDS 2.0.0 Libraries -->
-<!--      <plugin> -->
-<!--        <groupId>org.apache.maven.plugins</groupId> -->
-<!--        <artifactId>maven-dependency-plugin</artifactId> -->
-<!--        <executions> -->
-<!--          <execution> -->
-<!--            <id>copy-apacheds-2.0.0-libraries</id> -->
-<!--            <phase>process-resources</phase> -->
-<!--            <goals> -->
-<!--              <goal>copy</goal> -->
-<!--            </goals> -->
-<!--            <configuration> -->
-<!--              <outputDirectory>target/classes/resources/libs</outputDirectory> -->
-<!--              <artifactItems> -->
-<!--                <artifactItem> -->
-<!--                  <groupId>org.apache.directory.server</groupId> -->
-<!--                  <artifactId>apacheds-service</artifactId> -->
-<!--                  <version>2.0.0-M17</version> -->
-<!--                </artifactItem> -->
-<!--              </artifactItems> -->
-<!--            </configuration> -->
-<!--          </execution> -->
-<!--        </executions> -->
-<!--     </plugin> -->
-<!--    </plugins> -->
-<!--  </build> -->
+      <plugin>
+        <artifactId>maven-clean-plugin</artifactId>
+        <configuration>
+          <filesets>
+            <fileset>
+              <directory>.</directory>
+              <includes>
+                <include>resources/libs/**</include>
+              </includes>
+            </fileset>
+          </filesets>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>copy-apacheds-2.0.0-libraries</id>
+            <phase>generate-resources</phase>
+            <goals>
+              <goal>copy</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>resources/libs</outputDirectory>
+              <artifactItems>
+                <artifactItem>
+                  <groupId>org.apache.directory.server</groupId>
+                  <artifactId>apacheds-service</artifactId>
+                  <version>2.0.0-M17</version>
+                </artifactItem>
+              </artifactItems>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
 <!-- -->
 <!--  <dependencies> -->
   	<!-- Apache Directory LDAP API dependencies -->
