@@ -26,6 +26,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.directory.studio.common.ui.CommonUIConstants;
 import org.apache.directory.studio.ldifeditor.LdifEditorActivator;
 import org.apache.directory.studio.ldifeditor.LdifEditorConstants;
 import org.apache.directory.studio.ldifeditor.editor.ILdifEditor;
@@ -51,7 +52,6 @@ import org.apache.directory.studio.ldifparser.model.lines.LdifModSpecTypeLine;
 import org.apache.directory.studio.ldifparser.model.lines.LdifNewrdnLine;
 import org.apache.directory.studio.ldifparser.model.lines.LdifNewsuperiorLine;
 import org.apache.directory.studio.ldifparser.model.lines.LdifVersionLine;
-
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.preference.PreferenceConverter;
 import org.eclipse.jface.text.DocumentEvent;
@@ -185,8 +185,7 @@ public class LdifDamagerRepairer implements IPresentationDamager, IPresentationR
     {
 
         // TextAttribute DEFAULT_TEXT_ATTRIBUTE = new
-        // TextAttribute(Activator.getDefault().getColor(new RGB(0, 0,
-        // 0)));
+        // TextAttribute(Activator.getDefault().getColor(CommonUIConstants.COLOR_BLACK));
 
         TextAttribute COMMENT_TEXT_ATTRIBUTE = geTextAttribute( LdifEditorConstants.PREFERENCE_LDIFEDITOR_SYNTAX_COMMENT );
         TextAttribute KEYWORD_TEXT_ATTRIBUTE = geTextAttribute( LdifEditorConstants.PREFERENCE_LDIFEDITOR_SYNTAX_KEYWORD );
