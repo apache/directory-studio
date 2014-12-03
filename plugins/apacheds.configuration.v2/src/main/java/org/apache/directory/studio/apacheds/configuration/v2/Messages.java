@@ -24,6 +24,11 @@ import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
 
+/**
+ * The class that returns messages based on a given key.
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ */
 public class Messages
 {
     private static final String BUNDLE_NAME = "org.apache.directory.studio.apacheds.configuration.v2.messages"; //$NON-NLS-1$
@@ -31,11 +36,20 @@ public class Messages
     private static final ResourceBundle RESOURCE_BUNDLE = ResourceBundle.getBundle( BUNDLE_NAME );
 
 
+    /**
+     * Private constructor
+     */
     private Messages()
     {
     }
 
 
+    /**
+     * Returns the message associated to a key
+     * 
+     * @param key The message we want to retrieve
+     * @return The message associated with a given key
+     */
     public static String getString( String key )
     {
         try

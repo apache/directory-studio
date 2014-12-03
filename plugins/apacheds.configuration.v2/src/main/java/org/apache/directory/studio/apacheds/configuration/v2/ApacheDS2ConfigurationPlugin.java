@@ -84,10 +84,8 @@ public class ApacheDS2ConfigurationPlugin extends AbstractUIPlugin
     /**
      * Gets the schema manager.
      *
-     * @return
-     *      the schema manager
-     * @throws Exception
-     *      if an error occurs when initializing the schema manager
+     * @return the schema manager
+     * @throws Exception if an error occurs when initializing the schema manager
      */
     public SchemaManager getSchemaManager() throws Exception
     {
@@ -115,8 +113,7 @@ public class ApacheDS2ConfigurationPlugin extends AbstractUIPlugin
     /**
      * Returns the shared instance.
      *
-     * @return
-     *      the shared instance
+     * @return the shared instance
      */
     public static ApacheDS2ConfigurationPlugin getDefault()
     {
@@ -128,8 +125,7 @@ public class ApacheDS2ConfigurationPlugin extends AbstractUIPlugin
      * Use this method to get SWT images. Use the IMG_ constants from
      * PluginConstants for the key.
      *
-     * @param key
-     *                The key (relative path to the image in filesystem)
+     * @param key The key (relative path to the image in filesystem)
      * @return The image descriptor or null
      */
     public ImageDescriptor getImageDescriptor( String key )
@@ -137,10 +133,15 @@ public class ApacheDS2ConfigurationPlugin extends AbstractUIPlugin
         if ( key != null )
         {
             URL url = FileLocator.find( getBundle(), new Path( key ), null );
+            
             if ( url != null )
+            {
                 return ImageDescriptor.createFromURL( url );
+            }
             else
+            {
                 return null;
+            }
         }
         else
         {
@@ -157,22 +158,24 @@ public class ApacheDS2ConfigurationPlugin extends AbstractUIPlugin
      * Note: Don't dispose the returned SWT Image. It is disposed
      * automatically when the plugin is stopped.
      *
-     * @param key
-     *                The key (relative path to the image in filesystem)
+     * @param keynThe key (relative path to the image in filesystem)
      * @return The SWT Image or null
      */
     public Image getImage( String key )
     {
         Image image = getImageRegistry().get( key );
+        
         if ( image == null )
         {
             ImageDescriptor id = getImageDescriptor( key );
+            
             if ( id != null )
             {
                 image = id.createImage();
                 getImageRegistry().put( key, image );
             }
         }
+        
         return image;
     }
 
@@ -180,8 +183,7 @@ public class ApacheDS2ConfigurationPlugin extends AbstractUIPlugin
     /**
      * Gets the plugin properties.
      *
-     * @return
-     *      the plugin properties
+     * @return the plugin properties
      */
     public PropertyResourceBundle getPluginProperties()
     {

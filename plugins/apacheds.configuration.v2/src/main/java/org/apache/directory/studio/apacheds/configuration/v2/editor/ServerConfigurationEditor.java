@@ -142,9 +142,11 @@ public class ServerConfigurationEditor extends FormEditor implements IPageChange
     private void showOrHideTabFolder()
     {
         Composite container = getContainer();
+        
         if ( container instanceof CTabFolder )
         {
             CTabFolder folder = ( CTabFolder ) container;
+            
             if ( getPageCount() == 1 )
             {
                 folder.setTabHeight( 0 );
@@ -153,6 +155,7 @@ public class ServerConfigurationEditor extends FormEditor implements IPageChange
             {
                 folder.setTabHeight( -1 );
             }
+            
             folder.layout( true, true );
         }
     }
@@ -224,6 +227,7 @@ public class ServerConfigurationEditor extends FormEditor implements IPageChange
 
         // Checking if the 'save as' is successful 
         boolean success = newInput != null;
+        
         if ( success )
         {
             // Setting the new input to the editor

@@ -32,6 +32,7 @@ import org.apache.directory.server.config.beans.ExtendedOpHandlerBean;
 import org.apache.directory.server.config.beans.InterceptorBean;
 import org.apache.directory.server.config.beans.LdapServerBean;
 import org.apache.directory.server.config.beans.SaslMechHandlerBean;
+import org.apache.directory.server.config.beans.TcpTransportBean;
 import org.apache.directory.server.config.beans.TransportBean;
 import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.jface.viewers.ArrayContentProvider;
@@ -64,7 +65,11 @@ import org.eclipse.ui.forms.widgets.TableWrapLayout;
 
 
 /**
- * This class represents the General Page of the Server Configuration Editor.
+ * This class represents the General Page of the Server Configuration Editor. We manage the following
+ * parameters :
+ * <ul>
+ * <li></li>
+ * </ul>
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
@@ -100,8 +105,10 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
     // UI Controls
     private Button enableLdapCheckbox;
     private Text ldapPortText;
+    private Text ldapAddressText;
     private Button enableLdapsCheckbox;
     private Text ldapsPortText;
+    private Text ldapsAddressText;
     private Text maxTimeLimitText;
     private Text maxSizeLimitText;
     private Button authMechSimpleCheckbox;
@@ -130,6 +137,7 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
     private Text diskSynchronizationDelayText;
 
     // UI Controls Listeners
+    // The LdapServer.enabled flag
     private SelectionAdapter enableLdapCheckboxListener = new SelectionAdapter()
     {
         public void widgetSelected( SelectionEvent e )
@@ -1304,12 +1312,10 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
 
 
     /**
-     * Gets the LDAP Server bean.
+     * Gets the LDAP Server bean for a given DirectoryService, or create a new one.
      *
-     * @param directoryServiceBean
-     *      the directory service bean
-     * @return
-     *      the LDAP Server bean
+     * @param directoryServiceBean the directory service bean
+     * @return the LDAP Server bean
      */
     public static LdapServerBean getLdapServerBean( DirectoryServiceBean directoryServiceBean )
     {
@@ -1317,6 +1323,7 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
 
         if ( ldapServerBean == null )
         {
+            // We don't have any LdapServer associated with this DirectoryService, create one
             ldapServerBean = new LdapServerBean();
             directoryServiceBean.addServers( ldapServerBean );
         }
@@ -1328,87 +1335,78 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
     /**
      * Gets the LDAP Server transport bean.
      *
-     * @return
-     *      the LDAP Server transport bean
+     * @return the LDAP Server transport bean
      */
     private TransportBean getLdapServerTransportBean()
     {
-        return getTransportBean( TRANSPORT_ID_LDAP );
+        return getLdapTransportBean( TRANSPORT_ID_LDAP );
     }
 
 
     /**
      * Gets the LDAP Server transport bean.
      *
-     * @param directoryServiceBean
-     *      the directory service bean
-     * @return
-     *      the LDAP Server transport bean
+     * @param directoryServiceBean the directory service bean
+     * @return the LDAP Server transport bean
      */
     public static TransportBean getLdapServerTransportBean( DirectoryServiceBean directoryServiceBean )
     {
-        return getTransportBean( directoryServiceBean, TRANSPORT_ID_LDAP );
+        return getLdapTransportBean( directoryServiceBean, TRANSPORT_ID_LDAP );
     }
 
 
     /**
      * Gets the LDAPS Server transport bean.
      *
-     * @return
-     *      the LDAPS Server transport bean
+     * @return the LDAPS Server transport bean
      */
     private TransportBean getLdapsServerTransportBean()
     {
-        return getTransportBean( TRANSPORT_ID_LDAPS );
+        return getLdapTransportBean( TRANSPORT_ID_LDAPS );
     }
 
 
     /**
      * Gets the LDAPS Server transport bean.
      *
-     * @param directoryServiceBean
-     *      the directory service bean
-     * @return
-     *      the LDAPS Server transport bean
+     * @param directoryServiceBean the directory service bean
+     * @return the LDAPS Server transport bean
      */
     public static TransportBean getLdapsServerTransportBean( DirectoryServiceBean directoryServiceBean )
     {
-        return getTransportBean( directoryServiceBean, TRANSPORT_ID_LDAPS );
+        return getLdapTransportBean( directoryServiceBean, TRANSPORT_ID_LDAPS );
     }
 
 
     /**
-     * Gets a transport bean based on its id.
+     * Gets a LDAP transport bean based on its id.
      *
-     * @param id
-     *      the id
-     * @return
-     *      the corresponding transport bean
+     * @param id the transport id
+     * @return the corresponding transport bean
      */
-    private TransportBean getTransportBean( String id )
+    private TransportBean getLdapTransportBean( String id )
     {
-        return getTransportBean( getDirectoryServiceBean(), id );
+        return getLdapTransportBean( getDirectoryServiceBean(), id );
     }
 
 
     /**
-     * Gets a transport bean based on its id.
+     * Gets a LDAP server transport bean based on its id
      *
-     * @param directoryServiceBean
-     *      the directory service bean
-     * @param id
-     *      the id
-     * @return
-     *      the corresponding transport bean
+     * @param directoryServiceBean the directory service bean
+     * @param id the transport id
+     * @return the corresponding transport bean
      */
-    public static TransportBean getTransportBean( DirectoryServiceBean directoryServiceBean, String id )
+    public static TransportBean getLdapTransportBean( DirectoryServiceBean directoryServiceBean, String id )
     {
+        // First fetch the LdapServer bean
         LdapServerBean ldapServerBean = getLdapServerBean( directoryServiceBean );
 
         TransportBean transportBean = null;
 
-        // Looking for the transport in the list
+        // Looking for the transports for this server
         TransportBean[] ldapServerTransportBeans = ldapServerBean.getTransports();
+        
         if ( ldapServerTransportBeans != null )
         {
             for ( TransportBean ldapServerTransportBean : ldapServerTransportBeans )
@@ -1424,8 +1422,8 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
         // No corresponding transport has been found
         if ( transportBean == null )
         {
-            // Creating a transport bean
-            transportBean = new TransportBean();
+            // Creating a TCP transport bean
+            transportBean = new TcpTransportBean();
             ldapServerBean.addTransports( transportBean );
 
             // ID
@@ -1478,6 +1476,7 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
 
         // Getting the list of extended operation handlers
         List<ExtendedOpHandlerBean> extendedOpHandlers = ldapServerBean.getExtendedOps();
+        
         for ( ExtendedOpHandlerBean extendedOpHandlerBean : extendedOpHandlers )
         {
             // Looking for the Start TLS extended operation handler 
@@ -1494,6 +1493,7 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
         extendedOpHandlerBean.setExtendedOpHandlerClass( START_TLS_HANDLER_CLASS );
         extendedOpHandlerBean.setEnabled( false );
         extendedOpHandlers.add( extendedOpHandlerBean );
+        
         return extendedOpHandlerBean;
     }
 

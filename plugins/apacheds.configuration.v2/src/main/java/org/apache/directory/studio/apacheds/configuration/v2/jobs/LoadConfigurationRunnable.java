@@ -78,8 +78,7 @@ public class LoadConfigurationRunnable implements StudioRunnableWithProgress
     /**
      * Creates a new instance of LoadConfigurationRunnable.
      * 
-     * @param editor
-     *            the editor
+     * @param editor the editor
      */
     public LoadConfigurationRunnable( ServerConfigurationEditor editor )
     {
@@ -125,6 +124,7 @@ public class LoadConfigurationRunnable implements StudioRunnableWithProgress
         try
         {
             final ConfigBean configBean = getConfiguration( input, monitor );
+            
             if ( configBean != null )
             {
                 Display.getDefault().asyncExec( new Runnable()
@@ -157,17 +157,15 @@ public class LoadConfigurationRunnable implements StudioRunnableWithProgress
     /**
      * Gets the configuration from the input.
      * 
-     * @param input
-     *      the editor input
-     * @param monitor
-     *      the studio progress monitor
-     * @return
-     *      the configuration
+     * @param input the editor input
+     * @param monitor the studio progress monitor
+     * @return the configuration
      * @throws Exception
      */
     public ConfigBean getConfiguration( IEditorInput input, StudioProgressMonitor monitor ) throws Exception
     {
         String inputClassName = input.getClass().getName();
+        
         // If the input is a NewServerConfigurationInput, then we only 
         // need to get the server configuration and return
         if ( input instanceof NewServerConfigurationInput )
@@ -175,6 +173,7 @@ public class LoadConfigurationRunnable implements StudioRunnableWithProgress
             InputStream is = ApacheDS2ConfigurationPlugin.class.getResourceAsStream( "config.ldif" ); //$NON-NLS-1$
             return readConfiguration( is );
         }
+        
         // If the input is a ConnectionServerConfigurationInput, then we 
         // read the server configuration from the selected connection
         if ( input instanceof ConnectionServerConfigurationInput )
@@ -212,10 +211,8 @@ public class LoadConfigurationRunnable implements StudioRunnableWithProgress
     /**
      * Reads the configuration from the given input stream.
      *
-     * @param is
-     *      the input stream
-     * @return
-     *      the associated configuration bean
+     * @param is the input stream
+     * @return the associated configuration bean
      * @throws Exception
      */
     public static ConfigBean readConfiguration( InputStream is ) throws Exception
@@ -239,10 +236,8 @@ public class LoadConfigurationRunnable implements StudioRunnableWithProgress
     /**
      * Reads the configuration from the given partition.
      *
-     * @param partition
-     *      the configuration partition
-     * @return
-     *      the associated configuration bean
+     * @param partition the configuration partition
+     * @return the associated configuration bean
      * @throws LdapException
      */
     private static ConfigBean readConfiguration( AbstractBTreePartition partition ) throws LdapException
@@ -260,12 +255,9 @@ public class LoadConfigurationRunnable implements StudioRunnableWithProgress
     /**
      * Reads the configuration from the given connection.
      *
-     * @param input
-     *      the editor input
-     * @param monitor 
-     *      the studio progress monitor
-     * @return
-     *      the associated configuration bean
+     * @param input the editor input
+     * @param monitor the studio progress monitor
+     * @return the associated configuration bean
      * @throws Exception
      */
     private ConfigBean readConfiguration( ConnectionServerConfigurationInput input,
@@ -313,6 +305,7 @@ public class LoadConfigurationRunnable implements StudioRunnableWithProgress
                 configEntry = new DefaultEntry( schemaManager, AttributeUtils.toEntry(
                     searchResult.getAttributes(), new Dn( searchResult.getNameInNamespace() ) ) );
             }
+            
             enumeration.close();
 
             // Verifying we found the 'ou=config' base entry
@@ -362,6 +355,7 @@ public class LoadConfigurationRunnable implements StudioRunnableWithProgress
                     // Adding the children to the list of entries
                     entries.add( childEntry );
                 }
+                
                 childrenEnumeration.close();
             }
 
@@ -388,6 +382,7 @@ public class LoadConfigurationRunnable implements StudioRunnableWithProgress
         if ( connection != null && !connection.getConnectionWrapper().isConnected() )
         {
             connection.getConnectionWrapper().connect( monitor );
+            
             if ( connection.getConnectionWrapper().isConnected() )
             {
                 connection.getConnectionWrapper().bind( monitor );
@@ -400,6 +395,7 @@ public class LoadConfigurationRunnable implements StudioRunnableWithProgress
                 {
                     listener.connectionOpened( connection, monitor );
                 }
+                
                 ConnectionEventRegistry.fireConnectionOpened( connection, input );
             }
         }
