@@ -212,9 +212,10 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
     private Button editEnabledProtocolsButton;
     private Button deleteEnabledProtocolsButton;
     
-    /** LDAP limit */
+    /** LDAP limits */
     private Text maxTimeLimitText;
     private Text maxSizeLimitText;
+    private Text maxPduSizeText;
     
     
     private Button authMechSimpleCheckbox;
@@ -602,6 +603,11 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
                 authMechNtlmText.getText() );
         }
     };
+    
+    
+    /**
+     * The maximum time for a SearchRequest's response
+     */
     private ModifyListener maxTimeLimitTextListener = new ModifyListener()
     {
         public void modifyText( ModifyEvent e )
@@ -609,6 +615,11 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
             getLdapServerBean().setLdapServerMaxTimeLimit( Integer.parseInt( maxTimeLimitText.getText() ) );
         }
     };
+    
+    
+    /**
+     * The maximum size for a SearchRequest's response
+     */
     private ModifyListener maxSizeLimitTextListener = new ModifyListener()
     {
         public void modifyText( ModifyEvent e )
@@ -616,6 +627,20 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
             getLdapServerBean().setLdapServerMaxSizeLimit( Integer.parseInt( maxSizeLimitText.getText() ) );
         }
     };
+    
+    
+    /**
+     * The maximum size for a request PDU
+     */
+    private ModifyListener maxPduSizeTextListener = new ModifyListener()
+    {
+        public void modifyText( ModifyEvent e )
+        {
+            getLdapServerBean().setMaxPDUSize( Integer.parseInt( maxPduSizeText.getText() ) );
+        }
+    };
+    
+    
     private SelectionAdapter enableTlsCheckboxListener = new SelectionAdapter()
     {
         public void widgetSelected( SelectionEvent e )
@@ -1067,6 +1092,11 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
         toolkit.createLabel( composite, Messages.getString( "LdapLdapsServersPage.MaxSizeLimit" ) ); //$NON-NLS-1$
         maxSizeLimitText = createIntegerText( toolkit, composite );
         maxSizeLimitText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
+
+        // Max. PDU Size Text
+        toolkit.createLabel( composite, Messages.getString( "LdapLdapsServersPage.MaxPduSize" ) ); //$NON-NLS-1$
+        maxPduSizeText = createIntegerText( toolkit, composite );
+        maxPduSizeText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
     }
 
 
@@ -1540,6 +1570,10 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
         addDirtyListener( maxSizeLimitText );
         addModifyListener( maxSizeLimitText, maxSizeLimitTextListener );
 
+        // Max PDU Size Text
+        addDirtyListener( maxPduSizeText );
+        addModifyListener( maxPduSizeText, maxPduSizeTextListener );
+
         // Enable TLS Checkbox
         addDirtyListener( enableTlsCheckbox );
         addSelectionListener( enableTlsCheckbox, enableTlsCheckboxListener );
@@ -1709,6 +1743,10 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
         removeDirtyListener( maxSizeLimitText );
         removeModifyListener( maxSizeLimitText, maxSizeLimitTextListener );
 
+        // Max PDU Size Text
+        removeDirtyListener( maxPduSizeText );
+        removeModifyListener( maxPduSizeText, maxPduSizeTextListener );
+
         // Hashing Password Checkbox
         removeDirtyListener( enableServerSidePasswordHashingCheckbox );
         removeSelectionListener( enableServerSidePasswordHashingCheckbox,
@@ -1845,8 +1883,9 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
             }
 
             // Limits
-            setText( maxTimeLimitText, "" + ldapServerBean.getLdapServerMaxTimeLimit() ); //$NON-NLS-1$
-            setText( maxSizeLimitText, "" + ldapServerBean.getLdapServerMaxSizeLimit() ); //$NON-NLS-1$
+            setText( maxTimeLimitText, Integer.toString( ldapServerBean.getLdapServerMaxTimeLimit() ) );
+            setText( maxSizeLimitText, Integer.toString( ldapServerBean.getLdapServerMaxSizeLimit() ) );
+            setText( maxPduSizeText, Integer.toString( ldapServerBean.getMaxPDUSize() ) );
 
             // Enable TLS Checkbox
             setSelection( enableTlsCheckbox, getTlsExtendedOpHandlerBean().isEnabled() );
