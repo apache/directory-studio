@@ -89,15 +89,19 @@ public class KerberosServerPage extends ServerConfigurationEditorPage
     private Text changePasswordPortText;
     private Text changePasswordAddressText;
     
+    // The basic Kerberos settings
     private Text primaryKdcRealmText;
     private Text kdcSearchBaseDnText;
     private CheckboxTableViewer encryptionTypesTableViewer;
+    
+    // The kerberos Tickets settings
     private Button verifyBodyChecksumCheckbox;
     private Button allowEmptyAddressesCheckbox;
     private Button allowForwardableAddressesCheckbox;
     private Button requirePreAuthByEncryptedTimestampCheckbox;
     private Button allowPostdatedTicketsCheckbox;
     private Button allowRenewableTicketsCheckbox;
+    private Button allowProxiableTicketsCheckbox;
     private Text maximumRenewableLifetimeText;
     private Text maximumTicketLifetimeText;
     private Text allowableClockSkewText;
@@ -300,6 +304,11 @@ public class KerberosServerPage extends ServerConfigurationEditorPage
             getKdcServerBean().setKrbPostdatedAllowed( allowPostdatedTicketsCheckbox.getSelection() );
         }
     };
+    
+    
+    /**
+     * The Allow Renewable Tickets listener
+     */
     private SelectionAdapter allowRenewableTicketsCheckboxListener = new SelectionAdapter()
     {
         public void widgetSelected( SelectionEvent e )
@@ -307,6 +316,20 @@ public class KerberosServerPage extends ServerConfigurationEditorPage
             getKdcServerBean().setKrbRenewableAllowed( allowRenewableTicketsCheckbox.getSelection() );
         }
     };
+    
+    
+    /**
+     * The Allow Proxiable Tickets listener
+     */
+    private SelectionAdapter allowProxiableTicketsCheckboxListener = new SelectionAdapter()
+    {
+        public void widgetSelected( SelectionEvent e )
+        {
+            getKdcServerBean().setKrbProxiableAllowed( allowProxiableTicketsCheckbox.getSelection() );
+        }
+    };
+    
+    
     private ModifyListener maximumRenewableLifetimeTextListener = new ModifyListener()
     {
         public void modifyText( ModifyEvent e )
@@ -548,6 +571,12 @@ public class KerberosServerPage extends ServerConfigurationEditorPage
         allowRenewableTicketsCheckbox.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, layout.numColumns,
             1 ) );
 
+        // Allow Proxiable Tickets Checkbox
+        allowProxiableTicketsCheckbox = toolkit.createButton( composite,
+            Messages.getString( "KerberosServerPage.AllowProxiableTickets" ), SWT.CHECK ); //$NON-NLS-1$
+        allowProxiableTicketsCheckbox.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, layout.numColumns,
+            1 ) );
+
         // Max Renewable Lifetime Text
         toolkit.createLabel( composite, Messages.getString( "KerberosServerPage.MaxRenewableLifetime" ) ); //$NON-NLS-1$
         maximumRenewableLifetimeText = createIntegerText( toolkit, composite );
@@ -611,6 +640,7 @@ public class KerberosServerPage extends ServerConfigurationEditorPage
             setSelection( requirePreAuthByEncryptedTimestampCheckbox, kdcServerBean.isKrbPaEncTimestampRequired() );
             setSelection( allowPostdatedTicketsCheckbox, kdcServerBean.isKrbPostdatedAllowed() );
             setSelection( allowRenewableTicketsCheckbox, kdcServerBean.isKrbRenewableAllowed() );
+            setSelection( allowProxiableTicketsCheckbox, kdcServerBean.isKrbProxiableAllowed() );
             setText( maximumRenewableLifetimeText, Long.toString( kdcServerBean.getKrbMaximumRenewableLifetime() ) );
             setText( maximumTicketLifetimeText, Long.toString( kdcServerBean.getKrbMaximumTicketLifetime() ) );
             setText( allowableClockSkewText, Long.toString( kdcServerBean.getKrbAllowableClockSkew() ) );
@@ -684,6 +714,10 @@ public class KerberosServerPage extends ServerConfigurationEditorPage
         // Allow Renewable Tickets Checkbox
         addDirtyListener( allowRenewableTicketsCheckbox );
         addSelectionListener( allowRenewableTicketsCheckbox, allowRenewableTicketsCheckboxListener );
+
+        // Allow Proxiable Tickets Checkbox
+        addDirtyListener( allowProxiableTicketsCheckbox );
+        addSelectionListener( allowProxiableTicketsCheckbox, allowProxiableTicketsCheckboxListener );
 
         // Maximum Renewable Lifetime Text
         addDirtyListener( maximumRenewableLifetimeText );
@@ -763,6 +797,10 @@ public class KerberosServerPage extends ServerConfigurationEditorPage
         // Allow Renewable Tickets Checkbox
         removeDirtyListener( allowRenewableTicketsCheckbox );
         removeSelectionListener( allowRenewableTicketsCheckbox, allowRenewableTicketsCheckboxListener );
+
+        // Allow Proxiable Tickets Checkbox
+        removeDirtyListener( allowProxiableTicketsCheckbox );
+        removeSelectionListener( allowProxiableTicketsCheckbox, allowProxiableTicketsCheckboxListener );
 
         // Maximum Renewable Lifetime Text
         removeDirtyListener( maximumRenewableLifetimeText );
