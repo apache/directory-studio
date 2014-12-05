@@ -57,6 +57,7 @@ import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.Section;
@@ -104,9 +105,9 @@ import org.eclipse.ui.forms.widgets.TableWrapLayout;
  * | | .--------------------------------. | | +--------------------------------+ | |
  * | | |V Advanced SSL Settings         | | | |                                | | |
  * | | +--------------------------------| | | |    Kerberos Server             | | |
- * | | |  [X] needClientAuth            | | | |                                | | |
- * | | |  [X] wantClientAuth            | | | |                                | | |
- * | | |  Cipher suite :                | | | |                                | | |
+ * | | |  [X] Require Client Auth       | | | |                                | | |
+ * | | |    [X] Request Client Auth     | | | |                                | | |
+ * | | |  Ciphers suite :               | | | |                                | | |
  * | | |   +-----------------+          | | | |                                | | |
  * | | |   |                 | (add)    | | | |                                | | |
  * | | |   |                 | (edit)   | | | |                                | | |
@@ -195,8 +196,9 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
     private Text ldapsAddressText;
     private Text ldapsNbThreadsText;
     private Text ldapsBackLogSizeText;
-    private Button enableNeedClientAuthCheckbox;
-    private Button enableWantClientAuthCheckbox;
+    private Button needClientAuthCheckbox;
+    private Button wantClientAuthCheckbox;
+    private boolean wantClientAuthStatus;
     
     /** The CiphersSuite controls */
     private TableViewer ciphersSuiteTableViewer;
@@ -362,8 +364,8 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
             setEnabled( ldapsAddressText, enabled );
             setEnabled( ldapsNbThreadsText, enabled );
             setEnabled( ldapsBackLogSizeText, enabled );
-            setEnabled( enableNeedClientAuthCheckbox, enabled );
-            setEnabled( enableWantClientAuthCheckbox, enabled );
+            setEnabled( needClientAuthCheckbox, enabled );
+            setEnabled( wantClientAuthCheckbox, enabled );
             setEnabled( ciphersSuiteTableViewer.getTable(), enabled );
             setEnabled( addCiphersSuiteButton, enabled );
             setEnabled( deleteCiphersSuiteButton, enabled );
@@ -451,6 +453,57 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
         }
     };
     
+    
+    /**
+     * As listener for the NeedClientAuth checkbox : we have to check the 
+     * WantClientAuth checkbox when the NeedClientAuth is selected.
+     */
+    private SelectionAdapter needClientAuthListener = new SelectionAdapter()
+    {
+        public void widgetSelected( SelectionEvent e )
+        {
+            boolean enabled = needClientAuthCheckbox.getSelection();
+
+            // Inject the flag in the config
+            //getLdapServerTransportBean().setWantClientAuth( enabled );
+            //getLdapServerTransportBean().setNeedClientAuth( enabled );
+            
+            // Turn on/off the NeedClientAuth
+            if ( enabled )
+            {
+                wantClientAuthCheckbox.setSelection( enabled );
+            }
+            else
+            {
+                // restore the previous value
+                wantClientAuthCheckbox.setSelection( wantClientAuthStatus );
+            }
+            
+            // And disable it or enable it
+            setEnabled( wantClientAuthCheckbox, !enabled );
+            
+            // last, 
+        }
+    };
+    
+    
+    /**
+     * As listener for the WantClientAuth checkbox
+     */
+    private SelectionAdapter wantClientAuthListener = new SelectionAdapter()
+    {
+        public void widgetSelected( SelectionEvent e )
+        {
+            boolean enabled = wantClientAuthCheckbox.getSelection();
+
+            // Inject the flag in the config
+            //getLdapServerTransportBean().setWantClientAuth( enabled );
+            
+            // Keep a track of the WantClientAuth flag
+            wantClientAuthStatus = enabled;
+        }
+    };
+
     
 
     private ModifyListener saslHostTextListener = new ModifyListener()
@@ -1077,19 +1130,21 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
         section.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
         Composite composite = toolkit.createComposite( section );
         toolkit.paintBordersFor( composite );
-        GridLayout glayout = new GridLayout( 2, false );
+        GridLayout glayout = new GridLayout( 3, false );
         composite.setLayout( glayout );
         section.setClient( composite );
 
         // Enable LDAPS needClientAuth Checkbox
-        enableNeedClientAuthCheckbox = toolkit.createButton( composite,
+        needClientAuthCheckbox = toolkit.createButton( composite,
             Messages.getString( "LdapLdapsServersPage.NeedClientAuth" ), SWT.CHECK ); //$NON-NLS-1$
-        enableNeedClientAuthCheckbox.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, glayout.numColumns, 1 ) );
+        needClientAuthCheckbox.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, glayout.numColumns, 1 ) );
 
-        // Enable LDAPS needClientAuth Checkbox
-        enableWantClientAuthCheckbox = toolkit.createButton( composite,
+        // Enable LDAPS wantClientAuth Checkbox. As the WantClientAuth is dependent on
+        // the NeedClientAuth, we move it one column to the right
+        toolkit.createLabel( composite, TABULATION );
+        wantClientAuthCheckbox = toolkit.createButton( composite,
             Messages.getString( "LdapLdapsServersPage.WantClientAuth" ), SWT.CHECK ); //$NON-NLS-1$
-        enableWantClientAuthCheckbox.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, glayout.numColumns, 1 ) );
+        wantClientAuthCheckbox.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
 
         // Ciphers Suite label 
         Label ciphersLabel = toolkit.createLabel( composite, Messages.getString( "LdapLdapsServersPage.CiphersSuite" ), SWT.WRAP  ); //$NON-NLS-1$
@@ -1099,7 +1154,7 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
         // Ciphers Suites Table Viewer
         ciphersSuiteTableViewer = new TableViewer( composite );
         ciphersSuiteTableViewer.setContentProvider( new ArrayContentProvider() );
-        GridData cipherSuitesTableViewerGridData = new GridData( SWT.FILL, SWT.CENTER, true, false, 1, 3 );
+        GridData cipherSuitesTableViewerGridData = new GridData( SWT.FILL, SWT.CENTER, true, false, 2, 3 );
         cipherSuitesTableViewerGridData.heightHint = 60;
         ciphersSuiteTableViewer.getControl().setLayoutData( cipherSuitesTableViewerGridData );
 
@@ -1128,7 +1183,7 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
         // Enabled Protocols Table Viewer
         enabledProtocolsTableViewer = new TableViewer( composite );
         enabledProtocolsTableViewer.setContentProvider( new ArrayContentProvider() );
-        GridData enabledProtocolsTableViewerGridData = new GridData( SWT.FILL, SWT.CENTER, true, false, 1, 3 );
+        GridData enabledProtocolsTableViewerGridData = new GridData( SWT.FILL, SWT.CENTER, true, false, 2, 3 );
         enabledProtocolsTableViewerGridData.heightHint = 60;
         enabledProtocolsTableViewer.getControl().setLayoutData( enabledProtocolsTableViewerGridData );
 
@@ -1409,6 +1464,14 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
         // LDAPS BackLogSize Text
         addDirtyListener( ldapsBackLogSizeText );
         addModifyListener( ldapsBackLogSizeText, ldapsBackLogSizeTextListener );
+        
+        // Enable wantClientAuth Checkbox
+        addDirtyListener( wantClientAuthCheckbox );
+        addSelectionListener( wantClientAuthCheckbox, wantClientAuthListener );
+
+        // Enable needClientAuth Checkbox
+        addDirtyListener( needClientAuthCheckbox );
+        addSelectionListener( needClientAuthCheckbox, needClientAuthListener );
 
         // Auth Mechanisms Simple Checkbox
         addDirtyListener( authMechSimpleCheckbox );
@@ -1569,6 +1632,14 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
         // LDAPS BackLogSize Text
         removeDirtyListener( ldapsBackLogSizeText );
         removeModifyListener( ldapsBackLogSizeText, ldapsBackLogSizeTextListener );
+        
+        // Enable wantClientAuth Checkbox
+        removeDirtyListener( wantClientAuthCheckbox );
+        removeSelectionListener( wantClientAuthCheckbox, wantClientAuthListener );
+
+        // Enable needClientAuth Checkbox
+        removeDirtyListener( needClientAuthCheckbox );
+        removeSelectionListener( needClientAuthCheckbox, needClientAuthListener );
 
         // Auth Mechanisms Simple Checkbox
         removeDirtyListener( authMechSimpleCheckbox );
