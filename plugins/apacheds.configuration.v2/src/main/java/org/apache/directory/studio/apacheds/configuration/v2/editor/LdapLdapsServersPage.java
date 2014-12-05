@@ -57,7 +57,6 @@ import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.Section;
@@ -145,7 +144,6 @@ import org.eclipse.ui.forms.widgets.TableWrapLayout;
  */
 public class LdapLdapsServersPage extends ServerConfigurationEditorPage
 {
-    private static final String DEFAULT_ADDRESS = "0.0.0.0"; //$NON-NLS-1$
     private static final int DEFAULT_PORT_LDAPS = 10636;
     private static final int DEFAULT_PORT_LDAP = 10389;
     private static final int DEFAULT_NB_THREADS = 4;

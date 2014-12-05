@@ -70,6 +70,8 @@ import org.eclipse.ui.forms.widgets.ScrolledForm;
  */
 public abstract class ServerConfigurationEditorPage extends FormPage
 {
+    /** The default IPV4 address for servers */
+    protected static final String DEFAULT_ADDRESS = "0.0.0.0"; //$NON-NLS-1$
     protected static final Color GRAY_COLOR = new Color( null, 120, 120, 120 );
     protected static final String TABULATION = "      "; //$NON-NLS-1$
     
