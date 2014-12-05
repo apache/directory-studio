@@ -607,13 +607,17 @@ public class KerberosServerPage extends ServerConfigurationEditorPage
             KdcServerBean kdcServerBean = getKdcServerBean();
             setSelection( enableKerberosCheckbox, kdcServerBean.isEnabled() );
             setEnabled( kerberosPortText, enableKerberosCheckbox.getSelection() );
+            setEnabled( kerberosAddressText, enableKerberosCheckbox.getSelection() );
             setText( kerberosPortText, Integer.toString( getKdcServerTransportBean().getSystemPort() ) );
+            setText( kerberosAddressText, getKdcServerTransportBean().getTransportAddress() );
 
             // Change Password Checkbox
             ChangePasswordServerBean changePasswordServerBean = getChangePasswordServerBean();
             setSelection( enableChangePasswordCheckbox, changePasswordServerBean.isEnabled() );
             setEnabled( changePasswordPortText, enableChangePasswordCheckbox.getSelection() );
+            setEnabled( changePasswordAddressText, enableChangePasswordCheckbox.getSelection() );
             setText( changePasswordPortText, Integer.toString( getChangePasswordServerTransportBean().getSystemPort() ) );
+            setText( changePasswordAddressText, getChangePasswordServerTransportBean().getTransportAddress() );
 
             // Kerberos Settings
             setText( primaryKdcRealmText, kdcServerBean.getKrbPrimaryRealm() );
