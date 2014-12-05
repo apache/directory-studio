@@ -1923,10 +1923,10 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
             ciphersSuiteTableViewer.refresh();
 
             // Replication Pinger Sleep
-            setText( replicationPingerSleepText, "" + ldapServerBean.getReplPingerSleep() ); //$NON-NLS-1$
+            setText( replicationPingerSleepText, Integer.toString( ldapServerBean.getReplPingerSleep() ) );
 
             // Disk Synchronization Delay
-            setText( diskSynchronizationDelayText, "" + getDirectoryServiceBean().getDsSyncPeriodMillis() ); //$NON-NLS-1$
+            setText( diskSynchronizationDelayText, Long.toString( getDirectoryServiceBean().getDsSyncPeriodMillis() ) );
 
             addListeners();
         }
