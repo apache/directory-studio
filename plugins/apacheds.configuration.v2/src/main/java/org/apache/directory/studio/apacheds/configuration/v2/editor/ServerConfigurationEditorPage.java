@@ -46,9 +46,8 @@ import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.events.VerifyEvent;
 import org.eclipse.swt.events.VerifyListener;
 import org.eclipse.swt.graphics.Color;
-import org.eclipse.swt.graphics.GC;
-import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.graphics.Rectangle;
+import org.eclipse.swt.graphics.Font;
+import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -56,9 +55,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.swt.widgets.ToolTip;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.forms.IManagedForm;
 import org.eclipse.ui.forms.editor.FormPage;
@@ -265,6 +262,7 @@ public abstract class ServerConfigurationEditorPage extends FormPage
         GridData gd = new GridData( SWT.NONE, SWT.NONE, false, false );
         gd.widthHint = 42;
         portText.setLayoutData( gd );
+        
         portText.addVerifyListener( new VerifyListener()
         {
             public void verifyText( VerifyEvent e )
@@ -273,15 +271,16 @@ public abstract class ServerConfigurationEditorPage extends FormPage
                 // any value between 0 and 65535
                 // Skip spaces on both sides
                 char[] port = e.text.trim().toCharArray();
-                
+
                 if ( port.length > 0 )
                 {
                     for ( char c : port )
                     {
-                        if ( ( c < '0' ) && ( c > '9' ) )
+                        if ( ( c < '0' ) || ( c > '9' ) )
                         {
                             // This is an error
                             e.doit = false;
+                            break;
                         }
                     }
                 }
@@ -341,6 +340,99 @@ public abstract class ServerConfigurationEditorPage extends FormPage
 
 
     /**
+     * Creates a Text that can be used to enter the number of threads
+     * (which limit is 999)
+     *
+     * @param toolkit the toolkit
+     * @param parent the parent
+     * @return a Text that can be used to enter the number of threads
+     */
+    protected Text createNbThreadsText( FormToolkit toolkit, Composite parent )
+    {
+        Text nbThreadsText = toolkit.createText( parent, "" ); //$NON-NLS-1$
+        GridData gd = new GridData( SWT.NONE, SWT.NONE, false, false );
+        gd.widthHint = 42;
+        nbThreadsText.setLayoutData( gd );
+        
+        nbThreadsText.addVerifyListener( new VerifyListener()
+        {
+            public void verifyText( VerifyEvent e )
+            {
+                // Check that it's a valid number of threads. It should be
+                // any value between 0 and 999
+                // Skip spaces on both sides
+                char[] nbThreads = e.text.trim().toCharArray();
+
+                if ( nbThreads.length > 0 )
+                {
+                    for ( char c : nbThreads )
+                    {
+                        if ( ( c < '0' ) || ( c > '9' ) )
+                        {
+                            // This is an error
+                            e.doit = false;
+                            break;
+                        }
+                    }
+                }
+            }
+        } );
+        
+        
+        // We can't have more than 999 threads
+        nbThreadsText.setTextLimit( 3 );
+
+        return nbThreadsText;
+    }
+
+
+    /**
+     * Creates a Text that can be used to enter the backLog size
+     *
+     * @param toolkit the toolkit
+     * @param parent the parent
+     * @return a Text that can be used to enter the backlog size
+     */
+    protected Text createBackLogSizeText( FormToolkit toolkit, Composite parent )
+    {
+        Text backLogSizetText = toolkit.createText( parent, "" ); //$NON-NLS-1$
+        GridData gd = new GridData( SWT.NONE, SWT.NONE, false, false );
+        gd.widthHint = 42;
+        backLogSizetText.setLayoutData( gd );
+        
+        backLogSizetText.addVerifyListener( new VerifyListener()
+        {
+            public void verifyText( VerifyEvent e )
+            {
+                // Check that it's a valid size. It should be
+                // any value between 0 and 99999
+                // Skip spaces on both sides
+                char[] backlogSize = e.text.trim().toCharArray();
+
+                if ( backlogSize.length > 0 )
+                {
+                    for ( char c : backlogSize )
+                    {
+                        if ( ( c < '0' ) || ( c > '9' ) )
+                        {
+                            // This is an error
+                            e.doit = false;
+                            break;
+                        }
+                    }
+                }
+            }
+        } );
+        
+        
+        // the backlog size can only have 5 chars max
+        backLogSizetText.setTextLimit( 5 );
+
+        return backLogSizetText;
+    }
+
+
+    /**
      * Creates a Text that can be used to enter an integer.
      *
      * @param toolkit the toolkit
@@ -379,6 +471,22 @@ public abstract class ServerConfigurationEditorPage extends FormPage
         Label label = toolkit.createLabel( parent,
             NLS.bind( Messages.getString( "ServerConfigurationEditorPage.DefaultWithValue" ), text ), SWT.WRAP ); //$NON-NLS-1$
         label.setForeground( GRAY_COLOR );
+
+        return label;
+    }
+
+
+    /**
+     * Set some Label to Bold
+     *
+     * @param label the Label we want to see as Bold
+     * @return a Label with bold text
+     */
+    protected Label setBold( Label label )
+    {
+        FontData fontData = label.getFont().getFontData()[0];
+        Font font = new Font( label.getDisplay(), new FontData( fontData.getName(), fontData.getHeight(), SWT.BOLD ) );
+        label.setFont( font );
 
         return label;
     }

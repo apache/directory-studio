@@ -59,19 +59,29 @@ import org.eclipse.ui.forms.widgets.TableWrapLayout;
  * <pre>
  * +-------------------------------------------------------------------------------+
  * | +------------------------------------+ +------------------------------------+ |
- * | | +--------------------------------+ | | +--------------------------------+ | |
- * | | |                                | | | |                                | | |
- * | | |    LDAP/LDAPS Servers          | | | |    Kerberos Server             | | |
- * | | |                                | | | |                                | | |
- * | | +--------------------------------+ | | +--------------------------------+ | |
- * | | +--------------------------------+ | | +--------------------------------+ | |
- * | | |                                | | | |                                | | |
- * | | |    Partitions                  | | | |    Options                     | | |
- * | | |                                | | | |                                | | |
+ * | | .--------------------------------. | | +--------------------------------+ | |
+ * | | | LDAP/LDAPS Transport           | | | | Kerberos Server                | | |
+ * | | +--------------------------------| | | +--------------------------------+ | |
+ * | | | [X] Enabled LDAP server        | | | | [X] Enable Kerberos Server     | | |
+ * | | |  Port     : [/////////]        | | | |   Port     : [/////]           | | |
+ * | | | [X] Enabled LDAPS server       | | | | [X] Enable Kerberos ChangePwd  | | |
+ * | | |  Port     : [/////////]        | | | |   Port     : [/////]           | | |
+ * | | | <advanced LDAP/LDAPS config>   | | | | <advanced Kerberos config>     | | |
+ * | | +--------------------------------| | | +--------------------------------+ | |
+ * | | .--------------------------------. | | +--------------------------------+ | |
+ * | | | Partitions                     | | | | Options                        | | |
+ * | | +--------------------------------| | | +--------------------------------+ | |
+ * | | | +----------------------------+ | | | | [X] Allow anonymous access     | | |
+ * | | | | Partition 1                | | | | | [X] Enable Access Control      | | |
+ * | | | | Partition 2                | | | | |                                | | |
+ * | | | | ...                        | | | | |                                | | |
+ * | | | +----------------------------+ | | | |                                | | |
+ * | | | <advanced partitionsS config>  | | | |                                | | |
  * | | +--------------------------------+ | | +--------------------------------+ | |
  * | +------------------------------------+ +------------------------------------+ |
- * +-------------------------------------------------------------------------------+
  * </pre>
+ * 
+ * We just expose the more frequent parameters in this page.
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
@@ -87,11 +97,9 @@ public class OverviewPage extends ServerConfigurationEditorPage
     /** LDAP Server controls */
     private Button enableLdapCheckbox;
     private Text ldapPortText;
-    private Text ldapAddressText;
     private Button enableLdapsCheckbox;
     private Text ldapsPortText;
-    private Text ldapsAddressText;
-    // This links open the extended LDAP/DLAPS configuration tab
+    // This link opens the advanced LDAP/LDAPS configuration tab 
     private Hyperlink openLdapConfigurationLink;
     
     /** Kerberos Server controls */
@@ -108,11 +116,14 @@ public class OverviewPage extends ServerConfigurationEditorPage
     // This link open the advanced partitions configuration Tab */
     private Hyperlink openPartitionsConfigurationLink;
 
-    /** The Options controls */
+    /** The LDAP Options controls */
     private Button allowAnonymousAccessCheckbox;
     private Button enableAccessControlCheckbox;
 
     // UI Control Listeners
+    /**
+     * The LDAP transport checkbox listener.
+     */
     private SelectionAdapter enableLdapCheckboxListener = new SelectionAdapter()
     {
         public void widgetSelected( SelectionEvent e )
@@ -120,7 +131,6 @@ public class OverviewPage extends ServerConfigurationEditorPage
             LdapLdapsServersPage.getLdapServerTransportBean( getDirectoryServiceBean() ).setEnabled(
                 enableLdapCheckbox.getSelection() );
             setEnabled( ldapPortText, enableLdapCheckbox.getSelection() );
-            setEnabled( ldapAddressText, enableLdapCheckbox.getSelection() );
         }
     };
 
@@ -136,19 +146,6 @@ public class OverviewPage extends ServerConfigurationEditorPage
                 Integer.parseInt( ldapPortText.getText() ) );
         }
     };
-
-    
-    /**
-     * The Ldap address modify listener
-     */
-    private ModifyListener ldapAddressTextListener = new ModifyListener()
-    {
-        public void modifyText( ModifyEvent e )
-        {
-            LdapLdapsServersPage.getLdapServerTransportBean( getDirectoryServiceBean() ).setTransportAddress( 
-                ldapAddressText.getText() );
-        }
-    };
     
     
     private SelectionAdapter enableLdapsCheckboxListener = new SelectionAdapter()
@@ -158,7 +155,6 @@ public class OverviewPage extends ServerConfigurationEditorPage
             LdapLdapsServersPage.getLdapsServerTransportBean( getDirectoryServiceBean() ).setEnabled(
                 enableLdapsCheckbox.getSelection() );
             setEnabled( ldapsPortText, enableLdapsCheckbox.getSelection() );
-            setEnabled( ldapsAddressText, enableLdapsCheckbox.getSelection() );
         }
     };
 
@@ -175,18 +171,6 @@ public class OverviewPage extends ServerConfigurationEditorPage
         }
     };
 
-    
-    /**
-     * The Ldaps address modify listener
-     */
-    private ModifyListener ldapsAddressTextListener = new ModifyListener()
-    {
-        public void modifyText( ModifyEvent e )
-        {
-            LdapLdapsServersPage.getLdapsServerTransportBean( getDirectoryServiceBean() ).setTransportAddress( 
-                ldapsAddressText.getText() );
-        }
-    };
     
     private HyperlinkAdapter openLdapConfigurationLinkListener = new HyperlinkAdapter()
     {
@@ -339,12 +323,6 @@ public class OverviewPage extends ServerConfigurationEditorPage
         ldapPortText = createPortText( toolkit, composite );
         createDefaultValueLabel( toolkit, composite, "10389" ); //$NON-NLS-1$
 
-        // LDAP Server Address Text
-        toolkit.createLabel( composite, TABULATION );
-        toolkit.createLabel( composite, Messages.getString( "OverviewPage.Address" ) ); //$NON-NLS-1$
-        ldapAddressText = createAddressText( toolkit, composite );
-        createDefaultValueLabel( toolkit, composite, "0.0.0.0" ); //$NON-NLS-1$
-
         // Enable LDAPS Server Checkbox
         enableLdapsCheckbox = toolkit.createButton( composite,
             Messages.getString( "OverviewPage.EnableLdapsServer" ), SWT.CHECK ); //$NON-NLS-1$
@@ -355,12 +333,6 @@ public class OverviewPage extends ServerConfigurationEditorPage
         toolkit.createLabel( composite, Messages.getString( "OverviewPage.Port" ) ); //$NON-NLS-1$
         ldapsPortText = createPortText( toolkit, composite );
         createDefaultValueLabel( toolkit, composite, "10636" ); //$NON-NLS-1$
-
-        // LDAPS Server Address Text
-        toolkit.createLabel( composite, TABULATION );
-        toolkit.createLabel( composite, Messages.getString( "OverviewPage.Address" ) ); //$NON-NLS-1$
-        ldapsAddressText = createAddressText( toolkit, composite );
-        createDefaultValueLabel( toolkit, composite, "0.0.0.0" ); //$NON-NLS-1$
 
         // LDAP Configuration Link
         openLdapConfigurationLink = toolkit.createHyperlink( composite,
@@ -510,10 +482,6 @@ public class OverviewPage extends ServerConfigurationEditorPage
         addDirtyListener( ldapPortText );
         addModifyListener( ldapPortText, ldapPortTextListener );
 
-        // LDAP Address Text
-        addDirtyListener( ldapAddressText );
-        addModifyListener( ldapAddressText, ldapAddressTextListener );
-
         // Enable LDAPS Checkbox
         addDirtyListener( enableLdapsCheckbox );
         addSelectionListener( enableLdapsCheckbox, enableLdapsCheckboxListener );
@@ -521,10 +489,6 @@ public class OverviewPage extends ServerConfigurationEditorPage
         // LDAPS Port Text
         addDirtyListener( ldapsPortText );
         addModifyListener( ldapsPortText, ldapsPortTextListener );
-
-        // LDAPS Address Text
-        addDirtyListener( ldapsAddressText );
-        addModifyListener( ldapsAddressText, ldapsAddressTextListener );
 
         // Enable Kerberos Checkbox
         addDirtyListener( enableKerberosCheckbox );
@@ -565,10 +529,6 @@ public class OverviewPage extends ServerConfigurationEditorPage
         removeDirtyListener( ldapPortText );
         removeModifyListener( ldapPortText, ldapPortTextListener );
 
-        // LDAP Address Text
-        removeDirtyListener( ldapAddressText );
-        removeModifyListener( ldapAddressText, ldapAddressTextListener );
-
         // Enable LDAPS Checkbox
         removeDirtyListener( enableLdapsCheckbox );
         removeSelectionListener( enableLdapsCheckbox, enableLdapsCheckboxListener );
@@ -576,10 +536,6 @@ public class OverviewPage extends ServerConfigurationEditorPage
         // LDAPS Port Text
         removeDirtyListener( ldapsPortText );
         removeModifyListener( ldapsPortText, ldapsPortTextListener );
-
-        // LDAPS Address Text
-        removeDirtyListener( ldapsAddressText );
-        removeModifyListener( ldapsAddressText, ldapsAddressTextListener );
 
         // Enable Kerberos Checkbox
         removeDirtyListener( enableKerberosCheckbox );
@@ -624,8 +580,6 @@ public class OverviewPage extends ServerConfigurationEditorPage
             setSelection( enableLdapCheckbox, ldapServerTransportBean.isEnabled() );
             setEnabled( ldapPortText, enableLdapCheckbox.getSelection() );
             setText( ldapPortText, Integer.toString( ldapServerTransportBean.getSystemPort() ) );
-            setEnabled( ldapAddressText, enableLdapCheckbox.getSelection() );
-            setText( ldapAddressText, ldapServerTransportBean.getTransportAddress() );
 
             // LDAPS Server
             TransportBean ldapsServerTransportBean = LdapLdapsServersPage
@@ -633,8 +587,6 @@ public class OverviewPage extends ServerConfigurationEditorPage
             setSelection( enableLdapsCheckbox, ldapsServerTransportBean.isEnabled() );
             setEnabled( ldapsPortText, enableLdapsCheckbox.getSelection() );
             setText( ldapsPortText, Integer.toString( ldapsServerTransportBean.getSystemPort() ) );
-            setEnabled( ldapsAddressText, enableLdapsCheckbox.getSelection() );
-            setText( ldapsAddressText, ldapsServerTransportBean.getTransportAddress() );
 
             // Kerberos Server
             KdcServerBean kdcServerBean = KerberosServerPage.getKdcServerBean( directoryServiceBean );
