@@ -144,8 +144,6 @@ import org.eclipse.ui.forms.widgets.TableWrapLayout;
  */
 public class LdapLdapsServersPage extends ServerConfigurationEditorPage
 {
-    private static final int DEFAULT_PORT_LDAPS = 10636;
-    private static final int DEFAULT_PORT_LDAP = 10389;
     private static final int DEFAULT_NB_THREADS = 4;
     private static final int DEFAULT_BACKLOG_SIZE = 50;
     private static final String TRANSPORT_ID_LDAP = "ldap"; //$NON-NLS-1$
@@ -274,7 +272,7 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
             {
                 int port = Integer.parseInt( ldapPortText.getText() );
                 
-                getLdapServerTransportBean().setTransportBackLog( port );
+                getLdapServerTransportBean().setSystemPort( port );
             }
             catch ( NumberFormatException nfe )
             {
@@ -1284,36 +1282,13 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
                 {
                     LdapSecurityConstants hashingMethod = ( LdapSecurityConstants ) element;
 
-                    switch ( hashingMethod )
-                    {
-                        case HASH_METHOD_SHA:
-                            return "SHA"; //$NON-NLS-1$
-                        case HASH_METHOD_SSHA:
-                            return "SSHA"; //$NON-NLS-1$
-                        case HASH_METHOD_MD5:
-                            return "MD5"; //$NON-NLS-1$
-                        case HASH_METHOD_SMD5:
-                            return "SMD5"; //$NON-NLS-1$
-                        case HASH_METHOD_CRYPT:
-                            return "CRYPT"; //$NON-NLS-1$
-                        case HASH_METHOD_SHA256:
-                            return "SHA-256"; //$NON-NLS-1$
-                        case HASH_METHOD_SSHA256:
-                            return "SSHA-256"; //$NON-NLS-1$
-                        case HASH_METHOD_SHA384:
-                            return "SHA-384"; //$NON-NLS-1$
-                        case HASH_METHOD_SSHA384:
-                            return "SSHA-384"; //$NON-NLS-1$
-                        case HASH_METHOD_SHA512:
-                            return "SHA-512"; //$NON-NLS-1$
-                        case HASH_METHOD_SSHA512:
-                            return "SSHA-512"; //$NON-NLS-1$
-                    }
+                    return hashingMethod.getName();
                 }
 
                 return super.getText( element );
             }
         } );
+        
         Object[] hashingMethods = new Object[]
             {
                 LdapSecurityConstants.HASH_METHOD_SHA,
@@ -1326,8 +1301,10 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
                 LdapSecurityConstants.HASH_METHOD_SHA384,
                 LdapSecurityConstants.HASH_METHOD_SSHA384,
                 LdapSecurityConstants.HASH_METHOD_SHA512,
-                LdapSecurityConstants.HASH_METHOD_SSHA512
+                LdapSecurityConstants.HASH_METHOD_SSHA512,
+                LdapSecurityConstants.HASH_METHOD_PKCS5S2
         };
+        
         hashingMethodComboViewer.setInput( hashingMethods );
         setSelection( hashingMethodComboViewer, LdapSecurityConstants.HASH_METHOD_SSHA );
         toolkit.createLabel( hashingMethodComposite, "   " ); //$NON-NLS-1$
