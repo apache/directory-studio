@@ -61,6 +61,7 @@ import org.eclipse.ui.forms.IManagedForm;
 import org.eclipse.ui.forms.editor.FormPage;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.ScrolledForm;
+import org.eclipse.ui.forms.widgets.Section;
 
 
 /**
@@ -796,5 +797,32 @@ public abstract class ServerConfigurationEditorPage extends FormPage
     {
         gd.widthHint = 50;
         control.setLayoutData( gd );
+    }
+    
+    
+    /**
+     * A shared method used to create a Section, based on a GridLayout.
+     * 
+     * @param toolkit The Form toolkit
+     * @param parent The parent 
+     * @param title The Section title
+     * @param nbColumns The number of columns for the inner grid
+     * 
+     * @return The created Composite
+     */
+    protected Composite createSection( FormToolkit toolkit, Composite parent, String title, int nbColumns, int style )
+    {
+        Section section = toolkit.createSection( parent, style );
+        section.setText( Messages.getString( title ) );
+        section.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
+        Composite composite = toolkit.createComposite( section );
+        toolkit.paintBordersFor( composite );
+        GridLayout gridLayout = new GridLayout( nbColumns, false );
+        gridLayout.marginHeight = 0;
+        gridLayout.marginWidth = 0;
+        composite.setLayout( gridLayout );
+        section.setClient( composite );
+
+        return composite;
     }
 }

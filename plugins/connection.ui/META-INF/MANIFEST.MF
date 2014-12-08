@@ -33,3 +33,4 @@ Import-Package: org.apache.commons.lang,
  org.apache.commons.codec.digest,
  org.bouncycastle.asn1,
  org.bouncycastle.x509.extension
+Bundle-ClassPath: .

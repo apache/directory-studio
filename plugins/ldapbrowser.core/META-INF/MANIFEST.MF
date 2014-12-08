@@ -29,7 +29,10 @@ Require-Bundle:  org.eclipse.core.runtime,
  org.apache.directory.api.util;bundle-version="1.0.0.M24",
  org.apache.directory.studio.common.core,
  org.apache.directory.studio.connection.core,
- org.apache.directory.studio.ldifparser
+ org.apache.directory.studio.ldifparser,
+ org.apache.poi;bundle-version="3.9.0",
+ org.openoffice.odfdom;bundle-version="0.6.16",
+ xerces.Impl;bundle-version="2.11.0"
 Import-Package: org.apache.commons.lang,
  org.apache.commons.io,
  org.apache.commons.collections,
@@ -37,14 +40,14 @@ Import-Package: org.apache.commons.lang,
  org.dom4j,
  org.dom4j.io,
  org.xmlpull.v1
-Bundle-ClassPath: .,
- lib/poi-3.9.jar,
- lib/odfdom-0.6.16.jar,
- lib/xercesImpl-2.11.0.jar,
- lib/xml-apis-1.4.01.jar
 Embed-Dependency: *;scope=compile|runtime
 Embed-Directory: lib
 Embed-StripGroup: true
 Embedded-Artifacts: lib/poi-3.9.jar;g="org.apache.poi";a="poi";v="3.9",l
  ib/odfdom-0.6.16.jar;g="org.openoffice";a="odfdom";v="0.6.16",lib/xerce
  sImpl-2.11.0.jar;g="xerces";a="xercesImpl";v="2.11.0"
+Bundle-ClassPath: .,
+ poi-3.9.jar,
+ odfdom-0.6.16.jar,
+ xercesImpl-2.11.0.jar,
+ xml-apis-1.4.01.jar

@@ -10,3 +10,4 @@ Eclipse-LazyStart: true
 Export-Package: org.apache.directory.studio.common.core.jobs
 Import-Package: org.apache.commons.lang
 Require-Bundle: org.eclipse.core.runtime
+Bundle-ClassPath: .

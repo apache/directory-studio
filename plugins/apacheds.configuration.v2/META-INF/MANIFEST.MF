@@ -45,3 +45,8 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.ui.forms,
  org.eclipse.ui.ide,
  net.sf.ehcache.core;bundle-version="2.4.4"
+Bundle-ClassPath: .,
+ poi-3.9.jar,
+ odfdom-0.6.16.jar,
+ xercesImpl-2.11.0.jar,
+ xml-apis-1.4.01.jar

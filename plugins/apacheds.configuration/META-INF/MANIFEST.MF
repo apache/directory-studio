@@ -30,3 +30,4 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.ui.editors,
  org.eclipse.ui.forms,
  org.eclipse.ui.ide
+Bundle-ClassPath: .

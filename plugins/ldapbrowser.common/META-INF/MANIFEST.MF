@@ -22,7 +22,7 @@ Export-Package: org.apache.directory.studio.ldapbrowser.common,
  org.apache.directory.studio.ldapbrowser.common.widgets.search,
  org.apache.directory.studio.ldapbrowser.common.wizards,
  org.apache.directory.studio.valueeditors
-Require-Bundle:  org.eclipse.core.runtime,
+Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.core.expressions,
  org.eclipse.jface.text,
  org.eclipse.ui,
@@ -38,3 +38,8 @@ Require-Bundle:  org.eclipse.core.runtime,
  org.apache.directory.api.util;bundle-version="1.0.0.M24"
 Import-Package: org.apache.commons.lang,
  org.apache.commons.io
+Bundle-ClassPath: .,
+ poi-3.9.jar,
+ odfdom-0.6.16.jar,
+ xercesImpl-2.11.0.jar,
+ xml-apis-1.4.01.jar

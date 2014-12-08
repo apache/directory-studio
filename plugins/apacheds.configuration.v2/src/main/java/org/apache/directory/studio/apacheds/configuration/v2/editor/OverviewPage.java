@@ -413,21 +413,13 @@ public class OverviewPage extends ServerConfigurationEditorPage
     private void createLdapLdapsServersSection( FormToolkit toolkit, Composite parent )
     {
         // Creation of the section
-        Section section = toolkit.createSection( parent, Section.TITLE_BAR );
-        section.setText( Messages.getString( "OverviewPage.LdapLdapsServers" ) ); //$NON-NLS-1$
-        section.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
-        Composite composite = toolkit.createComposite( section );
-        toolkit.paintBordersFor( composite );
-        GridLayout gridLayout = new GridLayout( 4, false );
-        gridLayout.marginHeight = 0;
-        gridLayout.marginWidth = 0;
-        composite.setLayout( gridLayout );
-        section.setClient( composite );
+        int nbColumns = 4;
+        Composite composite = createSection( toolkit, parent, "OverviewPage.LdapLdapsServers", nbColumns, Section.TITLE_BAR );
 
         // Enable LDAP Server Checkbox
         enableLdapCheckbox = toolkit.createButton( composite,
             Messages.getString( "OverviewPage.EnableLdapServer" ), SWT.CHECK ); //$NON-NLS-1$
-        enableLdapCheckbox.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, gridLayout.numColumns, 1 ) );
+        enableLdapCheckbox.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, nbColumns, 1 ) );
 
         // LDAP Server Port Text
         toolkit.createLabel( composite, TABULATION );
@@ -438,7 +430,7 @@ public class OverviewPage extends ServerConfigurationEditorPage
         // Enable LDAPS Server Checkbox
         enableLdapsCheckbox = toolkit.createButton( composite,
             Messages.getString( "OverviewPage.EnableLdapsServer" ), SWT.CHECK ); //$NON-NLS-1$
-        enableLdapsCheckbox.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, gridLayout.numColumns, 1 ) );
+        enableLdapsCheckbox.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, nbColumns, 1 ) );
 
         // LDAPS Server Port Text
         toolkit.createLabel( composite, TABULATION );
@@ -449,8 +441,7 @@ public class OverviewPage extends ServerConfigurationEditorPage
         // LDAP Configuration Link
         openLdapConfigurationLink = toolkit.createHyperlink( composite,
             Messages.getString( "OverviewPage.AdvancedLdapLdapsConfiguration" ), SWT.NONE ); //$NON-NLS-1$
-        openLdapConfigurationLink.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false,
-            gridLayout.numColumns, 1 ) );
+        openLdapConfigurationLink.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, nbColumns, 1 ) );
         openLdapConfigurationLink.addHyperlinkListener( openLdapConfigurationLinkListener );
     }
 
@@ -476,21 +467,14 @@ public class OverviewPage extends ServerConfigurationEditorPage
     private void createKerberosChangePasswordServersSection( FormToolkit toolkit, Composite parent )
     {
         // Creation of the section
-        Section section = toolkit.createSection( parent, Section.TITLE_BAR );
-        section.setText( Messages.getString( "OverviewPage.KerberosServer" ) ); //$NON-NLS-1$
-        section.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
-        Composite composite = toolkit.createComposite( section );
-        toolkit.paintBordersFor( composite );
-        GridLayout gridLayout = new GridLayout( 4, false );
-        gridLayout.marginHeight = gridLayout.marginWidth = 0;
-        composite.setLayout( gridLayout );
-        section.setClient( composite );
+        int nbColumns = 4;
+        Composite composite = createSection( toolkit, parent, "OverviewPage.KerberosServer", nbColumns, Section.TITLE_BAR );
 
         // Enable Kerberos Server Checkbox
         enableKerberosCheckbox = toolkit.createButton( composite,
             Messages.getString( "OverviewPage.EnableKerberosServer" ), SWT.CHECK ); //$NON-NLS-1$
         enableKerberosCheckbox
-            .setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, gridLayout.numColumns, 1 ) );
+            .setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, nbColumns, 1 ) );
 
         // Kerberos Server Port Text
         toolkit.createLabel( composite, TABULATION );
@@ -503,7 +487,7 @@ public class OverviewPage extends ServerConfigurationEditorPage
             Messages.getString( "OverviewPage.EnableKerberosChangePasswordServer" ), //$NON-NLS-1$
             SWT.CHECK );
         enableChangePasswordCheckbox.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false,
-            gridLayout.numColumns, 1 ) );
+            nbColumns, 1 ) );
 
         // Change Password Server Port Text
         toolkit.createLabel( composite, TABULATION );
@@ -515,13 +499,27 @@ public class OverviewPage extends ServerConfigurationEditorPage
         openKerberosConfigurationLink = toolkit.createHyperlink( composite,
             Messages.getString( "OverviewPage.AdvancedKerberosConfiguration" ), SWT.NONE ); //$NON-NLS-1$
         openKerberosConfigurationLink.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false,
-            gridLayout.numColumns, 1 ) );
+            nbColumns, 1 ) );
         openKerberosConfigurationLink.addHyperlinkListener( openKerberosConfigurationLinkListener );
     }
 
 
     /**
-     * Creates the Partitions section.
+     * Creates the Partitions section. This is just an informative section, 
+     * where we list the existing partitions.
+     * 
+     * <pre>
+     * .--------------------------------.
+     * | Partitions                     |
+     * +--------------------------------|
+     * | +----------------------------+ |
+     * | | Partition 1                | |
+     * | | Partition 2                | |
+     * | | ...                        | |
+     * | +----------------------------+ |
+     * | <advanced partitionsS config>  |
+     * +--------------------------------+
+     * </pre>
      *
      * @param toolkit the toolkit
      * @param parent the parent composite
@@ -529,15 +527,8 @@ public class OverviewPage extends ServerConfigurationEditorPage
     private void createPartitionsSection( FormToolkit toolkit, Composite parent )
     {
         // Creation of the section
-        Section section = toolkit.createSection( parent, Section.TITLE_BAR );
-        section.setText( Messages.getString( "OverviewPage.Partitions" ) ); //$NON-NLS-1$
-        section.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
-        Composite composite = toolkit.createComposite( section );
-        toolkit.paintBordersFor( composite );
-        GridLayout gridLayout = new GridLayout( 1, false );
-        gridLayout.marginHeight = gridLayout.marginWidth = 0;
-        composite.setLayout( gridLayout );
-        section.setClient( composite );
+        int nbColumns = 1;
+        Composite composite = createSection( toolkit, parent, "OverviewPage.Partitions", nbColumns, Section.TITLE_BAR );
 
         // Partitions Label
         partitionsLabel = toolkit.createLabel( composite, "" ); //$NON-NLS-1$
@@ -556,14 +547,24 @@ public class OverviewPage extends ServerConfigurationEditorPage
         // Partitions Configuration Link
         openPartitionsConfigurationLink = toolkit.createHyperlink( composite,
             Messages.getString( "OverviewPage.AdvancedPartitionsConfiguration" ), SWT.NONE ); //$NON-NLS-1$
-        openPartitionsConfigurationLink.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false,
-            gridLayout.numColumns, 1 ) );
+        openPartitionsConfigurationLink.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, nbColumns, 1 ) );
         openPartitionsConfigurationLink.addHyperlinkListener( openPartitionsConfigurationLinkListener );
     }
 
 
     /**
-     * Creates the Options section.
+     * Creates the Options section. This section expose a few critical options that are
+     * generally useful (allow anonymous, or enable control access atm).
+     * 
+     * <pre>
+     * +--------------------------------+
+     * | Options                        |
+     * +--------------------------------+
+     * | [X] Allow anonymous access     |
+     * | [X] Enable Access Control      |
+     * |                                |
+     * +--------------------------------+
+     * </pre>
      *
      * @param toolkit the toolkit
      * @param parent the parent composite
@@ -571,15 +572,8 @@ public class OverviewPage extends ServerConfigurationEditorPage
     private void createOptionsSection( FormToolkit toolkit, Composite parent )
     {
         // Creation of the section
-        Section section = toolkit.createSection( parent, Section.TITLE_BAR );
-        section.setText( Messages.getString( "OverviewPage.Options" ) ); //$NON-NLS-1$
-        section.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
-        Composite composite = toolkit.createComposite( section );
-        toolkit.paintBordersFor( composite );
-        GridLayout gridLayout = new GridLayout( 1, false );
-        gridLayout.marginHeight = gridLayout.marginWidth = 0;
-        composite.setLayout( gridLayout );
-        section.setClient( composite );
+        int nbColumns = 1;
+        Composite composite = createSection( toolkit, parent, "OverviewPage.Options", nbColumns, Section.TITLE_BAR );
 
         // Allow Anonymous Access Checkbox
         allowAnonymousAccessCheckbox = toolkit.createButton( composite,

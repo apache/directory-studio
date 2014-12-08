@@ -31,3 +31,4 @@ Import-Package: org.apache.commons.lang,
  org.apache.http.conn.ssl,
  org.dom4j,
  org.dom4j.io
+Bundle-ClassPath: .
