@@ -13,6 +13,8 @@
       <unit id="slf4j.log4j12" version="${org.slf4j.bundleversion}"/>
       <unit id="xpp3" version="${org.xpp3.bundleversion}"/>
       <unit id="net.sf.ehcache.core" version="${net.sf.ehcache.bundleversion}"/>
+      <unit id="org.apache.poi" version="${org.apache.poi.bundleversion}"/>
+      <unit id="org.openoffice.odfdom" version="${org.openoffice.odfdom.bundleversion}"/>
 
       <!-- Commons jars -->
       <unit id="org.apache.commons.collections" version="${org.apache.commons.collections.bundleversion}"/>

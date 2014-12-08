@@ -99,7 +99,11 @@
     <org.slf4j.bundleversion>1.7.7</org.slf4j.bundleversion>
     <org.xpp3.version>1.1.4c</org.xpp3.version>
     <org.xpp3.bundleversion>1.1.0.4c</org.xpp3.bundleversion>
-<!--     <org.apache.poi.version>3.9</org.apache.poi.version> -->
+    <org.apache.poi.version>3.9</org.apache.poi.version>
+    <org.apache.poi.bundleversion>3.9.0</org.apache.poi.bundleversion>
+    <org.openoffice.odfdom.version>0.6.16</org.openoffice.odfdom.version>
+    <org.openoffice.odfdom.bundleversion>0.6.16</org.openoffice.odfdom.bundleversion>
+
 <!--     <xerces.xercesimpl.version>2.11.0</xerces.xercesimpl.version> -->
 
     <!-- Set versions for maven plugins -->
