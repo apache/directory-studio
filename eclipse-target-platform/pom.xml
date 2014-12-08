@@ -60,6 +60,7 @@
                 <artifact><id>net.sf.ehcache:ehcache-core:${net.sf.ehcache.version}</id></artifact>
                 <artifact><id>org.apache.poi:poi:${org.apache.poi.version}</id></artifact>
                 <artifact><id>org.openoffice:odfdom:${org.openoffice.odfdom.version}</id></artifact>
+                <artifact><id>xerces:xercesImpl:${xerces.xercesimpl.version}</id></artifact>
 
                 <!-- LDAP API artifacts -->
                 <artifact><id>org.apache.directory.api:api-asn1-api:${org.apache.directory.api.version}</id></artifact>

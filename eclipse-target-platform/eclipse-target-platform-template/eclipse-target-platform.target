@@ -15,6 +15,7 @@
       <unit id="net.sf.ehcache.core" version="${net.sf.ehcache.bundleversion}"/>
       <unit id="org.apache.poi" version="${org.apache.poi.bundleversion}"/>
       <unit id="org.openoffice.odfdom" version="${org.openoffice.odfdom.bundleversion}"/>
+      <unit id="xerces.Impl" version="${xerces.xercesimpl.bundleversion}"/>
 
       <!-- Commons jars -->
       <unit id="org.apache.commons.collections" version="${org.apache.commons.collections.bundleversion}"/>
