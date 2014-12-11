@@ -13,4 +13,3 @@ Export-Package: org.apache.directory.studio.ldifparser,
  org.apache.directory.studio.ldifparser.parser
 Require-Bundle: org.apache.directory.api.ldap.model;bundle-version="1.0.0.M24"
 Import-Package: org.apache.commons.codec.binary
-Bundle-ClassPath: .

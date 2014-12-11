@@ -31,6 +31,3 @@ Require-Bundle: org.eclipse.core.runtime,
  org.apache.directory.studio.apacheds.configuration,
  org.apache.directory.studio.ldapservers,
  dom4j
-Bundle-ClassPath: .,
- jdi.jar,
- jdimodel.jar

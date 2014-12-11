@@ -38,8 +38,3 @@ Require-Bundle: org.eclipse.core.runtime,
  org.apache.directory.api.util;bundle-version="1.0.0.M24"
 Import-Package: org.apache.commons.lang,
  org.apache.commons.io
-Bundle-ClassPath: .,
- poi-3.9.jar,
- odfdom-0.6.16.jar,
- xercesImpl-2.11.0.jar,
- xml-apis-1.4.01.jar

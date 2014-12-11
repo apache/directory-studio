@@ -32,6 +32,3 @@ Require-Bundle: org.eclipse.core.runtime,
  org.apache.directory.studio.common.ui,
  org.apache.directory.studio.connection.core,
  dom4j
-Bundle-ClassPath: .,
- jdi.jar,
- jdimodel.jar
