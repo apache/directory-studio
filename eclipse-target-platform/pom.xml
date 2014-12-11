@@ -37,7 +37,7 @@
       <plugin>
         <groupId>org.reficio</groupId>
         <artifactId>p2-maven-plugin</artifactId>
-        <version>1.1.0</version>
+        <version>1.1.1</version>
         <executions>
           <execution>
             <id>default-cli</id>
@@ -53,14 +53,13 @@
                 <artifact><id>commons-io:commons-io:${org.apache.commons.io.version}</id></artifact>
                 <artifact><id>commons-lang:commons-lang:${org.apache.commons.lang.version}</id></artifact>
                 <artifact><id>commons-pool:commons-pool:${org.apache.commons.pool.version}</id></artifact>
-                <artifact><id>dom4j:dom4j:${org.dom4j.version}</id></artifact>
                 <artifact><id>log4j:log4j:${log4j.log4j.version}</id></artifact>
                 <artifact><id>org.slf4j:slf4j-api:${org.slf4j.version}</id></artifact>
                 <artifact><id>org.slf4j:slf4j-log4j12:${org.slf4j.version}</id></artifact>
                 <artifact><id>net.sf.ehcache:ehcache-core:${net.sf.ehcache.version}</id></artifact>
                 <artifact><id>org.apache.poi:poi:${org.apache.poi.version}</id></artifact>
-                <artifact><id>org.openoffice:odfdom:${org.openoffice.odfdom.version}</id></artifact>
                 <artifact><id>xerces:xercesImpl:${xerces.xercesimpl.version}</id></artifact>
+                <!-- artifact><id>org.xpp3:xpp3:${org.xpp3.version}</id></artifact -->
 
                 <!-- LDAP API artifacts -->
                 <artifact><id>org.apache.directory.api:api-asn1-api:${org.apache.directory.api.version}</id></artifact>
