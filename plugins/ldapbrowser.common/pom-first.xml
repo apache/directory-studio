@@ -27,8 +27,9 @@
     <relativePath>../pom-first.xml</relativePath>
   </parent>
 
-  <artifactId>org.apache.directory.studio.connection.ui</artifactId>
-  <name>Apache Directory Studio Connection UI Manifest Generation</name>
+  <artifactId>org.apache.directory.studio.ldapbrowser.common</artifactId>
+  <name>Apache Directory Studio LDAP Browser Common Manifest Generation</name>
+  <description/>
   <packaging>bundle</packaging>
 
   <build>
@@ -44,34 +45,39 @@
             <Bundle-SymbolicName>${project.artifactId};singleton:=true</Bundle-SymbolicName>
             <Bundle-Localization>plugin</Bundle-Localization>
             <Eclipse-LazyStart>true</Eclipse-LazyStart>
-            <Bundle-Activator>org.apache.directory.studio.connection.ui.ConnectionUIPlugin</Bundle-Activator>
+            <Bundle-Activator>org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator</Bundle-Activator>
             
-            <Export-Package>org.apache.directory.studio.connection.ui,
- org.apache.directory.studio.connection.ui.actions,
- org.apache.directory.studio.connection.ui.dialogs,
- org.apache.directory.studio.connection.ui.dnd,
- org.apache.directory.studio.connection.ui.preferences,
- org.apache.directory.studio.connection.ui.properties,
- org.apache.directory.studio.connection.ui.widgets,
- org.apache.directory.studio.connection.ui.wizards,
- org.apache.directory.studio.utils</Export-Package>
-            
-            <Require-Bundle>org.eclipse.core.runtime,
+            <Export-Package>org.apache.directory.studio.ldapbrowser.common,
+ org.apache.directory.studio.ldapbrowser.common.actions,
+ org.apache.directory.studio.ldapbrowser.common.actions.proxy,
+ org.apache.directory.studio.ldapbrowser.common.dialogs,
+ org.apache.directory.studio.ldapbrowser.common.dialogs.preferences,
+ org.apache.directory.studio.ldapbrowser.common.dnd,
+ org.apache.directory.studio.ldapbrowser.common.filtereditor,
+ org.apache.directory.studio.ldapbrowser.common.widgets,
+ org.apache.directory.studio.ldapbrowser.common.widgets.browser,
+ org.apache.directory.studio.ldapbrowser.common.widgets.entryeditor,
+ org.apache.directory.studio.ldapbrowser.common.widgets.search,
+ org.apache.directory.studio.ldapbrowser.common.wizards,
+ org.apache.directory.studio.valueeditors</Export-Package>
+ 
+            <Import-Package>org.eclipse.core.runtime,
+ org.eclipse.core.expressions,
+ org.eclipse.jface.text,
  org.eclipse.ui,
- org.eclipse.ui.forms,
+ org.eclipse.ui.editors,
  org.eclipse.ui.workbench.texteditor,
  org.apache.directory.studio.common.core,
  org.apache.directory.studio.common.ui,
  org.apache.directory.studio.connection.core,
- org.apache.directory.api.ldap.model;bundle-version="${org.apache.directory.api.bundleversion}"</Require-Bundle>
+ org.apache.directory.studio.connection.ui,
+ org.apache.directory.studio.ldapbrowser.core,
+ org.apache.directory.studio.ldifparser,
+ org.apache.directory.api.ldap.model;bundle-version="${org.apache.directory.api.bundleversion}",
+ org.apache.directory.api.util;bundle-version="${org.apache.directory.api.bundleversion}"</Import-Package>
             
-            <Import-Package>org.apache.commons.lang,
- org.apache.commons.lang.time,
- org.apache.commons.io,
- org.apache.commons.codec.binary,
- org.apache.commons.codec.digest,
- org.bouncycastle.asn1,
- org.bouncycastle.x509.extension</Import-Package>
+            <Require-Bundle>org.apache.commons.lang,
+ org.apache.commons.io</Require-Bundle>
           </instructions>
         </configuration>
         <executions>
