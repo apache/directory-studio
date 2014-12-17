@@ -1,33 +1,49 @@
 Manifest-Version: 1.0
-Bundle-ManifestVersion: 2
-Bundle-Name: Apache Directory Studio Connection Core
-Bundle-Vendor: The Apache Software Foundation
-Bundle-Version: 2.0.0.qualifier
-Bundle-SymbolicName: org.apache.directory.studio.connection.core;singleton:=true
+Bnd-LastModified: 1418808535981
+Build-Jdk: 1.7.0_55
+Built-By: elecharny
+Bundle-Activator: org.apache.directory.studio.connection.core.Connection
+ CorePlugin
+Bundle-Description: The Apache Directory Project provides directory solu
+ tions entirely written in Java. These include a directory server, which
+  has been certified as LDAP v3 compliant     by the Open Group (Apache 
+ Directory Server), and Eclipse-based directory tools (Apache Directory 
+ Studio).
+Bundle-DocURL: http://www.apache.org/
 Bundle-License: http://www.apache.org/licenses/LICENSE-2.0.txt
-Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-Localization: plugin
-Bundle-Activator: org.apache.directory.studio.connection.core.ConnectionCorePlugin
+Bundle-ManifestVersion: 2
+Bundle-Name: org.apache.directory.studio.connection.core
+Bundle-SymbolicName: org.apache.directory.studio.connection.core;singlet
+ on:=true
+Bundle-Vendor: The Apache Software Foundation
+Bundle-Version: 2.0.0.SNAPSHOT
+Created-By: Apache Maven Bundle Plugin
 Eclipse-LazyStart: true
-Export-Package: org.apache.directory.studio.connection.core,
- org.apache.directory.studio.connection.core.event,
- org.apache.directory.studio.connection.core.io,
- org.apache.directory.studio.connection.core.io.api,
- org.apache.directory.studio.connection.core.io.jndi,
- org.apache.directory.studio.connection.core.jobs
-Require-Bundle: org.eclipse.core.runtime,
- org.eclipse.ui,
- org.apache.directory.studio.common.core,
- org.apache.directory.studio.ldifparser,
- org.apache.directory.api.asn1.api;bundle-version="1.0.0.M24",
- org.apache.directory.api.ldap.client.api;bundle-version="1.0.0.M24",
- org.apache.directory.api.ldap.codec.core;bundle-version="1.0.0.M24",
- org.apache.directory.api.ldap.model;bundle-version="1.0.0.M24",
- org.apache.directory.api.ldap.net.mina;bundle-version="1.0.0.M24",
- org.apache.directory.api.util;bundle-version="1.0.0.M24"
-Import-Package: org.apache.commons.lang,
- org.apache.commons.io,
- org.apache.commons.codec.digest,
- org.apache.http.conn.ssl,
- org.dom4j,
- org.dom4j.io
+Export-Package: org.apache.directory.studio.connection.core;uses:="org.a
+ pache.directory.studio.connection.core.event,org.apache.directory.studi
+ o.connection.core.io,org.apache.directory.studio.connection.core.io.jnd
+ i";version="2.0.0",org.apache.directory.studio.connection.core.event;us
+ es:="org.apache.directory.studio.connection.core";version="2.0.0",org.a
+ pache.directory.studio.connection.core.io;uses:="org.apache.directory.s
+ tudio.connection.core,org.apache.directory.studio.connection.core.io.jn
+ di";version="2.0.0",org.apache.directory.studio.connection.core.io.api;
+ uses:="org.apache.directory.studio.connection.core,org.apache.directory
+ .studio.connection.core.io,org.apache.directory.studio.connection.core.
+ io.jndi";version="2.0.0",org.apache.directory.studio.connection.core.io
+ .jndi;uses:="org.apache.directory.studio.connection.core,org.apache.dir
+ ectory.studio.connection.core.io";version="2.0.0",org.apache.directory.
+ studio.connection.core.jobs;uses:="org.apache.directory.studio.connecti
+ on.core";version="2.0.0"
+Import-Package: org.apache.commons.lang,org.apache.commons.io,org.apache
+ .commons.codec.digest,org.apache.http.conn.ssl,org.dom4j,org.dom4j.io
+Require-Bundle: org.apache.directory.api.asn1.api;bundle-version="1.0.0.
+ M24",org.apache.directory.api.ldap.client.api;bundle-version="1.0.0.M24
+ ",org.apache.directory.api.ldap.codec.core;bundle-version="1.0.0.M24",o
+ rg.apache.directory.api.ldap.model;bundle-version="1.0.0.M24",org.apach
+ e.directory.api.ldap.net.mina;bundle-version="1.0.0.M24",org.apache.dir
+ ectory.api.util;bundle-version="1.0.0.M24",org.apache.directory.studio.
+ common.core,org.apache.directory.studio.ldifparser,org.eclipse.core.run
+ time,org.eclipse.ui
+Require-Capability: osgi.ee;filter:="(&(osgi.ee=JavaSE)(version=1.6))"
+Tool: Bnd-2.3.0.201405100607
