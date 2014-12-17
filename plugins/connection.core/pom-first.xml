@@ -45,7 +45,9 @@
             <Bundle-Localization>plugin</Bundle-Localization>
             <Eclipse-LazyStart>true</Eclipse-LazyStart>
             <Bundle-Activator>org.apache.directory.studio.connection.core.ConnectionCorePlugin</Bundle-Activator>
+            
             <Export-Package>org.apache.directory.studio.connection.core.*</Export-Package>
+            
             <Require-Bundle>org.apache.directory.api.asn1.api;bundle-version="${org.apache.directory.api.bundleversion}",
  org.apache.directory.api.ldap.client.api;bundle-version="${org.apache.directory.api.bundleversion}",
  org.apache.directory.api.ldap.codec.core;bundle-version="${org.apache.directory.api.bundleversion}",
@@ -56,9 +58,10 @@
  org.apache.directory.studio.ldifparser,
  org.eclipse.core.runtime,
  org.eclipse.ui</Require-Bundle>
-            <Import-Package>org.apache.commons.lang;version:"${org.apache.commons.lang.bundleversion},
- org.apache.commons.io;version:"${org.apache.commons.io.bundleversion},
- org.apache.commons.codec.digest;version:"${org.apache.commons.codec.bundleversion},
+            
+            <Import-Package>org.apache.commons.lang,
+ org.apache.commons.io,
+ org.apache.commons.codec.digest,
  org.apache.http.conn.ssl,
  org.dom4j,
  org.dom4j.io</Import-Package>

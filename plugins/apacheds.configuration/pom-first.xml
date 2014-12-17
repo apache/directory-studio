@@ -56,7 +56,7 @@
  org.apache.directory.studio.apacheds.configuration.model.v156,
  org.apache.directory.studio.apacheds.configuration.model.v157</Export-Package>
  
-            <Import-Packages>org.apache.commons.lang;version:"${org.apache.commons.lang.bundleversion},
+            <Import-Packages>org.apache.commons.lang,
  org.dom4j,
  org.dom4j.io</Import-Packages>
             
