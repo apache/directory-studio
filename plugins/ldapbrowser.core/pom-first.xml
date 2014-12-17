@@ -28,7 +28,7 @@
   </parent>
 
   <artifactId>org.apache.directory.studio.ldapbrowser.core</artifactId>
-  <name>Apache Directory Studio LDAP Browser Core</name>
+  <name>Apache Directory Studio LDAP Browser Core Manifest Generation</name>
   <description/>
   <packaging>bundle</packaging>
 
