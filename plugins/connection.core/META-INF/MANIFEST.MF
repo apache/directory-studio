@@ -17,7 +17,7 @@ Bundle-Name: org.apache.directory.studio.connection.core
 Bundle-SymbolicName: org.apache.directory.studio.connection.core;singlet
  on:=true
 Bundle-Vendor: The Apache Software Foundation
-Bundle-Version: 2.0.0.SNAPSHOT
+Bundle-Version: 2.0.0.qualifier
 Created-By: Apache Maven Bundle Plugin
 Eclipse-LazyStart: true
 Export-Package: org.apache.directory.studio.connection.core;uses:="org.a
