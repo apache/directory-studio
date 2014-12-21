@@ -46,7 +46,12 @@
             <Eclipse-LazyStart>true</Eclipse-LazyStart>
             <Bundle-Activator>org.apache.directory.studio.connection.core.ConnectionCorePlugin</Bundle-Activator>
             
-            <Export-Package>org.apache.directory.studio.connection.core.*</Export-Package>
+            <Export-Package>org.apache.directory.studio.connection.core,
+ org.apache.directory.studio.connection.core.event,
+ org.apache.directory.studio.connection.core.io,
+ org.apache.directory.studio.connection.core.io.api,
+ org.apache.directory.studio.connection.core.io.jndi,
+ org.apache.directory.studio.connection.core.jobs</Export-Package>
             
             <Require-Bundle>org.apache.directory.api.asn1.api;bundle-version="${org.apache.directory.api.bundleversion}",
  org.apache.directory.api.ldap.client.api;bundle-version="${org.apache.directory.api.bundleversion}",
