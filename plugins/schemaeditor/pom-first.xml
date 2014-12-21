@@ -32,6 +32,15 @@
   <description/>
   <packaging>bundle</packaging>
 
+  <dependencies>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>${junit.version}</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
   <build>
      <!-- MANIFEST.MF Generation -->
     <plugins>
@@ -47,15 +56,25 @@
             <Eclipse-LazyStart>true</Eclipse-LazyStart>
             <Bundle-Activator>org.apache.directory.studio.schemaeditor.Activator</Bundle-Activator>
             
-            <Export-Package>org.apache.directory.studio.schemaeditor</Export-Package>
- 
-            <Import-Package>org.apache.commons.collections,
+            <Export-Package>org.apache.directory.studio.schemaeditor,
+ org.apache.directory.studio.schemaeditor.controller,
+ org.apache.directory.studio.schemaeditor.model,
+ org.apache.directory.studio.schemaeditor.model.difference,
+ org.apache.directory.studio.schemaeditor.model.io,
+ org.apache.directory.studio.schemaeditor.model.schemachecker,
+ org.apache.directory.studio.schemaeditor.view,
+ org.apache.directory.studio.schemaeditor.view.search,
+ org.apache.directory.studio.schemaeditor.view.views,
+ org.apache.directory.studio.schemaeditor.view.widget,
+ org.apache.directory.studio.schemaeditor.view.wrappers</Export-Package>
+
+            <Import-Package>org.apache.commons.collections, 
  org.apache.commons.collections.map,
  org.apache.commons.io,
  org.apache.log4j,
  org.dom4j,
  org.dom4j.io</Import-Package>
-            
+
             <Require-Bundle>org.eclipse.core.runtime,
  org.apache.directory.api.asn1.api;bundle-version="${org.apache.directory.api.bundleversion}",
  org.apache.directory.api.ldap.model;bundle-version="${org.apache.directory.api.bundleversion}",
@@ -87,6 +106,5 @@
       </plugin>
     </plugins>
   </build>
-
 </project>
 
