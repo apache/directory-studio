@@ -42,8 +42,51 @@
   </dependencies>
   
   <build>
-     <!-- MANIFEST.MF Generation -->
     <plugins>
+      <!-- Embedded artifacts -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>copy-embedded-libs</id>
+            <phase>process-resources</phase>
+            <goals>
+              <goal>copy</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>lib</outputDirectory>
+              <artifactItems>
+                <artifactItem>
+                  <groupId>org.apache.poi</groupId>
+                  <artifactId>poi</artifactId>
+                  <version>3.9</version>
+                </artifactItem>
+                
+                <artifactItem>
+                  <groupId>org.openoffice</groupId>
+                  <artifactId>odfdom</artifactId>
+                  <version>0.6.16</version>
+                </artifactItem>
+                
+                <artifactItem>
+                  <groupId>xerces</groupId>
+                  <artifactId>xercesImpl</artifactId>
+                  <version>2.11.0</version>
+                </artifactItem>
+                
+                <artifactItem>
+                  <groupId>xml-apis</groupId>
+                  <artifactId>xml-apis</artifactId>
+                  <version>1.4.01</version>
+                </artifactItem>
+              </artifactItems>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <!-- MANIFEST.MF Generation -->
       <plugin>
         <groupId>org.apache.felix</groupId>
         <artifactId>maven-bundle-plugin</artifactId>
@@ -86,6 +129,11 @@
  org.apache.directory.studio.common.core,
  org.apache.directory.studio.connection.core,
  org.apache.directory.studio.ldifparser</Require-Bundle>
+
+            <Embed-Directory>lib</Embed-Directory>
+            <Embedded-Artifacts>lib/poi-3.9.jar;g="org.apache.poi";a="poi";v="3.9"</Embedded-Artifacts>
+            <Bundle-ClassPath>.,
+ lib/poi-3.9.jar</Bundle-ClassPath>
           </instructions>
         </configuration>
         <executions>

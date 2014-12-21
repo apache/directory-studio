@@ -53,24 +53,6 @@
                   <artifactId>poi</artifactId>
                   <version>3.9</version>
                 </artifactItem>
-                
-                <artifactItem>
-                  <groupId>org.openoffice</groupId>
-                  <artifactId>odfdom</artifactId>
-                  <version>0.6.16</version>
-                </artifactItem>
-                
-                <artifactItem>
-                  <groupId>xerces</groupId>
-                  <artifactId>xercesImpl</artifactId>
-                  <version>2.11.0</version>
-                </artifactItem>
-                
-                <artifactItem>
-                  <groupId>xml-apis</groupId>
-                  <artifactId>xml-apis</artifactId>
-                  <version>1.4.01</version>
-                </artifactItem>
               </artifactItems>
             </configuration>
           </execution>
