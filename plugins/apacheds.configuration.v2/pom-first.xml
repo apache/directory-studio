@@ -54,14 +54,14 @@
  org.apache.directory.studio.apacheds.configuration.v2.jobs,
  org.apache.directory.studio.apacheds.configuration.v2.wizards</Export-Package>
  
-            <Import-Packages>org.apache.directory.server.core.api,
+            <Import-Package>org.apache.directory.server.core.api,
  org.apache.directory.server.config,
  org.apache.directory.server.config.beans,
  org.apache.directory.server.core.api.entry,
  org.apache.directory.server.core.api.filtering,
  org.apache.directory.server.core.api.interceptor.context,
  org.apache.directory.server.core.api.partition,
- org.slf4j</Import-Packages>
+ org.slf4j</Import-Package>
             
             <Require-Bundle>org.eclipse.core.runtime,
  org.apache.commons.io;bundle-version="${org.apache.commons.io.bundleversion}",
