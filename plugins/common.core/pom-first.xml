@@ -45,10 +45,9 @@
             <Bundle-SymbolicName>${project.artifactId};singleton:=true</Bundle-SymbolicName>
             <Bundle-Localization>plugin</Bundle-Localization>
             <Eclipse-LazyStart>true</Eclipse-LazyStart>
-            <Bundle-Activator>org.apache.directory.studio.apacheds.configuration.v2.ApacheDS2ConfigurationPlugin</Bundle-Activator>
             
             <Export-Package>org.apache.directory.studio.common.core.jobs</Export-Package>
- 
+            
             <Import-Packages>org.apache.commons.lang</Import-Packages>
             
             <Require-Bundle>org.eclipse.core.runtime</Require-Bundle>
