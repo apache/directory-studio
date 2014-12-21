@@ -49,7 +49,9 @@
             
             <Export-Package>org.apache.directory.studio.ldapservers.apacheds.v200</Export-Package>
  
-            <Import-Package>dom4j</Import-Package>
+            <Import-Package>org.dom4j,
+ org.dom4j.io,
+ org.dom4j.tree</Import-Package>
             
             <Require-Bundle>org.apache.directory.server.config;bundle-version="${org.apache.directory.server.bundleversion}",
  org.apache.directory.server.xdbm.partition;bundle-version="${org.apache.directory.server.bundleversion}",
