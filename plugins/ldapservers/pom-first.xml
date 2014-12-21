@@ -47,26 +47,15 @@
             <Eclipse-LazyStart>true</Eclipse-LazyStart>
             <Bundle-Activator>org.apache.directory.studio.ldapservers.LdapServersPlugin</Bundle-Activator>
             
-            <Export-Package>org.apache.directory.studio.entryeditors,
- org.apache.directory.studio.ldapbrowser.ui,
- org.apache.directory.studio.ldapbrowser.ui.actions,
- org.apache.directory.studio.ldapbrowser.ui.actions.proxy,
- org.apache.directory.studio.ldapbrowser.ui.dialogs,
- org.apache.directory.studio.ldapbrowser.ui.dialogs.preferences,
- org.apache.directory.studio.ldapbrowser.ui.dialogs.properties,
- org.apache.directory.studio.ldapbrowser.ui.editors.entry,
- org.apache.directory.studio.ldapbrowser.ui.editors.schemabrowser,
- org.apache.directory.studio.ldapbrowser.ui.editors.searchresult,
- org.apache.directory.studio.ldapbrowser.ui.perspective,
- org.apache.directory.studio.ldapbrowser.ui.search,
- org.apache.directory.studio.ldapbrowser.ui.views.browser,
- org.apache.directory.studio.ldapbrowser.ui.views.connection,
- org.apache.directory.studio.ldapbrowser.ui.views.modificationlogs,
- org.apache.directory.studio.ldapbrowser.ui.views.searchlogs,
- org.apache.directory.studio.ldapbrowser.ui.wizards</Export-Package>
+            <Export-Package>org.apache.directory.studio.ldapservers,
+ org.apache.directory.studio.ldapservers.model,
+ org.apache.directory.studio.ldapservers.views,
+ org.apache.directory.studio.ldapservers.actions</Export-Package>
  
             <Import-Package>org.apache.commons.lang,
- dom4j</Import-Package>
+ org.dom4j,
+ org.dom4j.io,
+ org.dom4j.tree</Import-Package>
             
             <Require-Bundle>org.eclipse.core.runtime,
  org.apache.mina.core;bundle-version="${org.apache.mina.bundleversion}",
@@ -83,8 +72,7 @@
  org.eclipse.ui.ide,
  org.apache.directory.studio.common.core,
  org.apache.directory.studio.common.ui,
- org.apache.directory.studio.connection.core,
- org.apache.directory.studio.common.core.jobs</Require-Bundle>
+ org.apache.directory.studio.connection.core</Require-Bundle>
           </instructions>
         </configuration>
         <executions>
