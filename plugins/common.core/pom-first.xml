@@ -48,7 +48,7 @@
             
             <Export-Package>org.apache.directory.studio.common.core.jobs</Export-Package>
             
-            <Import-Packages>org.apache.commons.lang</Import-Packages>
+            <Import-Package>org.apache.commons.lang</Import-Package>
             
             <Require-Bundle>org.eclipse.core.runtime</Require-Bundle>
           </instructions>

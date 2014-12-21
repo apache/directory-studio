@@ -56,9 +56,9 @@
  org.apache.directory.studio.apacheds.configuration.model.v156,
  org.apache.directory.studio.apacheds.configuration.model.v157</Export-Package>
  
-            <Import-Packages>org.apache.commons.lang,
+            <Import-Package>org.apache.commons.lang,
  org.dom4j,
- org.dom4j.io</Import-Packages>
+ org.dom4j.io</Import-Package>
             
             <Require-Bundle>org.eclipse.core.runtime,
  org.apache.directory.api.ldap.model;bundle-version="${org.apache.directory.api.bundleversion}",
