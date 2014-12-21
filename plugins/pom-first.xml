@@ -31,27 +31,27 @@
   <packaging>pom</packaging>
 
   <modules>
-    <module>aciitemeditor/pom-first.xml</module>
-    <module>apacheds.configuration/pom-first.xml</module>
-    <module>apacheds.configuration.v2/pom-first.xml</module>
     <module>common.core/pom-first.xml</module>
+    <module>ldifparser/pom-first.xml</module>
     <module>common.ui/pom-first.xml</module>
+    <module>apacheds.configuration/pom-first.xml</module>
     <module>connection.core/pom-first.xml</module>
     <module>connection.ui/pom-first.xml</module>
     <module>ldapbrowser.core/pom-first.xml</module>
     <module>ldapbrowser.common/pom-first.xml</module>
+    <module>ldifeditor/pom-first.xml</module>
     <module>ldapbrowser.ui/pom-first.xml</module>
     <module>ldapservers/pom-first.xml</module>
+    <module>apacheds.configuration.v2/pom-first.xml</module>
+    <module>schemaeditor/pom-first.xml</module>
+    <module>valueeditors/pom-first.xml</module>
+    <module>aciitemeditor/pom-first.xml</module>
     <!-- module>ldapservers.apacheds.v153/pom-first.xml</module -->
     <!-- module>ldapservers.apacheds.v154/pom-first.xml</module -->
     <!-- module>ldapservers.apacheds.v155/pom-first.xml</module -->
     <!-- module>ldapservers.apacheds.v156/pom-first.xml</module -->
     <!-- module>ldapservers.apacheds.v157/pom-first.xml</module -->
     <module>ldapservers.apacheds.v200/pom-first.xml</module>
-    <module>ldifeditor/pom-first.xml</module>
-    <module>ldifparser/pom-first.xml</module>
-    <module>schemaeditor/pom-first.xml</module>
-    <module>valueeditors/pom-first.xml</module>
   </modules>
 
 </project>
