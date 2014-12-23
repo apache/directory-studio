@@ -61,7 +61,8 @@
  org.apache.directory.server.core.api.filtering,
  org.apache.directory.server.core.api.interceptor.context,
  org.apache.directory.server.core.api.partition,
- org.slf4j</Import-Package>
+ org.slf4j,
+ net.sf.ehcache</Import-Package>
             
             <Require-Bundle>org.eclipse.core.runtime,
  org.apache.commons.io;bundle-version="${org.apache.commons.io.bundleversion}",
@@ -83,8 +84,7 @@
  org.eclipse.ui,
  org.eclipse.ui.editors,
  org.eclipse.ui.forms,
- org.eclipse.ui.ide,
- net.sf.ehcache.core;bundle-version="${net.sf.ehcache.bundleversion}"</Require-Bundle>
+ org.eclipse.ui.ide</Require-Bundle>
           </instructions>
         </configuration>
         <executions>
