@@ -4,10 +4,14 @@
 1. Build the 'Eclipse Target Platform' first
 
     cd eclipse-target-platform
-    mvn clean install
+    mvn -f pom-first.xml clean install
     cd ..
 
-2. Build the main artifacts
+2. Generate MANIFEST.MF filres
+
+    mvn -f pom-first.xml clean bundle:manifest
+
+3. Build the main artifacts
 
     mvn clean install
 
@@ -36,4 +40,10 @@ Recommended IDE is 'Eclipse (Luna) for RCP Developers': <http://www.eclipse.org/
     * Finish
 
 During import some Maven plugin connectors need to be installed, accept the installation and restart.
+
+## Run
+
+	* Open 'Run Configurations...' dialog
+	* Select 'Eclipse Application' and create a new run configuration
+	* If not on OSX, remove VM arguments -Xdock:icon and -XstartOnFirstThread on 'Arguments' tab
 
