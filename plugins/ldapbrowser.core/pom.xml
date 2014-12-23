@@ -28,7 +28,7 @@
   </parent>
 
   <artifactId>org.apache.directory.studio.ldapbrowser.core</artifactId>
-  <name>Apache Directory Studio LDAP Browser Core Manifest Generation</name>
+  <name>Apache Directory Studio LDAP Browser Core</name>
   <packaging>eclipse-plugin</packaging>
 
   <description />
