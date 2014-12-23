@@ -36,18 +36,36 @@
   </modules>
   
   <properties>
-    <org.apache.directory.api.bundleversion>1.0.0.M24</org.apache.directory.api.bundleversion>
-    <org.apache.directory.server.bundleversion>2.0.0.M17</org.apache.directory.server.bundleversion>
+    <org.apache.directory.api.bundleversion>1.0.0.M27-SNAPSHOT</org.apache.directory.api.bundleversion>
+    <org.apache.directory.server.bundleversion>2.0.0.M20-SNAPSHOT</org.apache.directory.server.bundleversion>
     <org.apache.commons.codec.bundleversion>1.8.0</org.apache.commons.codec.bundleversion>
     <org.apache.commons.collections.bundleversion>3.2.1</org.apache.commons.collections.bundleversion>
     <org.apache.commons.io.bundleversion>2.4.0</org.apache.commons.io.bundleversion>
     <org.apache.commons.lang.bundleversion>2.6.0</org.apache.commons.lang.bundleversion>
-    <org.apache.mina.bundleversion>2.0.7</org.apache.mina.bundleversion>
+    <org.apache.mina.bundleversion>2.0.9</org.apache.mina.bundleversion>
     <org.dom4j.bundleversion>1.6.1</org.dom4j.bundleversion>
     <junit.version>4.11</junit.version>
     <net.sf.ehcache.bundleversion>2.4.4</net.sf.ehcache.bundleversion>
     
   </properties>
+
+  <build>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.apache.felix</groupId>
+          <artifactId>maven-bundle-plugin</artifactId>
+          <extensions>true</extensions>
+          <configuration>
+            <manifestLocation>META-INF</manifestLocation>
+            <instructions>
+              <_noee>true</_noee>
+            </instructions>
+          </configuration>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+  </build>
 
 </project>
 
