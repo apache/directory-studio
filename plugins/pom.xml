@@ -44,11 +44,11 @@
     <module>ldapbrowser.common</module>
     <module>ldapbrowser.ui</module>
     <module>ldapservers</module>
-    <module>ldapservers.apacheds.v153</module>
-    <module>ldapservers.apacheds.v154</module>
-    <module>ldapservers.apacheds.v155</module>
-    <module>ldapservers.apacheds.v156</module>
-    <module>ldapservers.apacheds.v157</module>
+<!--     <module>ldapservers.apacheds.v153</module> -->
+<!--     <module>ldapservers.apacheds.v154</module> -->
+<!--     <module>ldapservers.apacheds.v155</module> -->
+<!--     <module>ldapservers.apacheds.v156</module> -->
+<!--     <module>ldapservers.apacheds.v157</module> -->
     <module>ldapservers.apacheds.v200</module>
     <module>ldifeditor</module>
     <module>ldifparser</module>
