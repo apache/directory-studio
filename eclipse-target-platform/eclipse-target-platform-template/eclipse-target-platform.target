@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <?pde version="3.8"?>
-<target name="Apache Directory Studio Platform" sequenceNumber="44">
+<target name="Apache Directory Studio Platform" sequenceNumber="77">
   <locations>
 
     <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
       <!-- External jars -->
-      <unit id="antlr" version="${org.antlr.bundleversion}"/>
-      <unit id="bouncycastle.bcprov-jdk15" version="${org.bouncycastle.bcprov.jdk15.bundleversion}"/>
+      <unit id="org.apache.servicemix.bundles.antlr" version="2.7.7.5"/>
+      <unit id="org.apache.servicemix.bundles.dom4j" version="1.6.1.5"/>
+      <unit id="org.apache.servicemix.bundles.xpp3" version="1.1.0.4c_6"/>
+      <unit id="org.apache.servicemix.bundles.ehcache" version="2.4.3.1"/>
+
+      <!-- Logging jars -->
       <unit id="log4j" version="${log4j.log4j.bundleversion}"/>
       <unit id="slf4j.api" version="${org.slf4j.bundleversion}"/>
       <unit id="slf4j.log4j12" version="${org.slf4j.bundleversion}"/>
-      <unit id="xpp3" version="${org.xpp3.bundleversion}"/>
-      <unit id="net.sf.ehcache.core" version="${net.sf.ehcache.bundleversion}"/>
-      <unit id="org.apache.poi" version="${org.apache.poi.bundleversion}"/>
-      <unit id="xerces.Impl" version="${xerces.xercesimpl.bundleversion}"/>
 
       <!-- Commons jars -->
       <unit id="org.apache.commons.collections" version="${org.apache.commons.collections.bundleversion}"/>
@@ -24,6 +24,7 @@
       <!-- LDAP API modules -->
       <unit id="org.apache.directory.api.asn1.api" version="${org.apache.directory.api.bundleversion}"/>
       <unit id="org.apache.directory.api.asn1.ber" version="${org.apache.directory.api.bundleversion}"/>
+      <unit id="org.apache.directory.api.dsmlv2.engine" version="${org.apache.directory.api.bundleversion}"/>
       <unit id="org.apache.directory.api.dsmlv2.parser" version="${org.apache.directory.api.bundleversion}"/>
       <unit id="org.apache.directory.api.i18n" version="${org.apache.directory.api.bundleversion}"/>
       <unit id="org.apache.directory.api.ldap.client.api" version="${org.apache.directory.api.bundleversion}"/>
@@ -31,6 +32,9 @@
       <unit id="org.apache.directory.api.ldap.extras.aci" version="${org.apache.directory.api.bundleversion}"/>
       <unit id="org.apache.directory.api.ldap.extras.codec" version="${org.apache.directory.api.bundleversion}"/>
       <unit id="org.apache.directory.api.ldap.extras.codec.api" version="${org.apache.directory.api.bundleversion}"/>
+      <unit id="org.apache.directory.api.ldap.extras.sp" version="${org.apache.directory.api.bundleversion}"/>
+      <unit id="org.apache.directory.api.ldap.extras.trigger" version="${org.apache.directory.api.bundleversion}"/>
+      <unit id="org.apache.directory.api.ldap.extras.util" version="${org.apache.directory.api.bundleversion}"/>
       <unit id="org.apache.directory.api.ldap.model" version="${org.apache.directory.api.bundleversion}"/>
       <unit id="org.apache.directory.api.ldap.net.mina" version="${org.apache.directory.api.bundleversion}"/>
       <unit id="org.apache.directory.api.ldap.schema" version="${org.apache.directory.api.bundleversion}"/>
@@ -57,7 +61,7 @@
       <unit id="org.apache.directory.server.interceptors.journal" version="${org.apache.directory.server.bundleversion}" />
       <unit id="org.apache.directory.server.interceptors.logger" version="${org.apache.directory.server.bundleversion}" />
       <unit id="org.apache.directory.server.interceptors.normalization" version="${org.apache.directory.server.bundleversion}" />
-      <!-- <unit id="org.apache.directory.server.interceptors.number" version="${org.apache.directory.server.bundleversion}" /> -->
+      <unit id="org.apache.directory.server.interceptors.number" version="${org.apache.directory.server.bundleversion}" />
       <unit id="org.apache.directory.server.interceptors.operational" version="${org.apache.directory.server.bundleversion}" />
       <unit id="org.apache.directory.server.interceptors.referral" version="${org.apache.directory.server.bundleversion}" />
       <unit id="org.apache.directory.server.interceptors.schema" version="${org.apache.directory.server.bundleversion}" />
@@ -66,6 +70,7 @@
       <unit id="org.apache.directory.server.jdbm.partition" version="${org.apache.directory.server.bundleversion}" />
       <unit id="org.apache.directory.server.kerberos.codec" version="${org.apache.directory.server.bundleversion}" />
       <unit id="org.apache.directory.server.ldif.partition" version="${org.apache.directory.server.bundleversion}" />
+      <unit id="org.apache.directory.server.xdbm.partition" version="${org.apache.directory.server.bundleversion}" />
       <unit id="org.apache.directory.server.protocol.dhcp" version="${org.apache.directory.server.bundleversion}" />
       <unit id="org.apache.directory.server.protocol.dns" version="${org.apache.directory.server.bundleversion}" />
       <unit id="org.apache.directory.server.protocol.kerberos" version="${org.apache.directory.server.bundleversion}" />
@@ -74,9 +79,7 @@
       <unit id="org.apache.directory.server.protocol.shared" version="${org.apache.directory.server.bundleversion}" />
       <unit id="org.apache.directory.server.config" version="${org.apache.directory.server.bundleversion}" />
       <unit id="org.apache.directory.server.jndi" version="${org.apache.directory.server.bundleversion}" />
-      <unit id="org.apache.directory.server.apacheds-service" version="${org.apache.directory.server.bundleversion}" />
       <unit id="org.apache.directory.server.service.builder" version="${org.apache.directory.server.bundleversion}" />
-      <unit id="org.apache.directory.server.xdbm.partition" version="${org.apache.directory.server.bundleversion}" />
 
       <!-- MINA module -->
       <unit id="org.apache.mina.core" version="${org.apache.mina.bundleversion}"/>
@@ -85,14 +88,19 @@
     </location>
 
     <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
-      <unit id="org.eclipse.rcp.feature.group" version="4.4.0.v20140606-1445"/>
-      <unit id="org.eclipse.platform.source.feature.group" version="4.4.0.v20140606-1558"/>
-      <unit id="org.eclipse.rcp.source.feature.group" version="4.4.0.v20140606-1445"/>
-      <unit id="org.eclipse.equinox.executable" version="3.6.100.v20140603-1326"/>
-      <unit id="org.eclipse.platform.feature.group" version="4.4.0.v20140606-1558"/>
+      <unit id="org.eclipse.rcp.feature.group" version="4.4.0.v20140925-0400"/>
+      <unit id="org.eclipse.rcp.source.feature.group" version="4.4.0.v20140925-0400"/>
+      <unit id="org.eclipse.platform.feature.group" version="4.4.0.v20140925-0400"/>
+      <unit id="org.eclipse.platform.source.feature.group" version="4.4.0.v20140925-0400"/>
       <unit id="org.eclipse.jdt.feature.group" version="3.10.0.v20140925-0400"/>
       <repository location="http://download.eclipse.org/eclipse/updates/4.4"/>
     </location>
+
+    <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
+      <unit id="javax.xml.stream" version="1.0.1.v201004272200"/>
+      <repository location="http://download.eclipse.org/tools/orbit/downloads/drops/R20140525021250/repository/"/>
+    </location>
+
 
   </locations>
 
