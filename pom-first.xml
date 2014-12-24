@@ -21,33 +21,21 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
-    <groupId>org.apache.directory.project</groupId>
-    <artifactId>project</artifactId>
-    <version>32</version>
+    <groupId>org.apache.directory.studio</groupId>
+    <artifactId>parent</artifactId>
+    <version>2.0.0-SNAPSHOT</version>
+    <relativePath>./pom.xml</relativePath>
   </parent>
 
-  <groupId>org.apache.directory.studio</groupId>
-  <artifactId>parent</artifactId>
-  <version>2.0.0.qualifier</version>
+  <artifactId>parent-setup</artifactId>
+  <name>Apache Directory Studio Parent Setup</name>
+  <version>1-SNAPSHOT</version>
   <packaging>pom</packaging>
 
   <modules>
+    <module>eclipse-target-platform/pom.xml</module>
     <module>plugins/pom-first.xml</module>
   </modules>
-  
-  <properties>
-    <org.apache.directory.api.bundleversion>1.0.0.M27-SNAPSHOT</org.apache.directory.api.bundleversion>
-    <org.apache.directory.server.bundleversion>2.0.0.M20-SNAPSHOT</org.apache.directory.server.bundleversion>
-    <org.apache.commons.codec.bundleversion>1.8.0</org.apache.commons.codec.bundleversion>
-    <org.apache.commons.collections.bundleversion>3.2.1</org.apache.commons.collections.bundleversion>
-    <org.apache.commons.io.bundleversion>2.4.0</org.apache.commons.io.bundleversion>
-    <org.apache.commons.lang.bundleversion>2.6.0</org.apache.commons.lang.bundleversion>
-    <org.apache.mina.bundleversion>2.0.9</org.apache.mina.bundleversion>
-    <org.dom4j.bundleversion>1.6.1</org.dom4j.bundleversion>
-    <junit.version>4.11</junit.version>
-    <net.sf.ehcache.bundleversion>2.4.4</net.sf.ehcache.bundleversion>
-    
-  </properties>
 
   <build>
     <pluginManagement>

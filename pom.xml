@@ -29,7 +29,7 @@
   <groupId>org.apache.directory.studio</groupId>
   <artifactId>parent</artifactId>
   <version>2.0.0-SNAPSHOT</version>
-  <name>Apache Directory Studio</name>
+  <name>Apache Directory Studio Parent</name>
   <description>Apache Directory Studio is a complete directory tooling platform intended to be used with any LDAP server however it is particularly designed for use with the Apache Directory Server.</description>
   <packaging>pom</packaging>
 
@@ -105,7 +105,7 @@
     <!-- Set versions for maven plugins -->
 <!--     <checkstyle.version>4.1</checkstyle.version> -->
 <!--     <findbugs.annotations.version>1.0.0</findbugs.annotations.version> -->
-<!--     <junit.version>4.11</junit.version> -->
+    <junit.version>4.11</junit.version>
 <!--     <maven.artifact.version>3.2.2</maven.artifact.version> -->
 <!--     <maven.dependency.plugin.version>2.8</maven.dependency.plugin.version> -->
 <!--     <maven.model.version>3.2.2</maven.model.version> -->

@@ -22,12 +22,14 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>org.apache.directory.studio</groupId>
-    <artifactId>parent</artifactId>
-    <version>2.0.0.qualifier</version>
+    <artifactId>parent-setup</artifactId>
+    <version>1-SNAPSHOT</version>
     <relativePath>../pom-first.xml</relativePath>
   </parent>
 
   <artifactId>parent-plugins</artifactId>
+  <name>Apache Directory Studio Plugins Parent Manifest Generation</name>
+  <version>2.0.0.qualifier</version>
   <packaging>pom</packaging>
 
   <modules>
@@ -53,6 +55,124 @@
     <!-- module>ldapservers.apacheds.v157/pom-first.xml</module -->
     <module>ldapservers.apacheds.v200/pom-first.xml</module>
   </modules>
+
+  <build>
+    <plugins>
+      <plugin>
+        <artifactId>maven-resources-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>default-resources</id>
+            <phase>none</phase>
+            <goals>
+              <goal>resources</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>default-testResources</id>
+            <phase>none</phase>
+            <goals>
+              <goal>testResources</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>default-compile</id>
+            <phase>none</phase>
+            <goals>
+              <goal>compile</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>default-testCompile</id>
+            <phase>none</phase>
+            <goals>
+              <goal>testCompile</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>default-test</id>
+            <phase>none</phase>
+            <goals>
+              <goal>test</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <artifactId>maven-jar-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>default-jar</id>
+            <phase>none</phase>
+            <goals>
+              <goal>jar</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <artifactId>maven-install-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>default-install</id>
+            <phase>none</phase>
+            <goals>
+              <goal>install</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <artifactId>maven-deploy-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>default-deploy</id>
+            <phase>none</phase>
+            <goals>
+              <goal>deploy</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.felix</groupId>
+        <artifactId>maven-bundle-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>default-bundle</id>
+            <phase>none</phase>
+            <goals>
+              <goal>bundle</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>default-install</id>
+            <phase>none</phase>
+            <goals>
+              <goal>install</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>default-deploy</id>
+            <phase>none</phase>
+            <goals>
+              <goal>deploy</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
 
 </project>
 
