@@ -1,17 +1,11 @@
 
 ## Build from command line
 
-1. Build the 'Eclipse Target Platform' first
+1. Build the 'Eclipse Target Platform' and generate MANIFEST.MF files first
 
-    cd eclipse-target-platform
     mvn -f pom-first.xml clean install
-    cd ..
 
-2. Generate MANIFEST.MF filres
-
-    mvn -f pom-first.xml clean bundle:manifest
-
-3. Build the main artifacts
+2. Build the main eclipse artifacts using Tycho
 
     mvn clean install
 
