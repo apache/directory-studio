@@ -65,8 +65,8 @@
 
     <!-- Set versions for dependencies -->
 <!--     <com.bandlem.eclipse.fullscreen.version>1.0.4.201108061054</com.bandlem.eclipse.fullscreen.version> -->
-    <net.sf.ehcache.version>2.4.4</net.sf.ehcache.version>
-    <net.sf.ehcache.bundleversion>2.4.4</net.sf.ehcache.bundleversion>
+    <net.sf.ehcache.version>2.8.5</net.sf.ehcache.version>
+    <net.sf.ehcache.bundleversion>2.8.5</net.sf.ehcache.bundleversion>
     <org.antlr.version>2.7.7</org.antlr.version>
     <org.antlr.bundleversion>2.7.7</org.antlr.bundleversion>
     <org.apache.commons.codec.version>1.8</org.apache.commons.codec.version>
@@ -80,8 +80,8 @@
 <!--     <org.apache.commons.logging.version>1.1.3</org.apache.commons.logging.version> -->
     <org.apache.commons.pool.version>1.6</org.apache.commons.pool.version>
     <org.apache.commons.pool.bundleversion>1.6.0</org.apache.commons.pool.bundleversion>
-    <org.apache.directory.api.version>1.0.0-M27-SNAPSHOT</org.apache.directory.api.version>
-    <org.apache.directory.api.bundleversion>1.0.0.M27-SNAPSHOT</org.apache.directory.api.bundleversion>
+    <org.apache.directory.api.version>1.0.0-M28-SNAPSHOT</org.apache.directory.api.version>
+    <org.apache.directory.api.bundleversion>1.0.0.M28-SNAPSHOT</org.apache.directory.api.bundleversion>
 <!--     <org.apache.directory.server.validversion>2.0.0.M17</org.apache.directory.server.validversion> -->
     <org.apache.directory.server.version>2.0.0-M20-SNAPSHOT</org.apache.directory.server.version>
     <org.apache.directory.server.bundleversion>2.0.0.M20-SNAPSHOT</org.apache.directory.server.bundleversion>
