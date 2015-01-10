@@ -24,6 +24,7 @@
     <groupId>org.apache.directory.studio</groupId>
     <artifactId>parent</artifactId>
     <version>2.0.0-SNAPSHOT</version>
+    <relativePath>../</relativePath>
   </parent>
   
   <artifactId>parent-helps</artifactId>
@@ -31,55 +32,97 @@
   <packaging>pom</packaging>
   
   <modules>
-    <module>apacheds.help</module>
-    <module>apacheds.configuration.help</module>
-    <module>ldapbrowser.help</module>
+<!--     <module>apacheds.help</module> -->
+<!--     <module>apacheds.configuration.help</module> -->
+<!--     <module>ldapbrowser.help</module> -->
     <module>ldifeditor.help</module>
-    <module>rcp.help</module>
-    <module>schemaeditor.help</module>
+<!--     <module>rcp.help</module> -->
+<!--     <module>schemaeditor.help</module> -->
   </modules>
 
   <build>
     <pluginManagement>
       <plugins>
         <plugin>
-          <groupId>org.apache.rat</groupId>
-          <artifactId>apache-rat-plugin</artifactId>
+          <groupId>org.eclipse.tycho</groupId>
+          <artifactId>tycho-packaging-plugin</artifactId>
+          <version>${tycho.version}</version>
           <configuration>
-            <excludeSubProjects>false</excludeSubProjects>
-            <excludes>
-              <!-- MAVEN_DEFAULT_EXCLUDES -->
-              <exclude>**/target/**/*</exclude>
-              <exclude>**/cobertura.ser</exclude>
-              <!-- ECLIPSE_DEFAULT_EXCLUDES -->
-              <exclude>**/.classpath</exclude>
-              <exclude>**/.project</exclude>
-              <exclude>**/.settings/**/*</exclude>
-              <!-- IDEA_DEFAULT_EXCLUDES -->
-              <exclude>**/*.iml</exclude>
-              <exclude>**/*.ipr</exclude>
-              <exclude>**/*.iws</exclude>
-              <!-- MANIFEST_MF_EXCLUDES -->
-              <exclude>**/MANIFEST.MF</exclude>
-              <!-- Missing license header in dependency reduced pom, see http://jira.codehaus.org/browse/MSHADE-48 -->
-              <exclude>**/dependency-reduced-pom.xml</exclude>
-              <!-- GITIGNORE_EXCLUDES -->
-              <exclude>**/.gitignore</exclude>
-              <!-- ABOUT_EXCLUDES -->
-              <exclude>**/about.ini</exclude>
-              <exclude>**/about_files/*</exclude>
-              <!-- LOG_FILES_EXCLUDES -->
-              <exclude>**/*.log</exclude>
-              <exclude>**/*.vm</exclude>
-              <!-- NSIS_EXCLUDES -->
-              <exclude>**/src/main/resources/AdvUninstLog.nsh</exclude>
-              <!-- OTHER_EXCLUDES -->
-              <exclude>ldapbrowser.help/src/main/resources/sevenseas.ldif</exclude>
-              <exclude>**/src/main/resources/html/rfc/*.txt</exclude>
-              <exclude>**/src/main/resources/html/rfcs/*.txt</exclude>
-            </excludes>
+            <additionalFileSets>
+             <fileSet>
+              <directory>${project.build.directory}/classes/</directory>
+              <includes>
+               <include>**/*</include>
+              </includes>
+             </fileSet>
+            </additionalFileSets>
           </configuration>
         </plugin>
+
+        <!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
+        <plugin>
+          <groupId>org.eclipse.m2e</groupId>
+          <artifactId>lifecycle-mapping</artifactId>
+          <version>1.0.0</version>
+          <configuration>
+            <lifecycleMappingMetadata>
+              <pluginExecutions>
+                <pluginExecution>
+                  <pluginExecutionFilter>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-antrun-plugin</artifactId>
+                    <versionRange>[1.8,)</versionRange>
+                    <goals>
+                      <goal>run</goal>
+                    </goals>
+                  </pluginExecutionFilter>
+                  <action>
+                    <ignore></ignore>
+                  </action>
+                </pluginExecution>
+              </pluginExecutions>
+            </lifecycleMappingMetadata>
+          </configuration>
+        </plugin>
+
+<!--         <plugin> -->
+<!--           <groupId>org.apache.rat</groupId> -->
+<!--           <artifactId>apache-rat-plugin</artifactId> -->
+<!--           <configuration> -->
+<!--             <excludeSubProjects>false</excludeSubProjects> -->
+<!--             <excludes> -->
+              <!-- MAVEN_DEFAULT_EXCLUDES -->
+<!--               <exclude>**/target/**/*</exclude> -->
+<!--               <exclude>**/cobertura.ser</exclude> -->
+              <!-- ECLIPSE_DEFAULT_EXCLUDES -->
+<!--               <exclude>**/.classpath</exclude> -->
+<!--               <exclude>**/.project</exclude> -->
+<!--               <exclude>**/.settings/**/*</exclude> -->
+              <!-- IDEA_DEFAULT_EXCLUDES -->
+<!--               <exclude>**/*.iml</exclude> -->
+<!--               <exclude>**/*.ipr</exclude> -->
+<!--               <exclude>**/*.iws</exclude> -->
+              <!-- MANIFEST_MF_EXCLUDES -->
+<!--               <exclude>**/MANIFEST.MF</exclude> -->
+              <!-- Missing license header in dependency reduced pom, see http://jira.codehaus.org/browse/MSHADE-48 -->
+<!--               <exclude>**/dependency-reduced-pom.xml</exclude> -->
+              <!-- GITIGNORE_EXCLUDES -->
+<!--               <exclude>**/.gitignore</exclude> -->
+              <!-- ABOUT_EXCLUDES -->
+<!--               <exclude>**/about.ini</exclude> -->
+<!--               <exclude>**/about_files/*</exclude> -->
+              <!-- LOG_FILES_EXCLUDES -->
+<!--               <exclude>**/*.log</exclude> -->
+<!--               <exclude>**/*.vm</exclude> -->
+              <!-- NSIS_EXCLUDES -->
+<!--               <exclude>**/src/main/resources/AdvUninstLog.nsh</exclude> -->
+              <!-- OTHER_EXCLUDES -->
+<!--               <exclude>ldapbrowser.help/src/main/resources/sevenseas.ldif</exclude> -->
+<!--               <exclude>**/src/main/resources/html/rfc/*.txt</exclude> -->
+<!--               <exclude>**/src/main/resources/html/rfcs/*.txt</exclude> -->
+<!--             </excludes> -->
+<!--           </configuration> -->
+<!--         </plugin> -->
       </plugins>
     </pluginManagement>
   </build>  

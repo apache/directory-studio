@@ -80,8 +80,8 @@
 <!--     <org.apache.commons.logging.version>1.1.3</org.apache.commons.logging.version> -->
     <org.apache.commons.pool.version>1.6</org.apache.commons.pool.version>
     <org.apache.commons.pool.bundleversion>1.6.0</org.apache.commons.pool.bundleversion>
-    <org.apache.directory.api.version>1.0.0-M28</org.apache.directory.api.version>
-    <org.apache.directory.api.bundleversion>1.0.0.M28</org.apache.directory.api.bundleversion>
+    <org.apache.directory.api.version>1.0.0-M29-SNAPSHOT</org.apache.directory.api.version>
+    <org.apache.directory.api.bundleversion>1.0.0.M29-SNAPSHOT</org.apache.directory.api.bundleversion>
 <!--     <org.apache.directory.server.validversion>2.0.0.M17</org.apache.directory.server.validversion> -->
     <org.apache.directory.server.version>2.0.0-M20-SNAPSHOT</org.apache.directory.server.version>
     <org.apache.directory.server.bundleversion>2.0.0.M20-SNAPSHOT</org.apache.directory.server.bundleversion>
@@ -90,7 +90,7 @@
     <log4j.log4j.bundleversion>1.2.17</log4j.log4j.bundleversion>
     <org.apache.mina.version>2.0.9</org.apache.mina.version>
     <org.apache.mina.bundleversion>2.0.9</org.apache.mina.bundleversion>
-<!--     <org.apache.xmlgraphics.fop.version>1.0</org.apache.xmlgraphics.fop.version> -->
+    <org.apache.xmlgraphics.fop.version>1.0</org.apache.xmlgraphics.fop.version>
     <org.bouncycastle.bcprov.jdk15.version>140</org.bouncycastle.bcprov.jdk15.version>
     <org.bouncycastle.bcprov.jdk15.bundleversion>140.0.0</org.bouncycastle.bcprov.jdk15.bundleversion>
     <org.slf4j.version>1.7.10</org.slf4j.version>
@@ -123,6 +123,7 @@
 
   <modules>
     <module>plugins</module>
+    <module>helps</module>
   </modules>
 
   <build>
@@ -207,6 +208,51 @@
           <groupId>org.eclipse.tycho</groupId>
           <artifactId>target-platform-configuration</artifactId>
           <version>${tycho.version}</version>
+        </plugin>
+        
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-antrun-plugin</artifactId>
+          <dependencies>
+            <dependency>
+              <groupId>org.apache.ant</groupId>
+              <artifactId>ant-apache-regexp</artifactId>
+              <version>1.7.1</version>
+              <scope>compile</scope>
+            </dependency>
+
+            <dependency>
+              <groupId>xalan</groupId>
+              <artifactId>xalan</artifactId>
+              <version>2.7.0</version>
+              <scope>compile</scope>
+            </dependency>
+
+            <dependency>
+              <groupId>ant</groupId>
+              <artifactId>optional</artifactId>
+              <version>1.5.4</version>
+              <scope>compile</scope>
+            </dependency>
+
+            <dependency>
+              <groupId>org.apache.xmlgraphics</groupId>
+              <artifactId>fop</artifactId>
+              <version>${org.apache.xmlgraphics.fop.version}</version>
+              <scope>compile</scope>
+            </dependency>
+
+            <!--
+              Putting this dependency in the core pom produces following error (?):
+              Embedded error: java.lang.ClassCastException: org.apache.fop.render.pdf.PDFRendererMaker cannot be cast to org.apache.fop.render.AbstractRendererMaker
+            <dependency>
+              <groupId>org.apache.xmlgraphics</groupId>
+              <artifactId>xmlgraphics-commons</artifactId>
+              <version>1.1</version>
+              <scope>compile</scope>
+            </dependency>
+            -->
+          </dependencies>
         </plugin>
       </plugins>
     </pluginManagement>
@@ -2261,51 +2307,6 @@
 <!--           <groupId>org.apache.directory.studio</groupId> -->
 <!--           <artifactId>studio-maven-plugin</artifactId> -->
 <!--           <version>1.0.5</version> -->
-<!--         </plugin> -->
-
-<!--         <plugin> -->
-<!--           <groupId>org.apache.maven.plugins</groupId> -->
-<!--           <artifactId>maven-antrun-plugin</artifactId> -->
-<!--           <dependencies> -->
-<!--             <dependency> -->
-<!--               <groupId>org.apache.ant</groupId> -->
-<!--               <artifactId>ant-apache-regexp</artifactId> -->
-<!--               <version>1.7.1</version> -->
-<!--               <scope>compile</scope> -->
-<!--             </dependency> -->
-
-<!--             <dependency> -->
-<!--               <groupId>xalan</groupId> -->
-<!--               <artifactId>xalan</artifactId> -->
-<!--               <version>2.7.0</version> -->
-<!--               <scope>compile</scope> -->
-<!--             </dependency> -->
-
-<!--             <dependency> -->
-<!--               <groupId>ant</groupId> -->
-<!--               <artifactId>optional</artifactId> -->
-<!--               <version>1.5.4</version> -->
-<!--               <scope>compile</scope> -->
-<!--             </dependency> -->
-
-<!--             <dependency> -->
-<!--               <groupId>org.apache.xmlgraphics</groupId> -->
-<!--               <artifactId>fop</artifactId> -->
-<!--               <version>${org.apache.xmlgraphics.fop.version}</version> -->
-<!--               <scope>compile</scope> -->
-<!--             </dependency> -->
-
-            <!--
-              Putting this dependency in the core pom produces following error (?):
-              Embedded error: java.lang.ClassCastException: org.apache.fop.render.pdf.PDFRendererMaker cannot be cast to org.apache.fop.render.AbstractRendererMaker
-            <dependency>
-              <groupId>org.apache.xmlgraphics</groupId>
-              <artifactId>xmlgraphics-commons</artifactId>
-              <version>1.1</version>
-              <scope>compile</scope>
-            </dependency>
-            -->
-<!--           </dependencies> -->
 <!--         </plugin> -->
 
 <!--         <plugin> -->

@@ -22,38 +22,43 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>org.apache.directory.studio</groupId>
-    <artifactId>parent</artifactId>
-    <version>2.0.0-SNAPSHOT</version>
-    <relativePath>./pom.xml</relativePath>
+    <artifactId>parent-helps</artifactId>
+    <version>2.0.0.qualifier</version>
+    <relativePath>../pom-first.xml</relativePath>
   </parent>
 
-  <artifactId>parent-setup</artifactId>
-  <name>Apache Directory Studio Parent Setup</name>
-  <version>1-SNAPSHOT</version>
-  <packaging>pom</packaging>
-
-  <modules>
-    <module>eclipse-target-platform/pom.xml</module>
-    <module>plugins/pom-first.xml</module>
-    <module>helps/pom-first.xml</module>
-  </modules>
+  <artifactId>org.apache.directory.studio.ldifeditor.help</artifactId>
+  <name>Apache Directory Studio LDIF Editor Help Manifest Generation</name>
+  <description/>
+  <packaging>bundle</packaging>
 
   <build>
-    <pluginManagement>
-      <plugins>
-        <plugin>
-          <groupId>org.apache.felix</groupId>
-          <artifactId>maven-bundle-plugin</artifactId>
-          <extensions>true</extensions>
-          <configuration>
-            <manifestLocation>META-INF</manifestLocation>
-            <instructions>
-              <_noee>true</_noee>
-            </instructions>
-          </configuration>
-        </plugin>
-      </plugins>
-    </pluginManagement>
+     <!-- MANIFEST.MF Generation -->
+    <plugins>
+      <plugin>
+        <groupId>org.apache.felix</groupId>
+        <artifactId>maven-bundle-plugin</artifactId>
+        <extensions>true</extensions>
+        <configuration>
+          <manifestLocation>META-INF</manifestLocation>
+          <instructions>
+            <Bundle-SymbolicName>${project.artifactId};singleton:=true</Bundle-SymbolicName>
+            <Bundle-Localization>plugin</Bundle-Localization>
+            <Eclipse-LazyStart>true</Eclipse-LazyStart>
+            <Export-Package>!</Export-Package>
+          </instructions>
+        </configuration>
+        <executions>
+          <execution>
+            <id>generate-manifest</id>
+            <phase>process-classes</phase>
+            <goals>
+              <goal>manifest</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
   </build>
 
 </project>
