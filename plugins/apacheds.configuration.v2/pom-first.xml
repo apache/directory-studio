@@ -57,10 +57,12 @@
             <Import-Package>org.apache.directory.server.core.api,
  org.apache.directory.server.config,
  org.apache.directory.server.config.beans,
+ org.apache.directory.server.constants,
  org.apache.directory.server.core.api.entry,
  org.apache.directory.server.core.api.filtering,
  org.apache.directory.server.core.api.interceptor.context,
  org.apache.directory.server.core.api.partition,
+ org.apache.directory.api.ldap.model.constants,
  org.slf4j,
  net.sf.ehcache</Import-Package>
             
@@ -69,6 +71,7 @@
  org.apache.directory.api.ldap.model;bundle-version="${org.apache.directory.api.bundleversion}",
  org.apache.directory.api.ldap.schema;bundle-version="${org.apache.directory.api.bundleversion}",
  org.apache.directory.server.config;bundle-version="${org.apache.directory.server.bundleversion}",
+ org.apache.directory.server.core.constants;bundle-version="${org.apache.directory.server.bundleversion}",
  org.apache.directory.server.kerberos.codec;bundle-version="${org.apache.directory.server.bundleversion}",
  org.apache.directory.server.ldif.partition;bundle-version="${org.apache.directory.server.bundleversion}",
  org.apache.directory.server.xdbm.partition;bundle-version="${org.apache.directory.server.bundleversion}",

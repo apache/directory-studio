@@ -29,6 +29,7 @@ import java.util.List;
 
 import javax.naming.directory.SearchResult;
 
+import org.apache.directory.api.ldap.model.constants.LdapConstants;
 import org.apache.directory.api.ldap.model.constants.SchemaConstants;
 import org.apache.directory.api.ldap.model.entry.AttributeUtils;
 import org.apache.directory.api.ldap.model.entry.DefaultEntry;
@@ -42,6 +43,7 @@ import org.apache.directory.server.config.ConfigPartitionReader;
 import org.apache.directory.server.config.ReadOnlyConfigurationPartition;
 import org.apache.directory.server.config.beans.ConfigBean;
 import org.apache.directory.server.core.api.CacheService;
+import org.apache.directory.server.constants.ServerDNConstants;
 import org.apache.directory.server.core.partition.impl.btree.AbstractBTreePartition;
 import org.apache.directory.studio.apacheds.configuration.v2.ApacheDS2ConfigurationPlugin;
 import org.apache.directory.studio.apacheds.configuration.v2.editor.ConnectionServerConfigurationInput;
@@ -161,7 +163,7 @@ public class LoadConfigurationRunnable implements StudioRunnableWithProgress
      * @param input the editor input
      * @param monitor the studio progress monitor
      * @return the configuration
-     * @throws Exception
+     * @throws Exception If the configuration wasn't correctly read
      */
     public ConfigBean getConfiguration( IEditorInput input, StudioProgressMonitor monitor ) throws Exception
     {
@@ -214,7 +216,7 @@ public class LoadConfigurationRunnable implements StudioRunnableWithProgress
      *
      * @param is the input stream
      * @return the associated configuration bean
-     * @throws Exception
+     * @throws Exception if we weren't able to load the configuration
      */
     public static ConfigBean readConfiguration( InputStream is ) throws Exception
     {
@@ -243,7 +245,7 @@ public class LoadConfigurationRunnable implements StudioRunnableWithProgress
      *
      * @param partition the configuration partition
      * @return the associated configuration bean
-     * @throws LdapException
+     * @throws LdapException if we weren't able to load the configuration
      */
     private static ConfigBean readConfiguration( AbstractBTreePartition partition ) throws LdapException
     {
@@ -263,10 +265,9 @@ public class LoadConfigurationRunnable implements StudioRunnableWithProgress
      * @param input the editor input
      * @param monitor the studio progress monitor
      * @return the associated configuration bean
-     * @throws Exception
+     * @throws Exception if we weren't able to load the configuration
      */
-    private ConfigBean readConfiguration( ConnectionServerConfigurationInput input,
-        StudioProgressMonitor monitor ) throws Exception
+    private ConfigBean readConfiguration( ConnectionServerConfigurationInput input, StudioProgressMonitor monitor ) throws Exception
     {
         if ( input != null )
         {
@@ -286,8 +287,9 @@ public class LoadConfigurationRunnable implements StudioRunnableWithProgress
 
             // Creating the search parameter
             SearchParameter configSearchParameter = new SearchParameter();
-            configSearchParameter.setSearchBase( new Dn( "ou=config" ) ); //$NON-NLS-1$
-            configSearchParameter.setFilter( "(objectClass=*)" ); //$NON-NLS-1$
+            configSearchParameter.setSearchBase( new Dn( ServerDNConstants.CONFIG_DN ) ); //$NON-NLS-1$
+            //configSearchParameter.setSearchBase( new Dn( "ou=config" ) ); //$NON-NLS-1$
+            configSearchParameter.setFilter( LdapConstants.OBJECT_CLASS_STAR ); //$NON-NLS-1$
             configSearchParameter.setScope( SearchScope.OBJECT );
             configSearchParameter.setReturningAttributes( SchemaConstants.ALL_USER_ATTRIBUTES_ARRAY );
 
