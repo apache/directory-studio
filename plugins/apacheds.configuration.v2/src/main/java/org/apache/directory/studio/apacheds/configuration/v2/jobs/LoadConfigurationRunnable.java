@@ -41,6 +41,7 @@ import org.apache.directory.api.ldap.model.schema.SchemaManager;
 import org.apache.directory.server.config.ConfigPartitionReader;
 import org.apache.directory.server.config.ReadOnlyConfigurationPartition;
 import org.apache.directory.server.config.beans.ConfigBean;
+import org.apache.directory.server.core.api.CacheService;
 import org.apache.directory.server.core.partition.impl.btree.AbstractBTreePartition;
 import org.apache.directory.studio.apacheds.configuration.v2.ApacheDS2ConfigurationPlugin;
 import org.apache.directory.studio.apacheds.configuration.v2.editor.ConnectionServerConfigurationInput;
@@ -222,6 +223,10 @@ public class LoadConfigurationRunnable implements StudioRunnableWithProgress
             // Creating a partition associated from the input stream
             ReadOnlyConfigurationPartition configurationPartition = new ReadOnlyConfigurationPartition( is,
                 ApacheDS2ConfigurationPlugin.getDefault().getSchemaManager() );
+            CacheService cacheService = new CacheService();
+            cacheService.initialize( null );
+            configurationPartition.setCacheService( cacheService );
+
             configurationPartition.initialize();
 
             // Reading the configuration partition
