@@ -54,6 +54,7 @@
     <!-- module>ldapservers.apacheds.v156/pom-first.xml</module -->
     <!-- module>ldapservers.apacheds.v157/pom-first.xml</module -->
     <module>ldapservers.apacheds.v200/pom-first.xml</module>
+    <module>rcp/pom-first.xml</module>
   </modules>
 
   <build>

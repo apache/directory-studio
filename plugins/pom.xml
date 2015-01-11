@@ -52,7 +52,7 @@
     <module>ldapservers.apacheds.v200</module>
     <module>ldifeditor</module>
     <module>ldifparser</module>
-<!--     <module>rcp</module> -->
+    <module>rcp</module>
      <module>schemaeditor</module>
      <module>valueeditors</module>
   </modules>

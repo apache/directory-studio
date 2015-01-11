@@ -27,8 +27,8 @@ import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.swt.custom.BusyIndicator;
 import org.eclipse.ui.IWorkbenchWindow;
-import org.eclipse.update.ui.UpdateJob;
-import org.eclipse.update.ui.UpdateManagerUI;
+//import org.eclipse.update.ui.UpdateJob;
+//import org.eclipse.update.ui.UpdateManagerUI;
 
 
 /**
@@ -66,8 +66,8 @@ public class UpdateAction extends Action implements IAction
         {
             public void run()
             {
-                UpdateJob job = new UpdateJob( Messages.getString( "UpdateAction.Searching_for_updates" ), false, false ); //$NON-NLS-1$
-                UpdateManagerUI.openInstaller( window.getShell(), job );
+//                UpdateJob job = new UpdateJob( Messages.getString( "UpdateAction.Searching_for_updates" ), false, false ); //$NON-NLS-1$
+//                UpdateManagerUI.openInstaller( window.getShell(), job );
             }
         } );
     }
