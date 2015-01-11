@@ -31,24 +31,15 @@ import java.util.ResourceBundle;
  */
 public class Messages
 {
-    private static final String BUNDLE_NAME = "org.apache.directory.studio.apacheds.configuration.v2.messages"; //$NON-NLS-1$
-
-    private static final ResourceBundle RESOURCE_BUNDLE = ResourceBundle.getBundle( BUNDLE_NAME );
-
-
+    /** The resource name */
+    private static final ResourceBundle RESOURCE_BUNDLE = 
+        ResourceBundle.getBundle( Messages.class.getPackage().getName() + ".messages" );
+    
     /**
-     * Private constructor
-     */
-    private Messages()
-    {
-    }
-
-
-    /**
-     * Returns the message associated to a key
+     * Get back a message from the resource file given a key
      * 
-     * @param key The message we want to retrieve
-     * @return The message associated with a given key
+     * @param key The key associated with the message
+     * @return The found message
      */
     public static String getString( String key )
     {

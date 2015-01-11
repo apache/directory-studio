@@ -29,6 +29,7 @@ import org.apache.directory.api.ldap.model.exception.LdapInvalidDnException;
 import org.apache.directory.api.ldap.model.ldif.LdifEntry;
 import org.apache.directory.api.ldap.model.ldif.LdifReader;
 import org.apache.directory.api.ldap.model.name.Dn;
+import org.apache.directory.server.constants.ServerDNConstants;
 import org.eclipse.core.runtime.QualifiedName;
 import org.eclipse.core.runtime.content.IContentDescription;
 import org.eclipse.core.runtime.content.ITextContentDescriber;
@@ -59,7 +60,7 @@ public class ApacheDS2ConfigurationContentDescriber implements ITextContentDescr
         // Initializing DNs
         try
         {
-            configEntryDn = new Dn( "ou=config" ); //$NON-NLS-1$
+            configEntryDn = new Dn( ServerDNConstants.CONFIG_DN ); //$NON-NLS-1$
             directoryServiceDn = new Dn( "ads-directoryServiceId=default,ou=config" ); //$NON-NLS-1$
         }
         catch ( LdapInvalidDnException e )

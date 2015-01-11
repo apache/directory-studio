@@ -99,23 +99,14 @@ public class LdifUtils
     public static String hexEncode( byte[] data )
     {
         if ( data == null )
+        {
             return null;
+        }
 
         char[] c = Hex.encodeHex( data );
         String s = new String( c );
-        return s;
 
-        // StringBuffer sb = new StringBuffer(data.length*3);
-        // for(int i=0; i<data.length; i++) {
-        // int b = (int)data[i];
-        // if(b<0) b=256+b;
-        // String s = Integer.toHexString(b)/*.toUpperCase()*/;
-        // if(s.length() ==1) s = "0" + s; //$NON-NLS-1$
-        // sb.append(s);
-        // if(i+1 < data.length)
-        // sb.append(' ');
-        // }
-        // return(sb.toString());
+        return s;
     }
 
 
@@ -176,7 +167,7 @@ public class LdifUtils
      */
     public static boolean mustEncode( String value )
     {
-        if ( value == null || value.length() < 1 )
+        if ( ( value == null ) || ( value.length() < 1 ) )
         {
             return false;
         }
@@ -185,6 +176,7 @@ public class LdifUtils
         {
             return true;
         }
+        
         if ( value.endsWith( " " ) ) //$NON-NLS-1$
         {
             return true;
@@ -192,8 +184,8 @@ public class LdifUtils
 
         for ( int i = 0; i < value.length(); i++ )
         {
-            if ( value.charAt( i ) == '\r' || value.charAt( i ) == '\n' || value.charAt( i ) == '\u0000'
-                || value.charAt( i ) > '\u007F' )
+            if ( ( value.charAt( i ) == '\r' ) || ( value.charAt( i ) == '\n' ) || ( value.charAt( i ) == '\u0000' )
+                || ( value.charAt( i ) > '\u007F' ) )
             {
                 return true;
             }
@@ -201,5 +193,4 @@ public class LdifUtils
 
         return false;
     }
-
 }

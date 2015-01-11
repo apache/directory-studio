@@ -24,18 +24,23 @@ import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
 
+/**
+ * This class get messages from the resources file.
+ *  
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ */
 public class Messages
 {
-    private static final String BUNDLE_NAME = "org.apache.directory.studio.connection.ui.messages"; //$NON-NLS-1$
-
-    private static final ResourceBundle RESOURCE_BUNDLE = ResourceBundle.getBundle( BUNDLE_NAME );
-
-
-    private Messages()
-    {
-    }
-
-
+    /** The resource name */
+    private static final ResourceBundle RESOURCE_BUNDLE = 
+        ResourceBundle.getBundle( Messages.class.getPackage().getName() + ".messages" );
+    
+    /**
+     * Get back a message from the resource file given a key
+     * 
+     * @param key The key associated with the message
+     * @return The found message
+     */
     public static String getString( String key )
     {
         try
