@@ -33,8 +33,8 @@
   <packaging>pom</packaging>
 
   <modules>
-<!--     <module>apacheds.help</module> -->
-<!--     <module>apacheds.configuration.help</module> -->
+    <module>apacheds.help/pom-first.xml</module>
+    <module>apacheds.configuration.help/pom-first.xml</module>
     <module>ldapbrowser.help/pom-first.xml</module>
     <module>ldifeditor.help/pom-first.xml</module>
 <!--     <module>rcp.help</module> -->

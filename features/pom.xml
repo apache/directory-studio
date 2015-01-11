@@ -33,7 +33,7 @@
   <modules>
 <!--     <module>apacheds.configuration.feature</module> -->
 <!--     <module>apacheds.configuration.v2.feature</module> -->
-<!--     <module>apacheds.feature</module> -->
+    <module>apacheds.feature</module>
     <module>ldapbrowser.feature</module>
 <!--     <module>ldapservers.feature</module> -->
     <module>ldifeditor.feature</module>
