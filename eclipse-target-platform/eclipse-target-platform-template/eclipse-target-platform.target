@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <?pde version="3.8"?>
-<target name="Apache Directory Studio Platform" sequenceNumber="79">
+<target name="Apache Directory Studio Platform" sequenceNumber="85">
   <locations>
 
     <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
@@ -88,11 +88,13 @@
     </location>
 
     <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
-      <unit id="org.eclipse.rcp.feature.group" version="4.4.0.v20140925-0400"/>
-      <unit id="org.eclipse.rcp.source.feature.group" version="4.4.0.v20140925-0400"/>
-      <unit id="org.eclipse.platform.feature.group" version="4.4.0.v20140925-0400"/>
-      <unit id="org.eclipse.platform.source.feature.group" version="4.4.0.v20140925-0400"/>
-      <unit id="org.eclipse.jdt.feature.group" version="3.10.0.v20140925-0400"/>
+      <unit id="org.eclipse.rcp.feature.group" version="0.0.0"/>
+      <unit id="org.eclipse.rcp.source.feature.group" version="0.0.0"/>
+      <unit id="org.eclipse.platform.feature.group" version="0.0.0"/>
+      <unit id="org.eclipse.platform.source.feature.group" version="0.0.0"/>
+      <unit id="org.eclipse.jdt.feature.group" version="0.0.0"/>
+      <unit id="org.eclipse.equinox.p2.user.ui.feature.group" version="0.0.0"/>
+      <unit id="org.eclipse.equinox.executable.feature.group" version="0.0.0"/>
       <repository location="http://download.eclipse.org/eclipse/updates/4.4"/>
     </location>
 
@@ -105,6 +107,6 @@
   </locations>
 
   <launcherArgs>
-    <vmArgs>-Xms40m -Xmx512m -Xdock:icon=../Resources/Eclipse.icns -XstartOnFirstThread -Dorg.eclipse.swt.internal.carbon.smallFonts</vmArgs>
+    <vmArgs>-Xms40m -Xmx512m</vmArgs>
   </launcherArgs>
 </target>
