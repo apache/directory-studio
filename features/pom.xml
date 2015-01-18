@@ -37,7 +37,7 @@
     <module>ldapbrowser.feature</module>
 <!--     <module>ldapservers.feature</module> -->
     <module>ldifeditor.feature</module>
-<!--     <module>rcp.feature</module> -->
+    <module>rcp.feature</module>
     <module>schemaeditor.feature</module>
   </modules>
   
