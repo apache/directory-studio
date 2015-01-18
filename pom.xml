@@ -124,6 +124,7 @@
     <module>plugins</module>
     <module>helps</module>
     <module>features</module>
+    <module>product</module>
   </modules>
 
   <build>
