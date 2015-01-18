@@ -36,7 +36,7 @@
     <module>apacheds.configuration.help</module>
     <module>ldapbrowser.help</module>
     <module>ldifeditor.help</module>
-<!--     <module>rcp.help</module> -->
+    <module>rcp.help</module>
     <module>schemaeditor.help</module>
   </modules>
 

@@ -37,7 +37,7 @@
     <module>apacheds.configuration.help/pom-first.xml</module>
     <module>ldapbrowser.help/pom-first.xml</module>
     <module>ldifeditor.help/pom-first.xml</module>
-<!--     <module>rcp.help</module> -->
+    <module>rcp.help/pom-first.xml</module>
     <module>schemaeditor.help/pom-first.xml</module>
   </modules>
 
