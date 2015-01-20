@@ -60,6 +60,7 @@ import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
 import org.apache.directory.studio.ldapbrowser.core.jobs.SearchRunnable;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.SearchParameter;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IEditorInput;
@@ -141,11 +142,16 @@ public class LoadConfigurationRunnable implements StudioRunnableWithProgress
         }
         catch ( Exception e )
         {
+            ApacheDS2ConfigurationPlugin.getDefault().getLog().log( 
+                new Status( Status.ERROR, "org.apache.directory.studio.apacheds.configuration.v2", 
+                    e.getMessage() ) );
+
             // Reporting the error to the monitor
             monitor.reportError( e );
 
             // Reporting the error to the editor
             final Exception exception = e;
+            
             Display.getDefault().asyncExec( new Runnable()
             {
                 public void run()
@@ -204,6 +210,7 @@ public class LoadConfigurationRunnable implements StudioRunnableWithProgress
         {
             // We use the tooltip to get the full path of the file
             InputStream is = new FileInputStream( new File( input.getToolTipText() ) );
+            
             return readConfiguration( is );
         }
 
@@ -318,6 +325,9 @@ public class LoadConfigurationRunnable implements StudioRunnableWithProgress
             // Verifying we found the 'ou=config' base entry
             if ( configEntry == null )
             {
+                ApacheDS2ConfigurationPlugin.getDefault().getLog().log( 
+                    new Status( Status.ERROR, "org.apache.directory.studio.apacheds.configuration.v2", 
+                        Messages.getString( "LoadConfigurationRunnable.UnableToFindConfigBaseEntry" ) ) );
                 throw new LdapNoSuchObjectException(
                     Messages.getString( "LoadConfigurationRunnable.UnableToFindConfigBaseEntry" ) ); //$NON-NLS-1$
             }

@@ -26,6 +26,7 @@ import org.apache.directory.studio.apacheds.configuration.v2.ApacheDS2Configurat
 import org.apache.directory.studio.apacheds.configuration.v2.editor.ServerConfigurationEditor;
 import org.apache.directory.studio.apacheds.configuration.v2.editor.ServerConfigurationEditorUtils;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.resource.ImageDescriptor;
@@ -33,7 +34,7 @@ import org.eclipse.osgi.util.NLS;
 
 
 /**
- * This class implements the create connection action for an ApacheDS 1.5.7 server.
+ * This class implements the create connection action for an ApacheDS 2.0 server.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
@@ -86,6 +87,9 @@ public class EditorExportConfigurationAction extends Action
         }
         catch ( Exception e )
         {
+            ApacheDS2ConfigurationPlugin.getDefault().getLog().log( 
+                new Status( Status.ERROR, "org.apache.directory.studio.apacheds.configuration.v2", 
+                    e.getMessage() ) );
             MessageDialog
                 .openError( editor.getSite().getShell(),
                     Messages.getString( "EditorExportConfigurationAction.ErrorExportingConfigurationFile" ), //$NON-NLS-1$

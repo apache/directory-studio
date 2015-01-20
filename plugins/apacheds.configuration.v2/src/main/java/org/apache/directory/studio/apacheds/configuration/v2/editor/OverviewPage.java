@@ -73,7 +73,7 @@ import org.eclipse.ui.forms.widgets.TableWrapLayout;
  * | | +--------------------------------| | | +--------------------------------+ | |
  * | | | +----------------------------+ | | | | [X] Allow anonymous access     | | |
  * | | | | Partition 1                | | | | | [X] Enable Access Control      | | |
- * | | | | Partition 2                | | | | |                                | | |
+ * | | | | Partition 2                | | | | | [X] Password Hidden            | | |
  * | | | | ...                        | | | | |                                | | |
  * | | | +----------------------------+ | | | |                                | | |
  * | | | <advanced partitionsS config>  | | | |                                | | |
@@ -119,6 +119,7 @@ public class OverviewPage extends ServerConfigurationEditorPage
     /** The LDAP Options controls */
     private Button allowAnonymousAccessCheckbox;
     private Button enableAccessControlCheckbox;
+    private Button enableHiddenPasswordCheckbox;
 
     // UI Control Listeners
     /**
@@ -324,6 +325,18 @@ public class OverviewPage extends ServerConfigurationEditorPage
         public void widgetSelected( SelectionEvent e )
         {
             getDirectoryServiceBean().setDsAccessControlEnabled( enableAccessControlCheckbox.getSelection() );
+        }
+    };
+    
+    
+    /**
+     * The HiddenPassword checkbox listener
+     */
+    private SelectionAdapter enableHiddenPasswordCheckboxListener = new SelectionAdapter()
+    {
+        public void widgetSelected( SelectionEvent e )
+        {
+            getDirectoryServiceBean().setDsPasswordHidden( enableHiddenPasswordCheckbox.getSelection() );
         }
     };
 
@@ -584,6 +597,11 @@ public class OverviewPage extends ServerConfigurationEditorPage
         enableAccessControlCheckbox = toolkit.createButton( composite,
             Messages.getString( "OverviewPage.EnableAccessControl" ), SWT.CHECK ); //$NON-NLS-1$
         enableAccessControlCheckbox.setLayoutData( new GridData( SWT.NONE, SWT.NONE, true, false ) );
+
+        // Enable Hidden Password Checkbox
+        enableHiddenPasswordCheckbox = toolkit.createButton( composite,
+            Messages.getString( "OverviewPage.EnableHiddenPassword" ), SWT.CHECK ); //$NON-NLS-1$
+        enableHiddenPasswordCheckbox.setLayoutData( new GridData( SWT.NONE, SWT.NONE, true, false ) );
     }
 
 
@@ -631,6 +649,10 @@ public class OverviewPage extends ServerConfigurationEditorPage
         // Enable Access Control Checkbox
         addDirtyListener( enableAccessControlCheckbox );
         addSelectionListener( enableAccessControlCheckbox, enableAccessControlCheckboxListener );
+
+        // Enable Hidden Password Checkbox
+        addDirtyListener( enableHiddenPasswordCheckbox );
+        addSelectionListener( enableHiddenPasswordCheckbox, enableHiddenPasswordCheckboxListener );
     }
 
 
@@ -678,6 +700,10 @@ public class OverviewPage extends ServerConfigurationEditorPage
         // Enable Access Control Checkbox
         removeDirtyListener( enableAccessControlCheckbox );
         removeSelectionListener( enableAccessControlCheckbox, enableAccessControlCheckboxListener );
+
+        // Enable Hidden Password Checkbox
+        removeDirtyListener( enableHiddenPasswordCheckbox );
+        removeSelectionListener( enableHiddenPasswordCheckbox, enableHiddenPasswordCheckboxListener );
     }
 
 
@@ -737,6 +763,7 @@ public class OverviewPage extends ServerConfigurationEditorPage
             // Options
             allowAnonymousAccessCheckbox.setSelection( directoryServiceBean.isDsAllowAnonymousAccess() );
             enableAccessControlCheckbox.setSelection( directoryServiceBean.isDsAccessControlEnabled() );
+            enableHiddenPasswordCheckbox.setSelection( directoryServiceBean.isDsPasswordHidden() );
 
             addListeners();
         }

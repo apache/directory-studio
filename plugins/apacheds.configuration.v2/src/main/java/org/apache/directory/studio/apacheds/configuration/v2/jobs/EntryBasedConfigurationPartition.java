@@ -29,6 +29,7 @@ import org.apache.directory.api.ldap.model.entry.Entry;
 import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.api.ldap.model.schema.SchemaManager;
+import org.apache.directory.server.constants.ServerDNConstants;
 import org.apache.directory.server.core.api.interceptor.context.AddOperationContext;
 import org.apache.directory.server.core.partition.ldif.AbstractLdifPartition;
 
@@ -43,10 +44,8 @@ public class EntryBasedConfigurationPartition extends AbstractLdifPartition
     /**
      * Creates a new instance of ReadOnlyConfigurationPartition.
      *
-     * @param inputStream
-     *      the input stream
-     * @param schemaManager
-     *      the schema manager
+     * @param inputStream the input stream
+     * @param schemaManager the schema manager
      */
     public EntryBasedConfigurationPartition( SchemaManager schemaManager )
     {
@@ -60,7 +59,7 @@ public class EntryBasedConfigurationPartition extends AbstractLdifPartition
     protected void doInit() throws InvalidNameException, Exception
     {
         setId( "config" ); //$NON-NLS-1$
-        setSuffixDn( new Dn( "ou=config" ) ); //$NON-NLS-1$
+        setSuffixDn( new Dn( ServerDNConstants.CONFIG_DN ) ); //$NON-NLS-1$
 
         super.doInit();
     }
@@ -69,8 +68,7 @@ public class EntryBasedConfigurationPartition extends AbstractLdifPartition
     /**
      * Adds the given entry.
      *
-     * @param entry
-     *      the entry
+     * @param entry the entry
      * @throws Exception
      */
     public void addEntry( Entry entry ) throws Exception

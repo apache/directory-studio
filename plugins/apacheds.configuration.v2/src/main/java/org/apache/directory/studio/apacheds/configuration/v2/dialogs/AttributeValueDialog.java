@@ -74,6 +74,13 @@ public class AttributeValueDialog extends Dialog
 
 
     /**
+     * This create a dialog like :
+     * 
+     * <pre>
+     *   +------------------------------------------------+
+     *   | Attribute: [           ]  Value: [           ] |
+     *   +------------------------------------------------+
+     * </pre>
      * {@inheritDoc}
      */
     protected Control createDialogArea( Composite parent )
@@ -153,8 +160,7 @@ public class AttributeValueDialog extends Dialog
     /**
      * Gets the Attribute Value Object.
      *
-     * @return
-     *      the Attribute Value Object
+     * @return the Attribute Value Object
      */
     public AttributeValueObject getAttributeValueObject()
     {
@@ -165,8 +171,7 @@ public class AttributeValueDialog extends Dialog
     /**
      * Returns the dirty flag of the dialog.
      *
-     * @return
-     *      the dirty flag of the dialog
+     * @return the dirty flag of the dialog
      */
     public boolean isDirty()
     {

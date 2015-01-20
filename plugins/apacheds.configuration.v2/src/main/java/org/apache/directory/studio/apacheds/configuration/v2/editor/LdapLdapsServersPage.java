@@ -21,6 +21,7 @@ package org.apache.directory.studio.apacheds.configuration.v2.editor;
 
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.directory.api.ldap.model.constants.LdapSecurityConstants;
@@ -70,63 +71,61 @@ import org.eclipse.ui.forms.widgets.TableWrapLayout;
  * <pre>
  * +-------------------------------------------------------------------------------+
  * | +------------------------------------+ +------------------------------------+ |
- * | | .--------------------------------. | | +--------------------------------+ | |
- * | | |V LDAP Transport                | | | |                                | | |
- * | | +--------------------------------| | | |    Kerberos Server             | | |
- * | | | [X] Enabled                    | | | |                                | | |
- * | | |  Address  : [////////////////] | | | |                                | | |
- * | | |  Port     : [/////////]        | | | |                                | | |
- * | | |  nbThreads: [/////////]        | | | |                                | | |
- * | | |  backLog  : [/////////]        | | | |                                | | |
+ * | | .--------------------------------. | | .--------------------------------. | |
+ * | | |V LDAP/LDAPS servers            | | | |V Supported Authn Mechanisms    | | |
  * | | +--------------------------------+ | | +--------------------------------+ | |
+ * | | | [X] Enabled LDAP Server        | | | | [X] Simple      [X] GSSAPI     | | |
+ * | | |  Address  : [////////////////] | | | | [X] CRAM-MD5    [X] Digest-MD5 | | |
+ * | | |  Port     : [/////////]        | | | | [X] NTLM                       | | |
+ * | | |  nbThreads: [/////////]        | | | |   Provider : [///////////////] | | |
+ * | | |  backLog  : [/////////]        | | | | [X] GSS_SPNEGO                 | | |
+ * | | | [X] Enabled LDAPS Server       | | | |   Provider : [///////////////] | | |
+ * | | |  Address  : [////////////////] | | | | [X] Delegated                  | | |
+ * | | |  Port     : [/////////]        | | | |   Host    : [////////////////] | | |
+ * | | |  nbThreads: [/////////]        | | | |   Port    : [/////]            | | |
+ * | | |  backLog  : [/////////]        | | | |   Ssl     : [X]                | | |
+ * | | +--------------------------------+ | | |   Base DN : [////////////////] | | |
  * | | .--------------------------------. | | +--------------------------------+ | |
- * | | |V LDAPS Transport               | | | |                                | | |
- * | | +--------------------------------| | | |    Kerberos Server             | | |
- * | | | [X] Enabled                    | | | |                                | | |
- * | | |  Address  : [////////////////] | | | |                                | | |
- * | | |  Port     : [/////////]        | | | |                                | | |
- * | | |  nbThreads: [/////////]        | | | |                                | | |
- * | | |  backLog  : [/////////]        | | | |                                | | |
- * | | +--------------------------------| | | |    Kerberos Server             | | |
- * | | .--------------------------------. | | +--------------------------------+ | |
- * | | |  Server limits                 | | | |                                | | |
- * | | +--------------------------------| | | |    Kerberos Server             | | |
- * | | |    Max time limit : [////////] | | | |    Options                     | | |
- * | | |    Max size limit : [////////] | | | |    Options                     | | |
+ * | | |V Server limits                 | | | .--------------------------------. | |
+ * | | +--------------------------------+ | | |V SASL Settings                 | | |
+ * | | |    Max time limit : [////////] | | | +--------------------------------+ | |
+ * | | |    Max size limit : [////////] | | | | SASL Host      : [///////////] | | |
+ * | | |    Max PDU size   : [////////] | | | | SASL Principal : [///////////] | | |
+ * | | +--------------------------------+ | | | Search Base DN : [///////////] | | |
+ * | | .--------------------------------. | | | SASL realms    :               | | |
+ * | | |V SSL/Start TLS keystore        | | | |   +-----------------+          | | |
+ * | | +--------------------------------+ | | |   |                 | (add)    | | |
+ * | | |  keystore : [////////] (browse)| | | |   |                 | (edit)   | | |
+ * | | |  password : [////////////////] | | | |   |                 | (delete) | | |
+ * | | |             [X] Show password  | | | |   +-----------------+          | | |
  * | | +--------------------------------+ | | +--------------------------------+ | |
- * | | .--------------------------------. | | +--------------------------------+ | |
- * | | |  SSL/TLS keystore              | | | |                                | | |
- * | | +--------------------------------| | | |    Kerberos Server             | | |
- * | | |  keystore : [////////] (browse)| | | |    Options                     | | |
- * | | |  password : [////////////////] | | | |    Options                     | | |
- * | | |             [X] Show password  | | | |    Options                     | | |
- * | | +--------------------------------+ | | +--------------------------------+ | |
- * | | .--------------------------------. | | +--------------------------------+ | |
- * | | |V Advanced SSL Settings         | | | |                                | | |
- * | | +--------------------------------| | | |    Kerberos Server             | | |
- * | | |  [X] Require Client Auth       | | | |                                | | |
- * | | |    [X] Request Client Auth     | | | |                                | | |
- * | | |  Ciphers suite :               | | | |                                | | |
- * | | |   +-----------------+          | | | |                                | | |
- * | | |   |                 | (add)    | | | |                                | | |
- * | | |   |                 | (edit)   | | | |                                | | |
- * | | |   |                 | (delete) | | | |                                | | |
- * | | |   +-----------------+          | | | |                                | | |
- * | | |  Enabled protocols :           | | | |                                | | |
- * | | |   +-----------------+          | | | |                                | | |
- * | | |   |                 | (add)    | | | |                                | | |
- * | | |   |                 | (edit)   | | | |                                | | |
- * | | |   |                 | (delete) | | | |                                | | |
- * | | |   +-----------------+          | | | |                                | | |
- * | | +--------------------------------+ | | +--------------------------------+ | |
- * | | .--------------------------------. | | +--------------------------------+ | |
- * | | |V Advanced                      | | | |                                | | |
- * | | +--------------------------------| | | |    Kerberos Server             | | |
- * | | | [X] Enable TLS                 | | | |                                | | |
- * | | | [X] Enable ServerSide PWD hash | | | |                                | | |
- * | | |      hashing method {========} | | | |                                | | |
- * | | | Replication pinger sleep [XXX] | | | |                                | | |
- * | | +--------------------------------+ | | +--------------------------------+ | |
+ * | | .--------------------------------. | |                                    | |
+ * | | |V SSL Advanced Settings         | | |                                    | |
+ * | | +--------------------------------+ | |                                    | |
+ * | | |  [X] Require Client Auth       | | |                                    | |
+ * | | |    [X] Request Client Auth     | | |                                    | |
+ * | | |  Ciphers suite :               | | |                                    | |
+ * | | |   +-----------------+          | | |                                    | |
+ * | | |   |                 | (add)    | | |                                    | |
+ * | | |   |                 | (edit)   | | |                                    | |
+ * | | |   |                 | (delete) | | |                                    | |
+ * | | |   +-----------------+          | | |                                    | |
+ * | | |  Enabled protocols :           | | |                                    | |
+ * | | |   +-----------------+          | | |                                    | |
+ * | | |   |                 | (add)    | | |                                    | |
+ * | | |   |                 | (edit)   | | |                                    | |
+ * | | |   |                 | (delete) | | |                                    | |
+ * | | |   +-----------------+          | | |                                    | |
+ * | | +--------------------------------+ | |                                    | |
+ * | | .--------------------------------. | |                                    | |
+ * | | |V Advanced                      | | |                                    | |
+ * | | +--------------------------------+ | |                                    | |
+ * | | | [X] Enable TLS                 | | |                                    | |
+ * | | | [X] Enable ServerSide PWD hash | | |                                    | |
+ * | | |      hashing method {========} | | |                                    | |
+ * | | | Replication pinger sleep [XXX] | | |                                    | |
+ * | | | Disk sync delay [XXX]          | | |                                    | |
+ * | | +--------------------------------+ | |                                    | |
  * | +------------------------------------+ +------------------------------------+ |
  * +-------------------------------------------------------------------------------+
  * </pre>
@@ -213,7 +212,7 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
     private Text maxSizeLimitText;
     private Text maxPduSizeText;
     
-    
+    /** The supported authentication controls */
     private Button authMechSimpleCheckbox;
     private Button authMechCramMd5Checkbox;
     private Button authMechDigestMd5Checkbox;
@@ -222,9 +221,17 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
     private Text authMechNtlmText;
     private Button authMechGssSpnegoCheckbox;
     private Text authMechGssSpnegoText;
+
+    /** The SASL controls */
     private Text saslHostText;
     private Text saslPrincipalText;
     private Text saslSearchBaseDnText;
+    private TableViewer saslRealmsTableViewer;
+    private Button addSaslRealmsButton;
+    private Button editSaslRealmsButton;
+    private Button deleteSaslRealmsButton;
+    
+    /** The Advanced controls */
     private Button enableTlsCheckbox;
     private Button enableServerSidePasswordHashingCheckbox;
     private ComboViewer hashingMethodComboViewer;
@@ -403,8 +410,7 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
     {
         public void modifyText( ModifyEvent e )
         {
-            LdapLdapsServersPage.getLdapsServerTransportBean( getDirectoryServiceBean() ).setTransportAddress( 
-                ldapsAddressText.getText() );
+            getLdapsServerTransportBean().setTransportAddress( ldapsAddressText.getText() );
         }
     };
 
@@ -462,9 +468,20 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
             boolean enabled = needClientAuthCheckbox.getSelection();
 
             // Inject the flag in the config
-            //getLdapServerTransportBean().setWantClientAuth( enabled );
-            //getLdapServerTransportBean().setNeedClientAuth( enabled );
+            TransportBean ldapTransport = getLdapServerTransportBean();
             
+            if ( ldapTransport!= null )
+            {
+                ldapTransport.setWantClientAuth( enabled );
+            }
+            
+            TransportBean ldapsTransport = getLdapsServerTransportBean();
+            
+            if ( ldapsTransport!= null )
+            {
+                ldapsTransport.setWantClientAuth( enabled );
+            }
+
             // Turn on/off the NeedClientAuth
             if ( enabled )
             {
@@ -493,16 +510,31 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
         {
             boolean enabled = wantClientAuthCheckbox.getSelection();
 
-            // Inject the flag in the config
-            //getLdapServerTransportBean().setWantClientAuth( enabled );
+            // Inject the flag in the config - for all the transports, as
+            // it may be for SSL or startTLS - 
+            TransportBean ldapTransport =  getLdapServerTransportBean();
             
+            if ( ldapTransport != null )
+            {
+                ldapTransport.setWantClientAuth( enabled );
+            }
+
+            TransportBean ldapsTransport =  getLdapsServerTransportBean();
+            
+            if ( ldapsTransport != null )
+            {
+                ldapsTransport.setWantClientAuth( enabled );
+            }
+
             // Keep a track of the WantClientAuth flag
             wantClientAuthStatus = enabled;
         }
     };
 
-    
 
+    /**
+     * The SASL Host modify listener
+     */
     private ModifyListener saslHostTextListener = new ModifyListener()
     {
         public void modifyText( ModifyEvent e )
@@ -510,6 +542,11 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
             getLdapServerBean().setLdapServerSaslHost( saslHostText.getText() );
         }
     };
+    
+    
+    /**
+     * The SASL principal modify listener
+     */
     private ModifyListener saslPrincipalTextListener = new ModifyListener()
     {
         public void modifyText( ModifyEvent e )
@@ -517,6 +554,11 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
             getLdapServerBean().setLdapServerSaslPrincipal( saslPrincipalText.getText() );
         }
     };
+
+    
+    /**
+     * The SASL search Base DN modify listener
+     */
     private ModifyListener saslSearchBaseDnTextListener = new ModifyListener()
     {
         public void modifyText( ModifyEvent e )
@@ -534,6 +576,97 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
             }
         }
     };
+    
+    
+    /**
+     * SASL realms Table change
+     */
+    private ISelectionChangedListener saslRealmsTableViewerSelectionChangedListener = new ISelectionChangedListener()
+    {
+        public void selectionChanged( SelectionChangedEvent event )
+        {
+            StructuredSelection selection = ( StructuredSelection ) saslRealmsTableViewer.getSelection();
+
+            editSaslRealmsButton.setEnabled( !selection.isEmpty() );
+            deleteSaslRealmsButton.setEnabled( !selection.isEmpty() );
+        }
+    };
+    
+    
+    /**
+     * SaslRealms Table double-click
+     */
+    private IDoubleClickListener saslRealmsTableViewerDoubleClickListener = new IDoubleClickListener()
+    {
+        public void doubleClick( DoubleClickEvent event )
+        {
+            editSaslRealmsAction();
+        }
+    };
+    
+
+    /**
+     * Add SASL realms button
+     */
+    private SelectionListener addSaslRealmsButtonListener = new SelectionAdapter()
+    {
+        public void widgetSelected( SelectionEvent e )
+        {
+            InputDialog dialog = new InputDialog( editSaslRealmsButton.getShell(),
+                Messages.getString( "LdapLdapsServersPage.Add" ), //$NON-NLS-1$
+                Messages.getString( "LdapLdapsServersPage.SaslRealms" ), //$NON-NLS-1$
+                null, null );
+
+            if ( dialog.open() == InputDialog.OK )
+            {
+                String newSaslRealms = dialog.getValue();
+
+                getLdapServerBean().addSaslRealms( newSaslRealms );
+
+                saslRealmsTableViewer.refresh();
+                saslRealmsTableViewer.setSelection( new StructuredSelection( newSaslRealms ) );
+
+                setEditorDirty();
+            }
+        }
+    };
+    
+    
+    /**
+     * Edit SASL realms button
+     */
+    private SelectionListener editSaslRealmsButtonListener = new SelectionAdapter()
+    {
+        public void widgetSelected( SelectionEvent e )
+        {
+            editSaslRealmsAction();
+        }
+    };
+    
+    
+    /**
+     * Delete SASL realms button
+     */
+    private SelectionListener deleteSaslRealmsButtonListener = new SelectionAdapter()
+    {
+        public void widgetSelected( SelectionEvent e )
+        {
+            String selectedSaslRealms = getSelectedSaslRealms();
+
+            if ( selectedSaslRealms != null )
+            {
+                getLdapServerBean().getLdapServerSaslRealms().remove( selectedSaslRealms );
+                saslRealmsTableViewer.refresh();
+
+                setEditorDirty();
+            }
+        }
+    };
+
+    
+    /**
+     * The AuthMech Simple checkbox listener
+     */
     private SelectionAdapter authMechSimpleCheckboxListener = new SelectionAdapter()
     {
         public void widgetSelected( SelectionEvent e )
@@ -541,6 +674,11 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
             setEnableSupportedAuthenticationMechanism( SASL_MECHANISMS_SIMPLE, authMechSimpleCheckbox.getSelection() );
         };
     };
+    
+    
+    /**
+     * The AuthMech GSSAPI checkbox listener
+     */
     private SelectionAdapter authMechGssapiCheckboxListener = new SelectionAdapter()
     {
         public void widgetSelected( SelectionEvent e )
@@ -549,6 +687,11 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
                 authMechGssapiCheckbox.getSelection() );
         };
     };
+
+    
+    /**
+     * The AuthMech CRAM-MD5 checkbox listener
+     */
     private SelectionAdapter authMechCramMd5CheckboxListener = new SelectionAdapter()
     {
         public void widgetSelected( SelectionEvent e )
@@ -557,6 +700,11 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
                 authMechCramMd5Checkbox.getSelection() );
         };
     };
+    
+    
+    /**
+     * The AuthMech Digest MD5 checkbox listener
+     */
     private SelectionAdapter authMechDigestMd5CheckboxListener = new SelectionAdapter()
     {
         public void widgetSelected( SelectionEvent e )
@@ -565,6 +713,11 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
                 authMechDigestMd5Checkbox.getSelection() );
         };
     };
+    
+    
+    /**
+     * The AuthMech GSS-SPNEGO checkbox listener
+     */
     private SelectionAdapter authMechGssSpnegoCheckboxListener = new SelectionAdapter()
     {
         public void widgetSelected( SelectionEvent e )
@@ -574,6 +727,11 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
             setEnabled( authMechGssSpnegoText, authMechGssSpnegoCheckbox.getSelection() );
         };
     };
+
+    
+    /**
+     * The AuthMech GSS-SPNEGO text listener
+     */
     private ModifyListener authMechGssSpnegoTextListener = new ModifyListener()
     {
         public void modifyText( ModifyEvent e )
@@ -582,6 +740,11 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
                 authMechGssSpnegoText.getText() );
         }
     };
+    
+    
+    /**
+     * The AuthMech NTLM checkbox listener
+     */
     private SelectionAdapter authMechNtlmCheckboxListener = new SelectionAdapter()
     {
         public void widgetSelected( SelectionEvent e )
@@ -591,6 +754,11 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
             setEnabled( authMechNtlmText, authMechNtlmCheckbox.getSelection() );
         };
     };
+    
+    
+    /**
+     * The AuthMech NTLM  text listener
+     */
     private ModifyListener authMechNtlmTextListener = new ModifyListener()
     {
         public void modifyText( ModifyEvent e )
@@ -637,6 +805,9 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
     };
     
     
+    /**
+     * Tells if TLS is enabled
+     */
     private SelectionAdapter enableTlsCheckboxListener = new SelectionAdapter()
     {
         public void widgetSelected( SelectionEvent e )
@@ -644,6 +815,11 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
             setEnableTls( enableTlsCheckbox.getSelection() );
         }
     };
+    
+    
+    /**
+     * Tell the server to hash the passwords
+     */
     private SelectionAdapter enableServerSidePasswordHashingCheckboxListener = new SelectionAdapter()
     {
         public void widgetSelected( SelectionEvent e )
@@ -660,6 +836,11 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
             setEnabled( hashingMethodComboViewer.getCombo(), enableServerSidePasswordHashingCheckbox.getSelection() );
         }
     };
+    
+    
+    /**
+     * The list of method to use to hash the passwords
+     */
     private ISelectionChangedListener hashingMethodComboViewerListener = new ISelectionChangedListener()
     {
         public void selectionChanged( SelectionChangedEvent event )
@@ -667,22 +848,32 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
             updateHashingMethod();
         }
     };
+    
+    
+    /**
+     * The keyStore file listener
+     */
     private ModifyListener keystoreFileTextListener = new ModifyListener()
     {
         public void modifyText( ModifyEvent e )
         {
             String keystoreFile = keystoreFileText.getText();
 
-            if ( !"".equals( keystoreFile ) ) //$NON-NLS-1$
-            {
-                getLdapServerBean().setLdapServerKeystoreFile( keystoreFile );
-            }
-            else
+            if ( ( keystoreFile == null ) || ( keystoreFile.length() == 0 ) )
             {
                 getLdapServerBean().setLdapServerKeystoreFile( null );
             }
+            else
+            {
+                getLdapServerBean().setLdapServerKeystoreFile( keystoreFile );
+            }
         }
     };
+    
+    
+    /**
+     * Let the user browse the disk to find the keystore file
+     */
     private SelectionListener keystoreFileBrowseButtonSelectionListener = new SelectionAdapter()
     {
         public void widgetSelected( SelectionEvent event )
@@ -690,6 +881,7 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
             FileDialog fileDialog = new FileDialog( keystoreFileBrowseButton.getShell(), SWT.OPEN );
 
             File file = new File( keystoreFileText.getText() );
+            
             if ( file.isFile() )
             {
                 fileDialog.setFilterPath( file.getParent() );
@@ -705,6 +897,7 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
             }
 
             String returnedFileName = fileDialog.open();
+            
             if ( returnedFileName != null )
             {
                 keystoreFileText.setText( returnedFileName );
@@ -712,22 +905,32 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
             }
         }
     };
+    
+    
+    /**
+     * The keystore password listener
+     */
     private ModifyListener keystorePasswordTextListener = new ModifyListener()
     {
         public void modifyText( ModifyEvent e )
         {
             String keystorePassword = keystorePasswordText.getText();
 
-            if ( !"".equals( keystorePassword ) ) //$NON-NLS-1$
-            {
-                getLdapServerBean().setLdapServerCertificatePassword( keystorePassword );
-            }
-            else
+            if ( ( keystorePassword == null ) || ( keystorePassword.length() == 0 ) )
             {
                 getLdapServerBean().setLdapServerCertificatePassword( null );
             }
+            else
+            {
+                getLdapServerBean().setLdapServerCertificatePassword( keystorePassword );
+            }
         }
     };
+    
+    
+    /**
+     * The keystore password checkbox listener
+     */
     private SelectionListener showPasswordCheckboxSelectionListener = new SelectionAdapter()
     {
         public void widgetSelected( SelectionEvent e )
@@ -845,6 +1048,8 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
     };
     
     
+    
+    
     /**
      * Enabled Protocols Table double-click
      */
@@ -855,6 +1060,8 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
             editEnabledProtocolsAction();
         }
     };
+    
+    
     
 
     /**
@@ -873,7 +1080,21 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
             {
                 String newEnabledProtocol = dialog.getValue();
 
-                //getLdapServerTransportBean().addEnabledProtocols( newEnabledProtocol );
+                // Add the enabled protocols to LDAP and LDAPS transports. LDAP because
+                // it may be used for startTLS operation
+                TransportBean ldapTransport =  getLdapServerTransportBean();
+                
+                if ( ldapTransport != null )
+                {
+                    ldapTransport.addEnabledProtocols( newEnabledProtocol );
+                }
+
+                TransportBean ldapsTransport =  getLdapsServerTransportBean();
+                
+                if ( ldapsTransport != null )
+                {
+                    ldapsTransport.addEnabledProtocols( newEnabledProtocol );
+                }
 
                 enabledProtocolsTableViewer.refresh();
                 enabledProtocolsTableViewer.setSelection( new StructuredSelection( newEnabledProtocol ) );
@@ -907,7 +1128,20 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
 
             if ( selectedEnabledProtocols != null )
             {
-                //getLdapsServerTransportBean().getEnabledProtocols().remove( selectedEnabledProtocols );
+                TransportBean ldapTransport =  getLdapServerTransportBean();
+                
+                if ( ldapTransport != null )
+                {
+                    ldapTransport.getEnabledProtocols().remove( selectedEnabledProtocols );
+                }
+
+                TransportBean ldapsTransport =  getLdapsServerTransportBean();
+                
+                if ( ldapsTransport != null )
+                {
+                    ldapsTransport.getEnabledProtocols().remove( selectedEnabledProtocols );
+                }
+
                 enabledProtocolsTableViewer.refresh();
 
                 setEditorDirty();
@@ -916,6 +1150,9 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
     };
 
     
+    /**
+     * The replication ping Sleep modify listener
+     */
     private ModifyListener replicationPingerSleepTextListener = new ModifyListener()
     {
         public void modifyText( ModifyEvent e )
@@ -923,6 +1160,11 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
             getLdapServerBean().setReplPingerSleep( Integer.parseInt( replicationPingerSleepText.getText() ) );
         }
     };
+    
+    
+    /**
+     * The disk synchronization delay modify listener
+     */
     private ModifyListener diskSynchronizationDelayTextListener = new ModifyListener()
     {
         public void modifyText( ModifyEvent e )
@@ -935,8 +1177,7 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
     /**
      * Creates a new instance of GeneralPage.
      *
-     * @param editor
-     *      the associated editor
+     * @param editor the associated editor
      */
     public LdapLdapsServersPage( ServerConfigurationEditor editor )
     {
@@ -1392,36 +1633,65 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
     private void createSaslSettingsSection( FormToolkit toolkit, Composite parent )
     {
         // Creation of the section
-        Section section = toolkit.createSection( parent, Section.TITLE_BAR );
+        Section section = toolkit.createSection( parent, Section.TITLE_BAR | Section.TWISTIE | Section.COMPACT );
         section.setText( Messages.getString( "LdapLdapsServersPage.SaslSettings" ) ); //$NON-NLS-1$
         section.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
         Composite composite = toolkit.createComposite( section );
         toolkit.paintBordersFor( composite );
-        GridLayout glayout = new GridLayout( 2, false );
+        GridLayout glayout = new GridLayout( 3, false );
         composite.setLayout( glayout );
         section.setClient( composite );
 
         // SASL Host Text
         toolkit.createLabel( composite, Messages.getString( "LdapLdapsServersPage.SaslHost" ) ); //$NON-NLS-1$
         saslHostText = toolkit.createText( composite, "" ); //$NON-NLS-1$
-        setGridDataWithDefaultWidth( saslHostText, new GridData( SWT.FILL, SWT.NONE, true, false ) );
+        setGridDataWithDefaultWidth( saslHostText, new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
         Label defaultSaslHostLabel = createDefaultValueLabel( toolkit, composite, "ldap.example.com" ); //$NON-NLS-1$
-        defaultSaslHostLabel.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
+        defaultSaslHostLabel.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 3, 1 ) );
 
         // SASL Principal Text
         toolkit.createLabel( composite, Messages.getString( "LdapLdapsServersPage.SaslPrincipal" ) ); //$NON-NLS-1$
         saslPrincipalText = toolkit.createText( composite, "" ); //$NON-NLS-1$
-        setGridDataWithDefaultWidth( saslPrincipalText, new GridData( SWT.FILL, SWT.NONE, true, false ) );
+        setGridDataWithDefaultWidth( saslPrincipalText, new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
         Label defaultSaslPrincipalLabel = createDefaultValueLabel( toolkit, composite,
             "ldap/ldap.example.com@EXAMPLE.COM" ); //$NON-NLS-1$
-        defaultSaslPrincipalLabel.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
+        defaultSaslPrincipalLabel.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 3, 1 ) );
 
         // Search Base Dn Text
         toolkit.createLabel( composite, Messages.getString( "LdapLdapsServersPage.SearchBaseDn" ) ); //$NON-NLS-1$
         saslSearchBaseDnText = toolkit.createText( composite, "" ); //$NON-NLS-1$
-        setGridDataWithDefaultWidth( saslSearchBaseDnText, new GridData( SWT.FILL, SWT.NONE, true, false ) );
+        setGridDataWithDefaultWidth( saslSearchBaseDnText, new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
         Label defaultSaslSearchBaseDnLabel = createDefaultValueLabel( toolkit, composite, "ou=users,dc=example,dc=com" ); //$NON-NLS-1$
-        defaultSaslSearchBaseDnLabel.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
+        defaultSaslSearchBaseDnLabel.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 3, 1 ) );
+
+        // SASL Realms label 
+        Label saslRealmsLabel = toolkit.createLabel( composite, Messages.getString( "LdapLdapsServersPage.SaslRealms" ), SWT.WRAP  ); //$NON-NLS-1$
+        setBold( saslRealmsLabel );
+        saslRealmsLabel.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, glayout.numColumns, 1 ) );
+
+        // SASL realms Table Viewer
+        saslRealmsTableViewer = new TableViewer( composite );
+        saslRealmsTableViewer.setContentProvider( new ArrayContentProvider() );
+        GridData saslRealmsTableViewerGridData = new GridData( SWT.FILL, SWT.CENTER, true, false, 2, 3 );
+        saslRealmsTableViewerGridData.heightHint = 60;
+        saslRealmsTableViewer.getControl().setLayoutData( saslRealmsTableViewerGridData );
+
+        // Add SASL realms Button
+        addSaslRealmsButton = toolkit.createButton( composite,
+            Messages.getString( "LdapLdapsServersPage.Add" ), SWT.PUSH ); //$NON-NLS-1$
+        addSaslRealmsButton.setLayoutData( new GridData( SWT.FILL, SWT.BEGINNING, false, false, 1, 1 ) );
+
+        // Edit SASL realms Button
+        editSaslRealmsButton = toolkit.createButton( composite,
+            Messages.getString( "LdapLdapsServersPage.Edit" ), SWT.PUSH ); //$NON-NLS-1$
+        editSaslRealmsButton.setLayoutData( new GridData( SWT.FILL, SWT.BEGINNING, false, false, 1, 1 ) );
+        editSaslRealmsButton.setEnabled( false );
+
+        // Delete SASL realms Button
+        deleteSaslRealmsButton = toolkit.createButton( composite,
+            Messages.getString( "LdapLdapsServersPage.Delete" ), SWT.PUSH ); //$NON-NLS-1$
+        deleteSaslRealmsButton.setLayoutData( new GridData( SWT.FILL, SWT.BEGINNING, false, false, 1, 1 ) );
+        deleteSaslRealmsButton.setEnabled( false );
     }
 
 
@@ -1537,6 +1807,13 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
         addDirtyListener( saslSearchBaseDnText );
         addModifyListener( saslSearchBaseDnText, saslSearchBaseDnTextListener );
 
+        // SASL Realms Table Viewer
+        addSelectionChangedListener( saslRealmsTableViewer, saslRealmsTableViewerSelectionChangedListener );
+        addDoubleClickListener( saslRealmsTableViewer, saslRealmsTableViewerDoubleClickListener );
+        addSelectionListener( editSaslRealmsButton, editSaslRealmsButtonListener );
+        addSelectionListener( addSaslRealmsButton, addSaslRealmsButtonListener );
+        addSelectionListener( deleteSaslRealmsButton, deleteSaslRealmsButtonListener );
+
         // Max Time Limit Text
         addDirtyListener( maxTimeLimitText );
         addModifyListener( maxTimeLimitText, maxTimeLimitTextListener );
@@ -1565,26 +1842,18 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
         addSelectionChangedListener( ciphersSuiteTableViewer, ciphersSuiteTableViewerSelectionChangedListener );
         addDoubleClickListener( ciphersSuiteTableViewer, ciphersSuiteTableViewerDoubleClickListener );
 
-        // Advanced SSL Cipher Suite
+        // Advanced SSL Cipher Suite add/edit/delete buttons listeners
         addSelectionListener( addCiphersSuiteButton, addCiphersSuiteButtonListener );
-
-        // Advanced SSL Cipher Suite
         addSelectionListener( editCiphersSuiteButton, editCiphersSuiteButtonListener );
-
-        // Advanced SSL Cipher Suite
         addSelectionListener( deleteCiphersSuiteButton, deleteCiphersSuiteButtonListener );
 
         // Advanced SSL Enabled Protocols
         addSelectionChangedListener( enabledProtocolsTableViewer, enabledProtocolsTableViewerSelectionChangedListener );
         addDoubleClickListener( enabledProtocolsTableViewer, enabledProtocolsTableViewerDoubleClickListener );
 
-        // Advanced SSL Enabled Protocols
+        // Advanced SSL Enabled Protocols add/edit/delete buttons
         addSelectionListener( addEnabledProtocolsButton, addEnabledProtocolsButtonListener );
-
-        // Advanced SSL Enabled Protocols
         addSelectionListener( editEnabledProtocolsButton, editEnabledProtocolsButtonListener );
-
-        // Delete SSL/Start TLS Cipher Suite
         addSelectionListener( deleteEnabledProtocolsButton, deleteEnabledProtocolsButtonListener );
 
         // Replication Pinger Sleep
@@ -1709,7 +1978,16 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
         // SASL Seach Base Dn Text
         removeDirtyListener( saslSearchBaseDnText );
         removeModifyListener( saslSearchBaseDnText, saslSearchBaseDnTextListener );
-
+        
+        // SASL Realms
+        removeSelectionChangedListener( saslRealmsTableViewer, saslRealmsTableViewerSelectionChangedListener );
+        removeDoubleClickListener( saslRealmsTableViewer, saslRealmsTableViewerDoubleClickListener );
+        
+        // SASL Realms add/edit/delete buttons
+        removeSelectionListener( addSaslRealmsButton, addSaslRealmsButtonListener );
+        removeSelectionListener( editSaslRealmsButton, editSaslRealmsButtonListener );
+        removeSelectionListener( deleteSaslRealmsButton, deleteSaslRealmsButtonListener );
+        
         // Max Time Limit Text
         removeDirtyListener( maxTimeLimitText );
         removeModifyListener( maxTimeLimitText, maxTimeLimitTextListener );
@@ -1735,26 +2013,18 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
         removeSelectionChangedListener( ciphersSuiteTableViewer, ciphersSuiteTableViewerSelectionChangedListener );
         removeDoubleClickListener( ciphersSuiteTableViewer, ciphersSuiteTableViewerDoubleClickListener );
 
-        // Advanced SSL Cipher Suite
+        // Advanced SSL Cipher Suite add/edit/delete buttons
         removeSelectionListener( addCiphersSuiteButton, addCiphersSuiteButtonListener );
-
-        // Advanced SSL Cipher Suite
         removeSelectionListener( editCiphersSuiteButton, editCiphersSuiteButtonListener );
-
-        // Advanced SSL Cipher Suite
         removeSelectionListener( deleteCiphersSuiteButton, deleteCiphersSuiteButtonListener );
 
         // Advanced SSL Enabled Protocols
         removeSelectionChangedListener( enabledProtocolsTableViewer, enabledProtocolsTableViewerSelectionChangedListener );
         removeDoubleClickListener( enabledProtocolsTableViewer, enabledProtocolsTableViewerDoubleClickListener );
 
-        // Advanced SSL Enabled Protocols
+        // Advanced SSL Enabled Protocols add/edit/delete buttons removal
         removeSelectionListener( addEnabledProtocolsButton, addEnabledProtocolsButtonListener );
-
-        // Advanced SSL Enabled Protocols
         removeSelectionListener( editEnabledProtocolsButton, editEnabledProtocolsButtonListener );
-
-        // Advanced SSL Enabled Protocols
         removeSelectionListener( deleteEnabledProtocolsButton, deleteEnabledProtocolsButtonListener );
 
         // Replication Pinger Sleep
@@ -1817,6 +2087,8 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
             setText( saslHostText, ldapServerBean.getLdapServerSaslHost() );
             setText( saslPrincipalText, ldapServerBean.getLdapServerSaslPrincipal() );
             setText( saslSearchBaseDnText, ldapServerBean.getSearchBaseDn().toString() );
+            saslRealmsTableViewer.setInput( ldapServerBean.getLdapServerSaslRealms() );
+            saslRealmsTableViewer.refresh();
 
             // Keystore Properties
             setText( keystoreFileText, ldapServerBean.getLdapServerKeystoreFile() );
@@ -1825,6 +2097,7 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
             // Supported Auth Mechanisms
             List<SaslMechHandlerBean> saslMechHandlers = ldapServerBean.getSaslMechHandlers();
             uncheckAllSupportedAuthenticationMechanisms();
+            
             for ( SaslMechHandlerBean saslMechHandler : saslMechHandlers )
             {
                 if ( SASL_MECHANISMS_SIMPLE.equalsIgnoreCase( saslMechHandler.getSaslMechName() ) )
@@ -1877,6 +2150,7 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
             else
             {
                 LdapSecurityConstants hashingMethod = getHashingMethodFromInterceptor( hashingMethodInterceptor );
+                
                 if ( hashingMethod != null )
                 {
                     // Setting selection for the hashing method
@@ -1899,6 +2173,23 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
             ciphersSuiteTableViewer.setInput( ldapServerBean.getEnabledCipherSuites() );
             ciphersSuiteTableViewer.refresh();
 
+            // SSL/Start TLS Enabled Protocols
+            List<String> transports = new ArrayList<String>();
+            
+            for ( TransportBean transportBean : ldapServerBean.getTransports() )
+            {
+                if ( transportBean.getEnabledProtocols() != null )
+                {
+                    for ( String enableProtocol : transportBean.getEnabledProtocols() )
+                    {
+                        transports.add( enableProtocol );
+                    }
+                }
+            }
+            
+            enabledProtocolsTableViewer.setInput( transports );
+            enabledProtocolsTableViewer.refresh();
+
             // Replication Pinger Sleep
             setText( replicationPingerSleepText, Integer.toString( ldapServerBean.getReplPingerSleep() ) );
 
@@ -1911,7 +2202,7 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
 
 
     /**
-     * Unchecks all supported authentication mechanisns checkboxes.
+     * Unchecks all supported authentication mechanisms checkboxes.
      */
     private void uncheckAllSupportedAuthenticationMechanisms()
     {
@@ -1935,6 +2226,7 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
     private void setEnableSupportedAuthenticationMechanism( String mechanismName, boolean enabled )
     {
         List<SaslMechHandlerBean> saslMechHandlers = getLdapServerBean().getSaslMechHandlers();
+        
         for ( SaslMechHandlerBean saslMechHandler : saslMechHandlers )
         {
             if ( mechanismName.equalsIgnoreCase( saslMechHandler.getSaslMechName() ) )
@@ -1955,6 +2247,7 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
     private void setNtlmMechProviderSupportedAuthenticationMechanism( String mechanismName, String ntlmMechProvider )
     {
         List<SaslMechHandlerBean> saslMechHandlers = getLdapServerBean().getSaslMechHandlers();
+        
         for ( SaslMechHandlerBean saslMechHandler : saslMechHandlers )
         {
             if ( mechanismName.equalsIgnoreCase( saslMechHandler.getSaslMechName() ) )
@@ -1969,8 +2262,7 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
     /**
      * Gets the LDAP Server bean.
      *
-     * @return
-     *      the LDAP Server bean
+     * @return the LDAP Server bean
      */
     private LdapServerBean getLdapServerBean()
     {
@@ -2370,24 +2662,34 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
         {
             case HASH_METHOD_MD5:
                 return HASHING_PASSWORD_INTERCEPTOR_FQCN_MD5;
+                
             case HASH_METHOD_SMD5:
                 return HASHING_PASSWORD_INTERCEPTOR_FQCN_SMD5;
+                
             case HASH_METHOD_CRYPT:
                 return HASHING_PASSWORD_INTERCEPTOR_FQCN_CRYPT;
+                
             case HASH_METHOD_SHA256:
                 return HASHING_PASSWORD_INTERCEPTOR_FQCN_SHA256;
+                
             case HASH_METHOD_SSHA256:
                 return HASHING_PASSWORD_INTERCEPTOR_FQCN_SSHA256;
+                
             case HASH_METHOD_SHA384:
                 return HASHING_PASSWORD_INTERCEPTOR_FQCN_SHA384;
+                
             case HASH_METHOD_SSHA384:
                 return HASHING_PASSWORD_INTERCEPTOR_FQCN_SSHA384;
+                
             case HASH_METHOD_SHA512:
                 return HASHING_PASSWORD_INTERCEPTOR_FQCN_SHA512;
+                
             case HASH_METHOD_SSHA512:
                 return HASHING_PASSWORD_INTERCEPTOR_FQCN_SSHA512;
+                
             case HASH_METHOD_SHA:
                 return HASHING_PASSWORD_INTERCEPTOR_FQCN_SHA;
+                
             case HASH_METHOD_SSHA:
             default:
                 return HASHING_PASSWORD_INTERCEPTOR_FQCN_SSHA;
@@ -2499,11 +2801,57 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
             {
                 String newEnabledProtocols = dialog.getValue();
 
-                //getLdapServerTransportBean().getEnabledProtocols().remove( selectedEnabledProtocols );
-                //getLdapServerTransportBean().addEnabledProtocols( newEnabledProtocols );
-
                 enabledProtocolsTableViewer.refresh();
                 enabledProtocolsTableViewer.setSelection( new StructuredSelection( newEnabledProtocols ) );
+
+                setEditorDirty();
+            }
+        }
+    }
+
+
+    /**
+     * Gets the first SASL realms Table 
+     *
+     * @return the first Enabled Protocols Table
+     */
+    private String getSelectedSaslRealms()
+    {
+        StructuredSelection selection = ( StructuredSelection ) saslRealmsTableViewer.getSelection();
+
+        if ( !selection.isEmpty() )
+        {
+            return ( String ) selection.getFirstElement();
+        }
+
+        return null;
+    }
+
+
+    /**
+     * This method is called when the edit Sasl realms button is clicked,
+     * or when the table viewer is double clicked.
+     */
+    private void editSaslRealmsAction()
+    {
+        String selectedSaslRealms = getSelectedSaslRealms();
+
+        if ( selectedSaslRealms != null )
+        {
+            InputDialog dialog = new InputDialog( editSaslRealmsButton.getShell(),
+                Messages.getString( "LdapLdapsServersPage.Edit" ), //$NON-NLS-1$
+                Messages.getString( "LdapLdapsServersPage.SaslRealms" ), //$NON-NLS-1$
+                selectedSaslRealms, null );
+
+            if ( dialog.open() == InputDialog.OK )
+            {
+                String newSaslRealms = dialog.getValue();
+
+                getLdapServerBean().getLdapServerSaslRealms().remove( selectedSaslRealms );
+                getLdapServerBean().addSaslRealms( newSaslRealms );
+
+                saslRealmsTableViewer.refresh();
+                saslRealmsTableViewer.setSelection( new StructuredSelection( newSaslRealms ) );
 
                 setEditorDirty();
             }

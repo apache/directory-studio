@@ -48,8 +48,7 @@ public class SaveConfigurationRunnable implements StudioRunnableWithProgress
     /**
      * Creates a new instance of SaveConfigurationRunnable.
      * 
-     * @param editor
-     *            the editor
+     * @param editor the editor
      */
     public SaveConfigurationRunnable( ServerConfigurationEditor editor )
     {
@@ -100,6 +99,7 @@ public class SaveConfigurationRunnable implements StudioRunnableWithProgress
                 IEditorInput input = editor.getEditorInput();
                 String inputClassName = input.getClass().getName();
                 boolean success = false;
+                
                 if ( input instanceof FileEditorInput )
                 // FileEditorInput class is used when the file is opened
                 // from a project in the workspace.
@@ -110,6 +110,7 @@ public class SaveConfigurationRunnable implements StudioRunnableWithProgress
                         monitor );
                     success = true;
                 }
+                
                 // If the input is a ConnectionServerConfigurationInput, then we 
                 // read the server configuration from the selected connection
                 if ( input instanceof ConnectionServerConfigurationInput )

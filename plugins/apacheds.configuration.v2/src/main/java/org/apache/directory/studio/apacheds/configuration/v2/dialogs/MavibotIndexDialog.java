@@ -73,6 +73,13 @@ public class MavibotIndexDialog extends Dialog
 
 
     /**
+     * This create a dialog like :
+     * 
+     * <pre>
+     *   +------------------------------+
+     *   | Attribute ID: [           ]  |
+     *   +------------------------------+
+     * </pre>
      * {@inheritDoc}
      */
     protected Control createDialogArea( Composite parent )
@@ -134,8 +141,7 @@ public class MavibotIndexDialog extends Dialog
     /**
      * Gets the Indexed Attribute.
      *
-     * @return
-     *      the Indexed Attribute
+     * @return the Indexed Attribute
      */
     public MavibotIndexBean getIndex()
     {

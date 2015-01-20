@@ -49,7 +49,7 @@ import org.eclipse.ui.model.WorkbenchLabelProvider;
 
 
 /**
- * This class implements the create connection action for an ApacheDS 1.5.7 server.
+ * This class implements the create connection action for an ApacheDS 2.0 server.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
@@ -65,8 +65,7 @@ public class EditorImportConfigurationAction extends Action
     /**
      * Creates a new instance of EditorImportConfigurationAction.
      *
-     * @param editor
-     *      the associated editor
+     * @param editor the associated editor
      */
     public EditorImportConfigurationAction( ServerConfigurationEditor editor )
     {
@@ -120,14 +119,17 @@ public class EditorImportConfigurationAction extends Action
 
             // detect IDE or RCP:
             boolean isIDE = CommonUIUtils.isIDEEnvironment();
+            
             if ( isIDE )
             {
                 // Opening a dialog for file selection
                 ElementTreeSelectionDialog dialog = createWorkspaceFileSelectionDialog();
+                
                 if ( dialog.open() == Dialog.OK )
                 {
                     // Getting the input stream for the selected file
                     Object firstResult = dialog.getFirstResult();
+                    
                     if ( ( firstResult != null ) && ( firstResult instanceof IFile ) )
                     {
                         inputStream = ( ( IFile ) firstResult ).getContents();
@@ -146,6 +148,7 @@ public class EditorImportConfigurationAction extends Action
                 dialog.setText( DIALOG_TITLE );
                 dialog.setFilterPath( System.getProperty( "user.home" ) ); //$NON-NLS-1$
                 String filePath = dialog.open();
+                
                 if ( filePath == null )
                 {
                     // Cancel button has been clicked
@@ -154,6 +157,7 @@ public class EditorImportConfigurationAction extends Action
 
                 // Checking the file
                 File file = new File( filePath );
+                
                 if ( !file.exists() || !file.isFile() || !file.canRead() )
                 {
                     // This is not a valid file
@@ -189,6 +193,10 @@ public class EditorImportConfigurationAction extends Action
         }
         catch ( Exception e )
         {
+            ApacheDS2ConfigurationPlugin.getDefault().getLog().log( 
+                new Status( Status.ERROR, "org.apache.directory.studio.apacheds.configuration.v2", 
+                    e.getMessage() ) );
+
             MessageDialog
                 .openError(
                     editor.getSite().getShell(),
@@ -204,8 +212,7 @@ public class EditorImportConfigurationAction extends Action
     /**
      * Creates a {@link Dialog} to select a single file in the workspace.
      *
-     * @return
-     *      a {@link Dialog} to select a single file in the workspace
+     * @return a {@link Dialog} to select a single file in the workspace
      */
     private ElementTreeSelectionDialog createWorkspaceFileSelectionDialog()
     {
@@ -225,7 +232,6 @@ public class EditorImportConfigurationAction extends Action
             /** The not validated status */
             private Status notValidated = new Status( IStatus.ERROR, ApacheDS2ConfigurationPluginConstants.PLUGIN_ID,
                 IStatus.ERROR, "", null ); //$NON-NLS-1$
-
 
             public IStatus validate( Object[] selection )
             {
