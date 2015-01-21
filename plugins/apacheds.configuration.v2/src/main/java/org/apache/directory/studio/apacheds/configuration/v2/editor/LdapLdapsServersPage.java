@@ -35,10 +35,14 @@ import org.apache.directory.server.config.beans.LdapServerBean;
 import org.apache.directory.server.config.beans.SaslMechHandlerBean;
 import org.apache.directory.server.config.beans.TcpTransportBean;
 import org.apache.directory.server.config.beans.TransportBean;
+import org.apache.directory.studio.common.ui.CommonUIUtils;
 import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.jface.viewers.ArrayContentProvider;
+import org.eclipse.jface.viewers.CheckStateChangedEvent;
+import org.eclipse.jface.viewers.CheckboxTableViewer;
 import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.viewers.DoubleClickEvent;
+import org.eclipse.jface.viewers.ICheckStateListener;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.LabelProvider;
@@ -58,6 +62,7 @@ import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.Section;
@@ -105,12 +110,12 @@ import org.eclipse.ui.forms.widgets.TableWrapLayout;
  * | | |  [X] Require Client Auth       | | |                                    | |
  * | | |    [X] Request Client Auth     | | |                                    | |
  * | | |  Ciphers suite :               | | |                                    | |
- * | | |   +-----------------+          | | |                                    | |
- * | | |   |                 | (add)    | | |                                    | |
- * | | |   |                 | (edit)   | | |                                    | |
- * | | |   |                 | (delete) | | |                                    | |
- * | | |   +-----------------+          | | |                                    | |
- * | | |  Enabled protocols :           | | |                                    | |
+ * | | |   +--------------------------+ | | |                                    | |
+ * | | |   |[X] xyz                   | | | |                                    | |
+ * | | |   |[X] abc                   | | | |                                    | |
+ * | | |   |[X] def                   | | | |                                    | |
+ * | | |   +--------------------------+ | | |                                    | |
+ * | | | Enabled protocols :            | | |                                    | |
  * | | | [X] SSLv3  [X] TLSv1           | | |                                    | |
  * | | |        [X] TLSv1.1 [X] TLSv1.2 | | |                                    | |
  * | | +--------------------------------+ | |                                    | |
@@ -197,10 +202,7 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
     private boolean wantClientAuthStatus;
     
     /** The CiphersSuite controls */
-    private TableViewer ciphersSuiteTableViewer;
-    private Button addCiphersSuiteButton;
-    private Button editCiphersSuiteButton;
-    private Button deleteCiphersSuiteButton;
+    private CheckboxTableViewer ciphersSuiteTableViewer;
     
     /** The EnabledProtocols controls */
     private Button sslv3Checkbox;
@@ -372,9 +374,6 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
             setEnabled( needClientAuthCheckbox, enabled );
             setEnabled( wantClientAuthCheckbox, enabled );
             setEnabled( ciphersSuiteTableViewer.getTable(), enabled );
-            setEnabled( addCiphersSuiteButton, enabled );
-            setEnabled( deleteCiphersSuiteButton, enabled );
-            setEnabled( editCiphersSuiteButton, enabled );
             setEnabled( sslv3Checkbox, enabled );
             setEnabled( tlsv1_0Checkbox, enabled );
             setEnabled( tlsv1_1Checkbox, enabled );
@@ -951,84 +950,60 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
     /**
      * Ciphers Suite Table change
      */
-    private ISelectionChangedListener ciphersSuiteTableViewerSelectionChangedListener = new ISelectionChangedListener()
+    private ICheckStateListener ciphersSuiteTableViewerListener = new ICheckStateListener()
     {
-        public void selectionChanged( SelectionChangedEvent event )
+        public void checkStateChanged( CheckStateChangedEvent event )
         {
-            StructuredSelection selection = ( StructuredSelection ) ciphersSuiteTableViewer.getSelection();
-
-            editCiphersSuiteButton.setEnabled( !selection.isEmpty() );
-            deleteCiphersSuiteButton.setEnabled( !selection.isEmpty() );
-        }
-    };
-    
-    
-    /**
-     * Ciphers Suite Table double-click
-     */
-    private IDoubleClickListener ciphersSuiteTableViewerDoubleClickListener = new IDoubleClickListener()
-    {
-        public void doubleClick( DoubleClickEvent event )
-        {
-            editCiphersSuiteAction();
-        }
-    };
-    
-
-    /**
-     * Add Ciphers Suite button
-     */
-    private SelectionListener addCiphersSuiteButtonListener = new SelectionAdapter()
-    {
-        public void widgetSelected( SelectionEvent e )
-        {
-            InputDialog dialog = new InputDialog( editCiphersSuiteButton.getShell(),
-                Messages.getString( "LdapLdapsServersPage.Add" ), //$NON-NLS-1$
-                Messages.getString( "LdapLdapsServersPage.CiphersSuite" ), //$NON-NLS-1$
-                null, null );
-
-            if ( dialog.open() == InputDialog.OK )
+            TransportBean transport = getLdapTransportBean( TRANSPORT_ID_LDAP );
+            
+            if ( transport == null )
             {
-                String newCipher = dialog.getValue();
-
-                getLdapServerBean().addEnabledCipherSuites( newCipher );
-
-                ciphersSuiteTableViewer.refresh();
-                ciphersSuiteTableViewer.setSelection( new StructuredSelection( newCipher ) );
-
-                setEditorDirty();
+                transport = getLdapTransportBean( TRANSPORT_ID_LDAPS );
             }
-        }
-    };
-    
-    
-    /**
-     * Edit Ciphers Suite button
-     */
-    private SelectionListener editCiphersSuiteButtonListener = new SelectionAdapter()
-    {
-        public void widgetSelected( SelectionEvent e )
-        {
-            editCiphersSuiteAction();
-        }
-    };
-    
-    
-    /**
-     * Delete Ciphers Suite button
-     */
-    private SelectionListener deleteCiphersSuiteButtonListener = new SelectionAdapter()
-    {
-        public void widgetSelected( SelectionEvent e )
-        {
-            String selectedCiphersSuite = getSelectedCiphersSuite();
-
-            if ( selectedCiphersSuite != null )
+            
+            if ( transport == null )
             {
-                getLdapServerBean().getEnabledCipherSuites().remove( selectedCiphersSuite );
-                ciphersSuiteTableViewer.refresh();
+                // TODO : the list should be disabled
+                return;
+            }
+            
+            // Checking if the last cipher is being unchecked
+            if ( transport.getEnabledCiphers() == null )
+            {
+                // Ok, we don't have any selected cipher, which means all of them are selected
+                transport.setEnabledCiphers( SupportedCipher.supportedCipherNamesJava8 );
+            }
+            if ( ( transport.getEnabledCiphers().size() == 1 ) && ( event.getChecked() == false ) )
+            {
+                // Displaying an error to the user
+                CommonUIUtils.openErrorDialog( Messages
+                    .getString( "LdapLdapsServersPage.AtLeastOneCipherMustBeSelected" ) );
 
-                setEditorDirty();
+                // Reverting the current checked state
+                ciphersSuiteTableViewer.setChecked( event.getElement(), !event.getChecked() );
+
+                // Exiting
+                return;
+            }
+
+            // Setting the editor as dirty
+            setEditorDirty();
+
+            // Clearing previous cipher suite
+            transport.getEnabledCiphers().clear();
+
+            // Getting all selected encryption types
+            Object[] selectedCipherObjects = ciphersSuiteTableViewer.getCheckedElements();
+
+            // Adding each selected cipher
+            for ( Object cipher : selectedCipherObjects )
+            {
+                if ( cipher instanceof SupportedCipher )
+                {
+                    SupportedCipher supportedCipher = ( SupportedCipher ) cipher;
+
+                    transport.getEnabledCiphers().add( supportedCipher.getCipher() );
+                }
             }
         }
     };
@@ -1351,28 +1326,37 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
         ciphersLabel.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, glayout.numColumns, 1 ) );
 
         // Ciphers Suites Table Viewer
-        ciphersSuiteTableViewer = new TableViewer( composite );
+        ciphersSuiteTableViewer = new CheckboxTableViewer( new Table( composite, SWT.BORDER | SWT.CHECK ) );
         ciphersSuiteTableViewer.setContentProvider( new ArrayContentProvider() );
-        GridData cipherSuitesTableViewerGridData = new GridData( SWT.FILL, SWT.CENTER, true, false, 3, 4 );
-        cipherSuitesTableViewerGridData.heightHint = 60;
-        ciphersSuiteTableViewer.getControl().setLayoutData( cipherSuitesTableViewerGridData );
+        ciphersSuiteTableViewer.setLabelProvider( new LabelProvider()
+        {
+            public String getText( Object cipher )
+            {
+                if ( cipher instanceof SupportedCipher )
+                {
+                    SupportedCipher supportedCipher = ( SupportedCipher ) cipher;
 
-        // Add Ciphers Suite Button
-        addCiphersSuiteButton = toolkit.createButton( composite,
-            Messages.getString( "LdapLdapsServersPage.Add" ), SWT.PUSH ); //$NON-NLS-1$
-        addCiphersSuiteButton.setLayoutData( new GridData( SWT.FILL, SWT.BEGINNING, false, false ) );
+                    return supportedCipher.getCipher();
+                }
 
-        // Edit Ciphers Suite Button
-        editCiphersSuiteButton = toolkit.createButton( composite,
-            Messages.getString( "LdapLdapsServersPage.Edit" ), SWT.PUSH ); //$NON-NLS-1$
-        editCiphersSuiteButton.setLayoutData( new GridData( SWT.FILL, SWT.BEGINNING, false, false ) );
-        editCiphersSuiteButton.setEnabled( false );
-
-        // Delete Ciphers Suite Button
-        deleteCiphersSuiteButton = toolkit.createButton( composite,
-            Messages.getString( "LdapLdapsServersPage.Delete" ), SWT.PUSH ); //$NON-NLS-1$
-        deleteCiphersSuiteButton.setLayoutData( new GridData( SWT.FILL, SWT.BEGINNING, false, false ) );
-        deleteCiphersSuiteButton.setEnabled( false );
+                return super.getText( cipher );
+            }
+        } );
+        
+        List<SupportedCipher> supportedCiphers = new ArrayList<SupportedCipher>();
+        
+        for ( SupportedCipher supportedCipher : SupportedCipher.SUPPORTED_CIPHERS )
+        {
+            if ( supportedCipher.isJava8Implemented() )
+            {
+                supportedCiphers.add( supportedCipher );
+            }
+        }
+        
+        ciphersSuiteTableViewer.setInput( supportedCiphers );
+        GridData ciphersSuiteTableViewerGridData = new GridData( SWT.FILL, SWT.NONE, true, false, glayout.numColumns, 5 );
+        ciphersSuiteTableViewerGridData.heightHint = 60;
+        ciphersSuiteTableViewer.getControl().setLayoutData( ciphersSuiteTableViewerGridData );
 
         // Enabled Protocols label 
         Label protocolsLabel = toolkit.createLabel( composite, Messages.getString( "LdapLdapsServersPage.EnabledProtocols" ), SWT.WRAP  ); //$NON-NLS-1$
@@ -1395,31 +1379,6 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
         // TLS 1.2
         tlsv1_2Checkbox = toolkit.createButton( composite, "TLSv1.2", SWT.CHECK ); //$NON-NLS-1$
         tlsv1_2Checkbox.setLayoutData( new GridData( SWT.FILL, SWT.CENTER, true, false ) );
-
-        /*
-        enabledProtocolsTableViewer = new TableViewer( composite );
-        enabledProtocolsTableViewer.setContentProvider( new ArrayContentProvider() );
-        GridData enabledProtocolsTableViewerGridData = new GridData( SWT.FILL, SWT.CENTER, true, false, 2, 3 );
-        enabledProtocolsTableViewerGridData.heightHint = 60;
-        enabledProtocolsTableViewer.getControl().setLayoutData( enabledProtocolsTableViewerGridData );
-
-        // Add Enabled Protocols Button
-        addEnabledProtocolsButton = toolkit.createButton( composite,
-            Messages.getString( "LdapLdapsServersPage.Add" ), SWT.PUSH ); //$NON-NLS-1$
-        addEnabledProtocolsButton.setLayoutData( new GridData( SWT.FILL, SWT.BEGINNING, false, false ) );
-
-        // Edit Enabled Protocols Button
-        editEnabledProtocolsButton = toolkit.createButton( composite,
-            Messages.getString( "LdapLdapsServersPage.Edit" ), SWT.PUSH ); //$NON-NLS-1$
-        editEnabledProtocolsButton.setLayoutData( new GridData( SWT.FILL, SWT.BEGINNING, false, false ) );
-        editEnabledProtocolsButton.setEnabled( false );
-
-        // Delete Enabled Protocols Button
-        deleteEnabledProtocolsButton = toolkit.createButton( composite,
-            Messages.getString( "LdapLdapsServersPage.Delete" ), SWT.PUSH ); //$NON-NLS-1$
-        deleteEnabledProtocolsButton.setLayoutData( new GridData( SWT.FILL, SWT.BEGINNING, false, false ) );
-        deleteEnabledProtocolsButton.setEnabled( false );
-        */
     }
 
 
@@ -1789,13 +1748,7 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
         addSelectionChangedListener( hashingMethodComboViewer, hashingMethodComboViewerListener );
 
         // Advanced SSL Cipher Suites
-        addSelectionChangedListener( ciphersSuiteTableViewer, ciphersSuiteTableViewerSelectionChangedListener );
-        addDoubleClickListener( ciphersSuiteTableViewer, ciphersSuiteTableViewerDoubleClickListener );
-
-        // Advanced SSL Cipher Suite add/edit/delete buttons listeners
-        addSelectionListener( addCiphersSuiteButton, addCiphersSuiteButtonListener );
-        addSelectionListener( editCiphersSuiteButton, editCiphersSuiteButtonListener );
-        addSelectionListener( deleteCiphersSuiteButton, deleteCiphersSuiteButtonListener );
+        ciphersSuiteTableViewer.addCheckStateListener( ciphersSuiteTableViewerListener );
 
         // Advanced SSL Enabled Protocols
         // Enable sslv3 Checkbox
@@ -1968,13 +1921,7 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
         removeSelectionChangedListener( hashingMethodComboViewer, hashingMethodComboViewerListener );
 
         // Advanced SSL Cipher Suites
-        removeSelectionChangedListener( ciphersSuiteTableViewer, ciphersSuiteTableViewerSelectionChangedListener );
-        removeDoubleClickListener( ciphersSuiteTableViewer, ciphersSuiteTableViewerDoubleClickListener );
-
-        // Advanced SSL Cipher Suite add/edit/delete buttons
-        removeSelectionListener( addCiphersSuiteButton, addCiphersSuiteButtonListener );
-        removeSelectionListener( editCiphersSuiteButton, editCiphersSuiteButtonListener );
-        removeSelectionListener( deleteCiphersSuiteButton, deleteCiphersSuiteButtonListener );
+        ciphersSuiteTableViewer.removeCheckStateListener( ciphersSuiteTableViewerListener );
 
         // Advanced SSL Enabled Protocols SSL v3
         removeDirtyListener( sslv3Checkbox );
@@ -2139,9 +2086,33 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
             }
 
             // SSL/Start TLS Cipher Suites
-            ciphersSuiteTableViewer.setInput( ldapServerBean.getEnabledCipherSuites() );
-            ciphersSuiteTableViewer.refresh();
+            List<String> enabledCiphers = ldapServerTransportBean.getEnabledCiphers();
+            List<SupportedCipher> supportedCiphers = new ArrayList<SupportedCipher>();
+            
+            if ( enabledCiphers == null )
+            {
+                // We don't have any selected ciphers. Propose the full list
+                for ( SupportedCipher cipher : SupportedCipher.supportedCiphersJava8 )
+                {
+                    supportedCiphers.add( cipher );
+                }
+            }
+            else
+            {
+                for ( String supportedCipher : enabledCiphers )
+                {
+                    SupportedCipher cipher = SupportedCipher.getByName( supportedCipher );
 
+                    if ( cipher != null )
+                    {
+                        supportedCiphers.add( cipher );
+                    }
+                }
+            }
+            
+            ciphersSuiteTableViewer.setCheckedElements( supportedCiphers.toArray() );
+            ciphersSuiteTableViewer.refresh();
+            
             // SSL/Start TLS Enabled Protocols
             // Check if we have a LDAP transport
             TransportBean transportBean = getLdapTransportBean( TRANSPORT_ID_LDAP );
@@ -2686,6 +2657,8 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
                 return HASHING_PASSWORD_INTERCEPTOR_FQCN_SSHA;
         }
     }
+    
+    
 
 
     /**
@@ -2704,57 +2677,10 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
 
         return null;
     }
-
-
-    /**
-     * Gets the selected Ciphers Suite 
-     *
-     * @return the selected Ciphers Suite
-     */
-    private String getSelectedCiphersSuite()
-    {
-        StructuredSelection selection = ( StructuredSelection ) ciphersSuiteTableViewer.getSelection();
-
-        if ( !selection.isEmpty() )
-        {
-            return ( String ) selection.getFirstElement();
-        }
-
-        return null;
-    }
-
-
-    /**
-     * This method is called when the edit cipher suite button is clicked,
-     * or when the table viewer is double clicked.
-     */
-    private void editCiphersSuiteAction()
-    {
-        String selectedCiphersSuite = getSelectedCiphersSuite();
-
-        if ( selectedCiphersSuite != null )
-        {
-            InputDialog dialog = new InputDialog( editCiphersSuiteButton.getShell(),
-                Messages.getString( "LdapLdapsServersPage.Edit" ), //$NON-NLS-1$
-                Messages.getString( "LdapLdapsServersPage.CiphersSuite" ), //$NON-NLS-1$
-                selectedCiphersSuite, null );
-
-            if ( dialog.open() == InputDialog.OK )
-            {
-                String newCiphersSuite = dialog.getValue();
-
-                getLdapServerBean().getEnabledCipherSuites().remove( selectedCiphersSuite );
-                getLdapServerBean().addEnabledCipherSuites( newCiphersSuite );
-
-                ciphersSuiteTableViewer.refresh();
-                ciphersSuiteTableViewer.setSelection( new StructuredSelection( newCiphersSuite ) );
-
-                setEditorDirty();
-            }
-        }
-    }
     
     
+
+
     /**
      * Enables/disables SSLV3.
      *
