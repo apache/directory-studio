@@ -111,11 +111,8 @@ import org.eclipse.ui.forms.widgets.TableWrapLayout;
  * | | |   |                 | (delete) | | |                                    | |
  * | | |   +-----------------+          | | |                                    | |
  * | | |  Enabled protocols :           | | |                                    | |
- * | | |   +-----------------+          | | |                                    | |
- * | | |   |                 | (add)    | | |                                    | |
- * | | |   |                 | (edit)   | | |                                    | |
- * | | |   |                 | (delete) | | |                                    | |
- * | | |   +-----------------+          | | |                                    | |
+ * | | | [X] SSLv3  [X] TLSv1           | | |                                    | |
+ * | | |        [X] TLSv1.1 [X] TLSv1.2 | | |                                    | |
  * | | +--------------------------------+ | |                                    | |
  * | | .--------------------------------. | |                                    | |
  * | | |V Advanced                      | | |                                    | |
@@ -148,6 +145,10 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
     private static final String TRANSPORT_ID_LDAP = "ldap"; //$NON-NLS-1$
     private static final String TRANSPORT_ID_LDAPS = "ldaps"; //$NON-NLS-1$
     private static final String SASL_MECHANISMS_SIMPLE = "SIMPLE"; //$NON-NLS-1$
+    private static final String SSL_V3 = "SSLv3";
+    private static final String TLS_V1_0 = "TLSv1";
+    private static final String TLS_V1_1 = "TLSv1.1";
+    private static final String TLS_V1_2 = "TLSv1.2";
     private static final String START_TLS_HANDLER_ID = "starttlshandler"; //$NON-NLS-1$
     private static final String START_TLS_HANDLER_CLASS = "org.apache.directory.server.ldap.handlers.extended.StartTlsHandler"; //$NON-NLS-1$
     private static final String HASHING_PASSWORD_INTERCEPTOR_ID = "passwordHashingInterceptor"; //$NON-NLS-1$
@@ -202,10 +203,10 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
     private Button deleteCiphersSuiteButton;
     
     /** The EnabledProtocols controls */
-    private TableViewer enabledProtocolsTableViewer;
-    private Button addEnabledProtocolsButton;
-    private Button editEnabledProtocolsButton;
-    private Button deleteEnabledProtocolsButton;
+    private Button sslv3Checkbox;
+    private Button tlsv1_0Checkbox;
+    private Button tlsv1_1Checkbox;
+    private Button tlsv1_2Checkbox;
     
     /** LDAP limits */
     private Text maxTimeLimitText;
@@ -374,10 +375,10 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
             setEnabled( addCiphersSuiteButton, enabled );
             setEnabled( deleteCiphersSuiteButton, enabled );
             setEnabled( editCiphersSuiteButton, enabled );
-            setEnabled( enabledProtocolsTableViewer.getTable(), enabled );
-            setEnabled( addEnabledProtocolsButton, enabled );
-            setEnabled( deleteEnabledProtocolsButton, enabled );
-            setEnabled( editEnabledProtocolsButton, enabled );
+            setEnabled( sslv3Checkbox, enabled );
+            setEnabled( tlsv1_0Checkbox, enabled );
+            setEnabled( tlsv1_1Checkbox, enabled );
+            setEnabled( tlsv1_2Checkbox, enabled );
         }
     };
     
@@ -530,8 +531,8 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
             wantClientAuthStatus = enabled;
         }
     };
-
-
+    
+    
     /**
      * The SASL Host modify listener
      */
@@ -1034,118 +1035,49 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
     
     
     /**
-     * Enabled Protocols Table change
+     * Enable SSLV3
      */
-    private ISelectionChangedListener enabledProtocolsTableViewerSelectionChangedListener = new ISelectionChangedListener()
-    {
-        public void selectionChanged( SelectionChangedEvent event )
-        {
-            StructuredSelection selection = ( StructuredSelection ) enabledProtocolsTableViewer.getSelection();
-
-            editEnabledProtocolsButton.setEnabled( !selection.isEmpty() );
-            deleteEnabledProtocolsButton.setEnabled( !selection.isEmpty() );
-        }
-    };
-    
-    
-    
-    
-    /**
-     * Enabled Protocols Table double-click
-     */
-    private IDoubleClickListener enabledProtocolsTableViewerDoubleClickListener = new IDoubleClickListener()
-    {
-        public void doubleClick( DoubleClickEvent event )
-        {
-            editEnabledProtocolsAction();
-        }
-    };
-    
-    
-    
-
-    /**
-     * Add Enabled Protocols button
-     */
-    private SelectionListener addEnabledProtocolsButtonListener = new SelectionAdapter()
+    private SelectionAdapter sslv3CheckboxListener = new SelectionAdapter()
     {
         public void widgetSelected( SelectionEvent e )
         {
-            InputDialog dialog = new InputDialog( editEnabledProtocolsButton.getShell(),
-                Messages.getString( "LdapLdapsServersPage.Add" ), //$NON-NLS-1$
-                Messages.getString( "LdapLdapsServersPage.EnabledProtocols" ), //$NON-NLS-1$
-                null, null );
-
-            if ( dialog.open() == InputDialog.OK )
-            {
-                String newEnabledProtocol = dialog.getValue();
-
-                // Add the enabled protocols to LDAP and LDAPS transports. LDAP because
-                // it may be used for startTLS operation
-                TransportBean ldapTransport =  getLdapServerTransportBean();
-                
-                if ( ldapTransport != null )
-                {
-                    ldapTransport.addEnabledProtocols( newEnabledProtocol );
-                }
-
-                TransportBean ldapsTransport =  getLdapsServerTransportBean();
-                
-                if ( ldapsTransport != null )
-                {
-                    ldapsTransport.addEnabledProtocols( newEnabledProtocol );
-                }
-
-                enabledProtocolsTableViewer.refresh();
-                enabledProtocolsTableViewer.setSelection( new StructuredSelection( newEnabledProtocol ) );
-
-                setEditorDirty();
-            }
+            setProtocol( sslv3Checkbox.getSelection(), "SSLv3" );
         }
     };
     
     
     /**
-     * Edit Enabled Protocols button
+     * Enable TLS V1
      */
-    private SelectionListener editEnabledProtocolsButtonListener = new SelectionAdapter()
+    private SelectionAdapter tlsv1_0CheckboxListener = new SelectionAdapter()
     {
         public void widgetSelected( SelectionEvent e )
         {
-            editEnabledProtocolsAction();
+            setProtocol( tlsv1_0Checkbox.getSelection(), "TLSV1" );
         }
     };
     
     
     /**
-     * Delete Enabled Protocols button
+     * Enable TLS V1.1
      */
-    private SelectionListener deleteEnabledProtocolsButtonListener = new SelectionAdapter()
+    private SelectionAdapter tlsv1_1CheckboxListener = new SelectionAdapter()
     {
         public void widgetSelected( SelectionEvent e )
         {
-            String selectedEnabledProtocols = getSelectedEnabledProtocols();
-
-            if ( selectedEnabledProtocols != null )
-            {
-                TransportBean ldapTransport =  getLdapServerTransportBean();
-                
-                if ( ldapTransport != null )
-                {
-                    ldapTransport.getEnabledProtocols().remove( selectedEnabledProtocols );
-                }
-
-                TransportBean ldapsTransport =  getLdapsServerTransportBean();
-                
-                if ( ldapsTransport != null )
-                {
-                    ldapsTransport.getEnabledProtocols().remove( selectedEnabledProtocols );
-                }
-
-                enabledProtocolsTableViewer.refresh();
-
-                setEditorDirty();
-            }
+            setProtocol( tlsv1_1Checkbox.getSelection(), "TLSV1.1" );
+        }
+    };
+    
+    
+    /**
+     * Enable TLS V1.2
+     */
+    private SelectionAdapter tlsv1_2CheckboxListener = new SelectionAdapter()
+    {
+        public void widgetSelected( SelectionEvent e )
+        {
+            setProtocol( tlsv1_2Checkbox.getSelection(), "TLSV1.2" );
         }
     };
 
@@ -1397,7 +1329,7 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
         section.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
         Composite composite = toolkit.createComposite( section );
         toolkit.paintBordersFor( composite );
-        GridLayout glayout = new GridLayout( 3, false );
+        GridLayout glayout = new GridLayout( 4, false );
         composite.setLayout( glayout );
         section.setClient( composite );
 
@@ -1421,7 +1353,7 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
         // Ciphers Suites Table Viewer
         ciphersSuiteTableViewer = new TableViewer( composite );
         ciphersSuiteTableViewer.setContentProvider( new ArrayContentProvider() );
-        GridData cipherSuitesTableViewerGridData = new GridData( SWT.FILL, SWT.CENTER, true, false, 2, 3 );
+        GridData cipherSuitesTableViewerGridData = new GridData( SWT.FILL, SWT.CENTER, true, false, 3, 4 );
         cipherSuitesTableViewerGridData.heightHint = 60;
         ciphersSuiteTableViewer.getControl().setLayoutData( cipherSuitesTableViewerGridData );
 
@@ -1447,7 +1379,24 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
         setBold( protocolsLabel );
         protocolsLabel.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, glayout.numColumns, 1 ) );
 
-        // Enabled Protocols Table Viewer
+        // Enabled Protocols
+        // SSL V3
+        sslv3Checkbox = toolkit.createButton( composite, "SSLv3", SWT.CHECK ); //$NON-NLS-1$
+        sslv3Checkbox.setLayoutData( new GridData( SWT.FILL, SWT.CENTER, true, false ) );
+
+        // TLS 1.0
+        tlsv1_0Checkbox = toolkit.createButton( composite, "TLSv1", SWT.CHECK ); //$NON-NLS-1$
+        tlsv1_0Checkbox.setLayoutData( new GridData( SWT.FILL, SWT.CENTER, true, false ) );
+
+        // TLS 1.1
+        tlsv1_1Checkbox = toolkit.createButton( composite, "TLSv1.1", SWT.CHECK ); //$NON-NLS-1$
+        tlsv1_1Checkbox.setLayoutData( new GridData( SWT.FILL, SWT.CENTER, true, false ) );
+        
+        // TLS 1.2
+        tlsv1_2Checkbox = toolkit.createButton( composite, "TLSv1.2", SWT.CHECK ); //$NON-NLS-1$
+        tlsv1_2Checkbox.setLayoutData( new GridData( SWT.FILL, SWT.CENTER, true, false ) );
+
+        /*
         enabledProtocolsTableViewer = new TableViewer( composite );
         enabledProtocolsTableViewer.setContentProvider( new ArrayContentProvider() );
         GridData enabledProtocolsTableViewerGridData = new GridData( SWT.FILL, SWT.CENTER, true, false, 2, 3 );
@@ -1470,6 +1419,7 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
             Messages.getString( "LdapLdapsServersPage.Delete" ), SWT.PUSH ); //$NON-NLS-1$
         deleteEnabledProtocolsButton.setLayoutData( new GridData( SWT.FILL, SWT.BEGINNING, false, false ) );
         deleteEnabledProtocolsButton.setEnabled( false );
+        */
     }
 
 
@@ -1848,13 +1798,21 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
         addSelectionListener( deleteCiphersSuiteButton, deleteCiphersSuiteButtonListener );
 
         // Advanced SSL Enabled Protocols
-        addSelectionChangedListener( enabledProtocolsTableViewer, enabledProtocolsTableViewerSelectionChangedListener );
-        addDoubleClickListener( enabledProtocolsTableViewer, enabledProtocolsTableViewerDoubleClickListener );
+        // Enable sslv3 Checkbox
+        addDirtyListener( sslv3Checkbox );
+        addSelectionListener( sslv3Checkbox, sslv3CheckboxListener );
 
-        // Advanced SSL Enabled Protocols add/edit/delete buttons
-        addSelectionListener( addEnabledProtocolsButton, addEnabledProtocolsButtonListener );
-        addSelectionListener( editEnabledProtocolsButton, editEnabledProtocolsButtonListener );
-        addSelectionListener( deleteEnabledProtocolsButton, deleteEnabledProtocolsButtonListener );
+        // Enable tlsv1 Checkbox
+        addDirtyListener( tlsv1_0Checkbox );
+        addSelectionListener( tlsv1_0Checkbox, tlsv1_0CheckboxListener );
+
+        // Enable tlsv1.1 Checkbox
+        addDirtyListener( tlsv1_1Checkbox );
+        addSelectionListener( tlsv1_1Checkbox, tlsv1_1CheckboxListener );
+
+        // Enable tlsv1.2 Checkbox
+        addDirtyListener( tlsv1_2Checkbox );
+        addSelectionListener( tlsv1_2Checkbox, tlsv1_2CheckboxListener );
 
         // Replication Pinger Sleep
         addDirtyListener( replicationPingerSleepText );
@@ -2018,14 +1976,24 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
         removeSelectionListener( editCiphersSuiteButton, editCiphersSuiteButtonListener );
         removeSelectionListener( deleteCiphersSuiteButton, deleteCiphersSuiteButtonListener );
 
-        // Advanced SSL Enabled Protocols
-        removeSelectionChangedListener( enabledProtocolsTableViewer, enabledProtocolsTableViewerSelectionChangedListener );
-        removeDoubleClickListener( enabledProtocolsTableViewer, enabledProtocolsTableViewerDoubleClickListener );
+        // Advanced SSL Enabled Protocols SSL v3
+        removeDirtyListener( sslv3Checkbox );
+        removeSelectionListener( sslv3Checkbox, sslv3CheckboxListener );
+
+        // Advanced SSL Enabled Protocols TLS v1
+        removeDirtyListener( tlsv1_0Checkbox );
+        removeSelectionListener( tlsv1_0Checkbox, tlsv1_0CheckboxListener );
+
+        // Advanced SSL Enabled Protocols TLS v1.1
+        removeDirtyListener( tlsv1_1Checkbox );
+        removeSelectionListener( tlsv1_1Checkbox, tlsv1_1CheckboxListener );
+
+        // Advanced SSL Enabled Protocols TLS v1.2
+        removeDirtyListener( tlsv1_2Checkbox );
+        removeSelectionListener( tlsv1_2Checkbox, tlsv1_2CheckboxListener );
+
 
         // Advanced SSL Enabled Protocols add/edit/delete buttons removal
-        removeSelectionListener( addEnabledProtocolsButton, addEnabledProtocolsButtonListener );
-        removeSelectionListener( editEnabledProtocolsButton, editEnabledProtocolsButtonListener );
-        removeSelectionListener( deleteEnabledProtocolsButton, deleteEnabledProtocolsButtonListener );
 
         // Replication Pinger Sleep
         removeDirtyListener( replicationPingerSleepText );
@@ -2140,6 +2108,7 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
 
             // Hashing Password widgets
             InterceptorBean hashingMethodInterceptor = getHashingPasswordInterceptor();
+            
             if ( hashingMethodInterceptor == null )
             {
                 // No hashing method interceptor
@@ -2174,22 +2143,44 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
             ciphersSuiteTableViewer.refresh();
 
             // SSL/Start TLS Enabled Protocols
-            List<String> transports = new ArrayList<String>();
+            // Check if we have a LDAP transport
+            TransportBean transportBean = getLdapTransportBean( TRANSPORT_ID_LDAP );
             
-            for ( TransportBean transportBean : ldapServerBean.getTransports() )
+            if ( transportBean == null )
             {
-                if ( transportBean.getEnabledProtocols() != null )
+                // No LDAP transport, check the LDAPS transport
+                transportBean = getLdapTransportBean( TRANSPORT_ID_LDAPS );
+            }
+            
+            if ( transportBean != null )
+            {
+                // Ok, process the enabled protocols now
+                List<String> enabledProtocols = transportBean.getEnabledProtocols();
+                
+                if ( enabledProtocols != null )
                 {
-                    for ( String enableProtocol : transportBean.getEnabledProtocols() )
+                    for ( String enabledProtocol : transportBean.getEnabledProtocols() )
                     {
-                        transports.add( enableProtocol );
+                        if ( SSL_V3.equalsIgnoreCase( enabledProtocol ) )
+                        {
+                            setSelection( sslv3Checkbox, true );
+                        }
+                        else if ( TLS_V1_0.equalsIgnoreCase( enabledProtocol ) )
+                        {
+                            setSelection( tlsv1_0Checkbox, true );
+                        }
+                        else if ( TLS_V1_1.equalsIgnoreCase( enabledProtocol ) )
+                        {
+                            setSelection( tlsv1_1Checkbox, true );
+                        }
+                        else if ( TLS_V1_2.equalsIgnoreCase( enabledProtocol ) )
+                        {
+                            setSelection( tlsv1_2Checkbox, true );
+                        }
                     }
                 }
             }
             
-            enabledProtocolsTableViewer.setInput( transports );
-            enabledProtocolsTableViewer.refresh();
-
             // Replication Pinger Sleep
             setText( replicationPingerSleepText, Integer.toString( ldapServerBean.getReplPingerSleep() ) );
 
@@ -2762,50 +2753,41 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
             }
         }
     }
-
-
+    
+    
     /**
-     * Gets the first Enabled Protocols Table 
+     * Enables/disables SSLV3.
      *
-     * @return the first Enabled Protocols Table
+     * @param enabled the enabled state
      */
-    private String getSelectedEnabledProtocols()
+    private void setProtocol( boolean enabled, String protocol )
     {
-        StructuredSelection selection = ( StructuredSelection ) enabledProtocolsTableViewer.getSelection();
-
-        if ( !selection.isEmpty() )
+        if ( enabled )
         {
-            return ( String ) selection.getFirstElement();
-        }
-
-        return null;
-    }
-
-
-    /**
-     * This method is called when the edit enabled protocols button is clicked,
-     * or when the table viewer is double clicked.
-     */
-    private void editEnabledProtocolsAction()
-    {
-        String selectedEnabledProtocols = getSelectedEnabledProtocols();
-
-        if ( selectedEnabledProtocols != null )
-        {
-            InputDialog dialog = new InputDialog( editEnabledProtocolsButton.getShell(),
-                Messages.getString( "LdapLdapsServersPage.Edit" ), //$NON-NLS-1$
-                Messages.getString( "LdapLdapsServersPage.EnabledProtocols" ), //$NON-NLS-1$
-                selectedEnabledProtocols, null );
-
-            if ( dialog.open() == InputDialog.OK )
+            // We have to compute the new list of enabled protocols
+            List<String> enabledProtocols = getLdapTransportBean( TRANSPORT_ID_LDAP ).getEnabledProtocols();
+            
+            if ( enabledProtocols == null )
             {
-                String newEnabledProtocols = dialog.getValue();
-
-                enabledProtocolsTableViewer.refresh();
-                enabledProtocolsTableViewer.setSelection( new StructuredSelection( newEnabledProtocols ) );
-
-                setEditorDirty();
+                enabledProtocols = new ArrayList<String>();
             }
+            
+            if ( !enabledProtocols.contains( protocol ) )
+            {
+                enabledProtocols.add( protocol );
+            }
+            
+            getLdapTransportBean( TRANSPORT_ID_LDAP ).setEnabledProtocols( enabledProtocols );
+            getLdapTransportBean( TRANSPORT_ID_LDAPS ).setEnabledProtocols( enabledProtocols );
+        }
+        else
+        {
+            // We have to compute the new list of enabled protocols
+            List<String> enabledProtocols = getLdapTransportBean( TRANSPORT_ID_LDAP ).getEnabledProtocols();
+            
+            enabledProtocols.remove( protocol );
+            getLdapTransportBean( TRANSPORT_ID_LDAP ).setEnabledProtocols( enabledProtocols );
+            getLdapTransportBean( TRANSPORT_ID_LDAPS ).setEnabledProtocols( enabledProtocols );
         }
     }
 
