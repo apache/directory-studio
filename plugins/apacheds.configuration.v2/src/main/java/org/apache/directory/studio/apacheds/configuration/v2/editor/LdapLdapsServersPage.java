@@ -148,7 +148,7 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
     private static final int DEFAULT_NB_THREADS = 4;
     private static final int DEFAULT_BACKLOG_SIZE = 50;
     private static final String TRANSPORT_ID_LDAP = "ldap"; //$NON-NLS-1$
-    private static final String TRANSPORT_ID_LDAPS = "ldaps"; //$NON-NLS-1$
+    public static final String TRANSPORT_ID_LDAPS = "ldaps"; //$NON-NLS-1$
     private static final String SASL_MECHANISMS_SIMPLE = "SIMPLE"; //$NON-NLS-1$
     private static final String SSL_V3 = "SSLv3";
     private static final String TLS_V1_0 = "TLSv1";
@@ -371,13 +371,6 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
             setEnabled( ldapsAddressText, enabled );
             setEnabled( ldapsNbThreadsText, enabled );
             setEnabled( ldapsBackLogSizeText, enabled );
-            setEnabled( needClientAuthCheckbox, enabled );
-            setEnabled( wantClientAuthCheckbox, enabled );
-            setEnabled( ciphersSuiteTableViewer.getTable(), enabled );
-            setEnabled( sslv3Checkbox, enabled );
-            setEnabled( tlsv1_0Checkbox, enabled );
-            setEnabled( tlsv1_1Checkbox, enabled );
-            setEnabled( tlsv1_2Checkbox, enabled );
         }
     };
     
@@ -530,7 +523,7 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
             wantClientAuthStatus = enabled;
         }
     };
-    
+
     
     /**
      * The SASL Host modify listener
@@ -945,7 +938,7 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
             }
         }
     };
-    
+
     
     /**
      * Ciphers Suite Table change
@@ -1311,7 +1304,7 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
         // Enable LDAPS needClientAuth Checkbox
         needClientAuthCheckbox = toolkit.createButton( composite,
             Messages.getString( "LdapLdapsServersPage.NeedClientAuth" ), SWT.CHECK ); //$NON-NLS-1$
-        needClientAuthCheckbox.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, glayout.numColumns, 1 ) );
+        needClientAuthCheckbox.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 1, 1 ) );
 
         // Enable LDAPS wantClientAuth Checkbox. As the WantClientAuth is dependent on
         // the NeedClientAuth, we move it one column to the right
@@ -1417,7 +1410,6 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
         hashingMethodComposite.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
 
         // Server-side Password Hashing Combo
-        toolkit.createLabel( hashingMethodComposite, "   " ); //$NON-NLS-1$
         toolkit.createLabel( hashingMethodComposite, Messages.getString( "LdapLdapsServersPage.HashingMethod" ) ); //$NON-NLS-1$
         Combo hashingMethodCombo = new Combo( hashingMethodComposite, SWT.READ_ONLY | SWT.SINGLE );
         hashingMethodCombo.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
@@ -2594,10 +2586,10 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
             hashingPasswordInterceptor.setEnabled( false );
         }
     }
-
-
+    
+    
     /**
-     * Updates the hashing method.
+     * Update the hashingPassword inteceptor with the selected hashing method
      */
     private void updateHashingMethod()
     {

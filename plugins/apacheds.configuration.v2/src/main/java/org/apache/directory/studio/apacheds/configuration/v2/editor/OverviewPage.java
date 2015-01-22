@@ -165,8 +165,8 @@ public class OverviewPage extends ServerConfigurationEditorPage
     {
         public void widgetSelected( SelectionEvent e )
         {
-            boolean enableLdaps = enableLdapCheckbox.getSelection();
-            LdapLdapsServersPage.getLdapsServerTransportBean( getDirectoryServiceBean() ).setEnabled(
+            boolean enableLdaps = enableLdapsCheckbox.getSelection();
+            LdapLdapsServersPage.getLdapTransportBean( getDirectoryServiceBean(), LdapLdapsServersPage.TRANSPORT_ID_LDAPS ).setEnabled(
                 enableLdaps );
             setEnabled( ldapsPortText, enableLdaps );
         }
