@@ -35,7 +35,7 @@ On Linux / Mac OS X :
 
     $ ./build.sh
 
-r on Windows :
+or on Windows :
 
     > build.bat
 
