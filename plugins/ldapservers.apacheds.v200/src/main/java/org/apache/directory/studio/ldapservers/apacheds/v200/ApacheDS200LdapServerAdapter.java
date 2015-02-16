@@ -251,6 +251,7 @@ public class ApacheDS200LdapServerAdapter implements LdapServerAdapter
         vmArguments
             .append( "-Dapacheds.controls=org.apache.directory.api.ldap.codec.controls.cascade.CascadeFactory," + //$NON-NLS-1$
                 "org.apache.directory.api.ldap.codec.controls.manageDsaIT.ManageDsaITFactory," + //$NON-NLS-1$
+                "org.apache.directory.api.ldap.codec.controls.proxiedauthz.ProxiedAuthzFactory," + //$NON-NLS-1$
                 "org.apache.directory.api.ldap.codec.controls.search.entryChange.EntryChangeFactory," + //$NON-NLS-1$
                 "org.apache.directory.api.ldap.codec.controls.search.pagedSearch.PagedResultsFactory," + //$NON-NLS-1$
                 "org.apache.directory.api.ldap.codec.controls.search.persistentSearch.PersistentSearchFactory," + //$NON-NLS-1$
@@ -259,14 +260,18 @@ public class ApacheDS200LdapServerAdapter implements LdapServerAdapter
                 "org.apache.directory.api.ldap.extras.controls.syncrepl_impl.SyncDoneValueFactory," + //$NON-NLS-1$
                 "org.apache.directory.api.ldap.extras.controls.syncrepl_impl.SyncInfoValueFactory," + //$NON-NLS-1$
                 "org.apache.directory.api.ldap.extras.controls.syncrepl_impl.SyncRequestValueFactory," + //$NON-NLS-1$
-                "org.apache.directory.api.ldap.extras.controls.syncrepl_impl.SyncStateValueFactory" ); //$NON-NLS-1$
+                "org.apache.directory.api.ldap.extras.controls.syncrepl_impl.SyncStateValueFactory," + //$NON-NLS-1$
+                "org.apache.directory.api.ldap.extras.controls.ad_impl.AdDirSyncFactory" ); //$NON-NLS-1$
         vmArguments.append( " " ); //$NON-NLS-1$
         vmArguments
             .append( "-Dapacheds.extendedOperations=org.apache.directory.api.ldap.extras.extended.ads_impl.cancel.CancelFactory," + //$NON-NLS-1$
                 "org.apache.directory.api.ldap.extras.extended.ads_impl.certGeneration.CertGenerationFactory," + //$NON-NLS-1$
                 "org.apache.directory.api.ldap.extras.extended.ads_impl.gracefulShutdown.GracefulShutdownFactory," + //$NON-NLS-1$
                 "org.apache.directory.api.ldap.extras.extended.ads_impl.storedProcedure.StoredProcedureFactory," + //$NON-NLS-1$
-                "org.apache.directory.api.ldap.extras.extended.ads_impl.gracefulDisconnect.GracefulDisconnectFactory" ); //$NON-NLS-1$
+                "org.apache.directory.api.ldap.extras.extended.ads_impl.pwdModify.PasswordModifyFactory," + //$NON-NLS-1$
+                "org.apache.directory.api.ldap.extras.extended.ads_impl.gracefulDisconnect.GracefulDisconnectFactory," + //$NON-NLS-1$
+                "org.apache.directory.api.ldap.extras.extended.ads_impl.whoAmI.WhoAmIFactory," + // $NON-NLS-1$
+                "org.apache.directory.api.ldap.extras.extended.ads_impl.startTls.StartTlsFactory" ); // $NON-NLS-1$
 
         // Setting the VM arguments attribute
         workingCopy.setAttribute( IJavaLaunchConfigurationConstants.ATTR_VM_ARGUMENTS, vmArguments.toString() );
