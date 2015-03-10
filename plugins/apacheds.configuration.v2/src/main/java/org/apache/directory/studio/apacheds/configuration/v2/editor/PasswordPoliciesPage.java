@@ -20,6 +20,7 @@
 package org.apache.directory.studio.apacheds.configuration.v2.editor;
 
 
+import org.apache.directory.api.ldap.model.constants.SchemaConstants;
 import org.apache.directory.server.config.beans.AuthenticationInterceptorBean;
 import org.apache.directory.server.config.beans.DirectoryServiceBean;
 import org.apache.directory.server.config.beans.InterceptorBean;
@@ -29,17 +30,25 @@ import org.eclipse.ui.forms.widgets.FormToolkit;
 
 
 /**
- * This class represents the General Page of the Server Configuration Editor.
+ * This class represents the PasswordPolicy Page of the Server Configuration Editor. It has 
+ * two parts :
+ * <ul>
+ * <li>The list of existing password policies</li>
+ * <li>The detail for each selected password policy</li>
+ * </ul>
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public class PasswordPoliciesPage extends ServerConfigurationEditorPage
 {
+    /** The authentication interceptor name */
     private static final String AUTHENTICATION_INTERCEPTOR_ID = "authenticationInterceptor";
+    
+    /** Default name for the passwordPolicy */
     private static final String PASSWORD_POLICY_ID_DEFAULT = "default";
-
+    
     /** The Page ID*/
-    public static final String ID = PasswordPoliciesPage.class.getName(); //$NON-NLS-1$
+    public static final String ID = PasswordPoliciesPage.class.getName(); 
 
     /** The Page Title */
     private static final String TITLE = Messages.getString( "PasswordPoliciesPage.PasswordPolicies" ); //$NON-NLS-1$
@@ -51,8 +60,7 @@ public class PasswordPoliciesPage extends ServerConfigurationEditorPage
     /**
      * Creates a new instance of GeneralPage.
      *
-     * @param editor
-     *      the associated editor
+     * @param editor the associated editor
      */
     public PasswordPoliciesPage( ServerConfigurationEditor editor )
     {
@@ -177,22 +185,22 @@ public class PasswordPoliciesPage extends ServerConfigurationEditorPage
 
             // Configuring the password policy
             passwordPolicy.setPwdId( PASSWORD_POLICY_ID_DEFAULT );
-            passwordPolicy.setPwdMaxAge( 0 );
-            passwordPolicy.setPwdFailureCountInterval( 30 );
-            passwordPolicy.setPwdAttribute( "userPassword" );
-            passwordPolicy.setPwdMaxFailure( 5 );
-            passwordPolicy.setPwdLockout( true );
-            passwordPolicy.setPwdMustChange( false );
-            passwordPolicy.setPwdLockoutDuration( 0 );
-            passwordPolicy.setPwdMinLength( 5 );
-            passwordPolicy.setPwdInHistory( 5 );
-            passwordPolicy.setPwdExpireWarning( 600 );
+            passwordPolicy.setPwdAttribute( SchemaConstants.USER_PASSWORD_AT );
             passwordPolicy.setPwdMinAge( 0 );
-            passwordPolicy.setPwdAllowUserChange( true );
-            passwordPolicy.setPwdGraceAuthNLimit( 5 );
+            passwordPolicy.setPwdMaxAge( 0 );
+            passwordPolicy.setPwdInHistory( 5 );
             passwordPolicy.setPwdCheckQuality( 1 );
+            passwordPolicy.setPwdMinLength( 5 );
             passwordPolicy.setPwdMaxLength( 0 );
+            passwordPolicy.setPwdExpireWarning( 600 );
+            passwordPolicy.setPwdGraceAuthNLimit( 5 );
             passwordPolicy.setPwdGraceExpire( 0 );
+            passwordPolicy.setPwdLockout( true );
+            passwordPolicy.setPwdLockoutDuration( 0 );
+            passwordPolicy.setPwdMaxFailure( 5 );
+            passwordPolicy.setPwdFailureCountInterval( 30 );
+            passwordPolicy.setPwdMustChange( false );
+            passwordPolicy.setPwdAllowUserChange( true );
             passwordPolicy.setPwdMinDelay( 0 );
             passwordPolicy.setPwdMaxDelay( 0 );
             passwordPolicy.setPwdMaxIdle( 0 );

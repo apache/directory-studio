@@ -2036,6 +2036,9 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
                     setText( authMechNtlmText, saslMechHandler.getNtlmMechProvider() );
                 }
             }
+            
+            // Delegating authentication
+            // TODO
 
             // Limits
             setText( maxTimeLimitText, Integer.toString( ldapServerBean.getLdapServerMaxTimeLimit() ) );
