@@ -21,6 +21,8 @@
 package org.apache.directory.studio.apacheds.configuration.v2.jobs;
 
 
+import java.io.File;
+
 import org.apache.directory.studio.apacheds.configuration.v2.editor.ConnectionServerConfigurationInput;
 import org.apache.directory.studio.apacheds.configuration.v2.editor.NewServerConfigurationInput;
 import org.apache.directory.studio.apacheds.configuration.v2.editor.ServerConfigurationEditor;
@@ -31,7 +33,6 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IPathEditorInput;
-import org.eclipse.ui.part.FileEditorInput;
 
 
 /**
@@ -99,18 +100,7 @@ public class SaveConfigurationRunnable implements StudioRunnableWithProgress
                 IEditorInput input = editor.getEditorInput();
                 String inputClassName = input.getClass().getName();
                 boolean success = false;
-                
-                if ( input instanceof FileEditorInput )
-                // FileEditorInput class is used when the file is opened
-                // from a project in the workspace.
-                {
-                    // Saving the ServerConfiguration to disk
-                    ServerConfigurationEditorUtils.saveConfiguration( ( FileEditorInput ) input,
-                        editor.getConfigWriter(),
-                        monitor );
-                    success = true;
-                }
-                
+
                 // If the input is a ConnectionServerConfigurationInput, then we 
                 // read the server configuration from the selected connection
                 if ( input instanceof ConnectionServerConfigurationInput )
@@ -123,8 +113,9 @@ public class SaveConfigurationRunnable implements StudioRunnableWithProgress
                 else if ( input instanceof IPathEditorInput )
                 {
                     // Saving the ServerConfiguration to disk
-                    ServerConfigurationEditorUtils
-                        .saveConfiguration( ( ( IPathEditorInput ) input ).getPath().toFile(), editor.getConfigWriter() );
+                    File file = ( ( IPathEditorInput ) input ).getPath().toFile();
+                    ServerConfigurationEditorUtils.saveConfiguration( file, editor.getConfigWriter(),
+                        editor.getConfiguration() );
                     success = true;
                 }
                 else if ( inputClassName.equals( "org.eclipse.ui.internal.editors.text.JavaFileEditorInput" ) //$NON-NLS-1$
@@ -135,7 +126,9 @@ public class SaveConfigurationRunnable implements StudioRunnableWithProgress
                 // opening a file from the menu File > Open... in Eclipse 3.3.x
                 {
                     // Saving the ServerConfiguration to disk
-                    ServerConfigurationEditorUtils.saveConfiguration( input.getToolTipText(), editor.getConfigWriter() );
+                    File file = new File( input.getToolTipText() );
+                    ServerConfigurationEditorUtils.saveConfiguration( file, editor.getConfigWriter(),
+                        editor.getConfiguration() );
                     success = true;
                 }
                 else if ( input instanceof NewServerConfigurationInput )

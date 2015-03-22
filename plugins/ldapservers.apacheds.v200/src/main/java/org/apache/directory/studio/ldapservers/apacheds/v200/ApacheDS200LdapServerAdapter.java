@@ -22,9 +22,7 @@ package org.apache.directory.studio.ldapservers.apacheds.v200;
 
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,6 +34,8 @@ import org.apache.directory.server.config.beans.KdcServerBean;
 import org.apache.directory.server.config.beans.LdapServerBean;
 import org.apache.directory.server.config.beans.NtpServerBean;
 import org.apache.directory.server.config.beans.TransportBean;
+import org.apache.directory.studio.apacheds.configuration.v2.ApacheDS2ConfigurationPluginConstants;
+import org.apache.directory.studio.apacheds.configuration.v2.editor.Configuration;
 import org.apache.directory.studio.apacheds.configuration.v2.editor.ServerConfigurationEditor;
 import org.apache.directory.studio.apacheds.configuration.v2.jobs.LoadConfigurationRunnable;
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
@@ -74,7 +74,6 @@ import org.osgi.framework.Bundle;
 public class ApacheDS200LdapServerAdapter implements LdapServerAdapter
 {
     // Various strings constants used in paths
-    private static final String CONFIG_LDIF = "config.ldif"; //$NON-NLS-1$
     private static final String LOG4J_PROPERTIES = "log4j.properties"; //$NON-NLS-1$
     private static final String RESOURCES = "resources"; //$NON-NLS-1$
     private static final String LIBS = "libs"; //$NON-NLS-1$
@@ -82,7 +81,7 @@ public class ApacheDS200LdapServerAdapter implements LdapServerAdapter
 
     /** The array of libraries names */
     private static final String[] libraries = new String[]
-        { "apacheds-service-2.0.0-M17.jar" }; //$NON-NLS-1$
+        { "apacheds-service.jar" }; //$NON-NLS-1$
 
 
     /**
@@ -113,8 +112,8 @@ public class ApacheDS200LdapServerAdapter implements LdapServerAdapter
         // Copying configuration files
         monitor.subTask( Messages.getString( "ApacheDS200LdapServerAdapter.CopyingConfigurationFiles" ) ); //$NON-NLS-1$
         IPath resourceConfFolderPath = new Path( RESOURCES ).append( CONF );
-        LdapServersUtils.copyResource( bundle, resourceConfFolderPath.append( CONFIG_LDIF ), new File( confFolder,
-            CONFIG_LDIF ) );
+        // call of getServerConfiguration() extracts the default configuration
+        getServerConfiguration( server );
         LdapServersUtils.copyResource( bundle, resourceConfFolderPath.append( LOG4J_PROPERTIES ), new File( confFolder,
             LOG4J_PROPERTIES ) );
 
@@ -146,7 +145,7 @@ public class ApacheDS200LdapServerAdapter implements LdapServerAdapter
                 try
                 {
                     PathEditorInput input = new PathEditorInput( LdapServersManager.getServerFolder( server )
-                        .append( CONF ).append( CONFIG_LDIF ) );
+                        .append( CONF ).append( ApacheDS2ConfigurationPluginConstants.OU_CONFIG_LDIF ) );
                     PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
                         .openEditor( input, ServerConfigurationEditor.ID );
                 }
@@ -331,12 +330,11 @@ public class ApacheDS200LdapServerAdapter implements LdapServerAdapter
     * @throws ServerXmlIOException 
     * @throws FileNotFoundException 
     */
-    public static ConfigBean getServerConfiguration( LdapServer server ) throws Exception
+    public static Configuration getServerConfiguration( LdapServer server ) throws Exception
     {
-        InputStream fis = new FileInputStream( LdapServersManager.getServerFolder( server ).append( CONF )
-            .append( CONFIG_LDIF ).toFile() );
-
-        return LoadConfigurationRunnable.readConfiguration( fis );
+        File configFile = LdapServersManager.getServerFolder( server ).append( CONF )
+            .append( ApacheDS2ConfigurationPluginConstants.OU_CONFIG_LDIF ).toFile();
+        return LoadConfigurationRunnable.readConfiguration( configFile );
     }
 
 
@@ -352,7 +350,7 @@ public class ApacheDS200LdapServerAdapter implements LdapServerAdapter
      */
     private int getTestingPort( LdapServer server ) throws Exception
     {
-        ConfigBean configuration = getServerConfiguration( server );
+        ConfigBean configuration = getServerConfiguration( server ).getConfigBean();
 
         // LDAP
         if ( isEnableLdap( configuration ) )
@@ -784,7 +782,7 @@ public class ApacheDS200LdapServerAdapter implements LdapServerAdapter
     {
         List<String> alreadyInUseProtocolPortsList = new ArrayList<String>();
 
-        ConfigBean configuration = getServerConfiguration( server );
+        ConfigBean configuration = getServerConfiguration( server ).getConfigBean();
 
         // LDAP
         if ( isEnableLdap( configuration ) )

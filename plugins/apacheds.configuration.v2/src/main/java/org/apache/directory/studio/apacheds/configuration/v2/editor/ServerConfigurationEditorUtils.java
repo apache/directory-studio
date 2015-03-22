@@ -23,13 +23,26 @@ package org.apache.directory.studio.apacheds.configuration.v2.editor;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.util.List;
+import java.util.UUID;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.directory.api.ldap.model.constants.SchemaConstants;
+import org.apache.directory.api.ldap.model.csn.CsnFactory;
 import org.apache.directory.api.ldap.model.entry.DefaultEntry;
+import org.apache.directory.api.ldap.model.entry.Entry;
 import org.apache.directory.api.ldap.model.ldif.LdifEntry;
+import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.api.ldap.model.schema.SchemaManager;
 import org.apache.directory.server.config.ConfigWriter;
+import org.apache.directory.server.core.api.CacheService;
+import org.apache.directory.server.core.api.DnFactory;
+import org.apache.directory.server.core.api.interceptor.context.AddOperationContext;
+import org.apache.directory.server.core.partition.impl.btree.AbstractBTreePartition;
+import org.apache.directory.server.core.partition.ldif.AbstractLdifPartition;
+import org.apache.directory.server.core.partition.ldif.LdifPartition;
+import org.apache.directory.server.core.partition.ldif.SingleFileLdifPartition;
 import org.apache.directory.studio.apacheds.configuration.v2.ApacheDS2ConfigurationPlugin;
+import org.apache.directory.studio.apacheds.configuration.v2.ApacheDS2ConfigurationPluginConstants;
 import org.apache.directory.studio.apacheds.configuration.v2.jobs.EntryBasedConfigurationPartition;
 import org.apache.directory.studio.apacheds.configuration.v2.jobs.PartitionsDiffComputer;
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
@@ -83,7 +96,7 @@ public class ServerConfigurationEditorUtils
      * @throws Exception
      */
     public static IEditorInput saveAs( IProgressMonitor monitor, Shell shell, IEditorInput input,
-        ConfigWriter configWriter, boolean newInput )
+        ConfigWriter configWriter, Configuration configuration, boolean newInput )
         throws Exception
     {
         // detect IDE or RCP:
@@ -119,7 +132,7 @@ public class ServerConfigurationEditorUtils
             }
             else
             {
-                dialog.setOriginalName( "config.ldif" ); //$NON-NLS-1$
+                dialog.setOriginalName( ApacheDS2ConfigurationPluginConstants.CONFIG_LDIF );
             }
 
             // Open the dialog
@@ -141,7 +154,8 @@ public class ServerConfigurationEditorUtils
             FileEditorInput fei = new FileEditorInput( file );
 
             // Saving the file to disk
-            saveConfiguration( fei, configWriter, monitor );
+            File configFile = fei.getPath().toFile();
+            saveConfiguration( configFile, configWriter, configuration );
 
             return fei;
         }
@@ -189,7 +203,7 @@ public class ServerConfigurationEditorUtils
             }
 
             // Saving the file to disk
-            saveConfiguration( path, configWriter );
+            saveConfiguration( new File(path), configWriter, configuration );
 
             // Checking if a new input is required
             if ( newInput )
@@ -298,25 +312,6 @@ public class ServerConfigurationEditorUtils
      * Saves the configuration.
      *
      * @param input
-     *      the file editor input
-     * @param configWriter
-     *      the configuration writer
-     * @param monitor
-     *      the monitor
-     * @throws Exception
-     */
-    public static void saveConfiguration( FileEditorInput input, ConfigWriter configWriter, IProgressMonitor monitor )
-        throws Exception
-    {
-        input.getFile().setContents( new ByteArrayInputStream( configWriter.writeToString().getBytes() ), true,
-            true, monitor );
-    }
-
-
-    /**
-     * Saves the configuration.
-     *
-     * @param input
      *      the connection server configuration input
      * @param configWriter
      *      the configuration writer
@@ -338,6 +333,9 @@ public class ServerConfigurationEditorUtils
         SchemaManager schemaManager = ApacheDS2ConfigurationPlugin.getDefault().getSchemaManager();
         EntryBasedConfigurationPartition newconfigurationPartition = new EntryBasedConfigurationPartition(
             schemaManager );
+        CacheService cacheService = new CacheService();
+        cacheService.initialize( null );
+        newconfigurationPartition.setCacheService( cacheService );
         newconfigurationPartition.initialize();
         List<LdifEntry> convertedLdifEntries = configWriter.getConvertedLdifEntries();
         for ( LdifEntry ldifEntry : convertedLdifEntries )
@@ -405,24 +403,114 @@ public class ServerConfigurationEditorUtils
      *      the configuration writer
      * @throws Exception
      */
-    public static void saveConfiguration( File file, ConfigWriter configWriter ) throws Exception
+    public static void saveConfiguration( File file, ConfigWriter configWriter, Configuration configuration )
+        throws Exception
     {
-        configWriter.writeToFile( file );
+        SchemaManager schemaManager = ApacheDS2ConfigurationPlugin.getDefault().getSchemaManager();
+
+        CacheService cacheService = new CacheService();
+        cacheService.initialize( null );
+
+        DnFactory dnFactory = null;
+
+        CsnFactory csnFactory = new CsnFactory( 0 );
+
+        if ( file != null )
+        {
+            // create partiton
+            AbstractLdifPartition configPartition;
+            if ( file.getName().equals( ApacheDS2ConfigurationPluginConstants.OU_CONFIG_LDIF ) )
+            {
+                File confDir = file.getParentFile();
+                if ( file.exists() )
+                {
+                    FileUtils.deleteDirectory( confDir );
+                }
+                configPartition = createMultiFileConfiguration( confDir, schemaManager, dnFactory, cacheService );
+            }
+            else
+            {
+                if ( file.exists() )
+                {
+                    file.delete();
+                }
+                configPartition = createSingleFileConfiguration( file, schemaManager, dnFactory, cacheService );
+            }
+
+            // write entries to partition
+            List<LdifEntry> convertedLdifEntries = configWriter.getConvertedLdifEntries();
+            for ( LdifEntry ldifEntry : convertedLdifEntries )
+            {
+                Entry entry = new DefaultEntry( schemaManager, ldifEntry.getEntry() );
+                if ( entry.get( SchemaConstants.ENTRY_CSN_AT ) == null )
+                {
+                    entry.add( SchemaConstants.ENTRY_CSN_AT, csnFactory.newInstance().toString() );
+                }
+                if ( entry.get( SchemaConstants.ENTRY_UUID_AT ) == null )
+                {
+                    String uuid = UUID.randomUUID().toString();
+                    entry.add( SchemaConstants.ENTRY_UUID_AT, uuid );
+                }
+                configPartition.add( new AddOperationContext( null, entry ) );
+            }
+        }
     }
 
 
-    /**
-     * Saves the configuration.
-     *
-     * @param path
-     *      the path
-     * @param configWriter
-     *      the configuration writer
-     * @throws Exception
-     */
-    public static void saveConfiguration( String path, ConfigWriter configWriter ) throws Exception
+    private static SingleFileLdifPartition createSingleFileConfiguration( File configFile, SchemaManager schemaManager,
+        DnFactory dnFactory, CacheService cacheService ) throws Exception
     {
-        saveConfiguration( new File( path ), configWriter );
+        SingleFileLdifPartition configPartition = new SingleFileLdifPartition( schemaManager, dnFactory );
+        configPartition.setId( "config" );
+        configPartition.setPartitionPath( configFile.toURI() );
+        configPartition.setSuffixDn( new Dn( schemaManager, "ou=config" ) );
+        configPartition.setSchemaManager( schemaManager );
+        configPartition.setCacheService( cacheService );
+        configPartition.initialize();
+        return configPartition;
+    }
+
+
+    private static LdifPartition createMultiFileConfiguration( File confDir, SchemaManager schemaManager, DnFactory dnFactory,
+        CacheService cacheService ) throws Exception
+    {
+        LdifPartition configPartition = new LdifPartition( schemaManager, dnFactory );
+        configPartition.setId( "config" );
+        configPartition.setPartitionPath( confDir.toURI() );
+        configPartition.setSuffixDn( new Dn( schemaManager, "ou=config" ) );
+        configPartition.setSchemaManager( schemaManager );
+        configPartition.setCacheService( cacheService );
+        configPartition.initialize();
+        return configPartition;
+    }
+
+
+    // TODO: somthing link this should be used in future to only write changes to partition
+    private static List<LdifEntry> computeModifications( ConfigWriter configWriter,
+        AbstractBTreePartition originalPartition ) throws Exception
+    {
+        // Creating a new configuration partition
+        SchemaManager schemaManager = ApacheDS2ConfigurationPlugin.getDefault().getSchemaManager();
+        EntryBasedConfigurationPartition newconfigurationPartition = new EntryBasedConfigurationPartition(
+            schemaManager );
+        CacheService cacheService = new CacheService();
+        cacheService.initialize( null );
+        newconfigurationPartition.setCacheService( cacheService );
+        newconfigurationPartition.initialize();
+        List<LdifEntry> convertedLdifEntries = configWriter.getConvertedLdifEntries();
+        for ( LdifEntry ldifEntry : convertedLdifEntries )
+        {
+            newconfigurationPartition.addEntry( new DefaultEntry( schemaManager, ldifEntry.getEntry() ) );
+        }
+
+        // Comparing both partitions to get the list of modifications to be applied
+        PartitionsDiffComputer partitionsDiffComputer = new PartitionsDiffComputer();
+        partitionsDiffComputer.setOriginalPartition( originalPartition );
+        partitionsDiffComputer.setDestinationPartition( newconfigurationPartition );
+        List<LdifEntry> modificationsList = partitionsDiffComputer.computeModifications( new String[]
+            { SchemaConstants.ALL_USER_ATTRIBUTES } );
+
+        return modificationsList;
     }
 
 

@@ -85,7 +85,7 @@ public class CreateConnectionAction implements IObjectActionDelegate
                 ConfigBean configuration = null;
                 try
                 {
-                    configuration = ApacheDS200LdapServerAdapter.getServerConfiguration( server );
+                    configuration = ApacheDS200LdapServerAdapter.getServerConfiguration( server ).getConfigBean();
                 }
                 catch ( Exception e )
                 {

@@ -23,7 +23,6 @@ package org.apache.directory.studio.apacheds.configuration.v2.editor;
 import java.lang.reflect.InvocationTargetException;
 
 import org.apache.directory.server.config.ConfigWriter;
-import org.apache.directory.server.config.beans.ConfigBean;
 import org.apache.directory.studio.apacheds.configuration.v2.ApacheDS2ConfigurationPlugin;
 import org.apache.directory.studio.apacheds.configuration.v2.jobs.LoadConfigurationRunnable;
 import org.apache.directory.studio.apacheds.configuration.v2.jobs.SaveConfigurationRunnable;
@@ -64,8 +63,8 @@ public class ServerConfigurationEditor extends FormEditor implements IPageChange
     /** The flag indicating if the editor is dirty */
     private boolean dirty = false;
 
-    /** The configuration bean */
-    private ConfigBean configBean;
+    /** The configuration including bean and underlying parttiton */
+    private Configuration configuration;
 
     /** The pages */
     private LoadingPage loadingPage;
@@ -75,6 +74,8 @@ public class ServerConfigurationEditor extends FormEditor implements IPageChange
     private PartitionsPage partitionsPage;
     private PasswordPoliciesPage passwordPolicyPage;
     private ReplicationPage replicationPage;
+
+
 
 
     /**
@@ -230,7 +231,7 @@ public class ServerConfigurationEditor extends FormEditor implements IPageChange
 
         // Saving the configuration as a new file and getting the associated new editor input
         IEditorInput newInput = ServerConfigurationEditorUtils.saveAs( monitor, getSite().getShell(),
-            getEditorInput(), getConfigWriter(), true );
+            getEditorInput(), getConfigWriter(), getConfiguration(), true );
 
         // Checking if the 'save as' is successful 
         boolean success = newInput != null;
@@ -309,35 +310,35 @@ public class ServerConfigurationEditor extends FormEditor implements IPageChange
 
 
     /**
-     * Gets the configuration bean.
+     * Gets the configuration.
      *
-     * @return the configuration bean
+     * @return the configuration
      */
-    public ConfigBean getConfigBean()
+    public Configuration getConfiguration()
     {
-        return configBean;
+        return configuration;
     }
 
 
     /**
      * Sets the configuration.
      *
-     * @param configBean the configuration bean
+     * @param configuration the configuration
      */
-    public void setConfiguration( ConfigBean configBean )
+    public void setConfiguration( Configuration configuration )
     {
-        this.configBean = configBean;
+        this.configuration = configuration;
     }
 
 
     /**
      * Resets the configuration and refresh the UI.
      *
-     * @param configBean the configuration bean
+     * @param configuration the configuration
      */
-    public void resetConfiguration( ConfigBean configBean )
+    public void resetConfiguration( Configuration configuration )
     {
-        setConfiguration( configBean );
+        setConfiguration( configuration );
 
         setDirty( true );
 
@@ -354,11 +355,11 @@ public class ServerConfigurationEditor extends FormEditor implements IPageChange
      * This method is called by the job responsible for loading the 
      * configuration when it has been fully and correctly loaded.
      *
-     * @param configBean the loaded configuration bean
+     * @param configuration the configuration
      */
-    public void configurationLoaded( ConfigBean configBean )
+    public void configurationLoaded( Configuration configuration )
     {
-        setConfiguration( configBean );
+        setConfiguration( configuration );
 
         hideLoadingPageAndDisplayConfigPages();
     }
@@ -474,6 +475,7 @@ public class ServerConfigurationEditor extends FormEditor implements IPageChange
      */
     public ConfigWriter getConfigWriter() throws Exception
     {
-        return new ConfigWriter( ApacheDS2ConfigurationPlugin.getDefault().getSchemaManager(), configBean );
+        return new ConfigWriter( ApacheDS2ConfigurationPlugin.getDefault().getSchemaManager(),
+            configuration.getConfigBean() );
     }
 }

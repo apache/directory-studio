@@ -160,15 +160,15 @@ public abstract class ServerConfigurationEditorPage extends FormPage
      */
     public ConfigBean getConfigBean()
     {
-        ConfigBean configBean = getServerConfigurationEditor().getConfigBean();
+        Configuration configuration = getServerConfigurationEditor().getConfiguration();
 
-        if ( configBean == null )
+        if ( configuration == null )
         {
-            configBean = new ConfigBean();
-            getServerConfigurationEditor().setConfiguration( configBean );
+            configuration = new Configuration( new ConfigBean(), null );
+            getServerConfigurationEditor().setConfiguration( configuration );
         }
 
-        return configBean;
+        return configuration.getConfigBean();
     }
 
 

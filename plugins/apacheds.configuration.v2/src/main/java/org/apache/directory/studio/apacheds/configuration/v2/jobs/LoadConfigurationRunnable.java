@@ -24,6 +24,7 @@ package org.apache.directory.studio.apacheds.configuration.v2.jobs;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,12 +41,18 @@ import org.apache.directory.api.ldap.model.message.SearchScope;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.api.ldap.model.schema.SchemaManager;
 import org.apache.directory.server.config.ConfigPartitionReader;
+import org.apache.directory.server.config.ConfigPartitionInitializer;
 import org.apache.directory.server.config.ReadOnlyConfigurationPartition;
 import org.apache.directory.server.config.beans.ConfigBean;
 import org.apache.directory.server.core.api.CacheService;
+import org.apache.directory.server.core.api.DnFactory;
+import org.apache.directory.server.core.api.InstanceLayout;
 import org.apache.directory.server.constants.ServerDNConstants;
 import org.apache.directory.server.core.partition.impl.btree.AbstractBTreePartition;
+import org.apache.directory.server.core.partition.ldif.LdifPartition;
 import org.apache.directory.studio.apacheds.configuration.v2.ApacheDS2ConfigurationPlugin;
+import org.apache.directory.studio.apacheds.configuration.v2.ApacheDS2ConfigurationPluginConstants;
+import org.apache.directory.studio.apacheds.configuration.v2.editor.Configuration;
 import org.apache.directory.studio.apacheds.configuration.v2.editor.ConnectionServerConfigurationInput;
 import org.apache.directory.studio.apacheds.configuration.v2.editor.NewServerConfigurationInput;
 import org.apache.directory.studio.apacheds.configuration.v2.editor.ServerConfigurationEditor;
@@ -60,12 +67,14 @@ import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
 import org.apache.directory.studio.ldapbrowser.core.jobs.SearchRunnable;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.SearchParameter;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IPathEditorInput;
 import org.eclipse.ui.part.FileEditorInput;
+import org.osgi.framework.Bundle;
 
 
 /**
@@ -127,15 +136,15 @@ public class LoadConfigurationRunnable implements StudioRunnableWithProgress
 
         try
         {
-            final ConfigBean configBean = getConfiguration( input, monitor );
+            final Configuration configuration = getConfiguration( input, monitor );
             
-            if ( configBean != null )
+            if ( configuration != null )
             {
                 Display.getDefault().asyncExec( new Runnable()
                 {
                     public void run()
                     {
-                        editor.configurationLoaded( configBean );
+                        editor.configurationLoaded( configuration );
                     }
                 } );
             }
@@ -171,7 +180,7 @@ public class LoadConfigurationRunnable implements StudioRunnableWithProgress
      * @return the configuration
      * @throws Exception If the configuration wasn't correctly read
      */
-    public ConfigBean getConfiguration( IEditorInput input, StudioProgressMonitor monitor ) throws Exception
+    public Configuration getConfiguration( IEditorInput input, StudioProgressMonitor monitor ) throws Exception
     {
         String inputClassName = input.getClass().getName();
         
@@ -179,10 +188,12 @@ public class LoadConfigurationRunnable implements StudioRunnableWithProgress
         // need to get the server configuration and return
         if ( input instanceof NewServerConfigurationInput )
         {
-            InputStream is = ApacheDS2ConfigurationPlugin.class.getResourceAsStream( "config.ldif" ); //$NON-NLS-1$
-            return readConfiguration( is );
+            Bundle bundle = Platform.getBundle( "org.apache.directory.server.config" );
+            URL resource = bundle.getResource( "config.ldif" );
+            InputStream is = resource.openStream();
+            return readSingleFileConfiguration( is );
         }
-        
+
         // If the input is a ConnectionServerConfigurationInput, then we 
         // read the server configuration from the selected connection
         if ( input instanceof ConnectionServerConfigurationInput )
@@ -193,13 +204,13 @@ public class LoadConfigurationRunnable implements StudioRunnableWithProgress
         // The 'FileEditorInput' class is used when the file is opened
         // from a project in the workspace.
         {
-            InputStream is = ( ( FileEditorInput ) input ).getFile().getContents();
-            return readConfiguration( is );
+            File file = ( ( FileEditorInput ) input ).getFile().getLocation().toFile();
+            return readConfiguration( file );
         }
         else if ( input instanceof IPathEditorInput )
         {
-            InputStream is = new FileInputStream( new File( ( ( IPathEditorInput ) input ).getPath().toOSString() ) );
-            return readConfiguration( is );
+            File file = ( ( IPathEditorInput ) input ).getPath().toFile();
+            return readConfiguration( file );
         }
         else if ( inputClassName.equals( "org.eclipse.ui.internal.editors.text.JavaFileEditorInput" ) //$NON-NLS-1$
             || inputClassName.equals( "org.eclipse.ui.ide.FileStoreEditorInput" ) ) //$NON-NLS-1$
@@ -209,9 +220,8 @@ public class LoadConfigurationRunnable implements StudioRunnableWithProgress
         // opening a file from the menu File > Open... in Eclipse 3.3.x
         {
             // We use the tooltip to get the full path of the file
-            InputStream is = new FileInputStream( new File( input.getToolTipText() ) );
-            
-            return readConfiguration( is );
+            File file = new File( input.getToolTipText() );
+            return readConfiguration( file );
         }
 
         return null;
@@ -225,25 +235,62 @@ public class LoadConfigurationRunnable implements StudioRunnableWithProgress
      * @return the associated configuration bean
      * @throws Exception if we weren't able to load the configuration
      */
-    public static ConfigBean readConfiguration( InputStream is ) throws Exception
+    public static Configuration readConfiguration( File file ) throws Exception
     {
-        if ( is != null )
+        if ( file != null )
         {
-            // Creating a partition associated from the input stream
-            ReadOnlyConfigurationPartition configurationPartition = new ReadOnlyConfigurationPartition( is,
-                ApacheDS2ConfigurationPlugin.getDefault().getSchemaManager() );
-            CacheService cacheService = new CacheService();
-            cacheService.initialize( null );
-            configurationPartition.setCacheService( cacheService );
-
-            configurationPartition.initialize();
-
-            // Reading the configuration partition
-            return readConfiguration( configurationPartition );
-
+            if(file.getName().equals( ApacheDS2ConfigurationPluginConstants.CONFIG_LDIF )) {
+                return readSingleFileConfiguration( file );
+            }
+            else if(file.getName().equals( ApacheDS2ConfigurationPluginConstants.OU_CONFIG_LDIF )) {
+                return readMultiFileConfigureation( file.getParentFile() );
+            }
         }
 
         return null;
+    }
+
+
+    private static Configuration readSingleFileConfiguration( File configLdifFile ) throws Exception
+    {
+        InputStream is = new FileInputStream( configLdifFile );
+
+        // Reading the configuration partition
+        return readSingleFileConfiguration( is );
+    }
+
+
+    private static Configuration readSingleFileConfiguration( InputStream is ) throws Exception
+    {
+        // Creating a partition associated from the input stream
+        ReadOnlyConfigurationPartition configurationPartition = new ReadOnlyConfigurationPartition( is,
+            ApacheDS2ConfigurationPlugin.getDefault().getSchemaManager() );
+        CacheService cacheService = new CacheService();
+        cacheService.initialize( null );
+        configurationPartition.setCacheService( cacheService );
+
+        configurationPartition.initialize();
+
+        // Reading the configuration partition
+        return readConfiguration( configurationPartition );
+    }
+
+
+    private static Configuration readMultiFileConfigureation( File confDirectory ) throws Exception
+    {
+        InstanceLayout instanceLayout = new InstanceLayout( confDirectory.getParentFile() );
+
+        CacheService cacheService = new CacheService();
+        cacheService.initialize( null );
+
+        SchemaManager schemaManager = ApacheDS2ConfigurationPlugin.getDefault().getSchemaManager();
+
+        DnFactory dnFactory = null;
+
+        ConfigPartitionInitializer init = new ConfigPartitionInitializer( instanceLayout, dnFactory, cacheService, schemaManager );
+        LdifPartition configurationPartition = init.initConfigPartition();
+
+        return readConfiguration( configurationPartition );
     }
 
 
@@ -254,12 +301,13 @@ public class LoadConfigurationRunnable implements StudioRunnableWithProgress
      * @return the associated configuration bean
      * @throws LdapException if we weren't able to load the configuration
      */
-    private static ConfigBean readConfiguration( AbstractBTreePartition partition ) throws LdapException
+    private static Configuration readConfiguration( AbstractBTreePartition partition ) throws LdapException
     {
         if ( partition != null )
         {
             ConfigPartitionReader cpReader = new ConfigPartitionReader( partition );
-            return cpReader.readConfig();
+            ConfigBean configBean = cpReader.readConfig();
+            return new Configuration( configBean, partition );
         }
 
         return null;
@@ -274,7 +322,7 @@ public class LoadConfigurationRunnable implements StudioRunnableWithProgress
      * @return the associated configuration bean
      * @throws Exception if we weren't able to load the configuration
      */
-    private ConfigBean readConfiguration( ConnectionServerConfigurationInput input, StudioProgressMonitor monitor ) throws Exception
+    private Configuration readConfiguration( ConnectionServerConfigurationInput input, StudioProgressMonitor monitor ) throws Exception
     {
         if ( input != null )
         {
@@ -287,6 +335,9 @@ public class LoadConfigurationRunnable implements StudioRunnableWithProgress
             // Creating and initializing the configuration partition
             EntryBasedConfigurationPartition configurationPartition = new EntryBasedConfigurationPartition(
                 schemaManager );
+            CacheService cacheService = new CacheService();
+            cacheService.initialize( null );
+            configurationPartition.setCacheService( cacheService );
             configurationPartition.initialize();
 
             // Opening the connection

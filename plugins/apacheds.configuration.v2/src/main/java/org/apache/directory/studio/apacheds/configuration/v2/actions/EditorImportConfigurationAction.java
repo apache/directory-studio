@@ -22,12 +22,10 @@ package org.apache.directory.studio.apacheds.configuration.v2.actions;
 
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
 
-import org.apache.directory.server.config.beans.ConfigBean;
 import org.apache.directory.studio.apacheds.configuration.v2.ApacheDS2ConfigurationPlugin;
 import org.apache.directory.studio.apacheds.configuration.v2.ApacheDS2ConfigurationPluginConstants;
+import org.apache.directory.studio.apacheds.configuration.v2.editor.Configuration;
 import org.apache.directory.studio.apacheds.configuration.v2.editor.ServerConfigurationEditor;
 import org.apache.directory.studio.apacheds.configuration.v2.jobs.LoadConfigurationRunnable;
 import org.apache.directory.studio.common.ui.CommonUIUtils;
@@ -114,8 +112,8 @@ public class EditorImportConfigurationAction extends Action
                 }
             }
 
-            // The input stream that will be used to load the configuration
-            InputStream inputStream = null;
+            // The file that will be used to load the configuration
+            File file = null;
 
             // detect IDE or RCP:
             boolean isIDE = CommonUIUtils.isIDEEnvironment();
@@ -132,7 +130,7 @@ public class EditorImportConfigurationAction extends Action
                     
                     if ( ( firstResult != null ) && ( firstResult instanceof IFile ) )
                     {
-                        inputStream = ( ( IFile ) firstResult ).getContents();
+                        file = ( ( IFile ) firstResult ).getLocation().toFile();
                     }
                 }
                 else
@@ -156,20 +154,17 @@ public class EditorImportConfigurationAction extends Action
                 }
 
                 // Checking the file
-                File file = new File( filePath );
+                file = new File( filePath );
                 
                 if ( !file.exists() || !file.isFile() || !file.canRead() )
                 {
                     // This is not a valid file
                     return;
                 }
-
-                // Getting the input stream for the selected file
-                inputStream = new FileInputStream( file );
             }
 
             // Checking if we found an input stream
-            if ( inputStream == null )
+            if ( file == null )
             {
                 return;
             }
@@ -186,10 +181,10 @@ public class EditorImportConfigurationAction extends Action
             }
 
             // Reading the configuration of the file
-            ConfigBean configBean = LoadConfigurationRunnable.readConfiguration( inputStream );
+            Configuration configuration = LoadConfigurationRunnable.readConfiguration( file );
 
             // Resetting the configuration back to the editor
-            editor.resetConfiguration( configBean );
+            editor.resetConfiguration( configuration );
         }
         catch ( Exception e )
         {

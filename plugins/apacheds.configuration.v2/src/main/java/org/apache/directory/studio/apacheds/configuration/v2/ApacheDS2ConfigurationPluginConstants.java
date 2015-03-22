@@ -48,4 +48,8 @@ public interface ApacheDS2ConfigurationPluginConstants
     public static final String IMG_PASSWORD_POLICY_DEFAULT = "resources/icons/password_policy_default.gif"; //$NON-NLS-1$
     public static final String IMG_REPLICATION_CONSUMER = "resources/icons/replication_consumer.gif"; //$NON-NLS-1$
     public static final String IMG_VERTICAL_ORIENTATION = "resources/icons/vertical_orientation.gif"; //$NON-NLS-1$
+
+    public static final String CONFIG_LDIF = "config.ldif"; //$NON-NLS-1$
+    public static final String OU_CONFIG_LDIF = "ou=config.ldif"; //$NON-NLS-1$
+
 }
