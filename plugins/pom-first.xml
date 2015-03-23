@@ -48,11 +48,6 @@
     <module>schemaeditor/pom-first.xml</module>
     <module>valueeditors/pom-first.xml</module>
     <module>aciitemeditor/pom-first.xml</module>
-    <!-- module>ldapservers.apacheds.v153/pom-first.xml</module -->
-    <!-- module>ldapservers.apacheds.v154/pom-first.xml</module -->
-    <!-- module>ldapservers.apacheds.v155/pom-first.xml</module -->
-    <!-- module>ldapservers.apacheds.v156/pom-first.xml</module -->
-    <!-- module>ldapservers.apacheds.v157/pom-first.xml</module -->
     <module>ldapservers.apacheds.v200/pom-first.xml</module>
     <module>rcp/pom-first.xml</module>
   </modules>
