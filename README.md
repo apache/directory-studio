@@ -39,6 +39,11 @@ or on Windows :
 
     > build.bat
 
+### Build issues
+
+Tycho doesn't handle snapshot dependencies well. The first time a snapshot dependency is used within the build it is cached in `~/.m2/repository/p2`. Afterwards any change in the dependency (e.g. ApacheDS or LDAP API) is the considered unless it is deleted from the cache.
+
+
 ## Setup Eclipse workspace
 
 Recommended IDE is 'Eclipse (Luna) for RCP Developers': <http://www.eclipse.org/downloads/packages/eclipse-rcp-and-rap-developers/lunasr1>
@@ -74,4 +79,14 @@ The build produces binaries for all platforms. Archived versions can be found in
 
 * Open the product configuration 'org.apache.directory.studio.product' with the Product Configuration Editor
 * Click the link 'Launch an Eclipse application'
+
+
+## Release
+
+Work in progress...
+
+Generate help plugins
+
+    cd helps
+    mvn clean install -Duserguides
 
