@@ -23,6 +23,11 @@ package org.apache.directory.studio.ldapbrowser.core.model.filter;
 import org.eclipse.osgi.util.NLS;
 
 
+/**
+ * This class get messages from the resources file.
+ *  
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ */
 public class Messages extends NLS
 {
     private static final String BUNDLE_NAME = "org.apache.directory.studio.ldapbrowser.core.model.filter.messages"; //$NON-NLS-1$

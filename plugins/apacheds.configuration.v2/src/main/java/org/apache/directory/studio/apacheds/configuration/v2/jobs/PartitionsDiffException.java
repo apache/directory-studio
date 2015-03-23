@@ -43,10 +43,8 @@ public class PartitionsDiffException extends Exception
     /**
      * Constructs a new PartitionsDiffException with the specified detail message and cause.
      *
-     * @param message
-     *      the message
-     * @param cause
-     *      the cause
+     * @param message the message
+     * @param cause the cause
      */
     public PartitionsDiffException( String message, Throwable cause )
     {
@@ -57,8 +55,7 @@ public class PartitionsDiffException extends Exception
     /**
      * Constructs a new PartitionsDiffException with the specified detail message.
      *
-     * @param message
-     *      the message
+     * @param message the message
      */
     public PartitionsDiffException( String message )
     {
@@ -70,8 +67,7 @@ public class PartitionsDiffException extends Exception
      * Constructs a new exception with the specified cause and a detail message 
      * of <code>(cause==null ? null : cause.toString())</code>
      *
-     * @param cause
-     *      the cause
+     * @param cause the cause
      */
     public PartitionsDiffException( Throwable cause )
     {

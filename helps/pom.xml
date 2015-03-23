@@ -24,6 +24,7 @@
     <groupId>org.apache.directory.studio</groupId>
     <artifactId>parent</artifactId>
     <version>2.0.0-SNAPSHOT</version>
+    <relativePath>../</relativePath>
   </parent>
   
   <artifactId>parent-helps</artifactId>
@@ -39,47 +40,329 @@
     <module>schemaeditor.help</module>
   </modules>
 
+  <profiles>
+    <!-- Help Plugin -->
+    <profile>
+      <id>help-plugin</id>
+      <activation>
+        <file><exists>src/main/docbook/0_index.xml</exists></file>
+      </activation>
+      <build>
+        <resources>
+          <resource>
+            <directory>.</directory>
+            <includes>
+              <include>plugin.xml</include>
+            </includes>
+          </resource>
+          <resource>
+            <directory>src/main/resources</directory>
+          </resource>
+          <resource>
+            <directory>src/main/docbook</directory>
+            <targetPath>../docbook/documents</targetPath>
+            <filtering>true</filtering>
+          </resource>
+        </resources>
+        <plugins>
+          <plugin>
+            <artifactId>maven-antrun-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>build-eclipse-help</id>
+                <phase>process-classes</phase>
+                <configuration>
+                  <target>
+                    <!-- Prepare docbook -->
+                    <unzip src="../../repository/docbook/docbook-xml/4.5/docbook-xml-4.5.zip" dest="target/docbook/docbook-xml" />
+                    <unzip src="../../repository/docbook/docbook-xsl/1.71.1/docbook-xsl-1.71.1.zip" dest="target/docbook" />
+                    <property name="fromregexpxml" value="^(docbook-xml-[^/]+)/(.*)" />
+                    <property name="toregexpxml" value="docbook-xml/\2" />
+                    <move todir="target/docbook">
+                      <fileset dir="target/docbook">
+                        <include name="docbook-xml-*/**" />
+                      </fileset>
+                      <regexpmapper from="${fromregexpxml}" to="${toregexpxml}" handledirsep="true" />
+                    </move>
+    
+                    <property name="fromregexpxsl" value="^(docbook-xsl-[^/]+)/(.*)" />
+                    <property name="toregexpxsl" value="docbook-xsl/\2" />
+                    <move todir="target/docbook">
+                      <fileset dir="target/docbook">
+                        <include name="docbook-xsl-*/**" />
+                      </fileset>
+                      <regexpmapper from="${fromregexpxsl}" to="${toregexpxsl}" handledirsep="true" />
+                    </move>
+    
+                    <!-- Create HTML -->
+                    <xslt basedir="target/docbook/" in="target/docbook/documents/0_index.xml" out="target/classes/index.html" style="target/docbook/docbook-xsl/eclipse/eclipse.xsl">
+                      <param name="ignore.image.scaling" expression="1" />
+                      <param name="manifest.in.base.dir" expression="0" />
+                      <param name="base.dir" expression="html/" />
+                      <param name="html.stylesheet" expression="css/book.css" />
+                      <param name="table.cell.borders.thickness" expression="1" />
+                      <!-- <param name="table.borders.with.css" expression="1" /> -->
+                      <param name="generate.section.toc.level" expression="5" />
+                      <param name="toc.max.depth" expression="1" />
+                      <param name="chunk.first.sections" expression="1" />
+                      <param name="chunk.section.depth" expression="5" />
+                      <param name="chunk.fast" expression="1" />
+                      <param name="chunk.separate.lots" expression="1" />
+                      <!--<param name="chunk.tocs.and.lots" expression="1" />-->
+                      <param name="ulink.target" expression="_self" />
+                      <param name="suppress.navigation" expression="1" />
+                      <param name="html.cleanup" expression="1" />
+                      <param name="html.cellpadding" expression="3" />
+                      <param name="use.id.as.filename" expression="1" />
+                      <param name="chapter.autolabel" expression="0" />
+                      <param name="section.autolabel" expression="0" />
+                      <outputproperty name="method" value="xml" />
+                      <outputproperty name="standalone" value="yes" />
+                      <outputproperty name="encoding" value="iso8859_1" />
+                      <outputproperty name="indent" value="es" />
+                    </xslt>
+                    <!-- Copy the good plugin.xml. 
+                         The eclipse.xsl creates its own plugin.xml but we want 
+                         to use our own.
+                    -->
+                    <copy todir="target/classes" file="plugin.xml" overwrite="true" />
+                  </target>
+                </configuration>
+                <goals>
+                  <goal>run</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+    <!-- UserGuides -->
+    <profile>
+      <id>userguides</id>
+      <activation>
+        <file><exists>src/main/docbook/0_index.xml</exists></file>
+        <property>
+          <name>userguides</name>
+        </property>
+      </activation>
+      <build>
+        <resources>
+          <resource>
+            <directory>src/main/resources/html</directory>
+            <targetPath>../pdf</targetPath>
+          </resource>
+          <resource>
+            <directory>src/main/resources/html</directory>
+            <targetPath>../html</targetPath>
+          </resource>
+          <resource>
+            <directory>src/main/docbook</directory>
+            <targetPath>../docbook/documents</targetPath>
+            <filtering>true</filtering>
+          </resource>
+        </resources>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-antrun-plugin</artifactId>
+            <dependencies>
+              <!-- 
+                Putting this dependency in the core pom produces following error (?):
+                Embedded error: java.lang.ClassCastException: org.apache.fop.render.pdf.PDFRendererMaker cannot be cast to org.apache.fop.render.AbstractRendererMaker
+              -->
+              <dependency>
+                <groupId>org.apache.xmlgraphics</groupId>
+                <artifactId>xmlgraphics-commons</artifactId>
+                <version>1.5</version>
+                <scope>compile</scope>
+              </dependency>
+            </dependencies>
+            <executions>
+              <execution>
+                <id>build-pdf-html-help</id>
+                <phase>compile</phase>
+                <configuration>
+                  <target>
+                    <taskdef name="fop" classname="org.apache.fop.tools.anttasks.Fop">
+                      <classpath>
+                        <path refid="maven.compile.classpath" />
+                        <pathelement location="${project.build.outputDirectory}" />
+                      </classpath>
+                    </taskdef>
+
+                    <!-- Prepare docbook -->
+                    <unzip src="../../repository/docbook/docbook-xml/4.5/docbook-xml-4.5.zip" dest="target/docbook/docbook-xml" />
+                    <unzip src="../../repository/docbook/docbook-xsl/1.71.1/docbook-xsl-1.71.1.zip" dest="target/docbook" />
+                    <property name="fromregexpxml" value="^(docbook-xml-[^/]+)/(.*)" />
+                    <property name="toregexpxml" value="docbook-xml/\2" />
+                    <move todir="target/docbook">
+                      <fileset dir="target/docbook">
+                        <include name="docbook-xml-*/**" />
+                      </fileset>
+                      <regexpmapper from="${fromregexpxml}" to="${toregexpxml}" handledirsep="true" />
+                    </move>
+
+                    <property name="fromregexpxsl" value="^(docbook-xsl-[^/]+)/(.*)" />
+                    <property name="toregexpxsl" value="docbook-xsl/\2" />
+                    <move todir="target/docbook">
+                      <fileset dir="target/docbook">
+                        <include name="docbook-xsl-*/**" />
+                      </fileset>
+                      <regexpmapper from="${fromregexpxsl}" to="${toregexpxsl}" handledirsep="true" />
+                    </move>
+
+                    <!-- Create PDF -->
+                    <xslt basedir="target/docbook" in="target/docbook/documents/0_index.xml" out="target/pdf/${project.artifactId}.fo" style="target/docbook/docbook-xsl/fo/docbook.xsl">
+                      <param name="manifest.in.base.dir" expression="0" />
+                      <param name="generate.section.toc.level" expression="5" />
+                      <param name="toc.max.depth" expression="3" />
+                      <param name="ulink.target" expression="_self" />
+                      <param name="suppress.navigation" expression="0" />
+                      <param name="use.id.as.filename" expression="1" />
+                      <param name="chapter.autolabel" expression="I" />
+                      <param name="section.autolabel" expression="1" />
+                      <outputproperty name="method" value="xml" />
+                      <outputproperty name="standalone" value="yes" />
+                      <outputproperty name="encoding" value="iso8859_1" />
+                      <outputproperty name="indent" value="es" />
+                    </xslt>
+                    <fop format="application/pdf" basedir="target/pdf" fofile="target/pdf/${project.artifactId}.fo" outfile="target/pdf/${project.name}.pdf" />
+
+                    <!-- Create HTML -->
+                    <xslt in="target/docbook/documents/0_index.xml" out="target/html/index.html" style="target/docbook/docbook-xsl/html/chunk.xsl">
+                      <param name="ignore.image.scaling" expression="1" />
+                      <param name="manifest.in.base.dir" expression="0" />
+                      <!-- <param name="base.dir" expression="html/" /> -->
+                      <param name="html.stylesheet" expression="css/book.css" />
+                      <param name="table.cell.borders.thickness" expression="1" />
+                      <!-- <param name="table.borders.with.css" expression="1" /> -->
+                      <param name="generate.section.toc.level" expression="5" />
+                      <param name="toc.max.depth" expression="3" />
+                      <param name="chunk.first.sections" expression="1" />
+                      <param name="chunk.section.depth" expression="5" />
+                      <param name="chunk.fast" expression="1" />
+                      <param name="chunk.separate.lots" expression="1" />
+                      <!--<param name="chunk.tocs.and.lots" expression="1" />-->
+                      <param name="ulink.target" expression="_self" />
+                      <param name="suppress.navigation" expression="0" />
+                      <param name="html.cleanup" expression="1" />
+                      <param name="html.cellpadding" expression="3" />
+                      <param name="use.id.as.filename" expression="1" />
+                      <param name="chapter.autolabel" expression="0" />
+                      <param name="section.autolabel" expression="0" />
+                      <outputproperty name="method" value="xml" />
+                      <outputproperty name="standalone" value="yes" />
+                      <outputproperty name="encoding" value="iso8859_1" />
+                      <outputproperty name="indent" value="es" />
+                    </xslt>
+
+                    <!-- Copy PDF/HTML to ../../target -->
+                    <mkdir dir="../../target/userguides" />
+                    <copy todir="../../target/userguides">
+                      <fileset dir="target/pdf" />
+                    </copy>
+                    <mkdir dir="../../target/userguides/${project.name}" />
+                    <copy todir="../../target/userguides/${project.name}">
+                      <fileset dir="target/html" />
+                    </copy>
+                  </target>
+                </configuration>
+                <goals>
+                  <goal>run</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
+
   <build>
     <pluginManagement>
       <plugins>
         <plugin>
-          <groupId>org.apache.rat</groupId>
-          <artifactId>apache-rat-plugin</artifactId>
+          <groupId>org.eclipse.tycho</groupId>
+          <artifactId>tycho-packaging-plugin</artifactId>
+          <version>${tycho.version}</version>
           <configuration>
-            <excludeSubProjects>false</excludeSubProjects>
-            <excludes>
-              <!-- MAVEN_DEFAULT_EXCLUDES -->
-              <exclude>**/target/**/*</exclude>
-              <exclude>**/cobertura.ser</exclude>
-              <!-- ECLIPSE_DEFAULT_EXCLUDES -->
-              <exclude>**/.classpath</exclude>
-              <exclude>**/.project</exclude>
-              <exclude>**/.settings/**/*</exclude>
-              <!-- IDEA_DEFAULT_EXCLUDES -->
-              <exclude>**/*.iml</exclude>
-              <exclude>**/*.ipr</exclude>
-              <exclude>**/*.iws</exclude>
-              <!-- MANIFEST_MF_EXCLUDES -->
-              <exclude>**/MANIFEST.MF</exclude>
-              <!-- Missing license header in dependency reduced pom, see http://jira.codehaus.org/browse/MSHADE-48 -->
-              <exclude>**/dependency-reduced-pom.xml</exclude>
-              <!-- GITIGNORE_EXCLUDES -->
-              <exclude>**/.gitignore</exclude>
-              <!-- ABOUT_EXCLUDES -->
-              <exclude>**/about.ini</exclude>
-              <exclude>**/about_files/*</exclude>
-              <!-- LOG_FILES_EXCLUDES -->
-              <exclude>**/*.log</exclude>
-              <exclude>**/*.vm</exclude>
-              <!-- NSIS_EXCLUDES -->
-              <exclude>**/src/main/resources/AdvUninstLog.nsh</exclude>
-              <!-- OTHER_EXCLUDES -->
-              <exclude>ldapbrowser.help/src/main/resources/sevenseas.ldif</exclude>
-              <exclude>**/src/main/resources/html/rfc/*.txt</exclude>
-              <exclude>**/src/main/resources/html/rfcs/*.txt</exclude>
-            </excludes>
+            <additionalFileSets>
+             <fileSet>
+              <directory>${project.build.directory}/classes/</directory>
+              <includes>
+               <include>**/*</include>
+              </includes>
+             </fileSet>
+            </additionalFileSets>
           </configuration>
         </plugin>
+
+        <!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
+        <plugin>
+          <groupId>org.eclipse.m2e</groupId>
+          <artifactId>lifecycle-mapping</artifactId>
+          <version>1.0.0</version>
+          <configuration>
+            <lifecycleMappingMetadata>
+              <pluginExecutions>
+                <pluginExecution>
+                  <pluginExecutionFilter>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-antrun-plugin</artifactId>
+                    <versionRange>[1.8,)</versionRange>
+                    <goals>
+                      <goal>run</goal>
+                    </goals>
+                  </pluginExecutionFilter>
+                  <action>
+                    <ignore></ignore>
+                  </action>
+                </pluginExecution>
+              </pluginExecutions>
+            </lifecycleMappingMetadata>
+          </configuration>
+        </plugin>
+
+<!--         <plugin> -->
+<!--           <groupId>org.apache.rat</groupId> -->
+<!--           <artifactId>apache-rat-plugin</artifactId> -->
+<!--           <configuration> -->
+<!--             <excludeSubProjects>false</excludeSubProjects> -->
+<!--             <excludes> -->
+              <!-- MAVEN_DEFAULT_EXCLUDES -->
+<!--               <exclude>**/target/**/*</exclude> -->
+<!--               <exclude>**/cobertura.ser</exclude> -->
+              <!-- ECLIPSE_DEFAULT_EXCLUDES -->
+<!--               <exclude>**/.classpath</exclude> -->
+<!--               <exclude>**/.project</exclude> -->
+<!--               <exclude>**/.settings/**/*</exclude> -->
+              <!-- IDEA_DEFAULT_EXCLUDES -->
+<!--               <exclude>**/*.iml</exclude> -->
+<!--               <exclude>**/*.ipr</exclude> -->
+<!--               <exclude>**/*.iws</exclude> -->
+              <!-- MANIFEST_MF_EXCLUDES -->
+<!--               <exclude>**/MANIFEST.MF</exclude> -->
+              <!-- Missing license header in dependency reduced pom, see http://jira.codehaus.org/browse/MSHADE-48 -->
+<!--               <exclude>**/dependency-reduced-pom.xml</exclude> -->
+              <!-- GITIGNORE_EXCLUDES -->
+<!--               <exclude>**/.gitignore</exclude> -->
+              <!-- ABOUT_EXCLUDES -->
+<!--               <exclude>**/about.ini</exclude> -->
+<!--               <exclude>**/about_files/*</exclude> -->
+              <!-- LOG_FILES_EXCLUDES -->
+<!--               <exclude>**/*.log</exclude> -->
+<!--               <exclude>**/*.vm</exclude> -->
+              <!-- NSIS_EXCLUDES -->
+<!--               <exclude>**/src/main/resources/AdvUninstLog.nsh</exclude> -->
+              <!-- OTHER_EXCLUDES -->
+<!--               <exclude>ldapbrowser.help/src/main/resources/sevenseas.ldif</exclude> -->
+<!--               <exclude>**/src/main/resources/html/rfc/*.txt</exclude> -->
+<!--               <exclude>**/src/main/resources/html/rfcs/*.txt</exclude> -->
+<!--             </excludes> -->
+<!--           </configuration> -->
+<!--         </plugin> -->
       </plugins>
     </pluginManagement>
   </build>  

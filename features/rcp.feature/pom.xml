@@ -24,103 +24,13 @@
     <groupId>org.apache.directory.studio</groupId>
     <artifactId>parent-features</artifactId>
     <version>2.0.0-SNAPSHOT</version>
+    <relativePath>../</relativePath>
   </parent>
   
-  <artifactId>rcp.feature</artifactId>
+  <artifactId>org.apache.directory.studio.rcp.feature</artifactId>
   <name>Apache Directory Studio RCP Feature</name>
-  <packaging>jar</packaging>
+  <packaging>eclipse-feature</packaging>
 
   <description />
-  
-  <build>
-    <resources>
-      <resource>
-        <directory>.</directory>
-        <includes>
-          <include>feature.xml</include>
-          <include>studio.png</include>
-        </includes>
-        <filtering>true</filtering>
-      </resource>
-    </resources>
-    
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-resources-plugin</artifactId>
-        <executions>
-          <execution>
-            <phase>package</phase>
-            <goals>
-              <goal>resources</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-eclipse-plugin</artifactId>
-        <configuration>
-          <skip>false</skip>
-          <projectnatures>
-            <projectnature>org.eclipse.pde.FeatureNature</projectnature>
-          </projectnatures>
-          <buildcommands>
-            <buildcommand>org.eclipse.pde.FeatureBuilder</buildcommand>
-          </buildcommands>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-jar-plugin</artifactId>
-        <configuration>
-          <archive>
-            <manifestFile>META-INF/MANIFEST.MF</manifestFile>
-            <addMavenDescriptor>false</addMavenDescriptor>
-          </archive>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.directory.studio</groupId>
-        <artifactId>studio-maven-plugin</artifactId>
-        <configuration>
-          <skip>true</skip>
-          <createManifest>true</createManifest>
-        </configuration>
-      </plugin>
-      <!-- MANIFEST.MF Generation -->
-      <plugin>
-        <groupId>org.apache.felix</groupId>
-        <artifactId>maven-bundle-plugin</artifactId>
-        <extensions>true</extensions>
-        <configuration>
-          <manifestLocation>META-INF</manifestLocation>
-          <instructions>            
-            <Bundle-SymbolicName>${project.groupId}.${project.artifactId};singleton:=true</Bundle-SymbolicName>
-            <Bundle-Localization>plugin</Bundle-Localization>
-            <Eclipse-LazyStart>true</Eclipse-LazyStart>
-            <Export-Package>!</Export-Package>
-          </instructions>
-        </configuration>
-        <executions>
-          <execution>
-            <id>generate-manifest</id>
-            <phase>process-classes</phase>
-            <goals>
-              <goal>manifest</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-      <!-- No tests to run -->
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-surefire-plugin</artifactId>
-        <configuration>
-          <skip>true</skip>
-        </configuration>
-      </plugin>
-    </plugins>
-  </build>
 
 </project>

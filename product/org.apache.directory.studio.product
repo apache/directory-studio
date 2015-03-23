@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?pde version="3.5"?>
+
+<product name="Apache Directory Studio" uid="org.apache.directory.studio.product" id="org.apache.directory.studio.rcp.product" application="org.apache.directory.studio.rcp.application" useFeatures="true" includeLaunchers="true">
+
+   <aboutInfo>
+      <image path="/org.apache.directory.studio.rcp/resources/pictures/product_lg.gif"/>
+      <text>
+         %aboutText
+      </text>
+   </aboutInfo>
+
+   <configIni use="default">
+   </configIni>
+
+   <launcherArgs>
+      <programArgs>/studio-rcp/resources/icons/linux/studio.xpm
+      </programArgs>
+      <vmArgsMac>-XstartOnFirstThread -Dorg.eclipse.swt.internal.carbon.smallFonts
+      </vmArgsMac>
+   </launcherArgs>
+
+   <windowImages i16="/org.apache.directory.studio.rcp/resources/icons/window/studio_16x16.png" i32="/org.apache.directory.studio.rcp/resources/icons/window/studio_32x32.png" i48="/org.apache.directory.studio.rcp/resources/icons/window/studio_48x48.png" i64="/org.apache.directory.studio.rcp/resources/icons/window/studio_64x64.png" i128="/org.apache.directory.studio.rcp/resources/icons/window/studio_128x128.png"/>
+
+   <splash
+      location="org.apache.directory.studio.rcp"
+      startupProgressRect="0,280,455,15"
+      startupMessageRect="10,237,435,20"
+      startupForegroundColor="FFFFFF" />
+   <launcher name="Apache Directory Studio">
+      <linux icon="icons/linux/studio.xpm"/>
+      <macosx icon="icons/macosx/studio.icns"/>
+      <solaris/>
+      <win useIco="true">
+         <ico path="icons/windows/studio.ico"/>
+         <bmp/>
+      </win>
+   </launcher>
+
+   <intro introId="studio.intro"/>
+
+   <vm>
+   </vm>
+
+   <plugins>
+   </plugins>
+
+   <features>
+      <feature id="org.apache.directory.studio.rcp.feature"/>
+      <feature id="org.apache.directory.studio.apacheds.feature"/>
+      <feature id="org.apache.directory.studio.ldapbrowser.feature"/>
+      <feature id="org.apache.directory.studio.ldifeditor.feature"/>
+      <feature id="org.apache.directory.studio.schemaeditor.feature"/>
+      <feature id="org.eclipse.rcp"/>
+      <feature id="org.eclipse.emf.ecore"/>
+      <feature id="org.eclipse.e4.rcp"/>
+      <feature id="org.eclipse.emf.common"/>
+      <feature id="org.eclipse.platform"/>
+      <feature id="org.eclipse.ecf.filetransfer.httpclient4.feature"/>
+      <feature id="org.eclipse.ecf.filetransfer.feature"/>
+      <feature id="org.eclipse.equinox.p2.core.feature"/>
+      <feature id="org.eclipse.ecf.core.ssl.feature"/>
+      <feature id="org.eclipse.ecf.core.feature"/>
+      <feature id="org.eclipse.help"/>
+      <feature id="org.eclipse.ecf.filetransfer.httpclient4.ssl.feature"/>
+      <feature id="org.eclipse.equinox.p2.rcp.feature"/>
+      <feature id="org.eclipse.equinox.p2.user.ui"/>
+      <feature id="org.eclipse.equinox.p2.extras.feature"/>
+      <feature id="org.eclipse.ecf.filetransfer.ssl.feature"/>
+   </features>
+
+   <configurations>
+      <plugin id="org.eclipse.core.runtime" autoStart="true" startLevel="4" />
+      <plugin id="org.eclipse.equinox.common" autoStart="true" startLevel="2" />
+      <plugin id="org.eclipse.equinox.ds" autoStart="true" startLevel="2" />
+      <plugin id="org.eclipse.equinox.p2.reconciler.dropins" autoStart="true" startLevel="4" />
+      <plugin id="org.eclipse.equinox.simpleconfigurator" autoStart="true" startLevel="1" />
+      <plugin id="org.eclipse.update.configurator" autoStart="true" startLevel="4" />
+      <property name="org.eclipse.update.reconcile" value="false" />
+   </configurations>
+
+</product>

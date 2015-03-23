@@ -63,10 +63,16 @@ public class InitializeRootDSERunnable implements StudioConnectionBulkRunnableWi
 {
     /** The requested attributes when reading the Root DSE. */
     public static final String[] ROOT_DSE_ATTRIBUTES =
-        { SchemaConstants.NAMING_CONTEXTS_AT, SchemaConstants.SUBSCHEMA_SUBENTRY_AT,
-            SchemaConstants.SUPPORTED_LDAP_VERSION_AT, SchemaConstants.SUPPORTED_SASL_MECHANISMS_AT,
-            SchemaConstants.SUPPORTED_EXTENSION_AT, SchemaConstants.SUPPORTED_CONTROL_AT,
-            SchemaConstants.SUPPORTED_FEATURES_AT, SchemaConstants.VENDOR_NAME_AT, SchemaConstants.VENDOR_VERSION_AT,
+        { 
+            SchemaConstants.NAMING_CONTEXTS_AT, 
+            SchemaConstants.SUBSCHEMA_SUBENTRY_AT,
+            SchemaConstants.SUPPORTED_LDAP_VERSION_AT, 
+            SchemaConstants.SUPPORTED_SASL_MECHANISMS_AT,
+            SchemaConstants.SUPPORTED_EXTENSION_AT, 
+            SchemaConstants.SUPPORTED_CONTROL_AT,
+            SchemaConstants.SUPPORTED_FEATURES_AT, 
+            SchemaConstants.VENDOR_NAME_AT,
+            SchemaConstants.VENDOR_VERSION_AT,
             SchemaConstants.ALL_OPERATIONAL_ATTRIBUTES };
 
     private IRootDSE rootDSE;
@@ -165,6 +171,7 @@ public class InitializeRootDSERunnable implements StudioConnectionBulkRunnableWi
 
         // delete old attributes
         IAttribute[] oldAttributes = browserConnection.getRootDSE().getAttributes();
+        
         if ( oldAttributes != null )
         {
             for ( IAttribute oldAttribute : oldAttributes )
@@ -179,7 +186,9 @@ public class InitializeRootDSERunnable implements StudioConnectionBulkRunnableWi
             Connection.ReferralHandlingMethod.IGNORE, false, null );
         SearchRunnable.searchAndUpdateModel( browserConnection, search, monitor );
 
-        // load all user attributes
+        // Load all user attributes. This is done because the BEA "LDAP server" (so called) is stupid
+        // enough not to accept searches where "+" and "*" are provided on the list of parameters.
+        // We have to do two searches...
         search = new Search( null, browserConnection, Dn.EMPTY_DN, ISearch.FILTER_TRUE, new String[]
             { SchemaConstants.ALL_USER_ATTRIBUTES }, SearchScope.OBJECT, 0, 0,
             Connection.AliasDereferencingMethod.NEVER, Connection.ReferralHandlingMethod.IGNORE, false, null );
@@ -195,6 +204,7 @@ public class InitializeRootDSERunnable implements StudioConnectionBulkRunnableWi
             // only add the specified base Dn
             Dn dn = browserConnection.getBaseDN();
             IEntry entry = browserConnection.getEntryFromCache( dn );
+            
             if ( entry == null )
             {
                 entry = new BaseDNEntry( dn, browserConnection );
@@ -207,9 +217,11 @@ public class InitializeRootDSERunnable implements StudioConnectionBulkRunnableWi
             // get base DNs from namingContexts attribute
             Set<String> namingContextSet = new HashSet<String>();
             IAttribute attribute = browserConnection.getRootDSE().getAttribute( SchemaConstants.NAMING_CONTEXTS_AT );
+            
             if ( attribute != null )
             {
                 String[] values = attribute.getStringValues();
+                
                 for ( int i = 0; i < values.length; i++ )
                 {
                     namingContextSet.add( values[i] );
@@ -231,11 +243,13 @@ public class InitializeRootDSERunnable implements StudioConnectionBulkRunnableWi
                         {
                             Dn dn = new Dn( namingContext );
                             IEntry entry = browserConnection.getEntryFromCache( dn );
+                            
                             if ( entry == null )
                             {
                                 entry = new BaseDNEntry( dn, browserConnection );
                                 browserConnection.cacheEntry( entry );
                             }
+                            
                             rootDseEntries.put( dn, entry );
                         }
                         catch ( LdapInvalidDnException e )
@@ -261,22 +275,26 @@ public class InitializeRootDSERunnable implements StudioConnectionBulkRunnableWi
 
         // 2nd: add schema sub-entry
         IEntry[] schemaEntries = getDirectoryMetadataEntries( browserConnection, SchemaConstants.SUBSCHEMA_SUBENTRY_AT );
+        
         for ( IEntry entry : schemaEntries )
         {
             if ( entry instanceof DirectoryMetadataEntry )
             {
                 ( ( DirectoryMetadataEntry ) entry ).setSchemaEntry( true );
             }
+            
             rootDseEntries.put( entry.getDn(), entry );
         }
 
         // get other meta data entries
         IAttribute[] rootDseAttributes = browserConnection.getRootDSE().getAttributes();
+        
         if ( rootDseAttributes != null )
         {
             for ( IAttribute attribute : rootDseAttributes )
             {
                 IEntry[] metadataEntries = getDirectoryMetadataEntries( browserConnection, attribute.getDescription() );
+                
                 for ( IEntry entry : metadataEntries )
                 {
                     rootDseEntries.put( entry.getDn(), entry );
@@ -286,6 +304,7 @@ public class InitializeRootDSERunnable implements StudioConnectionBulkRunnableWi
 
         // try to init entries
         StudioProgressMonitor dummyMonitor = new StudioProgressMonitor( monitor );
+        
         for ( IEntry entry : rootDseEntries.values() )
         {
             initBaseEntry( entry, dummyMonitor );
@@ -303,33 +322,43 @@ public class InitializeRootDSERunnable implements StudioConnectionBulkRunnableWi
         DetectedConnectionProperties detectedConnectionProperties = browserConnection.getConnection()
             .getDetectedConnectionProperties();
         IAttribute vendorNameAttribute = browserConnection.getRootDSE().getAttribute( "vendorName" ); //$NON-NLS-1$
+        
         if ( ( vendorNameAttribute != null ) && ( vendorNameAttribute.getValueSize() > 0 ) )
         {
             detectedConnectionProperties.setVendorName( vendorNameAttribute.getStringValue() );
         }
+        
         IAttribute vendorVersionAttribute = browserConnection.getRootDSE().getAttribute( "vendorVersion" ); //$NON-NLS-1$
+        
         if ( ( vendorVersionAttribute != null ) && ( vendorVersionAttribute.getValueSize() > 0 ) )
         {
             detectedConnectionProperties.setVendorVersion( vendorVersionAttribute.getStringValue() );
         }
+        
         IAttribute supportedControlAttribute = browserConnection.getRootDSE().getAttribute( "supportedControl" ); //$NON-NLS-1$
+        
         if ( ( supportedControlAttribute != null ) && ( supportedControlAttribute.getValueSize() > 0 ) )
         {
             detectedConnectionProperties.setSupportedControls( Arrays.asList( supportedControlAttribute
                 .getStringValues() ) );
         }
+        
         IAttribute supportedExtensionAttribute = browserConnection.getRootDSE().getAttribute( "supportedExtension" ); //$NON-NLS-1$
+        
         if ( ( supportedExtensionAttribute != null ) && ( supportedExtensionAttribute.getValueSize() > 0 ) )
         {
             detectedConnectionProperties.setSupportedExtensions( Arrays.asList( supportedExtensionAttribute
                 .getStringValues() ) );
         }
+        
         IAttribute supportedFeaturesAttribute = browserConnection.getRootDSE().getAttribute( "supportedFeatures" ); //$NON-NLS-1$
+        
         if ( ( supportedFeaturesAttribute != null ) && ( supportedFeaturesAttribute.getValueSize() > 0 ) )
         {
             detectedConnectionProperties.setSupportedFeatures( Arrays.asList( supportedFeaturesAttribute
                 .getStringValues() ) );
         }
+        
         detectedConnectionProperties
             .setServerType( ServerTypeDetector.detectServerType( browserConnection.getRootDSE() ) );
 
@@ -351,6 +380,7 @@ public class InitializeRootDSERunnable implements StudioConnectionBulkRunnableWi
         SearchRunnable.searchAndUpdateModel( browserConnection, search, monitor );
 
         ISearchResult[] results = search.getSearchResults();
+        
         if ( results != null && results.length == 1 )
         {
             // add entry to Root DSE
@@ -371,9 +401,11 @@ public class InitializeRootDSERunnable implements StudioConnectionBulkRunnableWi
     {
         List<Dn> metadataEntryDnList = new ArrayList<Dn>();
         IAttribute attribute = browserConnection.getRootDSE().getAttribute( metadataAttributeName );
+        
         if ( attribute != null )
         {
             String[] values = attribute.getStringValues();
+            
             for ( String dn : values )
             {
                 if ( dn != null && !"".equals( dn ) ) //$NON-NLS-1$
@@ -390,10 +422,12 @@ public class InitializeRootDSERunnable implements StudioConnectionBulkRunnableWi
         }
 
         IEntry[] metadataEntries = new IEntry[metadataEntryDnList.size()];
+        
         for ( int i = 0; i < metadataEntryDnList.size(); i++ )
         {
             Dn dn = metadataEntryDnList.get( i );
             metadataEntries[i] = browserConnection.getEntryFromCache( dn );
+            
             if ( metadataEntries[i] == null )
             {
                 metadataEntries[i] = new DirectoryMetadataEntry( dn, browserConnection );
@@ -401,6 +435,7 @@ public class InitializeRootDSERunnable implements StudioConnectionBulkRunnableWi
                 browserConnection.cacheEntry( metadataEntries[i] );
             }
         }
+        
         return metadataEntries;
     }
 

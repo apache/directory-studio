@@ -129,7 +129,7 @@ public class Schema
 
     private String modifyTimestamp;
 
-    private Map<String, MutableObjectClass> ocdMapByNameOrNumericOid;
+    private Map<String, ObjectClass> ocdMapByNameOrNumericOid;
 
     private Map<String, AttributeType> atdMapByNameOrNumericOid;
 
@@ -149,7 +149,7 @@ public class Schema
         this.dn = null;
         this.createTimestamp = null;
         this.modifyTimestamp = null;
-        this.ocdMapByNameOrNumericOid = new HashMap<String, MutableObjectClass>();
+        this.ocdMapByNameOrNumericOid = new HashMap<String, ObjectClass>();
         this.atdMapByNameOrNumericOid = new HashMap<String, AttributeType>();
         this.lsdMapByNumericOid = new HashMap<String, LdapSyntax>();
         this.mrdMapByNameOrNumericOid = new HashMap<String, MatchingRule>();
@@ -261,7 +261,7 @@ public class Schema
             {
                 if ( attributeName.equalsIgnoreCase( SchemaConstants.OBJECT_CLASSES_AT ) )
                 {
-                    MutableObjectClass ocd = ocdPparser.parseObjectClassDescription( value );
+                    ObjectClass ocd = ocdPparser.parseObjectClassDescription( value );
                     ocd.addExtension( RAW_SCHEMA_DEFINITION_LDIF_VALUE, ldifValues );
                     addObjectClass( ocd );
                 }
@@ -330,12 +330,15 @@ public class Schema
         }
 
         // set extensibleObject may attributes
-        MutableObjectClass extensibleObjectOcd = this
+        ObjectClass extensibleObjectOcd = this
             .getObjectClassDescription( SchemaConstants.EXTENSIBLE_OBJECT_OC );
-        Collection<AttributeType> userAtds = SchemaUtils.getUserAttributeDescriptions( this );
-        Collection<String> atdNames = SchemaUtils.getNames( userAtds );
-        List<String> atdNames2 = new ArrayList<String>( atdNames );
-        extensibleObjectOcd.setMayAttributeTypeOids( atdNames2 );
+        if ( extensibleObjectOcd instanceof MutableObjectClass )
+        {
+            Collection<AttributeType> userAtds = SchemaUtils.getUserAttributeDescriptions( this );
+            Collection<String> atdNames = SchemaUtils.getNames( userAtds );
+            List<String> atdNames2 = new ArrayList<String>( atdNames );
+            ( ( MutableObjectClass ) extensibleObjectOcd ).setMayAttributeTypeOids( atdNames2 );
+        }
     }
 
 
@@ -449,7 +452,7 @@ public class Schema
      * 
      * @param ocd the object class description
      */
-    private void addObjectClass( MutableObjectClass ocd )
+    private void addObjectClass( ObjectClass ocd )
     {
         if ( ocd.getOid() != null )
         {
@@ -505,7 +508,7 @@ public class Schema
      * 
      * @return the object class description, or the default or a dummy
      */
-    public MutableObjectClass getObjectClassDescription( String nameOrOid )
+    public ObjectClass getObjectClassDescription( String nameOrOid )
     {
         if ( ocdMapByNameOrNumericOid.containsKey( Strings.toLowerCase( nameOrOid ) ) )
         {
@@ -520,7 +523,7 @@ public class Schema
             // DUMMY
             List<String> names = new ArrayList<String>();
             names.add( nameOrOid );
-            MutableObjectClass ocd = new MutableObjectClass( nameOrOid );
+            ObjectClass ocd = new ObjectClass( nameOrOid );
             ocd.setNames( names );
             ocd.setExtensions( DUMMY_EXTENSIONS );
             return ocd;

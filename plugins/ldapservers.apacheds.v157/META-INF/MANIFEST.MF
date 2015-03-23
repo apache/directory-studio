@@ -1,0 +1,34 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Apache Directory Studio ApacheDS 1.5.7 LDAP Server Adapter
+Bundle-Vendor: The Apache Software Foundation
+Bundle-Version: 2.0.0.qualifier
+Bundle-SymbolicName: org.apache.directory.studio.ldapservers.apacheds.v157;singleton:=true
+Bundle-License: http://www.apache.org/licenses/LICENSE-2.0.txt
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-Localization: plugin
+Bundle-Activator: org.apache.directory.studio.ldapservers.apacheds.v157.ApacheDS157Plugin
+Eclipse-LazyStart: true
+Export-Package: org.apache.directory.studio.ldapservers.apacheds.v157
+Require-Bundle: org.eclipse.core.runtime,
+ org.apache.commons.lang;bundle-version="2.6.0",
+ org.apache.mina.core;bundle-version="2.0.7",
+ org.apache.commons.collections;bundle-version="3.2.1",
+ org.apache.commons.io;bundle-version="2.4",
+ org.eclipse.jface.text,
+ org.eclipse.ui,
+ org.eclipse.debug.core,
+ org.eclipse.debug.ui,
+ org.eclipse.core.resources,
+ org.eclipse.core.runtime,
+ org.eclipse.ui.console,
+ org.eclipse.ui.ide,
+ org.eclipse.ui.editors,
+ org.apache.directory.studio.common.core,
+ org.apache.directory.studio.common.ui,
+ org.apache.directory.studio.connection.core,
+ org.apache.directory.studio.connection.ui,
+ org.apache.directory.studio.apacheds.configuration,
+ org.apache.directory.studio.ldapservers,
+ dom4j
+

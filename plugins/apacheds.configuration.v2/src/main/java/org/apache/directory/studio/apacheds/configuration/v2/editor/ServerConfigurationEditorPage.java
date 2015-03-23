@@ -20,6 +20,9 @@
 package org.apache.directory.studio.apacheds.configuration.v2.editor;
 
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+
 import org.apache.directory.server.config.beans.ConfigBean;
 import org.apache.directory.server.config.beans.DirectoryServiceBean;
 import org.apache.directory.studio.apacheds.configuration.v2.actions.EditorExportConfigurationAction;
@@ -43,11 +46,14 @@ import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.events.VerifyEvent;
 import org.eclipse.swt.events.VerifyListener;
 import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.Font;
+import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IEditorInput;
@@ -55,6 +61,7 @@ import org.eclipse.ui.forms.IManagedForm;
 import org.eclipse.ui.forms.editor.FormPage;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.ScrolledForm;
+import org.eclipse.ui.forms.widgets.Section;
 
 
 /**
@@ -64,6 +71,21 @@ import org.eclipse.ui.forms.widgets.ScrolledForm;
  */
 public abstract class ServerConfigurationEditorPage extends FormPage
 {
+    /** The default LDAP port */
+    protected static final int DEFAULT_PORT_LDAP = 10389;
+    
+    /** The default LDAPS port */
+    protected static final int DEFAULT_PORT_LDAPS = 10636;
+    
+    /** The default Kerberos port */
+    protected static final int DEFAULT_PORT_KERBEROS = 60088;
+    
+    /** The default LDAPS port */
+    protected static final int DEFAULT_PORT_CHANGE_PASSWORD = 60464;
+    
+    /** The default IPV4 address for servers */
+    protected static final String DEFAULT_ADDRESS = "0.0.0.0"; //$NON-NLS-1$
+    
     protected static final Color GRAY_COLOR = new Color( null, 120, 120, 120 );
     protected static final String TABULATION = "      "; //$NON-NLS-1$
     
@@ -78,6 +100,8 @@ public abstract class ServerConfigurationEditorPage extends FormPage
             setEditorDirty();
         }
     };
+    
+    
     private SelectionListener dirtySelectionListener = new SelectionAdapter()
     {
         public void widgetSelected( SelectionEvent e )
@@ -85,6 +109,8 @@ public abstract class ServerConfigurationEditorPage extends FormPage
             setEditorDirty();
         }
     };
+    
+    
     private ISelectionChangedListener dirtySelectionChangedListener = new ISelectionChangedListener()
     {
         public void selectionChanged( SelectionChangedEvent event )
@@ -97,8 +123,9 @@ public abstract class ServerConfigurationEditorPage extends FormPage
     /**
      * Creates a new instance of GeneralPage.
      *
-     * @param editor
-     *      the associated editor
+     * @param editor the associated editor
+     * @param id the unique identifier
+     * @param title The page title
      */
     public ServerConfigurationEditorPage( ServerConfigurationEditor editor, String id, String title )
     {
@@ -109,8 +136,7 @@ public abstract class ServerConfigurationEditorPage extends FormPage
     /**
      * Gets the ServerConfigurationEditor object associated with the page.
      *
-     * @return
-     *      the ServerConfigurationEditor object associated with the page
+     * @return the ServerConfigurationEditor object associated with the page
      */
     public ServerConfigurationEditor getServerConfigurationEditor()
     {
@@ -130,28 +156,26 @@ public abstract class ServerConfigurationEditorPage extends FormPage
     /**
      * Gets the configuration bean associated with the editor.
      *
-     * @return
-     *      the configuration bean associated with the editor
+     * @return the configuration bean associated with the editor
      */
     public ConfigBean getConfigBean()
     {
-        ConfigBean configBean = getServerConfigurationEditor().getConfigBean();
+        Configuration configuration = getServerConfigurationEditor().getConfiguration();
 
-        if ( configBean == null )
+        if ( configuration == null )
         {
-            configBean = new ConfigBean();
-            getServerConfigurationEditor().setConfiguration( configBean );
+            configuration = new Configuration( new ConfigBean(), null );
+            getServerConfigurationEditor().setConfiguration( configuration );
         }
 
-        return configBean;
+        return configuration.getConfigBean();
     }
 
 
     /**
      * Gets the directory service associated with the editor.
      *
-     * @return
-     *      the directory service bean associated with the editor
+     * @return the directory service bean associated with the editor
      */
     public DirectoryServiceBean getDirectoryServiceBean()
     {
@@ -217,10 +241,8 @@ public abstract class ServerConfigurationEditorPage extends FormPage
     /**
      * Subclasses must implement this method to create the content of their form.
      *
-     * @param parent
-     *      the parent element
-     * @param toolkit
-     *      the form toolkit
+     * @param parent the parent element
+     * @param toolkit the form toolkit
      */
     protected abstract void createFormContent( Composite parent, FormToolkit toolkit );
 
@@ -229,6 +251,7 @@ public abstract class ServerConfigurationEditorPage extends FormPage
      * Refreshes the UI.
      */
     protected abstract void refreshUI();
+    
     
     /**
      * Indicates if the page is initialized.
@@ -245,12 +268,9 @@ public abstract class ServerConfigurationEditorPage extends FormPage
     /**
      * Creates a Text that can be used to enter a port number.
      *
-     * @param toolkit
-     *      the toolkit
-     * @param parent
-     *      the parent
-     * @return
-     *      a Text that can be used to enter a port number
+     * @param toolkit the toolkit
+     * @param parent the parent
+     * @return a Text that can be used to enter a port number
      */
     protected Text createPortText( FormToolkit toolkit, Composite parent )
     {
@@ -258,16 +278,33 @@ public abstract class ServerConfigurationEditorPage extends FormPage
         GridData gd = new GridData( SWT.NONE, SWT.NONE, false, false );
         gd.widthHint = 42;
         portText.setLayoutData( gd );
+        
         portText.addVerifyListener( new VerifyListener()
         {
             public void verifyText( VerifyEvent e )
             {
-                if ( !e.text.matches( "[0-9]*" ) ) //$NON-NLS-1$
+                // Check that it's a valid port. It should be
+                // any value between 0 and 65535
+                // Skip spaces on both sides
+                char[] port = e.text.trim().toCharArray();
+
+                if ( port.length > 0 )
                 {
-                    e.doit = false;
+                    for ( char c : port )
+                    {
+                        if ( ( c < '0' ) || ( c > '9' ) )
+                        {
+                            // This is an error
+                            e.doit = false;
+                            break;
+                        }
+                    }
                 }
             }
         } );
+        
+        
+        // the port can only have 5 chars max
         portText.setTextLimit( 5 );
 
         return portText;
@@ -275,18 +312,153 @@ public abstract class ServerConfigurationEditorPage extends FormPage
 
 
     /**
+     * Creates a Text that can be used to enter an address. If the address is incorrect, 
+     * it will be in red while typing until it gets correct.
+     *
+     * @param toolkit the toolkit
+     * @param parent the parent
+     * @return a Text that can be used to enter an address
+     */
+    protected Text createAddressText( FormToolkit toolkit, Composite parent )
+    {
+        final Text addressText = toolkit.createText( parent, "" ); //$NON-NLS-1$
+        GridData gd = new GridData( SWT.NONE, SWT.NONE, false, false );
+        gd.widthHint = 200;
+        addressText.setLayoutData( gd );
+        
+        addressText.addModifyListener( new ModifyListener()
+        {
+            Display display = addressText.getDisplay();
+
+            // Check that the address is valid
+            public void modifyText( ModifyEvent e )
+            {
+                Text addressText = (Text)e.widget;
+                String address = addressText.getText();
+                
+                try
+                {
+                    InetAddress.getAllByName( address );
+                    addressText.setForeground( null );
+                }
+                catch ( UnknownHostException uhe )
+                {
+                    addressText.setForeground( display.getSystemColor( SWT.COLOR_RED ) );
+                }
+            }
+        } );
+        
+        // An address can be fairly long...
+        addressText.setTextLimit( 256 );
+
+        return addressText;
+    }
+
+
+    /**
+     * Creates a Text that can be used to enter the number of threads
+     * (which limit is 999)
+     *
+     * @param toolkit the toolkit
+     * @param parent the parent
+     * @return a Text that can be used to enter the number of threads
+     */
+    protected Text createNbThreadsText( FormToolkit toolkit, Composite parent )
+    {
+        Text nbThreadsText = toolkit.createText( parent, "" ); //$NON-NLS-1$
+        GridData gd = new GridData( SWT.NONE, SWT.NONE, false, false );
+        gd.widthHint = 42;
+        nbThreadsText.setLayoutData( gd );
+        
+        nbThreadsText.addVerifyListener( new VerifyListener()
+        {
+            public void verifyText( VerifyEvent e )
+            {
+                // Check that it's a valid number of threads. It should be
+                // any value between 0 and 999
+                // Skip spaces on both sides
+                char[] nbThreads = e.text.trim().toCharArray();
+
+                if ( nbThreads.length > 0 )
+                {
+                    for ( char c : nbThreads )
+                    {
+                        if ( ( c < '0' ) || ( c > '9' ) )
+                        {
+                            // This is an error
+                            e.doit = false;
+                            break;
+                        }
+                    }
+                }
+            }
+        } );
+        
+        
+        // We can't have more than 999 threads
+        nbThreadsText.setTextLimit( 3 );
+
+        return nbThreadsText;
+    }
+
+
+    /**
+     * Creates a Text that can be used to enter the backLog size
+     *
+     * @param toolkit the toolkit
+     * @param parent the parent
+     * @return a Text that can be used to enter the backlog size
+     */
+    protected Text createBackLogSizeText( FormToolkit toolkit, Composite parent )
+    {
+        Text backLogSizetText = toolkit.createText( parent, "" ); //$NON-NLS-1$
+        GridData gd = new GridData( SWT.NONE, SWT.NONE, false, false );
+        gd.widthHint = 42;
+        backLogSizetText.setLayoutData( gd );
+        
+        backLogSizetText.addVerifyListener( new VerifyListener()
+        {
+            public void verifyText( VerifyEvent e )
+            {
+                // Check that it's a valid size. It should be
+                // any value between 0 and 99999
+                // Skip spaces on both sides
+                char[] backlogSize = e.text.trim().toCharArray();
+
+                if ( backlogSize.length > 0 )
+                {
+                    for ( char c : backlogSize )
+                    {
+                        if ( ( c < '0' ) || ( c > '9' ) )
+                        {
+                            // This is an error
+                            e.doit = false;
+                            break;
+                        }
+                    }
+                }
+            }
+        } );
+        
+        
+        // the backlog size can only have 5 chars max
+        backLogSizetText.setTextLimit( 5 );
+
+        return backLogSizetText;
+    }
+
+
+    /**
      * Creates a Text that can be used to enter an integer.
      *
-     * @param toolkit
-     *      the toolkit
-     * @param parent
-     *      the parent
-     * @return
-     *      a Text that can be used to enter a port number
+     * @param toolkit the toolkit
+     * @param parent the parent
+     * @return a Text that can be used to enter a port number
      */
     protected Text createIntegerText( FormToolkit toolkit, Composite parent )
     {
         Text integerText = toolkit.createText( parent, "" ); //$NON-NLS-1$
+        
         integerText.addVerifyListener( new VerifyListener()
         {
             public void verifyText( VerifyEvent e )
@@ -305,14 +477,10 @@ public abstract class ServerConfigurationEditorPage extends FormPage
     /**
      * Creates default value Label.
      *
-     * @param toolkit
-     *      the toolkit
-     * @param parent
-     *      the parent
-     * @param text
-     *      the text string
-     * @return
-     *      a default value Label
+     * @param toolkit the toolkit
+     * @param parent the parent
+     * @param text the text string
+     * @return a default value Label
      */
     protected Label createDefaultValueLabel( FormToolkit toolkit, Composite parent, String text )
     {
@@ -325,12 +493,26 @@ public abstract class ServerConfigurationEditorPage extends FormPage
 
 
     /**
+     * Set some Label to Bold
+     *
+     * @param label the Label we want to see as Bold
+     * @return a Label with bold text
+     */
+    protected Label setBold( Label label )
+    {
+        FontData fontData = label.getFont().getFontData()[0];
+        Font font = new Font( label.getDisplay(), new FontData( fontData.getName(), fontData.getHeight(), SWT.BOLD ) );
+        label.setFont( font );
+
+        return label;
+    }
+
+
+    /**
      * Adds a modify listener to the given Text.
      *
-     * @param text
-     *      the Text control
-     * @param listener
-     *      the listener
+     * @param text the Text control
+     * @param listener the listener
      */
     protected void addModifyListener( Text text, ModifyListener listener )
     {
@@ -344,10 +526,8 @@ public abstract class ServerConfigurationEditorPage extends FormPage
     /**
      * Adds a selection changed listener to the given Viewer.
      *
-     * @param viewer
-     *      the viewer control
-     * @param listener
-     *      the listener
+     * @param viewer the viewer control
+     * @param listener the listener
      */
     protected void addSelectionChangedListener( Viewer viewer, ISelectionChangedListener listener )
     {
@@ -362,10 +542,8 @@ public abstract class ServerConfigurationEditorPage extends FormPage
     /**
      * Adds a double click listener to the given StructuredViewer.
      *
-     * @param viewer
-     *      the viewer control
-     * @param listener
-     *      the listener
+     * @param viewer the viewer control
+     * @param listener the listener
      */
     protected void addDoubleClickListener( StructuredViewer viewer, IDoubleClickListener listener )
     {
@@ -380,10 +558,8 @@ public abstract class ServerConfigurationEditorPage extends FormPage
     /**
      * Adds a selection listener to the given Button.
      *
-     * @param button
-     *      the Button control
-     * @param listener
-     *      the listener
+     * @param button the Button control
+     * @param listener the listener
      */
     protected void addSelectionListener( Button button, SelectionListener listener )
     {
@@ -397,10 +573,8 @@ public abstract class ServerConfigurationEditorPage extends FormPage
     /**
      * Removes a modify listener to the given Text.
      *
-     * @param text
-     *      the Text control
-     * @param listener
-     *      the listener
+     * @param text the Text control
+     * @param listener the listener
      */
     protected void removeModifyListener( Text text, ModifyListener listener )
     {
@@ -414,10 +588,8 @@ public abstract class ServerConfigurationEditorPage extends FormPage
     /**
      * Removes a selection changed listener to the given Viewer.
      *
-     * @param viewer
-     *      the viewer control
-     * @param listener
-     *      the listener
+     * @param viewer the viewer control
+     * @param listener the listener
      */
     protected void removeSelectionChangedListener( Viewer viewer, ISelectionChangedListener listener )
     {
@@ -432,10 +604,8 @@ public abstract class ServerConfigurationEditorPage extends FormPage
     /**
      * Removes a selection changed listener to the given Viewer.
      *
-     * @param viewer
-     *      the viewer control
-     * @param listener
-     *      the listener
+     * @param viewer the viewer control
+     * @param listener the listener
      */
     protected void removeDoubleClickListener( StructuredViewer viewer, IDoubleClickListener listener )
     {
@@ -450,10 +620,8 @@ public abstract class ServerConfigurationEditorPage extends FormPage
     /**
      * Removes a selection listener to the given Button.
      *
-     * @param button
-     *      the Button control
-     * @param listener
-     *      the listener
+     * @param button the Button control
+     * @param listener the listener
      */
     protected void removeSelectionListener( Button button, SelectionListener listener )
     {
@@ -467,8 +635,7 @@ public abstract class ServerConfigurationEditorPage extends FormPage
     /**
      * Adds a 'dirty' listener to the given Text.
      *
-     * @param text
-     *      the Text control
+     * @param text the Text control
      */
     protected void addDirtyListener( Text text )
     {
@@ -479,8 +646,7 @@ public abstract class ServerConfigurationEditorPage extends FormPage
     /**
      * Adds a 'dirty' listener to the given Button.
      *
-     * @param button
-     *      the Button control
+     * @param button the Button control
      */
     protected void addDirtyListener( Button button )
     {
@@ -491,8 +657,7 @@ public abstract class ServerConfigurationEditorPage extends FormPage
     /**
      * Adds a 'dirty' listener to the given Viewer.
      *
-     * @param viewer
-     *      the viewer control
+     * @param viewer the viewer control
      */
     protected void addDirtyListener( Viewer viewer )
     {
@@ -503,8 +668,7 @@ public abstract class ServerConfigurationEditorPage extends FormPage
     /**
      * Removes a 'dirty' listener to the given Text.
      *
-     * @param text
-     *      the Text control
+     * @param text the Text control
      */
     protected void removeDirtyListener( Text text )
     {
@@ -515,8 +679,7 @@ public abstract class ServerConfigurationEditorPage extends FormPage
     /**
      * Removes a 'dirty' listener to the given Button.
      *
-     * @param button
-     *      the Button control
+     * @param button the Button control
      */
     protected void removeDirtyListener( Button button )
     {
@@ -527,8 +690,7 @@ public abstract class ServerConfigurationEditorPage extends FormPage
     /**
      * Removes a 'dirty' listener to the given Viewer.
      *
-     * @param viewer
-     *      the viewer control
+     * @param viewer the viewer control
      */
     protected void removeDirtyListener( Viewer viewer )
     {
@@ -542,10 +704,8 @@ public abstract class ServerConfigurationEditorPage extends FormPage
      * Verifies that the button exists and is not disposed 
      * before applying the new selection state.
      *
-     * @param button
-     *      the button
-     * @param selected
-     *      the new selection state
+     * @param button the button
+     * @param selected the new selection state
      */
     protected void setSelection( Button button, boolean selected )
     {
@@ -562,10 +722,8 @@ public abstract class ServerConfigurationEditorPage extends FormPage
      * Verifies that the viewer exists and is not disposed 
      * before applying the new selection.
      *
-     * @param button
-     *      the button
-     * @param selection
-     *      the new selection
+     * @param button the button
+     * @param selection the new selection
      */
     protected void setSelection( Viewer viewer, Object selection )
     {
@@ -582,10 +740,8 @@ public abstract class ServerConfigurationEditorPage extends FormPage
      * Verifies that the button exists and is not disposed 
      * before applying the new text.
      *
-     * @param text
-     *      the text
-     * @param string
-     *       the new text
+     * @param text the text
+     * @param string the new text
      */
     protected void setText( Text text, String string )
     {
@@ -641,5 +797,32 @@ public abstract class ServerConfigurationEditorPage extends FormPage
     {
         gd.widthHint = 50;
         control.setLayoutData( gd );
+    }
+    
+    
+    /**
+     * A shared method used to create a Section, based on a GridLayout.
+     * 
+     * @param toolkit The Form toolkit
+     * @param parent The parent 
+     * @param title The Section title
+     * @param nbColumns The number of columns for the inner grid
+     * 
+     * @return The created Composite
+     */
+    protected Composite createSection( FormToolkit toolkit, Composite parent, String title, int nbColumns, int style )
+    {
+        Section section = toolkit.createSection( parent, style );
+        section.setText( Messages.getString( title ) );
+        section.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
+        Composite composite = toolkit.createComposite( section );
+        toolkit.paintBordersFor( composite );
+        GridLayout gridLayout = new GridLayout( nbColumns, false );
+        gridLayout.marginHeight = 0;
+        gridLayout.marginWidth = 0;
+        composite.setLayout( gridLayout );
+        section.setClient( composite );
+
+        return composite;
     }
 }

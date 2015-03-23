@@ -21,10 +21,8 @@ package org.apache.directory.studio.apacheds.configuration.v2.editor;
 
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.Enumeration;
 
 import org.apache.directory.server.config.ConfigWriter;
-import org.apache.directory.server.config.beans.ConfigBean;
 import org.apache.directory.studio.apacheds.configuration.v2.ApacheDS2ConfigurationPlugin;
 import org.apache.directory.studio.apacheds.configuration.v2.jobs.LoadConfigurationRunnable;
 import org.apache.directory.studio.apacheds.configuration.v2.jobs.SaveConfigurationRunnable;
@@ -44,7 +42,16 @@ import org.eclipse.ui.forms.editor.FormEditor;
 
 
 /**
- * This class implements the Server Configuration Editor.
+ * This class implements the Server Configuration Editor. This editor expose
+ * 6 pages into a form with 6 tags :
+ * <ul>
+ * <li>Overview : the basic configuration</li>
+ * <li>LDAP/LDAPS : the configuration for the LDAP/S server</li>
+ * <li>Kerberos : the configuration for the Kerberos server</li>
+ * <li>Partitions : The partitions configuration</li>
+ * <li>PasswordPolicy : The password policy configuration</li>
+ * <li>Replication : The replicationconfiguration</li>
+ * </ul> 
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
@@ -56,10 +63,10 @@ public class ServerConfigurationEditor extends FormEditor implements IPageChange
     /** The flag indicating if the editor is dirty */
     private boolean dirty = false;
 
-    /** The configuration bean */
-    private ConfigBean configBean;
+    /** The configuration including bean and underlying parttiton */
+    private Configuration configuration;
 
-    // The pages
+    /** The pages */
     private LoadingPage loadingPage;
     private OverviewPage overviewPage;
     private LdapLdapsServersPage ldapLdapsServersPage;
@@ -67,6 +74,8 @@ public class ServerConfigurationEditor extends FormEditor implements IPageChange
     private PartitionsPage partitionsPage;
     private PasswordPoliciesPage passwordPolicyPage;
     private ReplicationPage replicationPage;
+
+
 
 
     /**
@@ -142,9 +151,11 @@ public class ServerConfigurationEditor extends FormEditor implements IPageChange
     private void showOrHideTabFolder()
     {
         Composite container = getContainer();
+        
         if ( container instanceof CTabFolder )
         {
             CTabFolder folder = ( CTabFolder ) container;
+            
             if ( getPageCount() == 1 )
             {
                 folder.setTabHeight( 0 );
@@ -153,6 +164,7 @@ public class ServerConfigurationEditor extends FormEditor implements IPageChange
             {
                 folder.setTabHeight( -1 );
             }
+            
             folder.layout( true, true );
         }
     }
@@ -209,8 +221,7 @@ public class ServerConfigurationEditor extends FormEditor implements IPageChange
     /**
      * Performs the "Save as..." action.
      *
-     * @param monitor
-     *      the monitor to use
+     * @param monitor the monitor to use
      * @throws Exception
      */
     public boolean doSaveAs( IProgressMonitor monitor ) throws Exception
@@ -220,10 +231,11 @@ public class ServerConfigurationEditor extends FormEditor implements IPageChange
 
         // Saving the configuration as a new file and getting the associated new editor input
         IEditorInput newInput = ServerConfigurationEditorUtils.saveAs( monitor, getSite().getShell(),
-            getEditorInput(), getConfigWriter(), true );
+            getEditorInput(), getConfigWriter(), getConfiguration(), true );
 
         // Checking if the 'save as' is successful 
         boolean success = newInput != null;
+        
         if ( success )
         {
             // Setting the new input to the editor
@@ -281,8 +293,7 @@ public class ServerConfigurationEditor extends FormEditor implements IPageChange
     /**
      * Sets the 'dirty' flag.
      *
-     * @param dirty
-     *      the 'dirty' flag
+     * @param dirty the 'dirty' flag
      */
     public void setDirty( boolean dirty )
     {
@@ -299,38 +310,35 @@ public class ServerConfigurationEditor extends FormEditor implements IPageChange
 
 
     /**
-     * Gets the configuration bean.
+     * Gets the configuration.
      *
-     * @return
-     *      the configuration bean
+     * @return the configuration
      */
-    public ConfigBean getConfigBean()
+    public Configuration getConfiguration()
     {
-        return configBean;
+        return configuration;
     }
 
 
     /**
      * Sets the configuration.
      *
-     * @param configBean
-     *      the configuration bean
+     * @param configuration the configuration
      */
-    public void setConfiguration( ConfigBean configBean )
+    public void setConfiguration( Configuration configuration )
     {
-        this.configBean = configBean;
+        this.configuration = configuration;
     }
 
 
     /**
      * Resets the configuration and refresh the UI.
      *
-     * @param configBean
-     *      the configuration bean
+     * @param configuration the configuration
      */
-    public void resetConfiguration( ConfigBean configBean )
+    public void resetConfiguration( Configuration configuration )
     {
-        setConfiguration( configBean );
+        setConfiguration( configuration );
 
         setDirty( true );
 
@@ -347,12 +355,11 @@ public class ServerConfigurationEditor extends FormEditor implements IPageChange
      * This method is called by the job responsible for loading the 
      * configuration when it has been fully and correctly loaded.
      *
-     * @param configBean
-     *      the loaded configuration bean
+     * @param configuration the configuration
      */
-    public void configurationLoaded( ConfigBean configBean )
+    public void configurationLoaded( Configuration configuration )
     {
-        setConfiguration( configBean );
+        setConfiguration( configuration );
 
         hideLoadingPageAndDisplayConfigPages();
     }
@@ -362,8 +369,7 @@ public class ServerConfigurationEditor extends FormEditor implements IPageChange
      * This method is called by the job responsible for loading the
      * configuration when it failed to load it.
      *
-     * @param exception
-     *      the exception
+     * @param exception the exception
      */
     public void configurationLoadFailed( Exception exception )
     {
@@ -442,21 +448,18 @@ public class ServerConfigurationEditor extends FormEditor implements IPageChange
     /**
      * Set a particular page as active if it is found in the pages vector.
      *
-     * @param pageClass
-     *      the class of the page
+     * @param pageClass the class of the page
      */
-    @SuppressWarnings("rawtypes")
     public void showPage( Class<?> pageClass )
     {
         if ( pageClass != null )
         {
-            Enumeration enumeration = pages.elements();
-            while ( enumeration.hasMoreElements() )
+            for ( Object page : pages )
             {
-                Object page = enumeration.nextElement();
                 if ( pageClass.isInstance( page ) )
                 {
                     setActivePage( pages.indexOf( page ) );
+                    
                     return;
                 }
             }
@@ -467,12 +470,12 @@ public class ServerConfigurationEditor extends FormEditor implements IPageChange
     /**
      * Gets the configuration writer.
      *
-     * @return
-     *      the configuration writer
+     * @return the configuration writer
      * @throws Exception
      */
     public ConfigWriter getConfigWriter() throws Exception
     {
-        return new ConfigWriter( ApacheDS2ConfigurationPlugin.getDefault().getSchemaManager(), configBean );
+        return new ConfigWriter( ApacheDS2ConfigurationPlugin.getDefault().getSchemaManager(),
+            configuration.getConfigBean() );
     }
 }

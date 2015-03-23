@@ -2,7 +2,7 @@
 <feature
       id="org.apache.directory.studio.ldifeditor.feature"
       label="Apache Directory Studio LDIF Editor"
-      version="${pom.version}"
+      version="2.0.0.qualifier"
       provider-name="Apache Software Foundation"
       plugin="org.apache.directory.studio.ldifeditor"
       image="studio.png">
@@ -213,261 +213,261 @@ http://www.apache.org/licenses/
    </requires>
 
    <plugin
-         id="org.antlr.antlr"
+         id="org.apache.servicemix.bundles.antlr"
          download-size="0"
          install-size="0"
-         version="${org.antlr.version}"
+         version="0.0.0"
          unpack="false"/>
 
    <plugin
          id="org.apache.commons.codec"
          download-size="0"
          install-size="0"
-         version="${org.apache.commons.codec.version}"
+         version="0.0.0"
          unpack="false"/>
 
    <plugin
          id="org.apache.commons.collections"
          download-size="0"
          install-size="0"
-         version="${org.apache.commons.collections.version}"
+         version="0.0.0"
          unpack="false"/>
 
    <plugin
          id="org.apache.commons.io"
          download-size="0"
          install-size="0"
-         version="${org.apache.commons.io.version}"
+         version="0.0.0"
          unpack="false"/>
 
    <plugin
          id="org.apache.commons.lang"
          download-size="0"
          install-size="0"
-         version="${org.apache.commons.lang.version}"
+         version="0.0.0"
          unpack="false"/>
 
    <plugin
          id="org.apache.commons.logging"
          download-size="0"
          install-size="0"
-         version="${org.apache.commons.logging.version}"
+         version="0.0.0"
          unpack="false"/>
 
    <plugin
          id="org.apache.commons.pool"
          download-size="0"
          install-size="0"
-         version="${org.apache.commons.pool.version}"
+         version="0.0.0"
          unpack="false"/>
 
    <plugin
          id="org.apache.directory.api.asn1.api"
          download-size="0"
          install-size="0"
-         version="${org.apache.directory.api.validversion}"
+         version="0.0.0"
          unpack="false"/>
 
    <plugin
          id="org.apache.directory.api.asn1.ber"
          download-size="0"
          install-size="0"
-         version="${org.apache.directory.api.validversion}"
+         version="0.0.0"
          unpack="false"/>
 
    <plugin
          id="org.apache.directory.api.dsmlv2.parser"
          download-size="0"
          install-size="0"
-         version="${org.apache.directory.api.validversion}"
+         version="0.0.0"
          unpack="false"/>
 
    <plugin
          id="org.apache.directory.api.i18n"
          download-size="0"
          install-size="0"
-         version="${org.apache.directory.api.validversion}"
+         version="0.0.0"
          unpack="false"/>
 
    <plugin
          id="org.apache.directory.api.ldap.client.api"
          download-size="0"
          install-size="0"
-         version="${org.apache.directory.api.validversion}"
+         version="0.0.0"
          unpack="false"/>
 
    <plugin
          id="org.apache.directory.api.ldap.codec.core"
          download-size="0"
          install-size="0"
-         version="${org.apache.directory.api.validversion}"
+         version="0.0.0"
          unpack="false"/>
 
    <plugin
          id="org.apache.directory.api.ldap.extras.aci"
          download-size="0"
          install-size="0"
-         version="${org.apache.directory.api.validversion}"
+         version="0.0.0"
          unpack="false"/>
 
    <plugin
          id="org.apache.directory.api.ldap.model"
          download-size="0"
          install-size="0"
-         version="${org.apache.directory.api.validversion}"
+         version="0.0.0"
          unpack="false"/>
 
    <plugin
          id="org.apache.directory.api.ldap.net.mina"
          download-size="0"
          install-size="0"
-         version="${org.apache.directory.api.validversion}"
+         version="0.0.0"
          unpack="false"/>
 
    <plugin
          id="org.apache.directory.api.ldap.schema"
          download-size="0"
          install-size="0"
-         version="${org.apache.directory.api.validversion}"
+         version="0.0.0"
          unpack="false"/>
 
    <plugin
          id="org.apache.directory.api.util"
          download-size="0"
          install-size="0"
-         version="${org.apache.directory.api.validversion}"
+         version="0.0.0"
          unpack="false"/>
 
    <plugin
          id="org.apache.directory.studio.aciitemeditor"
          download-size="0"
          install-size="0"
-         version="${pom.version}"
+         version="0.0.0"
          unpack="false"/>
 
    <plugin
          id="org.apache.directory.studio.common.core"
          download-size="0"
          install-size="0"
-         version="${pom.version}"
+         version="0.0.0"
          unpack="false"/>
 
    <plugin
          id="org.apache.directory.studio.common.ui"
          download-size="0"
          install-size="0"
-         version="${pom.version}"
+         version="0.0.0"
          unpack="false"/>
 
    <plugin
          id="org.apache.directory.studio.connection.core"
          download-size="0"
          install-size="0"
-         version="${pom.version}"
+         version="0.0.0"
          unpack="false"/>
 
    <plugin
          id="org.apache.directory.studio.connection.ui"
          download-size="0"
          install-size="0"
-         version="${pom.version}"
+         version="0.0.0"
          unpack="false"/>
 
    <plugin
          id="org.apache.directory.studio.ldapbrowser.common"
          download-size="0"
          install-size="0"
-         version="${pom.version}"
+         version="0.0.0"
          unpack="false"/>
 
    <plugin
          id="org.apache.directory.studio.ldapbrowser.core"
          download-size="0"
          install-size="0"
-         version="${pom.version}"
+         version="0.0.0"
          unpack="false"/>
 
    <plugin
          id="org.apache.directory.studio.ldifeditor"
          download-size="0"
          install-size="0"
-         version="${pom.version}"
+         version="0.0.0"
          unpack="false"/>
 
    <plugin
          id="org.apache.directory.studio.ldifeditor.help"
          download-size="0"
          install-size="0"
-         version="${pom.version}"/>
+         version="0.0.0"/>
 
    <plugin
          id="org.apache.directory.studio.ldifparser"
          download-size="0"
          install-size="0"
-         version="${pom.version}"
+         version="0.0.0"
          unpack="false"/>
 
    <plugin
          id="org.apache.directory.studio.valueeditors"
          download-size="0"
          install-size="0"
-         version="${pom.version}"
+         version="0.0.0"
          unpack="false"/>
 
    <plugin
          id="org.apache.httpcomponents.httpclient"
          download-size="0"
          install-size="0"
-         version="${org.apache.httpcomponents.version}"
+         version="0.0.0"
          unpack="false"/>
 
    <plugin
          id="org.apache.httpcomponents.httpcore"
          download-size="0"
          install-size="0"
-         version="${org.apache.httpcomponents.version}"
+         version="0.0.0"
          unpack="false"/>
 
    <plugin
-         id="org.apache.logging.log4j"
+         id="log4j"
          download-size="0"
          install-size="0"
-         version="${org.apache.logging.log4j.version}"
+         version="0.0.0"
          unpack="false"/>
          
    <plugin
          id="org.apache.mina.core"
          download-size="0"
          install-size="0"
-         version="${org.apache.mina.version}"
+         version="0.0.0"
          unpack="false"/>
          
    <plugin
-         id="org.bouncycastle.bcprov.jdk15"
+         id="bcprov"
          download-size="0"
          install-size="0"
-         version="${org.bouncycastle.bcprov.jdk15.version}"
+         version="0.0.0"
          unpack="false"/>
          
    <plugin
-         id="org.dom4j.dom4j"
+         id="org.apache.servicemix.bundles.dom4j"
          download-size="0"
          install-size="0"
-         version="${org.dom4j.version}"
+         version="0.0.0"
          unpack="false"/>
          
    <plugin
-         id="org.slf4j.api"
+         id="slf4j.api"
          download-size="0"
          install-size="0"
-         version="${org.slf4j.version}"
+         version="0.0.0"
          unpack="false"/>
          
    <plugin
-         id="org.xpp3.xpp3"
+         id="org.apache.servicemix.bundles.xpp3"
          download-size="0"
          install-size="0"
-         version="${org.xpp3.validversion}"
+         version="0.0.0"
          unpack="false"/>
 
 </feature>

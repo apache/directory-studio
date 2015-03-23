@@ -24,6 +24,7 @@ package org.apache.directory.studio.ldapbrowser.common.filtereditor;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.directory.studio.common.ui.CommonUIConstants;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
 import org.apache.directory.studio.ldapbrowser.core.model.filter.LdapFilter;
 import org.apache.directory.studio.ldapbrowser.core.model.filter.parser.LdapFilterParser;
@@ -93,12 +94,12 @@ public class FilterReconcilingStrategy implements IReconcilingStrategy
         {
             AnnotationPainter ap = new AnnotationPainter( sourceViewer, null );
             ap.addAnnotationType( "DEFAULT" ); //$NON-NLS-1$
-            ap.setAnnotationTypeColor( "DEFAULT", BrowserCommonActivator.getDefault().getColor( new RGB( 255, 0, 0 ) ) ); //$NON-NLS-1$
+            ap.setAnnotationTypeColor( "DEFAULT", BrowserCommonActivator.getDefault().getColor( CommonUIConstants.RED ) ); //$NON-NLS-1$
             sourceViewer.getAnnotationModel().addAnnotationModelListener( ap );
 
             FilterCharacterPairMatcher cpm = new FilterCharacterPairMatcher( sourceViewer, parser );
             MatchingCharacterPainter mcp = new MatchingCharacterPainter( sourceViewer, cpm );
-            mcp.setColor( BrowserCommonActivator.getDefault().getColor( new RGB( 159, 159, 159 ) ) );
+            mcp.setColor( BrowserCommonActivator.getDefault().getColor( CommonUIConstants.ML_GREY ) );
 
             paintManager = new PaintManager( sourceViewer );
             paintManager.addPainter( ap );

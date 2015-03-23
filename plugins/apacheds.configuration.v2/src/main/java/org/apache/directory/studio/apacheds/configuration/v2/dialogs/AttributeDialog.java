@@ -110,10 +110,12 @@ public class AttributeDialog extends Dialog
         Composite c = BaseWidgetUtils.createColumnContainer( composite, 2, 1 );
         BaseWidgetUtils.createLabel( c, Messages.getString( "AttributeDialog.AttributeTypeOrOID" ), 1 ); //$NON-NLS-1$
         typeOrOidCombo = BaseWidgetUtils.createCombo( c, attributeTypesAndOids, -1, 1 );
+        
         if ( attribute != null )
         {
             typeOrOidCombo.setText( attribute );
         }
+        
         typeOrOidCombo.addModifyListener( new ModifyListener()
         {
             public void modifyText( ModifyEvent e )

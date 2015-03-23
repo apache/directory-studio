@@ -24,304 +24,70 @@
     <groupId>org.apache.directory.studio</groupId>
     <artifactId>parent-plugins</artifactId>
     <version>2.0.0-SNAPSHOT</version>
+    <relativePath>../</relativePath>
   </parent>
 
-  <artifactId>ldapbrowser.core</artifactId>
+  <artifactId>org.apache.directory.studio.ldapbrowser.core</artifactId>
   <name>Apache Directory Studio LDAP Browser Core</name>
-  <packaging>jar</packaging>
+  <packaging>eclipse-plugin</packaging>
 
   <description />
   
   <build>
-    <resources>
-      <resource>
-        <directory>.</directory>
-        <includes>
-          <include>plugin*.properties</include>
-          <include>plugin.xml</include>
-        </includes>
-      </resource>
-      <resource>
-        <directory>src/main/resources</directory>
-      </resource>
-      <resource>
-        <directory>src/main/java</directory>
-        <includes>
-          <include>**/*.properties</include>
-        </includes>
-      </resource>
-    </resources>
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-eclipse-plugin</artifactId>
-        <configuration>
-          <skip>false</skip>
-          <pde>true</pde>
-          <additionalProjectnatures>
-            <projectnature>org.eclipse.pde.PluginNature</projectnature>
-            <projectnature>org.eclipse.jdt.core.javanature</projectnature>
-          </additionalProjectnatures>
-          <classpathContainers>
-            <classpathContainer>org.eclipse.jdt.launching.JRE_CONTAINER</classpathContainer>
-            <classpathContainer>org.eclipse.jdt.junit.JUNIT_CONTAINER/3.8.1</classpathContainer>
-            <classpathContainer>org.eclipse.pde.core.requiredPlugins</classpathContainer>
-          </classpathContainers>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.directory.studio</groupId>
-        <artifactId>studio-maven-plugin</artifactId>
-        <configuration>
-          <skip>false</skip>
-          <createManifest>true</createManifest>
-        </configuration>
+        <artifactId>maven-dependency-plugin</artifactId>
         <executions>
           <execution>
+            <id>copy-embedded-libs</id>
+            <phase>process-resources</phase>
             <goals>
-              <goal>prepare-jar-package</goal>
+              <goal>copy</goal>
             </goals>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-jar-plugin</artifactId>
-        <configuration>
-          <archive>
-            <manifestFile>META-INF/MANIFEST.MF</manifestFile>
-            <addMavenDescriptor>false</addMavenDescriptor>
-          </archive>
-        </configuration>
-      </plugin>
-      <!-- MANIFEST.MF Generation -->
-      <plugin>
-        <groupId>org.apache.felix</groupId>
-        <artifactId>maven-bundle-plugin</artifactId>
-        <extensions>true</extensions>
-        <configuration>
-          <manifestLocation>META-INF</manifestLocation>
-          <instructions>            
-            <Bundle-SymbolicName>${project.groupId}.${project.artifactId};singleton:=true</Bundle-SymbolicName>
-            <Bundle-Localization>plugin</Bundle-Localization>
-            <Eclipse-LazyStart>true</Eclipse-LazyStart>
-            <Bundle-Activator>org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin</Bundle-Activator>
-            <Require-Bundle>org.apache.commons.codec;bundle-version="${org.apache.commons.codec.version}",
- org.apache.commons.collections;bundle-version="${org.apache.commons.collections.version}",
- org.apache.commons.io;bundle-version="${org.apache.commons.io.version}",
- org.apache.commons.lang;bundle-version="${org.apache.commons.lang.version}",
- org.apache.directory.api.asn1.api;bundle-version="${org.apache.directory.api.validversion}",
- org.apache.directory.api.ldap.model;bundle-version="${org.apache.directory.api.validversion}",
- org.apache.directory.api.ldap.codec.core;bundle-version="${org.apache.directory.api.validversion}",
- org.apache.directory.api.dsmlv2.parser;bundle-version="${org.apache.directory.api.validversion}",
- org.apache.directory.api.util;bundle-version="${org.apache.directory.api.validversion}",
- org.apache.directory.studio.common.core,
- org.apache.directory.studio.connection.core,
- org.apache.directory.studio.ldifparser,
- org.dom4j.dom4j;bundle-version="${org.dom4j.version}",
- org.eclipse.core.runtime,
- org.eclipse.search,
- org.xpp3.xpp3;bundle-version="${org.xpp3.validversion}"</Require-Bundle>
-            <Embed-Dependency>*;scope=compile|runtime</Embed-Dependency>
-            <Embed-Directory>lib</Embed-Directory>
-            <Embed-StripGroup>true</Embed-StripGroup>
-            <Export-Package>org.apache.directory.studio.ldapbrowser.core.*</Export-Package>
-            <Import-Package>!*</Import-Package>
-          </instructions>
-        </configuration>
-        <executions>
-          <execution>
-            <id>generate-manifest</id>
-            <phase>process-classes</phase>
-            <goals>
-              <goal>manifest</goal>
-            </goals>
+            <configuration>
+              <outputDirectory>lib</outputDirectory>
+              <artifactItems>
+                <artifactItem>
+                  <groupId>org.apache.poi</groupId>
+                  <artifactId>poi</artifactId>
+                  <version>3.9</version>
+                </artifactItem>
+              </artifactItems>
+            </configuration>
           </execution>
         </executions>
       </plugin>
     </plugins>
+    
     <pluginManagement>
       <plugins>
+        <!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
         <plugin>
-          <groupId>org.apache.rat</groupId>
-          <artifactId>apache-rat-plugin</artifactId>
+          <groupId>org.eclipse.m2e</groupId>
+          <artifactId>lifecycle-mapping</artifactId>
+          <version>1.0.0</version>
           <configuration>
-            <excludeSubProjects>false</excludeSubProjects>
-            <excludes>
-              <!-- MAVEN_DEFAULT_EXCLUDES -->
-              <exclude>**/target/**/*</exclude>
-              <exclude>**/cobertura.ser</exclude>
-              <!-- ECLIPSE_DEFAULT_EXCLUDES -->
-              <exclude>**/.classpath</exclude>
-              <exclude>**/.project</exclude>
-              <exclude>**/.settings/**/*</exclude>
-              <!-- IDEA_DEFAULT_EXCLUDES -->
-              <exclude>**/*.iml</exclude>
-              <exclude>**/*.ipr</exclude>
-              <exclude>**/*.iws</exclude>
-              <!-- MANIFEST_MF_EXCLUDES -->
-              <exclude>**/MANIFEST.MF</exclude>
-              <!-- Missing license header in dependency reduced pom, see http://jira.codehaus.org/browse/MSHADE-48 -->
-              <exclude>**/dependency-reduced-pom.xml</exclude>
-              <!-- GITIGNORE_EXCLUDES -->
-              <exclude>**/.gitignore</exclude>
-              <!-- ABOUT_EXCLUDES -->
-              <exclude>**/about.ini</exclude>
-              <exclude>**/about_files/*</exclude>
-              <!-- LOG_FILES_EXCLUDES -->
-              <exclude>**/*.log</exclude>
-              <exclude>**/*.vm</exclude>
-              <!-- OTHER_EXCLUDES -->
-              <exclude>src/main/resources/default_schema.ldif</exclude>
-            </excludes>
+            <lifecycleMappingMetadata>
+              <pluginExecutions>
+                <pluginExecution>
+                  <pluginExecutionFilter>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-dependency-plugin</artifactId>
+                    <versionRange>[2.8,)</versionRange>
+                    <goals>
+                      <goal>copy</goal>
+                    </goals>
+                  </pluginExecutionFilter>
+                  <action>
+                    <ignore></ignore>
+                  </action>
+                </pluginExecution>
+              </pluginExecutions>
+            </lifecycleMappingMetadata>
           </configuration>
-         </plugin>
+        </plugin>
       </plugins>
     </pluginManagement>
   </build>
-
-  <dependencies>
-  	<!-- Libraries dependencies -->
-    <dependency>
-      <groupId>org.apache.poi</groupId>
-      <artifactId>poi</artifactId>
-      <exclusions>
-        <exclusion>
-          <groupId>commons-logging</groupId>
-          <artifactId>commons-logging</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>log4j</groupId>
-          <artifactId>log4j</artifactId>
-        </exclusion>
-      </exclusions>
-    </dependency>
-    <dependency>
-      <groupId>org.openoffice</groupId>
-      <artifactId>odfdom</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>xerces</groupId>
-      <artifactId>xercesImpl</artifactId>
-    </dependency>
-    
-    <!-- Apache Directory Studio library plugins dependencies -->
-    <dependency>
-      <groupId>org.apache.directory.api</groupId>
-      <artifactId>api-dsml-parser</artifactId>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.directory.api</groupId>
-      <artifactId>api-asn1-api</artifactId>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.directory.api</groupId>
-      <artifactId>api-ldap-codec-core</artifactId>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.directory.api</groupId>
-      <artifactId>api-ldap-model</artifactId>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.directory.api</groupId>
-      <artifactId>api-util</artifactId>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.directory.studio</groupId>
-      <artifactId>org.apache.commons.codec</artifactId>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.directory.studio</groupId>
-      <artifactId>org.apache.commons.collections</artifactId>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.directory.studio</groupId>
-      <artifactId>org.apache.commons.io</artifactId>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.directory.studio</groupId>
-      <artifactId>org.apache.commons.lang</artifactId>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.directory.studio</groupId>
-      <artifactId>org.dom4j.dom4j</artifactId>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.directory.studio</groupId>
-      <artifactId>org.xpp3.xpp3</artifactId>
-      <scope>provided</scope>
-    </dependency>
-  
-  	<!-- Apache Directory Studio plugins dependencies -->
-    <dependency>
-      <groupId>org.apache.directory.studio</groupId>
-      <artifactId>connection.core</artifactId>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.directory.studio</groupId>
-      <artifactId>common.core</artifactId>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.directory.studio</groupId>
-      <artifactId>ldifparser</artifactId>
-      <scope>provided</scope>
-    </dependency>
-    
-	<!-- Eclipse plugins dependencies -->
-    <dependency>
-      <groupId>org.eclipse</groupId>
-      <artifactId>osgi</artifactId>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.eclipse</groupId>
-      <artifactId>search</artifactId>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.eclipse</groupId>
-      <artifactId>text</artifactId>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.eclipse.core</groupId>
-      <artifactId>jobs</artifactId>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.eclipse.core</groupId>
-      <artifactId>runtime</artifactId>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.eclipse.equinox</groupId>
-      <artifactId>common</artifactId>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.eclipse.equinox</groupId>
-      <artifactId>preferences</artifactId>
-      <scope>provided</scope>
-    </dependency>
-    
-  	<!-- JUnit for test only -->
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <scope>test</scope>
-    </dependency>
-  </dependencies>
-
 </project>

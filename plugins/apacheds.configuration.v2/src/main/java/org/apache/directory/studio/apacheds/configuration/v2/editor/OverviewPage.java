@@ -53,7 +53,36 @@ import org.eclipse.ui.forms.widgets.TableWrapLayout;
 
 /**
  * This class represents the General Page of the Server Configuration Editor.
- *
+ * 
+ * The Overview tab exposes 4 panels, in 2 columns :
+ * 
+ * <pre>
+ * +-------------------------------------------------------------------------------+
+ * | +------------------------------------+ +------------------------------------+ |
+ * | | .--------------------------------. | | +--------------------------------+ | |
+ * | | | LDAP/LDAPS Transport           | | | | Kerberos Server                | | |
+ * | | +--------------------------------| | | +--------------------------------+ | |
+ * | | | [X] Enabled LDAP server        | | | | [X] Enable Kerberos Server     | | |
+ * | | |  Port     : [/////////]        | | | |   Port     : [/////]           | | |
+ * | | | [X] Enabled LDAPS server       | | | | [X] Enable Kerberos ChangePwd  | | |
+ * | | |  Port     : [/////////]        | | | |   Port     : [/////]           | | |
+ * | | | <advanced LDAP/LDAPS config>   | | | | <advanced Kerberos config>     | | |
+ * | | +--------------------------------| | | +--------------------------------+ | |
+ * | | .--------------------------------. | | +--------------------------------+ | |
+ * | | | Partitions                     | | | | Options                        | | |
+ * | | +--------------------------------| | | +--------------------------------+ | |
+ * | | | +----------------------------+ | | | | [X] Allow anonymous access     | | |
+ * | | | | Partition 1                | | | | | [X] Enable Access Control      | | |
+ * | | | | Partition 2                | | | | | [X] Password Hidden            | | |
+ * | | | | ...                        | | | | |                                | | |
+ * | | | +----------------------------+ | | | |                                | | |
+ * | | | <advanced partitionsS config>  | | | |                                | | |
+ * | | +--------------------------------+ | | +--------------------------------+ | |
+ * | +------------------------------------+ +------------------------------------+ |
+ * </pre>
+ * 
+ * We just expose the more frequent parameters in this page.
+ * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public class OverviewPage extends ServerConfigurationEditorPage
@@ -65,57 +94,109 @@ public class OverviewPage extends ServerConfigurationEditorPage
     private static final String TITLE = Messages.getString( "OverviewPage.Overview" ); //$NON-NLS-1$
 
     // UI Controls
+    /** LDAP Server controls */
     private Button enableLdapCheckbox;
     private Text ldapPortText;
     private Button enableLdapsCheckbox;
     private Text ldapsPortText;
+    // This link opens the advanced LDAP/LDAPS configuration tab 
     private Hyperlink openLdapConfigurationLink;
+    
+    /** Kerberos Server controls */
     private Button enableKerberosCheckbox;
     private Text kerberosPortText;
     private Button enableChangePasswordCheckbox;
     private Text changePasswordPortText;
+    // This link opens the advanced kerberos configuration tab 
     private Hyperlink openKerberosConfigurationLink;
+    
+    /** The Partitions controls */
     private Label partitionsLabel;
     private TableViewer partitionsTableViewer;
+    // This link open the advanced partitions configuration Tab */
     private Hyperlink openPartitionsConfigurationLink;
+
+    /** The LDAP Options controls */
     private Button allowAnonymousAccessCheckbox;
     private Button enableAccessControlCheckbox;
+    private Button enableHiddenPasswordCheckbox;
 
     // UI Control Listeners
+    /**
+     * The LDAP transport checkbox selection adapter.
+     */
     private SelectionAdapter enableLdapCheckboxListener = new SelectionAdapter()
     {
         public void widgetSelected( SelectionEvent e )
         {
+            boolean enableLdap = enableLdapCheckbox.getSelection();
             LdapLdapsServersPage.getLdapServerTransportBean( getDirectoryServiceBean() ).setEnabled(
-                enableLdapCheckbox.getSelection() );
-            setEnabled( ldapPortText, enableLdapCheckbox.getSelection() );
+                enableLdap );
+            setEnabled( ldapPortText, enableLdap );
         }
     };
+
+    
+    /**
+     * The Ldap port modify listener
+     */
     private ModifyListener ldapPortTextListener = new ModifyListener()
     {
         public void modifyText( ModifyEvent e )
         {
-            LdapLdapsServersPage.getLdapServerTransportBean( getDirectoryServiceBean() ).setSystemPort(
-                Integer.parseInt( ldapPortText.getText() ) );
+            try
+            {
+                int port = Integer.parseInt( ldapPortText.getText() );
+                
+                LdapLdapsServersPage.getLdapServerTransportBean( getDirectoryServiceBean() ).setSystemPort( port );
+            }
+            catch ( NumberFormatException nfe )
+            {
+                System.out.println( "Wrong LDAP TCP Port : it must be an integer" );
+            }
         }
     };
+    
+    
+    /**
+     * The LDAPS transport checkbox selection adapter
+     */
     private SelectionAdapter enableLdapsCheckboxListener = new SelectionAdapter()
     {
         public void widgetSelected( SelectionEvent e )
         {
-            LdapLdapsServersPage.getLdapsServerTransportBean( getDirectoryServiceBean() ).setEnabled(
-                enableLdapsCheckbox.getSelection() );
-            setEnabled( ldapsPortText, enableLdapsCheckbox.getSelection() );
+            boolean enableLdaps = enableLdapsCheckbox.getSelection();
+            LdapLdapsServersPage.getLdapTransportBean( getDirectoryServiceBean(), LdapLdapsServersPage.TRANSPORT_ID_LDAPS ).setEnabled(
+                enableLdaps );
+            setEnabled( ldapsPortText, enableLdaps );
         }
     };
+
+    
+    /**
+     * The Ldaps port modify listener
+     */
     private ModifyListener ldapsPortTextListener = new ModifyListener()
     {
         public void modifyText( ModifyEvent e )
         {
-            LdapLdapsServersPage.getLdapsServerTransportBean( getDirectoryServiceBean() ).setSystemPort(
-                Integer.parseInt( ldapsPortText.getText() ) );
+            try
+            {
+                int port = Integer.parseInt( ldapsPortText.getText() );
+                
+                LdapLdapsServersPage.getLdapsServerTransportBean( getDirectoryServiceBean() ).setSystemPort( port );
+            }
+            catch ( NumberFormatException nfe )
+            {
+                System.out.println( "Wrong LDAPS TCP Port : it must be an integer" );
+            }
         }
     };
+
+    
+    /**
+     * The advanced LDAP/LDAPS configuration hyper link adapter
+     */
     private HyperlinkAdapter openLdapConfigurationLinkListener = new HyperlinkAdapter()
     {
         public void linkActivated( HyperlinkEvent e )
@@ -123,42 +204,86 @@ public class OverviewPage extends ServerConfigurationEditorPage
             getServerConfigurationEditor().showPage( LdapLdapsServersPage.class );
         }
     };
+    
+    
+    /**
+     * The Kerberos server selection adpater
+     */
     private SelectionAdapter enableKerberosCheckboxListener = new SelectionAdapter()
     {
         public void widgetSelected( SelectionEvent e )
         {
-            KerberosServerPage.enableKerberosServer( getDirectoryServiceBean(), enableKerberosCheckbox.getSelection() );
-            setEnabled( kerberosPortText, enableKerberosCheckbox.getSelection() );
+            boolean enableKerberos = enableKerberosCheckbox.getSelection();
+            KerberosServerPage.enableKerberosServer( getDirectoryServiceBean(), enableKerberos );
+            setEnabled( kerberosPortText, enableKerberos );
         }
     };
+    
+    
+    /**
+     * The Kerberos port listener
+     */
     private ModifyListener kerberosPortTextListener = new ModifyListener()
     {
         public void modifyText( ModifyEvent e )
         {
-            KdcServerBean kdcServerBean = getConfigBean().getDirectoryServiceBean().getKdcServerBean();
-            kdcServerBean.getTransports()[0].setSystemPort( Integer.parseInt( kerberosPortText.getText() ) );
+            KdcServerBean kdcServerBean = getDirectoryServiceBean().getKdcServerBean();
+
+            try
+            {
+                int port = Integer.parseInt( kerberosPortText.getText() );
+                
+                kdcServerBean.getTransports()[0].setSystemPort( port );
+            }
+            catch ( NumberFormatException nfe )
+            {
+                System.out.println( "Wrong Kerberos TCP/UDP Port : it must be an integer" );
+            }
         }
     };
+    
+    
+    /**
+     * The ChangePassword server selection adapter 
+     */
     private SelectionAdapter enableChangePasswordCheckboxListener = new SelectionAdapter()
     {
         public void widgetSelected( SelectionEvent e )
         {
-            ChangePasswordServerBean changePasswordServerBean = getConfigBean().getDirectoryServiceBean()
-                .getChangePasswordServerBean();
-            changePasswordServerBean.setEnabled( enableChangePasswordCheckbox.getSelection() );
-            setEnabled( changePasswordPortText, enableChangePasswordCheckbox.getSelection() );
+            ChangePasswordServerBean changePasswordServerBean = getDirectoryServiceBean().getChangePasswordServerBean();
+            boolean enableChangePassword = enableChangePasswordCheckbox.getSelection();
+            changePasswordServerBean.setEnabled( enableChangePassword );
+            setEnabled( changePasswordPortText, enableChangePassword );
         }
     };
+    
+    
+    /**
+     * The ChangePassword server port listener
+     */
     private ModifyListener changePasswordPortTextListener = new ModifyListener()
     {
         public void modifyText( ModifyEvent e )
         {
-            ChangePasswordServerBean changePasswordServerBean = getConfigBean().getDirectoryServiceBean()
-                .getChangePasswordServerBean();
-            changePasswordServerBean.getTransports()[0].setSystemPort( Integer.parseInt( changePasswordPortText
-                .getText() ) );
+            ChangePasswordServerBean changePasswordServerBean = getDirectoryServiceBean().getChangePasswordServerBean();
+
+            try
+            {
+                int port = Integer.parseInt( changePasswordPortText.getText() );
+                
+                changePasswordServerBean.getTransports()[0].setSystemPort( port );
+            }
+            catch ( NumberFormatException nfe )
+            {
+                System.out.println( "Wrong ChnagePassword Port : it must be an integer" );
+            }
         }
     };
+    
+    
+    /**
+     * The advanced Kerberos configuration hyperlink
+     */
     private HyperlinkAdapter openKerberosConfigurationLinkListener = new HyperlinkAdapter()
     {
         public void linkActivated( HyperlinkEvent e )
@@ -166,6 +291,11 @@ public class OverviewPage extends ServerConfigurationEditorPage
             getServerConfigurationEditor().showPage( KerberosServerPage.class );
         }
     };
+    
+    
+    /**
+     * The advanced Partition configuration hyperlink
+     */
     private HyperlinkAdapter openPartitionsConfigurationLinkListener = new HyperlinkAdapter()
     {
         public void linkActivated( HyperlinkEvent e )
@@ -173,20 +303,40 @@ public class OverviewPage extends ServerConfigurationEditorPage
             getServerConfigurationEditor().showPage( PartitionsPage.class );
         }
     };
+    
+    
+    /**
+     * The AllowAnonymousAccess checkbox listener
+     */
     private SelectionAdapter allowAnonymousAccessCheckboxListener = new SelectionAdapter()
     {
         public void widgetSelected( SelectionEvent e )
         {
-            DirectoryServiceBean directoryServiceBean = getConfigBean().getDirectoryServiceBean();
-            directoryServiceBean.setDsAllowAnonymousAccess( allowAnonymousAccessCheckbox.getSelection() );
+            getDirectoryServiceBean().setDsAllowAnonymousAccess( allowAnonymousAccessCheckbox.getSelection() );
         }
     };
+    
+    
+    /**
+     * The AccessControl checkbox listener
+     */
     private SelectionAdapter enableAccessControlCheckboxListener = new SelectionAdapter()
     {
         public void widgetSelected( SelectionEvent e )
         {
-            DirectoryServiceBean directoryServiceBean = getConfigBean().getDirectoryServiceBean();
-            directoryServiceBean.setDsAccessControlEnabled( enableAccessControlCheckbox.getSelection() );
+            getDirectoryServiceBean().setDsAccessControlEnabled( enableAccessControlCheckbox.getSelection() );
+        }
+    };
+    
+    
+    /**
+     * The HiddenPassword checkbox listener
+     */
+    private SelectionAdapter enableHiddenPasswordCheckboxListener = new SelectionAdapter()
+    {
+        public void widgetSelected( SelectionEvent e )
+        {
+            getDirectoryServiceBean().setDsPasswordHidden( enableHiddenPasswordCheckbox.getSelection() );
         }
     };
 
@@ -194,8 +344,7 @@ public class OverviewPage extends ServerConfigurationEditorPage
     /**
      * Creates a new instance of GeneralPage.
      *
-     * @param editor
-     *      the associated editor
+     * @param editor the associated editor
      */
     public OverviewPage( ServerConfigurationEditor editor )
     {
@@ -204,7 +353,23 @@ public class OverviewPage extends ServerConfigurationEditorPage
 
 
     /**
-     * {@inheritDoc}
+     * Creates the global Overview Tab. It contains 2 columns, each one of
+     * them having two sections :
+     * 
+     * <pre>
+     * +-----------------------------------+---------------------------------+
+     * |                                   |                                 |
+     * | LDAP/LDAPS configuration section  | Kerberos/ChangePassword section |
+     * |                                   |                                 |
+     * +-----------------------------------+---------------------------------+
+     * |                                   |                                 |
+     * | Partition section                 | Options configuration section   |
+     * |                                   |                                 |
+     * +-----------------------------------+---------------------------------+
+     * </pre>
+     * 
+     * @param parent the parent element
+     * @param toolkit the form toolkit
      */
     protected void createFormContent( Composite parent, FormToolkit toolkit )
     {
@@ -238,7 +403,22 @@ public class OverviewPage extends ServerConfigurationEditorPage
 
 
     /**
-     * Creates the LDAP and LDAPS Servers section.
+     * Creates the LDAP and LDAPS Servers section. This section is a grid with 4 columns,
+     * where we configure LDAPa and LDAPS servers.
+     * We can enable or disable those servers, and if they are enabled, we can configure
+     * the port.
+     * 
+     * <pre>
+     * .--------------------------------.
+     * | LDAP/LDAPS Transport           |
+     * +--------------------------------|
+     * | [X] Enabled LDAP server        |
+     * |  Port     : [/////////]        |
+     * | [X] Enabled LDAPS server       |
+     * |  Port     : [/////////]        |
+     * | <advanced LDAP/LDAPS config>   |
+     * +--------------------------------|
+     * </pre>
      *
      * @param toolkit the toolkit
      * @param parent the parent composite
@@ -246,49 +426,53 @@ public class OverviewPage extends ServerConfigurationEditorPage
     private void createLdapLdapsServersSection( FormToolkit toolkit, Composite parent )
     {
         // Creation of the section
-        Section section = toolkit.createSection( parent, Section.TITLE_BAR );
-        section.setText( Messages.getString( "OverviewPage.LdapLdapsServers" ) ); //$NON-NLS-1$
-        section.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
-        Composite composite = toolkit.createComposite( section );
-        toolkit.paintBordersFor( composite );
-        GridLayout gridLayout = new GridLayout( 4, false );
-        gridLayout.marginHeight = gridLayout.marginWidth = 0;
-        composite.setLayout( gridLayout );
-        section.setClient( composite );
+        int nbColumns = 4;
+        Composite composite = createSection( toolkit, parent, "OverviewPage.LdapLdapsServers", nbColumns, Section.TITLE_BAR );
 
         // Enable LDAP Server Checkbox
         enableLdapCheckbox = toolkit.createButton( composite,
             Messages.getString( "OverviewPage.EnableLdapServer" ), SWT.CHECK ); //$NON-NLS-1$
-        enableLdapCheckbox.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, gridLayout.numColumns, 1 ) );
+        enableLdapCheckbox.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, nbColumns, 1 ) );
 
         // LDAP Server Port Text
         toolkit.createLabel( composite, TABULATION );
         toolkit.createLabel( composite, Messages.getString( "OverviewPage.Port" ) ); //$NON-NLS-1$
         ldapPortText = createPortText( toolkit, composite );
-        createDefaultValueLabel( toolkit, composite, "10389" ); //$NON-NLS-1$
+        createDefaultValueLabel( toolkit, composite, Integer.toString( DEFAULT_PORT_LDAP ) ); //$NON-NLS-1$
 
         // Enable LDAPS Server Checkbox
         enableLdapsCheckbox = toolkit.createButton( composite,
             Messages.getString( "OverviewPage.EnableLdapsServer" ), SWT.CHECK ); //$NON-NLS-1$
-        enableLdapsCheckbox.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, gridLayout.numColumns, 1 ) );
+        enableLdapsCheckbox.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, nbColumns, 1 ) );
 
         // LDAPS Server Port Text
         toolkit.createLabel( composite, TABULATION );
         toolkit.createLabel( composite, Messages.getString( "OverviewPage.Port" ) ); //$NON-NLS-1$
         ldapsPortText = createPortText( toolkit, composite );
-        createDefaultValueLabel( toolkit, composite, "10636" ); //$NON-NLS-1$
+        createDefaultValueLabel( toolkit, composite, Integer.toString( DEFAULT_PORT_LDAPS ) ); //$NON-NLS-1$
 
         // LDAP Configuration Link
         openLdapConfigurationLink = toolkit.createHyperlink( composite,
             Messages.getString( "OverviewPage.AdvancedLdapLdapsConfiguration" ), SWT.NONE ); //$NON-NLS-1$
-        openLdapConfigurationLink.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false,
-            gridLayout.numColumns, 1 ) );
+        openLdapConfigurationLink.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, nbColumns, 1 ) );
         openLdapConfigurationLink.addHyperlinkListener( openLdapConfigurationLinkListener );
     }
 
 
     /**
-     * Creates the Kerberos and Change Password Servers section.
+     * Creates the Kerberos and Change Password Servers section. As for the LDAP/LDAPS
+     * server, we can configure the Kerberos and ChangePassword ports if they are enabled.
+     * <pre>
+     * +--------------------------------+
+     * | Kerberos Server                |
+     * +--------------------------------+
+     * | [X] Enable Kerberos Server     |
+     * |   Port     : [/////]           |
+     * | [X] Enable Kerberos ChangePwd  |
+     * |   Port     : [/////]           |
+     * | <advanced Kerberos config>     |
+     * +--------------------------------+
+     * </pre>
      *
      * @param toolkit the toolkit
      * @param parent the parent composite
@@ -296,52 +480,59 @@ public class OverviewPage extends ServerConfigurationEditorPage
     private void createKerberosChangePasswordServersSection( FormToolkit toolkit, Composite parent )
     {
         // Creation of the section
-        Section section = toolkit.createSection( parent, Section.TITLE_BAR );
-        section.setText( Messages.getString( "OverviewPage.KerberosServer" ) ); //$NON-NLS-1$
-        section.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
-        Composite composite = toolkit.createComposite( section );
-        toolkit.paintBordersFor( composite );
-        GridLayout gridLayout = new GridLayout( 4, false );
-        gridLayout.marginHeight = gridLayout.marginWidth = 0;
-        composite.setLayout( gridLayout );
-        section.setClient( composite );
+        int nbColumns = 4;
+        Composite composite = createSection( toolkit, parent, "OverviewPage.KerberosServer", nbColumns, Section.TITLE_BAR );
 
         // Enable Kerberos Server Checkbox
         enableKerberosCheckbox = toolkit.createButton( composite,
             Messages.getString( "OverviewPage.EnableKerberosServer" ), SWT.CHECK ); //$NON-NLS-1$
         enableKerberosCheckbox
-            .setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, gridLayout.numColumns, 1 ) );
+            .setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, nbColumns, 1 ) );
 
         // Kerberos Server Port Text
         toolkit.createLabel( composite, TABULATION );
         toolkit.createLabel( composite, Messages.getString( "OverviewPage.Port" ) ); //$NON-NLS-1$
         kerberosPortText = createPortText( toolkit, composite );
-        createDefaultValueLabel( toolkit, composite, "60088" ); //$NON-NLS-1$
+        createDefaultValueLabel( toolkit, composite, Integer.toString( DEFAULT_PORT_KERBEROS ) ); //$NON-NLS-1$
 
         // Enable Change Password Server Checkbox
         enableChangePasswordCheckbox = toolkit.createButton( composite,
             Messages.getString( "OverviewPage.EnableKerberosChangePasswordServer" ), //$NON-NLS-1$
             SWT.CHECK );
         enableChangePasswordCheckbox.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false,
-            gridLayout.numColumns, 1 ) );
+            nbColumns, 1 ) );
 
         // Change Password Server Port Text
         toolkit.createLabel( composite, TABULATION );
         toolkit.createLabel( composite, Messages.getString( "OverviewPage.Port" ) ); //$NON-NLS-1$
         changePasswordPortText = createPortText( toolkit, composite );
-        createDefaultValueLabel( toolkit, composite, "60464" ); //$NON-NLS-1$
+        createDefaultValueLabel( toolkit, composite, Integer.toString( DEFAULT_PORT_CHANGE_PASSWORD ) ); //$NON-NLS-1$
 
         // Kerberos Configuration Link
         openKerberosConfigurationLink = toolkit.createHyperlink( composite,
             Messages.getString( "OverviewPage.AdvancedKerberosConfiguration" ), SWT.NONE ); //$NON-NLS-1$
         openKerberosConfigurationLink.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false,
-            gridLayout.numColumns, 1 ) );
+            nbColumns, 1 ) );
         openKerberosConfigurationLink.addHyperlinkListener( openKerberosConfigurationLinkListener );
     }
 
 
     /**
-     * Creates the Partitions section.
+     * Creates the Partitions section. This is just an informative section, 
+     * where we list the existing partitions.
+     * 
+     * <pre>
+     * .--------------------------------.
+     * | Partitions                     |
+     * +--------------------------------|
+     * | +----------------------------+ |
+     * | | Partition 1                | |
+     * | | Partition 2                | |
+     * | | ...                        | |
+     * | +----------------------------+ |
+     * | <advanced partitionsS config>  |
+     * +--------------------------------+
+     * </pre>
      *
      * @param toolkit the toolkit
      * @param parent the parent composite
@@ -349,15 +540,8 @@ public class OverviewPage extends ServerConfigurationEditorPage
     private void createPartitionsSection( FormToolkit toolkit, Composite parent )
     {
         // Creation of the section
-        Section section = toolkit.createSection( parent, Section.TITLE_BAR );
-        section.setText( Messages.getString( "OverviewPage.Partitions" ) ); //$NON-NLS-1$
-        section.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
-        Composite composite = toolkit.createComposite( section );
-        toolkit.paintBordersFor( composite );
-        GridLayout gridLayout = new GridLayout( 1, false );
-        gridLayout.marginHeight = gridLayout.marginWidth = 0;
-        composite.setLayout( gridLayout );
-        section.setClient( composite );
+        int nbColumns = 1;
+        Composite composite = createSection( toolkit, parent, "OverviewPage.Partitions", nbColumns, Section.TITLE_BAR );
 
         // Partitions Label
         partitionsLabel = toolkit.createLabel( composite, "" ); //$NON-NLS-1$
@@ -376,14 +560,24 @@ public class OverviewPage extends ServerConfigurationEditorPage
         // Partitions Configuration Link
         openPartitionsConfigurationLink = toolkit.createHyperlink( composite,
             Messages.getString( "OverviewPage.AdvancedPartitionsConfiguration" ), SWT.NONE ); //$NON-NLS-1$
-        openPartitionsConfigurationLink.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false,
-            gridLayout.numColumns, 1 ) );
+        openPartitionsConfigurationLink.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, nbColumns, 1 ) );
         openPartitionsConfigurationLink.addHyperlinkListener( openPartitionsConfigurationLinkListener );
     }
 
 
     /**
-     * Creates the Options section.
+     * Creates the Options section. This section expose a few critical options that are
+     * generally useful (allow anonymous, or enable control access atm).
+     * 
+     * <pre>
+     * +--------------------------------+
+     * | Options                        |
+     * +--------------------------------+
+     * | [X] Allow anonymous access     |
+     * | [X] Enable Access Control      |
+     * |                                |
+     * +--------------------------------+
+     * </pre>
      *
      * @param toolkit the toolkit
      * @param parent the parent composite
@@ -391,15 +585,8 @@ public class OverviewPage extends ServerConfigurationEditorPage
     private void createOptionsSection( FormToolkit toolkit, Composite parent )
     {
         // Creation of the section
-        Section section = toolkit.createSection( parent, Section.TITLE_BAR );
-        section.setText( Messages.getString( "OverviewPage.Options" ) ); //$NON-NLS-1$
-        section.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
-        Composite composite = toolkit.createComposite( section );
-        toolkit.paintBordersFor( composite );
-        GridLayout gridLayout = new GridLayout( 1, false );
-        gridLayout.marginHeight = gridLayout.marginWidth = 0;
-        composite.setLayout( gridLayout );
-        section.setClient( composite );
+        int nbColumns = 1;
+        Composite composite = createSection( toolkit, parent, "OverviewPage.Options", nbColumns, Section.TITLE_BAR );
 
         // Allow Anonymous Access Checkbox
         allowAnonymousAccessCheckbox = toolkit.createButton( composite,
@@ -410,6 +597,11 @@ public class OverviewPage extends ServerConfigurationEditorPage
         enableAccessControlCheckbox = toolkit.createButton( composite,
             Messages.getString( "OverviewPage.EnableAccessControl" ), SWT.CHECK ); //$NON-NLS-1$
         enableAccessControlCheckbox.setLayoutData( new GridData( SWT.NONE, SWT.NONE, true, false ) );
+
+        // Enable Hidden Password Checkbox
+        enableHiddenPasswordCheckbox = toolkit.createButton( composite,
+            Messages.getString( "OverviewPage.EnableHiddenPassword" ), SWT.CHECK ); //$NON-NLS-1$
+        enableHiddenPasswordCheckbox.setLayoutData( new GridData( SWT.NONE, SWT.NONE, true, false ) );
     }
 
 
@@ -457,6 +649,10 @@ public class OverviewPage extends ServerConfigurationEditorPage
         // Enable Access Control Checkbox
         addDirtyListener( enableAccessControlCheckbox );
         addSelectionListener( enableAccessControlCheckbox, enableAccessControlCheckboxListener );
+
+        // Enable Hidden Password Checkbox
+        addDirtyListener( enableHiddenPasswordCheckbox );
+        addSelectionListener( enableHiddenPasswordCheckbox, enableHiddenPasswordCheckboxListener );
     }
 
 
@@ -504,6 +700,10 @@ public class OverviewPage extends ServerConfigurationEditorPage
         // Enable Access Control Checkbox
         removeDirtyListener( enableAccessControlCheckbox );
         removeSelectionListener( enableAccessControlCheckbox, enableAccessControlCheckboxListener );
+
+        // Enable Hidden Password Checkbox
+        removeDirtyListener( enableHiddenPasswordCheckbox );
+        removeSelectionListener( enableHiddenPasswordCheckbox, enableHiddenPasswordCheckboxListener );
     }
 
 
@@ -523,14 +723,14 @@ public class OverviewPage extends ServerConfigurationEditorPage
                 .getLdapServerTransportBean( directoryServiceBean );
             setSelection( enableLdapCheckbox, ldapServerTransportBean.isEnabled() );
             setEnabled( ldapPortText, enableLdapCheckbox.getSelection() );
-            setText( ldapPortText, ldapServerTransportBean.getSystemPort() + "" ); //$NON-NLS-1$
+            setText( ldapPortText, Integer.toString( ldapServerTransportBean.getSystemPort() ) );
 
             // LDAPS Server
             TransportBean ldapsServerTransportBean = LdapLdapsServersPage
                 .getLdapsServerTransportBean( directoryServiceBean );
             setSelection( enableLdapsCheckbox, ldapsServerTransportBean.isEnabled() );
             setEnabled( ldapsPortText, enableLdapsCheckbox.getSelection() );
-            setText( ldapsPortText, ldapsServerTransportBean.getSystemPort() + "" ); //$NON-NLS-1$
+            setText( ldapsPortText, Integer.toString( ldapsServerTransportBean.getSystemPort() ) );
 
             // Kerberos Server
             KdcServerBean kdcServerBean = KerberosServerPage.getKdcServerBean( directoryServiceBean );
@@ -547,6 +747,7 @@ public class OverviewPage extends ServerConfigurationEditorPage
 
             // Partitions
             List<PartitionBean> partitions = directoryServiceBean.getPartitions();
+            
             if ( partitions.size() == 1 )
             {
                 partitionsLabel.setText( Messages.getString( "OverviewPage.ThereIsOnePartitionDefined" ) ); //$NON-NLS-1$
@@ -556,11 +757,13 @@ public class OverviewPage extends ServerConfigurationEditorPage
                 partitionsLabel.setText( NLS.bind(
                     Messages.getString( "OverviewPage.ThereAreXPartitionsDefined" ), partitions.size() ) ); //$NON-NLS-1$
             }
+            
             partitionsTableViewer.setInput( partitions.toArray() );
 
             // Options
             allowAnonymousAccessCheckbox.setSelection( directoryServiceBean.isDsAllowAnonymousAccess() );
             enableAccessControlCheckbox.setSelection( directoryServiceBean.isDsAccessControlEnabled() );
+            enableHiddenPasswordCheckbox.setSelection( directoryServiceBean.isDsPasswordHidden() );
 
             addListeners();
         }

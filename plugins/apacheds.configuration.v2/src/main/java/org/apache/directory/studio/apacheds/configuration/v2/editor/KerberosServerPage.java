@@ -79,56 +79,132 @@ public class KerberosServerPage extends ServerConfigurationEditorPage
     };
 
     // UI Controls
+    // The Kerberos transport
     private Button enableKerberosCheckbox;
     private Text kerberosPortText;
+    private Text kerberosAddressText;
+    
+    // The ChangePassword transport
     private Button enableChangePasswordCheckbox;
     private Text changePasswordPortText;
+    private Text changePasswordAddressText;
+    
+    // The basic Kerberos settings
     private Text primaryKdcRealmText;
     private Text kdcSearchBaseDnText;
     private CheckboxTableViewer encryptionTypesTableViewer;
+    
+    // The kerberos Tickets settings
     private Button verifyBodyChecksumCheckbox;
     private Button allowEmptyAddressesCheckbox;
     private Button allowForwardableAddressesCheckbox;
     private Button requirePreAuthByEncryptedTimestampCheckbox;
     private Button allowPostdatedTicketsCheckbox;
     private Button allowRenewableTicketsCheckbox;
+    private Button allowProxiableTicketsCheckbox;
     private Text maximumRenewableLifetimeText;
     private Text maximumTicketLifetimeText;
     private Text allowableClockSkewText;
 
     // UI Controls Listeners
+    /**
+     * The Kerberos checkbox listener
+     */
     private SelectionAdapter enableKerberosCheckboxListener = new SelectionAdapter()
     {
         public void widgetSelected( SelectionEvent e )
         {
-            enableKerberosServer( getDirectoryServiceBean(), enableKerberosCheckbox.getSelection() );
+            boolean enabled = enableKerberosCheckbox.getSelection();
+            enableKerberosServer( getDirectoryServiceBean(), enabled );
 
-            setEnabled( kerberosPortText, enableKerberosCheckbox.getSelection() );
+            setEnabled( kerberosPortText, enabled );
+            setEnabled( kerberosAddressText, enabled );
         }
     };
+
+    
+    /**
+     * The Kerberos port listener
+     */
     private ModifyListener kerberosPortTextListener = new ModifyListener()
     {
         public void modifyText( ModifyEvent e )
         {
-            getKdcServerTransportBean().setSystemPort( Integer.parseInt( kerberosPortText.getText() ) );
+            try
+            {
+                int port = Integer.parseInt( kerberosPortText.getText() );
+                
+                getKdcServerTransportBean().setSystemPort( port );
+            }
+            catch ( NumberFormatException nfe )
+            {
+                System.out.println( "Wrong KDC TCP/UDP Port : it must be an integer" );
+            }
         }
     };
+
+    
+    /**
+     * The Kerberos address modify listener
+     */
+    private ModifyListener kerberosAddressTextListener = new ModifyListener()
+    {
+        public void modifyText( ModifyEvent e )
+        {
+            getKdcServerTransportBean().setTransportAddress( kerberosAddressText.getText() );
+        }
+    };
+
+    
+    /**
+     * The ChangePassword checkbox listener
+     */
     private SelectionAdapter enableChangePasswordCheckboxListener = new SelectionAdapter()
     {
         public void widgetSelected( SelectionEvent e )
         {
-            getChangePasswordServerBean().setEnabled( enableChangePasswordCheckbox.getSelection() );
-            setEnabled( changePasswordPortText, enableChangePasswordCheckbox.getSelection() );
+            boolean enabled = enableChangePasswordCheckbox.getSelection();
+            
+            getChangePasswordServerBean().setEnabled( enabled );
+            setEnabled( changePasswordPortText, enabled );
+            setEnabled( changePasswordAddressText, enabled );
         }
     };
+    
+    
+    /**
+     * The ChangePassword port listener
+     */
     private ModifyListener changePasswordPortTextListener = new ModifyListener()
     {
         public void modifyText( ModifyEvent e )
         {
-            getChangePasswordServerTransportBean().setSystemPort(
-                Integer.parseInt( changePasswordPortText.getText() ) );
+            try
+            {
+                int port = Integer.parseInt( changePasswordPortText.getText() );
+                
+                getChangePasswordServerTransportBean().setSystemPort( port );
+            }
+            catch ( NumberFormatException nfe )
+            {
+                System.out.println( "Wrong ChangePassword TCP Port : it must be an integer" );
+            }
         }
     };
+
+    
+    /**
+     * The ChangePassword address modify listener
+     */
+    private ModifyListener changePasswordAddressTextListener = new ModifyListener()
+    {
+        public void modifyText( ModifyEvent e )
+        {
+            getChangePasswordServerTransportBean().setTransportAddress( changePasswordAddressText.getText() );
+        }
+    };
+
+    
     private ModifyListener primaryKdcRealmTextListener = new ModifyListener()
     {
         public void modifyText( ModifyEvent e )
@@ -228,6 +304,11 @@ public class KerberosServerPage extends ServerConfigurationEditorPage
             getKdcServerBean().setKrbPostdatedAllowed( allowPostdatedTicketsCheckbox.getSelection() );
         }
     };
+    
+    
+    /**
+     * The Allow Renewable Tickets listener
+     */
     private SelectionAdapter allowRenewableTicketsCheckboxListener = new SelectionAdapter()
     {
         public void widgetSelected( SelectionEvent e )
@@ -235,6 +316,20 @@ public class KerberosServerPage extends ServerConfigurationEditorPage
             getKdcServerBean().setKrbRenewableAllowed( allowRenewableTicketsCheckbox.getSelection() );
         }
     };
+    
+    
+    /**
+     * The Allow Proxiable Tickets listener
+     */
+    private SelectionAdapter allowProxiableTicketsCheckboxListener = new SelectionAdapter()
+    {
+        public void widgetSelected( SelectionEvent e )
+        {
+            getKdcServerBean().setKrbProxiableAllowed( allowProxiableTicketsCheckbox.getSelection() );
+        }
+    };
+    
+    
     private ModifyListener maximumRenewableLifetimeTextListener = new ModifyListener()
     {
         public void modifyText( ModifyEvent e )
@@ -335,6 +430,12 @@ public class KerberosServerPage extends ServerConfigurationEditorPage
         kerberosPortText = createPortText( toolkit, composite );
         createDefaultValueLabel( toolkit, composite, "60088" ); //$NON-NLS-1$
 
+        // Kerberos Server Address Text
+        toolkit.createLabel( composite, TABULATION );
+        toolkit.createLabel( composite, Messages.getString( "KerberosServerPage.Address" ) ); //$NON-NLS-1$
+        kerberosAddressText = createAddressText( toolkit, composite );
+        createDefaultValueLabel( toolkit, composite, DEFAULT_ADDRESS ); //$NON-NLS-1$
+
         // Enable Change Password Server Checkbox
         enableChangePasswordCheckbox = toolkit.createButton( composite,
             Messages.getString( "KerberosServerPage.EnableKerberosChangePassword" ), //$NON-NLS-1$
@@ -347,6 +448,12 @@ public class KerberosServerPage extends ServerConfigurationEditorPage
         toolkit.createLabel( composite, Messages.getString( "KerberosServerPage.Port" ) ); //$NON-NLS-1$
         changePasswordPortText = createPortText( toolkit, composite );
         createDefaultValueLabel( toolkit, composite, "60464" ); //$NON-NLS-1$
+
+        // Change Password Server Address Text
+        toolkit.createLabel( composite, TABULATION );
+        toolkit.createLabel( composite, Messages.getString( "KerberosServerPage.Address" ) ); //$NON-NLS-1$
+        changePasswordAddressText = createAddressText( toolkit, composite );
+        createDefaultValueLabel( toolkit, composite, DEFAULT_ADDRESS ); //$NON-NLS-1$
     }
 
 
@@ -464,6 +571,12 @@ public class KerberosServerPage extends ServerConfigurationEditorPage
         allowRenewableTicketsCheckbox.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, layout.numColumns,
             1 ) );
 
+        // Allow Proxiable Tickets Checkbox
+        allowProxiableTicketsCheckbox = toolkit.createButton( composite,
+            Messages.getString( "KerberosServerPage.AllowProxiableTickets" ), SWT.CHECK ); //$NON-NLS-1$
+        allowProxiableTicketsCheckbox.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, layout.numColumns,
+            1 ) );
+
         // Max Renewable Lifetime Text
         toolkit.createLabel( composite, Messages.getString( "KerberosServerPage.MaxRenewableLifetime" ) ); //$NON-NLS-1$
         maximumRenewableLifetimeText = createIntegerText( toolkit, composite );
@@ -494,13 +607,17 @@ public class KerberosServerPage extends ServerConfigurationEditorPage
             KdcServerBean kdcServerBean = getKdcServerBean();
             setSelection( enableKerberosCheckbox, kdcServerBean.isEnabled() );
             setEnabled( kerberosPortText, enableKerberosCheckbox.getSelection() );
-            setText( kerberosPortText, "" + getKdcServerTransportBean().getSystemPort() ); //$NON-NLS-1$
+            setEnabled( kerberosAddressText, enableKerberosCheckbox.getSelection() );
+            setText( kerberosPortText, Integer.toString( getKdcServerTransportBean().getSystemPort() ) );
+            setText( kerberosAddressText, getKdcServerTransportBean().getTransportAddress() );
 
             // Change Password Checkbox
             ChangePasswordServerBean changePasswordServerBean = getChangePasswordServerBean();
             setSelection( enableChangePasswordCheckbox, changePasswordServerBean.isEnabled() );
             setEnabled( changePasswordPortText, enableChangePasswordCheckbox.getSelection() );
-            setText( changePasswordPortText, "" + getChangePasswordServerTransportBean().getSystemPort() ); //$NON-NLS-1$
+            setEnabled( changePasswordAddressText, enableChangePasswordCheckbox.getSelection() );
+            setText( changePasswordPortText, Integer.toString( getChangePasswordServerTransportBean().getSystemPort() ) );
+            setText( changePasswordAddressText, getChangePasswordServerTransportBean().getTransportAddress() );
 
             // Kerberos Settings
             setText( primaryKdcRealmText, kdcServerBean.getKrbPrimaryRealm() );
@@ -527,9 +644,10 @@ public class KerberosServerPage extends ServerConfigurationEditorPage
             setSelection( requirePreAuthByEncryptedTimestampCheckbox, kdcServerBean.isKrbPaEncTimestampRequired() );
             setSelection( allowPostdatedTicketsCheckbox, kdcServerBean.isKrbPostdatedAllowed() );
             setSelection( allowRenewableTicketsCheckbox, kdcServerBean.isKrbRenewableAllowed() );
-            setText( maximumRenewableLifetimeText, kdcServerBean.getKrbMaximumRenewableLifetime() + "" ); //$NON-NLS-1$
-            setText( maximumTicketLifetimeText, kdcServerBean.getKrbMaximumTicketLifetime() + "" ); //$NON-NLS-1$
-            setText( allowableClockSkewText, kdcServerBean.getKrbAllowableClockSkew() + "" ); //$NON-NLS-1$
+            setSelection( allowProxiableTicketsCheckbox, kdcServerBean.isKrbProxiableAllowed() );
+            setText( maximumRenewableLifetimeText, Long.toString( kdcServerBean.getKrbMaximumRenewableLifetime() ) );
+            setText( maximumTicketLifetimeText, Long.toString( kdcServerBean.getKrbMaximumTicketLifetime() ) );
+            setText( allowableClockSkewText, Long.toString( kdcServerBean.getKrbAllowableClockSkew() ) );
 
             addListeners();
         }
@@ -549,6 +667,10 @@ public class KerberosServerPage extends ServerConfigurationEditorPage
         addDirtyListener( kerberosPortText );
         addModifyListener( kerberosPortText, kerberosPortTextListener );
 
+        // Kerberos Server Address Text
+        addDirtyListener( kerberosAddressText );
+        addModifyListener( kerberosAddressText, kerberosAddressTextListener );
+
         // Enable Change Password Server Checkbox
         addDirtyListener( enableChangePasswordCheckbox );
         addSelectionListener( enableChangePasswordCheckbox, enableChangePasswordCheckboxListener );
@@ -556,6 +678,10 @@ public class KerberosServerPage extends ServerConfigurationEditorPage
         // Change Password Server Port Text
         addDirtyListener( changePasswordPortText );
         addModifyListener( changePasswordPortText, changePasswordPortTextListener );
+
+        // Change Password Server Address Text
+        addDirtyListener( changePasswordAddressText );
+        addModifyListener( changePasswordAddressText, changePasswordAddressTextListener );
 
         // Primary KDC Text
         addDirtyListener( primaryKdcRealmText );
@@ -593,6 +719,10 @@ public class KerberosServerPage extends ServerConfigurationEditorPage
         addDirtyListener( allowRenewableTicketsCheckbox );
         addSelectionListener( allowRenewableTicketsCheckbox, allowRenewableTicketsCheckboxListener );
 
+        // Allow Proxiable Tickets Checkbox
+        addDirtyListener( allowProxiableTicketsCheckbox );
+        addSelectionListener( allowProxiableTicketsCheckbox, allowProxiableTicketsCheckboxListener );
+
         // Maximum Renewable Lifetime Text
         addDirtyListener( maximumRenewableLifetimeText );
         addModifyListener( maximumRenewableLifetimeText, maximumRenewableLifetimeTextListener );
@@ -620,6 +750,10 @@ public class KerberosServerPage extends ServerConfigurationEditorPage
         removeDirtyListener( kerberosPortText );
         removeModifyListener( kerberosPortText, kerberosPortTextListener );
 
+        // Kerberos Server Address Text
+        removeDirtyListener( kerberosAddressText );
+        removeModifyListener( kerberosAddressText, kerberosAddressTextListener );
+
         // Enable Change Password Server Checkbox
         removeDirtyListener( enableChangePasswordCheckbox );
         removeSelectionListener( enableChangePasswordCheckbox, enableChangePasswordCheckboxListener );
@@ -627,6 +761,10 @@ public class KerberosServerPage extends ServerConfigurationEditorPage
         // Change Password Server Port Text
         removeDirtyListener( changePasswordPortText );
         removeModifyListener( changePasswordPortText, changePasswordPortTextListener );
+
+        // Change Password Server Address Text
+        removeDirtyListener( changePasswordAddressText );
+        removeModifyListener( changePasswordAddressText, changePasswordAddressTextListener );
 
         // Primary KDC Text
         removeDirtyListener( primaryKdcRealmText );
@@ -663,6 +801,10 @@ public class KerberosServerPage extends ServerConfigurationEditorPage
         // Allow Renewable Tickets Checkbox
         removeDirtyListener( allowRenewableTicketsCheckbox );
         removeSelectionListener( allowRenewableTicketsCheckbox, allowRenewableTicketsCheckboxListener );
+
+        // Allow Proxiable Tickets Checkbox
+        removeDirtyListener( allowProxiableTicketsCheckbox );
+        removeSelectionListener( allowProxiableTicketsCheckbox, allowProxiableTicketsCheckboxListener );
 
         // Maximum Renewable Lifetime Text
         removeDirtyListener( maximumRenewableLifetimeText );

@@ -76,6 +76,13 @@ public class JdbmIndexDialog extends Dialog
 
 
     /**
+     * This create a dialog like :
+     * 
+     * <pre>
+     *   +-----------------------------------------------------+
+     *   | Attribute ID: [           ]  Cache Size: [        ] |
+     *   +-----------------------------------------------------+
+     * </pre>
      * {@inheritDoc}
      */
     protected Control createDialogArea( Composite parent )
@@ -99,12 +106,14 @@ public class JdbmIndexDialog extends Dialog
         {
             public void verifyText( VerifyEvent e )
             {
+                // The cache size must be a numeric
                 if ( !e.text.matches( "[0-9]*" ) ) //$NON-NLS-1$
                 {
                     e.doit = false;
                 }
             }
         } );
+        
         cacheSizeText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
 
         initFromInput();
@@ -154,6 +163,7 @@ public class JdbmIndexDialog extends Dialog
     protected void okPressed()
     {
         index.setIndexAttributeId( attributeIdText.getText() );
+        
         try
         {
             index.setIndexCacheSize( Integer.parseInt( cacheSizeText.getText() ) );
@@ -170,8 +180,7 @@ public class JdbmIndexDialog extends Dialog
     /**
      * Gets the Indexed Attribute.
      *
-     * @return
-     *      the Indexed Attribute
+     * @return the Indexed Attribute
      */
     public JdbmIndexBean getIndex()
     {
@@ -182,8 +191,7 @@ public class JdbmIndexDialog extends Dialog
     /**
      * Returns the dirty flag of the dialog.
      *
-     * @return
-     *      the dirty flag of the dialog
+     * @return the dirty flag of the dialog
      */
     public boolean isDirty()
     {

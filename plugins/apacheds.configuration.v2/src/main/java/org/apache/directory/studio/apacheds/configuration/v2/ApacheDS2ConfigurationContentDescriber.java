@@ -29,6 +29,7 @@ import org.apache.directory.api.ldap.model.exception.LdapInvalidDnException;
 import org.apache.directory.api.ldap.model.ldif.LdifEntry;
 import org.apache.directory.api.ldap.model.ldif.LdifReader;
 import org.apache.directory.api.ldap.model.name.Dn;
+import org.apache.directory.server.constants.ServerDNConstants;
 import org.eclipse.core.runtime.QualifiedName;
 import org.eclipse.core.runtime.content.IContentDescription;
 import org.eclipse.core.runtime.content.ITextContentDescriber;
@@ -59,7 +60,7 @@ public class ApacheDS2ConfigurationContentDescriber implements ITextContentDescr
         // Initializing DNs
         try
         {
-            configEntryDn = new Dn( "ou=config" ); //$NON-NLS-1$
+            configEntryDn = new Dn( ServerDNConstants.CONFIG_DN ); //$NON-NLS-1$
             directoryServiceDn = new Dn( "ads-directoryServiceId=default,ou=config" ); //$NON-NLS-1$
         }
         catch ( LdapInvalidDnException e )
@@ -75,9 +76,11 @@ public class ApacheDS2ConfigurationContentDescriber implements ITextContentDescr
     public int describe( Reader contents, IContentDescription description ) throws IOException
     {
         LdifReader reader = null;
+        
         try
         {
             reader = new LdifReader( contents );
+            
             return isValid( reader );
         }
         catch ( LdapException e )
@@ -100,9 +103,11 @@ public class ApacheDS2ConfigurationContentDescriber implements ITextContentDescr
     public int describe( InputStream contents, IContentDescription description ) throws IOException
     {
         LdifReader reader = null;
+        
         try
         {
             reader = new LdifReader( contents );
+            
             return isValid( reader );
         }
         catch ( LdapException e )
@@ -129,10 +134,10 @@ public class ApacheDS2ConfigurationContentDescriber implements ITextContentDescr
 
 
     /**
-     * Indicates if the given {@link Reader} is a valid server configuration.
+     * Indicates if the given {@link Reader} is a valid server configuration. It can either 
+     * contain the "ou=config" entry or the "ads-directoryServiceId=default,ou=config" entry
      *
-     * @param reader
-     *      the LDIF reader
+     * @param reader the LDIF reader
      * @return
      *      <code>ITextContentDescriber.VALID</code> if the given LDIF reader is a valid server 
      *      configuration, <code>ITextContentDescriber.INVALID</code> if not
@@ -155,23 +160,19 @@ public class ApacheDS2ConfigurationContentDescriber implements ITextContentDescr
             checkedEntries++;
 
             // Checking if this is the config entry
-            if ( !configEntryFound )
+            if ( ( !configEntryFound ) &&
+                 ( configEntryDn.getName().equalsIgnoreCase( entry.getDn().getNormName() ) ) )
             {
-                if ( configEntryDn.getName().equalsIgnoreCase( entry.getDn().getNormName() ) )
-                {
-                    configEntryFound = true;
-                    continue;
-                }
+                configEntryFound = true;
+                continue;
             }
 
             // Checking if this is the directory service entry
-            if ( !directoryServiceEntryFound )
+            if ( ( !directoryServiceEntryFound ) &&
+                 ( directoryServiceDn.getName().equalsIgnoreCase( entry.getDn().getNormName() ) ) )
             {
-                if ( directoryServiceDn.getName().equalsIgnoreCase( entry.getDn().getNormName() ) )
-                {
-                    directoryServiceEntryFound = true;
-                    continue;
-                }
+                directoryServiceEntryFound = true;
+                continue;
             }
         }
 

@@ -21,9 +21,11 @@
 package org.apache.directory.studio.apacheds.configuration.v2.actions;
 
 
+import org.apache.directory.studio.apacheds.configuration.v2.ApacheDS2ConfigurationPlugin;
 import org.apache.directory.studio.apacheds.configuration.v2.editor.ConnectionServerConfigurationInput;
 import org.apache.directory.studio.apacheds.configuration.v2.editor.ServerConfigurationEditor;
 import org.apache.directory.studio.connection.core.Connection;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.StructuredSelection;
@@ -55,6 +57,7 @@ public class OpenConfigurationAction implements IObjectActionDelegate
             try
             {
                 IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
+                
                 try
                 {
                     page.openEditor( new ConnectionServerConfigurationInput( selectedConnection ),
@@ -62,14 +65,16 @@ public class OpenConfigurationAction implements IObjectActionDelegate
                 }
                 catch ( PartInitException e )
                 {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
+                    ApacheDS2ConfigurationPlugin.getDefault().getLog().log( 
+                        new Status( Status.ERROR, "org.apache.directory.studio.apacheds.configuration.v2", 
+                            e.getMessage() ) );
                 }
             }
             catch ( Exception e )
             {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
+                ApacheDS2ConfigurationPlugin.getDefault().getLog().log( 
+                    new Status( Status.ERROR, "org.apache.directory.studio.apacheds.configuration.v2", 
+                        e.getMessage() ) );
             }
         }
     }
@@ -81,6 +86,7 @@ public class OpenConfigurationAction implements IObjectActionDelegate
     public void selectionChanged( IAction action, ISelection selection )
     {
         StructuredSelection structuredSelection = ( StructuredSelection ) selection;
+        
         if ( ( structuredSelection.size() == 1 ) && ( structuredSelection.getFirstElement() instanceof Connection ) )
         {
             selectedConnection = ( Connection ) structuredSelection.getFirstElement();

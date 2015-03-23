@@ -2,9 +2,9 @@
 <feature
       id="org.apache.directory.studio.apacheds.feature"
       label="Apache Directory Studio ApacheDS"
-      version="${pom.version}"
+      version="2.0.0.qualifier"
       provider-name="Apache Software Foundation"
-      plugin="org.apache.directory.studio.apacheds"
+      plugin="org.apache.directory.studio.apacheds.configuration.v2"
       image="studio.png">
 
    <description>
@@ -200,38 +200,45 @@ http://www.apache.org/licenses/
    </url>
 
    <plugin
-         id="org.apache.directory.studio.apacheds"
+         id="org.apache.directory.studio.ldapservers"
          download-size="0"
          install-size="0"
-         version="${pom.version}"
+         version="0.0.0"
          unpack="false"/>
 
    <plugin
-         id="org.apache.directory.studio.apacheds.configuration"
+         id="org.apache.directory.studio.ldapservers.apacheds.v200"
          download-size="0"
          install-size="0"
-         version="${pom.version}"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.apache.directory.studio.apacheds.configuration.v2"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
          unpack="false"/>
 
    <plugin
          id="org.apache.directory.studio.apacheds.configuration.help"
          download-size="0"
          install-size="0"
-         version="${pom.version}"
+         version="0.0.0"
          unpack="false"/>
 
    <plugin
          id="org.apache.directory.studio.apacheds.help"
          download-size="0"
          install-size="0"
-         version="${pom.version}"
+         version="0.0.0"
          unpack="false"/>
 
    <plugin
          id="org.apache.directory.studio.common.ui"
          download-size="0"
          install-size="0"
-         version="${pom.version}"
+         version="0.0.0"
          unpack="false"/>
 
 </feature>

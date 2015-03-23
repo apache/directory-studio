@@ -31,14 +31,39 @@
   <packaging>pom</packaging>
 
   <modules>
-    <module>apacheds.configuration.feature</module>
-    <module>apacheds.configuration.v2.feature</module>
+<!--     <module>apacheds.configuration.feature</module> -->
+<!--     <module>apacheds.configuration.v2.feature</module> -->
     <module>apacheds.feature</module>
     <module>ldapbrowser.feature</module>
-    <module>ldapservers.feature</module>
+<!--     <module>ldapservers.feature</module> -->
     <module>ldifeditor.feature</module>
     <module>rcp.feature</module>
     <module>schemaeditor.feature</module>
   </modules>
+  
+  <build>
+    <plugins>
+      <!-- Clean META-INF directory with legal files -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-clean-plugin</artifactId>
+        <configuration>
+          <filesets>
+            <fileset>
+              <directory>${basedir}/META-INF</directory>
+            </fileset>
+          </filesets>
+        </configuration>
+      </plugin>
+      <!-- Add legal files to META-INF directory -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-remote-resources-plugin</artifactId>
+        <configuration>
+          <outputDirectory>${basedir}</outputDirectory>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
   
 </project>

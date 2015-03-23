@@ -21,6 +21,8 @@
 package org.apache.directory.studio.ldapbrowser.common.filtereditor;
 
 
+import org.apache.directory.studio.common.core.jobs.CommonCoreConstants;
+import org.apache.directory.studio.common.ui.CommonUIConstants;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
 import org.apache.directory.studio.ldapbrowser.core.model.filter.parser.LdapFilterParser;
 import org.apache.directory.studio.ldapbrowser.core.model.filter.parser.LdapFilterToken;
@@ -46,22 +48,22 @@ public class FilterDamagerRepairer implements IPresentationDamager, IPresentatio
 {
 
     private static final TextAttribute DEFAULT_TEXT_ATTRIBUTE = new TextAttribute( BrowserCommonActivator.getDefault()
-        .getColor( new RGB( 0, 0, 0 ) ) );
+        .getColor( CommonUIConstants.BLACK ) );
 
     private static final TextAttribute AND_OR_NOT_TEXT_ATTRIBUTE = new TextAttribute( BrowserCommonActivator
-        .getDefault().getColor( new RGB( 0, 127, 0 ) ), null, SWT.BOLD );
+        .getDefault().getColor( CommonUIConstants.M_GREEN ), null, SWT.BOLD );
 
     private static final TextAttribute ATTRIBUTE_TEXT_ATTRIBUTE = new TextAttribute( BrowserCommonActivator
-        .getDefault().getColor( new RGB( 127, 0, 85 ) ) );
+        .getDefault().getColor( new RGB( 128, 0, 96 ) ) );
 
     private static final TextAttribute FILTER_TYPE_TEXT_ATTRIBUTE = new TextAttribute( BrowserCommonActivator
-        .getDefault().getColor( new RGB( 255, 0, 0 ) ), null, SWT.BOLD );
+        .getDefault().getColor( CommonUIConstants.RED ), null, SWT.BOLD );
 
     private static final TextAttribute VALUE_TEXT_ATTRIBUTE = new TextAttribute( BrowserCommonActivator.getDefault()
-        .getColor( new RGB( 0, 0, 127 ) ) );
+        .getColor( CommonUIConstants.M_BLUE ) );
 
     private static final TextAttribute PARENTHESIS_TEXT_ATTRIBUTE = new TextAttribute( BrowserCommonActivator
-        .getDefault().getColor( new RGB( 0, 0, 0 ) ), null, SWT.BOLD );
+        .getDefault().getColor( CommonUIConstants.BLACK ), null, SWT.BOLD );
 
     /** The filter parser. */
     private LdapFilterParser parser;

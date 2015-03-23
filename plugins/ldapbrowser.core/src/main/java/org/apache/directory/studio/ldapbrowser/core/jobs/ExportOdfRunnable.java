@@ -42,6 +42,7 @@ import org.apache.directory.studio.ldapbrowser.core.utils.JNDIUtils;
 import org.apache.directory.studio.ldifparser.model.container.LdifContainer;
 import org.apache.directory.studio.ldifparser.model.container.LdifContentRecord;
 import org.eclipse.core.runtime.Preferences;
+/*
 import org.openoffice.odf.doc.OdfFileDom;
 import org.openoffice.odf.doc.OdfSpreadsheetDocument;
 import org.openoffice.odf.doc.element.table.OdfTable;
@@ -49,6 +50,7 @@ import org.openoffice.odf.doc.element.table.OdfTableCell;
 import org.openoffice.odf.doc.element.table.OdfTableRow;
 import org.openoffice.odf.dom.OdfNamespace;
 import org.openoffice.odf.dom.type.office.OdfValueType;
+*/
 import org.w3c.dom.Element;
 
 
@@ -136,6 +138,7 @@ public class ExportOdfRunnable implements StudioConnectionRunnableWithProgress
      */
     public void run( StudioProgressMonitor monitor )
     {
+    	/*
         monitor.beginTask( BrowserCoreMessages.jobs__export_odf_task, 2 );
         monitor.reportProgress( " " ); //$NON-NLS-1$
         monitor.worked( 1 );
@@ -194,6 +197,7 @@ public class ExportOdfRunnable implements StudioConnectionRunnableWithProgress
         {
             monitor.reportError( e );
         }
+    	 */
     }
 
 
@@ -214,6 +218,7 @@ public class ExportOdfRunnable implements StudioConnectionRunnableWithProgress
      * 
      * @throws IOException Signals that an I/O exception has occurred.
      */
+/*
     private static void exportToOdf( IBrowserConnection browserConnection, SearchParameter searchParameter,
         OdfFileDom contentDoc, OdfTable table, OdfTableRow headerRow, int count, StudioProgressMonitor monitor,
         LinkedHashMap<String, Short> attributeNameMap, String valueDelimiter, int binaryEncoding, boolean exportDn )
@@ -257,6 +262,7 @@ public class ExportOdfRunnable implements StudioConnectionRunnableWithProgress
             monitor.reportError( e );
         }
     }
+*/
 
 
     /**
@@ -272,6 +278,7 @@ public class ExportOdfRunnable implements StudioConnectionRunnableWithProgress
      * @param binaryEncoding the binary encoding
      * @param exportDn the export dn
      */
+/*
     private static void recordToOdfRow( IBrowserConnection browserConnection, LdifContentRecord record,
         OdfFileDom contentDoc, OdfTable table, OdfTableRow headerRow, Map<String, Short> headerRowAttributeNameMap,
         String valueDelimiter, int binaryEncoding, boolean exportDn )
@@ -319,4 +326,6 @@ public class ExportOdfRunnable implements StudioConnectionRunnableWithProgress
             row.appendCell( cell );
         }
     }
+*/
+
 }

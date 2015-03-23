@@ -35,11 +35,11 @@ import javax.naming.directory.SearchResult;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.directory.api.dsmlv2.DsmlDecorator;
-import org.apache.directory.api.dsmlv2.reponse.BatchResponseDsml;
-import org.apache.directory.api.dsmlv2.reponse.SearchResponseDsml;
-import org.apache.directory.api.dsmlv2.reponse.SearchResultDoneDsml;
-import org.apache.directory.api.dsmlv2.reponse.SearchResultEntryDsml;
-import org.apache.directory.api.dsmlv2.reponse.SearchResultReferenceDsml;
+import org.apache.directory.api.dsmlv2.response.BatchResponseDsml;
+import org.apache.directory.api.dsmlv2.response.SearchResponseDsml;
+import org.apache.directory.api.dsmlv2.response.SearchResultDoneDsml;
+import org.apache.directory.api.dsmlv2.response.SearchResultEntryDsml;
+import org.apache.directory.api.dsmlv2.response.SearchResultReferenceDsml;
 import org.apache.directory.api.dsmlv2.request.AddRequestDsml;
 import org.apache.directory.api.dsmlv2.request.BatchRequestDsml;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;

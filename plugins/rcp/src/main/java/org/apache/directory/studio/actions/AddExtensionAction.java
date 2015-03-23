@@ -30,12 +30,12 @@ import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.swt.custom.BusyIndicator;
 import org.eclipse.ui.IWorkbenchWindow;
-import org.eclipse.update.search.BackLevelFilter;
-import org.eclipse.update.search.EnvironmentFilter;
-import org.eclipse.update.search.UpdateSearchRequest;
-import org.eclipse.update.search.UpdateSearchScope;
-import org.eclipse.update.ui.UpdateJob;
-import org.eclipse.update.ui.UpdateManagerUI;
+//import org.eclipse.update.search.BackLevelFilter;
+//import org.eclipse.update.search.EnvironmentFilter;
+//import org.eclipse.update.search.UpdateSearchRequest;
+//import org.eclipse.update.search.UpdateSearchScope;
+//import org.eclipse.update.ui.UpdateJob;
+//import org.eclipse.update.ui.UpdateManagerUI;
 
 
 /**
@@ -73,35 +73,35 @@ public class AddExtensionAction extends Action implements IAction
         {
             public void run()
             {
-                UpdateJob job = new UpdateJob(
-                    Messages.getString( "AddExtensionAction.Searching_new_extensions" ), getSearchRequest() ); //$NON-NLS-1$
-                UpdateManagerUI.openInstaller( window.getShell(), job );
+//                UpdateJob job = new UpdateJob(
+//                    Messages.getString( "AddExtensionAction.Searching_new_extensions" ), getSearchRequest() ); //$NON-NLS-1$
+//                UpdateManagerUI.openInstaller( window.getShell(), job );
             }
 
 
-            private UpdateSearchRequest getSearchRequest()
-            {
-                UpdateSearchRequest result = new UpdateSearchRequest( UpdateSearchRequest
-                    .createDefaultSiteSearchCategory(), new UpdateSearchScope() );
-                result.addFilter( new BackLevelFilter() );
-                result.addFilter( new EnvironmentFilter() );
-                UpdateSearchScope scope = new UpdateSearchScope();
-                try
-                {
-                    String homeBase = System
-                        .getProperty(
-                            "studio.homebase", Messages.getString( "AddExtensionAction.Apache_Directory_Studio_Home_Base" ) ); //$NON-NLS-1$ //$NON-NLS-2$
-                    URL url = new URL( homeBase );
-                    scope.addSearchSite(
-                        Messages.getString( "AddExtensionAction.Apache_Directory_Studio_Site" ), url, null ); //$NON-NLS-1$
-                }
-                catch ( MalformedURLException e )
-                {
-                    // TODO: handle exception
-                }
-                result.setScope( scope );
-                return result;
-            }
+//            private UpdateSearchRequest getSearchRequest()
+//            {
+//                UpdateSearchRequest result = new UpdateSearchRequest( UpdateSearchRequest
+//                    .createDefaultSiteSearchCategory(), new UpdateSearchScope() );
+//                result.addFilter( new BackLevelFilter() );
+//                result.addFilter( new EnvironmentFilter() );
+//                UpdateSearchScope scope = new UpdateSearchScope();
+//                try
+//                {
+//                    String homeBase = System
+//                        .getProperty(
+//                            "studio.homebase", Messages.getString( "AddExtensionAction.Apache_Directory_Studio_Home_Base" ) ); //$NON-NLS-1$ //$NON-NLS-2$
+//                    URL url = new URL( homeBase );
+//                    scope.addSearchSite(
+//                        Messages.getString( "AddExtensionAction.Apache_Directory_Studio_Site" ), url, null ); //$NON-NLS-1$
+//                }
+//                catch ( MalformedURLException e )
+//                {
+//                    // TODO: handle exception
+//                }
+//                result.setScope( scope );
+//                return result;
+//            }
         } );
     }
 }

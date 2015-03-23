@@ -55,6 +55,59 @@ import org.eclipse.ui.forms.widgets.Section;
 /**
  * This class represents the Password Policies Master/Details Block used in the Password Policies Page.
  *
+ * <pre>
+ * +------------------------------------------------------------------------------------+
+ * | .----------------------------------. .-------------------------------------------. |
+ * | | All password Policies            | | Password Policy Details                   | |
+ * | +----------------------------------+ +-------------------------------------------+ |
+ * | | +---------------------+          | | Set the properties of the password Policy | |
+ * | | | Default (enabled)   | [ Add  ] | |  [X] Enabled                              | |
+ * | | |                     | [Delete] | |  ID :          [//////////]               | |
+ * | | |                     |          | |  Description : [////////////////////////] | |
+ * | | |                     |          | |  Attribute   : [////////////////////////] | |
+ * | | |                     |          | .-------------------------------------------. |
+ * | | |                     |          | | Quality                                   | |
+ * | | |                     |          | +-------------------------------------------+ |
+ * | | |                     |          | | Check quality : [=======================] | |
+ * | | |                     |          | | Validator :     [///////////////////////] | |
+ * | | |                     |          | | [X] Enable Minimum Length                 | |
+ * | | |                     |          | |   Number of chars : [NNN]                 | |
+ * | | |                     |          | | [X] Enable Maximum Length                 | |
+ * | | |                     |          | |   Number of chars : [NNN]                 | |
+ * | | |                     |          | .-------------------------------------------. |
+ * | | |                     |          | | Expiration                                | |
+ * | | |                     |          | +-------------------------------------------+ |
+ * | | |                     |          | | Minimum age (seconds): [NNN]              | |
+ * | | |                     |          | | Maximum age (seconds): [NNN]              | |
+ * | | |                     |          | | [X] Enable Expire Warning                 | |
+ * | | |                     |          | |   Number of seconds  : [NNN]              | |
+ * | | |                     |          | | [X] Enable Grace Authentication Limit     | |
+ * | | |                     |          | |   Number of times    : [NNN]              | |
+ * | | |                     |          | | [X] Enable Grace Expire                   | |
+ * | | |                     |          | |   Interval (seconds) : [NNN]              | |
+ * | | |                     |          | .-------------------------------------------. |
+ * | | |                     |          | | Options                                   | |
+ * | | |                     |          | +-------------------------------------------+ |
+ * | | |                     |          | | [X] Enable Must Change                    | |
+ * | | |                     |          | | [X] Enable Allow User Change              | |
+ * | | |                     |          | | [X] Enable Safe Modify                    | |
+ * | | |                     |          | .-------------------------------------------. |
+ * | | |                     |          | | Lockout                                   | |
+ * | | |                     |          | +-------------------------------------------+ |
+ * | | |                     |          | | [X] Enable Lockout                        | |
+ * | | |                     |          | |   Lockout duration (seconds)   : [NNN]    | |
+ * | | |                     |          | |   Maximum Consecutive Failures : [NNN]    | |
+ * | | |                     |          | |   Failure Count Interval       : [NNN]    | |
+ * | | |                     |          | | [X] Enable Maximum Idle                   | |
+ * | | |                     |          | |   Intervals                    : [NNN]    | |
+ * | | |                     |          | | [X] Enable In History                     | |
+ * | | |                     |          | |   Used passwords stored in Hist: [NNN]    | |
+ * | | |                     |          | | [X] Delay                                 | |
+ * | | |                     |          | |   Minimum delay (seconds)      : [NNN]    | |
+ * | | +---------------------+          | |   Maximum delay (seconds)      : [NNN]    | |
+ * | +----------------------------------+ +-------------------------------------------+ |
+ * +------------------------------------------------------------------------------------+
+ * </pre>
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public class PasswordPoliciesMasterDetailsBlock extends MasterDetailsBlock
@@ -78,8 +131,7 @@ public class PasswordPoliciesMasterDetailsBlock extends MasterDetailsBlock
     /**
      * Creates a new instance of PasswordPoliciesMasterDetailsBlock.
      *
-     * @param page
-     *      the associated page
+     * @param page the associated page
      */
     public PasswordPoliciesMasterDetailsBlock( PasswordPoliciesPage page )
     {
@@ -181,6 +233,7 @@ public class PasswordPoliciesMasterDetailsBlock extends MasterDetailsBlock
                 return super.getImage( element );
             }
         } );
+        
         viewer.setComparator( new ViewerComparator()
         {
             public int compare( Viewer viewer, Object e1, Object e2 )

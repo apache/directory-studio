@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Licensed to the Apache Software Foundation (ASF) under one or more
+  contributor license agreements.  See the NOTICE file distributed with
+  this work for additional information regarding copyright ownership.
+  The ASF licenses this file to You under the Apache License, Version 2.0
+  (the "License"); you may not use this file except in compliance with
+  the License.  You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<!--
+  @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>org.apache.directory.studio</groupId>
+    <artifactId>parent-plugins</artifactId>
+    <version>2.0.0.qualifier</version>
+    <relativePath>../pom-first.xml</relativePath>
+  </parent>
+
+  <artifactId>org.apache.directory.studio.ldapservers</artifactId>
+  <name>Apache Directory Studio LDAP Servers Manifest Generation</name>
+  <description/>
+  <packaging>bundle</packaging>
+
+  <build>
+     <!-- MANIFEST.MF Generation -->
+    <plugins>
+      <plugin>
+        <groupId>org.apache.felix</groupId>
+        <artifactId>maven-bundle-plugin</artifactId>
+        <extensions>true</extensions>
+        <configuration>
+          <manifestLocation>META-INF</manifestLocation>
+          <instructions>
+            <Bundle-SymbolicName>${project.artifactId};singleton:=true</Bundle-SymbolicName>
+            <Bundle-Localization>plugin</Bundle-Localization>
+            <Eclipse-LazyStart>true</Eclipse-LazyStart>
+            <Bundle-Activator>org.apache.directory.studio.ldapservers.LdapServersPlugin</Bundle-Activator>
+            
+            <Export-Package>org.apache.directory.studio.ldapservers,
+ org.apache.directory.studio.ldapservers.model,
+ org.apache.directory.studio.ldapservers.views,
+ org.apache.directory.studio.ldapservers.actions</Export-Package>
+ 
+            <Import-Package>org.apache.commons.lang,
+ org.dom4j,
+ org.dom4j.io,
+ org.dom4j.tree</Import-Package>
+            
+            <Require-Bundle>org.eclipse.core.runtime,
+ org.apache.mina.core;bundle-version="${org.apache.mina.bundleversion}",
+ org.apache.commons.collections;bundle-version="${org.apache.commons.collections.bundleversion}",
+ org.apache.commons.io;bundle-version="${org.apache.commons.io.bundleversion}",
+ org.eclipse.jdt.launching,
+ org.eclipse.jface.text,
+ org.eclipse.ui,
+ org.eclipse.debug.core,
+ org.eclipse.debug.ui,
+ org.eclipse.core.resources,
+ org.eclipse.core.runtime,
+ org.eclipse.ui.console,
+ org.eclipse.ui.ide,
+ org.apache.directory.studio.common.core,
+ org.apache.directory.studio.common.ui,
+ org.apache.directory.studio.connection.core</Require-Bundle>
+          </instructions>
+        </configuration>
+        <executions>
+          <execution>
+            <id>generate-manifest</id>
+            <phase>process-classes</phase>
+            <goals>
+              <goal>manifest</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+
+</project>
+

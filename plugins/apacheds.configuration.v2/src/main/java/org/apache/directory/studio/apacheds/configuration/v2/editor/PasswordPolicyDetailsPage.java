@@ -52,6 +52,58 @@ import org.eclipse.ui.forms.widgets.TableWrapLayout;
 
 /**
  * This class represents the Details Page of the Server Configuration Editor for the Password Policy type
+ * 
+ * <pre>
+ * .-------------------------------------------.
+ * | Password Policy Details                   |
+ * +-------------------------------------------+
+ * | Set the properties of the password Policy |
+ * |  [X] Enabled                              |
+ * |  ID :          [//////////]               |
+ * |  Description : [////////////////////////] |
+ * |  Attribute   : [////////////////////////] |
+ * .-------------------------------------------.
+ * | Quality                                   |
+ * +-------------------------------------------+
+ * | Check quality : [=======================] |
+ * | Validator :     [///////////////////////] |
+ * | [X] Enable Minimum Length                 |
+ * |   Number of chars : [NNN]                 |
+ * | [X] Enable Maximum Length                 |
+ * |   Number of chars : [NNN]                 |
+ * .-------------------------------------------.
+ * | Expiration                                |
+ * +-------------------------------------------+
+ * | Minimum age (seconds): [NNN]              |
+ * | Maximum age (seconds): [NNN]              |
+ * | [X] Enable Expire Warning                 |
+ * |   Number of seconds  : [NNN]              |
+ * | [X] Enable Grace Authentication Limit     |
+ * |   Number of times    : [NNN]              |
+ * | [X] Enable Grace Expire                   |
+ * |   Interval (seconds) : [NNN]              |
+ * .-------------------------------------------.
+ * | Options                                   |
+ * +-------------------------------------------+
+ * | [X] Enable Must Change                    |
+ * | [X] Enable Allow User Change              |
+ * | [X] Enable Safe Modify                    |
+ * .-------------------------------------------.
+ * | Lockout                                   |
+ * +-------------------------------------------+
+ * | [X] Enable Lockout                        |
+ * |   Lockout duration (seconds)   : [NNN]    |
+ * |   Maximum Consecutive Failures : [NNN]    |
+ * |   Failure Count Interval       : [NNN]    |
+ * | [X] Enable Maximum Idle                   |
+ * |   Intervals                    : [NNN]    |
+ * | [X] Enable In History                     |
+ * |   Used passwords stored in Hist: [NNN]    |
+ * | [X] Delay                                 |
+ * |   Minimum delay (seconds)      : [NNN]    |
+ * |   Maximum delay (seconds)      : [NNN]    |
+ * +-------------------------------------------+
+ * </pre>
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
@@ -95,6 +147,8 @@ public class PasswordPolicyDetailsPage implements IDetailsPage
     private Text inHistoryText;
     private Button maxIdleCheckbox;
     private Text maxIdleText;
+    private Text minimumDelayText;
+    private Text maximumDelayText;
 
     // Listeners
     /** The Text Modify Listener */
@@ -269,6 +323,9 @@ public class PasswordPolicyDetailsPage implements IDetailsPage
         layout.bottomMargin = 2;
         parent.setLayout( layout );
 
+        // Depending on if the PP is enabled or disabled, we will
+        // expose the configuration
+        
         createDetailsSection( toolkit, parent );
         createQualitySection( toolkit, parent );
         createExpirationSection( toolkit, parent );
@@ -297,6 +354,7 @@ public class PasswordPolicyDetailsPage implements IDetailsPage
         section.setLayoutData( td );
         Composite client = toolkit.createComposite( section );
         toolkit.paintBordersFor( client );
+        
         GridLayout glayout = new GridLayout( 2, false );
         client.setLayout( glayout );
         section.setClient( client );
@@ -522,6 +580,16 @@ public class PasswordPolicyDetailsPage implements IDetailsPage
             "Used passwords stored in history:" );
         inHistoryText = toolkit.createText( inHistoryRadioIndentComposite, "" );
         inHistoryText.setLayoutData( new GridData( SWT.FILL, SWT.CENTER, true, false ) );
+        
+        // Minimum delay (pwdMinDelay)
+        toolkit.createLabel( composite, "Mimimum Delay (seconds):" );
+        minimumDelayText = toolkit.createText( composite, "" );
+        minimumDelayText.setLayoutData( new GridData( SWT.FILL, SWT.CENTER, true, false ) );
+
+        // Maximum Delay (pwdMaxDelay)
+        toolkit.createLabel( composite, "Maximum Delay (seconds):" );
+        maximumDelayText = toolkit.createText( composite, "" );
+        maximumDelayText.setLayoutData( new GridData( SWT.FILL, SWT.CENTER, true, false ) );
     }
 
 
@@ -600,6 +668,10 @@ public class PasswordPolicyDetailsPage implements IDetailsPage
         inHistoryCheckbox.addSelectionListener( inHistoryCheckboxSelectionListener );
         inHistoryText.addModifyListener( textModifyListener );
         inHistoryText.addVerifyListener( integerVerifyListener );
+        minimumDelayText.addModifyListener( textModifyListener );
+        minimumDelayText.addVerifyListener( integerVerifyListener );
+        maximumDelayText.addModifyListener( textModifyListener );
+        maximumDelayText.addVerifyListener( integerVerifyListener );
     }
 
 
@@ -656,6 +728,10 @@ public class PasswordPolicyDetailsPage implements IDetailsPage
         inHistoryCheckbox.removeSelectionListener( inHistoryCheckboxSelectionListener );
         inHistoryText.removeModifyListener( textModifyListener );
         inHistoryText.removeVerifyListener( integerVerifyListener );
+        minimumDelayText.removeModifyListener( textModifyListener );
+        minimumDelayText.removeVerifyListener( integerVerifyListener );
+        maximumDelayText.removeModifyListener( textModifyListener );
+        maximumDelayText.removeVerifyListener( integerVerifyListener );
     }
 
 
@@ -881,6 +957,26 @@ public class PasswordPolicyDetailsPage implements IDetailsPage
             {
                 passwordPolicy.setPwdInHistory( 0 );
             }
+
+            // Minimum Delay
+            try
+            {
+                passwordPolicy.setPwdMinDelay( Integer.parseInt( minimumDelayText.getText() ) );
+            }
+            catch ( NumberFormatException e )
+            {
+                passwordPolicy.setPwdMinDelay( 0 );
+            }
+
+            // Maximum Delay
+            try
+            {
+                passwordPolicy.setPwdMaxDelay( Integer.parseInt( maximumDelayText.getText() ) );
+            }
+            catch ( NumberFormatException e )
+            {
+                passwordPolicy.setPwdMaxDelay( 0 );
+            }
         }
     }
 
@@ -1051,6 +1147,12 @@ public class PasswordPolicyDetailsPage implements IDetailsPage
             inHistoryCheckbox.setSelection( inHistory != 0 );
             inHistoryText.setText( "" + inHistory );
             inHistoryText.setEnabled( inHistory != 0 );
+
+            // Minimum Delay
+            minimumDelayText.setText( "" + passwordPolicy.getPwdMinDelay() );
+
+            // Maximum Delay
+            maximumDelayText.setText( "" + passwordPolicy.getPwdMaxDelay() );
         }
 
         addListeners();
