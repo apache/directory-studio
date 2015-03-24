@@ -51,7 +51,7 @@ Recommended IDE is 'Eclipse (Luna) for RCP Developers': <http://www.eclipse.org/
 1. Import 'Eclipse Target Platorm' project first
 
     * File -> Import... -> Maven -> Existing Maven Projects
-    * Choose 'studio-tycho/eclipse-target-platform' as root directory
+    * Choose 'studio/eclipse-target-platform' as root directory
     * Only this single project is selected
     * Finish
 
@@ -63,7 +63,7 @@ Recommended IDE is 'Eclipse (Luna) for RCP Developers': <http://www.eclipse.org/
 3. Import the main plugins
 
     * File -> Import... -> Maven -> Existing Maven Projects
-    * Chosse 'studio-tycho' as root directory
+    * Chosse 'studio' as root directory
     * All the plugins are selected
     * Finish
 
