@@ -36,7 +36,6 @@
     <module>common.core/pom-first.xml</module>
     <module>ldifparser/pom-first.xml</module>
     <module>common.ui/pom-first.xml</module>
-    <module>apacheds.configuration/pom-first.xml</module>
     <module>connection.core/pom-first.xml</module>
     <module>connection.ui/pom-first.xml</module>
     <module>ldapbrowser.core/pom-first.xml</module>

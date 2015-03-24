@@ -33,7 +33,6 @@
 
   <modules>
     <module>aciitemeditor</module>
-    <module>apacheds.configuration</module>
     <module>apacheds.configuration.v2</module>
     <module>common.core</module>
     <module>common.ui</module>
