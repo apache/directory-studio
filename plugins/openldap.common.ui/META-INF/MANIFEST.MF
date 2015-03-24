@@ -1,0 +1,51 @@
+Manifest-Version: 1.0
+Bnd-LastModified: 1427224401146
+Build-Jdk: 1.7.0_55
+Built-By: elecharny
+Bundle-Activator: org.apache.directory.studio.openldap.common.ui.OpenLda
+ pCommonUIPlugin
+Bundle-DocURL: http://www.apache.org/
+Bundle-License: http://www.apache.org/licenses/LICENSE-2.0.txt
+Bundle-Localization: plugin
+Bundle-ManifestVersion: 2
+Bundle-Name: Apache Directory Studio OpenLDAP Common UI Manifest Generat
+ ion
+Bundle-SymbolicName: org.apache.directory.studio.openldap.common.ui;sing
+ leton:=true
+Bundle-Vendor: The Apache Software Foundation
+Bundle-Version: 2.0.0.qualifier
+Created-By: Apache Maven Bundle Plugin
+Eclipse-LazyStart: true
+Export-Package: org.apache.directory.studio.openldap.common.ui.widgets;v
+ ersion="2.0.0",org.apache.directory.studio.openldap.common.ui.dialogs;v
+ ersion="2.0.0",org.apache.directory.studio.openldap.common.ui;version="
+ 2.0.0"
+Implementation-Title: Apache Directory Studio OpenLDAP Common UI Manifes
+ t Generation
+Implementation-Vendor: The Apache Software Foundation
+Implementation-Vendor-Id: org.apache.directory.studio
+Implementation-Version: 2.0.0.qualifier
+Import-Package: org.apache.directory.studio.openldap.common.ui
+Require-Bundle: org.apache.directory.server.core.api;bundle-version="2.0
+ .0.M20-SNAPSHOT",org.apache.directory.server.ldif.partition;bundle-vers
+ ion="2.0.0.M20-SNAPSHOT",org.apache.directory.server.xdbm.partition;bun
+ dle-version="2.0.0.M20-SNAPSHOT",org.apache.directory.api.asn1.api;bund
+ le-version="1.0.0.M29-SNAPSHOT",org.apache.directory.api.ldap.model;bun
+ dle-version="1.0.0.M29-SNAPSHOT",org.apache.directory.api.ldap.schema;b
+ undle-version="1.0.0.M29-SNAPSHOT",org.apache.directory.api.util;bundle
+ -version="1.0.0.M29-SNAPSHOT",org.apache.directory.studio.common.core,o
+ rg.apache.directory.studio.common.ui,org.apache.directory.studio.connec
+ tion.core,org.apache.directory.studio.connection.ui,org.apache.director
+ y.studio.ldapbrowser.common,org.apache.directory.studio.ldapbrowser.cor
+ e,org.apache.directory.studio.valueeditors,org.apache.directory.studio.
+ common.core,org.apache.directory.studio.common.ui,org.apache.directory.
+ studio.connection.core,org.apache.directory.studio.connection.ui,org.ap
+ ache.directory.studio.ldapbrowser.common,org.apache.directory.studio.ld
+ apbrowser.core,org.apache.directory.studio.valueeditors,org.eclipse.cor
+ e.runtime,org.eclipse.core.resources,org.eclipse.ui,org.eclipse.ui.edit
+ ors,org.eclipse.ui.forms,org.eclipse.ui.ide
+Specification-Title: Apache Directory Studio OpenLDAP Common UI Manifest
+  Generation
+Specification-Vendor: The Apache Software Foundation
+Specification-Version: 2.0.0.qualifier
+Tool: Bnd-2.3.0.201405100607
