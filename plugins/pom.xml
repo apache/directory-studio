@@ -50,5 +50,6 @@
     <module>valueeditors</module>
     <module>openldap.common.ui</module>
     <module>openldap.config.editor</module>
+    <module>openldap.syncrepl</module>
   </modules>
 </project>

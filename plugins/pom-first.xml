@@ -50,6 +50,7 @@
     <module>ldapservers.apacheds.v200/pom-first.xml</module>
     <module>openldap.common.ui/pom-first.xml</module>
     <module>openldap.config.editor/pom-first.xml</module>
+    <module>openldap.syncrepl/pom-first.xml</module>
     <module>rcp/pom-first.xml</module>
   </modules>
 
