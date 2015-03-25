@@ -49,5 +49,6 @@
     <module>schemaeditor</module>
     <module>valueeditors</module>
     <module>openldap.common.ui</module>
+    <module>openldap.config.editor</module>
   </modules>
 </project>
