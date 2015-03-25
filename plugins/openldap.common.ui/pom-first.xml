@@ -28,7 +28,7 @@
   </parent>
 
   <artifactId>org.apache.directory.studio.openldap.common.ui</artifactId>
-  <name>Apache Directory Studio OpenLDAP Common UI Manifest Generation</name>
+  <name>Apache Directory Studio OpenLDAP Common UI</name>
   <description/>
   <packaging>bundle</packaging>
 

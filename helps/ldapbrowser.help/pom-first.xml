@@ -28,7 +28,7 @@
   </parent>
 
   <artifactId>org.apache.directory.studio.ldapbrowser.help</artifactId>
-  <name>Apache Directory Studio LDAP Browser Help Manifest Generation</name>
+  <name>Apache Directory Studio LDAP Browser Help</name>
   <description/>
   <packaging>bundle</packaging>
 

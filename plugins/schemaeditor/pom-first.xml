@@ -28,7 +28,7 @@
   </parent>
 
   <artifactId>org.apache.directory.studio.schemaeditor</artifactId>
-  <name>Apache Directory Studio Schema Editor Manifest Generation</name>
+  <name>Apache Directory Studio Schema Editor</name>
   <description/>
   <packaging>bundle</packaging>
 

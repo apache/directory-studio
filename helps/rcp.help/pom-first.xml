@@ -28,7 +28,7 @@
   </parent>
 
   <artifactId>org.apache.directory.studio.rcp.help</artifactId>
-  <name>Apache Directory Studio RCP Help Manifest Generation</name>
+  <name>Apache Directory Studio RCP Help</name>
   <description/>
   <packaging>bundle</packaging>
 

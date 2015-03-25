@@ -28,7 +28,7 @@
   </parent>
 
   <artifactId>org.apache.directory.studio.common.ui</artifactId>
-  <name>Apache Directory Studio Common UI Manifest Generation</name>
+  <name>Apache Directory Studio Common UI</name>
   <description/>
   <packaging>bundle</packaging>
 

@@ -28,7 +28,7 @@
   </parent>
 
   <artifactId>org.apache.directory.studio.rcp</artifactId>
-  <name>Apache Directory Studio RCP Manifest Generation</name>
+  <name>Apache Directory Studio RCP</name>
   <description/>
   <packaging>bundle</packaging>
 

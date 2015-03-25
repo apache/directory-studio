@@ -28,7 +28,7 @@
   </parent>
 
   <artifactId>org.apache.directory.studio.valueeditors</artifactId>
-  <name>Apache Directory Studio Value Editors Manifest Generation</name>
+  <name>Apache Directory Studio Value Editors</name>
   <description/>
   <packaging>bundle</packaging>
 

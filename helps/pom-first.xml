@@ -28,7 +28,7 @@
   </parent>
 
   <artifactId>parent-helps</artifactId>
-  <name>Apache Directory Studio Help Plugins Parent Manifest Generation</name>
+  <name>Apache Directory Studio Help Plugins Parent</name>
   <version>2.0.0.qualifier</version>
   <packaging>pom</packaging>
 

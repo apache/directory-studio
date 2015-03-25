@@ -28,7 +28,7 @@
   </parent>
 
   <artifactId>org.apache.directory.studio.apacheds.configuration.v2</artifactId>
-  <name>Apache Directory Studio ApacheDS 2.0 Configuration Manifest Generation</name>
+  <name>Apache Directory Studio ApacheDS 2.0 Configuration</name>
   <description/>
   <packaging>bundle</packaging>
 

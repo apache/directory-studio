@@ -28,7 +28,7 @@
   </parent>
 
   <artifactId>org.apache.directory.studio.ldapbrowser.common</artifactId>
-  <name>Apache Directory Studio LDAP Browser Common Manifest Generation</name>
+  <name>Apache Directory Studio LDAP Browser Common</name>
   <description/>
   <packaging>bundle</packaging>
 

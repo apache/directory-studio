@@ -28,7 +28,7 @@
   </parent>
 
   <artifactId>org.apache.directory.studio.connection.ui</artifactId>
-  <name>Apache Directory Studio Connection UI Manifest Generation</name>
+  <name>Apache Directory Studio Connection UI</name>
   <packaging>bundle</packaging>
 
   <build>

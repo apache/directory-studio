@@ -27,7 +27,7 @@
     <relativePath>../pom-first.xml</relativePath>
   </parent>
 
-  <name>Apache Directory Studio Connection Core Manifest Generation</name>
+  <name>Apache Directory Studio Connection Core</name>
   <artifactId>org.apache.directory.studio.connection.core</artifactId>
   <packaging>bundle</packaging>
 

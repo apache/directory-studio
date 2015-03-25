@@ -28,7 +28,7 @@
   </parent>
 
   <artifactId>org.apache.directory.studio.ldapbrowser.ui</artifactId>
-  <name>Apache Directory Studio LDAP Browser UI Manifest Generation</name>
+  <name>Apache Directory Studio LDAP Browser UI</name>
   <description/>
   <packaging>bundle</packaging>
 

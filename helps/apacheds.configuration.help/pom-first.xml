@@ -28,7 +28,7 @@
   </parent>
 
   <artifactId>org.apache.directory.studio.apacheds.configuration.help</artifactId>
-  <name>Apache Directory Studio Apache DS Configuration Help Manifest Generation</name>
+  <name>Apache Directory Studio Apache DS Configuration Help</name>
   <description/>
   <packaging>bundle</packaging>
 

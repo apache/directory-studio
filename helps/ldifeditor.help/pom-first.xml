@@ -28,7 +28,7 @@
   </parent>
 
   <artifactId>org.apache.directory.studio.ldifeditor.help</artifactId>
-  <name>Apache Directory Studio LDIF Editor Help Manifest Generation</name>
+  <name>Apache Directory Studio LDIF Editor Help</name>
   <description/>
   <packaging>bundle</packaging>
 

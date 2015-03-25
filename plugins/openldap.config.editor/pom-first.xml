@@ -28,7 +28,7 @@
   </parent>
 
   <artifactId>org.apache.directory.studio.openldap.config.editor</artifactId>
-  <name>Apache Directory Studio OpenLDAP Configuration Editor Manifest Generation</name>
+  <name>Apache Directory Studio OpenLDAP Configuration Editor</name>
   <description/>
   <packaging>bundle</packaging>
 

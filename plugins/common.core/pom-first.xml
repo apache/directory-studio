@@ -28,7 +28,7 @@
   </parent>
 
   <artifactId>org.apache.directory.studio.common.core</artifactId>
-  <name>Apache Directory Studio Common Core Manifest Generation</name>
+  <name>Apache Directory Studio Common Core</name>
   <description/>
   <packaging>bundle</packaging>
 

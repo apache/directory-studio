@@ -28,7 +28,7 @@
   </parent>
 
   <artifactId>org.apache.directory.studio.ldapservers</artifactId>
-  <name>Apache Directory Studio LDAP Servers Manifest Generation</name>
+  <name>Apache Directory Studio LDAP Servers</name>
   <description/>
   <packaging>bundle</packaging>
 

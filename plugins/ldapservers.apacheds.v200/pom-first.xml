@@ -28,7 +28,7 @@
   </parent>
 
   <artifactId>org.apache.directory.studio.ldapservers.apacheds.v200</artifactId>
-  <name>Apache Directory Studio ApacheDS 2.0.0 LDAP Server Adapter Manifest Generation</name>
+  <name>Apache Directory Studio ApacheDS 2.0.0 LDAP Server Adapter</name>
   <description/>
   <packaging>bundle</packaging>
 
