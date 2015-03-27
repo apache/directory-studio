@@ -90,3 +90,8 @@ Generate help plugins
     cd helps
     mvn clean install -Duserguides
 
+Update site (p2 repo) is generated in product/target/repository
+
+Distribution files are generated in product/target/products
+
+
