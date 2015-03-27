@@ -49,6 +49,7 @@
             
             <Export-Package>org.apache.directory.studio.valueeditors,
  org.apache.directory.studio.valueeditors.dn,
+ org.apache.directory.studio.valueeditors.time,
  org.apache.directory.studio.valueeditors.password,
  org.apache.directory.studio.valueeditors.integer</Export-Package>
  
