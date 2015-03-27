@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Licensed to the Apache Software Foundation (ASF) under one or more
+  contributor license agreements.  See the NOTICE file distributed with
+  this work for additional information regarding copyright ownership.
+  The ASF licenses this file to You under the Apache License, Version 2.0
+  (the "License"); you may not use this file except in compliance with
+  the License.  You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<?eclipse version="3.0"?>
+<plugin>
+  <extension-point id="templates" name="Entry Templates" schema="src/main/resources/org.apache.directory.studio.templateeditor.templates.exsd"/>
+  <extension point="org.apache.directory.studio.templateeditor.templates">
+    <template file="resources/templates/domain-view.xml"/>
+    <template file="resources/templates/domain-edit.xml"/>
+    <template file="resources/templates/groupOfNames-view.xml"/>
+    <template file="resources/templates/groupOfNames-edit.xml"/>
+    <template file="resources/templates/groupOfUniqueNames-view.xml"/>
+    <template file="resources/templates/groupOfUniqueNames-edit.xml"/>
+    <template file="resources/templates/inetOrgPerson-view.xml"/>
+    <template file="resources/templates/inetOrgPerson-edit.xml"/>
+    <template file="resources/templates/metaAttributeType-view.xml"/>
+    <template file="resources/templates/metaAttributeType-edit.xml"/>
+    <template file="resources/templates/metaComparator-view.xml"/>
+    <template file="resources/templates/metaComparator-edit.xml"/>
+    <template file="resources/templates/metaMatchingRule-view.xml"/>
+    <template file="resources/templates/metaMatchingRule-edit.xml"/>
+    <template file="resources/templates/metaNormalizer-view.xml"/>
+    <template file="resources/templates/metaNormalizer-edit.xml"/>
+    <template file="resources/templates/metaObjectClass-view.xml"/>
+    <template file="resources/templates/metaObjectClass-edit.xml"/>
+    <template file="resources/templates/metaSchema-view.xml"/>
+    <template file="resources/templates/metaSchema-edit.xml"/>
+    <template file="resources/templates/metaSyntax-view.xml"/>
+    <template file="resources/templates/metaSyntax-edit.xml"/>
+    <template file="resources/templates/metaSyntaxChecker-view.xml"/>
+    <template file="resources/templates/metaSyntaxChecker-edit.xml"/>
+    <template file="resources/templates/organization-view.xml"/>
+    <template file="resources/templates/organization-edit.xml"/>
+    <template file="resources/templates/organizationalUnit-view.xml"/>
+    <template file="resources/templates/organizationalUnit-edit.xml"/>
+  </extension>
+    
+  <extension point="org.eclipse.ui.preferencePages">
+    <page
+      class="org.apache.directory.studio.templateeditor.view.preferences.TemplateEntryEditorPreferencePage"
+      id="%PrefPage_TemplateEntryEditorPreferencePage_id"
+      category="%PrefPage_EntryEditorsPreferencePage_id"
+      name="%PrefPage_TemplateEntryEditorPreferencePage_name">
+    </page>
+  </extension>
+    
+  <extension point="org.eclipse.equinox.preferences.preferences">
+    <initializer class="org.apache.directory.studio.templateeditor.PreferenceInitializer"/>
+  </extension>
+   
+  <extension point="org.eclipse.ui.editors">
+    <editor
+      class="org.apache.directory.studio.templateeditor.editor.SingleTabTemplateEntryEditor"
+      default="false"
+      icon="resources/icons/editor_single_tab.gif"
+      id="%Editor_SingleTabTemplateEntryEditor_id"
+      matchingStrategy="org.apache.directory.studio.entryeditors.SingleTabEntryEditorMatchingStrategy"
+      name="%Editor_SingleTabTemplateEntryEditor_shortname">
+    </editor>
+	  
+    <editor
+      class="org.apache.directory.studio.templateeditor.editor.MultiTabTemplateEntryEditor"
+      default="false"
+      icon="resources/icons/editor_multi_tab.gif"
+      id="%Editor_MultiTabTemplateEntryEditor_id"
+      matchingStrategy="org.apache.directory.studio.entryeditors.MultiTabEntryEditorMatchingStrategy"
+      name="%Editor_MultiTabTemplateEntryEditor_shortname">
+    </editor>
+  </extension>
+   
+  <extension point="org.apache.directory.studio.entryeditors">
+    <entryEditor
+	  class="org.apache.directory.studio.templateeditor.editor.SingleTabTemplateEntryEditor"
+      description="%Editor_SingleTabTemplateEntryEditor_description"
+      editorId="%Editor_SingleTabTemplateEntryEditor_id"
+      icon="resources/icons/editor_single_tab.gif"
+      id="%Editor_SingleTabTemplateEntryEditor_id"
+      name="%Editor_SingleTabTemplateEntryEditor_fullname"
+      priority="9"
+      multiWindow="false">
+    </entryEditor>
+		
+    <entryEditor
+      class="org.apache.directory.studio.templateeditor.editor.MultiTabTemplateEntryEditor"
+      description="%Editor_MultiTabTemplateEntryEditor_description"
+      editorId="%Editor_MultiTabTemplateEntryEditor_id"
+      icon="resources/icons/editor_multi_tab.gif"
+      id="%Editor_MultiTabTemplateEntryEditor_id"
+      name="%Editor_MultiTabTemplateEntryEditor_fullname"
+      priority="8"
+      multiWindow="true">
+    </entryEditor>
+  </extension>
+</plugin>
