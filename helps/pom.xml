@@ -74,8 +74,8 @@
                 <configuration>
                   <target>
                     <!-- Prepare docbook -->
-                    <unzip src="../docbook-xml-4.5.zip" dest="target/docbook/docbook-xml" />
-                    <unzip src="../docbook-xsl-1.71.1.zip" dest="target/docbook" />
+                    <unzip src="${project.basedir}/../docbook-xml-4.5.zip" dest="${project.build.directory}/docbook/docbook-xml" />
+                    <unzip src="${project.basedir}/../docbook-xsl-1.71.1.zip" dest="${project.build.directory}/docbook" />
                     <property name="fromregexpxml" value="^(docbook-xml-[^/]+)/(.*)" />
                     <property name="toregexpxml" value="docbook-xml/\2" />
                     <move todir="target/docbook">
@@ -193,8 +193,8 @@
                     </taskdef>
 
                     <!-- Prepare docbook -->
-                    <unzip src="../docbook-xml-4.5.zip" dest="target/docbook/docbook-xml" />
-                    <unzip src="../docbook-xsl-1.71.1.zip" dest="target/docbook" />
+                    <unzip src="${project.basedir}/../docbook-xml-4.5.zip" dest="${project.build.directory}/docbook/docbook-xml" />
+                    <unzip src="${project.basedir}/../docbook-xsl-1.71.1.zip" dest="${project.build.directory}/docbook" />
                     <property name="fromregexpxml" value="^(docbook-xml-[^/]+)/(.*)" />
                     <property name="toregexpxml" value="docbook-xml/\2" />
                     <move todir="target/docbook">
