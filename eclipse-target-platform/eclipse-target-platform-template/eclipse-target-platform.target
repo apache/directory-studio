@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <?pde version="3.8"?>
-<target name="Apache Directory Studio Platform" sequenceNumber="85">
+<target name="Apache Directory Studio Platform" sequenceNumber="117">
   <locations>
 
     <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
@@ -88,13 +88,13 @@
     </location>
 
     <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
-      <unit id="org.eclipse.rcp.feature.group" version="0.0.0"/>
-      <unit id="org.eclipse.rcp.source.feature.group" version="0.0.0"/>
-      <unit id="org.eclipse.platform.feature.group" version="0.0.0"/>
-      <unit id="org.eclipse.platform.source.feature.group" version="0.0.0"/>
-      <unit id="org.eclipse.jdt.feature.group" version="0.0.0"/>
-      <unit id="org.eclipse.equinox.p2.user.ui.feature.group" version="0.0.0"/>
-      <unit id="org.eclipse.equinox.executable.feature.group" version="0.0.0"/>
+      <unit id="org.eclipse.rcp.feature.group" version="4.4.2.v20150204-1700"/>
+      <unit id="org.eclipse.rcp.source.feature.group" version="4.4.2.v20150204-1700"/>
+      <unit id="org.eclipse.platform.feature.group" version="4.4.2.v20150204-1700"/>
+      <unit id="org.eclipse.platform.source.feature.group" version="4.4.2.v20150204-1700"/>
+      <unit id="org.eclipse.jdt.feature.group" version="3.10.1.v20150204-1700"/>
+      <unit id="org.eclipse.equinox.p2.user.ui.feature.group" version="2.2.0.v20150129-0838"/>
+      <unit id="org.eclipse.equinox.executable.feature.group" version="3.6.102.v20150204-1316"/>
       <repository location="http://download.eclipse.org/eclipse/updates/4.4"/>
     </location>
 
