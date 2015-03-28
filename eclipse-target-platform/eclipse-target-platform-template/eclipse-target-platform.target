@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <?pde version="3.8"?>
-<target name="Apache Directory Studio Platform" sequenceNumber="117">
+<target name="Apache Directory Studio Platform" sequenceNumber="118">
   <locations>
 
     <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
@@ -80,6 +80,9 @@
       <unit id="org.apache.directory.server.config" version="${org.apache.directory.server.bundleversion}" />
       <unit id="org.apache.directory.server.jndi" version="${org.apache.directory.server.bundleversion}" />
       <unit id="org.apache.directory.server.service.builder" version="${org.apache.directory.server.bundleversion}" />
+      <unit id="org.apache.directory.server.core.annotations" version="${org.apache.directory.server.bundleversion}" />
+      <unit id="org.apache.directory.server.annotations" version="${org.apache.directory.server.bundleversion}" />
+      <unit id="org.apache.directory.server.apacheds-test-framework" version="${org.apache.directory.server.bundleversion}" />
 
       <!-- MINA module -->
       <unit id="org.apache.mina.core" version="${org.apache.mina.bundleversion}"/>
