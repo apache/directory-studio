@@ -48,10 +48,10 @@
             <Bundle-Activator>org.apache.directory.studio.test.integration.core.Activator</Bundle-Activator>
             
             <Require-Bundle>org.junit;bundle-version="4.11.0",
- org.apache.directory.server.apacheds-test-framework;bundle-version="${org.apache.directory.api.bundleversion}",
- org.apache.directory.server.annotations;bundle-version="${org.apache.directory.api.bundleversion}",
- org.apache.directory.server.core.annotations;bundle-version="${org.apache.directory.api.bundleversion}",
- org.apache.directory.server.protocol.ldap;bundle-version="${org.apache.directory.api.bundleversion}",
+ org.apache.directory.server.apacheds-test-framework;bundle-version="${org.apache.directory.server.bundleversion}",
+ org.apache.directory.server.annotations;bundle-version="${org.apache.directory.server.bundleversion}",
+ org.apache.directory.server.core.annotations;bundle-version="${org.apache.directory.server.bundleversion}",
+ org.apache.directory.server.protocol.ldap;bundle-version="${org.apache.directory.server.bundleversion}",
  org.apache.directory.api.asn1.api;bundle-version="${org.apache.directory.api.bundleversion}",
  org.apache.directory.api.ldap.client.api;bundle-version="${org.apache.directory.api.bundleversion}",
  org.apache.directory.api.ldap.codec.core;bundle-version="${org.apache.directory.api.bundleversion}",
