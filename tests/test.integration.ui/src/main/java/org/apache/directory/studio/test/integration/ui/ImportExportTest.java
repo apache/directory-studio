@@ -37,7 +37,7 @@ import org.apache.directory.server.annotations.CreateTransport;
 import org.apache.directory.server.core.annotations.ApplyLdifFiles;
 import org.apache.directory.server.core.integ.AbstractLdapTestUnit;
 import org.apache.directory.server.core.integ.FrameworkRunner;
-import org.apache.directory.server.core.partition.Partition;
+import org.apache.directory.server.core.api.partition.Partition;
 import org.apache.directory.server.core.partition.impl.btree.jdbm.JdbmPartition;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
@@ -204,10 +204,10 @@ public class ImportExportTest extends AbstractLdapTestUnit
     public void testImportContextEntryRefreshesRootDSE() throws Exception
     {
         // add a new partition
-        Partition partition = new JdbmPartition();
+        Partition partition = new JdbmPartition(service.getSchemaManager(), service.getDnFactory());
         partition.setId( "example" );
-        partition.setSuffix( new Dn( "dc=example,dc=com" ) );
-        ldapServer.getDirectoryService().addPartition( partition );
+        partition.setSuffixDn( new Dn( "dc=example,dc=com" ) );
+        service.addPartition( partition );
 
         // refresh root DSE and ensure that the partition is in root DSE
         browserViewBot.selectEntry( "DIT", "Root DSE" );

@@ -81,7 +81,7 @@ public class NewEntryWizardTest extends AbstractLdapTestUnit
         entry.add( "objectClass", "top", "referral", "extensibleObject" );
         entry.add( "cn", "referralDialogTest" );
         entry.add( "ref", "ldap://localhost:" + ldapServer.getPort() + "/ou=users,ou=system" );
-        ldapServer.getDirectoryService().getAdminSession().add( entry );
+        service.getAdminSession().add( entry );
 
         studioBot = new StudioBot();
         studioBot.resetLdapPerspective();

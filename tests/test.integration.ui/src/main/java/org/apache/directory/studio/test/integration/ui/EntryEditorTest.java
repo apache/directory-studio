@@ -60,8 +60,8 @@ import org.junit.runner.RunWith;
 @RunWith(FrameworkRunner.class)
 @CreateLdapServer(transports =
     { @CreateTransport(protocol = "LDAP") })
-@ApplyLdifFiles(
-    { "org/apache/directory/studio/test/integration/ui/EntryEditorTest.ldif" })
+@ApplyLdifFiles( clazz=EntryEditorTest.class,
+    value = { "org/apache/directory/studio/test/integration/ui/EntryEditorTest.ldif" })
 public class EntryEditorTest extends AbstractLdapTestUnit
 {
     private StudioBot studioBot;
@@ -249,7 +249,7 @@ public class EntryEditorTest extends AbstractLdapTestUnit
         entryEditorBot.getAttributeValues().contains( "uid: bjensen" );
 
         // assert pasted value was written to directory
-        Entry entry = ldapServer.getDirectoryService().getAdminSession()
+        Entry entry = service.getAdminSession()
             .lookup( new Dn( "cn=\\#\\\\\\+\\, \\\"\u00F6\u00E9\\\",ou=users,ou=system" ) );
         assertTrue( entry.contains( "uid", "bjensen" ) );
     }

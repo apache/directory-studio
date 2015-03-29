@@ -47,7 +47,7 @@ import javax.security.auth.x500.X500Principal;
 
 import org.apache.directory.server.annotations.CreateLdapServer;
 import org.apache.directory.server.annotations.CreateTransport;
-import org.apache.directory.server.core.CoreSession;
+import org.apache.directory.server.core.api.CoreSession;
 import org.apache.directory.server.core.integ.AbstractLdapTestUnit;
 import org.apache.directory.server.core.integ.FrameworkRunner;
 import org.apache.directory.api.ldap.model.entry.Entry;
@@ -1092,7 +1092,7 @@ public class NewConnectionWizardTest extends AbstractLdapTestUnit
         List<Modification> modifications = new ArrayList<Modification>();
 
         // Get old key algorithm
-        Entry entry = ldapServer.getDirectoryService().getAdminSession().lookup( dn );
+        Entry entry = service.getAdminSession().lookup( dn );
         String keyAlgo = entry.get( KEY_ALGORITHM_AT ).getString();
 
         // Generate key pair
@@ -1128,7 +1128,7 @@ public class NewConnectionWizardTest extends AbstractLdapTestUnit
         request.replace( PUBLIC_KEY_AT, publicKey.getEncoded() );
         request.replace( PUBLIC_KEY_FORMAT_AT, publicKey.getFormat() );
         request.replace( USER_CERTIFICATE_AT, cert.getEncoded() );
-        ldapServer.getDirectoryService().getAdminSession().modify( dn, modifications );
+        service.getAdminSession().modify( dn, modifications );
 
         // TODO: activate when DIRSERVER-1373 is fixed
         //ldapService.reloadSslContext();
@@ -1144,7 +1144,7 @@ public class NewConnectionWizardTest extends AbstractLdapTestUnit
         }
         ksFile = File.createTempFile( "testStore", "ks" );
 
-        CoreSession session = ldapServer.getDirectoryService().getAdminSession();
+        CoreSession session = service.getAdminSession();
         Entry entry = session.lookup( new Dn( "uid=admin,ou=system" ), new String[]
             { USER_CERTIFICATE_AT } );
         byte[] userCertificate = entry.get( USER_CERTIFICATE_AT ).getBytes();

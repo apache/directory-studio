@@ -82,7 +82,7 @@ public class ReferralDialogTest extends AbstractLdapTestUnit
         entry.add( "objectClass", "top", "referral", "extensibleObject" );
         entry.add( "cn", "referralDialogTest" );
         entry.add( "ref", "ldap://localhost:" + ldapServer.getPort() + "/ou=users,ou=system" );
-        ldapServer.getDirectoryService().getAdminSession().add( entry );
+        service.getAdminSession().add( entry );
 
         // get paths
         parentPath = new String[]

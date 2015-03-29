@@ -197,7 +197,7 @@ public class SearchTest extends AbstractLdapTestUnit
         ModifyRequest request = new ModifyRequestImpl();
         request.setName( new Dn( "uid=admin,ou=system" ) );
         request.replace( "description", "The 1st description." );
-        ldapServer.getDirectoryService().getAdminSession().modify( request );
+        service.getAdminSession().modify( request );
 
         // refresh the search, using the toolbar icon
         srEditorBot.refresh();

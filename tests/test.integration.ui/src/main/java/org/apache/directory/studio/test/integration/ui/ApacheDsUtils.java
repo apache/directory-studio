@@ -21,13 +21,15 @@
 package org.apache.directory.studio.test.integration.ui;
 
 
-import static org.apache.directory.server.integ.ServerIntegrationUtils.getWiredContext;
+import java.util.Hashtable;
 
+import javax.naming.Context;
 import javax.naming.directory.Attribute;
 import javax.naming.directory.Attributes;
 import javax.naming.directory.BasicAttribute;
 import javax.naming.directory.DirContext;
 import javax.naming.directory.ModificationItem;
+import javax.naming.ldap.InitialLdapContext;
 
 import org.apache.directory.server.ldap.LdapServer;
 
@@ -42,7 +44,14 @@ public class ApacheDsUtils
 {
     public static void enableSchema( LdapServer ldapServer, String schema ) throws Exception
     {
-        DirContext schemaRoot = ( DirContext ) getWiredContext( ldapServer ).lookup( "ou=schema" );
+        Hashtable<String, String> env = new Hashtable<String, String>();
+        env.put( Context.INITIAL_CONTEXT_FACTORY, "com.sun.jndi.ldap.LdapCtxFactory" );
+        env.put( Context.PROVIDER_URL, "ldap://localhost:" + ldapServer.getPort() );
+        env.put( Context.SECURITY_PRINCIPAL, "uid=admin,ou=system" );
+        env.put( Context.SECURITY_CREDENTIALS, "secret" );
+        env.put( Context.SECURITY_AUTHENTICATION, "simple" );
+        DirContext schemaRoot = ( DirContext ) new InitialLdapContext( env, null ).lookup( "ou=schema" );
+
         Attributes krb5kdcAttrs = schemaRoot.getAttributes( "cn=" + schema );
         boolean isKrb5KdcDisabled = false;
         if ( krb5kdcAttrs.get( "m-disabled" ) != null )

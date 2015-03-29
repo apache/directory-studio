@@ -20,9 +20,9 @@
 package org.apache.directory.studio.test.integration.ui.bots;
 
 
-import org.apache.directory.studio.apacheds.model.Server;
-import org.apache.directory.studio.apacheds.model.ServerStateEnum;
-import org.apache.directory.studio.apacheds.model.ServersHandler;
+import org.apache.directory.studio.ldapservers.LdapServersManager;
+import org.apache.directory.studio.ldapservers.model.LdapServer;
+import org.apache.directory.studio.ldapservers.model.LdapServerStatus;
 import org.apache.directory.studio.test.integration.ui.ContextMenuHelper;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
@@ -189,10 +189,10 @@ public class ApacheDSServersViewBot
         {
             public boolean test() throws Exception
             {
-                Server server = getServer( serverName );
+                LdapServer server = getServer( serverName );
                 if ( server != null )
                 {
-                    return ( ServerStateEnum.STARTED == server.getState() );
+                    return ( LdapServerStatus.STARTED == server.getStatus() );
                 }
 
                 return false;
@@ -219,10 +219,10 @@ public class ApacheDSServersViewBot
         {
             public boolean test() throws Exception
             {
-                Server server = getServer( serverName );
+                LdapServer server = getServer( serverName );
                 if ( server != null )
                 {
-                    return ( ServerStateEnum.STOPPED == server.getState() );
+                    return ( LdapServerStatus.STOPPED == server.getStatus() );
                 }
 
                 return false;
@@ -246,9 +246,9 @@ public class ApacheDSServersViewBot
      *      the server associated with the given name,
      *      or <code>null</code> if none was found.
      */
-    private Server getServer( String serverName )
+    private LdapServer getServer( String serverName )
     {
-        for ( Server server : ServersHandler.getDefault().getServersList() )
+        for ( LdapServer server : LdapServersManager.getDefault().getServersList() )
         {
             if ( serverName.equals( server.getName() ) )
             {

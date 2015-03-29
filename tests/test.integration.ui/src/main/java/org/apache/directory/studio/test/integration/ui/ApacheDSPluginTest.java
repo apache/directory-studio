@@ -25,12 +25,12 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import org.apache.directory.studio.apacheds.model.ServersHandler;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
 import org.apache.directory.studio.connection.core.ConnectionFolder;
 import org.apache.directory.studio.connection.core.ConnectionFolderManager;
 import org.apache.directory.studio.connection.core.ConnectionManager;
+import org.apache.directory.studio.ldapservers.LdapServersManager;
 import org.apache.directory.studio.test.integration.ui.bots.ApacheDSServersViewBot;
 import org.apache.directory.studio.test.integration.ui.bots.ConnectionFromServerDialogBot;
 import org.apache.directory.studio.test.integration.ui.bots.ConnectionsViewBot;
@@ -280,7 +280,7 @@ public class ApacheDSPluginTest
      */
     public int getCoreServersCount()
     {
-        ServersHandler serversHandler = ServersHandler.getDefault();
+        LdapServersManager serversHandler = LdapServersManager.getDefault();
         if ( serversHandler != null )
         {
             return serversHandler.getServersList().size();
