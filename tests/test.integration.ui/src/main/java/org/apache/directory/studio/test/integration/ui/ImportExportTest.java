@@ -21,9 +21,9 @@
 package org.apache.directory.studio.test.integration.ui;
 
 
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertFalse;
-import static junit.framework.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.InputStream;
@@ -38,7 +38,7 @@ import org.apache.directory.server.core.annotations.ApplyLdifFiles;
 import org.apache.directory.server.core.integ.AbstractLdapTestUnit;
 import org.apache.directory.server.core.integ.FrameworkRunner;
 import org.apache.directory.server.core.api.partition.Partition;
-import org.apache.directory.server.core.partition.impl.btree.jdbm.JdbmPartition;
+import org.apache.directory.server.core.partition.impl.avl.AvlPartition;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
 import org.apache.directory.studio.test.integration.ui.bots.BrowserViewBot;
@@ -63,8 +63,8 @@ import org.junit.runner.RunWith;
 @RunWith(FrameworkRunner.class)
 @CreateLdapServer(transports =
     { @CreateTransport(protocol = "LDAP") })
-@ApplyLdifFiles(
-    { "org/apache/directory/studio/test/integration/ui/ImportExportTest.ldif" })
+@ApplyLdifFiles( clazz = ImportExportTest.class,
+    value = "org/apache/directory/studio/test/integration/ui/ImportExportTest.ldif" )
 public class ImportExportTest extends AbstractLdapTestUnit
 {
     private StudioBot studioBot;
@@ -160,7 +160,7 @@ public class ImportExportTest extends AbstractLdapTestUnit
 
         browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users", "cn=Wolfgang K\u00f6lbel" );
 
-        // export LDIF
+        // export DSML
         ExportWizardBot wizardBot = browserViewBot.openExportDsmlWizard();
         assertTrue( wizardBot.isVisible() );
         wizardBot.clickNextButton();
@@ -204,7 +204,7 @@ public class ImportExportTest extends AbstractLdapTestUnit
     public void testImportContextEntryRefreshesRootDSE() throws Exception
     {
         // add a new partition
-        Partition partition = new JdbmPartition(service.getSchemaManager(), service.getDnFactory());
+        Partition partition = new AvlPartition(service.getSchemaManager(), service.getDnFactory());
         partition.setId( "example" );
         partition.setSuffixDn( new Dn( "dc=example,dc=com" ) );
         service.addPartition( partition );

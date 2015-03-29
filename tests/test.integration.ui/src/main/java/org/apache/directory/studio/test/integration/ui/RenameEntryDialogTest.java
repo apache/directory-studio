@@ -21,7 +21,7 @@
 package org.apache.directory.studio.test.integration.ui;
 
 
-import static junit.framework.Assert.assertTrue;
+import static org.junit.Assert.assertTrue;
 
 import org.apache.directory.server.annotations.CreateLdapServer;
 import org.apache.directory.server.annotations.CreateTransport;
@@ -47,8 +47,8 @@ import org.junit.runner.RunWith;
 @RunWith(FrameworkRunner.class)
 @CreateLdapServer(transports =
     { @CreateTransport(protocol = "LDAP") })
-@ApplyLdifFiles(
-    { "org/apache/directory/studio/test/integration/ui/RenameEntryDialogTest.ldif" })
+@ApplyLdifFiles( clazz = RenameEntryDialogTest.class,
+    value = "org/apache/directory/studio/test/integration/ui/RenameEntryDialogTest.ldif" )
 public class RenameEntryDialogTest extends AbstractLdapTestUnit
 {
     private StudioBot studioBot;
