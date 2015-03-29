@@ -276,7 +276,7 @@ public class LoadConfigurationRunnable implements StudioRunnableWithProgress
     }
 
 
-    private static Configuration readMultiFileConfigureation( File confDirectory ) throws Exception
+    private static synchronized Configuration readMultiFileConfigureation( File confDirectory ) throws Exception
     {
         InstanceLayout instanceLayout = new InstanceLayout( confDirectory.getParentFile() );
 
