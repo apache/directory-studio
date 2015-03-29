@@ -24,7 +24,7 @@
 	</objectClasses>
 	<form>
 		<section>
-			<link value="http://www.iktek.com" />
+			<link value="http://www.apache.org" />
 		</section>
 	</form>
 </template>

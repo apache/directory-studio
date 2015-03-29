@@ -727,7 +727,7 @@ public class TemplateIOTest extends TestCase
         TemplateLink link = ( TemplateLink ) section.getChildren().get( 0 );
         assertNotNull( link );
         assertNull( link.getAttributeType() );
-        assertEquals( "http://www.iktek.com", link.getValue() ); //$NON-NLS-1$
+        assertEquals( "http://www.apache.org", link.getValue() ); //$NON-NLS-1$
     }
 
 

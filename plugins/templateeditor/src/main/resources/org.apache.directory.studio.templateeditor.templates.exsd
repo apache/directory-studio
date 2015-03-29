@@ -19,10 +19,10 @@
   @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
 -->
 <!-- Schema file written by PDE -->
-<schema targetNamespace="com.iktek.studio.templateeditor" xmlns="http://www.w3.org/2001/XMLSchema">
+<schema targetNamespace="org.apache.directory.studio.templateeditor" xmlns="http://www.w3.org/2001/XMLSchema">
 <annotation>
       <appinfo>
-         <meta.schema plugin="com.iktek.studio.templateeditor" id="templates" name="Entry Templates"/>
+         <meta.schema plugin="org.apache.directory.studio.templateeditor" id="templates" name="Entry Templates"/>
       </appinfo>
       <documentation>
          [Enter description of this extension point.]

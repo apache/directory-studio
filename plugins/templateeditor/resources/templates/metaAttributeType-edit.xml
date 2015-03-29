@@ -19,7 +19,7 @@
   @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
 -->
 <template
-	id="com.iktek.studio.templateeditor.templates.metaAttributeType-edit"
+	id="org.apache.directory.studio.templateeditor.templates.metaAttributeType-edit"
 	title="MetaAttributeType - Edit">
 	<objectClasses>
 		<structural>metaAttributeType</structural>
