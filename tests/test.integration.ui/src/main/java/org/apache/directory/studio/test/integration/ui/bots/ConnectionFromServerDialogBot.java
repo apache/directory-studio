@@ -19,11 +19,21 @@
  */
 package org.apache.directory.studio.test.integration.ui.bots;
 
+import org.eclipse.swtbot.swt.finder.keyboard.Keystrokes;
+
 
 public class ConnectionFromServerDialogBot extends DialogBot
 {
     public void clickOkButton()
     {
-        super.clickButton( "OK" );
+        // TODO: handle native dialogs
+        //super.clickButton( "OK" );
+        super.bot.activeShell().pressShortcut( Keystrokes.SPACE );
+    }
+
+
+    public boolean isVisible()
+    {
+        return isVisible( "Connection created" );
     }
 }

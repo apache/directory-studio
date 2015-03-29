@@ -20,8 +20,25 @@
 package org.apache.directory.studio.test.integration.ui.bots;
 
 
+import org.eclipse.swtbot.swt.finder.waits.DefaultCondition;
+
+
 public abstract class WizardBot extends DialogBot
 {
+
+    private String title;
+
+
+    public WizardBot()
+    {
+    }
+
+
+    public WizardBot( String title )
+    {
+        this.title = title;
+    }
+
 
     public boolean isBackButtonEnabled()
     {
@@ -68,6 +85,23 @@ public abstract class WizardBot extends DialogBot
     public void clickFinishButton()
     {
         clickButton( "Finish" );
+
+        if ( title != null )
+        {
+            bot.waitUntil( new DefaultCondition()
+            {
+                public boolean test() throws Exception
+                {
+                    return isVisible( title );
+                }
+
+
+                public String getFailureMessage()
+                {
+                    return "Wizard " + title + " not closed.";
+                }
+            } );
+        }
     }
 
 

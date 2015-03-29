@@ -21,9 +21,9 @@
 package org.apache.directory.studio.test.integration.ui;
 
 
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertFalse;
-import static junit.framework.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 
@@ -68,8 +68,8 @@ import org.junit.runner.RunWith;
 @RunWith(FrameworkRunner.class)
 @CreateLdapServer(transports =
     { @CreateTransport(protocol = "LDAP") })
-@ApplyLdifFiles(
-    { "org/apache/directory/studio/test/integration/ui/BrowserTest.ldif" })
+@ApplyLdifFiles( clazz = BrowserTest.class,
+    value = "org/apache/directory/studio/test/integration/ui/BrowserTest.ldif" )
 public class BrowserTest extends AbstractLdapTestUnit
 {
     private StudioBot studioBot;
@@ -87,8 +87,6 @@ public class BrowserTest extends AbstractLdapTestUnit
         studioBot = new StudioBot();
         studioBot.resetLdapPerspective();
         connectionsViewBot = studioBot.getConnectionView();
-        System.out.println( connectionsViewBot );
-        System.out.println( ldapServer );
         connection = connectionsViewBot.createTestConnection( "BrowserTest", ldapServer.getPort() );
         browserViewBot = studioBot.getBrowserView();
         searchLogsViewBot = studioBot.getSearchLogsViewBot();

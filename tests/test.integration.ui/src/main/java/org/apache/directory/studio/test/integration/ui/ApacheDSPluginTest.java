@@ -92,6 +92,7 @@ public class ApacheDSPluginTest
         assertFalse( wizardBot.isFinishButtonEnabled() );
 
         // Filling fields of the wizard
+        wizardBot.selectApacheDS200();
         String serverName = "NewServerWizardTest";
         wizardBot.typeServerName( serverName );
 
@@ -146,6 +147,7 @@ public class ApacheDSPluginTest
 
         // Filling fields of the wizard
         String serverName = "NewServerWizardTest";
+        wizardBot.selectApacheDS200();
         wizardBot.typeServerName( serverName );
 
         // Verifying the wizard can now be finished
@@ -166,6 +168,7 @@ public class ApacheDSPluginTest
         assertFalse( wizardBot.isFinishButtonEnabled() );
 
         // Filling fields of the wizard
+        wizardBot.selectApacheDS200();
         wizardBot.typeServerName( serverName );
 
         // Verifying the wizard can't be finished (because a server with
@@ -209,6 +212,7 @@ public class ApacheDSPluginTest
 
         // Filling fields of the wizard
         String serverName = "NewServerWizardTest";
+        wizardBot.selectApacheDS200();
         wizardBot.typeServerName( serverName );
 
         // Verifying the wizard can now be finished
@@ -231,6 +235,7 @@ public class ApacheDSPluginTest
 
         // Creating a connection associated with the server
         ConnectionFromServerDialogBot connectionFromServerDialogBot = serversViewBot.createConnectionFromServer();
+        assertTrue( connectionFromServerDialogBot.isVisible() );
         connectionFromServerDialogBot.clickOkButton();
 
         // Verifying the connections count is now 1

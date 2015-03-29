@@ -40,7 +40,7 @@ public class ApacheDSServersViewBot
 
     public ApacheDSServersViewBot()
     {
-        view = new SWTWorkbenchBot().viewByTitle( "Servers" );
+        view = new SWTWorkbenchBot().viewByTitle( "LDAP Servers" );
     }
 
 
@@ -74,7 +74,7 @@ public class ApacheDSServersViewBot
      */
     public ConnectionFromServerDialogBot createConnectionFromServer()
     {
-        ContextMenuHelper.clickContextMenu( getServersTree(), "LDAP Browser", "Create a Connection" );
+        ContextMenuHelper.clickContextMenu( getServersTree(), "Create a Connection" );
         return new ConnectionFromServerDialogBot();
     }
 
