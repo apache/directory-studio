@@ -24,6 +24,7 @@
     <groupId>org.apache.directory.studio</groupId>
     <artifactId>parent</artifactId>
     <version>2.0.0-SNAPSHOT</version>
+    <relativePath>../</relativePath>
   </parent>
   
   <artifactId>parent-tests</artifactId>
@@ -32,7 +33,7 @@
 
   <modules>
     <module>test.integration.core</module>
-    <module>test.integration.ui</module>
+<!--     <module>test.integration.ui</module> -->
   </modules>
   
 </project>

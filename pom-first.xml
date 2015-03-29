@@ -36,6 +36,7 @@
     <module>eclipse-target-platform/pom.xml</module>
     <module>plugins/pom-first.xml</module>
     <module>helps/pom-first.xml</module>
+    <module>tests/pom-first.xml</module>
   </modules>
 
   <build>

@@ -113,6 +113,7 @@
     <module>plugins</module>
     <module>helps</module>
     <module>features</module>
+    <module>tests</module>
     <module>product</module>
   </modules>
 

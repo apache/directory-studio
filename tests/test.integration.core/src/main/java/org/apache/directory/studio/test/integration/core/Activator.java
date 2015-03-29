@@ -17,32 +17,35 @@
  *  under the License. 
  *  
  */
-
 package org.apache.directory.studio.test.integration.core;
 
 
-import junit.framework.Test;
-import junit.framework.TestSuite;
+import org.apache.directory.api.ldap.codec.protocol.mina.LdapProtocolCodecActivator;
+import org.eclipse.core.runtime.Plugin;
+import org.osgi.framework.BundleContext;
 
 
 /**
- * TODO AutomatedSuite.
- *
- * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
+ * The activator class controls the plug-in life cycle
  */
-public class AutomatedSuite extends TestSuite
+public class Activator extends Plugin
 {
 
-    public static Test suite()
+    /**
+     * @see org.eclipse.core.runtime.Plugin#start(org.osgi.framework.BundleContext)
+     */
+    public void start( BundleContext context ) throws Exception
     {
-        return new AutomatedSuite();
+        super.start( context );
+        LdapProtocolCodecActivator.lazyStart();
     }
 
 
-    public AutomatedSuite()
+    /**
+     * @see org.eclipse.core.runtime.Plugin#stop(org.osgi.framework.BundleContext)
+     */
+    public void stop( BundleContext context ) throws Exception
     {
-        addTest( new TestSuite( JNDIConnectionWrapperTest.class ) );
     }
 
 }
