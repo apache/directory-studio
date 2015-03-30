@@ -65,8 +65,17 @@ class EntryEditorWidgetBot
     void cancelEditValue()
     {
         SWTBotTree tree = bot.tree( 0 );
-        // TODO: DIRAPI-228
-        tree.getTreeItem( "objectclass" ).click();
+        // TODO: Workaround for DIRAPI-228/DIRAPI-229
+        //tree.getTreeItem( "objectClass" ).click();
+        SWTBotTreeItem[] allItems = tree.getAllItems();
+        for ( SWTBotTreeItem item : allItems )
+        {
+            if ( "objectclass".equalsIgnoreCase( item.getText() ) )
+            {
+                item.click();
+                return;
+            }
+        }
     }
 
 
