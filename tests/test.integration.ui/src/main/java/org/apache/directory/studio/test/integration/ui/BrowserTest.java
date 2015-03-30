@@ -55,6 +55,7 @@ import org.apache.directory.studio.test.integration.ui.bots.utils.JobWatcher;
 import org.eclipse.jface.dialogs.ErrorDialog;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -354,6 +355,7 @@ public class BrowserTest extends AbstractLdapTestUnit
      * @throws Exception
      */
     @Test
+    @Ignore("Till DIRSERVER-2057 is fixed")
     public void testRefreshSearchContinuation() throws Exception
     {
         // preparation: add referral entry and set referral handling
