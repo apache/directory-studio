@@ -52,7 +52,7 @@
     <module>openldap.config.editor/pom-first.xml</module>
     <module>openldap.syncrepl/pom-first.xml</module>
     <module>rcp/pom-first.xml</module>
-    <!--module>combinededitor/pom-first.xml</module-->
+    <module>combinededitor/pom-first.xml</module>
     <module>templateeditor/pom-first.xml</module>
   </modules>
 
