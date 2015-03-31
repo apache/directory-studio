@@ -27,7 +27,7 @@
     <relativePath>../pom-first.xml</relativePath>
   </parent>
 
-  <artifactId>templateeditor</artifactId>
+  <artifactId>org.apache.directory.studio.templateeditor</artifactId>
   <name>Apache Directory Studio Template Editor</name>
   <packaging>bundle</packaging>
   <description />
@@ -46,7 +46,17 @@
             <Bundle-Localization>plugin</Bundle-Localization>
             <Eclipse-LazyStart>true</Eclipse-LazyStart>
             <Bundle-Activator>org.apache.directory.studio.templateeditor.EntryTemplatePlugin</Bundle-Activator>
-            <Export-Package>org.apache.directory.studio.templateeditor</Export-Package>
+            <Export-Package>org.apache.directory.studio.templateeditor,
+              org.apache.directory.studio.templateeditor.actions,
+              org.apache.directory.studio.templateeditor.editor,
+              org.apache.directory.studio.templateeditor.editor.widgets,
+              org.apache.directory.studio.templateeditor.model,
+              org.apache.directory.studio.templateeditor.model.parser,
+              org.apache.directory.studio.templateeditor.model.widgets,
+              org.apache.directory.studio.templateeditor.view,
+              org.apache.directory.studio.templateeditor.view.preferences,
+              org.apache.directory.studio.templateeditor.view.wizards
+            </Export-Package>
             <Require-Bundle>
               org.eclipse.core.runtime,
               org.eclipse.ui,

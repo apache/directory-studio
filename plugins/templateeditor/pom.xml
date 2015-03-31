@@ -27,7 +27,7 @@
     <relativePath>../</relativePath>
   </parent>
 
-  <artifactId>templateeditor</artifactId>
+  <artifactId>org.apache.directory.studio.templateeditor</artifactId>
   <name>Apache Directory Studio Template Editor</name>
   <packaging>eclipse-plugin</packaging>
   <description />
