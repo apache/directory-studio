@@ -30,35 +30,5 @@
   <artifactId>org.apache.directory.studio.rcp</artifactId>
   <name>Apache Directory Studio RCP</name>
   <packaging>eclipse-plugin</packaging>
-
   <description />
-  
-<!--   <build> -->
-<!--     <resources> -->
-<!--       <resource> -->
-<!--         <directory>.</directory> -->
-<!--         <includes> -->
-<!--           <include>plugin.properties</include> -->
-<!--           <include>plugin.xml</include> -->
-<!--           <include>about.ini</include> -->
-<!--           <include>studio.png</include> -->
-<!--         </includes> -->
-<!--         <filtering>true</filtering> -->
-<!--       </resource> -->
-<!--       <resource> -->
-<!--         <directory>resources</directory> -->
-<!--         <targetPath>resources</targetPath> -->
-<!--       </resource> -->
-<!--       <resource> -->
-<!--         <directory>src/main/resources</directory> -->
-<!--       </resource> -->
-<!--       <resource> -->
-<!--         <directory>src/main/java</directory> -->
-<!--         <includes> -->
-<!--           <include>**/*.properties</include> -->
-<!--         </includes> -->
-<!--       </resource> -->
-<!--     </resources> -->
-<!--   </build> -->
-
 </project>
