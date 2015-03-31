@@ -42,7 +42,7 @@
     <module>ldapbrowser.common</module>
     <module>ldapbrowser.ui</module>
     <module>ldapservers</module>
-    <module>ldapservers.apacheds.v200</module>
+    <module>ldapservers.apacheds</module>
     <module>ldifeditor</module>
     <module>ldifparser</module>
     <module>rcp</module>

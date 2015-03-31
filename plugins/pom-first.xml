@@ -47,7 +47,7 @@
     <module>schemaeditor/pom-first.xml</module>
     <module>valueeditors/pom-first.xml</module>
     <module>aciitemeditor/pom-first.xml</module>
-    <module>ldapservers.apacheds.v200/pom-first.xml</module>
+    <module>ldapservers.apacheds/pom-first.xml</module>
     <module>openldap.common.ui/pom-first.xml</module>
     <module>openldap.config.editor/pom-first.xml</module>
     <module>openldap.syncrepl/pom-first.xml</module>
