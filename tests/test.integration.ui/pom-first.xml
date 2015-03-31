@@ -86,7 +86,7 @@
  org.apache.directory.studio.ldapbrowser.help,
  org.apache.directory.studio.ldapbrowser.ui,
  org.apache.directory.studio.ldapservers,
- org.apache.directory.studio.ldapservers.apacheds.v200,
+ org.apache.directory.studio.ldapservers.apacheds,
  org.apache.directory.studio.ldifeditor,
  org.apache.directory.studio.ldifeditor.help,
  org.apache.directory.studio.ldifparser,

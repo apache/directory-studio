@@ -207,7 +207,7 @@ http://www.apache.org/licenses/
          unpack="false"/>
 
    <plugin
-         id="org.apache.directory.studio.ldapservers.apacheds.v200"
+         id="org.apache.directory.studio.ldapservers.apacheds"
          download-size="0"
          install-size="0"
          version="0.0.0"

@@ -22,7 +22,7 @@
    <extension
          point="org.apache.directory.studio.ldapservers.ldapServerAdapters">
       <ldapServerAdapter
-            class="org.apache.directory.studio.ldapservers.apacheds.v200.ApacheDS200LdapServerAdapter"
+            class="org.apache.directory.studio.ldapservers.apacheds.ApacheDS200LdapServerAdapter"
             id="%LdapServerAdapter_id"
             name="%LdapServerAdapter_name"
             vendor="%LdapServerAdapter_vendor"
@@ -36,7 +36,7 @@
             objectClass="org.apache.directory.studio.ldapservers.model.LdapServer"
             id="org.apache.directory.studio.ldapservers.model.LdapServer">
          <action
-               class="org.apache.directory.studio.ldapservers.apacheds.v200.CreateConnectionAction"
+               class="org.apache.directory.studio.ldapservers.apacheds.CreateConnectionAction"
                enablesFor="1"
                id="%ActionCreateConnection_id"
                label="%ActionCreateConnection_label"
