@@ -39,6 +39,12 @@ or on Windows :
 
     > build.bat
 
+### Tests
+
+* Unit tests included in src/test/java of each plugin are executed automatically and run in 'test' phase
+* Core integration tests in tests/test.integration.core are executed automatically and run in 'integration-test' phase
+* SWTBot based UI integration tests in tests/test/integration.ui are not yet fully working and diabled by default. They can be enabled with -Denable-ui-tests.
+
 ### Build issues
 
 Tycho doesn't handle snapshot dependencies well. The first time a snapshot dependency is used within the build it is cached in `~/.m2/repository/p2`. Afterwards any change in the dependency (e.g. ApacheDS or LDAP API) is the considered unless it is deleted from the cache.

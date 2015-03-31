@@ -32,6 +32,30 @@
   <packaging>eclipse-test-plugin</packaging>
   <description />
 
+  <!-- 
+    UI tests using SWTBot are not yet fully working. By default test execution
+    is disabled but can be activated with property -Denable-ui-tests
+   -->
+  <properties>
+    <skip-ui-tests>true</skip-ui-tests>
+  </properties>
+
+  <profiles>
+    <profile>
+      <id>enable-ui-tests</id>
+      <activation>
+        <property>
+          <name>enable-ui-tests</name>
+        </property>
+      </activation>
+      <properties>
+        <skip-ui-tests>false</skip-ui-tests>
+      </properties>
+    </profile>
+    <!-- TODO: for Mac VM args -XstartOnFirstThread may be required -->
+  </profiles>
+
+
   <build>
     <plugins>
       <plugin>
@@ -40,6 +64,7 @@
         <configuration>
           <dependency-resolution>
             <extraRequirements>
+              <!-- TODO: more requirements required -->
               <requirement>
                 <type>eclipse-feature</type>
                 <id>org.eclipse.rcp</id>
@@ -54,11 +79,25 @@
         <artifactId>tycho-surefire-plugin</artifactId>
         <version>${tycho.version}</version>
         <configuration>
+          <skip>${skip-ui-tests}</skip>
           <includes>
             <include>**/*Test.java</include>
+<!--             <include>**/ApacheDSPluginTest.java</include> -->
+<!--             <include>**/BrowserTest.java</include> -->
+<!--             <include>**/EntryEditorTest.java</include> -->
+<!--             <include>**/ImportExportTest.java</include> -->
+<!--             <include>**/NewConnectionWizardTest.java</include> -->
+<!--             <include>**/NewEntryWizardTest.java</include> -->
+<!--             <include>**/PreferencesTest.java</include> -->
+<!--             <include>**/ReferralDialogTest.java</include> -->
+<!--             <include>**/RenameEntryDialogTest.java</include> -->
+<!--             <include>**/SearchTest.java</include> -->
+<!--             <include>**/SwtResourcesTest.java</include> -->
           </includes>
           <useUIHarness>true</useUIHarness>
           <useUIThread>false</useUIThread>
+          <appArgLine>-nl en -debug debugoptions</appArgLine>
+          <!-- TODO: Run tests in Studio RCP app only, or in full IDE, or both? -->
 <!--           <product>org.eclipse.sdk.ide</product> -->
 <!--           <application>org.eclipse.ui.ide.workbench</application> -->
           <product>org.apache.directory.studio.rcp.product</product>

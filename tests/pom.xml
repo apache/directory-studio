@@ -33,7 +33,7 @@
 
   <modules>
     <module>test.integration.core</module>
-<!--     <module>test.integration.ui</module> -->
+    <module>test.integration.ui</module>
   </modules>
   
 </project>

@@ -34,7 +34,7 @@
 
   <modules>
     <module>test.integration.core/pom-first.xml</module>
-<!--     <module>test.integration.ui</module> -->
+    <module>test.integration.ui/pom-first.xml</module>
   </modules>
 
   <build>
