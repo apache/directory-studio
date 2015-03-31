@@ -167,7 +167,7 @@ public class ImportExportTest extends AbstractLdapTestUnit
         wizardBot.typeFile( file );
         wizardBot.selectDsmlRequest();
         wizardBot.clickFinishButton();
-        wizardBot.waitTillExportFinished( file, 600 ); // is actually 651 bytes
+        wizardBot.waitTillExportFinished( file, 500 ); // is actually 542 bytes
 
         // verify that exported DSML contains the Base64 encoded DN
         String content = FileUtils.readFileToString( new File( file ), "UTF-8" );
