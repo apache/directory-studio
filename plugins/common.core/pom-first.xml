@@ -29,12 +29,12 @@
 
   <artifactId>org.apache.directory.studio.common.core</artifactId>
   <name>Apache Directory Studio Common Core</name>
-  <description/>
   <packaging>bundle</packaging>
+  <description/>
 
   <build>
-     <!-- MANIFEST.MF Generation -->
     <plugins>
+      <!-- MANIFEST.MF Generation -->
       <plugin>
         <groupId>org.apache.felix</groupId>
         <artifactId>maven-bundle-plugin</artifactId>
