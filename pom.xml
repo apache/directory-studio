@@ -65,10 +65,13 @@
     <tycho.version>0.22.0</tycho.version>
 
     <!-- Set versions for dependencies -->
+    <antlr.version>2.7.7</antlr.version>
+    <antlr.bundleversion>2.7.7</antlr.bundleversion>
+    <junit.version>4.11</junit.version>
+    <log4j.log4j.version>1.2.17</log4j.log4j.version>
+    <log4j.log4j.bundleversion>1.2.17</log4j.log4j.bundleversion>
     <net.sf.ehcache.version>2.8.5</net.sf.ehcache.version>
     <net.sf.ehcache.bundleversion>2.8.5</net.sf.ehcache.bundleversion>
-    <org.antlr.version>2.7.7</org.antlr.version>
-    <org.antlr.bundleversion>2.7.7</org.antlr.bundleversion>
     <org.apache.commons.codec.version>1.8</org.apache.commons.codec.version>
     <org.apache.commons.codec.bundleversion>1.8.0</org.apache.commons.codec.bundleversion>
     <org.apache.commons.collections.version>3.2.1</org.apache.commons.collections.version>
@@ -83,10 +86,10 @@
     <org.apache.directory.api.bundleversion>1.0.0.M30-SNAPSHOT</org.apache.directory.api.bundleversion>
     <org.apache.directory.server.version>2.0.0-M20-SNAPSHOT</org.apache.directory.server.version>
     <org.apache.directory.server.bundleversion>2.0.0.M20-SNAPSHOT</org.apache.directory.server.bundleversion>
-    <log4j.log4j.version>1.2.17</log4j.log4j.version>
-    <log4j.log4j.bundleversion>1.2.17</log4j.log4j.bundleversion>
     <org.apache.mina.version>2.0.9</org.apache.mina.version>
     <org.apache.mina.bundleversion>2.0.9</org.apache.mina.bundleversion>
+    <org.apache.poi.version>3.9</org.apache.poi.version>
+    <org.apache.poi.bundleversion>3.9.0</org.apache.poi.bundleversion>
     <org.apache.xmlgraphics.fop.version>1.0</org.apache.xmlgraphics.fop.version>
     <org.bouncycastle.bcprov.jdk15.version>140</org.bouncycastle.bcprov.jdk15.version>
     <org.bouncycastle.bcprov.jdk15.bundleversion>140.0.0</org.bouncycastle.bcprov.jdk15.bundleversion>
@@ -94,11 +97,8 @@
     <org.slf4j.bundleversion>1.7.10</org.slf4j.bundleversion>
     <org.xpp3.version>1.1.0.4c</org.xpp3.version>
     <org.xpp3.bundleversion>1.1.0.4c</org.xpp3.bundleversion>
-    <org.apache.poi.version>3.9</org.apache.poi.version>
-    <org.apache.poi.bundleversion>3.9.0</org.apache.poi.bundleversion>
     <xerces.xercesimpl.version>2.11.0</xerces.xercesimpl.version>
     <xerces.xercesimpl.bundleversion>2.11.0</xerces.xercesimpl.bundleversion>
-    <junit.version>4.11</junit.version>
 
     <!-- Set versions for skins -->
     <skin.version>1.0.2</skin.version>
