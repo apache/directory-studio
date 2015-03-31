@@ -4,7 +4,7 @@
       label="Apache Directory Studio ApacheDS"
       version="2.0.0.qualifier"
       provider-name="Apache Software Foundation"
-      plugin="org.apache.directory.studio.apacheds.configuration.v2"
+      plugin="org.apache.directory.studio.apacheds.configuration"
       image="studio.png">
 
    <description>
@@ -214,7 +214,7 @@ http://www.apache.org/licenses/
          unpack="false"/>
 
    <plugin
-         id="org.apache.directory.studio.apacheds.configuration.v2"
+         id="org.apache.directory.studio.apacheds.configuration"
          download-size="0"
          install-size="0"
          version="0.0.0"

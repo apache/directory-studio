@@ -27,7 +27,7 @@
     <relativePath>../</relativePath>
   </parent>
   
-  <artifactId>org.apache.directory.studio.apacheds.configuration.v2</artifactId>
+  <artifactId>org.apache.directory.studio.apacheds.configuration</artifactId>
   <name>Apache Directory Studio ApacheDS 2.0 Configuration</name>
   <packaging>eclipse-plugin</packaging>
 

@@ -22,7 +22,7 @@
    <extension
          point="org.eclipse.ui.editors">
       <editor
-            class="org.apache.directory.studio.apacheds.configuration.v2.editor.ServerConfigurationEditor"
+            class="org.apache.directory.studio.apacheds.configuration.editor.ServerConfigurationEditor"
             default="false"
             icon="resources/icons/editor.gif"
             id="%Editor_ServerConfigurationEditor_id"
@@ -35,7 +35,7 @@
    <extension
          point="org.eclipse.core.contenttype.contentTypes">
       <content-type
-            describer="org.apache.directory.studio.apacheds.configuration.v2.ApacheDS2ConfigurationContentDescriber"
+            describer="org.apache.directory.studio.apacheds.configuration.ApacheDS2ConfigurationContentDescriber"
             file-names="config.ldif"
             id="%ContentType_ServerConfiguration_id"
             name="%ContentType_ServerConfiguration_name">
@@ -47,7 +47,7 @@
             objectClass="org.apache.directory.studio.connection.core.Connection"
             id="org.apache.directory.studio.connection.core.Connection">
          <action
-               class="org.apache.directory.studio.apacheds.configuration.v2.actions.OpenConfigurationAction"
+               class="org.apache.directory.studio.apacheds.configuration.actions.OpenConfigurationAction"
                enablesFor="1"
                id="%OpenConfigurationAction_id"
                label="%OpenConfigurationAction_label"
@@ -82,7 +82,7 @@
       <wizard
             canFinishEarly="true"
             category="%NewWizards_Category_id"
-            class="org.apache.directory.studio.apacheds.configuration.v2.wizards.NewApacheDSConfigurationFileWizard"
+            class="org.apache.directory.studio.apacheds.configuration.wizards.NewApacheDSConfigurationFileWizard"
             hasPages="false"
             icon="resources/icons/editor_new.gif"
             id="%NewWizards_NewApacheDSConfigurationFileWizard_id"
