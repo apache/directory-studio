@@ -22,6 +22,8 @@ package org.apache.directory.studio.openldap.config;
 
 /**
  * This interface contains all the Constants used in the Plugin.
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public interface OpenLdapConfigurationPluginConstants
 {
@@ -32,7 +34,12 @@ public interface OpenLdapConfigurationPluginConstants
     // ------
     // IMAGES
     // ------
-    public static final String IMG_EDITOR = "resources/icons/editor.gif"; //$NON-NLS-1$
+    public static final String IMG_ATTRIBUTE = "resources/icons/attribute.gif"; //$NON-NLS-1$
     public static final String IMG_DATABASE = "resources/icons/database.gif"; //$NON-NLS-1$
+    public static final String IMG_EDITOR = "resources/icons/editor.gif"; //$NON-NLS-1$
+    public static final String IMG_EXPORT = "resources/icons/export.gif"; //$NON-NLS-1$
+    public static final String IMG_INDEX = "resources/icons/index.png"; //$NON-NLS-1$
+    public static final String IMG_INFORMATION = "resources/icons/information.gif"; //$NON-NLS-1$
+    public static final String IMG_IMPORT = "resources/icons/import.gif"; //$NON-NLS-1$
     public static final String IMG_OVERLAY = "resources/icons/overlay.gif"; //$NON-NLS-1$
 }

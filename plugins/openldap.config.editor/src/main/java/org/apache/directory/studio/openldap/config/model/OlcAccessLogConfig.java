@@ -28,6 +28,8 @@ import org.apache.directory.api.ldap.model.name.Dn;
 
 /**
  * Java bean for the 'olcAccessLogConfig' object class.
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public class OlcAccessLogConfig extends OlcOverlayConfig
 {
@@ -66,6 +68,33 @@ public class OlcAccessLogConfig extends OlcOverlayConfig
      */
     @ConfigurationElement(attributeType = "olcAccessLogSuccess")
     private Boolean olcAccessLogSuccess;
+
+
+    /**
+     * Creates a new instance of OlcAccessLogConfig.
+     */
+    public OlcAccessLogConfig()
+    {
+        super();
+        olcOverlay = "accesslog";
+    }
+
+
+    /**
+     * Creates a copy instance of OlcAccessLogConfig.
+     *
+     * @param o the initial object
+     */
+    public OlcAccessLogConfig( OlcAccessLogConfig o )
+    {
+        super( o );
+        olcAccessLogDB = o.olcAccessLogDB;
+        olcAccessLogOld = o.olcAccessLogOld;
+        olcAccessLogOldAttr = new ArrayList<String>( olcAccessLogOldAttr );
+        olcAccessLogOps = new ArrayList<String>( o.olcAccessLogOps );
+        olcAccessLogPurge = o.olcAccessLogPurge;
+        olcAccessLogSuccess = o.olcAccessLogSuccess;
+    }
 
 
     /**
@@ -209,5 +238,14 @@ public class OlcAccessLogConfig extends OlcOverlayConfig
     public void setOlcAccessLogSuccess( Boolean olcAccessLogSuccess )
     {
         this.olcAccessLogSuccess = olcAccessLogSuccess;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public OlcAccessLogConfig copy()
+    {
+        return new OlcAccessLogConfig( this );
     }
 }

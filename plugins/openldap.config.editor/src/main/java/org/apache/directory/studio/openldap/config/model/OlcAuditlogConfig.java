@@ -26,6 +26,8 @@ import java.util.List;
 
 /**
  * Java bean for the 'olcAuditlogConfig' object class.
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public class OlcAuditlogConfig extends OlcOverlayConfig
 {
@@ -34,6 +36,28 @@ public class OlcAuditlogConfig extends OlcOverlayConfig
      */
     @ConfigurationElement(attributeType = "olcAuditlogFile")
     private List<String> olcAuditlogFile = new ArrayList<String>();
+
+
+    /**
+     * Creates a new instance of OlcAuditlogConfig.
+     */
+    public OlcAuditlogConfig()
+    {
+        super();
+        olcOverlay = "auditlog";
+    }
+
+
+    /**
+     * Creates a copy instance of OlcAuditlogConfig.
+     *
+     * @param o the initial object
+     */
+    public OlcAuditlogConfig( OlcAuditlogConfig o )
+    {
+        super( o );
+        olcAuditlogFile = new ArrayList<String>( olcAuditlogFile );
+    }
 
 
     /**
@@ -69,5 +93,14 @@ public class OlcAuditlogConfig extends OlcOverlayConfig
     public void setOlcAuditlogFile( List<String> olcAuditlogFile )
     {
         this.olcAuditlogFile = olcAuditlogFile;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public OlcAuditlogConfig copy()
+    {
+        return new OlcAuditlogConfig( this );
     }
 }

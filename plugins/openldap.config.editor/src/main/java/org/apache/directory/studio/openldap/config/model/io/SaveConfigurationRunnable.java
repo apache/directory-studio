@@ -1,5 +1,4 @@
 /*
-/*
  *  Licensed to the Apache Software Foundation (ASF) under one
  *  or more contributor license agreements.  See the NOTICE file
  *  distributed with this work for additional information
@@ -23,13 +22,12 @@ package org.apache.directory.studio.openldap.config.model.io;
 
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.common.core.jobs.StudioRunnableWithProgress;
-import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
-import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.ui.IEditorInput;
 
 import org.apache.directory.studio.openldap.config.editor.ConnectionServerConfigurationInput;
+import org.apache.directory.studio.openldap.config.editor.DirectoryServerConfigurationInput;
 import org.apache.directory.studio.openldap.config.editor.ServerConfigurationEditor;
 import org.apache.directory.studio.openldap.config.editor.ServerConfigurationEditorUtils;
 
@@ -99,22 +97,18 @@ public class SaveConfigurationRunnable implements StudioRunnableWithProgress
                 IEditorInput input = editor.getEditorInput();
                 boolean success = false;
 
-                // If the input is a ConnectionServerConfigurationInput, then we 
-                // read the server configuration from the selected connection
                 if ( input instanceof ConnectionServerConfigurationInput )
                 {
-                    ConnectionServerConfigurationInput connectionServerConfigurationInput = ( ConnectionServerConfigurationInput ) input;
-
-                    // Getting the browser connection associated with the connection in the input
-                    IBrowserConnection browserConnection = BrowserCorePlugin.getDefault().getConnectionManager()
-                        .getBrowserConnection( connectionServerConfigurationInput.getConnection() );
-
-                    ConfigurationWriter configurationWriter = new ConfigurationWriter( browserConnection.getSchema(),
-                        editor.getConfiguration() );
-
                     // Saving the ServerConfiguration to the connection
                     ServerConfigurationEditorUtils.saveConfiguration( ( ConnectionServerConfigurationInput ) input,
-                        configurationWriter, monitor );
+                        editor, monitor );
+                    success = true;
+                }
+                else if ( input instanceof DirectoryServerConfigurationInput )
+                {
+                    // Saving the ServerConfiguration to the 'slapd.d' directory
+                    ServerConfigurationEditorUtils.saveConfiguration( editor.getConfiguration(),
+                        ( ( DirectoryServerConfigurationInput ) input ).getDirectory() );
                     success = true;
                 }
 

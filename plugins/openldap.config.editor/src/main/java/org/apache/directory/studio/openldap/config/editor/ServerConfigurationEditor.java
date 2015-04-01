@@ -25,6 +25,7 @@ import java.util.Enumeration;
 
 import org.apache.directory.studio.common.core.jobs.StudioJob;
 import org.apache.directory.studio.common.core.jobs.StudioRunnableWithProgress;
+import org.apache.directory.studio.connection.core.Connection;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.dialogs.IPageChangedListener;
 import org.eclipse.jface.dialogs.PageChangedEvent;
@@ -38,7 +39,6 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.forms.editor.FormEditor;
 
 import org.apache.directory.studio.openldap.config.editor.databases.DatabasesPage;
-import org.apache.directory.studio.openldap.config.editor.overlays.OverlaysPage;
 import org.apache.directory.studio.openldap.config.jobs.LoadConfigurationRunnable;
 import org.apache.directory.studio.openldap.config.model.OpenLdapConfiguration;
 import org.apache.directory.studio.openldap.config.model.io.SaveConfigurationRunnable;
@@ -46,6 +46,8 @@ import org.apache.directory.studio.openldap.config.model.io.SaveConfigurationRun
 
 /**
  * This class implements the Server Configuration Editor.
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public class ServerConfigurationEditor extends FormEditor implements IPageChangedListener
 {
@@ -60,9 +62,8 @@ public class ServerConfigurationEditor extends FormEditor implements IPageChange
 
     // The pages
     private LoadingPage loadingPage;
-    private OverviewPage overviewPage;
     private DatabasesPage databasesPage;
-    private OverlaysPage overlaysPage;
+    private OptionsPage optionsPage;
 
 
     /**
@@ -86,7 +87,7 @@ public class ServerConfigurationEditor extends FormEditor implements IPageChange
     {
         // Creating and scheduling the job to load the configuration
         StudioJob<StudioRunnableWithProgress> job = new StudioJob<StudioRunnableWithProgress>(
-                    new LoadConfigurationRunnable( this ) );
+            new LoadConfigurationRunnable( this ) );
         job.schedule();
     }
 
@@ -151,6 +152,10 @@ public class ServerConfigurationEditor extends FormEditor implements IPageChange
      */
     public void doSave( IProgressMonitor monitor )
     {
+        // Saving pages
+        doSavePages( monitor );
+
+        // Saving the configuration using a job
         StudioJob<StudioRunnableWithProgress> job = new StudioJob<StudioRunnableWithProgress>(
             new SaveConfigurationRunnable( this ) );
         job.schedule();
@@ -196,15 +201,16 @@ public class ServerConfigurationEditor extends FormEditor implements IPageChange
      *      the monitor to use
      * @throws Exception
      */
-    public boolean doSaveAs( IProgressMonitor monitor ) throws Exception
+    public void doSaveAs( IProgressMonitor monitor ) throws Exception
     {
+        // Saving pages
+        doSavePages( monitor );
+
         // Saving the configuration as a new file and getting the associated new editor input
-        IEditorInput newInput = null; //ServerConfigurationEditorUtils.saveAs( monitor, getSite().getShell(),
-        //getEditorInput(), getConfigWriter() );
+        IEditorInput newInput = ServerConfigurationEditorUtils.saveAs( getConfiguration(), true );
 
         // Checking if the 'save as' is successful 
-        boolean success = newInput != null;
-        if ( success )
+        if ( newInput != null )
         {
             // Setting the new input to the editor
             setInput( newInput );
@@ -221,8 +227,20 @@ public class ServerConfigurationEditor extends FormEditor implements IPageChange
                 }
             } );
         }
+    }
 
-        return success;
+
+    /**
+     * Saves the pages.
+     *
+     * @param monitor the monitor
+     */
+    private void doSavePages( IProgressMonitor monitor )
+    {
+        if ( databasesPage != null )
+        {
+            databasesPage.doSave( monitor );
+        }
     }
 
 
@@ -300,13 +318,8 @@ public class ServerConfigurationEditor extends FormEditor implements IPageChange
 
         setDirty( true );
 
-        overviewPage.refreshUI();
+        optionsPage.refreshUI();
         databasesPage.refreshUI();
-        overlaysPage.refreshUI();
-        //        ldapLdapsServersPage.refreshUI();
-        //        kerberosServerPage.refreshUI();
-        //        partitionsPage.refreshUI();
-        //        replicationPage.refreshUI();
     }
 
 
@@ -353,17 +366,14 @@ public class ServerConfigurationEditor extends FormEditor implements IPageChange
         // Adding the configuration pages
         try
         {
-            overviewPage = new OverviewPage( this );
-            addPage( overviewPage );
             databasesPage = new DatabasesPage( this );
             addPage( databasesPage );
-            overlaysPage = new OverlaysPage( this );
-            addPage( overlaysPage );
+            optionsPage = new OptionsPage( this );
+            addPage( optionsPage );
         }
         catch ( PartInitException e )
         {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            // Will never happen
         }
 
         // Activating the first page
@@ -410,7 +420,7 @@ public class ServerConfigurationEditor extends FormEditor implements IPageChange
     {
         if ( pageClass != null )
         {
-            Enumeration<Object> enumeration = pages.elements();
+            Enumeration<?> enumeration = pages.elements();
             while ( enumeration.hasMoreElements() )
             {
                 Object page = enumeration.nextElement();
@@ -421,5 +431,23 @@ public class ServerConfigurationEditor extends FormEditor implements IPageChange
                 }
             }
         }
+    }
+
+
+    /**
+     * Gets the connection.
+     *
+     * @return the connection
+     */
+    public Connection getConnection()
+    {
+        IEditorInput editorInput = getEditorInput();
+
+        if ( editorInput instanceof ConnectionServerConfigurationInput )
+        {
+            return ( ( ConnectionServerConfigurationInput ) editorInput ).getConnection();
+        }
+
+        return null;
     }
 }

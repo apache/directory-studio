@@ -48,4 +48,13 @@ public class OlcLdifConfig extends OlcDatabaseConfig
     {
         this.olcDbDirectory = olcDbDirectory;
     }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public String getOlcDatabaseType()
+    {
+        return "ldif";
+    };
 }

@@ -29,6 +29,8 @@ import org.apache.directory.studio.openldap.config.editor.ServerConfigurationEdi
 
 /**
  * This class represents the General Page of the Server Configuration Editor.
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public class OverlaysPage extends ServerConfigurationEditorPage
 {

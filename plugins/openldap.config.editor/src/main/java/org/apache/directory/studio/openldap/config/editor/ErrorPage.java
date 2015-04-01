@@ -43,6 +43,8 @@ import org.eclipse.ui.forms.widgets.ScrolledForm;
 
 /**
  * This class represents the Error Page of the Server Configuration Editor.
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public class ErrorPage extends FormPage
 {
@@ -102,8 +104,7 @@ public class ErrorPage extends FormPage
         toolkit.decorateFormHeading( form.getForm() );
 
         // Error Label
-        Label errorLabel = toolkit.createLabel( parent,
-            NLS.bind( "Could not open the editor: {0}", exception.getMessage() ) );
+        Label errorLabel = toolkit.createLabel( parent, "" );
         errorLabel.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
 
         // Details Button
@@ -112,12 +113,22 @@ public class ErrorPage extends FormPage
         detailsButton.setLayoutData( new GridData( SWT.RIGHT, SWT.NONE, false, false ) );
         detailsButton.addSelectionListener( new SelectionAdapter()
         {
-            @Override
             public void widgetSelected( SelectionEvent e )
             {
                 showOrHideDetailsView();
             }
         } );
+
+        // Initializing with the exception
+        if ( exception == null )
+        {
+            errorLabel.setText( "Could not open the editor." );
+            detailsButton.setVisible( false );
+        }
+        else
+        {
+            errorLabel.setText( NLS.bind( "Could not open the editor: {0}", exception.getMessage() ) ); //$NON-NLS-1$
+        }
     }
 
 

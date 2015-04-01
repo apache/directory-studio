@@ -22,7 +22,9 @@ package org.apache.directory.studio.openldap.config.model;
 
 /**
  * Java bean for the 'olcChainConfig' object class.
- */
+  * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+*/
 public class OlcChainConfig extends OlcOverlayConfig
 {
     /**
@@ -48,6 +50,30 @@ public class OlcChainConfig extends OlcOverlayConfig
      */
     @ConfigurationElement(attributeType = "olcChainReturnError")
     private Boolean olcChainReturnError;
+
+
+    /**
+     * Creates a new instance of OlcChainConfig.
+     */
+    public OlcChainConfig()
+    {
+        super();
+    }
+
+
+    /**
+     * Creates a copy instance of OlcChainConfig.
+     *
+     * @param o the initial object
+     */
+    public OlcChainConfig( OlcChainConfig o )
+    {
+        super( o );
+        olcChainCacheURI = o.olcChainCacheURI;
+        olcChainingBehavior = o.olcChainingBehavior;
+        olcChainMaxReferralDepth = o.olcChainMaxReferralDepth;
+        olcChainReturnError = o.olcChainReturnError;
+    }
 
 
     /**
@@ -119,5 +145,14 @@ public class OlcChainConfig extends OlcOverlayConfig
     public void setOlcChainReturnError( Boolean olcChainReturnError )
     {
         this.olcChainReturnError = olcChainReturnError;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public OlcChainConfig copy()
+    {
+        return new OlcChainConfig( this );
     }
 }

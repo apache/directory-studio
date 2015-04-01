@@ -19,11 +19,14 @@
  */
 package org.apache.directory.studio.openldap.config.model;
 
+
 import org.apache.directory.api.ldap.model.name.Dn;
 
 
 /**
  * Java bean for the 'olcPPolicyConfig' object class.
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public class OlcPPolicyConfig extends OlcOverlayConfig
 {
@@ -37,19 +40,44 @@ public class OlcPPolicyConfig extends OlcOverlayConfig
      * Field for the 'olcPPolicyForwardUpdates' attribute.
      */
     @ConfigurationElement(attributeType = "olcPPolicyForwardUpdates")
-    private boolean olcPPolicyForwardUpdates;
+    private Boolean olcPPolicyForwardUpdates;
 
     /**
      * Field for the 'olcPPolicyHashCleartext' attribute.
      */
     @ConfigurationElement(attributeType = "olcPPolicyHashCleartext")
-    private boolean olcPPolicyHashCleartext;
+    private Boolean olcPPolicyHashCleartext;
 
     /**
      * Field for the 'olcPPolicyUseLockout' attribute.
      */
     @ConfigurationElement(attributeType = "olcPPolicyUseLockout")
-    private boolean olcPPolicyUseLockout;
+    private Boolean olcPPolicyUseLockout;
+
+
+    /**
+     * Creates a new instance of OlcPPolicyConfig.
+     */
+    public OlcPPolicyConfig()
+    {
+        super();
+        olcOverlay = "ppolicy";
+    }
+
+
+    /**
+     * Creates a copy instance of OlcPPolicyConfig.
+     *
+     * @param o the initial object
+     */
+    public OlcPPolicyConfig( OlcPPolicyConfig o )
+    {
+        super( o );
+        olcPPolicyDefault = o.olcPPolicyDefault;
+        olcPPolicyForwardUpdates = o.olcPPolicyForwardUpdates;
+        olcPPolicyHashCleartext = o.olcPPolicyHashCleartext;
+        olcPPolicyUseLockout = o.olcPPolicyUseLockout;
+    }
 
 
     /**
@@ -64,7 +92,7 @@ public class OlcPPolicyConfig extends OlcOverlayConfig
     /**
      * @return the olcPPolicyForwardUpdates
      */
-    public boolean getOlcPPolicyForwardUpdates()
+    public Boolean getOlcPPolicyForwardUpdates()
     {
         return olcPPolicyForwardUpdates;
     }
@@ -73,7 +101,7 @@ public class OlcPPolicyConfig extends OlcOverlayConfig
     /**
      * @return the olcPPolicyHashCleartext
      */
-    public boolean getOlcPPolicyHashCleartext()
+    public Boolean getOlcPPolicyHashCleartext()
     {
         return olcPPolicyHashCleartext;
     }
@@ -82,7 +110,7 @@ public class OlcPPolicyConfig extends OlcOverlayConfig
     /**
      * @return the olcPPolicyUseLockout
      */
-    public boolean getOlcPPolicyUseLockout()
+    public Boolean getOlcPPolicyUseLockout()
     {
         return olcPPolicyUseLockout;
     }
@@ -100,7 +128,7 @@ public class OlcPPolicyConfig extends OlcOverlayConfig
     /**
      * @param olcPPolicyForwardUpdates the olcPPolicyForwardUpdates to set
      */
-    public void setOlcPPolicyForwardUpdates( boolean olcPPolicyForwardUpdates )
+    public void setOlcPPolicyForwardUpdates( Boolean olcPPolicyForwardUpdates )
     {
         this.olcPPolicyForwardUpdates = olcPPolicyForwardUpdates;
     }
@@ -109,7 +137,7 @@ public class OlcPPolicyConfig extends OlcOverlayConfig
     /**
      * @param olcPPolicyHashCleartext the olcPPolicyHashCleartext to set
      */
-    public void setOlcPPolicyHashCleartext( boolean olcPPolicyHashCleartext )
+    public void setOlcPPolicyHashCleartext( Boolean olcPPolicyHashCleartext )
     {
         this.olcPPolicyHashCleartext = olcPPolicyHashCleartext;
     }
@@ -118,8 +146,17 @@ public class OlcPPolicyConfig extends OlcOverlayConfig
     /**
      * @param olcPPolicyUseLockout the olcPPolicyUseLockout to set
      */
-    public void setOlcPPolicyUseLockout( boolean olcPPolicyUseLockout )
+    public void setOlcPPolicyUseLockout( Boolean olcPPolicyUseLockout )
     {
         this.olcPPolicyUseLockout = olcPPolicyUseLockout;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public OlcPPolicyConfig copy()
+    {
+        return new OlcPPolicyConfig( this );
     }
 }

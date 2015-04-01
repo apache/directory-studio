@@ -51,9 +51,8 @@
 
             <Import-Package>org.apache.directory.api.ldap.model.name,
  org.apache.directory.server.core.api.interceptor.context,
- org.apache.directory.api.ldap.schema.manager.impl,
- net.sf.ehcache,
- org.slf4j</Import-Package> 
+ org.apache.directory.api.ldap.schema.manager.impl
+ </Import-Package> 
             
             <Require-Bundle>org.apache.directory.server.core.api;bundle-version="${org.apache.directory.server.bundleversion}",
  org.apache.directory.server.ldif.partition;bundle-version="${org.apache.directory.server.bundleversion}",
@@ -61,18 +60,25 @@
  org.apache.directory.api.asn1.api;bundle-version="${org.apache.directory.api.bundleversion}",
  org.apache.directory.api.ldap.model;bundle-version="${org.apache.directory.api.bundleversion}",
  org.apache.directory.api.ldap.schema;bundle-version="${org.apache.directory.api.bundleversion}",
+ org.apache.directory.api.ldap.extras.util;bundle-version="${org.apache.directory.api.bundleversion}",
  org.apache.directory.api.util;bundle-version="${org.apache.directory.api.bundleversion}",
+ org.apache.directory.studio.openldap.common.ui,
+ org.apache.directory.studio.openldap.syncrepl,
  org.apache.directory.studio.common.core,
  org.apache.directory.studio.common.ui,
  org.apache.directory.studio.connection.core,
  org.apache.directory.studio.connection.ui,
+ org.apache.directory.studio.ldapbrowser.common,
  org.apache.directory.studio.ldapbrowser.core,
  org.eclipse.core.runtime,
  org.eclipse.core.resources,
  org.eclipse.ui,
  org.eclipse.ui.editors,
  org.eclipse.ui.forms,
- org.eclipse.ui.ide</Require-Bundle>
+ org.eclipse.ui.ide,
+ org.apache.servicemix.bundles.antlr,
+ net.sf.ehcache,
+ slf4j.api</Require-Bundle>
           </instructions>
         </configuration>
         <executions>

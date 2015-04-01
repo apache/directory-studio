@@ -22,45 +22,53 @@ package org.apache.directory.studio.openldap.config.editor.databases;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 
+import org.apache.directory.studio.openldap.common.ui.widgets.DirectoryBrowserWidget;
 import org.apache.directory.studio.openldap.config.model.OlcLdifConfig;
 
 
 /**
  * This interface represents a block for None Specific Details.
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class LdifDatabaseSpecificDetailsBlock implements DatabaseSpecificDetailsBlock
+public class LdifDatabaseSpecificDetailsBlock extends AbstractDatabaseSpecificDetailsBlock<OlcLdifConfig>
 {
-    /** The database */
-    private OlcLdifConfig database;
-
     // UI Widgets
-    private Text directoryText;
+    private DirectoryBrowserWidget directoryBrowserWidget;
 
 
     /**
      * Creates a new instance of LdifDatabaseSpecificDetailsBlock.
      * 
+     * @param detailsPage the details page
      * @param database the database
      */
-    public LdifDatabaseSpecificDetailsBlock( OlcLdifConfig database )
+    public LdifDatabaseSpecificDetailsBlock( DatabasesDetailsPage detailsPage, OlcLdifConfig database )
     {
-        this.database = database;
+        super( detailsPage, database );
     }
 
 
     /**
      * {@inheritDoc}
      */
-    public void createFormContent( Composite parent, FormToolkit toolkit )
+    public Composite createBlockContent( Composite parent, FormToolkit toolkit )
     {
-        // Directory Text
-        toolkit.createLabel( parent, "Directory:" );
-        directoryText = toolkit.createText( parent, "" );
-        directoryText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
+        // Composite
+        Composite composite = toolkit.createComposite( parent );
+        composite.setLayout( new GridLayout() );
+        composite.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
+
+        // Directory Widget
+        toolkit.createLabel( composite, "Directory:" );
+        directoryBrowserWidget = new DirectoryBrowserWidget( "" );
+        directoryBrowserWidget.createWidget( composite, toolkit );
+
+        return composite;
     }
 
 
@@ -69,17 +77,53 @@ public class LdifDatabaseSpecificDetailsBlock implements DatabaseSpecificDetails
      */
     public void refresh()
     {
+        removeListeners();
 
-        if ( database == null )
+        if ( database != null )
         {
-            // Blank out all fields
-            // TODO
-        }
-        else
-        {
-            // Directory Text
+            // Directory Widget
             String directory = database.getOlcDbDirectory();
-            directoryText.setText( ( directory == null ) ? "" : directory ); //$NON-NLS-1$
+
+            if ( directory != null )
+            {
+                directoryBrowserWidget.setDirectoryPath( directory );
+            }
+            else
+            {
+                directoryBrowserWidget.setDirectoryPath( "" );
+            }
+        }
+
+        addListeners();
+    }
+
+
+    /**
+     * Adds the listeners.
+     */
+    private void addListeners()
+    {
+        directoryBrowserWidget.addWidgetModifyListener( dirtyWidgetModifyListener );
+    }
+
+
+    /**
+     * Removes the listeners
+     */
+    private void removeListeners()
+    {
+        directoryBrowserWidget.removeWidgetModifyListener( dirtyWidgetModifyListener );
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public void commit( boolean onSave )
+    {
+        if ( database != null )
+        {
+            database.setOlcDbDirectory( directoryBrowserWidget.getDirectoryPath() );
         }
     }
 }

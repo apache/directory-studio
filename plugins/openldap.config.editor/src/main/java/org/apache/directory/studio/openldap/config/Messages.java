@@ -24,6 +24,10 @@ import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
 
+/**
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ */
 public class Messages
 {
     private static final String BUNDLE_NAME = "org.apache.directory.studio.openldap.config"; //$NON-NLS-1$

@@ -22,6 +22,8 @@ package org.apache.directory.studio.openldap.config.model;
 
 /**
  * Java bean for the 'olcPBindConfig' object class.
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public class OlcPBindConfig extends OlcOverlayConfig
 {
@@ -48,6 +50,30 @@ public class OlcPBindConfig extends OlcOverlayConfig
      */
     @ConfigurationElement(attributeType = "olcStartTLS")
     private String olcStartTLS;
+
+
+    /**
+     * Creates a new instance of OlcPBindConfig.
+     */
+    public OlcPBindConfig()
+    {
+        super();
+    }
+
+
+    /**
+     * Creates a copy instance of OlcPBindConfig.
+     *
+     * @param o the initial object
+     */
+    public OlcPBindConfig( OlcPBindConfig o )
+    {
+        super( o );
+        olcDbURI = o.olcDbURI;
+        olcDbNetworkTimeout = o.olcDbNetworkTimeout;
+        olcDbQuarantine = o.olcDbQuarantine;
+        olcStartTLS = o.olcStartTLS;
+    }
 
 
     /**
@@ -119,5 +145,14 @@ public class OlcPBindConfig extends OlcOverlayConfig
     public void setOlcStartTLS( String olcStartTLS )
     {
         this.olcStartTLS = olcStartTLS;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public OlcPBindConfig copy()
+    {
+        return new OlcPBindConfig( this );
     }
 }

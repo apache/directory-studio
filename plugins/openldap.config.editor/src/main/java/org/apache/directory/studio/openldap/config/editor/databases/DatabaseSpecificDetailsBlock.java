@@ -26,20 +26,43 @@ import org.eclipse.ui.forms.widgets.FormToolkit;
 
 /**
  * This interface represents a block for Database Specific Details.
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public interface DatabaseSpecificDetailsBlock
 {
     /**
-     * Creates the form content.
+     * Creates the block content.
      *
      * @param parent the parent composite
      * @param toolkit the toolkit
      */
-    public void createFormContent( Composite parent, FormToolkit toolkit );
+    public Composite createBlockContent( Composite parent, FormToolkit toolkit );
+
+
+    /**
+     * Gets the associated details page.
+     *
+     * @return the associated details page.
+     */
+    public DatabasesDetailsPage getDetailsPage();
 
 
     /**
      * Refreshes the UI based on the input.
      */
     public void refresh();
+
+
+    /**
+     * If part is displaying information loaded from a model, this method
+     * instructs it to commit the new (modified) data back into the model.
+     * 
+     * @param onSave
+     *            indicates if commit is called during 'save' operation or for
+     *            some other reason (for example, if form is contained in a
+     *            wizard or a multi-page editor and the user is about to leave
+     *            the page).
+     */
+    void commit( boolean onSave );
 }

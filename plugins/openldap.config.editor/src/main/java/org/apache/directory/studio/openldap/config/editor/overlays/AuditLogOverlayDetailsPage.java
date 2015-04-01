@@ -40,6 +40,8 @@ import org.apache.directory.studio.openldap.config.model.OlcAccessLogConfig;
 
 /**
  * This class represents the Details Page of the Server Configuration Editor for the Audit Log Overlay type
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public class AuditLogOverlayDetailsPage implements IDetailsPage
 {

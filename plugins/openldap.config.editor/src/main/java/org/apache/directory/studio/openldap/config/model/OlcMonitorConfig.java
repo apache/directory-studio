@@ -22,8 +22,18 @@ package org.apache.directory.studio.openldap.config.model;
 
 /**
  * Java bean for the 'olcMonitorConfig' object class.
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public class OlcMonitorConfig extends OlcDatabaseConfig
 {
     // No other fields than those inherited from the 'OlcDatabaseConfig' class
+
+    /**
+     * {@inheritDoc}
+     */
+    public String getOlcDatabaseType()
+    {
+        return "monitor";
+    };
 }

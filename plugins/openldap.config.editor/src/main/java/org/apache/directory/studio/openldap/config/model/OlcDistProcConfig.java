@@ -22,6 +22,8 @@ package org.apache.directory.studio.openldap.config.model;
 
 /**
  * Java bean for the 'olcDistProcConfig' object class.
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public class OlcDistProcConfig extends OlcOverlayConfig
 {
@@ -36,6 +38,28 @@ public class OlcDistProcConfig extends OlcOverlayConfig
      */
     @ConfigurationElement(attributeType = "olcChainingBehavior")
     private String olcChainingBehavior;
+
+
+    /**
+     * Creates a new instance of OlcDistProcConfig.
+     */
+    public OlcDistProcConfig()
+    {
+        super();
+    }
+
+
+    /**
+     * Creates a copy instance of OlcDistProcConfig.
+     *
+     * @param o the initial object
+     */
+    public OlcDistProcConfig( OlcDistProcConfig o )
+    {
+        super( o );
+        olcChainCacheURI = o.olcChainCacheURI;
+        olcChainingBehavior = o.olcChainingBehavior;
+    }
 
 
     /**
@@ -71,5 +95,14 @@ public class OlcDistProcConfig extends OlcOverlayConfig
     public void setOlcChainingBehavior( String olcChainingBehavior )
     {
         this.olcChainingBehavior = olcChainingBehavior;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public OlcDistProcConfig copy()
+    {
+        return new OlcDistProcConfig( this );
     }
 }

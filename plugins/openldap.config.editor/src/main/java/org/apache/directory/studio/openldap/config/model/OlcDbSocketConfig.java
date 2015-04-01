@@ -26,6 +26,8 @@ import java.util.List;
 
 /**
  * Java bean for the 'olcDbSocketConfig' object class.
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public class OlcDbSocketConfig extends OlcDatabaseConfig
 {

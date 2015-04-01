@@ -21,18 +21,14 @@
 package org.apache.directory.studio.openldap.config.jobs;
 
 
-import org.apache.directory.api.ldap.model.schema.SchemaManager;
-import org.apache.directory.api.ldap.model.schema.registries.SchemaLoader;
-import org.apache.directory.api.ldap.schema.manager.impl.DefaultSchemaManager;
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.common.core.jobs.StudioRunnableWithProgress;
-import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
-import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IEditorInput;
 
 import org.apache.directory.studio.openldap.config.editor.ConnectionServerConfigurationInput;
+import org.apache.directory.studio.openldap.config.editor.DirectoryServerConfigurationInput;
 import org.apache.directory.studio.openldap.config.editor.ServerConfigurationEditor;
 import org.apache.directory.studio.openldap.config.model.OpenLdapConfiguration;
 import org.apache.directory.studio.openldap.config.model.io.ConfigurationReader;
@@ -147,6 +143,12 @@ public class LoadConfigurationRunnable implements StudioRunnableWithProgress
         {
             return readConfiguration( ( ConnectionServerConfigurationInput ) input, monitor );
         }
+        // If the input is a DirectoryServerConfigurationInput, then we
+        // read the server configuration from the selected 'slapd.d' directory.
+        else if ( input instanceof DirectoryServerConfigurationInput )
+        {
+            return readConfiguration( ( DirectoryServerConfigurationInput ) input, monitor );
+        }
 
         return null;
     }
@@ -164,6 +166,29 @@ public class LoadConfigurationRunnable implements StudioRunnableWithProgress
      * @throws Exception
      */
     private OpenLdapConfiguration readConfiguration( ConnectionServerConfigurationInput input,
+        StudioProgressMonitor monitor ) throws Exception
+    {
+        if ( input != null )
+        {
+            return ConfigurationReader.readConfiguration( input );
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Reads the configuration from the given connection.
+     *
+     * @param input
+     *      the editor input
+     * @param monitor 
+     *      the studio progress monitor
+     * @return
+     *      the associated configuration bean
+     * @throws Exception
+     */
+    private OpenLdapConfiguration readConfiguration( DirectoryServerConfigurationInput input,
         StudioProgressMonitor monitor ) throws Exception
     {
         if ( input != null )

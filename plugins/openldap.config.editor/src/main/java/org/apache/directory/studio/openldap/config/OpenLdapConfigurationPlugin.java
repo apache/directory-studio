@@ -24,6 +24,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.PropertyResourceBundle;
 
+import org.apache.directory.api.ldap.model.schema.SchemaManager;
+import org.apache.directory.api.ldap.schema.manager.impl.DefaultSchemaManager;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
@@ -35,6 +37,8 @@ import org.osgi.framework.BundleContext;
 
 /**
  * The activator class controls the plug-in life cycle.
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public class OpenLdapConfigurationPlugin extends AbstractUIPlugin
 {
@@ -44,19 +48,49 @@ public class OpenLdapConfigurationPlugin extends AbstractUIPlugin
     /** The plugin properties */
     private PropertyResourceBundle properties;
 
+    /** The schema manager */
+    private SchemaManager schemaManager;
+
 
     /**
-     * Creates a new instance of ApacheDS2ConfigurationPlugin.
+     * Creates a new instance of OpenLdapConfigurationPlugin.
      */
     public OpenLdapConfigurationPlugin()
     {
         plugin = this;
     }
 
+    
+    /**
+     * Gets the schema manager.
+     *
+     * @return the schema manager
+     * @throws Exception if an error occurred
+     */
+    public synchronized SchemaManager getSchemaManager() throws Exception
+    {
+        if ( schemaManager == null )
+        {
+            // Initializing the schema manager
+            schemaManager = new DefaultSchemaManager( new OpenLdapSchemaLoader() );
 
-    /*
-     * (non-Javadoc)
-     * @see org.eclipse.ui.plugin.AbstractUIPlugin#start(org.osgi.framework.BundleContext)
+            // Loading only the OpenLDAP schema (and its dependencies)
+            schemaManager.loadWithDeps( OpenLdapSchemaLoader.OPENLDAPCONFIG_SCHEMA_NAME );
+
+            // Checking if no error occurred when loading the schemas
+            if ( schemaManager.getErrors().size() != 0 )
+            {
+                schemaManager = null;
+                throw new Exception( "Could not load the OpenLDAP schema correctly." );
+            }
+        }
+
+        return schemaManager;
+    }
+
+
+    /**
+     * {@inheritDoc}
      */
     public void start( BundleContext context ) throws Exception
     {
@@ -64,9 +98,8 @@ public class OpenLdapConfigurationPlugin extends AbstractUIPlugin
     }
 
 
-    /*
-     * (non-Javadoc)
-     * @see org.eclipse.ui.plugin.AbstractUIPlugin#stop(org.osgi.framework.BundleContext)
+    /**
+     * {@inheritDoc}
      */
     public void stop( BundleContext context ) throws Exception
     {
@@ -77,8 +110,7 @@ public class OpenLdapConfigurationPlugin extends AbstractUIPlugin
     /**
      * Returns the shared instance.
      *
-     * @return
-     *      the shared instance
+     * @return the shared instance
      */
     public static OpenLdapConfigurationPlugin getDefault()
     {
@@ -90,8 +122,7 @@ public class OpenLdapConfigurationPlugin extends AbstractUIPlugin
      * Use this method to get SWT images. Use the IMG_ constants from
      * PluginConstants for the key.
      *
-     * @param key
-     *                The key (relative path to the image in filesystem)
+     * @param key The key (relative path to the image in filesystem)
      * @return The image descriptor or null
      */
     public ImageDescriptor getImageDescriptor( String key )
@@ -99,10 +130,15 @@ public class OpenLdapConfigurationPlugin extends AbstractUIPlugin
         if ( key != null )
         {
             URL url = FileLocator.find( getBundle(), new Path( key ), null );
+            
             if ( url != null )
+            {   	
                 return ImageDescriptor.createFromURL( url );
+            }
             else
+            {
                 return null;
+            }
         }
         else
         {
@@ -119,22 +155,24 @@ public class OpenLdapConfigurationPlugin extends AbstractUIPlugin
      * Note: Don't dispose the returned SWT Image. It is disposed
      * automatically when the plugin is stopped.
      *
-     * @param key
-     *                The key (relative path to the image in filesystem)
+     * @param key The key (relative path to the image in filesystem)
      * @return The SWT Image or null
      */
     public Image getImage( String key )
     {
         Image image = getImageRegistry().get( key );
+        
         if ( image == null )
         {
             ImageDescriptor id = getImageDescriptor( key );
+            
             if ( id != null )
             {
                 image = id.createImage();
                 getImageRegistry().put( key, image );
             }
         }
+        
         return image;
     }
 
@@ -142,8 +180,7 @@ public class OpenLdapConfigurationPlugin extends AbstractUIPlugin
     /**
      * Gets the plugin properties.
      *
-     * @return
-     *      the plugin properties
+     * @return the plugin properties
      */
     public PropertyResourceBundle getPluginProperties()
     {

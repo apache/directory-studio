@@ -19,11 +19,14 @@
  */
 package org.apache.directory.studio.openldap.config.model;
 
+
 import org.apache.directory.api.ldap.model.name.Dn;
 
 
 /**
  * Java bean for the 'olcRelayConfig' object class.
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public class OlcRelayConfig extends OlcDatabaseConfig
 {
@@ -50,4 +53,13 @@ public class OlcRelayConfig extends OlcDatabaseConfig
     {
         this.olcRelay = olcRelay;
     }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public String getOlcDatabaseType()
+    {
+        return "relay";
+    };
 }

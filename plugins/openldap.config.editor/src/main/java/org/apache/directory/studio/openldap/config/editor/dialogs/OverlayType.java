@@ -17,29 +17,37 @@
  *  under the License. 
  *  
  */
-package org.apache.directory.studio.openldap.config.editor.databases;
+package org.apache.directory.studio.openldap.config.editor.dialogs;
 
 
 /**
- * This enum describes the various type of databases.
+ * This enum describes the various types of overlays.
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public enum DatabaseType
+public enum OverlayType
 {
-    /** None */
-    NONE,
+    /** Access Log */
+    ACCESS_LOG,
 
-    /** Oracle Berkerly DB */
-    BDB,
+    /** Audit Log */
+    AUDIT_LOG,
 
-    /** Oracle Berkerly DB */
-    FRONTEND,
+    /** Member Of */
+    MEMBER_OF,
+
+    /** Password Policy */
+    PASSWORD_POLICY,
+
+    /** Referential Integrity */
+    REFERENTIAL_INTEGRITY,
+
+    /** Rewrite/Remap */
+    REWRITE_REMAP,
+
+    /** Sync Prov (Replication) */
+    SYNC_PROV,
     
-    /** Hybrid DB */
-    HDB,
-    
-    /** LDAP DB*/
-    LDAP,
-    
-    /** LDIF DB*/
-    LDIF;
+    /** Value Sorting */
+    VALUE_SORTING;
 }

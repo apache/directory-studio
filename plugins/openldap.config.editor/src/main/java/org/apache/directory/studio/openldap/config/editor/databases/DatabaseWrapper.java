@@ -20,35 +20,57 @@
 package org.apache.directory.studio.openldap.config.editor.databases;
 
 
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.ui.forms.widgets.FormToolkit;
+import org.apache.directory.studio.openldap.config.model.OlcDatabaseConfig;
 
 
 /**
- * This interface represents a block for None Specific Details.
+ * This class implements a database wrapper used in the 'Databases' page UI.
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class NoneDatabaseSpecificDetailsBlock implements DatabaseSpecificDetailsBlock
+public class DatabaseWrapper
 {
+    /** The wrapped database */
+    private OlcDatabaseConfig database;
+
+
     /**
-     * Creates a new instance of NoneDatabaseSpecificDetailsBlock.
+     * Creates a new instance of DatabaseWrapper.
      */
-    public NoneDatabaseSpecificDetailsBlock()
+    public DatabaseWrapper()
     {
     }
 
 
     /**
-     * {@inheritDoc}
+     * Creates a new instance of DatabaseWrapper.
+     *
+     * @param database the wrapped database
      */
-    public void createFormContent( Composite parent, FormToolkit toolkit )
+    public DatabaseWrapper( OlcDatabaseConfig database )
     {
+        this.database = database;
     }
 
 
     /**
-     * {@inheritDoc}
+     * Gets the wrapped database.
+     *
+     * @return the wrapped database
      */
-    public void refresh()
+    public OlcDatabaseConfig getDatabase()
     {
+        return database;
+    }
+
+
+    /**
+     * Sets the wrapped database.
+     *
+     * @param database the wrapped database
+     */
+    public void setDatabase( OlcDatabaseConfig database )
+    {
+        this.database = database;
     }
 }

@@ -20,6 +20,7 @@
 package org.apache.directory.studio.openldap.config.editor.databases;
 
 
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 
@@ -29,6 +30,8 @@ import org.apache.directory.studio.openldap.config.editor.ServerConfigurationEdi
 
 /**
  * This class represents the General Page of the Server Configuration Editor.
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public class DatabasesPage extends ServerConfigurationEditorPage
 {
@@ -37,6 +40,9 @@ public class DatabasesPage extends ServerConfigurationEditorPage
 
     /** The Page Title */
     private static final String TITLE = "Databases";
+
+    /** The master details block */
+    private DatabasesMasterDetailsBlock masterDetailsBlock;
 
 
     /**
@@ -56,7 +62,7 @@ public class DatabasesPage extends ServerConfigurationEditorPage
      */
     protected void createFormContent( Composite parent, FormToolkit toolkit )
     {
-        DatabasesMasterDetailsBlock masterDetailsBlock = new DatabasesMasterDetailsBlock( this );
+        masterDetailsBlock = new DatabasesMasterDetailsBlock( this );
         masterDetailsBlock.createContent( getManagedForm() );
     }
 
@@ -66,5 +72,21 @@ public class DatabasesPage extends ServerConfigurationEditorPage
      */
     public void refreshUI()
     {
+        if ( isInitialized() )
+        {
+            masterDetailsBlock.refreshUI();
+        }
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public void doSave( IProgressMonitor monitor )
+    {
+        if ( masterDetailsBlock != null )
+        {
+            masterDetailsBlock.doSave( monitor );
+        }
     }
 }

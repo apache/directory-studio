@@ -25,9 +25,11 @@ import java.util.List;
 
 
 /**
- * Java bean for the 'olcDbSocketConfig' object class.
+ * Java bean for the 'OlcFrontendConfig' object class.
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class OlcFrontendConfig extends AuxiliaryObjectClass
+public class OlcFrontendConfig implements  AuxiliaryObjectClass
 {
     /**
      * Field for the 'olcDefaultSearchBase' attribute.

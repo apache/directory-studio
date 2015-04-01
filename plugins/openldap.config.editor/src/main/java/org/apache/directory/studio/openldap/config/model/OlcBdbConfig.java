@@ -23,9 +23,13 @@ package org.apache.directory.studio.openldap.config.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.directory.studio.openldap.config.editor.databases.DatabaseTypeEnum;
+
 
 /**
  * Java bean for the 'olcBdbConfig' object class.
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public class OlcBdbConfig extends OlcDatabaseConfig
 {
@@ -84,7 +88,7 @@ public class OlcBdbConfig extends OlcDatabaseConfig
     private Integer olcDbDNcacheSize;
 
     /**
-     * Field for the 'olcDbDLcacheSize' attribute.
+     * Field for the 'olcDbIDLcacheSize' attribute.
      */
     @ConfigurationElement(attributeType = "olcDbIDLcacheSize")
     private Integer olcDbIDLcacheSize;
@@ -108,7 +112,7 @@ public class OlcBdbConfig extends OlcDatabaseConfig
     private String olcDbLockDetect;
 
     /**
-     * Field for the 'olcDbNoSync' attribute.
+     * Field for the 'olcDbMode' attribute.
      */
     @ConfigurationElement(attributeType = "olcDbMode")
     private String olcDbMode;
@@ -514,4 +518,13 @@ public class OlcBdbConfig extends OlcDatabaseConfig
     {
         this.olcDbShmKey = olcDbShmKey;
     }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public String getOlcDatabaseType()
+    {
+        return DatabaseTypeEnum.BDB.toString().toLowerCase();
+    };
 }

@@ -27,10 +27,30 @@ import org.apache.directory.api.ldap.model.name.Dn;
 
 
 /**
- * Java bean for the 'olcDatabaseConfig' object class.
+ * Java bean for the 'olcDatabaseConfig' object class. It stores the common parameters
+ * for any DB :
+ * <ul>
+ * <li></li>
+ * <li></li>
+ * <li></li>
+ * <li></li>
+ * <li></li>
+ * <li></li>
+ * <li></li>
+ * <li></li>
+ * <li></li>
+ * <li></li>
+ * </ul>
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public class OlcDatabaseConfig extends OlcConfig
 {
+    /**
+     * The overlays list
+     */
+    private List<OlcOverlayConfig> overlays = new ArrayList<OlcOverlayConfig>();
+
     /**
      * Field for the 'olcDatabase' attribute.
      */
@@ -681,6 +701,52 @@ public class OlcDatabaseConfig extends OlcConfig
 
 
     /**
+     * @return the overlays
+     */
+    public List<OlcOverlayConfig> getOverlays()
+    {
+        return overlays;
+    }
+
+
+    /**
+     * @param overlays
+     */
+    public void setOverlays( List<OlcOverlayConfig> overlays )
+    {
+        this.overlays = overlays;
+    }
+
+
+    public void clearOverlays()
+    {
+        overlays.clear();
+    }
+
+
+    /**
+     * @param o
+     * @return
+     * @see java.util.List#add(java.lang.Object)
+     */
+    public boolean addOverlay( OlcOverlayConfig o )
+    {
+        return overlays.add( o );
+    }
+
+
+    /**
+     * @param o
+     * @return
+     * @see java.util.List#remove(java.lang.Object)
+     */
+    public boolean removeOverlay( OlcOverlayConfig o )
+    {
+        return overlays.remove( o );
+    }
+
+
+    /**
      * @param olcAccess the olcAccess to set
      */
     public void setOlcAccess( List<String> olcAccess )
@@ -947,5 +1013,16 @@ public class OlcDatabaseConfig extends OlcConfig
     public void setOlcUpdateRef( List<String> olcUpdateRef )
     {
         this.olcUpdateRef = olcUpdateRef;
+    }
+
+
+    /**
+     * Gets the type of the database.
+     *
+     * @return the type of the database
+     */
+    public String getOlcDatabaseType()
+    {
+        return "default";
     }
 }

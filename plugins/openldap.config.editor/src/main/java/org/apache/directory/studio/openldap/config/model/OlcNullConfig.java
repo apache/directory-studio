@@ -22,6 +22,8 @@ package org.apache.directory.studio.openldap.config.model;
 
 /**
  * Java bean for the 'olcNullConfig' object class.
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public class OlcNullConfig extends OlcDatabaseConfig
 {
@@ -48,4 +50,13 @@ public class OlcNullConfig extends OlcDatabaseConfig
     {
         this.olcDbBindAllowed = olcDbBindAllowed;
     }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public String getOlcDatabaseType()
+    {
+        return "null";
+    };
 }

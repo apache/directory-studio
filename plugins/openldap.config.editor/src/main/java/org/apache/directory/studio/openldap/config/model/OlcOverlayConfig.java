@@ -22,6 +22,8 @@ package org.apache.directory.studio.openldap.config.model;
 
 /**
  * Java bean for the 'olcOverlayConfig' object class.
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public class OlcOverlayConfig extends OlcConfig
 {
@@ -29,7 +31,26 @@ public class OlcOverlayConfig extends OlcConfig
      * Field for the 'olcOverlay' attribute.
      */
     @ConfigurationElement(attributeType = "olcOverlay", isOptional = false, isRdn = true)
-    private String olcOverlay;
+    protected String olcOverlay;
+
+
+    /**
+     * Creates a new instance of OlcOverlayConfig.
+     */
+    public OlcOverlayConfig()
+    {
+    }
+
+
+    /**
+     * Creates a copy instance of OlcOverlayConfig.
+     *
+     * @param o the initial object
+     */
+    public OlcOverlayConfig( OlcOverlayConfig o )
+    {
+        olcOverlay = o.olcOverlay;
+    }
 
 
     /**
@@ -47,5 +68,16 @@ public class OlcOverlayConfig extends OlcConfig
     public void setOlcOverlay( String olcOverlay )
     {
         this.olcOverlay = olcOverlay;
+    }
+
+
+    /**
+     * Gets a copy of this object.
+     *
+     * @return a copy of this object
+     */
+    public OlcOverlayConfig copy()
+    {
+        return new OlcOverlayConfig( this );
     }
 }

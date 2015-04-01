@@ -22,6 +22,8 @@ package org.apache.directory.studio.openldap.config.model;
 
 /**
  * Java bean for the 'olcSyncProvConfig' object class.
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public class OlcSyncProvConfig extends OlcOverlayConfig
 {
@@ -34,20 +36,45 @@ public class OlcSyncProvConfig extends OlcOverlayConfig
     /**
      * Field for the 'olcSpNoPresent' attribute.
      */
-    @ConfigurationElement(attributeType = "olcSpNoPresent")
-    private Boolean olcSpNoPresent;
+    @ConfigurationElement(attributeType = "olcSpNoPresent", defaultValue = "FALSE")
+    private Boolean olcSpNoPresent = false;
 
     /**
      * Field for the 'olcSpReloadHint' attribute.
      */
-    @ConfigurationElement(attributeType = "olcSpReloadHint")
-    private Boolean olcSpReloadHint;
+    @ConfigurationElement(attributeType = "olcSpReloadHint", defaultValue = "FALSE")
+    private Boolean olcSpReloadHint = false;
 
     /**
      * Field for the 'olcSpSessionlog' attribute.
      */
     @ConfigurationElement(attributeType = "olcSpSessionlog")
     private Integer olcSpSessionlog;
+
+
+    /**
+     * Creates a new instance of OlcSyncProvConfig.
+     */
+    public OlcSyncProvConfig()
+    {
+        super();
+        olcOverlay = "syncprov";
+    }
+
+
+    /**
+     * Creates a copy instance of OlcSyncProvConfig.
+     *
+     * @param o the initial object
+     */
+    public OlcSyncProvConfig( OlcSyncProvConfig o )
+    {
+        super();
+        olcSpCheckpoint = o.olcSpCheckpoint;
+        olcSpNoPresent = o.olcSpNoPresent;
+        olcSpReloadHint = o.olcSpReloadHint;
+        olcSpSessionlog = o.olcSpSessionlog;
+    }
 
 
     /**
@@ -119,5 +146,14 @@ public class OlcSyncProvConfig extends OlcOverlayConfig
     public void setOlcSpSessionlog( Integer olcSpSessionlog )
     {
         this.olcSpSessionlog = olcSpSessionlog;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public OlcSyncProvConfig copy()
+    {
+        return new OlcSyncProvConfig( this );
     }
 }

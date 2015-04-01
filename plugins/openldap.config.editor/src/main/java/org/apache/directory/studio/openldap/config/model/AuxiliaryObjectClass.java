@@ -22,7 +22,9 @@ package org.apache.directory.studio.openldap.config.model;
 
 /**
  * Java bean for an auxiliary object class.
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public abstract class AuxiliaryObjectClass
+public interface AuxiliaryObjectClass
 {
 }

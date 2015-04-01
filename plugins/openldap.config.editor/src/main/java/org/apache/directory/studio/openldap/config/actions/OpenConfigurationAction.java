@@ -26,15 +26,18 @@ import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.ui.IObjectActionDelegate;
-import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchPart;
-import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 
 import org.apache.directory.studio.openldap.config.editor.ConnectionServerConfigurationInput;
 import org.apache.directory.studio.openldap.config.editor.ServerConfigurationEditor;
 
 
+/**
+ * This class implements the action which open the configuration.
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ */
 public class OpenConfigurationAction implements IObjectActionDelegate
 {
     /** The selected connection */
@@ -50,33 +53,14 @@ public class OpenConfigurationAction implements IObjectActionDelegate
         {
             try
             {
-                IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
-                try
-                {
-                    page.openEditor( new ConnectionServerConfigurationInput( selectedConnection ),
+                PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
+                    .openEditor( new ConnectionServerConfigurationInput( selectedConnection ),
                         ServerConfigurationEditor.ID );
-                }
-                catch ( PartInitException e )
-                {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
             }
             catch ( Exception e )
             {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
+                // Will never occur.
             }
-
-            //            try
-            //            {
-            //                ConfigurationReader.readConfiguration( selectedConnection );
-            //            }
-            //            catch ( Exception e )
-            //            {
-            //                // TODO Auto-generated catch block
-            //                e.printStackTrace();
-            //            }
         }
     }
 

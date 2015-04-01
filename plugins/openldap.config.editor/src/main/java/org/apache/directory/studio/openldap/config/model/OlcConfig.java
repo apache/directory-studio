@@ -28,13 +28,14 @@ import org.apache.directory.api.ldap.model.name.Dn;
 
 /**
  * Java bean for the 'olcConfig' object class.
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public class OlcConfig
 {
     /** The parent DN of the associated entry */
     protected Dn parentDn;
-    
-    
+
     /** The list of auxiliary object classes */
     protected List<AuxiliaryObjectClass> auxiliaryObjectClasses = new ArrayList<AuxiliaryObjectClass>();
 
@@ -75,7 +76,7 @@ public class OlcConfig
 
     /**
      * Gets the parent DN of the associated entry.
-     * 
+     *
      * @return the dn the parent DN of the asssociated entry
      */
     public Dn getParentDn()
@@ -86,7 +87,7 @@ public class OlcConfig
 
     /**
      * Sets the parent DN of the associated entry.
-     * 
+     *
      * @param dn the parent dn to set
      */
     public void setParentDn( Dn parentDn )

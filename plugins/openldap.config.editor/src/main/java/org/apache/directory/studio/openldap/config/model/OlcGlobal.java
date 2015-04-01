@@ -26,6 +26,8 @@ import java.util.List;
 
 /**
  * Java bean for the 'OlcGlobal' object class.
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public class OlcGlobal extends OlcConfig
 {
@@ -130,6 +132,12 @@ public class OlcGlobal extends OlcConfig
      */
     @ConfigurationElement(attributeType = "olcIdleTimeout")
     private Integer olcIdleTimeout;
+
+    /**
+     * Field for the 'olcIndexHash64' attribute.
+     */
+    @ConfigurationElement(attributeType = "olcIndexHash64")
+    private Boolean olcIndexHash64;
 
     /**
      * Field for the 'olcIndexIntLen' attribute.
@@ -306,16 +314,16 @@ public class OlcGlobal extends OlcConfig
     private String olcSizeLimit;
 
     /**
-     * Field for the 'olcSockbufMaxIncomming' attribute.
+     * Field for the 'olcSockbufMaxIncoming' attribute.
      */
-    @ConfigurationElement(attributeType = "olcSockbufMaxIncomming")
-    private String olcSockbufMaxIncomming;
+    @ConfigurationElement(attributeType = "olcSockbufMaxIncoming")
+    private String olcSockbufMaxIncoming;
 
     /**
-     * Field for the 'olcSockbufMaxIncommingAuth' attribute.
+     * Field for the 'olcSockbufMaxIncomingAuth' attribute.
      */
-    @ConfigurationElement(attributeType = "olcSockbufMaxIncommingAuth")
-    private String olcSockbufMaxIncommingAuth;
+    @ConfigurationElement(attributeType = "olcSockbufMaxIncomingAuth")
+    private String olcSockbufMaxIncomingAuth;
 
     /**
      * Field for the 'olcTCPBuffer' attribute.
@@ -922,6 +930,15 @@ public class OlcGlobal extends OlcConfig
 
 
     /**
+     * @return the olcIndexHash64
+     */
+    public Boolean getOlcIndexHash64()
+    {
+        return olcIndexHash64;
+    }
+
+
+    /**
      * @return the olcIndexIntLen
      */
     public Integer getOlcIndexIntLen()
@@ -1183,20 +1200,20 @@ public class OlcGlobal extends OlcConfig
 
 
     /**
-     * @return the olcSockbufMaxIncomming
+     * @return the olcSockbufMaxIncoming
      */
-    public String getOlcSockbufMaxIncomming()
+    public String getOlcSockbufMaxIncoming()
     {
-        return olcSockbufMaxIncomming;
+        return olcSockbufMaxIncoming;
     }
 
 
     /**
-     * @return the olcSockbufMaxIncommingAuth
+     * @return the olcSockbufMaxIncomingAuth
      */
-    public String getOlcSockbufMaxIncommingAuth()
+    public String getOlcSockbufMaxIncomingAuth()
     {
-        return olcSockbufMaxIncommingAuth;
+        return olcSockbufMaxIncomingAuth;
     }
 
 
@@ -1489,6 +1506,15 @@ public class OlcGlobal extends OlcConfig
 
 
     /**
+     * @param olcIndexHash64 the olcIndexHash64 to set
+     */
+    public void setOlcIndexHash64( Boolean olcIndexHash64 )
+    {
+        this.olcIndexHash64 = olcIndexHash64;
+    }
+
+
+    /**
      * @param olcIndexIntLen the olcIndexIntLen to set
      */
     public void setOlcIndexIntLen( Integer olcIndexIntLen )
@@ -1750,20 +1776,20 @@ public class OlcGlobal extends OlcConfig
 
 
     /**
-     * @param olcSockbufMaxIncomming the olcSockbufMaxIncomming to set
+     * @param olcSockbufMaxIncoming the olcSockbufMaxIncoming to set
      */
-    public void setOlcSockbufMaxIncomming( String olcSockbufMaxIncomming )
+    public void setOlcSockbufMaxIncomming( String olcSockbufMaxIncoming )
     {
-        this.olcSockbufMaxIncomming = olcSockbufMaxIncomming;
+        this.olcSockbufMaxIncoming = olcSockbufMaxIncoming;
     }
 
 
     /**
-     * @param olcSockbufMaxIncommingAuth the olcSockbufMaxIncommingAuth to set
+     * @param olcSockbufMaxIncomingAuth the olcSockbufMaxIncomingAuth to set
      */
-    public void setOlcSockbufMaxIncommingAuth( String olcSockbufMaxIncommingAuth )
+    public void setOlcSockbufMaxIncomingAuth( String olcSockbufMaxIncomingAuth )
     {
-        this.olcSockbufMaxIncommingAuth = olcSockbufMaxIncommingAuth;
+        this.olcSockbufMaxIncomingAuth = olcSockbufMaxIncomingAuth;
     }
 
 

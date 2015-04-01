@@ -44,16 +44,23 @@ import org.eclipse.ui.forms.editor.FormPage;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.ScrolledForm;
 
+import org.apache.directory.studio.openldap.config.actions.EditorExportConfigurationAction;
+import org.apache.directory.studio.openldap.config.actions.EditorImportConfigurationAction;
 import org.apache.directory.studio.openldap.config.model.OpenLdapConfiguration;
 
 
 /**
  * This class represents the General Page of the Server Configuration Editor.
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public abstract class ServerConfigurationEditorPage extends FormPage
 {
     protected static final Color GRAY_COLOR = new Color( null, 120, 120, 120 );
     protected static final String TABULATION = "      ";
+    
+    /** A flag to indicate if the page is initialized */
+    protected boolean isInitialized = false;
 
     private ModifyListener dirtyModifyListener = new ModifyListener()
     {
@@ -142,13 +149,15 @@ public abstract class ServerConfigurationEditorPage extends FormPage
         ServerConfigurationEditor editor = ( ServerConfigurationEditor ) getEditor();
 
         IToolBarManager toolbarManager = form.getToolBarManager();
-        //        toolbarManager.add( new EditorImportConfigurationAction( editor ) );
+        toolbarManager.add( new EditorImportConfigurationAction( editor ) );
         toolbarManager.add( new Separator() );
-        //        toolbarManager.add( new EditorExportConfigurationAction( editor ) );
+        toolbarManager.add( new EditorExportConfigurationAction( editor ) );
 
         toolbarManager.update( true );
 
         createFormContent( parent, toolkit );
+        
+        isInitialized = true;
     }
 
 
@@ -167,6 +176,17 @@ public abstract class ServerConfigurationEditorPage extends FormPage
      * Refreshes the UI.
      */
     protected abstract void refreshUI();
+    
+    /**
+     * Indicates if the page is initialized.
+     *
+     * @return <code>true</code> if the page is initialized,
+     *         <code>false</code> if not.
+     */
+    public boolean isInitialized()
+    {
+        return isInitialized;
+    }
 
 
     /**

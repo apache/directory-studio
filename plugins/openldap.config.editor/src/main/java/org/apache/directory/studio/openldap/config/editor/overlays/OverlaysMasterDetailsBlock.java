@@ -57,6 +57,8 @@ import org.apache.directory.studio.openldap.config.model.OpenLdapConfiguration;
 
 /**
  * This class represents the Overlays Master/Details Block used in the Overlays Page.
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public class OverlaysMasterDetailsBlock extends MasterDetailsBlock
 {

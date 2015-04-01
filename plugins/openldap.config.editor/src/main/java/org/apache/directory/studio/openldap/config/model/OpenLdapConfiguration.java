@@ -23,63 +23,103 @@ package org.apache.directory.studio.openldap.config.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.directory.studio.connection.core.Connection;
+
 
 /**
  * This class implements the basic class for an OpenLDAP configuration.
  * <p>
- * It contains all the configuration objects found under the "cn=config" branch. 
+ * It contains all the configuration objects found under the "cn=config" branch.
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public class OpenLdapConfiguration
 {
+    /** The connection */
+    private Connection connection;
+
+    /** The global configuration */
+    private OlcGlobal global;
+
+    /** The databases list */
+    private List<OlcDatabaseConfig> databases = new ArrayList<OlcDatabaseConfig>();
+
+    /** The other configuration elements list*/
     private List<OlcConfig> configurationElements = new ArrayList<OlcConfig>();
 
 
-    /**
-     * @return the configurationElements
-     */
-    public List<OlcConfig> getConfigurationElements()
-    {
-        return configurationElements;
-    }
-
-
-    /**
-     * @param e
-     * @return
-     * @see java.util.List#add(java.lang.Object)
-     */
     public boolean add( OlcConfig o )
     {
         return configurationElements.add( o );
     }
 
 
-    /**
-     * @param o
-     * @return
-     * @see java.util.List#contains(java.lang.Object)
-     */
+    public boolean addDatabase( OlcDatabaseConfig o )
+    {
+        return databases.add( o );
+    }
+
+
+    public void clearDatabases()
+    {
+        databases.clear();
+    }
+
+
     public boolean contains( OlcConfig o )
     {
         return configurationElements.contains( o );
     }
 
 
-    /**
-     * @param o
-     * @return
-     * @see java.util.List#remove(java.lang.Object)
-     */
+    public List<OlcConfig> getConfigurationElements()
+    {
+        return configurationElements;
+    }
+
+
+    public Connection getConnection()
+    {
+        return connection;
+    }
+
+
+    public List<OlcDatabaseConfig> getDatabases()
+    {
+        return databases;
+    }
+
+
+    public OlcGlobal getGlobal()
+    {
+        return global;
+    }
+
+
     public boolean remove( OlcConfig o )
     {
         return configurationElements.remove( o );
     }
 
 
-    /**
-     * @return
-     * @see java.util.List#size()
-     */
+    public boolean removeDatabase( OlcDatabaseConfig o )
+    {
+        return databases.remove( o );
+    }
+
+
+    public void setConnection( Connection connection )
+    {
+        this.connection = connection;
+    }
+
+
+    public void setGlobal( OlcGlobal global )
+    {
+        this.global = global;
+    }
+
+
     public int size()
     {
         return configurationElements.size();

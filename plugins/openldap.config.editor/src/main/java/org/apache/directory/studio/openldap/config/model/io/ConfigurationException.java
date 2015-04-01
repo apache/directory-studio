@@ -25,7 +25,9 @@ import org.apache.directory.api.ldap.model.exception.LdapException;
 
 /**
  * An exception used when we cannot read the configuration, or when an error
- * occured while reading it from the DIT.
+ * occurred while reading it from the DIT.
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public class ConfigurationException extends LdapException
 {

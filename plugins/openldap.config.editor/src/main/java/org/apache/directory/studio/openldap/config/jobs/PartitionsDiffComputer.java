@@ -21,24 +21,16 @@ package org.apache.directory.studio.openldap.config.jobs;
 
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
-import org.apache.directory.server.core.api.entry.ClonedServerEntry;
-import org.apache.directory.server.core.api.filtering.EntryFilteringCursor;
-import org.apache.directory.server.core.api.interceptor.context.LookupOperationContext;
-import org.apache.directory.server.core.api.interceptor.context.SearchOperationContext;
-import org.apache.directory.server.core.api.partition.Partition;
 import org.apache.directory.api.ldap.model.constants.SchemaConstants;
+import org.apache.directory.api.ldap.model.entry.Attribute;
 import org.apache.directory.api.ldap.model.entry.DefaultAttribute;
 import org.apache.directory.api.ldap.model.entry.DefaultModification;
 import org.apache.directory.api.ldap.model.entry.Entry;
-import org.apache.directory.api.ldap.model.entry.Attribute;
 import org.apache.directory.api.ldap.model.entry.Modification;
 import org.apache.directory.api.ldap.model.entry.ModificationOperation;
 import org.apache.directory.api.ldap.model.entry.Value;
-import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.exception.LdapInvalidAttributeValueException;
 import org.apache.directory.api.ldap.model.filter.FilterParser;
 import org.apache.directory.api.ldap.model.ldif.ChangeType;
@@ -47,12 +39,19 @@ import org.apache.directory.api.ldap.model.message.AliasDerefMode;
 import org.apache.directory.api.ldap.model.message.SearchScope;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.api.ldap.model.schema.AttributeType;
-import org.apache.directory.api.ldap.model.schema.AttributeTypeOptions;
-import org.apache.directory.api.ldap.model.schema.SchemaManager;
-import org.apache.directory.api.ldap.model.schema.SchemaUtils;
 import org.apache.directory.api.ldap.model.schema.UsageEnum;
+import org.apache.directory.server.core.api.entry.ClonedServerEntry;
+import org.apache.directory.server.core.api.filtering.EntryFilteringCursor;
+import org.apache.directory.server.core.api.interceptor.context.LookupOperationContext;
+import org.apache.directory.server.core.api.interceptor.context.SearchOperationContext;
+import org.apache.directory.server.core.api.partition.Partition;
 
 
+/**
+ * 
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ */
 public class PartitionsDiffComputer
 {
     /** The original partition */
@@ -215,11 +214,9 @@ public class PartitionsDiffComputer
                 }
 
                 // Creating a search operation context to get the children of the current entry
-                SearchOperationContext soc = new SearchOperationContext( null );
-                setReturningAttributes( originalPartition.getSchemaManager(), attributeIds, soc );
-                soc.setDn( originalEntry.getDn() );
-                soc.setScope( SearchScope.ONELEVEL );
-                soc.setFilter( FilterParser.parse( originalPartition.getSchemaManager(), "(objectClass=*)" ) );
+                SearchOperationContext soc = new SearchOperationContext( null, originalEntry.getDn(),
+                    SearchScope.ONELEVEL,
+                    FilterParser.parse( originalPartition.getSchemaManager(), "(objectClass=*)" ), attributeIds );
                 soc.setAliasDerefMode( AliasDerefMode.DEREF_ALWAYS );
 
                 // Looking for the children of the current entry
@@ -229,6 +226,64 @@ public class PartitionsDiffComputer
                     originalEntries.add( ( ( ClonedServerEntry ) cursor.get() ).getClonedEntry() );
                 }
             }
+
+            // Looking up the destination base entry
+            Entry destinationBaseEntry = destinationPartition
+                .lookup( new LookupOperationContext( null, baseDn, attributeIds ) );
+            if ( destinationBaseEntry == null )
+            {
+                throw new PartitionsDiffException( "Unable to find the base entry in the destination partition." );
+            }
+
+            // Creating the list containing all the destination entries to be processed
+            // and adding it the destination base entry
+            List<Entry> destinationEntries = new ArrayList<Entry>();
+            destinationEntries.add( originalBaseEntry );
+
+            // Looping until all destination entries are being processed
+            while ( destinationEntries.size() > 0 )
+            {
+                // Getting the first destination entry from the list
+                Entry destinationEntry = destinationEntries.remove( 0 );
+
+                // Looking for the equivalent entry in the destination partition
+                Entry originalEntry = originalPartition.lookup( new LookupOperationContext( null, destinationEntry
+                    .getDn(), attributeIds ) );
+                // We're only looking for new entries, modified or removed 
+                // entries have already been computed
+                if ( originalEntry == null )
+                {
+                    // Creating a modification entry to hold all modifications
+                    LdifEntry modificationEntry = new LdifEntry();
+                    modificationEntry.setDn( destinationEntry.getDn() );
+
+                    // Setting the changetype to addition
+                    modificationEntry.setChangeType( ChangeType.Add );
+
+                    // Copying attributes
+                    for ( Attribute attribute : destinationEntry )
+                    {
+                        modificationEntry.addAttribute( attribute );
+                    }
+
+                    // Adding the modification entry to the list
+                    modifications.add( modificationEntry );
+                }
+
+                // Creating a search operation context to get the children of the current entry
+                SearchOperationContext soc = new SearchOperationContext( null, destinationEntry.getDn(),
+                    SearchScope.ONELEVEL,
+                    FilterParser.parse( originalPartition.getSchemaManager(), "(objectClass=*)" ), attributeIds );
+                soc.setAliasDerefMode( AliasDerefMode.DEREF_ALWAYS );
+
+                // Looking for the children of the current entry
+                EntryFilteringCursor cursor = destinationPartition.search( soc );
+
+                while ( cursor.next() )
+                {
+                    destinationEntries.add( ( ( ClonedServerEntry ) cursor.get() ).getClonedEntry() );
+                }
+            }
         }
         catch ( Exception e )
         {
@@ -236,65 +291,6 @@ public class PartitionsDiffComputer
         }
 
         return modifications;
-    }
-
-
-    /**
-     * Sets the returning attributes to the search operation context.
-     *
-     * @param schemaManager
-     *      the schema manager
-     * @param attributeIds
-     *      the attribute IDs
-     * @param soc
-     *      the search operation context
-     * @throws org.apache.directory.api.ldap.model.exception.LdapException
-     */
-    private void setReturningAttributes( SchemaManager schemaManager, String[] attributeIds,
-        SearchOperationContext soc ) throws LdapException
-    {
-        if ( attributeIds != null && attributeIds.length != 0 )
-        {
-            Set<AttributeTypeOptions> returningAttributes = new HashSet<AttributeTypeOptions>();
-
-            for ( String returnAttribute : attributeIds )
-            {
-                if ( returnAttribute.equals( SchemaConstants.NO_ATTRIBUTE ) )
-                {
-                    soc.setNoAttributes( true );
-                    continue;
-                }
-
-                if ( returnAttribute.equals( SchemaConstants.ALL_OPERATIONAL_ATTRIBUTES ) )
-                {
-                    soc.setAllOperationalAttributes( true );
-                    continue;
-                }
-
-                if ( returnAttribute.equals( SchemaConstants.ALL_USER_ATTRIBUTES ) )
-                {
-                    soc.setAllUserAttributes( true );
-                    continue;
-                }
-
-                String id = SchemaUtils.stripOptions( returnAttribute );
-                Set<String> options = SchemaUtils.getOptions( returnAttribute );
-
-                AttributeType attributeType = schemaManager.lookupAttributeTypeRegistry( id );
-                AttributeTypeOptions attrOptions = new AttributeTypeOptions( attributeType, options );
-
-                returningAttributes.add( attrOptions );
-            }
-
-            // reset the noAttrubte flag if it is already set cause that will be ignored if any other AT is requested
-            if ( soc.isNoAttributes()
-                && ( soc.isAllUserAttributes() || soc.isAllOperationalAttributes() || ( !returningAttributes.isEmpty() ) ) )
-            {
-                soc.setNoAttributes( false );
-            }
-
-            soc.setReturningAttributes( returningAttributes.toArray( new String[returningAttributes.size()] ) );
-        }
     }
 
 
@@ -392,54 +388,17 @@ public class PartitionsDiffComputer
     private void compareAttributes( Attribute originalAttribute, Attribute destinationAttribute,
         LdifEntry modificationEntry )
     {
-        // Creating a list to store the already evaluated values
-        List<Value<?>> evaluatedValues = new ArrayList<Value<?>>();
-
-        // Checking values of the original attribute
-        for ( Value<?> originalValue : originalAttribute )
+        // Special case for 'objectClass' attribute, due to a bug in OpenLDAP
+        // which does not allow us to modify the 'objectClass' attribute
+        if ( !SchemaConstants.OBJECT_CLASS_AT.equalsIgnoreCase( originalAttribute.getUpId() ) )
         {
-            if ( !destinationAttribute.contains( originalValue ) )
+            // Checking if the two attributes are equivalent
+            if ( !originalAttribute.equals( destinationAttribute ) )
             {
-                // Creating a modification for the removed AT value
+                // Creating a modification for the modified AT values
                 Modification modification = new DefaultModification();
-                modification.setOperation( ModificationOperation.REMOVE_ATTRIBUTE );
-                Attribute attribute = new DefaultAttribute( originalAttribute.getAttributeType() );
-                modification.setAttribute( attribute );
-
-                try
-                {
-                    attribute.add( originalValue );
-                }
-                catch ( LdapInvalidAttributeValueException liave )
-                {
-                    // TODO : handle the exception
-                }
-
-                modificationEntry.addModification( modification );
-            }
-
-            evaluatedValues.add( originalValue );
-        }
-
-        // Checking values of the destination attribute
-        for ( Value<?> destinationValue : destinationAttribute )
-        {
-            if ( !evaluatedValues.contains( destinationValue ) )
-            {
-                // Creating a modification for the added AT value
-                Modification modification = new DefaultModification();
-                modification.setOperation( ModificationOperation.ADD_ATTRIBUTE );
-                Attribute attribute = new DefaultAttribute( originalAttribute.getAttributeType() );
-                modification.setAttribute( attribute );
-
-                try
-                {
-                    attribute.add( destinationValue );
-                }
-                catch ( LdapInvalidAttributeValueException liave )
-                {
-                    // TODO : handle the exception
-                }
+                modification.setOperation( ModificationOperation.REPLACE_ATTRIBUTE );
+                modification.setAttribute( destinationAttribute );
 
                 modificationEntry.addModification( modification );
             }

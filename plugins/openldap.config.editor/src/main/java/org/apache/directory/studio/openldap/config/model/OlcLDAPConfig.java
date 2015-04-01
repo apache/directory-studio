@@ -28,6 +28,8 @@ import org.apache.directory.api.ldap.model.name.Dn;
 
 /**
  * Java bean for the 'olcLDAPConfig' object class.
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public class OlcLDAPConfig extends OlcDatabaseConfig
 {
@@ -714,4 +716,13 @@ public class OlcLDAPConfig extends OlcDatabaseConfig
     {
         this.olcDbUseTemporaryConn = olcDbUseTemporaryConn;
     }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public String getOlcDatabaseType()
+    {
+        return "ldap";
+    };
 }
