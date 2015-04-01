@@ -37,6 +37,7 @@ import org.apache.directory.api.ldap.model.schema.SchemaManager;
 import org.apache.directory.api.ldap.model.schema.registries.ObjectClassRegistry;
 import org.apache.directory.api.ldap.util.tree.DnNode;
 import org.apache.directory.api.util.DateUtils;
+import org.apache.directory.server.core.api.CacheService;
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.common.ui.CommonUIUtils;
 import org.apache.directory.studio.common.ui.filesystem.PathEditorInput;
@@ -52,7 +53,6 @@ import org.eclipse.swt.widgets.DirectoryDialog;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.PlatformUI;
-
 import org.apache.directory.studio.openldap.config.ExpandedLdifUtils;
 import org.apache.directory.studio.openldap.config.jobs.EntryBasedConfigurationPartition;
 import org.apache.directory.studio.openldap.config.jobs.PartitionsDiffComputer;
@@ -455,8 +455,12 @@ public class ServerConfigurationEditorUtils
     public static EntryBasedConfigurationPartition createConfigurationPartition( SchemaManager schemaManager,
         Dn configBaseDn ) throws LdapException
     {
+        CacheService cacheService = new CacheService();
+        cacheService.initialize( null );
+
         EntryBasedConfigurationPartition configurationPartition = new EntryBasedConfigurationPartition(
             schemaManager, configBaseDn );
+        configurationPartition.setCacheService(cacheService);
         configurationPartition.initialize();
 
         return configurationPartition;
