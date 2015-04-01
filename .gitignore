@@ -1,0 +1,9 @@
+.classpath
+.project
+.settings
+target/
+META-INF/
+eclipse-target-platform/eclipse-target-platform.target
+plugins/ldapbrowser.core/lib/
+plugins/ldapservers.apacheds/resources/libs/
+
