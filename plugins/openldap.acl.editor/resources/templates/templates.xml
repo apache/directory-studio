@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Licensed to the Apache Software Foundation (ASF) under one
+  or more contributor license agreements.  See the NOTICE file
+  distributed with this work for additional information
+  regarding copyright ownership.  The ASF licenses this file
+  to you under the Apache License, Version 2.0 (the
+  "License"); you may not use this file except in compliance
+  with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing,
+  software distributed under the License is distributed on an
+  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+  KIND, either express or implied.  See the License for the
+  specific language governing permissions and limitations
+  under the License.
+-->
+<!-- This file is used to store the code templates for the ACI Item syntax  -->
+<templates>
+    <template
+        id="org.apache.directory.studio.openldap.config.acl.templates.star"
+        name="*"
+        context="org.apache.directory.studio.openldap.config.acl.templates"
+        enabled="true"
+        deleted="false">* ${cursor}</template>
+    <template
+        id="org.apache.directory.studio.openldap.config.acl.templates.anonymous"
+        name="anonymous"
+        context="org.apache.directory.studio.openldap.config.acl.templates"
+        enabled="true"
+        deleted="false">anonymous ${cursor}</template>
+    <template
+        id="org.apache.directory.studio.openldap.config.acl.templates.attrs"
+        name="attrs"
+        context="org.apache.directory.studio.openldap.config.acl.templates"
+        enabled="true"
+        deleted="false">attrs=${attrlist} ${cursor}</template>
+    <template
+        id="org.apache.directory.studio.openldap.config.acl.templates.auth"
+        name="auth"
+        context="org.apache.directory.studio.openldap.config.acl.templates"
+        enabled="true"
+        deleted="false">auth ${cursor}</template>
+    <template
+        id="org.apache.directory.studio.openldap.config.acl.templates.by"
+        name="by"
+        context="org.apache.directory.studio.openldap.config.acl.templates"
+        enabled="true"
+        deleted="false">by ${cursor}</template>
+    <template
+        id="org.apache.directory.studio.openldap.config.acl.templates.compare"
+        name="compare"
+        context="org.apache.directory.studio.openldap.config.acl.templates"
+        enabled="true"
+        deleted="false">compare ${cursor}</template>
+    <template
+        id="org.apache.directory.studio.openldap.config.acl.templates.disclose"
+        name="disclose"
+        context="org.apache.directory.studio.openldap.config.acl.templates"
+        enabled="true"
+        deleted="false">disclose ${cursor}</template>
+    <template
+        id="org.apache.directory.studio.openldap.config.acl.templates.dn"
+        name="dn"
+        context="org.apache.directory.studio.openldap.config.acl.templates"
+        enabled="true"
+        deleted="false">dn="${dn}" ${cursor}</template>
+    <template
+        id="org.apache.directory.studio.openldap.config.acl.templates.dn.base"
+        name="dn.base"
+        context="org.apache.directory.studio.openldap.config.acl.templates"
+        enabled="true"
+        deleted="false">dn.base="${dn}" ${cursor}</template>
+    <template
+        id="org.apache.directory.studio.openldap.config.acl.templates.dn.children"
+        name="dn.children"
+        context="org.apache.directory.studio.openldap.config.acl.templates"
+        enabled="true"
+        deleted="false">dn.children="${dn}" ${cursor}</template>
+    <template
+        id="org.apache.directory.studio.openldap.config.acl.templates.dn.exact"
+        name="dn.exact"
+        context="org.apache.directory.studio.openldap.config.acl.templates"
+        enabled="true"
+        deleted="false">dn.exact="${dn}" ${cursor}</template>
+    <template
+        id="org.apache.directory.studio.openldap.config.acl.templates.dn.one"
+        name="dn.one"
+        context="org.apache.directory.studio.openldap.config.acl.templates"
+        enabled="true"
+        deleted="false">dn.one="${dn}" ${cursor}</template>
+    <template
+        id="org.apache.directory.studio.openldap.config.acl.templates.dn.regex"
+        name="dn.regex"
+        context="org.apache.directory.studio.openldap.config.acl.templates"
+        enabled="true"
+        deleted="false">dn.regex="${regex}" ${cursor}</template>
+    <template
+        id="org.apache.directory.studio.openldap.config.acl.templates.dn.subtree"
+        name="dn.subtree"
+        context="org.apache.directory.studio.openldap.config.acl.templates"
+        enabled="true"
+        deleted="false">dn.subtree="${dn}" ${cursor}</template>
+    <template
+        id="org.apache.directory.studio.openldap.config.acl.templates.dnattr"
+        name="dnattr"
+        context="org.apache.directory.studio.openldap.config.acl.templates"
+        enabled="true"
+        deleted="false">dnattr=${attrname} ${cursor}</template>
+    <template
+        id="org.apache.directory.studio.openldap.config.acl.templates.filter"
+        name="filter"
+        context="org.apache.directory.studio.openldap.config.acl.templates"
+        enabled="true"
+        deleted="false">filter=${ldapfilter} ${cursor}</template>
+    <template
+        id="org.apache.directory.studio.openldap.config.acl.templates.group"
+        name="group"
+        context="org.apache.directory.studio.openldap.config.acl.templates"
+        enabled="true"
+        deleted="false">group="${group}" ${cursor}</template>
+    <template
+        id="org.apache.directory.studio.openldap.config.acl.templates.group.type"
+        name="group.type"
+        context="org.apache.directory.studio.openldap.config.acl.templates"
+        enabled="true"
+        deleted="false">group.${type}="${pattern}" ${cursor}</template>
+    <template
+        id="org.apache.directory.studio.openldap.config.acl.templates.group.objectclass"
+        name="group/objectclass"
+        context="org.apache.directory.studio.openldap.config.acl.templates"
+        enabled="true"
+        deleted="false">group/${objectclass}="${pattern}" ${cursor}</template>
+    <template
+        id="org.apache.directory.studio.openldap.config.acl.templates.group.objectclass.type"
+        name="group/objectclass.type"
+        context="org.apache.directory.studio.openldap.config.acl.templates"
+        enabled="true"
+        deleted="false">group/${objectclass}.${type}="${pattern}" ${cursor}</template>
+    <template
+        id="org.apache.directory.studio.openldap.config.acl.templates.group.objectclass.attrname.type"
+        name="group/objectclass/attrname.type"
+        context="org.apache.directory.studio.openldap.config.acl.templates"
+        enabled="true"
+        deleted="false">group/${objectclass}/${attrname}.${type}="${pattern}" ${cursor}</template>
+    <template
+        id="org.apache.directory.studio.openldap.config.acl.templates.group.objectclass.attrname"
+        name="group/objectclass/attrname"
+        context="org.apache.directory.studio.openldap.config.acl.templates"
+        enabled="true"
+        deleted="false">group/${objectclass}/${attrname}="${pattern}" ${cursor}</template>
+    <template
+        id="org.apache.directory.studio.openldap.config.acl.templates.none"
+        name="none"
+        context="org.apache.directory.studio.openldap.config.acl.templates"
+        enabled="true"
+        deleted="false">none ${cursor}</template>
+    <template
+        id="org.apache.directory.studio.openldap.config.acl.templates.manage"
+        name="manage"
+        context="org.apache.directory.studio.openldap.config.acl.templates"
+        enabled="true"
+        deleted="false">manage ${cursor}</template>
+    <template
+        id="org.apache.directory.studio.openldap.config.acl.templates.read"
+        name="read"
+        context="org.apache.directory.studio.openldap.config.acl.templates"
+        enabled="true"
+        deleted="false">read ${cursor}</template>
+    <template
+        id="org.apache.directory.studio.openldap.config.acl.templates.sasl_ssf"
+        name="sasl_ssf"
+        context="org.apache.directory.studio.openldap.config.acl.templates"
+        enabled="true"
+        deleted="false">sasl_ssf=${n} ${cursor}</template>
+    <template
+        id="org.apache.directory.studio.openldap.config.acl.templates.search"
+        name="search"
+        context="org.apache.directory.studio.openldap.config.acl.templates"
+        enabled="true"
+        deleted="false">search ${cursor}</template>
+    <template
+        id="org.apache.directory.studio.openldap.config.acl.templates.self"
+        name="self"
+        context="org.apache.directory.studio.openldap.config.acl.templates"
+        enabled="true"
+        deleted="false">self ${cursor}</template>
+    <template
+        id="org.apache.directory.studio.openldap.config.acl.templates.ssf"
+        name="ssf"
+        context="org.apache.directory.studio.openldap.config.acl.templates"
+        enabled="true"
+        deleted="false">ssf=${n} ${cursor}</template>
+    <template
+        id="org.apache.directory.studio.openldap.config.acl.templates.to"
+        name="to"
+        context="org.apache.directory.studio.openldap.config.acl.templates"
+        enabled="true"
+        deleted="false">to ${cursor}</template>
+    <template
+        id="org.apache.directory.studio.openldap.config.acl.templates.tls_ssf"
+        name="tls_ssf"
+        context="org.apache.directory.studio.openldap.config.acl.templates"
+        enabled="true"
+        deleted="false">tls_ssf=${n} ${cursor}</template>
+    <template
+        id="org.apache.directory.studio.openldap.config.acl.templates.transport_ssf"
+        name="transport_ssf"
+        context="org.apache.directory.studio.openldap.config.acl.templates"
+        enabled="true"
+        deleted="false">transport_ssf=${n} ${cursor}</template>
+    <template
+        id="org.apache.directory.studio.openldap.config.acl.templates.users"
+        name="users"
+        context="org.apache.directory.studio.openldap.config.acl.templates"
+        enabled="true"
+        deleted="false">users ${cursor}</template>
+    <template
+        id="org.apache.directory.studio.openldap.config.acl.templates.write"
+        name="write"
+        context="org.apache.directory.studio.openldap.config.acl.templates"
+        enabled="true"
+        deleted="false">write ${cursor}</template>
+</templates>

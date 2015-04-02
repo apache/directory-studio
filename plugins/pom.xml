@@ -51,6 +51,7 @@
     <module>openldap.common.ui</module>
     <module>openldap.config.editor</module>
     <module>openldap.syncrepl</module>
+    <module>openldap.acl.editor</module>
     <module>templateeditor</module>
     <module>combinededitor</module>
   </modules>
