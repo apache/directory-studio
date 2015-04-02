@@ -28,6 +28,8 @@ import org.eclipse.jface.text.rules.Token;
 
 /**
  * Rule to detect a "dn[.type[,modifier]]=" clause.
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public class KeywordEqualRule extends AbstractRule
 {

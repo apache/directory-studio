@@ -38,6 +38,10 @@ import org.eclipse.ui.forms.widgets.ExpandableComposite;
 import org.apache.directory.studio.openldap.config.acl.model.AclWhoClauseGroup;
 
 
+/**
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ */
 public class WhoClauseGroupComposite extends AbstractClauseComposite<AclWhoClauseGroup> implements
     WhoClauseComposite<AclWhoClauseGroup>
 {

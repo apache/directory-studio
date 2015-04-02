@@ -34,12 +34,14 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 
-import org.apache.directory.studio.openldap.config.acl.model.AclWhatClauseDn;
 import org.apache.directory.studio.openldap.config.acl.model.AclWhatClauseDnTypeEnum;
 import org.apache.directory.studio.openldap.config.acl.model.AclWhoClauseDn;
 import org.apache.directory.studio.openldap.config.acl.model.AclWhoClauseDnTypeEnum;
 
-
+/**
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ */
 public class WhoClauseDnComposite extends AbstractClauseComposite<AclWhoClauseDn> implements
     WhoClauseComposite<AclWhoClauseDn>
 {

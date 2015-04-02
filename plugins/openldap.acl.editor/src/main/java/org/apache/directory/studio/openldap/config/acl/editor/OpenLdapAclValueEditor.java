@@ -34,6 +34,8 @@ import org.apache.directory.studio.openldap.config.acl.dialogs.OpenLdapAclDialog
 /**
  * This class implements a value editor that handle OpenLDAP ACL string values
  * in a dialog. 
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public class OpenLdapAclValueEditor extends AbstractDialogStringValueEditor
 {

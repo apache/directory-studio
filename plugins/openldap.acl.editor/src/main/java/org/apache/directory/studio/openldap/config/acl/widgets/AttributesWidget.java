@@ -48,6 +48,10 @@ import org.apache.directory.studio.openldap.config.acl.OpenLdapAclEditorPlugin;
 import org.apache.directory.studio.openldap.config.acl.OpenLdapAclEditorPluginConstants;
 
 
+/**
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ */
 public class AttributesWidget extends BrowserWidget
 {
     /** The initial attributes. */

@@ -26,6 +26,8 @@ import org.eclipse.swt.widgets.Composite;
 
 /**
  * A basic common abstract class implementing {@link ClauseComposite}.
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public abstract class AbstractClauseComposite<C> implements ClauseComposite<C>
 {

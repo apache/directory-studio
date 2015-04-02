@@ -20,6 +20,10 @@
 package org.apache.directory.studio.openldap.config.acl.widgets;
 
 
+/**
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ */
 public class AttributeTypeContentProposal extends AttributesWidgetContentProposal
 {
     public AttributeTypeContentProposal( String content )

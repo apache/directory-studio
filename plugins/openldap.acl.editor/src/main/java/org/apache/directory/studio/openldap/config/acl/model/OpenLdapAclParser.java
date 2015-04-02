@@ -31,6 +31,8 @@ import antlr.TokenStreamException;
 
 /**
  * A reusable wrapper around the antlr generated parser for an OpenLDAP ACL.
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public class OpenLdapAclParser
 {

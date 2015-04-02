@@ -22,6 +22,8 @@ package org.apache.directory.studio.openldap.config.acl.widgets;
 
 /**
  * A content proposal for an object class.
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public class ObjectClassContentProposal extends AttributesWidgetContentProposal
 {

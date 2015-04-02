@@ -25,6 +25,8 @@ import org.eclipse.jface.fieldassist.ContentProposal;
 
 /**
  * An abstract content proposal for the attributes widget.
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public abstract class AttributesWidgetContentProposal extends ContentProposal
 {

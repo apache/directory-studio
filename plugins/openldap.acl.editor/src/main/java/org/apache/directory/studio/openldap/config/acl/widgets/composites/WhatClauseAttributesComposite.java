@@ -32,6 +32,10 @@ import org.apache.directory.studio.openldap.config.acl.model.AclWhatClauseAttrib
 import org.apache.directory.studio.openldap.config.acl.widgets.AttributesWidget;
 
 
+/**
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ */
 public class WhatClauseAttributesComposite extends AbstractClauseComposite<AclWhatClauseAttributes> implements
     WhatClauseComposite<AclWhatClauseAttributes>
 {

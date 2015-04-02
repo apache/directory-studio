@@ -19,7 +19,10 @@
  */
 package org.apache.directory.studio.openldap.config.acl.model;
 
-
+/**
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ */
 public class AclWhatClause
 {
     /** The star (*) clause */

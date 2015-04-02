@@ -25,6 +25,10 @@ import org.eclipse.swt.widgets.Composite;
 import org.apache.directory.studio.openldap.config.acl.model.AclWhoClauseSaslSsf;
 
 
+/**
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ */
 public class WhoClauseSaslSsfComposite extends AbstractWhoClauseCryptoStrengthComposite<AclWhoClauseSaslSsf> implements
     WhoClauseComposite<AclWhoClauseSaslSsf>
 {

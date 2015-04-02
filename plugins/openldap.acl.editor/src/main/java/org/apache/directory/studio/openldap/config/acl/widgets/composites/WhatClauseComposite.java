@@ -22,6 +22,8 @@ package org.apache.directory.studio.openldap.config.acl.widgets.composites;
 
 /**
  * This interface defines a clause composite for what clauses.
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public interface WhatClauseComposite<C> extends ClauseComposite<C>
 {

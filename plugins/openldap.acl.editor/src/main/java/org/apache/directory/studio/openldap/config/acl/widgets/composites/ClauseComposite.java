@@ -26,6 +26,8 @@ import org.eclipse.swt.widgets.Composite;
 
 /**
  * This interface defines a clause composite.
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public interface ClauseComposite<C>
 {

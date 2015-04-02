@@ -41,6 +41,8 @@ import org.apache.directory.studio.openldap.config.acl.sourceeditor.OpenLdapAclT
 
 /**
  * The activator class controls the plug-in life cycle
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public class OpenLdapAclEditorPlugin extends AbstractUIPlugin
 {

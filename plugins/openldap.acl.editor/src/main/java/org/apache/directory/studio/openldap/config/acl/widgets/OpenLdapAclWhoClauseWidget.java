@@ -65,6 +65,10 @@ import org.apache.directory.studio.openldap.config.acl.widgets.composites.WhoCla
 import org.apache.directory.studio.openldap.config.acl.widgets.composites.WhoClauseTransportSsfComposite;
 
 
+/**
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ */
 public class OpenLdapAclWhoClauseWidget extends BrowserWidget implements SelectionListener
 {
     /** The array of clauses */

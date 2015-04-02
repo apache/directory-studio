@@ -28,6 +28,8 @@ import org.eclipse.jface.text.rules.IToken;
 
 /**
  * Rule to detect a "dn[.type[,modifier]]=" clause.
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public abstract class AbstractRule implements IPredicateRule
 {

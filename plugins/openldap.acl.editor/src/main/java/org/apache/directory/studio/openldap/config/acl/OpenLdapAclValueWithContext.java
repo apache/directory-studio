@@ -27,6 +27,8 @@ import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 /**
  * The OpenLdapAclValueWithContext is used to pass contextual
  * information to the opened OpenLdapAclDialog.
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public class OpenLdapAclValueWithContext
 {

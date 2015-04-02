@@ -45,7 +45,6 @@ import org.apache.directory.studio.openldap.config.acl.model.AclWhoClauseStar;
  * This composite contains the tabs with visual and source editor.
  * It also manages the synchronization between these two tabs.
  * 
- *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public class OpenLdapAclTabFolderComposite extends Composite

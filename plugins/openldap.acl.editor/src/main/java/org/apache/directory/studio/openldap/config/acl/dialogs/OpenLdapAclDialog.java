@@ -51,6 +51,8 @@ import org.apache.directory.studio.openldap.config.acl.widgets.OpenLdapAclTabFol
 
 /**
  * The OpenLDAP ACL Dialog is used to edit ACL values on an OpenLDAP server connection.
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public class OpenLdapAclDialog extends Dialog
 {

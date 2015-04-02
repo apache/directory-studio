@@ -28,6 +28,8 @@ import org.eclipse.jface.text.rules.Token;
 
 /**
  * Rule to detect a "group[/objectclass[/attrname]][.type]=" clause.
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public class GroupRule extends AbstractRule
 {

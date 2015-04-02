@@ -36,6 +36,10 @@ import org.eclipse.jface.fieldassist.IContentProposal;
 import org.eclipse.jface.fieldassist.IContentProposalProvider;
 
 
+/**
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ */
 public class AttributesWidgetContentProposalProvider implements IContentProposalProvider
 {
     /** The content proposal adapter */

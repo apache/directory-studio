@@ -38,6 +38,12 @@ import org.apache.directory.studio.openldap.config.acl.model.AbstractAclWhoClaus
 import org.apache.directory.studio.openldap.config.acl.widgets.AclWhoClauseSsfValuesEnum;
 
 
+/**
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ *
+ * @param <C>
+ */
 public class AbstractWhoClauseCryptoStrengthComposite<C extends AbstractAclWhoClauseCryptoStrength> extends
     AbstractClauseComposite<C> implements WhoClauseComposite<C>
 {

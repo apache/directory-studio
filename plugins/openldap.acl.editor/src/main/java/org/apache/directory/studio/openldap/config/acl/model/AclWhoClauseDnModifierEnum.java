@@ -23,6 +23,8 @@ package org.apache.directory.studio.openldap.config.acl.model;
 
 /**
  * This enum contains all possible values for the modifier of a DN Who Clause.
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public enum AclWhoClauseDnModifierEnum
 {

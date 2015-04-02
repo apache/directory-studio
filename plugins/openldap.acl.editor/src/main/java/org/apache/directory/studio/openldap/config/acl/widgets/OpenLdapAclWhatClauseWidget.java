@@ -39,6 +39,10 @@ import org.apache.directory.studio.openldap.config.acl.widgets.composites.WhatCl
 import org.apache.directory.studio.openldap.config.acl.widgets.composites.WhatClauseFilterComposite;
 
 
+/**
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ */
 public class OpenLdapAclWhatClauseWidget extends BrowserWidget
 {
     /** The visual editor composite */

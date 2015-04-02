@@ -37,6 +37,10 @@ import org.apache.directory.studio.openldap.config.acl.model.AclWhoClause;
 import org.apache.directory.studio.openldap.config.acl.model.AclWhoClauseStar;
 
 
+/**
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ */
 public class OpenLdapAclWhoClausesBuilderWidget
 {
     /** The visual editor composite */

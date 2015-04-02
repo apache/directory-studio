@@ -30,6 +30,8 @@ import org.eclipse.jface.text.source.ISourceViewer;
  * <ul>
  * <li>New line before the "by" keyword
  * </ul>
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public class OpenLdapAclFormattingStrategy implements IFormattingStrategy
 {

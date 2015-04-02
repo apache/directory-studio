@@ -19,7 +19,10 @@
  */
 package org.apache.directory.studio.openldap.config.acl.model;
 
-
+/**
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ */
 public abstract class AbstractAclWhoClause implements AclWhoClause
 {
     /** The access level */

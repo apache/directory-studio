@@ -38,6 +38,10 @@ import org.apache.directory.studio.openldap.config.acl.model.AclWhatClauseDn;
 import org.apache.directory.studio.openldap.config.acl.model.AclWhatClauseDnTypeEnum;
 
 
+/**
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ */
 public class WhatClauseDnComposite extends AbstractClauseComposite<AclWhatClauseDn> implements
     WhatClauseComposite<AclWhatClauseDn>
 {

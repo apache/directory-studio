@@ -29,6 +29,10 @@ import org.eclipse.swt.widgets.Composite;
 import org.apache.directory.studio.openldap.config.acl.model.AclWhoClauseDnAttr;
 
 
+/**
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ */
 public class WhoClauseDnAttributeComposite extends AbstractClauseComposite<AclWhoClauseDnAttr> implements
     WhoClauseComposite<AclWhoClauseDnAttr>
 {

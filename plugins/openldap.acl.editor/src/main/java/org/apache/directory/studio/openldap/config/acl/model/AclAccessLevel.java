@@ -25,6 +25,10 @@ import java.util.Collection;
 import java.util.List;
 
 
+/**
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ */
 public class AclAccessLevel
 {
     /** The 'self' modifier' flag */

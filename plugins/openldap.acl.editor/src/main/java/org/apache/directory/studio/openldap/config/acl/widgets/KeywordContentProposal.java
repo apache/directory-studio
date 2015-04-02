@@ -22,6 +22,8 @@ package org.apache.directory.studio.openldap.config.acl.widgets;
 
 /**
  * A content proposal for a keyword.
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public class KeywordContentProposal extends AttributesWidgetContentProposal
 {

@@ -22,6 +22,8 @@ package org.apache.directory.studio.openldap.config.acl.model;
 
 /**
  * TODO AclAccessLevelPrivilegeEnum.
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public enum AclAccessLevelPrivilegeEnum
 {

@@ -22,6 +22,8 @@ package org.apache.directory.studio.openldap.config.acl.model;
 
 /**
  * An abstract class for all Cryptographic Strength subclasses.
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public abstract class AbstractAclWhoClauseCryptoStrength extends AbstractAclWhoClause
 {

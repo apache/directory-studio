@@ -30,8 +30,6 @@ import org.eclipse.swt.widgets.Composite;
 
 import org.apache.directory.studio.openldap.config.acl.OpenLdapAclValueWithContext;
 import org.apache.directory.studio.openldap.config.acl.model.AclItem;
-import org.apache.directory.studio.openldap.config.acl.model.AclWhatClause;
-import org.apache.directory.studio.openldap.config.acl.model.AclWhatClauseStar;
 import org.apache.directory.studio.openldap.config.acl.model.OpenLdapAclParser;
 
 
@@ -39,6 +37,8 @@ import org.apache.directory.studio.openldap.config.acl.model.OpenLdapAclParser;
  * This is the main widget of the OpenLDAP ACL visual editor.
  * <p>
  * It extends ScrolledComposite.
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public class OpenLdapAclVisualEditorComposite extends ScrolledComposite
 {
