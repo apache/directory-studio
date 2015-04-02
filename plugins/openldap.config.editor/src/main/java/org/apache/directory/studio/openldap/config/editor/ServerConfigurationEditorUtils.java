@@ -416,34 +416,6 @@ public class ServerConfigurationEditorUtils
     }
 
 
-    //    /**
-    //     * Saves the configuration.
-    //     *
-    //     * @param file
-    //     *      the file
-    //     * @param configWriter
-    //     *      the configuration writer
-    //     * @throws Exception
-    //     */
-    //    public static void saveConfiguration( File file, ConfigurationWriter configurationWriter ) throws Exception
-    //    {
-    //        configurationWriter.writeToFile( file );
-    //    }
-
-    //    /**
-    //     * Saves the configuration.
-    //     *
-    //     * @param path
-    //     *      the path
-    //     * @param configWriter
-    //     *      the configuration writer
-    //     * @throws Exception
-    //     */
-    //    public static void saveConfiguration( String path, ConfigurationWriter configurationWriter ) throws Exception
-    //    {
-    //        saveConfiguration( new File( path ), configurationWriter );
-    //    }
-
     /**
      * Creates a configuration partition to store configuration entries.
      *
