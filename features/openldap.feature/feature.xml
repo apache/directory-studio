@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
-      id="org.apache.directory.studio.apacheds.feature"
+      id="org.apache.directory.studio.openldap.feature"
       label="Apache Directory Studio ApacheDS"
       version="2.0.0.qualifier"
       provider-name="Apache Software Foundation"
