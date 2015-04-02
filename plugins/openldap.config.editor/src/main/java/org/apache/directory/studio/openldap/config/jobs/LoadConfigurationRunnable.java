@@ -53,7 +53,6 @@ public class LoadConfigurationRunnable implements StudioRunnableWithProgress
      */
     public LoadConfigurationRunnable( ServerConfigurationEditor editor )
     {
-        super();
         this.editor = editor;
     }
 
@@ -95,6 +94,7 @@ public class LoadConfigurationRunnable implements StudioRunnableWithProgress
         try
         {
             final OpenLdapConfiguration configuration = getConfiguration( input, monitor );
+            
             if ( configuration != null )
             {
                 Display.getDefault().asyncExec( new Runnable()
@@ -113,6 +113,7 @@ public class LoadConfigurationRunnable implements StudioRunnableWithProgress
 
             // Reporting the error to the editor
             final Exception exception = e;
+            
             Display.getDefault().asyncExec( new Runnable()
             {
                 public void run()
