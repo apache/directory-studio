@@ -150,7 +150,7 @@
              <artifact>
                 <groupId>org.apache.directory.studio</groupId>
                 <artifactId>org.apache.directory.studio.eclipse-target-platform</artifactId>
-                <version>1-SNAPSHOT</version>
+                <version>${project.version}</version>
              </artifact>
           </target>
 

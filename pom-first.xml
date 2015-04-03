@@ -27,9 +27,8 @@
     <relativePath>./pom.xml</relativePath>
   </parent>
 
-  <artifactId>org.apache.directory.studio.parent</artifactId>
-  <name>Apache Directory Studio Parent Setup</name>
-  <version>1-SNAPSHOT</version>
+  <artifactId>org.apache.directory.studio.setup-parent</artifactId>
+  <name>Apache Directory Studio Setup Parent</name>
   <packaging>pom</packaging>
 
   <modules>
