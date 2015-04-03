@@ -179,6 +179,11 @@
             isEqualityPattern="true"
             pattern="org.eclipse.search/textSearchSubMenu">
       </activityPatternBinding>
+      <activityPatternBinding
+            activityId="org.apache.directory.studio.rcp.hide"
+            isEqualityPattern="true"
+            pattern="org.eclipse.ui.ide/org.eclipse.ui.openLocalFile">
+      </activityPatternBinding>
    </extension>
    <extension
          point="org.eclipse.ui.perspectiveExtensions">
