@@ -157,6 +157,11 @@
       <activityPatternBinding
             activityId="org.apache.directory.studio.rcp.hide"
             isEqualityPattern="true"
+            pattern="org.eclipse.search/org.eclipse.search.OpenFileSearchPage">
+      </activityPatternBinding>
+      <activityPatternBinding
+            activityId="org.apache.directory.studio.rcp.hide"
+            isEqualityPattern="true"
             pattern="org.eclipse.search/org.eclipse.search.TextSearchProject">
       </activityPatternBinding>
       <activityPatternBinding
