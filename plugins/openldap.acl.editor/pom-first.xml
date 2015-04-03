@@ -95,7 +95,7 @@
  org.apache.directory.studio.openldap.config.acl.dialogs,
  org.apache.directory.studio.openldap.config.acl.editor,
  org.apache.directory.studio.openldap.config.acl.model,
- org.apache.directory.studio.openldap.config.acl.sourceditor,
+ org.apache.directory.studio.openldap.config.acl.sourceeditor,
  org.apache.directory.studio.openldap.config.acl.widgets,
  org.apache.directory.studio.openldap.config.acl.widgets.composites</Export-Package>
           </instructions>
