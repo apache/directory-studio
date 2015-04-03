@@ -129,6 +129,21 @@
             isEqualityPattern="true"
             pattern="org.eclipse.ui.externaltools.ExternalToolMenuDelegateToolbar">
       </activityPatternBinding>
+      <activityPatternBinding
+            activityId="org.apache.directory.studio.rcp.hide"
+            isEqualityPattern="false"
+            pattern="org.eclipse.debug.ui.*">
+      </activityPatternBinding>
+      <activityPatternBinding
+            activityId="org.apache.directory.studio.rcp.hide"
+            isEqualityPattern="false"
+            pattern="org.eclipse.team.*">
+      </activityPatternBinding>
+      <activityPatternBinding
+            activityId="org.apache.directory.studio.rcp.hide"
+            isEqualityPattern="false"
+            pattern="org.eclipse.ui.ide.application.*">
+      </activityPatternBinding>
    </extension>
    <extension
          point="org.eclipse.ui.perspectiveExtensions">
