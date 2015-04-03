@@ -28,7 +28,7 @@
   </parent>
   
   <artifactId>org.apache.directory.studio.ldapservers.apacheds</artifactId>
-  <name>Apache Directory Studio ApacheDS 2.0.0 LDAP Server Adapter</name>
+  <name>Apache Directory Studio ApacheDS LDAP Server Adapter</name>
   <packaging>eclipse-plugin</packaging>
 
   <description />
