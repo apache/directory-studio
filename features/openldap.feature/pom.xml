@@ -28,7 +28,7 @@
   </parent>
   
   <artifactId>org.apache.directory.studio.openldap.feature</artifactId>
-  <name>OpenLDAP Feature</name>
+  <name>Apache Directory Studio OpenLDAP Feature</name>
   <packaging>eclipse-feature</packaging>
 
   <description />
