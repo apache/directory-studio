@@ -117,5 +117,30 @@
             id="%PrefPage_ShutdownPreferencesPage_id"
             name="%PrefPage_ShutdownPreferencesPage_name"/>
    </extension>
+   <extension
+         point="org.eclipse.ui.activities">
+      <activity
+            description="Hides unwanted UI parts provided by Eclipse"
+            id="org.apache.directory.studio.rcp.hide"
+            name="org.apache.directory.studio.rcp.hide">
+      </activity>
+      <activityPatternBinding
+            activityId="org.apache.directory.studio.rcp.hide"
+            isEqualityPattern="true"
+            pattern="org.eclipse.ui.externaltools.ExternalToolMenuDelegateToolbar">
+      </activityPatternBinding>
+   </extension>
+   <extension
+         point="org.eclipse.ui.perspectiveExtensions">
+      <perspectiveExtension
+            targetID="*">
+         <hiddenMenuItem
+               id="org.eclipse.ui.run">
+         </hiddenMenuItem>
+         <hiddenToolBarItem
+               id="org.eclipse.debug.internal.ui.actions.RunDropDownAction">
+         </hiddenToolBarItem>
+      </perspectiveExtension>
+   </extension>
 
 </plugin>
