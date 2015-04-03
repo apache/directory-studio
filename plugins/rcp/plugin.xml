@@ -184,6 +184,16 @@
             isEqualityPattern="true"
             pattern="org.eclipse.ui.ide/org.eclipse.ui.openLocalFile">
       </activityPatternBinding>
+      <activityPatternBinding
+            activityId="org.apache.directory.studio.rcp.hide"
+            isEqualityPattern="true"
+            pattern="org.eclipse.ui.ide/org.eclipse.ui.actions.showKeyAssistHandler">
+      </activityPatternBinding>
+      <activityPatternBinding
+            activityId="org.apache.directory.studio.rcp.hide"
+            isEqualityPattern="true"
+            pattern="org.eclipse.platform/org.eclipse.ui.cheatsheets.actions.CheatSheetHelpMenuAction">
+      </activityPatternBinding>
    </extension>
    <extension
          point="org.eclipse.ui.perspectiveExtensions">
