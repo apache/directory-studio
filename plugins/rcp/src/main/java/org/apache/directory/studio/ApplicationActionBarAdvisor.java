@@ -21,11 +21,8 @@
 package org.apache.directory.studio;
 
 
-import org.apache.directory.studio.actions.AddExtensionAction;
-import org.apache.directory.studio.actions.ManageConfigurationAction;
 import org.apache.directory.studio.actions.OpenFileAction;
 import org.apache.directory.studio.actions.ReportABugAction;
-import org.apache.directory.studio.actions.UpdateAction;
 import org.apache.directory.studio.view.ImageKeys;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.action.GroupMarker;
@@ -74,8 +71,6 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor
     private IWorkbenchAction preferencesAction;
     private IWorkbenchAction helpAction;
     private IWorkbenchAction dynamicHelpAction;
-    private UpdateAction updateAction;
-    private ManageConfigurationAction manageConfigurationAction;
     private IWorkbenchAction newAction;
     private IWorkbenchAction newDropDownAction;
     private IWorkbenchAction importAction;
@@ -100,7 +95,6 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor
     private IWorkbenchAction nextAction;
     private IWorkbenchAction previousAction;
     private IWorkbenchAction introAction;
-    private AddExtensionAction addExtensionAction;
 
 
     /**
@@ -218,19 +212,6 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor
         preferencesAction.setImageDescriptor( AbstractUIPlugin.imageDescriptorFromPlugin( Application.PLUGIN_ID,
             ImageKeys.SHOW_PREFERENCES ) );
         register( preferencesAction );
-
-        updateAction = new UpdateAction( window );
-        updateAction.setImageDescriptor( AbstractUIPlugin.imageDescriptorFromPlugin( Application.PLUGIN_ID,
-            ImageKeys.SEARCH_UPDATES ) );
-        register( updateAction );
-
-        addExtensionAction = new AddExtensionAction( window );
-        register( addExtensionAction );
-
-        manageConfigurationAction = new ManageConfigurationAction( window );
-        manageConfigurationAction.setImageDescriptor( AbstractUIPlugin.imageDescriptorFromPlugin(
-            Application.PLUGIN_ID, ImageKeys.MANAGE_CONFIGURATION ) );
-        register( manageConfigurationAction );
 
         helpAction = ActionFactory.HELP_CONTENTS.create( window );
         register( helpAction );
@@ -391,13 +372,7 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor
         helpMenu.add( dynamicHelpAction );
         helpMenu.add( new Separator() );
         helpMenu.add( reportABug );
-        helpMenu.add( new Separator() );
-        MenuManager softwareUpdates = new MenuManager( Messages
-            .getString( "ApplicationActionBarAdvisor.Software_Updates" ), "softwareUpdates" ); //$NON-NLS-1$ //$NON-NLS-2$
-        softwareUpdates.add( addExtensionAction );
-        softwareUpdates.add( updateAction );
-        softwareUpdates.add( manageConfigurationAction );
-        helpMenu.add( softwareUpdates );
+        helpMenu.add( new Separator( IWorkbenchActionConstants.MB_ADDITIONS ) );
         if ( ApplicationActionBarAdvisor.OS_MACOSX.equalsIgnoreCase( os ) )
         {
             // We hide the about action, it will be added by the "Carbon" plugin
