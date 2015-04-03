@@ -22,12 +22,12 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>org.apache.directory.studio</groupId>
-    <artifactId>parent-setup</artifactId>
+    <artifactId>org.apache.directory.studio.parent</artifactId>
     <version>1-SNAPSHOT</version>
     <relativePath>../pom-first.xml</relativePath>
   </parent>
 
-  <artifactId>parent-plugins</artifactId>
+  <artifactId>org.apache.directory.studio.plugins-parent</artifactId>
   <name>Apache Directory Studio Plugins Parent</name>
   <version>2.0.0.qualifier</version>
   <packaging>pom</packaging>

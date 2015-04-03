@@ -22,12 +22,12 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>org.apache.directory.studio</groupId>
-    <artifactId>parent</artifactId>
+    <artifactId>org.apache.directory.studio.parent</artifactId>
     <version>2.0.0-SNAPSHOT</version>
     <relativePath>./pom.xml</relativePath>
   </parent>
 
-  <artifactId>parent-setup</artifactId>
+  <artifactId>org.apache.directory.studio.parent</artifactId>
   <name>Apache Directory Studio Parent Setup</name>
   <version>1-SNAPSHOT</version>
   <packaging>pom</packaging>

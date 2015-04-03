@@ -23,12 +23,12 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>org.apache.directory.studio</groupId>
-    <artifactId>parent-setup</artifactId>
+    <artifactId>org.apache.directory.studio.parent</artifactId>
     <version>1-SNAPSHOT</version>
     <relativePath>../pom-first.xml</relativePath>
   </parent>
 
-  <artifactId>eclipse-target-platform</artifactId>
+  <artifactId>org.apache.directory.studio.eclipse-target-platform</artifactId>
   <name>Apache Directory Studio Target Platform for Eclipse</name>
   <packaging>eclipse-target-definition</packaging>
 
@@ -530,7 +530,7 @@
               <outputDirectory>${basedir}</outputDirectory>
               <resources>
                 <resource>
-                  <directory>${basedir}/eclipse-target-platform-template</directory>
+                  <directory>${basedir}/template</directory>
                   <filtering>true</filtering>
                 </resource>
               </resources>
@@ -547,6 +547,7 @@
               <directory>${basedir}</directory>
               <includes>
                 <include>eclipse-target-platform.target</include>
+                <include>org.apache.directory.studio.eclipse-target-platform.target</include>
               </includes>
             </fileset>
           </filesets>
