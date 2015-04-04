@@ -22,6 +22,7 @@ package org.apache.directory.studio.ldifparser.model.lines;
 
 
 import org.apache.directory.studio.ldifparser.LdifFormatParameters;
+import org.apache.directory.studio.ldifparser.LdifUtils;
 import org.apache.directory.studio.ldifparser.model.LdifPart;
 
 
@@ -128,8 +129,8 @@ public abstract class LdifLineBase implements LdifPart
     public final String toString()
     {
         String text = toRawString();
-        text = text.replaceAll( "\n", "\\\\n" ); //$NON-NLS-1$ //$NON-NLS-2$
-        text = text.replaceAll( "\r", "\\\\r" ); //$NON-NLS-1$ //$NON-NLS-2$
+        text = LdifUtils.convertNlRcToString( text ); //$NON-NLS-1$ //$NON-NLS-2$
+
         return getClass().getName() + " (" + getOffset() + "," + getLength() + "): '" + text + "'"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
     }
 

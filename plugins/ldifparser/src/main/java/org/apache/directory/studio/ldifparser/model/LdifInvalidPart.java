@@ -22,6 +22,7 @@ package org.apache.directory.studio.ldifparser.model;
 
 
 import org.apache.directory.studio.ldifparser.LdifFormatParameters;
+import org.apache.directory.studio.ldifparser.LdifUtils;
 
 
 public final class LdifInvalidPart implements LdifPart
@@ -73,8 +74,8 @@ public final class LdifInvalidPart implements LdifPart
     public final String toString()
     {
         String text = toRawString();
-        text = text.replaceAll( "\n", "\\\\n" ); //$NON-NLS-1$ //$NON-NLS-2$
-        text = text.replaceAll( "\r", "\\\\r" ); //$NON-NLS-1$ //$NON-NLS-2$
+        text = LdifUtils.convertNlRcToString( text );
+
         return getClass().getName() + " (" + getOffset() + "," + getLength() + "): '" + text + "'"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
     }
 

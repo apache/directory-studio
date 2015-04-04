@@ -193,4 +193,42 @@ public class LdifUtils
 
         return false;
     }
+    
+    
+    /**
+     * Convert all the '\n' and '\r' to a String 
+     * @param s The String to be converted
+     * @return The resulting String
+     */
+    public static String convertNlRcToString( String s )
+    {
+        if ( s == null )
+        {
+            return "";
+        }
+
+        // Worth case, the new string is three times bigger
+        char[] result = new char[s.length() * 3];
+        int pos = 0;
+
+        for ( char c : s.toCharArray() )
+        {
+            if ( c == '\n' )
+            {
+                result[pos++] = '\\';
+                result[pos++] = 'n';
+            }
+            else if ( c == '\r' )
+            {
+                result[pos++] = '\\';
+                result[pos++] = 'r';
+            }
+            else
+            {
+                result[pos++] = c;
+            }
+        }
+
+        return new String( result, 0, pos );
+    }
 }
