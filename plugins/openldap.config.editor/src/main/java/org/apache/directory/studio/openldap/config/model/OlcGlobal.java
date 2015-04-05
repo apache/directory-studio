@@ -146,7 +146,7 @@ public class OlcGlobal extends OlcConfig
     private Integer olcIdleTimeout;
 
     /**
-     * Field for the 'olcIndexHash64' attribute.
+     * Field for the 'olcIndexHash64' attribute. (Added in OpenLDAP 2.4.34)
      */
     @ConfigurationElement(attributeType = "olcIndexHash64")
     private Boolean olcIndexHash64;
@@ -188,7 +188,7 @@ public class OlcGlobal extends OlcConfig
     private List<String> olcLdapSyntaxes = new ArrayList<String>();
 
     /**
-     * Field for the 'olcListenerThreads' attribute.
+     * Field for the 'olcListenerThreads' attribute.  (Added in OpenLDAP 2.4.36)
      */
     @ConfigurationElement(attributeType = "olcListenerThreads")
     private Integer olcListenerThreads;
@@ -296,19 +296,18 @@ public class OlcGlobal extends OlcConfig
     private String olcSaslAuxprops;
 
     /**
-     * Field for the 'olcSaslAuxpropsDontUseCopy' attribute.
+     * Field for the 'olcSaslAuxpropsDontUseCopy' attribute. (Added in OpenLDAP 2.4.22)
      */
     @ConfigurationElement(attributeType = "olcSaslAuxpropsDontUseCopy")
     private String olcSaslAuxpropsDontUseCopy;
 
     /**
-     * Field for the 'olcSaslAuxpropsDontUseCopyIgnore' attribute.
+     * Field for the 'olcSaslAuxpropsDontUseCopyIgnore' attribute. (Added in OpenLDAP 2.4.22)
      */
     @ConfigurationElement(attributeType = "olcSaslAuxpropsDontUseCopyIgnore")
     private Boolean olcSaslAuxpropsDontUseCopyIgnore;
 
-
-	/**
+    /**
      * Field for the 'olcSaslHost' attribute.
      */
     @ConfigurationElement(attributeType = "olcSaslHost")
@@ -357,13 +356,13 @@ public class OlcGlobal extends OlcConfig
     private String olcSockbufMaxIncomingAuth;
 
     /**
-     * Field for the 'olcTCPBuffer' attribute.
+     * Field for the 'olcTCPBuffer' attribute. (Added in OpenLDAP 2.4.18)
      */
     @ConfigurationElement(attributeType = "olcTCPBuffer")
     private List<String> olcTCPBuffer = new ArrayList<String>();
 
     /**
-     * Field for the 'olcThreads' attribute.
+     * Field for the 'olcThreads' attribute. (Added in OpenLDAP 2.4.36)
      */
     @ConfigurationElement(attributeType = "olcThreads")
     private Integer olcThreads;
@@ -374,8 +373,7 @@ public class OlcGlobal extends OlcConfig
     @ConfigurationElement(attributeType = "olcThreadQueues")
     private Integer olcThreadQueues;
 
-
-	/**
+    /**
      * Field for the 'olcTimeLimit' attribute.
      */
     @ConfigurationElement(attributeType = "olcTimeLimit")
@@ -430,18 +428,18 @@ public class OlcGlobal extends OlcConfig
     private String olcTLSDHParamFile;
 
     /**
-     * Field for the 'olcTLSECName' attribute.
+     * Field for the 'olcTLSECName' attribute. (Added in OpenLDAP 2.4.41)
      */
     @ConfigurationElement(attributeType = "olcTLSECName")
     private String olcTLSECName;
 
-	/**
-     * Field for the 'olcTLSProtocolMin' attribute.
+    /**
+     * Field for the 'olcTLSProtocolMin' attribute. (Added in OpenLDAP 2.4.37)
      */
     @ConfigurationElement(attributeType = "olcTLSProtocolMin")
     private String olcTLSProtocolMin;
 
-	/**
+    /**
      * Field for the 'olcTLSRandFile' attribute.
      */
     @ConfigurationElement(attributeType = "olcTLSRandFile")
@@ -1043,11 +1041,12 @@ public class OlcGlobal extends OlcConfig
 
 
     /**
-	 * @return the olcListenerThreads
-	 */
-	public Integer getOlcListenerThreads() {
-		return olcListenerThreads;
-	}
+     * @return the olcListenerThreads
+     */
+    public Integer getOlcListenerThreads()
+    {
+        return olcListenerThreads;
+    }
 
 
     /**
@@ -1204,20 +1203,21 @@ public class OlcGlobal extends OlcConfig
 
 
     /**
-	 * @return the olcSaslAuxpropsDontUseCopy
-	 */
-	public String getOlcSaslAuxpropsDontUseCopy() 
-	{
-		return olcSaslAuxpropsDontUseCopy;
-	}
+     * @return the olcSaslAuxpropsDontUseCopy
+     */
+    public String getOlcSaslAuxpropsDontUseCopy()
+    {
+        return olcSaslAuxpropsDontUseCopy;
+    }
+
 
     /**
-	 * @return the olcSaslAuxpropsDontUseCopyIgnore
-	 */
-	public Boolean getOlcSaslAuxpropsDontUseCopyIgnore() 
-	{
-		return olcSaslAuxpropsDontUseCopyIgnore;
-	}
+     * @return the olcSaslAuxpropsDontUseCopyIgnore
+     */
+    public Boolean getOlcSaslAuxpropsDontUseCopyIgnore()
+    {
+        return olcSaslAuxpropsDontUseCopyIgnore;
+    }
 
 
     /**
@@ -1309,13 +1309,14 @@ public class OlcGlobal extends OlcConfig
         return olcThreads;
     }
 
+
     /**
-	 * @return the olcThreadQueues
-	 */
-	public Integer getOlcThreadQueues() 
-	{
-		return olcThreadQueues;
-	}
+     * @return the olcThreadQueues
+     */
+    public Integer getOlcThreadQueues()
+    {
+        return olcThreadQueues;
+    }
 
 
     /**
@@ -1389,14 +1390,14 @@ public class OlcGlobal extends OlcConfig
         return olcTLSCRLFile;
     }
 
-    
+
     /**
-	 * @return the olcTLSECName
-	 */
-	public String getOlcTLSECName() 
-	{
-		return olcTLSECName;
-	}
+     * @return the olcTLSECName
+     */
+    public String getOlcTLSECName()
+    {
+        return olcTLSECName;
+    }
 
 
     /**
@@ -1406,15 +1407,15 @@ public class OlcGlobal extends OlcConfig
     {
         return olcTLSDHParamFile;
     }
-    
-    
+
+
     /**
-	 * @return the olcTLSProtocolMin
-	 */
-	public String getOlcTLSProtocolMin() 
-	{
-		return olcTLSProtocolMin;
-	}
+     * @return the olcTLSProtocolMin
+     */
+    public String getOlcTLSProtocolMin()
+    {
+        return olcTLSProtocolMin;
+    }
 
 
     /**
@@ -1669,15 +1670,16 @@ public class OlcGlobal extends OlcConfig
     }
 
 
-	/**
-	 * @param olcListenerThreads the olcListenerThreads to set
-	 */
-	public void setOlcListenerThreads(Integer olcListenerThreads) {
-		this.olcListenerThreads = olcListenerThreads;
-	}
+    /**
+     * @param olcListenerThreads the olcListenerThreads to set
+     */
+    public void setOlcListenerThreads( Integer olcListenerThreads )
+    {
+        this.olcListenerThreads = olcListenerThreads;
+    }
 
 
-	/**
+    /**
      * @param olcLocalSSF the olcLocalSSF to set
      */
     public void setOlcLocalSSF( Integer olcLocalSSF )
@@ -1830,25 +1832,25 @@ public class OlcGlobal extends OlcConfig
     }
 
 
-	/**
-	 * @param olcSaslAuxpropsDontUseCopy the olcSaslAuxpropsDontUseCopy to set
-	 */
-	public void setOlcSaslAuxpropsDontUseCopy(String olcSaslAuxpropsDontUseCopy) 
-	{
-		this.olcSaslAuxpropsDontUseCopy = olcSaslAuxpropsDontUseCopy;
-	}
+    /**
+     * @param olcSaslAuxpropsDontUseCopy the olcSaslAuxpropsDontUseCopy to set
+     */
+    public void setOlcSaslAuxpropsDontUseCopy( String olcSaslAuxpropsDontUseCopy )
+    {
+        this.olcSaslAuxpropsDontUseCopy = olcSaslAuxpropsDontUseCopy;
+    }
 
 
-	/**
-	 * @param olcSaslAuxpropsDontUseCopyIgnore the olcSaslAuxpropsDontUseCopyIgnore to set
-	 */
-	public void setOlcSaslAuxpropsDontUseCopyIgnore( Boolean olcSaslAuxpropsDontUseCopyIgnore ) 
-	{
-		this.olcSaslAuxpropsDontUseCopyIgnore = olcSaslAuxpropsDontUseCopyIgnore;
-	}
+    /**
+     * @param olcSaslAuxpropsDontUseCopyIgnore the olcSaslAuxpropsDontUseCopyIgnore to set
+     */
+    public void setOlcSaslAuxpropsDontUseCopyIgnore( Boolean olcSaslAuxpropsDontUseCopyIgnore )
+    {
+        this.olcSaslAuxpropsDontUseCopyIgnore = olcSaslAuxpropsDontUseCopyIgnore;
+    }
 
 
-	/**
+    /**
      * @param olcSaslHost the olcSaslHost to set
      */
     public void setOlcSaslHost( String olcSaslHost )
@@ -1903,15 +1905,15 @@ public class OlcGlobal extends OlcConfig
 
 
     /**
-	 * @param olcSockbufMaxIncoming the olcSockbufMaxIncoming to set
-	 */
-	public void setOlcSockbufMaxIncoming( String olcSockbufMaxIncoming ) 
-	{
-		this.olcSockbufMaxIncoming = olcSockbufMaxIncoming;
-	}
+     * @param olcSockbufMaxIncoming the olcSockbufMaxIncoming to set
+     */
+    public void setOlcSockbufMaxIncoming( String olcSockbufMaxIncoming )
+    {
+        this.olcSockbufMaxIncoming = olcSockbufMaxIncoming;
+    }
 
 
-	/**
+    /**
      * @param olcSockbufMaxIncomingAuth the olcSockbufMaxIncomingAuth to set
      */
     public void setOlcSockbufMaxIncomingAuth( String olcSockbufMaxIncomingAuth )
@@ -1938,13 +1940,13 @@ public class OlcGlobal extends OlcConfig
     }
 
 
-	/**
-	 * @param olcThreadQueues the olcThreadQueues to set
-	 */
-	public void setOlcThreadQueues( Integer olcThreadQueues ) 
-	{
-		this.olcThreadQueues = olcThreadQueues;
-	}
+    /**
+     * @param olcThreadQueues the olcThreadQueues to set
+     */
+    public void setOlcThreadQueues( Integer olcThreadQueues )
+    {
+        this.olcThreadQueues = olcThreadQueues;
+    }
 
 
     /**
@@ -2028,22 +2030,22 @@ public class OlcGlobal extends OlcConfig
     }
 
 
-	/**
-	 * @param olcTLSECName the olcTLSECName to set
-	 */
-	public void setOlcTLSECName( String olcTLSECName ) 
-	{
-		this.olcTLSECName = olcTLSECName;
-	}
+    /**
+     * @param olcTLSECName the olcTLSECName to set
+     */
+    public void setOlcTLSECName( String olcTLSECName )
+    {
+        this.olcTLSECName = olcTLSECName;
+    }
 
 
-	/**
-	 * @param olcTLSProtocolMin the olcTLSProtocolMin to set
-	 */
-	public void setOlcTLSProtocolMin( String olcTLSProtocolMin ) 
-	{
-		this.olcTLSProtocolMin = olcTLSProtocolMin;
-	}
+    /**
+     * @param olcTLSProtocolMin the olcTLSProtocolMin to set
+     */
+    public void setOlcTLSProtocolMin( String olcTLSProtocolMin )
+    {
+        this.olcTLSProtocolMin = olcTLSProtocolMin;
+    }
 
 
     /**
