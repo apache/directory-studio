@@ -21,17 +21,25 @@
 package org.apache.directory.studio.ldifparser.model;
 
 
-import java.io.Serializable;
-
 import org.apache.directory.studio.ldifparser.LdifFormatParameters;
 
 
-public interface LdifPart extends Serializable
+/**
+ * An interface representing a part of a LDIF file
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ */
+public interface LdifPart
 {
-
+    /**
+     * @return The position of this part in the LDIF file
+     */
     public int getOffset();
 
 
+    /**
+     * @return The length of this part
+     */
     public int getLength();
 
 

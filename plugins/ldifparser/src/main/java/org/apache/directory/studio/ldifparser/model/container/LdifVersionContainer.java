@@ -24,17 +24,13 @@ package org.apache.directory.studio.ldifparser.model.container;
 import org.apache.directory.studio.ldifparser.model.lines.LdifVersionLine;
 
 
+/**
+ * A LDIF container for the "version: 1" line
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ */
 public class LdifVersionContainer extends LdifContainer
 {
-
-    private static final long serialVersionUID = -6373331266642629348L;
-
-
-    protected LdifVersionContainer()
-    {
-    }
-
-
     public LdifVersionContainer( LdifVersionLine versionLine )
     {
         super( versionLine );
@@ -50,5 +46,4 @@ public class LdifVersionContainer extends LdifContainer
 
         return getLastPart() instanceof LdifVersionLine;
     }
-
 }

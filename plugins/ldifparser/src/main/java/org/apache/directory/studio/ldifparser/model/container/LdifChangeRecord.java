@@ -22,7 +22,6 @@ package org.apache.directory.studio.ldifparser.model.container;
 
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import org.apache.directory.studio.ldifparser.model.lines.LdifChangeTypeLine;
@@ -30,17 +29,13 @@ import org.apache.directory.studio.ldifparser.model.lines.LdifControlLine;
 import org.apache.directory.studio.ldifparser.model.lines.LdifDnLine;
 
 
+/**
+ * A LDIF container for LDIF change records
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ */
 public class LdifChangeRecord extends LdifRecord
 {
-
-    private static final long serialVersionUID = 2995003778589275697L;
-
-
-    protected LdifChangeRecord()
-    {
-    }
-
-
     public LdifChangeRecord( LdifDnLine dn )
     {
         super( dn );
@@ -50,44 +45,53 @@ public class LdifChangeRecord extends LdifRecord
     public void addControl( LdifControlLine controlLine )
     {
         if ( controlLine == null )
+        {
             throw new IllegalArgumentException( "null argument" ); //$NON-NLS-1$
-        this.parts.add( controlLine );
+        }
+
+        ldifParts.add( controlLine );
     }
 
 
     public void setChangeType( LdifChangeTypeLine changeTypeLine )
     {
         if ( changeTypeLine == null )
+        {
             throw new IllegalArgumentException( "null argument" ); //$NON-NLS-1$
+        }
+
         if ( getChangeTypeLine() != null )
+        {
             throw new IllegalArgumentException( "changetype is already set" );
-        this.parts.add( changeTypeLine );
+        }
+
+        ldifParts.add( changeTypeLine );
     }
 
 
     public LdifControlLine[] getControls()
     {
-        List l = new ArrayList();
-        for ( Iterator it = this.parts.iterator(); it.hasNext(); )
+        List<LdifControlLine> ldifControlLines = new ArrayList<LdifControlLine>();
+
+        for ( Object part : ldifParts )
         {
-            Object o = it.next();
-            if ( o instanceof LdifControlLine )
+            if ( part instanceof LdifControlLine )
             {
-                l.add( o );
+                ldifControlLines.add( ( LdifControlLine ) part );
             }
         }
-        return ( LdifControlLine[] ) l.toArray( new LdifControlLine[l.size()] );
+
+        return ldifControlLines.toArray( new LdifControlLine[ldifControlLines.size()] );
     }
 
 
     public LdifChangeTypeLine getChangeTypeLine()
     {
-        for ( Iterator it = this.parts.iterator(); it.hasNext(); )
+        for ( Object part : ldifParts )
         {
-            Object o = it.next();
-            if ( o instanceof LdifChangeTypeLine )
+            if ( part instanceof LdifChangeTypeLine )
             {
-                return ( LdifChangeTypeLine ) o;
+                return ( LdifChangeTypeLine ) part;
             }
         }
 
@@ -101,6 +105,7 @@ public class LdifChangeRecord extends LdifRecord
         {
             return false;
         }
+
         return getChangeTypeLine() != null;
     }
 
@@ -115,9 +120,10 @@ public class LdifChangeRecord extends LdifRecord
     {
 
         if ( getChangeTypeLine() == null )
+        {
             return "Missing changetype line";
+        }
 
         return super.getInvalidString();
     }
-
 }

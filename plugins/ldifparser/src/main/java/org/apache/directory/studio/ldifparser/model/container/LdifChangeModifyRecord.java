@@ -22,24 +22,19 @@ package org.apache.directory.studio.ldifparser.model.container;
 
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import org.apache.directory.studio.ldifparser.model.lines.LdifChangeTypeLine;
 import org.apache.directory.studio.ldifparser.model.lines.LdifDnLine;
 
 
+/**
+ * A LDIF container for LDIF modify change records
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ */
 public class LdifChangeModifyRecord extends LdifChangeRecord
 {
-
-    private static final long serialVersionUID = 6971543260694585796L;
-
-
-    protected LdifChangeModifyRecord()
-    {
-    }
-
-
     public LdifChangeModifyRecord( LdifDnLine dn )
     {
         super( dn );
@@ -49,23 +44,27 @@ public class LdifChangeModifyRecord extends LdifChangeRecord
     public void addModSpec( LdifModSpec modSpec )
     {
         if ( modSpec == null )
+        {
             throw new IllegalArgumentException( "null argument" ); //$NON-NLS-1$
-        this.parts.add( modSpec );
+        }
+
+        ldifParts.add( modSpec );
     }
 
 
     public LdifModSpec[] getModSpecs()
     {
-        List l = new ArrayList();
-        for ( Iterator it = this.parts.iterator(); it.hasNext(); )
+        List<LdifModSpec> ldifModSpecs = new ArrayList<LdifModSpec>();
+
+        for ( Object part : ldifParts )
         {
-            Object o = it.next();
-            if ( o instanceof LdifModSpec )
+            if ( part instanceof LdifModSpec )
             {
-                l.add( o );
+                ldifModSpecs.add( ( LdifModSpec ) part );
             }
         }
-        return ( LdifModSpec[] ) l.toArray( new LdifModSpec[l.size()] );
+
+        return ldifModSpecs.toArray( new LdifModSpec[ldifModSpecs.size()] );
     }
 
 
@@ -73,18 +72,13 @@ public class LdifChangeModifyRecord extends LdifChangeRecord
     {
         LdifChangeModifyRecord record = new LdifChangeModifyRecord( LdifDnLine.create( dn ) );
         record.setChangeType( LdifChangeTypeLine.createModify() );
+
         return record;
     }
 
 
     public boolean isValid()
     {
-        if ( !super.isAbstractValid() )
-        {
-            return false;
-        }
-
-        return true;
+        return super.isAbstractValid();
     }
-
 }

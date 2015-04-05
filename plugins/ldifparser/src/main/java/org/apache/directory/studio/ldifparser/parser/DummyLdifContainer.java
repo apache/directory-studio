@@ -45,7 +45,7 @@ public class DummyLdifContainer extends LdifContainer
     public LdifCommentLine[] getComments()
     {
         List l = new ArrayList();
-        for ( Iterator it = this.parts.iterator(); it.hasNext(); )
+        for ( Iterator it = this.ldifParts.iterator(); it.hasNext(); )
         {
             Object o = it.next();
             if ( o instanceof LdifCommentLine )

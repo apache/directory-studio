@@ -24,17 +24,13 @@ package org.apache.directory.studio.ldifparser.model.container;
 import org.apache.directory.studio.ldifparser.model.lines.LdifSepLine;
 
 
+/**
+ * A LDIF container for SEP (ie, 'r', '\n' or '\n\r' or '\r\n')
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ */
 public class LdifSepContainer extends LdifContainer
 {
-
-    private static final long serialVersionUID = 479360761136440710L;
-
-
-    protected LdifSepContainer()
-    {
-    }
-
-
     public LdifSepContainer( LdifSepLine sep )
     {
         super( sep );
@@ -44,8 +40,11 @@ public class LdifSepContainer extends LdifContainer
     public void addSep( LdifSepLine sep )
     {
         if ( sep == null )
+        {
             throw new IllegalArgumentException( "null argument" ); //$NON-NLS-1$
-        this.parts.add( sep );
+        }
+
+        ldifParts.add( sep );
     }
 
 
@@ -58,5 +57,4 @@ public class LdifSepContainer extends LdifContainer
 
         return true;
     }
-
 }
