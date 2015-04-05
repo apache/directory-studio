@@ -70,6 +70,18 @@ public class OlcDatabaseConfig extends OlcConfig
     private Boolean olcAddContentAcl;
 
     /**
+     * Field for the 'olcDisabled' attribute. (Added in OpenLDAP 2.4.36)
+     */
+    @ConfigurationElement(attributeType = "olcDisabled")
+    private Boolean olcDisabled;
+
+    /**
+     * Field for the 'olcExtraAttrs' attribute. (Added in OpenLDAP 2.4.22)
+     */
+    @ConfigurationElement(attributeType = "olcExtraAttrs")
+    private List<String> olcExtraAttrs;
+
+    /**
      * Field for the 'olcHidden' attribute.
      */
     @ConfigurationElement(attributeType = "olcHidden")
@@ -208,7 +220,7 @@ public class OlcDatabaseConfig extends OlcConfig
     private List<String> olcSyncrepl = new ArrayList<String>();
 
     /**
-     * Field for the 'olcSyncUseSubentry' attribute.
+     * Field for the 'olcSyncUseSubentry' attribute. (Added in OpenLDAP 2.4.20)
      */
     @ConfigurationElement(attributeType = "olcSyncUseSubentry")
     private Boolean olcSyncUseSubentry;
@@ -240,6 +252,18 @@ public class OlcDatabaseConfig extends OlcConfig
         for ( String string : strings )
         {
             olcAccess.add( string );
+        }
+    }
+
+
+    /**
+     * @param strings The olcExtraAttrs to add
+     */
+    public void addOlcExtraAttrs( String... strings )
+    {
+        for ( String string : strings )
+        {
+            olcExtraAttrs.add( string );
         }
     }
 
@@ -370,6 +394,12 @@ public class OlcDatabaseConfig extends OlcConfig
     }
 
 
+    public void clearOlcExtraAttrs()
+    {
+        olcExtraAttrs.clear();
+    }
+
+
     public void clearOlcLimits()
     {
         olcLimits.clear();
@@ -454,6 +484,24 @@ public class OlcDatabaseConfig extends OlcConfig
     public String getOlcDatabase()
     {
         return olcDatabase;
+    }
+
+
+    /**
+     * @return the olcDisabled
+     */
+    public Boolean getOlcDisabled()
+    {
+        return olcDisabled;
+    }
+
+
+    /**
+     * @return the olcExtraAttrs
+     */
+    public List<String> getOlcExtraAttrs()
+    {
+        return olcExtraAttrs;
     }
 
 
@@ -770,6 +818,24 @@ public class OlcDatabaseConfig extends OlcConfig
     public void setOlcDatabase( String olcDatabase )
     {
         this.olcDatabase = olcDatabase;
+    }
+
+
+    /**
+     * @param oldDisabled the olcDisabled to set
+     */
+    public void setOlcDisabled( Boolean olcDisabled )
+    {
+        this.olcDisabled = olcDisabled;
+    }
+
+
+    /**
+     * @param olcExtraAttrs the olcExtraAttrs to set
+     */
+    public void setOlcExtraAttrs( List<String> olcExtraAttrs )
+    {
+        this.olcExtraAttrs = olcExtraAttrs;
     }
 
 
