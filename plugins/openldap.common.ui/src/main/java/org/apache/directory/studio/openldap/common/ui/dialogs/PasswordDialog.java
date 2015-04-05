@@ -56,6 +56,8 @@ import org.eclipse.swt.widgets.Text;
 /**
  * The PasswordDialog is used from the password value editor to view the current password
  * and to enter a new password.
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public class PasswordDialog extends Dialog
 {
@@ -192,6 +194,7 @@ public class PasswordDialog extends Dialog
         addListeners();
 
         applyDialogFont( composite );
+        
         return composite;
     }
 
