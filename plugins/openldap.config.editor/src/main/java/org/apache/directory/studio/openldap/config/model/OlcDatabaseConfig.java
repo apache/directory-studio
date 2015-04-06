@@ -465,7 +465,7 @@ public class OlcDatabaseConfig extends OlcConfig
      */
     public List<String> getOlcAccess()
     {
-        return olcAccess;
+        return copyListString( olcAccess );
     }
 
 
@@ -501,7 +501,7 @@ public class OlcDatabaseConfig extends OlcConfig
      */
     public List<String> getOlcExtraAttrs()
     {
-        return olcExtraAttrs;
+        return copyListString( olcExtraAttrs );
     }
 
 
@@ -528,7 +528,7 @@ public class OlcDatabaseConfig extends OlcConfig
      */
     public List<String> getOlcLimits()
     {
-        return olcLimits;
+        return copyListString( olcLimits );
     }
 
 
@@ -564,7 +564,7 @@ public class OlcDatabaseConfig extends OlcConfig
      */
     public List<String> getOlcPlugin()
     {
-        return olcPlugin;
+        return copyListString( olcPlugin );
     }
 
 
@@ -582,7 +582,7 @@ public class OlcDatabaseConfig extends OlcConfig
      */
     public List<String> getOlcReplica()
     {
-        return olcReplica;
+        return copyListString( olcReplica );
     }
 
 
@@ -627,7 +627,7 @@ public class OlcDatabaseConfig extends OlcConfig
      */
     public List<String> getOlcRequires()
     {
-        return olcRequires;
+        return copyListString( olcRequires );
     }
 
 
@@ -636,7 +636,7 @@ public class OlcDatabaseConfig extends OlcConfig
      */
     public List<String> getOlcRestrict()
     {
-        return olcRestrict;
+        return copyListString( olcRestrict );
     }
 
 
@@ -672,7 +672,7 @@ public class OlcDatabaseConfig extends OlcConfig
      */
     public List<String> getOlcSecurity()
     {
-        return olcSecurity;
+        return copyListString( olcSecurity );
     }
 
 
@@ -708,7 +708,7 @@ public class OlcDatabaseConfig extends OlcConfig
      */
     public List<String> getOlcSyncrepl()
     {
-        return olcSyncrepl;
+        return copyListString( olcSyncrepl );
     }
 
 
@@ -726,7 +726,7 @@ public class OlcDatabaseConfig extends OlcConfig
      */
     public List<String> getOlcTimeLimit()
     {
-        return olcTimeLimit;
+        return copyListString( olcTimeLimit );
     }
 
 
@@ -744,7 +744,7 @@ public class OlcDatabaseConfig extends OlcConfig
      */
     public List<String> getOlcUpdateRef()
     {
-        return olcUpdateRef;
+        return copyListString( olcUpdateRef );
     }
 
 
@@ -799,7 +799,7 @@ public class OlcDatabaseConfig extends OlcConfig
      */
     public void setOlcAccess( List<String> olcAccess )
     {
-        this.olcAccess = olcAccess;
+        this.olcAccess = copyListString( olcAccess );
     }
 
 
@@ -835,7 +835,7 @@ public class OlcDatabaseConfig extends OlcConfig
      */
     public void setOlcExtraAttrs( List<String> olcExtraAttrs )
     {
-        this.olcExtraAttrs = olcExtraAttrs;
+        this.olcExtraAttrs = copyListString( olcExtraAttrs );
     }
 
 
@@ -862,7 +862,7 @@ public class OlcDatabaseConfig extends OlcConfig
      */
     public void setOlcLimits( List<String> olcLimits )
     {
-        this.olcLimits = olcLimits;
+        this.olcLimits = copyListString( olcLimits );
     }
 
 
@@ -898,7 +898,7 @@ public class OlcDatabaseConfig extends OlcConfig
      */
     public void setOlcPlugin( List<String> olcPlugin )
     {
-        this.olcPlugin = olcPlugin;
+        this.olcPlugin = copyListString( olcPlugin );
     }
 
 
@@ -916,7 +916,7 @@ public class OlcDatabaseConfig extends OlcConfig
      */
     public void setOlcReplica( List<String> olcReplica )
     {
-        this.olcReplica = olcReplica;
+        this.olcReplica = copyListString( olcReplica );
     }
 
 
@@ -961,7 +961,7 @@ public class OlcDatabaseConfig extends OlcConfig
      */
     public void setOlcRequires( List<String> olcRequires )
     {
-        this.olcRequires = olcRequires;
+        this.olcRequires = copyListString( olcRequires );
     }
 
 
@@ -970,7 +970,7 @@ public class OlcDatabaseConfig extends OlcConfig
      */
     public void setOlcRestrict( List<String> olcRestrict )
     {
-        this.olcRestrict = olcRestrict;
+        this.olcRestrict = copyListString( olcRestrict );
     }
 
 
@@ -1006,7 +1006,7 @@ public class OlcDatabaseConfig extends OlcConfig
      */
     public void setOlcSecurity( List<String> olcSecurity )
     {
-        this.olcSecurity = olcSecurity;
+        this.olcSecurity = copyListString( olcSecurity );
     }
 
 
@@ -1042,7 +1042,7 @@ public class OlcDatabaseConfig extends OlcConfig
      */
     public void setOlcSyncrepl( List<String> olcSyncrepl )
     {
-        this.olcSyncrepl = olcSyncrepl;
+        this.olcSyncrepl = copyListString( olcSyncrepl );
     }
 
 
@@ -1060,7 +1060,7 @@ public class OlcDatabaseConfig extends OlcConfig
      */
     public void setOlcTimeLimit( List<String> olcTimeLimit )
     {
-        this.olcTimeLimit = olcTimeLimit;
+        this.olcTimeLimit = copyListString( olcTimeLimit );
     }
 
 
@@ -1078,7 +1078,7 @@ public class OlcDatabaseConfig extends OlcConfig
      */
     public void setOlcUpdateRef( List<String> olcUpdateRef )
     {
-        this.olcUpdateRef = olcUpdateRef;
+        this.olcUpdateRef = copyListString( olcUpdateRef );
     }
 
 

@@ -94,4 +94,19 @@ public class OlcConfig
     {
         this.parentDn = parentDn;
     }
+
+
+    /**
+     * Copy a List of Strings into a new List of strings.
+     * 
+     * @param original The list to copy
+     * @return The copied list
+     */
+    protected List<String> copyListString( List<String> original )
+    {
+        List<String> copy = new ArrayList<String>( original.size() );
+        copy.addAll( original );
+
+        return copy;
+    }
 }

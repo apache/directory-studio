@@ -169,7 +169,7 @@ public class OlcMdbConfig extends OlcDatabaseConfig
      */
     public List<String> getOlcDbIndex()
     {
-        return olcDbIndex;
+        return copyListString( olcDbIndex );
     }
 
 
@@ -178,7 +178,7 @@ public class OlcMdbConfig extends OlcDatabaseConfig
      */
     public List<String> getOlcDbEnvFlags()
     {
-        return olcDbEnvFlags;
+        return copyListString( olcDbEnvFlags );
     }
 
 
@@ -259,7 +259,7 @@ public class OlcMdbConfig extends OlcDatabaseConfig
      */
     public void setOlcDbIndex( List<String> olcDbIndex )
     {
-        this.olcDbIndex = olcDbIndex;
+        this.olcDbIndex = copyListString( olcDbIndex );
     }
 
 
@@ -268,7 +268,7 @@ public class OlcMdbConfig extends OlcDatabaseConfig
      */
     public void setOlcDbEnvFlagsx( List<String> olcDbEnvFlags )
     {
-        this.olcDbEnvFlags = olcDbEnvFlags;
+        this.olcDbEnvFlags = copyListString( olcDbEnvFlags );
     }
 
 

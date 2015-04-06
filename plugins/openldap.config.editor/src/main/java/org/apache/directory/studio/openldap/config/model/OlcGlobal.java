@@ -829,7 +829,7 @@ public class OlcGlobal extends OlcConfig
      */
     public List<String> getCn()
     {
-        return cn;
+        return copyListString( cn );
     }
 
 
@@ -838,7 +838,7 @@ public class OlcGlobal extends OlcConfig
      */
     public List<String> getOlcAllows()
     {
-        return olcAllows;
+        return copyListString( olcAllows );
     }
 
 
@@ -856,7 +856,7 @@ public class OlcGlobal extends OlcConfig
      */
     public List<String> getOlcAttributeOptions()
     {
-        return olcAttributeOptions;
+        return copyListString( olcAttributeOptions );
     }
 
 
@@ -865,7 +865,7 @@ public class OlcGlobal extends OlcConfig
      */
     public List<String> getOlcAttributeTypes()
     {
-        return olcAttributeTypes;
+        return copyListString( olcAttributeTypes );
     }
 
 
@@ -874,7 +874,7 @@ public class OlcGlobal extends OlcConfig
      */
     public List<String> getOlcAuthIDRewrite()
     {
-        return olcAuthIDRewrite;
+        return copyListString( olcAuthIDRewrite );
     }
 
 
@@ -892,7 +892,7 @@ public class OlcGlobal extends OlcConfig
      */
     public List<String> getOlcAuthzRegexp()
     {
-        return olcAuthzRegexp;
+        return copyListString( olcAuthzRegexp );
     }
 
 
@@ -946,7 +946,7 @@ public class OlcGlobal extends OlcConfig
      */
     public List<String> getOlcDisallows()
     {
-        return olcDisallows;
+        return copyListString( olcDisallows );
     }
 
 
@@ -955,7 +955,7 @@ public class OlcGlobal extends OlcConfig
      */
     public List<String> getOlcDitContentRules()
     {
-        return olcDitContentRules;
+        return copyListString( olcDitContentRules );
     }
 
 
@@ -1036,7 +1036,7 @@ public class OlcGlobal extends OlcConfig
      */
     public List<String> getOlcLdapSyntaxes()
     {
-        return olcLdapSyntaxes;
+        return copyListString( olcLdapSyntaxes );
     }
 
 
@@ -1072,7 +1072,7 @@ public class OlcGlobal extends OlcConfig
      */
     public List<String> getOlcLogLevel()
     {
-        return olcLogLevel;
+        return copyListString( olcLogLevel );
     }
 
 
@@ -1081,7 +1081,7 @@ public class OlcGlobal extends OlcConfig
      */
     public List<String> getOlcObjectClasses()
     {
-        return olcObjectClasses;
+        return copyListString( olcObjectClasses );
     }
 
 
@@ -1090,7 +1090,7 @@ public class OlcGlobal extends OlcConfig
      */
     public List<String> getOlcObjectIdentifier()
     {
-        return olcObjectIdentifier;
+        return copyListString( olcObjectIdentifier );
     }
 
 
@@ -1108,7 +1108,7 @@ public class OlcGlobal extends OlcConfig
      */
     public List<String> getOlcPasswordHash()
     {
-        return olcPasswordHash;
+        return copyListString( olcPasswordHash );
     }
 
 
@@ -1162,7 +1162,7 @@ public class OlcGlobal extends OlcConfig
      */
     public List<String> getOlcRequires()
     {
-        return olcRequires;
+        return copyListString( olcRequires );
     }
 
 
@@ -1180,7 +1180,7 @@ public class OlcGlobal extends OlcConfig
      */
     public List<String> getOlcRestrict()
     {
-        return olcRestrict;
+        return copyListString( olcRestrict );
     }
 
 
@@ -1189,7 +1189,7 @@ public class OlcGlobal extends OlcConfig
      */
     public List<String> getOlcRootDSE()
     {
-        return olcRootDSE;
+        return copyListString( olcRootDSE );
     }
 
 
@@ -1252,7 +1252,7 @@ public class OlcGlobal extends OlcConfig
      */
     public List<String> getOlcSecurity()
     {
-        return olcSecurity;
+        return copyListString( olcSecurity );
     }
 
 
@@ -1261,7 +1261,7 @@ public class OlcGlobal extends OlcConfig
      */
     public List<String> getOlcServerID()
     {
-        return olcServerID;
+        return copyListString( olcServerID );
     }
 
 
@@ -1297,7 +1297,7 @@ public class OlcGlobal extends OlcConfig
      */
     public List<String> getOlcTCPBuffer()
     {
-        return olcTCPBuffer;
+        return copyListString( olcTCPBuffer );
     }
 
 
@@ -1324,7 +1324,7 @@ public class OlcGlobal extends OlcConfig
      */
     public List<String> getOlcTimeLimit()
     {
-        return olcTimeLimit;
+        return copyListString( olcTimeLimit );
     }
 
 
@@ -1459,7 +1459,7 @@ public class OlcGlobal extends OlcConfig
      */
     public void setCn( List<String> cn )
     {
-        this.cn = cn;
+        this.cn = copyListString( cn );
     }
 
 
@@ -1468,7 +1468,7 @@ public class OlcGlobal extends OlcConfig
      */
     public void setOlcAllows( List<String> olcAllows )
     {
-        this.olcAllows = olcAllows;
+        this.olcAllows = copyListString( olcAllows );
     }
 
 
@@ -1486,7 +1486,7 @@ public class OlcGlobal extends OlcConfig
      */
     public void setOlcAttributeOptions( List<String> olcAttributeOptions )
     {
-        this.olcAttributeOptions = olcAttributeOptions;
+        this.olcAttributeOptions = copyListString( olcAttributeOptions );
     }
 
 
@@ -1495,7 +1495,7 @@ public class OlcGlobal extends OlcConfig
      */
     public void setOlcAttributeTypes( List<String> olcAttributeTypes )
     {
-        this.olcAttributeTypes = olcAttributeTypes;
+        this.olcAttributeTypes = copyListString( olcAttributeTypes );
     }
 
 
@@ -1504,7 +1504,7 @@ public class OlcGlobal extends OlcConfig
      */
     public void setOlcAuthIDRewrite( List<String> olcAuthIDRewrite )
     {
-        this.olcAuthIDRewrite = olcAuthIDRewrite;
+        this.olcAuthIDRewrite = copyListString( olcAuthIDRewrite );
     }
 
 
@@ -1522,7 +1522,7 @@ public class OlcGlobal extends OlcConfig
      */
     public void setOlcAuthzRegexp( List<String> olcAuthzRegexp )
     {
-        this.olcAuthzRegexp = olcAuthzRegexp;
+        this.olcAuthzRegexp = copyListString( olcAuthzRegexp );
     }
 
 
@@ -1576,7 +1576,7 @@ public class OlcGlobal extends OlcConfig
      */
     public void setOlcDisallows( List<String> olcDisallows )
     {
-        this.olcDisallows = olcDisallows;
+        this.olcDisallows = copyListString( olcDisallows );
     }
 
 
@@ -1585,7 +1585,7 @@ public class OlcGlobal extends OlcConfig
      */
     public void setOlcDitContentRules( List<String> olcDitContentRules )
     {
-        this.olcDitContentRules = olcDitContentRules;
+        this.olcDitContentRules = copyListString( olcDitContentRules );
     }
 
 
@@ -1666,7 +1666,7 @@ public class OlcGlobal extends OlcConfig
      */
     public void setOlcLdapSyntaxes( List<String> olcLdapSyntaxes )
     {
-        this.olcLdapSyntaxes = olcLdapSyntaxes;
+        this.olcLdapSyntaxes = copyListString( olcLdapSyntaxes );
     }
 
 
@@ -1702,7 +1702,7 @@ public class OlcGlobal extends OlcConfig
      */
     public void setOlcLogLevel( List<String> olcLogLevel )
     {
-        this.olcLogLevel = olcLogLevel;
+        this.olcLogLevel = copyListString( olcLogLevel );
     }
 
 
@@ -1711,7 +1711,7 @@ public class OlcGlobal extends OlcConfig
      */
     public void setOlcObjectClasses( List<String> olcObjectClasses )
     {
-        this.olcObjectClasses = olcObjectClasses;
+        this.olcObjectClasses = copyListString( olcObjectClasses );
     }
 
 
@@ -1720,7 +1720,7 @@ public class OlcGlobal extends OlcConfig
      */
     public void setOlcObjectIdentifier( List<String> olcObjectIdentifier )
     {
-        this.olcObjectIdentifier = olcObjectIdentifier;
+        this.olcObjectIdentifier = copyListString( olcObjectIdentifier );
     }
 
 
@@ -1738,7 +1738,7 @@ public class OlcGlobal extends OlcConfig
      */
     public void setOlcPasswordHash( List<String> olcPasswordHash )
     {
-        this.olcPasswordHash = olcPasswordHash;
+        this.olcPasswordHash = copyListString( olcPasswordHash );
     }
 
 
@@ -1792,7 +1792,7 @@ public class OlcGlobal extends OlcConfig
      */
     public void setOlcRequires( List<String> olcRequires )
     {
-        this.olcRequires = olcRequires;
+        this.olcRequires = copyListString( olcRequires );
     }
 
 
@@ -1810,7 +1810,7 @@ public class OlcGlobal extends OlcConfig
      */
     public void setOlcRestrict( List<String> olcRestrict )
     {
-        this.olcRestrict = olcRestrict;
+        this.olcRestrict = copyListString( olcRestrict );
     }
 
 
@@ -1819,7 +1819,7 @@ public class OlcGlobal extends OlcConfig
      */
     public void setOlcRootDSE( List<String> olcRootDSE )
     {
-        this.olcRootDSE = olcRootDSE;
+        this.olcRootDSE = copyListString( olcRootDSE );
     }
 
 
@@ -1882,7 +1882,7 @@ public class OlcGlobal extends OlcConfig
      */
     public void setOlcSecurity( List<String> olcSecurity )
     {
-        this.olcSecurity = olcSecurity;
+        this.olcSecurity = copyListString( olcSecurity );
     }
 
 
@@ -1891,7 +1891,7 @@ public class OlcGlobal extends OlcConfig
      */
     public void setOlcServerID( List<String> olcServerID )
     {
-        this.olcServerID = olcServerID;
+        this.olcServerID = copyListString( olcServerID );
     }
 
 
@@ -1927,7 +1927,7 @@ public class OlcGlobal extends OlcConfig
      */
     public void setOlcTCPBuffer( List<String> olcTCPBuffer )
     {
-        this.olcTCPBuffer = olcTCPBuffer;
+        this.olcTCPBuffer = copyListString( olcTCPBuffer );
     }
 
 
@@ -1954,7 +1954,7 @@ public class OlcGlobal extends OlcConfig
      */
     public void setOlcTimeLimit( List<String> olcTimeLimit )
     {
-        this.olcTimeLimit = olcTimeLimit;
+        this.olcTimeLimit = copyListString( olcTimeLimit );
     }
 
 
