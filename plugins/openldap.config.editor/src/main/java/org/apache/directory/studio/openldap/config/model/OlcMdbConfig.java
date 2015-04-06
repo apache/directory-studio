@@ -47,28 +47,16 @@ public class OlcMdbConfig extends OlcDatabaseConfig
     private String olcDbDirectory;
 
     /**
-     * Field for the 'olcDbMaxSize' attribute.
-     */
-    @ConfigurationElement(attributeType = "olcDbMaxSize")
-    private Long olcDbMaxSize;
-
-    /**
      * Field for the 'olcDbCheckpoint' attribute.
      */
     @ConfigurationElement(attributeType = "olcDbCheckpoint")
     private String olcDbCheckpoint;
 
     /**
-     * Field for the 'olcDbNoSync' attribute.
+     * Field for the 'olcDbEnvFlags' attribute.
      */
-    @ConfigurationElement(attributeType = "olcDbNoSync")
-    private Boolean olcDbNoSync;
-
-    /**
-     * Field for the 'olcDbMode' attribute.
-     */
-    @ConfigurationElement(attributeType = "olcDbMode")
-    private String olcDbMode;
+    @ConfigurationElement(attributeType = "olcDbEnvFlags")
+    private List<String> olcDbEnvFlags = new ArrayList<String>();
 
     /**
      * Field for the 'olcDbIndex' attribute.
@@ -77,10 +65,34 @@ public class OlcMdbConfig extends OlcDatabaseConfig
     private List<String> olcDbIndex = new ArrayList<String>();
 
     /**
+     * Field for the 'olcDbMaxEntrySize' attribute.
+     */
+    @ConfigurationElement(attributeType = "olcDbMaxEntrySize")
+    private Integer olcDbMaxEntrySize;
+
+    /**
      * Field for the 'olcDbMaxReaders' attribute.
      */
     @ConfigurationElement(attributeType = "olcDbMaxReaders")
     private Integer olcDbMaxReaders;
+
+    /**
+     * Field for the 'olcDbMaxSize' attribute.
+     */
+    @ConfigurationElement(attributeType = "olcDbMaxSize")
+    private Long olcDbMaxSize;
+
+    /**
+     * Field for the 'olcDbMode' attribute.
+     */
+    @ConfigurationElement(attributeType = "olcDbMode")
+    private String olcDbMode;
+
+    /**
+     * Field for the 'olcDbNoSync' attribute.
+     */
+    @ConfigurationElement(attributeType = "olcDbNoSync")
+    private Boolean olcDbNoSync;
 
     /**
      * Field for the 'olcDbSearchStack' attribute.
@@ -101,9 +113,27 @@ public class OlcMdbConfig extends OlcDatabaseConfig
     }
 
 
+    /**
+     * @param strings
+     */
+    public void addOlcDbEnvFlags( String... strings )
+    {
+        for ( String string : strings )
+        {
+            olcDbEnvFlags.add( string );
+        }
+    }
+
+
     public void clearOlcDbIndex()
     {
         olcDbIndex.clear();
+    }
+
+
+    public void clearOlcDbEnvFlags()
+    {
+        olcDbEnvFlags.clear();
     }
 
 
@@ -140,6 +170,24 @@ public class OlcMdbConfig extends OlcDatabaseConfig
     public List<String> getOlcDbIndex()
     {
         return olcDbIndex;
+    }
+
+
+    /**
+     * @return the olcDbEnvFlags
+     */
+    public List<String> getOlcDbEnvFlags()
+    {
+        return olcDbEnvFlags;
+    }
+
+
+    /**
+     * @return the olcDbMaxEntrySize
+     */
+    public Integer getOlcDbMaxEntrySize()
+    {
+        return olcDbMaxEntrySize;
     }
 
 
@@ -212,6 +260,24 @@ public class OlcMdbConfig extends OlcDatabaseConfig
     public void setOlcDbIndex( List<String> olcDbIndex )
     {
         this.olcDbIndex = olcDbIndex;
+    }
+
+
+    /**
+     * @param olcDbEnvFlags the olcDbEnvFlags to set
+     */
+    public void setOlcDbEnvFlagsx( List<String> olcDbEnvFlags )
+    {
+        this.olcDbEnvFlags = olcDbEnvFlags;
+    }
+
+
+    /**
+     * @param olcDbMaxEntrySize the olcDbMaxEntrySize to set
+     */
+    public void setOlcDbMaxEntrySize( Integer olcDbMaxEntrySize )
+    {
+        this.olcDbMaxEntrySize = olcDbMaxEntrySize;
     }
 
 
