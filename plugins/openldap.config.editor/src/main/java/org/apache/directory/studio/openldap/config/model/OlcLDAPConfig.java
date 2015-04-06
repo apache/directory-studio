@@ -118,6 +118,12 @@ public class OlcLDAPConfig extends OlcDatabaseConfig
     private String olcDbIdleTimeout;
 
     /**
+     * Field for the 'olcDbKeepalive' attribute.
+     */
+    @ConfigurationElement(attributeType = "olcDbKeepalive")
+    private String olcDbKeepalive;
+
+    /**
      * Field for the 'olcDbNetworkTimeout' attribute.
      */
     @ConfigurationElement(attributeType = "olcDbNetworkTimeout")
@@ -134,6 +140,12 @@ public class OlcLDAPConfig extends OlcDatabaseConfig
      */
     @ConfigurationElement(attributeType = "olcDbNoUndefFilter")
     private Boolean olcDbNoUndefFilter;
+
+    /**
+     * Field for the 'olcDbOnErr' attribute.
+     */
+    @ConfigurationElement(attributeType = "olcDbOnErr")
+    private String olcDbOnErr;
 
     /**
      * Field for the 'olcDbProtocolVersion' attribute.
@@ -158,6 +170,12 @@ public class OlcLDAPConfig extends OlcDatabaseConfig
      */
     @ConfigurationElement(attributeType = "olcDbRebindAsUser")
     private Boolean olcDbRebindAsUser;
+
+    /**
+     * Field for the 'olcDbSessionTrackingRequest' attribute.
+     */
+    @ConfigurationElement(attributeType = "olcDbSessionTrackingRequest")
+    private Boolean olcDbSessionTrackingRequest;
 
     /**
      * Field for the 'olcDbSingleConn' attribute.
@@ -309,7 +327,7 @@ public class OlcLDAPConfig extends OlcDatabaseConfig
      */
     public List<String> getOlcDbIDAssertAuthzFrom()
     {
-        return olcDbIDAssertAuthzFrom;
+        return copyListString( olcDbIDAssertAuthzFrom );
     }
 
 
@@ -336,7 +354,7 @@ public class OlcLDAPConfig extends OlcDatabaseConfig
      */
     public List<String> getOlcDbIDAssertPassThru()
     {
-        return olcDbIDAssertPassThru;
+        return copyListString( olcDbIDAssertPassThru );
     }
 
 
@@ -355,6 +373,15 @@ public class OlcLDAPConfig extends OlcDatabaseConfig
     public String getOlcDbIdleTimeout()
     {
         return olcDbIdleTimeout;
+    }
+
+
+    /**
+     * @return the olcDbKeepalive
+     */
+    public String getOlcDbKeepalive()
+    {
+        return olcDbKeepalive;
     }
 
 
@@ -382,6 +409,15 @@ public class OlcLDAPConfig extends OlcDatabaseConfig
     public Boolean getOlcDbNoUndefFilter()
     {
         return olcDbNoUndefFilter;
+    }
+
+
+    /**
+     * @return the olcDbOnErr
+     */
+    public String getOlcDbOnErr()
+    {
+        return olcDbOnErr;
     }
 
 
@@ -418,6 +454,15 @@ public class OlcLDAPConfig extends OlcDatabaseConfig
     public Boolean getOlcDbRebindAsUser()
     {
         return olcDbRebindAsUser;
+    }
+
+
+    /**
+     * @return the olcDbSessionTrackingRequest
+     */
+    public Boolean getOlcDbSessionTrackingRequest()
+    {
+        return olcDbSessionTrackingRequest;
     }
 
 
@@ -552,7 +597,7 @@ public class OlcLDAPConfig extends OlcDatabaseConfig
      */
     public void setOlcDbIDAssertAuthzFrom( List<String> olcDbIDAssertAuthzFrom )
     {
-        this.olcDbIDAssertAuthzFrom = olcDbIDAssertAuthzFrom;
+        this.olcDbIDAssertAuthzFrom = copyListString( olcDbIDAssertAuthzFrom );
     }
 
 
@@ -579,7 +624,7 @@ public class OlcLDAPConfig extends OlcDatabaseConfig
      */
     public void setOlcDbIDAssertPassThru( List<String> olcDbIDAssertPassThru )
     {
-        this.olcDbIDAssertPassThru = olcDbIDAssertPassThru;
+        this.olcDbIDAssertPassThru = copyListString( olcDbIDAssertPassThru );
     }
 
 
@@ -598,6 +643,15 @@ public class OlcLDAPConfig extends OlcDatabaseConfig
     public void setOlcDbIdleTimeout( String olcDbIdleTimeout )
     {
         this.olcDbIdleTimeout = olcDbIdleTimeout;
+    }
+
+
+    /**
+     * @param olcDbKeepalive the olcDbKeepalive to set
+     */
+    public void setOlcDbKeepalive( String olcDbKeepalive )
+    {
+        this.olcDbKeepalive = olcDbKeepalive;
     }
 
 
@@ -625,6 +679,15 @@ public class OlcLDAPConfig extends OlcDatabaseConfig
     public void setOlcDbNoUndefFilter( Boolean olcDbNoUndefFilter )
     {
         this.olcDbNoUndefFilter = olcDbNoUndefFilter;
+    }
+
+
+    /**
+     * @param olcDbOnErr the olcDbOnErr to set
+     */
+    public void setOlcDbOnErr( String olcDbOnErr )
+    {
+        this.olcDbOnErr = olcDbOnErr;
     }
 
 
@@ -661,6 +724,15 @@ public class OlcLDAPConfig extends OlcDatabaseConfig
     public void setOlcDbRebindAsUser( Boolean olcDbRebindAsUser )
     {
         this.olcDbRebindAsUser = olcDbRebindAsUser;
+    }
+
+
+    /**
+     * @param olcDbSessionTrackingRequest the olcDbSessionTrackingRequest to set
+     */
+    public void setOlcDbSessionTrackingRequest( Boolean olcDbSessionTrackingRequest )
+    {
+        this.olcDbSessionTrackingRequest = olcDbSessionTrackingRequest;
     }
 
 
