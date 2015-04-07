@@ -23,8 +23,8 @@ package org.apache.directory.studio.openldap.config.model.database;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.directory.studio.openldap.config.editor.databases.DatabaseTypeEnum;
 import org.apache.directory.studio.openldap.config.model.ConfigurationElement;
-import org.apache.directory.studio.openldap.config.model.OlcDatabaseConfig;
 
 
 /**
@@ -99,4 +99,13 @@ public class OlcDbSocketConfig extends OlcDatabaseConfig
     {
         this.olcDbSocketPath = olcDbSocketPath;
     }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public String getOlcDatabaseType()
+    {
+        return DatabaseTypeEnum.DB_SOCKET.toString().toLowerCase();
+    };
 }

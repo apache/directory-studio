@@ -71,9 +71,9 @@ import org.apache.directory.studio.openldap.config.OpenLdapConfigurationPluginCo
 import org.apache.directory.studio.openldap.config.OpenLdapConfigurationPluginUtils;
 import org.apache.directory.studio.openldap.config.editor.dialogs.OverlayDialog;
 import org.apache.directory.studio.openldap.config.editor.dialogs.ReplicationConsumerDialog;
-import org.apache.directory.studio.openldap.config.model.OlcDatabaseConfig;
 import org.apache.directory.studio.openldap.config.model.OlcOverlayConfig;
 import org.apache.directory.studio.openldap.config.model.database.OlcBdbConfig;
+import org.apache.directory.studio.openldap.config.model.database.OlcDatabaseConfig;
 import org.apache.directory.studio.openldap.config.model.database.OlcHdbConfig;
 import org.apache.directory.studio.openldap.config.model.database.OlcLdifConfig;
 import org.apache.directory.studio.openldap.config.model.database.OlcMdbConfig;

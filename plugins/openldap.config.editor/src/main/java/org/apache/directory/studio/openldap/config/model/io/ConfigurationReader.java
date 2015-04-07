@@ -58,10 +58,6 @@ import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
 import org.apache.directory.studio.ldapbrowser.core.jobs.SearchRunnable;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.SearchParameter;
-import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.NullProgressMonitor;
-import org.eclipse.osgi.util.NLS;
-
 import org.apache.directory.studio.openldap.config.ExpandedLdifUtils;
 import org.apache.directory.studio.openldap.config.OpenLdapConfigurationPlugin;
 import org.apache.directory.studio.openldap.config.editor.ConnectionServerConfigurationInput;
@@ -71,10 +67,13 @@ import org.apache.directory.studio.openldap.config.jobs.EntryBasedConfigurationP
 import org.apache.directory.studio.openldap.config.model.AuxiliaryObjectClass;
 import org.apache.directory.studio.openldap.config.model.ConfigurationElement;
 import org.apache.directory.studio.openldap.config.model.OlcConfig;
-import org.apache.directory.studio.openldap.config.model.OlcDatabaseConfig;
 import org.apache.directory.studio.openldap.config.model.OlcGlobal;
 import org.apache.directory.studio.openldap.config.model.OlcOverlayConfig;
 import org.apache.directory.studio.openldap.config.model.OpenLdapConfiguration;
+import org.apache.directory.studio.openldap.config.model.database.OlcDatabaseConfig;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.osgi.util.NLS;
 
 
 /**
@@ -86,6 +85,12 @@ public class ConfigurationReader
 {
     /** The package name where the model classes are stored */
     private static final String MODEL_PACKAGE_NAME = "org.apache.directory.studio.openldap.config.model";
+
+    /** The package name where the database model classes are stored */
+    private static final String DATABASE_PACKAGE_NAME = "org.apache.directory.studio.openldap.config.model.database";
+
+    /** The package name where the overlay model classes are stored */
+    private static final String OVERLAY_PACKAGE_NAME = "org.apache.directory.studio.openldap.config.model.overlay";
 
 
     /**
@@ -546,6 +551,7 @@ public class ConfigurationReader
     {
         // Getting the 'objectClass' attribute
         Attribute objectClassAttribute = entry.get( SchemaConstants.OBJECT_CLASS_AT );
+
         if ( objectClassAttribute != null )
         {
             // Getting the highest structural object class based on schema
@@ -553,15 +559,31 @@ public class ConfigurationReader
 
             // Computing the class name for the bean corresponding to the structural object class
             String highestObjectClassName = highestStructuralObjectClass.getName();
-            String className = MODEL_PACKAGE_NAME + "."
-                + Character.toUpperCase( highestObjectClassName.charAt( 0 ) ) +
-                highestObjectClassName.substring( 1 );
+            StringBuilder className = new StringBuilder();
+
+            if ( objectClassAttribute.contains( "olcDatabaseConfig" ) )
+            {
+                className.append( DATABASE_PACKAGE_NAME );
+            }
+            else if ( objectClassAttribute.contains( "olcOverlayConfig" ) )
+            {
+                className.append( OVERLAY_PACKAGE_NAME );
+            }
+            else
+            {
+                className.append( MODEL_PACKAGE_NAME );
+            }
+
+            className.append( "." );
+            className.append( Character.toUpperCase( highestObjectClassName.charAt( 0 ) ) );
+            className.append( highestObjectClassName.substring( 1 ) );
 
             // Instantiating the object
             OlcConfig bean = null;
+
             try
             {
-                Class<?> clazz = Class.forName( className );
+                Class<?> clazz = Class.forName( className.toString() );
                 Constructor<?> constructor = clazz.getConstructor();
                 bean = ( OlcConfig ) constructor.newInstance();
             }
@@ -578,21 +600,25 @@ public class ConfigurationReader
 
             // Checking auxiliary object classes
             ObjectClass[] auxiliaryObjectClasses = getAuxiliaryObjectClasses( objectClassAttribute );
+
             if ( ( auxiliaryObjectClasses != null ) && ( auxiliaryObjectClasses.length > 0 ) )
             {
                 for ( ObjectClass auxiliaryObjectClass : auxiliaryObjectClasses )
                 {
                     // Computing the class name for the bean corresponding to the auxiliary object class
                     String auxiliaryObjectClassName = auxiliaryObjectClass.getName();
-                    className = MODEL_PACKAGE_NAME + "."
-                        + Character.toUpperCase( auxiliaryObjectClassName.charAt( 0 ) ) +
-                        auxiliaryObjectClassName.substring( 1 );
+                    className = new StringBuilder();
+                    className.append( MODEL_PACKAGE_NAME );
+                    className.append( "." );
+                    className.append( Character.toUpperCase( auxiliaryObjectClassName.charAt( 0 ) ) );
+                    className.append( auxiliaryObjectClassName.substring( 1 ) );
 
                     // Instantiating the object
                     AuxiliaryObjectClass auxiliaryObjectClassBean = null;
+
                     try
                     {
-                        Class<?> clazz = Class.forName( className );
+                        Class<?> clazz = Class.forName( className.toString() );
                         Constructor<?> constructor = clazz.getConstructor();
                         auxiliaryObjectClassBean = ( AuxiliaryObjectClass ) constructor.newInstance();
                     }

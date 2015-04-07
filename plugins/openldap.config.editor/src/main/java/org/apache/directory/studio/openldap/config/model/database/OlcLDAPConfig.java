@@ -24,8 +24,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.directory.api.ldap.model.name.Dn;
+import org.apache.directory.studio.openldap.config.editor.databases.DatabaseTypeEnum;
 import org.apache.directory.studio.openldap.config.model.ConfigurationElement;
-import org.apache.directory.studio.openldap.config.model.OlcDatabaseConfig;
 
 
 /**
@@ -797,6 +797,6 @@ public class OlcLDAPConfig extends OlcDatabaseConfig
      */
     public String getOlcDatabaseType()
     {
-        return "ldap";
+        return DatabaseTypeEnum.LDAP.toString().toLowerCase();
     };
 }

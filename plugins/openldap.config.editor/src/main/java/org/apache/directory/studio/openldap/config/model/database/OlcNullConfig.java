@@ -19,8 +19,9 @@
  */
 package org.apache.directory.studio.openldap.config.model.database;
 
+
+import org.apache.directory.studio.openldap.config.editor.databases.DatabaseTypeEnum;
 import org.apache.directory.studio.openldap.config.model.ConfigurationElement;
-import org.apache.directory.studio.openldap.config.model.OlcDatabaseConfig;
 
 
 /**
@@ -60,6 +61,6 @@ public class OlcNullConfig extends OlcDatabaseConfig
      */
     public String getOlcDatabaseType()
     {
-        return "null";
+        return DatabaseTypeEnum.NULL.toString().toLowerCase();
     };
 }

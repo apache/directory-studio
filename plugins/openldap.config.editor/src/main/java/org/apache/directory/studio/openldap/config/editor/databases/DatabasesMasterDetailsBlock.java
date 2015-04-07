@@ -53,12 +53,11 @@ import org.eclipse.ui.forms.MasterDetailsBlock;
 import org.eclipse.ui.forms.SectionPart;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.Section;
-
 import org.apache.directory.studio.openldap.config.OpenLdapConfigurationPlugin;
 import org.apache.directory.studio.openldap.config.OpenLdapConfigurationPluginConstants;
 import org.apache.directory.studio.openldap.config.OpenLdapConfigurationPluginUtils;
 import org.apache.directory.studio.openldap.config.editor.ServerConfigurationEditor;
-import org.apache.directory.studio.openldap.config.model.OlcDatabaseConfig;
+import org.apache.directory.studio.openldap.config.model.database.OlcDatabaseConfig;
 
 
 /**

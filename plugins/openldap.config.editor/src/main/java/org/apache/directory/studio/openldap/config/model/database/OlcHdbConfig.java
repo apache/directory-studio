@@ -20,6 +20,9 @@
 package org.apache.directory.studio.openldap.config.model.database;
 
 
+import org.apache.directory.studio.openldap.config.editor.databases.DatabaseTypeEnum;
+
+
 /**
  * Java bean for the 'olcHdbConfig' object class.
  * 
@@ -32,6 +35,6 @@ public class OlcHdbConfig extends OlcBdbConfig
      */
     public String getOlcDatabaseType()
     {
-        return "hdb";
+        return DatabaseTypeEnum.HDB.toString().toLowerCase();
     };
 }

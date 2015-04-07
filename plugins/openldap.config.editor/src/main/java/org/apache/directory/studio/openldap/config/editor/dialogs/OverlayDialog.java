@@ -46,13 +46,13 @@ import org.apache.directory.studio.openldap.config.editor.dialogs.overlays.Rewri
 import org.apache.directory.studio.openldap.config.editor.dialogs.overlays.SyncProvOverlayConfigurationBlock;
 import org.apache.directory.studio.openldap.config.editor.dialogs.overlays.ValueSortingOverlayConfigurationBlock;
 import org.apache.directory.studio.openldap.config.model.OlcOverlayConfig;
-import org.apache.directory.studio.openldap.config.model.OlcSyncProvConfig;
 import org.apache.directory.studio.openldap.config.model.overlay.OlcAccessLogConfig;
 import org.apache.directory.studio.openldap.config.model.overlay.OlcAuditlogConfig;
 import org.apache.directory.studio.openldap.config.model.overlay.OlcMemberOf;
 import org.apache.directory.studio.openldap.config.model.overlay.OlcPPolicyConfig;
 import org.apache.directory.studio.openldap.config.model.overlay.OlcRefintConfig;
 import org.apache.directory.studio.openldap.config.model.overlay.OlcRwmConfig;
+import org.apache.directory.studio.openldap.config.model.overlay.OlcSyncProvConfig;
 import org.apache.directory.studio.openldap.config.model.overlay.OlcValSortConfig;
 
 

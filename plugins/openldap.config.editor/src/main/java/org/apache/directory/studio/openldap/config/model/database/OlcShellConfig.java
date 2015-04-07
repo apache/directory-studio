@@ -20,48 +20,23 @@
 package org.apache.directory.studio.openldap.config.model.database;
 
 
-import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.studio.openldap.config.editor.databases.DatabaseTypeEnum;
-import org.apache.directory.studio.openldap.config.model.ConfigurationElement;
 
 
 /**
- * Java bean for the 'olcRelayConfig' object class.
+ * Java bean for the 'olcMonitorConfig' object class.
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class OlcRelayConfig extends OlcDatabaseConfig
+public class OlcShellConfig extends OlcDatabaseConfig
 {
-    /**
-     * Field for the 'olcRelay' attribute.
-     */
-    @ConfigurationElement(attributeType = "olcRelay")
-    private Dn olcRelay;
-
-
-    /**
-     * @return the olcRelay
-     */
-    public Dn getOlcRelay()
-    {
-        return olcRelay;
-    }
-
-
-    /**
-     * @param olcRelay the olcRelay to set
-     */
-    public void setOlcRelay( Dn olcRelay )
-    {
-        this.olcRelay = olcRelay;
-    }
-
+    // No other fields than those inherited from the 'OlcDatabaseConfig' class
 
     /**
      * {@inheritDoc}
      */
     public String getOlcDatabaseType()
     {
-        return DatabaseTypeEnum.RELAY.toString().toLowerCase();
+        return DatabaseTypeEnum.SHELL.toString().toLowerCase();
     };
 }

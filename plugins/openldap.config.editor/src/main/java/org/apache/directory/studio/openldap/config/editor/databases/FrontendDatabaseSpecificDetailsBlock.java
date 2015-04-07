@@ -45,14 +45,13 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.ui.forms.widgets.FormToolkit;
-
 import org.apache.directory.studio.openldap.common.ui.dialogs.AttributeDialog;
 import org.apache.directory.studio.openldap.common.ui.widgets.EntryWidget;
 import org.apache.directory.studio.openldap.config.OpenLdapConfigurationPlugin;
 import org.apache.directory.studio.openldap.config.OpenLdapConfigurationPluginConstants;
 import org.apache.directory.studio.openldap.config.model.AuxiliaryObjectClass;
-import org.apache.directory.studio.openldap.config.model.OlcDatabaseConfig;
 import org.apache.directory.studio.openldap.config.model.OlcFrontendConfig;
+import org.apache.directory.studio.openldap.config.model.database.OlcDatabaseConfig;
 
 
 /**

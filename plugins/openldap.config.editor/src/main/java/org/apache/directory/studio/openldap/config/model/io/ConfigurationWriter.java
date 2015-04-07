@@ -41,15 +41,14 @@ import org.apache.directory.api.ldap.model.name.Rdn;
 import org.apache.directory.api.ldap.model.schema.ObjectClass;
 import org.apache.directory.api.ldap.model.schema.SchemaManager;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
-
 import org.apache.directory.studio.openldap.config.OpenLdapConfigurationPlugin;
 import org.apache.directory.studio.openldap.config.editor.ServerConfigurationEditorUtils;
 import org.apache.directory.studio.openldap.config.model.AuxiliaryObjectClass;
 import org.apache.directory.studio.openldap.config.model.ConfigurationElement;
 import org.apache.directory.studio.openldap.config.model.OlcConfig;
-import org.apache.directory.studio.openldap.config.model.OlcDatabaseConfig;
 import org.apache.directory.studio.openldap.config.model.OlcOverlayConfig;
 import org.apache.directory.studio.openldap.config.model.OpenLdapConfiguration;
+import org.apache.directory.studio.openldap.config.model.database.OlcDatabaseConfig;
 
 
 /**

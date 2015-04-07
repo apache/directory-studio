@@ -19,7 +19,8 @@
  */
 package org.apache.directory.studio.openldap.config.model.database;
 
-import org.apache.directory.studio.openldap.config.model.OlcDatabaseConfig;
+
+import org.apache.directory.studio.openldap.config.editor.databases.DatabaseTypeEnum;
 
 
 /**
@@ -36,6 +37,6 @@ public class OlcMonitorConfig extends OlcDatabaseConfig
      */
     public String getOlcDatabaseType()
     {
-        return "monitor";
+        return DatabaseTypeEnum.MONITOR.toString().toLowerCase();
     };
 }

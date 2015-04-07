@@ -38,42 +38,67 @@ package org.apache.directory.studio.openldap.config.editor.databases;
 public enum DatabaseTypeEnum
 {
     /** None */
-    NONE( "None" ),
+    NONE("None"),
 
     /** Frontend DB */
-    FRONTEND( "Frontend DB" ),
+    FRONTEND("Frontend DB"),
 
     /** Config DB */
-    CONFIG( "Config DB" ),
+    CONFIG("Config DB"),
 
     /** Berkeley DB */
-    BDB( "BDB (Berkeley DB)" ),
+    BDB("BDB (Berkeley DB)"),
+
+    /** DB Perl */
+    DB_PERL("DB Perl"),
+
+    /** DB Socket */
+    DB_SOCKET("DB Socket"),
 
     /** Hierarchical Berkeley DB */
-    HDB( "HDB (Hierarchical Berkeley DB)" ),
+    HDB("HDB (Hierarchical Berkeley DB)"),
 
     /** Memory-Mapped DB */
-    MDB( "MDB (Memory-Mapped DB)" ),
+    MDB("MDB (Memory-Mapped DB)"),
 
     /** LDAP DB*/
-    LDAP( "LDAP DB" ),
+    LDAP("LDAP DB"),
 
     /** LDIF DB*/
-    LDIF( "LDIF DB" ),
+    LDIF("LDIF DB"),
+
+    /** META DB*/
+    META("META DB"),
+
+    /** MONITOR DB*/
+    MONITOR("MONITOR DB"),
+
+    /** NDB DB*/
+    NDB("NDB DB"),
 
     /** Null DB*/
-    NULL( "Null DB" ),
+    NULL("Null DB"),
+
+    /** PASSWD DB */
+    PASSWD("PASSWD DB"),
 
     /** Relay DB*/
-    RELAY( "Relay DB" );
+    RELAY("Relay DB"),
+
+    /** Shell DB*/
+    SHELL("Shell DB"),
+
+    /** SQL DB*/
+    SQL("SQL DB");
 
     /** The internal name of the database */
     private String name;
 
+
     /** A private constructor with the name as a parameter */
     private DatabaseTypeEnum( String name )
     {
-        this.name= name;
+        this.name = name;
     }
 
 

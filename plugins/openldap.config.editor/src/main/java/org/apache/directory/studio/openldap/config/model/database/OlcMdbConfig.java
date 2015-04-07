@@ -23,8 +23,8 @@ package org.apache.directory.studio.openldap.config.model.database;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.directory.studio.openldap.config.editor.databases.DatabaseTypeEnum;
 import org.apache.directory.studio.openldap.config.model.ConfigurationElement;
-import org.apache.directory.studio.openldap.config.model.OlcDatabaseConfig;
 
 
 /**
@@ -137,15 +137,6 @@ public class OlcMdbConfig extends OlcDatabaseConfig
     public void clearOlcDbEnvFlags()
     {
         olcDbEnvFlags.clear();
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    public String getOlcDatabaseType()
-    {
-        return "mdb";
     }
 
 
@@ -327,4 +318,13 @@ public class OlcMdbConfig extends OlcDatabaseConfig
     {
         this.olcDbSearchStack = olcDbSearchStack;
     }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public String getOlcDatabaseType()
+    {
+        return DatabaseTypeEnum.MDB.toString().toLowerCase();
+    };
 }

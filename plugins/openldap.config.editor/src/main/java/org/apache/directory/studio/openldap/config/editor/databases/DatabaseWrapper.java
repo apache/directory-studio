@@ -19,8 +19,9 @@
  */
 package org.apache.directory.studio.openldap.config.editor.databases;
 
+import org.apache.directory.studio.openldap.config.model.database.OlcDatabaseConfig;
 
-import org.apache.directory.studio.openldap.config.model.OlcDatabaseConfig;
+
 
 
 /**

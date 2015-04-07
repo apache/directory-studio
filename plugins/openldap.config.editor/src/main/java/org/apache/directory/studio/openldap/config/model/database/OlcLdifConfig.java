@@ -19,8 +19,9 @@
  */
 package org.apache.directory.studio.openldap.config.model.database;
 
+
+import org.apache.directory.studio.openldap.config.editor.databases.DatabaseTypeEnum;
 import org.apache.directory.studio.openldap.config.model.ConfigurationElement;
-import org.apache.directory.studio.openldap.config.model.OlcDatabaseConfig;
 
 
 /**
@@ -58,6 +59,6 @@ public class OlcLdifConfig extends OlcDatabaseConfig
      */
     public String getOlcDatabaseType()
     {
-        return "ldif";
+        return DatabaseTypeEnum.LDIF.toString().toLowerCase();
     };
 }

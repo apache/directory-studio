@@ -48,10 +48,10 @@ import org.apache.directory.studio.openldap.config.model.OlcConfig;
 import org.apache.directory.studio.openldap.config.model.OlcDistProcConfig;
 import org.apache.directory.studio.openldap.config.model.OlcOverlayConfig;
 import org.apache.directory.studio.openldap.config.model.OlcPBindConfig;
-import org.apache.directory.studio.openldap.config.model.OlcSyncProvConfig;
 import org.apache.directory.studio.openldap.config.model.OpenLdapConfiguration;
 import org.apache.directory.studio.openldap.config.model.overlay.OlcAccessLogConfig;
 import org.apache.directory.studio.openldap.config.model.overlay.OlcAuditlogConfig;
+import org.apache.directory.studio.openldap.config.model.overlay.OlcSyncProvConfig;
 
 
 /**
