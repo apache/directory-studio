@@ -24,17 +24,12 @@ package org.apache.directory.studio.ldifparser.model.lines;
 import org.apache.directory.studio.ldifparser.LdifParserConstants;
 
 
+/**
+ * 
+ *  @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ */
 public class LdifChangeTypeLine extends LdifValueLineBase
 {
-
-    private static final long serialVersionUID = 8613980677301250589L;
-
-
-    protected LdifChangeTypeLine()
-    {
-    }
-
-
     public LdifChangeTypeLine( int offset, String rawChangeTypeSpec, String rawValueType, String rawChangeType,
         String rawNewLine )
     {
@@ -74,41 +69,37 @@ public class LdifChangeTypeLine extends LdifValueLineBase
 
     public boolean isAdd()
     {
-        return this.getUnfoldedChangeType().equals( "add" ); //$NON-NLS-1$
+        return getUnfoldedChangeType().equals( "add" ); //$NON-NLS-1$
     }
 
 
     public boolean isDelete()
     {
-        return this.getUnfoldedChangeType().equals( "delete" ); //$NON-NLS-1$
+        return getUnfoldedChangeType().equals( "delete" ); //$NON-NLS-1$
     }
 
 
     public boolean isModify()
     {
-        return this.getUnfoldedChangeType().equals( "modify" ); //$NON-NLS-1$
+        return getUnfoldedChangeType().equals( "modify" ); //$NON-NLS-1$
     }
 
 
     public boolean isModDn()
     {
-        return this.getUnfoldedChangeType().equals( "moddn" ) || this.getUnfoldedChangeType().equals( "modrdn" ); //$NON-NLS-1$ //$NON-NLS-2$
-    }
+        String unfoldedChangeType = getUnfoldedChangeType();
 
-
-    public boolean isValid()
-    {
-        return super.isValid();
+        return "moddn".equalsIgnoreCase( unfoldedChangeType ) || "modrdn".equalsIgnoreCase( unfoldedChangeType ); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
 
     public String getInvalidString()
     {
-        if ( this.getUnfoldedChangeTypeSpec().length() == 0 )
+        if ( getUnfoldedChangeTypeSpec().length() == 0 )
         {
             return "Missing spec 'changetype'";
         }
-        else if ( this.getUnfoldedChangeType().length() == 0 )
+        else if ( getUnfoldedChangeType().length() == 0 )
         {
             return "Missing changetype";
         }
@@ -147,5 +138,4 @@ public class LdifChangeTypeLine extends LdifValueLineBase
     {
         return new LdifChangeTypeLine( 0, "changetype", ":", "modrdn", LdifParserConstants.LINE_SEPARATOR ); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
     }
-
 }

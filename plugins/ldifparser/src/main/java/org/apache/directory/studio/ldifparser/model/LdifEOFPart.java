@@ -24,17 +24,13 @@ package org.apache.directory.studio.ldifparser.model;
 import org.apache.directory.studio.ldifparser.LdifFormatParameters;
 
 
+/**
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ */
 public final class LdifEOFPart implements LdifPart
 {
-
-    private static final long serialVersionUID = -8527682569842893613L;
-
     private int offset;
-
-
-    protected LdifEOFPart()
-    {
-    }
 
 
     public LdifEOFPart( int offset )
@@ -55,12 +51,18 @@ public final class LdifEOFPart implements LdifPart
     }
 
 
+    /**
+     * @return The raw version of a EOF part : an empty String
+     */
     public final String toRawString()
     {
         return ""; //$NON-NLS-1$
     }
 
 
+    /**
+     * @return The formatted version of a EOF part : an empty String
+     */
     public final String toFormattedString( LdifFormatParameters formatParameters )
     {
         return ""; //$NON-NLS-1$
@@ -69,10 +71,7 @@ public final class LdifEOFPart implements LdifPart
 
     public final String toString()
     {
-        String text = toRawString();
-        text = text.replaceAll( "\n", "\\\\n" ); //$NON-NLS-1$ //$NON-NLS-2$
-        text = text.replaceAll( "\r", "\\\\r" ); //$NON-NLS-1$ //$NON-NLS-2$
-        return getClass().getName() + " (" + getOffset() + "," + getLength() + "): '" + text + "'"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+        return getClass().getName() + " (" + getOffset() + "," + getLength() + "): ''"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
     }
 
 

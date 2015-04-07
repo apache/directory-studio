@@ -24,7 +24,6 @@ package org.apache.directory.studio.ldifparser.model;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
 
 import org.apache.directory.studio.ldifparser.LdifFormatParameters;
@@ -35,52 +34,69 @@ import org.apache.directory.studio.ldifparser.model.container.LdifModSpec;
 import org.apache.directory.studio.ldifparser.model.container.LdifRecord;
 
 
+/**
+ * A LDIF file, as we manipulate it in Studio.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ */
 public class LdifFile implements Serializable
 {
-
+    /** The serialVersionUID */
     private static final long serialVersionUID = 846864138240517008L;
 
-    private List containerList;
+    /** The list of container constituting this LDIF file */
+    private List<LdifContainer> containerList = new ArrayList<LdifContainer>();
 
 
+    /**
+     * Create an instance of a LdifFile.
+     */
     public LdifFile()
     {
-        super();
-        this.containerList = new ArrayList( 1 );
     }
 
 
+    /**
+     * Tells if the LDIF file is a Content LDIF (there will be no changes)
+     *
+     * @return true if the LDIF file does not contain any change
+     */
     public boolean isContentType()
     {
-        for ( Iterator it = this.containerList.iterator(); it.hasNext(); )
+        for ( LdifContainer container : containerList )
         {
-            Object o = it.next();
-            if ( o instanceof LdifRecord )
+            if ( container instanceof LdifRecord )
             {
-                return o instanceof LdifContentRecord;
+                return container instanceof LdifContentRecord;
             }
         }
+
         return false;
     }
 
 
+    /**
+     * Tells if the LDIF file is a Change LDIF (there will be no changes)
+     *
+     * @return true if the LDIF file is a Change LDIF
+     */
     public boolean isChangeType()
     {
-        for ( Iterator it = this.containerList.iterator(); it.hasNext(); )
+        for ( LdifContainer container : containerList )
         {
-            Object o = it.next();
-            if ( o instanceof LdifRecord )
+            if ( container instanceof LdifRecord )
             {
-                return o instanceof LdifChangeRecord;
+                return container instanceof LdifChangeRecord;
             }
         }
+
         return false;
     }
 
 
     public void addContainer( LdifContainer container )
     {
-        this.containerList.add( container );
+        containerList.add( container );
     }
 
 
@@ -91,27 +107,38 @@ public class LdifFile implements Serializable
      */
     public LdifContainer[] getContainers()
     {
-        return ( LdifContainer[] ) this.containerList.toArray( new LdifContainer[this.containerList.size()] );
+        return containerList.toArray( new LdifContainer[containerList.size()] );
     }
 
 
     /**
      * 
+     * @return all container, includes version, comments, records and
+     *         unknown
+     */
+    private List<LdifContainer> getContainerList()
+    {
+        return containerList;
+    }
+
+
+    /**
      * @return only records (even invalid), no version, comments, and
      *         unknown
      */
     public LdifRecord[] getRecords()
     {
-        List l = new ArrayList();
-        for ( Iterator it = this.containerList.iterator(); it.hasNext(); )
+        List<LdifRecord> recordList = new ArrayList<LdifRecord>();
+
+        for ( LdifContainer container : containerList )
         {
-            Object o = it.next();
-            if ( o instanceof LdifRecord )
+            if ( container instanceof LdifRecord )
             {
-                l.add( o );
+                recordList.add( ( LdifRecord ) container );
             }
         }
-        return ( LdifRecord[] ) l.toArray( new LdifRecord[l.size()] );
+
+        return recordList.toArray( new LdifRecord[recordList.size()] );
     }
 
 
@@ -121,25 +148,24 @@ public class LdifFile implements Serializable
      */
     public LdifContainer getLastContainer()
     {
-        if ( this.containerList.isEmpty() )
+        if ( containerList.isEmpty() )
         {
             return null;
         }
         else
         {
-            return ( LdifContainer ) this.containerList.get( this.containerList.size() - 1 );
+            return containerList.get( containerList.size() - 1 );
         }
     }
 
 
     public String toRawString()
     {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
 
-        LdifContainer[] containers = this.getContainers();
-        for ( int i = 0; i < containers.length; i++ )
+        for ( LdifContainer container : containerList )
         {
-            sb.append( containers[i].toRawString() );
+            sb.append( container.toRawString() );
         }
 
         return sb.toString();
@@ -148,12 +174,11 @@ public class LdifFile implements Serializable
 
     public String toFormattedString( LdifFormatParameters formatParameters )
     {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
 
-        LdifContainer[] containers = this.getContainers();
-        for ( int i = 0; i < containers.length; i++ )
+        for ( LdifContainer ldifContainer : containerList )
         {
-            sb.append( containers[i].toFormattedString( formatParameters ) );
+            sb.append( ldifContainer.toFormattedString( formatParameters ) );
         }
 
         return sb.toString();
@@ -162,106 +187,117 @@ public class LdifFile implements Serializable
 
     public String toString()
     {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
 
-        LdifContainer[] containers = this.getContainers();
-        for ( int i = 0; i < containers.length; i++ )
+        for ( LdifContainer ldifContainer : containerList )
         {
-            sb.append( containers[i].toString() );
+            sb.append( ldifContainer );
         }
 
         return sb.toString();
     }
 
 
+    /**
+     * Retrieve the container at the given offset
+     *
+     * @param model The Ldif file containing the containers
+     * @param offset The position in the file
+     * @return The container if we found one
+     */
     public static LdifContainer getContainer( LdifFile model, int offset )
     {
-        if ( model == null || offset < 0 )
-            return null;
-
-        LdifContainer container = null;
-        LdifContainer[] containers = model.getContainers();
-        if ( containers.length > 0 )
+        if ( ( model == null ) || ( offset < 0 ) )
         {
-            for ( int i = 0; i < containers.length; i++ )
+            return null;
+        }
+
+        List<LdifContainer> containers = model.getContainerList();
+
+        if ( containers.size() > 0 )
+        {
+            for ( LdifContainer ldifContainer : containers )
             {
-                if ( containers[i].getOffset() <= offset
-                    && offset < containers[i].getOffset() + containers[i].getLength() )
+                if ( ( ldifContainer.getOffset() <= offset ) &&
+                    ( offset < ldifContainer.getOffset() + ldifContainer.getLength() ) )
                 {
-                    container = containers[i];
-                    break;
+                    return ldifContainer;
                 }
             }
         }
-        return container;
+
+        return null;
     }
 
 
     public static LdifModSpec getInnerContainer( LdifContainer container, int offset )
     {
-        if ( container == null || offset < container.getOffset()
-            || offset > container.getOffset() + container.getLength() )
+        if ( ( container == null ) ||
+            ( offset < container.getOffset() ) ||
+            ( offset > container.getOffset() + container.getLength() ) )
+        {
             return null;
+        }
 
         LdifModSpec innerContainer = null;
         LdifPart[] parts = container.getParts();
+
         if ( parts.length > 0 )
         {
-            int partIndex = -1;
-
-            for ( int i = 0; i < parts.length; i++ )
+            for ( LdifPart ldifPart : parts )
             {
-                int start = parts[i].getOffset();
-                int end = parts[i].getOffset() + parts[i].getLength();
-                if ( start <= offset && offset < end )
+                int start = ldifPart.getOffset();
+                int end = ldifPart.getOffset() + ldifPart.getLength();
+
+                if ( ( start <= offset ) && ( offset < end ) && ( ldifPart instanceof LdifModSpec ) )
                 {
-                    partIndex = i;
+                    innerContainer = ( LdifModSpec ) ldifPart;
                     break;
                 }
             }
-
-            if ( partIndex > -1 )
-            {
-                if ( parts[partIndex] instanceof LdifModSpec )
-                {
-                    innerContainer = ( LdifModSpec ) parts[partIndex];
-                }
-            }
         }
+
         return innerContainer;
     }
 
 
     public static LdifContainer[] getContainers( LdifFile model, int offset, int length )
     {
-        if ( model == null || offset < 0 )
-            return null;
-
-        ArrayList containerList = new ArrayList();
-
-        LdifContainer[] containers = model.getContainers();
-        if ( containers.length > 0 )
+        if ( ( model == null ) || ( offset < 0 ) )
         {
-            for ( int i = 0; i < containers.length; i++ )
+            return null;
+        }
+
+        List<LdifContainer> containerList = new ArrayList<LdifContainer>();
+        List<LdifContainer> containers = model.getContainerList();
+
+        if ( containers.size() > 0 )
+        {
+            for ( LdifContainer container : containers )
             {
-                if ( offset < containers[i].getOffset() + containers[i].getLength()
-                    && offset + length > containers[i].getOffset() )
+                int containerOffset = container.getOffset();
+
+                if ( ( offset < containerOffset + container.getLength() ) &&
+                    ( offset + length > containerOffset ) )
                 {
-                    containerList.add( containers[i] );
+                    containerList.add( container );
                 }
             }
         }
 
-        return ( LdifContainer[] ) containerList.toArray( new LdifContainer[containerList.size()] );
+        return containerList.toArray( new LdifContainer[containerList.size()] );
     }
 
 
     public static LdifPart[] getParts( LdifFile model, int offset, int length )
     {
-        if ( model == null || offset < 0 )
+        if ( ( model == null ) || ( offset < 0 ) )
+        {
             return null;
+        }
 
         LdifContainer[] containers = model.getContainers();
+
         return getParts( containers, offset, length );
 
     }
@@ -269,166 +305,134 @@ public class LdifFile implements Serializable
 
     public static LdifPart[] getParts( LdifContainer[] containers, int offset, int length )
     {
-        if ( containers == null || offset < 0 )
-            return null;
-
-        ArrayList partList = new ArrayList();
-
-        for ( int i = 0; i < containers.length; i++ )
+        if ( ( containers == null ) || ( offset < 0 ) )
         {
-            if ( offset < containers[i].getOffset() + containers[i].getLength()
-                && offset + length >= containers[i].getOffset() )
+            return null;
+        }
+
+        List<LdifPart> partList = new ArrayList<LdifPart>();
+
+        for ( LdifContainer ldifContainer : containers )
+        {
+            int ldifContainerOffset = ldifContainer.getOffset();
+
+            if ( ( offset < ldifContainerOffset + ldifContainer.getLength() )
+                && ( offset + length >= ldifContainerOffset ) )
             {
-                LdifPart[] parts = containers[i].getParts();
-                if ( parts.length > 0 )
+                LdifPart[] ldifParts = ldifContainer.getParts();
+                LdifPart previousLdifPart = null;
+
+                for ( LdifPart ldifPart : ldifParts )
                 {
-                    for ( int p = 0; p < parts.length; p++ )
+                    int ldifPartOffset = ldifPart.getOffset();
+
+                    if ( ( offset < ldifPartOffset + ldifPart.getLength() ) && ( offset + length >= ldifPartOffset ) )
                     {
-                        if ( offset < parts[p].getOffset() + parts[p].getLength()
-                            && offset + length >= parts[p].getOffset() )
+                        if ( ldifPart instanceof LdifModSpec )
                         {
-                            LdifPart part = parts[p];
-
-                            if ( part instanceof LdifModSpec )
-                            {
-                                LdifModSpec spec = ( LdifModSpec ) part;
-                                partList.addAll( Arrays.asList( getParts( new LdifContainer[]
-                                    { spec }, offset, length ) ) );
-                            }
-                            else
-                            {
-                                if ( part instanceof LdifInvalidPart && p > 0 )
-                                {
-                                    part = parts[p - 1];
-                                }
-
-                                partList.add( part );
-                            }
+                            LdifModSpec spec = ( LdifModSpec ) ldifPart;
+                            partList.addAll( Arrays.asList( getParts( new LdifContainer[]
+                                { spec }, offset, length ) ) );
                         }
+                        else
+                        {
+                            if ( ( ldifPart instanceof LdifInvalidPart ) && ( previousLdifPart != null ) )
+                            {
+                                ldifPart = previousLdifPart;
+                            }
+
+                            partList.add( ldifPart );
+                        }
+
+                        previousLdifPart = ldifPart;
                     }
+
                 }
             }
         }
 
-        return ( org.apache.directory.studio.ldifparser.model.LdifPart[] ) partList.toArray( new LdifPart[partList
-            .size()] );
+        return partList.toArray( new LdifPart[partList.size()] );
     }
 
 
     public static LdifPart getContainerContent( LdifContainer container, int offset )
     {
-        if ( container == null || offset < container.getOffset()
-            || offset > container.getOffset() + container.getLength() )
+        int containerOffset = container.getOffset();
+
+        if ( ( container == null ) || ( offset < containerOffset ) ||
+            ( offset > containerOffset + container.getLength() ) )
+        {
             return null;
+        }
 
         LdifPart part = null;
         LdifPart[] parts = container.getParts();
+
         if ( parts.length > 0 )
         {
-            int partIndex = -1;
-
-            for ( int i = 0; i < parts.length; i++ )
+            for ( LdifPart ldifPart : parts )
             {
-                int start = parts[i].getOffset();
-                int end = parts[i].getOffset() + parts[i].getLength();
-                if ( start <= offset && offset < end )
+                int start = ldifPart.getOffset();
+                int end = ldifPart.getOffset() + ldifPart.getLength();
+
+                if ( ( start <= offset ) && ( offset < end ) )
                 {
-                    partIndex = i;
+                    if ( ldifPart instanceof LdifModSpec )
+                    {
+                        part = getContainerContent( ( LdifModSpec ) ldifPart, offset );
+                    }
+
                     break;
                 }
             }
-
-            if ( partIndex > -1 )
-            {
-                part = parts[partIndex];
-                if ( part instanceof LdifModSpec )
-                {
-                    part = getContainerContent( ( LdifModSpec ) part, offset );
-                }
-                // if(part instanceof LdifInvalidPart && partIndex > 0) {
-                // partIndex--;
-                // part = parts[partIndex];
-                // }
-            }
         }
+
         return part;
     }
 
 
-    // public static LdifPart getPart(LdifContainer container, int offset) {
-    // if(container == null || offset < 0)
-    // return null;
-    //		
-    // LdifPart part = null;
-    // LdifPart[] parts = container.getParts();
-    // if(parts.length > 0) {
-    // int partIndex = -1;
-    //			
-    // for (int i=0; i<parts.length; i++) {
-    // int start = parts[i].getOffset();
-    // int end = parts[i].getOffset()+parts[i].getLength();
-    // if(start <= offset && offset < end) {
-    // partIndex = i;
-    // break;
-    // }
-    // }
-    //			
-    // if(partIndex > -1) {
-    // part = parts[partIndex];
-    //
-    // if(part instanceof LdifUnknownPart && partIndex > 0) {
-    // partIndex--;
-    // part = parts[partIndex];
-    // }
-    //				
-    // if(part instanceof LdifContainer) {
-    // part = getPart((LdifContainer)part, offset);
-    // }
-    // }
-    // }
-    // return part;
-    // }
-
     public void replace( LdifContainer[] oldContainers, LdifContainer[] newContainers )
     {
-
         // find index
         int index = 0;
+
         if ( oldContainers.length > 0 )
         {
-            index = this.containerList.indexOf( oldContainers[0] );
+            index = containerList.indexOf( oldContainers[0] );
         }
 
         // remove old containers
         int removeLength = 0;
         int removeOffset = 0;
+
         if ( oldContainers.length > 0 )
         {
             removeOffset = oldContainers[0].getOffset();
+
             for ( int i = 0; i < oldContainers.length; i++ )
             {
-                this.containerList.remove( index );
+                containerList.remove( index );
                 removeLength += oldContainers[i].getLength();
             }
         }
 
         // add new containers
         int insertLength = 0;
+
         for ( int i = 0; i < newContainers.length; i++ )
         {
             newContainers[i].adjustOffset( removeOffset );
             insertLength += newContainers[i].getLength();
-            this.containerList.add( index + i, newContainers[i] );
+            containerList.add( index + i, newContainers[i] );
         }
 
-        // adjust offset of folling containers
+        // adjust offset of following containers
         int adjust = insertLength - removeLength;
-        for ( int i = index + newContainers.length; i < this.containerList.size(); i++ )
+
+        for ( int i = index + newContainers.length; i < containerList.size(); i++ )
         {
-            LdifContainer container = ( LdifContainer ) this.containerList.get( i );
+            LdifContainer container = containerList.get( i );
             container.adjustOffset( adjust );
         }
-
     }
-
 }

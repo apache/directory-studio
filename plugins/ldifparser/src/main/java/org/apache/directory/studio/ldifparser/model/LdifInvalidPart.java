@@ -25,19 +25,15 @@ import org.apache.directory.studio.ldifparser.LdifFormatParameters;
 import org.apache.directory.studio.ldifparser.LdifUtils;
 
 
+/**
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ */
 public final class LdifInvalidPart implements LdifPart
 {
-
-    private static final long serialVersionUID = 3107136058896890735L;
-
     private int offset;
 
     private String unknown;
-
-
-    protected LdifInvalidPart()
-    {
-    }
 
 
     public LdifInvalidPart( int offset, String unknown )
@@ -49,25 +45,28 @@ public final class LdifInvalidPart implements LdifPart
 
     public final int getOffset()
     {
-        return this.offset;
+        return offset;
     }
 
 
     public final int getLength()
     {
-        return this.toRawString().length();
+        return toRawString().length();
     }
 
 
+    /**
+     * @return The raw version of a Invalid part : the invalid String, unchanged
+     */
     public final String toRawString()
     {
-        return this.unknown;
+        return unknown;
     }
 
 
     public final String toFormattedString( LdifFormatParameters formatParameters )
     {
-        return this.unknown;
+        return unknown;
     }
 
 
@@ -94,7 +93,6 @@ public final class LdifInvalidPart implements LdifPart
 
     public final void adjustOffset( int adjust )
     {
-        this.offset += adjust;
+        offset += adjust;
     }
-
 }

@@ -21,23 +21,16 @@
 package org.apache.directory.studio.ldifparser.model.lines;
 
 
-import java.io.Serializable;
-
 import org.apache.directory.studio.ldifparser.LdifParserConstants;
 import org.apache.directory.studio.ldifparser.LdifUtils;
 
 
-public class LdifAttrValLine extends LdifValueLineBase implements Serializable
+/**
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ */
+public class LdifAttrValLine extends LdifValueLineBase
 {
-
-    private static final long serialVersionUID = 2818131653565822685L;
-
-
-    protected LdifAttrValLine()
-    {
-    }
-
-
     public LdifAttrValLine( int offset, String attributeDescripton, String valueType, String value, String newLine )
     {
         super( offset, attributeDescripton, valueType, value, newLine );
@@ -53,12 +46,6 @@ public class LdifAttrValLine extends LdifValueLineBase implements Serializable
     public String getUnfoldedAttributeDescription()
     {
         return super.getUnfoldedLineStart();
-    }
-
-
-    public boolean isValid()
-    {
-        return super.isValid();
     }
 
 
@@ -92,5 +79,4 @@ public class LdifAttrValLine extends LdifValueLineBase implements Serializable
     {
         return new LdifAttrValLine( 0, name, "::", LdifUtils.base64encode( value ), LdifParserConstants.LINE_SEPARATOR ); //$NON-NLS-1$
     }
-
 }
